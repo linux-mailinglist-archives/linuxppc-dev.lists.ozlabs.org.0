@@ -1,92 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99C3570B674
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 May 2023 09:25:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F052570B686
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 May 2023 09:28:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QPprX3tNgz3f6l
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 May 2023 17:25:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QPpwQ5fN4z3f6T
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 May 2023 17:28:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=n2CqLrCA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DPeseFRf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=n2CqLrCA;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DPeseFRf;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QPpqg4T8Bz3bhC
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 May 2023 17:24:47 +1000 (AEST)
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34M6fZrM002159;
-	Mon, 22 May 2023 07:24:21 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QPpvY0czTz30Jy
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 May 2023 17:28:08 +1000 (AEST)
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34M7MeZB009414;
+	Mon, 22 May 2023 07:28:04 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : reply-to : references : content-type : in-reply-to
- : mime-version; s=pp1; bh=QWCfiUU6i7bRLnCpHBU44p8sg8pJP+j/9vghbjX6vsI=;
- b=n2CqLrCAO0LcZO7eazo0hg4H4cU2pZnGz1l5fJ4LR3eNpUy3Hw/dGUg3hQieMnkOQ7QT
- uKjYZr0ORCCdVyN1I0gHEg0VKFKUZLZjNVlilZmwxbfXqwAw1MikkO+566kPHH5fln0F
- DfZCCPZT17tlF8FM9r+if2zX7ojaU1Eifmw+pK3q4xdw3ZxWCQ10O1Qh98IeqsmEaVBR
- 9yiiC3ebENzt7qWPr5ZPyuuaK2FxSpETBro/MVLQq+EDcPM5aK7BM6bugAv3j1nZCUYP
- 0JODvszMqmvw79CjW4N42YTKKIH2kqaEL0CDEX4M5rFRGw9037Qzz4XcDQbhY+VzXSz6 6Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qqgbq3s1k-1
+ subject : message-id : reply-to : references : mime-version : content-type
+ : in-reply-to; s=pp1; bh=AnqxjNrLS0dAvtQKq0+VbLFXh7qayS/jEJTCPB5vCps=;
+ b=DPeseFRfTRT+4GuPQY525fqQET+mKjjIWk7EnXXvad9Q0Pch8rU8pONxi4dfmlpr3RZ+
+ C+uYvMmf8a+adUVautFoMKYoMLv7TGSQJNXnS/chhI+TkP5lIgUoYLC8ZxolRYxFDTtn
+ kVsaZT7kHLTzp6p525uJP4YRz4uF7QFwCUqmRXQIvUm4fsZ4T4aiQuRfQO1vtMxWGQXM
+ lurEwbXIeD5CcJaDDe5w6pTmjSaKlnquxm8uHDdhjJ3AEMZ7EPLQ1p72Q2I+73c49SPb
+ au7lpbKJBDxSjfCmVDrDlDBPW/yEgtrzaUTidUrFObJuJM1cGYv1kxbce+gJoAmk2Ueb +A== 
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qq7qjbdpw-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 22 May 2023 07:24:21 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34M6rd1c009710;
-	Mon, 22 May 2023 07:24:21 GMT
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qqgbq3s16-1
+	Mon, 22 May 2023 07:28:03 +0000
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+	by ppma02fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34M3tMT1008210;
+	Mon, 22 May 2023 07:28:01 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma02fra.de.ibm.com (PPS) with ESMTPS id 3qppcs8puj-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 22 May 2023 07:24:20 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
-	by ppma01fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34M4duVD032081;
-	Mon, 22 May 2023 07:24:19 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma01fra.de.ibm.com (PPS) with ESMTPS id 3qppc10ppp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 22 May 2023 07:24:19 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 34M7OFK819137218
+	Mon, 22 May 2023 07:28:01 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 34M7Rwt140894986
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 22 May 2023 07:24:15 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 84B8D20043;
-	Mon, 22 May 2023 07:24:15 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6EF1520040;
-	Mon, 22 May 2023 07:24:13 +0000 (GMT)
+	Mon, 22 May 2023 07:27:58 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 88F3F20043;
+	Mon, 22 May 2023 07:27:58 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 568B720040;
+	Mon, 22 May 2023 07:27:57 +0000 (GMT)
 Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Mon, 22 May 2023 07:24:13 +0000 (GMT)
-Date: Mon, 22 May 2023 12:54:12 +0530
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Mon, 22 May 2023 07:27:57 +0000 (GMT)
+Date: Mon, 22 May 2023 12:57:56 +0530
 From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: Re: Probing nvme disks fails on Upstream kernels on powerpc Maxconfig
-Message-ID: <20230522072412.GA3902@linux.vnet.ibm.com>
-References: <20230323095333.GI1005120@linux.vnet.ibm.com>
- <906d4d0e-b487-00a5-9399-7d1edc5e20a4@leemhuis.info>
- <87bkk2khl0.fsf@mpe.ellerman.id.au>
- <2a80cb20-0c9f-2d0c-e951-c4f005f3e4b3@ozlabs.ru>
+To: Gaurav Batra <gbatra@linux.vnet.ibm.com>
+Subject: Re: [PATCH v3] powerpc/iommu: DMA address offset is incorrectly
+ calculated with 2MB TCEs
+Message-ID: <20230522072756.GA416000@linux.vnet.ibm.com>
+References: <20230504175913.83844-1-gbatra@linux.vnet.ibm.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <2a80cb20-0c9f-2d0c-e951-c4f005f3e4b3@ozlabs.ru>
+In-Reply-To: <20230504175913.83844-1-gbatra@linux.vnet.ibm.com>
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 13Z39uafd8HPXd7QhOiUouFbFLxN8SLs
-X-Proofpoint-ORIG-GUID: a3HDUesWl0Wck6bFVLwW1molImew3S4r
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
-MIME-Version: 1.0
+X-Proofpoint-ORIG-GUID: atQdoVV6zCz23afYXyrm_uXcWLuhy_uC
+X-Proofpoint-GUID: atQdoVV6zCz23afYXyrm_uXcWLuhy_uC
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.170.22
  definitions=2023-05-22_04,2023-05-17_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 spamscore=0
- phishscore=0 clxscore=1011 impostorscore=0 adultscore=0 mlxlogscore=999
- lowpriorityscore=0 mlxscore=0 malwarescore=0 suspectscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
+ priorityscore=1501 clxscore=1015 mlxlogscore=842 impostorscore=0
+ mlxscore=0 bulkscore=0 spamscore=0 phishscore=0 lowpriorityscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2304280000 definitions=main-2305220059
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -100,52 +90,32 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: sachinp@linux.vnet.ibm.com, Linux kernel regressions list <regressions@lists.linux.dev>, Gaurav Batra <gbatra@linux.vnet.ibm.com>, linux-kernel@vger.kernel.org, Abdul Haleem <abdhalee@linux.vnet.ibm.com>, "Linux regression tracking \(Thorsten Leemhuis\)" <regressions@leemhuis.info>, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: brking@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, gjoyce@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Alexey Kardashevskiy <aik@ozlabs.ru> [2023-04-13 22:09:22]:
+* Gaurav Batra <gbatra@linux.vnet.ibm.com> [2023-05-04 12:59:13]:
 
-> > > On 23.03.23 10:53, Srikar Dronamraju wrote:
-> > > > 
-> > > > I am unable to boot upstream kernels from v5.16 to the latest upstream
-> > > > kernel on a maxconfig system. (Machine config details given below)
-> > > > 
-> > > > At boot, we see a series of messages like the below.
-> > > > 
-> > > > dracut-initqueue[13917]: Warning: dracut-initqueue: timeout, still waiting for following initqueue hooks:
-> > > > dracut-initqueue[13917]: Warning: /lib/dracut/hooks/initqueue/finished/devexists-\x2fdev\x2fdisk\x2fby-uuid\x2f93dc0767-18aa-467f-afa7-5b4e9c13108a.sh: "if ! grep -q After=remote-fs-pre.target /run/systemd/generator/systemd-cryptsetup@*.service 2>/dev/null; then
-> > > > dracut-initqueue[13917]:     [ -e "/dev/disk/by-uuid/93dc0767-18aa-467f-afa7-5b4e9c13108a" ]
-> > > > dracut-initqueue[13917]: fi"
-> > > 
-> > > Alexey, did you look into this? This is apparently caused by a commit of
-> > > yours (see quoted part below) that Michael applied. Looks like it fell
-> > > through the cracks from here, but maybe I'm missing something.
-> > 
-> > Unfortunately Alexey is not working at IBM any more, so he won't have
-> > access to any hardware to debug/test this.
-> > 
-> > Srikar are you debugging this? If not we'll have to find someone else to
-> > look at it.
+> When DMA window is backed by 2MB TCEs, the DMA address for the mapped
+> page should be the offset of the page relative to the 2MB TCE. The code
+> was incorrectly setting the DMA address to the beginning of the TCE
+> range.
 > 
-> Has this been fixed and I missed cc:? Anyway, without the full log, I still
-> see it is a huge guest so chances are the guest could not map all RAM so
-> instead it uses the biggest possible DDW with 2M pages. If that's the case,
-> this might help it:
+> Mellanox driver is reporting timeout trying to ENABLE_HCA for an SR-IOV
+> ethernet port, when DMA window is backed by 2MB TCEs.
+> 
+> Fixes: 387273118714 ("powerps/pseries/dma: Add support for 2M IOMMU page size")
+> 
+> Signed-off-by: Gaurav Batra <gbatra@linux.vnet.ibm.com>
 > 
 
-Hi Alexey, Michael
+Works with this patch.
+Tested-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 
-Sorry for the late reply, but I didnt have access to this large system.
-This weekend, I did get access and tested with the patch. However it didn't
-help much, system is still stuck at dracut with similar message except the
-trace.
-
-However this patch
-https://lore.kernel.org/all/20230418204401.13168-1-gbatra@linux.vnet.ibm.com/
-from Gaurav Batra does solve this issue.
+> Reviewed-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+> Reviewed-by: Brian King <brking@linux.vnet.ibm.com>
+> ---
 
 -- 
 Thanks and Regards
 Srikar Dronamraju
-
