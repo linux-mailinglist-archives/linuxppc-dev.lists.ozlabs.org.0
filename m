@@ -2,55 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A81D270B6AE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 May 2023 09:42:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 767F570B7A3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 May 2023 10:30:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QPqCj3XvRz3f6v
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 May 2023 17:42:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QPrH70SG8z3f6Q
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 May 2023 18:30:11 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Ixl/y+Iv;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=ZU2Luicl;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QPqBs49QKz3bhC
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 May 2023 17:41:25 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::240; helo=mslow1.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Ixl/y+Iv;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=ZU2Luicl;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [IPv6:2001:4b98:dc4:8::240])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QPqBp6vY8z4x3x;
-	Mon, 22 May 2023 17:41:22 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1684741285;
-	bh=GjeGaNzNWtwtfRRm1b1ouqteUst+s4Mvd+JyTpGYURs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Ixl/y+Ivja1fcLNUxy/lob16vq86tLXx0GIPO2v0yYNq4iaCAVKKvW7aKt7BiieRZ
-	 cBckiQigthAWzA6b6/NDSyKC4Ty1hot//ArRd67kQI+oSs1wBBKwauQpq75+O3yZdc
-	 wPt2HLltRqGodtPEn3ad1ISq/zzB8BR5EHYfEiqHVbeDl78U+s6yAuDMezrJZk/Gmo
-	 Uo5wT2q2V/Tp1LsqYsHRbpEG0wl29mi4PP8oRdRwa9Xc7seSvJyGwWOdfkaNmq6c44
-	 izok3ZuCpZYbzJY/JlZ4d8KV9fQzTa9znBp7zAa5FWF+NeWhWUvrZo+XTSUmMXaUlZ
-	 Y75TX8jmE0vBg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>, Alexey Kardashevskiy
- <aik@ozlabs.ru>
-Subject: Re: Probing nvme disks fails on Upstream kernels on powerpc Maxconfig
-In-Reply-To: <20230522072412.GA3902@linux.vnet.ibm.com>
-References: <20230323095333.GI1005120@linux.vnet.ibm.com>
- <906d4d0e-b487-00a5-9399-7d1edc5e20a4@leemhuis.info>
- <87bkk2khl0.fsf@mpe.ellerman.id.au>
- <2a80cb20-0c9f-2d0c-e951-c4f005f3e4b3@ozlabs.ru>
- <20230522072412.GA3902@linux.vnet.ibm.com>
-Date: Mon, 22 May 2023 17:41:22 +1000
-Message-ID: <87edn8ak4d.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QPrFH1Nxrz3cBK
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 May 2023 18:28:34 +1000 (AEST)
+Received: from relay7-d.mail.gandi.net (unknown [IPv6:2001:4b98:dc4:8::227])
+	by mslow1.mail.gandi.net (Postfix) with ESMTP id DF6A0C0B31
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 May 2023 08:21:17 +0000 (UTC)
+Received: (Authenticated sender: herve.codina@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPA id 992D120011;
+	Mon, 22 May 2023 08:20:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1684743663;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ka1Fl6OswEMhixEbbi0TzCh7AW+Ii5FCal5DmvLTqf0=;
+	b=ZU2Luicl+fq4CWB6b6hl6ciqLNk6pTs/nZ8rxMxAmEw2HL6m9VAR54gwKKTMoqd5TrfpIh
+	Hvs8HzalYqJVpl10Y0QTmTMnuXmntSm58H7x3m4QWJJ6XF7XqrMAdQqdJOqp3Wa4TVnMyI
+	OSB/8fXPwhDRb6H6SwVdVt2u4sfhpN3TsRKhGFGJM8fOp0iRvtpm+2KRMAOwoZc4ea32Uo
+	rIWh1NvuOANtys1leoaXB4lUAVmnoXJH1iaVCeW41+5JGIrmwW4ZUiGUFFSf0J8L3SRF9n
+	q4a5vzRljWR+bMlaliCwjhlKyaSdByfx6yIj3mAkaxGch59Zb/RlEjdiw0GauA==
+From: Herve Codina <herve.codina@bootlin.com>
+To: Herve Codina <herve.codina@bootlin.com>,
+	Qiang Zhao <qiang.zhao@nxp.com>,
+	Li Yang <leoyang.li@nxp.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>
+Subject: [PATCH 0/2] Fix COMPILE_TEST dependencies for CPM uart, TSA and QMC
+Date: Mon, 22 May 2023 10:20:46 +0200
+Message-Id: <20230522082048.21216-1-herve.codina@bootlin.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,65 +62,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sachinp@linux.vnet.ibm.com, Linux kernel regressions list <regressions@lists.linux.dev>, Gaurav Batra <gbatra@linux.vnet.ibm.com>, linux-kernel@vger.kernel.org, Abdul Haleem <abdhalee@linux.vnet.ibm.com>, "Linux regression tracking \(Thorsten Leemhuis\)" <regressions@leemhuis.info>, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>, linux-serial@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
-> * Alexey Kardashevskiy <aik@ozlabs.ru> [2023-04-13 22:09:22]:
->
->> > > On 23.03.23 10:53, Srikar Dronamraju wrote:
->> > > > 
->> > > > I am unable to boot upstream kernels from v5.16 to the latest upstream
->> > > > kernel on a maxconfig system. (Machine config details given below)
->> > > > 
->> > > > At boot, we see a series of messages like the below.
->> > > > 
->> > > > dracut-initqueue[13917]: Warning: dracut-initqueue: timeout, still waiting for following initqueue hooks:
->> > > > dracut-initqueue[13917]: Warning: /lib/dracut/hooks/initqueue/finished/devexists-\x2fdev\x2fdisk\x2fby-uuid\x2f93dc0767-18aa-467f-afa7-5b4e9c13108a.sh: "if ! grep -q After=remote-fs-pre.target /run/systemd/generator/systemd-cryptsetup@*.service 2>/dev/null; then
->> > > > dracut-initqueue[13917]:     [ -e "/dev/disk/by-uuid/93dc0767-18aa-467f-afa7-5b4e9c13108a" ]
->> > > > dracut-initqueue[13917]: fi"
->> > > 
->> > > Alexey, did you look into this? This is apparently caused by a commit of
->> > > yours (see quoted part below) that Michael applied. Looks like it fell
->> > > through the cracks from here, but maybe I'm missing something.
->> > 
->> > Unfortunately Alexey is not working at IBM any more, so he won't have
->> > access to any hardware to debug/test this.
->> > 
->> > Srikar are you debugging this? If not we'll have to find someone else to
->> > look at it.
->> 
->> Has this been fixed and I missed cc:? Anyway, without the full log, I still
->> see it is a huge guest so chances are the guest could not map all RAM so
->> instead it uses the biggest possible DDW with 2M pages. If that's the case,
->> this might help it:
->> 
->
-> Hi Alexey, Michael
->
-> Sorry for the late reply, but I didnt have access to this large system.
-> This weekend, I did get access and tested with the patch. However it didn't
-> help much, system is still stuck at dracut with similar message except the
-> trace.
->
-> However this patch
-> https://lore.kernel.org/all/20230418204401.13168-1-gbatra@linux.vnet.ibm.com/
-> from Gaurav Batra does solve this issue.
+This series fixes issues raised by the kernel test robot
+  https://lore.kernel.org/oe-kbuild-all/202305160221.9XgweObz-lkp@intel.com/
 
-Thanks.
+In COMPILE_TEST configurations, TSA and QMC need CONFIG_CPM to be set in
+order to compile and CPM uart needs CONFIG_CPM2.
 
-There was a v3 of that patch:
-  https://lore.kernel.org/all/20230504175913.83844-1-gbatra@linux.vnet.ibm.com/
+Best regards,
+Hervé
 
-Which is merged now into mainline as:
-  096339ab84f3 ("powerpc/iommu: DMA address offset is incorrectly calculated with 2MB TCEs")
+Herve Codina (2):
+  soc: fsl: cpm1: Fix TSA and QMC dependencies in case of COMPILE_TEST
+  serial: cpm_uart: Fix a COMPILE_TEST dependency
 
-Presumably it also fixes the bug for you, so I'll mark this as fixed,
-but if you can test that exact commit that would be good to confirm the
-bug is fixed in mainline.
+ drivers/soc/fsl/qe/Kconfig | 4 ++--
+ drivers/tty/serial/Kconfig | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-cheers
+-- 
+2.40.1
 
-
-#regzbot fixed-by: 096339ab84f3 
