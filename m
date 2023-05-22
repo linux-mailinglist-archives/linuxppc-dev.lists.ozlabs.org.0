@@ -2,121 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36E3D70C1BC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 May 2023 17:01:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 766FA70C83C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 May 2023 21:36:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QQ0yW0DKJz3chl
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 May 2023 01:01:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QQ74B2KjBz3f4c
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 May 2023 05:36:42 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=fxK+MF7V;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=T0wLBkpL;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f400:7e1a::631; helo=eur05-db8-obe.outbound.protection.outlook.com; envelope-from=vladimir.oltean@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gbatra@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=fxK+MF7V;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=T0wLBkpL;
 	dkim-atps=neutral
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on20631.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e1a::631])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QQ0xb0yYnz306l
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 May 2023 01:00:33 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hsIXfpFc22j9LApHjHpOwcNpZkmGG6sUWn7G6Iwyayp+ves8003hr58N7WgMDqCSsHkn/inJ/3A9FbjfUWSmUNzkzpq0fEls8f7L/CwHrWbxGMyP5pyammwvnctwo8MceJ+5yNUEb4/Ooqi1js0QB1LjOUTrL1VeMVVCVMyfy7MGu/SJnZpqUO5cV2O6MqmGkap5daULVqrnANgDB6domWKhMPEiVCoxN1XOk3/dGvde0GQD/k2e0ugexeYnG8S43eD8vOxxYaSnRb9OQ/xt0m4EJPhzU2FMTsukAoAVxpDNYCVqki16M68s1lS8bntfvT8970Ivfx19aDpbdzLa/A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EB71iksn3qiV/RSIqRzeMbEh4hotab3QdoJm2tor1yA=;
- b=HjA39FFkAi1JT/adn9RoRPZ9OKYAviEybiFAHB+7L+58qxlb2ZFxQ0zE19wFouhzImjiz34izgsL5GUKQ8+Ot8h1G76Y6+HyohpWwjj8UkgmCDEP603TcUy9LJ2Ta2YvS9Y/0dwQS7koksfHncpfNcpCzGVIJdagN643ZHMx9fIyOIi6YRB3P9dhFL0KNDYZH0wyY4yWe0b4PZXHEXt1QyMdocAHrJaOaeOgc7TOhY4QA8lvQsvcae5XH9AT7UNXcj2iiwCN1i3f9w3w6rQD/5afiv99WsHV1e7ZTytVNI7hIS2qvMbXptcoKcWMMpwX0aaEyiHM7CgMQGHPCCtpxQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EB71iksn3qiV/RSIqRzeMbEh4hotab3QdoJm2tor1yA=;
- b=fxK+MF7VuVOPdBXBcRHPvAfaegNKmjhDLa5FG/Xw+9Cz9IXZXfKO6zsWfhePQqAseUNRl9u7SF0fYgIGgyMRfpNIpGpYLIpZH8G9GWHpahpR3SjgmMTDNigiVSLla3QwDlUMz79tsx8H0Pv/Zw5761gI67VdxtywCLN6zPYcFn8=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM0PR04MB6452.eurprd04.prod.outlook.com (2603:10a6:208:16d::21)
- by AS8PR04MB7670.eurprd04.prod.outlook.com (2603:10a6:20b:297::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.27; Mon, 22 May
- 2023 15:00:14 +0000
-Received: from AM0PR04MB6452.eurprd04.prod.outlook.com
- ([fe80::b027:17aa:e5f5:4fea]) by AM0PR04MB6452.eurprd04.prod.outlook.com
- ([fe80::b027:17aa:e5f5:4fea%6]) with mapi id 15.20.6411.028; Mon, 22 May 2023
- 15:00:14 +0000
-Date: Mon, 22 May 2023 18:00:10 +0300
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Sean Anderson <sean.anderson@seco.com>
-Subject: Re: [PATCH v14 00/15] phy: Add support for Lynx 10G SerDes
-Message-ID: <20230522150010.q5zndfwcuvrb6pg2@skbuf>
-References: <b7779674-c3ac-e0ab-3ca8-db1ec5953a97@seco.com>
- <20230426105140.t4yqv6irtjcwptm5@skbuf>
- <20230425195002.fls5cmwolyrslpad@skbuf>
- <b7779674-c3ac-e0ab-3ca8-db1ec5953a97@seco.com>
- <20230426105140.t4yqv6irtjcwptm5@skbuf>
- <7c7ab84b-3c4a-4e44-b5b5-4acf733a0246@seco.com>
- <7c7ab84b-3c4a-4e44-b5b5-4acf733a0246@seco.com>
- <20230429172422.vc35tnwkekfieoru@skbuf>
- <c81d23b6-ed22-0b37-d71b-ddce9d5d58eb@seco.com>
- <c2f928d2-25f6-0e31-9ab3-9d585968df1b@seco.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c2f928d2-25f6-0e31-9ab3-9d585968df1b@seco.com>
-X-ClientProxiedBy: AS4P189CA0015.EURP189.PROD.OUTLOOK.COM
- (2603:10a6:20b:5d7::19) To AM0PR04MB6452.eurprd04.prod.outlook.com
- (2603:10a6:208:16d::21)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QQ39x4z8Xz3bqv
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 May 2023 02:41:25 +1000 (AEST)
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34MFdb05027184;
+	Mon, 22 May 2023 16:41:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
+ message-id : date : mime-version : subject : to : cc : references : from :
+ in-reply-to; s=pp1; bh=E2WedIIVgLuVIx+VuMtJwg9+LFmqdy3h7MDUH6OfON4=;
+ b=T0wLBkpL7Is/WJXLltMeslJoX0HUvpIjcA9JOLMLasWhSqGs9erV3rUuDx46C34ZrmAa
+ 6xOup9J84mwco9Vc5bkKrdlNrAzGCjV+2/hxpD2rADzS7idahjnXIiHmhWQ4m7MO9bMV
+ ClZUeuNNbJzvKKpWJh3XCgrJquLQtH+Lp20xwfl2yM7hhmPp8Cy+w65Dgo2UN0zFjem8
+ bd4Ig8lZ5UB2w1EsSWNYsVAm6wAC2OutkdesJELARzlCmy9YBXwwpSxdDtLeMNJeKwRs
+ 51GZ5ajnG5WhYQ5GLnp+tswMQm6eGyvBpOJ/Aq/KpjSMq9K09BBqmce/LSLoCRUW+oSM ow== 
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qrak1jtgx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 22 May 2023 16:41:17 +0000
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+	by ppma03wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34MDtBlx009109;
+	Mon, 22 May 2023 16:41:16 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([9.208.130.97])
+	by ppma03wdc.us.ibm.com (PPS) with ESMTPS id 3qppc5b5ty-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 22 May 2023 16:41:16 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 34MGfFpE24379910
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 22 May 2023 16:41:15 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3B70658067;
+	Mon, 22 May 2023 16:41:15 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C618B58065;
+	Mon, 22 May 2023 16:41:14 +0000 (GMT)
+Received: from [9.67.88.183] (unknown [9.67.88.183])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 22 May 2023 16:41:14 +0000 (GMT)
+Content-Type: multipart/alternative;
+ boundary="------------OVdZP7zTK11QF3FGRVEWjgMM"
+Message-ID: <b1260c4d-78ac-9c61-02e3-538846796982@linux.vnet.ibm.com>
+Date: Mon, 22 May 2023 11:41:14 -0500
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB6452:EE_|AS8PR04MB7670:EE_
-X-MS-Office365-Filtering-Correlation-Id: cd6f4d8b-8da7-4396-2012-08db5ad53fb5
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:  foszXlwfKuk2yurSmEzFeqnhdf9iE9hDoUOPBTEUp7CyzZ7VzZXHartFN/cO0opz57sIui8oUkSY12zIFsi7TqWaAvBv2Vo0NllKnvun6I/mI38SAKtV0ValsV5UoFp8Lfkyt+NKAQoK9ZdoUNmxyjFIHYHfBCBiZVNL7pg7Li3Si56mtG0OpmoRNd58nSKj3w6lEyQOwyxnpMokouAS2bdjRG0589RMfhESEsEtXN1IGhViToApaexoVo3J4OfX5/1+8bBmFNy6Lgp1QLpYf/D7l1JoAwHJrNSImCSfElBY8afd+wA5L+M8j/aEIdcjsWXITLG6dtABSvSmuiygWx8We8YeBv1v5RZj6+ESEUmCcYIvE+SCmqQab3y/rxPw5M4VOCs+0jAORGGk2yRq0DL2nt/zFL5Z5Y52Iy4uDAmHLNedLkYYmzv+8NK2x0H3MgainWRtdrNqBtrbBrmngSBTaFf8bm7AVPyO5akVOoLTWMzyDFXydRJCQUkp61hktW43uJODJNfnhYx7bsOCkyH4UUpAmTkYVJ4EVcqhvEM11J0CQ+h1a63bqoyLyBRB
-X-Forefront-Antispam-Report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6452.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(7916004)(4636009)(136003)(376002)(346002)(396003)(366004)(39860400002)(451199021)(8676002)(8936002)(7416002)(44832011)(5660300002)(186003)(6512007)(6506007)(33716001)(26005)(1076003)(9686003)(86362001)(38100700002)(41300700001)(6666004)(558084003)(6486002)(478600001)(6916009)(4326008)(66946007)(66476007)(66556008)(54906003)(316002)(2906002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:  =?us-ascii?Q?s3v7KPkWB2B4nMS7Q2RVIg6K2MnDBWFfW13xRM3q4gyhnAZz1q4mNQ7P+tp3?=
- =?us-ascii?Q?GewXD2JCbyBidPxTTwJUuwkDDdoGDBG73KFRhFGMXbACNDvYVS89ueUuZMUx?=
- =?us-ascii?Q?ogwwwDYRUwRnEF3vKeZy1CqPkpokfPAeqgOM8QqLbN0FX370VvIf/UR8Kxpr?=
- =?us-ascii?Q?R67hPqsYo16XAq6jfm1WK2OvfJFIEi5kUFP07MJ+qwvuSVi0cIFsTFim02UK?=
- =?us-ascii?Q?OvbR4Ng1QNtrlF+cNxjfPTqXgQM6W3MfgATUFHvQoXvaXhuVnJcyuVMvPESi?=
- =?us-ascii?Q?tHOyR36jA9Vn5s0QykSIqmvLWLBPcSVNoO9bC5A5Sob2UQ6cCvwaWUX6kuPJ?=
- =?us-ascii?Q?dBGM5eyHXNfWcI1CsVKsbS1FTOFqlZNlx6ZWk6YluFuV3sNFf/xvdw5gR9XN?=
- =?us-ascii?Q?pqxIMpcbjmt/ZFeDPstwxA04Vk9EzGyqQZbApEw7VAcRSkp7fQvcmNbbju7t?=
- =?us-ascii?Q?y2ADfEYBJ/wfrV5Ls2hpCckc0egAIDgHwNkmEDIdlaqGPqllZBFhEtKC1f3O?=
- =?us-ascii?Q?dL02yvTVwBIAC5ulVS1Ye0fEYqbCpf11uueWH5Mvb+FNAlrs4KY/PHU78QeY?=
- =?us-ascii?Q?/39xTfhtC/whrzQx9w3xcb/rgwTnSL13V1Xl05QF0jmLGW129W3g5dV2tZH1?=
- =?us-ascii?Q?9JpFTLrAQxPDnR3SJHlb+ORB168pP1DspCmuBtWpais7bD7aJXH+i/WtXUZI?=
- =?us-ascii?Q?LevTokE3ciHSxKTE5HWNFSJlG6QeM07MfUPD98zFv7dZqRUzeWnZ+9iS4USz?=
- =?us-ascii?Q?7ei8VVXuqbQrg0ebaiRi2SJTNwfwY6/Jn8LhTP6TpnlXWjm4RSsX1KIXF0yE?=
- =?us-ascii?Q?COAlsNM6iDNoPuJELJD14UjxGjrXBVu3Me04Yi1YRt9VZcpmOUY0T848C3Ra?=
- =?us-ascii?Q?TORYhnRnG2R20UyKm4AtBf3xpHDbQoNZyhHAc7QgXe2ZREhQpsvlrMphb+W2?=
- =?us-ascii?Q?AVPzMFuGVVB27ePFJucRdBD53l3sa5ItKeADnDDZFrKW3/lDoK5Ip8ifH2hu?=
- =?us-ascii?Q?2zVchP0/PvTVWeBDvwneY3B0caYzEo9/8tfOK67F+ThYKzIHBVRXDjGTBRyO?=
- =?us-ascii?Q?LANn2JPttnRrYpUWcU1KDxsH6VOt6GCyoeWf5pE6tK/GFbFFlhHk11nGlVse?=
- =?us-ascii?Q?dfOirQg5LkA/cNXcRRn8CHeHU68Fe5/fy63QTnQYmeC8vBCCwatWw5y4LASl?=
- =?us-ascii?Q?5rAQEyvxJP7LpxudixxrFjiaKzML3wBYymsMOEADXnEySTVDEE/CVGsQn/4g?=
- =?us-ascii?Q?RuyCcRVAoYlvoZNz0sZooyYDO8eBiREvX8BPBoy5YEJDfOgS/jgEOVn0NWuQ?=
- =?us-ascii?Q?qdIOrOBoSyiUD2kG66e/DOXvzmIwqWyADPRXgbCtL4tZlm0Bqf5Mazb7vlAN?=
- =?us-ascii?Q?LVcP61n+TZLIADhQIXBQPFvMrK3/J2YDyAFejANwET378bdoTGg5rYQrBlZg?=
- =?us-ascii?Q?dLtgRo4DvbqCPBVL6w1IhmmyqktrJQr+/V2fptIob4TEtI+Ubr2MpoMKe7qn?=
- =?us-ascii?Q?pjf2BL99L7laWhw3IyevDLZb7IcNXKs7xFM+Yy2Vxk3kLs2A/6A+GiVohOmD?=
- =?us-ascii?Q?u6PUaB1Mcm+Tu0URfMfstiyhgdXEfiUd3UJX35xz30oObFwKdVLGprzov9gl?=
- =?us-ascii?Q?xA=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cd6f4d8b-8da7-4396-2012-08db5ad53fb5
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6452.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2023 15:00:14.8215
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AJ205IlLv9ZHXAEkkXMBhX32pGbzWUQQ81URgVJENksORwKoO3+t3pfoUq4q8VYgHFwZVQjkOqYDAH0pmWlHnQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7670
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH] powerpc/iommu: limit number of TCEs to 512 for
+ H_STUFF_TCE hcall
+Content-Language: en-US
+To: Michael Ellerman <mpe@ellerman.id.au>
+References: <20230509220549.23946-1-gbatra@linux.vnet.ibm.com>
+ <875y8yl1k5.fsf@mail.lhotse>
+ <ad7517b3-02f2-436a-4c31-878031630c25@linux.vnet.ibm.com>
+ <87r0rfywtf.fsf@mail.lhotse>
+From: Gaurav Batra <gbatra@linux.vnet.ibm.com>
+In-Reply-To: <87r0rfywtf.fsf@mail.lhotse>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: eSB8_aCuCMnRQEhu0ttsRH7WSqd1wL8K
+X-Proofpoint-GUID: eSB8_aCuCMnRQEhu0ttsRH7WSqd1wL8K
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-05-22_11,2023-05-22_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1015
+ mlxscore=0 bulkscore=0 lowpriorityscore=0 mlxlogscore=999 malwarescore=0
+ priorityscore=1501 spamscore=0 impostorscore=0 phishscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2304280000
+ definitions=main-2305220134
+X-Mailman-Approved-At: Tue, 23 May 2023 05:36:00 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -128,12 +96,146 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?utf-8?B?RmVybuKUnMOtbmRleg==?= Rojas <noltari@gmail.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Madalin Bucur <madalin.bucur@nxp.com>, Michael Turquette <mturquette@baylibre.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Jonas Gorski <jonas.gorski@gmail.com>, linux-phy@lists.infradead.org, linux-clk@vger.kernel.org, Kishon Vijay Abraham I <kishon@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Bartosz Golaszewski <brgl@bgdev.pl>, linux-doc@vger.kernel.org, Camelia Alexandra Groza <camelia.groza@nxp.com>, Linus Walleij <linus.walleij@linaro.org>, devicetree@vger.kernel.org, linux-gpio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, linux-arm-kernel@lists.infradead.org, Stephen Boyd <sboyd@kernel.org>, linuxppc-dev@lists.ozlabs.org, Li Yang <leoyang.li@nxp.com>, Vinod Koul <vkoul@kernel.org>, Shawn Guo <shawnguo@kernel.org>
+Cc: brking@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, gjoyce@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 22, 2023 at 10:42:04AM -0400, Sean Anderson wrote:
-> Have you had a chance to review this driver?
+This is a multi-part message in MIME format.
+--------------OVdZP7zTK11QF3FGRVEWjgMM
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Partially / too little (and no, I don't have an answer yet). I am
-debugging a SERDES protocol change procedure from XFI to SGMII.
+
+On 5/17/23 7:19 AM, Michael Ellerman wrote:
+> Gaurav Batra<gbatra@linux.vnet.ibm.com>  writes:
+>> Hello Michael,
+>>
+>> System test hit the crash. I believe, it was PHYP that resulted in it
+>> due to number of TCEs passed in to be >512.
+> OK. It's always good to spell out in the change log whether it's a
+> theoretical/unlikely bug, or one that's actually been hit in testing or
+> the field.
+I will submit another version of the patch with some changes in the log 
+once I figure out how to Tag it for stable (as mentioned below).
+>> I was wondering about the Fixes tag as well. But, this interface, in
+>> it's current form, is there from the day the file was created. So, in
+>> this case, should I mention the first commit which created this source file?
+> If it really goes back to the origin commit, then it's probably better
+> to just say so and tag it for stable, rather than pointing to 1da177e4.
+How to do I tag it for stable? Will it be part of the "Fixes:" tag or 
+some other tag?
+>
+> I wonder though is there something else that changed that means this bug
+> is now being hit but wasn't before? Or maybe it's just that we are
+> testing on systems with large enough amounts of memory to hit this but
+> which aren't using a direct mapping?
+
+ From the details in Bugzilla, it does seems like the HCALL was 
+previously taking long as well but PHYP was more relaxed about it. Now, 
+PHYP is limiting on how long can an HCALL take.
+
+Below are some excerpts from the Bug: 202349
+
+Linux is passing too many counts in H_STUFF_TCE. The higher the counts, 
+the longer the HCALL takes. From a Hypervisor perspective, we cannot 
+stop Linux from doing this or it will violate the rules in the PAPR 
+(which then would cause Linux to crash). The dispatcher team has 
+"tightened the screws" on long running HCALLs by causing this trap to 
+fire. From our discussions, they will not put the limits back where they 
+were before.
+
+
+Thanks
+
+Gaurav
+
+>
+> cheers
+--------------OVdZP7zTK11QF3FGRVEWjgMM
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 5/17/23 7:19 AM, Michael Ellerman
+      wrote:<br>
+    </div>
+    <blockquote type="cite" cite="mid:87r0rfywtf.fsf@mail.lhotse">
+      <pre class="moz-quote-pre" wrap="">Gaurav Batra <a class="moz-txt-link-rfc2396E" href="mailto:gbatra@linux.vnet.ibm.com">&lt;gbatra@linux.vnet.ibm.com&gt;</a> writes:
+</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">Hello Michael,
+
+System test hit the crash. I believe, it was PHYP that resulted in it 
+due to number of TCEs passed in to be &gt;512.
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+OK. It's always good to spell out in the change log whether it's a
+theoretical/unlikely bug, or one that's actually been hit in testing or
+the field.
+</pre>
+    </blockquote>
+    <font color="#0432ff">I will submit another version of the patch
+      with some changes in the log once I figure out how to Tag it for
+      stable (as mentioned below).</font><br>
+    <blockquote type="cite" cite="mid:87r0rfywtf.fsf@mail.lhotse">
+      <pre class="moz-quote-pre" wrap="">
+</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">I was wondering about the Fixes tag as well. But, this interface, in 
+it's current form, is there from the day the file was created. So, in 
+this case, should I mention the first commit which created this source file?
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+If it really goes back to the origin commit, then it's probably better
+to just say so and tag it for stable, rather than pointing to 1da177e4.</pre>
+    </blockquote>
+    <font color="#0432ff">How to do I tag it for stable? Will it be part
+      of the "Fixes:" tag or some other tag?</font><br>
+    <blockquote type="cite" cite="mid:87r0rfywtf.fsf@mail.lhotse">
+      <pre class="moz-quote-pre" wrap="">
+
+I wonder though is there something else that changed that means this bug
+is now being hit but wasn't before? Or maybe it's just that we are
+testing on systems with large enough amounts of memory to hit this but
+which aren't using a direct mapping?</pre>
+    </blockquote>
+    <p><font color="#0432ff">From the details in Bugzilla, it does seems
+        like the HCALL was previously taking long as well but PHYP was
+        more relaxed about it. Now, PHYP is limiting on how long can an
+        HCALL take. <br>
+      </font></p>
+    <p><font color="#0432ff">Below are some excerpts from the Bug:
+        202349</font></p>
+    <pre class="bz_comment_text" style="font-size: small; margin: 0px; font-family: courier; white-space: pre-wrap; width: auto; word-break: break-word; padding: 2px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; text-align: start; text-indent: 0px; text-transform: none; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;"><font color="#0432ff">Linux is passing too many counts in H_STUFF_TCE.  The higher the counts,
+the longer the HCALL takes.  From a Hypervisor perspective, we cannot stop
+Linux from doing this or it will violate the rules in the PAPR (which then
+would cause Linux to crash).
+
+The dispatcher team has "tightened the screws" on long running HCALLs by
+causing this trap to fire.  From our discussions, they will not put the limits
+back where they were before.
+</font></pre>
+    <br class="Apple-interchange-newline">
+    <p>Thanks</p>
+    <p>Gaurav<br>
+    </p>
+    <p><font color="#0432ff"></font></p>
+    <blockquote type="cite" cite="mid:87r0rfywtf.fsf@mail.lhotse">
+      <pre class="moz-quote-pre" wrap="">
+
+cheers
+</pre>
+    </blockquote>
+  </body>
+</html>
+
+--------------OVdZP7zTK11QF3FGRVEWjgMM--
+
