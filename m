@@ -1,60 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2754B70D94C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 May 2023 11:41:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42A4270D935
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 May 2023 11:36:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QQTpZ04ryz3f8H
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 May 2023 19:41:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QQThh17bTz3f7H
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 May 2023 19:36:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rwwMnlo/;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=KU08slto;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=naveen@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rwwMnlo/;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=KU08slto;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QQTgn3TCRz30Qg
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 May 2023 19:35:15 +1000 (AEST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out2.suse.de (Postfix) with ESMTP id B6BD41FF45;
+	Tue, 23 May 2023 09:35:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1684834512; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IAYq7YJVS2Hlnl42uVu2goasTRVPRgZ4NqjKSyNxGrQ=;
+	b=KU08sltoiXCpoxueN/xTm1Dj8XgBHSTDWuL90uW147a2/O/Mr6ZoeLyNLFpVJWdIVW5kxX
+	qqA4ifcAtaWSIWN6bnayexKSUglQmxet+EFMnoKUKq4Izsg5nga9Xy+G/qI4h+1EzPAbdY
+	lsmjo1AyUZ4F7lDFhMIZqs6iohgJ0mY=
+Received: from suse.cz (unknown [10.100.201.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QQTnj6C59z3bcT
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 May 2023 19:40:25 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id CF09661EB5;
-	Tue, 23 May 2023 09:40:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B7CC433EF;
-	Tue, 23 May 2023 09:40:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1684834821;
-	bh=aoJPzuZGmUXhQvVKQ1oFA01sfy5pIQx3hQz3f58+NQ0=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
-	b=rwwMnlo/A+mnx0xYaQUiKZRFa6xZNk4+AMHbB/889LTPkZz5jQM4YtZpC9OLrdWVL
-	 gSLKMOM9AS4YQ8LC7JhSeON+UFFcIlzkDIWXq2Xhuc+xexC5Zv41U+uknf97dOgZKX
-	 NWp5fWTJi1pxBzSgzACpQdDMOi3L7WQ8QGWmeE9HljyEtYUT4dk76yp8ggH23NWBah
-	 /t6Vp9/ceMU9mxNI9S5JfJJbi7LN3Bt3VxG29HrQrUON4FxcQ8CKInINaXt5GMkXmF
-	 8LXjIPGIHQhCTy1XpRe1VMP9yPTc8Las37HoPI5SJgOVbOJ1qzRZV/cnYUgLSZ6mk1
-	 RNd0zxac4yo/A==
-Date: Tue, 23 May 2023 15:01:39 +0530
-From: Naveen N Rao <naveen@kernel.org>
-Subject: Re: [RFC PATCH] powerpc/ftrace: Refactoring and support for
- -fpatchable-function-entry
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <20230519192600.2593506-1-naveen@kernel.org>
-	<3527b8d2-275e-29d8-fd3b-4002a4a901fd@csgroup.eu>
-	<85460820-e5e0-57e3-68a7-dd7a562c9eb0@csgroup.eu>
-	<1684605928.yl2udzpst9.naveen@kernel.org>
-	<5463949f-289b-1eae-17c7-f77f63389f98@csgroup.eu>
-In-Reply-To: <5463949f-289b-1eae-17c7-f77f63389f98@csgroup.eu>
+	by relay2.suse.de (Postfix) with ESMTPS id 46EBC2C141;
+	Tue, 23 May 2023 09:35:07 +0000 (UTC)
+Date: Tue, 23 May 2023 11:35:02 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: Douglas Anderson <dianders@chromium.org>
+Subject: Re: [PATCH v5 02/18] watchdog/perf: More properly prevent false
+ positives with turbo modes
+Message-ID: <ZGyIxvKhVjr-L8-I@alley>
+References: <20230519101840.v5.18.Ia44852044cdcb074f387e80df6b45e892965d4a1@changeid>
+ <20230519101840.v5.2.I843b0d1de3e096ba111a179f3adb16d576bef5c7@changeid>
 MIME-Version: 1.0
-User-Agent: astroid/0.16.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1684833778.7ege0impv3.naveen@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230519101840.v5.2.I843b0d1de3e096ba111a179f3adb16d576bef5c7@changeid>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,174 +61,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, Ian Rogers <irogers@google.com>, ito-yuichi@fujitsu.com, Lecopzer Chen <lecopzer.chen@mediatek.com>, kgdb-bugreport@lists.sourceforge.net, ricardo.neri@intel.com, Stephane Eranian <eranian@google.com>, sparclinux@vger.kernel.org, Guenter Roeck <groeck@chromium.org>, Will Deacon <will@kernel.org>, Daniel Thompson <daniel.thompson@linaro.org>, Andi Kleen <ak@linux.intel.com>, Marc Zyngier <maz@kernel.org>, Chen-Yu Tsai <wens@csie.org>, Matthias Kaehlcke <mka@chromium.org>, Catalin Marinas <catalin.marinas@arm.com>, Masayoshi Mizuma <msys.mizuma@gmail.com>, ravi.v.shankar@intel.com, Tzung-Bi Shih <tzungbi@chromium.org>, npiggin@gmail.com, Stephen Boyd <swboyd@chromium.org>, Pingfan Liu <kernelfans@gmail.com>, linux-arm-kernel@lists.infradead.org, Sumit Garg <sumit.garg@linaro.org>, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozl
+ abs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy wrote:
->=20
-> That's better, but still more time than original implementation:
->=20
-> +20% to activate function tracer (was +40% with your RFC)
-> +21% to activate nop tracer (was +24% with your RFC)
->=20
-> perf record (without strict kernel rwx) :
->=20
->      17.75%  echo     [kernel.kallsyms]   [k] ftrace_check_record
->       9.76%  echo     [kernel.kallsyms]   [k] ftrace_replace_code
->       6.53%  echo     [kernel.kallsyms]   [k] patch_instruction
->       5.21%  echo     [kernel.kallsyms]   [k] __ftrace_hash_rec_update
->       4.26%  echo     [kernel.kallsyms]   [k] ftrace_get_addr_curr
->       4.18%  echo     [kernel.kallsyms]   [k] ftrace_get_call_inst.isra.0
->       3.45%  echo     [kernel.kallsyms]   [k] ftrace_get_addr_new
->       3.08%  echo     [kernel.kallsyms]   [k] function_trace_call
->       2.20%  echo     [kernel.kallsyms]   [k] __rb_reserve_next.constprop=
-.0
->       2.05%  echo     [kernel.kallsyms]   [k] copy_page
->       1.91%  echo     [kernel.kallsyms]   [k]=20
-> ftrace_create_branch_inst.constprop.0
->       1.83%  echo     [kernel.kallsyms]   [k] ftrace_rec_iter_next
->       1.83%  echo     [kernel.kallsyms]   [k] rb_commit
->       1.69%  echo     [kernel.kallsyms]   [k] ring_buffer_lock_reserve
->       1.54%  echo     [kernel.kallsyms]   [k] trace_function
->       1.39%  echo     [kernel.kallsyms]   [k] __call_rcu_common.constprop=
-.0
->       1.25%  echo     ld-2.23.so          [.] do_lookup_x
->       1.17%  echo     [kernel.kallsyms]   [k] ftrace_rec_iter_record
->       1.03%  echo     [kernel.kallsyms]   [k] unmap_page_range
->       0.95%  echo     [kernel.kallsyms]   [k] flush_dcache_icache_page
->       0.95%  echo     [kernel.kallsyms]   [k] ftrace_lookup_ip
+On Fri 2023-05-19 10:18:26, Douglas Anderson wrote:
+> Currently, in the watchdog_overflow_callback() we first check to see
+> if the watchdog had been touched and _then_ we handle the workaround
+> for turbo mode. This order should be reversed.
+> 
+> Specifically, "touching" the hardlockup detector's watchdog should
+> avoid lockups being detected for one period that should be roughly the
+> same regardless of whether we're running turbo or not. That means that
+> we should do the extra accounting for turbo _before_ we look at (and
+> clear) the global indicating that we've been touched.
 
-Ok, I simplified this further, and this is as close to the previous fast=20
-path as we can get (applies atop the original RFC). The only difference=20
-left is the ftrace_rec iterator.
+The ideal solution would be to reset the turbo-mode-related
+variables when the watchdog is touched. And keep checking
+watchdog_nmi_touch first.
 
+But this ordering change should be good enough. It causes that
+we always check watchdog_nmi_touch when the turbo-more-related
+variables are already reset.
 
-- Naveen
+> NOTE: this fix is made based on code inspection. I am not aware of any
+> reports where the old code would have generated false positives. That
+> being said, this order seems more correct and also makes it easier
+> down the line to share code with the "buddy" hardlockup detector.
+> 
+> Fixes: 7edaeb6841df ("kernel/watchdog: Prevent false positives with turbo modes")
+> Signed-off-by: Douglas Anderson <dianders@chromium.org>
 
----
- arch/powerpc/kernel/trace/ftrace.c | 55 +++++++++++++-----------------
- 1 file changed, 23 insertions(+), 32 deletions(-)
+Reviewed-by: Petr Mladek <pmladek@suse.com>
 
-diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace=
-/ftrace.c
-index a9d57f338bd78e..4937651ecfafb0 100644
---- a/arch/powerpc/kernel/trace/ftrace.c
-+++ b/arch/powerpc/kernel/trace/ftrace.c
-@@ -96,13 +96,18 @@ static unsigned long find_ftrace_tramp(unsigned long ip=
-)
-=20
- static int ftrace_get_call_inst(struct dyn_ftrace *rec, unsigned long addr=
-, ppc_inst_t *call_inst)
- {
--	struct module *mod =3D rec->arch.mod;
- 	unsigned long ip =3D rec->ip;
- 	unsigned long stub;
-=20
- 	if (is_offset_in_branch_range(addr - ip)) {
- 		/* Within range */
- 		stub =3D addr;
-+#ifdef CONFIG_MODULES
-+	} else if (rec->arch.mod) {
-+		/* Module code would be going to one of the module stubs */
-+		stub =3D (addr =3D=3D (unsigned long)ftrace_caller ? rec->arch.mod->arch=
-.tramp :
-+							       rec->arch.mod->arch.tramp_regs);
-+#endif
- 	} else if (core_kernel_text(ip)) {
- 		/* We would be branching to one of our ftrace stubs */
- 		stub =3D find_ftrace_tramp(ip);
-@@ -110,9 +115,6 @@ static int ftrace_get_call_inst(struct dyn_ftrace *rec,=
- unsigned long addr, ppc_
- 			pr_err("0x%lx: No ftrace stubs reachable\n", ip);
- 			return -EINVAL;
- 		}
--	} else if (IS_ENABLED(CONFIG_MODULES)) {
--		/* Module code would be going to one of the module stubs */
--		stub =3D (addr =3D=3D (unsigned long)ftrace_caller ? mod->arch.tramp : m=
-od->arch.tramp_regs);
- 	} else {
- 		return -EINVAL;
- 	}
-@@ -159,7 +161,8 @@ int ftrace_make_nop(struct module *mod, struct dyn_ftra=
-ce *rec, unsigned long ad
-=20
- void ftrace_replace_code(int enable)
- {
--	ppc_inst_t old, new, nop_inst, call_inst, new_call_inst;
-+	ppc_inst_t old, new, call_inst, new_call_inst;
-+	ppc_inst_t nop_inst =3D ppc_inst(PPC_RAW_NOP());
- 	unsigned long ip, new_addr, addr;
- 	struct ftrace_rec_iter *iter;
- 	struct dyn_ftrace *rec;
-@@ -167,53 +170,41 @@ void ftrace_replace_code(int enable)
-=20
- 	for_ftrace_rec_iter(iter) {
- 		rec =3D ftrace_rec_iter_record(iter);
--		update =3D ftrace_test_record(rec, enable);
- 		ip =3D rec->ip;
--		new_addr =3D 0;
-+
-+		if (rec->flags & FTRACE_FL_DISABLED && !(rec->flags & FTRACE_FL_ENABLED)=
-)
-+			continue;
-+
-+		addr =3D ftrace_get_addr_curr(rec);
-+		new_addr =3D ftrace_get_addr_new(rec);
-+		update =3D ftrace_update_record(rec, enable);
-=20
- 		switch (update) {
- 		case FTRACE_UPDATE_IGNORE:
- 		default:
- 			continue;
- 		case FTRACE_UPDATE_MODIFY_CALL:
--			addr =3D ftrace_get_addr_curr(rec);
--			new_addr =3D ftrace_get_addr_new(rec);
--			break;
--		case FTRACE_UPDATE_MAKE_CALL:
--			addr =3D ftrace_get_addr_new(rec);
--			break;
--		case FTRACE_UPDATE_MAKE_NOP:
--			addr =3D ftrace_get_addr_curr(rec);
--			break;
--		}
--		nop_inst =3D ppc_inst(PPC_RAW_NOP());
--		ret =3D ftrace_get_call_inst(rec, addr, &call_inst);
--		if (!ret && new_addr)
- 			ret =3D ftrace_get_call_inst(rec, new_addr, &new_call_inst);
--		if (ret)
--			goto out;
--
--		switch (update) {
--		case FTRACE_UPDATE_MODIFY_CALL:
-+			ret |=3D ftrace_get_call_inst(rec, addr, &call_inst);
- 			old =3D call_inst;
- 			new =3D new_call_inst;
- 			break;
-+		case FTRACE_UPDATE_MAKE_NOP:
-+			ret =3D ftrace_get_call_inst(rec, addr, &call_inst);
-+			old =3D call_inst;
-+			new =3D nop_inst;
-+			break;
- 		case FTRACE_UPDATE_MAKE_CALL:
-+			ret =3D ftrace_get_call_inst(rec, new_addr, &call_inst);
- 			old =3D nop_inst;
- 			new =3D call_inst;
- 			break;
--		case FTRACE_UPDATE_MAKE_NOP:
--			new =3D nop_inst;
--			old =3D call_inst;
--			break;
- 		}
-=20
--		/* old =3D=3D new when going to .ftrace.text stub for modify */
--		if (!ppc_inst_equal(old, new))
-+		if (!ret)
- 			ret =3D ftrace_modify_code(ip, old, new);
- 		if (ret)
- 			goto out;
--		ftrace_update_record(rec, enable);
- 	}
-=20
- out:
-
+Best Regards,
+Petr
