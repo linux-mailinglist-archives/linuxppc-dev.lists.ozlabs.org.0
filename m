@@ -1,55 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9ACC70D8FF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 May 2023 11:28:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2754B70D94C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 May 2023 11:41:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QQTWj4GWlz3fBs
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 May 2023 19:28:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QQTpZ04ryz3f8H
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 May 2023 19:41:10 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=MLkNf5XJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rwwMnlo/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::227; helo=relay7-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=naveen@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=MLkNf5XJ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rwwMnlo/;
 	dkim-atps=neutral
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::227])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QQTVt4nfQz3bxC
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 May 2023 19:27:34 +1000 (AEST)
-Received: (Authenticated sender: herve.codina@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id CBD502000C;
-	Tue, 23 May 2023 09:27:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1684834051;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tWmP+K0uuA6jsYPFxeIuaz/mxhobE31RozhJ+QuYoSM=;
-	b=MLkNf5XJX5xupRjTys0zCJsfk4CyCnGchIZJhXDIN9UveOQS+bjXcKHkw0FkgFdzI/2Fcu
-	U1v6aa8rCqWKAdykDjVKmeMCkOBRwcNNdrPyl2jsqrZvwV63jvo0yxbigG0eegZVxeHZEF
-	aJ4r8+RfJ81gjc5Zt5j4vUeS+NnZ4GIzco1gFar9fJtORIe4dhqldqKGdGmjORPlhesl+l
-	lIJpKxxhXPulS3qCMUJQKquSUY3UVeaWRQHidxrESNYqFSmUsBxfH/iQbVSt4ewKQchVlC
-	3m3KcKuZbhGtlmz3IVO5hHXkbQcIWw+HN+ftUwgW8Y6ImTwI2/Gao9GrwgSFTA==
-Date: Tue, 23 May 2023 11:27:28 +0200
-From: Herve Codina <herve.codina@bootlin.com>
-To: Jiri Slaby <jirislaby@kernel.org>
-Subject: Re: [PATCH v2 2/2] serial: cpm_uart: Fix a COMPILE_TEST dependency
-Message-ID: <20230523112728.00dd5268@bootlin.com>
-In-Reply-To: <012b7c3d-1411-e5e1-662a-33369bfca610@kernel.org>
-References: <20230523085902.75837-1-herve.codina@bootlin.com>
-	<20230523085902.75837-3-herve.codina@bootlin.com>
-	<012b7c3d-1411-e5e1-662a-33369bfca610@kernel.org>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-redhat-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QQTnj6C59z3bcT
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 May 2023 19:40:25 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id CF09661EB5;
+	Tue, 23 May 2023 09:40:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B7CC433EF;
+	Tue, 23 May 2023 09:40:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1684834821;
+	bh=aoJPzuZGmUXhQvVKQ1oFA01sfy5pIQx3hQz3f58+NQ0=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=rwwMnlo/A+mnx0xYaQUiKZRFa6xZNk4+AMHbB/889LTPkZz5jQM4YtZpC9OLrdWVL
+	 gSLKMOM9AS4YQ8LC7JhSeON+UFFcIlzkDIWXq2Xhuc+xexC5Zv41U+uknf97dOgZKX
+	 NWp5fWTJi1pxBzSgzACpQdDMOi3L7WQ8QGWmeE9HljyEtYUT4dk76yp8ggH23NWBah
+	 /t6Vp9/ceMU9mxNI9S5JfJJbi7LN3Bt3VxG29HrQrUON4FxcQ8CKInINaXt5GMkXmF
+	 8LXjIPGIHQhCTy1XpRe1VMP9yPTc8Las37HoPI5SJgOVbOJ1qzRZV/cnYUgLSZ6mk1
+	 RNd0zxac4yo/A==
+Date: Tue, 23 May 2023 15:01:39 +0530
+From: Naveen N Rao <naveen@kernel.org>
+Subject: Re: [RFC PATCH] powerpc/ftrace: Refactoring and support for
+ -fpatchable-function-entry
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+References: <20230519192600.2593506-1-naveen@kernel.org>
+	<3527b8d2-275e-29d8-fd3b-4002a4a901fd@csgroup.eu>
+	<85460820-e5e0-57e3-68a7-dd7a562c9eb0@csgroup.eu>
+	<1684605928.yl2udzpst9.naveen@kernel.org>
+	<5463949f-289b-1eae-17c7-f77f63389f98@csgroup.eu>
+In-Reply-To: <5463949f-289b-1eae-17c7-f77f63389f98@csgroup.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: astroid/0.16.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1684833778.7ege0impv3.naveen@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,79 +66,174 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, kernel test robot <lkp@intel.com>, Mark Brown <broonie@kernel.org>, linux-serial@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, Qiang Zhao <qiang.zhao@nxp.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 23 May 2023 11:13:02 +0200
-Jiri Slaby <jirislaby@kernel.org> wrote:
+Christophe Leroy wrote:
+>=20
+> That's better, but still more time than original implementation:
+>=20
+> +20% to activate function tracer (was +40% with your RFC)
+> +21% to activate nop tracer (was +24% with your RFC)
+>=20
+> perf record (without strict kernel rwx) :
+>=20
+>      17.75%  echo     [kernel.kallsyms]   [k] ftrace_check_record
+>       9.76%  echo     [kernel.kallsyms]   [k] ftrace_replace_code
+>       6.53%  echo     [kernel.kallsyms]   [k] patch_instruction
+>       5.21%  echo     [kernel.kallsyms]   [k] __ftrace_hash_rec_update
+>       4.26%  echo     [kernel.kallsyms]   [k] ftrace_get_addr_curr
+>       4.18%  echo     [kernel.kallsyms]   [k] ftrace_get_call_inst.isra.0
+>       3.45%  echo     [kernel.kallsyms]   [k] ftrace_get_addr_new
+>       3.08%  echo     [kernel.kallsyms]   [k] function_trace_call
+>       2.20%  echo     [kernel.kallsyms]   [k] __rb_reserve_next.constprop=
+.0
+>       2.05%  echo     [kernel.kallsyms]   [k] copy_page
+>       1.91%  echo     [kernel.kallsyms]   [k]=20
+> ftrace_create_branch_inst.constprop.0
+>       1.83%  echo     [kernel.kallsyms]   [k] ftrace_rec_iter_next
+>       1.83%  echo     [kernel.kallsyms]   [k] rb_commit
+>       1.69%  echo     [kernel.kallsyms]   [k] ring_buffer_lock_reserve
+>       1.54%  echo     [kernel.kallsyms]   [k] trace_function
+>       1.39%  echo     [kernel.kallsyms]   [k] __call_rcu_common.constprop=
+.0
+>       1.25%  echo     ld-2.23.so          [.] do_lookup_x
+>       1.17%  echo     [kernel.kallsyms]   [k] ftrace_rec_iter_record
+>       1.03%  echo     [kernel.kallsyms]   [k] unmap_page_range
+>       0.95%  echo     [kernel.kallsyms]   [k] flush_dcache_icache_page
+>       0.95%  echo     [kernel.kallsyms]   [k] ftrace_lookup_ip
 
-> On 23. 05. 23, 10:59, Herve Codina wrote:
-> > In a COMPILE_TEST configuration, the cpm_uart driver uses symbols from
-> > the cpm_uart_cpm2.c file. This file is compiled only when CONFIG_CPM2 is
-> > set.
-> > 
-> > Without this dependency, the linker fails with some missing symbols for
-> > COMPILE_TEST configuration that needs SERIAL_CPM without enabling CPM2.
-> > 
-> > This lead to:
-> >    depends on CPM2 || CPM1 || (PPC32 && CPM2 && COMPILE_TEST)
-> > 
-> > This dependency does not make sense anymore and can be simplified
-> > removing all the COMPILE_TEST part.  
-> 
-> Then it's the same as my revert:
-> https://lore.kernel.org/all/20230518055620.29957-1-jirislaby@kernel.org/
-> 
-> :D
-> 
-> But nevermind.
+Ok, I simplified this further, and this is as close to the previous fast=20
+path as we can get (applies atop the original RFC). The only difference=20
+left is the ftrace_rec iterator.
 
-Sorry, I didn't look at your revert.
 
-Do you want a new iteration adding (same as your revert) ?
-  Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-  Reported-by: Randy Dunlap <rdunlap@infradead.org>
-  Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+- Naveen
 
-Best regards,
-Hervé
+---
+ arch/powerpc/kernel/trace/ftrace.c | 55 +++++++++++++-----------------
+ 1 file changed, 23 insertions(+), 32 deletions(-)
 
-> 
-> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > Link: https://lore.kernel.org/oe-kbuild-all/202305160221.9XgweObz-lkp@intel.com/
-> > Fixes: e3e7b13bffae ("serial: allow COMPILE_TEST for some drivers")
-> > ---
-> >   drivers/tty/serial/Kconfig             | 2 +-
-> >   drivers/tty/serial/cpm_uart/cpm_uart.h | 2 --
-> >   2 files changed, 1 insertion(+), 3 deletions(-)
-> > 
-> > diff --git a/drivers/tty/serial/Kconfig b/drivers/tty/serial/Kconfig
-> > index 625358f44419..de092bc1289e 100644
-> > --- a/drivers/tty/serial/Kconfig
-> > +++ b/drivers/tty/serial/Kconfig
-> > @@ -769,7 +769,7 @@ config SERIAL_PMACZILOG_CONSOLE
-> >   
-> >   config SERIAL_CPM
-> >   	tristate "CPM SCC/SMC serial port support"
-> > -	depends on CPM2 || CPM1 || (PPC32 && COMPILE_TEST)
-> > +	depends on CPM2 || CPM1
-> >   	select SERIAL_CORE
-> >   	help
-> >   	  This driver supports the SCC and SMC serial ports on Motorola
-> > diff --git a/drivers/tty/serial/cpm_uart/cpm_uart.h b/drivers/tty/serial/cpm_uart/cpm_uart.h
-> > index 0577618e78c0..46c03ed71c31 100644
-> > --- a/drivers/tty/serial/cpm_uart/cpm_uart.h
-> > +++ b/drivers/tty/serial/cpm_uart/cpm_uart.h
-> > @@ -19,8 +19,6 @@ struct gpio_desc;
-> >   #include "cpm_uart_cpm2.h"
-> >   #elif defined(CONFIG_CPM1)
-> >   #include "cpm_uart_cpm1.h"
-> > -#elif defined(CONFIG_COMPILE_TEST)
-> > -#include "cpm_uart_cpm2.h"
-> >   #endif
-> >   
-> >   #define SERIAL_CPM_MAJOR	204  
-> 
+diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace=
+/ftrace.c
+index a9d57f338bd78e..4937651ecfafb0 100644
+--- a/arch/powerpc/kernel/trace/ftrace.c
++++ b/arch/powerpc/kernel/trace/ftrace.c
+@@ -96,13 +96,18 @@ static unsigned long find_ftrace_tramp(unsigned long ip=
+)
+=20
+ static int ftrace_get_call_inst(struct dyn_ftrace *rec, unsigned long addr=
+, ppc_inst_t *call_inst)
+ {
+-	struct module *mod =3D rec->arch.mod;
+ 	unsigned long ip =3D rec->ip;
+ 	unsigned long stub;
+=20
+ 	if (is_offset_in_branch_range(addr - ip)) {
+ 		/* Within range */
+ 		stub =3D addr;
++#ifdef CONFIG_MODULES
++	} else if (rec->arch.mod) {
++		/* Module code would be going to one of the module stubs */
++		stub =3D (addr =3D=3D (unsigned long)ftrace_caller ? rec->arch.mod->arch=
+.tramp :
++							       rec->arch.mod->arch.tramp_regs);
++#endif
+ 	} else if (core_kernel_text(ip)) {
+ 		/* We would be branching to one of our ftrace stubs */
+ 		stub =3D find_ftrace_tramp(ip);
+@@ -110,9 +115,6 @@ static int ftrace_get_call_inst(struct dyn_ftrace *rec,=
+ unsigned long addr, ppc_
+ 			pr_err("0x%lx: No ftrace stubs reachable\n", ip);
+ 			return -EINVAL;
+ 		}
+-	} else if (IS_ENABLED(CONFIG_MODULES)) {
+-		/* Module code would be going to one of the module stubs */
+-		stub =3D (addr =3D=3D (unsigned long)ftrace_caller ? mod->arch.tramp : m=
+od->arch.tramp_regs);
+ 	} else {
+ 		return -EINVAL;
+ 	}
+@@ -159,7 +161,8 @@ int ftrace_make_nop(struct module *mod, struct dyn_ftra=
+ce *rec, unsigned long ad
+=20
+ void ftrace_replace_code(int enable)
+ {
+-	ppc_inst_t old, new, nop_inst, call_inst, new_call_inst;
++	ppc_inst_t old, new, call_inst, new_call_inst;
++	ppc_inst_t nop_inst =3D ppc_inst(PPC_RAW_NOP());
+ 	unsigned long ip, new_addr, addr;
+ 	struct ftrace_rec_iter *iter;
+ 	struct dyn_ftrace *rec;
+@@ -167,53 +170,41 @@ void ftrace_replace_code(int enable)
+=20
+ 	for_ftrace_rec_iter(iter) {
+ 		rec =3D ftrace_rec_iter_record(iter);
+-		update =3D ftrace_test_record(rec, enable);
+ 		ip =3D rec->ip;
+-		new_addr =3D 0;
++
++		if (rec->flags & FTRACE_FL_DISABLED && !(rec->flags & FTRACE_FL_ENABLED)=
+)
++			continue;
++
++		addr =3D ftrace_get_addr_curr(rec);
++		new_addr =3D ftrace_get_addr_new(rec);
++		update =3D ftrace_update_record(rec, enable);
+=20
+ 		switch (update) {
+ 		case FTRACE_UPDATE_IGNORE:
+ 		default:
+ 			continue;
+ 		case FTRACE_UPDATE_MODIFY_CALL:
+-			addr =3D ftrace_get_addr_curr(rec);
+-			new_addr =3D ftrace_get_addr_new(rec);
+-			break;
+-		case FTRACE_UPDATE_MAKE_CALL:
+-			addr =3D ftrace_get_addr_new(rec);
+-			break;
+-		case FTRACE_UPDATE_MAKE_NOP:
+-			addr =3D ftrace_get_addr_curr(rec);
+-			break;
+-		}
+-		nop_inst =3D ppc_inst(PPC_RAW_NOP());
+-		ret =3D ftrace_get_call_inst(rec, addr, &call_inst);
+-		if (!ret && new_addr)
+ 			ret =3D ftrace_get_call_inst(rec, new_addr, &new_call_inst);
+-		if (ret)
+-			goto out;
+-
+-		switch (update) {
+-		case FTRACE_UPDATE_MODIFY_CALL:
++			ret |=3D ftrace_get_call_inst(rec, addr, &call_inst);
+ 			old =3D call_inst;
+ 			new =3D new_call_inst;
+ 			break;
++		case FTRACE_UPDATE_MAKE_NOP:
++			ret =3D ftrace_get_call_inst(rec, addr, &call_inst);
++			old =3D call_inst;
++			new =3D nop_inst;
++			break;
+ 		case FTRACE_UPDATE_MAKE_CALL:
++			ret =3D ftrace_get_call_inst(rec, new_addr, &call_inst);
+ 			old =3D nop_inst;
+ 			new =3D call_inst;
+ 			break;
+-		case FTRACE_UPDATE_MAKE_NOP:
+-			new =3D nop_inst;
+-			old =3D call_inst;
+-			break;
+ 		}
+=20
+-		/* old =3D=3D new when going to .ftrace.text stub for modify */
+-		if (!ppc_inst_equal(old, new))
++		if (!ret)
+ 			ret =3D ftrace_modify_code(ip, old, new);
+ 		if (ret)
+ 			goto out;
+-		ftrace_update_record(rec, enable);
+ 	}
+=20
+ out:
 
