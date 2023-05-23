@@ -2,72 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5313970E73C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 May 2023 23:18:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4443770E78B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 May 2023 23:41:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QQnHS72sDz3f7f
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 May 2023 07:18:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QQnnG0djwz3fC6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 May 2023 07:41:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Cx4v8KmD;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=lFBe/CB0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42a; helo=mail-pf1-x42a.google.com; envelope-from=dmitry.torokhov@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Cx4v8KmD;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=lFBe/CB0;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QQnGb5D0xz2xvF
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 May 2023 07:17:59 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 264A862F1D
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 May 2023 21:17:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8AD5EC433D2
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 May 2023 21:17:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1684876676;
-	bh=9tLqLJtUvd8WQgjufgg1A9LohqPAaJqwA1V1xggHBTU=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=Cx4v8KmDqL14Sz8HUqMC4T/L/+KzUXFZfjNJduKkioyEfVSehjN+Lfh0pfkPJKGLQ
-	 IxHtd2xFI0ibzNbopvH5Qo68sq/qaR1mtu2eu2X+yBtbnIdceNrMG+I6ucGgarKTez
-	 3+vfFkgV47W2G5Vga8Yb4VWkQ1X6sNs/xa7354FPOq1D8kBzok3ZRUw7sB5elCb3V5
-	 M++DwczFChgeJ/XPbbNUv0hDydoCoY0RKUFMQJesmp+gD5+Rb/C0azz3/8NdYbotxu
-	 kl34Kr5cieJbFv+wS+SFhsaYTUNjl+Geze5XVaQI7GYlALx2eFmf6MGfsIC/rLnWsD
-	 g+FRwrwBCiLjQ==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 702A9C43142; Tue, 23 May 2023 21:17:56 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 215389] pagealloc: memory corruption at building glibc-2.33 and
- running its' testsuite
-Date: Tue, 23 May 2023 21:17:56 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-32
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: ASSIGNED
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-215389-206035-6DCYhREAad@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-215389-206035@https.bugzilla.kernel.org/>
-References: <bug-215389-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QQnmP5z0dz2xD7
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 May 2023 07:40:20 +1000 (AEST)
+Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-64d2467d640so19246b3a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 May 2023 14:40:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1684878016; x=1687470016;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=s7yqKtJGQ4rO6GxpsP0WhBw/hM2jGWUUfgT4G26UFH4=;
+        b=lFBe/CB0hLjL+iwz6TiXDBABiey4ZOfn0KgPP+dpPo2ZpjVk69nB3jVlZG9zfppW1I
+         wV+52SS64FmIrGsLfumRbHzt1ZOcpLGXC3YTDGGyF4k4LWvDxB9GX5v8q6Sc1Myma5zq
+         Td3wY9WDajX4Bq9POlxWenccYj/Vg/edoQgvU5TgevII478Lwy2z1zI8QNKbtEiBNfTG
+         sUAcx7v+BaFF+f2GX6X4QnB3qqDF+1zpGcCMHXWXl8RXlJhRA2FDdYTYZXSCQPpV8IiL
+         j3M38ki22Fct53VG6W9gUQ4StaAIX7o9lqQRR0FIV8DJ1T+xrKNiLhSYzPAwGUKaRzKG
+         9RrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684878016; x=1687470016;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=s7yqKtJGQ4rO6GxpsP0WhBw/hM2jGWUUfgT4G26UFH4=;
+        b=eWPeWcgKqsduqdoY51qDgBRSBBLappp21QWSE6w+LpwQ/eTam/kerphGO/s5ljuSJt
+         ukoqpgtpsmishfuDB2c+bZFZ9mQugQat2wpQPG7q/dxVtecyfR1Qtprsq2SiWAdnFHti
+         bQp/RWJpRzOP8gfcwRGygh7N7fk8mEDkET3XtdHq8B0kq19WpZSUrbvBbss1x50KMiDR
+         WBp4eaZCIrzRjeZVb1mEV95NmMh7QU95HNQyya+aTB2nU8htIWQcHNgHj0ykivTuhiP7
+         izg8ix/136aY/C/yQAUl3FdOmZ4Eg/CvoVvPYzNKZvpShVGbA1KCPqaGwRNG6JzmMPx1
+         36AA==
+X-Gm-Message-State: AC+VfDxfoIO2JPlrC5xEgg0pvFU0l9BtTw0yVYYyLzU02qSaq2gw4DOA
+	vaoWZsSm0qPESvrPnHwyA0w=
+X-Google-Smtp-Source: ACHHUZ7ByQYmbPNiRk/npdxnALHiSpClUqugilniT8IGLIIEeSkstEVA1QE9+T8037r37/yslRajFw==
+X-Received: by 2002:a05:6a20:728c:b0:ff:da37:ae9 with SMTP id o12-20020a056a20728c00b000ffda370ae9mr17573318pzk.53.1684878016554;
+        Tue, 23 May 2023 14:40:16 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:3913:9c00:6a9e:2c95])
+        by smtp.gmail.com with ESMTPSA id s23-20020a63dc17000000b0052c737ea9bbsm6512466pgg.39.2023.05.23.14.40.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 May 2023 14:40:15 -0700 (PDT)
+Date: Tue, 23 May 2023 14:40:12 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH] macintosh: Switch i2c drivers back to use .probe()
+Message-ID: <ZG0yvL890RwSeLS8@google.com>
+References: <20230523195053.464138-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230523195053.464138-1-u.kleine-koenig@pengutronix.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,57 +79,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Corey Minyard <cminyard@mvista.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, Ajay Gupta <ajayg@nvidia.com>, Peter Senna Tschudin <peter.senna@gmail.com>, Javier Martinez Canillas <javierm@redhat.com>, Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Liang He <windhl@126.com>, Jean Delvare <jdelvare@suse.de>, Sebastian Reichel <sebastian.reichel@collabora.com>, Adrien Grassein <adrien.grassein@gmail.com>, Nathan Chancellor <nathan@kernel.org>, Colin Leroy <colin@colino.net>, Krzysztof =?utf-8?Q?Ha=C5=82asa?= <khalasa@piap.pl>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Petr Machata <petrm@nvidia.com>, Maximilian Luz <luzmaximilian@gmail.com>, Wolfram Sang <wsa@kernel.org>, kernel@pengutronix.de, Hans Verkuil <hverkuil-cisco@xs4all.nl>, linuxppc-dev@lists.ozlabs.org, Peter Rosin <peda@axentia.se>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D215389
+On Tue, May 23, 2023 at 09:50:53PM +0200, Uwe Kleine-König wrote:
+> After commit b8a1a4cd5a98 ("i2c: Provide a temporary .probe_new()
+> call-back type"), all drivers being converted to .probe_new() and then
+> 03c835f498b5 ("i2c: Switch .probe() to not take an id parameter") convert
+> back to (the new) .probe() to be able to eventually drop .probe_new() from
+> struct i2c_driver.
+> 
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
---- Comment #39 from Erhard F. (erhard_f@mailbox.org) ---
-No change with 6.4-rc4, only additional data "page_type: 0xffffffff()" is
-shown:
+Reviewed-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-[...]
-pagealloc: memory corruption
-06fe3258: 00 00 00 00                                      ....
-CPU: 1 PID: 397 Comm: stress Tainted: G        W       T=20
-6.4.0-rc3-PMacG4-dirty #1
-Hardware name: PowerMac3,6 7455 0x80010303 PowerMac
-Call Trace:
-[f2a35c70] [c0eea17c] dump_stack_lvl+0x60/0xa4 (unreliable)
-[f2a35c90] [c0eea1d8] dump_stack+0x18/0x30
-[f2a35ca0] [c0360f90] __kernel_unpoison_pages+0x234/0x288
-[f2a35ce0] [c033fdf4] get_page_from_freelist+0xd90/0x10d8
-[f2a35d90] [c0340978] __alloc_pages+0x138/0xdd8
-[f2a35e40] [c0315b80] handle_mm_fault+0xab8/0x15e0
-[f2a35ed0] [c003a3d4] ___do_page_fault+0x320/0x8c4
-[f2a35f10] [c003abe0] do_page_fault+0x28/0x80
-[f2a35f30] [c000433c] DataAccess_virt+0x124/0x17c
---- interrupt: 300 at 0xaf30d8
-NIP:  00af30d8 LR: 00af30b4 CTR: 00000000
-REGS: f2a35f40 TRAP: 0300   Tainted: G        W       T=20=20
-(6.4.0-rc3-PMacG4-dirty)
-MSR:  0000d032 <EE,PR,ME,IR,DR,RI>  CR: 20882464  XER: 00000000
-DAR: 8f7a3010 DSISR: 42000000=20
-GPR00: 00af30b4 af9c9cb0 a7cd2740 6e97d010 39300000 20224462 00000000 00a10=
-264=20
-GPR08: 20e27000 20e26000 00000000 4062ceda 20882462 00b0fff4 00000000 00000=
-000=20
-GPR16: 00000000 00000002 00000000 0000005a 40802462 80002462 40002462 00b10=
-0a4=20
-GPR24: ffffffff ffffffff 39300000 00000000 00000000 6e97d010 00b17d64 00001=
-000=20
-NIP [00af30d8] 0xaf30d8
-LR [00af30b4] 0xaf30b4
---- interrupt: 300
-page:e314e657 refcount:1 mapcount:0 mapping:00000000 index:0x1 pfn:0x31065
-flags: 0x80000000(zone=3D2)
-page_type: 0xffffffff()
-raw: 80000000 00000100 00000122 00000000 00000001 00000000 ffffffff 00000001
-raw: 00000000
-page dumped because: pagealloc: corrupted page details
+Thanks.
 
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+-- 
+Dmitry
