@@ -1,73 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4443770E78B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 May 2023 23:41:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1080570E91F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 May 2023 00:35:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QQnnG0djwz3fC6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 May 2023 07:41:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QQq0D6rwQz3f7X
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 May 2023 08:35:40 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=lFBe/CB0;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cgagJH94;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42a; helo=mail-pf1-x42a.google.com; envelope-from=dmitry.torokhov@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=lFBe/CB0;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cgagJH94;
 	dkim-atps=neutral
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QQnmP5z0dz2xD7
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 May 2023 07:40:20 +1000 (AEST)
-Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-64d2467d640so19246b3a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 May 2023 14:40:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684878016; x=1687470016;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=s7yqKtJGQ4rO6GxpsP0WhBw/hM2jGWUUfgT4G26UFH4=;
-        b=lFBe/CB0hLjL+iwz6TiXDBABiey4ZOfn0KgPP+dpPo2ZpjVk69nB3jVlZG9zfppW1I
-         wV+52SS64FmIrGsLfumRbHzt1ZOcpLGXC3YTDGGyF4k4LWvDxB9GX5v8q6Sc1Myma5zq
-         Td3wY9WDajX4Bq9POlxWenccYj/Vg/edoQgvU5TgevII478Lwy2z1zI8QNKbtEiBNfTG
-         sUAcx7v+BaFF+f2GX6X4QnB3qqDF+1zpGcCMHXWXl8RXlJhRA2FDdYTYZXSCQPpV8IiL
-         j3M38ki22Fct53VG6W9gUQ4StaAIX7o9lqQRR0FIV8DJ1T+xrKNiLhSYzPAwGUKaRzKG
-         9RrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684878016; x=1687470016;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=s7yqKtJGQ4rO6GxpsP0WhBw/hM2jGWUUfgT4G26UFH4=;
-        b=eWPeWcgKqsduqdoY51qDgBRSBBLappp21QWSE6w+LpwQ/eTam/kerphGO/s5ljuSJt
-         ukoqpgtpsmishfuDB2c+bZFZ9mQugQat2wpQPG7q/dxVtecyfR1Qtprsq2SiWAdnFHti
-         bQp/RWJpRzOP8gfcwRGygh7N7fk8mEDkET3XtdHq8B0kq19WpZSUrbvBbss1x50KMiDR
-         WBp4eaZCIrzRjeZVb1mEV95NmMh7QU95HNQyya+aTB2nU8htIWQcHNgHj0ykivTuhiP7
-         izg8ix/136aY/C/yQAUl3FdOmZ4Eg/CvoVvPYzNKZvpShVGbA1KCPqaGwRNG6JzmMPx1
-         36AA==
-X-Gm-Message-State: AC+VfDxfoIO2JPlrC5xEgg0pvFU0l9BtTw0yVYYyLzU02qSaq2gw4DOA
-	vaoWZsSm0qPESvrPnHwyA0w=
-X-Google-Smtp-Source: ACHHUZ7ByQYmbPNiRk/npdxnALHiSpClUqugilniT8IGLIIEeSkstEVA1QE9+T8037r37/yslRajFw==
-X-Received: by 2002:a05:6a20:728c:b0:ff:da37:ae9 with SMTP id o12-20020a056a20728c00b000ffda370ae9mr17573318pzk.53.1684878016554;
-        Tue, 23 May 2023 14:40:16 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:3913:9c00:6a9e:2c95])
-        by smtp.gmail.com with ESMTPSA id s23-20020a63dc17000000b0052c737ea9bbsm6512466pgg.39.2023.05.23.14.40.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 May 2023 14:40:15 -0700 (PDT)
-Date: Tue, 23 May 2023 14:40:12 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Subject: Re: [PATCH] macintosh: Switch i2c drivers back to use .probe()
-Message-ID: <ZG0yvL890RwSeLS8@google.com>
-References: <20230523195053.464138-1-u.kleine-koenig@pengutronix.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QQpzQ18F2z3bl3
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 May 2023 08:34:58 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 968636158D
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 May 2023 22:34:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 01F2EC433D2
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 May 2023 22:34:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1684881294;
+	bh=V2djgJWqeCjHCRgRuDicGWPS1C9fFKPeQb02SeKFrsI=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=cgagJH94oHZ/T8N4d5Qqv67i4FDTE9fBm0+cKLdKtqq4iPMSEGGprx1XYQ3J6qHph
+	 +A0oHwADKt+vwF3OvnbDWHL/mVJP6d6yOus7na+R+Mp4MDBq67/hb5Dr1aEFRIz9ZF
+	 pblddNpVrkEW1+QvoqUOqtlVN6+8SkxVt3oCNO4VALG448rr5l+iQ83LXPPjtGH3eE
+	 bp/xsCFxMCk1a26d5TdLVyD7U+d4vd8rrn7x+AwFHibOSdXnM/KcpWcStXfeXwic3j
+	 lWwECh0WLi7WA6zwdL4DqfdT9tmESV2TmyFRIXt/6G9YmWjwQFIYkdaMHIKv4txaJc
+	 ng5s/uSHTE0tg==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id D4B01C43142; Tue, 23 May 2023 22:34:53 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 216715] kernel 6.1-rc5 + KASAN_OUTLINE fails to boot at very
+ early stage when DEBUG_PAGEALLOC_ENABLE_DEFAULT is enabled (PowerMac G4 3,6)
+Date: Tue, 23 May 2023 22:34:53 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: attachments.isobsolete attachments.created
+Message-ID: <bug-216715-206035-PBOPT7wFQh@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-216715-206035@https.bugzilla.kernel.org/>
+References: <bug-216715-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230523195053.464138-1-u.kleine-koenig@pengutronix.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,22 +79,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Corey Minyard <cminyard@mvista.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, Ajay Gupta <ajayg@nvidia.com>, Peter Senna Tschudin <peter.senna@gmail.com>, Javier Martinez Canillas <javierm@redhat.com>, Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Liang He <windhl@126.com>, Jean Delvare <jdelvare@suse.de>, Sebastian Reichel <sebastian.reichel@collabora.com>, Adrien Grassein <adrien.grassein@gmail.com>, Nathan Chancellor <nathan@kernel.org>, Colin Leroy <colin@colino.net>, Krzysztof =?utf-8?Q?Ha=C5=82asa?= <khalasa@piap.pl>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Petr Machata <petrm@nvidia.com>, Maximilian Luz <luzmaximilian@gmail.com>, Wolfram Sang <wsa@kernel.org>, kernel@pengutronix.de, Hans Verkuil <hverkuil-cisco@xs4all.nl>, linuxppc-dev@lists.ozlabs.org, Peter Rosin <peda@axentia.se>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 23, 2023 at 09:50:53PM +0200, Uwe Kleine-König wrote:
-> After commit b8a1a4cd5a98 ("i2c: Provide a temporary .probe_new()
-> call-back type"), all drivers being converted to .probe_new() and then
-> 03c835f498b5 ("i2c: Switch .probe() to not take an id parameter") convert
-> back to (the new) .probe() to be able to eventually drop .probe_new() from
-> struct i2c_driver.
-> 
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+https://bugzilla.kernel.org/show_bug.cgi?id=3D216715
 
-Reviewed-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Erhard F. (erhard_f@mailbox.org) changed:
 
-Thanks.
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+ Attachment #303257|0                           |1
+        is obsolete|                            |
 
--- 
-Dmitry
+--- Comment #7 from Erhard F. (erhard_f@mailbox.org) ---
+Created attachment 304310
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D304310&action=3Dedit
+dmesg (6.4-rc4, PowerMac G4 DP) - succesful boot
+
+KASAN and KCSAN can't be enabled at the same time as it seems. If I select
+KASAN, KCSAN is automatically disabled.
+
+But in this case that does not seem to be a problem. Kernel 6.4-rc4 boots f=
+ine
+with KASAN_OUTLINE and DEBUG_PAGEALLOC_ENABLE_DEFAULT enabled. Tested it ab=
+out
+a dozen times to be sure.
+
+I'll close here when kernel 6.4.0 is released and this issue is still gone =
+for
+good.
+
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching the assignee of the bug.=
