@@ -1,98 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1072270D454
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 May 2023 08:52:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 656E270D5FB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 May 2023 09:49:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QQQ3j736mz3cXf
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 May 2023 16:52:17 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=duXwoVMx;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QQRK641X8z3f9c
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 May 2023 17:48:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=duXwoVMx;
-	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.218.50; helo=mail-ej1-f50.google.com; envelope-from=jirislaby@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QQQ2t6v3Vz3bcT
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 May 2023 16:51:34 +1000 (AEST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34N6ZCEj001151;
-	Tue, 23 May 2023 06:51:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=Qiq5S7TTj9QMWP0uNpJzZO4aze9iC4fmbfp24xvlprk=;
- b=duXwoVMxnGi31bAL6TemaodE1VIxg1mW+rkET6NoTUjbJzDq47tDJPlIrieXxQcK0H6j
- iYfz03zyvyqTvAO7fnXSVXb/9c0O5wnqU0vZ/DeyylPMECvVngsd2X5hby+TjvtXhJne
- MOKvpivOaeNWwq/LuDGIPjMYAfnOhJhMWKBq766pqRfE3fNiI/21OFC8cxllDmQirRKd
- GePVgQWYVjcC7VylROpTKESi+YfinR2ctwxYf2spSALJ9MO4dnTHlnvUOB67FRZmo/7t
- wbwcSeFODJL3TMTPT5XCYeRmKwiWxZGehIkTR2strN10oNrvtgd4HB36K9uzVPPDfMad 5A== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qrpu5jtsr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 23 May 2023 06:51:30 +0000
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 34N6U8BQ009892;
-	Tue, 23 May 2023 06:51:29 GMT
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qrpu5jtrv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 23 May 2023 06:51:29 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
-	by ppma01fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 34N4ZjYa011824;
-	Tue, 23 May 2023 06:51:27 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma01fra.de.ibm.com (PPS) with ESMTPS id 3qppc113af-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 23 May 2023 06:51:27 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 34N6pOWa27591330
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 23 May 2023 06:51:24 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D422B20040;
-	Tue, 23 May 2023 06:51:24 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5F06220043;
-	Tue, 23 May 2023 06:51:24 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 23 May 2023 06:51:24 +0000 (GMT)
-Received: from jarvis.ozlabs.ibm.com (unknown [9.192.255.234])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id CE87C600BB;
-	Tue, 23 May 2023 16:51:22 +1000 (AEST)
-Message-ID: <b31cc268fbfe9482131dc60b014c726c984910b5.camel@linux.ibm.com>
-Subject: Re: [PATCH v3 02/12] powerpc/ptrace: Add missing <linux/regset.h>
- include
-From: Andrew Donnellan <ajd@linux.ibm.com>
-To: Benjamin Gray <bgray@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Date: Tue, 23 May 2023 16:51:22 +1000
-In-Reply-To: <20230519050236.144847-3-bgray@linux.ibm.com>
-References: <20230519050236.144847-1-bgray@linux.ibm.com>
-	 <20230519050236.144847-3-bgray@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.1 (3.48.1-1.fc38) 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QQRJf4RbFz30CT
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 May 2023 17:48:34 +1000 (AEST)
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-96f6e83e12fso653543966b.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 May 2023 00:48:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684828110; x=1687420110;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=G/ga9kfQAmCrlcMothWIufyDqrfE6sQdv6qR5XzdMOg=;
+        b=ILnSTJruaY3m10G076RxUZqULjR/EfxZThI1w5Z8OpLUvthSWkLlNKM4SE/BAv3Oor
+         B6VodflvTQIyEBcY+awVDOMFJJNZZWz+mnvbG4u8FhKx52MQ41tC/dYGchGUpgRYq/+X
+         w0RuGxUUWCtZQethvowlCCqkyogkFqZKKciOspnCY+BTaRM07rQ0DXSfM7dcGpwoDr1h
+         mkU2nehnPdNSmKQURaj9JnUdjMAbe7+93tHO3S9dKNnoPmbwr8E6OXQcB+S7Novgt1k7
+         430WUIhDGKAHQbJ7R6vd97Qf2IQZ9/TET3hOgxXHgmL/Njoz+bkdrX0yuOq3j1Pc2rIm
+         xiuA==
+X-Gm-Message-State: AC+VfDwQhepSW/ccyOQWeJVs1G+hJm25/cY4QxGG1/V/ERPOnS4kN9ex
+	APF+VxuiXNBIRl0x0sn9XCY=
+X-Google-Smtp-Source: ACHHUZ5Lkei+0eevntPfv1VfTj6uFljsHPeKK8tvdztEH9quqLFDVH+u77ys6bL04uOufoqRWiCGNw==
+X-Received: by 2002:a17:907:928b:b0:96a:411a:1cc4 with SMTP id bw11-20020a170907928b00b0096a411a1cc4mr11813594ejc.66.1684828109630;
+        Tue, 23 May 2023 00:48:29 -0700 (PDT)
+Received: from [192.168.1.58] (185-219-167-24-static.vivo.cz. [185.219.167.24])
+        by smtp.gmail.com with ESMTPSA id jy2-20020a170907762200b0096f689848desm4087738ejc.195.2023.05.23.00.48.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 23 May 2023 00:48:29 -0700 (PDT)
+Message-ID: <e8c45035-1834-7214-46af-834e879cf3c5@kernel.org>
+Date: Tue, 23 May 2023 09:48:28 +0200
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: GxzKXTGhY5_2XWLe8WyOxv3gJfUkB4UI
-X-Proofpoint-GUID: ykGvF8VkC_h8VaD_KN1AFPcfN-67YQ8W
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-05-23_04,2023-05-22_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- priorityscore=1501 lowpriorityscore=0 suspectscore=0 spamscore=0
- bulkscore=0 mlxlogscore=901 malwarescore=0 impostorscore=0 phishscore=0
- adultscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305230053
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Subject: Re: [PATCH 0/2] Fix COMPILE_TEST dependencies for CPM uart, TSA and
+ QMC
+Content-Language: en-US
+To: Herve Codina <herve.codina@bootlin.com>, Qiang Zhao <qiang.zhao@nxp.com>,
+ Li Yang <leoyang.li@nxp.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <20230522082048.21216-1-herve.codina@bootlin.com>
+From: Jiri Slaby <jirislaby@kernel.org>
+In-Reply-To: <20230522082048.21216-1-herve.codina@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,21 +65,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: npiggin@gmail.com, ruscur@russell.cc
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>, linux-serial@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2023-05-19 at 15:02 +1000, Benjamin Gray wrote:
-> ptrace-decl.h uses user_regset_get2_fn (among other things) from
-> regset.h. While all current users of ptrace-decl.h include regset.h
-> before it anyway, it adds an implicit ordering dependency and breaks
-> source tooling that tries to inspect ptrace-decl.h by itself.
->=20
-> Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
-> Reviewed-by: Russell Currey <ruscur@russell.cc>
+On 22. 05. 23, 10:20, Herve Codina wrote:
+> This series fixes issues raised by the kernel test robot
+>    https://lore.kernel.org/oe-kbuild-all/202305160221.9XgweObz-lkp@intel.com/
+> 
+> In COMPILE_TEST configurations, TSA and QMC need CONFIG_CPM to be set in
+> order to compile and CPM uart needs CONFIG_CPM2.
 
-Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
+Ah, perfect. Greg, please disregard my revert posted at:
+   https://lore.kernel.org/all/20230518055620.29957-1-jirislaby@kernel.org/
 
---=20
-Andrew Donnellan    OzLabs, ADL Canberra
-ajd@linux.ibm.com   IBM Australia Limited
+and take these instead.
+
+Thanks.
+
+> Best regards,
+> Hervé
+> 
+> Herve Codina (2):
+>    soc: fsl: cpm1: Fix TSA and QMC dependencies in case of COMPILE_TEST
+>    serial: cpm_uart: Fix a COMPILE_TEST dependency
+> 
+>   drivers/soc/fsl/qe/Kconfig | 4 ++--
+>   drivers/tty/serial/Kconfig | 2 +-
+>   2 files changed, 3 insertions(+), 3 deletions(-)
+> 
+
+-- 
+js
+
