@@ -2,74 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F05070D8F7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 May 2023 11:27:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9ACC70D8FF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 May 2023 11:28:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QQTVk2zgtz3f4S
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 May 2023 19:27:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QQTWj4GWlz3fBs
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 May 2023 19:28:17 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=fmBOz2XQ;
-	dkim=fail reason="signature verification failed" header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=zajPamxt;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=MLkNf5XJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=vbabka@suse.cz; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::227; helo=relay7-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=fmBOz2XQ;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=zajPamxt;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=MLkNf5XJ;
 	dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::227])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QQTTs74mpz3bT5
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 May 2023 19:26:41 +1000 (AEST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id CB4FE2046A;
-	Tue, 23 May 2023 09:26:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1684833998; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QQTVt4nfQz3bxC
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 May 2023 19:27:34 +1000 (AEST)
+Received: (Authenticated sender: herve.codina@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id CBD502000C;
+	Tue, 23 May 2023 09:27:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1684834051;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VeeF7P+KGwlI3A5FT4CrZ0MRM4bqCgyOhKvZ384U0bw=;
-	b=fmBOz2XQkJ4XHhSdGh/HXGxJtyCnKClPp4X6MRT6VR5eXrTQZK9h5N6Toqfk+0GeD98iT3
-	ZDhHKznDkq0Y5mKvraQucwn+Wh9FeAeuFGHWgkercVl2rETq+mQKxe64zKr8IJWHxFZCKE
-	O8heNaNMsvS9Ka+Y0g3mOKcA0+3rNN0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1684833998;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VeeF7P+KGwlI3A5FT4CrZ0MRM4bqCgyOhKvZ384U0bw=;
-	b=zajPamxtH/5SGH5Qq9H7t7b5zBY3QOo+hV3Vqv/J4endm7d1fvc5Ztsv4d+st0dbhUYOxx
-	LgejBO7uUF0wFbCQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 4FA5A13588;
-	Tue, 23 May 2023 09:26:38 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id HfC5Es6GbGTEVAAAMHmgww
-	(envelope-from <vbabka@suse.cz>); Tue, 23 May 2023 09:26:38 +0000
-Message-ID: <c63dc769-e020-5a82-335e-11c992543a3a@suse.cz>
-Date: Tue, 23 May 2023 11:26:38 +0200
+	bh=tWmP+K0uuA6jsYPFxeIuaz/mxhobE31RozhJ+QuYoSM=;
+	b=MLkNf5XJX5xupRjTys0zCJsfk4CyCnGchIZJhXDIN9UveOQS+bjXcKHkw0FkgFdzI/2Fcu
+	U1v6aa8rCqWKAdykDjVKmeMCkOBRwcNNdrPyl2jsqrZvwV63jvo0yxbigG0eegZVxeHZEF
+	aJ4r8+RfJ81gjc5Zt5j4vUeS+NnZ4GIzco1gFar9fJtORIe4dhqldqKGdGmjORPlhesl+l
+	lIJpKxxhXPulS3qCMUJQKquSUY3UVeaWRQHidxrESNYqFSmUsBxfH/iQbVSt4ewKQchVlC
+	3m3KcKuZbhGtlmz3IVO5hHXkbQcIWw+HN+ftUwgW8Y6ImTwI2/Gao9GrwgSFTA==
+Date: Tue, 23 May 2023 11:27:28 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Jiri Slaby <jirislaby@kernel.org>
+Subject: Re: [PATCH v2 2/2] serial: cpm_uart: Fix a COMPILE_TEST dependency
+Message-ID: <20230523112728.00dd5268@bootlin.com>
+In-Reply-To: <012b7c3d-1411-e5e1-662a-33369bfca610@kernel.org>
+References: <20230523085902.75837-1-herve.codina@bootlin.com>
+	<20230523085902.75837-3-herve.codina@bootlin.com>
+	<012b7c3d-1411-e5e1-662a-33369bfca610@kernel.org>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] mm/slab: rename CONFIG_SLAB to CONFIG_SLAB_DEPRECATED
-Content-Language: en-US
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-References: <20230523091139.21449-1-vbabka@suse.cz>
- <CAMuHMdWRZmA1iEG2aXdKZ+wWgSTgg-P7KY7pTTJx9EmvuEa58A@mail.gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <CAMuHMdWRZmA1iEG2aXdKZ+wWgSTgg-P7KY7pTTJx9EmvuEa58A@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -83,63 +61,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, Tony Lindgren <tony@atomide.com>, Roman Gushchin <roman.gushchin@linux.dev>, "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, linux-mm@kvack.org, Helge Deller <deller@gmx.de>, sparclinux@vger.kernel.org, Hyeonggon Yoo <42.hyeyoo@gmail.com>, Christoph Lameter <cl@linux.com>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, linux-renesas-soc@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, Richard Weinberger <richard@nod.at>, Gregory Clement <gregory.clement@bootlin.com>, David Rientjes <rientjes@google.com>, linux-snps-arc@lists.infradead.org, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, Vladimir Zapolskiy <vz@mleia.com>, linux-m68k@lists.linux-m68k.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org, Johannes Berg <joha
- nnes@sipsolutions.net>, linux-arm-kernel@lists.infradead.org, Qin Jian <qinjian@cqplus1.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Andrew Morton <akpm@linux-foundation.org>, linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org, Pekka Enberg <penberg@kernel.org>, Dinh Nguyen <dinguyen@kernel.org>, Joonsoo Kim <iamjoonsoo.kim@lge.com>, Shawn Guo <shawnguo@kernel.org>, "David S . Miller" <davem@davemloft.net>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, kernel test robot <lkp@intel.com>, Mark Brown <broonie@kernel.org>, linux-serial@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 5/23/23 11:22, Geert Uytterhoeven wrote:
-> Hi Vlastimil,
-> 
-> Thanks for your patch!
-> 
-> On Tue, May 23, 2023 at 11:12 AM Vlastimil Babka <vbabka@suse.cz> wrote:
->> As discussed at LSF/MM [1] [2] and with no objections raised there,
->> deprecate the SLAB allocator. Rename the user-visible option so that
->> users with CONFIG_SLAB=y get a new prompt with explanation during make
->> oldconfig, while make olddefconfig will just switch to SLUB.
->>
->> In all defconfigs with CONFIG_SLAB=y remove the line so those also
->> switch to SLUB. Regressions due to the switch should be reported to
->> linux-mm and slab maintainers.
-> 
-> Technically, removing these lines from the defconfig files does not
-> have any impact, right?
+On Tue, 23 May 2023 11:13:02 +0200
+Jiri Slaby <jirislaby@kernel.org> wrote:
 
-Well, it doesn't, but I thought it's at least a useful heads-up for the
-maintainers in case some have specific reasons for keeping SLAB there.
-
-> And it removes one more sync point indicating the last time some
-> defconfig files were (not) updated by their maintainers ;-)
-
-Sure, I can exclude yours (and anyone else who'd prefer that), the ack on
-the deprecation itself is sufficient.
-
->> [1] https://lore.kernel.org/all/4b9fc9c6-b48c-198f-5f80-811a44737e5f@suse.cz/
->> [2] https://lwn.net/Articles/932201/
->>
->> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+> On 23. 05. 23, 10:59, Herve Codina wrote:
+> > In a COMPILE_TEST configuration, the cpm_uart driver uses symbols from
+> > the cpm_uart_cpm2.c file. This file is compiled only when CONFIG_CPM2 is
+> > set.
+> > 
+> > Without this dependency, the linker fails with some missing symbols for
+> > COMPILE_TEST configuration that needs SERIAL_CPM without enabling CPM2.
+> > 
+> > This lead to:
+> >    depends on CPM2 || CPM1 || (PPC32 && CPM2 && COMPILE_TEST)
+> > 
+> > This dependency does not make sense anymore and can be simplified
+> > removing all the COMPILE_TEST part.  
 > 
->>  arch/m68k/configs/amiga_defconfig               |  1 -
->>  arch/m68k/configs/apollo_defconfig              |  1 -
->>  arch/m68k/configs/atari_defconfig               |  1 -
->>  arch/m68k/configs/bvme6000_defconfig            |  1 -
->>  arch/m68k/configs/hp300_defconfig               |  1 -
->>  arch/m68k/configs/mac_defconfig                 |  1 -
->>  arch/m68k/configs/multi_defconfig               |  1 -
->>  arch/m68k/configs/mvme147_defconfig             |  1 -
->>  arch/m68k/configs/mvme16x_defconfig             |  1 -
->>  arch/m68k/configs/q40_defconfig                 |  1 -
->>  arch/m68k/configs/sun3_defconfig                |  1 -
->>  arch/m68k/configs/sun3x_defconfig               |  1 -
+> Then it's the same as my revert:
+> https://lore.kernel.org/all/20230518055620.29957-1-jirislaby@kernel.org/
 > 
-> Regardless,
-> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
-
-Thanks!
-
-> Gr{oetje,eeting}s,
+> :D
 > 
->                         Geert
+> But nevermind.
+
+Sorry, I didn't look at your revert.
+
+Do you want a new iteration adding (same as your revert) ?
+  Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+  Reported-by: Randy Dunlap <rdunlap@infradead.org>
+  Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+
+Best regards,
+Hervé
+
+> 
+> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> > Reported-by: kernel test robot <lkp@intel.com>
+> > Link: https://lore.kernel.org/oe-kbuild-all/202305160221.9XgweObz-lkp@intel.com/
+> > Fixes: e3e7b13bffae ("serial: allow COMPILE_TEST for some drivers")
+> > ---
+> >   drivers/tty/serial/Kconfig             | 2 +-
+> >   drivers/tty/serial/cpm_uart/cpm_uart.h | 2 --
+> >   2 files changed, 1 insertion(+), 3 deletions(-)
+> > 
+> > diff --git a/drivers/tty/serial/Kconfig b/drivers/tty/serial/Kconfig
+> > index 625358f44419..de092bc1289e 100644
+> > --- a/drivers/tty/serial/Kconfig
+> > +++ b/drivers/tty/serial/Kconfig
+> > @@ -769,7 +769,7 @@ config SERIAL_PMACZILOG_CONSOLE
+> >   
+> >   config SERIAL_CPM
+> >   	tristate "CPM SCC/SMC serial port support"
+> > -	depends on CPM2 || CPM1 || (PPC32 && COMPILE_TEST)
+> > +	depends on CPM2 || CPM1
+> >   	select SERIAL_CORE
+> >   	help
+> >   	  This driver supports the SCC and SMC serial ports on Motorola
+> > diff --git a/drivers/tty/serial/cpm_uart/cpm_uart.h b/drivers/tty/serial/cpm_uart/cpm_uart.h
+> > index 0577618e78c0..46c03ed71c31 100644
+> > --- a/drivers/tty/serial/cpm_uart/cpm_uart.h
+> > +++ b/drivers/tty/serial/cpm_uart/cpm_uart.h
+> > @@ -19,8 +19,6 @@ struct gpio_desc;
+> >   #include "cpm_uart_cpm2.h"
+> >   #elif defined(CONFIG_CPM1)
+> >   #include "cpm_uart_cpm1.h"
+> > -#elif defined(CONFIG_COMPILE_TEST)
+> > -#include "cpm_uart_cpm2.h"
+> >   #endif
+> >   
+> >   #define SERIAL_CPM_MAJOR	204  
 > 
 
