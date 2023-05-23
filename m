@@ -2,49 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1080570E91F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 May 2023 00:35:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 104A570E923
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 May 2023 00:36:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QQq0D6rwQz3f7X
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 May 2023 08:35:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QQq176tF6z3fGw
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 May 2023 08:36:27 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cgagJH94;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aFvOw2gw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cgagJH94;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aFvOw2gw;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QQpzQ18F2z3bl3
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 May 2023 08:34:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QQq033ZRVz3f90
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 May 2023 08:35:31 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 968636158D
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 May 2023 22:34:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 01F2EC433D2
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 May 2023 22:34:53 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 910E461B56
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 May 2023 22:35:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id EC25BC433D2
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 May 2023 22:35:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1684881294;
-	bh=V2djgJWqeCjHCRgRuDicGWPS1C9fFKPeQb02SeKFrsI=;
+	s=k20201202; t=1684881329;
+	bh=pNL+af/6FwQaFpV/zxw0Lrou2pBfoajt2ThnKhKMWLs=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=cgagJH94oHZ/T8N4d5Qqv67i4FDTE9fBm0+cKLdKtqq4iPMSEGGprx1XYQ3J6qHph
-	 +A0oHwADKt+vwF3OvnbDWHL/mVJP6d6yOus7na+R+Mp4MDBq67/hb5Dr1aEFRIz9ZF
-	 pblddNpVrkEW1+QvoqUOqtlVN6+8SkxVt3oCNO4VALG448rr5l+iQ83LXPPjtGH3eE
-	 bp/xsCFxMCk1a26d5TdLVyD7U+d4vd8rrn7x+AwFHibOSdXnM/KcpWcStXfeXwic3j
-	 lWwECh0WLi7WA6zwdL4DqfdT9tmESV2TmyFRIXt/6G9YmWjwQFIYkdaMHIKv4txaJc
-	 ng5s/uSHTE0tg==
+	b=aFvOw2gwBanlaEGvp4YicY5U0iwwsYwiFb5oucb+Vs2YlhRYajtlpob4CYhYYWNbw
+	 p2ghufXlLZDP54r4GxZv1Wsh0bVEgnWY3pStmOJ+ARdmiI0+yAtZgdEqeyr40ynPiq
+	 GEwUc89jDeM6j/BBOAk74hX7UDLDN2tScYbExepyIelNTiCAOgbWMxIT9ESmGBka6G
+	 GgvWuq9kSk/dlgC9WRvpCh2PrCrKd5rnv/Fjry8HH6VoCUPv7sNIbH7gnxBWe1PtZ8
+	 6/xjRHgUq7O100H9vKfM+QbcawlubZC3C2HJGoOPXkzDBodg8AuqMILFo8ISp7NaIa
+	 kpP0KD5//LG6A==
 Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id D4B01C43142; Tue, 23 May 2023 22:34:53 +0000 (UTC)
+	id DE103C43142; Tue, 23 May 2023 22:35:28 +0000 (UTC)
 From: bugzilla-daemon@kernel.org
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 216715] kernel 6.1-rc5 + KASAN_OUTLINE fails to boot at very
  early stage when DEBUG_PAGEALLOC_ENABLE_DEFAULT is enabled (PowerMac G4 3,6)
-Date: Tue, 23 May 2023 22:34:53 +0000
+Date: Tue, 23 May 2023 22:35:28 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
@@ -59,8 +59,8 @@ X-Bugzilla-Resolution:
 X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: attachments.isobsolete attachments.created
-Message-ID: <bug-216715-206035-PBOPT7wFQh@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: attachments.created
+Message-ID: <bug-216715-206035-zi6fO4U0RL@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-216715-206035@https.bugzilla.kernel.org/>
 References: <bug-216715-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -84,30 +84,10 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D216715
 
-Erhard F. (erhard_f@mailbox.org) changed:
-
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
- Attachment #303257|0                           |1
-        is obsolete|                            |
-
---- Comment #7 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 304310
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D304310&action=3Dedit
-dmesg (6.4-rc4, PowerMac G4 DP) - succesful boot
-
-KASAN and KCSAN can't be enabled at the same time as it seems. If I select
-KASAN, KCSAN is automatically disabled.
-
-But in this case that does not seem to be a problem. Kernel 6.4-rc4 boots f=
-ine
-with KASAN_OUTLINE and DEBUG_PAGEALLOC_ENABLE_DEFAULT enabled. Tested it ab=
-out
-a dozen times to be sure.
-
-I'll close here when kernel 6.4.0 is released and this issue is still gone =
-for
-good.
+--- Comment #8 from Erhard F. (erhard_f@mailbox.org) ---
+Created attachment 304311
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D304311&action=3Dedit
+kernel .config (6.4-rc3, PowerMac G4 DP)
 
 --=20
 You may reply to this email to add a comment.
