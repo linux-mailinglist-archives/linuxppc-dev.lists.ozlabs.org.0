@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C446C70EDA8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 May 2023 08:11:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31B8B70EDA9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 May 2023 08:12:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QR16J53TWz3fNP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 May 2023 16:11:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QR17D0nYTz3fLd
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 May 2023 16:12:24 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=jnqwi6DJ;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=YVfR4h9r;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62d; helo=mail-pl1-x62d.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52e; helo=mail-pg1-x52e.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=jnqwi6DJ;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=YVfR4h9r;
 	dkim-atps=neutral
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QR12t3clwz3f5r
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 May 2023 16:08:38 +1000 (AEST)
-Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1ae40dcdc18so4212045ad.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 May 2023 23:08:38 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QR12x1Jvdz3f7v
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 May 2023 16:08:41 +1000 (AEST)
+Received: by mail-pg1-x52e.google.com with SMTP id 41be03b00d2f7-5343c3daff0so427017a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 May 2023 23:08:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684908516; x=1687500516;
+        d=gmail.com; s=20221208; t=1684908518; x=1687500518;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FNTKzgNHoYsYBJ1w6ox2ZWziujVaGJw7eJ2ap0bcafU=;
-        b=jnqwi6DJC4WUuMuWbbNEgZvR/B264VWRneOlrpnRbq3cAzVd2M3AAb7bJigwLL3BAu
-         fqSgWCIvvx98ehItGimgQt6DIQKYdcZ4f4iN3ihDidmTBWepEtES21u6s3iHGINuwC7o
-         MuPP4pwqyUsBfo5HOVlztqY3fS5Xlf9i4Pb5L4B8otXtuwZDQnyK7KpUFUEeAS+lbUWi
-         VHtLBlCcTjT4ju8++iGdv5SG+zslN/iiGVn02HNRWIkn1kqqLySPcNlQ27lqW8O7I3RH
-         u8LuWzdKPEiKDFHIa4CQDHM1xHjULEhKSDEeubi1ui04Xt3mPKFC7lApNlcuvahyreTa
-         msoQ==
+        bh=yNILb4+cQ1eKYMAz1WBE8LcfWvbmXRGydxXui234anI=;
+        b=YVfR4h9r61gNpNxdgsBp/tsaw5J1Yf+//AN5hJXt1uUxa/juzR5qD/miX2SLekqyBH
+         NM1xrV7WiQRODbdSRn2K9rS45PRp2DZKBpzmN9okTD5y4gmUSLC4MiYJtc7Lxdey6hWQ
+         D9vV339rLCSCTeLJmHSOxCIMEMX2thLLNdWPscRcDGMBa8DW/JSMJJHhDvb4jrAO1fhH
+         YXk/5vgAA5zY6ilj8d/3cIzGRdqhdUThVZmydvgFFFD+o9Dh2SCPmLTCiT7lxpOYVigZ
+         wyFfbOQLkdliFTFX0sDPoFZscenI5qRzY54sOAEUM9GAi1cAm7tUKUkW5ugzT+nvKeOB
+         rfZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684908516; x=1687500516;
+        d=1e100.net; s=20221208; t=1684908518; x=1687500518;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=FNTKzgNHoYsYBJ1w6ox2ZWziujVaGJw7eJ2ap0bcafU=;
-        b=YCyKRGjsczrP7d+DmaG6rCP/5pZL47nh24CH3UDCVuCBzTaeyIWjLI26IzZbGjzcA8
-         J6JIzXlBE01rvLBnsNrj9VHrQFqfjm9Jc6eDC4D51rPCpAXRkzMIEQBM55Oy1AZcu8gD
-         6vpPEBDrz9WYUd5uz292Pg0VSFZZn+hJH0Kx6yU1nvDsM+uL15hLxTuDoDKuqrCHQcuy
-         3Ao9SPb6IhoBG7A3YDR18XgANT8U+Uj8bcLEZ7CW5oqPPLoVLbvKE/BTu1XO1ouahD8a
-         6amZfbjOL8FARlnnSU3m58ovsdpgCEU8c0bcSmGcsO08BEGIhpIk55gN3IyjLOa5rLbF
-         an/Q==
-X-Gm-Message-State: AC+VfDxCiEVw1V4EXpXlEhLeDnOqQwdB5ynkyv+bQhWM68+jM1gx+fFj
-	bmwWQqp+m5SmkBqJIs2w66W3jUYH/VA=
-X-Google-Smtp-Source: ACHHUZ51XEqCLrHiWbknpM3feLfj7paXYm9dZfTfOigiY7HGI0Tx1SVUWuZ+wp8wJUWCKIFPrvFcIw==
-X-Received: by 2002:a17:902:e5ce:b0:1a6:4127:857 with SMTP id u14-20020a170902e5ce00b001a641270857mr20731309plf.5.1684908515832;
-        Tue, 23 May 2023 23:08:35 -0700 (PDT)
+        bh=yNILb4+cQ1eKYMAz1WBE8LcfWvbmXRGydxXui234anI=;
+        b=JGeg+PlTCTuUIuEV2lsqwqPzPxVmu4B56Zza1giRTB9qMrtlK+SPlRUij29FAUew+z
+         9NqrXjzOVdw2730dBZj8JDdpTxbtQakpYdiK5HD0IaNQrnFE8haNmmfwtKCuFUOcNN6I
+         J7aY0u1r2h9PVUvXE1eXh3DW8UQxmQ/5G24BRMwosPAeQ6mThLvf+xNOTbM0TEWjaRdO
+         N6rsIqu6y5Du2YhUEESmJxjkx7JmO+J9EiVqjcaqZU85g04iyyr8fEeex0T4cQ0hLpIK
+         Inj/CkDPgHjU4xCk/iHAmgyddQ6LS9qGYfcRM2X/6+IqyggclyV6eJ6v3m5g3bVd95XA
+         egjg==
+X-Gm-Message-State: AC+VfDyvpA+opBpD3bHnTerNSyTROTc1+VzmteeZF4FXwbbotAaIcF1y
+	SFmquqM8AvPyPSGEzzQA4Ub3IP7w1iE=
+X-Google-Smtp-Source: ACHHUZ6FZolKd8yFWy74Jr7IyAijTLR9yo33/Pbk7T39hY2GS0YtQQ3pD5PcY/Ct8Vr5fkbwXtpsJA==
+X-Received: by 2002:a17:902:8d8a:b0:1ad:7bc5:b9ea with SMTP id v10-20020a1709028d8a00b001ad7bc5b9eamr13402174plo.60.1684908518594;
+        Tue, 23 May 2023 23:08:38 -0700 (PDT)
 Received: from wheely.local0.net ([220.240.241.243])
-        by smtp.gmail.com with ESMTPSA id 9-20020a170902c14900b001aaecb74f82sm7793019plj.72.2023.05.23.23.08.33
+        by smtp.gmail.com with ESMTPSA id 9-20020a170902c14900b001aaecb74f82sm7793019plj.72.2023.05.23.23.08.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 May 2023 23:08:35 -0700 (PDT)
+        Tue, 23 May 2023 23:08:38 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 3/4] powerpc: Add mm_cpumask warning when context switching
-Date: Wed, 24 May 2023 16:08:20 +1000
-Message-Id: <20230524060821.148015-4-npiggin@gmail.com>
+Subject: [PATCH 4/4] powerpc/64s/radix: combine final TLB flush and lazy tlb mm shootdown IPIs
+Date: Wed, 24 May 2023 16:08:21 +1000
+Message-Id: <20230524060821.148015-5-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230524060821.148015-1-npiggin@gmail.com>
 References: <20230524060821.148015-1-npiggin@gmail.com>
@@ -82,45 +82,58 @@ Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When context switching away from an mm, add a CONFIG_DEBUG_VM warning
-check to ensure this CPU is still set in the mask. This could catch
-bugs where the mask is improperly trimmed while the CPU is still using
-the mm.
+This performs lazy tlb mm shootdown when doing the exit TLB flush when
+all mm users go away and user mappings are removed, which avoids having
+to do the lazy tlb mm shootdown IPIs on the final mmput when all kernel
+references disappear.
+
+powerpc/64s uses a broadcast TLBIE for the exit TLB flush if remote CPUs
+need to be invalidated (unless TLBIE is disabled), so this doesn't
+necessarily save IPIs but it does avoid a broadcast TLBIE which is quite
+expensive.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/mm/mmu_context.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/powerpc/mm/book3s64/radix_tlb.c | 26 +++++++++++++++++++++++++-
+ 1 file changed, 25 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/mm/mmu_context.c b/arch/powerpc/mm/mmu_context.c
-index 894468975a44..b24c19078eb1 100644
---- a/arch/powerpc/mm/mmu_context.c
-+++ b/arch/powerpc/mm/mmu_context.c
-@@ -43,12 +43,13 @@ static inline void switch_mm_pgdir(struct task_struct *tsk,
- void switch_mm_irqs_off(struct mm_struct *prev, struct mm_struct *next,
- 			struct task_struct *tsk)
- {
-+	int cpu = smp_processor_id();
- 	bool new_on_cpu = false;
- 
- 	/* Mark this context has been used on the new CPU */
--	if (!cpumask_test_cpu(smp_processor_id(), mm_cpumask(next))) {
-+	if (!cpumask_test_cpu(cpu, mm_cpumask(next))) {
- 		VM_WARN_ON_ONCE(next == &init_mm);
--		cpumask_set_cpu(smp_processor_id(), mm_cpumask(next));
-+		cpumask_set_cpu(cpu, mm_cpumask(next));
- 		inc_mm_active_cpus(next);
- 
- 		/*
-@@ -101,6 +102,8 @@ void switch_mm_irqs_off(struct mm_struct *prev, struct mm_struct *next,
- 	 * sub architectures. Out of line for now
+diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
+index 8160c1630c3d..e2aaee6df1f6 100644
+--- a/arch/powerpc/mm/book3s64/radix_tlb.c
++++ b/arch/powerpc/mm/book3s64/radix_tlb.c
+@@ -1301,7 +1301,31 @@ void radix__tlb_flush(struct mmu_gather *tlb)
+ 	 * See the comment for radix in arch_exit_mmap().
  	 */
- 	switch_mmu_context(prev, next, tsk);
+ 	if (tlb->fullmm) {
+-		__flush_all_mm(mm, true);
++		if (IS_ENABLED(CONFIG_MMU_LAZY_TLB_SHOOTDOWN)) {
++			/*
++			 * Shootdown based lazy tlb mm refcounting means we
++			 * have to IPI everyone in the mm_cpumask anyway soon
++			 * when the mm goes away, so might as well do it as
++			 * part of the final flush now.
++			 *
++			 * If lazy shootdown was improved to reduce IPIs (e.g.,
++			 * by batching), then it may end up being better to use
++			 * tlbies here instead.
++			 */
++			smp_mb(); /* see radix__flush_tlb_mm */
++			exit_flush_lazy_tlbs(mm);
++			_tlbiel_pid(mm->context.id, RIC_FLUSH_ALL);
 +
-+	VM_WARN_ON_ONCE(!cpumask_test_cpu(cpu, mm_cpumask(prev)));
- }
- 
- #ifndef CONFIG_PPC_BOOK3S_64
++			/*
++			 * It should not be possible to have coprocessors still
++			 * attached here.
++			 */
++			if (WARN_ON_ONCE(atomic_read(&mm->context.copros) > 0))
++				__flush_all_mm(mm, true);
++		} else {
++			__flush_all_mm(mm, true);
++		}
++
+ 	} else if ( (psize = radix_get_mmu_psize(page_size)) == -1) {
+ 		if (!tlb->freed_tables)
+ 			radix__flush_tlb_mm(mm);
 -- 
 2.40.1
 
