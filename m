@@ -2,55 +2,36 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B553770F2F5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 May 2023 11:36:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CE3D70F3F0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 May 2023 12:18:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QR5fS4pJxz3f8s
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 May 2023 19:36:16 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=K6jPGfF6;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QR6Zd3372z3fGC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 May 2023 20:18:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gondor.apana.org.au (client-ip=167.179.156.38; helo=167-179-156-38.a7b39c.syd.nbn.aussiebb.net; envelope-from=herbert@gondor.apana.org.au; receiver=<UNKNOWN>)
+Received: from 167-179-156-38.a7b39c.syd.nbn.aussiebb.net (167-179-156-38.a7b39c.syd.nbn.aussiebb.net [167.179.156.38])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QR5dV0QBmz3bqw
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 May 2023 19:35:23 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=Dq2/xPmnodnbbQMnix8EKRleSU9lxflCTwZrdL+JKew=; b=K6jPGfF6XEoTSx04m1/lrNA0O/
-	W0D3Pw7nMrLVxg9xhcQOVW99G4D5puN3UW/Q4hnGPTETNIhbvdQR1RZ+HWtpeiZH6huHuuvFmC/nx
-	BtEk5HGeyISrr3+bZVW4cdHEHob4FUtzfTpnP6u+9jRibOdTsMj/JEsU3jYZoVXhj/PB2CwXo7mU4
-	J8wjaCXEXMtB9Ey6j/q9sM5hZnhu041JIXHrpJDkuWB2KNuEVKFjPHjEaQx2TFn7f7Jqmvy2QkNso
-	eLv1R9YLuX6uolUpKpTK0p0m/ab7PiZEzSbNNsaQOGosfG+Kb/QfIMM0SGr75SFe3WsCKuEsZS+L0
-	QJkY//jw==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1q1ktT-00B4En-MM; Wed, 24 May 2023 09:34:55 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id E603D3001AE;
-	Wed, 24 May 2023 11:34:54 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-	id CCA312435C811; Wed, 24 May 2023 11:34:54 +0200 (CEST)
-Date: Wed, 24 May 2023 11:34:54 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Stephen Rothwell <sfr@canb.auug.org.au>
-Subject: Re: linux-next: boot failure after merge of the tip tree
-Message-ID: <20230524093454.GI4253@hirez.programming.kicks-ass.net>
-References: <20230524154459.48cda184@canb.auug.org.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QR6Z911XWz3bhD
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 May 2023 20:17:35 +1000 (AEST)
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
+	id 1q1lXr-00Cl6E-Rk; Wed, 24 May 2023 18:16:40 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Wed, 24 May 2023 18:16:39 +0800
+Date: Wed, 24 May 2023 18:16:39 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Randy Dunlap <rdunlap@infradead.org>
+Subject: Re: [PATCH] powerpc/crypto: fix build warnings when DEBUG_FS is not
+ enabled
+Message-ID: <ZG3kB4Mlmlc4I0Ck@gondor.apana.org.au>
+References: <20230519223334.11992-1-rdunlap@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20230524154459.48cda184@canb.auug.org.au>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230519223334.11992-1-rdunlap@infradead.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,38 +43,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux Next Mailing List <linux-next@vger.kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@redhat.com>
+Cc: Nayna Jain <nayna@linux.ibm.com>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Paulo Flabiano Smorigo <pfsmorigo@gmail.com>, linux-crypto@vger.kernel.org, Breno =?iso-8859-1?Q?Leit=E3o?= <leitao@debian.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, May 24, 2023 at 03:44:59PM +1000, Stephen Rothwell wrote:
-> Hi all,
->=20
-> After merging the tip tree, today's linux-next build (powerpc
-> pseries_le_defconfig) failed to boot like this:
->=20
->  Built 1 zonelists, mobility grouping on.  Total pages: 32736
->  Policy zone: Normal
->  mem auto-init: stack:all(zero), heap alloc:off, heap free:off
->  Memory: 2027392K/2097152K available (17984K kernel code, 3328K rwdata, 1=
-4784K rodata, 6080K init, 1671K bss, 69760K reserved, 0K cma-reserved)
->=20
-> *crickets*
->=20
-> Bisected to commit
->=20
->   f4ab23558310 ("slub: Replace cmpxchg_double()")
->=20
-> I have reverted that commit (and the following one) for today.
+On Fri, May 19, 2023 at 03:33:34PM -0700, Randy Dunlap wrote:
+> Fix build warnings when DEBUG_FS is not enabled by using an empty
+> do-while loop instead of a value:
+> 
+> In file included from ../drivers/crypto/nx/nx.c:27:
+> ../drivers/crypto/nx/nx.c: In function 'nx_register_algs':
+> ../drivers/crypto/nx/nx.h:173:33: warning: statement with no effect [-Wunused-value]
+>   173 | #define NX_DEBUGFS_INIT(drv)    (0)
+> ../drivers/crypto/nx/nx.c:573:9: note: in expansion of macro 'NX_DEBUGFS_INIT'
+>   573 |         NX_DEBUGFS_INIT(&nx_driver);
+> ../drivers/crypto/nx/nx.c: In function 'nx_remove':
+> ../drivers/crypto/nx/nx.h:174:33: warning: statement with no effect [-Wunused-value]
+>   174 | #define NX_DEBUGFS_FINI(drv)    (0)
+> ../drivers/crypto/nx/nx.c:793:17: note: in expansion of macro 'NX_DEBUGFS_FINI'
+>   793 |                 NX_DEBUGFS_FINI(&nx_driver);
+> 
+> Also, there is no need to build nx_debugfs.o when DEBUG_FS is not
+> enabled, so change the Makefile to accommodate that.
+> 
+> Fixes: ae0222b7289d ("powerpc/crypto: nx driver code supporting nx encryption")
+> Fixes: aef7b31c8833 ("powerpc/crypto: Build files for the nx device driver")
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Cc: Breno Leitão <leitao@debian.org>
+> Cc: Nayna Jain <nayna@linux.ibm.com>
+> Cc: Paulo Flabiano Smorigo <pfsmorigo@gmail.com>
+> Cc: Herbert Xu <herbert@gondor.apana.org.au>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: linux-crypto@vger.kernel.org
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> ---
+>  drivers/crypto/nx/Makefile |    2 +-
+>  drivers/crypto/nx/nx.h     |    4 ++--
+>  2 files changed, 3 insertions(+), 3 deletions(-)
 
-Sorry about that; turns out I forgot to test the case where cmpxchg128
-wasn't available.
-
-Please see:
-
-  https://lkml.kernel.org/r/20230524093246.GP83892@hirez.programming.kicks-=
-ass.net
-
-As stated there, I'm going to zap tip/locking/core for a few days and
-let this fixed version run through the robots again before re-instating
-it.
+Patch applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
