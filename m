@@ -1,55 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81E9C70F82A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 May 2023 16:00:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BDE070F8BC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 May 2023 16:27:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QRCVx3N1lz3fC4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 May 2023 00:00:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QRD6y6XHSz3f7D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 May 2023 00:27:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=RHX2g085;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=CvxJjiwU;
+	dkim=fail reason="signature verification failed" header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=pq5m/8gW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2001:67c:2178:6::1c; helo=smtp-out1.suse.de; envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=vbabka@suse.cz; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=RHX2g085;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=CvxJjiwU;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=pq5m/8gW;
 	dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QRCV42BYcz3c9V
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 May 2023 23:59:22 +1000 (AEST)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out1.suse.de (Postfix) with ESMTP id BDD9021D3D;
-	Wed, 24 May 2023 13:59:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1684936756; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dBvtScxG64js1V2WtJGSat2wyTIF8r92U3UegFL2rYQ=;
-	b=RHX2g085w5u88X+4Z6mGRE58L0b4uuVjnoB5ile5yyEku/n0vK3Ga3gzxfL7+dqOWR8qzS
-	Enh+hAYTwRSzigqBWe8ELlR+JBHmK0H4bMUVMJEQc98zMr5VIBl3JapUXhy5gy6G8xv9gW
-	1Vyj+Mx19rJDf489l0WBgZnOiWR+PkQ=
-Received: from suse.cz (dhcp129.suse.cz [10.100.51.129])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QRD651tMYz3f6n
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 May 2023 00:27:08 +1000 (AEST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id 944262C141;
-	Wed, 24 May 2023 13:59:15 +0000 (UTC)
-Date: Wed, 24 May 2023 15:59:15 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: Douglas Anderson <dianders@chromium.org>
-Subject: Re: [PATCH v5 13/18] watchdog/hardlockup: Have the perf hardlockup
- use __weak functions more cleanly
-Message-ID: <ZG4YMyifGLOBJxLo@alley>
-References: <20230519101840.v5.18.Ia44852044cdcb074f387e80df6b45e892965d4a1@changeid>
- <20230519101840.v5.13.I847d9ec852449350997ba00401d2462a9cb4302b@changeid>
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 91B9522041;
+	Wed, 24 May 2023 14:27:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1684938424; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tXGazCQJhB+4Gbe14ojDjDepmPElagpzQVjU1cq9coM=;
+	b=CvxJjiwUfSN+kySKUn/EWA67pNGj3pzmDi1HbwCtE90AFBLWe7vv+d8M1Ij3FkSbIz4VTI
+	gWvmGqepcrFlLCBiRAAf+FLKtDv7IxP6DOFYzfABdT3HuVDKFvuPv4HouAx5CI/XFNBevQ
+	b0eo4MDqgOjEmRFkWmGBuHZT8lU/dcs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1684938424;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tXGazCQJhB+4Gbe14ojDjDepmPElagpzQVjU1cq9coM=;
+	b=pq5m/8gWb5XY3U0bzLALdtiUNBu4jqNs3ujyoKqIbmne//9yJpXq+qLIx07FO9Z84ILL6b
+	c/7V1xSDO+g6aHAA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 1777E13425;
+	Wed, 24 May 2023 14:27:04 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id VWz9BLgebmSqKAAAMHmgww
+	(envelope-from <vbabka@suse.cz>); Wed, 24 May 2023 14:27:04 +0000
+Message-ID: <4f690e97-b26c-1705-51e7-0d7ebc77d819@suse.cz>
+Date: Wed, 24 May 2023 16:27:03 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230519101840.v5.13.I847d9ec852449350997ba00401d2462a9cb4302b@changeid>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] mm/slab: rename CONFIG_SLAB to CONFIG_SLAB_DEPRECATED
+Content-Language: en-US
+To: David Rientjes <rientjes@google.com>
+References: <20230523091139.21449-1-vbabka@suse.cz>
+ <be109b49-8510-5887-72ae-738db9945619@google.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <be109b49-8510-5887-72ae-738db9945619@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,81 +83,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Ian Rogers <irogers@google.com>, ito-yuichi@fujitsu.com, Lecopzer Chen <lecopzer.chen@mediatek.com>, kgdb-bugreport@lists.sourceforge.net, ricardo.neri@intel.com, Stephane Eranian <eranian@google.com>, sparclinux@vger.kernel.org, Guenter Roeck <groeck@chromium.org>, Will Deacon <will@kernel.org>, Daniel Thompson <daniel.thompson@linaro.org>, Andi Kleen <ak@linux.intel.com>, Marc Zyngier <maz@kernel.org>, Chen-Yu Tsai <wens@csie.org>, Matthias Kaehlcke <mka@chromium.org>, Catalin Marinas <catalin.marinas@arm.com>, Masayoshi Mizuma <msys.mizuma@gmail.com>, ravi.v.shankar@intel.com, Tzung-Bi Shih <tzungbi@chromium.org>, npiggin@gmail.com, Stephen Boyd <swboyd@chromium.org>, Pingfan Liu <kernelfans@gmail.com>, linux-arm-kernel@lists.infradead.org, Sumit Garg <sumit.garg@linaro.org>, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozl
- abs.org, davem@davemloft.net
+Cc: Andrew Lunn <andrew@lunn.ch>, Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, Tony Lindgren <tony@atomide.com>, Roman Gushchin <roman.gushchin@linux.dev>, "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, linux-mm@kvack.org, Helge Deller <deller@gmx.de>, sparclinux@vger.kernel.org, Hyeonggon Yoo <42.hyeyoo@gmail.com>, Christoph Lameter <cl@linux.com>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, linux-renesas-soc@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, Richard Weinberger <richard@nod.at>, Gregory Clement <gregory.clement@bootlin.com>, linux-snps-arc@lists.infradead.org, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, Vladimir Zapolskiy <vz@mleia.com>, linux-m68k@lists.linux-m68k.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-tegra@vger.kernel.org, linux-omap@vger.kernel.org, Johannes Berg <johannes@sipsolutions.net>, linux-arm-kern
+ el@lists.infradead.org, Qin Jian <qinjian@cqplus1.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Andrew Morton <akpm@linux-foundation.org>, linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org, Pekka Enberg <penberg@kernel.org>, Dinh Nguyen <dinguyen@kernel.org>, Joonsoo Kim <iamjoonsoo.kim@lge.com>, Shawn Guo <shawnguo@kernel.org>, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri 2023-05-19 10:18:37, Douglas Anderson wrote:
-> The fact that there watchdog_hardlockup_enable(),
-> watchdog_hardlockup_disable(), and watchdog_hardlockup_probe() are
-> declared __weak means that the configured hardlockup detector can
-> define non-weak versions of those functions if it needs to. Instead of
-> doing this, the perf hardlockup detector hooked itself into the
-> default __weak implementation, which was a bit awkward. Clean this up.
+On 5/24/23 02:29, David Rientjes wrote:
+> On Tue, 23 May 2023, Vlastimil Babka wrote:
 > 
-> >From comments, it looks as if the original design was done because the
-> __weak function were expected to implemented by the architecture and
-> not by the configured hardlockup detector. This got awkward when we
-> tried to add the buddy lockup detector which was not arch-specific but
-> wanted to hook into those same functions.
+>> As discussed at LSF/MM [1] [2] and with no objections raised there,
+>> deprecate the SLAB allocator. Rename the user-visible option so that
+>> users with CONFIG_SLAB=y get a new prompt with explanation during make
+>> oldconfig, while make olddefconfig will just switch to SLUB.
+>> 
+>> In all defconfigs with CONFIG_SLAB=y remove the line so those also
+>> switch to SLUB. Regressions due to the switch should be reported to
+>> linux-mm and slab maintainers.
+>> 
+>> [1] https://lore.kernel.org/all/4b9fc9c6-b48c-198f-5f80-811a44737e5f@suse.cz/
+>> [2] https://lwn.net/Articles/932201/
+>> 
+>> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 > 
-> This is not expected to have any functional impact.
->
-> @@ -187,27 +187,33 @@ static inline void watchdog_hardlockup_kick(void) { }
->  #endif /* !CONFIG_HARDLOCKUP_DETECTOR_PERF */
->  
->  /*
-> - * These functions can be overridden if an architecture implements its
-> - * own hardlockup detector.
-> + * These functions can be overridden based on the configured hardlockdup detector.
->   *
->   * watchdog_hardlockup_enable/disable can be implemented to start and stop when
-> - * softlockup watchdog start and stop. The arch must select the
-> + * softlockup watchdog start and stop. The detector must select the
->   * SOFTLOCKUP_DETECTOR Kconfig.
->   */
-> -void __weak watchdog_hardlockup_enable(unsigned int cpu)
-> -{
-> -	hardlockup_detector_perf_enable();
-> -}
-> +void __weak watchdog_hardlockup_enable(unsigned int cpu) { }
->  
-> -void __weak watchdog_hardlockup_disable(unsigned int cpu)
-> -{
-> -	hardlockup_detector_perf_disable();
-> -}
-> +void __weak watchdog_hardlockup_disable(unsigned int cpu) { }
->  
->  /* Return 0, if a hardlockup watchdog is available. Error code otherwise */
->  int __weak __init watchdog_hardlockup_probe(void)
->  {
-> -	return hardlockup_detector_perf_init();
-> +	/*
-> +	 * If CONFIG_HAVE_NMI_WATCHDOG is defined then an architecture
-> +	 * is assumed to have the hard watchdog available and we return 0.
-> +	 */
-> +	if (IS_ENABLED(CONFIG_HAVE_NMI_WATCHDOG))
-> +		return 0;
-> +
-> +	/*
-> +	 * Hardlockup detectors other than those using CONFIG_HAVE_NMI_WATCHDOG
-> +	 * are required to implement a non-weak version of this probe function
-> +	 * to tell whether they are available. If they don't override then
-> +	 * we'll return -ENODEV.
-> +	 */
-> +	return -ENODEV;
->  }
+> Acked-by: David Rientjes <rientjes@google.com>
 
-When thinking more about it. It is weird that we need to handle
-CONFIG_HAVE_NMI_WATCHDOG in this default week function.
+Thanks.
 
-It should be handled in watchdog_hardlockup_probe() implemented
-in kernel/watchdog_perf.c.
+> The Kconfig option says that SLAB will be removed in a few cycles.  I 
+> think we should wait until at least the next LTS kernel is forked at the 
+> end of the year so that users who upgrade to only the LTS releases can be 
+> prompted for this change and surface any concerns.  Slab allocation is a 
+> critical subsystem, so I presume this is the safest and most responsible 
+> way to do the SLAB deprecation.  Hopefully that timeline works for 
+> everybody.
 
-IMHO, the default __weak function could always return -ENODEV;
+Sure, and in fact looking at predicted release dates [1], if the deprecation
+goes into 6.5 then 6.7 ("few" == 2) is already end of January 2024, anyway.
 
-Would it make sense, please?
-
-Best Regards,
-Petr
+[1] https://hansen.beer/~dave/phb/
