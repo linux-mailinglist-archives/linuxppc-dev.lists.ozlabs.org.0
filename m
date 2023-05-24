@@ -2,55 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD05770F9DD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 May 2023 17:12:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C766A710240
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 May 2023 03:18:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QRF6K5xk8z3f8x
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 May 2023 01:12:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QRVYr54Bsz3cCW
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 May 2023 11:18:40 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ElRel7+i;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=Oyc7VO+I;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QRF5X6MDvz3bcT
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 May 2023 01:11:44 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::130; helo=mail-lf1-x130.google.com; envelope-from=doru.iorgulescu1@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ElRel7+i;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=Oyc7VO+I;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QRF5X4n79z4x3g;
-	Thu, 25 May 2023 01:11:44 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1684941104;
-	bh=gCH+qrmvnYdFXIGPJq+jFnmibZig7S/8yT7yhZq0Yzg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=ElRel7+iQi7Od05dNk0DvoixSdAzgi4CXfb6ihfSCU7jYHDwz4Nq0TIrH36t9J5Ni
-	 0RFicYhcrElX8IGAXyRXDBVsomvTvAHTM6YlkYmogRaJLYNy/trk+vRLDKD+oguJb5
-	 Q7np/JYQ27Xi0HdoB2v3KEjH6RbYXSbu7FuWN9kyCc+MZOj1iwuTw7AHZSQ7tF0EzG
-	 p9z4RtUudIN0XZg+zaHpL1on6FZiE1bINRSXQWUst0CLG3FXgGVBdarZLgUUPPJE2f
-	 WUUP4YL0LFlK0eqBGRVq6wiQMAYxoXigQ0oKDI3vLhdMUSatOx/El7cS+Yeu99BDB3
-	 o6Aq8w6LAsI3w==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Gaurav Batra <gbatra@linux.vnet.ibm.com>
-Subject: Re: [PATCH] powerpc/iommu: limit number of TCEs to 512 for
- H_STUFF_TCE hcall
-In-Reply-To: <b1260c4d-78ac-9c61-02e3-538846796982@linux.vnet.ibm.com>
-References: <20230509220549.23946-1-gbatra@linux.vnet.ibm.com>
- <875y8yl1k5.fsf@mail.lhotse>
- <ad7517b3-02f2-436a-4c31-878031630c25@linux.vnet.ibm.com>
- <87r0rfywtf.fsf@mail.lhotse>
- <b1260c4d-78ac-9c61-02e3-538846796982@linux.vnet.ibm.com>
-Date: Thu, 25 May 2023 01:11:44 +1000
-Message-ID: <878rddahn3.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QRF8Q6FQkz3bcv
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 May 2023 01:14:14 +1000 (AEST)
+Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-4f3a99b9177so1068175e87.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 May 2023 08:14:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1684941245; x=1687533245;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=u1K+UlFLN01myeQ16ErMnsg0Xg53+3BwWP9ANS2dQpk=;
+        b=Oyc7VO+IVo96U/3R6Cvccq+1e4cHs0PMXxYqS++8mmF9v5Jt/h9vFoGEuDO7RfPHqV
+         dypx6DJFpgk6oY7HgL4XmZ2OKqYJjPJSb8xJy2ty1b5oneO1iiCvbZBZSM5XJ/GUCZ4n
+         LuFk9gt1DHQU+hdKJgyzyvJV7Uw1PjHH1XVLAvwqG1OTOR1+k5YdtybchVbKGb9EUyTy
+         RnM+i7RUtv6lREViDjQx3vFXtR3qfCVv/s7LVFnLCFAmCrAQ4e4uC3BZFljjWNvR/3u1
+         0gUj4a1ix6DoMZqnN9d6n2KdJBl/goA3i3mJynQ4vyA4VB1CEiy887EGF6Kz4dw90+Wz
+         oIjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684941246; x=1687533246;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=u1K+UlFLN01myeQ16ErMnsg0Xg53+3BwWP9ANS2dQpk=;
+        b=QaaKqXQ0mQUMUOxToF6p8sykGwLQBP8xzc1WcLufnIXHr0IC5IHBdPmqjR98GxfeCk
+         0Rk9v15FSHil6N0OQ9hH6VGKNzBLFku0DBFO90mYOlfoQfZsfs3RS6Vje6CdxFiFbaxl
+         PNj/9Cubgxzg7sz0EYq6l5YjP3XWUk9nVm5ah9YpoPcdIsmU3/uxPTgYEzjOHNsg45Kp
+         Kvmpk6pLzS506SXps76Qo0CM0y2d5YRUc65Dt48E/0jTSCk3QycvRdhrFBbEi2bmwQE5
+         JuMmPLm/LGZwCcGQgEZ5uCn7E61x8a5teelXmqaNtA1ZDI974QW5qpcl+0MRpz3GMsKw
+         KcDw==
+X-Gm-Message-State: AC+VfDySP8R3t5jVSYvCjgafkdgBhFf2TEtQBh4NC4NyTjLuspIqE18l
+	LqamBs7uK5MKaACKYy6sgv/Qvho4ksW9hDGnkTg=
+X-Google-Smtp-Source: ACHHUZ4PshyxkR9bCGCE/ATs/SAyScU3Lg8X7XlN49gWYJyNhV8OxQJuISFfi5K5ZGvDk1Wk/W5JAPlI5oWms0HJmTI=
+X-Received: by 2002:a2e:b007:0:b0:298:acea:d261 with SMTP id
+ y7-20020a2eb007000000b00298acead261mr37564ljk.21.1684941245162; Wed, 24 May
+ 2023 08:14:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <2a1cd5e6-01f7-66f9-1f9d-c655cc3f919b@gmail.com>
+ <5d22e1e9-0307-3664-8b4a-99caaaaa4315@gmail.com> <87bki9ai11.fsf@mail.lhotse>
+In-Reply-To: <87bki9ai11.fsf@mail.lhotse>
+From: Doru Iorgulescu <doru.iorgulescu1@gmail.com>
+Date: Wed, 24 May 2023 18:13:52 +0300
+Message-ID: <CA+39qUjP48n=EwqHzwdGkBE8SC-nTNZHZxEfG4r4hWC-5Bg4HA@mail.gmail.com>
+Subject: Re: Fwd: ./include/linux/mmzone.h:1735:2: error: #error Allocator
+ MAX_ORDER exceeds SECTION_SIZE (v6.4-rc3 build regression)
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: multipart/alternative; boundary="00000000000062aa8e05fc71f4cb"
+X-Mailman-Approved-At: Thu, 25 May 2023 11:17:11 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,64 +76,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: brking@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, gjoyce@linux.vnet.ibm.com
+Cc: Disha Goel <disgoel@linux.vnet.ibm.com>, Athira Rajeev <atrajeev@linux.vnet.ibm.com>, Linux Regressions <regressions@lists.linux.dev>, Fabiano Rosas <farosas@linux.ibm.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Linux Memory Management List <linux-mm@kvack.org>, Bagas Sanjaya <bagasdotme@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, Linux PowerPC <linuxppc-dev@lists.ozlabs.org>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Gaurav Batra <gbatra@linux.vnet.ibm.com> writes:
-> On 5/17/23 7:19 AM, Michael Ellerman wrote:
->> Gaurav Batra<gbatra@linux.vnet.ibm.com>  writes:
->>> Hello Michael,
->>>
->>> System test hit the crash. I believe, it was PHYP that resulted in it
->>> due to number of TCEs passed in to be >512.
->> OK. It's always good to spell out in the change log whether it's a
->> theoretical/unlikely bug, or one that's actually been hit in testing or
->> the field.
+--00000000000062aa8e05fc71f4cb
+Content-Type: text/plain; charset="UTF-8"
 
-> I will submit another version of the patch with some changes in the log 
-> once I figure out how to Tag it for stable (as mentioned below).
-> 
->>> I was wondering about the Fixes tag as well. But, this interface, in
->>> it's current form, is there from the day the file was created. So, in
->>> this case, should I mention the first commit which created this source file?
->> If it really goes back to the origin commit, then it's probably better
->> to just say so and tag it for stable, rather than pointing to 1da177e4.
+Awesome, thanks!
 
-> How to do I tag it for stable? Will it be part of the "Fixes:" tag or 
-> some other tag?
+On Wed, May 24, 2023, 6:03 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
 
-A stable tag is just adding in the change log:
-
-Cc: stable@vger.kernel.org
-
-Note *not* in the email headers, in the change log.
-
-That asks the stable kernel folks to backport the commit to all
-currently active stable trees. Whereas when you use a Fixes: tag it will
-be only backported to stable trees that contain the offending commit.
-
->> I wonder though is there something else that changed that means this bug
->> is now being hit but wasn't before? Or maybe it's just that we are
->> testing on systems with large enough amounts of memory to hit this but
->> which aren't using a direct mapping?
+> Bagas Sanjaya <bagasdotme@gmail.com> writes:
+> > On 5/24/23 17:58, Bagas Sanjaya wrote:
+> >> Anyway, I'm adding it to regzbot:
+> >>
+> >> #regzbot introduced: 23baf831a32c04f
+> https://bugzilla.kernel.org/show_bug.cgi?id=217477
+> >> #regzbot title: Allocator MAX_ORDER exceeds SECTION_SIZE caused by
+> MAX_ORDER redefinition
+> >>
+> >
+> > From bugzilla [1], the reporter had successfully tried the proposed
+> > kernel config fix, so:
+> >
+> > #regzbot resolve: reducing CONFIG_ARCH_FORCE_MAX_ORDER to 8 resolves the
+> regression
 >
->  From the details in Bugzilla, it does seems like the HCALL was 
-> previously taking long as well but PHYP was more relaxed about it. Now, 
-> PHYP is limiting on how long can an HCALL take.
+> Should be fixed properly by:
 >
-> Below are some excerpts from the Bug: 202349
 >
-> Linux is passing too many counts in H_STUFF_TCE. The higher the counts, 
-> the longer the HCALL takes. From a Hypervisor perspective, we cannot 
-> stop Linux from doing this or it will violate the rules in the PAPR 
-> (which then would cause Linux to crash). The dispatcher team has 
-> "tightened the screws" on long running HCALLs by causing this trap to 
-> fire. From our discussions, they will not put the limits back where they 
-> were before.
+> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20230519113806.370635-1-mpe@ellerman.id.au/
+>
+> Which is in powerpc-fixes as 358e526a1648.
+>
+> cheers
+>
 
-OK, that explains why it's only been noticed recently, so that's good
-info. In the change log you can say something like "newer firmware has
-started enforcing the limits".
+--00000000000062aa8e05fc71f4cb
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-cheers
+<div dir=3D"auto">Awesome, thanks!=C2=A0</div><br><div class=3D"gmail_quote=
+"><div dir=3D"ltr" class=3D"gmail_attr">On Wed, May 24, 2023, 6:03 PM Micha=
+el Ellerman &lt;<a href=3D"mailto:mpe@ellerman.id.au">mpe@ellerman.id.au</a=
+>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0=
+ 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">Bagas Sanjaya &lt;<a h=
+ref=3D"mailto:bagasdotme@gmail.com" target=3D"_blank" rel=3D"noreferrer">ba=
+gasdotme@gmail.com</a>&gt; writes:<br>
+&gt; On 5/24/23 17:58, Bagas Sanjaya wrote:<br>
+&gt;&gt; Anyway, I&#39;m adding it to regzbot:<br>
+&gt;&gt; <br>
+&gt;&gt; #regzbot introduced: 23baf831a32c04f <a href=3D"https://bugzilla.k=
+ernel.org/show_bug.cgi?id=3D217477" rel=3D"noreferrer noreferrer" target=3D=
+"_blank">https://bugzilla.kernel.org/show_bug.cgi?id=3D217477</a><br>
+&gt;&gt; #regzbot title: Allocator MAX_ORDER exceeds SECTION_SIZE caused by=
+ MAX_ORDER redefinition<br>
+&gt;&gt; <br>
+&gt;<br>
+&gt; From bugzilla [1], the reporter had successfully tried the proposed<br=
+>
+&gt; kernel config fix, so:<br>
+&gt;<br>
+&gt; #regzbot resolve: reducing CONFIG_ARCH_FORCE_MAX_ORDER to 8 resolves t=
+he regression<br>
+<br>
+Should be fixed properly by:<br>
+<br>
+<a href=3D"https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20230519=
+113806.370635-1-mpe@ellerman.id.au/" rel=3D"noreferrer noreferrer" target=
+=3D"_blank">https://patchwork.ozlabs.org/project/linuxppc-dev/patch/2023051=
+9113806.370635-1-mpe@ellerman.id.au/</a><br>
+<br>
+Which is in powerpc-fixes as 358e526a1648.<br>
+<br>
+cheers<br>
+</blockquote></div>
+
+--00000000000062aa8e05fc71f4cb--
