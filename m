@@ -1,69 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4902C71023E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 May 2023 03:17:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BCFA70F7C8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 May 2023 15:39:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QRVXx1kQYz3fDH
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 May 2023 11:17:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QRC301NhWz3fDX
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 May 2023 23:39:24 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=R/m+hqrl;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=b+R628Ql;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12d; helo=mail-lf1-x12d.google.com; envelope-from=doru.iorgulescu1@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=R/m+hqrl;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=b+R628Ql;
 	dkim-atps=neutral
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QRBRS3rqjz2xHJ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 May 2023 23:12:03 +1000 (AEST)
-Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-4f3b337e842so882374e87.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 May 2023 06:12:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684933914; x=1687525914;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=/xPDZOoMRtA9vLoer76WBtYg4ydGY9G19anBSPJJ4rc=;
-        b=R/m+hqrlNVCjAETKy5V86lyw5jCVBLs62CPgCNXjZw2yox0+U+ZJ0BHHoZnpYA0O51
-         vZ9IE8HKPKL8vKAvqnkGWmQZ+oTCyS8pIztErbW23wWRGHuFx85QSCHextzlBbITnNua
-         DvTqqBultxsMHmO7plBMTB/+EFmP8XG4ijLW+iv+wROTx053aZ81nZ1lUESs6iPLQYLP
-         MGIDCHpRuC4YCymWKU3CLelfY38zXsaJJR4BFH6fVYLiUuEUqieklYJnHWZDcPUkiLvs
-         9xxT5GlYaa/ti8WtRmHbWhUydW2x5LoRgxqYanOQeYmJiecqaFl0PgIjbyGxURLjWTi3
-         En1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684933914; x=1687525914;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/xPDZOoMRtA9vLoer76WBtYg4ydGY9G19anBSPJJ4rc=;
-        b=JbbL/mswKIFOHfszm53x8scl5LEpyd5HkOd81gCuaYvxE9csqCSNpUXEL4/7WkGZjm
-         FMdYT6l16oNNyHfcSwxRBpIKLhDslRzRRWl53qAzmeo/AQhmgyMYxkkyBJ5uTbVi//8k
-         4l83eUeF1iIt53ElTESPRKj0+/wSnYdUvAhbbRd62jXKCKrgsAhXnoxio+r2qA3/Eu9X
-         JKiMzpG4TfsiXAqXxxv7ovVPyl4Wlx2JOoLHolI3812N1RR+naCck/O7wC5m8VqnP7Ce
-         M1HjEnLDooAWmgabECsedtyFfwGwr/ptIdjZ/M5Q3TYK4CoRHSuLC84407VzpjLofjgU
-         3Izg==
-X-Gm-Message-State: AC+VfDzT1SJC6k1o0dy5+RWmQc0d+yt0xHNugP+aPnvnllgyULoEN8M0
-	rqYWNlsE3ePyZxRwf/u1GV0f/CCeXga5LtKdea0=
-X-Google-Smtp-Source: ACHHUZ6s9uP+2goOdHsMmJlSY9Tpeioqz8dzhix648D9+BrQz8YQppTcjlO2PMCtWnjj7Asu+etx922sG4lSQFKGXPQ=
-X-Received: by 2002:ac2:5dfc:0:b0:4ef:f583:ee16 with SMTP id
- z28-20020ac25dfc000000b004eff583ee16mr5598512lfq.57.1684933914012; Wed, 24
- May 2023 06:11:54 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QRC2B47kWz3brK
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 May 2023 23:38:40 +1000 (AEST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out1.suse.de (Postfix) with ESMTP id 82F0E21FE4;
+	Wed, 24 May 2023 13:38:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1684935517; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=o9PpiufmZYzleg+TlrTh557lZlXDEM/AsL/PhNB0ois=;
+	b=b+R628QlRTNsSzyUC35Lh1Knve1z2zY9IzRDNTMeINWO8KcOzZ3/0LdvMfmwhO3yUgN9u0
+	3NjN78LPfVkSTa/C8qWoZJEhRh0s7kTbxRKhntcnuX12jzeNk1N45LuX7TCP5yoMvJy4ij
+	lnbnezv8q8w8QHqxzgg76qOTb5SCv3E=
+Received: from suse.cz (dhcp129.suse.cz [10.100.51.129])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by relay2.suse.de (Postfix) with ESMTPS id 3F3BE2C141;
+	Wed, 24 May 2023 13:38:36 +0000 (UTC)
+Date: Wed, 24 May 2023 15:38:35 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: Douglas Anderson <dianders@chromium.org>
+Subject: Re: [PATCH v5 12/18] watchdog/hardlockup: Rename some "NMI watchdog"
+ constants/function
+Message-ID: <ZG4TW--j-DdSsUO6@alley>
+References: <20230519101840.v5.18.Ia44852044cdcb074f387e80df6b45e892965d4a1@changeid>
+ <20230519101840.v5.12.I91f7277bab4bf8c0cb238732ed92e7ce7bbd71a6@changeid>
 MIME-Version: 1.0
-References: <2a1cd5e6-01f7-66f9-1f9d-c655cc3f919b@gmail.com> <5d22e1e9-0307-3664-8b4a-99caaaaa4315@gmail.com>
-In-Reply-To: <5d22e1e9-0307-3664-8b4a-99caaaaa4315@gmail.com>
-From: Doru Iorgulescu <doru.iorgulescu1@gmail.com>
-Date: Wed, 24 May 2023 16:11:41 +0300
-Message-ID: <CA+39qUjOA53UO4oYOzrUJqdYq8A3hbnnxpSV8nfqh0T5KiNL9A@mail.gmail.com>
-Subject: Re: Fwd: ./include/linux/mmzone.h:1735:2: error: #error Allocator
- MAX_ORDER exceeds SECTION_SIZE (v6.4-rc3 build regression)
-To: Bagas Sanjaya <bagasdotme@gmail.com>
-Content-Type: multipart/alternative; boundary="0000000000006a320805fc703f6b"
-X-Mailman-Approved-At: Thu, 25 May 2023 11:17:11 +1000
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230519101840.v5.12.I91f7277bab4bf8c0cb238732ed92e7ce7bbd71a6@changeid>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,76 +61,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, Linux Regressions <regressions@lists.linux.dev>, Fabiano Rosas <farosas@linux.ibm.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Linux Memory Management List <linux-mm@kvack.org>, Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, Disha Goel <disgoel@linux.vnet.ibm.com>, Linux PowerPC <linuxppc-dev@lists.ozlabs.org>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, Ian Rogers <irogers@google.com>, ito-yuichi@fujitsu.com, Lecopzer Chen <lecopzer.chen@mediatek.com>, kgdb-bugreport@lists.sourceforge.net, ricardo.neri@intel.com, Stephane Eranian <eranian@google.com>, sparclinux@vger.kernel.org, Guenter Roeck <groeck@chromium.org>, Will Deacon <will@kernel.org>, Daniel Thompson <daniel.thompson@linaro.org>, Andi Kleen <ak@linux.intel.com>, Marc Zyngier <maz@kernel.org>, Chen-Yu Tsai <wens@csie.org>, Matthias Kaehlcke <mka@chromium.org>, Catalin Marinas <catalin.marinas@arm.com>, Masayoshi Mizuma <msys.mizuma@gmail.com>, ravi.v.shankar@intel.com, Tzung-Bi Shih <tzungbi@chromium.org>, npiggin@gmail.com, Stephen Boyd <swboyd@chromium.org>, Pingfan Liu <kernelfans@gmail.com>, linux-arm-kernel@lists.infradead.org, Sumit Garg <sumit.garg@linaro.org>, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozl
+ abs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---0000000000006a320805fc703f6b
-Content-Type: text/plain; charset="UTF-8"
+On Fri 2023-05-19 10:18:36, Douglas Anderson wrote:
+> Do a search and replace of:
+> - NMI_WATCHDOG_ENABLED => WATCHDOG_HARDLOCKUP_ENABLED
+> - SOFT_WATCHDOG_ENABLED => WATCHDOG_SOFTOCKUP_ENABLED
+> - watchdog_nmi_ => watchdog_hardlockup_
+> - nmi_watchdog_available => watchdog_hardlockup_available
+> - nmi_watchdog_user_enabled => watchdog_hardlockup_user_enabled
+> - soft_watchdog_user_enabled => watchdog_softlockup_user_enabled
+> - NMI_WATCHDOG_DEFAULT => WATCHDOG_HARDLOCKUP_DEFAULT
+> 
+> Then update a few comments near where names were changed.
+> 
+> This is specifically to make it less confusing when we want to
+> introduce the buddy hardlockup detector, which isn't using NMIs. As
+> part of this, we sanitized a few names for consistency.
+> 
+> --- a/kernel/watchdog.c
+> +++ b/kernel/watchdog.c
+> @@ -30,17 +30,17 @@
+>  static DEFINE_MUTEX(watchdog_mutex);
+>  
+>  #if defined(CONFIG_HARDLOCKUP_DETECTOR) || defined(CONFIG_HAVE_NMI_WATCHDOG)
+> -# define NMI_WATCHDOG_DEFAULT	1
+> +# define WATCHDOG_HARDLOCKUP_DEFAULT	1
+>  #else
+> -# define NMI_WATCHDOG_DEFAULT	0
+> +# define WATCHDOG_HARDLOCKUP_DEFAULT	0
+>  #endif
+>  
+>  unsigned long __read_mostly watchdog_enabled;
+>  int __read_mostly watchdog_user_enabled = 1;
+> -int __read_mostly nmi_watchdog_user_enabled = NMI_WATCHDOG_DEFAULT;
+> -int __read_mostly soft_watchdog_user_enabled = 1;
+> +int __read_mostly watchdog_hardlockup_user_enabled = WATCHDOG_HARDLOCKUP_DEFAULT;
+> +int __read_mostly watchdog_softlockup_user_enabled = 1;
 
-Glad to hear it!
-Thank you
+I still see nmi_watchdog_user_enabled and soft_watchdog_user_enabled
+in include/linux/nmi.h. They are declared there and also mentioned
+in a comment.
 
-On Wed, May 24, 2023, 3:58 PM Bagas Sanjaya <bagasdotme@gmail.com> wrote:
+It seems that they do not actually need to be declared there.
+I guess that it was need for the /proc stuff. But it was
+moved into kernel/watchdog.c by the commit commit dd0693fdf054f2ed37
+("watchdog: move watchdog sysctl interface to watchdog.c").
 
-> On 5/24/23 17:58, Bagas Sanjaya wrote:
-> > Anyway, I'm adding it to regzbot:
-> >
-> > #regzbot introduced: 23baf831a32c04f
-> https://bugzilla.kernel.org/show_bug.cgi?id=217477
-> > #regzbot title: Allocator MAX_ORDER exceeds SECTION_SIZE caused by
-> MAX_ORDER redefinition
-> >
->
-> From bugzilla [1], the reporter had successfully tried the proposed
-> kernel config fix, so:
->
-> #regzbot resolve: reducing CONFIG_ARCH_FORCE_MAX_ORDER to 8 resolves the
-> regression
->
-> Thanks for all who participates in this regression report!
->
-> [1]: https://bugzilla.kernel.org/show_bug.cgi?id=217477#c8
->
-> --
-> An old man doll... just what I always wanted! - Clara
->
->
+>  int __read_mostly watchdog_thresh = 10;
+> -static int __read_mostly nmi_watchdog_available;
+> +static int __read_mostly watchdog_hardlockup_available;
+>  
+>  struct cpumask watchdog_cpumask __read_mostly;
+>  unsigned long *watchdog_cpumask_bits = cpumask_bits(&watchdog_cpumask);
 
---0000000000006a320805fc703f6b
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Otherwise, I like the changes.
 
-<div dir=3D"auto">Glad to hear it!=C2=A0<div dir=3D"auto">Thank you</div></=
-div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On=
- Wed, May 24, 2023, 3:58 PM Bagas Sanjaya &lt;<a href=3D"mailto:bagasdotme@=
-gmail.com">bagasdotme@gmail.com</a>&gt; wrote:<br></div><blockquote class=
-=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padd=
-ing-left:1ex">On 5/24/23 17:58, Bagas Sanjaya wrote:<br>
-&gt; Anyway, I&#39;m adding it to regzbot:<br>
-&gt; <br>
-&gt; #regzbot introduced: 23baf831a32c04f <a href=3D"https://bugzilla.kerne=
-l.org/show_bug.cgi?id=3D217477" rel=3D"noreferrer noreferrer" target=3D"_bl=
-ank">https://bugzilla.kernel.org/show_bug.cgi?id=3D217477</a><br>
-&gt; #regzbot title: Allocator MAX_ORDER exceeds SECTION_SIZE caused by MAX=
-_ORDER redefinition<br>
-&gt; <br>
-<br>
-From bugzilla [1], the reporter had successfully tried the proposed<br>
-kernel config fix, so:<br>
-<br>
-#regzbot resolve: reducing CONFIG_ARCH_FORCE_MAX_ORDER to 8 resolves the re=
-gression<br>
-<br>
-Thanks for all who participates in this regression report!<br>
-<br>
-[1]: <a href=3D"https://bugzilla.kernel.org/show_bug.cgi?id=3D217477#c8" re=
-l=3D"noreferrer noreferrer" target=3D"_blank">https://bugzilla.kernel.org/s=
-how_bug.cgi?id=3D217477#c8</a><br>
-<br>
--- <br>
-An old man doll... just what I always wanted! - Clara<br>
-<br>
-</blockquote></div>
+With the following:
 
---0000000000006a320805fc703f6b--
+diff --git a/include/linux/nmi.h b/include/linux/nmi.h
+index 83076bf70ce8..d14fe345eae9 100644
+--- a/include/linux/nmi.h
++++ b/include/linux/nmi.h
+@@ -17,8 +17,6 @@ void lockup_detector_soft_poweroff(void);
+ void lockup_detector_cleanup(void);
+ 
+ extern int watchdog_user_enabled;
+-extern int nmi_watchdog_user_enabled;
+-extern int soft_watchdog_user_enabled;
+ extern int watchdog_thresh;
+ extern unsigned long watchdog_enabled;
+ 
+@@ -68,8 +66,8 @@ static inline void reset_hung_task_detector(void) { }
+  * 'watchdog_enabled' variable. Each lockup detector has its dedicated bit -
+  * bit 0 for the hard lockup detector and bit 1 for the soft lockup detector.
+  *
+- * 'watchdog_user_enabled', 'nmi_watchdog_user_enabled' and
+- * 'soft_watchdog_user_enabled' are variables that are only used as an
++ * 'watchdog_user_enabled', 'watchdog_hardlockup_user_enabled' and
++ * 'watchdog_softlockup_user_enabled' are variables that are only used as an
+  * 'interface' between the parameters in /proc/sys/kernel and the internal
+  * state bits in 'watchdog_enabled'. The 'watchdog_thresh' variable is
+  * handled differently because its value is not boolean, and the lockup
+
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+
+Even better might be to remove the unused declaration in a separate
+patch. I think that more declarations are not needed after moving
+the /proc stuff into kernel/watchdog.c.
+
+But it might also be fixed later.
+
+Best Regards,
+Petr
