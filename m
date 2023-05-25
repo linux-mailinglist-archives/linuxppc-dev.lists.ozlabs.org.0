@@ -2,54 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3F1C7108B2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 May 2023 11:20:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DDC0710E20
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 May 2023 16:19:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QRjFR4Tzyz3fFH
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 May 2023 19:20:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QRqtC2yY9z3fGk
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 May 2023 00:18:59 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=foE41UqP;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=BF3NRz1W;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QRqsK4Q6Tz3bTs
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 May 2023 00:18:13 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=foE41UqP;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=BF3NRz1W;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QRjDd017bz3cgq
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 May 2023 19:19:28 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 0FA426442A;
-	Thu, 25 May 2023 09:19:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3CF9C433EF;
-	Thu, 25 May 2023 09:19:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1685006366;
-	bh=wqsrR+VLdLpuPAmDdXqCVY2XwnsXyfpXvlaNwL8b95Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=foE41UqPH1HgRiXHDcvmNVSgga8+6+movhrIvHcP0lKkim5d2C0CveXiAkrsugwUY
-	 mTMqHgjGefxYEA1DbMZBeEKmAQcDqRXgChs6yPJ6RFCubSjjaqUfXH5DibAVcYpUBA
-	 aCcKgzmG5mhVSa4fQNmh2lbUtoTD+weF0ODUHN0azy9cnLxTNG6czawfKdDGiZ3h9+
-	 eQhVfl9VDk2zYUu2V/zd6ljbuCqaKQw9PEhJG6TAu5DceAsH/0TRlb4M7Mib7O0vr6
-	 Y2yg35as+E26Oh74LjFv8mXxr+pdJYlNpysggvOKmpyB8i+xjdzE7MqNjdH/FF5KDP
-	 bMNE7SNyaBLAA==
-Date: Thu, 25 May 2023 12:19:00 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Subject: Re: [PATCH v2 13/34] mm: Create ptdesc equivalents for
- pgtable_{pte,pmd}_page_{ctor,dtor}
-Message-ID: <20230525091900.GY4967@kernel.org>
-References: <20230501192829.17086-1-vishal.moola@gmail.com>
- <20230501192829.17086-14-vishal.moola@gmail.com>
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QRqsH484zz4wgq;
+	Fri, 26 May 2023 00:18:11 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1685024291;
+	bh=eeBn6dIr+oE4gdD75FbHX3pTuqj/v0HbGPnYdSo0at8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=BF3NRz1WqptcQrrXR570k8rdHphoD+BOJV2QCfNCi9smwNPj51FzlHeXvg3bmlHxS
+	 TOIyXj3ajwShy+ME20au30sIYBnkZMao8lDP7e7vHG21+C2km3QvlWvmi7nl8hnPP2
+	 GNKOWj2a3ZcVvexMtvpAPIe87bncrgGCmz7Pdl5L7PeMrBnT2YYlxtT+pQRCPHHqNY
+	 DnENObEXw+qM3DWuF1p13IOCgTgSxPedMkbh+i9JnyLoXBayQKZVYT27YlQymjjBWe
+	 z/KxDKsH60vbAVcz/ZVUXrYazBYzRBPDTZFSojWiJB5hr5bccUhBHhD/fjtIoBJkIG
+	 WJNkBYMwQmitA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Joel Stanley <joel@jms.id.au>
+Subject: Re: [PATCH] powerpc/crypto: Fix aes-gcm-p10 build when VSX=n
+In-Reply-To: <CACPK8XdNMBm6D-EQU0BGfxrtzbXLJaLeqzUXDMDb3eAe-T4Bxg@mail.gmail.com>
+References: <20230515124731.122962-1-mpe@ellerman.id.au>
+ <CACPK8XdNMBm6D-EQU0BGfxrtzbXLJaLeqzUXDMDb3eAe-T4Bxg@mail.gmail.com>
+Date: Fri, 26 May 2023 00:18:07 +1000
+Message-ID: <87cz2otrz4.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230501192829.17086-14-vishal.moola@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,115 +59,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, kvm@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-sh@vger.kernel.org, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-csky@vger.kernel.org, linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org, Matthew Wilcox <willy@infradead.org>, loongarch@lists.linux.dev, sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org, dtsen@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 01, 2023 at 12:28:08PM -0700, Vishal Moola (Oracle) wrote:
-> Creates ptdesc_pte_ctor(), ptdesc_pmd_ctor(), ptdesc_pte_dtor(), and
-> ptdesc_pmd_dtor() and make the original pgtable constructor/destructors
-> wrappers.
+Joel Stanley <joel@jms.id.au> writes:
+> On Mon, 15 May 2023 at 12:48, Michael Ellerman <mpe@ellerman.id.au> wrote:
+>>
+>> When VSX is disabled, eg. microwatt_defconfig, the build fails with:
+>>
+>>   In function =E2=80=98enable_kernel_vsx=E2=80=99,
+>>       inlined from =E2=80=98vsx_begin=E2=80=99 at arch/powerpc/crypto/ae=
+s-gcm-p10-glue.c:68:2,
+>>       inlined from =E2=80=98p10_aes_gcm_crypt.constprop=E2=80=99 at arch=
+/powerpc/crypto/aes-gcm-p10-glue.c:244:2:
+>>   ...
+>>   arch/powerpc/include/asm/switch_to.h:86:9: note: in expansion of macro=
+ =E2=80=98BUILD_BUG=E2=80=99
+>>      86 |         BUILD_BUG();
+>>         |         ^~~~~~~~~
+>>
+>> Fix it by making the p10-aes-gcm code depend on VSX.
+>>
+>> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+>
+> Reviewed-by: Joel Stanley <joel@jms.id.au>
+>
+>> ---
+>>  arch/powerpc/crypto/Kconfig | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/arch/powerpc/crypto/Kconfig b/arch/powerpc/crypto/Kconfig
+>> index 7113f9355165..ad1872518992 100644
+>> --- a/arch/powerpc/crypto/Kconfig
+>> +++ b/arch/powerpc/crypto/Kconfig
+>> @@ -96,7 +96,7 @@ config CRYPTO_AES_PPC_SPE
+>>
+>>  config CRYPTO_AES_GCM_P10
+>>         tristate "Stitched AES/GCM acceleration support on P10 or later =
+CPU (PPC)"
+>> -       depends on PPC64 && CPU_LITTLE_ENDIAN
+>> +       depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
+>
+> VSX depends on PPC_BOOK3S_64 but I guess there's no harm in keeping
+> the PPC64 here?
 
-I think pgtable_pXY_ctor/dtor names would be better.
- 
-> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-> ---
->  include/linux/mm.h | 56 ++++++++++++++++++++++++++++++++++------------
->  1 file changed, 42 insertions(+), 14 deletions(-)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 58c911341a33..dc61aeca9077 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -2847,20 +2847,34 @@ static inline bool ptlock_init(struct ptdesc *ptdesc) { return true; }
->  static inline void ptlock_free(struct ptdesc *ptdesc) {}
->  #endif /* USE_SPLIT_PTE_PTLOCKS */
->  
-> -static inline bool pgtable_pte_page_ctor(struct page *page)
-> +static inline bool ptdesc_pte_ctor(struct ptdesc *ptdesc)
->  {
-> -	if (!ptlock_init(page_ptdesc(page)))
-> +	struct folio *folio = ptdesc_folio(ptdesc);
-> +
-> +	if (!ptlock_init(ptdesc))
->  		return false;
-> -	__SetPageTable(page);
-> -	inc_lruvec_page_state(page, NR_PAGETABLE);
-> +	__folio_set_table(folio);
-> +	lruvec_stat_add_folio(folio, NR_PAGETABLE);
->  	return true;
->  }
->  
-> +static inline bool pgtable_pte_page_ctor(struct page *page)
-> +{
-> +	return ptdesc_pte_ctor(page_ptdesc(page));
-> +}
-> +
-> +static inline void ptdesc_pte_dtor(struct ptdesc *ptdesc)
-> +{
-> +	struct folio *folio = ptdesc_folio(ptdesc);
-> +
-> +	ptlock_free(ptdesc);
-> +	__folio_clear_table(folio);
-> +	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
-> +}
-> +
->  static inline void pgtable_pte_page_dtor(struct page *page)
->  {
-> -	ptlock_free(page_ptdesc(page));
-> -	__ClearPageTable(page);
-> -	dec_lruvec_page_state(page, NR_PAGETABLE);
-> +	ptdesc_pte_dtor(page_ptdesc(page));
->  }
->  
->  #define pte_offset_map_lock(mm, pmd, address, ptlp)	\
-> @@ -2942,20 +2956,34 @@ static inline spinlock_t *pmd_lock(struct mm_struct *mm, pmd_t *pmd)
->  	return ptl;
->  }
->  
-> -static inline bool pgtable_pmd_page_ctor(struct page *page)
-> +static inline bool ptdesc_pmd_ctor(struct ptdesc *ptdesc)
->  {
-> -	if (!pmd_ptlock_init(page_ptdesc(page)))
-> +	struct folio *folio = ptdesc_folio(ptdesc);
-> +
-> +	if (!pmd_ptlock_init(ptdesc))
->  		return false;
-> -	__SetPageTable(page);
-> -	inc_lruvec_page_state(page, NR_PAGETABLE);
-> +	__folio_set_table(folio);
-> +	lruvec_stat_add_folio(folio, NR_PAGETABLE);
->  	return true;
->  }
->  
-> +static inline bool pgtable_pmd_page_ctor(struct page *page)
-> +{
-> +	return ptdesc_pmd_ctor(page_ptdesc(page));
-> +}
-> +
-> +static inline void ptdesc_pmd_dtor(struct ptdesc *ptdesc)
-> +{
-> +	struct folio *folio = ptdesc_folio(ptdesc);
-> +
-> +	pmd_ptlock_free(ptdesc);
-> +	__folio_clear_table(folio);
-> +	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
-> +}
-> +
->  static inline void pgtable_pmd_page_dtor(struct page *page)
->  {
-> -	pmd_ptlock_free(page_ptdesc(page));
-> -	__ClearPageTable(page);
-> -	dec_lruvec_page_state(page, NR_PAGETABLE);
-> +	ptdesc_pmd_dtor(page_ptdesc(page));
->  }
->  
->  /*
-> -- 
-> 2.39.2
-> 
-> 
+I guess it's somewhat redundant. But also harmless, and possibly clearer
+for folks who don't have the ingrained knowledge that VSX is 64-bit
+Book3S only. So yeah I think I'll leave it as-is.
 
--- 
-Sincerely yours,
-Mike.
+cheers
