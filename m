@@ -2,98 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3794711A2B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 May 2023 00:29:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4745711AC3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 May 2023 01:41:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QS2mN4GHlz3fGc
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 May 2023 08:29:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QS4Mg4L4Kz3cJg
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 May 2023 09:41:51 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=xW201YYM;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=h2cj+uGn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=2a01:111:f400:7eae::600; helo=nam11-bn8-obe.outbound.protection.outlook.com; envelope-from=robert.richter@amd.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::d2a; helo=mail-io1-xd2a.google.com; envelope-from=dianders@chromium.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=xW201YYM;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=h2cj+uGn;
 	dkim-atps=neutral
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on20600.outbound.protection.outlook.com [IPv6:2a01:111:f400:7eae::600])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-xd2a.google.com (mail-io1-xd2a.google.com [IPv6:2607:f8b0:4864:20::d2a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QS2lV6Fl5z3bsS
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 May 2023 08:28:51 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=D8yrN1EaQyCXTGolvCtrsxM4uGR7m3UCO/PKaoMKeuCMRR2YpkaFsKdhkgeultyZWr//7yC7jDEvg/YNUA3SxhZ7uUe0gLV+ChLMmDJyT1Va9CEMyxWxuPXW4KCQ8uOcqL3ycFYz0iSwzWS9HH/xJMj7EjilrKNFn8gIWyTM1+KHbwzqHZYWkLFhcVf4ghODXbBm+7HUt3gZ7wAKlMnBuMqgm3MGMMCnP7wVDHzWwPSchaKfQY9W15nUh6YtdLy+xoX87KWpDQL4dBjqdA4mgyDq4dPujb4ZLBJIFTAPqWQ9xLhwcyHz8rEzkNDh1aD9k+H1MR6ZTY+zpB0Ezw559A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FF/Ye6RWxvPnpimLd36vOyyLA5FHmU4aXZwbzPI+/u4=;
- b=Sk3CptWiN++cl95q1MwwEb5N2NeYDAewXZCg1RuO50B0ujkYYQHFiafCUIhtkS3+jSzJgljy1ZgXIk9tCCCZPsDDVq4BGYGV68BQGP9I/gv8vesWbBs0Hy5rGtmJnzWTm7z5faRZd9o/7akJQkfmzEHCd3y10I5skLJ2Rw2gN+jaRfOgDKBUMjrWMoU3modBmo11tR+fb5gxB9zvBBSV+tWZIrEVpuURt901w/Kh5vZDbHQcNCOCgnM9HOHBAGuN5weNLXSPqHVpoypUMVChxLMJwabRhWxtmrJAcHli12Xh7Cn2ulJN/TbEn+EzTg1y07POkppnI9Qm4032OpmXKg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FF/Ye6RWxvPnpimLd36vOyyLA5FHmU4aXZwbzPI+/u4=;
- b=xW201YYM2MpLPdcofgACFbTVQBnWyexwTyrPZjtRrdg9xW5qEw++wb3rP151CxuUrhej1uA58Caf6T7/XkRg4VTTJ8izfHOMXrs5/B1eDX9b8UoRuKKe4TrYYUio8gQ6hQayFGETGtK4MIOP1wNXflrEsyzgG+2DLXgH+QWmGPo=
-Received: from MW4P223CA0018.NAMP223.PROD.OUTLOOK.COM (2603:10b6:303:80::23)
- by IA1PR12MB6043.namprd12.prod.outlook.com (2603:10b6:208:3d5::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.15; Thu, 25 May
- 2023 22:28:30 +0000
-Received: from CO1NAM11FT018.eop-nam11.prod.protection.outlook.com
- (2603:10b6:303:80:cafe::8d) by MW4P223CA0018.outlook.office365.com
- (2603:10b6:303:80::23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.17 via Frontend
- Transport; Thu, 25 May 2023 22:28:29 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1NAM11FT018.mail.protection.outlook.com (10.13.175.16) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6433.17 via Frontend Transport; Thu, 25 May 2023 22:28:29 +0000
-Received: from rric.localdomain (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Thu, 25 May
- 2023 17:28:26 -0500
-Date: Fri, 26 May 2023 00:28:23 +0200
-From: Robert Richter <rrichter@amd.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Subject: Re: [PATCH v4 22/23] PCI/AER: Forward RCH downstream port-detected
- errors to the CXL.mem dev handler
-Message-ID: <ZG/hB8cOuTkWT3g9@rric.localdomain>
-References: <ZG/TKOgMTSljryHN@rric.localdomain>
- <ZG/anZ78FukSpERs@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QS4Ln5yP5z3bgs
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 May 2023 09:41:03 +1000 (AEST)
+Received: by mail-io1-xd2a.google.com with SMTP id ca18e2360f4ac-774942ddfe0so22973739f.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 May 2023 16:41:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1685058057; x=1687650057;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3YzCxsRkWRgjvxa97wKSZh7dXjwpqx38ke3QcUo28Gw=;
+        b=h2cj+uGnsZaneX3U/guQy4WRWK8bSGCWCueYbMhG7MphLNIFG+GjpY+tpCTkmE/u9W
+         hOD5o2YG80g7tNfCnEyOck168jHQaRXYvGAVxhmXTVMapTCYICCkF6v5kt7vf97qto6U
+         gGdAtC4SxqTbE2SzFjQFBeXRPkflAShbXEnAY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685058057; x=1687650057;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3YzCxsRkWRgjvxa97wKSZh7dXjwpqx38ke3QcUo28Gw=;
+        b=dS1vqSZ44C88Bd1R000+W2oFNqvwZpPivZF7Vz69FytquYxgHF+jc291QTfZT166ZK
+         dEJ8RUmjRHCCWh1oLtag1TXtrSBIf4yV9B3pIV8eLDEgxg98btevEOg1sFzTYvTTglRO
+         mINrVi6vFn356IZz2j2SbhB2lzuY9vIPxDh3X8+HrqvDmBQgJFoEjRCKVcJDNKh5tik7
+         Wg9k29ubEsUNLY8ZpGC6qmNuZs2XwdCXjqmccUchk5gMKaJu2nuvkm/hbQMMLoK+R3Ie
+         iDDc0Y5p6JbaksoOb2iVRLS3Via/I5IE08+N9SAurCc67Kh4TvASLO5tTW9XYvxS5010
+         ZIIg==
+X-Gm-Message-State: AC+VfDytF+fT0mVD61pEkLBz6ifsicfecmmUsaRqGfca9O5vEkdgdZ/f
+	9Jz0hHRkJWjAQfXJiD54cCh37wVXkAoOrrWhheQ=
+X-Google-Smtp-Source: ACHHUZ4YBMlUEZyYbiCPg2b1SPtBQ2zNUSNqIqrCVrbWIVO4gPt/ri1vLcJMJo/YKJIYKfqot/uepw==
+X-Received: by 2002:a92:4b0f:0:b0:33a:b647:1bcb with SMTP id m15-20020a924b0f000000b0033ab6471bcbmr29139ilg.20.1685058057628;
+        Thu, 25 May 2023 16:40:57 -0700 (PDT)
+Received: from mail-il1-f182.google.com (mail-il1-f182.google.com. [209.85.166.182])
+        by smtp.gmail.com with ESMTPSA id z2-20020a92d182000000b0032957b21c26sm617496ilz.77.2023.05.25.16.40.57
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 May 2023 16:40:57 -0700 (PDT)
+Received: by mail-il1-f182.google.com with SMTP id e9e14a558f8ab-33828a86ee2so61645ab.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 May 2023 16:40:57 -0700 (PDT)
+X-Received: by 2002:a05:6e02:1c84:b0:331:a582:1c63 with SMTP id
+ w4-20020a056e021c8400b00331a5821c63mr3274ill.3.1685057600304; Thu, 25 May
+ 2023 16:33:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <ZG/anZ78FukSpERs@bhelgaas>
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1NAM11FT018:EE_|IA1PR12MB6043:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1a047ada-2b65-4c22-4cd5-08db5d6f5dbd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	dFWcjiSOb7AMofT4cGIHRdJhsPkMG9nn9TBWyfeBKOS+F+/ebnyLOBR7WctkpoRN4DgZePTTU3kZR6Da8J2NnZs3fmnKObsuAgW1bl80uwaQwPpXLv9721d9vqCzjHo7f7lQ3QLAmXrhAD5E0EjL5DlDuOkM0flgkkC3sxWdtumJWCdqjJM3oTI8zw96wWuG1higsH+zFHstwXJIIquvku6EU6L+iYb/ylC9WRU02WlU6nbT5+G+1aGaroJGU5VXTzs1AL52Vy7OJk1ooD6xe6dLyu+xLYfUbfFV0Fq38GkqTuC1kteq4MoDzy+RlkM704S6yuv1pzI8z5HxkvUC6nGuFqH50aT4pO+PgXl6MDGmSA/SB3FuJAKhjHAnBSNfbrO7oqq7NI2J2w7kCr/cBojkHHfyVR6UTBroVoHCfFST5TWZuj4CUikIo4k3/LnZ60Xj8gyyTFbLhRfuKAF7kWO4tE19+r14qGPNRE72Mm/7IMwly3YfFPjLaxtk4CeeXlMZv0R4+/DB/mYQ0JD23JSKyrChrFlKnKWrD1utxiBQEhC/4cAFGUfWUMMOxQ5StyPs6H8qXu+acD/jNUUuYcDo/BsvMXuWT7zYKrqhLZJDa0lQr0UcT3zTGnkdXyYhhT/QVus957zyPDNx6+NfzYhakXTi+iCbFqK5SEd9ldId34Z7jygw0Z3ZcP6hR3w8xJDjC5hdipKl0EGNZoRq+o11BJTU2C6j0ppSoHhBd3HSo8gHsP20cyW72vonMCjCQSMRLkTo+zu4ZTsn0Se17g==
-X-Forefront-Antispam-Report: 	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(396003)(376002)(136003)(346002)(39860400002)(451199021)(46966006)(40470700004)(36840700001)(6666004)(82740400003)(356005)(4326008)(6916009)(70206006)(81166007)(70586007)(478600001)(54906003)(316002)(7696005)(41300700001)(82310400005)(40460700003)(8936002)(5660300002)(8676002)(7416002)(40480700001)(55016003)(36860700001)(26005)(9686003)(53546011)(426003)(336012)(2906002)(186003)(16526019)(47076005)(83380400001)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 May 2023 22:28:29.7091
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1a047ada-2b65-4c22-4cd5-08db5d6f5dbd
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: 	CO1NAM11FT018.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6043
+References: <20230519101840.v5.18.Ia44852044cdcb074f387e80df6b45e892965d4a1@changeid>
+ <20230519101840.v5.12.I91f7277bab4bf8c0cb238732ed92e7ce7bbd71a6@changeid> <ZG4TW--j-DdSsUO6@alley>
+In-Reply-To: <ZG4TW--j-DdSsUO6@alley>
+From: Doug Anderson <dianders@chromium.org>
+Date: Thu, 25 May 2023 16:33:08 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=Vu4BSec-kDxf8oS+DDcb+3W6RS-Z-Ouu-+sRnk2zhSrQ@mail.gmail.com>
+Message-ID: <CAD=FV=Vu4BSec-kDxf8oS+DDcb+3W6RS-Z-Ouu-+sRnk2zhSrQ@mail.gmail.com>
+Subject: Re: [PATCH v5 12/18] watchdog/hardlockup: Rename some "NMI watchdog" constants/function
+To: Petr Mladek <pmladek@suse.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,101 +83,116 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alison.schofield@intel.com, dave.jiang@intel.com, ira.weiny@intel.com, Terry Bowman <terry.bowman@amd.com>, linux-pci@vger.kernel.org, Jonathan.Cameron@huawei.com, linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org, bwidawsk@kernel.org, Oliver O'Halloran <oohall@gmail.com>, vishal.l.verma@intel.com, bhelgaas@google.com, dan.j.williams@intel.com, linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>, Ian Rogers <irogers@google.com>, ito-yuichi@fujitsu.com, Lecopzer Chen <lecopzer.chen@mediatek.com>, kgdb-bugreport@lists.sourceforge.net, ricardo.neri@intel.com, Stephane Eranian <eranian@google.com>, sparclinux@vger.kernel.org, Guenter Roeck <groeck@chromium.org>, Will Deacon <will@kernel.org>, Daniel Thompson <daniel.thompson@linaro.org>, Andi Kleen <ak@linux.intel.com>, Marc Zyngier <maz@kernel.org>, Chen-Yu Tsai <wens@csie.org>, Matthias Kaehlcke <mka@chromium.org>, Catalin Marinas <catalin.marinas@arm.com>, Masayoshi Mizuma <msys.mizuma@gmail.com>, ravi.v.shankar@intel.com, Tzung-Bi Shih <tzungbi@chromium.org>, npiggin@gmail.com, Stephen Boyd <swboyd@chromium.org>, Pingfan Liu <kernelfans@gmail.com>, linux-arm-kernel@lists.infradead.org, Sumit Garg <sumit.garg@linaro.org>, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozl
+ abs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 25.05.23 17:01:01, Bjorn Helgaas wrote:
-> On Thu, May 25, 2023 at 11:29:58PM +0200, Robert Richter wrote:
-> > eOn 24.05.23 16:32:35, Bjorn Helgaas wrote:
-> > > On Tue, May 23, 2023 at 06:22:13PM -0500, Terry Bowman wrote:
-> > > > From: Robert Richter <rrichter@amd.com>
-> > > > 
-> > > > In Restricted CXL Device (RCD) mode a CXL device is exposed as an
-> > > > RCiEP, but CXL downstream and upstream ports are not enumerated and
-> > > > not visible in the PCIe hierarchy. Protocol and link errors are sent
-> > > > to an RCEC.
-> > > >
-> > > > Restricted CXL host (RCH) downstream port-detected errors are signaled
-> > > > as internal AER errors, either Uncorrectable Internal Error (UIE) or
-> > > > Corrected Internal Errors (CIE). 
-> > > 
-> > > From the parallelism with RCD above, I first thought that RCH devices
-> > > were non-RCD mode and *were* enumerated as part of the PCIe hierarchy,
-> > > but actually I suspect it's more like the following?
-> > > 
-> > >   ... but CXL downstream and upstream ports are not enumerated and not
-> > >   visible in the PCIe hierarchy.
-> > > 
-> > >   Protocol and link errors from these non-enumerated ports are
-> > >   signaled as internal AER errors ... via a CXL RCEC.
-> > 
-> > Exactly, except the RCEC is standard PCIe and also must not
-> > necessarily on the same PCI bus as the CXL RCiEPs are.
-> 
-> So make it "RCEC" instead of "CXL RCEC", I guess?  PCIe r6.0, sec
-> 7.9.10.3, allows an RCEC to be associated with RCiEPs on different
-> buses, so nothing to see there.
+Hi,
 
-Yes, nothing special. This makes it more difficult to check if the
-RCEC has CXL devices connected, but still it is feasible.
-
-> 
-> > > > The error source is the id of the RCEC.
-> > > 
-> > > This seems odd; I assume this refers to the RCEC's AER Error Source
-> > > Identification register, and the ERR_COR or ERR_FATAL/NONFATAL Source
-> > > Identification would ordinarily be the Requester ID of the RCiEP that
-> > > "sent" the Error Message.  But you're saying it's actually the ID of
-> > > the *RCEC*, not the RCiEP?
-> > 
-> > Right, the downstream port has its own AER ext capability in
-> > non-config (io mapped) RCRB register range. Errors originating from
-> > there are signaled as internal AER errors via the RCEC *with* the
-> > RCEC's Requester ID. Code walks through all associated CXL endpoints,
-> > determines the dport and checks its AER.
-> > 
-> > There is also an RDPAS structure defined in CXL but that is only a
-> > different way to provide the RCEC to dport association instead of
-> > using the RCEC's Endpoint Association Extended Capability. In the end
-> > we get all associated RCHs and check the AER of all their dports.
-> > 
-> > The upstream port is signaled using the RCiEP's AER. CXL spec is
-> > strict here: "Upstream Port RCRB shall not implement the AER Extended
-> > Capability." The RCiEP's requestor ID is used then and its config
-> > space the AER is in.
-> > 
-> > CXL.cachemem errors are reported with the RCiEP as requester
-> > too. Status is in the CXL RAS cap and the UIE or CIE is set
-> > respectively in the AER status of the RCiEP.
+On Wed, May 24, 2023 at 6:38=E2=80=AFAM Petr Mladek <pmladek@suse.com> wrot=
+e:
+>
+> On Fri 2023-05-19 10:18:36, Douglas Anderson wrote:
+> > Do a search and replace of:
+> > - NMI_WATCHDOG_ENABLED =3D> WATCHDOG_HARDLOCKUP_ENABLED
+> > - SOFT_WATCHDOG_ENABLED =3D> WATCHDOG_SOFTOCKUP_ENABLED
+> > - watchdog_nmi_ =3D> watchdog_hardlockup_
+> > - nmi_watchdog_available =3D> watchdog_hardlockup_available
+> > - nmi_watchdog_user_enabled =3D> watchdog_hardlockup_user_enabled
+> > - soft_watchdog_user_enabled =3D> watchdog_softlockup_user_enabled
+> > - NMI_WATCHDOG_DEFAULT =3D> WATCHDOG_HARDLOCKUP_DEFAULT
 > >
-> > > We're going to call pci_aer_handle_error() as well, to handle the
-> > > non-internal errors, and I'm pretty sure that path expects the RCiEP
-> > > ID there.
-> > > 
-> > > Whatever the answer, I'm not sure this sentence is actually relevant
-> > > to this patch, since this patch doesn't read PCI_ERR_ROOT_ERR_SRC or
-> > > look at struct aer_err_source.id.
-> > 
-> > The source id is used in aer_process_err_devices() which finally calls
-> > handle_error_source() for the device with the requestor id. This is
-> > the place where cxl_rch_handle_error() checks if it is an RCEC that
-> > received an internal error and has cxl devices connected to it. Then,
-> > the request is forwarded to the cxl_mem handler which also needs to
-> > check the dport now. That is, pcie_walk_rcec() in
-> > cxl_rch_handle_error() is called with the RCEC's pci handle,
-> > cxl_rch_handle_error_iter() with the RCiEP's pci handle.
-> 
-> I'm still not sure this is relevant.  Isn't that last sentence just
-> the way we always use pcie_walk_rcec()?
-> 
-> If there's something *different* here about CXL, and it's important to
-> this patch, sure.  But I don't see that yet.  Maybe a comment in the
-> code if you think it's important to clarify something there.
+> > Then update a few comments near where names were changed.
+> >
+> > This is specifically to make it less confusing when we want to
+> > introduce the buddy hardlockup detector, which isn't using NMIs. As
+> > part of this, we sanitized a few names for consistency.
+> >
+> > --- a/kernel/watchdog.c
+> > +++ b/kernel/watchdog.c
+> > @@ -30,17 +30,17 @@
+> >  static DEFINE_MUTEX(watchdog_mutex);
+> >
+> >  #if defined(CONFIG_HARDLOCKUP_DETECTOR) || defined(CONFIG_HAVE_NMI_WAT=
+CHDOG)
+> > -# define NMI_WATCHDOG_DEFAULT        1
+> > +# define WATCHDOG_HARDLOCKUP_DEFAULT 1
+> >  #else
+> > -# define NMI_WATCHDOG_DEFAULT        0
+> > +# define WATCHDOG_HARDLOCKUP_DEFAULT 0
+> >  #endif
+> >
+> >  unsigned long __read_mostly watchdog_enabled;
+> >  int __read_mostly watchdog_user_enabled =3D 1;
+> > -int __read_mostly nmi_watchdog_user_enabled =3D NMI_WATCHDOG_DEFAULT;
+> > -int __read_mostly soft_watchdog_user_enabled =3D 1;
+> > +int __read_mostly watchdog_hardlockup_user_enabled =3D WATCHDOG_HARDLO=
+CKUP_DEFAULT;
+> > +int __read_mostly watchdog_softlockup_user_enabled =3D 1;
+>
+> I still see nmi_watchdog_user_enabled and soft_watchdog_user_enabled
+> in include/linux/nmi.h. They are declared there and also mentioned
+> in a comment.
+>
+> It seems that they do not actually need to be declared there.
+> I guess that it was need for the /proc stuff. But it was
+> moved into kernel/watchdog.c by the commit commit dd0693fdf054f2ed37
+> ("watchdog: move watchdog sysctl interface to watchdog.c").
+>
+> >  int __read_mostly watchdog_thresh =3D 10;
+> > -static int __read_mostly nmi_watchdog_available;
+> > +static int __read_mostly watchdog_hardlockup_available;
+> >
+> >  struct cpumask watchdog_cpumask __read_mostly;
+> >  unsigned long *watchdog_cpumask_bits =3D cpumask_bits(&watchdog_cpumas=
+k);
+>
+> Otherwise, I like the changes.
+>
+> With the following:
+>
+> diff --git a/include/linux/nmi.h b/include/linux/nmi.h
+> index 83076bf70ce8..d14fe345eae9 100644
+> --- a/include/linux/nmi.h
+> +++ b/include/linux/nmi.h
+> @@ -17,8 +17,6 @@ void lockup_detector_soft_poweroff(void);
+>  void lockup_detector_cleanup(void);
+>
+>  extern int watchdog_user_enabled;
+> -extern int nmi_watchdog_user_enabled;
+> -extern int soft_watchdog_user_enabled;
+>  extern int watchdog_thresh;
+>  extern unsigned long watchdog_enabled;
+>
+> @@ -68,8 +66,8 @@ static inline void reset_hung_task_detector(void) { }
+>   * 'watchdog_enabled' variable. Each lockup detector has its dedicated b=
+it -
+>   * bit 0 for the hard lockup detector and bit 1 for the soft lockup dete=
+ctor.
+>   *
+> - * 'watchdog_user_enabled', 'nmi_watchdog_user_enabled' and
+> - * 'soft_watchdog_user_enabled' are variables that are only used as an
+> + * 'watchdog_user_enabled', 'watchdog_hardlockup_user_enabled' and
+> + * 'watchdog_softlockup_user_enabled' are variables that are only used a=
+s an
+>   * 'interface' between the parameters in /proc/sys/kernel and the intern=
+al
+>   * state bits in 'watchdog_enabled'. The 'watchdog_thresh' variable is
+>   * handled differently because its value is not boolean, and the lockup
+>
+> Reviewed-by: Petr Mladek <pmladek@suse.com>
+>
+> Even better might be to remove the unused declaration in a separate
+> patch. I think that more declarations are not needed after moving
+> the /proc stuff into kernel/watchdog.c.
+>
+> But it might also be fixed later.
 
-The importance I see is that internal errors of an RCEC indicate an
-AER error in an RCH's downstream port. Thus, once that happens, all
-involved dports must be checked. Internal errors are typically
-non-standard and implementation defined, but here it is CXL standard.
+Breadcrumbs: I squashed your suggestion together with Tom's patch and
+posted the result:
 
--Robert
+https://lore.kernel.org/r/20230525162822.1.I0fb41d138d158c9230573eaa37dc56a=
+fa2fb14ee@changeid
+
+-Doug
