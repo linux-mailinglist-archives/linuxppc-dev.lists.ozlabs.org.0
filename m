@@ -2,49 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC31E710F0F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 May 2023 17:05:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A6277110F3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 May 2023 18:27:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QRrwL6Bbtz3fGq
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 May 2023 01:05:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QRtkz3bj6z3bTf
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 May 2023 02:27:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=IP2WmgdY;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=C4s+hdIy;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QRrvS4fSQz3f6n
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 May 2023 01:05:08 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2001:67c:2178:6::1c; helo=smtp-out1.suse.de; envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=IP2WmgdY;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=C4s+hdIy;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QRrvS1jJGz4x1f;
-	Fri, 26 May 2023 01:05:08 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1685027108;
-	bh=Yugt0W+VFVSDPC+o3CYwVw2DfSd+n8rBxVNHF+lq1eo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=IP2WmgdYEsJaxOGjd+WY/2m+kiF+VFtHHyYl785Ogv6pG3rfItfGyJItf7DCS5Vb7
-	 l1ajWzTBnts1zCoZHxMm3cvghBe38tA2o0+YWUTTRr6/RWTUiP8Av1rB2sbYi1H6j2
-	 N4uibh71gjEH21QQ2BzWSsRSTR8cVq7hd+r0pZn+eqIAh1J3Bvf2ylyUPJpMomjwhH
-	 SVke2q6llN0A327y0XjVe3BYQ1uRrWVCK8zY5zmoUXppjcer54It6q98itOPZOI+C2
-	 mW635uH2aEs0dMzmSAy05KL3o+ZW7nBW+RYrGXy37/H5O3JQgc8oiFJJ+c4yXK1XyI
-	 RePJ30bbxBqyA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH] powerpc/crypto: Fix aes-gcm-p10 link errors
-Date: Fri, 26 May 2023 01:05:01 +1000
-Message-Id: <20230525150501.37081-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.40.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QRtk60Vtkz3f8l
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 May 2023 02:27:08 +1000 (AEST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out1.suse.de (Postfix) with ESMTP id 34E5221C65;
+	Thu, 25 May 2023 16:26:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1685032018; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qBSf8dQvqenvM4XuaXqBfFlxjVrL5fPe+CB4lmnXjuk=;
+	b=C4s+hdIyCnXmGRzN2XmAwfRTIB+9xRT+DvPlRO3vRcui7FbrbO1JQDWFx0rfTnZPSjX5i1
+	rRTvdTF0fGM/eRmPRJQYStRfQXRzvjlNo/ZL8IUHR6kuT7x8QzWCoJZmsiqU3ukACJ1fan
+	DauIAYjaJf8QRWaSlI7nNnrfcF7cPGY=
+Received: from suse.cz (unknown [10.100.201.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by relay2.suse.de (Postfix) with ESMTPS id A2C412C141;
+	Thu, 25 May 2023 16:26:55 +0000 (UTC)
+Date: Thu, 25 May 2023 18:26:52 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: Douglas Anderson <dianders@chromium.org>
+Subject: Re: [PATCH v5 14/18] watchdog/hardlockup: detect hard lockups using
+ secondary (buddy) CPUs
+Message-ID: <ZG-MTPSZakRDl2CP@alley>
+References: <20230519101840.v5.18.Ia44852044cdcb074f387e80df6b45e892965d4a1@changeid>
+ <20230519101840.v5.14.I6bf789d21d0c3d75d382e7e51a804a7a51315f2c@changeid>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230519101840.v5.14.I6bf789d21d0c3d75d382e7e51a804a7a51315f2c@changeid>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,213 +61,295 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dtsen@linux.ibm.com
+Cc: Mark Rutland <mark.rutland@arm.com>, Ian Rogers <irogers@google.com>, ito-yuichi@fujitsu.com, Lecopzer Chen <lecopzer.chen@mediatek.com>, kgdb-bugreport@lists.sourceforge.net, ricardo.neri@intel.com, Stephane Eranian <eranian@google.com>, sparclinux@vger.kernel.org, Guenter Roeck <groeck@chromium.org>, Will Deacon <will@kernel.org>, Daniel Thompson <daniel.thompson@linaro.org>, Andi Kleen <ak@linux.intel.com>, Marc Zyngier <maz@kernel.org>, Chen-Yu Tsai <wens@csie.org>, Matthias Kaehlcke <mka@chromium.org>, Catalin Marinas <catalin.marinas@arm.com>, Masayoshi Mizuma <msys.mizuma@gmail.com>, ravi.v.shankar@intel.com, Tzung-Bi Shih <tzungbi@chromium.org>, Colin Cross <ccross@android.com>, npiggin@gmail.com, Stephen Boyd <swboyd@chromium.org>, Pingfan Liu <kernelfans@gmail.com>, linux-arm-kernel@lists.infradead.org, Sumit Garg <sumit.garg@linaro.org>, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, Andrew Morton <akpm@linux-found
+ ation.org>, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The recently added P10 AES/GCM code added some files containing
-CRYPTOGAMS perl-asm code which are near duplicates of the p8 files
-found in drivers/crypto/vmx.
+On Fri 2023-05-19 10:18:38, Douglas Anderson wrote:
+> Implement a hardlockup detector that doesn't doesn't need any extra
+> arch-specific support code to detect lockups. Instead of using
+> something arch-specific we will use the buddy system, where each CPU
+> watches out for another one. Specifically, each CPU will use its
+> softlockup hrtimer to check that the next CPU is processing hrtimer
+> interrupts by verifying that a counter is increasing.
+> 
+> --- a/kernel/watchdog.c
+> +++ b/kernel/watchdog.c
+> @@ -85,7 +85,7 @@ __setup("nmi_watchdog=", hardlockup_panic_setup);
+>  
+>  #endif /* CONFIG_HARDLOCKUP_DETECTOR */
+>  
+> -#if defined(CONFIG_HARDLOCKUP_DETECTOR_PERF)
+> +#if defined(CONFIG_HARDLOCKUP_DETECTOR_COUNTS_HRTIMER)
+>  
+>  static DEFINE_PER_CPU(atomic_t, hrtimer_interrupts);
+>  static DEFINE_PER_CPU(int, hrtimer_interrupts_saved);
+> @@ -106,6 +106,14 @@ notrace void arch_touch_nmi_watchdog(void)
+>  }
+>  EXPORT_SYMBOL(arch_touch_nmi_watchdog);
+>  
+> +void watchdog_hardlockup_touch_cpu(unsigned int cpu)
+> +{
+> +	per_cpu(watchdog_hardlockup_touched, cpu) = true;
+> +
+> +	/* Match with smp_rmb() in watchdog_hardlockup_check() */
+> +	smp_wmb();
 
-In particular the newly added files produce functions with identical
-names to the existing code.
+It is great that you described where the related barrier is.
 
-When the kernel is built with CONFIG_CRYPTO_AES_GCM_P10=y and
-CONFIG_CRYPTO_DEV_VMX_ENCRYPT=y that leads to link errors, eg:
+Another important information is what exactly is synchronized.
+And I am actually not sure what we are synchronizing here.
 
-  ld: drivers/crypto/vmx/aesp8-ppc.o: in function `aes_p8_set_encrypt_key':
-  (.text+0xa0): multiple definition of `aes_p8_set_encrypt_key'; arch/powerpc/crypto/aesp8-ppc.o:(.text+0xa0): first defined here
-  ...
-  ld: drivers/crypto/vmx/ghashp8-ppc.o: in function `gcm_ghash_p8':
-  (.text+0x140): multiple definition of `gcm_ghash_p8'; arch/powerpc/crypto/ghashp8-ppc.o:(.text+0x2e4): first defined here
+My understanding is that a write barrier should synchronize
+related writes, for example:
 
-Fix it for now by renaming the newly added files and functions to use
-"p10" instead of "p8" in the names.
+	X = ...;
+	/* Make sure that X is modified before Y */
+	smp_wmb();
+	Y = ...;
 
-Fixes: 45a4672b9a6e ("crypto: p10-aes-gcm - Update Kconfig and Makefile")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/crypto/Makefile                   | 10 +++++-----
- arch/powerpc/crypto/aes-gcm-p10-glue.c         | 18 +++++++++---------
- .../crypto/{aesp8-ppc.pl => aesp10-ppc.pl}     |  2 +-
- .../crypto/{ghashp8-ppc.pl => ghashp10-ppc.pl} | 12 ++++++------
- 4 files changed, 21 insertions(+), 21 deletions(-)
- rename arch/powerpc/crypto/{aesp8-ppc.pl => aesp10-ppc.pl} (99%)
- rename arch/powerpc/crypto/{ghashp8-ppc.pl => ghashp10-ppc.pl} (97%)
+And the related read barrier should synchronize the related reads,
+for example:
 
-diff --git a/arch/powerpc/crypto/Makefile b/arch/powerpc/crypto/Makefile
-index 05c7486f42c5..7b4f516abec1 100644
---- a/arch/powerpc/crypto/Makefile
-+++ b/arch/powerpc/crypto/Makefile
-@@ -22,15 +22,15 @@ sha1-ppc-spe-y := sha1-spe-asm.o sha1-spe-glue.o
- sha256-ppc-spe-y := sha256-spe-asm.o sha256-spe-glue.o
- crc32c-vpmsum-y := crc32c-vpmsum_asm.o crc32c-vpmsum_glue.o
- crct10dif-vpmsum-y := crct10dif-vpmsum_asm.o crct10dif-vpmsum_glue.o
--aes-gcm-p10-crypto-y := aes-gcm-p10-glue.o aes-gcm-p10.o ghashp8-ppc.o aesp8-ppc.o
-+aes-gcm-p10-crypto-y := aes-gcm-p10-glue.o aes-gcm-p10.o ghashp10-ppc.o aesp10-ppc.o
- 
- quiet_cmd_perl = PERL    $@
-       cmd_perl = $(PERL) $< $(if $(CONFIG_CPU_LITTLE_ENDIAN), linux-ppc64le, linux-ppc64) > $@
- 
--targets += aesp8-ppc.S ghashp8-ppc.S
-+targets += aesp10-ppc.S ghashp10-ppc.S
- 
--$(obj)/aesp8-ppc.S $(obj)/ghashp8-ppc.S: $(obj)/%.S: $(src)/%.pl FORCE
-+$(obj)/aesp10-ppc.S $(obj)/ghashp10-ppc.S: $(obj)/%.S: $(src)/%.pl FORCE
- 	$(call if_changed,perl)
- 
--OBJECT_FILES_NON_STANDARD_aesp8-ppc.o := y
--OBJECT_FILES_NON_STANDARD_ghashp8-ppc.o := y
-+OBJECT_FILES_NON_STANDARD_aesp10-ppc.o := y
-+OBJECT_FILES_NON_STANDARD_ghashp10-ppc.o := y
-diff --git a/arch/powerpc/crypto/aes-gcm-p10-glue.c b/arch/powerpc/crypto/aes-gcm-p10-glue.c
-index bd3475f5348d..4b6e899895e7 100644
---- a/arch/powerpc/crypto/aes-gcm-p10-glue.c
-+++ b/arch/powerpc/crypto/aes-gcm-p10-glue.c
-@@ -30,15 +30,15 @@ MODULE_AUTHOR("Danny Tsen <dtsen@linux.ibm.com");
- MODULE_LICENSE("GPL v2");
- MODULE_ALIAS_CRYPTO("aes");
- 
--asmlinkage int aes_p8_set_encrypt_key(const u8 *userKey, const int bits,
-+asmlinkage int aes_p10_set_encrypt_key(const u8 *userKey, const int bits,
- 				      void *key);
--asmlinkage void aes_p8_encrypt(const u8 *in, u8 *out, const void *key);
-+asmlinkage void aes_p10_encrypt(const u8 *in, u8 *out, const void *key);
- asmlinkage void aes_p10_gcm_encrypt(u8 *in, u8 *out, size_t len,
- 				    void *rkey, u8 *iv, void *Xi);
- asmlinkage void aes_p10_gcm_decrypt(u8 *in, u8 *out, size_t len,
- 				    void *rkey, u8 *iv, void *Xi);
- asmlinkage void gcm_init_htable(unsigned char htable[256], unsigned char Xi[16]);
--asmlinkage void gcm_ghash_p8(unsigned char *Xi, unsigned char *Htable,
-+asmlinkage void gcm_ghash_p10(unsigned char *Xi, unsigned char *Htable,
- 		unsigned char *aad, unsigned int alen);
- 
- struct aes_key {
-@@ -93,7 +93,7 @@ static void set_aad(struct gcm_ctx *gctx, struct Hash_ctx *hash,
- 	gctx->aadLen = alen;
- 	i = alen & ~0xf;
- 	if (i) {
--		gcm_ghash_p8(nXi, hash->Htable+32, aad, i);
-+		gcm_ghash_p10(nXi, hash->Htable+32, aad, i);
- 		aad += i;
- 		alen -= i;
- 	}
-@@ -102,7 +102,7 @@ static void set_aad(struct gcm_ctx *gctx, struct Hash_ctx *hash,
- 			nXi[i] ^= aad[i];
- 
- 		memset(gctx->aad_hash, 0, 16);
--		gcm_ghash_p8(gctx->aad_hash, hash->Htable+32, nXi, 16);
-+		gcm_ghash_p10(gctx->aad_hash, hash->Htable+32, nXi, 16);
- 	} else {
- 		memcpy(gctx->aad_hash, nXi, 16);
- 	}
-@@ -115,7 +115,7 @@ static void gcmp10_init(struct gcm_ctx *gctx, u8 *iv, unsigned char *rdkey,
- {
- 	__be32 counter = cpu_to_be32(1);
- 
--	aes_p8_encrypt(hash->H, hash->H, rdkey);
-+	aes_p10_encrypt(hash->H, hash->H, rdkey);
- 	set_subkey(hash->H);
- 	gcm_init_htable(hash->Htable+32, hash->H);
- 
-@@ -126,7 +126,7 @@ static void gcmp10_init(struct gcm_ctx *gctx, u8 *iv, unsigned char *rdkey,
- 	/*
- 	 * Encrypt counter vector as iv tag and increment counter.
- 	 */
--	aes_p8_encrypt(iv, gctx->ivtag, rdkey);
-+	aes_p10_encrypt(iv, gctx->ivtag, rdkey);
- 
- 	counter = cpu_to_be32(2);
- 	*((__be32 *)(iv+12)) = counter;
-@@ -160,7 +160,7 @@ static void finish_tag(struct gcm_ctx *gctx, struct Hash_ctx *hash, int len)
- 	/*
- 	 * hash (AAD len and len)
- 	 */
--	gcm_ghash_p8(hash->Htable, hash->Htable+32, aclen, 16);
-+	gcm_ghash_p10(hash->Htable, hash->Htable+32, aclen, 16);
- 
- 	for (i = 0; i < 16; i++)
- 		hash->Htable[i] ^= gctx->ivtag[i];
-@@ -192,7 +192,7 @@ static int p10_aes_gcm_setkey(struct crypto_aead *aead, const u8 *key,
- 	int ret;
- 
- 	vsx_begin();
--	ret = aes_p8_set_encrypt_key(key, keylen * 8, &ctx->enc_key);
-+	ret = aes_p10_set_encrypt_key(key, keylen * 8, &ctx->enc_key);
- 	vsx_end();
- 
- 	return ret ? -EINVAL : 0;
-diff --git a/arch/powerpc/crypto/aesp8-ppc.pl b/arch/powerpc/crypto/aesp10-ppc.pl
-similarity index 99%
-rename from arch/powerpc/crypto/aesp8-ppc.pl
-rename to arch/powerpc/crypto/aesp10-ppc.pl
-index 1f22aec27d79..2c06ce2a2c7c 100644
---- a/arch/powerpc/crypto/aesp8-ppc.pl
-+++ b/arch/powerpc/crypto/aesp10-ppc.pl
-@@ -110,7 +110,7 @@ die "can't locate ppc-xlate.pl";
- open STDOUT,"| $^X $xlate $flavour ".shift || die "can't call $xlate: $!";
- 
- $FRAME=8*$SIZE_T;
--$prefix="aes_p8";
-+$prefix="aes_p10";
- 
- $sp="r1";
- $vrsave="r12";
-diff --git a/arch/powerpc/crypto/ghashp8-ppc.pl b/arch/powerpc/crypto/ghashp10-ppc.pl
-similarity index 97%
-rename from arch/powerpc/crypto/ghashp8-ppc.pl
-rename to arch/powerpc/crypto/ghashp10-ppc.pl
-index b56603b4a893..27a6b0bec645 100644
---- a/arch/powerpc/crypto/ghashp8-ppc.pl
-+++ b/arch/powerpc/crypto/ghashp10-ppc.pl
-@@ -64,7 +64,7 @@ $code=<<___;
- 
- .text
- 
--.globl	.gcm_init_p8
-+.globl	.gcm_init_p10
- 	lis		r0,0xfff0
- 	li		r8,0x10
- 	mfspr		$vrsave,256
-@@ -110,7 +110,7 @@ $code=<<___;
- 	.long		0
- 	.byte		0,12,0x14,0,0,0,2,0
- 	.long		0
--.size	.gcm_init_p8,.-.gcm_init_p8
-+.size	.gcm_init_p10,.-.gcm_init_p10
- 
- .globl	.gcm_init_htable
- 	lis		r0,0xfff0
-@@ -237,7 +237,7 @@ $code=<<___;
- 	.long		0
- .size	.gcm_init_htable,.-.gcm_init_htable
- 
--.globl	.gcm_gmult_p8
-+.globl	.gcm_gmult_p10
- 	lis		r0,0xfff8
- 	li		r8,0x10
- 	mfspr		$vrsave,256
-@@ -283,9 +283,9 @@ $code=<<___;
- 	.long		0
- 	.byte		0,12,0x14,0,0,0,2,0
- 	.long		0
--.size	.gcm_gmult_p8,.-.gcm_gmult_p8
-+.size	.gcm_gmult_p10,.-.gcm_gmult_p10
- 
--.globl	.gcm_ghash_p8
-+.globl	.gcm_ghash_p10
- 	lis		r0,0xfff8
- 	li		r8,0x10
- 	mfspr		$vrsave,256
-@@ -350,7 +350,7 @@ Loop:
- 	.long		0
- 	.byte		0,12,0x14,0,0,0,4,0
- 	.long		0
--.size	.gcm_ghash_p8,.-.gcm_ghash_p8
-+.size	.gcm_ghash_p10,.-.gcm_ghash_p10
- 
- .asciz  "GHASH for PowerISA 2.07, CRYPTOGAMS by <appro\@openssl.org>"
- .align  2
--- 
-2.40.1
+	if (test(Y)) {
+		/*
+		 * Make sure that we use the updated X when
+		 * we saw the updated Y.
+		 */
+		 smp_rmb();
+		 do_something(X);
+	 }
 
+IMHO, we do not need any barrier here because we have only
+one variable "watchdog_hardlockup_touched" here.
+watchdog_hardlockup_check() will either see the updated value
+or not. But it does not synchronize it against any other
+variables or values.
+
+> +}
+> +
+>  static bool is_hardlockup(unsigned int cpu)
+>  {
+>  	int hrint = atomic_read(&per_cpu(hrtimer_interrupts, cpu));
+> @@ -443,11 +454,15 @@ static enum hrtimer_restart watchdog_timer_fn(struct hrtimer *hrtimer)
+>  	struct pt_regs *regs = get_irq_regs();
+>  	int duration;
+>  	int softlockup_all_cpu_backtrace = sysctl_softlockup_all_cpu_backtrace;
+> +	unsigned long hrtimer_interrupts;
+>  
+>  	if (!watchdog_enabled)
+>  		return HRTIMER_NORESTART;
+>  
+> -	watchdog_hardlockup_kick();
+> +	hrtimer_interrupts = watchdog_hardlockup_kick();
+> +
+> +	/* test for hardlockups */
+
+I would omit the comment. It is not valid when perf detector is used.
+And checking the buddy is clear from the function name.
+
+> +	watchdog_buddy_check_hardlockup(hrtimer_interrupts);
+
+I would personally move this into watchdog_hardlockup_kick().
+watchdog_timer_fn() is already complex enough. And checking
+the buddy when kicking a CPU makes sense.
+
+Also I would not pass "hrtimer_interrupts". I guess that it is
+just an optimization. It is an extra churn in the code. IMHO,
+is is not wort it. This code does not need to be super optimized.
+
+> +
+
+>  
+>  	/* kick the softlockup detector */
+>  	if (completion_done(this_cpu_ptr(&softlockup_completion))) {
+> diff --git a/kernel/watchdog_buddy.c b/kernel/watchdog_buddy.c
+> new file mode 100644
+> index 000000000000..fee45af2e5bd
+> --- /dev/null
+> +++ b/kernel/watchdog_buddy.c
+> @@ -0,0 +1,93 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/cpu.h>
+> +#include <linux/cpumask.h>
+> +#include <linux/kernel.h>
+> +#include <linux/nmi.h>
+> +#include <linux/percpu-defs.h>
+> +
+> +static cpumask_t __read_mostly watchdog_cpus;
+> +
+> +static unsigned int watchdog_next_cpu(unsigned int cpu)
+> +{
+> +	cpumask_t cpus = watchdog_cpus;
+
+A copy should be done by cpumask_copy().
+
+But the question is why a copy would be needed. When called from
+watchdog_buddy_check_hardlockup(), this function is not sychronized
+against the CPU hotplug. And even the copying would be racy.
+
+IMHO, the copy does not help much and we do not need it.
+
+The only important this is that this function would return
+a valid CPU. And I think that it is guarantted because
+CPU0 could not be disabled.
+
+> +	unsigned int next_cpu;
+> +
+> +	next_cpu = cpumask_next(cpu, &cpus);
+> +	if (next_cpu >= nr_cpu_ids)
+> +		next_cpu = cpumask_first(&cpus);
+> +
+> +	if (next_cpu == cpu)
+> +		return nr_cpu_ids;
+>> +	return next_cpu;
+> +}
+> +
+> +int __init watchdog_hardlockup_probe(void)
+> +{
+> +	return 0;
+> +}
+> +
+> +void watchdog_hardlockup_enable(unsigned int cpu)
+> +{
+> +	unsigned int next_cpu;
+> +
+> +	/*
+> +	 * The new CPU will be marked online before the hrtimer interrupt
+> +	 * gets a chance to run on it. If another CPU tests for a
+> +	 * hardlockup on the new CPU before it has run its the hrtimer
+> +	 * interrupt, it will get a false positive. Touch the watchdog on
+> +	 * the new CPU to delay the check for at least 3 sampling periods
+> +	 * to guarantee one hrtimer has run on the new CPU.
+> +	 */
+> +	watchdog_hardlockup_touch_cpu(cpu);
+> +
+> +	/*
+> +	 * We are going to check the next CPU. Our watchdog_hrtimer
+> +	 * need not be zero if the CPU has already been online earlier.
+> +	 * Touch the watchdog on the next CPU to avoid false positive
+> +	 * if we try to check it in less then 3 interrupts.
+> +	 */
+> +	next_cpu = watchdog_next_cpu(cpu);
+> +	if (next_cpu < nr_cpu_ids)
+> +		watchdog_hardlockup_touch_cpu(next_cpu);
+
+Thinking loudly:
+
+This feels racy when many CPUs are enabled/disabled in parallel.
+I am not 100% sure it it can happen though.
+
+My understanding is that it can't happen because the CPU hotplug
+is serialized by cpu_add_remove_lock.
+
+So, this seems to work after all.
+
+> +
+> +	cpumask_set_cpu(cpu, &watchdog_cpus);
+> +}
+> +
+> --- a/lib/Kconfig.debug
+> +++ b/lib/Kconfig.debug
+> @@ -1035,10 +1035,55 @@ config BOOTPARAM_SOFTLOCKUP_PANIC
+>  
+>  	  Say N if unsure.
+>  
+> -config HARDLOCKUP_DETECTOR_PERF
+> +# Both the "perf" and "buddy" hardlockup detectors count hrtimer
+> +# interrupts. This config enables functions managing this common code.
+> +config HARDLOCKUP_DETECTOR_COUNTS_HRTIMER
+>  	bool
+>  	select SOFTLOCKUP_DETECTOR
+>  
+> +config HARDLOCKUP_DETECTOR_PERF
+> +	bool
+> +	depends on HAVE_HARDLOCKUP_DETECTOR_PERF
+> +	select HARDLOCKUP_DETECTOR_COUNTS_HRTIMER
+> +
+> +config HARDLOCKUP_DETECTOR_BUDDY
+> +	bool
+> +	depends on SMP
+> +	select HARDLOCKUP_DETECTOR_COUNTS_HRTIMER
+> +
+> +# For hardlockup detectors you can have one directly provided by the arch
+> +# or use a "non-arch" one. If you're using a "non-arch" one that is
+> +# further divided the perf hardlockup detector (which, confusingly, needs
+> +# arch-provided perf support) and the buddy hardlockup detector (which just
+> +# needs SMP). In either case, using the "non-arch" code conflicts with
+> +# the NMI watchdog code (which is sometimes used directly and sometimes used
+> +# by the arch-provided hardlockup detector).
+> +config HAVE_HARDLOCKUP_DETECTOR_NON_ARCH
+> +	bool
+> +	depends on (HAVE_HARDLOCKUP_DETECTOR_PERF || SMP) && !HAVE_NMI_WATCHDOG
+> +	default y
+> +
+> +config HARDLOCKUP_DETECTOR_PREFER_BUDDY
+> +	bool "Prefer the buddy CPU hardlockup detector"
+> +	depends on HAVE_HARDLOCKUP_DETECTOR_NON_ARCH && HAVE_HARDLOCKUP_DETECTOR_PERF && SMP
+
+Huh, I have big troubles to scratch my head around this check:
+
+       HAVE_HARDLOCKUP_DETECTOR_NON_ARCH depends on HAVE_HARDLOCKUP_DETECTOR_PERF and SMP
+
+       and this depends on HAVE_HARDLOCKUP_DETECTOR_NON_ARCH and again
+	       on HAVE_HARDLOCKUP_DETECTOR_PERF and SMP.
+
+> +	help
+> +	  Say Y here to prefer the buddy hardlockup detector over the perf one.
+> +
+> +	  With the buddy detector, each CPU uses its softlockup hrtimer
+> +	  to check that the next CPU is processing hrtimer interrupts by
+> +	  verifying that a counter is increasing.
+> +
+> +	  This hardlockup detector is useful on systems that don't have
+> +	  an arch-specific hardlockup detector or if resources needed
+> +	  for the hardlockup detector are better used for other things.
+> +
+> +# This will select the appropriate non-arch hardlockdup detector
+> +config HARDLOCKUP_DETECTOR_NON_ARCH
+> +	bool
+> +	depends on HAVE_HARDLOCKUP_DETECTOR_NON_ARCH
+> +	select HARDLOCKUP_DETECTOR_BUDDY if !HAVE_HARDLOCKUP_DETECTOR_PERF || HARDLOCKUP_DETECTOR_PREFER_BUDDY
+> +	select HARDLOCKUP_DETECTOR_PERF if HAVE_HARDLOCKUP_DETECTOR_PERF && !HARDLOCKUP_DETECTOR_PREFER_BUDDY
+> +
+>  #
+>  # Enables a timestamp based low pass filter to compensate for perf based
+>  # hard lockup detection which runs too fast due to turbo modes.
+> @@ -1053,9 +1098,10 @@ config HARDLOCKUP_CHECK_TIMESTAMP
+>  config HARDLOCKUP_DETECTOR
+>  	bool "Detect Hard Lockups"
+>  	depends on DEBUG_KERNEL && !S390
+
+Is there any reason why S390 could not or do not want to use the buddy
+hardlockup detector.
+
+> -	depends on HAVE_HARDLOCKUP_DETECTOR_PERF || HAVE_HARDLOCKUP_DETECTOR_ARCH
+> +	depends on HAVE_HARDLOCKUP_DETECTOR_NON_ARCH || HAVE_HARDLOCKUP_DETECTOR_ARCH
+>  	select LOCKUP_DETECTOR
+> -	select HARDLOCKUP_DETECTOR_PERF if HAVE_HARDLOCKUP_DETECTOR_PERF
+> +	select HARDLOCKUP_DETECTOR_NON_ARCH if HAVE_HARDLOCKUP_DETECTOR_NON_ARCH
+
+Anyway, the configuration of the hard lockup detectors is insane and
+this patchset makes it even worse, especially the new
+HARDLOCKUP_DETECTOR_NON_ARCH stuff.
+
+It seems that sparc, powerpc and s390 are somehow special. Do you
+still have in mind how they are distinguished using the Kconfig
+variables?
+
+For example, I am pretty confused by the meaning of HAVE_NMI_WATCHDOG.
+
+And sparc has its own variant of
+watchdog_hardlockup_enable()/disable(). It means that it is
+arch-specific. Does it work with the 13th patch which made
+watchdog_hardlockup_enable()/disable() to be watchdog-hardlockup-type
+specific? Is is somehow related to HAVE_NMI_WATCHDOG?
+Does this replace the entire watchdog only only the enable part?
+
+I think that we need to make this more straightforward. But I first
+need to understand the existing maze of config variables.
+
+Best Regards,
+Petr
