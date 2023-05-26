@@ -1,62 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CCF7714F8C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 May 2023 21:10:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 002E27122AE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 May 2023 10:51:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QVQ972ykmz3fK9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 May 2023 05:10:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QSJZK640Fz3fH3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 May 2023 18:51:53 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=n84NiyNj;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=fail (SPF fail - not authorized) smtp.mailfrom=csgroup.eu (client-ip=92.175.17.1; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-X-Greylist: delayed 12006 seconds by postgrey-1.36 at boromir; Tue, 30 May 2023 05:10:25 AEST
-Received: from pegase2.c-s.fr (unknown [92.175.17.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::52f; helo=mail-ed1-x52f.google.com; envelope-from=mingo.kernel.org@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=n84NiyNj;
+	dkim-atps=neutral
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QVQ8d66jHz3bhC
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 May 2023 05:10:20 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4QSDjY4qvyz9skW;
-	Fri, 26 May 2023 07:57:53 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id UX0gB1HwZOeH; Fri, 26 May 2023 07:57:53 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4QSDjY41Bvz9skT;
-	Fri, 26 May 2023 07:57:53 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 72CFA8B780;
-	Fri, 26 May 2023 07:57:53 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id d4Cyt6NbTa6b; Fri, 26 May 2023 07:57:53 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.232.54])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 3B5F88B763;
-	Fri, 26 May 2023 07:57:53 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 34Q5vlQC2409970
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 26 May 2023 07:57:47 +0200
-Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 34Q5vjkP2409965;
-	Fri, 26 May 2023 07:57:45 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
-        kasan-dev@googlegroups.com, Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH] powerpc/kcsan: Properly instrument arch_spin_unlock()
-Date: Fri, 26 May 2023 07:57:33 +0200
-Message-Id: <57834a703dfa5d6c27c9de0a01329059636e5ab7.1685080579.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.40.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QSJYQ71Fwz3c6v
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 May 2023 18:51:04 +1000 (AEST)
+Received: by mail-ed1-x52f.google.com with SMTP id 4fb4d7f45d1cf-51478f6106cso345412a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 May 2023 01:51:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685091056; x=1687683056;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EUvWLoLJ7ecOqnvXeIvpdjcIeOwM/KgQz5/8pA9G8eQ=;
+        b=n84NiyNjWL1xHP6179rB/rjlflDf5X2HBFQ63nbtEgqvmk9lOoFy98AwhuuOGcGLLZ
+         sRC0lvwHR8T9j1pFRXiRzeIW7cJCYhJZUvJaYfEw7/ugrQzqpBIKVjvmZq2KsOAIbteM
+         QSD/sC+dRhzssEexVYJLwthLIZIMQlgKerWfGQIXgVsmMgL+CFd//j+mdPSTMylWg/mN
+         Z5SyA7v208OHyaDuH2s3qmioliEg5QOLjHPFbD154gszPG7OBzh4X0kccRieqw+uf/VF
+         XapyyMNJWhFSON2li3VQjCVZAlLiDtmKktG3bJbh0e+81e1YPcnOB65bU4pYFbDnq+ED
+         FN9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685091056; x=1687683056;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EUvWLoLJ7ecOqnvXeIvpdjcIeOwM/KgQz5/8pA9G8eQ=;
+        b=Ms+1F5qq9njnjToFLcMfD0ezZ76R+7OrapwJ0sU1w/041ijlJdiWdb6ODLDeMdAfj+
+         NoIUBQeThTfU7Ebln5wMsWnAC2m90R2HZcIQCTyl2jGeWGEWg5rqUdCJhI1CGMI5aVMo
+         0WYmk/d3Dr/T9KnmMBm9oK8g6pQ8VaVOrIQ+uYJV/n7c9c+1rmUwYYxpL+X5tupsZkTU
+         PQpRntaqu1xjv9l3/HWCjMAGPVs6m0vTY/RDpYyVRm+TLvHu/eiehZHRBGUiuZlLdjQ2
+         nr7hC1PsMyI8VPHwznnnmEMCKH2qarSSnnlDCfWaV8FsexUnFHTPJPLe+0dxc8nkV9mg
+         NKbw==
+X-Gm-Message-State: AC+VfDwhZQvCRHQ8prknKtgD8n/kCoOHVdoE6Hk+rDcDr1o5BlLL2GoG
+	+EtP/Wut48/2g6JVKm+YFF4=
+X-Google-Smtp-Source: ACHHUZ5vLWV4BA5GbUd7uTb6R3TNt35h/LrNw5FK47z6XTA7FhoAMdRuoTd1JbFzYtOHZbAJyUOY9A==
+X-Received: by 2002:a17:907:7e81:b0:959:6fb2:1c3b with SMTP id qb1-20020a1709077e8100b009596fb21c3bmr1366954ejc.39.1685091055982;
+        Fri, 26 May 2023 01:50:55 -0700 (PDT)
+Received: from gmail.com (1F2EF43E.nat.pool.telekom.hu. [31.46.244.62])
+        by smtp.gmail.com with ESMTPSA id e14-20020a50ec8e000000b00509d1c6dcefsm1347783edr.13.2023.05.26.01.50.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 May 2023 01:50:55 -0700 (PDT)
+Date: Fri, 26 May 2023 10:50:50 +0200
+From: Ingo Molnar <mingo@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Subject: Re: linux-next: boot failure after merge of the tip tree
+Message-ID: <ZHBy6hkfQze53pOS@gmail.com>
+References: <20230524154459.48cda184@canb.auug.org.au>
+ <20230524093454.GI4253@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1685080620; l=1725; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=CfZu93KMbju/LZ6ePfCOTshmQTWaMrm/rB4z3C92oIs=; b=+2PWX6nDdw/gAAX7fW08lO94CwMfTSoBkFH5UtBWw1jDJYxWf2c51uGUxZj8A8GYiczDC50Om 8+HisYWedKSBTWwJyGHw7Avdcacb0Rs2Quv8jSrKi/D7d32b3LC0PSB
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230524093454.GI4253@hirez.programming.kicks-ass.net>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,49 +79,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux Next Mailing List <linux-next@vger.kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The following boottime error is encountered with SMP kernel:
 
-  kcsan: improperly instrumented type=(0): arch_spin_unlock(&arch_spinlock)
-  kcsan: improperly instrumented type=(0): spin_unlock(&test_spinlock)
-  kcsan: improperly instrumented type=(KCSAN_ACCESS_WRITE): arch_spin_unlock(&arch_spinlock)
-  kcsan: improperly instrumented type=(KCSAN_ACCESS_WRITE): spin_unlock(&test_spinlock)
-  kcsan: improperly instrumented type=(KCSAN_ACCESS_WRITE | KCSAN_ACCESS_COMPOUND): arch_spin_unlock(&arch_spinlock)
-  kcsan: improperly instrumented type=(KCSAN_ACCESS_WRITE | KCSAN_ACCESS_COMPOUND): spin_unlock(&test_spinlock)
-  kcsan: selftest: test_barrier failed
-  kcsan: selftest: 2/3 tests passed
-  Kernel panic - not syncing: selftests failed
+* Peter Zijlstra <peterz@infradead.org> wrote:
 
-Properly instrument arch_spin_unlock() with kcsan_mb().
+> On Wed, May 24, 2023 at 03:44:59PM +1000, Stephen Rothwell wrote:
+> > Hi all,
+> > 
+> > After merging the tip tree, today's linux-next build (powerpc
+> > pseries_le_defconfig) failed to boot like this:
+> > 
+> >  Built 1 zonelists, mobility grouping on.  Total pages: 32736
+> >  Policy zone: Normal
+> >  mem auto-init: stack:all(zero), heap alloc:off, heap free:off
+> >  Memory: 2027392K/2097152K available (17984K kernel code, 3328K rwdata, 14784K rodata, 6080K init, 1671K bss, 69760K reserved, 0K cma-reserved)
+> > 
+> > *crickets*
+> > 
+> > Bisected to commit
+> > 
+> >   f4ab23558310 ("slub: Replace cmpxchg_double()")
+> > 
+> > I have reverted that commit (and the following one) for today.
+> 
+> Sorry about that; turns out I forgot to test the case where cmpxchg128
+> wasn't available.
+> 
+> Please see:
+> 
+>   https://lkml.kernel.org/r/20230524093246.GP83892@hirez.programming.kicks-ass.net
+> 
+> As stated there, I'm going to zap tip/locking/core for a few days and
+> let this fixed version run through the robots again before re-instating
+> it.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/include/asm/simple_spinlock.h | 2 ++
- 1 file changed, 2 insertions(+)
+Note to -next, this should now be resolved in the tip:auto-latest branch.
 
-diff --git a/arch/powerpc/include/asm/simple_spinlock.h b/arch/powerpc/include/asm/simple_spinlock.h
-index 9dcc7e9993b9..4dd12dcb9ef8 100644
---- a/arch/powerpc/include/asm/simple_spinlock.h
-+++ b/arch/powerpc/include/asm/simple_spinlock.h
-@@ -15,6 +15,7 @@
-  * (the type definitions are in asm/simple_spinlock_types.h)
-  */
- #include <linux/irqflags.h>
-+#include <linux/kcsan-checks.h>
- #include <asm/paravirt.h>
- #include <asm/paca.h>
- #include <asm/synch.h>
-@@ -126,6 +127,7 @@ static inline void arch_spin_lock(arch_spinlock_t *lock)
- 
- static inline void arch_spin_unlock(arch_spinlock_t *lock)
- {
-+	kcsan_mb();
- 	__asm__ __volatile__("# arch_spin_unlock\n\t"
- 				PPC_RELEASE_BARRIER: : :"memory");
- 	lock->slock = 0;
--- 
-2.40.1
+Thanks,
 
+	Ingo
