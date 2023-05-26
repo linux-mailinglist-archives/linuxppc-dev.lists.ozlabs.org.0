@@ -2,64 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61AC77130AB
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 May 2023 01:52:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60B7B7130B0
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 May 2023 01:53:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QShYB1TKxz3fnc
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 May 2023 09:52:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QShZ61Tpsz3fHs
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 May 2023 09:53:02 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=Ne/YRQ/s;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=yrD5cypj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--yuzhao.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=3derxzaykdoslhmunbtbbtyr.pbzyvahkccp-qriyvfgf.bmynof.bet@flex--yuzhao.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--yuzhao.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=3d0rxzaykdo4okpxqeweewbu.secbydknffs-tulbyiji.epbqri.ehw@flex--yuzhao.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=Ne/YRQ/s;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=yrD5cypj;
 	dkim-atps=neutral
 Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QShNl0mWQz3cP0
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 May 2023 09:44:54 +1000 (AEST)
-Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-bad475920a8so633624276.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 May 2023 16:44:54 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QShNn37k3z3fF8
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 May 2023 09:44:57 +1000 (AEST)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-bad06cc7fb7so2973483276.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 May 2023 16:44:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1685144693; x=1687736693;
+        d=google.com; s=20221208; t=1685144695; x=1687736695;
         h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7JLLUnbPXAaoH9i/N14KC8FRF4yfK0mZvbZkcTBOq5Y=;
-        b=Ne/YRQ/svpJFGXhXpgHmwxc0D9cLMxIoz8hghy2YEExILLlaUzGTTLTu8b32WLIGJt
-         Pl2W5ENMW5Sa2Kwrgh0yVLYa4j/IXKl/wxvEFqusCYfl9i2LCglCwg4qFOwnu/SiZlAZ
-         epK5zgrczZWcQF0/2oLgZ8laj6CsPXbNpnBrvrF3XhoGhjELY5RWTIQgLbNJgOlO3uxt
-         4d+XiEr2KggZNk0D2a/3M0F1IRHplA5m+1NXrAN0tP918Y2nokL0n9zRLbfOWAMyaJ2Q
-         beEb9W4X5NKj/DpGHg7ZQVC9QnQZ7wDRATscsNx8htwusD9k+VmLxpoV1j1SSPGezxSx
-         58Rg==
+        bh=M3AF7fBmc1xnJAMOiZdfCsfXZHiS6oPk41ReBM4zbdo=;
+        b=yrD5cypjwj76oGySeMKoL+EObdL+VlHBR0ZE4dlUQxoYbTEWiiVpSKdOJmkcaaiF/Z
+         4zilNg4E7S1qiA0OC/fMHUKvaq4lLe3h3XrcfBRajVZEzuTWsMjYGvjMBJ/wRyLbmfd/
+         x0p59R3lRKLAmUF0+sTBQhD8rRciT1hrCi2rbco+ObNSFPCgz7YI6gzDi295X90OlgMM
+         zrJNip6i/8aKO3FHb/HgogYFOfPOgx60+DOedoHxymQQDAPdmrus+K28IPt1M7E0g0cI
+         asbBmGj30I6PgAgE5VquUWTvHUX2/5VYaFLlsw0xBC7qUsoM7lDeTwedn+JU6nSVVIPC
+         w2tA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685144693; x=1687736693;
+        d=1e100.net; s=20221208; t=1685144695; x=1687736695;
         h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7JLLUnbPXAaoH9i/N14KC8FRF4yfK0mZvbZkcTBOq5Y=;
-        b=lcaLj1Aj/UmnxYCcJKMKWOjSMjp3B/TEuM346NgkJfZCU81ZfzqR2rMZMS2zKw5qwx
-         LFEX39J5wMY1g8V0TyQjWAxpQfEgly/8SPLncuGcg5BuOs7JmBNVDrtZBXzgdVcN+k52
-         OlVR6wBEhIe8frOhlH60CQTm/oMZe1jHWdcL+p27DCY2z3G4DRKS2AEp3uTUF5beM5La
-         ime3UVl3idqb1IkdVn264eTVgoS3RcT/NjObcFcjXlppVLal/qSG0XeSjzAgiaHagP4u
-         zm0xtdtRHrYmiUXlH4ozuynI58eXHTl8ctozDv4zhwscexqxB2HwFVXNHzwhHjfJyALc
-         XMgA==
-X-Gm-Message-State: AC+VfDxP7uMsq3oOD5XeAETcQcHkTfjva0Ic7YlUQnaJWEy2ndVvk+4v
-	ILZNunpFIMLsxvSqP+PfHQ54sZ9eBKM=
-X-Google-Smtp-Source: ACHHUZ5CZlpEmT2VkUcPhwDn9jTP7EScM/+97DNWp/Z/n1uD6F2Bv8HNZfloYPpxuZT6MB0BvBWbDvtVv+8=
+        bh=M3AF7fBmc1xnJAMOiZdfCsfXZHiS6oPk41ReBM4zbdo=;
+        b=ggSuEgZYg1AKL8ng/h6afZs0fsHvFUDuo9dT3BZTDbmeKlmW2zi5Sd3fRenhRc8VCw
+         8Mj6unnG4NGvLhyN1XJzIzc1XnBmDe+a5FyQpwFKsZGSzJDRPJxsOq7nvlddsoEu3+PG
+         cayugVwd6j+AN0vPOt70Q9CDAvZbQs4B/GFbWZv9QIs5s/RYfuUjxR9j/4UQPw4RITuN
+         Z8zdt5V4CT9sVaVV1qttPchF22iyHCLHJALUxa8c0nUNRM6Iwm006/+naegwAIukAx4y
+         5TZRF0hW6dKmSIL8V24IImH1RdMSW9qishvzdZxIjgLFPHvjz7LpqkwRqdTjxBxlecwT
+         oJlw==
+X-Gm-Message-State: AC+VfDypeMboP9YLixIqdpihjJrJxRdTK+nDaObAnonjZp6SpE24x0oU
+	xPhGwNmNqL0xYuAifrasoJrQnVJ7AFc=
+X-Google-Smtp-Source: ACHHUZ4QgTvrucO0Q6McE6sU/ZYyF1Ujw9/eAceyjgq3u2aouYR16g/56Sc2t/zSHX7sxuPwIu+K0d0WjYg=
 X-Received: from yuzhao.bld.corp.google.com ([2620:15c:183:200:910f:8a15:592b:2087])
- (user=yuzhao job=sendgmr) by 2002:a5b:9c6:0:b0:ba8:381b:f764 with SMTP id
- y6-20020a5b09c6000000b00ba8381bf764mr354063ybq.3.1685144692904; Fri, 26 May
- 2023 16:44:52 -0700 (PDT)
-Date: Fri, 26 May 2023 17:44:33 -0600
+ (user=yuzhao job=sendgmr) by 2002:a05:6902:1341:b0:bac:6bb:2549 with SMTP id
+ g1-20020a056902134100b00bac06bb2549mr1840571ybu.7.1685144695170; Fri, 26 May
+ 2023 16:44:55 -0700 (PDT)
+Date: Fri, 26 May 2023 17:44:34 -0600
 In-Reply-To: <20230526234435.662652-1-yuzhao@google.com>
-Message-Id: <20230526234435.662652-9-yuzhao@google.com>
+Message-Id: <20230526234435.662652-10-yuzhao@google.com>
 Mime-Version: 1.0
 References: <20230526234435.662652-1-yuzhao@google.com>
 X-Mailer: git-send-email 2.41.0.rc0.172.g3f132b7071-goog
-Subject: [PATCH mm-unstable v2 08/10] kvm/x86: move tdp_mmu_enabled and shadow_accessed_mask
+Subject: [PATCH mm-unstable v2 09/10] kvm/x86: add kvm_arch_test_clear_young()
 From: Yu Zhao <yuzhao@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>, Paolo Bonzini <pbonzini@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
@@ -79,69 +79,82 @@ Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, x86@kernel.org, Gavin Shan <gshan@re
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tdp_mmu_enabled and shadow_accessed_mask are needed to implement
-kvm_arch_has_test_clear_young().
+Implement kvm_arch_test_clear_young() to support the fast path in
+mmu_notifier_ops->test_clear_young().
+
+It focuses on a simple case, i.e., TDP MMU sets the accessed bit in
+KVM PTEs and VMs are not nested, where it can rely on RCU and
+clear_bit() to safely clear the accessed bit without taking
+kvm->mmu_lock. Complex cases fall back to the existing slow path
+where kvm->mmu_lock is then taken.
 
 Signed-off-by: Yu Zhao <yuzhao@google.com>
 ---
- arch/x86/include/asm/kvm_host.h | 6 ++++++
- arch/x86/kvm/mmu.h              | 6 ------
- arch/x86/kvm/mmu/spte.h         | 1 -
- 3 files changed, 6 insertions(+), 7 deletions(-)
+ arch/x86/include/asm/kvm_host.h |  7 +++++++
+ arch/x86/kvm/mmu/tdp_mmu.c      | 34 +++++++++++++++++++++++++++++++++
+ 2 files changed, 41 insertions(+)
 
 diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index fb9d1f2d6136..753c67072c47 100644
+index 753c67072c47..d6dfdebe3d94 100644
 --- a/arch/x86/include/asm/kvm_host.h
 +++ b/arch/x86/include/asm/kvm_host.h
-@@ -1772,6 +1772,7 @@ struct kvm_arch_async_pf {
+@@ -2223,4 +2223,11 @@ int memslot_rmap_alloc(struct kvm_memory_slot *slot, unsigned long npages);
+  */
+ #define KVM_EXIT_HYPERCALL_MBZ		GENMASK_ULL(31, 1)
  
- extern u32 __read_mostly kvm_nr_uret_msrs;
- extern u64 __read_mostly host_efer;
-+extern u64 __read_mostly shadow_accessed_mask;
- extern bool __read_mostly allow_smaller_maxphyaddr;
- extern bool __read_mostly enable_apicv;
- extern struct kvm_x86_ops kvm_x86_ops;
-@@ -1855,6 +1856,11 @@ void kvm_fire_mask_notifiers(struct kvm *kvm, unsigned irqchip, unsigned pin,
- 			     bool mask);
- 
- extern bool tdp_enabled;
-+#ifdef CONFIG_X86_64
-+extern bool tdp_mmu_enabled;
-+#else
-+#define tdp_mmu_enabled false
-+#endif
- 
- u64 vcpu_tsc_khz(struct kvm_vcpu *vcpu);
- 
-diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
-index 92d5a1924fc1..84aedb2671ef 100644
---- a/arch/x86/kvm/mmu.h
-+++ b/arch/x86/kvm/mmu.h
-@@ -253,12 +253,6 @@ static inline bool kvm_shadow_root_allocated(struct kvm *kvm)
- 	return smp_load_acquire(&kvm->arch.shadow_root_allocated);
++#define kvm_arch_has_test_clear_young kvm_arch_has_test_clear_young
++static inline bool kvm_arch_has_test_clear_young(void)
++{
++	return IS_ENABLED(CONFIG_X86_64) &&
++	       (!IS_REACHABLE(CONFIG_KVM) || (tdp_mmu_enabled && shadow_accessed_mask));
++}
++
+ #endif /* _ASM_X86_KVM_HOST_H */
+diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
+index 08340219c35a..6875a819e007 100644
+--- a/arch/x86/kvm/mmu/tdp_mmu.c
++++ b/arch/x86/kvm/mmu/tdp_mmu.c
+@@ -1232,6 +1232,40 @@ bool kvm_tdp_mmu_test_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
+ 	return kvm_tdp_mmu_handle_gfn(kvm, range, test_age_gfn);
  }
  
--#ifdef CONFIG_X86_64
--extern bool tdp_mmu_enabled;
--#else
--#define tdp_mmu_enabled false
--#endif
--
- static inline bool kvm_memslots_have_rmaps(struct kvm *kvm)
++bool kvm_arch_test_clear_young(struct kvm *kvm, struct kvm_gfn_range *range)
++{
++	struct kvm_mmu_page *root;
++	int offset = ffs(shadow_accessed_mask) - 1;
++
++	if (kvm_shadow_root_allocated(kvm))
++		return true;
++
++	rcu_read_lock();
++
++	list_for_each_entry_rcu(root, &kvm->arch.tdp_mmu_roots, link) {
++		struct tdp_iter iter;
++
++		if (kvm_mmu_page_as_id(root) != range->slot->as_id)
++			continue;
++
++		tdp_root_for_each_leaf_pte(iter, root, range->start, range->end) {
++			u64 *sptep = rcu_dereference(iter.sptep);
++
++			VM_WARN_ON_ONCE(!page_count(virt_to_page(sptep)));
++
++			if (!(iter.old_spte & shadow_accessed_mask))
++				continue;
++
++			if (kvm_should_clear_young(range, iter.gfn))
++				clear_bit(offset, (unsigned long *)sptep);
++		}
++	}
++
++	rcu_read_unlock();
++
++	return false;
++}
++
+ static bool set_spte_gfn(struct kvm *kvm, struct tdp_iter *iter,
+ 			 struct kvm_gfn_range *range)
  {
- 	return !tdp_mmu_enabled || kvm_shadow_root_allocated(kvm);
-diff --git a/arch/x86/kvm/mmu/spte.h b/arch/x86/kvm/mmu/spte.h
-index 1279db2eab44..a82c4fa1c47b 100644
---- a/arch/x86/kvm/mmu/spte.h
-+++ b/arch/x86/kvm/mmu/spte.h
-@@ -153,7 +153,6 @@ extern u64 __read_mostly shadow_mmu_writable_mask;
- extern u64 __read_mostly shadow_nx_mask;
- extern u64 __read_mostly shadow_x_mask; /* mutual exclusive with nx_mask */
- extern u64 __read_mostly shadow_user_mask;
--extern u64 __read_mostly shadow_accessed_mask;
- extern u64 __read_mostly shadow_dirty_mask;
- extern u64 __read_mostly shadow_mmio_value;
- extern u64 __read_mostly shadow_mmio_mask;
 -- 
 2.41.0.rc0.172.g3f132b7071-goog
 
