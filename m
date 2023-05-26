@@ -2,45 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5B22712CC5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 May 2023 20:47:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6566B712CCF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 May 2023 20:48:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QSYnK41Ctz3fP2
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 May 2023 04:47:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QSYqB2CtNz3flm
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 May 2023 04:48:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=SgFlGGL1;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=YSi6lHAg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=SgFlGGL1;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=YSi6lHAg;
 	dkim-atps=neutral
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QSYcZ35Nhz3fJN
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 May 2023 04:39:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QSYln4BFmz3fgj
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 May 2023 04:45:57 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id B91A46528E;
-	Fri, 26 May 2023 18:39:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D940EC433EF;
-	Fri, 26 May 2023 18:39:39 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id DAB8F65284;
+	Fri, 26 May 2023 18:45:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEE84C433EF;
+	Fri, 26 May 2023 18:45:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1685126380;
-	bh=pcjM2wYt6oBJmrxKsiZroJVoDZKSFImZCGYa7c8qQZQ=;
+	s=korg; t=1685126755;
+	bh=i+dmKSj5VJ9Jxn/9SzB496+BnbXbayEbsj10lF6IZK0=;
 	h=Subject:To:Cc:From:Date:In-Reply-To:From;
-	b=SgFlGGL1cmqqjSK1q9I1HAHNgLKwk0HyNPgqSxVsMaGoaLw4b8OFUSrppF7dYX3yj
-	 2uMK+JNnGxsnOEX3nZ1yvyM/Qntb4cc4Ec3ciQB9s0a5mZPfTKFPzX+nHYMxJ2spUE
-	 wZ/HFh0ItOPOs8DdSi+DdTMclO/gtue/EJbtaap8=
-Subject: Patch "Subject:[For 5.15/5.10/5.4] spi: fsl-spi: Re-organise transfer bits_per_word adaptation" has been added to the 5.15-stable tree
+	b=YSi6lHAgyp+DFOMHVm2S4PFS2YwQeDUz9MCmwDJV82vY0244GVg/mDWa5wFrCEIiP
+	 aoeubEY3mJncb/uSwwO5Y/UXFUCeHFOCfRBXhESNgYzhV2XkIQ/UGcsIAgFWIkX5yL
+	 pAMq7UjW0842Mv/mS4a3xWjaFj9SrRfCsX2R5asE=
+Subject: Patch "spi: fsl-spi: Re-organise transfer bits_per_word adaptation" has been added to the 5.4-stable tree
 To: broonie@kernel.org,christophe.leroy@csgroup.eu,gregkh@linuxfoundation.org,linuxppc-dev@lists.ozlabs.org
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 26 May 2023 19:39:24 +0100
+Date: Fri, 26 May 2023 19:45:44 +0100
 In-Reply-To: <1e4bfb4850ba849c316f48a0ab0d7123da0e2f54.1684156552.git.christophe.leroy@csgroup.eu>
-Message-ID: <2023052623-giddy-conclude-f138@gregkh>
+Message-ID: <2023052644-entrust-balancing-ed6e@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -64,14 +64,14 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 This is a note to let you know that I've just added the patch titled
 
-    Subject:[For 5.15/5.10/5.4] spi: fsl-spi: Re-organise transfer bits_per_word adaptation
+    spi: fsl-spi: Re-organise transfer bits_per_word adaptation
 
-to the 5.15-stable tree which can be found at:
+to the 5.4-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
      spi-fsl-spi-re-organise-transfer-bits_per_word-adaptation.patch
-and it can be found in the queue-5.15 subdirectory.
+and it can be found in the queue-5.4 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
 please let <stable@vger.kernel.org> know about it.
@@ -80,7 +80,7 @@ please let <stable@vger.kernel.org> know about it.
 From christophe.leroy@csgroup.eu Mon May 15 15:08:03 2023
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 Date: Mon, 15 May 2023 16:07:16 +0200
-Subject:[For 5.15/5.10/5.4] spi: fsl-spi: Re-organise transfer bits_per_word adaptation
+Subject: spi: fsl-spi: Re-organise transfer bits_per_word adaptation
 To: gregkh@linuxfoundation.org, stable@vger.kernel.org
 Cc: Christophe Leroy <christophe.leroy@csgroup.eu>, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Mark Brown <broonie@kernel.org>
 Message-ID: <1e4bfb4850ba849c316f48a0ab0d7123da0e2f54.1684156552.git.christophe.leroy@csgroup.eu>
@@ -111,7 +111,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/spi/spi-fsl-spi.c
 +++ b/drivers/spi/spi-fsl-spi.c
-@@ -203,26 +203,6 @@ static int mspi_apply_cpu_mode_quirks(st
+@@ -204,26 +204,6 @@ static int mspi_apply_cpu_mode_quirks(st
  	return bits_per_word;
  }
  
@@ -138,7 +138,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  static int fsl_spi_setup_transfer(struct spi_device *spi,
  					struct spi_transfer *t)
  {
-@@ -250,9 +230,6 @@ static int fsl_spi_setup_transfer(struct
+@@ -251,9 +231,6 @@ static int fsl_spi_setup_transfer(struct
  		bits_per_word = mspi_apply_cpu_mode_quirks(cs, spi,
  							   mpc8xxx_spi,
  							   bits_per_word);
@@ -148,7 +148,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  	if (bits_per_word < 0)
  		return bits_per_word;
-@@ -370,14 +347,27 @@ static int fsl_spi_do_one_msg(struct spi
+@@ -371,14 +348,27 @@ static int fsl_spi_do_one_msg(struct spi
  	 * In CPU mode, optimize large byte transfers to use larger
  	 * bits_per_word values to reduce number of interrupts taken.
  	 */
@@ -178,7 +178,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		}
  	}
  
-@@ -635,8 +625,14 @@ static struct spi_master *fsl_spi_probe(
+@@ -637,8 +627,14 @@ static struct spi_master * fsl_spi_probe
  	if (mpc8xxx_spi->type == TYPE_GRLIB)
  		fsl_spi_grlib_probe(dev);
  
@@ -199,5 +199,5 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 Patches currently in stable-queue which might be from christophe.leroy@csgroup.eu are
 
-queue-5.15/spi-fsl-cpm-use-16-bit-mode-for-large-transfers-with-even-size.patch
-queue-5.15/spi-fsl-spi-re-organise-transfer-bits_per_word-adaptation.patch
+queue-5.4/spi-fsl-cpm-use-16-bit-mode-for-large-transfers-with-even-size.patch
+queue-5.4/spi-fsl-spi-re-organise-transfer-bits_per_word-adaptation.patch
