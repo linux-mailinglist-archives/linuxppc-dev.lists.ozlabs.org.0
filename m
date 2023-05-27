@@ -2,69 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A4887131CC
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 May 2023 03:51:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4978713421
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 May 2023 12:43:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QSlBc3DqZz3fqs
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 May 2023 11:51:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QSz0469grz3fJG
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 May 2023 20:43:00 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ShJfBqA9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qtjpACU3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=dianders@chromium.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ShJfBqA9;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qtjpACU3;
 	dkim-atps=neutral
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QSl0X0Ndbz3fGl
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 May 2023 11:42:35 +1000 (AEST)
-Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-64d4e45971bso1117179b3a.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 May 2023 18:42:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1685151754; x=1687743754;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JxNnTqvzGhDuJSCmbsa+rtoHfqlXA4TJSz9TjwxMeho=;
-        b=ShJfBqA9ft7ncDs0dOFd2RPnmhJyBiEjNx2LZ1p8J3ek51VUldJqNKK6EfAx/6LMhv
-         I51cZ9p9OhuJ3HYRQJPDRwiiLTttUI75WZhav7nrw8b5x+FhEcc5+eyfOPfL9y63jllh
-         02RO3yac0QfbIeTbVj1CHjUWHigjgjdAjKjnQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685151754; x=1687743754;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JxNnTqvzGhDuJSCmbsa+rtoHfqlXA4TJSz9TjwxMeho=;
-        b=a0elNdfytwA9D3lNJqHDyz0lPQ1s3x53T4n4w9XQdp/QtiJMM1aF5+t/uLcRF1TZqL
-         zaXcZGEQ/43JU4f/ct59wHATvPP3welTzH0Ya5xk5QQFjCRC9ytS+JLyY9qTY7gf5K2t
-         cG3R+yraaZuF9YYzWQ8awKgLDVx9TPzgIeXsj2XcbTsYaY/1zGFTBlsXr3jNJQP/qpGM
-         TfEOvQlvPfm+SLMROBpUMhv+VGoMPQvT/JY92OWCRNusNiLUwNglWmPOW4UuPabtQnhU
-         lvRS6oqQd7xd2akE4CNg6NVyUbzP5w6owWD9aJ9cVvN+hNR84a6zXA6/pUX55N8+a6Zn
-         Lobw==
-X-Gm-Message-State: AC+VfDyzMOHA0BwsmPEq2s4dW0eH9W+qOYsYQ8I/FKTNrZM7FF23/JiZ
-	xcCdEvUYox7KPJDa+tOmU4m8Gg==
-X-Google-Smtp-Source: ACHHUZ44oKfcxHCQB35NN8gNpgRMYCCD+rINnjdYYnIa0h9+Lp5g65zql8hV6FRXqlU+zWxTf6WHVg==
-X-Received: by 2002:a05:6a00:3911:b0:63b:7fc0:a4af with SMTP id fh17-20020a056a00391100b0063b7fc0a4afmr5852154pfb.26.1685151753915;
-        Fri, 26 May 2023 18:42:33 -0700 (PDT)
-Received: from tictac2.mtv.corp.google.com ([2620:15c:9d:2:4015:7255:c79a:26d7])
-        by smtp.gmail.com with ESMTPSA id x25-20020aa79199000000b0063b8ddf77f7sm3202440pfa.211.2023.05.26.18.42.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 May 2023 18:42:33 -0700 (PDT)
-From: Douglas Anderson <dianders@chromium.org>
-To: Petr Mladek <pmladek@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 10/10] watchdog/hardlockup: Rename HAVE_HARDLOCKUP_DETECTOR_NON_ARCH to ..._PERF_OR_BUDDY
-Date: Fri, 26 May 2023 18:41:40 -0700
-Message-ID: <20230526184139.10.I821fe7609e57608913fe05abd8f35b343e7a9aae@changeid>
-X-Mailer: git-send-email 2.41.0.rc0.172.g3f132b7071-goog
-In-Reply-To: <20230527014153.2793931-1-dianders@chromium.org>
-References: <20230527014153.2793931-1-dianders@chromium.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QSyz83q7Hz3f5c
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 May 2023 20:42:12 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 9F50861072;
+	Sat, 27 May 2023 10:42:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE11AC433EF;
+	Sat, 27 May 2023 10:42:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1685184129;
+	bh=Z4TeIapFpeS1e5WxOMUpOrDg87Rxe8ydQavxJsO0vug=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qtjpACU3i7FVjLT023Ddg5iX1Sm9mYGyR9BAcAldcZGtkGi1IgPSjR20Gkom5YVFi
+	 9GqwWTqSe6aCGE+Jk6r1lk9ASI1BqwfpG0h2HSrQ1BaMlG84/DZwyIoKGVbNuFJs46
+	 KM/CX4KgN01bs8ctMAmNzdH3P/7vJMOVtl/spQpp1NeNWLVBfmoG8tubTTHEz78nbM
+	 Mi5TzSK4O/LtfJpDtvhI5QLWzSn68VROvh7bVsKVmfCA0L8DXw2EUj7uC78b19+5Rx
+	 6iPjAV5tMRrgS7SBBOhhGo75UiSObo7waKqxJ5uuMYjPYcI7MRtTbdg+ba8TB9jNgs
+	 b+IpYHQpsYW9A==
+Date: Sat, 27 May 2023 13:41:44 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Vishal Moola <vishal.moola@gmail.com>
+Subject: Re: [PATCH v2 05/34] mm: add utility functions for ptdesc
+Message-ID: <20230527104144.GH4967@kernel.org>
+References: <20230501192829.17086-1-vishal.moola@gmail.com>
+ <20230501192829.17086-6-vishal.moola@gmail.com>
+ <20230525090956.GX4967@kernel.org>
+ <CAOzc2pxSH6GhBnAoSOjvYJk2VdMDFZi3H_1qGC5Cdyp3j4AzPQ@mail.gmail.com>
+ <20230525202537.GA4967@kernel.org>
+ <CAOzc2pxD21mxisy-M5b_SDUv0MYwNHqaVDJnJpARuDG_HjCbOg@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAOzc2pxD21mxisy-M5b_SDUv0MYwNHqaVDJnJpARuDG_HjCbOg@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,59 +65,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kgdb-bugreport@lists.sourceforge.net, linux-kernel@vger.kernel.org, Douglas Anderson <dianders@chromium.org>, linux-perf-users@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, kvm@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-sh@vger.kernel.org, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-csky@vger.kernel.org, linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org, Matthew Wilcox <willy@infradead.org>, loongarch@lists.linux.dev, sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-HAVE_HARDLOCKUP_DETECTOR_NON_ARCH is a mouthful and
-confusing. HAVE_HARDLOCKUP_DETECTOR_PERF_OR_BUDDY is even more of a
-mouthful, but probably less confusing. Rename the Kconfig names.
+On Thu, May 25, 2023 at 01:53:24PM -0700, Vishal Moola wrote:
+> On Thu, May 25, 2023 at 1:26 PM Mike Rapoport <rppt@kernel.org> wrote:
+> >
+> > On Thu, May 25, 2023 at 11:04:28AM -0700, Vishal Moola wrote:
+> > > On Thu, May 25, 2023 at 2:10 AM Mike Rapoport <rppt@kernel.org> wrote:
+> > > > > +
+> > > > > +static inline struct ptdesc *ptdesc_alloc(gfp_t gfp, unsigned int order)
+> > > > > +{
+> > > > > +     struct page *page = alloc_pages(gfp | __GFP_COMP, order);
+> > > > > +
+> > > > > +     return page_ptdesc(page);
+> > > > > +}
+> > > > > +
+> > > > > +static inline void ptdesc_free(struct ptdesc *pt)
+> > > > > +{
+> > > > > +     struct page *page = ptdesc_page(pt);
+> > > > > +
+> > > > > +     __free_pages(page, compound_order(page));
+> > > > > +}
+> > > >
+> > > > The ptdesc_{alloc,free} API does not sound right to me. The name
+> > > > ptdesc_alloc() implies the allocation of the ptdesc itself, rather than
+> > > > allocation of page table page. The same goes for free.
+> > >
+> > > I'm not sure I see the difference. Could you elaborate?
+> >
+> > I read ptdesc_alloc() as "allocate a ptdesc" rather than as "allocate a
+> > page for page table and return ptdesc pointing to that page". Seems very
+> > confusing to me already and it will be even more confusion when we'll start
+> > allocating actual ptdescs.
+> 
+> Hmm, I see what you're saying. I'm envisioning this function evolving into
+> one that allocates a ptdesc later. I don't see why we would need to have both a
+> page table page AND ptdesc at any point, but that may be a lack of knowledge
+> from my part.
 
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
----
+Sorry if I wasn't clear, by "page table page" I meant the page (or memory
+for that matter) for actual page table rather than struct page describing
+that memory.
 
- lib/Kconfig.debug | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+So what we allocate here is the actual memory for the page tables and not
+the memory for the metadata. That's why I think the name ptdesc_alloc is
+confusing.
+ 
+> I was thinking later, if necessary, we could make another function
+> (only to be used internally) to allocate page table pages.
 
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index eb1edd5905bc..b9e162698a82 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -1058,7 +1058,7 @@ config HARDLOCKUP_DETECTOR_BUDDY
- # needs SMP). In either case, using the "non-arch" code conflicts with
- # the NMI watchdog code (which is sometimes used directly and sometimes used
- # by the arch-provided hardlockup detector).
--config HAVE_HARDLOCKUP_DETECTOR_NON_ARCH
-+config HAVE_HARDLOCKUP_DETECTOR_PERF_OR_BUDDY
- 	bool
- 	depends on (HAVE_HARDLOCKUP_DETECTOR_PERF || SMP) && !HAVE_NMI_WATCHDOG
- 	default y
-@@ -1077,10 +1077,10 @@ config HARDLOCKUP_DETECTOR_PREFER_BUDDY
- 	  an arch-specific hardlockup detector or if resources needed
- 	  for the hardlockup detector are better used for other things.
- 
--# This will select the appropriate non-arch hardlockdup detector
--config HARDLOCKUP_DETECTOR_NON_ARCH
-+# This will select the appropriate non-arch hardlockup detector
-+config HARDLOCKUP_DETECTOR_PERF_OR_BUDDY
- 	bool
--	depends on HAVE_HARDLOCKUP_DETECTOR_NON_ARCH
-+	depends on HAVE_HARDLOCKUP_DETECTOR_PERF_OR_BUDDY
- 	select HARDLOCKUP_DETECTOR_BUDDY if !HAVE_HARDLOCKUP_DETECTOR_PERF || HARDLOCKUP_DETECTOR_PREFER_BUDDY
- 	select HARDLOCKUP_DETECTOR_PERF if HAVE_HARDLOCKUP_DETECTOR_PERF && !HARDLOCKUP_DETECTOR_PREFER_BUDDY
- 
-@@ -1098,9 +1098,9 @@ config HARDLOCKUP_CHECK_TIMESTAMP
- config HARDLOCKUP_DETECTOR
- 	bool "Detect Hard Lockups"
- 	depends on DEBUG_KERNEL && !S390
--	depends on HAVE_HARDLOCKUP_DETECTOR_NON_ARCH || HAVE_HARDLOCKUP_DETECTOR_ARCH
-+	depends on HAVE_HARDLOCKUP_DETECTOR_PERF_OR_BUDDY || HAVE_HARDLOCKUP_DETECTOR_ARCH
- 	select LOCKUP_DETECTOR
--	select HARDLOCKUP_DETECTOR_NON_ARCH if HAVE_HARDLOCKUP_DETECTOR_NON_ARCH
-+	select HARDLOCKUP_DETECTOR_PERF_OR_BUDDY if HAVE_HARDLOCKUP_DETECTOR_PERF_OR_BUDDY
- 
- 	help
- 	  Say Y here to enable the kernel to act as a watchdog to detect
 -- 
-2.41.0.rc0.172.g3f132b7071-goog
-
+Sincerely yours,
+Mike.
