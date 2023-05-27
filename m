@@ -1,65 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B9247131C9
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 May 2023 03:50:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A4887131CC
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 May 2023 03:51:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QSl9X67M2z3ffG
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 May 2023 11:50:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QSlBc3DqZz3fqs
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 May 2023 11:51:20 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=lWWP/2wc;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ShJfBqA9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::42f; helo=mail-pf1-x42f.google.com; envelope-from=dianders@chromium.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=dianders@chromium.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=lWWP/2wc;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ShJfBqA9;
 	dkim-atps=neutral
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QSl0S4YCqz3fFh
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 May 2023 11:42:32 +1000 (AEST)
-Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-64d2c865e4eso1233769b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 May 2023 18:42:32 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QSl0X0Ndbz3fGl
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 May 2023 11:42:35 +1000 (AEST)
+Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-64d4e45971bso1117179b3a.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 May 2023 18:42:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1685151752; x=1687743752;
+        d=chromium.org; s=google; t=1685151754; x=1687743754;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4CpMXuml+REzVPCV5YpF8KcdPL/FMQZnR1a5DDg0o94=;
-        b=lWWP/2wciP5Lcnvzvjsar/98gic2UMLjL7shy/u4jcBVbG5MnQbC3jVJH8wV32l4xR
-         /nrvT+VbnmoHL7WUx9Zoh+UT6oazi8OyVzo4oafQGAwcJbnMk2/Hi1w+wVB/DP/r1xpp
-         TGm6jAwztGOFKItK9wAegBPuXnpdHRPuC12Ys=
+        bh=JxNnTqvzGhDuJSCmbsa+rtoHfqlXA4TJSz9TjwxMeho=;
+        b=ShJfBqA9ft7ncDs0dOFd2RPnmhJyBiEjNx2LZ1p8J3ek51VUldJqNKK6EfAx/6LMhv
+         I51cZ9p9OhuJ3HYRQJPDRwiiLTttUI75WZhav7nrw8b5x+FhEcc5+eyfOPfL9y63jllh
+         02RO3yac0QfbIeTbVj1CHjUWHigjgjdAjKjnQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685151752; x=1687743752;
+        d=1e100.net; s=20221208; t=1685151754; x=1687743754;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=4CpMXuml+REzVPCV5YpF8KcdPL/FMQZnR1a5DDg0o94=;
-        b=X3y3DJTzgCvG82Y4kXbCBD9sIS0/8OJS1bQxuSWFat0/hI8XOZPOOqJm7Jmo2uEq6l
-         oHmUjB5ZCIID4Ivi+PZqijdGjAwDjmkZfDNPqoyDjKzcD27S0VpjaNlEucq98qnXamkQ
-         j32I8V9r8Gv9isjqmWxO3WOuqhESXfOQu1UjLna2D1Dn9lVTyh5KJOivjfzXXtcdjDbx
-         5nZDMUVaCJ1DM4kx7cU/OXXBD+bWQhP+FkfZsUzTKV1WIiu7x9VtezT7ziIflnkkazaX
-         nLb6BF3qR1K0we2qRa4XKxzhB8ks27cxCjhBsicphZo1b9LSXn+ETv7vChDS0D90O9yd
-         1DRQ==
-X-Gm-Message-State: AC+VfDzg3s59pSMwt8fwTZ8V/5Lo5df3anIY7GTR2Laj4ih/8JSgEC0J
-	euWiLaTtBp1Rzw9w/XQD4QJ+Hg==
-X-Google-Smtp-Source: ACHHUZ6DB7hFCO3S8IN2pb5iImgPKyxBk6jrI7pr6oeNwgGoZm+rSryxNvvUZrHJqd9sGrPZ5NEogQ==
-X-Received: by 2002:a05:6a20:2d2a:b0:10c:7c72:bdd6 with SMTP id g42-20020a056a202d2a00b0010c7c72bdd6mr1357189pzl.59.1685151752164;
-        Fri, 26 May 2023 18:42:32 -0700 (PDT)
+        bh=JxNnTqvzGhDuJSCmbsa+rtoHfqlXA4TJSz9TjwxMeho=;
+        b=a0elNdfytwA9D3lNJqHDyz0lPQ1s3x53T4n4w9XQdp/QtiJMM1aF5+t/uLcRF1TZqL
+         zaXcZGEQ/43JU4f/ct59wHATvPP3welTzH0Ya5xk5QQFjCRC9ytS+JLyY9qTY7gf5K2t
+         cG3R+yraaZuF9YYzWQ8awKgLDVx9TPzgIeXsj2XcbTsYaY/1zGFTBlsXr3jNJQP/qpGM
+         TfEOvQlvPfm+SLMROBpUMhv+VGoMPQvT/JY92OWCRNusNiLUwNglWmPOW4UuPabtQnhU
+         lvRS6oqQd7xd2akE4CNg6NVyUbzP5w6owWD9aJ9cVvN+hNR84a6zXA6/pUX55N8+a6Zn
+         Lobw==
+X-Gm-Message-State: AC+VfDyzMOHA0BwsmPEq2s4dW0eH9W+qOYsYQ8I/FKTNrZM7FF23/JiZ
+	xcCdEvUYox7KPJDa+tOmU4m8Gg==
+X-Google-Smtp-Source: ACHHUZ44oKfcxHCQB35NN8gNpgRMYCCD+rINnjdYYnIa0h9+Lp5g65zql8hV6FRXqlU+zWxTf6WHVg==
+X-Received: by 2002:a05:6a00:3911:b0:63b:7fc0:a4af with SMTP id fh17-20020a056a00391100b0063b7fc0a4afmr5852154pfb.26.1685151753915;
+        Fri, 26 May 2023 18:42:33 -0700 (PDT)
 Received: from tictac2.mtv.corp.google.com ([2620:15c:9d:2:4015:7255:c79a:26d7])
-        by smtp.gmail.com with ESMTPSA id x25-20020aa79199000000b0063b8ddf77f7sm3202440pfa.211.2023.05.26.18.42.30
+        by smtp.gmail.com with ESMTPSA id x25-20020aa79199000000b0063b8ddf77f7sm3202440pfa.211.2023.05.26.18.42.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 May 2023 18:42:31 -0700 (PDT)
+        Fri, 26 May 2023 18:42:33 -0700 (PDT)
 From: Douglas Anderson <dianders@chromium.org>
 To: Petr Mladek <pmladek@suse.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 09/10] watchdog/hardlockup: Move SMP barriers from common code to buddy code
-Date: Fri, 26 May 2023 18:41:39 -0700
-Message-ID: <20230526184139.9.I5ab0a0eeb0bd52fb23f901d298c72fa5c396e22b@changeid>
+Subject: [PATCH 10/10] watchdog/hardlockup: Rename HAVE_HARDLOCKUP_DETECTOR_NON_ARCH to ..._PERF_OR_BUDDY
+Date: Fri, 26 May 2023 18:41:40 -0700
+Message-ID: <20230526184139.10.I821fe7609e57608913fe05abd8f35b343e7a9aae@changeid>
 X-Mailer: git-send-email 2.41.0.rc0.172.g3f132b7071-goog
 In-Reply-To: <20230527014153.2793931-1-dianders@chromium.org>
 References: <20230527014153.2793931-1-dianders@chromium.org>
@@ -80,88 +80,55 @@ Cc: kgdb-bugreport@lists.sourceforge.net, linux-kernel@vger.kernel.org, Douglas 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-It's been suggested that since the SMP barriers are only potentially
-useful for the buddy hardlockup detector, not the perf hardlockup
-detector, that the barriers belong in the buddy code. Let's move them
-and add clearer comments about why they're needed.
+HAVE_HARDLOCKUP_DETECTOR_NON_ARCH is a mouthful and
+confusing. HAVE_HARDLOCKUP_DETECTOR_PERF_OR_BUDDY is even more of a
+mouthful, but probably less confusing. Rename the Kconfig names.
 
-Suggested-by: Petr Mladek <pmladek@suse.com>
 Signed-off-by: Douglas Anderson <dianders@chromium.org>
 ---
 
- kernel/watchdog.c       |  6 ------
- kernel/watchdog_buddy.c | 21 +++++++++++++++++++++
- 2 files changed, 21 insertions(+), 6 deletions(-)
+ lib/Kconfig.debug | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/watchdog.c b/kernel/watchdog.c
-index 6cc46b8e3d07..a351ab0c35eb 100644
---- a/kernel/watchdog.c
-+++ b/kernel/watchdog.c
-@@ -109,9 +109,6 @@ EXPORT_SYMBOL(arch_touch_nmi_watchdog);
- void watchdog_hardlockup_touch_cpu(unsigned int cpu)
- {
- 	per_cpu(watchdog_hardlockup_touched, cpu) = true;
--
--	/* Match with smp_rmb() in watchdog_hardlockup_check() */
--	smp_wmb();
- }
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index eb1edd5905bc..b9e162698a82 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -1058,7 +1058,7 @@ config HARDLOCKUP_DETECTOR_BUDDY
+ # needs SMP). In either case, using the "non-arch" code conflicts with
+ # the NMI watchdog code (which is sometimes used directly and sometimes used
+ # by the arch-provided hardlockup detector).
+-config HAVE_HARDLOCKUP_DETECTOR_NON_ARCH
++config HAVE_HARDLOCKUP_DETECTOR_PERF_OR_BUDDY
+ 	bool
+ 	depends on (HAVE_HARDLOCKUP_DETECTOR_PERF || SMP) && !HAVE_NMI_WATCHDOG
+ 	default y
+@@ -1077,10 +1077,10 @@ config HARDLOCKUP_DETECTOR_PREFER_BUDDY
+ 	  an arch-specific hardlockup detector or if resources needed
+ 	  for the hardlockup detector are better used for other things.
  
- static bool is_hardlockup(unsigned int cpu)
-@@ -141,9 +138,6 @@ static void watchdog_hardlockup_kick(void)
+-# This will select the appropriate non-arch hardlockdup detector
+-config HARDLOCKUP_DETECTOR_NON_ARCH
++# This will select the appropriate non-arch hardlockup detector
++config HARDLOCKUP_DETECTOR_PERF_OR_BUDDY
+ 	bool
+-	depends on HAVE_HARDLOCKUP_DETECTOR_NON_ARCH
++	depends on HAVE_HARDLOCKUP_DETECTOR_PERF_OR_BUDDY
+ 	select HARDLOCKUP_DETECTOR_BUDDY if !HAVE_HARDLOCKUP_DETECTOR_PERF || HARDLOCKUP_DETECTOR_PREFER_BUDDY
+ 	select HARDLOCKUP_DETECTOR_PERF if HAVE_HARDLOCKUP_DETECTOR_PERF && !HARDLOCKUP_DETECTOR_PREFER_BUDDY
  
- void watchdog_hardlockup_check(unsigned int cpu, struct pt_regs *regs)
- {
--	/* Match with smp_wmb() in watchdog_hardlockup_touch_cpu() */
--	smp_rmb();
--
- 	if (per_cpu(watchdog_hardlockup_touched, cpu)) {
- 		per_cpu(watchdog_hardlockup_touched, cpu) = false;
- 		return;
-diff --git a/kernel/watchdog_buddy.c b/kernel/watchdog_buddy.c
-index 2ef88722c5e7..34dbfe091f4b 100644
---- a/kernel/watchdog_buddy.c
-+++ b/kernel/watchdog_buddy.c
-@@ -51,6 +51,13 @@ void watchdog_hardlockup_enable(unsigned int cpu)
- 	if (next_cpu < nr_cpu_ids)
- 		watchdog_hardlockup_touch_cpu(next_cpu);
+@@ -1098,9 +1098,9 @@ config HARDLOCKUP_CHECK_TIMESTAMP
+ config HARDLOCKUP_DETECTOR
+ 	bool "Detect Hard Lockups"
+ 	depends on DEBUG_KERNEL && !S390
+-	depends on HAVE_HARDLOCKUP_DETECTOR_NON_ARCH || HAVE_HARDLOCKUP_DETECTOR_ARCH
++	depends on HAVE_HARDLOCKUP_DETECTOR_PERF_OR_BUDDY || HAVE_HARDLOCKUP_DETECTOR_ARCH
+ 	select LOCKUP_DETECTOR
+-	select HARDLOCKUP_DETECTOR_NON_ARCH if HAVE_HARDLOCKUP_DETECTOR_NON_ARCH
++	select HARDLOCKUP_DETECTOR_PERF_OR_BUDDY if HAVE_HARDLOCKUP_DETECTOR_PERF_OR_BUDDY
  
-+	/*
-+	 * Makes sure that watchdog is touched on this CPU before
-+	 * other CPUs could see it in watchdog_cpus. The counter
-+	 * part is in watchdog_buddy_check_hardlockup().
-+	 */
-+	smp_wmb();
-+
- 	cpumask_set_cpu(cpu, &watchdog_cpus);
- }
- 
-@@ -68,6 +75,13 @@ void watchdog_hardlockup_disable(unsigned int cpu)
- 	if (next_cpu < nr_cpu_ids)
- 		watchdog_hardlockup_touch_cpu(next_cpu);
- 
-+	/*
-+	 * Makes sure that watchdog is touched on the next CPU before
-+	 * this CPU disappear in watchdog_cpus. The counter part is in
-+	 * watchdog_buddy_check_hardlockup().
-+	 */
-+	smp_wmb();
-+
- 	cpumask_clear_cpu(cpu, &watchdog_cpus);
- }
- 
-@@ -88,5 +102,12 @@ void watchdog_buddy_check_hardlockup(int hrtimer_interrupts)
- 	if (next_cpu >= nr_cpu_ids)
- 		return;
- 
-+	/*
-+	 * Make sure that the watchdog was touched on next CPU when
-+	 * watchdog_next_cpu() returned another one because of
-+	 * a change in watchdog_hardlockup_enable()/disable().
-+	 */
-+	smp_rmb();
-+
- 	watchdog_hardlockup_check(next_cpu, NULL);
- }
+ 	help
+ 	  Say Y here to enable the kernel to act as a watchdog to detect
 -- 
 2.41.0.rc0.172.g3f132b7071-goog
 
