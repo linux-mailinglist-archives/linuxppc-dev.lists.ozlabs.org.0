@@ -2,68 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 075A2713937
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 May 2023 13:34:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F372D713967
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 May 2023 14:15:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QTc4t6tYrz3fGX
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 May 2023 21:34:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QTd0C6DR5z3f8c
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 May 2023 22:15:23 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=fnTknatG;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=EKY74s2B;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2001:4860:4864:20::34; helo=mail-oa1-x34.google.com; envelope-from=mirimmad17@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=fnTknatG;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=EKY74s2B;
 	dkim-atps=neutral
-Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QTWTk0pDrz30QD
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 May 2023 18:07:05 +1000 (AEST)
-Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-19f0ccea0e1so1518893fac.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 May 2023 01:07:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685261219; x=1687853219;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=by1yE0hynhTEDRPpbpoTodUbxmdRljE7mPKm8U9QdFk=;
-        b=fnTknatGPlQhQ15a1CyvW4dQecmFS+BWg52YKqkX8guDcxb9WCaGhqFA+nFTZ2/3cm
-         PabxmsBuusqR/df9thBzjAIbAgMMtjqbra3BSfxzu7vqOgfEw+LO0wR3gYGJyDHpX0v7
-         7s+1NUDCxT1wUrTFZuYBLb1D0m9o0yMLhMaxW4KvK2FXUVsjAOgu6VwJOEx1qQ9yVGDU
-         iA5Ew0F71Rw7/2wQO0sjWoi8GxQCve7hIclRfJNiYwc+zI361uwbZyI3rGIvqKY/lBRj
-         mhsUjoux3Qx2olgbECcgQ9znE/oyDC3mmURX6vJRPvK/ML/q6xZe9OWWeOnguzA9AtB+
-         u1yQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685261219; x=1687853219;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=by1yE0hynhTEDRPpbpoTodUbxmdRljE7mPKm8U9QdFk=;
-        b=g1n/2uWH2Bzw+eGBGtTchOaWmPU+09tSQz5KMwUz4DTbKZmATGrbJk1po69qZMsnur
-         QycUAM0d/k3wi16D8HFeO6hdrV5Zx/v9nNAuKQR/GdNeXReZzeuscCwE+fugnIQKTj9C
-         ZupqD8BZygcY64NgP2SECRydB+8xVEDW6RLax1caDyTmORA7Z9ZO6ZmxilVjRe5ILXRl
-         0wqXKfNQso0ql/tmFHmGAgIqz1XEWX0sCZYWQwKsEOP7ObyLh4bqkq52iAxIupdBYtu+
-         Zyw5UXRI/ABfO59c115RpomWI42x5T9YSdr7XrQBnHnV7Df6GJw9gE8XTNaxZlzfa231
-         90Fw==
-X-Gm-Message-State: AC+VfDygALdVwtU4ZYWJe4jkygdAnlRYX50qGH3HinUDhGIXCSQVp9e5
-	ZJ7buwruTq/5lSmn8Alw+Ut777SXPVdnVZ/vKAE=
-X-Google-Smtp-Source: ACHHUZ4DORFcubWv1tk/1REM7gV35BbLfs9sYcicBOzXg9amXUcfGX1a3E4PR9KGiCqPSOErmk0gIJH5lpRfKf9h/Bw=
-X-Received: by 2002:a05:6870:73d5:b0:19a:7bd0:e260 with SMTP id
- a21-20020a05687073d500b0019a7bd0e260mr3630174oan.0.1685261219452; Sun, 28 May
- 2023 01:06:59 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QTc8q24X0z30QD;
+	Sun, 28 May 2023 21:37:47 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 8756E61445;
+	Sun, 28 May 2023 11:37:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CFAFC433D2;
+	Sun, 28 May 2023 11:37:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1685273862;
+	bh=BIru6hlSNmRQGDEmy/Ww2n/Ov46kOSzrO8WVSVMyVwk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EKY74s2BqKVHsqdLZEJDtyzRLP27oRRAE5LsCzf35joLA4Bv8NFE6KwFSXzjEcDAc
+	 /QHhhuwz8E4i4TDH5lCtMbNH7ouvxh60fkkTD/Otlm/A+C79fe6sGqqSkaxM+fI2/7
+	 xnKqQUPfkVoUXTG/Y91VsilUBchm/3mfEM5jOOP0=
+Date: Sun, 28 May 2023 12:37:17 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH 00/97] usb: Convert to platform remove callback returning
+ void
+Message-ID: <2023052848-patronage-zen-de4b@gregkh>
+References: <20230517230239.187727-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-References: <CY5PR12MB64553EE96EBB3927311DB598C6459@CY5PR12MB6455.namprd12.prod.outlook.com>
- <2023052835-oxidant-doily-404f@gregkh>
-In-Reply-To: <2023052835-oxidant-doily-404f@gregkh>
-From: Immad Mir <mirimmad17@gmail.com>
-Date: Sun, 28 May 2023 13:36:48 +0530
-Message-ID: <CAJfv2=BV7GGrtG6SfRRfBaVBfdmC7cPOhH4ha0GJ_MfBka3F+Q@mail.gmail.com>
-Subject: Re: [PATCH] powerpc: fix debugfs_create_dir error checking
-To: Greg KH <gregkh@linuxfoundation.org>
-Content-Type: multipart/alternative; boundary="00000000000056dcd105fcbc74f0"
-X-Mailman-Approved-At: Sun, 28 May 2023 21:33:40 +1000
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230517230239.187727-1-u.kleine-koenig@pengutronix.de>
+X-Mailman-Approved-At: Sun, 28 May 2023 22:14:39 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,129 +59,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ivan Orlov <ivan.orlov0322@gmail.com>, mirimmad@outlook.com, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Richard Leitner <richard.leitner@linux.dev>, Tomer Maimon <tmaimon77@gmail.com>, Geert Uytterhoeven <geert+renesas@glider.be>, Linus Walleij <linus.walleij@linaro.org>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, Justin Chen <justinpopo6@gmail.com>, Alim Akhtar <alim.akhtar@samsung.com>, Hongren Zheng <i@zenithal.me>, Zheng Wang <zyytlz.wz@163.com>, Gaosheng Cui <cuigaosheng1@huawei.com>, Jerome Brunet <jbrunet@baylibre.com>, Phil Edworthy <phil.edworthy@renesas.com>, linux-samsung-soc@vger.kernel.org, Aaro Koskinen <aaro.koskinen@iki.fi>, Kevin Hilman <khilman@baylibre.com>, Artur Bujdoso <artur.bujdoso@gmail.com>, Alan Stern <stern@rowland.harvard.edu>, NXP Linux Team <linux-imx@nxp.com>, Cristian Birsan <cristian.birsan@microchip.com>, linux-tegra@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, Souradeep Chowdhury <quic_schowdhu@quicinc.com>, linux-omap@vger.kernel.org, Andrew Jeffery <andrew@aj.id.au>, Neal Liu <neal_liu@aspeedtech.com>, Peter Chen <peter.chen@
+ kernel.org>, linux-usb@vger.kernel.org, kernel@pengutronix.de, Claudiu Beznea <claudiu.beznea@microchip.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, linux-aspeed@lists.ozlabs.org, Prashanth K <quic_prashk@quicinc.com>, Thierry Reding <thierry.reding@gmail.com>, Shuah Khan <shuah@kernel.org>, Jean Delvare <jdelvare@suse.de>, Piyush Mehta <piyush.mehta@amd.com>, Jim Lin <jilin@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, Minas Harutyunyan <hminas@synopsys.com>, Haotien Hsu <haotienh@nvidia.com>, Colin Ian King <colin.i.king@gmail.com>, Kang Chen <void0red@gmail.com>, Mathias Nyman <mathias.nyman@intel.com>, Martin Blumenstingl <martin.blumenstingl@googlemail.com>, linux-arm-msm@vger.kernel.org, Aswath Govindraju <a-govindraju@ti.com>, Haojian Zhuang <haojian.zhuang@gmail.com>, Roger Quadros <rogerq@kernel.org>, Biju Das <biju.das.jz@bp.renesas.com>, linux-amlogic@lists.infradead.org, Wayne Chang <waynec@nvidia.com>, Sing-Han Chen <singhanc@nvidia.com>, linux-arm-ke
+ rnel@lists.infradead.org, Neil Armstrong <neil.armstrong@linaro.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, linux-renesas-soc@vger.kernel.org, linux-mediatek@lists.infradead.org, Darren Stevens <darren@stevens-zone.net>, Herve Codina <herve.codina@bootlin.com>, Dan Carpenter <error27@gmail.com>, Alexander Stein <alexander.stein@ew.tq-group.com>, Al Cooper <alcooperx@gmail.com>, Valentina Manea <valentina.manea.m@gmail.com>, Wolfram Sang <wsa+renesas@sang-engineering.com>, Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, Benjamin Fair <benjaminfair@google.com>, Michal Simek <michal.simek@amd.com>, Kevin Cernekee <cernekee@gmail.com>, Nancy Yuen <yuenn@google.com>, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Joel Stanley <joel@jms.id.au>, Paolo Abeni <pabeni@redhat.com>, Patrice Chotard <patrice.chotard@foss.st.com>, Arnd Bergmann <arnd@arndb.de>, "Steven Rostedt \(Google\)" <rostedt@goodmis.org>, Vladimir Zapolskiy <vz@mlei
+ a.com>, Francesco Dolcini <francesco.dolcini@toradex.com>, Olav Kongas <ok@artecdesign.ee>, Shaomin Deng <dengshaomin@cdjrlc.com>, Tang Bin <tangbin@cmss.chinamobile.com>, Avi Fishman <avifishman70@gmail.com>, Thinh Nguyen <Thinh.Nguyen@synopsys.com>, Samuel =?utf-8?B?xIxhdm9q?= <samuel@cavoj.net>, Konrad Dybcio <konrad.dybcio@linaro.org>, Guenter Roeck <linux@roeck-us.net>, Shawn Guo <shawnguo@kernel.org>, Lei YU <yulei.sh@bytedance.com>, Tali Perry <tali.perry1@gmail.com>, Robert Jarzmik <robert.jarzmik@free.fr>, Henry Tian <tianxiaofeng@bytedance.com>, openbmc@lists.ozlabs.org, Andy Gross <agross@kernel.org>, Chunfeng Yun <chunfeng.yun@mediatek.com>, Pawel Laszczak <pawell@cadence.com>, Kalle Valo <kvalo@kernel.org>, Dongliang Mu <mudongliangabcd@gmail.com>, Hans de Goede <hdegoede@redhat.com>, Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, Christophe JAILLET <christophe.jaillet@wanadoo.fr>, Matthias Brugger <matthias.bgg@gmail.com>, Andy Shevchenko <andriy.shevche
+ nko@linux.intel.com>, Emanuele Ghidoli <emanuele.ghidoli@toradex.com>, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Patrick Venture <venture@google.com>, Bjorn Andersson <andersson@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, Li Yang <leoyang.li@nxp.com>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Rui Miguel Silva <rui.silva@linaro.org>, linuxppc-dev@lists.ozlabs.org, Daniel Mack <daniel@zonque.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---00000000000056dcd105fcbc74f0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Thu, May 18, 2023 at 01:01:02AM +0200, Uwe Kleine-König wrote:
+> Hello,
+> 
+> this series convers the drivers below drivers/usb to the .remove_new()
+> callback of struct platform_driver(). The motivation is to make the
+> remove callback less prone for errors and wrong assumptions. See commit
+> 5c5a7680e67b ("platform: Provide a remove callback that returns no
+> value") for a more detailed rationale.
+> 
+> All drivers converted here already returned zero unconditionally in their
+> .remove() callback, so converting them to .remove_new() is trivial.
 
-> Why is this driver caring if debugfs is working or not at all?  It
-> should just ignore the error and keep moving forward.
+All but 2 patches applied, as one was for a driver that wasn't in the
+tree anymore, and the dwc2 patch didn't apply at all.
 
-I do not know. But, if the authors of the driver have decided to check for
-the error, maybe use the more appropriate way?
+thanks,
 
-Thanks.
-Immad.
-
-On Sun, May 28, 2023 at 1:27=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
-
-> On Sun, May 28, 2023 at 01:16:44PM +0530, mirimmad@outlook.com wrote:
-> > From: Immad Mir <mirimmad17@gmail.com>
-> >
-> > The debugfs_create_dir returns ERR_PTR incase of an error and the
-> > correct way of checking it by using the IS_ERR inline function, and
-> > not the simple null comparision. This patch fixes this.
-> >
-> > Suggested-By: Ivan Orlov <ivan.orlov0322@gmail.com>
-> > Signed-off-by: Immad Mir <mirimmad17@gmail.com>
-> > ---
-> >  arch/powerpc/platforms/powernv/opal-xscom.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/arch/powerpc/platforms/powernv/opal-xscom.c
-> b/arch/powerpc/platforms/powernv/opal-xscom.c
-> > index 6b4eed2ef..262cd6fac 100644
-> > --- a/arch/powerpc/platforms/powernv/opal-xscom.c
-> > +++ b/arch/powerpc/platforms/powernv/opal-xscom.c
-> > @@ -168,7 +168,7 @@ static int scom_debug_init_one(struct dentry *root,
-> struct device_node *dn,
-> >       ent->path.size =3D strlen((char *)ent->path.data);
-> >
-> >       dir =3D debugfs_create_dir(ent->name, root);
-> > -     if (!dir) {
-> > +     if (IS_ERR(dir)) {
-> >               kfree(ent->path.data);
-> >               kfree(ent);
-> >               return -1;
->
-> Why is this driver caring if debugfs is working or not at all?  It
-> should just ignore the error and keep moving forward.
->
-> And -1 is not a valid error number :(
->
-> Have you hit this error on this driver?
->
-> thanks,
->
-> greg k-h
->
-
---00000000000056dcd105fcbc74f0
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">&gt; Why is this driver caring if debugfs is working or no=
-t at all?=C2=A0 It<br><div>
-&gt; should just ignore the error and keep moving forward.</div><div><br></=
-div><div>I do not know. But, if the authors of the driver have decided to c=
-heck for the error, maybe use the more appropriate way?</div><div><br></div=
-><div>Thanks.</div><div>Immad.<br></div>
-</div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">=
-On Sun, May 28, 2023 at 1:27=E2=80=AFPM Greg KH &lt;<a href=3D"mailto:gregk=
-h@linuxfoundation.org">gregkh@linuxfoundation.org</a>&gt; wrote:<br></div><=
-blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-l=
-eft:1px solid rgb(204,204,204);padding-left:1ex">On Sun, May 28, 2023 at 01=
-:16:44PM +0530, <a href=3D"mailto:mirimmad@outlook.com" target=3D"_blank">m=
-irimmad@outlook.com</a> wrote:<br>
-&gt; From: Immad Mir &lt;<a href=3D"mailto:mirimmad17@gmail.com" target=3D"=
-_blank">mirimmad17@gmail.com</a>&gt;<br>
-&gt; <br>
-&gt; The debugfs_create_dir returns ERR_PTR incase of an error and the<br>
-&gt; correct way of checking it by using the IS_ERR inline function, and<br=
->
-&gt; not the simple null comparision. This patch fixes this.<br>
-&gt; <br>
-&gt; Suggested-By: Ivan Orlov &lt;<a href=3D"mailto:ivan.orlov0322@gmail.co=
-m" target=3D"_blank">ivan.orlov0322@gmail.com</a>&gt;<br>
-&gt; Signed-off-by: Immad Mir &lt;<a href=3D"mailto:mirimmad17@gmail.com" t=
-arget=3D"_blank">mirimmad17@gmail.com</a>&gt;<br>
-&gt; ---<br>
-&gt;=C2=A0 arch/powerpc/platforms/powernv/opal-xscom.c | 4 ++--<br>
-&gt;=C2=A0 1 file changed, 2 insertions(+), 2 deletions(-)<br>
-&gt; <br>
-&gt; diff --git a/arch/powerpc/platforms/powernv/opal-xscom.c b/arch/powerp=
-c/platforms/powernv/opal-xscom.c<br>
-&gt; index 6b4eed2ef..262cd6fac 100644<br>
-&gt; --- a/arch/powerpc/platforms/powernv/opal-xscom.c<br>
-&gt; +++ b/arch/powerpc/platforms/powernv/opal-xscom.c<br>
-&gt; @@ -168,7 +168,7 @@ static int scom_debug_init_one(struct dentry *root=
-, struct device_node *dn,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0ent-&gt;path.size =3D strlen((char *)ent-&gt=
-;path.data);<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0dir =3D debugfs_create_dir(ent-&gt;name, roo=
-t);<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0if (!dir) {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0if (IS_ERR(dir)) {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0kfree(ent-&gt;pa=
-th.data);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0kfree(ent);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return -1;<br>
-<br>
-Why is this driver caring if debugfs is working or not at all?=C2=A0 It<br>
-should just ignore the error and keep moving forward.<br>
-<br>
-And -1 is not a valid error number :(<br>
-<br>
-Have you hit this error on this driver?<br>
-<br>
-thanks,<br>
-<br>
-greg k-h<br>
-</blockquote></div>
-
---00000000000056dcd105fcbc74f0--
+greg k-h
