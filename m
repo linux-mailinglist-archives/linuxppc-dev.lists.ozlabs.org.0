@@ -2,111 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 364A27143D1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 May 2023 07:52:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50DC47143EC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 May 2023 08:12:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QV4Rf27p8z3fBT
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 May 2023 15:52:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QV4tl0wSGz3f7r
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 May 2023 16:12:15 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=NTyT/sjd;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=7B1W5MLw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=samsung.com (client-ip=203.254.224.24; helo=mailout1.samsung.com; envelope-from=maninder1.s@samsung.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b34; helo=mail-yb1-xb34.google.com; envelope-from=hughd@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=NTyT/sjd;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=7B1W5MLw;
 	dkim-atps=neutral
-X-Greylist: delayed 390 seconds by postgrey-1.36 at boromir; Mon, 29 May 2023 15:51:28 AEST
-Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QV4Qm1fmtz3bl3
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 May 2023 15:51:25 +1000 (AEST)
-Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
-	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20230529054442epoutp018a14210f2e49528f61372a31bbfea188~jhvdgFbYH2208922089epoutp01J
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 May 2023 05:44:42 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20230529054442epoutp018a14210f2e49528f61372a31bbfea188~jhvdgFbYH2208922089epoutp01J
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1685339082;
-	bh=VKGA7JRShMZpv9qQksUeVQx6cayrYtRJ5ilKYNP0jmE=;
-	h=From:To:Cc:Subject:Date:References:From;
-	b=NTyT/sjdXwOKF36GE+jkfCeAiwH+K4Kuu30gYW2CjFH9kJUBMCWhPCIGtMREsV+VA
-	 mii2WKxOc2VcXwW9IdMeqzthQ5ZZkb4f12JwphMQpquVRKfXqXlqIQzKP6+EluPXMW
-	 tKY99UVdtTIY4FsXy10t/zSoIQ3ZURNiUmI3OuFA=
-Received: from epsmges5p3new.samsung.com (unknown [182.195.42.75]) by
-	epcas5p1.samsung.com (KnoxPortal) with ESMTP id
-	20230529054442epcas5p174f7f1efb7ecaa25dcb51543f75c5f46~jhvc-Ls2d0107001070epcas5p1E;
-	Mon, 29 May 2023 05:44:42 +0000 (GMT)
-Received: from epcas5p4.samsung.com ( [182.195.41.42]) by
-	epsmges5p3new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	EA.1D.16380.9CB34746; Mon, 29 May 2023 14:44:41 +0900 (KST)
-Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
-	epcas5p4.samsung.com (KnoxPortal) with ESMTPA id
-	20230529052832epcas5p4fa1b8cf25d9810d32bd2ccf012086fb3~jhhVsx2dC0673106731epcas5p4b;
-	Mon, 29 May 2023 05:28:32 +0000 (GMT)
-Received: from epsmgms1p2.samsung.com (unknown [182.195.42.42]) by
-	epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
-	20230529052832epsmtrp1af9353d7aba59de1154e69418a46b28f~jhhVrzAe12525125251epsmtrp1M;
-	Mon, 29 May 2023 05:28:32 +0000 (GMT)
-X-AuditID: b6c32a4b-7dffd70000013ffc-a3-64743bc96d39
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
-	epsmgms1p2.samsung.com (Symantec Messaging Gateway) with SMTP id
-	9B.40.28392.FF734746; Mon, 29 May 2023 14:28:31 +0900 (KST)
-Received: from localhost.localdomain (unknown [107.109.224.44]) by
-	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20230529052828epsmtip2ec3d5bb5aec6f5fcd83577c21270d0c9~jhhSnoNsd1095910959epsmtip2J;
-	Mon, 29 May 2023 05:28:28 +0000 (GMT)
-From: Maninder Singh <maninder1.s@samsung.com>
-To: bcain@quicinc.com, mpe@ellerman.id.au, npiggin@gmail.com,
-	christophe.leroy@csgroup.eu, keescook@chromium.org, nathanl@linux.ibm.com,
-	ustavoars@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
-	ojeda@kernel.org, pmladek@suse.com, wedsonaf@google.com
-Subject: [PATCH 1/1] arch:hexagon/powerpc: use KSYM_NAME_LEN in array size
-Date: Mon, 29 May 2023 10:58:21 +0530
-Message-Id: <20230529052821.58175-1-maninder1.s@samsung.com>
-X-Mailer: git-send-email 2.25.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QV4sr6NMJz3f3k
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 May 2023 16:11:27 +1000 (AEST)
+Received: by mail-yb1-xb34.google.com with SMTP id 3f1490d57ef6-bacf5b89da7so4531576276.2
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 May 2023 23:11:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1685340684; x=1687932684;
+        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=zliJFPKkBRA/n2GaYWcI8flBsJ+sn1iKXV6efEOvVuc=;
+        b=7B1W5MLwR/lNmx3BIWIEBSexKnAAtAeI5OObdohvQtJ0ya6QvwHlgYFcOox2PoWx79
+         AqTZ5kdBzWLNorOsK4QCVE297PN18hQKAQbCdVGnbvFaS7kyYm3WQLVA/nvW5TUXBwEK
+         caAcy7rQi84u8SNtdxTLyllY4LVN73jaN501s4k727QQrqblWsE0z78z1nbHIMjpBe5J
+         U7bsOrnIMfDvYrfJ38H4/OhgD5cA+Y2quHyXE8xkEJQ1/qi+xCB9+P6Rf/V3USkqhcRr
+         ADhdVtWOZGV+AvVYyI9ulfCMHPe9IScFN/bL7d58cmN+M8/9WGgQpLLoAa3PpgIRJ6V+
+         lp1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685340684; x=1687932684;
+        h=mime-version:message-id:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zliJFPKkBRA/n2GaYWcI8flBsJ+sn1iKXV6efEOvVuc=;
+        b=VDDO/1smORDCgd7GvHnOQxRQPqysOtokG4xq1w5JGNxphapgqGO823Uv1WP+sQHhgm
+         vn00gLLSae8cbUG6gjWQNrrcS36UHYFBesrzl8x8LGXSGC1P8HnoFhggwTZfU+jFHY2e
+         7+BFQe5oOW4OdxvL4lUvc/cYdZeK8xZ/x1gGfJCe2krEwi7GnbTkYlx19sB6FeUVu+An
+         9rPVMMeA2zGi7UxFFFkXTjF9l1fghKDm6EWGlwIqC2Q2lH9Vpd943ncQr7RRMb/kM74D
+         FjN0E/OJf3ALLkQ6ckmXhXJlNX9oBkcs6Y6Kz0YwNggSzS4KlVIuTxLBhPjJZx9hHqWB
+         sWcg==
+X-Gm-Message-State: AC+VfDyehp7ieLhnxELBHmmcfSnq5F7yR6XJeZaVThXXQIz1+lUCBGd/
+	d+/l5KpoQoHXRNf9aHioN5kbXA==
+X-Google-Smtp-Source: ACHHUZ6vifKmHFoYdv3qrFkDElnMJbREaNq58bFiSjvre/dDskro6b5jD1pQPpN+OFNUHzxvXn3Qhw==
+X-Received: by 2002:a25:d4b:0:b0:ba8:6530:d561 with SMTP id 72-20020a250d4b000000b00ba86530d561mr10306665ybn.30.1685340684077;
+        Sun, 28 May 2023 23:11:24 -0700 (PDT)
+Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id r63-20020a252b42000000b00b7b0aba5cccsm2703954ybr.22.2023.05.28.23.11.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 28 May 2023 23:11:23 -0700 (PDT)
+Date: Sun, 28 May 2023 23:11:07 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+X-X-Sender: hugh@ripple.attlocal.net
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 00/12] mm: free retracted page table by RCU
+Message-ID: <35e983f5-7ed3-b310-d949-9ae8b130cdab@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrPKsWRmVeSWpSXmKPExsWy7bCmlu5J65IUg77/lhZ/Z29nt3i4u4XF
-	4s6k5+wWF8+8ZrQ4051r8b5lB5vF5V1z2Cx+f//HanF4fhuLxZaGQ2wWG44GW/x8cYPFYuX8
-	5YwWK3o+sFr8f/wVSLw7wmTRsXglo4Ogx+yGiyweX2+eY/JY9LKBxWNJ5y8mj52z7rJ7LNhU
-	6rFpVSebx4RFBxg9zs9YyOgxcU+dR9+WVYwe67dcZfH4vEkugDeKyyYlNSezLLVI3y6BK+P3
-	om+sBe08FdPP3WBpYOzh6mLk5JAQMJFYdHMhWxcjF4eQwG5GiVlzdjJBOJ8YJVq2XoNyPjNK
-	vNozkxmm5fDvn2C2kMAuRonOvhqIoi+MEtfvnwdLsAnoSazatYcFJCEi0MokcePwabAlzAIb
-	GSX+7lnFCFIlLOAl8eHrfFYQm0VAVeLi0w52EJtXwEbiyaxGVoh18hIzL32HigtKnJz5hAXE
-	ZgaKN2+dzQwyVELgDIdE087pQEM5gBwXiUVzCiB6hSVeHd/CDmFLSbzsb2OHKCmX2DqhHqK1
-	hVFi/5wpbBA19hJPLi5kBalhFtCUWL9LHyIsKzH11DomiLV8Er2/nzBBxHkldsyDsVUlWm5u
-	gDpZWuLzx48sELaHxKnvq1ghoRUrse/MIuYJjPKzkHwzC8k3sxA2L2BkXsUomVpQnJueWmxa
-	YJyXWq5XnJhbXJqXrpecn7uJEZwGtbx3MD568EHvECMTB+MhRgkOZiURXtvE4hQh3pTEyqrU
-	ovz4otKc1OJDjNIcLErivOq2J5OFBNITS1KzU1MLUotgskwcnFINTIuFN0aYrT3lPXV7/LeO
-	oPZSlULpPvWvjnW9sz/OWTyN99+3M3PObYwLOeLC9jCbuyCPY/lVbv6ZzYZakxcUcPwKcuhL
-	NzIy2mqbsuPk1dAjQZ6HujKZ9bb0hTUdmZ2+M75cwuHn/LceSx55iGUofcn0vLOgc/HBx5zq
-	EknnZb6uVz9r+eFYzm2xwhelyWXrA2yW5SXvnfPzwLRDYVF6z7TmH89Vec5vxu9o8Olvu4xU
-	GsdMrpksTnN2dEzvcp2z6eos6W/64R/vv2ebs/dV1l+15w9zlERnt+5drBMSduPGbW/b3gxL
-	Lp8j7//UqPEuvPp37jXhgxwB7qkNUU5ubNuf/XG4cb0oT/GyqbNqqxJLcUaioRZzUXEiAJrs
-	hsPyAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpjkeLIzCtJLcpLzFFi42LZdlhJXve/eUmKwZPrNhZ/Z29nt3i4u4XF
-	4s6k5+wWF8+8ZrQ4051r8b5lB5vF5V1z2Cx+f//HanF4fhuLxZaGQ2wWG44GW/x8cYPFYuX8
-	5YwWK3o+sFr8f/wVSLw7wmTRsXglo4Ogx+yGiyweX2+eY/JY9LKBxWNJ5y8mj52z7rJ7LNhU
-	6rFpVSebx4RFBxg9zs9YyOgxcU+dR9+WVYwe67dcZfH4vEkugDeKyyYlNSezLLVI3y6BK+P3
-	om+sBe08FdPP3WBpYOzh6mLk5JAQMJE4/PsncxcjF4eQwA5GiYW7X7FCJKQlfv57zwJhC0us
-	/PecHaLoE6PE7tdnwRJsAnoSq3btYQFJiAhMZZKY8vo+G0iCWWAro8SSK/UgtrCAl8SHr/PB
-	prIIqEpcfNrBDmLzCthIPJnVCLVNXmLmpe9QcUGJkzOfsEDMkZdo3jqbeQIj3ywkqVlIUgsY
-	mVYxSqYWFOem5xYbFhjlpZbrFSfmFpfmpesl5+duYgRHlZbWDsY9qz7oHWJk4mA8xCjBwawk
-	wmubWJwixJuSWFmVWpQfX1Sak1p8iFGag0VJnPdC18l4IYH0xJLU7NTUgtQimCwTB6dUA9Ne
-	E2HTExmS6ce+nW786zprzUHdGNPWp0pnYkqu3/6Zf1DZmU/50PHz23T2+Kz0auuaGFRwpHej
-	5NyebVI5OlMEpq8UE663XFu8/Pe/WVVLtwhemmzgpeypsLp+Uva8CazrWDuOf5m+9ambMd8h
-	zR2F649/FTNjfzJv4Q0hbpn+0g+JonyikVFyNxcUveKNuF8m69lxR3Txl8ArlaUchm/cZyw6
-	6FLAaXLMmaWCrVrWJaf3fOyCZRfuCHU+SZMzTNn6Ym5L+oWwC5N5P/qH9lyyr+j0Nym+civu
-	FKf9nrjyOcv/fZyTuHuqzsTfadIS7hsslp/buUk5PcVCZMuHX5Osv26zFpTrdk/60fNehV2J
-	pTgj0VCLuag4EQDXWk9QGQMAAA==
-X-CMS-MailID: 20230529052832epcas5p4fa1b8cf25d9810d32bd2ccf012086fb3
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: REQ_APPROVE
-CMS-TYPE: 105P
-X-CMS-RootMailID: 20230529052832epcas5p4fa1b8cf25d9810d32bd2ccf012086fb3
-References: <CGME20230529052832epcas5p4fa1b8cf25d9810d32bd2ccf012086fb3@epcas5p4.samsung.com>
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -118,53 +74,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Maninder Singh <maninder1.s@samsung.com>, linux-hexagon@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Onkarnath <onkarnath.1@samsung.com>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Yang Shi <shy828301@gmail.com>, Peter Xu <peterx@redhat.com>, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Yu Zhao <yuzhao@google.com>, Ira Weiny <ira.weiny@intel.com>, Alistair Popple <apopple@nvidia.com>, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, Steven Price <steven.price@arm.com>, Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Axel Rasmussen <axelrasmussen@google.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Thomas Hellstrom <thomas.hellstrom@linux.intel.com>, Ralph Campbell <rcampbell@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, Anshuman Khandual <anshuman.khandual@arm.com>, Heiko Ca
+ rstens <hca@linux.ibm.com>, Qi Zheng <zhengqi.arch@bytedance.com>, Suren Baghdasaryan <surenb@google.com>, linux-arm-kernel@lists.infradead.org, SeongJae Park <sj@kernel.org>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Naoya Horiguchi <naoya.horiguchi@nec.com>, linux-kernel@vger.kernel.org, Minchan Kim <minchan@kernel.org>, Mike Rapoport <rppt@kernel.org>, Mel Gorman <mgorman@techsingularity.net>, "David S. Miller" <davem@davemloft.net>, Zack Rusin <zackr@vmware.com>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-kallsyms_lookup which in turn calls for kallsyms_lookup_buildid()
-writes on index "KSYM_NAME_LEN - 1".
+Here is the third series of patches to mm (and a few architectures), based
+on v6.4-rc3 with the preceding two series applied: in which khugepaged
+takes advantage of pte_offset_map[_lock]() allowing for pmd transitions.
 
-Thus array size should be KSYM_NAME_LEN.
+This follows on from the "arch: allow pte_offset_map[_lock]() to fail"
+https://lore.kernel.org/linux-mm/77a5d8c-406b-7068-4f17-23b7ac53bc83@google.com/
+series of 23 posted on 2023-05-09,
+and the "mm: allow pte_offset_map[_lock]() to fail"
+https://lore.kernel.org/linux-mm/68a97fbe-5c1e-7ac6-72c-7b9c6290b370@google.com/
+series of 31 posted on 2023-05-21.
 
-for powerpc and hexagon it was defined as "128" directly.
-and commit '61968dbc2d5d' changed define value to 512,
-So both were missed to update with new size.
+Those two series were "independent": neither depending for build or
+correctness on the other, but both series needed before this third one
+can safely make the effective changes.  I'll send v2 of those two series
+in a couple of days, incorporating Acks and Revieweds and the minor fixes.
 
-Fixes: 61968dbc2d5d ("kallsyms: increase maximum kernel symbol length to 512")
-Signed-off-by: Onkarnath <onkarnath.1@samsung.com>
-Signed-off-by: Maninder Singh <maninder1.s@samsung.com>
----
- arch/hexagon/kernel/traps.c | 2 +-
- arch/powerpc/xmon/xmon.c    | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+What is it all about?  Some mmap_lock avoidance i.e. latency reduction.
+Initially just for the case of collapsing shmem or file pages to THPs:
+the usefulness of MADV_COLLAPSE on shmem is being limited by that
+mmap_write_lock it currently requires.
 
-diff --git a/arch/hexagon/kernel/traps.c b/arch/hexagon/kernel/traps.c
-index 6447763ce5a9..65b30b6ea226 100644
---- a/arch/hexagon/kernel/traps.c
-+++ b/arch/hexagon/kernel/traps.c
-@@ -82,7 +82,7 @@ static void do_show_stack(struct task_struct *task, unsigned long *fp,
- 	const char *name = NULL;
- 	unsigned long *newfp;
- 	unsigned long low, high;
--	char tmpstr[128];
-+	char tmpstr[KSYM_NAME_LEN];
- 	char *modname;
- 	int i;
- 
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index 728d3c257e4a..70c4c59a1a8f 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -88,7 +88,7 @@ static unsigned long ndump = 64;
- static unsigned long nidump = 16;
- static unsigned long ncsum = 4096;
- static int termch;
--static char tmpstr[128];
-+static char tmpstr[KSYM_NAME_LEN];
- static int tracing_enabled;
- 
- static long bus_error_jmp[JMP_BUF_LEN];
--- 
-2.17.1
+Likely to be relied upon later in other contexts e.g. freeing of
+empty page tables (but that's not work I'm doing).  mmap_write_lock
+avoidance when collapsing to anon THPs?  Perhaps, but again that's not
+work I've done: a quick attempt was not as easy as the shmem/file case.
 
+These changes (though of course not these exact patches) have been in
+Google's data centre kernel for three years now: we do rely upon them.
+
+Based on the preceding two series over v6.4-rc3, but good over
+v6.4-rc[1-4], current mm-everything or current linux-next.
+
+01/12 mm/pgtable: add rcu_read_lock() and rcu_read_unlock()s
+02/12 mm/pgtable: add PAE safety to __pte_offset_map()
+03/12 arm: adjust_pte() use pte_offset_map_nolock()
+04/12 powerpc: assert_pte_locked() use pte_offset_map_nolock()
+05/12 powerpc: add pte_free_defer() for pgtables sharing page
+06/12 sparc: add pte_free_defer() for pgtables sharing page
+07/12 s390: add pte_free_defer(), with use of mmdrop_async()
+08/12 mm/pgtable: add pte_free_defer() for pgtable as page
+09/12 mm/khugepaged: retract_page_tables() without mmap or vma lock
+10/12 mm/khugepaged: collapse_pte_mapped_thp() with mmap_read_lock()
+11/12 mm/khugepaged: delete khugepaged_collapse_pte_mapped_thps()
+12/12 mm: delete mmap_write_trylock() and vma_try_start_write()
+
+ arch/arm/mm/fault-armv.c            |   3 +-
+ arch/powerpc/include/asm/pgalloc.h  |   4 +
+ arch/powerpc/mm/pgtable-frag.c      |  18 ++
+ arch/powerpc/mm/pgtable.c           |  16 +-
+ arch/s390/include/asm/pgalloc.h     |   4 +
+ arch/s390/mm/pgalloc.c              |  34 +++
+ arch/sparc/include/asm/pgalloc_64.h |   4 +
+ arch/sparc/mm/init_64.c             |  16 ++
+ include/linux/mm.h                  |  17 --
+ include/linux/mm_types.h            |   2 +-
+ include/linux/mmap_lock.h           |  10 -
+ include/linux/pgtable.h             |   6 +-
+ include/linux/sched/mm.h            |   1 +
+ kernel/fork.c                       |   2 +-
+ mm/khugepaged.c                     | 425 ++++++++----------------------
+ mm/pgtable-generic.c                |  44 +++-
+ 16 files changed, 253 insertions(+), 353 deletions(-)
+
+Hugh
