@@ -2,49 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E04F714B49
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 May 2023 15:59:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF0B6714B78
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 May 2023 16:04:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QVHFn1yXBz3f7v
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 May 2023 23:59:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QVHMC6CJLz3fGG
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 May 2023 00:04:07 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=fuY62XaN;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=lDre3Kyc;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=fuY62XaN;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=lDre3Kyc;
 	dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QVHDs1mx1z3bbZ
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 May 2023 23:58:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QVHLQ1HJSz30QD
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 May 2023 00:03:26 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=daJr36z+xkb/H/fiOexwZNK30Bl/V66a5KNArnHZvM8=; b=fuY62XaNQ1pid4PNx3bW9OvYFH
-	W2MZp/QZXjFmThuV9a1DJcWOd+JYQNxPMJygXk9c0KUuaPqy0M9u/r+Vs27UTvHbWDtYVnA+RTTp6
-	jB78eAY5YpAKoIS/61GR1/oSnkSEWJbGBUTSyEmZ9+18f/mzDRAupMRvltvNWDYeS4BcrG9tm2BJf
-	9eiEdU9vtilsjcpBoR5QNebyugV+d/7DnGaOatu9kYBzf4L0AOTycICgaBuWc/MrIP0hG9cSOgII0
-	Ru6GHGxtFSG/YbqlMBCcSBH4IipXcVzJCce6Tp4PdiiqApnnSuEbaBiJJr4ds9zEpfuv9ZaAXKVgR
-	jTQB7oWw==;
+	bh=8n/gSgUfVLp+2xUxKUXJObyidN3fOaenRgCYrh0plbg=; b=lDre3KycVopHJgQtSVi6Ft0h2+
+	/6KcXeh5DDgTYRWUam42o5WNWijcaqCZOd3dx2HAurqm8z1fldvnXLpCnoSy0NLLn08cXknKDuPGQ
+	gYTInVr7Mv6sz5/UedpbbXKAgGCEtbEPUwJS3HU859+6q2mrf+Vst5r6bVYq4QYO4FOSwRHoda1Dn
+	5iV/2BvS3JTHI2796pUfUpALVlmDgyKCBvF/8JWEkyCLv2cJ9H9RqEbD681UXQ5f6iLi2mlHWJs6k
+	+YJbLW+C+/rFR09hhGpAEembhtRGCh+/zp9btJ5yU++252/kk/VTdEAS56sP+b2VQVAXRo/gquNr/
+	Yo5hUC4w==;
 Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1q3dMZ-005SA0-VJ; Mon, 29 May 2023 13:56:44 +0000
-Date: Mon, 29 May 2023 14:56:43 +0100
+	id 1q3dRi-005SM1-Ch; Mon, 29 May 2023 14:02:02 +0000
+Date: Mon, 29 May 2023 15:02:02 +0100
 From: Matthew Wilcox <willy@infradead.org>
 To: Hugh Dickins <hughd@google.com>
-Subject: Re: [PATCH 02/12] mm/pgtable: add PAE safety to __pte_offset_map()
-Message-ID: <ZHSvG8UIaq14I/5p@casper.infradead.org>
+Subject: Re: [PATCH 05/12] powerpc: add pte_free_defer() for pgtables sharing
+ page
+Message-ID: <ZHSwWgLWaEd+zi/g@casper.infradead.org>
 References: <35e983f5-7ed3-b310-d949-9ae8b130cdab@google.com>
- <923480d5-35ab-7cac-79d0-343d16e29318@google.com>
+ <28eb289f-ea2c-8eb9-63bb-9f7d7b9ccc11@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <923480d5-35ab-7cac-79d0-343d16e29318@google.com>
+In-Reply-To: <28eb289f-ea2c-8eb9-63bb-9f7d7b9ccc11@google.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,22 +62,18 @@ Cc: Miaohe Lin <linmiaohe@huawei.com>, David Hildenbrand <david@redhat.com>, Pet
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, May 28, 2023 at 11:16:16PM -0700, Hugh Dickins wrote:
-> +#if defined(CONFIG_GUP_GET_PXX_LOW_HIGH) && \
-> +	(defined(CONFIG_SMP) || defined(CONFIG_PREEMPT_RCU))
-> +/*
-> + * See the comment above ptep_get_lockless() in include/linux/pgtable.h:
-> + * the barriers in pmdp_get_lockless() cannot guarantee that the value in
-> + * pmd_high actually belongs with the value in pmd_low; but holding interrupts
-> + * off blocks the TLB flush between present updates, which guarantees that a
-> + * successful __pte_offset_map() points to a page from matched halves.
-> + */
-> +#define config_might_irq_save(flags)	local_irq_save(flags)
-> +#define config_might_irq_restore(flags)	local_irq_restore(flags)
-> +#else
-> +#define config_might_irq_save(flags)
-> +#define config_might_irq_restore(flags)
+On Sun, May 28, 2023 at 11:20:21PM -0700, Hugh Dickins wrote:
+> +void pte_free_defer(struct mm_struct *mm, pgtable_t pgtable)
+> +{
+> +	struct page *page;
+> +
+> +	page = virt_to_page(pgtable);
+> +	call_rcu(&page->rcu_head, pte_free_now);
+> +}
 
-I don't like the name.  It should indicate that it's PMD-related, so
-pmd_read_start(flags) / pmd_read_end(flags)?
+This can't be safe (on ppc).  IIRC you might have up to 16x4k page
+tables sharing one 64kB page.  So if you have two page tables from the
+same page being defer-freed simultaneously, you'll reuse the rcu_head
+and I cannot imagine things go well from that point.
 
+I have no idea how to solve this problem.
