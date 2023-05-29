@@ -2,112 +2,111 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EEDA714168
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 May 2023 02:47:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 364A27143D1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 May 2023 07:52:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QTxgt1ZC2z3f7d
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 May 2023 10:47:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QV4Rf27p8z3fBT
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 May 2023 15:52:14 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=GGeDvTr0;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=NTyT/sjd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f400:7e89::60c; helo=nam10-mw2-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=samsung.com (client-ip=203.254.224.24; helo=mailout1.samsung.com; envelope-from=maninder1.s@samsung.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=GGeDvTr0;
+	dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=NTyT/sjd;
 	dkim-atps=neutral
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2060c.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e89::60c])
+X-Greylist: delayed 390 seconds by postgrey-1.36 at boromir; Mon, 29 May 2023 15:51:28 AEST
+Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QTxfx5hdyz3bqx
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 May 2023 10:46:30 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=l2JDQuy5PpuF1wlkvj5dQQPEfMMyWDi+7MLWteOVpQkCzBpNUEXafWflg0p9/LYafysj59v6sZwmDgswykonjhWcYjK4jyVZT0pcF1zM2jPyJTieogpitcljegDQy+mq6AB4dZrxHRl3dSDBZRD9PBBfwe5lCgDbNAS4aG+F878zmt8LUz6NF7ashkvyLlau44VOET7QYYnulZK3RRCppHmWH8y4GmH7VrTAJNzGgkCWuSaOPD+V10raQ5tdCl95hvpE5CnlVVMmBEkZv5q/hIZKPleMgNYEjh5SyQ1k9Ug53OYYIyNe0jtKem6WfNlGEBEERv1i1njDpPaZCbScMQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eVMyjlvg/KlrSG6hdT6cZXpbFu0qwmoujW4rupeqVzQ=;
- b=TQVl/BOgAvSXZ6D41+38rgfrIuBReQGNzbl9eyc4g1uBHFzmxR5GcX6A7bghtzvMsJSv4++bf4ZJT2Y6R7IMm1oP9MHA47KqFFg91RjGvox2Gxdl9zHqCG3VH7dKInPMc8ELc9QOVFTSddj9+qtTdAqb5LMpjlfp1iGnVNZ4v7HC2646Z4df1BSXicGNVCE+PnXCTBLfNyX08h5TyTLmFRoa3G4RTNDxbZLg54AQnVWSpW5h2UX8dW28hfDeCwAQAyF4uLRtnAOydvGjfmDVGjL/twJ6v0nuX5UZqKCFpr0cYCGR9XGExwq8WHiV4AtWRWLHJE56g8DCA+H8LVlwfQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eVMyjlvg/KlrSG6hdT6cZXpbFu0qwmoujW4rupeqVzQ=;
- b=GGeDvTr0vD7wyt7WaB+eldrORNImAUrWXhuw1WtwTTX6i5vJrNIyrzz5xjz0ZnQwuFDA0oBeVEP6Wn+eTp/GbQ2sL71HZe34B5K+ATmBn3YhinrOEjRYGkC1M4fRBP6E7ndXZuFKtDKxuHmHShLTxqfRKap2dJfBmw+tts+49HRRZVesWM0pukb5MHT6Fnix+Cc/tLmjPPkjkJ2qhfJsu/K65egctNMLhz+fXymKxq5QOrFKbc3kB99Kcx/RZ5zyVTdRi5VX9sHzItVgQzD6esKu/r8xZjNhHfIYWZj8c9WI77cD6brYAi74g3hd8wvbh4KkTVhv+REGzAtMTQOotg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
- by MW4PR12MB5665.namprd12.prod.outlook.com (2603:10b6:303:187::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.22; Mon, 29 May
- 2023 00:46:08 +0000
-Received: from LV2PR12MB5869.namprd12.prod.outlook.com
- ([fe80::f7a7:a561:87e9:5fab]) by LV2PR12MB5869.namprd12.prod.outlook.com
- ([fe80::f7a7:a561:87e9:5fab%6]) with mapi id 15.20.6433.017; Mon, 29 May 2023
- 00:46:08 +0000
-Date: Sun, 28 May 2023 21:46:06 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Joerg Roedel <joro@8bytes.org>, Li Yang <leoyang.li@nxp.com>
-Subject: Re: [PATCH v2 0/3] Remove iommu_group_remove_device() from fsl
-Message-ID: <ZHP1zv48iZUV5Ypj@nvidia.com>
-References: <0-v2-ce71068deeec+4cf6-fsl_rm_groups_jgg@nvidia.com>
- <ZGxcmJ3vH0Smqqxu@8bytes.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZGxcmJ3vH0Smqqxu@8bytes.org>
-X-ClientProxiedBy: MN2PR19CA0020.namprd19.prod.outlook.com
- (2603:10b6:208:178::33) To LV2PR12MB5869.namprd12.prod.outlook.com
- (2603:10b6:408:176::16)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QV4Qm1fmtz3bl3
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 May 2023 15:51:25 +1000 (AEST)
+Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
+	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20230529054442epoutp018a14210f2e49528f61372a31bbfea188~jhvdgFbYH2208922089epoutp01J
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 May 2023 05:44:42 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20230529054442epoutp018a14210f2e49528f61372a31bbfea188~jhvdgFbYH2208922089epoutp01J
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1685339082;
+	bh=VKGA7JRShMZpv9qQksUeVQx6cayrYtRJ5ilKYNP0jmE=;
+	h=From:To:Cc:Subject:Date:References:From;
+	b=NTyT/sjdXwOKF36GE+jkfCeAiwH+K4Kuu30gYW2CjFH9kJUBMCWhPCIGtMREsV+VA
+	 mii2WKxOc2VcXwW9IdMeqzthQ5ZZkb4f12JwphMQpquVRKfXqXlqIQzKP6+EluPXMW
+	 tKY99UVdtTIY4FsXy10t/zSoIQ3ZURNiUmI3OuFA=
+Received: from epsmges5p3new.samsung.com (unknown [182.195.42.75]) by
+	epcas5p1.samsung.com (KnoxPortal) with ESMTP id
+	20230529054442epcas5p174f7f1efb7ecaa25dcb51543f75c5f46~jhvc-Ls2d0107001070epcas5p1E;
+	Mon, 29 May 2023 05:44:42 +0000 (GMT)
+Received: from epcas5p4.samsung.com ( [182.195.41.42]) by
+	epsmges5p3new.samsung.com (Symantec Messaging Gateway) with SMTP id
+	EA.1D.16380.9CB34746; Mon, 29 May 2023 14:44:41 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+	epcas5p4.samsung.com (KnoxPortal) with ESMTPA id
+	20230529052832epcas5p4fa1b8cf25d9810d32bd2ccf012086fb3~jhhVsx2dC0673106731epcas5p4b;
+	Mon, 29 May 2023 05:28:32 +0000 (GMT)
+Received: from epsmgms1p2.samsung.com (unknown [182.195.42.42]) by
+	epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+	20230529052832epsmtrp1af9353d7aba59de1154e69418a46b28f~jhhVrzAe12525125251epsmtrp1M;
+	Mon, 29 May 2023 05:28:32 +0000 (GMT)
+X-AuditID: b6c32a4b-7dffd70000013ffc-a3-64743bc96d39
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+	epsmgms1p2.samsung.com (Symantec Messaging Gateway) with SMTP id
+	9B.40.28392.FF734746; Mon, 29 May 2023 14:28:31 +0900 (KST)
+Received: from localhost.localdomain (unknown [107.109.224.44]) by
+	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20230529052828epsmtip2ec3d5bb5aec6f5fcd83577c21270d0c9~jhhSnoNsd1095910959epsmtip2J;
+	Mon, 29 May 2023 05:28:28 +0000 (GMT)
+From: Maninder Singh <maninder1.s@samsung.com>
+To: bcain@quicinc.com, mpe@ellerman.id.au, npiggin@gmail.com,
+	christophe.leroy@csgroup.eu, keescook@chromium.org, nathanl@linux.ibm.com,
+	ustavoars@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
+	ojeda@kernel.org, pmladek@suse.com, wedsonaf@google.com
+Subject: [PATCH 1/1] arch:hexagon/powerpc: use KSYM_NAME_LEN in array size
+Date: Mon, 29 May 2023 10:58:21 +0530
+Message-Id: <20230529052821.58175-1-maninder1.s@samsung.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|MW4PR12MB5665:EE_
-X-MS-Office365-Filtering-Correlation-Id: ea622c01-bf7d-42ff-54cd-08db5fde1736
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	w1RM5uAXMXErVn30ZOtAj8K9b0wZBQYp4znaaX2ZnhTFotDzLnSz/bWxWCrnVHVrWYIFEFYPjcwcduyxl2dzSVjfmnWA4qt2WvLtbqGzpgTjwx6+gWUg7YzNKsRUF4ppLSkAo5gllPDU+jfeGWdYx1NcYbOET113PiSugke8UATzWlbQfLXHU8WRdXn0x7cBmTqThbL/AIRw67e/LE9VdOZkfT+aquyh+VsFy8n4zxKCu765J+Zr0sl1vqX4gDq/g4NgZsdNfN1WhazEPDNiHOlAbYiSOMKTcHch5CKFsGSQ6qsT1qZ6sCwVw5WaM9046VyPqJZMu3tnAW6vz50gyV3pUZS0NbXl2jaEqiaWKLcjOSXgNIokWFKDkZHDwQ8ov8Ek7onRfnEy/W6mPzw5kaLoHluvUk+YkeAnvgXYHhFLVV3zoxkSlrncAssWvXFyCKMlEUOSw1VCdL0lJoAqQx72zEAcL6FMjnszEs1jPLBl9OiAAQsFuUUKqqcAn3lM1nhsMAC5+pnaAJzkIRojrDmoTUAFVHUYkIYT3LuMxNt3VTFCp1CWY5O4a1aFF+jbru3jKUHimJZF3CPHREKC8CYVY3IX0hpED/OU81u1cO4=
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5869.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(376002)(136003)(346002)(39860400002)(366004)(451199021)(6506007)(6512007)(186003)(2906002)(2616005)(54906003)(110136005)(26005)(478600001)(83380400001)(86362001)(8936002)(8676002)(6486002)(966005)(38100700002)(41300700001)(5660300002)(36756003)(66476007)(316002)(66946007)(66556008)(4326008);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?aRtfgznu6TVsI8SdTr9cm0B7m7L+NCP2jIICnLkmZwQzKsUiCbavNQlM9ujT?=
- =?us-ascii?Q?7TEo+ufYFQ5fVwbYqXRZ/LeWYqZcphH9qmyLaNgeMc/YNxB79PUIPEfbfoB4?=
- =?us-ascii?Q?Mhby3dHgNoVv0RXjmGj6dDOcpWA7pwWMBjXss2SQcJqGmIeSjt7srCSH0Nbt?=
- =?us-ascii?Q?nHIyfoT42BzMn4EHVbPi3WWijPZzz702ETrxYlrih4hUIKUUfHS7DpPqj121?=
- =?us-ascii?Q?fWPLU+aVsgNUqstlzUfrmTr12fgNgFNmaQQxQivvKl1kyUAqR7mApVHaKQvY?=
- =?us-ascii?Q?js4gxDmOGn7q4CjvqI+RHXItYGRFpvxLpZF1Xh66EBAEbIIyda49odU5Cqzc?=
- =?us-ascii?Q?IXpzKazS8C4vJk5REq4/EWt4K2Mbx/qhUNanghsCNkU8BbUJ1P7Ve8Ca46mG?=
- =?us-ascii?Q?tCMYM3AEtWm5oxC/L+2/STrckDw2C/4CgfMC/BmpUsyEdtqNK1kyMwqozjyX?=
- =?us-ascii?Q?l6CjTnVNIPhIEn5rgBmsTyabUUlqSCiJIOpX/S6m4zbV9f/1zhgmWmnA1ZoE?=
- =?us-ascii?Q?1lbvmt7qdQUhzpoEBXX+2+b1g2hN2JgnSq4e3/EZuKnoDTQb5GGkHai7Yrek?=
- =?us-ascii?Q?x8Ja91pLJ1j+wiKS8ZFpzFqwPkmQxZB03SoLryCnsOS2/m+q6kucKFVQNlB3?=
- =?us-ascii?Q?9Q6DZ/x2LC1/xa/XGRCf4RCQBho5yGrrpwOMPW1z4JfsIl2iaxsR02WXDg4g?=
- =?us-ascii?Q?pNn2Vkd2f8oLIZ/DlcH8BIENLDJ/H7xRXVa4dai6uBA+94oj5TM2i+yzeYUc?=
- =?us-ascii?Q?L+lZcesyajdQLRWxpo/7XQAEh2ZdCoIhpRSJVsKce6As+1NJTHfDh7VOX+Oy?=
- =?us-ascii?Q?ujQlbW5Beb7c/nlnus7HFZUnhwRiU8eotRwzoaU/7CgdtuvlvJI6CcsTuRE6?=
- =?us-ascii?Q?UcvpY92+NOcesmfGWilQKz0Jvjb5EDLVV/03sSiT0u+gw3ZADCaJImM1WSRM?=
- =?us-ascii?Q?fVJSIqOPnmZf0BPhFwwOyGy/KXIHGz5RKRSWQiKcX7Ynd8Dq9R62M3HniWf6?=
- =?us-ascii?Q?ch12Nlg10rXhjR9upKJF6JmVKX7ksIexSIqq1SpBZw2lZ8iLihUsuXKRAKVk?=
- =?us-ascii?Q?Zv2nN18j870sdXGLCoWcJwaOc/y2ZWSe8jVBXlocwl64f6WJpUZGDmdhDe9A?=
- =?us-ascii?Q?wOcvwUse+CYbqc3Y+2rYQuzDzMcMfkfSxQI1hiA8IBSgSGDcxZjhkyJn/2DL?=
- =?us-ascii?Q?IeOT+yniEaPmKAaGuBTIZq/XXz9xgAeKnKh6aMEM+RblajuZ0LAsMAB9326H?=
- =?us-ascii?Q?9FK+e3S8aKGHl/64sqKD19yiQSYs0E4DXRHUDtnFbE7MYZf5NHHvynr3CMHp?=
- =?us-ascii?Q?AZ9avHHQidr1rGZONNv6hgaQrDDLdttsbe5kmFgByuHRSgRUt+hjRBxBL2QG?=
- =?us-ascii?Q?cRWWYDHzqGPhhZyEU6VqUT2qn3W3e/tD/UEGrpPwrulDvVyeJAn9fTriW39I?=
- =?us-ascii?Q?Pacxaa0gREK5/z5Ijrq6HCYa4c0u8nk6wcKOSvGH1TBX6lV4jMXhftBI728E?=
- =?us-ascii?Q?oTwh8pnHQ6vtdZW4dJIuc4RvHdgaWu2pc9zWPXZ8MkRm2aI37Mt56kA9i0Vj?=
- =?us-ascii?Q?ATwkFrtIYl8K28F+N4Q=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ea622c01-bf7d-42ff-54cd-08db5fde1736
-X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2023 00:46:08.1263
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PracepHHgI6o1uh/vdcTqYQLrrOjNQZBKXCnqdnevs9KPtz7v+rigfyLB5Sz1OpQ
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB5665
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrPKsWRmVeSWpSXmKPExsWy7bCmlu5J65IUg77/lhZ/Z29nt3i4u4XF
+	4s6k5+wWF8+8ZrQ4051r8b5lB5vF5V1z2Cx+f//HanF4fhuLxZaGQ2wWG44GW/x8cYPFYuX8
+	5YwWK3o+sFr8f/wVSLw7wmTRsXglo4Ogx+yGiyweX2+eY/JY9LKBxWNJ5y8mj52z7rJ7LNhU
+	6rFpVSebx4RFBxg9zs9YyOgxcU+dR9+WVYwe67dcZfH4vEkugDeKyyYlNSezLLVI3y6BK+P3
+	om+sBe08FdPP3WBpYOzh6mLk5JAQMJFYdHMhWxcjF4eQwG5GiVlzdjJBOJ8YJVq2XoNyPjNK
+	vNozkxmm5fDvn2C2kMAuRonOvhqIoi+MEtfvnwdLsAnoSazatYcFJCEi0MokcePwabAlzAIb
+	GSX+7lnFCFIlLOAl8eHrfFYQm0VAVeLi0w52EJtXwEbiyaxGVoh18hIzL32HigtKnJz5hAXE
+	ZgaKN2+dzQwyVELgDIdE087pQEM5gBwXiUVzCiB6hSVeHd/CDmFLSbzsb2OHKCmX2DqhHqK1
+	hVFi/5wpbBA19hJPLi5kBalhFtCUWL9LHyIsKzH11DomiLV8Er2/nzBBxHkldsyDsVUlWm5u
+	gDpZWuLzx48sELaHxKnvq1ghoRUrse/MIuYJjPKzkHwzC8k3sxA2L2BkXsUomVpQnJueWmxa
+	YJyXWq5XnJhbXJqXrpecn7uJEZwGtbx3MD568EHvECMTB+MhRgkOZiURXtvE4hQh3pTEyqrU
+	ovz4otKc1OJDjNIcLErivOq2J5OFBNITS1KzU1MLUotgskwcnFINTIuFN0aYrT3lPXV7/LeO
+	oPZSlULpPvWvjnW9sz/OWTyN99+3M3PObYwLOeLC9jCbuyCPY/lVbv6ZzYZakxcUcPwKcuhL
+	NzIy2mqbsuPk1dAjQZ6HujKZ9bb0hTUdmZ2+M75cwuHn/LceSx55iGUofcn0vLOgc/HBx5zq
+	EknnZb6uVz9r+eFYzm2xwhelyWXrA2yW5SXvnfPzwLRDYVF6z7TmH89Vec5vxu9o8Olvu4xU
+	GsdMrpksTnN2dEzvcp2z6eos6W/64R/vv2ebs/dV1l+15w9zlERnt+5drBMSduPGbW/b3gxL
+	Lp8j7//UqPEuvPp37jXhgxwB7qkNUU5ubNuf/XG4cb0oT/GyqbNqqxJLcUaioRZzUXEiAJrs
+	hsPyAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpjkeLIzCtJLcpLzFFi42LZdlhJXve/eUmKwZPrNhZ/Z29nt3i4u4XF
+	4s6k5+wWF8+8ZrQ4051r8b5lB5vF5V1z2Cx+f//HanF4fhuLxZaGQ2wWG44GW/x8cYPFYuX8
+	5YwWK3o+sFr8f/wVSLw7wmTRsXglo4Ogx+yGiyweX2+eY/JY9LKBxWNJ5y8mj52z7rJ7LNhU
+	6rFpVSebx4RFBxg9zs9YyOgxcU+dR9+WVYwe67dcZfH4vEkugDeKyyYlNSezLLVI3y6BK+P3
+	om+sBe08FdPP3WBpYOzh6mLk5JAQMJE4/PsncxcjF4eQwA5GiYW7X7FCJKQlfv57zwJhC0us
+	/PecHaLoE6PE7tdnwRJsAnoSq3btYQFJiAhMZZKY8vo+G0iCWWAro8SSK/UgtrCAl8SHr/PB
+	prIIqEpcfNrBDmLzCthIPJnVCLVNXmLmpe9QcUGJkzOfsEDMkZdo3jqbeQIj3ywkqVlIUgsY
+	mVYxSqYWFOem5xYbFhjlpZbrFSfmFpfmpesl5+duYgRHlZbWDsY9qz7oHWJk4mA8xCjBwawk
+	wmubWJwixJuSWFmVWpQfX1Sak1p8iFGag0VJnPdC18l4IYH0xJLU7NTUgtQimCwTB6dUA9Ne
+	E2HTExmS6ce+nW786zprzUHdGNPWp0pnYkqu3/6Zf1DZmU/50PHz23T2+Kz0auuaGFRwpHej
+	5NyebVI5OlMEpq8UE663XFu8/Pe/WVVLtwhemmzgpeypsLp+Uva8CazrWDuOf5m+9ambMd8h
+	zR2F649/FTNjfzJv4Q0hbpn+0g+JonyikVFyNxcUveKNuF8m69lxR3Txl8ArlaUchm/cZyw6
+	6FLAaXLMmaWCrVrWJaf3fOyCZRfuCHU+SZMzTNn6Ym5L+oWwC5N5P/qH9lyyr+j0Nym+civu
+	FKf9nrjyOcv/fZyTuHuqzsTfadIS7hsslp/buUk5PcVCZMuHX5Osv26zFpTrdk/60fNehV2J
+	pTgj0VCLuag4EQDXWk9QGQMAAA==
+X-CMS-MailID: 20230529052832epcas5p4fa1b8cf25d9810d32bd2ccf012086fb3
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: REQ_APPROVE
+CMS-TYPE: 105P
+X-CMS-RootMailID: 20230529052832epcas5p4fa1b8cf25d9810d32bd2ccf012086fb3
+References: <CGME20230529052832epcas5p4fa1b8cf25d9810d32bd2ccf012086fb3@epcas5p4.samsung.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -119,45 +118,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Nicholas Piggin <npiggin@gmail.com>, iommu@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
+Cc: Maninder Singh <maninder1.s@samsung.com>, linux-hexagon@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Onkarnath <onkarnath.1@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 23, 2023 at 08:26:32AM +0200, Joerg Roedel wrote:
-> On Tue, May 16, 2023 at 09:35:25PM -0300, Jason Gunthorpe wrote:
-> > With POWER SPAPR now having a real iommu driver and using the normal group
-> > lifecycle stuff fixing FSL will leave only VFIO's no-iommu support as a
-> > user for the iommu_group_add/remove_device() calls. This will help
-> > simplify the understanding of what the core code should be doing for these
-> > functions.
-> > 
-> > Fix FSL to not need to call iommu_group_remove_device() at all.
-> > 
-> > v2:
-> >  - Change the approach to use driver_managed_dma
-> >  - Really simplify fsl_pamu_device_group() and just put everything in one
-> >    function
-> >  - New patch to make missing OF properties a probe failure
-> > v1: https://lore.kernel.org/r/0-v1-1421774b874b+167-ppc_device_group_jgg@nvidia.com
-> > 
-> > Jason Gunthorpe (3):
-> >   iommu/fsl: Always allocate a group for non-pci devices
-> >   iommu/fsl: Move ENODEV to fsl_pamu_probe_device()
-> >   iommu/fsl: Use driver_managed_dma to allow VFIO to work
-> > 
-> >  arch/powerpc/sysdev/fsl_pci.c   |   1 +
-> >  drivers/iommu/fsl_pamu_domain.c | 123 +++++++++-----------------------
-> >  2 files changed, 36 insertions(+), 88 deletions(-)
-> 
-> Any chance someone can test this on real hardware?
+kallsyms_lookup which in turn calls for kallsyms_lookup_buildid()
+writes on index "KSYM_NAME_LEN - 1".
 
-There isn't even a MAINTAINERS entry for this, and the git log looks
-pretty dead for a long time. I tried to cc people who might care,
-but I'm not so optimistic - unless Li says something.
+Thus array size should be KSYM_NAME_LEN.
 
-I do feel good that if there is a problem and someone does come
-forward it can be fixed up without a big trouble. Certainly without
-going back to mis-using iommu_grou_add/remove_device..
+for powerpc and hexagon it was defined as "128" directly.
+and commit '61968dbc2d5d' changed define value to 512,
+So both were missed to update with new size.
 
-Thanks,
-Jason
+Fixes: 61968dbc2d5d ("kallsyms: increase maximum kernel symbol length to 512")
+Signed-off-by: Onkarnath <onkarnath.1@samsung.com>
+Signed-off-by: Maninder Singh <maninder1.s@samsung.com>
+---
+ arch/hexagon/kernel/traps.c | 2 +-
+ arch/powerpc/xmon/xmon.c    | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/hexagon/kernel/traps.c b/arch/hexagon/kernel/traps.c
+index 6447763ce5a9..65b30b6ea226 100644
+--- a/arch/hexagon/kernel/traps.c
++++ b/arch/hexagon/kernel/traps.c
+@@ -82,7 +82,7 @@ static void do_show_stack(struct task_struct *task, unsigned long *fp,
+ 	const char *name = NULL;
+ 	unsigned long *newfp;
+ 	unsigned long low, high;
+-	char tmpstr[128];
++	char tmpstr[KSYM_NAME_LEN];
+ 	char *modname;
+ 	int i;
+ 
+diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+index 728d3c257e4a..70c4c59a1a8f 100644
+--- a/arch/powerpc/xmon/xmon.c
++++ b/arch/powerpc/xmon/xmon.c
+@@ -88,7 +88,7 @@ static unsigned long ndump = 64;
+ static unsigned long nidump = 16;
+ static unsigned long ncsum = 4096;
+ static int termch;
+-static char tmpstr[128];
++static char tmpstr[KSYM_NAME_LEN];
+ static int tracing_enabled;
+ 
+ static long bus_error_jmp[JMP_BUF_LEN];
+-- 
+2.17.1
+
