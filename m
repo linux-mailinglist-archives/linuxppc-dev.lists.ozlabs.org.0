@@ -2,54 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCF88716589
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 May 2023 17:01:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 339AD71686F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 May 2023 18:01:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QVwb638vPz3fDZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 May 2023 01:01:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QVxwD66S4z3fDN
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 May 2023 02:01:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=EVny03Fp;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=T6kwuwNO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2001:67c:2178:6::1d; helo=smtp-out2.suse.de; envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d2e; helo=mail-io1-xd2e.google.com; envelope-from=azeemshaikh38@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=EVny03Fp;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=T6kwuwNO;
 	dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QVwZ863Lnz2ygG
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 May 2023 01:00:48 +1000 (AEST)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out2.suse.de (Postfix) with ESMTP id 5DA861F8C8;
-	Tue, 30 May 2023 15:00:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1685458845; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Lzf8k9OeD6CxKARnPSlUMY/zE2d/0eZgKuThx3A5Fj4=;
-	b=EVny03Fpuk0L/eAxDq5AtkoQdDuOqfyJ7Ynis5eAo/QQE/uz4JFp9wkFa6GWJxxvIp89AX
-	qC2iLiX+no6dVa9Q1Ggo/++xFZeUCnro6XI6oWHE917EOtE/68yB2PQvonkyCzRTjHLJav
-	3s8c4Qs1zP94tZouCjAYz0nd2cpW40E=
-Received: from suse.cz (unknown [10.100.201.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id 175C82C141;
-	Tue, 30 May 2023 15:00:45 +0000 (UTC)
-Date: Tue, 30 May 2023 17:00:43 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: Douglas Anderson <dianders@chromium.org>
-Subject: Re: [PATCH 09/10] watchdog/hardlockup: Move SMP barriers from common
- code to buddy code
-Message-ID: <ZHYPmxdzl0tOB_uY@alley>
-References: <20230527014153.2793931-1-dianders@chromium.org>
- <20230526184139.9.I5ab0a0eeb0bd52fb23f901d298c72fa5c396e22b@changeid>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QVxvG0f1lz3c9s
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 May 2023 02:00:40 +1000 (AEST)
+Received: by mail-io1-xd2e.google.com with SMTP id ca18e2360f4ac-76c5db6a5cfso337535139f.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 May 2023 09:00:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685462436; x=1688054436;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zX10SJBU8S1HDBYkbi8trIiB7376uD4rHt1agT0RgVE=;
+        b=T6kwuwNOMP7SpNBuj9ulB7wtBDWLgkSuq5HTmKEa5CuYtWLEVwQNJmgxnv+xiuEE0B
+         2rku+K4GXdjh+DlwdYc8eirLyEiOPsBAMctGxjT5iHZ04TBMqoKZjNUbSVqLgXtgU/AY
+         uIqH6Hz+yPtRarj8PvB6p42hNDUXz2yC3EjsLUjbFZlQKnzw5G7613CyK0oimxB+Llxh
+         gVYjawUUecbgmkn74c7SvBAIw6y3w9a25jdxXF4uoJoPSCqI7Mj6TPZObK+XUgqIakYx
+         iW8JW9dLDsdAdykEY7ARdusn6bbkgDwmmjvAaoiVj6JqvddlunlIU3PhGJ1THnj1/4bu
+         f2pQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685462436; x=1688054436;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zX10SJBU8S1HDBYkbi8trIiB7376uD4rHt1agT0RgVE=;
+        b=XNKk/kcndFI8AxKCOBzTz4ne/7xWtJYjEHX0jO5H5VHTYgY59JcUNCNBazDNObNRrU
+         YQCb3ahbkFhaAIXBxEUF592Hy190xPUTqcSPRjeT6+cKnOLtm001LgbHEpe9gmjAbuLI
+         IUXqAb7VE4SC2nWjg6+3qWOB8jA74SwSyZUGvCTprGz+gWdzkCRvjXVPvpNoF1IHiU3W
+         4x8ApTqljkgCNSv7TQJU5JBuDv9N1OsmgAO4CsSbq8XOlZi96dSpQOeBuaTjL5zxhgnE
+         WSEnvDFyj5wYzhCveklKQOJ9r2oD+tMq1lDIy3D+nOYZ9t+FQoLGrVLfPI+BC+K0eNB8
+         OFtg==
+X-Gm-Message-State: AC+VfDwsGQFjGNp2s8NQ0IBbAnApTNKda5LHV+xZi8/rEk2LiHCZy9ps
+	In87KHnIwHRG1+H4fv2aqbg=
+X-Google-Smtp-Source: ACHHUZ4Y7vaByrfhYL39lnBvPFfAEKvFNbSJFnHyf/l553ue3parkMv7sOH7zAptCsOe6CzI2RFFWQ==
+X-Received: by 2002:a5e:8914:0:b0:73a:6c7f:c476 with SMTP id k20-20020a5e8914000000b0073a6c7fc476mr2352086ioj.16.1685462436590;
+        Tue, 30 May 2023 09:00:36 -0700 (PDT)
+Received: from azeems-kspp.c.googlers.com.com (54.70.188.35.bc.googleusercontent.com. [35.188.70.54])
+        by smtp.gmail.com with ESMTPSA id q22-20020a5ea616000000b007767a221ea0sm3238153ioi.11.2023.05.30.09.00.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 May 2023 09:00:36 -0700 (PDT)
+From: Azeem Shaikh <azeemshaikh38@gmail.com>
+To: Qiang Zhao <qiang.zhao@nxp.com>
+Subject: [PATCH] soc: fsl: qe: Replace all non-returning strlcpy with strscpy
+Date: Tue, 30 May 2023 16:00:33 +0000
+Message-ID: <20230530160033.411441-1-azeemshaikh38@gmail.com>
+X-Mailer: git-send-email 2.41.0.rc0.172.g3f132b7071-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230526184139.9.I5ab0a0eeb0bd52fb23f901d298c72fa5c396e22b@changeid>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,20 +75,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kgdb-bugreport@lists.sourceforge.net, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-perf-users@vger.kernel.org, sparclinux@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
+Cc: linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, linux-hardening@vger.kernel.org, Azeem Shaikh <azeemshaikh38@gmail.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri 2023-05-26 18:41:39, Douglas Anderson wrote:
-> It's been suggested that since the SMP barriers are only potentially
-> useful for the buddy hardlockup detector, not the perf hardlockup
-> detector, that the barriers belong in the buddy code. Let's move them
-> and add clearer comments about why they're needed.
-> 
-> Suggested-by: Petr Mladek <pmladek@suse.com>
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
+strlcpy() reads the entire source buffer first.
+This read may exceed the destination size limit.
+This is both inefficient and can lead to linear read
+overflows if a source string is not NUL-terminated [1].
+In an effort to remove strlcpy() completely [2], replace
+strlcpy() here with strscpy().
+No return values were used, so direct replacement is safe.
 
-Reviewed-by: Petr Mladek <pmladek@suse.com>
+[1] https://www.kernel.org/doc/html/latest/process/deprecated.html#strlcpy
+[2] https://github.com/KSPP/linux/issues/89
 
-Best Regards,
-Petr
+Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
+---
+ drivers/soc/fsl/qe/qe.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/soc/fsl/qe/qe.c b/drivers/soc/fsl/qe/qe.c
+index b3c226eb5292..58746e570d14 100644
+--- a/drivers/soc/fsl/qe/qe.c
++++ b/drivers/soc/fsl/qe/qe.c
+@@ -524,7 +524,7 @@ int qe_upload_firmware(const struct qe_firmware *firmware)
+ 	 * saved microcode information and put in the new.
+ 	 */
+ 	memset(&qe_firmware_info, 0, sizeof(qe_firmware_info));
+-	strlcpy(qe_firmware_info.id, firmware->id, sizeof(qe_firmware_info.id));
++	strscpy(qe_firmware_info.id, firmware->id, sizeof(qe_firmware_info.id));
+ 	qe_firmware_info.extended_modes = be64_to_cpu(firmware->extended_modes);
+ 	memcpy(qe_firmware_info.vtraps, firmware->vtraps,
+ 		sizeof(firmware->vtraps));
+@@ -599,7 +599,7 @@ struct qe_firmware_info *qe_get_firmware_info(void)
+ 	/* Copy the data into qe_firmware_info*/
+ 	sprop = of_get_property(fw, "id", NULL);
+ 	if (sprop)
+-		strlcpy(qe_firmware_info.id, sprop,
++		strscpy(qe_firmware_info.id, sprop,
+ 			sizeof(qe_firmware_info.id));
+ 
+ 	of_property_read_u64(fw, "extended-modes",
+
