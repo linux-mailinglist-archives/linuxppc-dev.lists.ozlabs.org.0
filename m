@@ -2,68 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 453947168C5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 May 2023 18:10:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B706C716DB6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 May 2023 21:38:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QVy635dJRz3f8n
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 May 2023 02:10:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QW2kb2p2qz3fDx
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 May 2023 05:38:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=hVGRu0pr;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=oTgfsm6Y;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::42b; helo=mail-wr1-x42b.google.com; envelope-from=azeemshaikh38@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=91.218.175.11; helo=out-11.mta0.migadu.com; envelope-from=oliver.upton@linux.dev; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=hVGRu0pr;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=oTgfsm6Y;
 	dkim-atps=neutral
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+Received: from out-11.mta0.migadu.com (out-11.mta0.migadu.com [91.218.175.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QVy566hNqz3cL0
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 May 2023 02:09:14 +1000 (AEST)
-Received: by mail-wr1-x42b.google.com with SMTP id ffacd0b85a97d-30aeee7c8a0so1533645f8f.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 May 2023 09:09:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685462949; x=1688054949;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oi0/JSrKBypgCtjQEoow24NFxZocncTUaEgKTBeFpRQ=;
-        b=hVGRu0prW/3S+Zg8ZJ1Tz6XPV24/xDsOnyP8dFoMgmQfP0JUFuGqzGAcHbka3yAuPQ
-         SugcRLOkP9/VXsMnyb5id8VqYhISd6rVqpv+IzZhHwEnPh8gK+cOM9uUUlpuuRsgjaK8
-         DDZcZj56JHwrW2bTx31CI2+JAgYVbAo+zEklLQJSU8zRs/rUOUlaJyCRPdHZCMYUuS03
-         MzBB6AKo150s/58E822BDtV6WS0NMm+H2VhSceuzQ2kmLspIPTfBrfoJT0Nur10k+2+o
-         Jun10e6ds2y8NxmwzAY3mvh31Jc268Dw06p+PXjB9BUe0/Hdk7foKMlXbEm7xzvMo/jo
-         9mtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685462949; x=1688054949;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oi0/JSrKBypgCtjQEoow24NFxZocncTUaEgKTBeFpRQ=;
-        b=jhiyuszHILhS6jJTLis0+cTcA5jLhffsaeioMud3v312OcAboqjqETFs0YBARGfpON
-         oz2aJooVLNqYWSXFYD+tcM+0BzgHIcpv/JBZ7bTuzkHATHQaulWMG895AxegYyOjp3Yx
-         p2miJ0o0/P0EBuYicizdXzk/tAt68BRHqwBeOa+aD0ngPjbt/HjnYIVkj8uXSDiBqBBr
-         eRiK9I3FH63Pc8avA26IC3nZLJNRpLTSFqLVo0DpkraJUhNLvoC8s+BCBO3zhHhqxacQ
-         lggKjXdQCMI6Ety/bQNQksnUsGZMRG9T04Ct7exgE3hPPzt8LFWGBT8yxLXTvbwZqHyC
-         4Y/w==
-X-Gm-Message-State: AC+VfDzXuVsY8RNHqw7wCbhriGqM3NAZL3Gn7BoKVvDE7bdNXt5roHsX
-	bW7ZornBv+suG3JdA6omW0mLiNDSscvK+U9Tq80=
-X-Google-Smtp-Source: ACHHUZ6aXodoM2hGVPxieUQ1l1WXdJrNDTm1QeHOWlvIwTAqEarAHbF9cm8DW7PE6ssRdnEeq4SfiQDwReqkPJLAiTQ=
-X-Received: by 2002:adf:f812:0:b0:2f6:661:c03c with SMTP id
- s18-20020adff812000000b002f60661c03cmr2525443wrp.28.1685462948658; Tue, 30
- May 2023 09:09:08 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QW2jh4nzZz3cLx
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 May 2023 05:37:42 +1000 (AEST)
+Date: Tue, 30 May 2023 19:37:25 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1685475455;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xJBcu8ATCUO1aDY2yQ8vOVcCThAxEWqTiihzn189BcI=;
+	b=oTgfsm6Y7m0cHeGsa3KJXNWXMuNSlm0sfaQCoEPDjFj6jxNxzseINRPUWevletZvuYk83p
+	+kFUfwmLUYdIL6pvdibsqLd2oceBrIf/xJKHf7O+W7xiGADvFsQD0goq381G/kYiPU+lqt
+	jv2kELueVaqLNY647oTCnG+i/dK3+OY=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Oliver Upton <oliver.upton@linux.dev>
+To: Yu Zhao <yuzhao@google.com>
+Subject: Re: [PATCH mm-unstable v2 04/10] kvm/arm64: make stage2 page tables
+ RCU safe
+Message-ID: <ZHZQdQAApIrw6fBu@linux.dev>
+References: <20230526234435.662652-1-yuzhao@google.com>
+ <20230526234435.662652-5-yuzhao@google.com>
+ <ZHJHJPBF6euzOFdw@linux.dev>
+ <CAOUHufa74CufHziHSquO5bZwbFXz2MNssBzW+AH7=Xo5RCnQ0A@mail.gmail.com>
 MIME-Version: 1.0
-References: <20230530160033.411441-1-azeemshaikh38@gmail.com>
-In-Reply-To: <20230530160033.411441-1-azeemshaikh38@gmail.com>
-From: Azeem Shaikh <azeemshaikh38@gmail.com>
-Date: Tue, 30 May 2023 12:08:57 -0400
-Message-ID: <CADmuW3Vgraciy__V24wHF0fBstT8odmMm6t1bUxZLeyFi9P6fQ@mail.gmail.com>
-Subject: Re: [PATCH] soc: fsl: qe: Replace all non-returning strlcpy with strscpy
-To: Qiang Zhao <qiang.zhao@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAOUHufa74CufHziHSquO5bZwbFXz2MNssBzW+AH7=Xo5RCnQ0A@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,58 +60,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Li Yang <leoyang.li@nxp.com>, linuxppc-dev@lists.ozlabs.org, linux-hardening@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, x86@kernel.org, Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, Ben Gardon <bgardon@google.com>, Chao Peng <chao.p.peng@linux.intel.com>, Will Deacon <will@kernel.org>, Gaosheng Cui <cuigaosheng1@huawei.com>, Marc Zyngier <maz@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Jonathan Corbet <corbet@lwn.net>, Alistair Popple <apopple@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, Ingo Molnar <mingo@redhat.com>, Zenghui Yu <yuzenghui@huawei.com>, linux-trace-kernel@vger.kernel.org, linux-mm@google.com, Thomas Huth <thuth@redhat.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Steven Rostedt <rostedt@goodmis.org>, kvmarm@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Fab
+ iano Rosas <farosas@linux.ibm.com>, Michael Larabel <michael@michaellarabel.com>, Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>, Masami Hiramatsu <mhiramat@kernel.org>, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Duplicate of https://lore.kernel.org/all/20230523021425.2406309-1-azeemshai=
-kh38@gmail.com/.
-Sorry about that.
+Hi Yu,
 
-On Tue, May 30, 2023 at 12:00=E2=80=AFPM Azeem Shaikh <azeemshaikh38@gmail.=
-com> wrote:
->
-> strlcpy() reads the entire source buffer first.
-> This read may exceed the destination size limit.
-> This is both inefficient and can lead to linear read
-> overflows if a source string is not NUL-terminated [1].
-> In an effort to remove strlcpy() completely [2], replace
-> strlcpy() here with strscpy().
-> No return values were used, so direct replacement is safe.
->
-> [1] https://www.kernel.org/doc/html/latest/process/deprecated.html#strlcp=
-y
-> [2] https://github.com/KSPP/linux/issues/89
->
-> Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
-> ---
->  drivers/soc/fsl/qe/qe.c |    4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/soc/fsl/qe/qe.c b/drivers/soc/fsl/qe/qe.c
-> index b3c226eb5292..58746e570d14 100644
-> --- a/drivers/soc/fsl/qe/qe.c
-> +++ b/drivers/soc/fsl/qe/qe.c
-> @@ -524,7 +524,7 @@ int qe_upload_firmware(const struct qe_firmware *firm=
-ware)
->          * saved microcode information and put in the new.
->          */
->         memset(&qe_firmware_info, 0, sizeof(qe_firmware_info));
-> -       strlcpy(qe_firmware_info.id, firmware->id, sizeof(qe_firmware_inf=
-o.id));
-> +       strscpy(qe_firmware_info.id, firmware->id, sizeof(qe_firmware_inf=
-o.id));
->         qe_firmware_info.extended_modes =3D be64_to_cpu(firmware->extende=
-d_modes);
->         memcpy(qe_firmware_info.vtraps, firmware->vtraps,
->                 sizeof(firmware->vtraps));
-> @@ -599,7 +599,7 @@ struct qe_firmware_info *qe_get_firmware_info(void)
->         /* Copy the data into qe_firmware_info*/
->         sprop =3D of_get_property(fw, "id", NULL);
->         if (sprop)
-> -               strlcpy(qe_firmware_info.id, sprop,
-> +               strscpy(qe_firmware_info.id, sprop,
->                         sizeof(qe_firmware_info.id));
->
->         of_property_read_u64(fw, "extended-modes",
->
+On Sat, May 27, 2023 at 02:13:07PM -0600, Yu Zhao wrote:
+> On Sat, May 27, 2023 at 12:08 PM Oliver Upton <oliver.upton@linux.dev> wrote:
+> > diff --git a/arch/arm64/kvm/hyp/pgtable.c b/arch/arm64/kvm/hyp/pgtable.c
+> > index 3d61bd3e591d..bfbebdcb4ef0 100644
+> > --- a/arch/arm64/kvm/hyp/pgtable.c
+> > +++ b/arch/arm64/kvm/hyp/pgtable.c
+> > @@ -1019,7 +1019,7 @@ static int stage2_unmap_walker(const struct kvm_pgtable_visit_ctx *ctx,
+> >                                                kvm_granule_size(ctx->level));
+> >
+> >         if (childp)
+> > -               mm_ops->put_page(childp);
+> > +               mm_ops->free_removed_table(childp, ctx->level);
+> 
+> Thanks, Oliver.
+> 
+> A couple of things I haven't had the chance to verify -- I'm hoping
+> you could help clarify:
+> 1. For unmapping, with free_removed_table(), wouldn't we have to look
+> into the table we know it's empty unnecessarily?
+
+As it is currently implemented, yes. But, there's potential to fast-path
+the implementation by checking page_count() before starting the walk.
+
+> 2. For remapping and unmapping, how does free_removed_table() put the
+> final refcnt on the table passed in? (Previously we had
+> put_page(childp) in stage2_map_walk_table_post(). So I'm assuming we'd
+> have to do something equivalent with free_removed_table().)
+
+Heh, that's a bug, and an embarrassing one at that!
+
+Sent out a fix for that, since it would appear we leak memory on
+table->block transitions. PTAL if you have a chance.
+
+https://lore.kernel.org/all/20230530193213.1663411-1-oliver.upton@linux.dev/
+
+-- 
+Thanks,
+Oliver
