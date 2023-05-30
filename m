@@ -1,51 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8938715528
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 May 2023 07:48:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81377715574
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 May 2023 08:21:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QVhJg56l6z3f5P
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 May 2023 15:48:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QVj2P2x4xz3fFd
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 May 2023 16:21:01 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=c83pko6Y;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=vIS25q//;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=batv+6438538edd150666cef4+7219+infradead.org+hch@bombadil.srs.infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=naveen@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=c83pko6Y;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=vIS25q//;
 	dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QVhHp06gbz3c8r
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 May 2023 15:47:31 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Vj3P4dh9WYoURI5rGEPJ8G9gG4iFtJpTelQk67+lDWI=; b=c83pko6YfiFpgLUhB/s9eA10Aq
-	1G2V1aTpuNQ5Owjnjbrpqca2l/HUFer73qVW+nawtcb0tTKFzHXhAD1iaEE3MWOJzU3uT/f0IWnNz
-	4pu+cl2cNMLU/eOp1W9oiubICnryW5OFw2Y2mNLnxacMtJSRLZUKtIXAE2m9fY3Su6vrbY7KJv9g7
-	HrIuSFSh2OgSXcjw10mktfT3SDUo5IXgKYpx+hI4ahDGYPK/rnRbLBy7BHz1iw1CqdcImgYiaw4bb
-	/bTPT+TPdxV7f67e6Ixa/ypBPGiQtBZl2akIvVo3z+7tEyvVsuNR4xPs1Qk5SEKW/vhoavcSnSG6y
-	/jZNX93g==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
-	id 1q3sCc-00CVMI-08;
-	Tue, 30 May 2023 05:47:26 +0000
-Date: Mon, 29 May 2023 22:47:26 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Sachin Sant <sachinp@linux.ibm.com>
-Subject: Re: WARNING at fs/btrfs/disk-io.c:275 during xfstests run(4k block)
-Message-ID: <ZHWN7lD6QPIoNa6C@infradead.org>
-References: <50217126-0798-4ED7-BF46-4DF14C99ED0D@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QVj1b2xqcz3bkb
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 May 2023 16:20:19 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 6B1AD60F6D;
+	Tue, 30 May 2023 06:20:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 086F8C433D2;
+	Tue, 30 May 2023 06:20:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1685427614;
+	bh=Q7zI/RAyOdClb/7U7m12tsXQzVWR77uVj9xH1SG50+s=;
+	h=From:To:Cc:Subject:Date:From;
+	b=vIS25q//4uy8JRLlv1XRfUS6Kk7LK9VsDthusK4Zu/Dz4iwyRf94UQWWvLy9l2qjr
+	 vH80lSb/4rn+6k5J/dB9CUICHeOslg8KEYUE972EdUqEUetzShcHpWmL+cjEOfeeML
+	 3PIZfB47RWFYDhEVxbsAYRz+dNcavx5XrkW5TNc4NIix8ufKy/cr3q4zM8X0uuoo9N
+	 AVc/oIWhztSVK/G1A2G5raV5ejy3M9+4QF8Rr53GKSbCYH2Qb/LjdsSEAE6tD1pmRj
+	 CThK4JO7fTvrPGU3/H5KMh24SqkFCJkFSoSVN5QCqFJ1Q1qNoQlRxWoQd7rOfn87+1
+	 dP1UozuyRw1Tg==
+From: Naveen N Rao <naveen@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH v2] powerpc: Fail build if using recordmcount with binutils v2.37
+Date: Tue, 30 May 2023 11:44:36 +0530
+Message-Id: <20230530061436.56925-1-naveen@kernel.org>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <50217126-0798-4ED7-BF46-4DF14C99ED0D@linux.ibm.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,12 +57,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: riteshh@linux.ibm.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-btrfs@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, Joel Stanley <joel@jms.id.au>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This should be fixed by
+binutils v2.37 drops unused section symbols, which prevents recordmcount
+from capturing mcount locations in sections that have no non-weak
+symbols. This results in a build failure with a message such as:
+	Cannot find symbol for section 12: .text.perf_callchain_kernel.
+	kernel/events/callchain.o: failed
 
-"btrfs: fix the uptodate assert in btree_csum_one_bio"
+The change to binutils was reverted for v2.38, so this behavior is
+specific to binutils v2.37:
+https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=c09c8b42021180eee9495bd50d8b35e683d3901b
 
-on the list.
+Objtool is able to cope with such sections, so this issue is specific to
+recordmcount.
+
+Fail the build and print a warning if binutils v2.37 is detected and if
+we are using recordmcount.
+
+Cc: stable@vger.kernel.org
+Suggested-by: Joel Stanley <joel@jms.id.au>
+Signed-off-by: Naveen N Rao <naveen@kernel.org>
+---
+v2: Check directly against $CONFIG_LD_VERSION
+
+ arch/powerpc/Makefile | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+index dca73f673d7046..fc76eb9830fdfa 100644
+--- a/arch/powerpc/Makefile
++++ b/arch/powerpc/Makefile
+@@ -409,3 +409,11 @@ checkbin:
+ 		echo -n '*** Please use a different binutils version.' ; \
+ 		false ; \
+ 	fi
++	@if test "x${CONFIG_FTRACE_MCOUNT_USE_RECORDMCOUNT}" = "xy" -a \
++		"x${CONFIG_LD_IS_BFD}" = "xy" -a \
++		"${CONFIG_LD_VERSION}" = "23700" ; then \
++		echo -n '*** binutils 2.37 drops unused section symbols, which recordmcount ' ; \
++		echo 'is unable to handle.' ; \
++		echo '*** Please use a different binutils version.' ; \
++		false ; \
++	fi
+
+base-commit: 7b2f56d76feff3b494d6e77950ab97987323d3c5
+-- 
+2.40.1
+
