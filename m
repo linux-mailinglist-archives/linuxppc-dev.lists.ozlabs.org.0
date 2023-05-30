@@ -2,71 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A3E4716E5C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 May 2023 22:08:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D09E7716FA3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 May 2023 23:24:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QW3P40m04z3fCB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 May 2023 06:08:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QW55H3kgbz3fFc
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 May 2023 07:24:51 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=DtfynU88;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TV1bjAHw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::836; helo=mail-qt1-x836.google.com; envelope-from=yuzhao@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=DtfynU88;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TV1bjAHw;
 	dkim-atps=neutral
-Received: from mail-qt1-x836.google.com (mail-qt1-x836.google.com [IPv6:2607:f8b0:4864:20::836])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QW3NB4VMhz3c9s
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 May 2023 06:07:37 +1000 (AEST)
-Received: by mail-qt1-x836.google.com with SMTP id d75a77b69052e-3f6a6e9d90dso57881cf.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 May 2023 13:07:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1685477252; x=1688069252;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tnJw+gna055xgPY4k/D+ZQZ+/+poCudJDicda2AGR3k=;
-        b=DtfynU88O3z0/4oFgDiYM7qy14b7RLg4yomBzxL0dog8TFdWbHyo2tpb/B1SOYXfmp
-         NSRsIG+eVwPFOobh1xJCt8kwErPgylGUweOcutP0ywct+6P+S2IjeaikfhAUmhYPV+uH
-         Mv+j09gZh5WjQDA3Z/2Gy9TgffLJonGspryTqmY7mSq0d2Id3AeV0HEZ5ulNgRW7LXMq
-         4JCJAWgEwKAWSjc16VpDrPx50NJw92bJUlL+d9zw+H+Lfu/l9dON3ftxIU/zENGgXs4K
-         1cHj3nLx36gvePguvMtotajaF04WFwISrYvt1J6cDwX3ikwzIPGkd33waRKuVJi8J5gu
-         uXaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685477252; x=1688069252;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tnJw+gna055xgPY4k/D+ZQZ+/+poCudJDicda2AGR3k=;
-        b=hyVCNZFmTgcbBHMWHvkgKIE/YEMzikguwWK3E3+I7dM7vKH4xaELi3YOv6dm2Eyfd2
-         l51/Hb+qcB6H7snEeH3z/zonrlpKJNRIZtYpl0mtXIZVBQPzesrG1zPYYzIMlw08TK1p
-         /6stYrcIfl++JhSTsNq2ZUbe3WvTHQ1Q8a2RR0UOTjqlvTXLGRghb1j+TlSBDpkEkQx7
-         BaYA/1F+U04rP2oVcHSOL9222KSZ3bd7rle+0lAZPJhqyD66UafVjCytB4mp9sW70GEF
-         UpOPgtvQrF6PEexZfPuvCz4CPLEc6raSHqi7jnzVIKsXgVo+5HxiaD/UCsSeiK/j4rpg
-         zYuA==
-X-Gm-Message-State: AC+VfDx41BynxNlr6YntS9k2kV4U0E2126jsR3tG8uUMCQYQq1xSQgjH
-	+dFRfwusNipUQwkZSgIzxlm8AFy84BbQE80Qj1d8kg==
-X-Google-Smtp-Source: ACHHUZ6GXKZ8JX2tTyi2dAoKnrLtSo8EMFYdPNZnbJmbRABrmf7MX05SzfLq0yw9C6unlnFwzm3TaQimSQte4R7XEoY=
-X-Received: by 2002:a05:622a:1012:b0:3ef:2f55:2204 with SMTP id
- d18-20020a05622a101200b003ef2f552204mr6506qte.6.1685477252408; Tue, 30 May
- 2023 13:07:32 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QW54R6VXkz2xbC
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 May 2023 07:24:07 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id B52D263375;
+	Tue, 30 May 2023 21:24:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB01EC4339B;
+	Tue, 30 May 2023 21:24:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1685481844;
+	bh=nSQjRvB5sqKGMsdtyBRHXZYqX4emyOnsRXhxnpxj5CY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=TV1bjAHwa6NLdVZVD7DllGDZUObfyAObgZ8dpZarPA3MFb+4JwjHeGjrah/sKeuB6
+	 Xq8Z6uhzHX0F3PKJSdkRh1pFxjO+XorK0VZvx6no556rDJNfISNz+wSJYYSdEmvn7Z
+	 hUMZYEgCtddE7YUdKaua4hQLvfWtpf57g3PAd+6ZmWrfu2xY5A7mha+RytVeJ/84Sv
+	 mxnDEJPKCDkp/bA6BADO+x5ZZtDdknfJeDc4bcwl2S3en2mWL+rmMtiDyQsmiX2t01
+	 UKGSafGTnUjV0OrS31D6yutY2Y59cmVv6Xh9lXe15RO90svr9jvNnhSKkE8vII7TeO
+	 VMw5j/h0xzgKQ==
+Date: Tue, 30 May 2023 16:24:02 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v8 0/7] Add pci_dev_for_each_resource() helper and update
+ users
+Message-ID: <ZHZpcli2UmdzHgme@bhelgaas>
 MIME-Version: 1.0
-References: <20230526234435.662652-1-yuzhao@google.com> <20230526234435.662652-5-yuzhao@google.com>
- <ZHJHJPBF6euzOFdw@linux.dev> <CAOUHufa74CufHziHSquO5bZwbFXz2MNssBzW+AH7=Xo5RCnQ0A@mail.gmail.com>
- <ZHZQdQAApIrw6fBu@linux.dev>
-In-Reply-To: <ZHZQdQAApIrw6fBu@linux.dev>
-From: Yu Zhao <yuzhao@google.com>
-Date: Tue, 30 May 2023 14:06:55 -0600
-Message-ID: <CAOUHufZOkBmZJgCU2xW2B8S3P3TWERHezy0xKWY9_TeyV9K7Rg@mail.gmail.com>
-Subject: Re: [PATCH mm-unstable v2 04/10] kvm/arm64: make stage2 page tables
- RCU safe
-To: Oliver Upton <oliver.upton@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZF6YIezraETr9iNM@bhelgaas>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,57 +59,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, x86@kernel.org, Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, Ben Gardon <bgardon@google.com>, Chao Peng <chao.p.peng@linux.intel.com>, Will Deacon <will@kernel.org>, Gaosheng Cui <cuigaosheng1@huawei.com>, Marc Zyngier <maz@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Jonathan Corbet <corbet@lwn.net>, Alistair Popple <apopple@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, Ingo Molnar <mingo@redhat.com>, Zenghui Yu <yuzenghui@huawei.com>, linux-trace-kernel@vger.kernel.org, linux-mm@google.com, Thomas Huth <thuth@redhat.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Steven Rostedt <rostedt@goodmis.org>, kvmarm@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Fab
- iano Rosas <farosas@linux.ibm.com>, Michael Larabel <michael@michaellarabel.com>, Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>, Masami Hiramatsu <mhiramat@kernel.org>, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
+Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, linux-pci@vger.kernel.org, Dominik Brodowski <linux@dominikbrodowski.net>, linux-mips@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, Andrew Lunn <andrew@lunn.ch>, sparclinux@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Gregory Clement <gregory.clement@bootlin.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Russell King <linux@armlinux.org.uk>, linux-acpi@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, xen-devel@lists.xenproject.org, Matt Turner <mattst88@gmail.com>, Anatolij Gustschin <agust@denx.de>, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Arnd Bergmann <arnd@arndb.de>, Niklas Schnelle <schnelle@linux.ibm.com>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, John Paul Adrian Glaubitz <glaubitz@
+ physik.fu-berlin.de>, =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>, Mika Westerberg <mika.westerberg@linux.intel.com>, linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, "Maciej W. Rozycki" <macro@orcam.me.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 30, 2023 at 1:37=E2=80=AFPM Oliver Upton <oliver.upton@linux.de=
-v> wrote:
->
-> Hi Yu,
->
-> On Sat, May 27, 2023 at 02:13:07PM -0600, Yu Zhao wrote:
-> > On Sat, May 27, 2023 at 12:08=E2=80=AFPM Oliver Upton <oliver.upton@lin=
-ux.dev> wrote:
-> > > diff --git a/arch/arm64/kvm/hyp/pgtable.c b/arch/arm64/kvm/hyp/pgtabl=
-e.c
-> > > index 3d61bd3e591d..bfbebdcb4ef0 100644
-> > > --- a/arch/arm64/kvm/hyp/pgtable.c
-> > > +++ b/arch/arm64/kvm/hyp/pgtable.c
-> > > @@ -1019,7 +1019,7 @@ static int stage2_unmap_walker(const struct kvm=
-_pgtable_visit_ctx *ctx,
-> > >                                                kvm_granule_size(ctx->=
-level));
-> > >
-> > >         if (childp)
-> > > -               mm_ops->put_page(childp);
-> > > +               mm_ops->free_removed_table(childp, ctx->level);
-> >
-> > Thanks, Oliver.
-> >
-> > A couple of things I haven't had the chance to verify -- I'm hoping
-> > you could help clarify:
-> > 1. For unmapping, with free_removed_table(), wouldn't we have to look
-> > into the table we know it's empty unnecessarily?
->
-> As it is currently implemented, yes. But, there's potential to fast-path
-> the implementation by checking page_count() before starting the walk.
+On Fri, May 12, 2023 at 02:48:51PM -0500, Bjorn Helgaas wrote:
+> On Fri, May 12, 2023 at 01:56:29PM +0300, Andy Shevchenko wrote:
+> > On Tue, May 09, 2023 at 01:21:22PM -0500, Bjorn Helgaas wrote:
+> > > On Tue, Apr 04, 2023 at 11:11:01AM -0500, Bjorn Helgaas wrote:
+> > > > On Thu, Mar 30, 2023 at 07:24:27PM +0300, Andy Shevchenko wrote:
+> > > > > Provide two new helper macros to iterate over PCI device resources and
+> > > > > convert users.
+> > > 
+> > > > Applied 2-7 to pci/resource for v6.4, thanks, I really like this!
+> > > 
+> > > This is 09cc90063240 ("PCI: Introduce pci_dev_for_each_resource()")
+> > > upstream now.
+> > > 
+> > > Coverity complains about each use,
+> > 
+> > It needs more clarification here. Use of reduced variant of the
+> > macro or all of them? If the former one, then I can speculate that
+> > Coverity (famous for false positives) simply doesn't understand `for
+> > (type var; var ...)` code.
+> 
+> True, Coverity finds false positives.  It flagged every use in
+> drivers/pci and drivers/pnp.  It didn't mention the arch/alpha, arm,
+> mips, powerpc, sh, or sparc uses, but I think it just didn't look at
+> those.
+> 
+> It flagged both:
+> 
+>   pbus_size_io    pci_dev_for_each_resource(dev, r)
+>   pbus_size_mem   pci_dev_for_each_resource(dev, r, i)
+> 
+> Here's a spreadsheet with a few more details (unfortunately I don't
+> know how to make it dump the actual line numbers or analysis like I
+> pasted below, so "pci_dev_for_each_resource" doesn't appear).  These
+> are mostly in the "Drivers-PCI" component.
+> 
+> https://docs.google.com/spreadsheets/d/1ohOJwxqXXoDUA0gwopgk-z-6ArLvhN7AZn4mIlDkHhQ/edit?usp=sharing
+> 
+> These particular reports are in the "High Impact Outstanding" tab.
 
-Do you mind posting another patch? I'd be happy to ack it, as well as
-the one you suggested above.
+Where are we at?  Are we going to ignore this because some Coverity
+reports are false positives?
 
-> > 2. For remapping and unmapping, how does free_removed_table() put the
-> > final refcnt on the table passed in? (Previously we had
-> > put_page(childp) in stage2_map_walk_table_post(). So I'm assuming we'd
-> > have to do something equivalent with free_removed_table().)
->
-> Heh, that's a bug, and an embarrassing one at that!
->
-> Sent out a fix for that, since it would appear we leak memory on
-> table->block transitions. PTAL if you have a chance.
->
-> https://lore.kernel.org/all/20230530193213.1663411-1-oliver.upton@linux.d=
-ev/
-
-Awesome.
+Bjorn
