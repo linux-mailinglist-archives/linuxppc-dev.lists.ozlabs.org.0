@@ -2,76 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DDB77189F9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 May 2023 21:18:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B462718A02
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 May 2023 21:18:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QWfDS5tMNz3fFy
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 05:18:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QWfFW4pDKz3fL5
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 05:18:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=XsEc9zVF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=EuO9Wmuu;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::32f; helo=mail-ot1-x32f.google.com; envelope-from=jgg@ziepe.ca; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=schmitzmic@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=XsEc9zVF;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=EuO9Wmuu;
 	dkim-atps=neutral
-Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com [IPv6:2607:f8b0:4864:20::32f])
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QWfCY4CYkz3bfp
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jun 2023 05:17:11 +1000 (AEST)
-Received: by mail-ot1-x32f.google.com with SMTP id 46e09a7af769-6af8b25fc72so92218a34.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 May 2023 12:17:10 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QWfDK6Wjrz3fFS
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jun 2023 05:17:53 +1000 (AEST)
+Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-64d41763796so98495b3a.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 May 2023 12:17:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1685560628; x=1688152628;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MHtweHA3SWHMpKKRoTnSYY+2sgOnMlETASaKZp5cnWg=;
-        b=XsEc9zVFJou7Y3nnebryiByVBn6LMK4Wf9l4nO5gpford+hJUA/H2QpOG0COLFuX5a
-         URGPWFQpc3LDA6bntwf8mYCOUR7LRedzET0Ewd0rzO9PgVPKYEFRaNqy9Tly9asRKiaJ
-         uFEF3kE4Sc6oLXyO2nGQxY+xPOxeWYxp2VOpLq6pkzybqeLXldDHEX36YE+JV0/2WgYR
-         MEZP0OGJ34Wk74uKTPmjaR3f2Bt+Qidy74lDTyE54KXWUVya+wI2fELz6WmymjadQ0vz
-         6R6qPRykBkgotiP004pJgvChmAdW+rE0X9JyPAJunztg1ytyzcjhuhEpYuoYimbwCbpO
-         ox3w==
+        d=gmail.com; s=20221208; t=1685560671; x=1688152671;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=hRXn+Cy0RvW1WV+5bzVi+rN/pdYikDqitAksVBeXVYc=;
+        b=EuO9WmuuKtJgo4lBRnyvIyxTOy9aVaVtH958FX5rYCAK9ebeGpuNWy4LCDCJ7tgtwE
+         v8KWz8C1BRfePhrrRgtWbGB/097dG/fm/w8lJUKxMFBI0FG/EeQYidzpE8r2odFV7Hm8
+         0w5CGfMRo2DeXeSG7DC2/jdfyrDpf4lNY13c4wSENrakuCSZqraYIPMnDs8SGyQI8DeS
+         4YUjE1eduWUpgvu9OgQZ5D7hzQfPt6n+0xgp/TakD7BBPTVK/3AdWNF/fkis0b1E0uyj
+         f5FUSFjESXltyW69Nt/q0vdDbC2e7qiO3CaUnCTtbyPD5hy/37AsaFH8WHmP36rL3luz
+         wrUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685560628; x=1688152628;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MHtweHA3SWHMpKKRoTnSYY+2sgOnMlETASaKZp5cnWg=;
-        b=FJgdxewTz6EURff1/ZaQNMvF+ga1tvhyJrzStnoDWimqfOzNe1B2aYll/95xknEZ4O
-         z5RWyRuNTf8GeCuED8A2wNm1lxqRy3mmU824ehsMOwmBAX//Vz0Ix7xhkcY1YWC5b1wG
-         n7Kv+NrRjJr6FFQFsqXTZ3sOoTCLzxJ4+5I/euQbGSsMKCnNyOTwu0sLRsfS9eB0k0l9
-         M3gU1eAu7qBpxMttou3pIRIUL6/ptCZKhJqzvmCK+avOtCjgB+dYVs/s/z65EQgNPCnl
-         ZlDnatPbNWBgQ02veQ7d1zzGNe8zSUSWIYETtI3MV/ICmwtVBi3SKM+NP9871pmYS2HB
-         06fw==
-X-Gm-Message-State: AC+VfDwpPz1Ar/t96G0gH62a+3cRU+spMNKyFAtDa6LpiXrsfBajzdih
-	/DHIrUEqqHXTCaYib6l2/6StaQ==
-X-Google-Smtp-Source: ACHHUZ5EAb6uxqk7kkbizac+JrcIuoYNmIlHHRhpUDjRmBZ8boj1JThitoXP6J0DZ/TEoplrWHjlbg==
-X-Received: by 2002:a05:6358:7e9b:b0:123:3203:928a with SMTP id o27-20020a0563587e9b00b001233203928amr1487114rwn.27.1685560627568;
-        Wed, 31 May 2023 12:17:07 -0700 (PDT)
-Received: from ziepe.ca ([206.223.160.26])
-        by smtp.gmail.com with ESMTPSA id g3-20020a17090a300300b00250d670306esm1594668pjb.35.2023.05.31.12.17.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 May 2023 12:17:06 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.95)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1q4RJh-0017d4-7W;
-	Wed, 31 May 2023 16:17:05 -0300
-Date: Wed, 31 May 2023 16:17:05 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Yu Zhao <yuzhao@google.com>
-Subject: Re: [PATCH mm-unstable v2 01/10] mm/kvm: add
- mmu_notifier_ops->test_clear_young()
-Message-ID: <ZHedMX470b7EMwbe@ziepe.ca>
-References: <20230526234435.662652-1-yuzhao@google.com>
- <20230526234435.662652-2-yuzhao@google.com>
+        d=1e100.net; s=20221208; t=1685560671; x=1688152671;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hRXn+Cy0RvW1WV+5bzVi+rN/pdYikDqitAksVBeXVYc=;
+        b=AqaYxGo976iPQTKLC4eEdOvaPqPY2vXmV4CO+1BSOEllMF3pZdHGlYZJqtn8A9hg3L
+         cxoCWUXJ5UHN0xQnaPjrPRVuZNjB3gQRNNVq82Mmo+vScLtKYn948+AUWmvUQfrovKE2
+         9aghld+Zx90w7Q2stM9aAtR8JZGJIONzJQbYL9MNr4pEaZcx5l6bRU1g6QHFRcRHTzVQ
+         4oyyXvq0uLQMDaWE7Gpf+Lt14TlpDw9sdXLg77S3aWeyBj6F4DTHzGdZN4/ykW/xyibx
+         N69KkyoqnZov179arnjBGIoB5yCBkbnttpl2w/7m3UsudCBb3grwIOEn4PAB4yR8ad7I
+         4ocQ==
+X-Gm-Message-State: AC+VfDwykRr2MoUPRZBRiV3Vpju4DP6zipNMLVoKOva4w9s7cu3kbs5N
+	y0OzUwb8aF5PV1lqeTiQ2f4=
+X-Google-Smtp-Source: ACHHUZ6JEfEzcQ63O6e6hUpl79Dub3S1WceBl5T0WyKTt8XrQMOJrY9Wd7ylaeB21wY4TWeCqdYChw==
+X-Received: by 2002:a05:6a00:1592:b0:64d:3fb3:9ed9 with SMTP id u18-20020a056a00159200b0064d3fb39ed9mr6519475pfk.23.1685560671394;
+        Wed, 31 May 2023 12:17:51 -0700 (PDT)
+Received: from ?IPV6:2001:df0:0:200c:e888:4048:539d:b33c? ([2001:df0:0:200c:e888:4048:539d:b33c])
+        by smtp.gmail.com with ESMTPSA id z16-20020aa785d0000000b0063b806b111csm3627068pfn.169.2023.05.31.12.17.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 31 May 2023 12:17:50 -0700 (PDT)
+Message-ID: <1806cc8f-f119-a1e6-230d-03b45e182efa@gmail.com>
+Date: Thu, 1 Jun 2023 07:17:45 +1200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230526234435.662652-2-yuzhao@google.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] MAINTAINERS: Exclude m68k-only drivers from powerpc entry
+Content-Language: en-US
+To: Geert Uytterhoeven <geert@linux-m68k.org>,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <20230531125023.1121060-1-mpe@ellerman.id.au>
+ <CAMuHMdUbVmjcYyXmparBm6pQwu3q7HpTKsKfi_aAHGOSX97MUw@mail.gmail.com>
+From: Michael Schmitz <schmitzmic@gmail.com>
+In-Reply-To: <CAMuHMdUbVmjcYyXmparBm6pQwu3q7HpTKsKfi_aAHGOSX97MUw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,22 +83,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, x86@kernel.org, Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, Ben Gardon <bgardon@google.com>, Chao Peng <chao.p.peng@linux.intel.com>, Will Deacon <will@kernel.org>, Gaosheng Cui <cuigaosheng1@huawei.com>, Marc Zyngier <maz@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Jonathan Corbet <corbet@lwn.net>, Alistair Popple <apopple@nvidia.com>, Ingo Molnar <mingo@redhat.com>, Zenghui Yu <yuzenghui@huawei.com>, linux-trace-kernel@vger.kernel.org, linux-mm@google.com, Thomas Huth <thuth@redhat.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Steven Rostedt <rostedt@goodmis.org>, kvmarm@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Fabiano Rosas <farosas@linux.ibm.co
- m>, Michael Larabel <michael@michaellarabel.com>, Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, James Morse <james.morse@arm.com>, Masami Hiramatsu <mhiramat@kernel.org>, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
+Cc: linux-m68k@lists.linux-m68k.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Finn Thain <fthain@linux-m68k.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 26, 2023 at 05:44:26PM -0600, Yu Zhao wrote:
-> @@ -122,6 +124,10 @@ struct mmu_notifier_ops {
->  			  struct mm_struct *mm,
->  			  unsigned long address);
->  
-> +	int (*test_clear_young)(struct mmu_notifier *mn, struct mm_struct *mm,
-> +				unsigned long start, unsigned long end,
-> +				bool clear, unsigned long *bitmap);
-> +
+Hi Geert,
 
-Why leave clear_young behind? Just make a NULL bitmap mean
-clear_young?
+On 1/06/23 00:59, Geert Uytterhoeven wrote:
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -11916,6 +11916,8 @@ L:      linuxppc-dev@lists.ozlabs.org
+>>   S:     Odd Fixes
+>>   F:     arch/powerpc/platforms/powermac/
+>>   F:     drivers/macintosh/
+>> +X:     drivers/macintosh/adb-iop.c
+>> +X:     drivers/macintosh/via-macii.c
+>>
+>>   LINUX FOR POWERPC (32-BIT AND 64-BIT)
+>>   M:     Michael Ellerman <mpe@ellerman.id.au>
+> LGTM, as there are already entries for these two files under
+> "M68K ON APPLE MACINTOSH".
+> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+>
+> Which leads us to a related topic: Is Joshua still around?  Should Finn
+> be added or replace Joshua in the "M68K ON APPLE MACINTOSH" entry?
 
-Jason
+Add Finn, at the very least (if he's agreed). Haven't seen mail from 
+Joshua in the past 13 years myself.
+
+Cheers,
+
+     Michael
+
+>
+> Gr{oetje,eeting}s,
+>
+>                          Geert
+>
+>
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+>
+> In personal conversations with technical people, I call myself a hacker. But
+> when I'm talking to journalists I just say "programmer" or something like that.
+>                                  -- Linus Torvalds
