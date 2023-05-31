@@ -1,61 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A9A37180E1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 May 2023 14:59:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C35671866E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 May 2023 17:33:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QWTrB6qcjz3f6j
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 May 2023 22:59:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QWYFR04j8z3fJv
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 01:33:31 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=g2Ftknds;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.128.170; helo=mail-yw1-f170.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=g2Ftknds;
+	dkim-atps=neutral
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QWTqk3DLWz3bd5
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 May 2023 22:59:29 +1000 (AEST)
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-565eaf83853so48891087b3.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 May 2023 05:59:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685537966; x=1688129966;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gk0pPTGREGNtqqDFsY8KHF8G7JlW3Q+zzUWS3RUpyQU=;
-        b=j5Vt1zex8GwJJK6Z+XwjxLUJWeiU6Fux82uHYv9OdRi05h5BRfJ6f7TDYR6s4jYu/E
-         ZTx6QMGqYUaxEzGoaHOS4mFO+4WYBsXj5fNX9wSggeI1ypdsE5/oEKBhoOmYLfJO12dK
-         2BFkN8trGvGaY/8dPS+ySTp0hyx0DoTQzMcdbMsfLZlF+dX1sn1H0FD4UgY0FuoV9Biy
-         djiQbwmsx/NxKOmJ7RHNEqBL+Y2Tc+lnVK7HyWY0+BbO8IMwoqHDoP/Ef5bIUUtEbYwg
-         d9OB7whiCzGWNiCYSTug8lhJTS6tBgrW6tyjRzS4ARYqx/CRUx3iMN9xXE8l4TarPmXP
-         rq3A==
-X-Gm-Message-State: AC+VfDzA843UObdb7xhx+UtqgKOoCeSf8cX6yszqy83Au8VXcSBHn3t3
-	4STobEFB3PSJ9I1PE0KC/YQy2TmPpKocsg==
-X-Google-Smtp-Source: ACHHUZ7kmsk6XtVzlWtGIz/KNxZ799Ylx9gtxjFF4vJxiMUCGxb0qJfHqAszIoTuNsfL9k60Kaay+Q==
-X-Received: by 2002:a0d:d413:0:b0:565:ef11:1610 with SMTP id w19-20020a0dd413000000b00565ef111610mr5972950ywd.48.1685537966216;
-        Wed, 31 May 2023 05:59:26 -0700 (PDT)
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com. [209.85.128.176])
-        by smtp.gmail.com with ESMTPSA id s130-20020a817788000000b00559ec10f245sm5308132ywc.103.2023.05.31.05.59.25
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 31 May 2023 05:59:25 -0700 (PDT)
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-565ee3d14c2so47496787b3.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 May 2023 05:59:25 -0700 (PDT)
-X-Received: by 2002:a81:48cc:0:b0:55a:c51:9a15 with SMTP id
- v195-20020a8148cc000000b0055a0c519a15mr6087006ywa.22.1685537965151; Wed, 31
- May 2023 05:59:25 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230531125023.1121060-1-mpe@ellerman.id.au>
-In-Reply-To: <20230531125023.1121060-1-mpe@ellerman.id.au>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 31 May 2023 14:59:12 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdUbVmjcYyXmparBm6pQwu3q7HpTKsKfi_aAHGOSX97MUw@mail.gmail.com>
-Message-ID: <CAMuHMdUbVmjcYyXmparBm6pQwu3q7HpTKsKfi_aAHGOSX97MUw@mail.gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: Exclude m68k-only drivers from powerpc entry
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QWYDX3fdkz3f4B
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jun 2023 01:32:37 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1685547164; x=1717083164;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=ToAgdbmYyBTVciOEZca9OHnOGaVAyu/4tvM8ja+xqKI=;
+  b=g2FtkndsoeO263+ZZ1NCyOo8FDRqvJfoQM5lxxVNJBWwE2/FLsIncePI
+   DqCJYp/o0BZen6BQ8QbHJ8Uq9nlfOyM39mAautd8CWZi9cVyov9UMRN+7
+   8GzLOvnpWxBZAYV/o7yiZadc+4A1iBwPOHVRKV4IbZ01TmMRVO1A6zIs/
+   BWbne+zRl0Lc0oai3v1Q8eYmqkEa15/zrXkOmL002r7tbPO2PIrYOvepH
+   o2ayUP8vbxmVYSXq48r4vkRt/+DiXfHZkif+OiLtekzRTshGNIhK8yoFE
+   6C7CHg8e2gqEFxYzCI0l9nX+nRkaRmVAyXYcfh/rUOoAnuj5+V5pX+eGd
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10727"; a="354116852"
+X-IronPort-AV: E=Sophos;i="6.00,207,1681196400"; 
+   d="scan'208";a="354116852"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2023 08:32:31 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10727"; a="701140918"
+X-IronPort-AV: E=Sophos;i="6.00,207,1681196400"; 
+   d="scan'208";a="701140918"
+Received: from lkp-server01.sh.intel.com (HELO fb1ced2c09fb) ([10.239.97.150])
+  by orsmga007.jf.intel.com with ESMTP; 31 May 2023 08:32:29 -0700
+Received: from kbuild by fb1ced2c09fb with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1q4NoL-0001Qj-0K;
+	Wed, 31 May 2023 15:32:29 +0000
+Date: Wed, 31 May 2023 23:32:25 +0800
+From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: [powerpc:topic/cpu-smt 6/9] kernel/cpu.c:2583:36: error:
+ 'cpu_smt_max_threads' undeclared; did you mean 'cpu_smt_num_threads'?
+Message-ID: <202305312356.SfvJ8Iwh-lkp@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,55 +68,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-m68k@lists.linux-m68k.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Finn Thain <fthain@linux-m68k.org>
+Cc: linuxppc-dev@lists.ozlabs.org, oe-kbuild-all@lists.linux.dev
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael,
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git topic/cpu-smt
+head:   7bb712baeffc4640f5511feec68add6f1767413f
+commit: 570b70824d468facd197e44b6d40c9e79886b81c [6/9] cpu/SMT: Allow enabling partial SMT states via sysfs
+config: parisc-defconfig (https://download.01.org/0day-ci/archive/20230531/202305312356.SfvJ8Iwh-lkp@intel.com/config)
+compiler: hppa-linux-gcc (GCC) 12.3.0
+reproduce (this is a W=1 build):
+        mkdir -p ~/bin
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/commit/?id=570b70824d468facd197e44b6d40c9e79886b81c
+        git remote add powerpc https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
+        git fetch --no-tags powerpc topic/cpu-smt
+        git checkout 570b70824d468facd197e44b6d40c9e79886b81c
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.3.0 ~/bin/make.cross W=1 O=build_dir ARCH=parisc olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.3.0 ~/bin/make.cross W=1 O=build_dir ARCH=parisc SHELL=/bin/bash
 
-CC Finn
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202305312356.SfvJ8Iwh-lkp@intel.com/
 
-On Wed, May 31, 2023 at 2:50=E2=80=AFPM Michael Ellerman <mpe@ellerman.id.a=
-u> wrote:
-> The powerpc section has a "F:" entry for drivers/macintosh, matching all
-> files in or below drivers/macintosh. That is correct for the most part,
-> but there are a couple of m68k-only drivers in the directory, so exclude
-> those.
->
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+All errors (new ones prefixed by >>):
 
-Thanks for your patch!
-
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -11916,6 +11916,8 @@ L:      linuxppc-dev@lists.ozlabs.org
->  S:     Odd Fixes
->  F:     arch/powerpc/platforms/powermac/
->  F:     drivers/macintosh/
-> +X:     drivers/macintosh/adb-iop.c
-> +X:     drivers/macintosh/via-macii.c
->
->  LINUX FOR POWERPC (32-BIT AND 64-BIT)
->  M:     Michael Ellerman <mpe@ellerman.id.au>
-
-LGTM, as there are already entries for these two files under
-"M68K ON APPLE MACINTOSH".
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
-
-Which leads us to a related topic: Is Joshua still around?  Should Finn
-be added or replace Joshua in the "M68K ON APPLE MACINTOSH" entry?
-
-Gr{oetje,eeting}s,
-
-                        Geert
+   kernel/cpu.c: In function 'control_show':
+>> kernel/cpu.c:2583:36: error: 'cpu_smt_max_threads' undeclared (first use in this function); did you mean 'cpu_smt_num_threads'?
+    2583 |             cpu_smt_num_threads != cpu_smt_max_threads)
+         |                                    ^~~~~~~~~~~~~~~~~~~
+         |                                    cpu_smt_num_threads
+   kernel/cpu.c:2583:36: note: each undeclared identifier is reported only once for each function it appears in
 
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+vim +2583 kernel/cpu.c
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+  2571	
+  2572	static ssize_t control_show(struct device *dev,
+  2573				    struct device_attribute *attr, char *buf)
+  2574	{
+  2575		const char *state = smt_states[cpu_smt_control];
+  2576	
+  2577		/*
+  2578		 * If SMT is enabled but not all threads are enabled then show the
+  2579		 * number of threads. If all threads are enabled show "on". Otherwise
+  2580		 * show the state name.
+  2581		 */
+  2582		if (cpu_smt_control == CPU_SMT_ENABLED &&
+> 2583		    cpu_smt_num_threads != cpu_smt_max_threads)
+  2584			return sysfs_emit(buf, "%d\n", cpu_smt_num_threads);
+  2585	
+  2586		return snprintf(buf, PAGE_SIZE - 2, "%s\n", state);
+  2587	}
+  2588	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
