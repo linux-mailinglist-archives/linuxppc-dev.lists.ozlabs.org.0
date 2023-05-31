@@ -1,53 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04556717780
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 May 2023 09:04:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 117267178A5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 May 2023 09:50:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QWKyc4gc3z3f95
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 May 2023 17:04:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QWLzK54npz3fCK
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 May 2023 17:50:37 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Msgcco8W;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=fjasle.eu header.i=@fjasle.eu header.a=rsa-sha256 header.s=mail header.b=wEOslFOP;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QWKxk04Dmz3bgV
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 May 2023 17:04:10 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=fjasle.eu (client-ip=212.227.17.10; helo=mout.kundenserver.de; envelope-from=nicolas@fjasle.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Msgcco8W;
+	dkim=pass (1024-bit key; unprotected) header.d=fjasle.eu header.i=@fjasle.eu header.a=rsa-sha256 header.s=mail header.b=wEOslFOP;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+X-Greylist: delayed 633 seconds by postgrey-1.36 at boromir; Wed, 31 May 2023 17:49:46 AEST
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QWKxg2Cjyz4whk;
-	Wed, 31 May 2023 17:04:07 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1685516649;
-	bh=QTIfO3Zt/MDKwwC7w7B3sh+nL8ekhE3DoJAK+oNicmE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Msgcco8WDpbdcaRZlMk3qkAc0XV2iv0xna1IAU2hY+Ji34DbSo9nRsWtshzZohNg1
-	 fWS6+DZUQ4uKCGA8MxaG+CmgC8X42mcrVHr49k1Y8D1biC4eqY//0GKujHdiSf0eVy
-	 RXxUDsWvKB9jQIdaMlHuCxYAZOPMPAKsPIdN+oBD8KEcfsOxdNlL2BMEYVhA84K+Jt
-	 CXfQh1IwTxbSW6FxRa05Dmhhsa+LHpEx51ra494RLKQKapQwAwO5Gr3aeO4zTKt2qR
-	 MvN1XUIy3PgL1TIfYhaf1/UXnJBNFVS/9XwR2WlrKA4um2mZboQd/vJb5JnZpo+aP7
-	 Ex33nJnvLrVJg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [PATCH v2 0/3] Remove iommu_group_remove_device() from fsl
-In-Reply-To: <ZHX9nu234ehZWVwU@nvidia.com>
-References: <0-v2-ce71068deeec+4cf6-fsl_rm_groups_jgg@nvidia.com>
- <ZGxcmJ3vH0Smqqxu@8bytes.org> <ZHP1zv48iZUV5Ypj@nvidia.com>
- <87leh658ly.fsf@mail.lhotse> <ZHX9nu234ehZWVwU@nvidia.com>
-Date: Wed, 31 May 2023 17:04:04 +1000
-Message-ID: <87leh5yobf.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QWLyL2hKWz3bgn
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 May 2023 17:49:27 +1000 (AEST)
+Received: from leknes.fjasle.eu ([46.142.48.214]) by mrelayeu.kundenserver.de
+ (mreue108 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1N0X0U-1qG8Jq33SO-00wVdq; Wed, 31 May 2023 09:29:30 +0200
+Received: by leknes.fjasle.eu (Postfix, from userid 1000)
+	id 16F453E7CB; Wed, 31 May 2023 09:29:25 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fjasle.eu; s=mail;
+	t=1685518165; bh=HpS8LrsnY/89NscygVkPsEBgTNTbHKpEGmsUMP/4T6Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=wEOslFOPWf2p08nC8zApP5Rcoc6tiv/v6ERy4dGWcUUWrmTuj6q11wGLLkqqrj706
+	 WLz0JzJsYSw/tI8bK5P97oE2bMKPLd3buMdXXfQ2Qr59505Ib/EfH3BZx9F1loHHxU
+	 zTbg1mJTFRQv59eeJ32gfP9BJgg0wxr3D571i3Bg=
+Date: Wed, 31 May 2023 09:29:24 +0200
+From: Nicolas Schier <nicolas@fjasle.eu>
+To: Randy Dunlap <rdunlap@infradead.org>
+Subject: Re: [PATCH v2 RESEND] soc/fsl/qe: fix usb.c build errors
+Message-ID: <ZHb3VD4OgqDd2oKR@fjasle.eu>
+References: <20230521225216.21795-1-rdunlap@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230521225216.21795-1-rdunlap@infradead.org>
+X-Provags-ID: V03:K1:7aNwyNIJJGSwsSWIPPBCoqlbrWM1lrCsSwYfhj+nxprnIqzghd8
+ j/UnBB7xn4z/O3bMZdwCnwu+sllhHuHQ67c9LORIPuBxHfh00uZ5KUPq/5MpX+jjxwUJMAJ
+ Y6C00Sq4tZuCPiz6F1aURO30MU18l/y9gyUYnLTRdQvdQFteOKGecgPvTCZxvy6ZWMI0Rl2
+ 2TGI7d6XRMv9fuzxYZKJQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:Bt27j1T/A2k=;6FcZHhHiDY4t8wzkR4In7P9Exzh
+ 5Dspe3MZ0WIyYylYinjZGjEjuEtx2+A2vl+8EJ21bR9/xktrWE2phprYeJ0pp9Wv2m06zKoMW
+ Mbgsfwf4g3ghTk9l4ZvWar9a6OZoLfgBCqeuvPXIqU9IQTIQc3FWCsaFuuUtwVMD6YoQbdNGO
+ BqG17DiLb8m+UrfEE2ptMgm5kfEkisbDvViMbnKuZ+5P4PxTfDMacvcTVIIv4vYDxbJCbISlf
+ /7PQ2bSjXwZfAsRjrcVIUg5RzMiAhXILEXXPwFoBkHhW6/STmf+eOnc+DfryqNeCu1MdVZmrF
+ juAB2qbSSukvr3HElio3fu82cReQhP4NYl2u0UpNAWs2B2qSnt0Hf7T+1FddPfwHejWCKMGrz
+ ZWZadK8uLXRB9n2fYvlDcr/koGuL5ZdFbC97gL3CYcx+bullCxBP9X1ZfDgIiN8sEODkexVGp
+ hNhWg/AO+yAGqn11ZM9qxRpe3ffpVh+oZL2K7NEsxDLi0/+7aPUjAgHSPRcbIgERco5PFhrZ8
+ lziMDoGAxmuKl7c4vyet+91YsY5/D/6x6Ov7x20t7D5j/a1fluyi5POPtJ9+0KCL1slkXLDqA
+ AW3CJ+ywxsX6EWdXy/gVXfVKDu1SRd9qTqReiHAdw2y1elge8ZWD2OcEiVQk3hl6qO4k7uZms
+ Zy1/kHTanYyOhYPibIndBCtpkQZyPzSaPB9nljCU+Q==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,54 +72,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>, Nicholas Piggin <npiggin@gmail.com>, Li Yang <leoyang.li@nxp.com>, iommu@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
+Cc: Kumar Gala <galak@kernel.crashing.org>, kernel test robot <lkp@intel.com>, Masahiro Yamada <masahiroy@kernel.org>, linux-kernel@vger.kernel.org, Leo Li <leoyang.li@nxp.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-arm-kernel@lists.infradead.org, Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Jason Gunthorpe <jgg@nvidia.com> writes:
-> On Tue, May 30, 2023 at 10:03:53PM +1000, Michael Ellerman wrote:
->> Jason Gunthorpe <jgg@nvidia.com> writes:
->> > On Tue, May 23, 2023 at 08:26:32AM +0200, Joerg Roedel wrote:
->> >> On Tue, May 16, 2023 at 09:35:25PM -0300, Jason Gunthorpe wrote:
->> >> > With POWER SPAPR now having a real iommu driver and using the normal group
->> >> > lifecycle stuff fixing FSL will leave only VFIO's no-iommu support as a
->> >> > user for the iommu_group_add/remove_device() calls. This will help
->> >> > simplify the understanding of what the core code should be doing for these
->> >> > functions.
->> >> > 
->> >> > Fix FSL to not need to call iommu_group_remove_device() at all.
->> >> > 
->> >> > v2:
->> >> >  - Change the approach to use driver_managed_dma
->> >> >  - Really simplify fsl_pamu_device_group() and just put everything in one
->> >> >    function
->> >> >  - New patch to make missing OF properties a probe failure
->> >> > v1: https://lore.kernel.org/r/0-v1-1421774b874b+167-ppc_device_group_jgg@nvidia.com
->> >> > 
->> >> > Jason Gunthorpe (3):
->> >> >   iommu/fsl: Always allocate a group for non-pci devices
->> >> >   iommu/fsl: Move ENODEV to fsl_pamu_probe_device()
->> >> >   iommu/fsl: Use driver_managed_dma to allow VFIO to work
->> >> > 
->> >> >  arch/powerpc/sysdev/fsl_pci.c   |   1 +
->> >> >  drivers/iommu/fsl_pamu_domain.c | 123 +++++++++-----------------------
->> >> >  2 files changed, 36 insertions(+), 88 deletions(-)
->> >> 
->> >> Any chance someone can test this on real hardware?
->> >
->> > There isn't even a MAINTAINERS entry for this, and the git log looks
->> > pretty dead for a long time. I tried to cc people who might care,
->> > but I'm not so optimistic - unless Li says something.
->> 
-...
->
->> Anything else I can check easily?
->
-> Wow Great, I think that is a Tested-by. :) Honestly booting at all is
-> 99% of the battle..
+On Sun, May 21, 2023 at 03:52:16PM -0700 Randy Dunlap wrote:
+> Fix build errors in soc/fsl/qe/usb.c when QUICC_ENGINE is not set.
+> This happens when PPC_EP88XC is set, which selects CPM1 & CPM.
+> When CPM is set, USB_FSL_QE can be set without QUICC_ENGINE
+> being set. When USB_FSL_QE is set, QE_USB deafults to y, which
+> causes build errors when QUICC_ENGINE is not set. Making
+> QE_USB depend on QUICC_ENGINE prevents QE_USB from defaulting to y.
+> 
+> Fixes these build errors:
+> 
+> drivers/soc/fsl/qe/usb.o: in function `qe_usb_clock_set':
+> usb.c:(.text+0x1e): undefined reference to `qe_immr'
+> powerpc-linux-ld: usb.c:(.text+0x2a): undefined reference to `qe_immr'
+> powerpc-linux-ld: usb.c:(.text+0xbc): undefined reference to `qe_setbrg'
+> powerpc-linux-ld: usb.c:(.text+0xca): undefined reference to `cmxgcr_lock'
+> powerpc-linux-ld: usb.c:(.text+0xce): undefined reference to `cmxgcr_lock'
+> 
+> Fixes: 5e41486c408e ("powerpc/QE: add support for QE USB clocks routing")
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Link: https://lore.kernel.org/all/202301101500.pillNv6R-lkp@intel.com/
+> Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: Leo Li <leoyang.li@nxp.com>
+> Cc: Masahiro Yamada <masahiroy@kernel.org>
+> Cc: Nicolas Schier <nicolas@fjasle.eu>
+> Cc: Qiang Zhao <qiang.zhao@nxp.com>
+> Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: Kumar Gala <galak@kernel.crashing.org>
+> ---
 
-Great, yep consider it:
+I can reproduce the build error and confirm the build dependency fix (but I
+have no hardware for testing).
 
-Tested-by: Michael Ellerman <mpe@ellerman.id.au>
+Acked-by: Nicolas Schier <nicolas@jasle.eu>
 
-cheers
+
+
+> v2: drop Anton Vorontsov <avorontsov@ru.mvista.com>; rebase/resend
+> 
+>  drivers/soc/fsl/qe/Kconfig |    1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff -- a/drivers/soc/fsl/qe/Kconfig b/drivers/soc/fsl/qe/Kconfig
+> --- a/drivers/soc/fsl/qe/Kconfig
+> +++ b/drivers/soc/fsl/qe/Kconfig
+> @@ -62,6 +62,7 @@ config QE_TDM
+>  
+>  config QE_USB
+>  	bool
+> +	depends on QUICC_ENGINE
+>  	default y if USB_FSL_QE
+>  	help
+>  	  QE USB Controller support
+
+-- 
+epost|xmpp: nicolas@fjasle.eu          irc://oftc.net/nsc
+↳ gpg: 18ed 52db e34f 860e e9fb  c82b 7d97 0932 55a0 ce7f
+     -- frykten for herren er opphav til kunnskap --
