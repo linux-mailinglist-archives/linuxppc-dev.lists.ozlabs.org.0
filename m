@@ -2,69 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E590718BAC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 May 2023 23:14:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E36A3718C4A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 May 2023 23:32:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QWhq05Dfjz3fNX
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 07:14:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QWjCK3tt1z3fCH
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 07:32:13 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=kHJHBx69;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=nYeBH5p3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::831; helo=mail-qt1-x831.google.com; envelope-from=yuzhao@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1130; helo=mail-yw1-x1130.google.com; envelope-from=vishal.moola@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=kHJHBx69;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=nYeBH5p3;
 	dkim-atps=neutral
-Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com [IPv6:2607:f8b0:4864:20::831])
+Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QWhnX6kfJz3fDg
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jun 2023 07:13:19 +1000 (AEST)
-Received: by mail-qt1-x831.google.com with SMTP id d75a77b69052e-3f804665702so72161cf.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 May 2023 14:13:19 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QWjB96s3Jz3fBq
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jun 2023 07:31:13 +1000 (AEST)
+Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-561c1436c75so800147b3.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 May 2023 14:31:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1685567596; x=1688159596;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7+2qoqODzznlrzJdzN64MjbCVNNnQuwRRtJuX4ggbCU=;
-        b=kHJHBx69u6844yWRg+bdMx0m0tvgPlagRdL9WAIhqNvPpu8LX6GMuzHUHixyWgd9Mf
-         qMY0qxpAkEmOxYZNrn0heIVjfGWpYgIwlgNcz8wlOeZnnk3GSZB4NDa6DPPoQDzEoBo0
-         lR6HimNkut+XEN2CfKEthgqEw9XODXPnFgApD2MocwWQg3P600hpjTCFdeQ/aa4jxYoA
-         id1X9co22nLUO5CFxyBWnUvevyXMChC/vrSNZ3kgUh9Qq84ljrXGo9BVv2lPuo5FhPmW
-         R5vkwByRhT5602h6iBd8eMi2T7L9oJexCh5hLLcf6GpQ/OcBRYje/jyno1z0YmKsVGx1
-         h3gg==
+        d=gmail.com; s=20221208; t=1685568670; x=1688160670;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Wjb7mkxds2Oxu0tDA//mCadvcwpJnafWf0cD82pJKQE=;
+        b=nYeBH5p3+Qt6FUJ38UmFIxO7emaaMGST1TXgppBSGlquoGi0Vu88EMjm0R/stdK090
+         rAkGmKWr2iOmn9u+Pb/kM3qRzmk4mZo0E/qCXj+6fXwb5xT2cyvDopKHOf2mbUaUTVkW
+         IZJWedT+tZ8ojnhcwbCb2MsICPKO3NlZEBtylSK1ToQ7f9kqjkh5/U5nwImpNeor9qu5
+         IqgnJLTK4zE+DQC6rph9ulLyMVpd89EilRZG10pjBGo7K+adbGLVnpAlHyiTcC9wvrmA
+         MF9mV19ie8UWuPHO/B2dxtGuMvy+vvJd/sRqVo6b1JEZ5k0xW/bO1/+Ig0OmF8ty3QFr
+         I20Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685567596; x=1688159596;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7+2qoqODzznlrzJdzN64MjbCVNNnQuwRRtJuX4ggbCU=;
-        b=fphpfzJTadKmpHCgxBApLuZ5peOrAG7A90wKB9Injr2nfDhM7kRSZZzSXmiTiqMTOv
-         zb0/X8hi2F6hLIx+8K5C8ikI+XF0DieJgmlmhBu8MS1bBGDViYSETOHHRkRImxNLPd2D
-         eI6atc9qiaJ8P4QpZE10e52NKb/eHXtMs3DNX+IoSbC3jRvGA9cl4RfuI9vaOkvUnt/5
-         F0FesxH9kXLcxH0d+q05M6s9mQml8e9SCrzvWX0aXwIPVRBWsiMOoNnuHRPu/Z3ma7P+
-         jqUwATKJSysuRHiE82vLMr06+voKszRYCgLgyPG6TJ1xo4aLzSkRSF8eXkPyMYJlRw7l
-         DvAw==
-X-Gm-Message-State: AC+VfDzlMFK07pCsPpquJKFAzTwFJCpUHx8xDPqvKXoGezPVzrQoWVFw
-	1ulyOuWUtl9i69+mEQjDtispskQf3gbXzwOpV8S30g==
-X-Google-Smtp-Source: ACHHUZ5WfYJ6eA2+oGfutrPzowugKbbUX/q/GiLW+TIRlZfdD7OeKd4PuotxSoDS0rqsIQKlsK37axqyrYA0yyXPG+Q=
-X-Received: by 2002:a05:622a:1a11:b0:3f8:3065:7fc5 with SMTP id
- f17-20020a05622a1a1100b003f830657fc5mr7534qtb.1.1685567595969; Wed, 31 May
- 2023 14:13:15 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1685568670; x=1688160670;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Wjb7mkxds2Oxu0tDA//mCadvcwpJnafWf0cD82pJKQE=;
+        b=gMlIfaahjEjYPSBCm5O/ZNMq9Qam6MRQKwbhx3by4XBP0iUN2q/0mCVpVUgAGgDEX1
+         miGKRlVZBBM9HKnq8QnB+WDYGKEmXu3FMtq41V/Ik4keofAaGB7BiDaU6SUOVxFbojae
+         d6quIOXNRujO4NfaoWhxAd4Zcp6cpy9YQ6n7mUpbFLGPT5LjZ52NuJu1a1Lx2x3PAfmQ
+         Y8Fk3/I5RXHrpq5L5b36/cylhcchBzKa0jQD2n1IO99DjhQ2eF0zpkbwPDLO0OtApRM7
+         92WpGlZjRLZR+WqkdV3xSwHBIis+k8JUIqCaQP8DwI0YPaK9VGWH1kiCufn2vLWh7DvR
+         ZWzA==
+X-Gm-Message-State: AC+VfDxDKYGnk+BvquL6Igq3F/2Oz8w/USxd85kEzUPuEovak0TsEvPS
+	lx7BKGouOozuR+/EkWG8Onk=
+X-Google-Smtp-Source: ACHHUZ5BOuY9ns1UExUd8Gqiz8IGTSQZuNKoj5s1mEJ0QIzwi0ShIzlk0w6m3uPiq99qwG8NM2Rw1w==
+X-Received: by 2002:a0d:df51:0:b0:55a:3560:8ee0 with SMTP id i78-20020a0ddf51000000b0055a35608ee0mr6881175ywe.20.1685568669613;
+        Wed, 31 May 2023 14:31:09 -0700 (PDT)
+Received: from unknowna0e70b2ca394.attlocal.net ([2600:1700:2f7d:1800::46])
+        by smtp.googlemail.com with ESMTPSA id t63-20020a0dd142000000b0055aafcef659sm658905ywd.5.2023.05.31.14.31.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 31 May 2023 14:31:09 -0700 (PDT)
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Matthew Wilcox <willy@infradead.org>
+Subject: [PATCH v3 00/34] Split ptdesc from struct page
+Date: Wed, 31 May 2023 14:29:58 -0700
+Message-Id: <20230531213032.25338-1-vishal.moola@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-References: <20230526234435.662652-1-yuzhao@google.com> <20230526234435.662652-6-yuzhao@google.com>
- <ZHemUc3DiSbxQbxJ@linux.dev>
-In-Reply-To: <ZHemUc3DiSbxQbxJ@linux.dev>
-From: Yu Zhao <yuzhao@google.com>
-Date: Wed, 31 May 2023 15:12:39 -0600
-Message-ID: <CAOUHufa8+NZcctoYXOZQXNdvKTUxAMDF3sC=X+3mv4juMUyrLA@mail.gmail.com>
-Subject: Re: [PATCH mm-unstable v2 05/10] kvm/arm64: add kvm_arch_test_clear_young()
-To: Oliver Upton <oliver.upton@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,142 +76,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, x86@kernel.org, Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, Ben Gardon <bgardon@google.com>, Chao Peng <chao.p.peng@linux.intel.com>, Will Deacon <will@kernel.org>, Gaosheng Cui <cuigaosheng1@huawei.com>, Marc Zyngier <maz@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Jonathan Corbet <corbet@lwn.net>, Alistair Popple <apopple@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, Ingo Molnar <mingo@redhat.com>, Zenghui Yu <yuzenghui@huawei.com>, linux-trace-kernel@vger.kernel.org, linux-mm@google.com, Thomas Huth <thuth@redhat.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Steven Rostedt <rostedt@goodmis.org>, kvmarm@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Fab
- iano Rosas <farosas@linux.ibm.com>, Michael Larabel <michael@michaellarabel.com>, Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>, Masami Hiramatsu <mhiramat@kernel.org>, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
+Cc: kvm@vger.kernel.org, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, linux-openrisc@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, linux-hexagon@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>, linux-csky@vger.kernel.org, Geert Uytterhoeven <geert@linux-m68k.org>, xen-devel@lists.xenproject.org, Jonas Bonn <jonas@southpole.se>, Arnd Bergmann <arnd@arndb.de>, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-mm@kvack.org, linux-mips@vger.kernel.org, "Vishal Moola \(Oracle\)" <vishal.moola@gmail.com>, Dinh Nguyen <dinguyen@kernel.org
+ >, Richard Weinberger <richard@nod.at>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, May 31, 2023 at 1:56=E2=80=AFPM Oliver Upton <oliver.upton@linux.de=
-v> wrote:
->
-> Hi Yu,
->
-> On Fri, May 26, 2023 at 05:44:30PM -0600, Yu Zhao wrote:
-> > Implement kvm_arch_test_clear_young() to support the fast path in
-> > mmu_notifier_ops->test_clear_young().
-> >
-> > It focuses on a simple case, i.e., hardware sets the accessed bit in
-> > KVM PTEs and VMs are not protected, where it can rely on RCU and
-> > cmpxchg to safely clear the accessed bit without taking
-> > kvm->mmu_lock. Complex cases fall back to the existing slow path
-> > where kvm->mmu_lock is then taken.
-> >
-> > Signed-off-by: Yu Zhao <yuzhao@google.com>
-> > ---
-> >  arch/arm64/include/asm/kvm_host.h |  6 ++++++
-> >  arch/arm64/kvm/mmu.c              | 36 +++++++++++++++++++++++++++++++
-> >  2 files changed, 42 insertions(+)
-> >
-> > diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm=
-/kvm_host.h
-> > index 7e7e19ef6993..da32b0890716 100644
-> > --- a/arch/arm64/include/asm/kvm_host.h
-> > +++ b/arch/arm64/include/asm/kvm_host.h
-> > @@ -1113,4 +1113,10 @@ static inline void kvm_hyp_reserve(void) { }
-> >  void kvm_arm_vcpu_power_off(struct kvm_vcpu *vcpu);
-> >  bool kvm_arm_vcpu_stopped(struct kvm_vcpu *vcpu);
-> >
-> > +#define kvm_arch_has_test_clear_young kvm_arch_has_test_clear_young
-> > +static inline bool kvm_arch_has_test_clear_young(void)
-> > +{
-> > +     return cpu_has_hw_af() && !is_protected_kvm_enabled();
-> > +}
->
-> I would *strongly* suggest you consider supporting test_clear_young on
-> systems that do software Access Flag management. FEAT_HAFDBS is an
-> *optional* extension to the architecture, so we're going to support
-> software AF management for a very long time in KVM. It is also a valid
-> fallback option in the case of hardware errata which render HAFDBS
-> broken.
+The MM subsystem is trying to shrink struct page. This patchset
+introduces a memory descriptor for page table tracking - struct ptdesc.
 
-Hi Oliver,
+This patchset introduces ptdesc, splits ptdesc from struct page, and
+converts many callers of page table constructor/destructors to use ptdescs.
 
-It's not about willingness but resources. Ideally we want to make
-everything perfect, but in reality, we can only move forward one step
-a time.
+Ptdesc is a foundation to further standardize page tables, and eventually
+allow for dynamic allocation of page tables independent of struct page.
+However, the use of pages for page table tracking is quite deeply
+ingrained and varied across archictectures, so there is still a lot of
+work to be done before that can happen.
 
-If I looked at your request from ARM's POV, I would agree with you.
-But my goal is to lay the foundation for all architectures that could
-benefit, so I may not be able to cover a lot for each architecture.
-Specifically, I don't have the bandwidth to test the !FEAT_HAFDBS case
-for ARM.
+This is rebased on next-20230531.
 
-So here are some options I could offer, ordered by my preferences:
-1. We proceed as it is for now. I *will* find someone from my team (or
-yours) to follow up -- this way we can make sure !FEAT_HAFDBS is well
-tested.
-2. I drop the cpu_has_hw_af() check above. Not that I think there is
-much risk, I'm just trying to be cautious.
-3. I drop the entire ARM support (and include the RISC-V support which
-I previously deprioritized). We revisit after the test is done.
+v3:
+  Got an Acked-by
+  Fixed the arm64 compilation issue
+  Rename some ptdesc utility functions to be pagetable_* instead
+  Add some comments to functions describing their uses
 
-Sounds reasonable?
+Vishal Moola (Oracle) (34):
+  mm: Add PAGE_TYPE_OP folio functions
+  s390: Use _pt_s390_gaddr for gmap address tracking
+  s390: Use pt_frag_refcount for pagetables
+  pgtable: Create struct ptdesc
+  mm: add utility functions for ptdesc
+  mm: Convert pmd_pgtable_page() to pmd_ptdesc()
+  mm: Convert ptlock_alloc() to use ptdescs
+  mm: Convert ptlock_ptr() to use ptdescs
+  mm: Convert pmd_ptlock_init() to use ptdescs
+  mm: Convert ptlock_init() to use ptdescs
+  mm: Convert pmd_ptlock_free() to use ptdescs
+  mm: Convert ptlock_free() to use ptdescs
+  mm: Create ptdesc equivalents for pgtable_{pte,pmd}_page_{ctor,dtor}
+  powerpc: Convert various functions to use ptdescs
+  x86: Convert various functions to use ptdescs
+  s390: Convert various gmap functions to use ptdescs
+  s390: Convert various pgalloc functions to use ptdescs
+  mm: Remove page table members from struct page
+  pgalloc: Convert various functions to use ptdescs
+  arm: Convert various functions to use ptdescs
+  arm64: Convert various functions to use ptdescs
+  csky: Convert __pte_free_tlb() to use ptdescs
+  hexagon: Convert __pte_free_tlb() to use ptdescs
+  loongarch: Convert various functions to use ptdescs
+  m68k: Convert various functions to use ptdescs
+  mips: Convert various functions to use ptdescs
+  nios2: Convert __pte_free_tlb() to use ptdescs
+  openrisc: Convert __pte_free_tlb() to use ptdescs
+  riscv: Convert alloc_{pmd, pte}_late() to use ptdescs
+  sh: Convert pte_free_tlb() to use ptdescs
+  sparc64: Convert various functions to use ptdescs
+  sparc: Convert pgtable_pte_page_{ctor, dtor}() to ptdesc equivalents
+  um: Convert {pmd, pte}_free_tlb() to use ptdescs
+  mm: Remove pgtable_{pmd, pte}_page_{ctor, dtor}() wrappers
 
-> So, we should expect (and support) systems of all shapes and sizes that
-> do software AF. I'm sure we'll hear about more in the not-too-distant
-> future...
->
-> For future reference (even though I'm suggesting you support software
-> AF), decisions such of these need an extremely verbose comment
-> describing the rationale behind the decision.
->
-> > +
-> >  #endif /* __ARM64_KVM_HOST_H__ */
-> > diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> > index c3b3e2afe26f..26a8d955b49c 100644
-> > --- a/arch/arm64/kvm/mmu.c
-> > +++ b/arch/arm64/kvm/mmu.c
->
-> Please do not implement page table walkers outside of hyp/pgtable.c
->
-> > @@ -1678,6 +1678,42 @@ bool kvm_test_age_gfn(struct kvm *kvm, struct kv=
-m_gfn_range *range)
-> >                                          range->start << PAGE_SHIFT);
-> >  }
-> >
-> > +static int stage2_test_clear_young(const struct kvm_pgtable_visit_ctx =
-*ctx,
-> > +                                enum kvm_pgtable_walk_flags flags)
-> > +{
-> > +     kvm_pte_t new =3D ctx->old & ~KVM_PTE_LEAF_ATTR_LO_S2_AF;
-> > +
-> > +     VM_WARN_ON_ONCE(!page_count(virt_to_page(ctx->ptep)));
->
-> This sort of sanity checking is a bit excessive. Isn't there a risk of
-> false negatives here too? IOW, if we tragically mess up RCU in the page
-> table code, what's stopping a prematurely freed page from being
-> allocated to another user?
+ Documentation/mm/split_page_table_lock.rst    |  12 +-
+ .../zh_CN/mm/split_page_table_lock.rst        |  14 +-
+ arch/arm/include/asm/tlb.h                    |  12 +-
+ arch/arm/mm/mmu.c                             |   6 +-
+ arch/arm64/include/asm/tlb.h                  |  14 +-
+ arch/arm64/mm/mmu.c                           |   7 +-
+ arch/csky/include/asm/pgalloc.h               |   4 +-
+ arch/hexagon/include/asm/pgalloc.h            |   8 +-
+ arch/loongarch/include/asm/pgalloc.h          |  27 ++-
+ arch/loongarch/mm/pgtable.c                   |   7 +-
+ arch/m68k/include/asm/mcf_pgalloc.h           |  41 ++--
+ arch/m68k/include/asm/sun3_pgalloc.h          |   8 +-
+ arch/m68k/mm/motorola.c                       |   4 +-
+ arch/mips/include/asm/pgalloc.h               |  31 +--
+ arch/mips/mm/pgtable.c                        |   7 +-
+ arch/nios2/include/asm/pgalloc.h              |   8 +-
+ arch/openrisc/include/asm/pgalloc.h           |   8 +-
+ arch/powerpc/mm/book3s64/mmu_context.c        |  10 +-
+ arch/powerpc/mm/book3s64/pgtable.c            |  32 +--
+ arch/powerpc/mm/pgtable-frag.c                |  46 ++--
+ arch/riscv/include/asm/pgalloc.h              |   8 +-
+ arch/riscv/mm/init.c                          |  16 +-
+ arch/s390/include/asm/pgalloc.h               |   4 +-
+ arch/s390/include/asm/tlb.h                   |   4 +-
+ arch/s390/mm/gmap.c                           | 222 +++++++++++-------
+ arch/s390/mm/pgalloc.c                        | 126 +++++-----
+ arch/sh/include/asm/pgalloc.h                 |   9 +-
+ arch/sparc/mm/init_64.c                       |  17 +-
+ arch/sparc/mm/srmmu.c                         |   5 +-
+ arch/um/include/asm/pgalloc.h                 |  18 +-
+ arch/x86/mm/pgtable.c                         |  46 ++--
+ arch/x86/xen/mmu_pv.c                         |   2 +-
+ include/asm-generic/pgalloc.h                 |  62 +++--
+ include/asm-generic/tlb.h                     |  11 +
+ include/linux/mm.h                            | 155 ++++++++----
+ include/linux/mm_types.h                      |  14 --
+ include/linux/page-flags.h                    |  20 +-
+ include/linux/pgtable.h                       |  61 +++++
+ mm/memory.c                                   |   8 +-
+ 39 files changed, 665 insertions(+), 449 deletions(-)
 
-Yes, but from my aforementioned POV (the breadth I'm focusing on),
-this is a good practice. I can live without this assertion if you feel
-strongly about it.
+-- 
+2.40.1
 
-> > +     if (!kvm_pte_valid(new))
-> > +             return 0;
-> > +
-> > +     if (new =3D=3D ctx->old)
-> > +             return 0;
-> > +
-> > +     if (kvm_should_clear_young(ctx->arg, ctx->addr / PAGE_SIZE))
-> > +             stage2_try_set_pte(ctx, new);
-> > +
-> > +     return 0;
-> > +}
-> > +
-> > +bool kvm_arch_test_clear_young(struct kvm *kvm, struct kvm_gfn_range *=
-range)
-> > +{
-> > +     u64 start =3D range->start * PAGE_SIZE;
-> > +     u64 end =3D range->end * PAGE_SIZE;
-> > +     struct kvm_pgtable_walker walker =3D {
-> > +             .cb     =3D stage2_test_clear_young,
-> > +             .arg    =3D range,
-> > +             .flags  =3D KVM_PGTABLE_WALK_LEAF | KVM_PGTABLE_WALK_SHAR=
-ED,
-> > +     };
-> > +
-> > +     BUILD_BUG_ON(is_hyp_code());
->
-> Delete this assertion.
-
-Will do.
