@@ -1,56 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BC7A718A20
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 May 2023 21:29:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03513718A39
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 May 2023 21:33:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QWfTd0p5Vz3fDk
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 05:29:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QWfZQ4c5Kz3f87
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 05:33:34 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=j6oi+jpW;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=DqMU+tzE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:203:375::24; helo=out-36.mta1.migadu.com; envelope-from=oliver.upton@linux.dev; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::529; helo=mail-pg1-x529.google.com; envelope-from=jgg@ziepe.ca; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=j6oi+jpW;
+	dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=DqMU+tzE;
 	dkim-atps=neutral
-Received: from out-36.mta1.migadu.com (out-36.mta1.migadu.com [IPv6:2001:41d0:203:375::24])
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QWfSl5gCrz3bfp
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jun 2023 05:28:37 +1000 (AEST)
-Date: Wed, 31 May 2023 19:28:17 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1685561308;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fExwE02o2n9ir13h12C6sJUjb5CZIzSGV94ltztSeYU=;
-	b=j6oi+jpW4qEEAfeTqR1gVmlOIouoNE2cZuCQ9g4gmWt/4cyclojreEVXHu8btfeiGiVcDJ
-	x4P5UZRMb0dW2T4B2o8jFedTmwMjh8UL0366wjygZebZR43zxO9qUMsie4B5b5unRoLQTv
-	JJJh2wVtTtDIseRjA+dHi+WATyCzmmE=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Oliver Upton <oliver.upton@linux.dev>
-To: Yu Zhao <yuzhao@google.com>
-Subject: Re: [PATCH mm-unstable v2 04/10] kvm/arm64: make stage2 page tables
- RCU safe
-Message-ID: <ZHef0VsZvZ1Vnz0u@linux.dev>
-References: <20230526234435.662652-1-yuzhao@google.com>
- <20230526234435.662652-5-yuzhao@google.com>
- <ZHJHJPBF6euzOFdw@linux.dev>
- <CAOUHufa74CufHziHSquO5bZwbFXz2MNssBzW+AH7=Xo5RCnQ0A@mail.gmail.com>
- <ZHZQdQAApIrw6fBu@linux.dev>
- <CAOUHufZOkBmZJgCU2xW2B8S3P3TWERHezy0xKWY9_TeyV9K7Rg@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QWfYb6t5Yz2ym7
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jun 2023 05:32:51 +1000 (AEST)
+Received: by mail-pg1-x529.google.com with SMTP id 41be03b00d2f7-53f70f7c2d2so21697a12.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 May 2023 12:32:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1685561568; x=1688153568;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=K1b4BZmA9xJj4k+yX9G1OpwN8zaCq1YL9w8UMx2HW8U=;
+        b=DqMU+tzEkEG/KBm/Eq8c50aBcNpCYLCDfIfu2qjwwcPg0L4B3pyIohHBAzyR1rV0BP
+         V/m/A6VPjh2V/gAf1InQamkLfVKnTZy+tS4G8D7G9FxBmlJSwxxYbjh8ZmupHNl0eevX
+         lPbMy/Tw/ElEj/9T2zLclMOTikXMCoO4zi4Jz/K3dXTMzCQPf+al0bdolspqKcUBZ42g
+         y7dXf745BGesGzWYp54442rTbaeMerKhc5X4qohTsEn7zGpNGB/zvD6xbsbfEfu2Zlu+
+         WM86IzoR72al1oCugiwWriFtaYbSkEqg9fqkAfaWIDuLcOZimNJeIf/7vhUEyBMi3En6
+         l4lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685561568; x=1688153568;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=K1b4BZmA9xJj4k+yX9G1OpwN8zaCq1YL9w8UMx2HW8U=;
+        b=UknR4AkAU+tj3fgybK5IflYQt0wWrRBNuMtzBD+pdX23gwR7A/vK5A5wjuVpJ3htAh
+         TSW7mHbf85GSfYcLWTnabHMTIUG4x2fXt/iG9AtGyMBP47ipZ9apwe3nwucklyCar4eI
+         qJRj9/9c7TyeUP0/eYH/OtGHjgLhu98mLeUCyy44td2IMf/FcmoKwEgmxHeygguGlCPx
+         L0BBjmpMU/l+6xp+P8am7P+yTL4D9Ux3B/bcT6A578b/n5U7d/b7DBFkrVAQ4IEE4o3T
+         tVzW10fMYjqtAUw3XirHSPEIxYeYkoM7OEnqzqJbBCD91GZgz6vt/vOusxZEnIpWwUZ6
+         Ne7Q==
+X-Gm-Message-State: AC+VfDzXiZd3/EPm/huIR4Re9ECYKfKQLV8ToK4+BtwzdSy4eB6KjwFf
+	6TvLIghq46gZndWZDMfyRi+ysQ==
+X-Google-Smtp-Source: ACHHUZ7lcXE9sadSW9Rrzl5BAk50j1XTwgJx3egzhx6uSXmvo9XJdNso/P+uf7WiDgNFtlx4kiddiQ==
+X-Received: by 2002:a17:902:c3ca:b0:1b1:714a:335b with SMTP id j10-20020a170902c3ca00b001b1714a335bmr1984367plj.6.1685561568342;
+        Wed, 31 May 2023 12:32:48 -0700 (PDT)
+Received: from ziepe.ca ([206.223.160.26])
+        by smtp.gmail.com with ESMTPSA id i12-20020a170902c94c00b001b034faf49csm1733132pla.285.2023.05.31.12.32.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 31 May 2023 12:32:47 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.95)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1q4RYs-0017pL-AV;
+	Wed, 31 May 2023 16:32:46 -0300
+Date: Wed, 31 May 2023 16:32:46 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Hugh Dickins <hughd@google.com>
+Subject: Re: [PATCH 02/12] mm/pgtable: add PAE safety to __pte_offset_map()
+Message-ID: <ZHeg3oRljRn6wlLX@ziepe.ca>
+References: <35e983f5-7ed3-b310-d949-9ae8b130cdab@google.com>
+ <923480d5-35ab-7cac-79d0-343d16e29318@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOUHufZOkBmZJgCU2xW2B8S3P3TWERHezy0xKWY9_TeyV9K7Rg@mail.gmail.com>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <923480d5-35ab-7cac-79d0-343d16e29318@google.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,46 +82,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, x86@kernel.org, Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, Ben Gardon <bgardon@google.com>, Chao Peng <chao.p.peng@linux.intel.com>, Will Deacon <will@kernel.org>, Gaosheng Cui <cuigaosheng1@huawei.com>, Marc Zyngier <maz@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Jonathan Corbet <corbet@lwn.net>, Alistair Popple <apopple@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, Ingo Molnar <mingo@redhat.com>, Zenghui Yu <yuzenghui@huawei.com>, linux-trace-kernel@vger.kernel.org, linux-mm@google.com, Thomas Huth <thuth@redhat.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Steven Rostedt <rostedt@goodmis.org>, kvmarm@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Fab
- iano Rosas <farosas@linux.ibm.com>, Michael Larabel <michael@michaellarabel.com>, Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>, Masami Hiramatsu <mhiramat@kernel.org>, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Yang Shi <shy828301@gmail.com>, Peter Xu <peterx@redhat.com>, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Yu Zhao <yuzhao@google.com>, Ira Weiny <ira.weiny@intel.com>, Alistair Popple <apopple@nvidia.com>, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, Steven Price <steven.price@arm.com>, Christoph Hellwig <hch@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Axel Rasmussen <axelrasmussen@google.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Thomas Hellstrom <thomas.hellstrom@linux.intel.com>, Ralph Campbell <rcampbell@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, Anshuman Khandual <anshuman.khandual@arm.com>, Heiko Carstens <hca@linux.ibm.com>, Qi Z
+ heng <zhengqi.arch@bytedance.com>, Suren Baghdasaryan <surenb@google.com>, linux-arm-kernel@lists.infradead.org, SeongJae Park <sj@kernel.org>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Naoya Horiguchi <naoya.horiguchi@nec.com>, linux-kernel@vger.kernel.org, Minchan Kim <minchan@kernel.org>, Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Mel Gorman <mgorman@techsingularity.net>, "David S. Miller" <davem@davemloft.net>, Zack Rusin <zackr@vmware.com>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 30, 2023 at 02:06:55PM -0600, Yu Zhao wrote:
-> On Tue, May 30, 2023 at 1:37 PM Oliver Upton <oliver.upton@linux.dev> wrote:
-> >
-> > Hi Yu,
-> >
-> > On Sat, May 27, 2023 at 02:13:07PM -0600, Yu Zhao wrote:
-> > > On Sat, May 27, 2023 at 12:08 PM Oliver Upton <oliver.upton@linux.dev> wrote:
-> > > > diff --git a/arch/arm64/kvm/hyp/pgtable.c b/arch/arm64/kvm/hyp/pgtable.c
-> > > > index 3d61bd3e591d..bfbebdcb4ef0 100644
-> > > > --- a/arch/arm64/kvm/hyp/pgtable.c
-> > > > +++ b/arch/arm64/kvm/hyp/pgtable.c
-> > > > @@ -1019,7 +1019,7 @@ static int stage2_unmap_walker(const struct kvm_pgtable_visit_ctx *ctx,
-> > > >                                                kvm_granule_size(ctx->level));
-> > > >
-> > > >         if (childp)
-> > > > -               mm_ops->put_page(childp);
-> > > > +               mm_ops->free_removed_table(childp, ctx->level);
-> > >
-> > > Thanks, Oliver.
-> > >
-> > > A couple of things I haven't had the chance to verify -- I'm hoping
-> > > you could help clarify:
-> > > 1. For unmapping, with free_removed_table(), wouldn't we have to look
-> > > into the table we know it's empty unnecessarily?
-> >
-> > As it is currently implemented, yes. But, there's potential to fast-path
-> > the implementation by checking page_count() before starting the walk.
+On Sun, May 28, 2023 at 11:16:16PM -0700, Hugh Dickins wrote:
+> There is a faint risk that __pte_offset_map(), on a 32-bit architecture
+> with a 64-bit pmd_t e.g. x86-32 with CONFIG_X86_PAE=y, would succeed on
+> a pmdval assembled from a pmd_low and a pmd_high which never belonged
+> together: their combination not pointing to a page table at all, perhaps
+> not even a valid pfn.  pmdp_get_lockless() is not enough to prevent that.
 > 
-> Do you mind posting another patch? I'd be happy to ack it, as well as
-> the one you suggested above.
+> Guard against that (on such configs) by local_irq_save() blocking TLB
+> flush between present updates, as linux/pgtable.h suggests.  It's only
+> needed around the pmdp_get_lockless() in __pte_offset_map(): a race when
+> __pte_offset_map_lock() repeats the pmdp_get_lockless() after getting the
+> lock, would just send it back to __pte_offset_map() again.
 
-I'd rather not take such a patch independent of the test_clear_young
-series if you're OK with that. Do you mind implementing something
-similar to the above patch w/ the proposed optimization if you need it?
+What about the other places calling pmdp_get_lockless ? It seems like
+this is quietly making it part of the API that the caller must hold
+the IPIs off.
 
--- 
-Thanks,
-Oliver
+And Jann had a note that this approach used by the lockless functions
+doesn't work anyhow:
+
+https://lore.kernel.org/linux-mm/CAG48ez3h-mnp9ZFC10v+-BW_8NQvxbwBsMYJFP8JX31o0B17Pg@mail.gmail.com/
+
+Though we never fixed it, AFAIK..
+
+Jason
