@@ -1,67 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A917719FDD
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 16:26:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52629719FF0
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 16:28:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QX7jr2Cn5z3dxc
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jun 2023 00:26:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QX7lm6rlVz3dss
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jun 2023 00:28:20 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=LlLU/Q8f;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=trW0NbcR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mga06.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gjoyce@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=LlLU/Q8f;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=trW0NbcR;
 	dkim-atps=neutral
-X-Greylist: delayed 64 seconds by postgrey-1.36 at boromir; Fri, 02 Jun 2023 00:25:51 AEST
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QX7hv5k6Dz3cdX
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Jun 2023 00:25:51 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685629552; x=1717165552;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=BaD1zw6V2jf+wne8NUiF1WEc49QRybnZ2yKptn30Dmk=;
-  b=LlLU/Q8f1I8Qt+MVhBbV2hcWqpCpv8eQ5kXMSMYyhpGHLjIfTrGbzSkY
-   VIfFD5Eh637xs0xafnjP/lphXudG6iR4kr10B1VSekAP0KjmUV7ul99SO
-   6n7pZkN0RTD+FxAZ+w3WhhSaLEB12CGl+VNHT0bBNSlacGEB8tyEUUc8C
-   oaU7uUNp+S4F1UwQyAYDtxoPV9vxcp6rtY9NI5nH6/SgvFeX/T87cMEKg
-   q0Dfbe2/OFX6eLpqN0G6VF78GslrylT2gxdcPZVhY8XGpyvyEDb2kHiYx
-   iwjpE2FXblVsxSxxfUzV+INd011MfYDzq0cU2zKRAvZMH4/h5Xnftb89z
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="419088775"
-X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
-   d="scan'208";a="419088775"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 07:19:22 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="657813870"
-X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
-   d="scan'208";a="657813870"
-Received: from lkp-server01.sh.intel.com (HELO fb1ced2c09fb) ([10.239.97.150])
-  by orsmga003.jf.intel.com with ESMTP; 01 Jun 2023 07:19:17 -0700
-Received: from kbuild by fb1ced2c09fb with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1q4j92-0002Lp-1h;
-	Thu, 01 Jun 2023 14:19:16 +0000
-Date: Thu, 1 Jun 2023 22:18:18 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH v3 25/34] m68k: Convert various functions to use ptdescs
-Message-ID: <202306011704.i8xMWKPl-lkp@intel.com>
-References: <20230531213032.25338-26-vishal.moola@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230531213032.25338-26-vishal.moola@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QX7kx4gF6z2xKj
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Jun 2023 00:27:37 +1000 (AEST)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 351EMKkp008873;
+	Thu, 1 Jun 2023 14:27:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : reply-to : to : cc : date : in-reply-to : references : content-type
+ : mime-version : content-transfer-encoding; s=pp1;
+ bh=KDCcvfOMtv0kGWqqVMfClqyqi+qnHl34NlJRU1GMl78=;
+ b=trW0NbcRWJm31saHH8qHdePtGhc558ZCFSRTUXxgG71M2cvXTQBk0cHOyI9T0cHeM6Si
+ VRlWzm3ozzKaZtQtPbSrToxAdtxaEgZvJztdfVXFowtIrbL2UVEyRNa/QFSsuSB5gv9Q
+ fvc4/N54pBJ7iXkcUKUlCUSpFbjhEoYJ8hWg9P8M8rqUU5pOm0gJkc7dBIVpL3P1BTvx
+ FvsZVtJDZ3/JpZbe6HBCCq2TAWIRo50XWqKAttRt0Cnyb3CEypSOzhWJl5NfFOmwBBcF
+ W4XJ1M24Pd0KiKuA+ciyqg4Z26R9KTNwReGmtzYbUDmaHktXUmEcoJXXF+eMfRZZdtT0 VA== 
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qxw1kg4cv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 01 Jun 2023 14:27:24 +0000
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+	by ppma04wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 351CL4wN013950;
+	Thu, 1 Jun 2023 14:27:23 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([9.208.129.113])
+	by ppma04wdc.us.ibm.com (PPS) with ESMTPS id 3qu9g62880-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 01 Jun 2023 14:27:23 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 351ERL4G61538576
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 1 Jun 2023 14:27:21 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B0C575805C;
+	Thu,  1 Jun 2023 14:27:21 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 012E65805F;
+	Thu,  1 Jun 2023 14:27:21 +0000 (GMT)
+Received: from rhel-laptop.ibm.com (unknown [9.61.58.163])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  1 Jun 2023 14:27:20 +0000 (GMT)
+Message-ID: <ebd5fdef2348647e5c54278d67384e5d6e4b6e38.camel@linux.vnet.ibm.com>
+Subject: Re: [PATCH 4/4] powerpc/pseries: update SED for PLPKS api changes
+From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+To: Andrew Donnellan <ajd@linux.ibm.com>, linux-block@vger.kernel.org
+Date: Thu, 01 Jun 2023 09:27:20 -0500
+In-Reply-To: <aebe6be66ad982dafa072848246255b9a32e8903.camel@linux.ibm.com>
+References: <20230505194402.2079010-1-gjoyce@linux.vnet.ibm.com>
+	 <20230505194402.2079010-5-gjoyce@linux.vnet.ibm.com>
+	 <aebe6be66ad982dafa072848246255b9a32e8903.camel@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: OhzqyXviBWgIj_5lknGyuf9i39WWN-Y8
+X-Proofpoint-ORIG-GUID: OhzqyXviBWgIj_5lknGyuf9i39WWN-Y8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-01_08,2023-05-31_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 spamscore=0
+ suspectscore=0 mlxscore=0 malwarescore=0 priorityscore=1501
+ lowpriorityscore=0 mlxlogscore=999 adultscore=0 clxscore=1011 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2306010124
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,187 +92,160 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, kvm@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-sh@vger.kernel.org, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-csky@vger.kernel.org, "Vishal Moola \(Oracle\)" <vishal.moola@gmail.com>, Linux Memory Management List <linux-mm@kvack.org>, linux-m68k@lists.linux-m68k.org, Geert Uytterhoeven <geert@linux-m68k.org>, loongarch@lists.linux.dev, oe-kbuild-all@lists.linux.dev, sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Reply-To: gjoyce@linux.vnet.ibm.com
+Cc: axboe@kernel.dk, linux-efi@vger.kernel.org, nayna@linux.ibm.com, me@benboeckel.net, keyrings@vger.kernel.org, jonathan.derrick@linux.dev, brking@linux.vnet.ibm.com, akpm@linux-foundation.org, msuchanek@suse.de, linuxppc-dev@lists.ozlabs.org, elliott@hpe.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Vishal,
+On Mon, 2023-05-15 at 15:52 +1000, Andrew Donnellan wrote:
+> On Fri, 2023-05-05 at 14:44 -0500, gjoyce@linux.vnet.ibm.com wrote:
+> > From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+> > 
+> > Changes to the PLPKS API require minor updates to the SED Opal
+> > PLPKS keystore code.
+> > 
+> > Signed-off-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+> 
+> [+ Nayna]
+> 
+> This patch will need to be squashed with patch 2.
 
-kernel test robot noticed the following build errors:
+Thanks. I've squashed the patches and will resend shortly.
 
-[auto build test ERROR on next-20230531]
-[cannot apply to akpm-mm/mm-everything s390/features powerpc/next powerpc/fixes geert-m68k/for-next geert-m68k/for-linus linus/master v6.4-rc4 v6.4-rc3 v6.4-rc2 v6.4-rc4]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> 
+> > ---
+> >  arch/powerpc/platforms/pseries/Kconfig        |  6 +++++
+> >  arch/powerpc/platforms/pseries/Makefile       |  2 +-
+> >  .../powerpc/platforms/pseries/plpks_sed_ops.c | 22 +++++--------
+> > ----
+> > --
+> >  block/Kconfig                                 |  1 +
+> >  4 files changed, 13 insertions(+), 18 deletions(-)
+> > 
+> > diff --git a/arch/powerpc/platforms/pseries/Kconfig
+> > b/arch/powerpc/platforms/pseries/Kconfig
+> > index 21b22bf16ce6..c2f8a29e7b9b 100644
+> > --- a/arch/powerpc/platforms/pseries/Kconfig
+> > +++ b/arch/powerpc/platforms/pseries/Kconfig
+> > @@ -163,6 +163,12 @@ config PSERIES_PLPKS
+> >         # This option is selected by in-kernel consumers that
+> > require
+> >         # access to the PKS.
+> >  
+> > +config PSERIES_PLPKS_SED
+> > +       depends on PPC_PSERIES
+> > +       bool
+> > +       # This option is selected by in-kernel consumers that
+> > require
+> > +       # access to the SED PKS keystore.
+> > +
+> >  config PAPR_SCM
+> >         depends on PPC_PSERIES && MEMORY_HOTPLUG && LIBNVDIMM
+> >         tristate "Support for the PAPR Storage Class Memory
+> > interface"
+> > diff --git a/arch/powerpc/platforms/pseries/Makefile
+> > b/arch/powerpc/platforms/pseries/Makefile
+> > index 4242aed0d5d3..1476c5e4433c 100644
+> > --- a/arch/powerpc/platforms/pseries/Makefile
+> > +++ b/arch/powerpc/platforms/pseries/Makefile
+> > @@ -29,7 +29,7 @@ obj-$(CONFIG_PPC_SVM)         += svm.o
+> >  obj-$(CONFIG_FA_DUMP)          += rtas-fadump.o
+> >  obj-$(CONFIG_PSERIES_PLPKS)    += plpks.o
+> >  obj-$(CONFIG_PPC_SECURE_BOOT)  += plpks-secvar.o
+> > -obj-$(CONFIG_PSERIES_PLPKS_SED)        += plpks-sed.o
+> > +obj-$(CONFIG_PSERIES_PLPKS_SED)        += plpks_sed_ops.o
+> 
+> I think you could just use obj-$(CONFIG_BLK_SED_OPAL) and then there
+> wouldn't be a need to introduce a new option? Unless there's going to
+> be a second consumer.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Vishal-Moola-Oracle/mm-Add-PAGE_TYPE_OP-folio-functions/20230601-053454
-base:   next-20230531
-patch link:    https://lore.kernel.org/r/20230531213032.25338-26-vishal.moola%40gmail.com
-patch subject: [PATCH v3 25/34] m68k: Convert various functions to use ptdescs
-config: m68k-randconfig-r002-20230531 (https://download.01.org/0day-ci/archive/20230601/202306011704.i8xMWKPl-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 12.3.0
-reproduce (this is a W=1 build):
-        mkdir -p ~/bin
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/915ab62dc3315fe0a0544fccb4ee5f3ee32694b5
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Vishal-Moola-Oracle/mm-Add-PAGE_TYPE_OP-folio-functions/20230601-053454
-        git checkout 915ab62dc3315fe0a0544fccb4ee5f3ee32694b5
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.3.0 ~/bin/make.cross W=1 O=build_dir ARCH=m68k olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.3.0 ~/bin/make.cross W=1 O=build_dir ARCH=m68k SHELL=/bin/bash arch/m68k/mm/
+I was following the model of CONFIG_PPC_SECURE_BOOT. That gives a
+littler finer control and flexibilty for using SED and PLPKS. This also
+confines use of CONFIG_BLK_SED_OPAL to the base SED OPAL code.
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202306011704.i8xMWKPl-lkp@intel.com/
+> 
+> >  obj-$(CONFIG_SUSPEND)          += suspend.o
+> >  obj-$(CONFIG_PPC_VAS)          += vas.o vas-sysfs.o
+> >  
+> > diff --git a/arch/powerpc/platforms/pseries/plpks_sed_ops.c
+> > b/arch/powerpc/platforms/pseries/plpks_sed_ops.c
+> > index 086934b319a9..c1d08075e850 100644
+> > --- a/arch/powerpc/platforms/pseries/plpks_sed_ops.c
+> > +++ b/arch/powerpc/platforms/pseries/plpks_sed_ops.c
+> > @@ -14,7 +14,7 @@
+> >  #include <linux/string.h>
+> >  #include <linux/ioctl.h>
+> >  #include <linux/sed-opal-key.h>
+> > -#include "plpks.h"
+> > +#include <asm/plpks.h>
+> >  
+> >  /*
+> >   * structure that contains all SED data
+> > @@ -28,9 +28,6 @@ struct plpks_sed_object_data {
+> >         u_char key[32];
+> >  };
+> >  
+> > -#define PLPKS_PLATVAR_POLICY            WORLDREADABLE
+> > -#define PLPKS_PLATVAR_OS_COMMON         4
+> > -
+> >  #define PLPKS_SED_OBJECT_DATA_V0        0
+> >  #define PLPKS_SED_MANGLED_LABEL         "/default/pri"
+> >  #define PLPKS_SED_COMPONENT             "sed-opal"
+> > @@ -50,8 +47,8 @@ void plpks_init_var(struct plpks_var *var, char
+> > *keyname)
+> >                 var->name = PLPKS_SED_MANGLED_LABEL;
+> >                 var->namelen = strlen(keyname);
+> >         }
+> > -       var->policy = PLPKS_PLATVAR_POLICY;
+> > -       var->os = PLPKS_PLATVAR_OS_COMMON;
+> > +       var->policy = PLPKS_WORLDREADABLE;
+> > +       var->os = PLPKS_VAR_COMMON;
+> >         var->data = NULL;
+> >         var->datalen = 0;
+> >         var->component = PLPKS_SED_COMPONENT;
+> > @@ -64,28 +61,19 @@ int sed_read_key(char *keyname, char *key,
+> > u_int
+> > *keylen)
+> >  {
+> >         struct plpks_var var;
+> >         struct plpks_sed_object_data data;
+> > -       u_int offset;
+> >         int ret;
+> >         u_int len;
+> >  
+> >         plpks_init_var(&var, keyname);
+> > -       var.data = &data;
+> > +       var.data = (u8 *)&data;
+> >         var.datalen = sizeof(data);
+> >  
+> >         ret = plpks_read_os_var(&var);
+> >         if (ret != 0)
+> >                 return ret;
+> >  
+> > -       offset = offsetof(struct plpks_sed_object_data, key);
+> > -       if (offset > var.datalen) {
+> > -               return -EINVAL;
+> > -       }
+> > -
+> > -       len = min(be32_to_cpu(data.key_len), *keylen);
+> > -
+> > +       len = min_t(u16, be32_to_cpu(data.key_len), var.datalen);
+> >         memcpy(key, data.key, len);
+> > -       kfree(var.data);
+> > -
+> >         key[len] = '\0';
+> >         *keylen = len;
+> >  
+> > diff --git a/block/Kconfig b/block/Kconfig
+> > index 76b23114fdeb..75d4db34df5a 100644
+> > --- a/block/Kconfig
+> > +++ b/block/Kconfig
+> > @@ -182,6 +182,7 @@ config BLK_SED_OPAL
+> >         bool "Logic for interfacing with Opal enabled SEDs"
+> >         depends on KEYS
+> >         select PSERIES_PLPKS if PPC_PSERIES
+> > +       select PSERIES_PLPKS_SED if PPC_PSERIES
+> >         help
+> >         Builds Logic for interfacing with Opal enabled controllers.
+> >         Enabling this option enables users to setup/unlock/lock
 
-All error/warnings (new ones prefixed by >>):
-
-   In file included from arch/m68k/include/asm/pgalloc.h:12,
-                    from arch/m68k/mm/init.c:26:
-   arch/m68k/include/asm/mcf_pgalloc.h: In function 'pgd_alloc':
->> arch/m68k/include/asm/mcf_pgalloc.h:83:59: error: 'GFP_NOWARN' undeclared (first use in this function); did you mean 'GFP_NOWAIT'?
-      83 |         struct ptdesc *ptdesc = pagetable_alloc(GFP_DMA | GFP_NOWARN, 0);
-         |                                                           ^~~~~~~~~~
-         |                                                           GFP_NOWAIT
-   arch/m68k/include/asm/mcf_pgalloc.h:83:59: note: each undeclared identifier is reported only once for each function it appears in
-   arch/m68k/include/asm/mcf_pgalloc.h: At top level:
->> arch/m68k/include/asm/mcf_pgalloc.h:22:27: warning: 'ptdesc_address' is static but used in inline function 'pte_alloc_one_kernel' which is not static
-      22 |         return (pte_t *) (ptdesc_address(ptdesc));
-         |                           ^~~~~~~~~~~~~~
->> arch/m68k/include/asm/mcf_pgalloc.h:17:33: warning: 'pagetable_alloc' is static but used in inline function 'pte_alloc_one_kernel' which is not static
-      17 |         struct ptdesc *ptdesc = pagetable_alloc(GFP_DMA | __GFP_ZERO, 0);
-         |                                 ^~~~~~~~~~~~~~~
->> arch/m68k/include/asm/mcf_pgalloc.h:10:24: warning: 'virt_to_ptdesc' is static but used in inline function 'pte_free_kernel' which is not static
-      10 |         pagetable_free(virt_to_ptdesc(pte));
-         |                        ^~~~~~~~~~~~~~
->> arch/m68k/include/asm/mcf_pgalloc.h:10:9: warning: 'pagetable_free' is static but used in inline function 'pte_free_kernel' which is not static
-      10 |         pagetable_free(virt_to_ptdesc(pte));
-         |         ^~~~~~~~~~~~~~
---
-   In file included from arch/m68k/mm/mcfmmu.c:21:
-   arch/m68k/include/asm/mcf_pgalloc.h: In function 'pgd_alloc':
->> arch/m68k/include/asm/mcf_pgalloc.h:83:59: error: 'GFP_NOWARN' undeclared (first use in this function); did you mean 'GFP_NOWAIT'?
-      83 |         struct ptdesc *ptdesc = pagetable_alloc(GFP_DMA | GFP_NOWARN, 0);
-         |                                                           ^~~~~~~~~~
-         |                                                           GFP_NOWAIT
-   arch/m68k/include/asm/mcf_pgalloc.h:83:59: note: each undeclared identifier is reported only once for each function it appears in
-   arch/m68k/mm/mcfmmu.c: At top level:
-   arch/m68k/mm/mcfmmu.c:36:13: warning: no previous prototype for 'paging_init' [-Wmissing-prototypes]
-      36 | void __init paging_init(void)
-         |             ^~~~~~~~~~~
-   arch/m68k/mm/mcfmmu.c: In function 'paging_init':
-   arch/m68k/mm/mcfmmu.c:41:37: warning: variable 'bootmem_end' set but not used [-Wunused-but-set-variable]
-      41 |         unsigned long next_pgtable, bootmem_end;
-         |                                     ^~~~~~~~~~~
-   arch/m68k/include/asm/mcf_pgalloc.h: At top level:
->> arch/m68k/include/asm/mcf_pgalloc.h:22:27: warning: 'ptdesc_address' is static but used in inline function 'pte_alloc_one_kernel' which is not static
-      22 |         return (pte_t *) (ptdesc_address(ptdesc));
-         |                           ^~~~~~~~~~~~~~
->> arch/m68k/include/asm/mcf_pgalloc.h:17:33: warning: 'pagetable_alloc' is static but used in inline function 'pte_alloc_one_kernel' which is not static
-      17 |         struct ptdesc *ptdesc = pagetable_alloc(GFP_DMA | __GFP_ZERO, 0);
-         |                                 ^~~~~~~~~~~~~~~
->> arch/m68k/include/asm/mcf_pgalloc.h:10:24: warning: 'virt_to_ptdesc' is static but used in inline function 'pte_free_kernel' which is not static
-      10 |         pagetable_free(virt_to_ptdesc(pte));
-         |                        ^~~~~~~~~~~~~~
->> arch/m68k/include/asm/mcf_pgalloc.h:10:9: warning: 'pagetable_free' is static but used in inline function 'pte_free_kernel' which is not static
-      10 |         pagetable_free(virt_to_ptdesc(pte));
-         |         ^~~~~~~~~~~~~~
-
-
-vim +83 arch/m68k/include/asm/mcf_pgalloc.h
-
-     7	
-     8	extern inline void pte_free_kernel(struct mm_struct *mm, pte_t *pte)
-     9	{
-  > 10		pagetable_free(virt_to_ptdesc(pte));
-    11	}
-    12	
-    13	extern const char bad_pmd_string[];
-    14	
-    15	extern inline pte_t *pte_alloc_one_kernel(struct mm_struct *mm)
-    16	{
-  > 17		struct ptdesc *ptdesc = pagetable_alloc(GFP_DMA | __GFP_ZERO, 0);
-    18	
-    19		if (!ptdesc)
-    20			return NULL;
-    21	
-  > 22		return (pte_t *) (ptdesc_address(ptdesc));
-    23	}
-    24	
-    25	extern inline pmd_t *pmd_alloc_kernel(pgd_t *pgd, unsigned long address)
-    26	{
-    27		return (pmd_t *) pgd;
-    28	}
-    29	
-    30	#define pmd_populate(mm, pmd, pte) (pmd_val(*pmd) = (unsigned long)(pte))
-    31	
-    32	#define pmd_populate_kernel pmd_populate
-    33	
-    34	static inline void __pte_free_tlb(struct mmu_gather *tlb, pgtable_t pgtable,
-    35					  unsigned long address)
-    36	{
-    37		struct ptdesc *ptdesc = virt_to_ptdesc(pgtable);
-    38	
-    39		pagetable_pte_dtor(ptdesc);
-    40		pagetable_free(ptdesc);
-    41	}
-    42	
-    43	static inline pgtable_t pte_alloc_one(struct mm_struct *mm)
-    44	{
-    45		struct ptdesc *ptdesc = pagetable_alloc(GFP_DMA, 0);
-    46		pte_t *pte;
-    47	
-    48		if (!ptdesc)
-    49			return NULL;
-    50		if (!pagetable_pte_ctor(ptdesc)) {
-    51			pagetable_free(ptdesc);
-    52			return NULL;
-    53		}
-    54	
-    55		pte = ptdesc_address(ptdesc);
-    56		pagetable_clear(pte);
-    57	
-    58		return pte;
-    59	}
-    60	
-    61	static inline void pte_free(struct mm_struct *mm, pgtable_t pgtable)
-    62	{
-    63		struct ptdesc *ptdesc = virt_to_ptdesc(ptdesc);
-    64	
-    65		pagetable_pte_dtor(ptdesc);
-    66		pagetable_free(ptdesc);
-    67	}
-    68	
-    69	/*
-    70	 * In our implementation, each pgd entry contains 1 pmd that is never allocated
-    71	 * or freed.  pgd_present is always 1, so this should never be called. -NL
-    72	 */
-    73	#define pmd_free(mm, pmd) BUG()
-    74	
-    75	static inline void pgd_free(struct mm_struct *mm, pgd_t *pgd)
-    76	{
-    77		pagetable_free(virt_to_ptdesc(pgd));
-    78	}
-    79	
-    80	static inline pgd_t *pgd_alloc(struct mm_struct *mm)
-    81	{
-    82		pgd_t *new_pgd;
-  > 83		struct ptdesc *ptdesc = pagetable_alloc(GFP_DMA | GFP_NOWARN, 0);
-    84	
-    85		if (!ptdesc)
-    86			return NULL;
-    87		new_pgd = (pgd_t *) ptdesc_address(ptdesc);
-    88	
-    89		memcpy(new_pgd, swapper_pg_dir, PTRS_PER_PGD * sizeof(pgd_t));
-    90		memset(new_pgd, 0, PAGE_OFFSET >> PGDIR_SHIFT);
-    91		return new_pgd;
-    92	}
-    93	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
