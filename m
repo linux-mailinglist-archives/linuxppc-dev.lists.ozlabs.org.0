@@ -2,73 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C53F7718F1B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 01:43:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0234F718F8B
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 02:31:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QWm6M3BDyz3fFl
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 09:43:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QWnBL3yTRz3dwl
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 10:31:38 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=WNm7FPyf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=eUr9jxRG;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::830; helo=mail-qt1-x830.google.com; envelope-from=yuzhao@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=wout1-smtp.messagingengine.com (client-ip=64.147.123.24; helo=wout1-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=WNm7FPyf;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=eUr9jxRG;
 	dkim-atps=neutral
-Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com [IPv6:2607:f8b0:4864:20::830])
+X-Greylist: delayed 496 seconds by postgrey-1.36 at boromir; Thu, 01 Jun 2023 10:30:49 AEST
+Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QWm5X3yCXz3bfp
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jun 2023 09:42:23 +1000 (AEST)
-Received: by mail-qt1-x830.google.com with SMTP id d75a77b69052e-3f6c6320d4eso42671cf.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 May 2023 16:42:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1685576540; x=1688168540;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rDpz4krIKrc5w7qSPtF5SBqUynCIQ+thylT8XbaHGrk=;
-        b=WNm7FPyfhTPx3ZGuMrBHq00CD2pUQeKGlcUX8mQgn+G5dCO9p4/NX7woMudP9DApXP
-         eMJLs5SBR4fdqa3yCschb/mCpUzrZdTzCQk17xPxaPcyNXmO0GRLdFy3gHbSHxXHPTIP
-         /ozEJCi5UQdQkb2Q3mM6Zqe3S8JqvimfuEEiV/OCiDq8WYg8q9tsb/A8n35UOySEMRSe
-         cP+xGSCeNhL+QPzuxby2Y4g4uZHxNXxQLSBGnHEXmI9NR/ErERIcrgGmxuzljhndSanB
-         WP4UQiQL4UinzVp+2JgQHC1IybU3nDhwSEzellmsm7CBhp4CdyqxMsCJACyJb3WM+PYH
-         0PFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685576540; x=1688168540;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rDpz4krIKrc5w7qSPtF5SBqUynCIQ+thylT8XbaHGrk=;
-        b=JafjidGtJluRLWfDOAOVK879lFXZiH+lZdX9YVyVYuhmpmwAqDhRPsQhOgBenwuQay
-         EVhukxQCbTGd99KLBhVPY4DdRoAfC5V6hB1uIibk7qAjpP70Z1h8J2diQYYQlxNw0vrk
-         nM1+N9KcdH5du8iP44thQMCFlHOYQ4MVb8OGeYHAE7joB3ezMa1YevcMqiSLkyrba4ad
-         j4bsMQXk/ROf2jYVtbONs6Iy/qzsWycAwSNenL+jr+5gI/sR9rahUBXasPjIDWJZI8U+
-         iBpDQXpI6NT/rIO7yFMBR9vqpmsqDuijGP5kXxke8lOsJFeg2kgjVQhCykEU9qF9DggR
-         O9Cg==
-X-Gm-Message-State: AC+VfDxNIcmFB+z/XtuUhAjekdRJjQ5rkG6EwJ4J4RBHksOCXcxhBmhz
-	3ZZ+yjheNFfmkB+DcmdcG0KdppiX4jcPkgvNdMOpLA==
-X-Google-Smtp-Source: ACHHUZ5sABagGYjruKN8zRy0nDodbSiJxufLAv2SN+7MEBixn3XZ6Uymw2VwUSkM1BtzAJXGzFSFspv6fmhfCqrF5xc=
-X-Received: by 2002:ac8:7f02:0:b0:3f6:97b4:1a53 with SMTP id
- f2-20020ac87f02000000b003f697b41a53mr30800qtk.29.1685576539790; Wed, 31 May
- 2023 16:42:19 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QWn9P5ZThz3c6n
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jun 2023 10:30:48 +1000 (AEST)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailout.west.internal (Postfix) with ESMTP id D5E16320092F;
+	Wed, 31 May 2023 20:22:24 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute3.internal (MEProxy); Wed, 31 May 2023 20:22:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:sender:subject
+	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+	:x-sasl-enc; s=fm1; t=1685578944; x=1685665344; bh=lVTms7WrVNc9n
+	PSJkBHh4FAzxIOS8ynj2PPYmPcYMzY=; b=eUr9jxRGNxLjBaHd53eZEw21tFkk+
+	af+77+hX/XcwGswsZPN5LJVMtiQfZ84yW2kzEzV+aOMnqQNgrq161VEI25ZOmfJy
+	94LGPRXXOW0l+hUGee75tJANC7tXothI9FFE8/h8acVtGhnufcRN3TXkHY+/HS++
+	Q10C+Q7W4ZCba44xPUekbUYEsTNJSxT97UUcANPgYmpTUB/ecPUS1bzlFmENH+mR
+	xEEzkoZr/rWvHydlU9m7BiNsQurjE53DM8JYp96vsRDPHNjh40QyaAybjgybxLhj
+	ng8Du/6rEVFrXWfGt8+vYYN1EqCPK67Ahn9GJaGUQUZ5CniwJX11Erpew==
+X-ME-Sender: <xms:v-R3ZH3O8f7f99rN2sxAytIP8N54JYjpkeQdqEPcrhN-BHz6Ybr_aA>
+    <xme:v-R3ZGFVq9Xy45_Ol1zdNarNOCnxEdJaqu5D6QXOi-232OprEBSsJhj_2vBv-VNC8
+    S1wyYsh6IxDDFbM8IQ>
+X-ME-Received: <xmr:v-R3ZH7YdLO95N6oWPuh56UjxfaSMkFyodgvajTqF5XSjaIpb2BZQhAlSn1i-PT2k1QaJ7KlpBiaiU1IYG4f4bpSbzdeMsHYTC8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeeltddgfeefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevufgjkfhfgggtsehmtderredttdejnecuhfhrohhmpefhihhnnhcu
+    vfhhrghinhcuoehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrg
+    htthgvrhhnpeelfeeklefggfetkedukeevfffgvdeuheetffekledtfeejteelieejteeh
+    geelieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    hfthhhrghinheslhhinhhugidqmheikehkrdhorhhg
+X-ME-Proxy: <xmx:v-R3ZM3NTIAI1RDB3LPOvA14yEODQOmrcCbav_zw6P3I8nYqX-fpgw>
+    <xmx:v-R3ZKGS2VzSBBGyxWt9ieBvdPP_8H6Ifjs37P5-TaZpfs4JaqdbCw>
+    <xmx:v-R3ZN-wsk275sY5izl3SXtyK41ZnJKabgy3YrjCLb5_qvRGwVRt6Q>
+    <xmx:wOR3ZGCzxvYXspHRKx9BqJG3RcWMS_gr3Ze23Qj2MpbvzSmfRXUlFg>
+Feedback-ID: i58a146ae:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 31 May 2023 20:22:20 -0400 (EDT)
+Date: Thu, 1 Jun 2023 10:22:38 +1000 (AEST)
+From: Finn Thain <fthain@linux-m68k.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH] MAINTAINERS: Exclude m68k-only drivers from powerpc
+ entry
+In-Reply-To: <CAMuHMdUbVmjcYyXmparBm6pQwu3q7HpTKsKfi_aAHGOSX97MUw@mail.gmail.com>
+Message-ID: <f020b46c-f291-ad2f-6c4c-6bc79955e6f2@linux-m68k.org>
+References: <20230531125023.1121060-1-mpe@ellerman.id.au> <CAMuHMdUbVmjcYyXmparBm6pQwu3q7HpTKsKfi_aAHGOSX97MUw@mail.gmail.com>
 MIME-Version: 1.0
-References: <20230526234435.662652-1-yuzhao@google.com> <20230526234435.662652-5-yuzhao@google.com>
- <ZHJHJPBF6euzOFdw@linux.dev> <CAOUHufa74CufHziHSquO5bZwbFXz2MNssBzW+AH7=Xo5RCnQ0A@mail.gmail.com>
- <ZHZQdQAApIrw6fBu@linux.dev> <CAOUHufZOkBmZJgCU2xW2B8S3P3TWERHezy0xKWY9_TeyV9K7Rg@mail.gmail.com>
- <ZHef0VsZvZ1Vnz0u@linux.dev> <CAOUHufZrfnfcbrqSzmHkejR5MA2gmGKZ3LMRhbLHV+1427z=Tw@mail.gmail.com>
- <ZHfWzX04GlcNngdU@linux.dev>
-In-Reply-To: <ZHfWzX04GlcNngdU@linux.dev>
-From: Yu Zhao <yuzhao@google.com>
-Date: Wed, 31 May 2023 17:41:43 -0600
-Message-ID: <CAOUHufa9X4eXkvG+=xgm4AxrtvUKSZhjSRDtnskhVrVA2w2BkQ@mail.gmail.com>
-Subject: Re: [PATCH mm-unstable v2 04/10] kvm/arm64: make stage2 page tables
- RCU safe
-To: Oliver Upton <oliver.upton@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/mixed; boundary="-1463811774-394251797-1685578872=:27831"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,77 +80,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, x86@kernel.org, Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, Ben Gardon <bgardon@google.com>, Chao Peng <chao.p.peng@linux.intel.com>, Will Deacon <will@kernel.org>, Gaosheng Cui <cuigaosheng1@huawei.com>, Marc Zyngier <maz@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Jonathan Corbet <corbet@lwn.net>, Alistair Popple <apopple@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, Ingo Molnar <mingo@redhat.com>, Zenghui Yu <yuzenghui@huawei.com>, linux-trace-kernel@vger.kernel.org, linux-mm@google.com, Thomas Huth <thuth@redhat.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Steven Rostedt <rostedt@goodmis.org>, kvmarm@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Fab
- iano Rosas <farosas@linux.ibm.com>, Michael Larabel <michael@michaellarabel.com>, Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>, Masami Hiramatsu <mhiramat@kernel.org>, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
+Cc: linux-m68k@lists.linux-m68k.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Joshua Thompson <funaho@jurai.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, May 31, 2023 at 5:23=E2=80=AFPM Oliver Upton <oliver.upton@linux.de=
-v> wrote:
->
-> On Wed, May 31, 2023 at 05:10:52PM -0600, Yu Zhao wrote:
-> > On Wed, May 31, 2023 at 1:28=E2=80=AFPM Oliver Upton <oliver.upton@linu=
-x.dev> wrote:
-> > > On Tue, May 30, 2023 at 02:06:55PM -0600, Yu Zhao wrote:
-> > > > On Tue, May 30, 2023 at 1:37=E2=80=AFPM Oliver Upton <oliver.upton@=
-linux.dev> wrote:
-> > > > > As it is currently implemented, yes. But, there's potential to fa=
-st-path
-> > > > > the implementation by checking page_count() before starting the w=
-alk.
-> > > >
-> > > > Do you mind posting another patch? I'd be happy to ack it, as well =
-as
-> > > > the one you suggested above.
-> > >
-> > > I'd rather not take such a patch independent of the test_clear_young
-> > > series if you're OK with that. Do you mind implementing something
-> > > similar to the above patch w/ the proposed optimization if you need i=
-t?
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+
+---1463811774-394251797-1685578872=:27831
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+
+On Wed, 31 May 2023, Geert Uytterhoeven wrote:
+
+> On Wed, May 31, 2023 at 2:50=E2=80=AFPM Michael Ellerman <mpe@ellerman.id=
+=2Eau> wrote:
+> > The powerpc section has a "F:" entry for drivers/macintosh, matching=20
+> > all files in or below drivers/macintosh. That is correct for the most=
+=20
+> > part, but there are a couple of m68k-only drivers in the directory, so=
+=20
+> > exclude those.
 > >
-> > No worries. I can take the above together with the following, which
-> > would form a new series with its own merits, since apparently you
-> > think the !AF case is important.
->
-> Sorry if my suggestion was unclear.
->
-> I thought we were talking about ->free_removed_table() being called from
-> the stage-2 unmap path
+> > Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+>=20
+> Thanks for your patch!
+>=20
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -11916,6 +11916,8 @@ L:      linuxppc-dev@lists.ozlabs.org
+> >  S:     Odd Fixes
+> >  F:     arch/powerpc/platforms/powermac/
+> >  F:     drivers/macintosh/
+> > +X:     drivers/macintosh/adb-iop.c
+> > +X:     drivers/macintosh/via-macii.c
+> >
+> >  LINUX FOR POWERPC (32-BIT AND 64-BIT)
+> >  M:     Michael Ellerman <mpe@ellerman.id.au>
+>=20
+> LGTM, as there are already entries for these two files under
+> "M68K ON APPLE MACINTOSH".
 
-Yes, we were, or in general, about how to make KVM PTs RCU safe for ARM.
+Right. I should have addded those "X files" in commit 2ae92e8b9b7.
 
-So I'm thinking about taking 1) your patch above, 2) what I just
-suggested and 3) what you suggested below to form a mini series, which
-could land indepently and would make my job here easier.
+> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+>=20
+> Which leads us to a related topic: Is Joshua still around?  Should Finn=
+=20
+> be added or replace Joshua in the "M68K ON APPLE MACINTOSH" entry?
+>=20
 
-> in which case we wind up unnecessarily visiting
-> PTEs on a table known to be empty. You could fast-path that by only
-> initiating a walk if  page_count() > 1:
+CC Joshua.
 
-Yes, this is what I meant.
+If he's not around perhaps we'll see some bounces.
 
-> diff --git a/arch/arm64/kvm/hyp/pgtable.c b/arch/arm64/kvm/hyp/pgtable.c
-> index 95dae02ccc2e..766563dc465c 100644
-> --- a/arch/arm64/kvm/hyp/pgtable.c
-> +++ b/arch/arm64/kvm/hyp/pgtable.c
-> @@ -1331,7 +1331,8 @@ void kvm_pgtable_stage2_free_removed(struct kvm_pgt=
-able_mm_ops *mm_ops, void *pg
->                 .end    =3D kvm_granule_size(level),
->         };
->
-> -       WARN_ON(__kvm_pgtable_walk(&data, mm_ops, ptep, level + 1));
-> +       if (mm_ops->page_count(pgtable) > 1)
-> +               WARN_ON(__kvm_pgtable_walk(&data, mm_ops, ptep, level + 1=
-));
->
->         WARN_ON(mm_ops->page_count(pgtable) !=3D 1);
->         mm_ops->put_page(pgtable);
->
->
-> A lock-free access fault walker is interesting, but in my testing it hasn=
-'t
-> led to any significant improvements over acquiring the MMU lock for
-> read. Because of that I hadn't bothered with posting the series upstream.
+Anyway, I'd be willing to either share the M68K ON APPLE MACINTOSH role or=
+=20
+replace Joshua if he no longer wants that job.
 
-It's hard to measure but we have perf benchmarks on ChromeOS which should h=
-elp.
+But I hope he does still want it as there's always driver work to do.
+---1463811774-394251797-1685578872=:27831--
