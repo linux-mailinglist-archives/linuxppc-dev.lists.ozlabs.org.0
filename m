@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1C6371999C
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 12:22:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 792CE71999E
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 12:23:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QX2Hy2vW0z3fsV
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 20:22:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QX2Js0rfKz3fvS
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 20:23:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gpP21c/R;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gdsALwfC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gpP21c/R;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gdsALwfC;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QX27F2c0Yz3f00
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jun 2023 20:14:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QX27Q1tLtz3dsS
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jun 2023 20:14:58 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 9DBE963AC0;
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 94CC264314;
+	Thu,  1 Jun 2023 10:14:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95F22C433A8;
 	Thu,  1 Jun 2023 10:14:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E2E8C433A0;
-	Thu,  1 Jun 2023 10:14:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1685614487;
-	bh=Hrx9VtVZyq4uWMBfRCekQXUO/IA4A1XOafQormtZTuY=;
+	s=k20201202; t=1685614496;
+	bh=3lUg4pKLSJolxc237x3PHq7j3JRxqHTB75Jbt+sEmbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gpP21c/RwAJYJm+U25a1tWi/38F4mEWtcst293zmlG6D0PKkBX6d3h9ATwIa7uumf
-	 xA2hJJdQXNiMtmOQ7k+n+4Eh/tb5q0l+ZhSYKzMYnVQJJBECXK0Boas7FeJCclB+qU
-	 YcYICH1vai6DP7rq0TDqg3DTbnaTA2lnglkoOvwlhDm1fQ7nyhjt7rdP88kQv/EuQI
-	 aAPjl78FETn69M4Prx6Edwv1H7cz2NpKwM5xe4vWf7aC2SYCcxtbSZA9vK0QR4+ALQ
-	 VYyMUVtF0JdrmF3hiV5k4Z6ygm8TjniyOkfbF+4LCBKjd7eHTl1itn2XLvK6KpbTcp
-	 yOKt8OfWFYJOQ==
+	b=gdsALwfCviJo1WWIa/dDAGblbrNebHVr1ooSOhVNFz42SZfWVramT65AsKnpfP2Is
+	 CT0URD0cm7Fnvp3o9v0pgo39qBTlPCCgfcs/t4hxYdD0hcJM4wGpb+fELbrGOIjGLd
+	 Tv3YNe2gP8gwbrv7sTlMLUuKdfLxI9bHWF/BpwOwr1NMBKqXzx0U+X7CwxqpB2kHfd
+	 6JEFo3quF0bBzmfWaSgznKHZYHGbD7YpJVHcKn+/ZdqjRrBe7Fw1eYoYDfogBz73Bf
+	 vaoicdjp4SUPDhDj9TM29nKq8q43slzKRIYfcI3DU+tqPZ1milF/m+ZXRmFzBLUmh9
+	 0dlpJGK3F8Y8A==
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 10/13] modules, jitalloc: prepare to allocate executable memory as ROX
-Date: Thu,  1 Jun 2023 13:12:54 +0300
-Message-Id: <20230601101257.530867-11-rppt@kernel.org>
+Subject: [PATCH 11/13] ftrace: Add swap_func to ftrace_process_locs()
+Date: Thu,  1 Jun 2023 13:12:55 +0300
+Message-Id: <20230601101257.530867-12-rppt@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20230601101257.530867-1-rppt@kernel.org>
 References: <20230601101257.530867-1-rppt@kernel.org>
@@ -64,116 +64,60 @@ Cc: x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Song Liu <song@ke
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+From: Song Liu <song@kernel.org>
 
-When executable memory will be allocated as ROX it won't be possible to
-update it using memset() and memcpy().
+ftrace_process_locs sorts module mcount, which is inside RO memory. Add a
+ftrace_swap_func so that archs can use RO-memory-poke function to do the
+sorting.
 
-Introduce jit_update_copy() and jit_update_set() APIs and use them in
-modules loading code instead of memcpy() and memset().
-
-Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Signed-off-by: Song Liu <song@kernel.org>
 ---
- include/linux/jitalloc.h |  2 ++
- kernel/module/main.c     | 19 ++++++++++++++-----
- mm/jitalloc.c            | 20 ++++++++++++++++++++
- 3 files changed, 36 insertions(+), 5 deletions(-)
+ include/linux/ftrace.h |  2 ++
+ kernel/trace/ftrace.c  | 13 ++++++++++++-
+ 2 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/jitalloc.h b/include/linux/jitalloc.h
-index 7f8cafb3cfe9..0ba5ef785a85 100644
---- a/include/linux/jitalloc.h
-+++ b/include/linux/jitalloc.h
-@@ -55,6 +55,8 @@ struct jit_alloc_params *jit_alloc_arch_params(void);
- void jit_free(void *buf);
- void *jit_text_alloc(size_t len);
- void *jit_data_alloc(size_t len);
-+void jit_update_copy(void *buf, void *new_buf, size_t len);
-+void jit_update_set(void *buf, int c, size_t len);
+diff --git a/include/linux/ftrace.h b/include/linux/ftrace.h
+index b23bdd414394..fe443b8ed32c 100644
+--- a/include/linux/ftrace.h
++++ b/include/linux/ftrace.h
+@@ -1166,4 +1166,6 @@ unsigned long arch_syscall_addr(int nr);
  
- #ifdef CONFIG_JIT_ALLOC
- void jit_alloc_init(void);
-diff --git a/kernel/module/main.c b/kernel/module/main.c
-index 91477aa5f671..9f0711c42aa2 100644
---- a/kernel/module/main.c
-+++ b/kernel/module/main.c
-@@ -1197,9 +1197,19 @@ void __weak module_arch_freeing_init(struct module *mod)
+ #endif /* CONFIG_FTRACE_SYSCALLS */
  
- static void *module_memory_alloc(unsigned int size, enum mod_mem_type type)
- {
--	if (mod_mem_type_is_data(type))
--		return jit_data_alloc(size);
--	return jit_text_alloc(size);
-+	void *p;
++void ftrace_swap_func(void *a, void *b, int n);
 +
-+	if (mod_mem_type_is_data(type)) {
-+		p = jit_data_alloc(size);
-+		if (p)
-+			memset(p, 0, size);
-+	} else {
-+		p = jit_text_alloc(size);
-+		if (p)
-+			jit_update_set(p, 0, size);
-+	}
-+
-+	return p;
+ #endif /* _LINUX_FTRACE_H */
+diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
+index 764668467155..f5ddc9d4cfb6 100644
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -6430,6 +6430,17 @@ static void test_is_sorted(unsigned long *start, unsigned long count)
  }
+ #endif
  
- static void module_memory_free(void *ptr, enum mod_mem_type type)
-@@ -2223,7 +2233,6 @@ static int move_module(struct module *mod, struct load_info *info)
- 			t = type;
- 			goto out_enomem;
- 		}
--		memset(ptr, 0, mod->mem[type].size);
- 		mod->mem[type].base = ptr;
++void __weak ftrace_swap_func(void *a, void *b, int n)
++{
++	unsigned long t;
++
++	WARN_ON_ONCE(n != sizeof(t));
++
++	t = *((unsigned long *)a);
++	*(unsigned long *)a = *(unsigned long *)b;
++	*(unsigned long *)b = t;
++}
++
+ static int ftrace_process_locs(struct module *mod,
+ 			       unsigned long *start,
+ 			       unsigned long *end)
+@@ -6455,7 +6466,7 @@ static int ftrace_process_locs(struct module *mod,
+ 	 */
+ 	if (!IS_ENABLED(CONFIG_BUILDTIME_MCOUNT_SORT) || mod) {
+ 		sort(start, count, sizeof(*start),
+-		     ftrace_cmp_ips, NULL);
++		     ftrace_cmp_ips, ftrace_swap_func);
+ 	} else {
+ 		test_is_sorted(start, count);
  	}
- 
-@@ -2251,7 +2260,7 @@ static int move_module(struct module *mod, struct load_info *info)
- 				ret = -ENOEXEC;
- 				goto out_enomem;
- 			}
--			memcpy(dest, (void *)shdr->sh_addr, shdr->sh_size);
-+			jit_update_copy(dest, (void *)shdr->sh_addr, shdr->sh_size);
- 		}
- 		/*
- 		 * Update the userspace copy's ELF section address to point to
-diff --git a/mm/jitalloc.c b/mm/jitalloc.c
-index 16fd715d501a..a8ae64364d56 100644
---- a/mm/jitalloc.c
-+++ b/mm/jitalloc.c
-@@ -7,6 +7,16 @@
- 
- static struct jit_alloc_params jit_alloc_params;
- 
-+static inline void jit_text_poke_copy(void *dst, const void *src, size_t len)
-+{
-+	memcpy(dst, src, len);
-+}
-+
-+static inline void jit_text_poke_set(void *addr, int c, size_t len)
-+{
-+	memset(addr, c, len);
-+}
-+
- static void *jit_alloc(size_t len, unsigned int alignment, pgprot_t pgprot,
- 		       unsigned long start, unsigned long end,
- 		       unsigned long fallback_start, unsigned long fallback_end,
-@@ -86,6 +96,16 @@ void *jit_data_alloc(size_t len)
- 			 fallback_start, fallback_end, kasan);
- }
- 
-+void jit_update_copy(void *buf, void *new_buf, size_t len)
-+{
-+	jit_text_poke_copy(buf, new_buf, len);
-+}
-+
-+void jit_update_set(void *addr, int c, size_t len)
-+{
-+	jit_text_poke_set(addr, c, len);
-+}
-+
- struct jit_alloc_params * __weak jit_alloc_arch_params(void)
- {
- 	return NULL;
 -- 
 2.35.1
 
