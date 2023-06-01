@@ -2,60 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6E0371940B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 09:20:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A28DA719445
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 09:29:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QWyGZ4JTSz3dxy
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 17:20:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QWySp26pBz3dxm
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 17:29:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.160.180; helo=mail-qt1-f180.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66; helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de; receiver=<UNKNOWN>)
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QWyG00k7bz3c71
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jun 2023 17:20:23 +1000 (AEST)
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-3f6c81cc112so5049541cf.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Jun 2023 00:20:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685604020; x=1688196020;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uahBQ1+NZ4LtBmJlKuzSeHMKUQpvPqnHtI00z7d7Eg4=;
-        b=EuK/8HKO3iHcIJFhuaPK9u2UaN+xZDI7MQaQq9yNgT1BxgJC7hzCrCYeTW5r04yLy9
-         N5KACm5mAKqkEebgLrjtm7K/oiK+jDt1iuwQveLvukEO/gCERPgnJ23a7ltBIxC1Rybo
-         VSxUbQ2JY8zV79GwrZVvxxw9U+kIY0MkxX9LygFmwBB4wdqxT7xHMhmlmKzQHU/Xg78j
-         1+kRMszm9f/pm0VIOLeJ5mfByKqSsDbnavWOQ3L+nXJx45Ih3EQTjk+IZg8K8l5BpGcP
-         3J7NkgC14ntxQFSVqArH0wq+ZMH2Q6hfMC4KDD++66wly7cEqJ69+UcL5xyrRkVqPSIR
-         gD9w==
-X-Gm-Message-State: AC+VfDweCDJ1ipsFDevA0rZroTk8DrQXTWSM6rVlC04LAzyH6RL++Ri/
-	mOioALyG+Vbl9iLAtX9YHJ/p8602HuxKqg==
-X-Google-Smtp-Source: ACHHUZ4VILydg++KeV84qUGakMCSK/u247XFtiixX9bCPFXVSqafscXYqtYVEU69xmjIxP/+aDHvfg==
-X-Received: by 2002:ac8:5fc4:0:b0:3ef:54c9:9869 with SMTP id k4-20020ac85fc4000000b003ef54c99869mr9116721qta.31.1685604019624;
-        Thu, 01 Jun 2023 00:20:19 -0700 (PDT)
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com. [209.85.219.169])
-        by smtp.gmail.com with ESMTPSA id a186-20020a0dd8c3000000b00565de196516sm4370475ywe.32.2023.06.01.00.20.18
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 Jun 2023 00:20:18 -0700 (PDT)
-Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-b9a7e639656so556823276.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Jun 2023 00:20:18 -0700 (PDT)
-X-Received: by 2002:a25:6891:0:b0:ba8:7122:2917 with SMTP id
- d139-20020a256891000000b00ba871222917mr10052062ybc.0.1685604018484; Thu, 01
- Jun 2023 00:20:18 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230531213032.25338-1-vishal.moola@gmail.com> <20230531213032.25338-31-vishal.moola@gmail.com>
-In-Reply-To: <20230531213032.25338-31-vishal.moola@gmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 1 Jun 2023 09:20:05 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdU4t4ac_eCH0UaX9F+GQ5-9kYjB_=e+pSfTkxG=3b8DsA@mail.gmail.com>
-Message-ID: <CAMuHMdU4t4ac_eCH0UaX9F+GQ5-9kYjB_=e+pSfTkxG=3b8DsA@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QWySG24Kpz2xdv
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jun 2023 17:29:16 +1000 (AEST)
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.95)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1q4cjY-001s7N-3r; Thu, 01 Jun 2023 09:28:32 +0200
+Received: from p57bd9d78.dip0.t-ipconnect.de ([87.189.157.120] helo=[192.168.178.81])
+          by inpost2.zedat.fu-berlin.de (Exim 4.95)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1q4cjX-002tZZ-RO; Thu, 01 Jun 2023 09:28:32 +0200
+Message-ID: <025fc34a24e1a1c26b187f15dba86d382d9617eb.camel@physik.fu-berlin.de>
 Subject: Re: [PATCH v3 30/34] sh: Convert pte_free_tlb() to use ptdescs
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: Geert Uytterhoeven <geert@linux-m68k.org>, "Vishal Moola (Oracle)"
+	 <vishal.moola@gmail.com>
+Date: Thu, 01 Jun 2023 09:28:30 +0200
+In-Reply-To: <CAMuHMdU4t4ac_eCH0UaX9F+GQ5-9kYjB_=e+pSfTkxG=3b8DsA@mail.gmail.com>
+References: <20230531213032.25338-1-vishal.moola@gmail.com>
+	 <20230531213032.25338-31-vishal.moola@gmail.com>
+	 <CAMuHMdU4t4ac_eCH0UaX9F+GQ5-9kYjB_=e+pSfTkxG=3b8DsA@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.1 
+MIME-Version: 1.0
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.189.157.120
+X-ZEDAT-Hint: PO
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,30 +56,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, kvm@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-sh@vger.kernel.org, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-csky@vger.kernel.org, linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org, Matthew Wilcox <willy@infradead.org>, loongarch@lists.linux.dev, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, kvm@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-sh@vger.kernel.org, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-csky@vger.kernel.org, linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org, Matthew Wilcox <willy@infradead.org>, loongarch@lists.linux.dev, sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, May 31, 2023 at 11:33=E2=80=AFPM Vishal Moola (Oracle)
-<vishal.moola@gmail.com> wrote:
-> Part of the conversions to replace pgtable constructor/destructors with
-> ptdesc equivalents. Also cleans up some spacing issues.
->
-> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+Hi Geert!
 
-LGTM, so
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+On Thu, 2023-06-01 at 09:20 +0200, Geert Uytterhoeven wrote:
+> On Wed, May 31, 2023 at 11:33=E2=80=AFPM Vishal Moola (Oracle)
+> <vishal.moola@gmail.com> wrote:
+> > Part of the conversions to replace pgtable constructor/destructors with
+> > ptdesc equivalents. Also cleans up some spacing issues.
+> >=20
+> > Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+>=20
+> LGTM, so
+> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Gr{oetje,eeting}s,
+I assume this series is supposed to go through some mm tree?
 
-                        Geert
+Adrian
 
 --=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
