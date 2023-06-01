@@ -1,80 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BCE9719F33
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 16:07:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8032719F34
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 16:08:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QX7J81yj9z3f0B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jun 2023 00:07:52 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=Ja7iIoia;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QX7Jj41h6z3fgC
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jun 2023 00:08:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::c2b; helo=mail-oo1-xc2b.google.com; envelope-from=jgg@ziepe.ca; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=Ja7iIoia;
-	dkim-atps=neutral
-Received: from mail-oo1-xc2b.google.com (mail-oo1-xc2b.google.com [IPv6:2607:f8b0:4864:20::c2b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=<UNKNOWN>)
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QX7HD5QbVz3bcF
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Jun 2023 00:07:02 +1000 (AEST)
-Received: by mail-oo1-xc2b.google.com with SMTP id 006d021491bc7-55825988b7bso307269eaf.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Jun 2023 07:07:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1685628419; x=1688220419;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Il8ad/JyLlNtEN0Gv4lgifY2JQdLnMbUxgSHsXnJD/E=;
-        b=Ja7iIoiaBZS06nl+158TUHHbNfEj3dQZ/L62R0DW/ijsVPGlsZ2O32Ba4eQCHX0zAg
-         LfHMRKbOsxI5fTkJegrENtOKGl9zwk0OJLur02SGJ6GIveUDBcVkr+UhIEaFUVcRjrKv
-         I+lxCwssvsZK8CqLx1MBuX6uAdKjNETkdRqy7zXaIaDyhuZ4NBPXIc4oT4Kq9QPYL/wp
-         rQLV8GNPnEEDqd/Ylc/L8oZa2HjL+J1vDLj4QFw7X1INT12js5HjHN0Joz+wUbJ02lUx
-         KBCcn64/pwCReWJpNIW2B8GeaXRlQuUpK9rJC0snd+LGP1JbYm8YgxK8d5hCtKnpZFl1
-         SjSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685628419; x=1688220419;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Il8ad/JyLlNtEN0Gv4lgifY2JQdLnMbUxgSHsXnJD/E=;
-        b=BzAUfb2CqRzvuHeYnmBoxaBEFVVWHiCbuXyAfA8mvao1aQtLnjN4Z3/48ID4RYtnoe
-         oTL/w7udg/ZMbV5c2uy8BbcEY9BcjsFdFwVqcA2pYc2zaPY6QPC07n7p09Mjzm61pRKU
-         36Wj93ZRweRvaeigzgr0nbSvrRJ3ZTh2r6NV3G3WWwF9Pfo/2RqJIUXc4V2SonjedgwG
-         sNHYITAeA+aIUwhn88SJBK8rQ1i1pyfylXh6tN9x/v1RUnss+tE4Y0QfTNW7ZmX/rx3I
-         fGDzW3jfQNFRhzXSL4nekxJKeCri+4NsmE+rYQ77VAL/dPfP2M7L9fTDGtPd+G7DRHJl
-         Sc0Q==
-X-Gm-Message-State: AC+VfDyfnOGKEH71E11bMRbjjAOl3mjo4PLTUaycVnXlKiTChBIlDhVb
-	fzpSe+1eOmfloNjIN7WpbxZ/bA==
-X-Google-Smtp-Source: ACHHUZ4AEXih+LbcgXQJ3oJivdeKU2TDKI4u9IDJeO3/vV8DGscgFzmcnAdAr6rfYy2wFC0uefsS6g==
-X-Received: by 2002:a05:6808:1494:b0:398:1186:88b9 with SMTP id e20-20020a056808149400b00398118688b9mr5790684oiw.30.1685628419236;
-        Thu, 01 Jun 2023 07:06:59 -0700 (PDT)
-Received: from ziepe.ca ([206.223.160.26])
-        by smtp.gmail.com with ESMTPSA id es1-20020a056214192100b00626195bdbbdsm5454337qvb.132.2023.06.01.07.06.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Jun 2023 07:06:58 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.95)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1q4ix7-001SP8-JZ;
-	Thu, 01 Jun 2023 11:06:57 -0300
-Date: Thu, 1 Jun 2023 11:06:57 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 09/12] mm/khugepaged: retract_page_tables() without mmap
- or vma lock
-Message-ID: <ZHimAWRNDTg1JPOp@ziepe.ca>
-References: <35e983f5-7ed3-b310-d949-9ae8b130cdab@google.com>
- <2e9996fa-d238-e7c-1194-834a2bd1f60@google.com>
- <CAG48ez0aF1Rf1apSjn9YcnfyFQ4YqSd4GqB6f2wfhF7jMdi5Hg@mail.gmail.com>
- <ZHe0A079X9B8jWlH@x1n>
- <CAG48ez1UNFfpTUph6ZMuN61CoTGne05NLAweL_=ijRfqj5evMg@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QX7HH3xrnz3bcF
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Jun 2023 00:07:05 +1000 (AEST)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QX7F664D3z6D8W5;
+	Thu,  1 Jun 2023 22:05:14 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Thu, 1 Jun
+ 2023 15:06:58 +0100
+Date: Thu, 1 Jun 2023 15:06:58 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Terry Bowman <terry.bowman@amd.com>
+Subject: Re: [PATCH v4 22/23] PCI/AER: Forward RCH downstream port-detected
+ errors to the CXL.mem dev handler
+Message-ID: <20230601150658.000021d4@Huawei.com>
+In-Reply-To: <20230523232214.55282-23-terry.bowman@amd.com>
+References: <20230523232214.55282-1-terry.bowman@amd.com>
+	<20230523232214.55282-23-terry.bowman@amd.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAG48ez1UNFfpTUph6ZMuN61CoTGne05NLAweL_=ijRfqj5evMg@mail.gmail.com>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,28 +51,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Miaohe Lin <linmiaohe@huawei.com>, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Yang Shi <shy828301@gmail.com>, Peter Xu <peterx@redhat.com>, linux-kernel@vger.kernel.org, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Yu Zhao <yuzhao@google.com>, Ira Weiny <ira.weiny@intel.com>, Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, Steven Price <steven.price@arm.com>, Christoph Hellwig <hch@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Axel Rasmussen <axelrasmussen@google.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Thomas Hellstrom <thomas.hellstrom@linux.intel.com>, Ralph Campbell <rcampbell@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, Anshuman Khandual <anshu
- man.khandual@arm.com>, Heiko Carstens <hca@linux.ibm.com>, Qi Zheng <zhengqi.arch@bytedance.com>, Suren Baghdasaryan <surenb@google.com>, linux-arm-kernel@lists.infradead.org, SeongJae Park <sj@kernel.org>, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, Naoya Horiguchi <naoya.horiguchi@nec.com>, Zack Rusin <zackr@vmware.com>, Minchan Kim <minchan@kernel.org>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, Mel Gorman <mgorman@techsingularity.net>, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: alison.schofield@intel.com, dave.jiang@intel.com, rrichter@amd.com, vishal.l.verma@intel.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org, bhelgaas@google.com, Oliver O'Halloran <oohall@gmail.com>, linux-pci@vger.kernel.org, bwidawsk@kernel.org, dan.j.williams@intel.com, ira.weiny@intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 01, 2023 at 12:18:43AM +0200, Jann Horn wrote:
+On Tue, 23 May 2023 18:22:13 -0500
+Terry Bowman <terry.bowman@amd.com> wrote:
 
-> 3. We have to *serialize* with page table walks performed by the
-> IOMMU. We're doing an RCU barrier to synchronize against page table
-> walks from the MMU, but without an appropriate mmu_notifier call, we
-> have nothing to ensure that we aren't yanking a page table out from
-> under an IOMMU page table walker while it's in the middle of its walk.
-> Sure, this isn't very likely in practice, the IOMMU page table walker
-> is probably pretty fast, but still we need some kind of explicit
-> synchronization to make this robust, I think.
+> From: Robert Richter <rrichter@amd.com>
+> 
+> In Restricted CXL Device (RCD) mode a CXL device is exposed as an
+> RCiEP, but CXL downstream and upstream ports are not enumerated and
+> not visible in the PCIe hierarchy. Protocol and link errors are sent
+> to an RCEC.
+> 
+> Restricted CXL host (RCH) downstream port-detected errors are signaled
+> as internal AER errors, either Uncorrectable Internal Error (UIE) or
+> Corrected Internal Errors (CIE). The error source is the id of the
+> RCEC. A CXL handler must then inspect the error status in various CXL
+> registers residing in the dport's component register space (CXL RAS
+> capability) or the dport's RCRB (PCIe AER extended capability). [1]
+> 
+> Errors showing up in the RCEC's error handler must be handled and
+> connected to the CXL subsystem. Implement this by forwarding the error
+> to all CXL devices below the RCEC. Since the entire CXL device is
+> controlled only using PCIe Configuration Space of device 0, function
+> 0, only pass it there [2]. The error handling is limited to currently
+> supported devices with the Memory Device class code set
+> (PCI_CLASS_MEMORY_CXL, 502h), where the handler can be implemented in
+> the existing cxl_pci driver. Support of CXL devices (e.g. a CXL.cache
+> device) can be enabled later.
+> 
+> In addition to errors directed to the CXL endpoint device, a handler
+> must also inspect the CXL RAS and PCIe AER capabilities of the CXL
+> downstream port that is connected to the device.
+> 
+> Since CXL downstream port errors are signaled using internal errors,
+> the handler requires those errors to be unmasked. This is subject of a
+> follow-on patch.
+> 
+> The reason for choosing this implementation is that a CXL RCEC device
+> is bound to the AER port driver, but the driver does not allow it to
+> register a custom specific handler to support CXL. Connecting the RCEC
+> hard-wired with a CXL handler does not work, as the CXL subsystem
+> might not be present all the time. The alternative to add an
+> implementation to the portdrv to allow the registration of a custom
+> RCEC error handler isn't worth doing it as CXL would be its only user.
+> Instead, just check for an CXL RCEC and pass it down to the connected
+> CXL device's error handler. With this approach the code can entirely
+> be implemented in the PCIe AER driver and is independent of the CXL
+> subsystem. The CXL driver only provides the handler.
+> 
+> [1] CXL 3.0 spec, 12.2.1.1 RCH Downstream Port-detected Errors
+> [2] CXL 3.0 spec, 8.1.3 PCIe DVSEC for CXL Devices
+> 
+> Co-developed-by: Terry Bowman <terry.bowman@amd.com>
+> Signed-off-by: Terry Bowman <terry.bowman@amd.com>
+> Signed-off-by: Robert Richter <rrichter@amd.com>
+> Cc: "Oliver O'Halloran" <oohall@gmail.com>
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-pci@vger.kernel.org
+> ---
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-There is another thread talking about this..
-
-Broadly we are saying that we need to call mmu ops invalidate_range at
-any time the normal CPU TLB would be invalidated.
-
-invalidate_range will not return until the iommu HW is coherent with
-the current state of the page table.
-
-Jason
