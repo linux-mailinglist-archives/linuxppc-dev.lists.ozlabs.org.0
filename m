@@ -2,73 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0234F718F8B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 02:31:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C57AF719052
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 04:03:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QWnBL3yTRz3dwl
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 10:31:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QWqCv2MYrz3dtR
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 12:03:07 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=eUr9jxRG;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=iVM+pWfO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=wout1-smtp.messagingengine.com (client-ip=64.147.123.24; helo=wout1-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=eUr9jxRG;
-	dkim-atps=neutral
-X-Greylist: delayed 496 seconds by postgrey-1.36 at boromir; Thu, 01 Jun 2023 10:30:49 AEST
-Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QWn9P5ZThz3c6n
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jun 2023 10:30:48 +1000 (AEST)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-	by mailout.west.internal (Postfix) with ESMTP id D5E16320092F;
-	Wed, 31 May 2023 20:22:24 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute3.internal (MEProxy); Wed, 31 May 2023 20:22:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm1; t=1685578944; x=1685665344; bh=lVTms7WrVNc9n
-	PSJkBHh4FAzxIOS8ynj2PPYmPcYMzY=; b=eUr9jxRGNxLjBaHd53eZEw21tFkk+
-	af+77+hX/XcwGswsZPN5LJVMtiQfZ84yW2kzEzV+aOMnqQNgrq161VEI25ZOmfJy
-	94LGPRXXOW0l+hUGee75tJANC7tXothI9FFE8/h8acVtGhnufcRN3TXkHY+/HS++
-	Q10C+Q7W4ZCba44xPUekbUYEsTNJSxT97UUcANPgYmpTUB/ecPUS1bzlFmENH+mR
-	xEEzkoZr/rWvHydlU9m7BiNsQurjE53DM8JYp96vsRDPHNjh40QyaAybjgybxLhj
-	ng8Du/6rEVFrXWfGt8+vYYN1EqCPK67Ahn9GJaGUQUZ5CniwJX11Erpew==
-X-ME-Sender: <xms:v-R3ZH3O8f7f99rN2sxAytIP8N54JYjpkeQdqEPcrhN-BHz6Ybr_aA>
-    <xme:v-R3ZGFVq9Xy45_Ol1zdNarNOCnxEdJaqu5D6QXOi-232OprEBSsJhj_2vBv-VNC8
-    S1wyYsh6IxDDFbM8IQ>
-X-ME-Received: <xmr:v-R3ZH7YdLO95N6oWPuh56UjxfaSMkFyodgvajTqF5XSjaIpb2BZQhAlSn1i-PT2k1QaJ7KlpBiaiU1IYG4f4bpSbzdeMsHYTC8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeeltddgfeefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevufgjkfhfgggtsehmtderredttdejnecuhfhrohhmpefhihhnnhcu
-    vfhhrghinhcuoehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrg
-    htthgvrhhnpeelfeeklefggfetkedukeevfffgvdeuheetffekledtfeejteelieejteeh
-    geelieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    hfthhhrghinheslhhinhhugidqmheikehkrdhorhhg
-X-ME-Proxy: <xmx:v-R3ZM3NTIAI1RDB3LPOvA14yEODQOmrcCbav_zw6P3I8nYqX-fpgw>
-    <xmx:v-R3ZKGS2VzSBBGyxWt9ieBvdPP_8H6Ifjs37P5-TaZpfs4JaqdbCw>
-    <xmx:v-R3ZN-wsk275sY5izl3SXtyK41ZnJKabgy3YrjCLb5_qvRGwVRt6Q>
-    <xmx:wOR3ZGCzxvYXspHRKx9BqJG3RcWMS_gr3Ze23Qj2MpbvzSmfRXUlFg>
-Feedback-ID: i58a146ae:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 31 May 2023 20:22:20 -0400 (EDT)
-Date: Thu, 1 Jun 2023 10:22:38 +1000 (AEST)
-From: Finn Thain <fthain@linux-m68k.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH] MAINTAINERS: Exclude m68k-only drivers from powerpc
- entry
-In-Reply-To: <CAMuHMdUbVmjcYyXmparBm6pQwu3q7HpTKsKfi_aAHGOSX97MUw@mail.gmail.com>
-Message-ID: <f020b46c-f291-ad2f-6c4c-6bc79955e6f2@linux-m68k.org>
-References: <20230531125023.1121060-1-mpe@ellerman.id.au> <CAMuHMdUbVmjcYyXmparBm6pQwu3q7HpTKsKfi_aAHGOSX97MUw@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QWqC3031tz30QQ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jun 2023 12:02:23 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=iVM+pWfO;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QWqBz5Fkpz4x42;
+	Thu,  1 Jun 2023 12:02:19 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1685584941;
+	bh=EKqPUa5BbsNp2IS+PVeURMLivGy9/PqofQB8JVPKzHk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=iVM+pWfOIbhHL9f9DmsNTYSYsnsKADtZjQT9IBkW+solKs/5jaM7HmHXujPBPR3sR
+	 wMMXiW8q5QUIc2tF+b7pContzFBOjsvsrQZp+PB993f8ACrE562bCVTAPxc4nHPlVT
+	 1JaDyr37YE8RGysSYBHCWpx6blwoqIhVENU7L02HS4t35C05grIv/jnerzHXtBFxkr
+	 LlFZ4pTbtpMi1kzvCtW/E0KSPxtdyhZedudAUHM4yCfBKpWkN+tj7x/zD6gocR2QVp
+	 hI0nknDZgWcSY2pAmQYBBAJ+nUybSxOQcns2PjvlZPakzmphOIgWmf3ANOTX/gtTkW
+	 24NljidWcxz/Q==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Maninder Singh
+ <maninder1.s@samsung.com>
+Subject: Re: [PATCH 2/2] powerpc/xmon: use KSYM_NAME_LEN in array size
+In-Reply-To: <CANiq72=QeTgtZL4k9=4CJP6C_Hv=rh3fsn3B9S3KFoPXkyWk3w@mail.gmail.com>
+References: <CGME20230529111404epcas5p2d540d726dcf3e21aae2a6a0958e2eea5@epcas5p2.samsung.com>
+ <20230529111337.352990-1-maninder1.s@samsung.com>
+ <20230529111337.352990-2-maninder1.s@samsung.com>
+ <CANiq72=QeTgtZL4k9=4CJP6C_Hv=rh3fsn3B9S3KFoPXkyWk3w@mail.gmail.com>
+Date: Thu, 01 Jun 2023 12:02:16 +1000
+Message-ID: <87ilc8ym6v.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="-1463811774-394251797-1685578872=:27831"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,63 +62,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-m68k@lists.linux-m68k.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Joshua Thompson <funaho@jurai.org>
+Cc: nathanl@linux.ibm.com, bcain@quicinc.com, keescook@chromium.org, gary@garyguo.net, pmladek@suse.com, linux-hexagon@vger.kernel.org, ustavoars@kernel.org, linux-kernel@vger.kernel.org, Onkarnath <onkarnath.1@samsung.com>, wedsonaf@google.com, npiggin@gmail.com, alex.gaynor@gmail.com, ojeda@kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> writes:
+> On Mon, May 29, 2023 at 1:14=E2=80=AFPM Maninder Singh <maninder1.s@samsu=
+ng.com> wrote:
+>>
+>> +static char tmpstr[KSYM_NAME_LEN];
+>
+> Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
+>
+> Side-note: in `get_function_bounds()`, I see `kallsyms_lookup()` being
+> used, but the name seems discarded? Can
+> `kallsyms_lookup_size_offset()` be used instead, thus avoiding the
+> usage of the buffer there to begin with?
 
----1463811774-394251797-1685578872=:27831
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+A few lines below it uses the modname, and AFAICS there's no (easy) way
+to lookup the modname without also looking up the name.
 
-On Wed, 31 May 2023, Geert Uytterhoeven wrote:
+> Side-note 2: in `scanhex()`, I see a loop `i<63` using `tmpstr` which
+> then is used to do a `kallsyms_lookup_name()`, so I guess symbols
+> larger than 64 couldn't be found. I have no idea about what are the
+> external constraints here, but perhaps it is possible to increase the
+> `line` buffer etc. to then allow for bigger symbols to be found.
 
-> On Wed, May 31, 2023 at 2:50=E2=80=AFPM Michael Ellerman <mpe@ellerman.id=
-=2Eau> wrote:
-> > The powerpc section has a "F:" entry for drivers/macintosh, matching=20
-> > all files in or below drivers/macintosh. That is correct for the most=
-=20
-> > part, but there are a couple of m68k-only drivers in the directory, so=
-=20
-> > exclude those.
-> >
-> > Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
->=20
-> Thanks for your patch!
->=20
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -11916,6 +11916,8 @@ L:      linuxppc-dev@lists.ozlabs.org
-> >  S:     Odd Fixes
-> >  F:     arch/powerpc/platforms/powermac/
-> >  F:     drivers/macintosh/
-> > +X:     drivers/macintosh/adb-iop.c
-> > +X:     drivers/macintosh/via-macii.c
-> >
-> >  LINUX FOR POWERPC (32-BIT AND 64-BIT)
-> >  M:     Michael Ellerman <mpe@ellerman.id.au>
->=20
-> LGTM, as there are already entries for these two files under
-> "M68K ON APPLE MACINTOSH".
+Yeah that looks wrong. I don't see any symbols that long in current
+kernels, but we should fix it.
 
-Right. I should have addded those "X files" in commit 2ae92e8b9b7.
+Thanks for looking.
 
-> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
->=20
-> Which leads us to a related topic: Is Joshua still around?  Should Finn=
-=20
-> be added or replace Joshua in the "M68K ON APPLE MACINTOSH" entry?
->=20
-
-CC Joshua.
-
-If he's not around perhaps we'll see some bounces.
-
-Anyway, I'd be willing to either share the M68K ON APPLE MACINTOSH role or=
-=20
-replace Joshua if he no longer wants that job.
-
-But I hope he does still want it as there's always driver work to do.
----1463811774-394251797-1685578872=:27831--
+cheers
