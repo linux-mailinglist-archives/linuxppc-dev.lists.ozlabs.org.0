@@ -2,82 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5648971F62E
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jun 2023 00:43:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6347C71F644
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jun 2023 00:50:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QXLl673YLz3fpR
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jun 2023 08:43:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QXLvP0Bw5z3dwk
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jun 2023 08:50:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cVWm3Ep5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=K25ToaEb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gjoyce@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=song@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cVWm3Ep5;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=K25ToaEb;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QXLch1VDqz3f0Q
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Jun 2023 08:37:55 +1000 (AEST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 351MXb5l020030;
-	Thu, 1 Jun 2023 22:37:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=EfnFuxZjlOSYiQPbj17zco2tgyYM37DKcL7hgMjAjhE=;
- b=cVWm3Ep57LPyNV5Hv/D8JVkRy8nGEBX1vW9mNguXTpscHOjXUGBfrGkZNtNNdzPH7jfB
- peFHIlfEB50Q8EaFqgVuXlbjPkcdlnrgY3H9bUleJhFGSDCLS9vIt5Y0/b3sB7T3HWl7
- udoE9A68BjyDarCNG6OlyxiFsYUwkr1/4RLA6FZy9M21Rtswv8kvEEJH7DEPQ2aRryaf
- cq0dYSC7uK5l6A/jojOQbJVIY+SPZU0CGqJtt3KTHqD56MPpeCWQCkv/lP2kNbjKfUw4
- R9gHtoo1kdXr8UPXiNFsN59ApdG3178B46SX04vTZ2r0j3S89HDzd8xzoKJzNe0UBSRf lg== 
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qy47w036h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 01 Jun 2023 22:37:48 +0000
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-	by ppma03dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 351G5SXm017488;
-	Thu, 1 Jun 2023 22:37:48 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([9.208.130.99])
-	by ppma03dal.us.ibm.com (PPS) with ESMTPS id 3qu9g5af8r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 01 Jun 2023 22:37:48 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 351Mbkb738273722
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 1 Jun 2023 22:37:47 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CE8DC58064;
-	Thu,  1 Jun 2023 22:37:46 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 97AEF58069;
-	Thu,  1 Jun 2023 22:37:46 +0000 (GMT)
-Received: from rhel-laptop.ibm.com (unknown [9.61.58.163])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  1 Jun 2023 22:37:46 +0000 (GMT)
-From: gjoyce@linux.vnet.ibm.com
-To: linux-block@vger.kernel.org
-Subject: [PATCH v4 RESEND 3/3] block: sed-opal: keyring support for SED keys
-Date: Thu,  1 Jun 2023 17:37:45 -0500
-Message-Id: <20230601223745.2136203-4-gjoyce@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20230601223745.2136203-1-gjoyce@linux.vnet.ibm.com>
-References: <20230601223745.2136203-1-gjoyce@linux.vnet.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QXLtY2sjCz2yHT
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Jun 2023 08:49:57 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 3CDF064AB6
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jun 2023 22:49:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B69C433D2
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jun 2023 22:49:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1685659793;
+	bh=s5scddDgq8SCu6I0UWPQExKWJjas9UFzehdQi3Sw4tA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=K25ToaEbCp02bMG+wiJikwHyiXiwwQBkm/MmN8qlrLj5yam240H0kFAxxnFa3RlG8
+	 bu4BSS/frooyZ20B2VklohnrYULCfishpBQ/wfdUaMkt+oR8gS4E1+AjfNshKja3vS
+	 Rv+moH0Y5isDfBQyF8Rj722+0entBKGogJrcfr++cvzRmW73HdsIB35hoxtRn829Ae
+	 fyn3i/1QAGvtS1oiJarw65vHM76zJn0jBvddq9Vcz7E6Icr7CQW2U08iG1Oryzm6d3
+	 58DCK+DxQNJ2Qn/JWEej+n8GVZwut1/xKU3k6dkfSYsQUQ9uCCopruEXev0WWNFxor
+	 G4HpcCwxRlB1w==
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-4f4e71a09a7so1905707e87.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Jun 2023 15:49:52 -0700 (PDT)
+X-Gm-Message-State: AC+VfDwMfF4/3pBhPBkxwFPxfA34txCuzJV7mu3esFEXA3sx8Y3yEUbr
+	xrmyUkjTNXwSz3wtNwrRGZtym3bIEedkdq1Qq4o=
+X-Google-Smtp-Source: ACHHUZ4uA6ym60CkoL3kD4Xme876wGBHsdD1XRoswJZBV/GnrkgRlI3npJzU+tR131QuPJoGC+7UxG4nzuqJElDeBo4=
+X-Received: by 2002:ac2:4a8b:0:b0:4f3:aa81:2a6e with SMTP id
+ l11-20020ac24a8b000000b004f3aa812a6emr364328lfp.19.1685659791105; Thu, 01 Jun
+ 2023 15:49:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: IJcoqBLBCodSqEsdyidzduY-JlLAsq5d
-X-Proofpoint-GUID: IJcoqBLBCodSqEsdyidzduY-JlLAsq5d
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-01_08,2023-05-31_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
- lowpriorityscore=0 impostorscore=0 mlxlogscore=999 priorityscore=1501
- spamscore=0 phishscore=0 clxscore=1015 mlxscore=0 adultscore=0
- suspectscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2304280000 definitions=main-2306010194
+References: <20230601101257.530867-1-rppt@kernel.org> <20230601101257.530867-13-rppt@kernel.org>
+In-Reply-To: <20230601101257.530867-13-rppt@kernel.org>
+From: Song Liu <song@kernel.org>
+Date: Thu, 1 Jun 2023 15:49:39 -0700
+X-Gmail-Original-Message-ID: <CAPhsuW4Q2d7=7yBMQLgz+7Bz_q==_F+N3C8O4LStXva73ECCTg@mail.gmail.com>
+Message-ID: <CAPhsuW4Q2d7=7yBMQLgz+7Bz_q==_F+N3C8O4LStXva73ECCTg@mail.gmail.com>
+Subject: Re: [PATCH 12/13] x86/jitalloc: prepare to allocate exectuatble
+ memory as ROX
+To: Mike Rapoport <rppt@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,395 +69,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: axboe@kernel.dk, gjoyce@linux.vnet.ibm.com, nayna@linux.ibm.com, keyrings@vger.kernel.org, jonathan.derrick@linux.dev, brking@linux.vnet.ibm.com, akpm@linux-foundation.org, msuchanek@suse.de, linuxppc-dev@lists.ozlabs.org
+Cc: x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linux-trace-kernel@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Andrew Morton <akpm@linux-foundation.org>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, netdev@vger.kernel.org, Kent Overstreet <kent.overstreet@linux.dev>, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <d
+ avem@davemloft.net>, linux-modules@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+On Thu, Jun 1, 2023 at 3:15=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wrot=
+e:
+>
+> From: Song Liu <song@kernel.org>
+>
+> Replace direct memory writes to memory allocated for code with text pokin=
+g
+> to allow allocation of executable memory as ROX.
+>
+> The only exception is arch_prepare_bpf_trampoline() that cannot jit
+> directly into module memory yet, so it uses set_memory calls to
+> unprotect the memory before writing to it and to protect memory in the
+> end.
+>
+> Signed-off-by: Song Liu <song@kernel.org>
+> Co-developed-by: Mike Rapoport (IBM) <rppt@kernel.org>
+> Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+> ---
+>  arch/x86/kernel/alternative.c | 43 +++++++++++++++++++++++------------
+>  arch/x86/kernel/ftrace.c      | 41 +++++++++++++++++++++------------
+>  arch/x86/kernel/module.c      | 24 +++++--------------
+>  arch/x86/kernel/static_call.c | 10 ++++----
+>  arch/x86/kernel/unwind_orc.c  | 13 +++++++----
+>  arch/x86/net/bpf_jit_comp.c   | 22 +++++++++++++-----
 
-Extend the SED block driver so it can alternatively
-obtain a key from a sed-opal kernel keyring. The SED
-ioctls will indicate the source of the key, either
-directly in the ioctl data or from the keyring.
+We need the following in this patch (or before this patch).
+Otherwise, the system will crash at the VIRTUAL_BUG_ON()
+in vmalloc_to_page().
 
-This allows the use of SED commands in scripts such as
-udev scripts so that drives may be automatically unlocked
-as they become available.
+Thanks,
+Song
 
-Signed-off-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
-Reviewed-by: Jonathan Derrick <jonathan.derrick@linux.dev>
----
- block/Kconfig                 |   2 +
- block/sed-opal.c              | 174 +++++++++++++++++++++++++++++++++-
- include/linux/sed-opal.h      |   3 +
- include/uapi/linux/sed-opal.h |   8 +-
- 4 files changed, 184 insertions(+), 3 deletions(-)
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index bf954d2721c1..4efa8a795ebc 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -1084,7 +1084,7 @@ bpf_jit_binary_pack_alloc(unsigned int proglen,
+u8 **image_ptr,
+                return NULL;
+        }
 
-diff --git a/block/Kconfig b/block/Kconfig
-index 941b2dca70db..76b23114fdeb 100644
---- a/block/Kconfig
-+++ b/block/Kconfig
-@@ -180,6 +180,8 @@ config BLK_DEBUG_FS_ZONED
- 
- config BLK_SED_OPAL
- 	bool "Logic for interfacing with Opal enabled SEDs"
-+	depends on KEYS
-+	select PSERIES_PLPKS if PPC_PSERIES
- 	help
- 	Builds Logic for interfacing with Opal enabled controllers.
- 	Enabling this option enables users to setup/unlock/lock
-diff --git a/block/sed-opal.c b/block/sed-opal.c
-index 5b277eaabbc7..7f5f235a9048 100644
---- a/block/sed-opal.c
-+++ b/block/sed-opal.c
-@@ -20,6 +20,9 @@
- #include <linux/sed-opal.h>
- #include <linux/string.h>
- #include <linux/kdev_t.h>
-+#include <linux/key.h>
-+#include <linux/key-type.h>
-+#include <keys/user-type.h>
- 
- #include "opal_proto.h"
- 
-@@ -29,6 +32,8 @@
- /* Number of bytes needed by cmd_finalize. */
- #define CMD_FINALIZE_BYTES_NEEDED 7
- 
-+static struct key *sed_opal_keyring;
-+
- struct opal_step {
- 	int (*fn)(struct opal_dev *dev, void *data);
- 	void *data;
-@@ -265,6 +270,101 @@ static void print_buffer(const u8 *ptr, u32 length)
- #endif
- }
- 
-+/*
-+ * Allocate/update a SED Opal key and add it to the SED Opal keyring.
-+ */
-+static int update_sed_opal_key(const char *desc, u_char *key_data, int keylen)
-+{
-+	key_ref_t kr;
-+
-+	if (!sed_opal_keyring)
-+		return -ENOKEY;
-+
-+	kr = key_create_or_update(make_key_ref(sed_opal_keyring, true), "user",
-+				  desc, (const void *)key_data, keylen,
-+				  KEY_USR_VIEW | KEY_USR_SEARCH | KEY_USR_WRITE,
-+				  KEY_ALLOC_NOT_IN_QUOTA | KEY_ALLOC_BUILT_IN |
-+					KEY_ALLOC_BYPASS_RESTRICTION);
-+	if (IS_ERR(kr)) {
-+		pr_err("Error adding SED key (%ld)\n", PTR_ERR(kr));
-+		return PTR_ERR(kr);
-+	}
-+
-+	return 0;
-+}
-+
-+/*
-+ * Read a SED Opal key from the SED Opal keyring.
-+ */
-+static int read_sed_opal_key(const char *key_name, u_char *buffer, int buflen)
-+{
-+	int ret;
-+	key_ref_t kref;
-+	struct key *key;
-+
-+	if (!sed_opal_keyring)
-+		return -ENOKEY;
-+
-+	kref = keyring_search(make_key_ref(sed_opal_keyring, true),
-+			      &key_type_user, key_name, true);
-+
-+	if (IS_ERR(kref))
-+		ret = PTR_ERR(kref);
-+
-+	key = key_ref_to_ptr(kref);
-+	down_read(&key->sem);
-+	ret = key_validate(key);
-+	if (ret == 0) {
-+		if (buflen > key->datalen)
-+			buflen = key->datalen;
-+
-+		ret = key->type->read(key, (char *)buffer, buflen);
-+	}
-+	up_read(&key->sem);
-+
-+	key_ref_put(kref);
-+
-+	return ret;
-+}
-+
-+static int opal_get_key(struct opal_dev *dev, struct opal_key *key)
-+{
-+	int ret = 0;
-+
-+	switch (key->key_type) {
-+	case OPAL_INCLUDED:
-+		/* the key is ready to use */
-+		break;
-+	case OPAL_KEYRING:
-+		/* the key is in the keyring */
-+		ret = read_sed_opal_key(OPAL_AUTH_KEY, key->key, OPAL_KEY_MAX);
-+		if (ret > 0) {
-+			if (ret > U8_MAX) {
-+				ret = -ENOSPC;
-+				goto error;
-+			}
-+			key->key_len = ret;
-+			key->key_type = OPAL_INCLUDED;
-+		}
-+		break;
-+	default:
-+		ret = -EINVAL;
-+		break;
-+	}
-+	if (ret < 0)
-+		goto error;
-+
-+	/* must have a PEK by now or it's an error */
-+	if (key->key_type != OPAL_INCLUDED || key->key_len == 0) {
-+		ret = -EINVAL;
-+		goto error;
-+	}
-+	return 0;
-+error:
-+	pr_debug("Error getting password: %d\n", ret);
-+	return ret;
-+}
-+
- static bool check_tper(const void *data)
- {
- 	const struct d0_tper_features *tper = data;
-@@ -2271,6 +2371,9 @@ static int opal_secure_erase_locking_range(struct opal_dev *dev,
- 	};
- 	int ret;
- 
-+	ret = opal_get_key(dev, &opal_session->opal_key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, erase_steps, ARRAY_SIZE(erase_steps));
-@@ -2304,6 +2407,9 @@ static int opal_revertlsp(struct opal_dev *dev, struct opal_revert_lsp *rev)
- 	};
- 	int ret;
- 
-+	ret = opal_get_key(dev, &rev->key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, steps, ARRAY_SIZE(steps));
-@@ -2322,6 +2428,9 @@ static int opal_erase_locking_range(struct opal_dev *dev,
- 	};
- 	int ret;
- 
-+	ret = opal_get_key(dev, &opal_session->opal_key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, erase_steps, ARRAY_SIZE(erase_steps));
-@@ -2350,6 +2459,9 @@ static int opal_enable_disable_shadow_mbr(struct opal_dev *dev,
- 	    opal_mbr->enable_disable != OPAL_MBR_DISABLE)
- 		return -EINVAL;
- 
-+	ret = opal_get_key(dev, &opal_mbr->key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, mbr_steps, ARRAY_SIZE(mbr_steps));
-@@ -2375,6 +2487,9 @@ static int opal_set_mbr_done(struct opal_dev *dev,
- 	    mbr_done->done_flag != OPAL_MBR_NOT_DONE)
- 		return -EINVAL;
- 
-+	ret = opal_get_key(dev, &mbr_done->key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, mbr_steps, ARRAY_SIZE(mbr_steps));
-@@ -2396,6 +2511,9 @@ static int opal_write_shadow_mbr(struct opal_dev *dev,
- 	if (info->size == 0)
- 		return 0;
- 
-+	ret = opal_get_key(dev, &info->key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, mbr_steps, ARRAY_SIZE(mbr_steps));
-@@ -2452,6 +2570,9 @@ static int opal_add_user_to_lr(struct opal_dev *dev,
- 		return -EINVAL;
- 	}
- 
-+	ret = opal_get_key(dev, &lk_unlk->session.opal_key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, steps, ARRAY_SIZE(steps));
-@@ -2474,6 +2595,10 @@ static int opal_reverttper(struct opal_dev *dev, struct opal_key *opal, bool psi
- 
- 	int ret;
- 
-+	ret = opal_get_key(dev, opal);
-+
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	if (psid)
-@@ -2574,6 +2699,9 @@ static int opal_lock_unlock(struct opal_dev *dev,
- 	if (lk_unlk->session.who > OPAL_USER9)
- 		return -EINVAL;
- 
-+	ret = opal_get_key(dev, &lk_unlk->session.opal_key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	opal_lock_check_for_saved_key(dev, lk_unlk);
- 	ret = __opal_lock_unlock(dev, lk_unlk);
-@@ -2597,6 +2725,9 @@ static int opal_take_ownership(struct opal_dev *dev, struct opal_key *opal)
- 	if (!dev)
- 		return -ENODEV;
- 
-+	ret = opal_get_key(dev, opal);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, owner_steps, ARRAY_SIZE(owner_steps));
-@@ -2619,6 +2750,9 @@ static int opal_activate_lsp(struct opal_dev *dev,
- 	if (!opal_lr_act->num_lrs || opal_lr_act->num_lrs > OPAL_MAX_LRS)
- 		return -EINVAL;
- 
-+	ret = opal_get_key(dev, &opal_lr_act->key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, active_steps, ARRAY_SIZE(active_steps));
-@@ -2637,6 +2771,9 @@ static int opal_setup_locking_range(struct opal_dev *dev,
- 	};
- 	int ret;
- 
-+	ret = opal_get_key(dev, &opal_lrs->session.opal_key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, lr_steps, ARRAY_SIZE(lr_steps));
-@@ -2663,6 +2800,14 @@ static int opal_set_new_pw(struct opal_dev *dev, struct opal_new_pw *opal_pw)
- 	ret = execute_steps(dev, pw_steps, ARRAY_SIZE(pw_steps));
- 	mutex_unlock(&dev->dev_lock);
- 
-+	if (ret)
-+		return ret;
-+
-+	/* update keyring with new password */
-+	ret = update_sed_opal_key(OPAL_AUTH_KEY,
-+				  opal_pw->new_user_pw.opal_key.key,
-+				  opal_pw->new_user_pw.opal_key.key_len);
-+
- 	return ret;
- }
- 
-@@ -2683,6 +2828,9 @@ static int opal_activate_user(struct opal_dev *dev,
- 		return -EINVAL;
- 	}
- 
-+	ret = opal_get_key(dev, &opal_session->opal_key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, act_steps, ARRAY_SIZE(act_steps));
-@@ -2769,6 +2917,9 @@ static int opal_generic_read_write_table(struct opal_dev *dev,
- {
- 	int ret, bit_set;
- 
-+	ret = opal_get_key(dev, &rw_tbl->key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 
-@@ -2817,9 +2968,9 @@ int sed_ioctl(struct opal_dev *dev, unsigned int cmd, void __user *arg)
- 	if (!capable(CAP_SYS_ADMIN))
- 		return -EACCES;
- 	if (!dev)
--		return -ENOTSUPP;
-+		return -EOPNOTSUPP;
- 	if (!(dev->flags & OPAL_FL_SUPPORTED))
--		return -ENOTSUPP;
-+		return -EOPNOTSUPP;
- 
- 	if (cmd & IOC_IN) {
- 		p = memdup_user(arg, _IOC_SIZE(cmd));
-@@ -2895,3 +3046,22 @@ int sed_ioctl(struct opal_dev *dev, unsigned int cmd, void __user *arg)
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(sed_ioctl);
-+
-+static int __init sed_opal_init(void)
-+{
-+	struct key *kr;
-+
-+	kr = keyring_alloc(".sed_opal",
-+			   GLOBAL_ROOT_UID, GLOBAL_ROOT_GID, current_cred(),
-+			   (KEY_POS_ALL & ~KEY_POS_SETATTR) | KEY_USR_VIEW |
-+			   KEY_USR_READ | KEY_USR_SEARCH | KEY_USR_WRITE,
-+			   KEY_ALLOC_NOT_IN_QUOTA,
-+			   NULL, NULL);
-+	if (IS_ERR(kr))
-+		return PTR_ERR(kr);
-+
-+	sed_opal_keyring = kr;
-+
-+	return 0;
-+}
-+late_initcall(sed_opal_init);
-diff --git a/include/linux/sed-opal.h b/include/linux/sed-opal.h
-index bf2f9d7e11eb..bd5f4fe7156d 100644
---- a/include/linux/sed-opal.h
-+++ b/include/linux/sed-opal.h
-@@ -25,6 +25,9 @@ bool opal_unlock_from_suspend(struct opal_dev *dev);
- struct opal_dev *init_opal_dev(void *data, sec_send_recv *send_recv);
- int sed_ioctl(struct opal_dev *dev, unsigned int cmd, void __user *ioctl_ptr);
- 
-+#define	OPAL_AUTH_KEY           "opal-boot-pin"
-+#define	OPAL_AUTH_KEY_PREV      "opal-boot-pin-prev"
-+
- static inline bool is_sed_ioctl(unsigned int cmd)
- {
- 	switch (cmd) {
-diff --git a/include/uapi/linux/sed-opal.h b/include/uapi/linux/sed-opal.h
-index 720725f1c42a..bd285801e678 100644
---- a/include/uapi/linux/sed-opal.h
-+++ b/include/uapi/linux/sed-opal.h
-@@ -49,10 +49,16 @@ enum opal_lock_flags {
- 	OPAL_SAVE_FOR_LOCK = 0x01,
- };
- 
-+enum opal_key_type {
-+	OPAL_INCLUDED = 0,	/* key[] is the key */
-+	OPAL_KEYRING,		/* key is in keyring */
-+};
-+
- struct opal_key {
- 	__u8 lr;
- 	__u8 key_len;
--	__u8 __align[6];
-+	__u8 key_type;
-+	__u8 __align[5];
- 	__u8 key[OPAL_KEY_MAX];
- };
- 
--- 
-gjoyce@linux.vnet.ibm.com
+-       *rw_header =3D kvmalloc(size, GFP_KERNEL);
++       *rw_header =3D kvzalloc(size, GFP_KERNEL);
+        if (!*rw_header) {
+                bpf_arch_text_copy(&ro_header->size, &size, sizeof(size));
+                bpf_prog_pack_free(ro_header);
+@@ -1092,8 +1092,6 @@ bpf_jit_binary_pack_alloc(unsigned int proglen,
+u8 **image_ptr,
+                return NULL;
+        }
 
+-       /* Fill space with illegal/arch-dep instructions. */
+-       bpf_fill_ill_insns(*rw_header, size);
+        (*rw_header)->size =3D size;
+
+        hole =3D min_t(unsigned int, size - (proglen + sizeof(*ro_header)),
