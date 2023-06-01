@@ -2,33 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3637371EE66
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 18:13:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E02A71EEA6
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 18:21:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QXB4q4dGXz3dwg
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jun 2023 02:13:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QXBG84y6dz3dy0
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jun 2023 02:21:20 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KoqrlIn7;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QXB4K3JZmz3cdK
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Jun 2023 02:12:46 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 525171063;
-	Thu,  1 Jun 2023 09:12:58 -0700 (PDT)
-Received: from FVFF77S0Q05N.cambridge.arm.com (FVFF77S0Q05N.cambridge.arm.com [10.1.36.140])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C47623F663;
-	Thu,  1 Jun 2023 09:12:06 -0700 (PDT)
-Date: Thu, 1 Jun 2023 17:12:03 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH 00/13] mm: jit/text allocator
-Message-ID: <ZHjDU/mxE+cugpLj@FVFF77S0Q05N.cambridge.arm.com>
-References: <20230601101257.530867-1-rppt@kernel.org>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KoqrlIn7;
+	dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QXBFG6DBLz3cj7
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Jun 2023 02:20:34 +1000 (AEST)
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 351G6bMx031738;
+	Thu, 1 Jun 2023 16:20:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
+ message-id : date : mime-version : subject : from : to : cc : references :
+ in-reply-to; s=pp1; bh=N7QO9gm4wu5Nn/qtA2XQDm3cZffLg2V3+Sbl/oRfzyo=;
+ b=KoqrlIn7YAxeeWVrwx13zBkc2gPzNvCea7bz7RyMMPKu08B9fALZ9Qh62blVz3994Ref
+ SEGUiKDZd5yDwylT8K+mnw9aFP9wYmC9ArzEMW3GZqMqpegeWrDo0zyeJFBYXg9pWBqp
+ GtigiS/a0ZPGAd5Ho9V/Zx+Rx/E7D32VSaJOFOIlc0jy3kecX9ksaU9JchygPNNFMcIE
+ aXIA4L9V8EENOC+HaOfXXUbKXr6Tz6ADF6LCPct0zOYqrO/h+VoYPwuJuWq/jeMrLLWh
+ l7GrchMnqqGvceZQt2R3IE1+hyUvArR2kG1EJoRhRcTV93ksJEJZ1xfJH0znhPSJJEPD Mw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qxxe5ghwf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 01 Jun 2023 16:20:05 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 351G8S8t006598;
+	Thu, 1 Jun 2023 16:20:05 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qxxe5ghv9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 01 Jun 2023 16:20:04 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3513PKBI017606;
+	Thu, 1 Jun 2023 16:20:02 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3qu9g5ameb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 01 Jun 2023 16:20:02 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 351GK04O49480178
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 1 Jun 2023 16:20:00 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 483F320043;
+	Thu,  1 Jun 2023 16:20:00 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id ABB8C20040;
+	Thu,  1 Jun 2023 16:19:59 +0000 (GMT)
+Received: from [9.144.159.119] (unknown [9.144.159.119])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  1 Jun 2023 16:19:59 +0000 (GMT)
+Content-Type: multipart/mixed; boundary="------------dIYNVYK7maoZ44TdG4CHztGP"
+Message-ID: <6e86aedb-9349-afd4-0bcb-1949e828f997@linux.ibm.com>
+Date: Thu, 1 Jun 2023 18:19:59 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230601101257.530867-1-rppt@kernel.org>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH 8/9] powerpc: Add HOTPLUG_SMT support
+Content-Language: en-US
+From: Laurent Dufour <ldufour@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, linux-kernel@vger.kernel.org
+References: <20230524155630.794584-1-mpe@ellerman.id.au>
+ <20230524155630.794584-8-mpe@ellerman.id.au>
+ <5752a488-be54-61a0-6d18-647456abc4ee@linux.ibm.com>
+In-Reply-To: <5752a488-be54-61a0-6d18-647456abc4ee@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: rIpV25d11zj49lEd0NBT_fe-WhZCw_GY
+X-Proofpoint-ORIG-GUID: u1PM_dkPO6HPHibjMq3U6SyYLaMAsA4f
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-01_08,2023-05-31_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 malwarescore=0
+ clxscore=1015 impostorscore=0 mlxscore=0 mlxlogscore=999 bulkscore=0
+ phishscore=0 lowpriorityscore=0 priorityscore=1501 adultscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2306010139
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -40,158 +99,199 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linux-trace-kernel@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Andrew Morton <akpm@linux-foundation.org>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org, Kent Overstreet <kent.overstreet@linux.dev>, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, bpf@vger.kernel.org, linuxppc-dev@lists.ozla
- bs.org, "David S. Miller" <davem@davemloft.net>, linux-modules@vger.kernel.org
+Cc: linux-arch@vger.kernel.org, dave.hansen@linux.intel.com, x86@kernel.org, mingo@redhat.com, bp@alien8.de, tglx@linutronix.de, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Mike,
+This is a multi-part message in MIME format.
+--------------dIYNVYK7maoZ44TdG4CHztGP
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jun 01, 2023 at 01:12:44PM +0300, Mike Rapoport wrote:
-> From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+On 01/06/2023 15:27:30, Laurent Dufour wrote:
+> On 24/05/2023 17:56:29, Michael Ellerman wrote:
+>> Add support for HOTPLUG_SMT, which enables the generic sysfs SMT support
+>> files in /sys/devices/system/cpu/smt, as well as the "nosmt" boot
+>> parameter.
 > 
-> Hi,
+> Hi Michael,
 > 
-> module_alloc() is used everywhere as a mean to allocate memory for code.
+> It seems that there is now a conflict between with the PPC 'smt-enabled'
+> boot option.
 > 
-> Beside being semantically wrong, this unnecessarily ties all subsystmes
-> that need to allocate code, such as ftrace, kprobes and BPF to modules
-> and puts the burden of code allocation to the modules code.
+> Booting the patched kernel with 'smt-enabled=4', later, change to the SMT
+> level (for instance to 6) done through /sys/devices/system/cpu/smt/control
+> are not applied. Nothing happens.
+> Based on my early debug, I think the reasons is that cpu_smt_num_threads=8
+> when entering __store_smt_control(). But I need to dig further.
 
-I agree this is a problem, and one key issue here is that these can have
-different requirements. For example, on arm64 we need modules to be placed
-within a 128M or 2G window containing the kernel, whereas it would be safe for
-the kprobes XOL area to be placed arbitrarily far from the kernel image (since
-we don't allow PC-relative insns to be stepped out-of-line). Likewise arm64
-doesn't have ftrace trampolines, and DIRECT_CALL trampolines can safely be
-placed arbitarily far from the kernel image.
+I dug deeper.
 
-For a while I have wanted to give kprobes its own allocator so that it can work
-even with CONFIG_MODULES=n, and so that it doesn't have to waste VA space in
-the modules area.
+FWIW, I think smt_enabled_at_boot should be passed to
+cpu_smt_check_topology() in smp_prepare_cpus(), instead of
+threads_per_core. But that's not enough to fix the issue because this value
+is also used to set cpu_smt_max_threads.
 
-Given that, I think these should have their own allocator functions that can be
-provided independently, even if those happen to use common infrastructure.
+To achieve that, cpu_smt_check_topology() should receive 2 parameters, the
+current SMT level define at boot time, and the maximum SMT level.
 
-> Several architectures override module_alloc() because of various
-> constraints where the executable memory can be located and this causes
-> additional obstacles for improvements of code allocation.
-> 
-> This set splits code allocation from modules by introducing
-> jit_text_alloc(), jit_data_alloc() and jit_free() APIs, replaces call
-> sites of module_alloc() and module_memfree() with the new APIs and
-> implements core text and related allocation in a central place.
-> 
-> Instead of architecture specific overrides for module_alloc(), the
-> architectures that require non-default behaviour for text allocation must
-> fill jit_alloc_params structure and implement jit_alloc_arch_params() that
-> returns a pointer to that structure. If an architecture does not implement
-> jit_alloc_arch_params(), the defaults compatible with the current
-> modules::module_alloc() are used.
+The attached patch is fixing the issue on my ppc64 test LPAR.
+This patch is not addressing the x86 architecture (I didn't get the time to
+do it, but it should be doable) and should be spread among the patches 3
+and 8 of your series.
 
-As above, I suspect that each of the callsites should probably be using common
-infrastructure, but I don't think that a single jit_alloc_arch_params() makes
-sense, since the parameters for each case may need to be distinct.
+Hope this helps.
 
-> The new jitalloc infrastructure allows decoupling of kprobes and ftrace
-> from modules, and most importantly it enables ROX allocations for
-> executable memory.
-> 
-> A centralized infrastructure for code allocation allows future
-> optimizations for allocations of executable memory, caching large pages for
-> better iTLB performance and providing sub-page allocations for users that
-> only need small jit code snippets.
-
-This sounds interesting, but I think this can be achieved without requiring a
-single jit_alloc_arch_params() shared by all users?
-
-Thanks,
-Mark.
+Cheers,
+Laurent.
 
 > 
-> patches 1-5: split out the code allocation from modules and arch
-> patch 6: add dedicated API for data allocations with constraints similar to
-> code allocations
-> patches 7-9: decouple dynamic ftrace and kprobes form CONFIG_MODULES
-> patches 10-13: enable ROX allocations for executable memory on x86
+> BTW, should the 'smt-enabled' PPC specific option remain?
 > 
-> Mike Rapoport (IBM) (11):
->   nios2: define virtual address space for modules
->   mm: introduce jit_text_alloc() and use it instead of module_alloc()
->   mm/jitalloc, arch: convert simple overrides of module_alloc to jitalloc
->   mm/jitalloc, arch: convert remaining overrides of module_alloc to jitalloc
->   module, jitalloc: drop module_alloc
->   mm/jitalloc: introduce jit_data_alloc()
->   x86/ftrace: enable dynamic ftrace without CONFIG_MODULES
->   arch: make jitalloc setup available regardless of CONFIG_MODULES
->   kprobes: remove dependcy on CONFIG_MODULES
->   modules, jitalloc: prepare to allocate executable memory as ROX
->   x86/jitalloc: make memory allocated for code ROX
+> Cheers,
+> Laurent.
 > 
-> Song Liu (2):
->   ftrace: Add swap_func to ftrace_process_locs()
->   x86/jitalloc: prepare to allocate exectuatble memory as ROX
+>> Implement the recently added hooks to allow partial SMT states, allow
+>> any number of threads per core.
+>>
+>> Tie the config symbol to HOTPLUG_CPU, which enables it on the major
+>> platforms that support SMT. If there are other platforms that want the
+>> SMT support that can be tweaked in future.
+>>
+>> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+>> ---
+>>  arch/powerpc/Kconfig                |  1 +
+>>  arch/powerpc/include/asm/topology.h | 25 +++++++++++++++++++++++++
+>>  arch/powerpc/kernel/smp.c           |  3 +++
+>>  3 files changed, 29 insertions(+)
+>>
+>> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+>> index 539d1f03ff42..5cf87ca10a9c 100644
+>> --- a/arch/powerpc/Kconfig
+>> +++ b/arch/powerpc/Kconfig
+>> @@ -273,6 +273,7 @@ config PPC
+>>  	select HAVE_SYSCALL_TRACEPOINTS
+>>  	select HAVE_VIRT_CPU_ACCOUNTING
+>>  	select HAVE_VIRT_CPU_ACCOUNTING_GEN
+>> +	select HOTPLUG_SMT			if HOTPLUG_CPU
+>>  	select HUGETLB_PAGE_SIZE_VARIABLE	if PPC_BOOK3S_64 && HUGETLB_PAGE
+>>  	select IOMMU_HELPER			if PPC64
+>>  	select IRQ_DOMAIN
+>> diff --git a/arch/powerpc/include/asm/topology.h b/arch/powerpc/include/asm/topology.h
+>> index 8a4d4f4d9749..1e9117a22d14 100644
+>> --- a/arch/powerpc/include/asm/topology.h
+>> +++ b/arch/powerpc/include/asm/topology.h
+>> @@ -143,5 +143,30 @@ static inline int cpu_to_coregroup_id(int cpu)
+>>  #endif
+>>  #endif
+>>  
+>> +#ifdef CONFIG_HOTPLUG_SMT
+>> +#include <linux/cpu_smt.h>
+>> +#include <asm/cputhreads.h>
+>> +
+>> +static inline bool topology_smt_supported(void)
+>> +{
+>> +	return threads_per_core > 1;
+>> +}
+>> +
+>> +static inline bool topology_smt_threads_supported(unsigned int num_threads)
+>> +{
+>> +	return num_threads <= threads_per_core;
+>> +}
+>> +
+>> +static inline bool topology_is_primary_thread(unsigned int cpu)
+>> +{
+>> +	return cpu == cpu_first_thread_sibling(cpu);
+>> +}
+>> +
+>> +static inline bool topology_smt_thread_allowed(unsigned int cpu)
+>> +{
+>> +	return cpu_thread_in_core(cpu) < cpu_smt_num_threads;
+>> +}
+>> +#endif
+>> +
+>>  #endif /* __KERNEL__ */
+>>  #endif	/* _ASM_POWERPC_TOPOLOGY_H */
+>> diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+>> index 265801a3e94c..eed20b9253b7 100644
+>> --- a/arch/powerpc/kernel/smp.c
+>> +++ b/arch/powerpc/kernel/smp.c
+>> @@ -1154,6 +1154,9 @@ void __init smp_prepare_cpus(unsigned int max_cpus)
+>>  
+>>  	if (smp_ops && smp_ops->probe)
+>>  		smp_ops->probe();
+>> +
+>> +	// Initalise the generic SMT topology support
+>> +	cpu_smt_check_topology(threads_per_core);
+>>  }
+>>  
+>>  void smp_prepare_boot_cpu(void)
 > 
->  arch/Kconfig                     |   5 +-
->  arch/arm/kernel/module.c         |  32 ------
->  arch/arm/mm/init.c               |  35 ++++++
->  arch/arm64/kernel/module.c       |  47 --------
->  arch/arm64/mm/init.c             |  42 +++++++
->  arch/loongarch/kernel/module.c   |   6 -
->  arch/loongarch/mm/init.c         |  16 +++
->  arch/mips/kernel/module.c        |   9 --
->  arch/mips/mm/init.c              |  19 ++++
->  arch/nios2/include/asm/pgtable.h |   5 +-
->  arch/nios2/kernel/module.c       |  24 ++--
->  arch/parisc/kernel/module.c      |  11 --
->  arch/parisc/mm/init.c            |  21 +++-
->  arch/powerpc/kernel/kprobes.c    |   4 +-
->  arch/powerpc/kernel/module.c     |  37 -------
->  arch/powerpc/mm/mem.c            |  41 +++++++
->  arch/riscv/kernel/module.c       |  10 --
->  arch/riscv/mm/init.c             |  18 +++
->  arch/s390/kernel/ftrace.c        |   4 +-
->  arch/s390/kernel/kprobes.c       |   4 +-
->  arch/s390/kernel/module.c        |  46 +-------
->  arch/s390/mm/init.c              |  35 ++++++
->  arch/sparc/kernel/module.c       |  34 +-----
->  arch/sparc/mm/Makefile           |   2 +
->  arch/sparc/mm/jitalloc.c         |  21 ++++
->  arch/sparc/net/bpf_jit_comp_32.c |   8 +-
->  arch/x86/Kconfig                 |   2 +
->  arch/x86/kernel/alternative.c    |  43 ++++---
->  arch/x86/kernel/ftrace.c         |  59 +++++-----
->  arch/x86/kernel/kprobes/core.c   |   4 +-
->  arch/x86/kernel/module.c         |  75 +------------
->  arch/x86/kernel/static_call.c    |  10 +-
->  arch/x86/kernel/unwind_orc.c     |  13 ++-
->  arch/x86/mm/init.c               |  52 +++++++++
->  arch/x86/net/bpf_jit_comp.c      |  22 +++-
->  include/linux/ftrace.h           |   2 +
->  include/linux/jitalloc.h         |  69 ++++++++++++
->  include/linux/moduleloader.h     |  15 ---
->  kernel/bpf/core.c                |  14 +--
->  kernel/kprobes.c                 |  51 +++++----
->  kernel/module/Kconfig            |   1 +
->  kernel/module/main.c             |  56 ++++------
->  kernel/trace/ftrace.c            |  13 ++-
->  kernel/trace/trace_kprobe.c      |  11 ++
->  mm/Kconfig                       |   3 +
->  mm/Makefile                      |   1 +
->  mm/jitalloc.c                    | 185 +++++++++++++++++++++++++++++++
->  mm/mm_init.c                     |   2 +
->  48 files changed, 777 insertions(+), 462 deletions(-)
->  create mode 100644 arch/sparc/mm/jitalloc.c
->  create mode 100644 include/linux/jitalloc.h
->  create mode 100644 mm/jitalloc.c
-> 
-> 
-> base-commit: 44c026a73be8038f03dbdeef028b642880cf1511
-> -- 
-> 2.35.1
-> 
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+
+--------------dIYNVYK7maoZ44TdG4CHztGP
+Content-Type: text/plain; charset=UTF-8;
+ name="0001-Consider-the-SMT-level-specify-at-boot-time.patch"
+Content-Disposition: attachment;
+ filename="0001-Consider-the-SMT-level-specify-at-boot-time.patch"
+Content-Transfer-Encoding: base64
+
+RnJvbSA2ODJlN2Q3OGZiOThkNjI5ODkyNmU4OGU1MDkzZTIxNzI0ODhlYTZmIE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBMYXVyZW50IER1Zm91ciA8bGR1Zm91ckBsaW51eC5p
+Ym0uY29tPgpEYXRlOiBUaHUsIDEgSnVuIDIwMjMgMTg6MDI6NTUgKzAyMDAKU3ViamVjdDog
+W1BBVENIXSBDb25zaWRlciB0aGUgU01UIGxldmVsIHNwZWNpZnkgYXQgYm9vdCB0aW1lCgpU
+aGlzIGFsbG93cyBQUEMga2VybmVsIHRvIGJvb3Qgd2l0aCBhIFNNVCBsZXZlbCBkaWZmZXJl
+bnQgZnJvbSAxIG9yIHRocmVhZHMKcGVyIGNvcmUgdmFsdWUuCgpTaWduZWQtb2ZmLWJ5OiBM
+YXVyZW50IER1Zm91ciA8bGR1Zm91ckBsaW51eC5pYm0uY29tPgotLS0KIGFyY2gvcG93ZXJw
+Yy9rZXJuZWwvc21wLmMgfCAyICstCiBpbmNsdWRlL2xpbnV4L2NwdV9zbXQuaCAgIHwgNiAr
+KysrLS0KIGtlcm5lbC9jcHUuYyAgICAgICAgICAgICAgfCA5ICsrKysrKystLQogMyBmaWxl
+cyBjaGFuZ2VkLCAxMiBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdp
+dCBhL2FyY2gvcG93ZXJwYy9rZXJuZWwvc21wLmMgYi9hcmNoL3Bvd2VycGMva2VybmVsL3Nt
+cC5jCmluZGV4IGVlZDIwYjkyNTNiNy4uZWM4Y2NmM2Q2Mjk0IDEwMDY0NAotLS0gYS9hcmNo
+L3Bvd2VycGMva2VybmVsL3NtcC5jCisrKyBiL2FyY2gvcG93ZXJwYy9rZXJuZWwvc21wLmMK
+QEAgLTExNTYsNyArMTE1Niw3IEBAIHZvaWQgX19pbml0IHNtcF9wcmVwYXJlX2NwdXModW5z
+aWduZWQgaW50IG1heF9jcHVzKQogCQlzbXBfb3BzLT5wcm9iZSgpOwogCiAJLy8gSW5pdGFs
+aXNlIHRoZSBnZW5lcmljIFNNVCB0b3BvbG9neSBzdXBwb3J0Ci0JY3B1X3NtdF9jaGVja190
+b3BvbG9neSh0aHJlYWRzX3Blcl9jb3JlKTsKKwljcHVfc210X2NoZWNrX3RvcG9sb2d5KHNt
+dF9lbmFibGVkX2F0X2Jvb3QsIHRocmVhZHNfcGVyX2NvcmUpOwogfQogCiB2b2lkIHNtcF9w
+cmVwYXJlX2Jvb3RfY3B1KHZvaWQpCmRpZmYgLS1naXQgYS9pbmNsdWRlL2xpbnV4L2NwdV9z
+bXQuaCBiL2luY2x1ZGUvbGludXgvY3B1X3NtdC5oCmluZGV4IDhkNGFlMjYwNDdjOS4uYjVm
+MTNhY2IzMjNmIDEwMDY0NAotLS0gYS9pbmNsdWRlL2xpbnV4L2NwdV9zbXQuaAorKysgYi9p
+bmNsdWRlL2xpbnV4L2NwdV9zbXQuaApAQCAtMTQsNyArMTQsOCBAQCBlbnVtIGNwdWhwX3Nt
+dF9jb250cm9sIHsKIGV4dGVybiBlbnVtIGNwdWhwX3NtdF9jb250cm9sIGNwdV9zbXRfY29u
+dHJvbDsKIGV4dGVybiB1bnNpZ25lZCBpbnQgY3B1X3NtdF9udW1fdGhyZWFkczsKIGV4dGVy
+biB2b2lkIGNwdV9zbXRfZGlzYWJsZShib29sIGZvcmNlKTsKLWV4dGVybiB2b2lkIGNwdV9z
+bXRfY2hlY2tfdG9wb2xvZ3kodW5zaWduZWQgaW50IG51bV90aHJlYWRzKTsKK2V4dGVybiB2
+b2lkIGNwdV9zbXRfY2hlY2tfdG9wb2xvZ3kodW5zaWduZWQgaW50IG51bV90aHJlYWRzLAor
+CQkJCSAgIHVuc2lnbmVkIGludCBtYXhfdGhyZWFkcyk7CiBleHRlcm4gYm9vbCBjcHVfc210
+X3Bvc3NpYmxlKHZvaWQpOwogZXh0ZXJuIGludCBjcHVocF9zbXRfZW5hYmxlKHZvaWQpOwog
+ZXh0ZXJuIGludCBjcHVocF9zbXRfZGlzYWJsZShlbnVtIGNwdWhwX3NtdF9jb250cm9sIGN0
+cmx2YWwpOwpAQCAtMjIsNyArMjMsOCBAQCBleHRlcm4gaW50IGNwdWhwX3NtdF9kaXNhYmxl
+KGVudW0gY3B1aHBfc210X2NvbnRyb2wgY3RybHZhbCk7CiAjIGRlZmluZSBjcHVfc210X2Nv
+bnRyb2wJCShDUFVfU01UX05PVF9JTVBMRU1FTlRFRCkKICMgZGVmaW5lIGNwdV9zbXRfbnVt
+X3RocmVhZHMgMQogc3RhdGljIGlubGluZSB2b2lkIGNwdV9zbXRfZGlzYWJsZShib29sIGZv
+cmNlKSB7IH0KLXN0YXRpYyBpbmxpbmUgdm9pZCBjcHVfc210X2NoZWNrX3RvcG9sb2d5KHVu
+c2lnbmVkIGludCBudW1fdGhyZWFkcykgeyB9CitzdGF0aWMgaW5saW5lIHZvaWQgY3B1X3Nt
+dF9jaGVja190b3BvbG9neSh1bnNpZ25lZCBpbnQgbnVtX3RocmVhZHMsCisJCQkJCSAgdW5z
+aWduZWQgaW50IG1heF90aHJlYWRzKSB7IH0KIHN0YXRpYyBpbmxpbmUgYm9vbCBjcHVfc210
+X3Bvc3NpYmxlKHZvaWQpIHsgcmV0dXJuIGZhbHNlOyB9CiBzdGF0aWMgaW5saW5lIGludCBj
+cHVocF9zbXRfZW5hYmxlKHZvaWQpIHsgcmV0dXJuIDA7IH0KIHN0YXRpYyBpbmxpbmUgaW50
+IGNwdWhwX3NtdF9kaXNhYmxlKGVudW0gY3B1aHBfc210X2NvbnRyb2wgY3RybHZhbCkgeyBy
+ZXR1cm4gMDsgfQpkaWZmIC0tZ2l0IGEva2VybmVsL2NwdS5jIGIva2VybmVsL2NwdS5jCmlu
+ZGV4IGFjYTIzYzdiNDU0Ny4uMjY4ZDM4NmJkNGU3IDEwMDY0NAotLS0gYS9rZXJuZWwvY3B1
+LmMKKysrIGIva2VybmVsL2NwdS5jCkBAIC00MzUsMTIgKzQzNSwxNyBAQCB2b2lkIF9faW5p
+dCBjcHVfc210X2Rpc2FibGUoYm9vbCBmb3JjZSkKICAqIFRoZSBkZWNpc2lvbiB3aGV0aGVy
+IFNNVCBpcyBzdXBwb3J0ZWQgY2FuIG9ubHkgYmUgZG9uZSBhZnRlciB0aGUgZnVsbAogICog
+Q1BVIGlkZW50aWZpY2F0aW9uLiBDYWxsZWQgZnJvbSBhcmNoaXRlY3R1cmUgY29kZS4KICAq
+Lwotdm9pZCBfX2luaXQgY3B1X3NtdF9jaGVja190b3BvbG9neSh1bnNpZ25lZCBpbnQgbnVt
+X3RocmVhZHMpCit2b2lkIF9faW5pdCBjcHVfc210X2NoZWNrX3RvcG9sb2d5KHVuc2lnbmVk
+IGludCBudW1fdGhyZWFkcywKKwkJCQkgICB1bnNpZ25lZCBpbnQgbWF4X3RocmVhZHMpCiB7
+CiAJaWYgKCF0b3BvbG9neV9zbXRfc3VwcG9ydGVkKCkpCiAJCWNwdV9zbXRfY29udHJvbCA9
+IENQVV9TTVRfTk9UX1NVUFBPUlRFRDsKIAotCWNwdV9zbXRfbWF4X3RocmVhZHMgPSBudW1f
+dGhyZWFkczsKKwljcHVfc210X21heF90aHJlYWRzID0gbWF4X3RocmVhZHM7CisKKwlXQVJO
+X09OKG51bV90aHJlYWRzID4gbWF4X3RocmVhZHMpOworCWlmIChudW1fdGhyZWFkcyA+IG1h
+eF90aHJlYWRzKQorCQludW1fdGhyZWFkcyA9IG1heF90aHJlYWRzOwogCiAJLy8gTWF5IGFs
+cmVhZHkgYmUgZGlzYWJsZWQgYnkgbm9zbXQgY29tbWFuZCBsaW5lIHBhcmFtZXRlcgogCWlm
+IChjcHVfc210X2NvbnRyb2wgIT0gQ1BVX1NNVF9FTkFCTEVEKQotLSAKMi40MC4xCgo=
+
+--------------dIYNVYK7maoZ44TdG4CHztGP--
+
