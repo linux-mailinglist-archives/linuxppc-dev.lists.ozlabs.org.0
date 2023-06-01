@@ -2,60 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A50757191ED
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 06:37:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09EB4719341
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 08:31:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QWtf02TgLz3dx7
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 14:37:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QWx9l56CCz3dx0
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 16:31:39 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XjX+qO5T;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=y3oVPH0n;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=AmbgEac5;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=jdelvare@suse.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XjX+qO5T;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=y3oVPH0n;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=AmbgEac5;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QWtd63PH2z3bnP
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jun 2023 14:36:42 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QWx8s5c4lz3c3W
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jun 2023 16:30:53 +1000 (AEST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id DFAD26069B
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jun 2023 04:36:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E1D8C433EF
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jun 2023 04:36:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1685594197;
-	bh=QZIVYOfQMQfDIruN7rSg689YIbiJbkkfE8AKRfy2n5U=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=XjX+qO5TgZej3fh2HJQIqiOR5PxyL4koYuTQx2qeUwz0mw2WS7S8765bRMbrDCQVG
-	 whIGCjOlXBTjeWiN2+LrCx+Or8mSlhjQdHY5MFaYnqKspwUjKhBsJekNkwwwC3A2tK
-	 RRJ+PYWLTNVwk2Tc4E1sjjLY66LER3hFT6QIRdlz0YEtfE5QnejkEMpgjlFtCb1L5b
-	 jav2+jHQW0E6lB/EBDYRssonNB4dhirDM2pvI3kpcWJ0B9czAKVTkvmbZ2ylsgGsMq
-	 x3kGCiBqFY0IqxyFq7Pvs4DJbAWcMeNsAFCqYa1UhLYAOwr6LlCcKM6JbTbj+s1hsP
-	 DnX5huppMSCjQ==
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5147e441c33so1066361a12.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 May 2023 21:36:37 -0700 (PDT)
-X-Gm-Message-State: AC+VfDzXDdhGc/b5uxmJci+KgkyiEtTxhI/U88JQGPdXJsXwNgT8JHmh
-	RZaZtK7meGOk6q6m4ZVNqFOs2EldiUt5Hb1qHSU=
-X-Google-Smtp-Source: ACHHUZ7XdaYihX3P0occ4fimfrY7vXLE/b8sATTjW74eXROnZDFW1BQ/va3F8G7kmqLig8peXPPgGCGmqMpiLEgKGXM=
-X-Received: by 2002:a05:6402:3511:b0:4fc:97d9:18ec with SMTP id
- b17-20020a056402351100b004fc97d918ecmr437472edd.21.1685594195535; Wed, 31 May
- 2023 21:36:35 -0700 (PDT)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 0A10421987;
+	Thu,  1 Jun 2023 06:30:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1685601049; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+34HlVsA/poGj53ijrK9NrVP3E9GR2f0mj2vAOmFjhQ=;
+	b=y3oVPH0njicpYWzMgNtyBnRrPKyxDG8nANLQtZyhCY946UC46a8FxBAzq+VgPvMAzEE9m/
+	lmP7JLuKr8eG8rBwX6f913X0MTZ+GrFNNc7BeznYKB/pW5hboERxIhWmbEmhtkwe7iYt6m
+	hBDQhrJXig7lbdBb1+WPmZyyCYZlR0Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1685601049;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+34HlVsA/poGj53ijrK9NrVP3E9GR2f0mj2vAOmFjhQ=;
+	b=AmbgEac5TEPFoz3sqP7mJOH6MebzIgli8bql5h6Knn2VAONLzYEtdb3WCoSA9ZC2BiDSfz
+	3Xosw8jSh9mohECA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 4C3D113441;
+	Thu,  1 Jun 2023 06:30:48 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id L/j+EBg7eGQgSAAAMHmgww
+	(envelope-from <jdelvare@suse.de>); Thu, 01 Jun 2023 06:30:48 +0000
+Date: Thu, 1 Jun 2023 08:30:47 +0200
+From: Jean Delvare <jdelvare@suse.de>
+To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH] macintosh: Switch i2c drivers back to use .probe()
+Message-ID: <20230601083047.1c82046f@endymion.delvare>
+In-Reply-To: <20230523195053.464138-1-u.kleine-koenig@pengutronix.de>
+References: <20230523195053.464138-1-u.kleine-koenig@pengutronix.de>
+Organization: SUSE Linux
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.34; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-References: <20230531213032.25338-1-vishal.moola@gmail.com> <20230531213032.25338-23-vishal.moola@gmail.com>
-In-Reply-To: <20230531213032.25338-23-vishal.moola@gmail.com>
-From: Guo Ren <guoren@kernel.org>
-Date: Thu, 1 Jun 2023 12:36:23 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTSEguewbRMD8w3u3tfSPt-Opy+i=jm_8W2+NtAP1OYSsA@mail.gmail.com>
-Message-ID: <CAJF2gTSEguewbRMD8w3u3tfSPt-Opy+i=jm_8W2+NtAP1OYSsA@mail.gmail.com>
-Subject: Re: [PATCH v3 22/34] csky: Convert __pte_free_tlb() to use ptdescs
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -68,44 +81,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, kvm@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-sh@vger.kernel.org, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-csky@vger.kernel.org, linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org, Matthew Wilcox <willy@infradead.org>, loongarch@lists.linux.dev, sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+Cc: Corey Minyard <cminyard@mvista.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, Ajay Gupta <ajayg@nvidia.com>, Peter Senna Tschudin <peter.senna@gmail.com>, Javier Martinez Canillas <javierm@redhat.com>, Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Liang He <windhl@126.com>, Sebastian Reichel <sebastian.reichel@collabora.com>, Adrien Grassein <adrien.grassein@gmail.com>, Nathan Chancellor <nathan@kernel.org>, Colin Leroy <colin@colino.net>, Krzysztof =?UTF-8?B?SGHFgmFzYQ==?= <khalasa@piap.pl>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Petr Machata <petrm@nvidia.com>, Maximilian Luz <luzmaximilian@gmail.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, Wolfram Sang <wsa@kernel.org>, kernel@pengutronix.de, Hans Verkuil <hverkuil-cisco@xs4all.nl>, linuxppc-dev@lists.ozlabs.org, Peter Rosin <peda@axentia.se>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Acked-by: Guo Ren <guoren@kernel.org>
-
-On Thu, Jun 1, 2023 at 5:34=E2=80=AFAM Vishal Moola (Oracle)
-<vishal.moola@gmail.com> wrote:
->
-> Part of the conversions to replace pgtable constructor/destructors with
-> ptdesc equivalents.
->
-> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+On Tue, 23 May 2023 21:50:53 +0200, Uwe Kleine-K=C3=B6nig wrote:
+> After commit b8a1a4cd5a98 ("i2c: Provide a temporary .probe_new()
+> call-back type"), all drivers being converted to .probe_new() and then
+> 03c835f498b5 ("i2c: Switch .probe() to not take an id parameter") convert
+> back to (the new) .probe() to be able to eventually drop .probe_new() from
+> struct i2c_driver.
+>=20
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
 > ---
->  arch/csky/include/asm/pgalloc.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/csky/include/asm/pgalloc.h b/arch/csky/include/asm/pgal=
-loc.h
-> index 7d57e5da0914..9c84c9012e53 100644
-> --- a/arch/csky/include/asm/pgalloc.h
-> +++ b/arch/csky/include/asm/pgalloc.h
-> @@ -63,8 +63,8 @@ static inline pgd_t *pgd_alloc(struct mm_struct *mm)
->
->  #define __pte_free_tlb(tlb, pte, address)              \
->  do {                                                   \
-> -       pgtable_pte_page_dtor(pte);                     \
-> -       tlb_remove_page(tlb, pte);                      \
-> +       pagetable_pte_dtor(page_ptdesc(pte));           \
-> +       tlb_remove_page_ptdesc(tlb, page_ptdesc(pte));  \
->  } while (0)
->
->  extern void pagetable_init(void);
-> --
-> 2.40.1
->
+> Hello,
+>=20
+> this patch was generated using coccinelle, but I aligned the result to
+> the per-file indention.
+>=20
+> I chose to convert all drivers below drivers/macintosh in a single
+> patch, but if you prefer I can split by driver.
+>=20
+> v6.4-rc1 was taken as a base, as there are no commits in next touching
+> drivers/macintosh I don't expect problems when applying this patch. If
+> conflicts arise until this is applied, feel free to just drop the files
+> with conflicts from this patch. I'll care about the fallout later then.
+>=20
+> Also note there is no coordination necessary with the i2c tree. Dropping
+> .probe_new() will happen only when all (or most) drivers are converted,
+> which will happen after v6.5-rc1 for sure.
+>=20
+> Best regards
+> Uwe
+>=20
+>  drivers/macintosh/ams/ams-i2c.c             | 2 +-
+>  drivers/macintosh/therm_adt746x.c           | 2 +-
+>  drivers/macintosh/therm_windtunnel.c        | 2 +-
+>  drivers/macintosh/windfarm_ad7417_sensor.c  | 2 +-
+>  drivers/macintosh/windfarm_fcu_controls.c   | 2 +-
+>  drivers/macintosh/windfarm_lm75_sensor.c    | 2 +-
+>  drivers/macintosh/windfarm_lm87_sensor.c    | 2 +-
+>  drivers/macintosh/windfarm_max6690_sensor.c | 2 +-
+>  drivers/macintosh/windfarm_smu_sat.c        | 2 +-
+>  9 files changed, 9 insertions(+), 9 deletions(-)
+> (...)
 
+Reviewed-by: Jean Delvare <jdelvare@suse.de>
 
 --=20
-Best Regards
- Guo Ren
+Jean Delvare
+SUSE L3 Support
