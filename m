@@ -1,74 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09EB4719341
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 08:31:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6E0371940B
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 09:20:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QWx9l56CCz3dx0
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 16:31:39 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=y3oVPH0n;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=AmbgEac5;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QWyGZ4JTSz3dxy
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 17:20:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=jdelvare@suse.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=y3oVPH0n;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=AmbgEac5;
-	dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.160.180; helo=mail-qt1-f180.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QWx8s5c4lz3c3W
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jun 2023 16:30:53 +1000 (AEST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 0A10421987;
-	Thu,  1 Jun 2023 06:30:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1685601049; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+34HlVsA/poGj53ijrK9NrVP3E9GR2f0mj2vAOmFjhQ=;
-	b=y3oVPH0njicpYWzMgNtyBnRrPKyxDG8nANLQtZyhCY946UC46a8FxBAzq+VgPvMAzEE9m/
-	lmP7JLuKr8eG8rBwX6f913X0MTZ+GrFNNc7BeznYKB/pW5hboERxIhWmbEmhtkwe7iYt6m
-	hBDQhrJXig7lbdBb1+WPmZyyCYZlR0Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1685601049;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+34HlVsA/poGj53ijrK9NrVP3E9GR2f0mj2vAOmFjhQ=;
-	b=AmbgEac5TEPFoz3sqP7mJOH6MebzIgli8bql5h6Knn2VAONLzYEtdb3WCoSA9ZC2BiDSfz
-	3Xosw8jSh9mohECA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 4C3D113441;
-	Thu,  1 Jun 2023 06:30:48 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id L/j+EBg7eGQgSAAAMHmgww
-	(envelope-from <jdelvare@suse.de>); Thu, 01 Jun 2023 06:30:48 +0000
-Date: Thu, 1 Jun 2023 08:30:47 +0200
-From: Jean Delvare <jdelvare@suse.de>
-To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@pengutronix.de>
-Subject: Re: [PATCH] macintosh: Switch i2c drivers back to use .probe()
-Message-ID: <20230601083047.1c82046f@endymion.delvare>
-In-Reply-To: <20230523195053.464138-1-u.kleine-koenig@pengutronix.de>
-References: <20230523195053.464138-1-u.kleine-koenig@pengutronix.de>
-Organization: SUSE Linux
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.34; x86_64-suse-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QWyG00k7bz3c71
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jun 2023 17:20:23 +1000 (AEST)
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-3f6c81cc112so5049541cf.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Jun 2023 00:20:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685604020; x=1688196020;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uahBQ1+NZ4LtBmJlKuzSeHMKUQpvPqnHtI00z7d7Eg4=;
+        b=EuK/8HKO3iHcIJFhuaPK9u2UaN+xZDI7MQaQq9yNgT1BxgJC7hzCrCYeTW5r04yLy9
+         N5KACm5mAKqkEebgLrjtm7K/oiK+jDt1iuwQveLvukEO/gCERPgnJ23a7ltBIxC1Rybo
+         VSxUbQ2JY8zV79GwrZVvxxw9U+kIY0MkxX9LygFmwBB4wdqxT7xHMhmlmKzQHU/Xg78j
+         1+kRMszm9f/pm0VIOLeJ5mfByKqSsDbnavWOQ3L+nXJx45Ih3EQTjk+IZg8K8l5BpGcP
+         3J7NkgC14ntxQFSVqArH0wq+ZMH2Q6hfMC4KDD++66wly7cEqJ69+UcL5xyrRkVqPSIR
+         gD9w==
+X-Gm-Message-State: AC+VfDweCDJ1ipsFDevA0rZroTk8DrQXTWSM6rVlC04LAzyH6RL++Ri/
+	mOioALyG+Vbl9iLAtX9YHJ/p8602HuxKqg==
+X-Google-Smtp-Source: ACHHUZ4VILydg++KeV84qUGakMCSK/u247XFtiixX9bCPFXVSqafscXYqtYVEU69xmjIxP/+aDHvfg==
+X-Received: by 2002:ac8:5fc4:0:b0:3ef:54c9:9869 with SMTP id k4-20020ac85fc4000000b003ef54c99869mr9116721qta.31.1685604019624;
+        Thu, 01 Jun 2023 00:20:19 -0700 (PDT)
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com. [209.85.219.169])
+        by smtp.gmail.com with ESMTPSA id a186-20020a0dd8c3000000b00565de196516sm4370475ywe.32.2023.06.01.00.20.18
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 01 Jun 2023 00:20:18 -0700 (PDT)
+Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-b9a7e639656so556823276.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Jun 2023 00:20:18 -0700 (PDT)
+X-Received: by 2002:a25:6891:0:b0:ba8:7122:2917 with SMTP id
+ d139-20020a256891000000b00ba871222917mr10052062ybc.0.1685604018484; Thu, 01
+ Jun 2023 00:20:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20230531213032.25338-1-vishal.moola@gmail.com> <20230531213032.25338-31-vishal.moola@gmail.com>
+In-Reply-To: <20230531213032.25338-31-vishal.moola@gmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Thu, 1 Jun 2023 09:20:05 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdU4t4ac_eCH0UaX9F+GQ5-9kYjB_=e+pSfTkxG=3b8DsA@mail.gmail.com>
+Message-ID: <CAMuHMdU4t4ac_eCH0UaX9F+GQ5-9kYjB_=e+pSfTkxG=3b8DsA@mail.gmail.com>
+Subject: Re: [PATCH v3 30/34] sh: Convert pte_free_tlb() to use ptdescs
+To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -81,53 +67,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Corey Minyard <cminyard@mvista.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, Ajay Gupta <ajayg@nvidia.com>, Peter Senna Tschudin <peter.senna@gmail.com>, Javier Martinez Canillas <javierm@redhat.com>, Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Liang He <windhl@126.com>, Sebastian Reichel <sebastian.reichel@collabora.com>, Adrien Grassein <adrien.grassein@gmail.com>, Nathan Chancellor <nathan@kernel.org>, Colin Leroy <colin@colino.net>, Krzysztof =?UTF-8?B?SGHFgmFzYQ==?= <khalasa@piap.pl>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Petr Machata <petrm@nvidia.com>, Maximilian Luz <luzmaximilian@gmail.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, Wolfram Sang <wsa@kernel.org>, kernel@pengutronix.de, Hans Verkuil <hverkuil-cisco@xs4all.nl>, linuxppc-dev@lists.ozlabs.org, Peter Rosin <peda@axentia.se>
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, kvm@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-sh@vger.kernel.org, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-csky@vger.kernel.org, linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org, Matthew Wilcox <willy@infradead.org>, loongarch@lists.linux.dev, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 23 May 2023 21:50:53 +0200, Uwe Kleine-K=C3=B6nig wrote:
-> After commit b8a1a4cd5a98 ("i2c: Provide a temporary .probe_new()
-> call-back type"), all drivers being converted to .probe_new() and then
-> 03c835f498b5 ("i2c: Switch .probe() to not take an id parameter") convert
-> back to (the new) .probe() to be able to eventually drop .probe_new() from
-> struct i2c_driver.
->=20
-> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-> ---
-> Hello,
->=20
-> this patch was generated using coccinelle, but I aligned the result to
-> the per-file indention.
->=20
-> I chose to convert all drivers below drivers/macintosh in a single
-> patch, but if you prefer I can split by driver.
->=20
-> v6.4-rc1 was taken as a base, as there are no commits in next touching
-> drivers/macintosh I don't expect problems when applying this patch. If
-> conflicts arise until this is applied, feel free to just drop the files
-> with conflicts from this patch. I'll care about the fallout later then.
->=20
-> Also note there is no coordination necessary with the i2c tree. Dropping
-> .probe_new() will happen only when all (or most) drivers are converted,
-> which will happen after v6.5-rc1 for sure.
->=20
-> Best regards
-> Uwe
->=20
->  drivers/macintosh/ams/ams-i2c.c             | 2 +-
->  drivers/macintosh/therm_adt746x.c           | 2 +-
->  drivers/macintosh/therm_windtunnel.c        | 2 +-
->  drivers/macintosh/windfarm_ad7417_sensor.c  | 2 +-
->  drivers/macintosh/windfarm_fcu_controls.c   | 2 +-
->  drivers/macintosh/windfarm_lm75_sensor.c    | 2 +-
->  drivers/macintosh/windfarm_lm87_sensor.c    | 2 +-
->  drivers/macintosh/windfarm_max6690_sensor.c | 2 +-
->  drivers/macintosh/windfarm_smu_sat.c        | 2 +-
->  9 files changed, 9 insertions(+), 9 deletions(-)
-> (...)
+On Wed, May 31, 2023 at 11:33=E2=80=AFPM Vishal Moola (Oracle)
+<vishal.moola@gmail.com> wrote:
+> Part of the conversions to replace pgtable constructor/destructors with
+> ptdesc equivalents. Also cleans up some spacing issues.
+>
+> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 
-Reviewed-by: Jean Delvare <jdelvare@suse.de>
+LGTM, so
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+
+Gr{oetje,eeting}s,
+
+                        Geert
 
 --=20
-Jean Delvare
-SUSE L3 Support
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
