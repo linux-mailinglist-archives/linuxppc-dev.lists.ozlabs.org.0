@@ -1,55 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C57AF719052
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 04:03:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A50757191ED
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 06:37:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QWqCv2MYrz3dtR
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 12:03:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QWtf02TgLz3dx7
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 14:37:28 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=iVM+pWfO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XjX+qO5T;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QWqC3031tz30QQ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jun 2023 12:02:23 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=iVM+pWfO;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XjX+qO5T;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QWqBz5Fkpz4x42;
-	Thu,  1 Jun 2023 12:02:19 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1685584941;
-	bh=EKqPUa5BbsNp2IS+PVeURMLivGy9/PqofQB8JVPKzHk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=iVM+pWfOIbhHL9f9DmsNTYSYsnsKADtZjQT9IBkW+solKs/5jaM7HmHXujPBPR3sR
-	 wMMXiW8q5QUIc2tF+b7pContzFBOjsvsrQZp+PB993f8ACrE562bCVTAPxc4nHPlVT
-	 1JaDyr37YE8RGysSYBHCWpx6blwoqIhVENU7L02HS4t35C05grIv/jnerzHXtBFxkr
-	 LlFZ4pTbtpMi1kzvCtW/E0KSPxtdyhZedudAUHM4yCfBKpWkN+tj7x/zD6gocR2QVp
-	 hI0nknDZgWcSY2pAmQYBBAJ+nUybSxOQcns2PjvlZPakzmphOIgWmf3ANOTX/gtTkW
-	 24NljidWcxz/Q==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Maninder Singh
- <maninder1.s@samsung.com>
-Subject: Re: [PATCH 2/2] powerpc/xmon: use KSYM_NAME_LEN in array size
-In-Reply-To: <CANiq72=QeTgtZL4k9=4CJP6C_Hv=rh3fsn3B9S3KFoPXkyWk3w@mail.gmail.com>
-References: <CGME20230529111404epcas5p2d540d726dcf3e21aae2a6a0958e2eea5@epcas5p2.samsung.com>
- <20230529111337.352990-1-maninder1.s@samsung.com>
- <20230529111337.352990-2-maninder1.s@samsung.com>
- <CANiq72=QeTgtZL4k9=4CJP6C_Hv=rh3fsn3B9S3KFoPXkyWk3w@mail.gmail.com>
-Date: Thu, 01 Jun 2023 12:02:16 +1000
-Message-ID: <87ilc8ym6v.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QWtd63PH2z3bnP
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jun 2023 14:36:42 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id DFAD26069B
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jun 2023 04:36:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E1D8C433EF
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jun 2023 04:36:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1685594197;
+	bh=QZIVYOfQMQfDIruN7rSg689YIbiJbkkfE8AKRfy2n5U=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=XjX+qO5TgZej3fh2HJQIqiOR5PxyL4koYuTQx2qeUwz0mw2WS7S8765bRMbrDCQVG
+	 whIGCjOlXBTjeWiN2+LrCx+Or8mSlhjQdHY5MFaYnqKspwUjKhBsJekNkwwwC3A2tK
+	 RRJ+PYWLTNVwk2Tc4E1sjjLY66LER3hFT6QIRdlz0YEtfE5QnejkEMpgjlFtCb1L5b
+	 jav2+jHQW0E6lB/EBDYRssonNB4dhirDM2pvI3kpcWJ0B9czAKVTkvmbZ2ylsgGsMq
+	 x3kGCiBqFY0IqxyFq7Pvs4DJbAWcMeNsAFCqYa1UhLYAOwr6LlCcKM6JbTbj+s1hsP
+	 DnX5huppMSCjQ==
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5147e441c33so1066361a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 May 2023 21:36:37 -0700 (PDT)
+X-Gm-Message-State: AC+VfDzXDdhGc/b5uxmJci+KgkyiEtTxhI/U88JQGPdXJsXwNgT8JHmh
+	RZaZtK7meGOk6q6m4ZVNqFOs2EldiUt5Hb1qHSU=
+X-Google-Smtp-Source: ACHHUZ7XdaYihX3P0occ4fimfrY7vXLE/b8sATTjW74eXROnZDFW1BQ/va3F8G7kmqLig8peXPPgGCGmqMpiLEgKGXM=
+X-Received: by 2002:a05:6402:3511:b0:4fc:97d9:18ec with SMTP id
+ b17-20020a056402351100b004fc97d918ecmr437472edd.21.1685594195535; Wed, 31 May
+ 2023 21:36:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20230531213032.25338-1-vishal.moola@gmail.com> <20230531213032.25338-23-vishal.moola@gmail.com>
+In-Reply-To: <20230531213032.25338-23-vishal.moola@gmail.com>
+From: Guo Ren <guoren@kernel.org>
+Date: Thu, 1 Jun 2023 12:36:23 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTSEguewbRMD8w3u3tfSPt-Opy+i=jm_8W2+NtAP1OYSsA@mail.gmail.com>
+Message-ID: <CAJF2gTSEguewbRMD8w3u3tfSPt-Opy+i=jm_8W2+NtAP1OYSsA@mail.gmail.com>
+Subject: Re: [PATCH v3 22/34] csky: Convert __pte_free_tlb() to use ptdescs
+To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -62,35 +68,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, bcain@quicinc.com, keescook@chromium.org, gary@garyguo.net, pmladek@suse.com, linux-hexagon@vger.kernel.org, ustavoars@kernel.org, linux-kernel@vger.kernel.org, Onkarnath <onkarnath.1@samsung.com>, wedsonaf@google.com, npiggin@gmail.com, alex.gaynor@gmail.com, ojeda@kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, kvm@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-sh@vger.kernel.org, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-csky@vger.kernel.org, linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org, Matthew Wilcox <willy@infradead.org>, loongarch@lists.linux.dev, sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> writes:
-> On Mon, May 29, 2023 at 1:14=E2=80=AFPM Maninder Singh <maninder1.s@samsu=
-ng.com> wrote:
->>
->> +static char tmpstr[KSYM_NAME_LEN];
+Acked-by: Guo Ren <guoren@kernel.org>
+
+On Thu, Jun 1, 2023 at 5:34=E2=80=AFAM Vishal Moola (Oracle)
+<vishal.moola@gmail.com> wrote:
 >
-> Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
+> Part of the conversions to replace pgtable constructor/destructors with
+> ptdesc equivalents.
 >
-> Side-note: in `get_function_bounds()`, I see `kallsyms_lookup()` being
-> used, but the name seems discarded? Can
-> `kallsyms_lookup_size_offset()` be used instead, thus avoiding the
-> usage of the buffer there to begin with?
+> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+> ---
+>  arch/csky/include/asm/pgalloc.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/csky/include/asm/pgalloc.h b/arch/csky/include/asm/pgal=
+loc.h
+> index 7d57e5da0914..9c84c9012e53 100644
+> --- a/arch/csky/include/asm/pgalloc.h
+> +++ b/arch/csky/include/asm/pgalloc.h
+> @@ -63,8 +63,8 @@ static inline pgd_t *pgd_alloc(struct mm_struct *mm)
+>
+>  #define __pte_free_tlb(tlb, pte, address)              \
+>  do {                                                   \
+> -       pgtable_pte_page_dtor(pte);                     \
+> -       tlb_remove_page(tlb, pte);                      \
+> +       pagetable_pte_dtor(page_ptdesc(pte));           \
+> +       tlb_remove_page_ptdesc(tlb, page_ptdesc(pte));  \
+>  } while (0)
+>
+>  extern void pagetable_init(void);
+> --
+> 2.40.1
+>
 
-A few lines below it uses the modname, and AFAICS there's no (easy) way
-to lookup the modname without also looking up the name.
 
-> Side-note 2: in `scanhex()`, I see a loop `i<63` using `tmpstr` which
-> then is used to do a `kallsyms_lookup_name()`, so I guess symbols
-> larger than 64 couldn't be found. I have no idea about what are the
-> external constraints here, but perhaps it is possible to increase the
-> `line` buffer etc. to then allow for bigger symbols to be found.
-
-Yeah that looks wrong. I don't see any symbols that long in current
-kernels, but we should fix it.
-
-Thanks for looking.
-
-cheers
+--=20
+Best Regards
+ Guo Ren
