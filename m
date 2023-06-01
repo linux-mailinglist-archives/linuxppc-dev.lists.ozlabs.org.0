@@ -1,53 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D63C7199A0
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 12:24:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B74D7199B5
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 12:28:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QX2Lq6qd2z3fq9
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 20:24:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QX2R00rdfz3fbL
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jun 2023 20:28:28 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PpK9bveS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=DNPDU595;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1135; helo=mail-yw1-x1135.google.com; envelope-from=miguel.ojeda.sandonis@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PpK9bveS;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=DNPDU595;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QX27m3QXNz3dwP
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jun 2023 20:15:16 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id A2B4564322;
-	Thu,  1 Jun 2023 10:15:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 881EDC433A8;
-	Thu,  1 Jun 2023 10:15:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1685614514;
-	bh=KP9HX6DBOdeXbh1b+aKLs5zgkX2POLO57m2Kdhv+uBE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PpK9bveSqvpewvjbyZorKqSi3Q/F2n/LjJbM2xuj27cyV2j16y21onV4vnPjeZgTl
-	 zE9e28Ev7BFmducrk1/4dDKq3oOIJdBaX0QRyCLXbMWkq7hyE5K3/dP7zLmKJI/u+J
-	 lhU+vPxA/p2Jf8kS/aFYDSo6FeVktlpcm+nCEuVDQIry8EXyK9YUnYblgPqXCgLqeR
-	 2j1GLCveGyj3OVEyE2BDq2GHbbfSv+yRuLfu/Nry87svP0BgLxAfXOGT4DOJSO+sz1
-	 hW3iK555Pl8OaMr8Z+t77LXxqmLIyxUXr+Y3h+YIQv8TpNf780OllbwDGe20NNxSf6
-	 l3zqIrjNIFEhQ==
-From: Mike Rapoport <rppt@kernel.org>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH 13/13] x86/jitalloc: make memory allocated for code ROX
-Date: Thu,  1 Jun 2023 13:12:57 +0300
-Message-Id: <20230601101257.530867-14-rppt@kernel.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20230601101257.530867-1-rppt@kernel.org>
-References: <20230601101257.530867-1-rppt@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QX2Q96BcLz2xCd
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jun 2023 20:27:45 +1000 (AEST)
+Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-565ba53f434so6490087b3.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Jun 2023 03:27:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685615261; x=1688207261;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=V+7FpAWqJ9UaTJolR3fhX+VLULajdYAdz5DrVldjg9M=;
+        b=DNPDU5955K3+hJXFzOhvILPyfqhiSdd9AH82pxA7AZjcBYekzjwTVcHeYa5kxirgAO
+         Zsqg9Mg7i09PWZMBkKR7GAnp8ApHEPR/Ngb4zXdIsbHhJ2yHMUtuKsa+hA1WMlIBXDaZ
+         f5aECL2Gh3Xr5TOs0ItqQjUOT/xZD07F4DerYW8MthBWzV1iasujQH82WKNARh7GgVhv
+         RGxSnQJpSYab1qYmx8r7cey9siNoVykynMlqHekdt4eUUPcU8QbgHsus2PuNMBfIFJIn
+         wbOdnSrHZ8yKkEnZAa8jCXmmAosVEa2dhbK92w49HB5Bxw4jMYLpapeOHTgKpe+O3OCV
+         jJwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685615261; x=1688207261;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=V+7FpAWqJ9UaTJolR3fhX+VLULajdYAdz5DrVldjg9M=;
+        b=f+wiEmZpxNeJ8SVMz3b/zWLjV2gWzJV9uzxqjDRfV9PJRTNklPKM4oC6H//1PmzR3e
+         uU/7II7nT7d3UkQSvxkivSf7TO7R5ylvyKqlONTVzm3Yzk4qR11VIqOz6CqABM0Q6Szl
+         VTW14fE9RTjgfPJurmIucsr0iRssCe9KYfWojgFsFQoG6kTzjBp8TdWazYmhDa7TOR4F
+         VMirZ2eQkX0CpDNCspIU08Mb/BuRouNejV2z9H81y9w5skz/LJAACNavB7sItm7YOWTD
+         CbfXpSQTPSDaQubX5tH9JxgYpD1798U8EHhh/5Nt8wMTd4OmPJQTp2970UCQIvRULvX9
+         vStw==
+X-Gm-Message-State: AC+VfDyyMdssX/fqY/UOM1fBzyNL8QseqObuCRTJRp0Jd/alnH7SDmbl
+	b8oytHI6qvO5/5CEyWG5TMhWGnSAqwIAwt1qWhA=
+X-Google-Smtp-Source: ACHHUZ5Rl9j3K2nrrXUI/ytZpuvVrpIbThy1vg7TGrRlvrVK4YOxw4JnS8GJOEYrUj1mJ3ErDXiEdVBrPMLLYU7fcMk=
+X-Received: by 2002:a0d:d712:0:b0:561:abb8:3b38 with SMTP id
+ z18-20020a0dd712000000b00561abb83b38mr9719929ywd.17.1685615261437; Thu, 01
+ Jun 2023 03:27:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CGME20230529111404epcas5p2d540d726dcf3e21aae2a6a0958e2eea5@epcas5p2.samsung.com>
+ <20230529111337.352990-1-maninder1.s@samsung.com> <20230529111337.352990-2-maninder1.s@samsung.com>
+ <CANiq72=QeTgtZL4k9=4CJP6C_Hv=rh3fsn3B9S3KFoPXkyWk3w@mail.gmail.com> <87ilc8ym6v.fsf@mail.lhotse>
+In-Reply-To: <87ilc8ym6v.fsf@mail.lhotse>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 1 Jun 2023 12:27:30 +0200
+Message-ID: <CANiq72nf-MC36hHzv0ZpR+qUyaf3mhF+rfqpMcVbw0AheuRBpA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] powerpc/xmon: use KSYM_NAME_LEN in array size
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,152 +77,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linux-trace-kernel@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Andrew Morton <akpm@linux-foundation.org>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org, Kent Overstreet <kent.overstreet@linux.dev>, linux-mips@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-modules@vger.kernel.org, bpf@vger.kernel.org, linuxppc-dev@lists.ozl
- abs.org, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>
+Cc: nathanl@linux.ibm.com, bcain@quicinc.com, keescook@chromium.org, gary@garyguo.net, pmladek@suse.com, linux-hexagon@vger.kernel.org, ustavoars@kernel.org, linux-kernel@vger.kernel.org, ojeda@kernel.org, wedsonaf@google.com, npiggin@gmail.com, alex.gaynor@gmail.com, Maninder Singh <maninder1.s@samsung.com>, Onkarnath <onkarnath.1@samsung.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+On Thu, Jun 1, 2023 at 4:02=E2=80=AFAM Michael Ellerman <mpe@ellerman.id.au=
+> wrote:
+>
+> > Side-note: in `get_function_bounds()`, I see `kallsyms_lookup()` being
+> > used, but the name seems discarded? Can
+> > `kallsyms_lookup_size_offset()` be used instead, thus avoiding the
+> > usage of the buffer there to begin with?
+>
+> A few lines below it uses the modname, and AFAICS there's no (easy) way
+> to lookup the modname without also looking up the name.
 
-When STRICT_KERNEL_RWX or STRICT_MODULE_RWX is enabled, force text
-allocations to use KERNEL_PAGE_ROX.
+Hmm... I think you are looking at the `xmon_print_symbol()` one? I was
+referring to the `get_function_bounds()` one, where the `modname`
+parameter is `NULL` (and the `name` contents are not used, only
+whether it was found or not).
 
-Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
----
- arch/Kconfig             |  3 +++
- arch/x86/Kconfig         |  1 +
- arch/x86/kernel/ftrace.c |  3 ---
- arch/x86/mm/init.c       |  6 ++++++
- include/linux/jitalloc.h |  2 ++
- mm/jitalloc.c            | 21 +++++++++++++++++++++
- 6 files changed, 33 insertions(+), 3 deletions(-)
+> > Side-note 2: in `scanhex()`, I see a loop `i<63` using `tmpstr` which
+> > then is used to do a `kallsyms_lookup_name()`, so I guess symbols
+> > larger than 64 couldn't be found. I have no idea about what are the
+> > external constraints here, but perhaps it is possible to increase the
+> > `line` buffer etc. to then allow for bigger symbols to be found.
+>
+> Yeah that looks wrong. I don't see any symbols that long in current
+> kernels, but we should fix it.
+>
+> Thanks for looking.
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index 479a7b8be191..e7c4b01307d7 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -1307,6 +1307,9 @@ config STRICT_MODULE_RWX
- 	  and non-text memory will be made non-executable. This provides
- 	  protection against certain security exploits (e.g. writing to text)
- 
-+config ARCH_HAS_TEXT_POKE
-+	def_bool n
-+
- # select if the architecture provides an asm/dma-direct.h header
- config ARCH_HAS_PHYS_TO_DMA
- 	bool
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index fac4add6ce16..e1a512f557de 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -96,6 +96,7 @@ config X86
- 	select ARCH_HAS_SET_DIRECT_MAP
- 	select ARCH_HAS_STRICT_KERNEL_RWX
- 	select ARCH_HAS_STRICT_MODULE_RWX
-+	select ARCH_HAS_TEXT_POKE
- 	select ARCH_HAS_SYNC_CORE_BEFORE_USERMODE
- 	select ARCH_HAS_SYSCALL_WRAPPER
- 	select ARCH_HAS_UBSAN_SANITIZE_ALL
-diff --git a/arch/x86/kernel/ftrace.c b/arch/x86/kernel/ftrace.c
-index d50595f2c1a6..bd4dd8974ee6 100644
---- a/arch/x86/kernel/ftrace.c
-+++ b/arch/x86/kernel/ftrace.c
-@@ -313,7 +313,6 @@ create_trampoline(struct ftrace_ops *ops, unsigned int *tramp_size)
- 	unsigned long call_offset;
- 	unsigned long jmp_offset;
- 	unsigned long offset;
--	unsigned long npages;
- 	unsigned long size;
- 	unsigned long *ptr;
- 	void *trampoline;
-@@ -350,7 +349,6 @@ create_trampoline(struct ftrace_ops *ops, unsigned int *tramp_size)
- 		return 0;
- 
- 	*tramp_size = size + RET_SIZE + sizeof(void *);
--	npages = DIV_ROUND_UP(*tramp_size, PAGE_SIZE);
- 
- 	/* Copy ftrace_caller onto the trampoline memory */
- 	ret = text_poke_copy(trampoline, (void *)start_offset, size);
-@@ -416,7 +414,6 @@ create_trampoline(struct ftrace_ops *ops, unsigned int *tramp_size)
- 	/* ALLOC_TRAMP flags lets us know we created it */
- 	ops->flags |= FTRACE_OPS_FL_ALLOC_TRAMP;
- 
--	set_memory_rox((unsigned long)trampoline, npages);
- 	return (unsigned long)trampoline;
- fail:
- 	tramp_free(trampoline);
-diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index ffaf9a3840ce..c314738991fa 100644
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -1127,6 +1127,12 @@ struct jit_alloc_params *jit_alloc_arch_params(void)
- 	jit_alloc_params.text.start = MODULES_VADDR + get_jit_load_offset();
- 	jit_alloc_params.text.end = MODULES_END;
- 
-+	if (IS_ENABLED(CONFIG_STRICT_KERNEL_RWX) ||
-+	    IS_ENABLED(CONFIG_STRICT_MODULE_RWX)) {
-+		jit_alloc_params.text.pgprot = PAGE_KERNEL_ROX;
-+		jit_alloc_params.flags |= JIT_ALLOC_USE_TEXT_POKE;
-+	}
-+
- 	return &jit_alloc_params;
- }
- #endif /* CONFIG_JIT_ALLOC */
-diff --git a/include/linux/jitalloc.h b/include/linux/jitalloc.h
-index 0ba5ef785a85..0e29e87acefe 100644
---- a/include/linux/jitalloc.h
-+++ b/include/linux/jitalloc.h
-@@ -15,9 +15,11 @@
- /**
-  * enum jit_alloc_flags - options for executable memory allocations
-  * @JIT_ALLOC_KASAN_SHADOW:	allocate kasan shadow
-+ * @JIT_ALLOC_USE_TEXT_POKE:	use text poking APIs to update memory
-  */
- enum jit_alloc_flags {
- 	JIT_ALLOC_KASAN_SHADOW	= (1 << 0),
-+	JIT_ALLOC_USE_TEXT_POKE	= (1 << 1),
- };
- 
- /**
-diff --git a/mm/jitalloc.c b/mm/jitalloc.c
-index a8ae64364d56..15d1067faf3f 100644
---- a/mm/jitalloc.c
-+++ b/mm/jitalloc.c
-@@ -7,6 +7,26 @@
- 
- static struct jit_alloc_params jit_alloc_params;
- 
-+#ifdef CONFIG_ARCH_HAS_TEXT_POKE
-+#include <asm/text-patching.h>
-+
-+static inline void jit_text_poke_copy(void *dst, const void *src, size_t len)
-+{
-+	if (jit_alloc_params.flags & JIT_ALLOC_USE_TEXT_POKE)
-+		text_poke_copy(dst, src, len);
-+	else
-+		memcpy(dst, src, len);
-+}
-+
-+static inline void jit_text_poke_set(void *addr, int c, size_t len)
-+{
-+	if (jit_alloc_params.flags & JIT_ALLOC_USE_TEXT_POKE)
-+		text_poke_set(addr, c, len);
-+	else
-+		memset(addr, c, len);
-+}
-+
-+#else
- static inline void jit_text_poke_copy(void *dst, const void *src, size_t len)
- {
- 	memcpy(dst, src, len);
-@@ -16,6 +36,7 @@ static inline void jit_text_poke_set(void *addr, int c, size_t len)
- {
- 	memset(addr, c, len);
- }
-+#endif
- 
- static void *jit_alloc(size_t len, unsigned int alignment, pgprot_t pgprot,
- 		       unsigned long start, unsigned long end,
--- 
-2.35.1
+My pleasure!
 
+Cheers,
+Miguel
