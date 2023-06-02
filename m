@@ -1,71 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AD4F71FA3D
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jun 2023 08:40:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C83871FB49
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jun 2023 09:43:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QXYJz5cy8z3f0B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jun 2023 16:40:03 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=MQbltgtZ;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QXZkN260Bz3fbf
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jun 2023 17:43:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b2e; helo=mail-yb1-xb2e.google.com; envelope-from=hughd@google.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=MQbltgtZ;
-	dkim-atps=neutral
-Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33; helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=<UNKNOWN>)
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QXYHM27lhz3f09
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Jun 2023 16:38:38 +1000 (AEST)
-Received: by mail-yb1-xb2e.google.com with SMTP id 3f1490d57ef6-bacf9edc87bso1758997276.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Jun 2023 23:38:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1685687915; x=1688279915;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tpZOczBsR4xfXgaOr7JAksIfJeH0zAVR4HOmdqn2WnM=;
-        b=MQbltgtZnpxjctQr+uFVsewY5VE5NXUP+fgzpdshkW8VMDLi/jmX8Tm6cJEVN75KO5
-         eMzQQeVHyaOg5im7MqrpVvZmNtbY70bJPquEYjFZnpqOQiwh3ggGEuUZOqPQRJyrYh/W
-         i+iggUJfR2oZ0kl76ZzZLWFVADgUlsLiALbp15wr01z/YGZ4gs3TU2SO+DR0aQhnSTOT
-         dtI6TRsVuo4JEZoVSXAGY14e1RV+60jnzQrNU20RmPK7rqniXU/2wk1vKjSgTxR1Jys6
-         GAfhWX9n0uNxF5CP8nHZ8MEGqQL56HNKZn101HF3ximV36n96JF/CdcYDCKEOlrhAPpq
-         +j9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685687915; x=1688279915;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tpZOczBsR4xfXgaOr7JAksIfJeH0zAVR4HOmdqn2WnM=;
-        b=HyI+nlCNovSbXerJi8kfCbSb7reelG/N9r3aTSzqGf9FNNZNyK9N4kCCA/4/Fhzl7w
-         SxvP04yplNVgsI8CXLtmGV3TDP/O33sRyf8cubbSNgF75umI0qGvIoYs9AuD1hF2nGhz
-         eC2wbUTWgira8YhZitF+gpg6W/heEuJmM7HF+aQ0l6WJdRnBtnlS3YdFCxrvTW/9iYan
-         BO2RXIXpasUmbw7fH5odUeXK+PECzjL6wQWealhTRPs9MMnJ1yf2i/6dpJNCO5CNv4SW
-         eBu34DEew0vN40USGIRLuxYnjWme3qw3ZjPOMSKJgwXgduF7JFlr9feeFqiAMmYdTIQD
-         gj1w==
-X-Gm-Message-State: AC+VfDzprRFskAoHJ2NgXPDy9avLsJ4NmVv7zQxfKU3IMvwbE35lL4Vj
-	xsuEdhBtpKdRDioSQjWG/cPIiQ==
-X-Google-Smtp-Source: ACHHUZ6P8SSTMurOYYj/ALnVvhi3BuZn/ynwQtygsqQ/alJ03V+5vTPE5OsmNbOnOcV3aojCWBT3dw==
-X-Received: by 2002:a81:a50c:0:b0:55d:afe6:ebcf with SMTP id u12-20020a81a50c000000b0055dafe6ebcfmr10875964ywg.46.1685687915164;
-        Thu, 01 Jun 2023 23:38:35 -0700 (PDT)
-Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id v16-20020a814810000000b005688deeefc2sm199574ywa.20.2023.06.01.23.38.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Jun 2023 23:38:34 -0700 (PDT)
-Date: Thu, 1 Jun 2023 23:38:30 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-X-X-Sender: hugh@ripple.attlocal.net
-To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Subject: Re: [PATCH 05/12] powerpc: add pte_free_defer() for pgtables sharing
- page
-In-Reply-To: <20230601155751.7c949ca4@thinkpad-T15>
-Message-ID: <d6af2345-40b0-e6fc-56d2-bce778632da9@google.com>
-References: <35e983f5-7ed3-b310-d949-9ae8b130cdab@google.com> <28eb289f-ea2c-8eb9-63bb-9f7d7b9ccc11@google.com> <ZHSwWgLWaEd+zi/g@casper.infradead.org> <a8df11d-55ae-64bc-edcb-d383a7a941ea@google.com> <20230601155751.7c949ca4@thinkpad-T15>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QXZjq6ScDz3c75
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Jun 2023 17:43:08 +1000 (AEST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1q4zQc-0007gF-PU; Fri, 02 Jun 2023 09:42:30 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1q4zQR-004XFY-Rv; Fri, 02 Jun 2023 09:42:19 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1q4zQR-00AOmZ-8f; Fri, 02 Jun 2023 09:42:19 +0200
+Date: Fri, 2 Jun 2023 09:42:19 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: kernel test robot <lkp@intel.com>
+Subject: Re: [tty:tty-testing 19/19] legacy_serial.c:undefined reference to
+ `fsl8250_handle_irq'
+Message-ID: <20230602074219.srlgpaaypewd2q5s@pengutronix.de>
+References: <202306021041.qbRZZenE-lkp@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ve3roce4gpxozldk"
+Content-Disposition: inline
+In-Reply-To: <202306021041.qbRZZenE-lkp@intel.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,76 +55,142 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Miaohe Lin <linmiaohe@huawei.com>, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Yang Shi <shy828301@gmail.com>, Peter Xu <peterx@redhat.com>, linux-kernel@vger.kernel.org, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Yu Zhao <yuzhao@google.com>, Ira Weiny <ira.weiny@intel.com>, Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, Steven Price <steven.price@arm.com>, Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Axel Rasmussen <axelrasmussen@google.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Thomas Hellstrom <thomas.hellstrom@linux.intel.com>, Ralph Campbell <rcampbell@nvidia.com>, Pasha Tatashin <pasha.tatashin@solee
- n.com>, Vasily Gorbik <gor@linux.ibm.com>, Anshuman Khandual <anshuman.khandual@arm.com>, Heiko Carstens <hca@linux.ibm.com>, Qi Zheng <zhengqi.arch@bytedance.com>, Suren Baghdasaryan <surenb@google.com>, linux-arm-kernel@lists.infradead.org, SeongJae Park <sj@kernel.org>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, Naoya Horiguchi <naoya.horiguchi@nec.com>, Zack Rusin <zackr@vmware.com>, Vishal Moola <vishal.moola@gmail.com>, Minchan Kim <minchan@kernel.org>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, Mel Gorman <mgorman@techsingularity.net>, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, oe-kbuild-all@lists.linux.dev, Paul Gortmaker <paul.gortmaker@windriver.com>, Nicholas Piggin <npiggin@gmail.com>, linux-serial@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 1 Jun 2023, Gerald Schaefer wrote:
-> On Mon, 29 May 2023 07:36:40 -0700 (PDT)
-> Hugh Dickins <hughd@google.com> wrote:
-> > On Mon, 29 May 2023, Matthew Wilcox wrote:
-> > > On Sun, May 28, 2023 at 11:20:21PM -0700, Hugh Dickins wrote:  
-> > > > +void pte_free_defer(struct mm_struct *mm, pgtable_t pgtable)
-> > > > +{
-> > > > +	struct page *page;
-> > > > +
-> > > > +	page = virt_to_page(pgtable);
-> > > > +	call_rcu(&page->rcu_head, pte_free_now);
-> > > > +}  
-> > > 
-> > > This can't be safe (on ppc).  IIRC you might have up to 16x4k page
-> > > tables sharing one 64kB page.  So if you have two page tables from the
-> > > same page being defer-freed simultaneously, you'll reuse the rcu_head
-> > > and I cannot imagine things go well from that point.  
-> > 
-> > Oh yes, of course, thanks for catching that so quickly.
-> > So my s390 and sparc implementations will be equally broken.
-> > 
-> > > 
-> > > I have no idea how to solve this problem.  
-> > 
-> > I do: I'll have to go back to the more complicated implementation we
-> > actually ran with on powerpc - I was thinking those complications just
-> > related to deposit/withdraw matters, forgetting the one-rcu_head issue.
-> > 
-> > It uses large (0x10000) increments of the page refcount, avoiding
-> > call_rcu() when already active.
-> > 
-> > It's not a complication I had wanted to explain or test for now,
-> > but we shall have to.  Should apply equally well to sparc, but s390
-> > more of a problem, since s390 already has its own refcount cleverness.
-> 
-> Yes, we have 2 pagetables in one 4K page, which could result in same
-> rcu_head reuse. It might be possible to use the cleverness from our
-> page_table_free() function, e.g. to only do the call_rcu() once, for
-> the case where both 2K pagetable fragments become unused, similar to
-> how we decide when to actually call __free_page().
 
-Yes, I expect that it will be possible to mesh in with s390's cleverness
-there; but I may not be clever enough to do so myself - it was easier to
-get right by going my own way - except that the multiply-used rcu_head
-soon showed that I'd not got it right at all :-(
+--ve3roce4gpxozldk
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> 
-> However, it might be much worse, and page->rcu_head from a pagetable
-> page cannot be used at all for s390, because we also use page->lru
-> to keep our list of free 2K pagetable fragments. I always get confused
-> by struct page unions, so not completely sure, but it seems to me that
-> page->rcu_head would overlay with page->lru, right?
+Hello,
 
-However, I believe you are right that it's worse.  I'm glad to hear
-that you get confused by the struct page unions, me too, I preferred the
-old pre-union days when we could see at a glance which fields overlaid.
-(Perhaps I'm nostalgically exaggerating that "see at a glance" ease.)
+On Fri, Jun 02, 2023 at 10:27:52AM +0800, kernel test robot wrote:
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git tt=
+y-testing
+> head:   3a3d09a9ee0ef5b417d6bdf8486a4da2bef06dc3
+> commit: 3a3d09a9ee0ef5b417d6bdf8486a4da2bef06dc3 [19/19] serial: 8250: Ap=
+ply FSL workarounds also without SERIAL_8250_CONSOLE
+> config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/202=
+30602/202306021041.qbRZZenE-lkp@intel.com/config)
+> compiler: powerpc-linux-gcc (GCC) 12.3.0
+> reproduce (this is a W=3D1 build):
+>         mkdir -p ~/bin
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbi=
+n/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         # https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git/=
+commit/?id=3D3a3d09a9ee0ef5b417d6bdf8486a4da2bef06dc3
+>         git remote add tty https://git.kernel.org/pub/scm/linux/kernel/gi=
+t/gregkh/tty.git
+>         git fetch --no-tags tty tty-testing
+>         git checkout 3a3d09a9ee0ef5b417d6bdf8486a4da2bef06dc3
 
-But I think I remember the discussions when rcu_head, and compound_head
-at lru.next, came in: with the agreement that rcu_head.next would at
-least be 2-aligned to avoid PageTail - ah, it's even commented in the
-fundamental include/linux/types.h.
+For the new readers, this is about
 
-Sigh.  I don't at this moment know what to do for s390:
-it is frustrating to be held up by just the one architecture.
-But big thanks to you, Gerald, for bringing this to light.
+	https://lore.kernel.org/r/20230531083230.2702181-1-u.kleine-koenig@pengutr=
+onix.de
 
-Hugh
+Greg already dropped it from his tty-testing tree. Thanks and sorry for
+this second breakage. :-\
+
+>         # save the config file
+>         mkdir build_dir && cp config build_dir/.config
+>         COMPILER_INSTALL_PATH=3D$HOME/0day COMPILER=3Dgcc-12.3.0 ~/bin/ma=
+ke.cross W=3D1 O=3Dbuild_dir ARCH=3Dpowerpc olddefconfig
+>         COMPILER_INSTALL_PATH=3D$HOME/0day COMPILER=3Dgcc-12.3.0 ~/bin/ma=
+ke.cross W=3D1 O=3Dbuild_dir ARCH=3Dpowerpc SHELL=3D/bin/bash
+>=20
+> If you fix the issue, kindly add following tag where applicable
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202306021041.qbRZZenE-lkp=
+@intel.com/
+>=20
+> All errors (new ones prefixed by >>):
+>=20
+>    powerpc-linux-ld: arch/powerpc/kernel/legacy_serial.o: in function `se=
+rial_dev_init':
+> >> legacy_serial.c:(.init.text+0x46a): undefined reference to `fsl8250_ha=
+ndle_irq'
+> >> powerpc-linux-ld: legacy_serial.c:(.init.text+0x472): undefined refere=
+nce to `fsl8250_handle_irq'
+
+Urgs, this is ugly. Arch code uses a function from the 8250 driver
+introduced in commit 9deaa53ac7fa ("serial: add irq handler for
+Freescale 16550 errata.").
+
+So the problematic case is SERIAL_8250=3Dm which results in
+fsl8250_handle_irq being in a module.
+
+diff --git a/arch/powerpc/kernel/legacy_serial.c b/arch/powerpc/kernel/lega=
+cy_serial.c
+index c9ad12461d44..ad9f15902abb 100644
+--- a/arch/powerpc/kernel/legacy_serial.c
++++ b/arch/powerpc/kernel/legacy_serial.c
+@@ -510,8 +510,12 @@ static void __init fixup_port_irq(int index,
+=20
+ #ifdef CONFIG_SERIAL_8250_FSL
+ 	if (of_device_is_compatible(np, "fsl,ns16550")) {
+-		port->handle_irq =3D fsl8250_handle_irq;
+-		port->has_sysrq =3D IS_ENABLED(CONFIG_SERIAL_8250_CONSOLE);
++		if (IS_REACHABLE(CONFIG_SERIAL_8250)) {
++			port->handle_irq =3D fsl8250_handle_irq;
++			port->has_sysrq =3D IS_ENABLED(CONFIG_SERIAL_8250_CONSOLE);
++		} else {
++			pr_warn("Not activating fsl workarounds for 8250 port %d\n", index);
++		}
+ 	}
+ #endif
+ }
+
+would work. The warning would trigger in cases where before the port
+just silently used the default irq handler and so the FSL bug isn't
+workarounded[1]. If the warning isn't wanted, it could be simplified to:
+
+#if IS_REACHABLE(CONFIG_SERIAL_8250)
+	if (of_device_is_compatible(np, "fsl,ns16550")) {
+		...
+	}
+#endif
+
+But I wonder if in the presence of
+
+        if (IS_ENABLED(CONFIG_SERIAL_8250_FSL) &&
+            (of_device_is_compatible(np, "fsl,ns16550") ||
+             of_device_is_compatible(np, "fsl,16550-FIFO64"))) {
+                port->handle_irq =3D fsl8250_handle_irq;
+                port->has_sysrq =3D IS_ENABLED(CONFIG_SERIAL_8250_CONSOLE);
+        }
+
+in of_platform_serial_setup() the code in
+arch/powerpc/kernel/legacy_serial.c can just be dropped instead?!
+
+Best regards
+Uwe
+
+[1] Of course this won't happen because the help text of SERIAL_8250
+clearly indicates that =3Dm isn't a safe choice in the presence of
+"non-standard serial ports". So the issue is purly theoretic.
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--ve3roce4gpxozldk
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmR5nVoACgkQj4D7WH0S
+/k45Owf/RQIZ/tkvEslJTH7fcdK9qycxel/CpGP0wKndii5ft99uuONt4CoX3vVc
+gekWe0d4PQmTPNLmomQ0H6QiHYtI3q/+w+LqsxRubu3woNEQ2zRv5pvBMA5itBam
+K0rWT+8VZ+HcEpR/ZWB9utA1+d6J7fcFcISFcrDDIQDDGsxAiWAhFf6u19deg1w1
+mcUp/NorCRpNwl9ylq/1uyQ3XXeVQ1j8tgDReWvfTS6dVGaYUz9KKFgQpVFV39i3
+f3BbY03AkWojwI/NfHjsnqzr/pwLOzBJiTcMDdqukpp2DR6hcyuJ7DHbsHOELJkw
+YB/4rUr7yMxKmahchJYwjLLZYVw3bA==
+=OxiR
+-----END PGP SIGNATURE-----
+
+--ve3roce4gpxozldk--
