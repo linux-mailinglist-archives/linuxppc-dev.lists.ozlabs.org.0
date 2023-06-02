@@ -2,58 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6128A720828
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jun 2023 19:10:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5BA072090C
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jun 2023 20:22:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QXqJq0VHpz3dyQ
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Jun 2023 03:10:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QXrv02M2Wz3fBP
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Jun 2023 04:22:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=coreVa5A;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=m8QqKBlw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=song@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=coreVa5A;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=m8QqKBlw;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QXqHw3wZ8z3dtX
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 Jun 2023 03:10:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QXrt70dZYz3dxY
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 Jun 2023 04:21:18 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id ACE9661789;
-	Fri,  2 Jun 2023 17:10:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DACDAC433D2;
-	Fri,  2 Jun 2023 17:09:58 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 30B6C6525E
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Jun 2023 18:21:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F26C4339B
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Jun 2023 18:21:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1685725801;
-	bh=FFfbYJAeWVlemuy55YRw4ykuDglzPT/JaLEPqPbT6qQ=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=coreVa5AwxkjU4f992ggWjolW7fV/ntma+BDJMVAnLt8XKsXaJ/Jre5aYaA0WaLRW
-	 TVIv5LKzC5y518KFJ7VFxI+x7SP5HLfSY72ToqC3eFc/C3do0nIHGd4QWedjB4ad1G
-	 wjtlzoZImKq9iaIWLMUt5gXBaIYWGX8d9w3rthF0ItGy+Nng8LCNpjNBPHop8B6VEM
-	 ACSTKSuj/7L1kNkbW3zdwet6isLENysj+NEZtLjvSUxcLhNjpZQOQgRAKPeqZm7h00
-	 5DFhGs/D1TGuvezU2/a+OWvJTRP2EtoqsySXgPV8RcozZQAlX7QZz68Z/y0wIlsPjD
-	 JCGdgWaERJ1Bg==
-From: Mark Brown <broonie@kernel.org>
-To: lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
- alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, 
- festevam@gmail.com, nicoleotsuka@gmail.com, 
- Chancel Liu <chancel.liu@nxp.com>
-In-Reply-To: <20230530103012.3448838-1-chancel.liu@nxp.com>
-References: <20230530103012.3448838-1-chancel.liu@nxp.com>
-Subject: Re: [PATCH] ASoC: fsl_sai: Enable BCI bit if SAI works on
- synchronous mode with BYP asserted
-Message-Id: <168572579859.93025.4040527745876774020.b4-ty@kernel.org>
-Date: Fri, 02 Jun 2023 18:09:58 +0100
+	s=k20201202; t=1685730074;
+	bh=X+6D25ac/ynfkYhL6CVIatM+QSgTz3ZdfLV95/xOw/s=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=m8QqKBlwUZ1OdVsi3iL4i/wpx/dFY6BbtHjhKMAoPALO9d9S1Of5z7SZF4QL6sTbP
+	 1AkumCJkUSaKm4k7dCVk+lOGEFZdfq22cqjqj27S/pPlmB3p+6xXv2CNvliSMKoASM
+	 /hdXoCMRwv6EJy8J6GYtUkCvLB9u0rcyusLTXlpDOf8Lr4f24TWYjjjFg1gay1e8Ak
+	 p/JJ9xBOtMt5dIZYwKQ9oFJD8MWj9f1lt6ZhCj0XTqBGpkRKgNx/tS3niGcx/Matut
+	 0hwyzJfj74d+iBjmUiHb0LPXzSLbkWfgBPmkBtc2NCOoUpEnhn1N5112VQidBofQtB
+	 l46PC2/nl/Dww==
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-4f4e71a09a7so3086976e87.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Jun 2023 11:21:13 -0700 (PDT)
+X-Gm-Message-State: AC+VfDwuJOtFIzYX5zFMgQnGs1pOXX2aXbN8WPsMNEH+sFwLMfflCZY7
+	8fQRhCNsbiE5LPQCR9imW7dKTlw0VbEWDtMJtUQ=
+X-Google-Smtp-Source: ACHHUZ7u+3QRkPB700ZRWSkZS34WuzRLSBXiPs+mDMX8Rtj0TALCowhBg47HVf6nzRS8a/FS2UP95/Ck0Au4nvQTBcE=
+X-Received: by 2002:a2e:b55a:0:b0:2b0:59c3:29c9 with SMTP id
+ a26-20020a2eb55a000000b002b059c329c9mr217540ljn.6.1685730071990; Fri, 02 Jun
+ 2023 11:21:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-bfdf5
+References: <20230601101257.530867-1-rppt@kernel.org> <ZHjDU/mxE+cugpLj@FVFF77S0Q05N.cambridge.arm.com>
+ <ZHjgIH3aX9dCvVZc@moria.home.lan> <ZHm3zUUbwqlsZBBF@FVFF77S0Q05N>
+In-Reply-To: <ZHm3zUUbwqlsZBBF@FVFF77S0Q05N>
+From: Song Liu <song@kernel.org>
+Date: Fri, 2 Jun 2023 11:20:58 -0700
+X-Gmail-Original-Message-ID: <CAPhsuW7Euczff_KB70nuH=Hhf2EYHAf=xiQR7mFqVfByhD34XA@mail.gmail.com>
+Message-ID: <CAPhsuW7Euczff_KB70nuH=Hhf2EYHAf=xiQR7mFqVfByhD34XA@mail.gmail.com>
+Subject: Re: [PATCH 00/13] mm: jit/text allocator
+To: Mark Rutland <mark.rutland@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,47 +69,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linux-trace-kernel@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Andrew Morton <akpm@linux-foundation.org>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Puranjay Mohan <puranjay12@gmail.com>, linux-parisc@vger.kernel.org, netdev@vger.kernel.org, Kent Overstreet <kent.overstreet@linux.dev>, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-modules@vger.kernel.org, bp
+ f@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 30 May 2023 18:30:12 +0800, Chancel Liu wrote:
-> There's an issue on SAI synchronous mode that TX/RX side can't get BCLK
-> from RX/TX it sync with if BYP bit is asserted. It's a workaround to
-> fix it that enable SION of IOMUX pad control and assert BCI.
-> 
-> For example if TX sync with RX which means both TX and RX are using clk
-> form RX and BYP=1. TX can get BCLK only if the following two conditions
-> are valid:
-> 1. SION of RX BCLK IOMUX pad is set to 1
-> 2. BCI of TX is set to 1
-> 
-> [...]
+On Fri, Jun 2, 2023 at 2:35=E2=80=AFAM Mark Rutland <mark.rutland@arm.com> =
+wrote:
+>
+> On Thu, Jun 01, 2023 at 02:14:56PM -0400, Kent Overstreet wrote:
+> > On Thu, Jun 01, 2023 at 05:12:03PM +0100, Mark Rutland wrote:
+> > > For a while I have wanted to give kprobes its own allocator so that i=
+t can work
+> > > even with CONFIG_MODULES=3Dn, and so that it doesn't have to waste VA=
+ space in
+> > > the modules area.
+> > >
+> > > Given that, I think these should have their own allocator functions t=
+hat can be
+> > > provided independently, even if those happen to use common infrastruc=
+ture.
+> >
+> > How much memory can kprobes conceivably use? I think we also want to tr=
+y
+> > to push back on combinatorial new allocators, if we can.
+>
+> That depends on who's using it, and how (e.g. via BPF).
+>
+> To be clear, I'm not necessarily asking for entirely different allocators=
+, but
+> I do thinkg that we want wrappers that can at least pass distinct start+e=
+nd
+> parameters to a common allocator, and for arm64's modules code I'd expect=
+ that
+> we'd keep the range falblack logic out of the common allcoator, and just =
+call
+> it twice.
+>
+> > > > Several architectures override module_alloc() because of various
+> > > > constraints where the executable memory can be located and this cau=
+ses
+> > > > additional obstacles for improvements of code allocation.
+> > > >
+> > > > This set splits code allocation from modules by introducing
+> > > > jit_text_alloc(), jit_data_alloc() and jit_free() APIs, replaces ca=
+ll
+> > > > sites of module_alloc() and module_memfree() with the new APIs and
+> > > > implements core text and related allocation in a central place.
+> > > >
+> > > > Instead of architecture specific overrides for module_alloc(), the
+> > > > architectures that require non-default behaviour for text allocatio=
+n must
+> > > > fill jit_alloc_params structure and implement jit_alloc_arch_params=
+() that
+> > > > returns a pointer to that structure. If an architecture does not im=
+plement
+> > > > jit_alloc_arch_params(), the defaults compatible with the current
+> > > > modules::module_alloc() are used.
+> > >
+> > > As above, I suspect that each of the callsites should probably be usi=
+ng common
+> > > infrastructure, but I don't think that a single jit_alloc_arch_params=
+() makes
+> > > sense, since the parameters for each case may need to be distinct.
+> >
+> > I don't see how that follows. The whole point of function parameters is
+> > that they may be different :)
+>
+> What I mean is that jit_alloc_arch_params() tries to aggregate common
+> parameters, but they aren't actually common (e.g. the actual start+end ra=
+nge
+> for allocation).
+>
+> > Can you give more detail on what parameters you need? If the only extra
+> > parameter is just "does this allocation need to live close to kernel
+> > text", that's not that big of a deal.
+>
+> My thinking was that we at least need the start + end for each caller. Th=
+at
+> might be it, tbh.
 
-Applied to
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-
-Thanks!
-
-[1/1] ASoC: fsl_sai: Enable BCI bit if SAI works on synchronous mode with BYP asserted
-      commit: 32cf0046a652116d6a216d575f3049a9ff9dd80d
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+IIUC, arm64 uses VMALLOC address space for BPF programs. The reason
+is each BPF program uses at least 64kB (one page) out of the 128MB
+address space. Puranjay Mohan (CC'ed) is working on enabling
+bpf_prog_pack for arm64. Once this work is done, multiple BPF programs
+will be able to share a page. Will this improvement remove the need to
+specify a different address range for BPF programs?
 
 Thanks,
-Mark
-
+Song
