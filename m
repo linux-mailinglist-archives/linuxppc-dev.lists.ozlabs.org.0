@@ -1,68 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30F5272043E
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jun 2023 16:23:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08ED972062C
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jun 2023 17:28:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QXlb65y2Vz3fCX
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Jun 2023 00:22:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QXn2Q4vfFz3fGp
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Jun 2023 01:28:14 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=L79Re62N;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=dOBUs4e+;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::12c; helo=mail-il1-x12c.google.com; envelope-from=jannh@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::136; helo=mail-il1-x136.google.com; envelope-from=jannh@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=L79Re62N;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=dOBUs4e+;
 	dkim-atps=neutral
-Received: from mail-il1-x12c.google.com (mail-il1-x12c.google.com [IPv6:2607:f8b0:4864:20::12c])
+Received: from mail-il1-x136.google.com (mail-il1-x136.google.com [IPv6:2607:f8b0:4864:20::136])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QXlZJ0x87z3dx9
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 Jun 2023 00:22:15 +1000 (AEST)
-Received: by mail-il1-x12c.google.com with SMTP id e9e14a558f8ab-33baee0235cso93015ab.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Jun 2023 07:22:15 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QXn1W72DVz3cds
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 Jun 2023 01:27:26 +1000 (AEST)
+Received: by mail-il1-x136.google.com with SMTP id e9e14a558f8ab-33baee0235cso101685ab.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Jun 2023 08:27:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1685715732; x=1688307732;
+        d=google.com; s=20221208; t=1685719644; x=1688311644;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=H7d8d4MCc4onJq8pBQ681DcsEvxdLqedzghklpUu+XE=;
-        b=L79Re62NKLr7jyTpAhcYr+dj4BGT8jlpsciGJ9UqkUTmF1Fp8HF4f7l7PCMx74wnSp
-         Z4MExZDdVvmGr9HZZTldLvGj6yO4f7fmzOW5XHnYGFsp6aMxTvyGOWMjPJ6ywm+1hCxQ
-         OT6t1BPoULN32Prv5c6c7oEpn7DQQMc7OJntv8coVkeidQLUAxq4YWwjm4UCbhaAUkHY
-         CUlzXPTOm1Z7v2fI3l67bBKLhim0lh6AjxhBFfHcW9dOs+LcV01tauSIex0nknLfh486
-         eezgiwL7ika5ondE8vdXjdjqeaYRbUDxv3VyIaZo6ZQgfWFoet5hN9FlE8YQgtwWZQa+
-         l08w==
+        bh=VGpvRAYJcTbdsEDxK6Clk8jD+jwMUaRTiJd7OGuc/es=;
+        b=dOBUs4e+KgoAyiadv1JJ/f9tRqSN5ukcthj4VsU0D4Qes6hv2PsZpLdOPmqCt2ZbfT
+         CXdj5C1FgEWgPvMeHAQtRU71Y8a9/s5zW+2gD6fL9oiWaz1NTfBA889r+/CeuBNedToQ
+         y9FEwwG2vRh596WD/dNjkYUeIBDO2KkO6LlIO3v8MbmdrEpXss7rB+3TBNMIDEvWgJDY
+         9ImYQMoTxddcF5lsSEnQ/wUTIlB70U4obnNud4RtfmLF6/iSzfNonP9zKKd4j9ClkMH5
+         2I3BQ8ccjCWIk+EQTYses/gpOeyU9yAW+KUgfVQCLR3fRbgLO8XIkze0Iis1VMMNRgL5
+         dd5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685715732; x=1688307732;
+        d=1e100.net; s=20221208; t=1685719644; x=1688311644;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=H7d8d4MCc4onJq8pBQ681DcsEvxdLqedzghklpUu+XE=;
-        b=dXdxeogFeI0Uiy+dlzx+Pdi+eLizlTn7GyHG4ZjXDY62HyIcnzhtFJx3hVZ3QK6cBl
-         x6+4ZwBp6wOGG2kCuH6VHB8px9rTUfShPy3+QaP7hLaTV/EgtrDm/Yocj4Lu5P4tAzvJ
-         IZFYJa7IS3u5IIjfy7F2tEACQAJtk6mKUa7EgSEnTd6ZqlUATK8396LrUqbJGzlgkwir
-         kefiUWFmKtvr5Q3objfC7zvDUe0BIL+RE+cVcgjjhjJBoEe0oVfBNmhzL1dfG6xx8fag
-         gy+RT9YNx8jvUsKxx5fgk9OvkrhoWPBTExpUiIy7KVxi1qPdKJcZZoI7IQcTRD3k/yp7
-         wLdw==
-X-Gm-Message-State: AC+VfDzi9sHA9Bp9frem0Z2vvo9OKEpHPJKXYauWv3aw436X3ek3N9LG
-	4blhfNFt930Sotc1wzZIob0WYK+iia8umWtMEX/ZQg==
-X-Google-Smtp-Source: ACHHUZ6mi6QZprfgUPbDzcJiLe/rOvQrRI5aX2Gu9fS+O4S7pV5L9VHsi7BsweO4BYXLes4rrZUtI27C/96anNWk39g=
-X-Received: by 2002:a92:c56a:0:b0:338:55b9:f1a3 with SMTP id
- b10-20020a92c56a000000b0033855b9f1a3mr137710ilj.7.1685715732071; Fri, 02 Jun
- 2023 07:22:12 -0700 (PDT)
+        bh=VGpvRAYJcTbdsEDxK6Clk8jD+jwMUaRTiJd7OGuc/es=;
+        b=fj/QH0O1TmTF7jPAl3vAeLrmZbuiOzqnIbXM/oKdC6kOOL6hBl+OUGc/XE7Zy91fa5
+         JY5WTTH/xrqwLmXYxGvMK1q/KFhCHOAPcsIDg+ods8+4jgLKMzq0KbNDMXH7IG9YWC7d
+         0W8J/uaBrRgeR6cSW5NvfnS+b1MkyBuVZIB9YSzwWdFavG9B9GpBBAincKz7GbGf3R9P
+         /gKo1bw+39vwO3GEV7V2rCWF7RhpLFnJa2JY34UlSAKukdQPsWs9eVJZCq990BIa14xS
+         PbdGEa9pgckY8Sca76WxZTWRgPM5pDVckqdJ/054audTVqkzFLFBIIkAhVF76aFQbvFD
+         jqJg==
+X-Gm-Message-State: AC+VfDxO8JEQZ77/RQTJAxpIUlANeV6iPTU2rGwNxKk/eSiqwjRHRKdy
+	kdmZQ3GTbcgIxHLsgsa0KppZNw5S+agasLHxblc0sA==
+X-Google-Smtp-Source: ACHHUZ6wYA9MFcxbCRs4DlQGPF6tbNz6AN15jZgbaKRQbuP7sxKmkHSJQSJyONgVy18SRiB84LFHkHiwlvKWwKGXIik=
+X-Received: by 2002:a05:6e02:164a:b0:33c:c3ed:889c with SMTP id
+ v10-20020a056e02164a00b0033cc3ed889cmr239170ilu.12.1685719644120; Fri, 02 Jun
+ 2023 08:27:24 -0700 (PDT)
 MIME-Version: 1.0
 References: <35e983f5-7ed3-b310-d949-9ae8b130cdab@google.com>
- <88c445ae-552-5243-31a4-2674bac62d4d@google.com> <CAG48ez0tnYTVjr7zw3Vp4GTcQ=960EodatjqE5bM9a3EVYM16Q@mail.gmail.com>
- <de1e37c-354c-fb98-1598-7ce6d415f257@google.com>
-In-Reply-To: <de1e37c-354c-fb98-1598-7ce6d415f257@google.com>
+ <CAG48ez0pCqfRdVSnJz7EKtNvMR65=zJgVB-72nTdrNuhtJNX2Q@mail.gmail.com> <3a33b59f-47c1-9dea-209a-9f77eec3cb1@google.com>
+In-Reply-To: <3a33b59f-47c1-9dea-209a-9f77eec3cb1@google.com>
 From: Jann Horn <jannh@google.com>
-Date: Fri, 2 Jun 2023 16:21:35 +0200
-Message-ID: <CAG48ez3seuiWfiVq0z8weTQV3ZXwo-TXSQWLJ0uxn4eOrq0J0w@mail.gmail.com>
-Subject: Re: [PATCH 01/12] mm/pgtable: add rcu_read_lock() and rcu_read_unlock()s
+Date: Fri, 2 Jun 2023 17:26:47 +0200
+Message-ID: <CAG48ez1Yua=6ztK6Urc-BZj9ku14MWbOKP8iBUK6_F5VzRXP-A@mail.gmail.com>
+Subject: Re: [PATCH 00/12] mm: free retracted page table by RCU
 To: Hugh Dickins <hughd@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -82,120 +81,228 @@ Cc: Miaohe Lin <linmiaohe@huawei.com>, David Hildenbrand <david@redhat.com>, Pet
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 2, 2023 at 4:50=E2=80=AFAM Hugh Dickins <hughd@google.com> wrot=
+On Fri, Jun 2, 2023 at 6:37=E2=80=AFAM Hugh Dickins <hughd@google.com> wrot=
 e:
 > On Wed, 31 May 2023, Jann Horn wrote:
-> > On Mon, May 29, 2023 at 8:15=E2=80=AFAM Hugh Dickins <hughd@google.com>=
+> > On Mon, May 29, 2023 at 8:11=E2=80=AFAM Hugh Dickins <hughd@google.com>=
  wrote:
-> > > Before putting them to use (several commits later), add rcu_read_lock=
-()
-> > > to pte_offset_map(), and rcu_read_unlock() to pte_unmap().  Make this=
- a
-> > > separate commit, since it risks exposing imbalances: prior commits ha=
-ve
-> > > fixed all the known imbalances, but we may find some have been missed=
-.
-> > [...]
-> > > diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
-> > > index c7ab18a5fb77..674671835631 100644
-> > > --- a/mm/pgtable-generic.c
-> > > +++ b/mm/pgtable-generic.c
-> > > @@ -236,7 +236,7 @@ pte_t *__pte_offset_map(pmd_t *pmd, unsigned long=
- addr, pmd_t *pmdvalp)
-> > >  {
-> > >         pmd_t pmdval;
-> > >
-> > > -       /* rcu_read_lock() to be added later */
-> > > +       rcu_read_lock();
-> > >         pmdval =3D pmdp_get_lockless(pmd);
-> > >         if (pmdvalp)
-> > >                 *pmdvalp =3D pmdval;
+> > > Here is the third series of patches to mm (and a few architectures), =
+based
+> > > on v6.4-rc3 with the preceding two series applied: in which khugepage=
+d
+> > > takes advantage of pte_offset_map[_lock]() allowing for pmd transitio=
+ns.
 > >
-> > It might be a good idea to document that this series assumes that the
-> > first argument to __pte_offset_map() is a pointer into a second-level
-> > page table (and not a local copy of the entry) unless the containing
-> > VMA is known to not be THP-eligible or the page table is detached from
-> > the page table hierarchy or something like that. Currently a bunch of
-> > places pass references to local copies of the entry, and while I think
-> > all of these are fine, it would probably be good to at least document
-> > why these are allowed to do it while other places aren't.
+> > To clarify: Part of the design here is that when you look up a user
+> > page table with pte_offset_map_nolock() or pte_offset_map() without
+> > holding mmap_lock in write mode, and you later lock the page table
+> > yourself, you don't know whether you actually have the real page table
+> > or a detached table that is currently in its RCU grace period, right?
 >
-> Thanks Jann: but I have to guess that here you are showing awareness of
-> an important issue that I'm simply ignorant of.
+> Right.  (And I'd rather not assume anything of mmap_lock, but there are
+> one or two or three places that may still do so.)
 >
-> I have been haunted by a dim recollection that there is one architecture
-> (arm-32?) which is fussy about the placement of the pmdval being examined
-> (deduces info missing from the arch-independent interface, by following
-> up the address?), but I couldn't track it down when I tried.
+> > And detached tables are supposed to consist of only zeroed entries,
+> > and we assume that no relevant codepath will do anything bad if one of
+> > these functions spuriously returns a pointer to a page table full of
+> > zeroed entries?
 >
-> Please tell me more; or better, don't spend your time explaining to me,
-> but please just send a link to a good reference on the issue.  I'll be
-> unable to document what you ask there, without educating myself first.
+> (Nit that I expect you're well aware of: IIRC "zeroed" isn't 0 on s390.)
 
-Sorry, I think I was somewhat confused about what was going on when I
-wrote that message.
+I was not aware, thanks. I only knew that on Intel's Knights Landing
+CPUs, the A/D bits are ignored by pte_none() due to some erratum.
 
-After this series, __pte_offset_map() looks as follows, with added
-comments describing my understanding of the semantics:
+> If someone is using pte_offset_map() without lock, they must be prepared
+> to accept page-table-like changes.  The limits of pte_offset_map_nolock()
+> with later spin_lock(ptl): I'm still exploring: there's certainly an
+> argument that one ought to do a pmd_same() check before proceeding,
+> but I don't think anywhere needs that at present.
+>
+> Whether the page table has to be full of zeroed entries when detached:
+> I believe it is always like that at present (by the end of the series,
+> when the collapse_pte_offset_map() oddity is fixed), but whether it needs
+> to be so I'm not sure.  Quite likely it will need to be; but I'm open to
+> the possibility that all it needs is to be still a page table, with
+> perhaps new entries from a new usage in it.
 
-// `pmd` points to one of:
-// case 1: a pmd_t stored outside a page table,
-//         referencing a page table detached by the caller
-// case 2: a pmd_t stored outside a page table, which the caller copied
-//         from a page table in an RCU-critical section that extends
-//         until at least the end of this function
-// case 3: a pmd_t stored inside a page table
-pte_t *__pte_offset_map(pmd_t *pmd, unsigned long addr, pmd_t *pmdvalp)
+My understanding is that at least handle_pte_fault(), the way it is
+currently written, would do bad things in that case:
+
+// assume we enter with mmap_lock in read mode,
+// for a write fault on a shared writable VMA without a page_mkwrite handle=
+r
+static vm_fault_t handle_pte_fault(struct vm_fault *vmf)
 {
-        unsigned long __maybe_unused flags;
-        pmd_t pmdval;
+  pte_t entry;
 
-        // begin an RCU section; this is needed for case 3
-        rcu_read_lock();
-        config_might_irq_save(flags);
-        // read the pmd_t.
-        // if the pmd_t references a page table, this page table can not
-        // go away because:
-        //  - in case 1, the caller is the main owner of the page table
-        //  - in case 2, because the caller
-        //    started an RCU read-side critical section before the caller
-        //    read the original pmd_t. (This pmdp_get_lockless() is just
-        //    reading a copied pmd_t off the stack.)
-        //  - in case 3, because we started an RCU section above before
-        //    reading the pmd_t out of the page table here
-        pmdval =3D pmdp_get_lockless(pmd);
-        config_might_irq_restore(flags);
+  if (unlikely(pmd_none(*vmf->pmd))) {
+    [ not executed ]
+  } else {
+    /*
+     * A regular pmd is established and it can't morph into a huge
+     * pmd by anon khugepaged, since that takes mmap_lock in write
+     * mode; but shmem or file collapse to THP could still morph
+     * it into a huge pmd: just retry later if so.
+     */
+    vmf->pte =3D pte_offset_map_nolock(vmf->vma->vm_mm, vmf->pmd,
+             vmf->address, &vmf->ptl);
+    if (unlikely(!vmf->pte))
+      [not executed]
+    [assume that at this point, a concurrent THP collapse operation
+     removes the page table, and the page table has now been reused
+     and contains a read-only PTE]
+    // this reads page table contents protected solely by RCU
+    vmf->orig_pte =3D ptep_get_lockless(vmf->pte);
+    vmf->flags |=3D FAULT_FLAG_ORIG_PTE_VALID;
 
-        if (pmdvalp)
-                *pmdvalp =3D pmdval;
-        if (unlikely(pmd_none(pmdval) || is_pmd_migration_entry(pmdval)))
-                goto nomap;
-        if (unlikely(pmd_trans_huge(pmdval) || pmd_devmap(pmdval)))
-                goto nomap;
-        if (unlikely(pmd_bad(pmdval))) {
-                pmd_clear_bad(pmd);
-                goto nomap;
-        }
-        return __pte_map(&pmdval, addr);
-nomap:
-        rcu_read_unlock();
-        return NULL;
+    if (pte_none(vmf->orig_pte)) {
+      pte_unmap(vmf->pte);
+      vmf->pte =3D NULL;
+    }
+  }
+
+  if (!vmf->pte)
+    [not executed]
+
+  if (!pte_present(vmf->orig_pte))
+    [not executed]
+
+  if (pte_protnone(vmf->orig_pte) && vma_is_accessible(vmf->vma))
+    [not executed]
+
+  spin_lock(vmf->ptl);
+  entry =3D vmf->orig_pte;
+  if (unlikely(!pte_same(*vmf->pte, entry))) {
+    [not executed]
+  }
+  if (vmf->flags & (FAULT_FLAG_WRITE|FAULT_FLAG_UNSHARE)) {
+    if (!pte_write(entry))
+      // This will go into wp_page_shared(),
+      // which will call wp_page_reuse(),
+      // which will upgrade the page to writable
+      return do_wp_page(vmf);
+    [ not executed ]
+  }
+  [ not executed ]
 }
 
-case 1 is what happens in __page_table_check_pte_clear_range(),
-__split_huge_zero_page_pmd() and __split_huge_pmd_locked().
-case 2 happens in lockless page table traversal (gup_pte_range() and
-perf_get_pgtable_size()).
-case 3 is normal page table traversal under mmap lock or mapping lock.
+That looks like we could end up racing such that a read-only PTE in
+the reused page table gets upgraded to writable, which would probably
+be a security bug.
 
-I think having a function like this that can run in three different
-contexts in which it is protected in three different ways is somewhat
-hard to understand without comments. Though maybe I'm thinking about
-it the wrong way?
+But I guess if you added bailout checks to every page table lock
+operation, it'd be a different story, maybe?
 
-Basically my point is: __pte_offset_map() normally requires that the
-pmd argument points into a page table so that the rcu_read_lock() can
-provide protection starting from the time the pmd_t is read from a
-page table. The exception are cases where the caller has taken its own
-precautions to ensure that the referenced page table can not have been
-freed.
+> The most obvious vital thing (in the split ptlock case) is that it
+> remains a struct page with a usable ptl spinlock embedded in it.
+>
+> The question becomes more urgent when/if extending to replacing the
+> pagetable pmd by huge pmd in one go, without any mmap_lock: powerpc
+> wants to deposit the page table for later use even in the shmem/file
+> case (and all arches in the anon case): I did work out the details once
+> before, but I'm not sure whether I would still agree with myself; and was
+> glad to leave replacement out of this series, to revisit some time later.
+>
+> >
+> > So in particular, in handle_pte_fault() we can reach the "if
+> > (unlikely(!pte_same(*vmf->pte, entry)))" with vmf->pte pointing to a
+> > detached zeroed page table, but we're okay with that because in that
+> > case we know that !pte_none(vmf->orig_pte)&&pte_none(*vmf->pte) ,
+> > which implies !pte_same(*vmf->pte, entry) , which means we'll bail
+> > out?
+>
+> There is no current (even at end of series) circumstance in which we
+> could be pointing to a detached page table there; but yes, I want to
+> allow for that, and yes I agree with your analysis.
+
+Hmm, what am I missing here?
+
+static vm_fault_t handle_pte_fault(struct vm_fault *vmf)
+{
+  pte_t entry;
+
+  if (unlikely(pmd_none(*vmf->pmd))) {
+    [not executed]
+  } else {
+    /*
+     * A regular pmd is established and it can't morph into a huge
+     * pmd by anon khugepaged, since that takes mmap_lock in write
+     * mode; but shmem or file collapse to THP could still morph
+     * it into a huge pmd: just retry later if so.
+     */
+    vmf->pte =3D pte_offset_map_nolock(vmf->vma->vm_mm, vmf->pmd,
+             vmf->address, &vmf->ptl);
+    if (unlikely(!vmf->pte))
+      [not executed]
+    // this reads a present readonly PTE
+    vmf->orig_pte =3D ptep_get_lockless(vmf->pte);
+    vmf->flags |=3D FAULT_FLAG_ORIG_PTE_VALID;
+
+    if (pte_none(vmf->orig_pte)) {
+      [not executed]
+    }
+  }
+
+  [at this point, a concurrent THP collapse operation detaches the page tab=
+le]
+  // vmf->pte now points into a detached page table
+
+  if (!vmf->pte)
+    [not executed]
+
+  if (!pte_present(vmf->orig_pte))
+    [not executed]
+
+  if (pte_protnone(vmf->orig_pte) && vma_is_accessible(vmf->vma))
+    [not executed]
+
+  spin_lock(vmf->ptl);
+  entry =3D vmf->orig_pte;
+  // vmf->pte still points into a detached page table
+  if (unlikely(!pte_same(*vmf->pte, entry))) {
+    update_mmu_tlb(vmf->vma, vmf->address, vmf->pte);
+    goto unlock;
+  }
+  [...]
+}
+
+> But with the
+> interesting unanswered question for the future, of what if the same
+> value could be found there: would that imply it's safe to proceed,
+> or would some further prevention be needed?
+
+That would then hand the pointer to the detached page table to
+functions like do_wp_page(), which I think will do bad things (see
+above) if they are called on either a page table that has been reused
+in a different VMA with different protection flags (which could, for
+example, lead to pages becoming writable that should not be writable
+or such things) or on a page table that is no longer in use (because
+it would assume that PTEs referencing pages are refcounted when they
+actually aren't).
+
+> > If that's the intent, it might be good to add some comments, because
+> > at least to me that's not very obvious.
+>
+> That's a very fair request; but I shall have difficulty deciding where
+> to place such comments.  I shall have to try, then you redirect me.
+>
+> And I think we approach this in opposite ways: my nature is to put some
+> infrastructure in place, and then look at it to see what we can get away
+> with; whereas your nature is to define upfront what the possibilities are=
+.
+> We can expect some tussles!
+
+Yeah. :P
+One of my strongly-held beliefs is that it's important when making
+changes to code to continuously ask oneself "If I had to explain the
+rules by which this code operates - who has to take which locks, who
+holds references to what and so on -, how complicated would those
+rules be?", and if that turns into a series of exception cases, that
+probably means there will be bugs, because someone will probably lose
+track of one of those exceptions. So I would prefer it if we could
+have some rule like "whenever you lock an L1 page table, you must
+immediately recheck whether the page table is still referenced by the
+L2 page table, unless you know that you have a stable page reference
+for whatever reason", and then any code that operates on a locked page
+table doesn't have to worry about whether the page table might be
+detached.
