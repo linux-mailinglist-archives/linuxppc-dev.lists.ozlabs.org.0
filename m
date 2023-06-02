@@ -2,68 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2315071F8DE
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jun 2023 05:21:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E737871F89A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jun 2023 04:51:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QXSvk5Pn9z3dxf
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jun 2023 13:21:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QXSDx4N5wz3dyj
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jun 2023 12:51:13 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=Q8+6gAwv;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=CxDFRuGf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::332; helo=mail-wm1-x332.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::112e; helo=mail-yw1-x112e.google.com; envelope-from=hughd@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=Q8+6gAwv;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=CxDFRuGf;
 	dkim-atps=neutral
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QXS4V4Mynz3chl
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Jun 2023 12:43:53 +1000 (AEST)
-Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-3f6077660c6so14799235e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Jun 2023 19:43:53 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QXSD251rKz3c9y
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Jun 2023 12:50:25 +1000 (AEST)
+Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-565bdae581eso16907667b3.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Jun 2023 19:50:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685673826; x=1688265826;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=7cVgh41cB56ZwBQc5auMOmbHnoylbtnEaXxcEFXrCkg=;
-        b=Q8+6gAwvQm3mkfBcjKfRHTMkg6VRwfRaARy8Or+hDZS8V8F07JEFXUyQbDSyUnVN05
-         LpYm5oYnk6atD8VVstSc3Cl1ZsJcny86M/Bc3sbGg5/lLM6k/yt0PUbk5mchk728IRIK
-         TU9esCVwGSFOAfVi9v+QTm3Rc7Hyvw+RCP7B0upSf7mSPiN+33Swkr+GTnZgAjP1DSNw
-         RtnLAgTFfHJXIpckUF8FnCCe0bPNL7EUPOguBb4alMrdqAAM1+bWPdLS9GK+aRW2se8l
-         oPKGQQRWEftF0kMp+RlYzAQ7EpbZ2IBowOWj3UftfX4F8UQ1/XFZ+HVph8eRdx8yfXQl
-         K74w==
+        d=google.com; s=20221208; t=1685674220; x=1688266220;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=CkFBZ6Z26PEaI+Jgv/5bWGu+0hTm1SzRb6kODNNBn+M=;
+        b=CxDFRuGfcYOWRd6VMHq3ar2M1xRSdWVVRTOsF6xQ0mdly8R3+o2A6R0v/aETwVkb3P
+         6b58l7Ni9XRQdArFtwuFCZ5arCMLCFw+LE0g4/MaXwrjvut1vrEBPVcT+W6pSsdHU+oi
+         fjJ5UIEWmivzq31pCg6nsnlxQ0kE76d7AibcK5E6hVfvFaaxgiawOUnXccTx0uAP3pHm
+         Idl5hOTvyvy2EPX+52qQ1cF3H5O7fhiSRn3bhB/j26+Hz+Q41PkPVp08UWJRUageIgFV
+         GSVHYv6GOPwAxU0jH5OD/WRtBlcd1wSFGZtdCmsng+zRGOD1mVzbdt39IXv/0dJztfSK
+         LnLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685673826; x=1688265826;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7cVgh41cB56ZwBQc5auMOmbHnoylbtnEaXxcEFXrCkg=;
-        b=Gq+B1qs9pvotD02XNzIHXgkvI/eP2T9wJ9lq7OW90kO45EQ4eTGKm4/BFW6IVFb2b3
-         2P+oC+B+tGfOY3QWxNlliES2CBaSMmB4uXxDklGeMRgKpfA9S3/JQBjkFm4ZS8J8EPVk
-         Ooou1WciiSLQv8iVBNVcLcu5aYBbWLcbIYMU2kPFgElu6INO/UY5yOYWVku6pYttp7xK
-         zltLXph4nqq9QnvY994pL9pDENBV2tJKMg4DZeXZ/bJJnvw+f7/EWbmCNPh2g45h4fn7
-         e9Urkh4uoqhhjlI2WJaZQV4LOGuQt3enOpuGqo+olP3B7RHjdmlobsw1N9PBkyHT4HEE
-         UmLQ==
-X-Gm-Message-State: AC+VfDxnQLflskfJNRb9ObHifsxYNxE5cEQL+160+yoW/wwA9yyRRIb7
-	885ahE0OS86/zLKUCzakCLkpA7KWGz16B51dti0=
-X-Google-Smtp-Source: ACHHUZ4LtA8ru8OSkCtasFHOSmHlHQzQnBMH3+moMNHSO5F2m5tChotTQ58ICIWExoM5p70S0WdzAITRb7RTJsIp/X8=
-X-Received: by 2002:a05:600c:292:b0:3f6:ae3:5948 with SMTP id
- 18-20020a05600c029200b003f60ae35948mr891246wmk.33.1685673826427; Thu, 01 Jun
- 2023 19:43:46 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1685674220; x=1688266220;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CkFBZ6Z26PEaI+Jgv/5bWGu+0hTm1SzRb6kODNNBn+M=;
+        b=Bo2IMMW5E2J/adSw30Re2BKogpZz+MaCdbHpgXFvEaIfNSQOv81Jj757ynBebJNKuR
+         E+szFIKTXfBBkhn2DhcYKf8qdiuXwgM4fjOFDukc0Me4h/pWTODLfgIDEqGrtUwleU9e
+         l1BHPn6FlgI1aPCNaWFVPcwRrDMJ0a/26XrKBztnMBUZP13MXDL2u7jhbm4znMshqR/Z
+         FUZY1lPdg8l1+Csi1RMzHGrhuHHrMGkHypGELKYp0qvEg6Eq9Sw7C09W1zih3VLdBfzf
+         A9Mt0e7K2AydO+JJNhwAW7Tx80aqsDQRDVDP82oX24cTZ7shEShFa+ZvZ/E2BH8TIXcw
+         EXqg==
+X-Gm-Message-State: AC+VfDw75JFZYjostgYq0S39oOkPXk909PiBqfms6iz1RyMhQVQZPhlL
+	X5GLoWAbgDqh9UKvENCSohpA9g==
+X-Google-Smtp-Source: ACHHUZ6dtqdDIUgghSG7BNv1ykA9dzLFfcixbLHtolx08NZCshtI3n5qAtyBLAY0i0F+pIWOM2tKpQ==
+X-Received: by 2002:a81:5247:0:b0:565:d40b:f695 with SMTP id g68-20020a815247000000b00565d40bf695mr10827576ywb.48.1685674220390;
+        Thu, 01 Jun 2023 19:50:20 -0700 (PDT)
+Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id u5-20020a0deb05000000b0055a07585a91sm72029ywe.11.2023.06.01.19.50.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Jun 2023 19:50:19 -0700 (PDT)
+Date: Thu, 1 Jun 2023 19:50:15 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+X-X-Sender: hugh@ripple.attlocal.net
+To: Jann Horn <jannh@google.com>
+Subject: Re: [PATCH 01/12] mm/pgtable: add rcu_read_lock() and
+ rcu_read_unlock()s
+In-Reply-To: <CAG48ez0tnYTVjr7zw3Vp4GTcQ=960EodatjqE5bM9a3EVYM16Q@mail.gmail.com>
+Message-ID: <de1e37c-354c-fb98-1598-7ce6d415f257@google.com>
+References: <35e983f5-7ed3-b310-d949-9ae8b130cdab@google.com> <88c445ae-552-5243-31a4-2674bac62d4d@google.com> <CAG48ez0tnYTVjr7zw3Vp4GTcQ=960EodatjqE5bM9a3EVYM16Q@mail.gmail.com>
 MIME-Version: 1.0
-References: <20230530103012.3448838-1-chancel.liu@nxp.com>
-In-Reply-To: <20230530103012.3448838-1-chancel.liu@nxp.com>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Fri, 2 Jun 2023 10:43:34 +0800
-Message-ID: <CAA+D8AMKa2AVjFj+VDUG2uVpfrPD8fwpXrmK6_N05owQE+EN1w@mail.gmail.com>
-Subject: Re: [PATCH] ASoC: fsl_sai: Enable BCI bit if SAI works on synchronous
- mode with BYP asserted
-To: Chancel Liu <chancel.liu@nxp.com>
-Content-Type: multipart/alternative; boundary="000000000000a1a70905fd1c8515"
-X-Mailman-Approved-At: Fri, 02 Jun 2023 13:20:41 +1000
+Content-Type: multipart/mixed; boundary="-1463760895-2117762585-1685674219=:27216"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,190 +77,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, lgirdwood@gmail.com, festevam@gmail.com, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, tiwai@suse.com, nicoleotsuka@gmail.com, broonie@kernel.org, perex@perex.cz, linuxppc-dev@lists.ozlabs.org
+Cc: Miaohe Lin <linmiaohe@huawei.com>, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Yang Shi <shy828301@gmail.com>, Peter Xu <peterx@redhat.com>, linux-kernel@vger.kernel.org, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Yu Zhao <yuzhao@google.com>, Ira Weiny <ira.weiny@intel.com>, Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, Steven Price <steven.price@arm.com>, Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Axel Rasmussen <axelrasmussen@google.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Thomas Hellstrom <thomas.hellstrom@linux.intel.com>, Ralph Campbell <rcampbell@nvidia.com>, Pasha Tatashin <pasha.tatashin@solee
+ n.com>, Anshuman Khandual <anshuman.khandual@arm.com>, Heiko Carstens <hca@linux.ibm.com>, Qi Zheng <zhengqi.arch@bytedance.com>, Suren Baghdasaryan <surenb@google.com>, linux-arm-kernel@lists.infradead.org, SeongJae Park <sj@kernel.org>, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, Naoya Horiguchi <naoya.horiguchi@nec.com>, Zack Rusin <zackr@vmware.com>, Minchan Kim <minchan@kernel.org>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, Mel Gorman <mgorman@techsingularity.net>, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---000000000000a1a70905fd1c8515
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-On Tue, May 30, 2023 at 6:30=E2=80=AFPM Chancel Liu <chancel.liu@nxp.com> w=
+---1463760895-2117762585-1685674219=:27216
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+
+On Wed, 31 May 2023, Jann Horn wrote:
+> On Mon, May 29, 2023 at 8:15=E2=80=AFAM Hugh Dickins <hughd@google.com> w=
 rote:
+> > Before putting them to use (several commits later), add rcu_read_lock()
+> > to pte_offset_map(), and rcu_read_unlock() to pte_unmap().  Make this a
+> > separate commit, since it risks exposing imbalances: prior commits have
+> > fixed all the known imbalances, but we may find some have been missed.
+> [...]
+> > diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
+> > index c7ab18a5fb77..674671835631 100644
+> > --- a/mm/pgtable-generic.c
+> > +++ b/mm/pgtable-generic.c
+> > @@ -236,7 +236,7 @@ pte_t *__pte_offset_map(pmd_t *pmd, unsigned long a=
+ddr, pmd_t *pmdvalp)
+> >  {
+> >         pmd_t pmdval;
+> >
+> > -       /* rcu_read_lock() to be added later */
+> > +       rcu_read_lock();
+> >         pmdval =3D pmdp_get_lockless(pmd);
+> >         if (pmdvalp)
+> >                 *pmdvalp =3D pmdval;
+>=20
+> It might be a good idea to document that this series assumes that the
+> first argument to __pte_offset_map() is a pointer into a second-level
+> page table (and not a local copy of the entry) unless the containing
+> VMA is known to not be THP-eligible or the page table is detached from
+> the page table hierarchy or something like that. Currently a bunch of
+> places pass references to local copies of the entry, and while I think
+> all of these are fine, it would probably be good to at least document
+> why these are allowed to do it while other places aren't.
 
-> There's an issue on SAI synchronous mode that TX/RX side can't get BCLK
-> from RX/TX it sync with if BYP bit is asserted. It's a workaround to
-> fix it that enable SION of IOMUX pad control and assert BCI.
->
-> For example if TX sync with RX which means both TX and RX are using clk
-> form RX and BYP=3D1. TX can get BCLK only if the following two conditions
-> are valid:
-> 1. SION of RX BCLK IOMUX pad is set to 1
-> 2. BCI of TX is set to 1
->
-> Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
->
+Thanks Jann: but I have to guess that here you are showing awareness of
+an important issue that I'm simply ignorant of.
 
-Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
+I have been haunted by a dim recollection that there is one architecture
+(arm-32?) which is fussy about the placement of the pmdval being examined
+(deduces info missing from the arch-independent interface, by following
+up the address?), but I couldn't track it down when I tried.
 
-Best regards
-Wang Shengjiu
+Please tell me more; or better, don't spend your time explaining to me,
+but please just send a link to a good reference on the issue.  I'll be
+unable to document what you ask there, without educating myself first.
 
-> ---
->  sound/soc/fsl/fsl_sai.c | 11 +++++++++--
->  sound/soc/fsl/fsl_sai.h |  1 +
->  2 files changed, 10 insertions(+), 2 deletions(-)
->
-> diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-> index d9344025dc16..5e09f634c61b 100644
-> --- a/sound/soc/fsl/fsl_sai.c
-> +++ b/sound/soc/fsl/fsl_sai.c
-> @@ -491,14 +491,21 @@ static int fsl_sai_set_bclk(struct snd_soc_dai *dai=
-,
-> bool tx, u32 freq)
->         regmap_update_bits(sai->regmap, reg, FSL_SAI_CR2_MSEL_MASK,
->                            FSL_SAI_CR2_MSEL(sai->mclk_id[tx]));
->
-> -       if (savediv =3D=3D 1)
-> +       if (savediv =3D=3D 1) {
->                 regmap_update_bits(sai->regmap, reg,
->                                    FSL_SAI_CR2_DIV_MASK | FSL_SAI_CR2_BYP=
-,
->                                    FSL_SAI_CR2_BYP);
-> -       else
-> +               if (fsl_sai_dir_is_synced(sai, adir))
-> +                       regmap_update_bits(sai->regmap, FSL_SAI_xCR2(tx,
-> ofs),
-> +                                          FSL_SAI_CR2_BCI,
-> FSL_SAI_CR2_BCI);
-> +               else
-> +                       regmap_update_bits(sai->regmap, FSL_SAI_xCR2(tx,
-> ofs),
-> +                                          FSL_SAI_CR2_BCI, 0);
-> +       } else {
->                 regmap_update_bits(sai->regmap, reg,
->                                    FSL_SAI_CR2_DIV_MASK | FSL_SAI_CR2_BYP=
-,
->                                    savediv / 2 - 1);
-> +       }
->
->         if (sai->soc_data->max_register >=3D FSL_SAI_MCTL) {
->                 /* SAI is in master mode at this point, so enable MCLK */
-> diff --git a/sound/soc/fsl/fsl_sai.h b/sound/soc/fsl/fsl_sai.h
-> index 3eb994aef36a..8254c3547b87 100644
-> --- a/sound/soc/fsl/fsl_sai.h
-> +++ b/sound/soc/fsl/fsl_sai.h
-> @@ -116,6 +116,7 @@
->
->  /* SAI Transmit and Receive Configuration 2 Register */
->  #define FSL_SAI_CR2_SYNC       BIT(30)
-> +#define FSL_SAI_CR2_BCI                BIT(28)
->  #define FSL_SAI_CR2_MSEL_MASK  (0x3 << 26)
->  #define FSL_SAI_CR2_MSEL_BUS   0
->  #define FSL_SAI_CR2_MSEL_MCLK1 BIT(26)
-> --
-> 2.25.1
->
->
+Thanks,
+Hugh
 
---000000000000a1a70905fd1c8515
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Tue, May 30, 2023 at 6:30=E2=80=AF=
-PM Chancel Liu &lt;<a href=3D"mailto:chancel.liu@nxp.com">chancel.liu@nxp.c=
-om</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margi=
-n:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex=
-">There&#39;s an issue on SAI synchronous mode that TX/RX side can&#39;t ge=
-t BCLK<br>
-from RX/TX it sync with if BYP bit is asserted. It&#39;s a workaround to<br=
->
-fix it that enable SION of IOMUX pad control and assert BCI.<br>
-<br>
-For example if TX sync with RX which means both TX and RX are using clk<br>
-form RX and BYP=3D1. TX can get BCLK only if the following two conditions<b=
-r>
-are valid:<br>
-1. SION of RX BCLK IOMUX pad is set to 1<br>
-2. BCI of TX is set to 1<br>
-<br>
-Signed-off-by: Chancel Liu &lt;<a href=3D"mailto:chancel.liu@nxp.com" targe=
-t=3D"_blank">chancel.liu@nxp.com</a>&gt;<br></blockquote><div><br></div><di=
-v>Acked-by: Shengjiu Wang &lt;<a href=3D"mailto:shengjiu.wang@gmail.com">sh=
-engjiu.wang@gmail.com</a>&gt;</div><div><br></div><div>Best regards</div><d=
-iv>Wang Shengjiu=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"marg=
-in:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1e=
-x">
----<br>
-=C2=A0sound/soc/fsl/fsl_sai.c | 11 +++++++++--<br>
-=C2=A0sound/soc/fsl/fsl_sai.h |=C2=A0 1 +<br>
-=C2=A02 files changed, 10 insertions(+), 2 deletions(-)<br>
-<br>
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c<br>
-index d9344025dc16..5e09f634c61b 100644<br>
---- a/sound/soc/fsl/fsl_sai.c<br>
-+++ b/sound/soc/fsl/fsl_sai.c<br>
-@@ -491,14 +491,21 @@ static int fsl_sai_set_bclk(struct snd_soc_dai *dai, =
-bool tx, u32 freq)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 regmap_update_bits(sai-&gt;regmap, reg, FSL_SAI=
-_CR2_MSEL_MASK,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0FSL_SAI_CR2_MSEL(sai-&gt;mclk_id[tx]));<br>
-<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0if (savediv =3D=3D 1)<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0if (savediv =3D=3D 1) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 regmap_update_bits(=
-sai-&gt;regmap, reg,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0FSL_SAI_CR2_DIV_MASK | =
-FSL_SAI_CR2_BYP,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0FSL_SAI_CR2_BYP);<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0else<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (fsl_sai_dir_is_=
-synced(sai, adir))<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0regmap_update_bits(sai-&gt;regmap, FSL_SAI_xCR2(tx, ofs),<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 F=
-SL_SAI_CR2_BCI, FSL_SAI_CR2_BCI);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0else<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0regmap_update_bits(sai-&gt;regmap, FSL_SAI_xCR2(tx, ofs),<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 F=
-SL_SAI_CR2_BCI, 0);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0} else {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 regmap_update_bits(=
-sai-&gt;regmap, reg,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0FSL_SAI_CR2_DIV_MASK | =
-FSL_SAI_CR2_BYP,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0savediv / 2 - 1);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (sai-&gt;soc_data-&gt;max_register &gt;=3D F=
-SL_SAI_MCTL) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 /* SAI is in master=
- mode at this point, so enable MCLK */<br>
-diff --git a/sound/soc/fsl/fsl_sai.h b/sound/soc/fsl/fsl_sai.h<br>
-index 3eb994aef36a..8254c3547b87 100644<br>
---- a/sound/soc/fsl/fsl_sai.h<br>
-+++ b/sound/soc/fsl/fsl_sai.h<br>
-@@ -116,6 +116,7 @@<br>
-<br>
-=C2=A0/* SAI Transmit and Receive Configuration 2 Register */<br>
-=C2=A0#define FSL_SAI_CR2_SYNC=C2=A0 =C2=A0 =C2=A0 =C2=A0BIT(30)<br>
-+#define FSL_SAI_CR2_BCI=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 BIT(28)<br>
-=C2=A0#define FSL_SAI_CR2_MSEL_MASK=C2=A0 (0x3 &lt;&lt; 26)<br>
-=C2=A0#define FSL_SAI_CR2_MSEL_BUS=C2=A0 =C2=A00<br>
-=C2=A0#define FSL_SAI_CR2_MSEL_MCLK1 BIT(26)<br>
--- <br>
-2.25.1<br>
-<br>
-</blockquote></div></div>
-
---000000000000a1a70905fd1c8515--
+>=20
+> $ vgrep 'pte_offset_map(&'
+> Index File                  Line Content
+>     0 arch/sparc/mm/tlb.c    151 pte =3D pte_offset_map(&pmd, vaddr);
+>     1 kernel/events/core.c  7501 ptep =3D pte_offset_map(&pmd, addr);
+>     2 mm/gup.c              2460 ptem =3D ptep =3D pte_offset_map(&pmd, a=
+ddr);
+>     3 mm/huge_memory.c      2057 pte =3D pte_offset_map(&_pmd, haddr);
+>     4 mm/huge_memory.c      2214 pte =3D pte_offset_map(&_pmd, haddr);
+>     5 mm/page_table_check.c  240 pte_t *ptep =3D pte_offset_map(&pmd, add=
+r);
+---1463760895-2117762585-1685674219=:27216--
