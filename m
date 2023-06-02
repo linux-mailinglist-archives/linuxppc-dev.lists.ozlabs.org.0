@@ -1,62 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7B5471F72D
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jun 2023 02:37:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2315071F8DE
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jun 2023 05:21:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QXPGS24jMz3dxY
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jun 2023 10:37:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QXSvk5Pn9z3dxf
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jun 2023 13:21:22 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XTmFrz6x;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=Q8+6gAwv;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=song@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::332; helo=mail-wm1-x332.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XTmFrz6x;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=Q8+6gAwv;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QXPFf3V1tz3ds9
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Jun 2023 10:36:38 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 90DE46439F
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Jun 2023 00:36:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD4AC4339C
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Jun 2023 00:36:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1685666196;
-	bh=8680DMzx0gtVOisbuW5F5FI58VdZiV3S7sDNyC66jIs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=XTmFrz6x8P+uu4p7+8CwwHHAR8ToxETybv3aokjIkUt8au2/bliIWtKwA0GAbEtXU
-	 35MXE4ZwOYCOUbquOW3LQoZZDXhPbam+LWuZhJ0mqETvOfa2/rMGWxD+GJruYpNbS6
-	 ci30bYJW5Xs8iSRMEPad+knzjZDpipv9dxPxlL70NiYXhKXJnUs1HWnqvirj5dSWAN
-	 B2cCO/rarwHERSu66gvzGkFtyDmlSmQAJPI3dJJQqihBq56qTMR5zptT8HtrJ2b10S
-	 TMFJdORTSry9D8pvsZGiWSqPLVC1lC/A7oq6hOwBZbEcU0/jUM34HuLUgEBSnU29a0
-	 P+mvZ51/iQCoA==
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-4f3b5881734so2042957e87.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Jun 2023 17:36:35 -0700 (PDT)
-X-Gm-Message-State: AC+VfDwSDwRFcvPyM/odw2ytXR2SXLXAtW/pv/mudQW5BXJ99CX+NURD
-	64mIcvYNpFGLm+gNuW5WbM0qvHnImPZa+k4PUjw=
-X-Google-Smtp-Source: ACHHUZ4rAYUoiHYEWWqFuntxOuL06QmDCDII8lO4o2SuljgVgQXswY+xn62uFOnPiNtfcw4WXcIV+P9v/6p/Zkld05w=
-X-Received: by 2002:ac2:44ca:0:b0:4f3:b18a:6497 with SMTP id
- d10-20020ac244ca000000b004f3b18a6497mr927744lfm.52.1685666193979; Thu, 01 Jun
- 2023 17:36:33 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QXS4V4Mynz3chl
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Jun 2023 12:43:53 +1000 (AEST)
+Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-3f6077660c6so14799235e9.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Jun 2023 19:43:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685673826; x=1688265826;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=7cVgh41cB56ZwBQc5auMOmbHnoylbtnEaXxcEFXrCkg=;
+        b=Q8+6gAwvQm3mkfBcjKfRHTMkg6VRwfRaARy8Or+hDZS8V8F07JEFXUyQbDSyUnVN05
+         LpYm5oYnk6atD8VVstSc3Cl1ZsJcny86M/Bc3sbGg5/lLM6k/yt0PUbk5mchk728IRIK
+         TU9esCVwGSFOAfVi9v+QTm3Rc7Hyvw+RCP7B0upSf7mSPiN+33Swkr+GTnZgAjP1DSNw
+         RtnLAgTFfHJXIpckUF8FnCCe0bPNL7EUPOguBb4alMrdqAAM1+bWPdLS9GK+aRW2se8l
+         oPKGQQRWEftF0kMp+RlYzAQ7EpbZ2IBowOWj3UftfX4F8UQ1/XFZ+HVph8eRdx8yfXQl
+         K74w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685673826; x=1688265826;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7cVgh41cB56ZwBQc5auMOmbHnoylbtnEaXxcEFXrCkg=;
+        b=Gq+B1qs9pvotD02XNzIHXgkvI/eP2T9wJ9lq7OW90kO45EQ4eTGKm4/BFW6IVFb2b3
+         2P+oC+B+tGfOY3QWxNlliES2CBaSMmB4uXxDklGeMRgKpfA9S3/JQBjkFm4ZS8J8EPVk
+         Ooou1WciiSLQv8iVBNVcLcu5aYBbWLcbIYMU2kPFgElu6INO/UY5yOYWVku6pYttp7xK
+         zltLXph4nqq9QnvY994pL9pDENBV2tJKMg4DZeXZ/bJJnvw+f7/EWbmCNPh2g45h4fn7
+         e9Urkh4uoqhhjlI2WJaZQV4LOGuQt3enOpuGqo+olP3B7RHjdmlobsw1N9PBkyHT4HEE
+         UmLQ==
+X-Gm-Message-State: AC+VfDxnQLflskfJNRb9ObHifsxYNxE5cEQL+160+yoW/wwA9yyRRIb7
+	885ahE0OS86/zLKUCzakCLkpA7KWGz16B51dti0=
+X-Google-Smtp-Source: ACHHUZ4LtA8ru8OSkCtasFHOSmHlHQzQnBMH3+moMNHSO5F2m5tChotTQ58ICIWExoM5p70S0WdzAITRb7RTJsIp/X8=
+X-Received: by 2002:a05:600c:292:b0:3f6:ae3:5948 with SMTP id
+ 18-20020a05600c029200b003f60ae35948mr891246wmk.33.1685673826427; Thu, 01 Jun
+ 2023 19:43:46 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230601101257.530867-1-rppt@kernel.org>
-In-Reply-To: <20230601101257.530867-1-rppt@kernel.org>
-From: Song Liu <song@kernel.org>
-Date: Thu, 1 Jun 2023 17:36:21 -0700
-X-Gmail-Original-Message-ID: <CAPhsuW5Em5Sj9uCGyfM6BheTuvA4pviavRTUK-3MbGsd9yCRbQ@mail.gmail.com>
-Message-ID: <CAPhsuW5Em5Sj9uCGyfM6BheTuvA4pviavRTUK-3MbGsd9yCRbQ@mail.gmail.com>
-Subject: Re: [PATCH 00/13] mm: jit/text allocator
-To: Mike Rapoport <rppt@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+References: <20230530103012.3448838-1-chancel.liu@nxp.com>
+In-Reply-To: <20230530103012.3448838-1-chancel.liu@nxp.com>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Fri, 2 Jun 2023 10:43:34 +0800
+Message-ID: <CAA+D8AMKa2AVjFj+VDUG2uVpfrPD8fwpXrmK6_N05owQE+EN1w@mail.gmail.com>
+Subject: Re: [PATCH] ASoC: fsl_sai: Enable BCI bit if SAI works on synchronous
+ mode with BYP asserted
+To: Chancel Liu <chancel.liu@nxp.com>
+Content-Type: multipart/alternative; boundary="000000000000a1a70905fd1c8515"
+X-Mailman-Approved-At: Fri, 02 Jun 2023 13:20:41 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,67 +75,190 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linux-trace-kernel@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Andrew Morton <akpm@linux-foundation.org>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, netdev@vger.kernel.org, Kent Overstreet <kent.overstreet@linux.dev>, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <d
- avem@davemloft.net>, linux-modules@vger.kernel.org
+Cc: alsa-devel@alsa-project.org, lgirdwood@gmail.com, festevam@gmail.com, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, tiwai@suse.com, nicoleotsuka@gmail.com, broonie@kernel.org, perex@perex.cz, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 1, 2023 at 3:13=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wrot=
-e:
->
-> From: "Mike Rapoport (IBM)" <rppt@kernel.org>
->
-> Hi,
->
-> module_alloc() is used everywhere as a mean to allocate memory for code.
->
-> Beside being semantically wrong, this unnecessarily ties all subsystmes
-> that need to allocate code, such as ftrace, kprobes and BPF to modules
-> and puts the burden of code allocation to the modules code.
->
-> Several architectures override module_alloc() because of various
-> constraints where the executable memory can be located and this causes
-> additional obstacles for improvements of code allocation.
->
-> This set splits code allocation from modules by introducing
-> jit_text_alloc(), jit_data_alloc() and jit_free() APIs, replaces call
-> sites of module_alloc() and module_memfree() with the new APIs and
-> implements core text and related allocation in a central place.
->
-> Instead of architecture specific overrides for module_alloc(), the
-> architectures that require non-default behaviour for text allocation must
-> fill jit_alloc_params structure and implement jit_alloc_arch_params() tha=
-t
-> returns a pointer to that structure. If an architecture does not implemen=
-t
-> jit_alloc_arch_params(), the defaults compatible with the current
-> modules::module_alloc() are used.
->
-> The new jitalloc infrastructure allows decoupling of kprobes and ftrace
-> from modules, and most importantly it enables ROX allocations for
-> executable memory.
+--000000000000a1a70905fd1c8515
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This set does look cleaner than my version [1]. However, this is
-partially because this set only separates text and data; while [1]
-also separates rw data, ro data, and ro_after_init data. We need
-such separation to fully cover module usage, and to remove
-VM_FLUSH_RESET_PERMS. Once we add these logic to this
-set, the two versions will look similar.
+On Tue, May 30, 2023 at 6:30=E2=80=AFPM Chancel Liu <chancel.liu@nxp.com> w=
+rote:
 
-OTOH, I do like the fact this version enables kprobes (and
-potentially ftrace and bpf) without CONFIG_MODULES. And
-mm/ seems a better home for the logic.
+> There's an issue on SAI synchronous mode that TX/RX side can't get BCLK
+> from RX/TX it sync with if BYP bit is asserted. It's a workaround to
+> fix it that enable SION of IOMUX pad control and assert BCI.
+>
+> For example if TX sync with RX which means both TX and RX are using clk
+> form RX and BYP=3D1. TX can get BCLK only if the following two conditions
+> are valid:
+> 1. SION of RX BCLK IOMUX pad is set to 1
+> 2. BCI of TX is set to 1
+>
+> Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
+>
 
-That being said, besides comments in a few patches, this
-version looks good to me. With the fix I suggested for patch
-12/13, it passed my tests on x86_64 with modules, kprobes,
-ftrace, and BPF.
+Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
 
-If we decided to ship this version, I would appreciate it if I
-could get more credit for my work in [1] and research work
-before that.
+Best regards
+Wang Shengjiu
 
-Thanks,
-Song
+> ---
+>  sound/soc/fsl/fsl_sai.c | 11 +++++++++--
+>  sound/soc/fsl/fsl_sai.h |  1 +
+>  2 files changed, 10 insertions(+), 2 deletions(-)
+>
+> diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+> index d9344025dc16..5e09f634c61b 100644
+> --- a/sound/soc/fsl/fsl_sai.c
+> +++ b/sound/soc/fsl/fsl_sai.c
+> @@ -491,14 +491,21 @@ static int fsl_sai_set_bclk(struct snd_soc_dai *dai=
+,
+> bool tx, u32 freq)
+>         regmap_update_bits(sai->regmap, reg, FSL_SAI_CR2_MSEL_MASK,
+>                            FSL_SAI_CR2_MSEL(sai->mclk_id[tx]));
+>
+> -       if (savediv =3D=3D 1)
+> +       if (savediv =3D=3D 1) {
+>                 regmap_update_bits(sai->regmap, reg,
+>                                    FSL_SAI_CR2_DIV_MASK | FSL_SAI_CR2_BYP=
+,
+>                                    FSL_SAI_CR2_BYP);
+> -       else
+> +               if (fsl_sai_dir_is_synced(sai, adir))
+> +                       regmap_update_bits(sai->regmap, FSL_SAI_xCR2(tx,
+> ofs),
+> +                                          FSL_SAI_CR2_BCI,
+> FSL_SAI_CR2_BCI);
+> +               else
+> +                       regmap_update_bits(sai->regmap, FSL_SAI_xCR2(tx,
+> ofs),
+> +                                          FSL_SAI_CR2_BCI, 0);
+> +       } else {
+>                 regmap_update_bits(sai->regmap, reg,
+>                                    FSL_SAI_CR2_DIV_MASK | FSL_SAI_CR2_BYP=
+,
+>                                    savediv / 2 - 1);
+> +       }
+>
+>         if (sai->soc_data->max_register >=3D FSL_SAI_MCTL) {
+>                 /* SAI is in master mode at this point, so enable MCLK */
+> diff --git a/sound/soc/fsl/fsl_sai.h b/sound/soc/fsl/fsl_sai.h
+> index 3eb994aef36a..8254c3547b87 100644
+> --- a/sound/soc/fsl/fsl_sai.h
+> +++ b/sound/soc/fsl/fsl_sai.h
+> @@ -116,6 +116,7 @@
+>
+>  /* SAI Transmit and Receive Configuration 2 Register */
+>  #define FSL_SAI_CR2_SYNC       BIT(30)
+> +#define FSL_SAI_CR2_BCI                BIT(28)
+>  #define FSL_SAI_CR2_MSEL_MASK  (0x3 << 26)
+>  #define FSL_SAI_CR2_MSEL_BUS   0
+>  #define FSL_SAI_CR2_MSEL_MCLK1 BIT(26)
+> --
+> 2.25.1
+>
+>
 
-[1] https://lore.kernel.org/lkml/20230526051529.3387103-1-song@kernel.org/
+--000000000000a1a70905fd1c8515
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Tue, May 30, 2023 at 6:30=E2=80=AF=
+PM Chancel Liu &lt;<a href=3D"mailto:chancel.liu@nxp.com">chancel.liu@nxp.c=
+om</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margi=
+n:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex=
+">There&#39;s an issue on SAI synchronous mode that TX/RX side can&#39;t ge=
+t BCLK<br>
+from RX/TX it sync with if BYP bit is asserted. It&#39;s a workaround to<br=
+>
+fix it that enable SION of IOMUX pad control and assert BCI.<br>
+<br>
+For example if TX sync with RX which means both TX and RX are using clk<br>
+form RX and BYP=3D1. TX can get BCLK only if the following two conditions<b=
+r>
+are valid:<br>
+1. SION of RX BCLK IOMUX pad is set to 1<br>
+2. BCI of TX is set to 1<br>
+<br>
+Signed-off-by: Chancel Liu &lt;<a href=3D"mailto:chancel.liu@nxp.com" targe=
+t=3D"_blank">chancel.liu@nxp.com</a>&gt;<br></blockquote><div><br></div><di=
+v>Acked-by: Shengjiu Wang &lt;<a href=3D"mailto:shengjiu.wang@gmail.com">sh=
+engjiu.wang@gmail.com</a>&gt;</div><div><br></div><div>Best regards</div><d=
+iv>Wang Shengjiu=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"marg=
+in:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1e=
+x">
+---<br>
+=C2=A0sound/soc/fsl/fsl_sai.c | 11 +++++++++--<br>
+=C2=A0sound/soc/fsl/fsl_sai.h |=C2=A0 1 +<br>
+=C2=A02 files changed, 10 insertions(+), 2 deletions(-)<br>
+<br>
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c<br>
+index d9344025dc16..5e09f634c61b 100644<br>
+--- a/sound/soc/fsl/fsl_sai.c<br>
++++ b/sound/soc/fsl/fsl_sai.c<br>
+@@ -491,14 +491,21 @@ static int fsl_sai_set_bclk(struct snd_soc_dai *dai, =
+bool tx, u32 freq)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 regmap_update_bits(sai-&gt;regmap, reg, FSL_SAI=
+_CR2_MSEL_MASK,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0FSL_SAI_CR2_MSEL(sai-&gt;mclk_id[tx]));<br>
+<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0if (savediv =3D=3D 1)<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0if (savediv =3D=3D 1) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 regmap_update_bits(=
+sai-&gt;regmap, reg,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0FSL_SAI_CR2_DIV_MASK | =
+FSL_SAI_CR2_BYP,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0FSL_SAI_CR2_BYP);<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0else<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (fsl_sai_dir_is_=
+synced(sai, adir))<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0regmap_update_bits(sai-&gt;regmap, FSL_SAI_xCR2(tx, ofs),<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 F=
+SL_SAI_CR2_BCI, FSL_SAI_CR2_BCI);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0else<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0regmap_update_bits(sai-&gt;regmap, FSL_SAI_xCR2(tx, ofs),<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 F=
+SL_SAI_CR2_BCI, 0);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0} else {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 regmap_update_bits(=
+sai-&gt;regmap, reg,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0FSL_SAI_CR2_DIV_MASK | =
+FSL_SAI_CR2_BYP,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0savediv / 2 - 1);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (sai-&gt;soc_data-&gt;max_register &gt;=3D F=
+SL_SAI_MCTL) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 /* SAI is in master=
+ mode at this point, so enable MCLK */<br>
+diff --git a/sound/soc/fsl/fsl_sai.h b/sound/soc/fsl/fsl_sai.h<br>
+index 3eb994aef36a..8254c3547b87 100644<br>
+--- a/sound/soc/fsl/fsl_sai.h<br>
++++ b/sound/soc/fsl/fsl_sai.h<br>
+@@ -116,6 +116,7 @@<br>
+<br>
+=C2=A0/* SAI Transmit and Receive Configuration 2 Register */<br>
+=C2=A0#define FSL_SAI_CR2_SYNC=C2=A0 =C2=A0 =C2=A0 =C2=A0BIT(30)<br>
++#define FSL_SAI_CR2_BCI=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 BIT(28)<br>
+=C2=A0#define FSL_SAI_CR2_MSEL_MASK=C2=A0 (0x3 &lt;&lt; 26)<br>
+=C2=A0#define FSL_SAI_CR2_MSEL_BUS=C2=A0 =C2=A00<br>
+=C2=A0#define FSL_SAI_CR2_MSEL_MCLK1 BIT(26)<br>
+-- <br>
+2.25.1<br>
+<br>
+</blockquote></div></div>
+
+--000000000000a1a70905fd1c8515--
