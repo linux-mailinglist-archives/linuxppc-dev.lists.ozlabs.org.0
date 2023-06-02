@@ -1,49 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C83871FB49
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jun 2023 09:43:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A2A271FE03
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jun 2023 11:36:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QXZkN260Bz3fbf
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jun 2023 17:43:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QXdDR67Jzz3fbt
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jun 2023 19:36:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33; helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=<UNKNOWN>)
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QXZjq6ScDz3c75
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Jun 2023 17:43:08 +1000 (AEST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1q4zQc-0007gF-PU; Fri, 02 Jun 2023 09:42:30 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1q4zQR-004XFY-Rv; Fri, 02 Jun 2023 09:42:19 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1q4zQR-00AOmZ-8f; Fri, 02 Jun 2023 09:42:19 +0200
-Date: Fri, 2 Jun 2023 09:42:19 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: kernel test robot <lkp@intel.com>
-Subject: Re: [tty:tty-testing 19/19] legacy_serial.c:undefined reference to
- `fsl8250_handle_irq'
-Message-ID: <20230602074219.srlgpaaypewd2q5s@pengutronix.de>
-References: <202306021041.qbRZZenE-lkp@intel.com>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QXdCw5hqTz3dwt
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Jun 2023 19:35:53 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2ACE41063;
+	Fri,  2 Jun 2023 02:36:05 -0700 (PDT)
+Received: from FVFF77S0Q05N (unknown [10.57.24.167])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AF4863F7BD;
+	Fri,  2 Jun 2023 02:35:14 -0700 (PDT)
+Date: Fri, 2 Jun 2023 10:35:09 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: Kent Overstreet <kent.overstreet@linux.dev>
+Subject: Re: [PATCH 00/13] mm: jit/text allocator
+Message-ID: <ZHm3zUUbwqlsZBBF@FVFF77S0Q05N>
+References: <20230601101257.530867-1-rppt@kernel.org>
+ <ZHjDU/mxE+cugpLj@FVFF77S0Q05N.cambridge.arm.com>
+ <ZHjgIH3aX9dCvVZc@moria.home.lan>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ve3roce4gpxozldk"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <202306021041.qbRZZenE-lkp@intel.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <ZHjgIH3aX9dCvVZc@moria.home.lan>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,142 +42,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, oe-kbuild-all@lists.linux.dev, Paul Gortmaker <paul.gortmaker@windriver.com>, Nicholas Piggin <npiggin@gmail.com>, linux-serial@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linux-trace-kernel@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Andrew Morton <akpm@linux-foundation.org>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-modules@vger.kernel.org, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David
+  S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, Jun 01, 2023 at 02:14:56PM -0400, Kent Overstreet wrote:
+> On Thu, Jun 01, 2023 at 05:12:03PM +0100, Mark Rutland wrote:
+> > For a while I have wanted to give kprobes its own allocator so that it can work
+> > even with CONFIG_MODULES=n, and so that it doesn't have to waste VA space in
+> > the modules area.
+> > 
+> > Given that, I think these should have their own allocator functions that can be
+> > provided independently, even if those happen to use common infrastructure.
+> 
+> How much memory can kprobes conceivably use? I think we also want to try
+> to push back on combinatorial new allocators, if we can.
 
---ve3roce4gpxozldk
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+That depends on who's using it, and how (e.g. via BPF).
 
-Hello,
+To be clear, I'm not necessarily asking for entirely different allocators, but
+I do thinkg that we want wrappers that can at least pass distinct start+end
+parameters to a common allocator, and for arm64's modules code I'd expect that
+we'd keep the range falblack logic out of the common allcoator, and just call
+it twice.
 
-On Fri, Jun 02, 2023 at 10:27:52AM +0800, kernel test robot wrote:
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git tt=
-y-testing
-> head:   3a3d09a9ee0ef5b417d6bdf8486a4da2bef06dc3
-> commit: 3a3d09a9ee0ef5b417d6bdf8486a4da2bef06dc3 [19/19] serial: 8250: Ap=
-ply FSL workarounds also without SERIAL_8250_CONSOLE
-> config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/202=
-30602/202306021041.qbRZZenE-lkp@intel.com/config)
-> compiler: powerpc-linux-gcc (GCC) 12.3.0
-> reproduce (this is a W=3D1 build):
->         mkdir -p ~/bin
->         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbi=
-n/make.cross -O ~/bin/make.cross
->         chmod +x ~/bin/make.cross
->         # https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git/=
-commit/?id=3D3a3d09a9ee0ef5b417d6bdf8486a4da2bef06dc3
->         git remote add tty https://git.kernel.org/pub/scm/linux/kernel/gi=
-t/gregkh/tty.git
->         git fetch --no-tags tty tty-testing
->         git checkout 3a3d09a9ee0ef5b417d6bdf8486a4da2bef06dc3
+> > > Several architectures override module_alloc() because of various
+> > > constraints where the executable memory can be located and this causes
+> > > additional obstacles for improvements of code allocation.
+> > > 
+> > > This set splits code allocation from modules by introducing
+> > > jit_text_alloc(), jit_data_alloc() and jit_free() APIs, replaces call
+> > > sites of module_alloc() and module_memfree() with the new APIs and
+> > > implements core text and related allocation in a central place.
+> > > 
+> > > Instead of architecture specific overrides for module_alloc(), the
+> > > architectures that require non-default behaviour for text allocation must
+> > > fill jit_alloc_params structure and implement jit_alloc_arch_params() that
+> > > returns a pointer to that structure. If an architecture does not implement
+> > > jit_alloc_arch_params(), the defaults compatible with the current
+> > > modules::module_alloc() are used.
+> > 
+> > As above, I suspect that each of the callsites should probably be using common
+> > infrastructure, but I don't think that a single jit_alloc_arch_params() makes
+> > sense, since the parameters for each case may need to be distinct.
+> 
+> I don't see how that follows. The whole point of function parameters is
+> that they may be different :)
 
-For the new readers, this is about
+What I mean is that jit_alloc_arch_params() tries to aggregate common
+parameters, but they aren't actually common (e.g. the actual start+end range
+for allocation).
 
-	https://lore.kernel.org/r/20230531083230.2702181-1-u.kleine-koenig@pengutr=
-onix.de
+> Can you give more detail on what parameters you need? If the only extra
+> parameter is just "does this allocation need to live close to kernel
+> text", that's not that big of a deal.
 
-Greg already dropped it from his tty-testing tree. Thanks and sorry for
-this second breakage. :-\
+My thinking was that we at least need the start + end for each caller. That
+might be it, tbh.
 
->         # save the config file
->         mkdir build_dir && cp config build_dir/.config
->         COMPILER_INSTALL_PATH=3D$HOME/0day COMPILER=3Dgcc-12.3.0 ~/bin/ma=
-ke.cross W=3D1 O=3Dbuild_dir ARCH=3Dpowerpc olddefconfig
->         COMPILER_INSTALL_PATH=3D$HOME/0day COMPILER=3Dgcc-12.3.0 ~/bin/ma=
-ke.cross W=3D1 O=3Dbuild_dir ARCH=3Dpowerpc SHELL=3D/bin/bash
->=20
-> If you fix the issue, kindly add following tag where applicable
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202306021041.qbRZZenE-lkp=
-@intel.com/
->=20
-> All errors (new ones prefixed by >>):
->=20
->    powerpc-linux-ld: arch/powerpc/kernel/legacy_serial.o: in function `se=
-rial_dev_init':
-> >> legacy_serial.c:(.init.text+0x46a): undefined reference to `fsl8250_ha=
-ndle_irq'
-> >> powerpc-linux-ld: legacy_serial.c:(.init.text+0x472): undefined refere=
-nce to `fsl8250_handle_irq'
-
-Urgs, this is ugly. Arch code uses a function from the 8250 driver
-introduced in commit 9deaa53ac7fa ("serial: add irq handler for
-Freescale 16550 errata.").
-
-So the problematic case is SERIAL_8250=3Dm which results in
-fsl8250_handle_irq being in a module.
-
-diff --git a/arch/powerpc/kernel/legacy_serial.c b/arch/powerpc/kernel/lega=
-cy_serial.c
-index c9ad12461d44..ad9f15902abb 100644
---- a/arch/powerpc/kernel/legacy_serial.c
-+++ b/arch/powerpc/kernel/legacy_serial.c
-@@ -510,8 +510,12 @@ static void __init fixup_port_irq(int index,
-=20
- #ifdef CONFIG_SERIAL_8250_FSL
- 	if (of_device_is_compatible(np, "fsl,ns16550")) {
--		port->handle_irq =3D fsl8250_handle_irq;
--		port->has_sysrq =3D IS_ENABLED(CONFIG_SERIAL_8250_CONSOLE);
-+		if (IS_REACHABLE(CONFIG_SERIAL_8250)) {
-+			port->handle_irq =3D fsl8250_handle_irq;
-+			port->has_sysrq =3D IS_ENABLED(CONFIG_SERIAL_8250_CONSOLE);
-+		} else {
-+			pr_warn("Not activating fsl workarounds for 8250 port %d\n", index);
-+		}
- 	}
- #endif
- }
-
-would work. The warning would trigger in cases where before the port
-just silently used the default irq handler and so the FSL bug isn't
-workarounded[1]. If the warning isn't wanted, it could be simplified to:
-
-#if IS_REACHABLE(CONFIG_SERIAL_8250)
-	if (of_device_is_compatible(np, "fsl,ns16550")) {
-		...
-	}
-#endif
-
-But I wonder if in the presence of
-
-        if (IS_ENABLED(CONFIG_SERIAL_8250_FSL) &&
-            (of_device_is_compatible(np, "fsl,ns16550") ||
-             of_device_is_compatible(np, "fsl,16550-FIFO64"))) {
-                port->handle_irq =3D fsl8250_handle_irq;
-                port->has_sysrq =3D IS_ENABLED(CONFIG_SERIAL_8250_CONSOLE);
-        }
-
-in of_platform_serial_setup() the code in
-arch/powerpc/kernel/legacy_serial.c can just be dropped instead?!
-
-Best regards
-Uwe
-
-[1] Of course this won't happen because the help text of SERIAL_8250
-clearly indicates that =3Dm isn't a safe choice in the presence of
-"non-standard serial ports". So the issue is purly theoretic.
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---ve3roce4gpxozldk
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmR5nVoACgkQj4D7WH0S
-/k45Owf/RQIZ/tkvEslJTH7fcdK9qycxel/CpGP0wKndii5ft99uuONt4CoX3vVc
-gekWe0d4PQmTPNLmomQ0H6QiHYtI3q/+w+LqsxRubu3woNEQ2zRv5pvBMA5itBam
-K0rWT+8VZ+HcEpR/ZWB9utA1+d6J7fcFcISFcrDDIQDDGsxAiWAhFf6u19deg1w1
-mcUp/NorCRpNwl9ylq/1uyQ3XXeVQ1j8tgDReWvfTS6dVGaYUz9KKFgQpVFV39i3
-f3BbY03AkWojwI/NfHjsnqzr/pwLOzBJiTcMDdqukpp2DR6hcyuJ7DHbsHOELJkw
-YB/4rUr7yMxKmahchJYwjLLZYVw3bA==
-=OxiR
------END PGP SIGNATURE-----
-
---ve3roce4gpxozldk--
+Thanks,
+Mark.
