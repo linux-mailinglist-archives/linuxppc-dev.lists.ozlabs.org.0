@@ -1,102 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFE6D7210B5
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Jun 2023 17:02:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77FAA7213B3
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Jun 2023 00:36:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QYNQc3YmQz3f0D
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Jun 2023 01:02:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QYZTh0jTxz3fbV
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Jun 2023 08:36:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=rDFBvqau;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=RDS3HF6D;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=outlook.com (client-ip=2a01:111:f400:7e83::816; helo=nam02-dm3-obe.outbound.protection.outlook.com; envelope-from=mirimmad@outlook.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::22a; helo=mail-lj1-x22a.google.com; envelope-from=puranjay12@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=rDFBvqau;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=RDS3HF6D;
 	dkim-atps=neutral
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02olkn20816.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e83::816])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QYNP51Y65z3cB7
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  4 Jun 2023 01:01:26 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=czREagGwMwnpuVF5oOSrPMNxtg48pbB3wvY2BDHM+DsbKZmSo25NfJVrKC3JTcxeit3bTxfecr1AUUiXcFHkzhmXrw10cuYSklUSqt+La1cWyhJ6iEpgfa9MwbGDeSnjDEraUMnFAEVnLC+2PiW+rOEX9QvL9FJdHBG+cQx/rBh4kRKkOgmDQRGNdcDQOIG0H3bTuWYJdkg0Tn4YP2ghZih6NqN+IEOuWZ45rag0UXv8VBNu3BYS2VHfZ0coP/F5VPSJsr/QId8HLAu2njUsgGRxR4gKW0LJrV0WwnQ8hAOI/QMYQubp0lU9clobopz2K1X5YkmN9Ry6/2SrauHbtw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YqCsBM8+/NDPtklgA5tO3HD6BVKPrK4A9rNVt3cJSds=;
- b=T+8g8AjETmmLxRthLd9MXJ0URqSkEhChBPKoJIWZWbCFvlDBuJrF22HwfUZC21dVxaIeUo2n9sz6zKjUTaP3Tg7pYWhIIH04TZY9zVOExUxAPQvN/gvICV45CKycC4TeiimOuhPk24ZrrrWDTKyjxhnPDOs5Zj0eWHox3qgqQqe4IJGR3ECNUd6irynXZ4T48f0x7s8z16mISptzTAKMFti3sVv88WlWpcnAvVOqaW3YoE/l25zVub8aaFSsrPn/KJumyWU+sbaO1ogr3mLj5WOW++cSTolj8ZuvpRrXzeKu7JfVN9fXCk6QL5Mme1y003oF1iuIlw/R29hOpKR7RA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YqCsBM8+/NDPtklgA5tO3HD6BVKPrK4A9rNVt3cJSds=;
- b=rDFBvqauHkI3v1uce7vLRquks6z/6bCBGvqS7B8SqK2IV934apl7P3CsxrsD8Xmfpmno6ba8Vj5AnwbQUjIUXvKszo4w6UyBvRLBjeIGIMSHaoGSxM7nYyIagvjmPVIEJe4HuMVC1CnYAk6NLDUSvltopZFVgUXKKT4LsM10qKx4QGAl6HMZIgjKaBP2xX3qV7Y6HNIdxdXHMzyjuP7qdVv/VTIJzYE8Rl+vWu55CqHj+TlDUIF1UZE8LKv55I1Ss/TOTyiM2dpnbocfxoKmfJQSz68FILgbqK06scY8eD3KzFGTIVTkPGit3nwm37O0xqgXtVWbp70QP+PUa8g22Q==
-Received: from CY5PR12MB6455.namprd12.prod.outlook.com (2603:10b6:930:35::10)
- by SA0PR12MB4414.namprd12.prod.outlook.com (2603:10b6:806:9a::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.28; Sat, 3 Jun
- 2023 15:01:18 +0000
-Received: from CY5PR12MB6455.namprd12.prod.outlook.com
- ([fe80::a39e:3607:29f5:9cdc]) by CY5PR12MB6455.namprd12.prod.outlook.com
- ([fe80::a39e:3607:29f5:9cdc%4]) with mapi id 15.20.6455.028; Sat, 3 Jun 2023
- 15:01:18 +0000
-From: mirimmad@outlook.com
-To: 
-Subject: [PATCH] powerpc: use appropriate error codes
-Date: Sat,  3 Jun 2023 20:30:43 +0530
-Message-ID:  <CY5PR12MB6455D90BB75D6CA26C00E873C64FA@CY5PR12MB6455.namprd12.prod.outlook.com>
-X-Mailer: git-send-email 2.40.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-TMN: [1ua1v+cdNo9QRNu6smC4w6KBhF3tSskufLzEZ/+enMzVrRKCtjUBAZut/UUuwq3h]
-X-ClientProxiedBy: PN2PR01CA0076.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:23::21) To CY5PR12MB6455.namprd12.prod.outlook.com
- (2603:10b6:930:35::10)
-X-Microsoft-Original-Message-ID: <20230603150043.16779-1-mirimmad@outlook.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QYXcm5kJtz3dt9
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  4 Jun 2023 07:12:06 +1000 (AEST)
+Received: by mail-lj1-x22a.google.com with SMTP id 38308e7fff4ca-2b1b6865c7cso17708251fa.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 03 Jun 2023 14:12:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685826722; x=1688418722;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ywQUs5Fiz0nF2jpbvNI9hUxAw7fBwSlpxtNbhNWOdKQ=;
+        b=RDS3HF6Dzg4udc+gzR1ge+A8FipEjdhBSdULq7dQD2UyV6dgjBvuZgGerD6vUs2YSm
+         VDnqI9KNtr2Dk7Dcagvb3z7MHB6yFn9dZVHE0avEHhNOnZSxu+haoNYcH+DbvcdZqhp2
+         V/2FcSs+Og/LSo+4chvosoksvs7WCJCCw38bmEWjYWWbCKP1NNCl8K5ura9Sf0w8P5PP
+         7V+264OxyeQzdq0h0Oa1oSNUiGbjJiqkYN3172ascXs+vGBmB8K0oc564ajmaECysFRA
+         O+qDRdpmwpV7013SWgjBPZmxYgAbk4/aYxoKzE2wIVyrPNGanFSOTGWVNORuh+LwDAsi
+         f1HQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685826722; x=1688418722;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ywQUs5Fiz0nF2jpbvNI9hUxAw7fBwSlpxtNbhNWOdKQ=;
+        b=Ts/nqlUZcWtf5mQtu6/hkBjY5Q8bOEv4HRPv2pl4ZrZXT/9jpWyrpY/tcr4cQ/1M2M
+         1GqbBKnzw7wWvtn5mRzR42PMnZx63LI5B5TB/aulD24UC8tlGE61I8+UiYgzvYuMPDY8
+         BbcHdmauOX+RSEvQaziB8ZPzowk9QKrV5U1VX2/8vqaBVTbUtTcX94/WR/DfYC8cRJNK
+         H7RzLgEdlf0XN3xRiMmRKwJ35KNe+GYWMumXf0eMgD2tNYy9A0GC4L1TdurlPibBMq/j
+         d0RYq3aNJ8Ri2wA1yNtwatzlmy06vbcLzjGjWN5syKPTHgvMU6anV8zzXtvBVhT8+ucq
+         OjhQ==
+X-Gm-Message-State: AC+VfDwKu/2eMuT6NSya7bc+oSwk3nU+gXa0uJvd7noKSLJLisZRHnds
+	0dvefowL6BJNJ0Dfz0XonXJZEm7sjxwVKw7OhGU=
+X-Google-Smtp-Source: ACHHUZ7QpjsIySl/XiT4DfbanAj3JM5KVAqgA/T1nohoUOzVT96eBA8GwqXTmRgv+kLRpCQJ8cFP5VM7V3QLXDceJ3I=
+X-Received: by 2002:a2e:88d6:0:b0:2a7:b986:3481 with SMTP id
+ a22-20020a2e88d6000000b002a7b9863481mr1909233ljk.41.1685826722179; Sat, 03
+ Jun 2023 14:12:02 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY5PR12MB6455:EE_|SA0PR12MB4414:EE_
-X-MS-Office365-Filtering-Correlation-Id: 692e1597-66de-4438-bbe7-08db644362a4
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	QI54r0ysamcVtO62bkw6r2/V8j25ISPODtxzapcHoGcNW9Yw6TvEeVHz69JPmzy7g7paj2pRXqzJndLzd9Xh9O4zPbj8RIVHF2rLnWLIk5hUtYjvR8a0GDyVtm7oy0TwoXkh70kol0W7eB5ggp5Ow+Is03eY6zluUWWLrcx/7XPnQf9FG+zZdMEL219c4A+Gjb8qHCW7XsoNcNMkuCVv6d+F4B7sn/g2eQCskFAdZxCzO2+iobsgzE3acCU8xXEXQKRYS4IGlIna5jocp7v2B7nz7YUhp6Mqy8eyVrg0lvNWpHnKiA97j5zL5vRU9v3eplqxhfYbPjr3Xnq2ZHJViPkXa9sbb34FGS4pKVhhjFByNv9fwCg9poF3vZ8P9E2SflRrhD8wgEkwcjbygRz7y73AltGwW+X+tF6131DdxXD0FAjEpVuVlwuOvDYES5cK4XJFYjZVgvHXlo4GDRwB0VKI6gntcL3b1S6DD198U4MTP0VNnHhXvEjWJB4XuR7llsHHSNSnSkMUX39bvF9kwgKv+IlTNDkzRrd1bT9asblZYKjoam/Wz5aG6tb4k+2/
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?/p3XS6EHY643qOI4/v9+kohIYb0PljfN/2CJNpSNZjAx9r8eNfB8ajbk4O4P?=
- =?us-ascii?Q?XtlIxHHLFtp82aa2VxzRlZ1u7UI2S0mxfkQwDEEEdRSTQt2mRVJtLnBdCxrh?=
- =?us-ascii?Q?AlHplLcB6jV2GxtexPu1lhvgoOr1yO8gc0MHbhScrTtliBt3NkUSgsFmCYXR?=
- =?us-ascii?Q?9XrzUnK5BFwlTVpqNuWTmyuKGferx/V8skTfTfGdVoGRgqMF1gbWO+QH2kb+?=
- =?us-ascii?Q?UWx6hu2O9N8KYNoQeeCH4yprmYtPjWR5Rn4uqA8GWq+4qxTAMuqxLYZFjunf?=
- =?us-ascii?Q?Vks4P+XV+w8a3Y+7ljTu+zgCcypeEO3fBgb25k4L36EzZeh4FbrDZZrpsL7G?=
- =?us-ascii?Q?gzSo2lWpy8s97DkRzEioEACSHm6BwC3TnqHFdCerpvPbm/bBgTvorSNq5wJN?=
- =?us-ascii?Q?4fwEriBX5xgulXVz/tBLYgoucS07SG4lwVZbYSReTQQMgFmvfsaF1NXEDGAB?=
- =?us-ascii?Q?m9aUZzUrLCnXdhGUkibPr74BXXCME/1X3usA9szyg3K3NvyfNirdrUoV/9xF?=
- =?us-ascii?Q?nlqac+hT+cEj4oHZ0MHyjZYCJT/oNUGRlXL5vUSeRARAtJ+rgM3HbFP972HY?=
- =?us-ascii?Q?siMp6nEkMyQ6Z7+ooetB6c3IZUP+pp4+FvmbEpCKK9MncaJ1Pe96fhibGU51?=
- =?us-ascii?Q?64JecPLZe7GtrNU8ycYSIFkCW+rwbtUsLhFXuWjeYiuoYc8W5jJhY8GjaWBZ?=
- =?us-ascii?Q?mkhh3R61tl2r20UuLBa/WJYoSQWcL8ocM8TmaBMOGaoZTTuL+amioLwXmqUQ?=
- =?us-ascii?Q?wUt+PEf++6I7oVi6ZunnOK+mkAOkOwOxGNJxSFIMKuxJYHBeajTAxtvdFBov?=
- =?us-ascii?Q?Au26DLc5hWeNwUu0ZAnEZ8xjR+00VLcHCT/YYUmAmtkLJDQm50L7DIntV+Ot?=
- =?us-ascii?Q?whLN0neD9xlEfulzwLJlGEpbhn/IdQl4nRZRoFIAikBRdvLcZ0S1rFCO/doR?=
- =?us-ascii?Q?lh39q3x4J7e712BUdV+09reIGtOy1zxzzK3xvN6Wy50FxAAq35yEjfqF1Yao?=
- =?us-ascii?Q?tYZDNDwZikUP+VEbp7mYY9nkkdHE1JkVwCWLkGWnWF3b+miVtYPF9AvALO47?=
- =?us-ascii?Q?4a10ADBIm6o9rVdxa669W5u6kLP0aMVGnWdPYMNcGVVvmt3t2x1NsT0r+b3z?=
- =?us-ascii?Q?MjXDciNFC+nF58EHDck8UNOHsyn4hkMUj4RPYODsDr0LiKK3gRhUnkO3bdIf?=
- =?us-ascii?Q?Mxni7hvIdDCZclrajCe64Yqs7d9J1Kd8t3NKzARcHc34KDA9LyI/z1UoFe2V?=
- =?us-ascii?Q?SI78jNIxPVmEghybYkd0lZrqazT2sJchBZy9jCajPw=3D=3D?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 692e1597-66de-4438-bbe7-08db644362a4
-X-MS-Exchange-CrossTenant-AuthSource: CY5PR12MB6455.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2023 15:01:18.7225
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4414
+References: <20230601101257.530867-1-rppt@kernel.org> <ZHjDU/mxE+cugpLj@FVFF77S0Q05N.cambridge.arm.com>
+ <ZHjgIH3aX9dCvVZc@moria.home.lan> <ZHm3zUUbwqlsZBBF@FVFF77S0Q05N> <CAPhsuW7Euczff_KB70nuH=Hhf2EYHAf=xiQR7mFqVfByhD34XA@mail.gmail.com>
+In-Reply-To: <CAPhsuW7Euczff_KB70nuH=Hhf2EYHAf=xiQR7mFqVfByhD34XA@mail.gmail.com>
+From: Puranjay Mohan <puranjay12@gmail.com>
+Date: Sat, 3 Jun 2023 23:11:51 +0200
+Message-ID: <CANk7y0jtFA4sKgh2o2gAydLNzOxfZ0r3LVRuzzTGS8Qv0BuJGg@mail.gmail.com>
+Subject: Re: [PATCH 00/13] mm: jit/text allocator
+To: Song Liu <song@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Mailman-Approved-At: Sun, 04 Jun 2023 08:34:39 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,61 +77,119 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, Immad Mir <mirimmad17@gmail.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linux-trace-kernel@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Andrew Morton <akpm@linux-foundation.org>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, netdev@vger.kernel.org, Kent Overstreet <kent.overstreet@linux.dev>, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-modules@vger.kernel.org, bpf@
+ vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Immad Mir <mirimmad17@gmail.com>
+On Fri, Jun 2, 2023 at 8:21=E2=80=AFPM Song Liu <song@kernel.org> wrote:
+>
+> On Fri, Jun 2, 2023 at 2:35=E2=80=AFAM Mark Rutland <mark.rutland@arm.com=
+> wrote:
+> >
+> > On Thu, Jun 01, 2023 at 02:14:56PM -0400, Kent Overstreet wrote:
+> > > On Thu, Jun 01, 2023 at 05:12:03PM +0100, Mark Rutland wrote:
+> > > > For a while I have wanted to give kprobes its own allocator so that=
+ it can work
+> > > > even with CONFIG_MODULES=3Dn, and so that it doesn't have to waste =
+VA space in
+> > > > the modules area.
+> > > >
+> > > > Given that, I think these should have their own allocator functions=
+ that can be
+> > > > provided independently, even if those happen to use common infrastr=
+ucture.
+> > >
+> > > How much memory can kprobes conceivably use? I think we also want to =
+try
+> > > to push back on combinatorial new allocators, if we can.
+> >
+> > That depends on who's using it, and how (e.g. via BPF).
+> >
+> > To be clear, I'm not necessarily asking for entirely different allocato=
+rs, but
+> > I do thinkg that we want wrappers that can at least pass distinct start=
++end
+> > parameters to a common allocator, and for arm64's modules code I'd expe=
+ct that
+> > we'd keep the range falblack logic out of the common allcoator, and jus=
+t call
+> > it twice.
+> >
+> > > > > Several architectures override module_alloc() because of various
+> > > > > constraints where the executable memory can be located and this c=
+auses
+> > > > > additional obstacles for improvements of code allocation.
+> > > > >
+> > > > > This set splits code allocation from modules by introducing
+> > > > > jit_text_alloc(), jit_data_alloc() and jit_free() APIs, replaces =
+call
+> > > > > sites of module_alloc() and module_memfree() with the new APIs an=
+d
+> > > > > implements core text and related allocation in a central place.
+> > > > >
+> > > > > Instead of architecture specific overrides for module_alloc(), th=
+e
+> > > > > architectures that require non-default behaviour for text allocat=
+ion must
+> > > > > fill jit_alloc_params structure and implement jit_alloc_arch_para=
+ms() that
+> > > > > returns a pointer to that structure. If an architecture does not =
+implement
+> > > > > jit_alloc_arch_params(), the defaults compatible with the current
+> > > > > modules::module_alloc() are used.
+> > > >
+> > > > As above, I suspect that each of the callsites should probably be u=
+sing common
+> > > > infrastructure, but I don't think that a single jit_alloc_arch_para=
+ms() makes
+> > > > sense, since the parameters for each case may need to be distinct.
+> > >
+> > > I don't see how that follows. The whole point of function parameters =
+is
+> > > that they may be different :)
+> >
+> > What I mean is that jit_alloc_arch_params() tries to aggregate common
+> > parameters, but they aren't actually common (e.g. the actual start+end =
+range
+> > for allocation).
+> >
+> > > Can you give more detail on what parameters you need? If the only ext=
+ra
+> > > parameter is just "does this allocation need to live close to kernel
+> > > text", that's not that big of a deal.
+> >
+> > My thinking was that we at least need the start + end for each caller. =
+That
+> > might be it, tbh.
+>
+> IIUC, arm64 uses VMALLOC address space for BPF programs. The reason
+> is each BPF program uses at least 64kB (one page) out of the 128MB
+> address space. Puranjay Mohan (CC'ed) is working on enabling
+> bpf_prog_pack for arm64. Once this work is done, multiple BPF programs
+> will be able to share a page. Will this improvement remove the need to
+> specify a different address range for BPF programs?
 
-This patch replaces use of returning -1 by appropiate error codes.
+Hi,
+Thanks for adding me to the conversation.
 
-Signed-off-by: Immad Mir <mirimmad17@gmail.com>
----
- arch/powerpc/platforms/powernv/opal-elog.c  | 4 ++--
- arch/powerpc/platforms/powernv/opal-xscom.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+The ARM64 BPF JIT used to allocate the memory using module_alloc but it
+was not optimal because BPF programs and modules were sharing the 128 MB
+module region. This was fixed by
+91fc957c9b1d ("arm64/bpf: don't allocate BPF JIT programs in module memory"=
+)
+It created a dedicated 128 MB region set aside for BPF programs.
 
-diff --git a/arch/powerpc/platforms/powernv/opal-elog.c b/arch/powerpc/platforms/powernv/opal-elog.c
-index 554fdd7f8..8bb42858e 100644
---- a/arch/powerpc/platforms/powernv/opal-elog.c
-+++ b/arch/powerpc/platforms/powernv/opal-elog.c
-@@ -309,12 +309,12 @@ int __init opal_elog_init(void)
+But 128MB could get exhausted especially where PAGE_SIZE is 64KB - one
+page is needed per program. This restriction was removed by
+b89ddf4cca43 ("arm64/bpf: Remove 128MB limit for BPF JIT programs")
 
- 	/* ELOG not supported by firmware */
- 	if (!opal_check_token(OPAL_ELOG_READ))
--		return -1;
-+		return -EPERM;
+So, currently BPF programs are using a full page from vmalloc (4 KB,
+16 KB, or 64 KB).
+This wastes memory and also causes iTLB pressure. Enabling bpf_prog_pack
+for ARM64 would fix it. I am doing some final tests and will send the patch=
+es in
+1-2 days.
 
- 	elog_kset = kset_create_and_add("elog", NULL, opal_kobj);
- 	if (!elog_kset) {
- 		pr_warn("%s: failed to create elog kset\n", __func__);
--		return -1;
-+		return -EPERM;
- 	}
-
- 	irq = opal_event_request(ilog2(OPAL_EVENT_ERROR_LOG_AVAIL));
-diff --git a/arch/powerpc/platforms/powernv/opal-xscom.c b/arch/powerpc/platforms/powernv/opal-xscom.c
-index 6b4eed2ef..6df52404a 100644
---- a/arch/powerpc/platforms/powernv/opal-xscom.c
-+++ b/arch/powerpc/platforms/powernv/opal-xscom.c
-@@ -171,7 +171,7 @@ static int scom_debug_init_one(struct dentry *root, struct device_node *dn,
- 	if (!dir) {
- 		kfree(ent->path.data);
- 		kfree(ent);
--		return -1;
-+		return -EPERM;
- 	}
-
- 	debugfs_create_blob("devspec", 0400, dir, &ent->path);
-@@ -191,7 +191,7 @@ static int scom_debug_init(void)
-
- 	root = debugfs_create_dir("scom", arch_debugfs_dir);
- 	if (!root)
--		return -1;
-+		return -EPERM;
-
- 	rc = 0;
- 	for_each_node_with_property(dn, "scom-controller") {
---
-2.40.0
-
+Thanks,
+Puranjay
