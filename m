@@ -1,69 +1,102 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 254D17213B2
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Jun 2023 00:35:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFE6D7210B5
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Jun 2023 17:02:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QYZSm5SDlz3cds
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Jun 2023 08:35:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QYNQc3YmQz3f0D
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Jun 2023 01:02:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=soghk3Eh;
+	dkim=pass (2048-bit key; unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=rDFBvqau;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::c34; helo=mail-oo1-xc34.google.com; envelope-from=mirimmad17@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=outlook.com (client-ip=2a01:111:f400:7e83::816; helo=nam02-dm3-obe.outbound.protection.outlook.com; envelope-from=mirimmad@outlook.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=soghk3Eh;
+	dkim=pass (2048-bit key; unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=rDFBvqau;
 	dkim-atps=neutral
-Received: from mail-oo1-xc34.google.com (mail-oo1-xc34.google.com [IPv6:2607:f8b0:4864:20::c34])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02olkn20816.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e83::816])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QYMnH2ZD7z3c9R
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  4 Jun 2023 00:33:54 +1000 (AEST)
-Received: by mail-oo1-xc34.google.com with SMTP id 006d021491bc7-558a79941c6so152802eaf.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 03 Jun 2023 07:33:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685802829; x=1688394829;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=VqN/Cc43meDsfCoFH2RDmQekbZeIEiHB84/yvFErx6U=;
-        b=soghk3EhGicini6WykbdCmbI1n6uHBbqq9W77HJd9a7XV0rYXvGmCD/9g6EoOLdVOO
-         htYi98d9wMy4TScovrXnLUbjnYiEkXdw8mnJo/W9qiag8ZJn4c5BTHF/smN1w9bXQ0aN
-         I9dgYYknNWs7vj5b3bpNWZMSwZg+jA04BTBR6cCg6KXFJexwQi0BtJSMvr2Lx910LDI0
-         xqQeOWmNeTkqBLz+x7vBecYMv0ZtKnEcWcwu6S8YNjKu59152DUV7kmJmfDd4HmHDNdh
-         Pc2DOHl0FPq9+buxmOq9OjX0mLaPJbEYkCrXjBmptKL/qCpq0HykDWQPsdLqnmbPP5Hf
-         Mn9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685802829; x=1688394829;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VqN/Cc43meDsfCoFH2RDmQekbZeIEiHB84/yvFErx6U=;
-        b=kVv32cQ/Cs/PlnfeXlA4TwKWyVgdpUpwzt4l85yOLO8xVqA3/bigf4kUEEP6SZccQH
-         6WHQtdDZUDKnaEYsOWZQufUu473AVsCjKUi485ROExK+UIQYCCrK1hYZnKOsvqjSgEzv
-         tZytzVH4vJ2Mz4MGMXIr6dkMBDEhiOcA+8NTGkXGmf4ulScdZVPsKhu6QP8VXwuOXXIg
-         RGySjbZduHO7N4PsE8GM4qiSARoZVK5UmiOzIxOapU4HTbXyN6iY0FaPPtBwlxA2NklW
-         WINH8FdMU0axkTL7IU1j4bb2IBIOIkQcSiHI4Bjt67fPUeLa+vv3TMZ47lFgZ61gz6so
-         nttw==
-X-Gm-Message-State: AC+VfDwLdsBn0N0wzYF+aRvysRw+wolDsm9A5n0idgV6Mz/JZ1gvoxiG
-	PN+AqiqonglTg2/QB/s+jPR3ftm6w6qw9bV3QOI=
-X-Google-Smtp-Source: ACHHUZ6FfpI3WQwqrBxXpue9Y0Mig/aUvPVUiEsoYRmLue8TS/SK9CAoA5MabvpTHq1Agaqj7AA1GhWDsPVt6aL27+s=
-X-Received: by 2002:a4a:4548:0:b0:555:7c8b:910e with SMTP id
- y69-20020a4a4548000000b005557c8b910emr9771069ooa.1.1685802829092; Sat, 03 Jun
- 2023 07:33:49 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QYNP51Y65z3cB7
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  4 Jun 2023 01:01:26 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=czREagGwMwnpuVF5oOSrPMNxtg48pbB3wvY2BDHM+DsbKZmSo25NfJVrKC3JTcxeit3bTxfecr1AUUiXcFHkzhmXrw10cuYSklUSqt+La1cWyhJ6iEpgfa9MwbGDeSnjDEraUMnFAEVnLC+2PiW+rOEX9QvL9FJdHBG+cQx/rBh4kRKkOgmDQRGNdcDQOIG0H3bTuWYJdkg0Tn4YP2ghZih6NqN+IEOuWZ45rag0UXv8VBNu3BYS2VHfZ0coP/F5VPSJsr/QId8HLAu2njUsgGRxR4gKW0LJrV0WwnQ8hAOI/QMYQubp0lU9clobopz2K1X5YkmN9Ry6/2SrauHbtw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YqCsBM8+/NDPtklgA5tO3HD6BVKPrK4A9rNVt3cJSds=;
+ b=T+8g8AjETmmLxRthLd9MXJ0URqSkEhChBPKoJIWZWbCFvlDBuJrF22HwfUZC21dVxaIeUo2n9sz6zKjUTaP3Tg7pYWhIIH04TZY9zVOExUxAPQvN/gvICV45CKycC4TeiimOuhPk24ZrrrWDTKyjxhnPDOs5Zj0eWHox3qgqQqe4IJGR3ECNUd6irynXZ4T48f0x7s8z16mISptzTAKMFti3sVv88WlWpcnAvVOqaW3YoE/l25zVub8aaFSsrPn/KJumyWU+sbaO1ogr3mLj5WOW++cSTolj8ZuvpRrXzeKu7JfVN9fXCk6QL5Mme1y003oF1iuIlw/R29hOpKR7RA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YqCsBM8+/NDPtklgA5tO3HD6BVKPrK4A9rNVt3cJSds=;
+ b=rDFBvqauHkI3v1uce7vLRquks6z/6bCBGvqS7B8SqK2IV934apl7P3CsxrsD8Xmfpmno6ba8Vj5AnwbQUjIUXvKszo4w6UyBvRLBjeIGIMSHaoGSxM7nYyIagvjmPVIEJe4HuMVC1CnYAk6NLDUSvltopZFVgUXKKT4LsM10qKx4QGAl6HMZIgjKaBP2xX3qV7Y6HNIdxdXHMzyjuP7qdVv/VTIJzYE8Rl+vWu55CqHj+TlDUIF1UZE8LKv55I1Ss/TOTyiM2dpnbocfxoKmfJQSz68FILgbqK06scY8eD3KzFGTIVTkPGit3nwm37O0xqgXtVWbp70QP+PUa8g22Q==
+Received: from CY5PR12MB6455.namprd12.prod.outlook.com (2603:10b6:930:35::10)
+ by SA0PR12MB4414.namprd12.prod.outlook.com (2603:10b6:806:9a::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.28; Sat, 3 Jun
+ 2023 15:01:18 +0000
+Received: from CY5PR12MB6455.namprd12.prod.outlook.com
+ ([fe80::a39e:3607:29f5:9cdc]) by CY5PR12MB6455.namprd12.prod.outlook.com
+ ([fe80::a39e:3607:29f5:9cdc%4]) with mapi id 15.20.6455.028; Sat, 3 Jun 2023
+ 15:01:18 +0000
+From: mirimmad@outlook.com
+To: 
+Subject: [PATCH] powerpc: use appropriate error codes
+Date: Sat,  3 Jun 2023 20:30:43 +0530
+Message-ID:  <CY5PR12MB6455D90BB75D6CA26C00E873C64FA@CY5PR12MB6455.namprd12.prod.outlook.com>
+X-Mailer: git-send-email 2.40.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TMN: [1ua1v+cdNo9QRNu6smC4w6KBhF3tSskufLzEZ/+enMzVrRKCtjUBAZut/UUuwq3h]
+X-ClientProxiedBy: PN2PR01CA0076.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:23::21) To CY5PR12MB6455.namprd12.prod.outlook.com
+ (2603:10b6:930:35::10)
+X-Microsoft-Original-Message-ID: <20230603150043.16779-1-mirimmad@outlook.com>
 MIME-Version: 1.0
-References: <CY5PR12MB64553EE96EBB3927311DB598C6459@CY5PR12MB6455.namprd12.prod.outlook.com>
- <2023052835-oxidant-doily-404f@gregkh> <87zg5mrt8m.fsf@mail.lhotse>
-In-Reply-To: <87zg5mrt8m.fsf@mail.lhotse>
-From: Immad Mir <mirimmad17@gmail.com>
-Date: Sat, 3 Jun 2023 20:03:37 +0530
-Message-ID: <CAJfv2=BRCQVce4DYAtbcs+c_CT+eCHQeG1LWmcme-1bj=tnMJw@mail.gmail.com>
-Subject: Re: [PATCH] powerpc: fix debugfs_create_dir error checking
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: multipart/alternative; boundary="000000000000ca1c1305fd3a8e97"
-X-Mailman-Approved-At: Sun, 04 Jun 2023 08:34:39 +1000
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY5PR12MB6455:EE_|SA0PR12MB4414:EE_
+X-MS-Office365-Filtering-Correlation-Id: 692e1597-66de-4438-bbe7-08db644362a4
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	QI54r0ysamcVtO62bkw6r2/V8j25ISPODtxzapcHoGcNW9Yw6TvEeVHz69JPmzy7g7paj2pRXqzJndLzd9Xh9O4zPbj8RIVHF2rLnWLIk5hUtYjvR8a0GDyVtm7oy0TwoXkh70kol0W7eB5ggp5Ow+Is03eY6zluUWWLrcx/7XPnQf9FG+zZdMEL219c4A+Gjb8qHCW7XsoNcNMkuCVv6d+F4B7sn/g2eQCskFAdZxCzO2+iobsgzE3acCU8xXEXQKRYS4IGlIna5jocp7v2B7nz7YUhp6Mqy8eyVrg0lvNWpHnKiA97j5zL5vRU9v3eplqxhfYbPjr3Xnq2ZHJViPkXa9sbb34FGS4pKVhhjFByNv9fwCg9poF3vZ8P9E2SflRrhD8wgEkwcjbygRz7y73AltGwW+X+tF6131DdxXD0FAjEpVuVlwuOvDYES5cK4XJFYjZVgvHXlo4GDRwB0VKI6gntcL3b1S6DD198U4MTP0VNnHhXvEjWJB4XuR7llsHHSNSnSkMUX39bvF9kwgKv+IlTNDkzRrd1bT9asblZYKjoam/Wz5aG6tb4k+2/
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?/p3XS6EHY643qOI4/v9+kohIYb0PljfN/2CJNpSNZjAx9r8eNfB8ajbk4O4P?=
+ =?us-ascii?Q?XtlIxHHLFtp82aa2VxzRlZ1u7UI2S0mxfkQwDEEEdRSTQt2mRVJtLnBdCxrh?=
+ =?us-ascii?Q?AlHplLcB6jV2GxtexPu1lhvgoOr1yO8gc0MHbhScrTtliBt3NkUSgsFmCYXR?=
+ =?us-ascii?Q?9XrzUnK5BFwlTVpqNuWTmyuKGferx/V8skTfTfGdVoGRgqMF1gbWO+QH2kb+?=
+ =?us-ascii?Q?UWx6hu2O9N8KYNoQeeCH4yprmYtPjWR5Rn4uqA8GWq+4qxTAMuqxLYZFjunf?=
+ =?us-ascii?Q?Vks4P+XV+w8a3Y+7ljTu+zgCcypeEO3fBgb25k4L36EzZeh4FbrDZZrpsL7G?=
+ =?us-ascii?Q?gzSo2lWpy8s97DkRzEioEACSHm6BwC3TnqHFdCerpvPbm/bBgTvorSNq5wJN?=
+ =?us-ascii?Q?4fwEriBX5xgulXVz/tBLYgoucS07SG4lwVZbYSReTQQMgFmvfsaF1NXEDGAB?=
+ =?us-ascii?Q?m9aUZzUrLCnXdhGUkibPr74BXXCME/1X3usA9szyg3K3NvyfNirdrUoV/9xF?=
+ =?us-ascii?Q?nlqac+hT+cEj4oHZ0MHyjZYCJT/oNUGRlXL5vUSeRARAtJ+rgM3HbFP972HY?=
+ =?us-ascii?Q?siMp6nEkMyQ6Z7+ooetB6c3IZUP+pp4+FvmbEpCKK9MncaJ1Pe96fhibGU51?=
+ =?us-ascii?Q?64JecPLZe7GtrNU8ycYSIFkCW+rwbtUsLhFXuWjeYiuoYc8W5jJhY8GjaWBZ?=
+ =?us-ascii?Q?mkhh3R61tl2r20UuLBa/WJYoSQWcL8ocM8TmaBMOGaoZTTuL+amioLwXmqUQ?=
+ =?us-ascii?Q?wUt+PEf++6I7oVi6ZunnOK+mkAOkOwOxGNJxSFIMKuxJYHBeajTAxtvdFBov?=
+ =?us-ascii?Q?Au26DLc5hWeNwUu0ZAnEZ8xjR+00VLcHCT/YYUmAmtkLJDQm50L7DIntV+Ot?=
+ =?us-ascii?Q?whLN0neD9xlEfulzwLJlGEpbhn/IdQl4nRZRoFIAikBRdvLcZ0S1rFCO/doR?=
+ =?us-ascii?Q?lh39q3x4J7e712BUdV+09reIGtOy1zxzzK3xvN6Wy50FxAAq35yEjfqF1Yao?=
+ =?us-ascii?Q?tYZDNDwZikUP+VEbp7mYY9nkkdHE1JkVwCWLkGWnWF3b+miVtYPF9AvALO47?=
+ =?us-ascii?Q?4a10ADBIm6o9rVdxa669W5u6kLP0aMVGnWdPYMNcGVVvmt3t2x1NsT0r+b3z?=
+ =?us-ascii?Q?MjXDciNFC+nF58EHDck8UNOHsyn4hkMUj4RPYODsDr0LiKK3gRhUnkO3bdIf?=
+ =?us-ascii?Q?Mxni7hvIdDCZclrajCe64Yqs7d9J1Kd8t3NKzARcHc34KDA9LyI/z1UoFe2V?=
+ =?us-ascii?Q?SI78jNIxPVmEghybYkd0lZrqazT2sJchBZy9jCajPw=3D=3D?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 692e1597-66de-4438-bbe7-08db644362a4
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR12MB6455.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2023 15:01:18.7225
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4414
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,143 +108,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ivan Orlov <ivan.orlov0322@gmail.com>, Greg KH <gregkh@linuxfoundation.org>, mirimmad@outlook.com, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, Immad Mir <mirimmad17@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---000000000000ca1c1305fd3a8e97
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From: Immad Mir <mirimmad17@gmail.com>
 
-> Still I think this patch is an improvement so I'll plan to merge it.
+This patch replaces use of returning -1 by appropiate error codes.
 
-Please let me know when you commit it.
+Signed-off-by: Immad Mir <mirimmad17@gmail.com>
+---
+ arch/powerpc/platforms/powernv/opal-elog.c  | 4 ++--
+ arch/powerpc/platforms/powernv/opal-xscom.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-Thanks
-Immad.
+diff --git a/arch/powerpc/platforms/powernv/opal-elog.c b/arch/powerpc/platforms/powernv/opal-elog.c
+index 554fdd7f8..8bb42858e 100644
+--- a/arch/powerpc/platforms/powernv/opal-elog.c
++++ b/arch/powerpc/platforms/powernv/opal-elog.c
+@@ -309,12 +309,12 @@ int __init opal_elog_init(void)
 
-On Tue, May 30, 2023 at 4:17=E2=80=AFPM Michael Ellerman <mpe@ellerman.id.a=
-u> wrote:
+ 	/* ELOG not supported by firmware */
+ 	if (!opal_check_token(OPAL_ELOG_READ))
+-		return -1;
++		return -EPERM;
 
-> Greg KH <gregkh@linuxfoundation.org> writes:
-> > On Sun, May 28, 2023 at 01:16:44PM +0530, mirimmad@outlook.com wrote:
-> >> From: Immad Mir <mirimmad17@gmail.com>
-> >>
-> >> The debugfs_create_dir returns ERR_PTR incase of an error and the
-> >> correct way of checking it by using the IS_ERR inline function, and
-> >> not the simple null comparision. This patch fixes this.
-> >>
-> >> Suggested-By: Ivan Orlov <ivan.orlov0322@gmail.com>
-> >> Signed-off-by: Immad Mir <mirimmad17@gmail.com>
-> >> ---
-> >>  arch/powerpc/platforms/powernv/opal-xscom.c | 4 ++--
-> >>  1 file changed, 2 insertions(+), 2 deletions(-)
-> >>
-> >> diff --git a/arch/powerpc/platforms/powernv/opal-xscom.c
-> b/arch/powerpc/platforms/powernv/opal-xscom.c
-> >> index 6b4eed2ef..262cd6fac 100644
-> >> --- a/arch/powerpc/platforms/powernv/opal-xscom.c
-> >> +++ b/arch/powerpc/platforms/powernv/opal-xscom.c
-> >> @@ -168,7 +168,7 @@ static int scom_debug_init_one(struct dentry *root=
-,
-> struct device_node *dn,
-> >>      ent->path.size =3D strlen((char *)ent->path.data);
-> >>
-> >>      dir =3D debugfs_create_dir(ent->name, root);
-> >> -    if (!dir) {
-> >> +    if (IS_ERR(dir)) {
-> >>              kfree(ent->path.data);
-> >>              kfree(ent);
-> >>              return -1;
-> >
-> > Why is this driver caring if debugfs is working or not at all?  It
-> > should just ignore the error and keep moving forward.
->
-> It's creating directories and then creating files in those directories.
-> So I think it makes sense that it checks that the directory was created
-> successfully. It doesn't check whether the files were created.
->
-> > And -1 is not a valid error number :(
->
-> It's EPERM :) - but yeah probably not really the right error in this
-> case.
->
-> Still I think this patch is an improvement so I'll plan to merge it.
->
-> cheers
->
+ 	elog_kset = kset_create_and_add("elog", NULL, opal_kobj);
+ 	if (!elog_kset) {
+ 		pr_warn("%s: failed to create elog kset\n", __func__);
+-		return -1;
++		return -EPERM;
+ 	}
 
---000000000000ca1c1305fd3a8e97
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ 	irq = opal_event_request(ilog2(OPAL_EVENT_ERROR_LOG_AVAIL));
+diff --git a/arch/powerpc/platforms/powernv/opal-xscom.c b/arch/powerpc/platforms/powernv/opal-xscom.c
+index 6b4eed2ef..6df52404a 100644
+--- a/arch/powerpc/platforms/powernv/opal-xscom.c
++++ b/arch/powerpc/platforms/powernv/opal-xscom.c
+@@ -171,7 +171,7 @@ static int scom_debug_init_one(struct dentry *root, struct device_node *dn,
+ 	if (!dir) {
+ 		kfree(ent->path.data);
+ 		kfree(ent);
+-		return -1;
++		return -EPERM;
+ 	}
 
-<div dir=3D"ltr"><div>&gt; Still I think this patch is an improvement so I&=
-#39;ll plan to merge it.</div><div><br></div><div>Please let me know when y=
-ou commit it.</div><div><br></div><div>Thanks</div><div>Immad.<br></div></d=
-iv><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On =
-Tue, May 30, 2023 at 4:17=E2=80=AFPM Michael Ellerman &lt;<a href=3D"mailto=
-:mpe@ellerman.id.au">mpe@ellerman.id.au</a>&gt; wrote:<br></div><blockquote=
- class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px so=
-lid rgb(204,204,204);padding-left:1ex">Greg KH &lt;<a href=3D"mailto:gregkh=
-@linuxfoundation.org" target=3D"_blank">gregkh@linuxfoundation.org</a>&gt; =
-writes:<br>
-&gt; On Sun, May 28, 2023 at 01:16:44PM +0530, <a href=3D"mailto:mirimmad@o=
-utlook.com" target=3D"_blank">mirimmad@outlook.com</a> wrote:<br>
-&gt;&gt; From: Immad Mir &lt;<a href=3D"mailto:mirimmad17@gmail.com" target=
-=3D"_blank">mirimmad17@gmail.com</a>&gt;<br>
-&gt;&gt; <br>
-&gt;&gt; The debugfs_create_dir returns ERR_PTR incase of an error and the<=
-br>
-&gt;&gt; correct way of checking it by using the IS_ERR inline function, an=
-d<br>
-&gt;&gt; not the simple null comparision. This patch fixes this.<br>
-&gt;&gt; <br>
-&gt;&gt; Suggested-By: Ivan Orlov &lt;<a href=3D"mailto:ivan.orlov0322@gmai=
-l.com" target=3D"_blank">ivan.orlov0322@gmail.com</a>&gt;<br>
-&gt;&gt; Signed-off-by: Immad Mir &lt;<a href=3D"mailto:mirimmad17@gmail.co=
-m" target=3D"_blank">mirimmad17@gmail.com</a>&gt;<br>
-&gt;&gt; ---<br>
-&gt;&gt;=C2=A0 arch/powerpc/platforms/powernv/opal-xscom.c | 4 ++--<br>
-&gt;&gt;=C2=A0 1 file changed, 2 insertions(+), 2 deletions(-)<br>
-&gt;&gt; <br>
-&gt;&gt; diff --git a/arch/powerpc/platforms/powernv/opal-xscom.c b/arch/po=
-werpc/platforms/powernv/opal-xscom.c<br>
-&gt;&gt; index 6b4eed2ef..262cd6fac 100644<br>
-&gt;&gt; --- a/arch/powerpc/platforms/powernv/opal-xscom.c<br>
-&gt;&gt; +++ b/arch/powerpc/platforms/powernv/opal-xscom.c<br>
-&gt;&gt; @@ -168,7 +168,7 @@ static int scom_debug_init_one(struct dentry *=
-root, struct device_node *dn,<br>
-&gt;&gt;=C2=A0 =C2=A0 =C2=A0 ent-&gt;path.size =3D strlen((char *)ent-&gt;p=
-ath.data);<br>
-&gt;&gt; <br>
-&gt;&gt;=C2=A0 =C2=A0 =C2=A0 dir =3D debugfs_create_dir(ent-&gt;name, root)=
-;<br>
-&gt;&gt; -=C2=A0 =C2=A0 if (!dir) {<br>
-&gt;&gt; +=C2=A0 =C2=A0 if (IS_ERR(dir)) {<br>
-&gt;&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 kfree(ent-&gt;path=
-.data);<br>
-&gt;&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 kfree(ent);<br>
-&gt;&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return -1;<br>
-&gt;<br>
-&gt; Why is this driver caring if debugfs is working or not at all?=C2=A0 I=
-t<br>
-&gt; should just ignore the error and keep moving forward.<br>
-<br>
-It&#39;s creating directories and then creating files in those directories.=
-<br>
-So I think it makes sense that it checks that the directory was created<br>
-successfully. It doesn&#39;t check whether the files were created.<br>
-<br>
-&gt; And -1 is not a valid error number :(<br>
-<br>
-It&#39;s EPERM :) - but yeah probably not really the right error in this<br=
->
-case.<br>
-<br>
-Still I think this patch is an improvement so I&#39;ll plan to merge it.<br=
->
-<br>
-cheers<br>
-</blockquote></div>
+ 	debugfs_create_blob("devspec", 0400, dir, &ent->path);
+@@ -191,7 +191,7 @@ static int scom_debug_init(void)
 
---000000000000ca1c1305fd3a8e97--
+ 	root = debugfs_create_dir("scom", arch_debugfs_dir);
+ 	if (!root)
+-		return -1;
++		return -EPERM;
+
+ 	rc = 0;
+ 	for_each_node_with_property(dn, "scom-controller") {
+--
+2.40.0
+
