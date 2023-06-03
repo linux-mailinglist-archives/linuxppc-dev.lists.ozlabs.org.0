@@ -1,60 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 661D8720DC7
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Jun 2023 06:27:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 254D17213B2
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Jun 2023 00:35:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QY6KG08Bfz3f02
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Jun 2023 14:27:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QYZSm5SDlz3cds
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Jun 2023 08:35:20 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=UO48kVuZ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=soghk3Eh;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::c34; helo=mail-oo1-xc34.google.com; envelope-from=mirimmad17@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=UO48kVuZ;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=soghk3Eh;
 	dkim-atps=neutral
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-xc34.google.com (mail-oo1-xc34.google.com [IPv6:2607:f8b0:4864:20::c34])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QY6JQ0KxQz3c9r
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 Jun 2023 14:26:22 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685766390; x=1717302390;
-  h=date:from:to:cc:subject:message-id;
-  bh=6AYHhbfGZTJIsQT6DfQUWNxf8bhsO+x92t6yn5qzCCU=;
-  b=UO48kVuZhePaoa9n6KKifx6sF6dN0VlJUHvSHgjOBbB/HbFC50oH6ZtX
-   5ltSXxH/UTpvePs/h0N9+dRiVjMiydzGA4EVS3JTOkundZxLDU6dSpeoV
-   9g3bsDadVD8K/gYPXbwk/J8X1iTu3vhxcUaqV7qvCzAViugb5OfPm5o89
-   6HJ2uaZlPtv1SC/Y61t13MTcx6rXokKQSsHB0HoOlCgmo22ChThwwt8Dq
-   ETdKq1MAdzVOLoRmzMsXtNe0WYKLSrnYsoE8WeJ2B/Rajsmef6s9L09CI
-   gyDxjiePeZNbApApmxUw51V7MYMKuTUwB6bgmOJgJrp1uVOBrZEU0hA64
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10729"; a="359339620"
-X-IronPort-AV: E=Sophos;i="6.00,215,1681196400"; 
-   d="scan'208";a="359339620"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2023 21:26:18 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10729"; a="773118623"
-X-IronPort-AV: E=Sophos;i="6.00,215,1681196400"; 
-   d="scan'208";a="773118623"
-Received: from lkp-server01.sh.intel.com (HELO 15ab08e44a81) ([10.239.97.150])
-  by fmsmga008.fm.intel.com with ESMTP; 02 Jun 2023 21:26:17 -0700
-Received: from kbuild by 15ab08e44a81 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1q5IqG-0001HN-0x;
-	Sat, 03 Jun 2023 04:26:16 +0000
-Date: Sat, 03 Jun 2023 12:25:29 +0800
-From: kernel test robot <lkp@intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QYMnH2ZD7z3c9R
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  4 Jun 2023 00:33:54 +1000 (AEST)
+Received: by mail-oo1-xc34.google.com with SMTP id 006d021491bc7-558a79941c6so152802eaf.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 03 Jun 2023 07:33:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685802829; x=1688394829;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=VqN/Cc43meDsfCoFH2RDmQekbZeIEiHB84/yvFErx6U=;
+        b=soghk3EhGicini6WykbdCmbI1n6uHBbqq9W77HJd9a7XV0rYXvGmCD/9g6EoOLdVOO
+         htYi98d9wMy4TScovrXnLUbjnYiEkXdw8mnJo/W9qiag8ZJn4c5BTHF/smN1w9bXQ0aN
+         I9dgYYknNWs7vj5b3bpNWZMSwZg+jA04BTBR6cCg6KXFJexwQi0BtJSMvr2Lx910LDI0
+         xqQeOWmNeTkqBLz+x7vBecYMv0ZtKnEcWcwu6S8YNjKu59152DUV7kmJmfDd4HmHDNdh
+         Pc2DOHl0FPq9+buxmOq9OjX0mLaPJbEYkCrXjBmptKL/qCpq0HykDWQPsdLqnmbPP5Hf
+         Mn9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685802829; x=1688394829;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VqN/Cc43meDsfCoFH2RDmQekbZeIEiHB84/yvFErx6U=;
+        b=kVv32cQ/Cs/PlnfeXlA4TwKWyVgdpUpwzt4l85yOLO8xVqA3/bigf4kUEEP6SZccQH
+         6WHQtdDZUDKnaEYsOWZQufUu473AVsCjKUi485ROExK+UIQYCCrK1hYZnKOsvqjSgEzv
+         tZytzVH4vJ2Mz4MGMXIr6dkMBDEhiOcA+8NTGkXGmf4ulScdZVPsKhu6QP8VXwuOXXIg
+         RGySjbZduHO7N4PsE8GM4qiSARoZVK5UmiOzIxOapU4HTbXyN6iY0FaPPtBwlxA2NklW
+         WINH8FdMU0axkTL7IU1j4bb2IBIOIkQcSiHI4Bjt67fPUeLa+vv3TMZ47lFgZ61gz6so
+         nttw==
+X-Gm-Message-State: AC+VfDwLdsBn0N0wzYF+aRvysRw+wolDsm9A5n0idgV6Mz/JZ1gvoxiG
+	PN+AqiqonglTg2/QB/s+jPR3ftm6w6qw9bV3QOI=
+X-Google-Smtp-Source: ACHHUZ6FfpI3WQwqrBxXpue9Y0Mig/aUvPVUiEsoYRmLue8TS/SK9CAoA5MabvpTHq1Agaqj7AA1GhWDsPVt6aL27+s=
+X-Received: by 2002:a4a:4548:0:b0:555:7c8b:910e with SMTP id
+ y69-20020a4a4548000000b005557c8b910emr9771069ooa.1.1685802829092; Sat, 03 Jun
+ 2023 07:33:49 -0700 (PDT)
+MIME-Version: 1.0
+References: <CY5PR12MB64553EE96EBB3927311DB598C6459@CY5PR12MB6455.namprd12.prod.outlook.com>
+ <2023052835-oxidant-doily-404f@gregkh> <87zg5mrt8m.fsf@mail.lhotse>
+In-Reply-To: <87zg5mrt8m.fsf@mail.lhotse>
+From: Immad Mir <mirimmad17@gmail.com>
+Date: Sat, 3 Jun 2023 20:03:37 +0530
+Message-ID: <CAJfv2=BRCQVce4DYAtbcs+c_CT+eCHQeG1LWmcme-1bj=tnMJw@mail.gmail.com>
+Subject: Re: [PATCH] powerpc: fix debugfs_create_dir error checking
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:topic/cpu-smt] BUILD SUCCESS
- 940e915fcbf3494e794335eaab2ce793b75a3c1d
-Message-ID: <20230603042529.wsXu_%lkp@intel.com>
-User-Agent: s-nail v14.9.24
+Content-Type: multipart/alternative; boundary="000000000000ca1c1305fd3a8e97"
+X-Mailman-Approved-At: Sun, 04 Jun 2023 08:34:39 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,300 +75,143 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Ivan Orlov <ivan.orlov0322@gmail.com>, Greg KH <gregkh@linuxfoundation.org>, mirimmad@outlook.com, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git topic/cpu-smt
-branch HEAD: 940e915fcbf3494e794335eaab2ce793b75a3c1d  powerpc/pseries: Honour current SMT state when DLPAR onlining CPUs
+--000000000000ca1c1305fd3a8e97
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-elapsed time: 798m
+> Still I think this patch is an improvement so I'll plan to merge it.
 
-configs tested: 277
-configs skipped: 23
+Please let me know when you commit it.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Thanks
+Immad.
 
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha        buildonly-randconfig-r001-20230531   gcc  
-alpha        buildonly-randconfig-r005-20230531   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r001-20230531   gcc  
-alpha                randconfig-r002-20230531   gcc  
-alpha                randconfig-r004-20230531   gcc  
-alpha                randconfig-r013-20230531   gcc  
-alpha                randconfig-r015-20230601   gcc  
-alpha                randconfig-r021-20230531   gcc  
-alpha                randconfig-r024-20230531   gcc  
-alpha                randconfig-r025-20230531   gcc  
-alpha                randconfig-r031-20230531   gcc  
-alpha                randconfig-r033-20230602   gcc  
-arc                              allyesconfig   gcc  
-arc          buildonly-randconfig-r005-20230531   gcc  
-arc                                 defconfig   gcc  
-arc                 nsimosci_hs_smp_defconfig   gcc  
-arc                  randconfig-r003-20230531   gcc  
-arc                  randconfig-r015-20230601   gcc  
-arc                           tb10x_defconfig   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                          collie_defconfig   clang
-arm                     davinci_all_defconfig   clang
-arm                                 defconfig   gcc  
-arm                      integrator_defconfig   gcc  
-arm                            mmp2_defconfig   clang
-arm                        multi_v5_defconfig   clang
-arm                             mxs_defconfig   clang
-arm                  randconfig-r022-20230531   gcc  
-arm                  randconfig-r024-20230531   gcc  
-arm                             rpc_defconfig   gcc  
-arm                           sama7_defconfig   clang
-arm                           spitz_defconfig   clang
-arm                           sunxi_defconfig   gcc  
-arm64                            alldefconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64        buildonly-randconfig-r005-20230531   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r004-20230602   gcc  
-arm64                randconfig-r012-20230602   clang
-arm64                randconfig-r026-20230531   clang
-arm64                randconfig-r031-20230531   gcc  
-arm64                randconfig-r031-20230602   gcc  
-arm64                randconfig-r034-20230602   gcc  
-arm64                randconfig-r036-20230602   gcc  
-csky         buildonly-randconfig-r002-20230531   gcc  
-csky         buildonly-randconfig-r003-20230531   gcc  
-csky                                defconfig   gcc  
-csky                 randconfig-r005-20230531   gcc  
-csky                 randconfig-r006-20230602   gcc  
-csky                 randconfig-r012-20230601   gcc  
-csky                 randconfig-r023-20230531   gcc  
-csky                 randconfig-r035-20230531   gcc  
-csky                 randconfig-r035-20230602   gcc  
-hexagon              randconfig-r026-20230531   clang
-hexagon              randconfig-r031-20230531   clang
-hexagon              randconfig-r036-20230531   clang
-hexagon              randconfig-r041-20230531   clang
-hexagon              randconfig-r045-20230531   clang
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-r001-20230531   gcc  
-i386         buildonly-randconfig-r001-20230602   gcc  
-i386         buildonly-randconfig-r002-20230531   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-i001-20230531   gcc  
-i386                 randconfig-i001-20230602   gcc  
-i386                 randconfig-i002-20230531   gcc  
-i386                 randconfig-i002-20230602   gcc  
-i386                 randconfig-i003-20230531   gcc  
-i386                 randconfig-i003-20230602   gcc  
-i386                 randconfig-i004-20230531   gcc  
-i386                 randconfig-i004-20230602   gcc  
-i386                 randconfig-i005-20230531   gcc  
-i386                 randconfig-i005-20230602   gcc  
-i386                 randconfig-i006-20230531   gcc  
-i386                 randconfig-i006-20230602   gcc  
-i386                 randconfig-i051-20230531   gcc  
-i386                 randconfig-i051-20230602   gcc  
-i386                 randconfig-i052-20230531   gcc  
-i386                 randconfig-i052-20230602   gcc  
-i386                 randconfig-i053-20230531   gcc  
-i386                 randconfig-i053-20230602   gcc  
-i386                 randconfig-i054-20230531   gcc  
-i386                 randconfig-i054-20230602   gcc  
-i386                 randconfig-i055-20230531   gcc  
-i386                 randconfig-i055-20230602   gcc  
-i386                 randconfig-i056-20230531   gcc  
-i386                 randconfig-i056-20230602   gcc  
-i386                 randconfig-i061-20230531   gcc  
-i386                 randconfig-i061-20230602   gcc  
-i386                 randconfig-i062-20230531   gcc  
-i386                 randconfig-i062-20230602   gcc  
-i386                 randconfig-i063-20230531   gcc  
-i386                 randconfig-i063-20230602   gcc  
-i386                 randconfig-i064-20230531   gcc  
-i386                 randconfig-i064-20230602   gcc  
-i386                 randconfig-i065-20230531   gcc  
-i386                 randconfig-i065-20230602   gcc  
-i386                 randconfig-i066-20230531   gcc  
-i386                 randconfig-i066-20230602   gcc  
-i386                 randconfig-r003-20230531   gcc  
-i386                 randconfig-r006-20230531   gcc  
-i386                 randconfig-r012-20230601   gcc  
-i386                 randconfig-r035-20230531   gcc  
-i386                 randconfig-r035-20230602   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch    buildonly-randconfig-r004-20230531   gcc  
-loongarch    buildonly-randconfig-r006-20230602   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r002-20230531   gcc  
-loongarch            randconfig-r005-20230602   gcc  
-loongarch            randconfig-r011-20230601   gcc  
-loongarch            randconfig-r016-20230601   gcc  
-loongarch            randconfig-r021-20230531   gcc  
-loongarch            randconfig-r033-20230602   gcc  
-m68k                             allmodconfig   gcc  
-m68k                         amcore_defconfig   gcc  
-m68k                          atari_defconfig   gcc  
-m68k         buildonly-randconfig-r004-20230531   gcc  
-m68k         buildonly-randconfig-r006-20230531   gcc  
-m68k                                defconfig   gcc  
-m68k                       m5249evb_defconfig   gcc  
-m68k                        m5307c3_defconfig   gcc  
-m68k                 randconfig-r002-20230531   gcc  
-m68k                 randconfig-r016-20230601   gcc  
-m68k                 randconfig-r021-20230531   gcc  
-m68k                 randconfig-r023-20230531   gcc  
-m68k                 randconfig-r031-20230531   gcc  
-m68k                 randconfig-r034-20230531   gcc  
-m68k                 randconfig-r034-20230602   gcc  
-m68k                 randconfig-r036-20230531   gcc  
-m68k                          sun3x_defconfig   gcc  
-microblaze                      mmu_defconfig   gcc  
-microblaze           randconfig-r013-20230601   gcc  
-microblaze           randconfig-r014-20230601   gcc  
-microblaze           randconfig-r015-20230531   gcc  
-microblaze           randconfig-r021-20230531   gcc  
-microblaze           randconfig-r022-20230531   gcc  
-microblaze           randconfig-r025-20230531   gcc  
-microblaze           randconfig-r031-20230602   gcc  
-microblaze           randconfig-r032-20230531   gcc  
-microblaze           randconfig-r036-20230602   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                          ath79_defconfig   clang
-mips                           ci20_defconfig   gcc  
-mips                     decstation_defconfig   gcc  
-mips                       lemote2f_defconfig   clang
-mips                        maltaup_defconfig   clang
-mips                          rb532_defconfig   gcc  
-mips                          rm200_defconfig   clang
-nios2                         3c120_defconfig   gcc  
-nios2                            alldefconfig   gcc  
-nios2        buildonly-randconfig-r002-20230531   gcc  
-nios2        buildonly-randconfig-r004-20230531   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r001-20230531   gcc  
-nios2                randconfig-r012-20230531   gcc  
-nios2                randconfig-r012-20230601   gcc  
-nios2                randconfig-r024-20230531   gcc  
-openrisc     buildonly-randconfig-r003-20230531   gcc  
-openrisc             randconfig-r002-20230602   gcc  
-openrisc             randconfig-r011-20230601   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r003-20230531   gcc  
-parisc               randconfig-r016-20230531   gcc  
-parisc               randconfig-r026-20230531   gcc  
-parisc               randconfig-r032-20230531   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                   bluestone_defconfig   clang
-powerpc                      chrp32_defconfig   gcc  
-powerpc                    ge_imp3a_defconfig   clang
-powerpc                        icon_defconfig   clang
-powerpc                      mgcoge_defconfig   gcc  
-powerpc                   motionpro_defconfig   gcc  
-powerpc                 mpc836x_rdk_defconfig   clang
-powerpc                      ppc44x_defconfig   clang
-powerpc              randconfig-r002-20230602   gcc  
-powerpc              randconfig-r006-20230531   gcc  
-powerpc              randconfig-r011-20230601   gcc  
-powerpc              randconfig-r024-20230531   clang
-powerpc              randconfig-r032-20230602   gcc  
-powerpc                     tqm8555_defconfig   gcc  
-powerpc                     tqm8560_defconfig   clang
-powerpc                        warp_defconfig   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r033-20230531   gcc  
-riscv                randconfig-r034-20230531   gcc  
-riscv                randconfig-r034-20230602   gcc  
-riscv                randconfig-r036-20230531   gcc  
-riscv                randconfig-r042-20230531   clang
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r004-20230531   gcc  
-s390                 randconfig-r011-20230601   gcc  
-s390                 randconfig-r016-20230602   clang
-s390                 randconfig-r033-20230531   gcc  
-s390                 randconfig-r044-20230531   clang
-sh                               allmodconfig   gcc  
-sh           buildonly-randconfig-r005-20230531   gcc  
-sh                            hp6xx_defconfig   gcc  
-sh                   randconfig-r003-20230531   gcc  
-sh                   randconfig-r004-20230602   gcc  
-sh                   randconfig-r005-20230602   gcc  
-sh                          rsk7264_defconfig   gcc  
-sh                           se7721_defconfig   gcc  
-sh                           se7722_defconfig   gcc  
-sh                             sh03_defconfig   gcc  
-sh                          urquell_defconfig   gcc  
-sparc        buildonly-randconfig-r002-20230531   gcc  
-sparc        buildonly-randconfig-r002-20230602   gcc  
-sparc        buildonly-randconfig-r006-20230531   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r003-20230602   gcc  
-sparc                randconfig-r013-20230601   gcc  
-sparc                randconfig-r015-20230601   gcc  
-sparc                randconfig-r016-20230601   gcc  
-sparc                randconfig-r022-20230531   gcc  
-sparc                randconfig-r023-20230531   gcc  
-sparc                randconfig-r035-20230602   gcc  
-sparc64      buildonly-randconfig-r002-20230531   gcc  
-sparc64      buildonly-randconfig-r004-20230531   gcc  
-sparc64              randconfig-r002-20230531   gcc  
-sparc64              randconfig-r013-20230601   gcc  
-sparc64              randconfig-r022-20230531   gcc  
-sparc64              randconfig-r025-20230531   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-r003-20230531   gcc  
-x86_64       buildonly-randconfig-r005-20230602   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-a001-20230531   gcc  
-x86_64               randconfig-a002-20230531   gcc  
-x86_64               randconfig-a003-20230531   gcc  
-x86_64               randconfig-a004-20230531   gcc  
-x86_64               randconfig-a005-20230531   gcc  
-x86_64               randconfig-a006-20230531   gcc  
-x86_64               randconfig-a011-20230603   gcc  
-x86_64               randconfig-a012-20230603   gcc  
-x86_64               randconfig-a013-20230603   gcc  
-x86_64               randconfig-a014-20230603   gcc  
-x86_64               randconfig-a015-20230603   gcc  
-x86_64               randconfig-a016-20230603   gcc  
-x86_64               randconfig-r004-20230531   gcc  
-x86_64               randconfig-r006-20230531   gcc  
-x86_64               randconfig-r032-20230602   gcc  
-x86_64               randconfig-x051-20230603   gcc  
-x86_64               randconfig-x052-20230603   gcc  
-x86_64               randconfig-x053-20230603   gcc  
-x86_64               randconfig-x054-20230603   gcc  
-x86_64               randconfig-x055-20230603   gcc  
-x86_64               randconfig-x056-20230603   gcc  
-x86_64                           rhel-8.3-bpf   gcc  
-x86_64                          rhel-8.3-func   gcc  
-x86_64                    rhel-8.3-kselftests   gcc  
-x86_64                         rhel-8.3-kunit   gcc  
-x86_64                           rhel-8.3-kvm   gcc  
-x86_64                           rhel-8.3-ltp   gcc  
-x86_64                           rhel-8.3-syz   gcc  
-x86_64                               rhel-8.3   gcc  
-xtensa                              defconfig   gcc  
-xtensa               randconfig-r001-20230531   gcc  
-xtensa               randconfig-r033-20230602   gcc  
-xtensa               randconfig-r036-20230531   gcc  
-xtensa                    xip_kc705_defconfig   gcc  
+On Tue, May 30, 2023 at 4:17=E2=80=AFPM Michael Ellerman <mpe@ellerman.id.a=
+u> wrote:
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> Greg KH <gregkh@linuxfoundation.org> writes:
+> > On Sun, May 28, 2023 at 01:16:44PM +0530, mirimmad@outlook.com wrote:
+> >> From: Immad Mir <mirimmad17@gmail.com>
+> >>
+> >> The debugfs_create_dir returns ERR_PTR incase of an error and the
+> >> correct way of checking it by using the IS_ERR inline function, and
+> >> not the simple null comparision. This patch fixes this.
+> >>
+> >> Suggested-By: Ivan Orlov <ivan.orlov0322@gmail.com>
+> >> Signed-off-by: Immad Mir <mirimmad17@gmail.com>
+> >> ---
+> >>  arch/powerpc/platforms/powernv/opal-xscom.c | 4 ++--
+> >>  1 file changed, 2 insertions(+), 2 deletions(-)
+> >>
+> >> diff --git a/arch/powerpc/platforms/powernv/opal-xscom.c
+> b/arch/powerpc/platforms/powernv/opal-xscom.c
+> >> index 6b4eed2ef..262cd6fac 100644
+> >> --- a/arch/powerpc/platforms/powernv/opal-xscom.c
+> >> +++ b/arch/powerpc/platforms/powernv/opal-xscom.c
+> >> @@ -168,7 +168,7 @@ static int scom_debug_init_one(struct dentry *root=
+,
+> struct device_node *dn,
+> >>      ent->path.size =3D strlen((char *)ent->path.data);
+> >>
+> >>      dir =3D debugfs_create_dir(ent->name, root);
+> >> -    if (!dir) {
+> >> +    if (IS_ERR(dir)) {
+> >>              kfree(ent->path.data);
+> >>              kfree(ent);
+> >>              return -1;
+> >
+> > Why is this driver caring if debugfs is working or not at all?  It
+> > should just ignore the error and keep moving forward.
+>
+> It's creating directories and then creating files in those directories.
+> So I think it makes sense that it checks that the directory was created
+> successfully. It doesn't check whether the files were created.
+>
+> > And -1 is not a valid error number :(
+>
+> It's EPERM :) - but yeah probably not really the right error in this
+> case.
+>
+> Still I think this patch is an improvement so I'll plan to merge it.
+>
+> cheers
+>
+
+--000000000000ca1c1305fd3a8e97
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>&gt; Still I think this patch is an improvement so I&=
+#39;ll plan to merge it.</div><div><br></div><div>Please let me know when y=
+ou commit it.</div><div><br></div><div>Thanks</div><div>Immad.<br></div></d=
+iv><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On =
+Tue, May 30, 2023 at 4:17=E2=80=AFPM Michael Ellerman &lt;<a href=3D"mailto=
+:mpe@ellerman.id.au">mpe@ellerman.id.au</a>&gt; wrote:<br></div><blockquote=
+ class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px so=
+lid rgb(204,204,204);padding-left:1ex">Greg KH &lt;<a href=3D"mailto:gregkh=
+@linuxfoundation.org" target=3D"_blank">gregkh@linuxfoundation.org</a>&gt; =
+writes:<br>
+&gt; On Sun, May 28, 2023 at 01:16:44PM +0530, <a href=3D"mailto:mirimmad@o=
+utlook.com" target=3D"_blank">mirimmad@outlook.com</a> wrote:<br>
+&gt;&gt; From: Immad Mir &lt;<a href=3D"mailto:mirimmad17@gmail.com" target=
+=3D"_blank">mirimmad17@gmail.com</a>&gt;<br>
+&gt;&gt; <br>
+&gt;&gt; The debugfs_create_dir returns ERR_PTR incase of an error and the<=
+br>
+&gt;&gt; correct way of checking it by using the IS_ERR inline function, an=
+d<br>
+&gt;&gt; not the simple null comparision. This patch fixes this.<br>
+&gt;&gt; <br>
+&gt;&gt; Suggested-By: Ivan Orlov &lt;<a href=3D"mailto:ivan.orlov0322@gmai=
+l.com" target=3D"_blank">ivan.orlov0322@gmail.com</a>&gt;<br>
+&gt;&gt; Signed-off-by: Immad Mir &lt;<a href=3D"mailto:mirimmad17@gmail.co=
+m" target=3D"_blank">mirimmad17@gmail.com</a>&gt;<br>
+&gt;&gt; ---<br>
+&gt;&gt;=C2=A0 arch/powerpc/platforms/powernv/opal-xscom.c | 4 ++--<br>
+&gt;&gt;=C2=A0 1 file changed, 2 insertions(+), 2 deletions(-)<br>
+&gt;&gt; <br>
+&gt;&gt; diff --git a/arch/powerpc/platforms/powernv/opal-xscom.c b/arch/po=
+werpc/platforms/powernv/opal-xscom.c<br>
+&gt;&gt; index 6b4eed2ef..262cd6fac 100644<br>
+&gt;&gt; --- a/arch/powerpc/platforms/powernv/opal-xscom.c<br>
+&gt;&gt; +++ b/arch/powerpc/platforms/powernv/opal-xscom.c<br>
+&gt;&gt; @@ -168,7 +168,7 @@ static int scom_debug_init_one(struct dentry *=
+root, struct device_node *dn,<br>
+&gt;&gt;=C2=A0 =C2=A0 =C2=A0 ent-&gt;path.size =3D strlen((char *)ent-&gt;p=
+ath.data);<br>
+&gt;&gt; <br>
+&gt;&gt;=C2=A0 =C2=A0 =C2=A0 dir =3D debugfs_create_dir(ent-&gt;name, root)=
+;<br>
+&gt;&gt; -=C2=A0 =C2=A0 if (!dir) {<br>
+&gt;&gt; +=C2=A0 =C2=A0 if (IS_ERR(dir)) {<br>
+&gt;&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 kfree(ent-&gt;path=
+.data);<br>
+&gt;&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 kfree(ent);<br>
+&gt;&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return -1;<br>
+&gt;<br>
+&gt; Why is this driver caring if debugfs is working or not at all?=C2=A0 I=
+t<br>
+&gt; should just ignore the error and keep moving forward.<br>
+<br>
+It&#39;s creating directories and then creating files in those directories.=
+<br>
+So I think it makes sense that it checks that the directory was created<br>
+successfully. It doesn&#39;t check whether the files were created.<br>
+<br>
+&gt; And -1 is not a valid error number :(<br>
+<br>
+It&#39;s EPERM :) - but yeah probably not really the right error in this<br=
+>
+case.<br>
+<br>
+Still I think this patch is an improvement so I&#39;ll plan to merge it.<br=
+>
+<br>
+cheers<br>
+</blockquote></div>
+
+--000000000000ca1c1305fd3a8e97--
