@@ -1,56 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2952E721A6D
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Jun 2023 23:50:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 883D4721A65
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Jun 2023 23:48:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QZ9R35mLqz3f5y
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jun 2023 07:50:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QZ9NM1RlVz3dyX
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jun 2023 07:48:35 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=lJmPSA5r;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=YfqFINn6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=91.218.175.41; helo=out-41.mta0.migadu.com; envelope-from=kent.overstreet@linux.dev; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:1004:224b::a; helo=out-10.mta0.migadu.com; envelope-from=kent.overstreet@linux.dev; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=lJmPSA5r;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=YfqFINn6;
 	dkim-atps=neutral
-X-Greylist: delayed 584 seconds by postgrey-1.36 at boromir; Mon, 05 Jun 2023 07:50:12 AEST
-Received: from out-41.mta0.migadu.com (out-41.mta0.migadu.com [91.218.175.41])
+X-Greylist: delayed 446 seconds by postgrey-1.36 at boromir; Mon, 05 Jun 2023 07:47:49 AEST
+Received: from out-10.mta0.migadu.com (out-10.mta0.migadu.com [IPv6:2001:41d0:1004:224b::a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QZ9QD6n1jz3cdr
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Jun 2023 07:50:07 +1000 (AEST)
-Date: Sun, 4 Jun 2023 17:40:01 -0400
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QZ9MT5N13z3cjW
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Jun 2023 07:47:49 +1000 (AEST)
+Date: Sun, 4 Jun 2023 17:47:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1685914810;
+	t=1685915263;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Et8ABs17Zkfn2mGnERyKGLy92viAhCiNpbl07PFjtnE=;
-	b=lJmPSA5rKs24/0LEEceFQVOeSXhUoE0+fis7PHaMYfcE2LZdC95JDmW0A61ctvzkYppcPe
-	W9mzvDnQ++G15OC4MG7fFAFeLDHkLYUk7wWialJK1ki4sRZ8GoqzW1U3lBIfZIfX0tb2f2
-	f+19wUtFVDPjGlYI9R+Uk+lqqtnlv4Q=
+	bh=qZfrqkmOcubtDULoEnOL869saW/gsg6Wix94q7dUars=;
+	b=YfqFINn6izWiCi8X1ga2qGkSX12jQdO6/uM5Z2MbOgTPHwdlRmHzCNo7esPnqeOqp6VsVi
+	zGRvgrd73qlFp6wgP4dPxEdd3I7LdGJRQE1vxQlzZsGHPYkQgfFzvODPb5FpeUGhLw017m
+	/XDOZCuvIcPybXEwvbQdYXtG4WGYHSo=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Song Liu <song@kernel.org>
-Subject: Re: [PATCH 00/13] mm: jit/text allocator
-Message-ID: <ZH0EseWI9F1n9yJx@moria.home.lan>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Subject: Re: [PATCH 12/13] x86/jitalloc: prepare to allocate exectuatble
+ memory as ROX
+Message-ID: <ZH0GeKreazeNYmHT@moria.home.lan>
 References: <20230601101257.530867-1-rppt@kernel.org>
- <ZHjDU/mxE+cugpLj@FVFF77S0Q05N.cambridge.arm.com>
- <ZHjgIH3aX9dCvVZc@moria.home.lan>
- <ZHm3zUUbwqlsZBBF@FVFF77S0Q05N>
- <CAPhsuW7Euczff_KB70nuH=Hhf2EYHAf=xiQR7mFqVfByhD34XA@mail.gmail.com>
- <ZHzRxE5V6YzGVsHy@moria.home.lan>
- <CAPhsuW7iEDa44jxc_7Cj4KnVhtct-UTO2JtVK-U7o2ynn2iX8Q@mail.gmail.com>
+ <20230601101257.530867-13-rppt@kernel.org>
+ <0f50ac52a5280d924beeb131e6e4717b6ad9fdf7.camel@intel.com>
+ <ZHjcr26YskTm+0EF@moria.home.lan>
+ <a51c041b61e2916d2b91c990349aabc6cb9836aa.camel@intel.com>
+ <ZHjljJfQjhVV/jNS@moria.home.lan>
+ <68b8160454518387c53508717ba5ed5545ff0283.camel@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAPhsuW7iEDa44jxc_7Cj4KnVhtct-UTO2JtVK-U7o2ynn2iX8Q@mail.gmail.com>
+In-Reply-To: <68b8160454518387c53508717ba5ed5545ff0283.camel@intel.com>
 X-Migadu-Flow: FLOW_OUT
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -63,37 +62,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linux-trace-kernel@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Andrew Morton <akpm@linux-foundation.org>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Puranjay Mohan <puranjay12@gmail.com>, linux-parisc@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-modules@vger.kernel.org, bpf@vger.k
- ernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>
+Cc: "chenhuacai@kernel.org" <chenhuacai@kernel.org>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "song@kernel.org" <song@kernel.org>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "will@kernel.org" <will@kernel.org>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, "deller@gmx.de" <deller@gmx.de>, "x86@kernel.org" <x86@kernel.org>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>, "naveen.n.rao@linux.ibm.com" <naveen.n.rao@linux.ibm.com>, "linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>, "hca@linux.ibm.com" <hca@linux.ibm.com>, "rostedt@goodmis.org" <rostedt@goodmis.org>, "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, "tglx@linutronix.de" <tglx@linutronix.de>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.o
+ rg>, "tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>, "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "dinguyen@kernel.org" <dinguyen@kernel.org>, "mcgrof@kernel.org" <mcgrof@kernel.org>, "palmer@dabbelt.com" <palmer@dabbelt.com>, "linux-modules@vger.kernel.org" <linux-modules@vger.kernel.org>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "davem@davemloft.net" <davem@davemloft.net>, "rppt@kernel.org" <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Jun 04, 2023 at 02:22:30PM -0700, Song Liu wrote:
-> On Sun, Jun 4, 2023 at 11:02 AM Kent Overstreet
-> <kent.overstreet@linux.dev> wrote:
-> >
-> > On Fri, Jun 02, 2023 at 11:20:58AM -0700, Song Liu wrote:
-> > > IIUC, arm64 uses VMALLOC address space for BPF programs. The reason
-> > > is each BPF program uses at least 64kB (one page) out of the 128MB
-> > > address space. Puranjay Mohan (CC'ed) is working on enabling
-> > > bpf_prog_pack for arm64. Once this work is done, multiple BPF programs
-> > > will be able to share a page. Will this improvement remove the need to
-> > > specify a different address range for BPF programs?
-> >
-> > Can we please stop working on BPF specific sub page allocation and focus
-> > on doing this in mm/? This never should have been in BPF in the first
-> > place.
+On Thu, Jun 01, 2023 at 08:50:39PM +0000, Edgecombe, Rick P wrote:
+> > Ahh! Thanks for that; perhaps the comment in text_poke() about IPIs
+> > could be a bit clearer.
+> > 
+> > What is it (if anything) you don't like about text_poke() then? It
+> > looks
+> > like it's doing broadly similar things to kmap_local(), so should be
+> > in the same ballpark from a performance POV?
 > 
-> That work is mostly independent of the allocator work we are discussing here.
-> The goal Puranjay's work is to enable the arm64 BPF JIT engine to use a
-> ROX allocator. The allocator could be the bpf_prog_pack allocator, or jitalloc,
-> or module_alloc_type. Puranjay is using bpf_prog_alloc for now. But once
-> jitalloc or module_alloc_type (either one) is merged, we will migrate BPF
-> JIT engines (x86_64 and arm64) to the new allocator and then tear down
-> bpf_prog_pack.
-> 
-> Does this make sense?
+> The way text_poke() is used here, it is creating a new writable alias
+> and flushing it for *each* write to the module (like for each write of
+> an individual relocation, etc). I was just thinking it might warrant
+> some batching or something.
 
-Yeah, as long as that's the plan. Maybe one of you could tell us what
-issues were preventing prog_pack from being used in the first place, it
-might be relevant - this is the time to get the new allocator API right.
+Ah, I see. A kmap_local type interface might get us that kind of
+batching, if it supported mapping compound pages - currently kmap_local
+still only maps single pages, but with folios getting plumbed around I
+assume someone will make it handle compound pages eventually.
