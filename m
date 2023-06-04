@@ -2,48 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87B567213E4
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Jun 2023 02:34:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31EC972148C
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Jun 2023 06:06:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QYd5h17rXz3f7F
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Jun 2023 10:34:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QYjpK63Nsz3dxd
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Jun 2023 14:06:01 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qdrVHzFH;
+	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=mvhxQwPr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QYd4q37qzz3bkM
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  4 Jun 2023 10:33:15 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=raptorengineering.com (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=tpearson@raptorengineering.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qdrVHzFH;
+	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=mvhxQwPr;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+X-Greylist: delayed 457 seconds by postgrey-1.36 at boromir; Sun, 04 Jun 2023 14:05:13 AEST
+Received: from raptorengineering.com (mail.raptorengineering.com [23.155.224.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QYd4m3Tl9z4x3x;
-	Sun,  4 Jun 2023 10:33:12 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1685838792;
-	bh=HlEyZhE+LrdUOZTCV04b2fMeKrsIesj187fO09UzUIU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=qdrVHzFHHkmCWaBGYXaFZALpDl71Ul/+uEYHsJoBvsLf5Voq/G5qpvVS5uMZ74ZUe
-	 QeCAdykR4oSeykmCPAsmDKN1aC3cWaW7mQdzTNVf1smELK3eAx/WIT1wkIZiNQ1H2w
-	 sloHkLmPm6iew9bbckurez6gINYBPmbmbItCyeXsOOclB+RvEo6sAscqA3Wm2E/pyP
-	 OevPSmBbiXoH0CYgH/+G7EUJHcIjpwpotdabVZOWvpVlcB3fk79EV0seYADJPXAh6U
-	 WF6UtIkmIqgB4lZCNL7lC5XQYEXm+SaogJtNiwIVpmmAYTOLW6GBHUWKqqWCPmvuR6
-	 wgHQh/T3Om33Q==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.4-4 tag
-Date: Sun, 04 Jun 2023 10:33:12 +1000
-Message-ID: <87cz2cgj7b.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QYjnP3ZbSz3c4w
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  4 Jun 2023 14:05:13 +1000 (AEST)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id 32E518284E45;
+	Sat,  3 Jun 2023 22:57:33 -0500 (CDT)
+Received: from mail.rptsys.com ([127.0.0.1])
+	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id 16z4nBhDYE8N; Sat,  3 Jun 2023 22:57:31 -0500 (CDT)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id 21E1C8284F94;
+	Sat,  3 Jun 2023 22:57:31 -0500 (CDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rptsys.com 21E1C8284F94
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=raptorengineering.com; s=B8E824E6-0BE2-11E6-931D-288C65937AAD;
+	t=1685851051; bh=pp9YQ8oFCEzUqouZstn/GGVcB6betN1RFKBrWGUP9Fs=;
+	h=Date:From:To:Message-ID:MIME-Version;
+	b=mvhxQwPrWgfdt3u2ilB9ZnV4r7xUJBgie8mHoIpjdvKaaDwFXjCPHqor+GTRcRMIS
+	 EIcAvtbutXewQm0EAaoVySG89ZaSutTUKean2lOoUB8+9Ywt94CjBc0h6YhH1b7ToN
+	 14mcLB8iw/PNs6Etd0hWWGjROJAxcpMg9F/vQbww=
+X-Virus-Scanned: amavisd-new at rptsys.com
+Received: from mail.rptsys.com ([127.0.0.1])
+	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id SGdpJceVXicU; Sat,  3 Jun 2023 22:57:30 -0500 (CDT)
+Received: from vali.starlink.edu (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id CD7728284E45;
+	Sat,  3 Jun 2023 22:57:30 -0500 (CDT)
+Date: Sat, 3 Jun 2023 22:57:28 -0500 (CDT)
+From: Timothy Pearson <tpearson@raptorengineering.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Message-ID: <586983120.3136676.1685851048873.JavaMail.zimbra@raptorengineeringinc.com>
+In-Reply-To: <87h6rogjok.fsf@mail.lhotse>
+References: <20230602140143.0af52cee@canb.auug.org.au> <2d188c87-ef34-3812-7330-a985f756d959@infradead.org> <87h6rogjok.fsf@mail.lhotse>
+Subject: Re: linux-next: Tree for Jun 2 (arch/powerpc/kernel/iommu.c)
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: Zimbra 8.5.0_GA_3042 (ZimbraWebClient - GC114 (Linux)/8.5.0_GA_3042)
+Thread-Topic: linux-next: Tree for Jun 2 (arch/powerpc/kernel/iommu.c)
+Thread-Index: RTvjy9BIecQ79Qf7Chi/J96e/nXceg==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,73 +70,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maninder1.s@samsung.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, gbatra@linux.vnet.ibm.com
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>, Alexey Kardashevskiy <aik@ozlabs.ru>, Randy Dunlap <rdunlap@infradead.org>, linux-kernel <linux-kernel@vger.kernel.org>, Linux Next Mailing List <linux-next@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
-
-Hi Linus,
-
-Please pull some more powerpc fixes for 6.4:
-
-The following changes since commit 358e526a1648cdd773ba169da5867874ae2408e3:
-
-  powerpc/mm: Reinstate ARCH_FORCE_MAX_ORDER ranges (2023-05-21 11:40:34 +1000)
-
-are available in the git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.4-4
-
-for you to fetch changes up to 719dfd5925e186e09a2a6f23016936ac436f3d78:
-
-  powerpc/xmon: Use KSYM_NAME_LEN in array size (2023-05-30 16:46:56 +1000)
-
-- ------------------------------------------------------------------
-powerpc fixes for 6.4 #4
-
- - Fix link errors in new aes-gcm-p10 code when built-in with other drivers.
-
- - Limit number of TCEs passed to H_STUFF_TCE hcall as per spec.
-
- - Use KSYM_NAME_LEN in xmon array size to avoid possible OOB write.
-
-Thanks to: Gaurav Batra, Maninder Singh Vishal Chourasia.
-
-- ------------------------------------------------------------------
-Gaurav Batra (1):
-      powerpc/iommu: Limit number of TCEs to 512 for H_STUFF_TCE hcall
-
-Maninder Singh (1):
-      powerpc/xmon: Use KSYM_NAME_LEN in array size
-
-Michael Ellerman (1):
-      powerpc/crypto: Fix aes-gcm-p10 link errors
 
 
- arch/powerpc/crypto/Makefile                            | 10 +++++-----
- arch/powerpc/crypto/aes-gcm-p10-glue.c                  | 18 +++++++++---------
- arch/powerpc/crypto/{aesp8-ppc.pl => aesp10-ppc.pl}     |  2 +-
- arch/powerpc/crypto/{ghashp8-ppc.pl => ghashp10-ppc.pl} | 12 ++++++------
- arch/powerpc/platforms/pseries/iommu.c                  | 13 +++++++++++--
- arch/powerpc/xmon/xmon.c                                |  2 +-
- 6 files changed, 33 insertions(+), 24 deletions(-)
- rename arch/powerpc/crypto/{aesp8-ppc.pl => aesp10-ppc.pl} (99%)
- rename arch/powerpc/crypto/{ghashp8-ppc.pl => ghashp10-ppc.pl} (97%)
------BEGIN PGP SIGNATURE-----
+----- Original Message -----
+> From: "Michael Ellerman" <mpe@ellerman.id.au>
+> To: "Randy Dunlap" <rdunlap@infradead.org>, "Stephen Rothwell" <sfr@canb.auug.org.au>, "Linux Next Mailing List"
+> <linux-next@vger.kernel.org>
+> Cc: "linux-kernel" <linux-kernel@vger.kernel.org>, "linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>, "Alexey
+> Kardashevskiy" <aik@ozlabs.ru>, "Timothy Pearson" <tpearson@raptorengineering.com>
+> Sent: Saturday, June 3, 2023 7:22:51 PM
+> Subject: Re: linux-next: Tree for Jun 2 (arch/powerpc/kernel/iommu.c)
 
-iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmR724kACgkQUevqPMjh
-pYA43BAAndyoXJ2q+lOdn/tTHA0QUjefB8YON2/9OC/lkX//TWJfInpiZ3GI5DMn
-nx44N+zRdYMSjMKGw4NxOiFRoHguXb9Wns/9HEeLz2UpOS5nrxVPJRZsgGDQvzIx
-UN8pkOuAQF9nAHUD+ZRp2R61jxlxFrp2V3RvHsRTHyBUUVLcAdjk07GKTm5Z0hYx
-eLDka1FjAXUnd/6S4YJAsMpPKdHLxJOsz95mkT5eZJ6Mq67+HeYtd06Kcd6vgMaP
-gW91Z93THyKhiEIcSQSJhwngud3UyJfMj+6TIycSHC/21CE9yMHrmt+mjgprJpdd
-eLKLIC+I0Gj8rk0NW1AzLveXWoV0tN0rhs+pLA9/l4CbJUlHLq49IG451wksCnWM
-Esh3fmHgKQYn8MxNeYUC7h7NNCUWlVLXK4qzSB13ZNBdGVIEwMl5q0cXajXY6g7b
-jXwxNLDbuXoyFaZCHdfXkmyMKrxDLVG2kTzLdZ5y5nwmh2OgMu101CqgJyJP34ig
-Svu6IZmZepod/A3u4peNKMGHsMRCVI4TYdI3ItbnMV+SDLSLXDQhVvARZNe5PChb
-1bSfnFeDG0ib+WLZX85ZlQCsfzoNMRwZYMMOWlreMBKzypVALGFHVADEK+/v1c3w
-3bXw58YdrcsjNa5rI0BgucOpQLEzp0VMhB06LIzI0j5yFOjrPy0=
-=DY5l
------END PGP SIGNATURE-----
+> Randy Dunlap <rdunlap@infradead.org> writes:
+>> On 6/1/23 21:01, Stephen Rothwell wrote:
+>>> Hi all,
+>>> 
+>>> Changes since 20230601:
+>>> 
+>>
+>> On powerpc64, a randconfig failed with:
+>>
+>> In file included from ../include/linux/list.h:5,
+>>                  from ../include/linux/preempt.h:11,
+>>                  from ../include/linux/spinlock.h:56,
+>>                  from ../include/linux/mmzone.h:8,
+>>                  from ../include/linux/gfp.h:7,
+>>                  from ../include/linux/slab.h:15,
+>>                  from ../arch/powerpc/kernel/iommu.c:15:
+>> ../arch/powerpc/kernel/iommu.c: In function
+>> 'spapr_tce_setup_phb_iommus_initcall':
+>> ../arch/powerpc/kernel/iommu.c:1391:36: error: 'hose_list' undeclared (first use
+>> in this function); did you mean 'zonelist'?
+>>  1391 |         list_for_each_entry(hose, &hose_list, list_node) {
+>>       |                                    ^~~~~~~~~
+> ...
+> 
+> hose_list is in pci-common.c which is built when PCI=y.
+> 
+> PSERIES and POWERNV force PCI=y.
+> 
+> But this config has neither:
+> 
+> # CONFIG_PPC_POWERNV is not set
+> # CONFIG_PPC_PSERIES is not set
+> CONFIG_HAVE_PCI=y
+> # CONFIG_PCI is not set
+> # CONFIG_COMMON_CLK_RS9_PCIE is not set
+> 
+> 
+> Probably the spapr_tce code should be wrapped in an #ifdef that is only
+> enabled when POWERNV || PSERIES is enabled.
+> 
+> cheers
+
+Sounds reasonable, I was going to look into this further over the weekend.  I can put together a patch for Monday if that works?
