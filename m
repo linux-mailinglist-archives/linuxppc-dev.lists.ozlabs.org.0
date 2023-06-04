@@ -2,55 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 883D4721A65
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Jun 2023 23:48:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32736721A72
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Jun 2023 23:56:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QZ9NM1RlVz3dyX
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jun 2023 07:48:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QZ9YT5jqKz3f5p
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jun 2023 07:56:29 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=YfqFINn6;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=1jblcwa+;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:1004:224b::a; helo=out-10.mta0.migadu.com; envelope-from=kent.overstreet@linux.dev; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=YfqFINn6;
-	dkim-atps=neutral
-X-Greylist: delayed 446 seconds by postgrey-1.36 at boromir; Mon, 05 Jun 2023 07:47:49 AEST
-Received: from out-10.mta0.migadu.com (out-10.mta0.migadu.com [IPv6:2001:41d0:1004:224b::a])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QZ9MT5N13z3cjW
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Jun 2023 07:47:49 +1000 (AEST)
-Date: Sun, 4 Jun 2023 17:47:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1685915263;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qZfrqkmOcubtDULoEnOL869saW/gsg6Wix94q7dUars=;
-	b=YfqFINn6izWiCi8X1ga2qGkSX12jQdO6/uM5Z2MbOgTPHwdlRmHzCNo7esPnqeOqp6VsVi
-	zGRvgrd73qlFp6wgP4dPxEdd3I7LdGJRQE1vxQlzZsGHPYkQgfFzvODPb5FpeUGhLw017m
-	/XDOZCuvIcPybXEwvbQdYXtG4WGYHSo=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Subject: Re: [PATCH 12/13] x86/jitalloc: prepare to allocate exectuatble
- memory as ROX
-Message-ID: <ZH0GeKreazeNYmHT@moria.home.lan>
-References: <20230601101257.530867-1-rppt@kernel.org>
- <20230601101257.530867-13-rppt@kernel.org>
- <0f50ac52a5280d924beeb131e6e4717b6ad9fdf7.camel@intel.com>
- <ZHjcr26YskTm+0EF@moria.home.lan>
- <a51c041b61e2916d2b91c990349aabc6cb9836aa.camel@intel.com>
- <ZHjljJfQjhVV/jNS@moria.home.lan>
- <68b8160454518387c53508717ba5ed5545ff0283.camel@intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QZ9XX32dtz3cjW
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Jun 2023 07:55:40 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=NUSwhZy1/res6awhW/S7wR5GlEYRXerBv2gBnZJoqgk=; b=1jblcwa+kVG/RLLzLxxruy/Dha
+	6cqd8127kzAxwgpGf4/0eSSSt0dHgm2fYBCy22Tva4wwOT2WSwohRSAjJ7H5zOa/fxrK/KbvYVaKP
+	AU1JeZsf5RZVLizwWmoaceBBxeXysK+vH4FTFESUwMkIwZFlHSG9CjlMuaFXCZg9CK1yLPYmI3T6f
+	6odvsfZoixeHSfS1AT7OsbgC4BP/JkxAuwFrIXCZFxJIct0XPxmhooUnNCZa73+w9Z5WgnsOsL5Cx
+	qJtAAEBAYtZ+YWk3iCKJS5nOsC5UTbJGR+JVEw7mVyCEL/BgGF6ga7KbwH1JGzrfeQb4zWrqRAN0M
+	2VskWFPQ==;
+Received: from [2601:1c2:980:9ec0::2764]
+	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+	id 1q5vhF-00DGFK-09;
+	Sun, 04 Jun 2023 21:55:33 +0000
+Message-ID: <daa8c49e-a585-4c1d-9161-808633610850@infradead.org>
+Date: Sun, 4 Jun 2023 14:55:32 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <68b8160454518387c53508717ba5ed5545ff0283.camel@intel.com>
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Subject: Re: linux-next: Tree for Jun 2 (arch/powerpc/kernel/iommu.c)
+Content-Language: en-US
+To: Timothy Pearson <tpearson@raptorengineering.com>,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <20230602140143.0af52cee@canb.auug.org.au>
+ <2d188c87-ef34-3812-7330-a985f756d959@infradead.org>
+ <87h6rogjok.fsf@mail.lhotse>
+ <586983120.3136676.1685851048873.JavaMail.zimbra@raptorengineeringinc.com>
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <586983120.3136676.1685851048873.JavaMail.zimbra@raptorengineeringinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,26 +61,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "chenhuacai@kernel.org" <chenhuacai@kernel.org>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "song@kernel.org" <song@kernel.org>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "will@kernel.org" <will@kernel.org>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, "deller@gmx.de" <deller@gmx.de>, "x86@kernel.org" <x86@kernel.org>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>, "naveen.n.rao@linux.ibm.com" <naveen.n.rao@linux.ibm.com>, "linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>, "hca@linux.ibm.com" <hca@linux.ibm.com>, "rostedt@goodmis.org" <rostedt@goodmis.org>, "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, "tglx@linutronix.de" <tglx@linutronix.de>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.o
- rg>, "tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>, "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "dinguyen@kernel.org" <dinguyen@kernel.org>, "mcgrof@kernel.org" <mcgrof@kernel.org>, "palmer@dabbelt.com" <palmer@dabbelt.com>, "linux-modules@vger.kernel.org" <linux-modules@vger.kernel.org>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "davem@davemloft.net" <davem@davemloft.net>, "rppt@kernel.org" <rppt@kernel.org>
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Stephen Rothwell <sfr@canb.auug.org.au>, Linux Next Mailing List <linux-next@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-kernel <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 01, 2023 at 08:50:39PM +0000, Edgecombe, Rick P wrote:
-> > Ahh! Thanks for that; perhaps the comment in text_poke() about IPIs
-> > could be a bit clearer.
-> > 
-> > What is it (if anything) you don't like about text_poke() then? It
-> > looks
-> > like it's doing broadly similar things to kmap_local(), so should be
-> > in the same ballpark from a performance POV?
-> 
-> The way text_poke() is used here, it is creating a new writable alias
-> and flushing it for *each* write to the module (like for each write of
-> an individual relocation, etc). I was just thinking it might warrant
-> some batching or something.
 
-Ah, I see. A kmap_local type interface might get us that kind of
-batching, if it supported mapping compound pages - currently kmap_local
-still only maps single pages, but with folios getting plumbed around I
-assume someone will make it handle compound pages eventually.
+
+On 6/3/23 20:57, Timothy Pearson wrote:
+> 
+> 
+> ----- Original Message -----
+>> From: "Michael Ellerman" <mpe@ellerman.id.au>
+>> To: "Randy Dunlap" <rdunlap@infradead.org>, "Stephen Rothwell" <sfr@canb.auug.org.au>, "Linux Next Mailing List"
+>> <linux-next@vger.kernel.org>
+>> Cc: "linux-kernel" <linux-kernel@vger.kernel.org>, "linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>, "Alexey
+>> Kardashevskiy" <aik@ozlabs.ru>, "Timothy Pearson" <tpearson@raptorengineering.com>
+>> Sent: Saturday, June 3, 2023 7:22:51 PM
+>> Subject: Re: linux-next: Tree for Jun 2 (arch/powerpc/kernel/iommu.c)
+> 
+>> Randy Dunlap <rdunlap@infradead.org> writes:
+>>> On 6/1/23 21:01, Stephen Rothwell wrote:
+>>>> Hi all,
+>>>>
+>>>> Changes since 20230601:
+>>>>
+>>>
+>>> On powerpc64, a randconfig failed with:
+>>>
+>>> In file included from ../include/linux/list.h:5,
+>>>                  from ../include/linux/preempt.h:11,
+>>>                  from ../include/linux/spinlock.h:56,
+>>>                  from ../include/linux/mmzone.h:8,
+>>>                  from ../include/linux/gfp.h:7,
+>>>                  from ../include/linux/slab.h:15,
+>>>                  from ../arch/powerpc/kernel/iommu.c:15:
+>>> ../arch/powerpc/kernel/iommu.c: In function
+>>> 'spapr_tce_setup_phb_iommus_initcall':
+>>> ../arch/powerpc/kernel/iommu.c:1391:36: error: 'hose_list' undeclared (first use
+>>> in this function); did you mean 'zonelist'?
+>>>  1391 |         list_for_each_entry(hose, &hose_list, list_node) {
+>>>       |                                    ^~~~~~~~~
+>> ...
+>>
+>> hose_list is in pci-common.c which is built when PCI=y.
+>>
+>> PSERIES and POWERNV force PCI=y.
+>>
+>> But this config has neither:
+>>
+>> # CONFIG_PPC_POWERNV is not set
+>> # CONFIG_PPC_PSERIES is not set
+>> CONFIG_HAVE_PCI=y
+>> # CONFIG_PCI is not set
+>> # CONFIG_COMMON_CLK_RS9_PCIE is not set
+>>
+>>
+>> Probably the spapr_tce code should be wrapped in an #ifdef that is only
+>> enabled when POWERNV || PSERIES is enabled.
+>>
+>> cheers
+> 
+> Sounds reasonable, I was going to look into this further over the weekend.  I can put together a patch for Monday if that works?
+
+Works for me. Go for it.
+Thanks.
+
+-- 
+~Randy
