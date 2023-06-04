@@ -2,51 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C01417213DF
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Jun 2023 02:23:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87B567213E4
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Jun 2023 02:34:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QYcsr32lXz3f00
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Jun 2023 10:23:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QYd5h17rXz3f7F
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Jun 2023 10:34:00 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qd2YyRXs;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qdrVHzFH;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QYcrx0lH9z3cBL
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  4 Jun 2023 10:22:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QYd4q37qzz3bkM
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  4 Jun 2023 10:33:15 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qd2YyRXs;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qdrVHzFH;
 	dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QYcrs11C6z4x3x;
-	Sun,  4 Jun 2023 10:22:52 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QYd4m3Tl9z4x3x;
+	Sun,  4 Jun 2023 10:33:12 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1685838176;
-	bh=AUJ7jHGZlU1IgO9OqyJ4jwSVRZvI7dVMmKTNxQxKoeI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=qd2YyRXsuhpUARRns0XW/38b+R1sW7dr4usqM/UPRmx59J5EK5CrM7vQ4ROSYmYcg
-	 4UILf3rybeo9IVOT6KNFMUY2uox4B+heOXB4A0kqAIOgjeuEv5hoc6sSy6L0B0imXg
-	 yVii0FpGZVB4mwB5tgEDHEANGRPnikIhFd3Waos+0a73UAszqP6EODPT49dqN4k1Lm
-	 h1xrxTiQJ8Hrnbb/iQp2q2vIXA3niI7q7Ls2loypcmzfXq67Vt/zY27jAKKzBNEToh
-	 jHuBh0k8NWaQImrEUUhu3MEr3yfCqzS6aEWGlahbygEZPNHqVtTBPNKFg/1I3KWdKE
-	 EuBtbBTyBoqGQ==
+	s=201909; t=1685838792;
+	bh=HlEyZhE+LrdUOZTCV04b2fMeKrsIesj187fO09UzUIU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=qdrVHzFHHkmCWaBGYXaFZALpDl71Ul/+uEYHsJoBvsLf5Voq/G5qpvVS5uMZ74ZUe
+	 QeCAdykR4oSeykmCPAsmDKN1aC3cWaW7mQdzTNVf1smELK3eAx/WIT1wkIZiNQ1H2w
+	 sloHkLmPm6iew9bbckurez6gINYBPmbmbItCyeXsOOclB+RvEo6sAscqA3Wm2E/pyP
+	 OevPSmBbiXoH0CYgH/+G7EUJHcIjpwpotdabVZOWvpVlcB3fk79EV0seYADJPXAh6U
+	 WF6UtIkmIqgB4lZCNL7lC5XQYEXm+SaogJtNiwIVpmmAYTOLW6GBHUWKqqWCPmvuR6
+	 wgHQh/T3Om33Q==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Randy Dunlap <rdunlap@infradead.org>, Stephen Rothwell
- <sfr@canb.auug.org.au>, Linux Next Mailing List
- <linux-next@vger.kernel.org>
-Subject: Re: linux-next: Tree for Jun 2 (arch/powerpc/kernel/iommu.c)
-In-Reply-To: <2d188c87-ef34-3812-7330-a985f756d959@infradead.org>
-References: <20230602140143.0af52cee@canb.auug.org.au>
- <2d188c87-ef34-3812-7330-a985f756d959@infradead.org>
-Date: Sun, 04 Jun 2023 10:22:51 +1000
-Message-ID: <87h6rogjok.fsf@mail.lhotse>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.4-4 tag
+Date: Sun, 04 Jun 2023 10:33:12 +1000
+Message-ID: <87cz2cgj7b.fsf@mail.lhotse>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -60,46 +55,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Timothy Pearson <tpearson@raptorengineering.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: maninder1.s@samsung.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, gbatra@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Randy Dunlap <rdunlap@infradead.org> writes:
-> On 6/1/23 21:01, Stephen Rothwell wrote:
->> Hi all,
->> 
->> Changes since 20230601:
->> 
->
-> On powerpc64, a randconfig failed with:
->
-> In file included from ../include/linux/list.h:5,
->                  from ../include/linux/preempt.h:11,
->                  from ../include/linux/spinlock.h:56,
->                  from ../include/linux/mmzone.h:8,
->                  from ../include/linux/gfp.h:7,
->                  from ../include/linux/slab.h:15,
->                  from ../arch/powerpc/kernel/iommu.c:15:
-> ../arch/powerpc/kernel/iommu.c: In function 'spapr_tce_setup_phb_iommus_initcall':
-> ../arch/powerpc/kernel/iommu.c:1391:36: error: 'hose_list' undeclared (first use in this function); did you mean 'zonelist'?
->  1391 |         list_for_each_entry(hose, &hose_list, list_node) {
->       |                                    ^~~~~~~~~
-...
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
 
-hose_list is in pci-common.c which is built when PCI=y.
+Hi Linus,
 
-PSERIES and POWERNV force PCI=y.
+Please pull some more powerpc fixes for 6.4:
 
-But this config has neither:
+The following changes since commit 358e526a1648cdd773ba169da5867874ae2408e3:
 
-# CONFIG_PPC_POWERNV is not set
-# CONFIG_PPC_PSERIES is not set
-CONFIG_HAVE_PCI=y
-# CONFIG_PCI is not set
-# CONFIG_COMMON_CLK_RS9_PCIE is not set
+  powerpc/mm: Reinstate ARCH_FORCE_MAX_ORDER ranges (2023-05-21 11:40:34 +1000)
+
+are available in the git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.4-4
+
+for you to fetch changes up to 719dfd5925e186e09a2a6f23016936ac436f3d78:
+
+  powerpc/xmon: Use KSYM_NAME_LEN in array size (2023-05-30 16:46:56 +1000)
+
+- ------------------------------------------------------------------
+powerpc fixes for 6.4 #4
+
+ - Fix link errors in new aes-gcm-p10 code when built-in with other drivers.
+
+ - Limit number of TCEs passed to H_STUFF_TCE hcall as per spec.
+
+ - Use KSYM_NAME_LEN in xmon array size to avoid possible OOB write.
+
+Thanks to: Gaurav Batra, Maninder Singh Vishal Chourasia.
+
+- ------------------------------------------------------------------
+Gaurav Batra (1):
+      powerpc/iommu: Limit number of TCEs to 512 for H_STUFF_TCE hcall
+
+Maninder Singh (1):
+      powerpc/xmon: Use KSYM_NAME_LEN in array size
+
+Michael Ellerman (1):
+      powerpc/crypto: Fix aes-gcm-p10 link errors
 
 
-Probably the spapr_tce code should be wrapped in an #ifdef that is only
-enabled when POWERNV || PSERIES is enabled.
+ arch/powerpc/crypto/Makefile                            | 10 +++++-----
+ arch/powerpc/crypto/aes-gcm-p10-glue.c                  | 18 +++++++++---------
+ arch/powerpc/crypto/{aesp8-ppc.pl => aesp10-ppc.pl}     |  2 +-
+ arch/powerpc/crypto/{ghashp8-ppc.pl => ghashp10-ppc.pl} | 12 ++++++------
+ arch/powerpc/platforms/pseries/iommu.c                  | 13 +++++++++++--
+ arch/powerpc/xmon/xmon.c                                |  2 +-
+ 6 files changed, 33 insertions(+), 24 deletions(-)
+ rename arch/powerpc/crypto/{aesp8-ppc.pl => aesp10-ppc.pl} (99%)
+ rename arch/powerpc/crypto/{ghashp8-ppc.pl => ghashp10-ppc.pl} (97%)
+-----BEGIN PGP SIGNATURE-----
 
-cheers
+iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmR724kACgkQUevqPMjh
+pYA43BAAndyoXJ2q+lOdn/tTHA0QUjefB8YON2/9OC/lkX//TWJfInpiZ3GI5DMn
+nx44N+zRdYMSjMKGw4NxOiFRoHguXb9Wns/9HEeLz2UpOS5nrxVPJRZsgGDQvzIx
+UN8pkOuAQF9nAHUD+ZRp2R61jxlxFrp2V3RvHsRTHyBUUVLcAdjk07GKTm5Z0hYx
+eLDka1FjAXUnd/6S4YJAsMpPKdHLxJOsz95mkT5eZJ6Mq67+HeYtd06Kcd6vgMaP
+gW91Z93THyKhiEIcSQSJhwngud3UyJfMj+6TIycSHC/21CE9yMHrmt+mjgprJpdd
+eLKLIC+I0Gj8rk0NW1AzLveXWoV0tN0rhs+pLA9/l4CbJUlHLq49IG451wksCnWM
+Esh3fmHgKQYn8MxNeYUC7h7NNCUWlVLXK4qzSB13ZNBdGVIEwMl5q0cXajXY6g7b
+jXwxNLDbuXoyFaZCHdfXkmyMKrxDLVG2kTzLdZ5y5nwmh2OgMu101CqgJyJP34ig
+Svu6IZmZepod/A3u4peNKMGHsMRCVI4TYdI3ItbnMV+SDLSLXDQhVvARZNe5PChb
+1bSfnFeDG0ib+WLZX85ZlQCsfzoNMRwZYMMOWlreMBKzypVALGFHVADEK+/v1c3w
+3bXw58YdrcsjNa5rI0BgucOpQLEzp0VMhB06LIzI0j5yFOjrPy0=
+=DY5l
+-----END PGP SIGNATURE-----
