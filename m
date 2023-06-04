@@ -1,52 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA327721913
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Jun 2023 20:03:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF58E721A39
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Jun 2023 23:23:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QZ4Ny6p1tz3f0Y
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jun 2023 04:03:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QZ8qV4dj0z3dxd
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jun 2023 07:23:34 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=PqQAVjJ0;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=b7/fXotn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=95.215.58.42; helo=out-42.mta1.migadu.com; envelope-from=kent.overstreet@linux.dev; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=song@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=PqQAVjJ0;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=b7/fXotn;
 	dkim-atps=neutral
-Received: from out-42.mta1.migadu.com (out-42.mta1.migadu.com [95.215.58.42])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QZ4N51dcmz3c3w
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Jun 2023 04:02:58 +1000 (AEST)
-Date: Sun, 4 Jun 2023 14:02:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1685901772;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8eVzj7/BTcLqy7wFCwl6xnZsISP/KN6jro+z/mha3Xk=;
-	b=PqQAVjJ04ndqRoRQANhzjXtWIXqTHWREPNCE9YGBCSItM5aGzg9r4emrFDvZxP/xuQ2bpU
-	DTvQnUtepgxbciT5z6M6Z+EoNGC8g2gnKTdxk1x+F2TTQDaLu6DFNHuJfLzV07K3aFkiY5
-	e/eoFzp+TyP07cOwDSzIUjGa6eo5mqQ=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Song Liu <song@kernel.org>
-Subject: Re: [PATCH 00/13] mm: jit/text allocator
-Message-ID: <ZHzRxE5V6YzGVsHy@moria.home.lan>
-References: <20230601101257.530867-1-rppt@kernel.org>
- <ZHjDU/mxE+cugpLj@FVFF77S0Q05N.cambridge.arm.com>
- <ZHjgIH3aX9dCvVZc@moria.home.lan>
- <ZHm3zUUbwqlsZBBF@FVFF77S0Q05N>
- <CAPhsuW7Euczff_KB70nuH=Hhf2EYHAf=xiQR7mFqVfByhD34XA@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QZ8pd1SYwz3cjW
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Jun 2023 07:22:49 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 19B16611AA
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  4 Jun 2023 21:22:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D9D1C4339E
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  4 Jun 2023 21:22:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1685913764;
+	bh=M3qa4JrCJfL3BlNTay6Yo1EjRS0Ncm+BgXInegps46U=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=b7/fXotn0pQEscndihWizAxU7LQa5dSl44a9/klsWVyS0lxz/8hzxSa2IZZsjsxfX
+	 r+NUkhYWfR+U4pM6AYQOSE7NKbAlOja0TNvz5m0DUEI1zWFDSIkNTecITt/pEkmEGw
+	 J/i1EcDni6ZWXfMClgL03G31hjpaAYBpUerxaCwWdNhFcQlLqMtUbQhIMCbcYDNWvU
+	 UhGMgdB0T5xWi5hDLtX6T9Luh2uONUrqL+9je7Lg6uu0df3kWNPuh+zhJ8FFH8haNG
+	 M5E3S5UelWImxtKzuetFx71eO1My6o4ugA9ZPA9fKjM0HrHilfHJ2bhtk0fdh1FBN/
+	 wGD7X3O1e8t2w==
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-4f3a9ad31dbso5180006e87.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 04 Jun 2023 14:22:44 -0700 (PDT)
+X-Gm-Message-State: AC+VfDw/Q4PVbRnT79TTjlMlGILULE5QOqj9xdHQQtN4PC3mnTgXWrzj
+	Hp+HE+bZ+u/TOWvzoBOcHAN771seo/x6+lRDnUE=
+X-Google-Smtp-Source: ACHHUZ60WLRim/NZBMM58ZYdg3/lDfHnTA86A+7CXA+1QyWmoNPWXKyb36vAONlyven1Wz2rt1eY822fjimBjrUI6Ak=
+X-Received: by 2002:ac2:5d6c:0:b0:4f2:4df1:f071 with SMTP id
+ h12-20020ac25d6c000000b004f24df1f071mr4227167lft.51.1685913762272; Sun, 04
+ Jun 2023 14:22:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAPhsuW7Euczff_KB70nuH=Hhf2EYHAf=xiQR7mFqVfByhD34XA@mail.gmail.com>
-X-Migadu-Flow: FLOW_OUT
+References: <20230601101257.530867-1-rppt@kernel.org> <ZHjDU/mxE+cugpLj@FVFF77S0Q05N.cambridge.arm.com>
+ <ZHjgIH3aX9dCvVZc@moria.home.lan> <ZHm3zUUbwqlsZBBF@FVFF77S0Q05N>
+ <CAPhsuW7Euczff_KB70nuH=Hhf2EYHAf=xiQR7mFqVfByhD34XA@mail.gmail.com> <ZHzRxE5V6YzGVsHy@moria.home.lan>
+In-Reply-To: <ZHzRxE5V6YzGVsHy@moria.home.lan>
+From: Song Liu <song@kernel.org>
+Date: Sun, 4 Jun 2023 14:22:30 -0700
+X-Gmail-Original-Message-ID: <CAPhsuW7iEDa44jxc_7Cj4KnVhtct-UTO2JtVK-U7o2ynn2iX8Q@mail.gmail.com>
+Message-ID: <CAPhsuW7iEDa44jxc_7Cj4KnVhtct-UTO2JtVK-U7o2ynn2iX8Q@mail.gmail.com>
+Subject: Re: [PATCH 00/13] mm: jit/text allocator
+To: Kent Overstreet <kent.overstreet@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,14 +75,32 @@ Cc: Mark Rutland <mark.rutland@arm.com>, x86@kernel.org, Catalin Marinas <catali
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 02, 2023 at 11:20:58AM -0700, Song Liu wrote:
-> IIUC, arm64 uses VMALLOC address space for BPF programs. The reason
-> is each BPF program uses at least 64kB (one page) out of the 128MB
-> address space. Puranjay Mohan (CC'ed) is working on enabling
-> bpf_prog_pack for arm64. Once this work is done, multiple BPF programs
-> will be able to share a page. Will this improvement remove the need to
-> specify a different address range for BPF programs?
+On Sun, Jun 4, 2023 at 11:02=E2=80=AFAM Kent Overstreet
+<kent.overstreet@linux.dev> wrote:
+>
+> On Fri, Jun 02, 2023 at 11:20:58AM -0700, Song Liu wrote:
+> > IIUC, arm64 uses VMALLOC address space for BPF programs. The reason
+> > is each BPF program uses at least 64kB (one page) out of the 128MB
+> > address space. Puranjay Mohan (CC'ed) is working on enabling
+> > bpf_prog_pack for arm64. Once this work is done, multiple BPF programs
+> > will be able to share a page. Will this improvement remove the need to
+> > specify a different address range for BPF programs?
+>
+> Can we please stop working on BPF specific sub page allocation and focus
+> on doing this in mm/? This never should have been in BPF in the first
+> place.
 
-Can we please stop working on BPF specific sub page allocation and focus
-on doing this in mm/? This never should have been in BPF in the first
-place.
+That work is mostly independent of the allocator work we are discussing her=
+e.
+The goal Puranjay's work is to enable the arm64 BPF JIT engine to use a
+ROX allocator. The allocator could be the bpf_prog_pack allocator, or jital=
+loc,
+or module_alloc_type. Puranjay is using bpf_prog_alloc for now. But once
+jitalloc or module_alloc_type (either one) is merged, we will migrate BPF
+JIT engines (x86_64 and arm64) to the new allocator and then tear down
+bpf_prog_pack.
+
+Does this make sense?
+
+Thanks,
+Song
