@@ -1,66 +1,93 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8639C721CCE
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jun 2023 06:06:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23B4A721E8D
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jun 2023 08:51:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QZKmq1NqFz3dyp
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jun 2023 14:06:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QZPR65ZXbz3dxd
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jun 2023 16:51:46 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uxKGktXN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Z3v+7eHq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=song@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=jpn@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uxKGktXN;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Z3v+7eHq;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QZKlw05kjz3cCc
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Jun 2023 14:06:03 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QZPNK6cCCz3c3w
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Jun 2023 16:49:21 +1000 (AEST)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3556l4A4013791;
+	Mon, 5 Jun 2023 06:49:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=D/3MBPaELEF1VOmCuosGB989uzoBCgQxZwS8UG1yKHU=;
+ b=Z3v+7eHqQEz3ZuyI8Vqa9r4uC5EGzWyDKInyUFeSriwbArFWtKW2H56xldCHNCXo0UEm
+ 9sUGs8SpBQeh+neS8Igug2V5Znz2rikO824er77YuHjP7y0sDNgQpwYhM/LWJ08q9bbi
+ dHv41eW1D2urgO8qaQc3g09Rw4nlEk7itNZ7QgnWegs0AWqspk+HSgBQGqYBwLsbnyGE
+ uDHhW964eR4DBed9q/b30xRwIdckhbdEqDcXLRxLCq0YcHgRPZdoARZFosff3yrcQcBQ
+ QbUDf0lZrHXJ10233FF4qmAMgANt0llCiFp9ek5sy6Pd7fdVBtvkXjZ4M/UIRI3cYcXr zw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r1ar60111-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 05 Jun 2023 06:49:16 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3556kqrt013586;
+	Mon, 5 Jun 2023 06:49:16 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r1ar6010m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 05 Jun 2023 06:49:16 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3555l3Xu027498;
+	Mon, 5 Jun 2023 06:49:14 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3qyxmyh6kx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 05 Jun 2023 06:49:14 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3556nBKD65733084
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 5 Jun 2023 06:49:11 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A7B552004B;
+	Mon,  5 Jun 2023 06:49:11 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B936920043;
+	Mon,  5 Jun 2023 06:49:10 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  5 Jun 2023 06:49:10 +0000 (GMT)
+Received: from pwon.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id EA48E60C3D
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Jun 2023 04:06:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E194C4339B
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Jun 2023 04:06:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1685937961;
-	bh=WtI1jY3mnr9zb4/0mcezfP7YgsPqPtpWRWa72DAZTTg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=uxKGktXNqn49bEfc54rxrLont7pLs83GyZuzAufBwsGBjuGMKdcRP/bEdwYmfXXxU
-	 WvxTYj5OfeXmTt5HLnDLwPgr67Lkt70CP1EvdU2veiDINIXLIDAS+iKL+CqrOBDxNc
-	 W/VQJXu20GHLghTy7G8UfIn1gM+F5ueXv0na8lU8CSN0FmokvQ65P4mX8K8i05YG/W
-	 fPh72tKYwA3H59nPmnDH3bp9qH5k5y+9C+A7tg1dtcxIc9fAAEgtE2WRW9gNO+56RG
-	 rnpEhaZc8TsRLxnuELVYU2NxAebO69dROiM74lzh42BNKszJ2YPFsTB9bCrjTQGdS0
-	 SNLJmYWsBwYSA==
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2b1b6865c7cso28305131fa.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 04 Jun 2023 21:06:01 -0700 (PDT)
-X-Gm-Message-State: AC+VfDy5FzrVg5siq9afnVNOl4F/Mz9pJ734P9YlY0AxR/BCi9TU9TD9
-	F+lanURDiUc+XdOZ560j39xj9RKkBe8SkNTZ4QM=
-X-Google-Smtp-Source: ACHHUZ5GrSEK3PQNTobRaaPR4GI9Q/dG/dH9vtDqov4NPtsLbAuvSoOBGIqnwRO1u3fwexaWyE5OrfsdUvjgUci7FZk=
-X-Received: by 2002:a2e:2419:0:b0:2ad:d6cd:efdd with SMTP id
- k25-20020a2e2419000000b002add6cdefddmr3089294ljk.32.1685937959380; Sun, 04
- Jun 2023 21:05:59 -0700 (PDT)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 2DCE1600D5;
+	Mon,  5 Jun 2023 16:49:08 +1000 (AEST)
+From: Jordan Niethe <jpn@linux.vnet.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [RFC PATCH v2 0/6] KVM: PPC: Nested PAPR guests
+Date: Mon,  5 Jun 2023 16:48:42 +1000
+Message-Id: <20230605064848.12319-1-jpn@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.31.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: B3o1dsBf15sSvM3MaKALlSzqV6oStgbb
+X-Proofpoint-ORIG-GUID: evnw4AJWwlbCFbKecYGeVTcSvrBOLDY-
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-References: <20230601101257.530867-1-rppt@kernel.org> <ZHjDU/mxE+cugpLj@FVFF77S0Q05N.cambridge.arm.com>
- <ZHjgIH3aX9dCvVZc@moria.home.lan> <ZHm3zUUbwqlsZBBF@FVFF77S0Q05N>
- <CAPhsuW7Euczff_KB70nuH=Hhf2EYHAf=xiQR7mFqVfByhD34XA@mail.gmail.com>
- <ZHzRxE5V6YzGVsHy@moria.home.lan> <CAPhsuW7iEDa44jxc_7Cj4KnVhtct-UTO2JtVK-U7o2ynn2iX8Q@mail.gmail.com>
- <ZH0EseWI9F1n9yJx@moria.home.lan>
-In-Reply-To: <ZH0EseWI9F1n9yJx@moria.home.lan>
-From: Song Liu <song@kernel.org>
-Date: Sun, 4 Jun 2023 21:05:47 -0700
-X-Gmail-Original-Message-ID: <CAPhsuW7S40xCz_e0fdimfC+ybO=kvMg3SSzTd1s4qiOcvmJJcA@mail.gmail.com>
-Message-ID: <CAPhsuW7S40xCz_e0fdimfC+ybO=kvMg3SSzTd1s4qiOcvmJJcA@mail.gmail.com>
-Subject: Re: [PATCH 00/13] mm: jit/text allocator
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-03_08,2023-06-02_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 adultscore=0
+ mlxscore=0 priorityscore=1501 suspectscore=0 bulkscore=0 mlxlogscore=694
+ lowpriorityscore=0 spamscore=0 malwarescore=0 phishscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2304280000
+ definitions=main-2306050058
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,57 +99,119 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linux-trace-kernel@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Andrew Morton <akpm@linux-foundation.org>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Puranjay Mohan <puranjay12@gmail.com>, linux-parisc@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-modules@vger.kernel.org, bpf@vger.k
- ernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>
+Cc: Jordan Niethe <jpn@linux.vnet.ibm.com>, mikey@neuling.org, kautuk.consul.1980@gmail.com, kvm@vger.kernel.org, npiggin@gmail.com, kvm-ppc@vger.kernel.org, sbhat@linux.ibm.com, vaibhav@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Jun 4, 2023 at 2:40=E2=80=AFPM Kent Overstreet
-<kent.overstreet@linux.dev> wrote:
->
-> On Sun, Jun 04, 2023 at 02:22:30PM -0700, Song Liu wrote:
-> > On Sun, Jun 4, 2023 at 11:02=E2=80=AFAM Kent Overstreet
-> > <kent.overstreet@linux.dev> wrote:
-> > >
-> > > On Fri, Jun 02, 2023 at 11:20:58AM -0700, Song Liu wrote:
-> > > > IIUC, arm64 uses VMALLOC address space for BPF programs. The reason
-> > > > is each BPF program uses at least 64kB (one page) out of the 128MB
-> > > > address space. Puranjay Mohan (CC'ed) is working on enabling
-> > > > bpf_prog_pack for arm64. Once this work is done, multiple BPF progr=
-ams
-> > > > will be able to share a page. Will this improvement remove the need=
- to
-> > > > specify a different address range for BPF programs?
-> > >
-> > > Can we please stop working on BPF specific sub page allocation and fo=
-cus
-> > > on doing this in mm/? This never should have been in BPF in the first
-> > > place.
-> >
-> > That work is mostly independent of the allocator work we are discussing=
- here.
-> > The goal Puranjay's work is to enable the arm64 BPF JIT engine to use a
-> > ROX allocator. The allocator could be the bpf_prog_pack allocator, or j=
-italloc,
-> > or module_alloc_type. Puranjay is using bpf_prog_alloc for now. But onc=
-e
-> > jitalloc or module_alloc_type (either one) is merged, we will migrate B=
-PF
-> > JIT engines (x86_64 and arm64) to the new allocator and then tear down
-> > bpf_prog_pack.
-> >
-> > Does this make sense?
->
-> Yeah, as long as that's the plan. Maybe one of you could tell us what
-> issues were preventing prog_pack from being used in the first place, it
-> might be relevant - this is the time to get the new allocator API right.
+There is existing support for nested guests on powernv hosts however the
+hcall interface this uses is not support by other PAPR hosts. A set of
+new hcalls will be added to PAPR to facilitate creating and managing
+guests by a regular partition in the following way:
 
-The JIT engine does a lot of writes. Instead of doing many text_poke(),
-we are using a temporary RW write buffer, and then do text_poke_copy()
-at the end. To make this work, we need the JIT engine to be able to
-handle an RW temporary buffer and an RO final memory region. There
-is nothing preventing prog_pack to work. It is just we need to do the
-work.
+  - L1 and L0 negotiate capabilities with
+    H_GUEST_{G,S}ET_CAPABILITIES
 
-Thanks,
-Song
+  - L1 requests the L0 create a L2 with
+    H_GUEST_CREATE and receives a handle to use in future hcalls
+
+  - L1 requests the L0 create a L2 vCPU with
+    H_GUEST_CREATE_VCPU
+
+  - L1 sets up the L2 using H_GUEST_SET and the
+    H_GUEST_VCPU_RUN input buffer
+
+  - L1 requests the L0 runs the L2 vCPU using H_GUEST_VCPU_RUN
+
+  - L2 returns to L1 with an exit reason and L1 reads the
+    H_GUEST_VCPU_RUN output buffer populated by the L0
+
+  - L1 handles the exit using H_GET_STATE if necessary
+
+  - L1 reruns L2 vCPU with H_GUEST_VCPU_RUN
+
+  - L1 frees the L2 in the L0 with H_GUEST_DELETE
+
+Further details are available in Documentation/powerpc/kvm-nested.rst.
+
+This series adds KVM support for using this hcall interface as a regular
+PAPR partition, i.e. the L1. It does not add support for running as the
+L0.
+
+The new hcalls have been implemented in the spapr qemu model for
+testing.
+
+This is available at https://github.com/mikey/qemu/tree/kvm-papr
+
+There are scripts available to assist in setting up an environment for
+testing nested guests at https://github.com/mikey/kvm-powervm-test
+
+A tree with this series is available at
+https://github.com/iamjpn/linux/tree/features/kvm-papr
+
+Thanks to Amit Machhiwal, Kautuk Consul, Vaibhav Jain, Michael Neuling,
+Shivaprasad Bhat, Harsh Prateek Bora, Paul Mackerras and Nicholas
+Piggin. 
+
+Change overview in v2:
+  - Rebase on top of kvm ppc prefix instruction support
+  - Make documentation an individual patch
+  - Move guest state buffer files from arch/powerpc/lib/ to
+    arch/powerpc/kvm/
+  - Use kunit for testing guest state buffer
+  - Fix some build errors
+  - Change HEIR element from 4 bytes to 8 bytes
+
+Previous revisions:
+
+  - v1: https://lore.kernel.org/linuxppc-dev/20230508072332.2937883-1-jpn@linux.vnet.ibm.com/
+
+Jordan Niethe (5):
+  KVM: PPC: Use getters and setters for vcpu register state
+  KVM: PPC: Add fpr getters and setters
+  KVM: PPC: Add vr getters and setters
+  KVM: PPC: Add helper library for Guest State Buffers
+  KVM: PPC: Add support for nested PAPR guests
+
+Michael Neuling (1):
+  docs: powerpc: Document nested KVM on POWER
+
+ Documentation/powerpc/index.rst               |   1 +
+ Documentation/powerpc/kvm-nested.rst          | 636 +++++++++++
+ arch/powerpc/Kconfig.debug                    |  12 +
+ arch/powerpc/include/asm/guest-state-buffer.h | 988 ++++++++++++++++++
+ arch/powerpc/include/asm/hvcall.h             |  30 +
+ arch/powerpc/include/asm/kvm_book3s.h         | 205 +++-
+ arch/powerpc/include/asm/kvm_book3s_64.h      |   6 +
+ arch/powerpc/include/asm/kvm_booke.h          |  10 +
+ arch/powerpc/include/asm/kvm_host.h           |  21 +
+ arch/powerpc/include/asm/kvm_ppc.h            |  80 +-
+ arch/powerpc/include/asm/plpar_wrappers.h     | 198 ++++
+ arch/powerpc/kvm/Makefile                     |   4 +
+ arch/powerpc/kvm/book3s.c                     |  38 +-
+ arch/powerpc/kvm/book3s_64_mmu_hv.c           |   4 +-
+ arch/powerpc/kvm/book3s_64_mmu_radix.c        |   9 +-
+ arch/powerpc/kvm/book3s_64_vio.c              |   4 +-
+ arch/powerpc/kvm/book3s_hv.c                  | 336 ++++--
+ arch/powerpc/kvm/book3s_hv.h                  |  65 ++
+ arch/powerpc/kvm/book3s_hv_builtin.c          |  10 +-
+ arch/powerpc/kvm/book3s_hv_nested.c           |  38 +-
+ arch/powerpc/kvm/book3s_hv_p9_entry.c         |   4 +-
+ arch/powerpc/kvm/book3s_hv_papr.c             | 940 +++++++++++++++++
+ arch/powerpc/kvm/book3s_hv_ras.c              |   5 +-
+ arch/powerpc/kvm/book3s_hv_rm_mmu.c           |   8 +-
+ arch/powerpc/kvm/book3s_hv_rm_xics.c          |   4 +-
+ arch/powerpc/kvm/book3s_xive.c                |   9 +-
+ arch/powerpc/kvm/emulate_loadstore.c          |   6 +-
+ arch/powerpc/kvm/guest-state-buffer.c         | 612 +++++++++++
+ arch/powerpc/kvm/powerpc.c                    |  76 +-
+ arch/powerpc/kvm/test-guest-state-buffer.c    | 321 ++++++
+ 30 files changed, 4467 insertions(+), 213 deletions(-)
+ create mode 100644 Documentation/powerpc/kvm-nested.rst
+ create mode 100644 arch/powerpc/include/asm/guest-state-buffer.h
+ create mode 100644 arch/powerpc/kvm/book3s_hv_papr.c
+ create mode 100644 arch/powerpc/kvm/guest-state-buffer.c
+ create mode 100644 arch/powerpc/kvm/test-guest-state-buffer.c
+
+-- 
+2.31.1
+
