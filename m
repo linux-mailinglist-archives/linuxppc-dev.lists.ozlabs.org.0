@@ -1,95 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AFE3721E8C
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jun 2023 08:51:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBDA8721E94
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jun 2023 08:55:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QZPQB105hz3f8b
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jun 2023 16:50:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QZPVs3MSyz3fgs
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jun 2023 16:55:01 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ttOOklFv;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CfEnYl2O;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=jpn@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ttOOklFv;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CfEnYl2O;
 	dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QZPNL0J25z3dwW
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Jun 2023 16:49:21 +1000 (AEST)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3556HCKU001838;
-	Mon, 5 Jun 2023 06:49:19 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QZPNM3pTGz3c3w
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Jun 2023 16:49:23 +1000 (AEST)
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3556605c009744;
+	Mon, 5 Jun 2023 06:49:21 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=PGq5kVaWedupNc8a13M9U1Ew/FT/wGpvUNADUuN/Uw4=;
- b=ttOOklFvM2kCxOknhD4DlgT/yDZU2n9lpDPS1/Mtkt1rfU5oWVPVfU20O9c2MpZNKqjP
- 934OxZYnHb2l+JDHY754y5mFAcfwfgzu+d4sbR/lVBensubzdIMtuqw3r8Zck+yLNDMV
- 4SRvcokwJPVB8/YfmsI6hFO/N33gBLSXPvamZq8+SFmhMEGFucvICmQQ59M/pkxejX1w
- mYqdQhlQKH5uzr5PQtfxjjfRXoguYhCeZw21JVGWFtvie31cr/qZojanIE5lRVGZIiHH
- CtfcunjSDCs/iOSHCxjuaW1kpvefKPkbA39gIzQcH3sJK1PxMlpKh1XIQ73KP8U8FNv7 9Q== 
+ bh=6LJ6rsBZUhiuS/rtOJ6B8nAeTv92TnvuHpmWetYG80g=;
+ b=CfEnYl2O8XOaqnGkvAvMcBI1zpnlXBh0KsUlnWgykG02hCYT7a1Bij3FrfqK8+NREIS/
+ 3xBaShCP0mg9+6Fs8S8EhL6SXKeQJgFBmRqXpC+sTwp7DUowt89w7P01m5hw/3QLwIki
+ 7/idv/xk8AsaytGWEg29pgIXXL15Rti8e+pvg4cn8UcstFqpB9/Fh2ewDchhJh6/yNix
+ 1/TifJl/cDk9jBYAIUUcHwzJS6tLC5LJEeeFslYTOxD0zzAcLVS2bMEKH2JsGKw6VK7y
+ /twcpI3JYdC/wytzhReW3lVNtDrLri3E1c7Cid70Gp3Sksz1T1g/J18dC7RRDrcK8iIB pw== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r1aa50mvp-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r19x2s3xx-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Jun 2023 06:49:18 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3556n8UE014531;
-	Mon, 5 Jun 2023 06:49:18 GMT
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r1aa50mud-1
+	Mon, 05 Jun 2023 06:49:20 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3556kO1u020389;
+	Mon, 5 Jun 2023 06:49:20 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r19x2s3x3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 05 Jun 2023 06:49:19 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 354LQYNk000565;
+	Mon, 5 Jun 2023 06:49:17 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3qyxku16r4-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Mon, 05 Jun 2023 06:49:17 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-	by ppma02fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3552gJvJ032350;
-	Mon, 5 Jun 2023 06:49:15 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma02fra.de.ibm.com (PPS) with ESMTPS id 3qyxdf8xd3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Jun 2023 06:49:14 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3556nCEE590570
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3556nEvw56033714
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 5 Jun 2023 06:49:12 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2605B20043;
-	Mon,  5 Jun 2023 06:49:12 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BD4FF20040;
-	Mon,  5 Jun 2023 06:49:10 +0000 (GMT)
+	Mon, 5 Jun 2023 06:49:14 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BCB6E2004B;
+	Mon,  5 Jun 2023 06:49:14 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6435A20040;
+	Mon,  5 Jun 2023 06:49:13 +0000 (GMT)
 Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  5 Jun 2023 06:49:10 +0000 (GMT)
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  5 Jun 2023 06:49:13 +0000 (GMT)
 Received: from pwon.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 562AF605F1;
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 62717605AD;
 	Mon,  5 Jun 2023 16:49:08 +1000 (AEST)
 From: Jordan Niethe <jpn@linux.vnet.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH v2 4/6] KVM: PPC: Add helper library for Guest State Buffers
-Date: Mon,  5 Jun 2023 16:48:46 +1000
-Message-Id: <20230605064848.12319-5-jpn@linux.vnet.ibm.com>
+Subject: [RFC PATCH v2 5/6] KVM: PPC: Add support for nested PAPR guests
+Date: Mon,  5 Jun 2023 16:48:47 +1000
+Message-Id: <20230605064848.12319-6-jpn@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20230605064848.12319-1-jpn@linux.vnet.ibm.com>
 References: <20230605064848.12319-1-jpn@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: y1IF4y3suVyS2d4rlJp_FHYwhtw66v64
-X-Proofpoint-ORIG-GUID: DslylMXSXYxuZpK2FWIcq1HRJ7biHHsq
+X-Proofpoint-ORIG-GUID: CLPOctAGS7maeQg3fssMnayI6sHut60F
+X-Proofpoint-GUID: 8zQjWtYPVYNuZ32rh4ds8YQC-aQfjFIC
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
  definitions=2023-06-03_08,2023-06-02_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- mlxlogscore=999 priorityscore=1501 phishscore=0 spamscore=0 mlxscore=0
- malwarescore=0 clxscore=1015 lowpriorityscore=0 suspectscore=0
- adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2306050058
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
+ adultscore=0 suspectscore=0 mlxlogscore=999 bulkscore=0 lowpriorityscore=0
+ malwarescore=0 impostorscore=0 phishscore=0 clxscore=1015 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2304280000
+ definitions=main-2306050058
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,1932 +105,2434 @@ Cc: Jordan Niethe <jpn@linux.vnet.ibm.com>, mikey@neuling.org, kautuk.consul.198
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The new PAPR nested guest API introduces the concept of a Guest State
-Buffer for communication about L2 guests between L1 and L0 hosts.
+A series of hcalls have been added to the PAPR which allow a regular
+guest partition to create and manage guest partitions of its own. Add
+support to KVM to utilize these hcalls to enable running nested guests.
 
-In the new API, the L0 manages the L2 on behalf of the L1. This means
-that if the L1 needs to change L2 state (e.g. GPRs, SPRs, partition
-table...), it must request the L0 perform the modification. If the
-nested host needs to read L2 state likewise this request must
-go through the L0.
+Overview of the new hcall usage:
 
-The Guest State Buffer is a Type-Length-Value style data format defined
-in the PAPR which assigns all relevant partition state a unique
-identity. Unlike a typical TLV format the length is redundant as the
-length of each identity is fixed but is included for checking
-correctness.
+- L1 and L0 negotiate capabilities with
+  H_GUEST_{G,S}ET_CAPABILITIES()
 
-A guest state buffer consists of an element count followed by a stream
-of elements, where elements are composed of an ID number, data length,
-then the data:
+- L1 requests the L0 create a L2 with
+  H_GUEST_CREATE() and receives a handle to use in future hcalls
 
-  Header:
+- L1 requests the L0 create a L2 vCPU with
+  H_GUEST_CREATE_VCPU()
 
-   <---4 bytes--->
-  +----------------+-----
-  | Element Count  | Elements...
-  +----------------+-----
+- L1 sets up the L2 using H_GUEST_SET and the
+  H_GUEST_VCPU_RUN input buffer
 
-  Element:
+- L1 requests the L0 runs the L2 vCPU using H_GUEST_VCPU_RUN()
 
-   <----2 bytes---> <-2 bytes-> <-Length bytes->
-  +----------------+-----------+----------------+
-  | Guest State ID |  Length   |      Data      |
-  +----------------+-----------+----------------+
+- L2 returns to L1 with an exit reason and L1 reads the
+  H_GUEST_VCPU_RUN output buffer populated by the L0
 
-Guest State IDs have other attributes defined in the PAPR such as
-whether they are per thread or per guest, or read-only.
+- L1 handles the exit using H_GET_STATE if necessary
 
-Introduce a library for using guest state buffers. This includes support
-for actions such as creating buffers, adding elements to buffers,
-reading the value of elements and parsing buffers. This will be used
-later by the PAPR nested guest support.
+- L1 reruns L2 vCPU with H_GUEST_VCPU_RUN
+
+- L1 frees the L2 in the L0 with H_GUEST_DELETE()
+
+Support for the new API is determined by trying
+H_GUEST_GET_CAPABILITIES. On a successful return, the new API will then
+be used.
+
+Use the vcpu register state setters for tracking modified guest state
+elements and copy the thread wide values into the H_GUEST_VCPU_RUN input
+buffer immediately before running a L2. The guest wide
+elements can not be added to the input buffer so send them with a
+separate H_GUEST_SET call if necessary.
+
+Make the vcpu register getter load the corresponding value from the real
+host with H_GUEST_GET. To avoid unnecessarily calling H_GUEST_GET, track
+which values have already been loaded between H_GUEST_VCPU_RUN calls. If
+an element is present in the H_GUEST_VCPU_RUN output buffer it also does
+not need to be loaded again.
+
+There is existing support for running nested guests on KVM
+with powernv. However the interface used for this is not supported by
+other PAPR hosts. This existing API is still supported.
 
 Signed-off-by: Jordan Niethe <jpn@linux.vnet.ibm.com>
 ---
 v2:
-  - Add missing #ifdef CONFIG_VSXs
-  - Move files from lib/ to kvm/
-  - Guard compilation on CONFIG_KVM_BOOK3S_HV_POSSIBLE
-  - Use kunit for guest state buffer tests
-  - Add configuration option for the tests
-  - Use macros for contiguous id ranges like GPRs
-  - Add some missing EXPORTs to functions
-  - HEIR element is a double word not a word
+  - Declare op structs as static
+  - Use expressions in switch case with local variables
+  - Do not use the PVR for the LOGICAL PVR ID
+  - Handle emul_inst as now a double word
+  - Use new GPR(), etc macros
+  - Determine PAPR nested capabilities from cpu features
 ---
- arch/powerpc/Kconfig.debug                    |  12 +
- arch/powerpc/include/asm/guest-state-buffer.h | 901 ++++++++++++++++++
- arch/powerpc/include/asm/kvm_book3s.h         |   2 +
- arch/powerpc/kvm/Makefile                     |   3 +
- arch/powerpc/kvm/guest-state-buffer.c         | 563 +++++++++++
- arch/powerpc/kvm/test-guest-state-buffer.c    | 321 +++++++
- 6 files changed, 1802 insertions(+)
- create mode 100644 arch/powerpc/include/asm/guest-state-buffer.h
- create mode 100644 arch/powerpc/kvm/guest-state-buffer.c
- create mode 100644 arch/powerpc/kvm/test-guest-state-buffer.c
+ arch/powerpc/include/asm/guest-state-buffer.h | 105 +-
+ arch/powerpc/include/asm/hvcall.h             |  30 +
+ arch/powerpc/include/asm/kvm_book3s.h         | 122 ++-
+ arch/powerpc/include/asm/kvm_book3s_64.h      |   6 +
+ arch/powerpc/include/asm/kvm_host.h           |  21 +
+ arch/powerpc/include/asm/kvm_ppc.h            |  64 +-
+ arch/powerpc/include/asm/plpar_wrappers.h     | 198 ++++
+ arch/powerpc/kvm/Makefile                     |   1 +
+ arch/powerpc/kvm/book3s_hv.c                  | 126 ++-
+ arch/powerpc/kvm/book3s_hv.h                  |  74 +-
+ arch/powerpc/kvm/book3s_hv_nested.c           |  38 +-
+ arch/powerpc/kvm/book3s_hv_papr.c             | 940 ++++++++++++++++++
+ arch/powerpc/kvm/emulate_loadstore.c          |   4 +-
+ arch/powerpc/kvm/guest-state-buffer.c         |  49 +
+ 14 files changed, 1684 insertions(+), 94 deletions(-)
+ create mode 100644 arch/powerpc/kvm/book3s_hv_papr.c
 
-diff --git a/arch/powerpc/Kconfig.debug b/arch/powerpc/Kconfig.debug
-index 6aaf8dc60610..ed830a714720 100644
---- a/arch/powerpc/Kconfig.debug
-+++ b/arch/powerpc/Kconfig.debug
-@@ -82,6 +82,18 @@ config MSI_BITMAP_SELFTEST
- 	bool "Run self-tests of the MSI bitmap code"
- 	depends on DEBUG_KERNEL
- 
-+config GUEST_STATE_BUFFER_TEST
-+	def_tristate n
-+	prompt "Enable Guest State Buffer unit tests"
-+	depends on KUNIT
-+	depends on KVM_BOOK3S_HV_POSSIBLE
-+	default KUNIT_ALL_TESTS
-+	help
-+	  The Guest State Buffer is a data format specified in the PAPR.
-+	  It is by hcalls to communicate the state of L2 guests between
-+	  the L1 and L0 hypervisors. Enable unit tests for the library
-+	  used to create and use guest state buffers.
-+
- config PPC_IRQ_SOFT_MASK_DEBUG
- 	bool "Include extra checks for powerpc irq soft masking"
- 	depends on PPC64
 diff --git a/arch/powerpc/include/asm/guest-state-buffer.h b/arch/powerpc/include/asm/guest-state-buffer.h
-new file mode 100644
-index 000000000000..65a840abf1bb
---- /dev/null
+index 65a840abf1bb..116126edd8e2 100644
+--- a/arch/powerpc/include/asm/guest-state-buffer.h
 +++ b/arch/powerpc/include/asm/guest-state-buffer.h
-@@ -0,0 +1,901 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Interface based on include/net/netlink.h
-+ */
-+#ifndef _ASM_POWERPC_GUEST_STATE_BUFFER_H
-+#define _ASM_POWERPC_GUEST_STATE_BUFFER_H
-+
-+#include <linux/gfp.h>
-+#include <linux/bitmap.h>
-+#include <asm/plpar_wrappers.h>
-+
-+/**************************************************************************
-+ * Guest State Buffer Constants
-+ **************************************************************************/
-+#define GSID_BLANK			0x0000
-+
-+#define GSID_HOST_STATE_SIZE		0x0001 /* Size of Hypervisor Internal Format VCPU state */
-+#define GSID_RUN_OUTPUT_MIN_SIZE	0x0002 /* Minimum size of the Run VCPU output buffer */
-+#define GSID_LOGICAL_PVR		0x0003 /* Logical PVR */
-+#define GSID_TB_OFFSET			0x0004 /* Timebase Offset */
-+#define GSID_PARTITION_TABLE		0x0005 /* Partition Scoped Page Table */
-+#define GSID_PROCESS_TABLE		0x0006 /* Process Table */
-+
-+#define GSID_RUN_INPUT			0x0C00 /* Run VCPU Input Buffer */
-+#define GSID_RUN_OUTPUT			0x0C01 /* Run VCPU Out Buffer */
-+#define GSID_VPA			0x0C02 /* HRA to Guest VCPU VPA */
-+
-+#define GSID_GPR(x)			(0x1000 + (x))
-+#define GSID_HDEC_EXPIRY_TB		0x1020
-+#define GSID_NIA			0x1021
-+#define GSID_MSR			0x1022
-+#define GSID_LR				0x1023
-+#define GSID_XER			0x1024
-+#define GSID_CTR			0x1025
-+#define GSID_CFAR			0x1026
-+#define GSID_SRR0			0x1027
-+#define GSID_SRR1			0x1028
-+#define GSID_DAR			0x1029
-+#define GSID_DEC_EXPIRY_TB		0x102A
-+#define GSID_VTB			0x102B
-+#define GSID_LPCR			0x102C
-+#define GSID_HFSCR			0x102D
-+#define GSID_FSCR			0x102E
-+#define GSID_FPSCR			0x102F
-+#define GSID_DAWR0			0x1030
-+#define GSID_DAWR1			0x1031
-+#define GSID_CIABR			0x1032
-+#define GSID_PURR			0x1033
-+#define GSID_SPURR			0x1034
-+#define GSID_IC				0x1035
-+#define GSID_SPRG0			0x1036
-+#define GSID_SPRG1			0x1037
-+#define GSID_SPRG2			0x1038
-+#define GSID_SPRG3			0x1039
-+#define GSID_PPR			0x103A
-+#define GSID_MMCR(x)			(0x103B + (x))
-+#define GSID_MMCRA			0x103F
-+#define GSID_SIER(x)			(0x1040 + (x))
-+#define GSID_BESCR			0x1043
-+#define GSID_EBBHR			0x1044
-+#define GSID_EBBRR			0x1045
-+#define GSID_AMR			0x1046
-+#define GSID_IAMR			0x1047
-+#define GSID_AMOR			0x1048
-+#define GSID_UAMOR			0x1049
-+#define GSID_SDAR			0x104A
-+#define GSID_SIAR			0x104B
-+#define GSID_DSCR			0x104C
-+#define GSID_TAR			0x104D
-+#define GSID_DEXCR			0x104E
-+#define GSID_HDEXCR			0x104F
-+#define GSID_HASHKEYR			0x1050
-+#define GSID_HASHPKEYR			0x1051
-+#define GSID_CTRL			0x1052
-+
-+#define GSID_CR				0x2000
-+#define GSID_PIDR			0x2001
-+#define GSID_DSISR			0x2002
-+#define GSID_VSCR			0x2003
-+#define GSID_VRSAVE			0x2004
-+#define GSID_DAWRX0			0x2005
-+#define GSID_DAWRX1			0x2006
-+#define GSID_PMC(x)			(0x2007 + (x))
-+#define GSID_WORT			0x200D
-+#define GSID_PSPB			0x200E
-+
-+#define GSID_VSRS(x)			(0x3000 + (x))
-+
-+#define GSID_HDAR			0xF000
-+#define GSID_HDSISR			0xF001
-+#define GSID_HEIR			0xF002
-+#define GSID_ASDR			0xF003
-+
-+
-+#define GSE_GUESTWIDE_START GSID_BLANK
-+#define GSE_GUESTWIDE_END GSID_PROCESS_TABLE
-+#define GSE_GUESTWIDE_COUNT (GSE_GUESTWIDE_END - GSE_GUESTWIDE_START + 1)
-+
-+#define GSE_META_START GSID_RUN_INPUT
-+#define GSE_META_END GSID_VPA
-+#define GSE_META_COUNT (GSE_META_END - GSE_META_START + 1)
-+
-+#define GSE_DW_REGS_START GSID_GPR(0)
-+#define GSE_DW_REGS_END GSID_CTRL
-+#define GSE_DW_REGS_COUNT (GSE_DW_REGS_END - GSE_DW_REGS_START + 1)
-+
-+#define GSE_W_REGS_START GSID_CR
-+#define GSE_W_REGS_END GSID_PSPB
-+#define GSE_W_REGS_COUNT (GSE_W_REGS_END - GSE_W_REGS_START + 1)
-+
-+#define GSE_VSRS_START GSID_VSRS(0)
-+#define GSE_VSRS_END GSID_VSRS(63)
-+#define GSE_VSRS_COUNT (GSE_VSRS_END - GSE_VSRS_START + 1)
-+
-+#define GSE_INTR_REGS_START GSID_HDAR
-+#define GSE_INTR_REGS_END GSID_ASDR
-+#define GSE_INTR_REGS_COUNT (GSE_INTR_REGS_END - GSE_INTR_REGS_START + 1)
-+
-+#define GSE_IDEN_COUNT                                              \
-+	(GSE_GUESTWIDE_COUNT + GSE_META_COUNT + GSE_DW_REGS_COUNT + \
-+	 GSE_W_REGS_COUNT + GSE_VSRS_COUNT + GSE_INTR_REGS_COUNT)
-+
-+
+@@ -5,6 +5,7 @@
+ #ifndef _ASM_POWERPC_GUEST_STATE_BUFFER_H
+ #define _ASM_POWERPC_GUEST_STATE_BUFFER_H
+ 
++#include "asm/hvcall.h"
+ #include <linux/gfp.h>
+ #include <linux/bitmap.h>
+ #include <asm/plpar_wrappers.h>
+@@ -14,16 +15,16 @@
+  **************************************************************************/
+ #define GSID_BLANK			0x0000
+ 
+-#define GSID_HOST_STATE_SIZE		0x0001 /* Size of Hypervisor Internal Format VCPU state */
+-#define GSID_RUN_OUTPUT_MIN_SIZE	0x0002 /* Minimum size of the Run VCPU output buffer */
+-#define GSID_LOGICAL_PVR		0x0003 /* Logical PVR */
+-#define GSID_TB_OFFSET			0x0004 /* Timebase Offset */
+-#define GSID_PARTITION_TABLE		0x0005 /* Partition Scoped Page Table */
+-#define GSID_PROCESS_TABLE		0x0006 /* Process Table */
++#define GSID_HOST_STATE_SIZE		0x0001
++#define GSID_RUN_OUTPUT_MIN_SIZE	0x0002
++#define GSID_LOGICAL_PVR		0x0003
++#define GSID_TB_OFFSET			0x0004
++#define GSID_PARTITION_TABLE		0x0005
++#define GSID_PROCESS_TABLE		0x0006
+ 
+-#define GSID_RUN_INPUT			0x0C00 /* Run VCPU Input Buffer */
+-#define GSID_RUN_OUTPUT			0x0C01 /* Run VCPU Out Buffer */
+-#define GSID_VPA			0x0C02 /* HRA to Guest VCPU VPA */
++#define GSID_RUN_INPUT			0x0C00
++#define GSID_RUN_OUTPUT			0x0C01
++#define GSID_VPA			0x0C02
+ 
+ #define GSID_GPR(x)			(0x1000 + (x))
+ #define GSID_HDEC_EXPIRY_TB		0x1020
+@@ -300,6 +301,8 @@ struct gs_buff *gsb_new(size_t size, unsigned long guest_id,
+ 			unsigned long vcpu_id, gfp_t flags);
+ void gsb_free(struct gs_buff *gsb);
+ void *gsb_put(struct gs_buff *gsb, size_t size);
++int gsb_send(struct gs_buff *gsb, unsigned long flags);
++int gsb_recv(struct gs_buff *gsb, unsigned long flags);
+ 
+ /**
+  * gsb_header() - the header of a guest state buffer
+@@ -898,4 +901,88 @@ static inline void gsm_reset(struct gs_msg *gsm)
+ 	gsbm_zero(&gsm->bitmap);
+ }
+ 
 +/**
-+ * Ranges of guest state buffer elements
-+ */
-+enum {
-+	GS_CLASS_GUESTWIDE = 0x01,
-+	GS_CLASS_META = 0x02,
-+	GS_CLASS_DWORD_REG = 0x04,
-+	GS_CLASS_WORD_REG = 0x08,
-+	GS_CLASS_VECTOR = 0x10,
-+	GS_CLASS_INTR = 0x20,
-+};
-+
-+/**
-+ * Types of guest state buffer elements
-+ */
-+enum {
-+	GSE_BE32,
-+	GSE_BE64,
-+	GSE_VEC128,
-+	GSE_PARTITION_TABLE,
-+	GSE_PROCESS_TABLE,
-+	GSE_BUFFER,
-+	__GSE_TYPE_MAX,
-+};
-+
-+/**
-+ * Flags for guest state elements
-+ */
-+enum {
-+	GS_FLAGS_WIDE = 0x01,
-+};
-+
-+/**
-+ * struct gs_part_table - deserialized partition table information element
-+ * @address: start of the partition table
-+ * @ea_bits: number of bits in the effective address
-+ * @gpd_size: root page directory size
-+ */
-+struct gs_part_table {
-+	u64 address;
-+	u64 ea_bits;
-+	u64 gpd_size;
-+};
-+
-+/**
-+ * struct gs_proc_table - deserialized process table information element
-+ * @address: start of the process table
-+ * @gpd_size: process table size
-+ */
-+struct gs_proc_table {
-+	u64 address;
-+	u64 gpd_size;
-+};
-+
-+/**
-+ * struct gs_buff_info - deserialized meta guest state buffer information
-+ * @address: start of the guest state buffer
-+ * @size: size of the guest state buffer
-+ */
-+struct gs_buff_info {
-+	u64 address;
-+	u64 size;
-+};
-+
-+/**
-+ * struct gs_header - serialized guest state buffer header
-+ * @nelem: count of guest state elements in the buffer
-+ * @data: start of the stream of elements in the buffer
-+ */
-+struct gs_header {
-+	__be32 nelems;
-+	char data[];
-+} __packed;
-+
-+/**
-+ * struct gs_elem - serialized guest state buffer element
-+ * @iden: Guest State ID
-+ * @len: length of data
-+ * @data: the guest state buffer element's value
-+ */
-+struct gs_elem {
-+	__be16 iden;
-+	__be16 len;
-+	char data[];
-+} __packed;
-+
-+/**
-+ * struct gs_buff - a guest state buffer with metadata.
-+ * @capacity: total length of the buffer
-+ * @len: current length of the elements and header
-+ * @guest_id: guest id associated with the buffer
-+ * @vcpu_id: vcpu_id associated with the buffer
-+ * @hdr: the serialised guest state buffer
-+ */
-+struct gs_buff {
-+	size_t capacity;
-+	size_t len;
-+	unsigned long guest_id;
-+	unsigned long vcpu_id;
-+	struct gs_header *hdr;
-+};
-+
-+/**
-+ * struct gs_bitmap - a bitmap for element ids
-+ * @bitmap: a bitmap large enough for all Guest State IDs
-+ */
-+struct gs_bitmap {
-+/* private: */
-+	DECLARE_BITMAP(bitmap, GSE_IDEN_COUNT);
-+};
-+
-+/**
-+ * struct gs_parser - a map of element ids to locations in a buffer
-+ * @iterator: bitmap used for iterating
-+ * @gses: contains the pointers to elements
-+ *
-+ * A guest state parser is used for deserialising a guest state buffer.
-+ * Given a buffer, it then allows looking up guest state elements using
-+ * a guest state id.
-+ */
-+struct gs_parser {
-+/* private: */
-+	struct gs_bitmap iterator;
-+	struct gs_elem *gses[GSE_IDEN_COUNT];
-+};
-+
-+enum {
-+	GSM_GUEST_WIDE = 0x1,
-+	GSM_SEND = 0x2,
-+	GSM_RECEIVE = 0x4,
-+	GSM_GSB_OWNER = 0x8,
-+};
-+
-+struct gs_msg;
-+
-+/**
-+ * struct gs_msg_ops - guest state message behavior
-+ * @get_size: maximum size required for the message data
-+ * @fill_info: serializes to the guest state buffer format
-+ * @refresh_info: dserializes from the guest state buffer format
-+ */
-+struct gs_msg_ops {
-+	size_t (*get_size)(struct gs_msg *gsm);
-+	int (*fill_info)(struct gs_buff *gsb, struct gs_msg *gsm);
-+	int (*refresh_info)(struct gs_msg *gsm, struct gs_buff *gsb);
-+};
-+
-+/**
-+ * struct gs_msg - a guest state message
-+ * @bitmap: the guest state ids that should be included
-+ * @ops: modify message behavior for reading and writing to buffers
-+ * @flags: guest wide or thread wide
-+ * @data: location where buffer data will be written to or from.
-+ *
-+ * A guest state message is allows flexibility in sending in receiving data
-+ * in a guest state buffer format.
-+ */
-+struct gs_msg {
-+	struct gs_bitmap bitmap;
-+	struct gs_msg_ops *ops;
-+	unsigned long flags;
-+	void *data;
-+};
-+
-+/**************************************************************************
-+ * Guest State IDs
-+ **************************************************************************/
-+
-+u16 gsid_size(u16 iden);
-+unsigned long gsid_flags(u16 iden);
-+u64 gsid_mask(u16 iden);
-+
-+/**************************************************************************
-+ * Guest State Buffers
-+ **************************************************************************/
-+struct gs_buff *gsb_new(size_t size, unsigned long guest_id,
-+			unsigned long vcpu_id, gfp_t flags);
-+void gsb_free(struct gs_buff *gsb);
-+void *gsb_put(struct gs_buff *gsb, size_t size);
-+
-+/**
-+ * gsb_header() - the header of a guest state buffer
++ * gsb_receive_data - flexibly update values from a guest state buffer
 + * @gsb: guest state buffer
++ * @gsm: guest state message
 + *
-+ * Returns a pointer to the buffer header.
++ * Requests updated values for the guest state values included in the guest
++ * state message. The guest state message will then deserialize the guest state
++ * buffer.
 + */
-+static inline struct gs_header *gsb_header(struct gs_buff *gsb)
++static inline int gsb_receive_data(struct gs_buff *gsb, struct gs_msg *gsm)
 +{
-+	return gsb->hdr;
-+}
++	int rc;
 +
-+/**
-+ * gsb_data() - the elements of a guest state buffer
-+ * @gsb: guest state buffer
-+ *
-+ * Returns a pointer to the first element of the buffer data.
-+ */
-+static inline struct gs_elem *gsb_data(struct gs_buff *gsb)
-+{
-+	return (struct gs_elem *)gsb_header(gsb)->data;
-+}
++	rc = gsm_fill_info(gsm, gsb);
++	if (rc < 0)
++		return rc;
 +
-+/**
-+ * gsb_len() - the current length of a guest state buffer
-+ * @gsb: guest state buffer
-+ *
-+ * Returns the length including the header of a buffer.
-+ */
-+static inline size_t gsb_len(struct gs_buff *gsb)
-+{
-+	return gsb->len;
-+}
++	rc = gsb_recv(gsb, gsm->flags);
++	if (rc < 0)
++		return rc;
 +
-+/**
-+ * gsb_capacity() - the capacity of a guest state buffer
-+ * @gsb: guest state buffer
-+ *
-+ * Returns the capacity of a buffer.
-+ */
-+static inline size_t gsb_capacity(struct gs_buff *gsb)
-+{
-+	return gsb->capacity;
-+}
-+
-+/**
-+ * gsb_paddress() - the physical address of buffer
-+ * @gsb: guest state buffer
-+ *
-+ * Returns the physical address of the buffer.
-+ */
-+static inline u64 gsb_paddress(struct gs_buff *gsb)
-+{
-+	return __pa(gsb_header(gsb));
-+}
-+
-+/**
-+ * gsb_nelems() - the number of elements in a buffer
-+ * @gsb: guest state buffer
-+ *
-+ * Returns the number of elements in a buffer
-+ */
-+static inline u32 gsb_nelems(struct gs_buff *gsb)
-+{
-+	return be32_to_cpu(gsb_header(gsb)->nelems);
-+}
-+
-+/**
-+ * gsb_reset() - empty a guest state buffer
-+ * @gsb: guest state buffer
-+ *
-+ * Reset the number of elements and length of buffer to empty.
-+ */
-+static inline void gsb_reset(struct gs_buff *gsb)
-+{
-+	gsb_header(gsb)->nelems = cpu_to_be32(0);
-+	gsb->len = sizeof(struct gs_header);
-+}
-+
-+/**
-+ * gsb_data_len() - the length of a buffer excluding the header
-+ * @gsb: guest state buffer
-+ *
-+ * Returns the length of a buffer excluding the header
-+ */
-+static inline size_t gsb_data_len(struct gs_buff *gsb)
-+{
-+	return gsb->len - sizeof(struct gs_header);
-+}
-+
-+/**
-+ * gsb_data_cap() - the capacity of a buffer excluding the header
-+ * @gsb: guest state buffer
-+ *
-+ * Returns the capacity of a buffer excluding the header
-+ */
-+static inline size_t gsb_data_cap(struct gs_buff *gsb)
-+{
-+	return gsb->capacity - sizeof(struct gs_header);
-+}
-+
-+/**
-+ * gsb_for_each_elem - iterate over the elements in a buffer
-+ * @i: loop counter
-+ * @pos: set to current element
-+ * @gsb: guest state buffer
-+ * @rem: initialized to buffer capacity, holds bytes currently remaining in stream
-+ */
-+#define gsb_for_each_elem(i, pos, gsb, rem)                       \
-+	gse_for_each_elem(i, gsb_nelems(gsb), pos, gsb_data(gsb), \
-+			  gsb_data_cap(gsb), rem)
-+
-+/**************************************************************************
-+ * Guest State Elements
-+ **************************************************************************/
-+
-+/**
-+ * gse_iden() - guest state ID of element
-+ * @gse: guest state element
-+ *
-+ * Return the guest state ID in host endianness.
-+ */
-+static inline u16 gse_iden(const struct gs_elem *gse)
-+{
-+	return be16_to_cpu(gse->iden);
-+}
-+
-+/**
-+ * gse_len() - length of guest state element data
-+ * @gse: guest state element
-+ *
-+ * Returns the length of guest state element data
-+ */
-+static inline u16 gse_len(const struct gs_elem *gse)
-+{
-+	return be16_to_cpu(gse->len);
-+}
-+
-+/**
-+ * gse_total_len() - total length of guest state element
-+ * @gse: guest state element
-+ *
-+ * Returns the length of the data plus the ID and size header.
-+ */
-+static inline u16 gse_total_len(const struct gs_elem *gse)
-+{
-+	return be16_to_cpu(gse->len) + sizeof(*gse);
-+}
-+
-+/**
-+ * gse_total_size() - space needed for a given data length
-+ * @size: data length
-+ *
-+ * Returns size plus the space needed for the ID and size header.
-+ */
-+static inline u16 gse_total_size(u16 size)
-+{
-+	return sizeof(struct gs_elem) + size;
-+}
-+
-+/**
-+ * gse_data() - pointer to data of a guest state element
-+ * @gse: guest state element
-+ *
-+ * Returns a pointer to the beginning of guest state element data.
-+ */
-+static inline void *gse_data(const struct gs_elem *gse)
-+{
-+	return (void *)gse->data;
-+}
-+
-+/**
-+ * gse_ok() - checks space exists for guest state element
-+ * @gse: guest state element
-+ * @remaining: bytes of space remaining
-+ *
-+ * Returns true if the guest state element can fit in remaining space.
-+ */
-+static inline bool gse_ok(const struct gs_elem *gse, int remaining)
-+{
-+	return remaining >= gse_total_len(gse);
-+}
-+
-+/**
-+ * gse_next() - iterate to the next guest state element in a stream
-+ * @gse: stream of guest state elements
-+ * @remaining: length of the guest element stream
-+ *
-+ * Returns the next guest state element in a stream of elements. The length of
-+ * the stream is updated in remaining.
-+ */
-+static inline struct gs_elem *gse_next(const struct gs_elem *gse,
-+				       int *remaining)
-+{
-+	int len = sizeof(*gse) + gse_len(gse);
-+
-+	*remaining -= len;
-+	return (struct gs_elem *)(gse->data + gse_len(gse));
-+}
-+
-+/**
-+ * gse_for_each_elem - iterate over a stream of guest state elements
-+ * @i: loop counter
-+ * @max: number of elements
-+ * @pos: set to current element
-+ * @head: head of elements
-+ * @len: length of the stream
-+ * @rem: initialized to len, holds bytes currently remaining elements
-+ */
-+#define gse_for_each_elem(i, max, pos, head, len, rem)                  \
-+	for (i = 0, pos = head, rem = len; gse_ok(pos, rem) && i < max; \
-+	     pos = gse_next(pos, &(rem)), i++)
-+
-+int __gse_put(struct gs_buff *gsb, u16 iden, u16 size, const void *data);
-+int gse_parse(struct gs_parser *gsp, struct gs_buff *gsb);
-+
-+/**
-+ * gse_put_be32() - add a be32 guest state element to a buffer
-+ * @gsb: guest state buffer to add element to
-+ * @iden: guest state ID
-+ * @val: big endian value
-+ */
-+static inline int gse_put_be32(struct gs_buff *gsb, u16 iden, __be32 val)
-+{
-+	__be32 tmp;
-+
-+	tmp = val;
-+	return __gse_put(gsb, iden, sizeof(__be32), &tmp);
-+}
-+
-+/**
-+ * gse_put_u32() - add a host endian 32bit int guest state element to a buffer
-+ * @gsb: guest state buffer to add element to
-+ * @iden: guest state ID
-+ * @val: host endian value
-+ */
-+static inline int gse_put_u32(struct gs_buff *gsb, u16 iden, u32 val)
-+{
-+	__be32 tmp;
-+
-+	tmp = cpu_to_be32(val);
-+	return gse_put_be32(gsb, iden, tmp);
-+}
-+
-+/**
-+ * gse_put_be64() - add a be64 guest state element to a buffer
-+ * @gsb: guest state buffer to add element to
-+ * @iden: guest state ID
-+ * @val: big endian value
-+ */
-+static inline int gse_put_be64(struct gs_buff *gsb, u16 iden, __be64 val)
-+{
-+	__be64 tmp;
-+
-+	tmp = val;
-+	return __gse_put(gsb, iden, sizeof(__be64), &tmp);
-+}
-+
-+/**
-+ * gse_put_u64() - add a host endian 64bit guest state element to a buffer
-+ * @gsb: guest state buffer to add element to
-+ * @iden: guest state ID
-+ * @val: host endian value
-+ */
-+static inline int gse_put_u64(struct gs_buff *gsb, u16 iden, u64 val)
-+{
-+	__be64 tmp;
-+
-+	tmp = cpu_to_be64(val);
-+	return gse_put_be64(gsb, iden, tmp);
-+}
-+
-+/**
-+ * __gse_put_reg() - add a register type guest state element to a buffer
-+ * @gsb: guest state buffer to add element to
-+ * @iden: guest state ID
-+ * @val: host endian value
-+ *
-+ * Adds a register type guest state element. Uses the guest state ID for
-+ * determining the length of the guest element. If the guest state ID has
-+ * bits that can not be set they will be cleared.
-+ */
-+static inline int __gse_put_reg(struct gs_buff *gsb, u16 iden, u64 val)
-+{
-+	val &= gsid_mask(iden);
-+	if (gsid_size(iden) == sizeof(u64))
-+		return gse_put_u64(gsb, iden, val);
-+
-+	if (gsid_size(iden) == sizeof(u32)) {
-+		u32 tmp;
-+
-+		tmp = (u32)val;
-+		if (tmp != val)
-+			return -EINVAL;
-+
-+		return gse_put_u32(gsb, iden, tmp);
-+	}
-+	return -EINVAL;
-+}
-+
-+/**
-+ * gse_put_vector128() - add a vector guest state element to a buffer
-+ * @gsb: guest state buffer to add element to
-+ * @iden: guest state ID
-+ * @val: 16 byte vector value
-+ */
-+static inline int gse_put_vector128(struct gs_buff *gsb, u16 iden,
-+				    vector128 val)
-+{
-+	__be64 tmp[2] = { 0 };
-+	union {
-+		__vector128 v;
-+		u64 dw[2];
-+	} u;
-+
-+	u.v = val;
-+	tmp[0] = cpu_to_be64(u.dw[TS_FPROFFSET]);
-+#ifdef CONFIG_VSX
-+	tmp[1] = cpu_to_be64(u.dw[TS_VSRLOWOFFSET]);
-+#endif
-+	return __gse_put(gsb, iden, sizeof(tmp), &tmp);
-+}
-+
-+/**
-+ * gse_put_part_table() - add a partition table guest state element to a buffer
-+ * @gsb: guest state buffer to add element to
-+ * @iden: guest state ID
-+ * @val: partition table value
-+ */
-+static inline int gse_put_part_table(struct gs_buff *gsb, u16 iden,
-+				     struct gs_part_table val)
-+{
-+	__be64 tmp[3];
-+
-+	tmp[0] = cpu_to_be64(val.address);
-+	tmp[1] = cpu_to_be64(val.ea_bits);
-+	tmp[2] = cpu_to_be64(val.gpd_size);
-+	return __gse_put(gsb, GSID_PARTITION_TABLE, sizeof(tmp), &tmp);
-+}
-+
-+/**
-+ * gse_put_proc_table() - add a process table guest state element to a buffer
-+ * @gsb: guest state buffer to add element to
-+ * @iden: guest state ID
-+ * @val: process table value
-+ */
-+static inline int gse_put_proc_table(struct gs_buff *gsb, u16 iden,
-+				     struct gs_proc_table val)
-+{
-+	__be64 tmp[2];
-+
-+	tmp[0] = cpu_to_be64(val.address);
-+	tmp[1] = cpu_to_be64(val.gpd_size);
-+	return __gse_put(gsb, GSID_PROCESS_TABLE, sizeof(tmp), &tmp);
-+}
-+
-+/**
-+ * gse_put_buff_info() - adds a GSB description guest state element to a buffer
-+ * @gsb: guest state buffer to add element to
-+ * @iden: guest state ID
-+ * @val: guest state buffer description value
-+ */
-+static inline int gse_put_buff_info(struct gs_buff *gsb, u16 iden,
-+				    struct gs_buff_info val)
-+{
-+	__be64 tmp[2];
-+
-+	tmp[0] = cpu_to_be64(val.address);
-+	tmp[1] = cpu_to_be64(val.size);
-+	return __gse_put(gsb, iden, sizeof(tmp), &tmp);
-+}
-+
-+int __gse_put(struct gs_buff *gsb, u16 iden, u16 size, const void *data);
-+
-+/**
-+ * gse_get_be32() - return the data of a be32 element
-+ * @gse: guest state element
-+ */
-+static inline __be32 gse_get_be32(const struct gs_elem *gse)
-+{
-+	return *(__be32 *)gse_data(gse);
-+}
-+
-+/**
-+ * gse_get_u32() - return the data of a be32 element in host endianness
-+ * @gse: guest state element
-+ */
-+static inline u32 gse_get_u32(const struct gs_elem *gse)
-+{
-+	return be32_to_cpu(gse_get_be32(gse));
-+}
-+
-+/**
-+ * gse_get_be64() - return the data of a be64 element
-+ * @gse: guest state element
-+ */
-+static inline __be64 gse_get_be64(const struct gs_elem *gse)
-+{
-+	return *(__be64 *)gse_data(gse);
-+}
-+
-+/**
-+ * gse_get_u64() - return the data of a be64 element in host endianness
-+ * @gse: guest state element
-+ */
-+static inline u64 gse_get_u64(const struct gs_elem *gse)
-+{
-+	return be64_to_cpu(gse_get_be64(gse));
-+}
-+
-+/**
-+ * __gse_get_reg() - return the date of a register type guest state element
-+ * @gse: guest state element
-+ *
-+ * Determine the element data size from its guest state ID and return the
-+ * correctly sized value.
-+ */
-+static inline u64 __gse_get_reg(const struct gs_elem *gse)
-+{
-+	if (gse_len(gse) == sizeof(u64))
-+		return gse_get_u64(gse);
-+
-+	if (gse_len(gse) == sizeof(u32)) {
-+		u32 tmp;
-+
-+		tmp = gse_get_u32(gse);
-+		return (u64)tmp;
-+	}
++	rc = gsm_refresh_info(gsm, gsb);
++	if (rc < 0)
++		return rc;
 +	return 0;
 +}
 +
 +/**
-+ * gse_get_vector128() - return the data of a vector element
-+ * @gse: guest state element
-+ */
-+static inline vector128 gse_get_vector128(const struct gs_elem *gse)
-+{
-+	union {
-+		__vector128 v;
-+		u64 dw[2];
-+	} u = { 0 };
-+	__be64 *src;
-+
-+	src = (__be64 *)gse_data(gse);
-+	u.dw[TS_FPROFFSET] = be64_to_cpu(src[0]);
-+#ifdef CONFIG_VSX
-+	u.dw[TS_VSRLOWOFFSET] = be64_to_cpu(src[1]);
-+#endif
-+	return u.v;
-+}
-+
-+/**
-+ * gse_put - add a guest state element to a buffer
-+ * @gsb: guest state buffer to add to
++ * gsb_recv - receive a single guest state ID
++ * @gsb: guest state buffer
++ * @gsm: guest state message
 + * @iden: guest state identity
-+ * @v: generic value
 + */
-+#define gse_put(gsb, iden, v)					\
-+	(_Generic((v),						\
-+		  u64 : __gse_put_reg,				\
-+		  long unsigned int : __gse_put_reg,		\
-+		  u32 : __gse_put_reg,				\
-+		  struct gs_buff_info : gse_put_buff_info,	\
-+		  struct gs_proc_table : gse_put_proc_table,	\
-+		  struct gs_part_table : gse_put_part_table,	\
-+		  vector128 : gse_put_vector128)(gsb, iden, v))
-+
-+/**
-+ * gse_get - return the data of a guest state element
-+ * @gsb: guest state element to add to
-+ * @v: generic value pointer to return in
-+ */
-+#define gse_get(gse, v)						\
-+	(*v = (_Generic((v),					\
-+			u64 * : __gse_get_reg,			\
-+			unsigned long * : __gse_get_reg,	\
-+			u32 * : __gse_get_reg,			\
-+			vector128 * : gse_get_vector128)(gse)))
-+
-+/**************************************************************************
-+ * Guest State Bitmap
-+ **************************************************************************/
-+
-+bool gsbm_test(struct gs_bitmap *gsbm, u16 iden);
-+void gsbm_set(struct gs_bitmap *gsbm, u16 iden);
-+void gsbm_clear(struct gs_bitmap *gsbm, u16 iden);
-+u16 gsbm_next(struct gs_bitmap *gsbm, u16 prev);
-+
-+/**
-+ * gsbm_zero - zero the entire bitmap
-+ * @gsbm: guest state buffer bitmap
-+ */
-+static inline void gsbm_zero(struct gs_bitmap *gsbm)
++static inline int gsb_receive_datum(struct gs_buff *gsb, struct gs_msg *gsm,
++				    u16 iden)
 +{
-+	bitmap_zero(gsbm->bitmap, GSE_IDEN_COUNT);
++	int rc;
++
++	gsm_include(gsm, iden);
++	rc = gsb_receive_data(gsb, gsm);
++	if (rc < 0)
++		return rc;
++	gsm_reset(gsm);
++	return 0;
 +}
 +
 +/**
-+ * gsbm_fill - fill the entire bitmap
-+ * @gsbm: guest state buffer bitmap
-+ */
-+static inline void gsbm_fill(struct gs_bitmap *gsbm)
-+{
-+	bitmap_fill(gsbm->bitmap, GSE_IDEN_COUNT);
-+	clear_bit(0, gsbm->bitmap);
-+}
-+
-+/**
-+ * gsbm_for_each - iterate the present guest state IDs
-+ * @gsbm: guest state buffer bitmap
-+ * @iden: current guest state ID
-+ */
-+#define gsbm_for_each(gsbm, iden) \
-+	for (iden = gsbm_next(gsbm, 0); iden != 0; iden = gsbm_next(gsbm, iden))
-+
-+
-+/**************************************************************************
-+ * Guest State Parser
-+ **************************************************************************/
-+
-+void gsp_insert(struct gs_parser *gsp, u16 iden, struct gs_elem *gse);
-+struct gs_elem *gsp_lookup(struct gs_parser *gsp, u16 iden);
-+
-+/**
-+ * gsp_for_each - iterate the <guest state IDs, guest state element> pairs
-+ * @gsp: guest state buffer bitmap
-+ * @iden: current guest state ID
-+ * @gse: guest state element
-+ */
-+#define gsp_for_each(gsp, iden, gse)                              \
-+	for (iden = gsbm_next(&(gsp)->iterator, 0),               \
-+	    gse = gsp_lookup((gsp), iden);                        \
-+	     iden != 0; iden = gsbm_next(&(gsp)->iterator, iden), \
-+	    gse = gsp_lookup((gsp), iden))
-+
-+/**************************************************************************
-+ * Guest State Message
-+ **************************************************************************/
-+
-+/**
-+ * gsm_for_each - iterate the guest state IDs included in a guest state message
-+ * @gsp: guest state buffer bitmap
-+ * @iden: current guest state ID
-+ * @gse: guest state element
-+ */
-+#define gsm_for_each(gsm, iden)                            \
-+	for (iden = gsbm_next(&gsm->bitmap, 0); iden != 0; \
-+	     iden = gsbm_next(&gsm->bitmap, iden))
-+
-+int gsm_init(struct gs_msg *mgs, struct gs_msg_ops *ops, void *data,
-+	     unsigned long flags);
-+
-+struct gs_msg *gsm_new(struct gs_msg_ops *ops, void *data, unsigned long flags,
-+		       gfp_t gfp_flags);
-+void gsm_free(struct gs_msg *gsm);
-+size_t gsm_size(struct gs_msg *gsm);
-+int gsm_fill_info(struct gs_msg *gsm, struct gs_buff *gsb);
-+int gsm_refresh_info(struct gs_msg *gsm, struct gs_buff *gsb);
-+
-+/**
-+ * gsm_include - indicate a guest state ID should be included when serializing
++ * gsb_send_data - flexibly send values from a guest state buffer
++ * @gsb: guest state buffer
 + * @gsm: guest state message
-+ * @iden: guest state ID
++ *
++ * Sends the guest state values included in the guest state message.
 + */
-+static inline void gsm_include(struct gs_msg *gsm, u16 iden)
++static inline int gsb_send_data(struct gs_buff *gsb, struct gs_msg *gsm)
 +{
-+	gsbm_set(&gsm->bitmap, iden);
++	int rc;
++
++	rc = gsm_fill_info(gsm, gsb);
++	if (rc < 0)
++		return rc;
++	rc = gsb_send(gsb, gsm->flags);
++
++	return rc;
 +}
 +
 +/**
-+ * gsm_includes - check if a guest state ID will be included when serializing
++ * gsb_recv - send a single guest state ID
++ * @gsb: guest state buffer
 + * @gsm: guest state message
-+ * @iden: guest state ID
++ * @iden: guest state identity
 + */
-+static inline bool gsm_includes(struct gs_msg *gsm, u16 iden)
++static inline int gsb_send_datum(struct gs_buff *gsb, struct gs_msg *gsm,
++				 u16 iden)
 +{
-+	return gsbm_test(&gsm->bitmap, iden);
++	int rc;
++
++	gsm_include(gsm, iden);
++	rc = gsb_send_data(gsb, gsm);
++	if (rc < 0)
++		return rc;
++	gsm_reset(gsm);
++	return 0;
 +}
 +
-+/**
-+ * gsm_includes - indicate all guest state IDs should be included when serializing
-+ * @gsm: guest state message
-+ * @iden: guest state ID
-+ */
-+static inline void gsm_include_all(struct gs_msg *gsm)
-+{
-+	gsbm_fill(&gsm->bitmap);
-+}
+ #endif /* _ASM_POWERPC_GUEST_STATE_BUFFER_H */
+diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
+index c099780385dd..ddb99e982917 100644
+--- a/arch/powerpc/include/asm/hvcall.h
++++ b/arch/powerpc/include/asm/hvcall.h
+@@ -100,6 +100,18 @@
+ #define H_COP_HW	-74
+ #define H_STATE		-75
+ #define H_IN_USE	-77
 +
-+/**
-+ * gsm_include - clear the guest state IDs that should be included when serializing
-+ * @gsm: guest state message
-+ */
-+static inline void gsm_reset(struct gs_msg *gsm)
-+{
-+	gsbm_zero(&gsm->bitmap);
-+}
++#define H_INVALID_ELEMENT_ID			-79
++#define H_INVALID_ELEMENT_SIZE			-80
++#define H_INVALID_ELEMENT_VALUE			-81
++#define H_INPUT_BUFFER_NOT_DEFINED		-82
++#define H_INPUT_BUFFER_TOO_SMALL		-83
++#define H_OUTPUT_BUFFER_NOT_DEFINED		-84
++#define H_OUTPUT_BUFFER_TOO_SMALL		-85
++#define H_PARTITION_PAGE_TABLE_NOT_DEFINED	-86
++#define H_GUEST_VCPU_STATE_NOT_HV_OWNED		-87
 +
-+#endif /* _ASM_POWERPC_GUEST_STATE_BUFFER_H */
++
+ #define H_UNSUPPORTED_FLAG_START	-256
+ #define H_UNSUPPORTED_FLAG_END		-511
+ #define H_MULTI_THREADS_ACTIVE	-9005
+@@ -381,6 +393,15 @@
+ #define H_ENTER_NESTED		0xF804
+ #define H_TLB_INVALIDATE	0xF808
+ #define H_COPY_TOFROM_GUEST	0xF80C
++#define H_GUEST_GET_CAPABILITIES 0x460
++#define H_GUEST_SET_CAPABILITIES 0x464
++#define H_GUEST_CREATE		0x470
++#define H_GUEST_CREATE_VCPU	0x474
++#define H_GUEST_GET_STATE	0x478
++#define H_GUEST_SET_STATE	0x47C
++#define H_GUEST_RUN_VCPU	0x480
++#define H_GUEST_COPY_MEMORY	0x484
++#define H_GUEST_DELETE		0x488
+ 
+ /* Flags for H_SVM_PAGE_IN */
+ #define H_PAGE_IN_SHARED        0x1
+@@ -467,6 +488,15 @@
+ #define H_RPTI_PAGE_1G	0x08
+ #define H_RPTI_PAGE_ALL (-1UL)
+ 
++/* Flags for H_GUEST_{S,G}_STATE */
++#define H_GUEST_FLAGS_WIDE     (1UL<<(63-0))
++
++/* Flag values used for H_{S,G}SET_GUEST_CAPABILITIES */
++#define H_GUEST_CAP_COPY_MEM	(1UL<<(63-0))
++#define H_GUEST_CAP_POWER9	(1UL<<(63-1))
++#define H_GUEST_CAP_POWER10	(1UL<<(63-2))
++#define H_GUEST_CAP_BITMAP2	(1UL<<(63-63))
++
+ #ifndef __ASSEMBLY__
+ #include <linux/types.h>
+ 
 diff --git a/arch/powerpc/include/asm/kvm_book3s.h b/arch/powerpc/include/asm/kvm_book3s.h
-index 77653c5b356b..0ca2d8b37b42 100644
+index 0ca2d8b37b42..c5c57552b447 100644
 --- a/arch/powerpc/include/asm/kvm_book3s.h
 +++ b/arch/powerpc/include/asm/kvm_book3s.h
-@@ -444,6 +444,7 @@ static inline void kvmppc_set_vsx_fpr(struct kvm_vcpu *vcpu, int i, int j, u64 v
- 	vcpu->arch.fp.fpr[i][j] = val;
+@@ -12,6 +12,7 @@
+ #include <linux/types.h>
+ #include <linux/kvm_host.h>
+ #include <asm/kvm_book3s_asm.h>
++#include <asm/guest-state-buffer.h>
+ 
+ struct kvmppc_bat {
+ 	u64 raw;
+@@ -316,6 +317,57 @@ long int kvmhv_nested_page_fault(struct kvm_vcpu *vcpu);
+ 
+ void kvmppc_giveup_fac(struct kvm_vcpu *vcpu, ulong fac);
+ 
++
++#ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
++
++extern bool __kvmhv_on_papr;
++
++static inline bool kvmhv_on_papr(void)
++{
++	return __kvmhv_on_papr;
++}
++
++#else
++
++static inline bool kvmhv_on_papr(void)
++{
++	return false;
++}
++
++#endif
++
++int __kvmhv_papr_reload_ptregs(struct kvm_vcpu *vcpu, struct pt_regs *regs);
++int __kvmhv_papr_mark_dirty_ptregs(struct kvm_vcpu *vcpu, struct pt_regs *regs);
++int __kvmhv_papr_mark_dirty(struct kvm_vcpu *vcpu, u16 iden);
++int __kvmhv_papr_cached_reload(struct kvm_vcpu *vcpu, u16 iden);
++
++static inline int kvmhv_papr_reload_ptregs(struct kvm_vcpu *vcpu, struct pt_regs *regs)
++{
++	if (kvmhv_on_papr())
++		return __kvmhv_papr_reload_ptregs(vcpu, regs);
++	return 0;
++}
++static inline int kvmhv_papr_mark_dirty_ptregs(struct kvm_vcpu *vcpu, struct pt_regs *regs)
++{
++	if (kvmhv_on_papr())
++		return __kvmhv_papr_mark_dirty_ptregs(vcpu, regs);
++	return 0;
++}
++
++static inline int kvmhv_papr_mark_dirty(struct kvm_vcpu *vcpu, u16 iden)
++{
++	if (kvmhv_on_papr())
++		return __kvmhv_papr_mark_dirty(vcpu, iden);
++	return 0;
++}
++
++static inline int kvmhv_papr_cached_reload(struct kvm_vcpu *vcpu, u16 iden)
++{
++	if (kvmhv_on_papr())
++		return __kvmhv_papr_cached_reload(vcpu, iden);
++	return 0;
++}
++
+ extern int kvm_irq_bypass;
+ 
+ static inline struct kvmppc_vcpu_book3s *to_book3s(struct kvm_vcpu *vcpu)
+@@ -335,70 +387,84 @@ static inline struct kvmppc_vcpu_book3s *to_book3s(struct kvm_vcpu *vcpu)
+ static inline void kvmppc_set_gpr(struct kvm_vcpu *vcpu, int num, ulong val)
+ {
+ 	vcpu->arch.regs.gpr[num] = val;
++	kvmhv_papr_mark_dirty(vcpu, GSID_GPR(num));
  }
  
-+#ifdef CONFIG_VSX
+ static inline ulong kvmppc_get_gpr(struct kvm_vcpu *vcpu, int num)
+ {
++	kvmhv_papr_cached_reload(vcpu, GSID_GPR(num));
+ 	return vcpu->arch.regs.gpr[num];
+ }
+ 
+ static inline void kvmppc_set_cr(struct kvm_vcpu *vcpu, u32 val)
+ {
+ 	vcpu->arch.regs.ccr = val;
++	kvmhv_papr_mark_dirty(vcpu, GSID_CR);
+ }
+ 
+ static inline u32 kvmppc_get_cr(struct kvm_vcpu *vcpu)
+ {
++	kvmhv_papr_cached_reload(vcpu, GSID_CR);
+ 	return vcpu->arch.regs.ccr;
+ }
+ 
+ static inline void kvmppc_set_xer(struct kvm_vcpu *vcpu, ulong val)
+ {
+ 	vcpu->arch.regs.xer = val;
++	kvmhv_papr_mark_dirty(vcpu, GSID_XER);
+ }
+ 
+ static inline ulong kvmppc_get_xer(struct kvm_vcpu *vcpu)
+ {
++	kvmhv_papr_cached_reload(vcpu, GSID_XER);
+ 	return vcpu->arch.regs.xer;
+ }
+ 
+ static inline void kvmppc_set_ctr(struct kvm_vcpu *vcpu, ulong val)
+ {
+ 	vcpu->arch.regs.ctr = val;
++	kvmhv_papr_mark_dirty(vcpu, GSID_CTR);
+ }
+ 
+ static inline ulong kvmppc_get_ctr(struct kvm_vcpu *vcpu)
+ {
++	kvmhv_papr_cached_reload(vcpu, GSID_CTR);
+ 	return vcpu->arch.regs.ctr;
+ }
+ 
+ static inline void kvmppc_set_lr(struct kvm_vcpu *vcpu, ulong val)
+ {
+ 	vcpu->arch.regs.link = val;
++	kvmhv_papr_mark_dirty(vcpu, GSID_LR);
+ }
+ 
+ static inline ulong kvmppc_get_lr(struct kvm_vcpu *vcpu)
+ {
++	kvmhv_papr_cached_reload(vcpu, GSID_LR);
+ 	return vcpu->arch.regs.link;
+ }
+ 
+ static inline void kvmppc_set_pc(struct kvm_vcpu *vcpu, ulong val)
+ {
+ 	vcpu->arch.regs.nip = val;
++	kvmhv_papr_mark_dirty(vcpu, GSID_NIA);
+ }
+ 
+ static inline ulong kvmppc_get_pc(struct kvm_vcpu *vcpu)
+ {
++	kvmhv_papr_cached_reload(vcpu, GSID_NIA);
+ 	return vcpu->arch.regs.nip;
+ }
+ 
+ static inline void kvmppc_set_pid(struct kvm_vcpu *vcpu, u32 val)
+ {
+ 	vcpu->arch.pid = val;
++	kvmhv_papr_mark_dirty(vcpu, GSID_PIDR);
+ }
+ 
+ static inline u32 kvmppc_get_pid(struct kvm_vcpu *vcpu)
+ {
++	kvmhv_papr_cached_reload(vcpu, GSID_PIDR);
+ 	return vcpu->arch.pid;
+ }
+ 
+@@ -415,111 +481,129 @@ static inline ulong kvmppc_get_fault_dar(struct kvm_vcpu *vcpu)
+ 
+ static inline u64 kvmppc_get_fpr(struct kvm_vcpu *vcpu, int i)
+ {
++	kvmhv_papr_cached_reload(vcpu, GSID_VSRS(i));
+ 	return vcpu->arch.fp.fpr[i][TS_FPROFFSET];
+ }
+ 
+ static inline void kvmppc_set_fpr(struct kvm_vcpu *vcpu, int i, u64 val)
+ {
+ 	vcpu->arch.fp.fpr[i][TS_FPROFFSET] = val;
++	kvmhv_papr_mark_dirty(vcpu, GSID_VSRS(i));
+ }
+ 
+ static inline u64 kvmppc_get_fpscr(struct kvm_vcpu *vcpu)
+ {
++	kvmhv_papr_cached_reload(vcpu, GSID_FPSCR);
+ 	return vcpu->arch.fp.fpscr;
+ }
+ 
+ static inline void kvmppc_set_fpscr(struct kvm_vcpu *vcpu, u64 val)
+ {
+ 	vcpu->arch.fp.fpscr = val;
++	kvmhv_papr_mark_dirty(vcpu, GSID_FPSCR);
+ }
+ 
+ 
+ static inline u64 kvmppc_get_vsx_fpr(struct kvm_vcpu *vcpu, int i, int j)
+ {
++	kvmhv_papr_cached_reload(vcpu, GSID_VSRS(i));
+ 	return vcpu->arch.fp.fpr[i][j];
+ }
+ 
+ static inline void kvmppc_set_vsx_fpr(struct kvm_vcpu *vcpu, int i, int j, u64 val)
+ {
+ 	vcpu->arch.fp.fpr[i][j] = val;
++	kvmhv_papr_mark_dirty(vcpu, GSID_VSRS(i));
+ }
+ 
+ #ifdef CONFIG_VSX
  static inline vector128 kvmppc_get_vsx_vr(struct kvm_vcpu *vcpu, int i)
  {
++	kvmhv_papr_cached_reload(vcpu, GSID_VSRS(32 + i));
  	return vcpu->arch.vr.vr[i];
-@@ -463,6 +464,7 @@ static inline void kvmppc_set_vscr(struct kvm_vcpu *vcpu, u32 val)
+ }
+ 
+ static inline void kvmppc_set_vsx_vr(struct kvm_vcpu *vcpu, int i, vector128 val)
+ {
+ 	vcpu->arch.vr.vr[i] = val;
++	kvmhv_papr_mark_dirty(vcpu, GSID_VSRS(32 + i));
+ }
+ 
+ static inline u32 kvmppc_get_vscr(struct kvm_vcpu *vcpu)
+ {
++	kvmhv_papr_cached_reload(vcpu, GSID_VSCR);
+ 	return vcpu->arch.vr.vscr.u[3];
+ }
+ 
+ static inline void kvmppc_set_vscr(struct kvm_vcpu *vcpu, u32 val)
  {
  	vcpu->arch.vr.vscr.u[3] = val;
++	kvmhv_papr_mark_dirty(vcpu, GSID_VSCR);
  }
-+#endif
+ #endif
  
- #define BOOK3S_WRAPPER_SET(reg, size)					\
+-#define BOOK3S_WRAPPER_SET(reg, size)					\
++#define BOOK3S_WRAPPER_SET(reg, size, iden)				\
  static inline void kvmppc_set_##reg(struct kvm_vcpu *vcpu, u##size val)	\
+ {									\
+ 									\
+ 	vcpu->arch.reg = val;						\
++	kvmhv_papr_mark_dirty(vcpu, iden);				\
+ }
+ 
+-#define BOOK3S_WRAPPER_GET(reg, size)					\
++#define BOOK3S_WRAPPER_GET(reg, size, iden)				\
+ static inline u##size kvmppc_get_##reg(struct kvm_vcpu *vcpu)		\
+ {									\
++	kvmhv_papr_cached_reload(vcpu, iden);				\
+ 	return vcpu->arch.reg;						\
+ }
+ 
+-#define BOOK3S_WRAPPER(reg, size)					\
+-	BOOK3S_WRAPPER_SET(reg, size)					\
+-	BOOK3S_WRAPPER_GET(reg, size)					\
++#define BOOK3S_WRAPPER(reg, size, iden)					\
++	BOOK3S_WRAPPER_SET(reg, size, iden)				\
++	BOOK3S_WRAPPER_GET(reg, size, iden)				\
+ 
+-BOOK3S_WRAPPER(tar, 64)
+-BOOK3S_WRAPPER(ebbhr, 64)
+-BOOK3S_WRAPPER(ebbrr, 64)
+-BOOK3S_WRAPPER(bescr, 64)
+-BOOK3S_WRAPPER(ic, 64)
+-BOOK3S_WRAPPER(vrsave, 64)
++BOOK3S_WRAPPER(tar, 64, GSID_TAR)
++BOOK3S_WRAPPER(ebbhr, 64, GSID_EBBHR)
++BOOK3S_WRAPPER(ebbrr, 64, GSID_EBBRR)
++BOOK3S_WRAPPER(bescr, 64, GSID_BESCR)
++BOOK3S_WRAPPER(ic, 64, GSID_IC)
++BOOK3S_WRAPPER(vrsave, 64, GSID_VRSAVE)
+ 
+ 
+-#define VCORE_WRAPPER_SET(reg, size)					\
++#define VCORE_WRAPPER_SET(reg, size, iden)				\
+ static inline void kvmppc_set_##reg ##_hv(struct kvm_vcpu *vcpu, u##size val)	\
+ {									\
+ 	vcpu->arch.vcore->reg = val;					\
++	kvmhv_papr_mark_dirty(vcpu, iden);				\
+ }
+ 
+-#define VCORE_WRAPPER_GET(reg, size)					\
++#define VCORE_WRAPPER_GET(reg, size, iden)				\
+ static inline u##size kvmppc_get_##reg ##_hv(struct kvm_vcpu *vcpu)	\
+ {									\
++	kvmhv_papr_cached_reload(vcpu, iden);				\
+ 	return vcpu->arch.vcore->reg;					\
+ }
+ 
+-#define VCORE_WRAPPER(reg, size)					\
+-	VCORE_WRAPPER_SET(reg, size)					\
+-	VCORE_WRAPPER_GET(reg, size)					\
++#define VCORE_WRAPPER(reg, size, iden)					\
++	VCORE_WRAPPER_SET(reg, size, iden)				\
++	VCORE_WRAPPER_GET(reg, size, iden)				\
+ 
+ 
+-VCORE_WRAPPER(vtb, 64)
+-VCORE_WRAPPER(tb_offset, 64)
+-VCORE_WRAPPER(lpcr, 64)
++VCORE_WRAPPER(vtb, 64, GSID_VTB)
++VCORE_WRAPPER(tb_offset, 64, GSID_TB_OFFSET)
++VCORE_WRAPPER(lpcr, 64, GSID_LPCR)
+ 
+ static inline u64 kvmppc_get_dec_expires(struct kvm_vcpu *vcpu)
+ {
++	kvmhv_papr_cached_reload(vcpu, GSID_TB_OFFSET);
++	kvmhv_papr_cached_reload(vcpu, GSID_DEC_EXPIRY_TB);
+ 	return vcpu->arch.dec_expires;
+ }
+ 
+ static inline void kvmppc_set_dec_expires(struct kvm_vcpu *vcpu, u64 val)
+ {
+ 	vcpu->arch.dec_expires = val;
++	kvmhv_papr_cached_reload(vcpu, GSID_TB_OFFSET);
++	kvmhv_papr_mark_dirty(vcpu, GSID_DEC_EXPIRY_TB);
+ }
+ 
+ /* Expiry time of vcpu DEC relative to host TB */
+diff --git a/arch/powerpc/include/asm/kvm_book3s_64.h b/arch/powerpc/include/asm/kvm_book3s_64.h
+index d49065af08e9..689e14284127 100644
+--- a/arch/powerpc/include/asm/kvm_book3s_64.h
++++ b/arch/powerpc/include/asm/kvm_book3s_64.h
+@@ -677,6 +677,12 @@ static inline pte_t *find_kvm_host_pte(struct kvm *kvm, unsigned long mmu_seq,
+ extern pte_t *find_kvm_nested_guest_pte(struct kvm *kvm, unsigned long lpid,
+ 					unsigned long ea, unsigned *hshift);
+ 
++int kvmhv_papr_vcpu_create(struct kvm_vcpu *vcpu, struct kvmhv_papr_host *nested_state);
++void kvmhv_papr_vcpu_free(struct kvm_vcpu *vcpu, struct kvmhv_papr_host *nested_state);
++int kvmhv_papr_flush_vcpu(struct kvm_vcpu *vcpu, u64 time_limit);
++int kvmhv_papr_set_ptbl_entry(u64 lpid, u64 dw0, u64 dw1);
++int kvmhv_papr_parse_output(struct kvm_vcpu *vcpu);
++
+ #endif /* CONFIG_KVM_BOOK3S_HV_POSSIBLE */
+ 
+ #endif /* __ASM_KVM_BOOK3S_64_H__ */
+diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
+index 14ee0dece853..21e8bf9e530a 100644
+--- a/arch/powerpc/include/asm/kvm_host.h
++++ b/arch/powerpc/include/asm/kvm_host.h
+@@ -25,6 +25,7 @@
+ #include <asm/cacheflush.h>
+ #include <asm/hvcall.h>
+ #include <asm/mce.h>
++#include <asm/guest-state-buffer.h>
+ 
+ #define __KVM_HAVE_ARCH_VCPU_DEBUGFS
+ 
+@@ -509,6 +510,23 @@ union xive_tma_w01 {
+ 	__be64 w01;
+ };
+ 
++ /* Nested PAPR host H_GUEST_RUN_VCPU configuration */
++struct kvmhv_papr_config {
++	struct gs_buff_info vcpu_run_output_cfg;
++	struct gs_buff_info vcpu_run_input_cfg;
++	u64 vcpu_run_output_size;
++};
++
++ /* Nested PAPR host state */
++struct kvmhv_papr_host {
++	struct kvmhv_papr_config cfg;
++	struct gs_buff *vcpu_run_output;
++	struct gs_buff *vcpu_run_input;
++	struct gs_msg *vcpu_message;
++	struct gs_msg *vcore_message;
++	struct gs_bitmap valids;
++};
++
+ struct kvm_vcpu_arch {
+ 	ulong host_stack;
+ 	u32 host_pid;
+@@ -575,6 +593,7 @@ struct kvm_vcpu_arch {
+ 	ulong dscr;
+ 	ulong amr;
+ 	ulong uamor;
++	ulong amor;
+ 	ulong iamr;
+ 	u32 ctrl;
+ 	u32 dabrx;
+@@ -829,6 +848,8 @@ struct kvm_vcpu_arch {
+ 	u64 nested_hfscr;	/* HFSCR that the L1 requested for the nested guest */
+ 	u32 nested_vcpu_id;
+ 	gpa_t nested_io_gpr;
++	/* For nested APIv2 guests*/
++	struct kvmhv_papr_host papr_host;
+ #endif
+ 
+ #ifdef CONFIG_KVM_BOOK3S_HV_EXIT_TIMING
+diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
+index fbac353ac46b..4d43bb29ba7c 100644
+--- a/arch/powerpc/include/asm/kvm_ppc.h
++++ b/arch/powerpc/include/asm/kvm_ppc.h
+@@ -615,6 +615,35 @@ static inline bool kvmhv_on_pseries(void)
+ {
+ 	return false;
+ }
++
++#endif
++
++#ifndef CONFIG_PPC_BOOK3S
++
++static inline bool kvmhv_on_papr(void)
++{
++	return false;
++}
++
++static inline int kvmhv_papr_reload_ptregs(struct kvm_vcpu *vcpu, struct pt_regs *regs)
++{
++	return 0;
++}
++static inline int kvmhv_papr_mark_dirty_ptregs(struct kvm_vcpu *vcpu, struct pt_regs *regs)
++{
++	return 0;
++}
++
++static inline int kvmhv_papr_mark_dirty(struct kvm_vcpu *vcpu, u16 iden)
++{
++	return 0;
++}
++
++static inline int kvmhv_papr_cached_reload(struct kvm_vcpu *vcpu, u16 iden)
++{
++	return 0;
++}
++
+ #endif
+ 
+ #ifdef CONFIG_KVM_XICS
+@@ -957,31 +986,33 @@ static inline void kvmppc_set_##reg(struct kvm_vcpu *vcpu, u##size val)	\
+ 	       vcpu->arch.shared->reg = cpu_to_le##size(val);		\
+ }									\
+ 
+-#define SHARED_CACHE_WRAPPER_GET(reg, size)				\
++#define SHARED_CACHE_WRAPPER_GET(reg, size, iden)			\
+ static inline u##size kvmppc_get_##reg(struct kvm_vcpu *vcpu)		\
+ {									\
++	kvmhv_papr_cached_reload(vcpu, iden);				\
+ 	if (kvmppc_shared_big_endian(vcpu))				\
+ 	       return be##size##_to_cpu(vcpu->arch.shared->reg);	\
+ 	else								\
+ 	       return le##size##_to_cpu(vcpu->arch.shared->reg);	\
+ }									\
+ 
+-#define SHARED_CACHE_WRAPPER_SET(reg, size)				\
++#define SHARED_CACHE_WRAPPER_SET(reg, size, iden)			\
+ static inline void kvmppc_set_##reg(struct kvm_vcpu *vcpu, u##size val)	\
+ {									\
+ 	if (kvmppc_shared_big_endian(vcpu))				\
+ 	       vcpu->arch.shared->reg = cpu_to_be##size(val);		\
+ 	else								\
+ 	       vcpu->arch.shared->reg = cpu_to_le##size(val);		\
++	kvmhv_papr_mark_dirty(vcpu, iden);				\
+ }									\
+ 
+ #define SHARED_WRAPPER(reg, size)					\
+ 	SHARED_WRAPPER_GET(reg, size)					\
+ 	SHARED_WRAPPER_SET(reg, size)					\
+ 
+-#define SHARED_CACHE_WRAPPER(reg, size)					\
+-	SHARED_CACHE_WRAPPER_GET(reg, size)				\
+-	SHARED_CACHE_WRAPPER_SET(reg, size)				\
++#define SHARED_CACHE_WRAPPER(reg, size, iden)				\
++	SHARED_CACHE_WRAPPER_GET(reg, size, iden)			\
++	SHARED_CACHE_WRAPPER_SET(reg, size, iden)			\
+ 
+ #define SPRNG_WRAPPER(reg, bookehv_spr)					\
+ 	SPRNG_WRAPPER_GET(reg, bookehv_spr)				\
+@@ -1000,29 +1031,30 @@ static inline void kvmppc_set_##reg(struct kvm_vcpu *vcpu, u##size val)	\
+ #define SHARED_SPRNG_WRAPPER(reg, size, bookehv_spr)			\
+ 	SHARED_WRAPPER(reg, size)					\
+ 
+-#define SHARED_SPRNG_CACHE_WRAPPER(reg, size, bookehv_spr)		\
+-	SHARED_CACHE_WRAPPER(reg, size)					\
++#define SHARED_SPRNG_CACHE_WRAPPER(reg, size, bookehv_spr, iden)	\
++	SHARED_CACHE_WRAPPER(reg, size, iden)				\
+ 
+ #endif
+ 
+ SHARED_WRAPPER(critical, 64)
+-SHARED_SPRNG_CACHE_WRAPPER(sprg0, 64, SPRN_GSPRG0)
+-SHARED_SPRNG_CACHE_WRAPPER(sprg1, 64, SPRN_GSPRG1)
+-SHARED_SPRNG_CACHE_WRAPPER(sprg2, 64, SPRN_GSPRG2)
+-SHARED_SPRNG_CACHE_WRAPPER(sprg3, 64, SPRN_GSPRG3)
+-SHARED_SPRNG_CACHE_WRAPPER(srr0, 64, SPRN_GSRR0)
+-SHARED_SPRNG_CACHE_WRAPPER(srr1, 64, SPRN_GSRR1)
+-SHARED_SPRNG_CACHE_WRAPPER(dar, 64, SPRN_GDEAR)
++SHARED_SPRNG_CACHE_WRAPPER(sprg0, 64, SPRN_GSPRG0, GSID_SPRG0)
++SHARED_SPRNG_CACHE_WRAPPER(sprg1, 64, SPRN_GSPRG1, GSID_SPRG1)
++SHARED_SPRNG_CACHE_WRAPPER(sprg2, 64, SPRN_GSPRG2, GSID_SPRG2)
++SHARED_SPRNG_CACHE_WRAPPER(sprg3, 64, SPRN_GSPRG3, GSID_SPRG3)
++SHARED_SPRNG_CACHE_WRAPPER(srr0, 64, SPRN_GSRR0, GSID_SRR0)
++SHARED_SPRNG_CACHE_WRAPPER(srr1, 64, SPRN_GSRR1, GSID_SRR1)
++SHARED_SPRNG_CACHE_WRAPPER(dar, 64, SPRN_GDEAR, GSID_DAR)
+ SHARED_SPRNG_WRAPPER(esr, 64, SPRN_GESR)
+-SHARED_CACHE_WRAPPER_GET(msr, 64)
++SHARED_CACHE_WRAPPER_GET(msr, 64, GSID_MSR)
+ static inline void kvmppc_set_msr_fast(struct kvm_vcpu *vcpu, u64 val)
+ {
+ 	if (kvmppc_shared_big_endian(vcpu))
+ 	       vcpu->arch.shared->msr = cpu_to_be64(val);
+ 	else
+ 	       vcpu->arch.shared->msr = cpu_to_le64(val);
++	kvmhv_papr_mark_dirty(vcpu, GSID_MSR);
+ }
+-SHARED_CACHE_WRAPPER(dsisr, 32)
++SHARED_CACHE_WRAPPER(dsisr, 32, GSID_DSISR)
+ SHARED_WRAPPER(int_pending, 32)
+ SHARED_WRAPPER(sprg4, 64)
+ SHARED_WRAPPER(sprg5, 64)
+diff --git a/arch/powerpc/include/asm/plpar_wrappers.h b/arch/powerpc/include/asm/plpar_wrappers.h
+index 8239c0af5eb2..b48f90884522 100644
+--- a/arch/powerpc/include/asm/plpar_wrappers.h
++++ b/arch/powerpc/include/asm/plpar_wrappers.h
+@@ -6,6 +6,7 @@
+ 
+ #include <linux/string.h>
+ #include <linux/irqflags.h>
++#include <linux/delay.h>
+ 
+ #include <asm/hvcall.h>
+ #include <asm/paca.h>
+@@ -342,6 +343,203 @@ static inline long plpar_get_cpu_characteristics(struct h_cpu_char_result *p)
+ 	return rc;
+ }
+ 
++static inline long plpar_guest_create(unsigned long flags, unsigned long *guest_id)
++{
++	unsigned long retbuf[PLPAR_HCALL_BUFSIZE];
++	unsigned long token;
++	long rc;
++
++	token = -1UL;
++	while (true) {
++		rc = plpar_hcall(H_GUEST_CREATE, retbuf, flags, token);
++		if (rc == H_SUCCESS) {
++			*guest_id = retbuf[0];
++			break;
++		}
++
++		if (rc == H_BUSY) {
++			token = retbuf[0];
++			cpu_relax();
++			continue;
++		}
++
++		if (H_IS_LONG_BUSY(rc)) {
++			token = retbuf[0];
++			mdelay(get_longbusy_msecs(rc));
++			continue;
++		}
++
++		break;
++	}
++
++	return rc;
++}
++
++static inline long plpar_guest_create_vcpu(unsigned long flags,
++					   unsigned long guest_id,
++					   unsigned long vcpu_id)
++{
++	long rc;
++
++	while (true) {
++		rc = plpar_hcall_norets(H_GUEST_CREATE_VCPU, 0, guest_id, vcpu_id);
++
++		if (rc == H_BUSY) {
++			cpu_relax();
++			continue;
++		}
++
++		if (H_IS_LONG_BUSY(rc)) {
++			mdelay(get_longbusy_msecs(rc));
++			continue;
++		}
++
++		break;
++	}
++
++	return rc;
++}
++
++static inline long plpar_guest_set_state(unsigned long flags,
++					 unsigned long guest_id,
++					 unsigned long vcpu_id,
++					 unsigned long data_buffer,
++					 unsigned long data_size,
++					 unsigned long *failed_index)
++{
++	unsigned long retbuf[PLPAR_HCALL_BUFSIZE];
++	long rc;
++
++	while (true) {
++		rc = plpar_hcall(H_GUEST_SET_STATE, retbuf, flags, guest_id,
++				 vcpu_id, data_buffer, data_size);
++
++		if (rc == H_BUSY) {
++			cpu_relax();
++			continue;
++		}
++
++		if (H_IS_LONG_BUSY(rc)) {
++			mdelay(get_longbusy_msecs(rc));
++			continue;
++		}
++
++		if (rc == H_INVALID_ELEMENT_ID)
++			*failed_index = retbuf[0];
++		else if (rc == H_INVALID_ELEMENT_SIZE)
++			*failed_index = retbuf[0];
++		else if (rc == H_INVALID_ELEMENT_VALUE)
++			*failed_index = retbuf[0];
++
++		break;
++	}
++
++	return rc;
++}
++
++static inline long plpar_guest_get_state(unsigned long flags,
++					 unsigned long guest_id,
++					 unsigned long vcpu_id,
++					 unsigned long data_buffer,
++					 unsigned long data_size,
++					 unsigned long *failed_index)
++{
++	unsigned long retbuf[PLPAR_HCALL_BUFSIZE];
++	long rc;
++
++	while (true) {
++		rc = plpar_hcall(H_GUEST_GET_STATE, retbuf, flags, guest_id,
++				 vcpu_id, data_buffer, data_size);
++
++		if (rc == H_BUSY) {
++			cpu_relax();
++			continue;
++		}
++
++		if (H_IS_LONG_BUSY(rc)) {
++			mdelay(get_longbusy_msecs(rc));
++			continue;
++		}
++
++		if (rc == H_INVALID_ELEMENT_ID)
++			*failed_index = retbuf[0];
++		else if (rc == H_INVALID_ELEMENT_SIZE)
++			*failed_index = retbuf[0];
++		else if (rc == H_INVALID_ELEMENT_VALUE)
++			*failed_index = retbuf[0];
++
++		break;
++	}
++
++	return rc;
++}
++
++static inline long plpar_guest_run_vcpu(unsigned long flags, unsigned long guest_id,
++					unsigned long vcpu_id, int *trap,
++					unsigned long *failed_index)
++{
++	unsigned long retbuf[PLPAR_HCALL_BUFSIZE];
++	long rc;
++
++	rc = plpar_hcall(H_GUEST_RUN_VCPU, retbuf, flags, guest_id, vcpu_id);
++	if (rc == H_SUCCESS)
++		*trap = retbuf[0];
++	else if (rc == H_INVALID_ELEMENT_ID)
++		*failed_index = retbuf[0];
++	else if (rc == H_INVALID_ELEMENT_SIZE)
++		*failed_index = retbuf[0];
++	else if (rc == H_INVALID_ELEMENT_VALUE)
++		*failed_index = retbuf[0];
++
++	return rc;
++}
++
++static inline long plpar_guest_delete(unsigned long flags, u64 guest_id)
++{
++	long rc;
++
++	while (true) {
++		rc = plpar_hcall_norets(H_GUEST_DELETE, flags, guest_id);
++		if (rc == H_BUSY) {
++			cpu_relax();
++			continue;
++		}
++
++		if (H_IS_LONG_BUSY(rc)) {
++			mdelay(get_longbusy_msecs(rc));
++			continue;
++		}
++
++		break;
++	}
++
++	return rc;
++}
++
++static inline long plpar_guest_set_capabilities(unsigned long flags,
++						unsigned long capabilities)
++{
++	unsigned long retbuf[PLPAR_HCALL_BUFSIZE];
++	long rc;
++
++	rc = plpar_hcall(H_GUEST_SET_CAPABILITIES, retbuf, flags, capabilities);
++
++	return rc;
++}
++
++static inline long plpar_guest_get_capabilities(unsigned long flags,
++						unsigned long *capabilities)
++{
++	unsigned long retbuf[PLPAR_HCALL_BUFSIZE];
++	long rc;
++
++	rc = plpar_hcall(H_GUEST_GET_CAPABILITIES, retbuf, flags);
++	if (rc == H_SUCCESS)
++		*capabilities = retbuf[0];
++
++	return rc;
++}
++
+ /*
+  * Wrapper to H_RPT_INVALIDATE hcall that handles return values appropriately
+  *
 diff --git a/arch/powerpc/kvm/Makefile b/arch/powerpc/kvm/Makefile
-index 5319d889b184..eb8445e71c14 100644
+index eb8445e71c14..9bb0876521ee 100644
 --- a/arch/powerpc/kvm/Makefile
 +++ b/arch/powerpc/kvm/Makefile
-@@ -87,8 +87,11 @@ kvm-book3s_64-builtin-objs-$(CONFIG_KVM_BOOK3S_64_HANDLER) += \
+@@ -87,6 +87,7 @@ kvm-book3s_64-builtin-objs-$(CONFIG_KVM_BOOK3S_64_HANDLER) += \
  	book3s_hv_ras.o \
  	book3s_hv_builtin.o \
  	book3s_hv_p9_perf.o \
-+	guest-state-buffer.o \
++	book3s_hv_papr.o \
+ 	guest-state-buffer.o \
  	$(kvm-book3s_64-builtin-tm-objs-y) \
  	$(kvm-book3s_64-builtin-xics-objs-y)
-+
-+obj-$(CONFIG_GUEST_STATE_BUFFER_TEST) += test-guest-state-buffer.o
- endif
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 521d84621422..f22ee582e209 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -383,6 +383,11 @@ static void kvmppc_core_vcpu_put_hv(struct kvm_vcpu *vcpu)
+ 	spin_unlock_irqrestore(&vcpu->arch.tbacct_lock, flags);
+ }
  
- kvm-book3s_64-objs-$(CONFIG_KVM_XICS) += \
-diff --git a/arch/powerpc/kvm/guest-state-buffer.c b/arch/powerpc/kvm/guest-state-buffer.c
-new file mode 100644
-index 000000000000..db4a79bfcaf1
---- /dev/null
-+++ b/arch/powerpc/kvm/guest-state-buffer.c
-@@ -0,0 +1,563 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include "asm/hvcall.h"
-+#include <linux/log2.h>
-+#include <asm/pgalloc.h>
-+#include <asm/guest-state-buffer.h>
-+
-+static const u16 gse_iden_len[__GSE_TYPE_MAX] = {
-+	[GSE_BE32] = sizeof(__be32),
-+	[GSE_BE64] = sizeof(__be64),
-+	[GSE_VEC128] = sizeof(vector128),
-+	[GSE_PARTITION_TABLE] = sizeof(struct gs_part_table),
-+	[GSE_PROCESS_TABLE] = sizeof(struct gs_proc_table),
-+	[GSE_BUFFER] = sizeof(struct gs_buff_info),
-+};
-+
-+/**
-+ * gsb_new() - create a new guest state buffer
-+ * @size: total size of the guest state buffer (includes header)
-+ * @guest_id: guest_id
-+ * @vcpu_id: vcpu_id
-+ * @flags: GFP flags
-+ *
-+ * Returns a guest state buffer.
-+ */
-+struct gs_buff *gsb_new(size_t size, unsigned long guest_id,
-+			unsigned long vcpu_id, gfp_t flags)
++static void kvmppc_set_pvr_hv(struct kvm_vcpu *vcpu, u32 pvr)
 +{
-+	struct gs_buff *gsb;
-+
-+	gsb = kzalloc(sizeof(*gsb), flags);
-+	if (!gsb)
-+		return NULL;
-+
-+	size = roundup_pow_of_two(size);
-+	gsb->hdr = kzalloc(size, GFP_KERNEL);
-+	if (!gsb->hdr)
-+		goto free;
-+
-+	gsb->capacity = size;
-+	gsb->len = sizeof(struct gs_header);
-+	gsb->vcpu_id = vcpu_id;
-+	gsb->guest_id = guest_id;
-+
-+	gsb->hdr->nelems = cpu_to_be32(0);
-+
-+	return gsb;
-+
-+free:
-+	kfree(gsb);
-+	return NULL;
-+}
-+EXPORT_SYMBOL(gsb_new);
-+
-+/**
-+ * gsb_free() - free a guest state buffer
-+ * @gsb: guest state buffer
-+ */
-+void gsb_free(struct gs_buff *gsb)
-+{
-+	kfree(gsb->hdr);
-+	kfree(gsb);
-+}
-+EXPORT_SYMBOL(gsb_free);
-+
-+/**
-+ * gsb_put() - allocate space in a guest state buffer
-+ * @gsb: buffer to allocate in
-+ * @size: amount of space to allocate
-+ *
-+ * Returns a pointer to the amount of space requested within the buffer and
-+ * increments the count of elements in the buffer.
-+ *
-+ * Does not check if there is enough space in the buffer.
-+ */
-+void *gsb_put(struct gs_buff *gsb, size_t size)
-+{
-+	u32 nelems = gsb_nelems(gsb);
-+	void *p;
-+
-+	p = (void *)gsb_header(gsb) + gsb_len(gsb);
-+	gsb->len += size;
-+
-+	gsb_header(gsb)->nelems = cpu_to_be32(nelems + 1);
-+	return p;
-+}
-+EXPORT_SYMBOL(gsb_put);
-+
-+static int gsid_class(u16 iden)
-+{
-+	if ((iden >= GSE_GUESTWIDE_START) && (iden <= GSE_GUESTWIDE_END))
-+		return GS_CLASS_GUESTWIDE;
-+
-+	if ((iden >= GSE_META_START) && (iden <= GSE_META_END))
-+		return GS_CLASS_META;
-+
-+	if ((iden >= GSE_DW_REGS_START) && (iden <= GSE_DW_REGS_END))
-+		return GS_CLASS_DWORD_REG;
-+
-+	if ((iden >= GSE_W_REGS_START) && (iden <= GSE_W_REGS_END))
-+		return GS_CLASS_WORD_REG;
-+
-+	if ((iden >= GSE_VSRS_START) && (iden <= GSE_VSRS_END))
-+		return GS_CLASS_VECTOR;
-+
-+	if ((iden >= GSE_INTR_REGS_START) && (iden <= GSE_INTR_REGS_END))
-+		return GS_CLASS_INTR;
-+
-+	return -1;
++	vcpu->arch.pvr = pvr;
 +}
 +
-+static int gsid_type(u16 iden)
-+{
-+	int type = -1;
-+
-+	switch (gsid_class(iden)) {
-+	case GS_CLASS_GUESTWIDE:
-+		switch (iden) {
-+		case GSID_HOST_STATE_SIZE:
-+		case GSID_RUN_OUTPUT_MIN_SIZE:
-+		case GSID_TB_OFFSET:
-+			type = GSE_BE64;
-+			break;
-+		case GSID_PARTITION_TABLE:
-+			type = GSE_PARTITION_TABLE;
-+			break;
-+		case GSID_PROCESS_TABLE:
-+			type = GSE_PROCESS_TABLE;
-+			break;
-+		case GSID_LOGICAL_PVR:
-+			type = GSE_BE32;
-+			break;
-+		}
-+		break;
-+	case GS_CLASS_META:
-+		switch (iden) {
-+		case GSID_RUN_INPUT:
-+		case GSID_RUN_OUTPUT:
-+			type = GSE_BUFFER;
-+			break;
-+		case GSID_VPA:
-+			type = GSE_BE64;
-+			break;
-+		}
-+		break;
-+	case GS_CLASS_DWORD_REG:
-+		type = GSE_BE64;
-+		break;
-+	case GS_CLASS_WORD_REG:
-+		type = GSE_BE32;
-+		break;
-+	case GS_CLASS_VECTOR:
-+		type = GSE_VEC128;
-+		break;
-+	case GS_CLASS_INTR:
-+		switch (iden) {
-+		case GSID_HDAR:
-+		case GSID_ASDR:
-+		case GSID_HEIR:
-+			type = GSE_BE64;
-+			break;
-+		case GSID_HDSISR:
-+			type = GSE_BE32;
-+			break;
-+		}
-+		break;
+ /* Dummy value used in computing PCR value below */
+ #define PCR_ARCH_31    (PCR_ARCH_300 << 1)
+ 
+@@ -1262,13 +1267,14 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ 			return RESUME_HOST;
+ 		break;
+ #endif
+-	case H_RANDOM:
++	case H_RANDOM: {
+ 		unsigned long rand;
+ 
+ 		if (!arch_get_random_seed_longs(&rand, 1))
+ 			ret = H_HARDWARE;
+ 		kvmppc_set_gpr(vcpu, 4, rand);
+ 		break;
++	}
+ 	case H_RPT_INVALIDATE:
+ 		ret = kvmppc_h_rpt_invalidate(vcpu, kvmppc_get_gpr(vcpu, 4),
+ 					      kvmppc_get_gpr(vcpu, 5),
+@@ -2921,14 +2927,21 @@ static int kvmppc_core_vcpu_create_hv(struct kvm_vcpu *vcpu)
+ 	vcpu->arch.shared_big_endian = false;
+ #endif
+ #endif
+-	kvmppc_set_mmcr_hv(vcpu, 0, MMCR0_FC);
+ 
++	if (kvmhv_on_papr()) {
++		err = kvmhv_papr_vcpu_create(vcpu, &vcpu->arch.papr_host);
++		if (err < 0)
++			return err;
 +	}
 +
-+	return type;
-+}
-+
-+/**
-+ * gsid_flags() - the flags for a guest state ID
-+ * @iden: guest state ID
-+ *
-+ * Returns any flags for the guest state ID.
-+ */
-+unsigned long gsid_flags(u16 iden)
++	kvmppc_set_mmcr_hv(vcpu, 0, MMCR0_FC);
+ 	if (cpu_has_feature(CPU_FTR_ARCH_31)) {
+ 		kvmppc_set_mmcr_hv(vcpu, 0, kvmppc_get_mmcr_hv(vcpu, 0) | MMCR0_PMCCEXT);
+ 		kvmppc_set_mmcra_hv(vcpu, MMCRA_BHRB_DISABLE);
+ 	}
+ 
+ 	kvmppc_set_ctrl_hv(vcpu, CTRL_RUNLATCH);
++	kvmppc_set_amor_hv(vcpu, ~0);
+ 	/* default to host PVR, since we can't spoof it */
+ 	kvmppc_set_pvr_hv(vcpu, mfspr(SPRN_PVR));
+ 	spin_lock_init(&vcpu->arch.vpa_update_lock);
+@@ -3006,6 +3019,8 @@ static int kvmppc_core_vcpu_create_hv(struct kvm_vcpu *vcpu)
+ 			kvm->arch.vcores[core] = vcore;
+ 			kvm->arch.online_vcores++;
+ 			mutex_unlock(&kvm->arch.mmu_setup_lock);
++			if (kvmhv_on_papr())
++				kvmppc_set_lpcr_hv(vcpu, vcpu->arch.vcore->lpcr);
+ 		}
+ 	}
+ 	mutex_unlock(&kvm->lock);
+@@ -3078,6 +3093,8 @@ static void kvmppc_core_vcpu_free_hv(struct kvm_vcpu *vcpu)
+ 	unpin_vpa(vcpu->kvm, &vcpu->arch.slb_shadow);
+ 	unpin_vpa(vcpu->kvm, &vcpu->arch.vpa);
+ 	spin_unlock(&vcpu->arch.vpa_update_lock);
++	if (kvmhv_on_papr())
++		kvmhv_papr_vcpu_free(vcpu, &vcpu->arch.papr_host);
+ }
+ 
+ static int kvmppc_core_check_requests_hv(struct kvm_vcpu *vcpu)
+@@ -4042,6 +4059,50 @@ static void vcpu_vpa_increment_dispatch(struct kvm_vcpu *vcpu)
+ 	}
+ }
+ 
++static int kvmhv_vcpu_entry_papr(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpcr, u64 *tb)
 +{
-+	unsigned long flags = 0;
++	struct kvmhv_papr_host *ph;
++	unsigned long msr, i;
++	int trap;
++	long rc;
 +
-+	switch (gsid_class(iden)) {
-+	case GS_CLASS_GUESTWIDE:
-+		flags = GS_FLAGS_WIDE;
-+		break;
-+	case GS_CLASS_META:
-+	case GS_CLASS_DWORD_REG:
-+	case GS_CLASS_WORD_REG:
-+	case GS_CLASS_VECTOR:
-+	case GS_CLASS_INTR:
-+		break;
-+	}
++	ph = &vcpu->arch.papr_host;
 +
-+	return flags;
-+}
-+EXPORT_SYMBOL(gsid_flags);
-+
-+/**
-+ * gsid_size() - the size of a guest state ID
-+ * @iden: guest state ID
-+ *
-+ * Returns the size of guest state ID.
-+ */
-+u16 gsid_size(u16 iden)
-+{
-+	int type;
-+
-+	type = gsid_type(iden);
-+	if (type == -1)
++	msr = mfmsr();
++	kvmppc_msr_hard_disable_set_facilities(vcpu, msr);
++	if (lazy_irq_pending())
 +		return 0;
 +
-+	if (type >= __GSE_TYPE_MAX)
++	kvmhv_papr_flush_vcpu(vcpu, time_limit);
++
++	accumulate_time(vcpu, &vcpu->arch.in_guest);
++	rc = plpar_guest_run_vcpu(0, vcpu->kvm->arch.lpid, vcpu->vcpu_id,
++				  &trap, &i);
++
++	if (rc != H_SUCCESS) {
++		pr_err("KVM Guest Run VCPU hcall failed\n");
++		if (rc == H_INVALID_ELEMENT_ID)
++			pr_err("KVM: Guest Run VCPU invalid element id at %ld\n", i);
++		else if (rc == H_INVALID_ELEMENT_SIZE)
++			pr_err("KVM: Guest Run VCPU invalid element size at %ld\n", i);
++		else if (rc == H_INVALID_ELEMENT_VALUE)
++			pr_err("KVM: Guest Run VCPU invalid element value at %ld\n", i);
 +		return 0;
-+
-+	return gse_iden_len[type];
-+}
-+EXPORT_SYMBOL(gsid_size);
-+
-+/**
-+ * gsid_mask() - the settable bits of a guest state ID
-+ * @iden: guest state ID
-+ *
-+ * Returns a mask of settable bits for a guest state ID.
-+ */
-+u64 gsid_mask(u16 iden)
-+{
-+	u64 mask = ~0ull;
-+
-+	switch (iden) {
-+	case GSID_LPCR:
-+		mask = LPCR_DPFD | LPCR_ILE | LPCR_AIL | LPCR_LD | LPCR_MER | LPCR_GTSE;
-+		break;
-+	case GSID_MSR:
-+		mask = ~(MSR_HV | MSR_S | MSR_ME);
-+		break;
 +	}
++	accumulate_time(vcpu, &vcpu->arch.guest_exit);
 +
-+	return mask;
++	*tb = mftb();
++	gsm_reset(ph->vcpu_message);
++	gsm_reset(ph->vcore_message);
++	gsbm_zero(&ph->valids);
++
++	kvmhv_papr_parse_output(vcpu);
++
++	timer_rearm_host_dec(*tb);
++
++	return trap;
 +}
-+EXPORT_SYMBOL(gsid_mask);
 +
-+/**
-+ * __gse_put() - add a guest state element to a buffer
-+ * @gsb: buffer to the element to
-+ * @iden: guest state ID
-+ * @size: length of data
-+ * @data: pointer to data
-+ */
-+int __gse_put(struct gs_buff *gsb, u16 iden, u16 size, const void *data)
-+{
-+	struct gs_elem *gse;
-+	u16 total_size;
+ /* call our hypervisor to load up HV regs and go */
+ static int kvmhv_vcpu_entry_p9_nested(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpcr, u64 *tb)
+ {
+@@ -4159,7 +4220,10 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	vcpu_vpa_increment_dispatch(vcpu);
+ 
+ 	if (kvmhv_on_pseries()) {
+-		trap = kvmhv_vcpu_entry_p9_nested(vcpu, time_limit, lpcr, tb);
++		if (!kvmhv_on_papr())
++			trap = kvmhv_vcpu_entry_p9_nested(vcpu, time_limit, lpcr, tb);
++		else
++			trap = kvmhv_vcpu_entry_papr(vcpu, time_limit, lpcr, tb);
+ 
+ 		/* H_CEDE has to be handled now, not later */
+ 		if (trap == BOOK3S_INTERRUPT_SYSCALL && !nested &&
+@@ -5119,6 +5183,7 @@ static void kvmppc_core_commit_memory_region_hv(struct kvm *kvm,
+  */
+ void kvmppc_update_lpcr(struct kvm *kvm, unsigned long lpcr, unsigned long mask)
+ {
++	struct kvm_vcpu *vcpu;
+ 	long int i;
+ 	u32 cores_done = 0;
+ 
+@@ -5139,6 +5204,12 @@ void kvmppc_update_lpcr(struct kvm *kvm, unsigned long lpcr, unsigned long mask)
+ 		if (++cores_done >= kvm->arch.online_vcores)
+ 			break;
+ 	}
 +
-+	total_size = sizeof(*gse) + size;
-+	if (total_size + gsb_len(gsb) > gsb_capacity(gsb))
-+		return -ENOMEM;
++	if (kvmhv_on_papr()) {
++		kvm_for_each_vcpu(i, vcpu, kvm) {
++			kvmppc_set_lpcr_hv(vcpu, vcpu->arch.vcore->lpcr);
++		}
++	}
+ }
+ 
+ void kvmppc_setup_partition_table(struct kvm *kvm)
+@@ -5405,15 +5476,43 @@ static int kvmppc_core_init_vm_hv(struct kvm *kvm)
+ 
+ 	/* Allocate the guest's logical partition ID */
+ 
+-	lpid = kvmppc_alloc_lpid();
+-	if ((long)lpid < 0)
+-		return -ENOMEM;
+-	kvm->arch.lpid = lpid;
++	if (!kvmhv_on_papr()) {
++		lpid = kvmppc_alloc_lpid();
++		if ((long)lpid < 0)
++			return -ENOMEM;
++		kvm->arch.lpid = lpid;
++	}
+ 
+ 	kvmppc_alloc_host_rm_ops();
+ 
+ 	kvmhv_vm_nested_init(kvm);
+ 
++	if (kvmhv_on_papr()) {
++		long rc;
++		unsigned long guest_id;
 +
-+	if (gsid_size(iden) != size)
-+		return -EINVAL;
++		rc = plpar_guest_create(0, &guest_id);
 +
-+	gse = gsb_put(gsb, total_size);
-+	gse->iden = cpu_to_be16(iden);
-+	gse->len = cpu_to_be16(size);
-+	memcpy(gse->data, data, size);
++		if (rc != H_SUCCESS)
++			pr_err("KVM: Create Guest hcall failed, rc=%ld\n", rc);
 +
-+	return 0;
-+}
-+EXPORT_SYMBOL(__gse_put);
-+
-+/**
-+ * gse_parse() - create a parse map from a guest state buffer
-+ * @gsp: guest state parser
-+ * @gsb: guest state buffer
-+ */
-+int gse_parse(struct gs_parser *gsp, struct gs_buff *gsb)
-+{
-+	struct gs_elem *curr;
-+	int rem, i;
-+
-+	gsb_for_each_elem(i, curr, gsb, rem) {
-+		if (gse_len(curr) != gsid_size(gse_iden(curr)))
++		switch (rc) {
++		case H_PARAMETER:
++		case H_FUNCTION:
++		case H_STATE:
 +			return -EINVAL;
-+		gsp_insert(gsp, gse_iden(curr), curr);
-+	}
-+
-+	if (gsb_nelems(gsb) != i)
-+		return -EINVAL;
-+	return 0;
-+}
-+EXPORT_SYMBOL(gse_parse);
-+
-+static inline int gse_flatten_iden(u16 iden)
-+{
-+	int bit = 0;
-+	int class;
-+
-+	class = gsid_class(iden);
-+
-+	if (class == GS_CLASS_GUESTWIDE) {
-+		bit += iden - GSE_GUESTWIDE_START;
-+		return bit;
-+	}
-+
-+	bit += GSE_GUESTWIDE_COUNT;
-+
-+	if (class == GS_CLASS_META) {
-+		bit += iden - GSE_META_START;
-+		return bit;
-+	}
-+
-+	bit += GSE_META_COUNT;
-+
-+	if (class == GS_CLASS_DWORD_REG) {
-+		bit += iden - GSE_DW_REGS_START;
-+		return bit;
-+	}
-+
-+	bit += GSE_DW_REGS_COUNT;
-+
-+	if (class == GS_CLASS_WORD_REG) {
-+		bit += iden - GSE_W_REGS_START;
-+		return bit;
-+	}
-+
-+	bit += GSE_W_REGS_COUNT;
-+
-+	if (class == GS_CLASS_VECTOR) {
-+		bit += iden - GSE_VSRS_START;
-+		return bit;
-+	}
-+
-+	bit += GSE_VSRS_COUNT;
-+
-+	if (class == GS_CLASS_INTR) {
-+		bit += iden - GSE_INTR_REGS_START;
-+		return bit;
-+	}
-+
-+	return 0;
-+}
-+
-+static inline u16 gse_unflatten_iden(int bit)
-+{
-+	u16 iden;
-+
-+	if (bit < GSE_GUESTWIDE_COUNT) {
-+		iden = GSE_GUESTWIDE_START + bit;
-+		return iden;
-+	}
-+	bit -= GSE_GUESTWIDE_COUNT;
-+
-+	if (bit < GSE_META_COUNT) {
-+		iden = GSE_META_START + bit;
-+		return iden;
-+	}
-+	bit -= GSE_META_COUNT;
-+
-+	if (bit < GSE_DW_REGS_COUNT) {
-+		iden = GSE_DW_REGS_START + bit;
-+		return iden;
-+	}
-+	bit -= GSE_DW_REGS_COUNT;
-+
-+	if (bit < GSE_W_REGS_COUNT) {
-+		iden = GSE_W_REGS_START + bit;
-+		return iden;
-+	}
-+	bit -= GSE_W_REGS_COUNT;
-+
-+	if (bit < GSE_VSRS_COUNT) {
-+		iden = GSE_VSRS_START + bit;
-+		return iden;
-+	}
-+	bit -= GSE_VSRS_COUNT;
-+
-+	if (bit < GSE_IDEN_COUNT) {
-+		iden = GSE_INTR_REGS_START + bit;
-+		return iden;
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-+ * gsp_insert() - add a mapping from an guest state ID to an element
-+ * @gsp: guest state parser
-+ * @iden: guest state id (key)
-+ * @gse: guest state element (value)
-+ */
-+void gsp_insert(struct gs_parser *gsp, u16 iden, struct gs_elem *gse)
-+{
-+	int i;
-+
-+	i = gse_flatten_iden(iden);
-+	gsbm_set(&gsp->iterator, iden);
-+	gsp->gses[i] = gse;
-+}
-+EXPORT_SYMBOL(gsp_insert);
-+
-+/**
-+ * gsp_lookup() - lookup an element from a guest state ID
-+ * @gsp: guest state parser
-+ * @iden: guest state ID (key)
-+ *
-+ * Returns the guest state element if present.
-+ */
-+struct gs_elem *gsp_lookup(struct gs_parser *gsp, u16 iden)
-+{
-+	int i;
-+
-+	i = gse_flatten_iden(iden);
-+	return gsp->gses[i];
-+}
-+EXPORT_SYMBOL(gsp_lookup);
-+
-+/**
-+ * gsbm_set() - set the guest state ID
-+ * @gsbm: guest state bitmap
-+ * @iden: guest state ID
-+ */
-+void gsbm_set(struct gs_bitmap *gsbm, u16 iden)
-+{
-+	set_bit(gse_flatten_iden(iden), gsbm->bitmap);
-+}
-+EXPORT_SYMBOL(gsbm_set);
-+
-+/**
-+ * gsbm_clear() - clear the guest state ID
-+ * @gsbm: guest state bitmap
-+ * @iden: guest state ID
-+ */
-+void gsbm_clear(struct gs_bitmap *gsbm, u16 iden)
-+{
-+	clear_bit(gse_flatten_iden(iden), gsbm->bitmap);
-+}
-+EXPORT_SYMBOL(gsbm_clear);
-+
-+/**
-+ * gsbm_test() - test the guest state ID
-+ * @gsbm: guest state bitmap
-+ * @iden: guest state ID
-+ */
-+bool gsbm_test(struct gs_bitmap *gsbm, u16 iden)
-+{
-+	return test_bit(gse_flatten_iden(iden), gsbm->bitmap);
-+}
-+EXPORT_SYMBOL(gsbm_test);
-+
-+/**
-+ * gsbm_next() - return the next set guest state ID
-+ * @gsbm: guest state bitmap
-+ * @prev: last guest state ID
-+ */
-+u16 gsbm_next(struct gs_bitmap *gsbm, u16 prev)
-+{
-+	int bit, pbit;
-+
-+	pbit = prev ? gse_flatten_iden(prev) + 1 : 0;
-+	bit = find_next_bit(gsbm->bitmap, GSE_IDEN_COUNT, pbit);
-+
-+	if (bit < GSE_IDEN_COUNT)
-+		return gse_unflatten_iden(bit);
-+	return 0;
-+}
-+EXPORT_SYMBOL(gsbm_next);
-+
-+/**
-+ * gsm_init() - initialize a guest state message
-+ * @gsm: guest state message
-+ * @ops: callbacks
-+ * @data: private data
-+ * @flags: guest wide or thread wide
-+ */
-+int gsm_init(struct gs_msg *gsm, struct gs_msg_ops *ops, void *data,
-+	     unsigned long flags)
-+{
-+	memset(gsm, 0, sizeof(*gsm));
-+	gsm->ops = ops;
-+	gsm->data = data;
-+	gsm->flags = flags;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(gsm_init);
-+
-+/**
-+ * gsm_init() - creates a new guest state message
-+ * @ops: callbacks
-+ * @data: private data
-+ * @flags: guest wide or thread wide
-+ * @gfp_flags: GFP allocation flags
-+ *
-+ * Returns an initialized guest state message.
-+ */
-+struct gs_msg *gsm_new(struct gs_msg_ops *ops, void *data, unsigned long flags,
-+		       gfp_t gfp_flags)
-+{
-+	struct gs_msg *gsm;
-+
-+	gsm = kzalloc(sizeof(*gsm), gfp_flags);
-+	if (!gsm)
-+		return NULL;
-+
-+	gsm_init(gsm, ops, data, flags);
-+
-+	return gsm;
-+}
-+EXPORT_SYMBOL(gsm_new);
-+
-+/**
-+ * gsm_size() - creates a new guest state message
-+ * @gsm: self
-+ *
-+ * Returns the size required for the message.
-+ */
-+size_t gsm_size(struct gs_msg *gsm)
-+{
-+	if (gsm->ops->get_size)
-+		return gsm->ops->get_size(gsm);
-+	return 0;
-+}
-+EXPORT_SYMBOL(gsm_size);
-+
-+/**
-+ * gsm_free() - free guest state message
-+ * @gsm: guest state message
-+ *
-+ * Returns the size required for the message.
-+ */
-+void gsm_free(struct gs_msg *gsm)
-+{
-+	kfree(gsm);
-+}
-+EXPORT_SYMBOL(gsm_free);
-+
-+/**
-+ * gsm_fill_info() - serialises message to guest state buffer format
-+ * @gsm: self
-+ * @gsb: buffer to serialise into
-+ */
-+int gsm_fill_info(struct gs_msg *gsm, struct gs_buff *gsb)
-+{
-+	if (!gsm->ops->fill_info)
-+		return -EINVAL;
-+
-+	gsb_reset(gsb);
-+	return gsm->ops->fill_info(gsb, gsm);
-+}
-+EXPORT_SYMBOL(gsm_fill_info);
-+
-+/**
-+ * gsm_fill_info() - deserialises from guest state buffer
-+ * @gsm: self
-+ * @gsb: buffer to serialise from
-+ */
-+int gsm_refresh_info(struct gs_msg *gsm, struct gs_buff *gsb)
-+{
-+	if (!gsm->ops->fill_info)
-+		return -EINVAL;
-+
-+	return gsm->ops->refresh_info(gsm, gsb);
-+}
-+EXPORT_SYMBOL(gsm_refresh_info);
-diff --git a/arch/powerpc/kvm/test-guest-state-buffer.c b/arch/powerpc/kvm/test-guest-state-buffer.c
-new file mode 100644
-index 000000000000..d038051b61f8
---- /dev/null
-+++ b/arch/powerpc/kvm/test-guest-state-buffer.c
-@@ -0,0 +1,321 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+
-+#include <linux/init.h>
-+#include <linux/log2.h>
-+#include <kunit/test.h>
-+
-+
-+#include <asm/guest-state-buffer.h>
-+
-+static void test_creating_buffer(struct kunit *test)
-+{
-+	struct gs_buff *gsb;
-+	size_t size = 0x100;
-+
-+	gsb = gsb_new(size, 0, 0, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, gsb);
-+
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, gsb->hdr);
-+
-+	KUNIT_EXPECT_EQ(test, gsb->capacity, roundup_pow_of_two(size));
-+	KUNIT_EXPECT_EQ(test, gsb->len, sizeof(__be32));
-+
-+	gsb_free(gsb);
-+}
-+
-+static void test_adding_element(struct kunit *test)
-+{
-+	const struct gs_elem *head, *curr;
-+	union {
-+		__vector128 v;
-+		u64 dw[2];
-+	} u;
-+	int rem;
-+	struct gs_buff *gsb;
-+	size_t size = 0x1000;
-+	int i, rc;
-+	u64 data;
-+
-+	gsb = gsb_new(size, 0, 0, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, gsb);
-+
-+	/* Single elements, direct use of __gse_put() */
-+	data = 0xdeadbeef;
-+	rc = __gse_put(gsb, GSID_GPR(0), 8, &data);
-+	KUNIT_EXPECT_GE(test, rc, 0);
-+
-+	head = gsb_data(gsb);
-+	KUNIT_EXPECT_EQ(test, gse_iden(head), GSID_GPR(0));
-+	KUNIT_EXPECT_EQ(test, gse_len(head), 8);
-+	data = 0;
-+	memcpy(&data, gse_data(head), 8);
-+	KUNIT_EXPECT_EQ(test, data, 0xdeadbeef);
-+
-+	/* Multiple elements, simple wrapper */
-+	rc = gse_put_u64(gsb, GSID_GPR(1), 0xcafef00d);
-+	KUNIT_EXPECT_GE(test, rc, 0);
-+
-+	u.dw[0] = 0x1;
-+	u.dw[1] = 0x2;
-+	rc = gse_put_vector128(gsb, GSID_VSRS(0), u.v);
-+	KUNIT_EXPECT_GE(test, rc, 0);
-+	u.dw[0] = 0x0;
-+	u.dw[1] = 0x0;
-+
-+	gsb_for_each_elem(i, curr, gsb, rem) {
-+		switch (i) {
-+		case 0:
-+			KUNIT_EXPECT_EQ(test, gse_iden(curr), GSID_GPR(0));
-+			KUNIT_EXPECT_EQ(test, gse_len(curr), 8);
-+			KUNIT_EXPECT_EQ(test, gse_get_be64(curr), 0xdeadbeef);
-+			break;
-+		case 1:
-+			KUNIT_EXPECT_EQ(test, gse_iden(curr), GSID_GPR(1));
-+			KUNIT_EXPECT_EQ(test, gse_len(curr), 8);
-+			KUNIT_EXPECT_EQ(test, gse_get_u64(curr), 0xcafef00d);
-+			break;
-+		case 2:
-+			KUNIT_EXPECT_EQ(test, gse_iden(curr), GSID_VSRS(0));
-+			KUNIT_EXPECT_EQ(test, gse_len(curr), 16);
-+			u.v = gse_get_vector128(curr);
-+			KUNIT_EXPECT_EQ(test, u.dw[0], 0x1);
-+			KUNIT_EXPECT_EQ(test, u.dw[1], 0x2);
-+			break;
++		case H_NOT_ENOUGH_RESOURCES:
++		case H_ABORTED:
++			return -ENOMEM;
++		case H_AUTHORITY:
++			return -EPERM;
++		case H_NOT_AVAILABLE:
++			return -EBUSY;
 +		}
++		kvm->arch.lpid = guest_id;
 +	}
-+	KUNIT_EXPECT_EQ(test, i, 3);
 +
-+	gsb_reset(gsb);
-+	KUNIT_EXPECT_EQ(test, gsb_nelems(gsb), 0);
-+	KUNIT_EXPECT_EQ(test, gsb_len(gsb), sizeof(struct gs_header));
 +
-+	gsb_free(gsb);
-+}
+ 	/*
+ 	 * Since we don't flush the TLB when tearing down a VM,
+ 	 * and this lpid might have previously been used,
+@@ -5483,7 +5582,10 @@ static int kvmppc_core_init_vm_hv(struct kvm *kvm)
+ 			lpcr |= LPCR_HAIL;
+ 		ret = kvmppc_init_vm_radix(kvm);
+ 		if (ret) {
+-			kvmppc_free_lpid(kvm->arch.lpid);
++			if (kvmhv_on_papr())
++				plpar_guest_delete(0, kvm->arch.lpid);
++			else
++				kvmppc_free_lpid(kvm->arch.lpid);
+ 			return ret;
+ 		}
+ 		kvmppc_setup_partition_table(kvm);
+@@ -5573,10 +5675,14 @@ static void kvmppc_core_destroy_vm_hv(struct kvm *kvm)
+ 		kvm->arch.process_table = 0;
+ 		if (kvm->arch.secure_guest)
+ 			uv_svm_terminate(kvm->arch.lpid);
+-		kvmhv_set_ptbl_entry(kvm->arch.lpid, 0, 0);
++		if (!kvmhv_on_papr())
++			kvmhv_set_ptbl_entry(kvm->arch.lpid, 0, 0);
+ 	}
+ 
+-	kvmppc_free_lpid(kvm->arch.lpid);
++	if (kvmhv_on_papr())
++		plpar_guest_delete(0, kvm->arch.lpid);
++	else
++		kvmppc_free_lpid(kvm->arch.lpid);
+ 
+ 	kvmppc_free_pimap(kvm);
+ }
+diff --git a/arch/powerpc/kvm/book3s_hv.h b/arch/powerpc/kvm/book3s_hv.h
+index 7a7005189ab1..61d2c2b8d084 100644
+--- a/arch/powerpc/kvm/book3s_hv.h
++++ b/arch/powerpc/kvm/book3s_hv.h
+@@ -3,6 +3,8 @@
+ /*
+  * Privileged (non-hypervisor) host registers to save.
+  */
++#include "asm/guest-state-buffer.h"
 +
-+static void test_gs_parsing(struct kunit *test)
+ struct p9_host_os_sprs {
+ 	unsigned long iamr;
+ 	unsigned long amr;
+@@ -51,61 +53,65 @@ void accumulate_time(struct kvm_vcpu *vcpu, struct kvmhv_tb_accumulator *next);
+ #define end_timing(vcpu) do {} while (0)
+ #endif
+ 
+-#define HV_WRAPPER_SET(reg, size)					\
++#define HV_WRAPPER_SET(reg, size, iden)					\
+ static inline void kvmppc_set_##reg ##_hv(struct kvm_vcpu *vcpu, u##size val)	\
+ {									\
+ 	vcpu->arch.reg = val;						\
++	kvmhv_papr_mark_dirty(vcpu, iden);				\
+ }
+ 
+-#define HV_WRAPPER_GET(reg, size)					\
++#define HV_WRAPPER_GET(reg, size, iden)					\
+ static inline u##size kvmppc_get_##reg ##_hv(struct kvm_vcpu *vcpu)	\
+ {									\
++	kvmhv_papr_cached_reload(vcpu, iden);				\
+ 	return vcpu->arch.reg;						\
+ }
+ 
+-#define HV_WRAPPER(reg, size)						\
+-	HV_WRAPPER_SET(reg, size)					\
+-	HV_WRAPPER_GET(reg, size)					\
++#define HV_WRAPPER(reg, size, iden)					\
++	HV_WRAPPER_SET(reg, size, iden)					\
++	HV_WRAPPER_GET(reg, size, iden)					\
+ 
+-#define HV_ARRAY_WRAPPER_SET(reg, size)					\
++#define HV_ARRAY_WRAPPER_SET(reg, size, iden)				\
+ static inline void kvmppc_set_##reg ##_hv(struct kvm_vcpu *vcpu, int i, u##size val)	\
+ {									\
+ 	vcpu->arch.reg[i] = val;					\
++	kvmhv_papr_mark_dirty(vcpu, iden(i));				\
+ }
+ 
+-#define HV_ARRAY_WRAPPER_GET(reg, size)					\
++#define HV_ARRAY_WRAPPER_GET(reg, size, iden)				\
+ static inline u##size kvmppc_get_##reg ##_hv(struct kvm_vcpu *vcpu, int i)	\
+ {									\
++	kvmhv_papr_cached_reload(vcpu, iden(i));			\
+ 	return vcpu->arch.reg[i];					\
+ }
+ 
+-#define HV_ARRAY_WRAPPER(reg, size)					\
+-	HV_ARRAY_WRAPPER_SET(reg, size)					\
+-	HV_ARRAY_WRAPPER_GET(reg, size)					\
++#define HV_ARRAY_WRAPPER(reg, size, iden)				\
++	HV_ARRAY_WRAPPER_SET(reg, size, iden)				\
++	HV_ARRAY_WRAPPER_GET(reg, size, iden)				\
+ 
+-HV_WRAPPER(mmcra, 64)
+-HV_WRAPPER(hfscr, 64)
+-HV_WRAPPER(fscr, 64)
+-HV_WRAPPER(dscr, 64)
+-HV_WRAPPER(purr, 64)
+-HV_WRAPPER(spurr, 64)
+-HV_WRAPPER(amr, 64)
+-HV_WRAPPER(uamor, 64)
+-HV_WRAPPER(siar, 64)
+-HV_WRAPPER(sdar, 64)
+-HV_WRAPPER(iamr, 64)
+-HV_WRAPPER(dawr0, 64)
+-HV_WRAPPER(dawr1, 64)
+-HV_WRAPPER(dawrx0, 64)
+-HV_WRAPPER(dawrx1, 64)
+-HV_WRAPPER(ciabr, 64)
+-HV_WRAPPER(wort, 64)
+-HV_WRAPPER(ppr, 64)
+-HV_WRAPPER(ctrl, 64)
++HV_WRAPPER(mmcra, 64, GSID_MMCRA)
++HV_WRAPPER(hfscr, 64, GSID_HFSCR)
++HV_WRAPPER(fscr, 64, GSID_FSCR)
++HV_WRAPPER(dscr, 64, GSID_DSCR)
++HV_WRAPPER(purr, 64, GSID_PURR)
++HV_WRAPPER(spurr, 64, GSID_SPURR)
++HV_WRAPPER(amr, 64, GSID_AMR)
++HV_WRAPPER(uamor, 64, GSID_UAMOR)
++HV_WRAPPER(siar, 64, GSID_SIAR)
++HV_WRAPPER(sdar, 64, GSID_SDAR)
++HV_WRAPPER(iamr, 64, GSID_IAMR)
++HV_WRAPPER(dawr0, 64, GSID_DAWR0)
++HV_WRAPPER(dawr1, 64, GSID_DAWR1)
++HV_WRAPPER(dawrx0, 64, GSID_DAWRX0)
++HV_WRAPPER(dawrx1, 64, GSID_DAWRX1)
++HV_WRAPPER(ciabr, 64, GSID_CIABR)
++HV_WRAPPER(wort, 64, GSID_WORT)
++HV_WRAPPER(ppr, 64, GSID_PPR)
++HV_WRAPPER(ctrl, 64, GSID_CTRL);
++HV_WRAPPER(amor, 64, GSID_AMOR)
+ 
+-HV_ARRAY_WRAPPER(mmcr, 64)
+-HV_ARRAY_WRAPPER(sier, 64)
+-HV_ARRAY_WRAPPER(pmc, 32)
++HV_ARRAY_WRAPPER(mmcr, 64, GSID_MMCR)
++HV_ARRAY_WRAPPER(sier, 64, GSID_SIER)
++HV_ARRAY_WRAPPER(pmc, 32, GSID_PMC)
+ 
+-HV_WRAPPER(pvr, 32)
+-HV_WRAPPER(pspb, 32)
++HV_WRAPPER(pspb, 32, GSID_PSPB)
+diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
+index 377d0b4a05ee..62e011d1e912 100644
+--- a/arch/powerpc/kvm/book3s_hv_nested.c
++++ b/arch/powerpc/kvm/book3s_hv_nested.c
+@@ -428,10 +428,12 @@ long kvmhv_enter_nested_guest(struct kvm_vcpu *vcpu)
+ 	return vcpu->arch.trap;
+ }
+ 
++static unsigned long nested_capabilities;
++
+ long kvmhv_nested_init(void)
+ {
+ 	long int ptb_order;
+-	unsigned long ptcr;
++	unsigned long ptcr, host_capabilities;
+ 	long rc;
+ 
+ 	if (!kvmhv_on_pseries())
+@@ -439,6 +441,27 @@ long kvmhv_nested_init(void)
+ 	if (!radix_enabled())
+ 		return -ENODEV;
+ 
++	rc = plpar_guest_get_capabilities(0, &host_capabilities);
++	if (rc == H_SUCCESS) {
++		unsigned long capabilities = 0;
++
++		if (cpu_has_feature(CPU_FTR_ARCH_31))
++			capabilities |= H_GUEST_CAP_POWER10;
++		if (cpu_has_feature(CPU_FTR_ARCH_300))
++			capabilities |= H_GUEST_CAP_POWER9;
++
++		nested_capabilities = capabilities & host_capabilities;
++		rc = plpar_guest_set_capabilities(0, nested_capabilities);
++		if (rc != H_SUCCESS) {
++			pr_err("kvm-hv: Could not configure parent hypervisor capabilities (rc=%ld)",
++			       rc);
++			return -ENODEV;
++		}
++
++		__kvmhv_on_papr = true;
++		return 0;
++	}
++
+ 	/* Partition table entry is 1<<4 bytes in size, hence the 4. */
+ 	ptb_order = KVM_MAX_NESTED_GUESTS_SHIFT + 4;
+ 	/* Minimum partition table size is 1<<12 bytes */
+@@ -507,10 +530,15 @@ void kvmhv_set_ptbl_entry(unsigned int lpid, u64 dw0, u64 dw1)
+ 		return;
+ 	}
+ 
+-	pseries_partition_tb[lpid].patb0 = cpu_to_be64(dw0);
+-	pseries_partition_tb[lpid].patb1 = cpu_to_be64(dw1);
+-	/* L0 will do the necessary barriers */
+-	kvmhv_flush_lpid(lpid);
++	if (!kvmhv_on_papr()) {
++		pseries_partition_tb[lpid].patb0 = cpu_to_be64(dw0);
++		pseries_partition_tb[lpid].patb1 = cpu_to_be64(dw1);
++		/* L0 will do the necessary barriers */
++		kvmhv_flush_lpid(lpid);
++	}
++
++	if (kvmhv_on_papr())
++		kvmhv_papr_set_ptbl_entry(lpid, dw0, dw1);
+ }
+ 
+ static void kvmhv_set_nested_ptbl(struct kvm_nested_guest *gp)
+diff --git a/arch/powerpc/kvm/book3s_hv_papr.c b/arch/powerpc/kvm/book3s_hv_papr.c
+new file mode 100644
+index 000000000000..05d8e735e2a9
+--- /dev/null
++++ b/arch/powerpc/kvm/book3s_hv_papr.c
+@@ -0,0 +1,940 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright 2023 Jordan Niethe, IBM Corp. <jniethe5@gmail.com>
++ *
++ * Authors:
++ *    Jordan Niethe <jniethe5@gmail.com>
++ *
++ * Description: KVM functions specific to running on Book 3S
++ * processors as a PAPR guest.
++ *
++ */
++
++#include "linux/blk-mq.h"
++#include "linux/console.h"
++#include "linux/gfp_types.h"
++#include "linux/signal.h"
++#include <linux/kernel.h>
++#include <linux/kvm_host.h>
++#include <linux/pgtable.h>
++
++#include <asm/kvm_ppc.h>
++#include <asm/kvm_book3s.h>
++#include <asm/hvcall.h>
++#include <asm/pgalloc.h>
++#include <asm/reg.h>
++#include <asm/plpar_wrappers.h>
++#include <asm/guest-state-buffer.h>
++#include "trace_hv.h"
++
++bool __kvmhv_on_papr __read_mostly;
++EXPORT_SYMBOL_GPL(__kvmhv_on_papr);
++
++
++static size_t gs_msg_ops_kvmhv_papr_config_get_size(struct gs_msg *gsm)
 +{
-+	struct gs_elem *gse;
-+	struct gs_parser gsp = { 0 };
-+	struct gs_buff *gsb;
-+	size_t size = 0x1000;
-+	u64 tmp1, tmp2;
-+
-+	gsb = gsb_new(size, 0, 0, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, gsb);
-+
-+	tmp1 = 0xdeadbeefull;
-+	gse_put(gsb, GSID_GPR(0), tmp1);
-+
-+	KUNIT_EXPECT_GE(test, gse_parse(&gsp, gsb), 0);
-+
-+	gse = gsp_lookup(&gsp, GSID_GPR(0));
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, gse);
-+
-+	gse_get(gse, &tmp2);
-+	KUNIT_EXPECT_EQ(test, tmp2, 0xdeadbeefull);
-+
-+	gsb_free(gsb);
-+}
-+
-+static void test_gs_bitmap(struct kunit *test)
-+{
-+	struct gs_bitmap gsbm = { 0 };
-+	struct gs_bitmap gsbm1 = { 0 };
-+	struct gs_bitmap gsbm2 = { 0 };
-+	u16 iden;
-+	int i, j;
-+
-+	i = 0;
-+	for (u16 iden = GSID_HOST_STATE_SIZE;
-+	     iden <= GSID_PROCESS_TABLE; iden++) {
-+		gsbm_set(&gsbm, iden);
-+		gsbm_set(&gsbm1, iden);
-+		KUNIT_EXPECT_TRUE(test, gsbm_test(&gsbm, iden));
-+		gsbm_clear(&gsbm, iden);
-+		KUNIT_EXPECT_FALSE(test, gsbm_test(&gsbm, iden));
-+		i++;
-+	}
-+
-+	for (u16 iden = GSID_RUN_INPUT; iden <= GSID_VPA;
-+	     iden++) {
-+		gsbm_set(&gsbm, iden);
-+		gsbm_set(&gsbm1, iden);
-+		KUNIT_EXPECT_TRUE(test, gsbm_test(&gsbm, iden));
-+		gsbm_clear(&gsbm, iden);
-+		KUNIT_EXPECT_FALSE(test, gsbm_test(&gsbm, iden));
-+		i++;
-+	}
-+
-+	for (u16 iden = GSID_GPR(0); iden <= GSID_CTRL;
-+	     iden++) {
-+		gsbm_set(&gsbm, iden);
-+		gsbm_set(&gsbm1, iden);
-+		KUNIT_EXPECT_TRUE(test, gsbm_test(&gsbm, iden));
-+		gsbm_clear(&gsbm, iden);
-+		KUNIT_EXPECT_FALSE(test, gsbm_test(&gsbm, iden));
-+		i++;
-+	}
-+
-+	for (u16 iden = GSID_CR; iden <= GSID_PSPB; iden++) {
-+		gsbm_set(&gsbm, iden);
-+		gsbm_set(&gsbm1, iden);
-+		KUNIT_EXPECT_TRUE(test, gsbm_test(&gsbm, iden));
-+		gsbm_clear(&gsbm, iden);
-+		KUNIT_EXPECT_FALSE(test, gsbm_test(&gsbm, iden));
-+		i++;
-+	}
-+
-+	for (u16 iden = GSID_VSRS(0); iden <= GSID_VSRS(63);
-+	     iden++) {
-+		gsbm_set(&gsbm, iden);
-+		gsbm_set(&gsbm1, iden);
-+		KUNIT_EXPECT_TRUE(test, gsbm_test(&gsbm, iden));
-+		gsbm_clear(&gsbm, iden);
-+		KUNIT_EXPECT_FALSE(test, gsbm_test(&gsbm, iden));
-+		i++;
-+	}
-+
-+	for (u16 iden = GSID_HDAR; iden <= GSID_ASDR;
-+	     iden++) {
-+		gsbm_set(&gsbm, iden);
-+		gsbm_set(&gsbm1, iden);
-+		KUNIT_EXPECT_TRUE(test, gsbm_test(&gsbm, iden));
-+		gsbm_clear(&gsbm, iden);
-+		KUNIT_EXPECT_FALSE(test, gsbm_test(&gsbm, iden));
-+		i++;
-+	}
-+
-+	j = 0;
-+	gsbm_for_each(&gsbm1, iden)
-+	{
-+		gsbm_set(&gsbm2, iden);
-+		j++;
-+	}
-+	KUNIT_EXPECT_EQ(test, i, j);
-+	KUNIT_EXPECT_MEMEQ(test, &gsbm1, &gsbm2, sizeof(gsbm1));
-+}
-+
-+struct gs_msg_test1_data {
-+	u64 a;
-+	u32 b;
-+	struct gs_part_table c;
-+	struct gs_proc_table d;
-+	struct gs_buff_info e;
-+};
-+
-+static size_t test1_get_size(struct gs_msg *gsm)
-+{
-+	size_t size = 0;
 +	u16 ids[] = {
-+		GSID_PARTITION_TABLE,
-+		GSID_PROCESS_TABLE,
++		GSID_RUN_OUTPUT_MIN_SIZE,
 +		GSID_RUN_INPUT,
-+		GSID_GPR(0),
-+		GSID_CR,
++		GSID_RUN_OUTPUT,
++
 +	};
++	size_t size = 0;
 +
 +	for (int i = 0; i < ARRAY_SIZE(ids); i++)
 +		size += gse_total_size(gsid_size(ids[i]));
 +	return size;
 +}
 +
-+static int test1_fill_info(struct gs_buff *gsb, struct gs_msg *gsm)
++static int gs_msg_ops_kvmhv_papr_config_fill_info(struct gs_buff *gsb,
++						  struct gs_msg *gsm)
 +{
-+	struct gs_msg_test1_data *data = gsm->data;
++	struct kvmhv_papr_config *cfg;
++	int rc;
 +
-+	if (gsm_includes(gsm, GSID_GPR(0)))
-+		gse_put(gsb, GSID_GPR(0), data->a);
++	cfg = gsm->data;
 +
-+	if (gsm_includes(gsm, GSID_CR))
-+		gse_put(gsb, GSID_CR, data->b);
++	if (gsm_includes(gsm, GSID_RUN_OUTPUT_MIN_SIZE)) {
++		rc = gse_put(gsb, GSID_RUN_OUTPUT_MIN_SIZE,
++			     cfg->vcpu_run_output_size);
++		if (rc < 0)
++			return rc;
++	}
 +
-+	if (gsm_includes(gsm, GSID_PARTITION_TABLE))
-+		gse_put(gsb, GSID_PARTITION_TABLE, data->c);
++	if (gsm_includes(gsm, GSID_RUN_INPUT)) {
++		rc = gse_put(gsb, GSID_RUN_INPUT, cfg->vcpu_run_input_cfg);
++		if (rc < 0)
++			return rc;
++	}
 +
-+	if (gsm_includes(gsm, GSID_PROCESS_TABLE))
-+		gse_put(gsb, GSID_PARTITION_TABLE, data->d);
-+
-+	if (gsm_includes(gsm, GSID_RUN_INPUT))
-+		gse_put(gsb, GSID_RUN_INPUT, data->e);
++	if (gsm_includes(gsm, GSID_RUN_OUTPUT)) {
++		gse_put(gsb, GSID_RUN_OUTPUT, cfg->vcpu_run_output_cfg);
++		if (rc < 0)
++			return rc;
++	}
 +
 +	return 0;
 +}
 +
-+static int test1_refresh_info(struct gs_msg *gsm, struct gs_buff *gsb)
++static int gs_msg_ops_kvmhv_papr_config_refresh_info(struct gs_msg *gsm,
++						     struct gs_buff *gsb)
 +{
++	struct kvmhv_papr_config *cfg;
 +	struct gs_parser gsp = { 0 };
-+	struct gs_msg_test1_data *data = gsm->data;
 +	struct gs_elem *gse;
 +	int rc;
++
++	cfg = gsm->data;
 +
 +	rc = gse_parse(&gsp, gsb);
 +	if (rc < 0)
 +		return rc;
 +
-+	gse = gsp_lookup(&gsp, GSID_GPR(0));
++	gse = gsp_lookup(&gsp, GSID_RUN_OUTPUT_MIN_SIZE);
 +	if (gse)
-+		gse_get(gse, &data->a);
++		gse_get(gse, &cfg->vcpu_run_output_size);
++	return 0;
++}
 +
-+	gse = gsp_lookup(&gsp, GSID_CR);
-+	if (gse)
-+		gse_get(gse, &data->b);
++static struct gs_msg_ops config_msg_ops = {
++	.get_size = gs_msg_ops_kvmhv_papr_config_get_size,
++	.fill_info = gs_msg_ops_kvmhv_papr_config_fill_info,
++	.refresh_info = gs_msg_ops_kvmhv_papr_config_refresh_info,
++};
++
++static size_t gs_msg_ops_vcpu_get_size(struct gs_msg *gsm)
++{
++	struct gs_bitmap gsbm = { 0 };
++	size_t size = 0;
++	u16 iden;
++
++	gsbm_fill(&gsbm);
++	gsbm_for_each(&gsbm, iden) {
++		switch (iden) {
++		case GSID_HOST_STATE_SIZE:
++		case GSID_RUN_OUTPUT_MIN_SIZE:
++		case GSID_PARTITION_TABLE:
++		case GSID_PROCESS_TABLE:
++		case GSID_RUN_INPUT:
++		case GSID_RUN_OUTPUT:
++			break;
++		default:
++			size += gse_total_size(gsid_size(iden));
++		}
++	}
++	return size;
++}
++
++static int gs_msg_ops_vcpu_fill_info(struct gs_buff *gsb, struct gs_msg *gsm)
++{
++	struct kvm_vcpu *vcpu;
++	vector128 v;
++	int rc, i;
++	u16 iden;
++
++	vcpu = gsm->data;
++
++	gsm_for_each(gsm, iden)
++	{
++		rc = 0;
++
++		if ((gsm->flags & GS_FLAGS_WIDE) !=
++		    (gsid_flags(iden) & GS_FLAGS_WIDE))
++			continue;
++
++		switch (iden) {
++		case GSID_DSCR:
++			rc = gse_put(gsb, iden, vcpu->arch.dscr);
++			break;
++		case GSID_MMCRA:
++			rc = gse_put(gsb, iden, vcpu->arch.mmcra);
++			break;
++		case GSID_HFSCR:
++			rc = gse_put(gsb, iden, vcpu->arch.hfscr);
++			break;
++		case GSID_PURR:
++			rc = gse_put(gsb, iden, vcpu->arch.purr);
++			break;
++		case GSID_SPURR:
++			rc = gse_put(gsb, iden, vcpu->arch.spurr);
++			break;
++		case GSID_AMR:
++			rc = gse_put(gsb, iden, vcpu->arch.amr);
++			break;
++		case GSID_UAMOR:
++			rc = gse_put(gsb, iden, vcpu->arch.uamor);
++			break;
++		case GSID_SIAR:
++			rc = gse_put(gsb, iden, vcpu->arch.siar);
++			break;
++		case GSID_SDAR:
++			rc = gse_put(gsb, iden, vcpu->arch.sdar);
++			break;
++		case GSID_IAMR:
++			rc = gse_put(gsb, iden, vcpu->arch.iamr);
++			break;
++		case GSID_DAWR0:
++			rc = gse_put(gsb, iden, vcpu->arch.dawr0);
++			break;
++		case GSID_DAWR1:
++			rc = gse_put(gsb, iden, vcpu->arch.dawr1);
++			break;
++		case GSID_DAWRX0:
++			rc = gse_put(gsb, iden, vcpu->arch.dawrx0);
++			break;
++		case GSID_DAWRX1:
++			rc = gse_put(gsb, iden, vcpu->arch.dawrx1);
++			break;
++		case GSID_CIABR:
++			rc = gse_put(gsb, iden, vcpu->arch.ciabr);
++			break;
++		case GSID_WORT:
++			rc = gse_put(gsb, iden, vcpu->arch.wort);
++			break;
++		case GSID_PPR:
++			rc = gse_put(gsb, iden, vcpu->arch.ppr);
++			break;
++		case GSID_PSPB:
++			rc = gse_put(gsb, iden, vcpu->arch.pspb);
++			break;
++		case GSID_TAR:
++			rc = gse_put(gsb, iden, vcpu->arch.tar);
++			break;
++		case GSID_FSCR:
++			rc = gse_put(gsb, iden, vcpu->arch.fscr);
++			break;
++		case GSID_EBBHR:
++			rc = gse_put(gsb, iden, vcpu->arch.ebbhr);
++			break;
++		case GSID_EBBRR:
++			rc = gse_put(gsb, iden, vcpu->arch.ebbrr);
++			break;
++		case GSID_BESCR:
++			rc = gse_put(gsb, iden, vcpu->arch.bescr);
++			break;
++		case GSID_IC:
++			rc = gse_put(gsb, iden, vcpu->arch.ic);
++			break;
++		case GSID_CTRL:
++			rc = gse_put(gsb, iden, vcpu->arch.ctrl);
++			break;
++		case GSID_PIDR:
++			rc = gse_put(gsb, iden, vcpu->arch.pid);
++			break;
++		case GSID_AMOR:
++			rc = gse_put(gsb, iden, vcpu->arch.amor);
++			break;
++		case GSID_VRSAVE:
++			rc = gse_put(gsb, iden, vcpu->arch.vrsave);
++			break;
++		case GSID_MMCR(0) ... GSID_MMCR(3):
++			i = iden - GSID_MMCR(0);
++			rc = gse_put(gsb, iden, vcpu->arch.mmcr[i]);
++			break;
++		case GSID_SIER(0) ... GSID_SIER(2):
++			i = iden - GSID_SIER(0);
++			rc = gse_put(gsb, iden, vcpu->arch.sier[i]);
++			break;
++		case GSID_PMC(0) ... GSID_PMC(5):
++			i = iden - GSID_PMC(0);
++			rc = gse_put(gsb, iden, vcpu->arch.pmc[i]);
++			break;
++		case GSID_GPR(0) ... GSID_GPR(31):
++			i = iden - GSID_GPR(0);
++			rc = gse_put(gsb, iden, vcpu->arch.regs.gpr[i]);
++			break;
++		case GSID_CR:
++			rc = gse_put(gsb, iden, vcpu->arch.regs.ccr);
++			break;
++		case GSID_XER:
++			rc = gse_put(gsb, iden, vcpu->arch.regs.xer);
++			break;
++		case GSID_CTR:
++			rc = gse_put(gsb, iden, vcpu->arch.regs.ctr);
++			break;
++		case GSID_LR:
++			rc = gse_put(gsb, iden, vcpu->arch.regs.link);
++			break;
++		case GSID_NIA:
++			rc = gse_put(gsb, iden, vcpu->arch.regs.nip);
++			break;
++		case GSID_SRR0:
++			rc = gse_put(gsb, iden, vcpu->arch.shregs.srr0);
++			break;
++		case GSID_SRR1:
++			rc = gse_put(gsb, iden, vcpu->arch.shregs.srr1);
++			break;
++		case GSID_SPRG0:
++			rc = gse_put(gsb, iden, vcpu->arch.shregs.sprg0);
++			break;
++		case GSID_SPRG1:
++			rc = gse_put(gsb, iden, vcpu->arch.shregs.sprg1);
++			break;
++		case GSID_SPRG2:
++			rc = gse_put(gsb, iden, vcpu->arch.shregs.sprg2);
++			break;
++		case GSID_SPRG3:
++			rc = gse_put(gsb, iden, vcpu->arch.shregs.sprg3);
++			break;
++		case GSID_DAR:
++			rc = gse_put(gsb, iden, vcpu->arch.shregs.dar);
++			break;
++		case GSID_DSISR:
++			rc = gse_put(gsb, iden, vcpu->arch.shregs.dsisr);
++			break;
++		case GSID_MSR:
++			rc = gse_put(gsb, iden, vcpu->arch.shregs.msr);
++			break;
++		case GSID_VTB:
++			rc = gse_put(gsb, iden, vcpu->arch.vcore->vtb);
++			break;
++		case GSID_LPCR:
++			rc = gse_put(gsb, iden, vcpu->arch.vcore->lpcr);
++			break;
++		case GSID_TB_OFFSET:
++			rc = gse_put(gsb, iden, vcpu->arch.vcore->tb_offset);
++			break;
++		case GSID_FPSCR:
++			rc = gse_put(gsb, iden, vcpu->arch.fp.fpscr);
++			break;
++		case GSID_VSRS(0) ... GSID_VSRS(31):
++			i = iden - GSID_VSRS(0);
++			memcpy(&v, &vcpu->arch.fp.fpr[i],
++			       sizeof(vcpu->arch.fp.fpr[i]));
++			rc = gse_put(gsb, iden, v);
++			break;
++#ifdef CONFIG_VSX
++		case GSID_VSCR:
++			rc = gse_put(gsb, iden, vcpu->arch.vr.vscr.u[3]);
++			break;
++		case GSID_VSRS(32) ... GSID_VSRS(63):
++			i = iden - GSID_VSRS(32);
++			rc = gse_put(gsb, iden, vcpu->arch.vr.vr[i]);
++			break;
++#endif
++		case GSID_DEC_EXPIRY_TB: {
++			u64 dw;
++
++			dw = vcpu->arch.dec_expires -
++			     vcpu->arch.vcore->tb_offset;
++			rc = gse_put(gsb, iden, dw);
++		}
++			break;
++		}
++
++		if (rc < 0)
++			return rc;
++	}
 +
 +	return 0;
 +}
 +
-+static struct gs_msg_ops gs_msg_test1_ops = {
-+	.get_size = test1_get_size,
-+	.fill_info = test1_fill_info,
-+	.refresh_info = test1_refresh_info,
-+};
-+
-+static void test_gs_msg(struct kunit *test)
++static int gs_msg_ops_vcpu_refresh_info(struct gs_msg *gsm, struct gs_buff *gsb)
 +{
-+	struct gs_msg_test1_data test1_data = {
-+		.a = 0xdeadbeef,
-+		.b = 0x1,
-+	};
-+	struct gs_msg *gsm;
-+	struct gs_buff *gsb;
++	struct gs_parser gsp = { 0 };
++	struct kvmhv_papr_host *ph;
++	struct gs_bitmap *valids;
++	struct kvm_vcpu *vcpu;
++	struct gs_elem *gse;
++	vector128 v;
++	int rc, i;
++	u16 iden;
 +
-+	gsm = gsm_new(&gs_msg_test1_ops, &test1_data, GSM_SEND, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, gsm);
++	vcpu = gsm->data;
 +
-+	gsb = gsb_new(gsm_size(gsm), 0, 0, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, gsb);
++	rc = gse_parse(&gsp, gsb);
++	if (rc < 0)
++		return rc;
 +
-+	gsm_include(gsm, GSID_PARTITION_TABLE);
-+	gsm_include(gsm, GSID_PROCESS_TABLE);
-+	gsm_include(gsm, GSID_RUN_INPUT);
-+	gsm_include(gsm, GSID_GPR(0));
-+	gsm_include(gsm, GSID_CR);
++	ph = &vcpu->arch.papr_host;
++	valids = &ph->valids;
 +
-+	gsm_fill_info(gsm, gsb);
++	gsp_for_each(&gsp, iden, gse)
++	{
++		switch (iden) {
++		case GSID_DSCR:
++			gse_get(gse, &vcpu->arch.dscr);
++			break;
++		case GSID_MMCRA:
++			gse_get(gse, &vcpu->arch.mmcra);
++			break;
++		case GSID_HFSCR:
++			gse_get(gse, &vcpu->arch.hfscr);
++			break;
++		case GSID_PURR:
++			gse_get(gse, &vcpu->arch.purr);
++			break;
++		case GSID_SPURR:
++			gse_get(gse, &vcpu->arch.spurr);
++			break;
++		case GSID_AMR:
++			gse_get(gse, &vcpu->arch.amr);
++			break;
++		case GSID_UAMOR:
++			gse_get(gse, &vcpu->arch.uamor);
++			break;
++		case GSID_SIAR:
++			gse_get(gse, &vcpu->arch.siar);
++			break;
++		case GSID_SDAR:
++			gse_get(gse, &vcpu->arch.sdar);
++			break;
++		case GSID_IAMR:
++			gse_get(gse, &vcpu->arch.iamr);
++			break;
++		case GSID_DAWR0:
++			gse_get(gse, &vcpu->arch.dawr0);
++			break;
++		case GSID_DAWR1:
++			gse_get(gse, &vcpu->arch.dawr1);
++			break;
++		case GSID_DAWRX0:
++			gse_get(gse, &vcpu->arch.dawrx0);
++			break;
++		case GSID_DAWRX1:
++			gse_get(gse, &vcpu->arch.dawrx1);
++			break;
++		case GSID_CIABR:
++			gse_get(gse, &vcpu->arch.ciabr);
++			break;
++		case GSID_WORT:
++			gse_get(gse, &vcpu->arch.wort);
++			break;
++		case GSID_PPR:
++			gse_get(gse, &vcpu->arch.ppr);
++			break;
++		case GSID_PSPB:
++			gse_get(gse, &vcpu->arch.pspb);
++			break;
++		case GSID_TAR:
++			gse_get(gse, &vcpu->arch.tar);
++			break;
++		case GSID_FSCR:
++			gse_get(gse, &vcpu->arch.fscr);
++			break;
++		case GSID_EBBHR:
++			gse_get(gse, &vcpu->arch.ebbhr);
++			break;
++		case GSID_EBBRR:
++			gse_get(gse, &vcpu->arch.ebbrr);
++			break;
++		case GSID_BESCR:
++			gse_get(gse, &vcpu->arch.bescr);
++			break;
++		case GSID_IC:
++			gse_get(gse, &vcpu->arch.ic);
++			break;
++		case GSID_CTRL:
++			gse_get(gse, &vcpu->arch.ctrl);
++			break;
++		case GSID_PIDR:
++			gse_get(gse, &vcpu->arch.pid);
++			break;
++		case GSID_AMOR:
++			gse_get(gse, &vcpu->arch.amor);
++			break;
++		case GSID_VRSAVE:
++			gse_get(gse, &vcpu->arch.vrsave);
++			break;
++		case GSID_MMCR(0) ... GSID_MMCR(3):
++			i = iden - GSID_MMCR(0);
++			gse_get(gse, &vcpu->arch.mmcr[i]);
++			break;
++		case GSID_SIER(0) ... GSID_SIER(2):
++			i = iden - GSID_SIER(0);
++			gse_get(gse, &vcpu->arch.sier[i]);
++			break;
++		case GSID_PMC(0) ... GSID_PMC(5):
++			i = iden - GSID_PMC(0);
++			gse_get(gse, &vcpu->arch.pmc[i]);
++			break;
++		case GSID_GPR(0) ... GSID_GPR(31):
++			i = iden - GSID_GPR(0);
++			gse_get(gse, &vcpu->arch.regs.gpr[i]);
++			break;
++		case GSID_CR:
++			gse_get(gse, &vcpu->arch.regs.ccr);
++			break;
++		case GSID_XER:
++			gse_get(gse, &vcpu->arch.regs.xer);
++			break;
++		case GSID_CTR:
++			gse_get(gse, &vcpu->arch.regs.ctr);
++			break;
++		case GSID_LR:
++			gse_get(gse, &vcpu->arch.regs.link);
++			break;
++		case GSID_NIA:
++			gse_get(gse, &vcpu->arch.regs.nip);
++			break;
++		case GSID_SRR0:
++			gse_get(gse, &vcpu->arch.shregs.srr0);
++			break;
++		case GSID_SRR1:
++			gse_get(gse, &vcpu->arch.shregs.srr1);
++			break;
++		case GSID_SPRG0:
++			gse_get(gse, &vcpu->arch.shregs.sprg0);
++			break;
++		case GSID_SPRG1:
++			gse_get(gse, &vcpu->arch.shregs.sprg1);
++			break;
++		case GSID_SPRG2:
++			gse_get(gse, &vcpu->arch.shregs.sprg2);
++			break;
++		case GSID_SPRG3:
++			gse_get(gse, &vcpu->arch.shregs.sprg3);
++			break;
++		case GSID_DAR:
++			gse_get(gse, &vcpu->arch.shregs.dar);
++			break;
++		case GSID_DSISR:
++			gse_get(gse, &vcpu->arch.shregs.dsisr);
++			break;
++		case GSID_MSR:
++			gse_get(gse, &vcpu->arch.shregs.msr);
++			break;
++		case GSID_VTB:
++			gse_get(gse, &vcpu->arch.vcore->vtb);
++			break;
++		case GSID_LPCR:
++			gse_get(gse, &vcpu->arch.vcore->lpcr);
++			break;
++		case GSID_TB_OFFSET:
++			gse_get(gse, &vcpu->arch.vcore->tb_offset);
++			break;
++		case GSID_FPSCR:
++			gse_get(gse, &vcpu->arch.fp.fpscr);
++			break;
++		case GSID_VSRS(0) ... GSID_VSRS(31):
++			gse_get(gse, &v);
++			i = iden - GSID_VSRS(0);
++			memcpy(&vcpu->arch.fp.fpr[i], &v,
++			       sizeof(vcpu->arch.fp.fpr[i]));
++			break;
++#ifdef CONFIG_VSX
++		case GSID_VSCR:
++			gse_get(gse, &vcpu->arch.vr.vscr.u[3]);
++			break;
++		case GSID_VSRS(32) ... GSID_VSRS(63):
++			i = iden - GSID_VSRS(32);
++			gse_get(gse, &vcpu->arch.vr.vr[i]);
++			break;
++#endif
++		case GSID_HDAR:
++			gse_get(gse, &vcpu->arch.fault_dar);
++			break;
++		case GSID_HDSISR:
++			gse_get(gse, &vcpu->arch.fault_dsisr);
++			break;
++		case GSID_ASDR:
++			gse_get(gse, &vcpu->arch.fault_gpa);
++			break;
++		case GSID_HEIR:
++			gse_get(gse, &vcpu->arch.emul_inst);
++			break;
++		case GSID_DEC_EXPIRY_TB: {
++			u64 dw;
 +
-+	memset(&test1_data, 0, sizeof(test1_data));
++			gse_get(gse, &dw);
++			vcpu->arch.dec_expires =
++				dw + vcpu->arch.vcore->tb_offset;
++			break;
++		}
++		default:
++			continue;
++		}
++		gsbm_set(valids, iden);
++	}
 +
-+	gsm_refresh_info(gsm, gsb);
-+	KUNIT_EXPECT_EQ(test, test1_data.a, 0xdeadbeef);
-+	KUNIT_EXPECT_EQ(test, test1_data.b, 0x1);
-+
-+	gsm_free(gsm);
++	return 0;
 +}
 +
-+
-+static struct kunit_case guest_state_buffer_testcases[] = {
-+	KUNIT_CASE(test_creating_buffer),
-+	KUNIT_CASE(test_adding_element),
-+	KUNIT_CASE(test_gs_bitmap),
-+	KUNIT_CASE(test_gs_parsing),
-+	KUNIT_CASE(test_gs_msg),
-+	{}
++static struct gs_msg_ops vcpu_message_ops = {
++	.get_size = gs_msg_ops_vcpu_get_size,
++	.fill_info = gs_msg_ops_vcpu_fill_info,
++	.refresh_info = gs_msg_ops_vcpu_refresh_info,
 +};
 +
-+static struct kunit_suite guest_state_buffer_test_suite = {
-+	.name = "guest_state_buffer_test",
-+	.test_cases = guest_state_buffer_testcases,
-+};
++static int kvmhv_papr_host_create(struct kvm_vcpu *vcpu,
++				  struct kvmhv_papr_host *ph)
++{
++	struct kvmhv_papr_config *cfg;
++	struct gs_buff *gsb, *vcpu_run_output, *vcpu_run_input;
++	unsigned long guest_id, vcpu_id;
++	struct gs_msg *gsm, *vcpu_message, *vcore_message;
++	int rc;
 +
-+kunit_test_suites(&guest_state_buffer_test_suite);
++	cfg = &ph->cfg;
++	guest_id = vcpu->kvm->arch.lpid;
++	vcpu_id = vcpu->vcpu_id;
 +
-+MODULE_LICENSE("GPL");
++	gsm = gsm_new(&config_msg_ops, cfg, GS_FLAGS_WIDE, GFP_KERNEL);
++	if (!gsm) {
++		rc = -ENOMEM;
++		goto err;
++	}
++
++	gsb = gsb_new(gsm_size(gsm), guest_id, vcpu_id, GFP_KERNEL);
++	if (!gsb) {
++		rc = -ENOMEM;
++		goto free_gsm;
++	}
++
++	rc = gsb_receive_datum(gsb, gsm, GSID_RUN_OUTPUT_MIN_SIZE);
++	if (rc < 0) {
++		pr_err("KVM-PAPR: couldn't get vcpu run output buffer minimum size\n");
++		goto free_gsb;
++	}
++
++	vcpu_run_output = gsb_new(cfg->vcpu_run_output_size, guest_id, vcpu_id, GFP_KERNEL);
++	if (!vcpu_run_output) {
++		rc = -ENOMEM;
++		goto free_gsb;
++	}
++
++	cfg->vcpu_run_output_cfg.address = gsb_paddress(vcpu_run_output);
++	cfg->vcpu_run_output_cfg.size = gsb_capacity(vcpu_run_output);
++	ph->vcpu_run_output = vcpu_run_output;
++
++	gsm->flags = 0;
++	rc = gsb_send_datum(gsb, gsm, GSID_RUN_OUTPUT);
++	if (rc < 0) {
++		pr_err("KVM-PAPR: couldn't set vcpu run output buffer\n");
++		goto free_gs_out;
++	}
++
++	vcpu_message = gsm_new(&vcpu_message_ops, vcpu, 0, GFP_KERNEL);
++	if (!vcpu_message) {
++		rc = -ENOMEM;
++		goto free_gs_out;
++	}
++	gsm_include_all(vcpu_message);
++
++	ph->vcpu_message = vcpu_message;
++
++	vcpu_run_input = gsb_new(gsm_size(vcpu_message), guest_id, vcpu_id, GFP_KERNEL);
++	if (!vcpu_run_input) {
++		rc = -ENOMEM;
++		goto free_vcpu_message;
++	}
++
++	ph->vcpu_run_input = vcpu_run_input;
++	cfg->vcpu_run_input_cfg.address = gsb_paddress(vcpu_run_input);
++	cfg->vcpu_run_input_cfg.size = gsb_capacity(vcpu_run_input);
++	rc = gsb_send_datum(gsb, gsm, GSID_RUN_INPUT);
++	if (rc < 0) {
++		pr_err("KVM-PAPR: couldn't set vcpu run input buffer\n");
++		goto free_vcpu_run_input;
++	}
++
++	vcore_message =
++		gsm_new(&vcpu_message_ops, vcpu, GS_FLAGS_WIDE, GFP_KERNEL);
++	if (!vcore_message) {
++		rc = -ENOMEM;
++		goto free_vcpu_run_input;
++	}
++
++	gsm_include_all(vcore_message);
++	ph->vcore_message = vcore_message;
++
++	gsbm_fill(&ph->valids);
++	gsm_free(gsm);
++	gsb_free(gsb);
++	return 0;
++
++free_vcpu_run_input:
++	gsb_free(vcpu_run_input);
++free_vcpu_message:
++	gsm_free(vcpu_message);
++free_gs_out:
++	gsb_free(vcpu_run_output);
++free_gsb:
++	gsb_free(gsb);
++free_gsm:
++	gsm_free(gsm);
++err:
++	return rc;
++}
++
++/**
++ * __kvmhv_papr_mark_dirty() - mark a Guest State ID to be sent to the host
++ * @vcpu: vcpu
++ * @iden: guest state ID
++ *
++ * Mark a guest state ID as having been changed by the L1 host and thus
++ * the new value must be sent to the L0 hypervisor. See kvmhv_papr_flush_vcpu()
++ */
++int __kvmhv_papr_mark_dirty(struct kvm_vcpu *vcpu, u16 iden)
++{
++	struct kvmhv_papr_host *ph;
++	struct gs_bitmap *valids;
++	struct gs_msg *gsm;
++
++	if (!iden)
++		return 0;
++
++	ph = &vcpu->arch.papr_host;
++	valids = &ph->valids;
++	gsm = ph->vcpu_message;
++	gsm_include(gsm, iden);
++	gsm = ph->vcore_message;
++	gsm_include(gsm, iden);
++	gsbm_set(valids, iden);
++	return 0;
++}
++EXPORT_SYMBOL_GPL(__kvmhv_papr_mark_dirty);
++
++/**
++ * __kvmhv_papr_cached_reload() - reload a Guest State ID from the host
++ * @vcpu: vcpu
++ * @iden: guest state ID
++ *
++ * Reload the value for the guest state ID from the L0 host into the L1 host.
++ * This is cached so that going out to the L0 host only happens if necessary.
++ */
++int __kvmhv_papr_cached_reload(struct kvm_vcpu *vcpu, u16 iden)
++{
++	struct kvmhv_papr_host *ph;
++	struct gs_bitmap *valids;
++	struct gs_buff *gsb;
++	struct gs_msg gsm;
++	int rc;
++
++	if (!iden)
++		return 0;
++
++	ph = &vcpu->arch.papr_host;
++	valids = &ph->valids;
++	if (gsbm_test(valids, iden))
++		return 0;
++
++	gsb = ph->vcpu_run_input;
++	gsm_init(&gsm, &vcpu_message_ops, vcpu, gsid_flags(iden));
++	rc = gsb_receive_datum(gsb, &gsm, iden);
++	if (rc < 0) {
++		pr_err("KVM-PAPR: couldn't get GSID: 0x%x\n", iden);
++		return rc;
++	}
++	return 0;
++}
++EXPORT_SYMBOL_GPL(__kvmhv_papr_cached_reload);
++
++/**
++ * kvmhv_papr_flush_vcpu() - send modified Guest State IDs to the host
++ * @vcpu: vcpu
++ * @time_limit: hdec expiry tb
++ *
++ * Send the values marked by __kvmhv_papr_mark_dirty() to the L0 host. Thread
++ * wide values are copied to the H_GUEST_RUN_VCPU input buffer. Guest wide
++ * values need to be sent with H_GUEST_SET first.
++ *
++ * The hdec tb offset is always sent to L0 host.
++ */
++int kvmhv_papr_flush_vcpu(struct kvm_vcpu *vcpu, u64 time_limit)
++{
++	struct kvmhv_papr_host *ph;
++	struct gs_buff *gsb;
++	struct gs_msg *gsm;
++	int rc;
++
++	ph = &vcpu->arch.papr_host;
++	gsb = ph->vcpu_run_input;
++	gsm = ph->vcore_message;
++	rc = gsb_send_data(gsb, gsm);
++	if (rc < 0) {
++		pr_err("KVM-PAPR: couldn't set guest wide elements\n");
++		return rc;
++	}
++
++	gsm = ph->vcpu_message;
++	rc = gsm_fill_info(gsm, gsb);
++	if (rc < 0) {
++		pr_err("KVM-PAPR: couldn't fill vcpu run input buffer\n");
++		return rc;
++	}
++
++	rc = gse_put(gsb, GSID_HDEC_EXPIRY_TB, time_limit);
++	if (rc < 0)
++		return rc;
++	return 0;
++}
++EXPORT_SYMBOL_GPL(kvmhv_papr_flush_vcpu);
++
++
++/**
++ * kvmhv_papr_set_ptbl_entry() - send partition and process table state to L0 host
++ * @lpid: guest id
++ * @dw0: partition table double word
++ * @dw1: process table double word
++ */
++int kvmhv_papr_set_ptbl_entry(u64 lpid, u64 dw0, u64 dw1)
++{
++	struct gs_part_table patbl;
++	struct gs_proc_table prtbl;
++	struct gs_buff *gsb;
++	size_t size;
++	int rc;
++
++	size = gse_total_size(gsid_size(GSID_PARTITION_TABLE)) +
++	       gse_total_size(gsid_size(GSID_PROCESS_TABLE)) +
++	       sizeof(struct gs_header);
++	gsb = gsb_new(size, lpid, 0, GFP_KERNEL);
++	if (!gsb)
++		return -ENOMEM;
++
++	patbl.address = dw0 & RPDB_MASK;
++	patbl.ea_bits = ((((dw0 & RTS1_MASK) >> (RTS1_SHIFT - 3)) |
++			  ((dw0 & RTS2_MASK) >> RTS2_SHIFT)) +
++			 31);
++	patbl.gpd_size = 1ul << ((dw0 & RPDS_MASK) + 3);
++	rc = gse_put(gsb, GSID_PARTITION_TABLE, patbl);
++	if (rc < 0)
++		goto free_gsb;
++
++	prtbl.address = dw1 & PRTB_MASK;
++	prtbl.gpd_size = 1ul << ((dw1 & PRTS_MASK) + 12);
++	rc = gse_put(gsb, GSID_PROCESS_TABLE, prtbl);
++	if (rc < 0)
++		goto free_gsb;
++
++	rc = gsb_send(gsb, GS_FLAGS_WIDE);
++	if (rc < 0) {
++		pr_err("KVM-PAPR: couldn't set the PATE\n");
++		goto free_gsb;
++	}
++
++	gsb_free(gsb);
++	return 0;
++
++free_gsb:
++	gsb_free(gsb);
++	return rc;
++}
++EXPORT_SYMBOL_GPL(kvmhv_papr_set_ptbl_entry);
++
++/**
++ * kvmhv_papr_parse_output() - receive values from H_GUEST_RUN_VCPU output
++ * @vcpu: vcpu
++ *
++ * Parse the output buffer from H_GUEST_RUN_VCPU to update vcpu.
++ */
++int kvmhv_papr_parse_output(struct kvm_vcpu *vcpu)
++{
++	struct kvmhv_papr_host *ph;
++	struct gs_buff *gsb;
++	struct gs_msg gsm;
++
++	ph = &vcpu->arch.papr_host;
++	gsb = ph->vcpu_run_output;
++
++	vcpu->arch.fault_dar = 0;
++	vcpu->arch.fault_dsisr = 0;
++	vcpu->arch.fault_gpa = 0;
++	vcpu->arch.emul_inst = KVM_INST_FETCH_FAILED;
++
++	gsm_init(&gsm, &vcpu_message_ops, vcpu, 0);
++	gsm_refresh_info(&gsm, gsb);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(kvmhv_papr_parse_output);
++
++static void kvmhv_papr_host_free(struct kvm_vcpu *vcpu,
++				 struct kvmhv_papr_host *ph)
++{
++	gsm_free(ph->vcpu_message);
++	gsm_free(ph->vcore_message);
++	gsb_free(ph->vcpu_run_input);
++	gsb_free(ph->vcpu_run_output);
++}
++
++int __kvmhv_papr_reload_ptregs(struct kvm_vcpu *vcpu, struct pt_regs *regs)
++{
++	int rc;
++
++	for (int i = 0; i < 32; i++) {
++		rc = kvmhv_papr_cached_reload(vcpu, GSID_GPR(i));
++		if (rc < 0)
++			return rc;
++	}
++
++	rc = kvmhv_papr_cached_reload(vcpu, GSID_CR);
++	if (rc < 0)
++		return rc;
++	rc = kvmhv_papr_cached_reload(vcpu, GSID_XER);
++	if (rc < 0)
++		return rc;
++	rc = kvmhv_papr_cached_reload(vcpu, GSID_CTR);
++	if (rc < 0)
++		return rc;
++	rc = kvmhv_papr_cached_reload(vcpu, GSID_LR);
++	if (rc < 0)
++		return rc;
++	rc = kvmhv_papr_cached_reload(vcpu, GSID_NIA);
++	if (rc < 0)
++		return rc;
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(__kvmhv_papr_reload_ptregs);
++
++int __kvmhv_papr_mark_dirty_ptregs(struct kvm_vcpu *vcpu, struct pt_regs *regs)
++{
++	for (int i = 0; i < 32; i++)
++		kvmhv_papr_mark_dirty(vcpu, GSID_GPR(i));
++
++	kvmhv_papr_mark_dirty(vcpu, GSID_CR);
++	kvmhv_papr_mark_dirty(vcpu, GSID_XER);
++	kvmhv_papr_mark_dirty(vcpu, GSID_CTR);
++	kvmhv_papr_mark_dirty(vcpu, GSID_LR);
++	kvmhv_papr_mark_dirty(vcpu, GSID_NIA);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(__kvmhv_papr_mark_dirty_ptregs);
++
++/**
++ * kvmhv_papr_vcpu_create() - create nested vcpu for the PAPR API
++ * @vcpu: vcpu
++ * @ph: PAPR nested host state
++ *
++ * Parse the output buffer from H_GUEST_RUN_VCPU to update vcpu.
++ */
++int kvmhv_papr_vcpu_create(struct kvm_vcpu *vcpu,
++			   struct kvmhv_papr_host *ph)
++{
++	long rc;
++
++	rc = plpar_guest_create_vcpu(0, vcpu->kvm->arch.lpid, vcpu->vcpu_id);
++
++	if (rc != H_SUCCESS) {
++		pr_err("KVM: Create Guest vcpu hcall failed, rc=%ld\n", rc);
++		switch (rc) {
++		case H_NOT_ENOUGH_RESOURCES:
++		case H_ABORTED:
++			return -ENOMEM;
++		case H_AUTHORITY:
++			return -EPERM;
++		default:
++			return -EINVAL;
++		}
++	}
++
++	rc = kvmhv_papr_host_create(vcpu, ph);
++
++	return rc;
++}
++EXPORT_SYMBOL_GPL(kvmhv_papr_vcpu_create);
++
++/**
++ * kvmhv_papr_vcpu_free() - free the PAPR host state
++ * @vcpu: vcpu
++ * @ph: PAPR nested host state
++ */
++void kvmhv_papr_vcpu_free(struct kvm_vcpu *vcpu,
++			  struct kvmhv_papr_host *ph)
++{
++	kvmhv_papr_host_free(vcpu, ph);
++}
++EXPORT_SYMBOL_GPL(kvmhv_papr_vcpu_free);
+diff --git a/arch/powerpc/kvm/emulate_loadstore.c b/arch/powerpc/kvm/emulate_loadstore.c
+index e6e66c3792f8..663403fa86d4 100644
+--- a/arch/powerpc/kvm/emulate_loadstore.c
++++ b/arch/powerpc/kvm/emulate_loadstore.c
+@@ -92,7 +92,8 @@ int kvmppc_emulate_loadstore(struct kvm_vcpu *vcpu)
+ 	vcpu->arch.mmio_host_swabbed = 0;
+ 
+ 	emulated = EMULATE_FAIL;
+-	vcpu->arch.regs.msr = vcpu->arch.shared->msr;
++	vcpu->arch.regs.msr = kvmppc_get_msr(vcpu);
++	kvmhv_papr_reload_ptregs(vcpu, &vcpu->arch.regs);
+ 	if (analyse_instr(&op, &vcpu->arch.regs, inst) == 0) {
+ 		int type = op.type & INSTR_TYPE_MASK;
+ 		int size = GETSIZE(op.type);
+@@ -357,6 +358,7 @@ int kvmppc_emulate_loadstore(struct kvm_vcpu *vcpu)
+ 	}
+ 
+ 	trace_kvm_ppc_instr(ppc_inst_val(inst), kvmppc_get_pc(vcpu), emulated);
++	kvmhv_papr_mark_dirty_ptregs(vcpu, &vcpu->arch.regs);
+ 
+ 	/* Advance past emulated instruction. */
+ 	if (emulated != EMULATE_FAIL)
+diff --git a/arch/powerpc/kvm/guest-state-buffer.c b/arch/powerpc/kvm/guest-state-buffer.c
+index db4a79bfcaf1..cc3a7a416867 100644
+--- a/arch/powerpc/kvm/guest-state-buffer.c
++++ b/arch/powerpc/kvm/guest-state-buffer.c
+@@ -561,3 +561,52 @@ int gsm_refresh_info(struct gs_msg *gsm, struct gs_buff *gsb)
+ 	return gsm->ops->refresh_info(gsm, gsb);
+ }
+ EXPORT_SYMBOL(gsm_refresh_info);
++
++/**
++ * gsb_send - send all elements in the buffer to the hypervisor.
++ * @gsb: guest state buffer
++ * @flags: guest wide or thread wide
++ *
++ * Performs the H_GUEST_SET_STATE hcall for the guest state buffer.
++ */
++int gsb_send(struct gs_buff *gsb, unsigned long flags)
++{
++	unsigned long hflags = 0;
++	unsigned long i;
++	int rc;
++
++	if (gsb_nelems(gsb) == 0)
++		return 0;
++
++	if (flags & GS_FLAGS_WIDE)
++		hflags |= H_GUEST_FLAGS_WIDE;
++
++	rc = plpar_guest_set_state(hflags, gsb->guest_id, gsb->vcpu_id,
++				   __pa(gsb->hdr), gsb->capacity, &i);
++	return rc;
++}
++EXPORT_SYMBOL(gsb_send);
++
++/**
++ * gsb_recv - request all elements in the buffer have their value updated.
++ * @gsb: guest state buffer
++ * @flags: guest wide or thread wide
++ *
++ * Performs the H_GUEST_GET_STATE hcall for the guest state buffer.
++ * After returning from the hcall the guest state elements that were
++ * present in the buffer will have updated values from the hypervisor.
++ */
++int gsb_recv(struct gs_buff *gsb, unsigned long flags)
++{
++	unsigned long hflags = 0;
++	unsigned long i;
++	int rc;
++
++	if (flags & GS_FLAGS_WIDE)
++		hflags |= H_GUEST_FLAGS_WIDE;
++
++	rc = plpar_guest_get_state(hflags, gsb->guest_id, gsb->vcpu_id,
++				   __pa(gsb->hdr), gsb->capacity, &i);
++	return rc;
++}
++EXPORT_SYMBOL(gsb_recv);
 -- 
 2.31.1
 
