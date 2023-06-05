@@ -1,38 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CFB672230D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jun 2023 12:10:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8737B722422
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jun 2023 13:05:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QZTrl26K1z3fM8
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jun 2023 20:10:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QZW492dvlz3f8V
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jun 2023 21:05:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QZTrC0NlXz3dy5
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Jun 2023 20:10:15 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2B9CBD75;
-	Mon,  5 Jun 2023 03:10:28 -0700 (PDT)
-Received: from FVFF77S0Q05N (unknown [10.57.24.244])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8F8793F793;
-	Mon,  5 Jun 2023 03:09:37 -0700 (PDT)
-Date: Mon, 5 Jun 2023 11:09:34 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH 00/13] mm: jit/text allocator
-Message-ID: <ZH20XkD74prrdN4u@FVFF77S0Q05N>
-References: <20230601101257.530867-1-rppt@kernel.org>
- <ZHjDU/mxE+cugpLj@FVFF77S0Q05N.cambridge.arm.com>
- <ZHjgIH3aX9dCvVZc@moria.home.lan>
- <ZHm3zUUbwqlsZBBF@FVFF77S0Q05N>
- <20230605092040.GB3460@kernel.org>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QZW3c02PPz3bxt
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Jun 2023 21:05:12 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+	by localhost (Postfix) with ESMTP id 4QZW3T4WZ7z9sCP;
+	Mon,  5 Jun 2023 13:05:09 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 3wylewUK9X54; Mon,  5 Jun 2023 13:05:09 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4QZW3T3jqJz9sB5;
+	Mon,  5 Jun 2023 13:05:09 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7A97C8B779;
+	Mon,  5 Jun 2023 13:05:09 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id lEUim57Ixwxf; Mon,  5 Jun 2023 13:05:09 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.25.230.108])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 54CD58B776;
+	Mon,  5 Jun 2023 13:05:09 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 355B51wO063384
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 5 Jun 2023 13:05:01 +0200
+Received: (from chleroy@localhost)
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 355B50RE063381;
+	Mon, 5 Jun 2023 13:05:00 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
+Subject: [PATCH 1/4] powerpc/kuap: Avoid unnecessary reads of MD_AP
+Date: Mon,  5 Jun 2023 13:04:50 +0200
+Message-Id: <1a3c69e38349b687c6c65240d7c09a7817a797d8.1685963081.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230605092040.GB3460@kernel.org>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1685963090; l=2619; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=MpFKL0d/EfDJ0kCQxhMEiBWz5R0LOuG+v/7pxC8nbYg=; b=yFk0cQtOBClqR7+PON7Sbs8qGOthFHJPTPLMFmfROgtuV2h1DKcrbU5GVFZnTR0oTJL2fA5Xv 0uBUcaS5bDvAOEdWghpXIcLzT15MN1cjfmVS8ULDaPc31r7tZEzPLaI
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,144 +65,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linux-trace-kernel@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Andrew Morton <akpm@linux-foundation.org>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org, Kent Overstreet <kent.overstreet@linux.dev>, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, bpf@vger.kernel.org, linuxppc-dev@lists.ozla
- bs.org, "David S. Miller" <davem@davemloft.net>, linux-modules@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 05, 2023 at 12:20:40PM +0300, Mike Rapoport wrote:
-> On Fri, Jun 02, 2023 at 10:35:09AM +0100, Mark Rutland wrote:
-> > On Thu, Jun 01, 2023 at 02:14:56PM -0400, Kent Overstreet wrote:
-> > > On Thu, Jun 01, 2023 at 05:12:03PM +0100, Mark Rutland wrote:
-> > > > For a while I have wanted to give kprobes its own allocator so that it can work
-> > > > even with CONFIG_MODULES=n, and so that it doesn't have to waste VA space in
-> > > > the modules area.
-> > > > 
-> > > > Given that, I think these should have their own allocator functions that can be
-> > > > provided independently, even if those happen to use common infrastructure.
-> > > 
-> > > How much memory can kprobes conceivably use? I think we also want to try
-> > > to push back on combinatorial new allocators, if we can.
-> > 
-> > That depends on who's using it, and how (e.g. via BPF).
-> > 
-> > To be clear, I'm not necessarily asking for entirely different allocators, but
-> > I do thinkg that we want wrappers that can at least pass distinct start+end
-> > parameters to a common allocator, and for arm64's modules code I'd expect that
-> > we'd keep the range falblack logic out of the common allcoator, and just call
-> > it twice.
-> > 
-> > > > > Several architectures override module_alloc() because of various
-> > > > > constraints where the executable memory can be located and this causes
-> > > > > additional obstacles for improvements of code allocation.
-> > > > > 
-> > > > > This set splits code allocation from modules by introducing
-> > > > > jit_text_alloc(), jit_data_alloc() and jit_free() APIs, replaces call
-> > > > > sites of module_alloc() and module_memfree() with the new APIs and
-> > > > > implements core text and related allocation in a central place.
-> > > > > 
-> > > > > Instead of architecture specific overrides for module_alloc(), the
-> > > > > architectures that require non-default behaviour for text allocation must
-> > > > > fill jit_alloc_params structure and implement jit_alloc_arch_params() that
-> > > > > returns a pointer to that structure. If an architecture does not implement
-> > > > > jit_alloc_arch_params(), the defaults compatible with the current
-> > > > > modules::module_alloc() are used.
-> > > > 
-> > > > As above, I suspect that each of the callsites should probably be using common
-> > > > infrastructure, but I don't think that a single jit_alloc_arch_params() makes
-> > > > sense, since the parameters for each case may need to be distinct.
-> > > 
-> > > I don't see how that follows. The whole point of function parameters is
-> > > that they may be different :)
-> > 
-> > What I mean is that jit_alloc_arch_params() tries to aggregate common
-> > parameters, but they aren't actually common (e.g. the actual start+end range
-> > for allocation).
-> 
-> jit_alloc_arch_params() tries to aggregate architecture constraints and
-> requirements for allocations of executable memory and this exactly what
-> the first 6 patches of this set do.
-> 
-> A while ago Thomas suggested to use a structure that parametrizes
-> architecture constraints by the memory type used in modules [1] and Song
-> implemented the infrastructure for it and x86 part [2].
-> 
-> I liked the idea of defining parameters in a single structure, but I
-> thought that approaching the problem from the arch side rather than from
-> modules perspective will be better starting point, hence these patches.
-> 
-> I don't see a fundamental reason why a single structure cannot describe
-> what is needed for different code allocation cases, be it modules, kprobes
-> or bpf. There is of course an assumption that the core allocations will be
-> the same for all the users, and it seems to me that something like 
-> 
-> * allocate physical memory if allocator caches are empty
-> * map it in vmalloc or modules address space
-> * return memory from the allocator cache to the caller
-> 
-> will work for all usecases.
-> 
-> We might need separate caches for different cases on different
-> architectures, and a way to specify what cache should be used in the
-> allocator API, but that does not contradict a single structure for arch
-> specific parameters, but only makes it more elaborate, e.g. something like
-> 
-> enum jit_type {
-> 	JIT_MODULES_TEXT,
-> 	JIT_MODULES_DATA,
-> 	JIT_KPROBES,
-> 	JIT_FTRACE,
-> 	JIT_BPF,
-> 	JIT_TYPE_MAX,
-> };
-> 
-> struct jit_alloc_params {
-> 	struct jit_range	ranges[JIT_TYPE_MAX];
-> 	/* ... */
-> };
-> 
-> > > Can you give more detail on what parameters you need? If the only extra
-> > > parameter is just "does this allocation need to live close to kernel
-> > > text", that's not that big of a deal.
-> > 
-> > My thinking was that we at least need the start + end for each caller. That
-> > might be it, tbh.
-> 
-> Do you mean that modules will have something like
-> 
-> 	jit_text_alloc(size, MODULES_START, MODULES_END);
-> 
-> and kprobes will have
-> 
-> 	jit_text_alloc(size, KPROBES_START, KPROBES_END);
-> ?
+A disassembly of interrupt_exit_kernel_prepare() shows a useless read
+of MD_AP register. This is shown by r9 being re-used immediately without
+doing anything with the value read.
 
-Yes.
+  c000e0e0:       60 00 00 00     nop
+  c000e0e4: ===>  7d 3a c2 a6     mfmd_ap r9	<====
+  c000e0e8:       7d 20 00 a6     mfmsr   r9
+  c000e0ec:       7c 51 13 a6     mtspr   81,r2
+  c000e0f0:       81 3f 00 84     lwz     r9,132(r31)
+  c000e0f4:       71 29 80 00     andi.   r9,r9,32768
 
-> It sill can be achieved with a single jit_alloc_arch_params(), just by
-> adding enum jit_type parameter to jit_text_alloc().
+kuap_get_and_assert_locked() is paired with kuap_kernel_restore()
+and are only used in interrupt_exit_kernel_prepare(). The value
+returned by kuap_get_and_assert_locked() is only used by
+kuap_kernel_restore().
 
-That feels backwards to me; it centralizes a bunch of information about
-distinct users to be able to shove that into a static array, when the callsites
-can pass that information. 
+On 8xx, kuap_kernel_restore() doesn't use the value read by
+kuap_get_and_assert_locked() so modify kuap_get_and_assert_locked()
+to not perform the read of MD_AP and return 0 instead.
 
-What's *actually* common after separating out the ranges? Is it just the
-permissions?
+The same applies on BOOKE.
 
-If we want this to be able to share allocations and so on, why can't we do this
-like a kmem_cache, and have the callsite pass a pointer to the allocator data?
-That would make it easy for callsites to share an allocator or use a distinct
-one.
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/include/asm/nohash/32/kup-8xx.h | 8 ++------
+ arch/powerpc/include/asm/nohash/kup-booke.h  | 6 ++----
+ 2 files changed, 4 insertions(+), 10 deletions(-)
 
-Thanks,
-Mark.
+diff --git a/arch/powerpc/include/asm/nohash/32/kup-8xx.h b/arch/powerpc/include/asm/nohash/32/kup-8xx.h
+index c44d97751723..8579210f2a6a 100644
+--- a/arch/powerpc/include/asm/nohash/32/kup-8xx.h
++++ b/arch/powerpc/include/asm/nohash/32/kup-8xx.h
+@@ -41,14 +41,10 @@ static inline void __kuap_kernel_restore(struct pt_regs *regs, unsigned long kua
+ 
+ static inline unsigned long __kuap_get_and_assert_locked(void)
+ {
+-	unsigned long kuap;
+-
+-	kuap = mfspr(SPRN_MD_AP);
+-
+ 	if (IS_ENABLED(CONFIG_PPC_KUAP_DEBUG))
+-		WARN_ON_ONCE(kuap >> 16 != MD_APG_KUAP >> 16);
++		WARN_ON_ONCE(mfspr(SPRN_MD_AP) >> 16 != MD_APG_KUAP >> 16);
+ 
+-	return kuap;
++	return 0;
+ }
+ 
+ static inline void __allow_user_access(void __user *to, const void __user *from,
+diff --git a/arch/powerpc/include/asm/nohash/kup-booke.h b/arch/powerpc/include/asm/nohash/kup-booke.h
+index 49bb41ed0816..823c5a3a96d8 100644
+--- a/arch/powerpc/include/asm/nohash/kup-booke.h
++++ b/arch/powerpc/include/asm/nohash/kup-booke.h
+@@ -58,12 +58,10 @@ static inline void __kuap_kernel_restore(struct pt_regs *regs, unsigned long kua
+ 
+ static inline unsigned long __kuap_get_and_assert_locked(void)
+ {
+-	unsigned long kuap = mfspr(SPRN_PID);
+-
+ 	if (IS_ENABLED(CONFIG_PPC_KUAP_DEBUG))
+-		WARN_ON_ONCE(kuap);
++		WARN_ON_ONCE(mfspr(SPRN_PID));
+ 
+-	return kuap;
++	return 0;
+ }
+ 
+ static inline void __allow_user_access(void __user *to, const void __user *from,
+-- 
+2.40.1
 
-> [1] https://lore.kernel.org/linux-mm/87v8mndy3y.ffs@tglx/ 
-> [2] https://lore.kernel.org/all/20230526051529.3387103-1-song@kernel.org
-> 
-> > Thanks,
-> > Mark.
-> 
-> -- 
-> Sincerely yours,
-> Mike.
