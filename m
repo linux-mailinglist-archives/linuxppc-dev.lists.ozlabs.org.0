@@ -1,299 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E9187233FE
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jun 2023 02:17:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1A72722090
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jun 2023 10:08:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QZrdY1Xdkz3f8b
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jun 2023 10:17:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QZR7W4k87z3f7d
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jun 2023 18:08:23 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=o54X53Hf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JJs4vaCQ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mail.zeus03.de (client-ip=194.117.254.33; helo=mail.zeus03.de; envelope-from=wsa+renesas@sang-engineering.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=huschle@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=o54X53Hf;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JJs4vaCQ;
 	dkim-atps=neutral
-Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QZQrY3qGxz3c4w
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Jun 2023 17:55:25 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple; d=sang-engineering.com; h=
-	date:from:to:subject:message-id:references:mime-version
-	:content-type:in-reply-to; s=k1; bh=qNV9qf6rhJyxF+PFiRZlT81q/Mvm
-	db/EcAsD5Y7RO4A=; b=o54X53HfsxbpVsf5OsUMs5hqfUKh1FtMAgIvGYf/ao8X
-	OfgN/S/1QbXgW8iXetNizszdV6LmLLnwJIh/Ml2IAWrSsKhBUlY5kCxt0pa+RfrM
-	Hgft1OFLr+tM1Ea0Ob4WmgW4UT5YMSDHvFkIuQkEfMYIGIj3rB9wkDUyFzgsx04=
-Received: (qmail 2935631 invoked from network); 5 Jun 2023 09:54:54 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 5 Jun 2023 09:54:54 +0200
-X-UD-Smtp-Session: l3s3148p1@qaPYN1391MQujnt4
-Date: Mon, 5 Jun 2023 09:54:53 +0200
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Thor Thayer <thor.thayer@linux.intel.com>,
-	Elie Morisse <syniurge@gmail.com>,
-	Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	Codrin Ciubotariu <codrin.ciubotariu@microchip.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@microchip.com>,
-	ye xingchen <ye.xingchen@zte.com.cn>,
-	Krzysztof Adamski <krzysztof.adamski@nokia.com>,
-	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Allison Randal <allison@lohutok.net>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Kamal Dasu <kdasu.kdev@gmail.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Jochen Friedrich <jochen@scram.de>,
-	Benson Leung <bleung@chromium.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Baruch Siach <baruch@tkos.co.il>,
-	Jean-Marie Verdun <verdun@hpe.com>,
-	Nick Hawkins <nick.hawkins@hpe.com>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Oleksij Rempel <linux@rempel-privat.de>,
-	Jean Delvare <jdelvare@suse.com>,
-	Paul Cercueil <paul@crapouillou.net>,
-	Chris Pringle <chris.pringle@phabrix.com>,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Julia Lawall <Julia.Lawall@inria.fr>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Daire McNamara <daire.mcnamara@microchip.com>,
-	Khalil Blaiech <kblaiech@nvidia.com>,
-	Asmaa Mnebhi <asmaa@nvidia.com>,
-	Vadim Pasternak <vadimp@nvidia.com>,
-	Michael Shych <michaelsh@nvidia.com>,
-	Chris Packham <chris.packham@alliedtelesis.co.nz>,
-	Qii Wang <qii.wang@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Stefan Roese <sr@denx.de>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-	Stefan Wahren <stefan.wahren@i2se.com>,
-	Avi Fishman <avifishman70@gmail.com>,
-	Tomer Maimon <tmaimon77@gmail.com>,
-	Tali Perry <tali.perry1@gmail.com>,
-	Peter Korsgaard <peter@korsgaard.com>, Andrew Lunn <andrew@lunn.ch>,
-	Robert Richter <rric@kernel.org>, Tony Lindgren <tony@atomide.com>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-	Vignesh R <vigneshr@ti.com>, Michael Ellerman <mpe@ellerman.id.au>,
-	Hector Martin <marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>,
-	Rob Herring <robh@kernel.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Sebastian Reichel <sre@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Loic Poulain <loic.poulain@linaro.org>,
-	Robert Foss <rfoss@kernel.org>, Andy Gross <agross@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Chris Brandt <chris.brandt@renesas.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Jim Cromie <jim.cromie@gmail.com>,
-	Patrice Chotard <patrice.chotard@foss.st.com>,
-	Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Laxman Dewangan <ldewangan@nvidia.com>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Wei Chen <harperchen1110@gmail.com>,
-	George Cherian <gcherian@marvell.com>,
-	Peter Rosin <peda@axentia.se>,
-	Peter Korsgaard <peter.korsgaard@barco.com>,
-	linux-aspeed@lists.ozlabs.org,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Jan Dabros <jsd@semihalf.com>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Guenter Roeck <groeck@chromium.org>,
-	linux-riscv@lists.infradead.org, Fabio Estevam <festevam@gmail.com>,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	chrome-platform@lists.linux.dev, linux-samsung-soc@vger.kernel.org,
-	Benjamin Fair <benjaminfair@google.com>,
-	linux-rockchip@lists.infradead.org, openbmc@lists.ozlabs.org,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Nancy Yuen <yuenn@google.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	linux-sunxi@lists.linux.dev, Joel Stanley <joel@jms.id.au>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	linux-arm-msm@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
-	linux-mediatek@lists.infradead.org,
-	linux-rpi-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
-	linux-amlogic@lists.infradead.org, linux-omap@vger.kernel.org,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	linux-arm-kernel@lists.infradead.org,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Andrew Jeffery <andrew@aj.id.au>,
-	Patrick Venture <venture@google.com>, linux-mips@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	Dmitry Osipenko <digetx@gmail.com>, asahi@lists.linux.dev,
-	kernel@pengutronix.de, linuxppc-dev@lists.ozlabs.org,
-	linux-i2c@vger.kernel.org
-Subject: Re: [PATCH 00/89] i2c: Convert to platform remove callback returning
- void
-Message-ID: <ZH2UzYLPEQay3MBT@shikoro>
-Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Thor Thayer <thor.thayer@linux.intel.com>,
-	Elie Morisse <syniurge@gmail.com>,
-	Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	Codrin Ciubotariu <codrin.ciubotariu@microchip.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@microchip.com>,
-	ye xingchen <ye.xingchen@zte.com.cn>,
-	Krzysztof Adamski <krzysztof.adamski@nokia.com>,
-	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Allison Randal <allison@lohutok.net>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Kamal Dasu <kdasu.kdev@gmail.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Jochen Friedrich <jochen@scram.de>,
-	Benson Leung <bleung@chromium.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Baruch Siach <baruch@tkos.co.il>,
-	Jean-Marie Verdun <verdun@hpe.com>,
-	Nick Hawkins <nick.hawkins@hpe.com>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Oleksij Rempel <linux@rempel-privat.de>,
-	Jean Delvare <jdelvare@suse.com>,
-	Paul Cercueil <paul@crapouillou.net>,
-	Chris Pringle <chris.pringle@phabrix.com>,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Julia Lawall <Julia.Lawall@inria.fr>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Daire McNamara <daire.mcnamara@microchip.com>,
-	Khalil Blaiech <kblaiech@nvidia.com>,
-	Asmaa Mnebhi <asmaa@nvidia.com>,
-	Vadim Pasternak <vadimp@nvidia.com>,
-	Michael Shych <michaelsh@nvidia.com>,
-	Chris Packham <chris.packham@alliedtelesis.co.nz>,
-	Qii Wang <qii.wang@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Stefan Roese <sr@denx.de>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-	Stefan Wahren <stefan.wahren@i2se.com>,
-	Avi Fishman <avifishman70@gmail.com>,
-	Tomer Maimon <tmaimon77@gmail.com>,
-	Tali Perry <tali.perry1@gmail.com>,
-	Peter Korsgaard <peter@korsgaard.com>, Andrew Lunn <andrew@lunn.ch>,
-	Robert Richter <rric@kernel.org>, Tony Lindgren <tony@atomide.com>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-	Vignesh R <vigneshr@ti.com>, Michael Ellerman <mpe@ellerman.id.au>,
-	Hector Martin <marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>,
-	Rob Herring <robh@kernel.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Sebastian Reichel <sre@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Loic Poulain <loic.poulain@linaro.org>,
-	Robert Foss <rfoss@kernel.org>, Andy Gross <agross@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Chris Brandt <chris.brandt@renesas.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Jim Cromie <jim.cromie@gmail.com>,
-	Patrice Chotard <patrice.chotard@foss.st.com>,
-	Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Laxman Dewangan <ldewangan@nvidia.com>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Wei Chen <harperchen1110@gmail.com>,
-	George Cherian <gcherian@marvell.com>,
-	Peter Rosin <peda@axentia.se>,
-	Peter Korsgaard <peter.korsgaard@barco.com>,
-	linux-aspeed@lists.ozlabs.org,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Jan Dabros <jsd@semihalf.com>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Guenter Roeck <groeck@chromium.org>,
-	linux-riscv@lists.infradead.org, Fabio Estevam <festevam@gmail.com>,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	chrome-platform@lists.linux.dev, linux-samsung-soc@vger.kernel.org,
-	Benjamin Fair <benjaminfair@google.com>,
-	linux-rockchip@lists.infradead.org, openbmc@lists.ozlabs.org,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Nancy Yuen <yuenn@google.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	linux-sunxi@lists.linux.dev, Joel Stanley <joel@jms.id.au>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	linux-arm-msm@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
-	linux-mediatek@lists.infradead.org,
-	linux-rpi-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
-	linux-amlogic@lists.infradead.org, linux-omap@vger.kernel.org,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	linux-arm-kernel@lists.infradead.org,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Andrew Jeffery <andrew@aj.id.au>,
-	Patrick Venture <venture@google.com>, linux-mips@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	Dmitry Osipenko <digetx@gmail.com>, asahi@lists.linux.dev,
-	kernel@pengutronix.de, linuxppc-dev@lists.ozlabs.org,
-	linux-i2c@vger.kernel.org
-References: <20230508205306.1474415-1-u.kleine-koenig@pengutronix.de>
- <20230601073322.ww25ajaurktqsryr@pengutronix.de>
- <ZHijKtBbH2sCSuT4@shikoro>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QZR6b4JZmz3dsW
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Jun 2023 18:07:35 +1000 (AEST)
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3557bfQL002583;
+	Mon, 5 Jun 2023 08:07:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=mime-version : date :
+ from : to : cc : subject : in-reply-to : references : message-id :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=VGFfgmCUNPKnWMgtaYy+cB6Xt5WtNY0IFs9ynRDJG0I=;
+ b=JJs4vaCQEBT6Szq6oi5p2Gs+NSubCNy8hT0EfgbLa0cgBnebX+S9IHQLjDLCgGw7q2oW
+ GTM6UCoPrNhA+bOGJsHfvM1Olv+FA8n/tUiQdYNR0jifGX9UfcvT7DUrTwOIg5t7dGUf
+ QKp8BSyxZMdYXKQ83kkpPdlz+cy3S0TC2v03tY9dx1HipMoY7WtjzblOmkrylL8vGqZc
+ 9J/DSXUF3Ge4pE1Jsno97OAHE+4IWtMhcBUdBgnxmYw68ZEXZK4SNDtwjLOtzGweu4nA
+ RUl03W/V+tXVCg0NCnbuRGjsmD4d39K0NhISGtF336e8X/Hv/vPlXfne6Z7Ehuem1fWT WA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r1av59q6p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 05 Jun 2023 08:07:19 +0000
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3557eRRI011929;
+	Mon, 5 Jun 2023 08:07:19 GMT
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r1av59q64-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 05 Jun 2023 08:07:19 +0000
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+	by ppma04dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3555YOrO013581;
+	Mon, 5 Jun 2023 08:07:18 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([9.208.130.100])
+	by ppma04dal.us.ibm.com (PPS) with ESMTPS id 3qyxqqnwqq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 05 Jun 2023 08:07:18 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 35587HFh65798438
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 5 Jun 2023 08:07:17 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 728135805F;
+	Mon,  5 Jun 2023 08:07:17 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E846958051;
+	Mon,  5 Jun 2023 08:07:16 +0000 (GMT)
+Received: from ltc.linux.ibm.com (unknown [9.5.196.140])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  5 Jun 2023 08:07:16 +0000 (GMT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="pOTGJ+ASVLoKQ1Xi"
-Content-Disposition: inline
-In-Reply-To: <ZHijKtBbH2sCSuT4@shikoro>
-X-Mailman-Approved-At: Tue, 06 Jun 2023 10:16:36 +1000
+Date: Mon, 05 Jun 2023 10:07:16 +0200
+From: Tobias Huschle <huschle@linux.ibm.com>
+To: Vincent Guittot <vincent.guittot@linaro.org>
+Subject: Re: [RFC 1/1] sched/fair: Consider asymmetric scheduler groups in
+ load balancer
+In-Reply-To: <CAKfTPtC9050oY2EikUTAXTL8pAui3L+Sr4DBS0T-TccGNaA2hw@mail.gmail.com>
+References: <20230515114601.12737-1-huschle@linux.ibm.com>
+ <20230515114601.12737-2-huschle@linux.ibm.com>
+ <CAKfTPtC9050oY2EikUTAXTL8pAui3L+Sr4DBS0T-TccGNaA2hw@mail.gmail.com>
+Message-ID: <9021d4d99370162a815928cd6467f4a5@linux.ibm.com>
+X-Sender: huschle@linux.ibm.com
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: MB30DaVDVCMEslEZRMLGqSesKPedI8F3
+X-Proofpoint-ORIG-GUID: JD4odwECYJOqrC5fnWrrh_5QIyYK37dW
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-03_08,2023-06-02_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
+ priorityscore=1501 impostorscore=0 adultscore=0 lowpriorityscore=0
+ clxscore=1011 phishscore=0 suspectscore=0 malwarescore=0 mlxlogscore=999
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2306050072
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -305,45 +101,200 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: juri.lelli@redhat.com, vschneid@redhat.com, srikar@linux.vnet.ibm.com, peterz@infradead.org, sshegde@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, rostedt@goodmis.org, bsegall@google.com, mingo@redhat.com, mgorman@suse.de, bristot@redhat.com, dietmar.eggemann@arm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 2023-05-16 15:36, Vincent Guittot wrote:
+> On Mon, 15 May 2023 at 13:46, Tobias Huschle <huschle@linux.ibm.com> 
+> wrote:
+>> 
+>> The current load balancer implementation implies that scheduler 
+>> groups,
+>> within the same domain, all host the same number of CPUs. This is
+>> reflected in the condition, that a scheduler group, which is load
+>> balancing and classified as having spare capacity, should pull work
+>> from the busiest group, if the local group runs less processes than
+>> the busiest one. This implies that these two groups should run the
+>> same number of processes, which is problematic if the groups are not
+>> of the same size.
+>> 
+>> The assumption that scheduler groups within the same scheduler domain
+>> host the same number of CPUs appears to be true for non-s390
+>> architectures. Nevertheless, s390 can have scheduler groups of unequal
+>> size.
+>> 
+>> This introduces a performance degredation in the following scenario:
+>> 
+>> Consider a system with 8 CPUs, 6 CPUs are located on one CPU socket,
+>> the remaining 2 are located on another socket:
+>> 
+>> Socket   -----1-----    -2-
+>> CPU      1 2 3 4 5 6    7 8
+>> 
+>> Placing some workload ( x = one task ) yields the following
+>> scenarios:
+>> 
+>> The first 5 tasks are distributed evenly across the two groups.
+>> 
+>> Socket   -----1-----    -2-
+>> CPU      1 2 3 4 5 6    7 8
+>>          x x x          x x
+>> 
+>> Adding a 6th task yields the following distribution:
+>> 
+>> Socket   -----1-----    -2-
+>> CPU      1 2 3 4 5 6    7 8
+>> SMT1     x x x          x x
+>> SMT2                    x
+> 
+> Your description is a bit confusing for me. What you name CPU above
+> should be named Core, doesn' it ?
+> 
+> Could you share with us your scheduler topology ?
+> 
 
---pOTGJ+ASVLoKQ1Xi
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+You are correct, it should say core instead of CPU.
 
-On Thu, Jun 01, 2023 at 03:54:50PM +0200, Wolfram Sang wrote:
->=20
-> > I wonder how this series will go in. My expectation was that Wolfram
-> > picks up the whole series via his tree?!
->=20
-> Will do. I am currently super-busy, though.
+One actual configuration from one of my test machines (lscpu -e):
 
-Whole series applied to for-next. I squashed all the commits into one.
-These are mostly simple changes which we won't revert anyhow, but fix
-incrementally if we ever find an issue.
+CPU NODE DRAWER BOOK SOCKET CORE L1d:L1i:L2 ONLINE CONFIGURED 
+POLARIZATION ADDRESS
+   0    0      0    0      0    0 0:0:0         yes yes        horizontal 
+   0
+   1    0      0    0      0    0 1:1:0         yes yes        horizontal 
+   1
+   2    0      0    0      0    1 2:2:0         yes yes        horizontal 
+   2
+   3    0      0    0      0    1 3:3:0         yes yes        horizontal 
+   3
+   4    0      0    0      0    2 4:4:0         yes yes        horizontal 
+   4
+   5    0      0    0      0    2 5:5:0         yes yes        horizontal 
+   5
+   6    0      0    0      0    3 6:6:0         yes yes        horizontal 
+   6
+   7    0      0    0      0    3 7:7:0         yes yes        horizontal 
+   7
+   8    0      0    0      0    4 8:8:0         yes yes        horizontal 
+   8
+   9    0      0    0      0    4 9:9:0         yes yes        horizontal 
+   9
+  10    0      0    0      0    5 10:10:0       yes yes        horizontal 
+   10
+  11    0      0    0      0    5 11:11:0       yes yes        horizontal 
+   11
+  12    0      0    0      1    6 12:12:0       yes yes        horizontal 
+   12
+  13    0      0    0      1    6 13:13:0       yes yes        horizontal 
+   13
+  14    0      0    0      1    7 14:14:0       yes yes        horizontal 
+   14
+  15    0      0    0      1    7 15:15:0       yes yes        horizontal 
+   15
 
+So, 6 cores / 12 CPUs in one group 2 cores / 4 CPUs in the other.
 
---pOTGJ+ASVLoKQ1Xi
-Content-Type: application/pgp-signature; name="signature.asc"
+If I run stress-ng with 8 cpu stressors on the original code I get a 
+distribution
+like this:
 
------BEGIN PGP SIGNATURE-----
+00 01 02 03 04 05 06 07 08 09 10 11  || 12 13 14 15
+                 x     x     x     x      x  x  x  x
 
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmR9lM0ACgkQFA3kzBSg
-KbZSPhAAsfk7pusys7GFW8hUTH1/MqaEtjs2e4zgiR1STw1eeim+O6Ayd8LuEdGz
-eXWZfv2E4SYhFi1+lXo4jFP3tPkCynMqn8BLbfRwq6XzXboMRQtEOXXnmRM7aOKN
-5x2CbAPlQQZ3A4Bbht92ESvKN54WRDM8V5wg0YUkowAlK6wtG0H8ajUOqYJdfVeN
-OPftzfdxQUDphHtitAoIYgHrz8UDxZSuASIjHBbb5ppBwZNtxc81DQYuIE42ajf8
-uYRrujqm1lKaRKdWvbZrOwZ42he5QLFl88mVLpQ9OmuhexOuBryk/847XdGDUMP6
-LdI40mazpIk+X2txyOySPbR0e3nCmq8gHBUKw1VQ3FMcCwAf60CxaO6fz0WLKPnU
-ezWsW6ETk7l52upnb0oSFnTH7ZHBN30Ebtb6xqMoDWs4i6RX/DX//leVHoHb+rD1
-tj0EV3wgmvXgyo2wcha8I05YeTYiFofK5PmHq3L3yXBDusslXdEsyVdFU/Mjy01G
-vFMWb2wJliDaJy3u9c2LkNBeWdlScTUM7U978o1sakXd6k4AcFJ9iufF0QDoTKqF
-iZmdoZaQuVCiGtwB/gUFMtbQDnikh1r2XxLSeeIIe1Fj2yfWr/GzVUq2tCzWu2J/
-D0nf7ftd8Y/SK1BYHfuuHox68zo4O8+CNB9WKjgkdt4JsXBlV0U=
-=xv1r
------END PGP SIGNATURE-----
+Which means that the two cores in the smaller group are running into SMT 
+while two
+cores in the larger group are still idle. This is caused by the 
+prefer_sibling path
+which really wants to see both groups run the same number of tasks.
 
---pOTGJ+ASVLoKQ1Xi--
+>> 
+>> The task is added to the 2nd scheduler group, as the scheduler has the
+>> assumption that scheduler groups are of the same size, so they should
+>> also host the same number of tasks. This makes CPU 7 run into SMT
+>> thread, which comes with a performance penalty. This means, that in
+>> the window of 6-8 tasks, load balancing is done suboptimally, because
+>> SMT is used although there is no reason to do so as fully idle CPUs
+>> are still available.
+>> 
+>> Taking the weight of the scheduler groups into account, ensures that
+>> a load balancing CPU within a smaller group will not try to pull tasks
+>> from a bigger group while the bigger group still has idle CPUs
+>> available.
+>> 
+>> Signed-off-by: Tobias Huschle <huschle@linux.ibm.com>
+>> ---
+>>  kernel/sched/fair.c | 3 ++-
+>>  1 file changed, 2 insertions(+), 1 deletion(-)
+>> 
+>> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+>> index 48b6f0ca13ac..b1307d7e4065 100644
+>> --- a/kernel/sched/fair.c
+>> +++ b/kernel/sched/fair.c
+>> @@ -10426,7 +10426,8 @@ static struct sched_group 
+>> *find_busiest_group(struct lb_env *env)
+>>          * group's child domain.
+>>          */
+>>         if (sds.prefer_sibling && local->group_type == group_has_spare 
+>> &&
+>> -           busiest->sum_nr_running > local->sum_nr_running + 1)
+>> +           busiest->sum_nr_running * local->group_weight >
+>> +                       local->sum_nr_running * busiest->group_weight 
+>> + 1)
+> 
+> This is the prefer_sibling path. Could it be that you should disable
+> prefer_siling between your sockets for such topology ? the default
+> path compares the number of idle CPUs when groups has spare capacity
+> 
+> 
+
+If I disable prefer_sibling (I played around with it a bit), I run into 
+the problem,
+that the tasks are distributed s.t. each group has the same amount of 
+idle CPUs, which
+yields distributions similar to this:
+
+00 01 02 03 04 05 06 07 08 09 10 11  || 12 13 14 15
+     x  x  x     x  x     x     x  x
+
+Now both groups have 4 idle CPUs which fulfills the criteria imposed by 
+the load balancer,
+but the larger group is now running SMT while the smaller one is just 
+idle.
+
+So, in this asymmetric setup, both criteria seem to not work in an 
+optimal way. Going for
+the same number of idle CPUs or alternatively for the same number of 
+running processes
+both cause a sub-optimal distribution of tasks, leading to unnecessary 
+SMT.
+
+It seems also to be possible to address the regular load balancing path 
+by aiming to have the
+same unused capacity between groups instead of the same number of idle 
+CPUs. This seems to
+have been considered in the past, but the choice went in favor of the 
+number of idle CPUs.
+Since this decision was actively taken already, I focused on the 
+prefer_sibling path.
+
+The question now would be how to address this properly (or if I'm 
+missing something here).
+As mentioned in the cover letter, this was the most simplistic and least 
+invasive approach
+I could find, others might be more sophisticated but also have some 
+side-effects.
+
+I have a bit of a hard time leaving this one as-is, as it just 
+introduces two additional
+multiplications with no effect for most architectures. Maybe an 
+architectures specific
+inline function that the compiler can optimize away if not needed?
+
+>>                 goto force_balance;
+>> 
+>>         if (busiest->group_type != group_overloaded) {
+>> --
+>> 2.34.1
+>> 
+
