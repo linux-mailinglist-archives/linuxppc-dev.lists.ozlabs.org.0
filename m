@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45D31723E01
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jun 2023 11:41:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 955A6723E06
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jun 2023 11:42:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qb58t0Ktdz3fg5
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jun 2023 19:41:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qb59w2f5Xz3fhx
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jun 2023 19:42:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=Ys1w4a/6;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=QkaPvdTe;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::229; helo=mail-oi1-x229.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::533; helo=mail-pg1-x533.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=Ys1w4a/6;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=QkaPvdTe;
 	dkim-atps=neutral
-Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qb55Q5s5bz3f0s
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Jun 2023 19:38:50 +1000 (AEST)
-Received: by mail-oi1-x229.google.com with SMTP id 5614622812f47-39ab96e6aefso2002640b6e.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Jun 2023 02:38:50 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qb55T1ctvz3f0D
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Jun 2023 19:38:52 +1000 (AEST)
+Received: by mail-pg1-x533.google.com with SMTP id 41be03b00d2f7-5428f63c73aso2909505a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Jun 2023 02:38:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686044328; x=1688636328;
+        d=gmail.com; s=20221208; t=1686044330; x=1688636330;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kCh6RVJI4h7nw2maw98k2ell5XwYb4yP+21lrC089v4=;
-        b=Ys1w4a/6FCc9j6NvOaE9+7w4fuxadYIURiTEJim5ekaVKCKzhi5Kj53XtM8f61wR4v
-         fz66GqNp0onlIJWdgFFac+Fc9JJ+CcsocEQ0b+0Eu+iR3q24Ef9FF6Ryde/m1gIPMy4x
-         W6sKOBo1Pnc8jTpcJmFHH+e85JS7HYoDvXhtsFqR7wexNGdX/lFiLi7kfT0z9eDPu2dE
-         0C2ag9Pzf7uos+Gt7TiijiA7An9sCi0161gCt0AkqN9lThzJVXB969MX2z3AYVl3kypf
-         Z/Qzh0RtiPZl9WyhZXz84YYaGpoNu9ujyrtKE+2dFc7ssCvcCgyRi8NZBU8ug0X7utt1
-         tQoA==
+        bh=BP7sv56sSZVGYKuG4xdF4PTVbcSuzFuYTXq7ORXVJsE=;
+        b=QkaPvdTetHaBh2yTUt0SThgEn66LGUG+ecXfFHZHH8xyKBEM9T+eXCRAAQrGuM+jf2
+         yHBLgNzsRk9YqM/ayTlJiRyhpbVHaYV5QZsegaPBKcvNeQP311n5e0DXjaxrkJ+NAxr+
+         O21Dy5rEApMvLs3HmXJsk8In/nC7GT7PcBanzwdT64MwGJL/LUjMt/Idn4JuK9AQTcim
+         Zw96d4Uv+0m7RC1U+KYBDzUR5SO+2iGTxe7hik08KoQHPYdfjJa/WRO8BUqkkcOPMDD6
+         jsHCdzsmSIybhr6n2iM36Of7XjES2rCururP7xS6Vrjvoj6iltzltzOZJ6vUBrPUo/cV
+         FxFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686044328; x=1688636328;
+        d=1e100.net; s=20221208; t=1686044330; x=1688636330;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=kCh6RVJI4h7nw2maw98k2ell5XwYb4yP+21lrC089v4=;
-        b=HnB9V+wjpMQvcKd1+9dDl0O+M6bihf+4tjp2WHBbpCttXl5qr04nkSUaFnYz0TSEF1
-         EuKAw2SoEzRhAUQV9IrIE3fj5yesn0WbnxX37Fe16jH6gzxgyc+Apmdf3E94lTXALImC
-         sjRIg+XYijy3pmBNJv1fJysx3sRpx9gCtaN3r71/6jr/dtyzM85ZBhazoY8vjA00qZpH
-         60irugGU4kCCKIOR3pmaEglFj6CQdPOo4DqWfm8orOUJV33dGp/L9+T7Iej1rw9txN5H
-         /DdCVAxeuhCjq+nspqQmkARFvNdt9PYmXLJWquwv7+t27/WcLMxFDFvYaKzvnxEp7gxM
-         su7A==
-X-Gm-Message-State: AC+VfDyqaEzyIdNSYwXwv3mgAlADWRtHtp3DALvLYe7ePY7bIj0v2ZD8
-	eHcy4tijgnMpN30yWRMi4Xe7n4LSpjqZ+g==
-X-Google-Smtp-Source: ACHHUZ7E/8oi8nxRWE7Cwv9fr4Es95LhTZYyXhaTIRsiIkkKDw+t8RG3Op6X3COs94l+wblvlQSTHQ==
-X-Received: by 2002:a05:6808:8fb:b0:39a:5ea3:6b16 with SMTP id d27-20020a05680808fb00b0039a5ea36b16mr1677958oic.41.1686044327883;
-        Tue, 06 Jun 2023 02:38:47 -0700 (PDT)
+        bh=BP7sv56sSZVGYKuG4xdF4PTVbcSuzFuYTXq7ORXVJsE=;
+        b=BCUWjY94OIv9RhuQKYRNsPfVCdoSHpeZjcIy6cFgryf16lhChSxO3DZ418VunjVO+d
+         e+zqrq52ASRTqmNY/JeO9ubYma0yvz3ueSiXc66WUI82Fp1SzY8qwkYCYKMSAIBfhb8R
+         NEti2dgsbSrgbxgzdH1OHtCORvZhjGSHtNfxUfxTHyGMMHG0XsPq910l0qwMjCuNDdYf
+         pX7vnmH99Bo4MwlPtC4957brw4xgFQDVm0Uh2J8MfC67LQB6YRiX3CIOxIQmfM3CRi1o
+         jdhvTI0B2kTNlMUQ/S1kX6oI40OJIwzXoH4aJafWl/TZLqDA2kZAxJPpYxfkgHmN3MXP
+         JEXQ==
+X-Gm-Message-State: AC+VfDz+s6cJ0DNfYneKmfMFvgEBdYzRblx2cVwAU3+J5GVyzcQ/o61D
+	3dpwwgXP9xya7bfLjQMo351ngj4csT4tuA==
+X-Google-Smtp-Source: ACHHUZ6BHXdy/Pg6hkTVsrV084gpFqYMFeyjThiQambRoeBhCA+9FDCMhwMwVdxwefZ0mrCJt3V42g==
+X-Received: by 2002:a05:6a20:914f:b0:10b:71c:20c5 with SMTP id x15-20020a056a20914f00b0010b071c20c5mr1563673pzc.51.1686044330458;
+        Tue, 06 Jun 2023 02:38:50 -0700 (PDT)
 Received: from wheely.local0.net (58-6-230-127.tpgi.com.au. [58.6.230.127])
-        by smtp.gmail.com with ESMTPSA id s8-20020a170902ea0800b001ac8218ddb7sm8048442plg.84.2023.06.06.02.38.45
+        by smtp.gmail.com with ESMTPSA id s8-20020a170902ea0800b001ac8218ddb7sm8048442plg.84.2023.06.06.02.38.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jun 2023 02:38:47 -0700 (PDT)
+        Tue, 06 Jun 2023 02:38:49 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 3/4] powerpc/64: Use -mprofile-kernel for big endian ELFv2 kernels
-Date: Tue,  6 Jun 2023 19:38:31 +1000
-Message-Id: <20230606093832.199712-4-npiggin@gmail.com>
+Subject: [PATCH v2 4/4] powerpc/64s: Remove support for ELFv1 little endian userspace
+Date: Tue,  6 Jun 2023 19:38:32 +1000
+Message-Id: <20230606093832.199712-5-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230606093832.199712-1-npiggin@gmail.com>
 References: <20230606093832.199712-1-npiggin@gmail.com>
@@ -82,65 +82,54 @@ Cc: "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>, Nicholas Piggin <npiggin
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
--mprofile-kernel is an optimised calling convention for mcount that
-Linux  has only implemented with the ELFv2 ABI, so it was disabled for
-big endian kernels. However it does work with ELFv2 big endian, so let's
-allow that if the compiler supports it.
+ELFv2 was introduced together with little-endian. ELFv1 with LE has
+never been a thing. The GNU toolchain can create such a beast, but
+anyone doing that is a maniac who needs to be stopped so I consider
+this patch a feature.
 
-Acked-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/Kconfig                            |  5 +++--
- arch/powerpc/tools/gcc-check-mprofile-kernel.sh | 11 ++++++-----
- 2 files changed, 9 insertions(+), 7 deletions(-)
+ arch/powerpc/include/asm/elf.h         | 6 ++++++
+ arch/powerpc/include/asm/thread_info.h | 6 +++++-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 296e0448b5fc..9db707829638 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -547,8 +547,9 @@ config LD_HEAD_STUB_CATCH
- 	  If unsure, say "N".
+diff --git a/arch/powerpc/include/asm/elf.h b/arch/powerpc/include/asm/elf.h
+index 79f1c480b5eb..a26ca097d032 100644
+--- a/arch/powerpc/include/asm/elf.h
++++ b/arch/powerpc/include/asm/elf.h
+@@ -12,8 +12,14 @@
  
- config MPROFILE_KERNEL
--	depends on PPC64 && CPU_LITTLE_ENDIAN && FUNCTION_TRACER
--	def_bool $(success,$(srctree)/arch/powerpc/tools/gcc-check-mprofile-kernel.sh $(CC) -I$(srctree)/include -D__KERNEL__)
-+	depends on PPC64_ELF_ABI_V2 && FUNCTION_TRACER
-+	def_bool $(success,$(srctree)/arch/powerpc/tools/gcc-check-mprofile-kernel.sh $(CC) -mlittle-endian) if CPU_LITTLE_ENDIAN
-+	def_bool $(success,$(srctree)/arch/powerpc/tools/gcc-check-mprofile-kernel.sh $(CC) -mbig-endian) if CPU_BIG_ENDIAN
+ /*
+  * This is used to ensure we don't load something for the wrong architecture.
++ * 64le only supports ELFv2 64-bit binaries (64be supports v1 and v2).
+  */
++#if defined(CONFIG_PPC64) && defined(CONFIG_CPU_LITTLE_ENDIAN)
++#define elf_check_arch(x) (((x)->e_machine == ELF_ARCH) && \
++			   (((x)->e_flags & 0x3) == 0x2))
++#else
+ #define elf_check_arch(x) ((x)->e_machine == ELF_ARCH)
++#endif
+ #define compat_elf_check_arch(x)	((x)->e_machine == EM_PPC)
  
- config HOTPLUG_CPU
- 	bool "Support for enabling/disabling CPUs"
-diff --git a/arch/powerpc/tools/gcc-check-mprofile-kernel.sh b/arch/powerpc/tools/gcc-check-mprofile-kernel.sh
-index 137f3376ac2b..a31a56016c09 100755
---- a/arch/powerpc/tools/gcc-check-mprofile-kernel.sh
-+++ b/arch/powerpc/tools/gcc-check-mprofile-kernel.sh
-@@ -7,20 +7,21 @@ set -o pipefail
- # To debug, uncomment the following line
- # set -x
+ #define CORE_DUMP_USE_REGSET
+diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
+index bf5dde1a4114..bc5d39a835fe 100644
+--- a/arch/powerpc/include/asm/thread_info.h
++++ b/arch/powerpc/include/asm/thread_info.h
+@@ -183,9 +183,13 @@ static inline bool test_thread_local_flags(unsigned int flags)
+ #define clear_tsk_compat_task(tsk) do { } while (0)
+ #endif
  
--# -mprofile-kernel is only supported on 64le, so this should not be invoked
--# for other targets. Therefore we can pass in -m64 and -mlittle-endian
--# explicitly, to take care of toolchains defaulting to other targets.
-+# -mprofile-kernel is only supported on 64-bit, so this should not be invoked
-+# for 32-bit. We pass in -m64 explicitly, and -mbig-endian and -mlittle-endian
-+# are passed in from Kconfig, which takes care of toolchains defaulting to
-+# other targets.
- 
- # Test whether the compile option -mprofile-kernel exists and generates
- # profiling code (ie. a call to _mcount()).
- echo "int func() { return 0; }" | \
--    $* -m64 -mlittle-endian -S -x c -O2 -p -mprofile-kernel - -o - \
-+    $* -m64 -S -x c -O2 -p -mprofile-kernel - -o - \
-     2> /dev/null | grep -q "_mcount"
- 
- # Test whether the notrace attribute correctly suppresses calls to _mcount().
- 
- echo -e "#include <linux/compiler.h>\nnotrace int func() { return 0; }" | \
--    $* -m64 -mlittle-endian -S -x c -O2 -p -mprofile-kernel - -o - \
-+    $* -m64 -S -x c -O2 -p -mprofile-kernel - -o - \
-     2> /dev/null | grep -q "_mcount" && \
-     exit 1
+-#if defined(CONFIG_PPC64)
++#ifdef CONFIG_PPC64
++#ifdef CONFIG_CPU_BIG_ENDIAN
+ #define is_elf2_task() (test_thread_flag(TIF_ELF2ABI))
+ #else
++#define is_elf2_task() (1)
++#endif
++#else
+ #define is_elf2_task() (0)
+ #endif
  
 -- 
 2.40.1
