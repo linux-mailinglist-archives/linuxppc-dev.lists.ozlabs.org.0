@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B933F72381B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jun 2023 08:49:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E45D723822
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jun 2023 08:50:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qb1L33qpkz3fCB
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jun 2023 16:49:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qb1Ly2WjQz3fft
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jun 2023 16:50:18 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=RfI2ZLko;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=JgkFs7/p;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42a; helo=mail-pf1-x42a.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=RfI2ZLko;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=JgkFs7/p;
 	dkim-atps=neutral
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qb1HP4BqMz3bhY
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Jun 2023 16:47:13 +1000 (AEST)
-Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-650c89c7e4fso5856238b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Jun 2023 23:47:13 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qb1HS3Szvz3bhY
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Jun 2023 16:47:16 +1000 (AEST)
+Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-65055aa4ed7so3581902b3a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Jun 2023 23:47:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686034031; x=1688626031;
+        d=gmail.com; s=20221208; t=1686034034; x=1688626034;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qWWzXLx8dotAm4CkNVsWIsWxVrxEbMQDMV4PYsF5IU4=;
-        b=RfI2ZLkonlgVxwQr30f/GbLGQZ6Oo/A4FEMJR0NtT4Rd80LxUSvE1OkNh5VjrGc+2u
-         mmmO0T6HXyRvMQHxRpnvM9l+8KhNUfKj3eHCZ7VtSlBzOlhJ6H1YXB5C/FK9jU7rqPh+
-         LisgcEed4sH7ecrcHrekt1B3HeoFSrizx608Ucka9Es4B+n/rViX6Cpa35Q10VE/Kl1h
-         Yq7mgiXhAt4bg6SQGA376GZ73xWHOJj1VI0ptvzF45XPc1GkPHnjsY5raa6BLCxQk9Dm
-         U4wz7KF/50JutTvhMdo9EDbop1PLI4ufncJHmtXCMjDynHYdou4vgS8ruxoY+BAzziX/
-         BcuQ==
+        bh=dfulnTsEZdrLf2MiD74jKp1Umsk7hljuVadzaTgxllU=;
+        b=JgkFs7/pdEzy8CGFu9C9s2hcVH/mZHK87GNeDE7Ls4buF7H0l2957kigG4g5AOXDM/
+         G5nkdYkwfGO2Ma6N8+AmFCdFGSx8stOV1XJr+hDqowforlk7UYEhBzwie9+d3RgOJR3s
+         U0f1Gn0b54Mo1+YWyQDzW5PopxmoE7aTuUl8hXcYjdw1VdcRMUA7tyq0AKffTZ0St7XF
+         U+TfSEGEtnwWHC0rqUAX/KKjoUlQE8N6ax047AxmYrEPkIXUI/DOCsgS3MoDTzOKJJR6
+         d2mLJSMT6sjQ6gVIfScDPHJTo7XvtGjJeaARc377cUYKThCT9cfx1PFXp6bODW3VwEcK
+         ufLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686034031; x=1688626031;
+        d=1e100.net; s=20221208; t=1686034034; x=1688626034;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qWWzXLx8dotAm4CkNVsWIsWxVrxEbMQDMV4PYsF5IU4=;
-        b=ZLO1v3pecG1h01iyoTZ6oTnEkqA1wF7MFmMlHI1OPBgqhAtf0k+tZBXAXu2WL1uNMM
-         bmwQZKAJSEUMj+ZT64VoryuNmhmZ1c++uwnAWQLlUmwd2QlqTPuA0S98mKb7cQ33T5pb
-         qEA+GSJVQFR/RHxHRv4VjlRM458VjGig+NgLzsyLpfca15IVyiH8XjVqHEpxjKeEzOL+
-         xSgyqWI5XL2i/r9tJuamQylcUio7ia+IyRriXpkd7gBEHgStVNaYU1mWglpjWFp/FtJK
-         hi/0/zpcuhtMPv7JMIpUwi7kf5IOzD7Lj8a4Doe7Cvx45xSNce/6xeCX2zMdKy94srHn
-         sGgw==
-X-Gm-Message-State: AC+VfDzim9BLqYnC6ljzW3lz4GncLK33JFpLHg+bXnmCGVZpE2rzmcZD
-	Yr2XNAHdrH/E0UXd/fd/H7viBahcFPI=
-X-Google-Smtp-Source: ACHHUZ7KJxC5OH+9mTmJAxOK5UwIYxf/gcfsjMRrpi2c8Va+lfetjoBMzM/eR+u8TZBiSVRO0+Re+g==
-X-Received: by 2002:a05:6a00:1254:b0:64f:35c8:8584 with SMTP id u20-20020a056a00125400b0064f35c88584mr1433523pfi.18.1686034030997;
-        Mon, 05 Jun 2023 23:47:10 -0700 (PDT)
+        bh=dfulnTsEZdrLf2MiD74jKp1Umsk7hljuVadzaTgxllU=;
+        b=Z1LrX6h8s2uWjZVXB7FsDSWoqFN+lsWa3SYQVXSMxv3FrgWwhdjBCtNDt4lo9a6xBr
+         0dWUaoRZrD3RQvL6gVHv5dRLVnvc4MYFJfTVQtpJCbhY1c7kN6n47S8AnA2SpD7/B8cX
+         c/z4EgC5HhbU7I6pkQm6UqfwFltOnpntzT4MPLoyS9UZSGGYpkawEbf2cDeViW5CG8Jn
+         EtZG0EFucn8p3o/n37fyumuiteOg9FkenbPwSsR1vkpMsI+2Wsqw3PrSpCd9UjjDxFmv
+         5cPFOLukiK9yhPt75jn/TorVgnNsIs4T8uA7oXubW0XsFkJlPWVs3h6XTgozvTTIacC3
+         Knag==
+X-Gm-Message-State: AC+VfDyNT7UJCTt30PDuE9E9Zy4lKikUD/l/zVgpBrxg0t8a/LlHMy/c
+	eyurzR+QTgaY4dapae9WYF9LDcb7u2g=
+X-Google-Smtp-Source: ACHHUZ4aJLcA/0CpKIED2j5mSxixdKoQFQzL8PZGnq5k7V8RvjcikYMe+Ci1cr0yxerB0sxjleNKUA==
+X-Received: by 2002:a05:6a00:2ea7:b0:65a:6870:3ae6 with SMTP id fd39-20020a056a002ea700b0065a68703ae6mr702689pfb.22.1686034033804;
+        Mon, 05 Jun 2023 23:47:13 -0700 (PDT)
 Received: from wheely.local0.net ([1.146.61.5])
-        by smtp.gmail.com with ESMTPSA id c14-20020aa78e0e000000b0063d24fcc2besm6130449pfr.125.2023.06.05.23.47.08
+        by smtp.gmail.com with ESMTPSA id c14-20020aa78e0e000000b0063d24fcc2besm6130449pfr.125.2023.06.05.23.47.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jun 2023 23:47:10 -0700 (PDT)
+        Mon, 05 Jun 2023 23:47:13 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 2/4] powerpc/boot: Separate CPP flags from BOOTCFLAGS
-Date: Tue,  6 Jun 2023 16:46:55 +1000
-Message-Id: <20230606064657.183969-3-npiggin@gmail.com>
+Subject: [PATCH v2 3/4] powerpc/boot: Separate BOOTCFLAGS from BOOTASFLAGS
+Date: Tue,  6 Jun 2023 16:46:56 +1000
+Message-Id: <20230606064657.183969-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230606064657.183969-1-npiggin@gmail.com>
 References: <20230606064657.183969-1-npiggin@gmail.com>
@@ -78,67 +78,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add BOOTCPPFLAGS variable for the CPP options required by C and AS.
+BOOTCFLAGS no longer contains anything that BOOTASFLAGS needs (except
+-pipe). Separate them to avoid fragility with cross-contamination of
+flags which has caused several build problems.
 
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/lkml/CAHk-=whyWUdJDeOBN1hRWYSkQkvzYiQ5RbSW5rJjExgnbSNX9Q@mail.gmail.com/
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/boot/Makefile | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ arch/powerpc/boot/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
-index ae80f7f1774e..9445ec442512 100644
+index 9445ec442512..9cdc0858b256 100644
 --- a/arch/powerpc/boot/Makefile
 +++ b/arch/powerpc/boot/Makefile
-@@ -32,11 +32,13 @@ else
-     BOOTAR := $(AR)
- endif
- 
-+BOOTCPPFLAGS	:= -nostdinc $(LINUXINCLUDE)
-+BOOTCPPFLAGS	+= -isystem $(shell $(BOOTCC) -print-file-name=include)
-+
- BOOTCFLAGS    := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
- 		 -fno-strict-aliasing -O2 -msoft-float -mno-altivec -mno-vsx \
- 		 $(call cc-option,-mno-spe) $(call cc-option,-mspe=no) \
--		 -pipe -fomit-frame-pointer -fno-builtin -fPIC -nostdinc \
--		 $(LINUXINCLUDE)
-+		 -pipe -fomit-frame-pointer -fno-builtin -fPIC
- 
- ifdef CONFIG_PPC64_BOOT_WRAPPER
- BOOTTARGETFLAGS	+= -m64
-@@ -68,15 +70,13 @@ $(obj)/treeboot-iss4xx.o: BOOTTARGETFLAGS += -mcpu=405
- $(obj)/treeboot-currituck.o: BOOTTARGETFLAGS += -mcpu=405
- $(obj)/treeboot-akebono.o: BOOTTARGETFLAGS += -mcpu=405
- 
--BOOTCFLAGS	+= -isystem $(shell $(BOOTCC) -print-file-name=include)
--
- ifdef CONFIG_CPU_BIG_ENDIAN
- BOOTTARGETFLAGS	+= -mbig-endian
- else
+@@ -76,7 +76,7 @@ else
  BOOTTARGETFLAGS	+= -mlittle-endian
  endif
  
--BOOTAFLAGS	:= -D__ASSEMBLY__ $(BOOTTARGETFLAGS) $(BOOTCFLAGS) -nostdinc
-+BOOTAFLAGS	:= -D__ASSEMBLY__ $(BOOTTARGETFLAGS) $(BOOTCFLAGS)
+-BOOTAFLAGS	:= -D__ASSEMBLY__ $(BOOTTARGETFLAGS) $(BOOTCFLAGS)
++BOOTAFLAGS	:= -D__ASSEMBLY__ $(BOOTTARGETFLAGS) -pipe
  
  BOOTARFLAGS	:= -crD
  
-@@ -227,10 +227,10 @@ clean-files := $(zlib-) $(zlibheader-) $(zliblinuxheader-) \
- 		empty.c zImage.coff.lds zImage.ps3.lds zImage.lds
- 
- quiet_cmd_bootcc = BOOTCC  $@
--      cmd_bootcc = $(BOOTCC) -Wp,-MD,$(depfile) $(BOOTCFLAGS) -c -o $@ $<
-+      cmd_bootcc = $(BOOTCC) -Wp,-MD,$(depfile) $(BOOTCPPFLAGS) $(BOOTCFLAGS) -c -o $@ $<
- 
- quiet_cmd_bootas = BOOTAS  $@
--      cmd_bootas = $(BOOTCC) -Wp,-MD,$(depfile) $(BOOTAFLAGS) -c -o $@ $<
-+      cmd_bootas = $(BOOTCC) -Wp,-MD,$(depfile) $(BOOTCPPFLAGS) $(BOOTAFLAGS) -c -o $@ $<
- 
- quiet_cmd_bootar = BOOTAR  $@
-       cmd_bootar = $(BOOTAR) $(BOOTARFLAGS) $@.$$$$ $(real-prereqs); mv $@.$$$$ $@
 -- 
 2.40.1
 
