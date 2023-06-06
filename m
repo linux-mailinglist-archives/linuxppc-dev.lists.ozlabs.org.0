@@ -1,71 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94B657235F6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jun 2023 05:56:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4C0572367E
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jun 2023 06:57:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QZxVJ2X2cz3fbG
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jun 2023 13:56:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QZys53ljmz3cD5
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jun 2023 14:57:45 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=c6TZBnZm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XtRGTHGb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::52a; helo=mail-pg1-x52a.google.com; envelope-from=grundler@chromium.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=c6TZBnZm;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XtRGTHGb;
 	dkim-atps=neutral
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QZxSX5Qbtz3f4W
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Jun 2023 13:54:52 +1000 (AEST)
-Received: by mail-pg1-x52a.google.com with SMTP id 41be03b00d2f7-543c692db30so1204631a12.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Jun 2023 20:54:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1686023690; x=1688615690;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Zl0xSYFVXihxlFwU2GI1A7DmXGMBSodJ+vcgxYeTY0Q=;
-        b=c6TZBnZm4tjQlimIKuxQRIpQb8QaOyqNIC3Ybs3R1I6QmAUHBdQ6VrOpRmH5sJzlHl
-         yNmYpXjlJeKbgoxlirqPmoAAXwNKYE025hH6CtoReVgEIf39AnRgPxBYn8s75U2Dz/3p
-         LMG/pkrnhM1SXB7U+oq9nukDzv5jxXZm9PchQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686023690; x=1688615690;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Zl0xSYFVXihxlFwU2GI1A7DmXGMBSodJ+vcgxYeTY0Q=;
-        b=djmDwl5azMyBzn/rp6GKFsQy+6Uys1YNSWoEY9/GsAorBUkkeM0iM9l8lwCPK4ZyHk
-         l8ONIwOVCWvHtgvwQvQV70cbvqJaAeeGl2mUbiWnryxFQh0Aks1AjVq387U6gxI0Rw0L
-         yAm4bg0qLc0oP+gtPtlrGS/gHST0US+l40x+jI7avr+XnzzChXtt4HY0qlJIFFGPoP48
-         LnSXCpgMOHCrEcxR78vIoBxDE7qG9Sj7cbKevQhE+x4p+c0xZGQKtjZF7ejuPUFW2NFz
-         jhvcGWHUISiuWYC/qsoey3z5KNGsY4qpQVXvsu5VmAhJa/IWumeo8PwFYKFy79lKocwV
-         imng==
-X-Gm-Message-State: AC+VfDxIuGVDXKbambTEQJpPmvuRS5ghE/PCqcVWBLKcXq1yJqjBDhnr
-	m9BRGnUWUbSrqds+ziiQVbuEmg==
-X-Google-Smtp-Source: ACHHUZ7/CrXntbChZr3gqIpdTn+xlRnOrx/HP0LFPjZRwolM/ohxcYZ6OUGoLPPIj8t4jX8e+O5LZQ==
-X-Received: by 2002:a05:6a20:d806:b0:101:73a9:1683 with SMTP id iv6-20020a056a20d80600b0010173a91683mr1218950pzb.33.1686023690390;
-        Mon, 05 Jun 2023 20:54:50 -0700 (PDT)
-Received: from grundler-glapstation.lan ([70.134.62.80])
-        by smtp.gmail.com with ESMTPSA id e11-20020a17090301cb00b001ac5b0a959bsm7346636plh.24.2023.06.05.20.54.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jun 2023 20:54:50 -0700 (PDT)
-From: Grant Grundler <grundler@chromium.org>
-To: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	"Oliver O \ 'Halloran" <oohall@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCHv3 pci-next 2/2] PCI/AER: Rate limit the reporting of the correctable errors
-Date: Mon,  5 Jun 2023 20:54:42 -0700
-Message-ID: <20230606035442.2886343-2-grundler@chromium.org>
-X-Mailer: git-send-email 2.41.0.rc0.172.g3f132b7071-goog
-In-Reply-To: <20230606035442.2886343-1-grundler@chromium.org>
-References: <20230606035442.2886343-1-grundler@chromium.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QZyrB32kJz3c7Q
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Jun 2023 14:56:57 +1000 (AEST)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3564bwOx032116;
+	Tue, 6 Jun 2023 04:56:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=lczS+3n1eVCHvm0ULIz5VuW4f/yn5ncHrY2/uwlQksg=;
+ b=XtRGTHGblMsx1fG5KtspHWYS939MhLeaszYQLZ/lOtNI9JVZQtbYJJUig0hacn5+2ChF
+ P/cwbY7ixbUiO2qxLOK7e2GuvO+beV9PV/Z6w7j8KbAm9TU0WCiYsvMQMjywY3npR44q
+ decFOM/7OvJ2X1gSGqzYg5LnWrUaNcZwOTgZK8gV607NKvpFwDH41gV4/T+ydGnt0pk0
+ sIKD9paiGEnehqLS9UGY86UVA1D9uW699eaySZ7H7shcIyemhiR4xVmtyaJ3PuZHwubY
+ eqLrzP9G/DsU0E5NwhF9yc7yxE/QUMm724fLVJDatxnTLGiBZz9y2RCSwy27FQ2tPnVD rA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r1wqxgex9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 06 Jun 2023 04:56:30 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3564kkCs030491;
+	Tue, 6 Jun 2023 04:56:30 GMT
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r1wqxgex4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 06 Jun 2023 04:56:30 +0000
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+	by ppma04dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3564mAkB013549;
+	Tue, 6 Jun 2023 04:56:29 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([9.208.130.99])
+	by ppma04dal.us.ibm.com (PPS) with ESMTPS id 3qyxqqvbya-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 06 Jun 2023 04:56:29 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3564uSrO35652186
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 6 Jun 2023 04:56:28 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E1D9D58055;
+	Tue,  6 Jun 2023 04:56:27 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 21BAD5804B;
+	Tue,  6 Jun 2023 04:56:23 +0000 (GMT)
+Received: from skywalker.in.ibm.com (unknown [9.109.204.255])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  6 Jun 2023 04:56:22 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linux-mm@kvack.org, akpm@linux-foundation.org, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu
+Subject: [PATCH 00/16] Add support for DAX vmemmap optimization for ppc64
+Date: Tue,  6 Jun 2023 10:25:52 +0530
+Message-Id: <20230606045608.55127-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: c5VX_zwLJ2xoFbkfnhOsPv5PIShQNwJ4
+X-Proofpoint-GUID: zrjaZhppAYsqUQXzd8a7u7hDjiuyRZVo
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-06_02,2023-06-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 spamscore=0
+ mlxscore=0 impostorscore=0 malwarescore=0 mlxlogscore=999 suspectscore=0
+ phishscore=0 bulkscore=0 lowpriorityscore=0 priorityscore=1501
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2306060040
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,175 +94,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rajat Jain <rajatja@chromium.org>, Rajat Khandelwal <rajat.khandelwal@linux.intel.com>, Grant Grundler <grundler@chromium.org>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Will Deacon <will@kernel.org>, Muchun Song <muchun.song@linux.dev>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Catalin Marinas <catalin.marinas@arm.com>, Dan Williams <dan.j.williams@intel.com>, Oscar Salvador <osalvador@suse.de>, linuxppc-dev@lists.ozlabs.org, Joao Martins <joao.m.martins@oracle.com>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
+This patch series implements changes required to support DAX vmemmap
+optimization for ppc64. The vmemmap optimization is only enabled with radix MMU
+translation and 1GB PUD mapping with 64K page size. The patch series also split
+hugetlb vmemmap optimization as a separate Kconfig variable so that
+architectures can enable DAX vmemmap optimization without enabling hugetlb
+vmemmap optimization. This should enable architectures like arm64 to enable DAX
+vmemmap optimization while they can't enable hugetlb vmemmap optimization. More
+details of the same are in patch "mm/vmemmap optimization: Split hugetlb and
+d
 
-There are many instances where correctable errors tend to inundate
-the message buffer. We observe such instances during thunderbolt PCIe
-tunneling.
+Aneesh Kumar K.V (16):
+  powerpc/mm/book3s64: Use pmdp_ptep helper instead of typecasting.
+  powerpc/book3s64/mm: mmu_vmemmap_psize is used by radix
+  powerpc/book3s64/mm: Fix DirectMap stats in /proc/meminfo
+  powerpc/book3s64/mm: Use PAGE_KERNEL instead of opencoding
+  powerpc/mm/dax: Fix the condition when checking if altmap vmemap can
+    cross-boundary
+  mm/hugepage pud: Allow arch-specific helper function to check huge
+    page pud support
+  mm: Change pudp_huge_get_and_clear_full take vm_area_struct as arg
+  mm/vmemmap: Improve vmemmap_can_optimize and allow architectures to
+    override
+  mm/vmemmap: Allow architectures to override how vmemmap optimization
+    works
+  mm: Add __HAVE_ARCH_PUD_SAME similar to __HAVE_ARCH_P4D_SAME
+  mm/huge pud: Use transparent huge pud helpers only with
+    CONFIG_TRANSPARENT_HUGEPAGE
+  mm/vmemmap optimization: Split hugetlb and devdax vmemmap optimization
+  powerpc/book3s64/mm: Enable transparent pud hugepage
+  powerpc/book3s64/vmemmap: Switch radix to use a different vmemmap
+    handling function
+  powerpc/book3s64/radix: Add support for vmemmap optimization for radix
+  powerpc/book3s64/radix: Remove mmu_vmemmap_psize
 
-It's true that they are mitigated by the hardware and are non-fatal
-but we shouldn't be spamming the logs with such correctable errors as it
-confuses other kernel developers less familiar with PCI errors, support
-staff, and users who happen to look at the logs, hence rate limit them.
+ Documentation/mm/vmemmap_dedup.rst            |   1 +
+ Documentation/powerpc/vmemmap_dedup.rst       | 101 ++++
+ arch/loongarch/Kconfig                        |   2 +-
+ arch/powerpc/Kconfig                          |   1 +
+ arch/powerpc/include/asm/book3s/64/pgtable.h  | 156 ++++-
+ arch/powerpc/include/asm/book3s/64/radix.h    |  47 ++
+ .../include/asm/book3s/64/tlbflush-radix.h    |   2 +
+ arch/powerpc/include/asm/book3s/64/tlbflush.h |   8 +
+ arch/powerpc/include/asm/pgtable.h            |   3 +
+ arch/powerpc/mm/book3s64/pgtable.c            |  78 +++
+ arch/powerpc/mm/book3s64/radix_pgtable.c      | 551 ++++++++++++++++--
+ arch/powerpc/mm/book3s64/radix_tlb.c          |   7 +
+ arch/powerpc/mm/init_64.c                     |  39 +-
+ arch/powerpc/platforms/Kconfig.cputype        |   1 +
+ arch/riscv/Kconfig                            |   2 +-
+ arch/x86/Kconfig                              |   3 +-
+ drivers/nvdimm/pfn_devs.c                     |   2 +-
+ fs/Kconfig                                    |   2 +-
+ include/linux/mm.h                            |  32 +-
+ include/linux/pgtable.h                       |  11 +-
+ include/trace/events/thp.h                    |  17 +
+ mm/Kconfig                                    |   5 +-
+ mm/debug_vm_pgtable.c                         |   2 +-
+ mm/huge_memory.c                              |   2 +-
+ mm/mm_init.c                                  |   2 +-
+ mm/mremap.c                                   |   2 +-
+ mm/sparse-vmemmap.c                           |   3 +
+ 27 files changed, 1005 insertions(+), 77 deletions(-)
+ create mode 100644 Documentation/powerpc/vmemmap_dedup.rst
 
-A typical example log inside an HP TBT4 dock:
-[54912.661142] pcieport 0000:00:07.0: AER: Multiple Corrected error received: 0000:2b:00.0
-[54912.661194] igc 0000:2b:00.0: PCIe Bus Error: severity=Corrected, type=Data Link Layer, (Transmitter ID)
-[54912.661203] igc 0000:2b:00.0:   device [8086:5502] error status/mask=00001100/00002000
-[54912.661211] igc 0000:2b:00.0:    [ 8] Rollover
-[54912.661219] igc 0000:2b:00.0:    [12] Timeout
-[54982.838760] pcieport 0000:00:07.0: AER: Corrected error received: 0000:2b:00.0
-[54982.838798] igc 0000:2b:00.0: PCIe Bus Error: severity=Corrected, type=Data Link Layer, (Transmitter ID)
-[54982.838808] igc 0000:2b:00.0:   device [8086:5502] error status/mask=00001000/00002000
-[54982.838817] igc 0000:2b:00.0:    [12] Timeout
-
-This gets repeated continuously, thus inundating the buffer.
-
-Signed-off-by: Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
-Signed-off-by: Grant Grundler <grundler@chromium.org>
----
- drivers/pci/pcie/aer.c | 80 +++++++++++++++++++++++++++---------------
- 1 file changed, 51 insertions(+), 29 deletions(-)
-
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index d7bfc6070ddb..830f5a1261c9 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -686,26 +686,36 @@ static void __aer_print_error(struct pci_dev *dev,
- 			      struct aer_err_info *info)
- {
- 	const char **strings;
-+	char aer_msg[512];
- 	unsigned long status = info->status & ~info->mask;
--	const char *level, *errmsg;
- 	int i;
- 
--	if (info->severity == AER_CORRECTABLE) {
--		strings = aer_correctable_error_string;
--		level = KERN_INFO;
--	} else {
--		strings = aer_uncorrectable_error_string;
--		level = KERN_ERR;
--	}
-+	memset(aer_msg, 0, sizeof(*aer_msg));
-+	snprintf(aer_msg, sizeof(*aer_msg), "aer_status: 0x%08x, aer_mask: 0x%08x\n",
-+			info->status, info->mask);
-+
-+	strings = (info->severity == AER_CORRECTABLE) ?
-+		aer_correctable_error_string : aer_uncorrectable_error_string;
- 
- 	for_each_set_bit(i, &status, 32) {
--		errmsg = strings[i];
-+		const char *errmsg = strings[i];
-+		char bitmsg[64];
-+		memset(bitmsg, 0, sizeof(*bitmsg));
-+
- 		if (!errmsg)
- 			errmsg = "Unknown Error Bit";
- 
--		pci_printk(level, dev, "   [%2d] %-22s%s\n", i, errmsg,
--				info->first_error == i ? " (First)" : "");
-+		snprintf(bitmsg, sizeof(*bitmsg), "   [%2d] %-22s%s\n", i, errmsg,
-+			    info->first_error == i ? " (First)" : "");
-+
-+		strlcat(aer_msg, bitmsg, sizeof(*aer_msg));
- 	}
-+
-+	if (info->severity == AER_CORRECTABLE)
-+		pci_info_ratelimited(dev, "%s", aer_msg);
-+	else
-+		pci_err(dev, "%s", aer_msg):
-+
- 	pci_dev_aer_stats_incr(dev, info);
- }
- 
-@@ -713,7 +723,6 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
- {
- 	int layer, agent;
- 	int id = ((dev->bus->number << 8) | dev->devfn);
--	const char *level;
- 
- 	if (!info->status) {
- 		pci_err(dev, "PCIe Bus Error: severity=%s, type=Inaccessible, (Unregistered Agent ID)\n",
-@@ -724,14 +733,19 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
- 	layer = AER_GET_LAYER_ERROR(info->severity, info->status);
- 	agent = AER_GET_AGENT(info->severity, info->status);
- 
--	level = (info->severity == AER_CORRECTABLE) ? KERN_INFO : KERN_ERR;
--
--	pci_printk(level, dev, "PCIe Bus Error: severity=%s, type=%s, (%s)\n",
--		   aer_error_severity_string[info->severity],
--		   aer_error_layer[layer], aer_agent_string[agent]);
--
--	pci_printk(level, dev, "  device [%04x:%04x] error status/mask=%08x/%08x\n",
--		   dev->vendor, dev->device, info->status, info->mask);
-+	if (info->severity == AER_CORRECTABLE) {
-+		pci_info_ratelimited(dev, "PCIe Bus Error: severity=%s, type=%s, (%s)\n"
-+				"  device [%04x:%04x] error status/mask=%08x/%08x\n",
-+				     aer_error_severity_string[info->severity],
-+				     aer_error_layer[layer], aer_agent_string[agent],
-+				     dev->vendor, dev->device, info->status, info->mask);
-+	} else {
-+		pci_err(dev, "PCIe Bus Error: severity=%s, type=%s, (%s)\n",
-+			"  device [%04x:%04x] error status/mask=%08x/%08x\n",
-+			aer_error_severity_string[info->severity],
-+			aer_error_layer[layer], aer_agent_string[agent],
-+			dev->vendor, dev->device, info->status, info->mask);
-+	}
- 
- 	__aer_print_error(dev, info);
- 
-@@ -751,11 +765,19 @@ static void aer_print_port_info(struct pci_dev *dev, struct aer_err_info *info)
- 	u8 bus = info->id >> 8;
- 	u8 devfn = info->id & 0xff;
- 
--	pci_info(dev, "%s%s error received: %04x:%02x:%02x.%d\n",
--		 info->multi_error_valid ? "Multiple " : "",
--		 aer_error_severity_string[info->severity],
--		 pci_domain_nr(dev->bus), bus, PCI_SLOT(devfn),
--		 PCI_FUNC(devfn));
-+	if (info->severity == AER_CORRECTABLE)
-+		pci_info_ratelimited(dev, "%s%s error received: %04x:%02x:%02x.%d\n",
-+				     info->multi_error_valid ? "Multiple " : "",
-+				     aer_error_severity_string[info->severity],
-+				     pci_domain_nr(dev->bus), bus, PCI_SLOT(devfn),
-+				     PCI_FUNC(devfn));
-+	else
-+		pci_info(dev, "%s%s error received: %04x:%02x:%02x.%d\n",
-+			 info->multi_error_valid ? "Multiple " : "",
-+			 aer_error_severity_string[info->severity],
-+			 pci_domain_nr(dev->bus), bus, PCI_SLOT(devfn),
-+			 PCI_FUNC(devfn));
-+
- }
- 
- #ifdef CONFIG_ACPI_APEI_PCIEAER
-@@ -798,7 +820,7 @@ void cper_print_aer(struct pci_dev *dev, int aer_severity,
- 	info.first_error = PCI_ERR_CAP_FEP(aer->cap_control);
- 
- 	if (aer_severity == AER_CORRECTABLE)
--		pci_info(dev, "aer_status: 0x%08x, aer_mask: 0x%08x\n", status, mask);
-+		pci_info_ratelimited(dev, "aer_status: 0x%08x, aer_mask: 0x%08x\n", status, mask);
- 	else
- 		pci_err(dev, "aer_status: 0x%08x, aer_mask: 0x%08x\n", status, mask);
- 
-@@ -808,9 +830,9 @@ void cper_print_aer(struct pci_dev *dev, int aer_severity,
- 		pci_info(dev, "aer_layer=%s, aer_agent=%s\n",
- 			aer_error_layer[layer], aer_agent_string[agent]);
- 	} else {
--		pci_err(dev, "aer_layer=%s, aer_agent=%s\n",
--			aer_error_layer[layer], aer_agent_string[agent]);
--		pci_err(dev, "aer_uncor_severity: 0x%08x\n",
-+		pci_err(dev, "aer_layer=%s, aer_agent=%s,"
-+			" aer_uncor_severity=0x%08x\n",
-+			aer_error_layer[layer], aer_agent_string[agent],
- 			aer->uncor_severity);
- 	}
- 
 -- 
-2.41.0.rc0.172.g3f132b7071-goog
+2.40.1
 
