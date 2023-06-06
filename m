@@ -2,73 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42BC6723E1D
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jun 2023 11:47:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCF2C723E4F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jun 2023 11:51:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qb5Gq0Fgpz3f86
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jun 2023 19:46:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qb5NG4F9Kz3f90
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jun 2023 19:51:42 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=K9Lu9G39;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=n5gYZELR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::531; helo=mail-pg1-x531.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=K9Lu9G39;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=n5gYZELR;
 	dkim-atps=neutral
-Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qb5G13Hdcz3bdV
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Jun 2023 19:46:16 +1000 (AEST)
-Received: by mail-pg1-x531.google.com with SMTP id 41be03b00d2f7-53f7bef98b7so5238631a12.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Jun 2023 02:46:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686044773; x=1688636773;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=82KymGko1+wd7JT5GKcIigdi0TlS7W7QNWmu/cWLy3c=;
-        b=K9Lu9G39x6lnCK1MeFEnb04z2KrA2Ql8evFNR+EXcgRRA2aEdPN7SvlPXfi+L2iAVB
-         KWhDxyGRHnFXLuljujVmEEluYNahwPt5LjbmbeZVidHRUYt4EkEoZ0q8ct8i94K89MuH
-         5wHIQ8Tkc99aAefKn4QUSpKJ6EROn3LDiqwFZxXVzrm+5FNNXAeu6Qt9RVwQCMTGwDI6
-         h+sai8zhWZb9LxJ9H3/Xr+42lEjZBZLxJAP5gpT64J04klxy2LElzRp5LkIRAguNTy23
-         DVQbGntVehlqSFJsP1V4V39jomo9oJav3izG4JdZPskCr6kiZmdpWls8CLa1oMge+cvQ
-         mD2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686044773; x=1688636773;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=82KymGko1+wd7JT5GKcIigdi0TlS7W7QNWmu/cWLy3c=;
-        b=NDf/yhn1pVM9/Bdn+5dodGxWEwi1J0qSYdXpexc59Mx3swr7/MLOfLpuP8OZZUoumk
-         wmBuIfb5wbphzjYsvb2uAd8eYuMyisP/0DLOsB6PCnKwGfTOYQbOEl7wmi4SSxN/MPzJ
-         1iK/lJ+JbCS4Acv1PX6/xRSTfDVvBsAhf56WQm/vEmswo64TCnLcNh2ho6lbbCnOGMIR
-         s/LkpHaW4Lx8pUOft1YeG7eLfMMLEP6YEww1aBtFxpfjT/fh/TRBaq+GEb1YR90M66fU
-         UhBwUq1o5VKi6g5fcgLjVxdyyxZkfNfyeMthRzWqKqPCGeTrsSRRDqa1Z49SM0n7Jiwn
-         12Hg==
-X-Gm-Message-State: AC+VfDxsrrY6fYmCKRoW2gOt7KqSddSLlzCN7FS5a3zcv/ivA69+TCzW
-	hEgtHshTeVxWraO51YerN2w=
-X-Google-Smtp-Source: ACHHUZ5X0kVBbcWdn8vHqAaEgroopnqD9zsEBAtfkQP9RX/G3qkIgTXDnQsm+Gu6QKxVqo5kmMmrZg==
-X-Received: by 2002:a17:90b:68d:b0:256:cbe9:83c2 with SMTP id m13-20020a17090b068d00b00256cbe983c2mr1412864pjz.38.1686044773624;
-        Tue, 06 Jun 2023 02:46:13 -0700 (PDT)
-Received: from localhost (58-6-230-127.tpgi.com.au. [58.6.230.127])
-        by smtp.gmail.com with ESMTPSA id 72-20020a63034b000000b005344b30d449sm7180072pgd.86.2023.06.06.02.46.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Jun 2023 02:46:12 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 06 Jun 2023 19:46:08 +1000
-Message-Id: <CT5GZLOV5Y7B.2TE12USLNTKER@wheely>
-To: "Sachin Sant" <sachinp@linux.ibm.com>, "linuxppc-dev"
- <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: WARN at kernel/sched/core.c:5358 (kthread_end_lazy_tlb_mm)
-From: "Nicholas Piggin" <npiggin@gmail.com>
-X-Mailer: aerc 0.14.0
-References: <A9A5D83D-BA70-47A4-BCB4-30C1AE19BC22@linux.ibm.com>
-In-Reply-To: <A9A5D83D-BA70-47A4-BCB4-30C1AE19BC22@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qb5MM56bNz3cMw
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Jun 2023 19:50:54 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1686045055; x=1717581055;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=3cNnMr81VZ0I0o8WZIbb8MszLRP+Xq3U1TWFpdzHIS8=;
+  b=n5gYZELRa3ufv4v9ltCoXDnjtVODyjA1ZeSbK426SWtAwXt6BLvMKEyV
+   XXlj5aRaiCGUGK3g/nkKYs+QMnSgxLd0rTYr58wBLGyhlxeoFZ5SqSSNH
+   11XWLgGrQ4Rh1UJD7JBh/s+t+wnlF0+ItN93xk8Tch+5xtpq3B8xxLrfR
+   vvgVgzQrHV3S5CdfGy1YHl36YyKy/gaoamp3UUKW5/wKy6WpepxIFNBkb
+   i4EPmCMPad5Nx8pO8pLBUdnU1F6GhQZlLnvWQDL7G6323bLI/lY5hDyih
+   vu5kjVERKFaGU85Ml20FvDARNqe5GuznrO5AQd0KQ/6+o641ZwVclj+xq
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10732"; a="356630038"
+X-IronPort-AV: E=Sophos;i="6.00,219,1681196400"; 
+   d="scan'208";a="356630038"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2023 02:50:17 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10732"; a="709016088"
+X-IronPort-AV: E=Sophos;i="6.00,219,1681196400"; 
+   d="scan'208";a="709016088"
+Received: from lkp-server01.sh.intel.com (HELO 15ab08e44a81) ([10.239.97.150])
+  by orsmga002.jf.intel.com with ESMTP; 06 Jun 2023 02:50:13 -0700
+Received: from kbuild by 15ab08e44a81 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1q6TKP-00056l-0o;
+	Tue, 06 Jun 2023 09:50:13 +0000
+Date: Tue, 6 Jun 2023 17:49:53 +0800
+From: kernel test robot <lkp@intel.com>
+To: Grant Grundler <grundler@chromium.org>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O 'Halloran <oohall@gmail.com>,
+	Bjorn Helgaas <helgaas@kernel.org>
+Subject: Re: [PATCHv3 pci-next 2/2] PCI/AER: Rate limit the reporting of the
+ correctable errors
+Message-ID: <202306061710.tDjm3jHD-lkp@intel.com>
+References: <20230606035442.2886343-2-grundler@chromium.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230606035442.2886343-2-grundler@chromium.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,62 +74,146 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org
+Cc: Rajat Jain <rajatja@chromium.org>, Rajat Khandelwal <rajat.khandelwal@linux.intel.com>, Grant Grundler <grundler@chromium.org>, linux-pci@vger.kernel.org, llvm@lists.linux.dev, linux-kernel@vger.kernel.org, oe-kbuild-all@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu Jun 1, 2023 at 8:46 PM AEST, Sachin Sant wrote:
-> While compiling a kernel on a IBM Power system booted with
-> 6.4.0-rc4-next-20230601 following warning is observed
->
-> [  276.351697] ------------[ cut here ]------------
-> [  276.351709] WARNING: CPU: 27 PID: 9237 at kernel/sched/core.c:5358 kth=
-read_end_lazy_tlb_mm+0x90/0xa0
-> [  276.351719] Modules linked in: dm_mod nft_fib_inet nft_fib_ipv4 nft_fi=
-b_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft=
-_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 bonding=
- tls rfkill ip_set nf_tables nfnetlink sunrpc pseries_rng aes_gcm_p10_crypt=
-o xfs libcrc32c sd_mod sr_mod t10_pi crc64_rocksoft_generic cdrom crc64_roc=
-ksoft crc64 sg ibmvscsi scsi_transport_srp ibmveth vmx_crypto fuse
-> [  276.351752] CPU: 27 PID: 9237 Comm: cc1 Kdump: loaded Not tainted 6.4.=
-0-rc4-next-20230601 #1
-> [  276.351756] Hardware name: IBM,9080-HEX POWER10 (raw) 0x800200 0xf0000=
-06 of:IBM,FW1030.20 (NH1030_058) hv:phyp pSeries
-> [  276.351759] NIP:  c0000000001b8c10 LR: c0000000000a8d54 CTR: c00000000=
-046ec00
-> [  276.351763] REGS: c0000000dce337d0 TRAP: 0700   Not tainted  (6.4.0-rc=
-4-next-20230601)
-> [  276.351766] MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 2400222=
-8  XER: 00000000
-> [  276.351774] CFAR: c0000000001b8ba0 IRQMASK: 0  [  276.351774] GPR00: c=
-0000000000a8d54 c0000000dce33a70 c0000000014a1800 c000000007852a00  [  276.=
-351774] GPR04: 0000000000000001 ffffffffffffffff 0000000000000000 c00000000=
-7852f78  [  276.351774] GPR08: 0000000000000000 0000000000000000 0000000000=
-000000 0000000024002428  [  276.351774] GPR12: c0000000a032b608 c00000135fa=
-a5b00 0000000000000000 0000000000000000  [  276.351774] GPR16: 000000000000=
-0000 0000000000000000 0000000000000000 0000000000000000  [  276.351774] GPR=
-20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000  [ =
- 276.351774] GPR24: 0000000000000000 0000000000000000 0000000000000000 c000=
-000007852a70  [  276.351774] GPR28: 0000000000000000 0000000000000000 00000=
-0000000001b c000000007852a00  [  276.351810] NIP [c0000000001b8c10] kthread=
-_end_lazy_tlb_mm+0x90/0xa0
-> [  276.351814] LR [c0000000000a8d54] exit_lazy_flush_tlb+0xf4/0x110
-> [  276.351818] Call Trace:
-> [  276.351820] [c0000000dce33a70] [0000000000000001] 0x1 (unreliable)
-> [  276.351825] [c0000000dce33ab0] [c0000000000a8fbc] flush_type_needed+0x=
-24c/0x260
-> [  276.351829] [c0000000dce33af0] [c0000000000a91a8] __flush_all_mm+0x48/=
-0x2c0
-> [  276.351833] [c0000000dce33b40] [c0000000004d6dcc] tlb_finish_mmu+0x16c=
-/0x230
-> [  276.351839] [c0000000dce33b70] [c0000000004d2a2c] exit_mmap+0x17c/0x4c=
-0
+Hi Grant,
 
-Thanks for the report. IRQs aren't diabled where I'd they would be. Fix
-should be just add a local_irq_disable somewhere, but this looks like it
-is exposing an upstream bug of mine so I'll work out a fix for that
-first. No big deal for this series, it can stay in -next for now, it
-might just require a rebase.
+kernel test robot noticed the following build errors:
 
-Thanks,
-Nick
+[auto build test ERROR on pci/next]
+[also build test ERROR on pci/for-linus linus/master v6.4-rc5 next-20230606]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Grant-Grundler/PCI-AER-Rate-limit-the-reporting-of-the-correctable-errors/20230606-115515
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git next
+patch link:    https://lore.kernel.org/r/20230606035442.2886343-2-grundler%40chromium.org
+patch subject: [PATCHv3 pci-next 2/2] PCI/AER: Rate limit the reporting of the correctable errors
+config: x86_64-randconfig-x051-20230606 (https://download.01.org/0day-ci/archive/20230606/202306061710.tDjm3jHD-lkp@intel.com/config)
+compiler: clang version 15.0.7 (https://github.com/llvm/llvm-project.git 8dfdcc7b7bf66834a761bd8de445840ef68e4d1a)
+reproduce (this is a W=1 build):
+        mkdir -p ~/bin
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        git remote add pci https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git
+        git fetch pci next
+        git checkout pci/next
+        b4 shazam https://lore.kernel.org/r/20230606035442.2886343-2-grundler@chromium.org
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang ~/bin/make.cross W=1 O=build_dir ARCH=x86_64 olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang ~/bin/make.cross W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash drivers/pci/pcie/
+
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202306061710.tDjm3jHD-lkp@intel.com/
+
+All error/warnings (new ones prefixed by >>):
+
+>> drivers/pci/pcie/aer.c:717:30: error: expected ';' after expression
+                   pci_err(dev, "%s", aer_msg):
+                                              ^
+                                              ;
+>> drivers/pci/pcie/aer.c:746:28: warning: data argument not used by format string [-Wformat-extra-args]
+                           aer_error_layer[layer], aer_agent_string[agent],
+                           ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/pci.h:2600:65: note: expanded from macro 'pci_err'
+   #define pci_err(pdev, fmt, arg...)      dev_err(&(pdev)->dev, fmt, ##arg)
+                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
+   include/linux/dev_printk.h:144:65: note: expanded from macro 'dev_err'
+           dev_printk_index_wrap(_dev_err, KERN_ERR, dev, dev_fmt(fmt), ##__VA_ARGS__)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~
+   include/linux/dev_printk.h:110:23: note: expanded from macro 'dev_printk_index_wrap'
+                   _p_func(dev, fmt, ##__VA_ARGS__);                       \
+                                ~~~    ^
+   1 warning and 1 error generated.
+
+
+vim +717 drivers/pci/pcie/aer.c
+
+   684	
+   685	static void __aer_print_error(struct pci_dev *dev,
+   686				      struct aer_err_info *info)
+   687	{
+   688		const char **strings;
+   689		char aer_msg[512];
+   690		unsigned long status = info->status & ~info->mask;
+   691		int i;
+   692	
+   693		memset(aer_msg, 0, sizeof(*aer_msg));
+   694		snprintf(aer_msg, sizeof(*aer_msg), "aer_status: 0x%08x, aer_mask: 0x%08x\n",
+   695				info->status, info->mask);
+   696	
+   697		strings = (info->severity == AER_CORRECTABLE) ?
+   698			aer_correctable_error_string : aer_uncorrectable_error_string;
+   699	
+   700		for_each_set_bit(i, &status, 32) {
+   701			const char *errmsg = strings[i];
+   702			char bitmsg[64];
+   703			memset(bitmsg, 0, sizeof(*bitmsg));
+   704	
+   705			if (!errmsg)
+   706				errmsg = "Unknown Error Bit";
+   707	
+   708			snprintf(bitmsg, sizeof(*bitmsg), "   [%2d] %-22s%s\n", i, errmsg,
+   709				    info->first_error == i ? " (First)" : "");
+   710	
+   711			strlcat(aer_msg, bitmsg, sizeof(*aer_msg));
+   712		}
+   713	
+   714		if (info->severity == AER_CORRECTABLE)
+   715			pci_info_ratelimited(dev, "%s", aer_msg);
+   716		else
+ > 717			pci_err(dev, "%s", aer_msg):
+   718	
+   719		pci_dev_aer_stats_incr(dev, info);
+   720	}
+   721	
+   722	void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
+   723	{
+   724		int layer, agent;
+   725		int id = ((dev->bus->number << 8) | dev->devfn);
+   726	
+   727		if (!info->status) {
+   728			pci_err(dev, "PCIe Bus Error: severity=%s, type=Inaccessible, (Unregistered Agent ID)\n",
+   729				aer_error_severity_string[info->severity]);
+   730			goto out;
+   731		}
+   732	
+   733		layer = AER_GET_LAYER_ERROR(info->severity, info->status);
+   734		agent = AER_GET_AGENT(info->severity, info->status);
+   735	
+   736		if (info->severity == AER_CORRECTABLE) {
+   737			pci_info_ratelimited(dev, "PCIe Bus Error: severity=%s, type=%s, (%s)\n"
+   738					"  device [%04x:%04x] error status/mask=%08x/%08x\n",
+   739					     aer_error_severity_string[info->severity],
+   740					     aer_error_layer[layer], aer_agent_string[agent],
+   741					     dev->vendor, dev->device, info->status, info->mask);
+   742		} else {
+   743			pci_err(dev, "PCIe Bus Error: severity=%s, type=%s, (%s)\n",
+   744				"  device [%04x:%04x] error status/mask=%08x/%08x\n",
+   745				aer_error_severity_string[info->severity],
+ > 746				aer_error_layer[layer], aer_agent_string[agent],
+   747				dev->vendor, dev->device, info->status, info->mask);
+   748		}
+   749	
+   750		__aer_print_error(dev, info);
+   751	
+   752		if (info->tlp_header_valid)
+   753			__print_tlp_header(dev, &info->tlp);
+   754	
+   755	out:
+   756		if (info->id && info->error_dev_num > 1 && info->id == id)
+   757			pci_err(dev, "  Error of this Agent is reported first\n");
+   758	
+   759		trace_aer_event(dev_name(&dev->dev), (info->status & ~info->mask),
+   760				info->severity, info->tlp_header_valid, &info->tlp);
+   761	}
+   762	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
