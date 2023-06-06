@@ -2,74 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7087723C62
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jun 2023 10:58:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 569FF723C6E
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jun 2023 11:00:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qb4BX4gn0z3dsr
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jun 2023 18:58:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qb4F80pDVz3f7F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jun 2023 19:00:28 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=BFPBPBMO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=dPR7PAcB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62e; helo=mail-pl1-x62e.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b2c; helo=mail-yb1-xb2c.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=BFPBPBMO;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=dPR7PAcB;
 	dkim-atps=neutral
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qb49c55Ddz3cD5
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Jun 2023 18:57:22 +1000 (AEST)
-Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-1b011cffef2so54529085ad.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Jun 2023 01:57:22 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qb4DF0ztWz3cD5
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Jun 2023 18:59:40 +1000 (AEST)
+Received: by mail-yb1-xb2c.google.com with SMTP id 3f1490d57ef6-bacf685150cso7349883276.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Jun 2023 01:59:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686041839; x=1688633839;
+        d=gmail.com; s=20221208; t=1686041978; x=1688633978;
         h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KsotnkYKJJ++RTq8ZDtbyGBYv6z9/iH+HO0zFVXW2NY=;
-        b=BFPBPBMOf8PaUueNf8+J6cBztMB5syO78BMYAFc1m1fjSMKH/wMqWhHONypMA29RMO
-         JtBnIWN7Jsasj7/GY5Y1TAs6jlKQSn1WsWS8qDZ4F6hadfLZ7NTHz4jLdmhSp4SP2ZhM
-         b/cfC+/Eg5ingZrGS8jXDxJwMuFPZzJOGSlXawGgRVQnirUI/qdJagt2EoFxzMlip5OL
-         r624yUamptZtkyS0pcyo3eGZxkmqCzcS3/aQ3TudnaI2i5o0tToip0hiexqVRgyGkr0Q
-         ZCykcnep9ptsT5gra0Pz2sxmMrMjenSdFGVVwMA2uJkNg8TvGyi8dYKZgfpAsVNzA2/y
-         qerg==
+        bh=N6kW28rRS95PBT40ZyGvD53ULubXonpBS0T08hlvYzY=;
+        b=dPR7PAcBEbq14AyijUdKPeY9aopH5oxf/XU5xNmYSoOyjYqERl9cm3yey7nh0m1wiS
+         1fQw4PTKPUr1LJE40ZZd38eOjy07GYhYSuKlqSPiw9DGP2NV1Aew+xNyenr+gJKvfyEv
+         Y673QHzNp/7uVnjx13QJvFKmESHWi+kGU/7hSOalAPdHTdKRkE5GkH2WPHuEeLevB7hY
+         fg6S/VW2ocpOzz2HcK6UtqUmuV68T5KMZHULgMQU8YeFJ/522xFXPPa4x+MmRNG7uo3B
+         Ir72yEqU5vuJXbw10qlB+t+kNprQd5pxm7t7+R4QcijkqpA6eNRyCE7+kDOarN9nzyr+
+         ZNiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686041839; x=1688633839;
+        d=1e100.net; s=20221208; t=1686041978; x=1688633978;
         h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=KsotnkYKJJ++RTq8ZDtbyGBYv6z9/iH+HO0zFVXW2NY=;
-        b=Hk3ZwGe7sZdd5S5o73EGBI4qnVw0i8RrRe2/LTTWVi5f+LTv3H6Sc6tcIcLvAjbcGt
-         FpfODRMzpIjqubBHom0AbBR6oOQiZl26cYsoyzzYbhK0I5l5BVJvVp/S3zi3MFbLNt9U
-         eopY6gpqSR3m1bjvZV/2WZoHkepv9FaTc79FxEBExbDBz0jXu1D2m6om5YEE+XEIsh+q
-         3UxQEBg61PQcJclL5VHLPDiptphqcCWpIw1bcnXka418HEZABXTQOWAOKpiMdHhXFAgr
-         DJ1Ih6tWEFvLZ/m7Q2Ef1lOOLg1KMVULSzNFuedJTzN1xRZgmp5n48S0DGXGVjYBxeeK
-         MNWw==
-X-Gm-Message-State: AC+VfDzUF7TO+9gO7mkfzJW4ny1QeyaCs1+loOQNTq6S6Yt/woMGUnb6
-	V+tKhL4VwHnVDNXKPV5O+ts=
-X-Google-Smtp-Source: ACHHUZ4vx4ct4+UKChRJItU5T4VejzTrB4ZZ6XhJCp/+chr8riquVxvwcjpWSDzxg/yW8vU2i3C7QA==
-X-Received: by 2002:a17:902:db0f:b0:1b0:4bc7:31ee with SMTP id m15-20020a170902db0f00b001b04bc731eemr1570388plx.32.1686041839240;
-        Tue, 06 Jun 2023 01:57:19 -0700 (PDT)
+        bh=N6kW28rRS95PBT40ZyGvD53ULubXonpBS0T08hlvYzY=;
+        b=UmxszNy4giFTxkGVdvu77xGVfyis+y/ISmgzITZnFjBN12bXgeSa2S8XSyD2Gd+g+D
+         xE6s8JfX7UXe7rXRDjSq3S1L4qkd+q7khO9p364VanzaKKQF3Wpx7wGZjBZm+Zegdq/1
+         TiSocbR+FUXEOOHZX23lSX/KOQWUIJUuDf68ta7hmcsg1lTPiv7dgVFzpk+JVuUY8KqS
+         nFvW6z/I1blHuFL79b4QONIkswVkrg50BjjL6v65AMChCgXB2g9QRyOaplzLpPG7XrZl
+         mL8XgOW+g8lBd/nAeos/FNF18ttbX4O0JUAgGfyqzO4cQ/197MgN4iJhBjmdvMk9B7F1
+         8dPg==
+X-Gm-Message-State: AC+VfDzkiIOzi5mn+DlRrYaGhfh7OEzmU/3zyiy3+xAp/nqeJyXaR7Cn
+	T+H2Hmyq4j445Y3TfXdDTVU=
+X-Google-Smtp-Source: ACHHUZ6AeR7qesANdIDtp2lhgxb5Ewp8VMikOiupHZ9Q+qMTh31yK+rF2gXmNDrRFS8peWohfho2dQ==
+X-Received: by 2002:a25:c382:0:b0:bb3:b0ab:d626 with SMTP id t124-20020a25c382000000b00bb3b0abd626mr485746ybf.31.1686041978611;
+        Tue, 06 Jun 2023 01:59:38 -0700 (PDT)
 Received: from localhost ([203.221.142.9])
-        by smtp.gmail.com with ESMTPSA id x20-20020a170902ea9400b001a6d4ea7301sm7924557plb.251.2023.06.06.01.57.13
+        by smtp.gmail.com with ESMTPSA id o1-20020a17090ab88100b0024dfbac9e2fsm9010107pjr.21.2023.06.06.01.59.32
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Jun 2023 01:57:18 -0700 (PDT)
+        Tue, 06 Jun 2023 01:59:37 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 06 Jun 2023 18:57:03 +1000
-Message-Id: <CT5FY0YBBTYX.X4UB9DSZQCMY@wheely>
-Subject: Re: [PATCH] powerpc/interrupt: Don't read MSR from
- interrupt_exit_kernel_prepare()
+Date: Tue, 06 Jun 2023 18:58:46 +1000
+Message-Id: <CT5FZBY14ZM4.OYXBJNXQU9A2@wheely>
+Subject: Re: [PATCH] powerpc/signal32: Force inlining of
+ __unsafe_save_user_regs() and save_tm_user_regs_unsafe()
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "Christophe Leroy" <christophe.leroy@csgroup.eu>, "Michael Ellerman"
  <mpe@ellerman.id.au>
 X-Mailer: aerc 0.14.0
-References: <df36c6205ab64326fb1b991993c82057e92ace2f.1685955214.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <df36c6205ab64326fb1b991993c82057e92ace2f.1685955214.git.christophe.leroy@csgroup.eu>
+References: <7e469c8f01860a69c1ada3ca6a5e2aa65f0f74b2.1685955220.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <7e469c8f01860a69c1ada3ca6a5e2aa65f0f74b2.1685955220.git.christophe.leroy@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,69 +85,87 @@ Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon Jun 5, 2023 at 6:55 PM AEST, Christophe Leroy wrote:
-> A disassembly of interrupt_exit_kernel_prepare() shows a useless read
-> of MSR register. This is shown by r9 being re-used immediately without
-> doing anything with the value read.
+On Mon Jun 5, 2023 at 6:58 PM AEST, Christophe Leroy wrote:
+> Looking at generated code for handle_signal32() shows calls to a
+> function called __unsafe_save_user_regs.constprop.0 while user access
+> is open.
 >
->   c000e0e0:       60 00 00 00     nop
->   c000e0e4:       7d 3a c2 a6     mfmd_ap r9
->   c000e0e8:       7d 20 00 a6     mfmsr   r9
->   c000e0ec:       7c 51 13 a6     mtspr   81,r2
->   c000e0f0:       81 3f 00 84     lwz     r9,132(r31)
->   c000e0f4:       71 29 80 00     andi.   r9,r9,32768
+> And that __unsafe_save_user_regs.constprop.0 function has two nops at
+> the begining, allowing it to be traced, which is unexpected during
+> user access open window.
 >
-> This is due to the use of local_irq_save(). The flags read by
-> local_irq_save() are never used, use local_irq_disable() instead.
+> The solution could be to mark __unsafe_save_user_regs() no trace, but
+> to be on the safe side the most efficient is to flag it __always_inline
+> as already done for function __unsafe_restore_general_regs(). The
+> function is relatively small and only called twice, so the size
+> increase will remain in the noise.
+>
+> Do the same with save_tm_user_regs_unsafe() as it may suffer the
+> same issue.
 
-I did have a patch that warns if you do a local_irq_disable() when
-irqs are disabled which is why I did this, but it is kind of silly.
+Could you put a comment so someone doesn't uninline it later? Marking
+it notrace as well would be sufficient for a comment, if that works.
 
-You could do 'if (!irqs_disabled()) local_irq_disable()'
-
-Unfortunately that adds another branch but if it is not taken
-frequently then maybe avoiding the mtMSR/EID would make it a win?
-If you don't change that I might end up doing it if I can get that
-warning patch merged (needs a few core kernel changes).
-
-I wonder how much that would help local_irq_save too, if interrupts
-are already disabled then avoid the mt? Maybe those things are not
-very costly on smaller in-order cores.
-
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Thanks,
+Nick
 
 >
-> Fixes: 13799748b957 ("powerpc/64: use interrupt restart table to speed up=
- return from interrupt")
+> Fixes: ef75e7318294 ("powerpc/signal32: Transform save_user_regs() and sa=
+ve_tm_user_regs() in 'unsafe' version")
 > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 > ---
->  arch/powerpc/kernel/interrupt.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+>  arch/powerpc/kernel/signal_32.c | 15 +++++++++------
+>  1 file changed, 9 insertions(+), 6 deletions(-)
 >
-> diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interr=
-upt.c
-> index e34c72285b4e..f3fc5fe919d9 100644
-> --- a/arch/powerpc/kernel/interrupt.c
-> +++ b/arch/powerpc/kernel/interrupt.c
-> @@ -368,7 +368,6 @@ void preempt_schedule_irq(void);
+> diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/signal=
+_32.c
+> index c114c7f25645..7a718ed32b27 100644
+> --- a/arch/powerpc/kernel/signal_32.c
+> +++ b/arch/powerpc/kernel/signal_32.c
+> @@ -264,8 +264,9 @@ static void prepare_save_user_regs(int ctx_has_vsx_re=
+gion)
+>  #endif
+>  }
 > =20
->  notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs=
-)
+> -static int __unsafe_save_user_regs(struct pt_regs *regs, struct mcontext=
+ __user *frame,
+> -				   struct mcontext __user *tm_frame, int ctx_has_vsx_region)
+> +static __always_inline int
+> +__unsafe_save_user_regs(struct pt_regs *regs, struct mcontext __user *fr=
+ame,
+> +			struct mcontext __user *tm_frame, int ctx_has_vsx_region)
 >  {
-> -	unsigned long flags;
->  	unsigned long ret =3D 0;
->  	unsigned long kuap;
->  	bool stack_store =3D read_thread_flags() & _TIF_EMULATE_STACK_STORE;
-> @@ -392,7 +391,7 @@ notrace unsigned long interrupt_exit_kernel_prepare(s=
-truct pt_regs *regs)
+>  	unsigned long msr =3D regs->msr;
 > =20
->  	kuap =3D kuap_get_and_assert_locked();
+> @@ -364,8 +365,9 @@ static void prepare_save_tm_user_regs(void)
+>  		current->thread.ckvrsave =3D mfspr(SPRN_VRSAVE);
+>  }
 > =20
-> -	local_irq_save(flags);
-> +	local_irq_disable();
+> -static int save_tm_user_regs_unsafe(struct pt_regs *regs, struct mcontex=
+t __user *frame,
+> -				    struct mcontext __user *tm_frame, unsigned long msr)
+> +static __always_inline int
+> +save_tm_user_regs_unsafe(struct pt_regs *regs, struct mcontext __user *f=
+rame,
+> +			 struct mcontext __user *tm_frame, unsigned long msr)
+>  {
+>  	/* Save both sets of general registers */
+>  	unsafe_save_general_regs(&current->thread.ckpt_regs, frame, failed);
+> @@ -444,8 +446,9 @@ static int save_tm_user_regs_unsafe(struct pt_regs *r=
+egs, struct mcontext __user
+>  #else
+>  static void prepare_save_tm_user_regs(void) { }
 > =20
->  	if (!arch_irq_disabled_regs(regs)) {
->  		/* Returning to a kernel context with local irqs enabled. */
+> -static int save_tm_user_regs_unsafe(struct pt_regs *regs, struct mcontex=
+t __user *frame,
+> -				    struct mcontext __user *tm_frame, unsigned long msr)
+> +static __always_inline int
+> +save_tm_user_regs_unsafe(struct pt_regs *regs, struct mcontext __user *f=
+rame,
+> +			 struct mcontext __user *tm_frame, unsigned long msr)
+>  {
+>  	return 0;
+>  }
 > --=20
 > 2.40.1
 
