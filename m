@@ -1,75 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 569FF723C6E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jun 2023 11:00:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F62B723CB4
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jun 2023 11:13:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qb4F80pDVz3f7F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jun 2023 19:00:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qb4Wd6xSrz3f3k
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jun 2023 19:13:01 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=dPR7PAcB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=IlaMjUX2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b2c; helo=mail-yb1-xb2c.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::629; helo=mail-pl1-x629.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=dPR7PAcB;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=IlaMjUX2;
 	dkim-atps=neutral
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qb4DF0ztWz3cD5
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Jun 2023 18:59:40 +1000 (AEST)
-Received: by mail-yb1-xb2c.google.com with SMTP id 3f1490d57ef6-bacf685150cso7349883276.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Jun 2023 01:59:40 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qb4Vp6fHgz3bnM
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Jun 2023 19:12:16 +1000 (AEST)
+Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1b0424c5137so50953245ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Jun 2023 02:12:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686041978; x=1688633978;
+        d=gmail.com; s=20221208; t=1686042734; x=1688634734;
         h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=N6kW28rRS95PBT40ZyGvD53ULubXonpBS0T08hlvYzY=;
-        b=dPR7PAcBEbq14AyijUdKPeY9aopH5oxf/XU5xNmYSoOyjYqERl9cm3yey7nh0m1wiS
-         1fQw4PTKPUr1LJE40ZZd38eOjy07GYhYSuKlqSPiw9DGP2NV1Aew+xNyenr+gJKvfyEv
-         Y673QHzNp/7uVnjx13QJvFKmESHWi+kGU/7hSOalAPdHTdKRkE5GkH2WPHuEeLevB7hY
-         fg6S/VW2ocpOzz2HcK6UtqUmuV68T5KMZHULgMQU8YeFJ/522xFXPPa4x+MmRNG7uo3B
-         Ir72yEqU5vuJXbw10qlB+t+kNprQd5pxm7t7+R4QcijkqpA6eNRyCE7+kDOarN9nzyr+
-         ZNiQ==
+        bh=33Fi3vxPpajECwlEk7e4drhNdlJkHqysepyRL3vjQ8k=;
+        b=IlaMjUX2DEWSf62zBCcuw3sQibn/by5NfD7SCt0RqJD+KB8TcuJ18M+bnqtdWaWu6u
+         iK26B/FnL9uq9zIbXeiGrrUp2yUuevhPXiQA2d0mTd0/e8xg+q8W0slYwwwWbu9Vbfij
+         jSO85lmr/pYGkyBjW0xBauNQhLNIy63rRVjavAociiYC2p/m3gZRBi4mYpq1C3mLArVp
+         kJsK+swdwSRCFQmGc1r7mybeBW2UhyomKrlRCwzIacgde2VHyS6Nhc/VIYHxisRkj454
+         GjkSCrovXZ+GsBOnQaT08XHHOL236QhQ3DwHtrLLGAqy/WTNRIhaQQZyV72YNzJ6pPwN
+         NxhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686041978; x=1688633978;
+        d=1e100.net; s=20221208; t=1686042734; x=1688634734;
         h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=N6kW28rRS95PBT40ZyGvD53ULubXonpBS0T08hlvYzY=;
-        b=UmxszNy4giFTxkGVdvu77xGVfyis+y/ISmgzITZnFjBN12bXgeSa2S8XSyD2Gd+g+D
-         xE6s8JfX7UXe7rXRDjSq3S1L4qkd+q7khO9p364VanzaKKQF3Wpx7wGZjBZm+Zegdq/1
-         TiSocbR+FUXEOOHZX23lSX/KOQWUIJUuDf68ta7hmcsg1lTPiv7dgVFzpk+JVuUY8KqS
-         nFvW6z/I1blHuFL79b4QONIkswVkrg50BjjL6v65AMChCgXB2g9QRyOaplzLpPG7XrZl
-         mL8XgOW+g8lBd/nAeos/FNF18ttbX4O0JUAgGfyqzO4cQ/197MgN4iJhBjmdvMk9B7F1
-         8dPg==
-X-Gm-Message-State: AC+VfDzkiIOzi5mn+DlRrYaGhfh7OEzmU/3zyiy3+xAp/nqeJyXaR7Cn
-	T+H2Hmyq4j445Y3TfXdDTVU=
-X-Google-Smtp-Source: ACHHUZ6AeR7qesANdIDtp2lhgxb5Ewp8VMikOiupHZ9Q+qMTh31yK+rF2gXmNDrRFS8peWohfho2dQ==
-X-Received: by 2002:a25:c382:0:b0:bb3:b0ab:d626 with SMTP id t124-20020a25c382000000b00bb3b0abd626mr485746ybf.31.1686041978611;
-        Tue, 06 Jun 2023 01:59:38 -0700 (PDT)
-Received: from localhost ([203.221.142.9])
-        by smtp.gmail.com with ESMTPSA id o1-20020a17090ab88100b0024dfbac9e2fsm9010107pjr.21.2023.06.06.01.59.32
+        bh=33Fi3vxPpajECwlEk7e4drhNdlJkHqysepyRL3vjQ8k=;
+        b=LCfXPXgjfIS7E5wf5ci8LWoTl3UKwfSmZBwXL4FURF//pXwOUSsHoEJV9bxGqKf3vr
+         lsmArYw2SD38VSeuqzBNocuFQztUWIroMSSeLDsA/FuAGboXxCAHMW6Uo9nqAIdKfbek
+         k2iyQMW5cu1iVecdhpEgu4UNH0nl26XWnz1McZcsaR98qwr7JKI4FyMJMXFX02OCXA0d
+         DE/oyJBlKyhbFJUqCAZx7Zd7oVNQsSBJBQm92mUizGBUCihblElXMTe+pukBSVbtt7q6
+         ergMB/+Sjz4WD6hiaTXT9x2NQJ62hEq2VeChxb39bSKPUUh3EBtDv78tWV48WYSsHZke
+         1Biw==
+X-Gm-Message-State: AC+VfDxi4XC0nlOu6Ongmpjpq1d3A36Y4kCakkXfnOFru1hId8fYMVcl
+	uWXdC/OhmbbzvXZPzBhCMsA=
+X-Google-Smtp-Source: ACHHUZ54UH5/TGSxl0D32cNUSfJOXlgchtr7h6tK2bzJH50CbEBIfIcQ9/fVSaut+FV/AFQi/bLWMA==
+X-Received: by 2002:a17:902:e5c4:b0:1ab:7fb:aac1 with SMTP id u4-20020a170902e5c400b001ab07fbaac1mr1848442plf.24.1686042733831;
+        Tue, 06 Jun 2023 02:12:13 -0700 (PDT)
+Received: from localhost (58-6-230-127.tpgi.com.au. [58.6.230.127])
+        by smtp.gmail.com with ESMTPSA id ik4-20020a170902ab0400b001b03a7a40e7sm8107255plb.19.2023.06.06.02.12.11
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Jun 2023 01:59:37 -0700 (PDT)
+        Tue, 06 Jun 2023 02:12:13 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 06 Jun 2023 18:58:46 +1000
-Message-Id: <CT5FZBY14ZM4.OYXBJNXQU9A2@wheely>
-Subject: Re: [PATCH] powerpc/signal32: Force inlining of
- __unsafe_save_user_regs() and save_tm_user_regs_unsafe()
+Date: Tue, 06 Jun 2023 19:12:08 +1000
+Message-Id: <CT5G9KKH2R25.3QSRZU8EQXUZU@wheely>
+Subject: Re: [PATCH 2/4] powerpc/kuap: Avoid useless jump_label on empty
+ function
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "Christophe Leroy" <christophe.leroy@csgroup.eu>, "Michael Ellerman"
  <mpe@ellerman.id.au>
 X-Mailer: aerc 0.14.0
-References: <7e469c8f01860a69c1ada3ca6a5e2aa65f0f74b2.1685955220.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <7e469c8f01860a69c1ada3ca6a5e2aa65f0f74b2.1685955220.git.christophe.leroy@csgroup.eu>
+References: <1a3c69e38349b687c6c65240d7c09a7817a797d8.1685963081.git.christophe.leroy@csgroup.eu> <c2c9660cc4441dc37c477ce5cf60707c971bd2a1.1685963081.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <c2c9660cc4441dc37c477ce5cf60707c971bd2a1.1685963081.git.christophe.leroy@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,87 +85,69 @@ Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon Jun 5, 2023 at 6:58 PM AEST, Christophe Leroy wrote:
-> Looking at generated code for handle_signal32() shows calls to a
-> function called __unsafe_save_user_regs.constprop.0 while user access
-> is open.
+On Mon Jun 5, 2023 at 9:04 PM AEST, Christophe Leroy wrote:
+> Disassembly of interrupt_enter_prepare() shows a pointless nop before the=
+ mftb
 >
-> And that __unsafe_save_user_regs.constprop.0 function has two nops at
-> the begining, allowing it to be traced, which is unexpected during
-> user access open window.
+>   c000abf0 <interrupt_enter_prepare>:
+>   c000abf0:       81 23 00 84     lwz     r9,132(r3)
+>   c000abf4:       71 29 40 00     andi.   r9,r9,16384
+>   c000abf8:       41 82 00 28     beq-    c000ac20 <interrupt_enter_prepa=
+re+0x30>
+>   c000abfc: =3D=3D=3D>  60 00 00 00     nop	<=3D=3D=3D=3D
+>   c000ac00:       7d 0c 42 e6     mftb    r8
+>   c000ac04:       80 e2 00 08     lwz     r7,8(r2)
+>   c000ac08:       81 22 00 28     lwz     r9,40(r2)
+>   c000ac0c:       91 02 00 24     stw     r8,36(r2)
+>   c000ac10:       7d 29 38 50     subf    r9,r9,r7
+>   c000ac14:       7d 29 42 14     add     r9,r9,r8
+>   c000ac18:       91 22 00 08     stw     r9,8(r2)
+>   c000ac1c:       4e 80 00 20     blr
+>   c000ac20:       60 00 00 00     nop
+>   c000ac24:       7d 5a c2 a6     mfmd_ap r10
+>   c000ac28:       3d 20 de 00     lis     r9,-8704
+>   c000ac2c:       91 43 00 b0     stw     r10,176(r3)
+>   c000ac30:       7d 3a c3 a6     mtspr   794,r9
+>   c000ac34:       4e 80 00 20     blr
 >
-> The solution could be to mark __unsafe_save_user_regs() no trace, but
-> to be on the safe side the most efficient is to flag it __always_inline
-> as already done for function __unsafe_restore_general_regs(). The
-> function is relatively small and only called twice, so the size
-> increase will remain in the noise.
+> That comes from the call to kuap_loc(), allthough __kuap_lock() is an emp=
+ty
+> function on the 8xx.
 >
-> Do the same with save_tm_user_regs_unsafe() as it may suffer the
-> same issue.
+> To avoid that, only perform kuap_is_disabled() check when there is someth=
+ing
+> to do with __kuap_lock().
+>
+> Do the same with __kuap_save_and_lock() and __kuap_get_and_assert_locked(=
+).
 
-Could you put a comment so someone doesn't uninline it later? Marking
-it notrace as well would be sufficient for a comment, if that works.
+Too bad static branch nops can't be eliminated.
+
+> diff --git a/arch/powerpc/include/asm/book3s/64/kup.h b/arch/powerpc/incl=
+ude/asm/book3s/64/kup.h
+> index 54cf46808157..1b0215ff3710 100644
+> --- a/arch/powerpc/include/asm/book3s/64/kup.h
+> +++ b/arch/powerpc/include/asm/book3s/64/kup.h
+> @@ -297,15 +297,7 @@ static inline unsigned long __kuap_get_and_assert_lo=
+cked(void)
+>  		WARN_ON_ONCE(amr !=3D AMR_KUAP_BLOCKED);
+>  	return amr;
+>  }
+> -
+> -/* Do nothing, book3s/64 does that in ASM */
+> -static inline void __kuap_lock(void)
+> -{
+> -}
+> -
+> -static inline void __kuap_save_and_lock(struct pt_regs *regs)
+> -{
+> -}
+> +#define __kuap_get_and_assert_locked __kuap_get_and_assert_locked
+
+Maybe leave in /* __kuap_lock notrequired, book3s/64 does that in ASM */
+? Seems okay though
+
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
 Thanks,
 Nick
-
->
-> Fixes: ef75e7318294 ("powerpc/signal32: Transform save_user_regs() and sa=
-ve_tm_user_regs() in 'unsafe' version")
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->  arch/powerpc/kernel/signal_32.c | 15 +++++++++------
->  1 file changed, 9 insertions(+), 6 deletions(-)
->
-> diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/signal=
-_32.c
-> index c114c7f25645..7a718ed32b27 100644
-> --- a/arch/powerpc/kernel/signal_32.c
-> +++ b/arch/powerpc/kernel/signal_32.c
-> @@ -264,8 +264,9 @@ static void prepare_save_user_regs(int ctx_has_vsx_re=
-gion)
->  #endif
->  }
-> =20
-> -static int __unsafe_save_user_regs(struct pt_regs *regs, struct mcontext=
- __user *frame,
-> -				   struct mcontext __user *tm_frame, int ctx_has_vsx_region)
-> +static __always_inline int
-> +__unsafe_save_user_regs(struct pt_regs *regs, struct mcontext __user *fr=
-ame,
-> +			struct mcontext __user *tm_frame, int ctx_has_vsx_region)
->  {
->  	unsigned long msr =3D regs->msr;
-> =20
-> @@ -364,8 +365,9 @@ static void prepare_save_tm_user_regs(void)
->  		current->thread.ckvrsave =3D mfspr(SPRN_VRSAVE);
->  }
-> =20
-> -static int save_tm_user_regs_unsafe(struct pt_regs *regs, struct mcontex=
-t __user *frame,
-> -				    struct mcontext __user *tm_frame, unsigned long msr)
-> +static __always_inline int
-> +save_tm_user_regs_unsafe(struct pt_regs *regs, struct mcontext __user *f=
-rame,
-> +			 struct mcontext __user *tm_frame, unsigned long msr)
->  {
->  	/* Save both sets of general registers */
->  	unsafe_save_general_regs(&current->thread.ckpt_regs, frame, failed);
-> @@ -444,8 +446,9 @@ static int save_tm_user_regs_unsafe(struct pt_regs *r=
-egs, struct mcontext __user
->  #else
->  static void prepare_save_tm_user_regs(void) { }
-> =20
-> -static int save_tm_user_regs_unsafe(struct pt_regs *regs, struct mcontex=
-t __user *frame,
-> -				    struct mcontext __user *tm_frame, unsigned long msr)
-> +static __always_inline int
-> +save_tm_user_regs_unsafe(struct pt_regs *regs, struct mcontext __user *f=
-rame,
-> +			 struct mcontext __user *tm_frame, unsigned long msr)
->  {
->  	return 0;
->  }
-> --=20
-> 2.40.1
-
