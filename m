@@ -1,96 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E79B1724C15
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jun 2023 21:04:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4937724C92
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jun 2023 21:09:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QbKf94zCpz3f7F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Jun 2023 05:04:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QbKlm3JMQz3bkD
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Jun 2023 05:09:24 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AFuQrzjW;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ixywks/5;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=FJFr/wVI;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::336; helo=mail-ot1-x336.google.com; envelope-from=jgg@ziepe.ca; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AFuQrzjW;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ixywks/5;
+	dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=FJFr/wVI;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mail-ot1-x336.google.com (mail-ot1-x336.google.com [IPv6:2607:f8b0:4864:20::336])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QbKdF0SVGz3cjY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Jun 2023 05:03:43 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1686078218;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bmPwhcLQLS6QAOJhnaZRrlptzdg2mUtfNMjjPY6LfS8=;
-	b=AFuQrzjWZt9DInEY1lFNe2Dkl2jWUeOnZvEx5qHaeGepugKSmH3uiA6RXeZM6tL2ddVh48
-	DmlcdnHCQCHqUaJaJTJi4xa7fyWwzBuf0roPU+B8OJVu5y5PjQqcZGmW0Z02eAWTJ5Qn2d
-	evCVBAC6WjTzbhU7/EYtMPaLsJ+bbMg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1686078219;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bmPwhcLQLS6QAOJhnaZRrlptzdg2mUtfNMjjPY6LfS8=;
-	b=Ixywks/5q2Dkjdxe/1P1jArLDrquO2XlluTEvpyQblc2F5MfZa8hmG/7Gde274weT2Y2m/
-	ExgOi3XLZv2fcLvTqU13x+L/VWrkRiXyiRNmLXp2CuEagxYYxU/2IRWKQxb/Y1j32/LiTA
-	uu/0XmqbTOoNr9rsbA1HXS0hqFekeCA=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-658-EmGxPcuOMue9JpXo1eylpQ-1; Tue, 06 Jun 2023 15:03:37 -0400
-X-MC-Unique: EmGxPcuOMue9JpXo1eylpQ-1
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-75e681229c5so62267185a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Jun 2023 12:03:37 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QbKkx61Qlz3dqw
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Jun 2023 05:08:41 +1000 (AEST)
+Received: by mail-ot1-x336.google.com with SMTP id 46e09a7af769-6b280319df5so1761033a34.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Jun 2023 12:08:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1686078518; x=1688670518;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=IBKThEgW3NTUkiZRvoX00WYF0JkCsCOEnA4ezJ54Iw0=;
+        b=FJFr/wVIfPdoTjvHgpxP3od5kCmSMH1Z0JrOBWgah9N0Buw0Lqq2GUP2GVXw6WOiRh
+         c++a4+grcHjQUmrxZiqzadYduVRf1CjUAli+D+QVPy9jcNL51cCAxEPrkdxnOFwEvhnb
+         yJu3DX76dubw3UjpXKmY8bLxybb3MkH1N7SDa2D3lfFWRbwwkD/iwvDq5Rbs4pKZHixV
+         RtekPOxZJPk6BJtOGDh+2UFQd8Mq/YXw/gd5ayUOvGPplgDFeju7Fn5HsUTFW/r4mQOQ
+         KmK3lw44ULOSI0p8hKsZ+RHFSRdJo1L5kdi+DoAT49/RG5m4rt+DVmg8pGjnsJ3eO7lg
+         Wt/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686078216; x=1688670216;
+        d=1e100.net; s=20221208; t=1686078518; x=1688670518;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bmPwhcLQLS6QAOJhnaZRrlptzdg2mUtfNMjjPY6LfS8=;
-        b=mEjaFVBwCmvc11iFH72xp7JP/3QWZF82OCj0QhsQ7j1PYPg2lEc1Uq9ykSbz9lNQYA
-         TkzU9Af8mZEDx5wecso0CDg32pIgMTK/qSW/ey8FEuZh9+BktJESAX61veKXZuWHNPHb
-         ctzb3U6VG8AzdEO/BMZvSI/AiagllzvBA4ZzaaYpql7G+fX+weXvcdkBPkhAYefU2jYZ
-         Sg26J3oP8Njx0WSJ1hY1bRnSvKvoAo8JjQp7icLsTLFyeiLo3ZIF7t+9k3t2k1YtsT52
-         c6rRCEeq7SDuTuJfHjN8h5WUPmstUYJPGIkD7BHBRAPAxwonx9/Ujm1GcAHwSes3LC7u
-         Gv4w==
-X-Gm-Message-State: AC+VfDzzdNiiRb1BknkPSj2u9BVxI1ot1UBsjUCZK/1ly1AjnwdH8nkU
-	oXBtRIVSxxlPGi64kK2KkM9es5sltKCFvE4S6gC+BiwHVU0xT8X9SsF+nrAywSV1OFiUqgru8oY
-	f5AH42iWPS8apzCcLJ3pY71DZvw==
-X-Received: by 2002:a05:620a:2b92:b0:75b:23a1:69f0 with SMTP id dz18-20020a05620a2b9200b0075b23a169f0mr3107594qkb.7.1686078216679;
-        Tue, 06 Jun 2023 12:03:36 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5C5YMccZA+iUS9RAssWOgobvDgS7+Te3WrU+7dZkM3FviCtXVqQlWbzikNWhoOiLhOPK8t2g==
-X-Received: by 2002:a05:620a:2b92:b0:75b:23a1:69f0 with SMTP id dz18-20020a05620a2b9200b0075b23a169f0mr3107557qkb.7.1686078216403;
-        Tue, 06 Jun 2023 12:03:36 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
-        by smtp.gmail.com with ESMTPSA id d14-20020a05620a166e00b0074636e35405sm5100311qko.65.2023.06.06.12.03.32
+        bh=IBKThEgW3NTUkiZRvoX00WYF0JkCsCOEnA4ezJ54Iw0=;
+        b=bt2wtK668Pgh+fdcFTRwoatPgDgfQQFxAtT3IdiKM9qNUxD/MfP5eM352toBlmtY1O
+         Htg41e78/7dPOh+MaTGXJFQsIEwfj+jQuyHyg6Ba7ZlmeNjRvB20TdOTbkcTNsgatlCh
+         KcripggX7Ihv5BAizcujyQ2caIVghYCDwHAIZeTnJtK3TYFCRE3vPb/zB8R3AdEi3Pae
+         Q6hzSSK+8MTlmVXaagrR/39b+SEYzgkdadNjWokCMmvesRxAC29qx5mcDORKqQ6GqC4/
+         IRCxYFwql9X76ICMmAcqOnH/Bqah8+ekszM9PNTxapwj5F2boX/hwcRg+UQ5+o2QfJmt
+         /feg==
+X-Gm-Message-State: AC+VfDxvhneEdjOF6uPmiaRfQgkchrOgRrMwgrhIJZ5vMYwWYOuODr+i
+	wr5rcfnrMIRTXMzVTgP38MRUZA==
+X-Google-Smtp-Source: ACHHUZ48+nKNEQNTWy8wtaVIu/9suMpGBPu4hlCMZiSBnV9dLjpuiCkwZXnEA6HwkSqHl0CVdHIYlw==
+X-Received: by 2002:a05:6358:c407:b0:11b:3e4d:a203 with SMTP id ff7-20020a056358c40700b0011b3e4da203mr614356rwb.23.1686078517796;
+        Tue, 06 Jun 2023 12:08:37 -0700 (PDT)
+Received: from ziepe.ca ([206.223.160.26])
+        by smtp.gmail.com with ESMTPSA id f36-20020a631f24000000b0051f14839bf3sm7777289pgf.34.2023.06.06.12.08.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jun 2023 12:03:35 -0700 (PDT)
-Date: Tue, 6 Jun 2023 15:03:31 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
+        Tue, 06 Jun 2023 12:08:37 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.95)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1q6c2k-0030xL-9k;
+	Tue, 06 Jun 2023 16:08:34 -0300
+Date: Tue, 6 Jun 2023 16:08:34 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Peter Xu <peterx@redhat.com>
 Subject: Re: [PATCH 05/12] powerpc: add pte_free_defer() for pgtables sharing
  page
-Message-ID: <ZH+DAxLhIYpTlIFc@x1n>
+Message-ID: <ZH+EMp9RuEVOjVNb@ziepe.ca>
 References: <35e983f5-7ed3-b310-d949-9ae8b130cdab@google.com>
  <28eb289f-ea2c-8eb9-63bb-9f7d7b9ccc11@google.com>
  <ZHSwWgLWaEd+zi/g@casper.infradead.org>
  <ZHn6n5eVTsr4Wl8x@ziepe.ca>
  <4df4909f-f5dd-6f94-9792-8f2949f542b3@google.com>
  <ZH95oobIqN0WO5MK@ziepe.ca>
+ <ZH+DAxLhIYpTlIFc@x1n>
 MIME-Version: 1.0
-In-Reply-To: <ZH95oobIqN0WO5MK@ziepe.ca>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <ZH+DAxLhIYpTlIFc@x1n>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,51 +93,53 @@ Cc: Miaohe Lin <linmiaohe@huawei.com>, David Hildenbrand <david@redhat.com>, Pet
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 06, 2023 at 03:23:30PM -0300, Jason Gunthorpe wrote:
-> On Mon, Jun 05, 2023 at 08:40:01PM -0700, Hugh Dickins wrote:
+On Tue, Jun 06, 2023 at 03:03:31PM -0400, Peter Xu wrote:
+> On Tue, Jun 06, 2023 at 03:23:30PM -0300, Jason Gunthorpe wrote:
+> > On Mon, Jun 05, 2023 at 08:40:01PM -0700, Hugh Dickins wrote:
+> > 
+> > > diff --git a/arch/powerpc/mm/pgtable-frag.c b/arch/powerpc/mm/pgtable-frag.c
+> > > index 20652daa1d7e..e4f58c5fc2ac 100644
+> > > --- a/arch/powerpc/mm/pgtable-frag.c
+> > > +++ b/arch/powerpc/mm/pgtable-frag.c
+> > > @@ -120,3 +120,54 @@ void pte_fragment_free(unsigned long *table, int kernel)
+> > >  		__free_page(page);
+> > >  	}
+> > >  }
+> > > +
+> > > +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> > > +#define PTE_FREE_DEFERRED 0x10000 /* beyond any PTE_FRAG_NR */
+> > > +
+> > > +static void pte_free_now(struct rcu_head *head)
+> > > +{
+> > > +	struct page *page;
+> > > +	int refcount;
+> > > +
+> > > +	page = container_of(head, struct page, rcu_head);
+> > > +	refcount = atomic_sub_return(PTE_FREE_DEFERRED - 1,
+> > > +				     &page->pt_frag_refcount);
+> > > +	if (refcount < PTE_FREE_DEFERRED) {
+> > > +		pte_fragment_free((unsigned long *)page_address(page), 0);
+> > > +		return;
+> > > +	}
+> > 
+> > From what I can tell power doesn't recycle the sub fragment into any
+> > kind of free list. It just waits for the last fragment to be unused
+> > and then frees the whole page.
+> > 
+> > So why not simply go into pte_fragment_free() and do the call_rcu directly:
+> > 
+> > 	BUG_ON(atomic_read(&page->pt_frag_refcount) <= 0);
+> > 	if (atomic_dec_and_test(&page->pt_frag_refcount)) {
+> > 		if (!kernel)
+> > 			pgtable_pte_page_dtor(page);
+> > 		call_rcu(&page->rcu_head, free_page_rcu)
 > 
-> > diff --git a/arch/powerpc/mm/pgtable-frag.c b/arch/powerpc/mm/pgtable-frag.c
-> > index 20652daa1d7e..e4f58c5fc2ac 100644
-> > --- a/arch/powerpc/mm/pgtable-frag.c
-> > +++ b/arch/powerpc/mm/pgtable-frag.c
-> > @@ -120,3 +120,54 @@ void pte_fragment_free(unsigned long *table, int kernel)
-> >  		__free_page(page);
-> >  	}
-> >  }
-> > +
-> > +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> > +#define PTE_FREE_DEFERRED 0x10000 /* beyond any PTE_FRAG_NR */
-> > +
-> > +static void pte_free_now(struct rcu_head *head)
-> > +{
-> > +	struct page *page;
-> > +	int refcount;
-> > +
-> > +	page = container_of(head, struct page, rcu_head);
-> > +	refcount = atomic_sub_return(PTE_FREE_DEFERRED - 1,
-> > +				     &page->pt_frag_refcount);
-> > +	if (refcount < PTE_FREE_DEFERRED) {
-> > +		pte_fragment_free((unsigned long *)page_address(page), 0);
-> > +		return;
-> > +	}
-> 
-> From what I can tell power doesn't recycle the sub fragment into any
-> kind of free list. It just waits for the last fragment to be unused
-> and then frees the whole page.
-> 
-> So why not simply go into pte_fragment_free() and do the call_rcu directly:
-> 
-> 	BUG_ON(atomic_read(&page->pt_frag_refcount) <= 0);
-> 	if (atomic_dec_and_test(&page->pt_frag_refcount)) {
-> 		if (!kernel)
-> 			pgtable_pte_page_dtor(page);
-> 		call_rcu(&page->rcu_head, free_page_rcu)
+> We need to be careful on the lock being freed in pgtable_pte_page_dtor(),
+> in Hugh's series IIUC we need the spinlock being there for the rcu section
+> alongside the page itself.  So even if to do so we'll need to also rcu call 
+> pgtable_pte_page_dtor() when needed.
 
-We need to be careful on the lock being freed in pgtable_pte_page_dtor(),
-in Hugh's series IIUC we need the spinlock being there for the rcu section
-alongside the page itself.  So even if to do so we'll need to also rcu call 
-pgtable_pte_page_dtor() when needed.
+Er yes, I botched that, the dtor and the free_page should be in a the
+rcu callback function
 
--- 
-Peter Xu
-
+Jason
