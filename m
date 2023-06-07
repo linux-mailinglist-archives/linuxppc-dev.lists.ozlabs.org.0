@@ -2,74 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C13E725686
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Jun 2023 09:56:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96D51725771
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Jun 2023 10:23:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QbfmN5frYz3cfh
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Jun 2023 17:56:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QbgMc0j7gz3dxM
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Jun 2023 18:23:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=oGPsGi/k;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tCqX+kyH;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=oGPsGi/k;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tCqX+kyH;
 	dkim-atps=neutral
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QbflY3CZ5z3bNn
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Jun 2023 17:55:21 +1000 (AEST)
-Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-651e298be3fso6917962b3a.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jun 2023 00:55:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686124518; x=1688716518;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xSpR+cWU04iRIoIReN5SfCnN4k/gkf4T7uvt8nSNQ5w=;
-        b=oGPsGi/kB7XwSqq7iU3ikH7ANmaWp5fJfzu8ttnXixDBJMsgJeNgTvhazoLKJcnlop
-         /LxmwemCky3Q0zQOcXRByVyfE9voZr0baEM1blWDytpx2pz7p3FMGnj1O8Xxy+OMT5gx
-         yc+kvv/xw0rLy33UFvOva+ITsP9ALgsd18VItFkqHSaRaZb3PTAmApGbbJAEZF/qjjkm
-         gwSiWzE+YRTGnZulkCIx2l2Q4DIqujehnjBGDnpHpldrFTzVWy01kc2oExZ3OKvuDSA+
-         ZeYDzOEhk/Era3l/lcTJ+f2IV4/D80QcDwYEdufdt99YTwsr6+PmaMISnFMtvVUF0Qww
-         h8yQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686124518; x=1688716518;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=xSpR+cWU04iRIoIReN5SfCnN4k/gkf4T7uvt8nSNQ5w=;
-        b=kptNzQrZvoZF+eJKok27qdA/+px2ex8Hls+5eR8+rQmMAReYoRAh56wVPlw9ZL1Uz9
-         Ca4pdaeD41YKSXIScucKWI0kHMOpht3f5EgOBCD1vrgu4od2ZMnggUMsYFBxdRfuJAz7
-         SswXQdw2s/f/OkuVqLB/0H2DzmTePzxL4QulTPSryKkurQz9RKtW7aNOzney8LgiNqkC
-         4d20r/+igwaf8oBaxMF5rvEIDt0or7VKwkfKSkcfrun4pKsyoYc6b1njcH7Lhpa74pMk
-         FmnvS876YsnIoaz+NsI0mVW4PVgQnp3untgwYcpvZCUkhRuKX5BRhp1HFW8PXIViJiIQ
-         qBRQ==
-X-Gm-Message-State: AC+VfDzbOS6LqlpLv1y1ef1KabtaKQ9Kjlcmoe44dIutQNY3RNLl3cmd
-	rxb22Eu47I1WN82DWR3AZVQ=
-X-Google-Smtp-Source: ACHHUZ6F0FHKx24DZo61vm3joxKHGiju4BRrc09r1K50G+vG6nnk2V5FN7x8IhdjXhh3SJHP4o0k6w==
-X-Received: by 2002:a05:6a20:244c:b0:117:1c72:2f06 with SMTP id t12-20020a056a20244c00b001171c722f06mr2867153pzc.38.1686124518163;
-        Wed, 07 Jun 2023 00:55:18 -0700 (PDT)
-Received: from localhost (193-116-206-233.tpgi.com.au. [193.116.206.233])
-        by smtp.gmail.com with ESMTPSA id b10-20020a17090a12ca00b00246cc751c6bsm743437pjg.46.2023.06.07.00.55.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Jun 2023 00:55:17 -0700 (PDT)
-Mime-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QbgLk3WfVz3bkn
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Jun 2023 18:22:21 +1000 (AEST)
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3578D9p8005900;
+	Wed, 7 Jun 2023 08:22:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type : subject :
+ from : in-reply-to : date : cc : message-id : references : to :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=f4FWAMItm3ijlORKMfEi9nJdL7hEw2f1KcKOhyus33E=;
+ b=tCqX+kyHFffYqyr7UtcIw9MJmLNYBGwY6RoVBBM3NsDh/b8Eydbxhg4VUYomO871rhp7
+ WyD7yxAUMwi25lossdYWH4RHp8uGVz2Ta89S80OqK25+Jj0DV7a5/kUWW/CebHo7hLmI
+ m3lgNTRPadxpua2zr+7nFl4+ntbHN+UDhyRaP7dumwa5A//WELDlMcFinqozkUxSjOVT
+ 4GeVt8EJcBkClFSNn6RtbEZAKXIZTOfLSHCTxjdDc1a/lt676WtjeUxmTz3vZ93c3x34
+ EgVqHcQtYCMmEaPtycaqGQ8BVlUSydkFrtRDjXmyBjzUZM+SB7/ASq39xmy5EyeBfy8z kg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r2p6c878f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Jun 2023 08:22:17 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3578DEvJ006342;
+	Wed, 7 Jun 2023 08:22:17 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r2p6c877p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Jun 2023 08:22:17 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3576bo19008458;
+	Wed, 7 Jun 2023 08:22:15 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3r2a78r9sp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Jun 2023 08:22:14 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3578MCwj60162514
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 7 Jun 2023 08:22:12 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 95B932004E;
+	Wed,  7 Jun 2023 08:22:12 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F0B242004F;
+	Wed,  7 Jun 2023 08:22:11 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.109.241.192])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  7 Jun 2023 08:22:11 +0000 (GMT)
+Content-Type: text/plain;
+	charset=us-ascii
+Subject: Re: [PATCH] powerpc/64s/radix: Fix exit lazy tlb mm switch with irqs
+ enabled
+From: Sachin Sant <sachinp@linux.ibm.com>
+In-Reply-To: <20230607005601.583293-1-npiggin@gmail.com>
+Date: Wed, 7 Jun 2023 13:52:00 +0530
+Message-Id: <D247AC57-F552-4BDE-832E-C8DE2E8D684D@linux.ibm.com>
+References: <20230607005601.583293-1-npiggin@gmail.com>
+To: Nicholas Piggin <npiggin@gmail.com>
+X-Mailer: Apple Mail (2.3731.600.7)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: m1jwzGMP4Rxf_nt4qRWy9W5yvNuhd5ec
+X-Proofpoint-ORIG-GUID: r92ErdPmdFfqWiYraXGE2NOcxcPVtZmn
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 07 Jun 2023 17:55:11 +1000
-Message-Id: <CT6996Z3V83E.21I51JGIDHPOE@wheely>
-Subject: Re: [RFC PATCH v2 2/6] KVM: PPC: Add fpr getters and setters
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Jordan Niethe" <jpn@linux.vnet.ibm.com>,
- <linuxppc-dev@lists.ozlabs.org>
-X-Mailer: aerc 0.14.0
-References: <20230605064848.12319-1-jpn@linux.vnet.ibm.com>
- <20230605064848.12319-3-jpn@linux.vnet.ibm.com>
-In-Reply-To: <20230605064848.12319-3-jpn@linux.vnet.ibm.com>
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-07_05,2023-06-06_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ priorityscore=1501 bulkscore=0 clxscore=1011 malwarescore=0 spamscore=0
+ mlxscore=0 phishscore=0 mlxlogscore=803 suspectscore=0 impostorscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306070065
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,184 +100,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, kautuk.consul.1980@gmail.com, kvm@vger.kernel.org, kvm-ppc@vger.kernel.org, sbhat@linux.ibm.com, vaibhav@linux.ibm.com
+Cc: Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon Jun 5, 2023 at 4:48 PM AEST, Jordan Niethe wrote:
-> Add wrappers for fpr registers to prepare for supporting PAPR nested
-> guests.
->
-> Signed-off-by: Jordan Niethe <jpn@linux.vnet.ibm.com>
+
+
+> Reported-by: Sachin Sant <sachinp@linux.ibm.com>
+> Link: https://lore.kernel.org/linuxppc-dev/87a5xcgopc.fsf@mail.lhotse/T/#=
+m105488939d0cd9f980978ed2fdeeb89bf731e673
+> Fixes: a665eec0a22e1 ("powerpc/64s/radix: Fix mm_cpumask trimming race vs=
+ kthread_use_mm")
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->  arch/powerpc/include/asm/kvm_book3s.h | 31 +++++++++++++++++++++++++++
->  arch/powerpc/include/asm/kvm_booke.h  | 10 +++++++++
->  arch/powerpc/kvm/book3s.c             | 16 +++++++-------
->  arch/powerpc/kvm/emulate_loadstore.c  |  2 +-
->  arch/powerpc/kvm/powerpc.c            | 22 +++++++++----------
->  5 files changed, 61 insertions(+), 20 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/kvm_book3s.h b/arch/powerpc/include=
-/asm/kvm_book3s.h
-> index 4e91f54a3f9f..a632e79639f0 100644
-> --- a/arch/powerpc/include/asm/kvm_book3s.h
-> +++ b/arch/powerpc/include/asm/kvm_book3s.h
-> @@ -413,6 +413,37 @@ static inline ulong kvmppc_get_fault_dar(struct kvm_=
-vcpu *vcpu)
->  	return vcpu->arch.fault_dar;
->  }
-> =20
-> +static inline u64 kvmppc_get_fpr(struct kvm_vcpu *vcpu, int i)
-> +{
-> +	return vcpu->arch.fp.fpr[i][TS_FPROFFSET];
-> +}
-> +
-> +static inline void kvmppc_set_fpr(struct kvm_vcpu *vcpu, int i, u64 val)
-> +{
-> +	vcpu->arch.fp.fpr[i][TS_FPROFFSET] =3D val;
-> +}
-> +
-> +static inline u64 kvmppc_get_fpscr(struct kvm_vcpu *vcpu)
-> +{
-> +	return vcpu->arch.fp.fpscr;
-> +}
-> +
-> +static inline void kvmppc_set_fpscr(struct kvm_vcpu *vcpu, u64 val)
-> +{
-> +	vcpu->arch.fp.fpscr =3D val;
-> +}
-> +
-> +
-> +static inline u64 kvmppc_get_vsx_fpr(struct kvm_vcpu *vcpu, int i, int j=
-)
-> +{
-> +	return vcpu->arch.fp.fpr[i][j];
-> +}
-> +
-> +static inline void kvmppc_set_vsx_fpr(struct kvm_vcpu *vcpu, int i, int =
-j, u64 val)
-> +{
-> +	vcpu->arch.fp.fpr[i][j] =3D val;
-> +}
-> +
->  #define BOOK3S_WRAPPER_SET(reg, size)					\
->  static inline void kvmppc_set_##reg(struct kvm_vcpu *vcpu, u##size val)	=
-\
->  {									\
-> diff --git a/arch/powerpc/include/asm/kvm_booke.h b/arch/powerpc/include/=
-asm/kvm_booke.h
-> index 0c3401b2e19e..7c3291aa8922 100644
-> --- a/arch/powerpc/include/asm/kvm_booke.h
-> +++ b/arch/powerpc/include/asm/kvm_booke.h
-> @@ -89,6 +89,16 @@ static inline ulong kvmppc_get_pc(struct kvm_vcpu *vcp=
-u)
->  	return vcpu->arch.regs.nip;
->  }
-> =20
-> +static inline void kvmppc_set_fpr(struct kvm_vcpu *vcpu, int i, u64 val)
-> +{
-> +	vcpu->arch.fp.fpr[i][TS_FPROFFSET] =3D val;
-> +}
-> +
-> +static inline u64 kvmppc_get_fpr(struct kvm_vcpu *vcpu, int i)
-> +{
-> +	return vcpu->arch.fp.fpr[i][TS_FPROFFSET];
-> +}
-> +
->  #ifdef CONFIG_BOOKE
->  static inline ulong kvmppc_get_fault_dar(struct kvm_vcpu *vcpu)
->  {
-> diff --git a/arch/powerpc/kvm/book3s.c b/arch/powerpc/kvm/book3s.c
-> index 2fe31b518886..6cd20ab9e94e 100644
-> --- a/arch/powerpc/kvm/book3s.c
-> +++ b/arch/powerpc/kvm/book3s.c
-> @@ -636,17 +636,17 @@ int kvmppc_get_one_reg(struct kvm_vcpu *vcpu, u64 i=
-d,
->  			break;
->  		case KVM_REG_PPC_FPR0 ... KVM_REG_PPC_FPR31:
->  			i =3D id - KVM_REG_PPC_FPR0;
-> -			*val =3D get_reg_val(id, VCPU_FPR(vcpu, i));
-> +			*val =3D get_reg_val(id, kvmppc_get_fpr(vcpu, i));
->  			break;
->  		case KVM_REG_PPC_FPSCR:
-> -			*val =3D get_reg_val(id, vcpu->arch.fp.fpscr);
-> +			*val =3D get_reg_val(id, kvmppc_get_fpscr(vcpu));
->  			break;
->  #ifdef CONFIG_VSX
->  		case KVM_REG_PPC_VSR0 ... KVM_REG_PPC_VSR31:
->  			if (cpu_has_feature(CPU_FTR_VSX)) {
->  				i =3D id - KVM_REG_PPC_VSR0;
-> -				val->vsxval[0] =3D vcpu->arch.fp.fpr[i][0];
-> -				val->vsxval[1] =3D vcpu->arch.fp.fpr[i][1];
-> +				val->vsxval[0] =3D kvmppc_get_vsx_fpr(vcpu, i, 0);
-> +				val->vsxval[1] =3D kvmppc_get_vsx_fpr(vcpu, i, 1);
->  			} else {
->  				r =3D -ENXIO;
->  			}
-> @@ -724,7 +724,7 @@ int kvmppc_set_one_reg(struct kvm_vcpu *vcpu, u64 id,
->  			break;
->  		case KVM_REG_PPC_FPR0 ... KVM_REG_PPC_FPR31:
->  			i =3D id - KVM_REG_PPC_FPR0;
-> -			VCPU_FPR(vcpu, i) =3D set_reg_val(id, *val);
-> +			kvmppc_set_fpr(vcpu, i, set_reg_val(id, *val));
->  			break;
->  		case KVM_REG_PPC_FPSCR:
->  			vcpu->arch.fp.fpscr =3D set_reg_val(id, *val);
-> @@ -733,8 +733,8 @@ int kvmppc_set_one_reg(struct kvm_vcpu *vcpu, u64 id,
->  		case KVM_REG_PPC_VSR0 ... KVM_REG_PPC_VSR31:
->  			if (cpu_has_feature(CPU_FTR_VSX)) {
->  				i =3D id - KVM_REG_PPC_VSR0;
-> -				vcpu->arch.fp.fpr[i][0] =3D val->vsxval[0];
-> -				vcpu->arch.fp.fpr[i][1] =3D val->vsxval[1];
-> +				kvmppc_set_vsx_fpr(vcpu, i, 0, val->vsxval[0]);
-> +				kvmppc_set_vsx_fpr(vcpu, i, 1, val->vsxval[1]);
->  			} else {
->  				r =3D -ENXIO;
->  			}
-> @@ -765,7 +765,7 @@ int kvmppc_set_one_reg(struct kvm_vcpu *vcpu, u64 id,
->  			break;
->  #endif /* CONFIG_KVM_XIVE */
->  		case KVM_REG_PPC_FSCR:
-> -			vcpu->arch.fscr =3D set_reg_val(id, *val);
-> +			kvmppc_set_fpscr(vcpu, set_reg_val(id, *val));
->  			break;
->  		case KVM_REG_PPC_TAR:
->  			kvmppc_set_tar(vcpu, set_reg_val(id, *val));
-> diff --git a/arch/powerpc/kvm/emulate_loadstore.c b/arch/powerpc/kvm/emul=
-ate_loadstore.c
-> index 059c08ae0340..e6e66c3792f8 100644
-> --- a/arch/powerpc/kvm/emulate_loadstore.c
-> +++ b/arch/powerpc/kvm/emulate_loadstore.c
-> @@ -250,7 +250,7 @@ int kvmppc_emulate_loadstore(struct kvm_vcpu *vcpu)
->  				vcpu->arch.mmio_sp64_extend =3D 1;
-> =20
->  			emulated =3D kvmppc_handle_store(vcpu,
-> -					VCPU_FPR(vcpu, op.reg), size, 1);
-> +					kvmppc_get_fpr(vcpu, op.reg), size, 1);
-> =20
->  			if ((op.type & UPDATE) && (emulated !=3D EMULATE_FAIL))
->  				kvmppc_set_gpr(vcpu, op.update_reg, op.ea);
-> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-> index ca9793c3d437..7f913e68342a 100644
-> --- a/arch/powerpc/kvm/powerpc.c
-> +++ b/arch/powerpc/kvm/powerpc.c
-> @@ -938,7 +938,7 @@ static inline void kvmppc_set_vsr_dword(struct kvm_vc=
-pu *vcpu,
->  		val.vsxval[offset] =3D gpr;
->  		VCPU_VSX_VR(vcpu, index - 32) =3D val.vval;
->  	} else {
-> -		VCPU_VSX_FPR(vcpu, index, offset) =3D gpr;
-> +		kvmppc_set_vsx_fpr(vcpu, index, offset, gpr);
->  	}
->  }
-> =20
+> This sounds worse than it probably is, radix can likely tolerate an
+> interrupt hitting in mm switch, and the active_mm update may not be racy
+> in practice either. Still be good to backport it because I'm not 100%
+> sure of that.
+>=20
+> This path can be stressed by reducing tlb_mm_cpumask_trim_timer (e.g.,
+> to 3).
+>=20
+> Thanks,
+> Nick
+>=20
+> arch/powerpc/mm/book3s64/radix_tlb.c | 10 +++++++++-
+> 1 file changed, 9 insertions(+), 1 deletion(-)
+>=20
+This patch fixes the reported warning.
 
-Is there a particular reason some reg sets are broken into their own
-patches? Looking at this hunk you think the VR one got missed, but it's
-in its own patch.
+Ran powerpc selftests (with default value for tlb_mm_cpumask_trim_timer as
+well as tlb_mm_cpumask_trim_timer=3D3 ). No new errors were observed.
 
-Not really a big deal but I wouldn't mind them all in one patch. Or at
-least the FP/VR/VSR ine one since they're quite regular and similar.
+Tested-by: Sachin Sant <sachinp@linux.ibm.com>
 
-Thanks,
-Nick
+- Sachin=
