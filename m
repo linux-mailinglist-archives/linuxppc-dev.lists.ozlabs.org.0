@@ -1,74 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD9DE72733C
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 01:41:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CA177273DB
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 02:50:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qc3ll3S1kz3f5K
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 09:41:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qc5Gh5wppz3f5l
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 10:50:20 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=MF3rcwps;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=iXTEGvg/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::82d; helo=mail-qt1-x82d.google.com; envelope-from=dianders@chromium.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::129; helo=mail-il1-x129.google.com; envelope-from=dianders@chromium.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=MF3rcwps;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=iXTEGvg/;
 	dkim-atps=neutral
-Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
+Received: from mail-il1-x129.google.com (mail-il1-x129.google.com [IPv6:2607:f8b0:4864:20::129])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qc3kq5flsz2yyT
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jun 2023 09:41:06 +1000 (AEST)
-Received: by mail-qt1-x82d.google.com with SMTP id d75a77b69052e-3f805551a19so54871cf.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jun 2023 16:41:06 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qc5Fn1pb5z3dtG
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jun 2023 10:49:30 +1000 (AEST)
+Received: by mail-il1-x129.google.com with SMTP id e9e14a558f8ab-33d0b7114a9so10644505ab.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jun 2023 17:49:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1686181262; x=1688773262;
+        d=chromium.org; s=google; t=1686185367; x=1688777367;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GavxFaHwlTnRx3gt9uObRrogsyEG4oEATw/XGEuAuMI=;
-        b=MF3rcwps092kQdXF+gJCAw+MDvuPEGHWOXrUNjX8rWWcA3g5rF/5flgdBmwHIOwWl8
-         vX64np8SLgujL2pdH6JL2UZSueG46m0uCKZRpzICyAq5axfAOmsKNsUPDHjl4ntJiLWL
-         3VTfPlQBagdwJr2XHyiZnHVAquqOymSFNnSLA=
+        bh=nhl3RV14fXn8RdG370rcvuPNBbtc0Bpx0+NmOZMVtZc=;
+        b=iXTEGvg/ILHFZ4MmctWZrcsjVwX8MURaCUVKSgPXQ4f9X0AhamZU9vmta1Ned9mTP3
+         6D9QPRXrJjgLtL5RxnlXzAhQZ67A8838Hh98Eq4zkBKEmPCImr42n3zz6cZq6DNGLyeD
+         uScK4Z7i3X+PqwzuHBypvz+xsyH0yewKYaIE4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686181262; x=1688773262;
+        d=1e100.net; s=20221208; t=1686185367; x=1688777367;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=GavxFaHwlTnRx3gt9uObRrogsyEG4oEATw/XGEuAuMI=;
-        b=CFLX6+NV3VfuVO+pzftOGsJKVAiAAfZj7mbyOYpO3PpWebo1pNe/mrYJbuBJC34E3y
-         v4vgGHskR5o3+GWGj2TwpdQz3FJSvVw7Evj7kdz9ykA1ZEDJfYKfL6O7dSVTwHn54b8+
-         9YAhwqFMm1fApdUYRmKnK8izFaFLJdhG7aSY33Gc+FkKDnZDaSZYXOPo5n87Rf6/GQm1
-         Tnux4pp7m/D2FY0ZMyLy5rHlI6mmIDyuMIevxFymLDuhEUR7ykrk4a4e7Z3/J8Blp8wA
-         C83fPzHS2NzFKDCRWohrjkWWeKK1ZAmTDsiRVuO0PsKCRWmu+8+DWFiLCwgptpJNz1/p
-         rYhw==
-X-Gm-Message-State: AC+VfDyS2CzOMpFl6uY7Doy6/dlABR2LmUVhxSsSNTODET+cHyymCkAT
-	6SceW2zmaygzXi5wQ+TRbbw0ViVjRZ7naEZPSAg=
-X-Google-Smtp-Source: ACHHUZ44xVCqQqisnydZ1iLw6T8cZSl2JRpuSa5dK7LLcGd91AJl8KazqU7KYnXN0DdNep5vR34yLg==
-X-Received: by 2002:a05:622a:58a:b0:3f8:6bdc:3cb with SMTP id c10-20020a05622a058a00b003f86bdc03cbmr4653343qtb.17.1686181262628;
-        Wed, 07 Jun 2023 16:41:02 -0700 (PDT)
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com. [209.85.160.171])
-        by smtp.gmail.com with ESMTPSA id o24-20020ac86998000000b003f6b58b986fsm288652qtq.41.2023.06.07.16.41.02
+        bh=nhl3RV14fXn8RdG370rcvuPNBbtc0Bpx0+NmOZMVtZc=;
+        b=f1IFqbzqMSGa2jjLMiPpChBIDNAUCVViK4k7Gdlaa9Xd1d/oGP0pOAjydUaiAjx2B8
+         s39PdnchX15nsxAKIn7+wzCj5n84Xr/+HJbh/qK9u6QKdswiaaQJfgFaMv9tqH/ulEYs
+         ulzmZEef3R3lIlhc0ctuyQtoUOr8pc7GU+VomeN1eVON9cSbexKHPdxRBR29SwJ4w9iV
+         01zgbgeULE/gvtbVTTREKxD0Nh4lEmw1SziEsaW4Qm8/nlz98SxB2DltOSZM+BtPbJac
+         bw/c015Jrcul2jN2Ih94NkZEzZKuvOYa5s+wo3g04qou/o/BckjqfjxDlMbdZRkd6Qz0
+         sMTg==
+X-Gm-Message-State: AC+VfDxP3OdHnHmo1dXcHurlaWufjmFVITovMH7rtR8Ljy/pwqHfacSB
+	EsTFUnl5zZnivZ2tQE8fkBbcJUF8xiEwAukr180=
+X-Google-Smtp-Source: ACHHUZ4tvFx5y62BU7wPGs9dBTsSn42tQnPIsM0nm0HYzeZiV/RPAjy3OcX2zth2Icc60bEZVmnUQw==
+X-Received: by 2002:a92:dacb:0:b0:33e:5113:577b with SMTP id o11-20020a92dacb000000b0033e5113577bmr3390765ilq.13.1686185366788;
+        Wed, 07 Jun 2023 17:49:26 -0700 (PDT)
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com. [209.85.214.173])
+        by smtp.gmail.com with ESMTPSA id n9-20020aa78a49000000b0065e279c5c2csm4435168pfa.181.2023.06.07.17.49.26
         for <linuxppc-dev@lists.ozlabs.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Jun 2023 16:41:02 -0700 (PDT)
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-3f9c60bc99cso135321cf.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jun 2023 16:41:02 -0700 (PDT)
-X-Received: by 2002:a5e:a611:0:b0:777:aa56:f5e9 with SMTP id
- q17-20020a5ea611000000b00777aa56f5e9mr11095206ioi.16.1686180931677; Wed, 07
- Jun 2023 16:35:31 -0700 (PDT)
+        Wed, 07 Jun 2023 17:49:26 -0700 (PDT)
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1b1b51ec3e9so75005ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jun 2023 17:49:26 -0700 (PDT)
+X-Received: by 2002:a92:c54d:0:b0:33e:6b65:6f78 with SMTP id
+ a13-20020a92c54d000000b0033e6b656f78mr16489ilj.27.1686181007418; Wed, 07 Jun
+ 2023 16:36:47 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230607152432.5435-1-pmladek@suse.com> <20230607152432.5435-4-pmladek@suse.com>
-In-Reply-To: <20230607152432.5435-4-pmladek@suse.com>
+References: <20230607152432.5435-1-pmladek@suse.com> <20230607152432.5435-5-pmladek@suse.com>
+In-Reply-To: <20230607152432.5435-5-pmladek@suse.com>
 From: Doug Anderson <dianders@chromium.org>
-Date: Wed, 7 Jun 2023 16:35:19 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=XvUAeKFAcOD_xaT2to45=CCiKJMRbi-uxgrZ4mWN7hZg@mail.gmail.com>
-Message-ID: <CAD=FV=XvUAeKFAcOD_xaT2to45=CCiKJMRbi-uxgrZ4mWN7hZg@mail.gmail.com>
-Subject: Re: [PATCH 3/7] watchdog/hardlockup: Declare arch_touch_nmi_watchdog()
- only in linux/nmi.h
+Date: Wed, 7 Jun 2023 16:36:35 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=VV3Y7KoZWPtZfmfRsUCftAgo_CLRDazrYSgbR2XJKf=g@mail.gmail.com>
+Message-ID: <CAD=FV=VV3Y7KoZWPtZfmfRsUCftAgo_CLRDazrYSgbR2XJKf=g@mail.gmail.com>
+Subject: Re: [PATCH 4/7] watchdog/hardlockup: Enable HAVE_NMI_WATCHDOG only on sparc64
 To: Petr Mladek <pmladek@suse.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -92,59 +91,106 @@ Hi,
 On Wed, Jun 7, 2023 at 8:25=E2=80=AFAM Petr Mladek <pmladek@suse.com> wrote=
 :
 >
-> arch_touch_nmi_watchdog() needs a different implementation for various
-> hardlockup detector implementations. And it does nothing when
-> any hardlockup detector is not build at all.
+> diff --git a/arch/Kconfig b/arch/Kconfig
+> index 13c6e596cf9e..57f15babe188 100644
+> --- a/arch/Kconfig
+> +++ b/arch/Kconfig
+> @@ -404,10 +404,9 @@ config HAVE_NMI_WATCHDOG
+>         depends on HAVE_NMI
+>         bool
+>         help
+> -         The arch provides its own hardlockup detector implementation in=
+stead
+> +         Sparc64 provides its own hardlockup detector implementation ins=
+tead
+>           of the generic perf one.
 
-s/build/built/
+It's a little weird to document generic things with the specifics of
+the user. The exception, IMO, is when something is deprecated.
+Personally, it would sound less weird to me to say something like:
+
+The arch provides its own hardlockup detector implementation instead
+of the generic perf one. This is a deprecated thing to do and kept
+around until sparc64 provides a full hardlockup implementation or
+moves to generic code.
 
 
-> arch_touch_nmi_watchdog() has to be declared in linux/nmi.h. It is done
-> directly in this header file for the perf and buddy detectors. And it
-> is done in the included asm/linux.h for arch specific detectors.
->
-> The reason probably is that the arch specific variants build the code
-> using another conditions. For example, powerpc64/sparc64 builds the code
-> when CONFIG_PPC_WATCHDOG is enabled.
->
-> Another reason might be that these architectures define more functions
-> in asm/nmi.h anyway.
->
-> However the generic code actually knows the information. The config
-> variables HAVE_NMI_WATCHDOG and HAVE_HARDLOCKUP_DETECTOR_ARCH are used
-> to decide whether to build the buddy detector.
->
-> In particular, CONFIG_HARDLOCKUP_DETECTOR is set only when a generic
-> or arch-specific hardlockup detector is built. The only exception
-> is sparc64 which ignores the global HARDLOCKUP_DETECTOR switch.
->
-> The information about sparc64 is a bit complicated. The hardlockup
-> detector is built there when CONFIG_HAVE_NMI_WATCHDOG is set and
-> CONFIG_HAVE_HARDLOCKUP_DETECTOR_ARCH is not set.
->
-> People might wonder whether this change really makes things easier.
-> The motivation is:
->
->   + The current logic in linux/nmi.h is far from obvious.
->     For example, arch_touch_nmi_watchdog() is defined as {} when
->     neither CONFIG_HARDLOCKUP_DETECTOR_COUNTS_HRTIMER nor
->     CONFIG_HAVE_NMI_WATCHDOG is defined.
->
->   + The change synchronizes the checks in lib/Kconfig.debug and
->     in the generic code.
->
->   + It is a step that will help cleaning HAVE_NMI_WATCHDOG related
->     checks.
->
-> The change should not change the existing behavior.
->
-> Signed-off-by: Petr Mladek <pmladek@suse.com>
-> ---
->  arch/powerpc/include/asm/nmi.h |  2 --
->  arch/sparc/include/asm/nmi.h   |  1 -
->  include/linux/nmi.h            | 13 ++++++++++---
->  3 files changed, 10 insertions(+), 6 deletions(-)
+> diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+> index d201f5d3876b..4b4aa0f941f9 100644
+> --- a/lib/Kconfig.debug
+> +++ b/lib/Kconfig.debug
+> @@ -1050,15 +1050,13 @@ config HAVE_HARDLOCKUP_DETECTOR_BUDDY
+>  #      sparc64: has a custom implementation which is not using the commo=
+n
+>  #              hardlockup command line options and sysctl interface.
+>  #
+> -# Note that HAVE_NMI_WATCHDOG is used to distinguish the sparc64 specifi=
+c
+> -# implementaion. It is automatically enabled also for other arch-specifi=
+c
+> -# variants which set HAVE_HARDLOCKUP_DETECTOR_ARCH. It makes the check
+> -# of avaialable and supported variants quite tricky.
+> +# Note that HAVE_NMI_WATCHDOG is set when the sparc64 specific implement=
+ation
+> +# is used.
+>  #
+>  config HARDLOCKUP_DETECTOR
+>         bool "Detect Hard Lockups"
+> -       depends on DEBUG_KERNEL && !S390
+> -       depends on ((HAVE_HARDLOCKUP_DETECTOR_PERF || HAVE_HARDLOCKUP_DET=
+ECTOR_BUDDY) && !HAVE_NMI_WATCHDOG) || HAVE_HARDLOCKUP_DETECTOR_ARCH
+> +       depends on DEBUG_KERNEL && !S390 && !HAVE_NMI_WATCHDOG
+> +       depends on HAVE_HARDLOCKUP_DETECTOR_PERF || HAVE_HARDLOCKUP_DETEC=
+TOR_BUDDY || HAVE_HARDLOCKUP_DETECTOR_ARCH
 
-This looks right and is a nice cleanup.
+If you add the "!HAVE_NMI_WATCHDOG" as a dependency to
+HAVE_HARDLOCKUP_DETECTOR_BUDDY, as discussed in a previous patch, you
+can skip adding it here.
 
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
+
+>         imply HARDLOCKUP_DETECTOR_PERF
+>         imply HARDLOCKUP_DETECTOR_BUDDY
+>         select LOCKUP_DETECTOR
+> @@ -1079,7 +1077,7 @@ config HARDLOCKUP_DETECTOR_PREFER_BUDDY
+>         bool "Prefer the buddy CPU hardlockup detector"
+>         depends on HARDLOCKUP_DETECTOR
+>         depends on HAVE_HARDLOCKUP_DETECTOR_PERF && HAVE_HARDLOCKUP_DETEC=
+TOR_BUDDY
+> -       depends on !HAVE_NMI_WATCHDOG
+> +       depends on !HAVE_HARLOCKUP_DETECTOR_ARCH
+
+Don't need this. Architectures never are allowed to define
+HAVE_HARDLOCKUP_DETECTOR_PERF and HAVE_HARLOCKUP_DETECTOR_ARCH
+
+
+>         default n
+>         help
+>           Say Y here to prefer the buddy hardlockup detector over the per=
+f one.
+> @@ -1096,7 +1094,7 @@ config HARDLOCKUP_DETECTOR_PERF
+>         bool
+>         depends on HARDLOCKUP_DETECTOR
+>         depends on HAVE_HARDLOCKUP_DETECTOR_PERF && !HARDLOCKUP_DETECTOR_=
+PREFER_BUDDY
+> -       depends on !HAVE_NMI_WATCHDOG
+> +       depends on !HAVE_HARDLOCKUP_DETECTOR_ARCH
+
+Similarly, don't need this.
+
+
+>         select HARDLOCKUP_DETECTOR_COUNTS_HRTIMER
+>
+>  config HARDLOCKUP_DETECTOR_BUDDY
+> @@ -1104,7 +1102,7 @@ config HARDLOCKUP_DETECTOR_BUDDY
+>         depends on HARDLOCKUP_DETECTOR
+>         depends on HAVE_HARDLOCKUP_DETECTOR_BUDDY
+>         depends on !HAVE_HARDLOCKUP_DETECTOR_PERF || HARDLOCKUP_DETECTOR_=
+PREFER_BUDDY
+> -       depends on !HAVE_NMI_WATCHDOG
+> +       depends on !HAVE_HARDLOCKUP_DETECTOR_ARCH
+
+Similarly, don't need this.
+
+
+In general I don't object to splitting out HAVE_NMI_WATCHDOG from
+HAVE_HARDLOCKUP_DETECTOR_ARCH.
