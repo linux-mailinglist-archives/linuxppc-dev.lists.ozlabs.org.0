@@ -1,73 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15A3572732A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 01:38:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37BC7727333
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 01:39:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qc3h15zXTz3f17
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 09:38:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qc3hy6wKxz3fdT
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 09:39:30 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=fhWGMDaM;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=V96h5mLE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::d35; helo=mail-io1-xd35.google.com; envelope-from=dianders@chromium.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::d2f; helo=mail-io1-xd2f.google.com; envelope-from=dianders@chromium.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=fhWGMDaM;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=V96h5mLE;
 	dkim-atps=neutral
-Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
+Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com [IPv6:2607:f8b0:4864:20::d2f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qc3fj6Mvhz3f05
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jun 2023 09:37:33 +1000 (AEST)
-Received: by mail-io1-xd35.google.com with SMTP id ca18e2360f4ac-77865f63473so146358739f.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jun 2023 16:37:33 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qc3fr5lrXz3f83
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jun 2023 09:37:40 +1000 (AEST)
+Received: by mail-io1-xd2f.google.com with SMTP id ca18e2360f4ac-77807e43b7cso177295139f.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jun 2023 16:37:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1686181048; x=1688773048;
+        d=chromium.org; s=google; t=1686181056; x=1688773056;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vKF2b8Vjs6mvxh6WU02Nj8q7SFKUM+Iw8gQlZJ28woQ=;
-        b=fhWGMDaMcVfg40OW9dlJoBQPcu4wgXrQXZ/8qAicOyMvkmiIiS56CF+cMXPQJ6zypg
-         ajcitPXuiKED5i7ZsXKvGUM1A/vIE/51yw7R7J1xOEdVLv+z1dZxZKpqiUT32kQc7ZkV
-         7ytXy/MYcaLgy4TyhBRbZTwEuSPkuSQva1qjI=
+        bh=EN7QCcXv3GhQ50KYCOkYuc7v8/KdYJA2Wdn7x5ACZBs=;
+        b=V96h5mLEJYKOMV9BFNRVgNFaASJgFsdeMRqb3jswr4Wn2GHkVX33PPnOqoYfUIzwog
+         +uKfdgba9CkmAnJxDTjATMtDizd8LSpSjYbh4s7gaz62i5STy4pngNNkaj+LIUxN2yPz
+         XGaCAvvRdtGhT+TTTbgsqejeX8+dcfUhqNpv4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686181048; x=1688773048;
+        d=1e100.net; s=20221208; t=1686181056; x=1688773056;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vKF2b8Vjs6mvxh6WU02Nj8q7SFKUM+Iw8gQlZJ28woQ=;
-        b=Vwep+qbW6sGnfDaNGMVbmC/BMibVCzrHgs6uFv2aypL13MGmPtJYrgkiKUKGFiDVO7
-         x2gTX4PNXRWwwrAk2aSmKZ4CFdwEwMD7MTs8xMEShCbRx8VPa/FA/TEni3iPeNdY3iRf
-         7r9KzlzVeYT/Sn1cfViTsbz2epBPCq2g4rdfjylUOZWa/dF3hYAOL2sov9HY5gGv1f+w
-         /syS2stXzVB1xQkmYNH1kQYnMTzX5lMt3hGjovUeVpB1C9K+BhSYWWHaie2u3eqwI2sc
-         cg3thzeq/iUmdgT9GkhxSR5VSwbwmRGEKv5GgnK4YxyR4JA5MG5GFwvaTFtZHJaugHjr
-         N89Q==
-X-Gm-Message-State: AC+VfDxdaVUEWk06jFpPjOpxuP0UUb1ckvMPLAeuj/elIMrls4A0s4jv
-	ST69D/46p+thkYMzHc5oofabNDc55C1e51Y0VMw=
-X-Google-Smtp-Source: ACHHUZ7F/fWDdFcwue4LqF6+JmqPJqvl4sNi8VPR7mCD7wgdiRLY8BKy3x+J/8e4TO3Ffd6Qt5A1xA==
-X-Received: by 2002:a6b:6f15:0:b0:776:feaf:8cec with SMTP id k21-20020a6b6f15000000b00776feaf8cecmr7649780ioc.3.1686181048738;
-        Wed, 07 Jun 2023 16:37:28 -0700 (PDT)
-Received: from mail-il1-f172.google.com (mail-il1-f172.google.com. [209.85.166.172])
-        by smtp.gmail.com with ESMTPSA id h11-20020a056638062b00b0041d89b79fdasm3653837jar.20.2023.06.07.16.37.23
+        bh=EN7QCcXv3GhQ50KYCOkYuc7v8/KdYJA2Wdn7x5ACZBs=;
+        b=jA3utdZzN0Ceff50HmDyTlJHn2Z1t1d2pESWfUbGmtc6Pge3uSALyTtP7kURZzSzoB
+         H46aFfHgPHDUS6ogLFuWLrS3gUUVd0SYEM5M/Uu55eq99Bt+qxgLp55HZGPOi8czxakL
+         OzqVF7792+Y0XLVDMhW0TtbzoGPiuG+pAY2UTIaa2HE2xdCgPB6gXQIX1SUSF2hoOIas
+         J/LM6dFtCx4gMvUbvyUJYVRM8ewzVON7SfShA02mr5ssq7x1Osh+aRW2/3jynggXduf7
+         7n4wwtAOHbS5/d+j74Hj5IzhQ5BRsEumTbBePlY325cgmxLjnrR0g4bZhyJQ6V8D8RkP
+         noew==
+X-Gm-Message-State: AC+VfDyl7RHCm0sxr7oyQ7gbYtMq4tiOit7ji8TOI0ooBtC+xzxUlaS9
+	nclfpWIey779SBj7JvaZAKZXV4z2U1GemSf/gUc=
+X-Google-Smtp-Source: ACHHUZ7+TXiB2McgvSEJM1zhINF46MtYsaNCCgpyIH+ycWxwfAJBzePikY4iHkg9NvFKgEd9fB1UwQ==
+X-Received: by 2002:a6b:d818:0:b0:777:b3bf:c40d with SMTP id y24-20020a6bd818000000b00777b3bfc40dmr9628536iob.21.1686181056745;
+        Wed, 07 Jun 2023 16:37:36 -0700 (PDT)
+Received: from mail-il1-f180.google.com (mail-il1-f180.google.com. [209.85.166.180])
+        by smtp.gmail.com with ESMTPSA id t17-20020a6b0911000000b0076c872823b7sm4063951ioi.22.2023.06.07.16.37.32
         for <linuxppc-dev@lists.ozlabs.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Jun 2023 16:37:27 -0700 (PDT)
-Received: by mail-il1-f172.google.com with SMTP id e9e14a558f8ab-33d928a268eso54735ab.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jun 2023 16:37:23 -0700 (PDT)
-X-Received: by 2002:a92:cda5:0:b0:338:1993:1194 with SMTP id
- g5-20020a92cda5000000b0033819931194mr7952ild.2.1686181042584; Wed, 07 Jun
- 2023 16:37:22 -0700 (PDT)
+        Wed, 07 Jun 2023 16:37:34 -0700 (PDT)
+Received: by mail-il1-f180.google.com with SMTP id e9e14a558f8ab-33d928a268eso54835ab.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jun 2023 16:37:32 -0700 (PDT)
+X-Received: by 2002:a92:c54d:0:b0:33e:6b65:6f78 with SMTP id
+ a13-20020a92c54d000000b0033e6b656f78mr16557ilj.27.1686181051931; Wed, 07 Jun
+ 2023 16:37:31 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230607152432.5435-1-pmladek@suse.com> <20230607152432.5435-8-pmladek@suse.com>
-In-Reply-To: <20230607152432.5435-8-pmladek@suse.com>
+References: <20230607152432.5435-1-pmladek@suse.com>
+In-Reply-To: <20230607152432.5435-1-pmladek@suse.com>
 From: Doug Anderson <dianders@chromium.org>
-Date: Wed, 7 Jun 2023 16:37:10 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=U8CTttqz9jL6TockdKTd1dM1ApR4Nw+X3OF5tgoagfRQ@mail.gmail.com>
-Message-ID: <CAD=FV=U8CTttqz9jL6TockdKTd1dM1ApR4Nw+X3OF5tgoagfRQ@mail.gmail.com>
-Subject: Re: [PATCH 7/7] watchdog/hardlockup: Define HARDLOCKUP_DETECTOR_ARCH
+Date: Wed, 7 Jun 2023 16:37:20 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=W=xamTf6BUmp-Yg-SEEgE8GRKw6Pnfv6t=Hviywj-N-g@mail.gmail.com>
+Message-ID: <CAD=FV=W=xamTf6BUmp-Yg-SEEgE8GRKw6Pnfv6t=Hviywj-N-g@mail.gmail.com>
+Subject: Re: [PATCH 0/7] watchdog/hardlockup: Cleanup configuration of
+ hardlockup detectors
 To: Petr Mladek <pmladek@suse.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -88,25 +89,21 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 Hi,
 
-On Wed, Jun 7, 2023 at 8:26=E2=80=AFAM Petr Mladek <pmladek@suse.com> wrote=
+On Wed, Jun 7, 2023 at 8:25=E2=80=AFAM Petr Mladek <pmladek@suse.com> wrote=
 :
 >
-> @@ -1102,6 +1103,14 @@ config HARDLOCKUP_DETECTOR_BUDDY
->         depends on !HAVE_HARDLOCKUP_DETECTOR_ARCH
->         select HARDLOCKUP_DETECTOR_COUNTS_HRTIMER
+> Hi,
 >
-> +config HARDLOCKUP_DETECTOR_ARCH
-> +       bool
-> +       depends on HARDLOCKUP_DETECTOR
-> +       depends on HAVE_HARDLOCKUP_DETECTOR_ARCH
-> +       help
-> +         The arch-specific implementation of the hardlockup detector is
-> +         available.
+> this patchset is supposed to replace the last patch in the patchset clean=
+ing
+> up after introducing the buddy detector, see
+> https://lore.kernel.org/r/20230526184139.10.I821fe7609e57608913fe05abd8f3=
+5b343e7a9aae@changeid
 
-nit: "is available" makes it sound a bit too much like a "have"
-version. Maybe "The arch-specific implementation of the hardlockup
-detector will be used" or something like that?
+I will let Andrew chime in with his preference, but so far I haven't
+seen him dropping and/or modifying any patches that he's picked up in
+this series. I see that he's already picked up the patch that you're
+"replacing". I wonder if it would be easier for him if you just built
+atop that?
 
-Otherise:
-
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
+-Doug
