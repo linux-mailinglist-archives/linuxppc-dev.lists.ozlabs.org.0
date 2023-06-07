@@ -1,73 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCF62727343
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 01:44:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15A3572732A
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 01:38:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qc3qD49cgz3dxZ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 09:44:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qc3h15zXTz3f17
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 09:38:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=iBoEHAOv;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=fhWGMDaM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::f34; helo=mail-qv1-xf34.google.com; envelope-from=dianders@chromium.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::d35; helo=mail-io1-xd35.google.com; envelope-from=dianders@chromium.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=iBoEHAOv;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=fhWGMDaM;
 	dkim-atps=neutral
-Received: from mail-qv1-xf34.google.com (mail-qv1-xf34.google.com [IPv6:2607:f8b0:4864:20::f34])
+Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qc3pL59M5z2xZp
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jun 2023 09:44:10 +1000 (AEST)
-Received: by mail-qv1-xf34.google.com with SMTP id 6a1803df08f44-62884fa0e53so677116d6.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jun 2023 16:44:10 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qc3fj6Mvhz3f05
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jun 2023 09:37:33 +1000 (AEST)
+Received: by mail-io1-xd35.google.com with SMTP id ca18e2360f4ac-77865f63473so146358739f.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jun 2023 16:37:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1686181446; x=1688773446;
+        d=chromium.org; s=google; t=1686181048; x=1688773048;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=D+jSOn4aArekcx3+zLzXPOVm14+fmJKsE3biZ6If6cY=;
-        b=iBoEHAOvZpF0XyN9RWJAGfMnlZ/EaWFGG0ooI7cWYmEc5IE99yqvy7MoXxG64cSomx
-         gFc7ubGWOFVWFEAq61vsbRYZIVR61ELHfWXAO8PbyIO4r6voI0dgLweX4dyqBTb5HrC9
-         YDi7LT2WEe7dc/AGwHXkAqqOBsbpMz7VZDXPU=
+        bh=vKF2b8Vjs6mvxh6WU02Nj8q7SFKUM+Iw8gQlZJ28woQ=;
+        b=fhWGMDaMcVfg40OW9dlJoBQPcu4wgXrQXZ/8qAicOyMvkmiIiS56CF+cMXPQJ6zypg
+         ajcitPXuiKED5i7ZsXKvGUM1A/vIE/51yw7R7J1xOEdVLv+z1dZxZKpqiUT32kQc7ZkV
+         7ytXy/MYcaLgy4TyhBRbZTwEuSPkuSQva1qjI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686181446; x=1688773446;
+        d=1e100.net; s=20221208; t=1686181048; x=1688773048;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=D+jSOn4aArekcx3+zLzXPOVm14+fmJKsE3biZ6If6cY=;
-        b=Dkymc40SiN48rqwzMbUqBhOSXEp9IJYalI3xkrq+VdhEtI/dr4pBJvm4t1++yyfhT5
-         z5+1wXYJg1BHzDsZJnvjXdnzERvAN0NqlwH0dy+/grxKgEYpwb2vNIFj6J9ueFEs/zOo
-         +voVWXAC+yAKw/2qv3wCC1qa/dZn+bZzNuz0sqMTQUjp0e1n2fy7Q7j6ou2EPNeqX1nG
-         rt7NJNOPj6ym4k8ag8zYjVKjqDU9j6yG5PYgC6FYzlSIl36IHcrq7p6DRSwRUbYN1jBu
-         Hs+nEPdRaMy9WO2409KOgtZhUfZZJ0OAINKZFPymupOT/GbB7IsNrZ0BU8ehzDpKF2Oz
-         zbgg==
-X-Gm-Message-State: AC+VfDwKC7g888ISqb6/HCpqnlAx/k8EBGgHen7CHYcF2Derwnn1v6F+
-	zIqK47OT+sBhg+R7ZbaOpCUwUSS0ogjRGV62XXw=
-X-Google-Smtp-Source: ACHHUZ5E/PE+++D6HRhunz+wV7Ajm0hMU+ZoOO9jZHI5NhR1P0ruzXyc0+v5sIIoyiiULNhm1AOoWw==
-X-Received: by 2002:ac8:5951:0:b0:3f4:f2db:8210 with SMTP id 17-20020ac85951000000b003f4f2db8210mr6088762qtz.32.1686181446161;
-        Wed, 07 Jun 2023 16:44:06 -0700 (PDT)
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com. [209.85.160.180])
-        by smtp.gmail.com with ESMTPSA id r20-20020ac87ef4000000b003e64303bd2dsm274630qtc.63.2023.06.07.16.44.05
+        bh=vKF2b8Vjs6mvxh6WU02Nj8q7SFKUM+Iw8gQlZJ28woQ=;
+        b=Vwep+qbW6sGnfDaNGMVbmC/BMibVCzrHgs6uFv2aypL13MGmPtJYrgkiKUKGFiDVO7
+         x2gTX4PNXRWwwrAk2aSmKZ4CFdwEwMD7MTs8xMEShCbRx8VPa/FA/TEni3iPeNdY3iRf
+         7r9KzlzVeYT/Sn1cfViTsbz2epBPCq2g4rdfjylUOZWa/dF3hYAOL2sov9HY5gGv1f+w
+         /syS2stXzVB1xQkmYNH1kQYnMTzX5lMt3hGjovUeVpB1C9K+BhSYWWHaie2u3eqwI2sc
+         cg3thzeq/iUmdgT9GkhxSR5VSwbwmRGEKv5GgnK4YxyR4JA5MG5GFwvaTFtZHJaugHjr
+         N89Q==
+X-Gm-Message-State: AC+VfDxdaVUEWk06jFpPjOpxuP0UUb1ckvMPLAeuj/elIMrls4A0s4jv
+	ST69D/46p+thkYMzHc5oofabNDc55C1e51Y0VMw=
+X-Google-Smtp-Source: ACHHUZ7F/fWDdFcwue4LqF6+JmqPJqvl4sNi8VPR7mCD7wgdiRLY8BKy3x+J/8e4TO3Ffd6Qt5A1xA==
+X-Received: by 2002:a6b:6f15:0:b0:776:feaf:8cec with SMTP id k21-20020a6b6f15000000b00776feaf8cecmr7649780ioc.3.1686181048738;
+        Wed, 07 Jun 2023 16:37:28 -0700 (PDT)
+Received: from mail-il1-f172.google.com (mail-il1-f172.google.com. [209.85.166.172])
+        by smtp.gmail.com with ESMTPSA id h11-20020a056638062b00b0041d89b79fdasm3653837jar.20.2023.06.07.16.37.23
         for <linuxppc-dev@lists.ozlabs.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Jun 2023 16:44:06 -0700 (PDT)
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-3f6c6320d4eso45031cf.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jun 2023 16:44:05 -0700 (PDT)
-X-Received: by 2002:a05:6e02:170c:b0:33c:a46c:23b3 with SMTP id
- u12-20020a056e02170c00b0033ca46c23b3mr99141ill.1.1686181022226; Wed, 07 Jun
- 2023 16:37:02 -0700 (PDT)
+        Wed, 07 Jun 2023 16:37:27 -0700 (PDT)
+Received: by mail-il1-f172.google.com with SMTP id e9e14a558f8ab-33d928a268eso54735ab.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jun 2023 16:37:23 -0700 (PDT)
+X-Received: by 2002:a92:cda5:0:b0:338:1993:1194 with SMTP id
+ g5-20020a92cda5000000b0033819931194mr7952ild.2.1686181042584; Wed, 07 Jun
+ 2023 16:37:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230607152432.5435-1-pmladek@suse.com> <20230607152432.5435-7-pmladek@suse.com>
-In-Reply-To: <20230607152432.5435-7-pmladek@suse.com>
+References: <20230607152432.5435-1-pmladek@suse.com> <20230607152432.5435-8-pmladek@suse.com>
+In-Reply-To: <20230607152432.5435-8-pmladek@suse.com>
 From: Doug Anderson <dianders@chromium.org>
-Date: Wed, 7 Jun 2023 16:36:50 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=V-H9z20zT8Oop5+Hnf-S3QgiotzQ=f3LGvN6AiLUxi=Q@mail.gmail.com>
-Message-ID: <CAD=FV=V-H9z20zT8Oop5+Hnf-S3QgiotzQ=f3LGvN6AiLUxi=Q@mail.gmail.com>
-Subject: Re: [PATCH 6/7] watchdog/sparc64: Define HARDLOCKUP_DETECTOR_SPARC64
+Date: Wed, 7 Jun 2023 16:37:10 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=U8CTttqz9jL6TockdKTd1dM1ApR4Nw+X3OF5tgoagfRQ@mail.gmail.com>
+Message-ID: <CAD=FV=U8CTttqz9jL6TockdKTd1dM1ApR4Nw+X3OF5tgoagfRQ@mail.gmail.com>
+Subject: Re: [PATCH 7/7] watchdog/hardlockup: Define HARDLOCKUP_DETECTOR_ARCH
 To: Petr Mladek <pmladek@suse.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -91,32 +91,22 @@ Hi,
 On Wed, Jun 7, 2023 at 8:26=E2=80=AFAM Petr Mladek <pmladek@suse.com> wrote=
 :
 >
-> The HAVE_ prefix means that the code could be enabled. Add another
-> variable for HAVE_HARDLOCKUP_DETECTOR_SPARC64 without this prefix.
-> It will be set when it should be built. It will make it compatible
-> with the other hardlockup detectors.
+> @@ -1102,6 +1103,14 @@ config HARDLOCKUP_DETECTOR_BUDDY
+>         depends on !HAVE_HARDLOCKUP_DETECTOR_ARCH
+>         select HARDLOCKUP_DETECTOR_COUNTS_HRTIMER
 >
-> Before, it is far from obvious that the SPARC64 variant is actually used:
->
-> $> make ARCH=3Dsparc64 defconfig
-> $> grep HARDLOCKUP_DETECTOR .config
-> CONFIG_HAVE_HARDLOCKUP_DETECTOR_BUDDY=3Dy
-> CONFIG_HAVE_HARDLOCKUP_DETECTOR_SPARC64=3Dy
->
-> After, it is more clear:
->
-> $> make ARCH=3Dsparc64 defconfig
-> $> grep HARDLOCKUP_DETECTOR .config
-> CONFIG_HAVE_HARDLOCKUP_DETECTOR_BUDDY=3Dy
-> CONFIG_HAVE_HARDLOCKUP_DETECTOR_SPARC64=3Dy
-> CONFIG_HARDLOCKUP_DETECTOR_SPARC64=3Dy
->
-> Signed-off-by: Petr Mladek <pmladek@suse.com>
-> ---
->  arch/sparc/Kconfig.debug | 10 +++++++++-
->  include/linux/nmi.h      |  4 ++--
->  kernel/watchdog.c        |  2 +-
->  lib/Kconfig.debug        |  2 +-
->  4 files changed, 13 insertions(+), 5 deletions(-)
+> +config HARDLOCKUP_DETECTOR_ARCH
+> +       bool
+> +       depends on HARDLOCKUP_DETECTOR
+> +       depends on HAVE_HARDLOCKUP_DETECTOR_ARCH
+> +       help
+> +         The arch-specific implementation of the hardlockup detector is
+> +         available.
+
+nit: "is available" makes it sound a bit too much like a "have"
+version. Maybe "The arch-specific implementation of the hardlockup
+detector will be used" or something like that?
+
+Otherise:
 
 Reviewed-by: Douglas Anderson <dianders@chromium.org>
