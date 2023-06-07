@@ -2,125 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2163272630D
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Jun 2023 16:40:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2752C7263B2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Jun 2023 17:08:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QbqkW5WS6z3dt1
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 00:40:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QbrLj6Wthz3dy0
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 01:07:57 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=corigine.onmicrosoft.com header.i=@corigine.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-corigine-onmicrosoft-com header.b=aAcu1Ezs;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sTFo6bg6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=corigine.com (client-ip=2a01:111:f400:7eae::700; helo=nam11-bn8-obe.outbound.protection.outlook.com; envelope-from=simon.horman@corigine.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=corigine.onmicrosoft.com header.i=@corigine.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-corigine-onmicrosoft-com header.b=aAcu1Ezs;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sTFo6bg6;
 	dkim-atps=neutral
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on20700.outbound.protection.outlook.com [IPv6:2a01:111:f400:7eae::700])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qbqjd6Wgvz305g
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jun 2023 00:39:17 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=n51DtxbzSeUmT4QwxgwWSua6EWQa5PYkW3Wn1IVWrSiDIvf3XfWsk8JVrcSab5tcqlZvrKeaOvDOO+w/E3JVKTuqbYcX+ufb8mXDak99c2BIrDz9TygdcteWjW2s0F2jE8iLof3fKxLDXZLCeZ9N/iiPtJHKzqRVvICHqCPqWnGMnDArBVqk2YjsOS1emwjOyK16F/qCLgZfUwjd39U5txlL0qhqgQyRKGBJWCJYQPRU0gK8Cug+n8Al4Vd9Jp5OMQrd3u1sT6cHIOD4869bdX3p+jSvzYVRhIQy8qbm9effHND3MpWxImGmtAJDXR6m+YVuatQTAiRxNo0ST3ZVJg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jO3uWkusm6xuM8zDi3KCO2eC7nCzgOFdbZVlCxA1ZUY=;
- b=d+f2WzkdsutuOvgpmstgTR+OY1ZS5hpsqJW4x2WahcW2xLOougi7fvCSbMu+vNh8nYY3KDSLsWZKWmIXuketA6dNf+hNmkiRhtdOGw1FMozYE16XunueXrfy7dKjzryh/gYLb+UW8N/OPQUiOIuZd4dkoI/mbfp2c5ddfE+O+tTiEx5HWYognKSqxVzhp6REkQLWz9lEZ7wJmffGom7jNQpU32HzgjnRoDN8zv7Tej2KlZSNU3ei4pYbxgIKvRZztWWavinrwjzYzPiF4ApfIiZFkiAc59nzr6pwWDUG6xpviz+JPOyQwf0fJaRJpZLHbNX+AUPL6EFej17iWvdFlw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
- dkim=pass header.d=corigine.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jO3uWkusm6xuM8zDi3KCO2eC7nCzgOFdbZVlCxA1ZUY=;
- b=aAcu1Ezsr7Q3P16SAY/6ZhUI+A9Fl6OuaS17jdhDMJ42N25O0xC0HE1OiYUEBJFjnhQLJ0FV0/kgt+Uc/5WdlSoR9H63/O76YKapnhCm+QGOq38cXEk542ZNPZvSJrvtI83qy2s+Zr40itTWvh8IKcdoEzyYcJPbaM53Z/SHB2g=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=corigine.com;
-Received: from BY3PR13MB4834.namprd13.prod.outlook.com (2603:10b6:a03:36b::10)
- by PH0PR13MB5330.namprd13.prod.outlook.com (2603:10b6:510:f9::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.32; Wed, 7 Jun
- 2023 14:38:59 +0000
-Received: from BY3PR13MB4834.namprd13.prod.outlook.com
- ([fe80::9e79:5a11:b59:4e2e]) by BY3PR13MB4834.namprd13.prod.outlook.com
- ([fe80::9e79:5a11:b59:4e2e%7]) with mapi id 15.20.6455.037; Wed, 7 Jun 2023
- 14:38:59 +0000
-Date: Wed, 7 Jun 2023 16:38:52 +0200
-From: Simon Horman <simon.horman@corigine.com>
-To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Subject: Re: [PATCH net-next v2 5/8] net: fs_enet: Convert to platform remove
- callback returning void
-Message-ID: <ZICWfMaqqWFEfhH8@corigine.com>
-References: <20230606162829.166226-1-u.kleine-koenig@pengutronix.de>
- <20230606162829.166226-6-u.kleine-koenig@pengutronix.de>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230606162829.166226-6-u.kleine-koenig@pengutronix.de>
-X-ClientProxiedBy: AM0PR02CA0132.eurprd02.prod.outlook.com
- (2603:10a6:20b:28c::29) To BY3PR13MB4834.namprd13.prod.outlook.com
- (2603:10b6:a03:36b::10)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QbrKn036vz3ch8
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jun 2023 01:07:08 +1000 (AEST)
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 357EikRY006345;
+	Wed, 7 Jun 2023 15:07:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=WoWnY5OlcOlfAy0oKMyGUvUcDzL5jYRQ6LgR5eVqANY=;
+ b=sTFo6bg6oh6JaioAT8Y4r6UCB1F5ki0oPWpTjb1pJ4jsMQfQv8714dT+lfgMy2CEC624
+ g/HRq/2sncdorEL039A6Uf+p+J6KoLvQ+L/tTR8bLIZAn4oXEjWzW85xNYCa6PobKnrr
+ oVLhCkQfMUioRD7RcmH12vTI/1cnAJhYP6ABMl7e+ITK1TFZ7ccFFaPOmRjSVzZHIjCt
+ EpyfTuvTOv8vRfYMUaPtAJWyiTzGZ/suRjxZHh9FYNADA2Gd448z+x6EkQcYEfiPP55R
+ U88gcWvIbdgitDk00+xf6j25HYXlmANTdAhj8PKJdyKIVjavcJGe7XQ0U8PR5J0nDctN iA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r2uww8p2y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Jun 2023 15:07:01 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 357EilqT006353;
+	Wed, 7 Jun 2023 15:07:00 GMT
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r2uww8p2a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Jun 2023 15:07:00 +0000
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+	by ppma02dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 357EJeh2032105;
+	Wed, 7 Jun 2023 15:02:00 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([9.208.129.119])
+	by ppma02dal.us.ibm.com (PPS) with ESMTPS id 3r2a76pe0y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Jun 2023 15:02:00 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 357F1wep14942574
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 7 Jun 2023 15:01:58 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 62BBA58060;
+	Wed,  7 Jun 2023 15:01:58 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 01C565803F;
+	Wed,  7 Jun 2023 15:01:56 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.43.4.27])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  7 Jun 2023 15:01:55 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu
+Subject: [PATCH 1/2] powerpc/book3s64/mm: Remove radix_mem_block_size
+Date: Wed,  7 Jun 2023 20:31:49 +0530
+Message-Id: <20230607150150.237788-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY3PR13MB4834:EE_|PH0PR13MB5330:EE_
-X-MS-Office365-Filtering-Correlation-Id: de55b660-ae49-451a-63e2-08db6764ee06
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	8/c7GNh4wf4BqnoJO/2vF4uwde816cklUSDiuN1Wuo3mk1vPkaQcLVMsWOQ0UjfdWXdm+1bPhXtF/Ch/Nme7J2OQsO5IQLTvRlW762oQPcEzntVF7TYUsebzKBq0IjMP9DDD+hi3COI6MetvuOCfPQO0gPB9Jy2aGNpaTDjLgoE3iGjT0VMtMKeO81MbtYMZ1L0XKPXEohhGBDbSRJwmKVKtJxEegVqI2EKUQIAme/tiiBSf9HvGO+ru3sUul/5e+6dbQVExLD/Nb9Rq3awXhan5BMkNZP2S9RTWIHLfc554jS3P5tqHyeGa/JOpH9fajJ6fg/ImCSaryF/lvotbLcqVAKJcL7PCKxJs6Qopa6f1L+KuXile1i4w500CnG2GjjJT+94kP0N72O5T+wGOaldevRUxKoydnUbo+ad92Jy3/vhvQOMPDU48Np3/3if5R2PsREOcOXK+pw261V2uLo+lyrzbXR0DQoVEWVYhn1NtkZOublLgiPgVU68OAVOg9LbF88jEayvM5xVSpHrSZ0AJKZZvbvw+4OUGL666ILyhFkxYKfOyqkMFl82HhHiAk8ylNyZAV36Kj6EOoAbq+jVmV5xOT7zZ2VAYivcERVw=
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY3PR13MB4834.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(136003)(366004)(376002)(39840400004)(346002)(396003)(451199021)(38100700002)(6512007)(6506007)(36756003)(86362001)(2616005)(186003)(54906003)(5660300002)(7416002)(44832011)(2906002)(4744005)(316002)(478600001)(41300700001)(8936002)(66946007)(6916009)(66476007)(66556008)(8676002)(4326008)(6666004)(6486002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?SXBLN3Vva3NFamJYZllCVk0xakczSG1kTGlyV2JaZG9qRnhCL2JQMlRURUlN?=
- =?utf-8?B?TmRoVkg1S2VmZ3F1NWpicVc4R2trbnBEdXlIMWFNb0xPWVVNSm1tVHZMT2VO?=
- =?utf-8?B?SFlnRFNOdDZJNEZCSUVlZnFuNWhEWU9MZGl0bXlMZTFlQXFkbGVXYTNaSjVw?=
- =?utf-8?B?ZEhwekc1ZGVqM2c1MmNCWTZldHE4cHpaSFBxVEZ1VnRkdTdmak41UzMwOVpQ?=
- =?utf-8?B?L1p3ZW5icWRKZEpuRGlWektlSTA0TnNlV1FZNkFGNnNXWmZhNGcxTjhlV1Js?=
- =?utf-8?B?MWF4MkFTeHpTNXR3T3R3L1VodzA2U0wwZlIyNEtLM1lNUnYwUDZ6dzN3bllT?=
- =?utf-8?B?bE4wWis3RWlPTXNmeno1WklnSXlBWXVGY3NSV2IvNXZZZ1JCNFp4RUtlSlM3?=
- =?utf-8?B?ZlVsWGZYMi9HKzhFUWlUeU9mSWJxMnJiRkhSUHJJK3BLVytUZjRUQ0tsR3F5?=
- =?utf-8?B?b2RzOTlCUTNHOGcybGdqNloxZlhlVXNaNVJyaXFyd2RPcmhGSDF1N0pOblZP?=
- =?utf-8?B?TGpkM3JUN1Z4cTNsUUorSDd1Vk1wVTJPYUduSVdBelNucE92VW1sYUQxd2lk?=
- =?utf-8?B?SE1VRzErVGZJOVBVQm52cVNhV0lKWjhERzhWenRzM3c3dms5UVYzSVEva1d0?=
- =?utf-8?B?Y1R3MTcyOUZCaUpEQjBxSTVkMHNQSGUrWlhJdnR6NDFTdDYvRGJwdS9tWnVn?=
- =?utf-8?B?L0NXTU5jL1ZwTXpoT0RrQkhGM3ZLQ2xUaUgwUW1nVGQvaVVzVEpBVS9qQ0dS?=
- =?utf-8?B?YlRSbXhuSXo5cDF4WWM2WnIxR2orbHRYbldZcmU5VFIvbk5oQ1dsSjZGaW9v?=
- =?utf-8?B?M0w1bEY5RnRsaVFvcXpzczBrdnMvYjdiYkZEVExORG1remZaTENWTXRvSlE3?=
- =?utf-8?B?SEJLckpzNk1lRmV4byt1ZHlHRk1EVHFBQ3o1YVhPVk5Ed1g1UXYxV2ttcGNt?=
- =?utf-8?B?OUxFQ2RYUlFFTXNyS2VGY0NOZXJvbzlib01qNmVQTDRGajFLczN3ZE11Rkkx?=
- =?utf-8?B?K3BUYVhPdG5weTA0dzllZllPQ1VZbGkxOWRsYnRnNW9PeTNWLzQ0WFBFTWpy?=
- =?utf-8?B?enB1ajFKK1YrQklLWVRicW8xTVNpLzF6VWdFcmxLZW1XM1NTZjVQa0N6ZUtH?=
- =?utf-8?B?NnVGVGsrZVcxT1kva29xRmZpV1lqNFZ2bmdMOVlDSlJwRkpFbjJkSGpGYnUr?=
- =?utf-8?B?cDJrc2FXR3pFSFAySnArYnR3M1diZGNrano4VGZCcmhpK1ZnZ0FFUUJRdkZK?=
- =?utf-8?B?dlRwdDJQblBQN0xSamJ6QmVVd1prMDIxdHVOc3pUVjlYK1g4RVIrbGxuS1RE?=
- =?utf-8?B?cnlqRC85M1lCRHpjWGh1Z2t0dW9vNEk2SWJoWXk2MmVIaHJ1SGRXajJNY3ZP?=
- =?utf-8?B?cWY3OTNBR1hNNWRmM2xwMEFvYUFiQVFMcnBRZmIzRGw2by95bEY5VW9ZS1Va?=
- =?utf-8?B?dWp6bUlydHI4Um5TbW1sNkZKQnhudzVoT0FhVjM2dmYxUkJvSjJOTnpDRm1y?=
- =?utf-8?B?VC80dzhHa0pvM0M4bkZkREJ5TmtTNld2RDRhUWhIaU4wSnIwOTNuTFl5Lzhv?=
- =?utf-8?B?YUNPSjF6T29tOWZoZ3N6Tnk5VnkvcHBNWVhmVlRRa2ZSNzdaUmU4Y3Qvdklm?=
- =?utf-8?B?aDc0amd5WHNwRGxRTjhqZmZtQnNveDBjaFFOU3BYVkhPL0E1MVFOZ3ZjNEts?=
- =?utf-8?B?TTJtdWVNZ2Q4eU5zcDBQa2JYZDA0SmFVeG9ibzZObTJwMjBhNzIvSGFKcGxo?=
- =?utf-8?B?RGFya1p1a2lZcmpMWVBYSzhOSi9TUWtzQkNGcVJwTHI2WlB3bGUzQ1lqU2VT?=
- =?utf-8?B?UGhrS0ZFK3p3MFUzSVBiUk9Cem9TeDdFY3B1NmR3VUYrMk45dXRid0JxUjlk?=
- =?utf-8?B?Q3lwWDdtZjEvMHNOL0RRWUx4cG5Sb1FBQzN6QXk0Tnp5TkRwVjkrUWFERU1J?=
- =?utf-8?B?cHZORG5TRlhCdDFycU5FUGNtbkQ4MkRCVXJzT3Y3NVR2MTRkU1hkR1FUYW0y?=
- =?utf-8?B?cjdwNjErSWVIREFGdWVoV2FBTVhFYU5TK1pTY1BVb2lHdWU3VTZIWjgvczZR?=
- =?utf-8?B?cXlFUjd1YncvaExBNEVlUkNhMEpzMkxxUXZCd2NSTGRCV2x4dklqZkFsN1M5?=
- =?utf-8?B?Q3NkL0phbFc3ODNFNjJtVXBKeEY0Rm02S2hTYmV3RXlZdGtraG9SUjl5MEh4?=
- =?utf-8?B?VUxnUjU1YnN4WlJ6eXlwd3N2eUl3V3lhVXI5NXdkOWFzdVNtakVoQ1R6ZWVz?=
- =?utf-8?B?QlkwcWV6QUphZFFCZnVEMGZlUnJBPT0=?=
-X-OriginatorOrg: corigine.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: de55b660-ae49-451a-63e2-08db6764ee06
-X-MS-Exchange-CrossTenant-AuthSource: BY3PR13MB4834.namprd13.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jun 2023 14:38:59.2587
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GwFooYwldQThoTfoHkbZF/1lBqZd8+oVpDbO10BoF3xt4zed1DNr0F/U83BV86OHfsDdEky8sdWeFRxaX8f8rUXwbcf/osaoZ6Q7I5vp6cQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR13MB5330
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 1g0IQ2zh7a42N94cUWQFjsmmb4TWgGI1
+X-Proofpoint-ORIG-GUID: BlNooEqtR0fVY1nemDThMahzAzyMWlCJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-07_07,2023-06-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ impostorscore=0 clxscore=1015 spamscore=0 malwarescore=0 bulkscore=0
+ mlxlogscore=999 phishscore=0 mlxscore=0 adultscore=0 suspectscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306070128
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -132,24 +94,153 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Michal Kubiak <michal.kubiak@intel.com>, kernel@pengutronix.de, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, foraker1@llnl.gov
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 06, 2023 at 06:28:26PM +0200, Uwe Kleine-König wrote:
-> The .remove() callback for a platform driver returns an int which makes
-> many driver authors wrongly assume it's possible to do error handling by
-> returning an error code. However the value returned is (mostly) ignored
-> and this typically results in resource leaks. To improve here there is a
-> quest to make the remove callback return void. In the first step of this
-> quest all drivers are converted to .remove_new() which already returns
-> void.
-> 
-> Trivially convert this driver from always returning zero in the remove
-> callback to the void returning variant.
-> 
-> Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Simplify powernv memory_block_size call back by directly using 1G value
+instead of using radix_mem_block_size. Also, remove the variable and use
+memory_block_size_bytes() in the kernel mapping function. This gets called
+in radix__early_init_mmu() which is called after probe_machine is called
+and correct machine-specific callback is assigned.
 
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
+No functional change in this patch.
+
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+ arch/powerpc/include/asm/book3s/64/mmu.h |  5 --
+ arch/powerpc/mm/book3s64/radix_pgtable.c | 64 +-----------------------
+ arch/powerpc/platforms/powernv/setup.c   |  4 +-
+ 3 files changed, 3 insertions(+), 70 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/book3s/64/mmu.h b/arch/powerpc/include/asm/book3s/64/mmu.h
+index 570a4960cf17..7b7643f32e0e 100644
+--- a/arch/powerpc/include/asm/book3s/64/mmu.h
++++ b/arch/powerpc/include/asm/book3s/64/mmu.h
+@@ -71,11 +71,6 @@ extern unsigned int mmu_pid_bits;
+ /* Base PID to allocate from */
+ extern unsigned int mmu_base_pid;
+ 
+-/*
+- * memory block size used with radix translation.
+- */
+-extern unsigned long __ro_after_init radix_mem_block_size;
+-
+ #define PRTB_SIZE_SHIFT	(mmu_pid_bits + 4)
+ #define PRTB_ENTRIES	(1ul << mmu_pid_bits)
+ 
+diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+index 2297aa764ecd..905cfa0af1ae 100644
+--- a/arch/powerpc/mm/book3s64/radix_pgtable.c
++++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+@@ -37,7 +37,6 @@
+ #include <mm/mmu_decl.h>
+ 
+ unsigned int mmu_base_pid;
+-unsigned long radix_mem_block_size __ro_after_init;
+ 
+ static __ref void *early_alloc_pgtable(unsigned long size, int nid,
+ 			unsigned long region_start, unsigned long region_end)
+@@ -300,7 +299,7 @@ static int __meminit create_physical_mapping(unsigned long start,
+ 	bool prev_exec, exec = false;
+ 	pgprot_t prot;
+ 	int psize;
+-	unsigned long max_mapping_size = radix_mem_block_size;
++	unsigned long max_mapping_size = memory_block_size_bytes();
+ 
+ 	if (debug_pagealloc_enabled_or_kfence())
+ 		max_mapping_size = PAGE_SIZE;
+@@ -502,58 +501,6 @@ static int __init radix_dt_scan_page_sizes(unsigned long node,
+ 	return 1;
+ }
+ 
+-#ifdef CONFIG_MEMORY_HOTPLUG
+-static int __init probe_memory_block_size(unsigned long node, const char *uname, int
+-					  depth, void *data)
+-{
+-	unsigned long *mem_block_size = (unsigned long *)data;
+-	const __be32 *prop;
+-	int len;
+-
+-	if (depth != 1)
+-		return 0;
+-
+-	if (strcmp(uname, "ibm,dynamic-reconfiguration-memory"))
+-		return 0;
+-
+-	prop = of_get_flat_dt_prop(node, "ibm,lmb-size", &len);
+-
+-	if (!prop || len < dt_root_size_cells * sizeof(__be32))
+-		/*
+-		 * Nothing in the device tree
+-		 */
+-		*mem_block_size = MIN_MEMORY_BLOCK_SIZE;
+-	else
+-		*mem_block_size = of_read_number(prop, dt_root_size_cells);
+-	return 1;
+-}
+-
+-static unsigned long __init radix_memory_block_size(void)
+-{
+-	unsigned long mem_block_size = MIN_MEMORY_BLOCK_SIZE;
+-
+-	/*
+-	 * OPAL firmware feature is set by now. Hence we are ok
+-	 * to test OPAL feature.
+-	 */
+-	if (firmware_has_feature(FW_FEATURE_OPAL))
+-		mem_block_size = 1UL * 1024 * 1024 * 1024;
+-	else
+-		of_scan_flat_dt(probe_memory_block_size, &mem_block_size);
+-
+-	return mem_block_size;
+-}
+-
+-#else   /* CONFIG_MEMORY_HOTPLUG */
+-
+-static unsigned long __init radix_memory_block_size(void)
+-{
+-	return 1UL * 1024 * 1024 * 1024;
+-}
+-
+-#endif /* CONFIG_MEMORY_HOTPLUG */
+-
+-
+ void __init radix__early_init_devtree(void)
+ {
+ 	int rc;
+@@ -578,15 +525,6 @@ void __init radix__early_init_devtree(void)
+ 			psize_to_rpti_pgsize(MMU_PAGE_64K);
+ 	}
+ 
+-	/*
+-	 * Max mapping size used when mapping pages. We don't use
+-	 * ppc_md.memory_block_size() here because this get called
+-	 * early and we don't have machine probe called yet. Also
+-	 * the pseries implementation only check for ibm,lmb-size.
+-	 * All hypervisor supporting radix do expose that device
+-	 * tree node.
+-	 */
+-	radix_mem_block_size = radix_memory_block_size();
+ 	return;
+ }
+ 
+diff --git a/arch/powerpc/platforms/powernv/setup.c b/arch/powerpc/platforms/powernv/setup.c
+index 5e9c6b55809f..29f855c66ad3 100644
+--- a/arch/powerpc/platforms/powernv/setup.c
++++ b/arch/powerpc/platforms/powernv/setup.c
+@@ -488,9 +488,9 @@ static unsigned long pnv_memory_block_size(void)
+ 	 * this size.
+ 	 */
+ 	if (radix_enabled())
+-		return radix_mem_block_size;
++		return 1UL << 30;
+ 	else
+-		return 256UL * 1024 * 1024;
++		return 256UL << 20;
+ }
+ #endif
+ 
+-- 
+2.40.1
 
