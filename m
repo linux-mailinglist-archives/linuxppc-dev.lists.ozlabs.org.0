@@ -1,53 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02D687264B3
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Jun 2023 17:31:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 933AC726565
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Jun 2023 18:04:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QbrtN5Qllz3fpK
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 01:31:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qbsc82mtwz3dt7
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 02:04:40 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=ror0Tusl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pehR3VLZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2001:67c:2178:6::1c; helo=smtp-out1.suse.de; envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=ror0Tusl;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pehR3VLZ;
 	dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qbrlt6RvYz3dxc
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jun 2023 01:26:18 +1000 (AEST)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out1.suse.de (Postfix) with ESMTP id 02A9B21A11;
-	Wed,  7 Jun 2023 15:26:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1686151576; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UpwWRWvSJqy3T03ZY2JlbzZD9kWCp/NCykWW9d7sd1g=;
-	b=ror0Tusl1A4DBNmBYTkOot8hbHrSVjNcZ9FY2pwERAt1+clj7LJkXRHFWMQ/23qz+0TP6T
-	L0Y2STOeyZIftm9lb1yBJvu8qGmXXlOBCaK3kgHnHLaI2SmmyG+svuxj+aX4dSbodUZupp
-	j9a3mj67Hm7ygPMkrSlCW5O0X/eWAyU=
-Received: from alley.suse.cz (unknown [10.100.201.202])
-	by relay2.suse.de (Postfix) with ESMTP id 823902C141;
-	Wed,  7 Jun 2023 15:26:15 +0000 (UTC)
-From: Petr Mladek <pmladek@suse.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Douglas Anderson <dianders@chromium.org>
-Subject: [PATCH 7/7] watchdog/hardlockup: Define HARDLOCKUP_DETECTOR_ARCH
-Date: Wed,  7 Jun 2023 17:24:32 +0200
-Message-Id: <20230607152432.5435-8-pmladek@suse.com>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20230607152432.5435-1-pmladek@suse.com>
-References: <20230607152432.5435-1-pmladek@suse.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QbsbC34DNz2yw0
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jun 2023 02:03:51 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id E2AD264121;
+	Wed,  7 Jun 2023 16:03:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DAE1C433D2;
+	Wed,  7 Jun 2023 16:03:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1686153827;
+	bh=J16zGDckle7C4LdmhMdOVXFH/Zg0clJWTEbdvbDGIl8=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=pehR3VLZMvh72JpDSV4164kNkP4JMFv5uLG8kP5Bc7LHbUfQmxqLX4eslL8N5euxV
+	 giRI7DFGJSwjDYsWJfZRBp4C5SEnjgoSM6tOArSP+IUjh8sq8uOcIwb06kDLS3ERHc
+	 wckgOddFL3Ne2yHH+FdDtzBre18y1hIz5VW15R5xqo2UVci+s4+hwCCcW+gzTS80+W
+	 RG8hez47mD9gdkGftsb9uQhjXxu8/dnd3kGRaFV+x9BL7A2RzeR5C0GAxciTbhy/d+
+	 oMkdMX++DSivtUC/9XdafyKhZAUEV9NRmUP82/lOOIzsMOlTahYzM1AWFJQ/jBtW6r
+	 GrAvJ7/0pZ3vQ==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 07 Jun 2023 19:03:42 +0300
+Message-Id: <CT6JN8JJ18NJ.39MUF0A404TPF@suppilovahvero>
+Subject: Re: [PATCH] security/integrity: fix pointer to ESL data and its
+ size on pseries
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Nayna" <nayna@linux.vnet.ibm.com>, "Nayna Jain" <nayna@linux.ibm.com>,
+ "linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>, "linux-integrity"
+ <linux-integrity@vger.kernel.org>
+X-Mailer: aerc 0.14.0
+References: <20230606172652.198227-1-nayna@linux.ibm.com>
+ <CT5V56O3NZS8.1V2L3JJWRKIOE@suppilovahvero>
+ <6a4cac35-efa9-40f6-ae0f-ad3509ef7fbb@linux.vnet.ibm.com>
+In-Reply-To: <6a4cac35-efa9-40f6-ae0f-ad3509ef7fbb@linux.vnet.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,91 +65,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Petr Mladek <pmladek@suse.com>, kgdb-bugreport@lists.sourceforge.net, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
+Cc: Andrew Donnellan <ajd@linux.ibm.com>, Nageswara R Sastry <rnsastry@linux.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>, Russell Currey <ruscur@russell.cc>, George
+ Wilson <gcwilson@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The HAVE_ prefix means that the code could be enabled. Add another
-variable for HAVE_HARDLOCKUP_DETECTOR_ARCH without this prefix.
-It will be set when it should be built. It will make it compatible
-with the other hardlockup detectors.
+On Wed Jun 7, 2023 at 3:28 PM EEST, Nayna wrote:
+>
+> On 6/6/23 16:51, Jarkko Sakkinen wrote:
+> > On Tue Jun 6, 2023 at 8:26 PM EEST, Nayna Jain wrote:
+> >> On PowerVM guest, variable data is prefixed with 8 bytes of timestamp.
+> >> Extract ESL by stripping off the timestamp before passing to ESL parse=
+r.
+> >>
+> > Cc: stable@vger.kenrnel.org # v6.3
+> >
+> > ?
+>
+> Aah yes. Missed that.. Thanks..
+>
+>
+> >
+> >> Fixes: 4b3e71e9a34c ("integrity/powerpc: Support loading keys from PLP=
+KS")
+> >> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+> >> ---
+> >>   .../integrity/platform_certs/load_powerpc.c   | 39 ++++++++++++-----=
+--
+> >>   1 file changed, 26 insertions(+), 13 deletions(-)
+> >>
+> >> diff --git a/security/integrity/platform_certs/load_powerpc.c b/securi=
+ty/integrity/platform_certs/load_powerpc.c
+> >> index b9de70b90826..57768cbf1fd3 100644
+> >> --- a/security/integrity/platform_certs/load_powerpc.c
+> >> +++ b/security/integrity/platform_certs/load_powerpc.c
+> >> @@ -15,6 +15,9 @@
+> >>   #include "keyring_handler.h"
+> >>   #include "../integrity.h"
+> >>  =20
+> >> +#define extract_data(db, data, size, offset)	\
+> >> +	do { db =3D data + offset; size =3D size - offset; } while (0)
+> >> +
+> >>   /*
+> >>    * Get a certificate list blob from the named secure variable.
+> >>    *
+> >> @@ -55,8 +58,10 @@ static __init void *get_cert_list(u8 *key, unsigned=
+ long keylen, u64 *size)
+> >>    */
+> >>   static int __init load_powerpc_certs(void)
+> >>   {
+> >> +	void *data =3D NULL;
+> >> +	u64 dsize =3D 0;
+> >> +	u64 offset =3D 0;
+> >>   	void *db =3D NULL, *dbx =3D NULL;
+> > So... what do you need db still for?
+> >
+> > If you meant to rename 'db' to 'data', then you should not do it, since=
+ this is
+> > a bug fix. It is zero gain, and a factor harder backport.
+>
+> In case of PowerVM guest, data points to timestamp + ESL.=C2=A0 And then =
+with=20
+> offset of 8 bytes, db points to ESL.
+>
+> While db is used for parsing ESL, data is then later used to free=20
+> (timestamp + ESL) memory.
+>
+> Hope it answers the question.
 
-The change allows to clean up dependencies of PPC_WATCHDOG
-and HAVE_HARDLOCKUP_DETECTOR_PERF definitions for powerpc.
+OK, cool. Only thing I have to add that it would be more consistent if
+data was declared in the same line as db and dbx, given that they are
+declared in the same line.
 
-As a result HAVE_HARDLOCKUP_DETECTOR_PERF has the same dependencies
-on arm, x86, powerpc architectures.
-
-Signed-off-by: Petr Mladek <pmladek@suse.com>
----
- arch/powerpc/Kconfig | 5 ++---
- include/linux/nmi.h  | 2 +-
- lib/Kconfig.debug    | 9 +++++++++
- 3 files changed, 12 insertions(+), 4 deletions(-)
-
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 539d1f03ff42..987e730740d7 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -90,8 +90,7 @@ config NMI_IPI
- 
- config PPC_WATCHDOG
- 	bool
--	depends on HARDLOCKUP_DETECTOR
--	depends on HAVE_HARDLOCKUP_DETECTOR_ARCH
-+	depends on HARDLOCKUP_DETECTOR_ARCH
- 	default y
- 	help
- 	  This is a placeholder when the powerpc hardlockup detector
-@@ -240,7 +239,7 @@ config PPC
- 	select HAVE_GCC_PLUGINS			if GCC_VERSION >= 50200   # plugin support on gcc <= 5.1 is buggy on PPC
- 	select HAVE_GENERIC_VDSO
- 	select HAVE_HARDLOCKUP_DETECTOR_ARCH	if PPC_BOOK3S_64 && SMP
--	select HAVE_HARDLOCKUP_DETECTOR_PERF	if PERF_EVENTS && HAVE_PERF_EVENTS_NMI && !HAVE_HARDLOCKUP_DETECTOR_ARCH
-+	select HAVE_HARDLOCKUP_DETECTOR_PERF	if PERF_EVENTS && HAVE_PERF_EVENTS_NMI
- 	select HAVE_HW_BREAKPOINT		if PERF_EVENTS && (PPC_BOOK3S || PPC_8xx)
- 	select HAVE_IOREMAP_PROT
- 	select HAVE_IRQ_TIME_ACCOUNTING
-diff --git a/include/linux/nmi.h b/include/linux/nmi.h
-index 515d6724f469..ec808ebd36ba 100644
---- a/include/linux/nmi.h
-+++ b/include/linux/nmi.h
-@@ -9,7 +9,7 @@
- #include <asm/irq.h>
- 
- /* Arch specific watchdogs might need to share extra watchdog-related APIs. */
--#if defined(CONFIG_HAVE_HARDLOCKUP_DETECTOR_ARCH) || defined(CONFIG_HARDLOCKUP_DETECTOR_SPARC64)
-+#if defined(CONFIG_HARDLOCKUP_DETECTOR_ARCH) || defined(CONFIG_HARDLOCKUP_DETECTOR_SPARC64)
- #include <asm/nmi.h>
- #endif
- 
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 116904e65d9f..97853ca54dc7 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -1056,6 +1056,7 @@ config HARDLOCKUP_DETECTOR
- 	depends on HAVE_HARDLOCKUP_DETECTOR_PERF || HAVE_HARDLOCKUP_DETECTOR_BUDDY || HAVE_HARDLOCKUP_DETECTOR_ARCH
- 	imply HARDLOCKUP_DETECTOR_PERF
- 	imply HARDLOCKUP_DETECTOR_BUDDY
-+	imply HARDLOCKUP_DETECTOR_ARCH
- 	select LOCKUP_DETECTOR
- 
- 	help
-@@ -1102,6 +1103,14 @@ config HARDLOCKUP_DETECTOR_BUDDY
- 	depends on !HAVE_HARDLOCKUP_DETECTOR_ARCH
- 	select HARDLOCKUP_DETECTOR_COUNTS_HRTIMER
- 
-+config HARDLOCKUP_DETECTOR_ARCH
-+	bool
-+	depends on HARDLOCKUP_DETECTOR
-+	depends on HAVE_HARDLOCKUP_DETECTOR_ARCH
-+	help
-+	  The arch-specific implementation of the hardlockup detector is
-+	  available.
-+
- #
- # Both the "perf" and "buddy" hardlockup detectors count hrtimer
- # interrupts. This config enables functions managing this common code.
--- 
-2.35.3
-
+BR, Jarkko
