@@ -1,77 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37BC7727333
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 01:39:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2591A727379
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 01:55:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qc3hy6wKxz3fdT
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 09:39:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qc43W6YXRz3dxZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 09:55:35 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=V96h5mLE;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=EBEakHqu;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::d2f; helo=mail-io1-xd2f.google.com; envelope-from=dianders@chromium.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=V96h5mLE;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=EBEakHqu;
 	dkim-atps=neutral
-Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com [IPv6:2607:f8b0:4864:20::d2f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qc3fr5lrXz3f83
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jun 2023 09:37:40 +1000 (AEST)
-Received: by mail-io1-xd2f.google.com with SMTP id ca18e2360f4ac-77807e43b7cso177295139f.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jun 2023 16:37:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1686181056; x=1688773056;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EN7QCcXv3GhQ50KYCOkYuc7v8/KdYJA2Wdn7x5ACZBs=;
-        b=V96h5mLEJYKOMV9BFNRVgNFaASJgFsdeMRqb3jswr4Wn2GHkVX33PPnOqoYfUIzwog
-         +uKfdgba9CkmAnJxDTjATMtDizd8LSpSjYbh4s7gaz62i5STy4pngNNkaj+LIUxN2yPz
-         XGaCAvvRdtGhT+TTTbgsqejeX8+dcfUhqNpv4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686181056; x=1688773056;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EN7QCcXv3GhQ50KYCOkYuc7v8/KdYJA2Wdn7x5ACZBs=;
-        b=jA3utdZzN0Ceff50HmDyTlJHn2Z1t1d2pESWfUbGmtc6Pge3uSALyTtP7kURZzSzoB
-         H46aFfHgPHDUS6ogLFuWLrS3gUUVd0SYEM5M/Uu55eq99Bt+qxgLp55HZGPOi8czxakL
-         OzqVF7792+Y0XLVDMhW0TtbzoGPiuG+pAY2UTIaa2HE2xdCgPB6gXQIX1SUSF2hoOIas
-         J/LM6dFtCx4gMvUbvyUJYVRM8ewzVON7SfShA02mr5ssq7x1Osh+aRW2/3jynggXduf7
-         7n4wwtAOHbS5/d+j74Hj5IzhQ5BRsEumTbBePlY325cgmxLjnrR0g4bZhyJQ6V8D8RkP
-         noew==
-X-Gm-Message-State: AC+VfDyl7RHCm0sxr7oyQ7gbYtMq4tiOit7ji8TOI0ooBtC+xzxUlaS9
-	nclfpWIey779SBj7JvaZAKZXV4z2U1GemSf/gUc=
-X-Google-Smtp-Source: ACHHUZ7+TXiB2McgvSEJM1zhINF46MtYsaNCCgpyIH+ycWxwfAJBzePikY4iHkg9NvFKgEd9fB1UwQ==
-X-Received: by 2002:a6b:d818:0:b0:777:b3bf:c40d with SMTP id y24-20020a6bd818000000b00777b3bfc40dmr9628536iob.21.1686181056745;
-        Wed, 07 Jun 2023 16:37:36 -0700 (PDT)
-Received: from mail-il1-f180.google.com (mail-il1-f180.google.com. [209.85.166.180])
-        by smtp.gmail.com with ESMTPSA id t17-20020a6b0911000000b0076c872823b7sm4063951ioi.22.2023.06.07.16.37.32
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Jun 2023 16:37:34 -0700 (PDT)
-Received: by mail-il1-f180.google.com with SMTP id e9e14a558f8ab-33d928a268eso54835ab.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jun 2023 16:37:32 -0700 (PDT)
-X-Received: by 2002:a92:c54d:0:b0:33e:6b65:6f78 with SMTP id
- a13-20020a92c54d000000b0033e6b656f78mr16557ilj.27.1686181051931; Wed, 07 Jun
- 2023 16:37:31 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qc42b6w9Hz3cLX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jun 2023 09:54:41 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1686182088; x=1717718088;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=o0coyrEYJkX6FBDvnT+ZO3PeoSubsXx9+zPnYTYGm44=;
+  b=EBEakHqu1xI8R28lKygfFIP8hwop4qtdHIkhtchQKJtZICNyd74W5dUX
+   yzllyx5KiqgFQi4nkqi+F03mevKb9TQ2cJxClUVZhXveuK0Zkhz99agLT
+   N0EYA7L2WiBFlqT0ZdaKYS+mYjE+wbjVgY0kStHC6wn5sez22oBjS9vnf
+   i9qgboIUS5y/zlh/QPX3fjdyOYS5NDTtjtfyxOdBptN28RTKRfjlCBgdh
+   3iv3GZd/w7PKWpuNjZw2pnWF5bh9Mvor3fmq/IJ9gos9Tt9BTI6/zBa3j
+   xNSKY7x7fYE7wug0dvMNe7d5Cz9vVquHy/0UUhnOzXWVefR0sXweBKOCF
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10734"; a="337503239"
+X-IronPort-AV: E=Sophos;i="6.00,225,1681196400"; 
+   d="scan'208";a="337503239"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2023 16:54:38 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10734"; a="774826443"
+X-IronPort-AV: E=Sophos;i="6.00,225,1681196400"; 
+   d="scan'208";a="774826443"
+Received: from lkp-server01.sh.intel.com (HELO 15ab08e44a81) ([10.239.97.150])
+  by fmsmga008.fm.intel.com with ESMTP; 07 Jun 2023 16:54:34 -0700
+Received: from kbuild by 15ab08e44a81 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1q72z3-000711-1U;
+	Wed, 07 Jun 2023 23:54:33 +0000
+Date: Thu, 8 Jun 2023 07:54:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-mm@kvack.org,
+	akpm@linux-foundation.org, npiggin@gmail.com,
+	christophe.leroy@csgroup.eu
+Subject: Re: [PATCH 15/16] powerpc/book3s64/radix: Add support for vmemmap
+ optimization for radix
+Message-ID: <202306080711.eEcyyPFk-lkp@intel.com>
+References: <20230606045608.55127-16-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
-References: <20230607152432.5435-1-pmladek@suse.com>
-In-Reply-To: <20230607152432.5435-1-pmladek@suse.com>
-From: Doug Anderson <dianders@chromium.org>
-Date: Wed, 7 Jun 2023 16:37:20 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=W=xamTf6BUmp-Yg-SEEgE8GRKw6Pnfv6t=Hviywj-N-g@mail.gmail.com>
-Message-ID: <CAD=FV=W=xamTf6BUmp-Yg-SEEgE8GRKw6Pnfv6t=Hviywj-N-g@mail.gmail.com>
-Subject: Re: [PATCH 0/7] watchdog/hardlockup: Cleanup configuration of
- hardlockup detectors
-To: Petr Mladek <pmladek@suse.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230606045608.55127-16-aneesh.kumar@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,27 +73,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kgdb-bugreport@lists.sourceforge.net, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-perf-users@vger.kernel.org, sparclinux@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Muchun Song <muchun.song@linux.dev>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, oe-kbuild-all@lists.linux.dev, Dan Williams <dan.j.williams@intel.com>, Oscar Salvador <osalvador@suse.de>, linuxppc-dev@lists.ozlabs.org, Joao Martins <joao.m.martins@oracle.com>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+Hi Aneesh,
 
-On Wed, Jun 7, 2023 at 8:25=E2=80=AFAM Petr Mladek <pmladek@suse.com> wrote=
-:
->
-> Hi,
->
-> this patchset is supposed to replace the last patch in the patchset clean=
-ing
-> up after introducing the buddy detector, see
-> https://lore.kernel.org/r/20230526184139.10.I821fe7609e57608913fe05abd8f3=
-5b343e7a9aae@changeid
+kernel test robot noticed the following build warnings:
 
-I will let Andrew chime in with his preference, but so far I haven't
-seen him dropping and/or modifying any patches that he's picked up in
-this series. I see that he's already picked up the patch that you're
-"replacing". I wonder if it would be easier for him if you just built
-atop that?
+[auto build test WARNING on powerpc/next]
+[also build test WARNING on powerpc/fixes akpm-mm/mm-everything linus/master v6.4-rc5]
+[cannot apply to nvdimm/libnvdimm-for-next tip/x86/core nvdimm/dax-misc next-20230607]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
--Doug
+url:    https://github.com/intel-lab-lkp/linux/commits/Aneesh-Kumar-K-V/powerpc-mm-book3s64-Use-pmdp_ptep-helper-instead-of-typecasting/20230606-125913
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+patch link:    https://lore.kernel.org/r/20230606045608.55127-16-aneesh.kumar%40linux.ibm.com
+patch subject: [PATCH 15/16] powerpc/book3s64/radix: Add support for vmemmap optimization for radix
+reproduce:
+        git remote add powerpc https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
+        git fetch powerpc next
+        git checkout powerpc/next
+        b4 shazam https://lore.kernel.org/r/20230606045608.55127-16-aneesh.kumar@linux.ibm.com
+        make menuconfig
+        # enable CONFIG_COMPILE_TEST, CONFIG_WARN_MISSING_DOCUMENTS, CONFIG_WARN_ABI_ERRORS
+        make htmldocs
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202306080711.eEcyyPFk-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> Documentation/powerpc/vmemmap_dedup.rst: WARNING: document isn't included in any toctree
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
