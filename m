@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2C417288B1
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 21:35:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71C517288B9
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 21:36:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QcZDn4nPwz3g7j
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 05:35:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QcZFl1Z2qz3fvQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 05:36:11 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=xraoP+ub;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=24t2BtFN;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::112e; helo=mail-yw1-x112e.google.com; envelope-from=hughd@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b2c; helo=mail-yb1-xb2c.google.com; envelope-from=hughd@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=xraoP+ub;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=24t2BtFN;
 	dkim-atps=neutral
-Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
+Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QcZ855kzlz3frV
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jun 2023 05:31:17 +1000 (AEST)
-Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-565bdae581eso8705457b3.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jun 2023 12:31:17 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QcZ9m2LyVz3fkB
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jun 2023 05:32:44 +1000 (AEST)
+Received: by mail-yb1-xb2c.google.com with SMTP id 3f1490d57ef6-bad010e1e50so1069337276.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jun 2023 12:32:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1686252675; x=1688844675;
+        d=google.com; s=20221208; t=1686252761; x=1688844761;
         h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LRrENG7fj4nSEA3qiqmp7KZ6RwcG7U0j5SldGyBNlNI=;
-        b=xraoP+ub8QawPiBDd1NtmoCJ7Yde5e/+U+FNO1p7rYE1UZXZOAo1PDwcjZq5EwJthR
-         dV+vHCNMFKAoTdxBpkTX1DtrPJTkyYQzzcTJ6+Hvz6BbVAyle5wD2VnxGl+fo8KRjuW1
-         6lph5KG8FATG8Els+mnLkzVfzKtCZbvKkrDIrFy8tA1swRHwRpg7mlfmIfHBFYp2tEz0
-         /MtFJlEM4CazKliayJD7LKXK8RlITlLW8oxbTF1Qs6fFP4vrk+enY/g6/q9Fbkg7+DmC
-         flfsqeHeLuLJ1bEDqfGSKk77gUrt/I37di/bcF7XR9pfVd+mrCw58/52flYr3BiOm9us
-         kFmg==
+        bh=5V1nU3Kqzs/xawWKyc6+rxjcg3uMlDunTMtenGe5HoU=;
+        b=24t2BtFN5HXeEnWp4wmjqaz3ba7RZTv3BWN8E2lDsHPicXiEJRz9TlH2WLVzGd8CdE
+         of2yNqyqdnSUhfcGIlOsfvovWhpuG53taZz/x9DR/Th5PIOmYH7IKtDML+zGnAiDR7yW
+         CrmldFZSb2omivw75gysl+pOyy7IV7uE8SzN+doaYOlbMw3OdLZlcS0TMi0ZgvmIeRDQ
+         MJq/tuPeT8xPnNmBXjEKmMP3qPQGwnStEjRQklqNa0dtkxFHtF5PvuvrSEAvR9DPSdcW
+         McnyT5sGz87Djsd0XbZMK04rqnZG7iDmeQmmJXSZxSQJU2i6hoMEpfITW8x1lOY4n4VU
+         tBMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686252675; x=1688844675;
+        d=1e100.net; s=20221208; t=1686252761; x=1688844761;
         h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LRrENG7fj4nSEA3qiqmp7KZ6RwcG7U0j5SldGyBNlNI=;
-        b=LlCF2XJa59somOCmV2PtBydYCANY4Ugq8z8AoFDo7dhc5gteRhf68ct2ZU0WS2UkQQ
-         aeFJtk5/yR1+n6u5i7JBXE3SRZDQByBX+kRBEdEmGFViUR0ULi6c4TJW2WRBiWOkFJ//
-         BYkvZtV1aPWkLsrmS3cdf9KHze/Zq3j6XjGSDaGIkxa0b1hX2S+15dJ1IhjISY7ZqM0v
-         zvcTMpudtrWibO3FLy2SHXjKPtSoaLKJ1GrFLgFunglCuGpso01oCJnO/17UgeAvFNZo
-         IPjlW2aGbP0dFAFu4bvCnvaWXU8raM4F7WzBL6oyjx8SIgHkR5nnoCwpPu8+RSBnqn44
-         WLeA==
-X-Gm-Message-State: AC+VfDz1QSRW8pQbLNF9GwIskMkB1Ye9KCXxFnv0/xrxXh/XMpHEYT6j
-	xkiVh/E1bzsgnZHUwTvbI5kzwg==
-X-Google-Smtp-Source: ACHHUZ7QSwZkgLD2hJa5LAg1G48lqiWohJ5hVZ29HKnSz0REpapDpLCYy6czmfzJtz/zE4Z2iELuXA==
-X-Received: by 2002:a81:8986:0:b0:561:d1ef:3723 with SMTP id z128-20020a818986000000b00561d1ef3723mr688963ywf.38.1686252675399;
-        Thu, 08 Jun 2023 12:31:15 -0700 (PDT)
+        bh=5V1nU3Kqzs/xawWKyc6+rxjcg3uMlDunTMtenGe5HoU=;
+        b=dq9iTgwYnxQXEIbSvG5b7p7zq/De5fjkjWtntS/Zy/Ce/4V7NAEq9mgblqgTcid2Vh
+         R9Dh/wIyPl5cLQ/VaGgd3xwAeewPEmuoPKWKRA43qpfmFpOPH9nDAuOu1t1+58kfADn4
+         T0eFM6adCl/uA5kMOviORzAGKtJk+8fba3kOvPQ32WgUTnCZdbkiVUsY2vfxJho0dPXF
+         c4atMArsCGumQ3NFdmioxCoofdcn0J9QPZAmIUMzqD8IvKfNojeMI6qRvwb9WlaEXrcd
+         1XKIt8L06rRCNKoVgaBTfCb1HuOyWXWHOebNT1tnyaoG2/BWct41Cc6Sg2BL8tGrYvS8
+         d7Xg==
+X-Gm-Message-State: AC+VfDxhdE8nCl/ztSW6vZAsp+t4xAwPfnPZnGke1IFrDcNrG2ifXkAr
+	XvOmW8YedAfU2ScbjMQwy6vzlg==
+X-Google-Smtp-Source: ACHHUZ6ZLPO3tFN/Ri9lGF19A4q4QfMsE5CXjcYyyqXlwc0QGFL9qBHigDBgxXippDMgVek84lg5YA==
+X-Received: by 2002:a25:f40b:0:b0:ba8:54c4:3136 with SMTP id q11-20020a25f40b000000b00ba854c43136mr602795ybd.52.1686252760634;
+        Thu, 08 Jun 2023 12:32:40 -0700 (PDT)
 Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id a6-20020a816606000000b0055aaccfa2c7sm114090ywc.91.2023.06.08.12.31.11
+        by smtp.gmail.com with ESMTPSA id k7-20020a258c07000000b00bb0ae4221b8sm428913ybl.43.2023.06.08.12.32.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jun 2023 12:31:14 -0700 (PDT)
-Date: Thu, 8 Jun 2023 12:31:10 -0700 (PDT)
+        Thu, 08 Jun 2023 12:32:40 -0700 (PDT)
+Date: Thu, 8 Jun 2023 12:32:36 -0700 (PDT)
 From: Hugh Dickins <hughd@google.com>
 X-X-Sender: hugh@ripple.attlocal.net
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2 18/23] sparc/hugetlb: pte_alloc_huge() pte_offset_huge()
+Subject: [PATCH v2 19/23] sparc: allow pte_offset_map() to fail
 In-Reply-To: <a4963be9-7aa6-350-66d0-2ba843e1af44@google.com>
-Message-ID: <c2aeb62f-58f9-d014-ddcd-266267bd97b@google.com>
+Message-ID: <22165adb-581c-9ce1-8aa6-a3385cd39055@google.com>
 References: <a4963be9-7aa6-350-66d0-2ba843e1af44@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -81,37 +81,63 @@ Cc: linux-ia64@vger.kernel.org, David Hildenbrand <david@redhat.com>, Peter Zijl
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-pte_alloc_map() expects to be followed by pte_unmap(), but hugetlb omits
-that: to keep balance in future, use the recently added pte_alloc_huge()
-instead; with pte_offset_huge() a better name for pte_offset_kernel().
+In rare transient cases, not yet made possible, pte_offset_map() and
+pte_offset_map_lock() may not find a page table: handle appropriately.
 
 Signed-off-by: Hugh Dickins <hughd@google.com>
 ---
- arch/sparc/mm/hugetlbpage.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/sparc/kernel/signal32.c | 2 ++
+ arch/sparc/mm/fault_64.c     | 3 +++
+ arch/sparc/mm/tlb.c          | 2 ++
+ 3 files changed, 7 insertions(+)
 
-diff --git a/arch/sparc/mm/hugetlbpage.c b/arch/sparc/mm/hugetlbpage.c
-index d8e0e3c7038d..d7018823206c 100644
---- a/arch/sparc/mm/hugetlbpage.c
-+++ b/arch/sparc/mm/hugetlbpage.c
-@@ -298,7 +298,7 @@ pte_t *huge_pte_alloc(struct mm_struct *mm, struct vm_area_struct *vma,
- 		return NULL;
- 	if (sz >= PMD_SIZE)
- 		return (pte_t *)pmd;
--	return pte_alloc_map(mm, pmd, addr);
-+	return pte_alloc_huge(mm, pmd, addr);
- }
+diff --git a/arch/sparc/kernel/signal32.c b/arch/sparc/kernel/signal32.c
+index dad38960d1a8..ca450c7bc53f 100644
+--- a/arch/sparc/kernel/signal32.c
++++ b/arch/sparc/kernel/signal32.c
+@@ -328,6 +328,8 @@ static void flush_signal_insns(unsigned long address)
+ 		goto out_irqs_on;
  
- pte_t *huge_pte_offset(struct mm_struct *mm,
-@@ -325,7 +325,7 @@ pte_t *huge_pte_offset(struct mm_struct *mm,
- 		return NULL;
- 	if (is_hugetlb_pmd(*pmd))
- 		return (pte_t *)pmd;
--	return pte_offset_map(pmd, addr);
-+	return pte_offset_huge(pmd, addr);
- }
+ 	ptep = pte_offset_map(pmdp, address);
++	if (!ptep)
++		goto out_irqs_on;
+ 	pte = *ptep;
+ 	if (!pte_present(pte))
+ 		goto out_unmap;
+diff --git a/arch/sparc/mm/fault_64.c b/arch/sparc/mm/fault_64.c
+index d91305de694c..d8a407fbe350 100644
+--- a/arch/sparc/mm/fault_64.c
++++ b/arch/sparc/mm/fault_64.c
+@@ -99,6 +99,7 @@ static unsigned int get_user_insn(unsigned long tpc)
+ 	local_irq_disable();
  
- void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+ 	pmdp = pmd_offset(pudp, tpc);
++again:
+ 	if (pmd_none(*pmdp) || unlikely(pmd_bad(*pmdp)))
+ 		goto out_irq_enable;
+ 
+@@ -115,6 +116,8 @@ static unsigned int get_user_insn(unsigned long tpc)
+ #endif
+ 	{
+ 		ptep = pte_offset_map(pmdp, tpc);
++		if (!ptep)
++			goto again;
+ 		pte = *ptep;
+ 		if (pte_present(pte)) {
+ 			pa  = (pte_pfn(pte) << PAGE_SHIFT);
+diff --git a/arch/sparc/mm/tlb.c b/arch/sparc/mm/tlb.c
+index 9a725547578e..7ecf8556947a 100644
+--- a/arch/sparc/mm/tlb.c
++++ b/arch/sparc/mm/tlb.c
+@@ -149,6 +149,8 @@ static void tlb_batch_pmd_scan(struct mm_struct *mm, unsigned long vaddr,
+ 	pte_t *pte;
+ 
+ 	pte = pte_offset_map(&pmd, vaddr);
++	if (!pte)
++		return;
+ 	end = vaddr + HPAGE_SIZE;
+ 	while (vaddr < end) {
+ 		if (pte_val(*pte) & _PAGE_VALID) {
 -- 
 2.35.3
 
