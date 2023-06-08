@@ -2,70 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A8167288D6
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 21:40:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFCDD728B6F
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 00:55:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QcZLf1wNZz3fht
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 05:40:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qcfh35YKwz3f7x
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 08:55:47 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=wrjU6S4E;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=h+zDUMgi;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1133; helo=mail-yw1-x1133.google.com; envelope-from=hughd@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mga02.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=wrjU6S4E;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=h+zDUMgi;
 	dkim-atps=neutral
-Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QcZHm6F57z3fG0
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jun 2023 05:37:56 +1000 (AEST)
-Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-56896c77434so8890457b3.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jun 2023 12:37:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1686253073; x=1688845073;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4B5saBu/vw3gaGnlmIPZ9pQkqfzbj7+JgYM5jpygjcc=;
-        b=wrjU6S4EMiU3Ufcg2KZPT551Y8sNhg4QKjD2hAgSPlGh9yj39Rxf3Ke0FjcZO6VxtG
-         ALh4CVjSqM9GtJPRdIfEgNIlV/EEkptkG6e4IMSsrcpQSqGrj44uojyylNmPW3FhQBzm
-         h+3YVxQpJctPazelaypN7o1DBk1YFmyjCLOyVuE0ZSJNDZN1IWkDf39Bng35IMFfYc2S
-         OuTO6+N3JH4bhYslynL29X9VjGEwK1A0ffza+fgs91l3oerVxPUep2x461PcKgDhp6i7
-         yNPgK4idQjhQRO3vK4IICQL9mYykeSLt5G3Lqvr2ymPPunZsH8KwR6J1BbGlfhLHc47C
-         HKFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686253073; x=1688845073;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4B5saBu/vw3gaGnlmIPZ9pQkqfzbj7+JgYM5jpygjcc=;
-        b=YV4GlLnSXX1IKCYaVOqwrJcOK1qo6hEAcECRP0YhPPB4kq4DM5q8eoAklK01Qv0LlY
-         TVzUEUozSxUZpNyCNpTaz46mrYqohmR8ahi4rghnx+gUJLQ+v0C1lRE1oCeuEOHlLJJz
-         DIZeCnXUFgOLOVugKdaLt1ktILhg5K+jQ4Y1gjSmKK0b+N8IojlFkINMbOzQPTVJxanp
-         isPBI9C9/ayzoYq5vGmcz081NPrrGh7xaE7nlLnt8sorA4hOrqBKlY6eYAnepQx68Ex4
-         27asO5iff44z8jdxyKNOi/FccjVykZwFWu/FNuxN80lpNclmcR424R+o+yg2nDntV9PJ
-         gahA==
-X-Gm-Message-State: AC+VfDytDlkRMaIJVjDp7nAGiSrqtI3KHIORnj7WYXlrLjn4nVRumdaQ
-	GKDk5c434B2V9gnZCgHYRAOSWA==
-X-Google-Smtp-Source: ACHHUZ7Ebli0p9041CLEfO4CyQQvBmxN41VJwJsuM0MQnf822wu8ZsrJRZ2ru1aILLAWUog5xqYpmw==
-X-Received: by 2002:a81:72d4:0:b0:560:f6ae:a71b with SMTP id n203-20020a8172d4000000b00560f6aea71bmr508956ywc.48.1686253073290;
-        Thu, 08 Jun 2023 12:37:53 -0700 (PDT)
-Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id i133-20020a816d8b000000b0056953ab06c5sm114950ywc.95.2023.06.08.12.37.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jun 2023 12:37:52 -0700 (PDT)
-Date: Thu, 8 Jun 2023 12:37:48 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-X-X-Sender: hugh@ripple.attlocal.net
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2 23/23] xtensa: add pte_unmap() to balance
- pte_offset_map()
-In-Reply-To: <a4963be9-7aa6-350-66d0-2ba843e1af44@google.com>
-Message-ID: <ab2581eb-daa6-894e-4aa6-97c81de3b8c@google.com>
-References: <a4963be9-7aa6-350-66d0-2ba843e1af44@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QcfgB1hJSz3cf4
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jun 2023 08:54:55 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1686264902; x=1717800902;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=dd0u2N723fxNFuDaKsE3otcHiK0R6lSa4aGmdjcByVU=;
+  b=h+zDUMgi/yuZANIszXxC2/oMjYLda9GEtlRBpJ/E/crZV4T+i7zqsbHN
+   ib30EV0rGmzKMehndb87fpXPPY46j7SiPvZS+KoTWCUcGhznBLZ3Yo3pw
+   kJtLcvUu1gnh4UbYGu9Z983WUmS7MQisMMzdxzMtKBHZTlDpRCuRAT8Yq
+   2rxwGDVAXiKHAvnrxf5ElSEktrWQ6fvhOYRaz93VGK9h4I6W3Qjnfqy4o
+   GIsMCapRhz634hAxL/aplSvx0YeaNLQL8V2/QmrpGG4AZ09Khy7CS0hEx
+   4pSmUplgLreAZNio/2Qh2ugkprdgXnqwf8CKqiSKiKIVbi5bYb0/8rIlH
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10735"; a="347100905"
+X-IronPort-AV: E=Sophos;i="6.00,227,1681196400"; 
+   d="scan'208";a="347100905"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2023 15:54:50 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10735"; a="956914069"
+X-IronPort-AV: E=Sophos;i="6.00,227,1681196400"; 
+   d="scan'208";a="956914069"
+Received: from lkp-server01.sh.intel.com (HELO 15ab08e44a81) ([10.239.97.150])
+  by fmsmga006.fm.intel.com with ESMTP; 08 Jun 2023 15:54:46 -0700
+Received: from kbuild by 15ab08e44a81 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1q7OWk-0008KC-0g;
+	Thu, 08 Jun 2023 22:54:46 +0000
+Date: Fri, 9 Jun 2023 06:54:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: Terry Bowman <terry.bowman@amd.com>, alison.schofield@intel.com,
+	vishal.l.verma@intel.com, ira.weiny@intel.com, bwidawsk@kernel.org,
+	dan.j.williams@intel.com, dave.jiang@intel.com,
+	Jonathan.Cameron@huawei.com, linux-cxl@vger.kernel.org
+Subject: Re: [PATCH v5 25/26] PCI/AER: Forward RCH downstream port-detected
+ errors to the CXL.mem dev handler
+Message-ID: <202306090637.9E2ezbR4-lkp@intel.com>
+References: <20230607221651.2454764-26-terry.bowman@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230607221651.2454764-26-terry.bowman@amd.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,44 +74,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, Greg Ungerer <gerg@linux-m68k.org>, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, Helge Deller <deller@gmx.de>, x86@kernel.org, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, Geert Uytterhoeven <geert@linux-m68k.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, Alexandre Ghiti <alexghiti@rivosinc.com>, Heiko Carstens <hca@linux.ibm.com>, linux-m68k@lists.linux-m68k.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, John David Anglin <dave.anglin@bell.net>, Suren Baghdasaryan <surenb@google.com>, linux-arm-kernel@lists.infradead.org, C
- hris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-mm@kvack.org, linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: rrichter@amd.com, terry.bowman@amd.com, linux-pci@vger.kernel.org, llvm@lists.linux.dev, linux-kernel@vger.kernel.org, Oliver O'Halloran <oohall@gmail.com>, oe-kbuild-all@lists.linux.dev, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-To keep balance in future, remember to pte_unmap() after a successful
-pte_offset_map().  And act as if get_pte_for_vaddr() really needs a map
-there, to read the pteval before "unmapping", to be sure page table is
-not removed.
+Hi Terry,
 
-Signed-off-by: Hugh Dickins <hughd@google.com>
----
- arch/xtensa/mm/tlb.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+kernel test robot noticed the following build errors:
 
-diff --git a/arch/xtensa/mm/tlb.c b/arch/xtensa/mm/tlb.c
-index 27a477dae232..0a11fc5f185b 100644
---- a/arch/xtensa/mm/tlb.c
-+++ b/arch/xtensa/mm/tlb.c
-@@ -179,6 +179,7 @@ static unsigned get_pte_for_vaddr(unsigned vaddr)
- 	pud_t *pud;
- 	pmd_t *pmd;
- 	pte_t *pte;
-+	unsigned int pteval;
- 
- 	if (!mm)
- 		mm = task->active_mm;
-@@ -197,7 +198,9 @@ static unsigned get_pte_for_vaddr(unsigned vaddr)
- 	pte = pte_offset_map(pmd, vaddr);
- 	if (!pte)
- 		return 0;
--	return pte_val(*pte);
-+	pteval = pte_val(*pte);
-+	pte_unmap(pte);
-+	return pteval;
- }
- 
- enum {
+[auto build test ERROR on a70fc4ed20a6118837b0aecbbf789074935f473b]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Terry-Bowman/cxl-acpi-Probe-RCRB-later-during-RCH-downstream-port-creation/20230608-062818
+base:   a70fc4ed20a6118837b0aecbbf789074935f473b
+patch link:    https://lore.kernel.org/r/20230607221651.2454764-26-terry.bowman%40amd.com
+patch subject: [PATCH v5 25/26] PCI/AER: Forward RCH downstream port-detected errors to the CXL.mem dev handler
+config: x86_64-randconfig-r005-20230607 (https://download.01.org/0day-ci/archive/20230609/202306090637.9E2ezbR4-lkp@intel.com/config)
+compiler: clang version 15.0.7 (https://github.com/llvm/llvm-project.git 8dfdcc7b7bf66834a761bd8de445840ef68e4d1a)
+reproduce (this is a W=1 build):
+        mkdir -p ~/bin
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        git checkout a70fc4ed20a6118837b0aecbbf789074935f473b
+        b4 shazam https://lore.kernel.org/r/20230607221651.2454764-26-terry.bowman@amd.com
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang ~/bin/make.cross W=1 O=build_dir ARCH=x86_64 olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang ~/bin/make.cross W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202306090637.9E2ezbR4-lkp@intel.com/
+
+All errors (new ones prefixed by >>, old ones prefixed by <<):
+
+>> ERROR: modpost: module cxl_core uses symbol pci_print_aer from namespace CXL, but does not import it.
+
 -- 
-2.35.3
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
