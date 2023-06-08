@@ -1,69 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5B1C72795D
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 09:59:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5907727968
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 10:00:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QcGnk3jS4z3f0J
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 17:59:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QcGpk4yy8z3fGx
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 18:00:14 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=jCFSxpWf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=GvrbfRwJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::135; helo=mail-il1-x135.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::834; helo=mail-qt1-x834.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=jCFSxpWf;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=GvrbfRwJ;
 	dkim-atps=neutral
-Received: from mail-il1-x135.google.com (mail-il1-x135.google.com [IPv6:2607:f8b0:4864:20::135])
+Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com [IPv6:2607:f8b0:4864:20::834])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QcGmv1Lpqz3dqt
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jun 2023 17:58:38 +1000 (AEST)
-Received: by mail-il1-x135.google.com with SMTP id e9e14a558f8ab-33b1e83e1daso773935ab.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jun 2023 00:58:38 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QcGmy0Y69z3dwp
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jun 2023 17:58:41 +1000 (AEST)
+Received: by mail-qt1-x834.google.com with SMTP id d75a77b69052e-3f8008cb772so2734081cf.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jun 2023 00:58:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686211115; x=1688803115;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4yRFqg508jlhIJTvId1HikWkLMg7l9WIXZYisxaAOGc=;
-        b=jCFSxpWfAp3s7AdTzF8n8zs96QU5CfRqn96Aat1Y4ZAZnThzayo1wjSy+osBoLJ1ef
-         9YIGJFXCkIq7AOVA5fnBe074xj3j5HXljYwx/rz1b6a4VAUupmMmmxgtcCRp1v6sKbec
-         b0ba3bsxR+67w5lZ++6VTOpDSOKsKz4nmB3REtxWDtIL1W7v70K63edzksNmVl5q3xFE
-         Blj71m/NhVwcS5b/xEmolDKd7u4GdULnvoFUzyvcshJCaSqJ27prGSegxiIOxsBZt9dO
-         02SZy07UIfDwqq+Q8Js6HdhWB1ql+l6P54UtsI6Km465zJXwVpywTJ1ptnWQpJ1M0IaH
-         JGPg==
+        d=gmail.com; s=20221208; t=1686211119; x=1688803119;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1uR4vGAi/HAsBM59SbR3YpKTHihC3NFHqV1mwlrVIWs=;
+        b=GvrbfRwJpEXF0UUprcpAZJdJ/b/d7Ws/5/jJotwgMFcQJisi8DnObj8vX3sDGrE0Aa
+         eTq6/vZfRVjQ32WZ5gh45Ezj4cOUPCCipmbMDv2uM0+rmf/W63IYRxcVk7O80yoVkszw
+         nXiYhEnOnU10UlF0fT1eJrjjJmuGvaRUqIMYqpJHRtOClmYAw5yI0MDvuNGRBoXYCqwV
+         2xY26viwzt13synhCLWvi4lgeY+DDDT0+GYfvOHCDWXeuKyfMmfBjNX0fxpFm7cP4Yub
+         yrrCwkZvOmBnZ3D6PTY1YmGzs+7cU62WWcE93wUh3XzTeJe9PPwdKkqnaOlMJSxEoUiT
+         3pYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686211115; x=1688803115;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4yRFqg508jlhIJTvId1HikWkLMg7l9WIXZYisxaAOGc=;
-        b=OP0m0PVAMBh3DxorxqHrcAlbQxvxffbrve6hrgJ/ox2RxLjZzlF1x3Y2xRWczjLYzc
-         JtK9IbZMb+O9QgZZzd7r/OJkxw/0tFGZZIvPVrZXy2iGjXMAZDM2en2u/6THkmV9w9Ku
-         Vu1q1tK9TUso75IvvNh+kwMHvlP2xzaY2sUq2Z+EZTCbU36fOYxSvyicyQECGN97j+wi
-         rrAaujw14IOKfN+u6HuPkZCmcHbhcn164VpjiHeRe3wCXH/FaLyo38/uczKVGQqb3NIp
-         awew+BiKH24JDVojPED7/2zsx+TfliX1okLpfDgZR9xAVUrg3WKqxdYHNIJSIKN3ZAg5
-         kehQ==
-X-Gm-Message-State: AC+VfDypA54ToscHDvMNWTEcMXznux1emMFEPzvbCuiUeJ74ilszXS1j
-	Kgeu24XioQhChafddaQqstc=
-X-Google-Smtp-Source: ACHHUZ67ce7fphGLD+/kuZ1n4tpmZO5QdEngrfS9H0fO+f9uMO+b3L//Lx5tS+bSNU+ydGFnbljKOA==
-X-Received: by 2002:a92:2802:0:b0:33a:a93f:a87e with SMTP id l2-20020a922802000000b0033aa93fa87emr7621000ilf.14.1686211115408;
-        Thu, 08 Jun 2023 00:58:35 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1686211119; x=1688803119;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1uR4vGAi/HAsBM59SbR3YpKTHihC3NFHqV1mwlrVIWs=;
+        b=KRZHcSUtEWqCGR25lJF9sfPbZey9xy0KVZlUeBPoD1q1DLa1gkvhIpoVtuk6oBBcSZ
+         IZcv0sUprIDZjedgKI7IUv/i5IB1lTHw9Xi0+KgK1i9ImLh3GJRCLn0v7EEDnI3Lbkye
+         rZPLuda+vvBMpO+RVOfWv0xDwtgZTMAZCovXe7LilGsarFuViNXwlfaB0LSgF0CW3EMj
+         2ApP0Bhtazc9bTHS1JAebSA1NLlnIGzJUDEOQ0BIcKi2n3htIfkLPYljXLZm/hS10NLR
+         704CGQuDf/K7qXCUYFKwXvJEjTBfRvztQCQbyUJsoxuCdg211ht3oC7rR4s2HU/iWpIz
+         +JZg==
+X-Gm-Message-State: AC+VfDxU4EdhfXz88u/XSFde2WcosxrHeKT1ovWbbGR30DL5/esv3Tq4
+	Hl5pHIU1efsVV4h/f/g2OsU=
+X-Google-Smtp-Source: ACHHUZ52J1jHb+M/M/+4nUh1iyI5fsrCqpwzitxgH0ir7vG7XqcGRo1PiqB40N/R5HldTVTo5wvBag==
+X-Received: by 2002:a05:622a:2c1:b0:3ef:37d5:49e0 with SMTP id a1-20020a05622a02c100b003ef37d549e0mr6059436qtx.21.1686211119213;
+        Thu, 08 Jun 2023 00:58:39 -0700 (PDT)
 Received: from wheely.local0.net ([1.146.34.117])
-        by smtp.gmail.com with ESMTPSA id 17-20020a630011000000b00542d7720a6fsm673182pga.88.2023.06.08.00.58.31
+        by smtp.gmail.com with ESMTPSA id 17-20020a630011000000b00542d7720a6fsm673182pga.88.2023.06.08.00.58.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jun 2023 00:58:34 -0700 (PDT)
+        Thu, 08 Jun 2023 00:58:38 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm@vger.kernel.org
-Subject: [kvm-unit-tests v4 00/12] powerpc: updates, P10, PNV support
-Date: Thu,  8 Jun 2023 17:58:14 +1000
-Message-Id: <20230608075826.86217-1-npiggin@gmail.com>
+Subject: [kvm-unit-tests v4 01/12] powerpc: Report instruction address and MSR in unhandled exception error
+Date: Thu,  8 Jun 2023 17:58:15 +1000
+Message-Id: <20230608075826.86217-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230608075826.86217-1-npiggin@gmail.com>
+References: <20230608075826.86217-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -80,56 +82,27 @@ Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>, linuxpp
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Posting again, a couple of patches were merged and accounted for review
-comments from last time.
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+Since v3:
+- New patch
 
-Thanks,
-Nick
+ lib/powerpc/processor.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Nicholas Piggin (12):
-  powerpc: Report instruction address and MSR in unhandled exception
-    error
-  powerpc: Add some checking to exception handler install
-  powerpc: Abstract H_CEDE calls into a sleep functions
-  powerpc: Add ISA v3.1 (POWER10) support to SPR test
-  powerpc: Extract some common helpers and defines to headers
-  powerpc/sprs: Specify SPRs with data rather than code
-  powerpc/spapr_vpa: Add basic VPA tests
-  powerpc: Expand exception handler vector granularity
-  powerpc: Add support for more interrupts including HV interrupts
-  powerpc: Discover runtime load address dynamically
-  powerpc: Support powernv machine with QEMU TCG
-  powerpc/sprs: Test hypervisor registers on powernv machine
-
- lib/powerpc/asm/handlers.h  |   2 +-
- lib/powerpc/asm/hcall.h     |   1 +
- lib/powerpc/asm/ppc_asm.h   |   9 +
- lib/powerpc/asm/processor.h |  55 ++-
- lib/powerpc/handlers.c      |  10 +-
- lib/powerpc/hcall.c         |   4 +-
- lib/powerpc/io.c            |  27 +-
- lib/powerpc/io.h            |   6 +
- lib/powerpc/processor.c     |  79 ++++-
- lib/powerpc/setup.c         |   8 +-
- lib/ppc64/asm/opal.h        |  15 +
- lib/ppc64/asm/vpa.h         |  62 ++++
- lib/ppc64/opal-calls.S      |  46 +++
- lib/ppc64/opal.c            |  74 +++++
- powerpc/Makefile.ppc64      |   4 +-
- powerpc/cstart64.S          | 105 ++++--
- powerpc/run                 |  35 +-
- powerpc/spapr_hcall.c       |   9 +-
- powerpc/spapr_vpa.c         | 172 ++++++++++
- powerpc/sprs.c              | 645 ++++++++++++++++++++++++++----------
- powerpc/tm.c                |  20 +-
- powerpc/unittests.cfg       |   3 +
- 22 files changed, 1133 insertions(+), 258 deletions(-)
- create mode 100644 lib/ppc64/asm/opal.h
- create mode 100644 lib/ppc64/asm/vpa.h
- create mode 100644 lib/ppc64/opal-calls.S
- create mode 100644 lib/ppc64/opal.c
- create mode 100644 powerpc/spapr_vpa.c
-
+diff --git a/lib/powerpc/processor.c b/lib/powerpc/processor.c
+index ec85b9d8..05b4b04f 100644
+--- a/lib/powerpc/processor.c
++++ b/lib/powerpc/processor.c
+@@ -38,7 +38,7 @@ void do_handle_exception(struct pt_regs *regs)
+ 		return;
+ 	}
+ 
+-	printf("unhandled cpu exception %#lx\n", regs->trap);
++	printf("unhandled cpu exception %#lx at NIA:0x%016lx MSR:0x%016lx\n", regs->trap, regs->nip, regs->msr);
+ 	abort();
+ }
+ 
 -- 
 2.40.1
 
