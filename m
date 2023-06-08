@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DA5A7275B4
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 05:25:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A9A17275B6
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 05:27:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qc8jp1N8tz3dwh
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 13:25:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qc8lh65gcz3fbJ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 13:27:12 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=d9EhnBem;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=KoW2Cai7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::533; helo=mail-pg1-x533.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::22a; helo=mail-oi1-x22a.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=d9EhnBem;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=KoW2Cai7;
 	dkim-atps=neutral
-Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
+Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com [IPv6:2607:f8b0:4864:20::22a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qc8hr0cD6z3cGk
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jun 2023 13:24:42 +1000 (AEST)
-Received: by mail-pg1-x533.google.com with SMTP id 41be03b00d2f7-53fe2275249so4554a12.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jun 2023 20:24:41 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qc8hr3gl2z3cGk
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jun 2023 13:24:44 +1000 (AEST)
+Received: by mail-oi1-x22a.google.com with SMTP id 5614622812f47-39a505b901dso134282b6e.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jun 2023 20:24:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686194679; x=1688786679;
+        d=gmail.com; s=20221208; t=1686194682; x=1688786682;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VOCdNvewECOQ5+r30J+0zwy8ziQLU8oKSXOMN2+Hq4s=;
-        b=d9EhnBemmD2f4oibbfAEEtWejICQ1rNiFBazg0jFGkD4tHwSNxfejfLeSyWocMTaLl
-         69ynTHOgeRffw9JCwU/y0mkCtCcRzp2JHpPre42leBmr68P2ymOJOS1NDhptQVpW7X6i
-         OuTRe1NRirHOLlD1MDgzWUn20RpLjBGhZqNJ9T4QpmYittxkECm/5cS7vFLw/DAsHcew
-         ThrwAgWJ+opa5bWMZGPTAachovkIliDPpSvhae4lb1OTYqOhKYA1wORhDjSg+pwrwt9K
-         mAyxel8HQuUxkV8F6oZKoh5+SB2GPc84eFHWuvG3IfNBkKX+AyUTIjyhmdcYcWEA2oIH
-         dwew==
+        bh=amk+85rcFOEG0VcwuC0GEJTQvC7gKI7CfBL/n9y3Wjk=;
+        b=KoW2Cai7O57Pl3gqJ9zgbc22dpLlVb7iGVHoWl5Z8VXh082/fIfw3dubwBorOs33IQ
+         4ZCqSaIt8cQJtOOSvoYpIq2TThd6bR0sVQkNy5WQZJWVGo4P1nPuDY5YxPlObTQ9jXsa
+         WAq3ku+12nxQomVObqlFCWMwrsuySN589sjuFj+0VjDH5LRNTLoECGq5Ba4OcP70NfUi
+         5NSq5VJrVLPbxzfxDZhHfjBX5gh5eCzTTqNHQGZtRHb/FW5zNTv6KZ+8CpzDlFfPPXzG
+         vFrN3/WXaK2NdzHWZXROg59TOz0RGZkY4EMtbJjcH5JyKoUuiyKGkaYdMusMAr5jkvKN
+         LI2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686194679; x=1688786679;
+        d=1e100.net; s=20221208; t=1686194682; x=1688786682;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VOCdNvewECOQ5+r30J+0zwy8ziQLU8oKSXOMN2+Hq4s=;
-        b=L1jqLioZJ9FAMdIQ3JU1T52HrGquXrCXpH4npxua0nXGb6sFsWieKU0uoJw4RuFuMg
-         3a/+37VizwWp8BYPog7mAT2/NFdGR4nDC7+kC8aSuWstn7SA8M7DTkQxsLGaZId3GaVJ
-         C0H8+JBwzp6m72s0UOYt6QCxTlfFIzXL9aFFWd0zxeJKimXpxyuA6u0mVbgKu1bAtGtm
-         Bh9K28O9gP5rwLC8qWL8T2KtxrMB+oNDZHz9g2qZ5XaW+hx4uv/XAJqpGKQZwjNl9dtR
-         aoroyabGn8g4Ndc90UnVuN/8vudcF/MtrlaLRwBo1vIT97iobCqxIiLsgVs96SXGwjoC
-         vOmg==
-X-Gm-Message-State: AC+VfDynAjn2+Vx55+6Kn7RuGHuA/fEAaE563qvS+l7BR2wvIktrMvHz
-	stsWgSt9TQfH/S8KrP1LgtY=
-X-Google-Smtp-Source: ACHHUZ6Fc9Zs7wtSCeCsqeNk7P4TIUVPbOq/F2Y/2HPWYYO86i9s/Q34WVH0CArGjz6ZCHpbTvyAxw==
-X-Received: by 2002:a17:90a:4409:b0:256:675c:e552 with SMTP id s9-20020a17090a440900b00256675ce552mr3139034pjg.13.1686194678781;
-        Wed, 07 Jun 2023 20:24:38 -0700 (PDT)
+        bh=amk+85rcFOEG0VcwuC0GEJTQvC7gKI7CfBL/n9y3Wjk=;
+        b=Jjil4ojA5ShTxEWRMQ/xloAY1iCvp/fRxmUQmoY8+jbCbmJQ4lBKanL2DhqXxMCKtn
+         L06XJ2BtsFvhHEGJICAariOXiqIBCbBnGnDMBTjWky4/6UzHdQlCypYBbnkcvj2hZcHY
+         2epjLHNltXQxrlW+zxlxUPSkHpg2y4HGPkzMBPXp0Q/lj8LtaJX/n3HODyGxaDcBu+y8
+         4xY0JPUrdHx4w0ZfugJ3cdvMb1sk9mXe1h8bmFxOKQtotgI9oPNIkT0/UhTsKlN/FL7a
+         dsdZT6mpnJanVNL7wB0MOQjFI2tKS3mCrFiQR0j/wYg7SkG19bpH3Gssw4bTozfcoaqy
+         H5sw==
+X-Gm-Message-State: AC+VfDwCEIJ6mHoOh2S+BoZTMfmlKFzv8xDqMGxO8ij/2fIdRIgVDS1s
+	3YFM1/Ija2+F8EIrO26UhBeQOrMsVqg=
+X-Google-Smtp-Source: ACHHUZ52jpFSNcSJqFuHZeU6QrpkZcVwzp1YQoGV2ph/MtJ+gQ0dqW58LzXNOK9Zb3AWfX1DlRKnmg==
+X-Received: by 2002:a05:6808:496:b0:394:45ad:3ea7 with SMTP id z22-20020a056808049600b0039445ad3ea7mr7593080oid.5.1686194681878;
+        Wed, 07 Jun 2023 20:24:41 -0700 (PDT)
 Received: from wheely.local0.net (58-6-224-112.tpgi.com.au. [58.6.224.112])
-        by smtp.gmail.com with ESMTPSA id s12-20020a17090a5d0c00b0025930e50e28sm2015629pji.41.2023.06.07.20.24.36
+        by smtp.gmail.com with ESMTPSA id s12-20020a17090a5d0c00b0025930e50e28sm2015629pji.41.2023.06.07.20.24.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jun 2023 20:24:38 -0700 (PDT)
+        Wed, 07 Jun 2023 20:24:41 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm@vger.kernel.org,
 	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v3 1/6] KVM: selftests: Move pgd_created check into virt_pgd_alloc
-Date: Thu,  8 Jun 2023 13:24:20 +1000
-Message-Id: <20230608032425.59796-2-npiggin@gmail.com>
+Subject: [PATCH v3 2/6] KVM: selftests: Add aligned guest physical page allocator
+Date: Thu,  8 Jun 2023 13:24:21 +1000
+Message-Id: <20230608032425.59796-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230608032425.59796-1-npiggin@gmail.com>
 References: <20230608032425.59796-1-npiggin@gmail.com>
@@ -83,110 +83,106 @@ Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-virt_arch_pgd_alloc all do the same test and set of pgd_created. Move
-this into common code.
+powerpc will require this to allocate MMU tables in guest memory that
+are larger than guest base page size.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- tools/testing/selftests/kvm/include/kvm_util_base.h | 5 +++++
- tools/testing/selftests/kvm/lib/aarch64/processor.c | 4 ----
- tools/testing/selftests/kvm/lib/riscv/processor.c   | 4 ----
- tools/testing/selftests/kvm/lib/s390x/processor.c   | 4 ----
- tools/testing/selftests/kvm/lib/x86_64/processor.c  | 7 ++-----
- 5 files changed, 7 insertions(+), 17 deletions(-)
+ .../selftests/kvm/include/kvm_util_base.h     |  2 +
+ tools/testing/selftests/kvm/lib/kvm_util.c    | 44 ++++++++++++-------
+ 2 files changed, 29 insertions(+), 17 deletions(-)
 
 diff --git a/tools/testing/selftests/kvm/include/kvm_util_base.h b/tools/testing/selftests/kvm/include/kvm_util_base.h
-index a089c356f354..d630a0a1877c 100644
+index d630a0a1877c..42d03ae08ecb 100644
 --- a/tools/testing/selftests/kvm/include/kvm_util_base.h
 +++ b/tools/testing/selftests/kvm/include/kvm_util_base.h
-@@ -822,7 +822,12 @@ void virt_arch_pgd_alloc(struct kvm_vm *vm);
+@@ -680,6 +680,8 @@ const char *exit_reason_str(unsigned int exit_reason);
  
- static inline void virt_pgd_alloc(struct kvm_vm *vm)
+ vm_paddr_t vm_phy_page_alloc(struct kvm_vm *vm, vm_paddr_t paddr_min,
+ 			     uint32_t memslot);
++vm_paddr_t vm_phy_pages_alloc_align(struct kvm_vm *vm, size_t num, size_t align,
++			      vm_paddr_t paddr_min, uint32_t memslot);
+ vm_paddr_t vm_phy_pages_alloc(struct kvm_vm *vm, size_t num,
+ 			      vm_paddr_t paddr_min, uint32_t memslot);
+ vm_paddr_t vm_alloc_page_table(struct kvm_vm *vm);
+diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+index 298c4372fb1a..68558d60f949 100644
+--- a/tools/testing/selftests/kvm/lib/kvm_util.c
++++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+@@ -1903,6 +1903,7 @@ const char *exit_reason_str(unsigned int exit_reason)
+  * Input Args:
+  *   vm - Virtual Machine
+  *   num - number of pages
++ *   align - pages alignment
+  *   paddr_min - Physical address minimum
+  *   memslot - Memory region to allocate page from
+  *
+@@ -1916,7 +1917,7 @@ const char *exit_reason_str(unsigned int exit_reason)
+  * and their base address is returned. A TEST_ASSERT failure occurs if
+  * not enough pages are available at or above paddr_min.
+  */
+-vm_paddr_t vm_phy_pages_alloc(struct kvm_vm *vm, size_t num,
++vm_paddr_t vm_phy_pages_alloc_align(struct kvm_vm *vm, size_t num, size_t align,
+ 			      vm_paddr_t paddr_min, uint32_t memslot)
  {
-+	if (vm->pgd_created)
-+		return;
+ 	struct userspace_mem_region *region;
+@@ -1930,24 +1931,27 @@ vm_paddr_t vm_phy_pages_alloc(struct kvm_vm *vm, size_t num,
+ 		paddr_min, vm->page_size);
+ 
+ 	region = memslot2region(vm, memslot);
+-	base = pg = paddr_min >> vm->page_shift;
+-
+-	do {
+-		for (; pg < base + num; ++pg) {
+-			if (!sparsebit_is_set(region->unused_phy_pages, pg)) {
+-				base = pg = sparsebit_next_set(region->unused_phy_pages, pg);
+-				break;
++	base = paddr_min >> vm->page_shift;
 +
- 	virt_arch_pgd_alloc(vm);
++again:
++	base = (base + align - 1) & ~(align - 1);
++	for (pg = base; pg < base + num; ++pg) {
++		if (!sparsebit_is_set(region->unused_phy_pages, pg)) {
++			base = sparsebit_next_set(region->unused_phy_pages, pg);
++			if (!base) {
++				fprintf(stderr, "No guest physical pages "
++					"available, paddr_min: 0x%lx "
++					"page_size: 0x%x memslot: %u "
++					"num_pages: %lu align: %lu\n",
++					paddr_min, vm->page_size, memslot,
++					num, align);
++				fputs("---- vm dump ----\n", stderr);
++				vm_dump(stderr, vm, 2);
++				TEST_ASSERT(false, "false");
++				abort();
+ 			}
++			goto again;
+ 		}
+-	} while (pg && pg != base + num);
+-
+-	if (pg == 0) {
+-		fprintf(stderr, "No guest physical page available, "
+-			"paddr_min: 0x%lx page_size: 0x%x memslot: %u\n",
+-			paddr_min, vm->page_size, memslot);
+-		fputs("---- vm dump ----\n", stderr);
+-		vm_dump(stderr, vm, 2);
+-		abort();
+ 	}
+ 
+ 	for (pg = base; pg < base + num; ++pg)
+@@ -1956,6 +1960,12 @@ vm_paddr_t vm_phy_pages_alloc(struct kvm_vm *vm, size_t num,
+ 	return base * vm->page_size;
+ }
+ 
++vm_paddr_t vm_phy_pages_alloc(struct kvm_vm *vm, size_t num,
++			      vm_paddr_t paddr_min, uint32_t memslot)
++{
++	return vm_phy_pages_alloc_align(vm, num, 1, paddr_min, memslot);
++}
 +
-+	vm->pgd_created = true;
- }
- 
- /*
-diff --git a/tools/testing/selftests/kvm/lib/aarch64/processor.c b/tools/testing/selftests/kvm/lib/aarch64/processor.c
-index 3a0259e25335..3da3ec7c5b23 100644
---- a/tools/testing/selftests/kvm/lib/aarch64/processor.c
-+++ b/tools/testing/selftests/kvm/lib/aarch64/processor.c
-@@ -96,13 +96,9 @@ void virt_arch_pgd_alloc(struct kvm_vm *vm)
+ vm_paddr_t vm_phy_page_alloc(struct kvm_vm *vm, vm_paddr_t paddr_min,
+ 			     uint32_t memslot)
  {
- 	size_t nr_pages = page_align(vm, ptrs_per_pgd(vm) * 8) / vm->page_size;
- 
--	if (vm->pgd_created)
--		return;
--
- 	vm->pgd = vm_phy_pages_alloc(vm, nr_pages,
- 				     KVM_GUEST_PAGE_TABLE_MIN_PADDR,
- 				     vm->memslots[MEM_REGION_PT]);
--	vm->pgd_created = true;
- }
- 
- static void _virt_pg_map(struct kvm_vm *vm, uint64_t vaddr, uint64_t paddr,
-diff --git a/tools/testing/selftests/kvm/lib/riscv/processor.c b/tools/testing/selftests/kvm/lib/riscv/processor.c
-index d146ca71e0c0..7695ba2cd369 100644
---- a/tools/testing/selftests/kvm/lib/riscv/processor.c
-+++ b/tools/testing/selftests/kvm/lib/riscv/processor.c
-@@ -57,13 +57,9 @@ void virt_arch_pgd_alloc(struct kvm_vm *vm)
- {
- 	size_t nr_pages = page_align(vm, ptrs_per_pte(vm) * 8) / vm->page_size;
- 
--	if (vm->pgd_created)
--		return;
--
- 	vm->pgd = vm_phy_pages_alloc(vm, nr_pages,
- 				     KVM_GUEST_PAGE_TABLE_MIN_PADDR,
- 				     vm->memslots[MEM_REGION_PT]);
--	vm->pgd_created = true;
- }
- 
- void virt_arch_pg_map(struct kvm_vm *vm, uint64_t vaddr, uint64_t paddr)
-diff --git a/tools/testing/selftests/kvm/lib/s390x/processor.c b/tools/testing/selftests/kvm/lib/s390x/processor.c
-index 15945121daf1..358e03f09c7a 100644
---- a/tools/testing/selftests/kvm/lib/s390x/processor.c
-+++ b/tools/testing/selftests/kvm/lib/s390x/processor.c
-@@ -17,16 +17,12 @@ void virt_arch_pgd_alloc(struct kvm_vm *vm)
- 	TEST_ASSERT(vm->page_size == 4096, "Unsupported page size: 0x%x",
- 		    vm->page_size);
- 
--	if (vm->pgd_created)
--		return;
--
- 	paddr = vm_phy_pages_alloc(vm, PAGES_PER_REGION,
- 				   KVM_GUEST_PAGE_TABLE_MIN_PADDR,
- 				   vm->memslots[MEM_REGION_PT]);
- 	memset(addr_gpa2hva(vm, paddr), 0xff, PAGES_PER_REGION * vm->page_size);
- 
- 	vm->pgd = paddr;
--	vm->pgd_created = true;
- }
- 
- /*
-diff --git a/tools/testing/selftests/kvm/lib/x86_64/processor.c b/tools/testing/selftests/kvm/lib/x86_64/processor.c
-index d4a0b504b1e0..d4deb2718e86 100644
---- a/tools/testing/selftests/kvm/lib/x86_64/processor.c
-+++ b/tools/testing/selftests/kvm/lib/x86_64/processor.c
-@@ -127,11 +127,8 @@ void virt_arch_pgd_alloc(struct kvm_vm *vm)
- 	TEST_ASSERT(vm->mode == VM_MODE_PXXV48_4K, "Attempt to use "
- 		"unknown or unsupported guest mode, mode: 0x%x", vm->mode);
- 
--	/* If needed, create page map l4 table. */
--	if (!vm->pgd_created) {
--		vm->pgd = vm_alloc_page_table(vm);
--		vm->pgd_created = true;
--	}
-+	/* Create page map l4 table. */
-+	vm->pgd = vm_alloc_page_table(vm);
- }
- 
- static void *virt_get_pte(struct kvm_vm *vm, uint64_t *parent_pte,
 -- 
 2.40.1
 
