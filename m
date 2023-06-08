@@ -1,68 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDB827275B5
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 05:26:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DA5A7275B4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 05:25:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qc8kl5Mqzz3f1T
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 13:26:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qc8jp1N8tz3dwh
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 13:25:34 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=r72vBD0V;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=d9EhnBem;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2001:4860:4864:20::34; helo=mail-oa1-x34.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::533; helo=mail-pg1-x533.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=r72vBD0V;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=d9EhnBem;
 	dkim-atps=neutral
-Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qc8hr0g4gz3cNY
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jun 2023 13:24:43 +1000 (AEST)
-Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-19f31d6b661so154619fac.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jun 2023 20:24:43 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qc8hr0cD6z3cGk
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jun 2023 13:24:42 +1000 (AEST)
+Received: by mail-pg1-x533.google.com with SMTP id 41be03b00d2f7-53fe2275249so4554a12.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jun 2023 20:24:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686194676; x=1688786676;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=p5/+1fA9UdZZNdwm0m4IZsRyaLZTXCA/ALBNzcoctxQ=;
-        b=r72vBD0V9bJw0TEBoWHcQsXoI2/S17ZQ+6d18DHgGj2FZJZ7ySvdeAOC7LGAdfrlp8
-         xDBOGBN0FRgV4q008qbnWTt2usLpE2uFSlB3Uu/TtPAuAcxkk/2kYpscNeLaXqyDljRk
-         55Z+kE9OL2wZu3YITn7AAl5txn6CdKOu7LjmEFf2sGZveqdIClf6ZRWfc5WT4CAnoe0n
-         f2UCmZ/yaBs1s7yY2SKJc6O0kbg+bKHu7YacYwa+k09LysMJkS0YmJvbuAWeuXnSXA3j
-         u9vXIxcZ4a1imO8k7Bas76cNuCdaot1uW2mqBJEN92a+/EKcW/4naoPy0yxZAthukFUC
-         NCDg==
+        d=gmail.com; s=20221208; t=1686194679; x=1688786679;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VOCdNvewECOQ5+r30J+0zwy8ziQLU8oKSXOMN2+Hq4s=;
+        b=d9EhnBemmD2f4oibbfAEEtWejICQ1rNiFBazg0jFGkD4tHwSNxfejfLeSyWocMTaLl
+         69ynTHOgeRffw9JCwU/y0mkCtCcRzp2JHpPre42leBmr68P2ymOJOS1NDhptQVpW7X6i
+         OuTRe1NRirHOLlD1MDgzWUn20RpLjBGhZqNJ9T4QpmYittxkECm/5cS7vFLw/DAsHcew
+         ThrwAgWJ+opa5bWMZGPTAachovkIliDPpSvhae4lb1OTYqOhKYA1wORhDjSg+pwrwt9K
+         mAyxel8HQuUxkV8F6oZKoh5+SB2GPc84eFHWuvG3IfNBkKX+AyUTIjyhmdcYcWEA2oIH
+         dwew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686194676; x=1688786676;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=p5/+1fA9UdZZNdwm0m4IZsRyaLZTXCA/ALBNzcoctxQ=;
-        b=Mciae8Tr6Wu3avpOq6wJ8Lsf209PDeh6rcW5ibrsZgbCzYXq3X8OeND1e/DbtB62xd
-         Y8v4YY67lgXs2BwGT7Ma+Xqh+SbLVHd2S59d6uEnH0xEp+EjBVOYI7G1DhepSv7Adv8u
-         K++uAeKLcOc1RkT9hfd77MENN9I5mTxqcS78Ath2dJ9KO9EWC63wdNzk78nUQHeB/cY/
-         k/lz6vNbp647SfYf0z7/yTk1MbLDkGn+Iq7AHUqWl0josEoQkbpVGSCvXEkl6Ztnywrm
-         5hSWKbf5oC/gPtmaFyCTJmNZFnzcHgkUuWc2cFkq/BVa1j+l75cCT48zYBX0OU3Cp7zW
-         dK2w==
-X-Gm-Message-State: AC+VfDyHplmDgDBjizfLOsnAWaWcXEGJg4/1UAq6fJySLwuHmBG0ZyfE
-	RyIDE6+9lT0XUrKxt3AVDfQ=
-X-Google-Smtp-Source: ACHHUZ7SSMbx5SlpVrW00IgxXImnEczLcGdqRZGJzWtx+RigbzuqXWtGqLLbKluldGPnlDoLooa+1A==
-X-Received: by 2002:a05:6871:503:b0:187:e05e:a4f0 with SMTP id s3-20020a056871050300b00187e05ea4f0mr6654834oal.26.1686194675743;
-        Wed, 07 Jun 2023 20:24:35 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1686194679; x=1688786679;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VOCdNvewECOQ5+r30J+0zwy8ziQLU8oKSXOMN2+Hq4s=;
+        b=L1jqLioZJ9FAMdIQ3JU1T52HrGquXrCXpH4npxua0nXGb6sFsWieKU0uoJw4RuFuMg
+         3a/+37VizwWp8BYPog7mAT2/NFdGR4nDC7+kC8aSuWstn7SA8M7DTkQxsLGaZId3GaVJ
+         C0H8+JBwzp6m72s0UOYt6QCxTlfFIzXL9aFFWd0zxeJKimXpxyuA6u0mVbgKu1bAtGtm
+         Bh9K28O9gP5rwLC8qWL8T2KtxrMB+oNDZHz9g2qZ5XaW+hx4uv/XAJqpGKQZwjNl9dtR
+         aoroyabGn8g4Ndc90UnVuN/8vudcF/MtrlaLRwBo1vIT97iobCqxIiLsgVs96SXGwjoC
+         vOmg==
+X-Gm-Message-State: AC+VfDynAjn2+Vx55+6Kn7RuGHuA/fEAaE563qvS+l7BR2wvIktrMvHz
+	stsWgSt9TQfH/S8KrP1LgtY=
+X-Google-Smtp-Source: ACHHUZ6Fc9Zs7wtSCeCsqeNk7P4TIUVPbOq/F2Y/2HPWYYO86i9s/Q34WVH0CArGjz6ZCHpbTvyAxw==
+X-Received: by 2002:a17:90a:4409:b0:256:675c:e552 with SMTP id s9-20020a17090a440900b00256675ce552mr3139034pjg.13.1686194678781;
+        Wed, 07 Jun 2023 20:24:38 -0700 (PDT)
 Received: from wheely.local0.net (58-6-224-112.tpgi.com.au. [58.6.224.112])
-        by smtp.gmail.com with ESMTPSA id s12-20020a17090a5d0c00b0025930e50e28sm2015629pji.41.2023.06.07.20.24.32
+        by smtp.gmail.com with ESMTPSA id s12-20020a17090a5d0c00b0025930e50e28sm2015629pji.41.2023.06.07.20.24.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jun 2023 20:24:34 -0700 (PDT)
+        Wed, 07 Jun 2023 20:24:38 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm@vger.kernel.org,
 	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v3 0/6] KVM: selftests: add powerpc support
-Date: Thu,  8 Jun 2023 13:24:19 +1000
-Message-Id: <20230608032425.59796-1-npiggin@gmail.com>
+Subject: [PATCH v3 1/6] KVM: selftests: Move pgd_created check into virt_pgd_alloc
+Date: Thu,  8 Jun 2023 13:24:20 +1000
+Message-Id: <20230608032425.59796-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230608032425.59796-1-npiggin@gmail.com>
+References: <20230608032425.59796-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -80,66 +83,110 @@ Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This series adds initial KVM selftests support for powerpc
-(64-bit, BookS, radix MMU).
+virt_arch_pgd_alloc all do the same test and set of pgd_created. Move
+this into common code.
 
-Since v2:
-- Added a couple of new tests (patch 5,6)
-- Make default page size match host page size.
-- Check for radix MMU capability.
-- Build a few more of the generic tests.
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ tools/testing/selftests/kvm/include/kvm_util_base.h | 5 +++++
+ tools/testing/selftests/kvm/lib/aarch64/processor.c | 4 ----
+ tools/testing/selftests/kvm/lib/riscv/processor.c   | 4 ----
+ tools/testing/selftests/kvm/lib/s390x/processor.c   | 4 ----
+ tools/testing/selftests/kvm/lib/x86_64/processor.c  | 7 ++-----
+ 5 files changed, 7 insertions(+), 17 deletions(-)
 
-Since v1:
-- Update MAINTAINERS KVM PPC entry to include kvm selftests.
-- Fixes and cleanups from Sean's review including new patch 1.
-- Add 4K guest page support requiring new patch 2.
-
-Thanks,
-Nick
-
-Nicholas Piggin (6):
-  KVM: selftests: Move pgd_created check into virt_pgd_alloc
-  KVM: selftests: Add aligned guest physical page allocator
-  KVM: PPC: selftests: add support for powerpc
-  KVM: PPC: selftests: add selftests sanity tests
-  KVM: PPC: selftests: Add a TLBIEL virtualisation tester
-  KVM: PPC: selftests: Add interrupt performance tester
-
- MAINTAINERS                                   |   2 +
- tools/testing/selftests/kvm/Makefile          |  23 +
- .../selftests/kvm/include/kvm_util_base.h     |  29 +
- .../selftests/kvm/include/powerpc/hcall.h     |  21 +
- .../selftests/kvm/include/powerpc/ppc_asm.h   |  32 ++
- .../selftests/kvm/include/powerpc/processor.h |  46 ++
- .../selftests/kvm/lib/aarch64/processor.c     |   4 -
- tools/testing/selftests/kvm/lib/guest_modes.c |  27 +-
- tools/testing/selftests/kvm/lib/kvm_util.c    |  56 +-
- .../selftests/kvm/lib/powerpc/handlers.S      |  93 +++
- .../testing/selftests/kvm/lib/powerpc/hcall.c |  45 ++
- .../selftests/kvm/lib/powerpc/processor.c     | 541 ++++++++++++++++++
- .../testing/selftests/kvm/lib/powerpc/ucall.c |  30 +
- .../selftests/kvm/lib/riscv/processor.c       |   4 -
- .../selftests/kvm/lib/s390x/processor.c       |   4 -
- .../selftests/kvm/lib/x86_64/processor.c      |   7 +-
- tools/testing/selftests/kvm/powerpc/helpers.h |  46 ++
- .../selftests/kvm/powerpc/interrupt_perf.c    | 199 +++++++
- .../testing/selftests/kvm/powerpc/null_test.c | 166 ++++++
- .../selftests/kvm/powerpc/rtas_hcall.c        | 136 +++++
- .../selftests/kvm/powerpc/tlbiel_test.c       | 508 ++++++++++++++++
- 21 files changed, 1981 insertions(+), 38 deletions(-)
- create mode 100644 tools/testing/selftests/kvm/include/powerpc/hcall.h
- create mode 100644 tools/testing/selftests/kvm/include/powerpc/ppc_asm.h
- create mode 100644 tools/testing/selftests/kvm/include/powerpc/processor.h
- create mode 100644 tools/testing/selftests/kvm/lib/powerpc/handlers.S
- create mode 100644 tools/testing/selftests/kvm/lib/powerpc/hcall.c
- create mode 100644 tools/testing/selftests/kvm/lib/powerpc/processor.c
- create mode 100644 tools/testing/selftests/kvm/lib/powerpc/ucall.c
- create mode 100644 tools/testing/selftests/kvm/powerpc/helpers.h
- create mode 100644 tools/testing/selftests/kvm/powerpc/interrupt_perf.c
- create mode 100644 tools/testing/selftests/kvm/powerpc/null_test.c
- create mode 100644 tools/testing/selftests/kvm/powerpc/rtas_hcall.c
- create mode 100644 tools/testing/selftests/kvm/powerpc/tlbiel_test.c
-
+diff --git a/tools/testing/selftests/kvm/include/kvm_util_base.h b/tools/testing/selftests/kvm/include/kvm_util_base.h
+index a089c356f354..d630a0a1877c 100644
+--- a/tools/testing/selftests/kvm/include/kvm_util_base.h
++++ b/tools/testing/selftests/kvm/include/kvm_util_base.h
+@@ -822,7 +822,12 @@ void virt_arch_pgd_alloc(struct kvm_vm *vm);
+ 
+ static inline void virt_pgd_alloc(struct kvm_vm *vm)
+ {
++	if (vm->pgd_created)
++		return;
++
+ 	virt_arch_pgd_alloc(vm);
++
++	vm->pgd_created = true;
+ }
+ 
+ /*
+diff --git a/tools/testing/selftests/kvm/lib/aarch64/processor.c b/tools/testing/selftests/kvm/lib/aarch64/processor.c
+index 3a0259e25335..3da3ec7c5b23 100644
+--- a/tools/testing/selftests/kvm/lib/aarch64/processor.c
++++ b/tools/testing/selftests/kvm/lib/aarch64/processor.c
+@@ -96,13 +96,9 @@ void virt_arch_pgd_alloc(struct kvm_vm *vm)
+ {
+ 	size_t nr_pages = page_align(vm, ptrs_per_pgd(vm) * 8) / vm->page_size;
+ 
+-	if (vm->pgd_created)
+-		return;
+-
+ 	vm->pgd = vm_phy_pages_alloc(vm, nr_pages,
+ 				     KVM_GUEST_PAGE_TABLE_MIN_PADDR,
+ 				     vm->memslots[MEM_REGION_PT]);
+-	vm->pgd_created = true;
+ }
+ 
+ static void _virt_pg_map(struct kvm_vm *vm, uint64_t vaddr, uint64_t paddr,
+diff --git a/tools/testing/selftests/kvm/lib/riscv/processor.c b/tools/testing/selftests/kvm/lib/riscv/processor.c
+index d146ca71e0c0..7695ba2cd369 100644
+--- a/tools/testing/selftests/kvm/lib/riscv/processor.c
++++ b/tools/testing/selftests/kvm/lib/riscv/processor.c
+@@ -57,13 +57,9 @@ void virt_arch_pgd_alloc(struct kvm_vm *vm)
+ {
+ 	size_t nr_pages = page_align(vm, ptrs_per_pte(vm) * 8) / vm->page_size;
+ 
+-	if (vm->pgd_created)
+-		return;
+-
+ 	vm->pgd = vm_phy_pages_alloc(vm, nr_pages,
+ 				     KVM_GUEST_PAGE_TABLE_MIN_PADDR,
+ 				     vm->memslots[MEM_REGION_PT]);
+-	vm->pgd_created = true;
+ }
+ 
+ void virt_arch_pg_map(struct kvm_vm *vm, uint64_t vaddr, uint64_t paddr)
+diff --git a/tools/testing/selftests/kvm/lib/s390x/processor.c b/tools/testing/selftests/kvm/lib/s390x/processor.c
+index 15945121daf1..358e03f09c7a 100644
+--- a/tools/testing/selftests/kvm/lib/s390x/processor.c
++++ b/tools/testing/selftests/kvm/lib/s390x/processor.c
+@@ -17,16 +17,12 @@ void virt_arch_pgd_alloc(struct kvm_vm *vm)
+ 	TEST_ASSERT(vm->page_size == 4096, "Unsupported page size: 0x%x",
+ 		    vm->page_size);
+ 
+-	if (vm->pgd_created)
+-		return;
+-
+ 	paddr = vm_phy_pages_alloc(vm, PAGES_PER_REGION,
+ 				   KVM_GUEST_PAGE_TABLE_MIN_PADDR,
+ 				   vm->memslots[MEM_REGION_PT]);
+ 	memset(addr_gpa2hva(vm, paddr), 0xff, PAGES_PER_REGION * vm->page_size);
+ 
+ 	vm->pgd = paddr;
+-	vm->pgd_created = true;
+ }
+ 
+ /*
+diff --git a/tools/testing/selftests/kvm/lib/x86_64/processor.c b/tools/testing/selftests/kvm/lib/x86_64/processor.c
+index d4a0b504b1e0..d4deb2718e86 100644
+--- a/tools/testing/selftests/kvm/lib/x86_64/processor.c
++++ b/tools/testing/selftests/kvm/lib/x86_64/processor.c
+@@ -127,11 +127,8 @@ void virt_arch_pgd_alloc(struct kvm_vm *vm)
+ 	TEST_ASSERT(vm->mode == VM_MODE_PXXV48_4K, "Attempt to use "
+ 		"unknown or unsupported guest mode, mode: 0x%x", vm->mode);
+ 
+-	/* If needed, create page map l4 table. */
+-	if (!vm->pgd_created) {
+-		vm->pgd = vm_alloc_page_table(vm);
+-		vm->pgd_created = true;
+-	}
++	/* Create page map l4 table. */
++	vm->pgd = vm_alloc_page_table(vm);
+ }
+ 
+ static void *virt_get_pte(struct kvm_vm *vm, uint64_t *parent_pte,
 -- 
 2.40.1
 
