@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F333A7287B1
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 21:11:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32CAF7287C7
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 21:12:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QcYjf5KXmz3f8V
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 05:11:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QcYks6zLwz3f8j
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 05:12:53 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=zI2n2c7O;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=1l3g323z;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::336; helo=mail-ot1-x336.google.com; envelope-from=hughd@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::112d; helo=mail-yw1-x112d.google.com; envelope-from=hughd@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=zI2n2c7O;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=1l3g323z;
 	dkim-atps=neutral
-Received: from mail-ot1-x336.google.com (mail-ot1-x336.google.com [IPv6:2607:f8b0:4864:20::336])
+Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QcYhp34B8z3dxZ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jun 2023 05:11:06 +1000 (AEST)
-Received: by mail-ot1-x336.google.com with SMTP id 46e09a7af769-6b29c972e00so34167a34.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jun 2023 12:11:06 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QcYjy4fj9z3dxZ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jun 2023 05:12:06 +1000 (AEST)
+Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-568928af8f5so14441887b3.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jun 2023 12:12:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1686251462; x=1688843462;
+        d=google.com; s=20221208; t=1686251524; x=1688843524;
         h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1YvWeTkG3kfP7WDkFLxY3Kk7w85fUEyISH4lFagFGGw=;
-        b=zI2n2c7OkddkeoVughk/breFog0Z+EugvTVCVE29AxlIwAuw/EXjuVVrGwHMRC2bhf
-         x0zQuSLbArDGG85kKSwsyOqR0pmFFom/E7xSbaqroxyuObbaGosDK+M/+SoF1AtELCEy
-         bwiSK0YoqwXYs8RFX4mr6F5bpRQfVt01fhKCwqENzESWm7Dhrz7vfiQry977lpQgtzrZ
-         wnC//NTYAzqdTpQsJYqSSYM/JJ1rR9aCAEjxg8RoVlpIwLkFMrqySi29YtVXSpE8PojR
-         NAOs9BLAS5JJ+VzpPEvMOGrhcKbJ9tQKHA0AjGKdBMYv+rB/+u255TZMPygFcoEpIAK5
-         9xvQ==
+        bh=zVLRceEeXaiGvlgxdYbIgAo+AcDyW1dS+jDGBb+h1UA=;
+        b=1l3g323zHExDgYGww0zFXmVgic3jDwyc0JAOaU14MB4NUoruSezWtFEVocvA8VR+wP
+         D+bOPBhVpeN5TR7Q94HiD/7UXFwgvkn75HwqVtdM3hi/WhalPJUwiHRXSp3bpeKIuRdm
+         orIqBvL0rae06pUEOxuRX8a0MpgqpKjI5TTzLJ98WQmBBEIDz4RhToD7qotfuISdygmL
+         gKqyyQ61v8JQcZhpfriPzCyTWiXBbfQnLuFCKxtspZkjhV60I7fgSoyr0iHs2+KGMqLW
+         csaRWwWg7YMEgY5GV8POPk7y+6y3olAQXOM6liWFfJYYRJ0sFo+4jM2u98tnCjYnFP0Y
+         93kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686251462; x=1688843462;
+        d=1e100.net; s=20221208; t=1686251524; x=1688843524;
         h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1YvWeTkG3kfP7WDkFLxY3Kk7w85fUEyISH4lFagFGGw=;
-        b=b2yUCXSbdNr5coTdhYQKwvAbM3KGyQOLRcSvdaVydbVeZuO94KsM+r3OexFFZRxClU
-         myK+/KROby3FBtCACnuJDWFV3+4YZ+AArFmf5TSdIcLvETHaP97UrNw1M8KNfdbsaCnb
-         wW4bk/Qw5cdIjfOXm9F5UAaxOpPQ2TvVokNwyimHQ0BSEnCWGe0I1ItwhHl1mVkb3t34
-         3nnCpnIogY4lv9UZWb6PxllPfdNcUdZcMHbizq63kdNvEk7H0lDMrLpohuE3sdihz0Qe
-         opYozc+NL7hx1P2zxd2y6L8UFgeEah2l1sMDXRPLh69wLTM9bMUpxX+AVTXcbzXwLJuS
-         D2jQ==
-X-Gm-Message-State: AC+VfDzf6BvaX8a+NTEyjC1KGGmAUkrdvL/TVUZNPMrP+7QdoqSxx8m2
-	Jg5pIrfX8mIhpcgd0kdRb1rp1w==
-X-Google-Smtp-Source: ACHHUZ5JMT1Kov7YopWmoAdbj6VCmy1YpW57EN24ghxD3DbymGPoxfTUoK+9WA1xlwUdsIzRTkW8Cg==
-X-Received: by 2002:a05:6359:38f:b0:128:7ef8:805f with SMTP id eg15-20020a056359038f00b001287ef8805fmr5080226rwb.6.1686251462249;
-        Thu, 08 Jun 2023 12:11:02 -0700 (PDT)
+        bh=zVLRceEeXaiGvlgxdYbIgAo+AcDyW1dS+jDGBb+h1UA=;
+        b=ELGT+/4yyCTdZZMCeF5zKPMTbHZpC++LnPskuMkqF1pFAtEmqzb+O2eO2Cz5xcwbOf
+         K/a+hBH0UbyogsHmqfSjvpX6hh50rF7OhsQSVY9IaGBcUzO4Ff3++ofMcuAK8jAYjfCS
+         sUmBNfCCt4h+EYxqaFUlSXE8Cra+MvqY/Kvw2G/ekExp6DC2KJayRMt6pnrrFsKw3wex
+         yPp7gwgqLxTt9+DYBzqOr4An8qfaVzE3R2x0974dY2LPuuOqkJKbzy8g+WYHWm5q7KPD
+         l2oODnEo3DpM4DXGUHI3JGrqH8r4p9LuCt1b4Xx+oPReSJSwtXSyhunoJYIJJVJFKLt8
+         iYnA==
+X-Gm-Message-State: AC+VfDzDEgqcj3Vw3bwSM5PIGyY2M2D2vPakyN8UOEnXoawuywDHapGx
+	8HqxloNEy3SrDw+OtK4BxX3p1w==
+X-Google-Smtp-Source: ACHHUZ6kOJKeygbedx9f6pcNR03LNZvYC4ZecjCRxiqOz1IuKMf5mVIHIRdEhOcWlcOzm+o3M8bu5Q==
+X-Received: by 2002:a0d:ead2:0:b0:569:ec03:14eb with SMTP id t201-20020a0dead2000000b00569ec0314ebmr668029ywe.23.1686251523870;
+        Thu, 08 Jun 2023 12:12:03 -0700 (PDT)
 Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id a17-20020a81bb51000000b00545a08184fdsm87881ywl.141.2023.06.08.12.10.58
+        by smtp.gmail.com with ESMTPSA id d144-20020a814f96000000b00559f1cb8444sm106718ywb.70.2023.06.08.12.12.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jun 2023 12:11:01 -0700 (PDT)
-Date: Thu, 8 Jun 2023 12:10:57 -0700 (PDT)
+        Thu, 08 Jun 2023 12:12:03 -0700 (PDT)
+Date: Thu, 8 Jun 2023 12:11:59 -0700 (PDT)
 From: Hugh Dickins <hughd@google.com>
 X-X-Sender: hugh@ripple.attlocal.net
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2 01/23] arm: allow pte_offset_map[_lock]() to fail
+Subject: [PATCH v2 02/23] arm64: allow pte_offset_map() to fail
 In-Reply-To: <a4963be9-7aa6-350-66d0-2ba843e1af44@google.com>
-Message-ID: <813429a1-204a-1844-eeae-7fd72826c28@google.com>
+Message-ID: <35e46485-8499-4337-c51f-b8fa495a1a93@google.com>
 References: <a4963be9-7aa6-350-66d0-2ba843e1af44@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -85,57 +85,25 @@ In rare transient cases, not yet made possible, pte_offset_map() and
 pte_offset_map_lock() may not find a page table: handle appropriately.
 
 Signed-off-by: Hugh Dickins <hughd@google.com>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
 ---
- arch/arm/lib/uaccess_with_memcpy.c | 3 +++
- arch/arm/mm/fault-armv.c           | 5 ++++-
- arch/arm/mm/fault.c                | 3 +++
- 3 files changed, 10 insertions(+), 1 deletion(-)
+ arch/arm64/mm/fault.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm/lib/uaccess_with_memcpy.c b/arch/arm/lib/uaccess_with_memcpy.c
-index e4c2677cc1e9..2f6163f05e93 100644
---- a/arch/arm/lib/uaccess_with_memcpy.c
-+++ b/arch/arm/lib/uaccess_with_memcpy.c
-@@ -74,6 +74,9 @@ pin_page_for_write(const void __user *_addr, pte_t **ptep, spinlock_t **ptlp)
- 		return 0;
- 
- 	pte = pte_offset_map_lock(current->mm, pmd, addr, &ptl);
-+	if (unlikely(!pte))
-+		return 0;
-+
- 	if (unlikely(!pte_present(*pte) || !pte_young(*pte) ||
- 	    !pte_write(*pte) || !pte_dirty(*pte))) {
- 		pte_unmap_unlock(pte, ptl);
-diff --git a/arch/arm/mm/fault-armv.c b/arch/arm/mm/fault-armv.c
-index 0e49154454a6..ca5302b0b7ee 100644
---- a/arch/arm/mm/fault-armv.c
-+++ b/arch/arm/mm/fault-armv.c
-@@ -117,8 +117,11 @@ static int adjust_pte(struct vm_area_struct *vma, unsigned long address,
- 	 * must use the nested version.  This also means we need to
- 	 * open-code the spin-locking.
- 	 */
--	ptl = pte_lockptr(vma->vm_mm, pmd);
- 	pte = pte_offset_map(pmd, address);
-+	if (!pte)
-+		return 0;
-+
-+	ptl = pte_lockptr(vma->vm_mm, pmd);
- 	do_pte_lock(ptl);
- 
- 	ret = do_adjust_pte(vma, address, pfn, pte);
-diff --git a/arch/arm/mm/fault.c b/arch/arm/mm/fault.c
-index 2418f1efabd8..83598649a094 100644
---- a/arch/arm/mm/fault.c
-+++ b/arch/arm/mm/fault.c
-@@ -85,6 +85,9 @@ void show_pte(const char *lvl, struct mm_struct *mm, unsigned long addr)
+diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+index cb21ccd7940d..f3aaba853547 100644
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -177,6 +177,9 @@ static void show_pte(unsigned long addr)
  			break;
  
- 		pte = pte_offset_map(pmd, addr);
-+		if (!pte)
+ 		ptep = pte_offset_map(pmdp, addr);
++		if (!ptep)
 +			break;
 +
- 		pr_cont(", *pte=%08llx", (long long)pte_val(*pte));
- #ifndef CONFIG_ARM_LPAE
- 		pr_cont(", *ppte=%08llx",
+ 		pte = READ_ONCE(*ptep);
+ 		pr_cont(", pte=%016llx", pte_val(pte));
+ 		pte_unmap(ptep);
 -- 
 2.35.3
 
