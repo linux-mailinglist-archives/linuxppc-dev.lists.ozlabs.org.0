@@ -1,77 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B75DE7281E1
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 15:56:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26C827281FA
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 15:59:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QcQjp3l0zz3dyN
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 23:56:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QcQn96kG8z3f7w
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 23:59:25 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=oVg83mrT;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=c3kx8K7t;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::d33; helo=mail-io1-xd33.google.com; envelope-from=dianders@chromium.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::229; helo=mail-oi1-x229.google.com; envelope-from=jgg@ziepe.ca; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=oVg83mrT;
+	dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=c3kx8K7t;
 	dkim-atps=neutral
-Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
+Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QcQhv3m1lz3drw
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jun 2023 23:55:41 +1000 (AEST)
-Received: by mail-io1-xd33.google.com with SMTP id ca18e2360f4ac-77acb944bdfso22690239f.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jun 2023 06:55:40 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QcQmG2TcVz3dx7
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jun 2023 23:58:38 +1000 (AEST)
+Received: by mail-oi1-x229.google.com with SMTP id 5614622812f47-39a505b901dso424420b6e.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jun 2023 06:58:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1686232537; x=1688824537;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=27Vs9lje4ue6a9YND5XSnEpnS9VI2Lo/geXINpFnbB8=;
-        b=oVg83mrTBUl29PTk+RqO5MA1BbM29G9oM3VedLfG6Qy1nJ9HCw3ztfODFjNfW/5Foj
-         PV9ypqz1v+8NtZyWCWnd+W4r6KFZUVomawer+u+FDGofP56S8HQjCx39B7+Wj2Mltud4
-         3FUSID/L+JQ3Q0AHzm5LxcJ0wqiK8FdELAXCA=
+        d=ziepe.ca; s=google; t=1686232715; x=1688824715;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UNu2/S7sKOt+ubQCHoHXnO+tkZORQ3Sbd1tjf3f4Mr4=;
+        b=c3kx8K7tTcukv+anoLR5JE3/ubg8q5CO3nzZOO6SU5CXIix8vczuprLx4rXVDWTdEX
+         hs+E+zzja4ua8gGSjBrbVm6Ep8+L0fOEvdhrqVYJLxFv130wvOZzdjAaB2Flhgb2TRRb
+         uqPK/7XI63a9Wl2IZQN4DEejxckFyPyr0xFuvLWArVQ/+f9ud9V5FeMXJ6bonL6nPSkP
+         ZAWsLq+XfvZHPiGRN/xo7lAPtKsiLx+Q72RSIJ86pzS9EcuyNwtp9F9J96kqArgULjkv
+         3GfO6CrfSEhxuYeCqGRvjyHkvsZI1BdV24dd8bBsMQRPPswYuaCUpkJe5qj8Iwetk/KI
+         UiSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686232537; x=1688824537;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=27Vs9lje4ue6a9YND5XSnEpnS9VI2Lo/geXINpFnbB8=;
-        b=jjm0orQosYRLHeq1hGLDIQdjNacfrWLO74FfvNNzCyi9RwUbeBqMXjRpS+uxZOBdAX
-         meenyHYIEx1kylQQaFATZxtDiYWbIXYlaUgi7GigbuSQ9StT3JPTdpCRAEPP0xQrwjNb
-         bfciCqGgUohfVkEyhX2CFFoln4zRHeYcl9UZrzri5/J6y6dDRe94x12dP7ucD+zMBv4C
-         uHdpiwQIRG9BD4X4THxeq3o7uQsYNaTRrrypUve/KhCGFPSzQx7FuCuPzEJLPS3QBMRB
-         r2x+g87XtVfTKvOEoZ4VAGz5WNM13T7LiotgR/0tdJnMQEynxjwSminkM7qacMXZMATg
-         TVZw==
-X-Gm-Message-State: AC+VfDw3FdvDhKMLUXM+2dUUaDLBlUvGgQssWvqbCVBVQc8PV1qA/mEG
-	JzE6F9a/M9UA08MqfA65PFe48dxLbjCl7efU0vU=
-X-Google-Smtp-Source: ACHHUZ6W/3WW5EK+Yx5gwk998xoYRdUgCduzEno+tAxCTmtVPYcL0y429uDa2oTGardcUSsJLzhPeA==
-X-Received: by 2002:a5e:c74d:0:b0:776:fc29:d965 with SMTP id g13-20020a5ec74d000000b00776fc29d965mr11737860iop.10.1686232536992;
-        Thu, 08 Jun 2023 06:55:36 -0700 (PDT)
-Received: from mail-il1-f181.google.com (mail-il1-f181.google.com. [209.85.166.181])
-        by smtp.gmail.com with ESMTPSA id f27-20020a02cadb000000b00416789bfd70sm298655jap.1.2023.06.08.06.55.35
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Jun 2023 06:55:35 -0700 (PDT)
-Received: by mail-il1-f181.google.com with SMTP id e9e14a558f8ab-33bf12b5fb5so92655ab.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jun 2023 06:55:35 -0700 (PDT)
-X-Received: by 2002:a05:6e02:1a82:b0:32f:7715:4482 with SMTP id
- k2-20020a056e021a8200b0032f77154482mr109894ilv.4.1686232535228; Thu, 08 Jun
- 2023 06:55:35 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1686232715; x=1688824715;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UNu2/S7sKOt+ubQCHoHXnO+tkZORQ3Sbd1tjf3f4Mr4=;
+        b=ghxUF3Ur43rIafrDT/zBY85nx2axYbz+9K2O/OPkrzO/1v5SkQf2gGJZMhpzeqL1Fr
+         ZmWQFWgRedkoF90Ll3iZsOdEfX21Szdz26AOTIwaX6PFzaF9lS+ZEaywO/DGldSldq/v
+         xhYkCxHWj7VMhhl3we77TH+LhO2MWiLWRq3EQpzjRH0Ps9+W8cL5wQ6Jl8/5+CO062xy
+         e7wsYHEkTMZuMKEwG8bpqE2j9mThUk2kqbHbK/iA5qMkOQAjN8L/kDKvgsKptiKQgyea
+         +Q8zN45ZrJd+6dAYSoeT2mOao+Unup/J90QphhMTCC2vG6fEH51HE72eN3QnHQlhKOe/
+         rapg==
+X-Gm-Message-State: AC+VfDxgxBzXGlnQMBjwwdgmrg8vYVanu8vXuLfjqnS9QdHuhyVgS7MG
+	wVarFHvC4RiwwxbvtJMFyok4nw==
+X-Google-Smtp-Source: ACHHUZ79SDvHlQrsY3n06C+42lQZ8V3VBEDt3rX4FxqxgeXDKorKznGSCHqgRSC89Wx2XwVPR9xrlA==
+X-Received: by 2002:aca:90e:0:b0:397:f9f2:76b with SMTP id 14-20020aca090e000000b00397f9f2076bmr8071851oij.30.1686232715650;
+        Thu, 08 Jun 2023 06:58:35 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-68-25-194.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.25.194])
+        by smtp.gmail.com with ESMTPSA id pg4-20020a17090b1e0400b00256a4d59bfasm3119836pjb.23.2023.06.08.06.58.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Jun 2023 06:58:34 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.95)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1q7G9o-003TSq-VU;
+	Thu, 08 Jun 2023 10:58:32 -0300
+Date: Thu, 8 Jun 2023 10:58:32 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Hugh Dickins <hughd@google.com>
+Subject: Re: [PATCH 07/12] s390: add pte_free_defer(), with use of
+ mmdrop_async()
+Message-ID: <ZIHeiDf9srvRagfr@ziepe.ca>
+References: <35e983f5-7ed3-b310-d949-9ae8b130cdab@google.com>
+ <6dd63b39-e71f-2e8b-7e0-83e02f3bcb39@google.com>
+ <175ebec8-761-c3f-2d98-6c3bd87161c8@google.com>
+ <20230606214037.09c6b280@thinkpad-T15>
+ <dbed4c5-1d-f278-d03a-66f5eff5e48e@google.com>
 MIME-Version: 1.0
-References: <20230607152432.5435-1-pmladek@suse.com> <20230607152432.5435-3-pmladek@suse.com>
- <CAD=FV=WRzaLbLQ65usGeFq3ya=DV8cYyHQina_721EFoSTdBGA@mail.gmail.com> <ZIG1Qi0iUjTKICQM@alley>
-In-Reply-To: <ZIG1Qi0iUjTKICQM@alley>
-From: Doug Anderson <dianders@chromium.org>
-Date: Thu, 8 Jun 2023 06:55:23 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=XzueJia--Zv4cAofzk7yocmP-7K8wa4doAN8pzED_hZA@mail.gmail.com>
-Message-ID: <CAD=FV=XzueJia--Zv4cAofzk7yocmP-7K8wa4doAN8pzED_hZA@mail.gmail.com>
-Subject: Re: [PATCH 2/7] watchdog/hardlockup: Make the config checks more straightforward
-To: Petr Mladek <pmladek@suse.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dbed4c5-1d-f278-d03a-66f5eff5e48e@google.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,63 +86,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kgdb-bugreport@lists.sourceforge.net, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-perf-users@vger.kernel.org, sparclinux@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Yang Shi <shy828301@gmail.com>, Peter Xu <peterx@redhat.com>, linux-kernel@vger.kernel.org, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Yu Zhao <yuzhao@google.com>, Ira Weiny <ira.weiny@intel.com>, Alistair Popple <apopple@nvidia.com>, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, Steven Price <steven.price@arm.com>, Christoph Hellwig <hch@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Axel Rasmussen <axelrasmussen@google.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Thomas Hellstrom <thomas.hellstrom@linux.intel.com>, Ralph Campbell <rcampbell@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, Vasily G
+ orbik <gor@linux.ibm.com>, Anshuman Khandual <anshuman.khandual@arm.com>, Heiko Carstens <hca@linux.ibm.com>, Qi Zheng <zhengqi.arch@bytedance.com>, Suren Baghdasaryan <surenb@google.com>, linux-arm-kernel@lists.infradead.org, SeongJae Park <sj@kernel.org>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, Naoya Horiguchi <naoya.horiguchi@nec.com>, Zack Rusin <zackr@vmware.com>, Minchan Kim <minchan@kernel.org>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, Mel Gorman <mgorman@techsingularity.net>, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+On Wed, Jun 07, 2023 at 08:35:05PM -0700, Hugh Dickins wrote:
 
-On Thu, Jun 8, 2023 at 4:02=E2=80=AFAM Petr Mladek <pmladek@suse.com> wrote=
-:
->
-> > >  config HARDLOCKUP_DETECTOR
-> > >         bool "Detect Hard Lockups"
-> > >         depends on DEBUG_KERNEL && !S390
-> > > -       depends on HAVE_HARDLOCKUP_DETECTOR_NON_ARCH || HAVE_HARDLOCK=
-UP_DETECTOR_ARCH
-> > > +       depends on ((HAVE_HARDLOCKUP_DETECTOR_PERF || HAVE_HARDLOCKUP=
-_DETECTOR_BUDDY) && !HAVE_NMI_WATCHDOG) || HAVE_HARDLOCKUP_DETECTOR_ARCH
-> >
-> > Adding the dependency to buddy (see ablove) would simplify the above
-> > to just this:
-> >
-> > depends on HAVE_HARDLOCKUP_DETECTOR_PERF ||
-> > HAVE_HARDLOCKUP_DETECTOR_BUDDY || HAVE_HARDLOCKUP_DETECTOR_ARCH
->
-> This is exactly what I do not want. It would just move the check
-> somewhere else. But it would make the logic harder to understand.
+> My current thinking (but may be proved wrong) is along the lines of:
+> why does something on its way to being freed need to be on any list
+> than the rcu_head list?  I expect the current answer is, that the
+> other half is allocated, so the page won't be freed; but I hope that
+> we can put it back on that list once we're through with the rcu_head.
 
-Hmmm. To me, it felt easier to understand by moving this into the
-"HAVE_HARDLOCKUP_DETECTOR_BUDDY". To me it was pretty easy to say "if
-an architecture defined its own arch-specific watchdog then buddy
-can't be enabled" and that felt like it fit cleanly within the
-"HAVE_HARDLOCKUP_DETECTOR_BUDDY" definition. It got rid of _a lot_ of
-other special cases / checks elsewhere and felt quite a bit cleaner to
-me. I only had to think about the conflict between the "buddy" and
-"nmi" watchdogs once when I understood
-"HAVE_HARDLOCKUP_DETECTOR_BUDDY".
+I was having the same thought. It is pretty tricky, but if this was
+made into some core helper then PPC and S390 could both use it and PPC
+would get a nice upgrade to have the S390 frag re-use instead of
+leaking frags.
 
+Broadly we have three states:
 
-> > As per above, it's simply a responsibility of architectures not to
-> > define that they have both "perf" if they have the NMI watchdog, so
-> > it's just buddy to worry about.
->
-> Where is this documented, please?
-> Is it safe to assume this?
+ all frags free
+ at least one frag free
+ all frags used
 
-It's not well documented and I agree that it could be improved. Right
-now, HAVE_NMI_WATCHDOG is documented to say that the architecture
-"defines its own arch_touch_nmi_watchdog()". Looking before my
-patches, you can see that "kernel/watchdog_hld.c" (the "perf" detector
-code) unconditionally defines arch_touch_nmi_watchdog(). That would
-give you a linker error.
+'all frags free' should be returned to the allocator
+'at least one frag free' should have the struct page on the mmu_struct's list
+'all frags used' should be on no list.
 
+So if we go from 
+  all frags used -> at least one frag free
+Then we put it on the RCU then the RCU puts it on the mmu_struct list
 
-> I would personally prefer to ensure this by the config check.
-> It is even better than documentation because nobody reads
-> documentation ;-)
+If we go from 
+   at least one frag free -> all frags free
+Then we take it off the mmu_struct list, put it on the RCU, and RCU
+frees it.
 
-Sure. IMO this should be documented as close as possible to the root
-of the problem. Make "HAVE_NMI_WATCHDOG" depend on
-"!HAVE_HARDLOCKUP_DETECTOR_PERF". That expresses that an architecture
-is not allowed to declare that it has both.
+Your trick to put the list_head for the mm_struct list into the frag
+memory looks like the right direction. So 'at least one frag free' has
+a single already RCU free'd frag hold the list head pointer. Thus we
+never use the LRU and the rcu_head is always available.
+
+The struct page itself can contain the actual free frag bitmask.
+
+I think if we split up the memory used for pt_frag_refcount we can get
+enough bits to keep track of everything. With only 2-4 frags we should
+be OK.
+
+So we track this data in the struct page:
+  - Current RCU free TODO bitmask - if non-zero then a RCU is already
+    triggered
+  - Next RCU TODO bitmaks - If an RCU is already triggrered then we
+    accumulate more free'd frags here
+  - Current Free Bits - Only updated by the RCU callback
+
+?
+
+We'd also need to store the mmu_struct pointer in the struct page for
+the RCU to be able to add/remove from the mm_struct list.
+
+I'm not sure how much of the work can be done with atomics and how
+much would need to rely on spinlock inside the mm_struct.
+
+It feels feasible and not so bad. :)
+
+Figure it out and test it on S390 then make power use the same common
+code, and we get full RCU page table freeing using a reliable rcu_head
+on both of these previously troublesome architectures :) Yay
+
+Jason
