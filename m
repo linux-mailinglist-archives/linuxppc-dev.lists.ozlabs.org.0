@@ -1,80 +1,96 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26C827281FA
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 15:59:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 632CD728423
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 17:50:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QcQn96kG8z3f7w
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 23:59:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QcTDw1ZQzz3f8j
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 01:50:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=c3kx8K7t;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DTy60rdZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::229; helo=mail-oi1-x229.google.com; envelope-from=jgg@ziepe.ca; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gerald.schaefer@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=c3kx8K7t;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DTy60rdZ;
 	dkim-atps=neutral
-Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QcQmG2TcVz3dx7
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jun 2023 23:58:38 +1000 (AEST)
-Received: by mail-oi1-x229.google.com with SMTP id 5614622812f47-39a505b901dso424420b6e.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jun 2023 06:58:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1686232715; x=1688824715;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UNu2/S7sKOt+ubQCHoHXnO+tkZORQ3Sbd1tjf3f4Mr4=;
-        b=c3kx8K7tTcukv+anoLR5JE3/ubg8q5CO3nzZOO6SU5CXIix8vczuprLx4rXVDWTdEX
-         hs+E+zzja4ua8gGSjBrbVm6Ep8+L0fOEvdhrqVYJLxFv130wvOZzdjAaB2Flhgb2TRRb
-         uqPK/7XI63a9Wl2IZQN4DEejxckFyPyr0xFuvLWArVQ/+f9ud9V5FeMXJ6bonL6nPSkP
-         ZAWsLq+XfvZHPiGRN/xo7lAPtKsiLx+Q72RSIJ86pzS9EcuyNwtp9F9J96kqArgULjkv
-         3GfO6CrfSEhxuYeCqGRvjyHkvsZI1BdV24dd8bBsMQRPPswYuaCUpkJe5qj8Iwetk/KI
-         UiSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686232715; x=1688824715;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UNu2/S7sKOt+ubQCHoHXnO+tkZORQ3Sbd1tjf3f4Mr4=;
-        b=ghxUF3Ur43rIafrDT/zBY85nx2axYbz+9K2O/OPkrzO/1v5SkQf2gGJZMhpzeqL1Fr
-         ZmWQFWgRedkoF90Ll3iZsOdEfX21Szdz26AOTIwaX6PFzaF9lS+ZEaywO/DGldSldq/v
-         xhYkCxHWj7VMhhl3we77TH+LhO2MWiLWRq3EQpzjRH0Ps9+W8cL5wQ6Jl8/5+CO062xy
-         e7wsYHEkTMZuMKEwG8bpqE2j9mThUk2kqbHbK/iA5qMkOQAjN8L/kDKvgsKptiKQgyea
-         +Q8zN45ZrJd+6dAYSoeT2mOao+Unup/J90QphhMTCC2vG6fEH51HE72eN3QnHQlhKOe/
-         rapg==
-X-Gm-Message-State: AC+VfDxgxBzXGlnQMBjwwdgmrg8vYVanu8vXuLfjqnS9QdHuhyVgS7MG
-	wVarFHvC4RiwwxbvtJMFyok4nw==
-X-Google-Smtp-Source: ACHHUZ79SDvHlQrsY3n06C+42lQZ8V3VBEDt3rX4FxqxgeXDKorKznGSCHqgRSC89Wx2XwVPR9xrlA==
-X-Received: by 2002:aca:90e:0:b0:397:f9f2:76b with SMTP id 14-20020aca090e000000b00397f9f2076bmr8071851oij.30.1686232715650;
-        Thu, 08 Jun 2023 06:58:35 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-68-25-194.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.25.194])
-        by smtp.gmail.com with ESMTPSA id pg4-20020a17090b1e0400b00256a4d59bfasm3119836pjb.23.2023.06.08.06.58.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jun 2023 06:58:34 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.95)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1q7G9o-003TSq-VU;
-	Thu, 08 Jun 2023 10:58:32 -0300
-Date: Thu, 8 Jun 2023 10:58:32 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QcTD053k1z3dw1
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jun 2023 01:49:20 +1000 (AEST)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 358FGlFn005695;
+	Thu, 8 Jun 2023 15:48:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=tMWkrHWmdf0IYFFE01r4wAwCnOFP+Qrc/B/Q6JRs7Yw=;
+ b=DTy60rdZZgh016ux5vpfVgalKqqM+vKEGoo5uLgRt1twE3XZKvHMmQ8lh/H7HdT7wLZw
+ 2gZHVI4ZDNDAyHNEyeHhIWBFqUFu+7etr1drsnnoLcvN0lLBl4/gotbDxkOTHV50Nx+q
+ 0AFJow3PLyKQF+DIQEs8MKVoS2KUIFx7oARSH1/vuFiq08XvGTeacsy3Msj3qEWv0MP6
+ 9fnZ9kJlFmhYfVgaVbGb2j/e7L4p59ewaqD/ENOovf7gVMbTviXZiglP4xuGssuDWRLN
+ ekLhLsz8UfCCQOjGRddzEKBY/5eupoF5EVM0zN2sfTxws7+65EhKaV53MCjpoI+AVHFv Kg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r3hg710w1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 08 Jun 2023 15:48:08 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 358FHAQQ007204;
+	Thu, 8 Jun 2023 15:48:07 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r3hg710uy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 08 Jun 2023 15:48:07 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3586jH87011521;
+	Thu, 8 Jun 2023 15:48:04 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3r2a77hbe5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 08 Jun 2023 15:48:04 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 358Fm0LF25756168
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 8 Jun 2023 15:48:00 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B537520043;
+	Thu,  8 Jun 2023 15:48:00 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 90A1A2004B;
+	Thu,  8 Jun 2023 15:47:58 +0000 (GMT)
+Received: from thinkpad-T15 (unknown [9.179.28.214])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Thu,  8 Jun 2023 15:47:58 +0000 (GMT)
+Date: Thu, 8 Jun 2023 17:47:56 +0200
+From: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
 To: Hugh Dickins <hughd@google.com>
 Subject: Re: [PATCH 07/12] s390: add pte_free_defer(), with use of
  mmdrop_async()
-Message-ID: <ZIHeiDf9srvRagfr@ziepe.ca>
-References: <35e983f5-7ed3-b310-d949-9ae8b130cdab@google.com>
- <6dd63b39-e71f-2e8b-7e0-83e02f3bcb39@google.com>
- <175ebec8-761-c3f-2d98-6c3bd87161c8@google.com>
- <20230606214037.09c6b280@thinkpad-T15>
- <dbed4c5-1d-f278-d03a-66f5eff5e48e@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Message-ID: <20230608174756.27cace18@thinkpad-T15>
 In-Reply-To: <dbed4c5-1d-f278-d03a-66f5eff5e48e@google.com>
+References: <35e983f5-7ed3-b310-d949-9ae8b130cdab@google.com>
+	<6dd63b39-e71f-2e8b-7e0-83e02f3bcb39@google.com>
+	<175ebec8-761-c3f-2d98-6c3bd87161c8@google.com>
+	<20230606214037.09c6b280@thinkpad-T15>
+	<dbed4c5-1d-f278-d03a-66f5eff5e48e@google.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: j2pxU5M5eHqEDuvzUa-GCOc-JmsCbsws
+X-Proofpoint-GUID: CM_eGiry6q8Eks-V-DjTbf2yMscXJE-F
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-08_11,2023-06-08_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ clxscore=1015 lowpriorityscore=0 malwarescore=0 bulkscore=0 spamscore=0
+ phishscore=0 impostorscore=0 mlxscore=0 mlxlogscore=999 suspectscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306080136
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,73 +102,202 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Miaohe Lin <linmiaohe@huawei.com>, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Yang Shi <shy828301@gmail.com>, Peter Xu <peterx@redhat.com>, linux-kernel@vger.kernel.org, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Yu Zhao <yuzhao@google.com>, Ira Weiny <ira.weiny@intel.com>, Alistair Popple <apopple@nvidia.com>, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, Steven Price <steven.price@arm.com>, Christoph Hellwig <hch@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Axel Rasmussen <axelrasmussen@google.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Thomas Hellstrom <thomas.hellstrom@linux.intel.com>, Ralph Campbell <rcampbell@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, Vasily G
- orbik <gor@linux.ibm.com>, Anshuman Khandual <anshuman.khandual@arm.com>, Heiko Carstens <hca@linux.ibm.com>, Qi Zheng <zhengqi.arch@bytedance.com>, Suren Baghdasaryan <surenb@google.com>, linux-arm-kernel@lists.infradead.org, SeongJae Park <sj@kernel.org>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, Naoya Horiguchi <naoya.horiguchi@nec.com>, Zack Rusin <zackr@vmware.com>, Minchan Kim <minchan@kernel.org>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, Mel Gorman <mgorman@techsingularity.net>, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Yang Shi <shy828301@gmail.com>, Peter Xu <peterx@redhat.com>, linux-kernel@vger.kernel.org, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Yu Zhao <yuzhao@google.com>, Ira Weiny <ira.weiny@intel.com>, Alistair Popple <apopple@nvidia.com>, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, Steven Price <steven.price@arm.com>, Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, "Aneesh Kumar
+ K.V" <aneesh.kumar@linux.ibm.com>, Axel Rasmussen <axelrasmussen@google.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Thomas Hellstrom <thomas.hellstrom@linux.intel.com>, Ralph Campbell <rcampbell@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, Vasily Gorbik <gor@linux.ibm.com>, Anshuman Khandual <anshuman.khandual@arm.com>, Heiko Carstens <hca@linux.ibm.com>, Qi Zheng <zhengqi.arch@bytedance.com>, Suren Baghdasaryan <surenb@google.com>, linux-arm-kernel@lists.infradead.org, SeongJae Park <sj@kernel.org>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, Naoya Horiguchi <naoya.horiguchi@nec.com>, Zack Rusin <zackr@vmware.com>, Minchan Kim <minchan@kernel.org>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, Mel Gorman <mgorman@techsingularity.net>, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 07, 2023 at 08:35:05PM -0700, Hugh Dickins wrote:
+On Wed, 7 Jun 2023 20:35:05 -0700 (PDT)
+Hugh Dickins <hughd@google.com> wrote:
 
+> On Tue, 6 Jun 2023, Gerald Schaefer wrote:
+> > On Mon, 5 Jun 2023 22:11:52 -0700 (PDT)
+> > Hugh Dickins <hughd@google.com> wrote: =20
+> > > On Thu, 1 Jun 2023 15:57:51 +0200
+> > > Gerald Schaefer <gerald.schaefer@linux.ibm.com> wrote: =20
+> > > >=20
+> > > > Yes, we have 2 pagetables in one 4K page, which could result in same
+> > > > rcu_head reuse. It might be possible to use the cleverness from our
+> > > > page_table_free() function, e.g. to only do the call_rcu() once, for
+> > > > the case where both 2K pagetable fragments become unused, similar to
+> > > > how we decide when to actually call __free_page().
+> > > >=20
+> > > > However, it might be much worse, and page->rcu_head from a pagetable
+> > > > page cannot be used at all for s390, because we also use page->lru
+> > > > to keep our list of free 2K pagetable fragments. I always get confu=
+sed
+> > > > by struct page unions, so not completely sure, but it seems to me t=
+hat
+> > > > page->rcu_head would overlay with page->lru, right?   =20
+> > >=20
+> > > Sigh, yes, page->rcu_head overlays page->lru.  But (please correct me=
+ if
+> > > I'm wrong) I think that s390 could use exactly the same technique for
+> > > its list of free 2K pagetable fragments as it uses for its list of THP
+> > > "deposited" pagetable fragments, over in arch/s390/mm/pgtable.c: use
+> > > the first two longs of the page table itself for threading the list. =
+=20
+> >=20
+> > Nice idea, I think that could actually work, since we only need the emp=
+ty
+> > 2K halves on the list. So it should be possible to store the list_head
+> > inside those. =20
+>=20
+> Jason quickly pointed out the flaw in my thinking there.
+
+Yes, while I had the right concerns about "the to-be-freed pagetables would
+still be accessible, but not really valid, if we added them back to the lis=
+t,
+with list_heads inside them", when suggesting the approach w/o passing over
+the mm, I missed that we would have the very same issue already with the
+existing page_table_free_rcu().
+
+Thankfully Jason was watching out!
+
+>=20
+> >  =20
+> > >=20
+> > > And while it could use third and fourth longs instead, I don't see any
+> > > need for that: a deposited pagetable has been allocated, so would not
+> > > be on the list of free fragments. =20
+> >=20
+> > Correct, that should not interfere.
+> >  =20
+> > >=20
+> > > Below is one of the grossest patches I've ever posted: gross because
+> > > it's a rushed attempt to see whether that is viable, while it would t=
+ake
+> > > me longer to understand all the s390 cleverness there (even though the
+> > > PP AA commentary above page_table_alloc() is excellent). =20
+> >=20
+> > Sounds fair, this is also one of the grossest code we have, which is al=
+so
+> > why Alexander added the comment. I guess we could need even more commen=
+ts
+> > inside the code, as it still confuses me more than it should.
+> >=20
+> > Considering that, you did remarkably well. Your patch seems to work fin=
+e,
+> > at least it survived some LTP mm tests. I will also add it to our CI ru=
+ns,
+> > to give it some more testing. Will report tomorrow when it broke someth=
+ing.
+> > See also below for some patch comments. =20
+>=20
+> Many thanks for your effort on this patch.  I don't expect the testing
+> of it to catch Jason's point, that I'm corrupting the page table while
+> it's on its way through RCU to being freed, but he's right nonetheless.
+
+Right, tests ran fine, but we would have introduced subtle issues with
+racing gup_fast, I guess.
+
+>=20
+> I'll integrate your fixes below into what I have here, but probably
+> just archive it as something to refer to later in case it might play
+> a part; but probably it will not - sorry for wasting your time.
+
+No worries, looking at that s390 code can never be amiss. It seems I need
+regular refresh, at least I'm sure I already understood it better in the
+past.
+
+And who knows, with Jasons recent thoughts, that "list_head inside
+pagetable" idea might not be dead yet.
+
+>=20
+> >  =20
+> > >=20
+> > > I'm hoping the use of page->lru in arch/s390/mm/gmap.c is disjoint.
+> > > And cmma_init_nodat()? Ah, that's __init so I guess disjoint. =20
+> >=20
+> > cmma_init_nodat() should be disjoint, not only because it is __init,
+> > but also because it explicitly skips pagetable pages, so it should
+> > never touch page->lru of those.
+> >=20
+> > Not very familiar with the gmap code, it does look disjoint, and we sho=
+uld
+> > also use complete 4K pages for pagetables instead of 2K fragments there,
+> > but Christian or Claudio should also have a look.
+> >  =20
+> > >=20
+> > > Gerald, s390 folk: would it be possible for you to give this
+> > > a try, suggest corrections and improvements, and then I can make it
+> > > a separate patch of the series; and work on avoiding concurrent use
+> > > of the rcu_head by pagetable fragment buddies (ideally fit in with
+> > > the scheme already there, maybe DD bits to go along with the PP AA). =
+=20
+> >=20
+> > It feels like it could be possible to not only avoid the double
+> > rcu_head, but also avoid passing over the mm via page->pt_mm.
+> > I.e. have pte_free_defer(), which has the mm, do all the checks and
+> > list updates that page_table_free() does, for which we need the mm.
+> > Then just skip the pgtable_pte_page_dtor() + __free_page() at the end,
+> > and do call_rcu(pte_free_now) instead. The pte_free_now() could then
+> > just do _dtor/__free_page similar to the generic version. =20
+>=20
+> I'm not sure: I missed your suggestion there when I first skimmed
+> through, and today have spent more time getting deeper into how it's
+> done at present.  I am now feeling more confident of a way forward,
+> a nicely integrated way forward, than I was yesterday.
+> Though getting it right may not be so easy.
+
+I think my "feeling" was a d=C3=A9j=C3=A0 vu of the existing logic that we =
+use for
+page_table_free_rcu() -> __tlb_remove_table(), where we also have no mm
+any more at the end, and use the PP bits magic to find out if the page
+can be freed, or if we still have fragments left.
+
+Of course, in that case, we also would not need the mm any more for
+list handling, as the to-be-freed fragments were already put back
+on the list, but with PP bits set, to prevent re-use. And clearing
+those would then make the fragment usable from the list again.
+
+I guess that would also be the major difference here, i.e. your RCU
+call-back would need to be able to add fragments back to the list,
+after having them removed before to make room for page->rcu_head,
+but with Jasons thoughts that does not seem so impossible after all.
+
+I do not yet understand if the list_head would then compulsorily need
+to be inside the pagetable, because page->rcu_head/lru still cannot be
+used (again). But you already have a patch for that, so either way
+might be possible.
+
+>=20
+> When Jason pointed out the existing RCU, I initially hoped that it might
+> already provide the necessary framework: but sadly not, because the
+> unbatched case (used when additional memory is not available) does not
+> use RCU at all, but instead the tlb_remove_table_sync_one() IRQ hack.
+> If I used that, it would cripple the s390 implementation unacceptably.
+>=20
+> >=20
+> > I must admit that I still have no good overview of the "big picture"
+> > here, and especially if this approach would still fit in. Probably not,
+> > as the to-be-freed pagetables would still be accessible, but not really
+> > valid, if we added them back to the list, with list_heads inside them.
+> > So maybe call_rcu() has to be done always, and not only for the case
+> > where the whole 4K page becomes free, then we probably cannot do w/o
+> > passing over the mm for proper list handling. =20
+>=20
 > My current thinking (but may be proved wrong) is along the lines of:
 > why does something on its way to being freed need to be on any list
 > than the rcu_head list?  I expect the current answer is, that the
 > other half is allocated, so the page won't be freed; but I hope that
 > we can put it back on that list once we're through with the rcu_head.
 
-I was having the same thought. It is pretty tricky, but if this was
-made into some core helper then PPC and S390 could both use it and PPC
-would get a nice upgrade to have the S390 frag re-use instead of
-leaking frags.
+Yes, that looks promising. Such a fragment would not necessarily need
+to be on the list, because while it is on its way, i.e. before the
+RCU call-back finished, it cannot be re-used anyway.
 
-Broadly we have three states:
+page_table_alloc() could currently find such a fragment on the list, but
+only to see the PP bits set, so it will not use it. Only after
+__tlb_remove_table() in the RCU call-back resets the bits, it would be
+usable again.
 
- all frags free
- at least one frag free
- all frags used
+In your case, that could correspond to adding it back to the list.
+That could even be an improvement, because page_table_alloc() would
+not be bothered by such unusable fragments.
 
-'all frags free' should be returned to the allocator
-'at least one frag free' should have the struct page on the mmu_struct's list
-'all frags used' should be on no list.
+[...]
+>=20
+> Is it too early to wish you a happy reverse Xmas?
 
-So if we go from 
-  all frags used -> at least one frag free
-Then we put it on the RCU then the RCU puts it on the mmu_struct list
-
-If we go from 
-   at least one frag free -> all frags free
-Then we take it off the mmu_struct list, put it on the RCU, and RCU
-frees it.
-
-Your trick to put the list_head for the mm_struct list into the frag
-memory looks like the right direction. So 'at least one frag free' has
-a single already RCU free'd frag hold the list head pointer. Thus we
-never use the LRU and the rcu_head is always available.
-
-The struct page itself can contain the actual free frag bitmask.
-
-I think if we split up the memory used for pt_frag_refcount we can get
-enough bits to keep track of everything. With only 2-4 frags we should
-be OK.
-
-So we track this data in the struct page:
-  - Current RCU free TODO bitmask - if non-zero then a RCU is already
-    triggered
-  - Next RCU TODO bitmaks - If an RCU is already triggrered then we
-    accumulate more free'd frags here
-  - Current Free Bits - Only updated by the RCU callback
-
-?
-
-We'd also need to store the mmu_struct pointer in the struct page for
-the RCU to be able to add/remove from the mm_struct list.
-
-I'm not sure how much of the work can be done with atomics and how
-much would need to rely on spinlock inside the mm_struct.
-
-It feels feasible and not so bad. :)
-
-Figure it out and test it on S390 then make power use the same common
-code, and we get full RCU page table freeing using a reliable rcu_head
-on both of these previously troublesome architectures :) Yay
-
-Jason
+Nice idea, we should make June 24th the reverse Xmas Remembrance Day :-)
