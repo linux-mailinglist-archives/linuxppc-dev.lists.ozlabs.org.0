@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4E15728829
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 21:20:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EE16728839
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 21:22:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QcYw44L79z3fdt
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 05:20:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QcYxQ2t9cz3fgM
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 05:22:02 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=mXQ7UC6c;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=HKd31Lqv;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b35; helo=mail-yb1-xb35.google.com; envelope-from=hughd@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1136; helo=mail-yw1-x1136.google.com; envelope-from=hughd@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=mXQ7UC6c;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=HKd31Lqv;
 	dkim-atps=neutral
-Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
+Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QcYvF23jcz3cBL
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jun 2023 05:20:09 +1000 (AEST)
-Received: by mail-yb1-xb35.google.com with SMTP id 3f1490d57ef6-bb167972cffso1091000276.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jun 2023 12:20:09 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QcYwW4YM6z3bnV
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jun 2023 05:21:15 +1000 (AEST)
+Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-565c7399afaso9156197b3.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jun 2023 12:21:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1686252005; x=1688844005;
+        d=google.com; s=20221208; t=1686252072; x=1688844072;
         h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=E/dR8Qg9bFHe49vUjKvOi0Rl/4IhXWfwv6MExDzA+GE=;
-        b=mXQ7UC6cKQLLZIQ28oFk9gQ5KxeKVwwY9rk3e7MKP3JMMgFBUS0Y4Ow9xYO3QBbWBp
-         OG1o7JhalsKeTrmK+H6URVPXbxrefFexNILlJOVSmAp7Qw//UVTcssC14O2AbNOpA95o
-         3fphns61QjibpjRegZHBgnDNFY4BaX8z0yU2Yg9FB0o8UxxLFxwBrXonk679QJW2NVtL
-         a5CA3hBH6G8j2p1GNpc9/KN99Dv4NvapDgXnvT++Pvq7LeadMsdSuwcoq6yEHgW25m/P
-         tlZmPB8WvPaouvvNC3jzVDH6WgeuI0e6ggHbT3c4Xpt7le2+MhNk3DZW5USJxtb/KL2r
-         qm0A==
+        bh=alKFmwAdxdkIViw1WjkjX/OCKeQtR2IpGs2zcY6rd0M=;
+        b=HKd31LqvAwT3pdB9H8RTJjakAJAT9HvglTvKC+OkvKmv5VhsoaZHAtLpo2tFkCpDhK
+         eaJn1uAawotb3pLd5xLGg7DzD6kDQrKAHxas7kU/r2KN0gO+8LwEgaLotjlfcSI+ExXP
+         OsTJ1O2tfGB1hyPd2BGfO1Hv0XjmUpnPR5LgmonoIasqGq2fAG/aN3V/iTrXbCwGdrUM
+         I50yE5ZJKvbdrlam2CeJEmfXKvbJkG9Wl49W11ZHf6B9xR5DJRVBfUy3eWMAtZhLeFU3
+         MFev89ALFBnRCYsOlrl0s+V0pK/HvUPQhOTjtpCkmArqzAHuVaF4G3AF2HiTPrlcql5n
+         hmyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686252005; x=1688844005;
+        d=1e100.net; s=20221208; t=1686252072; x=1688844072;
         h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=E/dR8Qg9bFHe49vUjKvOi0Rl/4IhXWfwv6MExDzA+GE=;
-        b=RWk/oI2XTBEwIspdzN4vSDYS+nQl1AdgWlDMkQs6qsfXlOAMLms9UqeuRkAhtMN9Sg
-         ZgLH83uTkLSsJYE9eCJYSd3+QIs+CApGYfN7w/E0QMtQ+/9j6dar4YBYbhmPxnsD4O8j
-         vqdU8nGsd+7e6FZC9AS4VyA6PYvKXl/SySBk3axkxoQr/+40DU3igfLeSP+jI46avAzJ
-         OEKdfqGeuztF/wRhSKRmwdSpvyg2+BZL8OvrYvlUBbxHd+5WkNO8QBN1Pa7FtW+MXJDH
-         Gmj8NYWZXZG7yCU7q/9aZNtCMgd/wLeFQEIhafQKCs8co72M7Hz8aiFvq0wXEgm2Rw5W
-         Fuag==
-X-Gm-Message-State: AC+VfDzEuLI2JgQhjskMGwG+TWAXlK9/nxYPu439aYULIrn+tzrJ5L80
-	0p8asGPNKmCuFjGfzFKN802vLw==
-X-Google-Smtp-Source: ACHHUZ4wGfYoiszAK487KBc/kae1dH0iFiJPU4oIJDoWEvbSOVI5OJwBbX6lcOBaT8/42nfo55JclQ==
-X-Received: by 2002:a25:ce90:0:b0:ba8:16df:e3f5 with SMTP id x138-20020a25ce90000000b00ba816dfe3f5mr700600ybe.0.1686252005314;
-        Thu, 08 Jun 2023 12:20:05 -0700 (PDT)
+        bh=alKFmwAdxdkIViw1WjkjX/OCKeQtR2IpGs2zcY6rd0M=;
+        b=WEH4UmUIw9LIOdtSOCLizGGESF5KizF2E58ih+3Gm+idu0pXQaCI+wRploYiH5NgZy
+         9dR3az9RHh02EJg5+1y/uOU3q7DycaNtzgulNBxWK5DJlJ6VMbAkzXOX6VeOKNSfdP3q
+         1fiIhPEf5VODYUbn93je+g6g5HMIhDrYVmvj/wJid2LIOQfziMxu0wyCLa74SDpWXgNY
+         mFAguuZbi60RFn6AXCetVAaGJqGKZZ4KSubCUwD/HuwB8H7iSj31bsOpl8V66gc3bNvQ
+         MV55TNUHYrAAG85tZXkdLl72ast+cd+IIjUv3FM5qYfZmlXCmVyxykuCOoGz4UaD+s6q
+         s/vw==
+X-Gm-Message-State: AC+VfDx1dZG1h6wX3ML+YfsVhLfgbNI9rmJ8g+YBcpOZTYbeIE6ypDbX
+	j3Ky6fNdsgS7hhBLYst04T+FCQ==
+X-Google-Smtp-Source: ACHHUZ6osQDL46P3M+nFsTgwfoyN2ZCBLpMaIBhxVjRNKZnry7+6/FcNKdRpu6hPkSNVLheeDpiVWQ==
+X-Received: by 2002:a0d:d98f:0:b0:565:ba4b:aa81 with SMTP id b137-20020a0dd98f000000b00565ba4baa81mr612161ywe.45.1686252072277;
+        Thu, 08 Jun 2023 12:21:12 -0700 (PDT)
 Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 2-20020a251802000000b00b9dfcc7a1fasm446566yby.7.2023.06.08.12.20.01
+        by smtp.gmail.com with ESMTPSA id f184-20020a0ddcc1000000b00552ccda9bb3sm108635ywe.92.2023.06.08.12.21.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jun 2023 12:20:04 -0700 (PDT)
-Date: Thu, 8 Jun 2023 12:20:00 -0700 (PDT)
+        Thu, 08 Jun 2023 12:21:11 -0700 (PDT)
+Date: Thu, 8 Jun 2023 12:21:07 -0700 (PDT)
 From: Hugh Dickins <hughd@google.com>
 X-X-Sender: hugh@ripple.attlocal.net
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2 09/23] parisc: unmap_uncached_pte() use
- pte_offset_kernel()
+Subject: [PATCH v2 10/23] parisc/hugetlb: pte_alloc_huge()
+ pte_offset_huge()
 In-Reply-To: <a4963be9-7aa6-350-66d0-2ba843e1af44@google.com>
-Message-ID: <358dfe21-a47f-9d3-bf21-9c454735944@google.com>
+Message-ID: <7963aeed-f7d2-e0-f3c6-3680c5572444@google.com>
 References: <a4963be9-7aa6-350-66d0-2ba843e1af44@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -82,28 +82,37 @@ Cc: linux-ia64@vger.kernel.org, David Hildenbrand <david@redhat.com>, Peter Zijl
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-unmap_uncached_pte() is working from pgd_offset_k(vaddr), so it should
-use pte_offset_kernel() instead of pte_offset_map(), to avoid the
-question of whether a pte_unmap() will be needed to balance.
+pte_alloc_map() expects to be followed by pte_unmap(), but hugetlb omits
+that: to keep balance in future, use the recently added pte_alloc_huge()
+instead; with pte_offset_huge() a better name for pte_offset_kernel().
 
 Signed-off-by: Hugh Dickins <hughd@google.com>
 ---
- arch/parisc/kernel/pci-dma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/parisc/mm/hugetlbpage.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/parisc/kernel/pci-dma.c b/arch/parisc/kernel/pci-dma.c
-index 71ed5391f29d..415f12d5bab3 100644
---- a/arch/parisc/kernel/pci-dma.c
-+++ b/arch/parisc/kernel/pci-dma.c
-@@ -164,7 +164,7 @@ static inline void unmap_uncached_pte(pmd_t * pmd, unsigned long vaddr,
- 		pmd_clear(pmd);
- 		return;
+diff --git a/arch/parisc/mm/hugetlbpage.c b/arch/parisc/mm/hugetlbpage.c
+index d1d3990b83f6..a8a1a7c1e16e 100644
+--- a/arch/parisc/mm/hugetlbpage.c
++++ b/arch/parisc/mm/hugetlbpage.c
+@@ -66,7 +66,7 @@ pte_t *huge_pte_alloc(struct mm_struct *mm, struct vm_area_struct *vma,
+ 	if (pud) {
+ 		pmd = pmd_alloc(mm, pud, addr);
+ 		if (pmd)
+-			pte = pte_alloc_map(mm, pmd, addr);
++			pte = pte_alloc_huge(mm, pmd, addr);
  	}
--	pte = pte_offset_map(pmd, vaddr);
-+	pte = pte_offset_kernel(pmd, vaddr);
- 	vaddr &= ~PMD_MASK;
- 	end = vaddr + size;
- 	if (end > PMD_SIZE)
+ 	return pte;
+ }
+@@ -90,7 +90,7 @@ pte_t *huge_pte_offset(struct mm_struct *mm,
+ 			if (!pud_none(*pud)) {
+ 				pmd = pmd_offset(pud, addr);
+ 				if (!pmd_none(*pmd))
+-					pte = pte_offset_map(pmd, addr);
++					pte = pte_offset_huge(pmd, addr);
+ 			}
+ 		}
+ 	}
 -- 
 2.35.3
 
