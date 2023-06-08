@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44E4C7287EE
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 21:16:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BF7B7287F7
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 21:17:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QcYpd0R9Pz3fdD
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 05:16:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QcYqn5sBXz3fdD
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 05:17:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=RcRjFaFt;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=Xts+xHOk;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::22b; helo=mail-oi1-x22b.google.com; envelope-from=hughd@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::232; helo=mail-oi1-x232.google.com; envelope-from=hughd@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=RcRjFaFt;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=Xts+xHOk;
 	dkim-atps=neutral
-Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
+Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QcYnl3L9sz3fFk
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jun 2023 05:15:23 +1000 (AEST)
-Received: by mail-oi1-x22b.google.com with SMTP id 5614622812f47-39aa8a055e0so43778b6e.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jun 2023 12:15:23 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QcYpt32KBz3fbP
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jun 2023 05:16:22 +1000 (AEST)
+Received: by mail-oi1-x232.google.com with SMTP id 5614622812f47-392116b8f31so28662b6e.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jun 2023 12:16:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1686251721; x=1688843721;
+        d=google.com; s=20221208; t=1686251779; x=1688843779;
         h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WK0F+BrKreVsJ5WKZMSSwYtM+YC+fc99jiRjqR8qAzI=;
-        b=RcRjFaFt7MTsXYJ14yWo4U5eA6pVqkDXz8EgSw8rQFycQ7pMspld1gf0LfqrvmcfQ5
-         wTF2Paqcgla4R0ay3/D+SBW87kCEr4gikKdylaKnD0ifdUg5uzvb81mHOycuMKL93pbu
-         +4jYc+S9ZIa5rCOofCbRs+g+NjpuL2HFQoI0VVvcn9kL+J6N1marZJvlyS6H29Uy9XP9
-         eG8fQcR/05AwiXrOcow804IstbsNP+1l3OZiN8NosONtubhmvXmzHlK/q5JRXElO9Al1
-         ir/ohc+1TCFZSM0rluyKdy7OGTLktO3/SESE0MYOh7msrNKoSiowE8nv54l9tGtZ2JpY
-         LUCQ==
+        bh=fUQgmWpeb8XZ+Q95Ceu0Qoh2H5+Z0fgN6mScmqt4vh8=;
+        b=Xts+xHOkrh/u1lklJ9jF3D7S9f/kLV8GPG892l7zD8MlHgN8wPrMqgrCwto/Q1X+Pk
+         W1+dBhBpd/nxZGkRw7Je76Rv8ScIxWS7YhmGg7SCpWHyKB1Cka/5vVCHo+mJDQWdRl3m
+         u500Id80G1EkjsXNB0mtCuxFaZBYzNUs8Dvvd2LdfZ44ADa4Y8aQBNX2j9WdcdQ881QF
+         GqyzpCVHN9rDUPFg5SeHYjmoNQ/CJXz81UrJdT3zX813tHx7kBAl3bNlJp8cLIqFQaDy
+         L3QDpbP/aGZ6VEQHFKJzDm28XHlRNu1JajJiE2WmrxtPA9CVcv6EWsa+OLyEs2Vz0giA
+         l8jQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686251721; x=1688843721;
+        d=1e100.net; s=20221208; t=1686251779; x=1688843779;
         h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WK0F+BrKreVsJ5WKZMSSwYtM+YC+fc99jiRjqR8qAzI=;
-        b=HpFokRA2EFhDKXI3k24cYxSYGb2xt2snhbNzD24xdzekJg83zlvOnaTRfdHdtAUiEp
-         Nt3/4plb7HLonAjg8ANwHgmnJLco4M2DP6P7dIF53S31/QAiWtMD8+sMG1/ssVXnO26p
-         hPWmTt/ZWsuKzgW7a20QWxdd0136ZgMe0OdYoUi0qBAa0f3tuMX7idH4XBR6CRk1YSF5
-         ypEDvj9t8jG51rBwTJtq3tTqSjkqLoxNV3boE474WFpW7YtDbgf7cQiFz04k8XfS908x
-         m2M/Dy8ApWfO5fn9rzv+wNQaCSoxxKG4Y13xm9/an+G7I4r7GsvlwgqijsUMSuM3hB5r
-         Rwbg==
-X-Gm-Message-State: AC+VfDzSwK55fV0lmz4lN303b8NQNrUH6loaIQiMIKFyrOQoGgL4Dj/T
-	0JXvItT1zxRfH45jXisyeFc/0A==
-X-Google-Smtp-Source: ACHHUZ4GiCiA0/Y6MKCFg7CaDp1TXejdH2N2rUDPBFAR/nPzuleTjqZzDRxE6rsfXkK23/Kmg+ycrg==
-X-Received: by 2002:a54:4893:0:b0:39a:b35b:a06c with SMTP id r19-20020a544893000000b0039ab35ba06cmr9888918oic.30.1686251720727;
-        Thu, 08 Jun 2023 12:15:20 -0700 (PDT)
+        bh=fUQgmWpeb8XZ+Q95Ceu0Qoh2H5+Z0fgN6mScmqt4vh8=;
+        b=Cw8HsnaJ2Rax1NPGEZH9VKb0v2QjqfnxjNtZhcL/tvU0JDWbOx3W3yD0ydrAkLOZvs
+         n6frF7NQrXc1cstaEcFe6ptDQ4Lw14MfQ8rCtxrpxRO5O33WjPCjG8lFWNRWf7k/C1oG
+         qeZZ4BvPGpg8CdgEzDX8EsgY2mQOUnjiuLPhj0ASzv2Xee4wOUEtrWOAUcWJC4HcVDEx
+         P+x53WCkWqJSOml0kVqC8XYB1pW09TqA5sRJH2GkxMV4xxzUNXzPLqYtFXggdiY3vgeJ
+         WArLwDZNyxxlOYTfL4cB/oCtnPmT7PT8p7xH3w5BIDR7wQ+gxkgeKnwwf1wB6fmloghm
+         ZcVQ==
+X-Gm-Message-State: AC+VfDwilB474ExQokKzElhIMeRg/vkp+e6ZXkyYzr7Fv4qunVrM49n0
+	kPKTXi1EtrNY0eoMW51kKVeolQ==
+X-Google-Smtp-Source: ACHHUZ7LNWBjev2z0u+SFnM7tyBRgdoNXbEUc0/f74NGgApbHQPTQerveZROpTXi1Z/8SDXbKzu99A==
+X-Received: by 2002:aca:650c:0:b0:39b:da91:8749 with SMTP id m12-20020aca650c000000b0039bda918749mr6427430oim.50.1686251778936;
+        Thu, 08 Jun 2023 12:16:18 -0700 (PDT)
 Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id a17-20020a81bb51000000b00545a08184fdsm89974ywl.141.2023.06.08.12.15.17
+        by smtp.gmail.com with ESMTPSA id h200-20020a816cd1000000b0055aafcef659sm120593ywc.5.2023.06.08.12.16.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jun 2023 12:15:20 -0700 (PDT)
-Date: Thu, 8 Jun 2023 12:15:16 -0700 (PDT)
+        Thu, 08 Jun 2023 12:16:18 -0700 (PDT)
+Date: Thu, 8 Jun 2023 12:16:14 -0700 (PDT)
 From: Hugh Dickins <hughd@google.com>
 X-X-Sender: hugh@ripple.attlocal.net
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2 05/23] m68k: allow pte_offset_map[_lock]() to fail
+Subject: [PATCH v2 06/23] microblaze: allow pte_offset_map() to fail
 In-Reply-To: <a4963be9-7aa6-350-66d0-2ba843e1af44@google.com>
-Message-ID: <795f6a7-bcca-cdf-ad2a-fbdaa232998c@google.com>
+Message-ID: <eab66faf-c0ab-3a8f-47bf-8a7c5af638f@google.com>
 References: <a4963be9-7aa6-350-66d0-2ba843e1af44@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -84,151 +84,34 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 In rare transient cases, not yet made possible, pte_offset_map() and
 pte_offset_map_lock() may not find a page table: handle appropriately.
 
-Restructure cf_tlb_miss() with a pte_unmap() (previously omitted)
-at label out, followed by one local_irq_restore() for all.
-
 Signed-off-by: Hugh Dickins <hughd@google.com>
 ---
- arch/m68k/include/asm/mmu_context.h |  6 ++--
- arch/m68k/kernel/sys_m68k.c         |  2 ++
- arch/m68k/mm/mcfmmu.c               | 52 ++++++++++++-----------------
- 3 files changed, 27 insertions(+), 33 deletions(-)
+ arch/microblaze/kernel/signal.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/m68k/include/asm/mmu_context.h b/arch/m68k/include/asm/mmu_context.h
-index 8ed6ac14d99f..141bbdfad960 100644
---- a/arch/m68k/include/asm/mmu_context.h
-+++ b/arch/m68k/include/asm/mmu_context.h
-@@ -99,7 +99,7 @@ static inline void load_ksp_mmu(struct task_struct *task)
- 	p4d_t *p4d;
- 	pud_t *pud;
- 	pmd_t *pmd;
--	pte_t *pte;
-+	pte_t *pte = NULL;
- 	unsigned long mmuar;
+diff --git a/arch/microblaze/kernel/signal.c b/arch/microblaze/kernel/signal.c
+index c3aebec71c0c..c78a0ff48066 100644
+--- a/arch/microblaze/kernel/signal.c
++++ b/arch/microblaze/kernel/signal.c
+@@ -194,7 +194,7 @@ static int setup_rt_frame(struct ksignal *ksig, sigset_t *set,
  
- 	local_irq_save(flags);
-@@ -139,7 +139,7 @@ static inline void load_ksp_mmu(struct task_struct *task)
- 
- 	pte = (mmuar >= PAGE_OFFSET) ? pte_offset_kernel(pmd, mmuar)
- 				     : pte_offset_map(pmd, mmuar);
--	if (pte_none(*pte) || !pte_present(*pte))
-+	if (!pte || pte_none(*pte) || !pte_present(*pte))
- 		goto bug;
- 
- 	set_pte(pte, pte_mkyoung(*pte));
-@@ -161,6 +161,8 @@ static inline void load_ksp_mmu(struct task_struct *task)
- bug:
- 	pr_info("ksp load failed: mm=0x%p ksp=0x08%lx\n", mm, mmuar);
- end:
-+	if (pte && mmuar < PAGE_OFFSET)
-+		pte_unmap(pte);
- 	local_irq_restore(flags);
- }
- 
-diff --git a/arch/m68k/kernel/sys_m68k.c b/arch/m68k/kernel/sys_m68k.c
-index bd0274c7592e..c586034d2a7a 100644
---- a/arch/m68k/kernel/sys_m68k.c
-+++ b/arch/m68k/kernel/sys_m68k.c
-@@ -488,6 +488,8 @@ sys_atomic_cmpxchg_32(unsigned long newval, int oldval, int d3, int d4, int d5,
- 		if (!pmd_present(*pmd))
- 			goto bad_access;
- 		pte = pte_offset_map_lock(mm, pmd, (unsigned long)mem, &ptl);
-+		if (!pte)
-+			goto bad_access;
- 		if (!pte_present(*pte) || !pte_dirty(*pte)
- 		    || !pte_write(*pte)) {
- 			pte_unmap_unlock(pte, ptl);
-diff --git a/arch/m68k/mm/mcfmmu.c b/arch/m68k/mm/mcfmmu.c
-index 70aa0979e027..42f45abea37a 100644
---- a/arch/m68k/mm/mcfmmu.c
-+++ b/arch/m68k/mm/mcfmmu.c
-@@ -91,7 +91,8 @@ int cf_tlb_miss(struct pt_regs *regs, int write, int dtlb, int extension_word)
- 	p4d_t *p4d;
- 	pud_t *pud;
- 	pmd_t *pmd;
--	pte_t *pte;
-+	pte_t *pte = NULL;
-+	int ret = -1;
- 	int asid;
- 
- 	local_irq_save(flags);
-@@ -100,47 +101,33 @@ int cf_tlb_miss(struct pt_regs *regs, int write, int dtlb, int extension_word)
- 		regs->pc + (extension_word * sizeof(long));
- 
- 	mm = (!user_mode(regs) && KMAPAREA(mmuar)) ? &init_mm : current->mm;
--	if (!mm) {
--		local_irq_restore(flags);
--		return -1;
--	}
-+	if (!mm)
-+		goto out;
- 
- 	pgd = pgd_offset(mm, mmuar);
--	if (pgd_none(*pgd))  {
--		local_irq_restore(flags);
--		return -1;
--	}
-+	if (pgd_none(*pgd))
-+		goto out;
- 
- 	p4d = p4d_offset(pgd, mmuar);
--	if (p4d_none(*p4d)) {
--		local_irq_restore(flags);
--		return -1;
--	}
-+	if (p4d_none(*p4d))
-+		goto out;
- 
- 	pud = pud_offset(p4d, mmuar);
--	if (pud_none(*pud)) {
--		local_irq_restore(flags);
--		return -1;
--	}
-+	if (pud_none(*pud))
-+		goto out;
- 
- 	pmd = pmd_offset(pud, mmuar);
--	if (pmd_none(*pmd)) {
--		local_irq_restore(flags);
--		return -1;
--	}
-+	if (pmd_none(*pmd))
-+		goto out;
- 
- 	pte = (KMAPAREA(mmuar)) ? pte_offset_kernel(pmd, mmuar)
- 				: pte_offset_map(pmd, mmuar);
--	if (pte_none(*pte) || !pte_present(*pte)) {
--		local_irq_restore(flags);
--		return -1;
--	}
-+	if (!pte || pte_none(*pte) || !pte_present(*pte))
-+		goto out;
- 
- 	if (write) {
--		if (!pte_write(*pte)) {
--			local_irq_restore(flags);
--			return -1;
--		}
-+		if (!pte_write(*pte))
-+			goto out;
- 		set_pte(pte, pte_mkdirty(*pte));
+ 	preempt_disable();
+ 	ptep = pte_offset_map(pmdp, address);
+-	if (pte_present(*ptep)) {
++	if (ptep && pte_present(*ptep)) {
+ 		address = (unsigned long) page_address(pte_page(*ptep));
+ 		/* MS: I need add offset in page */
+ 		address += ((unsigned long)frame->tramp) & ~PAGE_MASK;
+@@ -203,7 +203,8 @@ static int setup_rt_frame(struct ksignal *ksig, sigset_t *set,
+ 		invalidate_icache_range(address, address + 8);
+ 		flush_dcache_range(address, address + 8);
  	}
- 
-@@ -161,9 +148,12 @@ int cf_tlb_miss(struct pt_regs *regs, int write, int dtlb, int extension_word)
- 		mmu_write(MMUOR, MMUOR_ACC | MMUOR_UAA);
- 	else
- 		mmu_write(MMUOR, MMUOR_ITLB | MMUOR_ACC | MMUOR_UAA);
--
-+	ret = 0;
-+out:
-+	if (pte && !KMAPAREA(mmuar))
-+		pte_unmap(pte);
- 	local_irq_restore(flags);
--	return 0;
-+	return ret;
- }
- 
- void __init cf_bootmem_alloc(void)
+-	pte_unmap(ptep);
++	if (ptep)
++		pte_unmap(ptep);
+ 	preempt_enable();
+ 	if (err)
+ 		return -EFAULT;
 -- 
 2.35.3
 
