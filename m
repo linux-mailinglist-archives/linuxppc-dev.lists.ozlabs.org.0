@@ -1,80 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0576728893
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 21:31:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 553A8728896
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 21:32:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QcZ8p2t88z3ft7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 05:31:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QcZ9m0sl9z3fgV
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 05:32:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JGvikONH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Z3rTgaTj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gjoyce@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gjoyce@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JGvikONH;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Z3rTgaTj;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QcZ620nM2z3fnD
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jun 2023 05:29:29 +1000 (AEST)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 358JPQA9024276;
-	Thu, 8 Jun 2023 19:29:21 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QcZ625HMsz3fjR
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jun 2023 05:29:30 +1000 (AEST)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 358JMigb022717;
+	Thu, 8 Jun 2023 19:29:22 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=xfxvt66nwFhNT4QzvINjK+p/O52X8zvxvkFCZfbndJE=;
- b=JGvikONH7EFb89+dTlXIaylW5xQoyKS5OowWEogCzT46nCVBL3/2FbCX9KsBR7zkFdzG
- fDF7vfAOQKU0m/dPqZdFQ8AYqkXpdT6LDmwuYb5kAxzSZuZUXMUt/JgIYs6PnjPVDMzh
- aTkG6qItZ13mTjInVuXFLneNiESxAsypwVZk+2EANt6TNgd6otTOv9atTcaH4/hYqLRK
- n2sYrqfyNTDuopfy1CmqFcvp6q2qLDGfQhVHavjAn7OnaF100aMDKZlIblaZklW0TBKn
- RKlfSrAULTeku+rD3SlnCeReYnR4yzJrtxhN7WWG7P0Q1tFuX1X+2JF2lsVMYu3U/u6G zg== 
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r3n4qr2md-1
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=l6VGKnMpb7HcR/ids8pl2nLjXlvBvwc5u/3q+Et+C3M=;
+ b=Z3rTgaTjOFePHSS54Antf61Ep7JrCEpAUyZ16sxwqS79sA+xk7bANHPPf0tS8CYPhnRa
+ e895Jcfmtox+/NVnuw+csozvgm7wmokwmcBaa+qtAxFP1p0Jiie2wr4HSDclK8lbMLQR
+ 5iMsXtaibS/fnxB5i+WSkgATueqwoiVNCAR+sTtWajtvGEq9lB5qU1uQiCeO2SBqgC7T
+ IDIdlSm2R1SuysVSoONGJ1GeUZeMk3iMbhg0ThJQQJ9WdvLhKTSuD/CmKw5HzC5GkcaR
+ 865ubXIrFktEVVYJGvwy4MgavsQfnN2VX2RzVLu7fBMx4uCFRb1IMaQki3RKdoAXkPkY 9A== 
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r3n35g3qv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 08 Jun 2023 19:29:22 +0000
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+	by ppma01dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 358Gtk3U008955;
+	Thu, 8 Jun 2023 19:29:21 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([9.208.129.117])
+	by ppma01dal.us.ibm.com (PPS) with ESMTPS id 3r2a77fs3p-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Thu, 08 Jun 2023 19:29:21 +0000
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
-	by ppma04wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 358GlLsh032737;
-	Thu, 8 Jun 2023 19:29:20 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([9.208.129.117])
-	by ppma04wdc.us.ibm.com (PPS) with ESMTPS id 3r2a76t7ey-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Jun 2023 19:29:20 +0000
 Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 358JTJFG66978166
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 358JTJIh61276450
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
 	Thu, 8 Jun 2023 19:29:19 GMT
 Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 03D725805A;
+	by IMSVA (Postfix) with ESMTP id 37F9358056;
 	Thu,  8 Jun 2023 19:29:19 +0000 (GMT)
 Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C6EC558052;
-	Thu,  8 Jun 2023 19:29:18 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 09A415805E;
+	Thu,  8 Jun 2023 19:29:19 +0000 (GMT)
 Received: from rhel-laptop.ibm.com (unknown [9.61.61.30])
 	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
 	Thu,  8 Jun 2023 19:29:18 +0000 (GMT)
 From: gjoyce@linux.vnet.ibm.com
 To: linux-block@vger.kernel.org
-Subject: [PATCH v7 0/3] generic and PowerPC SED Opal keystore
-Date: Thu,  8 Jun 2023 14:29:15 -0500
-Message-Id: <20230608192918.516911-1-gjoyce@linux.vnet.ibm.com>
+Subject: [PATCH v7 1/3] block:sed-opal: SED Opal keystore
+Date: Thu,  8 Jun 2023 14:29:16 -0500
+Message-Id: <20230608192918.516911-2-gjoyce@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.31.1
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: RWBFmvnulvjoocY5oxhn2KB1ZieUdwTE
-X-Proofpoint-ORIG-GUID: RWBFmvnulvjoocY5oxhn2KB1ZieUdwTE
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+In-Reply-To: <20230608192918.516911-1-gjoyce@linux.vnet.ibm.com>
+References: <20230608192918.516911-1-gjoyce@linux.vnet.ibm.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: u2f5erDbo0Jj6R1V5vZXCgRMYSnoc3U-
+X-Proofpoint-ORIG-GUID: u2f5erDbo0Jj6R1V5vZXCgRMYSnoc3U-
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
  definitions=2023-06-08_14,2023-06-08_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- priorityscore=1501 malwarescore=0 adultscore=0 mlxlogscore=807 spamscore=0
- bulkscore=0 suspectscore=0 phishscore=0 impostorscore=0 mlxscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
+ adultscore=0 spamscore=0 priorityscore=1501 phishscore=0 bulkscore=0
+ malwarescore=0 lowpriorityscore=0 suspectscore=0 mlxlogscore=801
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2305260000 definitions=main-2306080165
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -93,79 +95,83 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
 
-Patchset rebase to for-6.5/block
+Add read and write functions that allow SED Opal keys to stored
+in a permanent keystore.
 
-This patchset has gone through numerous rounds of review and
-all comments/suggetions have been addressed. I believe that
-this patchset is ready for inclusion.
-
-TCG SED Opal is a specification from The Trusted Computing Group
-that allows self encrypting storage devices (SED) to be locked at
-power on and require an authentication key to unlock the drive.
-
-Generic functions have been defined for accessing SED Opal keys.
-The generic functions are defined as weak so that they may be superseded
-by keystore specific versions.
-
-PowerPC/pseries versions of these functions provide read/write access
-to SED Opal keys in the PLPKS keystore.
-
-The SED block driver has been modified to read the SED Opal
-keystore to populate a key in the SED Opal keyring. Changes to the
-SED Opal key will be written to the SED Opal keystore.
-
-Patch 3 "keystore access for SED Opal keys" is dependent on:
-        https://lore.kernel.org/keyrings/20220818143045.680972-4-gjoyce@linux.vnet.ibm.com/T/#u
-
-Changelog
-v7:	- rebased to for-6.5/block
-
-v6:     - squashed two commits (suggested by Andrew Donnellan)
-
-v5:     - updated to reflect changes in PLPKS API
-
-v4:
-        - scope reduced to cover just SED Opal keys
-        - base SED Opal keystore is now in SED block driver
-        - removed use of enum to indicate type
-        - refactored common code into common function that read and
-          write use
-        - removed cast to void
-        - added use of SED Opal keystore functions to SED block driver
-
-v3:
-        - No code changes, but per reviewer requests, adding additional
-          mailing lists(keyring, EFI) for wider review.
-
-v2:
-        - Include feedback from Gregory Joyce, Eric Richter and
-          Murilo Opsfelder Araujo.
-        - Include suggestions from Michael Ellerman.
-        - Moved a dependency from generic SED code to this patchset.
-          This patchset now builds of its own.
-
-
-
-Greg Joyce (3):
-  block:sed-opal: SED Opal keystore
-  block: sed-opal: keystore access for SED Opal keys
-  powerpc/pseries: PLPKS SED Opal keystore support
-
- arch/powerpc/platforms/pseries/Kconfig        |   6 +
- arch/powerpc/platforms/pseries/Makefile       |   1 +
- .../powerpc/platforms/pseries/plpks_sed_ops.c | 114 ++++++++++++++++++
- block/Kconfig                                 |   1 +
- block/Makefile                                |   2 +-
- block/sed-opal-key.c                          |  24 ++++
- block/sed-opal.c                              |  18 ++-
- include/linux/sed-opal-key.h                  |  15 +++
- 8 files changed, 178 insertions(+), 3 deletions(-)
- create mode 100644 arch/powerpc/platforms/pseries/plpks_sed_ops.c
+Signed-off-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+Reviewed-by: Jonathan Derrick <jonathan.derrick@linux.dev>
+---
+ block/Makefile               |  2 +-
+ block/sed-opal-key.c         | 24 ++++++++++++++++++++++++
+ include/linux/sed-opal-key.h | 15 +++++++++++++++
+ 3 files changed, 40 insertions(+), 1 deletion(-)
  create mode 100644 block/sed-opal-key.c
  create mode 100644 include/linux/sed-opal-key.h
 
-
-base-commit: 1341c7d2ccf42ed91aea80b8579d35bc1ea381e2
+diff --git a/block/Makefile b/block/Makefile
+index 46ada9dc8bbf..ea07d80402a6 100644
+--- a/block/Makefile
++++ b/block/Makefile
+@@ -34,7 +34,7 @@ obj-$(CONFIG_BLK_DEV_ZONED)	+= blk-zoned.o
+ obj-$(CONFIG_BLK_WBT)		+= blk-wbt.o
+ obj-$(CONFIG_BLK_DEBUG_FS)	+= blk-mq-debugfs.o
+ obj-$(CONFIG_BLK_DEBUG_FS_ZONED)+= blk-mq-debugfs-zoned.o
+-obj-$(CONFIG_BLK_SED_OPAL)	+= sed-opal.o
++obj-$(CONFIG_BLK_SED_OPAL)	+= sed-opal.o sed-opal-key.o
+ obj-$(CONFIG_BLK_PM)		+= blk-pm.o
+ obj-$(CONFIG_BLK_INLINE_ENCRYPTION)	+= blk-crypto.o blk-crypto-profile.o \
+ 					   blk-crypto-sysfs.o
+diff --git a/block/sed-opal-key.c b/block/sed-opal-key.c
+new file mode 100644
+index 000000000000..16f380164c44
+--- /dev/null
++++ b/block/sed-opal-key.c
+@@ -0,0 +1,24 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * SED key operations.
++ *
++ * Copyright (C) 2022 IBM Corporation
++ *
++ * These are the accessor functions (read/write) for SED Opal
++ * keys. Specific keystores can provide overrides.
++ *
++ */
++
++#include <linux/kernel.h>
++#include <linux/errno.h>
++#include <linux/sed-opal-key.h>
++
++int __weak sed_read_key(char *keyname, char *key, u_int *keylen)
++{
++	return -EOPNOTSUPP;
++}
++
++int __weak sed_write_key(char *keyname, char *key, u_int keylen)
++{
++	return -EOPNOTSUPP;
++}
+diff --git a/include/linux/sed-opal-key.h b/include/linux/sed-opal-key.h
+new file mode 100644
+index 000000000000..c9b1447986d8
+--- /dev/null
++++ b/include/linux/sed-opal-key.h
+@@ -0,0 +1,15 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * SED key operations.
++ *
++ * Copyright (C) 2022 IBM Corporation
++ *
++ * These are the accessor functions (read/write) for SED Opal
++ * keys. Specific keystores can provide overrides.
++ *
++ */
++
++#include <linux/kernel.h>
++
++int sed_read_key(char *keyname, char *key, u_int *keylen);
++int sed_write_key(char *keyname, char *key, u_int keylen);
 -- 
 gjoyce@linux.vnet.ibm.com
 
