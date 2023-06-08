@@ -1,88 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C44A7280BC
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 14:57:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FBEA7280FF
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 15:17:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QcPQ80RMVz3f05
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 22:57:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QcPrX0y10z3f14
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 23:17:16 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=ZeX8L7pU;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=U6XRVjfP;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=O32Exwy5;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=64.147.123.20; helo=wout4-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=ZeX8L7pU;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=U6XRVjfP;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=O32Exwy5;
 	dkim-atps=neutral
-Received: from wout4-smtp.messagingengine.com (wout4-smtp.messagingengine.com [64.147.123.20])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QcPP91wSDz3cKW
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jun 2023 22:57:00 +1000 (AEST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailout.west.internal (Postfix) with ESMTP id 54C02320090B;
-	Thu,  8 Jun 2023 08:56:52 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Thu, 08 Jun 2023 08:56:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm1; t=1686229011; x=1686315411; bh=87
-	pYxZKtAnGH9oKy6pFHT1xHGz/WCvjygA8bIAeiKlA=; b=ZeX8L7pUZ5UIpOMY9M
-	9g1j8HgG7+kWRpcbfg5uyET+fH7MKKs1mmJd5GiTBtyG3e4Kb2S8oySTp2FMKVD5
-	6cPeO3EdjyqNf0z8ONTk7Y4xvff+IrOd/IEXcnucUJGHtunt79pl/8nMv5FddrAG
-	uQycTyVPowhwXFFmqqICRAUW8Rc8su6sZcA/n9xK4gkWZLq4FLGKG2+b/ofZFCuf
-	AMrvTTYFhxmA+huvu4Cjp75ap2Sf7MJK9JQ3pOVGdml0Q2jBbC5ggWY9QzN5MNkV
-	6Cu7hWpbrBfBHGI32iWeZ+txnWuzY/rdQ0nguYoFIEmTdH+KuW0pvhtt0TNXW/yQ
-	JP2A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm1; t=1686229011; x=1686315411; bh=87pYxZKtAnGH9
-	oKy6pFHT1xHGz/WCvjygA8bIAeiKlA=; b=U6XRVjfP+EHUDQvBv8cPL9pD/KGwo
-	iw0KnKWmDepSUXHsue7XYEEv3jSKmc5VneLRFAnbB7bjvWnjZAFimwr1xI3aZ2r2
-	RdXIfnuvROK2EFMWjCfwC3PBH93ikfGkGtdqsK5mas70L80DoSDFO8TKCaTh4eHz
-	K+ZspG/2pADrn/0PYTVFOIEgwbfucSZzMW91caxx97W+pzHbK9rkgf+0+vkf4oDD
-	jH5hLErq64lWlh17sXL7u3Td79LGnkb4UvXKtQw37hle5MqhD6Sfrp8G6cLyNfqi
-	QTut/2emZSYLnRuBAzk7rDPI0a305yR06UG65WJAnPVfPk2TBPYkBuvMA==
-X-ME-Sender: <xms:EtCBZE-D_kjWYp3ANnherykbAzIjPaixWoyhxXwJLmuQI-kmX5DxFw>
-    <xme:EtCBZMv-IJXp1mQnNzIiUM2AEt48SGWGnXLai4h_XUzypiLIXrG4wXRCGc1U27CR_
-    sWJ2VBCAcRl0hKP7ME>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrgedtiedgheekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepkeehtefguddvleejvdeileeifffhueevgedvheeiudfhueevgfehkeeitedu
-    keeknecuffhomhgrihhnpehsohhurhgtvgifrghrvgdrohhrghenucevlhhushhtvghruf
-    hiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:EtCBZKA2ewgTjhAvvYw7qmycGR9cVe-qDicg_oFDY4J69jtsZIvlug>
-    <xmx:EtCBZEdu7a-GJfOfcHAOiHAuoCAzbOXNlKWUPk55Fe3Mbg8D-CEnpQ>
-    <xmx:EtCBZJOC47AwohdFIRwPvxQhiJzPrz-2u8vWBLIbN9yK_NXQPYV6NQ>
-    <xmx:E9CBZGcuZlRzBuBBOm-YYYm5GycL4W2eCqAow4fI1BtYmFRYOd5HOA>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 9B111B60086; Thu,  8 Jun 2023 08:56:50 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-447-ge2460e13b3-fm-20230525.001-ge2460e13
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QcPqb1xCCz3cds
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jun 2023 23:16:27 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 938B264D66;
+	Thu,  8 Jun 2023 13:16:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC7D8C433EF;
+	Thu,  8 Jun 2023 13:16:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1686230183;
+	bh=FvlFmDL5KCFEx9RvnVpnGFUOv20bbkmDzfuLyHmyB74=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=O32Exwy5L6D1wCaregDWkVfkcIieWz/F539ZmalzqXD2OlkpaOHkKLhbUs/uu1ntM
+	 4UMzjKV+ChnS/yGysMukc7xH/wxjVkeRjjgLHS2UHPm85UJFKJxoNVaTOVn8ibHr+5
+	 S0APT8iSF+LXtnrZMjqGxCqECpwHR/6Jccnwbko54Cn2euX5NraD3fz/FTGZAdartT
+	 kFNLKQGs3MWp2+SOjiSw51SdAbG3waqkhx6W4gACUeGDpb5noEmuzDUmBr/jxI4QKj
+	 Nv9oZi61lx7fNdRq4HUiGPsGyp9PQ3eQGHlu3OFLJZSvZYNpnnEZnCnIVqmhA3i0S2
+	 K06GRvzSXB0NQ==
 Mime-Version: 1.0
-Message-Id: <a3a4f48a-07d4-4ed9-bc53-5d383428bdd2@app.fastmail.com>
-In-Reply-To: <76d3be65-91df-7969-5303-38231a7df926@loongson.cn>
-References: <1683615903-10862-1-git-send-email-yangtiezhu@loongson.cn>
- <b9624545-2c80-49a1-ac3c-39264a591f7b@app.fastmail.com>
- <76d3be65-91df-7969-5303-38231a7df926@loongson.cn>
-Date: Thu, 08 Jun 2023 14:56:30 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Tiezhu Yang" <yangtiezhu@loongson.cn>
-Subject: Re: [RFC PATCH] asm-generic: Unify uapi bitsperlong.h
-Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 08 Jun 2023 16:16:18 +0300
+Message-Id: <CT7APLUB2CWF.1ZGTUWOTPQGQH@suppilovahvero>
+Subject: Re: [PATCH v2] security/integrity: fix pointer to ESL data and its
+ size on pseries
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Nayna Jain" <nayna@linux.ibm.com>, "linuxppc-dev"
+ <linuxppc-dev@lists.ozlabs.org>, "linux-integrity"
+ <linux-integrity@vger.kernel.org>
+X-Mailer: aerc 0.14.0
+References: <20230608120444.382527-1-nayna@linux.ibm.com>
+In-Reply-To: <20230608120444.382527-1-nayna@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,56 +63,119 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-Arch <linux-arch@vger.kernel.org>, linux-s390@vger.kernel.org, x86@kernel.org, linux-ia64@vger.kernel.org, loongarch@lists.linux.dev, linux-parisc@vger.kernel.org, llvm@lists.linux.dev, linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, loongson-kernel@lists.loongnix.cn
+Cc: stable@vger.kenrnel.org, Andrew Donnellan <ajd@linux.ibm.com>, Nageswara R Sastry <rnsastry@linux.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>, Russell Currey <ruscur@russell.cc>, George
+ Wilson <gcwilson@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 8, 2023, at 09:04, Tiezhu Yang wrote:
-> On 05/09/2023 05:37 PM, Arnd Bergmann wrote:
->> On Tue, May 9, 2023, at 09:05, Tiezhu Yang wrote:
->>
->> I think we are completely safe on the architectures that were
->> added since the linux-3.x days (arm64, riscv, csky, openrisc,
->> loongarch, nios2, and hexagon), but for the older ones there
->> is a regression risk. Especially on targets that are not that
->> actively maintained (sparc, alpha, ia64, sh, ...) there is
->> a good chance that users are stuck on ancient toolchains.
->> It's probably also a safe assumption that anyone with an older
->> libc version won't be using the latest kernel headers, so
->> I think we can still do this across architectures if both
->> glibc and musl already require a compiler that is new enough,
->> or alternatively if we know that the kernel headers require
->> a new compiler for other reasons and nobody has complained.
->>
->> For glibc, it looks the minimum compiler version was raised
->> from gcc-5 to gcc-8 four years ago, so we should be fine.
->>
->> In musl, the documentation states that at least gcc-3.4 or
->> clang-3.2 are required, which probably predate the
->> __SIZEOF_LONG__ macro. On the other hand, musl was only
->> released in 2011, and building musl itself explicitly
->> does not require kernel uapi headers, so this may not
->> be too critical.
->>
->> There is also uClibc, but I could not find any minimum
->> supported compiler version for that. Most commonly, this
->> one is used for cross-build environments, so it's also
->> less likely to have libc/gcc/headers being wildly out of
->> sync. Not sure.
->>
->>       Arnd
->>
->> [1] https://sourceware.org/pipermail/libc-alpha/2019-January/101010.html
->>
+On Thu Jun 8, 2023 at 3:04 PM EEST, Nayna Jain wrote:
+> On PowerVM guest, variable data is prefixed with 8 bytes of timestamp.
+> Extract ESL by stripping off the timestamp before passing to ESL parser.
 >
-> Thanks Arnd for the detailed reply.
-> Any more comments? What should I do in the next step?
+> Fixes: 4b3e71e9a34c ("integrity/powerpc: Support loading keys from PLPKS"=
+)
+> Cc: stable@vger.kenrnel.org # v6.3
+> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+> ---
+> Changelog:
+> v2: Fixed feedback from Jarkko
+>       * added CC to stable
+>       * moved *data declaration to same line as *db,*dbx
+>     Renamed extract_data() macro to extract_esl() for clarity
+>  .../integrity/platform_certs/load_powerpc.c   | 40 ++++++++++++-------
+>  1 file changed, 26 insertions(+), 14 deletions(-)
+>
+> diff --git a/security/integrity/platform_certs/load_powerpc.c b/security/=
+integrity/platform_certs/load_powerpc.c
+> index b9de70b90826..170789dc63d2 100644
+> --- a/security/integrity/platform_certs/load_powerpc.c
+> +++ b/security/integrity/platform_certs/load_powerpc.c
+> @@ -15,6 +15,9 @@
+>  #include "keyring_handler.h"
+>  #include "../integrity.h"
+> =20
+> +#define extract_esl(db, data, size, offset)	\
+> +	do { db =3D data + offset; size =3D size - offset; } while (0)
+> +
+>  /*
+>   * Get a certificate list blob from the named secure variable.
+>   *
+> @@ -55,8 +58,9 @@ static __init void *get_cert_list(u8 *key, unsigned lon=
+g keylen, u64 *size)
+>   */
+>  static int __init load_powerpc_certs(void)
+>  {
+> -	void *db =3D NULL, *dbx =3D NULL;
+> -	u64 dbsize =3D 0, dbxsize =3D 0;
+> +	void *db =3D NULL, *dbx =3D NULL, *data =3D NULL;
+> +	u64 dsize =3D 0;
+> +	u64 offset =3D 0;
+>  	int rc =3D 0;
+>  	ssize_t len;
+>  	char buf[32];
+> @@ -74,38 +78,46 @@ static int __init load_powerpc_certs(void)
+>  		return -ENODEV;
+>  	}
+> =20
+> +	if (strcmp("ibm,plpks-sb-v1", buf) =3D=3D 0)
+> +		/* PLPKS authenticated variables ESL data is prefixed with 8 bytes of =
+timestamp */
+> +		offset =3D 8;
+> +
+>  	/*
+>  	 * Get db, and dbx. They might not exist, so it isn't an error if we
+>  	 * can't get them.
+>  	 */
+> -	db =3D get_cert_list("db", 3, &dbsize);
+> -	if (!db) {
+> +	data =3D get_cert_list("db", 3, &dsize);
+> +	if (!data) {
+>  		pr_info("Couldn't get db list from firmware\n");
+> -	} else if (IS_ERR(db)) {
+> -		rc =3D PTR_ERR(db);
+> +	} else if (IS_ERR(data)) {
+> +		rc =3D PTR_ERR(data);
+>  		pr_err("Error reading db from firmware: %d\n", rc);
+>  		return rc;
+>  	} else {
+> -		rc =3D parse_efi_signature_list("powerpc:db", db, dbsize,
+> +		extract_esl(db, data, dsize, offset);
+> +
+> +		rc =3D parse_efi_signature_list("powerpc:db", db, dsize,
+>  					      get_handler_for_db);
+>  		if (rc)
+>  			pr_err("Couldn't parse db signatures: %d\n", rc);
+> -		kfree(db);
+> +		kfree(data);
+>  	}
+> =20
+> -	dbx =3D get_cert_list("dbx", 4,  &dbxsize);
+> -	if (!dbx) {
+> +	data =3D get_cert_list("dbx", 4,  &dsize);
+> +	if (!data) {
+>  		pr_info("Couldn't get dbx list from firmware\n");
+> -	} else if (IS_ERR(dbx)) {
+> -		rc =3D PTR_ERR(dbx);
+> +	} else if (IS_ERR(data)) {
+> +		rc =3D PTR_ERR(data);
+>  		pr_err("Error reading dbx from firmware: %d\n", rc);
+>  		return rc;
+>  	} else {
+> -		rc =3D parse_efi_signature_list("powerpc:dbx", dbx, dbxsize,
+> +		extract_esl(dbx, data, dsize, offset);
+> +
+> +		rc =3D parse_efi_signature_list("powerpc:dbx", dbx, dsize,
+>  					      get_handler_for_dbx);
+>  		if (rc)
+>  			pr_err("Couldn't parse dbx signatures: %d\n", rc);
+> -		kfree(dbx);
+> +		kfree(data);
+>  	}
+> =20
+>  	return rc;
+> --=20
+> 2.31.1
 
-I think the summary is "it's probably fine", but I don't know
-for sure, and it may not be worth the benefit.
+Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-Maybe you can prepare a v2 that only does this for the newer
-architectures I mentioned above, with and an explanation and
-link to my above reply in the file comments?
-
-      Arnd
+BR, Jarkko
