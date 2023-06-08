@@ -2,95 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24824727B23
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 11:23:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1D44727C10
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 11:59:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QcJg26pZHz3dx1
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 19:23:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QcKSY402gz3dwG
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 19:59:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Co8MH+7i;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=CHgGOkdM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QcJfB25Yxz3dsR
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jun 2023 19:22:58 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::42d; helo=mail-wr1-x42d.google.com; envelope-from=colin.i.king@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Co8MH+7i;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=CHgGOkdM;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4QcJfB1TY0z4xD5
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jun 2023 19:22:58 +1000 (AEST)
-Received: by gandalf.ozlabs.org (Postfix)
-	id 4QcJfB1PKgz4x7s; Thu,  8 Jun 2023 19:22:58 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: gandalf.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Co8MH+7i;
-	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4QcJf945vtz4x4T;
-	Thu,  8 Jun 2023 19:22:56 +1000 (AEST)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3589HwIh032402;
-	Thu, 8 Jun 2023 09:22:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=AOu8zeeRbZwcSaPiMRwSf9X7VS3+rRbefhHL08TzUWI=;
- b=Co8MH+7ieS4N7BOlXvGa48jTJ3UJAdVDO+gMlfKWfGV2IrnqooRqOn+a9cjjjh/y0zUY
- S8DDOEEJCtK3rMieW0KI1oauyMLn2GvbN75TjBEOJnk2+gFJFY3sxMkVpWOHwOC5CKlT
- SlxAg2HYTB2qtWFdhNU97Bqx7OzS+TtZ1VNT7PeWD52xAyk9gd2J+xcL1Y2eIUZ+zBWy
- WO9qWx3Iy9vdFzhZ5wrMiTcHs2N8FrWArcNbEwlWNvU6F6/OVzWwjXl93kMK8jGiMaas
- eNCk8NwXaWVvwXivhvIQWm0dDaPu2iFs1rnMoxaNTU9FyOcv6vQwDvyIE9apcvt13jmd 0A== 
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r3bv5rm1e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Jun 2023 09:22:54 +0000
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
-	by ppma06fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3588dYII029128;
-	Thu, 8 Jun 2023 09:22:52 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma06fra.de.ibm.com (PPS) with ESMTPS id 3r2a7a0ttm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Jun 2023 09:22:52 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3589MmxK23659172
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 8 Jun 2023 09:22:49 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DF9A62004B;
-	Thu,  8 Jun 2023 09:22:48 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CAF7520040;
-	Thu,  8 Jun 2023 09:22:47 +0000 (GMT)
-Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.ibm.com.com (unknown [9.43.116.5])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  8 Jun 2023 09:22:47 +0000 (GMT)
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-To: linuxppc-dev@ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH] powerpc/fadump: reset dump area size variable if memblock reserve fails
-Date: Thu,  8 Jun 2023 14:52:46 +0530
-Message-Id: <20230608092246.343761-1-sourabhjain@linux.ibm.com>
-X-Mailer: git-send-email 2.40.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QcKRj1lPvz3cdZ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jun 2023 19:58:55 +1000 (AEST)
+Received: by mail-wr1-x42d.google.com with SMTP id ffacd0b85a97d-30c4c1fd511so416575f8f.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jun 2023 02:58:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686218331; x=1688810331;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YlNe4BUkEg1VajwhQoFVrqBpA5/M9bmxOxMvTziERXM=;
+        b=CHgGOkdMkON3E5JAKd2QN6ViPGseP5oGhADmE+HYpyeffAvoy6Muo/jJCSRgGv1I7d
+         XyZOwJF11dqKYGhTmSyYFuGOciv9teDQmWdwXxKEgJjUX6MIuEHzNm+RcF/Yn4qTqFpb
+         K4mt+7h24tWTOFP2nlbevHmvRaTvtdyrmp//Wi/2BDahsMSogZ1WwuL9ycF+8JKnFfbV
+         x8PuB7Qt7lZDZ1a+kzC7B+ksdshKcYM2KF+rJjlln+Ela62lnJX441dmuUPd/tmdhRXy
+         TmsqAWvc35OOnOL2XuPH9WTf3uDbxb8ol+5Hb47nPSG3KaV9CIW3ZwQlsvy+XMcIHYoX
+         KFgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686218331; x=1688810331;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YlNe4BUkEg1VajwhQoFVrqBpA5/M9bmxOxMvTziERXM=;
+        b=afOsN/SImwogW7JDZuzpxMz+5F4NogFLwWiArpyLedZqn7IA2YR4KTCiObGcffIfJe
+         R/jjN3xHrk2fGzupfO7Za+4WBcpwymXoN5nib38/yPQ8sdMdZzs1MkGIkZ+h3Sy1trkb
+         SaPsZ8Aoz9mAc/oTmi3bzd6WrEFfLKVbQw76Cge9JgB/CRTKOgwMgjNGV33+NSxZpf8J
+         gEDyaCqRjVdOVVb0JxZO3n/lPG0D/5kCIZZnMEotpz9Z2ikKncreBeD/5wOGvL/sPoKP
+         G2+QvLx2ulWe3+CCu0K3FNoal9yFQ6J10w2KU8iJZmEOAL18MzFKHXGRqr8iKLciW03y
+         W/lg==
+X-Gm-Message-State: AC+VfDw0Yk6f67W0Fg1KpUcI2GvYR/Y63A/WPwg0yvYfOsV3SEDvVaMz
+	Qi7YyTslSZsipiQdtzUZEvI=
+X-Google-Smtp-Source: ACHHUZ4bwjDbYedllIN1larsf4jSAU4BoOl6EnSlCIw2Dmt/YKIRFssvTbWtdQSg+qKIlIAdWC/90A==
+X-Received: by 2002:adf:e78d:0:b0:309:1532:87e with SMTP id n13-20020adfe78d000000b003091532087emr10078608wrm.31.1686218330725;
+        Thu, 08 Jun 2023 02:58:50 -0700 (PDT)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id a4-20020adffac4000000b00307c46f4f08sm1091924wrs.79.2023.06.08.02.58.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Jun 2023 02:58:50 -0700 (PDT)
+From: Colin Ian King <colin.i.king@gmail.com>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Oliver O'Halloran <oohall@gmail.com>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH][next] powerpc/powernv/sriov: perform null check on iov before dereferencing iov
+Date: Thu,  8 Jun 2023 10:58:49 +0100
+Message-Id: <20230608095849.1147969-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: wXPBGeARyXOMupdjdAXtsvIfNemqRBN5
-X-Proofpoint-ORIG-GUID: wXPBGeARyXOMupdjdAXtsvIfNemqRBN5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-08_06,2023-06-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- phishscore=0 malwarescore=0 bulkscore=0 impostorscore=0 spamscore=0
- suspectscore=0 clxscore=1011 mlxscore=0 adultscore=0 mlxlogscore=948
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306080078
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,37 +80,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mahesh@linux.vnet.ibm.com, Mahesh Salgaonkar <mahesh@linux.ibm.com>, hbathini@linux.ibm.com
+Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If the memory reservation process (memblock_reserve) fails to reserve
-the memory, the reserve dump variable retains the dump area size.
-Consequently, the size of the dump area calculated for reservation
-is displayed in /sys/kernel/fadump/mem_reserved.
+Currently pointer iov is being dereferenced before the null check of iov
+which can lead to null pointer dereference errors. Fix this by moving the
+iov null check before the dereferencing.
 
-To resolve this issue, the reserve dump area size variable is set to 0
-if the memblock_reserve fails to reserve memory.
+Detected using cppcheck static analysis:
+linux/arch/powerpc/platforms/powernv/pci-sriov.c:597:12: warning: Either
+the condition '!iov' is redundant or there is possible null pointer
+dereference: iov. [nullPointerRedundantCheck]
+ num_vfs = iov->num_vfs;
+           ^
 
-Fixes: 8255da95e545 ("powerpc/fadump: release all the memory above boot memory size")
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Acked-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Fixes: 052da31d45fc ("powerpc/powernv/sriov: De-indent setup and teardown")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 ---
- arch/powerpc/kernel/fadump.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/platforms/powernv/pci-sriov.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-index ea0a073abd96..a8f2c3b2fa1e 100644
---- a/arch/powerpc/kernel/fadump.c
-+++ b/arch/powerpc/kernel/fadump.c
-@@ -641,6 +641,7 @@ int __init fadump_reserve_mem(void)
- 			goto error_out;
+diff --git a/arch/powerpc/platforms/powernv/pci-sriov.c b/arch/powerpc/platforms/powernv/pci-sriov.c
+index 7195133b26bb..42e1f045199f 100644
+--- a/arch/powerpc/platforms/powernv/pci-sriov.c
++++ b/arch/powerpc/platforms/powernv/pci-sriov.c
+@@ -594,11 +594,10 @@ static void pnv_pci_sriov_disable(struct pci_dev *pdev)
+ 	struct pnv_iov_data   *iov;
  
- 		if (memblock_reserve(base, size)) {
-+			fw_dump.reserve_dump_area_size = 0;
- 			pr_err("Failed to reserve memory!\n");
- 			goto error_out;
- 		}
+ 	iov = pnv_iov_get(pdev);
+-	num_vfs = iov->num_vfs;
+-	base_pe = iov->vf_pe_arr[0].pe_number;
+-
+ 	if (WARN_ON(!iov))
+ 		return;
++	num_vfs = iov->num_vfs;
++	base_pe = iov->vf_pe_arr[0].pe_number;
+ 
+ 	/* Release VF PEs */
+ 	pnv_ioda_release_vf_PE(pdev);
 -- 
-2.40.1
+2.30.2
 
