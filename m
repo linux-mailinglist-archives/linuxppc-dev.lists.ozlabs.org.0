@@ -1,86 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78B72728736
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 20:30:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D3A3728769
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jun 2023 20:42:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QcXnM1w7nz3fBs
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 04:29:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QcY430vKmz3dxZ
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 04:42:43 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NGxOWhKq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Zf6igQH5;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gjoyce@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NGxOWhKq;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Zf6igQH5;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QcXmQ6jRLz3dw1
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jun 2023 04:29:10 +1000 (AEST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 358Hk2HQ001398;
-	Thu, 8 Jun 2023 18:28:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : cc : date : in-reply-to : references : content-type
- : mime-version : content-transfer-encoding; s=pp1;
- bh=iVL1UK1s3nj9G//sIoTKdRL7E54mZot0meikSd2hvBM=;
- b=NGxOWhKqy+InLGkSOMN9YzrYTKjiAxvYFuWufDWQ14iYnStYAUc3QPNUm8NOLjQ7H2ty
- g8T7IQUSyxsffjmGKP53k87fyRwAXaiSyWWZ3yJmDrHwO6y+AW/s7z6GRIXSyWp4F587
- JKOZd4feKWcK48mEh0pN7Cb62JrTj0ta1RYLjdvhGSiRAseDSEbXsjAo6qdpR7uqkvTW
- 4gjLOaqnOIlHFPIIwSEjf2A4dcEXm13UZphtP8h47W9SzJLiztCbSXsG++FwHQs6TpIh
- 6qLAE3vpBW6uU1RLwOxlH+LkybuhEkW+PlAKXh867lQy6FwEVawvIKkVH31mFJXvISRg ug== 
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r3jtm33v2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Jun 2023 18:28:53 +0000
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
-	by ppma01dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 358GrY0e008967;
-	Thu, 8 Jun 2023 18:28:52 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([9.208.129.114])
-	by ppma01dal.us.ibm.com (PPS) with ESMTPS id 3r2a77fe87-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Jun 2023 18:28:52 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 358ISpgi34407158
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 8 Jun 2023 18:28:51 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0C54F5805A;
-	Thu,  8 Jun 2023 18:28:51 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C23E158052;
-	Thu,  8 Jun 2023 18:28:50 +0000 (GMT)
-Received: from rhel-laptop.ibm.com (unknown [9.61.61.30])
-	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  8 Jun 2023 18:28:50 +0000 (GMT)
-Message-ID: <afc0ff6d83ea72f94b8f9e95476fa987d8ff8f17.camel@linux.vnet.ibm.com>
-Subject: Re: [PATCH v4 RESEND 0/3] sed-opal: keyrings, discovery, revert,
- key store
-From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
-To: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org
-Date: Thu, 08 Jun 2023 13:28:50 -0500
-In-Reply-To: <e340332d-ef64-9fa9-b4d6-927a3c271730@kernel.dk>
-References: <20230601223745.2136203-1-gjoyce@linux.vnet.ibm.com>
-	 <e340332d-ef64-9fa9-b4d6-927a3c271730@kernel.dk>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: LB_5UiyCs25L4UNrVlww0UIoK32-SzWK
-X-Proofpoint-ORIG-GUID: LB_5UiyCs25L4UNrVlww0UIoK32-SzWK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-08_13,2023-06-08_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 impostorscore=0
- priorityscore=1501 lowpriorityscore=0 mlxscore=0 clxscore=1015 spamscore=0
- bulkscore=0 mlxlogscore=925 suspectscore=0 adultscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
- definitions=main-2306080159
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QcY372FSGz3dxC
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jun 2023 04:41:55 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 4D0F465066;
+	Thu,  8 Jun 2023 18:41:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A486DC433D2;
+	Thu,  8 Jun 2023 18:41:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1686249710;
+	bh=4a7fPJtZnT2G3XUHjxk53JytGZ7vtRhXAZPweGPLJ7Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Zf6igQH5RfRjPL1LLNRp2u8iNNy6O+kF/bGYFX3Nrh8fUdglTmP/qjkVHeDHFuQNr
+	 jn2Uh6KySMX6f0GTo02MvlJp6Rv68cW/69I/MFZtSdKzOt0NBFweVHnVybdzHgWXfl
+	 KvtLJ4ESmigmI/uc0oNYGCIO7NHmoF2IrKkybPAl+gdBXFQ0P23XDeYWK4z9h15oKv
+	 ZKGiTpWdZVp/QxM4gHnWF1LN14ykgAc8/vUL3ndVfxx63Am/uu3wKbhKbUkF+Bi6Ox
+	 4oM/zbXXCqLIwER2tnq6O7dDS4+mh/aE4qybCY5QC5PMes/KnyWH9l0FxBIq6F8Dg4
+	 8wj5ZhMvd7MFQ==
+Date: Thu, 8 Jun 2023 21:41:16 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Song Liu <song@kernel.org>
+Subject: Re: [PATCH 00/13] mm: jit/text allocator
+Message-ID: <20230608184116.GJ52412@kernel.org>
+References: <20230601101257.530867-1-rppt@kernel.org>
+ <ZHjDU/mxE+cugpLj@FVFF77S0Q05N.cambridge.arm.com>
+ <ZHjgIH3aX9dCvVZc@moria.home.lan>
+ <ZHm3zUUbwqlsZBBF@FVFF77S0Q05N>
+ <20230605092040.GB3460@kernel.org>
+ <ZH20XkD74prrdN4u@FVFF77S0Q05N>
+ <CAPhsuW7ntn_HpVWdGK_hYVd3zsPEFToBNfmtt0m6K8SwfxJ66Q@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAPhsuW7ntn_HpVWdGK_hYVd3zsPEFToBNfmtt0m6K8SwfxJ66Q@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,50 +66,166 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: gjoyce@linux.vnet.ibm.com
-Cc: nayna@linux.ibm.com, keyrings@vger.kernel.org, jonathan.derrick@linux.dev, brking@linux.vnet.ibm.com, akpm@linux-foundation.org, msuchanek@suse.de, linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>, x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linux-trace-kernel@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Andrew Morton <akpm@linux-foundation.org>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, netdev@vger.kernel.org, Kent Overstreet <kent.overstreet@linux.dev>, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, bpf@vger.kernel.org, linuxppc-dev@l
+ ists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, linux-modules@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2023-06-05 at 15:14 -0600, Jens Axboe wrote:
-> On 6/1/23 4:37PM, gjoyce@linux.vnet.ibm.com wrote:
-> > From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
-> > 
-> > This patchset has gone through numerous rounds of review and
-> > all comments/suggetions have been addressed. I believe that
-> > this patchset is ready for inclusion.
-> > 
-> > TCG SED Opal is a specification from The Trusted Computing Group
-> > that allows self encrypting storage devices (SED) to be locked at
-> > power on and require an authentication key to unlock the drive.
-> > 
-> > The current SED Opal implementation in the block driver
-> > requires that authentication keys be provided in an ioctl
-> > so that they can be presented to the underlying SED
-> > capable drive. Currently, the key is typically entered by
-> > a user with an application like sedutil or sedcli. While
-> > this process works, it does not lend itself to automation
-> > like unlock by a udev rule.
-> > 
-> > The SED block driver has been extended so it can alternatively
-> > obtain a key from a sed-opal kernel keyring. The SED ioctls
-> > will indicate the source of the key, either directly in the
-> > ioctl data or from the keyring.
-> > 
-> > Two new SED ioctls have also been added. These are:
-> >   1) IOC_OPAL_REVERT_LSP to revert LSP state
-> >   2) IOC_OPAL_DISCOVERY to discover drive capabilities/state
-> > 
-> > change log v4:
-> >         - rebase to 6.3-rc7
-> > 	- replaced "255" magic number with U8_MAX
+On Tue, Jun 06, 2023 at 11:21:59AM -0700, Song Liu wrote:
+> On Mon, Jun 5, 2023 at 3:09 AM Mark Rutland <mark.rutland@arm.com> wrote:
 > 
-> None of this applies for for-6.5/block, and I'm a little puzzled
-> as to why you'd rebase to an old kernel rather than a 6.4-rc at
-> least?
+> [...]
 > 
-> Please resend one that is current.
+> > > > > Can you give more detail on what parameters you need? If the only extra
+> > > > > parameter is just "does this allocation need to live close to kernel
+> > > > > text", that's not that big of a deal.
+> > > >
+> > > > My thinking was that we at least need the start + end for each caller. That
+> > > > might be it, tbh.
+> > >
+> > > Do you mean that modules will have something like
+> > >
+> > >       jit_text_alloc(size, MODULES_START, MODULES_END);
+> > >
+> > > and kprobes will have
+> > >
+> > >       jit_text_alloc(size, KPROBES_START, KPROBES_END);
+> > > ?
+> >
+> > Yes.
+> 
+> How about we start with two APIs:
+>      jit_text_alloc(size);
+>      jit_text_alloc_range(size, start, end);
+> 
+> AFAICT, arm64 is the only arch that requires the latter API. And TBH, I am
+> not quite convinced it is needed.
+ 
+Right now arm64 and riscv override bpf and kprobes allocations to use the
+entire vmalloc address space, but having the ability to allocate generated
+code outside of modules area may be useful for other architectures.
 
-Rebase to for-6.5/block coming shortly.
+Still the start + end for the callers feels backwards to me because the
+callers do not define the ranges, but rather the architectures, so we still
+need a way for architectures to define how they want allocate memory for
+the generated code.
+
+> > > It sill can be achieved with a single jit_alloc_arch_params(), just by
+> > > adding enum jit_type parameter to jit_text_alloc().
+> >
+> > That feels backwards to me; it centralizes a bunch of information about
+> > distinct users to be able to shove that into a static array, when the callsites
+> > can pass that information.
+> 
+> I think we only two type of users: module and everything else (ftrace, kprobe,
+> bpf stuff). The key differences are:
+> 
+>   1. module uses text and data; while everything else only uses text.
+>   2. module code is generated by the compiler, and thus has stronger
+>   requirements in address ranges; everything else are generated via some
+>   JIT or manual written assembly, so they are more flexible with address
+>   ranges (in JIT, we can avoid using instructions that requires a specific
+>   address range).
+> 
+> The next question is, can we have the two types of users share the same
+> address ranges? If not, we can reserve the preferred range for modules,
+> and let everything else use the other range. I don't see reasons to further
+> separate users in the "everything else" group.
+ 
+I agree that we can define only two types: modules and everything else and
+let the architectures define if they need different ranges for these two
+types, or want the same range for everything.
+
+With only two types we can have two API calls for alloc, and a single
+structure that defines the ranges etc from the architecture side rather
+than spread all over.
+
+Like something along these lines:
+
+	struct execmem_range {
+		unsigned long   start;
+		unsigned long   end;
+		unsigned long   fallback_start;
+		unsigned long   fallback_end;
+		pgprot_t        pgprot;
+		unsigned int	alignment;
+	};
+
+	struct execmem_modules_range {
+		enum execmem_module_flags flags;
+		struct execmem_range text;
+		struct execmem_range data;
+	};
+
+	struct execmem_jit_range {
+		struct execmem_range text;
+	};
+
+	struct execmem_params {
+		struct execmem_modules_range	modules;
+		struct execmem_jit_range	jit;
+	};
+
+	struct execmem_params *execmem_arch_params(void);
+
+	void *execmem_text_alloc(size_t size);
+	void *execmem_data_alloc(size_t size);
+	void execmem_free(void *ptr);
+
+	void *jit_text_alloc(size_t size);
+	void jit_free(void *ptr);
+
+Modules or anything that must live close to the kernel image can use
+execmem_*_alloc() and the callers that don't generally care about relative
+addressing will use jit_text_alloc(), presuming that arch will restrict jit
+range if necessary, like e.g. below for arm64 jit can be anywhere in
+vmalloc and for x86 and s390 it will share the modules range. 
 
 
+	struct execmem_params arm64_execmem = {
+		.modules = {
+			.flags = KASAN,
+			.text = {
+				.start = MODULES_VADDR,
+				.end = MODULES_END,
+				.pgprot = PAGE_KERNEL_ROX,
+				.fallback_start = VMALLOC_START,
+				.fallback_start = VMALLOC_END,
+			},
+		},
+		.jit = {
+			.text = {
+				.start = VMALLOC_START,
+				.end = VMALLOC_END,
+				.pgprot = PAGE_KERNEL_ROX,
+			},
+		},
+	};
+
+	/* x86 and s390 */
+	struct execmem_params cisc_execmem = {
+		.modules = {
+			.flags = KASAN,
+			.text = {
+				.start = MODULES_VADDR,
+				.end = MODULES_END,
+				.pgprot = PAGE_KERNEL_ROX,
+			},
+		},
+		.jit_range = {},	/* impplies reusing .modules */
+	};
+
+	struct execmem_params default_execmem = {
+		.modules = {
+			.flags = KASAN,
+			.text = {
+				.start = VMALLOC_START,
+				.end = VMALLOC_END,
+				.pgprot = PAGE_KERNEL_EXEC,
+			},
+		},
+	};
+
+-- 
+Sincerely yours,
+Mike.
