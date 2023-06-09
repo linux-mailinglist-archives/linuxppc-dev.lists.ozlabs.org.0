@@ -2,56 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65295729ACA
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 14:56:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0A71729B04
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 15:05:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qd1LT1SSnz3f90
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 22:56:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qd1XR4p8Kz3fFk
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 23:05:27 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=EwB3F//8;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ct18ILo6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qd1KX67WMz3f0T
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jun 2023 22:56:00 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=maz@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=EwB3F//8;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ct18ILo6;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qd1KQ2t5Qz4x3x;
-	Fri,  9 Jun 2023 22:55:54 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1686315355;
-	bh=6hU42edEeCSuu+D9dpO9GvNrSsgyCJqWaGuZfm40wB0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=EwB3F//8pFCLNpmDUVeIo8piNUnx0Gt2G0w+0UXSMJrP1U57KHSECjtlTuFqAYtZc
-	 L+mvTbBkg/fnsaZ34YaMSb09wNzpJfePZNiPn518SIurg50xsYo5FIesgQldwcalbo
-	 0javXPbZ1zQjFhXDiPPtmTttttkc3QYUc8dhiGvBO71eaQcOr4UUgB3MD891tkir1Z
-	 xWzMVc/ot7HOLiZ0VIkY9jiO92sW7gQk/WZTIrHIwnHgvYrtHAw5ZwZyPyLoB28Ig6
-	 ZKaHSoEHZaLDlAKDJA/gEfmY7sPUuranAuGb+v8HPgmOy/vAcB5oZJONcLz0LdoMMW
-	 tuBc+47MFsM6g==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Marco Elver
- <elver@google.com>
-Subject: Re: [PATCH 1/3] kcsan: Don't expect 64 bits atomic builtins from 32
- bits architectures
-In-Reply-To: <662d074e-58cf-3bde-f454-e58d04803f34@csgroup.eu>
-References: <cover.1683892665.git.christophe.leroy@csgroup.eu>
- <d9c6afc28d0855240171a4e0ad9ffcdb9d07fceb.1683892665.git.christophe.leroy@csgroup.eu>
- <CANpmjNMm-2Tdhp6rDzA7CYvotmmGmLUnZnA_35yLUvxHB=7s0g@mail.gmail.com>
- <662d074e-58cf-3bde-f454-e58d04803f34@csgroup.eu>
-Date: Fri, 09 Jun 2023 22:55:49 +1000
-Message-ID: <877cschk16.fsf@mail.lhotse>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qd1WV5803z3f0c
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jun 2023 23:04:38 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 9A666657EA;
+	Fri,  9 Jun 2023 13:04:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC01EC433EF;
+	Fri,  9 Jun 2023 13:04:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1686315874;
+	bh=90rVHTRs/3F5on7zL7vvDRpDwafaR4yvoFsAW9sVsUU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ct18ILo60TPRsRZeRF0MA6HqVV541momQ/jF4nftPln9ac11WPptBUohnWBmUvWqE
+	 vnbarfiPcuydHingkmODEEfgyBqMNPOYeP2WxeWyeZBtXUQLPWlTQiK3YoRCoQuOkz
+	 ykp2yROWej+XaTRvcPNC1Mj4JCwFi/idPxZcvWKMzoJB4BmjIGu9z7nSlgQ6TTTjIl
+	 qP4PTzdDzoU3b8crpqEvZ0W3ktzTOLFYBKjsvJzANfoNoi8mgwX007iMF+sc9WNoo4
+	 c5+GV/8GYH3NerKeEbysr3Xjw/+GD6dgRglU5pvXYup5qB/zjHokXJytURgg3jzfRS
+	 C5Xro19M414WQ==
+Received: from 152.5.30.93.rev.sfr.net ([93.30.5.152] helo=wait-a-minute.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1q7bn5-0045UR-GR;
+	Fri, 09 Jun 2023 14:04:31 +0100
+Date: Fri, 09 Jun 2023 14:04:27 +0100
+Message-ID: <873530okh0.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Yu Zhao <yuzhao@google.com>
+Subject: Re: kvm/arm64: Spark benchmark
+In-Reply-To: <20230609005935.42390-1-yuzhao@google.com>
+References: <20230526234435.662652-1-yuzhao@google.com>
+	<20230609005935.42390-1-yuzhao@google.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/28.2
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 93.30.5.152
+X-SA-Exim-Rcpt-To: yuzhao@google.com, akpm@linux-foundation.org, pbonzini@redhat.com, apopple@nvidia.com, anup@brainfault.org, bgardon@google.com, bp@alien8.de, catalin.marinas@arm.com, chao.p.peng@linux.intel.com, christophe.leroy@csgroup.eu, dave.hansen@linux.intel.com, farosas@linux.ibm.com, cuigaosheng1@huawei.com, gshan@redhat.com, hpa@zytor.com, mingo@redhat.com, james.morse@arm.com, Jason@zx2c4.com, jgg@ziepe.ca, corbet@lwn.net, mhiramat@kernel.org, mpe@ellerman.id.au, michael@michaellarabel.com, rppt@kernel.org, npiggin@gmail.com, oliver.upton@linux.dev, paulus@ozlabs.org, peterx@redhat.com, seanjc@google.com, rostedt@goodmis.org, suzuki.poulose@arm.com, tglx@linutronix.de, thuth@redhat.com, will@kernel.org, yuzenghui@huawei.com, kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, linux-trace-kernel@vger.kernel.org, x86@kernel.org, linux-m
+ m@google.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,44 +73,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Chris Zankel <chris@zankel.net>, "Paul E. McKenney" <paulmck@kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>, Rohan McLure <rmclure@linux.ibm.com>, "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Dmitry Vyukov <dvyukov@google.com>
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, x86@kernel.org, Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, Ben Gardon <bgardon@google.com>, Chao Peng <chao.p.peng@linux.intel.com>, Will Deacon <will@kernel.org>, Gaosheng Cui <cuigaosheng1@huawei.com>, "H. Peter Anvin" <hpa@zytor.com>, Jonathan Corbet <corbet@lwn.net>, Alistair Popple <apopple@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, Ingo Molnar <mingo@redhat.com>, Zenghui Yu <yuzenghui@huawei.com>, linux-trace-kernel@vger.kernel.org, linux-mm@google.com, Thomas Huth <thuth@redhat.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Steven Rostedt <rostedt@goodmis.org>, kvmarm@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Fabiano Rosas <farosas@linux.ibm.c
+ om>, Michael Larabel <michael@michaellarabel.com>, Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, James Morse <james.morse@arm.com>, Masami Hiramatsu <mhiramat@kernel.org>, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Le 12/05/2023 =C3=A0 18:09, Marco Elver a =C3=A9crit=C2=A0:
->> On Fri, 12 May 2023 at 17:31, Christophe Leroy
->> <christophe.leroy@csgroup.eu> wrote:
->>>
->>> Activating KCSAN on a 32 bits architecture leads to the following
->>> link-time failure:
->>>
->>>      LD      .tmp_vmlinux.kallsyms1
->>>    powerpc64-linux-ld: kernel/kcsan/core.o: in function `__tsan_atomic6=
-4_load':
->>>    kernel/kcsan/core.c:1273: undefined reference to `__atomic_load_8'
->>>    powerpc64-linux-ld: kernel/kcsan/core.o: in function `__tsan_atomic6=
-4_store':
->>>    kernel/kcsan/core.c:1273: undefined reference to `__atomic_store_8'
-...
->>>
->>> 32 bits architectures don't have 64 bits atomic builtins. Only
->>> include DEFINE_TSAN_ATOMIC_OPS(64) on 64 bits architectures.
->>>
->>> Fixes: 0f8ad5f2e934 ("kcsan: Add support for atomic builtins")
->>> Suggested-by: Marco Elver <elver@google.com>
->>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->>=20
->> Reviewed-by: Marco Elver <elver@google.com>
->>=20
->> Do you have your own tree to take this through with the other patches?
->
-> I don't have my own tree but I guess that it can be taken by Michael for=
-=20
-> 6.5 via powerpc tree with acks from you and Max.
->
-> Michael is that ok for you ?
+On Fri, 09 Jun 2023 01:59:35 +0100,
+Yu Zhao <yuzhao@google.com> wrote:
+> 
+> TLDR
+> ====
+> Apache Spark spent 12% less time sorting four billion random integers twenty times (in ~4 hours) after this patchset [1].
 
-Yeah I can take it.
+Why are the 3 architectures you have considered being evaluated with 3
+different benchmarks? I am not suspecting you to have cherry-picked
+the best results, but I'd really like to see a variety of benchmarks
+that exercise this stuff differently.
 
-cheers
+Thanks,
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
