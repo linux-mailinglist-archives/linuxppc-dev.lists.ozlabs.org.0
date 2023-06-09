@@ -1,91 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95A18728FAC
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 08:10:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C079A729063
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 08:51:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QcrL72ddvz3fb2
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 16:10:55 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LPxaBTaG;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QcsF54JHGz3fbY
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 16:51:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LPxaBTaG;
-	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QcrJG49Vfz3cdt
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jun 2023 16:09:18 +1000 (AEST)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3595pGvv028120;
-	Fri, 9 Jun 2023 06:09:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=UUCfNiXCaS+WzWd5yKc9SuHScLa78eKoqsVXOXYx96k=;
- b=LPxaBTaGNQ7j8U4X1kyipPnSEbOHlltiK2yYdhOWgVe7HSrCz55IYsda4dhKPizvLKHe
- /vSFWIL565egkOKCMe2akGsWii0pv16l6fX7i3iekZDekKzad5EivMZw1TsT8tb2Euq0
- fC5dlgUJS9ucoxC3U6hP22WHZpZUD9NX9oMpaQHy/Qx2qHQGla/uRvMhEtchEeD95JMe
- 1hQhN7h0ZZgnbrUFB2aUVVoMsWfm57n47aRoZPaxy0dv39ieWT1sBHP9KQMV3pcztKgL
- wuG4IVIkJrlDxqqBC4EzDZrMyDn5aNWuJ7M4ck5+co9asQ6iuLck9gB0ObKDF8Zc6qwi 8w== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r3xa30d39-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 09 Jun 2023 06:09:10 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3595s3Wo005481;
-	Fri, 9 Jun 2023 06:09:10 GMT
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r3xa30d2w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 09 Jun 2023 06:09:10 +0000
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
-	by ppma01wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35961F9r004580;
-	Fri, 9 Jun 2023 06:09:09 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([9.208.129.114])
-	by ppma01wdc.us.ibm.com (PPS) with ESMTPS id 3r2a74caj6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 09 Jun 2023 06:09:09 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 359698r034800232
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 9 Jun 2023 06:09:08 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 474B358060;
-	Fri,  9 Jun 2023 06:09:08 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AA64A58051;
-	Fri,  9 Jun 2023 06:09:05 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.43.55.247])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  9 Jun 2023 06:09:05 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu
-Subject: [PATCH v2 2/2] powerpc/mm: Add memory_block_size as a kernel parameter
-Date: Fri,  9 Jun 2023 11:38:51 +0530
-Message-Id: <20230609060851.329406-2-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230609060851.329406-1-aneesh.kumar@linux.ibm.com>
-References: <20230609060851.329406-1-aneesh.kumar@linux.ibm.com>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=loongson.cn (client-ip=114.242.206.163; helo=mail.loongson.cn; envelope-from=yangtiezhu@loongson.cn; receiver=<UNKNOWN>)
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QcsDY0mMNz3f02
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jun 2023 16:51:05 +1000 (AEST)
+Received: from loongson.cn (unknown [113.200.148.30])
+	by gateway (Coremail) with SMTP id _____8DxRunVy4JkcPAAAA--.1016S3;
+	Fri, 09 Jun 2023 14:51:01 +0800 (CST)
+Received: from [10.130.0.149] (unknown [113.200.148.30])
+	by localhost.localdomain (Coremail) with SMTP id AQAAf8AxZuTSy4Jk8QsKAA--.30794S3;
+	Fri, 09 Jun 2023 14:51:00 +0800 (CST)
+Subject: Re: [RFC PATCH] asm-generic: Unify uapi bitsperlong.h
+To: Arnd Bergmann <arnd@arndb.de>
+References: <1683615903-10862-1-git-send-email-yangtiezhu@loongson.cn>
+ <b9624545-2c80-49a1-ac3c-39264a591f7b@app.fastmail.com>
+ <76d3be65-91df-7969-5303-38231a7df926@loongson.cn>
+ <a3a4f48a-07d4-4ed9-bc53-5d383428bdd2@app.fastmail.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
+Message-ID: <ca4c4968-411d-4e2c-543e-ffb62413ddef@loongson.cn>
+Date: Fri, 9 Jun 2023 14:50:58 +0800
+User-Agent: Mozilla/5.0 (X11; Linux mips64; rv:45.0) Gecko/20100101
+ Thunderbird/45.4.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Q62fht0_zmBzLLxVrheco7iHK3labZjC
-X-Proofpoint-ORIG-GUID: FBIrLh4bxgv4oApQaUrcg-PvYFp7SFtc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-09_03,2023-06-08_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 mlxscore=0
- adultscore=0 phishscore=0 lowpriorityscore=0 spamscore=0 suspectscore=0
- priorityscore=1501 mlxlogscore=999 bulkscore=0 impostorscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306090052
+In-Reply-To: <a3a4f48a-07d4-4ed9-bc53-5d383428bdd2@app.fastmail.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID: AQAAf8AxZuTSy4Jk8QsKAA--.30794S3
+X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7Cr1UWFy8Kr1kJFy7Kr47KFX_yoW5JFyrpF
+	4UGF1j9r4kAr1fAFn2yw4jqa4Fyws7KF1aq3s0gryxJFs0gFyrtry29w4agFWqvr18Jr4j
+	93yUXFy5uay0yFXCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUPIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
+	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
+	AVWUtwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
+	8JMxk0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vI
+	r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67
+	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIY
+	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
+	v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8
+	JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07jOiSdUUU
+	UU=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,102 +65,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, foraker1@llnl.gov
+Cc: Linux-Arch <linux-arch@vger.kernel.org>, linux-s390@vger.kernel.org, x86@kernel.org, linux-ia64@vger.kernel.org, loongarch@lists.linux.dev, linux-parisc@vger.kernel.org, llvm@lists.linux.dev, linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, loongson-kernel@lists.loongnix.cn
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Certain devices can possess non-standard memory capacities, not constrained
-to multiples of 1GB. Provide a kernel parameter so that we can map the
-device memory completely on memory hotplug.
 
-Restrict memory_block_size value to a power of 2 value similar to LMB size.
-The memory block size should also be more than the section size.
 
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- .../admin-guide/kernel-parameters.txt         |  3 +++
- arch/powerpc/kernel/setup_64.c                | 23 +++++++++++++++++++
- arch/powerpc/mm/init_64.c                     | 17 ++++++++++----
- 3 files changed, 38 insertions(+), 5 deletions(-)
+On 06/08/2023 08:56 PM, Arnd Bergmann wrote:
+> On Thu, Jun 8, 2023, at 09:04, Tiezhu Yang wrote:
+>> On 05/09/2023 05:37 PM, Arnd Bergmann wrote:
+>>> On Tue, May 9, 2023, at 09:05, Tiezhu Yang wrote:
+>>>
+>>> I think we are completely safe on the architectures that were
+>>> added since the linux-3.x days (arm64, riscv, csky, openrisc,
+>>> loongarch, nios2, and hexagon), but for the older ones there
+>>> is a regression risk. Especially on targets that are not that
+>>> actively maintained (sparc, alpha, ia64, sh, ...) there is
+>>> a good chance that users are stuck on ancient toolchains.
+>>> It's probably also a safe assumption that anyone with an older
+>>> libc version won't be using the latest kernel headers, so
+>>> I think we can still do this across architectures if both
+>>> glibc and musl already require a compiler that is new enough,
+>>> or alternatively if we know that the kernel headers require
+>>> a new compiler for other reasons and nobody has complained.
+>>>
+>>> For glibc, it looks the minimum compiler version was raised
+>>> from gcc-5 to gcc-8 four years ago, so we should be fine.
+>>>
+>>> In musl, the documentation states that at least gcc-3.4 or
+>>> clang-3.2 are required, which probably predate the
+>>> __SIZEOF_LONG__ macro. On the other hand, musl was only
+>>> released in 2011, and building musl itself explicitly
+>>> does not require kernel uapi headers, so this may not
+>>> be too critical.
+>>>
+>>> There is also uClibc, but I could not find any minimum
+>>> supported compiler version for that. Most commonly, this
+>>> one is used for cross-build environments, so it's also
+>>> less likely to have libc/gcc/headers being wildly out of
+>>> sync. Not sure.
+>>>
+>>>       Arnd
+>>>
+>>> [1] https://sourceware.org/pipermail/libc-alpha/2019-January/101010.html
+>>>
+>>
+>> Thanks Arnd for the detailed reply.
+>> Any more comments? What should I do in the next step?
+>
+> I think the summary is "it's probably fine", but I don't know
+> for sure, and it may not be worth the benefit.
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 9e5bab29685f..833b8c5b4b4c 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -3190,6 +3190,9 @@
- 			Note that even when enabled, there are a few cases where
- 			the feature is not effective.
- 
-+	memory_block_size=size [PPC]
-+			 Use this parameter to configure the memory block size value.
-+
- 	memtest=	[KNL,X86,ARM,M68K,PPC,RISCV] Enable memtest
- 			Format: <integer>
- 			default : 0 <disable>
-diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
-index 246201d0d879..cbdb924462c7 100644
---- a/arch/powerpc/kernel/setup_64.c
-+++ b/arch/powerpc/kernel/setup_64.c
-@@ -892,6 +892,29 @@ unsigned long memory_block_size_bytes(void)
- 
- 	return MIN_MEMORY_BLOCK_SIZE;
- }
-+
-+/*
-+ * Restrict to a power of 2 value for memblock which is larger than
-+ * section size
-+ */
-+static int __init parse_mem_block_size(char *ptr)
-+{
-+	unsigned int order;
-+	unsigned long size = memparse(ptr, NULL);
-+
-+	order = fls64(size);
-+	if (!order)
-+		return 0;
-+
-+	order--;
-+	if (order < SECTION_SIZE_BITS)
-+		return 0;
-+
-+	memory_block_size = 1UL << order;
-+
-+	return 0;
-+}
-+early_param("memory_block_size", parse_mem_block_size);
- #endif
- 
- #if defined(CONFIG_PPC_INDIRECT_PIO) || defined(CONFIG_PPC_INDIRECT_MMIO)
-diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
-index 97a9163f1280..5e6dde593ea3 100644
---- a/arch/powerpc/mm/init_64.c
-+++ b/arch/powerpc/mm/init_64.c
-@@ -549,13 +549,20 @@ static int __init probe_memory_block_size(unsigned long node, const char *uname,
- 	return 0;
- }
- 
--/*
-- * start with 1G memory block size. Early init will
-- * fix this with correct value.
-- */
--unsigned long memory_block_size __ro_after_init = 1UL << 30;
-+unsigned long memory_block_size __ro_after_init;
- static void __init early_init_memory_block_size(void)
- {
-+	/*
-+	 * if it is set via early param just return.
-+	 */
-+	if (memory_block_size)
-+		return;
-+
-+	/*
-+	 * start with 1G memory block size. update_memory_block_size()
-+	 * will derive the right value based on device tree details.
-+	 */
-+	memory_block_size = 1UL << 30;
- 	/*
- 	 * We need to do memory_block_size probe early so that
- 	 * radix__early_init_mmu() can use this as limit for
--- 
-2.40.1
+Thank you, it is very clear now.
+
+> Maybe you can prepare a v2 that only does this for the newer
+> architectures I mentioned above, with and an explanation and
+> link to my above reply in the file comments?
+
+Only arm64, riscv and loongarch belong to the newer architectures
+which are related with this change, I am not sure it is necessary
+to "unify" uapi bitsperlong.h for them.
+
+Anyway, let me try, I will send a new version, maybe this is going
+to progress in the right direction.
+
+Thanks,
+Tiezhu
 
