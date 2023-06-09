@@ -2,72 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94B0A7291E9
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 09:58:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4A5A72924E
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 10:10:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QctkY2k5Lz3fGy
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 17:58:45 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OnNWCzXO;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=P5yEWXzZ;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qcv053hgqz3f8n
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 18:10:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OnNWCzXO;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=P5yEWXzZ;
-	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33; helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=<UNKNOWN>)
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qctjd1wQXz3bxL
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jun 2023 17:57:56 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1686297471;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mrr2cNyhDy3XHVdkhg3dGxWKYfHUscXJOX9H9m6IS1s=;
-	b=OnNWCzXOw1E+K44dl7izPk+3Poz7PcX5dPpJ5KvGKLjtYxyOP/S33OAQcU0c3GYT9TAdp9
-	vsp7zTxKueWhf1tMPxKURD6PHyPXEb/NfBOjgfj9Res4QWMnc+36afxJvU/tDR/y2p1vj6
-	xv7jeV4AVthL8dDLYsTVzI1W0oK64Wo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1686297472;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mrr2cNyhDy3XHVdkhg3dGxWKYfHUscXJOX9H9m6IS1s=;
-	b=P5yEWXzZdUbEa0B4I3Sw7Xgl0TNNmWX2eL78dHTotY4b1O2zRSOSK1Tid13ZQXUbmDg4N1
-	U9HLc0JWgDFcN5F6pGBrtBtwDjgudpxhkMiLqv9O6/VMy5CAQ1YooWF2hdWnZq//SEPHiy
-	SnfRdh/EgrhIZVurVAI2w7P+w0nUMAM=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-76-1o8RxqJuNy6kld5Aajr5wQ-1; Fri, 09 Jun 2023 03:57:38 -0400
-X-MC-Unique: 1o8RxqJuNy6kld5Aajr5wQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 625713849528;
-	Fri,  9 Jun 2023 07:57:37 +0000 (UTC)
-Received: from MiWiFi-R3L-srv.redhat.com (ovpn-12-92.pek2.redhat.com [10.72.12.92])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 8C15C20268C6;
-	Fri,  9 Jun 2023 07:57:30 +0000 (UTC)
-From: Baoquan He <bhe@redhat.com>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH v6 17/19] powerpc: mm: Convert to GENERIC_IOREMAP
-Date: Fri,  9 Jun 2023 15:55:26 +0800
-Message-Id: <20230609075528.9390-18-bhe@redhat.com>
-In-Reply-To: <20230609075528.9390-1-bhe@redhat.com>
-References: <20230609075528.9390-1-bhe@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qctym4rwvz3f8n
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jun 2023 18:09:17 +1000 (AEST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1q7XAK-0006kw-V8; Fri, 09 Jun 2023 10:08:13 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1q7XAH-0069Zi-QX; Fri, 09 Jun 2023 10:08:09 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1q7XAG-00CXLI-Ow; Fri, 09 Jun 2023 10:08:08 +0200
+Date: Fri, 9 Jun 2023 10:08:08 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Randy Dunlap <rdunlap@infradead.org>
+Subject: Re: [PATCH] powerpc/legacy_serial: check CONFIG_SERIAL_8250_CONSOLE
+Message-ID: <20230609080808.cuujwvy55s2vvn4m@pengutronix.de>
+References: <20230609003328.15008-1-rdunlap@infradead.org>
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ndc6ya4l57czhno4"
+Content-Disposition: inline
+In-Reply-To: <20230609003328.15008-1-rdunlap@infradead.org>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,205 +54,124 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, wangkefeng.wang@huawei.com, Baoquan He <bhe@redhat.com>, arnd@arndb.de, schnelle@linux.ibm.com, deller@gmx.de, Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org, David.Laight@ACULAB.COM, willy@infradead.org, shorne@gmail.com, agordeev@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, hch@lst.de, rppt@kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-serial@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-By taking GENERIC_IOREMAP method, the generic generic_ioremap_prot(),
-generic_iounmap(), and their generic wrapper ioremap_prot(), ioremap()
-and iounmap() are all visible and available to arch. Arch needs to
-provide wrapper functions to override the generic versions if there's
-arch specific handling in its ioremap_prot(), ioremap() or iounmap().
-This change will simplify implementation by removing duplicated codes
-with generic_ioremap_prot() and generic_iounmap(), and has the equivalent
-functioality as before.
+--ndc6ya4l57czhno4
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Here, add wrapper functions ioremap_prot() and iounmap() for powerpc's
-special operation when ioremap() and iounmap().
+Hello Randy,
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Baoquan He <bhe@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: linuxppc-dev@lists.ozlabs.org
----
- arch/powerpc/Kconfig          |  1 +
- arch/powerpc/include/asm/io.h |  8 +++-----
- arch/powerpc/mm/ioremap.c     | 26 +-------------------------
- arch/powerpc/mm/ioremap_32.c  | 19 +++++++++----------
- arch/powerpc/mm/ioremap_64.c  | 12 ++----------
- 5 files changed, 16 insertions(+), 50 deletions(-)
+On Thu, Jun 08, 2023 at 05:33:28PM -0700, Randy Dunlap wrote:
+> When SERIAL_8250_CONSOLE is not set but PPC_UDBG_16550=3Dy,
+> the legacy_serial code references fsl8250_handle_irq, which is
+> only built when SERIAL_8250_CONSOLE is set.
+>=20
+> Be consistent in referencing the used CONFIG_SERIAL_8250*
+> symbols so that the build errors do not happen.
+>=20
+> Prevents these build errors:
+>=20
+> powerpc-linux-ld: arch/powerpc/kernel/legacy_serial.o: in function `seria=
+l_dev_init':
+> legacy_serial.c:(.init.text+0x2aa): undefined reference to `fsl8250_handl=
+e_irq'
+> powerpc-linux-ld: legacy_serial.c:(.init.text+0x2b2): undefined reference=
+ to `fsl8250_handle_irq'
+>=20
+> Fixes: 66eff0ef528b ("powerpc/legacy_serial: Warn about 8250 devices oper=
+ated without active FSL workarounds")
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Cc: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: linux-serial@vger.kernel.org
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> ---
+>  arch/powerpc/kernel/legacy_serial.c |    4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff -- a/arch/powerpc/kernel/legacy_serial.c b/arch/powerpc/kernel/legac=
+y_serial.c
+> --- a/arch/powerpc/kernel/legacy_serial.c
+> +++ b/arch/powerpc/kernel/legacy_serial.c
+> @@ -508,9 +508,9 @@ static void __init fixup_port_irq(int in
+> =20
+>  	port->irq =3D virq;
+> =20
+> -	if (IS_ENABLED(CONFIG_SERIAL_8250) &&
+> +	if (IS_ENABLED(CONFIG_SERIAL_8250_CONSOLE) &&
+>  	    of_device_is_compatible(np, "fsl,ns16550")) {
+> -		if (IS_REACHABLE(CONFIG_SERIAL_8250)) {
+> +		if (IS_REACHABLE(CONFIG_SERIAL_8250_CONSOLE)) {
+>  			port->handle_irq =3D fsl8250_handle_irq;
+>  			port->has_sysrq =3D IS_ENABLED(CONFIG_SERIAL_8250_CONSOLE);
+>  		} else {
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index bff5820b7cda..aadb280a539e 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -194,6 +194,7 @@ config PPC
- 	select GENERIC_CPU_VULNERABILITIES	if PPC_BARRIER_NOSPEC
- 	select GENERIC_EARLY_IOREMAP
- 	select GENERIC_GETTIMEOFDAY
-+	select GENERIC_IOREMAP
- 	select GENERIC_IRQ_SHOW
- 	select GENERIC_IRQ_SHOW_LEVEL
- 	select GENERIC_PCI_IOMAP		if PCI
-diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
-index 67a3fb6de498..0732b743e099 100644
---- a/arch/powerpc/include/asm/io.h
-+++ b/arch/powerpc/include/asm/io.h
-@@ -889,8 +889,8 @@ static inline void iosync(void)
-  *
-  */
- extern void __iomem *ioremap(phys_addr_t address, unsigned long size);
--extern void __iomem *ioremap_prot(phys_addr_t address, unsigned long size,
--				  unsigned long flags);
-+#define ioremap ioremap
-+#define ioremap_prot ioremap_prot
- extern void __iomem *ioremap_wc(phys_addr_t address, unsigned long size);
- #define ioremap_wc ioremap_wc
- 
-@@ -904,14 +904,12 @@ void __iomem *ioremap_coherent(phys_addr_t address, unsigned long size);
- #define ioremap_cache(addr, size) \
- 	ioremap_prot((addr), (size), pgprot_val(PAGE_KERNEL))
- 
--extern void iounmap(volatile void __iomem *addr);
-+#define iounmap iounmap
- 
- void __iomem *ioremap_phb(phys_addr_t paddr, unsigned long size);
- 
- int early_ioremap_range(unsigned long ea, phys_addr_t pa,
- 			unsigned long size, pgprot_t prot);
--void __iomem *do_ioremap(phys_addr_t pa, phys_addr_t offset, unsigned long size,
--			 pgprot_t prot, void *caller);
- 
- extern void __iomem *__ioremap_caller(phys_addr_t, unsigned long size,
- 				      pgprot_t prot, void *caller);
-diff --git a/arch/powerpc/mm/ioremap.c b/arch/powerpc/mm/ioremap.c
-index 4f12504fb405..705e8e8ffde4 100644
---- a/arch/powerpc/mm/ioremap.c
-+++ b/arch/powerpc/mm/ioremap.c
-@@ -41,7 +41,7 @@ void __iomem *ioremap_coherent(phys_addr_t addr, unsigned long size)
- 	return __ioremap_caller(addr, size, prot, caller);
- }
- 
--void __iomem *ioremap_prot(phys_addr_t addr, unsigned long size, unsigned long flags)
-+void __iomem *ioremap_prot(phys_addr_t addr, size_t size, unsigned long flags)
- {
- 	pte_t pte = __pte(flags);
- 	void *caller = __builtin_return_address(0);
-@@ -74,27 +74,3 @@ int early_ioremap_range(unsigned long ea, phys_addr_t pa,
- 
- 	return 0;
- }
--
--void __iomem *do_ioremap(phys_addr_t pa, phys_addr_t offset, unsigned long size,
--			 pgprot_t prot, void *caller)
--{
--	struct vm_struct *area;
--	int ret;
--	unsigned long va;
--
--	area = __get_vm_area_caller(size, VM_IOREMAP, IOREMAP_START, IOREMAP_END, caller);
--	if (area == NULL)
--		return NULL;
--
--	area->phys_addr = pa;
--	va = (unsigned long)area->addr;
--
--	ret = ioremap_page_range(va, va + size, pa, prot);
--	if (!ret)
--		return (void __iomem *)area->addr + offset;
--
--	vunmap_range(va, va + size);
--	free_vm_area(area);
--
--	return NULL;
--}
-diff --git a/arch/powerpc/mm/ioremap_32.c b/arch/powerpc/mm/ioremap_32.c
-index 9d13143b8be4..ca5bc6be3e6f 100644
---- a/arch/powerpc/mm/ioremap_32.c
-+++ b/arch/powerpc/mm/ioremap_32.c
-@@ -21,6 +21,13 @@ __ioremap_caller(phys_addr_t addr, unsigned long size, pgprot_t prot, void *call
- 	phys_addr_t p, offset;
- 	int err;
- 
-+	/*
-+	 * If the address lies within the first 16 MB, assume it's in ISA
-+	 * memory space
-+	 */
-+	if (addr < SZ_16M)
-+		addr += _ISA_MEM_BASE;
-+
- 	/*
- 	 * Choose an address to map it to.
- 	 * Once the vmalloc system is running, we use it.
-@@ -31,13 +38,6 @@ __ioremap_caller(phys_addr_t addr, unsigned long size, pgprot_t prot, void *call
- 	offset = addr & ~PAGE_MASK;
- 	size = PAGE_ALIGN(addr + size) - p;
- 
--	/*
--	 * If the address lies within the first 16 MB, assume it's in ISA
--	 * memory space
--	 */
--	if (p < 16 * 1024 * 1024)
--		p += _ISA_MEM_BASE;
--
- #ifndef CONFIG_CRASH_DUMP
- 	/*
- 	 * Don't allow anybody to remap normal RAM that we're using.
-@@ -63,7 +63,7 @@ __ioremap_caller(phys_addr_t addr, unsigned long size, pgprot_t prot, void *call
- 		return (void __iomem *)v + offset;
- 
- 	if (slab_is_available())
--		return do_ioremap(p, offset, size, prot, caller);
-+		return generic_ioremap_prot(addr, size, prot);
- 
- 	/*
- 	 * Should check if it is a candidate for a BAT mapping
-@@ -87,7 +87,6 @@ void iounmap(volatile void __iomem *addr)
- 	if (v_block_mapped((unsigned long)addr))
- 		return;
- 
--	if (addr > high_memory && (unsigned long)addr < ioremap_bot)
--		vunmap((void *)(PAGE_MASK & (unsigned long)addr));
-+	generic_iounmap(addr);
- }
- EXPORT_SYMBOL(iounmap);
-diff --git a/arch/powerpc/mm/ioremap_64.c b/arch/powerpc/mm/ioremap_64.c
-index 3acece00b33e..d24e5f166723 100644
---- a/arch/powerpc/mm/ioremap_64.c
-+++ b/arch/powerpc/mm/ioremap_64.c
-@@ -29,7 +29,7 @@ void __iomem *__ioremap_caller(phys_addr_t addr, unsigned long size,
- 		return NULL;
- 
- 	if (slab_is_available())
--		return do_ioremap(paligned, offset, size, prot, caller);
-+		return generic_ioremap_prot(addr, size, prot);
- 
- 	pr_warn("ioremap() called early from %pS. Use early_ioremap() instead\n", caller);
- 
-@@ -49,17 +49,9 @@ void __iomem *__ioremap_caller(phys_addr_t addr, unsigned long size,
-  */
- void iounmap(volatile void __iomem *token)
- {
--	void *addr;
--
- 	if (!slab_is_available())
- 		return;
- 
--	addr = (void *)((unsigned long __force)PCI_FIX_ADDR(token) & PAGE_MASK);
--
--	if ((unsigned long)addr < ioremap_bot) {
--		pr_warn("Attempt to iounmap early bolted mapping at 0x%p\n", addr);
--		return;
--	}
--	vunmap(addr);
-+	generic_iounmap(PCI_FIX_ADDR(token));
- }
- EXPORT_SYMBOL(iounmap);
--- 
-2.34.1
+Argh, indeed there is a problem. Your patch however defeats the idea of
+66eff0ef528b[1] which is still valid. And with your patch the else
+branch that starts at the end of the above hunk is never taken.
 
+With the feedback I got on
+https://lore.kernel.org/linux-serial/20230605130857.85543-3-u.kleine-koenig=
+@pengutronix.de
+the probable outcome is that CONFIG_SERIAL_8250_FSL becomes tristate and
+so the fix that is more future proof and keeps the warning, looks as
+follows:
+
+diff --git a/arch/powerpc/kernel/legacy_serial.c b/arch/powerpc/kernel/lega=
+cy_serial.c
+index fdbd85aafeb1..6ee65741dbd5 100644
+--- a/arch/powerpc/kernel/legacy_serial.c
++++ b/arch/powerpc/kernel/legacy_serial.c
+@@ -510,7 +510,7 @@ static void __init fixup_port_irq(int index,
+=20
+ 	if (IS_ENABLED(CONFIG_SERIAL_8250) &&
+ 	    of_device_is_compatible(np, "fsl,ns16550")) {
+-		if (IS_REACHABLE(CONFIG_SERIAL_8250)) {
++		if (IS_REACHABLE(CONFIG_SERIAL_8250_FSL)) {
+ 			port->handle_irq =3D fsl8250_handle_irq;
+ 			port->has_sysrq =3D IS_ENABLED(CONFIG_SERIAL_8250_CONSOLE);
+ 		} else {
+
+This should to the right thing now (while CONFIG_SERIAL_8250_FSL is
+still bool and only on if CONFIG_SERIAL_8250 is =3Dy) and also once
+CONFIG_SERIAL_8250_FSL can be =3Dm (which would make fsl8250_handle_irq
+not available for powerpc platform code).
+
+But given that I screwed this up several times now, I will think about
+this some more and do some more tests before submitting that as a proper
+patch.
+
+Best regards
+Uwe
+
+[1] Warn if the 8250 device is used but the required FSL workarounds are
+not.
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--ndc6ya4l57czhno4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmSC3ecACgkQj4D7WH0S
+/k5T9Af/fgeBpi2x/JEzkhLoSz3doP+2Pv+/pfLZFelOSp4kIlGd8qnJoxVmGXwS
+jTAcJ+jpz9fheIA1Obhl0K38LuODmGg8ZFankSMEUvUNDjcalTXb7mQpT/qmVX41
+kDWGHNpNnbgnAKA56gg/IGt/0PVzLeFi8NuBXqS/jv52hNySnXOjIaRVC2ZE36EM
+kAd7pGtf8SGNo4+o9V/JIbMWnoXZuS4Qvo+MPJcfFE5IHlk4wHmYCxtuUAH56SuM
+06Rs0YdxYgN2yoc/fch7XjD7fnYuM7TgnYPn0uZSG6+brec3SKVml3VopzggGSHZ
+lORWQ0Mp14HXFfYDMD9zdAF1EIj5kg==
+=igw/
+-----END PGP SIGNATURE-----
+
+--ndc6ya4l57czhno4--
