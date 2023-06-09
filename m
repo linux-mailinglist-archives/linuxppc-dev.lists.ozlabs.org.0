@@ -1,59 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C079A729063
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 08:51:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3802F72906B
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 08:52:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QcsF54JHGz3fbY
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 16:51:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QcsFz6yfzz3fbZ
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 16:52:23 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rIo2mO9Y;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=loongson.cn (client-ip=114.242.206.163; helo=mail.loongson.cn; envelope-from=yangtiezhu@loongson.cn; receiver=<UNKNOWN>)
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QcsDY0mMNz3f02
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jun 2023 16:51:05 +1000 (AEST)
-Received: from loongson.cn (unknown [113.200.148.30])
-	by gateway (Coremail) with SMTP id _____8DxRunVy4JkcPAAAA--.1016S3;
-	Fri, 09 Jun 2023 14:51:01 +0800 (CST)
-Received: from [10.130.0.149] (unknown [113.200.148.30])
-	by localhost.localdomain (Coremail) with SMTP id AQAAf8AxZuTSy4Jk8QsKAA--.30794S3;
-	Fri, 09 Jun 2023 14:51:00 +0800 (CST)
-Subject: Re: [RFC PATCH] asm-generic: Unify uapi bitsperlong.h
-To: Arnd Bergmann <arnd@arndb.de>
-References: <1683615903-10862-1-git-send-email-yangtiezhu@loongson.cn>
- <b9624545-2c80-49a1-ac3c-39264a591f7b@app.fastmail.com>
- <76d3be65-91df-7969-5303-38231a7df926@loongson.cn>
- <a3a4f48a-07d4-4ed9-bc53-5d383428bdd2@app.fastmail.com>
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
-Message-ID: <ca4c4968-411d-4e2c-543e-ffb62413ddef@loongson.cn>
-Date: Fri, 9 Jun 2023 14:50:58 +0800
-User-Agent: Mozilla/5.0 (X11; Linux mips64; rv:45.0) Gecko/20100101
- Thunderbird/45.4.0
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rIo2mO9Y;
+	dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QcsDm6J53z3fFs
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jun 2023 16:51:20 +1000 (AEST)
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3596gDf1002088
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 9 Jun 2023 06:51:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=ysJyQA/rmB+Nlf0ejCIsK6jJo8v8kyZ2D7V2aWs2FSQ=;
+ b=rIo2mO9Ym0lQPGi1ro3fwGN62evGRn3wZjQEjZjX5itdWLKkk1q6ZlMH2zv5SO1gKlbE
+ pCo76me05aXenwV7DNgCHV6X7oQgeqYej2NfdjA1Zt+qqdrZiNNDMmYBi26c1TSpKat9
+ BaIBVrnHGvwRZHt38u9OldoKHbQtr0sxsL8GWYaWWR2SONu/Yvpv91iB9SqvRkM+BTGv
+ 0EFQZFT8WTQuSLYXO/tx/sgbL+V8Q2rLrEEOvxhFnXt0oaY7Nhw7xgWdfaLdVK5DA4Iw
+ pn1mi8+ZVWhUEhh+9wcaZ2AbGAWrb7yp2B0VCfEHJpBT87G9hwS4nIBzt5tqdW1RKY34 Ow== 
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r3y1sg820-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Jun 2023 06:51:18 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3591GPiF004978
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 9 Jun 2023 06:51:16 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3r2a78stg7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Jun 2023 06:51:15 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3596pAiN21955248
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 9 Jun 2023 06:51:10 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D413520043;
+	Fri,  9 Jun 2023 06:51:10 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B3DAF2004D;
+	Fri,  9 Jun 2023 06:51:09 +0000 (GMT)
+Received: from [9.43.83.118] (unknown [9.43.83.118])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  9 Jun 2023 06:51:09 +0000 (GMT)
+Message-ID: <32eabf61-69ba-f850-b123-422c6802e796@linux.ibm.com>
+Date: Fri, 9 Jun 2023 12:21:08 +0530
 MIME-Version: 1.0
-In-Reply-To: <a3a4f48a-07d4-4ed9-bc53-5d383428bdd2@app.fastmail.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] powerpc/fadump: invoke ibm,os-term with
+ rtas_call_unlocked()
+Content-Language: en-US
+To: mahesh@linux.ibm.com
+References: <20230609051846.132457-1-hbathini@linux.ibm.com>
+ <riahmqyz32avudmqyoreffhtgeyz3ggisu7n5jrh2gvaqo6pxz@43watyra7uq2>
+From: Hari Bathini <hbathini@linux.ibm.com>
+In-Reply-To: <riahmqyz32avudmqyoreffhtgeyz3ggisu7n5jrh2gvaqo6pxz@43watyra7uq2>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-CM-TRANSID: AQAAf8AxZuTSy4Jk8QsKAA--.30794S3
-X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7Cr1UWFy8Kr1kJFy7Kr47KFX_yoW5JFyrpF
-	4UGF1j9r4kAr1fAFn2yw4jqa4Fyws7KF1aq3s0gryxJFs0gFyrtry29w4agFWqvr18Jr4j
-	93yUXFy5uay0yFXCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUPIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
-	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
-	AVWUtwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
-	8JMxk0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vI
-	r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67
-	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIY
-	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
-	v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8
-	JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07jOiSdUUU
-	UU=
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ZISUhGkURDTku2xL7KetHiC90UBnzk_j
+X-Proofpoint-ORIG-GUID: ZISUhGkURDTku2xL7KetHiC90UBnzk_j
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-09_04,2023-06-08_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ spamscore=0 phishscore=0 adultscore=0 mlxlogscore=832 malwarescore=0
+ lowpriorityscore=0 mlxscore=0 bulkscore=0 impostorscore=0 clxscore=1015
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306090057
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,70 +94,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-Arch <linux-arch@vger.kernel.org>, linux-s390@vger.kernel.org, x86@kernel.org, linux-ia64@vger.kernel.org, loongarch@lists.linux.dev, linux-parisc@vger.kernel.org, llvm@lists.linux.dev, linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, loongson-kernel@lists.loongnix.cn
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Sourabh Jain <sourabhjain@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 06/08/2023 08:56 PM, Arnd Bergmann wrote:
-> On Thu, Jun 8, 2023, at 09:04, Tiezhu Yang wrote:
->> On 05/09/2023 05:37 PM, Arnd Bergmann wrote:
->>> On Tue, May 9, 2023, at 09:05, Tiezhu Yang wrote:
->>>
->>> I think we are completely safe on the architectures that were
->>> added since the linux-3.x days (arm64, riscv, csky, openrisc,
->>> loongarch, nios2, and hexagon), but for the older ones there
->>> is a regression risk. Especially on targets that are not that
->>> actively maintained (sparc, alpha, ia64, sh, ...) there is
->>> a good chance that users are stuck on ancient toolchains.
->>> It's probably also a safe assumption that anyone with an older
->>> libc version won't be using the latest kernel headers, so
->>> I think we can still do this across architectures if both
->>> glibc and musl already require a compiler that is new enough,
->>> or alternatively if we know that the kernel headers require
->>> a new compiler for other reasons and nobody has complained.
->>>
->>> For glibc, it looks the minimum compiler version was raised
->>> from gcc-5 to gcc-8 four years ago, so we should be fine.
->>>
->>> In musl, the documentation states that at least gcc-3.4 or
->>> clang-3.2 are required, which probably predate the
->>> __SIZEOF_LONG__ macro. On the other hand, musl was only
->>> released in 2011, and building musl itself explicitly
->>> does not require kernel uapi headers, so this may not
->>> be too critical.
->>>
->>> There is also uClibc, but I could not find any minimum
->>> supported compiler version for that. Most commonly, this
->>> one is used for cross-build environments, so it's also
->>> less likely to have libc/gcc/headers being wildly out of
->>> sync. Not sure.
->>>
->>>       Arnd
->>>
->>> [1] https://sourceware.org/pipermail/libc-alpha/2019-January/101010.html
->>>
+On 09/06/23 11:03 am, Mahesh J Salgaonkar wrote:
+> On 2023-06-09 10:48:46 Fri, Hari Bathini wrote:
+>> Invoke ibm,os-term call with rtas_call_unlocked(), without using the
+>> RTAS spinlock, to avoid deadlock in the unlikely event of a machine
+>> crash while making an RTAS call.
+> 
+> Thanks for the patch. Minor comment bellow.
+> 
 >>
->> Thanks Arnd for the detailed reply.
->> Any more comments? What should I do in the next step?
->
-> I think the summary is "it's probably fine", but I don't know
-> for sure, and it may not be worth the benefit.
+>> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+>> ---
+>>   arch/powerpc/kernel/rtas.c | 3 ++-
+>>   1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+>> index c087eeee320f..f65b2a8cc0f1 100644
+>> --- a/arch/powerpc/kernel/rtas.c
+>> +++ b/arch/powerpc/kernel/rtas.c
+>> @@ -1587,6 +1587,7 @@ static bool ibm_extended_os_term;
+>>   void rtas_os_term(char *str)
+>>   {
+>>   	s32 token = rtas_function_token(RTAS_FN_IBM_OS_TERM);
+>> +	static struct rtas_args args;
+>>   	int status;
+>>   
+>>   	/*
+>> @@ -1607,7 +1608,7 @@ void rtas_os_term(char *str)
+>>   	 * schedules.
+>>   	 */
+>>   	do {
+>> -		status = rtas_call(token, 1, 1, NULL, __pa(rtas_os_term_buf));
+>> +		status = rtas_call_unlocked(&args, token, 1, 1, NULL, __pa(rtas_os_term_buf));
+> 
+> rtas_call_unlocked() returns void. You may want to extract the status
+> from args->rets[0].
 
-Thank you, it is very clear now.
+Yeah, Mahesh. I posted a stale version. Will post the updated version.
 
-> Maybe you can prepare a v2 that only does this for the newer
-> architectures I mentioned above, with and an explanation and
-> link to my above reply in the file comments?
-
-Only arm64, riscv and loongarch belong to the newer architectures
-which are related with this change, I am not sure it is necessary
-to "unify" uapi bitsperlong.h for them.
-
-Anyway, let me try, I will send a new version, maybe this is going
-to progress in the right direction.
-
-Thanks,
-Tiezhu
-
+Thanks
+Hari
