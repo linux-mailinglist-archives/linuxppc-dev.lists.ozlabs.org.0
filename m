@@ -2,79 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5427A7290AE
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 09:15:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94B0A7291E9
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 09:58:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QcsmC0Lqcz3f8p
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 17:15:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QctkY2k5Lz3fGy
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 17:58:45 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PZeLbU2/;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OnNWCzXO;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=P5yEWXzZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PZeLbU2/;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OnNWCzXO;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=P5yEWXzZ;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QcslH6XHZz2yw0
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jun 2023 17:14:19 +1000 (AEST)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3596pJTj026805;
-	Fri, 9 Jun 2023 07:14:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=Kdy9PF09PvPcDWaeU8fhYlDkPrzhLjdO9+JJplCjrno=;
- b=PZeLbU2/NrDEffcxoeAUZzRwL/69O7O+uIs0Za1WQCjM7kS8k3Hd8b6rlPXU1jvHv8zx
- aggBcp0jp49XGXS8zslgPkO0hpBCAMUzqCKhLdiQmpK5ZL5xcb2JBPttYCdksTa9XceH
- phnmUmjNpgGdsEoxkZCxYbM2eZyh9pCjnWtWOqXwR546WIS5b/rQP1SvA6W/0+gdQEF7
- 6dqxfHlsuAJOzJrZL/EJnNNq4j9SkLM4or5mQ++sr09ih5n25qz5j6syY1vcbsbyrEyj
- JX1ymc6H6eZMS0thkyeyVPmsnKlomWnAxyda74sj0nCtr+FR6rj6a++NV7614tXXkkcv nQ== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r3y698pj2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 09 Jun 2023 07:14:13 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
-	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3594e8SD023565;
-	Fri, 9 Jun 2023 07:14:12 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3r2a77ht9b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 09 Jun 2023 07:14:11 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3597E8ZL8782408
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 9 Jun 2023 07:14:08 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4922B2004B;
-	Fri,  9 Jun 2023 07:14:08 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E481820043;
-	Fri,  9 Jun 2023 07:14:06 +0000 (GMT)
-Received: from li-bd3f974c-2712-11b2-a85c-df1cec4d728e.ibm.com.com (unknown [9.43.83.118])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  9 Jun 2023 07:14:06 +0000 (GMT)
-From: Hari Bathini <hbathini@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v2] powerpc/fadump: invoke ibm,os-term with rtas_call_unlocked()
-Date: Fri,  9 Jun 2023 12:44:04 +0530
-Message-Id: <20230609071404.425529-1-hbathini@linux.ibm.com>
-X-Mailer: git-send-email 2.40.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qctjd1wQXz3bxL
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jun 2023 17:57:56 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1686297471;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mrr2cNyhDy3XHVdkhg3dGxWKYfHUscXJOX9H9m6IS1s=;
+	b=OnNWCzXOw1E+K44dl7izPk+3Poz7PcX5dPpJ5KvGKLjtYxyOP/S33OAQcU0c3GYT9TAdp9
+	vsp7zTxKueWhf1tMPxKURD6PHyPXEb/NfBOjgfj9Res4QWMnc+36afxJvU/tDR/y2p1vj6
+	xv7jeV4AVthL8dDLYsTVzI1W0oK64Wo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1686297472;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mrr2cNyhDy3XHVdkhg3dGxWKYfHUscXJOX9H9m6IS1s=;
+	b=P5yEWXzZdUbEa0B4I3Sw7Xgl0TNNmWX2eL78dHTotY4b1O2zRSOSK1Tid13ZQXUbmDg4N1
+	U9HLc0JWgDFcN5F6pGBrtBtwDjgudpxhkMiLqv9O6/VMy5CAQ1YooWF2hdWnZq//SEPHiy
+	SnfRdh/EgrhIZVurVAI2w7P+w0nUMAM=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-76-1o8RxqJuNy6kld5Aajr5wQ-1; Fri, 09 Jun 2023 03:57:38 -0400
+X-MC-Unique: 1o8RxqJuNy6kld5Aajr5wQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 625713849528;
+	Fri,  9 Jun 2023 07:57:37 +0000 (UTC)
+Received: from MiWiFi-R3L-srv.redhat.com (ovpn-12-92.pek2.redhat.com [10.72.12.92])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 8C15C20268C6;
+	Fri,  9 Jun 2023 07:57:30 +0000 (UTC)
+From: Baoquan He <bhe@redhat.com>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH v6 17/19] powerpc: mm: Convert to GENERIC_IOREMAP
+Date: Fri,  9 Jun 2023 15:55:26 +0800
+Message-Id: <20230609075528.9390-18-bhe@redhat.com>
+In-Reply-To: <20230609075528.9390-1-bhe@redhat.com>
+References: <20230609075528.9390-1-bhe@redhat.com>
 MIME-Version: 1.0
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 8Oq-UVHyL8qiAnK0vPAZQtxY42Uk31vR
-X-Proofpoint-GUID: 8Oq-UVHyL8qiAnK0vPAZQtxY42Uk31vR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-09_04,2023-06-08_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- lowpriorityscore=0 priorityscore=1501 phishscore=0 mlxscore=0
- suspectscore=0 clxscore=1015 impostorscore=0 adultscore=0 mlxlogscore=929
- bulkscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306090062
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,41 +79,205 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Sourabh Jain <sourabhjain@linux.ibm.com>
+Cc: linux-arch@vger.kernel.org, wangkefeng.wang@huawei.com, Baoquan He <bhe@redhat.com>, arnd@arndb.de, schnelle@linux.ibm.com, deller@gmx.de, Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org, David.Laight@ACULAB.COM, willy@infradead.org, shorne@gmail.com, agordeev@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, hch@lst.de, rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Invoke ibm,os-term call with rtas_call_unlocked(), without using the
-RTAS spinlock, to avoid deadlock in the unlikely event of a machine
-crash while making an RTAS call.
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+By taking GENERIC_IOREMAP method, the generic generic_ioremap_prot(),
+generic_iounmap(), and their generic wrapper ioremap_prot(), ioremap()
+and iounmap() are all visible and available to arch. Arch needs to
+provide wrapper functions to override the generic versions if there's
+arch specific handling in its ioremap_prot(), ioremap() or iounmap().
+This change will simplify implementation by removing duplicated codes
+with generic_ioremap_prot() and generic_iounmap(), and has the equivalent
+functioality as before.
+
+Here, add wrapper functions ioremap_prot() and iounmap() for powerpc's
+special operation when ioremap() and iounmap().
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Baoquan He <bhe@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 ---
- arch/powerpc/kernel/rtas.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/powerpc/Kconfig          |  1 +
+ arch/powerpc/include/asm/io.h |  8 +++-----
+ arch/powerpc/mm/ioremap.c     | 26 +-------------------------
+ arch/powerpc/mm/ioremap_32.c  | 19 +++++++++----------
+ arch/powerpc/mm/ioremap_64.c  | 12 ++----------
+ 5 files changed, 16 insertions(+), 50 deletions(-)
 
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index c087eeee320f..a8192e5b1a5f 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -1587,6 +1587,7 @@ static bool ibm_extended_os_term;
- void rtas_os_term(char *str)
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index bff5820b7cda..aadb280a539e 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -194,6 +194,7 @@ config PPC
+ 	select GENERIC_CPU_VULNERABILITIES	if PPC_BARRIER_NOSPEC
+ 	select GENERIC_EARLY_IOREMAP
+ 	select GENERIC_GETTIMEOFDAY
++	select GENERIC_IOREMAP
+ 	select GENERIC_IRQ_SHOW
+ 	select GENERIC_IRQ_SHOW_LEVEL
+ 	select GENERIC_PCI_IOMAP		if PCI
+diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
+index 67a3fb6de498..0732b743e099 100644
+--- a/arch/powerpc/include/asm/io.h
++++ b/arch/powerpc/include/asm/io.h
+@@ -889,8 +889,8 @@ static inline void iosync(void)
+  *
+  */
+ extern void __iomem *ioremap(phys_addr_t address, unsigned long size);
+-extern void __iomem *ioremap_prot(phys_addr_t address, unsigned long size,
+-				  unsigned long flags);
++#define ioremap ioremap
++#define ioremap_prot ioremap_prot
+ extern void __iomem *ioremap_wc(phys_addr_t address, unsigned long size);
+ #define ioremap_wc ioremap_wc
+ 
+@@ -904,14 +904,12 @@ void __iomem *ioremap_coherent(phys_addr_t address, unsigned long size);
+ #define ioremap_cache(addr, size) \
+ 	ioremap_prot((addr), (size), pgprot_val(PAGE_KERNEL))
+ 
+-extern void iounmap(volatile void __iomem *addr);
++#define iounmap iounmap
+ 
+ void __iomem *ioremap_phb(phys_addr_t paddr, unsigned long size);
+ 
+ int early_ioremap_range(unsigned long ea, phys_addr_t pa,
+ 			unsigned long size, pgprot_t prot);
+-void __iomem *do_ioremap(phys_addr_t pa, phys_addr_t offset, unsigned long size,
+-			 pgprot_t prot, void *caller);
+ 
+ extern void __iomem *__ioremap_caller(phys_addr_t, unsigned long size,
+ 				      pgprot_t prot, void *caller);
+diff --git a/arch/powerpc/mm/ioremap.c b/arch/powerpc/mm/ioremap.c
+index 4f12504fb405..705e8e8ffde4 100644
+--- a/arch/powerpc/mm/ioremap.c
++++ b/arch/powerpc/mm/ioremap.c
+@@ -41,7 +41,7 @@ void __iomem *ioremap_coherent(phys_addr_t addr, unsigned long size)
+ 	return __ioremap_caller(addr, size, prot, caller);
+ }
+ 
+-void __iomem *ioremap_prot(phys_addr_t addr, unsigned long size, unsigned long flags)
++void __iomem *ioremap_prot(phys_addr_t addr, size_t size, unsigned long flags)
  {
- 	s32 token = rtas_function_token(RTAS_FN_IBM_OS_TERM);
-+	static struct rtas_args args;
- 	int status;
+ 	pte_t pte = __pte(flags);
+ 	void *caller = __builtin_return_address(0);
+@@ -74,27 +74,3 @@ int early_ioremap_range(unsigned long ea, phys_addr_t pa,
+ 
+ 	return 0;
+ }
+-
+-void __iomem *do_ioremap(phys_addr_t pa, phys_addr_t offset, unsigned long size,
+-			 pgprot_t prot, void *caller)
+-{
+-	struct vm_struct *area;
+-	int ret;
+-	unsigned long va;
+-
+-	area = __get_vm_area_caller(size, VM_IOREMAP, IOREMAP_START, IOREMAP_END, caller);
+-	if (area == NULL)
+-		return NULL;
+-
+-	area->phys_addr = pa;
+-	va = (unsigned long)area->addr;
+-
+-	ret = ioremap_page_range(va, va + size, pa, prot);
+-	if (!ret)
+-		return (void __iomem *)area->addr + offset;
+-
+-	vunmap_range(va, va + size);
+-	free_vm_area(area);
+-
+-	return NULL;
+-}
+diff --git a/arch/powerpc/mm/ioremap_32.c b/arch/powerpc/mm/ioremap_32.c
+index 9d13143b8be4..ca5bc6be3e6f 100644
+--- a/arch/powerpc/mm/ioremap_32.c
++++ b/arch/powerpc/mm/ioremap_32.c
+@@ -21,6 +21,13 @@ __ioremap_caller(phys_addr_t addr, unsigned long size, pgprot_t prot, void *call
+ 	phys_addr_t p, offset;
+ 	int err;
+ 
++	/*
++	 * If the address lies within the first 16 MB, assume it's in ISA
++	 * memory space
++	 */
++	if (addr < SZ_16M)
++		addr += _ISA_MEM_BASE;
++
+ 	/*
+ 	 * Choose an address to map it to.
+ 	 * Once the vmalloc system is running, we use it.
+@@ -31,13 +38,6 @@ __ioremap_caller(phys_addr_t addr, unsigned long size, pgprot_t prot, void *call
+ 	offset = addr & ~PAGE_MASK;
+ 	size = PAGE_ALIGN(addr + size) - p;
+ 
+-	/*
+-	 * If the address lies within the first 16 MB, assume it's in ISA
+-	 * memory space
+-	 */
+-	if (p < 16 * 1024 * 1024)
+-		p += _ISA_MEM_BASE;
+-
+ #ifndef CONFIG_CRASH_DUMP
+ 	/*
+ 	 * Don't allow anybody to remap normal RAM that we're using.
+@@ -63,7 +63,7 @@ __ioremap_caller(phys_addr_t addr, unsigned long size, pgprot_t prot, void *call
+ 		return (void __iomem *)v + offset;
+ 
+ 	if (slab_is_available())
+-		return do_ioremap(p, offset, size, prot, caller);
++		return generic_ioremap_prot(addr, size, prot);
  
  	/*
-@@ -1607,7 +1608,8 @@ void rtas_os_term(char *str)
- 	 * schedules.
- 	 */
- 	do {
--		status = rtas_call(token, 1, 1, NULL, __pa(rtas_os_term_buf));
-+		rtas_call_unlocked(&args, token, 1, 1, NULL, __pa(rtas_os_term_buf));
-+		status = be32_to_cpu(args.rets[0]);
- 	} while (rtas_busy_delay_time(status));
+ 	 * Should check if it is a candidate for a BAT mapping
+@@ -87,7 +87,6 @@ void iounmap(volatile void __iomem *addr)
+ 	if (v_block_mapped((unsigned long)addr))
+ 		return;
  
- 	if (status != 0)
+-	if (addr > high_memory && (unsigned long)addr < ioremap_bot)
+-		vunmap((void *)(PAGE_MASK & (unsigned long)addr));
++	generic_iounmap(addr);
+ }
+ EXPORT_SYMBOL(iounmap);
+diff --git a/arch/powerpc/mm/ioremap_64.c b/arch/powerpc/mm/ioremap_64.c
+index 3acece00b33e..d24e5f166723 100644
+--- a/arch/powerpc/mm/ioremap_64.c
++++ b/arch/powerpc/mm/ioremap_64.c
+@@ -29,7 +29,7 @@ void __iomem *__ioremap_caller(phys_addr_t addr, unsigned long size,
+ 		return NULL;
+ 
+ 	if (slab_is_available())
+-		return do_ioremap(paligned, offset, size, prot, caller);
++		return generic_ioremap_prot(addr, size, prot);
+ 
+ 	pr_warn("ioremap() called early from %pS. Use early_ioremap() instead\n", caller);
+ 
+@@ -49,17 +49,9 @@ void __iomem *__ioremap_caller(phys_addr_t addr, unsigned long size,
+  */
+ void iounmap(volatile void __iomem *token)
+ {
+-	void *addr;
+-
+ 	if (!slab_is_available())
+ 		return;
+ 
+-	addr = (void *)((unsigned long __force)PCI_FIX_ADDR(token) & PAGE_MASK);
+-
+-	if ((unsigned long)addr < ioremap_bot) {
+-		pr_warn("Attempt to iounmap early bolted mapping at 0x%p\n", addr);
+-		return;
+-	}
+-	vunmap(addr);
++	generic_iounmap(PCI_FIX_ADDR(token));
+ }
+ EXPORT_SYMBOL(iounmap);
 -- 
-2.40.1
+2.34.1
 
