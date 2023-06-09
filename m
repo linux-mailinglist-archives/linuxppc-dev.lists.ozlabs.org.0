@@ -1,92 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADD45729430
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 11:07:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E9F5729432
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 11:08:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QcwFG1SVTz3f4W
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 19:06:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QcwHX21L2z3fBX
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 19:08:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EpEzYbuF;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EpEzYbuF;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bvcrHG1M;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bvcrHG1M;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EpEzYbuF;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EpEzYbuF;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bvcrHG1M;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bvcrHG1M;
 	dkim-atps=neutral
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QcwDL0kLwz3dwg
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jun 2023 19:06:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QcwGc6pkDz3c71
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jun 2023 19:08:08 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1686301567;
+	s=mimecast20190719; t=1686301686;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=eyj9qAaMTXhV0BDBMXgw3bkhoC43Djt8OMEq06UECOo=;
-	b=EpEzYbuFJzJ16t3cdUerq6nBDlvoivWJ3MML+Iyfnbd9IV1J+lbRAWAGTC/WE/nnuDkpl6
-	tmgga0QiW/vgwKCuBiGxXIdelZsc6ZbDhUQFR4otrSRuKhUIV059Ykvp0/WPBjZhMP/X8X
-	lxRNrnwMOi2/nlWxG1ZLVtp2G0u1jZM=
+	bh=+lS4qtD2LImPdpu4Ozd1FIICWXob78VQWCuBmNpNqeU=;
+	b=bvcrHG1MYQheEk3zspb40bXo5mhVKRFPwiTXbQ2yF37EL4JJ5/yUhyyKDsodAs6xQ/acNg
+	Im01UL1neLLLfwp1Dk+RufSCBLHTOayyT7iLWQf9oS+c+eEGEsXlB74Faisf0v2Yo0pr1Z
+	8r66UCr26YjbouEWaaVAjf7LN8M4nLc=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1686301567;
+	s=mimecast20190719; t=1686301686;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=eyj9qAaMTXhV0BDBMXgw3bkhoC43Djt8OMEq06UECOo=;
-	b=EpEzYbuFJzJ16t3cdUerq6nBDlvoivWJ3MML+Iyfnbd9IV1J+lbRAWAGTC/WE/nnuDkpl6
-	tmgga0QiW/vgwKCuBiGxXIdelZsc6ZbDhUQFR4otrSRuKhUIV059Ykvp0/WPBjZhMP/X8X
-	lxRNrnwMOi2/nlWxG1ZLVtp2G0u1jZM=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=+lS4qtD2LImPdpu4Ozd1FIICWXob78VQWCuBmNpNqeU=;
+	b=bvcrHG1MYQheEk3zspb40bXo5mhVKRFPwiTXbQ2yF37EL4JJ5/yUhyyKDsodAs6xQ/acNg
+	Im01UL1neLLLfwp1Dk+RufSCBLHTOayyT7iLWQf9oS+c+eEGEsXlB74Faisf0v2Yo0pr1Z
+	8r66UCr26YjbouEWaaVAjf7LN8M4nLc=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-582-umj4nF91PuyG77lMX5ZfPQ-1; Fri, 09 Jun 2023 05:06:06 -0400
-X-MC-Unique: umj4nF91PuyG77lMX5ZfPQ-1
-Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-514abe67064so1519858a12.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Jun 2023 02:06:06 -0700 (PDT)
+ us-mta-504-8S9ZSiGnN7eJEgKrR3vfNg-1; Fri, 09 Jun 2023 05:08:02 -0400
+X-MC-Unique: 8S9ZSiGnN7eJEgKrR3vfNg-1
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-94a341efd9aso186737766b.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Jun 2023 02:08:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686301565; x=1688893565;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20221208; t=1686301681; x=1688893681;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eyj9qAaMTXhV0BDBMXgw3bkhoC43Djt8OMEq06UECOo=;
-        b=Dt0uQ3DiorHar3ZqM3fjvwtkWmHNFSHA77SezG5xHDNb3nyJJR2l2xxPh7mAFIok/T
-         /s8C/EbOD2rfHnwWGDDR5N4adZ0el0YJ2gv3mYzsKZHLU/tx9cw6aISt8KxIjfywIMkC
-         HOF2/KvkWzEUCe63CQB0SBjS8sV4wQza48eXv6uwuvJPxLvOwp/C60dW5M83JwOsNfKy
-         WwFMg5UW7Cv3JWfnl1JvlaiV89ndQHRVqnmFUBxvoMbyS6+2BE4wXq54oFSB1RaCsq8L
-         yFE1qYDGDX2jlwSx2F3MuGIleDVAr2tqu0yXpUjyOHy7neV74bE+XsyX/RPMjWGsa7i0
-         8/9g==
-X-Gm-Message-State: AC+VfDzQnpXfBsg698XlUizp6YzVFyXgdpZZB+xeDxkaQagYAWIf3tPt
-	LEbdI9bosc5p3MxtJ6ge0OVAImn3fweyCW97gihaK7zyAIfOsguY9whv51yV7C5LwHBK27L7v4z
-	xZcAIfEEYkEOybzM+akbW8wV7VA==
-X-Received: by 2002:a05:6402:643:b0:510:82b4:844d with SMTP id u3-20020a056402064300b0051082b4844dmr902460edx.2.1686301565419;
-        Fri, 09 Jun 2023 02:06:05 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5Eo2fL8sg8ZAFF9ExDb1hoz+RWsXilNiiceAqQ1jh6YF+h+q2Lb+V5P8mQdJn5E/+DPP6p2g==
-X-Received: by 2002:a05:6402:643:b0:510:82b4:844d with SMTP id u3-20020a056402064300b0051082b4844dmr902445edx.2.1686301565157;
-        Fri, 09 Jun 2023 02:06:05 -0700 (PDT)
+        bh=+lS4qtD2LImPdpu4Ozd1FIICWXob78VQWCuBmNpNqeU=;
+        b=bQ2ieuhQVTdSTGrYue3m/2nA59/14l1rgbQAfChiOI9gB/87UieROess2MSdqPDU42
+         qrM/MiPtQOcpr9N7PyAvzhxIDPLea3G5+aSFR8viG05U1eV+r7L9hzKMFYXTYYfHd8ta
+         sU9UBHsygvqnf6viCrMfzQerLob2puSDPJKUNVjfW769MrJkwJ0WR+lFWHimWb/Gc+vZ
+         nPykJtTvWxRihoZ6G/6WYYyCvLbniw1j2kpOBS4tUXIajutxcoDOJw05PohJftQ7HED2
+         E4pZpVYf+I5cQTzIqFoWUtZbAh2RBBEAffGIl+NtcdTedxnikC4NYLUgxBh5lvgtF2XA
+         3SQw==
+X-Gm-Message-State: AC+VfDyo0kAYxJ9rsg4+0q9IFACBdMpp6HgR8UOBtACYt7hpbxbbwTXu
+	YFNfpUoqIIxe/DMWIKzj9O5/PEBbTgOL+wNNa/C8dQg2jeGEJjvOdy/ZiYIKGTN9/oUMNCv+Jrd
+	Pcu2Go5m3ZaH6AlGSJQ34Tzzz0g==
+X-Received: by 2002:a17:907:94cb:b0:97a:e0c0:2f8f with SMTP id dn11-20020a17090794cb00b0097ae0c02f8fmr315203ejc.65.1686301681485;
+        Fri, 09 Jun 2023 02:08:01 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6fk08I4RsyK9p9wcnjDRbMYLy3XBaoHlqt3xl1DLkFDODgHMHCV4XPzuR/CPTVwoW0y6Qefw==
+X-Received: by 2002:a17:907:94cb:b0:97a:e0c0:2f8f with SMTP id dn11-20020a17090794cb00b0097ae0c02f8fmr315171ejc.65.1686301681128;
+        Fri, 09 Jun 2023 02:08:01 -0700 (PDT)
 Received: from ?IPV6:2001:b07:6468:f312:9af8:e5f5:7516:fa89? ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
-        by smtp.googlemail.com with ESMTPSA id f9-20020a056402068900b0051495ce23absm1517006edy.10.2023.06.09.02.06.02
+        by smtp.googlemail.com with ESMTPSA id z8-20020a1709067e4800b00977ecf6942bsm1036209ejr.90.2023.06.09.02.07.58
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 09 Jun 2023 02:06:04 -0700 (PDT)
-Message-ID: <f0fc6e43-ffe3-dc38-03c1-77b2105cd0fb@redhat.com>
-Date: Fri, 9 Jun 2023 11:06:02 +0200
+        Fri, 09 Jun 2023 02:08:00 -0700 (PDT)
+Message-ID: <26cf0b0a-cda5-08a9-a669-6966f9e626b1@redhat.com>
+Date: Fri, 9 Jun 2023 11:07:55 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH mm-unstable v2 09/10] kvm/x86: add
- kvm_arch_test_clear_young()
 To: Yu Zhao <yuzhao@google.com>, Andrew Morton <akpm@linux-foundation.org>
 References: <20230526234435.662652-1-yuzhao@google.com>
- <20230526234435.662652-10-yuzhao@google.com>
 From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <20230526234435.662652-10-yuzhao@google.com>
+Subject: Re: [PATCH mm-unstable v2 00/10] mm/kvm: locklessly clear the
+ accessed bit
+In-Reply-To: <20230526234435.662652-1-yuzhao@google.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -109,17 +108,27 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 5/27/23 01:44, Yu Zhao wrote:
-> +#define kvm_arch_has_test_clear_young kvm_arch_has_test_clear_young
-> +static inline bool kvm_arch_has_test_clear_young(void)
-> +{
-> +	return IS_ENABLED(CONFIG_X86_64) &&
-> +	       (!IS_REACHABLE(CONFIG_KVM) || (tdp_mmu_enabled && shadow_accessed_mask));
-> +}
+> TLDR
+> ====
+> This patchset adds a fast path to clear the accessed bit without
+> taking kvm->mmu_lock. It can significantly improve the performance of
+> guests when the host is under heavy memory pressure.
+> 
+> ChromeOS has been using a similar approach [1] since mid 2021 and it
+> was proven successful on tens of millions devices.
+> 
+> This v2 addressed previous requests [2] on refactoring code, removing
+> inaccurate/redundant texts, etc.
+> 
+> [1]https://crrev.com/c/2987928
+> [2]https://lore.kernel.org/r/20230217041230.2417228-1-yuzhao@google.com/
 
-I don't think you need IS_REACHABLE(CONFIG_KVM) here, it would be a bug 
-if this is called from outside KVM code.
+ From the KVM point of view the patches look good (though I wouldn't 
+mind if Nicholas took a look at the ppc part).  Jason's comment on the 
+MMU notifier side are promising as well.  Can you send v3 with Oliver's 
+comments addressed?
 
-Maybe make it a BUILD_BUG_ON?
+Thanks,
 
 Paolo
 
