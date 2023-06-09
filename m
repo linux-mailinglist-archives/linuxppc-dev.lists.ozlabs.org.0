@@ -1,51 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF37372A24B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 20:32:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED42E72A252
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 20:33:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qd8nh51w0z3fqV
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Jun 2023 04:32:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qd8pS5lRwz3ffK
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Jun 2023 04:33:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.166.52; helo=mail-io1-f52.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-io1-f52.google.com (mail-io1-f52.google.com [209.85.166.52])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.166.182; helo=mail-il1-f182.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-il1-f182.google.com (mail-il1-f182.google.com [209.85.166.182])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qd8nC3p81z3dw2
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Jun 2023 04:31:59 +1000 (AEST)
-Received: by mail-io1-f52.google.com with SMTP id ca18e2360f4ac-777a8f11e14so117533739f.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Jun 2023 11:31:59 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qd8p00tQWz3dyc
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Jun 2023 04:32:39 +1000 (AEST)
+Received: by mail-il1-f182.google.com with SMTP id e9e14a558f8ab-33d22754450so9081655ab.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Jun 2023 11:32:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686335517; x=1688927517;
+        d=1e100.net; s=20221208; t=1686335558; x=1688927558;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=tXMDtdWN6nJZldqwpEUd7GnDVKNRMg93Z/FFZjfMFDo=;
-        b=jSDqt6X0sTY6mSk4zYwgrYTh1A26QCzPR33HWg2jO4vlF9WvN4XetU3R56JyxV1wJa
-         hOJdDuCJEf1nKbGvn861V0eWJJlsgdp/Pln7h78P1ixA+ukqDdd6sd2LTGuG+rsOB9Sa
-         Uyoe1WhIx6QUy6734968nWkr7XU/C0zUumeA2EZGNVQgmNCVFfhGmJB782jYpF7t55K9
-         Luez98TA78dNcEaF2X5YgJZ6ZfcBYCWRIH72RR9+CP5VH906vg5kIFr72XIwzLgMGYTW
-         dLw5Gmpcxvkg/J7uLAHos1zJdbgdXz2yz5iFvE/9Bf12CvJKbaTa71ZzV6SV70rkCqr9
-         6IBA==
-X-Gm-Message-State: AC+VfDxcZMurFFDejtgGgcVRj+5x2+j1bOaip4UhgATzQyn1Yz4sLsLC
-	4s97lMUNgj6Us+uqh19WHw==
-X-Google-Smtp-Source: ACHHUZ6BKEOfSW1H9tTyJANStK6mB/D2kcTclumsnvDTg5+rXrM1pBhCQZNmiN2c2Tm8s0XDxwJlew==
-X-Received: by 2002:a5d:925a:0:b0:777:de8a:79a with SMTP id e26-20020a5d925a000000b00777de8a079amr3556373iol.7.1686335517420;
-        Fri, 09 Jun 2023 11:31:57 -0700 (PDT)
+        bh=zg65H04iGkdu9WHQxXNVtHvgC9Kx1HBt9MiQibRABa0=;
+        b=DIiqDf3dF8ot3AvREm1HwioLURWBvYodPFVTJsceQNaddGO3rmzt1va7a3DEBKaJGm
+         zPyksRkWOU3jlauNY3FwAgUxPF09KP3qNq6KhZvsV8iY0eHRqrvh34YpiN7Vr854OEPQ
+         M1XbjQ0P/qgl5N5mlnMeL3KYLsc3abQ9ySywpvCO1rYCWE6vzSGscT27dKGFv7wkOX+d
+         IsfMOyzTgXxu//bcLRafWU85kG6O5sbNN5aei6t97jIoq3oqo2a3utWQ+dnQbA3VA+cF
+         mQxhITjhcNeUOlwjDXakJu9U3JOr84O6aZSu4n2EbMHOKKlj9VlATPXoulh96hRFZPcv
+         CTIw==
+X-Gm-Message-State: AC+VfDwhayrR+DecoLe1D82sna+uRCG5U1AnmjxBH9FjQ/MO0/OJSzkT
+	thb9FO78YrE0vd5/4aZRmQ==
+X-Google-Smtp-Source: ACHHUZ5kDT3yQU8Qmg/+XcR/h6SF54Crybnbfhrn4VLslc18TBNNRrE0/68Gu6Mp/XjU8TeFesPn6Q==
+X-Received: by 2002:a92:d9c5:0:b0:33a:b6ca:c4d3 with SMTP id n5-20020a92d9c5000000b0033ab6cac4d3mr2237604ilq.12.1686335557918;
+        Fri, 09 Jun 2023 11:32:37 -0700 (PDT)
 Received: from robh_at_kernel.org ([64.188.179.250])
-        by smtp.gmail.com with ESMTPSA id y9-20020a02c009000000b004209b1863c4sm1097473jai.52.2023.06.09.11.31.56
+        by smtp.gmail.com with ESMTPSA id t17-20020a92cc51000000b00325e4c39de8sm1203739ilq.66.2023.06.09.11.32.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Jun 2023 11:31:56 -0700 (PDT)
-Received: (nullmailer pid 1766355 invoked by uid 1000);
-	Fri, 09 Jun 2023 18:31:55 -0000
+        Fri, 09 Jun 2023 11:32:37 -0700 (PDT)
+Received: (nullmailer pid 1767148 invoked by uid 1000);
+	Fri, 09 Jun 2023 18:32:35 -0000
 From: Rob Herring <robh@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH] powerpc: fsl: Use of_property_read_reg() to parse "reg"
-Date: Fri,  9 Jun 2023 12:31:50 -0600
-Message-Id: <20230609183151.1766261-1-robh@kernel.org>
+To: Anatolij Gustschin <agust@denx.de>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH] powerpc: mpc512x: Remove open coded "ranges" parsing
+Date: Fri,  9 Jun 2023 12:32:32 -0600
+Message-Id: <20230609183232.1767050-1-robh@kernel.org>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -64,100 +64,83 @@ Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use the recently added of_property_read_reg() helper to get the
-untranslated "reg" address value.
+"ranges" is a standard property, and we have common helper functions
+for parsing it, so let's use the for_each_of_range() iterator.
 
 Signed-off-by: Rob Herring <robh@kernel.org>
 ---
- arch/powerpc/sysdev/fsl_rio.c | 14 +++-----------
- arch/powerpc/sysdev/fsl_rmu.c |  9 +--------
- 2 files changed, 4 insertions(+), 19 deletions(-)
+ arch/powerpc/platforms/512x/mpc512x_lpbfifo.c | 46 ++++++-------------
+ 1 file changed, 14 insertions(+), 32 deletions(-)
 
-diff --git a/arch/powerpc/sysdev/fsl_rio.c b/arch/powerpc/sysdev/fsl_rio.c
-index 18176d0df612..33ba1676ef5a 100644
---- a/arch/powerpc/sysdev/fsl_rio.c
-+++ b/arch/powerpc/sysdev/fsl_rio.c
-@@ -448,13 +448,11 @@ int fsl_rio_setup(struct platform_device *dev)
- 	struct rio_mport *port;
- 	struct rio_priv *priv;
- 	int rc = 0;
--	const u32 *dt_range, *cell, *port_index;
-+	const u32 *cell, *port_index;
- 	u32 active_ports = 0;
- 	struct device_node *np, *rmu_node;
--	int rlen;
- 	u32 ccsr;
- 	u64 range_start;
--	int aw;
- 	u32 i;
- 	static int tmp;
- 	struct device_node *rmu_np[MAX_MSG_UNIT_NUM] = {NULL};
-@@ -528,15 +526,12 @@ int fsl_rio_setup(struct platform_device *dev)
- 	dbell->bellirq = irq_of_parse_and_map(np, 1);
- 	dev_info(&dev->dev, "bellirq: %d\n", dbell->bellirq);
+diff --git a/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c b/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
+index 04bf6ecf7d55..1bfb29574caa 100644
+--- a/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
++++ b/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
+@@ -373,50 +373,32 @@ static int get_cs_ranges(struct device *dev)
+ {
+ 	int ret = -ENODEV;
+ 	struct device_node *lb_node;
+-	const u32 *addr_cells_p;
+-	const u32 *size_cells_p;
+-	int proplen;
+-	size_t i;
++	size_t i = 0;
++	struct of_range_parser parser;
++	struct of_range range;
  
--	aw = of_n_addr_cells(np);
--	dt_range = of_get_property(np, "reg", &rlen);
--	if (!dt_range) {
-+	if (of_property_read_reg(np, 0, &range_start, NULL)) {
- 		pr_err("%pOF: unable to find 'reg' property\n",
- 			np);
- 		rc = -ENOMEM;
- 		goto err_pw;
- 	}
--	range_start = of_read_number(dt_range, aw);
- 	dbell->dbell_regs = (struct rio_dbell_regs *)(rmu_regs_win +
- 				(u32)range_start);
+ 	lb_node = of_find_compatible_node(NULL, NULL, "fsl,mpc5121-localbus");
+ 	if (!lb_node)
+ 		return ret;
  
-@@ -556,15 +551,12 @@ int fsl_rio_setup(struct platform_device *dev)
- 	pw->dev = &dev->dev;
- 	pw->pwirq = irq_of_parse_and_map(np, 0);
- 	dev_info(&dev->dev, "pwirq: %d\n", pw->pwirq);
--	aw = of_n_addr_cells(np);
--	dt_range = of_get_property(np, "reg", &rlen);
--	if (!dt_range) {
-+	if (of_property_read_reg(np, 0, &range_start, NULL)) {
- 		pr_err("%pOF: unable to find 'reg' property\n",
- 			np);
- 		rc = -ENOMEM;
- 		goto err;
- 	}
--	range_start = of_read_number(dt_range, aw);
- 	pw->pw_regs = (struct rio_pw_regs *)(rmu_regs_win + (u32)range_start);
- 
- 	/*set up ports node*/
-diff --git a/arch/powerpc/sysdev/fsl_rmu.c b/arch/powerpc/sysdev/fsl_rmu.c
-index 7a5e2e2b9d06..e27c275c9c2e 100644
---- a/arch/powerpc/sysdev/fsl_rmu.c
-+++ b/arch/powerpc/sysdev/fsl_rmu.c
-@@ -1067,9 +1067,6 @@ int fsl_rio_setup_rmu(struct rio_mport *mport, struct device_node *node)
- 	struct rio_priv *priv;
- 	struct fsl_rmu *rmu;
- 	u64 msg_start;
--	const u32 *msg_addr;
--	int mlen;
--	int aw;
- 
- 	if (!mport || !mport->priv)
- 		return -EINVAL;
-@@ -1086,16 +1083,12 @@ int fsl_rio_setup_rmu(struct rio_mport *mport, struct device_node *node)
- 	if (!rmu)
- 		return -ENOMEM;
- 
--	aw = of_n_addr_cells(node);
--	msg_addr = of_get_property(node, "reg", &mlen);
--	if (!msg_addr) {
-+	if (of_property_read_reg(node, 0, &msg_start, NULL)) {
- 		pr_err("%pOF: unable to find 'reg' property of message-unit\n",
- 			node);
- 		kfree(rmu);
- 		return -ENOMEM;
- 	}
--	msg_start = of_read_number(msg_addr, aw);
+-	/*
+-	 * The node defined as compatible with 'fsl,mpc5121-localbus'
+-	 * should have two address cells and one size cell.
+-	 * Every item of its ranges property should consist of:
+-	 * - the first address cell which is the chipselect number;
+-	 * - the second address cell which is the offset in the chipselect,
+-	 *    must be zero.
+-	 * - CPU address of the beginning of an access window;
+-	 * - the only size cell which is the size of an access window.
+-	 */
+-	addr_cells_p = of_get_property(lb_node, "#address-cells", NULL);
+-	size_cells_p = of_get_property(lb_node, "#size-cells", NULL);
+-	if (addr_cells_p == NULL || *addr_cells_p != 2 ||
+-				size_cells_p == NULL ||	*size_cells_p != 1) {
+-		goto end;
+-	}
 -
- 	rmu->msg_regs = (struct rio_msg_regs *)
- 			(rmu_regs_win + (u32)msg_start);
+-	proplen = of_property_count_u32_elems(lb_node, "ranges");
+-	if (proplen <= 0 || proplen % 4 != 0)
+-		goto end;
++	of_range_parser_init(&parser, lb_node);
++	lpbfifo.cs_n = of_range_count(&parser);
  
+-	lpbfifo.cs_n = proplen / 4;
+ 	lpbfifo.cs_ranges = devm_kcalloc(dev, lpbfifo.cs_n,
+ 					sizeof(struct cs_range), GFP_KERNEL);
+ 	if (!lpbfifo.cs_ranges)
+ 		goto end;
+ 
+-	if (of_property_read_u32_array(lb_node, "ranges",
+-				(u32 *)lpbfifo.cs_ranges, proplen) != 0) {
+-		goto end;
+-	}
+-
+-	for (i = 0; i < lpbfifo.cs_n; i++) {
+-		if (lpbfifo.cs_ranges[i].base != 0)
++	for_each_of_range(&parser, &range) {
++		u32 base = lower_32_bits(range.bus_addr);
++		if (base)
+ 			goto end;
++
++		lpbfifo.cs_ranges[i].csnum = upper_32_bits(range.bus_addr);
++		lpbfifo.cs_ranges[i].base = base;
++		lpbfifo.cs_ranges[i].addr = range.cpu_addr;
++		lpbfifo.cs_ranges[i].size = range.size;
++		i++;
+ 	}
+ 
+ 	ret = 0;
 -- 
 2.39.2
 
