@@ -2,68 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9C5A728F3C
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 07:11:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B6C6728F41
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 07:19:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qcq1444Ypz3fK4
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 15:11:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QcqC614BZz3fBG
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jun 2023 15:19:46 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=iwHEeHVe;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cut4smeg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::436; helo=mail-pf1-x436.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=iwHEeHVe;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cut4smeg;
 	dkim-atps=neutral
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qcq0C2Kt5z3dwh
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jun 2023 15:10:16 +1000 (AEST)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-650bacd6250so1149937b3a.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jun 2023 22:10:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686287410; x=1688879410;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q61uwCs+opPfNGIfJe10WUoOtgcAd2jIfdBZ8rro1Lk=;
-        b=iwHEeHVe178g8aSxfwjWKZnFgRDtOezgxBxZFwtQf8x9CRRfrgU9l4xx4bnghLTrZ/
-         +LUgQIuYfXV6wWsMvDbpOcD57LZo36yo7UClHHGccclFVaCknmjf1X/W4jEfaaZhELvC
-         wrw61UZdBI2FZm1sF4waXxddzqQE1/dBUUVtwputmDlJVO8mil+PhdQ66na4Gg6ekPy+
-         ptP/EynLC8UvOnEuocU+ZHkWsxhFdpxQm5zhEVPHDJQlax/N4JXwynvUp3Ah53YxRVag
-         7YEp1ewplCsjZzsSKJKziTJiE8DRpPllxPFMTrLM3ramXu0rlmzFbItFx1XKhOG3Knk1
-         5HJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686287410; x=1688879410;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Q61uwCs+opPfNGIfJe10WUoOtgcAd2jIfdBZ8rro1Lk=;
-        b=CESLuJXB3jHQrsJA/GTXJ+r9S77ZUbrYiahuVZXQy9mOSXdk2n6E+FXvIY80eivEwC
-         cc0zGsTrIGKWbmpbOO/wZavmaRreKoirBcY1h9yJYW5GjBvtHyE9QsO443Bn/VgTGyx7
-         p2475LAopXpsSIrv47YmfEbAlQ0xkByH6dK2pzEujHn6dttbMac35vG4CysqEpbrLd3b
-         q/gprNjvIsFTA2zSg1Zy+AjHEOdXpDQLQZGn6ykjjJdPbcuBZsEWR6b9j5g9BiTA7Pmb
-         iUnsZ1O+kigZ0oeC4uC03UvXRkZIyKHcF6bG0jWEGC58oJ6jri1dlNSDPGrL1gy1ZVGe
-         /MZA==
-X-Gm-Message-State: AC+VfDwfROeivyV2WpB3WuPnsJD5QWJYOFGkfVn8VcfhlTtKzpOe03JX
-	ryIwEnZXYsx2EjwBP7GKgICg7RKw8RU=
-X-Google-Smtp-Source: ACHHUZ4tmg21mwfY7gwaQkxH5GkhueCUbrmAg4kEpWBXpqwlCQ97qjTUTawIZlndE2qLgBfVjt2Iew==
-X-Received: by 2002:a05:6a20:3d12:b0:103:b0f9:7110 with SMTP id y18-20020a056a203d1200b00103b0f97110mr184956pzi.11.1686287410335;
-        Thu, 08 Jun 2023 22:10:10 -0700 (PDT)
-Received: from wheely.local0.net (61-68-214-98.tpgi.com.au. [61.68.214.98])
-        by smtp.gmail.com with ESMTPSA id g9-20020a170902c38900b001aface7bdd8sm2276828plg.31.2023.06.08.22.10.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jun 2023 22:10:09 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/build: vdso linker warning for orphan sections
-Date: Fri,  9 Jun 2023 15:10:02 +1000
-Message-Id: <20230609051002.3342-1-npiggin@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QcqBF2Hztz3bgr
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jun 2023 15:19:01 +1000 (AEST)
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3595Hlfw018631;
+	Fri, 9 Jun 2023 05:18:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=JnmtpzZSA8d1i+zVnILVCz602wjV3bKiE/LWYOtIJEU=;
+ b=cut4smegzRd0+zJu+Fr4u3ZqzpCY8E/aqohPuIXCA+i1kIpzjXRwd48PUNqolgoJ7mP2
+ qA3N9gNe5+qbfe1vxXt06cuGytE1BH7JHo22O7u+ehe4MfBKx6jBotpmpUduQHSJ9nh2
+ mLzN+0Uw5dVUF12fWKtYytTS3ZQoLwMDwc3HUCj622svQ6s9D2yupHJGzrRrnTXeVwUa
+ /U6Ru2E3+WODqFmB97K7s65f+LDmxKUDVFVtQBdIrgF2HevT1ZcHxq8uJcHxRxSnnaNn
+ mrrtqd5CC2fRVJf6nz0Gw7tR6MHDFdM72Sr3cBbjAs8j/6j8QQwP6qbgnupH4oneazrG IA== 
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r3wtdr0b9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 09 Jun 2023 05:18:55 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3590JQVV025304;
+	Fri, 9 Jun 2023 05:18:53 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3r2a78sse0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 09 Jun 2023 05:18:53 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3595In2c7406198
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 9 Jun 2023 05:18:49 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9FA5620043;
+	Fri,  9 Jun 2023 05:18:49 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3343520040;
+	Fri,  9 Jun 2023 05:18:48 +0000 (GMT)
+Received: from li-bd3f974c-2712-11b2-a85c-df1cec4d728e.ibm.com.com (unknown [9.43.83.118])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  9 Jun 2023 05:18:47 +0000 (GMT)
+From: Hari Bathini <hbathini@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH] powerpc/fadump: invoke ibm,os-term with rtas_call_unlocked()
+Date: Fri,  9 Jun 2023 10:48:46 +0530
+Message-Id: <20230609051846.132457-1-hbathini@linux.ibm.com>
 X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 1eVeHnMJcjcHn6fNV0bOG-jQKZCMxn7z
+X-Proofpoint-ORIG-GUID: 1eVeHnMJcjcHn6fNV0bOG-jQKZCMxn7z
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-09_02,2023-06-08_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
+ lowpriorityscore=0 bulkscore=0 malwarescore=0 mlxlogscore=960
+ priorityscore=1501 spamscore=0 impostorscore=0 mlxscore=0 adultscore=0
+ suspectscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2305260000 definitions=main-2306090043
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,76 +86,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Sourabh Jain <sourabhjain@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add --orphan-handlin for vdsos, and adjust vdso linker scripts to deal
-with orphan sections.
+Invoke ibm,os-term call with rtas_call_unlocked(), without using the
+RTAS spinlock, to avoid deadlock in the unlikely event of a machine
+crash while making an RTAS call.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
 ---
- arch/powerpc/kernel/vdso/Makefile     | 2 ++
- arch/powerpc/kernel/vdso/vdso32.lds.S | 4 +++-
- arch/powerpc/kernel/vdso/vdso64.lds.S | 4 +++-
- 3 files changed, 8 insertions(+), 2 deletions(-)
+ arch/powerpc/kernel/rtas.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
-index 4c3f34485f08..23ee96106537 100644
---- a/arch/powerpc/kernel/vdso/Makefile
-+++ b/arch/powerpc/kernel/vdso/Makefile
-@@ -56,6 +56,8 @@ KCSAN_SANITIZE := n
- ccflags-y := -fno-common -fno-builtin
- ldflags-y := -Wl,--hash-style=both -nostdlib -shared -z noexecstack
- ldflags-$(CONFIG_LD_IS_LLD) += $(call cc-option,--ld-path=$(LD),-fuse-ld=lld)
-+ldflags-$(CONFIG_LD_ORPHAN_WARN) += -Wl,--orphan-handling=$(CONFIG_LD_ORPHAN_WARN_LEVEL)
-+
- # Filter flags that clang will warn are unused for linking
- ldflags-y += $(filter-out $(CC_AUTO_VAR_INIT_ZERO_ENABLER) $(CC_FLAGS_FTRACE) -Wa$(comma)%, $(KBUILD_CFLAGS))
+diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+index c087eeee320f..f65b2a8cc0f1 100644
+--- a/arch/powerpc/kernel/rtas.c
++++ b/arch/powerpc/kernel/rtas.c
+@@ -1587,6 +1587,7 @@ static bool ibm_extended_os_term;
+ void rtas_os_term(char *str)
+ {
+ 	s32 token = rtas_function_token(RTAS_FN_IBM_OS_TERM);
++	static struct rtas_args args;
+ 	int status;
  
-diff --git a/arch/powerpc/kernel/vdso/vdso32.lds.S b/arch/powerpc/kernel/vdso/vdso32.lds.S
-index bc0be274a9ac..426e1ccc6971 100644
---- a/arch/powerpc/kernel/vdso/vdso32.lds.S
-+++ b/arch/powerpc/kernel/vdso/vdso32.lds.S
-@@ -83,9 +83,11 @@ SECTIONS
+ 	/*
+@@ -1607,7 +1608,7 @@ void rtas_os_term(char *str)
+ 	 * schedules.
+ 	 */
+ 	do {
+-		status = rtas_call(token, 1, 1, NULL, __pa(rtas_os_term_buf));
++		status = rtas_call_unlocked(&args, token, 1, 1, NULL, __pa(rtas_os_term_buf));
+ 	} while (rtas_busy_delay_time(status));
  
- 	/DISCARD/	: {
- 		*(.note.GNU-stack)
-+		*(*.EMB.apuinfo)
-+		*(.branch_lt)
- 		*(.data .data.* .gnu.linkonce.d.* .sdata*)
- 		*(.bss .sbss .dynbss .dynsbss)
--		*(.got1)
-+		*(.got1 .glink .iplt .rela*)
- 	}
- }
- 
-diff --git a/arch/powerpc/kernel/vdso/vdso64.lds.S b/arch/powerpc/kernel/vdso/vdso64.lds.S
-index 744ae5363e6c..bda6c8cdd459 100644
---- a/arch/powerpc/kernel/vdso/vdso64.lds.S
-+++ b/arch/powerpc/kernel/vdso/vdso64.lds.S
-@@ -32,7 +32,7 @@ SECTIONS
- 	. = ALIGN(16);
- 	.text		: {
- 		*(.text .stub .text.* .gnu.linkonce.t.* __ftr_alt_*)
--		*(.sfpr .glink)
-+		*(.sfpr)
- 	}						:text
- 	PROVIDE(__etext = .);
- 	PROVIDE(_etext = .);
-@@ -81,10 +81,12 @@ SECTIONS
- 
- 	/DISCARD/	: {
- 		*(.note.GNU-stack)
-+		*(*.EMB.apuinfo)
- 		*(.branch_lt)
- 		*(.data .data.* .gnu.linkonce.d.* .sdata*)
- 		*(.bss .sbss .dynbss .dynsbss)
- 		*(.opd)
-+		*(.glink .iplt .plt .rela*)
- 	}
- }
- 
+ 	if (status != 0)
 -- 
 2.40.1
 
