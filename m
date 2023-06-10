@@ -1,57 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CCAD72A89D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Jun 2023 05:04:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7476C72A8A8
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Jun 2023 05:12:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QdN8w70t9z3fC1
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Jun 2023 13:04:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QdNKP0vxwz3fdB
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Jun 2023 13:12:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=wSu6tglF;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=i3RZaGvS;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=wSu6tglF;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=i3RZaGvS;
 	dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QdN7z5jnSz3dyJ
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Jun 2023 13:03:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QdNJY17rJz3ds2
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Jun 2023 13:11:25 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=mWqXrhtPz+A1dQHqM74gcGN+9URs9BL4g+g+v5pzTIM=; b=wSu6tglFSuo2JOa7P8aMS1Py+9
-	f/y823Vvc0u9+MibscICf2Z2ilkfENMWi7/ZKOuDPM8q3syX7/FUVJBwf4a35ReQRxfasrDiJ9a7c
-	S+SbWVaG5H5+HgKj0+yhGu350fWIDUyPlithj28nA02LznRGNF30BMNQPjvtL/TKAzVcCdIkpozNi
-	NfJniKHfDEFtvG4Z1npjlyQ0B4qes7yr9JHHYkKk1GcknEE697UYkbmYC1QNjxxyXLBWxWKFNV7Ob
-	yqXVQ/j07p/Lo/SfI9j8tkBhUx/+G3TOxWku1SfNCSUfLyaAdIy1Ou9HhM1Zr26bbmwy/rgG28m23
-	Wakk/Crg==;
+	bh=Sb/UB5/DjsCS2B8f+KFn47kYIziWm7qZBTkSBfzgFSs=; b=i3RZaGvShmlC9poF+PWtgMvYRh
+	CZBXULNRMjgpJhLE8Qku316RXG6YZaoV2PRdMiMg3RhXWQeDtEmnExT3l0bhzmmL+eguT+9wBKbA4
+	wIqmRVibzgX5Fhr/TK5aThYp74VJGJbYFQcbInJs3jqM+08WxX3EpTfvyR5QdNhjJjPlqum8Je+0u
+	XPhI2rZRCoqmRUKzScf+pWLfZmq0M+j8A7jg5VqviUprEuHCTrAPlS8QIf9Uy5gPjiSKPZ206RxJD
+	MzkyQt/c3XEozkux4Rv9jsmOl7p1+lPPXzOnvqT59VbaN64aocH0GeE0j74rjDlXlEgxSQWjJ9ImS
+	ygl3xEqA==;
 Received: from [2601:1c2:980:9ec0::2764]
 	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1q7otD-00F2br-2E;
-	Sat, 10 Jun 2023 03:03:43 +0000
-Message-ID: <aa8fecb1-d5e7-c7c6-a8ad-789fc0627e57@infradead.org>
-Date: Fri, 9 Jun 2023 20:03:42 -0700
+	id 1q7p0W-00F3SV-1y;
+	Sat, 10 Jun 2023 03:11:16 +0000
+Message-ID: <a259b113-6547-4323-c69d-5d04d7cf3a75@infradead.org>
+Date: Fri, 9 Jun 2023 20:11:16 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.2
-Subject: Re: [PATCH v4 1/2] powerpc/legacy_serial: Handle SERIAL_8250_FSL=n
- build failures
+Subject: Re: [PATCH] powerpc: allow PPC_EARLY_DEBUG_CPM only when SERIAL_CPM=y
 Content-Language: en-US
-To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>
-References: <20230609133932.786117-1-u.kleine-koenig@pengutronix.de>
- <20230609133932.786117-2-u.kleine-koenig@pengutronix.de>
+To: =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>
+References: <20230516152854.22465-1-rdunlap@infradead.org>
+ <20230516185400.urjy6y3kh4grbagt@pali>
 From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20230609133932.786117-2-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20230516185400.urjy6y3kh4grbagt@pali>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -65,50 +61,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rob Herring <robh@kernel.org>, Liang He <windhl@126.com>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, kernel@pengutronix.de, linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org, Kumar Gala <galak@kernel.crashing.org>, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi--
 
-
-On 6/9/23 06:39, Uwe Kleine-König wrote:
-> With SERIAL_8250=y and SERIAL_8250_FSL_CONSOLE=n the both
-> IS_ENABLED(CONFIG_SERIAL_8250) and IS_REACHABLE(CONFIG_SERIAL_8250)
-> evaluate to true and so fsl8250_handle_irq() is used. However this
-> function is only available if CONFIG_SERIAL_8250_CONSOLE=y (and thus
-> SERIAL_8250_FSL=y).
+On 5/16/23 11:54, Pali Rohár wrote:
+> On Tuesday 16 May 2023 08:28:54 Randy Dunlap wrote:
+>> In a randconfig with CONFIG_SERIAL_CPM=m and
+>> CONFIG_PPC_EARLY_DEBUG_CPM=y, there is a build error:
+>> ERROR: modpost: "udbg_putc" [drivers/tty/serial/cpm_uart/cpm_uart.ko] undefined!
+>>
+>> Prevent the build error by allowing PPC_EARLY_DEBUG_CPM only when
+>> SERIAL_CPM=y.
+>>
+>> Fixes: c374e00e17f1 ("[POWERPC] Add early debug console for CPM serial ports.")
+>> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+>> Cc: Scott Wood <scottwood@freescale.com>
+>> Cc: Kumar Gala <galak@kernel.crashing.org>
+>> Cc: "Pali Rohár" <pali@kernel.org>
+>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>> Cc: Nicholas Piggin <npiggin@gmail.com>
+>> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+>> Cc: linuxppc-dev@lists.ozlabs.org
 > 
-> To prepare SERIAL_8250_FSL becoming tristate and being enabled in more
-> cases, check for IS_REACHABLE(CONFIG_SERIAL_8250_FSL) before making use
-> of fsl8250_handle_irq(). This check is correct with and without the
-> change to make SERIAL_8250_FSL modular.
+> Looks good,
 > 
-> Reported-by: Randy Dunlap <rdunlap@infradead.org>
-> Fixes: 66eff0ef528b ("powerpc/legacy_serial: Warn about 8250 devices operated without active FSL workarounds")
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+> Reviewed-by: Pali Rohár <pali@kernel.org>
 
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
+I'm still seeing this build error in linux-next even with other (PPC) CPM
+patches applied.
 
-Thanks.
-
-> ---
->  arch/powerpc/kernel/legacy_serial.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/arch/powerpc/kernel/legacy_serial.c b/arch/powerpc/kernel/legacy_serial.c
-> index fdbd85aafeb1..6ee65741dbd5 100644
-> --- a/arch/powerpc/kernel/legacy_serial.c
-> +++ b/arch/powerpc/kernel/legacy_serial.c
-> @@ -510,7 +510,7 @@ static void __init fixup_port_irq(int index,
->  
->  	if (IS_ENABLED(CONFIG_SERIAL_8250) &&
->  	    of_device_is_compatible(np, "fsl,ns16550")) {
-> -		if (IS_REACHABLE(CONFIG_SERIAL_8250)) {
-> +		if (IS_REACHABLE(CONFIG_SERIAL_8250_FSL)) {
->  			port->handle_irq = fsl8250_handle_irq;
->  			port->has_sysrq = IS_ENABLED(CONFIG_SERIAL_8250_CONSOLE);
->  		} else {
+>> ---
+>>  arch/powerpc/Kconfig.debug |    2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff -- a/arch/powerpc/Kconfig.debug b/arch/powerpc/Kconfig.debug
+>> --- a/arch/powerpc/Kconfig.debug
+>> +++ b/arch/powerpc/Kconfig.debug
+>> @@ -240,7 +240,7 @@ config PPC_EARLY_DEBUG_40x
+>>  
+>>  config PPC_EARLY_DEBUG_CPM
+>>  	bool "Early serial debugging for Freescale CPM-based serial ports"
+>> -	depends on SERIAL_CPM
+>> +	depends on SERIAL_CPM=y
+>>  	help
+>>  	  Select this to enable early debugging for Freescale chips
+>>  	  using a CPM-based serial port.  This assumes that the bootwrapper
 
 -- 
 ~Randy
