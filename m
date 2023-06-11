@@ -2,23 +2,24 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA36272B30C
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Jun 2023 19:20:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BD3472B31B
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Jun 2023 19:20:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QfM5N3gl0z2ytR
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jun 2023 03:20:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QfM5w5t14z30LQ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jun 2023 03:20:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=orcam.me.uk (client-ip=2001:4190:8020::34; helo=angie.orcam.me.uk; envelope-from=macro@orcam.me.uk; receiver=lists.ozlabs.org)
-Received: from angie.orcam.me.uk (angie.orcam.me.uk [IPv6:2001:4190:8020::34])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QfM4N43wbz2ytS
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Jun 2023 03:19:16 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=orcam.me.uk (client-ip=78.133.224.34; helo=angie.orcam.me.uk; envelope-from=macro@orcam.me.uk; receiver=lists.ozlabs.org)
+X-Greylist: delayed 298 seconds by postgrey-1.37 at boromir; Mon, 12 Jun 2023 03:19:21 AEST
+Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QfM4T1mjkz300q
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Jun 2023 03:19:21 +1000 (AEST)
 Received: by angie.orcam.me.uk (Postfix, from userid 500)
-	id 0EA1A9200B4; Sun, 11 Jun 2023 19:19:15 +0200 (CEST)
+	id B62CE9200BC; Sun, 11 Jun 2023 19:19:19 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by angie.orcam.me.uk (Postfix) with ESMTP id 0B5499200B3;
-	Sun, 11 Jun 2023 18:19:15 +0100 (BST)
-Date: Sun, 11 Jun 2023 18:19:14 +0100 (BST)
+	by angie.orcam.me.uk (Postfix) with ESMTP id AEEC09200B3;
+	Sun, 11 Jun 2023 18:19:19 +0100 (BST)
+Date: Sun, 11 Jun 2023 18:19:19 +0100 (BST)
 From: "Maciej W. Rozycki" <macro@orcam.me.uk>
 To: Bjorn Helgaas <bhelgaas@google.com>, 
     Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
@@ -29,9 +30,9 @@ To: Bjorn Helgaas <bhelgaas@google.com>,
     "David S. Miller" <davem@davemloft.net>, 
     Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
     Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH v9 01/14] PCI: pciehp: Rely on `link_active_reporting'
+Subject: [PATCH v9 02/14] PCI: Export PCIe link retrain timeout
 In-Reply-To: <alpine.DEB.2.21.2305310024400.59226@angie.orcam.me.uk>
-Message-ID: <alpine.DEB.2.21.2305310028150.59226@angie.orcam.me.uk>
+Message-ID: <alpine.DEB.2.21.2305310030280.59226@angie.orcam.me.uk>
 References: <alpine.DEB.2.21.2305310024400.59226@angie.orcam.me.uk>
 User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
@@ -51,60 +52,83 @@ Cc: =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>, David Abdurachmanov <david.ab
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use `link_active_reporting' to determine whether Data Link Layer Link 
-Active Reporting is available rather than re-retrieving the capability.
+Convert LINK_RETRAIN_TIMEOUT from jiffies to milliseconds, accordingly 
+rename to PCIE_LINK_RETRAIN_TIMEOUT_MS, and make available via "pci.h" 
+for PCI drivers to use.  Use in `pcie_wait_for_link_delay'.
 
 Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
 ---
-NB this has been compile-tested only with PPC64LE and x86-64
-configurations.
+Changes from v8:
 
-No change from v8.
+- Convert LINK_RETRAIN_TIMEOUT from jiffies to milliseconds, rename it to
+  PCIE_LINK_RETRAIN_TIMEOUT_MS rather than PCIE_LINK_RETRAIN_TIMEOUT, and 
+  adjust its use accordingly.
+
+- Also replace hardcoded 1000 in `pcie_wait_for_link_delay'.
+
+- Correct the change heading, s/PCI/PCIe/ for the link reference.
 
 Changes from v7:
 
-- Add Reviewed-by: tag by Lukas Wunner.
-
-- Reorder from 6/7.
+- Reorder from 1/7.
 
 No change from v6.
 
-New change in v6.
----
- drivers/pci/hotplug/pciehp_hpc.c |    7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+No change from v5.
 
-linux-pcie-link-active-reporting-hpc.diff
-Index: linux-macro/drivers/pci/hotplug/pciehp_hpc.c
+New change in v5.
+---
+ drivers/pci/pci.c       |    2 +-
+ drivers/pci/pci.h       |    2 ++
+ drivers/pci/pcie/aspm.c |    4 +---
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+
+linux-pcie-link-retrain-timeout.diff
+Index: linux-macro/drivers/pci/pci.c
 ===================================================================
---- linux-macro.orig/drivers/pci/hotplug/pciehp_hpc.c
-+++ linux-macro/drivers/pci/hotplug/pciehp_hpc.c
-@@ -984,7 +984,7 @@ static inline int pcie_hotplug_depth(str
- struct controller *pcie_init(struct pcie_device *dev)
+--- linux-macro.orig/drivers/pci/pci.c
++++ linux-macro/drivers/pci/pci.c
+@@ -4860,7 +4860,7 @@ static int pci_pm_reset(struct pci_dev *
+ static bool pcie_wait_for_link_delay(struct pci_dev *pdev, bool active,
+ 				     int delay)
  {
- 	struct controller *ctrl;
--	u32 slot_cap, slot_cap2, link_cap;
-+	u32 slot_cap, slot_cap2;
- 	u8 poweron;
- 	struct pci_dev *pdev = dev->port;
- 	struct pci_bus *subordinate = pdev->subordinate;
-@@ -1030,9 +1030,6 @@ struct controller *pcie_init(struct pcie
- 	if (dmi_first_match(inband_presence_disabled_dmi_table))
- 		ctrl->inband_presence_disabled = 1;
+-	int timeout = 1000;
++	int timeout = PCIE_LINK_RETRAIN_TIMEOUT_MS;
+ 	bool ret;
+ 	u16 lnk_status;
  
--	/* Check if Data Link Layer Link Active Reporting is implemented */
--	pcie_capability_read_dword(pdev, PCI_EXP_LNKCAP, &link_cap);
+Index: linux-macro/drivers/pci/pci.h
+===================================================================
+--- linux-macro.orig/drivers/pci/pci.h
++++ linux-macro/drivers/pci/pci.h
+@@ -11,6 +11,8 @@
+ 
+ #define PCI_VSEC_ID_INTEL_TBT	0x1234	/* Thunderbolt */
+ 
++#define PCIE_LINK_RETRAIN_TIMEOUT_MS	1000
++
+ extern const unsigned char pcie_link_speed[];
+ extern bool pci_early_dump;
+ 
+Index: linux-macro/drivers/pci/pcie/aspm.c
+===================================================================
+--- linux-macro.orig/drivers/pci/pcie/aspm.c
++++ linux-macro/drivers/pci/pcie/aspm.c
+@@ -90,8 +90,6 @@ static const char *policy_str[] = {
+ 	[POLICY_POWER_SUPERSAVE] = "powersupersave"
+ };
+ 
+-#define LINK_RETRAIN_TIMEOUT HZ
 -
- 	/* Clear all remaining event bits in Slot Status register. */
- 	pcie_capability_write_word(pdev, PCI_EXP_SLTSTA,
- 		PCI_EXP_SLTSTA_ABP | PCI_EXP_SLTSTA_PFD |
-@@ -1051,7 +1048,7 @@ struct controller *pcie_init(struct pcie
- 		FLAG(slot_cap, PCI_EXP_SLTCAP_EIP),
- 		FLAG(slot_cap, PCI_EXP_SLTCAP_NCCS),
- 		FLAG(slot_cap2, PCI_EXP_SLTCAP2_IBPD),
--		FLAG(link_cap, PCI_EXP_LNKCAP_DLLLARC),
-+		FLAG(pdev->link_active_reporting, true),
- 		pdev->broken_cmd_compl ? " (with Cmd Compl erratum)" : "");
+ /*
+  * The L1 PM substate capability is only implemented in function 0 in a
+  * multi function device.
+@@ -213,7 +211,7 @@ static bool pcie_retrain_link(struct pci
+ 	}
  
- 	/*
+ 	/* Wait for link training end. Break out after waiting for timeout */
+-	end_jiffies = jiffies + LINK_RETRAIN_TIMEOUT;
++	end_jiffies = jiffies + msecs_to_jiffies(PCIE_LINK_RETRAIN_TIMEOUT_MS);
+ 	do {
+ 		pcie_capability_read_word(parent, PCI_EXP_LNKSTA, &reg16);
+ 		if (!(reg16 & PCI_EXP_LNKSTA_LT))
