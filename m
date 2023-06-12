@@ -1,98 +1,121 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E30772CC04
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jun 2023 19:06:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AF8E72CB35
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jun 2023 18:14:27 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WEIKac2z;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=TfEMBC2k;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qfykk1vXwz30XW
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jun 2023 03:06:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qfxb46t9Nz30Pp
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jun 2023 02:14:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WEIKac2z;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=TfEMBC2k;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 6221 seconds by postgrey-1.37 at boromir; Tue, 13 Jun 2023 03:05:14 AEST
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f400:7d00::61f; helo=eur05-vi1-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org)
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2061f.outbound.protection.outlook.com [IPv6:2a01:111:f400:7d00::61f])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qfyjk72Tjz304k
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jun 2023 03:05:14 +1000 (AEST)
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35CF4cHR015057;
-	Mon, 12 Jun 2023 15:21:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=+Vz0/00yi/aAA4sxflppHW+xZuDUOIaXptGoHipFi/M=;
- b=WEIKac2z3Mr9tKF3qmtb35CrtpCezGGlHYAbYzWShDvUQYpAonOA9QjKMVpNlgxnGP1V
- MP0e5zUr3B7Vr3Lzhz495IGyHpQnedwwm+4H+GaMG3FbMlnZlI/61UtLUBfY/3KY9Kuu
- 7EaLN8XWyAF1LtBH/V6ZuYLf8zeKZsIMjouWCbRVw5NG6YGP8WYIdVyU17xoM8J0EhOc
- jxBomN9q78+jXKkSvgh5KBgPuwY7dGQcHT015Euum10UKMgnAudQv//bJt8ZZhFsfSFr
- LjtGBwWnpcoTqO48M8s7Yvlnq7e7aLHdoyWthoL6qwGn0vro1r1g8FM/JD9Ohc71ICMp vw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r65pg8krh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 Jun 2023 15:21:06 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35CF4oNq015921;
-	Mon, 12 Jun 2023 15:21:06 GMT
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r65pg8kpx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 Jun 2023 15:21:06 +0000
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
-	by ppma05fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35C4pEbH007408;
-	Mon, 12 Jun 2023 15:20:06 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma05fra.de.ibm.com (PPS) with ESMTPS id 3r4gt4s4wv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 Jun 2023 15:20:06 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 35CFK25R15925896
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 12 Jun 2023 15:20:02 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BD1E420040;
-	Mon, 12 Jun 2023 15:20:02 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4A2A320043;
-	Mon, 12 Jun 2023 15:20:02 +0000 (GMT)
-Received: from [9.144.159.119] (unknown [9.144.159.119])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 12 Jun 2023 15:20:02 +0000 (GMT)
-Message-ID: <c0fe7b2c-1ce7-3d2f-0175-e61920fc3dee@linux.ibm.com>
-Date: Mon, 12 Jun 2023 17:20:01 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QfxZ554NFz2xqc
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jun 2023 02:13:31 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hffRUX47Ei7KEMnQLv491YIOukWx0/IPZ1+XWiy9/DmzNwiq2kneJ2RAms1SgXcI/2V5g0zdlIcPnjvy00DeiTBFCK3c/7y4v95Yw32NiDbweolnKCvIKSiHbPPSNA7zm7eflsaol3Yqr7sCemYojc9McnbSGSc+IdySbv0wP3ORx1v1JaN0/B/W4/KDBjyRnSPGEEPpBbKh8riyQxc3tLC8UK+ynnUuTuo2oPg63LLaLmsb5NW7S0h0hoh2rYk9PbyRNAiM9CIB8xlXwS8IJ74ztzKalNCseTTSS5hxwKs/g+6H63amGozI6d7+2XZRLEEgHz8qMy7WKGs4h9L8KA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=f6ngzwQnEw2DISScUpSMhqU3R6b7WmB0u1Zdod8zg3Y=;
+ b=iz30qfSdsIYWEq4KBq81j0zErpA9qoCWidWsqohx/omIJslIAE5FabcduDL6dMzb8jH9I7+8j/EP+LA6Rp5JHpGpUB3gwl6uy6qjRZRp/meJxTvZUNBg/qdPl5OnUhZZNzC850q71GPNpZn1ponSfk0XH2hVfmmSWn0w5C0jYSBINjlxjo3+Jd/+CR9QPNLJp7wublm9x7HkLf1x2GAV6+U5hGSeGydeabm5y0IALpLAj85bRyO9hAeGydzMth4YMgtXhBde/5km7S1Z8sy161iOsPxxVotBPxrkIEvFHiCU5+TO/xcRG3fV/FM/BirSKygOZoAgj5SCXUejohU7Pw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=f6ngzwQnEw2DISScUpSMhqU3R6b7WmB0u1Zdod8zg3Y=;
+ b=TfEMBC2kDBhk70v3gvIUb7uQ2iwFi3dtcVE4PVKdNh0JUo0DTTBQmpV5krZ1I+lszLzFGc3em+LuikJzSGoYY8nbOM3ViIfAvyjUTQRUaq0OZQvO4I28UEcdiYIM9YBYJ+HZgx+pq6E/Z+wNN9kRP5B33vY4ay83FspoNwcj1fQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
+ by GVXPR04MB9927.eurprd04.prod.outlook.com (2603:10a6:150:118::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.46; Mon, 12 Jun
+ 2023 16:13:09 +0000
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::4a2a:262e:415f:e41c]) by AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::4a2a:262e:415f:e41c%7]) with mapi id 15.20.6477.028; Mon, 12 Jun 2023
+ 16:13:09 +0000
+Date: Mon, 12 Jun 2023 12:12:53 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: manivannan.sadhasivam@linaro.org, Minghuan Lian <minghuan.Lian@nxp.com>,
+	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linuxppc-dev@lists.ozlabs.org>,
+	"open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-pci@vger.kernel.org>,
+	"moderated list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 1/1] PCI: layerscape: Add the endpoint linkup notifier
+ support
+Message-ID: <ZIdEBXH5AztZ/jz5@lizhi-Precision-Tower-5810>
+References: <20230515151049.2797105-1-Frank.Li@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230515151049.2797105-1-Frank.Li@nxp.com>
+X-ClientProxiedBy: BYAPR04CA0030.namprd04.prod.outlook.com
+ (2603:10b6:a03:40::43) To AM6PR04MB4838.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4::16)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH 8/9] powerpc: Add HOTPLUG_SMT support
-Content-Language: en-US
-To: Thomas Gleixner <tglx@linutronix.de>,
-        Michael Ellerman <mpe@ellerman.id.au>, linux-kernel@vger.kernel.org
-References: <20230524155630.794584-1-mpe@ellerman.id.au>
- <20230524155630.794584-8-mpe@ellerman.id.au>
- <5752a488-be54-61a0-6d18-647456abc4ee@linux.ibm.com>
- <6e86aedb-9349-afd4-0bcb-1949e828f997@linux.ibm.com> <87h6rf81n9.ffs@tglx>
-From: Laurent Dufour <ldufour@linux.ibm.com>
-In-Reply-To: <87h6rf81n9.ffs@tglx>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: hNuPU4n_q1mIKvJz4Z9K75KsuJKmTl-u
-X-Proofpoint-GUID: bEFsub-uM4oUopUHsNVENEqxZmw8Cda7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-12_06,2023-06-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 impostorscore=0 mlxscore=0 suspectscore=0 adultscore=0
- mlxlogscore=999 phishscore=0 bulkscore=0 lowpriorityscore=0 clxscore=1015
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306120129
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|GVXPR04MB9927:EE_
+X-MS-Office365-Filtering-Correlation-Id: ba8d95ad-267a-4fa6-cc08-08db6b5fe9e8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	NUOtldtFrEvJp8/nuk1z94xyKN+fmwSL+5CIGAVBegsv1I7XkJLFUMpLcDQqgcWIrx60aQphQy1ahAkek56Zwl85w2MS1rguSg5pktEluUIdAE30zqt5DlGzBQzZV5/EFjsolU73QTpIqrp8PpqBuuWYb3Z4EHD8SFb5fYDauaksVTAH6eCbJPoIbpqSIsQ68KN+opAhkQyJAjbNvqVoTDrSGa9qDRUEv3zv4jzufs7zVIuNgaU2qNIl9qiORwMU50eSVGEw6KEH8QSxR2sBq4a3VNt59wTuZZPgaFzt6I63q0FqS0HkWr4yaugzhsJ1vNL5h/vFV+fku9DPxMTetvlCd6XbSe1vgqDQjMFuqCbrPRLpqWOCzMW4TrpGWMiRCHM38OJZnrqAtOJ+iXeqXh2qMyJfukDiVgkVS458axRhN+aW9/DVFnis6/svl+SRVYAqt+z88/aTHN1Bi91uJ2frllQ1DL1xSBIzvxNbxjlljrorMzVcmCipsrYdRc+vS7KRGFQPkATg2x88Yr3OC0zpOyyW8STgWewg9dVZmWkyE7Q8poKGCqk/iRNgGxD5XNudg4srdsSgb9U24UDFgyzg6tuw8q2CB7xfAP4DRVMgc0Jmm7SgCpO5BqLf9sIOO3NrQQbjMeqFaVO4DYuCgw==
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(7916004)(136003)(346002)(366004)(39860400002)(396003)(376002)(451199021)(83380400001)(921005)(86362001)(38100700002)(38350700002)(33716001)(478600001)(110136005)(4326008)(6486002)(6666004)(8936002)(8676002)(4744005)(2906002)(52116002)(5660300002)(7416002)(66556008)(66946007)(66476007)(41300700001)(316002)(186003)(6506007)(6512007)(9686003)(26005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?4Jsw7fDXo7pFzFK4IisrWmaomqYBGrAQctK6bLoTJ1Qzn62UmJ2rYDtjVjiw?=
+ =?us-ascii?Q?gu27IdhpOv06HEhnYuHGzFNZKYzuKs0DIJH2DmnGKGJfaPF55j7/sLGj9b8D?=
+ =?us-ascii?Q?6MquazXTpKDqkkVL+uIjsKGMg6TvjcOGkWA+rmxRkO+xyaaXVKJ8/ecjzviU?=
+ =?us-ascii?Q?+1n/T4a9e0/cd60/bW6GQ+6LhFoVTojiGDTQDe55ZpEtgjqYK2SsIznOuzPA?=
+ =?us-ascii?Q?tQKhUx1nBjte8+1a5+xsU3Wz3eSbgV/WVLgrkTusuMKxaSQlJuWe1YWC/z5G?=
+ =?us-ascii?Q?O37s3RRN+a5PM7pqk2ue7nHe9DDCrJ4EUzNrulmCQqWy/oAuru9i6ne+P/fA?=
+ =?us-ascii?Q?duOtZWMYmMWsP7miPQZ2g5+hGbBEMe/VxVUClQyDoH2gocqxE/a6++eG2XlS?=
+ =?us-ascii?Q?h5BRKQgvcQ3iw94JEj1j/uzupczytkULoNbN2zgHlOoIhCnNPYxtlhxRfp37?=
+ =?us-ascii?Q?l4caZxPu0ayykf7OwKPTNcvWMJa7L9b7VkAjrjx2mch5y9sPX/RYjrOpCVBL?=
+ =?us-ascii?Q?9IKAoPlOaWQmZOT6vPUI2JBWeLnhkiF67xPP7VgFs06ylbD7GZalyVnzdJqL?=
+ =?us-ascii?Q?Y/L+S5Nzjf0hXDdEJwLWwEldZaYh+xHqzTAxJKwWEktk59+Y4ymX1e3bYIQ8?=
+ =?us-ascii?Q?NDJEahHpMCm2KYiSwVt6Wg4F8U4QT9JrrmmsSWdyJZu8pyXuam6krunig6NK?=
+ =?us-ascii?Q?YHYUEKCxYQyYSoe7YLfXVx0ZmJlJ9/QZFl6Srzo2ov10+Al6y+07u7GJCAu7?=
+ =?us-ascii?Q?v8I1PVAhjIgZM/RBft+P6LHFFkoBTeI03NpV3IrUWyNk167oGX2Rx5lhTFad?=
+ =?us-ascii?Q?1k0KURP1oRhrdTiNnL/3wTXaHhVpExpXeYQwIOJ+DacSI5VBNoxy3MwB2ecs?=
+ =?us-ascii?Q?BkMQona/O/v/mWdT6akHM6Qg6UlRkFnYZXiSx/Hqb6AmRbZmRGThzvDousP4?=
+ =?us-ascii?Q?Qvvkn8N1fviinbqeHVHy1drLKSUvt0YwPPbIHJK5hO8rtCbcTtV+A6LTROPK?=
+ =?us-ascii?Q?ydyWEv7WkmNav0jZmiW8MqpaBRfuvnlSzPO4BA0k4oAJxhFcJLGKXQqdQ9QF?=
+ =?us-ascii?Q?DhDOSMOpA/1Ciqs8okWkjnMyNwhiAkoCC2XSVy2aGXrj46xiXDPxrn4dRIDu?=
+ =?us-ascii?Q?fUinXgSdQpBBFcnqt0R3XZfWjdO0IqUFlEQM2X1eDgAQu99iikXQY1ltyhkl?=
+ =?us-ascii?Q?I8qJbCkIQ5FlJDgnqgPd6JtJ8zXpEGVnooOdP2e2rLkitxvYURuaDDts4n+E?=
+ =?us-ascii?Q?X+QJC4srn90zXpx7kBlzCaumRNXxjJIM1k6eQXtZ1gb/Lt1e7nMP9ZYAvqYh?=
+ =?us-ascii?Q?y89h0NECqJo6B3TshQrmU1z/X/JZK7SlUEPM2Nrn5y9lrbLXDjR7v4L5xr3G?=
+ =?us-ascii?Q?78L67gwKDYdZHNU4yVhnaykvz3IiNZsAc41JIr6KwwMU4YHNSATXy4zfOxum?=
+ =?us-ascii?Q?LoGlqDpj7DQDyhshrkTzKmfU0B89f1DnQiZ67PL+HQM1HvpztMxWQCY7EOGD?=
+ =?us-ascii?Q?Ua0UiM3lxU37fxj/NlHvJ3v3MWbITNExecIE+H3J0Rv6Sqk5mczimvFzO+zr?=
+ =?us-ascii?Q?Cs8FwZLlQnL9CyoYbsrqHESmmSa8tglIaQDcT+xy?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ba8d95ad-267a-4fa6-cc08-08db6b5fe9e8
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jun 2023 16:13:09.6448
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ght3SHwtDIBcAnfvQ8FlTxtdJWiq1hvlNu8HMrUVNyK67N3Wgq2rK+arKm7VU0lIV9GI8hdCPe3c0Ow0IcnD2w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB9927
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,61 +127,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, x86@kernel.org, dave.hansen@linux.intel.com, mingo@redhat.com, bp@alien8.de, linuxppc-dev@lists.ozlabs.org
+Cc: imx@lists.linux.dev
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/06/2023 23:10:02, Thomas Gleixner wrote:
-> On Thu, Jun 01 2023 at 18:19, Laurent Dufour wrote:
->> @@ -435,12 +435,17 @@ void __init cpu_smt_disable(bool force)
->>   * The decision whether SMT is supported can only be done after the full
->>   * CPU identification. Called from architecture code.
->>   */
->> -void __init cpu_smt_check_topology(unsigned int num_threads)
->> +void __init cpu_smt_check_topology(unsigned int num_threads,
->> +				   unsigned int max_threads)
->>  {
->>  	if (!topology_smt_supported())
->>  		cpu_smt_control = CPU_SMT_NOT_SUPPORTED;
->>  
->> -	cpu_smt_max_threads = num_threads;
->> +	cpu_smt_max_threads = max_threads;
->> +
->> +	WARN_ON(num_threads > max_threads);
->> +	if (num_threads > max_threads)
->> +		num_threads = max_threads;
+On Mon, May 15, 2023 at 11:10:49AM -0400, Frank Li wrote:
+> Layerscape has PME interrupt, which can be used as linkup notifier.
+> Set CFG_READY bit of PEX_PF0_CONFIG to enable accesses from root complex
+> when linkup detected.
 > 
-> This does not work. The call site does:
-> 
->> +	cpu_smt_check_topology(smt_enabled_at_boot, threads_per_core);
-> 
-> smt_enabled_at_boot is 0 when 'smt-enabled=off', which is not what the
-> hotplug core expects. If SMT is disabled it brings up the primary
-> thread, which means cpu_smt_num_threads = 1.
+> Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
 
-Thanks, Thomas,
-Definitively, a test against smt_enabled_at_boot==0 is required here.
+Ping, not comments almost over 1 months.
 
-> This needs more thoughts to avoid a completely inconsistent duct tape
-> mess.
-
-Despite the test against smt_enabled_at_boot, mentioned above, I can't see
-anything else to rework. Am I missing something?
-
+> Change from v3 to v4
+>  - swap irq and big_endian
+> Change from v2 to v3
+>  - align 80 column
+>  - clear irq firstly
+>  - dev_info to dev_dbg
+>  - remove double space
+>  - update commit message
 > 
-> Btw, the command line parser and the variable smt_enabled_at_boot being
-> type int allow negative number of threads too... Maybe not what you want.
-
-I do agree, it should an unsigned type.
-
-Thanks,
-Laurent.
-
-> Thanks,
+> Change from v1 to v2
+> - pme -> PME
+> - irq -> IRQ
+> - update dev_info message according to Bjorn's suggestion
 > 
->         tglx
+>  .../pci/controller/dwc/pci-layerscape-ep.c    | 102 +++++++++++++++++-
+>  1 file changed, 101 insertions(+), 1 deletion(-)
 > 
 > 
-> 
-> 
-
