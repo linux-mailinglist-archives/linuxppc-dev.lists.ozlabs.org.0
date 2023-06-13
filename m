@@ -2,57 +2,38 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B827672EB8A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jun 2023 21:05:48 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=UteSpuaA;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id EFA3672EC47
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jun 2023 21:49:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QgdLL4Y3Yz3bTV
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 05:05:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QgfKJ6LhCz30gr
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 05:49:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=UteSpuaA;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=95.215.58.25; helo=out-25.mta1.migadu.com; envelope-from=kent.overstreet@linux.dev; receiver=lists.ozlabs.org)
-X-Greylist: delayed 489 seconds by postgrey-1.37 at boromir; Wed, 14 Jun 2023 05:04:53 AEST
-Received: from out-25.mta1.migadu.com (out-25.mta1.migadu.com [95.215.58.25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QgdKK3J7Wz2y1T
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jun 2023 05:04:52 +1000 (AEST)
-Date: Tue, 13 Jun 2023 14:56:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1686682581;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cI/+VKexODe7tgazUH0uBbszHN+Sh5VjQJKMcYicSKU=;
-	b=UteSpuaAfbQ2NCJDHT0DaE6LH+0KCxqxliA1u1CiHpYLEp/BHx0yHT4z2wyOm1k0K155IH
-	1TdtqXMsJtk9bqAzUZ31aQXTksL2s2n1Q4RGfHebraQUDr3MhWO8yy+4wsaox2mGxQ3YRe
-	XgmITo5ci4OCni1zywcC85bIuHv1vdI=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH 00/13] mm: jit/text allocator
-Message-ID: <ZIi7zmey0w61EG25@moria.home.lan>
-References: <20230601101257.530867-1-rppt@kernel.org>
- <ZHjDU/mxE+cugpLj@FVFF77S0Q05N.cambridge.arm.com>
- <ZHjgIH3aX9dCvVZc@moria.home.lan>
- <ZHm3zUUbwqlsZBBF@FVFF77S0Q05N>
- <20230605092040.GB3460@kernel.org>
- <ZH20XkD74prrdN4u@FVFF77S0Q05N>
- <CAPhsuW7ntn_HpVWdGK_hYVd3zsPEFToBNfmtt0m6K8SwfxJ66Q@mail.gmail.com>
- <20230608184116.GJ52412@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QgfJm4mGkz2xjw
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jun 2023 05:49:28 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id C1A9862F35;
+	Tue, 13 Jun 2023 19:49:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E29E4C433D9;
+	Tue, 13 Jun 2023 19:49:20 +0000 (UTC)
+Date: Tue, 13 Jun 2023 20:49:18 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH 0/3] Move the ARCH_DMA_MINALIGN definition to asm/cache.h
+Message-ID: <ZIjIPquLFAeC2p0k@arm.com>
+References: <20230613155245.1228274-1-catalin.marinas@arm.com>
+ <5cc13519-e606-4dca-b22c-2dcb7bf06d32@csgroup.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230608184116.GJ52412@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <5cc13519-e606-4dca-b22c-2dcb7bf06d32@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,51 +45,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linux-trace-kernel@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Andrew Morton <akpm@linux-foundation.org>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- "David S. Miller" <davem@davemloft.net>, linux-modules@vger.kernel.org
+Cc: Michal Simek <monstr@monstr.eu>, Rich Felker <dalias@libc.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Nicholas Piggin <npiggin@gmail.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Andrew Morton <akpm@linux-foundation.org>, Linus Torvalds <torvalds@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 08, 2023 at 09:41:16PM +0300, Mike Rapoport wrote:
-> On Tue, Jun 06, 2023 at 11:21:59AM -0700, Song Liu wrote:
-> > On Mon, Jun 5, 2023 at 3:09â€¯AM Mark Rutland <mark.rutland@arm.com> wrote:
-> > 
-> > [...]
-> > 
-> > > > > > Can you give more detail on what parameters you need? If the only extra
-> > > > > > parameter is just "does this allocation need to live close to kernel
-> > > > > > text", that's not that big of a deal.
-> > > > >
-> > > > > My thinking was that we at least need the start + end for each caller. That
-> > > > > might be it, tbh.
-> > > >
-> > > > Do you mean that modules will have something like
-> > > >
-> > > >       jit_text_alloc(size, MODULES_START, MODULES_END);
-> > > >
-> > > > and kprobes will have
-> > > >
-> > > >       jit_text_alloc(size, KPROBES_START, KPROBES_END);
-> > > > ?
-> > >
-> > > Yes.
-> > 
-> > How about we start with two APIs:
-> >      jit_text_alloc(size);
-> >      jit_text_alloc_range(size, start, end);
-> > 
-> > AFAICT, arm64 is the only arch that requires the latter API. And TBH, I am
-> > not quite convinced it is needed.
->  
-> Right now arm64 and riscv override bpf and kprobes allocations to use the
-> entire vmalloc address space, but having the ability to allocate generated
-> code outside of modules area may be useful for other architectures.
+On Tue, Jun 13, 2023 at 04:42:40PM +0000, Christophe Leroy wrote:
 > 
-> Still the start + end for the callers feels backwards to me because the
-> callers do not define the ranges, but rather the architectures, so we still
-> need a way for architectures to define how they want allocate memory for
-> the generated code.
+> 
+> Le 13/06/2023 à 17:52, Catalin Marinas a écrit :
+> > Hi,
+> > 
+> > The ARCH_KMALLOC_MINALIGN reduction series defines a generic
+> > ARCH_DMA_MINALIGN in linux/cache.h:
+> > 
+> > https://lore.kernel.org/r/20230612153201.554742-2-catalin.marinas@arm.com/
+> > 
+> > Unfortunately, this causes a duplicate definition warning for
+> > microblaze, powerpc (32-bit only) and sh as these architectures define
+> > ARCH_DMA_MINALIGN in a different file than asm/cache.h. Move the macro
+> > to asm/cache.h to avoid this issue and also bring them in line with the
+> > other architectures.
+> 
+> What about mips ?
+> 
+> arch/mips/include/asm/mach-generic/kmalloc.h:#define ARCH_DMA_MINALIGN	128
+> arch/mips/include/asm/mach-ip32/kmalloc.h:#define ARCH_DMA_MINALIGN	32
+> arch/mips/include/asm/mach-ip32/kmalloc.h:#define ARCH_DMA_MINALIGN	128
+> arch/mips/include/asm/mach-n64/kmalloc.h:#define ARCH_DMA_MINALIGN	L1_CACHE_BYTES
+> arch/mips/include/asm/mach-tx49xx/kmalloc.h:#define ARCH_DMA_MINALIGN	L1_CACHE_BYTES
 
-So, the start + end just comes from the need to keep relative pointers
-under a certain size. I think this could be just a flag, I see no reason
-to expose actual addresses here.
+Sorry, I should have mentioned it in the cover letter (discussed here -
+https://lore.kernel.org/r/ZIhPaixb%2F0ve7zZo@arm.com/). These kmalloc.h
+files are included in asm/cache.h, based on which machine is enabled, so
+there's no problem for mips. It makes more sense to keep them in those
+mach-*/kmalloc.h files instead of having lots of #ifdefs in cache.h.
+
+-- 
+Catalin
