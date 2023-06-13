@@ -2,31 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 420CD72E7C0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jun 2023 18:03:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF7FE72E7BF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jun 2023 18:03:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QgYJS1Pgjz3cM3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 02:03:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QgYHv6Mmrz3cBs
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 02:03:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QgYGN4LSCz30M1
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jun 2023 02:02:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QgYGM4nN1z30Ln
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jun 2023 02:02:03 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 60FCA637EB;
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 950DD637F3;
+	Tue, 13 Jun 2023 15:52:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F14CC433F0;
 	Tue, 13 Jun 2023 15:52:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C635C433D9;
-	Tue, 13 Jun 2023 15:52:53 +0000 (UTC)
 From: Catalin Marinas <catalin.marinas@arm.com>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 2/3] microblaze: Move the ARCH_{DMA,SLAB}_MINALIGN definitions to asm/cache.h
-Date: Tue, 13 Jun 2023 16:52:44 +0100
-Message-Id: <20230613155245.1228274-3-catalin.marinas@arm.com>
+Subject: [PATCH 3/3] sh: Move the ARCH_DMA_MINALIGN definition to asm/cache.h
+Date: Tue, 13 Jun 2023 16:52:45 +0100
+Message-Id: <20230613155245.1228274-4-catalin.marinas@arm.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230613155245.1228274-1-catalin.marinas@arm.com>
 References: <20230613155245.1228274-1-catalin.marinas@arm.com>
@@ -47,47 +47,49 @@ Cc: Michal Simek <monstr@monstr.eu>, Rich Felker <dalias@libc.org>, Yoshinori Sa
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The microblaze architecture defines ARCH_DMA_MINALIGN in asm/page.h.
-Move it to asm/cache.h to allow a generic ARCH_DMA_MINALIGN definition
-in linux/cache.h without redefine errors/warnings.
-
-While at it, also move ARCH_SLAB_MINALIGN to asm/cache.h for
-consistency.
+The sh architecture defines ARCH_DMA_MINALIGN in asm/page.h. Move it to
+asm/cache.h to allow a generic ARCH_DMA_MINALIGN definition in
+linux/cache.h without redefine errors/warnings.
 
 Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Michal Simek <monstr@monstr.eu>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Rich Felker <dalias@libc.org>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: linux-sh@vger.kernel.org
 ---
- arch/microblaze/include/asm/cache.h | 5 +++++
- arch/microblaze/include/asm/page.h  | 5 -----
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ arch/sh/include/asm/cache.h | 6 ++++++
+ arch/sh/include/asm/page.h  | 6 ------
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/microblaze/include/asm/cache.h b/arch/microblaze/include/asm/cache.h
-index a149b3e711ec..1903988b9e23 100644
---- a/arch/microblaze/include/asm/cache.h
-+++ b/arch/microblaze/include/asm/cache.h
-@@ -18,4 +18,9 @@
+diff --git a/arch/sh/include/asm/cache.h b/arch/sh/include/asm/cache.h
+index 32dfa6b82ec6..b38dbc975581 100644
+--- a/arch/sh/include/asm/cache.h
++++ b/arch/sh/include/asm/cache.h
+@@ -14,6 +14,12 @@
  
- #define SMP_CACHE_BYTES	L1_CACHE_BYTES
+ #define L1_CACHE_BYTES		(1 << L1_CACHE_SHIFT)
  
-+/* MS be sure that SLAB allocates aligned objects */
++/*
++ * Some drivers need to perform DMA into kmalloc'ed buffers
++ * and so we have to increase the kmalloc minalign for this.
++ */
 +#define ARCH_DMA_MINALIGN	L1_CACHE_BYTES
 +
-+#define ARCH_SLAB_MINALIGN	L1_CACHE_BYTES
-+
- #endif /* _ASM_MICROBLAZE_CACHE_H */
-diff --git a/arch/microblaze/include/asm/page.h b/arch/microblaze/include/asm/page.h
-index 7b9861bcd458..337f23eabc71 100644
---- a/arch/microblaze/include/asm/page.h
-+++ b/arch/microblaze/include/asm/page.h
-@@ -30,11 +30,6 @@
+ #define __read_mostly __section(".data..read_mostly")
  
  #ifndef __ASSEMBLY__
+diff --git a/arch/sh/include/asm/page.h b/arch/sh/include/asm/page.h
+index 09ac6c7faee0..62f4b9edcb98 100644
+--- a/arch/sh/include/asm/page.h
++++ b/arch/sh/include/asm/page.h
+@@ -174,10 +174,4 @@ typedef struct page *pgtable_t;
+ #include <asm-generic/memory_model.h>
+ #include <asm-generic/getorder.h>
  
--/* MS be sure that SLAB allocates aligned objects */
+-/*
+- * Some drivers need to perform DMA into kmalloc'ed buffers
+- * and so we have to increase the kmalloc minalign for this.
+- */
 -#define ARCH_DMA_MINALIGN	L1_CACHE_BYTES
 -
--#define ARCH_SLAB_MINALIGN	L1_CACHE_BYTES
--
- /*
-  * PAGE_OFFSET -- the first address of the first page of memory. With MMU
-  * it is set to the kernel start address (aligned on a page boundary).
+ #endif /* __ASM_SH_PAGE_H */
