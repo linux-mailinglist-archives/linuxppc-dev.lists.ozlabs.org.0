@@ -2,93 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C938A72E938
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jun 2023 19:18:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3645372EB0D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jun 2023 20:35:53 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GOpbQ+w3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=l6DF4uDB;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QgZyk4yJ1z30jT
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 03:18:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qgcgq0p3Yz30Ps
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 04:35:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GOpbQ+w3;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=l6DF4uDB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gbatra@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 4635 seconds by postgrey-1.37 at boromir; Wed, 14 Jun 2023 04:35:02 AEST
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QgZxS46YHz30XV
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jun 2023 03:17:32 +1000 (AEST)
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35DH9KgO024010;
-	Tue, 13 Jun 2023 17:17:00 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qgcft11f1z30G5
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jun 2023 04:35:01 +1000 (AEST)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35DH5Rcf024499;
+	Tue, 13 Jun 2023 17:17:42 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
  mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=pp1;
- bh=MuX/s0te/QSTHMjPRIUCcvq4Q6ofXoMYiJTfW+gFUaw=;
- b=GOpbQ+w3nuKmSXPPMhXr5U8p7aK4qUg3X0651b+xC8oU0xIHFKYtaPvzDqfT1ohQpI0c
- lDU+23KKBtC+c4zTWU7JcLVErFqrEanlnwpVtfcpcNQpDvIpURb/eFB0nhhnVUr9PDXG
- 4ESztoA/X+O0VO1jlfZ5sCqMNJP8YqTMf3dp1xfdCVCFo/RMHUDdd/bZiXWhwE/qvw90
- eEkTpjduvo3KEs1ePYqP1WF+1roHcXQmst/BW4++3YJBYbgHXF02PdKfKnnB+wCDU1Pa
- 7H5oatbkVevtUaPK1VQbnaJKyQZ9hNTmU9icAhApdX9It/hXnz7kci0d1Dzc0YtYSndW sQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r6v94rmx8-1
+ bh=dFSraVinl+BLCsZQIM3RuB2udWihv+RswbiC5KzODqw=;
+ b=l6DF4uDBcbjxI5I9b60mKlzkqzfZsW+bgjwoyML1v4IJmtuj03ZkHK3RcnKeRnCrFOad
+ JGJcOSUfKqUNCSXmkLpv4LMIoUxjkvtRM3gPoFcAQQnI2glhQ7W7KAA/lP/pdiWId+hL
+ znCmJhZB+JOhkVdWloCf1jHjI2SBiG464gPd+0n7lfh2m/4VpSxMUr32jvih5CTd5RaJ
+ /rpkcGPbG+K3dM0Ts7OpFtC7pAfqqgwTJGA72xMHqyMs0e/lQVnWfyW5sLF2yw0Cx2ue
+ Ipb0I7LvXKfFki0ikvr9Q9n1fe+xzM80+EUX9cuNoDXnlXnpIePyxH35y1Y0W6aHoHoa wA== 
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r6vce0gxg-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 13 Jun 2023 17:17:00 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35DHA9eb028079;
-	Tue, 13 Jun 2023 17:16:59 GMT
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r6v94rmwj-1
+	Tue, 13 Jun 2023 17:17:42 +0000
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+	by ppma01wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35DGV2bS002749;
+	Tue, 13 Jun 2023 17:17:40 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([9.208.129.119])
+	by ppma01wdc.us.ibm.com (PPS) with ESMTPS id 3r4gt59fsd-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 13 Jun 2023 17:16:59 +0000
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
-	by ppma06fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35D8o1hA017849;
-	Tue, 13 Jun 2023 17:16:57 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma06fra.de.ibm.com (PPS) with ESMTPS id 3r4gedsr5v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 13 Jun 2023 17:16:57 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 35DHGtkY21037798
+	Tue, 13 Jun 2023 17:17:40 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 35DHHdU135783230
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 13 Jun 2023 17:16:55 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 20EF120043;
-	Tue, 13 Jun 2023 17:16:55 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8B42F2004E;
-	Tue, 13 Jun 2023 17:16:54 +0000 (GMT)
-Received: from [9.171.1.146] (unknown [9.171.1.146])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 13 Jun 2023 17:16:54 +0000 (GMT)
-Message-ID: <d42e9452-8210-a06a-4c91-6c2f1d038a61@linux.ibm.com>
-Date: Tue, 13 Jun 2023 19:16:54 +0200
+	Tue, 13 Jun 2023 17:17:39 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 738A45805D;
+	Tue, 13 Jun 2023 17:17:39 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5A4D358052;
+	Tue, 13 Jun 2023 17:17:39 +0000 (GMT)
+Received: from [9.24.27.252] (unknown [9.24.27.252])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 13 Jun 2023 17:17:39 +0000 (GMT)
+Message-ID: <ee63bcc9-4e06-198b-b3a2-5519bc11a83c@linux.vnet.ibm.com>
+Date: Tue, 13 Jun 2023 12:17:39 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.2
-Subject: Re: [PATCH 3/9] cpu/SMT: Store the current/max number of threads
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH] powerpc/iommu: TCEs are incorrectly manipulated with
+ DLPAR add/remove of memory
 Content-Language: en-US
-To: Thomas Gleixner <tglx@linutronix.de>,
-        Michael Ellerman <mpe@ellerman.id.au>, linux-kernel@vger.kernel.org
-References: <20230524155630.794584-1-mpe@ellerman.id.au>
- <20230524155630.794584-3-mpe@ellerman.id.au> <87fs6z80w5.ffs@tglx>
-From: Laurent Dufour <ldufour@linux.ibm.com>
-In-Reply-To: <87fs6z80w5.ffs@tglx>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: mpe@ellerman.id.au
+References: <20230613171641.15641-1-gbatra@linux.vnet.ibm.com>
+From: Gaurav Batra <gbatra@linux.vnet.ibm.com>
+In-Reply-To: <20230613171641.15641-1-gbatra@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: UUQofGuwuSBBIoz8cSy_Gu6pnGgH1Vh-
-X-Proofpoint-ORIG-GUID: T86cnNWOeg0f_uTNpCq-hakyXXApSFqc
+X-Proofpoint-GUID: nnSFck0S0ttQcvKw6bkGF27DUn21aOih
+X-Proofpoint-ORIG-GUID: nnSFck0S0ttQcvKw6bkGF27DUn21aOih
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
  definitions=2023-06-13_19,2023-06-12_02,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- impostorscore=0 mlxscore=0 suspectscore=0 mlxlogscore=999 phishscore=0
- malwarescore=0 lowpriorityscore=0 bulkscore=0 clxscore=1015 adultscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ mlxlogscore=999 suspectscore=0 mlxscore=0 adultscore=0 spamscore=0
+ phishscore=0 malwarescore=0 bulkscore=0 lowpriorityscore=0 clxscore=1015
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2305260000 definitions=main-2306130151
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -101,134 +94,133 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, dave.hansen@linux.intel.com, x86@kernel.org, mingo@redhat.com, bp@alien8.de, linuxppc-dev@lists.ozlabs.org
+Cc: Brian King <brking@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/06/2023 23:26:18, Thomas Gleixner wrote:
-> On Thu, May 25 2023 at 01:56, Michael Ellerman wrote:
->>  #ifdef CONFIG_HOTPLUG_SMT
->>  enum cpuhp_smt_control cpu_smt_control __read_mostly = CPU_SMT_ENABLED;
->> +static unsigned int cpu_smt_max_threads __ro_after_init;
->> +unsigned int cpu_smt_num_threads;
-> 
-> Why needs this to be global? cpu_smt_control is pointlessly global already.
+Hello Michael,
 
-I agree that cpu_smt_*_threads should be static.
+I found this bug while going though the code. This bug is exposed when 
+DDW is smaller than the max memory of the LPAR. This will result in 
+creating DDW which will have Dynamically mapped TCEs (no direct mapping).
 
-Howwever, regarding cpu_smt_control, it is used in 2 places in the x86 code:
- - arch/x86/power/hibernate.c in arch_resume_nosmt()
- - arch/x86/kernel/cpu/bugs.c in spectre_v2_user_select_mitigation()
+I would like to stress that this  bug is exposed only in Upstream 
+kernel. Current kernel level in Distros are not exposed to this since 
+they don't have the  concept of "dynamically mapped" DDW.
 
-An accessor function may be introduced to read that value in these 2
-functions, but I'm wondering if that's really the best option.
+I didn't have access to any of the P10 boxes with large amount of memory 
+to  re-create the scenario. On P10 we have 2MB TCEs, which results in 
+DDW large enough to be able to cover  max memory I could have for the 
+LPAR. As a result,  IO Bus Addresses generated were always within DDW 
+limits and no H_PARAMETER was returned by HCALL.
 
-Unless there is a real need to change this through this series, I think
-cpu_smt_control can remain global.
+So, I hacked the kernel to force the use of 64K TCEs. This resulted in 
+DDW smaller than max memory.
 
-Thomas, are you ok with that?
+When I tried to DLPAR ADD memory, it failed with error code of -4 
+(H_PARAMETER) from HCALL (H_PUT_TCE/H_PUT_TCE_INDIRECT), when 
+iommu_mem_notifier() invoked tce_setrange_multi_pSeriesLP().
 
-> 
->>  void __init cpu_smt_disable(bool force)
->>  {
->> @@ -433,10 +435,18 @@ void __init cpu_smt_disable(bool force)
->>   * The decision whether SMT is supported can only be done after the full
->>   * CPU identification. Called from architecture code.
->>   */
->> -void __init cpu_smt_check_topology(void)
->> +void __init cpu_smt_check_topology(unsigned int num_threads)
->>  {
->>  	if (!topology_smt_supported())
->>  		cpu_smt_control = CPU_SMT_NOT_SUPPORTED;
->> +
->> +	cpu_smt_max_threads = num_threads;
->> +
->> +	// May already be disabled by nosmt command line parameter
->> +	if (cpu_smt_control != CPU_SMT_ENABLED)
->> +		cpu_smt_num_threads = 1;
->> +	else
->> +		cpu_smt_num_threads = num_threads;
-> 
-> Taking Laurents findings into account this should be something like
-> the incomplete below.
-> 
-> x86 would simply invoke cpu_smt_set_num_threads() with both arguments as
-> smp_num_siblings while PPC can funnel its command line parameter through
-> the num_threads argument.
-
-I do prefer cpu_smt_set_num_threads() also.
+I didn't test the DLPAR REMOVE path, to verify if incorrect TCEs are 
+removed by tce_clearrange_multi_pSeriesLP(), since I would need to hack 
+kernel to force dynamically added TCEs to the high IO Bus Addresses. 
+But, the concept is  same.
 
 Thanks,
-Laurent
 
-> 
-> Thanks,
-> 
->         tglx
+Gaurav
+
+On 6/13/23 12:16 PM, Gaurav Batra wrote:
+> When memory is dynamically added/removed, iommu_mem_notifier() is invoked. This
+> routine traverses through all the DMA windows (DDW only, not default windows)
+> to add/remove "direct" TCE mappings. The routines for this purpose are
+> tce_clearrange_multi_pSeriesLP() and tce_clearrange_multi_pSeriesLP().
+>
+> Both these routines are designed for Direct mapped DMA windows only.
+>
+> The issue is that there could be some DMA windows in the list which are not
+> "direct" mapped. Calling these routines will either,
+>
+> 1) remove some dynamically mapped TCEs, Or
+> 2) try to add TCEs which are out of bounds and HCALL returns H_PARAMETER
+>
+> Here are the side affects when these routines are incorrectly invoked for
+> "dynamically" mapped DMA windows.
+>
+> tce_setrange_multi_pSeriesLP()
+>
+> This adds direct mapped TCEs. Now, this could invoke HCALL to add TCEs with
+> out-of-bound range. In this scenario, HCALL will return H_PARAMETER and DLAR
+> ADD of memory will fail.
+>
+> tce_clearrange_multi_pSeriesLP()
+>
+> This will remove range of TCEs. The TCE range that is calculated, depending on
+> the memory range being added, could infact be mapping some other memory
+> address (for dynamic DMA window scenario). This will wipe out those TCEs.
+>
+> The solution is for iommu_mem_notifier() to only invoke these routines for
+> "direct" mapped DMA windows.
+>
+> Signed-off-by: Gaurav Batra <gbatra@linux.vnet.ibm.com>
+> Reviewed-by: Brian King <brking@linux.vnet.ibm.com>
 > ---
-> --- a/kernel/cpu.c
-> +++ b/kernel/cpu.c
-> @@ -414,6 +414,8 @@ void __weak arch_smt_update(void) { }
->  
->  #ifdef CONFIG_HOTPLUG_SMT
->  enum cpuhp_smt_control cpu_smt_control __read_mostly = CPU_SMT_ENABLED;
-> +static unsigned int cpu_smt_max_threads __ro_after_init;
-> +static unsigned int cpu_smt_num_threads = UINT_MAX;
->  
->  void __init cpu_smt_disable(bool force)
->  {
-> @@ -427,24 +429,31 @@ void __init cpu_smt_disable(bool force)
->  		pr_info("SMT: disabled\n");
->  		cpu_smt_control = CPU_SMT_DISABLED;
->  	}
-> +	cpu_smt_num_threads = 1;
->  }
->  
->  /*
->   * The decision whether SMT is supported can only be done after the full
->   * CPU identification. Called from architecture code.
->   */
-> -void __init cpu_smt_check_topology(void)
-> +void __init cpu_smt_set_num_threads(unsigned int max_threads, unsigned int num_threads)
->  {
-> -	if (!topology_smt_supported())
-> +	if (max_threads == 1)
->  		cpu_smt_control = CPU_SMT_NOT_SUPPORTED;
-> -}
->  
-> -static int __init smt_cmdline_disable(char *str)
-> -{
-> -	cpu_smt_disable(str && !strcmp(str, "force"));
-> -	return 0;
-> +	cpu_smt_max_threads = max_threads;
+>   arch/powerpc/platforms/pseries/iommu.c | 17 +++++++++++++----
+>   1 file changed, 13 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+> index 918f511837db..24dd61636400 100644
+> --- a/arch/powerpc/platforms/pseries/iommu.c
+> +++ b/arch/powerpc/platforms/pseries/iommu.c
+> @@ -363,6 +363,7 @@ struct dynamic_dma_window_prop {
+>   struct dma_win {
+>   	struct device_node *device;
+>   	const struct dynamic_dma_window_prop *prop;
+> +	bool    direct;
+>   	struct list_head list;
+>   };
+>
+> @@ -1409,6 +1410,8 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>   		goto out_del_prop;
+>
+>   	if (direct_mapping) {
+> +		window->direct = true;
 > +
-> +	/*
-> +	 * If SMT has been disabled via the kernel command line or SMT is
-> +	 * not supported, set cpu_smt_num_threads to 1 for consistency.
-> +	 * If enabled, take the architecture requested number of threads
-> +	 * to bring up into account.
-> +	 */
-> +	if (cpu_smt_control != CPU_SMT_ENABLED)
-> +		cpu_smt_num_threads = 1;
-> +	else if (num_threads < cpu_smt_num_threads)
-> +		cpu_smt_num_threads = num_threads;
->  }
-> -early_param("nosmt", smt_cmdline_disable);
->  
->  static inline bool cpu_smt_allowed(unsigned int cpu)
->  {
-> @@ -463,6 +472,13 @@ static inline bool cpu_smt_allowed(unsig
->  	return !cpumask_test_cpu(cpu, &cpus_booted_once_mask);
->  }
->  
-> +static int __init smt_cmdline_disable(char *str)
-> +{
-> +	cpu_smt_disable(str && !strcmp(str, "force"));
-> +	return 0;
-> +}
-> +early_param("nosmt", smt_cmdline_disable);
+>   		/* DDW maps the whole partition, so enable direct DMA mapping */
+>   		ret = walk_system_ram_range(0, memblock_end_of_DRAM() >> PAGE_SHIFT,
+>   					    win64->value, tce_setrange_multi_pSeriesLP_walk);
+> @@ -1425,6 +1428,8 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>   		int i;
+>   		unsigned long start = 0, end = 0;
+>
+> +		window->direct = false;
 > +
->  /* Returns true if SMT is not supported of forcefully (irreversibly) disabled */
->  bool cpu_smt_possible(void)
->  {
-
+>   		for (i = 0; i < ARRAY_SIZE(pci->phb->mem_resources); i++) {
+>   			const unsigned long mask = IORESOURCE_MEM_64 | IORESOURCE_MEM;
+>
+> @@ -1587,8 +1592,10 @@ static int iommu_mem_notifier(struct notifier_block *nb, unsigned long action,
+>   	case MEM_GOING_ONLINE:
+>   		spin_lock(&dma_win_list_lock);
+>   		list_for_each_entry(window, &dma_win_list, list) {
+> -			ret |= tce_setrange_multi_pSeriesLP(arg->start_pfn,
+> -					arg->nr_pages, window->prop);
+> +			if (window->direct) {
+> +				ret |= tce_setrange_multi_pSeriesLP(arg->start_pfn,
+> +						arg->nr_pages, window->prop);
+> +			}
+>   			/* XXX log error */
+>   		}
+>   		spin_unlock(&dma_win_list_lock);
+> @@ -1597,8 +1604,10 @@ static int iommu_mem_notifier(struct notifier_block *nb, unsigned long action,
+>   	case MEM_OFFLINE:
+>   		spin_lock(&dma_win_list_lock);
+>   		list_for_each_entry(window, &dma_win_list, list) {
+> -			ret |= tce_clearrange_multi_pSeriesLP(arg->start_pfn,
+> -					arg->nr_pages, window->prop);
+> +			if (window->direct) {
+> +				ret |= tce_clearrange_multi_pSeriesLP(arg->start_pfn,
+> +						arg->nr_pages, window->prop);
+> +			}
+>   			/* XXX log error */
+>   		}
+>   		spin_unlock(&dma_win_list_lock);
