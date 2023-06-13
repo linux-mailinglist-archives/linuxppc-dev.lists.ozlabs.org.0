@@ -1,61 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A530172EB48
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jun 2023 20:55:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B827672EB8A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jun 2023 21:05:48 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=YozCldYN;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=l6BZB5sr;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=UteSpuaA;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qgd5t3b9Dz30fF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 04:54:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QgdLL4Y3Yz3bTV
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 05:05:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=YozCldYN;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=l6BZB5sr;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=UteSpuaA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 94753 seconds by postgrey-1.37 at boromir; Wed, 14 Jun 2023 04:54:09 AEST
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=95.215.58.25; helo=out-25.mta1.migadu.com; envelope-from=kent.overstreet@linux.dev; receiver=lists.ozlabs.org)
+X-Greylist: delayed 489 seconds by postgrey-1.37 at boromir; Wed, 14 Jun 2023 05:04:53 AEST
+Received: from out-25.mta1.migadu.com (out-25.mta1.migadu.com [95.215.58.25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qgd4x1Hhlz30LQ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jun 2023 04:54:09 +1000 (AEST)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1686682437;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QgdKK3J7Wz2y1T
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jun 2023 05:04:52 +1000 (AEST)
+Date: Tue, 13 Jun 2023 14:56:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1686682581;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cdtlI8O+BR0qXbj58jg6FvKGaw0Wgflhz7GcVSQmqTs=;
-	b=YozCldYNSkvTr+p9N13aPfwrZCetTLmVfUgIMbRgkvTdFFB+KsP7Bc/nFSb3Aypyiv3CtJ
-	HiuQX/BkK7i+txHUJVO80Cn39d+oKpyNlYvhUF6GtTt/iEmIeLnL4hHBqe9qfjvYA8icZW
-	JNHNPfIj64QFoIrIGtcCm13NRVIint6VhQQnicYv56ihWKYgciJBCzhZPAkHZaFFBXXc1A
-	8607gVBbh+RzZYZJD+9BxOzRVoHJ/rUVtqyFpu3qlIjx34p5HeSyUYw2Z62Fs7yM4TdSfE
-	uLF4gJ6HFLP7AbKgTVN3BrFWVDHbfFUnF1+bUBT4A5G674zBIhW963/HDlYDgA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1686682437;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cdtlI8O+BR0qXbj58jg6FvKGaw0Wgflhz7GcVSQmqTs=;
-	b=l6BZB5sr7NAcDi+r4y/BXgbOdgHhlHQ9Vb1NshrItcfbmq+cZw4PchfvnAucey7KgaZUrI
-	PGUXnPawzxE9tdAg==
-To: Laurent Dufour <ldufour@linux.ibm.com>, Michael Ellerman
- <mpe@ellerman.id.au>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/9] cpu/SMT: Store the current/max number of threads
-In-Reply-To: <d42e9452-8210-a06a-4c91-6c2f1d038a61@linux.ibm.com>
-References: <20230524155630.794584-1-mpe@ellerman.id.au>
- <20230524155630.794584-3-mpe@ellerman.id.au> <87fs6z80w5.ffs@tglx>
- <d42e9452-8210-a06a-4c91-6c2f1d038a61@linux.ibm.com>
-Date: Tue, 13 Jun 2023 20:53:56 +0200
-Message-ID: <87sfav5h2z.ffs@tglx>
+	bh=cI/+VKexODe7tgazUH0uBbszHN+Sh5VjQJKMcYicSKU=;
+	b=UteSpuaAfbQ2NCJDHT0DaE6LH+0KCxqxliA1u1CiHpYLEp/BHx0yHT4z2wyOm1k0K155IH
+	1TdtqXMsJtk9bqAzUZ31aQXTksL2s2n1Q4RGfHebraQUDr3MhWO8yy+4wsaox2mGxQ3YRe
+	XgmITo5ci4OCni1zywcC85bIuHv1vdI=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: Mike Rapoport <rppt@kernel.org>
+Subject: Re: [PATCH 00/13] mm: jit/text allocator
+Message-ID: <ZIi7zmey0w61EG25@moria.home.lan>
+References: <20230601101257.530867-1-rppt@kernel.org>
+ <ZHjDU/mxE+cugpLj@FVFF77S0Q05N.cambridge.arm.com>
+ <ZHjgIH3aX9dCvVZc@moria.home.lan>
+ <ZHm3zUUbwqlsZBBF@FVFF77S0Q05N>
+ <20230605092040.GB3460@kernel.org>
+ <ZH20XkD74prrdN4u@FVFF77S0Q05N>
+ <CAPhsuW7ntn_HpVWdGK_hYVd3zsPEFToBNfmtt0m6K8SwfxJ66Q@mail.gmail.com>
+ <20230608184116.GJ52412@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230608184116.GJ52412@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,36 +64,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, dave.hansen@linux.intel.com, x86@kernel.org, mingo@redhat.com, bp@alien8.de, linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>, x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linux-trace-kernel@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Andrew Morton <akpm@linux-foundation.org>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ "David S. Miller" <davem@davemloft.net>, linux-modules@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 13 2023 at 19:16, Laurent Dufour wrote:
-> On 10/06/2023 23:26:18, Thomas Gleixner wrote:
->> On Thu, May 25 2023 at 01:56, Michael Ellerman wrote:
->>>  #ifdef CONFIG_HOTPLUG_SMT
->>>  enum cpuhp_smt_control cpu_smt_control __read_mostly = CPU_SMT_ENABLED;
->>> +static unsigned int cpu_smt_max_threads __ro_after_init;
->>> +unsigned int cpu_smt_num_threads;
->> 
->> Why needs this to be global? cpu_smt_control is pointlessly global already.
->
-> I agree that cpu_smt_*_threads should be static.
->
-> Howwever, regarding cpu_smt_control, it is used in 2 places in the x86 code:
->  - arch/x86/power/hibernate.c in arch_resume_nosmt()
->  - arch/x86/kernel/cpu/bugs.c in spectre_v2_user_select_mitigation()
+On Thu, Jun 08, 2023 at 09:41:16PM +0300, Mike Rapoport wrote:
+> On Tue, Jun 06, 2023 at 11:21:59AM -0700, Song Liu wrote:
+> > On Mon, Jun 5, 2023 at 3:09 AM Mark Rutland <mark.rutland@arm.com> wrote:
+> > 
+> > [...]
+> > 
+> > > > > > Can you give more detail on what parameters you need? If the only extra
+> > > > > > parameter is just "does this allocation need to live close to kernel
+> > > > > > text", that's not that big of a deal.
+> > > > >
+> > > > > My thinking was that we at least need the start + end for each caller. That
+> > > > > might be it, tbh.
+> > > >
+> > > > Do you mean that modules will have something like
+> > > >
+> > > >       jit_text_alloc(size, MODULES_START, MODULES_END);
+> > > >
+> > > > and kprobes will have
+> > > >
+> > > >       jit_text_alloc(size, KPROBES_START, KPROBES_END);
+> > > > ?
+> > >
+> > > Yes.
+> > 
+> > How about we start with two APIs:
+> >      jit_text_alloc(size);
+> >      jit_text_alloc_range(size, start, end);
+> > 
+> > AFAICT, arm64 is the only arch that requires the latter API. And TBH, I am
+> > not quite convinced it is needed.
+>  
+> Right now arm64 and riscv override bpf and kprobes allocations to use the
+> entire vmalloc address space, but having the ability to allocate generated
+> code outside of modules area may be useful for other architectures.
+> 
+> Still the start + end for the callers feels backwards to me because the
+> callers do not define the ranges, but rather the architectures, so we still
+> need a way for architectures to define how they want allocate memory for
+> the generated code.
 
-Bah. I must have fatfingered the grep then.
-
-> An accessor function may be introduced to read that value in these 2
-> functions, but I'm wondering if that's really the best option.
->
-> Unless there is a real need to change this through this series, I think
-> cpu_smt_control can remain global.
-
-That's fine.
-
-Thanks,
-
-        tglx
+So, the start + end just comes from the need to keep relative pointers
+under a certain size. I think this could be just a flag, I see no reason
+to expose actual addresses here.
