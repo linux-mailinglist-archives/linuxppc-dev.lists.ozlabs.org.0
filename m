@@ -2,49 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAC5772D9CA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jun 2023 08:22:13 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=p257LeXX;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 05C7B72DAB6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jun 2023 09:24:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QgJPH42l7z30FN
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jun 2023 16:22:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QgKnT6MJGz30gp
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jun 2023 17:24:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=p257LeXX;
-	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33; helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=lists.ozlabs.org)
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QgJNK3D2bz2yyc
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jun 2023 16:21:21 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QgJNJ3Ywbz4x3y;
-	Tue, 13 Jun 2023 16:21:20 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-	s=201702; t=1686637281;
-	bh=09oLrHGEmpgpyTpLPSc4jHEwyd/VNs8IHZbmFF1qxD0=;
-	h=Date:From:To:Cc:Subject:From;
-	b=p257LeXXti8Ytj43puEZXiR0jOqqbg0HzOPzCYhgkkV3Umbssxt9OYv6TIyHfy8sP
-	 rlbDjbti7oFaeDP7lv5IZugyvCsDKiwrYRo6CWzoFiM/cJkmyfhUL0efoXJHC53Q+5
-	 WtRuofXTdsvB/FRX8aWjwmKEUx8empsTq6wNg7DoQJ2iqeMoI2vcdiUS5gvDGJnxM7
-	 DdKqGhm//56jaI/4d++oZ0aHn8qJAgO0YWF7IAyM4Ff835NO2FxseN6yiE7Vp5p0HZ
-	 AhobZSuNsaYkLYCcPG9cqWFtmzTe658dKg9ncvgD992nkIkg16w2V5BF49DXsqkLGv
-	 FyE6vTLL9DLxA==
-Date: Tue, 13 Jun 2023 16:21:19 +1000
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: linux-next: build failure after merge of the mm tree
-Message-ID: <20230613162119.4a7a7d3c@canb.auug.org.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QgKmy1WF0z2xpr
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jun 2023 17:24:18 +1000 (AEST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1q8yE6-000778-SV; Tue, 13 Jun 2023 09:14:02 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1q8yE2-0074Rm-9T; Tue, 13 Jun 2023 09:13:58 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1q8yE1-00DnL1-Dv; Tue, 13 Jun 2023 09:13:57 +0200
+Date: Tue, 13 Jun 2023 09:13:56 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Michael Ellerman <mpe@ellerman.id.au>, Scott Wood <oss@buserror.net>
+Subject: Re: [PATCH] powerpc: Switch i2c drivers back to use .probe()
+Message-ID: <20230613071356.xxdl2asqrev6be7x@pengutronix.de>
+References: <20230525205622.734093-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/IxEZ4RJthVOEGv9b4i2lpKw";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ut2kuzp24f4s5kaa"
+Content-Disposition: inline
+In-Reply-To: <20230525205622.734093-1-u.kleine-koenig@pengutronix.de>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,102 +54,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Linux Next Mailing List <linux-next@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>, Rob Herring <robh@kernel.org>, Crt Mori <cmo@melexis.com>, Liang He <windhl@126.com>, Nicholas Piggin <npiggin@gmail.com>, kernel@pengutronix.de, Hans Verkuil <hverkuil-cisco@xs4all.nl>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/IxEZ4RJthVOEGv9b4i2lpKw
-Content-Type: text/plain; charset=US-ASCII
+
+--ut2kuzp24f4s5kaa
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi all,
+Hello,
 
-After merging the mm tree, today's linux-next build (powerpc
-ppc44x_defconfig) failed like this:
+On Thu, May 25, 2023 at 10:56:22PM +0200, Uwe Kleine-K=F6nig wrote:
+> After commit b8a1a4cd5a98 ("i2c: Provide a temporary .probe_new()
+> call-back type"), all drivers being converted to .probe_new() and then
+> 03c835f498b5 ("i2c: Switch .probe() to not take an id parameter")
+> convert back to (the new) .probe() to be able to eventually drop
+> .probe_new() from struct i2c_driver.
+>=20
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
 
-In file included from arch/powerpc/include/asm/page.h:247,
-                 from arch/powerpc/include/asm/thread_info.h:13,
-                 from include/linux/thread_info.h:60,
-                 from include/asm-generic/preempt.h:5,
-                 from ./arch/powerpc/include/generated/asm/preempt.h:1,
-                 from include/linux/preempt.h:78,
-                 from include/linux/spinlock.h:56,
-                 from include/linux/ipc.h:5,
-                 from include/uapi/linux/sem.h:5,
-                 from include/linux/sem.h:5,
-                 from include/linux/compat.h:14,
-                 from arch/powerpc/kernel/asm-offsets.c:12:
-arch/powerpc/include/asm/page_32.h:16: warning: "ARCH_DMA_MINALIGN" redefin=
-ed
-   16 | #define ARCH_DMA_MINALIGN       L1_CACHE_BYTES
-      |=20
-In file included from include/linux/time.h:5,
-                 from include/linux/compat.h:10:
-include/linux/cache.h:104: note: this is the location of the previous defin=
-ition
-  104 | #define ARCH_DMA_MINALIGN __alignof__(unsigned long long)
-      |=20
+Is there a chance to get this patch in before v6.5-rc1? I intend to
+complete the conversion (i.e. drop .probe_new() from struct i2c_driver)
+after v6.5-rc1. If this patch doesn't make it in, I'd include it in a
+pull request for Wolfram's i2c tree early after v6.5-rc1. So if you
+don't take it any more for the upcoming merge window, an ack would be
+great.
 
-(lots of theses)
-
-Caused by commit
-
-  cc7335787e73 ("mm/slab: decouple ARCH_KMALLOC_MINALIGN from ARCH_DMA_MINA=
-LIGN")
-
-I have applied the following hack for today - we need something better.
-
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-Date: Tue, 13 Jun 2023 16:07:16 +1000
-Subject: [PATCH] fix up for "mm/slab: decouple ARCH_KMALLOC_MINALIGN from A=
-RCH_DMA_MINALIGN"
-
-Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
----
- arch/powerpc/include/asm/cache.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
-
-diff --git a/arch/powerpc/include/asm/cache.h b/arch/powerpc/include/asm/ca=
-che.h
-index ae0a68a838e8..e9be1396dfd1 100644
---- a/arch/powerpc/include/asm/cache.h
-+++ b/arch/powerpc/include/asm/cache.h
-@@ -142,5 +142,14 @@ static inline void iccci(void *addr)
- }
-=20
- #endif /* !__ASSEMBLY__ */
-+
-+#ifndef __powerpc64__
-+#ifdef CONFIG_NOT_COHERENT_CACHE
-+#ifndef ARCH_DMA_MINALIGN
-+#define ARCH_DMA_MINALIGN	L1_CACHE_BYTES
-+#endif
-+#endif
-+#endif
-+
- #endif /* __KERNEL__ */
- #endif /* _ASM_POWERPC_CACHE_H */
---=20
-2.39.2
+Best regards
+Uwe
 
 --=20
-Cheers,
-Stephen Rothwell
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
---Sig_/IxEZ4RJthVOEGv9b4i2lpKw
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+--ut2kuzp24f4s5kaa
+Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmSICt8ACgkQAVBC80lX
-0Gyh2gf/VSu16R9zpGg+AreGcHAXLfhTsn75srJGOYEEWqZPPHTW9DZUzOz1IavK
-bf4fb8hYVMrLMHrDMJyLENSBxgTdflaDLrifPRkZymuWhkIwRChFPz7na1i8LY93
-xo1yrKyYQqH1OEz5lJ3Kd3aXqIRH5dnnpT7Y1LxpmSPVPE+rQvg7PStaokJhgpeX
-o6Lv3dnNFwCPtse2bB1EugDaZL+tm9Jj7c8srAT/qtJHjtT6U9NvOnAhWDdB9S+B
-Xn7SxZBTA2W0ehVqHFdQtYiXoQONYiG8ILx3MIvGzwKN1YoO2XgsmC70uuVCUzUO
-s6MVpN2Bz305ZseGeBP1mzdz2YPl6w==
-=p8mM
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmSIFzMACgkQj4D7WH0S
+/k4JCQgAud2f5LiMgnZwzyy+ZDZyS2nc/AISel2RNS5oc/uEQhkUgApD4CqzFDAO
+wR7lv5t/42MF+5EVTlf8sd6g2NqyAo4NG11eCKrYfqjDgihAXdS+tDG/RVL1/6Re
+m6+ErUd1GwEfml3SaIgoKMqLpaTThIEybby3rzEGC9EByRO3PDQUzTTi/T7pjOAT
+/6cqq7/79/NOeUtK37kTXi1CC54Yj/hUyCm2Dol90oS1WPQQ86jywLY8UyztpuFq
+Wo8YHq9rAnWh+WE//wza/p6Xx0ZPILiSWUfb/sKcedVMJSiMhrVk4bvhRLDJVqk2
+b4hTKkppq9nezvVQMd3cqMThfPidiw==
+=NmuJ
 -----END PGP SIGNATURE-----
 
---Sig_/IxEZ4RJthVOEGv9b4i2lpKw--
+--ut2kuzp24f4s5kaa--
