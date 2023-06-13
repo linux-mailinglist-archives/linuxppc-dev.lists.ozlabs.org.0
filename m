@@ -1,52 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3212972E428
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jun 2023 15:32:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71AE472E4C2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jun 2023 16:00:32 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ecExd3Id;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=eKpzzlWj;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QgTy00s98z30MS
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jun 2023 23:32:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QgVZ61vl8z30KG
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 00:00:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ecExd3Id;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=eKpzzlWj;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QgTx51m8vz301c
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jun 2023 23:31:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QgVY43bT6z30KG
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jun 2023 23:59:36 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QgTww0NYGz4x4F;
-	Tue, 13 Jun 2023 23:31:43 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QgVXz3ttHz4x4K;
+	Tue, 13 Jun 2023 23:59:31 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1686663112;
-	bh=26xyDyXLr2R9oIQudjRYuumJylpFB2DfYjVBeh6Bfjo=;
+	s=201909; t=1686664771;
+	bh=qeOcEDnDN945pMMvmrh1wNRFwjAqyAaIZMYoZ0m5sjw=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=ecExd3IdIr19iytscT8t47baEmFlYjtzeoR4KlaOZcdUtKZeRK4gIAlWkrmJnS+4a
-	 GG+21ow407VloXJ6EC0uC6MFNKmjV/6HpTI3DK3OVCM5g5V2VOEJtzRxHI338f7Elm
-	 Ng/ar2ndwAnnhazUlq7LOpsJe9Mi9eUtS2B06diFiw4KkSFZYwswcR3R+Le7fcKG1G
-	 BhEHlzH7INj+uFvqNAry5BR8IY7pC57shGOiAp6w+6VA8BU+4ttXTEtb/NjMmcPjbD
-	 P/yynncDng/VvFvpvSrIpVkcXD6S87Gqct1OHBZv3lk4F63mGLsHK4yK/QgulLJQ26
-	 VP+Jb/nOUYmzQ==
+	b=eKpzzlWjiugEtwtDdCn/aKpfRi/PI3eXqv+JJk26mUUbEBpVDC4DEc7F6CKWec45M
+	 xJJlIecHH4m3MZM0aQbNuSvOmPWUod2vHg4bGw02jKCADLy68T2CTm54lY/Qeb6nig
+	 1wFMndaP7a+m9OG4rwoF0CEmrzRemIq+VYrgs1sOXjrH6Hr4qXvNAFJRjDbexNd84y
+	 9eQJBWB0QaTbdpgexg3A5pK5/skVtNMrvVO56SGwtvlVe6zWg4eUtpcvtsIpBoo9gq
+	 GsPQHauw5LkzUud2K0i9r0jPXTtYN7ZLzccR5YWRlK/w3DnVBUm//GcoK3GKbdawJo
+	 7hlwbrUlWVAXQ==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- Benjamin
- Herrenschmidt <benh@kernel.crashing.org>
-Subject: Re: [PATCH] macintosh: Switch i2c drivers back to use .probe()
-In-Reply-To: <20230613072044.gqyzostj4yu6yxo4@pengutronix.de>
-References: <20230523195053.464138-1-u.kleine-koenig@pengutronix.de>
- <20230613072044.gqyzostj4yu6yxo4@pengutronix.de>
-Date: Tue, 13 Jun 2023 23:31:39 +1000
-Message-ID: <871qifh4jo.fsf@mail.lhotse>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 4/4] powerpc/64s: Use POWER10 stsync barrier for wmb()
+In-Reply-To: <20230609100026.8946-4-npiggin@gmail.com>
+References: <20230609100026.8946-1-npiggin@gmail.com>
+ <20230609100026.8946-4-npiggin@gmail.com>
+Date: Tue, 13 Jun 2023 23:59:31 +1000
+Message-ID: <87wn07foos.fsf@mail.lhotse>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -61,40 +59,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Corey Minyard <cminyard@mvista.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, Ajay Gupta <ajayg@nvidia.com>, Peter Senna Tschudin <peter.senna@gmail.com>, Sebastian Reichel <sebastian.reichel@collabora.com>, Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Liang He <windhl@126.com>, Jean Delvare <jdelvare@suse.de>, Javier Martinez Canillas <javierm@redhat.com>, Adrien Grassein <adrien.grassein@gmail.com>, Nathan Chancellor <nathan@kernel.org>, Colin Leroy <colin@colino.net>, Krzysztof =?utf-8?Q?Ha=C5=82asa?= <khalasa@piap.pl>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Petr Machata <petrm@nvidia.com>, Maximilian Luz <luzmaximilian@gmail.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, Wolfram Sang <wsa@kernel.org>, kernel@pengutronix.de, Hans Verkuil <hverkuil-cisco@xs4all.nl>, linuxppc-dev@lists.ozlabs.org, Peter Rosin <peda@axentia.se>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de> writes:
-> On Tue, May 23, 2023 at 09:50:53PM +0200, Uwe Kleine-K=C3=B6nig wrote:
->> After commit b8a1a4cd5a98 ("i2c: Provide a temporary .probe_new()
->> call-back type"), all drivers being converted to .probe_new() and then
->> 03c835f498b5 ("i2c: Switch .probe() to not take an id parameter") convert
->> back to (the new) .probe() to be able to eventually drop .probe_new() fr=
-om
->> struct i2c_driver.
->>=20
->> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
->> ---
->> Hello,
->>=20
->> this patch was generated using coccinelle, but I aligned the result to
->> the per-file indention.
->>=20
->> I chose to convert all drivers below drivers/macintosh in a single
->> patch, but if you prefer I can split by driver.
->>=20
->> v6.4-rc1 was taken as a base, as there are no commits in next touching
->> drivers/macintosh I don't expect problems when applying this patch. If
->> conflicts arise until this is applied, feel free to just drop the files
->> with conflicts from this patch. I'll care about the fallout later then.
->>=20
->> Also note there is no coordination necessary with the i2c tree. Dropping
->> .probe_new() will happen only when all (or most) drivers are converted,
->> which will happen after v6.5-rc1 for sure.
+Nicholas Piggin <npiggin@gmail.com> writes:
+> The most expensive ordering for hwsync to provide is the store-load
+> barrier, because all prior stores have to be drained to the caches
+> before subsequent instructions can complete.
 >
-> Can someone still pick up this patch for v6.5-rc1?
+> stsync just orders stores which means it can just be a barrer that
+> goes down the store queue and orders draining, and does not prevent
+> completion of subsequent instructions. So it should be faster than
+> hwsync.
+>
+> Use stsync for wmb(). Older processors that don't recognise the SC
+> field should treat this as hwsync.
 
-Yes, I will.
+qemu (7.1) emulating ppc64e does not :/
+
+  mpic: Setting up MPIC " OpenPIC  " version 1.2 at fe0040000, max 1 CPUs
+  mpic: ISU size: 256, shift: 8, mask: ff
+  mpic: Initializing for 256 sources
+  Oops: Exception in kernel mode, sig: 4 [#1]
+
+No more output.
+
+(qemu) info registers                                                      =
+                                          =E2=94=82
+NIP c000000000df4264   LR c0000000000ce49c CTR 0000000000000000 XER 0000000=
+020000000 CPU#0                           =E2=94=82
+MSR 0000000080001000 HID0 0000000000000000  HF 24020006 iidx 1 didx 1      =
+                                          =E2=94=82
+...
+ SRR0 c0000000000ce7c4  SRR1 0000000080081000    PVR 0000000080240020 VRSAV=
+E 0000000000000000
+
+$ objdump -d vmlinux | grep c0000000000ce7c4
+c0000000000ce7c4:       7c 03 04 ac     stsync
+
+
+That's qemu -M ppce500 -cpu e5500 or e6500.
+
+I guess just put it behind an #ifdef 64S.
 
 cheers
