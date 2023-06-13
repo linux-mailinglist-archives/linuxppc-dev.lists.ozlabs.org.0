@@ -1,50 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F371F72DAB1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jun 2023 09:21:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E57AB72DAD4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jun 2023 09:29:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QgKk86rRWz30XP
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jun 2023 17:21:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QgKv95L4Pz30P4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jun 2023 17:29:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33; helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 416 seconds by postgrey-1.37 at boromir; Tue, 13 Jun 2023 17:21:25 AEST
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.128.182; helo=mail-yw1-f182.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QgKjd1RX1z30Dm
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jun 2023 17:21:24 +1000 (AEST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1q8yKi-0008JZ-2f; Tue, 13 Jun 2023 09:20:52 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1q8yKc-0074SF-7G; Tue, 13 Jun 2023 09:20:46 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1q8yKb-00DnMo-Ex; Tue, 13 Jun 2023 09:20:45 +0200
-Date: Tue, 13 Jun 2023 09:20:44 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] macintosh: Switch i2c drivers back to use .probe()
-Message-ID: <20230613072044.gqyzostj4yu6yxo4@pengutronix.de>
-References: <20230523195053.464138-1-u.kleine-koenig@pengutronix.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QgKtd1PwSz2xpr
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jun 2023 17:29:12 +1000 (AEST)
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-56cf913434cso35945277b3.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jun 2023 00:29:12 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686641350; x=1689233350;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gKEzJjzBKla4S0x8jxwIAxVSx314J/aF9PC4BBXNBUc=;
+        b=fejkSW0sLrzbPs6Ulkds0tcTQPjzc97P9MErKFDmSYMfEOs3qVyr3IjZRURY/eIS9o
+         9CkHtcC8q19qzB1s7y3EQnH+y1oxZ+sB88np+q75UlLoJlzhPNsTarJegxmvapWys08O
+         67aR4pbfTZFQHoPfK61IPkrDp+PkyyI4+N2C8omRvZ6jSUNbeWpWHzOypqhwUyvITzmQ
+         ea4IgVvxCrqSemEzPzkIrQ4ot4mz3+Ar6KQ4hdvPorJ8n0wUjb9nh03Zvu6VcrSw9ggB
+         jNPTJMH/9e17yuf2x/m/2OB/Ky/M2r2OXFEAlMl3z+395cpjazvn2YveS3hztKNA1CwT
+         ctwA==
+X-Gm-Message-State: AC+VfDyN02BEhBHlXoJ9cTYjSdveYqBidQS/385JP4iT/nx7H32ns7G6
+	LHPgkcvXXtVCYR3VfJb02nvZ0Jtkhrrv+g==
+X-Google-Smtp-Source: ACHHUZ59prt2KRtRzaT9wi4AmAF7pVqqgcKWcExbw+pJdgQKrJQ2aMMyH7JZyPGHZTEk97E20cgHeA==
+X-Received: by 2002:a0d:d245:0:b0:565:9fc7:9330 with SMTP id u66-20020a0dd245000000b005659fc79330mr1062502ywd.17.1686641349703;
+        Tue, 13 Jun 2023 00:29:09 -0700 (PDT)
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com. [209.85.128.171])
+        by smtp.gmail.com with ESMTPSA id t202-20020a8183d3000000b005619cfb1b88sm3057823ywf.52.2023.06.13.00.29.08
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 Jun 2023 00:29:08 -0700 (PDT)
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-56cf913434cso35945077b3.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jun 2023 00:29:08 -0700 (PDT)
+X-Received: by 2002:a0d:d611:0:b0:56d:ddc:cdbb with SMTP id
+ y17-20020a0dd611000000b0056d0ddccdbbmr1077781ywd.25.1686641348561; Tue, 13
+ Jun 2023 00:29:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ay2stk2d4e4ube37"
-Content-Disposition: inline
-In-Reply-To: <20230523195053.464138-1-u.kleine-koenig@pengutronix.de>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+References: <20230612210423.18611-1-vishal.moola@gmail.com> <20230612210423.18611-26-vishal.moola@gmail.com>
+In-Reply-To: <20230612210423.18611-26-vishal.moola@gmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 13 Jun 2023 09:28:56 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdUk2OM+j_j8XSkMxRnNqmKy3qwUA8Mq-RA+p+ByfY-+4g@mail.gmail.com>
+Message-ID: <CAMuHMdUk2OM+j_j8XSkMxRnNqmKy3qwUA8Mq-RA+p+ByfY-+4g@mail.gmail.com>
+Subject: Re: [PATCH v4 25/34] m68k: Convert various functions to use ptdescs
+To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,70 +67,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Corey Minyard <cminyard@mvista.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, Ajay Gupta <ajayg@nvidia.com>, Peter Senna Tschudin <peter.senna@gmail.com>, Sebastian Reichel <sebastian.reichel@collabora.com>, Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Liang He <windhl@126.com>, Jean Delvare <jdelvare@suse.de>, Javier Martinez Canillas <javierm@redhat.com>, Adrien Grassein <adrien.grassein@gmail.com>, Nathan Chancellor <nathan@kernel.org>, Colin Leroy <colin@colino.net>, Krzysztof =?utf-8?Q?Ha=C5=82asa?= <khalasa@piap.pl>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Petr Machata <petrm@nvidia.com>, Maximilian Luz <luzmaximilian@gmail.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, Wolfram Sang <wsa@kernel.org>, kernel@pengutronix.de, Hans Verkuil <hverkuil-cisco@xs4all.nl>, linuxppc-dev@lists.ozlabs.org, Peter Rosin <peda@axentia.se>
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, kvm@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-sh@vger.kernel.org, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-csky@vger.kernel.org, linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, loongarch@lists.linux.dev, sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Mon, Jun 12, 2023 at 11:05=E2=80=AFPM Vishal Moola (Oracle)
+<vishal.moola@gmail.com> wrote:
+> As part of the conversions to replace pgtable constructor/destructors wit=
+h
+> ptdesc equivalents, convert various page table functions to use ptdescs.
+>
+> Some of the functions use the *get*page*() helper functions. Convert
+> these to use pagetable_alloc() and ptdesc_address() instead to help
+> standardize page tables further.
+>
+> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 
---ay2stk2d4e4ube37
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
-Hello,
+Gr{oetje,eeting}s,
 
-On Tue, May 23, 2023 at 09:50:53PM +0200, Uwe Kleine-K=F6nig wrote:
-> After commit b8a1a4cd5a98 ("i2c: Provide a temporary .probe_new()
-> call-back type"), all drivers being converted to .probe_new() and then
-> 03c835f498b5 ("i2c: Switch .probe() to not take an id parameter") convert
-> back to (the new) .probe() to be able to eventually drop .probe_new() from
-> struct i2c_driver.
->=20
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> ---
-> Hello,
->=20
-> this patch was generated using coccinelle, but I aligned the result to
-> the per-file indention.
->=20
-> I chose to convert all drivers below drivers/macintosh in a single
-> patch, but if you prefer I can split by driver.
->=20
-> v6.4-rc1 was taken as a base, as there are no commits in next touching
-> drivers/macintosh I don't expect problems when applying this patch. If
-> conflicts arise until this is applied, feel free to just drop the files
-> with conflicts from this patch. I'll care about the fallout later then.
->=20
-> Also note there is no coordination necessary with the i2c tree. Dropping
-> .probe_new() will happen only when all (or most) drivers are converted,
-> which will happen after v6.5-rc1 for sure.
-
-Can someone still pick up this patch for v6.5-rc1? I intend to send a
-pull request to Wolfram's i2c-tree that drops .probe_new() from struct
-i2c_driver on top of v6.5-rc1 early after the merge window closes. So
-getting this in before would be great. Otherwise I'm happily adding
-received acks to this patch for my PR :-)
-
-Best regards
-Uwe
+                        Geert
 
 --=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
 
---ay2stk2d4e4ube37
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmSIGMwACgkQj4D7WH0S
-/k7Y8ggAgl0jEeX+7Kh5IzQx45yVpOWnCRg17HyU/cOUPH0MdY4lvJhnpCJ8XQGC
-Vtoeuumt3DoAjywr5jaE3Xd4PPUVZqQmq5zRXyUpSl9XUH9SvdDE9apb0b+wkQPr
-HeL0PnxHh+2QrjcbL6WGohHvwJPWHSAhPuS9sF6iqfpL3iOZZWCA6ogVpvmErcpa
-sa2PIoDLMnGFUETwktVDVvl26Y2BFkgPvthkwk8YDkoZVF/mpevIOnnl1eFUOlAu
-56Rt5czDw5orpzoYEObIZ83JIld/Aa9mzOxN332aB2Aa9U8+9xBBtHD5f9Z+9zOE
-I5pyWnOWG3BasrGd4OdxRSnUMxKXCQ==
-=KEwM
------END PGP SIGNATURE-----
-
---ay2stk2d4e4ube37--
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
