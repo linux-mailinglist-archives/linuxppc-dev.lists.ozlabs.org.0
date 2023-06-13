@@ -1,37 +1,38 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF7FE72E7BF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jun 2023 18:03:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B77AF72E7B5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jun 2023 17:59:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QgYHv6Mmrz3cBs
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 02:03:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QgYBt4Kcqz30gj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 01:59:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org)
+X-Greylist: delayed 332 seconds by postgrey-1.37 at boromir; Wed, 14 Jun 2023 01:58:32 AEST
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QgYGM4nN1z30Ln
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jun 2023 02:02:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QgYBJ71QKz302F
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jun 2023 01:58:32 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 950DD637F3;
-	Tue, 13 Jun 2023 15:52:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F14CC433F0;
-	Tue, 13 Jun 2023 15:52:56 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 44BA762F0B;
+	Tue, 13 Jun 2023 15:58:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 710A6C433D9;
+	Tue, 13 Jun 2023 15:58:28 +0000 (UTC)
+Date: Tue, 13 Jun 2023 16:58:25 +0100
 From: Catalin Marinas <catalin.marinas@arm.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 3/3] sh: Move the ARCH_DMA_MINALIGN definition to asm/cache.h
-Date: Tue, 13 Jun 2023 16:52:45 +0100
-Message-Id: <20230613155245.1228274-4-catalin.marinas@arm.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230613155245.1228274-1-catalin.marinas@arm.com>
-References: <20230613155245.1228274-1-catalin.marinas@arm.com>
+To: Stephen Rothwell <sfr@canb.auug.org.au>
+Subject: Re: linux-next: build failure after merge of the mm tree
+Message-ID: <ZIiSITqP1cXkR8Uz@arm.com>
+References: <20230613162119.4a7a7d3c@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230613162119.4a7a7d3c@canb.auug.org.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,53 +44,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Simek <monstr@monstr.eu>, Rich Felker <dalias@libc.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, linux-sh@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Linus Torvalds <torvalds@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Linux Next Mailing List <linux-next@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The sh architecture defines ARCH_DMA_MINALIGN in asm/page.h. Move it to
-asm/cache.h to allow a generic ARCH_DMA_MINALIGN definition in
-linux/cache.h without redefine errors/warnings.
+Hi Stephen,
 
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: linux-sh@vger.kernel.org
----
- arch/sh/include/asm/cache.h | 6 ++++++
- arch/sh/include/asm/page.h  | 6 ------
- 2 files changed, 6 insertions(+), 6 deletions(-)
+On Tue, Jun 13, 2023 at 04:21:19PM +1000, Stephen Rothwell wrote:
+> After merging the mm tree, today's linux-next build (powerpc
+> ppc44x_defconfig) failed like this:
+> 
+> In file included from arch/powerpc/include/asm/page.h:247,
+>                  from arch/powerpc/include/asm/thread_info.h:13,
+>                  from include/linux/thread_info.h:60,
+>                  from include/asm-generic/preempt.h:5,
+>                  from ./arch/powerpc/include/generated/asm/preempt.h:1,
+>                  from include/linux/preempt.h:78,
+>                  from include/linux/spinlock.h:56,
+>                  from include/linux/ipc.h:5,
+>                  from include/uapi/linux/sem.h:5,
+>                  from include/linux/sem.h:5,
+>                  from include/linux/compat.h:14,
+>                  from arch/powerpc/kernel/asm-offsets.c:12:
+> arch/powerpc/include/asm/page_32.h:16: warning: "ARCH_DMA_MINALIGN" redefined
+>    16 | #define ARCH_DMA_MINALIGN       L1_CACHE_BYTES
+>       | 
+> In file included from include/linux/time.h:5,
+>                  from include/linux/compat.h:10:
+> include/linux/cache.h:104: note: this is the location of the previous definition
+>   104 | #define ARCH_DMA_MINALIGN __alignof__(unsigned long long)
+>       | 
+> 
+> (lots of theses)
+> 
+> Caused by commit
+> 
+>   cc7335787e73 ("mm/slab: decouple ARCH_KMALLOC_MINALIGN from ARCH_DMA_MINALIGN")
+> 
+> I have applied the following hack for today - we need something better.
 
-diff --git a/arch/sh/include/asm/cache.h b/arch/sh/include/asm/cache.h
-index 32dfa6b82ec6..b38dbc975581 100644
---- a/arch/sh/include/asm/cache.h
-+++ b/arch/sh/include/asm/cache.h
-@@ -14,6 +14,12 @@
- 
- #define L1_CACHE_BYTES		(1 << L1_CACHE_SHIFT)
- 
-+/*
-+ * Some drivers need to perform DMA into kmalloc'ed buffers
-+ * and so we have to increase the kmalloc minalign for this.
-+ */
-+#define ARCH_DMA_MINALIGN	L1_CACHE_BYTES
-+
- #define __read_mostly __section(".data..read_mostly")
- 
- #ifndef __ASSEMBLY__
-diff --git a/arch/sh/include/asm/page.h b/arch/sh/include/asm/page.h
-index 09ac6c7faee0..62f4b9edcb98 100644
---- a/arch/sh/include/asm/page.h
-+++ b/arch/sh/include/asm/page.h
-@@ -174,10 +174,4 @@ typedef struct page *pgtable_t;
- #include <asm-generic/memory_model.h>
- #include <asm-generic/getorder.h>
- 
--/*
-- * Some drivers need to perform DMA into kmalloc'ed buffers
-- * and so we have to increase the kmalloc minalign for this.
-- */
--#define ARCH_DMA_MINALIGN	L1_CACHE_BYTES
--
- #endif /* __ASM_SH_PAGE_H */
+I just posted this series fixing it for powerpc, microblaze and sh. I
+did not add the #ifndef __powerpc64__ line since
+CONFIG_NOT_COHERENT_CACHE should not be enabled for those builds.
+
+https://lore.kernel.org/r/20230613155245.1228274-1-catalin.marinas@arm.com
+
+> From: Stephen Rothwell <sfr@canb.auug.org.au>
+> Date: Tue, 13 Jun 2023 16:07:16 +1000
+> Subject: [PATCH] fix up for "mm/slab: decouple ARCH_KMALLOC_MINALIGN from ARCH_DMA_MINALIGN"
+> 
+> Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+> ---
+>  arch/powerpc/include/asm/cache.h | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+> 
+> diff --git a/arch/powerpc/include/asm/cache.h b/arch/powerpc/include/asm/cache.h
+> index ae0a68a838e8..e9be1396dfd1 100644
+> --- a/arch/powerpc/include/asm/cache.h
+> +++ b/arch/powerpc/include/asm/cache.h
+> @@ -142,5 +142,14 @@ static inline void iccci(void *addr)
+>  }
+>  
+>  #endif /* !__ASSEMBLY__ */
+> +
+> +#ifndef __powerpc64__
+> +#ifdef CONFIG_NOT_COHERENT_CACHE
+> +#ifndef ARCH_DMA_MINALIGN
+> +#define ARCH_DMA_MINALIGN	L1_CACHE_BYTES
+> +#endif
+> +#endif
+> +#endif
+> +
+>  #endif /* __KERNEL__ */
+>  #endif /* _ASM_POWERPC_CACHE_H */
+
+I think it should also remove the ARCH_DMA_MINALIGN from asm/page.h (as
+I did in my series; sorry I did not cc you, only noticed now that you
+reported it as well).
+
+-- 
+Catalin
