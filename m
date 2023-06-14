@@ -2,94 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A53B072F957
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 11:38:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2653E72FB4B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 12:40:07 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SeGIj/c+;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=jJ+ALNso;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qh0hm3MFdz2xqK
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 19:38:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qh24N672lz30Ps
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 20:40:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SeGIj/c+;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=jJ+ALNso;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2001:67c:2178:6::1c; helo=smtp-out1.suse.de; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 585 seconds by postgrey-1.37 at boromir; Wed, 14 Jun 2023 20:39:15 AEST
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qh23R6DpRz300d
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jun 2023 20:39:14 +1000 (AEST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out1.suse.de (Postfix) with ESMTP id 653CF21C83;
+	Wed, 14 Jun 2023 10:29:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1686738557; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rhRpOEE0FKxbTYX/Job7y10yZH4TueIGHLBhWciCR2w=;
+	b=jJ+ALNsoAPJuxj3+WmnJdYwDSPIw7fH3gY97cONrkYcvme6b6gIAlQILJQKaiEWZBDWE+y
+	+5lNxbi2GlKwyPHV7zJEe68SriHx/afjuWaMhBfIPlhAZcuY/XGLQQc91eFEcIXkoRCR8r
+	XdyKtXz+yrqwb0V6rw5zk3u7kHRIQ0E=
+Received: from suse.cz (pmladek.udp.ovpn2.prg.suse.de [10.100.201.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qh0gs5ptxz2xqK
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jun 2023 19:37:13 +1000 (AEST)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35E9XsNM026222;
-	Wed, 14 Jun 2023 09:37:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type : subject :
- from : in-reply-to : date : cc : message-id : references : to :
- content-transfer-encoding : mime-version; s=pp1;
- bh=q3yUkZ+IiAXQeU9eIs/vZJfUNIBVVesrMKr1FDx0po0=;
- b=SeGIj/c+Zp+UHrxGxamY0N9sNGB5v9XxG6xHRjZCJwN4Rjv+n009RnGjt+eOEV5X1Oem
- T0y2jfBf+tWYHsHz26KLXxyr+MV3u9tma6zbpnhUQ3fImS131HKygxiwNu87rXsZ5ZG2
- HQg+rRJIGBYNtEh5pbIVxs0Fz7sgwKd1r2V0EXpIKK90Zjznb7j3zn8ymUnRexNTLKPu
- 2+smEO7T5Jn4u0O+tQY4K6cVaFtLg1PfIZoP9W9ovyn7M0S6ljjtQiNSRn9nKFMBBBEV
- CbzTGxiM5bDfmOGdOvNZjVaY9meqjucORwqpOEIyHxYV8fPIOh1pi2Vsk4ibxXjZA+Jd UQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r7ay3ga92-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 14 Jun 2023 09:37:05 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35E9a0dC012215;
-	Wed, 14 Jun 2023 09:37:05 GMT
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r7ay3ga71-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 14 Jun 2023 09:37:05 +0000
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
-	by ppma05fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35E6sfBj015633;
-	Wed, 14 Jun 2023 09:32:03 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma05fra.de.ibm.com (PPS) with ESMTPS id 3r4gt4t209-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 14 Jun 2023 09:32:03 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 35E9Vxwh34996590
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 14 Jun 2023 09:31:59 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8B0492004F;
-	Wed, 14 Jun 2023 09:31:59 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0114A20040;
-	Wed, 14 Jun 2023 09:31:57 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.109.215.188])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 14 Jun 2023 09:31:56 +0000 (GMT)
-Content-Type: text/plain;
-	charset=us-ascii
-Subject: Re: [PATCH 00/17] tool/perf/test: Fix shellcheck coding/formatting
- issues of test shell scripts
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <ZIjSxwyna2ExW8JQ@kernel.org>
-Date: Wed, 14 Jun 2023 15:01:44 +0530
-Message-Id: <53B7D823-1570-4289-A632-2205EE2B522C@linux.vnet.ibm.com>
-References: <20230613164145.50488-1-atrajeev@linux.vnet.ibm.com>
- <ZIjSxwyna2ExW8JQ@kernel.org>
-To: Arnaldo Carvalho de Melo <acme@kernel.org>
-X-Mailer: Apple Mail (2.3731.500.231)
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: bvxO6Tq66AEUSBCuuPSRRRqVUGB7td_d
-X-Proofpoint-ORIG-GUID: 2mbZJoUs3v9w5D-FVmw1tYvwc7OdjRLp
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by relay2.suse.de (Postfix) with ESMTPS id 55CB82C141;
+	Wed, 14 Jun 2023 10:29:15 +0000 (UTC)
+Date: Wed, 14 Jun 2023 12:29:11 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: Doug Anderson <dianders@chromium.org>
+Subject: Re: [PATCH 2/7] watchdog/hardlockup: Make the config checks more
+ straightforward
+Message-ID: <ZImWd62fXjsZildv@alley>
+References: <20230607152432.5435-1-pmladek@suse.com>
+ <20230607152432.5435-3-pmladek@suse.com>
+ <CAD=FV=WRzaLbLQ65usGeFq3ya=DV8cYyHQina_721EFoSTdBGA@mail.gmail.com>
+ <ZIG1Qi0iUjTKICQM@alley>
+ <CAD=FV=XzueJia--Zv4cAofzk7yocmP-7K8wa4doAN8pzED_hZA@mail.gmail.com>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-14_06,2023-06-12_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
- lowpriorityscore=0 malwarescore=0 adultscore=0 spamscore=0 phishscore=0
- mlxlogscore=999 clxscore=1015 priorityscore=1501 suspectscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
- definitions=main-2306140081
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAD=FV=XzueJia--Zv4cAofzk7yocmP-7K8wa4doAN8pzED_hZA@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,115 +67,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ian Rogers <irogers@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, john.g.garry@oracle.com, Kajol Jain <kjain@linux.ibm.com>, Ravi Bangoria <ravi.bangoria@amd.com>, linux-perf-users@vger.kernel.org, Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: kgdb-bugreport@lists.sourceforge.net, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-perf-users@vger.kernel.org, sparclinux@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu 2023-06-08 06:55:23, Doug Anderson wrote:
+> Hi,
+> 
+> On Thu, Jun 8, 2023 at 4:02 AM Petr Mladek <pmladek@suse.com> wrote:
+> >
+> > > >  config HARDLOCKUP_DETECTOR
+> > > >         bool "Detect Hard Lockups"
+> > > >         depends on DEBUG_KERNEL && !S390
+> > > > -       depends on HAVE_HARDLOCKUP_DETECTOR_NON_ARCH || HAVE_HARDLOCKUP_DETECTOR_ARCH
+> > > > +       depends on ((HAVE_HARDLOCKUP_DETECTOR_PERF || HAVE_HARDLOCKUP_DETECTOR_BUDDY) && !HAVE_NMI_WATCHDOG) || HAVE_HARDLOCKUP_DETECTOR_ARCH
+> > >
+> > > Adding the dependency to buddy (see ablove) would simplify the above
+> > > to just this:
+> > >
+> > > depends on HAVE_HARDLOCKUP_DETECTOR_PERF ||
+> > > HAVE_HARDLOCKUP_DETECTOR_BUDDY || HAVE_HARDLOCKUP_DETECTOR_ARCH
+> >
+> > This is exactly what I do not want. It would just move the check
+> > somewhere else. But it would make the logic harder to understand.
+> 
+> Hmmm. To me, it felt easier to understand by moving this into the
+> "HAVE_HARDLOCKUP_DETECTOR_BUDDY". To me it was pretty easy to say "if
+> an architecture defined its own arch-specific watchdog then buddy
+> can't be enabled" and that felt like it fit cleanly within the
+> "HAVE_HARDLOCKUP_DETECTOR_BUDDY" definition. It got rid of _a lot_ of
+> other special cases / checks elsewhere and felt quite a bit cleaner to
+> me. I only had to think about the conflict between the "buddy" and
+> "nmi" watchdogs once when I understood
+> "HAVE_HARDLOCKUP_DETECTOR_BUDDY".
+
+I see. My problem with this approach was that the dependencies between
+the 4 alternative implementations were too distributed. It was
+necessary read many definitions to understand what was possible and
+what was not possible. And it is even more complicated when
+cscope does not support Kconfig.
+
+Also the above solves the buddy detector which is global.
+
+The same conflict has PERF which has arch-specific dependencies.
+Maybe, it can be disabled by a conflict in the arch/Kconfig.
+But then the PERF dependencies would be split into 3 config
+files: arch/Kconfig, lib/Kconfig.debug, arch/Kconfig/.
+
+Anyway, HAVE_*_BUDDY and HAVE_*_PERF should behave the same.
+Both should either explicitly conflict with HAVE_*_ARCH
+and HAVE_NMI_WATCHDOG. Or they both should be enabled when
+they are supported by the architecture and just ignored when
+choosing the final implementation.
+
+My wish was to have consistent naming:
+
+   + HAVE_HARDLOCKUP_DETECTOR_<impl> set when the the architecture
+       supports the particular implementation.
+
+  + HARDLOCKUP_DETECTOR_<impl> set when the implementation will
+       be used (built).
 
 
-> On 14-Jun-2023, at 2:04 AM, Arnaldo Carvalho de Melo <acme@kernel.org> wr=
-ote:
->=20
-> Em Tue, Jun 13, 2023 at 10:11:28PM +0530, Athira Rajeev escreveu:
->> Patchset covers a set of fixes for coding/formatting issues observed whi=
-le
->> running shellcheck tool on the perf test shell scripts. Shellcheck is a =
-static
->> analysis tool that can find semantic/syntax bugs in the shell scripts.
->=20
-> Thanks, applied the series.
+Step aside:
 
-Hi,
+It seems that we have entered into a bike shedding mode.
+The following questions come to my mind:
 
-Thanks Arnaldo for picking up the patchset.
-We will check and resubmit patch 6.
+   1. Does this patchset improve the current state?
 
-Thanks
-Athira
->=20
-> - Arnaldo
->=20
->> Patches 1-14 fixes the issues found with shellcheck. Patch 15, 16
->> and patch 17 address a fix in task_analyzer test.
->>=20
->> This cleanup is a pre-requisite to include a build option for shellcheck
->> discussed here: https://www.spinics.net/lists/linux-perf-users/msg25553.=
-html
->> Also this is first set of patches. There will be one more set which will
->> include build option for shellcheck as discussed in the mail thread.
->>=20
->> Abhirup Deb (2):
->>  tools/perf/tests: fix test_arm_spe.sh signal case issues
->>  perf/tests/shell: fix shellscript errors for lock_contention.sh
->>=20
->> Aboorva Devarajan (1):
->>  tools/perf/tests: Fix shellcheck issues in test_task_analyzer.sh file
->>=20
->> Aditya Gupta (3):
->>  perf tests task_analyzer: fix bad substitution ${$1}
->>  perf tests task_analyzer: print command on failure
->>  perf tests task_analyzer: skip tests if no libtraceevent support
->>=20
->> Akanksha J N (1):
->>  tools/perf/tests: Fix shellcheck warnings for
->>    trace+probe_vfs_getname.sh
->>=20
->> Anushree Mathur (1):
->>  perf/tests/shell : Shellcheck fixes for perf test
->>    "test_arm_coresight.sh"
->>=20
->> Barnali Guha Thakurata (1):
->>  tools/perf/tests/shell/stat_all_metrics: Fix shellcheck warning SC2076
->>    in stat_all_metrics.sh
->>=20
->> Disha Goel (1):
->>  tools/perf/tests: fix shellcheck warning for stat+json_output
->>=20
->> Geetika (1):
->>  tools/perf/tests: Fix all POSIX sh warnings in perf shell test
->>    test_brstack.sh
->>=20
->> Korrapati Likhitha (1):
->>  tools/perf/tests: Fix shellcheck warnings for stat+csv_output
->>=20
->> Samir Mulani (1):
->>  tools/perf/tests: fixed shellcheck warnings for perf shell scripts
->>=20
->> Shirisha G (1):
->>  tools/perf/tests: fix shellcheck warnings for daemon.sh
->>=20
->> Sourabh Jain (1):
->>  perf: get rid of unused import
->>=20
->> Spoorthy S (2):
->>  shellcheck : fixing signal names and adding double quotes for
->>    expression in test_arm_callgraph_fp
->>  tools/perf/tests: Fix all POSIX sh warnings in stat+shadow_stat.sh
->>=20
->> .../scripts/python/arm-cs-trace-disasm.py     |   1 -
->> tools/perf/tests/shell/buildid.sh             |  12 +-
->> tools/perf/tests/shell/daemon.sh              | 113 ++++++++++++------
->> tools/perf/tests/shell/lock_contention.sh     |  70 +++++------
->> .../shell/record+probe_libc_inet_pton.sh      |   6 +-
->> .../shell/record+script_probe_vfs_getname.sh  |   4 +-
->> tools/perf/tests/shell/stat+csv_output.sh     |   4 +-
->> tools/perf/tests/shell/stat+json_output.sh    |   2 +-
->> tools/perf/tests/shell/stat+shadow_stat.sh    |   4 +-
->> tools/perf/tests/shell/stat_all_metrics.sh    |   6 +-
->> .../perf/tests/shell/test_arm_callgraph_fp.sh |   6 +-
->> tools/perf/tests/shell/test_arm_coresight.sh  |   6 +-
->> tools/perf/tests/shell/test_arm_spe.sh        |   2 +-
->> tools/perf/tests/shell/test_brstack.sh        |  12 +-
->> tools/perf/tests/shell/test_task_analyzer.sh  |  98 ++++++++-------
->> .../tests/shell/trace+probe_vfs_getname.sh    |   6 +-
->> 16 files changed, 203 insertions(+), 149 deletions(-)
->>=20
->> --=20
->> 2.39.1
->>=20
->=20
-> --=20
->=20
-> - Arnaldo
+   2. Maybe, it is not black&white. Is it possible to summarize
+      what exactly got better and what got worse?
 
+Maybe, there is no need to do bike-shedding about every step
+if the final result is reasonable and the steps are not
+completely wrong.
 
+I just followed my intuition and tried to do some changes step
+by step. I got lost many times so maybe the steps are not
+ideal. Anyway, the steps helped me to understand the logic
+and stay reasonably confident that they did not change
+the behavior.
+
+I could rework the patchset. But I first need to know what
+exactly is bad in the result. And eventually if there is more
+logical way how to end there.
+
+Best Regards,
+Petr
