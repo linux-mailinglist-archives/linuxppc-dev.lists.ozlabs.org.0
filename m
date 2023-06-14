@@ -1,66 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4681272F331
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 05:44:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A060972F2CB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 04:49:11 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="unknown key version" header.d=208.org header.i=@208.org header.a=rsa-sha256 header.s=dkim header.b=c6jHFt+8;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=KejiIVIH;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qgrrh1B2mz30P4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 13:44:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qgqd13GBFz3bTb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 12:49:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="unknown key version" header.d=208.org header.i=@208.org header.a=rsa-sha256 header.s=dkim header.b=c6jHFt+8;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=KejiIVIH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=208suo.com (client-ip=183.242.55.162; helo=mail.208.org; envelope-from=baomingtong001@208suo.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 464 seconds by postgrey-1.37 at boromir; Wed, 14 Jun 2023 12:42:43 AEST
-Received: from mail.208.org (unknown [183.242.55.162])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::62d; helo=mail-pl1-x62d.google.com; envelope-from=leo.yan@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QgqTb68Zgz306B
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jun 2023 12:42:43 +1000 (AEST)
-Received: from mail.208.org (email.208.org [127.0.0.1])
-	by mail.208.org (Postfix) with ESMTP id 4QgqJP5TJ2zBJL9w
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jun 2023 10:34:45 +0800 (CST)
-Authentication-Results: mail.208.org (amavisd-new); dkim=pass
-	reason="pass (just generated, assumed good)" header.d=208.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=208.org; h=
-	content-transfer-encoding:content-type:message-id:user-agent
-	:references:in-reply-to:subject:to:from:date:mime-version; s=
-	dkim; t=1686710085; x=1689302086; bh=/153KFImgT+gktyfP9V8RqyB2R8
-	agRq0rd6nSMh42WI=; b=c6jHFt+8uhaVx8AgCb70a/2HxXNGL3cV1/olgvE6wsM
-	b/Nc7kYIM+dhAFrRDhaABSDg2lUujKDHq+BsZxMs1SazTBEeXbIS0FvG1ayEk3t+
-	4YnM7iK9LskVvxahleYV2o23Bpa7DvM9Kwd08hBI0JW1QeUAI4zs+tbkLX/8OmOt
-	ZztmzXwJSKkoOioKlzuZ3EbBAZyjZ8i0ot+vR/oO11O7YmwFW+CWF1T/9/HdZPKo
-	t0s+ocM1sVA1guZRPlzBOLPIh19EnVvbwV4M3/3OC+f3vKdZBJdg4XH3/TLzrpMC
-	sGrV5RCaHsceH055a+TawgjEDXyo3P2db9ADeIqMLIA==
-X-Virus-Scanned: amavisd-new at mail.208.org
-Received: from mail.208.org ([127.0.0.1])
-	by mail.208.org (mail.208.org [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id HuEjzm4sUO9a for <linuxppc-dev@lists.ozlabs.org>;
-	Wed, 14 Jun 2023 10:34:45 +0800 (CST)
-Received: from localhost (email.208.org [127.0.0.1])
-	by mail.208.org (Postfix) with ESMTPSA id 4QgqJP2FFCzBJCMY;
-	Wed, 14 Jun 2023 10:34:45 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qgqc558mDz307h
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jun 2023 12:48:19 +1000 (AEST)
+Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1b3be39e666so24693325ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jun 2023 19:48:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1686710896; x=1689302896;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=k0YlFQAyWxbuL4Zsr4kr8EBosxhqQEgpBKxBIFTH5hE=;
+        b=KejiIVIHfhPCnwN1mYw9NB3AagkSdpS+LUX00U7yMb0BZFE8CAriat8e/7Pa/YmPDW
+         7N4n4SDA+y19EFfKUce9zSP0awfJ8ydt2d7Y4Kn4uTnseeQ/YMNbeH1XZjLv8FDsnemk
+         JmhfAvWtrlCE9jXrHErOgjxgUJ3PIQHY3zHTXLbGNjnN/WdwwKw9HiG+FPJpcIfkZ0uX
+         s8373Tzs4x5ddcaVnudyeXZ/ZiYzZO0c9sDHjkkJDR17NATD7IMBRjcnmQ8Z25j9+/Dg
+         v/x/lJHFeLdQqBBmzB6QX/5FmhpF9xDtm3cJJad9p8SfCWJLel/d7qKqmMsimtUTpcT9
+         byKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686710896; x=1689302896;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=k0YlFQAyWxbuL4Zsr4kr8EBosxhqQEgpBKxBIFTH5hE=;
+        b=hVzZmU7KK834tZhe0hYosGDGsnlUsMfSdQ/Zsppoy1060LA/B/3cDdDbNl4hLoTxty
+         rNULZj+RU4uH2NZonvi93NfwjjQJA3mFPQBlHgo3cJcUklASqZ7Eag70kr8JVXxzCctO
+         22tW6WoK8GuH0fcVdm9LACKLzhqZn9tGVZDOTNOK6dHr3FEntdEUG1yw11cudB589c9c
+         bpTY+BhhrEFz6jClqg47GT9SB84eYmL9eiIJcTyy+Q82Sr/dGGcR0mwG/hk/P6xExQOp
+         B24IrHHgUPSODZgvE76mdiPRPqAGRMtXUMPfLqDsYIEjcKuqXFoqf/JDrug+ML859lHI
+         //7A==
+X-Gm-Message-State: AC+VfDzVxMz/esBSt7PkdqbyD1bLmKkPloNEJeVb4DJ2HLY/fgKOUqZ5
+	8uk2woQvm9q6uHfnJBdRS3AelQ==
+X-Google-Smtp-Source: ACHHUZ6ErTAXlm3FfgIHNOscl4ATQNoo6KtiqunTj/PImDO4p4fi/ERgK1MRsNStbB3teZwD3dotxA==
+X-Received: by 2002:a17:902:e744:b0:1b3:c4c1:ec4e with SMTP id p4-20020a170902e74400b001b3c4c1ec4emr402092plf.30.1686710895980;
+        Tue, 13 Jun 2023 19:48:15 -0700 (PDT)
+Received: from leoy-huanghe.lan (211-75-219-201.hinet-ip.hinet.net. [211.75.219.201])
+        by smtp.gmail.com with ESMTPSA id r20-20020a170902be1400b001a9b29b6759sm10964697pls.183.2023.06.13.19.48.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Jun 2023 19:48:15 -0700 (PDT)
+Date: Wed, 14 Jun 2023 10:48:10 +0800
+From: Leo Yan <leo.yan@linaro.org>
+To: Arnaldo Carvalho de Melo <acme@kernel.org>
+Subject: Re: [PATCH 01/17] perf: get rid of unused import
+Message-ID: <20230614024810.GM217089@leoy-huanghe.lan>
+References: <20230613164145.50488-1-atrajeev@linux.vnet.ibm.com>
+ <20230613164145.50488-2-atrajeev@linux.vnet.ibm.com>
+ <ZIjJYCL38UX9FIl4@kernel.org>
+ <20230614015914.GL217089@leoy-huanghe.lan>
+ <ZIknI2imecS5doHN@kernel.org>
 MIME-Version: 1.0
-Date: Wed, 14 Jun 2023 10:34:45 +0800
-From: baomingtong001@208suo.com
-To: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
- pbonzini@redhat.com, paulus@ozlabs.org, seanjc@google.com, thuth@redhat.com
-Subject: [PATCH] KVM: PPC: remove unneeded variable
-In-Reply-To: <20230614023206.3865-1-luojianhong@cdjrlc.com>
-References: <20230614023206.3865-1-luojianhong@cdjrlc.com>
-User-Agent: Roundcube Webmail
-Message-ID: <de7ae31f88510a6b04f29fc01ab44854@208suo.com>
-X-Sender: baomingtong001@208suo.com
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Wed, 14 Jun 2023 13:43:36 +1000
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZIknI2imecS5doHN@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,37 +81,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: irogers@google.com, Athira Rajeev <atrajeev@linux.vnet.ibm.com>, john.g.garry@oracle.com, kjain@linux.ibm.com, ravi.bangoria@amd.com, Sourabh Jain <sourabhjain@linux.ibm.com>, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, jolsa@kernel.org, namhyung@kernel.org, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-fix the following coccicheck warning:
+On Tue, Jun 13, 2023 at 11:34:11PM -0300, Arnaldo Carvalho de Melo wrote:
 
-arch/powerpc/kvm/book3s_pr.c:424:5-6: Unneeded variable: "r".
+[...]
 
-Signed-off-by: Mingtong Bao <baomingtong001@208suo.com>
----
-  arch/powerpc/kvm/book3s_pr.c | 4 ++--
-  1 file changed, 2 insertions(+), 2 deletions(-)
+> > Since have applied this patch, it's no need to give my review tag :)
+> 
+> No, I usually can  add a Reviewed-by tag even after having applied it to
+> my local tree, as I still need to run tests before making it available
+> via perf-tools-next, when I should not make any further changes.
 
-diff --git a/arch/powerpc/kvm/book3s_pr.c b/arch/powerpc/kvm/book3s_pr.c
-index 9118242063fb..d03b31b240d7 100644
---- a/arch/powerpc/kvm/book3s_pr.c
-+++ b/arch/powerpc/kvm/book3s_pr.c
-@@ -421,14 +421,14 @@ void kvmppc_restore_tm_pr(struct kvm_vcpu *vcpu)
+Understand now.  Here is my review tag:
 
-  static int kvmppc_core_check_requests_pr(struct kvm_vcpu *vcpu)
-  {
--    int r = 1; /* Indicate we want to get back into the guest */
-+    /* Indicate we want to get back into the guest */
-
-      /* We misuse TLB_FLUSH to indicate that we want to clear
-         all shadow cache entries */
-      if (kvm_check_request(KVM_REQ_TLB_FLUSH, vcpu))
-          kvmppc_mmu_pte_flush(vcpu, 0, 0);
-
--    return r;
-+    return 1;
-  }
-
-  /************* MMU Notifiers *************/
+Reviewed-by: Leo Yan <leo.yan@linaro.org>
