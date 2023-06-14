@@ -2,72 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8451C72F259
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 04:00:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6408872F276
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 04:09:04 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=e2RgK1vx;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=AIHjCYUS;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QgpXk63N0z30PY
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 12:00:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qgpkk1tc0z2xwD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 12:09:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=e2RgK1vx;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=AIHjCYUS;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=leo.yan@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mga02.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Wed, 14 Jun 2023 12:08:15 AEST
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QgpWl6pfDz304l
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jun 2023 11:59:29 +1000 (AEST)
-Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-66643830ab3so251900b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jun 2023 18:59:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686707964; x=1689299964;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=CptATqeseRZ9wnta/kqV0RFXggJlBwVL1UgxNIajgOw=;
-        b=e2RgK1vxZSlLTPBqtiSaUZBIa1pYX3TyvB9mmgJfYVdBgv+uVbgWNieVfpID4RRcif
-         Rh4aKrtEjMQbFQgL/1cBNFSOCLkJIm6gnJlgU8Sm7S9Qx/+9SjPfFVFylYIi6+1lbdK5
-         0FjdUzRVBSxTFZj7AMQI1JkSrViqPraYB37ncZ/dv1/2vOTlVEBSHOUgWjQoWLktLHPw
-         /p5w1w9Ffg2h+1tGmiEdfa69l4HvRozyl4o+nqtTpc9PvK5kXL1ea0sQsQsIkr/U1ZGm
-         jh7Q0ITCO6NXcmc/6b1iRYJlDKFIoNGqKp//s5NetJgOxZdVgPd9tdT656pwTwyYsks8
-         7UWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686707965; x=1689299965;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CptATqeseRZ9wnta/kqV0RFXggJlBwVL1UgxNIajgOw=;
-        b=E5hSigyns6nEatd4D1vOt3xMfqqfAgW7V+Cpa5m76DEPVSmDX934US2JX3FUC8G5dd
-         zKcR0PJ0rItRFg98nyOwykacm4kRfoqJHjorrsL8MprCZZx90jPMmIawOQvGmQ90vGwa
-         unm/L0HF5y61WrPJF0lFcwAIkwjiLIYgm98Ptq+5FZwpNwu8pcXn0zeI0sjGiyL1H2yz
-         zOwzsa/jN/W2nudOuvz5GacMmoP+Ckk7WtEloCYaQaC6lXMiSe5hOerdzgl3TfbIESrf
-         qfjXHF2SxcJrHAE8Dw+BrTv6JdggPp3FDqJ2NRizRAShsaJ0FsCa4vhSRZxqlrQeGc45
-         9a5g==
-X-Gm-Message-State: AC+VfDx0gboS2UAZezVYypnX1ndxRDaL9W7TqL511wx5nq523S6HfTyX
-	RkcHhQjEC8qcKMPNK1Tn6irVAQ==
-X-Google-Smtp-Source: ACHHUZ7fIQKn6w558fr9elLAW7uFGq15RlsXFxAuykUMeZG/0doPLFqGLG+NTvihGA0DQVkqTDU/EQ==
-X-Received: by 2002:a05:6a00:1a45:b0:63a:ea82:b7b7 with SMTP id h5-20020a056a001a4500b0063aea82b7b7mr715343pfv.28.1686707964453;
-        Tue, 13 Jun 2023 18:59:24 -0700 (PDT)
-Received: from leoy-huanghe.lan ([223.104.5.42])
-        by smtp.gmail.com with ESMTPSA id n14-20020a635c4e000000b004fbd91d9716sm9813808pgm.15.2023.06.13.18.59.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jun 2023 18:59:23 -0700 (PDT)
-Date: Wed, 14 Jun 2023 09:59:14 +0800
-From: Leo Yan <leo.yan@linaro.org>
-To: Arnaldo Carvalho de Melo <acme@kernel.org>
-Subject: Re: [PATCH 01/17] perf: get rid of unused import
-Message-ID: <20230614015914.GL217089@leoy-huanghe.lan>
-References: <20230613164145.50488-1-atrajeev@linux.vnet.ibm.com>
- <20230613164145.50488-2-atrajeev@linux.vnet.ibm.com>
- <ZIjJYCL38UX9FIl4@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZIjJYCL38UX9FIl4@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qgpjq25Y1z2xpv
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jun 2023 12:08:15 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1686708495; x=1718244495;
+  h=date:from:to:cc:subject:message-id;
+  bh=imc5B/W4hVKTej1/5iTjrGuIhLS7WrPx9VnX5IjgyFY=;
+  b=AIHjCYUSTtLAisk2BiakBOGFL/JXuui1XEfjxvBGL1ScCg0mHv1D2MZg
+   LuvlfUoUgicZTFLMbDVgyNn6OKanoG1skkWuXx2/asGSctsAmuvWFe+KN
+   SohG1gdA18tKpTla7DdL81k/8KO2c0ZDKQ909Df0e74lHimOi9T0GLdhT
+   n9J+YjFCkh3EVxewnfb0nivvSspIdA5mea3ZrE+PrVCjRwGQccbN7eN7x
+   +LG+pTFmBuCsgNdQhSTKVksRKrl9MNtE+umn+6NAe84xtdpGN1RDEPvZy
+   FyBWNTh0R4VwSEU4tA/tybItiSfs/jtaQvLXvr1cet1D901/qydu1wEMt
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="348159388"
+X-IronPort-AV: E=Sophos;i="6.00,241,1681196400"; 
+   d="scan'208";a="348159388"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2023 19:07:02 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10740"; a="711871999"
+X-IronPort-AV: E=Sophos;i="6.00,241,1681196400"; 
+   d="scan'208";a="711871999"
+Received: from lkp-server01.sh.intel.com (HELO 211f47bdb1cb) ([10.239.97.150])
+  by orsmga002.jf.intel.com with ESMTP; 13 Jun 2023 19:06:42 -0700
+Received: from kbuild by 211f47bdb1cb with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1q9FuD-000256-1j;
+	Wed, 14 Jun 2023 02:06:41 +0000
+Date: Wed, 14 Jun 2023 10:06:33 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes] BUILD SUCCESS
+ dfaed3e1fa7099de8de4e89cbe7eb9c1bca27dfe
+Message-ID: <202306141031.UDQ6Zgv8-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,56 +67,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: irogers@google.com, Athira Rajeev <atrajeev@linux.vnet.ibm.com>, john.g.garry@oracle.com, kjain@linux.ibm.com, ravi.bangoria@amd.com, Sourabh Jain <sourabhjain@linux.ibm.com>, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, jolsa@kernel.org, namhyung@kernel.org, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 13, 2023 at 04:54:08PM -0300, Arnaldo Carvalho de Melo wrote:
-> Em Tue, Jun 13, 2023 at 10:11:29PM +0530, Athira Rajeev escreveu:
-> > From: Sourabh Jain <sourabhjain@linux.ibm.com>
-> > 
-> > Script doesn't use sys library, so remove it.
-> 
-> Please Cc the persons working on that file, I added Leo to the CC list
-> of this message.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes
+branch HEAD: dfaed3e1fa7099de8de4e89cbe7eb9c1bca27dfe  powerpc/64s/radix: Fix exit lazy tlb mm switch with irqs enabled
 
-Thanks, Arnaldo & Athira.  The change looks good to me.
+elapsed time: 728m
 
-> Thanks, applied.
+configs tested: 5
+configs skipped: 112
 
-Since have applied this patch, it's no need to give my review tag :)
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Thanks,
-Leo
+tested configs:
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc      buildonly-randconfig-r001-20230612   gcc  
+powerpc      buildonly-randconfig-r004-20230612   gcc  
+powerpc      buildonly-randconfig-r005-20230612   gcc  
 
-> - Arnaldo
->  
-> > Report by pylint:
-> > W0611: Unused import sys (unused-import)
-> > 
-> > Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> > Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-> > Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-> > ---
-> >  tools/perf/scripts/python/arm-cs-trace-disasm.py | 1 -
-> >  1 file changed, 1 deletion(-)
-> > 
-> > diff --git a/tools/perf/scripts/python/arm-cs-trace-disasm.py b/tools/perf/scripts/python/arm-cs-trace-disasm.py
-> > index 4339692a8d0b..d59ff53f1d94 100755
-> > --- a/tools/perf/scripts/python/arm-cs-trace-disasm.py
-> > +++ b/tools/perf/scripts/python/arm-cs-trace-disasm.py
-> > @@ -9,7 +9,6 @@
-> >  from __future__ import print_function
-> >  import os
-> >  from os import path
-> > -import sys
-> >  import re
-> >  from subprocess import *
-> >  from optparse import OptionParser, make_option
-> > -- 
-> > 2.39.1
-> > 
-> 
-> -- 
-> 
-> - Arnaldo
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
