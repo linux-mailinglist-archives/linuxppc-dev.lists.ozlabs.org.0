@@ -2,55 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22DB5730036
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 15:36:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17AF873006C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 15:48:33 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=peVIK5Pc;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=jlp8OxtI;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qh5zh0626z3bjc
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 23:36:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qh6Fp6sPsz30gp
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 23:48:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=peVIK5Pc;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=jlp8OxtI;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2a00:1450:4864:20::52a; helo=mail-ed1-x52a.google.com; envelope-from=dianders@chromium.org; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qh5yq6kspz30PT
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jun 2023 23:35:31 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 0E80460F45;
-	Wed, 14 Jun 2023 13:35:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0713C433CA;
-	Wed, 14 Jun 2023 13:35:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1686749729;
-	bh=81ZlQN2KCaIJsbaaGHZ2hKMohISmlbSD+ssqzisoAQE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=peVIK5PcFaRM99or9IKjg5Wk1GpROr9ctyT8BIC08WEGhT/YvEFdtyhqzVHUa/AJj
-	 e0i1V5xO3S+nkbZMN2Z1j+Bn1zFA3bcGptvRkcKcxOtQ1DiUiH/SRvFWkjYuPvNtOb
-	 /7PZZr5SP19VfVlFD96OM/KULQ1zOIX2Xbubj4bVzLGTDR+801nenrylY8DxDwa57O
-	 6Uw9KCAyHqA9nB1qo3GINyvqzZNtOwnsJDGtTX7sr0o8aiGfHvWm3PF1wyD410WZI6
-	 eWxsBLAJy2LJHLpDUj97I0afV+G5xEfwOHfY+jLMTVk+L4qUJ/WcbncB5RrE8B814w
-	 cPPJ2HH5q8yYA==
-Date: Wed, 14 Jun 2023 16:34:51 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Subject: Re: [PATCH v4 04/34] pgtable: Create struct ptdesc
-Message-ID: <20230614133451.GC52412@kernel.org>
-References: <20230612210423.18611-1-vishal.moola@gmail.com>
- <20230612210423.18611-5-vishal.moola@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qh6Dt31cNz30fG
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jun 2023 23:47:39 +1000 (AEST)
+Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-51496f57e59so9395362a12.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jun 2023 06:47:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1686750453; x=1689342453;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=76di/i2mInmVCxeVKqtSRBrcXSBLthtuA5QqmKpv0gg=;
+        b=jlp8OxtI66wmx6ofvYbecBCQapH2lREmqablzfBh+9OExysu5k9h76l1tCeV8/J90c
+         4Z1ZouQnIxyCpFC63R+Y2e/3+b2Jxk5JrOBGOCsPtQ8f8vMjLIC0eQU8nmbwpRYwQPz+
+         zcnti9QTI56yIvgkrHHGpaaUQcJKbnO76la6Y=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686750453; x=1689342453;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=76di/i2mInmVCxeVKqtSRBrcXSBLthtuA5QqmKpv0gg=;
+        b=ZI/Q5f2jzCCiNZw0pCPO2C7GOdo7AdGU1swmkhzp+oCiKYWIawSpzpeyDZr7c38iSm
+         CwWb8t/RrAo2y5kjZDvv+9yg4X15N4esvRiPbIqzEdt9NIbJWth9RONO0nEnRvwDUvR9
+         eDCAd8XECI7pb2C45Ggk5mGmFiSVhyNZFEtFvfo6C32WsrT2wqnMv8MpuniRBHIcYxM8
+         G3kG1/0ejmFb0AW/YDot6wwDDZ7pyOyAiIrxCI4gAiw15teOoV1OyfZx2F5vZZBnPqbT
+         h6/aNUBtDk+jyON8Z0PSOyjDtMFYEKVMSq0fFP/V/ghHFW/kem3v9XD8TVNac03PKVo6
+         t7/Q==
+X-Gm-Message-State: AC+VfDzLJvvveU4TqteYuIAyyJErlW7lN2oOVWuRV3noOkZveMPMm4Fv
+	8uqS9lMqv0yV551LDcdb3h/XBavouexwrxd5zasUqQQV
+X-Google-Smtp-Source: ACHHUZ4YM4ogHO+9PT5DtOuU1bwW+Gjg2ebIbCnKUPcY5DEa7Co/rlYThCv/S/qPqTYZQJg2Bpzt2g==
+X-Received: by 2002:aa7:c6cc:0:b0:518:5f8e:53b8 with SMTP id b12-20020aa7c6cc000000b005185f8e53b8mr4701550eds.13.1686750452847;
+        Wed, 14 Jun 2023 06:47:32 -0700 (PDT)
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com. [209.85.208.44])
+        by smtp.gmail.com with ESMTPSA id ca15-20020aa7cd6f000000b00514a5f7a145sm7661525edb.37.2023.06.14.06.47.31
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 Jun 2023 06:47:32 -0700 (PDT)
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-51400fa347dso11352a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jun 2023 06:47:31 -0700 (PDT)
+X-Received: by 2002:a50:9f82:0:b0:50b:c48c:8a25 with SMTP id
+ c2-20020a509f82000000b0050bc48c8a25mr104476edf.6.1686750451172; Wed, 14 Jun
+ 2023 06:47:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230612210423.18611-5-vishal.moola@gmail.com>
+References: <20230607152432.5435-1-pmladek@suse.com> <20230607152432.5435-3-pmladek@suse.com>
+ <CAD=FV=WRzaLbLQ65usGeFq3ya=DV8cYyHQina_721EFoSTdBGA@mail.gmail.com>
+ <ZIG1Qi0iUjTKICQM@alley> <CAD=FV=XzueJia--Zv4cAofzk7yocmP-7K8wa4doAN8pzED_hZA@mail.gmail.com>
+ <ZImWd62fXjsZildv@alley>
+In-Reply-To: <ZImWd62fXjsZildv@alley>
+From: Doug Anderson <dianders@chromium.org>
+Date: Wed, 14 Jun 2023 06:47:19 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=WP39nUmdeNjjTGx-XWhS4AgG5haHCfYjFUCEKckYVZDA@mail.gmail.com>
+Message-ID: <CAD=FV=WP39nUmdeNjjTGx-XWhS4AgG5haHCfYjFUCEKckYVZDA@mail.gmail.com>
+Subject: Re: [PATCH 2/7] watchdog/hardlockup: Make the config checks more straightforward
+To: Petr Mladek <pmladek@suse.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,94 +85,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, kvm@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-sh@vger.kernel.org, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-csky@vger.kernel.org, linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, loongarch@lists.linux.dev, sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+Cc: kgdb-bugreport@lists.sourceforge.net, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-perf-users@vger.kernel.org, sparclinux@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 12, 2023 at 02:03:53PM -0700, Vishal Moola (Oracle) wrote:
-> Currently, page table information is stored within struct page. As part
-> of simplifying struct page, create struct ptdesc for page table
-> information.
-> 
-> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+Hi,
 
-Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
+On Wed, Jun 14, 2023 at 3:29=E2=80=AFAM Petr Mladek <pmladek@suse.com> wrot=
+e:
+>
+> It seems that we have entered into a bike shedding mode.
+> The following questions come to my mind:
+>
+>    1. Does this patchset improve the current state?
+>
+>    2. Maybe, it is not black&white. Is it possible to summarize
+>       what exactly got better and what got worse?
+>
+> Maybe, there is no need to do bike-shedding about every step
+> if the final result is reasonable and the steps are not
+> completely wrong.
+>
+> I just followed my intuition and tried to do some changes step
+> by step. I got lost many times so maybe the steps are not
+> ideal. Anyway, the steps helped me to understand the logic
+> and stay reasonably confident that they did not change
+> the behavior.
+>
+> I could rework the patchset. But I first need to know what
+> exactly is bad in the result. And eventually if there is more
+> logical way how to end there.
 
-> ---
->  include/linux/pgtable.h | 51 +++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 51 insertions(+)
-> 
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index c5a51481bbb9..330de96ebfd6 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -975,6 +975,57 @@ static inline void ptep_modify_prot_commit(struct vm_area_struct *vma,
->  #endif /* __HAVE_ARCH_PTEP_MODIFY_PROT_TRANSACTION */
->  #endif /* CONFIG_MMU */
->  
-> +
-> +/**
-> + * struct ptdesc - Memory descriptor for page tables.
-> + * @__page_flags: Same as page flags. Unused for page tables.
-> + * @pt_list: List of used page tables. Used for s390 and x86.
-> + * @_pt_pad_1: Padding that aliases with page's compound head.
-> + * @pmd_huge_pte: Protected by ptdesc->ptl, used for THPs.
-> + * @_pt_s390_gaddr: Aliases with page's mapping. Used for s390 gmap only.
-> + * @pt_mm: Used for x86 pgds.
-> + * @pt_frag_refcount: For fragmented page table tracking. Powerpc and s390 only.
-> + * @ptl: Lock for the page table.
+Sure. I still feel like the end result of the CONFIG options after
+your whole patchset is easier to understand / cleaner by adjusting the
+dependencies as I have suggested. That being said, I agree that it is
+the type of thing that can be more a matter of personal preference. I
+do agree that, even if you don't take my suggestion of adjusting the
+dependencies, the end result of your patchset still makes things
+better than they were.
 
-Do you mind aligning the descriptions by @pt_frag_refcount? I think it'll
-be more readable.
+...so if you really feel strongly that things are more understandable
+with the dependencies specified as you have, I won't stand in the way.
+I still think you need a v2, though, just to address other nits.
 
-> + *
-> + * This struct overlays struct page for now. Do not modify without a good
-> + * understanding of the issues.
-> + */
-> +struct ptdesc {
-> +	unsigned long __page_flags;
-> +
-> +	union {
-> +		struct list_head pt_list;
-> +		struct {
-> +			unsigned long _pt_pad_1;
-> +			pgtable_t pmd_huge_pte;
-> +		};
-> +	};
-> +	unsigned long _pt_s390_gaddr;
-> +
-> +	union {
-> +		struct mm_struct *pt_mm;
-> +		atomic_t pt_frag_refcount;
-> +	};
-> +
-> +#if ALLOC_SPLIT_PTLOCKS
-> +	spinlock_t *ptl;
-> +#else
-> +	spinlock_t ptl;
-> +#endif
-> +};
-> +
-> +#define TABLE_MATCH(pg, pt)						\
-> +	static_assert(offsetof(struct page, pg) == offsetof(struct ptdesc, pt))
-> +TABLE_MATCH(flags, __page_flags);
-> +TABLE_MATCH(compound_head, pt_list);
-> +TABLE_MATCH(compound_head, _pt_pad_1);
-> +TABLE_MATCH(pmd_huge_pte, pmd_huge_pte);
-> +TABLE_MATCH(mapping, _pt_s390_gaddr);
-> +TABLE_MATCH(pt_mm, pt_mm);
-> +TABLE_MATCH(ptl, ptl);
-> +#undef TABLE_MATCH
-> +static_assert(sizeof(struct ptdesc) <= sizeof(struct page));
-> +
->  /*
->   * No-op macros that just return the current protection value. Defined here
->   * because these macros can be used even if CONFIG_MMU is not defined.
-> -- 
-> 2.40.1
-> 
-> 
-
--- 
-Sincerely yours,
-Mike.
+-Doug
