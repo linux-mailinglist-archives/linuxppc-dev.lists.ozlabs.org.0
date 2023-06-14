@@ -2,121 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65CAB7308E8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 22:00:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A92477309C4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 23:24:08 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=Z3Kv/Cn6;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JSy2cjQ3;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QhGWS1xTMz3bjX
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jun 2023 06:00:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QhJMV41SCz3bmp
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jun 2023 07:24:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=Z3Kv/Cn6;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JSy2cjQ3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f400:fe0c::614; helo=eur04-db3-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org)
-Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on0614.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe0c::614])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=dinguyen@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QhGVV3YrSz30P7
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jun 2023 06:00:00 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jvalseU25Sv2hULHSOE2o5UcktVRFxV2QQo9+mB8oQrPVnunuimI6wCiEJ+Sjm21BU5/JXM45m8NExWOeln1TIesD38vJWsXyGQw2zPkaButZCU/29uj21wyfsqj2NL6759TNnMFwpjCxA7b7wjRcTqYo3122V078iRE9FaITU9kOQKXIzXTETh4T2hkPcI3ma0H5tRtvT14sT07KawjJAF0wyC4uv0kWjLiR/qp0RYx89a1uucHPEan+Kn9wa7JzGMoMnUH4C4AQKlaGWJGlgKHuwCPdWZ6nEhnwnhajaYOjCjufTvCtkEAtrxh6eHQyq4mar+b2pitq1GbadGpZA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BFC0K0wpsDVH2e+Q2JJzF79DZUD85zMAoA86MbRC+sk=;
- b=jwRNOnhUQOthzC1tu/NaTLAw2FF2CRgAQlX5X8OX8DlO8B/zHyYOtonIraYbz5ZXHxsm+LHMFlS3P0DWMLlLoyPSDqDth1CRhbCUpSxWBf9KYwugL4AfYW3ZxDI6pI5Keppz4ZNIApiC3rKkjPqEFQ511OfK3Q4y98sZeqgVjU+CNUH7bTKhRS3aIyAAChrsPC20dAZJzkhrCDJzaPAe7bQPkJfE8s7FVfsTqJ1ejgcEVho4bRdfaJZfB8zEKHVcA9wT4NxniAzYAvpDmb3V5NWb4rynzQJywRX/O5i+JoQsQZS7SgZltHsUCoU3C0lHotgfcoVNSqOsRMFk/nUB2g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BFC0K0wpsDVH2e+Q2JJzF79DZUD85zMAoA86MbRC+sk=;
- b=Z3Kv/Cn684YOyDJxyh7BtoSiUaCY8ed7NnrIMdO/2ZVAXf1PkmkO1n8ryanN1RLBZ2OzQNHumFIcd6/AMJr4wiRdmgjJ6LbgGnwnDcgGMbUOnaOPLiE0B1yQrpw1ypk14RF33Hs8AFj4LXotJ3gCWzC6H5jZ7EEX9rwV/T2PKbc=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by DB8PR04MB6794.eurprd04.prod.outlook.com (2603:10a6:10:11b::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6477.37; Wed, 14 Jun
- 2023 19:59:36 +0000
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::4a2a:262e:415f:e41c]) by AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::4a2a:262e:415f:e41c%7]) with mapi id 15.20.6477.035; Wed, 14 Jun 2023
- 19:59:36 +0000
-Date: Wed, 14 Jun 2023 15:59:21 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: manivannan.sadhasivam@linaro.org, Minghuan Lian <minghuan.Lian@nxp.com>,
-	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linuxppc-dev@lists.ozlabs.org>,
-	"open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-pci@vger.kernel.org>,
-	"moderated list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 1/1] PCI: layerscape: Add the endpoint linkup notifier
- support
-Message-ID: <ZIocGZfj2T4Wvpeq@lizhi-Precision-Tower-5810>
-References: <20230515151049.2797105-1-Frank.Li@nxp.com>
- <ZIdEBXH5AztZ/jz5@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZIdEBXH5AztZ/jz5@lizhi-Precision-Tower-5810>
-X-ClientProxiedBy: SJ0PR13CA0068.namprd13.prod.outlook.com
- (2603:10b6:a03:2c4::13) To AM6PR04MB4838.eurprd04.prod.outlook.com
- (2603:10a6:20b:4::16)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QhJLc0kkjz2yjk
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jun 2023 07:23:20 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 34A296257E;
+	Wed, 14 Jun 2023 21:23:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E219C433C8;
+	Wed, 14 Jun 2023 21:23:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1686777794;
+	bh=sfZlQC0KRiU3VFMaS6H5djLiaDuaR3UyKKAHotXoEC4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=JSy2cjQ3EfZqDH+GRmJ+mjVAAcseGIvPUq3lquiQxXqEjjGqwU+HemD7F3wiC1btN
+	 oSofDjGtfqLFUZE6+eF26LaNmlZ0XJSVLI8h3M4XLmim/HM29Na3QWm9DVPo2aVCXI
+	 K79BAGLxK+0MfFwKGWozB9O2gr9yZd3Cu5CIDwhRjdpR3tn5b309NHjtR2IQGAy5FI
+	 ii48Ct/zrPJGlO6GMB0nxU3tTn8XzvIvT2D58R4sk2Mn4rxTjXdkRPrgiKhp+20BR7
+	 UEwrTSQZ099UBshJbATcCyWw+lXzjKCSDECSlkjbQFiwFpFsJU9nBH5UIC1JXPi4An
+	 txkWeQKuOaEyQ==
+Message-ID: <5729b45b-6a19-2aa8-8722-c50e6a1fceea@kernel.org>
+Date: Wed, 14 Jun 2023 16:23:10 -0500
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|DB8PR04MB6794:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6d076545-7c42-4801-c575-08db6d11e124
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	Aaqyi7Dr1ZJfRoj1p+9Q8m/qQb9ZdNnbXqqXf2v2JOkrg0SwQsNXfMSasNVYOsu6/yHGX2VpzlaffF4rvRs6NS7YW+Lc8VUJD6LryQoc18n0G5cIoFWVgWiJsQEOjE6x+78W7cBRSWUlUfJqyuEPFgF6TCRqAlur0CinGXmXbgXWb15FS064wiOE6ISK+hVRE8cB3XJUvh4RLw9JlohiwxQyFLBe+eJpsos4DZrc0J3Li+vPnc2sjZupfiYnqjGVKJjeGKh8X+C8tGH7nc+2YiHyfor/yKY9tXD1QRsYiBDk//2aYPwn5wqc4EBf+AIbnxo1zRfuFf41oi/O9Dre9axDYTRING2kfe7zsVG0boRRMa3Hmx1yysSMyDzgRGlpzC9vIPaSXzvq/snIGHns5v5ydWXFZK6FA5dtcM2IjM3/1BnzB3vbjIu4xeJUii+Y9LGW8Cqdi8MkbdmQvedm93MvlgpZM670LN1vkVOSa94piETpwHDQG94WczpiEFtiOmioYxVKYR2vjAV3PulFHPySt+qdiOs5woQ0jdK/Dj99NjvoP/5E6Y2VqAOcWFDvgR14TYlr5k3VbOVC++r4ShayDxNgPetA9j1aQTju3V9tQkJBH6PiE4Gc4gGPh+rM
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(7916004)(376002)(39860400002)(346002)(366004)(396003)(136003)(451199021)(52116002)(6486002)(6666004)(478600001)(186003)(9686003)(26005)(6512007)(66476007)(8676002)(8936002)(6506007)(41300700001)(4326008)(316002)(5660300002)(66946007)(110136005)(7416002)(66556008)(921005)(38100700002)(38350700002)(2906002)(86362001)(83380400001)(33716001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?bNVkvlcFsPy9+1Ul804pnS2hcsxQ83wJYuBs3bBeDHgjNEmCAb7jnT94Gjdi?=
- =?us-ascii?Q?Ir2Hocp8aio5Ymq3wZWYRAZobHWIXWstj2JLbN5ydZrrrCMRTRGrWotvBb9p?=
- =?us-ascii?Q?uXWyAWId9IIEBxIvD1b9GP4GmgdezJ2xj37fpwqFoGwXHdBJe1xa5t+SgP4v?=
- =?us-ascii?Q?cLiSFrPej+cuEXqmK7qhvRm+xygnmkIcVC+mjKzMSAsaXW9j64nNWsCYgJBm?=
- =?us-ascii?Q?DHhh6EFaqShtB4OWMfBDMOdpxhT4xXbb13M57DGFv2EW1n3sMLx6zhX4KcbJ?=
- =?us-ascii?Q?s8HG3Hn7+erKyQkWDVirWAI5WTz45qHO6SWyl0DfRZgvDKCgO2ABlN34ig/f?=
- =?us-ascii?Q?RnPAAMR+FmD3GEHWpoKCJsUS1waoeSI4bUJcipm8/8ox0o3GrwtEeLuCGaKy?=
- =?us-ascii?Q?kwR+NIDZBjsJwz0BnPs6bQ28QIpfPN6u4RyXYIGdOFoPSOot+PzP4cg12x77?=
- =?us-ascii?Q?SSbQ4AfreFxC8+R9c/JrfUqdg5YVS8rb4hmZnrlRlfrA/y6/OEGaZoeRuy+a?=
- =?us-ascii?Q?hAYAmXZbqEJ1BR1y50mJ2emeMDN9I/ugLaeJ+i/CA2/tLeOX2UABOBAWwL3z?=
- =?us-ascii?Q?1Z7GsIjDPiblclWFmsGo9qD8rNoBqYTrS10D3SMJBlvDGDTvKM+JUnW9a0gz?=
- =?us-ascii?Q?oLszcapp5kzRhhqnWYtc4hgsIEcdunUvno3S1Phhebzej8ExaBHey1Ig4boN?=
- =?us-ascii?Q?se/JpcM4n5x8DL+6Bfp4WIb4MVuTz9o5drJq2NNQUkdhIbslRx/IojZTVJ8V?=
- =?us-ascii?Q?e/nWbMzLG5IoX/xXwmPmWyHCB1aP+gf3Mj3pejwjTavKMkk9YVRIy0DC4tuq?=
- =?us-ascii?Q?Az/to/KmY8I3f6Wny8/di5VJ7ZCubvqHxvbveG9+bk6/H7usrxnhhGpSuKuO?=
- =?us-ascii?Q?/m4H5ATepM2yCC5IngwbyL3FOVvEuseq3FCSoGHY0wYdD8QCRwavLp5FLVaM?=
- =?us-ascii?Q?pON2nIf359ee3yVhvNS++hl3oZ6pQOnPF9PPn74z6v13jfR6/rAWwc+a8JaO?=
- =?us-ascii?Q?8w4t9ch1MIaZx0L7sEwVCxp1R5aW4lr69ruOeKZ9VcOZyRxyRpsP9/G8VG44?=
- =?us-ascii?Q?HGKdaQDdO9S3hHeoQRNZrt3ev37FJ3Koaut3RQ7h8h83HY+xMnjRlGdAwPMT?=
- =?us-ascii?Q?c60i3zEds/7/uZlJ2RAmwBoqobFC5QoExP8oAsXIT8dZrfXMPdve4nYpYRcw?=
- =?us-ascii?Q?2viGBd2GAtt3ZWbnZPChH08LikfZbNxWoxShC7stBYAM2YaVyDJBJMDyH+jH?=
- =?us-ascii?Q?hTF4JtBW8QNbX5M067pNZ0/AOhdCdBkmieCj+6yC9L5Jq1cITtHqN1lVzuPf?=
- =?us-ascii?Q?fqKfXp50egTZJrMmso4xq4NFn/l+d/JRiymkV/6+DoLPZdaud+cmqUC4Jzet?=
- =?us-ascii?Q?5KqrQy/PlRF5qy0SLeVEkudcINlJW8LG9jDRR1WEigQZeoFLVIeYNMqz6FDv?=
- =?us-ascii?Q?kT9QWwsPG6p0UvDPkf4WU32DsCAWW2DstSQ7IvTBmJlrJY4FqdHGZ6Oisupw?=
- =?us-ascii?Q?6LHvySxNxYrZJDoWaie88LDF6YweIj0JMgqNUCYENzls2S+EJacrfOeCf6wK?=
- =?us-ascii?Q?5MI1cC3JwWYeEpJYg5Z6abniwvHJeL3op/wBJ5ts?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6d076545-7c42-4801-c575-08db6d11e124
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jun 2023 19:59:36.3547
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Fu0mYgWAbwQEtezru0eGQRwNJZn8hPFmpK8yWXLuqd+TrlVKeuZnQJH1tMrTDhQZJ0MeNU1R2bWzL5WTvDUm5Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6794
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v4 27/34] nios2: Convert __pte_free_tlb() to use ptdescs
+Content-Language: en-US
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+References: <20230612210423.18611-1-vishal.moola@gmail.com>
+ <20230612210423.18611-28-vishal.moola@gmail.com>
+ <e52c7a74-da68-08d2-54e2-f95a8c5b52e7@kernel.org>
+ <CAMuHMdXPASfLM8St_JZOW3Wke+ickJoo1oDr+orRbTERy=Zgwg@mail.gmail.com>
+From: Dinh Nguyen <dinguyen@kernel.org>
+In-Reply-To: <CAMuHMdXPASfLM8St_JZOW3Wke+ickJoo1oDr+orRbTERy=Zgwg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -128,46 +67,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: imx@lists.linux.dev
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, kvm@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-sh@vger.kernel.org, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, "Vishal Moola \(Oracle\)" <vishal.moola@gmail.com>, linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org, Hugh Dickins <hughd@google.com>, linux-csky@vger.kernel.org, loongarch@lists.linux.dev, sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 12, 2023 at 12:12:53PM -0400, Frank Li wrote:
-> On Mon, May 15, 2023 at 11:10:49AM -0400, Frank Li wrote:
-> > Layerscape has PME interrupt, which can be used as linkup notifier.
-> > Set CFG_READY bit of PEX_PF0_CONFIG to enable accesses from root complex
-> > when linkup detected.
-> > 
-> > Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> > Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
+
+
+On 6/14/23 04:30, Geert Uytterhoeven wrote:
+> Hi Dinh,
 > 
-> Ping, not comments almost over 1 months.
-
-@lorenzo and @Bjorn
-
-Could you please pick this patch? This just added a linkup notification for
-layerscape platform and there are not futher comments over 1 months.
-
-Frank
-
+> On Wed, Jun 14, 2023 at 12:17 AM Dinh Nguyen <dinguyen@kernel.org> wrote:
+>> On 6/12/23 16:04, Vishal Moola (Oracle) wrote:
+>>> Part of the conversions to replace pgtable constructor/destructors with
+>>> ptdesc equivalents.
+>>>
+>>> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+>>> ---
+>>>    arch/nios2/include/asm/pgalloc.h | 8 ++++----
+>>>    1 file changed, 4 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/arch/nios2/include/asm/pgalloc.h b/arch/nios2/include/asm/pgalloc.h
+>>> index ecd1657bb2ce..ce6bb8e74271 100644
+>>> --- a/arch/nios2/include/asm/pgalloc.h
+>>> +++ b/arch/nios2/include/asm/pgalloc.h
+>>> @@ -28,10 +28,10 @@ static inline void pmd_populate(struct mm_struct *mm, pmd_t *pmd,
+>>>
+>>>    extern pgd_t *pgd_alloc(struct mm_struct *mm);
+>>>
+>>> -#define __pte_free_tlb(tlb, pte, addr)                               \
+>>> -     do {                                                    \
+>>> -             pgtable_pte_page_dtor(pte);                     \
+>>> -             tlb_remove_page((tlb), (pte));                  \
+>>> +#define __pte_free_tlb(tlb, pte, addr)                                       \
+>>> +     do {                                                            \
+>>> +             pagetable_pte_dtor(page_ptdesc(pte));                   \
+>>> +             tlb_remove_page_ptdesc((tlb), (page_ptdesc(pte)));      \
+>>>        } while (0)
+>>>
+>>>    #endif /* _ASM_NIOS2_PGALLOC_H */
+>>
+>> Applied!
 > 
-> > Change from v3 to v4
-> >  - swap irq and big_endian
-> > Change from v2 to v3
-> >  - align 80 column
-> >  - clear irq firstly
-> >  - dev_info to dev_dbg
-> >  - remove double space
-> >  - update commit message
-> > 
-> > Change from v1 to v2
-> > - pme -> PME
-> > - irq -> IRQ
-> > - update dev_info message according to Bjorn's suggestion
-> > 
-> >  .../pci/controller/dwc/pci-layerscape-ep.c    | 102 +++++++++++++++++-
-> >  1 file changed, 101 insertions(+), 1 deletion(-)
-> > 
-> > 
+> I don't think you can just apply this patch, as the new functions
+> were only introduced in [PATCH v4 05/34] of this series.
+> 
+
+Ah, thanks for the pointer!
+
+Dinh
