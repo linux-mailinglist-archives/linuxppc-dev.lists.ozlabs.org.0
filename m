@@ -2,58 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6114872F25F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 04:02:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8451C72F259
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 04:00:25 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=e2RgK1vx;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QgpbT2Jq9z30g0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 12:02:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QgpXk63N0z30PY
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 12:00:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com; envelope-from=thunder.leizhen@huawei.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 179 seconds by postgrey-1.37 at boromir; Wed, 14 Jun 2023 11:22:47 AEST
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=e2RgK1vx;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=leo.yan@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QgnjM4VpBz2xpf
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jun 2023 11:22:44 +1000 (AEST)
-Received: from dggpemm500006.china.huawei.com (unknown [172.30.72.56])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4Qgng45C3bzLmks;
-	Wed, 14 Jun 2023 09:20:48 +0800 (CST)
-Received: from [10.174.178.55] (10.174.178.55) by
- dggpemm500006.china.huawei.com (7.185.36.236) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Wed, 14 Jun 2023 09:22:36 +0800
-Subject: Re: [PATCH v1 05/21] arm64/kexec: refactor for kernel/Kconfig.kexec
-To: Eric DeVolder <eric.devolder@oracle.com>, <linux@armlinux.org.uk>,
-	<catalin.marinas@arm.com>, <will@kernel.org>, <chenhuacai@kernel.org>,
-	<geert@linux-m68k.org>, <tsbogend@alpha.franken.de>,
-	<James.Bottomley@HansenPartnership.com>, <deller@gmx.de>,
-	<ysato@users.sourceforge.jp>, <dalias@libc.org>,
-	<glaubitz@physik.fu-berlin.de>, <tglx@linutronix.de>, <mingo@redhat.com>,
-	<bp@alien8.de>, <dave.hansen@linux.intel.com>, <86@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-ia64@vger.kernel.org>, <loongarch@lists.linux.dev>,
-	<linux-m68k@lists.linux-m68k.org>, <linux-mips@vger.kernel.org>,
-	<linux-parisc@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
-	<linux-riscv@lists.infradead.org>, <linux-s390@vger.kernel.org>,
-	<linux-sh@vger.kernel.org>
-References: <20230612172805.681179-1-eric.devolder@oracle.com>
- <20230612172805.681179-6-eric.devolder@oracle.com>
-From: "Leizhen (ThunderTown)" <thunder.leizhen@huawei.com>
-Message-ID: <29427d7c-7d81-9bda-0067-d17b51952cb4@huawei.com>
-Date: Wed, 14 Jun 2023 09:22:35 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QgpWl6pfDz304l
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jun 2023 11:59:29 +1000 (AEST)
+Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-66643830ab3so251900b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jun 2023 18:59:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1686707964; x=1689299964;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=CptATqeseRZ9wnta/kqV0RFXggJlBwVL1UgxNIajgOw=;
+        b=e2RgK1vxZSlLTPBqtiSaUZBIa1pYX3TyvB9mmgJfYVdBgv+uVbgWNieVfpID4RRcif
+         Rh4aKrtEjMQbFQgL/1cBNFSOCLkJIm6gnJlgU8Sm7S9Qx/+9SjPfFVFylYIi6+1lbdK5
+         0FjdUzRVBSxTFZj7AMQI1JkSrViqPraYB37ncZ/dv1/2vOTlVEBSHOUgWjQoWLktLHPw
+         /p5w1w9Ffg2h+1tGmiEdfa69l4HvRozyl4o+nqtTpc9PvK5kXL1ea0sQsQsIkr/U1ZGm
+         jh7Q0ITCO6NXcmc/6b1iRYJlDKFIoNGqKp//s5NetJgOxZdVgPd9tdT656pwTwyYsks8
+         7UWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686707965; x=1689299965;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CptATqeseRZ9wnta/kqV0RFXggJlBwVL1UgxNIajgOw=;
+        b=E5hSigyns6nEatd4D1vOt3xMfqqfAgW7V+Cpa5m76DEPVSmDX934US2JX3FUC8G5dd
+         zKcR0PJ0rItRFg98nyOwykacm4kRfoqJHjorrsL8MprCZZx90jPMmIawOQvGmQ90vGwa
+         unm/L0HF5y61WrPJF0lFcwAIkwjiLIYgm98Ptq+5FZwpNwu8pcXn0zeI0sjGiyL1H2yz
+         zOwzsa/jN/W2nudOuvz5GacMmoP+Ckk7WtEloCYaQaC6lXMiSe5hOerdzgl3TfbIESrf
+         qfjXHF2SxcJrHAE8Dw+BrTv6JdggPp3FDqJ2NRizRAShsaJ0FsCa4vhSRZxqlrQeGc45
+         9a5g==
+X-Gm-Message-State: AC+VfDx0gboS2UAZezVYypnX1ndxRDaL9W7TqL511wx5nq523S6HfTyX
+	RkcHhQjEC8qcKMPNK1Tn6irVAQ==
+X-Google-Smtp-Source: ACHHUZ7fIQKn6w558fr9elLAW7uFGq15RlsXFxAuykUMeZG/0doPLFqGLG+NTvihGA0DQVkqTDU/EQ==
+X-Received: by 2002:a05:6a00:1a45:b0:63a:ea82:b7b7 with SMTP id h5-20020a056a001a4500b0063aea82b7b7mr715343pfv.28.1686707964453;
+        Tue, 13 Jun 2023 18:59:24 -0700 (PDT)
+Received: from leoy-huanghe.lan ([223.104.5.42])
+        by smtp.gmail.com with ESMTPSA id n14-20020a635c4e000000b004fbd91d9716sm9813808pgm.15.2023.06.13.18.59.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Jun 2023 18:59:23 -0700 (PDT)
+Date: Wed, 14 Jun 2023 09:59:14 +0800
+From: Leo Yan <leo.yan@linaro.org>
+To: Arnaldo Carvalho de Melo <acme@kernel.org>
+Subject: Re: [PATCH 01/17] perf: get rid of unused import
+Message-ID: <20230614015914.GL217089@leoy-huanghe.lan>
+References: <20230613164145.50488-1-atrajeev@linux.vnet.ibm.com>
+ <20230613164145.50488-2-atrajeev@linux.vnet.ibm.com>
+ <ZIjJYCL38UX9FIl4@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20230612172805.681179-6-eric.devolder@oracle.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.178.55]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpemm500006.china.huawei.com (7.185.36.236)
-X-CFilter-Loop: Reflected
-X-Mailman-Approved-At: Wed, 14 Jun 2023 12:02:20 +1000
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZIjJYCL38UX9FIl4@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,104 +79,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: peterz@infradead.org, linus.walleij@linaro.org, hpa@zytor.com, kernel@xen0n.name, ardb@kernel.org, tsi@tuyoix.net, agordeev@linux.ibm.com, paulmck@kernel.org, bhe@redhat.com, masahiroy@kernel.org, konrad.wilk@oracle.com, sebastian.reichel@collabora.com, samitolvanen@google.com, ojeda@kernel.org, juerg.haefliger@canonical.com, borntraeger@linux.ibm.com, frederic@kernel.org, arnd@arndb.de, mhiramat@kernel.org, aou@eecs.berkeley.edu, keescook@chromium.org, gor@linux.ibm.com, anshuman.khandual@arm.com, hca@linux.ibm.com, xin3.li@intel.com, npiggin@gmail.com, rmk+kernel@armlinux.org.uk, paul.walmsley@sifive.com, boris.ostrovsky@oracle.com, ziy@nvidia.com, hbathini@linux.ibm.com, gregkh@linuxfoundation.org, kirill.shutemov@linux.intel.com, ndesaulniers@google.com, sourabhjain@linux.ibm.com, palmer@dabbelt.com, svens@linux.ibm.com, tj@kernel.org, akpm@linux-foundation.org, rppt@kernel.org
+Cc: irogers@google.com, Athira Rajeev <atrajeev@linux.vnet.ibm.com>, john.g.garry@oracle.com, kjain@linux.ibm.com, ravi.bangoria@amd.com, Sourabh Jain <sourabhjain@linux.ibm.com>, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, jolsa@kernel.org, namhyung@kernel.org, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 2023/6/13 1:27, Eric DeVolder wrote:
-> The kexec and crash kernel options are provided in the common
-> kernel/Kconfig.kexec. Utilize the common options and provide
-> the ARCH_HAS_ and ARCH_SUPPORTS_ entries to recreate the
-> equivalent set of KEXEC and CRASH options.
+On Tue, Jun 13, 2023 at 04:54:08PM -0300, Arnaldo Carvalho de Melo wrote:
+> Em Tue, Jun 13, 2023 at 10:11:29PM +0530, Athira Rajeev escreveu:
+> > From: Sourabh Jain <sourabhjain@linux.ibm.com>
+> > 
+> > Script doesn't use sys library, so remove it.
 > 
-> Signed-off-by: Eric DeVolder <eric.devolder@oracle.com>
-> ---
->  arch/arm64/Kconfig | 61 ++++++++--------------------------------------
->  1 file changed, 10 insertions(+), 51 deletions(-)
+> Please Cc the persons working on that file, I added Leo to the CC list
+> of this message.
+
+Thanks, Arnaldo & Athira.  The change looks good to me.
+
+> Thanks, applied.
+
+Since have applied this patch, it's no need to give my review tag :)
+
+Thanks,
+Leo
+
+> - Arnaldo
+>  
+> > Report by pylint:
+> > W0611: Unused import sys (unused-import)
+> > 
+> > Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> > Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+> > Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+> > ---
+> >  tools/perf/scripts/python/arm-cs-trace-disasm.py | 1 -
+> >  1 file changed, 1 deletion(-)
+> > 
+> > diff --git a/tools/perf/scripts/python/arm-cs-trace-disasm.py b/tools/perf/scripts/python/arm-cs-trace-disasm.py
+> > index 4339692a8d0b..d59ff53f1d94 100755
+> > --- a/tools/perf/scripts/python/arm-cs-trace-disasm.py
+> > +++ b/tools/perf/scripts/python/arm-cs-trace-disasm.py
+> > @@ -9,7 +9,6 @@
+> >  from __future__ import print_function
+> >  import os
+> >  from os import path
+> > -import sys
+> >  import re
+> >  from subprocess import *
+> >  from optparse import OptionParser, make_option
+> > -- 
+> > 2.39.1
+> > 
 > 
-> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> index 343e1e1cae10..33552476a877 100644
-> --- a/arch/arm64/Kconfig
-> +++ b/arch/arm64/Kconfig
-> @@ -1433,60 +1433,19 @@ config PARAVIRT_TIME_ACCOUNTING
->  
->  	  If in doubt, say N here.
->  
-> -config KEXEC
-> -	depends on PM_SLEEP_SMP
-> -	select KEXEC_CORE
-> -	bool "kexec system call"
-> -	help
-> -	  kexec is a system call that implements the ability to shutdown your
-> -	  current kernel, and to start another kernel.  It is like a reboot
-> -	  but it is independent of the system firmware.   And like a reboot
-> -	  you can start any kernel with it, not just Linux.
-> -
-> -config KEXEC_FILE
-> -	bool "kexec file based system call"
-> -	select KEXEC_CORE
-> -	select HAVE_IMA_KEXEC if IMA
-> -	help
-> -	  This is new version of kexec system call. This system call is
-> -	  file based and takes file descriptors as system call argument
-> -	  for kernel and initramfs as opposed to list of segments as
-> -	  accepted by previous system call.
-> -
-> -config KEXEC_SIG
-> -	bool "Verify kernel signature during kexec_file_load() syscall"
-> -	depends on KEXEC_FILE
-> -	help
-> -	  Select this option to verify a signature with loaded kernel
-> -	  image. If configured, any attempt of loading a image without
-> -	  valid signature will fail.
-> -
-> -	  In addition to that option, you need to enable signature
-> -	  verification for the corresponding kernel image type being
-> -	  loaded in order for this to work.
-> +config ARCH_HAS_KEXEC
-> +	def_bool PM_SLEEP_SMP
->  
-> -config KEXEC_IMAGE_VERIFY_SIG
-> -	bool "Enable Image signature verification support"
-> -	default y
-> -	depends on KEXEC_SIG
-> -	depends on EFI && SIGNED_PE_FILE_VERIFICATION
-> -	help
-> -	  Enable Image signature verification support.
-
-I don't see an alternative to this option. It's used in
-arch/arm64/kernel/kexec_image.c:135
-
-> -
-> -comment "Support for PE file signature verification disabled"
-> -	depends on KEXEC_SIG
-> -	depends on !EFI || !SIGNED_PE_FILE_VERIFICATION
-> +config ARCH_HAS_KEXEC_FILE
-> +	def_bool y
->  
-> -config CRASH_DUMP
-> -	bool "Build kdump crash kernel"
-> -	help
-> -	  Generate crash dump after being started by kexec. This should
-> -	  be normally only set in special crash dump kernels which are
-> -	  loaded in the main kernel with kexec-tools into a specially
-> -	  reserved region and then later executed after a crash by
-> -	  kdump/kexec.
-> +config ARCH_SUPPORTS_KEXEC_FILE
-> +	def_bool y
-> +	depends on KEXEC_FILE
-> +	select HAVE_IMA_KEXEC if IMA
->  
-> -	  For more details see Documentation/admin-guide/kdump/kdump.rst
-> +config ARCH_HAS_CRASH_DUMP
-> +	def_bool y
->  
->  config TRANS_TABLE
->  	def_bool y
+> -- 
 > 
-
--- 
-Regards,
-  Zhen Lei
+> - Arnaldo
