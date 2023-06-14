@@ -1,56 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6110F730353
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 17:17:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB97673036D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jun 2023 17:18:51 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=a5HfETjk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Zs01V1OM;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qh8Dp1HQCz3bmN
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jun 2023 01:17:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qh8Fw1PSZz309V
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jun 2023 01:18:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=a5HfETjk;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Zs01V1OM;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qh8Cw0tNTz2xKS
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jun 2023 01:17:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qh8Db4YwLz3bfm
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jun 2023 01:17:35 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 4C48063E20;
-	Wed, 14 Jun 2023 15:16:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C0C6C433C8;
-	Wed, 14 Jun 2023 15:16:50 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id E203360C11;
+	Wed, 14 Jun 2023 15:17:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4DEFC433CA;
+	Wed, 14 Jun 2023 15:17:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1686755817;
-	bh=YWehRl3xWKEbQP9tq7ePmQYYbNy3P9MQRqza8pSXoQc=;
+	s=k20201202; t=1686755853;
+	bh=1S/7d32fWbuV27InCljg6kvJ/jUmDBZh0FnqMBK6hHQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=a5HfETjkviYZmB3yycxaStNQCcDjQ92r6U1dHXLCQYNXXuG0AAUSq7jKrB+2l21WE
-	 GypEoOApF1rLNsDZqptGPcxmCr0wOSIRfpVC7vWwoWHblSH2+PhDM7ZW5oWZFVA9ML
-	 0FHsMp89h7dErkEWSqM9r5MLgxZuAZm5NLE0GbwBvKGpFqgzoxM2AhuVGiRnrVxHpJ
-	 +MEb2WN6DRbMDDPEuOzeya9BK86TjWF0eG9IOlempn4j36CfKy0Jiz99cVNmFKgRnt
-	 JUCMMz1gmGbQUt/P8bZ99XYy/Rxm4p9/4bFRzL62I+G/NVscu1YUh+MWxgzqPj29/v
-	 2pSk7JFRzXlsw==
-Date: Wed, 14 Jun 2023 18:16:19 +0300
+	b=Zs01V1OMCQW9SGjoiM8833e4+GgLf+roxCp+ov/6p9qYwn56wOxhtLVwhJBsT7OTn
+	 GmKNr7uX+7PKLTTatiHu1h0uEJz56DdL9TKqVqAb2j/OoYwLYcpoymomSf3Vf49OoP
+	 yZFZoPUVg+zzeaw1qOVp7XommunMKxMETOeiXXwG1fruyJmVlSU1jjsRgmJeqGNLq+
+	 7Qw3V4aZAWAo+5aqDc7z4QbZ0aSE7DJmDeFcTGvIfVMtmqiMPos6cFk8QO6kEUCdUY
+	 C0Hs9o3XgkyQ8iM1Y5etTMXrjXaUuF82+5JCj8C2wU2HvHjg68S/JmOt57YphvSLka
+	 2vW1ji2mH198A==
+Date: Wed, 14 Jun 2023 18:16:55 +0300
 From: Mike Rapoport <rppt@kernel.org>
 To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Subject: Re: [PATCH v4 26/34] mips: Convert various functions to use ptdescs
-Message-ID: <20230614151619.GY52412@kernel.org>
+Subject: Re: [PATCH v4 27/34] nios2: Convert __pte_free_tlb() to use ptdescs
+Message-ID: <20230614151655.GZ52412@kernel.org>
 References: <20230612210423.18611-1-vishal.moola@gmail.com>
- <20230612210423.18611-27-vishal.moola@gmail.com>
+ <20230612210423.18611-28-vishal.moola@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230612210423.18611-27-vishal.moola@gmail.com>
+In-Reply-To: <20230612210423.18611-28-vishal.moola@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,111 +62,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, kvm@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-sh@vger.kernel.org, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-csky@vger.kernel.org, linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, loongarch@lists.linux.dev, sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, kvm@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-hexagon@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, linux-sh@vger.kernel.org, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-csky@vger.kernel.org, linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, loongarch@lists.linux.dev, sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 12, 2023 at 02:04:15PM -0700, Vishal Moola (Oracle) wrote:
-> As part of the conversions to replace pgtable constructor/destructors with
-> ptdesc equivalents, convert various page table functions to use ptdescs.
-> 
-> Some of the functions use the *get*page*() helper functions. Convert
-> these to use pagetable_alloc() and ptdesc_address() instead to help
-> standardize page tables further.
+On Mon, Jun 12, 2023 at 02:04:16PM -0700, Vishal Moola (Oracle) wrote:
+> Part of the conversions to replace pgtable constructor/destructors with
+> ptdesc equivalents.
 > 
 > Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 
 Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
 
 > ---
->  arch/mips/include/asm/pgalloc.h | 31 +++++++++++++++++--------------
->  arch/mips/mm/pgtable.c          |  7 ++++---
->  2 files changed, 21 insertions(+), 17 deletions(-)
+>  arch/nios2/include/asm/pgalloc.h | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 > 
-> diff --git a/arch/mips/include/asm/pgalloc.h b/arch/mips/include/asm/pgalloc.h
-> index f72e737dda21..6940e5536664 100644
-> --- a/arch/mips/include/asm/pgalloc.h
-> +++ b/arch/mips/include/asm/pgalloc.h
-> @@ -51,13 +51,13 @@ extern pgd_t *pgd_alloc(struct mm_struct *mm);
+> diff --git a/arch/nios2/include/asm/pgalloc.h b/arch/nios2/include/asm/pgalloc.h
+> index ecd1657bb2ce..ce6bb8e74271 100644
+> --- a/arch/nios2/include/asm/pgalloc.h
+> +++ b/arch/nios2/include/asm/pgalloc.h
+> @@ -28,10 +28,10 @@ static inline void pmd_populate(struct mm_struct *mm, pmd_t *pmd,
 >  
->  static inline void pgd_free(struct mm_struct *mm, pgd_t *pgd)
->  {
-> -	free_pages((unsigned long)pgd, PGD_TABLE_ORDER);
-> +	pagetable_free(virt_to_ptdesc(pgd));
->  }
+>  extern pgd_t *pgd_alloc(struct mm_struct *mm);
 >  
-> -#define __pte_free_tlb(tlb,pte,address)			\
-> -do {							\
-> -	pgtable_pte_page_dtor(pte);			\
-> -	tlb_remove_page((tlb), pte);			\
-> +#define __pte_free_tlb(tlb, pte, address)			\
-> +do {								\
-> +	pagetable_pte_dtor(page_ptdesc(pte));			\
-> +	tlb_remove_page_ptdesc((tlb), page_ptdesc(pte));	\
->  } while (0)
+> -#define __pte_free_tlb(tlb, pte, addr)				\
+> -	do {							\
+> -		pgtable_pte_page_dtor(pte);			\
+> -		tlb_remove_page((tlb), (pte));			\
+> +#define __pte_free_tlb(tlb, pte, addr)					\
+> +	do {								\
+> +		pagetable_pte_dtor(page_ptdesc(pte));			\
+> +		tlb_remove_page_ptdesc((tlb), (page_ptdesc(pte)));	\
+>  	} while (0)
 >  
->  #ifndef __PAGETABLE_PMD_FOLDED
-> @@ -65,18 +65,18 @@ do {							\
->  static inline pmd_t *pmd_alloc_one(struct mm_struct *mm, unsigned long address)
->  {
->  	pmd_t *pmd;
-> -	struct page *pg;
-> +	struct ptdesc *ptdesc;
->  
-> -	pg = alloc_pages(GFP_KERNEL_ACCOUNT, PMD_TABLE_ORDER);
-> -	if (!pg)
-> +	ptdesc = pagetable_alloc(GFP_KERNEL_ACCOUNT, PMD_TABLE_ORDER);
-> +	if (!ptdesc)
->  		return NULL;
->  
-> -	if (!pgtable_pmd_page_ctor(pg)) {
-> -		__free_pages(pg, PMD_TABLE_ORDER);
-> +	if (!pagetable_pmd_ctor(ptdesc)) {
-> +		pagetable_free(ptdesc);
->  		return NULL;
->  	}
->  
-> -	pmd = (pmd_t *)page_address(pg);
-> +	pmd = ptdesc_address(ptdesc);
->  	pmd_init(pmd);
->  	return pmd;
->  }
-> @@ -90,10 +90,13 @@ static inline pmd_t *pmd_alloc_one(struct mm_struct *mm, unsigned long address)
->  static inline pud_t *pud_alloc_one(struct mm_struct *mm, unsigned long address)
->  {
->  	pud_t *pud;
-> +	struct ptdesc *ptdesc = pagetable_alloc(GFP_KERNEL, PUD_TABLE_ORDER);
->  
-> -	pud = (pud_t *) __get_free_pages(GFP_KERNEL, PUD_TABLE_ORDER);
-> -	if (pud)
-> -		pud_init(pud);
-> +	if (!ptdesc)
-> +		return NULL;
-> +	pud = ptdesc_address(ptdesc);
-> +
-> +	pud_init(pud);
->  	return pud;
->  }
->  
-> diff --git a/arch/mips/mm/pgtable.c b/arch/mips/mm/pgtable.c
-> index b13314be5d0e..729258ff4e3b 100644
-> --- a/arch/mips/mm/pgtable.c
-> +++ b/arch/mips/mm/pgtable.c
-> @@ -10,10 +10,11 @@
->  
->  pgd_t *pgd_alloc(struct mm_struct *mm)
->  {
-> -	pgd_t *ret, *init;
-> +	pgd_t *init, *ret = NULL;
-> +	struct ptdesc *ptdesc = pagetable_alloc(GFP_KERNEL, PGD_TABLE_ORDER);
->  
-> -	ret = (pgd_t *) __get_free_pages(GFP_KERNEL, PGD_TABLE_ORDER);
-> -	if (ret) {
-> +	if (ptdesc) {
-> +		ret = ptdesc_address(ptdesc);
->  		init = pgd_offset(&init_mm, 0UL);
->  		pgd_init(ret);
->  		memcpy(ret + USER_PTRS_PER_PGD, init + USER_PTRS_PER_PGD,
+>  #endif /* _ASM_NIOS2_PGALLOC_H */
 > -- 
 > 2.40.1
 > 
