@@ -1,74 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 660A3730D68
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jun 2023 05:03:35 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=GOg+ZPxR;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B34E2730D6B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jun 2023 05:08:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QhRv92MLSz3bnv
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jun 2023 13:03:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QhS0H2RGRz3c1L
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jun 2023 13:07:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=GOg+ZPxR;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::632; helo=mail-pl1-x632.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QhRtD5f78z300q
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jun 2023 13:02:43 +1000 (AEST)
-Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1b3a6469623so31704165ad.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jun 2023 20:02:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686798160; x=1689390160;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6G4IXwGpoUdWL3Jj26QlGSDuiNxEjCjHlS4hHitS9FY=;
-        b=GOg+ZPxRGBheX5NiFnwchnIk6F9ucBIBZkHECyciq1u+1Lbw73d3KXyMNOJ5K7EGsa
-         DLKZNF6jBpC3ZnlkfQwAvDq7EjlkHz9J82xuBaIavB3mlD2Pi0bfyASTRcL7Joz1+9Pi
-         Nch/MQnKGvYv5fT+9VUMYDZUwHGL3gg+YCzN4NoY0K0QrTX5ppT4+x9waNF+QDmVliJV
-         YmCmrICVINR5cNM2tmXppwHAmwYspROGTazQG4swifGWdQE5UU1Lw9tMf2n3DMm70PDH
-         MO+lReBH35ycVa9ao6mhLkOcWmJebpodOPTgpxYjZ21Mxdx0iak2X4OFZyLtHtIpa9oB
-         CjbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686798160; x=1689390160;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=6G4IXwGpoUdWL3Jj26QlGSDuiNxEjCjHlS4hHitS9FY=;
-        b=KZbRvloyZ1lE+ukdRAqyT5X63hE+jJWn5VFNSSQLBydu7AWf4V/hLT4e8GxsJT8EFX
-         pVU25phcJKEXQ6gppzVq+YfpTg3VaLH/5yINBfGiEbAkkMnrUis/VUldFeGmKEetwYm2
-         O85ixfD6OOTIGaQ0cOB0cquk+xprapUYH11BTB17F1PtCirWHO5V7sddgKZ43lYqu/uN
-         QLMNFpybpl3uPR1082I43xxqBpGDD7IMzr1sa614J5KmwFi+/GuThx4r4lYXA4SWhXiW
-         l5dleSNyCLoUi2GCFpuqDkHpWgoUxpx+moaK1L18Ot7nBBBghQbvvhnYldKuTzsLxXAQ
-         uNBQ==
-X-Gm-Message-State: AC+VfDyJfVFQD/PqKmG6Kw0qsfm1dWiJKRVkmVVcPAWYsOljt2YM3iBk
-	JLNQpayrcEtfESBSesce/+E=
-X-Google-Smtp-Source: ACHHUZ6lgjIPBI0Tymldtf6QR27S0ioLRgoC0GF43wVBjXefXq1as6jZvCfbw6Hn4lMDb5hFgodfSA==
-X-Received: by 2002:a17:902:e314:b0:1af:fe12:4e18 with SMTP id q20-20020a170902e31400b001affe124e18mr11243125plc.20.1686798160453;
-        Wed, 14 Jun 2023 20:02:40 -0700 (PDT)
-Received: from localhost (14-203-144-223.static.tpgi.com.au. [14.203.144.223])
-        by smtp.gmail.com with ESMTPSA id w5-20020a170902d70500b001ac94b33ab1sm4164815ply.304.2023.06.14.20.02.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Jun 2023 20:02:40 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 15 Jun 2023 13:02:34 +1000
-Message-Id: <CTCW1ILCXTMA.24T7LU9PQBTDA@wheely>
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Joel Stanley" <joel@jms.id.au>
-Subject: Re: [kvm-unit-tests v4 00/12] powerpc: updates, P10, PNV support
-X-Mailer: aerc 0.14.0
-References: <20230608075826.86217-1-npiggin@gmail.com>
- <CACPK8XdpAxjvP+bFNFJzQQzBYvEwsE69QkbNWRumZtUW2wOrrA@mail.gmail.com>
-In-Reply-To: <CACPK8XdpAxjvP+bFNFJzQQzBYvEwsE69QkbNWRumZtUW2wOrrA@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QhRzn1GFzz2xqW
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jun 2023 13:07:33 +1000 (AEST)
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4QhRzj0gN6z4wjF;
+	Thu, 15 Jun 2023 13:07:29 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QhRzh71vKz4wgq;
+	Thu, 15 Jun 2023 13:07:28 +1000 (AEST)
+From: Michael Ellerman <michaele@au1.ibm.com>
+To: Sachin Sant <sachinp@linux.ibm.com>, open list
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [6.4-rc6] Crash during a kexec operation
+ (tpm_amd_is_rng_defective)
+In-Reply-To: <99B81401-DB46-49B9-B321-CF832B50CAC3@linux.ibm.com>
+References: <99B81401-DB46-49B9-B321-CF832B50CAC3@linux.ibm.com>
+Date: Thu, 15 Jun 2023 13:07:26 +1000
+Message-ID: <87o7lhfmoh.fsf@mail.lhotse>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,61 +46,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, Thomas
- Huth <thuth@redhat.com>, kvm@vger.kernel.org, qemu-devel@nongnu.org, qemu-ppc@nongnu.org, linuxppc-dev@lists.ozlabs.org
+Cc: jarkko@kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed Jun 14, 2023 at 11:09 AM AEST, Joel Stanley wrote:
-> On Thu, 8 Jun 2023 at 07:58, Nicholas Piggin <npiggin@gmail.com> wrote:
-> >
-> > Posting again, a couple of patches were merged and accounted for review
-> > comments from last time.
+Sachin Sant <sachinp@linux.ibm.com> writes:
+> Following crash is observed during a kexec operation on 
+> IBM Power10 server:
 >
-> I saw some failures in the spr tests running on a power9 powernv system:
->
-> $ TESTNAME=3Dsprs TIMEOUT=3D90s ACCEL=3D ./powerpc/run powerpc/sprs.elf -=
-smp
-> 1 |grep FAIL
-> FAIL: WORT      ( 895):    0x00000000c0deba80 <=3D=3D> 0x0000000000000000
+> [ 34.381548] Kernel attempted to read user page (50) - exploit attempt? (uid: 0)
+> [ 34.381562] BUG: Kernel NULL pointer dereference on read at 0x00000050
+> [ 34.381565] Faulting instruction address: 0xc0000000009db1e4
+> [ 34.381569] Oops: Kernel access of bad area, sig: 11 [#1]
+> [ 34.381572] LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
+> [ 34.381576] Modules linked in: dm_mod(E) nft_fib_inet(E) nft_fib_ipv4(E) nft_fib_ipv6(E) nft_fib(E) nft_reject_inet(E) nf_reject_ipv4(E) nf_reject_ipv6(E) nft_reject(E) nft_ct(E) nft_chain_nat(E) nf_nat(E) nf_conntrack(E) nf_defrag_ipv6(E) nf_defrag_ipv4(E) bonding(E) tls(E) rfkill(E) ip_set(E) sunrpc(E) nf_tables(E) nfnetlink(E) pseries_rng(E) aes_gcm_p10_crypto(E) drm(E) drm_panel_orientation_quirks(E) xfs(E) libcrc32c(E) sd_mod(E) sr_mod(E) t10_pi(E) crc64_rocksoft_generic(E) cdrom(E) crc64_rocksoft(E) crc64(E) sg(E) ibmvscsi(E) scsi_transport_srp(E) ibmveth(E) vmx_crypto(E) fuse(E)
+> [ 34.381613] CPU: 18 PID: 5918 Comm: kexec Kdump: loaded Tainted: G E 6.4.0-rc6-00037-gb6dad5178cea #3
+> [ 34.381618] Hardware name: IBM,9080-HEX POWER10 (raw) 0x800200 0xf000006 of:IBM,FW1030.20 (NH1030_058) hv:phyp pSeries
+> [ 34.381621] NIP: c0000000009db1e4 LR: c0000000009db928 CTR: c0000000009eab60
+> [ 34.381625] REGS: c00000009742f780 TRAP: 0300 Tainted: G E (6.4.0-rc6-00037-gb6dad5178cea)
+> [ 34.381628] MSR: 800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE> CR: 44488884 XER: 00000001
+> [ 34.381638] CFAR: c0000000009db19c DAR: 0000000000000050 DSISR: 40000000 IRQMASK: 0 
+> [ 34.381638] GPR00: c0000000009db928 c00000009742fa20 c0000000014a1500 c0000000081d0000 
+> [ 34.381638] GPR04: c00000000d842c50 c00000000d842c50 0000000000000025 fffffffffffe0000 
+> [ 34.381638] GPR08: 0000000000000000 0000000000000000 0000000000000009 c008000000785280 
+> [ 34.381638] GPR12: c0000000009eab60 c00000135fab7f00 0000000000000000 0000000000000000 
+> [ 34.381638] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
+> [ 34.381638] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
+> [ 34.381638] GPR24: 0000000000000000 0000000000000000 0000000000000000 c000000002e21e08 
+> [ 34.381638] GPR28: c00000000d842c48 c000000002a02208 c00000000321c0c0 c0000000081d0000 
+> [ 34.381674] NIP [c0000000009db1e4] tpm_amd_is_rng_defective+0x74/0x240
+> [ 34.381681] LR [c0000000009db928] tpm_chip_unregister+0x138/0x160
+> [ 34.381685] Call Trace:
+> [ 34.381686] [c00000009742faa0] [c0000000009db928] tpm_chip_unregister+0x138/0x160
+> [ 34.381690] [c00000009742fae0] [c0000000009eab94] tpm_ibmvtpm_remove+0x34/0x130
+...
+> [ 34.381788] Code: 5463063e 408201c8 38210080 4e800020 60000000 60000000 60000000 7c0802a6 fbe10078 7c7f1b78 f8010090 e9230728 <e9890050> 2c2c0000 41820020 7d8903a6 
 
-This is just TCG machine? I'm not sure why WORT fails, AFAIKS it's the
-same on POWER8 and doesn't do anything just a simple register. I think
-on real hardware WORT may not have any bits implemented on POWER9
-though.
+  2c:   28 07 23 e9     ld      r9,1832(r3)
+  30:   50 00 89 e9     ld      r12,80(r9)
 
-> $ MIGRATION=3Dyes TESTNAME=3Dsprs-migration TIMEOUT=3D90s ACCEL=3D
-> ./powerpc/run powerpc/sprs.elf -smp 1 -append '-w' | grep FAIL
-> FAIL: SRR0      (  26):    0xcafefacec0debabc <=3D=3D> 0x0000000000402244
-> FAIL: SRR1      (  27):    0xc0000006409ebab6 <=3D=3D> 0x8000000000001001
-> FAIL: CTRL      ( 136):            0x00000000 <=3D=3D>         0x00008001
-> FAIL: WORT      ( 895):    0x00000000c0deba80 <=3D=3D> 0x0000000000000000
-> FAIL: PIR       (1023):            0x00000010 <=3D=3D>         0x00000049
->
-> Linux 6.2.0-20-generic
-> QEMU emulator version 7.2.0 (Debian 1:7.2+dfsg-5ubuntu2)
->
-> On a power8 powernv:
->
-> MIGRATION=3Dyes TESTNAME=3Dsprs-migration TIMEOUT=3D90s ACCEL=3D ./powerp=
-c/run
-> powerpc/sprs.elf -smp 1 -append '-w' |grep FAIL
-> FAIL: SRR0      (  26):    0xcafefacec0debabc <=3D=3D> 0x0000000000402234
-> FAIL: SRR1      (  27):    0xc0000006409ebab6 <=3D=3D> 0x8000000000001000
-> FAIL: CTRL      ( 136):            0x00000000 <=3D=3D>         0x00008001
-> FAIL: PIR       (1023):            0x00000060 <=3D=3D>         0x00000030
+Where r3 is *chip.
+r9 is NULL, and 80 = 0x50.
 
-Hmm, seems we take some interrupt over migration test that is not
-accounted for (could check the address in SRR0 to see where it is).
-Either need to prevent that interrupt or avoid failing on SRR0/1 on
-this test.
+Looks like a NULL chip->ops, which oopses in:
 
-Interesting about CTRL, I wonder if that not migrating correctly.
-PIR looks like a migration issue as well, it can't be changed so
-destination CPU has got a different PIR. I would be inclined to
-leave those as failing to remind us to look into them.
+static int tpm_request_locality(struct tpm_chip *chip)
+{
+	int rc;
 
-I'll take a look at the others though.
+	if (!chip->ops->request_locality)
 
-Thanks,
-Nick
+
+Can you test the patch below?
+
+cheers
+
+
+diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-chip.c
+index cd48033b804a..82eb36e2e16d 100644
+--- a/drivers/char/tpm/tpm-chip.c
++++ b/drivers/char/tpm/tpm-chip.c
+@@ -36,7 +36,7 @@ static int tpm_request_locality(struct tpm_chip *chip)
+ {
+ 	int rc;
+ 
+-	if (!chip->ops->request_locality)
++	if (!chip->ops || !chip->ops->request_locality)
+ 		return 0;
+ 
+ 	rc = chip->ops->request_locality(chip, 0);
