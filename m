@@ -1,53 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47B9A730DC2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jun 2023 05:53:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03636730E73
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jun 2023 06:59:27 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=g/eeBySz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=KB2Fyunh;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QhT0j1G4Cz3bcS
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jun 2023 13:53:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QhVSr5nxXz3brm
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jun 2023 14:59:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=g/eeBySz;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=KB2Fyunh;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=kuba@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QhSzm4WrGz3bjV
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jun 2023 13:52:36 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 1820562FD3;
-	Thu, 15 Jun 2023 03:52:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8573EC433CA;
-	Thu, 15 Jun 2023 03:52:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1686801153;
-	bh=eUMOaaa64vv4PEr+rHiwQ5XErXSIP/gyvXwLW+x4DIE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=g/eeBySz8RkrHgqbCc6maIbvUP8+JWE1jWVuVwl8b2gorJu8s7PijZiGh1D7z/IiL
-	 +1jDMvOLh4jHLzHZXjxnXIKgqjkZV0MLziB+4k0aUQlAdCxAspblBZzdPZxD1myw+q
-	 Pbro0U9QV0o41yA2P7X0xSjfs75XfS5IqoGxx2+Vd0vkmcTmwur+hJRn0TWVuZA+HS
-	 Y/cBIFfeM6OXEI6Scap0+oqbPgGKeHA8mca8jxYwxBbzs5cdi/h0skfW6OYgd0M1mA
-	 I1BNbPKprnICjEVNwfN4Hiv2+M9ea62NRiI6cutq2VylWrzu41QEnMUOp/SC/MseTn
-	 uRz2xIxAVr8Mw==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Subject: [PATCH net-next] eth: fs_enet: fix print format for resource size
-Date: Wed, 14 Jun 2023 20:52:31 -0700
-Message-Id: <20230615035231.2184880-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.40.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QhSPz6MwXz300q
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jun 2023 13:26:47 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QhSPm1K9Bz4wjB;
+	Thu, 15 Jun 2023 13:26:36 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1686799607;
+	bh=bmc6oqF5FNKBZGg1/rZAHOUSx4X5esqFgaD2hQBXRq8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=KB2FyunhTuXf+jozautVWXZthKKCB+waS3cucwpJbJk0s24v4KKDQVWgg9Q1V6jR3
+	 0vEX2OWPXK/8QOdVINYGXUEXFhmEMCe6tR8/kJ2gs4NvUNlqzJka9/WRx2Av26B2bo
+	 vITH1k1S5enB4XE2YnFXxPCt6IWEd6YUcRno10b5k49kD4HUIdaDZUg9pyurS1KRTV
+	 HGZpbW1b+az+ld9IyfWGAhCPNIYxUEB/mIcl6YmKDvB1j32ka+tFJzfZQQ8K4TE/RF
+	 jdgpZreP8tke/E0lPR+QDG6MJzN4Q+6VqMmtmB3YLVvYFkFLRyyYqL9Imhecexc6g6
+	 0X6N/8mTgEXyA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Eric DeVolder <eric.devolder@oracle.com>, Kees Cook <keescook@chromium.org>
+Subject: Re: [PATCH v1 00/21] refactor Kconfig to consolidate KEXEC and
+ CRASH options
+In-Reply-To: <8a97f096-2bdc-0298-a1c5-8d48dbf94179@oracle.com>
+References: <20230612172805.681179-1-eric.devolder@oracle.com>
+ <202306131314.EFA558B7@keescook>
+ <8a97f096-2bdc-0298-a1c5-8d48dbf94179@oracle.com>
+Date: Thu, 15 Jun 2023 13:26:35 +1000
+Message-ID: <87ilbpflsk.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Mailman-Approved-At: Thu, 15 Jun 2023 14:58:14 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,54 +61,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>, edumazet@google.com, Jakub Kicinski <kuba@kernel.org>, pabeni@redhat.com, linuxppc-dev@lists.ozlabs.org
+Cc: dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, peterz@infradead.org, catalin.marinas@arm.com, linus.walleij@linaro.org, dave.hansen@linux.intel.com, linux-mips@vger.kernel.org, James.Bottomley@hansenpartnership.com, hpa@zytor.com, linux-riscv@lists.infradead.org, will@kernel.org, kernel@xen0n.name, tsi@tuyoix.net, linux-s390@vger.kernel.org, agordeev@linux.ibm.com, rmk+kernel@armlinux.org.uk, paulmck@kernel.org, ysato@users.sourceforge.jp, deller@gmx.de, chenhuacai@kernel.org, linux@armlinux.org.uk, paul.walmsley@sifive.com, mingo@redhat.com, geert@linux-m68k.org, hbathini@linux.ibm.com, samitolvanen@google.com, ojeda@kernel.org, juerg.haefliger@canonical.com, borntraeger@linux.ibm.com, frederic@kernel.org, arnd@arndb.de, mhiramat@kernel.org, ardb@kernel.org, thunder.leizhen@huawei.com, aou@eecs.berkeley.edu, ziy@nvidia.com, gor@linux.ibm.com, anshuman.khandual@arm.com, hca@linux.ibm.com, xin3.li@intel.com, npiggin@gmail.com, konrad.wilk@oracle.com, linux-m68k@lists.linux-m68k.org, bp@alien8.de, loongarch@lists.linux.dev, glaubitz@physik.fu-berlin.de, tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, boris.ostrovsky@oracle.com, tsbogend@alpha.franken.de, sebastian.reichel@collabora.com, bhe@redhat.com, linux-parisc@vger.kernel.org, gregkh@linuxfoundation.org, kirill.shutemov@linux.intel.com, ndesaulniers@google.com, linux-kernel@vger.kernel.org, sourabhjain@linux.ibm.com, palmer@dabbelt.com, svens@linux.ibm.com, tj@kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, masahiroy@kernel.org, rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Randy forwarded report from Stephen that on PowerPC:
+Eric DeVolder <eric.devolder@oracle.com> writes:
+> On 6/13/23 15:21, Kees Cook wrote:
+>> On Mon, Jun 12, 2023 at 01:27:52PM -0400, Eric DeVolder wrote:
+>>> The Kconfig is refactored to consolidate KEXEC and CRASH options from
+>>> various arch/<arch>/Kconfig files into new file kernel/Kconfig.kexec.
+>> 
+>> This looks very nice!
+>> 
+> Thank you Kees!
+>
+>>> [...]
+>>> - The boolean ARCH_HAS_<option> in effect allows the arch to determine
+>>>    when the feature is allowed.  Archs which don't have the feature
+>>>    simply do not provide the corresponding ARCH_HAS_<option>.
+>>>    For each arch, where there previously were KEXEC and/or CRASH
+>>>    options, these have been replaced with the corresponding boolean
+>>>    ARCH_HAS_<option>, and an appropriate def_bool statement.
+>>>
+>>>    For example, if the arch supports KEXEC_FILE, then the
+>>>    ARCH_HAS_KEXEC_FILE simply has a 'def_bool y'. This permits the
+>>>    KEXEC_FILE option to be available.
+>>>
+>>>    If the arch has a 'depends on' statement in its original coding
+>>>    of the option, then that expression becomes part of the def_bool
+>>>    expression. For example, arm64 had:
+>>>
+>>>    config KEXEC
+>>>      depends on PM_SLEEP_SMP
+>>>
+>>>    and in this solution, this converts to:
+>>>
+>>>    config ARCH_HAS_KEXEC
+>>>      def_bool PM_SLEEP_SMP
+>>>
+>>>
+>>> - In order to account for the differences in the config coding for
+>>>    the three common options, the ARCH_SUPPORTS_<option> is used.
+>>>    This options has a 'depends on <option>' statement to couple it
+>>>    to the main option, and from there can insert the differences
+>>>    from the common option and the arch original coding of that option.
+>>>
+>>>    For example, a few archs enable CRYPTO and CRYTPO_SHA256 for
+>>>    KEXEC_FILE. These require a ARCH_SUPPORTS_KEXEC_FILE and
+>>>    'select CRYPTO' and 'select CRYPTO_SHA256' statements.
+>> 
+>> Naming nit: "HAS" and "SUPPORTS" feel very similar, and looking at
+>> existing configs, "ARCH_SUPPORTS_..." is already used for doing this
+>> kind of bare "bool" management. e.g. see ARCH_SUPPORTS_INT128
+>> 
+>> It looks like you need to split "depends" and "select" so the options
+>> can be chosen separately from the "selectable" configs.
+>> 
+>> How about naming this ARCH_SELECTS_<option>, since that's what it's
+>> there for?
+>> 
+> I'm OK with this. Let's see if others agree?
 
-drivers/net/ethernet/freescale/fs_enet/mii-fec.c: In function 'fs_enet_mdio_probe':
-drivers/net/ethernet/freescale/fs_enet/mii-fec.c:130:50: warning: format '%x' expects argument of type 'unsigned int', but argument 4 has type 'resource_size_t' {aka 'long long unsigned int'} [-Wformat=]
-  130 |         snprintf(new_bus->id, MII_BUS_ID_SIZE, "%x", res.start);
-      |                                                 ~^   ~~~~~~~~~
-      |                                                  |      |
-      |                                                  |      resource_size_t {aka long long unsigned int}
-      |                                                  unsigned int
-      |                                                 %llx
+Yeah please rename one or both of them. At a glance the difference
+between HAS and SUPPORTS is very non-obvious.
 
-Use the right print format.
+I like Kees' suggestion to use ARCH_SUPPORTS and ARCH_SELECTS.
 
-Untested, I can't repro this warning myself. With or without
-the patch mpc512x_defconfig builds just fine.
-
-Link: https://lore.kernel.org/all/8f9f8d38-d9c7-9f1b-feb0-103d76902d14@infradead.org/
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
-CC: Randy Dunlap <rdunlap@infradead.org>
-CC: pantelis.antoniou@gmail.com
-CC: linuxppc-dev@lists.ozlabs.org
-
-Targeting net-next as I can't repro this, and I don't
-see recent changes which could cause this problem.
-So maybe it's something in linux-next... ?
-In any case res is a struct resource so patch shouldn't hurt.
----
- drivers/net/ethernet/freescale/fs_enet/mii-fec.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/freescale/fs_enet/mii-fec.c b/drivers/net/ethernet/freescale/fs_enet/mii-fec.c
-index d37d7a19a759..59a8f0bd0f5c 100644
---- a/drivers/net/ethernet/freescale/fs_enet/mii-fec.c
-+++ b/drivers/net/ethernet/freescale/fs_enet/mii-fec.c
-@@ -127,7 +127,7 @@ static int fs_enet_mdio_probe(struct platform_device *ofdev)
- 	if (ret)
- 		goto out_res;
- 
--	snprintf(new_bus->id, MII_BUS_ID_SIZE, "%x", res.start);
-+	snprintf(new_bus->id, MII_BUS_ID_SIZE, "%pap", &res.start);
- 
- 	fec->fecp = ioremap(res.start, resource_size(&res));
- 	if (!fec->fecp) {
--- 
-2.40.1
-
+cheers
