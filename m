@@ -1,74 +1,135 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB847732275
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 00:08:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 728947322DA
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 00:47:51 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=UUkUJO8x;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=dCEWVuXm;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QhxJb4GgMz3bnc
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 08:08:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qhy9d2dT4z3bmN
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 08:47:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=UUkUJO8x;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=dCEWVuXm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::134; helo=mail-il1-x134.google.com; envelope-from=yuzhao@google.com; receiver=lists.ozlabs.org)
-Received: from mail-il1-x134.google.com (mail-il1-x134.google.com [IPv6:2607:f8b0:4864:20::134])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e18::60e; helo=fra01-pr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from FRA01-PR2-obe.outbound.protection.outlook.com (mail-pr2fra01on2060e.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e18::60e])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QhxHf4pwBz2yDL
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jun 2023 08:07:57 +1000 (AEST)
-Received: by mail-il1-x134.google.com with SMTP id e9e14a558f8ab-3409d944009so18905ab.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jun 2023 15:07:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1686866874; x=1689458874;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KEqKkThMQzQYaVyTD2kgo4GkHwhHxMZnpLhGp1yGLGI=;
-        b=UUkUJO8xJ5iMueO5x9c8SwYef9EZOHxDfvAZbgkfxaEvGaVvhAUhHii88SWwduaCuJ
-         3LZR94Yyt/OxjoUYt+mt6EilDMbtFPRgpBePZI0CIn4Imt966ERgil3bo/f7GRgiFl+h
-         l7zgxquvdnnIm/CFlsjcIq1Nd+gwekG/Ot8ggAFy67rmjxInj9s4Rlwb8lI4GYEHG4Ki
-         YIagzlm6SMj37/Os5RmAZ034nyBC16BD1QQHIlGIlk9zHkq9sEL2FddgroYHSzCz5g9v
-         rNCl5B9GZgqZciU2HSVXf6ysfLlvH/OQ/XHbv3Aws7qZ3Q+jwtmNuhX/bzzBBAg0gVZd
-         9u0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686866874; x=1689458874;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KEqKkThMQzQYaVyTD2kgo4GkHwhHxMZnpLhGp1yGLGI=;
-        b=c3Fyhkd0pngtii68LmL1ZxjJhf0VIKLr+uwTK1pIPx5OrY+0pBrnWOWNf2yk5TXidt
-         1Xs21vcj9vko5tyUPzi0FL2QeRTCCJKY2aU5uLofNawGALO4Ws4jHldKBgq7cDwRPuUz
-         Do+6pEojBaH/drx9hcEKjjrLWd6in3x5CTgqRQbiKj7UsgVWiMwjO5FCBBktVSzP342q
-         f35y/R+nJPyZD+FGhkFljhG82Or4qwte2WvsofyR/DhjG6hulyVKb6KzLLi9Qt1wtaLO
-         oCEdqrV+fFtQbh6O5Lo3LOgCc+pxoTy4zhm71gPMFaEjJJn6T6deGmdqaFfDs7QV0Btd
-         Kbvw==
-X-Gm-Message-State: AC+VfDwzMGSKnymIBD/WRW7gvZw50aYpAJz9VSJeT2eArP3uWx925Idn
-	+PfoqzONW4hS25WTpwiagtXv2w==
-X-Google-Smtp-Source: ACHHUZ5PSUsX4TBlglte5PXxwY7OQy07gHXQmXZtXOgld5DvEn3H3RXARC81CLd3B/5nJfh4T753eA==
-X-Received: by 2002:a05:6e02:1caa:b0:33d:8c8a:cd0e with SMTP id x10-20020a056e021caa00b0033d8c8acd0emr242053ill.20.1686866873554;
-        Thu, 15 Jun 2023 15:07:53 -0700 (PDT)
-Received: from google.com ([2620:15c:183:202:e767:3e73:f240:e08c])
-        by smtp.gmail.com with ESMTPSA id h21-20020a02b615000000b0041d89b79fdasm5824838jam.20.2023.06.15.15.07.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Jun 2023 15:07:53 -0700 (PDT)
-Date: Thu, 15 Jun 2023 16:07:48 -0600
-From: Yu Zhao <yuzhao@google.com>
-To: Nathan Chancellor <nathan@kernel.org>, Hugh Dickins <hughd@google.com>
-Subject: Re: [PATCH v2 07/23] mips: update_mmu_cache() can replace
- __update_tlb()
-Message-ID: <ZIuLtABQvb8yiMih@google.com>
-References: <a4963be9-7aa6-350-66d0-2ba843e1af44@google.com>
- <178970b0-1539-8aac-76fd-972c6c46ec17@google.com>
- <20230614231758.GA1503611@dev-arch.thelio-3990X>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qhy8g07l7z305Q
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jun 2023 08:46:56 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=IxnGpo3f5oP94gd3uH4j03i9QSoJ7ZMvk5qo+PhYb1l8bMX7xREpvAoVnpf4ho9sQECMvAurK97KJLJp7RdTJGKJAlq5rH7Y/ZlJxJbczSfw2owC9o5K26GGxzSZX0c1Q8nxUe6gb74Xa7rMZYQW9WyVbxdfQDrLDhyJQzap0hfpaQvBE1/NDhn8oFOBlUMsa+Ew2cFQSUb/A+TqrwnL40buIAzbWPBcuHp7bigIR6vOnTYYl/VjixAVd3EloZswJ8/wds6ZhtT32A9NvrRhpHk3uEK1qu97EnPDcSYQG9U4cGVwlMevVar/U6YSQXlgH03p7TMBvc+6zLkCeNCY8A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QLlZKsPQt68yJ19/tLXuNxgzPw2q3M4A8uCKF2HUYSg=;
+ b=Dz1mkmnd3J03e+rFuRs55kBmCy3+R1cp4J23wonrxu2695GuJrP6I+7kTK9ik3ucl9EYhQF7yr7Ck+2PptNBSRxxxvC1/mRhwCCQka06dyKJCBaA6qqT+0w0IBhcfDI+wBuhLuzs+xsAynd3Hc8v97g96OlePA9OP+BohVhXtLBvUU/8n80VZ8lGvJ2GXMx5W5vgj/vjS7XFEOTxeDXjNNU0s5ksBfd78roagyaj2SgX/BFXyM+af+z+NSRKDo4gIXfje9J9ym4/ieFeb5dN8m2hbFogJhGwyYHMVbRpHC63pz4GmpExjQSPMuZkjdl4sgPEcdTa5QRQfN5/Oeh7lA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QLlZKsPQt68yJ19/tLXuNxgzPw2q3M4A8uCKF2HUYSg=;
+ b=dCEWVuXmjD943EvGm5Rtnk/bY5uP4Id13FX5zmMBP8jEo9C+RRl8uzU4zjeUCwJxHY+5Rmw1244/vnvkMLmUthsDtYjMRMDwbF9Bblv/8waS+J5450yhsfbJ7RTZG0t2Mw/anbIB1g5nwbI2CZwVeK86FySMSVhdYB9D2pAI4Oygt6buJXZn9GQqF0Yapqyk/GiGZYC0qvzERY5cqKd/Q6BSptdA+RSe2hWx8429kYO1vP3GU/xzLhsmN20d69DC4rYGkcMkqcmjSaEGBL3CcBBNBgh4MqLbXTMWELzTxh38sSOcDZTEm1o+gGgDculQ+R778UBuDHRogKiykIDOyQ==
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by PAZP264MB3301.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:112::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.25; Thu, 15 Jun
+ 2023 22:46:34 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::802b:33:561c:4217]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::802b:33:561c:4217%4]) with mapi id 15.20.6500.029; Thu, 15 Jun 2023
+ 22:46:34 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Randy Dunlap <rdunlap@infradead.org>, Timothy Pearson
+	<tpearson@raptorengineering.com>
+Subject: Re: linux-next: Tree for Jun 2 (arch/powerpc/kernel/iommu.c)
+Thread-Topic: linux-next: Tree for Jun 2 (arch/powerpc/kernel/iommu.c)
+Thread-Index:  AQHZlZXapxNyBVCZH0eUrnS8LFu+3K95yjmAgAA79gCAEhOPAIAAAYAAgAACJgCAAAX9AIAAZ+kA
+Date: Thu, 15 Jun 2023 22:46:34 +0000
+Message-ID: <ac523bab-716a-ed92-ad7d-56a6898a0475@csgroup.eu>
+References: <20230602140143.0af52cee@canb.auug.org.au>
+ <2d188c87-ef34-3812-7330-a985f756d959@infradead.org>
+ <87h6rogjok.fsf@mail.lhotse>
+ <586983120.3136676.1685851048873.JavaMail.zimbra@raptorengineeringinc.com>
+ <e2b46606-7ebc-c9a4-4f9a-873c0e71da5e@infradead.org>
+ <373175504.6295209.1686845130893.JavaMail.zimbra@raptorengineeringinc.com>
+ <208f3734-4902-ff5c-3410-5b9cd984dad7@infradead.org>
+ <75a27ada-7e88-2f93-48ee-3dc89b7f1a9a@infradead.org>
+In-Reply-To: <75a27ada-7e88-2f93-48ee-3dc89b7f1a9a@infradead.org>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PAZP264MB3301:EE_
+x-ms-office365-filtering-correlation-id: 38f3c91e-d524-41f0-9a92-08db6df25ecc
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  o2qz7D3mDy74V/taiFEZvc4+mQUOn8vTGhyJH9sm2IAgixzBnMn2+hUF2FynFKqv5XGizw3MgaPNX1zsVrILuT040b8j7h4Ee/rv37wcmg0jdM1SfVw7DUaokFkmrRsz7o3rjiaQCilnjo4hPF6nvMb6HQOTyq9g4EzlJEykL/5rYgU/fPf+njE6O/Sr55KTqvdwMFF+/8a9PwoIpo8vUL28pGFuYHX5FEaetz3REyJd1bmkxMr/IExZ/+Y9l7ZDaYKuwE/YJ6Dxpy7VY35iNywJFePixpWrDt+TdLGunKqn4QsN3FcbmdUhTilY4NGZD58YiHXFwpehy5zwpdpRRVlvXiyar0ZDmzkYdqSqfuCAQMbbpWg71jCp0aWgWuFXPv41Aee4zNl5prpDlbngNb/PCbxk/tpx7TqfeLLHU91Sx9qSNthBceIsZvSQ90msY64Q1wqp/Ren/Qb9rLd27hxWVg9BBPVYCGUlDRT9gC4ojH98F0yHqAoSrtMjCHKVwvMrv0I8d3h4JWyULKWYYG6MB7FnXwHe1gip7t4WMpcUDs5DP/ERl1mG2HnSE4MdZcwqnJ77mHZKuWkEOtNpKYzHl6Rm0LyOHgXRn+Yld7/zwtuTZ1BH3tQqbF36KZrIgdy+9XyIw3GzlM1h5x76JjXrntFG5KO2SaiHd8RsKAk=
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(366004)(376002)(136003)(39860400002)(346002)(451199021)(110136005)(31686004)(54906003)(86362001)(31696002)(41300700001)(8676002)(66446008)(66476007)(8936002)(6486002)(66946007)(316002)(71200400001)(66556008)(64756008)(4326008)(91956017)(76116006)(36756003)(38070700005)(26005)(478600001)(6512007)(44832011)(5660300002)(966005)(83380400001)(53546011)(6506007)(2906002)(186003)(38100700002)(122000001)(2616005)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?YUNLbm41MlNPQ0pheTFXZWcrT2d2NTd5RFVQMXhnZXhqWVFncXJMVEpoRy85?=
+ =?utf-8?B?TDFyNGVjMzNuM2hSUnlMUCtRUUtIK0NvUXcxZGE3K1V3MWF3L1YxaTFuUWhr?=
+ =?utf-8?B?NW5xVGpPTWFkZS8wbk9GT2haL3RuZW9VdU1jYk9jV2phUkEzTGkxbFYwa3Bp?=
+ =?utf-8?B?Y3pUV2Z5RlVsMGN6bGZ6cWpXVnpPVEFxcDRnTVVyRnlVWnlXaDVleTd0UzVl?=
+ =?utf-8?B?MEhxbzQ2bSsvQW12OUtjUE5Ec3Q3VFpmVHd0VWlHKzFCS2NDM016UEg0WXlO?=
+ =?utf-8?B?SUFoZ0hLUUhjQ1J2VVN3aWdEQjZvYVNBYzF0aVZGNTRteUc2TFhGd0EzSU5i?=
+ =?utf-8?B?NVV5c0I3SnNsalk3QUFLR3pTOEo2YVlRNENkTWt5K3pTb3VOaTkrTDhrOGV4?=
+ =?utf-8?B?cUFzdHg3RklNZjJ1dGt5eGZ2NGJsZ04zRit2L1FaOGV4bE5wbEg3QjFXNUU4?=
+ =?utf-8?B?YndtRVkvd1UzK1RvRGoxeTg4eW5jbDBmam80WkxUZXVFVUxyMHN4VUJ0d25F?=
+ =?utf-8?B?WVBvNnNyN1owSGRRNWJaWXd5MFBCRUhybTk0SXBCdTBBZUwydGNFMFlPQThu?=
+ =?utf-8?B?UktIcFY5OU5Sb25ETjRCb0lRTlZ0UUJCSVM4MStqOFFzM1psSExwcExKS0Z1?=
+ =?utf-8?B?eVFyaVROdFV1c0VKVEQyemRCTDZqUHE4NXN5TEVwdlFXUHdQcSsrazdDMWNQ?=
+ =?utf-8?B?TVFYSVdEanNIWFpjVGhhTi8zSkdROEhuNVNzaTkrZjJBNEdLS3M1VUc1M2ZD?=
+ =?utf-8?B?eThHUTRZYlFHdWQyUm1GNjJ5QWVyc1o5ZGh5bjFEQVpwS1Npam9OK01tQ2x6?=
+ =?utf-8?B?M1RveElpNUthRmc2TnlFQWJNbFlvendqTnRwR0tERFAybUtTYWNGMzJiVDVF?=
+ =?utf-8?B?aGEvV2wrdXo4WGJuclRHY256RkJvQ2tvU01KeVZQWUF2MkkxRm1Vdmd0WUh3?=
+ =?utf-8?B?N0JzOWlkV2t0d2RveTFSQmd6Uy95eXdoZHg1dy9kUzFYUzZCOXo4WHphbkt0?=
+ =?utf-8?B?L0V1aVcwNlowdXZJWjZTTXZHdTFrUnBUNjFOUk1wN2NJYTlHWkg3Q0FPWUpJ?=
+ =?utf-8?B?eHlNSDkyT2JJaWtNSjZiMW1CY1Ixa1QwdVQ5WWI2SzUyVzl6QlBZcDNOYzV4?=
+ =?utf-8?B?OGRLdExLek0yU1YvT2JQREZVekJzL0hYQ0F6L1cxUWM3Q3RzUkZudTh5ekJS?=
+ =?utf-8?B?bjVFeEEvN0JwK2RFVzY4SnZ2TXdsY0Q4blZWSWJYdjBOaHlZT29zb1pvTExa?=
+ =?utf-8?B?ZEhUZ09MbW5vcFhRU05EU1RzTSt4b1VNNTNNMG5wVlFyTEwwa25pSGtFSkhX?=
+ =?utf-8?B?bWYvWXhjaVdhMjkxZ0VZcDlJTWsvMXQ5UEJtMW53dFlNRWZuSi9yU0hndVIy?=
+ =?utf-8?B?SkhoVjE3dzgzMjlRNTlXWXZoOUxBSkU0aUpTRlhDSEhTTGh5d1RtMGtieG1r?=
+ =?utf-8?B?LzFiYk9PNGMvM3J0NFFFSkY2YURrL3FLditGdTR0OTdBZDE3L2dYKzB0cUV4?=
+ =?utf-8?B?MytQZGdZVm5HVEtVRC9HeW54aHJzUGc4SEl6cFQ4cHcrdTRBdytjNlpIYUJ5?=
+ =?utf-8?B?blBudnJkcE40Y3F6YmpoeDdrNkJKcjFya2tTcUo3cEZOSjgxdGNaSkFiQzJ5?=
+ =?utf-8?B?NjJGWnV2WGJrOHVzRGtuSHEzMFMzdVRDblZRS1lHeXlXbVhVelZsNHpUTWow?=
+ =?utf-8?B?dnRmajgxc3dCQ2o3T2FlTG1zTldsQk5wWlFJdjdieEpZNEJyYWhLSm9oNkpE?=
+ =?utf-8?B?cnBXRVZqSEtqZmUwbnQ1S29qWlhPSVFIbmNqZHJiRXhNd2diRnFMNzJBWXRN?=
+ =?utf-8?B?MnBFV01wamw3ZEhCTjY1U0swd2ZkYTc0RHdaNFBoM203K2hmSDFkUmdoMGFG?=
+ =?utf-8?B?bCtPVkRSZHd1QzYwb2pibnFtTEtsN3RuRUFEb3QzKzQzZVNkK0JmalRmb1pl?=
+ =?utf-8?B?OHdSaEF0MHVtdUhJU3BqSExROG45UHFnOGV2YnF1V3owYnMxekZNTXVwdUNQ?=
+ =?utf-8?B?cHZCZlJjaE5wQ2dPSHRDN1lMVTZPb2VObkxuMkY4OUpPMU04ZFpTTVZkcG9r?=
+ =?utf-8?B?Rk5kZGl6NjBuM0htcFQ4KzFoQmFEcE9Va1BVck1IU00ydHdUbFZCcC9MU21k?=
+ =?utf-8?Q?8ohO7qVmylbYOfEQDZ/hRBjuk?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <6EAEC533BDD4F640B3F86792FE168847@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230614231758.GA1503611@dev-arch.thelio-3990X>
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 38f3c91e-d524-41f0-9a92-08db6df25ecc
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Jun 2023 22:46:34.2817
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: fYiJyEPXiXJBTOPKWeV3j2T+v8cmB4dDUh0X31j1kJ4y+W3kecM2gMf6TBX2wTldopN1adYgatKdF31SXmF8FIFA+CFtdEnfrptYm3o4tOg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAZP264MB3301
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,283 +141,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, Greg Ungerer <gerg@linux-m68k.org>, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, Helge Deller <deller@gmx.de>, x86@kernel.org, Hugh Dickins <hughd@google.com>, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, Geert Uytterhoeven <geert@linux-m68k.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, Alexandre Ghiti <alexghiti@rivosinc.com>, Heiko Carstens <hca@linux.ibm.com>, linux-m68k@lists.linux-m68k.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, John David Anglin <dave.anglin@bell.net>, Suren Baghdasaryan <surenb@google.com>, linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-mm@kvack.org, linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Stephen Rothwell <sfr@canb.auug.org.au>, Linux Next Mailing List <linux-next@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-kernel <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 14, 2023 at 04:17:58PM -0700, Nathan Chancellor wrote:
-> Hi Hugh,
-> 
-> On Thu, Jun 08, 2023 at 12:17:24PM -0700, Hugh Dickins wrote:
-> > Don't make update_mmu_cache() a wrapper around __update_tlb(): call it
-> > directly, and use the ptep (or pmdp) provided by the caller, instead of
-> > re-calling pte_offset_map() - which would raise a question of whether a
-> > pte_unmap() is needed to balance it.
-> > 
-> > Check whether the "ptep" provided by the caller is actually the pmdp,
-> > instead of testing pmd_huge(): or test pmd_huge() too and warn if it
-> > disagrees?  This is "hazardous" territory: needs review and testing.
-> > 
-> > Signed-off-by: Hugh Dickins <hughd@google.com>
-> > ---
-> >  arch/mips/include/asm/pgtable.h | 15 +++------------
-> >  arch/mips/mm/tlb-r3k.c          |  5 +++--
-> >  arch/mips/mm/tlb-r4k.c          |  9 +++------
-> >  3 files changed, 9 insertions(+), 20 deletions(-)
-> > 
-> 
-> I just bisected a crash while powering down a MIPS machine in QEMU to
-> this change as commit 8044511d3893 ("mips: update_mmu_cache() can
-> replace __update_tlb()") in linux-next. Unfortunately, I can still
-> reproduce it with the existing fix you have for this change on the
-> mailing list, which is present in next-20230614.
-> 
-> I can reproduce it with the GCC 13.1.0 on kernel.org [1].
-> 
->   $ make -skj"$(nproc)" ARCH=mips CROSS_COMPILE=mips-linux- mrproper malta_defconfig vmlinux
-> 
->   $ qemu-system-mipsel \
->       -display none \
->       -nodefaults \
->       -cpu 24Kf \
->       -machine malta \
->       -kernel vmlinux \
->       -initrd rootfs.cpio \
->       -m 512m \
->       -serial mon:stdio
->   ...
->   Linux version 6.4.0-rc6-next-20230614 (nathan@dev-arch.thelio-3990X) (mips-linux-gcc (GCC) 13.1.0, GNU ld (GNU Binutils) 2.40) #1 SMP Wed Jun 14 16:13:02 MST 2023
->   ...
->   Run /init as init process
->   process '/bin/busybox' started with executable stack
->   do_page_fault(): sending SIGSEGV to init for invalid read access from 0000003c
->   epc = 77b893dc in ld-uClibc-1.0.39.so[77b84000+8000]
->   ra  = 77b8930c in ld-uClibc-1.0.39.so[77b84000+8000]
->   Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
->   ---[ end Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b ]---
-> 
-> The rootfs is available at [2] if it is needed. I am more than happy to
-> provide additional information or test patches if necessary.
-> 
-> [1]: https://mirrors.edge.kernel.org/pub/tools/crosstool/
-> [2]: https://github.com/ClangBuiltLinux/boot-utils/releases/download/20230609-194440/mipsel-rootfs.cpio.zst
-
-Seeing this on real h/w as well (just to confirm).
-
-Linux version 6.4.0-rc4-00437-g4bab5c42a698 (root@yuzhao.bld.corp.google.com) (mips64el-linux-gnuabi64-gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40) #3 SMP PREEMPT Thu Jun 15 01:05:20 MDT 2023
-Skipping L2 locking due to reduced L2 cache size
-CVMSEG size: 2 cache lines (256 bytes)
-printk: bootconsole [early0] enabled
-CPU0 revision is: 000d9602 (Cavium Octeon III)
-FPU revision is: 00739600
-Kernel sections are not in the memory maps
-Wasting 243712 bytes for tracking 4352 unused pages
-Initrd not found or empty - disabling initrd
-Using passed Device Tree.
-software IO TLB: SWIOTLB bounce buffer size adjusted to 0MB
-software IO TLB: area num 1.
-software IO TLB: mapped [mem 0x000000000370d000-0x000000000374d000] (0MB)
-Primary instruction cache 78kB, virtually tagged, 39 way, 16 sets, linesize 128 bytes.
-Primary data cache 32kB, 32-way, 8 sets, linesize 128 bytes.
-Zone ranges:
-  DMA32    [mem 0x0000000001100000-0x00000000efffffff]
-  Normal   empty
-Movable zone start for each node
-Early memory node ranges
-  node   0: [mem 0x0000000001100000-0x0000000003646fff]
-  node   0: [mem 0x0000000003700000-0x000000000fafffff]
-  node   0: [mem 0x0000000020000000-0x000000004ebfffff]
-Initmem setup node 0 [mem 0x0000000001100000-0x000000004ebfffff]
-On node 0, zone DMA32: 4352 pages in unavailable ranges
-On node 0, zone DMA32: 185 pages in unavailable ranges
-On node 0, zone DMA32: 1280 pages in unavailable ranges
-On node 0, zone DMA32: 5120 pages in unavailable ranges
-percpu: Embedded 15 pages/cpu s24368 r8192 d28880 u61440
-pcpu-alloc: s24368 r8192 d28880 u61440 alloc=15*4096
-pcpu-alloc: [0] 0 [0] 1 [0] 2 [0] 3 
-Kernel command line:  loglevel=8 console=ttyS0,115200
-printk: log_buf_len individual max cpu contribution: 4096 bytes
-printk: log_buf_len total cpu_extra contributions: 12288 bytes
-printk: log_buf_len min size: 16384 bytes
-printk: log_buf_len: 32768 bytes
-printk: early log buf free: 14184(86%)
-Dentry cache hash table entries: 131072 (order: 8, 1048576 bytes, linear)
-Inode-cache hash table entries: 65536 (order: 7, 524288 bytes, linear)
-Built 1 zonelists, mobility grouping on.  Total pages: 247772
-mem auto-init: stack:all(zero), heap alloc:off, heap free:off
-Memory: 950032K/1004828K available (8058K kernel code, 575K rwdata, 1880K rodata, 27488K init, 158K bss, 54796K reserved, 0K cma-reserved)
-rcu: Preemptible hierarchical RCU implementation.
-rcu: 	RCU event tracing is enabled.
-rcu: 	RCU restricting CPUs from NR_CPUS=32 to nr_cpu_ids=4.
-rcu: RCU calculated value of scheduler-enlistment delay is 10 jiffies.
-rcu: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=4
-NR_IRQS: 512
-CIB interrupt controller probed: 800107000000e000 23
-CIB interrupt controller probed: 800107000000e200 12
-CIB interrupt controller probed: 800107000000e400 6
-CIB interrupt controller probed: 800107000000ec00 15
-CIB interrupt controller probed: 800107000000e600 4
-CIB interrupt controller probed: 800107000000e800 11
-CIB interrupt controller probed: 800107000000e900 11
-rcu: srcu_init: Setting srcu_struct sizes based on contention.
-clocksource: OCTEON_CVMCOUNT: mask: 0xffffffffffffffff max_cycles: 0x1cd42e4dffb, max_idle_ns: 881590591483 ns
-Calibrating delay loop (skipped) preset value.. 2000.00 BogoMIPS (lpj=10000000)
-pid_max: default: 32768 minimum: 301
-LSM: initializing lsm=capability,integrity
-Mount-cache hash table entries: 2048 (order: 2, 16384 bytes, linear)
-Mountpoint-cache hash table entries: 2048 (order: 2, 16384 bytes, linear)
-rcu: Hierarchical SRCU implementation.
-rcu: 	Max phase no-delay instances is 1000.
-smp: Bringing up secondary CPUs ...
-SMP: Booting CPU01 (CoreId  1)...
-CPU1 revision is: 000d9602 (Cavium Octeon III)
-FPU revision is: 00739600
-SMP: Booting CPU02 (CoreId  2)...
-CPU2 revision is: 000d9602 (Cavium Octeon III)
-FPU revision is: 00739600
-SMP: Booting CPU03 (CoreId  3)...
-CPU3 revision is: 000d9602 (Cavium Octeon III)
-FPU revision is: 00739600
-smp: Brought up 1 node, 4 CPUs
-devtmpfs: initialized
-clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604462750000 ns
-futex hash table entries: 1024 (order: 5, 131072 bytes, linear)
-NET: Registered PF_NETLINK/PF_ROUTE protocol family
-PCIe: Initializing port 0
-PCIe: BIST2 FAILED for port 0 (0x0000000000000003)
-PCIe: Link timeout on port 0, probably the slot is empty
-PCIe: Initializing port 1
-PCIe: BIST FAILED for port 1 (0xffffffffffffffff)
-PCIe: Link timeout on port 1, probably the slot is empty
-HugeTLB: registered 2.00 MiB page size, pre-allocated 0 pages
-HugeTLB: 0 KiB vmemmap can be freed for a 2.00 MiB page
-SCSI subsystem initialized
-libata version 3.00 loaded.
-usbcore: registered new interface driver usbfs
-usbcore: registered new interface driver hub
-usbcore: registered new device driver usb
-pps_core: LinuxPPS API ver. 1 registered
-pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
-PTP clock support registered
-EDAC MC: Ver: 3.0.0
-PCI host bridge to bus 0000:00
-pci_bus 0000:00: root bus resource [mem 0x1000000000000]
-pci_bus 0000:00: root bus resource [io  0x0000]
-pci_bus 0000:00: No busn resource found for root bus, will use [bus 00-ff]
-pci_bus 0000:00: busn_res: [bus 00-ff] end is updated to 00
-vgaarb: loaded
-clocksource: Switched to clocksource OCTEON_CVMCOUNT
-NET: Registered PF_INET protocol family
-IP idents hash table entries: 16384 (order: 5, 131072 bytes, linear)
-tcp_listen_portaddr_hash hash table entries: 512 (order: 1, 8192 bytes, linear)
-Table-perturb hash table entries: 65536 (order: 6, 262144 bytes, linear)
-TCP established hash table entries: 8192 (order: 4, 65536 bytes, linear)
-TCP bind hash table entries: 8192 (order: 6, 262144 bytes, linear)
-TCP: Hash tables configured (established 8192 bind 8192)
-UDP hash table entries: 512 (order: 2, 16384 bytes, linear)
-UDP-Lite hash table entries: 512 (order: 2, 16384 bytes, linear)
-NET: Registered PF_UNIX/PF_LOCAL protocol family
-RPC: Registered named UNIX socket transport module.
-RPC: Registered udp transport module.
-RPC: Registered tcp transport module.
-RPC: Registered tcp NFSv4.1 backchannel transport module.
-PCI: CLS 0 bytes, default 128
-platform 1180068000000.uctl: clocks initialized.
-platform 1180069000000.uctl: clocks initialized.
-Starting KVM with MIPS VZ extensions
-workingset: timestamp_bits=62 max_order=18 bucket_order=0
-NFS: Registering the id_resolver key type
-Key type id_resolver registered
-Key type id_legacy registered
-nfs4filelayout_init: NFSv4 File Layout Driver Registering...
-nfs4flexfilelayout_init: NFSv4 Flexfile Layout Driver Registering...
-io scheduler mq-deadline registered
-io scheduler kyber registered
-io scheduler bfq registered
-gpio gpiochip0: Static allocation of GPIO base is deprecated, use dynamic allocation.
-octeon_gpio 1070000000800.gpio-controller: OCTEON GPIO driver probed.
-Serial: 8250/16550 driver, 2 ports, IRQ sharing disabled
-printk: console [ttyS0] disabled
-1180000000800.serial: ttyS0 at MMIO 0x1180000000800 (irq = 34, base_baud = 25000000) is a OCTEON
-printk: console [ttyS0] enabled
-printk: console [ttyS0] enabled
-printk: bootconsole [early0] disabled
-printk: bootconsole [early0] disabled
-1180000000c00.serial: ttyS1 at MMIO 0x1180000000c00 (irq = 35, base_baud = 25000000) is a OCTEON
-loop: module loaded
-Driver 'pata_octeon_cf' needs updating - please use bus_type methods
-slram: not enough parameters.
-spi-octeon 1070000001000.spi: OCTEON SPI bus driver
-process '/bin/kmod' started with executable stack
-do_page_fault(): sending SIGSEGV to modprobe for invalid read access from 0000000000000298
-epc = 000000fff3346470 in ld.so.1[fff3328000+2e000]
-ra  = 000000fff33456d0 in ld.so.1[fff3328000+2e000]
-do_page_fault(): sending SIGSEGV to modprobe for invalid read access from 0000000000000298
-epc = 000000fff3c78470 in ld.so.1[fff3c5a000+2e000]
-ra  = 000000fff3c776d0 in ld.so.1[fff3c5a000+2e000]
-do_page_fault(): sending SIGSEGV to modprobe for invalid read access from 0000000000021da8
-epc = 000000fff35aa2c0 in ld.so.1[fff358d000+2e000]
-ra  = 000000fff35aa688 in ld.so.1[fff358d000+2e000]
-do_page_fault(): sending SIGSEGV to modprobe for invalid read access from 0000000000000298
-epc = 000000fff34cc470 in ld.so.1[fff34ae000+2e000]
-ra  = 000000fff34cb6d0 in ld.so.1[fff34ae000+2e000]
-mdio_octeon 1180000001800.mdio: Probed
-mdio_octeon 1180000001900.mdio: Probed
-dwc3 1680000000000.xhci: Configuration mismatch. dr_mode forced to host
-dwc3 1690000000000.xhci: Configuration mismatch. dr_mode forced to host
-xhci-hcd xhci-hcd.0.auto: xHCI Host Controller
-xhci-hcd xhci-hcd.0.auto: new USB bus registered, assigned bus number 1
-xhci-hcd xhci-hcd.0.auto: hcc params 0x0220f06d hci version 0x100 quirks 0x0000000002010010
-xhci-hcd xhci-hcd.0.auto: irq 25, io mem 0x1680000000000
-dwc3 1680000000000.xhci: xhci_plat_probe get usb3phy fail (ret=-6)
-xhci-hcd xhci-hcd.0.auto: xHCI Host Controller
-xhci-hcd xhci-hcd.0.auto: new USB bus registered, assigned bus number 2
-xhci-hcd xhci-hcd.0.auto: Host supports USB 3.0 SuperSpeed
-hub 1-0:1.0: USB hub found
-hub 1-0:1.0: 1 port detected
-usb usb2: We don't know the algorithms for LPM for this host, disabling LPM.
-hub 2-0:1.0: USB hub found
-hub 2-0:1.0: 1 port detected
-xhci-hcd xhci-hcd.1.auto: xHCI Host Controller
-xhci-hcd xhci-hcd.1.auto: new USB bus registered, assigned bus number 3
-xhci-hcd xhci-hcd.1.auto: hcc params 0x0220f06d hci version 0x100 quirks 0x0000000002010010
-xhci-hcd xhci-hcd.1.auto: irq 26, io mem 0x1690000000000
-dwc3 1690000000000.xhci: xhci_plat_probe get usb3phy fail (ret=-6)
-xhci-hcd xhci-hcd.1.auto: xHCI Host Controller
-xhci-hcd xhci-hcd.1.auto: new USB bus registered, assigned bus number 4
-xhci-hcd xhci-hcd.1.auto: Host supports USB 3.0 SuperSpeed
-hub 3-0:1.0: USB hub found
-hub 3-0:1.0: 1 port detected
-usb usb4: We don't know the algorithms for LPM for this host, disabling LPM.
-hub 4-0:1.0: USB hub found
-hub 4-0:1.0: 1 port detected
-usbcore: registered new interface driver usb-storage
-i2c-octeon 1180000001000.i2c: probed
-i2c-octeon 1180000001200.i2c: probed
-octeon_wdt: Initial granularity 5 Sec
-EDAC DEVICE0: Giving out device to module octeon-cpu controller cache: DEV octeon_pc_edac (INTERRUPT)
-EDAC DEVICE1: Giving out device to module octeon-l2c controller octeon_l2c_err: DEV octeon_l2c_edac (POLLED)
-octeon_lmc_edac octeon_lmc_edac.0: Disabled (ECC not enabled)
-Interface 0 has 4 ports (SGMII)
-Interface 1 has 4 ports (SGMII)
-Interface 3 has 4 ports (LOOP)
-NET: Registered PF_INET6 protocol family
-Segment Routing with IPv6
-In-situ OAM (IOAM) with IPv6
-sit: IPv6, IPv4 and MPLS over IPv4 tunneling driver
-NET: Registered PF_PACKET protocol family
-Key type dns_resolver registered
-OF: fdt: not creating '/sys/firmware/fdt': CRC check failed
-Freeing unused kernel image (initmem) memory: 27488K
-This architecture does not have kernel memory protection.
-Run /init as init process
-  with arguments:
-    /init
-  with environment:
-    HOME=/
-    TERM=linux
-do_page_fault(): sending SIGSEGV to init for invalid read access from 0000000000021da8
-epc = 000000fff3a542c0 in ld.so.1[fff3a37000+2e000]
-ra  = 000000fff3a54688 in ld.so.1[fff3a37000+2e000]
-Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
----[ end Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b ]---
+DQoNCkxlIDE1LzA2LzIwMjMgw6AgMTg6MzQsIFJhbmR5IER1bmxhcCBhIMOpY3JpdMKgOg0KPiAN
+Cj4gDQo+IE9uIDYvMTUvMjMgMDk6MTMsIFJhbmR5IER1bmxhcCB3cm90ZToNCj4+DQo+Pg0KPj4g
+T24gNi8xNS8yMyAwOTowNSwgVGltb3RoeSBQZWFyc29uIHdyb3RlOg0KPj4+DQo+Pj4NCj4+PiAt
+LS0tLSBPcmlnaW5hbCBNZXNzYWdlIC0tLS0tDQo+Pj4+IEZyb206ICJSYW5keSBEdW5sYXAiIDxy
+ZHVubGFwQGluZnJhZGVhZC5vcmc+DQo+Pj4+IFRvOiAiVGltb3RoeSBQZWFyc29uIiA8dHBlYXJz
+b25AcmFwdG9yZW5naW5lZXJpbmcuY29tPiwgIk1pY2hhZWwgRWxsZXJtYW4iIDxtcGVAZWxsZXJt
+YW4uaWQuYXU+DQo+Pj4+IENjOiAiU3RlcGhlbiBSb3Rod2VsbCIgPHNmckBjYW5iLmF1dWcub3Jn
+LmF1PiwgIkxpbnV4IE5leHQgTWFpbGluZyBMaXN0IiA8bGludXgtbmV4dEB2Z2VyLmtlcm5lbC5v
+cmc+LCAibGludXgta2VybmVsIg0KPj4+PiA8bGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZz4s
+ICJsaW51eHBwYy1kZXYiIDxsaW51eHBwYy1kZXZAbGlzdHMub3psYWJzLm9yZz4sICJBbGV4ZXkg
+S2FyZGFzaGV2c2tpeSIgPGFpa0BvemxhYnMucnU+DQo+Pj4+IFNlbnQ6IFRodXJzZGF5LCBKdW5l
+IDE1LCAyMDIzIDExOjAwOjA4IEFNDQo+Pj4+IFN1YmplY3Q6IFJlOiBsaW51eC1uZXh0OiBUcmVl
+IGZvciBKdW4gMiAoYXJjaC9wb3dlcnBjL2tlcm5lbC9pb21tdS5jKQ0KPj4+DQo+Pj4+IEhpIFRp
+bW90aHksDQo+Pj4+DQo+Pj4+IE9uIDYvMy8yMyAyMDo1NywgVGltb3RoeSBQZWFyc29uIHdyb3Rl
+Og0KPj4+Pj4NCj4+Pj4+DQo+Pj4+PiAtLS0tLSBPcmlnaW5hbCBNZXNzYWdlIC0tLS0tDQo+Pj4+
+Pj4gRnJvbTogIk1pY2hhZWwgRWxsZXJtYW4iIDxtcGVAZWxsZXJtYW4uaWQuYXU+DQo+Pj4+Pj4g
+VG86ICJSYW5keSBEdW5sYXAiIDxyZHVubGFwQGluZnJhZGVhZC5vcmc+LCAiU3RlcGhlbiBSb3Ro
+d2VsbCINCj4+Pj4+PiA8c2ZyQGNhbmIuYXV1Zy5vcmcuYXU+LCAiTGludXggTmV4dCBNYWlsaW5n
+IExpc3QiDQo+Pj4+Pj4gPGxpbnV4LW5leHRAdmdlci5rZXJuZWwub3JnPg0KPj4+Pj4+IENjOiAi
+bGludXgta2VybmVsIiA8bGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZz4sICJsaW51eHBwYy1k
+ZXYiDQo+Pj4+Pj4gPGxpbnV4cHBjLWRldkBsaXN0cy5vemxhYnMub3JnPiwgIkFsZXhleQ0KPj4+
+Pj4+IEthcmRhc2hldnNraXkiIDxhaWtAb3psYWJzLnJ1PiwgIlRpbW90aHkgUGVhcnNvbiINCj4+
+Pj4+PiA8dHBlYXJzb25AcmFwdG9yZW5naW5lZXJpbmcuY29tPg0KPj4+Pj4+IFNlbnQ6IFNhdHVy
+ZGF5LCBKdW5lIDMsIDIwMjMgNzoyMjo1MSBQTQ0KPj4+Pj4+IFN1YmplY3Q6IFJlOiBsaW51eC1u
+ZXh0OiBUcmVlIGZvciBKdW4gMiAoYXJjaC9wb3dlcnBjL2tlcm5lbC9pb21tdS5jKQ0KPj4+Pj4N
+Cj4+Pj4+PiBSYW5keSBEdW5sYXAgPHJkdW5sYXBAaW5mcmFkZWFkLm9yZz4gd3JpdGVzOg0KPj4+
+Pj4+PiBPbiA2LzEvMjMgMjE6MDEsIFN0ZXBoZW4gUm90aHdlbGwgd3JvdGU6DQo+Pj4+Pj4+PiBI
+aSBhbGwsDQo+Pj4+Pj4+Pg0KPj4+Pj4+Pj4gQ2hhbmdlcyBzaW5jZSAyMDIzMDYwMToNCj4+Pj4+
+Pj4+DQo+Pj4+Pj4+DQo+Pj4+Pj4+IE9uIHBvd2VycGM2NCwgYSByYW5kY29uZmlnIGZhaWxlZCB3
+aXRoOg0KPj4+Pj4+Pg0KPj4+Pj4+PiBJbiBmaWxlIGluY2x1ZGVkIGZyb20gLi4vaW5jbHVkZS9s
+aW51eC9saXN0Lmg6NSwNCj4+Pj4+Pj4gICAgICAgICAgICAgICAgICAgZnJvbSAuLi9pbmNsdWRl
+L2xpbnV4L3ByZWVtcHQuaDoxMSwNCj4+Pj4+Pj4gICAgICAgICAgICAgICAgICAgZnJvbSAuLi9p
+bmNsdWRlL2xpbnV4L3NwaW5sb2NrLmg6NTYsDQo+Pj4+Pj4+ICAgICAgICAgICAgICAgICAgIGZy
+b20gLi4vaW5jbHVkZS9saW51eC9tbXpvbmUuaDo4LA0KPj4+Pj4+PiAgICAgICAgICAgICAgICAg
+ICBmcm9tIC4uL2luY2x1ZGUvbGludXgvZ2ZwLmg6NywNCj4+Pj4+Pj4gICAgICAgICAgICAgICAg
+ICAgZnJvbSAuLi9pbmNsdWRlL2xpbnV4L3NsYWIuaDoxNSwNCj4+Pj4+Pj4gICAgICAgICAgICAg
+ICAgICAgZnJvbSAuLi9hcmNoL3Bvd2VycGMva2VybmVsL2lvbW11LmM6MTU6DQo+Pj4+Pj4+IC4u
+L2FyY2gvcG93ZXJwYy9rZXJuZWwvaW9tbXUuYzogSW4gZnVuY3Rpb24NCj4+Pj4+Pj4gJ3NwYXBy
+X3RjZV9zZXR1cF9waGJfaW9tbXVzX2luaXRjYWxsJzoNCj4+Pj4+Pj4gLi4vYXJjaC9wb3dlcnBj
+L2tlcm5lbC9pb21tdS5jOjEzOTE6MzY6IGVycm9yOiAnaG9zZV9saXN0JyB1bmRlY2xhcmVkIChm
+aXJzdCB1c2UNCj4+Pj4+Pj4gaW4gdGhpcyBmdW5jdGlvbik7IGRpZCB5b3UgbWVhbiAnem9uZWxp
+c3QnPw0KPj4+Pj4+PiAgIDEzOTEgfCAgICAgICAgIGxpc3RfZm9yX2VhY2hfZW50cnkoaG9zZSwg
+Jmhvc2VfbGlzdCwgbGlzdF9ub2RlKSB7DQo+Pj4+Pj4+ICAgICAgICB8ICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgXn5+fn5+fn5+DQo+Pj4+Pj4gLi4uDQo+Pj4+Pj4NCj4+Pj4+
+PiBob3NlX2xpc3QgaXMgaW4gcGNpLWNvbW1vbi5jIHdoaWNoIGlzIGJ1aWx0IHdoZW4gUENJPXku
+DQo+Pj4+Pj4NCj4+Pj4+PiBQU0VSSUVTIGFuZCBQT1dFUk5WIGZvcmNlIFBDST15Lg0KPj4+Pj4+
+DQo+Pj4+Pj4gQnV0IHRoaXMgY29uZmlnIGhhcyBuZWl0aGVyOg0KPj4+Pj4+DQo+Pj4+Pj4gIyBD
+T05GSUdfUFBDX1BPV0VSTlYgaXMgbm90IHNldA0KPj4+Pj4+ICMgQ09ORklHX1BQQ19QU0VSSUVT
+IGlzIG5vdCBzZXQNCj4+Pj4+PiBDT05GSUdfSEFWRV9QQ0k9eQ0KPj4+Pj4+ICMgQ09ORklHX1BD
+SSBpcyBub3Qgc2V0DQo+Pj4+Pj4gIyBDT05GSUdfQ09NTU9OX0NMS19SUzlfUENJRSBpcyBub3Qg
+c2V0DQo+Pj4+Pj4NCj4+Pj4+Pg0KPj4+Pj4+IFByb2JhYmx5IHRoZSBzcGFwcl90Y2UgY29kZSBz
+aG91bGQgYmUgd3JhcHBlZCBpbiBhbiAjaWZkZWYgdGhhdCBpcyBvbmx5DQo+Pj4+Pj4gZW5hYmxl
+ZCB3aGVuIFBPV0VSTlYgfHwgUFNFUklFUyBpcyBlbmFibGVkLg0KPj4+Pj4+DQo+Pj4+Pj4gY2hl
+ZXJzDQo+Pj4+Pg0KPj4+Pj4gU291bmRzIHJlYXNvbmFibGUsIEkgd2FzIGdvaW5nIHRvIGxvb2sg
+aW50byB0aGlzIGZ1cnRoZXIgb3ZlciB0aGUgd2Vla2VuZC4gIEkNCj4+Pj4+IGNhbiBwdXQgdG9n
+ZXRoZXIgYSBwYXRjaCBmb3IgTW9uZGF5IGlmIHRoYXQgd29ya3M/DQo+Pj4+DQo+Pj4+IERpZCB5
+b3UgcHJlcGFyZSBhIHBhdGNoIGZvciB0aGlzPyBJIGFtIHN0aWxsIHNlZWluZyB0aGlzIGJ1aWxk
+IGVycm9yLg0KPj4+Pg0KPj4+PiB0aGFua3MuDQo+Pj4+IC0tDQo+Pj4+IH5SYW5keQ0KPj4+DQo+
+Pj4gWWVzLCBpdCB3YXMgc2VudCBpbiB0byB0aGUgbGludXhwcGMtZGV2IGxpc3Qgc29tZSB3ZWVr
+cyBhZ28uICBEaWQgaXQgbm90IGFycml2ZT8NCj4+DQo+PiBJIGRvbid0IGtub3cgLSBJJ20gbm90
+IHN1YnNjcmliZWQgdG8gdGhhdCBsaXN0Lg0KPj4NCj4+IEl0J3MgcHJvYmFibHkgc3RpbGwgaW4g
+dGhlIHBhdGNod29ya3MgcmV2aWV3IGN5Y2xlDQo+PiBzbyBpdCBoYXNuJ3QgYmVlbiBhcHBsaWVk
+IGFueXdoZXJlIHRoYXQgZ2V0cyBpbnRvIGxpbnV4LW5leHQuDQo+IA0KPiBPSywgaXQncyBoZXJl
+LCBtYXJrIHdpdGggU3VjY2VzczoNCj4gaHR0cDovL3BhdGNod29yay5vemxhYnMub3JnL3Byb2pl
+Y3QvbGludXhwcGMtZGV2L3BhdGNoLzIwMTU5MjU5NjguMzU0Njg3Mi4xNjg1OTkwOTM2ODIzLkph
+dmFNYWlsLnppbWJyYUByYXB0b3JlbmdpbmVlcmluZ2luYy5jb20vDQo+IA0KPiBJIGRvbid0IGtu
+b3cgd2hhdCBoYXBwZW5zIHRvIGl0IG5leHQgb3Igd2hlbi4NCg0KSXMgdGhhdCBzdXBwb3NlZCB0
+byBmaXggYW55dGhpbmcgPyBJIGRvZXNuJ3QgaGF2ZSBhbnkgRml4ZXM6IHRhZw0KDQpDaHJpc3Rv
+cGhlDQo=
