@@ -2,37 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B34E2730D6B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jun 2023 05:08:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF20D730D73
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jun 2023 05:10:11 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=pX1pi6rJ;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QhS0H2RGRz3c1L
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jun 2023 13:07:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QhS2n3Wcpz300t
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jun 2023 13:10:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=pX1pi6rJ;
+	dkim-atps=neutral
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QhRzn1GFzz2xqW
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jun 2023 13:07:33 +1000 (AEST)
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4QhRzj0gN6z4wjF;
-	Thu, 15 Jun 2023 13:07:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QhS1s5T5Hz2ynD
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jun 2023 13:09:21 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QhRzh71vKz4wgq;
-	Thu, 15 Jun 2023 13:07:28 +1000 (AEST)
-From: Michael Ellerman <michaele@au1.ibm.com>
-To: Sachin Sant <sachinp@linux.ibm.com>, open list
- <linux-kernel@vger.kernel.org>
-Subject: Re: [6.4-rc6] Crash during a kexec operation
- (tpm_amd_is_rng_defective)
-In-Reply-To: <99B81401-DB46-49B9-B321-CF832B50CAC3@linux.ibm.com>
-References: <99B81401-DB46-49B9-B321-CF832B50CAC3@linux.ibm.com>
-Date: Thu, 15 Jun 2023 13:07:26 +1000
-Message-ID: <87o7lhfmoh.fsf@mail.lhotse>
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QhS1q39Tyz4wj9;
+	Thu, 15 Jun 2023 13:09:19 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1686798559;
+	bh=eXxt1sPWIWdDmJmw2LO00dTprEK6R4O6Y1+/n/DtWLA=;
+	h=From:To:Subject:In-Reply-To:References:Date:From;
+	b=pX1pi6rJlMoCI3x29/TEz5fsvFLHasHxOtPfrTRlJHRrRu4BGeLN7y7hKQJ6IzNr4
+	 xj8VxbFr/MoTSSHK8pFZdWu5ZYMNmRik7Q2lLVta/HuVhLgh8E4vzGLnFjZuEVNYL2
+	 yr/yFfnTX6aROnxxwismf0todNjA/3Vv9X8QKeV0csfEZlpGqsUSea7CaP10a0Wxai
+	 1M1sv1xYBeq6ar5uE5JHaCT6O84y23qux/yw8QOE/yB/LiPmMwU0FmrU5QMIk+xqCZ
+	 HXnVmY2w0Jq2eTJzmgM9O8tC38NwB3bnQlpc+aSe0qmsz0qaKUWE/embNtpU+hDljS
+	 BFpY6T5azvTnw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 4/4] powerpc/64s: Use POWER10 stsync barrier for wmb()
+In-Reply-To: <CTCUKC30VVC4.KMUHD1RN0W79@wheely>
+References: <20230609100026.8946-1-npiggin@gmail.com>
+ <20230609100026.8946-4-npiggin@gmail.com> <87wn07foos.fsf@mail.lhotse>
+ <87ttvafuxi.fsf@mail.lhotse> <CTCUKC30VVC4.KMUHD1RN0W79@wheely>
+Date: Thu, 15 Jun 2023 13:09:19 +1000
+Message-ID: <87leglfmlc.fsf@mail.lhotse>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -46,72 +59,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jarkko@kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sachin Sant <sachinp@linux.ibm.com> writes:
-> Following crash is observed during a kexec operation on 
-> IBM Power10 server:
+"Nicholas Piggin" <npiggin@gmail.com> writes:
+> On Wed Jun 14, 2023 at 3:56 PM AEST, Michael Ellerman wrote:
+>> Michael Ellerman <mpe@ellerman.id.au> writes:
+>> > Nicholas Piggin <npiggin@gmail.com> writes:
+>> >> The most expensive ordering for hwsync to provide is the store-load
+>> >> barrier, because all prior stores have to be drained to the caches
+>> >> before subsequent instructions can complete.
+>> >>
+>> >> stsync just orders stores which means it can just be a barrer that
+>> >> goes down the store queue and orders draining, and does not prevent
+>> >> completion of subsequent instructions. So it should be faster than
+>> >> hwsync.
+>> >>
+>> >> Use stsync for wmb(). Older processors that don't recognise the SC
+>> >> field should treat this as hwsync.
+>> >
+>> > qemu (7.1) emulating ppc64e does not :/
+>> >
+>> >   mpic: Setting up MPIC " OpenPIC  " version 1.2 at fe0040000, max 1 CPUs
+>> >   mpic: ISU size: 256, shift: 8, mask: ff
+>> >   mpic: Initializing for 256 sources
+>> >   Oops: Exception in kernel mode, sig: 4 [#1]
+>> ..
+>> >
+>> > I guess just put it behind an #ifdef 64S.
+>>
+>> That doesn't work because qemu emulating a G5 also doesn't accept it.
+>>
+>> So either we need to get qemu updated and wait a while for that to
+>> percolate, or do some runtime patching of wmbs in the kernel >_<
 >
-> [ 34.381548] Kernel attempted to read user page (50) - exploit attempt? (uid: 0)
-> [ 34.381562] BUG: Kernel NULL pointer dereference on read at 0x00000050
-> [ 34.381565] Faulting instruction address: 0xc0000000009db1e4
-> [ 34.381569] Oops: Kernel access of bad area, sig: 11 [#1]
-> [ 34.381572] LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
-> [ 34.381576] Modules linked in: dm_mod(E) nft_fib_inet(E) nft_fib_ipv4(E) nft_fib_ipv6(E) nft_fib(E) nft_reject_inet(E) nf_reject_ipv4(E) nf_reject_ipv6(E) nft_reject(E) nft_ct(E) nft_chain_nat(E) nf_nat(E) nf_conntrack(E) nf_defrag_ipv6(E) nf_defrag_ipv4(E) bonding(E) tls(E) rfkill(E) ip_set(E) sunrpc(E) nf_tables(E) nfnetlink(E) pseries_rng(E) aes_gcm_p10_crypto(E) drm(E) drm_panel_orientation_quirks(E) xfs(E) libcrc32c(E) sd_mod(E) sr_mod(E) t10_pi(E) crc64_rocksoft_generic(E) cdrom(E) crc64_rocksoft(E) crc64(E) sg(E) ibmvscsi(E) scsi_transport_srp(E) ibmveth(E) vmx_crypto(E) fuse(E)
-> [ 34.381613] CPU: 18 PID: 5918 Comm: kexec Kdump: loaded Tainted: G E 6.4.0-rc6-00037-gb6dad5178cea #3
-> [ 34.381618] Hardware name: IBM,9080-HEX POWER10 (raw) 0x800200 0xf000006 of:IBM,FW1030.20 (NH1030_058) hv:phyp pSeries
-> [ 34.381621] NIP: c0000000009db1e4 LR: c0000000009db928 CTR: c0000000009eab60
-> [ 34.381625] REGS: c00000009742f780 TRAP: 0300 Tainted: G E (6.4.0-rc6-00037-gb6dad5178cea)
-> [ 34.381628] MSR: 800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE> CR: 44488884 XER: 00000001
-> [ 34.381638] CFAR: c0000000009db19c DAR: 0000000000000050 DSISR: 40000000 IRQMASK: 0 
-> [ 34.381638] GPR00: c0000000009db928 c00000009742fa20 c0000000014a1500 c0000000081d0000 
-> [ 34.381638] GPR04: c00000000d842c50 c00000000d842c50 0000000000000025 fffffffffffe0000 
-> [ 34.381638] GPR08: 0000000000000000 0000000000000000 0000000000000009 c008000000785280 
-> [ 34.381638] GPR12: c0000000009eab60 c00000135fab7f00 0000000000000000 0000000000000000 
-> [ 34.381638] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
-> [ 34.381638] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
-> [ 34.381638] GPR24: 0000000000000000 0000000000000000 0000000000000000 c000000002e21e08 
-> [ 34.381638] GPR28: c00000000d842c48 c000000002a02208 c00000000321c0c0 c0000000081d0000 
-> [ 34.381674] NIP [c0000000009db1e4] tpm_amd_is_rng_defective+0x74/0x240
-> [ 34.381681] LR [c0000000009db928] tpm_chip_unregister+0x138/0x160
-> [ 34.381685] Call Trace:
-> [ 34.381686] [c00000009742faa0] [c0000000009db928] tpm_chip_unregister+0x138/0x160
-> [ 34.381690] [c00000009742fae0] [c0000000009eab94] tpm_ibmvtpm_remove+0x34/0x130
-...
-> [ 34.381788] Code: 5463063e 408201c8 38210080 4e800020 60000000 60000000 60000000 7c0802a6 fbe10078 7c7f1b78 f8010090 e9230728 <e9890050> 2c2c0000 41820020 7d8903a6 
+> Gah, sorry. QEMU really should be ignoring reserved fields in
+> instructions :(
 
-  2c:   28 07 23 e9     ld      r9,1832(r3)
-  30:   50 00 89 e9     ld      r12,80(r9)
+Yeah, it's an annoying discrepancy vs real hardware and the ISA.
 
-Where r3 is *chip.
-r9 is NULL, and 80 = 0x50.
+> I guess leave it out for now. Should fix QEMU but we probably also need
+> to do patching so as not to break older QEMUs.
 
-Looks like a NULL chip->ops, which oopses in:
-
-static int tpm_request_locality(struct tpm_chip *chip)
-{
-	int rc;
-
-	if (!chip->ops->request_locality)
-
-
-Can you test the patch below?
+I'll plan to take the first 3 patches, they seem OK as-is.
 
 cheers
-
-
-diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-chip.c
-index cd48033b804a..82eb36e2e16d 100644
---- a/drivers/char/tpm/tpm-chip.c
-+++ b/drivers/char/tpm/tpm-chip.c
-@@ -36,7 +36,7 @@ static int tpm_request_locality(struct tpm_chip *chip)
- {
- 	int rc;
- 
--	if (!chip->ops->request_locality)
-+	if (!chip->ops || !chip->ops->request_locality)
- 		return 0;
- 
- 	rc = chip->ops->request_locality(chip, 0);
