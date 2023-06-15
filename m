@@ -1,54 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73FA1731A8D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jun 2023 15:55:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0FB3731D19
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jun 2023 17:50:42 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cX2RDj22;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WNkYf8fB;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QhkMW2TMxz30h9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jun 2023 23:55:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QhmwJ3Zw6z3c3k
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 01:50:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cX2RDj22;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WNkYf8fB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
-X-Greylist: delayed 103695 seconds by postgrey-1.37 at boromir; Thu, 15 Jun 2023 23:54:47 AEST
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QhkLb1Db3z30dm
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jun 2023 23:54:47 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 6DAB360DC1
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jun 2023 13:54:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E3B1C433C0;
-	Thu, 15 Jun 2023 13:54:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1686837283;
-	bh=+/moxkQoRy+4tGDo/+K1avcb9w0TBdzhL8yMtmZpejo=;
-	h=From:To:Subject:Date:From;
-	b=cX2RDj22FB/JQARXXfNaXnk1sJ6+IuVQPcmc7KIqMiFZnSKMEJLRdAb9f8OWxXzIK
-	 CPC3ERViuHA1y50jfPZiEyoBjbgVXznld1HmDS66g1MbcjkSQIVKa/r+fwX2S5yw+W
-	 Lbo4vzWW7dHPv1dAG7XAvO3FnxnQom7RlLB+I3OMmopZ1NojILt2sucRFmAkHzVsde
-	 ZhY9xwTBMlmETES1WYl4Ui6sIKErZ7YW6U3Q7f1cOeiAXvFmGY5T5D5qS8zkpXxuxk
-	 C0LBlDPhNEzXxhCxd4C8s0Uyn8PKXf6KamcUNuSPa2MxVm3FDm6046735i+rFMVwP6
-	 OnAoyQ3gwmM1A==
-From: Naveen N Rao <naveen@kernel.org>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [RFC PATCH] powerpc/ftrace: Create a dummy stackframe to fix stack unwind
-Date: Thu, 15 Jun 2023 19:21:13 +0530
-Message-Id: <20230615135113.2989625-1-naveen@kernel.org>
-X-Mailer: git-send-email 2.40.1
-MIME-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QhmrP5Sd6z3bVf
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jun 2023 01:47:17 +1000 (AEST)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35FFFQMA009766;
+	Thu, 15 Jun 2023 15:46:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=087qHErCZA/JVKPFMbbrEGEkxbB+mjj9YP0xkEBcYl0=;
+ b=WNkYf8fBCCq7PJJdNiwboCADRsY9opFncrD4zFzV6JVES+QMwDgdBbYaI6UXIvU6Vll1
+ 4KUUgmfYI8spQcJPrXYGmqFWNMnQfGUIB7kQpEBdLoXlmg/Bbrp0UFKRbFteDsgA6W8l
+ rN3SaOYBcwY+X8TMlB0uxH+aHN4neCNnlMssLtKTTr3fn3+wzOLOp1JuzkDp4mt2je3f
+ rgF4MTl7Vul7iWv/zz2rq7EILgMi3cpHikw27wMOinCv+AgdSXMO55jd7ViunvYsFLKD
+ i3/XqkrVUqH4/sKRGzozlWGi2L99O14UbSuCysgof91uArmkt/z3RdhdhogTuB1qMzCT Fg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r84qb1yg0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 15 Jun 2023 15:46:42 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35FF7tLo003717;
+	Thu, 15 Jun 2023 15:46:42 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r84qb1ydt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 15 Jun 2023 15:46:42 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35F5mTQU029171;
+	Thu, 15 Jun 2023 15:46:39 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3r4gt53pxd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 15 Jun 2023 15:46:39 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 35FFkak827001424
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 15 Jun 2023 15:46:36 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A93F220040;
+	Thu, 15 Jun 2023 15:46:36 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2764F20043;
+	Thu, 15 Jun 2023 15:46:36 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.144.159.119])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 15 Jun 2023 15:46:36 +0000 (GMT)
+From: Laurent Dufour <ldufour@linux.ibm.com>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH 00/10] Introduce SMT level and add PowerPC support
+Date: Thu, 15 Jun 2023 17:46:25 +0200
+Message-ID: <20230615154635.13660-1-ldufour@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: vbNxcUUp6qN-xWwxpfBrWD3mvl8RDwP1
+X-Proofpoint-ORIG-GUID: 9qz2-n89y1ASyiV1R1Nvr1hDg_lnuL0c
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-15_12,2023-06-15_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 impostorscore=0
+ adultscore=0 lowpriorityscore=0 bulkscore=0 mlxlogscore=985 phishscore=0
+ spamscore=0 suspectscore=0 malwarescore=0 priorityscore=1501 clxscore=1011
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
+ definitions=main-2306150136
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,166 +94,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-arch@vger.kernel.org, dave.hansen@linux.intel.com, x86@kernel.org, mingo@redhat.com, bp@alien8.de, npiggin@gmail.com, tglx@linutronix.de, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With ppc64 -mprofile-kernel and ppc32 -pg, profiling instructions to
-call into ftrace are emitted right at function entry. The instruction
-sequence used is minimal to reduce overhead. Crucially, a stackframe is
-not created for the function being traced. This breaks stack unwinding
-since the function being traced does not have a stackframe for itself.
-As such, it never shows up in the backtrace:
+I'm taking over the series Michael sent previously [1] which is smartly
+reviewing the initial series I sent [2].  This series is addressing the
+comments sent by Thomas and me on the Michael's one.
 
-/sys/kernel/debug/tracing # echo 1 > /proc/sys/kernel/stack_tracer_enabled
-/sys/kernel/debug/tracing # cat stack_trace
-        Depth    Size   Location    (17 entries)
-        -----    ----   --------
-  0)     4144      32   ftrace_call+0x4/0x44
-  1)     4112     432   get_page_from_freelist+0x26c/0x1ad0
-  2)     3680     496   __alloc_pages+0x290/0x1280
-  3)     3184     336   __folio_alloc+0x34/0x90
-  4)     2848     176   vma_alloc_folio+0xd8/0x540
-  5)     2672     272   __handle_mm_fault+0x700/0x1cc0
-  6)     2400     208   handle_mm_fault+0xf0/0x3f0
-  7)     2192      80   ___do_page_fault+0x3e4/0xbe0
-  8)     2112     160   do_page_fault+0x30/0xc0
-  9)     1952     256   data_access_common_virt+0x210/0x220
- 10)     1696     400   0xc00000000f16b100
- 11)     1296     384   load_elf_binary+0x804/0x1b80
- 12)      912     208   bprm_execve+0x2d8/0x7e0
- 13)      704      64   do_execveat_common+0x1d0/0x2f0
- 14)      640     160   sys_execve+0x54/0x70
- 15)      480      64   system_call_exception+0x138/0x350
- 16)      416     416   system_call_common+0x160/0x2c4
+Here is a short introduction to the issue this series is addressing:
 
-Fix this by having ftrace create a dummy stackframe for the function
-being traced. Since this is only relevant when ftrace is active, we nop
-out the instruction to store LR in the LR save area in the profiling
-instruction sequence on ppc32 (and in ppc64 with older gcc versions).
-Instead, in ftrace, we store LR in the LR save area of the previous
-stackframe, and create a minimal stackframe to represent the function
-being traced. With this, backtraces now capture the function being
-traced:
+When a new CPU is added, the kernel is activating all its threads. This
+leads to weird, but functional, result when adding CPU on a SMT 4 system
+for instance.
 
-/sys/kernel/debug/tracing # cat stack_trace
-        Depth    Size   Location    (17 entries)
-        -----    ----   --------
-  0)     3888      32   _raw_spin_trylock+0x8/0x70
-  1)     3856     576   get_page_from_freelist+0x26c/0x1ad0
-  2)     3280      64   __alloc_pages+0x290/0x1280
-  3)     3216     336   __folio_alloc+0x34/0x90
-  4)     2880     176   vma_alloc_folio+0xd8/0x540
-  5)     2704     416   __handle_mm_fault+0x700/0x1cc0
-  6)     2288      96   handle_mm_fault+0xf0/0x3f0
-  7)     2192      48   ___do_page_fault+0x3e4/0xbe0
-  8)     2144     192   do_page_fault+0x30/0xc0
-  9)     1952     608   data_access_common_virt+0x210/0x220
- 10)     1344      16   0xc0000000334bbb50
- 11)     1328     416   load_elf_binary+0x804/0x1b80
- 12)      912      64   bprm_execve+0x2d8/0x7e0
- 13)      848     176   do_execveat_common+0x1d0/0x2f0
- 14)      672     192   sys_execve+0x54/0x70
- 15)      480      64   system_call_exception+0x138/0x350
- 16)      416     416   system_call_common+0x160/0x2c4
+Here the newly added CPU 1 has 8 threads while the other one has 4 threads
+active (system has been booted with the 'smt-enabled=4' kernel option):
 
-This results in two additional stores in the ftrace entry code, but
-produces reliable backtraces. Note that this change now aligns with
-other architectures (arm64, s390, x86).
+ltcden3-lp12:~ # ppc64_cpu --info
+Core   0:    0*    1*    2*    3*    4     5     6     7
+Core   1:    8*    9*   10*   11*   12*   13*   14*   15*
 
-Signed-off-by: Naveen N Rao <naveen@kernel.org>
----
-This applies atop the below RFC patchset:
-http://lore.kernel.org/cover.1686151854.git.naveen@kernel.org
+This mixed SMT level may confused end users and/or some applications.
 
-- Naveen
+There is no SMT level recorded in the kernel (common code), neither in user
+space, as far as I know. Such a level is helpful when adding new CPU or
+when optimizing the energy efficiency (when reactivating CPUs).
 
- arch/powerpc/kernel/trace/ftrace.c       |  8 +++++---
- arch/powerpc/kernel/trace/ftrace_entry.S | 11 ++++++++---
- 2 files changed, 13 insertions(+), 6 deletions(-)
+When SMP and HOTPLUG_SMT are defined, this series is adding a new SMT level
+(cpu_smt_num_threads) and few callbacks allowing the architecture code to
+fine control this value, setting a max and a "at boot" level, and
+controling whether a thread should be onlined or not.
 
-diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
-index a03aa4fd7a08ba..3f090f037d8ef5 100644
---- a/arch/powerpc/kernel/trace/ftrace.c
-+++ b/arch/powerpc/kernel/trace/ftrace.c
-@@ -229,13 +229,15 @@ int ftrace_init_nop(struct module *mod, struct dyn_ftrace *rec)
- 		/* Expected sequence: 'mflr r0', 'stw r0,4(r1)', 'bl _mcount' */
- 		ret = ftrace_validate_inst(ip - 8, ppc_inst(PPC_RAW_MFLR(_R0)));
- 		if (!ret)
--			ret = ftrace_validate_inst(ip - 4, ppc_inst(PPC_RAW_STW(_R0, _R1, 4)));
-+			ret = ftrace_modify_code(ip - 4, ppc_inst(PPC_RAW_STW(_R0, _R1, 4)),
-+						 ppc_inst(PPC_RAW_NOP()));
- 	} else if (IS_ENABLED(CONFIG_MPROFILE_KERNEL)) {
- 		/* Expected sequence: 'mflr r0', ['std r0,16(r1)'], 'bl _mcount' */
- 		ret = ftrace_validate_inst(ip - 4, ppc_inst(PPC_RAW_MFLR(_R0)));
- 		if (ret) {
--			ret = ftrace_validate_inst(ip - 4, ppc_inst(PPC_RAW_STD(_R0, _R1, 16)));
--			ret |= ftrace_validate_inst(ip - 8, ppc_inst(PPC_RAW_MFLR(_R0)));
-+			ret = ftrace_validate_inst(ip - 8, ppc_inst(PPC_RAW_MFLR(_R0)));
-+			ret |= ftrace_modify_code(ip - 4, ppc_inst(PPC_RAW_STD(_R0, _R1, 16)),
-+						  ppc_inst(PPC_RAW_NOP()));
- 		}
- 	} else {
- 		return -EINVAL;
-diff --git a/arch/powerpc/kernel/trace/ftrace_entry.S b/arch/powerpc/kernel/trace/ftrace_entry.S
-index bab3ab1368a33f..05e981fb526c2e 100644
---- a/arch/powerpc/kernel/trace/ftrace_entry.S
-+++ b/arch/powerpc/kernel/trace/ftrace_entry.S
-@@ -33,6 +33,11 @@
-  * and then arrange for the ftrace function to be called.
-  */
- .macro	ftrace_regs_entry allregs
-+	/* Create a minimal stack frame for representing B */
-+	PPC_STLU	r1, -STACK_FRAME_MIN_SIZE(r1)
-+	/* Save the original return address in A's stack frame */
-+	PPC_STL		r0, LRSAVE+STACK_FRAME_MIN_SIZE(r1)
-+
- 	/* Create our stack frame + pt_regs */
- 	PPC_STLU	r1,-SWITCH_FRAME_SIZE(r1)
- 
-@@ -41,8 +46,6 @@
- 	SAVE_GPRS(3, 10, r1)
- 
- #ifdef CONFIG_PPC64
--	/* Save the original return address in A's stack frame */
--	std	r0, LRSAVE+SWITCH_FRAME_SIZE(r1)
- 	/* Ok to continue? */
- 	lbz	r3, PACA_FTRACE_ENABLED(r13)
- 	cmpdi	r3, 0
-@@ -77,6 +80,8 @@
- 	mflr	r7
- 	/* Save it as pt_regs->nip */
- 	PPC_STL	r7, _NIP(r1)
-+	/* Also save it in B's stackframe header for proper unwind */
-+	PPC_STL	r7, LRSAVE+SWITCH_FRAME_SIZE(r1)
- 	/* Save the read LR in pt_regs->link */
- 	PPC_STL	r0, _LINK(r1)
- 
-@@ -142,7 +147,7 @@
- #endif
- 
- 	/* Pop our stack frame */
--	addi r1, r1, SWITCH_FRAME_SIZE
-+	addi r1, r1, SWITCH_FRAME_SIZE+STACK_FRAME_MIN_SIZE
- 
- #ifdef CONFIG_LIVEPATCH_64
-         /* Based on the cmpd above, if the NIP was altered handle livepatch */
+[1] https://lore.kernel.org/linuxppc-dev/20230524155630.794584-1-mpe@ellerman.id.au/
+[2] https://lore.kernel.org/linuxppc-dev/20230331153905.31698-1-ldufour@linux.ibm.com/
 
-base-commit: bd517a8442b6c6646a136421cd4c1b95bf4ce32b
-prerequisite-patch-id: b953231ea1102dee0e99a793e2b0a4cc3524d6e4
-prerequisite-patch-id: 029435b7efc8ac3e9a49fd253c3a32c1ae6b625d
-prerequisite-patch-id: d54692b0a2bf9d8d4230ad9d529ca5cca9f064fa
-prerequisite-patch-id: f35d59616da6d295ebb49146b5e5000d63bc2e2d
-prerequisite-patch-id: 7476dc63da245d21085fc1d661fc913012a2829d
-prerequisite-patch-id: 2dfadfbafe18b69462284402ed2bbd20ef3627d3
-prerequisite-patch-id: 0550450ddc1fa88ec7e00356799c66dbf31aed95
-prerequisite-patch-id: 9a4c24553f536cde60636b2d91cd24f6127d9978
-prerequisite-patch-id: af2d0864837e4e2fb85604fd6519a894a086fd22
-prerequisite-patch-id: 8695c750ac80fac717e390ea8868cfd2a7fac22e
-prerequisite-patch-id: 75675def2fb28145ae98ad21636cbe09b6174c57
-prerequisite-patch-id: 66991e58b939a95ee69704f329aaa69de92b5f5c
-prerequisite-patch-id: a86977fec45531c24925f66691c2a9624596a943
-prerequisite-patch-id: f581bcc4ff26bdee41ad2e79acde16424faa8c76
-prerequisite-patch-id: 423e0ef649173547fa1d16b5763883e5946469f2
+Laurent Dufour (1):
+  cpu/SMT: Remove topology_smt_supported()
+
+Michael Ellerman (9):
+  cpu/SMT: Move SMT prototypes into cpu_smt.h
+  cpu/SMT: Move smt/control simple exit cases earlier
+  cpu/SMT: Store the current/max number of threads
+  cpu/SMT: Create topology_smt_threads_supported()
+  cpu/SMT: Create topology_smt_thread_allowed()
+  cpu/SMT: Allow enabling partial SMT states via sysfs
+  powerpc/pseries: Initialise CPU hotplug callbacks earlier
+  powerpc: Add HOTPLUG_SMT support
+  powerpc/pseries: Honour current SMT state when DLPAR onlining CPUs
+
+ .../ABI/testing/sysfs-devices-system-cpu      |  1 +
+ arch/powerpc/Kconfig                          |  1 +
+ arch/powerpc/include/asm/topology.h           | 20 +++++
+ arch/powerpc/kernel/smp.c                     |  8 +-
+ arch/powerpc/platforms/pseries/hotplug-cpu.c  | 30 +++++--
+ arch/powerpc/platforms/pseries/pseries.h      |  2 +
+ arch/powerpc/platforms/pseries/setup.c        |  2 +
+ arch/x86/include/asm/topology.h               |  8 +-
+ arch/x86/kernel/cpu/bugs.c                    |  3 +-
+ arch/x86/kernel/smpboot.c                     | 25 +++++-
+ include/linux/cpu.h                           | 25 +-----
+ include/linux/cpu_smt.h                       | 33 ++++++++
+ kernel/cpu.c                                  | 83 +++++++++++++++----
+ 13 files changed, 187 insertions(+), 54 deletions(-)
+ create mode 100644 include/linux/cpu_smt.h
+
 -- 
-2.40.1
+2.41.0
 
