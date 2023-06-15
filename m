@@ -2,64 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD4A07311D0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jun 2023 10:12:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11E6E7311E4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jun 2023 10:16:10 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256 header.s=google header.b=DeLazfIC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JSO64BdU;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QhZlL5Rlkz3bVP
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jun 2023 18:12:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QhZqq6qbZz30h5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jun 2023 18:16:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256 header.s=google header.b=DeLazfIC;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JSO64BdU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62e; helo=mail-ej1-x62e.google.com; envelope-from=joel.stan@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=lpieralisi@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QhZkR0HhJz301d
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jun 2023 18:11:26 +1000 (AEST)
-Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-9745ba45cd1so219329166b.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jun 2023 01:11:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jms.id.au; s=google; t=1686816682; x=1689408682;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Jc3bGs7n8LGJfGG9OcFyn2jHuE4ZH06NRDgfF5l5LjU=;
-        b=DeLazfIC3InLlnc+CbN7u3tKeBgHiyvNu9e/jNH3WftMrgPB8g8Nm8trECi2KONeGZ
-         uf3lWDYbRqTYPo0TVAcyEuFtq7s9eO4TbZ8HkZ0Zo2uvlysLQyGKYZ4tw2gr7KzCTIpj
-         SgMSEMZGFaHUpnALuimbilC8pr1x3qSHGxIzM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686816682; x=1689408682;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Jc3bGs7n8LGJfGG9OcFyn2jHuE4ZH06NRDgfF5l5LjU=;
-        b=O+usb2SXajWhLjaPTVBV913IVducuyO9juw1GQuQev8rpANMONkp4ufOZ6ti/NrstZ
-         vRFGMNtrehfr88m5o9EMG6rNageZ26gMRmFHQlsoiUKETgzEUemmXaZ5h1W7jbeU1+Qt
-         V3D/2aonT0QlRD0wHWhkEQzF/JXyE+34SnsRfosfGryRQi114S6QzNyOQhQknVJDJrY3
-         Ipqga88ExBrqj6wxVzPZlvn26DB9jojvP8h+ipO/EE4ENMKQisDze+4v2smKE3Mr44na
-         mBMTC5Y05KQnS3q2FS/TAYVxlbV3CBUyTBXLfLN4MYJ6nNhJYnq/S22kPG2JxV6ai021
-         oxjA==
-X-Gm-Message-State: AC+VfDzRm2WpNBgEMaDrg/Q0GbElGoNgltBHg6tsmgmyvhj2qYzMEgh1
-	W9FNVgKme97XLw8h5X6bleqQTmVEQNZf2KZncWA=
-X-Google-Smtp-Source: ACHHUZ4bUFGFP77ZcF3kMaZOJhG6wTzBNRglO1RF+tVoIeHKdwBZFicWiHALQYaEk74qIyu3OSniSMlM/E6RZ+LZRhQ=
-X-Received: by 2002:a17:906:d553:b0:970:c9f:2db6 with SMTP id
- cr19-20020a170906d55300b009700c9f2db6mr17756450ejc.63.1686816681651; Thu, 15
- Jun 2023 01:11:21 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QhZpt0qnwz301d
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jun 2023 18:15:18 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 3150260FE5;
+	Thu, 15 Jun 2023 08:15:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60323C433C0;
+	Thu, 15 Jun 2023 08:15:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1686816910;
+	bh=WeovI7rajZxovg2FExZZodivoJQZzw867iDK5ovAvt0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JSO64BdU/2Fgb8NcsA73faA0Nc3XcsbUpRbaf0zhR8VlmwyaRycq4sYtb4vY7Myl6
+	 LKiw02rbIvxObLXBe5MZngfvCiwzrDCDCuKbXjXBG/6n+9PV4XiX1VlvJfJhqYRpom
+	 XdDFj3KAfx8tHf0DtVsYB9EoopfnBPkyjpUzZFao3ZnQ6RZOTGOCNlV3RYISj6FAHG
+	 XnHKh3NJZXKgkTBA6pl+tJJBVhgDqQCDuyfz+6154YUQz4i1OuDTcXLffa3NLS3mLh
+	 1wXWmPn+StnAklSpuB0mh0sCGkD8xsCeb5wrqo0KoSgp7dllezfw69HyfLr8olH6oq
+	 0uzOD0jOmMnlQ==
+Date: Thu, 15 Jun 2023 10:15:04 +0200
+From: Lorenzo Pieralisi <lpieralisi@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v4 1/1] PCI: layerscape: Add the endpoint linkup notifier
+ support
+Message-ID: <ZIrIiPLsXAPGlJqX@lpieralisi>
+References: <20230515151049.2797105-1-Frank.Li@nxp.com>
 MIME-Version: 1.0
-References: <20230608075826.86217-1-npiggin@gmail.com> <CACPK8XdpAxjvP+bFNFJzQQzBYvEwsE69QkbNWRumZtUW2wOrrA@mail.gmail.com>
- <CTCW1ILCXTMA.24T7LU9PQBTDA@wheely>
-In-Reply-To: <CTCW1ILCXTMA.24T7LU9PQBTDA@wheely>
-From: Joel Stanley <joel@jms.id.au>
-Date: Thu, 15 Jun 2023 08:11:09 +0000
-Message-ID: <CACPK8XdOv4j5y6ADrxfvW_iDLLT0UT6Dwb_-J3mTA1Rq9s4xtQ@mail.gmail.com>
-Subject: Re: [kvm-unit-tests v4 00/12] powerpc: updates, P10, PNV support
-To: Nicholas Piggin <npiggin@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230515151049.2797105-1-Frank.Li@nxp.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,71 +62,187 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>, kvm@vger.kernel.org, qemu-devel@nongnu.org, qemu-ppc@nongnu.org, linuxppc-dev@lists.ozlabs.org
+Cc: Rob Herring <robh@kernel.org>, imx@lists.linux.dev, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, "open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-pci@vger.kernel.org>, manivannan.sadhasivam@linaro.org, open list <linux-kernel@vger.kernel.org>, Minghuan Lian <minghuan.Lian@nxp.com>, "moderated list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-arm-kernel@lists.infradead.org>, Roy Zang <roy.zang@nxp.com>, Bjorn Helgaas <bhelgaas@google.com>, "open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linuxppc-dev@lists.ozlabs.org>, Mingkai Hu <mingkai.hu@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 15 Jun 2023 at 03:02, Nicholas Piggin <npiggin@gmail.com> wrote:
->
-> On Wed Jun 14, 2023 at 11:09 AM AEST, Joel Stanley wrote:
-> > On Thu, 8 Jun 2023 at 07:58, Nicholas Piggin <npiggin@gmail.com> wrote:
-> > >
-> > > Posting again, a couple of patches were merged and accounted for review
-> > > comments from last time.
-> >
-> > I saw some failures in the spr tests running on a power9 powernv system:
-> >
-> > $ TESTNAME=sprs TIMEOUT=90s ACCEL= ./powerpc/run powerpc/sprs.elf -smp
-> > 1 |grep FAIL
-> > FAIL: WORT      ( 895):    0x00000000c0deba80 <==> 0x0000000000000000
->
-> This is just TCG machine? I'm not sure why WORT fails, AFAIKS it's the
-> same on POWER8 and doesn't do anything just a simple register. I think
-> on real hardware WORT may not have any bits implemented on POWER9
-> though.
+On Mon, May 15, 2023 at 11:10:49AM -0400, Frank Li wrote:
+> Layerscape has PME interrupt, which can be used as linkup notifier.
+> Set CFG_READY bit of PEX_PF0_CONFIG to enable accesses from root complex
+> when linkup detected.
+> 
+> Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Change from v3 to v4
+>  - swap irq and big_endian
+> Change from v2 to v3
+>  - align 80 column
+>  - clear irq firstly
+>  - dev_info to dev_dbg
+>  - remove double space
+>  - update commit message
+> 
+> Change from v1 to v2
+> - pme -> PME
+> - irq -> IRQ
+> - update dev_info message according to Bjorn's suggestion
+> 
+>  .../pci/controller/dwc/pci-layerscape-ep.c    | 102 +++++++++++++++++-
+>  1 file changed, 101 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+> index c640db60edc6..5398641b6b7e 100644
+> --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
+> +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+> @@ -18,6 +18,20 @@
+>  
+>  #include "pcie-designware.h"
+>  
+> +#define PEX_PF0_CONFIG			0xC0014
+> +#define PEX_PF0_CFG_READY		BIT(0)
+> +
+> +/* PEX PFa PCIE PME and message interrupt registers*/
+> +#define PEX_PF0_PME_MES_DR		0xC0020
+> +#define PEX_PF0_PME_MES_DR_LUD		BIT(7)
+> +#define PEX_PF0_PME_MES_DR_LDD		BIT(9)
+> +#define PEX_PF0_PME_MES_DR_HRD		BIT(10)
+> +
+> +#define PEX_PF0_PME_MES_IER		0xC0028
+> +#define PEX_PF0_PME_MES_IER_LUDIE	BIT(7)
+> +#define PEX_PF0_PME_MES_IER_LDDIE	BIT(9)
+> +#define PEX_PF0_PME_MES_IER_HRDIE	BIT(10)
+> +
+>  #define to_ls_pcie_ep(x)	dev_get_drvdata((x)->dev)
+>  
+>  struct ls_pcie_ep_drvdata {
+> @@ -30,8 +44,86 @@ struct ls_pcie_ep {
+>  	struct dw_pcie			*pci;
+>  	struct pci_epc_features		*ls_epc;
+>  	const struct ls_pcie_ep_drvdata *drvdata;
+> +	int				irq;
+> +	bool				big_endian;
+>  };
+>  
+> +static u32 ls_lut_readl(struct ls_pcie_ep *pcie, u32 offset)
+> +{
+> +	struct dw_pcie *pci = pcie->pci;
+> +
+> +	if (pcie->big_endian)
+> +		return ioread32be(pci->dbi_base + offset);
+> +	else
+> +		return ioread32(pci->dbi_base + offset);
+> +}
+> +
+> +static void ls_lut_writel(struct ls_pcie_ep *pcie, u32 offset, u32 value)
+> +{
+> +	struct dw_pcie *pci = pcie->pci;
+> +
+> +	if (pcie->big_endian)
+> +		iowrite32be(value, pci->dbi_base + offset);
+> +	else
+> +		iowrite32(value, pci->dbi_base + offset);
+> +}
+> +
+> +static irqreturn_t ls_pcie_ep_event_handler(int irq, void *dev_id)
+> +{
+> +	struct ls_pcie_ep *pcie = dev_id;
+> +	struct dw_pcie *pci = pcie->pci;
+> +	u32 val, cfg;
+> +
+> +	val = ls_lut_readl(pcie, PEX_PF0_PME_MES_DR);
+> +	ls_lut_writel(pcie, PEX_PF0_PME_MES_DR, val);
+> +
+> +	if (!val)
+> +		return IRQ_NONE;
+> +
+> +	if (val & PEX_PF0_PME_MES_DR_LUD) {
+> +		cfg = ls_lut_readl(pcie, PEX_PF0_CONFIG);
+> +		cfg |= PEX_PF0_CFG_READY;
+> +		ls_lut_writel(pcie, PEX_PF0_CONFIG, cfg);
+> +		dw_pcie_ep_linkup(&pci->ep);
+> +
+> +		dev_dbg(pci->dev, "Link up\n");
+> +	} else if (val & PEX_PF0_PME_MES_DR_LDD) {
+> +		dev_dbg(pci->dev, "Link down\n");
+> +	} else if (val & PEX_PF0_PME_MES_DR_HRD) {
+> +		dev_dbg(pci->dev, "Hot reset\n");
+> +	}
+> +
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +static int ls_pcie_ep_interrupt_init(struct ls_pcie_ep *pcie,
+> +				     struct platform_device *pdev)
+> +{
+> +	u32 val;
+> +	int ret;
+> +
+> +	pcie->irq = platform_get_irq_byname(pdev, "pme");
+> +	if (pcie->irq < 0) {
+> +		dev_err(&pdev->dev, "Can't get 'pme' IRQ\n");
 
-Yeah, just the TCG machine. Now that you point it out all of the
-failures I reported are for ACCEL=<blank>, so they are running in tcg
-mode.
+I will remove this log, platform_get_irq_byname() already logs an
+error.
 
-run_migration timeout -k 1s --foreground 90s
-/usr/bin/qemu-system-ppc64 -nodefaults -machine pseries,accel=tcg
--bios powerpc/boot_rom.bin -display none -serial stdio -kernel
-powerpc/sprs.elf -smp 1 -append -w # -initrd /tmp/tmp.61XhbvCGcb
+Lorenzo
 
-
->
-> > $ MIGRATION=yes TESTNAME=sprs-migration TIMEOUT=90s ACCEL=
-> > ./powerpc/run powerpc/sprs.elf -smp 1 -append '-w' | grep FAIL
-> > FAIL: SRR0      (  26):    0xcafefacec0debabc <==> 0x0000000000402244
-> > FAIL: SRR1      (  27):    0xc0000006409ebab6 <==> 0x8000000000001001
-> > FAIL: CTRL      ( 136):            0x00000000 <==>         0x00008001
-> > FAIL: WORT      ( 895):    0x00000000c0deba80 <==> 0x0000000000000000
-> > FAIL: PIR       (1023):            0x00000010 <==>         0x00000049
-> >
-> > Linux 6.2.0-20-generic
-> > QEMU emulator version 7.2.0 (Debian 1:7.2+dfsg-5ubuntu2)
-> >
-> > On a power8 powernv:
-> >
-> > MIGRATION=yes TESTNAME=sprs-migration TIMEOUT=90s ACCEL= ./powerpc/run
-> > powerpc/sprs.elf -smp 1 -append '-w' |grep FAIL
-> > FAIL: SRR0      (  26):    0xcafefacec0debabc <==> 0x0000000000402234
-> > FAIL: SRR1      (  27):    0xc0000006409ebab6 <==> 0x8000000000001000
-> > FAIL: CTRL      ( 136):            0x00000000 <==>         0x00008001
-> > FAIL: PIR       (1023):            0x00000060 <==>         0x00000030
->
-> Hmm, seems we take some interrupt over migration test that is not
-> accounted for (could check the address in SRR0 to see where it is).
-> Either need to prevent that interrupt or avoid failing on SRR0/1 on
-> this test.
->
-> Interesting about CTRL, I wonder if that not migrating correctly.
-> PIR looks like a migration issue as well, it can't be changed so
-> destination CPU has got a different PIR. I would be inclined to
-> leave those as failing to remind us to look into them.
->
-> I'll take a look at the others though.
->
-> Thanks,
-> Nick
+> +		return pcie->irq;
+> +	}
+> +
+> +	ret = devm_request_irq(&pdev->dev, pcie->irq, ls_pcie_ep_event_handler,
+> +			       IRQF_SHARED, pdev->name, pcie);
+> +	if (ret) {
+> +		dev_err(&pdev->dev, "Can't register PCIe IRQ\n");
+> +		return ret;
+> +	}
+> +
+> +	/* Enable interrupts */
+> +	val = ls_lut_readl(pcie, PEX_PF0_PME_MES_IER);
+> +	val |=  PEX_PF0_PME_MES_IER_LDDIE | PEX_PF0_PME_MES_IER_HRDIE |
+> +		PEX_PF0_PME_MES_IER_LUDIE;
+> +	ls_lut_writel(pcie, PEX_PF0_PME_MES_IER, val);
+> +
+> +	return 0;
+> +}
+> +
+>  static const struct pci_epc_features*
+>  ls_pcie_ep_get_features(struct dw_pcie_ep *ep)
+>  {
+> @@ -125,6 +217,7 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
+>  	struct ls_pcie_ep *pcie;
+>  	struct pci_epc_features *ls_epc;
+>  	struct resource *dbi_base;
+> +	int ret;
+>  
+>  	pcie = devm_kzalloc(dev, sizeof(*pcie), GFP_KERNEL);
+>  	if (!pcie)
+> @@ -144,6 +237,7 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
+>  	pci->ops = pcie->drvdata->dw_pcie_ops;
+>  
+>  	ls_epc->bar_fixed_64bit = (1 << BAR_2) | (1 << BAR_4);
+> +	ls_epc->linkup_notifier = true;
+>  
+>  	pcie->pci = pci;
+>  	pcie->ls_epc = ls_epc;
+> @@ -155,9 +249,15 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
+>  
+>  	pci->ep.ops = &ls_pcie_ep_ops;
+>  
+> +	pcie->big_endian = of_property_read_bool(dev->of_node, "big-endian");
+> +
+>  	platform_set_drvdata(pdev, pcie);
+>  
+> -	return dw_pcie_ep_init(&pci->ep);
+> +	ret = dw_pcie_ep_init(&pci->ep);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return ls_pcie_ep_interrupt_init(pcie, pdev);
+>  }
+>  
+>  static struct platform_driver ls_pcie_ep_driver = {
+> -- 
+> 2.34.1
+> 
