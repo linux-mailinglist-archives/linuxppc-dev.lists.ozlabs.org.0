@@ -1,60 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A379731D34
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jun 2023 17:57:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E0DB731D43
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jun 2023 18:01:15 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HtfzZGG4;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=0QxAoByn;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qhn4d6Myhz3cFf
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 01:57:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qhn8S6yTXz3c5T
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 02:01:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HtfzZGG4;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=0QxAoByn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=lists.ozlabs.org)
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qhmwr2S3gz3bnL
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jun 2023 01:51:08 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 3543D615C3;
-	Thu, 15 Jun 2023 15:51:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A065C433C0;
-	Thu, 15 Jun 2023 15:51:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1686844263;
-	bh=4vpbcLIWH8N9kUhfy14gCg44JnNZ7tmcDbTQofjr2PY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HtfzZGG4h7OB0EE/lQpmPVeug5hEItWTKVdQh4sHq5pkRyi+IBc4bQYhPGfLUyXAE
-	 O6q85QbbLOckkkq+ZDCntMP7kzjRH0BvUgQTZTsRtxOQVhMz+kPywYdC329KKPHRCd
-	 EzHAMzGxIY08qUxBzBs5hhcSI+TdpRxjxhxRYluzPI7qsWgQhBwbTOga8HmP1oqokR
-	 Nfn1KKfQ7SfISyWUrNFe+l7vvHqttosQ0oHQWcCUmbPCzjqzV6ZQmJ6Lgxc8I7me24
-	 3i0BNy8Yi/K34Ad5bteBhAQILk/jkgdXefVdp3M52mTzK8Ji4AXkYMW3KmuCjB1GQn
-	 39zP25YPwdB6Q==
-Date: Thu, 15 Jun 2023 08:50:59 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Hugh Dickins <hughd@google.com>
-Subject: Re: [PATCH v2 07/23] mips: update_mmu_cache() can replace
- __update_tlb()
-Message-ID: <20230615155059.GB3665766@dev-arch.thelio-3990X>
-References: <a4963be9-7aa6-350-66d0-2ba843e1af44@google.com>
- <178970b0-1539-8aac-76fd-972c6c46ec17@google.com>
- <20230614231758.GA1503611@dev-arch.thelio-3990X>
- <f5526f17-9d78-f7ea-427a-7e76bfeb6b8@google.com>
- <344a4da-3890-45fd-607e-b5f85ca6ad48@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qhn7W1XrSz2xbC
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jun 2023 02:00:23 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=UrGANt7scBrisMpPSlfWbqcoa3cbh52COIYVdt4D2VY=; b=0QxAoBynm1SLoxxSI3Gclka5Vu
+	xUULIUSel2hEg2rLJ8O9BZaZHyrMxKQ4yYY3EdEF0sTzbZX4au+/KlFVLNOHc4Kwt+VY+yBCsexlJ
+	Es2+5cYctqb0heDwLAQOeW7ojHu52MJPhPFIH/XyxuIR/11WfXaeusqkohM1i9yBydIyIKjsC14tl
+	oRChPCxLXAAcvbchHQEuz9TI6BHX0crznjLQKOPyMHsfq247yt2Po1gdxDJXp2J5y7Er6f1yJ3WpJ
+	VEx43/do3B9eGlelwjIqPk1bDMRE8jIKvSSIJ748RNKabhQhDUsKMKMhJngRq17yPgthx/ySdfX0B
+	o5dl9luQ==;
+Received: from [2601:1c2:980:9ec0::2764]
+	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+	id 1q9pOL-00FMVx-3A;
+	Thu, 15 Jun 2023 16:00:10 +0000
+Message-ID: <e2b46606-7ebc-c9a4-4f9a-873c0e71da5e@infradead.org>
+Date: Thu, 15 Jun 2023 09:00:08 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <344a4da-3890-45fd-607e-b5f85ca6ad48@google.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Subject: Re: linux-next: Tree for Jun 2 (arch/powerpc/kernel/iommu.c)
+Content-Language: en-US
+To: Timothy Pearson <tpearson@raptorengineering.com>,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <20230602140143.0af52cee@canb.auug.org.au>
+ <2d188c87-ef34-3812-7330-a985f756d959@infradead.org>
+ <87h6rogjok.fsf@mail.lhotse>
+ <586983120.3136676.1685851048873.JavaMail.zimbra@raptorengineeringinc.com>
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <586983120.3136676.1685851048873.JavaMail.zimbra@raptorengineeringinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,93 +64,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, Greg Ungerer <gerg@linux-m68k.org>, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, Helge Deller <deller@gmx.de>, x86@kernel.org, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, Geert Uytterhoeven <geert@linux-m68k.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, Alexandre Ghiti <alexghiti@rivosinc.com>, Heiko Carstens <hca@linux.ibm.com>, linux-m68k@lists.linux-m68k.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, John David Anglin <dave.anglin@bell.net>, Suren Baghdasaryan <surenb@google.com>, linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-mm@kvack.org, linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Stephen Rothwell <sfr@canb.auug.org.au>, Linux Next Mailing List <linux-next@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-kernel <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 14, 2023 at 10:43:30PM -0700, Hugh Dickins wrote:
-> On Wed, 14 Jun 2023, Hugh Dickins wrote:
-> > On Wed, 14 Jun 2023, Nathan Chancellor wrote:
-> > > 
-> > > I just bisected a crash while powering down a MIPS machine in QEMU to
-> > > this change as commit 8044511d3893 ("mips: update_mmu_cache() can
-> > > replace __update_tlb()") in linux-next.
-> > 
-> > Thank you, Nathan, that's very helpful indeed.  This patch certainly knew
-> > that it wanted testing, and I'm glad to hear that it is now seeing some.
-> > 
-> > While powering down?  The messages below look like it was just coming up,
-> > but no doubt that's because you were bisecting (or because I'm unfamiliar
-> > with what messages to expect there).  It's probably irrelevant information,
-> > but I wonder whether the (V)machine worked well enough for a while before
-> > you first powered down and spotted the problem, or whether it's never got
-> > much further than trying to run init (busybox)?  I'm trying to get a feel
-> > for whether the problem occurs under common or uncommon conditions.
+Hi Timothy,
 
-Ugh sorry, I have been looking into too many bugs lately and got my
-wires crossed :) this is indeed a problem when running init (which is
-busybox, this is a simple Buildroot file system).
+On 6/3/23 20:57, Timothy Pearson wrote:
+> 
+> 
+> ----- Original Message -----
+>> From: "Michael Ellerman" <mpe@ellerman.id.au>
+>> To: "Randy Dunlap" <rdunlap@infradead.org>, "Stephen Rothwell" <sfr@canb.auug.org.au>, "Linux Next Mailing List"
+>> <linux-next@vger.kernel.org>
+>> Cc: "linux-kernel" <linux-kernel@vger.kernel.org>, "linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>, "Alexey
+>> Kardashevskiy" <aik@ozlabs.ru>, "Timothy Pearson" <tpearson@raptorengineering.com>
+>> Sent: Saturday, June 3, 2023 7:22:51 PM
+>> Subject: Re: linux-next: Tree for Jun 2 (arch/powerpc/kernel/iommu.c)
+> 
+>> Randy Dunlap <rdunlap@infradead.org> writes:
+>>> On 6/1/23 21:01, Stephen Rothwell wrote:
+>>>> Hi all,
+>>>>
+>>>> Changes since 20230601:
+>>>>
+>>>
+>>> On powerpc64, a randconfig failed with:
+>>>
+>>> In file included from ../include/linux/list.h:5,
+>>>                  from ../include/linux/preempt.h:11,
+>>>                  from ../include/linux/spinlock.h:56,
+>>>                  from ../include/linux/mmzone.h:8,
+>>>                  from ../include/linux/gfp.h:7,
+>>>                  from ../include/linux/slab.h:15,
+>>>                  from ../arch/powerpc/kernel/iommu.c:15:
+>>> ../arch/powerpc/kernel/iommu.c: In function
+>>> 'spapr_tce_setup_phb_iommus_initcall':
+>>> ../arch/powerpc/kernel/iommu.c:1391:36: error: 'hose_list' undeclared (first use
+>>> in this function); did you mean 'zonelist'?
+>>>  1391 |         list_for_each_entry(hose, &hose_list, list_node) {
+>>>       |                                    ^~~~~~~~~
+>> ...
+>>
+>> hose_list is in pci-common.c which is built when PCI=y.
+>>
+>> PSERIES and POWERNV force PCI=y.
+>>
+>> But this config has neither:
+>>
+>> # CONFIG_PPC_POWERNV is not set
+>> # CONFIG_PPC_PSERIES is not set
+>> CONFIG_HAVE_PCI=y
+>> # CONFIG_PCI is not set
+>> # CONFIG_COMMON_CLK_RS9_PCIE is not set
+>>
+>>
+>> Probably the spapr_tce code should be wrapped in an #ifdef that is only
+>> enabled when POWERNV || PSERIES is enabled.
+>>
+>> cheers
+> 
+> Sounds reasonable, I was going to look into this further over the weekend.  I can put together a patch for Monday if that works?
 
-> > > Unfortunately, I can still
-> > > reproduce it with the existing fix you have for this change on the
-> > > mailing list, which is present in next-20230614.
-> > 
-> > Right, that later fix was only for a build warning, nothing functional
-> > (or at least I hoped that it wasn't making any functional difference).
-> > 
-> > Thanks a lot for the detailed instructions below: unfortunately, those
-> > would draw me into a realm of testing I've never needed to enter before,
-> > so a lot of time spent on setup and learning.  Usually, I just stare at
-> > the source.
-> > 
-> > What this probably says is that I should revert most my cleanup there,
-> > and keep as close to the existing code as possible.  But some change is
-> > needed, and I may need to understand (or have a good guess at) what was
-> > going wrong, to decide what kind of retreat will be successful.
-> > 
-> > Back to the source for a while: I hope I'll find examples in nearby MIPS
-> > kernel source (and git history), which will hint at the right way forward.
-> > Then send you a patch against next-20230614 to try, when I'm reasonably
-> > confident that it's enough to satisfy my purpose, but likely not to waste
-> > your time.
-> 
-> I'm going to take advantage of your good nature by attaching
-> two alternative patches, either to go on top of next-20230614.
-> 
-> mips1.patch,
->  arch/mips/mm/tlb-r4k.c |   12 +-----------
->  1 file changed, 1 insertion(+), 11 deletions(-)
-> 
-> is by far my favourite.  I couldn't see anything wrong with what's
-> already there for mips, but it seems possible that (though I didn't
-> find it) somewhere calls update_mmu_cache_pmd() on a page table.  So
-> mips1.patch restores the pmd_huge() check, and cleans up further by
-> removing the silly pgdp, p4dp, pudp, pmdp stuff: the pointer has now
-> been passed in by the caller, why walk the tree again?  I should have
-> done it this way before.
-> 
-> But if that doesn't work, then I'm afraid it will have to be
-> mips2.patch,
->  arch/mips/include/asm/pgtable.h |   15 ++++++++++++---
->  arch/mips/mm/tlb-r3k.c          |    5 ++---
->  arch/mips/mm/tlb-r4k.c          |   27 ++++++++++++++++++---------
->  3 files changed, 32 insertions(+), 15 deletions(-)
-> 
-> which reverts all of the original patch and its build warning fix,
-> and does a pte_unmap() to balance the silly pte_offset_map() there;
-> with an apologetic comment for this being about the only place in
-> the tree where I have no idea what to do if ptep were NULL.
-> 
-> I do hope that you find the first fixes the breakage; but if not, then
+Did you prepare a patch for this? I am still seeing this build error.
 
-I hate to be the bearer of bad news but the first patch did not fix the
-breakage, I see the same issue.
-
-> I even more fervently hope that the second will, despite my hating it.
-> Touch wood for the first, fingers crossed for the second, thanks,
-
-Thankfully, the second one does. Thanks for the quick and thoughtful
-responses!
-
-Cheers,
-Nathan
+thanks.
+-- 
+~Randy
