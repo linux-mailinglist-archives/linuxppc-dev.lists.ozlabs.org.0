@@ -1,64 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2094B73210F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jun 2023 22:44:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78BE57320D7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jun 2023 22:20:43 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=nQbZV095;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=EuTGS91H;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QhvQk05Vzz3bnw
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 06:43:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qhtvs26skz3bs0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 06:20:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=nQbZV095;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=EuTGS91H;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::a49; helo=mail-vk1-xa49.google.com; envelope-from=3geolzaykdf8pb7kg9dlldib.9ljifkrumm9-absifpqp.lwi78p.lod@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-vk1-xa49.google.com (mail-vk1-xa49.google.com [IPv6:2607:f8b0:4864:20::a49])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::849; helo=mail-qt1-x849.google.com; envelope-from=3o02lzaykdjyi40d926ee6b4.2ecb8dknff2-34lb8iji.epb01i.eh6@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-qt1-x849.google.com (mail-qt1-x849.google.com [IPv6:2607:f8b0:4864:20::849])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QhvPs5pzCz30FW
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jun 2023 06:43:11 +1000 (AEST)
-Received: by mail-vk1-xa49.google.com with SMTP id 71dfb90a1353d-46e6f186080so763784e0c.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jun 2023 13:43:11 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qhttz04vzz2xqp
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jun 2023 06:19:53 +1000 (AEST)
+Received: by mail-qt1-x849.google.com with SMTP id d75a77b69052e-3f9dc388636so75071cf.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jun 2023 13:19:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1686861788; x=1689453788;
+        d=google.com; s=20221208; t=1686860390; x=1689452390;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ncA8NUQ/d7RIXyoqKxF4dofBT4rINO6z44852n+jNFs=;
-        b=nQbZV095qPTODM38p030xUkUE5YvPu/SZRzBpPfAXb+fLsoa1IGO9yqckVeOQshL6T
-         K+JwXgnKUHxQEx5636G+4fgYCnUVleMvPleLvieSaIvK9v+lIL8nmEZQO8QButhEQLZv
-         lW//NSLqYnHhKpkWpZb3umXstgQFcdd2srXFlCBcWln+720WttnI0XQ9xBtmd1Evi7YL
-         a5oQG5UTyBCNvIUY6C/RgnT59oqEOLyP8z+w1VtbmtIDLYsjgcDSunfFLuBPr1wPUPYU
-         pwLL1WcZBPSf8UWLLktIi6pDH2d+QINc05EvgnluyEVFUlX2ucegVqKnUxlMpj7qFseF
-         q1sQ==
+        bh=3VaVpYnKKIXM0ZMJBv2BahWS6rKgSDR5ikxQlp7Qm5M=;
+        b=EuTGS91HsthvX7goK5i2bE192NgKPLER56ZiTGZExzaOLyziPUNZmDI8gUA8rK2QIX
+         8MUfochdPJO7GF4xOLP7zJFlDmkAYA/muE5oqze+6m55Tl/n7uJIQEYVDTdv/21OeIfd
+         tCafixtcTihj8H4PvXEYhVBWXeHkRuCcAM0EU11DCi5tLjZ5lxfTTYiLlAVInteXhKvk
+         LiM8fzLLcXpg6feUVq1U1NAiCiaXRpM2F6Tp24lZK3GcJUD4qzf0B176FnQwXRnLE+oK
+         kvUVbwSvbxf4poeSHpupSYldz5y5dmjJAUFbd9eEIj6mEqz8I6JvZowPlSovg/ZOR+rq
+         goFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686861788; x=1689453788;
+        d=1e100.net; s=20221208; t=1686860390; x=1689452390;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ncA8NUQ/d7RIXyoqKxF4dofBT4rINO6z44852n+jNFs=;
-        b=ZbZRu+jMI+WlFZkrvjrkCPiKlctmOtpz0jSMwjNJxxzYSrKVJlaGYUmonmLXMYCurY
-         VzTxTPIJF/F4CeUEtBZSHap7tAAlwjxBmwnPiugArWxsQYMzVdESUOqC+utnpnomoThp
-         vBsbdwyXXvu+5A+No0GEL1s2tyHrsYdaXLi7kJ7FHuQqtd0HkyaBEFm+IyCIsR6z/lcx
-         cmt8T7M0SDVgenOc4hprxpsLO7YrpShwPaQgsmbPR8lx5z+mS+9a8SbybP/DREHrT96k
-         R/a/R4lGF7nY+D6LH2TWF2xXn2XtoOFny8qx5LwE52/Bjg1a54WJn/1pU23lZynuNL7J
-         SAJg==
-X-Gm-Message-State: AC+VfDy8T/CydmYKuyISeOgVqxjpJaahbARA4GGrKXS/+p0umkzidDT8
-	2xR51gkT8NsIlr+HdROdPV7V7B0OY4Q=
-X-Google-Smtp-Source: ACHHUZ58VbUpKiHJn4yWrs3hFzFVgLfs2NAcssDwAzKOV57o1C8oPk/BJPOHvBI5DAEtAMIVLjSdWrCDPAY=
+        bh=3VaVpYnKKIXM0ZMJBv2BahWS6rKgSDR5ikxQlp7Qm5M=;
+        b=d3ekxkDZ90lHcQS4ZFLPbHTjlB1nOmmjd09VfBQW8kWcSgRUDdbVWFvVxG290X6WMA
+         or2Oz6fC8D5S5nsHL1TIZ59qfU5aAwgBBsbFkx2dWaIryJgjrW1y4Kal1aMFaQRctkQU
+         LJSx2nyzY1yeYITerZ2HJ1GcLzZ6pGl4DK4oReOB1ZhZFfy+G0bV6FjQKY2IwoI6r08I
+         HNmBQCMK8HhSrO1lMYD8PijJTP7kTFsPkum/NTZsgn7BSe/HeLIseHfbKxBy5mHAWEZt
+         cUCeTnGyUa9sSbRzMy216sKUIKNc3C46WWxidcda9kzX35ax+mnvRntwLjb3KeTkhXX9
+         CA8w==
+X-Gm-Message-State: AC+VfDwKl0o2JBFjNYycr5rAt7qANjVMexkUdRjIuXcUeuBpA0fLmdVV
+	9kibVanIIoPhdAyxc6PrzPclJ99vXTA=
+X-Google-Smtp-Source: ACHHUZ4cQlpzVe0KczazAvYqGjGYoNkXv8UVqui26XxKS9kOBWmazT/WNj+BhRRRMGskVfw0J/AilzSk6Q0=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a25:3495:0:b0:bc3:9cd9:6e0e with SMTP id
- b143-20020a253495000000b00bc39cd96e0emr732274yba.10.1686848384875; Thu, 15
- Jun 2023 09:59:44 -0700 (PDT)
-Date: Thu, 15 Jun 2023 09:59:43 -0700
-In-Reply-To: <20230526234435.662652-9-yuzhao@google.com>
+ (user=seanjc job=sendgmr) by 2002:a17:902:f7d3:b0:1b5:147f:d8d1 with SMTP id
+ h19-20020a170902f7d300b001b5147fd8d1mr547182plw.3.1686850979254; Thu, 15 Jun
+ 2023 10:42:59 -0700 (PDT)
+Date: Thu, 15 Jun 2023 10:42:57 -0700
+In-Reply-To: <20230526234435.662652-2-yuzhao@google.com>
 Mime-Version: 1.0
-References: <20230526234435.662652-1-yuzhao@google.com> <20230526234435.662652-9-yuzhao@google.com>
-Message-ID: <ZItDf5lpKJz7uezP@google.com>
-Subject: Re: [PATCH mm-unstable v2 08/10] kvm/x86: move tdp_mmu_enabled and shadow_accessed_mask
+References: <20230526234435.662652-1-yuzhao@google.com> <20230526234435.662652-2-yuzhao@google.com>
+Message-ID: <ZItNoeWriZgLUaon@google.com>
+Subject: Re: [PATCH mm-unstable v2 01/10] mm/kvm: add mmu_notifier_ops->test_clear_young()
 From: Sean Christopherson <seanjc@google.com>
 To: Yu Zhao <yuzhao@google.com>
 Content-Type: text/plain; charset="us-ascii"
@@ -78,183 +78,247 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Fri, May 26, 2023, Yu Zhao wrote:
-> tdp_mmu_enabled and shadow_accessed_mask are needed to implement
-> kvm_arch_has_test_clear_young().
-> 
-> Signed-off-by: Yu Zhao <yuzhao@google.com>
-> ---
->  arch/x86/include/asm/kvm_host.h | 6 ++++++
->  arch/x86/kvm/mmu.h              | 6 ------
->  arch/x86/kvm/mmu/spte.h         | 1 -
->  3 files changed, 6 insertions(+), 7 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> index fb9d1f2d6136..753c67072c47 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -1772,6 +1772,7 @@ struct kvm_arch_async_pf {
->  
->  extern u32 __read_mostly kvm_nr_uret_msrs;
->  extern u64 __read_mostly host_efer;
-> +extern u64 __read_mostly shadow_accessed_mask;
->  extern bool __read_mostly allow_smaller_maxphyaddr;
->  extern bool __read_mostly enable_apicv;
->  extern struct kvm_x86_ops kvm_x86_ops;
-> @@ -1855,6 +1856,11 @@ void kvm_fire_mask_notifiers(struct kvm *kvm, unsigned irqchip, unsigned pin,
->  			     bool mask);
->  
->  extern bool tdp_enabled;
-> +#ifdef CONFIG_X86_64
-> +extern bool tdp_mmu_enabled;
-> +#else
-> +#define tdp_mmu_enabled false
-> +#endif
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 0e571e973bc2..374262545f96 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -258,6 +258,7 @@ int kvm_async_pf_wakeup_all(struct kvm_vcpu *vcpu);
+>  #ifdef KVM_ARCH_WANT_MMU_NOTIFIER
+>  struct kvm_gfn_range {
+>  	struct kvm_memory_slot *slot;
+> +	void *args;
 
-I would much prefer that these be kept in kvm/mmu.h.  And looking at all the arch
-code, there's no reason to make kvm_arch_has_test_clear_young() a runtime callback,
-all of the logic is constant relative to when KVM is loaded.
+There's no reason to make this "void *", just declare "struct test_clear_young_args"
+in the header.  Arch code won't be able to use it regardless.  And I vote for
+something more like "test_clear_young_metadata", as there's far more information
+in there than just function arguments.
 
-So rather than have generic KVM pull from arch code, what if we have arch code
-push info to generic KVM?  We could even avoid #ifdefs if arch code passed in its
-handler.  That might result in an extra indirect branch though, so it might be
-better to just use a flag?  E.g. the x86 conversion would be something like this.
+And to stave off the argument that "void *" would allow reuse, take this opportunity
+to unionize the test_clear_young field with the change_pte field, e.g.
+
+	/* comment about these fields being callback specific. */
+	union {
+		struct test_clear_young_metadata *metadata;
+		pte_t pte;
+		unsigned long callback_arg; /* needs a better name */
+	};
+
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 51e4882d0873..31ee58754b19 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -541,6 +541,7 @@ typedef void (*on_lock_fn_t)(struct kvm *kvm, unsigned long start,
+>  typedef void (*on_unlock_fn_t)(struct kvm *kvm);
+>  
+>  struct kvm_hva_range {
+> +	void *args;
+
+Same feedback as kvm_gfn_range.
+
+>  	unsigned long start;
+>  	unsigned long end;
+>  	pte_t pte;
+> @@ -549,6 +550,7 @@ struct kvm_hva_range {
+>  	on_unlock_fn_t on_unlock;
+>  	bool flush_on_ret;
+>  	bool may_block;
+> +	bool lockless;
+>  };
+>  
+>  /*
+> @@ -602,6 +604,8 @@ static __always_inline int __kvm_handle_hva_range(struct kvm *kvm,
+>  			hva_end = min(range->end, slot->userspace_addr +
+>  						  (slot->npages << PAGE_SHIFT));
+>  
+> +			gfn_range.args = range->args;
+
+And this goes away because the generic callback_arg is what gets propagated.
+
+> +
+>  			/*
+>  			 * To optimize for the likely case where the address
+>  			 * range is covered by zero or one memslots, don't
+> @@ -619,7 +623,7 @@ static __always_inline int __kvm_handle_hva_range(struct kvm *kvm,
+>  			gfn_range.end = hva_to_gfn_memslot(hva_end + PAGE_SIZE - 1, slot);
+>  			gfn_range.slot = slot;
+>  
+> -			if (!locked) {
+> +			if (!range->lockless && !locked) {
+>  				locked = true;
+>  				KVM_MMU_LOCK(kvm);
+>  				if (!IS_KVM_NULL_FN(range->on_lock))
+> @@ -628,6 +632,9 @@ static __always_inline int __kvm_handle_hva_range(struct kvm *kvm,
+>  					break;
+>  			}
+>  			ret |= range->handler(kvm, &gfn_range);
+> +
+> +			if (range->lockless && ret)
+
+I don't like overloading "lockless" to also mean "stop on ret".  Just add another
+flag, there's literally no cost for most callbacks as everything is constant at
+compile time and gets optimized away.
+
+> +		range.args = &args;
+> +		range.lockless = true;
+
+The lockless and stop_on_ret behavior needs comments.
+
+> +		range.handler = kvm_arch_test_clear_young;
+> +
+> +		if (!__kvm_handle_hva_range(kvm, &range))
+> +			return args.young ? MMU_NOTIFIER_RANGE_LOCKLESS : 0;
+> +	}
+> +
+> +	if (bitmap)
+> +		return 0;
+> +
+> +	range.args = NULL;
+> +	range.lockless = false;
+
+No need to manually clear these, they'll be zeroed by the initialization code.
+
+E.g. all in all, something like so
 
 ---
- arch/x86/kvm/mmu/mmu.c     |  5 +++++
- arch/x86/kvm/mmu/tdp_mmu.c |  2 +-
- arch/x86/kvm/mmu/tdp_mmu.h |  1 +
- include/linux/kvm_host.h   | 24 ++++--------------------
- virt/kvm/kvm_main.c        | 14 ++++++++++----
- 5 files changed, 21 insertions(+), 25 deletions(-)
+ include/linux/kvm_host.h |  9 +++++++--
+ virt/kvm/kvm_main.c      | 29 +++++++++++++++++------------
+ 2 files changed, 24 insertions(+), 14 deletions(-)
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index c8ebe542c565..84a4a83540f0 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -5809,6 +5809,11 @@ void kvm_configure_mmu(bool enable_tdp, int tdp_forced_root_level,
- 		max_huge_page_level = PG_LEVEL_1G;
- 	else
- 		max_huge_page_level = PG_LEVEL_2M;
-+
-+	if (tdp_mmu_enabled && kvm_ad_enabled())
-+		kvm_init_test_clear_young(kvm_tdp_mmu_test_clear_young);
-+	else
-+		kvm_init_test_clear_young(NULL);
- }
- EXPORT_SYMBOL_GPL(kvm_configure_mmu);
- 
-diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
-index f463d54228f8..e878c88f0e02 100644
---- a/arch/x86/kvm/mmu/tdp_mmu.c
-+++ b/arch/x86/kvm/mmu/tdp_mmu.c
-@@ -1308,7 +1308,7 @@ bool kvm_tdp_mmu_test_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
- 	return kvm_tdp_mmu_handle_gfn(kvm, range, test_age_gfn);
- }
- 
--bool kvm_arch_test_clear_young(struct kvm *kvm, struct kvm_gfn_range *range)
-+bool kvm_tdp_mmu_test_clear_young(struct kvm *kvm, struct kvm_gfn_range *range)
- {
- 	struct kvm_mmu_page *root;
- 	int offset = ffs(shadow_accessed_mask) - 1;
-diff --git a/arch/x86/kvm/mmu/tdp_mmu.h b/arch/x86/kvm/mmu/tdp_mmu.h
-index 0a63b1afabd3..aaa0b75b3896 100644
---- a/arch/x86/kvm/mmu/tdp_mmu.h
-+++ b/arch/x86/kvm/mmu/tdp_mmu.h
-@@ -34,6 +34,7 @@ bool kvm_tdp_mmu_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range,
- bool kvm_tdp_mmu_age_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range);
- bool kvm_tdp_mmu_test_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range);
- bool kvm_tdp_mmu_set_spte_gfn(struct kvm *kvm, struct kvm_gfn_range *range);
-+bool kvm_tdp_mmu_test_clear_young(struct kvm *kvm, struct kvm_gfn_range *range);
- 
- bool kvm_tdp_mmu_wrprot_slot(struct kvm *kvm,
- 			     const struct kvm_memory_slot *slot, int min_level);
 diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 1714f82a0c47..7a0922cbc36f 100644
+index 7a0922cbc36f..e04605061f5e 100644
 --- a/include/linux/kvm_host.h
 +++ b/include/linux/kvm_host.h
-@@ -264,31 +264,15 @@ struct kvm_gfn_range {
- 	pte_t pte;
- 	bool may_block;
- };
-+
-+typedef bool (*hva_handler_t)(struct kvm *kvm, struct kvm_gfn_range *range);
-+
- bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range);
- bool kvm_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range);
- bool kvm_test_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range);
- bool kvm_set_spte_gfn(struct kvm *kvm, struct kvm_gfn_range *range);
- bool kvm_should_clear_young(struct kvm_gfn_range *range, gfn_t gfn);
--bool kvm_arch_test_clear_young(struct kvm *kvm, struct kvm_gfn_range *range);
--#endif
--
--/*
-- * Architectures that implement kvm_arch_test_clear_young() should override
-- * kvm_arch_has_test_clear_young().
-- *
-- * kvm_arch_has_test_clear_young() is allowed to return false positive, i.e., it
-- * can return true if kvm_arch_test_clear_young() is supported but disabled due
-- * to some runtime constraint. In this case, kvm_arch_test_clear_young() should
-- * return true; otherwise, it should return false.
-- *
-- * For each young KVM PTE, kvm_arch_test_clear_young() should call
-- * kvm_should_clear_young() to decide whether to clear the accessed bit.
-- */
--#ifndef kvm_arch_has_test_clear_young
--static inline bool kvm_arch_has_test_clear_young(void)
--{
--	return false;
--}
-+void kvm_init_test_clear_young(hva_handler_t arch_test_clear_young);
+@@ -256,12 +256,17 @@ int kvm_async_pf_wakeup_all(struct kvm_vcpu *vcpu);
  #endif
  
- enum {
+ #ifdef KVM_ARCH_WANT_MMU_NOTIFIER
++struct test_clear_young_metadata;
++
+ struct kvm_gfn_range {
+ 	struct kvm_memory_slot *slot;
+-	void *args;
+ 	gfn_t start;
+ 	gfn_t end;
+-	pte_t pte;
++	union {
++		struct test_clear_young_metadata *metadata;
++		pte_t pte;
++		unsigned long callback_arg;
++	};
+ 	bool may_block;
+ };
+ 
 diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index ef2790469fda..ac83cfb30771 100644
+index ac83cfb30771..8cf4fee9cd8b 100644
 --- a/virt/kvm/kvm_main.c
 +++ b/virt/kvm/kvm_main.c
-@@ -530,8 +530,6 @@ static void kvm_mmu_notifier_invalidate_range(struct mmu_notifier *mn,
- 	srcu_read_unlock(&kvm->srcu, idx);
- }
+@@ -536,16 +536,20 @@ typedef void (*on_lock_fn_t)(struct kvm *kvm, unsigned long start,
+ typedef void (*on_unlock_fn_t)(struct kvm *kvm);
  
--typedef bool (*hva_handler_t)(struct kvm *kvm, struct kvm_gfn_range *range);
+ struct kvm_hva_range {
+-	void *args;
+ 	unsigned long start;
+ 	unsigned long end;
+-	pte_t pte;
+ 	hva_handler_t handler;
++	union {
++		struct test_clear_young_metadata *metadata;
++		pte_t pte;
++		unsigned long callback_arg;
++	};
+ 	on_lock_fn_t on_lock;
+ 	on_unlock_fn_t on_unlock;
+ 	bool flush_on_ret;
+ 	bool may_block;
+ 	bool lockless;
++	bool stop_on_ret;
+ };
+ 
+ /*
+@@ -576,6 +580,9 @@ static __always_inline int __kvm_handle_hva_range(struct kvm *kvm,
+ 	struct kvm_memslots *slots;
+ 	int i, idx;
+ 
++	BUILD_BUG_ON(sizeof(gfn_range.callback_arg) != sizeof(gfn_range.pte) ||
++		     sizeof(gfn_range.callback_arg) != sizeof(gfn_range.metadata));
++
+ 	if (WARN_ON_ONCE(range->end <= range->start))
+ 		return 0;
+ 
+@@ -599,16 +606,14 @@ static __always_inline int __kvm_handle_hva_range(struct kvm *kvm,
+ 			hva_end = min(range->end, slot->userspace_addr +
+ 						  (slot->npages << PAGE_SHIFT));
+ 
+-			gfn_range.args = range->args;
 -
- typedef void (*on_lock_fn_t)(struct kvm *kvm, unsigned long start,
- 			     unsigned long end);
+ 			/*
+ 			 * To optimize for the likely case where the address
+ 			 * range is covered by zero or one memslots, don't
+ 			 * bother making these conditional (to avoid writes on
+ 			 * the second or later invocation of the handler).
+ 			 */
+-			gfn_range.pte = range->pte;
+ 			gfn_range.may_block = range->may_block;
++			gfn_range.callback_arg = range->callback_arg;
  
-@@ -859,6 +857,14 @@ bool kvm_should_clear_young(struct kvm_gfn_range *range, gfn_t gfn)
- 	return args->clear;
+ 			/*
+ 			 * {gfn(page) | page intersects with [hva_start, hva_end)} =
+@@ -628,7 +633,8 @@ static __always_inline int __kvm_handle_hva_range(struct kvm *kvm,
+ 			}
+ 			ret |= range->handler(kvm, &gfn_range);
+ 
+-			if (range->lockless && ret)
++			/* comment goes here. */
++			if (range->stop_on_ret && ret)
+ 				break;
+ 		}
+ 	}
+@@ -830,7 +836,7 @@ static int kvm_mmu_notifier_clear_flush_young(struct mmu_notifier *mn,
+ 	return kvm_handle_hva_range(mn, start, end, __pte(0), kvm_age_gfn);
  }
  
-+static hva_handler_t kvm_test_clear_young;
-+
-+void kvm_init_test_clear_young(hva_handler_t arch_test_clear_young)
-+{
-+	WARN_ON_ONCE(!list_empty(&vm_list));
-+	kvm_test_clear_young = arch_test_clear_young;
-+}
-+
- static int kvm_mmu_notifier_test_clear_young(struct mmu_notifier *mn, struct mm_struct *mm,
- 					     unsigned long start, unsigned long end,
- 					     bool clear, unsigned long *bitmap)
-@@ -873,7 +879,7 @@ static int kvm_mmu_notifier_test_clear_young(struct mmu_notifier *mn, struct mm_
+-struct test_clear_young_args {
++struct test_clear_young_metadata {
+ 	unsigned long *bitmap;
+ 	unsigned long end;
+ 	bool clear;
+@@ -839,7 +845,7 @@ struct test_clear_young_args {
  
+ bool kvm_should_clear_young(struct kvm_gfn_range *range, gfn_t gfn)
+ {
+-	struct test_clear_young_args *args = range->args;
++	struct test_clear_young_metadata *args = range->metadata;
+ 
+ 	VM_WARN_ON_ONCE(gfn < range->start || gfn >= range->end);
+ 
+@@ -880,14 +886,15 @@ static int kvm_mmu_notifier_test_clear_young(struct mmu_notifier *mn, struct mm_
  	trace_kvm_age_hva(start, end);
  
--	if (kvm_arch_has_test_clear_young()) {
-+	if (kvm_test_clear_young) {
- 		struct test_clear_young_args args = {
+ 	if (kvm_test_clear_young) {
+-		struct test_clear_young_args args = {
++		struct test_clear_young_metadata args = {
  			.bitmap	= bitmap,
  			.end	= end,
-@@ -882,7 +888,7 @@ static int kvm_mmu_notifier_test_clear_young(struct mmu_notifier *mn, struct mm_
+ 			.clear	= clear,
+ 		};
  
- 		range.args = &args;
+-		range.args = &args;
  		range.lockless = true;
--		range.handler = kvm_arch_test_clear_young;
-+		range.handler = kvm_test_clear_young;
++		range.stop_on_ret = true;
++		range.metadata = &args;
+ 		range.handler = kvm_test_clear_young;
  
  		if (!__kvm_handle_hva_range(kvm, &range))
- 			return args.young ? MMU_NOTIFIER_RANGE_LOCKLESS : 0;
+@@ -897,8 +904,6 @@ static int kvm_mmu_notifier_test_clear_young(struct mmu_notifier *mn, struct mm_
+ 	if (bitmap)
+ 		return 0;
+ 
+-	range.args = NULL;
+-	range.lockless = false;
+ 	range.handler = clear ? kvm_age_gfn : kvm_test_age_gfn;
+ 
+ 	return __kvm_handle_hva_range(kvm, &range) ? MMU_NOTIFIER_RANGE_YOUNG : 0;
 
-base-commit: 39ca80f27cc0d2a37b4e3d07bbf763d4954934d7
+base-commit: 7a5d8be2c18415b73b9380741095f439d6983a40
 -- 
 
