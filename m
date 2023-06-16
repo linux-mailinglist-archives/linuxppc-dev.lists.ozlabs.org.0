@@ -2,59 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5B4A7325CE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 05:21:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 412457325FE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 05:50:19 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kg5la72h;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gfF2CqGG;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qj4F265PSz3bhy
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 13:21:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qj4td11MRz3bhp
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 13:50:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kg5la72h;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gfF2CqGG;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Fri, 16 Jun 2023 13:20:21 AEST
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qj4D53d63z2xH6
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jun 2023 13:20:21 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686885621; x=1718421621;
-  h=date:from:to:cc:subject:message-id;
-  bh=iyoUPD2Tnv5/AlW5ADGWx9Duc75C7i589jO48QHCm4s=;
-  b=kg5la72hnmXcJn4vvRdQ98vqqu9vJgcevybsOcRlXC+FQPwjpY4mHqBR
-   jfvbNaxdNKX0U4qKFfhh2GoyK59rwKS5cOk6KHLH7z8RVt6VwpdCww1Lu
-   tb8v48/83oNlil5nUDpPKmFrj00v3pSQIrFdeRhlz/OavNdd6IfyTZ4dI
-   J2LqzjLTywL3yAI8oiPdS9nbcKDY5LUa8jmlBo5FTscud2vzlipmHl3RV
-   VqZ1IFyB8hrgXwAFhI4ViUSUy4NRd1PddLxMSRqSvy/3KkstD4Y1zg0sK
-   KAZErnvx7dFPRZEsYs9vYOyjwRSuIcyyPDQz2sIOhD9XrMf6qwwF8N3jV
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="445484724"
-X-IronPort-AV: E=Sophos;i="6.00,246,1681196400"; 
-   d="scan'208";a="445484724"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2023 20:19:07 -0700
-X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="745966756"
-X-IronPort-AV: E=Sophos;i="6.00,246,1681196400"; 
-   d="scan'208";a="745966756"
-Received: from lkp-server01.sh.intel.com (HELO 783282924a45) ([10.239.97.150])
-  by orsmga001.jf.intel.com with ESMTP; 15 Jun 2023 20:19:06 -0700
-Received: from kbuild by 783282924a45 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1q9zzN-0000kV-14;
-	Fri, 16 Jun 2023 03:19:05 +0000
-Date: Fri, 16 Jun 2023 11:18:57 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next] BUILD SUCCESS
- 4adc95a3edc152ffc3b0c88117767a31c9c01a1e
-Message-ID: <202306161155.jEIHSxS8-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qj4sh3v2Pz304p
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jun 2023 13:49:28 +1000 (AEST)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35G3Igfa001604;
+	Fri, 16 Jun 2023 03:49:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=4AmzWwIjyMT0ExotR4NpU9bARYIfqmRTjp47EoZc/m8=;
+ b=gfF2CqGGJGF7fmlAEXmlcIx8uwDfnqBwMoFFL0O4nLe91z6wI6dFS3SkXNp+M3MkT1r7
+ 8bmFnZaVwDGM9xRUYirih15qlcn9ATysgcy2MYb/+JczuyxZP8ICnopD7n7ZOPG1BU9W
+ k0IK63UxH/bhJ7DscvD7LfZMCWf27QO7OiZj5+UXiGq0Br32di5V3W8sWu7xxGxgiSLD
+ 4F9WsSuIYHn70jJtZteZCD0SdXQjS0m0NeipSW7b5JLef7M7gJJrZdjaCNEFUo3jwIIP
+ zUTpjRp56YngnTKhFB4hpygvwSetVOEd/Kg3J4MI6BVDwA2IcffS3MSKCcCLEJhEmuWl DA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r8fqargw6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 16 Jun 2023 03:49:20 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35G3hk99005575;
+	Fri, 16 Jun 2023 03:49:20 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r8fqargvv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 16 Jun 2023 03:49:20 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35G2sNN3031597;
+	Fri, 16 Jun 2023 03:49:18 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3r4gee44ex-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 16 Jun 2023 03:49:18 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 35G3nGXD10420782
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 16 Jun 2023 03:49:16 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 109F22004E;
+	Fri, 16 Jun 2023 03:49:16 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8CF6420040;
+	Fri, 16 Jun 2023 03:49:15 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 16 Jun 2023 03:49:15 +0000 (GMT)
+Received: from bgray-lenovo-p15.ibmuc.com (unknown [9.43.205.129])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id EB32060125;
+	Fri, 16 Jun 2023 13:49:08 +1000 (AEST)
+From: Benjamin Gray <bgray@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v3 00/11] Add static DEXCR support
+Date: Fri, 16 Jun 2023 13:48:35 +1000
+Message-Id: <20230616034846.311705-1-bgray@linux.ibm.com>
+X-Mailer: git-send-email 2.40.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: foegCWUF8uAG-hQihwjtSBYFcPPaVUOg
+X-Proofpoint-GUID: Ub7paTz4HP9yWVN2F_VbZkbPvDf-m5aB
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-15_17,2023-06-15_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 phishscore=0
+ mlxlogscore=999 mlxscore=0 spamscore=0 priorityscore=1501 suspectscore=0
+ malwarescore=0 lowpriorityscore=0 bulkscore=0 impostorscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
+ definitions=main-2306160032
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,203 +99,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Benjamin Gray <bgray@linux.ibm.com>, ajd@linux.ibm.com, npiggin@gmail.com, ruscur@russell.cc
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-branch HEAD: 4adc95a3edc152ffc3b0c88117767a31c9c01a1e  powerpc: update ppc_save_regs to save current r1 in pt_regs
+v3:	* Expose (H)DEXCR in ptrace as 64 bits
+	* Remove build config for DEXCR, always enable NPHIE
+	* Fix up documentation to reflect this
+	* Some commit message fixes
 
-elapsed time: 726m
+Previous versions:
+v2: https://lore.kernel.org/all/20230330055040.434133-1-bgray@linux.ibm.com/
+v1: https://lore.kernel.org/all/20230322054612.1340573-1-bgray@linux.ibm.com/
+RFC: https://lore.kernel.org/all/20221128024458.46121-1-bgray@linux.ibm.com/
 
-configs tested: 179
-configs skipped: 13
+Benjamin Gray (11):
+  powerpc/book3s: Add missing <linux/sched.h> include
+  powerpc/ptrace: Add missing <linux/regset.h> include
+  powerpc/dexcr: Add initial Dynamic Execution Control Register (DEXCR)
+    support
+  powerpc/dexcr: Handle hashchk exception
+  powerpc/dexcr: Support userspace ROP protection
+  powerpc/ptrace: Expose DEXCR and HDEXCR registers to ptrace
+  powerpc/ptrace: Expose HASHKEYR register to ptrace
+  Documentation: Document PowerPC kernel DEXCR interface
+  selftests/powerpc: Add more utility macros
+  selftests/powerpc/dexcr: Add hashst/hashchk test
+  selftests/powerpc/dexcr: Add DEXCR status utility lsdexcr
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+ Documentation/powerpc/dexcr.rst               |  58 +++++
+ Documentation/powerpc/index.rst               |   1 +
+ arch/powerpc/include/asm/book3s/64/kexec.h    |   5 +
+ arch/powerpc/include/asm/book3s/64/kup.h      |   1 +
+ arch/powerpc/include/asm/cputable.h           |   4 +-
+ arch/powerpc/include/asm/ppc-opcode.h         |   1 +
+ arch/powerpc/include/asm/processor.h          |   1 +
+ arch/powerpc/include/asm/reg.h                |  11 +
+ arch/powerpc/include/uapi/asm/elf.h           |   2 +
+ arch/powerpc/kernel/cpu_setup_power.c         |   8 +
+ arch/powerpc/kernel/process.c                 |  17 ++
+ arch/powerpc/kernel/prom.c                    |   1 +
+ arch/powerpc/kernel/ptrace/ptrace-decl.h      |   6 +
+ arch/powerpc/kernel/ptrace/ptrace-view.c      |  72 +++++-
+ arch/powerpc/kernel/traps.c                   |  16 ++
+ include/uapi/linux/elf.h                      |   2 +
+ tools/testing/selftests/powerpc/Makefile      |   1 +
+ .../selftests/powerpc/dexcr/.gitignore        |   2 +
+ .../testing/selftests/powerpc/dexcr/Makefile  |   9 +
+ tools/testing/selftests/powerpc/dexcr/dexcr.c | 132 ++++++++++
+ tools/testing/selftests/powerpc/dexcr/dexcr.h |  49 ++++
+ .../selftests/powerpc/dexcr/hashchk_test.c    | 227 ++++++++++++++++++
+ .../testing/selftests/powerpc/dexcr/lsdexcr.c | 141 +++++++++++
+ tools/testing/selftests/powerpc/include/reg.h |   4 +
+ .../testing/selftests/powerpc/include/utils.h |  31 ++-
+ .../powerpc/pmu/sampling_tests/misc.h         |   2 -
+ tools/testing/selftests/powerpc/utils.c       |  24 ++
+ 27 files changed, 823 insertions(+), 5 deletions(-)
+ create mode 100644 Documentation/powerpc/dexcr.rst
+ create mode 100644 tools/testing/selftests/powerpc/dexcr/.gitignore
+ create mode 100644 tools/testing/selftests/powerpc/dexcr/Makefile
+ create mode 100644 tools/testing/selftests/powerpc/dexcr/dexcr.c
+ create mode 100644 tools/testing/selftests/powerpc/dexcr/dexcr.h
+ create mode 100644 tools/testing/selftests/powerpc/dexcr/hashchk_test.c
+ create mode 100644 tools/testing/selftests/powerpc/dexcr/lsdexcr.c
 
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha        buildonly-randconfig-r004-20230615   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r002-20230615   gcc  
-alpha                randconfig-r011-20230614   gcc  
-alpha                randconfig-r013-20230614   gcc  
-alpha                randconfig-r025-20230615   gcc  
-alpha                randconfig-r026-20230615   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r003-20230615   gcc  
-arc                  randconfig-r034-20230615   gcc  
-arc                  randconfig-r043-20230614   gcc  
-arc                  randconfig-r043-20230615   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                         axm55xx_defconfig   gcc  
-arm                                 defconfig   gcc  
-arm                      footbridge_defconfig   gcc  
-arm                  randconfig-r046-20230614   clang
-arm                  randconfig-r046-20230615   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r033-20230615   gcc  
-arm64                randconfig-r036-20230615   gcc  
-csky         buildonly-randconfig-r003-20230614   gcc  
-csky                                defconfig   gcc  
-csky                 randconfig-r003-20230615   gcc  
-csky                 randconfig-r034-20230615   gcc  
-hexagon              randconfig-r015-20230614   clang
-hexagon              randconfig-r025-20230615   clang
-hexagon              randconfig-r035-20230615   clang
-hexagon              randconfig-r041-20230614   clang
-hexagon              randconfig-r041-20230615   clang
-hexagon              randconfig-r045-20230614   clang
-hexagon              randconfig-r045-20230615   clang
-i386                             allyesconfig   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-i001-20230614   clang
-i386                 randconfig-i001-20230615   gcc  
-i386                 randconfig-i002-20230614   clang
-i386                 randconfig-i002-20230615   gcc  
-i386                 randconfig-i003-20230614   clang
-i386                 randconfig-i003-20230615   gcc  
-i386                 randconfig-i004-20230614   clang
-i386                 randconfig-i004-20230615   gcc  
-i386                 randconfig-i005-20230614   clang
-i386                 randconfig-i005-20230615   gcc  
-i386                 randconfig-i006-20230614   clang
-i386                 randconfig-i006-20230615   gcc  
-i386                 randconfig-i011-20230614   gcc  
-i386                 randconfig-i011-20230615   clang
-i386                 randconfig-i012-20230614   gcc  
-i386                 randconfig-i012-20230615   clang
-i386                 randconfig-i013-20230614   gcc  
-i386                 randconfig-i013-20230615   clang
-i386                 randconfig-i014-20230614   gcc  
-i386                 randconfig-i014-20230615   clang
-i386                 randconfig-i015-20230614   gcc  
-i386                 randconfig-i015-20230615   clang
-i386                 randconfig-i016-20230614   gcc  
-i386                 randconfig-i016-20230615   clang
-i386                 randconfig-r014-20230614   gcc  
-i386                 randconfig-r021-20230615   clang
-i386                 randconfig-r032-20230615   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch    buildonly-randconfig-r005-20230614   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r004-20230615   gcc  
-loongarch            randconfig-r024-20230615   gcc  
-m68k                             allmodconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r002-20230615   gcc  
-m68k                 randconfig-r013-20230614   gcc  
-m68k                 randconfig-r023-20230615   gcc  
-m68k                 randconfig-r033-20230615   gcc  
-microblaze   buildonly-randconfig-r002-20230614   gcc  
-microblaze           randconfig-r005-20230615   gcc  
-microblaze           randconfig-r023-20230615   gcc  
-microblaze           randconfig-r025-20230615   gcc  
-microblaze           randconfig-r033-20230615   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                           gcw0_defconfig   gcc  
-mips                           jazz_defconfig   gcc  
-mips                      loongson3_defconfig   gcc  
-mips                    maltaup_xpa_defconfig   gcc  
-mips                        omega2p_defconfig   clang
-mips                 randconfig-r022-20230615   gcc  
-mips                 randconfig-r024-20230615   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r001-20230615   gcc  
-nios2                randconfig-r016-20230614   gcc  
-openrisc     buildonly-randconfig-r001-20230614   gcc  
-openrisc     buildonly-randconfig-r006-20230614   gcc  
-openrisc             randconfig-r012-20230614   gcc  
-openrisc             randconfig-r026-20230615   gcc  
-openrisc             randconfig-r032-20230615   gcc  
-parisc                           allyesconfig   gcc  
-parisc       buildonly-randconfig-r004-20230614   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r036-20230615   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc      buildonly-randconfig-r001-20230614   gcc  
-powerpc      buildonly-randconfig-r005-20230614   gcc  
-powerpc                     kilauea_defconfig   clang
-powerpc              randconfig-r011-20230614   gcc  
-powerpc              randconfig-r021-20230615   clang
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r005-20230615   gcc  
-riscv                randconfig-r042-20230614   gcc  
-riscv                randconfig-r042-20230615   clang
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r001-20230615   gcc  
-s390                 randconfig-r014-20230614   gcc  
-s390                 randconfig-r044-20230614   gcc  
-s390                 randconfig-r044-20230615   clang
-sh                               allmodconfig   gcc  
-sh           buildonly-randconfig-r001-20230615   gcc  
-sh                                  defconfig   gcc  
-sh                          landisk_defconfig   gcc  
-sh                   randconfig-r016-20230614   gcc  
-sh                   randconfig-r024-20230615   gcc  
-sh                   randconfig-r031-20230615   gcc  
-sh                           se7343_defconfig   gcc  
-sh                           se7751_defconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc        buildonly-randconfig-r003-20230615   gcc  
-sparc                               defconfig   gcc  
-sparc64      buildonly-randconfig-r005-20230615   gcc  
-sparc64              randconfig-r006-20230615   gcc  
-sparc64              randconfig-r021-20230615   gcc  
-sparc64              randconfig-r032-20230615   gcc  
-um                               alldefconfig   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   clang
-um                           x86_64_defconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-a001-20230614   clang
-x86_64               randconfig-a001-20230615   gcc  
-x86_64               randconfig-a002-20230614   clang
-x86_64               randconfig-a002-20230615   gcc  
-x86_64               randconfig-a003-20230614   clang
-x86_64               randconfig-a003-20230615   gcc  
-x86_64               randconfig-a004-20230614   clang
-x86_64               randconfig-a004-20230615   gcc  
-x86_64               randconfig-a005-20230614   clang
-x86_64               randconfig-a005-20230615   gcc  
-x86_64               randconfig-a006-20230614   clang
-x86_64               randconfig-a006-20230615   gcc  
-x86_64               randconfig-a011-20230614   gcc  
-x86_64               randconfig-a011-20230615   clang
-x86_64               randconfig-a012-20230614   gcc  
-x86_64               randconfig-a012-20230615   clang
-x86_64               randconfig-a013-20230614   gcc  
-x86_64               randconfig-a013-20230615   clang
-x86_64               randconfig-a014-20230614   gcc  
-x86_64               randconfig-a014-20230615   clang
-x86_64               randconfig-a015-20230614   gcc  
-x86_64               randconfig-a015-20230615   clang
-x86_64               randconfig-a016-20230614   gcc  
-x86_64               randconfig-a016-20230615   clang
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa       buildonly-randconfig-r004-20230614   gcc  
-xtensa               randconfig-r015-20230614   gcc  
-xtensa               randconfig-r022-20230615   gcc  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+--
+2.40.1
