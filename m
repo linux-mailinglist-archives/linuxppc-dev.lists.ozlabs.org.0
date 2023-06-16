@@ -1,55 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4C76733ADE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 22:29:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAF05733B06
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 22:39:30 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pqbxAH6I;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=QBNdm8qv;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QjW425RwNz3bxB
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Jun 2023 06:29:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QjWH45dfYz3c01
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Jun 2023 06:39:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pqbxAH6I;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=QBNdm8qv;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=lists.ozlabs.org)
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QjW360pdYz30fG
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Jun 2023 06:29:06 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 89A6C612AB;
-	Fri, 16 Jun 2023 20:29:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D28CC433C0;
-	Fri, 16 Jun 2023 20:29:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1686947343;
-	bh=gvd+AZX4jPfWnZ3uCqLoz9KHdUprTUE9ZWgZSJAJEeU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=pqbxAH6IMfvevBErMdfzPcFXUr9ietWlKM3lyqdp4aPvp6tq4RWgXVgk+W5QTwneX
-	 lqr8Dib4Y8DezbaOcYxo0DAOlWTIFJv6+2epCmW/a/pXxl7GIoo45bpvrHqxNWY53J
-	 irIJLGlmwP9G/lkjjdpMAzDaKemBNRb++f+W4xpE+FGy3vln+rtp53lFK7iO60oGuG
-	 PLBOLpxnn+poJcE7cIz1Kwt/+CAGwSUrl+zPFN5wE6rq9xRqIPxFXb868VtHKy62dD
-	 81lYxVYRzhAJz93dz9AVo1z+WxEFFm0KWEL6f4dS94AkiCBFGeEYU4ltvUEFfjcgVM
-	 7MQ6QjOsNzgiQ==
-Date: Fri, 16 Jun 2023 15:29:00 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: "Maciej W. Rozycki" <macro@orcam.me.uk>
-Subject: Re: [PATCH v9 00/14] pci: Work around ASMedia ASM2824 PCIe link
- training failures
-Message-ID: <20230616202900.GA1540115@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QjWG80jVpz3bZK
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Jun 2023 06:38:40 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=fw74FAZhkocnJnJyLR/WQNNOz26kiObyhL++hGG0nWw=; b=QBNdm8qv6j/A/iWrMKfpB6M7G8
+	dX02GHdjAg9rPGckqaKAq0nuLHgnEOZOUcT5iS1KFKrWFBJlTrkF2I4g5N2YgCfsexrQECwyFoHPp
+	z6yd+/vIl/PequagU7pGV8UNE2yhdOrdkDT+t3SJSVONZj6Q1cQWhoxiK+7FUVh/Fb17OdOH8kjtt
+	OWIuj2P4ze5K/i70TfCVLOSJSXO+Ry9WEoIoy6BlMNh0EJ1wlu/c8zXDIuEPPIicVlz2AV+6m8LDv
+	lA4vOEDBJYuPKGoF8lu2OSuuFhx10iSF/LiB0UcYpqrALuMFJM02PbH03w+/bd9OLb/nrxdqasmpe
+	J/m6D//w==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1qAGD7-009Lj7-EI; Fri, 16 Jun 2023 20:38:21 +0000
+Date: Fri, 16 Jun 2023 21:38:21 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Hugh Dickins <hughd@google.com>
+Subject: Re: [PATCH v4 04/34] pgtable: Create struct ptdesc
+Message-ID: <ZIzIPQBXvnMtQekj@casper.infradead.org>
+References: <20230612210423.18611-1-vishal.moola@gmail.com>
+ <20230612210423.18611-5-vishal.moola@gmail.com>
+ <fd63179-6ad6-fd86-79d6-2833c91111f8@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.21.2306160431470.64925@angie.orcam.me.uk>
+In-Reply-To: <fd63179-6ad6-fd86-79d6-2833c91111f8@google.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,52 +57,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Oliver O'Halloran <oohall@gmail.com>, Stefan Roese <sr@denx.de>, Leon Romanovsky <leon@kernel.org>, linux-rdma@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Jim Wilson <wilson@tuliptree.org>, Nicholas Piggin <npiggin@gmail.com>, Alex Williamson <alex.williamson@redhat.com>, Bjorn Helgaas <bhelgaas@google.com>, Mika Westerberg <mika.westerberg@linux.intel.com>, David Abdurachmanov <david.abdurachmanov@gmail.com>, linuxppc-dev@lists.ozlabs.org, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, Lukas Wunner <lukas@wunner.de>, netdev@vger.kernel.org, Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>
+Cc: kvm@vger.kernel.org, linux-sh@vger.kernel.org, linux-mm@kvack.org, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-csky@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>, xen-devel@lists.xenproject.org, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-openrisc@vger.kernel.org, linux-mips@vger.kernel.org, "Vishal Moola \(Oracle\)" <vishal.moola@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 16, 2023 at 01:27:52PM +0100, Maciej W. Rozycki wrote:
-> On Thu, 15 Jun 2023, Bjorn Helgaas wrote:
-
->  As per my earlier remark:
+On Thu, Jun 15, 2023 at 12:57:19AM -0700, Hugh Dickins wrote:
+> Probably just trivial collisions in most architectures, which either
+> of us can easily adjust to the other; powerpc likely to be more awkward,
+> but fairly easily resolved; s390 quite a problem.
 > 
-> > I think making a system halfway-fixed would make little sense, but with
-> > the actual fix actually made last as you suggested I think this can be
-> > split off, because it'll make no functional change by itself.
+> I've so far been unable to post a v2 of my series (and powerpc and s390
+> were stupidly wrong in the v1), because a good s390 patch is not yet
+> decided - Gerald Schaefer and I are currently working on that, on the
+> s390 list (I took off most Ccs until we are settled and I can post v2).
 > 
-> I am not perfectly happy with your rearrangement to fold the !PCI_QUIRKS 
-> stub into the change carrying the actual workaround and then have the 
-> reset path update with a follow-up change only, but I won't fight over it.  
-> It's only one tree revision that will be in this halfway-fixed state and 
-> I'll trust your judgement here.
+> As you have no doubt found yourself, s390 has sophisticated handling of
+> free half-pages already, and I need to add rcu_head usage in there too:
+> it's tricky to squeeze it all in, and ptdesc does not appear to help us
+> in any way (though mostly it's just changing some field names, okay).
+> 
+> If ptdesc were actually allowing a flexible structure which architectures
+> could add into, that would (in some future) be nice; but of course at
+> present it's still fitting it all into one struct page, and mandating
+> new restrictions which just make an architecture's job harder.
 
-Thanks for raising this.  Here's my thought process:
+The intent is to get ptdescs to be dynamically allocated at some point
+in the ~2-3 years out future when we have finished the folio project ...
+which is not a terribly helpful thing for me to say.
 
-  12 PCI: Provide stub failed link recovery for device probing and hot plug
-  13 PCI: Add failed link recovery for device reset events
-  14 PCI: Work around PCIe link training failures
+I have three suggestions, probably all dreadful:
 
-Patch 12 [1] adds calls to pcie_failed_link_retrain(), which does
-nothing and returns false.  Functionally, it's a no-op, but the
-structure is important later.
+1. s390 could change its behaviour to always allocate page tables in
+pairs.  That is, it fills in two pmd_t entries any time it takes a fault
+in either of them.
 
-Patch 13 [2] claims to request failed link recovery after resets, but
-actually doesn't do anything yet because pcie_failed_link_retrain() is
-still a no-op, so this was a bit confusing.
+2. We could allocate two or four pages at a time for s390 to allocate
+2kB pages from.  That gives us a lot more space to store RCU heads.
 
-Patch 14 [3] implements pcie_failed_link_retrain(), so the recovery
-mentioned in 12 and 13 actually happens.  But this patch doesn't add
-the call to pcie_failed_link_retrain(), so it's a little bit hard to
-connect the dots.
+3. We could use s390 as a guinea-pig for dynamic ptdesc allocation.
+Every time we allocate a struct page, we have a slab cache for an
+s390-special definition of struct ptdesc, we allocate a ptdesc and store
+a pointer to that in compound_head.
 
-I agree that as I rearranged it, the workaround doesn't apply in all
-cases simultaneously.  Maybe not ideal, but maybe not terrible either.
-Looking at it again, maybe it would have made more sense to move the
-pcie_wait_for_link_delay() change to the last patch along with the
-pci_dev_wait() change.  I dunno.
+We could sweeten #3 by doing that not just for s390 but also for every
+configuration which has ALLOC_SPLIT_PTLOCKS today.  That would get rid
+of the ambiguity between "is ptl a pointer or a lock".
 
-Bjorn
+> But I've no desire to undo powerpc's use of pt_frag_refcount:
+> just warning that we may want to undo any use of it in s390.
 
-[1] 12 https://lore.kernel.org/r/alpine.DEB.2.21.2306111619570.64925@angie.orcam.me.uk
-[2] 13 https://lore.kernel.org/r/alpine.DEB.2.21.2306111631050.64925@angie.orcam.me.uk
-[3] 14 https://lore.kernel.org/r/alpine.DEB.2.21.2305310038540.59226@angie.orcam.me.uk
+I would dearly love ppc & s390 to use the _same_ scheme to solve the
+same problem.
