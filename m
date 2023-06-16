@@ -1,164 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED2D7733715
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 19:03:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F2C7733743
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 19:15:22 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=N+c3d2ke;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XKIcZxmE;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QjQVM5P7Fz3brV
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Jun 2023 03:03:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QjQlX2ZjLz3c24
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Jun 2023 03:15:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=N+c3d2ke;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XKIcZxmE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=rick.p.edgecombe@intel.com; receiver=lists.ozlabs.org)
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QjQTP3XbSz3bbt
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Jun 2023 03:03:00 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686934985; x=1718470985;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=zHd3TS71swFhG8RMGSnlbtJ7WI0MBrRbGEKCUVGjX0Q=;
-  b=N+c3d2keTrbhV4uE7zljbTZEeUw/aQ2CKfdppgdPCB1IKdEw5jIPzFnT
-   Tn0Z1e1tf7vFVMG72JPm4W2Ll8RHWA9Cdfv2QUKFwLg6MxvDPKOL6YB7H
-   WNa1/rs5zHobh5AXZl6kh6rA5oXHza1kq43Vd6duL5tnryLtWPCOHBJtV
-   1R43R0BKbIqML0A9kjFB/EN7uCIha2+SUrDePAxWz/2wv1kOYyABHR+Qs
-   T3OyU2l5noC819h6qjkdRM3rFBfy2NPM//n2DbCn121F8eoDOStUqc5Sx
-   QD0kd6VeGubDn3Boxl6A7EAKqG6oWoOQkDEJ8vwkKDe1F5/HVchB0yIV2
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10743"; a="358135437"
-X-IronPort-AV: E=Sophos;i="6.00,248,1681196400"; 
-   d="scan'208";a="358135437"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2023 10:02:54 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10743"; a="716092462"
-X-IronPort-AV: E=Sophos;i="6.00,248,1681196400"; 
-   d="scan'208";a="716092462"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
-  by fmsmga007.fm.intel.com with ESMTP; 16 Jun 2023 10:02:53 -0700
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Fri, 16 Jun 2023 10:02:53 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Fri, 16 Jun 2023 10:02:52 -0700
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23 via Frontend Transport; Fri, 16 Jun 2023 10:02:52 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.104)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.23; Fri, 16 Jun 2023 10:02:52 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aNpY7uIBBNXVqe2fOVLh9gLcMfp1euWmmgIP4qOmo39/LuNts/nPYPYCq5K3ICnpBKaWGQPkeR4yD4iKp/lrujywlAP5emcgONW+Nnon3BFic4aTh4PSFGC+3XoW0KgDYgHtV60065wSGiMhfmhN+KN5D3cWDT4YC+XvaphSbsppWYCIfqnhakPnsSdP3jDBLdzs4SZTV31u/9xucd35qoksu33rM2Nt2PsEqXbTJ4G7697ANMNwbT0liyDZy9FuQoJ/zvRecpjJv341BLOFgfBoIYKHbGZYa0tnpbPuiDWUGA9zF3cGjKJ2qSvT0LdffPucZ2ZGkEpMSAmiWmaq1w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zHd3TS71swFhG8RMGSnlbtJ7WI0MBrRbGEKCUVGjX0Q=;
- b=nusVKTysbu35+Mmh/CeuEzRLT5sBtpL5JtDAH+562fKEE58+Pfu1VYstTkhIR4H7y1GM76p6oBXJsypAJGZbXEAZsJ3dHnftuVRJqiZGVvH8G7qJSivcj4VNSTlepgHy+T6hgpwx7sluRiB00e5T+Kbk4Yy99brTdmG0Wto26ZWt5VDXpMIPN5SOtW8o/oYN5X1f1u9UR2GRRzp2TDxte3rSdgCBQkSZ49DUvCHsJPWhTxgfzDMjcmKUaONm/bThqw2MuZDsczJnWj0EL6LskUDSR9Le209m8SDY6fDSlFJwmn4ByEsquTETXkiuwY2CybBbHcRcIa/uAZ8d7hR8AQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MN0PR11MB5963.namprd11.prod.outlook.com (2603:10b6:208:372::10)
- by PH0PR11MB5015.namprd11.prod.outlook.com (2603:10b6:510:39::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.25; Fri, 16 Jun
- 2023 17:02:50 +0000
-Received: from MN0PR11MB5963.namprd11.prod.outlook.com
- ([fe80::6984:19a5:fe1c:dfec]) by MN0PR11MB5963.namprd11.prod.outlook.com
- ([fe80::6984:19a5:fe1c:dfec%7]) with mapi id 15.20.6500.029; Fri, 16 Jun 2023
- 17:02:50 +0000
-From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-To: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"rppt@kernel.org" <rppt@kernel.org>
-Subject: Re: [PATCH v2 00/12] mm: jit/text allocator
-Thread-Topic: [PATCH v2 00/12] mm: jit/text allocator
-Thread-Index: AQHZoC+0c1p3dpPJ0Umm53KR18jBkK+NqGKA
-Date: Fri, 16 Jun 2023 17:02:50 +0000
-Message-ID: <557b2205c6826ce00c4cb76d8d8679807eb0ff58.camel@intel.com>
-References: <20230616085038.4121892-1-rppt@kernel.org>
-In-Reply-To: <20230616085038.4121892-1-rppt@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.44.4-0ubuntu1 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MN0PR11MB5963:EE_|PH0PR11MB5015:EE_
-x-ms-office365-filtering-correlation-id: c0a47551-35b1-4512-9c4b-08db6e8b8441
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: TejL0XHybv9fjD47zhrpMJcVYKnhdJKohm/7rGrV3fadxqN8WIDf6LCbTqORF3P1sk6Ko9gkPRsVgACdvD5ZzrxN0slwwKScNK8F9sGfyNz4UTNwldVYSAIQ69EXd91H1LNnaKjkGz1/2f8Vc4UHE8gMsTMeQhDb1oJ+CCAhJqRS6TFOikZu1vhJP92S4qwrv2LQE1HkVLZtKRD7nC25rBnrp6dQPrykP/3zt4v90cxYeM2HrxmDPxKaPPyYQenbMGysmQvbXUq8oNPGGXxODpRVL7d1X6TqOd4B7vX0t7D8izAGIdVNxwBhVSKCB/t26BE8DyjvlbQK8iG/QF+JAK8+UHIEo5CnNo9D1qgr7ty8bsBgDCmpBopEX++nS+3oSd1UZo7IFptABls/ncDpaToldWtCvMAOq1WODlSLsKExfjKeif8Ve7QmYvFmnPGRlGBtJTHLVLDD+xsUJe9tMz57hUWMeZiH4eZyajrwWIYGc2gO8wvx8FDeH8VBwhgROdWBXAg37oXRRNCfC13mFI+m3MoE2B3HdbK9oNM5V2UfT+pxB4Hq3NYk88DHWRcuNb2/rJq459CBmcYo/AjvwnhlTSs+XhyJ+v74SCflgYw3o6l2ReHHhqkDXUxBUge4
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR11MB5963.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(136003)(376002)(366004)(396003)(39860400002)(346002)(451199021)(5660300002)(38100700002)(82960400001)(122000001)(186003)(2616005)(2906002)(4744005)(6506007)(6512007)(7406005)(7416002)(478600001)(26005)(38070700005)(66446008)(66946007)(316002)(66476007)(6486002)(71200400001)(64756008)(66556008)(8936002)(8676002)(41300700001)(86362001)(76116006)(91956017)(4326008)(36756003)(54906003)(110136005);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?ZG5DcElmUE5vbk9WUkgyTFpkamxXNXgxMURNSkZrcytOWnFCRlpVQjdjZmow?=
- =?utf-8?B?MVcrMTE5VUJyUHZaNHVoZ1JoUkhNOHkzWXVjaDBrYm9yM25QbDJrWGJ5Q0py?=
- =?utf-8?B?a3QvVFlPWGlNUHBQQzROWEwxN01nTjYzdSttTHJWUm92VzBEdmJvdkRBNWRw?=
- =?utf-8?B?bDBxNU00cmNMWjY2eHZqNmtFMU55Z3RJRGt6K0ZzeXNST0JoZDZTaFJuUTRm?=
- =?utf-8?B?R0p3aTZpRStTeXBvZmVGeDZQTUFXdlJZSVV2L3M4N1ZIOU11UEg3ZXRGMTNw?=
- =?utf-8?B?eGtXN25HVFE3NmZnT2ZjMzR1NFJ1MG00WnRaWEVvTC9WWUxPR1JRS1Y3Uk5r?=
- =?utf-8?B?RFFISENjbFcvd01wYXBYUFVoOVVPc3U0WmQyc3lKYzUrTGRNdzd6V1lLK0hI?=
- =?utf-8?B?aEVhd29FZTFyK2NZQithQmR4bktxSk16c0xqSmo2TmhxQ3YvV2VlZGd6bTJy?=
- =?utf-8?B?YlBrRTFid3ZhMmlpbWhtZ1U1RXVKRmlBaXBGZ3VDbVlRaTVLalF0TjllRTln?=
- =?utf-8?B?UnF0ZEJiVk5Gblp0aUxHTVlGclNkemtLcDlWMEFIS1Zrd3NRamhEZEhlNGdv?=
- =?utf-8?B?MktwQktPWXhXd2RIK0dzTVJ5LzVqejFDU1ZwVVFmdkFvY3JpS3pxeE5kVkxy?=
- =?utf-8?B?WE1YTjJkbEdjMDJpYzRpdU1aUllqV2o0S2pEL1NtV0ZpSXBjRE9iVTR6RTNO?=
- =?utf-8?B?QmZHNUd3eHNlc3BMMkVzNGpaR24yQzA4QVpyZnU4T3V4ZnFOcFJ4NXdSN3Fs?=
- =?utf-8?B?eHVxNEZBRS8yeVpaeEt4aUZPY2tYQkkxb0VQWlZxODNBUXJBT2xvQnNFcldo?=
- =?utf-8?B?VDhoZXRtZXZzMDJ4L2ZJbXdIVTBsbXVRR1JjVlprbzBnQ3ZRRGZ5bmp4RVgr?=
- =?utf-8?B?Lyt0TG9ibWFnd2ZjT3hzS0lZZXoveStLWnE1Yzg3L09JUlVFcUxHcndaSDJF?=
- =?utf-8?B?S01ra3RyaC9sd3pzeUNNM3g0MFFxc0VBd042Skg0RnExRzhjSUhRM1dCNlhq?=
- =?utf-8?B?TmhYQlpLWU9QQ1dOMTFZZnR0dDMrYkg3OXlXY0t4UlRWM1RmS3RNMHdvckRz?=
- =?utf-8?B?cXVuUFVQM2FyYjl5QzJzNXhKT05qRStrRldNT1RMN3dMQ3hxSzRDcnBlTGk2?=
- =?utf-8?B?b2FtTU96cTBDUkEzTTA0OFhzVDRXY09UcWs1MEdEY1hLNENrNkVUdk9TQ1E0?=
- =?utf-8?B?K3VXZ3VoSVZ1OUJUMFlkVXFtQUtBTkFUanlES3BHb3pFMFlwempvclpGOEs0?=
- =?utf-8?B?NEc2ZzNRVmlObVcvazRwUFJadk4vV2ZUQ01tYnJmRk4vbjQ4ZU1kdk1TYktq?=
- =?utf-8?B?WWVYUlhzM0w0NjQzS0VRcm8rdklXU3ZSZWJLU0VFOWZMa2JQRThFRWsvdmdE?=
- =?utf-8?B?RjYrMExEb0xXVzJkTEFRUlYwOVlvd2U4NCtDUFFINVpnemZyc2pWNGZpKzVE?=
- =?utf-8?B?MDdyWFA5MEpWM2dveUpKTG1ITlQ2dVhNbWtNYlBFUUEzNlFaNGlraWZXV1hW?=
- =?utf-8?B?eEVRVWJYZW1SbWdwcTM3cGNrUGhJdXlNUG9RSmFndndBWkJQaGZsc25tb3gv?=
- =?utf-8?B?OUZianlNa1dkSGJMWWZkTFFvcnRWSm1sZlFYSjY5MFB2UmpBRmZ0RmlJSjkr?=
- =?utf-8?B?MEk5bDdSVlJ1YW5RWkRZWlFTYVMrVDV0SjZ4elBaNXBtWENmZ2FiTmt4RzE5?=
- =?utf-8?B?TllTT0YvTy9YdG1CbVBvSjd2R0RHNWNPYzcyeWhXbGZ4WG8rWXVWdmVEelNa?=
- =?utf-8?B?cEJrMzF2ZGpYcEhGQmtZUXZFc04rbkJmWWZPVHoyd1h6SWhpbEcrRHJIOVJ4?=
- =?utf-8?B?TXZHYWE4aEptczJmZHcwN1M1ZEszejRtbFBvZzc4V1I0dmROWiswZS9ydW5V?=
- =?utf-8?B?Z29pVi9BZjZEa0VCM0xldjRvM2dqWVJrdkpCcjIybHpFT2czQTZkTmZrcUZD?=
- =?utf-8?B?R2RpVUszRk5zUklwUTlGR3FvaHkwd3YwK0NoYk1ldlpwUUtHWmZiWW13RzJE?=
- =?utf-8?B?WmZBdWJVRk1ZYjNuOHZBeTJPOWR0elpzeFRjeW9Ya1lFbzNjNCsvZGVoSmZK?=
- =?utf-8?B?RU1YcXdsQW4xL3lqUzVrWStjUW0rYlJsbm9VQ3BIalVqWkxMaExJZ1NxZmlG?=
- =?utf-8?B?eWEzeWc2b2xZaHVjWVJFRm5DSW9aTzloMVJzeURTNkJvRlBNUHF0UFBuMzFr?=
- =?utf-8?B?NlE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <007468AB03AB764CA8371FF7D2F58E71@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QjQkc4NTgz3bcF
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Jun 2023 03:14:31 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 95B2761F3A;
+	Fri, 16 Jun 2023 17:14:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8460BC433C8;
+	Fri, 16 Jun 2023 17:14:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1686935668;
+	bh=PIy0eDkU+XgEcCqTGXTVNJA4eA/en2aswew83heoDgU=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=XKIcZxmE596EiYRv9HwErM0ngEbBPgMxzwFYkMIN0/WGjLUUkdukYBBM81CfUsSGp
+	 6Vx76e77RzA5ARjRpW3v5KKT2rFsuNWDV1MgTSBd4EVLvl22velq9dM6l476Q5pbIx
+	 S25ot0Ho+BKVsk5acJ5lgqBu7VCY8qk9GQG1hQwN1y/JRQhhVTkY0vpBfILE1z+L97
+	 MraaV+CEv+Abii8aT2ETMZfnuH/p0SgOsXiNPCziORvxLdh+mmKANyCAy/93fnp5g3
+	 L4bL2xcx+KWNS25gL8aC/gANJkbQpPDdbHfsctKRIoz9a+r/plAvMa6/V29oobbjtS
+	 y5/CnpyCJ2n6g==
+Date: Fri, 16 Jun 2023 22:42:40 +0530
+From: Naveen N Rao <naveen@kernel.org>
+Subject: Re: ppc64le vmlinuz is huge when building with BTF
+To: Dominique Martinet <asmadeus@codewreck.org>
+References: <ZIqGSJDaZObKjLnN@codewreck.org> <ZIrONqGJeATpbg3Y@krava>
+	<ZIr7aaVpOaP8HjbZ@codewreck.org>
+	<6b26dfef-016c-43df-07f5-c2f88157d1dc@oracle.com>
+	<ZIt11crcIjfyeygA@codewreck.org> <1686912543.c6zqyw5s4x.naveen@kernel.org>
+	<ZIxOxj0Y-kay22Oh@codewreck.org>
+In-Reply-To: <ZIxOxj0Y-kay22Oh@codewreck.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB5963.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c0a47551-35b1-4512-9c4b-08db6e8b8441
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Jun 2023 17:02:50.1302
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: AxNS+ahK+DX1qWqlhMqp8dGmxRY2V1uAK49QA5AQIKPjhPYDLmEE/uWc8XataiNhlTucVUMvPXTbfyxsBS2XERmqw4bOuyDR4kHjwNoPlVg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5015
-X-OriginatorOrg: intel.com
+User-Agent: astroid/0.16.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1686935137.j96zp0hcg9.naveen@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -170,23 +66,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>, "x86@kernel.org" <x86@kernel.org>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>, "song@kernel.org" <song@kernel.org>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "nadav.amit@gmail.com" <nadav.amit@gmail.com>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, "deller@gmx.de" <deller@gmx.de>, "chenhuacai@kernel.org" <chenhuacai@kernel.org>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>, "naveen.n.rao@linux.ibm.com" <naveen.n.rao@linux.ibm.com>, "linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>, "will@kernel.org" <will@kernel.org>, "hca@linux.ibm.com" <hca@linux.ibm.com>, "rostedt@goodmis.org" <rostedt@goodmis.org>, "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, "tglx@linutronix.de" <tglx@linutronix.de>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>, "puranjay12@gmail.com" <puranjay12@gmail.com>, "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "kent.overstreet@linux.dev" <kent.overstreet@linux.dev>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "dinguyen@kernel.org" <dinguyen@kernel.org>, "mcgrof@kernel.org" <mcgrof@kernel.org>, "palmer@dabbelt.com" <palmer@dabbelt.com>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "davem@davemloft.net" <davem@davemloft.net>, "linux-modules@vger.kernel.org" <linux-modules@vger.kernel.org>
+Cc: Alan Maguire <alan.maguire@oracle.com>, dwarves@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Arnaldo Carvalho de Melo <acme@kernel.org>, bpf@vger.kernel.org, Jiri Olsa <olsajiri@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gRnJpLCAyMDIzLTA2LTE2IGF0IDExOjUwICswMzAwLCBNaWtlIFJhcG9wb3J0IHdyb3RlOg0K
-PiBGcm9tOiAiTWlrZSBSYXBvcG9ydCAoSUJNKSIgPHJwcHRAa2VybmVsLm9yZz4NCj4gDQo+IEhp
-LA0KPiANCj4gbW9kdWxlX2FsbG9jKCkgaXMgdXNlZCBldmVyeXdoZXJlIGFzIGEgbWVhbiB0byBh
-bGxvY2F0ZSBtZW1vcnkgZm9yDQo+IGNvZGUuDQo+IA0KPiBCZXNpZGUgYmVpbmcgc2VtYW50aWNh
-bGx5IHdyb25nLCB0aGlzIHVubmVjZXNzYXJpbHkgdGllcyBhbGwNCj4gc3Vic3lzdG1lcw0KPiB0
-aGF0IG5lZWQgdG8gYWxsb2NhdGUgY29kZSwgc3VjaCBhcyBmdHJhY2UsIGtwcm9iZXMgYW5kIEJQ
-RiB0bw0KPiBtb2R1bGVzIGFuZA0KPiBwdXRzIHRoZSBidXJkZW4gb2YgY29kZSBhbGxvY2F0aW9u
-IHRvIHRoZSBtb2R1bGVzIGNvZGUuDQo+IA0KPiBTZXZlcmFsIGFyY2hpdGVjdHVyZXMgb3ZlcnJp
-ZGUgbW9kdWxlX2FsbG9jKCkgYmVjYXVzZSBvZiB2YXJpb3VzDQo+IGNvbnN0cmFpbnRzIHdoZXJl
-IHRoZSBleGVjdXRhYmxlIG1lbW9yeSBjYW4gYmUgbG9jYXRlZCBhbmQgdGhpcw0KPiBjYXVzZXMN
-Cj4gYWRkaXRpb25hbCBvYnN0YWNsZXMgZm9yIGltcHJvdmVtZW50cyBvZiBjb2RlIGFsbG9jYXRp
-b24uDQoNCkkgbGlrZSBob3cgdGhpcyBzZXJpZXMgbGVhdmVzIHRoZSBhbGxvY2F0aW9uIGNvZGUg
-Y2VudHJhbGl6ZWQgYXQgdGhlDQplbmQgb2YgaXQgYmVjYXVzZSBpdCB3aWxsIGJlIG11Y2ggZWFz
-aWVyIHdoZW4gd2UgZ2V0IHRvIFJPWCwgaHVnZSBwYWdlLA0KdGV4dF9wb2tpbmcoKSB0eXBlIHN0
-dWZmLg0KDQpJIGd1ZXNzIHRoYXQncyB0aGUgaWRlYS4gSSdtIGp1c3QgY2F0Y2hpbmcgdXAgb24g
-d2hhdCB5b3UgYW5kIFNvbmcgaGF2ZQ0KYmVlbiB1cCB0by4NCg0KDQo=
+Dominique Martinet wrote:
+> Naveen N Rao wrote on Fri, Jun 16, 2023 at 04:28:53PM +0530:
+>> > We're not stripping anything in vmlinuz for other archs -- the linker
+>> > script already should be including only the bare minimum to decompress
+>> > itself (+compressed useful bits), so I guess it's a Kbuild issue for t=
+he
+>> > arch.
+>>=20
+>> For a related discussion, see:
+>> http://lore.kernel.org/CAK18DXZKs2PNmLndeGYqkPxmrrBR=3D6ca3bhyYCj=3DGhyA=
+7dHfAQ@mail.gmail.com
+>=20
+> Thanks, I didn't know that ppc64le boots straight into vmlinux, as 'make
+> install' somehow installs something called 'vmlinuz-lts' (-lts coming
+> out of localversion afaiu, but vmlinuz would come from the build
+> scripts) ; this is somewhat confusing as vmlinuz on other archs is a
+> compressed/pre-processed binary so I'd expect it to at least be
+> stripped...
+
+As far as I can tell, kernel's install script doesn't give out that=20
+name, so 'vmlinuz' is likely coming from the distro's=20
+/[s]bin/installkernel script. It probably needs an override to retain=20
+'vmlinux'.=20
+
+>=20
+>> > We can add a strip but I unfortunately have no way of testing ppc buil=
+d,
+>> > I'll ask around the build linux-kbuild and linuxppc-dev lists if that'=
+s
+>> > expected; it shouldn't be that bad now that's figured out.
+>>=20
+>> Stripping vmlinux would indeed be the way to go. As mentioned in the abo=
+ve
+>> link, fedora also packages a strip'ed vmlinux for ppc64le:
+>> https://src.fedoraproject.org/rpms/kernel/blob/4af17bffde7a1eca9ab164e5d=
+e0e391c277998a4/f/kernel.spec#_1797
+>=20
+> It feels somewhat wrong to add a strip just for ppc64le after make
+> install, but I guess we probably ought to do the same...
+> I don't have any hardware to test booting the result though, I'll submit
+> an update and ask for someone to test when it's done.
+> (bit busy but that doesn't take long, will do that tomorrow morning
+> before I forget)
+
+Thanks! You're right that it's likely just powerpc that is different=20
+here. It sure would be nice if we can iron out issues with our zImage.
+
+
+- Naveen
+
