@@ -2,75 +2,164 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2F3C73367E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 18:49:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D6E37336DA
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 18:57:06 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=mw9VZJyF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Q8S6v/ns;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QjQ9x4j7xz3c3K
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Jun 2023 02:49:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QjQLS0Mv5z3bxr
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Jun 2023 02:57:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=mw9VZJyF;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Q8S6v/ns;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2a00:1450:4864:20::232; helo=mail-lj1-x232.google.com; envelope-from=dianders@chromium.org; receiver=lists.ozlabs.org)
-Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=rick.p.edgecombe@intel.com; receiver=lists.ozlabs.org)
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QjQ8V5J12z3bst
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Jun 2023 02:48:26 +1000 (AEST)
-Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2b448470602so13248691fa.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jun 2023 09:48:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1686934100; x=1689526100;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Tr5g+LR86poa7vi9trOMIJcQmYHg1BLUYh+fDHbbZ4k=;
-        b=mw9VZJyFnadMrJUUtmiTBfqkJU/ZTf8r+H20SF4OKP5jmUmk0shC7PyCCoQvHlFXtW
-         DUfg5zFRKNRihsnMoC8brrxS4uD2pU9RaVEme7hDE0VA38JyrIIMVSR4n7/DOPZ21gFB
-         4FZS2PtxAkQAjHNAt+j9faQzeEmssXiTCVYZ4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686934100; x=1689526100;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Tr5g+LR86poa7vi9trOMIJcQmYHg1BLUYh+fDHbbZ4k=;
-        b=DMvKyaupqh8QHFHm1qpEqcFBu4DgSSWA9rZkUZdzZBA3lmIqX5GOfMkbsxmKuMn49c
-         FezA8Z6xPG9SY7pfzZ0s6xEsLMkMpJSijf3+/JczAcuM1unzCwPWg1FHaMonhrN4xdvR
-         rTq6ZyABAxNNc2DgcNDvFE8AsBgtOp98dCn84j2lHsDwjfVsdyLtHMzWrCT8jAnNxLKx
-         i/vvmV0GSUK4xm3Kxk//QyydLckVyRb1aUO73rbpEcNRgpW/0rkLFn5O9EqmpMzFMuVM
-         LKZkHZYvvzAJALV5UU7KLea1LcOZJfO6wAmMt2WIdUtcyDOHKlnVxyJ4tj3JUA5ZpPhq
-         Jhpg==
-X-Gm-Message-State: AC+VfDwFkpTvGIqUJu2jn/Z9x8i/uC7F5MQKhIKZp5D86niejLhmfx91
-	ir/mzviq9tsZMXe02lJaHeKHruOeY0g3lxtK7SQBAbcL
-X-Google-Smtp-Source: ACHHUZ5um9KHvXi/p2339gM8Wd0AcdXK1gPjDNY7YB+r2o23kDujJFGmw3CBD9LG/PHFSmZzwvR9Tw==
-X-Received: by 2002:a2e:b0ef:0:b0:2b1:b747:fad6 with SMTP id h15-20020a2eb0ef000000b002b1b747fad6mr2247859ljl.39.1686934100481;
-        Fri, 16 Jun 2023 09:48:20 -0700 (PDT)
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com. [209.85.208.48])
-        by smtp.gmail.com with ESMTPSA id g25-20020a50ee19000000b0050bfeb15049sm9971277eds.60.2023.06.16.09.48.19
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 16 Jun 2023 09:48:19 -0700 (PDT)
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-513ea2990b8so188a12.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jun 2023 09:48:19 -0700 (PDT)
-X-Received: by 2002:a50:999d:0:b0:516:6453:1b76 with SMTP id
- m29-20020a50999d000000b0051664531b76mr240103edb.5.1686934098700; Fri, 16 Jun
- 2023 09:48:18 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QjQKT2dWVz2yfg
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Jun 2023 02:56:02 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1686934573; x=1718470573;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=Js61kklOp4BQ1rwerQRjlhJ3sV165mZhQX0vvO8dy+U=;
+  b=Q8S6v/nsCf6s4rD+ckV/R0ibinKHKWirLWtkdMSb6ZyUTXRkDoAmwqL/
+   kZH0ekvGx57srEs9CX0xR22DGAucg04g6tePOLEc9EF+ew8id/iaLWVTS
+   Ajz3byGzWlyaR2NDUBDsQlgOalsQgmaT4wi9ibKu9IKofvGCMSSNgQnIJ
+   F9okfe4kUlzBagE0z5ElXFQz5sRFj71WvBBRqqsewwHnlm3+j/UfSYHGB
+   bgilo46BXI7Fi6dT6HrCUv3hySaJWsNGqSNhJLYEPmhqQcHHqd8KTzpNb
+   MwyP1/bWHIR82iIFlLkY44wqMmcDSr1rUxlwS/LmvxfHhCMzAYN+/KQiD
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10743"; a="388029675"
+X-IronPort-AV: E=Sophos;i="6.00,248,1681196400"; 
+   d="scan'208";a="388029675"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2023 09:55:59 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10743"; a="690308661"
+X-IronPort-AV: E=Sophos;i="6.00,248,1681196400"; 
+   d="scan'208";a="690308661"
+Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
+  by orsmga006.jf.intel.com with ESMTP; 16 Jun 2023 09:55:58 -0700
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Fri, 16 Jun 2023 09:55:57 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Fri, 16 Jun 2023 09:55:57 -0700
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23 via Frontend Transport; Fri, 16 Jun 2023 09:55:57 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.169)
+ by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.23; Fri, 16 Jun 2023 09:55:57 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=GLFm7Ts/De8RA8GmO6FLJQKRIVWusJVHr6s+fqv/EeCdguWQNuWrOVnNfdryqbyG365gk51qGQYq44uluAF6B0tXjnqS8wv3pXEsxkpBDqejK4mxoTx51q1LcWKm6LpKgLN3OLxBMz2Jt5j4ecV4JgfTjtz7ncCF0v9TrsjJzzNmUjxIKCGQETBBugoagWzxpotQffXMLzDyPY+6HFx5KcSDm8rTaq9S2rpENT+twKiMGdxQzLAH4BeKFF7OBzi55hTEGPmgLN3reZl8oATWxy6DtuXf9uSBDZE0+DMp9+9zHuknSPpYr4iKdInSSsvEd1cjsLSLDJ8gsRVBbAt3PA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Js61kklOp4BQ1rwerQRjlhJ3sV165mZhQX0vvO8dy+U=;
+ b=OScAWFPfVesu83HbP6tyN3+R3jZvs6O8YrxYDjOcYFI1b7LC1mfGiMr1z88h1i7t9pIXdqG+cbv8eLEQygrbPEGlpu8uwB+gYeRIMene/VU9DyCNRwuXjaxaJ0ZldlXYZIrPMRIvdIwDrQqD2r6VG1VqFH2zAw4Lgk7RTXdWS5SngXeRpWI/bdkzi4cwkK5St0Kyf8FUxsvctQALOS4mT4WjHZ2F81XZb6gXbsFwDmV7bhzebuv1Y7dpdZFkEL5PTn0HlOyHDwPDPnle2aDePkXNg0l244xnmrQedEN5KZ39sl0cA+lC9I6wXimNr8W6ZC+9omft/6bbc2DD8lBfxw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from MN0PR11MB5963.namprd11.prod.outlook.com (2603:10b6:208:372::10)
+ by MW3PR11MB4697.namprd11.prod.outlook.com (2603:10b6:303:2c::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.29; Fri, 16 Jun
+ 2023 16:55:55 +0000
+Received: from MN0PR11MB5963.namprd11.prod.outlook.com
+ ([fe80::6984:19a5:fe1c:dfec]) by MN0PR11MB5963.namprd11.prod.outlook.com
+ ([fe80::6984:19a5:fe1c:dfec%7]) with mapi id 15.20.6500.029; Fri, 16 Jun 2023
+ 16:55:54 +0000
+From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+To: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"rppt@kernel.org" <rppt@kernel.org>
+Subject: Re: [PATCH v2 06/12] mm/execmem: introduce execmem_data_alloc()
+Thread-Topic: [PATCH v2 06/12] mm/execmem: introduce execmem_data_alloc()
+Thread-Index: AQHZoC/TR3JgcIuStE2G0Xd9KghheK+NpnKA
+Date: Fri, 16 Jun 2023 16:55:53 +0000
+Message-ID: <90a64b6f040491da16af0694172a6cbdaba33669.camel@intel.com>
+References: <20230616085038.4121892-1-rppt@kernel.org>
+	 <20230616085038.4121892-7-rppt@kernel.org>
+In-Reply-To: <20230616085038.4121892-7-rppt@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.44.4-0ubuntu1 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MN0PR11MB5963:EE_|MW3PR11MB4697:EE_
+x-ms-office365-filtering-correlation-id: 5b3da7c8-1546-4167-f029-08db6e8a8c34
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 55tymwny0+p9AJrKuV6Lw9CTmKI2ItrnVOstrECWigv9Z8cjWvqSfeaHWQSUGW5VU+mfWIG70rMyttZ4EwUgfMSBR60zyCn9smiGC8YCcUF9fASq/sC8Cf2dDIhithsBz5Pv3FICtzSk8YB9Zy6t+fjAjTY3WFEcUEpLYsXokYmKWva3797Cuef1kpDYCqUXOwnCkMsyPHXxoOjJ9K8kxRC5IZQs/sp1uhaQ96/0lfABWqm8JzoRMTX4njLk8N8x7zKahweTPSQQpeIJZlqaPehuz+tjJWsFaOaBpCf/9MxW2f/Zdg34HyKEakHRwPelRpxZTl6XnoAfILl4qjk7VHWnEIn45mflQ88cnbto+XP8To0FsI7A9yitE7wAos5Z/Nhitl0w/BDdicTSi9b00kfMVBLSNw1qutwPd7+O6rqImZeoBea0Izxc7C00bjhNQBI3I4BrR3icZ/8zLO+vFqr15e/7HLRkTZoKRQF00ZsutWPPAA7Lq/Sld7ITjrMrLcU3r7xzpraFc1dU+lhwUDI8PERloI68A5kU3/DKilTBOiDW/cjVfh1sRC8Yh34F/bABmj8G78GVUV/+ee6mjIdta/q3/kArkkrK2q1g/VDGIkmd2VetbOxFwzTPjuL1
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR11MB5963.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(39860400002)(136003)(366004)(396003)(346002)(376002)(451199021)(2616005)(71200400001)(26005)(186003)(6506007)(6512007)(54906003)(478600001)(110136005)(6486002)(38070700005)(82960400001)(38100700002)(86362001)(122000001)(7406005)(8676002)(8936002)(7416002)(41300700001)(5660300002)(76116006)(316002)(4326008)(66946007)(66446008)(66476007)(66556008)(4744005)(2906002)(64756008)(91956017)(36756003);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?VlNzbFFxSis4ZmpHV0ZCYXQyTFNsVFY2NnVoOHV1OXpnSjVxTVVNVlg4VlNX?=
+ =?utf-8?B?ejdRVnZJWFVMUmpuM2ZxbXZvd2hNdlN4aWxCV2VuTGE3WU8xSXpzVWJvY2xR?=
+ =?utf-8?B?bVU4cE0wSitZMms2SEFURzlwN2NDTnQ3TnBCNEhodkdtYkdETTVGWjA1emVY?=
+ =?utf-8?B?VlgvTGRHU3JRRnc3NEJ0eUp4Skdpd0x6VXYrRitKS1dFM3VGMk5yZWxWbmxB?=
+ =?utf-8?B?SklVUENkaXJjY0tGRmxZNmRKNi9hQnJHa040WUFYamZmZzFmRklaZVRBNkc4?=
+ =?utf-8?B?dkhZOGdTb052NHUrYkM0VE9rOExuQXJjeXlERllVeWNENDllMWgrc2FwUDhG?=
+ =?utf-8?B?STEwSzdUVDR0bVhiOGZXdjZTV2JWdy9GY0VLeXA1V1grNE1ZVldnNGIybUJr?=
+ =?utf-8?B?ajFycDVEd3RrSXBUZHhCeVR3R2JLWXB5ZWFnU2NsS3AxY0c0UlB4S3hrUDJP?=
+ =?utf-8?B?OWJhTWRtaU0wSXloc0sxek01cFp3VXMyc21QV2ZIa1BObjRNdkwyVHJXTmo4?=
+ =?utf-8?B?WFhUa1lNKzZLem9nbnJEVk9NQ0loWHJ2RE13U0J3aUV6eEMrRnFTWEQwMlg5?=
+ =?utf-8?B?ZjJ4WjhDU0U4WDUwNEJpWU9wcXBwcm04NVJ2VEJsTXVBVzNaSVJBSENjWTR6?=
+ =?utf-8?B?VGdnaDNlTWNURzJNd1dvUnliaUQzUVlHZHVOalUxaDhtdk94UEVtZ2NaWk9a?=
+ =?utf-8?B?M1FFa3dDVEllK205NnlKd3VPTVMwNm1oZ2o5RVIrcjlsWGpYa2hDNkx4WEM2?=
+ =?utf-8?B?cVZiaHRGbEZ2T3JvVE1aQ2ZhQ2NETkpONEVmT0w2Z3FZTXVwZUVZT2lzeUF1?=
+ =?utf-8?B?N3orcnhNZ2ZyYVQ5aTVHdUM5R2Y1UmxjWHdQdFd1ckhoM1JYbnZ5QzVVeWlv?=
+ =?utf-8?B?Z3Y0UWlHb3ZHb1NWNkVIL3dvZVF4T21pRGRtZnRGT01idDE4Q0pTTVMzY0gw?=
+ =?utf-8?B?QzJaWUR5eERKSzRsNStsZ3oxeFd4Tm1uazNuWDNpTnJMdnFIV1pOVnFyMnhF?=
+ =?utf-8?B?M3FaeFBLRkd6bEt0Y1FNTkE5ZlZmWWVEdEx3N1ZBR3hUWUFYRzVob2ZKSy9U?=
+ =?utf-8?B?Nkt3TWtCbDFWd0thdGFLMGN1NmpnMGxBUTZ6S21wVldZejRCeUR2YUw1aTNz?=
+ =?utf-8?B?aE81elRTSVVQejlRZGpKL2Z4Nk05ZjluVUUyWHBGaUV4cXJTTWxlWWZZUWFo?=
+ =?utf-8?B?WUJVTVFTeWhHZEJoWG50Ykg1QTRkaDdwa1dOU0VBZnIrNHZMSUo1Y1VQbDFP?=
+ =?utf-8?B?SExGWmFUbkcxMmVQTW5EU3psNTg1ZTVVbExMT1lUdkRlTHNLakl4azBYM0JI?=
+ =?utf-8?B?T2RBQ2tsWisyUU1VTzNFMW1VeFQvRWVvWEh3NXp5Tjl3SE9HK3AxZmNqVXhs?=
+ =?utf-8?B?Q3RkdSt6djh4TkFLeU1sZWcvMnlvVWNIOWRTSjkzQnN3ZXI4WUkrd1FXZXBG?=
+ =?utf-8?B?UmRtWVBmSnAzSjZ5UU93M2VabU1PS2FPbi9vVnhzR25vSjducmJ6V0cvUXlJ?=
+ =?utf-8?B?S1dPQldkRitHTUxpUHlHUVN3ZUU0TTkxQmFlOUMrcTIyU2FWMjVPcHh5K0ZP?=
+ =?utf-8?B?aGRWUCtJOEFzdUFlVjMrZ0t0RWxLSHZGNElvWDNXYitjTGxiZEVzblZVQW5Y?=
+ =?utf-8?B?S3RLRis1aVYrbnhsRjdrcE13YnI3MGxGb2xjL2xpY2RtVVVNcXBaeUVSUlZn?=
+ =?utf-8?B?azFod1BHUmZKSmNiTWp4V1ZWOHJFeUVVMHlCNlAvWTFtU085WC9yTFM3dEpH?=
+ =?utf-8?B?dkk5MmpCTDBiZ2pLZlhaVkh4K1VUZTBrY3NiVXVpL2lpZ2lMWXJ6ZmMxYjJs?=
+ =?utf-8?B?SEJ0ZEs2cFNESjZLdjBWOEJmS1FFRkdndU9YNG8wUEpocXBhZ2ljeDZxSVJR?=
+ =?utf-8?B?MXVObHYyOTBrR2xHNGdZZVlDd1JpanlXYnlGYWE3OG53K1B4dFlOaDgrRnlZ?=
+ =?utf-8?B?RHpiY1Z3cTFsSk9Bc0NDVlhkSjlmYmlvbWQzYjMwOFpVMzZPNTlYSGMxdDdB?=
+ =?utf-8?B?dVRoWlJjMDVEa1Q3K3dNQU1NeVp6SStycVI0ZEZmdmU2dGNvaXRPdTRtbmlO?=
+ =?utf-8?B?WHZwOTB1ZGZYN0phUjJFMGlTSC90OFIyVHFpN2R6YUI0RllGN1QvY3h2OEo4?=
+ =?utf-8?B?aks1d2JhQUFETThkWUJCK3crOUFZeEl5VGcwY3F3RkIxc1ZyR1hXSGp2Nm95?=
+ =?utf-8?B?OHc9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <296480AEB1784F438AF55677428C8428@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20230616150618.6073-1-pmladek@suse.com> <20230616150618.6073-5-pmladek@suse.com>
-In-Reply-To: <20230616150618.6073-5-pmladek@suse.com>
-From: Doug Anderson <dianders@chromium.org>
-Date: Fri, 16 Jun 2023 09:48:06 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=U=ox4ApMbDL7v=ivNF6x=UyG=dd4MU_Dt0rppNCEwCpw@mail.gmail.com>
-Message-ID: <CAD=FV=U=ox4ApMbDL7v=ivNF6x=UyG=dd4MU_Dt0rppNCEwCpw@mail.gmail.com>
-Subject: Re: [PATCH v2 4/6] watchdog/hardlockup: Make HAVE_NMI_WATCHDOG sparc64-specific
-To: Petr Mladek <pmladek@suse.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB5963.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5b3da7c8-1546-4167-f029-08db6e8a8c34
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Jun 2023 16:55:53.8380
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: djtwhzK5rIuDoNODv1diC0gNewajiVZ3/uT8OfCTcgK3MGfFfnfk6NQh4QGrKI8Mn/9WaTKi1BcoE2Fi1Wv+cbhC/2Z1m3nfYDGQ4vxU7DA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR11MB4697
+X-OriginatorOrg: intel.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,136 +171,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kgdb-bugreport@lists.sourceforge.net, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-perf-users@vger.kernel.org, sparclinux@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
+Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>, "x86@kernel.org" <x86@kernel.org>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>, "song@kernel.org" <song@kernel.org>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "nadav.amit@gmail.com" <nadav.amit@gmail.com>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, "deller@gmx.de" <deller@gmx.de>, "chenhuacai@kernel.org" <chenhuacai@kernel.org>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>, "naveen.n.rao@linux.ibm.com" <naveen.n.rao@linux.ibm.com>, "linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>, "will@kernel.org" <will@kernel.org>, "hca@linux.ibm.com" <hca@linux.ibm.com>, "rostedt@goodmis.org" <rostedt@goodmis.org>, "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, "tglx@linutronix.de" <tglx@linutronix.de>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>, "puranjay12@gmail.com" <puranjay12@gmail.com>, "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "kent.overstreet@linux.dev" <kent.overstreet@linux.dev>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "dinguyen@kernel.org" <dinguyen@kernel.org>, "mcgrof@kernel.org" <mcgrof@kernel.org>, "palmer@dabbelt.com" <palmer@dabbelt.com>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "davem@davemloft.net" <davem@davemloft.net>, "linux-modules@vger.kernel.org" <linux-modules@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
-
-On Fri, Jun 16, 2023 at 8:07=E2=80=AFAM Petr Mladek <pmladek@suse.com> wrot=
-e:
->
-> There are several hardlockup detector implementations and several Kconfig
-> values which allow selection and build of the preferred one.
->
-> CONFIG_HARDLOCKUP_DETECTOR was introduced by the commit 23637d477c1f53acb
-> ("lockup_detector: Introduce CONFIG_HARDLOCKUP_DETECTOR") in v2.6.36.
-> It was a preparation step for introducing the new generic perf hardlockup
-> detector.
->
-> The existing arch-specific variants did not support the to-be-created
-> generic build configurations, sysctl interface, etc. This distinction
-> was made explicit by the commit 4a7863cc2eb5f98 ("x86, nmi_watchdog:
-> Remove ARCH_HAS_NMI_WATCHDOG and rely on CONFIG_HARDLOCKUP_DETECTOR")
-> in v2.6.38.
->
-> CONFIG_HAVE_NMI_WATCHDOG was introduced by the commit d314d74c695f967e105
-> ("nmi watchdog: do not use cpp symbol in Kconfig") in v3.4-rc1. It replac=
-ed
-> the above mentioned ARCH_HAS_NMI_WATCHDOG. At that time, it was still use=
-d
-> by three architectures, namely blackfin, mn10300, and sparc.
->
-> The support for blackfin and mn10300 architectures has been completely
-> dropped some time ago. And sparc is the only architecture with the histor=
-ic
-> NMI watchdog at the moment.
->
-> And the old sparc implementation is really special. It is always built on
-> sparc64. It used to be always enabled until the commit 7a5c8b57cec93196b
-> ("sparc: implement watchdog_nmi_enable and watchdog_nmi_disable") added
-> in v4.10-rc1.
->
-> There are only few locations where the sparc64 NMI watchdog interacts
-> with the generic hardlockup detectors code:
->
->   + implements arch_touch_nmi_watchdog() which is called from the generic
->     touch_nmi_watchdog()
->
->   + implements watchdog_hardlockup_enable()/disable() to support
->     /proc/sys/kernel/nmi_watchdog
->
->   + is always preferred over other generic watchdogs, see
->     CONFIG_HARDLOCKUP_DETECTOR
->
->   + includes asm/nmi.h into linux/nmi.h because some sparc-specific
->     functions are needed in sparc-specific code which includes
->     only linux/nmi.h.
->
-> The situation became more complicated after the commit 05a4a95279311c3
-> ("kernel/watchdog: split up config options") and commit 2104180a53698df5
-> ("powerpc/64s: implement arch-specific hardlockup watchdog") in v4.13-rc1=
-.
-> They introduced HAVE_HARDLOCKUP_DETECTOR_ARCH. It was used for powerpc
-> specific hardlockup detector. It was compatible with the perf one
-> regarding the general boot, sysctl, and programming interfaces.
->
-> HAVE_HARDLOCKUP_DETECTOR_ARCH was defined as a superset of
-> HAVE_NMI_WATCHDOG. It made some sense because all arch-specific
-> detectors had some common requirements, namely:
->
->   + implemented arch_touch_nmi_watchdog()
->   + included asm/nmi.h into linux/nmi.h
->   + defined the default value for /proc/sys/kernel/nmi_watchdog
->
-> But it actually has made things pretty complicated when the generic
-> buddy hardlockup detector was added. Before the generic perf detector
-> was newer supported together with an arch-specific one. But the buddy
-> detector could work on any SMP system. It means that an architecture
-> could support both the arch-specific and buddy detector.
->
-> As a result, there are few tricky dependencies. For example,
-> CONFIG_HARDLOCKUP_DETECTOR depends on:
->
->   ((HAVE_HARDLOCKUP_DETECTOR_PERF || HAVE_HARDLOCKUP_DETECTOR_BUDDY) && !=
-HAVE_NMI_WATCHDOG) || HAVE_HARDLOCKUP_DETECTOR_ARCH
->
-> The problem is that the very special sparc implementation is defined as:
->
->   HAVE_NMI_WATCHDOG && !HAVE_HARDLOCKUP_DETECTOR_ARCH
->
-> Another problem is that the meaning of HAVE_NMI_WATCHDOG is far from clea=
-r
-> without reading understanding the history.
->
-> Make the logic less tricky and more self-explanatory by making
-> HAVE_NMI_WATCHDOG specific for the sparc64 implementation. And rename it =
-to
-> HAVE_HARDLOCKUP_DETECTOR_SPARC64.
->
-> Note that HARDLOCKUP_DETECTOR_PREFER_BUDDY, HARDLOCKUP_DETECTOR_PERF,
-> and HARDLOCKUP_DETECTOR_BUDDY may conflict only with
-> HAVE_HARDLOCKUP_DETECTOR_ARCH. They depend on HARDLOCKUP_DETECTOR
-> and it is not longer enabled when HAVE_NMI_WATCHDOG is set.
->
-> Signed-off-by: Petr Mladek <pmladek@suse.com>
->
-> watchdog/sparc64: Rename HAVE_NMI_WATCHDOG to HAVE_HARDLOCKUP_WATCHDOG_SP=
-ARC64
->
-> The configuration variable HAVE_NMI_WATCHDOG has a generic name but
-> it is selected only for SPARC64.
->
-> It should _not_ be used in general because it is not integrated with
-> the other hardlockup detectors. Namely, it does not support the hardlocku=
-p
-> specific command line parameters and systcl interface. Instead, it is
-> enabled/disabled together with the softlockup detector by the global
-> "watchdog" sysctl.
->
-> Rename it to HAVE_HARDLOCKUP_WATCHDOG_SPARC64 to make the special
-> behavior more clear.
->
-> Also the variable is set only on sparc64. Move the definition
-> from arch/Kconfig to arch/sparc/Kconfig.debug.
->
-> Signed-off-by: Petr Mladek <pmladek@suse.com>
-
-I think you goofed up when squashing the patches. You've now got a
-second patch subject after your first Signed-off-by and then a second
-Signed-off-by... I assume everything after the first Signed-off-by
-should be dropped?
-
-Other than that:
-
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
+T24gRnJpLCAyMDIzLTA2LTE2IGF0IDExOjUwICswMzAwLCBNaWtlIFJhcG9wb3J0IHdyb3RlOg0K
+PiBGcm9tOiAiTWlrZSBSYXBvcG9ydCAoSUJNKSIgPHJwcHRAa2VybmVsLm9yZz4NCj4gDQo+IERh
+dGEgcmVsYXRlZCB0byBjb2RlIGFsbG9jYXRpb25zLCBzdWNoIGFzIG1vZHVsZSBkYXRhIHNlY3Rp
+b24sIG5lZWQNCj4gdG8NCj4gY29tcGx5IHdpdGggYXJjaGl0ZWN0dXJlIGNvbnN0cmFpbnRzIGZv
+ciBpdHMgcGxhY2VtZW50IGFuZCBpdHMNCj4gYWxsb2NhdGlvbiByaWdodCBub3cgd2FzIGRvbmUg
+dXNpbmcgZXhlY21lbV90ZXh0X2FsbG9jKCkuDQo+IA0KPiBDcmVhdGUgYSBkZWRpY2F0ZWQgQVBJ
+IGZvciBhbGxvY2F0aW5nIGRhdGEgcmVsYXRlZCB0byBjb2RlDQo+IGFsbG9jYXRpb25zDQo+IGFu
+ZCBhbGxvdyBhcmNoaXRlY3R1cmVzIHRvIGRlZmluZSBhZGRyZXNzIHJhbmdlcyBmb3IgZGF0YQ0K
+PiBhbGxvY2F0aW9ucy4NCg0KUmlnaHQgbm93IHRoZSBjcm9zcy1hcmNoIHdheSB0byBzcGVjaWZ5
+IGtlcm5lbCBtZW1vcnkgcGVybWlzc2lvbnMgaXMNCmVuY29kZWQgaW4gdGhlIGZ1bmN0aW9uIG5h
+bWVzIG9mIGFsbCB0aGUgc2V0X21lbW9yeV9mb28oKSdzLiBZb3UgY2FuJ3QNCmp1c3QgaGF2ZSB1
+bmlmaWVkIHByb3QgbmFtZXMgYmVjYXVzZSBzb21lIGFyY2gncyBoYXZlIE5YIGFuZCBzb21lIGhh
+dmUNClggYml0cywgZXRjLiBDUEEgd291bGRuJ3Qga25vdyBpZiBpdCBuZWVkcyB0byBzZXQgb3Ig
+dW5zZXQgYSBiaXQgaWYgeW91DQpwYXNzIGluIGEgUFJPVC4NCg0KQnV0IHRoZW4geW91IGVuZCB1
+cCB3aXRoIGEgbmV3IGZ1bmN0aW9uIGZvciAqZWFjaCogY29tYmluYXRpb24gKGkuZS4NCnNldF9t
+ZW1vcnlfcm94KCkpLiBJIHdpc2ggQ1BBIGhhcyBmbGFncyBsaWtlIG1tYXAoKSBkb2VzLCBhbmQg
+SSB3b25kZXINCmlmIGl0IG1ha2VzIHNlbnNlIGhlcmUgaW5zdGVhZCBvZiBleGVjbWVtX2RhdGFf
+YWxsb2MoKS4NCg0KTWF5YmUgdGhhdCBpcyBhbiBvdmVyaGF1bCBmb3IgYW5vdGhlciBkYXkgdGhv
+dWdoLi4uDQo=
