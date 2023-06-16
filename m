@@ -1,59 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B458732DC5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 12:27:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62612732F61
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 13:04:17 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QxF0fuYN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dQayLtCO;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QjFjF3Vl4z3bpK
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 20:27:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QjGWM1fjXz3bng
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 21:04:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QxF0fuYN;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dQayLtCO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QjFhM2Tq8z3bXw
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jun 2023 20:26:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QjGVS1ZDcz304M
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jun 2023 21:03:28 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 7883E62544;
-	Fri, 16 Jun 2023 10:26:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D193C433C9;
-	Fri, 16 Jun 2023 10:26:55 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 9FC6162134;
+	Fri, 16 Jun 2023 11:03:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B03CC433C8;
+	Fri, 16 Jun 2023 11:03:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1686911216;
-	bh=qM1zyWhIcnuGdrWVUOFioXZD/zskQZe1GJXMqbI3dQE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QxF0fuYN70eK0b265nEwb13m9ALRLmzWnxTz7ru5zSgqkS4Lz06Ni8wHIUDclBQ1I
-	 TSJjvL2tT8JCcS9fGT1kI4n1XB+IcKkWJbZjpQv02hP3M2F+oJ30F0EaVe9rSQLRnm
-	 jyYXADPEyHVN3QUBgZZ5/opiX99uNjzgiSj8VmDvT5Ik40aw4QfQ5D1cgirOCm7POZ
-	 JXeSZEB89n+2M6JKEF5Tz18+m0hPk7yp1dl/31NiM5xfro6QMzHPgYy4g/wwwUMkW+
-	 ySsqmlrzkWPR0nydx3Gc3+lTUIIBy2eTaV48UQbGUxn3fAflUjhADRvmGtPhhnS7by
-	 ZY+XU+Z4+Plgw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 15/26] ASoC: fsl_sai: Enable BCI bit if SAI works on synchronous mode with BYP asserted
-Date: Fri, 16 Jun 2023 06:26:12 -0400
-Message-Id: <20230616102625.673454-15-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230616102625.673454-1-sashal@kernel.org>
-References: <20230616102625.673454-1-sashal@kernel.org>
+	s=k20201202; t=1686913404;
+	bh=K3lFwyOnVKe+TMdTvX27i4bzBi+CYkU0SDSmg004bso=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=dQayLtCOyPqzP2H1hF4KitPWW/+uNGDZJ1aD7SYu4gFeE3ZHAtwwiBdB/B87hZrKG
+	 YDZ5KkNAP8/lXLyFDd5YkbSyhVqw+JqmEPc+7ZvoKlpZLca9X+eYIkbIFLirZqvAnt
+	 KIa/Mu/ZJh+wh34K+cvjlQ0CvGvGSF+R5MApYS8ZcnTmFLc7vRwEwRxNB+1BXmv3xN
+	 YjxGPq/P8G+rnYxYNiZaE1bcyh+8nrsPxLXcRZXufcNwF5SxX3AiQ+RwOetQvww38G
+	 K+AOoh0b115OU+XpyuX6Ozj2Z3fMb1zxTOUq9nQWKcGvA3jxKD89QNj7f+eh8Uj+jE
+	 yMEYM5KMxRqUw==
+Date: Fri, 16 Jun 2023 16:28:53 +0530
+From: Naveen N Rao <naveen@kernel.org>
+Subject: Re: ppc64le vmlinuz is huge when building with BTF
+To: Alan Maguire <alan.maguire@oracle.com>, Dominique Martinet
+	<asmadeus@codewreck.org>
+References: <ZIqGSJDaZObKjLnN@codewreck.org> <ZIrONqGJeATpbg3Y@krava>
+	<ZIr7aaVpOaP8HjbZ@codewreck.org>
+	<6b26dfef-016c-43df-07f5-c2f88157d1dc@oracle.com>
+	<ZIt11crcIjfyeygA@codewreck.org>
+In-Reply-To: <ZIt11crcIjfyeygA@codewreck.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.34
-Content-Transfer-Encoding: 8bit
+User-Agent: astroid/0.16.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1686912543.c6zqyw5s4x.naveen@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,74 +66,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, alsa-devel@alsa-project.org, Xiubo.Lee@gmail.com, linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, lgirdwood@gmail.com, perex@perex.cz, Mark Brown <broonie@kernel.org>, Chancel Liu <chancel.liu@nxp.com>, Shengjiu Wang <shengjiu.wang@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, bpf@vger.kernel.org, Jiri Olsa <olsajiri@gmail.com>, dwarves@vger.kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Chancel Liu <chancel.liu@nxp.com>
+[Cc linuxppc-dev]
 
-[ Upstream commit 32cf0046a652116d6a216d575f3049a9ff9dd80d ]
+Dominique Martinet wrote:
+>=20
+> Alan Maguire wrote on Thu, Jun 15, 2023 at 03:31:49PM +0100:
+>> However the problem I suspect is this:
+>>=20
+>>  51 .debug_info   0a488b55  0000000000000000  0000000000000000  026f8d20
+>>  2**0
+>>                   CONTENTS, READONLY, DEBUGGING
+>> [...]
+>>=20
+>> The debug info hasn't been stripped, so I suspect the packaging spec
+>> file or equivalent - in perhaps trying to preserve the .BTF section -
+>> is preserving debug info too. DWARF needs to be there at BTF
+>> generation time in vmlinux but is usually stripped for non-debug
+>> packages.
+>=20
+> Thanks Alan and Eduard!
+> I guess I should have checked that first, it helps.
+>=20
+> We're not stripping anything in vmlinuz for other archs -- the linker
+> script already should be including only the bare minimum to decompress
+> itself (+compressed useful bits), so I guess it's a Kbuild issue for the
+> arch.
 
-There's an issue on SAI synchronous mode that TX/RX side can't get BCLK
-from RX/TX it sync with if BYP bit is asserted. It's a workaround to
-fix it that enable SION of IOMUX pad control and assert BCI.
+For a related discussion, see:
+http://lore.kernel.org/CAK18DXZKs2PNmLndeGYqkPxmrrBR=3D6ca3bhyYCj=3DGhyA7dH=
+fAQ@mail.gmail.com
 
-For example if TX sync with RX which means both TX and RX are using clk
-form RX and BYP=1. TX can get BCLK only if the following two conditions
-are valid:
-1. SION of RX BCLK IOMUX pad is set to 1
-2. BCI of TX is set to 1
+> We can add a strip but I unfortunately have no way of testing ppc build,
+> I'll ask around the build linux-kbuild and linuxppc-dev lists if that's
+> expected; it shouldn't be that bad now that's figured out.
 
-Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
-Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
-Link: https://lore.kernel.org/r/20230530103012.3448838-1-chancel.liu@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- sound/soc/fsl/fsl_sai.c | 11 +++++++++--
- sound/soc/fsl/fsl_sai.h |  1 +
- 2 files changed, 10 insertions(+), 2 deletions(-)
+Stripping vmlinux would indeed be the way to go. As mentioned in the=20
+above link, fedora also packages a strip'ed vmlinux for ppc64le:
+https://src.fedoraproject.org/rpms/kernel/blob/4af17bffde7a1eca9ab164e5de0e=
+391c277998a4/f/kernel.spec#_1797
 
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-index 6d88af5b287fe..b33104715c7ba 100644
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -491,14 +491,21 @@ static int fsl_sai_set_bclk(struct snd_soc_dai *dai, bool tx, u32 freq)
- 	regmap_update_bits(sai->regmap, reg, FSL_SAI_CR2_MSEL_MASK,
- 			   FSL_SAI_CR2_MSEL(sai->mclk_id[tx]));
- 
--	if (savediv == 1)
-+	if (savediv == 1) {
- 		regmap_update_bits(sai->regmap, reg,
- 				   FSL_SAI_CR2_DIV_MASK | FSL_SAI_CR2_BYP,
- 				   FSL_SAI_CR2_BYP);
--	else
-+		if (fsl_sai_dir_is_synced(sai, adir))
-+			regmap_update_bits(sai->regmap, FSL_SAI_xCR2(tx, ofs),
-+					   FSL_SAI_CR2_BCI, FSL_SAI_CR2_BCI);
-+		else
-+			regmap_update_bits(sai->regmap, FSL_SAI_xCR2(tx, ofs),
-+					   FSL_SAI_CR2_BCI, 0);
-+	} else {
- 		regmap_update_bits(sai->regmap, reg,
- 				   FSL_SAI_CR2_DIV_MASK | FSL_SAI_CR2_BYP,
- 				   savediv / 2 - 1);
-+	}
- 
- 	if (sai->soc_data->max_register >= FSL_SAI_MCTL) {
- 		/* SAI is in master mode at this point, so enable MCLK */
-diff --git a/sound/soc/fsl/fsl_sai.h b/sound/soc/fsl/fsl_sai.h
-index 697f6690068c8..c5423f81e4560 100644
---- a/sound/soc/fsl/fsl_sai.h
-+++ b/sound/soc/fsl/fsl_sai.h
-@@ -116,6 +116,7 @@
- 
- /* SAI Transmit and Receive Configuration 2 Register */
- #define FSL_SAI_CR2_SYNC	BIT(30)
-+#define FSL_SAI_CR2_BCI		BIT(28)
- #define FSL_SAI_CR2_MSEL_MASK	(0x3 << 26)
- #define FSL_SAI_CR2_MSEL_BUS	0
- #define FSL_SAI_CR2_MSEL_MCLK1	BIT(26)
--- 
-2.39.2
+
+- Naveen
 
