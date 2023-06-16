@@ -1,61 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B428733A46
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 22:02:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C41E5733A68
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 22:06:33 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nN/7beEv;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f6jdPi0v;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QjVS81Sgtz3c3F
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Jun 2023 06:02:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QjVY34Lqfz3c2c
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Jun 2023 06:06:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nN/7beEv;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f6jdPi0v;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=song@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QjVRC4RH4z303p
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Jun 2023 06:01:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QjVXB1M3vz304p
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Jun 2023 06:05:46 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 35CF863165
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jun 2023 20:01:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 283C3C4339A
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jun 2023 20:01:23 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 4180A63522
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jun 2023 20:05:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2F22C433C9
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jun 2023 20:05:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1686945683;
-	bh=NNR06pawYLcrluh/DT0ZjxTIOvEpuKGIsr6P52TLsXk=;
+	s=k20201202; t=1686945943;
+	bh=WtL681uu0xgDuNDCtnoYcQSLjySma9uSe62fWHoJUhA=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=nN/7beEvgALVGQkGDEWMU+WqmdryAGMT4sVLSi7IEGH0/JtCnmrU3kw5AqPLNEEt2
-	 b6emvhoGN8eTdLfEDtNYs26stQbDj/4s/lj/H7doGiv19RIkQeGdhKyNqG1Qjo7N6h
-	 zQTAaJBX00GGP97q/gkRiV+5kyjXHPHnjAye9DI90OZEFDTXx9TQNSqKb0n9w0bzYW
-	 yxHLnA4zTvHmfaAjtSOfNR3JJPDo/DMYbNlXcfilvYl1IRgxPyH9NdLZUlPRpYsdUE
-	 wHxG+Bo6kDlJfk/kU/gHZcMukITMi2cUkAY5BsjH4quq3iBvEGr92lAorvbxrlQ5vA
-	 zG5Aco1x2X+Sg==
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-4f766777605so1569611e87.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jun 2023 13:01:23 -0700 (PDT)
-X-Gm-Message-State: AC+VfDy/7noCtyZOaNgUTago5GQE+qk2Vf7O8UfgE+mWu4cVhUuj0+0R
-	nglo2kWVWsIN1v6mN4ucBPE6t/DzrmV87vSaCw4=
-X-Google-Smtp-Source: ACHHUZ5JqRMNnpRMFCyZiMjc+UWPs6A2cx1mTw/2r3SQw3woyTfRJjaUEkhnoXK7xbHKeHI/ilSSCGbka/vlr73Fo7g=
-X-Received: by 2002:a05:6512:60a:b0:4f8:5635:2ccf with SMTP id
- b10-20020a056512060a00b004f856352ccfmr2048673lfe.8.1686945680955; Fri, 16 Jun
- 2023 13:01:20 -0700 (PDT)
+	b=f6jdPi0vbCVqLqgQDDmD+GO6OBfmTAAnNSnv31ejf0X579gkscpmfn1bTrsu+q2ra
+	 40XK5tgjD4Pn3DEwgEMNXaNpAJoNV7jL4P4r8shZe9dBhyksUMC8rwkwFkvZkFVkCR
+	 IGp3JmtLPxLnrzx47G+lStd1hKB4UgLYKewi3Ki/K5woVsZktBsRAZ2Di1MUFiXRWn
+	 1YkJryPbn+hll4loxeYSz5PcOp11n7V/droF7ZpB0pqIuzSutJSGr0pq7VRjU9BgpD
+	 r54x5CfpgaRK4fVGltSX9D3VAd0D4uJxrcV171/lcN7V+Y7pDOa0WYzp0o27UZTPXi
+	 Y80FFy3waZkgA==
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-4f845060481so1571531e87.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jun 2023 13:05:43 -0700 (PDT)
+X-Gm-Message-State: AC+VfDz4WasTtKPaUM2Y1FgPgk92BnD3oWpjtcaeUHYcQ3JpVEAo7mii
+	WJ8ctUnedkRPZjEcnCqZa+7wP/3a2wvG+vAEx2g=
+X-Google-Smtp-Source: ACHHUZ7v0OG7lj710Dpkky2x3Qwl+xOOMZ2WmKSKGrGJ24Aq4/yPm9YniFAuyGWs2DWPlG6NvD65kdAaVeIKyOd6PQ8=
+X-Received: by 2002:a19:644e:0:b0:4e9:9e45:3470 with SMTP id
+ b14-20020a19644e000000b004e99e453470mr2381818lfj.3.1686945941704; Fri, 16 Jun
+ 2023 13:05:41 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230616085038.4121892-1-rppt@kernel.org> <20230616085038.4121892-7-rppt@kernel.org>
-In-Reply-To: <20230616085038.4121892-7-rppt@kernel.org>
+References: <20230616085038.4121892-1-rppt@kernel.org> <20230616085038.4121892-8-rppt@kernel.org>
+In-Reply-To: <20230616085038.4121892-8-rppt@kernel.org>
 From: Song Liu <song@kernel.org>
-Date: Fri, 16 Jun 2023 13:01:08 -0700
-X-Gmail-Original-Message-ID: <CAPhsuW4J+rFvh9WJVWLZxFHtcYxahYk=NoKYdU9FMibZU8986w@mail.gmail.com>
-Message-ID: <CAPhsuW4J+rFvh9WJVWLZxFHtcYxahYk=NoKYdU9FMibZU8986w@mail.gmail.com>
-Subject: Re: [PATCH v2 06/12] mm/execmem: introduce execmem_data_alloc()
+Date: Fri, 16 Jun 2023 13:05:29 -0700
+X-Gmail-Original-Message-ID: <CAPhsuW6BG2oVrGDOpCKyOEvU9fBOboYYhducv96KUBe276Mvng@mail.gmail.com>
+Message-ID: <CAPhsuW6BG2oVrGDOpCKyOEvU9fBOboYYhducv96KUBe276Mvng@mail.gmail.com>
+Subject: Re: [PATCH v2 07/12] arm64, execmem: extend execmem_params for
+ generated code definitions
 To: Mike Rapoport <rppt@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -74,86 +75,49 @@ Cc: Mark Rutland <mark.rutland@arm.com>, x86@kernel.org, Catalin Marinas <catali
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 16, 2023 at 1:51=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
+On Fri, Jun 16, 2023 at 1:52=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
 te:
 >
 > From: "Mike Rapoport (IBM)" <rppt@kernel.org>
 >
-> Data related to code allocations, such as module data section, need to
-> comply with architecture constraints for its placement and its
-> allocation right now was done using execmem_text_alloc().
+> The memory allocations for kprobes on arm64 can be placed anywhere in
+> vmalloc address space and currently this is implemented with an override
+> of alloc_insn_page() in arm64.
 >
-> Create a dedicated API for allocating data related to code allocations
-> and allow architectures to define address ranges for data allocations.
->
-> Since currently this is only relevant for powerpc variants that use the
-> VMALLOC address space for module data allocations, automatically reuse
-> address ranges defined for text unless address range for data is
-> explicitly defined by an architecture.
->
-> With separation of code and data allocations, data sections of the
-> modules are now mapped as PAGE_KERNEL rather than PAGE_KERNEL_EXEC which
-> was a default on many architectures.
+> Extend execmem_params with a range for generated code allocations and
+> make kprobes on arm64 use this extension rather than override
+> alloc_insn_page().
 >
 > Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
-[...]
->  static void free_mod_mem(struct module *mod)
-> diff --git a/mm/execmem.c b/mm/execmem.c
-> index a67acd75ffef..f7bf496ad4c3 100644
-> --- a/mm/execmem.c
-> +++ b/mm/execmem.c
-> @@ -63,6 +63,20 @@ void *execmem_text_alloc(size_t size)
->                              fallback_start, fallback_end, kasan);
->  }
+> ---
+>  arch/arm64/kernel/module.c         |  9 +++++++++
+>  arch/arm64/kernel/probes/kprobes.c |  7 -------
+>  include/linux/execmem.h            | 11 +++++++++++
+>  mm/execmem.c                       | 14 +++++++++++++-
+>  4 files changed, 33 insertions(+), 8 deletions(-)
 >
-> +void *execmem_data_alloc(size_t size)
-> +{
-> +       unsigned long start =3D execmem_params.modules.data.start;
-> +       unsigned long end =3D execmem_params.modules.data.end;
-> +       pgprot_t pgprot =3D execmem_params.modules.data.pgprot;
-> +       unsigned int align =3D execmem_params.modules.data.alignment;
-> +       unsigned long fallback_start =3D execmem_params.modules.data.fall=
-back_start;
-> +       unsigned long fallback_end =3D execmem_params.modules.data.fallba=
-ck_end;
-> +       bool kasan =3D execmem_params.modules.flags & EXECMEM_KASAN_SHADO=
-W;
-> +
-> +       return execmem_alloc(size, start, end, align, pgprot,
-> +                            fallback_start, fallback_end, kasan);
-> +}
-> +
->  void execmem_free(void *ptr)
->  {
->         /*
-> @@ -101,6 +115,28 @@ static bool execmem_validate_params(struct execmem_p=
-arams *p)
->         return true;
->  }
->
-> +static void execmem_init_missing(struct execmem_params *p)
+> diff --git a/arch/arm64/kernel/module.c b/arch/arm64/kernel/module.c
+> index c3d999f3a3dd..52b09626bc0f 100644
+> --- a/arch/arm64/kernel/module.c
+> +++ b/arch/arm64/kernel/module.c
+> @@ -30,6 +30,13 @@ static struct execmem_params execmem_params =3D {
+>                         .alignment =3D MODULE_ALIGN,
+>                 },
+>         },
+> +       .jit =3D {
+> +               .text =3D {
+> +                       .start =3D VMALLOC_START,
+> +                       .end =3D VMALLOC_END,
+> +                       .alignment =3D 1,
+> +               },
+> +       },
+>  };
 
-Shall we call this execmem_default_init_data?
+This is growing fast. :) We have 3 now: text, data, jit. And it will be
+5 when we split data into rw data, ro data, ro after init data. I wonder
+whether we should still do some type enum here. But we can revisit
+this topic later.
 
-> +{
-> +       struct execmem_modules_range *m =3D &p->modules;
-> +
-> +       if (!pgprot_val(execmem_params.modules.data.pgprot))
-> +               execmem_params.modules.data.pgprot =3D PAGE_KERNEL;
+Other than that
 
-Do we really need to check each of these? IOW, can we do:
-
-if (!pgprot_val(execmem_params.modules.data.pgprot)) {
-       execmem_params.modules.data.pgprot =3D PAGE_KERNEL;
-       execmem_params.modules.data.alignment =3D m->text.alignment;
-       execmem_params.modules.data.start =3D m->text.start;
-       execmem_params.modules.data.end =3D m->text.end;
-       execmem_params.modules.data.fallback_start =3D m->text.fallback_star=
-t;
-      execmem_params.modules.data.fallback_end =3D m->text.fallback_end;
-}
-
-Thanks,
-Song
-
-[...]
+Acked-by: Song Liu <song@kernel.org>
