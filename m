@@ -2,61 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C41E5733A68
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 22:06:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DCF1733A83
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 22:10:10 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f6jdPi0v;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LxCbm5cD;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QjVY34Lqfz3c2c
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Jun 2023 06:06:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QjVdC6GZ5z3bjX
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Jun 2023 06:10:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f6jdPi0v;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LxCbm5cD;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=song@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QjVXB1M3vz304p
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Jun 2023 06:05:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QjVcH2H09z303p
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Jun 2023 06:09:19 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 4180A63522
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jun 2023 20:05:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2F22C433C9
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jun 2023 20:05:43 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 5F14C61059
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jun 2023 20:09:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48325C433D9
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jun 2023 20:09:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1686945943;
-	bh=WtL681uu0xgDuNDCtnoYcQSLjySma9uSe62fWHoJUhA=;
+	s=k20201202; t=1686946156;
+	bh=OgYjmmyzs2EjPHttaKLNX98CAQTU+jc+5TBMU4O7+WI=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=f6jdPi0vbCVqLqgQDDmD+GO6OBfmTAAnNSnv31ejf0X579gkscpmfn1bTrsu+q2ra
-	 40XK5tgjD4Pn3DEwgEMNXaNpAJoNV7jL4P4r8shZe9dBhyksUMC8rwkwFkvZkFVkCR
-	 IGp3JmtLPxLnrzx47G+lStd1hKB4UgLYKewi3Ki/K5woVsZktBsRAZ2Di1MUFiXRWn
-	 1YkJryPbn+hll4loxeYSz5PcOp11n7V/droF7ZpB0pqIuzSutJSGr0pq7VRjU9BgpD
-	 r54x5CfpgaRK4fVGltSX9D3VAd0D4uJxrcV171/lcN7V+Y7pDOa0WYzp0o27UZTPXi
-	 Y80FFy3waZkgA==
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-4f845060481so1571531e87.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jun 2023 13:05:43 -0700 (PDT)
-X-Gm-Message-State: AC+VfDz4WasTtKPaUM2Y1FgPgk92BnD3oWpjtcaeUHYcQ3JpVEAo7mii
-	WJ8ctUnedkRPZjEcnCqZa+7wP/3a2wvG+vAEx2g=
-X-Google-Smtp-Source: ACHHUZ7v0OG7lj710Dpkky2x3Qwl+xOOMZ2WmKSKGrGJ24Aq4/yPm9YniFAuyGWs2DWPlG6NvD65kdAaVeIKyOd6PQ8=
-X-Received: by 2002:a19:644e:0:b0:4e9:9e45:3470 with SMTP id
- b14-20020a19644e000000b004e99e453470mr2381818lfj.3.1686945941704; Fri, 16 Jun
- 2023 13:05:41 -0700 (PDT)
+	b=LxCbm5cDIUCYF8vZ7/LSzW/JsLhlLxX2d0fFu2V1HgTidoI9d4L/VcB0ImMydV0Ee
+	 8YO3x9rZwXIg0Q8DSxAacAiTV2XZF+Tx6U090kqCtI27PsdZZcqcz9z/jPPmjP/BO+
+	 +hkLjrbWsn0v25jP1pDPME4x+2gpLpEY35EjhkIKvEuKe2/3rsozkAcXaNwJmCkb+A
+	 X7bmvsPi5j2j5SwoGSlbvPVi8ziT05b2vTUayZaz5G8lhTX7m8dLb1/JKFPYnoJ/IR
+	 mFM5oymVsHdTAn2VYpKaZ+WPpolrWfQDdRU+ChUXiqnpZHojozka+L/klHYc/ncUUT
+	 POOaZ9hxvTPSA==
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2b3424edd5fso15872841fa.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jun 2023 13:09:16 -0700 (PDT)
+X-Gm-Message-State: AC+VfDyacJGvCealF0heejM11zDxLDMBUJzK9fC+lx+2RNo/CRzguS1s
+	iv40CYE4zdUnrzYDHg5hM9aoT8Y2e45LMBAgbKU=
+X-Google-Smtp-Source: ACHHUZ5jllDYgbNtI+72IVu/75j7amNBljuYpY3fpVnJlR5XF3n+gM7EWdkroNHXMw4vgK3ry1o4z8o6D6rXoRQsv1A=
+X-Received: by 2002:a2e:b705:0:b0:2b4:4a0b:8fad with SMTP id
+ j5-20020a2eb705000000b002b44a0b8fadmr2685993ljo.29.1686946154254; Fri, 16 Jun
+ 2023 13:09:14 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230616085038.4121892-1-rppt@kernel.org> <20230616085038.4121892-8-rppt@kernel.org>
-In-Reply-To: <20230616085038.4121892-8-rppt@kernel.org>
+References: <20230616085038.4121892-1-rppt@kernel.org> <20230616085038.4121892-9-rppt@kernel.org>
+In-Reply-To: <20230616085038.4121892-9-rppt@kernel.org>
 From: Song Liu <song@kernel.org>
-Date: Fri, 16 Jun 2023 13:05:29 -0700
-X-Gmail-Original-Message-ID: <CAPhsuW6BG2oVrGDOpCKyOEvU9fBOboYYhducv96KUBe276Mvng@mail.gmail.com>
-Message-ID: <CAPhsuW6BG2oVrGDOpCKyOEvU9fBOboYYhducv96KUBe276Mvng@mail.gmail.com>
-Subject: Re: [PATCH v2 07/12] arm64, execmem: extend execmem_params for
- generated code definitions
+Date: Fri, 16 Jun 2023 13:09:02 -0700
+X-Gmail-Original-Message-ID: <CAPhsuW4xrU5vfpwOmP6KC2jzVaovjO_-zo+07YvJL3r9masQ2Q@mail.gmail.com>
+Message-ID: <CAPhsuW4xrU5vfpwOmP6KC2jzVaovjO_-zo+07YvJL3r9masQ2Q@mail.gmail.com>
+Subject: Re: [PATCH v2 08/12] riscv: extend execmem_params for kprobes allocations
 To: Mike Rapoport <rppt@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -80,44 +79,88 @@ te:
 >
 > From: "Mike Rapoport (IBM)" <rppt@kernel.org>
 >
-> The memory allocations for kprobes on arm64 can be placed anywhere in
-> vmalloc address space and currently this is implemented with an override
-> of alloc_insn_page() in arm64.
+> RISC-V overrides kprobes::alloc_insn_range() to use the entire vmalloc ar=
+ea
+> rather than limit the allocations to the modules area.
 >
-> Extend execmem_params with a range for generated code allocations and
-> make kprobes on arm64 use this extension rather than override
-> alloc_insn_page().
+> Slightly reorder execmem_params initialization to support both 32 and 64
+> bit variantsi and add definition of jit area to execmem_params to support
+> generic kprobes::alloc_insn_page().
 >
 > Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+
+Acked-by: Song Liu <song@kernel.org>
+
+
 > ---
->  arch/arm64/kernel/module.c         |  9 +++++++++
->  arch/arm64/kernel/probes/kprobes.c |  7 -------
->  include/linux/execmem.h            | 11 +++++++++++
->  mm/execmem.c                       | 14 +++++++++++++-
->  4 files changed, 33 insertions(+), 8 deletions(-)
+>  arch/riscv/kernel/module.c         | 16 +++++++++++++++-
+>  arch/riscv/kernel/probes/kprobes.c | 10 ----------
+>  2 files changed, 15 insertions(+), 11 deletions(-)
 >
-> diff --git a/arch/arm64/kernel/module.c b/arch/arm64/kernel/module.c
-> index c3d999f3a3dd..52b09626bc0f 100644
-> --- a/arch/arm64/kernel/module.c
-> +++ b/arch/arm64/kernel/module.c
-> @@ -30,6 +30,13 @@ static struct execmem_params execmem_params =3D {
->                         .alignment =3D MODULE_ALIGN,
+> diff --git a/arch/riscv/kernel/module.c b/arch/riscv/kernel/module.c
+> index ee5e04cd3f21..cca6ed4e9340 100644
+> --- a/arch/riscv/kernel/module.c
+> +++ b/arch/riscv/kernel/module.c
+> @@ -436,7 +436,7 @@ int apply_relocate_add(Elf_Shdr *sechdrs, const char =
+*strtab,
+>         return 0;
+>  }
+>
+> -#if defined(CONFIG_MMU) && defined(CONFIG_64BIT)
+> +#ifdef CONFIG_MMU
+>  static struct execmem_params execmem_params =3D {
+>         .modules =3D {
+>                 .text =3D {
+> @@ -444,12 +444,26 @@ static struct execmem_params execmem_params =3D {
+>                         .alignment =3D 1,
 >                 },
 >         },
 > +       .jit =3D {
 > +               .text =3D {
-> +                       .start =3D VMALLOC_START,
-> +                       .end =3D VMALLOC_END,
+> +                       .pgprot =3D PAGE_KERNEL_READ_EXEC,
 > +                       .alignment =3D 1,
 > +               },
 > +       },
 >  };
-
-This is growing fast. :) We have 3 now: text, data, jit. And it will be
-5 when we split data into rw data, ro data, ro after init data. I wonder
-whether we should still do some type enum here. But we can revisit
-this topic later.
-
-Other than that
-
-Acked-by: Song Liu <song@kernel.org>
+>
+>  struct execmem_params __init *execmem_arch_params(void)
+>  {
+> +#ifdef CONFIG_64BIT
+>         execmem_params.modules.text.start =3D MODULES_VADDR;
+>         execmem_params.modules.text.end =3D MODULES_END;
+> +#else
+> +       execmem_params.modules.text.start =3D VMALLOC_START;
+> +       execmem_params.modules.text.end =3D VMALLOC_END;
+> +#endif
+> +
+> +       execmem_params.jit.text.start =3D VMALLOC_START;
+> +       execmem_params.jit.text.end =3D VMALLOC_END;
+>
+>         return &execmem_params;
+>  }
+> diff --git a/arch/riscv/kernel/probes/kprobes.c b/arch/riscv/kernel/probe=
+s/kprobes.c
+> index 2f08c14a933d..e64f2f3064eb 100644
+> --- a/arch/riscv/kernel/probes/kprobes.c
+> +++ b/arch/riscv/kernel/probes/kprobes.c
+> @@ -104,16 +104,6 @@ int __kprobes arch_prepare_kprobe(struct kprobe *p)
+>         return 0;
+>  }
+>
+> -#ifdef CONFIG_MMU
+> -void *alloc_insn_page(void)
+> -{
+> -       return  __vmalloc_node_range(PAGE_SIZE, 1, VMALLOC_START, VMALLOC=
+_END,
+> -                                    GFP_KERNEL, PAGE_KERNEL_READ_EXEC,
+> -                                    VM_FLUSH_RESET_PERMS, NUMA_NO_NODE,
+> -                                    __builtin_return_address(0));
+> -}
+> -#endif
+> -
+>  /* install breakpoint in text */
+>  void __kprobes arch_arm_kprobe(struct kprobe *p)
+>  {
+> --
+> 2.35.1
+>
