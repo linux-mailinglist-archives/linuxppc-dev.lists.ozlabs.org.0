@@ -2,91 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9140C7330BC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 14:05:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE0107330DD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 14:10:51 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rJ0CCkKR;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=LSROzQYN;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=Ji86U9fW;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QjHtR3bnJz3bxr
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 22:05:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QjJ095FbLz3bvJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jun 2023 22:10:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rJ0CCkKR;
+	dkim=pass (2048-bit key; secure) header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=LSROzQYN;
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=Ji86U9fW;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=codewreck.org (client-ip=91.121.71.147; helo=nautica.notk.org; envelope-from=asmadeus@codewreck.org; receiver=lists.ozlabs.org)
+X-Greylist: delayed 557 seconds by postgrey-1.37 at boromir; Fri, 16 Jun 2023 22:09:59 AEST
+Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QjHsW6KkTz301V
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jun 2023 22:05:03 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35GC2Lkr022986;
-	Fri, 16 Jun 2023 12:04:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=olZzUnBM/e0N6uqOS2BdEdJT2kmPhsk0clbOlTlXdCc=;
- b=rJ0CCkKRp4LNJYjT8Yerck+ryFBBBSdMcQEBlWrRZC5v7Nu/Cnt64ffdVCnqKOK+rHrD
- wAOyaoTs+Pxd97Ihk5EDYi/JuFG7yPvK5U8Vo4WSdZiQFrCkSE1qetfPcraLVitVNK/z
- f50JbH/e1xX/MoXNhBbeASxqUJrkmiGaW2W7oYonBxZqy3ISKx+EKvrENGqCzsDGGqzz
- oXwt52Sjzg0kvhF+UdyJaNg2yeV0UfDlFC+pTl9U1jxggf9csMJkjkv45/K1a+lH+DIn
- jyE7kC2pWdZa7Fod2CYI0FCF87VqgHF+NBXYljIb2ctjOCAoChdaXsIHyxsTGfUJHlN0 Uw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r8qcs82a6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 16 Jun 2023 12:04:42 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35GC3H3G028054;
-	Fri, 16 Jun 2023 12:04:42 GMT
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r8qcs8276-6
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 16 Jun 2023 12:04:42 +0000
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-	by ppma03dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35FMGLok020557;
-	Fri, 16 Jun 2023 11:09:57 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([9.208.130.100])
-	by ppma03dal.us.ibm.com (PPS) with ESMTPS id 3r4gt529ch-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 16 Jun 2023 11:09:56 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 35GB9tVf2687568
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 16 Jun 2023 11:09:55 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8AB275805D;
-	Fri, 16 Jun 2023 11:09:55 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 46A6358059;
-	Fri, 16 Jun 2023 11:09:49 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.43.52.24])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 16 Jun 2023 11:09:48 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linux-mm@kvack.org, akpm@linux-foundation.org, mpe@ellerman.id.au,
-        linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu
-Subject: [PATCH v2 11/16] mm/huge pud: Use transparent huge pud helpers only with CONFIG_TRANSPARENT_HUGEPAGE
-Date: Fri, 16 Jun 2023 16:38:21 +0530
-Message-Id: <20230616110826.344417-12-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230616110826.344417-1-aneesh.kumar@linux.ibm.com>
-References: <20230616110826.344417-1-aneesh.kumar@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QjHzC3HfZz303p
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jun 2023 22:09:59 +1000 (AEST)
+Received: by nautica.notk.org (Postfix, from userid 108)
+	id 26DBAC01C; Fri, 16 Jun 2023 14:00:28 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1686916828; bh=9nXHLN7zJI9BQgtDSekrm26F4Nn7MWhpt5Ufa49rKNo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LSROzQYN44p1XDf+2jDK6y4IO+3f84MA/dZJKYHr/Cqke4E9x6H2YPKhtGMhlCiZf
+	 LSKh++s9q3FU7h0aEDztd10ZE2W75uaQsM4r/9BvrClupAMJKAofKd6nzdevebCjhf
+	 4amk4tPgKykV3nN1KUnogIjqrxpsdASaoVwvVZ52uZhTGhVJI5ZO9eNNiZLOhSDB2w
+	 mdf0utjm8Fpmf0hLmbmieJlQInSH0labOum3GfIeuErQm91oADQabdiOJyT9BFeCfX
+	 6n1Jkgm79netQvtAUsFIoub+YqcdPkYvsk3utgbLcQ68NtWqW/IfGqSNhmuWjqzhwG
+	 c+IAb/cGE9JQQ==
+X-Spam-Checker-Version: SpamAssassin 3.3.2 (2011-06-06) on nautica.notk.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.0 required=5.0 tests=UNPARSEABLE_RELAY
+	autolearn=unavailable version=3.3.2
+Received: from odin.codewreck.org (localhost [127.0.0.1])
+	by nautica.notk.org (Postfix) with ESMTPS id 6809CC009;
+	Fri, 16 Jun 2023 14:00:24 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1686916826; bh=9nXHLN7zJI9BQgtDSekrm26F4Nn7MWhpt5Ufa49rKNo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ji86U9fWl3Vj1x1scsw7OZ+YWz25a+oPE23lpIo3uvIsNAv0eul8TQ3nO5I+IVFZ0
+	 4oKbGD02L0ekFYO+F9FSLV4fVyO8bshdUTJFvbhW2eUDoebMR1kfOLFaZrrRxR+QWy
+	 ibQOnn1tkHyvDs9+qtJm4L6aQMuW3Niqn713S1K3vE/4VNkj2yviH2j3N62y9h1/j7
+	 xBEVx0tvTgvtQq+dW8HhZYxSPV2vZueokHZuZHnYHiGiHadIvJhD1Mzsvyekp62u+1
+	 6y7dRsPpz4JKx+n98Q9kabbcRWbiR/EdIVhkvQTTbAIifCLBzbnBkXpZ8+greeNbxR
+	 X7ORaZOt40+WA==
+Received: from localhost (odin.codewreck.org [local])
+	by odin.codewreck.org (OpenSMTPD) with ESMTPA id 82db0a7a;
+	Fri, 16 Jun 2023 12:00:21 +0000 (UTC)
+Date: Fri, 16 Jun 2023 21:00:06 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Naveen N Rao <naveen@kernel.org>
+Subject: Re: ppc64le vmlinuz is huge when building with BTF
+Message-ID: <ZIxOxj0Y-kay22Oh@codewreck.org>
+References: <ZIqGSJDaZObKjLnN@codewreck.org>
+ <ZIrONqGJeATpbg3Y@krava>
+ <ZIr7aaVpOaP8HjbZ@codewreck.org>
+ <6b26dfef-016c-43df-07f5-c2f88157d1dc@oracle.com>
+ <ZIt11crcIjfyeygA@codewreck.org>
+ <1686912543.c6zqyw5s4x.naveen@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: frKTnl-WpFRdIDjBFqJxtBQcZz3jswKD
-X-Proofpoint-ORIG-GUID: WMYlyHWFkL4rQ2q3O0j-Mohn2_cm_BLS
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-06-16_08,2023-06-16_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
- suspectscore=0 spamscore=0 clxscore=1015 priorityscore=1501 adultscore=0
- mlxscore=0 lowpriorityscore=0 bulkscore=0 malwarescore=0 impostorscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306160108
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <1686912543.c6zqyw5s4x.naveen@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,54 +80,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Muchun Song <muchun.song@linux.dev>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Dan Williams <dan.j.williams@intel.com>, Oscar Salvador <osalvador@suse.de>, Will Deacon <will@kernel.org>, Joao Martins <joao.m.martins@oracle.com>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Alan Maguire <alan.maguire@oracle.com>, dwarves@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Arnaldo Carvalho de Melo <acme@kernel.org>, bpf@vger.kernel.org, Jiri Olsa <olsajiri@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-pudp_set_wrprotect and move_huge_pud helpers are only used when
-CONFIG_TRANSPARENT_HUGEPAGE is enabled. Similar to pmdp_set_wrprotect and
-move_huge_pmd_helpers use architecture override only if
-CONFIG_TRANSPARENT_HUGEPAGE is set
+Naveen N Rao wrote on Fri, Jun 16, 2023 at 04:28:53PM +0530:
+> > We're not stripping anything in vmlinuz for other archs -- the linker
+> > script already should be including only the bare minimum to decompress
+> > itself (+compressed useful bits), so I guess it's a Kbuild issue for the
+> > arch.
+> 
+> For a related discussion, see:
+> http://lore.kernel.org/CAK18DXZKs2PNmLndeGYqkPxmrrBR=6ca3bhyYCj=GhyA7dHfAQ@mail.gmail.com
 
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- include/linux/pgtable.h | 2 ++
- mm/mremap.c             | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+Thanks, I didn't know that ppc64le boots straight into vmlinux, as 'make
+install' somehow installs something called 'vmlinuz-lts' (-lts coming
+out of localversion afaiu, but vmlinuz would come from the build
+scripts) ; this is somewhat confusing as vmlinuz on other archs is a
+compressed/pre-processed binary so I'd expect it to at least be
+stripped...
 
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 8c5174d1f9db..c7f5806dc9d1 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -550,6 +550,7 @@ static inline void pmdp_set_wrprotect(struct mm_struct *mm,
- #endif
- #ifndef __HAVE_ARCH_PUDP_SET_WRPROTECT
- #ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
- static inline void pudp_set_wrprotect(struct mm_struct *mm,
- 				      unsigned long address, pud_t *pudp)
- {
-@@ -563,6 +564,7 @@ static inline void pudp_set_wrprotect(struct mm_struct *mm,
- {
- 	BUILD_BUG();
- }
-+#endif /* CONFIG_TRANSPARENT_HUGEPAGE */
- #endif /* CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD */
- #endif
- 
-diff --git a/mm/mremap.c b/mm/mremap.c
-index b11ce6c92099..6373db571e5c 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -338,7 +338,7 @@ static inline bool move_normal_pud(struct vm_area_struct *vma,
- }
- #endif
- 
--#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
-+#if defined(CONFIG_TRANSPARENT_HUGEPAGE) && defined(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
- static bool move_huge_pud(struct vm_area_struct *vma, unsigned long old_addr,
- 			  unsigned long new_addr, pud_t *old_pud, pud_t *new_pud)
- {
+> > We can add a strip but I unfortunately have no way of testing ppc build,
+> > I'll ask around the build linux-kbuild and linuxppc-dev lists if that's
+> > expected; it shouldn't be that bad now that's figured out.
+> 
+> Stripping vmlinux would indeed be the way to go. As mentioned in the above
+> link, fedora also packages a strip'ed vmlinux for ppc64le:
+> https://src.fedoraproject.org/rpms/kernel/blob/4af17bffde7a1eca9ab164e5de0e391c277998a4/f/kernel.spec#_1797
+
+It feels somewhat wrong to add a strip just for ppc64le after make
+install, but I guess we probably ought to do the same...
+I don't have any hardware to test booting the result though, I'll submit
+an update and ask for someone to test when it's done.
+(bit busy but that doesn't take long, will do that tomorrow morning
+before I forget)
+
+Thanks!
 -- 
-2.40.1
-
+Dominique Martinet | Asmadeus
