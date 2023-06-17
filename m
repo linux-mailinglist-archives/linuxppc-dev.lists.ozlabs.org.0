@@ -2,56 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F9DB733ED1
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Jun 2023 08:45:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2DC0733EDC
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Jun 2023 08:52:47 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=A0C/04zw;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=P0RFez1E;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qjmkq1W0pz3c3b
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Jun 2023 16:45:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qjmtj5sPdz3bxY
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Jun 2023 16:52:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=A0C/04zw;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=P0RFez1E;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qjmjy0Xxrz30fx
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Jun 2023 16:45:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qjmsr29Hqz30fG
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Jun 2023 16:52:00 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 26EC260204;
-	Sat, 17 Jun 2023 06:45:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC914C433C8;
-	Sat, 17 Jun 2023 06:44:55 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 69FCC60B07;
+	Sat, 17 Jun 2023 06:51:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F5A2C433C0;
+	Sat, 17 Jun 2023 06:51:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1686984307;
-	bh=Uw5cw1TPn0rntsQJRbeXZU+V2i3I8bpFiME/qcflP08=;
+	s=k20201202; t=1686984717;
+	bh=/qKKDaoSMPytALuHQ04GytBWLf/bqmvRcK74ppFE2a8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=A0C/04zwp8Svpx/hprFTuDwIwHJCnHpNRmn2tDdvfcmYt4wp3n7OAxHp5Py33C+kd
-	 4kMHu8FACuUr1jN3jGFObWQ4Pw9NFQKQAIyO/G6pFYoVPUe76lGyVXZO3TQemSokHm
-	 VXxdoS02gSAauNcMun3iVu1Zubv2t9PebDcIDYD6cqQx8/HkOPh4X4/5bVg3dgu6dB
-	 sBHr55LVzNEboL0DRdq7gLRwtJOv/T3RNn91O3Tsgsn70wRNMkVoUNRgpMFOdo78UU
-	 n4UYOHCQfFtBs9Glr8+Avi1tBIrn2kszVYZ167A35xKrcwfLNkZs7DpMC2d48GQpfN
-	 ByDutHlpcGnYg==
-Date: Sat, 17 Jun 2023 09:44:21 +0300
+	b=P0RFez1EfGYRPTyev/ddBuUzPfaI7NYAV3qwPAYDnlRPd3VlORPb9LLwAJNsB7HOD
+	 XaTNoL/vc3WgcVwGzmW11kDKJAUwiH+6/aq1FZDc7+GKKGRDNnH6fEazV3xviU4Xdu
+	 C+/q5uFaTCGSUOqz7wG3tCyqcwsxuFowQGM9EqAXvug3eByaI82gwGU/LAA7W+0x7N
+	 lIyzQgQ47UaYju+tMMa6eYibyB5m2xJlH6icNOvjTXhyI/Ih1KbRLoHwZvr/gyzXyu
+	 vOgqeIZZrqb6yw/imXyF8xZATseZuyfjlfKJVafWUrfVejHNNcMI379QODomewks5q
+	 shTjXZO35vEXQ==
+Date: Sat, 17 Jun 2023 09:51:11 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+To: Song Liu <song@kernel.org>
 Subject: Re: [PATCH v2 06/12] mm/execmem: introduce execmem_data_alloc()
-Message-ID: <20230617064421.GQ52412@kernel.org>
+Message-ID: <20230617065111.GR52412@kernel.org>
 References: <20230616085038.4121892-1-rppt@kernel.org>
  <20230616085038.4121892-7-rppt@kernel.org>
- <90a64b6f040491da16af0694172a6cbdaba33669.camel@intel.com>
+ <CAPhsuW4J+rFvh9WJVWLZxFHtcYxahYk=NoKYdU9FMibZU8986w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <90a64b6f040491da16af0694172a6cbdaba33669.camel@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAPhsuW4J+rFvh9WJVWLZxFHtcYxahYk=NoKYdU9FMibZU8986w@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,53 +64,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>, "x86@kernel.org" <x86@kernel.org>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "song@kernel.org" <song@kernel.org>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "nadav.amit@gmail.com" <nadav.amit@gmail.com>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, "deller@gmx.de" <deller@gmx.de>, "chenhuacai@kernel.org" <chenhuacai@kernel.org>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>, "naveen.n.rao@linux.ibm.com" <naveen.n.rao@linux.ibm.com>, "linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>, "will@kernel.org" <will@kernel.org>, "hca@linux.ibm.com" <hca@linux.ibm.com>, "rostedt@goodmis.org" <rostedt@goodmis.org>, "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, "tglx@linutronix.de" <tglx@linutronix.de>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>, "puranjay12@gmail.com" <puranjay12@gmail.com>, "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "kent.overstreet@linux.dev" <kent.overstreet@linux.dev>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "dinguyen@kernel.org" <dinguyen@kernel.org>, "mcgrof@kernel.org" <mcgrof@kernel.org>, "palmer@dabbelt.com" <palmer@dabbelt.com>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "davem@davemloft.net" <davem@davemloft.net>, "linux-modules@vger.kernel.org" <linux-modules@vger.kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Nadav Amit <nadav.amit@gmail.com>, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linux-trace-kernel@vger.kernel.org, Will Deacon <will@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Puranjay Mohan <puranjay12@gmail.com>, netdev@vger.kernel.org, Kent Overstreet <kent.overstreet@linux.dev>, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, linux-modules@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 16, 2023 at 04:55:53PM +0000, Edgecombe, Rick P wrote:
-> On Fri, 2023-06-16 at 11:50 +0300, Mike Rapoport wrote:
+On Fri, Jun 16, 2023 at 01:01:08PM -0700, Song Liu wrote:
+> On Fri, Jun 16, 2023 at 1:51 AM Mike Rapoport <rppt@kernel.org> wrote:
+> >
 > > From: "Mike Rapoport (IBM)" <rppt@kernel.org>
-> > 
-> > Data related to code allocations, such as module data section, need
-> > to
+> >
+> > Data related to code allocations, such as module data section, need to
 > > comply with architecture constraints for its placement and its
 > > allocation right now was done using execmem_text_alloc().
-> > 
-> > Create a dedicated API for allocating data related to code
-> > allocations
-> > and allow architectures to define address ranges for data
-> > allocations.
+> >
+> > Create a dedicated API for allocating data related to code allocations
+> > and allow architectures to define address ranges for data allocations.
+> >
+> > Since currently this is only relevant for powerpc variants that use the
+> > VMALLOC address space for module data allocations, automatically reuse
+> > address ranges defined for text unless address range for data is
+> > explicitly defined by an architecture.
+> >
+> > With separation of code and data allocations, data sections of the
+> > modules are now mapped as PAGE_KERNEL rather than PAGE_KERNEL_EXEC which
+> > was a default on many architectures.
+> >
+> > Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+> [...]
+> >  static void free_mod_mem(struct module *mod)
+> > diff --git a/mm/execmem.c b/mm/execmem.c
+> > index a67acd75ffef..f7bf496ad4c3 100644
+> > --- a/mm/execmem.c
+> > +++ b/mm/execmem.c
+> > @@ -63,6 +63,20 @@ void *execmem_text_alloc(size_t size)
+> >                              fallback_start, fallback_end, kasan);
+> >  }
+> >
+> > +void *execmem_data_alloc(size_t size)
+> > +{
+> > +       unsigned long start = execmem_params.modules.data.start;
+> > +       unsigned long end = execmem_params.modules.data.end;
+> > +       pgprot_t pgprot = execmem_params.modules.data.pgprot;
+> > +       unsigned int align = execmem_params.modules.data.alignment;
+> > +       unsigned long fallback_start = execmem_params.modules.data.fallback_start;
+> > +       unsigned long fallback_end = execmem_params.modules.data.fallback_end;
+> > +       bool kasan = execmem_params.modules.flags & EXECMEM_KASAN_SHADOW;
+> > +
+> > +       return execmem_alloc(size, start, end, align, pgprot,
+> > +                            fallback_start, fallback_end, kasan);
+> > +}
+> > +
+> >  void execmem_free(void *ptr)
+> >  {
+> >         /*
+> > @@ -101,6 +115,28 @@ static bool execmem_validate_params(struct execmem_params *p)
+> >         return true;
+> >  }
+> >
+> > +static void execmem_init_missing(struct execmem_params *p)
 > 
-> Right now the cross-arch way to specify kernel memory permissions is
-> encoded in the function names of all the set_memory_foo()'s. You can't
-> just have unified prot names because some arch's have NX and some have
-> X bits, etc. CPA wouldn't know if it needs to set or unset a bit if you
-> pass in a PROT.
+> Shall we call this execmem_default_init_data?
 
-The idea is that allocator never uses CPA. It allocates with the
-permissions defined by architecture at the first place and then the callers
-might use CPA to change them. Ideally, that shouldn't be needed for
-anything but ro_after_init, but we are far from there.
-
-> But then you end up with a new function for *each* combination (i.e.
-> set_memory_rox()). I wish CPA has flags like mmap() does, and I wonder
-> if it makes sense here instead of execmem_data_alloc().
-
-I don't think execmem should handle all the combinations. The code is
-always allocated as ROX for architectures that support text poking and as
-RWX for those that don't.
-
-Maybe execmem_data_alloc() will need to able to handle RW and RO data
-differently at some point, but that's the only variant I can think of, but
-even then I don't expect CPA will be used by execmem. 
-
-We also might move resetting the permissions to default from vmalloc to
-execmem, but again, we are far from there.
+This also fills in jit.text (next patch), so _data doesn't work here :)
+And it's not really a default, the defaults are set explicitly for arches
+that don't have execmem_arch_params.
  
-> Maybe that is an overhaul for another day though...
+> > +{
+> > +       struct execmem_modules_range *m = &p->modules;
+> > +
+> > +       if (!pgprot_val(execmem_params.modules.data.pgprot))
+> > +               execmem_params.modules.data.pgprot = PAGE_KERNEL;
+> 
+> Do we really need to check each of these? IOW, can we do:
+> 
+> if (!pgprot_val(execmem_params.modules.data.pgprot)) {
+>        execmem_params.modules.data.pgprot = PAGE_KERNEL;
+>        execmem_params.modules.data.alignment = m->text.alignment;
+>        execmem_params.modules.data.start = m->text.start;
+>        execmem_params.modules.data.end = m->text.end;
+>        execmem_params.modules.data.fallback_start = m->text.fallback_start;
+>       execmem_params.modules.data.fallback_end = m->text.fallback_end;
+> }
 
-CPA surely needs some love :)
+Yes, we can have a single check here.
+ 
+> Thanks,
+> Song
+> 
+> [...]
 
 -- 
 Sincerely yours,
