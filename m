@@ -1,58 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFF18733E7E
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Jun 2023 07:54:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D212733E88
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Jun 2023 07:59:13 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lpj2dpfi;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=B9hc07/U;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qjlbd5ZS5z3c1R
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Jun 2023 15:54:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qjlhv2MB8z3btn
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Jun 2023 15:59:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lpj2dpfi;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=B9hc07/U;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QjlZg59FHz2xdp
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Jun 2023 15:53:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qjlh04k6fz2xdp
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Jun 2023 15:58:24 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id C3DF360F9B;
-	Sat, 17 Jun 2023 05:53:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24536C433C8;
-	Sat, 17 Jun 2023 05:53:30 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 73E2760D2D;
+	Sat, 17 Jun 2023 05:58:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA841C433C8;
+	Sat, 17 Jun 2023 05:58:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1686981222;
-	bh=TluszqxdgR0a0IwbMuuhT/6JAXY40kPgAznuGjSXri0=;
+	s=k20201202; t=1686981501;
+	bh=9SqjLlF2xzEFMDzeUI2FvZ8TQ/VYLeU5U3+d2ag6lCs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lpj2dpfi9Ji3xzZ2kbgOQVYp/ZmysDx8WqNHlHmdTvMZEZsbjfL4hE6m7SXkjz4Zo
-	 Mkq0iog3xkwtSwK3WOjB9XwUu05VRpcB0eogiPxG2WXCBK0aumyezzFkPPpZnGtjc7
-	 5x++BGdF8JI0RHFvISKKMXQLn7exxg6GH1B4T2YCX3C0Zr0t9A89VOCr3b7IhrP+qG
-	 ZzJIZ0zukBYcwghAr54w2jBQdBKljd+YnNYrk8GHhTFw3utqrXxsX2NC3voAWygO8q
-	 svafETOLy9nPtmeHj06Y/0ZWzWAt+idrvmT6go/EJzAEpVusozQOwG5k1TndPIMv23
-	 z+o01h8acz8Lg==
-Date: Sat, 17 Jun 2023 08:52:56 +0300
+	b=B9hc07/UYnnRas23n9bJwWr+pH130gxwd28u02GqPOK/3pfJBCaemAnqVGrkDZJvc
+	 c1CAOIsikGJgqoHvH/7lYMCMhV6ZKfKOSUTWgFsy65h+ShXGvPeLAwohq+3h4qZEdI
+	 4hdYWdRJ1+jHavy8l0eCEiP9dZuoxTKyc1UOJ6v+W6Yd8E12mVMWzVMrv38nPKgPzX
+	 moqJqCymmH/VJkuy+GUQ7PHhVA13ypUE+mj0CzOEMjMShVb3ccT9eDbLaWG8SQqxxA
+	 PHzQL4oLwI3nEQGSA+tdAQmm6prwylQLhbSagwZslqD3uTtetH44zVkHm5GQY4CCKg
+	 LaEhwb1fWA+nA==
+Date: Sat, 17 Jun 2023 08:57:35 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Subject: Re: [PATCH v2 01/12] nios2: define virtual address space for modules
-Message-ID: <20230617055256.GM52412@kernel.org>
+To: Kent Overstreet <kent.overstreet@linux.dev>
+Subject: Re: [PATCH v2 02/12] mm: introduce execmem_text_alloc() and
+ jit_text_alloc()
+Message-ID: <20230617055735.GN52412@kernel.org>
 References: <20230616085038.4121892-1-rppt@kernel.org>
- <20230616085038.4121892-2-rppt@kernel.org>
- <6f9e9c385096bd965e53c49065848953398f5b8e.camel@intel.com>
+ <20230616085038.4121892-3-rppt@kernel.org>
+ <ZIySQgafdTHk5Yet@moria.home.lan>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <6f9e9c385096bd965e53c49065848953398f5b8e.camel@intel.com>
+In-Reply-To: <ZIySQgafdTHk5Yet@moria.home.lan>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,39 +64,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>, "x86@kernel.org" <x86@kernel.org>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "song@kernel.org" <song@kernel.org>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "nadav.amit@gmail.com" <nadav.amit@gmail.com>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, "deller@gmx.de" <deller@gmx.de>, "chenhuacai@kernel.org" <chenhuacai@kernel.org>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>, "naveen.n.rao@linux.ibm.com" <naveen.n.rao@linux.ibm.com>, "linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>, "will@kernel.org" <will@kernel.org>, "hca@linux.ibm.com" <hca@linux.ibm.com>, "rostedt@goodmis.org" <rostedt@goodmis.org>, "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, "tglx@linutronix.de" <tglx@linutronix.de>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>, "puranjay12@gmail.com" <puranjay12@gmail.com>, "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "kent.overstreet@linux.dev" <kent.overstreet@linux.dev>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "dinguyen@kernel.org" <dinguyen@kernel.org>, "mcgrof@kernel.org" <mcgrof@kernel.org>, "palmer@dabbelt.com" <palmer@dabbelt.com>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "davem@davemloft.net" <davem@davemloft.net>, "linux-modules@vger.kernel.org" <linux-modules@vger.kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Nadav Amit <nadav.amit@gmail.com>, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linux-trace-kernel@vger.kernel.org, Will Deacon <will@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Puranjay Mohan <puranjay12@gmail.com>, linux-mm@kvack.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, linux-modules@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 16, 2023 at 04:00:19PM +0000, Edgecombe, Rick P wrote:
-> On Fri, 2023-06-16 at 11:50 +0300, Mike Rapoport wrote:
-> >  void *module_alloc(unsigned long size)
-> >  {
-> > -       if (size == 0)
-> > -               return NULL;
-> > -       return kmalloc(size, GFP_KERNEL);
-> > -}
-> > -
-> > -/* Free memory returned from module_alloc */
-> > -void module_memfree(void *module_region)
-> > -{
-> > -       kfree(module_region);
-> > +       return __vmalloc_node_range(size, 1, MODULES_VADDR,
-> > MODULES_END,
-> > +                                   GFP_KERNEL, PAGE_KERNEL_EXEC,
-> > +                                   VM_FLUSH_RESET_PERMS,
-> > NUMA_NO_NODE,
-> > +                                   __builtin_return_address(0));
-> >  }
-> >  
-> >  int apply_relocate_add(Elf32_Shdr *sechdrs, const char *s
+On Fri, Jun 16, 2023 at 12:48:02PM -0400, Kent Overstreet wrote:
+> On Fri, Jun 16, 2023 at 11:50:28AM +0300, Mike Rapoport wrote:
+> > From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+> > 
+> > module_alloc() is used everywhere as a mean to allocate memory for code.
+> > 
+> > Beside being semantically wrong, this unnecessarily ties all subsystems
+> > that need to allocate code, such as ftrace, kprobes and BPF to modules
+> > and puts the burden of code allocation to the modules code.
+> > 
+> > Several architectures override module_alloc() because of various
+> > constraints where the executable memory can be located and this causes
+> > additional obstacles for improvements of code allocation.
+> > 
+> > Start splitting code allocation from modules by introducing
+> > execmem_text_alloc(), execmem_free(), jit_text_alloc(), jit_free() APIs.
+> > 
+> > Initially, execmem_text_alloc() and jit_text_alloc() are wrappers for
+> > module_alloc() and execmem_free() and jit_free() are replacements of
+> > module_memfree() to allow updating all call sites to use the new APIs.
+> > 
+> > The intention semantics for new allocation APIs:
+> > 
+> > * execmem_text_alloc() should be used to allocate memory that must reside
+> >   close to the kernel image, like loadable kernel modules and generated
+> >   code that is restricted by relative addressing.
+> > 
+> > * jit_text_alloc() should be used to allocate memory for generated code
+> >   when there are no restrictions for the code placement. For
+> >   architectures that require that any code is within certain distance
+> >   from the kernel image, jit_text_alloc() will be essentially aliased to
+> >   execmem_text_alloc().
+> > 
+> > The names execmem_text_alloc() and jit_text_alloc() emphasize that the
+> > allocated memory is for executable code, the allocations of the
+> > associated data, like data sections of a module will use
+> > execmem_data_alloc() interface that will be added later.
 > 
-> I wonder if the (size == 0) check is really needed, but
-> __vmalloc_node_range() will WARN on this case where the old code won't.
+> I like the API split - at the risk of further bikeshedding, perhaps
+> near_text_alloc() and far_text_alloc()? Would be more explicit.
 
-module_alloc() should not be called with zero size, so a warning there
-would be appropriate.
-Besides, no other module_alloc() had this check.
+With near and far it should mention from where and that's getting too long.
+I don't mind changing the names, but I couldn't think about something
+better than Song's execmem and your jit.
+ 
+> Reviewed-by: Kent Overstreet <kent.overstreet@linux.dev>
+
+Thanks!
 
 -- 
 Sincerely yours,
