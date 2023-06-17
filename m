@@ -2,54 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D1F3733E2B
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Jun 2023 07:09:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFF18733E7E
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Jun 2023 07:54:39 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=sbKTvkdW;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lpj2dpfi;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qjkbx6jpYz3bxH
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Jun 2023 15:09:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qjlbd5ZS5z3c1R
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Jun 2023 15:54:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=sbKTvkdW;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lpj2dpfi;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=lists.ozlabs.org)
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QjkZz6Jn6z30R5
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Jun 2023 15:08:57 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=7hf5/V1+7qv/OVN9FVB5EfsnRiw5saIpK4oYVVac1Aw=; b=sbKTvkdWKTASdSCVFWD6nn16dc
-	CHkSGhjkW+NujzLO1cALnOJGX6AJ7GK3XjCKihAUMDhJAStz9m6kmysroB5uoBlG0RwIzcwJXimuT
-	D7lpogjh9SsgtzLK6sT1ATw2xz1gdZoeDI5pewZZJqVDZV0ruqWEYkXdAIqqiwe0Vh3rCTF82kzj4
-	P/9bt6H8rayv2wKfCVuEsHmmnN+mPuevsVmnLJCej/op3kGH+yVeVGyEKyuSeWDGDjlrPLhH7F4rn
-	AKA3AkQM/paqDt7sw26TkTdFi9K8yVZlg/0CUA2s81NOXrcWYa4dIS4UsRKnV16guTrS0Yo4/m5SH
-	3i7Q/lxA==;
-Received: from [2601:1c2:980:9ec0::2764]
-	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1qAOB2-002kjp-2b;
-	Sat, 17 Jun 2023 05:08:44 +0000
-Message-ID: <20042da0-3b00-5c33-6f22-23b48a1f236c@infradead.org>
-Date: Fri, 16 Jun 2023 22:08:42 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QjlZg59FHz2xdp
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Jun 2023 15:53:47 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id C3DF360F9B;
+	Sat, 17 Jun 2023 05:53:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24536C433C8;
+	Sat, 17 Jun 2023 05:53:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1686981222;
+	bh=TluszqxdgR0a0IwbMuuhT/6JAXY40kPgAznuGjSXri0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lpj2dpfi9Ji3xzZ2kbgOQVYp/ZmysDx8WqNHlHmdTvMZEZsbjfL4hE6m7SXkjz4Zo
+	 Mkq0iog3xkwtSwK3WOjB9XwUu05VRpcB0eogiPxG2WXCBK0aumyezzFkPPpZnGtjc7
+	 5x++BGdF8JI0RHFvISKKMXQLn7exxg6GH1B4T2YCX3C0Zr0t9A89VOCr3b7IhrP+qG
+	 ZzJIZ0zukBYcwghAr54w2jBQdBKljd+YnNYrk8GHhTFw3utqrXxsX2NC3voAWygO8q
+	 svafETOLy9nPtmeHj06Y/0ZWzWAt+idrvmT6go/EJzAEpVusozQOwG5k1TndPIMv23
+	 z+o01h8acz8Lg==
+Date: Sat, 17 Jun 2023 08:52:56 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Subject: Re: [PATCH v2 01/12] nios2: define virtual address space for modules
+Message-ID: <20230617055256.GM52412@kernel.org>
+References: <20230616085038.4121892-1-rppt@kernel.org>
+ <20230616085038.4121892-2-rppt@kernel.org>
+ <6f9e9c385096bd965e53c49065848953398f5b8e.camel@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: [PATCH v2 RESEND] ASoC: fsl MPC52xx drivers require PPC_BESTCOMM
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-To: linux-kernel@vger.kernel.org
-References: <20230521225702.1608-1-rdunlap@infradead.org>
- <71922379-ee3d-9d6d-33dd-edcf8ef7508e@infradead.org>
-In-Reply-To: <71922379-ee3d-9d6d-33dd-edcf8ef7508e@infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <6f9e9c385096bd965e53c49065848953398f5b8e.camel@intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,85 +64,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, Xiubo Li <Xiubo.Lee@gmail.com>, linuxppc-dev@lists.ozlabs.org, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, Grant Likely <grant.likely@secretlab.ca>, Mark Brown <broonie@kernel.org>, Shengjiu Wang <shengjiu.wang@gmail.com>
+Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>, "x86@kernel.org" <x86@kernel.org>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "song@kernel.org" <song@kernel.org>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "nadav.amit@gmail.com" <nadav.amit@gmail.com>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, "deller@gmx.de" <deller@gmx.de>, "chenhuacai@kernel.org" <chenhuacai@kernel.org>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>, "naveen.n.rao@linux.ibm.com" <naveen.n.rao@linux.ibm.com>, "linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>, "will@kernel.org" <will@kernel.org>, "hca@linux.ibm.com" <hca@linux.ibm.com>, "rostedt@goodmis.org" <rostedt@goodmis.org>, "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, "tglx@linutronix.de" <tglx@linutronix.de>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>, "puranjay12@gmail.com" <puranjay12@gmail.com>, "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "kent.overstreet@linux.dev" <kent.overstreet@linux.dev>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "dinguyen@kernel.org" <dinguyen@kernel.org>, "mcgrof@kernel.org" <mcgrof@kernel.org>, "palmer@dabbelt.com" <palmer@dabbelt.com>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "davem@davemloft.net" <davem@davemloft.net>, "linux-modules@vger.kernel.org" <linux-modules@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Mark, Liam,
-
-On 5/30/23 16:38, Randy Dunlap wrote:
-> Hello maintainers,
+On Fri, Jun 16, 2023 at 04:00:19PM +0000, Edgecombe, Rick P wrote:
+> On Fri, 2023-06-16 at 11:50 +0300, Mike Rapoport wrote:
+> >  void *module_alloc(unsigned long size)
+> >  {
+> > -       if (size == 0)
+> > -               return NULL;
+> > -       return kmalloc(size, GFP_KERNEL);
+> > -}
+> > -
+> > -/* Free memory returned from module_alloc */
+> > -void module_memfree(void *module_region)
+> > -{
+> > -       kfree(module_region);
+> > +       return __vmalloc_node_range(size, 1, MODULES_VADDR,
+> > MODULES_END,
+> > +                                   GFP_KERNEL, PAGE_KERNEL_EXEC,
+> > +                                   VM_FLUSH_RESET_PERMS,
+> > NUMA_NO_NODE,
+> > +                                   __builtin_return_address(0));
+> >  }
+> >  
+> >  int apply_relocate_add(Elf32_Shdr *sechdrs, const char *s
 > 
-> I am still seeing these build errors on linux-next-20230530.
-> 
-> Is there a problem with the patch?
-> Thanks.
-> 
+> I wonder if the (size == 0) check is really needed, but
+> __vmalloc_node_range() will WARN on this case where the old code won't.
 
-I am still seeing build errors on linux-next-20230615.
-
-Is there a problem with the patch?
-
-Can it be applied/merged?
-
-Thanks.
-
-> On 5/21/23 15:57, Randy Dunlap wrote:
->> Both SND_MPC52xx_SOC_PCM030 and SND_MPC52xx_SOC_EFIKA select
->> SND_SOC_MPC5200_AC97. The latter symbol depends on PPC_BESTCOMM,
->> so the 2 former symbols should also depend on PPC_BESTCOMM since
->> "select" does not follow any dependency chains.
->>
->> This prevents a kconfig warning and build errors:
->>
->> WARNING: unmet direct dependencies detected for SND_SOC_MPC5200_AC97
->>   Depends on [n]: SOUND [=y] && !UML && SND [=m] && SND_SOC [=m] && SND_POWERPC_SOC [=m] && PPC_MPC52xx [=y] && PPC_BESTCOMM [=n]
->>   Selected by [m]:
->>   - SND_MPC52xx_SOC_PCM030 [=m] && SOUND [=y] && !UML && SND [=m] && SND_SOC [=m] && SND_POWERPC_SOC [=m] && PPC_MPC5200_SIMPLE [=y]
->>   - SND_MPC52xx_SOC_EFIKA [=m] && SOUND [=y] && !UML && SND [=m] && SND_SOC [=m] && SND_POWERPC_SOC [=m] && PPC_EFIKA [=y]
->>
->> ERROR: modpost: "mpc5200_audio_dma_destroy" [sound/soc/fsl/mpc5200_psc_ac97.ko] undefined!
->> ERROR: modpost: "mpc5200_audio_dma_create" [sound/soc/fsl/mpc5200_psc_ac97.ko] undefined!
->>
->> Fixes: 40d9ec14e7e1 ("ASoC: remove BROKEN from Efika and pcm030 fabric drivers")
->> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
->> Cc: Grant Likely <grant.likely@secretlab.ca>
->> Cc: Mark Brown <broonie@kernel.org>
->> Cc: Liam Girdwood <lgirdwood@gmail.com>
->> Cc: Shengjiu Wang <shengjiu.wang@gmail.com>
->> Cc: Xiubo Li <Xiubo.Lee@gmail.com>
->> Cc: alsa-devel@alsa-project.org
->> Cc: linuxppc-dev@lists.ozlabs.org
->> Cc: Jaroslav Kysela <perex@perex.cz>
->> Cc: Takashi Iwai <tiwai@suse.com>
->> ---
->> v2: use correct email address for Mark Brown.
->>
->>  sound/soc/fsl/Kconfig |    4 ++--
->>  1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff -- a/sound/soc/fsl/Kconfig b/sound/soc/fsl/Kconfig
->> --- a/sound/soc/fsl/Kconfig
->> +++ b/sound/soc/fsl/Kconfig
->> @@ -243,7 +243,7 @@ config SND_SOC_MPC5200_AC97
->>  
->>  config SND_MPC52xx_SOC_PCM030
->>  	tristate "SoC AC97 Audio support for Phytec pcm030 and WM9712"
->> -	depends on PPC_MPC5200_SIMPLE
->> +	depends on PPC_MPC5200_SIMPLE && PPC_BESTCOMM
->>  	select SND_SOC_MPC5200_AC97
->>  	select SND_SOC_WM9712
->>  	help
->> @@ -252,7 +252,7 @@ config SND_MPC52xx_SOC_PCM030
->>  
->>  config SND_MPC52xx_SOC_EFIKA
->>  	tristate "SoC AC97 Audio support for bbplan Efika and STAC9766"
->> -	depends on PPC_EFIKA
->> +	depends on PPC_EFIKA && PPC_BESTCOMM
->>  	select SND_SOC_MPC5200_AC97
->>  	select SND_SOC_STAC9766
->>  	help
-> 
+module_alloc() should not be called with zero size, so a warning there
+would be appropriate.
+Besides, no other module_alloc() had this check.
 
 -- 
-~Randy
+Sincerely yours,
+Mike.
