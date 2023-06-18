@@ -2,93 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E052734605
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Jun 2023 13:56:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FEEB73468D
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Jun 2023 16:21:19 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jxiEUau/;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=VaAic+1r;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QkWZq1Rw3z30h2
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Jun 2023 21:56:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QkZnm6tgcz30NP
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 00:21:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jxiEUau/;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=VaAic+1r;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::112a; helo=mail-yw1-x112a.google.com; envelope-from=miguel.ojeda.sandonis@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QkWYr16KLz300n
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Jun 2023 21:55:43 +1000 (AEST)
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35IBkReq028258;
-	Sun, 18 Jun 2023 11:55:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type : subject :
- from : in-reply-to : date : cc : message-id : references : to :
- content-transfer-encoding : mime-version; s=pp1;
- bh=2WXh4w64Lv8mltEuD3jJMBBsm9fTJg70V/r7wviudCM=;
- b=jxiEUau/TlaYhvl7UpsK+zX+y7O6Fzx0OPy28juabu/Mj8Bba15izseO4R+bywGgdGSy
- TEwHYY8kNiq2x8/aJ3wdxymi1jk1yX2g2IPcLmg6syFcWQC02eaLrzly66P/N8lWE2UT
- iqjqLE3TgXHbdES8gKHu/67bfWRdz8lrfjIhoGfGSSyfFi2gEvgl89i7jZFk8OcmbkTt
- fjA8ZTZlqdYT9dmiyx226Lh6tMrJy0dMbq2YOo912xTEcbu+1VPJLM2EQNsm9CfVfP7W
- RaMbYtrOcVrHhPFZ1U1o39X7bFt0kLzv1y6KqjF36kjRglV0neZmN8MDI6tS6ZfDNUmG Og== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ra1bm02au-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 18 Jun 2023 11:55:09 +0000
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35IBqgr6009618;
-	Sun, 18 Jun 2023 11:55:09 GMT
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ra1bm02aa-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 18 Jun 2023 11:55:09 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
-	by ppma01fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35IBbFU8005259;
-	Sun, 18 Jun 2023 11:55:06 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma01fra.de.ibm.com (PPS) with ESMTPS id 3r94f50j99-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 18 Jun 2023 11:55:06 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 35IBt3C427263620
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 18 Jun 2023 11:55:03 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8CAF620049;
-	Sun, 18 Jun 2023 11:55:03 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 10FFA20040;
-	Sun, 18 Jun 2023 11:55:01 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.43.72.246])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sun, 18 Jun 2023 11:55:00 +0000 (GMT)
-Content-Type: text/plain;
-	charset=us-ascii
-Subject: Re: [PATCH v2 00/16] Add support for DAX vmemmap optimization for
- ppc64
-From: Sachin Sant <sachinp@linux.ibm.com>
-In-Reply-To: <20230616110826.344417-1-aneesh.kumar@linux.ibm.com>
-Date: Sun, 18 Jun 2023 17:24:49 +0530
-Message-Id: <CCFBB9B1-9B2E-4FF1-8025-6B40E01960DF@linux.ibm.com>
-References: <20230616110826.344417-1-aneesh.kumar@linux.ibm.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-X-Mailer: Apple Mail (2.3731.600.7)
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 9Ym_WmZhEU-XS7AWkf4ltraHl5BImMLP
-X-Proofpoint-GUID: rBazhGExN_bo1tVzTPkynVUjkAHljWwd
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QkZmv3l7Hz309V
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jun 2023 00:20:30 +1000 (AEST)
+Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-56ce61769b7so30157167b3.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Jun 2023 07:20:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1687098025; x=1689690025;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UKngzCbi/z0YczLfmgJ8G+89JRu+Tx99q0y6rf+xc3g=;
+        b=VaAic+1rlhUTFVg7WGWjD/PM++B/69nK3R1DcgWj7rqNxpw4yV9fuUWKfpqgtW/K7I
+         Jku2fodUUoezlMprvokwNK49VRwuEDr/JdcXT2eyuPymQU/KU44RR6E4F/VCjvAoxDk1
+         KrGyx51eGhHP3KY8eiarxseURUuPzQcRrZnqyy8Wh1wskYRfipZKy11JzbyD16UzaKvC
+         nsVkqLniY3F1bfuJP/l8ILPUL5tUoOJ/pHmFBOxEGlZGVPMIk7aUfKcOWy+M2DZ9RWfc
+         Y3uvvy4nQTH4yi9lyWQ0OCifbD4zzFYRwWNQVmJHCU+m8tyCaeCz/eCA8ppT0z0pCwT+
+         +7NA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687098025; x=1689690025;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UKngzCbi/z0YczLfmgJ8G+89JRu+Tx99q0y6rf+xc3g=;
+        b=hjP96UvsC12BE2I9fATLKHkAF3pSK0yQlKxadL8VvaKTi7cO4r+IIcYiIDCOPZNxZx
+         RhL0WOF5AwSl5nLb9g+/97pbp2/62P0b1JDnazYrUswiCuuq7I6jJSHW55mItb0yMRJV
+         q+gc6pos5vnPEBnJQgLI69jj/Eb+Smv5RVttUIZZNC4PnnKTnlAY6uhFO/VqNCGYhVVm
+         VtwBDlc6gMYekhRCCWTKjqqbcR1rXgjjbHyexntQqAtSpVuXK1UTtXkSwuTezxvyDA8O
+         HgNJdi4to9xNr6wBq/4A85mkWFKjstHdILWOFV8wk+KGBIa4X4r/u1g48tJBMMwI08+K
+         CSkw==
+X-Gm-Message-State: AC+VfDwMy0AobfZ+WuVZLnMGICFBqLlF9PAFDNaqJXxKZN3f3UKrUVVm
+	C0AEfSkV29Fb9fLuYiZu+j/wGtw3Jn8WpNUn7aI=
+X-Google-Smtp-Source: ACHHUZ6OWkndylY7XcNfai46ffCnTYYuh35ry6WdKDFVRKwvPPPvXYLW796YQAzIMxPv4BZVitbcDftNF6Bg3+Aa+r4=
+X-Received: by 2002:a0d:eb93:0:b0:56d:805:1507 with SMTP id
+ u141-20020a0deb93000000b0056d08051507mr7753300ywe.16.1687098025485; Sun, 18
+ Jun 2023 07:20:25 -0700 (PDT)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-06-18_08,2023-06-16_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
- lowpriorityscore=0 priorityscore=1501 malwarescore=0 clxscore=1011
- mlxscore=0 impostorscore=0 suspectscore=0 spamscore=0 mlxlogscore=999
- adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306180110
+References: <20230529052821.58175-1-maninder1.s@samsung.com>
+ <CGME20230529052832epcas5p4fa1b8cf25d9810d32bd2ccf012086fb3@epcms5p1>
+ <CANiq72ncDr68qeahrHuQ63dj1Va3=Us6ZSjGRkr6Zp8j+=yH_Q@mail.gmail.com>
+ <20230529105707epcms5p1418eac680ebe1736196706b0db80dd39@epcms5p1>
+ <CANiq72n_eso7_pgna8ukmEnuCQPsKYPr0NU-Ss9Nwv0VzX=etg@mail.gmail.com> <202305301611.34F0A680A2@keescook>
+In-Reply-To: <202305301611.34F0A680A2@keescook>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 18 Jun 2023 16:20:14 +0200
+Message-ID: <CANiq72=K1sXz=TjBSjx+7JuTueH6vjbz9--Q2dGDYj3naKvroQ@mail.gmail.com>
+Subject: Re: [PATCH 1/1] arch:hexagon/powerpc: use KSYM_NAME_LEN in array size
+To: Kees Cook <keescook@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,44 +79,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Joao Martins <joao.m.martins@oracle.com>, Will Deacon <will@kernel.org>, Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org, Nicholas Piggin <npiggin@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>, Andrew Morton <akpm@linux-foundation.org>, Mike Kravetz <mike.kravetz@oracle.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Dan Williams <dan.j.williams@intel.com>, Oscar Salvador <osalvador@suse.de>
+Cc: "nathanl@linux.ibm.com" <nathanl@linux.ibm.com>, "bcain@quicinc.com" <bcain@quicinc.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, "gary@garyguo.net" <gary@garyguo.net>, "pmladek@suse.com" <pmladek@suse.com>, "ustavoars@kernel.org" <ustavoars@kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "npiggin@gmail.com" <npiggin@gmail.com>, "ojeda@kernel.org" <ojeda@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, "alex.gaynor@gmail.com" <alex.gaynor@gmail.com>, "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>, maninder1.s@samsung.com, Onkarnath <onkarnath.1@samsung.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed, May 31, 2023 at 1:14=E2=80=AFAM Kees Cook <keescook@chromium.org> w=
+rote:
+>
+> On Mon, May 29, 2023 at 04:50:45PM +0200, Miguel Ojeda wrote:
+> > Kees: what is the current stance on `[static N]` parameters? Something =
+like:
+> >
+> >     const char *kallsyms_lookup(unsigned long addr,
+> >                                 unsigned long *symbolsize,
+> >                                 unsigned long *offset,
+> >     -                           char **modname, char *namebuf);
+> >     +                           char **modname, char namebuf[static KSY=
+M_NAME_LEN]);
+> >
+> > makes the compiler complain about cases like these (even if trivial):
+> >
+> >     arch/powerpc/xmon/xmon.c:1711:10: error: array argument is too smal=
+l;
+> >         contains 128 elements, callee requires at least 512
+> > [-Werror,-Warray-bounds]
+> >             name =3D kallsyms_lookup(pc, &size, &offset, NULL, tmpstr);
+> >                  ^                                           ~~~~~~
+> >     ./include/linux/kallsyms.h:86:29: note: callee declares array
+> > parameter as static here
+> >             char **modname, char namebuf[static KSYM_NAME_LEN]);
+> >                                  ^      ~~~~~~~~~~~~~~~~~~~~~~
+>
+> Wouldn't that be a good thing? (I.e. complain about the size mismatch?)
 
+Yeah, I would say so (i.e. I meant it as a good thing).
 
-> On 16-Jun-2023, at 4:38 PM, Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>=
- wrote:
->=20
-> This patch series implements changes required to support DAX vmemmap
-> optimization for ppc64. The vmemmap optimization is only enabled with rad=
-ix MMU
-> translation and 1GB PUD mapping with 64K page size. The patch series also=
- split
-> hugetlb vmemmap optimization as a separate Kconfig variable so that
-> architectures can enable DAX vmemmap optimization without enabling hugetlb
-> vmemmap optimization. This should enable architectures like arm64 to enab=
-le DAX
-> vmemmap optimization while they can't enable hugetlb vmemmap optimization=
-. More
-> details of the same are in patch "mm/vmemmap optimization: Split hugetlb =
-and
-> devdax vmemmap optimization"
->=20
-> Changes from V1:
-> * Fix make htmldocs warning
-> * Fix vmemmap allocation bugs with different alignment values.
-> * Correctly check for section validity to before we free vmemmap area
+> > But I only see 2 files in the kernel using `[static N]` (from 2020 and
+> > 2021). Should something else be used instead (e.g. `__counted_by`),
+> > even if constexpr-sized?.
+>
+> Yeah, it seems pretty uncommon. I'd say traditionally arrays aren't
+> based too often, rather structs containing them.
+>
+> But ultimately, yeah, everything could gain __counted_by and friends in
+> the future.
 
-Thanks for the updated series.
+That would be nice!
 
-The previously reported WARN_ON is not seen with this series.
-I also ran few regression tests against this series and did not
-see any problems.
-
-Based on the test results
-
-Tested-by: Sachin Sant <sachinp@linux.ibm.com <mailto:sachinp@linux.ibm.com=
->>
-
--Sachin=
+Cheers,
+Miguel
