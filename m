@@ -2,74 +2,103 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 131AF734AD5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 06:04:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F1D7734BC2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 08:31:23 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=gmx.de header.i=deller@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=S+n1mlEn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=P5pMZSS/;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qkx3Y6RwGz30Py
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 14:04:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ql0K50QcJz30fp
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 16:31:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=gmx.de header.i=deller@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=S+n1mlEn;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=P5pMZSS/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmx.de (client-ip=212.227.17.21; helo=mout.gmx.net; envelope-from=deller@gmx.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 368 seconds by postgrey-1.37 at boromir; Mon, 19 Jun 2023 14:03:38 AEST
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qkx2f0Spcz3003
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jun 2023 14:03:36 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1687147409; x=1687752209; i=deller@gmx.de;
- bh=2fndrLIH+tdYpXaN3a+B2+gpkPc6UJVTkZbYPRfVVB8=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=S+n1mlEn+XxQuCnwTZJXV5Hbf3zQDUhey+VPucONnHTs/JXrG4Z6wWrUIQfTOlhnBLDkX6F
- jQAcLNZUWkpO6BtpROl1G6x4o+7njsUqhrzygtz5po6rQfsLKbHxQd54ZdBYcLtMeq2sxpPgn
- AF5GsAX4guX8b1OeXBiFsS4R34xZCx3mmz5UQDnpe5jUIuNWGLaVRmROjpO2NOOu4wPNQFItg
- LHJpQPJOB0xrVlN3j7Um3hfJg15twk7+gUMflKa9V4KtLQDw0Vd1QfdK3NaE8lzF7yjQREiik
- Wsn7ZqLZnLbfYSBUSRy6DCkwN4O29P+fyVismbSckpij3WVo/vFw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.148.114]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1My36N-1ptYsd3hol-00zXMS; Mon, 19
- Jun 2023 05:55:49 +0200
-Message-ID: <2f5a3805-b7a5-1c45-e5a4-e273ea289ba6@gmx.de>
-Date: Mon, 19 Jun 2023 05:55:42 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ql0J70wK2z2xpm
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jun 2023 16:30:31 +1000 (AEST)
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4Ql0J44BZMz4x0L
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jun 2023 16:30:28 +1000 (AEST)
+Received: by gandalf.ozlabs.org (Postfix)
+	id 4Ql0J443wWz4x0K; Mon, 19 Jun 2023 16:30:28 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=name@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=P5pMZSS/;
+	dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4Ql0J35DpQz4x0B;
+	Mon, 19 Jun 2023 16:30:27 +1000 (AEST)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35J5qXGR020922;
+	Mon, 19 Jun 2023 06:30:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=Rxy1nBlhEdPYshc2NgcfmTBqq6fedV8bqtMwMnrF1uE=;
+ b=P5pMZSS/EP82ZTE4+1A0EZme63mW5Pj3OE8GpGU+MPJROBIAQ8iIu2mbuHVnAe0rcWPT
+ eHfCk1w0syjqn+1mq/SVT7f263i0AdYdVxFIPF9B+fzdJdsQg3XPd+MM1BHeOWoKaNhy
+ fZBX8yOXXXoVvz3e5FZbPAJLYsLxUUl7oXpIvo1xCVDZSAlMIST4qWQl2kwrUM8PwKwB
+ l1mAf9U5uckuYPqR5j7pSasTUHaAVRRr+Yov+UV7UibF8fJry9KnH2n7eksIuL//FPLz
+ ZoDjW5s0y+ktXm1GoL9AhpMESmvSqhw9gpTvFgQ6UrsgLRLp1WtGRMBk/j59sC6X2yLv yA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rah8grv15-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Jun 2023 06:30:24 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35J6UN2X017364;
+	Mon, 19 Jun 2023 06:30:23 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rah8grv0g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Jun 2023 06:30:23 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35J56e1L027760;
+	Mon, 19 Jun 2023 06:30:21 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3r94f5960w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Jun 2023 06:30:21 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 35J6UIsL17957570
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 19 Jun 2023 06:30:18 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5727220040;
+	Mon, 19 Jun 2023 06:30:18 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C6A8420043;
+	Mon, 19 Jun 2023 06:30:16 +0000 (GMT)
+Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.in.ibm.com (unknown [9.109.199.72])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 19 Jun 2023 06:30:16 +0000 (GMT)
+From: Aditya Gupta <adityag@linux.ibm.com>
+To: linuxppc-dev@ozlabs.org, mpe@ellerman.id.au
+Subject: [PATCH v3 1/1] powerpc: update ppc_save_regs to save current r1 in pt_regs
+Date: Mon, 19 Jun 2023 12:00:15 +0530
+Message-Id: <20230619063015.38165-1-adityag@linux.ibm.com>
+X-Mailer: git-send-email 2.40.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Vn8lsUJ0_r6lsPQY26N3OxxH7RD93YHz
+X-Proofpoint-GUID: SA7AhnPfGzQeUsNYGWVlXzaXKE1Ljjwk
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2 08/23] parisc: add pte_unmap() to balance get_ptep()
-Content-Language: en-US
-To: Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>
-References: <a4963be9-7aa6-350-66d0-2ba843e1af44@google.com>
- <653369-95ef-acd2-d6ea-e95f5a997493@google.com>
-From: Helge Deller <deller@gmx.de>
-In-Reply-To: <653369-95ef-acd2-d6ea-e95f5a997493@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:E3xdg5CpQcjOoKW8Y56OwqWPK69wZz6OC3pXUq5sC4koD4vx6TE
- 8yx7mlAVEcBGQCbXtdVKp5UUdnr/61/KwgdLsdsCeafoXWrwMUBr6cWiQIGAUgINT3sBkXj
- YUQ+i02IXhG0ZBE1C7Dv9zl3aVQVXzwfFiVekkVC97MGOBsK+OwPv4gKZzvDYcrI9sx6vlb
- RKMhNKB17Raa0wGb+9IJg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:SavJJQrSETc=;Q4+Mohq9kiLPuqyetAufSsyFlS5
- hTZh9UY3ApX0rs9wXmBDeDsu5U24lMRvmGlXtPpGRAMil4yH2XAj0xs4blHQiY0pOUfNPA1s1
- G0wDYx1set9NyYE5oCEoGY8RKuf/S60hXwMUAl/ZM37AHhK+LKYuFIhzG1VjQqtdnZrSqmd6z
- CImKzn1TU7In5a5QOsHiDAlufEyc2odKlKwMMvOWb+92Pf8ggacXMEYEVuAVDqx8WFvSAANkP
- zJ5oEA1OEMrgTrJl0RPgvlPPxB7mqh6cmgVNsYC9tJjWWiiEWS5c6P5QloM8XGzR1DYg1W0u3
- dul9zuMbEZTrUG6G5hDpUhyiEsTk4Czd7JISqAtSkYAhrAjCGdAmnN1O/rZNJTCF53Ek2J3t4
- tT1rs6gKpXYrr1euxxGt6y4EKPMdorQkedT23yVCDZ0MHUAyJ+tRLR/3iysGvrqFSal+vQAJF
- V0AybLgmsqTSnYMqsFcXP+QxZs0uzsesZtbmQ9bBqT1yZ+PgdI7xfRRxhtzanthx/ZIHManEg
- ZP9gOdIKaY5ievySnRJkVlI58IGdsesN5qfHYEOQnzwcCZ8EGDwMPYMIy1unlQI+IzPp2PKqD
- NbbapvRr8uYx/8ZLLl+KWnPK8AnJxY+B+pcojhuoP2njwZuI8sLl60m6Qz5TwwJ3dgMyj8gYI
- Iy2+PlD7CH4ux6d8QIWuHt4o7BXGPnE5ZFA4/tMUzDrkwfDbTbWfXgi5Cyw2KuLZOdAtfP0qZ
- vHZPyn1qql77t6GDiNKx5L4d25bO8t41GMe3u8ZYU1ez28wyfem+OJqnuSox095Si6LrtSlMN
- lY5CmlLFGBwSmss5JVTZV2QNPuG94YkAfLZ2PXf5uLQInaqqmNIGeVUxs1q81p9jLtIeWAJob
- 1ib7BIAZezgiyknuRrfbQZcpjJjticXOwBgCHJ5PWya5I9PQJmVwjhksTbUPwyI5QosWZ/6qJ
- LNGErqwzSGoLLq0QKi9RKKodGVs=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-19_04,2023-06-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxscore=0
+ suspectscore=0 priorityscore=1501 malwarescore=0 adultscore=0 spamscore=0
+ clxscore=1015 impostorscore=0 mlxlogscore=999 lowpriorityscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306190055
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,97 +110,123 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, Greg Ungerer <gerg@linux-m68k.org>, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, x86@kernel.org, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, Geert Uytterhoeven <geert@linux-m68k.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, Alexandre Ghiti <alexghiti@rivosinc.com>, Heiko Carstens <hca@linux.ibm.com>, linux-m68k@lists.linux-m68k.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, John David Anglin <dave.anglin@bell.net>, Suren Baghdasaryan <surenb@google.com>, linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-mm@kvack.org, linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Sourabh Jain <sourabhjain@linux.ibm.com>, "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/8/23 21:18, Hugh Dickins wrote:
-> To keep balance in future, remember to pte_unmap() after a successful
-> get_ptep().  And act as if flush_cache_pages() really needs a map there,
-> to read the pfn before "unmapping", to be sure page table is not removed=
-.
->
-> Signed-off-by: Hugh Dickins <hughd@google.com>
+ppc_save_regs() skips one stack frame while saving the CPU register states.
+Instead of saving current R1, it pulls the previous stack frame pointer.
 
-For the parisc parts:
+When vmcores caused by direct panic call (such as `echo c >
+/proc/sysrq-trigger`), are debugged with gdb, gdb fails to show the
+backtrace correctly. On further analysis, it was found that it was because
+of mismatch between r1 and NIP.
 
-Acked-by: Helge Deller <deller@gmx.de> # parisc
+GDB uses NIP to get current function symbol and uses corresponding debug
+info of that function to unwind previous frames, but due to the
+mismatching r1 and NIP, the unwinding does not work, and it fails to
+unwind to the 2nd frame and hence does not show the backtrace.
 
-Helge
+GDB backtrace with vmcore of kernel without this patch:
 
+---------
+(gdb) bt
+ #0  0xc0000000002a53e8 in crash_setup_regs (oldregs=<optimized out>,
+    newregs=0xc000000004f8f8d8) at ./arch/powerpc/include/asm/kexec.h:69
+ #1  __crash_kexec (regs=<optimized out>) at kernel/kexec_core.c:974
+ #2  0x0000000000000063 in ?? ()
+ #3  0xc000000003579320 in ?? ()
+---------
 
-> ---
->   arch/parisc/kernel/cache.c | 26 +++++++++++++++++++++-----
->   1 file changed, 21 insertions(+), 5 deletions(-)
->
-> diff --git a/arch/parisc/kernel/cache.c b/arch/parisc/kernel/cache.c
-> index ca4a302d4365..501160250bb7 100644
-> --- a/arch/parisc/kernel/cache.c
-> +++ b/arch/parisc/kernel/cache.c
-> @@ -426,10 +426,15 @@ void flush_dcache_page(struct page *page)
->   		offset =3D (pgoff - mpnt->vm_pgoff) << PAGE_SHIFT;
->   		addr =3D mpnt->vm_start + offset;
->   		if (parisc_requires_coherency()) {
-> +			bool needs_flush =3D false;
->   			pte_t *ptep;
->
->   			ptep =3D get_ptep(mpnt->vm_mm, addr);
-> -			if (ptep && pte_needs_flush(*ptep))
-> +			if (ptep) {
-> +				needs_flush =3D pte_needs_flush(*ptep);
-> +				pte_unmap(ptep);
-> +			}
-> +			if (needs_flush)
->   				flush_user_cache_page(mpnt, addr);
->   		} else {
->   			/*
-> @@ -561,14 +566,20 @@ EXPORT_SYMBOL(flush_kernel_dcache_page_addr);
->   static void flush_cache_page_if_present(struct vm_area_struct *vma,
->   	unsigned long vmaddr, unsigned long pfn)
->   {
-> -	pte_t *ptep =3D get_ptep(vma->vm_mm, vmaddr);
-> +	bool needs_flush =3D false;
-> +	pte_t *ptep;
->
->   	/*
->   	 * The pte check is racy and sometimes the flush will trigger
->   	 * a non-access TLB miss. Hopefully, the page has already been
->   	 * flushed.
->   	 */
-> -	if (ptep && pte_needs_flush(*ptep))
-> +	ptep =3D get_ptep(vma->vm_mm, vmaddr);
-> +	if (ptep) {
-> +		needs_flush =3D pte_needs_flush(*ptep);
-> +		pte_unmap(ptep);
-> +	}
-> +	if (needs_flush)
->   		flush_cache_page(vma, vmaddr, pfn);
->   }
->
-> @@ -635,17 +646,22 @@ static void flush_cache_pages(struct vm_area_struc=
-t *vma, unsigned long start, u
->   	pte_t *ptep;
->
->   	for (addr =3D start; addr < end; addr +=3D PAGE_SIZE) {
-> +		bool needs_flush =3D false;
->   		/*
->   		 * The vma can contain pages that aren't present. Although
->   		 * the pte search is expensive, we need the pte to find the
->   		 * page pfn and to check whether the page should be flushed.
->   		 */
->   		ptep =3D get_ptep(vma->vm_mm, addr);
-> -		if (ptep && pte_needs_flush(*ptep)) {
-> +		if (ptep) {
-> +			needs_flush =3D pte_needs_flush(*ptep);
-> +			pfn =3D pte_pfn(*ptep);
-> +			pte_unmap(ptep);
-> +		}
-> +		if (needs_flush) {
->   			if (parisc_requires_coherency()) {
->   				flush_user_cache_page(vma, addr);
->   			} else {
-> -				pfn =3D pte_pfn(*ptep);
->   				if (WARN_ON(!pfn_valid(pfn)))
->   					return;
->   				__flush_cache_page(vma, addr, PFN_PHYS(pfn));
+Further analysis revealed that the mismatch occurred because
+"ppc_save_regs" was saving the previous stack's SP instead of the current
+r1. This patch fixes this by storing current r1 in the saved pt_regs.
+
+GDB backtrace with vmcore of patched kernel:
+
+--------
+(gdb) bt
+ #0  0xc0000000002a53e8 in crash_setup_regs (oldregs=0x0, newregs=0xc00000000670b8d8)
+    at ./arch/powerpc/include/asm/kexec.h:69
+ #1  __crash_kexec (regs=regs@entry=0x0) at kernel/kexec_core.c:974
+ #2  0xc000000000168918 in panic (fmt=fmt@entry=0xc000000001654a60 "sysrq triggered crash\n")
+    at kernel/panic.c:358
+ #3  0xc000000000b735f8 in sysrq_handle_crash (key=<optimized out>) at drivers/tty/sysrq.c:155
+ #4  0xc000000000b742cc in __handle_sysrq (key=key@entry=99, check_mask=check_mask@entry=false)
+    at drivers/tty/sysrq.c:602
+ #5  0xc000000000b7506c in write_sysrq_trigger (file=<optimized out>, buf=<optimized out>,
+    count=2, ppos=<optimized out>) at drivers/tty/sysrq.c:1163
+ #6  0xc00000000069a7bc in pde_write (ppos=<optimized out>, count=<optimized out>,
+    buf=<optimized out>, file=<optimized out>, pde=0xc00000000362cb40) at fs/proc/inode.c:340
+ #7  proc_reg_write (file=<optimized out>, buf=<optimized out>, count=<optimized out>,
+    ppos=<optimized out>) at fs/proc/inode.c:352
+ #8  0xc0000000005b3bbc in vfs_write (file=file@entry=0xc000000006aa6b00,
+    buf=buf@entry=0x61f498b4f60 <error: Cannot access memory at address 0x61f498b4f60>,
+    count=count@entry=2, pos=pos@entry=0xc00000000670bda0) at fs/read_write.c:582
+ #9  0xc0000000005b4264 in ksys_write (fd=<optimized out>,
+    buf=0x61f498b4f60 <error: Cannot access memory at address 0x61f498b4f60>, count=2)
+    at fs/read_write.c:637
+ #10 0xc00000000002ea2c in system_call_exception (regs=0xc00000000670be80, r0=<optimized out>)
+    at arch/powerpc/kernel/syscall.c:171
+ #11 0xc00000000000c270 in system_call_vectored_common ()
+    at arch/powerpc/kernel/interrupt_64.S:192
+--------
+
+Fixes: d16a58f8854b1 ("powerpc: Improve ppc_save_regs()")
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
+---
+
+More information:
+
+This problem with gdb backtrace was discovered while working on a crash
+tool enhancement to improve crash analysis using gdb passthrough to be
+able print function arguments and local variables inside crash tool. gdb
+passthrough simply asks gdb to handle the backtrace printing, where it
+was noticed that it could not print correct backtrace in some vmcores.
+
+The changes introduced here has an implication on xmon, that it might show
+one extra `xmon` frame in backtrace. By looking at older commits it seems
+that originally the ppc_save_regs function was introduced as
+xmon_save_regs(). But now the same function has been renamed to
+ppc_save_regs() and been used in few other places as well.
+
+Tested this patch with multiple ways of crashing:
+1. direct panic call (`echo c > /proc/sysrq-trigger`)
+2. null dereference/oops path (the earlier implementation of `sysrq_handle_crash`)
+3. sys reset
+4. sys reset inside qemu
+
+Changelog
+V3:
+  - resend as normal patch with Reviewed-by and Fixes tag
+RFC V2:
+  https://lore.kernel.org/linuxppc-dev/334e6694-e4e4-dce4-9443-2aaccdb86f04@linux.ibm.com/T/#mb7c9e73b4ba771f6eba74c7d8e13dbb118619ad2
+  - fixed bogus LR by storing caller's LR area as pointed out by Naveen and
+  Nick
+
+---
+ arch/powerpc/kernel/ppc_save_regs.S | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/powerpc/kernel/ppc_save_regs.S b/arch/powerpc/kernel/ppc_save_regs.S
+index 49813f982468..a9b9c32d0c1f 100644
+--- a/arch/powerpc/kernel/ppc_save_regs.S
++++ b/arch/powerpc/kernel/ppc_save_regs.S
+@@ -31,10 +31,10 @@ _GLOBAL(ppc_save_regs)
+ 	lbz	r0,PACAIRQSOFTMASK(r13)
+ 	PPC_STL	r0,SOFTE(r3)
+ #endif
+-	/* go up one stack frame for SP */
+-	PPC_LL	r4,0(r1)
+-	PPC_STL	r4,GPR1(r3)
++	/* store current SP */
++	PPC_STL	r1,GPR1(r3)
+ 	/* get caller's LR */
++	PPC_LL	r4,0(r1)
+ 	PPC_LL	r0,LRSAVE(r4)
+ 	PPC_STL	r0,_LINK(r3)
+ 	mflr	r0
+-- 
+2.40.1
 
