@@ -1,57 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D21D735B19
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 17:25:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4B11735C0C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 18:18:38 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kRzjt2nD;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gaF6L4AC;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QlD926txbz3bNp
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jun 2023 01:25:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QlFLh3f5qz3bWc
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jun 2023 02:18:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kRzjt2nD;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gaF6L4AC;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QlD8456Gqz2y1Q
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jun 2023 01:24:20 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 0183660CFB;
-	Mon, 19 Jun 2023 15:24:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AA4DC433C8;
-	Mon, 19 Jun 2023 15:24:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1687188257;
-	bh=N4a6+AKTlpfQu+hNLgDTvYGemlpqgXPewbtXySTT2Wk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kRzjt2nDIAl4X26ojRiB8w8CJVn45eTmiPbIYkIvDYRBR/QR7IVpfAXYd9FpfNQDQ
-	 OvemWMKmfnlcr5GwcS7TCX2oTJmzf2fUUsDJHf2Oq+4RHGmHWKbk0CASnuDz6Gk1Ld
-	 1e26ENdIJqn1qjqL2vy8CRe3zudh+ZqjAZ7btzz+Jja4UEKxYRLaqjs+hNR8TPWi48
-	 sYyUqJtdsNHbcbOzxo9zMe/AaYlu9nZhYjfHu5NSh21mKAk+otvslcioi5dkhxeNTF
-	 EnxnECqDbcsPkYZvvYUeyjGiH7IzMmaAIOnWvmMc+HuAd2WDWUtK2BFwEfTtd03m+J
-	 SY9K1sARFWi7g==
-Date: Mon, 19 Jun 2023 18:23:34 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v2 06/12] mm/execmem: introduce execmem_data_alloc()
-Message-ID: <20230619152334.GC52412@kernel.org>
-References: <20230616085038.4121892-1-rppt@kernel.org>
- <20230616085038.4121892-7-rppt@kernel.org>
- <87jzw0qu3s.ffs@tglx>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QlFKk697Kz309m
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jun 2023 02:17:45 +1000 (AEST)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35JFq4CK000658;
+	Mon, 19 Jun 2023 16:17:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=T3U8jMHxS5CAFb9h0CXdTshAnP3Ssx+P0u8kgH27xe8=;
+ b=gaF6L4ACaPLD6tvzaB3Ev3PhQ7rwDZfJahgYRsfE+VwWzpbO65yiBWfPIHHL0nup57C4
+ bkuhpWB/Q6tv3t/M0zDdf8Oj0g2Pt9AcJ0AXNlFeeP5SZX7fbwxEirBIohMKvjjBohvu
+ hXPNRzfxZwTd0bSwa2Jfy/lcGZaRXHM/RleZVV/z574z8w+lgL0p158GudNKAD4wh2EC
+ CLqF2M4wjnRFo9pmq4wY1PrTD53eN5RCfzeSYjzCVvCy03SBwmF4UmL88ShsYsKCqwvn
+ Wi/41885LnhM+CZPQAjz/mbWKEZv5l8aZOKuVXSHjXM9GwHWWYgN4l0sgKI2xheD/OII sA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rat1r8nm1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Jun 2023 16:17:36 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35JFq69c000740;
+	Mon, 19 Jun 2023 16:17:36 GMT
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com [169.55.91.170])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rat1r8nj7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Jun 2023 16:17:36 +0000
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+	by ppma02wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35JD03iP020825;
+	Mon, 19 Jun 2023 16:17:34 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([9.208.130.97])
+	by ppma02wdc.us.ibm.com (PPS) with ESMTPS id 3r94f639pu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Jun 2023 16:17:34 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 35JGHX4Z27918884
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 19 Jun 2023 16:17:33 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6AD895805C;
+	Mon, 19 Jun 2023 16:17:33 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8B03D5805B;
+	Mon, 19 Jun 2023 16:17:30 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.43.80.193])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 19 Jun 2023 16:17:30 +0000 (GMT)
+X-Mailer: emacs 29.0.91 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: David Hildenbrand <david@redhat.com>, linuxppc-dev@lists.ozlabs.org,
+        mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+        Tarun Sahu <tsahu@linux.ibm.com>
+Subject: Re: [PATCH v2 2/2] powerpc/mm: Add memory_block_size as a kernel
+ parameter
+In-Reply-To: <853eae60-b92b-9284-e24d-564429aba8c1@redhat.com>
+References: <20230609060851.329406-1-aneesh.kumar@linux.ibm.com>
+ <20230609060851.329406-2-aneesh.kumar@linux.ibm.com>
+ <853eae60-b92b-9284-e24d-564429aba8c1@redhat.com>
+Date: Mon, 19 Jun 2023 21:47:27 +0530
+Message-ID: <875y7jifzc.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87jzw0qu3s.ffs@tglx>
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: PuX4B68A2hjXyt68OE0mHSY1eNuSHLxo
+X-Proofpoint-ORIG-GUID: spmOxf8BTjZW9zgIrmS9L5n5pKKT8cQn
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-19_11,2023-06-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
+ lowpriorityscore=0 clxscore=1015 suspectscore=0 impostorscore=0
+ phishscore=0 priorityscore=1501 mlxscore=0 mlxlogscore=999 spamscore=0
+ adultscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2305260000 definitions=main-2306190147
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,67 +100,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Nadav Amit <nadav.amit@gmail.com>, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linux-trace-kernel@vger.kernel.org, Will Deacon <will@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Puranjay Mohan <puranjay12@gmail.com>, linux-mm@kvack.org, netdev@vger.kernel.org, Kent Overstreet <kent.overstreet@linux.dev>, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, linux-modules@vger.kernel.org
+Cc: foraker1@llnl.gov
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 19, 2023 at 12:32:55AM +0200, Thomas Gleixner wrote:
-> Mike!
-> 
-> Sorry for being late on this ...
-> 
-> On Fri, Jun 16 2023 at 11:50, Mike Rapoport wrote:
-> 
-> The fact that my suggestions had a 'mod_' namespace prefix does not make
-> any of my points moot.
+David Hildenbrand <david@redhat.com> writes:
 
-The prefix does not matter. What matters is what we are trying to abstract.
-Your suggestion is based of the memory used by modules. I'm abstracting
-address spaces for different types of executable and related memory. They
-are similar, yes, but they are not the same.
+> On 09.06.23 08:08, Aneesh Kumar K.V wrote:
+>> Certain devices can possess non-standard memory capacities, not constrained
+>> to multiples of 1GB. Provide a kernel parameter so that we can map the
+>> device memory completely on memory hotplug.
+>
+> So, the unfortunate thing is that these devices would have worked out of 
+> the box before the memory block size was increased from 256 MiB to 1 GiB 
+> in these setups. Now, one has to fine-tune the memory block size. The 
+> only other arch that I know, which supports setting the memory block 
+> size, is x86 for special (large) UV systems -- and at least in the past 
+> 128 MiB vs. 2 GiB memory blocks made a performance difference during 
+> boot (maybe no longer today, who knows).
+>
+>
+> Obviously, less tunable and getting stuff simply working out of the box 
+> is preferable.
+>
+> Two questions:
+>
+> 1) Isn't there a way to improve auto-detection to fallback to 256 MiB in 
+> these setups, to avoid specifying these parameters?
 
-The TEXT, INIT_TEXT and *_DATA do not match to what we have from arch POV.
-They have modules with text, rw data, ro data and ro after init data and
-the memory for the generated code. The memory for modules and memory for
-other users have different restrictions for their placement, so using a
-single TEXT type for them is semantically wrong. BPF and kprobes do not
-necessarily must be at the same address range as modules and init text does
-not differ from normal text.
+The patch does try to detect as much as possible by looking at device tree
+nodes and aperture window size. But there are still cases where we find
+a memory aperture of size X GB and device driver hotplug X.YGB memory.
 
-> Song did an extremly good job in abstracting things out, but you decided
-> to ditch his ground work instead of building on it and keeping the good
-> parts. That's beyond sad.
+>
+> 2) Is the 256 MiB -> 1 GiB memory block size switch really worth it? On 
+> x86-64, experiments (with direct map fragmentation) showed that the 
+> effective performance boost is pretty insignificant, so I wonder how big 
+> the 1 GiB direct map performance improvement is.
 
-Actually not. The core idea to describe address range suitable for code
-allocations with a structure and have arch code initialize this structure
-at boot and be done with it is the same. But I don't think vmalloc
-parameters belong there, they should be completely encapsulated in the
-allocator. Having fallback range named explicitly is IMO clearer than an
-array of address spaces.
 
-I accept your point that the structures describing ranges for different
-types should be unified and I've got carried away with making the wrappers
-to convert that structure to parameters to the core allocation function.
+Tarun is running some tests to evaluate the impact. We used to use 1GiB
+mapping always. This was later switched to use memory block size to fix
+issues with memory unplug
+commit af9d00e93a4f ("powerpc/mm/radix: Create separate mappings for hot-plugged memory")
+explains some details related to that change.
 
-I've chosen to define ranges as fields in the containing structure rather
-than enum with types and an array because I strongly feel that the callers
-should not care about these parameters. These parameters are defined by
-architecture and the callers should not need to know how each and every
-arch defines restrictions suitable for modules, bpf or kprobes.
 
-That's also the reason to have different names for API calls, exactly to
-avoid having alloc(KPROBES,...), alloc(BPF, ...), alloc(MODULES, ...) an so
-on.
+>
+>
+> I guess the only real issue with 256 MiB memory blocks and 1 GiB direct 
+> mapping is memory unplug of boot memory: when unplugging a 256 MiB 
+> block, one would have to remap the 1 GiB range using 2 MiB ranges.
 
-All in all, if I filter all the ranting, this boils down to having a
-unified structure for all the address ranges and passing this structure
-from the wrappers to the core alloc as is rather that translating it to
-separate parameters, with which I agree.
+>
+> ... I was wondering what would happen if you simply leave the direct 
+> mapping in this corner case in place instead of doing this remapping. 
+> IOW, remove the memory but keep the direct map pointing at the removed 
+> memory. Nobody should be touching it, or are there any cases where that 
+> could hurt?
+>
+>
+> Or is there any other reason why we really want 1 GiB memory blocks 
+> instead of to defaulting to 256 MiB the way it used to be?
+>
 
-> Thanks,
-> 
->         tglx
+The idea we are working towards is to keep the memory block size small
+but map the boot memory using 1G. An unplug request can split that 1G
+mapping later. We could look at the possibility of leaving that mapping
+without splitting. But not sure why we would want to do that if we can
+correctly split things. Right now there is no splitting support in powerpc.
 
--- 
-Sincerely yours,
-Mike.
+-aneesh
