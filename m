@@ -2,54 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A1E573517E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 12:07:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A03AB735187
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 12:08:46 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Y50bS7Ip;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=kpNSnf7r;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ql55y2ndBz3dGr
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 20:07:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ql57w3krRz3cjf
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 20:08:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Y50bS7Ip;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=kpNSnf7r;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2001:67c:2178:6::1d; helo=smtp-out2.suse.de; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ql4pF58bjz3bh5
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jun 2023 19:53:25 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ql4rS0tyNz3c54
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jun 2023 19:55:19 +1000 (AEST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out2.suse.de (Postfix) with ESMTP id 680A91F38A;
+	Mon, 19 Jun 2023 09:55:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1687168508; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BqmUWIwDB6MccYaGRsbpmDX+MgysrUEAbIREmqAE7tY=;
+	b=kpNSnf7reRG026G37InlC9KBsz3JngC4BSohPCpE0Ofc8ydoyz5aDha+1hAEwNWXhASmzX
+	JV7x4Bu/lZZHnRlKAzxfLi3A7L5vetPl1KZBY3/H/ktCk4Lt0ZiiylFlNJrfUgRwyPoKfP
+	BcAm8JrzmAlSyJ7pzGIK0PKATklgyIU=
+Received: from suse.cz (unknown [10.100.208.146])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 188E2601CD;
-	Mon, 19 Jun 2023 09:53:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDC11C433C0;
-	Mon, 19 Jun 2023 09:53:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1687168403;
-	bh=4BIFSN0aQLOkDhEOEPJRJLNag5NGLIcNmv1ORO+002w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y50bS7IprMYs5zNAdqpJqlJ2YKG1bojwELtQPrLawaFjYN36E15EYIen55WT/amX+
-	 x9HjX52cSNMXNmCBW3B7/xbQnX+uyPKGdjKbtyHZSWIM2Q3LZ9ERDrYsfm2JWdsPy4
-	 Ma9KZTpZS/EbU/NOzq0+3C5vpEvFl65nuIuHZbJFxIK1LpOJTQybK1/1ZIZK0BCZ6+
-	 TsjPjYteaS3m6yp+sCtq6HC+Q66kcgL6iepqSYMAHT8NF5Mc5WFZlOVr7haK0fQQL+
-	 pr1kOnPsItz3fcsMtBi9eydc+Jj/ciwASRNXsztNfc3oq2e1uAZe47ecXeFzjDhxb+
-	 NbL27HLAb4NOQ==
-From: Naveen N Rao <naveen@kernel.org>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH 13/17] powerpc/ftrace: Simplify ftrace_modify_call()
-Date: Mon, 19 Jun 2023 15:17:31 +0530
-Message-Id: <06275720939f8ee4c2f61c9e9a3e89b1fa3c441d.1687166935.git.naveen@kernel.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <cover.1687166935.git.naveen@kernel.org>
-References: <cover.1687166935.git.naveen@kernel.org>
+	by relay2.suse.de (Postfix) with ESMTPS id A3CCF2C141;
+	Mon, 19 Jun 2023 09:55:06 +0000 (UTC)
+Date: Mon, 19 Jun 2023 11:55:06 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: Doug Anderson <dianders@chromium.org>
+Subject: Re: [PATCH v2 4/6] watchdog/hardlockup: Make HAVE_NMI_WATCHDOG
+ sparc64-specific
+Message-ID: <ZJAl-rznBaZubY3-@alley>
+References: <20230616150618.6073-1-pmladek@suse.com>
+ <20230616150618.6073-5-pmladek@suse.com>
+ <CAD=FV=U=ox4ApMbDL7v=ivNF6x=UyG=dd4MU_Dt0rppNCEwCpw@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAD=FV=U=ox4ApMbDL7v=ivNF6x=UyG=dd4MU_Dt0rppNCEwCpw@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,218 +64,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: kgdb-bugreport@lists.sourceforge.net, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-perf-users@vger.kernel.org, sparclinux@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now that we validate the ftrace location during initialization in
-ftrace_init_nop(), we can simplify ftrace_modify_call() to patch-in the
-updated branch instruction without worrying about the instructions
-surrounding the ftrace location. Note that we continue to ensure we
-have the expected branch instruction at the ftrace location before
-patching it with the updated branch destination.
+On Fri 2023-06-16 09:48:06, Doug Anderson wrote:
+> Hi,
+> 
+> On Fri, Jun 16, 2023 at 8:07 AM Petr Mladek <pmladek@suse.com> wrote:
+> >
+> > There are several hardlockup detector implementations and several Kconfig
+> > values which allow selection and build of the preferred one.
+[...]
+> > Note that HARDLOCKUP_DETECTOR_PREFER_BUDDY, HARDLOCKUP_DETECTOR_PERF,
+> > and HARDLOCKUP_DETECTOR_BUDDY may conflict only with
+> > HAVE_HARDLOCKUP_DETECTOR_ARCH. They depend on HARDLOCKUP_DETECTOR
+> > and it is not longer enabled when HAVE_NMI_WATCHDOG is set.
+> >
+> > Signed-off-by: Petr Mladek <pmladek@suse.com>
+> >
+> > watchdog/sparc64: Rename HAVE_NMI_WATCHDOG to HAVE_HARDLOCKUP_WATCHDOG_SPARC64
+[...]
+> > Also the variable is set only on sparc64. Move the definition
+> > from arch/Kconfig to arch/sparc/Kconfig.debug.
+> >
+> > Signed-off-by: Petr Mladek <pmladek@suse.com>
+> 
+> I think you goofed up when squashing the patches. You've now got a
+> second patch subject after your first Signed-off-by and then a second
+> Signed-off-by... I assume everything after the first Signed-off-by
+> should be dropped?
 
-Signed-off-by: Naveen N Rao <naveen@kernel.org>
----
- arch/powerpc/kernel/trace/ftrace.c | 161 ++++-------------------------
- 1 file changed, 21 insertions(+), 140 deletions(-)
+Ah, you are right. It seems that Andrew has fixed this when taking
+the patch.
 
-diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
-index 6ea8b90246a540..c37e22c6c26521 100644
---- a/arch/powerpc/kernel/trace/ftrace.c
-+++ b/arch/powerpc/kernel/trace/ftrace.c
-@@ -89,33 +89,11 @@ static inline int ftrace_modify_code(unsigned long ip, ppc_inst_t old, ppc_inst_
- 	return ret;
- }
- 
--/*
-- * Helper functions that are the same for both PPC64 and PPC32.
-- */
--static int test_24bit_addr(unsigned long ip, unsigned long addr)
--{
--	addr = ppc_function_entry((void *)addr);
--
--	return is_offset_in_branch_range(addr - ip);
--}
--
- static int is_bl_op(ppc_inst_t op)
- {
- 	return (ppc_inst_val(op) & ~PPC_LI_MASK) == PPC_RAW_BL(0);
- }
- 
--static unsigned long find_bl_target(unsigned long ip, ppc_inst_t op)
--{
--	int offset;
--
--	offset = PPC_LI(ppc_inst_val(op));
--	/* make it signed */
--	if (offset & 0x02000000)
--		offset |= 0xfe000000;
--
--	return ip + (long)offset;
--}
--
- static unsigned long find_ftrace_tramp(unsigned long ip)
- {
- 	int i;
-@@ -130,115 +108,16 @@ static unsigned long find_ftrace_tramp(unsigned long ip)
- }
- 
- #ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
--#ifdef CONFIG_MODULES
--static int
--__ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr,
--					unsigned long addr)
-+int ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr, unsigned long addr)
- {
--	ppc_inst_t op;
--	unsigned long ip = rec->ip;
--	unsigned long entry, ptr, tramp;
--	struct module *mod = rec->arch.mod;
--
--	/* If we never set up ftrace trampolines, then bail */
--	if (!mod->arch.tramp || !mod->arch.tramp_regs) {
--		pr_err("No ftrace trampoline\n");
--		return -EINVAL;
--	}
--
--	/* read where this goes */
--	if (copy_inst_from_kernel_nofault(&op, (void *)ip)) {
--		pr_err("Fetching opcode failed.\n");
--		return -EFAULT;
--	}
--
--	/* Make sure that this is still a 24bit jump */
--	if (!is_bl_op(op)) {
--		pr_err("Not expected bl: opcode is %08lx\n", ppc_inst_as_ulong(op));
--		return -EINVAL;
--	}
--
--	/* lets find where the pointer goes */
--	tramp = find_bl_target(ip, op);
--	entry = ppc_global_function_entry((void *)old_addr);
--
--	pr_devel("ip:%lx jumps to %lx", ip, tramp);
--
--	if (tramp != entry) {
--		/* old_addr is not within range, so we must have used a trampoline */
--		if (module_trampoline_target(mod, tramp, &ptr)) {
--			pr_err("Failed to get trampoline target\n");
--			return -EFAULT;
--		}
--
--		pr_devel("trampoline target %lx", ptr);
--
--		/* This should match what was called */
--		if (ptr != entry) {
--			pr_err("addr %lx does not match expected %lx\n", ptr, entry);
--			return -EINVAL;
--		}
--	}
--
--	/* The new target may be within range */
--	if (test_24bit_addr(ip, addr)) {
--		/* within range */
--		if (patch_branch((u32 *)ip, addr, BRANCH_SET_LINK)) {
--			pr_err("REL24 out of range!\n");
--			return -EINVAL;
--		}
--
--		return 0;
--	}
--
--	if (rec->flags & FTRACE_FL_REGS)
--		tramp = mod->arch.tramp_regs;
--	else
--		tramp = mod->arch.tramp;
--
--	if (module_trampoline_target(mod, tramp, &ptr)) {
--		pr_err("Failed to get trampoline target\n");
--		return -EFAULT;
--	}
--
--	pr_devel("trampoline target %lx", ptr);
--
--	entry = ppc_global_function_entry((void *)addr);
--	/* This should match what was called */
--	if (ptr != entry) {
--		pr_err("addr %lx does not match expected %lx\n", ptr, entry);
--		return -EINVAL;
--	}
--
--	if (patch_branch((u32 *)ip, tramp, BRANCH_SET_LINK)) {
--		pr_err("REL24 out of range!\n");
--		return -EINVAL;
--	}
--
--	return 0;
--}
--#else
--static int __ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr, unsigned long addr)
--{
--	return 0;
--}
--#endif
--
--int ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr,
--			unsigned long addr)
--{
--	unsigned long ip = rec->ip;
-+	unsigned long tramp, tramp_old, ip = rec->ip;
- 	ppc_inst_t old, new;
-+	struct module *mod;
- 
--	/*
--	 * If the calling address is more that 24 bits away,
--	 * then we had to use a trampoline to make the call.
--	 * Otherwise just update the call site.
--	 */
--	if (test_24bit_addr(ip, addr) && test_24bit_addr(ip, old_addr)) {
--		/* within range */
--		old = ftrace_call_replace(ip, old_addr, 1);
--		new = ftrace_call_replace(ip, addr, 1);
-+	if (is_offset_in_branch_range(old_addr - ip) && is_offset_in_branch_range(addr - ip)) {
-+		/* Within range */
-+		old = ftrace_create_branch_inst(ip, old_addr, 1);
-+		new = ftrace_create_branch_inst(ip, addr, 1);
- 		return ftrace_modify_code(ip, old, new);
- 	} else if (core_kernel_text(ip)) {
- 		/*
-@@ -246,20 +125,22 @@ int ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr,
- 		 * variant, so there is nothing to do here
- 		 */
- 		return 0;
--	} else if (!IS_ENABLED(CONFIG_MODULES)) {
--		/* We should not get here without modules */
--		return -EINVAL;
-+	} else if (IS_ENABLED(CONFIG_MODULES)) {
-+		/* Module code would be going to one of the module stubs */
-+		mod = rec->arch.mod;
-+		if (addr == (unsigned long)ftrace_caller) {
-+			tramp_old = mod->arch.tramp_regs;
-+			tramp = mod->arch.tramp;
-+		} else {
-+			tramp_old = mod->arch.tramp;
-+			tramp = mod->arch.tramp_regs;
-+		}
-+		old = ftrace_create_branch_inst(ip, tramp_old, 1);
-+		new = ftrace_create_branch_inst(ip, tramp, 1);
-+		return ftrace_modify_code(ip, old, new);
- 	}
- 
--	/*
--	 * Out of range jumps are called from modules.
--	 */
--	if (!rec->arch.mod) {
--		pr_err("No module loaded\n");
--		return -EINVAL;
--	}
--
--	return __ftrace_modify_call(rec, old_addr, addr);
-+	return -EINVAL;
- }
- #endif
- 
--- 
-2.40.1
-
+Thank you both,
+Petr
