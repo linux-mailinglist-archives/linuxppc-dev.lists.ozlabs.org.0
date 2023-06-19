@@ -2,100 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D571E735286
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 12:36:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A10057355ED
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 13:35:32 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aPMz2eR3;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=eYLauzga;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=i+cENnWb;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ql5lN1Mclz30Mc
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 20:36:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ql7423wpKz3bXf
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 21:35:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aPMz2eR3;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=eYLauzga;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=i+cENnWb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=91.218.175.63; helo=out-63.mta0.migadu.com; envelope-from=kent.overstreet@linux.dev; receiver=lists.ozlabs.org)
+Received: from out-63.mta0.migadu.com (out-63.mta0.migadu.com [91.218.175.63])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ql5kR0gw3z2yx0
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jun 2023 20:35:09 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1687170905;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ql7343XLsz30PS
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jun 2023 21:34:38 +1000 (AEST)
+Date: Mon, 19 Jun 2023 07:34:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1687174472;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8kzRWvnW08C3j+K9Vi5MjKEYmDrDN5xHolZBplvhXmY=;
-	b=aPMz2eR3vbNM/5l9yCVa9dZ2mDz8a7gDzXluPA5yT3NfEyjGeMgywL4Curx92haF8WpkCd
-	D6Tfh7Lb4z1C+XqZYGZfm+iLF8PKWosmRUKuAiQcwaJ4dCVgYUrOldbZQQyXsk5qPXU9Kp
-	OWIpTQKfGXZgvIO1j9Njr6AfnGA2fGQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1687170906;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8kzRWvnW08C3j+K9Vi5MjKEYmDrDN5xHolZBplvhXmY=;
-	b=eYLauzgaWyEu1kK6XN0LFugxowI+Tuki1SUh7567utNl07LQteP9K8OBBnFltZZJ+TnQgB
-	ljA+fzJKdRy8LKoTgH9rc+OICm6B/envXxLIT634TRotY/3eu2EiJGJRxxpLinmqSpeOEe
-	Yt1+8D4SpH1iNVEALlDmrACmh6N15fU=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-632-Pk_rceVmOmedp7ay3zmYew-1; Mon, 19 Jun 2023 06:35:04 -0400
-X-MC-Unique: Pk_rceVmOmedp7ay3zmYew-1
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-31118de9a69so1133291f8f.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jun 2023 03:35:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687170903; x=1689762903;
-        h=content-transfer-encoding:in-reply-to:subject:organization:from
-         :references:cc:to:content-language:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8kzRWvnW08C3j+K9Vi5MjKEYmDrDN5xHolZBplvhXmY=;
-        b=jvs/NNkPclE/xfBdeti64BdWy3ffZOZcjc+5K9aOf3Wv6hyvT4Au48mjqsiISg0+HB
-         u4t/NaY+YsuzmsWptVev+tDD7w1LZlwiwh42Lz3HHU6mWl63vQDmXKN92VrN6bIFKAm4
-         G5/0mpXmiFq6x/ivrLoC/lvs+NvzAzJS6UZAu4HUAxUsUU7KNJGbkTV/p0DEVugIqE5O
-         ztrgfjRWvIOFJdt7ttqCsScQZ7ktqNfs+QUA9XOO4v5Iqc83WBFD2XGulEcNRR+JuDhQ
-         55wTnr1ZUlWIjUWCfwtC7liJuc+xobVqNxz7cEV+mSxoTA2kR/+Q3zOYK9FWIewr6OyI
-         FXZw==
-X-Gm-Message-State: AC+VfDyUr9RVxy0bjhQDHv8uNylrBAN1/30nxrdONkNCmv/IjpuYOc7i
-	7105U4qk1JUPckUuTzTsGXMzt0qJtI8U5uDiA2sb/XHPiC6sxQPZEwk9nuOZJ2wBaqdqXernKZ+
-	heV1fIl+T77jCSR7Y38AJkP8fow==
-X-Received: by 2002:adf:f08b:0:b0:311:1ce2:ee1b with SMTP id n11-20020adff08b000000b003111ce2ee1bmr6137145wro.66.1687170903287;
-        Mon, 19 Jun 2023 03:35:03 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7UlXqyx79AZbg7cQKKw3/FukF7BwIL7pS8JScrUi2KCcalrl35OKswwnX/DBdodQxokoKs5w==
-X-Received: by 2002:adf:f08b:0:b0:311:1ce2:ee1b with SMTP id n11-20020adff08b000000b003111ce2ee1bmr6137126wro.66.1687170902871;
-        Mon, 19 Jun 2023 03:35:02 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c72f:7100:cede:6433:a77b:41e9? (p200300cbc72f7100cede6433a77b41e9.dip0.t-ipconnect.de. [2003:cb:c72f:7100:cede:6433:a77b:41e9])
-        by smtp.gmail.com with ESMTPSA id w15-20020a5d404f000000b0030fcf3d75c4sm17148919wrp.45.2023.06.19.03.35.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Jun 2023 03:35:02 -0700 (PDT)
-Message-ID: <853eae60-b92b-9284-e24d-564429aba8c1@redhat.com>
-Date: Mon, 19 Jun 2023 12:35:01 +0200
+	bh=Tt3RWh8BEKoqLhK86LDh7llJ14l6KCTXk/okAyPXAzA=;
+	b=i+cENnWbA17Y+F/fishc8UmKkX2d11aFrfbkEA/RSeJGs8DaK+pP54Vf1C7aoZ8NsEj74R
+	cXaE50KWXHIuXWZXVuGC783hgIjWLesjrEEDAYhwTaqLKdCoI85w4n4+GuOUgBvzA2QigP
+	oa1A17/zsm0VN2UgH6YNfjC3Cc/g4gI=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: Andy Lutomirski <luto@kernel.org>
+Subject: Re: [PATCH v2 02/12] mm: introduce execmem_text_alloc() and
+ jit_text_alloc()
+Message-ID: <20230619113426.c37bpwvdagbzyevn@moria.home.lan>
+References: <20230616085038.4121892-1-rppt@kernel.org>
+ <20230616085038.4121892-3-rppt@kernel.org>
+ <f9a7eebe-d36e-4587-b99d-35d4edefdd14@app.fastmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, npiggin@gmail.com,
- christophe.leroy@csgroup.eu
-References: <20230609060851.329406-1-aneesh.kumar@linux.ibm.com>
- <20230609060851.329406-2-aneesh.kumar@linux.ibm.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [PATCH v2 2/2] powerpc/mm: Add memory_block_size as a kernel
- parameter
-In-Reply-To: <20230609060851.329406-2-aneesh.kumar@linux.ibm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f9a7eebe-d36e-4587-b99d-35d4edefdd14@app.fastmail.com>
+X-Migadu-Flow: FLOW_OUT
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,146 +57,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: foraker1@llnl.gov
+Cc: Mark Rutland <mark.rutland@arm.com>, the arch/x86 maintainers <x86@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Nadav Amit <nadav.amit@gmail.com>, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, "Russell King \(Oracle\)" <linux@armlinux.org.uk>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linux-trace-kernel@vger.kernel.org, Will Deacon <will@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Puranjay Mohan <puranjay12@gmail.com>, linux-mm@kvack.org, netdev@vger.kernel.org, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Dinh Nguyen <dinguyen@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-modules@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 09.06.23 08:08, Aneesh Kumar K.V wrote:
-> Certain devices can possess non-standard memory capacities, not constrained
-> to multiples of 1GB. Provide a kernel parameter so that we can map the
-> device memory completely on memory hotplug.
-
-So, the unfortunate thing is that these devices would have worked out of 
-the box before the memory block size was increased from 256 MiB to 1 GiB 
-in these setups. Now, one has to fine-tune the memory block size. The 
-only other arch that I know, which supports setting the memory block 
-size, is x86 for special (large) UV systems -- and at least in the past 
-128 MiB vs. 2 GiB memory blocks made a performance difference during 
-boot (maybe no longer today, who knows).
-
-
-Obviously, less tunable and getting stuff simply working out of the box 
-is preferable.
-
-Two questions:
-
-1) Isn't there a way to improve auto-detection to fallback to 256 MiB in 
-these setups, to avoid specifying these parameters?
-
-2) Is the 256 MiB -> 1 GiB memory block size switch really worth it? On 
-x86-64, experiments (with direct map fragmentation) showed that the 
-effective performance boost is pretty insignificant, so I wonder how big 
-the 1 GiB direct map performance improvement is.
-
-
-I guess the only real issue with 256 MiB memory blocks and 1 GiB direct 
-mapping is memory unplug of boot memory: when unplugging a 256 MiB 
-block, one would have to remap the 1 GiB range using 2 MiB ranges.
-
-... I was wondering what would happen if you simply leave the direct 
-mapping in this corner case in place instead of doing this remapping. 
-IOW, remove the memory but keep the direct map pointing at the removed 
-memory. Nobody should be touching it, or are there any cases where that 
-could hurt?
-
-
-Or is there any other reason why we really want 1 GiB memory blocks 
-instead of to defaulting to 256 MiB the way it used to be?
-
-Thanks!
-
+On Sat, Jun 17, 2023 at 01:38:29PM -0700, Andy Lutomirski wrote:
+> On Fri, Jun 16, 2023, at 1:50 AM, Mike Rapoport wrote:
+> > From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+> >
+> > module_alloc() is used everywhere as a mean to allocate memory for code.
+> >
+> > Beside being semantically wrong, this unnecessarily ties all subsystems
+> > that need to allocate code, such as ftrace, kprobes and BPF to modules
+> > and puts the burden of code allocation to the modules code.
+> >
+> > Several architectures override module_alloc() because of various
+> > constraints where the executable memory can be located and this causes
+> > additional obstacles for improvements of code allocation.
+> >
+> > Start splitting code allocation from modules by introducing
+> > execmem_text_alloc(), execmem_free(), jit_text_alloc(), jit_free() APIs.
+> >
+> > Initially, execmem_text_alloc() and jit_text_alloc() are wrappers for
+> > module_alloc() and execmem_free() and jit_free() are replacements of
+> > module_memfree() to allow updating all call sites to use the new APIs.
+> >
+> > The intention semantics for new allocation APIs:
+> >
+> > * execmem_text_alloc() should be used to allocate memory that must reside
+> >   close to the kernel image, like loadable kernel modules and generated
+> >   code that is restricted by relative addressing.
+> >
+> > * jit_text_alloc() should be used to allocate memory for generated code
+> >   when there are no restrictions for the code placement. For
+> >   architectures that require that any code is within certain distance
+> >   from the kernel image, jit_text_alloc() will be essentially aliased to
+> >   execmem_text_alloc().
+> >
 > 
-> Restrict memory_block_size value to a power of 2 value similar to LMB size.
-> The memory block size should also be more than the section size.
+> Is there anything in this series to help users do the appropriate synchronization when the actually populate the allocated memory with code?  See here, for example:
 > 
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> ---
->   .../admin-guide/kernel-parameters.txt         |  3 +++
->   arch/powerpc/kernel/setup_64.c                | 23 +++++++++++++++++++
->   arch/powerpc/mm/init_64.c                     | 17 ++++++++++----
->   3 files changed, 38 insertions(+), 5 deletions(-)
-> 
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> index 9e5bab29685f..833b8c5b4b4c 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -3190,6 +3190,9 @@
->   			Note that even when enabled, there are a few cases where
->   			the feature is not effective.
->   
-> +	memory_block_size=size [PPC]
-> +			 Use this parameter to configure the memory block size value.
-> +
->   	memtest=	[KNL,X86,ARM,M68K,PPC,RISCV] Enable memtest
->   			Format: <integer>
->   			default : 0 <disable>
-> diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
-> index 246201d0d879..cbdb924462c7 100644
-> --- a/arch/powerpc/kernel/setup_64.c
-> +++ b/arch/powerpc/kernel/setup_64.c
-> @@ -892,6 +892,29 @@ unsigned long memory_block_size_bytes(void)
->   
->   	return MIN_MEMORY_BLOCK_SIZE;
->   }
-> +
-> +/*
-> + * Restrict to a power of 2 value for memblock which is larger than
-> + * section size
-> + */
-> +static int __init parse_mem_block_size(char *ptr)
-> +{
-> +	unsigned int order;
-> +	unsigned long size = memparse(ptr, NULL);
-> +
-> +	order = fls64(size);
-> +	if (!order)
-> +		return 0;
-> +
-> +	order--;
-> +	if (order < SECTION_SIZE_BITS)
-> +		return 0;
-> +
-> +	memory_block_size = 1UL << order;
-> +
-> +	return 0;
-> +}
-> +early_param("memory_block_size", parse_mem_block_size);
->   #endif
->   
->   #if defined(CONFIG_PPC_INDIRECT_PIO) || defined(CONFIG_PPC_INDIRECT_MMIO)
-> diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
-> index 97a9163f1280..5e6dde593ea3 100644
-> --- a/arch/powerpc/mm/init_64.c
-> +++ b/arch/powerpc/mm/init_64.c
-> @@ -549,13 +549,20 @@ static int __init probe_memory_block_size(unsigned long node, const char *uname,
->   	return 0;
->   }
->   
-> -/*
-> - * start with 1G memory block size. Early init will
-> - * fix this with correct value.
-> - */
-> -unsigned long memory_block_size __ro_after_init = 1UL << 30;
-> +unsigned long memory_block_size __ro_after_init;
->   static void __init early_init_memory_block_size(void)
->   {
-> +	/*
-> +	 * if it is set via early param just return.
-> +	 */
-> +	if (memory_block_size)
-> +		return;
-> +
-> +	/*
-> +	 * start with 1G memory block size. update_memory_block_size()
-> +	 * will derive the right value based on device tree details.
-> +	 */
-> +	memory_block_size = 1UL << 30;
->   	/*
->   	 * We need to do memory_block_size probe early so that
->   	 * radix__early_init_mmu() can use this as limit for
+> https://lore.kernel.org/linux-fsdevel/cb6533c6-cea0-4f04-95cf-b8240c6ab405@app.fastmail.com/T/#u
 
--- 
-Cheers,
-
-David / dhildenb
-
+We're still in need of an arch independent text_poke() api.
