@@ -2,102 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 222D8735C2F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 18:29:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4478735CCC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 19:10:25 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SyWeFqnN;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SyWeFqnN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YEOROC7Y;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QlFbm0R95z30hB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jun 2023 02:29:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QlGVR4xVjz30hK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jun 2023 03:10:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SyWeFqnN;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SyWeFqnN;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YEOROC7Y;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=luto@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QlFZn5p2mz2ynD
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jun 2023 02:29:04 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1687192141;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=F/mlufGciH87ZRVOdPMbNjdM4IrF5cBYE9BGED5TrRc=;
-	b=SyWeFqnNkhKewKqg+7O059vnx3sUgzQ68xljmEsvFtfWv9SAXqMu98lH9KgU84woCdzxqm
-	aVkjLEURitQ88tZISMs+uE2U8VJRe/iOGQXkMNLK7K1GSgiVOkaX7jbgNKjBxf2j/Q94qt
-	CBVOxOVzpHUAO3zhnfREwYRNhat6594=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1687192141;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=F/mlufGciH87ZRVOdPMbNjdM4IrF5cBYE9BGED5TrRc=;
-	b=SyWeFqnNkhKewKqg+7O059vnx3sUgzQ68xljmEsvFtfWv9SAXqMu98lH9KgU84woCdzxqm
-	aVkjLEURitQ88tZISMs+uE2U8VJRe/iOGQXkMNLK7K1GSgiVOkaX7jbgNKjBxf2j/Q94qt
-	CBVOxOVzpHUAO3zhnfREwYRNhat6594=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-272-LcwQCL5aMx-5lYhpOfStzg-1; Mon, 19 Jun 2023 12:28:59 -0400
-X-MC-Unique: LcwQCL5aMx-5lYhpOfStzg-1
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-3f814f78af2so16832385e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jun 2023 09:28:59 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687192138; x=1689784138;
-        h=content-transfer-encoding:in-reply-to:subject:organization:from
-         :references:cc:to:content-language:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=F/mlufGciH87ZRVOdPMbNjdM4IrF5cBYE9BGED5TrRc=;
-        b=Tm9zszsRWrXi8n8ILDNCDTMvm0z8f8ASNwJUxAfhsck0hLiR8Scvq6fVD7u5r2EMur
-         2223M5FbGfGjm5Tp13wwfXkiEi3+4VLfYP1gNdVCM2YVsNvhKbwa1284LIcdIeaQa9WV
-         zvGeQd61oTq/UTfbWxmCY2uO97dm6UHsUcJxPOXtXFC4EI5aecT2WlSDl9fidCsuW59e
-         K2KXvY1QbgzHrXmpTgbFWU7AGXhnl8q9k4qgMjxM1seS/kCuJgrYoM+zGuhYatlmmHH8
-         btZTfQQRkePcDgtN74EyleyLygLMCvmKVBnzvTKBOq9edNbvRQyXAVNTA2RPdT7GexYL
-         mCJA==
-X-Gm-Message-State: AC+VfDwQwLU/UTtDvQapyqI4vobormxNnqzCqmCNw5rtIij3jmp3i0M3
-	qe5w3ylRA4Iz4dEbfbyX8nOSFe7EfAsdoAVTKQzkWu2qUh5coYfueD9tCXXDacufp0b4hGmyksB
-	UZWULqEwbrxQFoeIEcdHnAGtAuQ==
-X-Received: by 2002:a7b:c386:0:b0:3f9:be1:6cc2 with SMTP id s6-20020a7bc386000000b003f90be16cc2mr2687621wmj.32.1687192138682;
-        Mon, 19 Jun 2023 09:28:58 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6Iy29BnneSEM2SVtjfe56wDeb+u0SvxapFD4iQie1bKcwPepj/Do7MVEAPU3TxLxAFNki+AQ==
-X-Received: by 2002:a7b:c386:0:b0:3f9:be1:6cc2 with SMTP id s6-20020a7bc386000000b003f90be16cc2mr2687609wmj.32.1687192138346;
-        Mon, 19 Jun 2023 09:28:58 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c72f:7100:cede:6433:a77b:41e9? (p200300cbc72f7100cede6433a77b41e9.dip0.t-ipconnect.de. [2003:cb:c72f:7100:cede:6433:a77b:41e9])
-        by smtp.gmail.com with ESMTPSA id s14-20020a7bc38e000000b003f801c12c58sm107625wmj.43.2023.06.19.09.28.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Jun 2023 09:28:57 -0700 (PDT)
-Message-ID: <bdb94911-ec9a-02ca-06fc-f850b6c815b2@redhat.com>
-Date: Mon, 19 Jun 2023 18:28:56 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, npiggin@gmail.com,
- christophe.leroy@csgroup.eu, Tarun Sahu <tsahu@linux.ibm.com>
-References: <20230609060851.329406-1-aneesh.kumar@linux.ibm.com>
- <20230609060851.329406-2-aneesh.kumar@linux.ibm.com>
- <853eae60-b92b-9284-e24d-564429aba8c1@redhat.com>
- <875y7jifzc.fsf@linux.ibm.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [PATCH v2 2/2] powerpc/mm: Add memory_block_size as a kernel
- parameter
-In-Reply-To: <875y7jifzc.fsf@linux.ibm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QlGTS2Lk0z3020
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jun 2023 03:09:32 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 2470460E76;
+	Mon, 19 Jun 2023 17:09:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2BBEC433C0;
+	Mon, 19 Jun 2023 17:09:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1687194567;
+	bh=JAKwTrp1uinVAtoLWlXEGNS+fEBZEu6il2wWrUqzEzo=;
+	h=In-Reply-To:References:Date:From:To:Cc:Subject:From;
+	b=YEOROC7YGunxOkL9NsbJwROPW3V877k09rIaiwwEQBd6bVLJWdMjusQxoVnbsuD5D
+	 SKibXVd7FHc2nMr1tudbdYIZvJGYXAOuK4akurudUoPTNxoZjnK21I5AdFijJrVbol
+	 wMmYZdLv8Hw2umDYdeUGRbNj+IGHaRZ0DomN5ubTCsJ6NBLT+yY4qE1y7ajOHRP1RW
+	 KGFKHX9UnHaE0jcV0Lk398WnGNpxO+L8j061yUD+7F16bO6b13PKK3oASVquk5plTv
+	 fi30eJK4gcno8KPn/VoCZ0cPaw9JHH45FBctirdWyvzfVojpY1MuX3tVhu6B84K6vz
+	 1DQlrW9fvYTQw==
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailauth.nyi.internal (Postfix) with ESMTP id BDC6027C0054;
+	Mon, 19 Jun 2023 13:09:24 -0400 (EDT)
+Received: from imap48 ([10.202.2.98])
+  by compute3.internal (MEProxy); Mon, 19 Jun 2023 13:09:24 -0400
+X-ME-Sender: <xms:wouQZL1KKgLu09W-gITBMTpyAXyCop721KHeRNSzShP91di0wPWHmw>
+    <xme:wouQZKG8Wf_3R-mPlBMuIdAgUtqSh1IoF1oSxFnk9i4TgZk6ENhss3V_yoaRPv-RL
+    TAuvGDsGQbdSiWuWsY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrgeefvddguddtjecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdet
+    nhguhicunfhuthhomhhirhhskhhifdcuoehluhhtoheskhgvrhhnvghlrdhorhhgqeenuc
+    ggtffrrghtthgvrhhnpedvhfeuvddthfdufffhkeekffetgffhledtleegffetheeugeej
+    ffduhefgteeihfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfh
+    hrohhmpegrnhguhidomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudduiedu
+    keehieefvddqvdeifeduieeitdekqdhluhhtoheppehkvghrnhgvlhdrohhrgheslhhinh
+    hugidrlhhuthhordhush
+X-ME-Proxy: <xmx:wouQZL5OetLa4Clx3-k8PoL2vfJibp2bgnqmJ2SvMc_usNTskAjOCQ>
+    <xmx:wouQZA2n3SB0X1LUMOotkjWhlqzrq7LHl-_hgrAS7-wGIbb0zOE8Fw>
+    <xmx:wouQZOGStaRHYVBRbGjqqlxYN_stg3xW85Vh8QJme5E9zOhMY7GQOQ>
+    <xmx:xIuQZOK5iPdRAlFtT5-Mu5Cjdtszefp8KfJWF6OppfL2ayIjz9WFYA>
+Feedback-ID: ieff94742:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 5BFB531A0063; Mon, 19 Jun 2023 13:09:22 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-496-g8c46984af0-fm-20230615.001-g8c46984a
+Mime-Version: 1.0
+Message-Id: <a17c65c6-863f-4026-9c6f-a04b659e9ab4@app.fastmail.com>
+In-Reply-To: <20230618080027.GA52412@kernel.org>
+References: <20230616085038.4121892-1-rppt@kernel.org>
+ <20230616085038.4121892-3-rppt@kernel.org>
+ <f9a7eebe-d36e-4587-b99d-35d4edefdd14@app.fastmail.com>
+ <20230618080027.GA52412@kernel.org>
+Date: Mon, 19 Jun 2023 10:09:02 -0700
+From: "Andy Lutomirski" <luto@kernel.org>
+To: "Mike Rapoport" <rppt@kernel.org>, "Mark Rutland" <mark.rutland@arm.com>,
+ "Kees Cook" <keescook@chromium.org>
+Subject: Re: [PATCH v2 02/12] mm: introduce execmem_text_alloc() and jit_text_alloc()
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,106 +91,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: foraker1@llnl.gov
+Cc: Mark Rutland <mark.rutland@arm.com>, the arch/x86 maintainers <x86@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Nadav Amit <nadav.amit@gmail.com>, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, "Russell King \(Oracle\)" <linux@armlinux.org.uk>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linux-trace-kernel@vger.kernel.org, Will Deacon <will@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Puranjay Mohan <puranjay12@gmail.com>, linux-mm@kvack.org, netdev@vger.kernel.org, Kent Overstreet <kent.overstreet@linux.dev>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Dinh Nguyen <dinguyen@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, linux-modules@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 19.06.23 18:17, Aneesh Kumar K.V wrote:
-> David Hildenbrand <david@redhat.com> writes:
-> 
->> On 09.06.23 08:08, Aneesh Kumar K.V wrote:
->>> Certain devices can possess non-standard memory capacities, not constrained
->>> to multiples of 1GB. Provide a kernel parameter so that we can map the
->>> device memory completely on memory hotplug.
->>
->> So, the unfortunate thing is that these devices would have worked out of
->> the box before the memory block size was increased from 256 MiB to 1 GiB
->> in these setups. Now, one has to fine-tune the memory block size. The
->> only other arch that I know, which supports setting the memory block
->> size, is x86 for special (large) UV systems -- and at least in the past
->> 128 MiB vs. 2 GiB memory blocks made a performance difference during
->> boot (maybe no longer today, who knows).
->>
->>
->> Obviously, less tunable and getting stuff simply working out of the box
->> is preferable.
->>
->> Two questions:
->>
->> 1) Isn't there a way to improve auto-detection to fallback to 256 MiB in
->> these setups, to avoid specifying these parameters?
-> 
-> The patch does try to detect as much as possible by looking at device tree
-> nodes and aperture window size. But there are still cases where we find
-> a memory aperture of size X GB and device driver hotplug X.YGB memory.
-> 
-
-Okay, and I assume we can't detect that case easily.
-
-Which interface is that device driver using to hotplug memory? It's 
-quite surprising I have to say ...
-
->>
->> 2) Is the 256 MiB -> 1 GiB memory block size switch really worth it? On
->> x86-64, experiments (with direct map fragmentation) showed that the
->> effective performance boost is pretty insignificant, so I wonder how big
->> the 1 GiB direct map performance improvement is.
-> 
-> 
-> Tarun is running some tests to evaluate the impact. We used to use 1GiB
-> mapping always. This was later switched to use memory block size to fix
-> issues with memory unplug
-> commit af9d00e93a4f ("powerpc/mm/radix: Create separate mappings for hot-plugged memory")
-> explains some details related to that change.
-> 
-
-IIUC, that commit (conditionally) increased the memory block size to 
-avoid the splitting, correct? By that, it broke the device driver use case.
-
-> 
->>
->>
->> I guess the only real issue with 256 MiB memory blocks and 1 GiB direct
->> mapping is memory unplug of boot memory: when unplugging a 256 MiB
->> block, one would have to remap the 1 GiB range using 2 MiB ranges.
-> 
->>
->> ... I was wondering what would happen if you simply leave the direct
->> mapping in this corner case in place instead of doing this remapping.
->> IOW, remove the memory but keep the direct map pointing at the removed
->> memory. Nobody should be touching it, or are there any cases where that
->> could hurt?
->>
->>
->> Or is there any other reason why we really want 1 GiB memory blocks
->> instead of to defaulting to 256 MiB the way it used to be?
->>
-> 
-> The idea we are working towards is to keep the memory block size small
-
-That would be preferable, yes ...
-
-> but map the boot memory using 1G. An unplug request can split that 1G
-> mapping later. We could look at the possibility of leaving that mapping
-> without splitting. But not sure why we would want to do that if we can
-> correctly split things. Right now there is no splitting support in powerpc.
-
-If splitting over-complicates the matter (and well, it will even consume 
-more memory), it might at least be worth looking into that. Yes, it's 
-cleaner.
-
-I think there is also the option to fail memory offlining (and therefore 
-unplug) if we have a 1 GiB mapping and don't want to split. For 
-hotplugged memory it would always work to unplug again. aarch64 blocks 
-any boot memory from getting unplugged.
-
-But I guess that might break existing use cases (unplug boot memory) on 
-ppc64 that rely on ZONE_MOVABLE to have it working with guarantees, 
-right? Could be optimized but not sure if that's the best approach.
 
 
--- 
-Cheers,
+On Sun, Jun 18, 2023, at 1:00 AM, Mike Rapoport wrote:
+> On Sat, Jun 17, 2023 at 01:38:29PM -0700, Andy Lutomirski wrote:
+>> On Fri, Jun 16, 2023, at 1:50 AM, Mike Rapoport wrote:
+>> > From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+>> >
+>> > module_alloc() is used everywhere as a mean to allocate memory for code.
+>> >
+>> > Beside being semantically wrong, this unnecessarily ties all subsystems
+>> > that need to allocate code, such as ftrace, kprobes and BPF to modules
+>> > and puts the burden of code allocation to the modules code.
+>> >
+>> > Several architectures override module_alloc() because of various
+>> > constraints where the executable memory can be located and this causes
+>> > additional obstacles for improvements of code allocation.
+>> >
+>> > Start splitting code allocation from modules by introducing
+>> > execmem_text_alloc(), execmem_free(), jit_text_alloc(), jit_free() APIs.
+>> >
+>> > Initially, execmem_text_alloc() and jit_text_alloc() are wrappers for
+>> > module_alloc() and execmem_free() and jit_free() are replacements of
+>> > module_memfree() to allow updating all call sites to use the new APIs.
+>> >
+>> > The intention semantics for new allocation APIs:
+>> >
+>> > * execmem_text_alloc() should be used to allocate memory that must reside
+>> >   close to the kernel image, like loadable kernel modules and generated
+>> >   code that is restricted by relative addressing.
+>> >
+>> > * jit_text_alloc() should be used to allocate memory for generated code
+>> >   when there are no restrictions for the code placement. For
+>> >   architectures that require that any code is within certain distance
+>> >   from the kernel image, jit_text_alloc() will be essentially aliased to
+>> >   execmem_text_alloc().
+>> >
+>> 
+>> Is there anything in this series to help users do the appropriate
+>> synchronization when the actually populate the allocated memory with
+>> code?  See here, for example:
+>
+> This series only factors out the executable allocations from modules and
+> puts them in a central place.
+> Anything else would go on top after this lands.
 
-David / dhildenb
+Hmm.
+
+On the one hand, there's nothing wrong with factoring out common code. On the other hand, this is probably the right time to at least start thinking about synchronization, at least to the extent that it might make us want to change this API.  (I'm not at all saying that this series should require changes -- I'm just saying that this is a good time to think about how this should work.)
+
+The current APIs, *and* the proposed jit_text_alloc() API, don't actually look like the one think in the Linux ecosystem that actually intelligently and efficiently maps new text into an address space: mmap().
+
+On x86, you can mmap() an existing file full of executable code PROT_EXEC and jump to it with minimal synchronization (just the standard implicit ordering in the kernel that populates the pages before setting up the PTEs and whatever user synchronization is needed to avoid jumping into the mapping before mmap() finishes).  It works across CPUs, and the only possible way userspace can screw it up (for a read-only mapping of read-only text, anyway) is to jump to the mapping too early, in which case userspace gets a page fault.  Incoherence is impossible, and no one needs to "serialize" (in the SDM sense).
+
+I think the same sequence (from userspace's perspective) works on other architectures, too, although I think more cache management is needed on the kernel's end.  As far as I know, no Linux SMP architecture needs an IPI to map executable text into usermode, but I could easily be wrong.  (IIRC RISC-V has very developer-unfriendly icache management, but I don't remember the details.)
+
+Of course, using ptrace or any other FOLL_FORCE to modify text on x86 is rather fraught, and I bet many things do it wrong when userspace is multithreaded.  But not in production because it's mostly not used in production.)
+
+But jit_text_alloc() can't do this, because the order of operations doesn't match.  With jit_text_alloc(), the executable mapping shows up before the text is populated, so there is no atomic change from not-there to populated-and-executable.  Which means that there is an opportunity for CPUs, speculatively or otherwise, to start filling various caches with intermediate states of the text, which means that various architectures (even x86!) may need serialization.
+
+For eBPF- and module- like use cases, where JITting/code gen is quite coarse-grained, perhaps something vaguely like:
+
+jit_text_alloc() -> returns a handle and an executable virtual address, but does *not* map it there
+jit_text_write() -> write to that handle
+jit_text_map() -> map it and synchronize if needed (no sync needed on x86, I think)
+
+could be more efficient and/or safer.
+
+(Modules could use this too.  Getting alternatives right might take some fiddling, because off the top of my head, this doesn't match how it works now.)
+
+To make alternatives easier, this could work, maybe (haven't fully thought it through):
+
+jit_text_alloc()
+jit_text_map_rw_inplace() -> map at the target address, but RW, !X
+
+write the text and apply alternatives
+
+jit_text_finalize() -> change from RW to RX *and synchronize*
+
+jit_text_finalize() would either need to wait for RCU (possibly extra heavy weight RCU to get "serialization") or send an IPI.
+
+This is slower than the alloc, write, map solution, but allows alternatives to be applied at the final address.
+
+
+Even fancier variants where the writing is some using something like use_temporary_mm() might even make sense.
+
+
+To what extent does performance matter for the various users?  module loading is slow, and I don't think we care that much.  eBPF loaded is not super fast, and we care to a limited extent.  I *think* the bcachefs use case needs to be very fast, but I'm not sure it can be fast and supportable.
+
+Anyway, food for thought.
 
