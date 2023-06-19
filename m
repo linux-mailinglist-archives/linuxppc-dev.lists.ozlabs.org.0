@@ -2,49 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F09FB735166
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 12:02:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95C09735102
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 11:56:25 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kQE3XR/0;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fpsi3CYW;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ql50v5Wrqz3cF1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 20:02:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ql4sg30tmz3byl
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 19:56:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kQE3XR/0;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fpsi3CYW;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ql4nl5mvCz3bTr
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jun 2023 19:52:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ql4n32spcz30f6
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jun 2023 19:52:23 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 2CF6A601CD;
-	Mon, 19 Jun 2023 09:52:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3378C433C8;
-	Mon, 19 Jun 2023 09:52:56 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id BAF1E602E0;
+	Mon, 19 Jun 2023 09:52:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87343C433C8;
+	Mon, 19 Jun 2023 09:52:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1687168377;
-	bh=8JeQh63fPatsalzj0Vl6bvA1m4bFoaGQC3L7k3yskE0=;
+	s=k20201202; t=1687168341;
+	bh=fvNzA4Q938jsAQnFgUt78HMwwQ810FzVX7BIJSSbuFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kQE3XR/0y8+ni92uSmj1iv8i9vmd5MNVRf0IkIhh2zL40VaX1COKGwUb1ksdqTLk4
-	 8XFSSbtJtvcQpREUep2KKm+t+uNFHcY/JZ0dkQksuQosibi76sAMZpaKVjqi+MO7Xb
-	 G3SuhGYUhfYa6Q4d2qlSDtiSS0lO0gJ15uzKRuzc8e5/nwuC+ELcRpk+4RHlOGg4SE
-	 sK4cwYzaYdvTfZrEZ+7IrORf6GCewsxU2QLtmzYGnmB/UMABvhe7NeRYJL+rnG4ZLi
-	 8ShRWgva9IcGf7MvcVkqeGOQoL21c4CZ0cJBfz6hjn5x/M5AmJ1pqz5t4BxeDYNVG8
-	 trZpLaWsIcW8Q==
+	b=fpsi3CYW+G70ajSQFtErV1h/yNfLRqjCbqErJA4Tk+z8P9FHKA7ugTKicQRN5x4E7
+	 876nv4gi1Z8zZeghWcnjOG+nEc9zJRmaXmoqnG8TKO/5JfqpLwL4JMI8bMr1m7Np1o
+	 KsPVVC3lLQuPWRx5aeMuI0t6dgYGVr2glTKdMX+vw8SQDN9lVhkrYlYuvWfnsipBti
+	 RjOmM7uw/ivQuZ0SaEDv67lkYaHtCCJv++/jMOxHqEKUHiH+vUHvNRZFACjshiEtuY
+	 g2Btz4dIkLplGsAg8fWCq4FjkUSYB2iw3mChdkidoFWIa7Of9Fhgw4ujAlh3BUQaiH
+	 CUes9jsaRareQ==
 From: Naveen N Rao <naveen@kernel.org>
 To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH 08/17] powerpc/ftrace: Refactor ftrace_modify_code()
-Date: Mon, 19 Jun 2023 15:17:26 +0530
-Message-Id: <a8daa49712b44ff539e6c22a2ea649a540386798.1687166935.git.naveen@kernel.org>
+Subject: [PATCH 14/17] powerpc/ftrace: Replace use of ftrace_call_replace() with ftrace_create_branch_inst()
+Date: Mon, 19 Jun 2023 15:17:32 +0530
+Message-Id: <953513b88fa922ba7a66d772dc1310710efe9177.1687166935.git.naveen@kernel.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <cover.1687166935.git.naveen@kernel.org>
 References: <cover.1687166935.git.naveen@kernel.org>
@@ -65,80 +65,55 @@ Cc: Steven Rostedt <rostedt@goodmis.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Split up ftrace_modify_code() into a few helpers for future use. Also
-update error messages accordingly.
+ftrace_create_branch_inst() is clearer about its intent than
+ftrace_call_replace().
 
 Signed-off-by: Naveen N Rao <naveen@kernel.org>
 ---
- arch/powerpc/kernel/trace/ftrace.c | 51 +++++++++++++++++-------------
- 1 file changed, 29 insertions(+), 22 deletions(-)
+ arch/powerpc/kernel/trace/ftrace.c | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
 diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
-index 913c7aa63d3fa3..ef4e49c2c37781 100644
+index c37e22c6c26521..422dd760fbe013 100644
 --- a/arch/powerpc/kernel/trace/ftrace.c
 +++ b/arch/powerpc/kernel/trace/ftrace.c
-@@ -50,32 +50,39 @@ ftrace_call_replace(unsigned long ip, unsigned long addr, int link)
+@@ -41,19 +41,6 @@ static ppc_inst_t ftrace_create_branch_inst(unsigned long ip, unsigned long addr
  	return op;
  }
  
--static inline int
--ftrace_modify_code(unsigned long ip, ppc_inst_t old, ppc_inst_t new)
-+static inline int ftrace_read_inst(unsigned long ip, ppc_inst_t *op)
+-static ppc_inst_t
+-ftrace_call_replace(unsigned long ip, unsigned long addr, int link)
+-{
+-	ppc_inst_t op;
+-
+-	addr = ppc_function_entry((void *)addr);
+-
+-	/* if (link) set op to 'bl' else 'b' */
+-	create_branch(&op, (u32 *)ip, addr, link ? BRANCH_SET_LINK : 0);
+-
+-	return op;
+-}
+-
+ static inline int ftrace_read_inst(unsigned long ip, ppc_inst_t *op)
  {
--	ppc_inst_t replaced;
--
--	/*
--	 * Note:
--	 * We are paranoid about modifying text, as if a bug was to happen, it
--	 * could cause us to read or write to someplace that could cause harm.
--	 * Carefully read and modify the code with probe_kernel_*(), and make
--	 * sure what we read is what we expected it to be before modifying it.
--	 */
--
--	/* read the text we want to modify */
--	if (copy_inst_from_kernel_nofault(&replaced, (void *)ip))
-+	if (copy_inst_from_kernel_nofault(op, (void *)ip)) {
-+		pr_err("0x%lx: fetching instruction failed\n", ip);
- 		return -EFAULT;
--
--	/* Make sure it is what we expect it to be */
--	if (!ppc_inst_equal(replaced, old)) {
--		pr_err("%p: replaced (%08lx) != old (%08lx)", (void *)ip,
--		       ppc_inst_as_ulong(replaced), ppc_inst_as_ulong(old));
--		return -EINVAL;
+ 	if (copy_inst_from_kernel_nofault(op, (void *)ip)) {
+@@ -275,14 +262,14 @@ int ftrace_update_ftrace_func(ftrace_func_t func)
+ 	int ret;
+ 
+ 	old = ppc_inst_read((u32 *)&ftrace_call);
+-	new = ftrace_call_replace(ip, (unsigned long)func, 1);
++	new = ftrace_create_branch_inst(ip, ppc_function_entry(func), 1);
+ 	ret = ftrace_modify_code(ip, old, new);
+ 
+ 	/* Also update the regs callback function */
+ 	if (IS_ENABLED(CONFIG_DYNAMIC_FTRACE_WITH_REGS) && !ret) {
+ 		ip = (unsigned long)(&ftrace_regs_call);
+ 		old = ppc_inst_read((u32 *)&ftrace_regs_call);
+-		new = ftrace_call_replace(ip, (unsigned long)func, 1);
++		new = ftrace_create_branch_inst(ip, ppc_function_entry(func), 1);
+ 		ret = ftrace_modify_code(ip, old, new);
  	}
  
--	/* replace the text with the new text */
--	return patch_instruction((u32 *)ip, new);
-+	return 0;
-+}
-+
-+static inline int ftrace_validate_inst(unsigned long ip, ppc_inst_t inst)
-+{
-+	ppc_inst_t op;
-+	int ret;
-+
-+	ret = ftrace_read_inst(ip, &op);
-+	if (!ret && !ppc_inst_equal(op, inst)) {
-+		pr_err("0x%lx: expected (%08lx) != found (%08lx)\n",
-+		       ip, ppc_inst_as_ulong(inst), ppc_inst_as_ulong(op));
-+		ret = -EINVAL;
-+	}
-+
-+	return ret;
-+}
-+
-+static inline int ftrace_modify_code(unsigned long ip, ppc_inst_t old, ppc_inst_t new)
-+{
-+	int ret = ftrace_validate_inst(ip, old);
-+
-+	if (!ret)
-+		ret = patch_instruction((u32 *)ip, new);
-+
-+	return ret;
- }
- 
- /*
 -- 
 2.40.1
 
