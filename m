@@ -1,68 +1,97 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 359D4734A4F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 04:35:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE816734A66
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 04:54:35 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=qL6SLh1l;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sagGRciX;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qkv4Z0RGhz3bNj
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 12:35:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QkvVx5BKtz3btp
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 12:54:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=qL6SLh1l;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sagGRciX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42a; helo=mail-pf1-x42a.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qktd73LPyz2xZp
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jun 2023 12:14:50 +1000 (AEST)
-Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-666eba6f3d6so687810b3a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Jun 2023 19:14:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687140885; x=1689732885;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=w0uvLTYVJ3T8cSG1TwSPs0VLhCp5ZmVWs5OHrwQBj5I=;
-        b=qL6SLh1l2LBqXHCU8V1cfuypozqvTQSDxG4vhGTYQ8bbgGJgIrX4fx4GwxkMyXYs2F
-         EZGgjSpoXSdk5PtW6Zh7mpkLHlaFa3iYjRq1CAq0/Gmj9PUpe5TFUk3+auHsOtnEUa5X
-         rSjMjlHj0MIvkeph5j1AJrUvXd7aq97hTVf1f/qksrR5ofKe33zu4Wrt0sVS5jb4Uu0D
-         igPQbZRTowdtv7pBn61WJAEnVH1ictkAjNcbzQKLWst/oqCUsvLlvG/EsmQqWB52ZlXf
-         nq+DvNzeNlGN4i3QkG5FfPvtIV4C2iXtt4oX/cLU7Hoh3OUr4hKEgehLuNLFLC+WaLzh
-         NArQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687140885; x=1689732885;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=w0uvLTYVJ3T8cSG1TwSPs0VLhCp5ZmVWs5OHrwQBj5I=;
-        b=ZqnYs9n9hv6EBY+l+Vqb5Jui08Zre3gI3A6bQPXBqkgk8pjRvkFn4qFvQKfqobeJl4
-         25pOZYjp/iWgB5bMPGJx2+xDTH0tr8wPHKTwuMelrdXqHRnsLELHFsqev8P0Bf6AhuxG
-         oBja0P0b4PiRghrQWcGgX1fhS5RPY473uYVLS7s33d/B/Jinay2DUMzA/v0cx74p4Qzi
-         6mgNs2Dr9N2afexC5dKp8qNwdxHECgFth9oxTc+uihLxCQPZ7zJvi+jXkSWeohPIH4SK
-         OLKjfHofS76eYNduDXRQgNzHzFyTJ9nCUUprC9k+EC5wrL3B2j0WsL81CANBVkDHcH3m
-         Aucw==
-X-Gm-Message-State: AC+VfDxe9027JXebtwqpY8PEXmao3jrYL8kzO6Mnfbizh+ejZDJ/hwMs
-	ek7GMM59mcVzRowRYgzm0b3AfxloyF4iuvFu768=
-X-Google-Smtp-Source: ACHHUZ6mqbsOaVJDJQRBG23wENKFPy4oTQXM31UIqXXsp/G2AcP0kHvV25mS5byRqp1s8A9Br6UgyBR2rBWepPkkmyg=
-X-Received: by 2002:a05:6a21:6d88:b0:11d:5b5d:ddf0 with SMTP id
- wl8-20020a056a216d8800b0011d5b5dddf0mr6206344pzb.49.1687140884957; Sun, 18
- Jun 2023 19:14:44 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QkvQM1V7cz30fr
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jun 2023 12:50:35 +1000 (AEST)
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4QkvQK5lx9z4x0B
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jun 2023 12:50:33 +1000 (AEST)
+Received: by gandalf.ozlabs.org (Postfix)
+	id 4QkvQK5hWsz4x0G; Mon, 19 Jun 2023 12:50:33 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sagGRciX;
+	dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4QkvQK2nRrz4x0B
+	for <linuxppc-dev@ozlabs.org>; Mon, 19 Jun 2023 12:50:33 +1000 (AEST)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35J2kFFP008921;
+	Mon, 19 Jun 2023 02:49:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=i0pleWiUr9wJnF3pY/32Ej+SzvLvPwsiY8m4QrgyhUk=;
+ b=sagGRciX8vGsrOE7apatfxZR77Zk8Xjdltb3seRXekqKaMayx2frKFw+9K1zt6jcss0E
+ jevnaTuQzACG7OZRjlWUaZAR3RB0b1uVgw8Qng6JZMC4tqi+UPXv1v6zd4PINutqwwZs
+ Mj/fyCoPSOn2m+Ou/u3F1uA5Kd4jldB6rfB3KtYONx8X4cMERUI1hn2ICSdU6qHM+3pg
+ ufpKev9GFCwm7Zcsy1M2A94ELuhXi0FYWLPUwRLE3JILOwARPMDIY2+W8yggTWfK15kL
+ +akkPwgSjNUU7oEj3NpMhxO7JWavnOujcbcw/kfS2gsy87o9fauNLmmyQltYYnnFb+Ba 7w== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3raehcr1d3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Jun 2023 02:49:42 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35J2bHjo014362;
+	Mon, 19 Jun 2023 02:49:40 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3r94f513bb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Jun 2023 02:49:40 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 35J2nb9H34341314
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 19 Jun 2023 02:49:37 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 438F720043;
+	Mon, 19 Jun 2023 02:49:37 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A97C520040;
+	Mon, 19 Jun 2023 02:49:35 +0000 (GMT)
+Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.ibm.com.com (unknown [9.43.70.141])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 19 Jun 2023 02:49:35 +0000 (GMT)
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: linuxppc-dev@ozlabs.org, mpe@ellerman.id.au
+Subject: [PATCH v11 0/4] PowerPC: In-kernel handling of CPU/Memory hotplug/online/offline events for kdump kernel
+Date: Mon, 19 Jun 2023 08:19:30 +0530
+Message-Id: <20230619024934.567046-1-sourabhjain@linux.ibm.com>
+X-Mailer: git-send-email 2.40.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 0TB_lTfk9ZkZtCn4Z9Pt4ZQXh6tD-nDm
+X-Proofpoint-ORIG-GUID: 0TB_lTfk9ZkZtCn4Z9Pt4ZQXh6tD-nDm
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-References: <20230614121509.443926-1-claudiu.beznea@microchip.com>
-In-Reply-To: <20230614121509.443926-1-claudiu.beznea@microchip.com>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Mon, 19 Jun 2023 10:14:33 +0800
-Message-ID: <CAA+D8APLC5jk2jFmeT6HEP84Hr8XdL5gqiopZDUrz0sSB+7JOw@mail.gmail.com>
-Subject: Re: [PATCH] ASoC: imx-audmix: check return value of devm_kasprintf()
-To: Claudiu Beznea <claudiu.beznea@microchip.com>
-Content-Type: multipart/alternative; boundary="00000000000022504805fe7219c1"
-X-Mailman-Approved-At: Mon, 19 Jun 2023 12:34:24 +1000
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-18_16,2023-06-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ suspectscore=0 bulkscore=0 priorityscore=1501 clxscore=1011 mlxscore=0
+ spamscore=0 mlxlogscore=999 malwarescore=0 phishscore=0 adultscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306190022
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,224 +103,169 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, viorel.suman@nxp.com, Xiubo.Lee@gmail.com, shawnguo@kernel.org, s.hauer@pengutronix.de, tiwai@suse.com, lgirdwood@gmail.com, perex@perex.cz, nicoleotsuka@gmail.com, broonie@kernel.org, linux-imx@nxp.com, kernel@pengutronix.de, festevam@gmail.com, linux-arm-kernel@lists.infradead.org
+Cc: mahesh@linux.vnet.ibm.com, ldufour@linux.ibm.com, eric.devolder@oracle.com, kexec@lists.infradead.org, hbathini@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---00000000000022504805fe7219c1
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+The Problem:
+============
+Post CPU/Memory hot plug/unplug and online/offline events occur, the
+kdump kernel often retains outdated system information. This presents
+a significant challenge when attempting to perform a dump collection
+using an outdated or stale kdump kernel. In such situations, there
+are two potential outcomes that pose risks: either the dump collection
+fails to capture the required data entirely, leading to a failed dump,
+or the collected dump data is inaccurate, thereby compromising its
+reliability for analysis and troubleshooting purposes
 
-On Wed, Jun 14, 2023 at 8:15=E2=80=AFPM Claudiu Beznea <claudiu.beznea@micr=
-ochip.com>
-wrote:
+Existing solution:
+==================
+The existing solution to keep the kdump kernel up-to-date involves
+monitoring CPU/Memory hotplug/online/offline events via a udev rule.
+This approach triggers a full kdump kernel reload for each hotplug event,
+ensuring that the kdump kernel is always synchronized with the latest
+system resource changes.
 
-> devm_kasprintf() returns a pointer to dynamically allocated memory.
-> Pointer could be NULL in case allocation fails. Check pointer validity.
-> Identified with coccinelle (kmerr.cocci script).
->
-> Fixes: b86ef5367761 ("ASoC: fsl: Add Audio Mixer machine driver")
-> Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
->
+Shortcomings of existing solution:
+==================================
+- Leaves a window where kernel crash might not lead to a successful dump
+  collection.
+- Reloading all kexec segments for each hotplug is inefficient.
+- udev rules are prone to races if hotplug events are frequent.
 
-Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
+Further information regarding the problems associated with a current
+solution can be found here.
+ - https://lore.kernel.org/lkml/b04ed259-dc5f-7f30-6661-c26f92d9096a@oracle.com/
+ - https://lists.ozlabs.org/pipermail/linuxppc-dev/2022-February/240254.html
 
-Best regards
-Wang shengjiu
+Proposed Solution:
+==================
+To address the limitations of the current approach, a proposed solution
+focuses on implementing a more targeted update strategy. Instead of
+performing a full reload of all kexec segments for every CPU/Memory hot
+plug/unplug and online/offline events, the proposed solution aims to update
+only the relevant kexec segment. After loading the kexec segments into the
+reserved area, a newly introduced hotplug handler will be responsible for
+updating the specific kexec segment based on the type of hotplug event.
+This selective update approach enhances overall efficiency by minimizing
+unnecessary overhead and significantly reduces the chances of a kernel
+crash leading to a failed or inaccurate dump collection.
 
-> ---
->
-> Hi,
->
-> This has been addressed using kmerr.cocci script proposed for update
-> at [1].
->
-> Thank you,
-> Claudiu Beznea
->
-> [1]
-> https://lore.kernel.org/all/20230530074044.1603426-1-claudiu.beznea@micro=
-chip.com/
->
->  sound/soc/fsl/imx-audmix.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
->
-> diff --git a/sound/soc/fsl/imx-audmix.c b/sound/soc/fsl/imx-audmix.c
-> index 2c57fe9d2d08..af06268ee57b 100644
-> --- a/sound/soc/fsl/imx-audmix.c
-> +++ b/sound/soc/fsl/imx-audmix.c
-> @@ -228,6 +228,8 @@ static int imx_audmix_probe(struct platform_device
-> *pdev)
->
->                 dai_name =3D devm_kasprintf(&pdev->dev, GFP_KERNEL, "%s%s=
-",
->                                           fe_name_pref, args.np->full_nam=
-e
-> + 1);
-> +               if (!dai_name)
-> +                       return -ENOMEM;
->
->                 dev_info(pdev->dev.parent, "DAI FE name:%s\n", dai_name);
->
-> @@ -236,6 +238,8 @@ static int imx_audmix_probe(struct platform_device
-> *pdev)
->                         capture_dai_name =3D
->                                 devm_kasprintf(&pdev->dev, GFP_KERNEL, "%=
-s
-> %s",
->                                                dai_name, "CPU-Capture");
-> +                       if (!capture_dai_name)
-> +                               return -ENOMEM;
->                 }
->
->                 priv->dai[i].cpus =3D &dlc[0];
-> @@ -263,6 +267,8 @@ static int imx_audmix_probe(struct platform_device
-> *pdev)
->                                        "AUDMIX-Playback-%d", i);
->                 be_cp =3D devm_kasprintf(&pdev->dev, GFP_KERNEL,
->                                        "AUDMIX-Capture-%d", i);
-> +               if (!be_name || !be_pb || !be_cp)
-> +                       return -ENOMEM;
->
->                 priv->dai[num_dai + i].cpus =3D &dlc[2];
->                 priv->dai[num_dai + i].codecs =3D &dlc[3];
-> @@ -287,6 +293,9 @@ static int imx_audmix_probe(struct platform_device
-> *pdev)
->                 priv->dapm_routes[i].source =3D
->                         devm_kasprintf(&pdev->dev, GFP_KERNEL, "%s %s",
->                                        dai_name, "CPU-Playback");
-> +               if (!priv->dapm_routes[i].source)
-> +                       return -ENOMEM;
-> +
->                 priv->dapm_routes[i].sink =3D be_pb;
->                 priv->dapm_routes[num_dai + i].source   =3D be_pb;
->                 priv->dapm_routes[num_dai + i].sink     =3D be_cp;
-> --
-> 2.34.1
->
->
+Series Dependencies:
+====================
+The implementation of the crash hotplug handler on PowerPC is included in
+this patch series. The introduction of the generic crash hotplug handler
+is done through the patch series available at
+https://lore.kernel.org/all/20230612210712.683175-1-eric.devolder@oracle.com/
 
---00000000000022504805fe7219c1
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Git tree for testing:
+=====================
+The following Git tree incorporates this patch series applied on top of
+the dependent patch series.
+https://github.com/sourabhjains/linux/tree/e23-s11-with-kexec-config
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Wed, Jun 14, 2023 at 8:15=E2=80=AF=
-PM Claudiu Beznea &lt;<a href=3D"mailto:claudiu.beznea@microchip.com">claud=
-iu.beznea@microchip.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_=
-quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,=
-204);padding-left:1ex">devm_kasprintf() returns a pointer to dynamically al=
-located memory.<br>
-Pointer could be NULL in case allocation fails. Check pointer validity.<br>
-Identified with coccinelle (kmerr.cocci script).<br>
-<br>
-Fixes: b86ef5367761 (&quot;ASoC: fsl: Add Audio Mixer machine driver&quot;)=
-<br>
-Signed-off-by: Claudiu Beznea &lt;<a href=3D"mailto:claudiu.beznea@microchi=
-p.com" target=3D"_blank">claudiu.beznea@microchip.com</a>&gt;<br></blockquo=
-te><div><br></div><div>Acked-by: Shengjiu Wang &lt;<a href=3D"mailto:shengj=
-iu.wang@gmail.com">shengjiu.wang@gmail.com</a>&gt;</div><div><br></div><div=
->Best regards</div><div>Wang shengjiu=C2=A0</div><blockquote class=3D"gmail=
-_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204=
-,204);padding-left:1ex">
----<br>
-<br>
-Hi,<br>
-<br>
-This has been addressed using kmerr.cocci script proposed for update<br>
-at [1].<br>
-<br>
-Thank you,<br>
-Claudiu Beznea<br>
-<br>
-[1] <a href=3D"https://lore.kernel.org/all/20230530074044.1603426-1-claudiu=
-.beznea@microchip.com/" rel=3D"noreferrer" target=3D"_blank">https://lore.k=
-ernel.org/all/20230530074044.1603426-1-claudiu.beznea@microchip.com/</a><br=
->
-<br>
-=C2=A0sound/soc/fsl/imx-audmix.c | 9 +++++++++<br>
-=C2=A01 file changed, 9 insertions(+)<br>
-<br>
-diff --git a/sound/soc/fsl/imx-audmix.c b/sound/soc/fsl/imx-audmix.c<br>
-index 2c57fe9d2d08..af06268ee57b 100644<br>
---- a/sound/soc/fsl/imx-audmix.c<br>
-+++ b/sound/soc/fsl/imx-audmix.c<br>
-@@ -228,6 +228,8 @@ static int imx_audmix_probe(struct platform_device *pde=
-v)<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 dai_name =3D devm_k=
-asprintf(&amp;pdev-&gt;dev, GFP_KERNEL, &quot;%s%s&quot;,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 f=
-e_name_pref, args.np-&gt;full_name + 1);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!dai_name)<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0return -ENOMEM;<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 dev_info(pdev-&gt;d=
-ev.parent, &quot;DAI FE name:%s\n&quot;, dai_name);<br>
-<br>
-@@ -236,6 +238,8 @@ static int imx_audmix_probe(struct platform_device *pde=
-v)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 capture_dai_name =3D<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 devm_kasprintf(&amp;pdev-&gt;dev, GF=
-P_KERNEL, &quot;%s %s&quot;,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0dai_name, &quot;CPU-Capture&quot;);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0if (!capture_dai_name)<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return -ENOMEM;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 priv-&gt;dai[i].cpu=
-s =3D &amp;dlc[0];<br>
-@@ -263,6 +267,8 @@ static int imx_audmix_probe(struct platform_device *pde=
-v)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;AUD=
-MIX-Playback-%d&quot;, i);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 be_cp =3D devm_kasp=
-rintf(&amp;pdev-&gt;dev, GFP_KERNEL,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;AUD=
-MIX-Capture-%d&quot;, i);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!be_name || !be=
-_pb || !be_cp)<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0return -ENOMEM;<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 priv-&gt;dai[num_da=
-i + i].cpus =3D &amp;dlc[2];<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 priv-&gt;dai[num_da=
-i + i].codecs =3D &amp;dlc[3];<br>
-@@ -287,6 +293,9 @@ static int imx_audmix_probe(struct platform_device *pde=
-v)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 priv-&gt;dapm_route=
-s[i].source =3D<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 devm_kasprintf(&amp;pdev-&gt;dev, GFP_KERNEL, &quot;%s %s&quot;,=
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0dai_name,=
- &quot;CPU-Playback&quot;);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!priv-&gt;dapm_=
-routes[i].source)<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0return -ENOMEM;<br>
-+<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 priv-&gt;dapm_route=
-s[i].sink =3D be_pb;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 priv-&gt;dapm_route=
-s[num_dai + i].source=C2=A0 =C2=A0=3D be_pb;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 priv-&gt;dapm_route=
-s[num_dai + i].sink=C2=A0 =C2=A0 =C2=A0=3D be_cp;<br>
--- <br>
-2.34.1<br>
-<br>
-</blockquote></div></div>
+In order to enable this feature, it is necessary to disable the udev rule
+responsible for reloading the kdump service. To do this, you can make the
+following additions to the file "/usr/lib/udev/rules.d/98-kexec.rules" on RHEL:
 
---00000000000022504805fe7219c1--
+Add the following two lines at top:
+
+   SUBSYSTEM=="cpu", ATTRS{crash_hotplug}=="1", GOTO="kdump_reload_end"
+   SUBSYSTEM=="memory", ATTRS{crash_hotplug}=="1", GOTO="kdump_reload_end"
+
+The changes mentioned above ensure that the kdump reload process is skipped
+for CPU/Memory hot plug/unplug events when the path
+"/sys/devices/system/[cpu|memory]/crash_hotplug" exists.
+
+Note: only kexec_file_load syscall will work. For kexec_load minor changes are
+required in kexec tool.
+
+---
+Changelog:
+
+v11:
+  - Rebase to v6.4-rc6
+  - The patch that introduced CONFIG_CRASH_HOTPLUG for PowerPC has been removed.
+    The config is now part of common configuration:
+    https://lore.kernel.org/all/87ilbpflsk.fsf@mail.lhotse/
+
+v10:
+  - Drop the patch that adds fdt_index attribute to struct kimage_arch
+    Find the fdt segment index when needed.
+  - Added more details into commits messages.
+  - Rebased onto 6.3.0-rc5
+
+v9:
+  - Removed patch to prepare elfcorehdr crash notes for possible CPUs.
+    The patch is moved to generic patch series that introduces generic
+    infrastructure for in kernel crash update.
+  - Removed patch to pass the hotplug action type to the arch crash
+    hotplug handler function. The generic patch series has introduced
+    the hotplug action type in kimage struct.
+  - Add detail commit message for better understanding.
+
+v8:
+  - Restrict fdt_index initialization to machine_kexec_post_load
+    it work for both kexec_load and kexec_file_load.[3/8] Laurent Dufour
+
+  - Updated the logic to find the number of offline core. [6/8]
+
+  - Changed the logic to find the elfcore program header to accommodate
+    future memory ranges due memory hotplug events. [8/8]
+
+v7
+  - added a new config to configure this feature
+  - pass hotplug action type to arch specific handler
+
+v6
+  - Added crash memory hotplug support
+
+v5:
+  - Replace COFNIG_CRASH_HOTPLUG with CONFIG_HOTPLUG_CPU.
+  - Move fdt segment identification for kexec_load case to load path
+    instead of crash hotplug handler
+  - Keep new attribute defined under kimage_arch to track FDT segment
+    under CONFIG_HOTPLUG_CPU config.
+
+v4:
+  - Update the logic to find the additional space needed for hotadd CPUs post
+    kexec load. Refer "[RFC v4 PATCH 4/5] powerpc/crash hp: add crash hotplug
+    support for kexec_file_load" patch to know more about the change.
+  - Fix a couple of typo.
+  - Replace pr_err to pr_info_once to warn user about memory hotplug
+    support.
+  - In crash hotplug handle exit the for loop if FDT segment is found.
+
+v3
+  - Move fdt_index and fdt_index_vaild variables to kimage_arch struct.
+  - Rebase patche on top of
+    https://lore.kernel.org/lkml/20220303162725.49640-1-eric.devolder@oracle.com/
+  - Fixed warning reported by checpatch script
+
+v2:
+  - Use generic hotplug handler introduced by
+    https://lore.kernel.org/lkml/20220209195706.51522-1-eric.devolder@oracle.com/
+    a significant change from v1.
+
+Sourabh Jain (4):
+  powerpc/kexec: turn some static helper functions public
+  powerpc/crash: add crash CPU hotplug support
+  crash: forward memory_notify args to arch crash hotplug handler
+  powerpc/crash: add crash memory hotplug support
+
+ arch/powerpc/Kconfig                    |   3 +
+ arch/powerpc/include/asm/kexec.h        |  22 ++
+ arch/powerpc/include/asm/kexec_ranges.h |   1 +
+ arch/powerpc/kexec/core_64.c            | 301 ++++++++++++++++++++++++
+ arch/powerpc/kexec/elf_64.c             |  12 +-
+ arch/powerpc/kexec/file_load_64.c       | 212 ++++-------------
+ arch/powerpc/kexec/ranges.c             |  85 +++++++
+ arch/x86/include/asm/kexec.h            |   2 +-
+ arch/x86/kernel/crash.c                 |   5 +-
+ include/linux/kexec.h                   |   2 +-
+ kernel/crash_core.c                     |  14 +-
+ 11 files changed, 483 insertions(+), 176 deletions(-)
+
+-- 
+2.40.1
+
