@@ -1,50 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 718D3735172
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 12:05:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6DBE735176
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 12:06:13 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=k6cLAnt/;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hye2PuV5;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ql53s20R2z3d8N
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 20:05:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ql54z50LXz3dDh
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 20:06:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=k6cLAnt/;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hye2PuV5;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ql4p33PmDz3bNj
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jun 2023 19:53:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ql4p82wDjz3bfK
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jun 2023 19:53:20 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id B817C601CD;
-	Mon, 19 Jun 2023 09:53:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90209C433C8;
-	Mon, 19 Jun 2023 09:53:12 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id BDD0E601CD;
+	Mon, 19 Jun 2023 09:53:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B1D3C433C8;
+	Mon, 19 Jun 2023 09:53:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1687168393;
-	bh=kY59zIia92tnkVQ+n2QicgjFmTstOeOTi3k+EkFObTo=;
+	s=k20201202; t=1687168398;
+	bh=1WQ3lhGz5caRaaobUBPQvT/KIGPZ8w9+nESjHNgmp3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k6cLAnt/4LIy65hrAOHg3mCPIr7YJwBkTrJu+KhbtI3y5a8K074SvMaj1MKheBkW/
-	 XawIA1pUdR+LfkaLYP2BLf/ACFaKXXRlozaOM8YeJo1yfKz3e01vBQSpqY1h3oqsqK
-	 w3tdMxLRNL9m9a0Yv1o0LcIwZKN7Pu6uhlZrzy6xU9Ims6BtcPzwWnyDch2uROlApe
-	 PioMXoA+Pl9e5KvSH5GeCTZ1g1yNe0jXsGFtyZ0mF5IvHvM8/LiWzkZcIln8rSZOy4
-	 J57EWj/v0hkg9aSL0cbe1qBhznIySROLaGAjxALYG0qLoaRoal6ZNe2QJcBBbqvxDa
-	 EFFcjn/7zuc/A==
+	b=hye2PuV57U7eBCAajtwe3MjBecp8HtNUJqe/O3c+AhMHQkJ9fPF0ofzIn40O4PcNo
+	 zrIrcQWhiSY17TTWKGs19afSBDDdw0cItIGJMQtYD2cEl8TMNXhhNyHnlQsUsVTm+d
+	 kbrdaUJ/WvABlQpfNkdMlHGOyy1PmYwMhl78Evf5zRGkPIkXy5gRpwSdXk/RPt/3rZ
+	 9NFNQZs2+IDPSI1wnnkaNkcRvLFVB4iOVapkRp8FBNWcYGVrpQiyfbiUWv0rsQJjlA
+	 E+UrKtKhioiXLcf5GNB47L1Wrp3drxBJFCyovuIDO4s90kUE9WNCdGUFd1JLOTLfjW
+	 AXDWpuW91HGHw==
 From: Naveen N Rao <naveen@kernel.org>
 To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH 11/17] powerpc/ftrace: Simplify ftrace_make_nop()
-Date: Mon, 19 Jun 2023 15:17:29 +0530
-Message-Id: <e12ccbf28c50c3a07fb614f4d392e55f7098a729.1687166935.git.naveen@kernel.org>
+Subject: [PATCH 12/17] powerpc/ftrace: Simplify ftrace_make_call()
+Date: Mon, 19 Jun 2023 15:17:30 +0530
+Message-Id: <2d28866d2f556488a663981abe5621511efb207b.1687166935.git.naveen@kernel.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <cover.1687166935.git.naveen@kernel.org>
 References: <cover.1687166935.git.naveen@kernel.org>
@@ -66,49 +66,72 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Now that we validate the ftrace location during initialization in
-ftrace_init_nop(), we can simplify ftrace_make_nop() to patch-in the nop
+ftrace_init_nop(), we can simplify ftrace_make_call() to replace the nop
 without worrying about the instructions surrounding the ftrace location.
-Note that we continue to ensure that we have a bl to
-ftrace_[regs_]caller at the ftrace location before nop-ing it out.
+Note that we continue to ensure that we have a nop at the ftrace
+location before patching it.
 
 Signed-off-by: Naveen N Rao <naveen@kernel.org>
 ---
- arch/powerpc/kernel/trace/ftrace.c | 220 +++++------------------------
- 1 file changed, 32 insertions(+), 188 deletions(-)
+ arch/powerpc/kernel/trace/ftrace.c | 187 +++++------------------------
+ 1 file changed, 31 insertions(+), 156 deletions(-)
 
 diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
-index 98bd099c428ee0..05153a1038fdff 100644
+index 05153a1038fdff..6ea8b90246a540 100644
 --- a/arch/powerpc/kernel/trace/ftrace.c
 +++ b/arch/powerpc/kernel/trace/ftrace.c
-@@ -116,112 +116,6 @@ static unsigned long find_bl_target(unsigned long ip, ppc_inst_t op)
- 	return ip + (long)offset;
+@@ -129,162 +129,6 @@ static unsigned long find_ftrace_tramp(unsigned long ip)
+ 	return 0;
  }
  
 -#ifdef CONFIG_MODULES
--static int
--__ftrace_make_nop(struct module *mod,
--		  struct dyn_ftrace *rec, unsigned long addr)
+-/*
+- * Examine the existing instructions for __ftrace_make_call.
+- * They should effectively be a NOP, and follow formal constraints,
+- * depending on the ABI. Return false if they don't.
+- */
+-static bool expected_nop_sequence(void *ip, ppc_inst_t op0, ppc_inst_t op1)
 -{
+-	if (IS_ENABLED(CONFIG_DYNAMIC_FTRACE_WITH_REGS))
+-		return ppc_inst_equal(op0, ppc_inst(PPC_RAW_NOP()));
+-	else
+-		return ppc_inst_equal(op0, ppc_inst(PPC_RAW_BRANCH(8))) &&
+-		       ppc_inst_equal(op1, ppc_inst(PPC_INST_LD_TOC));
+-}
+-
+-static int
+-__ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
+-{
+-	ppc_inst_t op[2];
+-	void *ip = (void *)rec->ip;
 -	unsigned long entry, ptr, tramp;
--	unsigned long ip = rec->ip;
--	ppc_inst_t op, pop;
+-	struct module *mod = rec->arch.mod;
 -
 -	/* read where this goes */
--	if (copy_inst_from_kernel_nofault(&op, (void *)ip)) {
--		pr_err("Fetching opcode failed.\n");
+-	if (copy_inst_from_kernel_nofault(op, ip))
 -		return -EFAULT;
--	}
 -
--	/* Make sure that this is still a 24bit jump */
--	if (!is_bl_op(op)) {
--		pr_err("Not expected bl: opcode is %08lx\n", ppc_inst_as_ulong(op));
+-	if (!IS_ENABLED(CONFIG_DYNAMIC_FTRACE_WITH_REGS) &&
+-	    copy_inst_from_kernel_nofault(op + 1, ip + 4))
+-		return -EFAULT;
+-
+-	if (!expected_nop_sequence(ip, op[0], op[1])) {
+-		pr_err("Unexpected call sequence at %p: %08lx %08lx\n", ip,
+-		       ppc_inst_as_ulong(op[0]), ppc_inst_as_ulong(op[1]));
 -		return -EINVAL;
 -	}
 -
--	/* lets find where the pointer goes */
--	tramp = find_bl_target(ip, op);
+-	/* If we never set up ftrace trampoline(s), then bail */
+-	if (!mod->arch.tramp ||
+-	    (IS_ENABLED(CONFIG_DYNAMIC_FTRACE_WITH_REGS) && !mod->arch.tramp_regs)) {
+-		pr_err("No ftrace trampoline\n");
+-		return -EINVAL;
+-	}
 -
--	pr_devel("ip:%lx jumps to %lx", ip, tramp);
+-	if (IS_ENABLED(CONFIG_DYNAMIC_FTRACE_WITH_REGS) && rec->flags & FTRACE_FL_REGS)
+-		tramp = mod->arch.tramp_regs;
+-	else
+-		tramp = mod->arch.tramp;
 -
 -	if (module_trampoline_target(mod, tramp, &ptr)) {
 -		pr_err("Failed to get trampoline target\n");
@@ -124,117 +147,65 @@ index 98bd099c428ee0..05153a1038fdff 100644
 -		return -EINVAL;
 -	}
 -
--	if (IS_ENABLED(CONFIG_MPROFILE_KERNEL)) {
--		if (copy_inst_from_kernel_nofault(&op, (void *)(ip - 4))) {
--			pr_err("Fetching instruction at %lx failed.\n", ip - 4);
--			return -EFAULT;
--		}
--
--		/* We expect either a mflr r0, or a std r0, LRSAVE(r1) */
--		if (!ppc_inst_equal(op, ppc_inst(PPC_RAW_MFLR(_R0))) &&
--		    !ppc_inst_equal(op, ppc_inst(PPC_INST_STD_LR))) {
--			pr_err("Unexpected instruction %08lx around bl _mcount\n",
--			       ppc_inst_as_ulong(op));
--			return -EINVAL;
--		}
--	} else if (IS_ENABLED(CONFIG_PPC64)) {
--		/*
--		 * Check what is in the next instruction. We can see ld r2,40(r1), but
--		 * on first pass after boot we will see mflr r0.
--		 */
--		if (copy_inst_from_kernel_nofault(&op, (void *)(ip + 4))) {
--			pr_err("Fetching op failed.\n");
--			return -EFAULT;
--		}
--
--		if (!ppc_inst_equal(op,  ppc_inst(PPC_INST_LD_TOC))) {
--			pr_err("Expected %08lx found %08lx\n", PPC_INST_LD_TOC,
--			       ppc_inst_as_ulong(op));
--			return -EINVAL;
--		}
--	}
--
--	/*
--	 * When using -mprofile-kernel or PPC32 there is no load to jump over.
--	 *
--	 * Otherwise our original call site looks like:
--	 *
--	 * bl <tramp>
--	 * ld r2,XX(r1)
--	 *
--	 * Milton Miller pointed out that we can not simply nop the branch.
--	 * If a task was preempted when calling a trace function, the nops
--	 * will remove the way to restore the TOC in r2 and the r2 TOC will
--	 * get corrupted.
--	 *
--	 * Use a b +8 to jump over the load.
--	 * XXX: could make PCREL depend on MPROFILE_KERNEL
--	 * XXX: check PCREL && MPROFILE_KERNEL calling sequence
--	 */
--	if (IS_ENABLED(CONFIG_MPROFILE_KERNEL) || IS_ENABLED(CONFIG_PPC32))
--		pop = ppc_inst(PPC_RAW_NOP());
--	else
--		pop = ppc_inst(PPC_RAW_BRANCH(8));	/* b +8 */
--
--	if (patch_instruction((u32 *)ip, pop)) {
--		pr_err("Patching NOP failed.\n");
--		return -EPERM;
+-	if (patch_branch(ip, tramp, BRANCH_SET_LINK)) {
+-		pr_err("REL24 out of range!\n");
+-		return -EINVAL;
 -	}
 -
 -	return 0;
 -}
 -#else
--static int __ftrace_make_nop(struct module *mod, struct dyn_ftrace *rec, unsigned long addr)
+-static int __ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
 -{
 -	return 0;
 -}
 -#endif /* CONFIG_MODULES */
 -
- static unsigned long find_ftrace_tramp(unsigned long ip)
- {
- 	int i;
-@@ -235,88 +129,6 @@ static unsigned long find_ftrace_tramp(unsigned long ip)
- 	return 0;
- }
- 
--static int __ftrace_make_nop_kernel(struct dyn_ftrace *rec, unsigned long addr)
+-static int __ftrace_make_call_kernel(struct dyn_ftrace *rec, unsigned long addr)
 -{
--	unsigned long tramp, ip = rec->ip;
 -	ppc_inst_t op;
+-	void *ip = (void *)rec->ip;
+-	unsigned long tramp, entry, ptr;
 -
--	/* Read where this goes */
--	if (copy_inst_from_kernel_nofault(&op, (void *)ip)) {
--		pr_err("Fetching opcode failed.\n");
+-	/* Make sure we're being asked to patch branch to a known ftrace addr */
+-	entry = ppc_global_function_entry((void *)ftrace_caller);
+-	ptr = ppc_global_function_entry((void *)addr);
+-
+-	if (ptr != entry && IS_ENABLED(CONFIG_DYNAMIC_FTRACE_WITH_REGS))
+-		entry = ppc_global_function_entry((void *)ftrace_regs_caller);
+-
+-	if (ptr != entry) {
+-		pr_err("Unknown ftrace addr to patch: %ps\n", (void *)ptr);
+-		return -EINVAL;
+-	}
+-
+-	/* Make sure we have a nop */
+-	if (copy_inst_from_kernel_nofault(&op, ip)) {
+-		pr_err("Unable to read ftrace location %p\n", ip);
 -		return -EFAULT;
 -	}
 -
--	/* Make sure that this is still a 24bit jump */
--	if (!is_bl_op(op)) {
--		pr_err("Not expected bl: opcode is %08lx\n", ppc_inst_as_ulong(op));
+-	if (!ppc_inst_equal(op, ppc_inst(PPC_RAW_NOP()))) {
+-		pr_err("Unexpected call sequence at %p: %08lx\n",
+-		       ip, ppc_inst_as_ulong(op));
 -		return -EINVAL;
 -	}
 -
--	/* Let's find where the pointer goes */
--	tramp = find_bl_target(ip, op);
--
--	pr_devel("ip:%lx jumps to %lx", ip, tramp);
--
--	/* Are ftrace trampolines reachable? */
--	if (!find_ftrace_tramp(ip)) {
--		pr_err("No ftrace trampolines reachable from %ps\n", (void *)ip);
+-	tramp = find_ftrace_tramp((unsigned long)ip);
+-	if (!tramp) {
+-		pr_err("No ftrace trampolines reachable from %ps\n", ip);
 -		return -EINVAL;
 -	}
 -
--	if (patch_instruction((u32 *)ip, ppc_inst(PPC_RAW_NOP()))) {
--		pr_err("Patching NOP failed.\n");
--		return -EPERM;
+-	if (patch_branch(ip, tramp, BRANCH_SET_LINK)) {
+-		pr_err("Error patching branch to ftrace tramp!\n");
+-		return -EINVAL;
 -	}
 -
 -	return 0;
 -}
 -
--int ftrace_make_nop(struct module *mod,
--		    struct dyn_ftrace *rec, unsigned long addr)
+-int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
 -{
 -	unsigned long ip = rec->ip;
 -	ppc_inst_t old, new;
@@ -246,56 +217,46 @@ index 98bd099c428ee0..05153a1038fdff 100644
 -	 */
 -	if (test_24bit_addr(ip, addr)) {
 -		/* within range */
--		old = ftrace_call_replace(ip, addr, 1);
--		new = ppc_inst(PPC_RAW_NOP());
+-		old = ppc_inst(PPC_RAW_NOP());
+-		new = ftrace_call_replace(ip, addr, 1);
 -		return ftrace_modify_code(ip, old, new);
 -	} else if (core_kernel_text(ip)) {
--		return __ftrace_make_nop_kernel(rec, addr);
+-		return __ftrace_make_call_kernel(rec, addr);
 -	} else if (!IS_ENABLED(CONFIG_MODULES)) {
+-		/* We should not get here without modules */
 -		return -EINVAL;
 -	}
 -
 -	/*
 -	 * Out of range jumps are called from modules.
--	 * We should either already have a pointer to the module
--	 * or it has been passed in.
+-	 * Being that we are converting from nop, it had better
+-	 * already have a module defined.
 -	 */
 -	if (!rec->arch.mod) {
--		if (!mod) {
--			pr_err("No module loaded addr=%lx\n", addr);
--			return -EFAULT;
--		}
--		rec->arch.mod = mod;
--	} else if (mod) {
--		if (mod != rec->arch.mod) {
--			pr_err("Record mod %p not equal to passed in mod %p\n",
--			       rec->arch.mod, mod);
--			return -EINVAL;
--		}
--		/* nothing to do if mod == rec->arch.mod */
--	} else
--		mod = rec->arch.mod;
+-		pr_err("No module loaded\n");
+-		return -EINVAL;
+-	}
 -
--	return __ftrace_make_nop(mod, rec, addr);
+-	return __ftrace_make_call(rec, addr);
 -}
 -
+ #ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
  #ifdef CONFIG_MODULES
- /*
-  * Examine the existing instructions for __ftrace_make_call.
-@@ -607,6 +419,38 @@ int ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr,
+ static int
+@@ -419,6 +263,37 @@ int ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr,
  }
  #endif
  
-+int ftrace_make_nop(struct module *mod, struct dyn_ftrace *rec, unsigned long addr)
++int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
 +{
 +	unsigned long tramp, ip = rec->ip;
 +	ppc_inst_t old, new;
++	struct module *mod;
 +
-+	/* Nop-out the ftrace location */
-+	new = ppc_inst(PPC_RAW_NOP());
++	old = ppc_inst(PPC_RAW_NOP());
 +	if (is_offset_in_branch_range(addr - ip)) {
 +		/* Within range */
-+		old = ftrace_create_branch_inst(ip, addr, 1);
++		new = ftrace_create_branch_inst(ip, addr, 1);
 +		return ftrace_modify_code(ip, old, new);
 +	} else if (core_kernel_text(ip)) {
 +		/* We would be branching to one of our ftrace tramps */
@@ -304,23 +265,22 @@ index 98bd099c428ee0..05153a1038fdff 100644
 +			pr_err("0x%lx: No ftrace trampolines reachable\n", ip);
 +			return -EINVAL;
 +		}
-+		old = ftrace_create_branch_inst(ip, tramp, 1);
++		new = ftrace_create_branch_inst(ip, tramp, 1);
 +		return ftrace_modify_code(ip, old, new);
 +	} else if (IS_ENABLED(CONFIG_MODULES)) {
 +		/* Module code would be going to one of the module stubs */
-+		if (!mod)
-+			mod = rec->arch.mod;
++		mod = rec->arch.mod;
 +		tramp = (addr == (unsigned long)ftrace_caller ? mod->arch.tramp : mod->arch.tramp_regs);
-+		old = ftrace_create_branch_inst(ip, tramp, 1);
++		new = ftrace_create_branch_inst(ip, tramp, 1);
 +		return ftrace_modify_code(ip, old, new);
 +	}
 +
 +	return -EINVAL;
 +}
 +
- int ftrace_init_nop(struct module *mod, struct dyn_ftrace *rec)
+ int ftrace_make_nop(struct module *mod, struct dyn_ftrace *rec, unsigned long addr)
  {
- 	unsigned long addr, ip = rec->ip;
+ 	unsigned long tramp, ip = rec->ip;
 -- 
 2.40.1
 
