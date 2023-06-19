@@ -1,50 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ABEE735182
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 12:07:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D96473516D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 12:03:32 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HCUqb8Gr;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TkwcTdHn;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ql56x2bszz3dJ0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 20:07:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ql51t2x3Hz3cM3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 20:03:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HCUqb8Gr;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TkwcTdHn;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ql4pM0kjGz30f0
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jun 2023 19:53:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ql4nr5qDpz3bn2
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jun 2023 19:53:04 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 7143F602E0;
-	Mon, 19 Jun 2023 09:53:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 424ECC433C8;
-	Mon, 19 Jun 2023 09:53:27 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 2D16F601CD;
+	Mon, 19 Jun 2023 09:53:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07DE5C433C0;
+	Mon, 19 Jun 2023 09:53:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1687168408;
-	bh=fiYOSGx/yX+rBoVWfDjzvuQpt+N/h7M6dfetR+JOhWA=;
+	s=k20201202; t=1687168382;
+	bh=jk9z1qfTbnJ4M50k9sUONn0cX2iepmGzBY8gg5oa7Ew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HCUqb8GrgIDA9dG2ZUhBvnsrKrltO+YCP5Nj7AFKGAZxolXAhJKoGjNjW16oohjob
-	 00bVBx/H+hkc+mzK6+6L7VZrs67nOZMvB05s2mGdYT+Mz5hTkHTNL99aeLXe10MO9g
-	 73FlAdsniSmO0mxs17MxYkkVlomgCImHlcdjNGMfaLAlHvIyLU2ODfH7p0kuRpyFG0
-	 z+04JLXZuhiV9jWi3xnL50VxqwPEhBG3kSlbUmQ/Yyr+J02J/apcp5cAp2RTwtvM8I
-	 q07Uf4A8UOw1H38bd/oFk3uJ9jMwCoHK2I0GAMGnWFh51533TFSgpgf/+m3c2mCK25
-	 0ugLcHd/avGBA==
+	b=TkwcTdHnp3h7eqSZTi+5eHtkidPf4WRlOPbqrZN6u+hvpdl2BcgwG0Oq7OMIqvXqf
+	 YUvCMHJrOkf4nSzTlZ0KYKu9fH36vaBBLEkdbfOQKRGZFQqzkUz9OrHe4+iMWCl1xu
+	 g7EYne51tb0gj74Fu8KUtC/pt5L9WHigkuxAYO6QIRoxlX7+CAUwXDImR5ChZaEsWy
+	 E3tHozLqFbYXlxB0lrcPIswwn79FPD8+e6KLitJu+xhNXsMWLiTJR4X0e6NXxqAydR
+	 d/NtN4TbVyyyzQsNMrXF53RtEDoE6VMMrYOUru2eyx4Yal6Yyrh5WwXhAWrOkjfcqK
+	 dCGvmYKMd77NQ==
 From: Naveen N Rao <naveen@kernel.org>
 To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH 04/17] powerpc/ftrace: Simplify function_graph support in ftrace.c
-Date: Mon, 19 Jun 2023 15:17:22 +0530
-Message-Id: <4dc92c4b1ed444dc62b748ae7327acdb9e096864.1687166935.git.naveen@kernel.org>
+Subject: [PATCH 09/17] powerpc/ftrace: Stop re-purposing linker generated long branches for ftrace
+Date: Mon, 19 Jun 2023 15:17:27 +0530
+Message-Id: <33fa3be97f8e1f2171254ef2e1b0d5c8836c11fd.1687166935.git.naveen@kernel.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <cover.1687166935.git.naveen@kernel.org>
 References: <cover.1687166935.git.naveen@kernel.org>
@@ -65,102 +65,196 @@ Cc: Steven Rostedt <rostedt@goodmis.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Since we now support DYNAMIC_FTRACE_WITH_ARGS across ppc32 and ppc64
-ELFv2, we can simplify function_graph tracer support code in ftrace.c
+Commit 67361cf8071286 ("powerpc/ftrace: Handle large kernel configs")
+added ftrace support for ppc64 kernel images with a text section larger
+than 32MB. The patch did two things:
+1. Add stubs at the end of .text to branch into ftrace_[regs_]caller for
+   functions that were out of branch range.
+2. Re-purpose linker-generated long branches to _mcount to instead branch
+   to ftrace_[regs_]caller.
+
+Before that, we only supported kernel .text up to ~32MB. With the above,
+we now support up to ~96MB:
+- The first 32MB of kernel text can branch directly into
+  ftrace_[regs_]caller since that symbol is usually at the beginning.
+- The modified long_branch from (2) above is used by the next 32MB of
+  kernel text.
+- The next 32MB of kernel text can use the stub at the end of text to
+  branch back to ftrace_[regs_]caller.
+
+While re-purposing the long branch works in practice, it still restricts
+ftrace to kernel text up to ~96MB. The stub at the end of kernel text
+from (1) already enables us to extend ftrace support for kernel text
+up to 64MB, which fulfils the original requirement. Further, once we
+switch to -fpatchable-function-entry, there will not be a long branch
+that we can use.
+
+Stop re-purposing the linker-generated long branches for ftrace to
+simplify the code. If there are good reasons to support ftrace on
+kernels beyond 64MB, we can consider adding support by using
+-fpatchable-function-entry.
 
 Signed-off-by: Naveen N Rao <naveen@kernel.org>
 ---
- arch/powerpc/kernel/trace/ftrace.c | 64 ++++--------------------------
- 1 file changed, 7 insertions(+), 57 deletions(-)
+ arch/powerpc/kernel/trace/ftrace.c | 110 +++++------------------------
+ 1 file changed, 17 insertions(+), 93 deletions(-)
 
 diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
-index 81a121b56c4d7f..f117124c30325f 100644
+index ef4e49c2c37781..278bf8e52b6e89 100644
 --- a/arch/powerpc/kernel/trace/ftrace.c
 +++ b/arch/powerpc/kernel/trace/ftrace.c
-@@ -790,44 +790,10 @@ int __init ftrace_dyn_arch_init(void)
- #endif
+@@ -28,13 +28,7 @@
+ #include <asm/syscall.h>
+ #include <asm/inst.h>
  
- #ifdef CONFIG_FUNCTION_GRAPH_TRACER
+-/*
+- * We generally only have a single long_branch tramp and at most 2 or 3 plt
+- * tramps generated. But, we don't use the plt tramps currently. We also allot
+- * 2 tramps after .text and .init.text. So, we only end up with around 3 usable
+- * tramps in total. Set aside 8 just to be sure.
+- */
+-#define	NUM_FTRACE_TRAMPS	8
++#define	NUM_FTRACE_TRAMPS	2
+ static unsigned long ftrace_tramps[NUM_FTRACE_TRAMPS];
+ 
+ static ppc_inst_t
+@@ -100,11 +94,6 @@ static int is_bl_op(ppc_inst_t op)
+ 	return (ppc_inst_val(op) & ~PPC_LI_MASK) == PPC_RAW_BL(0);
+ }
+ 
+-static int is_b_op(ppc_inst_t op)
+-{
+-	return (ppc_inst_val(op) & ~PPC_LI_MASK) == PPC_RAW_BRANCH(0);
+-}
 -
--extern void ftrace_graph_call(void);
--extern void ftrace_graph_stub(void);
--
--static int ftrace_modify_ftrace_graph_caller(bool enable)
-+void ftrace_graph_func(unsigned long ip, unsigned long parent_ip,
-+		       struct ftrace_ops *op, struct ftrace_regs *fregs)
+ static unsigned long find_bl_target(unsigned long ip, ppc_inst_t op)
  {
--	unsigned long ip = (unsigned long)(&ftrace_graph_call);
--	unsigned long addr = (unsigned long)(&ftrace_graph_caller);
--	unsigned long stub = (unsigned long)(&ftrace_graph_stub);
--	ppc_inst_t old, new;
--
--	if (IS_ENABLED(CONFIG_DYNAMIC_FTRACE_WITH_ARGS))
--		return 0;
--
--	old = ftrace_call_replace(ip, enable ? stub : addr, 0);
--	new = ftrace_call_replace(ip, enable ? addr : stub, 0);
--
--	return ftrace_modify_code(ip, old, new);
--}
--
--int ftrace_enable_ftrace_graph_caller(void)
+ 	int offset;
+@@ -227,11 +216,7 @@ static unsigned long find_ftrace_tramp(unsigned long ip)
+ {
+ 	int i;
+ 
+-	/*
+-	 * We have the compiler generated long_branch tramps at the end
+-	 * and we prefer those
+-	 */
+-	for (i = NUM_FTRACE_TRAMPS - 1; i >= 0; i--)
++	for (i = 0; i < NUM_FTRACE_TRAMPS; i++)
+ 		if (!ftrace_tramps[i])
+ 			continue;
+ 		else if (is_offset_in_branch_range(ftrace_tramps[i] - ip))
+@@ -240,75 +225,6 @@ static unsigned long find_ftrace_tramp(unsigned long ip)
+ 	return 0;
+ }
+ 
+-static int add_ftrace_tramp(unsigned long tramp)
 -{
--	return ftrace_modify_ftrace_graph_caller(true);
--}
+-	int i;
 -
--int ftrace_disable_ftrace_graph_caller(void)
--{
--	return ftrace_modify_ftrace_graph_caller(false);
+-	for (i = 0; i < NUM_FTRACE_TRAMPS; i++)
+-		if (!ftrace_tramps[i]) {
+-			ftrace_tramps[i] = tramp;
+-			return 0;
+-		}
+-
+-	return -1;
 -}
 -
 -/*
-- * Hook the return address and push it in the stack of return addrs
-- * in current thread info. Return the address we want to divert to.
+- * If this is a compiler generated long_branch trampoline (essentially, a
+- * trampoline that has a branch to _mcount()), we re-write the branch to
+- * instead go to ftrace_[regs_]caller() and note down the location of this
+- * trampoline.
 - */
--static unsigned long
--__prepare_ftrace_return(unsigned long parent, unsigned long ip, unsigned long sp)
+-static int setup_mcount_compiler_tramp(unsigned long tramp)
 -{
--	unsigned long return_hooker;
-+	unsigned long sp = fregs->regs.gpr[1];
- 	int bit;
- 
- 	if (unlikely(ftrace_graph_is_dead()))
-@@ -836,31 +802,15 @@ __prepare_ftrace_return(unsigned long parent, unsigned long ip, unsigned long sp
- 	if (unlikely(atomic_read(&current->tracing_graph_pause)))
- 		goto out;
- 
--	bit = ftrace_test_recursion_trylock(ip, parent);
-+	bit = ftrace_test_recursion_trylock(ip, parent_ip);
- 	if (bit < 0)
- 		goto out;
- 
--	return_hooker = ppc_function_entry(return_to_handler);
+-	int i;
+-	ppc_inst_t op;
+-	unsigned long ptr;
 -
--	if (!function_graph_enter(parent, ip, 0, (unsigned long *)sp))
--		parent = return_hooker;
-+	if (!function_graph_enter(parent_ip, ip, 0, (unsigned long *)sp))
-+		parent_ip = ppc_function_entry(return_to_handler);
+-	/* Is this a known long jump tramp? */
+-	for (i = 0; i < NUM_FTRACE_TRAMPS; i++)
+-		if (ftrace_tramps[i] == tramp)
+-			return 0;
+-
+-	/* New trampoline -- read where this goes */
+-	if (copy_inst_from_kernel_nofault(&op, (void *)tramp)) {
+-		pr_debug("Fetching opcode failed.\n");
+-		return -1;
+-	}
+-
+-	/* Is this a 24 bit branch? */
+-	if (!is_b_op(op)) {
+-		pr_debug("Trampoline is not a long branch tramp.\n");
+-		return -1;
+-	}
+-
+-	/* lets find where the pointer goes */
+-	ptr = find_bl_target(tramp, op);
+-
+-	if (ptr != ppc_global_function_entry((void *)_mcount)) {
+-		pr_debug("Trampoline target %p is not _mcount\n", (void *)ptr);
+-		return -1;
+-	}
+-
+-	/* Let's re-write the tramp to go to ftrace_[regs_]caller */
+-	if (IS_ENABLED(CONFIG_DYNAMIC_FTRACE_WITH_REGS))
+-		ptr = ppc_global_function_entry((void *)ftrace_regs_caller);
+-	else
+-		ptr = ppc_global_function_entry((void *)ftrace_caller);
+-
+-	if (patch_branch((u32 *)tramp, ptr, 0)) {
+-		pr_debug("REL24 out of range!\n");
+-		return -1;
+-	}
+-
+-	if (add_ftrace_tramp(tramp)) {
+-		pr_debug("No tramp locations left\n");
+-		return -1;
+-	}
+-
+-	return 0;
+-}
+-
+ static int __ftrace_make_nop_kernel(struct dyn_ftrace *rec, unsigned long addr)
+ {
+ 	unsigned long tramp, ip = rec->ip;
+@@ -331,13 +247,10 @@ static int __ftrace_make_nop_kernel(struct dyn_ftrace *rec, unsigned long addr)
  
- 	ftrace_test_recursion_unlock(bit);
- out:
--	return parent;
-+	fregs->regs.link = parent_ip;
+ 	pr_devel("ip:%lx jumps to %lx", ip, tramp);
+ 
+-	if (setup_mcount_compiler_tramp(tramp)) {
+-		/* Are other trampolines reachable? */
+-		if (!find_ftrace_tramp(ip)) {
+-			pr_err("No ftrace trampolines reachable from %ps\n",
+-					(void *)ip);
+-			return -EINVAL;
+-		}
++	/* Are ftrace trampolines reachable? */
++	if (!find_ftrace_tramp(ip)) {
++		pr_err("No ftrace trampolines reachable from %ps\n", (void *)ip);
++		return -EINVAL;
+ 	}
+ 
+ 	if (patch_instruction((u32 *)ip, ppc_inst(PPC_RAW_NOP()))) {
+@@ -725,6 +638,17 @@ void ftrace_free_init_tramp(void)
+ 		}
  }
--
--#ifdef CONFIG_DYNAMIC_FTRACE_WITH_ARGS
--void ftrace_graph_func(unsigned long ip, unsigned long parent_ip,
--		       struct ftrace_ops *op, struct ftrace_regs *fregs)
--{
--	fregs->regs.link = __prepare_ftrace_return(parent_ip, ip, fregs->regs.gpr[1]);
--}
--#else
--unsigned long prepare_ftrace_return(unsigned long parent, unsigned long ip,
--				    unsigned long sp)
--{
--	return __prepare_ftrace_return(parent, ip, sp);
--}
--#endif
- #endif /* CONFIG_FUNCTION_GRAPH_TRACER */
+ 
++static void __init add_ftrace_tramp(unsigned long tramp)
++{
++	int i;
++
++	for (i = 0; i < NUM_FTRACE_TRAMPS; i++)
++		if (!ftrace_tramps[i]) {
++			ftrace_tramps[i] = tramp;
++			return;
++		}
++}
++
+ int __init ftrace_dyn_arch_init(void)
+ {
+ 	unsigned int *tramp[] = { ftrace_tramp_text, ftrace_tramp_init };
 -- 
 2.40.1
 
