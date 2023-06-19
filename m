@@ -1,99 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA027734A5F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 04:52:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34F09734A8B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 05:19:37 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Z5UuS7Vq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EmjGstj8;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QkvSp4tTVz3bNq
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 12:52:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qkw3q0p9Kz30Kf
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 13:19:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Z5UuS7Vq;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EmjGstj8;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QkvPx1ZhWz30fk
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jun 2023 12:50:13 +1000 (AEST)
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4QkvPx0r0wz4x0G
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jun 2023 12:50:13 +1000 (AEST)
-Received: by gandalf.ozlabs.org (Postfix)
-	id 4QkvPx0hJhz4x2c; Mon, 19 Jun 2023 12:50:13 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: gandalf.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Z5UuS7Vq;
-	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=kconsul@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4QkvPw5WFBz4x0G
-	for <linuxppc-dev@ozlabs.org>; Mon, 19 Jun 2023 12:50:12 +1000 (AEST)
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35J2MIrq021726;
-	Mon, 19 Jun 2023 02:49:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=1vZAiIeF8PY8O23m8NeNFdj0mi9w57QpugXmzyz5Yps=;
- b=Z5UuS7Vq40Z201mS1PUu5gPMceAl3QrOwgBY56ug+XqJxanw8I3YYjhvOLZvEcVNPsC8
- 3nNzBUSst1jUHRB4jRD56vtaRhkvSDMRCDVI5qFJu6fIda2I45qPZ62cnjrlQDoiqQfW
- 3uKLS/Zj/SEjtBWcEhrMn2k2i+Yoxt3AHj2Dm78cSHp2ugstqSsBdCIpAoZ8I0rRUVKY
- xH5or4RKd4bvEeoTC5YLZjkgEk3LiW11vHcjPiyggkblFskBbb9Fof/UFrblPUF0Fd16
- EaZaoEW6Yz+uJOfrsQnp62B/oKvkjB72eeWU8FhynriQ7vk8m6UsrM4mC3juEjF+xh0B HQ== 
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rae5x8d68-1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qkw2s6Gvpz2xqK
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jun 2023 13:18:45 +1000 (AEST)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35J36oU0026618;
+	Mon, 19 Jun 2023 03:18:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=HReniWAH2iwP4oo3WMdwOWfNB4Vu9FHcp9HQYG3jU+U=;
+ b=EmjGstj8VMvXASKYtt8yCe/wzlx/+uS0Sm5GjtX+7Na2crhW9ZIOefXtxTshP1MvmGpz
+ D77r4r4iZ1axs/Pn7MqzDhytPuHbPuMBqj8/OGoHX5esgjR25gbyK07gTdklWy4baF5V
+ 49bP6RkC0kLUpYcHC4h1iChopCCQLlrd7sxwxY+JztgCD9uUQszYlkd/r2d5NOMym2iB
+ uUGbS3kBicePEDOxwLwVY1OhxILB01j4VIZ0fYk0OZX0NbAIuzDkO1l1Mm5wSmKp2Fcx
+ QJHV46/VpYXKvNq962Rrkn3DWy/EBEvHuU6mOCYwdSHkUxgEJI6XjPC7311Spq1WKd5t Fg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rae5v8x7n-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Jun 2023 02:49:51 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
-	by ppma01fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35J2McsZ011993;
-	Mon, 19 Jun 2023 02:49:49 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma01fra.de.ibm.com (PPS) with ESMTPS id 3r94f50tuc-1
+	Mon, 19 Jun 2023 03:18:39 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35J36ldo026115;
+	Mon, 19 Jun 2023 03:18:39 GMT
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rae5v8x6t-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Jun 2023 02:49:49 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 35J2nj4614615160
+	Mon, 19 Jun 2023 03:18:39 +0000
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+	by ppma02fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35J0ldtF028392;
+	Mon, 19 Jun 2023 03:18:36 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma02fra.de.ibm.com (PPS) with ESMTPS id 3r94f58u6p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Jun 2023 03:18:36 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 35J3IYRs9568962
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 19 Jun 2023 02:49:45 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5B0BC2004D;
-	Mon, 19 Jun 2023 02:49:45 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 731012004B;
-	Mon, 19 Jun 2023 02:49:43 +0000 (GMT)
-Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.ibm.com.com (unknown [9.43.70.141])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 19 Jun 2023 02:49:43 +0000 (GMT)
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-To: linuxppc-dev@ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH v11 4/4] powerpc/crash: add crash memory hotplug support
-Date: Mon, 19 Jun 2023 08:19:34 +0530
-Message-Id: <20230619024934.567046-5-sourabhjain@linux.ibm.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230619024934.567046-1-sourabhjain@linux.ibm.com>
-References: <20230619024934.567046-1-sourabhjain@linux.ibm.com>
+	Mon, 19 Jun 2023 03:18:34 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5F1D320043;
+	Mon, 19 Jun 2023 03:18:34 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B14EE20049;
+	Mon, 19 Jun 2023 03:18:31 +0000 (GMT)
+Received: from li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com (unknown [9.109.216.99])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 19 Jun 2023 03:18:31 +0000 (GMT)
+Date: Mon, 19 Jun 2023 08:48:28 +0530
+From: Kautuk Consul <kconsul@linux.vnet.ibm.com>
+To: Nicholas Piggin <npiggin@gmail.com>, Fabiano Rosas <farosas@linux.ibm.com>,
+        jpn@linux.vnet.ibm.com, Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@ozlabs.org>, Thomas Huth <thuth@redhat.com>,
+        Paolo Bonzini <pbonzini@redhat.com>, Gavin Shan <gshan@redhat.com>
+Subject: Re: [PATCH] KVM: ppc64: Enable ring-based dirty memory tracking
+Message-ID: <ZI/JBOTFGKbg6MX4@li-a450e7cc-27df-11b2-a85c-b5a9ac31e8ef.ibm.com>
+References: <20230608123448.71861-1-kconsul@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230608123448.71861-1-kconsul@linux.vnet.ibm.com>
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: m_6zJl27kjEoDavRiVfRgGyMhmoQJwaj
-X-Proofpoint-ORIG-GUID: m_6zJl27kjEoDavRiVfRgGyMhmoQJwaj
+X-Proofpoint-GUID: 5256Md3NTWgMLIODM4V6WuWJRcWfL8Qo
+X-Proofpoint-ORIG-GUID: 4WXmetJpppGfzyfDrRXdTLXEwjYhXKIi
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-06-18_16,2023-06-16_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- clxscore=1015 lowpriorityscore=0 phishscore=0 impostorscore=0 spamscore=0
- mlxscore=0 bulkscore=0 malwarescore=0 adultscore=0 mlxlogscore=999
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306190022
+ definitions=2023-06-19_01,2023-06-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ mlxlogscore=737 phishscore=0 adultscore=0 bulkscore=0 suspectscore=0
+ spamscore=0 impostorscore=0 priorityscore=1501 malwarescore=0
+ clxscore=1015 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306190027
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,358 +98,165 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mahesh@linux.vnet.ibm.com, ldufour@linux.ibm.com, eric.devolder@oracle.com, kexec@lists.infradead.org, hbathini@linux.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Extend PowerPC arch crash hotplug handler to support memory hotplug
-events. Since elfcorehdr is used to exchange the memory info between the
-kernels hence it needs to be recreated to reflect the changes due to
-memory hotplug events.
+Hi Nick/Gavin/Everyone,
 
-The way memory hotplug events are handled on PowerPC and the notifier
-call chain used in generic code to trigger the arch crash handler, the
-process to recreate the elfcorehdr is different for memory add and
-remove case.
-
-For memory remove case the memory change notifier call chain is
-triggered first and then memblock regions is updated. Whereas for the
-memory hot add case, memblock regions are updated before invoking the
-memory change notifier call chain.
-
-On PowerPC, memblock regions list is used to prepare the elfcorehdr. In
-case of memory hot remove the memblock regions are updated after the
-arch crash hotplug handler is triggered, hence an additional step is
-taken to ensure that memory ranges used to prepare elfcorehdr do not
-include hot removed memory.
-
-When memory is hot removed it possible that memory regions count may
-increase. So to accommodate a growing number of memory regions, the
-elfcorehdr kexec segment is built with additional buffer space.
-
-The changes done here will also work for the kexec_load system call given
-that the kexec tool builds the elfcoredhr with additional space to
-accommodate future memory regions as it is done for kexec_file_load
-system call in the kernel.
-
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
----
- arch/powerpc/include/asm/kexec.h        |  6 ++
- arch/powerpc/include/asm/kexec_ranges.h |  1 +
- arch/powerpc/kexec/core_64.c            | 77 +++++++++++++++++++++-
- arch/powerpc/kexec/file_load_64.c       | 36 ++++++++++-
- arch/powerpc/kexec/ranges.c             | 85 +++++++++++++++++++++++++
- 5 files changed, 201 insertions(+), 4 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/kexec.h b/arch/powerpc/include/asm/kexec.h
-index d3ff481aa9f8..10017880571c 100644
---- a/arch/powerpc/include/asm/kexec.h
-+++ b/arch/powerpc/include/asm/kexec.h
-@@ -112,6 +112,12 @@ void arch_crash_handle_hotplug_event(struct kimage *image, void *arg);
- static inline int crash_hotplug_cpu_support(void) { return 1; }
- #define crash_hotplug_cpu_support crash_hotplug_cpu_support
- #endif
-+
-+#ifdef CONFIG_MEMORY_HOTPLUG
-+static inline int crash_hotplug_memory_support(void) { return 1; }
-+#define crash_hotplug_memory_support crash_hotplug_memory_support
-+#endif
-+
- #endif
- #endif
- 
-diff --git a/arch/powerpc/include/asm/kexec_ranges.h b/arch/powerpc/include/asm/kexec_ranges.h
-index f83866a19e87..802abf580cf0 100644
---- a/arch/powerpc/include/asm/kexec_ranges.h
-+++ b/arch/powerpc/include/asm/kexec_ranges.h
-@@ -7,6 +7,7 @@
- void sort_memory_ranges(struct crash_mem *mrngs, bool merge);
- struct crash_mem *realloc_mem_ranges(struct crash_mem **mem_ranges);
- int add_mem_range(struct crash_mem **mem_ranges, u64 base, u64 size);
-+int remove_mem_range(struct crash_mem **mem_ranges, u64 base, u64 size);
- int add_tce_mem_ranges(struct crash_mem **mem_ranges);
- int add_initrd_mem_range(struct crash_mem **mem_ranges);
- #ifdef CONFIG_PPC_64S_HASH_MMU
-diff --git a/arch/powerpc/kexec/core_64.c b/arch/powerpc/kexec/core_64.c
-index 4d1c53cc9a90..e5038f2769bb 100644
---- a/arch/powerpc/kexec/core_64.c
-+++ b/arch/powerpc/kexec/core_64.c
-@@ -19,6 +19,7 @@
- #include <linux/of.h>
- #include <linux/libfdt.h>
- #include <linux/memblock.h>
-+#include <linux/memory.h>
- 
- #include <asm/page.h>
- #include <asm/current.h>
-@@ -547,6 +548,76 @@ int update_cpus_node(void *fdt)
- #undef pr_fmt
- #define pr_fmt(fmt) "crash hp: " fmt
- 
-+/**
-+ * update_crash_elfcorehdr() - Recreate the elfcorehdr and replace it with old
-+ *			       elfcorehdr in the kexec segment array.
-+ * @image: the active struct kimage
-+ * @mn: struct memory_notify data handler
-+ */
-+static void update_crash_elfcorehdr(struct kimage *image, struct memory_notify *mn)
-+{
-+	int ret;
-+	struct crash_mem *cmem = NULL;
-+	struct kexec_segment *ksegment;
-+	void *ptr, *mem, *elfbuf = NULL;
-+	unsigned long elfsz, memsz, base_addr, size;
-+
-+	ksegment = &image->segment[image->elfcorehdr_index];
-+	mem = (void *) ksegment->mem;
-+	memsz = ksegment->memsz;
-+
-+	ret = get_crash_memory_ranges(&cmem);
-+	if (ret) {
-+		pr_err("Failed to get crash mem range\n");
-+		return;
-+	}
-+
-+	/*
-+	 * The hot unplugged memory is part of crash memory ranges,
-+	 * remove it here.
-+	 */
-+	if (image->hp_action == KEXEC_CRASH_HP_REMOVE_MEMORY) {
-+		base_addr = PFN_PHYS(mn->start_pfn);
-+		size = mn->nr_pages * PAGE_SIZE;
-+		ret = remove_mem_range(&cmem, base_addr, size);
-+		if (ret) {
-+			pr_err("Failed to remove hot-unplugged from crash memory ranges.\n");
-+			return;
-+		}
-+	}
-+
-+	ret = crash_prepare_elf64_headers(cmem, false, &elfbuf, &elfsz);
-+	if (ret) {
-+		pr_err("Failed to prepare elf header\n");
-+		return;
-+	}
-+
-+	/*
-+	 * It is unlikely that kernel hit this because elfcorehdr kexec
-+	 * segment (memsz) is built with addition space to accommodate growing
-+	 * number of crash memory ranges while loading the kdump kernel. It is
-+	 * Just to avoid any unforeseen case.
-+	 */
-+	if (elfsz > memsz) {
-+		pr_err("Updated crash elfcorehdr elfsz %lu > memsz %lu", elfsz, memsz);
-+		goto out;
-+	}
-+
-+	ptr = __va(mem);
-+	if (ptr) {
-+		/* Temporarily invalidate the crash image while it is replaced */
-+		xchg(&kexec_crash_image, NULL);
-+
-+		/* Replace the old elfcorehdr with newly prepared elfcorehdr */
-+		memcpy((void *)ptr, elfbuf, elfsz);
-+
-+		/* The crash image is now valid once again */
-+		xchg(&kexec_crash_image, image);
-+	}
-+out:
-+	vfree(elfbuf);
-+}
-+
- /**
-  * arch_crash_handle_hotplug_event - Handle crash CPU/Memory hotplug events to update the
-  *				     necessary kexec segments based on the hotplug event.
-@@ -554,12 +625,14 @@ int update_cpus_node(void *fdt)
-  * @arg: struct memory_notify handler for memory hotplug case and NULL for CPU hotplug case.
-  *
-  * Update FDT segment to include newly added CPU. No action for CPU remove case.
-+ * Recreate the elfcorehdr for Memory add/remove case and replace it with old one.
-  */
- void arch_crash_handle_hotplug_event(struct kimage *image, void *arg)
- {
- 	void *fdt, *ptr;
- 	unsigned long mem;
- 	int i, fdt_index = -1;
-+	struct memory_notify *mn;
- 	unsigned int hp_action = image->hp_action;
- 
- 	/*
-@@ -569,9 +642,9 @@ void arch_crash_handle_hotplug_event(struct kimage *image, void *arg)
- 	if (hp_action == KEXEC_CRASH_HP_REMOVE_CPU)
- 		return;
- 
--	/* crash update on memory hotplug events is not supported yet */
- 	if (hp_action == KEXEC_CRASH_HP_REMOVE_MEMORY || hp_action == KEXEC_CRASH_HP_ADD_MEMORY) {
--		pr_info_once("Crash update is not supported for memory hotplug\n");
-+		mn = (struct memory_notify *)arg;
-+		update_crash_elfcorehdr(image, mn);
- 		return;
- 	}
- 
-diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
-index 1757e7ba379a..8853b7308ae9 100644
---- a/arch/powerpc/kexec/file_load_64.c
-+++ b/arch/powerpc/kexec/file_load_64.c
-@@ -21,6 +21,8 @@
- #include <linux/memblock.h>
- #include <linux/slab.h>
- #include <linux/vmalloc.h>
-+#include <linux/elf.h>
-+
- #include <asm/setup.h>
- #include <asm/drmem.h>
- #include <asm/firmware.h>
-@@ -707,6 +709,30 @@ static void update_backup_region_phdr(struct kimage *image, Elf64_Ehdr *ehdr)
- 	}
- }
- 
-+/* get_max_phdr - Find the total number of Phdr needed to represent the
-+ *		  max memory in the kdump elfcorehdr.
-+ *
-+ * @cmem: crash memory ranges in the system.
-+ */
-+static int get_max_phdr(struct crash_mem *cmem)
-+{
-+	int max_lmb;
-+
-+	/* In the worst case, a Phdr is needed for every other LMB to be represented
-+	 * as an individual crash range.
-+	 */
-+	max_lmb = memory_hotplug_max() / 2 * drmem_lmb_size();
-+
-+	/* Do not cross the Phdr max limit of the elf header.
-+	 * Avoid counting Phdr for crash ranges (cmem->nr_ranges) which
-+	 * are already part of elfcorehdr.
-+	 */
-+	if (max_lmb > PN_XNUM)
-+		return PN_XNUM - cmem->nr_ranges;
-+
-+	return max_lmb - cmem->nr_ranges;
-+}
-+
- /**
-  * load_elfcorehdr_segment - Setup crash memory ranges and initialize elfcorehdr
-  *                           segment needed to load kdump kernel.
-@@ -738,7 +764,13 @@ static int load_elfcorehdr_segment(struct kimage *image, struct kexec_buf *kbuf)
- 
- 	kbuf->buffer = headers;
- 	kbuf->mem = KEXEC_BUF_MEM_UNKNOWN;
--	kbuf->bufsz = kbuf->memsz = headers_sz;
-+	kbuf->bufsz = headers_sz;
-+/* Additional buffer space to accommodate future memory ranges */
-+#ifdef CONFIG_MEMORY_HOTPLUG
-+	kbuf->memsz = headers_sz + get_max_phdr(cmem) * sizeof(Elf64_Phdr);
-+#else
-+	kbuf->memsz = headers_sz;
-+#endif
- 	kbuf->top_down = false;
- 
- 	ret = kexec_add_buffer(kbuf);
-@@ -748,7 +780,7 @@ static int load_elfcorehdr_segment(struct kimage *image, struct kexec_buf *kbuf)
- 	}
- 
- 	image->elf_load_addr = kbuf->mem;
--	image->elf_headers_sz = headers_sz;
-+	image->elf_headers_sz = kbuf->memsz;
- 	image->elf_headers = headers;
- out:
- 	kfree(cmem);
-diff --git a/arch/powerpc/kexec/ranges.c b/arch/powerpc/kexec/ranges.c
-index 5fc53a5fcfdf..d8007363cdc1 100644
---- a/arch/powerpc/kexec/ranges.c
-+++ b/arch/powerpc/kexec/ranges.c
-@@ -234,6 +234,91 @@ int add_mem_range(struct crash_mem **mem_ranges, u64 base, u64 size)
- 	return __add_mem_range(mem_ranges, base, size);
- }
- 
-+/**
-+ * remove_mem_range - Removes the given memory range from the range list.
-+ * @mem_ranges:    Range list to remove the memory range to.
-+ * @base:          Base address of the range to remove.
-+ * @size:          Size of the memory range to remove.
-+ *
-+ * (Re)allocates memory, if needed.
-+ *
-+ * Returns 0 on success, negative errno on error.
-+ */
-+int remove_mem_range(struct crash_mem **mem_ranges, u64 base, u64 size)
-+{
-+	u64 end;
-+	int ret = 0;
-+	unsigned int i;
-+	u64 mstart, mend;
-+	struct crash_mem *mem_rngs = *mem_ranges;
-+
-+	if (!size)
-+		return 0;
-+
-+	/*
-+	 * Memory range are stored as start and end address, use
-+	 * the same format to do remove operation.
-+	 */
-+	end = base + size - 1;
-+
-+	for (i = 0; i < mem_rngs->nr_ranges; i++) {
-+		mstart = mem_rngs->ranges[i].start;
-+		mend = mem_rngs->ranges[i].end;
-+
-+		/*
-+		 * Memory range to remove is not part of this range entry
-+		 * in the memory range list
-+		 */
-+		if (!(base >= mstart && end <= mend))
-+			continue;
-+
-+		/*
-+		 * Memory range to remove is equivalent to this entry in the
-+		 * memory range list. Remove the range entry from the list.
-+		 */
-+		if (base == mstart && end == mend) {
-+			for (; i < mem_rngs->nr_ranges - 1; i++) {
-+				mem_rngs->ranges[i].start = mem_rngs->ranges[i+1].start;
-+				mem_rngs->ranges[i].end = mem_rngs->ranges[i+1].end;
-+			}
-+			mem_rngs->nr_ranges--;
-+			goto out;
-+		}
-+		/*
-+		 * Start address of the memory range to remove and the
-+		 * current memory range entry in the list is same. Just
-+		 * move the start address of the current memory range
-+		 * entry in the list to end + 1.
-+		 */
-+		else if (base == mstart) {
-+			mem_rngs->ranges[i].start = end + 1;
-+			goto out;
-+		}
-+		/*
-+		 * End address of the memory range to remove and the
-+		 * current memory range entry in the list is same.
-+		 * Just move the end address of the current memory
-+		 * range entry in the list to base - 1.
-+		 */
-+		else if (end == mend)  {
-+			mem_rngs->ranges[i].end = base - 1;
-+			goto out;
-+		}
-+		/*
-+		 * Memory range to remove is not at the edge of current
-+		 * memory range entry. Split the current memory entry into
-+		 * two half.
-+		 */
-+		else {
-+			mem_rngs->ranges[i].end = base - 1;
-+			size = mem_rngs->ranges[i].end - end;
-+			ret = add_mem_range(mem_ranges, end + 1, size);
-+		}
-+	}
-+out:
-+	return ret;
-+}
-+
- /**
-  * add_tce_mem_ranges - Adds tce-table range to the given memory ranges list.
-  * @mem_ranges:         Range list to add the memory range(s) to.
--- 
-2.40.1
-
+On 2023-06-08 08:34:48, Kautuk Consul wrote:
+> - Enable CONFIG_HAVE_KVM_DIRTY_RING_ACQ_REL as ppc64 is weakly
+>   ordered.
+> - Enable CONFIG_NEED_KVM_DIRTY_RING_WITH_BITMAP because the
+>   kvmppc_xive_native_set_attr is called in the context of an ioctl
+>   syscall and will call kvmppc_xive_native_eq_sync for setting the
+>   KVM_DEV_XIVE_EQ_SYNC attribute which will call mark_dirty_page()
+>   when there isn't a running vcpu. Implemented the
+>   kvm_arch_allow_write_without_running_vcpu to always return true
+>   to allow mark_page_dirty_in_slot to mark the page dirty in the
+>   memslot->dirty_bitmap in this case.
+> - Set KVM_DIRTY_LOG_PAGE_OFFSET for the ring buffer's physical page
+>   offset.
+> - Implement the kvm_arch_mmu_enable_log_dirty_pt_masked function required
+>   for the generic KVM code to call.
+> - Add a check to kvmppc_vcpu_run_hv for checking whether the dirty
+>   ring is soft full.
+> - Implement the kvm_arch_flush_remote_tlbs_memslot function to support
+>   the CONFIG_KVM_GENERIC_DIRTYLOG_READ_PROTECT config option.
+> 
+> On testing with live migration it was found that there is around
+> 150-180 ms improvment in overall migration time with this patch.
+> 
+> Signed-off-by: Kautuk Consul <kconsul@linux.vnet.ibm.com>
+> ---
+>  Documentation/virt/kvm/api.rst      |  2 +-
+>  arch/powerpc/include/uapi/asm/kvm.h |  2 ++
+>  arch/powerpc/kvm/Kconfig            |  2 ++
+>  arch/powerpc/kvm/book3s_64_mmu_hv.c | 42 +++++++++++++++++++++++++++++
+>  arch/powerpc/kvm/book3s_hv.c        |  3 +++
+>  include/linux/kvm_dirty_ring.h      |  5 ++++
+>  6 files changed, 55 insertions(+), 1 deletion(-)
+> 
+Any review comments on this ?
+> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+> index add067793b90..ce1ebc513bae 100644
+> --- a/Documentation/virt/kvm/api.rst
+> +++ b/Documentation/virt/kvm/api.rst
+> @@ -8114,7 +8114,7 @@ regardless of what has actually been exposed through the CPUID leaf.
+>  8.29 KVM_CAP_DIRTY_LOG_RING/KVM_CAP_DIRTY_LOG_RING_ACQ_REL
+>  ----------------------------------------------------------
+> 
+> -:Architectures: x86, arm64
+> +:Architectures: x86, arm64, ppc64
+>  :Parameters: args[0] - size of the dirty log ring
+> 
+>  KVM is capable of tracking dirty memory using ring buffers that are
+> diff --git a/arch/powerpc/include/uapi/asm/kvm.h b/arch/powerpc/include/uapi/asm/kvm.h
+> index 9f18fa090f1f..f722309ed7fb 100644
+> --- a/arch/powerpc/include/uapi/asm/kvm.h
+> +++ b/arch/powerpc/include/uapi/asm/kvm.h
+> @@ -33,6 +33,8 @@
+>  /* Not always available, but if it is, this is the correct offset.  */
+>  #define KVM_COALESCED_MMIO_PAGE_OFFSET 1
+> 
+> +#define KVM_DIRTY_LOG_PAGE_OFFSET 64
+> +
+>  struct kvm_regs {
+>  	__u64 pc;
+>  	__u64 cr;
+> diff --git a/arch/powerpc/kvm/Kconfig b/arch/powerpc/kvm/Kconfig
+> index 902611954200..c93354ec3bd5 100644
+> --- a/arch/powerpc/kvm/Kconfig
+> +++ b/arch/powerpc/kvm/Kconfig
+> @@ -26,6 +26,8 @@ config KVM
+>  	select IRQ_BYPASS_MANAGER
+>  	select HAVE_KVM_IRQ_BYPASS
+>  	select INTERVAL_TREE
+> +	select HAVE_KVM_DIRTY_RING_ACQ_REL
+> +	select NEED_KVM_DIRTY_RING_WITH_BITMAP
+> 
+>  config KVM_BOOK3S_HANDLER
+>  	bool
+> diff --git a/arch/powerpc/kvm/book3s_64_mmu_hv.c b/arch/powerpc/kvm/book3s_64_mmu_hv.c
+> index 7f765d5ad436..c92e8022e017 100644
+> --- a/arch/powerpc/kvm/book3s_64_mmu_hv.c
+> +++ b/arch/powerpc/kvm/book3s_64_mmu_hv.c
+> @@ -2147,3 +2147,45 @@ void kvmppc_mmu_book3s_hv_init(struct kvm_vcpu *vcpu)
+> 
+>  	vcpu->arch.hflags |= BOOK3S_HFLAG_SLB;
+>  }
+> +
+> +/*
+> + * kvm_arch_mmu_enable_log_dirty_pt_masked - enable dirty logging for selected
+> + * dirty pages.
+> + *
+> + * It write protects selected pages to enable dirty logging for them.
+> + */
+> +void kvm_arch_mmu_enable_log_dirty_pt_masked(struct kvm *kvm,
+> +					     struct kvm_memory_slot *slot,
+> +					     gfn_t gfn_offset,
+> +					     unsigned long mask)
+> +{
+> +	phys_addr_t base_gfn = slot->base_gfn + gfn_offset;
+> +	phys_addr_t start = (base_gfn +  __ffs(mask)) << PAGE_SHIFT;
+> +	phys_addr_t end = (base_gfn + __fls(mask) + 1) << PAGE_SHIFT;
+> +
+> +	while (start < end) {
+> +		pte_t *ptep;
+> +		unsigned int shift;
+> +
+> +		ptep = find_kvm_secondary_pte(kvm, start, &shift);
+> +
+> +		*ptep = __pte(pte_val(*ptep) & ~(_PAGE_WRITE));
+> +
+> +		start += PAGE_SIZE;
+> +	}
+> +}
+> +
+> +#ifdef CONFIG_NEED_KVM_DIRTY_RING_WITH_BITMAP
+> +bool kvm_arch_allow_write_without_running_vcpu(struct kvm *kvm)
+> +{
+> +	return true;
+> +}
+> +#endif
+> +
+> +#ifdef CONFIG_KVM_GENERIC_DIRTYLOG_READ_PROTECT
+> +void kvm_arch_flush_remote_tlbs_memslot(struct kvm *kvm,
+> +					const struct kvm_memory_slot *memslot)
+> +{
+> +	kvm_flush_remote_tlbs(kvm);
+> +}
+> +#endif
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 130bafdb1430..1d1264ea72c4 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -4804,6 +4804,9 @@ static int kvmppc_vcpu_run_hv(struct kvm_vcpu *vcpu)
+>  		return -EINTR;
+>  	}
+> 
+> +	if (kvm_dirty_ring_check_request(vcpu))
+> +		return 0;
+> +
+>  #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+>  	/*
+>  	 * Don't allow entry with a suspended transaction, because
+> diff --git a/include/linux/kvm_dirty_ring.h b/include/linux/kvm_dirty_ring.h
+> index 4862c98d80d3..a00301059da5 100644
+> --- a/include/linux/kvm_dirty_ring.h
+> +++ b/include/linux/kvm_dirty_ring.h
+> @@ -69,6 +69,11 @@ static inline void kvm_dirty_ring_free(struct kvm_dirty_ring *ring)
+>  {
+>  }
+> 
+> +static inline bool kvm_dirty_ring_check_request(struct kvm_vcpu *vcpu)
+> +{
+> +	return false;
+> +}
+> +
+>  #else /* CONFIG_HAVE_KVM_DIRTY_RING */
+> 
+>  int kvm_cpu_dirty_log_size(void);
+> -- 
+> 2.39.2
+> 
