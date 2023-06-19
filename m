@@ -1,95 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B83C734979
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 02:28:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D75D8734988
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 02:44:57 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ddNIuuv+;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=rUN14PJn;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=lLIbNU3p;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QkrG71jcNz30fV
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 10:28:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QkrdM5kL3z30hk
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 10:44:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ddNIuuv+;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=rUN14PJn;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=lLIbNU3p;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=stefanb@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QkrF86nrZz302F
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jun 2023 10:27:24 +1000 (AEST)
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35J0AMtV027983;
-	Mon, 19 Jun 2023 00:26:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=dxiSW/Q5iJ1yg55cF0W2WtihdhUKeic4ECzsYMPueDg=;
- b=ddNIuuv+jebDfhKkYfQtQ8ab9/SmZiq64Mqvfy4VuCe5pzdNIfzi7muOH3ynORNLjTyy
- CUg0VEuDe6hSDazJS+Bs80+xvM1OC3aXHYDWZgNJfxT00zBsg4g2jSiNRKGfEboy3pko
- RBmk71uqr0kw/UGKD7YwzuoGYR5H1Hkx4O6HSkwkP2LNUbpS/Cw0izSiro+jYzVu2HIT
- +2FCzpkW16vyindDcVZXN0Gj3IG9tMjXVvkEHjlOD2FSqf55mtLpxH1lgVNJD5RPlGWm
- cDD/I9s3f2nBT2p4DX7TV55KEzEUrbPbJEwNu3BNQxq0izFS6sDzBm/z/+BMasyz6Mon sg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rab3ah3yx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Jun 2023 00:26:57 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35J0Bphc030856;
-	Mon, 19 Jun 2023 00:26:56 GMT
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rab3ah3ys-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Jun 2023 00:26:56 +0000
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
-	by ppma03wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35INPhb8016226;
-	Mon, 19 Jun 2023 00:26:55 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([9.208.129.120])
-	by ppma03wdc.us.ibm.com (PPS) with ESMTPS id 3r94f5r2tv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Jun 2023 00:26:55 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 35J0Qsa842336754
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 19 Jun 2023 00:26:54 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 773CE5805A;
-	Mon, 19 Jun 2023 00:26:54 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 098A058051;
-	Mon, 19 Jun 2023 00:26:54 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 19 Jun 2023 00:26:53 +0000 (GMT)
-Message-ID: <bd7a10c8-a077-1c87-98f4-4c31aed2bf36@linux.ibm.com>
-Date: Sun, 18 Jun 2023 20:26:53 -0400
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QkrcR6qm0z2xWc
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jun 2023 10:44:07 +1000 (AEST)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1687135439;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vsMXbrKh0JGoYY4QV9GoJzzJG7ynUwMTeuBBW75Cixw=;
+	b=rUN14PJnvCNMHwi3GTEOlfidoeu9X715ZKU0SYtls/E3LdchOubCrv6G6mpg1kS5Tfe1/9
+	s4JZa7jZI7/5XwWNgt1s7Bm2c/bSSDDBur1GSNft3GZ9udoq7EXJISSUO38jFXsNGvEbM0
+	tkM74ZwC4qjXGWb7oec1XP9g1Yz2kDYVXq2zWp3OYogUAp3NdYJ+EU/2VWfMYxaoBPM/f0
+	h8mrju1Sc9ps1cTeu3nCYiDGzqD/IRl0erFde+EUGB5wGGP14zw+GKvCyObIUHvlYiaxv4
+	ceZRK3Uxj0lWHTCBTGtW1lP8JYu8YM/FvQhC52QcdmikiK6sh8q/uSftK+9f4w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1687135439;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vsMXbrKh0JGoYY4QV9GoJzzJG7ynUwMTeuBBW75Cixw=;
+	b=lLIbNU3pTbmQ6EcHS74pAHUeumYKJH5D0qb0hsj7fDkEeEfUM8kX51p2S8npikVP/atNyj
+	ZNKqUDCt/8atTiDw==
+To: Kent Overstreet <kent.overstreet@linux.dev>
+Subject: Re: [PATCH v2 06/12] mm/execmem: introduce execmem_data_alloc()
+In-Reply-To: <20230618231431.4aj3k5ujye22sqai@moria.home.lan>
+References: <20230616085038.4121892-1-rppt@kernel.org>
+ <20230616085038.4121892-7-rppt@kernel.org> <87jzw0qu3s.ffs@tglx>
+ <20230618231431.4aj3k5ujye22sqai@moria.home.lan>
+Date: Mon, 19 Jun 2023 02:43:58 +0200
+Message-ID: <87h6r4qo1d.ffs@tglx>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH v2 2/2] powerpc/tpm: Reserve SML log when kexec'ing with
- kexec_file_load()
-Content-Language: en-US
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-References: <20230615123703.4028156-1-mpe@ellerman.id.au>
- <20230615123703.4028156-2-mpe@ellerman.id.au>
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <20230615123703.4028156-2-mpe@ellerman.id.au>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: d4GVSuT1t902Cq_ab-bXuEnXjvWOGxrJ
-X-Proofpoint-GUID: pjB8ieEw8lie7mgqrp4cDfYHnmwhFDgu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-06-18_16,2023-06-16_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- clxscore=1011 bulkscore=0 mlxlogscore=999 phishscore=0 impostorscore=0
- suspectscore=0 adultscore=0 spamscore=0 priorityscore=1501 malwarescore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306180229
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,78 +65,149 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: eajames@linux.ibm.com, jgg@ziepe.ca, jarkko@kernel.org, yangyingliang@huawei.com, linux-integrity@vger.kernel.org, peterhuewe@gmx.de
+Cc: Mark Rutland <mark.rutland@arm.com>, x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Nadav Amit <nadav.amit@gmail.com>, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linux-trace-kernel@vger.kernel.org, Will Deacon <will@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Puranjay Mohan <puranjay12@gmail.com>, linux-mm@kvack.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-modules@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Kent!
 
+On Sun, Jun 18 2023 at 19:14, Kent Overstreet wrote:
+> On Mon, Jun 19, 2023 at 12:32:55AM +0200, Thomas Gleixner wrote:
+>
+> Thomas, you're confusing an internal interface with external
 
-On 6/15/23 08:37, Michael Ellerman wrote:
-> The TPM code in prom_init.c creates a small buffer of memory to store
-> the TPM's SML (Stored Measurement Log). It's communicated to Linux via
-> the linux,sml-base/size device tree properties of the TPM node.
-> 
-> When kexec'ing that buffer can be overwritten, or when kdump'ing it may
-> not be mapped by the second kernel. The latter can lead to a crash when
-> booting the second kernel such as:
-> 
->    tpm_ibmvtpm 71000003: CRQ initialization completed
->    BUG: Unable to handle kernel data access on read at 0xc00000002ffb0000
->    Faulting instruction address: 0xc0000000200a70e0
->    Oops: Kernel access of bad area, sig: 11 [#1]
->    LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
->    Modules linked in:
->    CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.2.0-rc2-00134-g9307ce092f5d #314
->    Hardware name: IBM pSeries (emulated by qemu) POWER9 (raw) 0x4e1200 0xf000005 of:SLOF,git-5b4c5a pSeries
->    NIP:  c0000000200a70e0 LR: c0000000203dd5dc CTR: 0000000000000800
->    REGS: c000000024543280 TRAP: 0300   Not tainted  (6.2.0-rc2-00134-g9307ce092f5d)
->    MSR:  8000000002009033 <SF,VEC,EE,ME,IR,DR,RI,LE>  CR: 24002280  XER: 00000006
->    CFAR: c0000000200a70c8 DAR: c00000002ffb0000 DSISR: 40000000 IRQMASK: 0
->    ...
->    NIP memcpy_power7+0x400/0x7d0
->    LR  kmemdup+0x5c/0x80
->    Call Trace:
->      memcpy_power7+0x274/0x7d0 (unreliable)
->      kmemdup+0x5c/0x80
->      tpm_read_log_of+0xe8/0x1b0
->      tpm_bios_log_setup+0x60/0x210
->      tpm_chip_register+0x134/0x320
->      tpm_ibmvtpm_probe+0x520/0x7d0
->      vio_bus_probe+0x9c/0x460
->      really_probe+0x104/0x420
->      __driver_probe_device+0xb0/0x170
->      driver_probe_device+0x58/0x180
->      __driver_attach+0xd8/0x250
->      bus_for_each_dev+0xb4/0x140
->      driver_attach+0x34/0x50
->      bus_add_driver+0x1e8/0x2d0
->      driver_register+0xb4/0x1c0
->      __vio_register_driver+0x74/0x9c
->      ibmvtpm_module_init+0x34/0x48
->      do_one_initcall+0x80/0x320
->      kernel_init_freeable+0x304/0x3ac
->      kernel_init+0x30/0x1a0
->      ret_from_kernel_thread+0x5c/0x64
-> 
-> To fix the crash, add the SML region to the usable memory areas for the
-> kdump kernel, so that the second kernel will map the region. To avoid
-> corruption of the region, add the region to the reserved memory areas,
+No. I am not.
 
-To me the 2nd paragraph and the one below seem to say that in general it does NOT 'avoid corruption of the region.'
+Whether that's an internal function or not does not make any difference
+at all.
 
+Having a function growing _eight_ parameters where _six_ of them are
+derived from a well defined data structure is a clear sign of design
+fail.
 
-> so that the second kernel does not use the memory for something else.
-> 
-> Note that when loading a kdump kernel with the regular kexec_load()
-> syscall the SML may be overwritten by the kdump kernel, depending on
-> where the SML is in memory in relation to the crashkernel region. That
-> is a separate problem that is not solved by this patch.
-> 
-> Fixes: a0458284f062 ("powerpc: Add support code for kexec_file_load()")
-> Reported-by: Stefan Berger <stefanb@linux.ibm.com>
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+It's not rocket science to do:
 
-I agree to the code:
+struct generic_allocation_info {
+       ....
+};
 
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+struct execmem_info {
+       ....
+       struct generic_allocation_info alloc_info;
+;
 
+struct execmem_param {
+       ...
+       struct execmem_info[NTYPES];
+};
+
+and having a function which can either operate on execmem_param and type
+or on generic_allocation_info itself. It does not matter as long as the
+data structure which is handed into this internal function is
+describing it completely or needs a supplementary argument, i.e. flags.
+
+Having tons of wrappers which do:
+
+       a = generic_info.a;
+       b = generic_info.b;
+       ....
+       n = generic_info.n;
+
+       internal_func(a, b, ....,, n);
+
+is just hillarious and to repeat myself tasteless and therefore
+disgusting.
+
+That's CS course first semester hackery, but TBH, I can only tell from
+imagination because I did not take CS courses - maybe that's the
+problem...
+
+Data structure driven design works not from the usage site down to the
+internals. It's the other way round:
+
+  1) Define a data structure which describes what the internal function
+     needs to know
+
+  2) Implement use case specific variants which describe that
+
+  3) Hand the use case specific variant to the internal function
+     eventually with some minimal supplementary information.
+
+Object oriented basics, right?
+
+There is absolutely nothing wrong with having
+
+      internal_func(generic_info *, modifier);
+
+but having
+
+      internal_func(a, b, ... n)
+
+is fundamentally wrong in the context of an extensible and future proof
+internal function.
+
+Guess what. Today it's sufficient to have _eight_ arguments and we are
+happy to have 10 nonsensical wrappers around this internal
+function. Tomorrow there happens to be a use case which needs another
+argument so you end up:
+
+  Changing 10 wrappers plus the function declaration and definition in
+  one go
+
+instead of adding
+
+  One new naturally 0 initialized member to generic_info and be done
+  with it.
+
+Look at the evolution of execmem_alloc() in this very pathset which I
+pointed out. That very patchset covers _two_ of at least _six_ cases
+Song and myself identified. It already had _three_ steps of evolution
+from _one_ to _five_ to _eight_ parameters.
+
+C is not like e.g. python where you can "solve" that problem by simply
+doing:
+
+- internal_func(a, b, c):
++ internal_func(a, b, c, d=None, ..., n=None):
+
+But that's not a solution either. That's a horrible workaround even in
+python once your parameter space gets sufficiently large. The way out in
+python is to have **kwargs. But that's not an option in C, and not
+necessarily the best option for python either.
+
+Even in python or any other object oriented language you get to the
+point where you have to rethink your approach, go back to the drawing
+board and think about data representation.
+
+But creating a new interface based on "let's see what we need over
+time and add parameters as we see fit" is simply wrong to begin with
+independent of the programming language.
+
+Even if the _eight_ parameters are the end of the range, then they are
+beyond justifyable because that's way beyond the natural register
+argument space of any architecture and you are offloading your lazyness
+to wrappers and the compiler to emit pointlessly horrible code.
+
+There is a reason why new syscalls which need more than a few parameters
+are based on 'struct DATA_WHICH_I_NEED_TO_KNOW' and 'flags'.
+
+We've got burned on the non-extensibilty often enough. Why would a new
+internal function have any different requirements especially as it is
+neither implemented to the full extent nor a hotpath function?
+
+Now you might argue that it _is_ a "hotpath" due to the BPF usage, but
+then even more so as any intermediate wrapper which converts from one
+data representation to another data representation is not going to
+increase performance, right?
+
+> ... I made the same mistake reviewing Song's patchset...
+
+Songs series had rough edges, but was way more data structure driven
+and palatable than this hackery.
+
+The fact that you made a mistake while reviewing Songs series has
+absolutely nothing to do with the above or my previous reply to Mike.
+
+Thanks,
+
+        tglx
