@@ -2,64 +2,94 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25674734969
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 02:05:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B83C734979
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 02:28:17 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="unknown key version" header.d=208.org header.i=@208.org header.a=rsa-sha256 header.s=dkim header.b=KR1y3uP6;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ddNIuuv+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qkqm34swtz30PH
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 10:05:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QkrG71jcNz30fV
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jun 2023 10:28:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="unknown key version" header.d=208.org header.i=@208.org header.a=rsa-sha256 header.s=dkim header.b=KR1y3uP6;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ddNIuuv+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=208suo.com (client-ip=183.242.55.162; helo=mail.208.org; envelope-from=zhumao001@208suo.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 544 seconds by postgrey-1.37 at boromir; Mon, 19 Jun 2023 01:17:44 AEST
-Received: from mail.208.org (unknown [183.242.55.162])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=stefanb@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qkc2w3dwDz308s
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jun 2023 01:17:44 +1000 (AEST)
-Received: from mail.208.org (email.208.org [127.0.0.1])
-	by mail.208.org (Postfix) with ESMTP id 4Qkbr41P7hzBJTD7
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Jun 2023 23:08:20 +0800 (CST)
-Authentication-Results: mail.208.org (amavisd-new); dkim=pass
-	reason="pass (just generated, assumed good)" header.d=208.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=208.org; h=
-	content-type:message-id:user-agent:references:in-reply-to
-	:subject:to:from:date:mime-version; s=dkim; t=1687100900; x=
-	1689692901; bh=QIcZOBynhyZVuqtTppi/QgtH5uEk2xGMmNooc0JUOeE=; b=K
-	R1y3uP6kDpW/i15XylaxtJEottmFDxUXuspBc6AYh1Cjdic0gwWUYoUvZtnVh5db
-	Hk1UGCGNNdwtPX+NQir+oWLJmMulRL1qSeD/N8Gr3WhMIeluT/Wo0fIFLHAYEhB0
-	8bdd5zaCWAGRshZawJqiZ3waOXvGPytKgRAhSJILZZDJhs3lBMItDa7tOcSovtWh
-	YzRUm/9a/NRBa9gh4lKacPd0LQtTMCwCRpePyzrNGQo+A5oopvVwlouXK5VyUCz2
-	Ls5qsmeELIu7Rf55EEjiubTuWTtkV4wx99TqqsvrKpUhsv+RZXtbw2M40iZmU7GJ
-	Wx1o0a/3W7RhpzCTU+dTg==
-X-Virus-Scanned: amavisd-new at mail.208.org
-Received: from mail.208.org ([127.0.0.1])
-	by mail.208.org (mail.208.org [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id NO1IlWJUB7si for <linuxppc-dev@lists.ozlabs.org>;
-	Sun, 18 Jun 2023 23:08:20 +0800 (CST)
-Received: from localhost (email.208.org [127.0.0.1])
-	by mail.208.org (Postfix) with ESMTPSA id 4Qkbr35sMRzBJJDJ;
-	Sun, 18 Jun 2023 23:08:19 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QkrF86nrZz302F
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jun 2023 10:27:24 +1000 (AEST)
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35J0AMtV027983;
+	Mon, 19 Jun 2023 00:26:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=dxiSW/Q5iJ1yg55cF0W2WtihdhUKeic4ECzsYMPueDg=;
+ b=ddNIuuv+jebDfhKkYfQtQ8ab9/SmZiq64Mqvfy4VuCe5pzdNIfzi7muOH3ynORNLjTyy
+ CUg0VEuDe6hSDazJS+Bs80+xvM1OC3aXHYDWZgNJfxT00zBsg4g2jSiNRKGfEboy3pko
+ RBmk71uqr0kw/UGKD7YwzuoGYR5H1Hkx4O6HSkwkP2LNUbpS/Cw0izSiro+jYzVu2HIT
+ +2FCzpkW16vyindDcVZXN0Gj3IG9tMjXVvkEHjlOD2FSqf55mtLpxH1lgVNJD5RPlGWm
+ cDD/I9s3f2nBT2p4DX7TV55KEzEUrbPbJEwNu3BNQxq0izFS6sDzBm/z/+BMasyz6Mon sg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rab3ah3yx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Jun 2023 00:26:57 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35J0Bphc030856;
+	Mon, 19 Jun 2023 00:26:56 GMT
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rab3ah3ys-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Jun 2023 00:26:56 +0000
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+	by ppma03wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35INPhb8016226;
+	Mon, 19 Jun 2023 00:26:55 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([9.208.129.120])
+	by ppma03wdc.us.ibm.com (PPS) with ESMTPS id 3r94f5r2tv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Jun 2023 00:26:55 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 35J0Qsa842336754
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 19 Jun 2023 00:26:54 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 773CE5805A;
+	Mon, 19 Jun 2023 00:26:54 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 098A058051;
+	Mon, 19 Jun 2023 00:26:54 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 19 Jun 2023 00:26:53 +0000 (GMT)
+Message-ID: <bd7a10c8-a077-1c87-98f4-4c31aed2bf36@linux.ibm.com>
+Date: Sun, 18 Jun 2023 20:26:53 -0400
 MIME-Version: 1.0
-Date: Sun, 18 Jun 2023 23:08:19 +0800
-From: zhumao001@208suo.com
-To: fbarrat@linux.ibm.com, ajd@linux.ibm.com, arnd@arndb.de,
- gregkh@linuxfoundation.org
-Subject: [PATCH] cxl/ocxl: Possible repeated word
-In-Reply-To: <20230618150648.1123-1-dengshaomin@cdjrlc.com>
-References: <20230618150648.1123-1-dengshaomin@cdjrlc.com>
-User-Agent: Roundcube Webmail
-Message-ID: <787f5a712a0459bc21d83bb388770b58@208suo.com>
-X-Sender: zhumao001@208suo.com
-Content-Type: multipart/alternative;
- boundary="=_b268a70895ade5c999a5d7f3bb310296"
-X-Mailman-Approved-At: Mon, 19 Jun 2023 10:04:52 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH v2 2/2] powerpc/tpm: Reserve SML log when kexec'ing with
+ kexec_file_load()
+Content-Language: en-US
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+References: <20230615123703.4028156-1-mpe@ellerman.id.au>
+ <20230615123703.4028156-2-mpe@ellerman.id.au>
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <20230615123703.4028156-2-mpe@ellerman.id.au>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: d4GVSuT1t902Cq_ab-bXuEnXjvWOGxrJ
+X-Proofpoint-GUID: pjB8ieEw8lie7mgqrp4cDfYHnmwhFDgu
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-18_16,2023-06-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ clxscore=1011 bulkscore=0 mlxlogscore=999 phishscore=0 impostorscore=0
+ suspectscore=0 adultscore=0 spamscore=0 priorityscore=1501 malwarescore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306180229
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,63 +101,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: eajames@linux.ibm.com, jgg@ziepe.ca, jarkko@kernel.org, yangyingliang@huawei.com, linux-integrity@vger.kernel.org, peterhuewe@gmx.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---=_b268a70895ade5c999a5d7f3bb310296
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
 
 
-Delete repeated word in comment.
+On 6/15/23 08:37, Michael Ellerman wrote:
+> The TPM code in prom_init.c creates a small buffer of memory to store
+> the TPM's SML (Stored Measurement Log). It's communicated to Linux via
+> the linux,sml-base/size device tree properties of the TPM node.
+> 
+> When kexec'ing that buffer can be overwritten, or when kdump'ing it may
+> not be mapped by the second kernel. The latter can lead to a crash when
+> booting the second kernel such as:
+> 
+>    tpm_ibmvtpm 71000003: CRQ initialization completed
+>    BUG: Unable to handle kernel data access on read at 0xc00000002ffb0000
+>    Faulting instruction address: 0xc0000000200a70e0
+>    Oops: Kernel access of bad area, sig: 11 [#1]
+>    LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
+>    Modules linked in:
+>    CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.2.0-rc2-00134-g9307ce092f5d #314
+>    Hardware name: IBM pSeries (emulated by qemu) POWER9 (raw) 0x4e1200 0xf000005 of:SLOF,git-5b4c5a pSeries
+>    NIP:  c0000000200a70e0 LR: c0000000203dd5dc CTR: 0000000000000800
+>    REGS: c000000024543280 TRAP: 0300   Not tainted  (6.2.0-rc2-00134-g9307ce092f5d)
+>    MSR:  8000000002009033 <SF,VEC,EE,ME,IR,DR,RI,LE>  CR: 24002280  XER: 00000006
+>    CFAR: c0000000200a70c8 DAR: c00000002ffb0000 DSISR: 40000000 IRQMASK: 0
+>    ...
+>    NIP memcpy_power7+0x400/0x7d0
+>    LR  kmemdup+0x5c/0x80
+>    Call Trace:
+>      memcpy_power7+0x274/0x7d0 (unreliable)
+>      kmemdup+0x5c/0x80
+>      tpm_read_log_of+0xe8/0x1b0
+>      tpm_bios_log_setup+0x60/0x210
+>      tpm_chip_register+0x134/0x320
+>      tpm_ibmvtpm_probe+0x520/0x7d0
+>      vio_bus_probe+0x9c/0x460
+>      really_probe+0x104/0x420
+>      __driver_probe_device+0xb0/0x170
+>      driver_probe_device+0x58/0x180
+>      __driver_attach+0xd8/0x250
+>      bus_for_each_dev+0xb4/0x140
+>      driver_attach+0x34/0x50
+>      bus_add_driver+0x1e8/0x2d0
+>      driver_register+0xb4/0x1c0
+>      __vio_register_driver+0x74/0x9c
+>      ibmvtpm_module_init+0x34/0x48
+>      do_one_initcall+0x80/0x320
+>      kernel_init_freeable+0x304/0x3ac
+>      kernel_init+0x30/0x1a0
+>      ret_from_kernel_thread+0x5c/0x64
+> 
+> To fix the crash, add the SML region to the usable memory areas for the
+> kdump kernel, so that the second kernel will map the region. To avoid
+> corruption of the region, add the region to the reserved memory areas,
 
-Signed-off-by: Zhu Mao <zhumao001@208suo.com>
----
-  drivers/misc/cxl/native.c | 2 +-
-  1 file changed, 1 insertion(+), 1 deletion(-)
+To me the 2nd paragraph and the one below seem to say that in general it does NOT 'avoid corruption of the region.'
 
-diff --git a/drivers/misc/cxl/native.c b/drivers/misc/cxl/native.c
-index 50b0c44bb8d7..6957946a6463 100644
---- a/drivers/misc/cxl/native.c
-+++ b/drivers/misc/cxl/native.c
-@@ -920,7 +920,7 @@ int cxl_attach_dedicated_process_psl9(struct 
-cxl_context *ctx, u64 wed, u64 amr)
-       * Ideally we should do a wmb() here to make sure the changes to 
-the
-       * PE are visible to the card before we call afu_enable.
-       * On ppc64 though all mmios are preceded by a 'sync' instruction 
-hence
--     * we dont dont need one here.
-+     * we dont need one here.
-       */
 
-      result = cxl_ops->afu_reset(afu);
---=_b268a70895ade5c999a5d7f3bb310296
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/html; charset=UTF-8
+> so that the second kernel does not use the memory for something else.
+> 
+> Note that when loading a kdump kernel with the regular kexec_load()
+> syscall the SML may be overwritten by the kdump kernel, depending on
+> where the SML is in memory in relation to the crashkernel region. That
+> is a separate problem that is not solved by this patch.
+> 
+> Fixes: a0458284f062 ("powerpc: Add support code for kexec_file_load()")
+> Reported-by: Stefan Berger <stefanb@linux.ibm.com>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 
-<html><head><meta http-equiv=3D"Content-Type" content=3D"text/html; charset=
-=3DUTF-8" /></head><body style=3D'font-size: 12pt; font-family: Verdana,Gen=
-eva,sans-serif'>
-<div class=3D"pre" style=3D"margin: 0; padding: 0; font-family: monospace">=
-Delete repeated word in comment.<br /><br />Signed-off-by: Zhu Mao &lt;zhum=
-ao001@208suo.com&gt;<br />---<br />&nbsp;drivers/misc/cxl/native.c | 2 +-<b=
-r />&nbsp;1 file changed, 1 insertion(+), 1 deletion(-)<br /><br />diff --g=
-it a/drivers/misc/cxl/native.c b/drivers/misc/cxl/native.c<br />index 50b0c=
-44bb8d7..6957946a6463 100644<br />--- a/drivers/misc/cxl/native.c<br />+++ =
-b/drivers/misc/cxl/native.c<br />@@ -920,7 +920,7 @@ int cxl_attach_dedicat=
-ed_process_psl9(struct cxl_context *ctx, u64 wed, u64 amr)<br />&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;* Ideally we should do a wmb() here to make sure t=
-he changes to the<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;* PE are visible=
- to the card before we call afu_enable.<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;* On ppc64 though all mmios are preceded by a 'sync' instruction henc=
-e<br />- &nbsp;&nbsp;&nbsp;&nbsp;* we dont dont need one here.<br />+ &nbsp=
-;&nbsp;&nbsp;&nbsp;* we dont need one here.<br />&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;*/<br />&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result =3D cxl_=
-ops-&gt;afu_reset(afu);</div>
+I agree to the code:
 
-</body></html>
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
 
---=_b268a70895ade5c999a5d7f3bb310296--
