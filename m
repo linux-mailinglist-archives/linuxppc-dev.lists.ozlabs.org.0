@@ -2,80 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0633E738D79
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jun 2023 19:44:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31F06738EDC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jun 2023 20:33:23 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=duef5UCO;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bqpFt5V3;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bqpFt5V3;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QmW8d6HrPz3bpG
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 03:44:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QmXFF0gsRz3bsn
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 04:33:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=duef5UCO;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bqpFt5V3;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bqpFt5V3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.136; helo=mga12.intel.com; envelope-from=dave.hansen@intel.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 63 seconds by postgrey-1.37 at boromir; Thu, 22 Jun 2023 03:43:31 AEST
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 65 seconds by postgrey-1.37 at boromir; Tue, 20 Jun 2023 18:23:03 AEST
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QmW7l1qj5z2xqK
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jun 2023 03:43:30 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687369411; x=1718905411;
-  h=message-id:date:mime-version:subject:to:references:from:
-   in-reply-to:content-transfer-encoding;
-  bh=LVptCrukcCrf+ulAXv9iJ2UzZRi1STprNI7mWSySJig=;
-  b=duef5UCOkpk326C86kqSIQKmjg4sWeL7xcw/FGiQBbGImH0Tyo3dUU58
-   9xpA2UntmjIYS+fgl1fpnRmjPKniDlE50AHIBhDKrgyRzmUPOcxN/H2hS
-   5u3ZQ2Zd+fpEltOyK7Bv1f5HXE4k5z17XtF6PC5DAHYHY4A5pzWMUXCjf
-   8JP8s7EJ9cVNfLLaKhbaGdqmWveRk6WgZxB5q+uQJ0hqUuvyiM7diyddt
-   GGIjhd94WzUj/W8J3zy7XxjvMYLJjbYeOb7JN0miyWd4Gx2Bio0tVcGBj
-   ccN9fzfIOMsdRrFzc8t8NtBOjkNsY+QNPvBqPEviVvygZXpj9Yr6XZTBJ
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10748"; a="339870191"
-X-IronPort-AV: E=Sophos;i="6.00,261,1681196400"; 
-   d="scan'208";a="339870191"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2023 10:42:19 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10748"; a="1044816796"
-X-IronPort-AV: E=Sophos;i="6.00,261,1681196400"; 
-   d="scan'208";a="1044816796"
-Received: from rmathew-mobl2.amr.corp.intel.com (HELO [10.212.134.235]) ([10.212.134.235])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2023 10:42:16 -0700
-Message-ID: <680fadba-9104-3914-5175-e207fd3d9246@intel.com>
-Date: Wed, 21 Jun 2023 10:42:16 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QlflW648wz2y1c
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jun 2023 18:23:03 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1687249381;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5XHdbMNys0EMjfbiSdwj8lWyGP51R68NotGh4ls9XCg=;
+	b=bqpFt5V3QLI2GxO8ApakkaAjuq9diyMpU8tyAnWFV32Z5ALRzQP7cm/LG5yOhId9EjrydZ
+	TUhZN3ymgbJRCmzQj/umswV++pCbPAc3rQoSN0J6yy7dNvG4Sa4nb/0sRFOuWYQBUiF12T
+	/Eq2WX4EE+2WDrYQKkII35hbmfF2F8U=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1687249381;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5XHdbMNys0EMjfbiSdwj8lWyGP51R68NotGh4ls9XCg=;
+	b=bqpFt5V3QLI2GxO8ApakkaAjuq9diyMpU8tyAnWFV32Z5ALRzQP7cm/LG5yOhId9EjrydZ
+	TUhZN3ymgbJRCmzQj/umswV++pCbPAc3rQoSN0J6yy7dNvG4Sa4nb/0sRFOuWYQBUiF12T
+	/Eq2WX4EE+2WDrYQKkII35hbmfF2F8U=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-653-DHNnL6O0PoOX-_3jeDwo5g-1; Tue, 20 Jun 2023 04:21:49 -0400
+X-MC-Unique: DHNnL6O0PoOX-_3jeDwo5g-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 918E73806739;
+	Tue, 20 Jun 2023 08:21:48 +0000 (UTC)
+Received: from localhost (ovpn-12-166.pek2.redhat.com [10.72.12.166])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 2B95A2166B26;
+	Tue, 20 Jun 2023 08:21:46 +0000 (UTC)
+Date: Tue, 20 Jun 2023 16:21:42 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Eric DeVolder <eric.devolder@oracle.com>
+Subject: Re: [PATCH v2 02/13] x86/kexec: refactor for kernel/Kconfig.kexec
+Message-ID: <ZJFhlsFN6DxnWsQE@MiWiFi-R3L-srv>
+References: <20230619145801.1064716-1-eric.devolder@oracle.com>
+ <20230619145801.1064716-3-eric.devolder@oracle.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2 2/2] mm/mmu_gather: send tlb_remove_table_smp_sync IPI
- only to MM CPUs
-Content-Language: en-US
-To: Yair Podemsky <ypodemsk@redhat.com>, mtosatti@redhat.com,
- ppandit@redhat.com, david@redhat.com, linux@armlinux.org.uk,
- mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
- hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
- borntraeger@linux.ibm.com, svens@linux.ibm.com, davem@davemloft.net,
- tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, hpa@zytor.com, keescook@chromium.org,
- paulmck@kernel.org, frederic@kernel.org, will@kernel.org,
- peterz@infradead.org, ardb@kernel.org, samitolvanen@google.com,
- juerg.haefliger@canonical.com, arnd@arndb.de, rmk+kernel@armlinux.org.uk,
- geert+renesas@glider.be, linus.walleij@linaro.org,
- akpm@linux-foundation.org, sebastian.reichel@collabora.com, rppt@kernel.org,
- aneesh.kumar@linux.ibm.com, x86@kernel.org,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20230620144618.125703-1-ypodemsk@redhat.com>
- <20230620144618.125703-3-ypodemsk@redhat.com>
-From: Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <20230620144618.125703-3-ypodemsk@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230619145801.1064716-3-eric.devolder@oracle.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+X-Mailman-Approved-At: Thu, 22 Jun 2023 04:32:35 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,43 +80,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: chenhuacai@kernel.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, peterz@infradead.org, catalin.marinas@arm.com, linus.walleij@linaro.org, dave.hansen@linux.intel.com, linux-mips@vger.kernel.org, James.Bottomley@hansenpartnership.com, dalias@libc.org, hpa@zytor.com, linux-riscv@lists.infradead.org, will@kernel.org, kernel@xen0n.name, tsi@tuyoix.net, linux-s390@vger.kernel.org, agordeev@linux.ibm.com, rmk+kernel@armlinux.org.uk, paulmck@kernel.org, ysato@users.sourceforge.jp, deller@gmx.de, x86@kernel.org, linux@armlinux.org.uk, paul.walmsley@sifive.com, mingo@redhat.com, geert@linux-m68k.org, hbathini@linux.ibm.com, samitolvanen@google.com, ojeda@kernel.org, juerg.haefliger@canonical.com, borntraeger@linux.ibm.com, frederic@kernel.org, arnd@arndb.de, mhiramat@kernel.org, ardb@kernel.org, thunder.leizhen@huawei.com, aou@eecs.berkeley.edu, keescook@chromium.org, gor@linux.ibm.com, anshuman.khandual@arm.com, hca@linux.ibm.com, xin3.li@intel.com, npiggin@gmail.com, konrad.wilk@oracle.com, linux-m68k@lists.linux-m68k.org, bp@alien8.de, loongarch@lists.linux.dev, glaubitz@physik.fu-berlin.de, tglx@linutronix.de, ziy@nvidia.com, linux-arm-kernel@lists.infradead.org, boris.ostrovsky@oracle.com, tsbogend@alpha.franken.de, sebastian.reichel@collabora.com, linux-parisc@vger.kernel.org, gregkh@linuxfoundation.org, kirill.shutemov@linux.intel.com, ndesaulniers@google.com, linux-kernel@vger.kernel.org, sourabhjain@linux.ibm.com, palmer@dabbelt.com, svens@linux.ibm.com, tj@kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, masahiroy@kernel.org, rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/20/23 07:46, Yair Podemsky wrote:
-> -void tlb_remove_table_sync_one(void)
-> +#ifdef CONFIG_ARCH_HAS_CPUMASK_BITS
-> +#define REMOVE_TABLE_IPI_MASK mm_cpumask(mm)
-> +#else
-> +#define REMOVE_TABLE_IPI_MASK cpu_online_mask
-> +#endif /* CONFIG_ARCH_HAS_CPUMASK_BITS */
-> +
-> +void tlb_remove_table_sync_one(struct mm_struct *mm)
->  {
->  	/*
->  	 * This isn't an RCU grace period and hence the page-tables cannot be
-> @@ -200,7 +206,8 @@ void tlb_remove_table_sync_one(void)
->  	 * It is however sufficient for software page-table walkers that rely on
->  	 * IRQ disabling.
->  	 */
-> -	smp_call_function(tlb_remove_table_smp_sync, NULL, 1);
-> +	on_each_cpu_mask(REMOVE_TABLE_IPI_MASK, tlb_remove_table_smp_sync,
-> +			NULL, true);
->  }
+Hi Eric,
 
-That "REMOVE_TABLE_IPI_MASK" thing is pretty confusing.  It *looks* like
-a constant.  It does *NOT* look at all like it consumes 'mm'.  Worst
-case, just create a local variable:
+On 06/19/23 at 10:57am, Eric DeVolder wrote:
+......
+> +config ARCH_SUPPORTS_KEXEC
+> +	def_bool y
+>  
+> -config ARCH_HAS_KEXEC_PURGATORY
+> -	def_bool KEXEC_FILE
+> +config ARCH_SUPPORTS_KEXEC_FILE
+> +	def_bool X86_64 && CRYPTO && CRYPTO_SHA256
+......  
+> +config ARCH_SELECTS_KEXEC_FILE
+> +	def_bool y
+>  	depends on KEXEC_FILE
+> -	help
 
-	if (IS_ENABLED(CONFIG_ARCH_HAS_CPUMASK_BITS))
-		ipi_mask = mm_cpumask(mm);
-	else
-		ipi_mask = cpu_online_mask;
+I am a little confused about this ARCH_SELECTS_XX adding. Wondering what
+limits us defining the ARCH_SUPPORTS_KEXEC_FILE like below? I have limited
+knowledge about Kconfig, please correct me if I am wrong. Thanks in
+advance.
 
-	on_each_cpu_mask(ipi_mask, ...);
+ +config ARCH_SUPPORTS_KEXEC_FILE
+ +	def_bool y
+  	depends on KEXEC_FILE
+  	depends on X86_64 && CRYPTO && CRYPTO_SHA256
 
-That's a billion times more clear and it'll compile down to the same thing.
+> -
+> -	  This option makes the kexec_file_load() syscall check for a valid
+> -	  signature of the kernel image.  The image can still be loaded without
+> -	  a valid signature unless you also enable KEXEC_SIG_FORCE, though if
+> -	  there's a signature that we can check, then it must be valid.
+> -
+> -	  In addition to this option, you need to enable signature
+> -	  verification for the corresponding kernel image type being
+> -	  loaded in order for this to work.
+> -
 
-I do think the CONFIG_ARCH_HAS_CPUMASK_BITS naming is also pretty
-confusing, but I don't have any better suggestions.  Maybe something
-with "MM_CPUMASK" in it?
