@@ -2,69 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACE7373617E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jun 2023 04:20:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 848E37362B7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jun 2023 06:45:20 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=sNHrZ1LK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=windriver.com header.i=@windriver.com header.a=rsa-sha256 header.s=PPS06212021 header.b=gPoeKi4n;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QlVjS2cK6z30fL
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jun 2023 12:20:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QlYwG363Pz30J1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jun 2023 14:45:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=sNHrZ1LK;
+	dkim=pass (2048-bit key; unprotected) header.d=windriver.com header.i=@windriver.com header.a=rsa-sha256 header.s=PPS06212021 header.b=gPoeKi4n;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::82a; helo=mail-qt1-x82a.google.com; envelope-from=yuzhao@google.com; receiver=lists.ozlabs.org)
-Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=windriver.com (client-ip=205.220.178.238; helo=mx0b-0064b401.pphosted.com; envelope-from=prvs=5535a9ab19=paul.gortmaker@windriver.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 665 seconds by postgrey-1.37 at boromir; Tue, 20 Jun 2023 14:44:29 AEST
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QlVhT4HrXz2yLP
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jun 2023 12:19:52 +1000 (AEST)
-Received: by mail-qt1-x82a.google.com with SMTP id d75a77b69052e-3f9d619103dso454291cf.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jun 2023 19:19:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1687227588; x=1689819588;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3EPXA9p2JzuvzKzWgCYYXlon3hk90pdnuUAk2cg5+oQ=;
-        b=sNHrZ1LKYtFz3X1H+MgLDy6o0nbrrhrd1YKD6rtJcW3ttYHs9f5dyY0axzWJCvpzWF
-         3o0ncsgfP5UDH7NTvRyQAcsGgg9JpLu+jFVAH3FJLnLMFYG+fxywkAC28XwfvqNqZmQK
-         IFUklgGtHIOC3T2HblFwLsGfrEizS/eFOyfR59HJGCj3NLATeWYbP+Pg2p8UrZWBeMpa
-         32bFBxdll4sSVTWVtOqWKiuT2J6FqgQ2hp7Mod9/Sx0Ak+MTgWCQUN9kS8y1HoT2CBgL
-         iZLyV4YibsmMoTiVxXer72V03w1CLB/TQXGwBB9khGhCUst7GGbzHBkJpPmgooW/jTiW
-         nYCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687227588; x=1689819588;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3EPXA9p2JzuvzKzWgCYYXlon3hk90pdnuUAk2cg5+oQ=;
-        b=l1Lq8bo6S+RtW/rk2jCddvMQ1PFZWWEogAZ/yP116OuYeRFA9bJBDKUld/QuVZwXnQ
-         uIvuyd4Epi5/FCVQGPuFnV/xHbYWrq7JhA1nlq9JvmYyG08RkY5Toa/1jzwhBVZ4Ir8O
-         4uJYbRfUUcxMvj9kn6Wby8PJQykiRrB9dgpZk4AXoBmZCL6yamlncpARWyzlLftVh9pN
-         wFOdBYNsLPjubMe64yR+he14ASbKX6VxHAlDKMVYoOX0KP26VfoBqWEpDwKpdgz7SZr0
-         VSCesm+mVf2FuDeldpdQ+4EsXQYqkswLRxpr/kXyAzw5pa4/v9xAdJsMTVyOrxH6DTmi
-         SBtw==
-X-Gm-Message-State: AC+VfDyRviBQPyruCe36miyuz5AfSozmUFq7q2yDOUALDNbVSZEW6okw
-	tZOYCFqxEl5ZouT7qjoks7nw5BgkC+pBAJn4/zY7RA==
-X-Google-Smtp-Source: ACHHUZ4X3CzpwwHdrmJnCxXIBAk6HQXykSsn31iNLJMOP1aC/6DP8FnJZ+MTQ6AdfTjiGdmwOfd3hduXZamO7zy5qTQ=
-X-Received: by 2002:ac8:7f93:0:b0:3ef:404a:b291 with SMTP id
- z19-20020ac87f93000000b003ef404ab291mr104628qtj.7.1687227587619; Mon, 19 Jun
- 2023 19:19:47 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QlYvK1bt0z300H
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jun 2023 14:44:27 +1000 (AEST)
+Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35K4UR15006041;
+	Tue, 20 Jun 2023 04:33:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=PPS06212021;
+ bh=C9exeSs6LzjAtVqjMSkYqTkzve399PIHlF25HoiLgg0=;
+ b=gPoeKi4nb3atWDvIWZ54a93T6E7SSx7VQ8BIEhPYJknY2sDuITxUMwmVBg5uLpUfYGow
+ 2AfjNI/6i9/K2xMHocDhaIoErozwSLFrscouTaSU7cIiIzQ1OTJlu5tsXEOe3wmX1SCH
+ sUf1h+G86qPh1qPpu9hrRsRvcHyAfNlNjVNEj6H5S68K0qvEgH1bz8ZdpvQxSphuuB1B
+ RNQBNxL1Moffbeai0O2R3Zs126CPjyTrQjaKzQaOwStuhNY+RJddeyLCXmcZZeh8bnJX
+ SW6MM0OHSMxTdAVJGWvUIi7YpjS2t6cIbkZOfOkNcasr4X3ePlUxG4TC21qiLFd6T3Sa 3g== 
+Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 3r9220j8dd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Tue, 20 Jun 2023 04:33:08 +0000
+Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
+ ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Mon, 19 Jun 2023 21:33:07 -0700
+Received: from sc2600cp.wrs.com (128.224.56.77) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
+ 15.1.2507.23 via Frontend Transport; Mon, 19 Jun 2023 21:33:06 -0700
+From: Paul Gortmaker <paul.gortmaker@windriver.com>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH v2 0/2] Remove some e500/MPC85xx evaluation platforms
+Date: Tue, 20 Jun 2023 00:32:58 -0400
+Message-ID: <20230620043300.197546-1-paul.gortmaker@windriver.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20230526234435.662652-1-yuzhao@google.com> <26cf0b0a-cda5-08a9-a669-6966f9e626b1@redhat.com>
-In-Reply-To: <26cf0b0a-cda5-08a9-a669-6966f9e626b1@redhat.com>
-From: Yu Zhao <yuzhao@google.com>
-Date: Mon, 19 Jun 2023 20:19:11 -0600
-Message-ID: <CAOUHufagkd2Jk3_HrVoFFptRXM=hX2CV8f+M-dka-hJU4bP8kw@mail.gmail.com>
-Subject: Re: [PATCH mm-unstable v2 00/10] mm/kvm: locklessly clear the
- accessed bit
-To: Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: u7wRhxuuO2T19VUL08H3JSDaJWznq0zO
+X-Proofpoint-ORIG-GUID: u7wRhxuuO2T19VUL08H3JSDaJWznq0zO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-20_02,2023-06-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
+ lowpriorityscore=0 suspectscore=0 bulkscore=0 impostorscore=0 mlxscore=0
+ mlxlogscore=999 clxscore=1011 spamscore=0 adultscore=0 malwarescore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306200040
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,45 +75,100 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, x86@kernel.org, Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, Ben Gardon <bgardon@google.com>, Chao Peng <chao.p.peng@linux.intel.com>, Will Deacon <will@kernel.org>, Gaosheng Cui <cuigaosheng1@huawei.com>, Marc Zyngier <maz@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Jonathan Corbet <corbet@lwn.net>, Alistair Popple <apopple@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, Ingo Molnar <mingo@redhat.com>, Zenghui Yu <yuzenghui@huawei.com>, linux-trace-kernel@vger.kernel.org, linux-mm@google.com, Thomas Huth <thuth@redhat.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Steven Rostedt <rostedt@goodmis.org>, kvmarm@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Fabiano Rosas <farosas@linux.ibm.com>, Michael Larabel <michael@michaellarabel.com>, Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, James Morse <james.morse@arm.com>, Masami Hiramatsu <mhiramat@kernel.org>, Anup Patel <anup@brainfault.org>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
+Cc: Li Yang <leoyang.li@nxp.com>, Scott Wood <oss@buserror.net>, Paul Gortmaker <paul.gortmaker@windriver.com>, Claudiu Manoil <claudiu.manoil@nxp.com>, Paul Mackerras <paulus@samba.org>, =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 9, 2023 at 3:08=E2=80=AFAM Paolo Bonzini <pbonzini@redhat.com> =
-wrote:
->
-> On 5/27/23 01:44, Yu Zhao wrote:
-> > TLDR
-> > =3D=3D=3D=3D
-> > This patchset adds a fast path to clear the accessed bit without
-> > taking kvm->mmu_lock. It can significantly improve the performance of
-> > guests when the host is under heavy memory pressure.
-> >
-> > ChromeOS has been using a similar approach [1] since mid 2021 and it
-> > was proven successful on tens of millions devices.
-> >
-> > This v2 addressed previous requests [2] on refactoring code, removing
-> > inaccurate/redundant texts, etc.
-> >
-> > [1]https://crrev.com/c/2987928
-> > [2]https://lore.kernel.org/r/20230217041230.2417228-1-yuzhao@google.com=
-/
->
->  From the KVM point of view the patches look good (though I wouldn't
-> mind if Nicholas took a look at the ppc part).  Jason's comment on the
-> MMU notifier side are promising as well.  Can you send v3 with Oliver's
-> comments addressed?
+v1: https://lore.kernel.org/all/20230221194637.28436-1-paul.gortmaker@windriver.com/
 
-Thanks. I'll address all the comments in v3 and post it asap.
+v1 --> v2:
+   -don't remove MPC8568MDS or P1021 or P1012 platforms as per discussion
+   -drop commit #4 that removed kernel fragments still in use elsewhere.
+   -trivial refresh for the updated baseline of linux-next
 
-Meanwhile, some updates on the recent progress from my side:
-1. I've asked some downstream kernels to pick up v2 for testing, the
-Archlinux Zen kernel did. I don't really expect its enthusiastic
-testers to find this series relevant to their use cases. But who
-knows.
-2. I've also asked openbenchmarking.org to run their popular highmem
-benchmark suites with v2. Hopefully they'll have some independent
-results soon.
-3. I've backported v2 to v5.15 and v6.1 and started an A/B experiment
-involving ~1 million devices, as I mentioned in another email in this
-thread. I should have some results to share when posting v3.
+
+In a similar theme to the e300/MPC83xx evaluation platform removal[1],
+this targets removal of two of the oldest e500/MPC85xx evaluation
+boards that were produced in limited numbers and primarily made available
+to hardware/software developers to shape their own boards and BSPs.
+
+We start with the MPC8540-ADS[2] and MPC8560-ADS[3] -- based on the revision
+history in the user's guide[4], these near-identical platforms date back to
+at least 2002.  These boards are probably a part of the very small few that
+still exist from the ppc ---> powerpc transition.  Typical of evaluation
+boards, and as the picture[3] shows, these boards had a large footprint in
+order to break out connectors to evaluate as many features as possible.
+
+For reference, I will note that for comparison that I retired our SBC8560
+support over a decade ago, in v3.6 (2012, in commit b048b4e17cbb) and I
+don't think a single person complained.
+
+Next, position yourself about 2007, and the MPC8548CDS (and variants)
+appeared as a vehicle to showcase the then new e500-v2 processor family,
+in a PCI-X card form factor with an additional backplane and the CPU on
+yet another daughter-card.  Not very "hobbyist" friendly.  As the saying
+goes, a picture[5] is worth 1000 words.  It was quite the 3D beast.
+
+Again, for comparison, and perhaps well overdue, I'd requested removal of
+our SBC8548 support in Jan 2021 (c12adb067844, v5.15).
+
+Testing included builds of defconfig, mpc85xx_defconfig, mpc85xx_smp_defconfig
+and corenet32_smp_defconfig
+
+As there is obviously no rush for this to be in v6.5, a defer to v6.6 would
+be perfectly fine.  In any case it is is based off linux-next from today.
+
+Paul.
+--
+
+[1] https://lore.kernel.org/all/20230220115913.25811-1-paul.gortmaker@windriver.com/
+[2] https://www.nxp.com/products/no-longer-manufactured/application-development-system-for-mpc8540:MPC8540ADS
+[3] https://www.nxp.com/products/no-longer-manufactured/application-development-system-for-mpc8560:MPC8560ADS
+[4] https://www.nxp.com/docs/en/reference-manual/MPC8560ADSUG.pdf
+[5] https://www.flickr.com/photos/daiharuki/905150424/in/photostream/
+
+Cc: Scott Wood <oss@buserror.net>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Li Yang <leoyang.li@nxp.com>
+Cc: Claudiu Manoil <claudiu.manoil@nxp.com>
+Cc: Pali Rohár <pali@kernel.org>
+
+---
+
+Paul Gortmaker (2):
+  powerpc: drop MPC8540_ADS and MPC8560_ADS platform support
+  powerpc: drop MPC85xx_CDS platform support
+
+ arch/powerpc/boot/Makefile                    |   5 -
+ arch/powerpc/boot/dts/fsl/mpc8540ads.dts      | 355 ----------------
+ arch/powerpc/boot/dts/fsl/mpc8541cds.dts      | 375 -----------------
+ arch/powerpc/boot/dts/fsl/mpc8548cds.dtsi     | 302 --------------
+ arch/powerpc/boot/dts/fsl/mpc8548cds_32b.dts  |  82 ----
+ arch/powerpc/boot/dts/fsl/mpc8548cds_36b.dts  |  82 ----
+ arch/powerpc/boot/dts/fsl/mpc8555cds.dts      | 375 -----------------
+ arch/powerpc/boot/dts/fsl/mpc8560ads.dts      | 388 ------------------
+ .../configs/85xx/mpc8540_ads_defconfig        |  47 ---
+ .../configs/85xx/mpc8560_ads_defconfig        |  50 ---
+ .../configs/85xx/mpc85xx_cds_defconfig        |  52 ---
+ arch/powerpc/configs/mpc85xx_base.config      |   3 -
+ arch/powerpc/platforms/85xx/Makefile          |   3 -
+ arch/powerpc/platforms/85xx/mpc85xx_ads.c     | 162 --------
+ arch/powerpc/platforms/85xx/mpc85xx_cds.c     | 387 -----------------
+ 15 files changed, 2668 deletions(-)
+ delete mode 100644 arch/powerpc/boot/dts/fsl/mpc8540ads.dts
+ delete mode 100644 arch/powerpc/boot/dts/fsl/mpc8541cds.dts
+ delete mode 100644 arch/powerpc/boot/dts/fsl/mpc8548cds.dtsi
+ delete mode 100644 arch/powerpc/boot/dts/fsl/mpc8548cds_32b.dts
+ delete mode 100644 arch/powerpc/boot/dts/fsl/mpc8548cds_36b.dts
+ delete mode 100644 arch/powerpc/boot/dts/fsl/mpc8555cds.dts
+ delete mode 100644 arch/powerpc/boot/dts/fsl/mpc8560ads.dts
+ delete mode 100644 arch/powerpc/configs/85xx/mpc8540_ads_defconfig
+ delete mode 100644 arch/powerpc/configs/85xx/mpc8560_ads_defconfig
+ delete mode 100644 arch/powerpc/configs/85xx/mpc85xx_cds_defconfig
+ delete mode 100644 arch/powerpc/platforms/85xx/mpc85xx_ads.c
+ delete mode 100644 arch/powerpc/platforms/85xx/mpc85xx_cds.c
+
+-- 
+2.25.1
