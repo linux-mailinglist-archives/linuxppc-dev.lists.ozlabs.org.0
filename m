@@ -1,62 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39673736FC6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jun 2023 17:06:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC770736FCF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jun 2023 17:07:27 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Zqjbt+ru;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Zqjbt+ru;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KYoKKh3v;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BlwY8o85;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qlqj6087Hz3dK0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jun 2023 01:06:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qlqk45X3lz3dST
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jun 2023 01:07:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Zqjbt+ru;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Zqjbt+ru;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KYoKKh3v;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BlwY8o85;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=ypodemsk@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QlqcB1Vqxz3cJR
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jun 2023 01:02:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qlqd50YkCz3cRN
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jun 2023 01:03:04 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1687273334;
+	s=mimecast20190719; t=1687273075;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iujXwuftdxXImWSWSI9VizTXy4E1fvuK20wksczwI/k=;
-	b=Zqjbt+ruNQPnfWKmsluSewFveSgeWfYXzfYb0BOdLaIGOvPYq20aYag0gz5+pcDwGxRq7/
-	ictXRSOTg++GTncqltADpztSCK/FSqpEiPG/pOvl31pBuRBuplT6nID9O1keUyQGM6l0R2
-	i/MC4qeHZPrbvzDTX2fhRzrcmWHk6k0=
+	bh=IMVWP9uUwreYp41lBQlzx9rQqv8YUX+d+4RkZ35R+cQ=;
+	b=KYoKKh3v/VZH1L0TW+/ZULfh7LDh/wixi3ybrqqbuoLS9i5Z+KmNGcrIvJLunTaYcgtYuC
+	D3dSWdYCKXYNe486IGv783o0s9+/yRa23QetyBFlZ2lzF6vWUQPOE2k3goWzO4xF9LIwbz
+	k+9jOEHDia7ej/rrlfKqrVQULRpdx1U=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1687273334;
+	s=mimecast20190719; t=1687273379;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iujXwuftdxXImWSWSI9VizTXy4E1fvuK20wksczwI/k=;
-	b=Zqjbt+ruNQPnfWKmsluSewFveSgeWfYXzfYb0BOdLaIGOvPYq20aYag0gz5+pcDwGxRq7/
-	ictXRSOTg++GTncqltADpztSCK/FSqpEiPG/pOvl31pBuRBuplT6nID9O1keUyQGM6l0R2
-	i/MC4qeHZPrbvzDTX2fhRzrcmWHk6k0=
+	bh=IMVWP9uUwreYp41lBQlzx9rQqv8YUX+d+4RkZ35R+cQ=;
+	b=BlwY8o85KHDHYi9SNt3J3Zv8rM18ksXT/7RXjiWUe6BCwtzp9YON4C1V8FSiUqTfyKTStg
+	EfyaERVEj2/ha4Dk3SZG040dJ6hdAlVb8TWC4UloPHDK0BndrU1DZuGespYEdAoX01bDFk
+	l47egin5UHEQBTVJVM1fXLRSt+dF5hU=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-17-x-AozXEzMu217ZwsSukKWg-1; Tue, 20 Jun 2023 10:51:23 -0400
-X-MC-Unique: x-AozXEzMu217ZwsSukKWg-1
+ us-mta-582-PGZ8P0JHPzaSP3c_R985HA-1; Tue, 20 Jun 2023 10:54:43 -0400
+X-MC-Unique: PGZ8P0JHPzaSP3c_R985HA-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
 	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 71CC488D51C;
-	Tue, 20 Jun 2023 14:46:42 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AFAFA18E0072;
+	Tue, 20 Jun 2023 14:46:51 +0000 (UTC)
 Received: from ypodemsk.tlv.csb (unknown [10.39.195.147])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 905379E9C;
-	Tue, 20 Jun 2023 14:46:34 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id E04889E9C;
+	Tue, 20 Jun 2023 14:46:42 +0000 (UTC)
 From: Yair Podemsky <ypodemsk@redhat.com>
 To: mtosatti@redhat.com,
 	ppandit@redhat.com,
@@ -100,9 +100,9 @@ To: mtosatti@redhat.com,
 	linux-arch@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/2] arch: Introduce ARCH_HAS_CPUMASK_BITS
-Date: Tue, 20 Jun 2023 17:46:17 +0300
-Message-Id: <20230620144618.125703-2-ypodemsk@redhat.com>
+Subject: [PATCH v2 2/2] mm/mmu_gather: send tlb_remove_table_smp_sync IPI only to MM CPUs
+Date: Tue, 20 Jun 2023 17:46:18 +0300
+Message-Id: <20230620144618.125703-3-ypodemsk@redhat.com>
 In-Reply-To: <20230620144618.125703-1-ypodemsk@redhat.com>
 References: <20230620144618.125703-1-ypodemsk@redhat.com>
 MIME-Version: 1.0
@@ -123,100 +123,116 @@ Cc: ypodemsk@redhat.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Some architectures set and maintain the mm_cpumask bits when loading
-or removing process from cpu.
-This Kconfig will mark those to allow different behavior between
-kernels that maintain the mm_cpumask and those that do not.
+Currently the tlb_remove_table_smp_sync IPI is sent to all CPUs
+indiscriminately, this causes unnecessary work and delays notable in
+real-time use-cases and isolated cpus.
+This patch will limit this IPI on systems with ARCH_HAS_CPUMASK_BITS,
+Where the IPI will only be sent to cpus referencing the affected mm.
 
 Signed-off-by: Yair Podemsky <ypodemsk@redhat.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
 ---
- arch/Kconfig         | 8 ++++++++
- arch/arm/Kconfig     | 1 +
- arch/powerpc/Kconfig | 1 +
- arch/s390/Kconfig    | 1 +
- arch/sparc/Kconfig   | 1 +
- arch/x86/Kconfig     | 1 +
- 6 files changed, 13 insertions(+)
+ include/asm-generic/tlb.h |  4 ++--
+ mm/khugepaged.c           |  4 ++--
+ mm/mmu_gather.c           | 17 ++++++++++++-----
+ 3 files changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index 205fd23e0cad..953fbfa5a2ad 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -1466,6 +1466,14 @@ config ARCH_HAS_NONLEAF_PMD_YOUNG
- 	  address translations. Page table walkers that clear the accessed bit
- 	  may use this capability to reduce their search space.
+diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
+index b46617207c93..0b6ba17cc8d3 100644
+--- a/include/asm-generic/tlb.h
++++ b/include/asm-generic/tlb.h
+@@ -222,7 +222,7 @@ extern void tlb_remove_table(struct mmu_gather *tlb, void *table);
+ #define tlb_needs_table_invalidate() (true)
+ #endif
  
-+config ARCH_HAS_CPUMASK_BITS
-+	bool
-+	help
-+	  Architectures that select this option set bits on the mm_cpumask
-+	  to mark which cpus loaded the mm, The mask can then be used to
-+	  control mm specific actions such as tlb_flush.
-+
-+
- source "kernel/gcov/Kconfig"
+-void tlb_remove_table_sync_one(void);
++void tlb_remove_table_sync_one(struct mm_struct *mm);
  
- source "scripts/gcc-plugins/Kconfig"
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 0fb4b218f665..cd20e96bc1dc 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -70,6 +70,7 @@ config ARM
- 	select GENERIC_SMP_IDLE_THREAD
- 	select HARDIRQS_SW_RESEND
- 	select HAS_IOPORT
-+	select ARCH_HAS_CPUMASK_BITS
- 	select HAVE_ARCH_AUDITSYSCALL if AEABI && !OABI_COMPAT
- 	select HAVE_ARCH_BITREVERSE if (CPU_32v7M || CPU_32v7) && !CPU_32v6
- 	select HAVE_ARCH_JUMP_LABEL if !XIP_KERNEL && !CPU_ENDIAN_BE32 && MMU
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index bff5820b7cda..c9218722aa2f 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -156,6 +156,7 @@ config PPC
- 	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
- 	select ARCH_HAS_UACCESS_FLUSHCACHE
- 	select ARCH_HAS_UBSAN_SANITIZE_ALL
-+	select ARCH_HAS_CPUMASK_BITS
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
- 	select ARCH_KEEP_MEMBLOCK
- 	select ARCH_MIGHT_HAVE_PC_PARPORT
-diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-index 6dab9c1be508..60bf29bc3f87 100644
---- a/arch/s390/Kconfig
-+++ b/arch/s390/Kconfig
-@@ -84,6 +84,7 @@ config S390
- 	select ARCH_HAS_SYSCALL_WRAPPER
- 	select ARCH_HAS_UBSAN_SANITIZE_ALL
- 	select ARCH_HAS_VDSO_DATA
-+	select ARCH_HAS_CPUMASK_BITS
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
- 	select ARCH_INLINE_READ_LOCK
- 	select ARCH_INLINE_READ_LOCK_BH
-diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
-index 8535e19062f6..e8bf4d769306 100644
---- a/arch/sparc/Kconfig
-+++ b/arch/sparc/Kconfig
-@@ -99,6 +99,7 @@ config SPARC64
- 	select ARCH_HAS_PTE_SPECIAL
- 	select PCI_DOMAINS if PCI
- 	select ARCH_HAS_GIGANTIC_PAGE
-+	select ARCH_HAS_CPUMASK_BITS
- 	select HAVE_SOFTIRQ_ON_OWN_STACK
- 	select HAVE_SETUP_PER_CPU_AREA
- 	select NEED_PER_CPU_EMBED_FIRST_CHUNK
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 53bab123a8ee..b351421695f3 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -185,6 +185,7 @@ config X86
- 	select HAVE_ARCH_THREAD_STRUCT_WHITELIST
- 	select HAVE_ARCH_STACKLEAK
- 	select HAVE_ARCH_TRACEHOOK
-+	select ARCH_HAS_CPUMASK_BITS
- 	select HAVE_ARCH_TRANSPARENT_HUGEPAGE
- 	select HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD if X86_64
- 	select HAVE_ARCH_USERFAULTFD_WP         if X86_64 && USERFAULTFD
+ #else
+ 
+@@ -230,7 +230,7 @@ void tlb_remove_table_sync_one(void);
+ #error tlb_needs_table_invalidate() requires MMU_GATHER_RCU_TABLE_FREE
+ #endif
+ 
+-static inline void tlb_remove_table_sync_one(void) { }
++static inline void tlb_remove_table_sync_one(struct mm_struct *mm) { }
+ 
+ #endif /* CONFIG_MMU_GATHER_RCU_TABLE_FREE */
+ 
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 6b9d39d65b73..3e5cb079d268 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1166,7 +1166,7 @@ static int collapse_huge_page(struct mm_struct *mm, unsigned long address,
+ 	_pmd = pmdp_collapse_flush(vma, address, pmd);
+ 	spin_unlock(pmd_ptl);
+ 	mmu_notifier_invalidate_range_end(&range);
+-	tlb_remove_table_sync_one();
++	tlb_remove_table_sync_one(mm);
+ 
+ 	spin_lock(pte_ptl);
+ 	result =  __collapse_huge_page_isolate(vma, address, pte, cc,
+@@ -1525,7 +1525,7 @@ static void collapse_and_free_pmd(struct mm_struct *mm, struct vm_area_struct *v
+ 				addr + HPAGE_PMD_SIZE);
+ 	mmu_notifier_invalidate_range_start(&range);
+ 	pmd = pmdp_collapse_flush(vma, addr, pmdp);
+-	tlb_remove_table_sync_one();
++	tlb_remove_table_sync_one(mm);
+ 	mmu_notifier_invalidate_range_end(&range);
+ 	mm_dec_nr_ptes(mm);
+ 	page_table_check_pte_clear_range(mm, addr, pmd);
+diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
+index ea9683e12936..692d8175a88e 100644
+--- a/mm/mmu_gather.c
++++ b/mm/mmu_gather.c
+@@ -191,7 +191,13 @@ static void tlb_remove_table_smp_sync(void *arg)
+ 	/* Simply deliver the interrupt */
+ }
+ 
+-void tlb_remove_table_sync_one(void)
++#ifdef CONFIG_ARCH_HAS_CPUMASK_BITS
++#define REMOVE_TABLE_IPI_MASK mm_cpumask(mm)
++#else
++#define REMOVE_TABLE_IPI_MASK cpu_online_mask
++#endif /* CONFIG_ARCH_HAS_CPUMASK_BITS */
++
++void tlb_remove_table_sync_one(struct mm_struct *mm)
+ {
+ 	/*
+ 	 * This isn't an RCU grace period and hence the page-tables cannot be
+@@ -200,7 +206,8 @@ void tlb_remove_table_sync_one(void)
+ 	 * It is however sufficient for software page-table walkers that rely on
+ 	 * IRQ disabling.
+ 	 */
+-	smp_call_function(tlb_remove_table_smp_sync, NULL, 1);
++	on_each_cpu_mask(REMOVE_TABLE_IPI_MASK, tlb_remove_table_smp_sync,
++			NULL, true);
+ }
+ 
+ static void tlb_remove_table_rcu(struct rcu_head *head)
+@@ -237,9 +244,9 @@ static inline void tlb_table_invalidate(struct mmu_gather *tlb)
+ 	}
+ }
+ 
+-static void tlb_remove_table_one(void *table)
++static void tlb_remove_table_one(struct mm_struct *mm, void *table)
+ {
+-	tlb_remove_table_sync_one();
++	tlb_remove_table_sync_one(mm);
+ 	__tlb_remove_table(table);
+ }
+ 
+@@ -262,7 +269,7 @@ void tlb_remove_table(struct mmu_gather *tlb, void *table)
+ 		*batch = (struct mmu_table_batch *)__get_free_page(GFP_NOWAIT | __GFP_NOWARN);
+ 		if (*batch == NULL) {
+ 			tlb_table_invalidate(tlb);
+-			tlb_remove_table_one(table);
++			tlb_remove_table_one(tlb->mm, table);
+ 			return;
+ 		}
+ 		(*batch)->nr = 0;
+---
+v2: replaced no REMOVE_TABLE_IPI_MASK REMOVE_TABLE_IPI_MASK to cpu_online_mask
 -- 
 2.39.3
 
