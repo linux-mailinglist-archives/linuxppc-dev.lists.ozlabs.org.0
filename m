@@ -2,66 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACE1D736516
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jun 2023 09:45:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DFA073651A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jun 2023 09:46:32 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=qhwhngGU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=jZI7lGkG;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QldwM4Jfpz3bv0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jun 2023 17:45:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QldxL0Y46z3c3b
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jun 2023 17:46:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=qhwhngGU;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=jZI7lGkG;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1133; helo=mail-yw1-x1133.google.com; envelope-from=hughd@google.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::112a; helo=mail-yw1-x112a.google.com; envelope-from=hughd@google.com; receiver=lists.ozlabs.org)
+Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QldtQ6WLlz30f7
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jun 2023 17:43:58 +1000 (AEST)
-Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-570114e1feaso51317047b3.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jun 2023 00:43:58 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QldwH2hYRz3bW1
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jun 2023 17:45:35 +1000 (AEST)
+Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-5703cb4bcb4so39361697b3.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jun 2023 00:45:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1687247035; x=1689839035;
+        d=google.com; s=20221208; t=1687247132; x=1689839132;
         h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QJ3N9RNUACQk0rp/xTQEOUK2bEy9LceuxJNDbuu7Hdo=;
-        b=qhwhngGUpgrcZDlnvH+b7VWG9WLTHUEVswW9xK/3YCFZXun6Sku2aj+qmeuJtlpDm9
-         NL1p7tRRaSaVuFlEgJZSd1u9Osk9e4zYWPVYSmjFqeH51Two+LdeRyVK6tn3qt9RQ2/C
-         FXROYrneK++r2OPYxjNpEmp15a3hsycB8EeXDTwBWnGuwYFgeqd19dhMRsM+70lw7kZD
-         UxM84oMlRLUMCqnzuOHx9Iap0algo8Gh2vtX9lFjHG25G0LFiMapQLFR33NHeN7LFjU7
-         xqRJD57e/d0/xxEOFNXoz5t1uVw5lEYV2V7WrZMTJMmAFZ9r11+4uO5ZNp31jPHEHE3P
-         8GXg==
+        bh=7tbEFbFk5pzLjwVra+37SCseEW8dJexk2Np2YDtZH+c=;
+        b=jZI7lGkGOA9VplRFSG9/39QEHLqEHFn81AVfRltHoq/8iNx7aAWlNrNyFe+XyF0lml
+         Bnzro2qd7JBTjoGR7k3DplV7l1biYn3/LoxKNyegFiBFIRoYqaL2y+rd8Ux0pQmhTgvs
+         IUPCYgX4z0WdKLSspIafzLUn3c05nMTizwc56jirtYHMfRSc/oqFfK7oTa/fwkNDoThq
+         2HdR/Am0ViDDg3zBY7MZWP/MVjmD1Yx9xMfwqoDnIfAkP9LmxM3rFBDQvW9AFIfnglmj
+         paE2iSuMCCu/tpYLxht5C/v0kudDdPO6A0RSV0ftjBtK/MFrCHoTJHxirOjy2uYrAODS
+         XFsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687247035; x=1689839035;
+        d=1e100.net; s=20221208; t=1687247132; x=1689839132;
         h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QJ3N9RNUACQk0rp/xTQEOUK2bEy9LceuxJNDbuu7Hdo=;
-        b=KsoEeyqcqIHJM2bo9S6lFxtenG1WWjZGxnd/VZuJlu9e98h6VQxXivbSwyjkTHV2nQ
-         e1SJkrBEWAc6NdlnlXxw6wKuBXcEYey23w4i+QqQTejFX4XlIvcCPMWv43j68aA2QzxD
-         I/YjSgkzESMsjvpMSUGNorw9SSCQ4Ldq0fGAec/mLfBRxhtfZDNeYjoDRrnlCTs0wzHF
-         5nd5hmORqfFo2l65vRitSuVKTJmZqCT1bZ5eS+ZvdQZoVPjly7dhPBdFNFRaNRdJ8AtY
-         dbEIRjqMh5rhnMkwhucd0j7hluWzU+GZatPTji46q3poCx8OdZaxOe2BQAAnnQ/FkIEG
-         rUVg==
-X-Gm-Message-State: AC+VfDw38v80AutfVH0RaKwfEfnO2kJMZKBCA8vM6pvhYdaPvkyWNlkg
-	bEJ0/e/lrvLJ1jdxAs/JsTA3tA==
-X-Google-Smtp-Source: ACHHUZ7JD/5gT47oLcluDex4538IBoUvSmCiuwTDk3dXuw6uEp5PSF1HYd+jz7L8cEHWLsd+Ww/fjQ==
-X-Received: by 2002:a0d:cf82:0:b0:56d:2b1e:3d88 with SMTP id r124-20020a0dcf82000000b0056d2b1e3d88mr11408597ywd.24.1687247035289;
-        Tue, 20 Jun 2023 00:43:55 -0700 (PDT)
+        bh=7tbEFbFk5pzLjwVra+37SCseEW8dJexk2Np2YDtZH+c=;
+        b=cNAjs17KN5KGfgXrCCE6UymmJM3ip6PW61u3C7KLexRCexndb2ezriFug2VvsIQkwz
+         JvAF3VBv3sEIMx4GCJpsT49UBTOgCT6BA3NeWD8pi8aChVbImjvg4sA2tnmc64bw/xKp
+         pyt3e+TPlqS9/QHg40X3NuGDJ88lJag2KY59S/Q5nAxysaMgX9xTRgFDWCHHc/B7Llx5
+         NBONoxGhQui7Oflo6Pz3iOUbsrqpoKZ8QOYa4mlZnKPndjL3wQHv4Xbdh+dZ51o079Xn
+         rIPhkm+D1Pd4q59v6mHX0QDPMz2lkC/GRLiLr4uXOC14gv4/K6lg4qzNpJl6rxza06jU
+         Ry5Q==
+X-Gm-Message-State: AC+VfDyiNDJAvAl6t6cIVHgwozL71DHrwLxEuVfLRBI2x9eyD2ioOzEg
+	r12PhXs1Wu9OOyF6jK1bWG1tEg==
+X-Google-Smtp-Source: ACHHUZ6lVvN31sBriyHtQUo4iIlWjUc8vgsx+qnIrz5Kb8Jhe8UJO9QGV+cM44ErYZUti1LdEdlZpw==
+X-Received: by 2002:a81:7189:0:b0:54f:9cd0:990 with SMTP id m131-20020a817189000000b0054f9cd00990mr2846044ywc.18.1687247131680;
+        Tue, 20 Jun 2023 00:45:31 -0700 (PDT)
 Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id y188-20020a8188c5000000b00545a08184f8sm365085ywf.136.2023.06.20.00.43.51
+        by smtp.gmail.com with ESMTPSA id o9-20020a0dcc09000000b0056d2fce4e09sm379759ywd.42.2023.06.20.00.45.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jun 2023 00:43:54 -0700 (PDT)
-Date: Tue, 20 Jun 2023 00:43:50 -0700 (PDT)
+        Tue, 20 Jun 2023 00:45:31 -0700 (PDT)
+Date: Tue, 20 Jun 2023 00:45:26 -0700 (PDT)
 From: Hugh Dickins <hughd@google.com>
 X-X-Sender: hugh@ripple.attlocal.net
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2 03/12] arm: adjust_pte() use pte_offset_map_nolock()
+Subject: [PATCH v2 04/12] powerpc: assert_pte_locked() use
+ pte_offset_map_nolock()
 In-Reply-To: <54cb04f-3762-987f-8294-91dafd8ebfb0@google.com>
-Message-ID: <c959c62f-b186-cb41-55ab-59da79ece688@google.com>
+Message-ID: <7ae6836b-b612-23f1-63e0-babda6e96e2c@google.com>
 References: <54cb04f-3762-987f-8294-91dafd8ebfb0@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -81,32 +82,53 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Instead of pte_lockptr(), use the recently added pte_offset_map_nolock()
-in adjust_pte(): because it gives the not-locked ptl for precisely that
-pte, which the caller can then safely lock; whereas pte_lockptr() is not
-so tightly coupled, because it dereferences the pmd pointer again.
+in assert_pte_locked().  BUG if pte_offset_map_nolock() fails: this is
+stricter than the previous implementation, which skipped when pmd_none()
+(with a comment on khugepaged collapse transitions): but wouldn't we want
+to know, if an assert_pte_locked() caller can be racing such transitions?
+
+This mod might cause new crashes: which either expose my ignorance, or
+indicate issues to be fixed, or limit the usage of assert_pte_locked().
 
 Signed-off-by: Hugh Dickins <hughd@google.com>
 ---
- arch/arm/mm/fault-armv.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/powerpc/mm/pgtable.c | 16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm/mm/fault-armv.c b/arch/arm/mm/fault-armv.c
-index ca5302b0b7ee..7cb125497976 100644
---- a/arch/arm/mm/fault-armv.c
-+++ b/arch/arm/mm/fault-armv.c
-@@ -117,11 +117,10 @@ static int adjust_pte(struct vm_area_struct *vma, unsigned long address,
- 	 * must use the nested version.  This also means we need to
- 	 * open-code the spin-locking.
- 	 */
--	pte = pte_offset_map(pmd, address);
-+	pte = pte_offset_map_nolock(vma->vm_mm, pmd, address, &ptl);
- 	if (!pte)
- 		return 0;
+diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
+index cb2dcdb18f8e..16b061af86d7 100644
+--- a/arch/powerpc/mm/pgtable.c
++++ b/arch/powerpc/mm/pgtable.c
+@@ -311,6 +311,8 @@ void assert_pte_locked(struct mm_struct *mm, unsigned long addr)
+ 	p4d_t *p4d;
+ 	pud_t *pud;
+ 	pmd_t *pmd;
++	pte_t *pte;
++	spinlock_t *ptl;
  
--	ptl = pte_lockptr(vma->vm_mm, pmd);
- 	do_pte_lock(ptl);
+ 	if (mm == &init_mm)
+ 		return;
+@@ -321,16 +323,10 @@ void assert_pte_locked(struct mm_struct *mm, unsigned long addr)
+ 	pud = pud_offset(p4d, addr);
+ 	BUG_ON(pud_none(*pud));
+ 	pmd = pmd_offset(pud, addr);
+-	/*
+-	 * khugepaged to collapse normal pages to hugepage, first set
+-	 * pmd to none to force page fault/gup to take mmap_lock. After
+-	 * pmd is set to none, we do a pte_clear which does this assertion
+-	 * so if we find pmd none, return.
+-	 */
+-	if (pmd_none(*pmd))
+-		return;
+-	BUG_ON(!pmd_present(*pmd));
+-	assert_spin_locked(pte_lockptr(mm, pmd));
++	pte = pte_offset_map_nolock(mm, pmd, addr, &ptl);
++	BUG_ON(!pte);
++	assert_spin_locked(ptl);
++	pte_unmap(pte);
+ }
+ #endif /* CONFIG_DEBUG_VM */
  
- 	ret = do_adjust_pte(vma, address, pfn, pte);
 -- 
 2.35.3
 
