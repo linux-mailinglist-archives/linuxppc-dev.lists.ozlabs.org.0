@@ -2,103 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6063736C6A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jun 2023 14:55:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 252C1736D16
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jun 2023 15:20:06 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gd8I4n0k;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gd8I4n0k;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MzwUT/1R;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iVmjpZEo;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QlmpC3zvBz3bYc
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jun 2023 22:55:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QlnLC6h5wz30Xd
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jun 2023 23:20:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gd8I4n0k;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gd8I4n0k;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MzwUT/1R;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iVmjpZEo;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 67 seconds by postgrey-1.37 at boromir; Tue, 20 Jun 2023 22:54:55 AEST
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QlmnC543zz2xpw
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jun 2023 22:54:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QlnKD5cKBz30Xd
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jun 2023 23:19:12 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1687265693;
+	s=mimecast20190719; t=1687267149;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LONR6m/1jfRFOtiATxy8qXhrZ9BTeIfLSA3KC4pCEEo=;
-	b=gd8I4n0kDNdHrSEs9TvmZqMRyiakZGVnyRvO/6TvczGx9SVMqvTWZeF36iMVob2y9nnkwu
-	JnBYGWwKGF/g2muYtpJCc6Ld3BDmrkUx/XeFW390ZepaW2RkUqNatp2petWnW38RqbLHVy
-	VMrcnHfo4Hgtq8rjHoUNTetJeePtsb0=
+	bh=mrr2cNyhDy3XHVdkhg3dGxWKYfHUscXJOX9H9m6IS1s=;
+	b=MzwUT/1RgMQ0yZRVbqOQ2tzuOAe4l+O42q1mYe00Pme5sG5DWeh4BT94aH876N896k14+F
+	x9S3gAKAAJ6zX+dbt2KTChCYdyxHpPp7tCPC3I+IjedjvqJGUU7qP3xUF/MHNQiafRBIAg
+	WnJGhUrbridXSfklRPs3h+2qO7T+7nI=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1687265693;
+	s=mimecast20190719; t=1687267150;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LONR6m/1jfRFOtiATxy8qXhrZ9BTeIfLSA3KC4pCEEo=;
-	b=gd8I4n0kDNdHrSEs9TvmZqMRyiakZGVnyRvO/6TvczGx9SVMqvTWZeF36iMVob2y9nnkwu
-	JnBYGWwKGF/g2muYtpJCc6Ld3BDmrkUx/XeFW390ZepaW2RkUqNatp2petWnW38RqbLHVy
-	VMrcnHfo4Hgtq8rjHoUNTetJeePtsb0=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-635-oV0AgZWdPnedSjL5tBNazg-1; Tue, 20 Jun 2023 08:53:38 -0400
-X-MC-Unique: oV0AgZWdPnedSjL5tBNazg-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-3f8fa2ef407so17552845e9.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jun 2023 05:53:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687265617; x=1689857617;
-        h=content-transfer-encoding:in-reply-to:subject:organization:from
-         :references:cc:to:content-language:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LONR6m/1jfRFOtiATxy8qXhrZ9BTeIfLSA3KC4pCEEo=;
-        b=c/9lgpQXWRJV4qOQC/McuawJ9+f13p2JHvsYzCBtdTFi3CWeT368Ip/Mi8WHWnwmQd
-         6yEs5MbXL2krUqHCvAOvNyRoWk+KBoS7CuexiW2EUVmRVogssfJi90B3B0dYBMwn5pjG
-         9a329oB+okebnGsUM5ZPCw6vWbNZhzZWP3hJT56rhM/jDCgaJYwECFHMNPf06bt27PZZ
-         1/MQaixQUVDhjp9ar8jFi+msU3o178tr91N0tZov3S2UjAR0lKfatMcbDazElsWkbNND
-         cJitl5c30yG2xccjOj6J4MTefsH4t4TLfccZlu/vYxvibwegqoKdm0G2AIoJkHLn/4su
-         H+WA==
-X-Gm-Message-State: AC+VfDy4Uy+rtgmnGSbbx/4hmgi0Y4HvIQYwR2ur6rAM4vv2yNmpPpBO
-	oBU3921i2XGSnu1bIdCz/zSfKmWnhSoZlDNxiuOajansiH5g/9a8+g1ZyS2aUFm4jVgs0zN05t0
-	rMSm0zR52hskcE6NngVhskjv1Fg==
-X-Received: by 2002:a05:600c:acd:b0:3f9:92d:9ffe with SMTP id c13-20020a05600c0acd00b003f9092d9ffemr5190224wmr.14.1687265617244;
-        Tue, 20 Jun 2023 05:53:37 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ68rz6lTi+Hh68O9/RYt7NiKgrPncAiLx5RQOzoXAJlToy43M1W0K9XLEhBAgIq3IhmQBrKFg==
-X-Received: by 2002:a05:600c:acd:b0:3f9:92d:9ffe with SMTP id c13-20020a05600c0acd00b003f9092d9ffemr5190210wmr.14.1687265616923;
-        Tue, 20 Jun 2023 05:53:36 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c739:d200:8745:c520:8bf6:b587? (p200300cbc739d2008745c5208bf6b587.dip0.t-ipconnect.de. [2003:cb:c739:d200:8745:c520:8bf6:b587])
-        by smtp.gmail.com with ESMTPSA id p25-20020a05600c205900b003f9b1131a90sm2276116wmg.23.2023.06.20.05.53.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Jun 2023 05:53:36 -0700 (PDT)
-Message-ID: <2b902e78-be4f-cff4-0e8e-771d2981455d@redhat.com>
-Date: Tue, 20 Jun 2023 14:53:35 +0200
+	bh=mrr2cNyhDy3XHVdkhg3dGxWKYfHUscXJOX9H9m6IS1s=;
+	b=iVmjpZEomVlvfOa1qfRcW7pPsI4M0HK4ekM09QCbnXXix9mKCIuGjQTrmUxza/N3Hau4nk
+	pzAMgtiILSwXhSphg2SP7AzFXq9O8d9wyfiG2Ez8kMvimv386pLoVwwlIB8xvcVYG1/PvZ
+	UE1CLQweWY9NhViz/s+jtRcFJJouuLI=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-100-cbsQdSbTO9iAyNHoribILg-1; Tue, 20 Jun 2023 09:17:52 -0400
+X-MC-Unique: cbsQdSbTO9iAyNHoribILg-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2CDB33C28C17;
+	Tue, 20 Jun 2023 13:16:52 +0000 (UTC)
+Received: from MiWiFi-R3L-srv.redhat.com (ovpn-12-166.pek2.redhat.com [10.72.12.166])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 5B052C1ED97;
+	Tue, 20 Jun 2023 13:16:42 +0000 (UTC)
+From: Baoquan He <bhe@redhat.com>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH v7 17/19] powerpc: mm: Convert to GENERIC_IOREMAP
+Date: Tue, 20 Jun 2023 21:13:54 +0800
+Message-Id: <20230620131356.25440-18-bhe@redhat.com>
+In-Reply-To: <20230620131356.25440-1-bhe@redhat.com>
+References: <20230620131356.25440-1-bhe@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-To: Michael Ellerman <mpe@ellerman.id.au>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, christophe.leroy@csgroup.eu
-References: <20230609060851.329406-1-aneesh.kumar@linux.ibm.com>
- <20230609060851.329406-2-aneesh.kumar@linux.ibm.com>
- <853eae60-b92b-9284-e24d-564429aba8c1@redhat.com>
- <87mt0upazj.fsf@mail.lhotse>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [PATCH v2 2/2] powerpc/mm: Add memory_block_size as a kernel
- parameter
-In-Reply-To: <87mt0upazj.fsf@mail.lhotse>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,64 +79,205 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: foraker1@llnl.gov
+Cc: linux-arch@vger.kernel.org, wangkefeng.wang@huawei.com, Baoquan He <bhe@redhat.com>, arnd@arndb.de, schnelle@linux.ibm.com, deller@gmx.de, Nicholas Piggin <npiggin@gmail.com>, nathan@kernel.org, linux-mm@kvack.org, David.Laight@ACULAB.COM, willy@infradead.org, glaubitz@physik.fu-berlin.de, shorne@gmail.com, agordeev@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, hch@lst.de, rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 20.06.23 14:35, Michael Ellerman wrote:
-> David Hildenbrand <david@redhat.com> writes:
->> On 09.06.23 08:08, Aneesh Kumar K.V wrote:
->>> Certain devices can possess non-standard memory capacities, not constrained
->>> to multiples of 1GB. Provide a kernel parameter so that we can map the
->>> device memory completely on memory hotplug.
->>
->> So, the unfortunate thing is that these devices would have worked out of
->> the box before the memory block size was increased from 256 MiB to 1 GiB
->> in these setups. Now, one has to fine-tune the memory block size. The
->> only other arch that I know, which supports setting the memory block
->> size, is x86 for special (large) UV systems -- and at least in the past
->> 128 MiB vs. 2 GiB memory blocks made a performance difference during
->> boot (maybe no longer today, who knows).
->>
->>
->> Obviously, less tunable and getting stuff simply working out of the box
->> is preferable.
->>
->> Two questions:
->>
->> 1) Isn't there a way to improve auto-detection to fallback to 256 MiB in
->> these setups, to avoid specifying these parameters?
->>
->> 2) Is the 256 MiB -> 1 GiB memory block size switch really worth it? On
->> x86-64, experiments (with direct map fragmentation) showed that the
->> effective performance boost is pretty insignificant, so I wonder how big
->> the 1 GiB direct map performance improvement is.
-> 
-> The other issue is simply the number of sysfs entries.
-> 
-> With 64TB of memory and a 256MB block size you end up with ~250,000
-> directories in /sys/devices/system/memory.
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-Yes, and so far on other archs we only optimize for that for on UV x86 
-systems (with a default of 2 GiB). And that was added before we started 
-to speed up memory device lookups significantly using a radix tree IIRC.
+By taking GENERIC_IOREMAP method, the generic generic_ioremap_prot(),
+generic_iounmap(), and their generic wrapper ioremap_prot(), ioremap()
+and iounmap() are all visible and available to arch. Arch needs to
+provide wrapper functions to override the generic versions if there's
+arch specific handling in its ioremap_prot(), ioremap() or iounmap().
+This change will simplify implementation by removing duplicated codes
+with generic_ioremap_prot() and generic_iounmap(), and has the equivalent
+functioality as before.
 
-It's worth noting that there was a discussion on:
+Here, add wrapper functions ioremap_prot() and iounmap() for powerpc's
+special operation when ioremap() and iounmap().
 
-(a) not creating these device sysfs entries (when configured on the 
-cmdline); often, nobody really ends up using them to online/offline 
-memory blocks. Then, the only primary users is lsmem.
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Baoquan He <bhe@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+---
+ arch/powerpc/Kconfig          |  1 +
+ arch/powerpc/include/asm/io.h |  8 +++-----
+ arch/powerpc/mm/ioremap.c     | 26 +-------------------------
+ arch/powerpc/mm/ioremap_32.c  | 19 +++++++++----------
+ arch/powerpc/mm/ioremap_64.c  | 12 ++----------
+ 5 files changed, 16 insertions(+), 50 deletions(-)
 
-(b) exposing logical devices (e.g., a DIMM) taht can only be 
-offlined/removed as a whole, instead of their individual memblocks (when 
-configured on the cmdline). But for PPC64 that won't help.
-
-
-But (a) gets more tricky if device drivers (and things like dax/kmem) 
-rely on user-space memory onlining/offlining.
-
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index bff5820b7cda..aadb280a539e 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -194,6 +194,7 @@ config PPC
+ 	select GENERIC_CPU_VULNERABILITIES	if PPC_BARRIER_NOSPEC
+ 	select GENERIC_EARLY_IOREMAP
+ 	select GENERIC_GETTIMEOFDAY
++	select GENERIC_IOREMAP
+ 	select GENERIC_IRQ_SHOW
+ 	select GENERIC_IRQ_SHOW_LEVEL
+ 	select GENERIC_PCI_IOMAP		if PCI
+diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
+index 67a3fb6de498..0732b743e099 100644
+--- a/arch/powerpc/include/asm/io.h
++++ b/arch/powerpc/include/asm/io.h
+@@ -889,8 +889,8 @@ static inline void iosync(void)
+  *
+  */
+ extern void __iomem *ioremap(phys_addr_t address, unsigned long size);
+-extern void __iomem *ioremap_prot(phys_addr_t address, unsigned long size,
+-				  unsigned long flags);
++#define ioremap ioremap
++#define ioremap_prot ioremap_prot
+ extern void __iomem *ioremap_wc(phys_addr_t address, unsigned long size);
+ #define ioremap_wc ioremap_wc
+ 
+@@ -904,14 +904,12 @@ void __iomem *ioremap_coherent(phys_addr_t address, unsigned long size);
+ #define ioremap_cache(addr, size) \
+ 	ioremap_prot((addr), (size), pgprot_val(PAGE_KERNEL))
+ 
+-extern void iounmap(volatile void __iomem *addr);
++#define iounmap iounmap
+ 
+ void __iomem *ioremap_phb(phys_addr_t paddr, unsigned long size);
+ 
+ int early_ioremap_range(unsigned long ea, phys_addr_t pa,
+ 			unsigned long size, pgprot_t prot);
+-void __iomem *do_ioremap(phys_addr_t pa, phys_addr_t offset, unsigned long size,
+-			 pgprot_t prot, void *caller);
+ 
+ extern void __iomem *__ioremap_caller(phys_addr_t, unsigned long size,
+ 				      pgprot_t prot, void *caller);
+diff --git a/arch/powerpc/mm/ioremap.c b/arch/powerpc/mm/ioremap.c
+index 4f12504fb405..705e8e8ffde4 100644
+--- a/arch/powerpc/mm/ioremap.c
++++ b/arch/powerpc/mm/ioremap.c
+@@ -41,7 +41,7 @@ void __iomem *ioremap_coherent(phys_addr_t addr, unsigned long size)
+ 	return __ioremap_caller(addr, size, prot, caller);
+ }
+ 
+-void __iomem *ioremap_prot(phys_addr_t addr, unsigned long size, unsigned long flags)
++void __iomem *ioremap_prot(phys_addr_t addr, size_t size, unsigned long flags)
+ {
+ 	pte_t pte = __pte(flags);
+ 	void *caller = __builtin_return_address(0);
+@@ -74,27 +74,3 @@ int early_ioremap_range(unsigned long ea, phys_addr_t pa,
+ 
+ 	return 0;
+ }
+-
+-void __iomem *do_ioremap(phys_addr_t pa, phys_addr_t offset, unsigned long size,
+-			 pgprot_t prot, void *caller)
+-{
+-	struct vm_struct *area;
+-	int ret;
+-	unsigned long va;
+-
+-	area = __get_vm_area_caller(size, VM_IOREMAP, IOREMAP_START, IOREMAP_END, caller);
+-	if (area == NULL)
+-		return NULL;
+-
+-	area->phys_addr = pa;
+-	va = (unsigned long)area->addr;
+-
+-	ret = ioremap_page_range(va, va + size, pa, prot);
+-	if (!ret)
+-		return (void __iomem *)area->addr + offset;
+-
+-	vunmap_range(va, va + size);
+-	free_vm_area(area);
+-
+-	return NULL;
+-}
+diff --git a/arch/powerpc/mm/ioremap_32.c b/arch/powerpc/mm/ioremap_32.c
+index 9d13143b8be4..ca5bc6be3e6f 100644
+--- a/arch/powerpc/mm/ioremap_32.c
++++ b/arch/powerpc/mm/ioremap_32.c
+@@ -21,6 +21,13 @@ __ioremap_caller(phys_addr_t addr, unsigned long size, pgprot_t prot, void *call
+ 	phys_addr_t p, offset;
+ 	int err;
+ 
++	/*
++	 * If the address lies within the first 16 MB, assume it's in ISA
++	 * memory space
++	 */
++	if (addr < SZ_16M)
++		addr += _ISA_MEM_BASE;
++
+ 	/*
+ 	 * Choose an address to map it to.
+ 	 * Once the vmalloc system is running, we use it.
+@@ -31,13 +38,6 @@ __ioremap_caller(phys_addr_t addr, unsigned long size, pgprot_t prot, void *call
+ 	offset = addr & ~PAGE_MASK;
+ 	size = PAGE_ALIGN(addr + size) - p;
+ 
+-	/*
+-	 * If the address lies within the first 16 MB, assume it's in ISA
+-	 * memory space
+-	 */
+-	if (p < 16 * 1024 * 1024)
+-		p += _ISA_MEM_BASE;
+-
+ #ifndef CONFIG_CRASH_DUMP
+ 	/*
+ 	 * Don't allow anybody to remap normal RAM that we're using.
+@@ -63,7 +63,7 @@ __ioremap_caller(phys_addr_t addr, unsigned long size, pgprot_t prot, void *call
+ 		return (void __iomem *)v + offset;
+ 
+ 	if (slab_is_available())
+-		return do_ioremap(p, offset, size, prot, caller);
++		return generic_ioremap_prot(addr, size, prot);
+ 
+ 	/*
+ 	 * Should check if it is a candidate for a BAT mapping
+@@ -87,7 +87,6 @@ void iounmap(volatile void __iomem *addr)
+ 	if (v_block_mapped((unsigned long)addr))
+ 		return;
+ 
+-	if (addr > high_memory && (unsigned long)addr < ioremap_bot)
+-		vunmap((void *)(PAGE_MASK & (unsigned long)addr));
++	generic_iounmap(addr);
+ }
+ EXPORT_SYMBOL(iounmap);
+diff --git a/arch/powerpc/mm/ioremap_64.c b/arch/powerpc/mm/ioremap_64.c
+index 3acece00b33e..d24e5f166723 100644
+--- a/arch/powerpc/mm/ioremap_64.c
++++ b/arch/powerpc/mm/ioremap_64.c
+@@ -29,7 +29,7 @@ void __iomem *__ioremap_caller(phys_addr_t addr, unsigned long size,
+ 		return NULL;
+ 
+ 	if (slab_is_available())
+-		return do_ioremap(paligned, offset, size, prot, caller);
++		return generic_ioremap_prot(addr, size, prot);
+ 
+ 	pr_warn("ioremap() called early from %pS. Use early_ioremap() instead\n", caller);
+ 
+@@ -49,17 +49,9 @@ void __iomem *__ioremap_caller(phys_addr_t addr, unsigned long size,
+  */
+ void iounmap(volatile void __iomem *token)
+ {
+-	void *addr;
+-
+ 	if (!slab_is_available())
+ 		return;
+ 
+-	addr = (void *)((unsigned long __force)PCI_FIX_ADDR(token) & PAGE_MASK);
+-
+-	if ((unsigned long)addr < ioremap_bot) {
+-		pr_warn("Attempt to iounmap early bolted mapping at 0x%p\n", addr);
+-		return;
+-	}
+-	vunmap(addr);
++	generic_iounmap(PCI_FIX_ADDR(token));
+ }
+ EXPORT_SYMBOL(iounmap);
 -- 
-Cheers,
-
-David / dhildenb
+2.34.1
 
