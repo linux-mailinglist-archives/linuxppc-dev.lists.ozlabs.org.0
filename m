@@ -2,99 +2,175 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FC4B738F34
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jun 2023 20:52:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5A6B7392FB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 01:23:08 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=juxGTMRq;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PiPk49g+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QmXgK07yxz3cSK
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 04:52:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QmfgY608nz3bkD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 09:23:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=juxGTMRq;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PiPk49g+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=adityag@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=jlayton@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QmXSz1pQ9z3cZv
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jun 2023 04:43:31 +1000 (AEST)
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35LISFsZ003550;
-	Wed, 21 Jun 2023 18:43:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=+pC+l0tVA8Whlpv+QpYxLtQdys13EVz05hYg5BH1rMY=;
- b=juxGTMRq+m0jRNPUJp9dLK6UkhbeT9L0kMp5WDSo+RzK46TLXW161qwchaJppB2yaM8T
- xnIgC0d+tc/yBKN6TfutAwYftwOiL5fWfecUlOmIUQYTOtJj7m4LsZFE07ubHDfRI58g
- CYKDvzmugz5lOmtgBuEsnz9MkwwXWqAFTPRRD/rZ5xZAchxh4e+RM+2aJ4RQpFMvD893
- qYczWbinQUW1cellZlDoHhAMTBnsMtrT1qQA5wHpQUwuODu3pS2+E8dlGQ2eROZCpir3
- 5BxXUQpV6KIi2W5NifL7ykx2IktYoHaViA2BXQzbHyXernK+i9RSVSRx4WwUcMAEtbJs bw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rc6gtgcxv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 21 Jun 2023 18:43:15 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35LIfknj025617;
-	Wed, 21 Jun 2023 18:43:15 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rc6gtgcwr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 21 Jun 2023 18:43:14 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-	by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35L3OLgT009702;
-	Wed, 21 Jun 2023 18:43:12 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3r94f5317s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 21 Jun 2023 18:43:12 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 35LIh8Wn12780192
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 21 Jun 2023 18:43:09 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DCC7B20040;
-	Wed, 21 Jun 2023 18:43:08 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 539A72004B;
-	Wed, 21 Jun 2023 18:43:06 +0000 (GMT)
-Received: from [9.43.103.191] (unknown [9.43.103.191])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 21 Jun 2023 18:43:06 +0000 (GMT)
-Message-ID: <ee0bd9de-c2c7-010f-5a4d-40e07ded8a3e@linux.ibm.com>
-Date: Thu, 22 Jun 2023 00:13:05 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 15/17] perf tests task_analyzer: fix bad substitution
- ${$1}
-To: Namhyung Kim <namhyung@kernel.org>
-References: <20230613164145.50488-1-atrajeev@linux.vnet.ibm.com>
- <20230613164145.50488-16-atrajeev@linux.vnet.ibm.com>
- <ZIjMWUk/axKfMCM4@kernel.org>
- <CAM9d7cjrpaNk0UC22ntBSP+LzQwT2YAHwQ2o3z1aayAZNQ329g@mail.gmail.com>
- <5ab5cc25-03b0-ef7f-3dc0-be1b59a4147d@linux.ibm.com>
- <CAM9d7cgcETpnNgvgJ8a966bwc0phQuVMwABHzA8APk6Z9Er=OQ@mail.gmail.com>
-Content-Language: en-IN, en-US
-From: Aditya Gupta <adityag@linux.ibm.com>
-In-Reply-To: <CAM9d7cgcETpnNgvgJ8a966bwc0phQuVMwABHzA8APk6Z9Er=OQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: qLUSCoUZZDCVSwlQ9gu_0Xixz3s5nGf1
-X-Proofpoint-GUID: pmHnR0uV1xKMVx8S0l7dMyzi94kRNPmH
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QmXZx1Q6tz3dDx;
+	Thu, 22 Jun 2023 04:48:41 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 75C6F616AB;
+	Wed, 21 Jun 2023 18:48:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB234C433C8;
+	Wed, 21 Jun 2023 18:48:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1687373315;
+	bh=a5OpkE0TU4uPAvSOWcyUKhr2U/OaDDTahqvZpyNm/D4=;
+	h=Subject:From:To:Date:In-Reply-To:References:From;
+	b=PiPk49g+MFOu/O2ZwDxO/8QAjKIZGlhjql5KOg56o+z0jsrDavO9BiaXOtkYto876
+	 fJ7qYzZ7aATc9kPncdP1kCdlY5wqINNGdYK2LGj2HmV63uWD5NHZ4+OFVQ4t30vFE9
+	 rYDpgx917Jc/lUMtGxdnWxKlhyndYbn3MftPxoStquXW6wJVzxk1ZBM8Z7BTbv2h/U
+	 qJjwHaLWN8lUJ3h6C5OcO+D166wrcNaWoWGX2W/vO7mNHZJIsw6euWqEIeYa7S4lF3
+	 jaX3jg20U9mjcF803nObNGAx9i1QbKIM3FZeyHr6EhjkD9DNtiQVqDSkHfY1GNj8rV
+	 9eRPHwtyQHGGQ==
+Message-ID: <c376703f26442b3310f173219c37c7b7ae4fe61b.camel@kernel.org>
+Subject: Re: [PATCH 01/79] fs: add ctime accessors infrastructure
+From: Jeff Layton <jlayton@kernel.org>
+To: Tom Talpey <tom@talpey.com>, Jeremy Kerr <jk@ozlabs.org>, Arnd Bergmann
+ <arnd@arndb.de>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
+ <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Heiko
+ Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Alexander
+ Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger
+ <borntraeger@linux.ibm.com>,  Sven Schnelle <svens@linux.ibm.com>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Arve
+ =?ISO-8859-1?Q?Hj=F8nnev=E5g?= <arve@android.com>, Todd Kjos
+ <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes
+ <joel@joelfernandes.org>, Christian Brauner <brauner@kernel.org>, Carlos
+ Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>,
+ Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, Jason
+ Gunthorpe <jgg@ziepe.ca>,  Leon Romanovsky <leon@kernel.org>, Brad Warrum
+ <bwarrum@linux.ibm.com>, Ritu Agarwal <rituagar@linux.ibm.com>, Eric Van
+ Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>,
+ Dominique Martinet <asmadeus@codewreck.org>, Christian Schoenebeck
+ <linux_oss@crudebyte.com>, David Sterba <dsterba@suse.com>, David Howells
+ <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>, Alexander
+ Viro <viro@zeniv.linux.org.uk>, Ian Kent <raven@themaw.net>, Luis de
+ Bethencourt <luisbg@kernel.org>, Salah Triki <salah.triki@gmail.com>,
+ "Tigran A. Aivazian" <aivazian.tigran@gmail.com>, Eric Biederman
+ <ebiederm@xmission.com>, Kees Cook <keescook@chromium.org>, Chris Mason
+ <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>, Xiubo Li
+ <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>, Jan Harkes
+ <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu, Joel Becker <jlbec@evilplan.org>,
+ Christoph Hellwig <hch@lst.de>, Nicolas Pitre <nico@fluxnic.net>,  "Rafael
+ J. Wysocki" <rafael@kernel.org>, Tyler Hicks <code@tyhicks.com>, Ard
+ Biesheuvel <ardb@kernel.org>, Gao Xiang <xiang@kernel.org>, Chao Yu
+ <chao@kernel.org>,  Yue Hu <huyue2@coolpad.com>, Jeffle Xu
+ <jefflexu@linux.alibaba.com>, Namjae Jeon <linkinjeon@kernel.org>, Sungjong
+ Seo <sj1557.seo@samsung.com>, Jan Kara <jack@suse.com>, Theodore Ts'o
+ <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>, Jaegeuk Kim
+ <jaegeuk@kernel.org>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, Miklos
+ Szeredi <miklos@szeredi.hu>, Bob Peterson <rpeterso@redhat.com>, Andreas
+ Gruenbacher <agruenba@redhat.com>, Richard Weinberger <richard@nod.at>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg
+ <johannes@sipsolutions.net>, Mikulas Patocka
+ <mikulas@artax.karlin.mff.cuni.cz>,  Mike Kravetz
+ <mike.kravetz@oracle.com>, Muchun Song <muchun.song@linux.dev>, David
+ Woodhouse <dwmw2@infradead.org>, Dave Kleikamp <shaggy@kernel.org>, Tejun
+ Heo <tj@kernel.org>, Trond Myklebust <trond.myklebust@hammerspace.com>,
+ Anna Schumaker <anna@kernel.org>, Chuck Lever <chuck.lever@oracle.com>,
+ Ryusuke Konishi <konishi.ryusuke@gmail.com>, Anton Altaparmakov
+ <anton@tuxera.com>,  Konstantin Komarov
+ <almaz.alexandrovich@paragon-software.com>, Mark Fasheh <mark@fasheh.com>,
+ Joseph Qi <joseph.qi@linux.alibaba.com>, Bob Copeland <me@bobcopeland.com>,
+ Mike Marshall <hubcap@omnibond.com>, Martin Brandenburg
+ <martin@omnibond.com>, Luis Chamberlain <mcgrof@kernel.org>, Iurii Zaikin
+ <yzaikin@google.com>, Tony Luck <tony.luck@intel.com>,  "Guilherme G.
+ Piccoli" <gpiccoli@igalia.com>, Anders Larsen <al@alarsen.net>, Steve
+ French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.com>, Ronnie
+ Sahlberg <lsahlber@redhat.com>, Shyam Prasad N <sprasad@microsoft.com>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>, Phillip Lougher
+ <phillip@squashfs.org.uk>, Steven Rostedt <rostedt@goodmis.org>, Masami
+ Hiramatsu <mhiramat@kernel.org>, Evgeniy Dushistov <dushistov@mail.ru>,
+ Hans de Goede <hdegoede@redhat.com>, "Darrick J. Wong" <djwong@kernel.org>,
+ Damien Le Moal <dlemoal@kernel.org>, Naohiro Aota <naohiro.aota@wdc.com>,
+ Johannes Thumshirn <jth@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko
+ <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, Song Liu
+ <song@kernel.org>, Yonghong Song <yhs@fb.com>, John Fastabend
+ <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>, Stanislav
+ Fomichev <sdf@google.com>, Hao Luo <haoluo@google.com>, Jiri Olsa
+ <jolsa@kernel.org>,  Hugh Dickins <hughd@google.com>, Andrew Morton
+ <akpm@linux-foundation.org>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, John Johansen <john.johansen@canonical.com>,
+ Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, "Serge
+ E. Hallyn" <serge@hallyn.com>, Stephen Smalley
+ <stephen.smalley.work@gmail.com>, Eric Paris <eparis@parisplace.org>, 
+ Juergen Gross <jgross@suse.com>, Ruihan Li <lrh2000@pku.edu.cn>, Laurent
+ Pinchart <laurent.pinchart+renesas@ideasonboard.com>, Wolfram Sang
+ <wsa+renesas@sang-engineering.com>, Udipto Goswami
+ <quic_ugoswami@quicinc.com>,  Linyu Yuan <quic_linyyuan@quicinc.com>, John
+ Keeping <john@keeping.me.uk>, Andrzej Pietrasiewicz
+ <andrzej.p@collabora.com>, Dan Carpenter <error27@gmail.com>, Yuta Hayama
+ <hayama@lineo.co.jp>, Jozef Martiniak <jomajm@gmail.com>, Jens Axboe
+ <axboe@kernel.dk>, Alan Stern <stern@rowland.harvard.edu>, Sandeep Dhavale
+ <dhavale@google.com>, Dave Chinner <dchinner@redhat.com>, Johannes Weiner
+ <hannes@cmpxchg.org>, ZhangPeng <zhangpeng362@huawei.com>, Viacheslav
+ Dubeyko <slava@dubeyko.com>, Tetsuo Handa
+ <penguin-kernel@I-love.SAKURA.ne.jp>,  Aditya Garg <gargaditya08@live.com>,
+ Erez Zadok <ezk@cs.stonybrook.edu>, Yifei Liu <yifeliu@cs.stonybrook.edu>,
+ Yu Zhe <yuzhe@nfschina.com>, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, Oleg Kanatov <okanatov@gmail.com>, "Dr. David Alan
+ Gilbert" <linux@treblig.org>, Jiangshan Yi <yijiangshan@kylinos.cn>, xu xin
+ <cgel.zte@gmail.com>, Stefan Roesch <shr@devkernel.io>, Zhihao Cheng
+ <chengzhihao1@huawei.com>, "Liam R. Howlett" <Liam.Howlett@Oracle.com>, 
+ Alexey Dobriyan <adobriyan@gmail.com>, Minghao Chi
+ <chi.minghao@zte.com.cn>, Seth Forshee <sforshee@digitalocean.com>, Zeng
+ Jingxiang <linuszeng@tencent.com>, Bart Van Assche <bvanassche@acm.org>,
+ Mimi Zohar <zohar@linux.ibm.com>, Roberto Sassu <roberto.sassu@huawei.com>,
+ Zhang Yi <yi.zhang@huawei.com>, Tom Rix <trix@redhat.com>, "Fabio M. De
+ Francesco" <fmdefrancesco@gmail.com>, Chen Zhongjin
+ <chenzhongjin@huawei.com>, Zhengchao Shao <shaozhengchao@huawei.com>, Rik
+ van Riel <riel@surriel.com>, Jingyu Wang <jingyuwang_vip@163.com>, Hangyu
+ Hua <hbh25y@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org,  linux-s390@vger.kernel.org,
+ linux-rdma@vger.kernel.org,  linux-usb@vger.kernel.org,
+ v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
+ linux-afs@lists.infradead.org, autofs@vger.kernel.org, linux-mm@kvack.org, 
+ linux-btrfs@vger.kernel.org, ceph-devel@vger.kernel.org, 
+ codalist@coda.cs.cmu.edu, ecryptfs@vger.kernel.org,
+ linux-efi@vger.kernel.org,  linux-erofs@lists.ozlabs.org,
+ linux-ext4@vger.kernel.org,  linux-f2fs-devel@lists.sourceforge.net,
+ cluster-devel@redhat.com,  linux-um@lists.infradead.org,
+ linux-mtd@lists.infradead.org,  jfs-discussion@lists.sourceforge.net,
+ linux-nfs@vger.kernel.org,  linux-nilfs@vger.kernel.org,
+ linux-ntfs-dev@lists.sourceforge.net,  ntfs3@lists.linux.dev,
+ ocfs2-devel@oss.oracle.com,  linux-karma-devel@lists.sourceforge.net,
+ devel@lists.orangefs.org,  linux-unionfs@vger.kernel.org,
+ linux-hardening@vger.kernel.org,  reiserfs-devel@vger.kernel.org,
+ linux-cifs@vger.kernel.org,  samba-technical@lists.samba.org,
+ linux-trace-kernel@vger.kernel.org,  linux-xfs@vger.kernel.org,
+ bpf@vger.kernel.org, netdev@vger.kernel.org,  apparmor@lists.ubuntu.com,
+ linux-security-module@vger.kernel.org,  selinux@vger.kernel.org
+Date: Wed, 21 Jun 2023 14:48:17 -0400
+In-Reply-To: <e513d856-3a6f-3a32-40fe-6c728e7b5ec8@talpey.com>
+References: <20230621144507.55591-1-jlayton@kernel.org>
+	 <20230621144507.55591-2-jlayton@kernel.org>
+	 <1f97d595-e035-46ce-6269-eebfe922cf35@talpey.com>
+	 <6f4bcd7d79f688120d80e96e86d7c521854d8e84.camel@kernel.org>
+	 <e513d856-3a6f-3a32-40fe-6c728e7b5ec8@talpey.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.3 (3.48.3-1.fc38) 
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-06-21_10,2023-06-16_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- priorityscore=1501 mlxscore=0 malwarescore=0 bulkscore=0 spamscore=0
- impostorscore=0 adultscore=0 lowpriorityscore=0 mlxlogscore=999
- phishscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2305260000 definitions=main-2306210155
+X-Mailman-Approved-At: Thu, 22 Jun 2023 09:22:21 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,76 +182,193 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: irogers@google.com, Athira Rajeev <atrajeev@linux.vnet.ibm.com>, john.g.garry@oracle.com, kjain@linux.ibm.com, Hagen Paul Pfeifer <hagen@jauu.net>, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-perf-users@vger.kernel.org, ravi.bangoria@amd.com, maddy@linux.ibm.com, jolsa@kernel.org, Petar Gligoric <petar.gligoric@rohde-schwarz.com>, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Namhyung,
+On Wed, 2023-06-21 at 14:19 -0400, Tom Talpey wrote:
+> On 6/21/2023 2:01 PM, Jeff Layton wrote:
+> > On Wed, 2023-06-21 at 13:29 -0400, Tom Talpey wrote:
+> > > On 6/21/2023 10:45 AM, Jeff Layton wrote:
+> > > > struct timespec64 has unused bits in the tv_nsec field that can be =
+used
+> > > > for other purposes. In future patches, we're going to change how th=
+e
+> > > > inode->i_ctime is accessed in certain inodes in order to make use o=
+f
+> > > > them. In order to do that safely though, we'll need to eradicate ra=
+w
+> > > > accesses of the inode->i_ctime field from the kernel.
+> > > >=20
+> > > > Add new accessor functions for the ctime that we can use to replace=
+ them.
+> > > >=20
+> > > > Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> > > > ---
+> > > >    fs/inode.c         | 16 ++++++++++++++
+> > > >    include/linux/fs.h | 53 ++++++++++++++++++++++++++++++++++++++++=
++++++-
+> > > >    2 files changed, 68 insertions(+), 1 deletion(-)
+> > > >=20
+> > > > diff --git a/fs/inode.c b/fs/inode.c
+> > > > index d37fad91c8da..c005e7328fbb 100644
+> > > > --- a/fs/inode.c
+> > > > +++ b/fs/inode.c
+> > > > @@ -2499,6 +2499,22 @@ struct timespec64 current_time(struct inode =
+*inode)
+> > > >    }
+> > > >    EXPORT_SYMBOL(current_time);
+> > > >   =20
+> > > > +/**
+> > > > + * inode_ctime_set_current - set the ctime to current_time
+> > > > + * @inode: inode
+> > > > + *
+> > > > + * Set the inode->i_ctime to the current value for the inode. Retu=
+rns
+> > > > + * the current value that was assigned to i_ctime.
+> > > > + */
+> > > > +struct timespec64 inode_ctime_set_current(struct inode *inode)
+> > > > +{
+> > > > +	struct timespec64 now =3D current_time(inode);
+> > > > +
+> > > > +	inode_set_ctime(inode, now);
+> > > > +	return now;
+> > > > +}
+> > > > +EXPORT_SYMBOL(inode_ctime_set_current);
+> > > > +
+> > > >    /**
+> > > >     * in_group_or_capable - check whether caller is CAP_FSETID priv=
+ileged
+> > > >     * @idmap:	idmap of the mount @inode was found from
+> > > > diff --git a/include/linux/fs.h b/include/linux/fs.h
+> > > > index 6867512907d6..9afb30606373 100644
+> > > > --- a/include/linux/fs.h
+> > > > +++ b/include/linux/fs.h
+> > > > @@ -1474,7 +1474,58 @@ static inline bool fsuidgid_has_mapping(stru=
+ct super_block *sb,
+> > > >    	       kgid_has_mapping(fs_userns, kgid);
+> > > >    }
+> > > >   =20
+> > > > -extern struct timespec64 current_time(struct inode *inode);
+> > > > +struct timespec64 current_time(struct inode *inode);
+> > > > +struct timespec64 inode_ctime_set_current(struct inode *inode);
+> > > > +
+> > > > +/**
+> > > > + * inode_ctime_peek - fetch the current ctime from the inode
+> > > > + * @inode: inode from which to fetch ctime
+> > > > + *
+> > > > + * Grab the current ctime from the inode and return it.
+> > > > + */
+> > > > +static inline struct timespec64 inode_ctime_peek(const struct inod=
+e *inode)
+> > > > +{
+> > > > +	return inode->i_ctime;
+> > > > +}
+> > > > +
+> > > > +/**
+> > > > + * inode_ctime_set - set the ctime in the inode to the given value
+> > > > + * @inode: inode in which to set the ctime
+> > > > + * @ts: timespec value to set the ctime
+> > > > + *
+> > > > + * Set the ctime in @inode to @ts.
+> > > > + */
+> > > > +static inline struct timespec64 inode_ctime_set(struct inode *inod=
+e, struct timespec64 ts)
+> > > > +{
+> > > > +	inode->i_ctime =3D ts;
+> > > > +	return ts;
+> > > > +}
+> > > > +
+> > > > +/**
+> > > > + * inode_ctime_set_sec - set only the tv_sec field in the inode ct=
+ime
+> > >=20
+> > > I'm curious about why you choose to split the tv_sec and tv_nsec
+> > > set_ functions. Do any callers not set them both? Wouldn't a
+> > > single call enable a more atomic behavior someday?
+> > >=20
+> > >     inode_ctime_set_sec_nsec(struct inode *, time64_t, time64_t)
+> > >=20
+> > > (or simply initialize a timespec64 and use inode_ctime_spec() )
+> > >=20
+> >=20
+> > Yes, quite a few places set the fields individually. For example, when
+> > loading a value from disk that doesn't have sufficient granularity to
+> > set the nsecs field to anything but 0.
+>=20
+> Well, they still need to set the tv_nsec so they could just pass 0.
+> But ok.
+>=20
 
-On 21/06/23 20:53, Namhyung Kim wrote:
-> Hello Aditya,
->
-> On Wed, Jun 21, 2023 at 3:05 AM Aditya Gupta <adityag@linux.ibm.com> wrote:
->> Hello Namhyung,
->>
->> On 21/06/23 06:18, Namhyung Kim wrote:
->>> ...
->>>
->>> $ sudo ./perf test -v task
->>> 114: perf script task-analyzer tests                                 :
->>> --- start ---
->>> test child forked, pid 1771042
->>> Please specify a valid report script(see 'perf script -l' for listing)
->>> FAIL: "invocation of perf command failed" Error message: ""
->>> FAIL: "test_basic" Error message: "Failed to find required string:'Comm'."
->>> Please specify a valid report script(see 'perf script -l' for listing)
->>> FAIL: "invocation of perf command failed" Error message: ""
->>> FAIL: "test_ns_rename" Error message: "Failed to find required string:'Comm'."
->>> ...
->>> test child finished with -1
->>> ---- end ----
->>> perf script task-analyzer tests: FAILED!
->> Can you please check if your environment has libtraceevent devel
->> libraries (or did you compile with `make NO_LIBTRACEEVENT=1`) ? When
->> libtraceevent support is not there, perf record fails and so perf.data
->> doesn't contain the strings it's searching for and hence those errors
->>
->> The error you mentioned has been mentioned and fixed in patch 17/17 of
->> this series.
-> Thanks for your reply but It has libtraceevent.  Also, shouldn't it
-> skip if it's not?
->
-> Thanks,
-> Namhyung
+Sure. The difficulty is in trying to do this in an automated way. For
+instance, look at the hfsplus patch; it has separate assignments in
+place already:
 
-The skipping is handled in the 17th patch in this series, and 
-considering that patch has also been applied, it will skip the tests if 
-perf wasn't built with proper libtraceevent support.
+-       result->i_ctime.tv_sec =3D result->i_mtime.tv_sec =3D result->i_ati=
+me.tv_sec =3D local_to_gmt(dir->i_sb, le32_to_cpu(dee.creation_date));
+-       result->i_ctime.tv_nsec =3D 0;
++       inode_ctime_set_sec(result,
++                           result->i_mtime.tv_sec =3D result->i_atime.tv_s=
+ec =3D local_to_gmt(dir->i_sb, le32_to_cpu(dee.creation_date)));
++       inode_ctime_set_nsec(result, 0);
 
-Back to the error, Sorry but I tested again on my system and am unable to reproduce the issue you are seeing when built with libtraceevent support.
+Granted the new code is pretty ugly, but it compiles!
 
-This is what I did:
+Transforming that into what you're suggesting is a tougher proposition
+to do with coccinelle. I didn't see a way to conditionally catch cases
+like this, declare a new variable in the appropriate spot and then
+transform two assignments (that may not be next to one another!) into a
+single one.
 
-0. git clone --depth=1 https://github.com/torvalds/linux
-0. cd linux/tools/perf
-0. git am patch_15/17.patch
+Maybe it's possible, but my grasp of SMPL is not that great. The docs
+and examples (including Kees' vey helpful ones!) cover fairly simple
+changes well, but I didn't quite grasp how to do that complex an
+evolution.
 
-> I applied ONLY this patch (15/17) of this series, to a fresh linux tree
+> > Could I have done it by declaring a local timespec64 variable and just
+> > use the inode_ctime_set function in these places? Absolutely.
+> >=20
+> > That's a bit more difficult to handle with coccinelle though. If someon=
+e
+> > wants to suggest a way to do that without having to change all of these
+> > call sites manually, then I'm open to redoing the set.
+> >=20
+> > That might be better left for a later cleanup though.
+>=20
+> Acked-by: Tom Talpey <tom@talpey.com>
+>=20
 
-1. dnf install libtraceevent-devel
-2. make clean && make
-3. sudo ./perf test -v "perf script task-analyzer tests"       # Working fine, tests passed
+Many thanks!
 
-4. dnf remove libtraceevent-devel
-5. make clean && make                                          # There will also be a warning during build: "libtraceevent is missing limiting functionality"
-6. sudo ./perf test -v "perf script task-analyzer tests"       # Fails with the error you posted, which was the case till now, it's skipped when the 17th patch is also applied and perf built without libtraceevent support
+> > > > + * @inode: inode in which to set the ctime
+> > > > + * @sec:  value to set the tv_sec field
+> > > > + *
+> > > > + * Set the sec field in the ctime. Returns @sec.
+> > > > + */
+> > > > +static inline time64_t inode_ctime_set_sec(struct inode *inode, ti=
+me64_t sec)
+> > > > +{
+> > > > +	inode->i_ctime.tv_sec =3D sec;
+> > > > +	return sec;
+> > > > +}
+> > > > +
+> > > > +/**
+> > > > + * inode_ctime_set_nsec - set only the tv_nsec field in the inode =
+ctime
+> > > > + * @inode: inode in which to set the ctime
+> > > > + * @nsec:  value to set the tv_nsec field
+> > > > + *
+> > > > + * Set the nsec field in the ctime. Returns @nsec.
+> > > > + */
+> > > > +static inline long inode_ctime_set_nsec(struct inode *inode, long =
+nsec)
+> > > > +{
+> > > > +	inode->i_ctime.tv_nsec =3D nsec;
+> > > > +	return nsec;
+> > > > +}
+> > > >   =20
+> > > >    /*
+> > > >     * Snapshotting support.
+> >=20
 
-The error in the second case (without proper libtraceevent support) is expected, as it was the case till now, that is fixed by the 17th patch, try applying that also and build perf with `make NO_LIBTRACEEVENT=1`, it will skip then.
-
-Can you guide me with the steps to reproduce the error ?
-
-Sidenote: Just in case, please ensure you are running the perf as root here as `perf record -e sched:sched_switch -a -- sleep 1` requires root, which has been used in `prepare_perf_data`
-
-Thanks,
-- Aditya
-
+--=20
+Jeff Layton <jlayton@kernel.org>
