@@ -2,96 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2A06738821
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jun 2023 16:56:39 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=isdibHY3;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AjGYnRev;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id B95907388C3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jun 2023 17:21:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QmRR96C5Cz3bV3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 00:56:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QmRzd4tVFz3c0w
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 01:21:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=isdibHY3;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AjGYnRev;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QmRPP5qJfz3bXM
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jun 2023 00:55:05 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1687359302;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VcvlcGOsdz8xmfczPODHKTAf1QOSvNikn1NEKXY6yqQ=;
-	b=isdibHY3wQHmHPsdlBWr5r0KZgWsBA794GF0NDmowUgXeUMS+bDBM2xzHQyu82kjUvxMMj
-	PFs69ohFUicjVDF53T0wB5UsiubzjA5GKdLTU9zgXQgxwg9lOYgp1GnIH+qPcjcQWRYOAc
-	gQitZw0mX5y4fvRiU7rhBIsxhGT4ZxM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1687359303;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VcvlcGOsdz8xmfczPODHKTAf1QOSvNikn1NEKXY6yqQ=;
-	b=AjGYnRevslW19J+cRzzcOfWbOZMXVPTVPh1QU/Z2tbGVhHTIR2rQCVY93g3Xy1jHNyETE0
-	D+WWgTrrfJ4kzwx8OadsX58uqs0yFp8212oyE84tFR653ij8qehkWLPirrt4Ru6mQpltAy
-	OwmkG2PYgrElnM3k9CWGbOcL3c94wIA=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-470-vff3avH-Ngy_pBbzUqyKlQ-1; Wed, 21 Jun 2023 10:55:01 -0400
-X-MC-Unique: vff3avH-Ngy_pBbzUqyKlQ-1
-Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-4f618172ed6so4437923e87.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jun 2023 07:55:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687359299; x=1689951299;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VcvlcGOsdz8xmfczPODHKTAf1QOSvNikn1NEKXY6yqQ=;
-        b=TXn6lXpKJdtLK12j/QmF0/B+44chQTHcpZ1JunhgrMbt5fH5UMLsQSHiYtEDUi8R2T
-         U1BsAJyH4luz4v1CVbDMx4Vqsnycim3JeYJPprVIWR6HQaVHkNOFJC6LVHMnCDxLW4dM
-         drffwl71zEQbat3uh3P2v2XIBAE9XTG0IdAvM1nWsSdnW0NAlBUs5bbXsmCB33GU5wpB
-         4jJS6JL/4YPqgJ/UBlDPVs6Zykg980uRAeFNAcvMdN51amORvKxc3off1LmqLi6uIBg+
-         9fRjdFc8JdcIrpSsiK4AN+eEtesgdStBqg56cvaO0qsRG8YNgPUoD2XQwiPlGY/cFmMn
-         +Avg==
-X-Gm-Message-State: AC+VfDxF6TDdRDuWM0Q1RS3gPE47REjdKmiq46vHIby31RgYpJTU6GGn
-	2ZsTdoFSxVa+kETmM3Jh37qwAzVB5ugGiaK9krPp1CaKBqyq16Hs7ofg777gLDsdUbOrDsauHC0
-	8CDUJxyKTEEP9eK1j3XFlIi/5qA==
-X-Received: by 2002:a19:da12:0:b0:4f9:5622:4795 with SMTP id r18-20020a19da12000000b004f956224795mr2204138lfg.42.1687359299631;
-        Wed, 21 Jun 2023 07:54:59 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5lKj8j3ZctUkIWEOuFj4T6DLcuWbUypmaju9CtFGHgHhgm9afUQ54tnfDfia7uz8bcTsc8ZA==
-X-Received: by 2002:a19:da12:0:b0:4f9:5622:4795 with SMTP id r18-20020a19da12000000b004f956224795mr2204127lfg.42.1687359299272;
-        Wed, 21 Jun 2023 07:54:59 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-177-207.web.vodafone.de. [109.43.177.207])
-        by smtp.gmail.com with ESMTPSA id p20-20020a05600c205400b003f9a6f3f240sm9249173wmg.14.2023.06.21.07.54.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 21 Jun 2023 07:54:58 -0700 (PDT)
-Message-ID: <daa0bae9-38ec-e3ab-5ed7-de214091d2e8@redhat.com>
-Date: Wed, 21 Jun 2023 16:54:57 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QmRz51VgXz301r
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jun 2023 01:20:46 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+	by localhost (Postfix) with ESMTP id 4QmRz004c7z9sJj;
+	Wed, 21 Jun 2023 17:20:44 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id pCGSmOT-fKYY; Wed, 21 Jun 2023 17:20:43 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4QmRyx2PMJz9sJs;
+	Wed, 21 Jun 2023 17:20:41 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4EE338B779;
+	Wed, 21 Jun 2023 17:20:41 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id dIDcK9DBKVGZ; Wed, 21 Jun 2023 17:20:41 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.25.230.108])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 24B988B763;
+	Wed, 21 Jun 2023 17:20:41 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 35LFKbuK2124260
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 21 Jun 2023 17:20:37 +0200
+Received: (from chleroy@localhost)
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 35LFKbQZ2124256;
+	Wed, 21 Jun 2023 17:20:37 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Josh Poimboeuf <jpoimboe@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>
+Subject: [PATCH] objtool: Make 'sec-address' always on
+Date: Wed, 21 Jun 2023 17:20:31 +0200
+Message-Id: <e7e1de1d01194df3ff4053cb0815fc2ddba33213.1687360711.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [kvm-unit-tests v4 02/12] powerpc: Add some checking to exception
- handler install
-To: Nicholas Piggin <npiggin@gmail.com>, kvm@vger.kernel.org
-References: <20230608075826.86217-1-npiggin@gmail.com>
- <20230608075826.86217-3-npiggin@gmail.com>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230608075826.86217-3-npiggin@gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1687360830; l=2749; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=cug9KrnhkD0tWNRN91NqNAgvx0YYURd13fBg+W5IvHQ=; b=MSMupOM8tiZHXuHmbGUr+49tsvsHOoMqLJJr6dQ9WAhib0c9wQaeZlV1OoHElkm//dypb0DWq 8Ers3uhG87CCZKBc1aSQNebBr5BBhwJHfoFpOCSe2UDbQpXq9wSto2C
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,46 +66,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 08/06/2023 09.58, Nicholas Piggin wrote:
-> Check to ensure exception handlers are not being overwritten or
-> invalid exception numbers are used.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
-> Since v3:
-> - Simplified code as suggested by Thomas.
-> 
->   lib/powerpc/processor.c | 10 +++++++---
->   1 file changed, 7 insertions(+), 3 deletions(-)
-> 
-> diff --git a/lib/powerpc/processor.c b/lib/powerpc/processor.c
-> index 05b4b04f..0550e4fc 100644
-> --- a/lib/powerpc/processor.c
-> +++ b/lib/powerpc/processor.c
-> @@ -19,12 +19,16 @@ static struct {
->   void handle_exception(int trap, void (*func)(struct pt_regs *, void *),
->   		      void * data)
->   {
-> +	assert(!(trap & ~0xf00));
-> +
->   	trap >>= 8;
->   
-> -	if (trap < 16) {
-> -		handlers[trap].func = func;
-> -		handlers[trap].data = data;
-> +	if (func && handlers[trap].func) {
-> +		printf("exception handler installed twice %#x\n", trap);
-> +		abort();
->   	}
-> +	handlers[trap].func = func;
-> +	handlers[trap].data = data;
->   }
->   
->   void do_handle_exception(struct pt_regs *regs)
+Most of the time objtool warnings are useless without the
+absolute address within the section.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Today there is --sec-address option to get it printed, but
+that option is nowhere used and requires a change in Makefile
+to use it.
+
+Having the address inside the section at all time in addition
+to the address within the object doesn't hurt and will help.
+
+Remove the --sec-address option and print it at all time.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ tools/objtool/builtin-check.c           | 1 -
+ tools/objtool/include/objtool/builtin.h | 1 -
+ tools/objtool/include/objtool/warn.h    | 6 ++----
+ 3 files changed, 2 insertions(+), 6 deletions(-)
+
+diff --git a/tools/objtool/builtin-check.c b/tools/objtool/builtin-check.c
+index 7c175198d09f..d5024a95467a 100644
+--- a/tools/objtool/builtin-check.c
++++ b/tools/objtool/builtin-check.c
+@@ -91,7 +91,6 @@ static const struct option check_options[] = {
+ 	OPT_BOOLEAN(0, "module", &opts.module, "object is part of a kernel module"),
+ 	OPT_BOOLEAN(0, "mnop", &opts.mnop, "nop out mcount call sites"),
+ 	OPT_BOOLEAN(0, "no-unreachable", &opts.no_unreachable, "skip 'unreachable instruction' warnings"),
+-	OPT_BOOLEAN(0, "sec-address", &opts.sec_address, "print section addresses in warnings"),
+ 	OPT_BOOLEAN(0, "stats", &opts.stats, "print statistics"),
+ 
+ 	OPT_END(),
+diff --git a/tools/objtool/include/objtool/builtin.h b/tools/objtool/include/objtool/builtin.h
+index 2a108e648b7a..af79618cf6ab 100644
+--- a/tools/objtool/include/objtool/builtin.h
++++ b/tools/objtool/include/objtool/builtin.h
+@@ -35,7 +35,6 @@ struct opts {
+ 	bool mnop;
+ 	bool module;
+ 	bool no_unreachable;
+-	bool sec_address;
+ 	bool stats;
+ };
+ 
+diff --git a/tools/objtool/include/objtool/warn.h b/tools/objtool/include/objtool/warn.h
+index b1c920dc9516..2db9717d0558 100644
+--- a/tools/objtool/include/objtool/warn.h
++++ b/tools/objtool/include/objtool/warn.h
+@@ -21,7 +21,6 @@ static inline char *offstr(struct section *sec, unsigned long offset)
+ 	bool is_text = (sec->sh.sh_flags & SHF_EXECINSTR);
+ 	struct symbol *sym = NULL;
+ 	char *str;
+-	int len;
+ 
+ 	if (is_text)
+ 		sym = find_func_containing(sec, offset);
+@@ -30,9 +29,8 @@ static inline char *offstr(struct section *sec, unsigned long offset)
+ 
+ 	if (sym) {
+ 		str = malloc(strlen(sym->name) + strlen(sec->name) + 40);
+-		len = sprintf(str, "%s+0x%lx", sym->name, offset - sym->offset);
+-		if (opts.sec_address)
+-			sprintf(str+len, " (%s+0x%lx)", sec->name, offset);
++		sprintf(str, "%s+0x%lx (%s+0x%lx)", sym->name,
++			offset - sym->offset, sec->name, offset);
+ 	} else {
+ 		str = malloc(strlen(sec->name) + 20);
+ 		sprintf(str, "%s+0x%lx", sec->name, offset);
+-- 
+2.40.1
 
