@@ -2,74 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B80C8738BBE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jun 2023 18:41:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0633E738D79
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jun 2023 19:44:20 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=ouDN/VVT;
-	dkim=fail reason="signature verification failed" header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=eo+l3AgW;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=duef5UCO;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QmTm44YKtz309J
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 02:41:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QmW8d6HrPz3bpG
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 03:44:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=ouDN/VVT;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=eo+l3AgW;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=duef5UCO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=jack@suse.cz; receiver=lists.ozlabs.org)
-X-Greylist: delayed 377 seconds by postgrey-1.37 at boromir; Thu, 22 Jun 2023 02:40:38 AEST
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.136; helo=mga12.intel.com; envelope-from=dave.hansen@intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 63 seconds by postgrey-1.37 at boromir; Thu, 22 Jun 2023 03:43:31 AEST
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QmTlB0KZlz3039
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jun 2023 02:40:37 +1000 (AEST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id D9DDB1FF33;
-	Wed, 21 Jun 2023 16:34:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1687365259; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7B1rYZPmUUmzG9AoAPJupPPqfTGJws54sAbZMp3PkUA=;
-	b=ouDN/VVTNK6cBdCJ4J8ygLPNzVV/2zwMHeaArMxw1HltM4aU7N34JgXIUgiEALkKX2g21m
-	OJoSQY1urvoXICt3pICYxeEfZbT87xQX6QykUmkIAVyhULax2wawYCmvJQMorMSG+LUow6
-	9RDVhbWpggFzIfiUF0tCopWx/uxZyuA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1687365259;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7B1rYZPmUUmzG9AoAPJupPPqfTGJws54sAbZMp3PkUA=;
-	b=eo+l3AgW85QpyYlNRRCatCClY81nY/61R6LbM2JVU+X6MU1mo7Ktcdd/h5gqYp7kIf81sr
-	hCXv5Vhbo7RFBDBQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id CC3DD133E6;
-	Wed, 21 Jun 2023 16:34:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id myTWMYsmk2TfQgAAMHmgww
-	(envelope-from <jack@suse.cz>); Wed, 21 Jun 2023 16:34:19 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 6C725A075D; Wed, 21 Jun 2023 18:34:19 +0200 (CEST)
-Date: Wed, 21 Jun 2023 18:34:19 +0200
-From: Jan Kara <jack@suse.cz>
-To: Jeff Layton <jlayton@kernel.org>
-Subject: Re: [PATCH 02/79] spufs: switch to new ctime accessors
-Message-ID: <20230621163419.adjsdbqoyebvymqc@quack3>
-References: <20230621144507.55591-1-jlayton@kernel.org>
- <20230621144735.55953-1-jlayton@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QmW7l1qj5z2xqK
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jun 2023 03:43:30 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1687369411; x=1718905411;
+  h=message-id:date:mime-version:subject:to:references:from:
+   in-reply-to:content-transfer-encoding;
+  bh=LVptCrukcCrf+ulAXv9iJ2UzZRi1STprNI7mWSySJig=;
+  b=duef5UCOkpk326C86kqSIQKmjg4sWeL7xcw/FGiQBbGImH0Tyo3dUU58
+   9xpA2UntmjIYS+fgl1fpnRmjPKniDlE50AHIBhDKrgyRzmUPOcxN/H2hS
+   5u3ZQ2Zd+fpEltOyK7Bv1f5HXE4k5z17XtF6PC5DAHYHY4A5pzWMUXCjf
+   8JP8s7EJ9cVNfLLaKhbaGdqmWveRk6WgZxB5q+uQJ0hqUuvyiM7diyddt
+   GGIjhd94WzUj/W8J3zy7XxjvMYLJjbYeOb7JN0miyWd4Gx2Bio0tVcGBj
+   ccN9fzfIOMsdRrFzc8t8NtBOjkNsY+QNPvBqPEviVvygZXpj9Yr6XZTBJ
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10748"; a="339870191"
+X-IronPort-AV: E=Sophos;i="6.00,261,1681196400"; 
+   d="scan'208";a="339870191"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2023 10:42:19 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10748"; a="1044816796"
+X-IronPort-AV: E=Sophos;i="6.00,261,1681196400"; 
+   d="scan'208";a="1044816796"
+Received: from rmathew-mobl2.amr.corp.intel.com (HELO [10.212.134.235]) ([10.212.134.235])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2023 10:42:16 -0700
+Message-ID: <680fadba-9104-3914-5175-e207fd3d9246@intel.com>
+Date: Wed, 21 Jun 2023 10:42:16 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230621144735.55953-1-jlayton@kernel.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2 2/2] mm/mmu_gather: send tlb_remove_table_smp_sync IPI
+ only to MM CPUs
+Content-Language: en-US
+To: Yair Podemsky <ypodemsk@redhat.com>, mtosatti@redhat.com,
+ ppandit@redhat.com, david@redhat.com, linux@armlinux.org.uk,
+ mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+ hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+ borntraeger@linux.ibm.com, svens@linux.ibm.com, davem@davemloft.net,
+ tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, hpa@zytor.com, keescook@chromium.org,
+ paulmck@kernel.org, frederic@kernel.org, will@kernel.org,
+ peterz@infradead.org, ardb@kernel.org, samitolvanen@google.com,
+ juerg.haefliger@canonical.com, arnd@arndb.de, rmk+kernel@armlinux.org.uk,
+ geert+renesas@glider.be, linus.walleij@linaro.org,
+ akpm@linux-foundation.org, sebastian.reichel@collabora.com, rppt@kernel.org,
+ aneesh.kumar@linux.ibm.com, x86@kernel.org,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20230620144618.125703-1-ypodemsk@redhat.com>
+ <20230620144618.125703-3-ypodemsk@redhat.com>
+From: Dave Hansen <dave.hansen@intel.com>
+In-Reply-To: <20230620144618.125703-3-ypodemsk@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,43 +87,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, Jeremy Kerr <jk@ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed 21-06-23 10:45:15, Jeff Layton wrote:
-> In later patches, we're going to change how the ctime.tv_nsec field is
-> utilized. Switch to using accessor functions instead of raw accesses of
-> inode->i_ctime.
-> 
-> Signed-off-by: Jeff Layton <jlayton@kernel.org>
-
-Looks good to me. Feel free to add:
-
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
-> ---
->  arch/powerpc/platforms/cell/spufs/inode.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/platforms/cell/spufs/inode.c b/arch/powerpc/platforms/cell/spufs/inode.c
-> index ea807aa0c31a..55418395bd9a 100644
-> --- a/arch/powerpc/platforms/cell/spufs/inode.c
-> +++ b/arch/powerpc/platforms/cell/spufs/inode.c
-> @@ -86,7 +86,7 @@ spufs_new_inode(struct super_block *sb, umode_t mode)
->  	inode->i_mode = mode;
->  	inode->i_uid = current_fsuid();
->  	inode->i_gid = current_fsgid();
-> -	inode->i_atime = inode->i_mtime = inode->i_ctime = current_time(inode);
-> +	inode->i_atime = inode->i_mtime = inode_ctime_set_current(inode);
->  out:
->  	return inode;
+On 6/20/23 07:46, Yair Podemsky wrote:
+> -void tlb_remove_table_sync_one(void)
+> +#ifdef CONFIG_ARCH_HAS_CPUMASK_BITS
+> +#define REMOVE_TABLE_IPI_MASK mm_cpumask(mm)
+> +#else
+> +#define REMOVE_TABLE_IPI_MASK cpu_online_mask
+> +#endif /* CONFIG_ARCH_HAS_CPUMASK_BITS */
+> +
+> +void tlb_remove_table_sync_one(struct mm_struct *mm)
+>  {
+>  	/*
+>  	 * This isn't an RCU grace period and hence the page-tables cannot be
+> @@ -200,7 +206,8 @@ void tlb_remove_table_sync_one(void)
+>  	 * It is however sufficient for software page-table walkers that rely on
+>  	 * IRQ disabling.
+>  	 */
+> -	smp_call_function(tlb_remove_table_smp_sync, NULL, 1);
+> +	on_each_cpu_mask(REMOVE_TABLE_IPI_MASK, tlb_remove_table_smp_sync,
+> +			NULL, true);
 >  }
-> -- 
-> 2.41.0
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+
+That "REMOVE_TABLE_IPI_MASK" thing is pretty confusing.  It *looks* like
+a constant.  It does *NOT* look at all like it consumes 'mm'.  Worst
+case, just create a local variable:
+
+	if (IS_ENABLED(CONFIG_ARCH_HAS_CPUMASK_BITS))
+		ipi_mask = mm_cpumask(mm);
+	else
+		ipi_mask = cpu_online_mask;
+
+	on_each_cpu_mask(ipi_mask, ...);
+
+That's a billion times more clear and it'll compile down to the same thing.
+
+I do think the CONFIG_ARCH_HAS_CPUMASK_BITS naming is also pretty
+confusing, but I don't have any better suggestions.  Maybe something
+with "MM_CPUMASK" in it?
