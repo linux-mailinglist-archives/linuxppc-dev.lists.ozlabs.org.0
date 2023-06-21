@@ -1,61 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A93CB73827D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jun 2023 13:59:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCFEB7383FA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jun 2023 14:41:09 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=AHDRmqVo;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WEJIomjK;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QmMVj4K7cz3bZD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jun 2023 21:59:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QmNQq5brGz3bvY
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jun 2023 22:41:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=AHDRmqVo;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WEJIomjK;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QmMTm4Rm4z30hG
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jun 2023 21:58:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QmNPt6mGgz30hH
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jun 2023 22:40:13 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687348716; x=1718884716;
+  t=1687351219; x=1718887219;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=/UaZYJmBVZXLtrLONhqjC70JFtiBLSaQl6d55pahEGM=;
-  b=AHDRmqVoL8ars7JTc4KhyZAfiK5YW/naXo9w0NU8W0MrbaMeizWLVqKl
-   jlFxrEB61JcrNrU9wAkrbk4gSHsLLOtkHiZZEyhEADUDjBD50Ehmjroed
-   p0gF9fdK44dJqJiMJ4BP2sJ7vEkoLB2Vag0W49T6Qv+PbYtqAuk6Jy2Tb
-   rMp5RjXj2yoKE5JLtpsKfudh7bgBfBRjkeD7kE0tdOhv/vD3jI0/SH+I9
-   rYjTlDcWrmbMpx0nXOu3QvqzhU9VRceIslsB1gomaOMcOEw6R0zDRyNwt
-   xS/Rhl3Alz0RVzhTSTOdW2XpOmvkD/UjycrDAnjeviPGCTrUaLAv/3lz7
+  bh=HVhum5BVs1xL83ZgFv1hBEIGdcVvccPhMD7yvMOlJwU=;
+  b=WEJIomjK+rXec8VYcg+8vor88uGEjNuoCcIcyM9gaI7RdQK4FrNXWLdA
+   9GFxwL6CsNKjlaTpxwKEJUUvSEWZ522GTXw/WLqlnHVh4IsoKdaE6DOkc
+   6wDtMgaz/c5kZ6o19Aa7H1+S08mO9TFs0HR/hP1jcZqFMrSV68ZBquevJ
+   yk+Ol2e0+N2eG7UjShwTm3QO5LqroElO7oSNzGYK9TAqyyRGh/8lq69Ek
+   EEPffjU/+/zbrSw4OTaJ2yIgvAPSrhEg3lEp6OfZa1E7ecRttIWJK1tVN
+   4QrEchs0wUxWf4GZ9WKUEhmjNvumbDs5sQ7QDSEw0+82kzAG4bFoIutQS
    A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="340493096"
+X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="340501666"
 X-IronPort-AV: E=Sophos;i="6.00,260,1681196400"; 
-   d="scan'208";a="340493096"
+   d="scan'208";a="340501666"
 Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2023 04:58:10 -0700
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2023 05:40:10 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="838591996"
+X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="838599634"
 X-IronPort-AV: E=Sophos;i="6.00,260,1681196400"; 
-   d="scan'208";a="838591996"
+   d="scan'208";a="838599634"
 Received: from lkp-server01.sh.intel.com (HELO 783282924a45) ([10.239.97.150])
-  by orsmga004.jf.intel.com with ESMTP; 21 Jun 2023 04:58:07 -0700
+  by orsmga004.jf.intel.com with ESMTP; 21 Jun 2023 05:40:05 -0700
 Received: from kbuild by 783282924a45 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1qBwTO-0006op-0a;
-	Wed, 21 Jun 2023 11:58:06 +0000
-Date: Wed, 21 Jun 2023 19:57:46 +0800
+	id 1qBx82-0006pX-1i;
+	Wed, 21 Jun 2023 12:40:06 +0000
+Date: Wed, 21 Jun 2023 20:39:24 +0800
 From: kernel test robot <lkp@intel.com>
 To: Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>
 Subject: Re: [PATCH] powerpc/ptrace: Split gpr32_set_common
-Message-ID: <202306211940.y4kIhSei-lkp@intel.com>
+Message-ID: <202306212029.AbMrgmSQ-lkp@intel.com>
 References: <3086d189fa629e6c7bf800832921669450cc09bf.1687343697.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -78,10 +78,10 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 Hi Christophe,
 
-kernel test robot noticed the following build errors:
+kernel test robot noticed the following build warnings:
 
-[auto build test ERROR on powerpc/next]
-[also build test ERROR on powerpc/fixes linus/master v6.4-rc7 next-20230621]
+[auto build test WARNING on powerpc/next]
+[also build test WARNING on powerpc/fixes linus/master v6.4-rc7 next-20230621]
 [If your patch is applied to the wrong git tree, kindly drop us a note.
 And when submitting patch, we suggest to use '--base' as documented in
 https://git-scm.com/docs/git-format-patch#_base_tree_information]
@@ -90,24 +90,23 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Christophe-Leroy/powerpc-
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
 patch link:    https://lore.kernel.org/r/3086d189fa629e6c7bf800832921669450cc09bf.1687343697.git.christophe.leroy%40csgroup.eu
 patch subject: [PATCH] powerpc/ptrace: Split gpr32_set_common
-config: powerpc-allnoconfig (https://download.01.org/0day-ci/archive/20230621/202306211940.y4kIhSei-lkp@intel.com/config)
+config: powerpc-allyesconfig (https://download.01.org/0day-ci/archive/20230621/202306212029.AbMrgmSQ-lkp@intel.com/config)
 compiler: powerpc-linux-gcc (GCC) 12.3.0
-reproduce: (https://download.01.org/0day-ci/archive/20230621/202306211940.y4kIhSei-lkp@intel.com/reproduce)
+reproduce: (https://download.01.org/0day-ci/archive/20230621/202306212029.AbMrgmSQ-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202306211940.y4kIhSei-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202306212029.AbMrgmSQ-lkp@intel.com/
 
-All errors (new ones prefixed by >>):
+All warnings (new ones prefixed by >>):
 
->> arch/powerpc/kernel/ptrace/ptrace-view.c:719:5: error: no previous prototype for 'gpr32_set_common_kernel' [-Werror=missing-prototypes]
+>> arch/powerpc/kernel/ptrace/ptrace-view.c:719:5: warning: no previous prototype for 'gpr32_set_common_kernel' [-Wmissing-prototypes]
      719 | int gpr32_set_common_kernel(struct task_struct *target,
          |     ^~~~~~~~~~~~~~~~~~~~~~~
->> arch/powerpc/kernel/ptrace/ptrace-view.c:757:5: error: no previous prototype for 'gpr32_set_common_user' [-Werror=missing-prototypes]
+>> arch/powerpc/kernel/ptrace/ptrace-view.c:757:5: warning: no previous prototype for 'gpr32_set_common_user' [-Wmissing-prototypes]
      757 | int gpr32_set_common_user(struct task_struct *target,
          |     ^~~~~~~~~~~~~~~~~~~~~
-   cc1: all warnings being treated as errors
 
 
 vim +/gpr32_set_common_kernel +719 arch/powerpc/kernel/ptrace/ptrace-view.c
