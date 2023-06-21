@@ -1,45 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01F68738F0B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jun 2023 20:46:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02808738F11
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jun 2023 20:47:48 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DW9+xZXP;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ISOE40fd;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QmXWr6D0Xz3cDy
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 04:46:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QmXYs6SZ1z3c4J
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 04:47:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DW9+xZXP;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ISOE40fd;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=jlayton@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QmRBg23yFz3038;
-	Thu, 22 Jun 2023 00:45:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QmRHw5GgXz2x9T;
+	Thu, 22 Jun 2023 00:50:20 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 85AC961587;
-	Wed, 21 Jun 2023 14:45:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89BA8C43140;
-	Wed, 21 Jun 2023 14:45:26 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id D8A156159C;
+	Wed, 21 Jun 2023 14:50:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D2B7C433C0;
+	Wed, 21 Jun 2023 14:50:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1687358744;
-	bh=QciNdEX/PyL764MrYn7o3dC/r/b/XxL6Z8WOkZZO2JI=;
+	s=k20201202; t=1687359018;
+	bh=UjGkh/R6M6s97WmBHUYoIzUz4Kj0pfZWSOmlDakb56A=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=DW9+xZXPreiGHhWDzQhz3WX3mGR/hoBV4BdoUSGdAv1SFIQY2OlFGsFXe5YTCbCFz
-	 BR15LO6X+8VOz4uI3dADGbD0uhm8s2+O+4j7MgHyXZKIB90uQDbsYuepPjRyFF3B0B
-	 2S88vZc4u+0i13yohGMjh5aUO1xiGWGRa8WmDwIn7xIa6Wp2KMcljJfg3hIVIsXtwI
-	 PnOnQteXv2+zJ1j2KyYyBXTgj5whBFg1lvMWJyIj6Iu0U45Bl7KlDPY9zxLJTnkEzM
-	 WVhRqOkZnv8t+Jqrh38ZBCXmUl4Pasq/CpzYkhAM57nQJPwjZQCbu6T7NzstnyDGUj
-	 O9Kd+RU2DNxhA==
+	b=ISOE40fdFmyXRm/TIenvjT5UPIUlRpH8J3VXkqLNmMjonh3PxQUwms01/Yi03EFVs
+	 0Dbmg3MhBXszxfTG8IN5sJUV51G3yzr2l+xEcTv3UxHsR5GZVBA3Pc/bLeaVRh8Fky
+	 mQRivsDIFQLvh7PTD0UhMoUYUsH54SQx4XJdGS1uxlALaEHJ41U4mfrNqDh6Z2e9YU
+	 zstvKFH+ajE4gwTrV3FMYcl2On1Z4hs/04RbZRYmIvx2XCz/kBCMIDiaLQGhT43X6p
+	 101AKLQSNzXS+wnJ9GtxpEAGEEaK20+moMvm0BbrXzcVctbK1xXBMZeGaKBZrhVORb
+	 qMhsmnVxb8r6g==
 From: Jeff Layton <jlayton@kernel.org>
 To: Jeremy Kerr <jk@ozlabs.org>,
 	Arnd Bergmann <arnd@arndb.de>,
@@ -254,9 +254,9 @@ To: Jeremy Kerr <jk@ozlabs.org>,
 	apparmor@lists.ubuntu.com,
 	linux-security-module@vger.kernel.org,
 	selinux@vger.kernel.org
-Subject: [PATCH 01/79] fs: add ctime accessors infrastructure
-Date: Wed, 21 Jun 2023 10:45:06 -0400
-Message-ID: <20230621144507.55591-2-jlayton@kernel.org>
+Subject: [PATCH 79/79] fs: rename i_ctime field to __i_ctime
+Date: Wed, 21 Jun 2023 10:49:58 -0400
+Message-ID: <20230621144959.57905-1-jlayton@kernel.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230621144507.55591-1-jlayton@kernel.org>
 References: <20230621144507.55591-1-jlayton@kernel.org>
@@ -277,111 +277,64 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-struct timespec64 has unused bits in the tv_nsec field that can be used
-for other purposes. In future patches, we're going to change how the
-inode->i_ctime is accessed in certain inodes in order to make use of
-them. In order to do that safely though, we'll need to eradicate raw
-accesses of the inode->i_ctime field from the kernel.
-
-Add new accessor functions for the ctime that we can use to replace them.
+Now that everything in-tree is converted to use the accessor functions,
+rename the i_ctime field in the inode to make its accesses more
+self-documenting.
 
 Signed-off-by: Jeff Layton <jlayton@kernel.org>
 ---
- fs/inode.c         | 16 ++++++++++++++
- include/linux/fs.h | 53 +++++++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 68 insertions(+), 1 deletion(-)
+ include/linux/fs.h | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/inode.c b/fs/inode.c
-index d37fad91c8da..c005e7328fbb 100644
---- a/fs/inode.c
-+++ b/fs/inode.c
-@@ -2499,6 +2499,22 @@ struct timespec64 current_time(struct inode *inode)
- }
- EXPORT_SYMBOL(current_time);
- 
-+/**
-+ * inode_ctime_set_current - set the ctime to current_time
-+ * @inode: inode
-+ *
-+ * Set the inode->i_ctime to the current value for the inode. Returns
-+ * the current value that was assigned to i_ctime.
-+ */
-+struct timespec64 inode_ctime_set_current(struct inode *inode)
-+{
-+	struct timespec64 now = current_time(inode);
-+
-+	inode_set_ctime(inode, now);
-+	return now;
-+}
-+EXPORT_SYMBOL(inode_ctime_set_current);
-+
- /**
-  * in_group_or_capable - check whether caller is CAP_FSETID privileged
-  * @idmap:	idmap of the mount @inode was found from
 diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 6867512907d6..9afb30606373 100644
+index 9afb30606373..2ca46c532b49 100644
 --- a/include/linux/fs.h
 +++ b/include/linux/fs.h
-@@ -1474,7 +1474,58 @@ static inline bool fsuidgid_has_mapping(struct super_block *sb,
- 	       kgid_has_mapping(fs_userns, kgid);
+@@ -642,7 +642,7 @@ struct inode {
+ 	loff_t			i_size;
+ 	struct timespec64	i_atime;
+ 	struct timespec64	i_mtime;
+-	struct timespec64	i_ctime;
++	struct timespec64	__i_ctime; /* use inode_ctime_* accessors! */
+ 	spinlock_t		i_lock;	/* i_blocks, i_bytes, maybe i_size */
+ 	unsigned short          i_bytes;
+ 	u8			i_blkbits;
+@@ -1485,7 +1485,7 @@ struct timespec64 inode_ctime_set_current(struct inode *inode);
+  */
+ static inline struct timespec64 inode_ctime_peek(const struct inode *inode)
+ {
+-	return inode->i_ctime;
++	return inode->__i_ctime;
  }
  
--extern struct timespec64 current_time(struct inode *inode);
-+struct timespec64 current_time(struct inode *inode);
-+struct timespec64 inode_ctime_set_current(struct inode *inode);
-+
-+/**
-+ * inode_ctime_peek - fetch the current ctime from the inode
-+ * @inode: inode from which to fetch ctime
-+ *
-+ * Grab the current ctime from the inode and return it.
-+ */
-+static inline struct timespec64 inode_ctime_peek(const struct inode *inode)
-+{
-+	return inode->i_ctime;
-+}
-+
-+/**
-+ * inode_ctime_set - set the ctime in the inode to the given value
-+ * @inode: inode in which to set the ctime
-+ * @ts: timespec value to set the ctime
-+ *
-+ * Set the ctime in @inode to @ts.
-+ */
-+static inline struct timespec64 inode_ctime_set(struct inode *inode, struct timespec64 ts)
-+{
-+	inode->i_ctime = ts;
-+	return ts;
-+}
-+
-+/**
-+ * inode_ctime_set_sec - set only the tv_sec field in the inode ctime
-+ * @inode: inode in which to set the ctime
-+ * @sec:  value to set the tv_sec field
-+ *
-+ * Set the sec field in the ctime. Returns @sec.
-+ */
-+static inline time64_t inode_ctime_set_sec(struct inode *inode, time64_t sec)
-+{
-+	inode->i_ctime.tv_sec = sec;
-+	return sec;
-+}
-+
-+/**
-+ * inode_ctime_set_nsec - set only the tv_nsec field in the inode ctime
-+ * @inode: inode in which to set the ctime
-+ * @nsec:  value to set the tv_nsec field
-+ *
-+ * Set the nsec field in the ctime. Returns @nsec.
-+ */
-+static inline long inode_ctime_set_nsec(struct inode *inode, long nsec)
-+{
-+	inode->i_ctime.tv_nsec = nsec;
-+	return nsec;
-+}
+ /**
+@@ -1497,7 +1497,7 @@ static inline struct timespec64 inode_ctime_peek(const struct inode *inode)
+  */
+ static inline struct timespec64 inode_ctime_set(struct inode *inode, struct timespec64 ts)
+ {
+-	inode->i_ctime = ts;
++	inode->__i_ctime = ts;
+ 	return ts;
+ }
  
- /*
-  * Snapshotting support.
+@@ -1510,7 +1510,7 @@ static inline struct timespec64 inode_ctime_set(struct inode *inode, struct time
+  */
+ static inline time64_t inode_ctime_set_sec(struct inode *inode, time64_t sec)
+ {
+-	inode->i_ctime.tv_sec = sec;
++	inode->__i_ctime.tv_sec = sec;
+ 	return sec;
+ }
+ 
+@@ -1523,7 +1523,7 @@ static inline time64_t inode_ctime_set_sec(struct inode *inode, time64_t sec)
+  */
+ static inline long inode_ctime_set_nsec(struct inode *inode, long nsec)
+ {
+-	inode->i_ctime.tv_nsec = nsec;
++	inode->__i_ctime.tv_nsec = nsec;
+ 	return nsec;
+ }
+ 
 -- 
 2.41.0
 
