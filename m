@@ -2,74 +2,201 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3D04738F18
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jun 2023 20:48:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F0B3738F21
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jun 2023 20:49:32 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=sc9SdGkV;
-	dkim=fail reason="signature verification failed" header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=PrqwLsXY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2023-03-30 header.b=asXOqynp;
+	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=inU5w9GI;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QmXZs5GVHz3d9B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 04:48:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QmXbt2PYZz3dGT
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 04:49:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=sc9SdGkV;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=PrqwLsXY;
+	dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2023-03-30 header.b=asXOqynp;
+	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=inU5w9GI;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=softfail (domain owner discourages use of this host) smtp.mailfrom=suse.cz (client-ip=2001:67c:2178:6::1d; helo=smtp-out2.suse.de; envelope-from=jack@suse.cz; receiver=lists.ozlabs.org)
-X-Greylist: delayed 380 seconds by postgrey-1.37 at boromir; Thu, 22 Jun 2023 02:40:38 AEST
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oracle.com (client-ip=205.220.165.32; helo=mx0a-00069f02.pphosted.com; envelope-from=eric.devolder@oracle.com; receiver=lists.ozlabs.org)
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QmTlB0cYJz309J;
-	Thu, 22 Jun 2023 02:40:37 +1000 (AEST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 0D47B1FF34;
-	Wed, 21 Jun 2023 16:34:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1687365247; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=83XiFVWYz/09+oGN/3WNfR8rOmdHj8dhtkMP8AULWnA=;
-	b=sc9SdGkVYpy6qJIOp94C8ZTK7+yexSuiuzBBQMmC044LdrYsGTTopVDpXJpirhT8YYUNwr
-	EkZW+2bPiDoUHc1sENxt/GtvO8e+o5cGEB5/qIHjLNWUPiQKx/fex55iHFqqK+cK1B9O2I
-	hTcjZhgE/PAahoI8Eyiz/fHdKLMV9RA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1687365247;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=83XiFVWYz/09+oGN/3WNfR8rOmdHj8dhtkMP8AULWnA=;
-	b=PrqwLsXYpUHalqAYLIba6BTiYIYYM3iCNT6BT131aBHGuZlOrJnTQ+csCsqt6keBKu3RY2
-	7Ndse7BgJBjAHYAQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id E3BAB133E6;
-	Wed, 21 Jun 2023 16:34:06 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id YfCPN34mk2S4QgAAMHmgww
-	(envelope-from <jack@suse.cz>); Wed, 21 Jun 2023 16:34:06 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 74A08A075D; Wed, 21 Jun 2023 18:34:06 +0200 (CEST)
-Date: Wed, 21 Jun 2023 18:34:06 +0200
-From: Jan Kara <jack@suse.cz>
-To: Jeff Layton <jlayton@kernel.org>
-Subject: Re: [PATCH 01/79] fs: add ctime accessors infrastructure
-Message-ID: <20230621163406.udwkxl6tteg6nlcn@quack3>
-References: <20230621144507.55591-1-jlayton@kernel.org>
- <20230621144507.55591-2-jlayton@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QmVR50hr5z30hG
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jun 2023 03:11:43 +1000 (AEST)
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35LDAbSC030805;
+	Wed, 21 Jun 2023 17:11:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2023-03-30;
+ bh=cFVA8rz4Byy6FovNBlIwDK3HTVYo/vUXwFWTq50KWOU=;
+ b=asXOqynpqRuVCSuVziBHfs+JoSW/Zu1LVq933MkQRxYSB5tAMQW+d59PpJM7lKLgvhY/
+ xaL2mf6Rar5p908DUOWTdXvFe4q6ugG1cYQ5SVo0Q5oHk7dO8Ub/NlEc1kMiblCiSoTt
+ NnkcDQx9rNPLJVIOi6rJKbULIvodYfOv1g62qoHkjIfNRP+QxiIK1RunyiwaMbLDauZ0
+ gu4GmQDgoH4Y+F9eGEu+fycKrXUiufV+TzpjZs39BluYdFsPhFN35+vsOX/3QV6lTT4W
+ GELraALyCWABn9Jdn1P8Mwu6faeYzeqg3Uo9ZDQuA/H/noDoV+wH9n0uRNKyWydcrKV5 TA== 
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3r93e1g0u7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 21 Jun 2023 17:11:05 +0000
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 35LGJxvI008428;
+	Wed, 21 Jun 2023 17:11:04 GMT
+Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11lp2168.outbound.protection.outlook.com [104.47.58.168])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3r9396kj7t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 21 Jun 2023 17:11:04 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Rf4uBUd4lyEaY7MnulRrmgXTokHmlZJW24aQBmrAhPLhz1c2Hkncf5g1cvpilRrD62Mda0O8gIvk6kpLDhM06EUIUTFiV/q0wHAEwcL/l3oIiHOJjVKdP5ijQUEJMiIUXjDAIs8lQsDIlCImyJn3kK8eN/fQ+BASpWfDhv53SicK/0cw02f7z0emhWfD428KzeqORCH8Q1j2p5fCFZmtZ3H90O9A8eBmw+mzY3txXZx2dNtAwCwfSYR9MIpiuapLLvG24INNtKt3e02zYXiF0FgQqXVz7xStOTymAFulN8R3/CUkJHI5JU7YWyiYsujtVUXqhw7Fu5yQDL6TAjI6lA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cFVA8rz4Byy6FovNBlIwDK3HTVYo/vUXwFWTq50KWOU=;
+ b=HFVzr/dFRo0vbvoQg3Fsptqn5pT4AvTfzcKD/ysKOJDRJvzbMsZ4xvFI3t5DJXIVdRMkUmLpMJeiZh4VwREkX8a7v7/bUUZAhI1n8Pw6LjJSh42pDF5mnanUdjOZP45Mtlm4aaqWS2jMk7sVcAqEYFxFajrVhFIeVFWCKL581wS8AV7VkIM8krrRsvQC43pwtaVzcIVD1iNMi43hEsQ9UQ3kBKmP69Bwxu7e1I6bUKDgUyybrNaaGoXS25u2VaVoJf74rEiKUFGS79D8VUXa8x+iWZdIJ0S6ZBjtrUUyUjmLzBdJ4gZXYwFl1eu8s7RFru8MCnKaU3JWsldphKftwQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cFVA8rz4Byy6FovNBlIwDK3HTVYo/vUXwFWTq50KWOU=;
+ b=inU5w9GIRoMgWDY0lNDzLZ6tHplbwJZFjjeNlO7kKuNFvhfm4oLEEb59pIEuBCE7A3OZMpuEsZevHu0RMGvot7z5zP2O2GVSSg5lxhenjKNU7d+TsyKIMR0Ndpw8n+45A+6I7J5fRRrIdN9RR3u/qHQFis3CKm75Zzr1TgMBtVg=
+Received: from CO1PR10MB4531.namprd10.prod.outlook.com (2603:10b6:303:6c::22)
+ by SA2PR10MB4699.namprd10.prod.outlook.com (2603:10b6:806:118::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.21; Wed, 21 Jun
+ 2023 17:10:59 +0000
+Received: from CO1PR10MB4531.namprd10.prod.outlook.com
+ ([fe80::8b8f:b4b1:bb78:b048]) by CO1PR10MB4531.namprd10.prod.outlook.com
+ ([fe80::8b8f:b4b1:bb78:b048%5]) with mapi id 15.20.6500.036; Wed, 21 Jun 2023
+ 17:10:59 +0000
+Message-ID: <b89bb8d6-77db-76fe-e360-f6c439b80e73@oracle.com>
+Date: Wed, 21 Jun 2023 12:10:49 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v2 12/13] s390/kexec: refactor for kernel/Kconfig.kexec
+Content-Language: en-US
+To: Alexander Gordeev <agordeev@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>
+References: <20230619145801.1064716-1-eric.devolder@oracle.com>
+ <20230619145801.1064716-13-eric.devolder@oracle.com>
+ <ZJKD690QaX1IgiAz@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+From: Eric DeVolder <eric.devolder@oracle.com>
+In-Reply-To: <ZJKD690QaX1IgiAz@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SA9P221CA0007.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:806:25::12) To CO1PR10MB4531.namprd10.prod.outlook.com
+ (2603:10b6:303:6c::22)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230621144507.55591-2-jlayton@kernel.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PR10MB4531:EE_|SA2PR10MB4699:EE_
+X-MS-Office365-Filtering-Correlation-Id: 20ab26fe-9ba1-4023-73ee-08db727a7c14
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	TSe6jR9RDHigmRyBDUYjurDIcM2OcJBQy6AEfFDI56YSvVfPaOzBh5wm73eVBDQBoQ2yDP1s7ZDV14jhzzKZBgTtaEwWerukQ/A+fIkBRAtTGjit+8Cc0EPB59Q/0A2v/pxZuwcXKUMb3avE4JjNDzN9BigerI/6o6sQRXy1PpB5I0Fm3+uPhJ2VERC64Bc5SUS0Knyc8ZqQzXY3RSBCAHSyK500eT9zLCz3iTixXlmTdVU8dL4+U4Hnc2npnba6O8hEGg50IGzTDfRV+iNrIRfXPcfB4iLRy1H2anRGDe4c6u2L/AQhdZNNNFZkfRRVYo1AqfUoPIwqpxM+AYqV+PfLSJOZeL1wPSMp1/1KribzbH+WDnkxsXdRp8jWoxTPNG/OrQWLSTIYzEIGPPgKPXjkqgY5JU5Itpc+3yX0j2U7wIbrDrv2y8vsnsalGO98v+kEragmTstosV8t0R4BfuwfFRjK/yrQR6r4DzFv42NLfXn2gSKv/Ppe+TycXnx7yv8EKUpKpqsFMWoZZRH8h0rPjdo3HTj5bH6srXtFOm0zEkT3XsGz99/QDX9cWpdY/azLtwgx9gj4CRmpDDc7fvTdwVCAWywg5hJBcR3eFma6wVmQ07y4F4Sk31D6BlBqSOCyYwTQ46ElcrEfky5hTw==
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR10MB4531.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(39860400002)(396003)(136003)(366004)(376002)(346002)(451199021)(31686004)(66899021)(36756003)(7406005)(7366002)(7416002)(5660300002)(41300700001)(8676002)(38100700002)(8936002)(66476007)(4326008)(316002)(86362001)(66556008)(31696002)(66946007)(6486002)(107886003)(6506007)(26005)(186003)(2906002)(6512007)(53546011)(2616005)(478600001)(83380400001)(6666004)(110136005)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?Ukx4cG50azBTazNpRGRweUFXRTUvVVZRd3VFaHZUOTU3L1gyQm1oTkU3dGtP?=
+ =?utf-8?B?L1pXN0hOKzBGSUVDelJBb2d6NENZYk9vR2tBOWUwamRLNEFkdUJTMGl5L05o?=
+ =?utf-8?B?cXBqc01heTdTeS9oMTNEdVEzbG96MjZUZ05FWWxGdFRkMGc2K2FHTlkvV3ls?=
+ =?utf-8?B?ZU9pUUZmc29vZGVhQlp3RThGQWZ0SjZPanFXd08vQ2ppNk5VKzJMdkFRRTl2?=
+ =?utf-8?B?U1Rvc2FxVkxpK3kvMTdhalRuWjczKzZucDM0bjhidEMxenQ0ZThGRCtlRTZl?=
+ =?utf-8?B?bFowYlpmd2hlRFU3cGh3aTdoZHdZWitrdWtodDJWbHlqMk1BNFRBaTNMUk91?=
+ =?utf-8?B?bWwxV1R6MjB2Kzczbm9uRmYxbU96ek9iU05zd041alFwSUdKa3pJU3ptVlR1?=
+ =?utf-8?B?TWdtNU1Gc1MvRnVYa0hYU0ZjYklMb2FpL2N5YTAxdXdwUk5wT2dnblg1Rm9v?=
+ =?utf-8?B?SjdMWEdocktPd0Y3Ti9nR0w4SkdWV1FrQXRUejFWWVMyVGJyNDNhNjRHT0xv?=
+ =?utf-8?B?NXJxbUxaUDZIQ0RUVytvbU9hc3c0dXc0NTRDM3BPZktkRGtVR2ZhV3JoZk9K?=
+ =?utf-8?B?eDFjZ2JpdjFOaThVMWFsTlkxYS9MNzJ5c0RPalpYcmxMK3h0UFgzcTYraDRM?=
+ =?utf-8?B?aUxoVFhqeHkrS1FGVlgvd2V6Wm1udWo4Z0NlME94bmFDc1BGZ0F5TGFYR3FB?=
+ =?utf-8?B?S1AvaFYyY3JENDUyTEtqZ1hia2dONzdRaHVuTklXamVqNXZWbVFZaTI3ZkhX?=
+ =?utf-8?B?WlpEeU5VNHRQb3pnQUFYTlNSTFgxa1hjc2Fabis3bjhEbE5SRTlicXlVd1dI?=
+ =?utf-8?B?eXBKbEpzZEs0V2lSNDBYRVc1REVsdEozTm9iazA2TDVTcEJJYm1rUTlPV0V4?=
+ =?utf-8?B?R0dRVVRud09IS3UxdzRaamxCSXE5bzBMQjVnUGRjdlVpWUVEMUVEOXgvOHBu?=
+ =?utf-8?B?Qm03OTc2R1dzU1VlOGEyUjM2SFZwRzFGby9GVkUwT0MvVFZkWkNEZWY3dUQ2?=
+ =?utf-8?B?aGIvZkordTBkV053dWx5eGM1NFN5Vkh2cVhKMmo1Q0txYTZtUmhnZVhZRENO?=
+ =?utf-8?B?OEtpWi9TVGYxM2Exc2pDczlCTEVyYXh3NFpaRlhwMy9ES3VZb012NXVTa1Vw?=
+ =?utf-8?B?SlRtSzdBemY0V3ZndjFhcEtlZFRSWGtOeTh2cjg1UlVldVdlMEc5NytueWsr?=
+ =?utf-8?B?QVhJSUdrdUlIWndiM0o2aGZ5UXBOcUpKeVowTUU4YjVjRzlEd240SGlvVlov?=
+ =?utf-8?B?WTJBSEdEamhpTUpZdjFkbzhkN1ZTS1p6b093Y25UZDl0WG1mNFNtM3ZNNkZK?=
+ =?utf-8?B?Zzc0MVVQQ3N6YlBqUXQ5MThDT2FCYkt4S3U4UmZyYnU2WS9KUGpEcVRqelgx?=
+ =?utf-8?B?ZXB5aWd3bWtqanpNejB6LzBnU3RkTmlqcHRydlYvWmdNSlUxK0pwS0hIZVNE?=
+ =?utf-8?B?Vk5hNEZkZldLbytYVDJ4V3JQOVhnbDExdS9XU3BKaVdydFRjdGZwTnNXTm5m?=
+ =?utf-8?B?L3Bxc0RiVjkzNURicGtDQkdxOW9LNUlzaFE2b3pLdUcvZHZPa0pjbFJyNTZh?=
+ =?utf-8?B?Y21XaTBuWTZIc1BCTjBNWis2OTYyZDVqRjRhMW40eHZoRTRWK3dyb3dXaWVO?=
+ =?utf-8?B?MzZTdXp6Y25tK1FFZUtHTTdsbFQwVGZhaU9lQjJnTHdycHc4NVpqT1NXUzcw?=
+ =?utf-8?B?TmgyaW5ZTmtSUmlVc05JSk5CM3dTTldjTW9HZUMwUGhPSDdCWXgzQ3ZTVVRp?=
+ =?utf-8?B?anVCVVJENUQzOWFJd0gwemhyRmovcjdUcnBSTTNRZHQ1N1lMalg1c0lhOXR3?=
+ =?utf-8?B?dHhtczNibTJESnRGbXByQm9kd1NUcmpHaHBaYzk1T1pXQmVmbFB5bXdUbnhr?=
+ =?utf-8?B?UzNBSHNHbG1pWTVsTlRXWlI5VE12SzVVUFA4a0hzeVFLR3JpanFZYXdGb2hE?=
+ =?utf-8?B?anBwUFZBZUEvRFM1enJicW9RNGMwdlVFZm9MaDJkZk9SWnNRb01Ub0RsWDAy?=
+ =?utf-8?B?SUtqNmxCOVJqallsNzExVU41NDZSZi9lVk5pd1RqWnBydHE3YXFsOWc1Ykpw?=
+ =?utf-8?B?V1ZuWGJObzdYUXpoRkNBQmhUOWJLN0FnczlJVzlNbU4ydmltOEFWUWNMQXpF?=
+ =?utf-8?B?b0MxaFc4MWRtcXA0YnJ1bzJ5M2JWdjBLenZoOEdHa3F5RGhjcWozM2YraDg1?=
+ =?utf-8?B?WUE9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 	=?utf-8?B?RElPd3Q1dm9heE1NV0ZEWXVidjZ0Zk53RXlFSnJTYkppTU1DS29NZ2Y2TEpJ?=
+ =?utf-8?B?UVJFRU8wRkpINGI5MGp1cmlHV0t4VWRNb3p3WVJESDNXdEF3bFI3YWI5VnI1?=
+ =?utf-8?B?MFFhaXpUUGJleGdiQlY4SzU0ektpWWFzNkpNU0FZMDJ1THBjbUR5YlJiU1VM?=
+ =?utf-8?B?eURpWjhlMkltbFJCSFk0MXN3THRRTE5BSW1PRThNUWRQdGtHTTdhSEQ3cHpG?=
+ =?utf-8?B?R3cwc0dGMUlDak5HT2h0ZVlFSWtWQzR3eEJmQjNWNmlpMjdvQXVjd2tCZjJX?=
+ =?utf-8?B?S2c3TG5BVThiZTc4Nmh5V01LdUF6UU1RNGV2N2puODdPQ0NDWVRtTk50c1Nu?=
+ =?utf-8?B?S0hNY0h0VVI4TWxaQUdGL2pHNW1vR25NZTBNUVUraXoxMDNJUW5DODhOakNr?=
+ =?utf-8?B?NWtlNmFydEhiOE9RaWt6VlQ4MWgzMWpxeWV2YUluN1VTdkNTbUtxYWJvNWgz?=
+ =?utf-8?B?c0crQ2NxanhmYXpSV1E4eGhVMG5TbzNLcExTM3ZYd3VzekVCNk9xeDlPY1Z6?=
+ =?utf-8?B?ZXVubFN2a0s3OEJxN01ocVY1cXF5N1FUU3Iza0ZYcTlMdkxwemxqRlpsOXM4?=
+ =?utf-8?B?VEd1S2hZSlhZS2U5K0krcmFERkkwZW5YcTVnMGJtU050WUZ2MXppaHBubGg3?=
+ =?utf-8?B?K3VRS0F6ZjlXVHduNWozcTlENDFrY09BZjBhajMwN3hqbUNBL2JHdjJtSUUw?=
+ =?utf-8?B?Mjc4dWRrWERLMDJJdmo1cVRzdWQ2eUFYeHR3WU5WSWx6cHQwREJDYXJmcEVC?=
+ =?utf-8?B?WjJic1lKZXE1c2FtUVhmdlgwdTM4dVViNFAwNGRwYkowTktYNS8wYWNxNTN0?=
+ =?utf-8?B?WjZBVisrWlV4YUVZQkZkK0V0ZzZ0eVlETWljdnppZENEOGNhN09LbGphaUFP?=
+ =?utf-8?B?cUQ5OFZIdFRZUVN6YW9HdTNKc1JUMXNqdUY1MjI1am9RK0tmUVVxVFVCTGti?=
+ =?utf-8?B?dnIwOVNmQnpyQ3JybzRxMmNJYVgyTCt2NDI3ZTl0VFdWM3BhZGxRVHNyOEJO?=
+ =?utf-8?B?QUVaNEJPVEp5WmtkN2o5Z0RDUFhFL3RTMlZaKzJIalNwcC9CTktWa0M4dnNG?=
+ =?utf-8?B?RlRtbnN5WHVQSFFIbmV3MEJhc3A0WFJDNFNVZ3hyVEpoQnh5TVZCRFIrUEI3?=
+ =?utf-8?B?cnBObU16WU1IQWJIWWpqSUswRW10NTJmekNreDhmQjMzSlpqSjAxTlByL09l?=
+ =?utf-8?B?akowVHByTEgwclRtcTYrdG1MZ2lMckZMQ2ZEVnhzaS8xcUVUeXV3SVh2Q0N6?=
+ =?utf-8?B?dFkvVlRKbVd2N2MwY2xRem1CdUc1dkhhMUdKUWFNaHk5R2dITjl4MTFmeGNG?=
+ =?utf-8?B?L3M4OGNpT2V1YUpVaXcvajkrWkhDZ2p4TGx3U0dzMlQyUXc2VGVwcFZVVmgw?=
+ =?utf-8?B?YnQxd0FycGEvK3R2cW95KzhWbWJnUGR5aEROVnhzU1cwU1pRL3JUY0lPaFgx?=
+ =?utf-8?B?b0FuK3BlVlFDdnlTRVk4ek0yQXVKalpMSDhDVVhwdDNOeHY1ZDVYVFBacTdY?=
+ =?utf-8?B?c1pyS2Q4S0VqTmRBRG10TmMvcGJCblU3NFlVU1d2dzR5emVLTjJhOUNad2Rq?=
+ =?utf-8?B?bElwNDRYd1Z5dGJEUXdLTlU0UllEUGxtRFhDc2lXVCtPVE5rTnh5ZlhscU8r?=
+ =?utf-8?B?VlpINUZWQWl0cmRBK0ZtOUNlN2o2MnlqaGtPQUdRUzFBZnBwMjRjbjVqSmcr?=
+ =?utf-8?B?RmNpZVFMTXlqQ0RrTzdOSEVKQVpBdVZsOGxVVi9GalF1M1lTNDBYZHhHelZ0?=
+ =?utf-8?B?Q01kR3o3bDFsVTJXa1FlVy9YbTRkSXdPMUtkN2FIbjBKRFdiazZzOUZKd3pp?=
+ =?utf-8?B?YUo5cnIrYXRsblA2RG5RVTh6UTlvVDZrcGUrajl2MWFHSVVTRDQzdE9BWktU?=
+ =?utf-8?B?OUVVaHgzQzh2N25sUFJPZS9Qb1FtSk9zNEs5aGpBYndWcTc4MDFqdmpYSlds?=
+ =?utf-8?B?dWtkdEtjdHc1QlhTcmN0dUd6Y29CZlBSWWlkV3g5K1NWUThxUnZOS2RrY3cy?=
+ =?utf-8?B?S2F4ZjYwaTVhOGYveE9RZUFkOW43Rm1jTjcrUkhONFl6WXpCY282OGhVWDc1?=
+ =?utf-8?B?V25UMmhNbVpBcm9LZC9qc1dSZkthY0FTTm8zVnVFRTAwUDd3RlJFY3hQeVBY?=
+ =?utf-8?B?cUVmTG9FNDJJZ211Qnp2NWhBcmZ4L0FEd295clJVVUQ5TkowaGcxaWtxTGpI?=
+ =?utf-8?B?S3IvUE96VG9maklwZ1c3dHMzajBOOU40QWh5SCtXUm5rcXBqVlRSSUFzNjVV?=
+ =?utf-8?B?WXFOTUszSnhiU0gxZklyUmNVcXVXZjFNWlVFWlQvVUxyYTNOaktRT1hIYUxR?=
+ =?utf-8?B?bm8yNWFiajJCY0FrTGRQR1JTeHdSdE5xY2dSenljZ1gxZkFRbmJXSWc3SXVk?=
+ =?utf-8?Q?sT0XTl6skeVKUWSSlQqnb5QNhbfI1VEOK6fsTb2C4ObFy?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-1: 	r4Kg79TGH/5+GpXJ4RIGsplkvLGx/ah6xU+we4dxo2OvfNCuk4Xo2TJRgGiHk2N3T0qo0Pec4XEoWf7+3u5Q99FA5xvadOa96jTSlW+ab87tjZgdRX5EfK/D1y3XuWrXQx3BCWN5j1DxA7dkSFxBYeODfjWZfnFAIJW+x2ONJMk1QTYsFz0ZAjKsqNcCb0WJGpKlAfibfH9Wfy0lmGwEeprgkHwIrfCm221jWVn2vA63GOujfxledyGqdXXYL0Wu20g6MsBLhunGVGmZeXITUaHAJRNrLMBFplS1Hjd4wU79pF3hJryGuMe3AHbkXTuoAr+PM0aH4vrGvLC6IjEXBYOguG41P4T4KfVI9wSdeEnHJd2r5rN4qCsT3gXzpDspfS4xYg7gxUJqqRRim0dz6tTrYq6+Gmo5/G98Q6AcPG7wliPvXN7KoZec9XwO2V8KSdS6U7VgpLathg==
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 20ab26fe-9ba1-4023-73ee-08db727a7c14
+X-MS-Exchange-CrossTenant-AuthSource: CO1PR10MB4531.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2023 17:10:59.8369
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: NNn7B8IpDq50uWYPKj8K/Rk9COIn8nMPGUbl6QNCB9nHBsPFbRbUGBAjKCHP9suZNQ1FEpITduIQZnWiFbPWXUgkvBoSkRenS7UNrOKHczk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR10MB4699
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-21_10,2023-06-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 adultscore=0
+ spamscore=0 phishscore=0 suspectscore=0 malwarescore=0 bulkscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306210144
+X-Proofpoint-GUID: aQzqRkEXScwn-a6gonGdwPG6ptTnbI-0
+X-Proofpoint-ORIG-GUID: aQzqRkEXScwn-a6gonGdwPG6ptTnbI-0
 X-Mailman-Approved-At: Thu, 22 Jun 2023 04:32:35 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -82,129 +209,177 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Latchesar Ionkov <lucho@ionkov.net>, "Rafael J. Wysocki" <rafael@kernel.org>, "Darrick J. Wong" <djwong@kernel.org>, Anders Larsen <al@alarsen.net>, Carlos Llamas <cmllamas@google.com>, Andrii Nakryiko <andrii@kernel.org>, Hugh Dickins <hughd@google.com>, John Johansen <john.johansen@canonical.com>, Seth Forshee <sforshee@digitalocean.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Christoph Hellwig <hch@lst.de>, Mike Marshall <hubcap@omnibond.com>, Paulo Alcantara <pc@manguebit.com>, linux-xfs@vger.kernel.org, Bart Van Assche <bvanassche@acm.org>, John Keeping <john@keeping.me.uk>, Zhang Yi <yi.zhang@huawei.com>, James Morris <jmorris@namei.org>, Tyler Hicks <code@tyhicks.com>, Alan Stern <stern@rowland.harvard.edu>, Christian Borntraeger <borntraeger@linux.ibm.com>, devel@lists.orangefs.org, Shyam Prasad N <sprasad@microsoft.com>, Jan Harkes <jaharkes@cs.cmu.edu>, linux-um@lists.infradead.org, Nicholas Piggin <npiggin@gmail.com>, Alexander Viro <viro@zeniv.linux.org.uk>, Eric Van Hensbergen <ericvh@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Trond Myklebust <trond.myklebust@hammerspace.com>, Anton Altaparmakov <anton@tuxera.com>, Christian Brauner <brauner@kernel.org>, Wolfram Sang <wsa+renesas@sang-engineering.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Stephen Smalley <stephen.smalley.work@gmail.com>, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, Ronnie Sahlberg <lsahlber@redhat.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, Luis Chamberlain <mcgrof@kernel.org>, Chuck Lever <chuck.lever@oracle.com>, Sven Schnelle <svens@linux.ibm.com>, Jiri Olsa <jolsa@kernel.org>, Jan Kara <jack@suse.com>, Tejun Heo <tj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linux-trace-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, Dave Kleikamp <shaggy@kernel.org>, Sandeep Dhavale <dhavale@google.com>, Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>, Mimi Zohar <zohar@linux.ibm.com>, linux-mm@kvack.org, Joel Fernandes <joel@joelfernandes.org>, Eric Dumazet <edumazet@
- google.com>, Stanislav Fomichev <sdf@google.com>, Andrzej Pietrasiewicz <andrzej.p@collabora.com>, Hangyu Hua <hbh25y@gmail.com>, linux-s390@vger.kernel.org, linux-nilfs@vger.kernel.org, Paul Moore <paul@paul-moore.com>, Leon Romanovsky <leon@kernel.org>, John Fastabend <john.fastabend@gmail.com>, Arve =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>, Minghao Chi <chi.minghao@zte.com.cn>, codalist@coda.cs.cmu.edu, selinux@vger.kernel.org, ZhangPeng <zhangpeng362@huawei.com>, Udipto Goswami <quic_ugoswami@quicinc.com>, Yonghong Song <yhs@fb.com>, Iurii Zaikin <yzaikin@google.com>, Namjae Jeon <linkinjeon@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>, ecryptfs@vger.kernel.org, Todd Kjos <tkjos@android.com>, Vasily Gorbik <gor@linux.ibm.com>, Yu Zhe <yuzhe@nfschina.com>, linuxppc-dev@lists.ozlabs.org, reiserfs-devel@vger.kernel.org, Miklos Szeredi <miklos@szeredi.hu>, Yue Hu <huyue2@coolpad.com>, Jaegeuk Kim <jaegeuk@kernel.org>, Aditya Garg <gargaditya08@live.com>, Martijn Coenen <maco@android.com>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, Hao Luo <haoluo@google.com>, Tony Luck <tony.luck@intel.com>, Theodore Ts'o <tytso@mit.edu>, Nicolas Pitre <nico@fluxnic.net>, linux-ntfs-dev@lists.sourceforge.net, Muchun Song <muchun.song@linux.dev>, Roberto Sassu <roberto.sassu@huawei.com>, linux-f2fs-devel@lists.sourceforge.net, "Guilherme G. Piccoli" <gpiccoli@igalia.com>, Jozef Martiniak <jomajm@gmail.com>, Eric Biederman <ebiederm@xmission.com>, Anna Schumaker <anna@kernel.org>, xu xin <cgel.zte@gmail.com>, Brad Warrum <bwarrum@linux.ibm.com>, Mike Kravetz <mike.kravetz@oracle.com>, Jingyu Wang <jingyuwang_vip@163.com>, linux-efi@vger.kernel.org, Dan Carpenter <error27@gmail.com>, Martin Brandenburg <martin@omnibond.com>, Tom Rix <trix@redhat.com>, Alexei Starovoitov <ast@kernel.org>, Chris Mason <clm@fb.com>, linux-mtd@lists.infradead.org, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Marc Dionne <marc.dionne@auristor.com>, linux-afs@lists.infradead.org, Ian Kent <raven@themaw.net>, Naohiro Aota <naohiro
- .aota@wdc.com>, Daniel Borkmann <daniel@iogearbox.net>, Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, linux-rdma@vger.kernel.org, Linyu Yuan <quic_linyyuan@quicinc.com>, coda@cs.cmu.edu, Viacheslav Dubeyko <slava@dubeyko.com>, Ilya Dryomov <idryomov@gmail.com>, Paolo Abeni <pabeni@redhat.com>, Alexey Dobriyan <adobriyan@gmail.com>, "Serge E. Hallyn" <serge@hallyn.com>, Zhihao Cheng <chengzhihao1@huawei.com>, Jens Axboe <axboe@kernel.dk>, Zeng Jingxiang <linuszeng@tencent.com>, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, autofs@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>, Yifei Liu <yifeliu@cs.stonybrook.edu>, Damien Le Moal <dlemoal@kernel.org>, Eric Paris <eparis@parisplace.org>, ceph-devel@vger.kernel.org, Gao Xiang <xiang@kernel.org>, Jiangshan Yi <yijiangshan@kylinos.cn>, David Howells <dhowells@redhat.com>, linux-nfs@vger.kernel.org, linux-ext4@vger.kernel.org, Song Liu <song@kernel.org>, samba-technical@lists.samba.org, Steve French <sfrench@samba.org>, Jeremy Kerr <jk@ozlabs.org>, netdev@vger.kernel.org, Bob Peterson <rpeterso@redhat.com>, linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org, ntfs3@lists.linux.dev, linux-erofs@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, ocfs2-devel@oss.oracle.com, jfs-discussion@lists.sourceforge.net, Dominique Martinet <asmadeus@codewreck.org>, Christian Schoenebeck <linux_oss@crudebyte.com>, Bob Copeland <me@bobcopeland.com>, KP Singh <kpsingh@kernel.org>, Oleg Kanatov <okanatov@gmail.com>, Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, Joseph Qi <joseph.qi@linux.alibaba.com>, Yuta Hayama <hayama@lineo.co.jp>, Andreas Dilger <adilger.kernel@dilger.ca>, Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>, Zhengchao Shao <shaozhengchao@huawei.com>, Chen Zhongjin <chenzhongjin@huawei.com>, Ard Biesheuvel <ardb@kernel.org>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, Andreas Gruenbacher <agruenba@redhat.com>, Richard Weinberger <ric
- hard@nod.at>, Mark Fasheh <mark@fasheh.com>, Stefan Roesch <shr@devkernel.io>, cluster-devel@redhat.com, Jason Gunthorpe <jgg@ziepe.ca>, Jakub Kicinski <kuba@kernel.org>, Rik van Riel <riel@surriel.com>, Salah Triki <salah.triki@gmail.com>, Evgeniy Dushistov <dushistov@mail.ru>, linux-cifs@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Chao Yu <chao@kernel.org>, apparmor@lists.ubuntu.com, Josef Bacik <josef@toxicpanda.com>, "Liam R. Howlett" <Liam.Howlett@Oracle.com>, Tom Talpey <tom@talpey.com>, Hans de Goede <hdegoede@redhat.com>, "Tigran A. Aivazian" <aivazian.tigran@gmail.com>, Dave Chinner <dchinner@redhat.com>, David Sterba <dsterba@suse.com>, Xiubo Li <xiubli@redhat.com>, Ryusuke Konishi <konishi.ryusuke@gmail.com>, Juergen Gross <jgross@suse.com>, Johannes Thumshirn <jth@kernel.org>, Ritu Agarwal <rituagar@linux.ibm.com>, Luis de Bethencourt <luisbg@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, v9fs@lists.linux.dev, "Fabio M. De Francesco" <fmdefrancesco@gmail.com>, linux-unionfs@vger.kernel.org, Ruihan Li <lrh2000@pku.edu.cn>, linux-security-module@vger.kernel.org, Erez Zadok <ezk@cs.stonybrook.edu>, Jeffle Xu <jefflexu@linux.alibaba.com>, "Dr. David Alan Gilbert" <linux@treblig.org>, Johannes Weiner <hannes@cmpxchg.org>, Phillip Lougher <phillip@squashfs.org.uk>, Johannes Berg <johannes@sipsolutions.net>, Sungjong Seo <sj1557.seo@samsung.com>, David Woodhouse <dwmw2@infradead.org>, linux-karma-devel@lists.sourceforge.net, linux-btrfs@vger.kernel.org, Joel Becker <jlbec@evilplan.org>
+Cc: chenhuacai@kernel.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, peterz@infradead.org, catalin.marinas@arm.com, linus.walleij@linaro.org, dave.hansen@linux.intel.com, linux-mips@vger.kernel.org, James.Bottomley@hansenpartnership.com, dalias@libc.org, hpa@zytor.com, linux-riscv@lists.infradead.org, will@kernel.org, kernel@xen0n.name, tsi@tuyoix.net, linux-s390@vger.kernel.org, rmk+kernel@armlinux.org.uk, paulmck@kernel.org, ysato@users.sourceforge.jp, deller@gmx.de, x86@kernel.org, linux@armlinux.org.uk, paul.walmsley@sifive.com, mingo@redhat.com, geert@linux-m68k.org, hbathini@linux.ibm.com, samitolvanen@google.com, ojeda@kernel.org, juerg.haefliger@canonical.com, borntraeger@linux.ibm.com, frederic@kernel.org, arnd@arndb.de, mhiramat@kernel.org, ardb@kernel.org, thunder.leizhen@huawei.com, aou@eecs.berkeley.edu, keescook@chromium.org, gor@linux.ibm.com, anshuman.khandual@arm.com, hca@linux.ibm.com, xin3.li@intel.com, npiggin@gmail.com, konrad.wilk@oracle.com, linux-m68k@lists.linux-m68k.org, bp@alien8.de, loongarch@lists.linux.dev, glaubitz@physik.fu-berlin.de, tglx@linutronix.de, ziy@nvidia.com, linux-arm-kernel@lists.infradead.org, boris.ostrovsky@oracle.com, tsbogend@alpha.franken.de, sebastian.reichel@collabora.com, bhe@redhat.com, linux-parisc@vger.kernel.org, gregkh@linuxfoundation.org, kirill.shutemov@linux.intel.com, ndesaulniers@google.com, linux-kernel@vger.kernel.org, sourabhjain@linux.ibm.com, palmer@dabbelt.com, svens@linux.ibm.com, tj@kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, masahiroy@kernel.org, rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed 21-06-23 10:45:06, Jeff Layton wrote:
-> struct timespec64 has unused bits in the tv_nsec field that can be used
-> for other purposes. In future patches, we're going to change how the
-> inode->i_ctime is accessed in certain inodes in order to make use of
-> them. In order to do that safely though, we'll need to eradicate raw
-> accesses of the inode->i_ctime field from the kernel.
-> 
-> Add new accessor functions for the ctime that we can use to replace them.
-> 
-> Signed-off-by: Jeff Layton <jlayton@kernel.org>
 
-Looks good to me. Feel free to add:
 
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
-> ---
->  fs/inode.c         | 16 ++++++++++++++
->  include/linux/fs.h | 53 +++++++++++++++++++++++++++++++++++++++++++++-
->  2 files changed, 68 insertions(+), 1 deletion(-)
+On 6/21/23 00:00, Alexander Gordeev wrote:
+> On Mon, Jun 19, 2023 at 10:58:00AM -0400, Eric DeVolder wrote:
 > 
-> diff --git a/fs/inode.c b/fs/inode.c
-> index d37fad91c8da..c005e7328fbb 100644
-> --- a/fs/inode.c
-> +++ b/fs/inode.c
-> @@ -2499,6 +2499,22 @@ struct timespec64 current_time(struct inode *inode)
->  }
->  EXPORT_SYMBOL(current_time);
->  
-> +/**
-> + * inode_ctime_set_current - set the ctime to current_time
-> + * @inode: inode
-> + *
-> + * Set the inode->i_ctime to the current value for the inode. Returns
-> + * the current value that was assigned to i_ctime.
-> + */
-> +struct timespec64 inode_ctime_set_current(struct inode *inode)
-> +{
-> +	struct timespec64 now = current_time(inode);
-> +
-> +	inode_set_ctime(inode, now);
-> +	return now;
-> +}
-> +EXPORT_SYMBOL(inode_ctime_set_current);
-> +
->  /**
->   * in_group_or_capable - check whether caller is CAP_FSETID privileged
->   * @idmap:	idmap of the mount @inode was found from
-> diff --git a/include/linux/fs.h b/include/linux/fs.h
-> index 6867512907d6..9afb30606373 100644
-> --- a/include/linux/fs.h
-> +++ b/include/linux/fs.h
-> @@ -1474,7 +1474,58 @@ static inline bool fsuidgid_has_mapping(struct super_block *sb,
->  	       kgid_has_mapping(fs_userns, kgid);
->  }
->  
-> -extern struct timespec64 current_time(struct inode *inode);
-> +struct timespec64 current_time(struct inode *inode);
-> +struct timespec64 inode_ctime_set_current(struct inode *inode);
-> +
-> +/**
-> + * inode_ctime_peek - fetch the current ctime from the inode
-> + * @inode: inode from which to fetch ctime
-> + *
-> + * Grab the current ctime from the inode and return it.
-> + */
-> +static inline struct timespec64 inode_ctime_peek(const struct inode *inode)
-> +{
-> +	return inode->i_ctime;
-> +}
-> +
-> +/**
-> + * inode_ctime_set - set the ctime in the inode to the given value
-> + * @inode: inode in which to set the ctime
-> + * @ts: timespec value to set the ctime
-> + *
-> + * Set the ctime in @inode to @ts.
-> + */
-> +static inline struct timespec64 inode_ctime_set(struct inode *inode, struct timespec64 ts)
-> +{
-> +	inode->i_ctime = ts;
-> +	return ts;
-> +}
-> +
-> +/**
-> + * inode_ctime_set_sec - set only the tv_sec field in the inode ctime
-> + * @inode: inode in which to set the ctime
-> + * @sec:  value to set the tv_sec field
-> + *
-> + * Set the sec field in the ctime. Returns @sec.
-> + */
-> +static inline time64_t inode_ctime_set_sec(struct inode *inode, time64_t sec)
-> +{
-> +	inode->i_ctime.tv_sec = sec;
-> +	return sec;
-> +}
-> +
-> +/**
-> + * inode_ctime_set_nsec - set only the tv_nsec field in the inode ctime
-> + * @inode: inode in which to set the ctime
-> + * @nsec:  value to set the tv_nsec field
-> + *
-> + * Set the nsec field in the ctime. Returns @nsec.
-> + */
-> +static inline long inode_ctime_set_nsec(struct inode *inode, long nsec)
-> +{
-> +	inode->i_ctime.tv_nsec = nsec;
-> +	return nsec;
-> +}
->  
->  /*
->   * Snapshotting support.
-> -- 
-> 2.41.0
+> Hi Eric,
 > 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+>> The kexec and crash kernel options are provided in the common
+>> kernel/Kconfig.kexec. Utilize the common options and provide
+>> the ARCH_SUPPORTS_ and ARCH_SELECTS_ entries to recreate the
+>> equivalent set of KEXEC and CRASH options.
+>>
+>> NOTE: The original Kconfig has a KEXEC_SIG which depends on
+>> MODULE_SIG_FORMAT. However, attempts to keep the MODULE_SIG_FORMAT
+>> dependency (using the strategy outlined in this series, and other
+>> techniques) results in 'error: recursive dependency detected'
+>> on CRYPTO. This occurs due to any path through KEXEC_SIG
+>> attempting to select CRYPTO is ultimately dependent upon CRYPTO:
+>>
+>>   CRYPTO
+>>    <- ARCH_SUPPORTS_KEXEC_FILE
+>>       <- KEXEC_FILE
+>>          <- KEXEC_SIG
+>>
+>> Therefore, the solution is to drop the MODULE_SIG_FORMAT dependency
+>> for KEXEC_SIG. In practice, however, MODULE_SIG_FORMAT is still
+>> configured-in as the use of KEXEC_SIG is in step with the use of
+>> SYSTEM_DATA_VERIFICATION, which does select MODULE_SIG_FORMAT.
+> 
+> No, it is actually the other way around.
+> Could you please provide the correct explanation?
+> 
+> AFAICT the MODULE_SIG_FORMAT dependency was introduced with commit
+> c8424e776b09 ("MODSIGN: Export module signature definitions") and
+> in fact was not necessary, since s390 did/does not use mod_check_sig()
+> anyway. So the SYSTEM_DATA_VERIFICATION could have left intact.
+
+Thomas, would the correct explanation be simply indicating that MODULE_SIG_FORMAT isn't needed as it 
+is not used by s390 (crediting your summary above)?
+
+> 
+> However, the original SYSTEM_DATA_VERIFICATION seems sane and I do
+> not understand why other architectures do not have it also? May be
+> Mimi Zohar (putting on CC) could explain that?
+> 
+> It looks like such dependency actually exists in implicit form
+> (which you picked from x86):
+> 
+> 	In addition to this option, you need to enable signature
+> 	verification for the corresponding kernel image type being
+> 	loaded in order for this to work.
+> 
+> Does it mean that if an architecture did not enable the signature
+> verification type explicitly the linker could fail - both before
+> and after you series?
+
+As a quick test I checked x86 and it compiles/links ok if KEXEC_SIG and KEXEC_SIG_FORCE are 
+configured-in, but KEXEC_BZIMAGE_VERIFY_SIG (used for x86 sig verify) is not. The reason being that 
+the kexec_image_verify_sig() function checks if the fops.verify_sig is non-NULL before invoking the 
+verification. If it is NULL, the sig check fails. This would appear to be valid outcome for other 
+archs as well.
+
+At any rate, I think attempting to determine if other archs need SYSTEM_DATA_VERIFICATION is out of 
+the scope of this series; I'm targeting just the refactor to be equivalent to what is what prior.
+
+Thanks for looking at this!
+eric
+> 
+> Thanks!
+> 
+>> Not ideal, but results in equivalent .config files for s390.
+>>
+>> Signed-off-by: Eric DeVolder <eric.devolder@oracle.com>
+>> ---
+>>   arch/s390/Kconfig | 65 ++++++++++++++---------------------------------
+>>   1 file changed, 19 insertions(+), 46 deletions(-)
+>>
+>> diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+>> index 6dab9c1be508..58dc124433ca 100644
+>> --- a/arch/s390/Kconfig
+>> +++ b/arch/s390/Kconfig
+>> @@ -243,6 +243,25 @@ config PGTABLE_LEVELS
+>>   
+>>   source "kernel/livepatch/Kconfig"
+>>   
+>> +config ARCH_DEFAULT_KEXEC
+>> +	def_bool y
+>> +
+>> +config ARCH_SUPPORTS_KEXEC
+>> +	def_bool y
+>> +
+>> +config ARCH_SUPPORTS_KEXEC_FILE
+>> +	def_bool CRYPTO && CRYPTO_SHA256 && CRYPTO_SHA256_S390
+>> +
+>> +config ARCH_HAS_KEXEC_PURGATORY
+>> +	def_bool KEXEC_FILE
+>> +
+>> +config ARCH_SUPPORTS_CRASH_DUMP
+>> +	def_bool y
+>> +	help
+>> +	  Refer to <file:Documentation/s390/zfcpdump.rst> for more details on this.
+>> +	  This option also enables s390 zfcpdump.
+>> +	  See also <file:Documentation/s390/zfcpdump.rst>
+>> +
+>>   menu "Processor type and features"
+>>   
+>>   config HAVE_MARCH_Z10_FEATURES
+>> @@ -481,36 +500,6 @@ config SCHED_TOPOLOGY
+>>   
+>>   source "kernel/Kconfig.hz"
+>>   
+>> -config KEXEC
+>> -	def_bool y
+>> -	select KEXEC_CORE
+>> -
+>> -config KEXEC_FILE
+>> -	bool "kexec file based system call"
+>> -	select KEXEC_CORE
+>> -	depends on CRYPTO
+>> -	depends on CRYPTO_SHA256
+>> -	depends on CRYPTO_SHA256_S390
+>> -	help
+>> -	  Enable the kexec file based system call. In contrast to the normal
+>> -	  kexec system call this system call takes file descriptors for the
+>> -	  kernel and initramfs as arguments.
+>> -
+>> -config ARCH_HAS_KEXEC_PURGATORY
+>> -	def_bool y
+>> -	depends on KEXEC_FILE
+>> -
+>> -config KEXEC_SIG
+>> -	bool "Verify kernel signature during kexec_file_load() syscall"
+>> -	depends on KEXEC_FILE && MODULE_SIG_FORMAT
+>> -	help
+>> -	  This option makes kernel signature verification mandatory for
+>> -	  the kexec_file_load() syscall.
+>> -
+>> -	  In addition to that option, you need to enable signature
+>> -	  verification for the corresponding kernel image type being
+>> -	  loaded in order for this to work.
+>> -
+>>   config KERNEL_NOBP
+>>   	def_bool n
+>>   	prompt "Enable modified branch prediction for the kernel by default"
+>> @@ -732,22 +721,6 @@ config VFIO_AP
+>>   
+>>   endmenu
+>>   
+>> -menu "Dump support"
+>> -
+>> -config CRASH_DUMP
+>> -	bool "kernel crash dumps"
+>> -	select KEXEC
+>> -	help
+>> -	  Generate crash dump after being started by kexec.
+>> -	  Crash dump kernels are loaded in the main kernel with kexec-tools
+>> -	  into a specially reserved region and then later executed after
+>> -	  a crash by kdump/kexec.
+>> -	  Refer to <file:Documentation/s390/zfcpdump.rst> for more details on this.
+>> -	  This option also enables s390 zfcpdump.
+>> -	  See also <file:Documentation/s390/zfcpdump.rst>
+>> -
+>> -endmenu
+>> -
+>>   config CCW
+>>   	def_bool y
+>>   
+>> -- 
+>> 2.31.1
+>>
