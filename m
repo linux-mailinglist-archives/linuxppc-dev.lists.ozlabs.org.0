@@ -2,52 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B8C97388D5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jun 2023 17:24:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B80C8738BBE
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jun 2023 18:41:26 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=ouDN/VVT;
+	dkim=fail reason="signature verification failed" header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=eo+l3AgW;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QmS2q3DFtz3bl3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 01:24:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QmTm44YKtz309J
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 02:41:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.219.170; helo=mail-yb1-f170.google.com; envelope-from=namhyung@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=ouDN/VVT;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=eo+l3AgW;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=jack@suse.cz; receiver=lists.ozlabs.org)
+X-Greylist: delayed 377 seconds by postgrey-1.37 at boromir; Thu, 22 Jun 2023 02:40:38 AEST
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QmS2J0wgQz2yyT
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jun 2023 01:23:35 +1000 (AEST)
-Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-bfe6ea01ff5so1021291276.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jun 2023 08:23:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687361012; x=1689953012;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=j/3AFmhGrnT7miz2C2qw2MKk/841rTkgAzatLOE0ayw=;
-        b=BPZLnDUSJCq+l7j56YMsO6t9X3A9A4eI/toP7kDECtAWRuNWhb6XUf+cfojfY2nEEs
-         Q9d8QHmClZRVwd6t4EX7PcyVi++fWkUVD1OSg2sh4WEvrJWQYZRsqkRnm4k+HfwRnrrX
-         Lb0JZjQEZF8zhdrpe6Vlo77Wz7IxdYOb5rQv7hdNVv1j2OQ2HE/278WRDIBPv8ehszlj
-         EWlyW1+WErrMnEzyHAkaR0O0A1Wcv8d21TrZ1TmapDmoDzuN1Qie2cnkjVRXh36zQb1G
-         vadVJY466r5G2zAMkrS/XqZqv2xMvI0EVvDqekmhvp9/skjD9YBN2uQPwEcLxfDn/10i
-         MICA==
-X-Gm-Message-State: AC+VfDzoSZI9/4TUKYPUA4y3qLGf7qj7Avde46Slu39NfryE9KIpI4kA
-	j42uZ2tSyMyRU6nZNxxH1MUO+wZvnMMPlWkvr/k=
-X-Google-Smtp-Source: ACHHUZ7pv1M82zaGE8eykIulxbJ0/K7GzIgBbww4P2+H//HaGGZw4qWn45Wc3Pv5WXcy7xDcNv0U57YFueK6umYS/qA=
-X-Received: by 2002:a25:abb1:0:b0:bc2:65d:6e9d with SMTP id
- v46-20020a25abb1000000b00bc2065d6e9dmr12122505ybi.11.1687361012341; Wed, 21
- Jun 2023 08:23:32 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QmTlB0KZlz3039
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jun 2023 02:40:37 +1000 (AEST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id D9DDB1FF33;
+	Wed, 21 Jun 2023 16:34:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1687365259; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7B1rYZPmUUmzG9AoAPJupPPqfTGJws54sAbZMp3PkUA=;
+	b=ouDN/VVTNK6cBdCJ4J8ygLPNzVV/2zwMHeaArMxw1HltM4aU7N34JgXIUgiEALkKX2g21m
+	OJoSQY1urvoXICt3pICYxeEfZbT87xQX6QykUmkIAVyhULax2wawYCmvJQMorMSG+LUow6
+	9RDVhbWpggFzIfiUF0tCopWx/uxZyuA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1687365259;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7B1rYZPmUUmzG9AoAPJupPPqfTGJws54sAbZMp3PkUA=;
+	b=eo+l3AgW85QpyYlNRRCatCClY81nY/61R6LbM2JVU+X6MU1mo7Ktcdd/h5gqYp7kIf81sr
+	hCXv5Vhbo7RFBDBQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id CC3DD133E6;
+	Wed, 21 Jun 2023 16:34:19 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id myTWMYsmk2TfQgAAMHmgww
+	(envelope-from <jack@suse.cz>); Wed, 21 Jun 2023 16:34:19 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 6C725A075D; Wed, 21 Jun 2023 18:34:19 +0200 (CEST)
+Date: Wed, 21 Jun 2023 18:34:19 +0200
+From: Jan Kara <jack@suse.cz>
+To: Jeff Layton <jlayton@kernel.org>
+Subject: Re: [PATCH 02/79] spufs: switch to new ctime accessors
+Message-ID: <20230621163419.adjsdbqoyebvymqc@quack3>
+References: <20230621144507.55591-1-jlayton@kernel.org>
+ <20230621144735.55953-1-jlayton@kernel.org>
 MIME-Version: 1.0
-References: <20230613164145.50488-1-atrajeev@linux.vnet.ibm.com>
- <20230613164145.50488-16-atrajeev@linux.vnet.ibm.com> <ZIjMWUk/axKfMCM4@kernel.org>
- <CAM9d7cjrpaNk0UC22ntBSP+LzQwT2YAHwQ2o3z1aayAZNQ329g@mail.gmail.com> <5ab5cc25-03b0-ef7f-3dc0-be1b59a4147d@linux.ibm.com>
-In-Reply-To: <5ab5cc25-03b0-ef7f-3dc0-be1b59a4147d@linux.ibm.com>
-From: Namhyung Kim <namhyung@kernel.org>
-Date: Wed, 21 Jun 2023 08:23:20 -0700
-Message-ID: <CAM9d7cgcETpnNgvgJ8a966bwc0phQuVMwABHzA8APk6Z9Er=OQ@mail.gmail.com>
-Subject: Re: [PATCH 15/17] perf tests task_analyzer: fix bad substitution ${$1}
-To: Aditya Gupta <adityag@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230621144735.55953-1-jlayton@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,67 +81,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: irogers@google.com, Athira Rajeev <atrajeev@linux.vnet.ibm.com>, john.g.garry@oracle.com, kjain@linux.ibm.com, Hagen Paul Pfeifer <hagen@jauu.net>, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-perf-users@vger.kernel.org, ravi.bangoria@amd.com, maddy@linux.ibm.com, jolsa@kernel.org, Petar Gligoric <petar.gligoric@rohde-schwarz.com>, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, Jeremy Kerr <jk@ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Aditya,
+On Wed 21-06-23 10:45:15, Jeff Layton wrote:
+> In later patches, we're going to change how the ctime.tv_nsec field is
+> utilized. Switch to using accessor functions instead of raw accesses of
+> inode->i_ctime.
+> 
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
 
-On Wed, Jun 21, 2023 at 3:05=E2=80=AFAM Aditya Gupta <adityag@linux.ibm.com=
-> wrote:
->
-> Hello Namhyung,
->
-> On 21/06/23 06:18, Namhyung Kim wrote:
-> > Hello,
-> >
-> > On Tue, Jun 13, 2023 at 1:06=E2=80=AFPM Arnaldo Carvalho de Melo
-> > <acme@kernel.org> wrote:
-> >> Em Tue, Jun 13, 2023 at 10:11:43PM +0530, Athira Rajeev escreveu:
-> >>> This issue due to ${$1} caused all function calls to give error in
-> >>> `find_str_or_fail` line, and so no test runs completely. But
-> >>> 'perf test "perf script task-analyzer tests"' wrongly reports
-> >>> that tests passed with the status OK, which is wrong considering
-> >>> the tests didn't even run completely
-> >>>
-> >>> Fixes: e8478b84d6ba ("perf test: add new task-analyzer tests")
-> >>> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> >>> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-> >>> Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
-> >>> ---
-> > I'm seeing a different error even after this fix.
-> > Can you please take a look?
-> >
-> > Thanks,
-> > Namhyung
-> >
-> >
-> > $ sudo ./perf test -v task
-> > 114: perf script task-analyzer tests                                 :
-> > --- start ---
-> > test child forked, pid 1771042
-> > Please specify a valid report script(see 'perf script -l' for listing)
-> > FAIL: "invocation of perf command failed" Error message: ""
-> > FAIL: "test_basic" Error message: "Failed to find required string:'Comm=
-'."
-> > Please specify a valid report script(see 'perf script -l' for listing)
-> > FAIL: "invocation of perf command failed" Error message: ""
-> > FAIL: "test_ns_rename" Error message: "Failed to find required string:'=
-Comm'."
-> > ...
-> > test child finished with -1
-> > ---- end ----
-> > perf script task-analyzer tests: FAILED!
-> Can you please check if your environment has libtraceevent devel
-> libraries (or did you compile with `make NO_LIBTRACEEVENT=3D1`) ? When
-> libtraceevent support is not there, perf record fails and so perf.data
-> doesn't contain the strings it's searching for and hence those errors
->
-> The error you mentioned has been mentioned and fixed in patch 17/17 of
-> this series.
+Looks good to me. Feel free to add:
 
-Thanks for your reply but It has libtraceevent.  Also, shouldn't it
-skip if it's not?
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-Thanks,
-Namhyung
+								Honza
+
+> ---
+>  arch/powerpc/platforms/cell/spufs/inode.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/platforms/cell/spufs/inode.c b/arch/powerpc/platforms/cell/spufs/inode.c
+> index ea807aa0c31a..55418395bd9a 100644
+> --- a/arch/powerpc/platforms/cell/spufs/inode.c
+> +++ b/arch/powerpc/platforms/cell/spufs/inode.c
+> @@ -86,7 +86,7 @@ spufs_new_inode(struct super_block *sb, umode_t mode)
+>  	inode->i_mode = mode;
+>  	inode->i_uid = current_fsuid();
+>  	inode->i_gid = current_fsgid();
+> -	inode->i_atime = inode->i_mtime = inode->i_ctime = current_time(inode);
+> +	inode->i_atime = inode->i_mtime = inode_ctime_set_current(inode);
+>  out:
+>  	return inode;
+>  }
+> -- 
+> 2.41.0
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
