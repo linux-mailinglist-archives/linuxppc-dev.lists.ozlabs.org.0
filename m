@@ -2,131 +2,264 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8059738F07
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jun 2023 20:44:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5032F738F08
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jun 2023 20:45:12 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=PTZBv1Kz;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PnrB/Inm;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QmXTs1yZtz3ccR
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 04:44:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QmXVt1Wltz3cjm
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 04:45:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=PTZBv1Kz;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PnrB/Inm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=samsung.com (client-ip=210.118.77.11; helo=mailout1.w1.samsung.com; envelope-from=j.granados@samsung.com; receiver=lists.ozlabs.org)
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=jlayton@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QmPqV38pwz30fM
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jun 2023 23:44:04 +1000 (AEST)
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20230621134353euoutp018c6ff8dabdeed1eb9c37b5ba647c330d~qsHZ_CVub2580325803euoutp01E;
-	Wed, 21 Jun 2023 13:43:53 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20230621134353euoutp018c6ff8dabdeed1eb9c37b5ba647c330d~qsHZ_CVub2580325803euoutp01E
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1687355033;
-	bh=SetH/myydi6dk+ldkx72EVQztsegim0VSf5FSMMJW28=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=PTZBv1Kz5BEVObNa7leJ/yxGfQakTivesF5jb6tBj4a7mw0z2DwCV8KG/lz6Htp2A
-	 zjthU/P8T1sIWZ42nVHC5ArvGqiQK48scKj0Re/P/DwFQFC0M/FPQnfLTFYC/Ucswv
-	 L2oK3I/5AOGeZQ+wBCu+TIiCshDxA9TJNwfHFkfQ=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-	20230621134352eucas1p15e4a4e0ef4e890317f5774efb574c917~qsHZk4hDM0731207312eucas1p1W;
-	Wed, 21 Jun 2023 13:43:52 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-	eusmges2new.samsung.com (EUCPMTA) with SMTP id 4E.2B.11320.89EF2946; Wed, 21
-	Jun 2023 14:43:52 +0100 (BST)
-Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20230621134351eucas1p2fb0148f4fe396dbbd6919e2c6f9d997c~qsHYqylm50332103321eucas1p2D;
-	Wed, 21 Jun 2023 13:43:51 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
-	eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-	20230621134351eusmtrp27ac00183debbcf679144adf320f21783~qsHYfajZr2158321583eusmtrp2a;
-	Wed, 21 Jun 2023 13:43:51 +0000 (GMT)
-X-AuditID: cbfec7f4-993ff70000022c38-ba-6492fe983db1
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-	eusmgms1.samsung.com (EUCPMTA) with SMTP id B0.8C.10549.79EF2946; Wed, 21
-	Jun 2023 14:43:51 +0100 (BST)
-Received: from CAMSVWEXC02.scsc.local (unknown [106.1.227.72]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20230621134351eusmtip295329994762b412f6d02a3f47b794c24~qsHX0_Bhu0221102211eusmtip2V;
-	Wed, 21 Jun 2023 13:43:51 +0000 (GMT)
-Received: from localhost (106.210.248.248) by CAMSVWEXC02.scsc.local
-	(2002:6a01:e348::6a01:e348) with Microsoft SMTP Server (TLS) id 15.0.1497.2;
-	Wed, 21 Jun 2023 14:43:50 +0100
-Date: Wed, 21 Jun 2023 15:43:48 +0200
-From: Joel Granados <j.granados@samsung.com>
-To: Jani Nikula <jani.nikula@linux.intel.com>
-Subject: Re: [PATCH 09/11] sysctl: Remove the end element in sysctl table
- arrays
-Message-ID: <20230621134348.rcdzl7fi7yq2uj6h@localhost>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QmRBM5bSrz3bNn;
+	Thu, 22 Jun 2023 00:45:31 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id C397C6155A;
+	Wed, 21 Jun 2023 14:45:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 828EBC433C0;
+	Wed, 21 Jun 2023 14:45:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1687358726;
+	bh=ITVtuh8zH7IgGAgeioITWFIWh9Z+1gDo8p1lVWyg0oY=;
+	h=From:To:Subject:Date:From;
+	b=PnrB/InmtbJQ53yas78akcjSInUrV/+ejTyuNMTd8geX+GrsATqqv+A76zQLeg6OZ
+	 HykzxzC4nJwglmReumfJVglW2DyTmkTj6wLXkspYjbgS1D9AmPzZ6/acxW4soMbskU
+	 tuave6illXjLdtKHw0kZAdOi5xVWhKM9yX0Wd3J9iW6t3D0cTwvW9/s6Vxcx2PFye/
+	 +qpZxa0gxqwtQdPKXj2zIGSUnh+BzV5yfegRIS6R6rVqD4TT+RUSrMnn6oO+hm6cUf
+	 6uCoCYLF3j/BD1z1QiaBwoQprTd6KkQlE8XzQmxCZAUC4lpZZd7Xybeqcvdm+nSmoo
+	 ipgGCTsuHkjBA==
+From: Jeff Layton <jlayton@kernel.org>
+To: Jeremy Kerr <jk@ozlabs.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>,
+	Martijn Coenen <maco@android.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Carlos Llamas <cmllamas@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Brad Warrum <bwarrum@linux.ibm.com>,
+	Ritu Agarwal <rituagar@linux.ibm.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	David Sterba <dsterba@suse.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Ian Kent <raven@themaw.net>,
+	Luis de Bethencourt <luisbg@kernel.org>,
+	Salah Triki <salah.triki@gmail.com>,
+	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
+	Eric Biederman <ebiederm@xmission.com>,
+	Kees Cook <keescook@chromium.org>,
+	Chris Mason <clm@fb.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Xiubo Li <xiubli@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Jan Harkes <jaharkes@cs.cmu.edu>,
+	coda@cs.cmu.edu,
+	Joel Becker <jlbec@evilplan.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Nicolas Pitre <nico@fluxnic.net>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Tyler Hicks <code@tyhicks.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Gao Xiang <xiang@kernel.org>,
+	Chao Yu <chao@kernel.org>,
+	Yue Hu <huyue2@coolpad.com>,
+	Jeffle Xu <jefflexu@linux.alibaba.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Jan Kara <jack@suse.com>,
+	"Theodore Ts'o" <tytso@mit.edu>,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Bob Peterson <rpeterso@redhat.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>,
+	Mike Kravetz <mike.kravetz@oracle.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Dave Kleikamp <shaggy@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Anton Altaparmakov <anton@tuxera.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Bob Copeland <me@bobcopeland.com>,
+	Mike Marshall <hubcap@omnibond.com>,
+	Martin Brandenburg <martin@omnibond.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Iurii Zaikin <yzaikin@google.com>,
+	Tony Luck <tony.luck@intel.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Anders Larsen <al@alarsen.net>,
+	Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Ronnie Sahlberg <lsahlber@redhat.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Tom Talpey <tom@talpey.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Evgeniy Dushistov <dushistov@mail.ru>,
+	Hans de Goede <hdegoede@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	Johannes Thumshirn <jth@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yhs@fb.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	KP Singh <kpsingh@kernel.org>,
+	Stanislav Fomichev <sdf@google.com>,
+	Hao Luo <haoluo@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	John Johansen <john.johansen@canonical.com>,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Eric Paris <eparis@parisplace.org>,
+	Juergen Gross <jgross@suse.com>,
+	Ruihan Li <lrh2000@pku.edu.cn>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Udipto Goswami <quic_ugoswami@quicinc.com>,
+	Linyu Yuan <quic_linyyuan@quicinc.com>,
+	John Keeping <john@keeping.me.uk>,
+	Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+	Dan Carpenter <error27@gmail.com>,
+	Yuta Hayama <hayama@lineo.co.jp>,
+	Jozef Martiniak <jomajm@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Sandeep Dhavale <dhavale@google.com>,
+	Dave Chinner <dchinner@redhat.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	ZhangPeng <zhangpeng362@huawei.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Aditya Garg <gargaditya08@live.com>,
+	Erez Zadok <ezk@cs.stonybrook.edu>,
+	Yifei Liu <yifeliu@cs.stonybrook.edu>,
+	Yu Zhe <yuzhe@nfschina.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Oleg Kanatov <okanatov@gmail.com>,
+	"Dr. David Alan Gilbert" <linux@treblig.org>,
+	Jiangshan Yi <yijiangshan@kylinos.cn>,
+	xu xin <cgel.zte@gmail.com>,
+	Stefan Roesch <shr@devkernel.io>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Minghao Chi <chi.minghao@zte.com.cn>,
+	Seth Forshee <sforshee@digitalocean.com>,
+	Zeng Jingxiang <linuszeng@tencent.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Tom Rix <trix@redhat.com>,
+	"Fabio M. De Francesco" <fmdefrancesco@gmail.com>,
+	Chen Zhongjin <chenzhongjin@huawei.com>,
+	Zhengchao Shao <shaozhengchao@huawei.com>,
+	Rik van Riel <riel@surriel.com>,
+	Jingyu Wang <jingyuwang_vip@163.com>,
+	Hangyu Hua <hbh25y@gmail.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-afs@lists.infradead.org,
+	autofs@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-btrfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	codalist@coda.cs.cmu.edu,
+	ecryptfs@vger.kernel.org,
+	linux-efi@vger.kernel.org,
+	linux-erofs@lists.ozlabs.org,
+	linux-ext4@vger.kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net,
+	cluster-devel@redhat.com,
+	linux-um@lists.infradead.org,
+	linux-mtd@lists.infradead.org,
+	jfs-discussion@lists.sourceforge.net,
+	linux-nfs@vger.kernel.org,
+	linux-nilfs@vger.kernel.org,
+	linux-ntfs-dev@lists.sourceforge.net,
+	ntfs3@lists.linux.dev,
+	ocfs2-devel@oss.oracle.com,
+	linux-karma-devel@lists.sourceforge.net,
+	devel@lists.orangefs.org,
+	linux-unionfs@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	reiserfs-devel@vger.kernel.org,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-xfs@vger.kernel.org,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	apparmor@lists.ubuntu.com,
+	linux-security-module@vger.kernel.org,
+	selinux@vger.kernel.org
+Subject: [PATCH 00/79] fs: new accessors for inode->i_ctime
+Date: Wed, 21 Jun 2023 10:45:05 -0400
+Message-ID: <20230621144507.55591-1-jlayton@kernel.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="nwcq3i6cyedok5cv"
-Content-Disposition: inline
-In-Reply-To: <878rcd2by5.fsf@intel.com>
-X-Originating-IP: [106.210.248.248]
-X-ClientProxiedBy: CAMSVWEXC01.scsc.local (2002:6a01:e347::6a01:e347) To
-	CAMSVWEXC02.scsc.local (2002:6a01:e348::6a01:e348)
-X-Brightmail-Tracker: H4sIAAAAAAAAA2WTW1BTVxSGZ587aJgj2rpHazvibaYK1lbrcixWKw+now+obacXOxXljFgh
-	aCJW61i5WRBEIIRyEeUmFyUIpCGKIlIGQyJyEaigImKIjRhEEJHBSCjx4NSZvn1rrf/fa/0P
-	myPdM7hZ3C75PlEh9wv0YFwpvWG00TPVofL/KCbbC8rqexkwtucQkFGiYaD5fBGCEftJEiq0
-	OhrCDFk0jKkMLMQ4dBQMhB8lQaMLI6BnrIaBoVLHhFdzl4WWnr8ZSOkNo6BTZWVh/J6VgKEH
-	Vhpys1+QMNYey0BVajEDxZWvSNDHTey4dUEA2+lzCCzxZhry7h6joS1/gIGC1hIEaalGBPeH
-	zRTUqtNJeGUsY+BefDIFN2KD4HL9MAHlneEMWKviCGjWn6DBUlTOgvplHgnqP8IRaHtu0XC/
-	a5SAyismClovZTDQpRmnISo6A0FCdgQJD7NsNAwcNzNQW9JAQfWVTAT2EQcN9QYjBeaSpwQ0
-	XSqmISLzGQl57TcJiE1MYaExbpyEwhv/ENCR8BCt9Rda2zYII0dPUILmtAYJ9pcqJPQ3mpBw
-	MvQmJWTVbhSGbzcSQk5vKCV05lUgoeS2ihESI/pZoSL9HitEVt1hhSxtiPCqpoz1Xfa962f+
-	YuCu/aJi6ZptrgGJCVXUngbPA1E9DXQoapsfg1w4zC/HpsGLdAxy5dz5QoRz04oZqXiOcJLZ
-	RDhV7vwQwg8u7H3jKOoZoiRRAcJnHMmEVEyIdFfqJiflCF9LMTBOC8UvwN2Jx18/xfBLcFNf
-	J+nkGbwnLu6wvF5O8i2rcJS2FjkH0/nNODInmo1BHCfjV+KebqWzLeOnYVOahXIyyR/AlsYz
-	lFNC8rNxgYNzogu/CFtMjHToPNxelTvJh/F13R1C4ttTsbmfl9gHjyZbSYmn48d1Olbi9/B4
-	RebrXJhPQviqY4CViiKE88OGJ19ajSPbLJOOddiYc41xHoF5N9zxZJp0phtW6VNIqS3D0b+7
-	S+qFuKirj0pA89LfCpb+VrD0/4JJ7SU46/Iz5n/txTg/20ZK7I3Pn39KZSH2HJophiiDdorK
-	j+XiL15KvyBliHyn147gIC2a+LT1jrrnF1HB40GvGkRwqAbNnzCbS4ua0SxKHiwXPWbI5mhV
-	/u4yf7+Dv4qK4J8UIYGisgbN5iiPmbLF3qYd7vxOv33iblHcIyreTAnOZVYosTqg+VTHWiqy
-	qzri2Q7LlqSFtrGywk+8Kw/0lh1pUtu/ePIofDDJNb5PvTdD/UGQm2JTqdYe20Q+mrv5UHLA
-	ok6NbaBy69V9hxvmeKcd2xu74uCUIxfclvpTvu+juS6KbaPd3707uPLP/V//BqsfLgiZoVpi
-	sPWRqPaH+nVHfHJa1se7kJV5chfllNGXoRvW+xgNZ6H7RRhwLXG+ioPb/rLLSruXi562UaN+
-	e/gLeS5XoIwN1q+yfxn2zkjfV9/upkqZQ2cPX1Y/7d9ivV4yHLnix9aN6sLcT+uqZds/13+z
-	qY0oD6xes195SZbJW1edWhF6A8WPLLp/a+vP5MzH+dEmHTfVg1IG+C37kFQo/f4FCuwQMC8F
-	AAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA2WTe0xTVxzHc+69va3GujtEvSIzrLJsQyiWh/4YymbcsrvNxM0EzXCiHdwp
-	QVrWApkaHUKrUMRhEygrpgJaHPbBQ0DFwUxlIHNB5aniHBYUeaNQHGLbtXbLTPbPyed8z/f7
-	ze+c5PBwr1quDy9BksLKJOK9AnI+cd3Rcj9I41DHr86f9YGq60MkXOspxeBkhZEES/pauGk2
-	IHg2V4TD5ce9BCgvOQm4VF3DgcPNxRywq5u5MD3bywWVo4aAyQwlDsaawxj02y0kTFU6XEtT
-	CwkjV58iuGZ0+dr7u0jQDB0m4OTQ71yYKDuG4J56kAvOPwYxOHPtAQYzxtsYXDaPY2C/dBSH
-	qQeDHHDWncDhdMkMDo8rjyI4eUNBgL0nh4RGRTWCxkITCeMZcwQ8zKvFoWNgIXTaJkgw1ysx
-	V1TBBdPPL3B42GzlQrbVSUJdrutWE5mxcFM7w4HM0xUkdF9gwNLyCxdGdOcQ5Az7QmatDUFB
-	1VIoyjuPwcAPVg4UaTIx0Pdmc6CzbJKEsx0VCNSzeeiDXxHT0fkZ80x5nGD+HLUTjFFndEnd
-	t3Bm7rkaMXetNpwZb2tFjM54gNGm55JMUfotgilu2sTY7rRhzPPZAKam/A7G5DQN459HxwjX
-	yaSpKazfHqk8Zb1guwhChKIIEIaERQhFoWt3vBcSLgiOWhfP7k1IY2XBUbuEexrmfsOTrwd9
-	p5lyonTU7q9C83g0FUYb+qcIN3tRekSnGyI9ui9dNd3F8fAi+kW3ilSh+S7PE0TXmBTIs6lF
-	9HThDHK7COotuu/EMczNJBVI3xi9h7vZmwqiTbcHOO4ATrVF0IqxTtJ9sIjaQitKs7gqxOPx
-	qbV0f5/cU2rA6Jz6updhPvU63frjwMvxcCqNftQwhrn9OLWcPuvguXEe9TY90Ep6Bl1J9zSe
-	/ocP0lP2RygPLdK+UqR9pUj7X5FHDqBvO4b+L6+iy0pGcA+vp83mCaIYcc8hbzZVnrQ7SS4S
-	ysVJ8lTJbmGcNKkauf5MXfPs+YtIN/xEaEEYD1mQvytprTTcRD6ERCphBd78N6rV8V78ePG+
-	/axMulOWupeVW1C46xFP4D6L46SuDyhJ2SlaszpcFLYmYnV4xJpQwVL+J8lZYi9qtziFTWTZ
-	ZFb2bw7jzfNJx14rj+b39kWHUfmOwWfLtqZtKGyK2bbxHWnDzMXEzE11On/O05KqRCx0eeQB
-	ZXP9l2Oxm6vaskb2ZSyMexRZNmPSKg853/dTHrlq74oZ1dbtutUbW5zNDRgwtK/aMCeub7d2
-	bKwONvM+1G1eqf0mkPatXcCUSFZsbeHXLo61Zx+q2h83zbdEPezeVZ4xaFI1bHkQ/ldfiGVs
-	27vOj5fs32LjHLm7zP/rLzhj7UFXZj/1zzhlL8hv/Oin7G8XKy/c//7UxX1nkjQamyC49Yq+
-	QFauN43qo1dszxO9GT/Sn39wSUJRaWxkSaC5O+as/fHWxEnbAi8/UbI5IumrxDv6hNwd00Jm
-	SEDI94hFAbhMLv4bHgGuKMgEAAA=
-X-CMS-MailID: 20230621134351eucas1p2fb0148f4fe396dbbd6919e2c6f9d997c
-X-Msg-Generator: CA
-X-RootMTR: 20230621094824eucas1p2b6adfbd3f15ff3665674917f419b25d3
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20230621094824eucas1p2b6adfbd3f15ff3665674917f419b25d3
-References: <20230621091000.424843-1-j.granados@samsung.com>
-	<CGME20230621094824eucas1p2b6adfbd3f15ff3665674917f419b25d3@eucas1p2.samsung.com>
-	<20230621094817.433842-1-j.granados@samsung.com> <87o7l92hg8.fsf@intel.com>
-	<20230621130614.s36w4u7dzmb5d5p3@localhost> <878rcd2by5.fsf@intel.com>
+Content-Transfer-Encoding: 8bit
 X-Mailman-Approved-At: Thu, 22 Jun 2023 04:32:35 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -139,165 +272,355 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, Miaohe Lin <linmiaohe@huawei.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, dri-devel@lists.freedesktop.org, Ben Segall <bsegall@google.com>, linux-sctp@vger.kernel.org, ocfs2-devel@oss.oracle.com, Miquel Raynal <miquel.raynal@bootlin.com>, Alexander Gordeev <agordeev@linux.ibm.com>, "K. Y. Srinivasan" <kys@microsoft.com>, Stefan Schmidt <stefan@datenfreihafen.org>, Wei Liu <wei.liu@kernel.org>, Vincent Guittot <vincent.guittot@linaro.org>, bridge@lists.linux-foundation.org, James Morris <jmorris@namei.org>, Jozsef Kadlecsik <kadlec@netfilter.org>, Eric Biggers <ebiggers@kernel.org>, linux-cachefs@redhat.com, Mel Gorman <mgorman@suse.de>, "Darrick J.
- Wong" <djwong@kernel.org>, Waiman Long <longman@redhat.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Petr Mladek <pmladek@suse.com>, Martin Schiller <ms@dev.tdt.de>, Russ Weight <russell.h.weight@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, Boqun Feng <boqun.feng@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, John Ogness <john.ogness@linutronix.de>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Remi Denis-Courmont <courmisch@gmail.com>, xen-devel@lists.xenproject.org, Thomas Gleixner <tglx@linutronix.de>, Trond Myklebust <trond.myklebust@hammerspace.com>, Anton Altaparmakov <anton@tuxera.com>, Christian Brauner <brauner@kernel.org>, Will Drewry <wad@chromium.org>, Neil Horman <nhorman@tuxdriver.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, mcgrof@kernel.org, Chuck Lever <chuck.lever@oracle.com>, netfilter-devel@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Jiri Olsa <jolsa@kernel.org>, linux-fsdevel@vger.kernel.org, Matthieu Baerts <matthieu.baerts@tessares.net>, Andrew Morton <akpm@linux-foundation.org>, linux-trace-kernel@vger.kernel.org, linux-wpan@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>, linux-aio@kvack.org, "Jason A.
- Donenfeld" <Jason@zx2c4.com>, linux-ia64@vger.kernel.org, Naoya Horiguchi <naoya.horiguchi@nec.com>, Dave Hansen <dave.hansen@linux.intel.com>, Clemens Ladisch <clemens@ladisch.de>, Phillip Potter <phil@philpotter.co.uk>, Song Liu <song@kernel.org>, Eric Dumazet <edumazet@google.com>, keyrings@vger.kernel.org, John Stultz <jstultz@google.com>, Stanislav Fomichev <sdf@google.com>, Jan Karcher <jaka@linux.ibm.com>, codalist@telemann.coda.cs.cmu.edu, linux-s390@vger.kernel.org, Valentin Schneider <vschneid@redhat.com>, Stefano Stabellini <sstabellini@kernel.org>, Corey Minyard <minyard@acm.org>, Leon Romanovsky <leon@kernel.org>, Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, Will Deacon <will@kernel.org>, John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>, Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>, Mat Martineau <martineau@kernel.org>, Matthew Bobrowski <repnop@google.com>, Julian Anastasov <ja@ssi.bg>, coreteam@netfilter.org, Roopa Prabhu <roopa@nvidia.com>, Yonghong Song <yhs@fb.com>, Iurii Zaikin <yzaikin@google.com>, Sven Schnelle <svens@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Mike Travis <mike.travis@hpe.com>, Wenjia Zhang <wenjia@linux.ibm.com>, Simon Horman <horms@verge.net.au>, Xin Long <lucien.xin@gmail.com>, linux-arm-kernel@lists.infradead.org, fsverity@lists.linux.dev, Hao Luo <haoluo@google.com>, Theodore Ts'o <tytso@mit.edu>, Stephen Boyd <sboyd@kernel.org>, Muchun Song <muchun.song@linux.dev>, Florian Westphal <fw@strlen.de>, Robin Holt <robinmholt@gmail.com>, "David S. Miller" <davem@davemloft.net>, Jon Maloy <jmaloy@redhat.com>, Jarkko Sakkinen <jarkko@kernel.org>, Eric Biederman <ebiederm@xmission.com>, Anna Schumaker <anna@kernel.org>, Daniel Bristot de Oliveira <bristot@redhat.com>, Mike Kravetz <mike.kravetz@oracle.com>, Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, linux-hams@vger.kernel.org, Nikolay Aleksandrov <razor@blackwall.org>, Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Alexei Starovoitov <ast@kernel.org>, Marc 
- Dionne <marc.dionne@auristor.com>, Jiri Slaby <jirislaby@kernel.org>, linux-afs@lists.infradead.org, Daniel Borkmann <daniel@iogearbox.net>, linux-rdma@vger.kernel.org, Dexuan Cui <decui@microsoft.com>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, lvs-devel@vger.kernel.org, coda@cs.cmu.edu, Doug Gilbert <dgilbert@interlog.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Paolo Abeni <pabeni@redhat.com>, Pablo Neira Ayuso <pablo@netfilter.org>, "Serge E. Hallyn" <serge@hallyn.com>, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, Haiyang Zhang <haiyangz@microsoft.com>, intel-gfx@lists.freedesktop.org, Steven Rostedt <rostedt@goodmis.org>, linux-crypto@vger.kernel.org, Borislav Petkov <bp@alien8.de>, Rodrigo Vivi <rodrigo.vivi@intel.com>, openipmi-developer@lists.sourceforge.net, mptcp@lists.linux.dev, Jan Harkes <jaharkes@cs.cmu.edu>, linux-nfs@vger.kernel.org, "Martin K. Petersen" <martin.petersen@oracle.com>, linux-mm@kvack.org, Jeff Layton <jlayton@kernel.org>, Andy Lutomirski <luto@amacapital.net>, linux-xfs@vger.kernel.org, linux-ntfs-dev@lists.sourceforge.net, netdev@vger.kernel.org, Ying Xue <ying.xue@windriver.com>, bpf@vger.kernel.org, Sudip Mukherjee <sudipm.mukherjee@gmail.com>, Dietmar Eggemann <dietmar.eggemann@arm.com>, Alexander Aring <alex.aring@gmail.com>, Jan Kara <jack@suse.cz>, Steve Wahl <steve.wahl@hpe.com>, Peter Zijlstra <peterz@infradead.org>, Amir Goldstein <amir73il@gmail.com>, KP Singh <kpsingh@kernel.org>, David Howells <dhowells@redhat.com>, Joseph Qi <joseph.qi@linux.alibaba.com>, "H. Peter
- Anvin" <hpa@zytor.com>, David Airlie <airlied@gmail.com>, Steffen Klassert <steffen.klassert@secunet.com>, rds-devel@oss.oracle.com, Herbert Xu <herbert@gondor.apana.org.au>, linux-scsi@vger.kernel.org, dccp@vger.kernel.org, Mark Fasheh <mark@fasheh.com>, x86@kernel.org, Russell King <linux@armlinux.org.uk>, Jason Gunthorpe <jgg@ziepe.ca>, Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>, "James
- E.J. Bottomley" <jejb@linux.ibm.com>, Joerg Reuter <jreuter@yaina.de>, linux-hyperv@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Santosh Shilimkar <santosh.shilimkar@oracle.com>, apparmor@lists.ubuntu.com, linux-raid@vger.kernel.org, Paul Moore <paul@paul-moore.com>, Juergen Gross <jgross@suse.com>, John Johansen <john.johansen@canonical.com>, linux-x25@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, David Ahern <dsahern@kernel.org>, kexec@lists.infradead.org, linux-security-module@vger.kernel.org, Benjamin LaHaise <bcrl@kvack.org>, tipc-discussion@lists.sourceforge.net, Daniel Vetter <daniel@ffwll.ch>, Martin KaFai Lau <martin.lau@linux.dev>, Karsten Graul <kgraul@linux.ibm.com>, Joel Becker <jlbec@evilplan.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---nwcq3i6cyedok5cv
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I've been working on a patchset to change how the inode->i_ctime is
+accessed in order to give us conditional, high-res timestamps for the
+ctime and mtime. struct timespec64 has unused bits in it that we can use
+to implement this. In order to do that however, we need to wrap all
+accesses of inode->i_ctime to ensure that bits used as flags are
+appropriately handled.
 
-On Wed, Jun 21, 2023 at 04:15:46PM +0300, Jani Nikula wrote:
-> On Wed, 21 Jun 2023, Joel Granados <j.granados@samsung.com> wrote:
-> > On Wed, Jun 21, 2023 at 02:16:55PM +0300, Jani Nikula wrote:
-> >> On Wed, 21 Jun 2023, Joel Granados <j.granados@samsung.com> wrote:
-> >> > Remove the empty end element from all the arrays that are passed to =
-the
-> >> > register sysctl calls. In some files this means reducing the explicit
-> >> > array size by one. Also make sure that we are using the size in
-> >> > ctl_table_header instead of evaluating the .procname element.
-> >>=20
-> >> Where's the harm in removing the end elements driver by driver? This is
-> >> an unwieldy patch to handle.
-> >
-> > I totally agree. Its a big one!!! but I'm concerned of breaking bisecti=
-bility:
-> > * I could for example separate all the removes into separate commits and
-> >   then have a final commit that removes the check for the empty element.
-> >   But this will leave the tree in a state where the for loop will have
-> >   undefined behavior when it looks for the empty end element. It might
-> >   or might not work (probably not :) until the final commit where I fix
-> >   that.
-> >
-> > * I could also change the logic that looks for the final element,
-> >   commit that first and then remove the empty element one commit per
-> >   driver after that. But then for all the arrays that still have an
-> >   empty element, there would again be undefined behavior as it would
-> >   think that the last element is valid (when it is really the sentinel).
-> >
-> > Any ideas on how to get around these?
->=20
-> First add size to the register calls, and allow the last one to be
-> sentinel but do not require the sentinel.
->=20
-> Start removing sentinels, adjusting the size passed in.
-This is a great idea! and I think I don't even have to adjust the size
-because if I change the logic to stop on the sentinel or the size; so when
-the sentinel is there, it will stop before the size. And when the
-sentinel is not there, it will stop on the correct size.
+This patchset first adds some new inode_ctime_* accessor functions. It
+then converts all in-tree accesses of inode->i_ctime to use those new
+functions and then renames the i_ctime field to __i_ctime to help ensure
+that use of the accessors.
 
-There might be issues with indirection calls. And there might also be
-lots of places where I need to adjust a for loop (as dan has pointed
-out) but its worth a try for V2.
+Most of this conversion was done via coccinelle, with a few of the more
+non-standard accesses done by hand. There should be no behavioral
+changes with this set. That will come later, as we convert individual
+filesystems to use multigrain timestamps.
 
-Best
->=20
-> Once enough sentinels have been removed, add warning if the final entry
-> is a sentinel.
->=20
-> Never really remove the check? (But surely you can rework the logic to
-> not count the number of elements up front, only while iterating.)
->=20
->=20
-> BR,
-> Jani.
->=20
-> >>=20
-> >> > diff --git a/drivers/gpu/drm/i915/i915_perf.c b/drivers/gpu/drm/i915=
-/i915_perf.c
-> >> > index f43950219ffc..e4d7372afb10 100644
-> >> > --- a/drivers/gpu/drm/i915/i915_perf.c
-> >> > +++ b/drivers/gpu/drm/i915/i915_perf.c
-> >> > @@ -4884,24 +4884,23 @@ int i915_perf_remove_config_ioctl(struct drm=
-_device *dev, void *data,
-> >> > =20
-> >> >  static struct ctl_table oa_table[] =3D {
-> >> >  	{
-> >> > -	 .procname =3D "perf_stream_paranoid",
-> >> > -	 .data =3D &i915_perf_stream_paranoid,
-> >> > -	 .maxlen =3D sizeof(i915_perf_stream_paranoid),
-> >> > -	 .mode =3D 0644,
-> >> > -	 .proc_handler =3D proc_dointvec_minmax,
-> >> > -	 .extra1 =3D SYSCTL_ZERO,
-> >> > -	 .extra2 =3D SYSCTL_ONE,
-> >> > -	 },
-> >> > +		.procname =3D "perf_stream_paranoid",
-> >> > +		.data =3D &i915_perf_stream_paranoid,
-> >> > +		.maxlen =3D sizeof(i915_perf_stream_paranoid),
-> >> > +		.mode =3D 0644,
-> >> > +		.proc_handler =3D proc_dointvec_minmax,
-> >> > +		.extra1 =3D SYSCTL_ZERO,
-> >> > +		.extra2 =3D SYSCTL_ONE,
-> >> > +	},
-> >> >  	{
-> >> > -	 .procname =3D "oa_max_sample_rate",
-> >> > -	 .data =3D &i915_oa_max_sample_rate,
-> >> > -	 .maxlen =3D sizeof(i915_oa_max_sample_rate),
-> >> > -	 .mode =3D 0644,
-> >> > -	 .proc_handler =3D proc_dointvec_minmax,
-> >> > -	 .extra1 =3D SYSCTL_ZERO,
-> >> > -	 .extra2 =3D &oa_sample_rate_hard_limit,
-> >> > -	 },
-> >> > -	{}
-> >> > +		.procname =3D "oa_max_sample_rate",
-> >> > +		.data =3D &i915_oa_max_sample_rate,
-> >> > +		.maxlen =3D sizeof(i915_oa_max_sample_rate),
-> >> > +		.mode =3D 0644,
-> >> > +		.proc_handler =3D proc_dointvec_minmax,
-> >> > +		.extra1 =3D SYSCTL_ZERO,
-> >> > +		.extra2 =3D &oa_sample_rate_hard_limit,
-> >> > +	}
-> >> >  };
-> >>=20
-> >> The existing indentation is off, but fixing it doesn't really belong in
-> >> this patch.
-> >
-> > Agreed. But I actually was trying to fix something that checkpatch
-> > flagged. I'll change these back (which will cause this patch to be
-> > flagged).
-> >
-> > An alternative solution would be to fix the indentation as part of the
-> > preparation patches. Tell me what you think.
-> >
-> > Thx
-> >
-> >>=20
-> >> BR,
-> >> Jani.
-> >>=20
-> >>=20
-> >> --=20
-> >> Jani Nikula, Intel Open Source Graphics Center
->=20
-> --=20
-> Jani Nikula, Intel Open Source Graphics Center
+Some of these patches depend on the set I sent recently to add missing
+ctime updates in various subsystems:
 
---=20
+    https://lore.kernel.org/linux-fsdevel/20230612104524.17058-1-jlayton@kernel.org/T/#m25399f903cc9526e46b2e0f5a35713c80b52fde9
 
-Joel Granados
+Since this patchset is so large, I'm only going to send individual
+conversion patches to the appropriate maintainers. Please send
+Acked-by's or Reviewed-by's if you can. The intent is to merge these as
+a set (probably in v6.6). Let me know if that causes conflicts though,
+and we can work it out.
 
---nwcq3i6cyedok5cv
-Content-Type: application/pgp-signature; name="signature.asc"
+This is based on top of linux-next as of yesterday.
 
------BEGIN PGP SIGNATURE-----
+Jeff Layton (79):
+  fs: add ctime accessors infrastructure
+  spufs: switch to new ctime accessors
+  s390: switch to new ctime accessors
+  binderfs: switch to new ctime accessors
+  qib_fs: switch to new ctime accessors
+  ibm: switch to new ctime accessors
+  usb: switch to new ctime accessors
+  9p: switch to new ctime accessors
+  adfs: switch to new ctime accessors
+  affs: switch to new ctime accessors
+  afs: switch to new ctime accessors
+  fs: switch to new ctime accessors
+  autofs: switch to new ctime accessors
+  befs: switch to new ctime accessors
+  bfs: switch to new ctime accessors
+  btrfs: switch to new ctime accessors
+  ceph: switch to new ctime accessors
+  coda: switch to new ctime accessors
+  configfs: switch to new ctime accessors
+  cramfs: switch to new ctime accessors
+  debugfs: switch to new ctime accessors
+  devpts: switch to new ctime accessors
+  ecryptfs: switch to new ctime accessors
+  efivarfs: switch to new ctime accessors
+  efs: switch to new ctime accessors
+  erofs: switch to new ctime accessors
+  exfat: switch to new ctime accessors
+  ext2: switch to new ctime accessors
+  ext4: switch to new ctime accessors
+  f2fs: switch to new ctime accessors
+  fat: switch to new ctime accessors
+  freevxfs: switch to new ctime accessors
+  fuse: switch to new ctime accessors
+  gfs2: switch to new ctime accessors
+  hfs: switch to new ctime accessors
+  hfsplus: switch to new ctime accessors
+  hostfs: switch to new ctime accessors
+  hpfs: switch to new ctime accessors
+  hugetlbfs: switch to new ctime accessors
+  isofs: switch to new ctime accessors
+  jffs2: switch to new ctime accessors
+  jfs: switch to new ctime accessors
+  kernfs: switch to new ctime accessors
+  minix: switch to new ctime accessors
+  nfs: switch to new ctime accessors
+  nfsd: switch to new ctime accessors
+  nilfs2: switch to new ctime accessors
+  ntfs: switch to new ctime accessors
+  ntfs3: switch to new ctime accessors
+  ocfs2: switch to new ctime accessors
+  omfs: switch to new ctime accessors
+  openpromfs: switch to new ctime accessors
+  orangefs: switch to new ctime accessors
+  overlayfs: switch to new ctime accessors
+  proc: switch to new ctime accessors
+  pstore: switch to new ctime accessors
+  qnx4: switch to new ctime accessors
+  qnx6: switch to new ctime accessors
+  ramfs: switch to new ctime accessors
+  reiserfs: switch to new ctime accessors
+  romfs: switch to new ctime accessors
+  smb: switch to new ctime accessors
+  squashfs: switch to new ctime accessors
+  sysv: switch to new ctime accessors
+  tracefs: switch to new ctime accessors
+  ubifs: switch to new ctime accessors
+  udf: switch to new ctime accessors
+  ufs: switch to new ctime accessors
+  vboxsf: switch to new ctime accessors
+  xfs: switch to new ctime accessors
+  zonefs: switch to new ctime accessors
+  mqueue: switch to new ctime accessors
+  bpf: switch to new ctime accessors
+  shmem: switch to new ctime accessors
+  rpc_pipefs: switch to new ctime accessors
+  apparmor: switch to new ctime accessors
+  security: switch to new ctime accessors
+  selinux: switch to new ctime accessors
+  fs: rename i_ctime field to __i_ctime
 
-iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmSS/pIACgkQupfNUreW
-QU8FZgv+NJjIGObr29DU3w9gC84AcnW6dJTp9wHS00NxSXpo+c714JQ2xV0z8i/m
-wZbyBR21D/CkjJCTL0pwjCh1xi+PdMHmpB9mDlQSxEg6i+fJXBb7GvWvkOfNagP8
-Z2t/NzP/RPP+/BjBP3QOGNyQWgZ4Jl6lMvzlt0aJlHMx7/QD7PRgnNN3KYiFzB+I
-FTf5QLbTT85TSPPoGBQCzF6Ych5vKNmIzRZxD2o1zPJFftGIcYOfYOC7vX/1tuOa
-1l2+maHSi22uTAHFL3XKvcQBxuLeBCoAIgYOGeO0B+wApLgDVUdHb3PPMw74sOuD
-RtgKG6gEgO937g+zKo5xP6M5iLH8xYavJRYPNGH5FBfL7DDROXI6t9tjBpvpUbPS
-VQDducT3r8p7hbIhb+3MnRgJri1yF7SjRZF6iewJ9G3Rd7o8PlcLC3aTZLvilO9j
-4YYKID1bOqsI9tcLY5oeM6HROqdmLhzFQQlzZCCz4Y/1XVO7ZKpJHP97wqBETkbq
-DRVhBHDj
-=lxdq
------END PGP SIGNATURE-----
+ arch/powerpc/platforms/cell/spufs/inode.c |  2 +-
+ arch/s390/hypfs/inode.c                   |  4 +-
+ drivers/android/binderfs.c                |  8 +--
+ drivers/infiniband/hw/qib/qib_fs.c        |  4 +-
+ drivers/misc/ibmasm/ibmasmfs.c            |  2 +-
+ drivers/misc/ibmvmc.c                     |  2 +-
+ drivers/usb/core/devio.c                  | 16 +++---
+ drivers/usb/gadget/function/f_fs.c        |  6 +--
+ drivers/usb/gadget/legacy/inode.c         |  3 +-
+ fs/9p/vfs_inode.c                         |  6 ++-
+ fs/9p/vfs_inode_dotl.c                    | 11 ++--
+ fs/adfs/inode.c                           |  4 +-
+ fs/affs/amigaffs.c                        |  6 +--
+ fs/affs/inode.c                           | 17 +++---
+ fs/afs/dynroot.c                          |  2 +-
+ fs/afs/inode.c                            |  6 +--
+ fs/attr.c                                 |  2 +-
+ fs/autofs/inode.c                         |  2 +-
+ fs/autofs/root.c                          |  6 +--
+ fs/bad_inode.c                            |  3 +-
+ fs/befs/linuxvfs.c                        |  2 +-
+ fs/bfs/dir.c                              | 16 +++---
+ fs/bfs/inode.c                            |  6 +--
+ fs/binfmt_misc.c                          |  3 +-
+ fs/btrfs/delayed-inode.c                  | 10 ++--
+ fs/btrfs/file.c                           | 24 +++------
+ fs/btrfs/inode.c                          | 66 +++++++++--------------
+ fs/btrfs/ioctl.c                          |  2 +-
+ fs/btrfs/reflink.c                        |  7 ++-
+ fs/btrfs/transaction.c                    |  3 +-
+ fs/btrfs/tree-log.c                       |  4 +-
+ fs/btrfs/xattr.c                          |  4 +-
+ fs/ceph/acl.c                             |  2 +-
+ fs/ceph/caps.c                            |  2 +-
+ fs/ceph/inode.c                           | 17 +++---
+ fs/ceph/snap.c                            |  2 +-
+ fs/ceph/xattr.c                           |  2 +-
+ fs/coda/coda_linux.c                      |  2 +-
+ fs/coda/dir.c                             |  2 +-
+ fs/coda/file.c                            |  2 +-
+ fs/coda/inode.c                           |  2 +-
+ fs/configfs/inode.c                       |  6 +--
+ fs/cramfs/inode.c                         |  2 +-
+ fs/debugfs/inode.c                        |  2 +-
+ fs/devpts/inode.c                         |  6 +--
+ fs/ecryptfs/inode.c                       |  2 +-
+ fs/efivarfs/file.c                        |  2 +-
+ fs/efivarfs/inode.c                       |  2 +-
+ fs/efs/inode.c                            |  5 +-
+ fs/erofs/inode.c                          | 16 +++---
+ fs/exfat/file.c                           |  4 +-
+ fs/exfat/inode.c                          |  6 +--
+ fs/exfat/namei.c                          | 29 +++++-----
+ fs/exfat/super.c                          |  4 +-
+ fs/ext2/acl.c                             |  2 +-
+ fs/ext2/dir.c                             |  6 +--
+ fs/ext2/ialloc.c                          |  2 +-
+ fs/ext2/inode.c                           | 11 ++--
+ fs/ext2/ioctl.c                           |  4 +-
+ fs/ext2/namei.c                           |  8 +--
+ fs/ext2/super.c                           |  2 +-
+ fs/ext2/xattr.c                           |  2 +-
+ fs/ext4/acl.c                             |  2 +-
+ fs/ext4/ext4.h                            | 20 +++++++
+ fs/ext4/extents.c                         | 12 ++---
+ fs/ext4/ialloc.c                          |  2 +-
+ fs/ext4/inline.c                          |  4 +-
+ fs/ext4/inode.c                           | 16 +++---
+ fs/ext4/ioctl.c                           |  9 ++--
+ fs/ext4/namei.c                           | 26 +++++----
+ fs/ext4/super.c                           |  2 +-
+ fs/ext4/xattr.c                           |  6 +--
+ fs/f2fs/dir.c                             |  8 +--
+ fs/f2fs/f2fs.h                            |  5 +-
+ fs/f2fs/file.c                            | 16 +++---
+ fs/f2fs/inline.c                          |  2 +-
+ fs/f2fs/inode.c                           | 10 ++--
+ fs/f2fs/namei.c                           | 12 ++---
+ fs/f2fs/recovery.c                        |  4 +-
+ fs/f2fs/super.c                           |  2 +-
+ fs/f2fs/xattr.c                           |  2 +-
+ fs/fat/inode.c                            |  8 +--
+ fs/fat/misc.c                             |  7 ++-
+ fs/freevxfs/vxfs_inode.c                  |  4 +-
+ fs/fuse/control.c                         |  2 +-
+ fs/fuse/dir.c                             |  8 +--
+ fs/fuse/inode.c                           | 18 ++++---
+ fs/gfs2/acl.c                             |  2 +-
+ fs/gfs2/bmap.c                            | 11 ++--
+ fs/gfs2/dir.c                             | 15 +++---
+ fs/gfs2/file.c                            |  2 +-
+ fs/gfs2/glops.c                           |  4 +-
+ fs/gfs2/inode.c                           |  8 +--
+ fs/gfs2/super.c                           |  4 +-
+ fs/gfs2/xattr.c                           |  8 +--
+ fs/hfs/catalog.c                          |  8 +--
+ fs/hfs/dir.c                              |  2 +-
+ fs/hfs/inode.c                            | 13 +++--
+ fs/hfs/sysdep.c                           |  2 +-
+ fs/hfsplus/catalog.c                      |  8 +--
+ fs/hfsplus/dir.c                          |  6 +--
+ fs/hfsplus/inode.c                        | 14 ++---
+ fs/hostfs/hostfs_kern.c                   |  4 +-
+ fs/hpfs/dir.c                             |  8 +--
+ fs/hpfs/inode.c                           |  6 +--
+ fs/hpfs/namei.c                           | 26 +++++----
+ fs/hpfs/super.c                           |  5 +-
+ fs/hugetlbfs/inode.c                      | 12 ++---
+ fs/inode.c                                | 26 +++++++--
+ fs/isofs/inode.c                          |  4 +-
+ fs/isofs/rock.c                           | 16 +++---
+ fs/jffs2/dir.c                            | 19 +++----
+ fs/jffs2/file.c                           |  3 +-
+ fs/jffs2/fs.c                             | 10 ++--
+ fs/jffs2/os-linux.h                       |  2 +-
+ fs/jfs/acl.c                              |  2 +-
+ fs/jfs/inode.c                            |  2 +-
+ fs/jfs/ioctl.c                            |  2 +-
+ fs/jfs/jfs_imap.c                         |  8 +--
+ fs/jfs/jfs_inode.c                        |  4 +-
+ fs/jfs/namei.c                            | 25 ++++-----
+ fs/jfs/super.c                            |  2 +-
+ fs/jfs/xattr.c                            |  2 +-
+ fs/kernfs/inode.c                         |  4 +-
+ fs/libfs.c                                | 32 +++++------
+ fs/minix/bitmap.c                         |  2 +-
+ fs/minix/dir.c                            |  6 +--
+ fs/minix/inode.c                          | 11 ++--
+ fs/minix/itree_common.c                   |  4 +-
+ fs/minix/namei.c                          |  6 +--
+ fs/nfs/callback_proc.c                    |  2 +-
+ fs/nfs/fscache.h                          |  4 +-
+ fs/nfs/inode.c                            | 21 ++++----
+ fs/nfsd/nfsctl.c                          |  2 +-
+ fs/nfsd/vfs.c                             |  2 +-
+ fs/nilfs2/dir.c                           |  6 +--
+ fs/nilfs2/inode.c                         | 12 ++---
+ fs/nilfs2/ioctl.c                         |  2 +-
+ fs/nilfs2/namei.c                         |  8 +--
+ fs/nsfs.c                                 |  2 +-
+ fs/ntfs/inode.c                           | 15 +++---
+ fs/ntfs/mft.c                             |  3 +-
+ fs/ntfs3/file.c                           |  6 +--
+ fs/ntfs3/frecord.c                        |  4 +-
+ fs/ntfs3/inode.c                          | 14 ++---
+ fs/ntfs3/namei.c                          | 10 ++--
+ fs/ntfs3/xattr.c                          |  4 +-
+ fs/ocfs2/acl.c                            |  6 +--
+ fs/ocfs2/alloc.c                          |  6 +--
+ fs/ocfs2/aops.c                           |  2 +-
+ fs/ocfs2/dir.c                            |  8 +--
+ fs/ocfs2/dlmfs/dlmfs.c                    |  4 +-
+ fs/ocfs2/dlmglue.c                        | 10 ++--
+ fs/ocfs2/file.c                           | 16 +++---
+ fs/ocfs2/inode.c                          | 14 ++---
+ fs/ocfs2/move_extents.c                   |  6 +--
+ fs/ocfs2/namei.c                          | 22 ++++----
+ fs/ocfs2/refcounttree.c                   | 14 ++---
+ fs/ocfs2/xattr.c                          |  6 +--
+ fs/omfs/dir.c                             |  4 +-
+ fs/omfs/inode.c                           | 10 ++--
+ fs/openpromfs/inode.c                     |  4 +-
+ fs/orangefs/namei.c                       |  2 +-
+ fs/orangefs/orangefs-utils.c              |  6 +--
+ fs/overlayfs/file.c                       |  7 ++-
+ fs/overlayfs/util.c                       |  2 +-
+ fs/pipe.c                                 |  2 +-
+ fs/posix_acl.c                            |  2 +-
+ fs/proc/base.c                            |  2 +-
+ fs/proc/inode.c                           |  2 +-
+ fs/proc/proc_sysctl.c                     |  2 +-
+ fs/proc/self.c                            |  2 +-
+ fs/proc/thread_self.c                     |  2 +-
+ fs/pstore/inode.c                         |  4 +-
+ fs/qnx4/inode.c                           |  4 +-
+ fs/qnx6/inode.c                           |  4 +-
+ fs/ramfs/inode.c                          |  6 +--
+ fs/reiserfs/inode.c                       | 14 ++---
+ fs/reiserfs/ioctl.c                       |  4 +-
+ fs/reiserfs/namei.c                       | 21 ++++----
+ fs/reiserfs/stree.c                       |  4 +-
+ fs/reiserfs/super.c                       |  2 +-
+ fs/reiserfs/xattr.c                       |  5 +-
+ fs/reiserfs/xattr_acl.c                   |  2 +-
+ fs/romfs/super.c                          |  4 +-
+ fs/smb/client/file.c                      |  4 +-
+ fs/smb/client/fscache.h                   |  5 +-
+ fs/smb/client/inode.c                     | 15 +++---
+ fs/smb/client/smb2ops.c                   |  2 +-
+ fs/smb/server/smb2pdu.c                   |  8 +--
+ fs/squashfs/inode.c                       |  2 +-
+ fs/stack.c                                |  2 +-
+ fs/stat.c                                 |  2 +-
+ fs/sysv/dir.c                             |  6 +--
+ fs/sysv/ialloc.c                          |  2 +-
+ fs/sysv/inode.c                           |  6 +--
+ fs/sysv/itree.c                           |  4 +-
+ fs/sysv/namei.c                           |  6 +--
+ fs/tracefs/inode.c                        |  2 +-
+ fs/ubifs/debug.c                          |  4 +-
+ fs/ubifs/dir.c                            | 39 +++++++-------
+ fs/ubifs/file.c                           | 16 +++---
+ fs/ubifs/ioctl.c                          |  2 +-
+ fs/ubifs/journal.c                        |  4 +-
+ fs/ubifs/super.c                          |  4 +-
+ fs/ubifs/xattr.c                          |  6 +--
+ fs/udf/ialloc.c                           |  2 +-
+ fs/udf/inode.c                            | 17 +++---
+ fs/udf/namei.c                            | 24 ++++-----
+ fs/ufs/dir.c                              |  6 +--
+ fs/ufs/ialloc.c                           |  2 +-
+ fs/ufs/inode.c                            | 23 ++++----
+ fs/ufs/namei.c                            |  8 +--
+ fs/vboxsf/utils.c                         |  4 +-
+ fs/xfs/libxfs/xfs_inode_buf.c             |  4 +-
+ fs/xfs/libxfs/xfs_trans_inode.c           |  2 +-
+ fs/xfs/xfs_acl.c                          |  2 +-
+ fs/xfs/xfs_bmap_util.c                    |  6 ++-
+ fs/xfs/xfs_inode.c                        |  2 +-
+ fs/xfs/xfs_inode_item.c                   |  2 +-
+ fs/xfs/xfs_iops.c                         |  4 +-
+ fs/xfs/xfs_itable.c                       |  4 +-
+ fs/zonefs/super.c                         |  8 +--
+ include/linux/fs.h                        | 55 ++++++++++++++++++-
+ include/linux/fs_stack.h                  |  2 +-
+ ipc/mqueue.c                              | 20 ++++---
+ kernel/bpf/inode.c                        |  4 +-
+ mm/shmem.c                                | 28 +++++-----
+ net/sunrpc/rpc_pipe.c                     |  2 +-
+ security/apparmor/apparmorfs.c            |  6 +--
+ security/apparmor/policy_unpack.c         |  4 +-
+ security/inode.c                          |  2 +-
+ security/selinux/selinuxfs.c              |  2 +-
+ 233 files changed, 914 insertions(+), 808 deletions(-)
 
---nwcq3i6cyedok5cv--
+-- 
+2.41.0
+
