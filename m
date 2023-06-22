@@ -2,58 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8662D73A02D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 13:58:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0669A73A056
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 14:00:39 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=pSWWLPWk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=MfNfXvsZ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QmzQb33Dsz2yHr
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 21:57:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QmzTc6TpDz3bTk
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 22:00:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=pSWWLPWk;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=MfNfXvsZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QmzPd60B9z2xrD
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jun 2023 21:57:09 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=dnuSRjit9BClyf8ssWCLDDODxXJZmhDnJ4paeO5Nhx4=; b=pSWWLPWkaaoJwHc5BYho2poyPl
-	eIWhn/5lqy2SEgEoeR3nAv0aJ8EHJmEWIJd1pNAfu6XYd3iA1O0K29sU64D64FD89ly99k0csSzr6
-	/Yf44ZWG5r1/r112unkcSNqmOEFsnJ0IvnVjdtAkNmAO9AQWc1o4P0yHC+mBLwUSiUQ7FE0bdA9lh
-	v6HwdXpSBBNckOoEpyjh5Vl/7X7BxoC8B860EG/qV4xYN9NQxldNh1LTQhU35lNy0OPwpkt+6q1EM
-	TEp5tJ83ZWBXcldmwOlDKqgo28P7Gral3S6BrII6lffytuKus/FlQUaypbE+qdNfn7/7v3vGBBB92
-	oDeVJM5Q==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1qCIvr-00FZUB-Ln; Thu, 22 Jun 2023 11:56:59 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QmzSh6Mq2z2y3H
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jun 2023 21:59:48 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 4B83F300338;
-	Thu, 22 Jun 2023 13:56:59 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 1FD74241BF9B6; Thu, 22 Jun 2023 13:56:59 +0200 (CEST)
-Date: Thu, 22 Jun 2023 13:56:59 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v2 14/14] powerpc: Implement UACCESS validation on PPC32
-Message-ID: <20230622115659.GO4253@hirez.programming.kicks-ass.net>
-References: <cover.1687430631.git.christophe.leroy@csgroup.eu>
- <be282f27ad808418c7475b51a00b4cb035f89a95.1687430631.git.christophe.leroy@csgroup.eu>
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QmzSd5NYGz4x3S;
+	Thu, 22 Jun 2023 21:59:45 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1687435185;
+	bh=yN+GmeoETJWiTPlx/fsRtqX7iQul/wMbk1v3RmO7Aa4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=MfNfXvsZPdGTx3J/MFV3acPM+us+53zhikLlxiG29s7oSlNyIDDp3cV7AR13Bgt2c
+	 KzYbgZcuNpWli+byZZsH+PqZtlojeWLlFqLdXYkC5Ra3FIszZ0AZSK49EIojET5DWr
+	 aY02RkaMD7xqgvMGJTIxhNrQDqIadEq8O+Tnu5YczVpgS7yZhFZGa37yuNRodKJUjD
+	 x39e2JlfV9ajvdodswW8f2Tf3N0DFSPeTOrR/OdHYc1UehVXteBydCiHmVhw/U1Jie
+	 VkegI6JlRz3CilJd+S+sbCbmF93ix2GYaVagHBJXOJmBN6htUBxEHMbYnR4EwnqVuk
+	 96wzXCRTuQL9A==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.4-5 tag
+Date: Thu, 22 Jun 2023 21:59:45 +1000
+Message-ID: <87wmzvogge.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <be282f27ad808418c7475b51a00b4cb035f89a95.1687430631.git.christophe.leroy@csgroup.eu>
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,49 +55,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>, Sathvika Vasireddy <sv@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 22, 2023 at 12:54:36PM +0200, Christophe Leroy wrote:
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
 
-> diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-> index f850ab892ad5..8ac5711a055f 100644
-> --- a/tools/objtool/check.c
-> +++ b/tools/objtool/check.c
-> @@ -218,6 +218,7 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
->  		"kthread_exit",
->  		"kunit_try_catch_throw",
->  		"lbug_with_loc",
-> +		"longjmp",
->  		"machine_real_restart",
->  		"make_task_dead",
->  		"mpt_halt_firmware",
-> @@ -230,7 +231,9 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
->  		"sev_es_terminate",
->  		"snp_abort",
->  		"start_kernel",
-> +		"start_secondary_resume",
->  		"stop_this_cpu",
-> +		"unrecoverable_exception",
->  		"usercopy_abort",
->  		"x86_64_start_kernel",
->  		"x86_64_start_reservations",
+Hi Linus,
 
-Someone went and changed all that in tip/objtool/core :-)
+Please pull one more powerpc fix for 6.4:
 
-But perhaps, like the uaccess_safe_builtins[] array below, should we
-start marking sections so we can remember where stuff comes from later?
+The following change since commit 719dfd5925e186e09a2a6f23016936ac436f3d78:
 
-> @@ -1335,6 +1338,8 @@ static const char *uaccess_safe_builtin[] = {
->  	"rep_stos_alternative",
->  	"rep_movs_alternative",
->  	"__copy_user_nocache",
-> +	"__copy_tofrom_user",
-> +	"__arch_clear_user",
->  	NULL
->  };
+  powerpc/xmon: Use KSYM_NAME_LEN in array size (2023-05-30 16:46:56 +1000)
 
-Do we want to rename the 'misc' sectino to 'x86' and start a 'ppc32'
-section there?
+is available in the git repository at:
 
+  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.4-5
+
+for you to fetch up to dfaed3e1fa7099de8de4e89cbe7eb9c1bca27dfe:
+
+  powerpc/64s/radix: Fix exit lazy tlb mm switch with irqs enabled (2023-06-09 16:35:52 +1000)
+
+- ------------------------------------------------------------------
+powerpc fixes for 6.4 #5
+
+ - Disable IRQs when switching mm in exit_lazy_flush_tlb() called from exit_mmap()
+
+Thanks to: Nicholas Piggin, Sachin Sant.
+
+- ------------------------------------------------------------------
+Nicholas Piggin (1):
+      powerpc/64s/radix: Fix exit lazy tlb mm switch with irqs enabled
+
+
+ arch/powerpc/mm/book3s64/radix_tlb.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmSUN4YACgkQUevqPMjh
+pYAmxBAAm9jgtDQaFG4LxUnSGvhPFFqN2x5/JVAu0oJyXlnr8nJifGLOL27chVtw
+20QKMtOA5c1gnb+WLqhojrxDzets9oIdvEoej3VtYKtJHs17fPIvn/l0PDfp63WK
+T3oy8qjyOKr1FSRhKXqeFd1kXqT6u4q+ZYlG/C0z82wSFw+tM2mBJa5u8MMzQTE5
+Zl1SBL0LCI0KJPdyh+VpTJE68Q2SuDtd4qzNNqg1IPuzrQueXjZMNefpPLGOcuNW
+PlvAKsLkZRcJduINI5DqvoGVt7Dmqy35qnqPq256Uq3OrRIzcSCyzxQLVHrhVeRe
+a72ndemS+sOZY2ds/F7qtkhZ8jtMCj0CzRWYcmtsAKFmRczBslkdHuF2PVXYldDt
+SPbg9MNTaIpp+XwkR2CF1b6QqtSru0kWy4ZDbqa4yaeAeGixFd2QS+3P2H1a3UEQ
+M8i0+EhEE2aqvRKtOWP8lZ5k0HceB0MNaeOjYkWs0Fyo4++PiPXs9PytSh/KCYrj
+xD1XLQApl3AydQfTC5trmCkZ+3z3WwrBxN/pi+USQinY490DWVC9PPyI4a7Kp74l
+G/vaz5wotHSwDjlLa48V6oFH/qvi1tfoHzlhPKZPRiTI8pFWUkDX/92Q1yVhTbL3
+cvLvZ0bc3XeHiEuJwMj07pohAT5JHYI1rVPby6QNHC8j9+ukzfQ=
+=62oS
+-----END PGP SIGNATURE-----
