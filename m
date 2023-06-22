@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93781739F32
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 13:02:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 456CB739F2F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 13:02:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QmyBv3pXmz3dnJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 21:02:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QmyBC6Dwwz3dhW
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 21:02:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
@@ -14,34 +14,34 @@ Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qmy2z4TWbz3c2t
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jun 2023 20:55:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qmy2w0QHkz3c2D
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jun 2023 20:55:52 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4Qmy2B19JFz9sRy;
-	Thu, 22 Jun 2023 12:55:14 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4Qmy293Bmpz9sRs;
+	Thu, 22 Jun 2023 12:55:13 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
 	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 1i7GCOvs_3fi; Thu, 22 Jun 2023 12:55:14 +0200 (CEST)
+	with ESMTP id 0y8zvkea4ST8; Thu, 22 Jun 2023 12:55:13 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4Qmy1z466Dz9sS2;
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4Qmy1z42L8z9sS0;
 	Thu, 22 Jun 2023 12:55:03 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 886E78B77D;
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 85FA68B77C;
 	Thu, 22 Jun 2023 12:55:03 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id Qx6bjsuqdINP; Thu, 22 Jun 2023 12:55:03 +0200 (CEST)
+	with ESMTP id ZAHRRKp1hzW3; Thu, 22 Jun 2023 12:55:03 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.232.14])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 1349F8B77B;
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 0F4DF8B763;
 	Thu, 22 Jun 2023 12:55:03 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 35MAst7U2382603
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 35MAstH22382608
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
 	Thu, 22 Jun 2023 12:54:55 +0200
 Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 35MAstrf2382602;
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 35MAstt92382607;
 	Thu, 22 Jun 2023 12:54:55 +0200
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
@@ -50,14 +50,14 @@ To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
         Peter Zijlstra <peterz@infradead.org>,
         Sathvika Vasireddy <sv@linux.ibm.com>,
         Naveen N Rao <naveen@kernel.org>
-Subject: [PATCH v2 13/14] powerpc/bug: Annotate reachable after warning trap
-Date: Thu, 22 Jun 2023 12:54:35 +0200
-Message-Id: <c5df2e21e585078677c7444cb6aee3e4404047ce.1687430631.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v2 14/14] powerpc: Implement UACCESS validation on PPC32
+Date: Thu, 22 Jun 2023 12:54:36 +0200
+Message-Id: <be282f27ad808418c7475b51a00b4cb035f89a95.1687430631.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <cover.1687430631.git.christophe.leroy@csgroup.eu>
 References: <cover.1687430631.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1687431272; l=2316; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=/W4+xqj0r7zNXbQJn/jQRk2PTNbpBc+Jr6goIjqzvwg=; b=TD/95uGV7fn5nikSzDwHKl57kO2RzzOio+Nwz/LkTCP1Fxdc8R+C0cbguVoXQ5QbZiUb8zuGX zheE5iP1J/VDgT5KzUTfR68jop11OJpuAMK+g2h8TRdQTRpfDK+OwLA
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1687431272; l=13818; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=gGCZPMWcuDAJxDyLtoC/Wa9LU9DPZyUBcIAjsrrKoPY=; b=QkK2Cs1jjnRQKTzTCHOcUNHUkm4s6aDFRKDhP8tOH/rsWl73Ooqpyv2M4yf4CGAjeePgFRXbl GBuOQGO7jHZA/IZgD5pk2VfMWk7seVHjuPLs5vnVm11xS4f9gByLjpx
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -75,82 +75,424 @@ Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This commit is copied from commit bfb1a7c91fb7 ("x86/bug: Merge
-annotate_reachable() into _BUG_FLAGS() asm")
+In order to implement UACCESS validation, objtool support
+for powerpc needs to be enhanced to decode more instructions.
 
-'twi 31,0,0' is a BUG instruction, which is by default a dead end.
+It also requires implementation of switch tables finding.
+On PPC32 it is similar to x86, switch tables are anonymous in .rodata,
+the difference is that the value is relative to its index in the table.
 
-But the same instruction is used for WARNINGs and the execution
-resumes with the following instruction. Mark it reachable so
-that objtool knows that it is not a dead end in that case.
+Then comes the UACCESS enabling/disabling instructions. On booke and
+8xx it is done with a mtspr instruction. For 8xx that's in SPRN_MD_AP,
+for booke that's in SPRN_PID. Annotate those instructions.
 
-Also change the unreachable() annotation by __builtin_unreachable()
-since objtool already knows that a BUG instruction is a dead end.
+For book3s/32 that's a bit more complex and left aside for the moment.
+
+No work has been done for ASM files, they are not used for UACCESS
+so for the moment just tell objtool to ignore ASM files.
+
+For relocable code, the .got2 relocation preceding each global
+function needs to be marked as ignored because some versions of GCC
+do this:
+
+			120: R_PPC_REL32	.got2+0x7ff0
+
+00000124 <tohex>:
+     124:	94 21 ff f0 	stwu    r1,-16(r1)
+     128:	7c 08 02 a6 	mflr    r0
+     12c:	42 9f 00 05 	bcl     20,4*cr7+so,130 <tohex+0xc>
+     130:	39 00 00 00 	li      r8,0
+     134:	39 20 00 08 	li      r9,8
+     138:	93 c1 00 08 	stw     r30,8(r1)
+     13c:	7f c8 02 a6 	mflr    r30
+     140:	90 01 00 14 	stw     r0,20(r1)
+     144:	80 1e ff f0 	lwz     r0,-16(r30)
+     148:	7f c0 f2 14 	add     r30,r0,r30
+     14c:	81 5e 80 00 	lwz     r10,-32768(r30)
+     150:	80 fe 80 04 	lwz     r7,-32764(r30)
+
+While other versions do that:
+
+00000120 <tohex>:
+     120:	94 21 ff f0 	stwu    r1,-16(r1)
+     124:	7c 08 02 a6 	mflr    r0
+     128:	42 9f 00 05 	bcl     20,4*cr7+so,12c <tohex+0xc>
+     12c:	39 00 00 00 	li      r8,0
+     130:	39 20 00 08 	li      r9,8
+     134:	93 c1 00 08 	stw     r30,8(r1)
+     138:	7f c8 02 a6 	mflr    r30
+     13c:	3f de 00 00 	addis   r30,r30,0
+			13e: R_PPC_REL16_HA	.got2+0x8012
+     140:	90 01 00 14 	stw     r0,20(r1)
+     144:	3b de 00 00 	addi    r30,r30,0
+			146: R_PPC_REL16_LO	.got2+0x801a
+     148:	81 5e 80 00 	lwz     r10,-32768(r30)
+     14c:	80 fe 80 04 	lwz     r7,-32764(r30)
+
+Also declare longjmp() and start_secondary_resume() as global noreturn
+functions, and declare __copy_tofrom_user() and __arch_clear_user()
+as UACCESS safe.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/bug.h | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ arch/powerpc/Kconfig                         |  2 +
+ arch/powerpc/include/asm/kup.h               | 12 +++
+ arch/powerpc/include/asm/nohash/32/kup-8xx.h |  8 +-
+ arch/powerpc/include/asm/nohash/kup-booke.h  |  8 +-
+ arch/powerpc/kexec/core_32.c                 |  4 +-
+ tools/objtool/arch/powerpc/decode.c          | 82 ++++++++++++++++++--
+ tools/objtool/arch/powerpc/special.c         | 42 +++++++++-
+ tools/objtool/check.c                        |  5 ++
+ 8 files changed, 148 insertions(+), 15 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
-index a565995fb742..5550ebffb146 100644
---- a/arch/powerpc/include/asm/bug.h
-+++ b/arch/powerpc/include/asm/bug.h
-@@ -4,6 +4,7 @@
- #ifdef __KERNEL__
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 8b955bc7b59f..8b613e520143 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -160,6 +160,7 @@ config PPC
+ 	select ARCH_KEEP_MEMBLOCK
+ 	select ARCH_MIGHT_HAVE_PC_PARPORT
+ 	select ARCH_MIGHT_HAVE_PC_SERIO
++	select ARCH_OBJTOOL_SKIP_ASM
+ 	select ARCH_OPTIONAL_KERNEL_RWX		if ARCH_HAS_STRICT_KERNEL_RWX
+ 	select ARCH_OPTIONAL_KERNEL_RWX_DEFAULT
+ 	select ARCH_SPLIT_ARG64			if PPC32
+@@ -258,6 +259,7 @@ config PPC
+ 	select HAVE_OPTPROBES
+ 	select HAVE_OBJTOOL			if PPC32 || MPROFILE_KERNEL
+ 	select HAVE_OBJTOOL_MCOUNT		if HAVE_OBJTOOL
++	select HAVE_UACCESS_VALIDATION		if HAVE_OBJTOOL && PPC_KUAP && PPC32
+ 	select HAVE_PERF_EVENTS
+ 	select HAVE_PERF_EVENTS_NMI		if PPC64
+ 	select HAVE_PERF_REGS
+diff --git a/arch/powerpc/include/asm/kup.h b/arch/powerpc/include/asm/kup.h
+index 132f1c7e1064..9f824cb93d8a 100644
+--- a/arch/powerpc/include/asm/kup.h
++++ b/arch/powerpc/include/asm/kup.h
+@@ -10,6 +10,8 @@
+ #include <linux/types.h>
  
- #include <asm/asm-compat.h>
-+#include <linux/objtool.h>
- 
- #ifdef CONFIG_BUG
- 
-@@ -51,10 +52,11 @@
- 	".previous\n"
+ static __always_inline bool kuap_is_disabled(void);
++static __always_inline void mtspr_uaccess_begin(int rn, unsigned long val);
++static __always_inline void mtspr_uaccess_end(int rn, unsigned long val);
  #endif
  
--#define BUG_ENTRY(insn, flags, ...)			\
-+#define BUG_ENTRY(insn, flags, extra, ...)		\
- 	__asm__ __volatile__(				\
- 		"1:	" insn "\n"			\
- 		_EMIT_BUG_ENTRY				\
-+		extra					\
- 		: : "i" (__FILE__), "i" (__LINE__),	\
- 		  "i" (flags),				\
- 		  "i" (sizeof(struct bug_entry)),	\
-@@ -67,12 +69,12 @@
-  */
+ #ifdef CONFIG_PPC_BOOK3S_64
+@@ -222,6 +224,16 @@ static __always_inline void prevent_current_write_to_user(void)
+ 	prevent_user_access(KUAP_WRITE);
+ }
  
- #define BUG() do {						\
--	BUG_ENTRY("twi 31, 0, 0", 0);				\
--	unreachable();						\
-+	BUG_ENTRY("twi 31, 0, 0", 0, "");			\
-+	__builtin_unreachable();				\
- } while (0)
- #define HAVE_ARCH_BUG
++static __always_inline void mtspr_uaccess_begin(int rn, unsigned long val)
++{
++	asm(ASM_UACCESS_BEGIN "mtspr %0, %1\n\t" : : "i"(rn), "r"(val) : "memory");
++}
++
++static __always_inline void mtspr_uaccess_end(int rn, unsigned long val)
++{
++	asm(ASM_UACCESS_END "mtspr %0, %1\n\t" : : "i"(rn), "r"(val) : "memory");
++}
++
+ #endif /* !__ASSEMBLY__ */
  
--#define __WARN_FLAGS(flags) BUG_ENTRY("twi 31, 0, 0", BUGFLAG_WARNING | (flags))
-+#define __WARN_FLAGS(flags) BUG_ENTRY("twi 31, 0, 0", BUGFLAG_WARNING | (flags), ASM_REACHABLE)
+ #endif /* _ASM_POWERPC_KUAP_H_ */
+diff --git a/arch/powerpc/include/asm/nohash/32/kup-8xx.h b/arch/powerpc/include/asm/nohash/32/kup-8xx.h
+index 61067e4c8f22..9b59231d87c9 100644
+--- a/arch/powerpc/include/asm/nohash/32/kup-8xx.h
++++ b/arch/powerpc/include/asm/nohash/32/kup-8xx.h
+@@ -42,12 +42,12 @@ static __always_inline unsigned long __kuap_get_and_assert_locked(void)
+ static __always_inline void __allow_user_access(void __user *to, const void __user *from,
+ 						unsigned long size, unsigned long dir)
+ {
+-	mtspr(SPRN_MD_AP, MD_APG_INIT);
++	mtspr_uaccess_begin(SPRN_MD_AP, MD_APG_INIT);
+ }
  
- #ifdef CONFIG_PPC64
- #define BUG_ON(x) do {						\
-@@ -80,7 +82,7 @@
- 		if (x)						\
- 			BUG();					\
- 	} else {						\
--		BUG_ENTRY(PPC_TLNEI " %4, 0", 0, "r" ((__force long)(x)));	\
-+		BUG_ENTRY(PPC_TLNEI " %4, 0", 0, "", "r" ((__force long)(x)));	\
- 	}							\
- } while (0)
+ static __always_inline void __prevent_user_access(unsigned long dir)
+ {
+-	mtspr(SPRN_MD_AP, MD_APG_KUAP);
++	mtspr_uaccess_end(SPRN_MD_AP, MD_APG_KUAP);
+ }
  
-@@ -92,7 +94,7 @@
- 	} else {						\
- 		BUG_ENTRY(PPC_TLNEI " %4, 0",			\
- 			  BUGFLAG_WARNING | BUGFLAG_TAINT(TAINT_WARN),	\
--			  "r" (__ret_warn_on));	\
-+			  "", "r" (__ret_warn_on));	\
- 	}							\
- 	unlikely(__ret_warn_on);				\
- })
+ static __always_inline unsigned long __prevent_user_access_return(void)
+@@ -56,14 +56,14 @@ static __always_inline unsigned long __prevent_user_access_return(void)
+ 
+ 	flags = mfspr(SPRN_MD_AP);
+ 
+-	mtspr(SPRN_MD_AP, MD_APG_KUAP);
++	mtspr_uaccess_end(SPRN_MD_AP, MD_APG_KUAP);
+ 
+ 	return flags;
+ }
+ 
+ static __always_inline void __restore_user_access(unsigned long flags)
+ {
+-	mtspr(SPRN_MD_AP, flags);
++	mtspr_uaccess_begin(SPRN_MD_AP, flags);
+ }
+ 
+ static __always_inline bool
+diff --git a/arch/powerpc/include/asm/nohash/kup-booke.h b/arch/powerpc/include/asm/nohash/kup-booke.h
+index 416f3e0897d5..2967501c434e 100644
+--- a/arch/powerpc/include/asm/nohash/kup-booke.h
++++ b/arch/powerpc/include/asm/nohash/kup-booke.h
+@@ -64,13 +64,13 @@ static __always_inline unsigned long __kuap_get_and_assert_locked(void)
+ static __always_inline void __allow_user_access(void __user *to, const void __user *from,
+ 						unsigned long size, unsigned long dir)
+ {
+-	mtspr(SPRN_PID, current->thread.pid);
++	mtspr_uaccess_begin(SPRN_PID, current->thread.pid);
+ 	isync();
+ }
+ 
+ static __always_inline void __prevent_user_access(unsigned long dir)
+ {
+-	mtspr(SPRN_PID, 0);
++	mtspr_uaccess_end(SPRN_PID, 0);
+ 	isync();
+ }
+ 
+@@ -78,7 +78,7 @@ static __always_inline unsigned long __prevent_user_access_return(void)
+ {
+ 	unsigned long flags = mfspr(SPRN_PID);
+ 
+-	mtspr(SPRN_PID, 0);
++	mtspr_uaccess_end(SPRN_PID, 0);
+ 	isync();
+ 
+ 	return flags;
+@@ -87,7 +87,7 @@ static __always_inline unsigned long __prevent_user_access_return(void)
+ static __always_inline void __restore_user_access(unsigned long flags)
+ {
+ 	if (flags) {
+-		mtspr(SPRN_PID, current->thread.pid);
++		mtspr_uaccess_begin(SPRN_PID, current->thread.pid);
+ 		isync();
+ 	}
+ }
+diff --git a/arch/powerpc/kexec/core_32.c b/arch/powerpc/kexec/core_32.c
+index c95f96850c9e..6e955f32e7c3 100644
+--- a/arch/powerpc/kexec/core_32.c
++++ b/arch/powerpc/kexec/core_32.c
+@@ -17,7 +17,7 @@
+ typedef void (*relocate_new_kernel_t)(
+ 				unsigned long indirection_page,
+ 				unsigned long reboot_code_buffer,
+-				unsigned long start_address) __noreturn;
++				unsigned long start_address);
+ 
+ /*
+  * This is a generic machine_kexec function suitable at least for
+@@ -61,6 +61,8 @@ void default_machine_kexec(struct kimage *image)
+ 	/* now call it */
+ 	rnk = (relocate_new_kernel_t) reboot_code_buffer;
+ 	(*rnk)(page_list, reboot_code_buffer_phys, image->start);
++
++	unreachable();	/* For objtool */
+ }
+ 
+ int machine_kexec_prepare(struct kimage *image)
+diff --git a/tools/objtool/arch/powerpc/decode.c b/tools/objtool/arch/powerpc/decode.c
+index 53b55690f320..2ed5241eb7be 100644
+--- a/tools/objtool/arch/powerpc/decode.c
++++ b/tools/objtool/arch/powerpc/decode.c
+@@ -43,24 +43,94 @@ int arch_decode_instruction(struct objtool_file *file, const struct section *sec
+ 			    unsigned long offset, unsigned int maxlen,
+ 			    struct instruction *insn)
+ {
+-	unsigned int opcode;
++	unsigned int opcode, xop;
++	unsigned int rs, ra, rb, bo, bi, to, uimm, simm, lk, aa;
+ 	enum insn_type typ;
+ 	unsigned long imm;
+ 	u32 ins;
+ 
++	if (file->elf->ehdr.e_flags & EF_PPC_RELOCATABLE_LIB) {
++		struct reloc *reloc;
++
++		reloc = find_reloc_by_dest_range(file->elf, insn->sec, insn->offset, 4);
++
++		if (reloc && reloc->type == R_PPC_REL32 &&
++		    !strncmp(reloc->sym->sec->name, ".got2", 5)) {
++			insn->type = INSN_OTHER;
++			insn->ignore = true;
++			insn->len = 4;
++
++			return 0;
++		}
++	}
++
+ 	ins = bswap_if_needed(file->elf, *(u32 *)(sec->data->d_buf + offset));
+ 	opcode = ins >> 26;
+-	typ = INSN_OTHER;
+-	imm = 0;
++	xop = (ins >> 1) & 0x3ff;
++	rs = bo = to = (ins >> 21) & 0x1f;
++	ra = bi = (ins >> 16) & 0x1f;
++	rb = (ins >> 11) & 0x1f;
++	uimm = simm = (ins >> 0) & 0xffff;
++	aa = ins & 2;
++	lk = ins & 1;
+ 
+ 	switch (opcode) {
++	case 3:
++		if (to == 31 && ra == 0 && simm == 0) /* twi 31, r0, 0 */
++			typ = INSN_BUG;
++		else
++			typ = INSN_OTHER;
++		break;
++	case 16: /* bc[l][a] */
++		if (lk)	/* bcl[a] */
++			typ = INSN_OTHER;
++		else		/* bc[a] */
++			typ = INSN_JUMP_CONDITIONAL;
++
++		imm = ins & 0xfffc;
++		if (imm & 0x8000)
++			imm -= 0x10000;
++		insn->immediate = imm | aa;
++		break;
+ 	case 18: /* b[l][a] */
+-		if ((ins & 3) == 1) /* bl */
++		if (lk)	/* bl[a] */
+ 			typ = INSN_CALL;
++		else		/* b[a] */
++			typ = INSN_JUMP_UNCONDITIONAL;
+ 
+ 		imm = ins & 0x3fffffc;
+ 		if (imm & 0x2000000)
+ 			imm -= 0x4000000;
++		insn->immediate = imm | aa;
++		break;
++	case 19:
++		if (xop == 16 && bo == 20 && bi == 0)	/* blr */
++			typ = INSN_RETURN;
++		else if (xop == 16)	/* bclr */
++			typ = INSN_RETURN_CONDITIONAL;
++		else if (xop == 50)	/* rfi */
++			typ = INSN_JUMP_DYNAMIC;
++		else if (xop == 528 && bo == 20 && bi == 0 && !lk)	/* bctr */
++			typ = INSN_JUMP_DYNAMIC;
++		else if (xop == 528 && bo == 20 && bi == 0 && lk)	/* bctrl */
++			typ = INSN_CALL_DYNAMIC;
++		else
++			typ = INSN_OTHER;
++		break;
++	case 24:
++		if (rs == 0 && ra == 0 && uimm == 0)
++			typ = INSN_NOP;
++		else
++			typ = INSN_OTHER;
++		break;
++	case 31:
++		if (xop == 4 && to == 31 && ra == 0 && rb == 0) /* trap */
++			typ = INSN_BUG;
++		else
++			typ = INSN_OTHER;
++		break;
++	default:
++		typ = INSN_OTHER;
+ 		break;
+ 	}
+ 
+@@ -70,13 +140,15 @@ int arch_decode_instruction(struct objtool_file *file, const struct section *sec
+ 		insn->len = 4;
+ 
+ 	insn->type = typ;
+-	insn->immediate = imm;
+ 
+ 	return 0;
+ }
+ 
+ unsigned long arch_jump_destination(struct instruction *insn)
+ {
++	if (insn->immediate & 2)
++		return insn->immediate & ~2;
++
+ 	return insn->offset + insn->immediate;
+ }
+ 
+diff --git a/tools/objtool/arch/powerpc/special.c b/tools/objtool/arch/powerpc/special.c
+index 979b555b16ea..be37f4b455dc 100644
+--- a/tools/objtool/arch/powerpc/special.c
++++ b/tools/objtool/arch/powerpc/special.c
+@@ -15,5 +15,45 @@ bool arch_support_alt_relocation(struct special_alt *special_alt,
+ struct reloc *arch_find_switch_table(struct objtool_file *file,
+ 				     struct instruction *insn, bool *is_rel)
+ {
+-	exit(-1);
++	struct reloc  *text_reloc, *rodata_reloc;
++	struct section *table_sec;
++	unsigned long table_offset;
++
++	/* look for a relocation which references .rodata */
++	text_reloc = find_reloc_by_dest_range(file->elf, insn->sec,
++					      insn->offset, insn->len);
++	if (!text_reloc || text_reloc->sym->type != STT_SECTION ||
++	    !text_reloc->sym->sec->rodata)
++		return NULL;
++
++	table_offset = text_reloc->addend;
++	table_sec = text_reloc->sym->sec;
++
++	/*
++	 * Make sure the .rodata address isn't associated with a
++	 * symbol.  GCC jump tables are anonymous data.
++	 *
++	 * Also support C jump tables which are in the same format as
++	 * switch jump tables.  For objtool to recognize them, they
++	 * need to be placed in the C_JUMP_TABLE_SECTION section.  They
++	 * have symbols associated with them.
++	 */
++	if (find_symbol_containing(table_sec, table_offset)) {
++		if (strcmp(table_sec->name, C_JUMP_TABLE_SECTION))
++			return NULL;
++		*is_rel = false;
++	} else {
++		*is_rel = true;
++	}
++
++	/*
++	 * Each table entry has a rela associated with it.  The rela
++	 * should reference text in the same function as the original
++	 * instruction.
++	 */
++	rodata_reloc = find_reloc_by_dest(file->elf, table_sec, table_offset);
++	if (!rodata_reloc)
++		return NULL;
++
++	return rodata_reloc;
+ }
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index f850ab892ad5..8ac5711a055f 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -218,6 +218,7 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
+ 		"kthread_exit",
+ 		"kunit_try_catch_throw",
+ 		"lbug_with_loc",
++		"longjmp",
+ 		"machine_real_restart",
+ 		"make_task_dead",
+ 		"mpt_halt_firmware",
+@@ -230,7 +231,9 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
+ 		"sev_es_terminate",
+ 		"snp_abort",
+ 		"start_kernel",
++		"start_secondary_resume",
+ 		"stop_this_cpu",
++		"unrecoverable_exception",
+ 		"usercopy_abort",
+ 		"x86_64_start_kernel",
+ 		"x86_64_start_reservations",
+@@ -1335,6 +1338,8 @@ static const char *uaccess_safe_builtin[] = {
+ 	"rep_stos_alternative",
+ 	"rep_movs_alternative",
+ 	"__copy_user_nocache",
++	"__copy_tofrom_user",
++	"__arch_clear_user",
+ 	NULL
+ };
+ 
 -- 
 2.40.1
 
