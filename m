@@ -1,71 +1,101 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D44273958B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 04:37:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 699F6739608
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 05:59:05 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=O3tP+byB;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=vUs3RgfY;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qmkzl11B3z30PJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 12:37:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qmmnz2HCKz3bW4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 13:59:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=O3tP+byB;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=vUs3RgfY;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b33; helo=mail-yb1-xb33.google.com; envelope-from=hughd@google.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=2a01:111:f400:7eb2::619; helo=nam02-bn1-obe.outbound.protection.outlook.com; envelope-from=terry.bowman@amd.com; receiver=lists.ozlabs.org)
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on20619.outbound.protection.outlook.com [IPv6:2a01:111:f400:7eb2::619])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qmkyq4K5Cz2xFm
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jun 2023 12:36:34 +1000 (AEST)
-Received: by mail-yb1-xb33.google.com with SMTP id 3f1490d57ef6-bc40d4145feso6278722276.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jun 2023 19:36:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1687401389; x=1689993389;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=v95kJuIKZOvwX2VyzbcG9p4WcOSZqpPbckNEDTbMqbw=;
-        b=O3tP+byBHyqrVuzTTEu8WRLDc/8A9uAf+TdWk4s+4iRKfQ5KOSa7bvLkBzTYKr0W8M
-         j3sRCXur+WjZ9BeHD+FncbDp1prKZ/qXqo9vRO5qA8AQSnrPS9w22qXk+xnyoij9+QY4
-         Acm9ERBt0JMUlTv5p8Jp0yNYMVl5d341AvRtjPFDRxez8WAwHgXzS6SBOEkhSkDpkgzA
-         FicxTEqozjAq1pC+B+ZdlXfR0aFh6Inz+lQvgqOR+F9yGjspH8iPGFbJTwEd3pnnSvO5
-         lsJm1UV477OB7Dih1OhkfIqmAM0XwW9HFmiv+LGL2kzkOO0DnreoAdIjNdFX9CO4XaoS
-         SsqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687401389; x=1689993389;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=v95kJuIKZOvwX2VyzbcG9p4WcOSZqpPbckNEDTbMqbw=;
-        b=iNkqibIzgRhcZEDfRzi6bil/5jzcHcvlj7z4gcds8SfXCMssyd2QC7GxYVoZAzWaGX
-         0JIYYGrJqFz8AMfAjlIYSjs/PXbcfSmYSNxt/qE9DEi2o+v3aEwr4ZOiPYWmmfE4txi/
-         xCV8gsPwqrqk+Z5oG4ssMdySjD7AjGrYZHhVFUa0PkpnqI8lLAdU7RhpqXEWe21yldAJ
-         YUs0OoN9I1p9EdqSRrpz3alzcyAHNzLt8y8cQaIs3BpjPv8CK3BhH1EUE6N2LxVFinYl
-         q7/duwNrZNKrlrZ9NxOra1UntikrPGlW0w8l2n2ob7pD/kYkXGyjF5JtaHGnE01XZAMR
-         wstw==
-X-Gm-Message-State: AC+VfDz1+w+qDytZQDGYDyPhaEeQDUL3VmZBnem1mUmKT4lZBOpEDGPB
-	d+o6mkqzFbWBNnDAgBTtAlMx7w==
-X-Google-Smtp-Source: ACHHUZ7nNc0KOSzPxWDeH97+s3XtTQiSXAf5QSy+8GGNP+KxVnc2GWHN4WSyWChzR7EoY+E3ZvtVZQ==
-X-Received: by 2002:a0d:e6d3:0:b0:56d:ffa:f3b0 with SMTP id p202-20020a0de6d3000000b0056d0ffaf3b0mr14905560ywe.52.1687401389086;
-        Wed, 21 Jun 2023 19:36:29 -0700 (PDT)
-Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id e65-20020a0dc244000000b0056cffe97a11sm1564690ywd.13.2023.06.21.19.36.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Jun 2023 19:36:27 -0700 (PDT)
-Date: Wed, 21 Jun 2023 19:36:11 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-X-X-Sender: hugh@ripple.attlocal.net
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [PATCH v2 05/12] powerpc: add pte_free_defer() for pgtables
- sharing page
-In-Reply-To: <ZJI7xkXWmjrE1yY3@ziepe.ca>
-Message-ID: <c8284d0-91cb-b65e-4c95-bfeb627234f@google.com>
-References: <54cb04f-3762-987f-8294-91dafd8ebfb0@google.com> <5cd9f442-61da-4c3d-eca-b7f44d22aa5f@google.com> <ZJGRa4zvsXfc43vB@ziepe.ca> <2ad8b6cf-692a-ff89-ecc-586c20c5e07f@google.com> <ZJI7xkXWmjrE1yY3@ziepe.ca>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qmmn06Ry6z300G
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jun 2023 13:58:09 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=aukQy2+OJvygP8GhV3C72LgqrEorY18fgEo5g4jfL/dDyZnlXPvIyGM+KalU8EvDcaeBJyl9AF7nJMSykWCjld3KXzU3IdPB3BCdjZeBZll22RBD6bEBJknpxKyz3KfwXaWkJlcs2y5O9Xz58+u95UijULRNZ2ORodlKwn6C+rie8GoA5wQ95l+1CZrGPIt9Hc9OxedNsxk5qk6F3bcPl78lwoprRdiR7x9lofZOPGogadFQboI2xpMRq0RjHFI3abMS4vK54zhUbNW3XMNYTHR8RNxAOI9D4cGLQDOqCOk72VoBNpRCz6bcdX7CHnO2BHIm7YefyfDwS2e7ApSw6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YEWZoqGQjZGiHM078woqIXSPHIqp1sJsoUluk/TlTf0=;
+ b=mfViSur8fVrVwrarq9LJ3AXeifUqlkGnSGYZJ7SKiMfdi4cLEj4m34yZZAxL8vgfAPI8ZbmowKazGEs5Fp6MFtsKinm+8UlPBRKMk1CwLE9xaB4bPQg+kOKwwEufoCMW8EbrPOjMNyNQrFMB/zSaVBUR8WhutmbLEF+kY92TnulM3p9aTiuRk1CGV1cmsOAQAjTXHZ170esbZxUddD/QoVAeTnT7uvMniHUJ/aDruYKPqv5VdYm9hd7ujlQ5hsiRq6pOfEOl99sMyez5G7aMpQ8/VuGdnw4Ct8TEBUCpNW4p+Wz9XtPrsSY1k/ehYXJityUkIUokEPtir58ztPZRGQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YEWZoqGQjZGiHM078woqIXSPHIqp1sJsoUluk/TlTf0=;
+ b=vUs3RgfYDOxihf2J01jMuqp+SxmiLKoesipuBoRkjxFVaMfKEFRci8julB1MQ6i4Krk3Xtgj8UMlOhdngk1JNWJksJGyVmjhxLND5C9S1lN3fyh/NFpIBuPoG8ny1iDTU3Hub/wKHDev5fAkT8FbHmZWVOPhrB6pCT+H1XF+zTQ=
+Received: from BN1PR13CA0025.namprd13.prod.outlook.com (2603:10b6:408:e2::30)
+ by MN0PR12MB5810.namprd12.prod.outlook.com (2603:10b6:208:376::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.21; Thu, 22 Jun
+ 2023 03:57:46 +0000
+Received: from BN8NAM11FT101.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:408:e2:cafe::11) by BN1PR13CA0025.outlook.office365.com
+ (2603:10b6:408:e2::30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6544.9 via Frontend
+ Transport; Thu, 22 Jun 2023 03:57:46 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN8NAM11FT101.mail.protection.outlook.com (10.13.177.126) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6500.41 via Frontend Transport; Thu, 22 Jun 2023 03:57:45 +0000
+Received: from ethanolx7ea3host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Wed, 21 Jun
+ 2023 22:57:44 -0500
+From: Terry Bowman <terry.bowman@amd.com>
+To: <alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
+	<ira.weiny@intel.com>, <bwidawsk@kernel.org>, <dan.j.williams@intel.com>,
+	<dave.jiang@intel.com>, <Jonathan.Cameron@huawei.com>,
+	<linux-cxl@vger.kernel.org>
+Subject: [PATCH v6 26/27] PCI/AER: Forward RCH downstream port-detected errors to the CXL.mem dev handler
+Date: Wed, 21 Jun 2023 22:51:25 -0500
+Message-ID: <20230622035126.4130151-27-terry.bowman@amd.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230622035126.4130151-1-terry.bowman@amd.com>
+References: <20230622035126.4130151-1-terry.bowman@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN8NAM11FT101:EE_|MN0PR12MB5810:EE_
+X-MS-Office365-Filtering-Correlation-Id: 89d2a05e-686a-47f4-5467-08db72d4d66d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	pStLA9xEtLiDlfKYjcxkn8z8nyMgzRqSx/E+CMb/11mWTYUO7d/h4Z16WCSZnXYtu9qiaIm1z9b42EurFDrGHKYrw+be8ceBzbkwnKE0D2xoF4K9IFsDTn5WYwvx3Vhw+JpMV0NqLYXp1hjcy/DXoC/8EYOGKgw4ndbjTsa+wSrgWUJ/yFajEWPGLSm8JrxQbbRR61um1CVpeaw18gQzql0avCw6ITx/jKCPD49wTC94WvXnhPgEPDfDbAXeFuQlvt4WnAAyE1sAkYfVsLDv28wrZ4EatJjrpt1F1eBOgEn7tO5ia52nwy1dxKmoMh+FDhz0yGkAi7JHufu9Qp3ZX4D7OCfhCCnjAjzsot9ese8/NsdjAIOlQMBGJeKLcr6nmLQi5FwcPynK0tT1w/MiENX28IgA5katFsfkyK/vXYrJw3bEx/emUPlmFotJ1Y1RjT9KmfZ7ZMoa9/tc6MuUgAhwwjAi43uj4Z6W6KLDOzypzQkZxnEeaKH0uUzBOccz/9GHVw767i9510hsB9iHl2q0qFjErdyP5RS6wM6GDHPJONl1FA8HC1BbvoqWQgII3db+6n+p7qDIESlGAJlXHKmA5vzP8Gj0QBOsXOxUZHRZEkpz5liAIqKdExLW5FSAiZdVm9ZbdyRP7+M0qTEUAVoApHTidBbkS0oLKAlbFQTtfEqo3BfIm9uNTV0Mh6t4q1xZBpIJE9n6sQ94f1dOaU3U8TVj9Ed9SQ9jiy8m2edHFDfmW4xK8RqkCw6yF27fVNp1mRbIbLRScwuLYVfgpA==
+X-Forefront-Antispam-Report: 	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(376002)(396003)(39860400002)(346002)(136003)(451199021)(36840700001)(46966006)(40470700004)(40460700003)(5660300002)(44832011)(7416002)(2906002)(40480700001)(82310400005)(8676002)(356005)(81166007)(47076005)(83380400001)(426003)(36860700001)(86362001)(36756003)(82740400003)(6666004)(4326008)(966005)(8936002)(478600001)(70206006)(70586007)(110136005)(7696005)(54906003)(41300700001)(186003)(16526019)(26005)(336012)(2616005)(316002)(1076003)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jun 2023 03:57:45.8867
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 89d2a05e-686a-47f4-5467-08db72d4d66d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: 	BN8NAM11FT101.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5810
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,147 +107,218 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Miaohe Lin <linmiaohe@huawei.com>, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Yang Shi <shy828301@gmail.com>, Peter Xu <peterx@redhat.com>, linux-kernel@vger.kernel.org, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Yu Zhao <yuzhao@google.com>, Ira Weiny <ira.weiny@intel.com>, Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, Steven Price <steven.price@arm.com>, Christoph Hellwig <hch@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Huang Ying <ying.huang@intel.com>, Axel Rasmussen <axelrasmussen@google.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Thomas Hellstrom <thomas.hellstrom@linux.intel.com>, Ralph Campbell <rcampbe
- ll@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, Vasily Gorbik <gor@linux.ibm.com>, Anshuman Khandual <anshuman.khandual@arm.com>, Heiko Carstens <hca@linux.ibm.com>, Qi Zheng <zhengqi.arch@bytedance.com>, Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, linux-arm-kernel@lists.infradead.org, SeongJae Park <sj@kernel.org>, Lorenzo Stoakes <lstoakes@gmail.com>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, Naoya Horiguchi <naoya.horiguchi@nec.com>, Zack Rusin <zackr@vmware.com>, Vishal Moola <vishal.moola@gmail.com>, Minchan Kim <minchan@kernel.org>, Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Mel Gorman <mgorman@techsingularity.net>, "David Sc. Miller" <davem@davemloft.net>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: rrichter@amd.com, terry.bowman@amd.com, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, Oliver O'Halloran <oohall@gmail.com>, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 20 Jun 2023, Jason Gunthorpe wrote:
-> On Tue, Jun 20, 2023 at 12:54:25PM -0700, Hugh Dickins wrote:
-> > On Tue, 20 Jun 2023, Jason Gunthorpe wrote:
-> > > On Tue, Jun 20, 2023 at 12:47:54AM -0700, Hugh Dickins wrote:
-> > > > Add powerpc-specific pte_free_defer(), to call pte_free() via call_rcu().
-> > > > pte_free_defer() will be called inside khugepaged's retract_page_tables()
-> > > > loop, where allocating extra memory cannot be relied upon.  This precedes
-> > > > the generic version to avoid build breakage from incompatible pgtable_t.
-> > > > 
-> > > > This is awkward because the struct page contains only one rcu_head, but
-> > > > that page may be shared between PTE_FRAG_NR pagetables, each wanting to
-> > > > use the rcu_head at the same time: account concurrent deferrals with a
-> > > > heightened refcount, only the first making use of the rcu_head, but
-> > > > re-deferring if more deferrals arrived during its grace period.
-> > > 
-> > > You didn't answer my question why we can't just move the rcu to the
-> > > actual free page?
-> > 
-> > I thought that I had answered it, perhaps not to your satisfaction:
-> > 
-> > https://lore.kernel.org/linux-mm/9130acb-193-6fdd-f8df-75766e663978@google.com/
-> > 
-> > My conclusion then was:
-> > Not very good reasons: good enough, or can you supply a better patch?
-> 
-> Oh, I guess I didn't read that email as answering the question..
-> 
-> I was saying to make pte_fragment_free() unconditionally do the
-> RCU. It is the only thing that uses the page->rcu_head, and it means
-> PPC would double RCU the final free on the TLB path, but that is
-> probably OK for now. This means pte_free_defer() won't do anything
-> special on PPC as PPC will always RCU free these things, this address
-> the defer concern too, I think. Overall it is easier to reason about.
-> 
-> I looked at fixing the TLB stuff to avoid the double rcu but quickly
-> got scared that ppc was using a kmem_cache to allocate other page
-> table sizes so there is not a reliable struct page to get a rcu_head
-> from. This looks like the main challenge for ppc... We'd have to teach
-> the tlb code to not do its own RCU stuff for table levels that the
-> arch is already RCU freeing - and that won't get us to full RCU
-> freeing on PPC.
+From: Robert Richter <rrichter@amd.com>
 
-Sorry for being so dense all along: yes, your way is unquestionably
-much better than mine.  I guess I must have been obsessive about
-keeping pte_free_defer()+pte_free_now() "on the outside", as they
-were on x86, and never perceived how much easier it is with a small
-tweak inside pte_fragment_free(); and never reconsidered it since.
+In Restricted CXL Device (RCD) mode a CXL device is exposed as an
+RCiEP, but CXL downstream and upstream ports are not enumerated and
+not visible in the PCIe hierarchy. [1] Protocol and link errors from
+these non-enumerated ports are signaled as internal AER errors, either
+Uncorrectable Internal Error (UIE) or Corrected Internal Errors (CIE)
+via an RCEC.
 
-But I'm not so keen on the double-RCU, extending this call_rcu() to
-all the normal cases, while still leaving the TLB batching in place:
-here is the replacement patch I'd prefer us to go forward with now.
+Restricted CXL host (RCH) downstream port-detected errors have the
+Requster ID of the RCEC set in the RCEC's AER Error Source ID
+register. A CXL handler must then inspect the error status in various
+CXL registers residing in the dport's component register space (CXL
+RAS capability) or the dport's RCRB (PCIe AER extended
+capability). [2]
 
-Many thanks!
+Errors showing up in the RCEC's error handler must be handled and
+connected to the CXL subsystem. Implement this by forwarding the error
+to all CXL devices below the RCEC. Since the entire CXL device is
+controlled only using PCIe Configuration Space of device 0, function
+0, only pass it there [3]. The error handling is limited to currently
+supported devices with the Memory Device class code set (CXL Type 3
+Device, PCI_CLASS_MEMORY_CXL, 502h), handle downstream port errors in
+the device's cxl_pci driver. Support for other CXL Device Types
+(e.g. a CXL.cache Device) can be added later.
 
-[PATCH v3 05/12] powerpc: add pte_free_defer() for pgtables sharing page
+To handle downstream port errors in addition to errors directed to the
+CXL endpoint device, a handler must also inspect the CXL RAS and PCIe
+AER capabilities of the CXL downstream port the device is connected
+to.
 
-Add powerpc-specific pte_free_defer(), to free table page via call_rcu().
-pte_free_defer() will be called inside khugepaged's retract_page_tables()
-loop, where allocating extra memory cannot be relied upon.  This precedes
-the generic version to avoid build breakage from incompatible pgtable_t.
+Since CXL downstream port errors are signaled using internal errors,
+the handler requires those errors to be unmasked. This is subject of a
+follow-on patch.
 
-This is awkward because the struct page contains only one rcu_head, but
-that page may be shared between PTE_FRAG_NR pagetables, each wanting to
-use the rcu_head at the same time.  But powerpc never reuses a fragment
-once it has been freed: so mark the page Active in pte_free_defer(),
-before calling pte_fragment_free() directly; and there call_rcu() to
-pte_free_now() when last fragment is freed and the page is PageActive.
+The reason for choosing this implementation is that the AER service
+driver claims the RCEC device, but does not allow it to register a
+custom specific handler to support CXL. Connecting the RCEC hard-wired
+with a CXL handler does not work, as the CXL subsystem might not be
+present all the time. The alternative to add an implementation to the
+portdrv to allow the registration of a custom RCEC error handler isn't
+worth doing it as CXL would be its only user. Instead, just check for
+an CXL RCEC and pass it down to the connected CXL device's error
+handler. With this approach the code can entirely be implemented in
+the PCIe AER driver and is independent of the CXL subsystem. The CXL
+driver only provides the handler.
 
-Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
-Signed-off-by: Hugh Dickins <hughd@google.com>
+[1] CXL 3.0 spec: 9.11.8 CXL Devices Attached to an RCH
+[2] CXL 3.0 spec, 12.2.1.1 RCH Downstream Port-detected Errors
+[3] CXL 3.0 spec, 8.1.3 PCIe DVSEC for CXL Devices
+
+Co-developed-by: Terry Bowman <terry.bowman@amd.com>
+Signed-off-by: Terry Bowman <terry.bowman@amd.com>
+Signed-off-by: Robert Richter <rrichter@amd.com>
+Cc: "Oliver O'Halloran" <oohall@gmail.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-pci@vger.kernel.org
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- arch/powerpc/include/asm/pgalloc.h |  4 ++++
- arch/powerpc/mm/pgtable-frag.c     | 29 ++++++++++++++++++++++++++---
- 2 files changed, 30 insertions(+), 3 deletions(-)
+ drivers/pci/pcie/Kconfig | 12 +++++
+ drivers/pci/pcie/aer.c   | 96 +++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 106 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/pgalloc.h b/arch/powerpc/include/asm/pgalloc.h
-index 3360cad78ace..3a971e2a8c73 100644
---- a/arch/powerpc/include/asm/pgalloc.h
-+++ b/arch/powerpc/include/asm/pgalloc.h
-@@ -45,6 +45,10 @@ static inline void pte_free(struct mm_struct *mm, pgtable_t ptepage)
- 	pte_fragment_free((unsigned long *)ptepage, 0);
- }
+diff --git a/drivers/pci/pcie/Kconfig b/drivers/pci/pcie/Kconfig
+index 228652a59f27..4f0e70fafe2d 100644
+--- a/drivers/pci/pcie/Kconfig
++++ b/drivers/pci/pcie/Kconfig
+@@ -49,6 +49,18 @@ config PCIEAER_INJECT
+ 	  gotten from:
+ 	     https://git.kernel.org/cgit/linux/kernel/git/gong.chen/aer-inject.git/
  
-+/* arch use pte_free_defer() implementation in arch/powerpc/mm/pgtable-frag.c */
-+#define pte_free_defer pte_free_defer
-+void pte_free_defer(struct mm_struct *mm, pgtable_t pgtable);
++config PCIEAER_CXL
++	bool "PCI Express CXL RAS support for Restricted Hosts (RCH)"
++	default y
++	depends on PCIEAER && CXL_PCI
++	help
++	  Enables error handling of downstream ports of a CXL host
++	  that is operating in RCD mode (Restricted CXL Host, RCH).
++	  The downstream port reports AER errors to a given RCEC.
++	  Errors are handled by the CXL memory device driver.
 +
- /*
-  * Functions that deal with pagetables that could be at any level of
-  * the table need to be passed an "index_size" so they know how to
-diff --git a/arch/powerpc/mm/pgtable-frag.c b/arch/powerpc/mm/pgtable-frag.c
-index 20652daa1d7e..0c6b68130025 100644
---- a/arch/powerpc/mm/pgtable-frag.c
-+++ b/arch/powerpc/mm/pgtable-frag.c
-@@ -106,6 +106,15 @@ pte_t *pte_fragment_alloc(struct mm_struct *mm, int kernel)
- 	return __alloc_for_ptecache(mm, kernel);
++	  If unsure, say Y.
++
+ #
+ # PCI Express ECRC
+ #
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index d3344fcf1f79..c354ca5e8f2b 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -946,14 +946,100 @@ static bool find_source_device(struct pci_dev *parent,
+ 	return true;
  }
  
-+static void pte_free_now(struct rcu_head *head)
++#ifdef CONFIG_PCIEAER_CXL
++
++static bool is_cxl_mem_dev(struct pci_dev *dev)
 +{
-+	struct page *page;
++	/*
++	 * The capability, status, and control fields in Device 0,
++	 * Function 0 DVSEC control the CXL functionality of the
++	 * entire device (CXL 3.0, 8.1.3).
++	 */
++	if (dev->devfn != PCI_DEVFN(0, 0))
++		return false;
 +
-+	page = container_of(head, struct page, rcu_head);
-+	pgtable_pte_page_dtor(page);
-+	__free_page(page);
++	/*
++	 * CXL Memory Devices must have the 502h class code set (CXL
++	 * 3.0, 8.1.12.1).
++	 */
++	if ((dev->class >> 8) != PCI_CLASS_MEMORY_CXL)
++		return false;
++
++	return true;
 +}
 +
- void pte_fragment_free(unsigned long *table, int kernel)
++static bool cxl_error_is_native(struct pci_dev *dev)
++{
++	struct pci_host_bridge *host = pci_find_host_bridge(dev->bus);
++
++	if (pcie_ports_native)
++		return true;
++
++	return host->native_aer && host->native_cxl_error;
++}
++
++static bool is_internal_error(struct aer_err_info *info)
++{
++	if (info->severity == AER_CORRECTABLE)
++		return info->status & PCI_ERR_COR_INTERNAL;
++
++	return info->status & PCI_ERR_UNC_INTN;
++}
++
++static int cxl_rch_handle_error_iter(struct pci_dev *dev, void *data)
++{
++	struct aer_err_info *info = (struct aer_err_info *)data;
++	const struct pci_error_handlers *err_handler;
++
++	if (!is_cxl_mem_dev(dev) || !cxl_error_is_native(dev))
++		return 0;
++
++	/* protect dev->driver */
++	device_lock(&dev->dev);
++
++	err_handler = dev->driver ? dev->driver->err_handler : NULL;
++	if (!err_handler)
++		goto out;
++
++	if (info->severity == AER_CORRECTABLE) {
++		if (err_handler->cor_error_detected)
++			err_handler->cor_error_detected(dev);
++	} else if (err_handler->error_detected) {
++		if (info->severity == AER_NONFATAL)
++			err_handler->error_detected(dev, pci_channel_io_normal);
++		else if (info->severity == AER_FATAL)
++			err_handler->error_detected(dev, pci_channel_io_frozen);
++	}
++out:
++	device_unlock(&dev->dev);
++	return 0;
++}
++
++static void cxl_rch_handle_error(struct pci_dev *dev, struct aer_err_info *info)
++{
++	/*
++	 * Internal errors of an RCEC indicate an AER error in an
++	 * RCH's downstream port. Check and handle them in the CXL.mem
++	 * device driver.
++	 */
++	if (pci_pcie_type(dev) == PCI_EXP_TYPE_RC_EC &&
++	    is_internal_error(info))
++		pcie_walk_rcec(dev, cxl_rch_handle_error_iter, info);
++}
++
++#else
++static inline void cxl_rch_handle_error(struct pci_dev *dev,
++					struct aer_err_info *info) { }
++#endif
++
+ /**
+- * handle_error_source - handle logging error into an event log
++ * pci_aer_handle_error - handle logging error into an event log
+  * @dev: pointer to pci_dev data structure of error source device
+  * @info: comprehensive error information
+  *
+  * Invoked when an error being detected by Root Port.
+  */
+-static void handle_error_source(struct pci_dev *dev, struct aer_err_info *info)
++static void pci_aer_handle_error(struct pci_dev *dev, struct aer_err_info *info)
  {
- 	struct page *page = virt_to_page(table);
-@@ -115,8 +124,22 @@ void pte_fragment_free(unsigned long *table, int kernel)
+ 	int aer = dev->aer_cap;
  
- 	BUG_ON(atomic_read(&page->pt_frag_refcount) <= 0);
- 	if (atomic_dec_and_test(&page->pt_frag_refcount)) {
--		if (!kernel)
--			pgtable_pte_page_dtor(page);
--		__free_page(page);
-+		if (kernel)
-+			__free_page(page);
-+		else if (TestClearPageActive(page))
-+			call_rcu(&page->rcu_head, pte_free_now);
-+		else
-+			pte_free_now(&page->rcu_head);
- 	}
- }
-+
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-+void pte_free_defer(struct mm_struct *mm, pgtable_t pgtable)
-+{
-+	struct page *page;
-+
-+	page = virt_to_page(pgtable);
-+	SetPageActive(page);
-+	pte_fragment_free((unsigned long *)pgtable, 0);
+@@ -977,6 +1063,12 @@ static void handle_error_source(struct pci_dev *dev, struct aer_err_info *info)
+ 		pcie_do_recovery(dev, pci_channel_io_normal, aer_root_reset);
+ 	else if (info->severity == AER_FATAL)
+ 		pcie_do_recovery(dev, pci_channel_io_frozen, aer_root_reset);
 +}
-+#endif /* CONFIG_TRANSPARENT_HUGEPAGE */
++
++static void handle_error_source(struct pci_dev *dev, struct aer_err_info *info)
++{
++	cxl_rch_handle_error(dev, info);
++	pci_aer_handle_error(dev, info);
+ 	pci_dev_put(dev);
+ }
+ 
 -- 
-2.35.3
+2.34.1
 
