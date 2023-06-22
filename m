@@ -1,95 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96F3B73A25B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 15:58:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B0A073A426
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 17:03:07 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dE63dA3m;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IazrzXPa;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=dabbelt-com.20221208.gappssmtp.com header.i=@dabbelt-com.20221208.gappssmtp.com header.a=rsa-sha256 header.s=20221208 header.b=mt+u4MU2;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qn25m3dNwz3bVS
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 23:58:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qn3X903xTz3brj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jun 2023 01:03:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dE63dA3m;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IazrzXPa;
+	dkim=pass (2048-bit key; unprotected) header.d=dabbelt-com.20221208.gappssmtp.com header.i=@dabbelt-com.20221208.gappssmtp.com header.a=rsa-sha256 header.s=20221208 header.b=mt+u4MU2;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=ypodemsk@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=dabbelt.com (client-ip=2607:f8b0:4864:20::62f; helo=mail-pl1-x62f.google.com; envelope-from=palmer@dabbelt.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qn24t1Mydz2xgq
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jun 2023 23:57:49 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1687442266;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9GM+KaVBTG0d2ZoawOpQPP3iTozMv6kRahCWZiyW/ao=;
-	b=dE63dA3mj9ln5+tXWsIQXmlaizNsyy0fLjor2NKmEQWZSNTzQP/DpTfWoWKzXEbX3znGt0
-	0iFpj78wJtWj1N/KcuDNjdv2UBTRdbt2UcPte3uvGfsIjxDBFxh3muvqvqPgM4WITdDv52
-	BzJwOiQDPWHS2reYwxJDI9Ti9DAcujQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1687442267;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9GM+KaVBTG0d2ZoawOpQPP3iTozMv6kRahCWZiyW/ao=;
-	b=IazrzXParNj7jXGNi4lwfFXyrzIXWnbrG7B/IAOZTjJsw8DO4JN6v3IFilzylavpRIz0KK
-	NFq3ASeBvd6yV5BH7XFdZVVULs7Yiz/xRr4qT1a8AgoV/oIgtjSBZnveMvNsKTOYEFyjyA
-	I6LdgHsxzrtLfQtpNswYY8aMo6nYfiY=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-359-jJ4skriJO1qv-c1A8Q022Q-1; Thu, 22 Jun 2023 09:57:44 -0400
-X-MC-Unique: jJ4skriJO1qv-c1A8Q022Q-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-3f42bcef2acso29875465e9.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jun 2023 06:57:44 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qn3WF43QWz30PJ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jun 2023 01:02:15 +1000 (AEST)
+Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1b51780bed0so56459425ad.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jun 2023 08:02:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dabbelt-com.20221208.gappssmtp.com; s=20221208; t=1687446130; x=1690038130;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=faWv91VP2z/YbKZA+qDwvC+H5Ebg0LphINaB6C6XGBI=;
+        b=mt+u4MU2N69BdCB48EipZPFZvxxegmfx/OHOcyc/fM4PZHcrYAkSQWkcdFUsmp5rNU
+         a6j2G9cgP05nAPrTpXTrKstR8E5BoO42DmiP6/AZUuIG/6/BBMLFuw5aAo/SAHPeZdEg
+         DNvDehDx9+J7nZG9sBU7G6/wpPi2vu+msKWiZ8QFox3/ruMzFIOZCnfnj843xufxdgu9
+         MeGUmiA7Z/dRVBK3NdT9B4ymhpM9c0qpwKNXpegEvvYhn5T1kxweIZjlNE+fattEVIvn
+         jG1RiXKH3SvzlebwvUPYmft34NdlnUAiikYo4SRSggxh+pPF10pxJtEKozp+lS8TepIG
+         aHrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687442263; x=1690034263;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:date
-         :cc:to:from:subject:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=9GM+KaVBTG0d2ZoawOpQPP3iTozMv6kRahCWZiyW/ao=;
-        b=PyOurCBSMy4VzruBK3VOCC2YIzRKJZPfnwmhngxC1VjHsfXdF1uV6tNIqdQi9iBhSE
-         qbMxwvunvOlYeTfJqDsz7h616sOGx3Uan95uUNG0LJiEh7moSH9auRPx719OGLsi6KAv
-         Ruo2Jb3GOlhC81wTH79D8Jz3+cv957Z5o+Vr/2CIEeQUOeB7YNdv2LxH4nZZzQKUuAUL
-         hwNfnHT4ue9VlO+27Q6LwSQC3vqawWsvRs2lIOZYgE0JqNIdgL++7Hr2azNvH6PE/Et6
-         rZfVvjfp8v35tQ3Eb4aRL6rGwfpXmWklCc/K5aUtW153b0pr+SRRyPqGxccRFfEgS/9P
-         YKUg==
-X-Gm-Message-State: AC+VfDxYGgnzIdznYK7lYWL1mE6hOrHk7StHNO251Dd54boZ2fuJOoel
-	Eg0hIde44Ed2Xy1tzAFQUm8ab+kGXG5PyE2k7nkNM1nPmrs2hEpwRUCgDs8rnFrbZR1rSVexcuf
-	l2eEvGC13TP9Js/ydDm2oVZwE9w==
-X-Received: by 2002:a05:600c:2942:b0:3f7:5d:4a06 with SMTP id n2-20020a05600c294200b003f7005d4a06mr1531916wmd.1.1687442263390;
-        Thu, 22 Jun 2023 06:57:43 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5p9/Up90QSZ1DAdrQMEuugJHQR/5D9norGZu6r3B4czFVgo4n6RIoxrIJViM7m10t9Bv6d/Q==
-X-Received: by 2002:a05:600c:2942:b0:3f7:5d:4a06 with SMTP id n2-20020a05600c294200b003f7005d4a06mr1531890wmd.1.1687442263118;
-        Thu, 22 Jun 2023 06:57:43 -0700 (PDT)
-Received: from ypodemsk.tlv.csb (IGLD-84-229-250-192.inter.net.il. [84.229.250.192])
-        by smtp.gmail.com with ESMTPSA id n6-20020a7bcbc6000000b003f7e4d143cfsm7832711wmi.15.2023.06.22.06.57.40
+        d=1e100.net; s=20221208; t=1687446130; x=1690038130;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=faWv91VP2z/YbKZA+qDwvC+H5Ebg0LphINaB6C6XGBI=;
+        b=HidLXQEw+zRKdM1gaZqVtVepV933IUEjRQIe+6KJSNzPqBlSUh5RqgNfr3LvJfrHAD
+         4SvVbbbdyPPeActYlAb4sxq5iMJTxvPFRW0+Q1zl6fYCL4lDSraxbJs84UwZEf9nyjyo
+         6yd9Alh5pV5OmzGpWEaubPayyg3joxgPWuPd7UTogxIGwzHwGzMxK7/axrMeRpBGGX6n
+         2BTdMfzv0crTR6bLbv3IEiTVvhp1HU/UzP1oz3pyVK/gSpg/94brBI1GK/IQ82Kdfz9W
+         64izvtNU9v0MiF4rqjiwSNJ51zypQr1juGdcJi1kstBDsyU9iq7c/uRmdytKE+BUAB1e
+         G1cQ==
+X-Gm-Message-State: AC+VfDwf6HFkSGA9PqGIaoWGc8tLgAP8b/3qiVPNKkclFPU19Wx+3TVb
+	y1fF5FPaDOoPUWwWulo8+H0VXw==
+X-Google-Smtp-Source: ACHHUZ7sxI2/l9NYWY43UXjLd7//zIrvDML1M6VqO+WFrtnEGO/KRuc42ZZ7KlADjiu835vi4h/IOA==
+X-Received: by 2002:a17:902:f7c6:b0:1ae:14d:8d0a with SMTP id h6-20020a170902f7c600b001ae014d8d0amr15965819plw.29.1687446130063;
+        Thu, 22 Jun 2023 08:02:10 -0700 (PDT)
+Received: from localhost ([50.221.140.188])
+        by smtp.gmail.com with ESMTPSA id z7-20020a170902708700b001b3dada0e78sm5466709plk.258.2023.06.22.08.02.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Jun 2023 06:57:42 -0700 (PDT)
-Message-ID: <c08d81286b9986c086e9b68e3440f9bf99086d70.camel@redhat.com>
-Subject: Re: [PATCH v2 2/2] mm/mmu_gather: send tlb_remove_table_smp_sync
- IPI only to MM CPUs
-From: ypodemsk@redhat.com
-To: Nadav Amit <nadav.amit@gmail.com>
-Date: Thu, 22 Jun 2023 16:57:39 +0300
-In-Reply-To: <10050BB1-15A4-4E84-B900-B21500B2079B@gmail.com>
-References: <20230620144618.125703-1-ypodemsk@redhat.com>
-	 <20230620144618.125703-3-ypodemsk@redhat.com>
-	 <10050BB1-15A4-4E84-B900-B21500B2079B@gmail.com>
-X-Mailer: Evolution 3.28.5 (3.28.5-22.el8)
-Mime-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
+        Thu, 22 Jun 2023 08:02:09 -0700 (PDT)
+Date: Thu, 22 Jun 2023 08:02:09 -0700 (PDT)
+X-Google-Original-Date: Thu, 22 Jun 2023 08:01:29 PDT (-0700)
+Subject: Re: [PATCH 11/14] init: consolidate prototypes in linux/init.h
+In-Reply-To: <20230517131102.934196-12-arnd@kernel.org>
+From: Palmer Dabbelt <palmer@dabbelt.com>
+To: arnd@kernel.org
+Message-ID: <mhng-eb6e6d97-fe40-4755-9be5-eb75a690d88c@palmer-ri-x1c9a>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -102,42 +78,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: geert+renesas@glider.be, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, linus.walleij@linaro.org, Dave Hansen <dave.hansen@linux.intel.com>, sebastian.reichel@collabora.com, linux-mm <linux-mm@kvack.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, agordeev@linux.ibm.com, Will Deacon <will@kernel.org>, ardb@kernel.org, linux-arch@vger.kernel.org, linux-s390 <linux-s390@vger.kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>, the arch/x86 maintainers <x86@kernel.org>, "Russell King \(Oracle\)" <linux@armlinux.org.uk>, ppandit@redhat.com, Ingo Molnar <mingo@redhat.com>, samitolvanen@google.com, Christian Borntraeger <borntraeger@linux.ibm.com>, frederic@kernel.org, Arnd Bergmann <arnd@arndb.de>, Kees Cook <keescook@chromium.org>, gor@linux.ibm.com, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, rmk+kernel@armlinux.org.uk, Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel
- @lists.infradead.org, mtosatti@redhat.com, linux-kernel@vger.kernel.org, juerg.haefliger@canonical.com, svens@linux.ibm.com, aneesh.kumar@linux.ibm.com, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "David S.
- Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>
+Cc: linux-kselftest@vger.kernel.org, rafael@kernel.org, peterz@infradead.org, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, pavel@ucw.cz, cl@linux.com, Will Deacon <will@kernel.org>, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, paul@paul-moore.com, linux-sh@vger.kernel.org, deller@gmx.de, x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com, dennis@kernel.org, boqun.feng@gmail.com, Arnd Bergmann <arnd@arndb.de>, linux-pm@vger.kernel.org, hca@linux.ibm.com, longman@redhat.com, tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, kunit-dev@googlegroups.com, monstr@monstr.eu, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, eparis@redhat.com, audit@vger.kernel.org, tj@kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2023-06-21 at 11:02 -0700, Nadav Amit wrote:
-> > On Jun 20, 2023, at 7:46 AM, Yair Podemsky <ypodemsk@redhat.com>
-> > wrote:
-> > 
-> > @@ -1525,7 +1525,7 @@ static void collapse_and_free_pmd(struct
-> > mm_struct *mm, struct vm_area_struct *v
-> > 				addr + HPAGE_PMD_SIZE);
-> > 	mmu_notifier_invalidate_range_start(&range);
-> > 	pmd = pmdp_collapse_flush(vma, addr, pmdp);
-> > -	tlb_remove_table_sync_one();
-> > +	tlb_remove_table_sync_one(mm);
-> 
-> Can’t pmdp_collapse_flush() have one additional argument
-> “freed_tables”
-> that it would propagate, for instance on x86 to flush_tlb_mm_range()
-> ?
-> Then you would not need tlb_remove_table_sync_one() to issue an
-> additional
-> IPI, no?
-> 
-> It just seems that you might still have 2 IPIs in many cases instead
-> of
-> one, and unless I am missing something, I don’t see why.
-> 
-Hi Nadav,
-Thanks for your comment.
-I think you are right and in some configurations 2 IPIs might occur.
-However I a am not really dealing with the thp code at the moment,
-This patch is about the mmu_gatherer and mostly dealing with IPIs sent
-via the other code path.
-Thanks,
-Yair
+On Wed, 17 May 2023 06:10:59 PDT (-0700), arnd@kernel.org wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> The init/main.c file contains some extern declarations for functions
+> defined in architecture code, and it defines some other functions that
+> are called from architecture code with a custom prototype. Both of those
+> result in warnings with 'make W=1':
+>
+> init/calibrate.c:261:37: error: no previous prototype for 'calibrate_delay_is_known' [-Werror=missing-prototypes]
+> init/main.c:790:20: error: no previous prototype for 'mem_encrypt_init' [-Werror=missing-prototypes]
+> init/main.c:792:20: error: no previous prototype for 'poking_init' [-Werror=missing-prototypes]
+> arch/arm64/kernel/irq.c:122:13: error: no previous prototype for 'init_IRQ' [-Werror=missing-prototypes]
+> arch/arm64/kernel/time.c:55:13: error: no previous prototype for 'time_init' [-Werror=missing-prototypes]
+> arch/x86/kernel/process.c:935:13: error: no previous prototype for 'arch_post_acpi_subsys_init' [-Werror=missing-prototypes]
+> init/calibrate.c:261:37: error: no previous prototype for 'calibrate_delay_is_known' [-Werror=missing-prototypes]
+> kernel/fork.c:991:20: error: no previous prototype for 'arch_task_cache_init' [-Werror=missing-prototypes]
+>
+> Add prototypes for all of these in include/linux/init.h or another
+> appropriate header, and remove the duplicate declarations from
+> architecture specific code.
+>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  arch/arm/include/asm/irq.h          |  1 -
+>  arch/microblaze/include/asm/setup.h |  2 --
+>  arch/mips/include/asm/irq.h         |  1 -
+>  arch/parisc/kernel/smp.c            |  1 -
+>  arch/powerpc/include/asm/irq.h      |  1 -
+>  arch/riscv/include/asm/irq.h        |  2 --
+>  arch/riscv/include/asm/timex.h      |  2 --
+>  arch/s390/kernel/entry.h            |  2 --
+>  arch/sh/include/asm/irq.h           |  1 -
+>  arch/sh/include/asm/rtc.h           |  2 --
+>  arch/sparc/include/asm/irq_32.h     |  1 -
+>  arch/sparc/include/asm/irq_64.h     |  1 -
+>  arch/sparc/include/asm/timer_64.h   |  1 -
+>  arch/sparc/kernel/kernel.h          |  4 ----
+>  arch/x86/include/asm/irq.h          |  2 --
+>  arch/x86/include/asm/mem_encrypt.h  |  3 ---
+>  arch/x86/include/asm/time.h         |  1 -
+>  arch/x86/include/asm/tsc.h          |  1 -
+>  include/linux/acpi.h                |  3 ++-
+>  include/linux/delay.h               |  1 +
+>  include/linux/init.h                | 20 ++++++++++++++++++++
+>  init/main.c                         | 18 ------------------
+>  22 files changed, 23 insertions(+), 48 deletions(-)
+
+...
+
+> diff --git a/arch/riscv/include/asm/irq.h b/arch/riscv/include/asm/irq.h
+> index 43b9ebfbd943..8e10a94430a2 100644
+> --- a/arch/riscv/include/asm/irq.h
+> +++ b/arch/riscv/include/asm/irq.h
+> @@ -16,6 +16,4 @@ void riscv_set_intc_hwnode_fn(struct fwnode_handle *(*fn)(void));
+>
+>  struct fwnode_handle *riscv_get_intc_hwnode(void);
+>
+> -extern void __init init_IRQ(void);
+> -
+>  #endif /* _ASM_RISCV_IRQ_H */
+> diff --git a/arch/riscv/include/asm/timex.h b/arch/riscv/include/asm/timex.h
+> index d6a7428f6248..a06697846e69 100644
+> --- a/arch/riscv/include/asm/timex.h
+> +++ b/arch/riscv/include/asm/timex.h
+> @@ -88,6 +88,4 @@ static inline int read_current_timer(unsigned long *timer_val)
+>  	return 0;
+>  }
+>
+> -extern void time_init(void);
+> -
+>  #endif /* _ASM_RISCV_TIMEX_H */
+
+Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com> # RISC-V
+Acked-by: Palmer Dabbelt <palmer@rivosinc.com> # RISC-V
+
+Thanks!
+
 
