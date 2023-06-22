@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F00A73AB1E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 23:04:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5F1573AB23
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 23:05:00 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=UtF2QiZk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=SXnr3kTV;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QnCXd1yH4z3cVq
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jun 2023 07:04:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QnCYk528Nz3cYY
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jun 2023 07:04:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=UtF2QiZk;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=SXnr3kTV;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::c33; helo=mail-oo1-xc33.google.com; envelope-from=vishal.moola@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-oo1-xc33.google.com (mail-oo1-xc33.google.com [IPv6:2607:f8b0:4864:20::c33])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b32; helo=mail-yb1-xb32.google.com; envelope-from=vishal.moola@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QnCPw0jSTz3bYx
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jun 2023 06:58:11 +1000 (AEST)
-Received: by mail-oo1-xc33.google.com with SMTP id 006d021491bc7-561403f7225so709528eaf.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jun 2023 13:58:11 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QnCPx6rVgz3bXX
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jun 2023 06:58:13 +1000 (AEST)
+Received: by mail-yb1-xb32.google.com with SMTP id 3f1490d57ef6-bc43a73ab22so22985276.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jun 2023 13:58:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687467488; x=1690059488;
+        d=gmail.com; s=20221208; t=1687467490; x=1690059490;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sr5TgrSX24KD5rPSp2rkPhxpII4heal/IIgk1FACoIs=;
-        b=UtF2QiZk6b9G+hZ8o+uaaa8jIMv9kwu5Z4W+DnKhqSxtuxZLeuCmgWiQ2UyCbKdGf3
-         JlKYQP1/9HAEwi4YcMuZIpkc1UasphklUD1y4PAfxdaiUenlc82pk0MDNgE4UyvTP/Ti
-         WAZ4mtTP+0UbBT6PIwdrRUvrUpbxA+faq7jSe2iTSffGzc1HNKXsxuak3eG36Kz3Hx1p
-         3Bw014l7N9peXiYCyjbUvF7k31KviCnInVoJPhH8kz/FXkdJ8oxWXWbjuOh6BjmUEfNL
-         NLvkARmq7C0ZzVI4l8HT21OfZWS/swkiU6k+jkbLgeAOyE/KVS/34HjWz0qthh2YGY4M
-         vuhg==
+        bh=Z9Q71kHk0zB6vt5ahL9ZHs7069+SCA/PofhBzVdlAuY=;
+        b=SXnr3kTV6njYUvauamdMyIGRqi3Z41OxkG9JlPzJUx0NriTeoHWuqaMEo3l+9h8t2a
+         VYkat48qctNxV1/ppcRnfQARZuWAzrRCUbykSbsoBMp8966TwG20r91mIMZZWqpjcTmW
+         hdpH7DDiGoYlRwkaTlsQfcolxJPdgdCgC9/4W8c/dT4apJrOeLX3lj0oWu+YQP0DxUAd
+         osWDaPCIsD5h/hDouYKm/GWbJh0+G1rOXddszwPTKiRotQWqfvXUbSh9a+2twyPuDXpa
+         FZNLCmQA2AiifhKNd54UF2voysI7AeqYSwKdAxxqSAv3Uf/qcrBy28RD1vznPZVN3aBc
+         SnyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687467488; x=1690059488;
+        d=1e100.net; s=20221208; t=1687467490; x=1690059490;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=sr5TgrSX24KD5rPSp2rkPhxpII4heal/IIgk1FACoIs=;
-        b=lGWFH7dFFeGsX/5HnmMXOG6k8IShhKz8MxcFYq4nNJpJBi1000JABrGETx7FCqF17S
-         Er6lYPIt+NJqgl8sriXEBTRDI+nNhq50yNyClqwWkdzasAd58SmweJtOTARWhySNnxcg
-         GwVxAik4HmKBWRjrUUTt0GNzPbKbqZPxAtM1CL6inWp3s3cbKiMN+0VVMnZNgRhFl5+e
-         hEvWfo2+3xBoakVq6+Uw5e6LPNQdvqy1SwQQGuBHGO0eaAriRCJFEykvy+3XCiVKbhNN
-         5ahjsaNuPym029osFiMqYWS+qJMudcQhTvrijOLVDJeVQJahl6zdcIXIZ2CRNU1rKLi3
-         mk9A==
-X-Gm-Message-State: AC+VfDzPPJGXHw8eQpRYcueZpkTppuiLZ3AGuLiVjaJRmO9BTDkRuT6y
-	ruuHeBtmopyTovFdUzMnldo=
-X-Google-Smtp-Source: ACHHUZ6Wv4q+lCV8nxexJGI3S2vfJP94k7k+pAexpWAqQNNuxMHJpmGx+Tn2Ll2+HAYtwXHgGRnsHw==
-X-Received: by 2002:a05:6358:9f9f:b0:132:d8bc:b15b with SMTP id fy31-20020a0563589f9f00b00132d8bcb15bmr1343396rwb.2.1687467488545;
-        Thu, 22 Jun 2023 13:58:08 -0700 (PDT)
+        bh=Z9Q71kHk0zB6vt5ahL9ZHs7069+SCA/PofhBzVdlAuY=;
+        b=iuxNuTAI52VU5jpST4U0w0esOnzEL1ETfrwynSvikon/wy+aiGTEdpFRY8X6pMGRxl
+         eQyF4RSrz5U581AFpYS5gfAePMC1NTdjahXS/InC2AddwV+WinCzmRJcoHVz39K1MP5q
+         8zju2C7N+7cX06BzSdcdYDwS6xJXao/a+gqaHYn00tYFYTRYhmAkuigWRspic6vxAkZI
+         Mo7FN/B4aYdWKYoTL5EyY5WIQqDoRn1ErjQV9EG7Ed5Ghjj3wg6lsDOCui0OkmmW4QP6
+         DCyICtdyAISlgKGoabOgKWxaKYSKFSVwGxtkn+45ke8DJhsgYEat5msbgv02rm7Bpiy9
+         DUDg==
+X-Gm-Message-State: AC+VfDwYxAzFLneIgtHHKojbWq85E8lwlwcSTvZUeCP9k4jTkFKXGTQx
+	NBmCgYXWZ+lcPYcySsNQeevCO6rtkiV0Sw==
+X-Google-Smtp-Source: ACHHUZ6BwDtDcu2DafE0mELxOK/IzeJcBBP6EuYjmA8bqRWBwzcd6lelREQA4aNwT3EjfCEygFsIlw==
+X-Received: by 2002:a25:2144:0:b0:bce:5e08:c330 with SMTP id h65-20020a252144000000b00bce5e08c330mr18770867ybh.29.1687467490539;
+        Thu, 22 Jun 2023 13:58:10 -0700 (PDT)
 Received: from unknowna0e70b2ca394.attlocal.net ([2600:1700:2f7d:1800::36])
-        by smtp.googlemail.com with ESMTPSA id d18-20020a5b0c52000000b00bc501a1b062sm1684937ybr.42.2023.06.22.13.58.06
+        by smtp.googlemail.com with ESMTPSA id d18-20020a5b0c52000000b00bc501a1b062sm1684937ybr.42.2023.06.22.13.58.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Jun 2023 13:58:08 -0700 (PDT)
+        Thu, 22 Jun 2023 13:58:10 -0700 (PDT)
 From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Matthew Wilcox <willy@infradead.org>
-Subject: [PATCH v5 06/33] mm: Convert ptlock_alloc() to use ptdescs
-Date: Thu, 22 Jun 2023 13:57:18 -0700
-Message-Id: <20230622205745.79707-7-vishal.moola@gmail.com>
+Subject: [PATCH v5 07/33] mm: Convert ptlock_ptr() to use ptdescs
+Date: Thu, 22 Jun 2023 13:57:19 -0700
+Message-Id: <20230622205745.79707-8-vishal.moola@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230622205745.79707-1-vishal.moola@gmail.com>
 References: <20230622205745.79707-1-vishal.moola@gmail.com>
@@ -89,62 +89,76 @@ splitting out struct ptdesc from struct page.
 Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
 ---
- include/linux/mm.h | 6 +++---
- mm/memory.c        | 4 ++--
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ arch/x86/xen/mmu_pv.c |  2 +-
+ include/linux/mm.h    | 14 +++++++-------
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
+diff --git a/arch/x86/xen/mmu_pv.c b/arch/x86/xen/mmu_pv.c
+index e0a975165de7..8796ec310483 100644
+--- a/arch/x86/xen/mmu_pv.c
++++ b/arch/x86/xen/mmu_pv.c
+@@ -667,7 +667,7 @@ static spinlock_t *xen_pte_lock(struct page *page, struct mm_struct *mm)
+ 	spinlock_t *ptl = NULL;
+ 
+ #if USE_SPLIT_PTE_PTLOCKS
+-	ptl = ptlock_ptr(page);
++	ptl = ptlock_ptr(page_ptdesc(page));
+ 	spin_lock_nest_lock(ptl, &mm->page_table_lock);
+ #endif
+ 
 diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 1511faf0263c..39b0a4661e44 100644
+index 39b0a4661e44..0b230d5d229a 100644
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
-@@ -2798,7 +2798,7 @@ static inline void pagetable_free(struct ptdesc *pt)
- #if USE_SPLIT_PTE_PTLOCKS
- #if ALLOC_SPLIT_PTLOCKS
- void __init ptlock_cache_init(void);
--extern bool ptlock_alloc(struct page *page);
-+bool ptlock_alloc(struct ptdesc *ptdesc);
+@@ -2801,9 +2801,9 @@ void __init ptlock_cache_init(void);
+ bool ptlock_alloc(struct ptdesc *ptdesc);
  extern void ptlock_free(struct page *page);
  
- static inline spinlock_t *ptlock_ptr(struct page *page)
-@@ -2810,7 +2810,7 @@ static inline void ptlock_cache_init(void)
+-static inline spinlock_t *ptlock_ptr(struct page *page)
++static inline spinlock_t *ptlock_ptr(struct ptdesc *ptdesc)
+ {
+-	return page->ptl;
++	return ptdesc->ptl;
+ }
+ #else /* ALLOC_SPLIT_PTLOCKS */
+ static inline void ptlock_cache_init(void)
+@@ -2819,15 +2819,15 @@ static inline void ptlock_free(struct page *page)
  {
  }
  
--static inline bool ptlock_alloc(struct page *page)
-+static inline bool ptlock_alloc(struct ptdesc *ptdesc)
+-static inline spinlock_t *ptlock_ptr(struct page *page)
++static inline spinlock_t *ptlock_ptr(struct ptdesc *ptdesc)
  {
- 	return true;
+-	return &page->ptl;
++	return &ptdesc->ptl;
  }
-@@ -2840,7 +2840,7 @@ static inline bool ptlock_init(struct page *page)
- 	 * slab code uses page->slab_cache, which share storage with page->ptl.
- 	 */
+ #endif /* ALLOC_SPLIT_PTLOCKS */
+ 
+ static inline spinlock_t *pte_lockptr(struct mm_struct *mm, pmd_t *pmd)
+ {
+-	return ptlock_ptr(pmd_page(*pmd));
++	return ptlock_ptr(page_ptdesc(pmd_page(*pmd)));
+ }
+ 
+ static inline bool ptlock_init(struct page *page)
+@@ -2842,7 +2842,7 @@ static inline bool ptlock_init(struct page *page)
  	VM_BUG_ON_PAGE(*(unsigned long *)&page->ptl, page);
--	if (!ptlock_alloc(page))
-+	if (!ptlock_alloc(page_ptdesc(page)))
+ 	if (!ptlock_alloc(page_ptdesc(page)))
  		return false;
- 	spin_lock_init(ptlock_ptr(page));
+-	spin_lock_init(ptlock_ptr(page));
++	spin_lock_init(ptlock_ptr(page_ptdesc(page)));
  	return true;
-diff --git a/mm/memory.c b/mm/memory.c
-index 80faf3e76232..2ff14f50c7b3 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5920,14 +5920,14 @@ void __init ptlock_cache_init(void)
- 			SLAB_PANIC, NULL);
  }
  
--bool ptlock_alloc(struct page *page)
-+bool ptlock_alloc(struct ptdesc *ptdesc)
+@@ -2923,7 +2923,7 @@ static inline struct ptdesc *pmd_ptdesc(pmd_t *pmd)
+ 
+ static inline spinlock_t *pmd_lockptr(struct mm_struct *mm, pmd_t *pmd)
  {
- 	spinlock_t *ptl;
- 
- 	ptl = kmem_cache_alloc(page_ptl_cachep, GFP_KERNEL);
- 	if (!ptl)
- 		return false;
--	page->ptl = ptl;
-+	ptdesc->ptl = ptl;
- 	return true;
+-	return ptlock_ptr(ptdesc_page(pmd_ptdesc(pmd)));
++	return ptlock_ptr(pmd_ptdesc(pmd));
  }
  
+ static inline bool pmd_ptlock_init(struct page *page)
 -- 
 2.40.1
 
