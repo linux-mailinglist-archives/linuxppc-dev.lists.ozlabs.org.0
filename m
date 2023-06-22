@@ -1,56 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67B5C739A26
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 10:41:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7229739ABF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 10:52:27 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=ps0suCBT;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=Opa27WRk;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=Ve1c4q2s;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qmv3g2CtXz309q
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 18:41:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QmvJT4Lqlz3bYR
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 18:52:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=ps0suCBT;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=Opa27WRk;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=Ve1c4q2s;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2001:67c:2178:6::1d; helo=smtp-out2.suse.de; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org)
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qmv2k5WvBz2yyV
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jun 2023 18:40:28 +1000 (AEST)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out2.suse.de (Postfix) with ESMTP id 88A3320427;
-	Thu, 22 Jun 2023 08:40:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1687423217; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QmvHZ6mQGz2yyV
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jun 2023 18:51:38 +1000 (AEST)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1687423889;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=mJUeHRwvSRI1USK97hB/jvNr2ApKuOYeUxF/NEMnAOo=;
-	b=ps0suCBTBthe6h0Nfl48mHNnsZr5TTQOTH2AvK9D3K1jom6XmgEiduYWXRN7jhwIr7Q24d
-	MRFAbIkqkq6luq/8bxxMkxc5T059iRnT6N7MBpKOrCqbETiNOcLWUAeeY89i+aSh2ofn9u
-	mrwh50t0CC6d/jj7vksrsGgCk6SdodI=
-Received: from suse.cz (pmladek.udp.ovpn2.prg.suse.de [10.100.201.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id 393382C141;
-	Thu, 22 Jun 2023 08:40:15 +0000 (UTC)
-Date: Thu, 22 Jun 2023 10:40:11 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: Douglas Anderson <dianders@chromium.org>
-Subject: Re: [PATCH] powerpc: Move arch_trigger_cpumask_backtrace from nmi.h
- to irq.h
-Message-ID: <ZJQI6_P2yfJKZK52@alley>
-References: <20230621164809.1.Ice67126857506712559078e7de26d32d26e64631@changeid>
+	bh=11GWicbLpC0F9A4O6rye+3TFV+Z0pKuEfGbmi5Xihgc=;
+	b=Opa27WRko24s9SyCBdoBaKtro+GrTco4r1eCgge8Lgfx0shKBIsTEUSu6MG9v71RP8O3d2
+	SbFwcybbw9miqtX1iK8hfGQZ6W7YN4/79DlQ24txRJ4X7h8agW+3ucdT9h2P2ItdehjhRR
+	W5rLoAJs0hiIDY/+5ieAMpJAt1Fk+IfWLguEtZT7/xKVmtsRlgRESsf/3QJjKYYo0HwgWw
+	LrSNZbQdyvPcNnVeUgZYTOc4cIOCnaC5ZP011AG6Cn1n1mtrMGNc1uIZencaADiSiwXOoK
+	RRWrz5VFP7qiiu4bVOJGsPxq6yG0afTyN9zZc0Dcbyk5UscuvXOi34MDPVN5/Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1687423889;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=11GWicbLpC0F9A4O6rye+3TFV+Z0pKuEfGbmi5Xihgc=;
+	b=Ve1c4q2sKAtVICADuROmlUGEt5SFRidTNne8Y/DVygOVgESR5lDmwgOlo+HHq2uYtGIBR3
+	GBkNjUNUDJh+T2Cg==
+To: Laurent Dufour <ldufour@linux.ibm.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 01/10] cpu/SMT: Move SMT prototypes into cpu_smt.h
+In-Reply-To: <20230615154635.13660-2-ldufour@linux.ibm.com>
+References: <20230615154635.13660-1-ldufour@linux.ibm.com>
+ <20230615154635.13660-2-ldufour@linux.ibm.com>
+Date: Thu, 22 Jun 2023 10:51:29 +0200
+Message-ID: <87o7l77ucu.ffs@tglx>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230621164809.1.Ice67126857506712559078e7de26d32d26e64631@changeid>
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,36 +64,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>, Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Tom Rix <trix@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Laurent Dufour <ldufour@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, dave.hansen@linux.intel.com, x86@kernel.org, mingo@redhat.com, bp@alien8.de, npiggin@gmail.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed 2023-06-21 16:48:19, Douglas Anderson wrote:
-> The powerpc architecture was the only one that defined
-> arch_trigger_cpumask_backtrace() in asm/nmi.h instead of
-> asm/irq.h. Move it to be consistent.
-> 
-> This fixes compile time errors introduced by commit 7ca8fe94aa92
-> ("watchdog/hardlockup: define HARDLOCKUP_DETECTOR_ARCH"). That commit
+On Thu, Jun 15 2023 at 17:46, Laurent Dufour wrote:
+> From: Michael Ellerman <mpe@ellerman.id.au>
+>
+> A subsequent patch would like to use the cpuhp_smt_control enum as part
+> of the interface between generic and arch code.
 
-Will this commit end up in the mainline wihtout rebasing?
-We could use only final commit hashes in the commit messages.
+This still has the 'patch' and 'arch' style which I pointed out
+before. It seems you fixed it only for one patch in the series.
 
-> caused <asm/nmi.h> to stop being included if the hardlockup detector
-> wasn't enabled. The specific errors were:
->   error: implicit declaration of function ‘nmi_cpu_backtrace’
->   error: implicit declaration of function ‘nmi_trigger_cpumask_backtrace’
-> 
-> Fixes: 7ca8fe94aa92 ("watchdog/hardlockup: define HARDLOCKUP_DETECTOR_ARCH")
-> Reported-by: Michael Ellerman <mpe@ellerman.id.au>
-> Closes: https://lore.kernel.org/r/871qi5otdh.fsf@mail.lhotse
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Thanks,
 
-Looks like a reasonable solution:
+        tglx
 
-Reviewed-by: Petr Mladek <pmladek@suse.com>
 
-Thanks a lot for fixing the regression.
-
-Best Regards,
-Petr
