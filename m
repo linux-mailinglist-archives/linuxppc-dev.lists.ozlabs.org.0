@@ -2,73 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F31973AB93
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 23:27:49 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=oQo8Ww3r;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B9A473ABAA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jun 2023 23:33:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QnD433Q3kz3dDN
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jun 2023 07:27:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QnDC04157z3cM5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jun 2023 07:33:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=oQo8Ww3r;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b2c; helo=mail-yb1-xb2c.google.com; envelope-from=vishal.moola@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.219.176; helo=mail-yb1-f176.google.com; envelope-from=namhyung@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QnCQz32Ctz3bn8
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jun 2023 06:59:07 +1000 (AEST)
-Received: by mail-yb1-xb2c.google.com with SMTP id 3f1490d57ef6-bb3a77abd7bso7357775276.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jun 2023 13:59:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687467545; x=1690059545;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UurGuuLzED1CKQ5+YtAa+uldlNlkULcrhOlEPtYgkts=;
-        b=oQo8Ww3rkcQ6O4ERZYbbm7gIN+KUZJBSX76Jt+A0yqxzuaw5csFJ7AbMPXoNar1y+V
-         tZQraeqybmf35Qo5xoKl1awKHEBN/Nxr+iHHL+iOhynJPYAD9oID72CJXajJ9Jf7DkVt
-         j26rlavSXJqsTv4JH9m0aLFnC9iK42GCsz7JUCHqTbiCOXGPKTX89JvhbmgJctDtXiKK
-         TITKlfKlRxN76qLZH8F23nvkVHDCJrlE7Pe9NREUl+WlgOK0PObb86E20s865la+XsRl
-         r0ny/7zkkdzJjzv/4f5M4RYeUYdlHDKmxWEXxa021UXcBJ73jIQME8NWHlpzSqT6M39a
-         D91A==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QnDBQ1gjtz2xFk
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jun 2023 07:33:17 +1000 (AEST)
+Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-bd61dd9a346so7370923276.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jun 2023 14:33:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687467545; x=1690059545;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20221208; t=1687469593; x=1690061593;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=UurGuuLzED1CKQ5+YtAa+uldlNlkULcrhOlEPtYgkts=;
-        b=BPTWjXoxiV/LxZoI/+GouMuyY0eRe7RizxPV5gMjh6QX91h9yFW2t0HH5aFYehMYqn
-         DaYIKAY5l56FM+OSLaIUSwM8iZAkrUWeyrc5sGBnewLdl+nj+ugW3Dsk24cDZOkzglG1
-         k2bgJxtTS6ECTnbN2yjinxmmSJSF8li/yhoSKDav074FO6yv5bgZY5uvqb+XDFFX8vXu
-         1NMCJe8nO0XTXsmEs1/UrQOKgAvxCQz11lClSFQrgDofQCdfcyY/SYnJwqicGH832WR+
-         nxD1S5WZ5MqxA7hILBzm8Fr6nHCR7j8wx7TAR/VZLBCDbjwqc3ApRlfuR+iyX4Wnc/Z+
-         qy3Q==
-X-Gm-Message-State: AC+VfDxhp5eLB2eZn99jPd8jIxLU0YICdUAxVuRKCws71FiQl9iBq/Zd
-	zy6jJNlU4zsMwtG5DyCh4+Y=
-X-Google-Smtp-Source: ACHHUZ5/16pTE8w+KmQXtTEHVbvOJ9pX8CyeEgbjUI2ZBq46DEtB7j98e4dbCDGlFjYL7Uz7mrOclw==
-X-Received: by 2002:a25:d707:0:b0:bca:9c66:e53b with SMTP id o7-20020a25d707000000b00bca9c66e53bmr16719019ybg.14.1687467545228;
-        Thu, 22 Jun 2023 13:59:05 -0700 (PDT)
-Received: from unknowna0e70b2ca394.attlocal.net ([2600:1700:2f7d:1800::36])
-        by smtp.googlemail.com with ESMTPSA id d18-20020a5b0c52000000b00bc501a1b062sm1684937ybr.42.2023.06.22.13.59.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Jun 2023 13:59:04 -0700 (PDT)
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Matthew Wilcox <willy@infradead.org>
-Subject: [PATCH v5 33/33] mm: Remove pgtable_{pmd, pte}_page_{ctor, dtor}() wrappers
-Date: Thu, 22 Jun 2023 13:57:45 -0700
-Message-Id: <20230622205745.79707-34-vishal.moola@gmail.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230622205745.79707-1-vishal.moola@gmail.com>
-References: <20230622205745.79707-1-vishal.moola@gmail.com>
+        bh=SNlPBraAb0ddYlZ5jLanYEj5hG5ppMWiPaAkJlDVGoo=;
+        b=Vk3AVaBEwpO4fhRLIsxlMf56kGRveJQhN1xZrmboYu0sWrYxaOITxB7NU2ZCwudrHh
+         gdwIjQhcpZ4PvRz/EpUhLgut5U0HeNfnVVOQRaNarGlk5OeSMnZPkWZ3R7/spaFCGiAq
+         goaTzMAH4HDxu2qaz9sE/Fku3KlxF/KhylM5ZsiUfBQfPwFXpDwDVmYvbTqWYWcM1HkR
+         RoeaO7abjTAvkIfBsAMkxUv+8K3hSFn69zRE7bIJTSc8tC7RBzN6sju+Uoq9ngRDu+wF
+         PoE1tUaY3mAHOAGuTaReHxr75eqfGVoytZ8Hs0s5lg22A9IwbvIP4+AOHAYcw/Huv6Dj
+         8YKg==
+X-Gm-Message-State: AC+VfDwKKJ8BylRrHYqCdKFybvMaBFIsLdkQwOYYZAD3yg2nO3kiu/oa
+	ZKonwgn6TAZ/Jxtv9+oDmG2mio0YNx+F6kvBXRE=
+X-Google-Smtp-Source: ACHHUZ7ahP08mnJ+Pi0ywwdKgRpTuottvev/vWGMxKQ6Mn3ROdJWIjWu36O2obVi65pWifmkIbtWlVGZ96tjwWogEjk=
+X-Received: by 2002:a0d:d485:0:b0:56d:541b:a02e with SMTP id
+ w127-20020a0dd485000000b0056d541ba02emr19452926ywd.1.1687469593617; Thu, 22
+ Jun 2023 14:33:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20230613164145.50488-1-atrajeev@linux.vnet.ibm.com>
+ <20230613164145.50488-16-atrajeev@linux.vnet.ibm.com> <ZIjMWUk/axKfMCM4@kernel.org>
+ <CAM9d7cjrpaNk0UC22ntBSP+LzQwT2YAHwQ2o3z1aayAZNQ329g@mail.gmail.com>
+ <5ab5cc25-03b0-ef7f-3dc0-be1b59a4147d@linux.ibm.com> <CAM9d7cgcETpnNgvgJ8a966bwc0phQuVMwABHzA8APk6Z9Er=OQ@mail.gmail.com>
+ <ee0bd9de-c2c7-010f-5a4d-40e07ded8a3e@linux.ibm.com>
+In-Reply-To: <ee0bd9de-c2c7-010f-5a4d-40e07ded8a3e@linux.ibm.com>
+From: Namhyung Kim <namhyung@kernel.org>
+Date: Thu, 22 Jun 2023 14:33:01 -0700
+Message-ID: <CAM9d7cgopOAyL0QgHs+x_O9A6v020Jyaju+EOv8ymS_cg1Sarg@mail.gmail.com>
+Subject: Re: [PATCH 15/17] perf tests task_analyzer: fix bad substitution ${$1}
+To: Aditya Gupta <adityag@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,160 +61,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, kvm@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-sh@vger.kernel.org, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-csky@vger.kernel.org, "Vishal Moola \(Oracle\)" <vishal.moola@gmail.com>, linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org, Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, loongarch@lists.linux.dev, sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: irogers@google.com, Athira Rajeev <atrajeev@linux.vnet.ibm.com>, john.g.garry@oracle.com, kjain@linux.ibm.com, Hagen Paul Pfeifer <hagen@jauu.net>, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-perf-users@vger.kernel.org, ravi.bangoria@amd.com, maddy@linux.ibm.com, jolsa@kernel.org, Petar Gligoric <petar.gligoric@rohde-schwarz.com>, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-These functions are no longer necessary. Remove them and cleanup
-Documentation referencing them.
+Hello Aditya,
 
-Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
----
- Documentation/mm/split_page_table_lock.rst    | 12 +++++------
- .../zh_CN/mm/split_page_table_lock.rst        | 14 ++++++-------
- include/linux/mm.h                            | 20 -------------------
- 3 files changed, 13 insertions(+), 33 deletions(-)
+On Wed, Jun 21, 2023 at 11:43=E2=80=AFAM Aditya Gupta <adityag@linux.ibm.co=
+m> wrote:
+>
+> Hello Namhyung,
+>
+> On 21/06/23 20:53, Namhyung Kim wrote:
+> > Hello Aditya,
+> >
+> > On Wed, Jun 21, 2023 at 3:05=E2=80=AFAM Aditya Gupta <adityag@linux.ibm=
+.com> wrote:
+> >> Hello Namhyung,
+> >>
+> >> On 21/06/23 06:18, Namhyung Kim wrote:
+> >>> ...
+> >>>
+> >>> $ sudo ./perf test -v task
+> >>> 114: perf script task-analyzer tests                                 =
+:
+> >>> --- start ---
+> >>> test child forked, pid 1771042
+> >>> Please specify a valid report script(see 'perf script -l' for listing=
+)
+> >>> FAIL: "invocation of perf command failed" Error message: ""
+> >>> FAIL: "test_basic" Error message: "Failed to find required string:'Co=
+mm'."
+> >>> Please specify a valid report script(see 'perf script -l' for listing=
+)
+> >>> FAIL: "invocation of perf command failed" Error message: ""
+> >>> FAIL: "test_ns_rename" Error message: "Failed to find required string=
+:'Comm'."
+> >>> ...
+> >>> test child finished with -1
+> >>> ---- end ----
+> >>> perf script task-analyzer tests: FAILED!
+> >> Can you please check if your environment has libtraceevent devel
+> >> libraries (or did you compile with `make NO_LIBTRACEEVENT=3D1`) ? When
+> >> libtraceevent support is not there, perf record fails and so perf.data
+> >> doesn't contain the strings it's searching for and hence those errors
+> >>
+> >> The error you mentioned has been mentioned and fixed in patch 17/17 of
+> >> this series.
+> > Thanks for your reply but It has libtraceevent.  Also, shouldn't it
+> > skip if it's not?
+> >
+> > Thanks,
+> > Namhyung
+>
+> The skipping is handled in the 17th patch in this series, and
+> considering that patch has also been applied, it will skip the tests if
+> perf wasn't built with proper libtraceevent support.
 
-diff --git a/Documentation/mm/split_page_table_lock.rst b/Documentation/mm/split_page_table_lock.rst
-index a834fad9de12..e4f6972eb6c0 100644
---- a/Documentation/mm/split_page_table_lock.rst
-+++ b/Documentation/mm/split_page_table_lock.rst
-@@ -58,7 +58,7 @@ Support of split page table lock by an architecture
- ===================================================
- 
- There's no need in special enabling of PTE split page table lock: everything
--required is done by pgtable_pte_page_ctor() and pgtable_pte_page_dtor(), which
-+required is done by pagetable_pte_ctor() and pagetable_pte_dtor(), which
- must be called on PTE table allocation / freeing.
- 
- Make sure the architecture doesn't use slab allocator for page table
-@@ -68,8 +68,8 @@ This field shares storage with page->ptl.
- PMD split lock only makes sense if you have more than two page table
- levels.
- 
--PMD split lock enabling requires pgtable_pmd_page_ctor() call on PMD table
--allocation and pgtable_pmd_page_dtor() on freeing.
-+PMD split lock enabling requires pagetable_pmd_ctor() call on PMD table
-+allocation and pagetable_pmd_dtor() on freeing.
- 
- Allocation usually happens in pmd_alloc_one(), freeing in pmd_free() and
- pmd_free_tlb(), but make sure you cover all PMD table allocation / freeing
-@@ -77,7 +77,7 @@ paths: i.e X86_PAE preallocate few PMDs on pgd_alloc().
- 
- With everything in place you can set CONFIG_ARCH_ENABLE_SPLIT_PMD_PTLOCK.
- 
--NOTE: pgtable_pte_page_ctor() and pgtable_pmd_page_ctor() can fail -- it must
-+NOTE: pagetable_pte_ctor() and pagetable_pmd_ctor() can fail -- it must
- be handled properly.
- 
- page->ptl
-@@ -97,7 +97,7 @@ trick:
-    split lock with enabled DEBUG_SPINLOCK or DEBUG_LOCK_ALLOC, but costs
-    one more cache line for indirect access;
- 
--The spinlock_t allocated in pgtable_pte_page_ctor() for PTE table and in
--pgtable_pmd_page_ctor() for PMD table.
-+The spinlock_t allocated in pagetable_pte_ctor() for PTE table and in
-+pagetable_pmd_ctor() for PMD table.
- 
- Please, never access page->ptl directly -- use appropriate helper.
-diff --git a/Documentation/translations/zh_CN/mm/split_page_table_lock.rst b/Documentation/translations/zh_CN/mm/split_page_table_lock.rst
-index 4fb7aa666037..a2c288670a24 100644
---- a/Documentation/translations/zh_CN/mm/split_page_table_lock.rst
-+++ b/Documentation/translations/zh_CN/mm/split_page_table_lock.rst
-@@ -56,16 +56,16 @@ Hugetlb特定的辅助函数:
- 架构对分页表锁的支持
- ====================
- 
--没有必要特别启用PTE分页表锁：所有需要的东西都由pgtable_pte_page_ctor()
--和pgtable_pte_page_dtor()完成，它们必须在PTE表分配/释放时被调用。
-+没有必要特别启用PTE分页表锁：所有需要的东西都由pagetable_pte_ctor()
-+和pagetable_pte_dtor()完成，它们必须在PTE表分配/释放时被调用。
- 
- 确保架构不使用slab分配器来分配页表：slab使用page->slab_cache来分配其页
- 面。这个区域与page->ptl共享存储。
- 
- PMD分页锁只有在你有两个以上的页表级别时才有意义。
- 
--启用PMD分页锁需要在PMD表分配时调用pgtable_pmd_page_ctor()，在释放时调
--用pgtable_pmd_page_dtor()。
-+启用PMD分页锁需要在PMD表分配时调用pagetable_pmd_ctor()，在释放时调
-+用pagetable_pmd_dtor()。
- 
- 分配通常发生在pmd_alloc_one()中，释放发生在pmd_free()和pmd_free_tlb()
- 中，但要确保覆盖所有的PMD表分配/释放路径：即X86_PAE在pgd_alloc()中预先
-@@ -73,7 +73,7 @@ PMD分页锁只有在你有两个以上的页表级别时才有意义。
- 
- 一切就绪后，你可以设置CONFIG_ARCH_ENABLE_SPLIT_PMD_PTLOCK。
- 
--注意：pgtable_pte_page_ctor()和pgtable_pmd_page_ctor()可能失败--必
-+注意：pagetable_pte_ctor()和pagetable_pmd_ctor()可能失败--必
- 须正确处理。
- 
- page->ptl
-@@ -90,7 +90,7 @@ page->ptl用于访问分割页表锁，其中'page'是包含该表的页面struc
-    的指针并动态分配它。这允许在启用DEBUG_SPINLOCK或DEBUG_LOCK_ALLOC的
-    情况下使用分页锁，但由于间接访问而多花了一个缓存行。
- 
--PTE表的spinlock_t分配在pgtable_pte_page_ctor()中，PMD表的spinlock_t
--分配在pgtable_pmd_page_ctor()中。
-+PTE表的spinlock_t分配在pagetable_pte_ctor()中，PMD表的spinlock_t
-+分配在pagetable_pmd_ctor()中。
- 
- 请不要直接访问page->ptl - -使用适当的辅助函数。
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 0e4d5f6d10e5..dc0f19f35424 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2873,11 +2873,6 @@ static inline bool pagetable_pte_ctor(struct ptdesc *ptdesc)
- 	return true;
- }
- 
--static inline bool pgtable_pte_page_ctor(struct page *page)
--{
--	return pagetable_pte_ctor(page_ptdesc(page));
--}
--
- static inline void pagetable_pte_dtor(struct ptdesc *ptdesc)
- {
- 	struct folio *folio = ptdesc_folio(ptdesc);
-@@ -2887,11 +2882,6 @@ static inline void pagetable_pte_dtor(struct ptdesc *ptdesc)
- 	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
- }
- 
--static inline void pgtable_pte_page_dtor(struct page *page)
--{
--	pagetable_pte_dtor(page_ptdesc(page));
--}
--
- pte_t *__pte_offset_map(pmd_t *pmd, unsigned long addr, pmd_t *pmdvalp);
- static inline pte_t *pte_offset_map(pmd_t *pmd, unsigned long addr)
- {
-@@ -2993,11 +2983,6 @@ static inline bool pagetable_pmd_ctor(struct ptdesc *ptdesc)
- 	return true;
- }
- 
--static inline bool pgtable_pmd_page_ctor(struct page *page)
--{
--	return pagetable_pmd_ctor(page_ptdesc(page));
--}
--
- static inline void pagetable_pmd_dtor(struct ptdesc *ptdesc)
- {
- 	struct folio *folio = ptdesc_folio(ptdesc);
-@@ -3007,11 +2992,6 @@ static inline void pagetable_pmd_dtor(struct ptdesc *ptdesc)
- 	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
- }
- 
--static inline void pgtable_pmd_page_dtor(struct page *page)
--{
--	pagetable_pmd_dtor(page_ptdesc(page));
--}
--
- /*
-  * No scalability reason to split PUD locks yet, but follow the same pattern
-  * as the PMD locks to make it easier if we decide to.  The VM should not be
--- 
-2.40.1
+Right, I tested it with the whole series applied.
+It skipped to run when I disable libtraceevent build.
 
+>
+> Back to the error, Sorry but I tested again on my system and am unable to=
+ reproduce the issue you are seeing when built with libtraceevent support.
+>
+> This is what I did:
+>
+> 0. git clone --depth=3D1 https://github.com/torvalds/linux
+> 0. cd linux/tools/perf
+> 0. git am patch_15/17.patch
+>
+> > I applied ONLY this patch (15/17) of this series, to a fresh linux tree
+>
+> 1. dnf install libtraceevent-devel
+> 2. make clean && make
+> 3. sudo ./perf test -v "perf script task-analyzer tests"       # Working =
+fine, tests passed
+>
+> 4. dnf remove libtraceevent-devel
+> 5. make clean && make                                          # There wi=
+ll also be a warning during build: "libtraceevent is missing limiting funct=
+ionality"
+> 6. sudo ./perf test -v "perf script task-analyzer tests"       # Fails wi=
+th the error you posted, which was the case till now, it's skipped when the=
+ 17th patch is also applied and perf built without libtraceevent support
+>
+> The error in the second case (without proper libtraceevent support) is ex=
+pected, as it was the case till now, that is fixed by the 17th patch, try a=
+pplying that also and build perf with `make NO_LIBTRACEEVENT=3D1`, it will =
+skip then.
+>
+> Can you guide me with the steps to reproduce the error ?
+
+You can try the perf-tools-next branch in the perf/perft-tools-next.git rep=
+o.
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.git
+
+  $ make clean all
+  $ sudo ./perf test -v task
+
+>
+> Sidenote: Just in case, please ensure you are running the perf as root he=
+re as `perf record -e sched:sched_switch -a -- sleep 1` requires root, whic=
+h has been used in `prepare_perf_data`
+
+Sure, I ran the perf test as root.
+
+Thanks,
+Namhyung
