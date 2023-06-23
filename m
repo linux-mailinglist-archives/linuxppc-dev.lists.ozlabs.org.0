@@ -1,90 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D04B973AECD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jun 2023 04:53:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C9B073AF18
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jun 2023 05:29:54 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sw7IO5Yr;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Ri8oxVqP;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QnMHn5ZNQz3bpC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jun 2023 12:53:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QnN5r35vlz3bn6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jun 2023 13:29:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sw7IO5Yr;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Ri8oxVqP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::42f; helo=mail-pf1-x42f.google.com; envelope-from=dianders@chromium.org; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QnMGs3yJwz3020
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jun 2023 12:52:37 +1000 (AEST)
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35N2lgCc006723;
-	Fri, 23 Jun 2023 02:52:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=RVm125GpA+1HVQbzGy//ia9dU0l+5tLkVFavKaQYjzw=;
- b=sw7IO5Yr5ooD7hVnf1f+5UcLFKHQpGeUj6942kPhFdBBj3i7J0Dx2EppuOUQKCVbHOl8
- mkIm3VVuDoK4TCiaqoc2zTDTLmJedbn1y4KFf7SlIMaRSkZ0ZzNdmx/TVyg7e84m5oAT
- wYikFR/BLFuYgiajKYp7+QK5rONto6Vhn8wJW5doRAC9WLPmKNzRunV0b/8TKRWpyU6B
- yBxFO/dQSaC06PgOsGLLXk4e1AdlQ9woRlgNXIYgd6HhysLE0e6miUub9jSOjfcRO8S4
- hSPcwYSC7nCsEvxVSlpBTlAdYma9Tzb8uJS0kF0GXSWeNv/BkaVquSXdg6mDE/MtOMQ6 sg== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rd2wv01kn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 23 Jun 2023 02:52:21 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
-	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35N0KUfT027259;
-	Fri, 23 Jun 2023 02:52:19 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3r943e3vy4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 23 Jun 2023 02:52:19 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 35N2qGMs58720550
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 23 Jun 2023 02:52:16 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CD1DB20040;
-	Fri, 23 Jun 2023 02:52:16 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4312F20043;
-	Fri, 23 Jun 2023 02:52:15 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.43.65.200])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 23 Jun 2023 02:52:15 +0000 (GMT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.600.7\))
-Subject: Re: [6.4-rc6] Crash during a kexec operation
- (tpm_amd_is_rng_defective)
-From: Sachin Sant <sachinp@linux.ibm.com>
-In-Reply-To: <3f5a37f1-70e0-3dcf-3bd3-acc8a04e53ee@amd.com>
-Date: Fri, 23 Jun 2023 08:22:04 +0530
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <425CE5FE-FE54-493D-A74E-7EBC812544BB@linux.ibm.com>
-References: <99B81401-DB46-49B9-B321-CF832B50CAC3@linux.ibm.com>
- <87o7lhfmoh.fsf@mail.lhotse>
- <CA0088E4-2851-4AFF-94F8-2A07C5CDA8D8@linux.ibm.com>
- <675a8893-429d-05be-b647-089b249c814c@leemhuis.info>
- <87o7l7oer1.fsf@mail.lhotse> <3f5a37f1-70e0-3dcf-3bd3-acc8a04e53ee@amd.com>
-To: "Limonciello, Mario" <Mario.Limonciello@amd.com>
-X-Mailer: Apple Mail (2.3731.600.7)
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Fzee60I0I2G4wkal38UFV33R3U9zVDls
-X-Proofpoint-GUID: Fzee60I0I2G4wkal38UFV33R3U9zVDls
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-06-22_18,2023-06-22_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- clxscore=1011 priorityscore=1501 impostorscore=0 malwarescore=0 mlxscore=0
- phishscore=0 spamscore=0 mlxlogscore=999 bulkscore=0 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306230020
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QnN4w6CZzz30hF
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jun 2023 13:29:02 +1000 (AEST)
+Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-666eef03ebdso43742b3a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jun 2023 20:29:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1687490937; x=1690082937;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UbCparE/RKUBvduSG+9T7tJYjF4EAS3Se6eC6l4lN3I=;
+        b=Ri8oxVqPuYB8qbqbpDHBR7UsvWxZYJPhe0Z/RzlE+I4ZLTBMwDVvs4C6yEr/K2LQM0
+         G8KdvziFF5fR91nZYgF/YyNcQ7CHa5pAiNev+qKDdpls/Un3s/+e58oaD/FTy6+rDTV/
+         EP7ug2pDfnLrdNksWColE+/sETHm8R2Ze2zZc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687490937; x=1690082937;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UbCparE/RKUBvduSG+9T7tJYjF4EAS3Se6eC6l4lN3I=;
+        b=h/sHl9AJCOYixo57h5itMz9ZaXxKrg/5/EwL2WRlUGiIOfSpU+/dFsSRvPp+aepZps
+         9btMHzf6PtI0g+8TZmaKqDsiIFOao+osfmc8j9OaRLWLZm5gFNAF8v1CFIoG8APm+Z8k
+         7WDu+q1U5M6gR9eQ6+HyJy1KJNv27bbigNlvrOToZR3jzb9Ec1unU1vty6TsNHdn21pk
+         BBy3Ui4CBKY0ln+zzliI4dCWO49v+4V2BV6aifwgRfVWsTwzArpu8BztuDc6duyW5JDx
+         sP6svYDYKwEDk8m+Y74D4AbAss/yc9WSvIMNraVPBQG7ufltCz3lEQJn3LFZFiPDKTVr
+         ujRA==
+X-Gm-Message-State: AC+VfDyb32uLKRzfjb6QO2szRvnJOcGKB7OpRPHt9+vjBZbFzgPPHbga
+	oVRM7XVu6Xaz2NbU5ansEJV/vg==
+X-Google-Smtp-Source: ACHHUZ71Y8YUhMdZD3k4/kExQ1KMRHXAMNZY4EEbBixcC9tU/J9oOscg5bO9OohTYDHLuQg7HGWZ2A==
+X-Received: by 2002:a05:6a00:b51:b0:668:71a1:2e74 with SMTP id p17-20020a056a000b5100b0066871a12e74mr12139295pfo.5.1687490937604;
+        Thu, 22 Jun 2023 20:28:57 -0700 (PDT)
+Received: from tictac2.mtv.corp.google.com ([2620:15c:9d:2:fddd:7fcf:b7e4:2619])
+        by smtp.gmail.com with ESMTPSA id m2-20020aa79002000000b0064d1d8fd24asm5156391pfo.60.2023.06.22.20.28.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Jun 2023 20:28:56 -0700 (PDT)
+From: Douglas Anderson <dianders@chromium.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH v2] powerpc: Move arch_trigger_cpumask_backtrace from nmi.h to irq.h
+Date: Thu, 22 Jun 2023 20:28:25 -0700
+Message-ID: <20230622202816.v2.1.Ice67126857506712559078e7de26d32d26e64631@changeid>
+X-Mailer: git-send-email 2.41.0.162.gfafddb0af9-goog
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,52 +73,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux regressions mailing list <regressions@lists.linux.dev>, open list <linux-kernel@vger.kernel.org>, jarkko@kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-integrity@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Petr Mladek <pmladek@suse.com>, Arnd Bergmann <arnd@arndb.de>, Douglas Anderson <dianders@chromium.org>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Tom Rix <trix@redhat.com>, Laurent Dufour <ldufour@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+The powerpc architecture was the only one that defined
+arch_trigger_cpumask_backtrace() in asm/nmi.h instead of
+asm/irq.h. Move it to be consistent.
 
+This fixes compile time errors introduced by commit 7ca8fe94aa92
+("watchdog/hardlockup: define HARDLOCKUP_DETECTOR_ARCH"). That commit
+caused <asm/nmi.h> to stop being included if the hardlockup detector
+wasn't enabled. The specific errors were:
+  error: implicit declaration of function ‘nmi_cpu_backtrace’
+  error: implicit declaration of function ‘nmi_trigger_cpumask_backtrace’
 
-> On 22-Jun-2023, at 8:08 PM, Limonciello, Mario =
-<Mario.Limonciello@amd.com> wrote:
->=20
->=20
-> On 6/22/2023 7:36 AM, Michael Ellerman wrote:
->> "Linux regression tracking (Thorsten Leemhuis)" =
-<regressions@leemhuis.info> writes:
->>> Hi, Thorsten here, the Linux kernel's regression tracker. =
-Top-posting
->>> for once, to make this easily accessible to everyone.
->>>=20
->>> As Linus will likely release 6.4 on this or the following Sunday a =
-quick
->>> question: is there any hope this regression might be fixed any time
->>> soon?
->> No.
->>=20
->> I have added the author of the commit to Cc, maybe they can help?
->>=20
->> The immediate question is, is it expected for chip->ops to be NULL in
->> this path? Obviously on actual AMD systems that isn't the case,
->> otherwise the code would crash there. But is the fact that chip->ops =
-is
->> NULL a bug in the ibmvtpm driver, or a possibility that has been
->> overlooked by the checking code.
->>=20
->> cheers
->=20
-> All that code assumes that the TPM is still functional which
-> seems not to be the case for your TPM.
->=20
-> This should fix it:
+NOTE: when moving this into irq.h, we also change the guards from just
+checking if "CONFIG_NMI_IPI" is defined to also checking if
+"CONFIG_PPC_BOOK3S_64" is defined. This matches the code in
+arch/powerpc/kernel/stacktrace.c. Previously this worked because
+<asm.nmi.h> was included if "CONFIG_HAVE_HARDLOCKUP_DETECTOR_ARCH" was
+defined. For powerpc that's only selected if "CONFIG_PPC_BOOK3S_64" is
+defined.
 
-Yes, with this change kexec works correctly.
+Fixes: 7ca8fe94aa92 ("watchdog/hardlockup: define HARDLOCKUP_DETECTOR_ARCH")
+Reported-by: Michael Ellerman <mpe@ellerman.id.au>
+Closes: https://lore.kernel.org/r/871qi5otdh.fsf@mail.lhotse
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+---
+I'd expect that this would land in Andrew Morton's tree along with the
+other lockup detector stuff.
 
-Since Aneesh first reported this problem including reported by credit =
-for him
+Changes in v2:
+- Change the guards to include CONFIG_PPC_BOOK3S_64.
 
-Reported-by: Aneesh Kumar K. V <aneesh.kumar@linux.ibm.com>
-Reported-by: Sachin Sant <sachinp@linux.ibm.com>
-Tested-by: Sachin Sant <sachinp@linux.ibm.com>
+ arch/powerpc/include/asm/irq.h | 6 ++++++
+ arch/powerpc/include/asm/nmi.h | 6 ------
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
--Sachin=
+diff --git a/arch/powerpc/include/asm/irq.h b/arch/powerpc/include/asm/irq.h
+index 94dffa1dd223..f257cacb49a9 100644
+--- a/arch/powerpc/include/asm/irq.h
++++ b/arch/powerpc/include/asm/irq.h
+@@ -53,5 +53,11 @@ void __do_IRQ(struct pt_regs *regs);
+ 
+ int irq_choose_cpu(const struct cpumask *mask);
+ 
++#if defined(CONFIG_PPC_BOOK3S_64) && defined(CONFIG_NMI_IPI)
++extern void arch_trigger_cpumask_backtrace(const cpumask_t *mask,
++					   bool exclude_self);
++#define arch_trigger_cpumask_backtrace arch_trigger_cpumask_backtrace
++#endif
++
+ #endif /* _ASM_IRQ_H */
+ #endif /* __KERNEL__ */
+diff --git a/arch/powerpc/include/asm/nmi.h b/arch/powerpc/include/asm/nmi.h
+index ce25318c3902..49a75340c3e0 100644
+--- a/arch/powerpc/include/asm/nmi.h
++++ b/arch/powerpc/include/asm/nmi.h
+@@ -9,12 +9,6 @@ void watchdog_hardlockup_set_timeout_pct(u64 pct);
+ static inline void watchdog_hardlockup_set_timeout_pct(u64 pct) {}
+ #endif
+ 
+-#ifdef CONFIG_NMI_IPI
+-extern void arch_trigger_cpumask_backtrace(const cpumask_t *mask,
+-					   bool exclude_self);
+-#define arch_trigger_cpumask_backtrace arch_trigger_cpumask_backtrace
+-#endif
+-
+ extern void hv_nmi_check_nonrecoverable(struct pt_regs *regs);
+ 
+ #endif /* _ASM_NMI_H */
+-- 
+2.41.0.162.gfafddb0af9-goog
+
