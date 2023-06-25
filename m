@@ -1,58 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 106BA73D2DA
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Jun 2023 20:08:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A44973D502
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jun 2023 00:13:41 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=aXajD2i2;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=DIu9Ny/7;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QpzW571P1z30XS
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jun 2023 04:08:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qq4xZ6pvCz3bX8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jun 2023 08:13:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=aXajD2i2;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=DIu9Ny/7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=91.218.175.19; helo=out-19.mta0.migadu.com; envelope-from=kent.overstreet@linux.dev; receiver=lists.ozlabs.org)
-Received: from out-19.mta0.migadu.com (out-19.mta0.migadu.com [91.218.175.19])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52b; helo=mail-pg1-x52b.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QpzV74jwRz2yKy
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Jun 2023 04:07:57 +1000 (AEST)
-Date: Sun, 25 Jun 2023 14:07:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1687716469;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=x12U1WYtcx6jDlDwgHgbxmj32g/zkWzgCuMsg5jfD4E=;
-	b=aXajD2i2wwOOlc+E4aQ5ftNnVZYVjHsu7uT27YxK2bXpBRIXa1eKBZ8P2dVL4HSRL50jhN
-	dl4pAPJVm0Y66ty1hQePwe0na/Kn+yesj8fl7fue26gk3qnaybZQTgnxMOqItdgoFFMt+o
-	J0vO106Xs02q2DzuR5rjQ9B9gsNPKJs=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v2 02/12] mm: introduce execmem_text_alloc() and
- jit_text_alloc()
-Message-ID: <20230625180741.jrrtkq55c4jrqh3t@moria.home.lan>
-References: <20230616085038.4121892-1-rppt@kernel.org>
- <20230616085038.4121892-3-rppt@kernel.org>
- <f9a7eebe-d36e-4587-b99d-35d4edefdd14@app.fastmail.com>
- <20230618080027.GA52412@kernel.org>
- <a17c65c6-863f-4026-9c6f-a04b659e9ab4@app.fastmail.com>
- <20230625161417.GK52412@kernel.org>
- <90161ac9-3ca0-4c72-b1c4-ab1293e55445@app.fastmail.com>
- <20230625174257.GL52412@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qpsgg3mfMz2ydd
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Jun 2023 23:45:50 +1000 (AEST)
+Received: by mail-pg1-x52b.google.com with SMTP id 41be03b00d2f7-54fb3c168fcso2097279a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Jun 2023 06:45:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1687700745; x=1690292745;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=9um6ptaOKAi61nB5XO7Dl3qnm1zJlbhB7/bYZ4qz2kM=;
+        b=DIu9Ny/7jaoTNLkGF8/WA5PPNK+jRdr7UQ0oUK8gpDleZDBYKkEZTRWvV3q0WCVDkr
+         GT9WGDqQAd6NM3Hv1OBgtl8/K9UJmgSuJRLqsWXBXFXz9xRKraV4dO1gJ8knuWzH89FD
+         5ZBp0RxbEzte21jPDl7kMB+sxKGvhF7PqHUrgXYtdti8GcQuUInbzrjXCOqFFOZDBhMO
+         IMo7/KqAaRWozkJvnoh0Iekll7VhVmEMiZQsJ3TqFXKC1y0eUPCjoaPqTzuR0cjVbcs2
+         xJTlHHmr8A6MBvUO6sq0WtDEOTraSRGzMEPDoZJ5FSgONJaq67twdWxH0KwyA7EKLbZm
+         hw/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687700745; x=1690292745;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9um6ptaOKAi61nB5XO7Dl3qnm1zJlbhB7/bYZ4qz2kM=;
+        b=Yp7/MZp6UioUZvO1JyRVpRRpRubwnTB/GcZw6hAEaJJTPsuc6RDCCcexlDlPQ1G2qa
+         anJgyIBSVAFNL85b+NBhWidOoj2k4lfT09bgY4h/2sf4idAAkQA7qSE9If9vX4N8MaUo
+         LMcMVsUvub9+kO+DVY0spp89RtSRuXf9j6OSn4+6s6DEPtT/scD6jZADeWCV/m+Xo1Fl
+         WGz1VmtImEZTNT6v2lonWZxKf4vRGQ07VpBDN2dAdANsLvhWueJcqj64eg21tstefjZH
+         pryWM4gv9f/hBNGSv7Z1pGVoBmihCLGFsuIKkFH76cqAwj0hs/BcJTla8nJMy2bThE1h
+         5L7g==
+X-Gm-Message-State: AC+VfDyrJF8/rXINP+oe0+vDICvYYCxGEybS+0JJGkMRaAboYr35MQUE
+	u9LQiwoGLW5pnbUkmfz8YCpjVtIviRa1pSkfJqs=
+X-Google-Smtp-Source: ACHHUZ7vkizBq3N3yfXSjDuGR6Zka/LKQnjrdgn0dMXOeeTF+VYjwYV4P6nmFxHwa1+WFqaETkla1uT7JKiYDkyc20I=
+X-Received: by 2002:a17:90b:3714:b0:261:685:95b6 with SMTP id
+ mg20-20020a17090b371400b00261068595b6mr11812001pjb.13.1687700745344; Sun, 25
+ Jun 2023 06:45:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230625174257.GL52412@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+References: <20230521225702.1608-1-rdunlap@infradead.org>
+In-Reply-To: <20230521225702.1608-1-rdunlap@infradead.org>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Sun, 25 Jun 2023 21:45:34 +0800
+Message-ID: <CAA+D8AMArTYodVhJuLfptvUDKUw4o7miPXYdaAsi_O=UdMKbpQ@mail.gmail.com>
+Subject: Re: [PATCH v2 RESEND] ASoC: fsl MPC52xx drivers require PPC_BESTCOMM
+To: Randy Dunlap <rdunlap@infradead.org>
+Content-Type: multipart/alternative; boundary="00000000000069dbfb05fef4732d"
+X-Mailman-Approved-At: Mon, 26 Jun 2023 08:12:51 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,173 +74,177 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, the arch/x86 maintainers <x86@kernel.org>, loongarch@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Nadav Amit <nadav.amit@gmail.com>, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, "Russell King \(Oracle\)" <linux@armlinux.org.uk>, torvalds@linux-foundation.org, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, pjt@google.com, linux-trace-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>, Will Deacon <will@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Puranjay Mohan <puranjay12@gmail.com>, linux-mm@kvack.org, netdev@
- vger.kernel.org, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Dinh Nguyen <dinguyen@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, linux-modules@vger.kernel.org
+Cc: alsa-devel@alsa-project.org, Xiubo Li <Xiubo.Lee@gmail.com>, Takashi Iwai <tiwai@suse.com>, linux-kernel@vger.kernel.org, Liam Girdwood <lgirdwood@gmail.com>, Grant Likely <grant.likely@secretlab.ca>, Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Jun 25, 2023 at 08:42:57PM +0300, Mike Rapoport wrote:
-> On Sun, Jun 25, 2023 at 09:59:34AM -0700, Andy Lutomirski wrote:
-> > 
-> > 
-> > On Sun, Jun 25, 2023, at 9:14 AM, Mike Rapoport wrote:
-> > > On Mon, Jun 19, 2023 at 10:09:02AM -0700, Andy Lutomirski wrote:
-> > >> 
-> > >> On Sun, Jun 18, 2023, at 1:00 AM, Mike Rapoport wrote:
-> > >> > On Sat, Jun 17, 2023 at 01:38:29PM -0700, Andy Lutomirski wrote:
-> > >> >> On Fri, Jun 16, 2023, at 1:50 AM, Mike Rapoport wrote:
-> > >> >> > From: "Mike Rapoport (IBM)" <rppt@kernel.org>
-> > >> >> >
-> > >> >> > module_alloc() is used everywhere as a mean to allocate memory for code.
-> > >> >> >
-> > >> >> > Beside being semantically wrong, this unnecessarily ties all subsystems
-> > >> >> > that need to allocate code, such as ftrace, kprobes and BPF to modules
-> > >> >> > and puts the burden of code allocation to the modules code.
-> > >> >> >
-> > >> >> > Several architectures override module_alloc() because of various
-> > >> >> > constraints where the executable memory can be located and this causes
-> > >> >> > additional obstacles for improvements of code allocation.
-> > >> >> >
-> > >> >> > Start splitting code allocation from modules by introducing
-> > >> >> > execmem_text_alloc(), execmem_free(), jit_text_alloc(), jit_free() APIs.
-> > >> >> >
-> > >> >> > Initially, execmem_text_alloc() and jit_text_alloc() are wrappers for
-> > >> >> > module_alloc() and execmem_free() and jit_free() are replacements of
-> > >> >> > module_memfree() to allow updating all call sites to use the new APIs.
-> > >> >> >
-> > >> >> > The intention semantics for new allocation APIs:
-> > >> >> >
-> > >> >> > * execmem_text_alloc() should be used to allocate memory that must reside
-> > >> >> >   close to the kernel image, like loadable kernel modules and generated
-> > >> >> >   code that is restricted by relative addressing.
-> > >> >> >
-> > >> >> > * jit_text_alloc() should be used to allocate memory for generated code
-> > >> >> >   when there are no restrictions for the code placement. For
-> > >> >> >   architectures that require that any code is within certain distance
-> > >> >> >   from the kernel image, jit_text_alloc() will be essentially aliased to
-> > >> >> >   execmem_text_alloc().
-> > >> >> >
-> > >> >> 
-> > >> >> Is there anything in this series to help users do the appropriate
-> > >> >> synchronization when the actually populate the allocated memory with
-> > >> >> code?  See here, for example:
-> > >> >
-> > >> > This series only factors out the executable allocations from modules and
-> > >> > puts them in a central place.
-> > >> > Anything else would go on top after this lands.
-> > >> 
-> > >> Hmm.
-> > >> 
-> > >> On the one hand, there's nothing wrong with factoring out common code. On
-> > >> the other hand, this is probably the right time to at least start
-> > >> thinking about synchronization, at least to the extent that it might make
-> > >> us want to change this API.  (I'm not at all saying that this series
-> > >> should require changes -- I'm just saying that this is a good time to
-> > >> think about how this should work.)
-> > >> 
-> > >> The current APIs, *and* the proposed jit_text_alloc() API, don't actually
-> > >> look like the one think in the Linux ecosystem that actually
-> > >> intelligently and efficiently maps new text into an address space:
-> > >> mmap().
-> > >> 
-> > >> On x86, you can mmap() an existing file full of executable code PROT_EXEC
-> > >> and jump to it with minimal synchronization (just the standard implicit
-> > >> ordering in the kernel that populates the pages before setting up the
-> > >> PTEs and whatever user synchronization is needed to avoid jumping into
-> > >> the mapping before mmap() finishes).  It works across CPUs, and the only
-> > >> possible way userspace can screw it up (for a read-only mapping of
-> > >> read-only text, anyway) is to jump to the mapping too early, in which
-> > >> case userspace gets a page fault.  Incoherence is impossible, and no one
-> > >> needs to "serialize" (in the SDM sense).
-> > >> 
-> > >> I think the same sequence (from userspace's perspective) works on other
-> > >> architectures, too, although I think more cache management is needed on
-> > >> the kernel's end.  As far as I know, no Linux SMP architecture needs an
-> > >> IPI to map executable text into usermode, but I could easily be wrong.
-> > >> (IIRC RISC-V has very developer-unfriendly icache management, but I don't
-> > >> remember the details.)
-> > >> 
-> > >> Of course, using ptrace or any other FOLL_FORCE to modify text on x86 is
-> > >> rather fraught, and I bet many things do it wrong when userspace is
-> > >> multithreaded.  But not in production because it's mostly not used in
-> > >> production.)
-> > >> 
-> > >> But jit_text_alloc() can't do this, because the order of operations
-> > >> doesn't match.  With jit_text_alloc(), the executable mapping shows up
-> > >> before the text is populated, so there is no atomic change from not-there
-> > >> to populated-and-executable.  Which means that there is an opportunity
-> > >> for CPUs, speculatively or otherwise, to start filling various caches
-> > >> with intermediate states of the text, which means that various
-> > >> architectures (even x86!) may need serialization.
-> > >> 
-> > >> For eBPF- and module- like use cases, where JITting/code gen is quite
-> > >> coarse-grained, perhaps something vaguely like:
-> > >> 
-> > >> jit_text_alloc() -> returns a handle and an executable virtual address,
-> > >> but does *not* map it there
-> > >> jit_text_write() -> write to that handle
-> > >> jit_text_map() -> map it and synchronize if needed (no sync needed on
-> > >> x86, I think)
-> > >> 
-> > >> could be more efficient and/or safer.
-> > >> 
-> > >> (Modules could use this too.  Getting alternatives right might take some
-> > >> fiddling, because off the top of my head, this doesn't match how it works
-> > >> now.)
-> > >> 
-> > >> To make alternatives easier, this could work, maybe (haven't fully
-> > >> thought it through):
-> > >> 
-> > >> jit_text_alloc()
-> > >> jit_text_map_rw_inplace() -> map at the target address, but RW, !X
-> > >> 
-> > >> write the text and apply alternatives
-> > >> 
-> > >> jit_text_finalize() -> change from RW to RX *and synchronize*
-> > >> 
-> > >> jit_text_finalize() would either need to wait for RCU (possibly extra
-> > >> heavy weight RCU to get "serialization") or send an IPI.
-> > >
-> > > This essentially how modules work now. The memory is allocated RW, written
-> > > and updated with alternatives and then made ROX in the end with set_memory
-> > > APIs.
-> > >
-> > > The issue with not having the memory mapped X when it's written is that we
-> > > cannot use large pages to map it. One of the goals is to have executable
-> > > memory mapped with large pages and make code allocator able to divide that
-> > > page among several callers.
-> > >
-> > > So the idea was that jit_text_alloc() will have a cache of large pages
-> > > mapped ROX, will allocate memory from those caches and there will be
-> > > jit_update() that uses text poking for writing to that memory.
-> > >
-> > > Upon allocation of a large page to increase the cache, that large page will
-> > > be "invalidated" by filling it with breakpoint instructions (e.g int3 on
-> > > x86)
-> > 
-> > Is this actually valid?  In between int3 and real code, there’s a
-> > potential torn read of real code mixed up with 0xcc.
->  
-> You mean while doing text poking?
+--00000000000069dbfb05fef4732d
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I think we've been getting distracted by text_poke(). text_poke() does
-updates via a different virtual address which introduce new
-synchroniation wrinkles, but it's not the main issue.
+On Mon, May 22, 2023 at 6:57=E2=80=AFAM Randy Dunlap <rdunlap@infradead.org=
+> wrote:
 
-As _think_ I understand it, the root of the issue is that speculative
-execution - and that per Andy, speculative execution doesn't obey memory
-barriers.
+> Both SND_MPC52xx_SOC_PCM030 and SND_MPC52xx_SOC_EFIKA select
+> SND_SOC_MPC5200_AC97. The latter symbol depends on PPC_BESTCOMM,
+> so the 2 former symbols should also depend on PPC_BESTCOMM since
+> "select" does not follow any dependency chains.
+>
+> This prevents a kconfig warning and build errors:
+>
+> WARNING: unmet direct dependencies detected for SND_SOC_MPC5200_AC97
+>   Depends on [n]: SOUND [=3Dy] && !UML && SND [=3Dm] && SND_SOC [=3Dm] &&
+> SND_POWERPC_SOC [=3Dm] && PPC_MPC52xx [=3Dy] && PPC_BESTCOMM [=3Dn]
+>   Selected by [m]:
+>   - SND_MPC52xx_SOC_PCM030 [=3Dm] && SOUND [=3Dy] && !UML && SND [=3Dm] &=
+&
+> SND_SOC [=3Dm] && SND_POWERPC_SOC [=3Dm] && PPC_MPC5200_SIMPLE [=3Dy]
+>   - SND_MPC52xx_SOC_EFIKA [=3Dm] && SOUND [=3Dy] && !UML && SND [=3Dm] &&
+> SND_SOC [=3Dm] && SND_POWERPC_SOC [=3Dm] && PPC_EFIKA [=3Dy]
+>
+> ERROR: modpost: "mpc5200_audio_dma_destroy"
+> [sound/soc/fsl/mpc5200_psc_ac97.ko] undefined!
+> ERROR: modpost: "mpc5200_audio_dma_create"
+> [sound/soc/fsl/mpc5200_psc_ac97.ko] undefined!
+>
+> Fixes: 40d9ec14e7e1 ("ASoC: remove BROKEN from Efika and pcm030 fabric
+> drivers")
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Cc: Grant Likely <grant.likely@secretlab.ca>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Liam Girdwood <lgirdwood@gmail.com>
+> Cc: Shengjiu Wang <shengjiu.wang@gmail.com>
+> Cc: Xiubo Li <Xiubo.Lee@gmail.com>
+> Cc: alsa-devel@alsa-project.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: Jaroslav Kysela <perex@perex.cz>
+> Cc: Takashi Iwai <tiwai@suse.com>
+>
 
-I have _not_ dug into the details of how retpolines work and all the
-spectre stuff that was going on, but - retpoline uses lfence, doesn't
-it? And if speculative execution is the issue here, isn't retpoline what
-we need?
+Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
 
-For this particular issue, I'm not sure "invalidate by filling with
-illegal instructions" makes sense. For that to work, would the processor
-have to execute a serialize operation and a retry on hitting an illegal
-instruction - or perhaps we do in the interrupt handler?
+Best regards
+Wang shengjiu
 
-But if filling with illegal instructions does act as a speculation
-barrier, then the issue is that a torn read could generate a legal but
-incorrect instruction.
+> ---
+> v2: use correct email address for Mark Brown.
+>
+>  sound/soc/fsl/Kconfig |    4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff -- a/sound/soc/fsl/Kconfig b/sound/soc/fsl/Kconfig
+> --- a/sound/soc/fsl/Kconfig
+> +++ b/sound/soc/fsl/Kconfig
+> @@ -243,7 +243,7 @@ config SND_SOC_MPC5200_AC97
+>
+>  config SND_MPC52xx_SOC_PCM030
+>         tristate "SoC AC97 Audio support for Phytec pcm030 and WM9712"
+> -       depends on PPC_MPC5200_SIMPLE
+> +       depends on PPC_MPC5200_SIMPLE && PPC_BESTCOMM
+>         select SND_SOC_MPC5200_AC97
+>         select SND_SOC_WM9712
+>         help
+> @@ -252,7 +252,7 @@ config SND_MPC52xx_SOC_PCM030
+>
+>  config SND_MPC52xx_SOC_EFIKA
+>         tristate "SoC AC97 Audio support for bbplan Efika and STAC9766"
+> -       depends on PPC_EFIKA
+> +       depends on PPC_EFIKA && PPC_BESTCOMM
+>         select SND_SOC_MPC5200_AC97
+>         select SND_SOC_STAC9766
+>         help
+>
+
+--00000000000069dbfb05fef4732d
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Mon, May 22, 2023 at 6:57=E2=80=AF=
+AM Randy Dunlap &lt;<a href=3D"mailto:rdunlap@infradead.org">rdunlap@infrad=
+ead.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"=
+margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-lef=
+t:1ex">Both SND_MPC52xx_SOC_PCM030 and SND_MPC52xx_SOC_EFIKA select<br>
+SND_SOC_MPC5200_AC97. The latter symbol depends on PPC_BESTCOMM,<br>
+so the 2 former symbols should also depend on PPC_BESTCOMM since<br>
+&quot;select&quot; does not follow any dependency chains.<br>
+<br>
+This prevents a kconfig warning and build errors:<br>
+<br>
+WARNING: unmet direct dependencies detected for SND_SOC_MPC5200_AC97<br>
+=C2=A0 Depends on [n]: SOUND [=3Dy] &amp;&amp; !UML &amp;&amp; SND [=3Dm] &=
+amp;&amp; SND_SOC [=3Dm] &amp;&amp; SND_POWERPC_SOC [=3Dm] &amp;&amp; PPC_M=
+PC52xx [=3Dy] &amp;&amp; PPC_BESTCOMM [=3Dn]<br>
+=C2=A0 Selected by [m]:<br>
+=C2=A0 - SND_MPC52xx_SOC_PCM030 [=3Dm] &amp;&amp; SOUND [=3Dy] &amp;&amp; !=
+UML &amp;&amp; SND [=3Dm] &amp;&amp; SND_SOC [=3Dm] &amp;&amp; SND_POWERPC_=
+SOC [=3Dm] &amp;&amp; PPC_MPC5200_SIMPLE [=3Dy]<br>
+=C2=A0 - SND_MPC52xx_SOC_EFIKA [=3Dm] &amp;&amp; SOUND [=3Dy] &amp;&amp; !U=
+ML &amp;&amp; SND [=3Dm] &amp;&amp; SND_SOC [=3Dm] &amp;&amp; SND_POWERPC_S=
+OC [=3Dm] &amp;&amp; PPC_EFIKA [=3Dy]<br>
+<br>
+ERROR: modpost: &quot;mpc5200_audio_dma_destroy&quot; [sound/soc/fsl/mpc520=
+0_psc_ac97.ko] undefined!<br>
+ERROR: modpost: &quot;mpc5200_audio_dma_create&quot; [sound/soc/fsl/mpc5200=
+_psc_ac97.ko] undefined!<br>
+<br>
+Fixes: 40d9ec14e7e1 (&quot;ASoC: remove BROKEN from Efika and pcm030 fabric=
+ drivers&quot;)<br>
+Signed-off-by: Randy Dunlap &lt;<a href=3D"mailto:rdunlap@infradead.org" ta=
+rget=3D"_blank">rdunlap@infradead.org</a>&gt;<br>
+Cc: Grant Likely &lt;<a href=3D"mailto:grant.likely@secretlab.ca" target=3D=
+"_blank">grant.likely@secretlab.ca</a>&gt;<br>
+Cc: Mark Brown &lt;<a href=3D"mailto:broonie@kernel.org" target=3D"_blank">=
+broonie@kernel.org</a>&gt;<br>
+Cc: Liam Girdwood &lt;<a href=3D"mailto:lgirdwood@gmail.com" target=3D"_bla=
+nk">lgirdwood@gmail.com</a>&gt;<br>
+Cc: Shengjiu Wang &lt;<a href=3D"mailto:shengjiu.wang@gmail.com" target=3D"=
+_blank">shengjiu.wang@gmail.com</a>&gt;<br>
+Cc: Xiubo Li &lt;<a href=3D"mailto:Xiubo.Lee@gmail.com" target=3D"_blank">X=
+iubo.Lee@gmail.com</a>&gt;<br>
+Cc: <a href=3D"mailto:alsa-devel@alsa-project.org" target=3D"_blank">alsa-d=
+evel@alsa-project.org</a><br>
+Cc: <a href=3D"mailto:linuxppc-dev@lists.ozlabs.org" target=3D"_blank">linu=
+xppc-dev@lists.ozlabs.org</a><br>
+Cc: Jaroslav Kysela &lt;<a href=3D"mailto:perex@perex.cz" target=3D"_blank"=
+>perex@perex.cz</a>&gt;<br>
+Cc: Takashi Iwai &lt;<a href=3D"mailto:tiwai@suse.com" target=3D"_blank">ti=
+wai@suse.com</a>&gt;<br></blockquote><div><br></div><div>Acked-by: Shengjiu=
+ Wang &lt;<a href=3D"mailto:shengjiu.wang@gmail.com">shengjiu.wang@gmail.co=
+m</a>&gt;</div><div><br></div><div>Best regards</div><div>Wang shengjiu=C2=
+=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8e=
+x;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+---<br>
+v2: use correct email address for Mark Brown.<br>
+<br>
+=C2=A0sound/soc/fsl/Kconfig |=C2=A0 =C2=A0 4 ++--<br>
+=C2=A01 file changed, 2 insertions(+), 2 deletions(-)<br>
+<br>
+diff -- a/sound/soc/fsl/Kconfig b/sound/soc/fsl/Kconfig<br>
+--- a/sound/soc/fsl/Kconfig<br>
++++ b/sound/soc/fsl/Kconfig<br>
+@@ -243,7 +243,7 @@ config SND_SOC_MPC5200_AC97<br>
+<br>
+=C2=A0config SND_MPC52xx_SOC_PCM030<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 tristate &quot;SoC AC97 Audio support for Phyte=
+c pcm030 and WM9712&quot;<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0depends on PPC_MPC5200_SIMPLE<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0depends on PPC_MPC5200_SIMPLE &amp;&amp; PPC_BE=
+STCOMM<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 select SND_SOC_MPC5200_AC97<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 select SND_SOC_WM9712<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 help<br>
+@@ -252,7 +252,7 @@ config SND_MPC52xx_SOC_PCM030<br>
+<br>
+=C2=A0config SND_MPC52xx_SOC_EFIKA<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 tristate &quot;SoC AC97 Audio support for bbpla=
+n Efika and STAC9766&quot;<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0depends on PPC_EFIKA<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0depends on PPC_EFIKA &amp;&amp; PPC_BESTCOMM<br=
+>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 select SND_SOC_MPC5200_AC97<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 select SND_SOC_STAC9766<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 help<br>
+</blockquote></div></div>
+
+--00000000000069dbfb05fef4732d--
