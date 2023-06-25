@@ -1,66 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C12973CF21
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Jun 2023 09:59:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6859273CF26
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Jun 2023 10:03:47 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=AOADXr0b;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VITkWm9+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qpk0F2J45z3bmb
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Jun 2023 17:59:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qpk4x1sH2z3Wtt
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Jun 2023 18:03:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=AOADXr0b;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VITkWm9+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QpjzH4XVYz2ys4
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Jun 2023 17:58:45 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687679932; x=1719215932;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=eTIwvrfKylgiLU30c+QKGL2VdYd5OeJbT6ROhsR0yJI=;
-  b=AOADXr0boWkX4diCS7znwOLURZDykSPOddVClOaz799XhncqzwDOWSAa
-   MQDCc4Ed4fzOJqw/uqCpXgZ1CScbxp0Sip0eEXVqfTRnTNG3oIBhg3XJg
-   h8J1HY7hFo8YhVewfI5OGs1awMH5P/dvzPeghHDscwM8SzXXQy3+aQytq
-   /pAZuMlrVyALxXnuavjQ7z47v69UwLr83nG27+64tKZpTMNl7O8oYx8aJ
-   B/VftQI0QDaoW/xNmYHACBMxERHKfX+rwyj2Yyb1+dIpXqp5H/JYyTDOP
-   +ICh7+WQRGdr2tasx5yU61KFMvRsfShJbK0z+c+ur+ikTIve3cihDNhVn
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10751"; a="447419941"
-X-IronPort-AV: E=Sophos;i="6.01,156,1684825200"; 
-   d="scan'208";a="447419941"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2023 00:58:41 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10751"; a="693123135"
-X-IronPort-AV: E=Sophos;i="6.01,156,1684825200"; 
-   d="scan'208";a="693123135"
-Received: from lkp-server01.sh.intel.com (HELO 783282924a45) ([10.239.97.150])
-  by orsmga006.jf.intel.com with ESMTP; 25 Jun 2023 00:58:34 -0700
-Received: from kbuild by 783282924a45 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1qDKdm-0009sJ-0Z;
-	Sun, 25 Jun 2023 07:58:34 +0000
-Date: Sun, 25 Jun 2023 15:57:56 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH v5 24/33] m68k: Convert various functions to use ptdescs
-Message-ID: <202306251513.WVzxgGxu-lkp@intel.com>
-References: <20230622205745.79707-25-vishal.moola@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qpk3z3qGMz2y1j
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Jun 2023 18:02:55 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 14FC560B65
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Jun 2023 08:02:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F4C8C433CD
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Jun 2023 08:02:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1687680170;
+	bh=Yn7ur0hSLgRRcuejzwOvXvGPThkAsc4tD6ZTogw5Dbk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=VITkWm9+HFxZZGaLbiI0TbgwUuWrOm7vVonDHwKcmhh0Ez/L05hHn3Ei32oV0/Ipz
+	 A4lxW7STEyOgjMah1JrloMlux884tQaXIQePy0eBaTZ7Rp0iwnlikQOuy42B2YtPDS
+	 oeVh4DN/bldtBPjD1RCW6qRbt4IMQx882cizX5lghRJJ+z4DhP/CF7PO/FEip3a2gq
+	 3m6b6FUc4A6u8X5ystwZXJw+M5p2p9SRH/IH2tIwhMkfI5xd7Ml9bwursZnUt2Gh3P
+	 q8E3DG2lnOax4AUY+fQro5eUGWrxD6fL8gktT/OB0s5p11lD1RzUp2xH6Cxj8iRnb4
+	 fW8L6r6CJJ7fA==
+Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-56344354e2cso116069eaf.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Jun 2023 01:02:50 -0700 (PDT)
+X-Gm-Message-State: AC+VfDxBASExA2lFUjzI8Aj8bI0JWjq3+uebMG30C2oZVGmhAviTmigX
+	SI6KLOA3Ubs/MHfQBA75DZhERzAxjhivkPHJDoI=
+X-Google-Smtp-Source: ACHHUZ66qeBOQbYT6xqBwBk53SBAigcOVZD1snybv27WYy25h2Tl6o1VD3Lyob4H2XEggxc8JPEB+i3Z576D2dJAxHI=
+X-Received: by 2002:a4a:dc19:0:b0:560:c7dd:e19e with SMTP id
+ p25-20020a4adc19000000b00560c7dde19emr9398546oov.3.1687680169577; Sun, 25 Jun
+ 2023 01:02:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230622205745.79707-25-vishal.moola@gmail.com>
+References: <20230119082250.151485-1-masahiroy@kernel.org> <CACPK8XeGsWN+2L57=dfQWOTSo8df7_qrxhwvV4Ho0rkhV=0vSw@mail.gmail.com>
+ <CAK7LNAQWtDHOs=K+qznt5U1WiDv86tChkj4zOer4wtVRB974OA@mail.gmail.com>
+In-Reply-To: <CAK7LNAQWtDHOs=K+qznt5U1WiDv86tChkj4zOer4wtVRB974OA@mail.gmail.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Sun, 25 Jun 2023 17:02:13 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAS=UCo_o-B0mgsR+SDb0sYwvQo90uag5sJ1UmB+8NqLjQ@mail.gmail.com>
+Message-ID: <CAK7LNAS=UCo_o-B0mgsR+SDb0sYwvQo90uag5sJ1UmB+8NqLjQ@mail.gmail.com>
+Subject: Re: [PATCH] powerpc: remove checks for binutils older than 2.25
+To: Joel Stanley <joel@jms.id.au>, Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,177 +71,167 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, linux-sh@vger.kernel.org, linux-openrisc@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org, Hugh Dickins <hughd@google.com>, linux-csky@vger.kernel.org, Geert Uytterhoeven <geert@linux-m68k.org>, xen-devel@lists.xenproject.org, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, oe-kbuild-all@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Linux Memory Management List <linux-mm@kvack.org>, linux-mips@vger.kernel.org, "Vishal Moola \(Oracle\)" <vishal.moola@gmail.com>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Vishal,
-
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on next-20230622]
-[cannot apply to akpm-mm/mm-everything powerpc/next powerpc/fixes s390/features geert-m68k/for-next geert-m68k/for-linus linus/master v6.4-rc7 v6.4-rc6 v6.4-rc5 v6.4-rc7]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Vishal-Moola-Oracle/mm-Add-PAGE_TYPE_OP-folio-functions/20230623-050011
-base:   next-20230622
-patch link:    https://lore.kernel.org/r/20230622205745.79707-25-vishal.moola%40gmail.com
-patch subject: [PATCH v5 24/33] m68k: Convert various functions to use ptdescs
-config: m68k-randconfig-s051-20230625 (https://download.01.org/0day-ci/archive/20230625/202306251513.WVzxgGxu-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 12.3.0
-reproduce: (https://download.01.org/0day-ci/archive/20230625/202306251513.WVzxgGxu-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202306251513.WVzxgGxu-lkp@intel.com/
-
-All error/warnings (new ones prefixed by >>):
-
-   In file included from arch/m68k/include/asm/pgalloc.h:12,
-                    from kernel/fork.c:103:
-   arch/m68k/include/asm/mcf_pgalloc.h: In function 'pgd_alloc':
->> arch/m68k/include/asm/mcf_pgalloc.h:82:60: error: 'GFP_NOWARN' undeclared (first use in this function); did you mean 'GFP_NOWAIT'?
-      82 |         struct ptdesc *ptdesc = pagetable_alloc((GFP_DMA | GFP_NOWARN) &
-         |                                                            ^~~~~~~~~~
-         |                                                            GFP_NOWAIT
-   arch/m68k/include/asm/mcf_pgalloc.h:82:60: note: each undeclared identifier is reported only once for each function it appears in
-   arch/m68k/include/asm/mcf_pgalloc.h: At top level:
->> arch/m68k/include/asm/mcf_pgalloc.h:23:16: warning: 'ptdesc_address' is static but used in inline function 'pte_alloc_one_kernel' which is not static
-      23 |         return ptdesc_address(ptdesc);
-         |                ^~~~~~~~~~~~~~
->> arch/m68k/include/asm/mcf_pgalloc.h:17:33: warning: 'pagetable_alloc' is static but used in inline function 'pte_alloc_one_kernel' which is not static
-      17 |         struct ptdesc *ptdesc = pagetable_alloc((GFP_DMA | __GFP_ZERO) &
-         |                                 ^~~~~~~~~~~~~~~
->> arch/m68k/include/asm/mcf_pgalloc.h:10:24: warning: 'virt_to_ptdesc' is static but used in inline function 'pte_free_kernel' which is not static
-      10 |         pagetable_free(virt_to_ptdesc(pte));
-         |                        ^~~~~~~~~~~~~~
->> arch/m68k/include/asm/mcf_pgalloc.h:10:9: warning: 'pagetable_free' is static but used in inline function 'pte_free_kernel' which is not static
-      10 |         pagetable_free(virt_to_ptdesc(pte));
-         |         ^~~~~~~~~~~~~~
---
-   In file included from arch/m68k/mm/mcfmmu.c:21:
-   arch/m68k/include/asm/mcf_pgalloc.h: In function 'pgd_alloc':
->> arch/m68k/include/asm/mcf_pgalloc.h:82:60: error: 'GFP_NOWARN' undeclared (first use in this function); did you mean 'GFP_NOWAIT'?
-      82 |         struct ptdesc *ptdesc = pagetable_alloc((GFP_DMA | GFP_NOWARN) &
-         |                                                            ^~~~~~~~~~
-         |                                                            GFP_NOWAIT
-   arch/m68k/include/asm/mcf_pgalloc.h:82:60: note: each undeclared identifier is reported only once for each function it appears in
-   arch/m68k/mm/mcfmmu.c: At top level:
-   arch/m68k/mm/mcfmmu.c:36:13: warning: no previous prototype for 'paging_init' [-Wmissing-prototypes]
-      36 | void __init paging_init(void)
-         |             ^~~~~~~~~~~
-   arch/m68k/mm/mcfmmu.c: In function 'paging_init':
-   arch/m68k/mm/mcfmmu.c:41:37: warning: variable 'bootmem_end' set but not used [-Wunused-but-set-variable]
-      41 |         unsigned long next_pgtable, bootmem_end;
-         |                                     ^~~~~~~~~~~
-   arch/m68k/include/asm/mcf_pgalloc.h: At top level:
->> arch/m68k/include/asm/mcf_pgalloc.h:23:16: warning: 'ptdesc_address' is static but used in inline function 'pte_alloc_one_kernel' which is not static
-      23 |         return ptdesc_address(ptdesc);
-         |                ^~~~~~~~~~~~~~
->> arch/m68k/include/asm/mcf_pgalloc.h:17:33: warning: 'pagetable_alloc' is static but used in inline function 'pte_alloc_one_kernel' which is not static
-      17 |         struct ptdesc *ptdesc = pagetable_alloc((GFP_DMA | __GFP_ZERO) &
-         |                                 ^~~~~~~~~~~~~~~
->> arch/m68k/include/asm/mcf_pgalloc.h:10:24: warning: 'virt_to_ptdesc' is static but used in inline function 'pte_free_kernel' which is not static
-      10 |         pagetable_free(virt_to_ptdesc(pte));
-         |                        ^~~~~~~~~~~~~~
->> arch/m68k/include/asm/mcf_pgalloc.h:10:9: warning: 'pagetable_free' is static but used in inline function 'pte_free_kernel' which is not static
-      10 |         pagetable_free(virt_to_ptdesc(pte));
-         |         ^~~~~~~~~~~~~~
+On Thu, Jan 19, 2023 at 9:37=E2=80=AFPM Masahiro Yamada <masahiroy@kernel.o=
+rg> wrote:
+>
+> On Thu, Jan 19, 2023 at 9:12 PM Joel Stanley <joel@jms.id.au> wrote:
+> >
+> > On Thu, 19 Jan 2023 at 08:24, Masahiro Yamada <masahiroy@kernel.org> wr=
+ote:
+> > >
+> > > Commit e4412739472b ("Documentation: raise minimum supported version =
+of
+> > > binutils to 2.25") allows us to remove the checks for old binutils.
+> > >
+> > > There is no more user for ld-ifversion. Remove it as well.
+> >
+> > ppc kernels fail to link with 2.27 under some configurations:
+> >
+> >  https://github.com/linuxppc/issues/issues/388
+> >
+> > We may want to use ld-ifversion to exclude that version.
+>
+>
 
 
-vim +82 arch/m68k/include/asm/mcf_pgalloc.h
+Ping?
 
-     7	
-     8	extern inline void pte_free_kernel(struct mm_struct *mm, pte_t *pte)
-     9	{
-  > 10		pagetable_free(virt_to_ptdesc(pte));
-    11	}
-    12	
-    13	extern const char bad_pmd_string[];
-    14	
-    15	extern inline pte_t *pte_alloc_one_kernel(struct mm_struct *mm)
-    16	{
-  > 17		struct ptdesc *ptdesc = pagetable_alloc((GFP_DMA | __GFP_ZERO) &
-    18				~__GFP_HIGHMEM, 0);
-    19	
-    20		if (!ptdesc)
-    21			return NULL;
-    22	
-  > 23		return ptdesc_address(ptdesc);
-    24	}
-    25	
-    26	extern inline pmd_t *pmd_alloc_kernel(pgd_t *pgd, unsigned long address)
-    27	{
-    28		return (pmd_t *) pgd;
-    29	}
-    30	
-    31	#define pmd_populate(mm, pmd, pte) (pmd_val(*pmd) = (unsigned long)(pte))
-    32	
-    33	#define pmd_populate_kernel pmd_populate
-    34	
-    35	static inline void __pte_free_tlb(struct mmu_gather *tlb, pgtable_t pgtable,
-    36					  unsigned long address)
-    37	{
-    38		struct ptdesc *ptdesc = virt_to_ptdesc(pgtable);
-    39	
-    40		pagetable_pte_dtor(ptdesc);
-    41		pagetable_free(ptdesc);
-    42	}
-    43	
-    44	static inline pgtable_t pte_alloc_one(struct mm_struct *mm)
-    45	{
-    46		struct ptdesc *ptdesc = pagetable_alloc(GFP_DMA | __GFP_ZERO, 0);
-    47		pte_t *pte;
-    48	
-    49		if (!ptdesc)
-    50			return NULL;
-    51		if (!pagetable_pte_ctor(ptdesc)) {
-    52			pagetable_free(ptdesc);
-    53			return NULL;
-    54		}
-    55	
-    56		pte = ptdesc_address(ptdesc);
-    57		return pte;
-    58	}
-    59	
-    60	static inline void pte_free(struct mm_struct *mm, pgtable_t pgtable)
-    61	{
-    62		struct ptdesc *ptdesc = virt_to_ptdesc(pgtable);
-    63	
-    64		pagetable_pte_dtor(ptdesc);
-    65		pagetable_free(ptdesc);
-    66	}
-    67	
-    68	/*
-    69	 * In our implementation, each pgd entry contains 1 pmd that is never allocated
-    70	 * or freed.  pgd_present is always 1, so this should never be called. -NL
-    71	 */
-    72	#define pmd_free(mm, pmd) BUG()
-    73	
-    74	static inline void pgd_free(struct mm_struct *mm, pgd_t *pgd)
-    75	{
-    76		pagetable_free(virt_to_ptdesc(pgd));
-    77	}
-    78	
-    79	static inline pgd_t *pgd_alloc(struct mm_struct *mm)
-    80	{
-    81		pgd_t *new_pgd;
-  > 82		struct ptdesc *ptdesc = pagetable_alloc((GFP_DMA | GFP_NOWARN) &
-    83				~__GFP_HIGHMEM, 0);
-    84	
-    85		if (!ptdesc)
-    86			return NULL;
-    87		new_pgd = ptdesc_address(ptdesc);
-    88	
-    89		memcpy(new_pgd, swapper_pg_dir, PTRS_PER_PGD * sizeof(pgd_t));
-    90		memset(new_pgd, 0, PAGE_OFFSET >> PGDIR_SHIFT);
-    91		return new_pgd;
-    92	}
-    93	
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+
+
+>
+> For LLD, CONFIG option is directly checked.
+>
+>
+> masahiro@zoe:~/ref/linux(master)$ git grep  CONFIG_LLD_VERSION
+> Makefile:ifeq ($(call test-lt, $(CONFIG_LLD_VERSION), 130000),y)
+> arch/riscv/Makefile:ifeq ($(call test-lt, $(CONFIG_LLD_VERSION), 150000),=
+y)
+> arch/x86/Makefile:ifeq ($(call test-lt, $(CONFIG_LLD_VERSION), 130000),y)
+> scripts/Kbuild.include:# Usage: $(call test-lt, $(CONFIG_LLD_VERSION), 15=
+0000)
+>
+>
+>
+>
+>
+>
+>
+>
+>
+>
+>
+> > >
+> > > Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> > > ---
+> > >
+> > >  arch/powerpc/Makefile     | 22 +---------------------
+> > >  arch/powerpc/lib/Makefile |  2 +-
+> > >  scripts/Makefile.compiler |  4 ----
+> > >  3 files changed, 2 insertions(+), 26 deletions(-)
+> > >
+> > > diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+> > > index dc4cbf0a5ca9..3d265b16c0ae 100644
+> > > --- a/arch/powerpc/Makefile
+> > > +++ b/arch/powerpc/Makefile
+> > > @@ -42,18 +42,13 @@ machine-$(CONFIG_PPC64) +=3D 64
+> > >  machine-$(CONFIG_CPU_LITTLE_ENDIAN) +=3D le
+> > >  UTS_MACHINE :=3D $(subst $(space),,$(machine-y))
+> > >
+> > > -# XXX This needs to be before we override LD below
+> > > -ifdef CONFIG_PPC32
+> > > -KBUILD_LDFLAGS_MODULE +=3D arch/powerpc/lib/crtsavres.o
+> > > -else
+> > > -ifeq ($(call ld-ifversion, -ge, 22500, y),y)
+> > > +ifeq ($(CONFIG_PPC64)$(CONFIG_LD_IS_BFD),yy)
+> > >  # Have the linker provide sfpr if possible.
+> > >  # There is a corresponding test in arch/powerpc/lib/Makefile
+> > >  KBUILD_LDFLAGS_MODULE +=3D --save-restore-funcs
+> > >  else
+> > >  KBUILD_LDFLAGS_MODULE +=3D arch/powerpc/lib/crtsavres.o
+> > >  endif
+> > > -endif
+> > >
+> > >  ifdef CONFIG_CPU_LITTLE_ENDIAN
+> > >  KBUILD_CFLAGS  +=3D -mlittle-endian
+> > > @@ -389,8 +384,6 @@ vdso_prepare: prepare0
+> > >                 $(build)=3Darch/powerpc/kernel/vdso include/generated=
+/vdso64-offsets.h)
+> > >  endif
+> > >
+> > > -archprepare: checkbin
+> > > -
+> > >  archheaders:
+> > >         $(Q)$(MAKE) $(build)=3Darch/powerpc/kernel/syscalls all
+> > >
+> > > @@ -405,16 +398,3 @@ else
+> > >         $(eval KBUILD_CFLAGS +=3D -mstack-protector-guard-offset=3D$(=
+shell awk '{if ($$2 =3D=3D "TASK_CANARY") print $$3;}' include/generated/as=
+m-offsets.h))
+> > >  endif
+> > >  endif
+> > > -
+> > > -PHONY +=3D checkbin
+> > > -# Check toolchain versions:
+> > > -# - gcc-4.6 is the minimum kernel-wide version so nothing required.
+> > > -checkbin:
+> > > -       @if test "x${CONFIG_LD_IS_LLD}" !=3D "xy" -a \
+> > > -               "x$(call ld-ifversion, -le, 22400, y)" =3D "xy" ; the=
+n \
+> > > -               echo -n '*** binutils 2.24 miscompiles weak symbols '=
+ ; \
+> > > -               echo 'in some circumstances.' ; \
+> > > -               echo    '*** binutils 2.23 do not define the TOC symb=
+ol ' ; \
+> > > -               echo -n '*** Please use a different binutils version.=
+' ; \
+> > > -               false ; \
+> > > -       fi
+> > > diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
+> > > index 4de71cbf6e8e..c53618c34b70 100644
+> > > --- a/arch/powerpc/lib/Makefile
+> > > +++ b/arch/powerpc/lib/Makefile
+> > > @@ -42,7 +42,7 @@ obj-$(CONFIG_FUNCTION_ERROR_INJECTION)        +=3D =
+error-inject.o
+> > >  # 64-bit linker creates .sfpr on demand for final link (vmlinux),
+> > >  # so it is only needed for modules, and only for older linkers which
+> > >  # do not support --save-restore-funcs
+> > > -ifeq ($(call ld-ifversion, -lt, 22500, y),y)
+> > > +ifndef CONFIG_LD_IS_BFD
+> > >  extra-$(CONFIG_PPC64)  +=3D crtsavres.o
+> > >  endif
+> > >
+> > > diff --git a/scripts/Makefile.compiler b/scripts/Makefile.compiler
+> > > index 3d8adfd34af1..ad07a4efc253 100644
+> > > --- a/scripts/Makefile.compiler
+> > > +++ b/scripts/Makefile.compiler
+> > > @@ -72,7 +72,3 @@ clang-min-version =3D $(call test-ge, $(CONFIG_CLAN=
+G_VERSION), $1)
+> > >  # ld-option
+> > >  # Usage: KBUILD_LDFLAGS +=3D $(call ld-option, -X, -Y)
+> > >  ld-option =3D $(call try-run, $(LD) $(KBUILD_LDFLAGS) $(1) -v,$(1),$=
+(2),$(3))
+> > > -
+> > > -# ld-ifversion
+> > > -# Usage:  $(call ld-ifversion, -ge, 22252, y)
+> > > -ld-ifversion =3D $(shell [ $(CONFIG_LD_VERSION)0 $(1) $(2)0 ] && ech=
+o $(3) || echo $(4))
+> > > --
+> > > 2.34.1
+> > >
+>
+>
+>
+> --
+> Best Regards
+> Masahiro Yamada
+
+
+
+--=20
+Best Regards
+Masahiro Yamada
