@@ -1,61 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D26673CF89
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Jun 2023 10:52:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4A6473D207
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Jun 2023 18:16:09 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Wstfenfq;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qpl8n3rlWz3btj
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Jun 2023 18:52:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qpx134dH8z3bnk
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jun 2023 02:16:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.128.173; helo=mail-yw1-f173.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Wstfenfq;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qpl8B20wSz2xq5
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Jun 2023 18:51:37 +1000 (AEST)
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-56fff21c2ebso23288277b3.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Jun 2023 01:51:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687683093; x=1690275093;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=e/Aydrd9oAz9wF8VtbGA6a+XUUai3n6kkWsRZbAgo9o=;
-        b=OTJiWMLZwnYapM+1dCoZ3uhNVhJWm3rsxY7LSTNqPZhxVJj+SI/+bsqqIAWRBiZSZl
-         S3jc+fd3nvqa7trQGQWTwSCfHho7BoXoPuzoBzmEYSfVaUTCwVPUHTaHCueZqMe1HHM8
-         cixEJyV/d3PoQvKiBwb+DNX+SZugZ85iM0fTg/3xwUFJmebF8oKrlpcjjN87kEUUtRXx
-         pJuhTzlvRRuEaYrjauhyTTFLZCuSvQmoJdhiCym6dBXqQQz8HZuY91cRXov/5SQImvKP
-         A3O9YEkKMpNOUZKYjSuS9NYv3kpK5e42ekquKbcgtwv48Vershe8MGaywayPF5KtU3PP
-         eQSQ==
-X-Gm-Message-State: AC+VfDz7vr8XinX8Bta0BAfT3xrf6ruSiYZfw8HJ3UlL9tC5hmJey8uM
-	muXmv9ywjbINdNYgMZMV2Pw9NyTCCdYmWw==
-X-Google-Smtp-Source: ACHHUZ5TUri7wBnLhphkf0LLEFAUkQhnkxA49xZ+J7RhClke55qNRSy6cny/TJzDMuMYOg1BfrjKcA==
-X-Received: by 2002:a0d:f2c7:0:b0:570:2831:3ccd with SMTP id b190-20020a0df2c7000000b0057028313ccdmr26101195ywf.47.1687683092943;
-        Sun, 25 Jun 2023 01:51:32 -0700 (PDT)
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com. [209.85.219.177])
-        by smtp.gmail.com with ESMTPSA id s4-20020a0dd004000000b0057399b3bd26sm731171ywd.33.2023.06.25.01.51.30
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 25 Jun 2023 01:51:31 -0700 (PDT)
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-bd6d9d7da35so2325346276.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Jun 2023 01:51:30 -0700 (PDT)
-X-Received: by 2002:a25:cc02:0:b0:c13:f86d:3324 with SMTP id
- l2-20020a25cc02000000b00c13f86d3324mr3724376ybf.14.1687683090555; Sun, 25 Jun
- 2023 01:51:30 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qpx073z5jz2ykB
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Jun 2023 02:15:19 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id F114260BEE;
+	Sun, 25 Jun 2023 16:15:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E463C433C8;
+	Sun, 25 Jun 2023 16:15:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1687709714;
+	bh=4/ubcrsJvqhBH/vtuVerDOnT8cLh0Z8x9NdrY0vOnlQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WstfenfqrQraRy6ufCoglL05809oMSEcRfUfndB4rQcusE2zI6TcMHkeBnayI84XA
+	 LeozoS1GxcgX6ngSkoBmbS3qtRRxpB4XJfcJ0UBAlF7QFxeCg91BLDI10maMfpngYE
+	 GUM0fRwCgV10clhNpI2PaQ4gob7CHex19G8gRldqPBuUpM78fGkBpM0UXT8ixelGSU
+	 z1J5NhvB3QyMnCUu0HFkwD1i+NEXK0yL9AmrFlsQbZjM/QMXh/KkJhf0b8d0tCsjR9
+	 O2Kt+FWy9X6r90AuucdbQ5DKiCYwwvRks6UN7t6Eai/BXzXsbKQsTn9de+dLQqBnA/
+	 HFT91PEpPBRoA==
+Date: Sun, 25 Jun 2023 19:14:17 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Andy Lutomirski <luto@kernel.org>
+Subject: Re: [PATCH v2 02/12] mm: introduce execmem_text_alloc() and
+ jit_text_alloc()
+Message-ID: <20230625161417.GK52412@kernel.org>
+References: <20230616085038.4121892-1-rppt@kernel.org>
+ <20230616085038.4121892-3-rppt@kernel.org>
+ <f9a7eebe-d36e-4587-b99d-35d4edefdd14@app.fastmail.com>
+ <20230618080027.GA52412@kernel.org>
+ <a17c65c6-863f-4026-9c6f-a04b659e9ab4@app.fastmail.com>
 MIME-Version: 1.0
-References: <20230622205745.79707-1-vishal.moola@gmail.com> <20230622205745.79707-25-vishal.moola@gmail.com>
-In-Reply-To: <20230622205745.79707-25-vishal.moola@gmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Sun, 25 Jun 2023 10:51:19 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdU2ZM1oJ7=Br6nezLpxjDQo_07N3T-adOupDm0Jntp=Qg@mail.gmail.com>
-Message-ID: <CAMuHMdU2ZM1oJ7=Br6nezLpxjDQo_07N3T-adOupDm0Jntp=Qg@mail.gmail.com>
-Subject: Re: [PATCH v5 24/33] m68k: Convert various functions to use ptdescs
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a17c65c6-863f-4026-9c6f-a04b659e9ab4@app.fastmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,61 +66,149 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Mike Rapoport <rppt@kernel.org>, kvm@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-sh@vger.kernel.org, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-csky@vger.kernel.org, linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, loongarch@lists.linux.dev, sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+Cc: Mark Rutland <mark.rutland@arm.com>, the arch/x86 maintainers <x86@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Nadav Amit <nadav.amit@gmail.com>, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, "Russell King \(Oracle\)" <linux@armlinux.org.uk>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linux-trace-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>, Will Deacon <will@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Puranjay Mohan <puranjay12@gmail.com>, linux-mm@kvack.org, netdev@vger.kernel.org, Kent Overstreet <kent.overstreet@linux.dev>, Linux Kernel Mailing
+  List <linux-kernel@vger.kernel.org>, Dinh Nguyen <dinguyen@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, linux-modules@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Vishal,
+On Mon, Jun 19, 2023 at 10:09:02AM -0700, Andy Lutomirski wrote:
+> 
+> On Sun, Jun 18, 2023, at 1:00 AM, Mike Rapoport wrote:
+> > On Sat, Jun 17, 2023 at 01:38:29PM -0700, Andy Lutomirski wrote:
+> >> On Fri, Jun 16, 2023, at 1:50 AM, Mike Rapoport wrote:
+> >> > From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+> >> >
+> >> > module_alloc() is used everywhere as a mean to allocate memory for code.
+> >> >
+> >> > Beside being semantically wrong, this unnecessarily ties all subsystems
+> >> > that need to allocate code, such as ftrace, kprobes and BPF to modules
+> >> > and puts the burden of code allocation to the modules code.
+> >> >
+> >> > Several architectures override module_alloc() because of various
+> >> > constraints where the executable memory can be located and this causes
+> >> > additional obstacles for improvements of code allocation.
+> >> >
+> >> > Start splitting code allocation from modules by introducing
+> >> > execmem_text_alloc(), execmem_free(), jit_text_alloc(), jit_free() APIs.
+> >> >
+> >> > Initially, execmem_text_alloc() and jit_text_alloc() are wrappers for
+> >> > module_alloc() and execmem_free() and jit_free() are replacements of
+> >> > module_memfree() to allow updating all call sites to use the new APIs.
+> >> >
+> >> > The intention semantics for new allocation APIs:
+> >> >
+> >> > * execmem_text_alloc() should be used to allocate memory that must reside
+> >> >   close to the kernel image, like loadable kernel modules and generated
+> >> >   code that is restricted by relative addressing.
+> >> >
+> >> > * jit_text_alloc() should be used to allocate memory for generated code
+> >> >   when there are no restrictions for the code placement. For
+> >> >   architectures that require that any code is within certain distance
+> >> >   from the kernel image, jit_text_alloc() will be essentially aliased to
+> >> >   execmem_text_alloc().
+> >> >
+> >> 
+> >> Is there anything in this series to help users do the appropriate
+> >> synchronization when the actually populate the allocated memory with
+> >> code?  See here, for example:
+> >
+> > This series only factors out the executable allocations from modules and
+> > puts them in a central place.
+> > Anything else would go on top after this lands.
+> 
+> Hmm.
+> 
+> On the one hand, there's nothing wrong with factoring out common code. On
+> the other hand, this is probably the right time to at least start
+> thinking about synchronization, at least to the extent that it might make
+> us want to change this API.  (I'm not at all saying that this series
+> should require changes -- I'm just saying that this is a good time to
+> think about how this should work.)
+> 
+> The current APIs, *and* the proposed jit_text_alloc() API, don't actually
+> look like the one think in the Linux ecosystem that actually
+> intelligently and efficiently maps new text into an address space:
+> mmap().
+> 
+> On x86, you can mmap() an existing file full of executable code PROT_EXEC
+> and jump to it with minimal synchronization (just the standard implicit
+> ordering in the kernel that populates the pages before setting up the
+> PTEs and whatever user synchronization is needed to avoid jumping into
+> the mapping before mmap() finishes).  It works across CPUs, and the only
+> possible way userspace can screw it up (for a read-only mapping of
+> read-only text, anyway) is to jump to the mapping too early, in which
+> case userspace gets a page fault.  Incoherence is impossible, and no one
+> needs to "serialize" (in the SDM sense).
+> 
+> I think the same sequence (from userspace's perspective) works on other
+> architectures, too, although I think more cache management is needed on
+> the kernel's end.  As far as I know, no Linux SMP architecture needs an
+> IPI to map executable text into usermode, but I could easily be wrong.
+> (IIRC RISC-V has very developer-unfriendly icache management, but I don't
+> remember the details.)
+> 
+> Of course, using ptrace or any other FOLL_FORCE to modify text on x86 is
+> rather fraught, and I bet many things do it wrong when userspace is
+> multithreaded.  But not in production because it's mostly not used in
+> production.)
+> 
+> But jit_text_alloc() can't do this, because the order of operations
+> doesn't match.  With jit_text_alloc(), the executable mapping shows up
+> before the text is populated, so there is no atomic change from not-there
+> to populated-and-executable.  Which means that there is an opportunity
+> for CPUs, speculatively or otherwise, to start filling various caches
+> with intermediate states of the text, which means that various
+> architectures (even x86!) may need serialization.
+> 
+> For eBPF- and module- like use cases, where JITting/code gen is quite
+> coarse-grained, perhaps something vaguely like:
+> 
+> jit_text_alloc() -> returns a handle and an executable virtual address,
+> but does *not* map it there
+> jit_text_write() -> write to that handle
+> jit_text_map() -> map it and synchronize if needed (no sync needed on
+> x86, I think)
+> 
+> could be more efficient and/or safer.
+> 
+> (Modules could use this too.  Getting alternatives right might take some
+> fiddling, because off the top of my head, this doesn't match how it works
+> now.)
+> 
+> To make alternatives easier, this could work, maybe (haven't fully
+> thought it through):
+> 
+> jit_text_alloc()
+> jit_text_map_rw_inplace() -> map at the target address, but RW, !X
+> 
+> write the text and apply alternatives
+> 
+> jit_text_finalize() -> change from RW to RX *and synchronize*
+> 
+> jit_text_finalize() would either need to wait for RCU (possibly extra
+> heavy weight RCU to get "serialization") or send an IPI.
 
-On Thu, Jun 22, 2023 at 10:58=E2=80=AFPM Vishal Moola (Oracle)
-<vishal.moola@gmail.com> wrote:
-> As part of the conversions to replace pgtable constructor/destructors wit=
-h
-> ptdesc equivalents, convert various page table functions to use ptdescs.
->
-> Some of the functions use the *get*page*() helper functions. Convert
-> these to use pagetable_alloc() and ptdesc_address() instead to help
-> standardize page tables further.
->
-> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+This essentially how modules work now. The memory is allocated RW, written
+and updated with alternatives and then made ROX in the end with set_memory
+APIs.
 
-Thanks for your patch!
+The issue with not having the memory mapped X when it's written is that we
+cannot use large pages to map it. One of the goals is to have executable
+memory mapped with large pages and make code allocator able to divide that
+page among several callers.
 
-> --- a/arch/m68k/include/asm/mcf_pgalloc.h
-> +++ b/arch/m68k/include/asm/mcf_pgalloc.h
+So the idea was that jit_text_alloc() will have a cache of large pages
+mapped ROX, will allocate memory from those caches and there will be
+jit_update() that uses text poking for writing to that memory.
 
->  static inline pgd_t *pgd_alloc(struct mm_struct *mm)
->  {
->         pgd_t *new_pgd;
-> +       struct ptdesc *ptdesc =3D pagetable_alloc((GFP_DMA | GFP_NOWARN) =
-&
+Upon allocation of a large page to increase the cache, that large page will
+be "invalidated" by filling it with breakpoint instructions (e.g int3 on
+x86)
 
-0-day already told you for v3 that GFP_NOWARN does not exist.
-Please try cross-compiling your changes:
-https://mirrors.edge.kernel.org/pub/tools/crosstool/
+To improve the performance of this process, we can write to !X copy and
+then text_poke it to the actual address in one go. This will require some
+changes to get the alternatives right.
 
-> +                       ~__GFP_HIGHMEM, 0);
->
-> -       new_pgd =3D (pgd_t *)__get_free_page(GFP_DMA | __GFP_NOWARN);
-> -       if (!new_pgd)
-> +       if (!ptdesc)
->                 return NULL;
-> +       new_pgd =3D ptdesc_address(ptdesc);
-> +
->         memcpy(new_pgd, swapper_pg_dir, PTRS_PER_PGD * sizeof(pgd_t));
->         memset(new_pgd, 0, PAGE_OFFSET >> PGDIR_SHIFT);
->         return new_pgd;
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+-- 
+Sincerely yours,
+Mike.
