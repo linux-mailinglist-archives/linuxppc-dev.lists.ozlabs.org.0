@@ -2,121 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 164E173CEC8
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Jun 2023 08:56:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C12973CF21
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Jun 2023 09:59:43 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=nhMDxYGR;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=AOADXr0b;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QphZw1zv9z3bnt
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Jun 2023 16:56:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qpk0F2J45z3bmb
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Jun 2023 17:59:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=nhMDxYGR;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=AOADXr0b;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f400:fe0c::608; helo=eur04-db3-obe.outbound.protection.outlook.com; envelope-from=chancel.liu@nxp.com; receiver=lists.ozlabs.org)
-Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on0608.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe0c::608])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QphYv020yz2yKy
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Jun 2023 16:55:13 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AL8z2XiS4Y41oj5yU4463NHH4dOuFNEY8l3pcv9dTnAX3qaV90To/IR5Y9/gMUcv7ps2+eMp/rKwk9QOii+f6r8m9Wfwg4BBp84M6B2sAYTB8klb/Kk1QDHovg7c/ZC7wWbSKV2Mi5PWw5nu/R6vYcWdhMwZoYDe7acEKoisGkkHizZARlOJlPJc3uIYRGSh4gR08ipXXs2i0DamEzsl1r34u22/mCUD1/tVgWprEOoD8411mjk2gEIv/DBazH/lDrNLsYOBcH/n/etkNn2cTjoc3OOShsV7KiavFFzJ8c4dVkbPHnM3yCwT1q4YruCg/5zcLIoOU5ct+wjivvbYeA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VfF5dXzltExNR893CrnqE0MoDFRyXPnWtG/seWW6G/0=;
- b=gGRPrJdzpuqse0op1JDJjxbx0A6dDgNJq6GyCmcGiHCCd9a1+FoE6g18HDRwLghzkWizzibBm/MPospJvYxNeHKUhd6Us8+M4eSMLIgzmmS5DnSSW2gMnI98jgmauzAFZB3JFKWcYmlwiqX2c1Iez6Nr3kaZFR8D0b94jeYswNWKRQO3tojjTGPRnVuLyOZr9Ch80edDHuE7JhNtR6Tjfhw3uzRSXlX8UBOmpReAABMXaEUh5hLsLtz+mlXgYfSNFu/JyoOOJLOPYswwPbbg1XxVx64Izjxlp2o9Rd8Yu0xrUV/gxTmxvJHGMPqTS/TvtISlD/CF7C0GidO7UgKswg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VfF5dXzltExNR893CrnqE0MoDFRyXPnWtG/seWW6G/0=;
- b=nhMDxYGRv7nXue3mdf5bnsdQ/HNwuZzjPzEeHnCvDyScHHMLqxphf+m+bwfM4+74trKh3MZN0sYnpUKJw3tBx9gl65qcJAZ/lea3QBHZzb8ZVPt65vWL/6KSboez1tuABbc1AZf5PPflXsbOp8UI0tsdwwFc4S2BJNdL2Bcu57g=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DB9PR04MB9498.eurprd04.prod.outlook.com (2603:10a6:10:360::21)
- by DU2PR04MB9098.eurprd04.prod.outlook.com (2603:10a6:10:2f1::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.24; Sun, 25 Jun
- 2023 06:54:49 +0000
-Received: from DB9PR04MB9498.eurprd04.prod.outlook.com
- ([fe80::7552:a10c:7f4b:96b7]) by DB9PR04MB9498.eurprd04.prod.outlook.com
- ([fe80::7552:a10c:7f4b:96b7%6]) with mapi id 15.20.6521.026; Sun, 25 Jun 2023
- 06:54:49 +0000
-From: Chancel Liu <chancel.liu@nxp.com>
-To: shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com,
-	festevam@gmail.com,
-	nicoleotsuka@gmail.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	alsa-devel@alsa-project.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] ASoC: imx-pcm-rpmsg: Set PCM hardware parameters separately
-Date: Sun, 25 Jun 2023 14:54:12 +0800
-Message-Id: <20230625065412.651870-1-chancel.liu@nxp.com>
-X-Mailer: git-send-email 2.25.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2P153CA0039.APCP153.PROD.OUTLOOK.COM (2603:1096:4:c6::8)
- To DB9PR04MB9498.eurprd04.prod.outlook.com (2603:10a6:10:360::21)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QpjzH4XVYz2ys4
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Jun 2023 17:58:45 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1687679932; x=1719215932;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=eTIwvrfKylgiLU30c+QKGL2VdYd5OeJbT6ROhsR0yJI=;
+  b=AOADXr0boWkX4diCS7znwOLURZDykSPOddVClOaz799XhncqzwDOWSAa
+   MQDCc4Ed4fzOJqw/uqCpXgZ1CScbxp0Sip0eEXVqfTRnTNG3oIBhg3XJg
+   h8J1HY7hFo8YhVewfI5OGs1awMH5P/dvzPeghHDscwM8SzXXQy3+aQytq
+   /pAZuMlrVyALxXnuavjQ7z47v69UwLr83nG27+64tKZpTMNl7O8oYx8aJ
+   B/VftQI0QDaoW/xNmYHACBMxERHKfX+rwyj2Yyb1+dIpXqp5H/JYyTDOP
+   +ICh7+WQRGdr2tasx5yU61KFMvRsfShJbK0z+c+ur+ikTIve3cihDNhVn
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10751"; a="447419941"
+X-IronPort-AV: E=Sophos;i="6.01,156,1684825200"; 
+   d="scan'208";a="447419941"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2023 00:58:41 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10751"; a="693123135"
+X-IronPort-AV: E=Sophos;i="6.01,156,1684825200"; 
+   d="scan'208";a="693123135"
+Received: from lkp-server01.sh.intel.com (HELO 783282924a45) ([10.239.97.150])
+  by orsmga006.jf.intel.com with ESMTP; 25 Jun 2023 00:58:34 -0700
+Received: from kbuild by 783282924a45 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1qDKdm-0009sJ-0Z;
+	Sun, 25 Jun 2023 07:58:34 +0000
+Date: Sun, 25 Jun 2023 15:57:56 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH v5 24/33] m68k: Convert various functions to use ptdescs
+Message-ID: <202306251513.WVzxgGxu-lkp@intel.com>
+References: <20230622205745.79707-25-vishal.moola@gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB9498:EE_|DU2PR04MB9098:EE_
-X-MS-Office365-Filtering-Correlation-Id: c4a73961-b805-4c30-2417-08db754911a2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	ztBmrqbJ3wxFoLNjh25yGR62vtOKfpm5A/wkcaJciAi7yr2PkCh3NeewIp49UjOCQ+Y/tDEQMPiiojAWp+GzExFLH1mpwTb9XJvluEXUtyi9b8Du2ZuoGITh5xNAyqOlgQdplQhaEJWeDFGXcYVaNaRBwKSvENp5915DDolKwXeR+Mtz4w5wVC6qO6kzDT6xxuvvUrRpnUhptDjelQdNkSCAWbpXFy2E5lFuIpXZZ7IBeJ+K6qg7lP6mJzyOhdLA6OYtKGEOEDNF46kDfCzOubBxp09l3b8HwWMfj9+1HANejadDXdy21i/oZoqwmnIIRRz/3ycS3ENliBXlEluFYO+WIzTbojGv6RbD6R5B5PosDPut6fj+MdxVVXbj3eAwMfSqKAj7xT8FEdE0YKSkTyYetpgVHLO0FtGpY14WmSybHDCI6QWRfaTjYgMNsGl+LR1SGUsQd8qBB4RqnYiJetHIK4nyXWJY8K3L/bPtEfj4RUUU4STFS6eMWsEg65dnbqkIZRmF/0RmyKdIStgwhUmXuzSduFmdCM3Ux3gvlFVrteLeAid8Pur72WvOQXCjTQ9gP3NymtycXKEaKNbNbM/GMeOq0A39k70Mh/fiFLTs86oy8CpxhQoTGkw9wcWF
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9498.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(136003)(39850400004)(376002)(366004)(346002)(451199021)(6486002)(478600001)(52116002)(6666004)(2616005)(83380400001)(26005)(6512007)(1076003)(6506007)(186003)(2906002)(5660300002)(44832011)(7416002)(36756003)(921005)(38350700002)(38100700002)(4326008)(66946007)(316002)(86362001)(8936002)(8676002)(41300700001)(66556008)(66476007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?knnntIx1XMkGv1C9C0wohaF4HbD03G/lpxChH/UrioW6Fmg4NkDA6jDIona8?=
- =?us-ascii?Q?1c5gjWPS0A/MrNe54kclbbxIus1+2ZjfwEgM5JmefzyYXUnmEiBx8s2SiKKe?=
- =?us-ascii?Q?cfhjzSvqJ3gURB5FT+S1gDTVlWSy+qMt4Lo8mMSniD49fRpdeSQq0Em847vy?=
- =?us-ascii?Q?fZtPfnQziqelvSOcgdh4dvH6tWvT72T26sWUwNp0VqNNJPftPasBzAbFTmRZ?=
- =?us-ascii?Q?kVzgMCOJzLZI5Dcn+LTNdbp0NWRCjxziWQJ6MUkZWG1uU5ASnJHlO/XHIk47?=
- =?us-ascii?Q?kACKJ5FccCO00MP9tVXR4lACeBeFNWdb+kgitznaHK5eQT83sTto/YxR+UUi?=
- =?us-ascii?Q?oIUokQ2SwC0NGmfRxcoeFfTN2s7H6QGLUdAnFn3K2cTh49k2JCuKU3o/MS05?=
- =?us-ascii?Q?+RBC2hBnripM+2jMXl9jhUym6YuicjGYv3LBfVlVXmiM+wg5eyQnDIK6XeFB?=
- =?us-ascii?Q?Sbh1gpn/9jaGHRyXwSi2ISoAtjcfffgOrSDYmXB+f6lLjLc+PVRlW/QWeLLF?=
- =?us-ascii?Q?R9MzchPkWO29DvUwxyMMsODhem6VbKl0FOhZMePiP60uyFhBFoimR0jtKsHp?=
- =?us-ascii?Q?8hWv+allyUzpZMA7b9ydwiv2pCCGxPDMXQyIPNwP5aTudlSgRS/03j6CEC2b?=
- =?us-ascii?Q?QnzS/0L+UtxwLF4ax2gN7KLzI7Hd+D/gtYoVTb1Ilj7vqYsLztoKxpUGmuQw?=
- =?us-ascii?Q?cjsiYtM8x+AoLqagGeWB5EK39a5Ss52nPm2JbDr1x7iuqmu0VkehDFWQlg7P?=
- =?us-ascii?Q?n/pOM0FLNginGuX6ZvgasBQvXqseJBEoyOSEgxnhYPBWthQEAS/dbPk5KaOY?=
- =?us-ascii?Q?xSRov7UhZXTlYNgPt/75ztaNRU6dLtylpuDhZhyf8C3dFQegq1nMpxYcLU/o?=
- =?us-ascii?Q?+byReKrNKMW85wGwEcc8YHqwyZfU0UpRF0EJel4YKEw5DFfx+LTs9oFj3ltt?=
- =?us-ascii?Q?rHZ5M61DT2iUpgZoe3yNk+TFUaPS5Wn4r5uR+n3/UxcaMPnJ6r4h1XRL+my/?=
- =?us-ascii?Q?mYLbdz3I4tf1EU6Mbzyhps4q/YnftukVEeaAkjoN2XDa/cdRBLTKNKPUkwov?=
- =?us-ascii?Q?bq3u8FS/OFOQ7lhpDhEE8sEZIRK2O/ILL5tjM17bqGT813RwT4BMJWBBk9Zl?=
- =?us-ascii?Q?yK3plreNPwaTIGt44oD1lbBd1NRninmvwKo1iBVTPzCFzu1yKfjapfxmpt3Z?=
- =?us-ascii?Q?3NxXmtWOnOjMDtf822Ro0p56W1zjIVYZ7LpKh9Z1UzH/SjmbatacEijuNC0d?=
- =?us-ascii?Q?RfcqjT7/nQfmSPM4ahNPrW8Q6Yzqu28KVUooaTagYUBRuVpgcbBysPCvCiaj?=
- =?us-ascii?Q?ZihO6/8Yhrvr5eHkYh5xFmw4iMinXctsrluHlx7GRiOyd1v1JLRjd8Uov4e7?=
- =?us-ascii?Q?ETsq0Uv/5LfU4jET0+ZrJQ+HLAcRAIixtLa0hKyEfedY+zLVbmkYtAZpM/k6?=
- =?us-ascii?Q?nrvpsCv0k4DMSKQzYvXtWT+Og15yd4q1pa390q1j0UdIu8RLfWNq+e2qIhbi?=
- =?us-ascii?Q?yJzPpy9fGP7RZNzVpyYrmFBVjTge9ZcYfsyJ/2DRSiY/q3pW2Xrv+1OQ9Zbq?=
- =?us-ascii?Q?jkSOb0G2addhKF+bcg9Sh8VWtzZkWpyF6ZpCYM5Z?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c4a73961-b805-4c30-2417-08db754911a2
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9498.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2023 06:54:49.3568
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: B9qZr2cqdubM7WJ1ptk5TBhRLarMg0E/ywh+jotgUPhyfpb8ibj7mvLSiKfbBEEIGJhH9PawJs1bN1RRnD3+Tw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB9098
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230622205745.79707-25-vishal.moola@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -128,57 +72,177 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Chancel Liu <chancel.liu@nxp.com>
+Cc: kvm@vger.kernel.org, linux-sh@vger.kernel.org, linux-openrisc@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org, Hugh Dickins <hughd@google.com>, linux-csky@vger.kernel.org, Geert Uytterhoeven <geert@linux-m68k.org>, xen-devel@lists.xenproject.org, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, oe-kbuild-all@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Linux Memory Management List <linux-mm@kvack.org>, linux-mips@vger.kernel.org, "Vishal Moola \(Oracle\)" <vishal.moola@gmail.com>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Different PCM devices may have different PCM hardware parameters. It
-requires PCM hardware parameters set separately if there is more than
-one rpmsg sound card.
+Hi Vishal,
 
-Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
----
- sound/soc/fsl/imx-pcm-rpmsg.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+kernel test robot noticed the following build errors:
 
-diff --git a/sound/soc/fsl/imx-pcm-rpmsg.c b/sound/soc/fsl/imx-pcm-rpmsg.c
-index 765dad607bf6..d63782b8bdef 100644
---- a/sound/soc/fsl/imx-pcm-rpmsg.c
-+++ b/sound/soc/fsl/imx-pcm-rpmsg.c
-@@ -228,6 +228,10 @@ static int imx_rpmsg_pcm_open(struct snd_soc_component *component,
- 			      struct snd_pcm_substream *substream)
- {
- 	struct rpmsg_info *info = dev_get_drvdata(component->dev);
-+	struct snd_soc_pcm_runtime *rtd = asoc_substream_to_rtd(substream);
-+	struct snd_soc_dai *cpu_dai = asoc_rtd_to_cpu(rtd, 0);
-+	struct fsl_rpmsg *rpmsg = dev_get_drvdata(cpu_dai->dev);
-+	struct snd_pcm_hardware pcm_hardware;
- 	struct rpmsg_msg *msg;
- 	int ret = 0;
- 	int cmd;
-@@ -255,10 +259,11 @@ static int imx_rpmsg_pcm_open(struct snd_soc_component *component,
- 
- 	info->send_message(msg, info);
- 
--	imx_rpmsg_pcm_hardware.period_bytes_max =
--			imx_rpmsg_pcm_hardware.buffer_bytes_max / 2;
-+	pcm_hardware = imx_rpmsg_pcm_hardware;
-+	pcm_hardware.buffer_bytes_max = rpmsg->buffer_size;
-+	pcm_hardware.period_bytes_max = pcm_hardware.buffer_bytes_max / 2;
- 
--	snd_soc_set_runtime_hwparams(substream, &imx_rpmsg_pcm_hardware);
-+	snd_soc_set_runtime_hwparams(substream, &pcm_hardware);
- 
- 	ret = snd_pcm_hw_constraint_integer(substream->runtime,
- 					    SNDRV_PCM_HW_PARAM_PERIODS);
-@@ -597,7 +602,6 @@ static int imx_rpmsg_pcm_new(struct snd_soc_component *component,
- 	if (ret)
- 		return ret;
- 
--	imx_rpmsg_pcm_hardware.buffer_bytes_max = rpmsg->buffer_size;
- 	return snd_pcm_set_fixed_buffer_all(pcm, SNDRV_DMA_TYPE_DEV_WC,
- 					    pcm->card->dev, rpmsg->buffer_size);
- }
+[auto build test ERROR on next-20230622]
+[cannot apply to akpm-mm/mm-everything powerpc/next powerpc/fixes s390/features geert-m68k/for-next geert-m68k/for-linus linus/master v6.4-rc7 v6.4-rc6 v6.4-rc5 v6.4-rc7]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Vishal-Moola-Oracle/mm-Add-PAGE_TYPE_OP-folio-functions/20230623-050011
+base:   next-20230622
+patch link:    https://lore.kernel.org/r/20230622205745.79707-25-vishal.moola%40gmail.com
+patch subject: [PATCH v5 24/33] m68k: Convert various functions to use ptdescs
+config: m68k-randconfig-s051-20230625 (https://download.01.org/0day-ci/archive/20230625/202306251513.WVzxgGxu-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 12.3.0
+reproduce: (https://download.01.org/0day-ci/archive/20230625/202306251513.WVzxgGxu-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202306251513.WVzxgGxu-lkp@intel.com/
+
+All error/warnings (new ones prefixed by >>):
+
+   In file included from arch/m68k/include/asm/pgalloc.h:12,
+                    from kernel/fork.c:103:
+   arch/m68k/include/asm/mcf_pgalloc.h: In function 'pgd_alloc':
+>> arch/m68k/include/asm/mcf_pgalloc.h:82:60: error: 'GFP_NOWARN' undeclared (first use in this function); did you mean 'GFP_NOWAIT'?
+      82 |         struct ptdesc *ptdesc = pagetable_alloc((GFP_DMA | GFP_NOWARN) &
+         |                                                            ^~~~~~~~~~
+         |                                                            GFP_NOWAIT
+   arch/m68k/include/asm/mcf_pgalloc.h:82:60: note: each undeclared identifier is reported only once for each function it appears in
+   arch/m68k/include/asm/mcf_pgalloc.h: At top level:
+>> arch/m68k/include/asm/mcf_pgalloc.h:23:16: warning: 'ptdesc_address' is static but used in inline function 'pte_alloc_one_kernel' which is not static
+      23 |         return ptdesc_address(ptdesc);
+         |                ^~~~~~~~~~~~~~
+>> arch/m68k/include/asm/mcf_pgalloc.h:17:33: warning: 'pagetable_alloc' is static but used in inline function 'pte_alloc_one_kernel' which is not static
+      17 |         struct ptdesc *ptdesc = pagetable_alloc((GFP_DMA | __GFP_ZERO) &
+         |                                 ^~~~~~~~~~~~~~~
+>> arch/m68k/include/asm/mcf_pgalloc.h:10:24: warning: 'virt_to_ptdesc' is static but used in inline function 'pte_free_kernel' which is not static
+      10 |         pagetable_free(virt_to_ptdesc(pte));
+         |                        ^~~~~~~~~~~~~~
+>> arch/m68k/include/asm/mcf_pgalloc.h:10:9: warning: 'pagetable_free' is static but used in inline function 'pte_free_kernel' which is not static
+      10 |         pagetable_free(virt_to_ptdesc(pte));
+         |         ^~~~~~~~~~~~~~
+--
+   In file included from arch/m68k/mm/mcfmmu.c:21:
+   arch/m68k/include/asm/mcf_pgalloc.h: In function 'pgd_alloc':
+>> arch/m68k/include/asm/mcf_pgalloc.h:82:60: error: 'GFP_NOWARN' undeclared (first use in this function); did you mean 'GFP_NOWAIT'?
+      82 |         struct ptdesc *ptdesc = pagetable_alloc((GFP_DMA | GFP_NOWARN) &
+         |                                                            ^~~~~~~~~~
+         |                                                            GFP_NOWAIT
+   arch/m68k/include/asm/mcf_pgalloc.h:82:60: note: each undeclared identifier is reported only once for each function it appears in
+   arch/m68k/mm/mcfmmu.c: At top level:
+   arch/m68k/mm/mcfmmu.c:36:13: warning: no previous prototype for 'paging_init' [-Wmissing-prototypes]
+      36 | void __init paging_init(void)
+         |             ^~~~~~~~~~~
+   arch/m68k/mm/mcfmmu.c: In function 'paging_init':
+   arch/m68k/mm/mcfmmu.c:41:37: warning: variable 'bootmem_end' set but not used [-Wunused-but-set-variable]
+      41 |         unsigned long next_pgtable, bootmem_end;
+         |                                     ^~~~~~~~~~~
+   arch/m68k/include/asm/mcf_pgalloc.h: At top level:
+>> arch/m68k/include/asm/mcf_pgalloc.h:23:16: warning: 'ptdesc_address' is static but used in inline function 'pte_alloc_one_kernel' which is not static
+      23 |         return ptdesc_address(ptdesc);
+         |                ^~~~~~~~~~~~~~
+>> arch/m68k/include/asm/mcf_pgalloc.h:17:33: warning: 'pagetable_alloc' is static but used in inline function 'pte_alloc_one_kernel' which is not static
+      17 |         struct ptdesc *ptdesc = pagetable_alloc((GFP_DMA | __GFP_ZERO) &
+         |                                 ^~~~~~~~~~~~~~~
+>> arch/m68k/include/asm/mcf_pgalloc.h:10:24: warning: 'virt_to_ptdesc' is static but used in inline function 'pte_free_kernel' which is not static
+      10 |         pagetable_free(virt_to_ptdesc(pte));
+         |                        ^~~~~~~~~~~~~~
+>> arch/m68k/include/asm/mcf_pgalloc.h:10:9: warning: 'pagetable_free' is static but used in inline function 'pte_free_kernel' which is not static
+      10 |         pagetable_free(virt_to_ptdesc(pte));
+         |         ^~~~~~~~~~~~~~
+
+
+vim +82 arch/m68k/include/asm/mcf_pgalloc.h
+
+     7	
+     8	extern inline void pte_free_kernel(struct mm_struct *mm, pte_t *pte)
+     9	{
+  > 10		pagetable_free(virt_to_ptdesc(pte));
+    11	}
+    12	
+    13	extern const char bad_pmd_string[];
+    14	
+    15	extern inline pte_t *pte_alloc_one_kernel(struct mm_struct *mm)
+    16	{
+  > 17		struct ptdesc *ptdesc = pagetable_alloc((GFP_DMA | __GFP_ZERO) &
+    18				~__GFP_HIGHMEM, 0);
+    19	
+    20		if (!ptdesc)
+    21			return NULL;
+    22	
+  > 23		return ptdesc_address(ptdesc);
+    24	}
+    25	
+    26	extern inline pmd_t *pmd_alloc_kernel(pgd_t *pgd, unsigned long address)
+    27	{
+    28		return (pmd_t *) pgd;
+    29	}
+    30	
+    31	#define pmd_populate(mm, pmd, pte) (pmd_val(*pmd) = (unsigned long)(pte))
+    32	
+    33	#define pmd_populate_kernel pmd_populate
+    34	
+    35	static inline void __pte_free_tlb(struct mmu_gather *tlb, pgtable_t pgtable,
+    36					  unsigned long address)
+    37	{
+    38		struct ptdesc *ptdesc = virt_to_ptdesc(pgtable);
+    39	
+    40		pagetable_pte_dtor(ptdesc);
+    41		pagetable_free(ptdesc);
+    42	}
+    43	
+    44	static inline pgtable_t pte_alloc_one(struct mm_struct *mm)
+    45	{
+    46		struct ptdesc *ptdesc = pagetable_alloc(GFP_DMA | __GFP_ZERO, 0);
+    47		pte_t *pte;
+    48	
+    49		if (!ptdesc)
+    50			return NULL;
+    51		if (!pagetable_pte_ctor(ptdesc)) {
+    52			pagetable_free(ptdesc);
+    53			return NULL;
+    54		}
+    55	
+    56		pte = ptdesc_address(ptdesc);
+    57		return pte;
+    58	}
+    59	
+    60	static inline void pte_free(struct mm_struct *mm, pgtable_t pgtable)
+    61	{
+    62		struct ptdesc *ptdesc = virt_to_ptdesc(pgtable);
+    63	
+    64		pagetable_pte_dtor(ptdesc);
+    65		pagetable_free(ptdesc);
+    66	}
+    67	
+    68	/*
+    69	 * In our implementation, each pgd entry contains 1 pmd that is never allocated
+    70	 * or freed.  pgd_present is always 1, so this should never be called. -NL
+    71	 */
+    72	#define pmd_free(mm, pmd) BUG()
+    73	
+    74	static inline void pgd_free(struct mm_struct *mm, pgd_t *pgd)
+    75	{
+    76		pagetable_free(virt_to_ptdesc(pgd));
+    77	}
+    78	
+    79	static inline pgd_t *pgd_alloc(struct mm_struct *mm)
+    80	{
+    81		pgd_t *new_pgd;
+  > 82		struct ptdesc *ptdesc = pagetable_alloc((GFP_DMA | GFP_NOWARN) &
+    83				~__GFP_HIGHMEM, 0);
+    84	
+    85		if (!ptdesc)
+    86			return NULL;
+    87		new_pgd = ptdesc_address(ptdesc);
+    88	
+    89		memcpy(new_pgd, swapper_pg_dir, PTRS_PER_PGD * sizeof(pgd_t));
+    90		memset(new_pgd, 0, PAGE_OFFSET >> PGDIR_SHIFT);
+    91		return new_pgd;
+    92	}
+    93	
+
 -- 
-2.25.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
