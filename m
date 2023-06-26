@@ -2,91 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1427E73DC34
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jun 2023 12:28:07 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=poSa4lSy;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id D6D5973DF08
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jun 2023 14:24:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QqPF06vGnz3c7y
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jun 2023 20:28:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QqRqT64hLz30Bs
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jun 2023 22:24:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=poSa4lSy;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QqP754Rmgz30g2
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Jun 2023 20:22:57 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35QAHOCj028263;
-	Mon, 26 Jun 2023 10:22:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=oxvnKRSpGoW8JFJutnQHFPsa2w6ImNzo01OT7dEV1Yo=;
- b=poSa4lSyeGRBevI379bTanXRVWiH5oEff+/dQwVevmCkNZQh6yFV9kMYJ6NB9qsS41vq
- 4Y3XBHgF+eOrGa2d4PtOIphJqWXkllLSHeKlqX569qEJVQIDma0A+KfJLAPyBnPc4aF/
- sFqjtsQCDxmWJ839Cp/KAK7HnpK8nLzbAr6DVXgRE2DhdqKyBOB1eEGndEHX3WWl9Ym9
- wMbXEqxb1XC3qmQwgVDkaOCzYJGJ6EW+2lTW0OZqOmH7xifS8yUAsVJEv5OgylJls6zi
- 0Oclbpd0AboD6EUUl55GnlYlAFytHJf1u1y4ZBd4Qgzcu4BX9gXLiNvhNSkwh0bYFGkL /A== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rf8sq84ap-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 26 Jun 2023 10:22:46 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35QAKnAW005905;
-	Mon, 26 Jun 2023 10:22:45 GMT
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rf8sq84a6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 26 Jun 2023 10:22:45 +0000
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
-	by ppma03wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35Q8Lqht028053;
-	Mon, 26 Jun 2023 10:22:44 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([9.208.129.120])
-	by ppma03wdc.us.ibm.com (PPS) with ESMTPS id 3rdr45ae4s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 26 Jun 2023 10:22:44 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 35QAMgtl52887914
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 26 Jun 2023 10:22:43 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D5B8A58059;
-	Mon, 26 Jun 2023 10:22:42 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2BB6A58057;
-	Mon, 26 Jun 2023 10:22:39 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.43.116.175])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 26 Jun 2023 10:22:38 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linux-mm@kvack.org, akpm@linux-foundation.org, mpe@ellerman.id.au,
-        linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu
-Subject: [RFC PATCH 5/5] powerpc/book3s64/memhotplug: Enable memmap on memory for radix
-Date: Mon, 26 Jun 2023 15:52:12 +0530
-Message-ID: <20230626102212.119919-6-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230626102212.119919-1-aneesh.kumar@linux.ibm.com>
-References: <20230626102212.119919-1-aneesh.kumar@linux.ibm.com>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QqRpt0wmlz304p
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Jun 2023 22:24:02 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E14312F4;
+	Mon, 26 Jun 2023 05:24:12 -0700 (PDT)
+Received: from FVFF77S0Q05N (unknown [10.57.23.38])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DA5173F64C;
+	Mon, 26 Jun 2023 05:23:22 -0700 (PDT)
+Date: Mon, 26 Jun 2023 13:23:17 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: Puranjay Mohan <puranjay12@gmail.com>
+Subject: Re: [PATCH v2 02/12] mm: introduce execmem_text_alloc() and
+ jit_text_alloc()
+Message-ID: <ZJmDNbY009G3haH9@FVFF77S0Q05N>
+References: <20230616085038.4121892-3-rppt@kernel.org>
+ <f9a7eebe-d36e-4587-b99d-35d4edefdd14@app.fastmail.com>
+ <20230618080027.GA52412@kernel.org>
+ <a17c65c6-863f-4026-9c6f-a04b659e9ab4@app.fastmail.com>
+ <20230625161417.GK52412@kernel.org>
+ <90161ac9-3ca0-4c72-b1c4-ab1293e55445@app.fastmail.com>
+ <20230625174257.GL52412@kernel.org>
+ <20230625180741.jrrtkq55c4jrqh3t@moria.home.lan>
+ <CAPhsuW45gmtCVgA0mg6X87x5EOzSmVqq3SCMSR6agyiukiJvEQ@mail.gmail.com>
+ <CANk7y0jcakmuF4e9x8z7ZUra=MPx-=xxb0JZ3RrJ+S9Eb9-0_g@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: l6nyOvHImYr2ncmzpAHpJpj-D7a6hwbk
-X-Proofpoint-GUID: p6ifLIVYMARIoyS0jhsdU5P2mBOTmdPC
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-06-26_06,2023-06-22_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- phishscore=0 impostorscore=0 suspectscore=0 bulkscore=0 malwarescore=0
- mlxlogscore=999 mlxscore=0 spamscore=0 clxscore=1015 adultscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306260091
+In-Reply-To: <CANk7y0jcakmuF4e9x8z7ZUra=MPx-=xxb0JZ3RrJ+S9Eb9-0_g@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,95 +51,207 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vishal Verma <vishal.l.verma@intel.com>, David Hildenbrand <david@redhat.com>, Michal Hocko <mhocko@suse.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Oscar Salvador <osalvador@suse.de>
+Cc: the arch/x86 maintainers <x86@kernel.org>, loongarch@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Nadav Amit <nadav.amit@gmail.com>, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, "Russell King \(Oracle\)" <linux@armlinux.org.uk>, torvalds@linux-foundation.org, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, pjt@google.com, linux-trace-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>, Will Deacon <will@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org, Kent Overstreet <kent.overstreet@linux.dev>, Linux Kernel M
+ ailing List <linux-kernel@vger.kernel.org>, Dinh Nguyen <dinguyen@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-modules@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Radix vmemmap mapping can map things correctly at the PMD level or PTE
-level based on different device boundary checks. We also use altmap.reserve
-feature to align things correctly at pageblock granularity. We can end up
-loosing some pages in memory with this. For ex: with 256MB memory block
-size, we require 4 pages to map vmemmap pages, In order to align things
-correctly we end up adding a reserve of 28 pages. ie, for every 4096 pages
-28 pages get reserved.
+On Mon, Jun 26, 2023 at 11:54:02AM +0200, Puranjay Mohan wrote:
+> On Mon, Jun 26, 2023 at 8:13 AM Song Liu <song@kernel.org> wrote:
+> >
+> > On Sun, Jun 25, 2023 at 11:07 AM Kent Overstreet
+> > <kent.overstreet@linux.dev> wrote:
+> > >
+> > > On Sun, Jun 25, 2023 at 08:42:57PM +0300, Mike Rapoport wrote:
+> > > > On Sun, Jun 25, 2023 at 09:59:34AM -0700, Andy Lutomirski wrote:
+> > > > >
+> > > > >
+> > > > > On Sun, Jun 25, 2023, at 9:14 AM, Mike Rapoport wrote:
+> > > > > > On Mon, Jun 19, 2023 at 10:09:02AM -0700, Andy Lutomirski wrote:
+> > > > > >>
+> > > > > >> On Sun, Jun 18, 2023, at 1:00 AM, Mike Rapoport wrote:
+> > > > > >> > On Sat, Jun 17, 2023 at 01:38:29PM -0700, Andy Lutomirski wrote:
+> > > > > >> >> On Fri, Jun 16, 2023, at 1:50 AM, Mike Rapoport wrote:
+> > > > > >> >> > From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+> > > > > >> >> >
+> > > > > >> >> > module_alloc() is used everywhere as a mean to allocate memory for code.
+> > > > > >> >> >
+> > > > > >> >> > Beside being semantically wrong, this unnecessarily ties all subsystems
+> > > > > >> >> > that need to allocate code, such as ftrace, kprobes and BPF to modules
+> > > > > >> >> > and puts the burden of code allocation to the modules code.
+> > > > > >> >> >
+> > > > > >> >> > Several architectures override module_alloc() because of various
+> > > > > >> >> > constraints where the executable memory can be located and this causes
+> > > > > >> >> > additional obstacles for improvements of code allocation.
+> > > > > >> >> >
+> > > > > >> >> > Start splitting code allocation from modules by introducing
+> > > > > >> >> > execmem_text_alloc(), execmem_free(), jit_text_alloc(), jit_free() APIs.
+> > > > > >> >> >
+> > > > > >> >> > Initially, execmem_text_alloc() and jit_text_alloc() are wrappers for
+> > > > > >> >> > module_alloc() and execmem_free() and jit_free() are replacements of
+> > > > > >> >> > module_memfree() to allow updating all call sites to use the new APIs.
+> > > > > >> >> >
+> > > > > >> >> > The intention semantics for new allocation APIs:
+> > > > > >> >> >
+> > > > > >> >> > * execmem_text_alloc() should be used to allocate memory that must reside
+> > > > > >> >> >   close to the kernel image, like loadable kernel modules and generated
+> > > > > >> >> >   code that is restricted by relative addressing.
+> > > > > >> >> >
+> > > > > >> >> > * jit_text_alloc() should be used to allocate memory for generated code
+> > > > > >> >> >   when there are no restrictions for the code placement. For
+> > > > > >> >> >   architectures that require that any code is within certain distance
+> > > > > >> >> >   from the kernel image, jit_text_alloc() will be essentially aliased to
+> > > > > >> >> >   execmem_text_alloc().
+> > > > > >> >> >
+> > > > > >> >>
+> > > > > >> >> Is there anything in this series to help users do the appropriate
+> > > > > >> >> synchronization when the actually populate the allocated memory with
+> > > > > >> >> code?  See here, for example:
+> > > > > >> >
+> > > > > >> > This series only factors out the executable allocations from modules and
+> > > > > >> > puts them in a central place.
+> > > > > >> > Anything else would go on top after this lands.
+> > > > > >>
+> > > > > >> Hmm.
+> > > > > >>
+> > > > > >> On the one hand, there's nothing wrong with factoring out common code. On
+> > > > > >> the other hand, this is probably the right time to at least start
+> > > > > >> thinking about synchronization, at least to the extent that it might make
+> > > > > >> us want to change this API.  (I'm not at all saying that this series
+> > > > > >> should require changes -- I'm just saying that this is a good time to
+> > > > > >> think about how this should work.)
+> > > > > >>
+> > > > > >> The current APIs, *and* the proposed jit_text_alloc() API, don't actually
+> > > > > >> look like the one think in the Linux ecosystem that actually
+> > > > > >> intelligently and efficiently maps new text into an address space:
+> > > > > >> mmap().
+> > > > > >>
+> > > > > >> On x86, you can mmap() an existing file full of executable code PROT_EXEC
+> > > > > >> and jump to it with minimal synchronization (just the standard implicit
+> > > > > >> ordering in the kernel that populates the pages before setting up the
+> > > > > >> PTEs and whatever user synchronization is needed to avoid jumping into
+> > > > > >> the mapping before mmap() finishes).  It works across CPUs, and the only
+> > > > > >> possible way userspace can screw it up (for a read-only mapping of
+> > > > > >> read-only text, anyway) is to jump to the mapping too early, in which
+> > > > > >> case userspace gets a page fault.  Incoherence is impossible, and no one
+> > > > > >> needs to "serialize" (in the SDM sense).
+> > > > > >>
+> > > > > >> I think the same sequence (from userspace's perspective) works on other
+> > > > > >> architectures, too, although I think more cache management is needed on
+> > > > > >> the kernel's end.  As far as I know, no Linux SMP architecture needs an
+> > > > > >> IPI to map executable text into usermode, but I could easily be wrong.
+> > > > > >> (IIRC RISC-V has very developer-unfriendly icache management, but I don't
+> > > > > >> remember the details.)
+> > > > > >>
+> > > > > >> Of course, using ptrace or any other FOLL_FORCE to modify text on x86 is
+> > > > > >> rather fraught, and I bet many things do it wrong when userspace is
+> > > > > >> multithreaded.  But not in production because it's mostly not used in
+> > > > > >> production.)
+> > > > > >>
+> > > > > >> But jit_text_alloc() can't do this, because the order of operations
+> > > > > >> doesn't match.  With jit_text_alloc(), the executable mapping shows up
+> > > > > >> before the text is populated, so there is no atomic change from not-there
+> > > > > >> to populated-and-executable.  Which means that there is an opportunity
+> > > > > >> for CPUs, speculatively or otherwise, to start filling various caches
+> > > > > >> with intermediate states of the text, which means that various
+> > > > > >> architectures (even x86!) may need serialization.
+> > > > > >>
+> > > > > >> For eBPF- and module- like use cases, where JITting/code gen is quite
+> > > > > >> coarse-grained, perhaps something vaguely like:
+> > > > > >>
+> > > > > >> jit_text_alloc() -> returns a handle and an executable virtual address,
+> > > > > >> but does *not* map it there
+> > > > > >> jit_text_write() -> write to that handle
+> > > > > >> jit_text_map() -> map it and synchronize if needed (no sync needed on
+> > > > > >> x86, I think)
+> > > > > >>
+> > > > > >> could be more efficient and/or safer.
+> > > > > >>
+> > > > > >> (Modules could use this too.  Getting alternatives right might take some
+> > > > > >> fiddling, because off the top of my head, this doesn't match how it works
+> > > > > >> now.)
+> > > > > >>
+> > > > > >> To make alternatives easier, this could work, maybe (haven't fully
+> > > > > >> thought it through):
+> > > > > >>
+> > > > > >> jit_text_alloc()
+> > > > > >> jit_text_map_rw_inplace() -> map at the target address, but RW, !X
+> > > > > >>
+> > > > > >> write the text and apply alternatives
+> > > > > >>
+> > > > > >> jit_text_finalize() -> change from RW to RX *and synchronize*
+> > > > > >>
+> > > > > >> jit_text_finalize() would either need to wait for RCU (possibly extra
+> > > > > >> heavy weight RCU to get "serialization") or send an IPI.
+> > > > > >
+> > > > > > This essentially how modules work now. The memory is allocated RW, written
+> > > > > > and updated with alternatives and then made ROX in the end with set_memory
+> > > > > > APIs.
+> > > > > >
+> > > > > > The issue with not having the memory mapped X when it's written is that we
+> > > > > > cannot use large pages to map it. One of the goals is to have executable
+> > > > > > memory mapped with large pages and make code allocator able to divide that
+> > > > > > page among several callers.
+> > > > > >
+> > > > > > So the idea was that jit_text_alloc() will have a cache of large pages
+> > > > > > mapped ROX, will allocate memory from those caches and there will be
+> > > > > > jit_update() that uses text poking for writing to that memory.
+> > > > > >
+> > > > > > Upon allocation of a large page to increase the cache, that large page will
+> > > > > > be "invalidated" by filling it with breakpoint instructions (e.g int3 on
+> > > > > > x86)
+> > > > >
+> > > > > Is this actually valid?  In between int3 and real code, there’s a
+> > > > > potential torn read of real code mixed up with 0xcc.
+> > > >
+> > > > You mean while doing text poking?
+> > >
+> > > I think we've been getting distracted by text_poke(). text_poke() does
+> > > updates via a different virtual address which introduce new
+> > > synchroniation wrinkles, but it's not the main issue.
+> > >
+> > > As _think_ I understand it, the root of the issue is that speculative
+> > > execution - and that per Andy, speculative execution doesn't obey memory
+> > > barriers.
+> > >
+> > > I have _not_ dug into the details of how retpolines work and all the
+> > > spectre stuff that was going on, but - retpoline uses lfence, doesn't
+> > > it? And if speculative execution is the issue here, isn't retpoline what
+> > > we need?
+> > >
+> > > For this particular issue, I'm not sure "invalidate by filling with
+> > > illegal instructions" makes sense. For that to work, would the processor
+> > > have to execute a serialize operation and a retry on hitting an illegal
+> > > instruction - or perhaps we do in the interrupt handler?
+> > >
+> > > But if filling with illegal instructions does act as a speculation
+> > > barrier, then the issue is that a torn read could generate a legal but
+> > > incorrect instruction.
+> >
+> > What is a "torn read" here? I assume it is an instruction read that
+> > goes at the wrong instruction boundary (CISC). If this is correct, do
+> > we need to handle torn read caused by software bug, or hardware
+> > bit flip, or both?
+> 
+> On ARM64 (RISC), torn reads can't happen because the instruction fetch
+> is word aligned. If we replace the whole instruction atomically then there
+> won't be half old - half new instruction fetches.
 
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- arch/powerpc/Kconfig                          |  1 +
- arch/powerpc/mm/book3s64/radix_pgtable.c      | 28 +++++++++++++++++++
- .../platforms/pseries/hotplug-memory.c        |  4 ++-
- 3 files changed, 32 insertions(+), 1 deletion(-)
+Unfortunately, that's only guaranteed for a subset of instructions (e.g. B,
+NOP), and in general CPUs can fetch an instruction multiple times, and could
+fetch arbitrary portions of the instruction each time.
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 6bd9ca6f2448..1b0954854a12 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -158,6 +158,7 @@ config PPC
- 	select ARCH_HAS_UBSAN_SANITIZE_ALL
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
- 	select ARCH_KEEP_MEMBLOCK
-+	select ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE	if PPC_RADIX_MMU
- 	select ARCH_MIGHT_HAVE_PC_PARPORT
- 	select ARCH_MIGHT_HAVE_PC_SERIO
- 	select ARCH_OPTIONAL_KERNEL_RWX		if ARCH_HAS_STRICT_KERNEL_RWX
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index afbae37612ad..e0e292b87b4b 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -1692,3 +1692,31 @@ int pmd_free_pte_page(pmd_t *pmd, unsigned long addr)
- 
- 	return 1;
- }
-+
-+/*
-+ * mm/memory_hotplug.c:mhp_supports_memmap_on_memory goes into details
-+ * some of the restrictions. We don't check for PMD_SIZE because our
-+ * vmemmap allocation code can fallback correctly. The pageblock
-+ * alignment requirement is met using altmap->reserve blocks.
-+ */
-+bool mhp_supports_memmap_on_memory(unsigned long size)
-+{
-+	if (!radix_enabled())
-+		return false;
-+	/*
-+	 * The pageblock alignment requirement is met by using
-+	 * reserve blocks in altmap.
-+	 */
-+	return size == memory_block_size_bytes();
-+}
-+
-+unsigned long memory_block_align_base(struct resource *res)
-+{
-+	unsigned long base_pfn = PHYS_PFN(res->start);
-+	unsigned long align, size = resource_size(res);
-+	unsigned long nr_vmemmap_pages = size / PAGE_SIZE;
-+	unsigned long vmemmap_size = (nr_vmemmap_pages * sizeof(struct page))/PAGE_SIZE;
-+
-+	align = pageblock_align(base_pfn + vmemmap_size) - (base_pfn + vmemmap_size);
-+	return align;
-+}
-diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-index 9c62c2c3b3d0..326db26d773e 100644
---- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-+++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-@@ -617,6 +617,7 @@ static int dlpar_memory_remove_by_ic(u32 lmbs_to_remove, u32 drc_index)
- 
- static int dlpar_add_lmb(struct drmem_lmb *lmb)
- {
-+	mhp_t mhp_flags = MHP_NONE;
- 	unsigned long block_sz;
- 	int nid, rc;
- 
-@@ -637,7 +638,8 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
- 		nid = first_online_node;
- 
- 	/* Add the memory */
--	rc = __add_memory(nid, lmb->base_addr, block_sz, MHP_NONE);
-+	mhp_flags |= get_memmap_on_memory_flags();
-+	rc = __add_memory(nid, lmb->base_addr, block_sz, mhp_flags);
- 	if (rc) {
- 		invalidate_lmb_associativity_index(lmb);
- 		return rc;
--- 
-2.41.0
+Please see the "Concurrent Modification and Execution of instructions" rules in
+the ARM ARM.
 
+For arm64, in general, you need to inhibit any concurrent execution (e.g. by
+stopping-the-world) when patching text, and afterwards you need cache maintence
+followed by a context-syncrhonization-event (aking to an x86 serializing
+instruction) on CPUs which will execute the new instruction(s).
+
+There are a bunch of special cases where we can omit some of that, but in
+general the architectural guarnatees are *very* weak and require SW to perform
+several bits of work to guarantee the new instructions will be executed without issues.
+
+Thanks,
+Mark.
