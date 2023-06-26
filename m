@@ -1,84 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9AAA73E336
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jun 2023 17:24:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC17573E6E7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jun 2023 19:50:05 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jtaWgcjN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gsu5wtN5;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QqWqL0hHNz30gc
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jun 2023 01:24:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qqb2z5TDbz3bpC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jun 2023 03:50:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jtaWgcjN;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gsu5wtN5;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com; envelope-from=dave.hansen@intel.com; receiver=lists.ozlabs.org)
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=song@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QqWpN5tKbz305g
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jun 2023 01:23:50 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687793037; x=1719329037;
-  h=message-id:date:mime-version:subject:to:references:from:
-   in-reply-to:content-transfer-encoding;
-  bh=h8sLHtBTnVZJQ+VK9Mju0L08CrA3iMKmjHrpKD0aiOc=;
-  b=jtaWgcjNbbybyHnrBMqrvyMPHFaAd20IsoGmNh0LLyeVbPZuE8A+53wL
-   ajYBI9VAlw3VdcSe3VJeQRi7Yvxhn1MbYIqv7RDX+1F5MyK6Vollum0og
-   j4pTU792+1f2dk4wQJnJhoWGHLE9TOMQroSHsckv2+DAMggf+Ehv1XcW5
-   yvBCbwfJx3fTI2ImpviZ/Jl/hNBMinL0wxBOCHkbheV3YZQDSmfAEL7dK
-   hV/G2q4PnNy+Ix16/LFDeaNaYu6HOA5XaqC/JtReRJEm51yqusqXoJqUK
-   +Ef+eG+lBYkxFaiLcA33XLpkJJ+3hfTwjfWGXEkdpPmcM9NT+J2DBpM8E
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10753"; a="358796835"
-X-IronPort-AV: E=Sophos;i="6.01,159,1684825200"; 
-   d="scan'208";a="358796835"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2023 08:23:22 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10753"; a="781476701"
-X-IronPort-AV: E=Sophos;i="6.01,159,1684825200"; 
-   d="scan'208";a="781476701"
-Received: from mshindo-mobl5.amr.corp.intel.com (HELO [10.212.198.145]) ([10.212.198.145])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2023 08:23:19 -0700
-Message-ID: <14f91337-ac7d-52f7-bc86-4091bec4d099@intel.com>
-Date: Mon, 26 Jun 2023 08:23:19 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qqb260KJkz305N
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jun 2023 03:49:18 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 1194860E8D
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Jun 2023 17:49:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 757F8C433C0
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Jun 2023 17:49:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1687801751;
+	bh=fFWuzhLLiGkinhaWeToFLkDX/dcx5OWER83aW8VgRow=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=gsu5wtN50LZdJATM3ZjDYRwk1wnL4zKmLVdDqqUpcLtSNYlPt2g8EOd2+LHOYG0G5
+	 HJb6UdQ1uCsnI8e7N++rgev5m4nSa6GuRAJ1KqvHYFOZQchtOemxBOGvfMG1j5Osdd
+	 gV8aBmKXzrC6Q+VYPFHx1qXffUm36IuFITg1YCCjupG+JYtQ7Ki6FGlI1JCtnPafXG
+	 BflN3PH1aFSJcZb5/HVOZxfkzz3hTosSHdnVSJwFszzWNxojXWnuwt26Kb9cys6I2L
+	 Z/dJc0eQyaMVi232VXzASC5AOFcr+LZ8Z/R0k5jXoEQbxTh4I/aMaqIE8NWBVDE9Ir
+	 WJbgxGOvJGyQg==
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-51cff235226so4906358a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Jun 2023 10:49:11 -0700 (PDT)
+X-Gm-Message-State: AC+VfDxnWEQgDieZA/1CbbEQXl7C/3w8htSbHg3fc+ZhuXEidrvStjkS
+	lRlQKE085OVi07mOrG6h0rHvVo2d4jkkl1OTwqM=
+X-Google-Smtp-Source: ACHHUZ6w6e1OYy7QM9S+YTdK71Dx4cd9s642AcRaJSfPZb8UXF8n/hvi2zuHhdV8C7DcTgUpaxVtcUwpuH0YchvBFOg=
+X-Received: by 2002:a19:5f5d:0:b0:4f8:5e62:b94b with SMTP id
+ a29-20020a195f5d000000b004f85e62b94bmr8655403lfj.9.1687801729333; Mon, 26 Jun
+ 2023 10:48:49 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2 2/2] mm/mmu_gather: send tlb_remove_table_smp_sync IPI
- only to MM CPUs
-Content-Language: en-US
-To: ypodemsk@redhat.com, mtosatti@redhat.com, ppandit@redhat.com,
- david@redhat.com, linux@armlinux.org.uk, mpe@ellerman.id.au,
- npiggin@gmail.com, christophe.leroy@csgroup.eu, hca@linux.ibm.com,
- gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
- svens@linux.ibm.com, davem@davemloft.net, tglx@linutronix.de,
- mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
- keescook@chromium.org, paulmck@kernel.org, frederic@kernel.org,
- will@kernel.org, peterz@infradead.org, ardb@kernel.org,
- samitolvanen@google.com, juerg.haefliger@canonical.com, arnd@arndb.de,
- rmk+kernel@armlinux.org.uk, geert+renesas@glider.be,
- linus.walleij@linaro.org, akpm@linux-foundation.org,
- sebastian.reichel@collabora.com, rppt@kernel.org,
- aneesh.kumar@linux.ibm.com, x86@kernel.org,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20230620144618.125703-1-ypodemsk@redhat.com>
- <20230620144618.125703-3-ypodemsk@redhat.com>
- <680fadba-9104-3914-5175-e207fd3d9246@intel.com>
- <79f29f99fa07c46dbaee7b802cdd7b477b2d8dd1.camel@redhat.com>
- <d0ef9148-3c95-87bb-26f9-ea0920a4faa4@intel.com>
- <cccb5351e48b11e6c657bcfa28632f49cb9cc800.camel@redhat.com>
-From: Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <cccb5351e48b11e6c657bcfa28632f49cb9cc800.camel@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20230616085038.4121892-1-rppt@kernel.org> <20230616085038.4121892-3-rppt@kernel.org>
+ <f9a7eebe-d36e-4587-b99d-35d4edefdd14@app.fastmail.com> <20230618080027.GA52412@kernel.org>
+ <a17c65c6-863f-4026-9c6f-a04b659e9ab4@app.fastmail.com> <20230625161417.GK52412@kernel.org>
+ <ZJmFFmexl_1GUhIL@FVFF77S0Q05N>
+In-Reply-To: <ZJmFFmexl_1GUhIL@FVFF77S0Q05N>
+From: Song Liu <song@kernel.org>
+Date: Mon, 26 Jun 2023 10:48:37 -0700
+X-Gmail-Original-Message-ID: <CAPhsuW4pDkd7rCWRM6938ve36rfhGxyu=8t1-GjcKnNajofpQA@mail.gmail.com>
+Message-ID: <CAPhsuW4pDkd7rCWRM6938ve36rfhGxyu=8t1-GjcKnNajofpQA@mail.gmail.com>
+Subject: Re: [PATCH v2 02/12] mm: introduce execmem_text_alloc() and jit_text_alloc()
+To: Mark Rutland <mark.rutland@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,52 +73,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: the arch/x86 maintainers <x86@kernel.org>, loongarch@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Nadav Amit <nadav.amit@gmail.com>, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, "Russell King \(Oracle\)" <linux@armlinux.org.uk>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linux-trace-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>, Will Deacon <will@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Puranjay Mohan <puranjay12@gmail.com>, netdev@vger.kernel.org, Kent Overstreet <kent.overstreet@linux.dev>, Linux Kernel Mailing List <linux-kernel@vger.kerne
+ l.org>, Dinh Nguyen <dinguyen@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-modules@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/26/23 07:36, ypodemsk@redhat.com wrote:
-> On Thu, 2023-06-22 at 06:37 -0700, Dave Hansen wrote:
->> On 6/22/23 06:14, ypodemsk@redhat.com wrote:
->>> I will send a new version with the local variable as you suggested
->>> soon.
->>> As for the config name, what about CONFIG_ARCH_HAS_MM_CPUMASK?
->>
->> The confusing part about that name is that mm_cpumask() and
->> mm->cpu_bitmap[] are defined unconditionally.  So, they're *around*
->> unconditionally but just aren't updated.
->>
-> I think your right about the config name,
-> How about the
-> CONFIG_ARCH_USE_MM_CPUMASK?
-> This has the right semantic as these archs use the cpumask field of the
-> mm struct.
+On Mon, Jun 26, 2023 at 5:31=E2=80=AFAM Mark Rutland <mark.rutland@arm.com>=
+ wrote:
+>
+[...]
+> >
+> > So the idea was that jit_text_alloc() will have a cache of large pages
+> > mapped ROX, will allocate memory from those caches and there will be
+> > jit_update() that uses text poking for writing to that memory.
+> >
+> > Upon allocation of a large page to increase the cache, that large page =
+will
+> > be "invalidated" by filling it with breakpoint instructions (e.g int3 o=
+n
+> > x86)
+>
+> Does that work on x86?
+>
+> That is in no way gauranteed for other architectures; on arm64 you need
+> explicit cache maintenance (with I-cache maintenance at the VA to be exec=
+uted
+> from) followed by context-synchronization-events (e.g. via ISB instructio=
+ns, or
+> IPIs).
 
-"USE" is still a command.  It should, at worst, be "USES".  But that's
-still kinda generic.  How about:
+I guess we need:
+1) Invalidate unused part of the huge ROX pages;
+2) Do not put two jit users (including module text, bpf, etc.) in the
+same cache line;
+3) Explicit cache maintenance;
+4) context-synchronization-events.
 
-	CONFIG_ARCH_UPDATES_MM_CPUMASK
+Would these (or a subset of them) be sufficient to protect us from torn rea=
+d?
 
-?
-
->> BTW, it would also be nice to have _some_ kind of data behind this
->> patch.
->>
->> Fewer IPIs are better I guess, but it would still be nice if you
->> could say:
->>
->> 	Before this patch, /proc/interrupts showed 123 IPIs/hour for an
->> 	isolated CPU.  After the approach here, it was 0.
->>
->> ... or something.
-> 
-> This is part of an ongoing effort to remove IPIs and this one was found
-> via code inspection.
-
-OK, so it should be something more like:
-
-	This was found via code inspection, but fixing it isn't very
-	important so we didn't bother to test it any more than just
-	making sure the thing still boots when it is applied.
-
-Does that cover it?
-
+Thanks,
+Song
