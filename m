@@ -2,38 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C19773E010
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jun 2023 15:03:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A8BE73E042
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jun 2023 15:13:32 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GPqpnfY7;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QqSgr2DrWz3bv4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jun 2023 23:03:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QqSvt1bCrz3bZ4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jun 2023 23:13:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QqSgJ6Hzxz2yJT
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Jun 2023 23:02:34 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CF2D62F4;
-	Mon, 26 Jun 2023 06:02:47 -0700 (PDT)
-Received: from FVFF77S0Q05N (unknown [10.57.23.38])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 14E543F64C;
-	Mon, 26 Jun 2023 06:01:57 -0700 (PDT)
-Date: Mon, 26 Jun 2023 14:01:55 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Andy Lutomirski <luto@kernel.org>
-Subject: Re: [PATCH v2 02/12] mm: introduce execmem_text_alloc() and
- jit_text_alloc()
-Message-ID: <ZJmMQ62fW7RO5W2O@FVFF77S0Q05N>
-References: <20230616085038.4121892-1-rppt@kernel.org>
- <20230616085038.4121892-3-rppt@kernel.org>
- <f9a7eebe-d36e-4587-b99d-35d4edefdd14@app.fastmail.com>
- <20230618080027.GA52412@kernel.org>
- <a17c65c6-863f-4026-9c6f-a04b659e9ab4@app.fastmail.com>
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GPqpnfY7;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gbatra@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QqStv0fpWz2ydR
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Jun 2023 23:12:38 +1000 (AEST)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35QCmwnc030172;
+	Mon, 26 Jun 2023 13:12:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=PqcXSxarzDWe9L6VNzTqpNd22BbvdirdjtI/v/B/zSE=;
+ b=GPqpnfY7eLwdVOsxbo+AQRJMvsSvjg3a77BSmp0v9OkDCf4nOfHFS96gchh9XVSrKJw4
+ ZEga1+ojydPbiy1Ahs5dp0Isw28O5lDsBMAhVmtFA9Pg1LFWTghl+ulXRbDO5m9Iue/e
+ MG2kHB3oapKX/H2+75WZ5/Ahs7ETzi+Sw7CGHe1/9xsLLCtgT5jZ0qj2wbDPM5+01gXg
+ RQ8v3cXSoK3BXc+h1sIs2Db/7xjE9AkB6hpLJ17LBdUV/bl/GNIaZ9XgRfkVfdBAt7mX
+ QzNbjBATDTwxwciHdlQnBovhZ5uLrRMO2kPa8t5LZ34W8au2Gk33fw1pC/FN5nGwHX4M xg== 
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rfb0u0q3j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 26 Jun 2023 13:12:32 +0000
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+	by ppma01wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35QCGCOD013262;
+	Mon, 26 Jun 2023 13:12:31 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([9.208.129.120])
+	by ppma01wdc.us.ibm.com (PPS) with ESMTPS id 3rdr45b41d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 26 Jun 2023 13:12:31 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 35QDCUiE655872
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 26 Jun 2023 13:12:30 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 772295805A;
+	Mon, 26 Jun 2023 13:12:30 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0471A58056;
+	Mon, 26 Jun 2023 13:12:30 +0000 (GMT)
+Received: from [9.67.105.9] (unknown [9.67.105.9])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 26 Jun 2023 13:12:29 +0000 (GMT)
+Message-ID: <051669d5-7a01-3730-f10c-793533bc0ffd@linux.vnet.ibm.com>
+Date: Mon, 26 Jun 2023 08:12:29 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a17c65c6-863f-4026-9c6f-a04b659e9ab4@app.fastmail.com>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH] powerpc/iommu: TCEs are incorrectly manipulated with
+ DLPAR add/remove of memory
+Content-Language: en-US
+To: Michael Ellerman <mpe@ellerman.id.au>
+References: <20230613171641.15641-1-gbatra@linux.vnet.ibm.com>
+ <ee63bcc9-4e06-198b-b3a2-5519bc11a83c@linux.vnet.ibm.com>
+ <6c6de9d0-1d40-c1f6-2b9a-b00eb3673b44@linux.vnet.ibm.com>
+ <87pm5ihlhc.fsf@mail.lhotse>
+From: Gaurav Batra <gbatra@linux.vnet.ibm.com>
+In-Reply-To: <87pm5ihlhc.fsf@mail.lhotse>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: VqQZNJyiWs5TTW1ueuEDQ0OVF4LQazOp
+X-Proofpoint-ORIG-GUID: VqQZNJyiWs5TTW1ueuEDQ0OVF4LQazOp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-26_09,2023-06-26_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
+ mlxscore=0 suspectscore=0 mlxlogscore=999 spamscore=0 clxscore=1015
+ priorityscore=1501 adultscore=0 phishscore=0 lowpriorityscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306260113
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,168 +96,172 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: the arch/x86 maintainers <x86@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Nadav Amit <nadav.amit@gmail.com>, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, "Russell King \(Oracle\)" <linux@armlinux.org.uk>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linux-trace-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>, Will Deacon <will@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Puranjay Mohan <puranjay12@gmail.com>, linux-mm@kvack.org, netdev@vger.kernel.org, Kent Overstreet <kent.overstreet@linux.dev>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-  Dinh Nguyen <dinguyen@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-modules@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>
+Cc: Brian King <brking@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 19, 2023 at 10:09:02AM -0700, Andy Lutomirski wrote:
-> On Sun, Jun 18, 2023, at 1:00 AM, Mike Rapoport wrote:
-> > On Sat, Jun 17, 2023 at 01:38:29PM -0700, Andy Lutomirski wrote:
-> >> On Fri, Jun 16, 2023, at 1:50 AM, Mike Rapoport wrote:
-> >> > From: "Mike Rapoport (IBM)" <rppt@kernel.org>
-> >> >
-> >> > module_alloc() is used everywhere as a mean to allocate memory for code.
-> >> >
-> >> > Beside being semantically wrong, this unnecessarily ties all subsystems
-> >> > that need to allocate code, such as ftrace, kprobes and BPF to modules
-> >> > and puts the burden of code allocation to the modules code.
-> >> >
-> >> > Several architectures override module_alloc() because of various
-> >> > constraints where the executable memory can be located and this causes
-> >> > additional obstacles for improvements of code allocation.
-> >> >
-> >> > Start splitting code allocation from modules by introducing
-> >> > execmem_text_alloc(), execmem_free(), jit_text_alloc(), jit_free() APIs.
-> >> >
-> >> > Initially, execmem_text_alloc() and jit_text_alloc() are wrappers for
-> >> > module_alloc() and execmem_free() and jit_free() are replacements of
-> >> > module_memfree() to allow updating all call sites to use the new APIs.
-> >> >
-> >> > The intention semantics for new allocation APIs:
-> >> >
-> >> > * execmem_text_alloc() should be used to allocate memory that must reside
-> >> >   close to the kernel image, like loadable kernel modules and generated
-> >> >   code that is restricted by relative addressing.
-> >> >
-> >> > * jit_text_alloc() should be used to allocate memory for generated code
-> >> >   when there are no restrictions for the code placement. For
-> >> >   architectures that require that any code is within certain distance
-> >> >   from the kernel image, jit_text_alloc() will be essentially aliased to
-> >> >   execmem_text_alloc().
-> >> >
-> >> 
-> >> Is there anything in this series to help users do the appropriate
-> >> synchronization when the actually populate the allocated memory with
-> >> code?  See here, for example:
-> >
-> > This series only factors out the executable allocations from modules and
-> > puts them in a central place.
-> > Anything else would go on top after this lands.
-> 
-> Hmm.
-> 
-> On the one hand, there's nothing wrong with factoring out common code. On the
-> other hand, this is probably the right time to at least start thinking about
-> synchronization, at least to the extent that it might make us want to change
-> this API.  (I'm not at all saying that this series should require changes --
-> I'm just saying that this is a good time to think about how this should
-> work.)
-> 
-> The current APIs, *and* the proposed jit_text_alloc() API, don't actually
-> look like the one think in the Linux ecosystem that actually intelligently
-> and efficiently maps new text into an address space: mmap().
-> 
-> On x86, you can mmap() an existing file full of executable code PROT_EXEC and
-> jump to it with minimal synchronization (just the standard implicit ordering
-> in the kernel that populates the pages before setting up the PTEs and
-> whatever user synchronization is needed to avoid jumping into the mapping
-> before mmap() finishes).  It works across CPUs, and the only possible way
-> userspace can screw it up (for a read-only mapping of read-only text, anyway)
-> is to jump to the mapping too early, in which case userspace gets a page
-> fault.  Incoherence is impossible, and no one needs to "serialize" (in the
-> SDM sense).
-> 
-> I think the same sequence (from userspace's perspective) works on other
-> architectures, too, although I think more cache management is needed on the
-> kernel's end.  As far as I know, no Linux SMP architecture needs an IPI to
-> map executable text into usermode, but I could easily be wrong.  (IIRC RISC-V
-> has very developer-unfriendly icache management, but I don't remember the
-> details.)
+Thanks a lot
 
-That's my understanding too, with a couple of details:
 
-1) After the copy we perform and complete all the data + instruction cache
-   maintenance *before* marking the mapping as executable.
-
-2) Even *after* the mapping is marked executable, a thread could take a
-   spurious fault on an instruction fetch for the new instructions. One way to
-   think about this is that the CPU attempted to speculate the instructions
-   earlier, saw that the mapping was faulting, and placed a "generate a fault
-   here" operation into its pipeline to generate that later.
-
-   The CPU pipeline/OoO-engine/whatever is effectively a transient cache for
-   operations in-flight which is only ever "invalidated" by a
-   context-synchronization-event (akin to an x86 serializing effect).
-
-   We're only guarnateed to have a new instruction fetch (from the I-cache into
-   the CPU pipeline) after the next context synchronization event (akin to an x86
-   serializing effect), and luckily out exception entry/exit is architecturally
-   guarnateed to provide that (unless we explicitly opt out via a control bit).
-
-I know we're a bit lax with that today: I think we omit the
-context-synchronization-event when enabling ftrace callsites, and worse, for
-static keys. Those are both on my TODO list of nasty problems that require
-careful auditing...
-
-> Of course, using ptrace or any other FOLL_FORCE to modify text on x86 is
-> rather fraught, and I bet many things do it wrong when userspace is
-> multithreaded.  But not in production because it's mostly not used in
-> production.)
-
-I suspect uprobes needs a look too...
-
-I'll need to go dig into all that a bit before I have more of an opinion on the
-shape of the API.
-
-Thanks,
-Mark.
-
-> But jit_text_alloc() can't do this, because the order of operations doesn't
-> match.  With jit_text_alloc(), the executable mapping shows up before the
-> text is populated, so there is no atomic change from not-there to
-> populated-and-executable.  Which means that there is an opportunity for CPUs,
-> speculatively or otherwise, to start filling various caches with intermediate
-> states of the text, which means that various architectures (even x86!) may
-> need serialization.
-> 
-> For eBPF- and module- like use cases, where JITting/code gen is quite
-> coarse-grained, perhaps something vaguely like:
-> 
-> jit_text_alloc() -> returns a handle and an executable virtual address, but does *not* map it there
-> jit_text_write() -> write to that handle
-> jit_text_map() -> map it and synchronize if needed (no sync needed on x86, I think)
-> 
-> could be more efficient and/or safer.
-> 
-> (Modules could use this too.  Getting alternatives right might take some
-> fiddling, because off the top of my head, this doesn't match how it works
-> now.)
-> 
-> To make alternatives easier, this could work, maybe (haven't fully thought it through):
-> 
-> jit_text_alloc()
-> jit_text_map_rw_inplace() -> map at the target address, but RW, !X
-> 
-> write the text and apply alternatives
-> 
-> jit_text_finalize() -> change from RW to RX *and synchronize*
-> 
-> jit_text_finalize() would either need to wait for RCU (possibly extra heavy
-> weight RCU to get "serialization") or send an IPI.
-> 
-> This is slower than the alloc, write, map solution, but allows alternatives
-> to be applied at the final address.
-> 
-> 
-> Even fancier variants where the writing is some using something like
-> use_temporary_mm() might even make sense.
-> 
-> 
-> To what extent does performance matter for the various users?  module loading
-> is slow, and I don't think we care that much.  eBPF loaded is not super fast,
-> and we care to a limited extent.  I *think* the bcachefs use case needs to be
-> very fast, but I'm not sure it can be fast and supportable.
-> 
-> Anyway, food for thought.
-> 
+On 6/25/23 11:54 PM, Michael Ellerman wrote:
+> Gaurav Batra <gbatra@linux.vnet.ibm.com> writes:
+>> Hello Michael,
+>>
+>> Did you get a chance to look into this patch? I don't mean to rush you.
+>> Just wondering if there is anything I can do to help make the patch to
+>> Upstream.
+> I skimmed it and decided it wasn't a critical bug fix, and hoped someone
+> else would review it - silly me :D
+>
+> But the patch looks simple enough, and the explanation is very good so I
+> think it looks good to merge.
+>
+> I'll apply it for v6.5.
+>
+> cheers
+>
+>> On 6/13/23 12:17 PM, Gaurav Batra wrote:
+>>> Hello Michael,
+>>>
+>>> I found this bug while going though the code. This bug is exposed when
+>>> DDW is smaller than the max memory of the LPAR. This will result in
+>>> creating DDW which will have Dynamically mapped TCEs (no direct mapping).
+>>>
+>>> I would like to stress that this  bug is exposed only in Upstream
+>>> kernel. Current kernel level in Distros are not exposed to this since
+>>> they don't have the  concept of "dynamically mapped" DDW.
+>>>
+>>> I didn't have access to any of the P10 boxes with large amount of
+>>> memory to  re-create the scenario. On P10 we have 2MB TCEs, which
+>>> results in DDW large enough to be able to cover  max memory I could
+>>> have for the LPAR. As a result,  IO Bus Addresses generated were
+>>> always within DDW limits and no H_PARAMETER was returned by HCALL.
+>>>
+>>> So, I hacked the kernel to force the use of 64K TCEs. This resulted in
+>>> DDW smaller than max memory.
+>>>
+>>> When I tried to DLPAR ADD memory, it failed with error code of -4
+>>> (H_PARAMETER) from HCALL (H_PUT_TCE/H_PUT_TCE_INDIRECT), when
+>>> iommu_mem_notifier() invoked tce_setrange_multi_pSeriesLP().
+>>>
+>>> I didn't test the DLPAR REMOVE path, to verify if incorrect TCEs are
+>>> removed by tce_clearrange_multi_pSeriesLP(), since I would need to
+>>> hack kernel to force dynamically added TCEs to the high IO Bus
+>>> Addresses. But, the concept is  same.
+>>>
+>>> Thanks,
+>>>
+>>> Gaurav
+>>>
+>>> On 6/13/23 12:16 PM, Gaurav Batra wrote:
+>>>> When memory is dynamically added/removed, iommu_mem_notifier() is
+>>>> invoked. This
+>>>> routine traverses through all the DMA windows (DDW only, not default
+>>>> windows)
+>>>> to add/remove "direct" TCE mappings. The routines for this purpose are
+>>>> tce_clearrange_multi_pSeriesLP() and tce_clearrange_multi_pSeriesLP().
+>>>>
+>>>> Both these routines are designed for Direct mapped DMA windows only.
+>>>>
+>>>> The issue is that there could be some DMA windows in the list which
+>>>> are not
+>>>> "direct" mapped. Calling these routines will either,
+>>>>
+>>>> 1) remove some dynamically mapped TCEs, Or
+>>>> 2) try to add TCEs which are out of bounds and HCALL returns H_PARAMETER
+>>>>
+>>>> Here are the side affects when these routines are incorrectly invoked
+>>>> for
+>>>> "dynamically" mapped DMA windows.
+>>>>
+>>>> tce_setrange_multi_pSeriesLP()
+>>>>
+>>>> This adds direct mapped TCEs. Now, this could invoke HCALL to add
+>>>> TCEs with
+>>>> out-of-bound range. In this scenario, HCALL will return H_PARAMETER
+>>>> and DLAR
+>>>> ADD of memory will fail.
+>>>>
+>>>> tce_clearrange_multi_pSeriesLP()
+>>>>
+>>>> This will remove range of TCEs. The TCE range that is calculated,
+>>>> depending on
+>>>> the memory range being added, could infact be mapping some other memory
+>>>> address (for dynamic DMA window scenario). This will wipe out those
+>>>> TCEs.
+>>>>
+>>>> The solution is for iommu_mem_notifier() to only invoke these
+>>>> routines for
+>>>> "direct" mapped DMA windows.
+>>>>
+>>>> Signed-off-by: Gaurav Batra <gbatra@linux.vnet.ibm.com>
+>>>> Reviewed-by: Brian King <brking@linux.vnet.ibm.com>
+>>>> ---
+>>>>    arch/powerpc/platforms/pseries/iommu.c | 17 +++++++++++++----
+>>>>    1 file changed, 13 insertions(+), 4 deletions(-)
+>>>>
+>>>> diff --git a/arch/powerpc/platforms/pseries/iommu.c
+>>>> b/arch/powerpc/platforms/pseries/iommu.c
+>>>> index 918f511837db..24dd61636400 100644
+>>>> --- a/arch/powerpc/platforms/pseries/iommu.c
+>>>> +++ b/arch/powerpc/platforms/pseries/iommu.c
+>>>> @@ -363,6 +363,7 @@ struct dynamic_dma_window_prop {
+>>>>    struct dma_win {
+>>>>        struct device_node *device;
+>>>>        const struct dynamic_dma_window_prop *prop;
+>>>> +    bool    direct;
+>>>>        struct list_head list;
+>>>>    };
+>>>>
+>>>> @@ -1409,6 +1410,8 @@ static bool enable_ddw(struct pci_dev *dev,
+>>>> struct device_node *pdn)
+>>>>            goto out_del_prop;
+>>>>
+>>>>        if (direct_mapping) {
+>>>> +        window->direct = true;
+>>>> +
+>>>>            /* DDW maps the whole partition, so enable direct DMA
+>>>> mapping */
+>>>>            ret = walk_system_ram_range(0, memblock_end_of_DRAM() >>
+>>>> PAGE_SHIFT,
+>>>>                            win64->value,
+>>>> tce_setrange_multi_pSeriesLP_walk);
+>>>> @@ -1425,6 +1428,8 @@ static bool enable_ddw(struct pci_dev *dev,
+>>>> struct device_node *pdn)
+>>>>            int i;
+>>>>            unsigned long start = 0, end = 0;
+>>>>
+>>>> +        window->direct = false;
+>>>> +
+>>>>            for (i = 0; i < ARRAY_SIZE(pci->phb->mem_resources); i++) {
+>>>>                const unsigned long mask = IORESOURCE_MEM_64 |
+>>>> IORESOURCE_MEM;
+>>>>
+>>>> @@ -1587,8 +1592,10 @@ static int iommu_mem_notifier(struct
+>>>> notifier_block *nb, unsigned long action,
+>>>>        case MEM_GOING_ONLINE:
+>>>>            spin_lock(&dma_win_list_lock);
+>>>>            list_for_each_entry(window, &dma_win_list, list) {
+>>>> -            ret |= tce_setrange_multi_pSeriesLP(arg->start_pfn,
+>>>> -                    arg->nr_pages, window->prop);
+>>>> +            if (window->direct) {
+>>>> +                ret |= tce_setrange_multi_pSeriesLP(arg->start_pfn,
+>>>> +                        arg->nr_pages, window->prop);
+>>>> +            }
+>>>>                /* XXX log error */
+>>>>            }
+>>>>            spin_unlock(&dma_win_list_lock);
+>>>> @@ -1597,8 +1604,10 @@ static int iommu_mem_notifier(struct
+>>>> notifier_block *nb, unsigned long action,
+>>>>        case MEM_OFFLINE:
+>>>>            spin_lock(&dma_win_list_lock);
+>>>>            list_for_each_entry(window, &dma_win_list, list) {
+>>>> -            ret |= tce_clearrange_multi_pSeriesLP(arg->start_pfn,
+>>>> -                    arg->nr_pages, window->prop);
+>>>> +            if (window->direct) {
+>>>> +                ret |= tce_clearrange_multi_pSeriesLP(arg->start_pfn,
+>>>> +                        arg->nr_pages, window->prop);
+>>>> +            }
+>>>>                /* XXX log error */
+>>>>            }
+>>>>            spin_unlock(&dma_win_list_lock);
