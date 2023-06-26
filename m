@@ -2,77 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91DFC73D6EB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jun 2023 06:42:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 275F373D704
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jun 2023 06:55:25 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=TnLYX9fF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=WJldk12p;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QqFZ83YsQz3bZ4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jun 2023 14:42:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QqFs70K0pz3bX8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jun 2023 14:55:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=TnLYX9fF;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=WJldk12p;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::32c; helo=mail-ot1-x32c.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ot1-x32c.google.com (mail-ot1-x32c.google.com [IPv6:2607:f8b0:4864:20::32c])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QqFY936GZz2ys3
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Jun 2023 14:41:32 +1000 (AEST)
-Received: by mail-ot1-x32c.google.com with SMTP id 46e09a7af769-6b72329b63eso2841059a34.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Jun 2023 21:41:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687754489; x=1690346489;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IjIjSBtwF6o7woy6Npq28vEiTf2tiatJf1eyfceP8+M=;
-        b=TnLYX9fF5KeprRW3Kz4HAa5iaGoitIq1SE9Gi6/kpv3H2WwGmka5UYGfZDRIHiA9aB
-         29aJ+EQLJMBw+FO55dCtwEoJy2eBpqZxij9V4hxSBz8wLHE+xpKhFwal4Jq/ovItuNZQ
-         eC5rPYkQtQiuMI6H4bLib3AmBW7i1G2LIuh2gNmuoV3SsPbTq5qXcevkQaOTXSMA89PQ
-         8wrjZgY1XDcImhYkYKN0S6WlJ7YqPG4DNp00CNjNtex/B8iQRJWK+QyRuunyqAXWsFe/
-         DmHGtlbMVioKAUCmEaaTosr45t8j5etMfv1eCat0hvqRu3pbeQAkY8QYnh8Skg/zH1PO
-         6Wkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687754489; x=1690346489;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=IjIjSBtwF6o7woy6Npq28vEiTf2tiatJf1eyfceP8+M=;
-        b=UCxdxSHWz2UDuyD+CWVH/6mgvogd+BatPIaDEAnFpkETIwgvTs0b4MrNALvpENrHcl
-         FBlUjKFxCfeDE7lyFICy9ANsXz4fvDkh0zMTf9zgjE3G0YtZOWf07AXsOU6GaZgacyM/
-         ODu/8qn9P1BYmk814YWbV6T0EB3D3aEeVbbDLXW21+SBythgcuoKDNR+3+xBPrRHLbL8
-         jWAkcre2yVRmApuroCmxKv7Bw6NkwIdvLZf1nBpiq/+lBofQ2ndlNgyYKJa3Z058j9cZ
-         m++JC5SgHgBEhIjd3LLS+k6U6V2WFxBEbkhGMONwuRxrNswqZEA6MctqCDAr80UI0p1W
-         JQQA==
-X-Gm-Message-State: AC+VfDySEDhyo74ujGcbaI9ZpHhmiPW1IEbdeE87eV4o1CNqA2atGtJx
-	FasNc2wgarshb7HeFw6FTso=
-X-Google-Smtp-Source: ACHHUZ4AB8+akzOG9NaJ7kF9YsaDyO733dStDUCkMDQ4+Chv0ieZyhsPU7l9BhtpBVSHOQm0SzYGGg==
-X-Received: by 2002:a05:6808:168e:b0:39e:d559:61fc with SMTP id bb14-20020a056808168e00b0039ed55961fcmr27544563oib.30.1687754489238;
-        Sun, 25 Jun 2023 21:41:29 -0700 (PDT)
-Received: from localhost ([1.146.50.103])
-        by smtp.gmail.com with ESMTPSA id rm8-20020a17090b3ec800b00259e553f59bsm5022722pjb.20.2023.06.25.21.41.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 25 Jun 2023 21:41:28 -0700 (PDT)
-Mime-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QqFrB6Pwjz2ys3
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Jun 2023 14:54:34 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QqFr65Yxkz4wb3;
+	Mon, 26 Jun 2023 14:54:30 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1687755271;
+	bh=GI2Mk6KUVsUcdqRJ8WZo5YaqGj9JC4bMFc5bfakqFds=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=WJldk12pFgT/54nHo/XENJxwG4Wtzqa2PLodnI8Neh3pCiwFxQnfXKBlvEWGpcO8U
+	 OwVJZ6yeYLm1C8NQJbv0dxgM/43Ts2tYYvvCltcnP4/cPpeKzA4GPcL4FaIbBU0ccF
+	 EoUHQeqSce10Ei9oL+8tD3aT41wcC9ob/Uwm6D+P+0U4l040upLqMLV7vEvTA60zKb
+	 yBxlIcYZv8Jqn0Sio1MW3G3nxJUWhht6d1d5iex6G1pvkFCc9mAksc3y89yTv3Jj4P
+	 3NQKs5U74Wctu6veBcsw6eeauqNieBAw1J4OYz62gZOdNHLGdg/mYVCDh6VYzeXatn
+	 /VzEwYvDSoulQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Gaurav Batra <gbatra@linux.vnet.ibm.com>
+Subject: Re: [PATCH] powerpc/iommu: TCEs are incorrectly manipulated with
+ DLPAR add/remove of memory
+In-Reply-To: <6c6de9d0-1d40-c1f6-2b9a-b00eb3673b44@linux.vnet.ibm.com>
+References: <20230613171641.15641-1-gbatra@linux.vnet.ibm.com>
+ <ee63bcc9-4e06-198b-b3a2-5519bc11a83c@linux.vnet.ibm.com>
+ <6c6de9d0-1d40-c1f6-2b9a-b00eb3673b44@linux.vnet.ibm.com>
+Date: Mon, 26 Jun 2023 14:54:23 +1000
+Message-ID: <87pm5ihlhc.fsf@mail.lhotse>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 26 Jun 2023 14:41:21 +1000
-Message-Id: <CTMB151SAX64.1FMUHTKTUKWWE@wheely>
-To: "Masahiro Yamada" <masahiroy@kernel.org>
-Subject: Re: [PATCH] powerpc: remove checks for binutils older than 2.25
-From: "Nicholas Piggin" <npiggin@gmail.com>
-X-Mailer: aerc 0.15.2
-References: <20230119082250.151485-1-masahiroy@kernel.org>
- <CACPK8XeGsWN+2L57=dfQWOTSo8df7_qrxhwvV4Ho0rkhV=0vSw@mail.gmail.com>
- <CAK7LNAQWtDHOs=K+qznt5U1WiDv86tChkj4zOer4wtVRB974OA@mail.gmail.com>
- <CAK7LNAS=UCo_o-B0mgsR+SDb0sYwvQo90uag5sJ1UmB+8NqLjQ@mail.gmail.com>
- <CTM7K580U3T2.261RJKV58M653@wheely>
- <CAK7LNARx4exTpkCeR47T+XdF5-a7nLZ19p0R4tvnqyOT5y92XQ@mail.gmail.com>
-In-Reply-To: <CAK7LNARx4exTpkCeR47T+XdF5-a7nLZ19p0R4tvnqyOT5y92XQ@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,191 +61,200 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, Joel Stanley <joel@jms.id.au>, linuxppc-dev@lists.ozlabs.org
+Cc: Brian King <brking@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon Jun 26, 2023 at 1:11 PM AEST, Masahiro Yamada wrote:
-> On Mon, Jun 26, 2023 at 10:58=E2=80=AFAM Nicholas Piggin <npiggin@gmail.c=
-om> wrote:
-> >
-> > On Sun Jun 25, 2023 at 6:02 PM AEST, Masahiro Yamada wrote:
-> > > On Thu, Jan 19, 2023 at 9:37=E2=80=AFPM Masahiro Yamada <masahiroy@ke=
-rnel.org> wrote:
-> > > >
-> > > > On Thu, Jan 19, 2023 at 9:12 PM Joel Stanley <joel@jms.id.au> wrote=
-:
-> > > > >
-> > > > > On Thu, 19 Jan 2023 at 08:24, Masahiro Yamada <masahiroy@kernel.o=
-rg> wrote:
-> > > > > >
-> > > > > > Commit e4412739472b ("Documentation: raise minimum supported ve=
-rsion of
-> > > > > > binutils to 2.25") allows us to remove the checks for old binut=
-ils.
-> > > > > >
-> > > > > > There is no more user for ld-ifversion. Remove it as well.
-> > > > >
-> > > > > ppc kernels fail to link with 2.27 under some configurations:
-> > > > >
-> > > > >  https://github.com/linuxppc/issues/issues/388
-> > > > >
-> > > > > We may want to use ld-ifversion to exclude that version.
-> > > >
-> > > >
-> > >
-> > >
-> > > Ping?
-> > >
-> > >
-> > >
-> > >
-> > > >
-> > > > For LLD, CONFIG option is directly checked.
-> >
-> > Yeah, doesn't seem too difficult to add new linker version tests if nee=
-ded.
-> >
-> > > >
-> > > >
-> > > > masahiro@zoe:~/ref/linux(master)$ git grep  CONFIG_LLD_VERSION
-> > > > Makefile:ifeq ($(call test-lt, $(CONFIG_LLD_VERSION), 130000),y)
-> > > > arch/riscv/Makefile:ifeq ($(call test-lt, $(CONFIG_LLD_VERSION), 15=
-0000),y)
-> > > > arch/x86/Makefile:ifeq ($(call test-lt, $(CONFIG_LLD_VERSION), 1300=
-00),y)
-> > > > scripts/Kbuild.include:# Usage: $(call test-lt, $(CONFIG_LLD_VERSIO=
-N), 150000)
-> > > >
-> > > >
-> > > >
-> > > >
-> > > >
-> > > >
-> > > >
-> > > >
-> > > >
-> > > >
-> > > >
-> > > > > >
-> > > > > > Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> > > > > > ---
-> > > > > >
-> > > > > >  arch/powerpc/Makefile     | 22 +---------------------
-> > > > > >  arch/powerpc/lib/Makefile |  2 +-
-> > > > > >  scripts/Makefile.compiler |  4 ----
-> > > > > >  3 files changed, 2 insertions(+), 26 deletions(-)
-> > > > > >
-> > > > > > diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-> > > > > > index dc4cbf0a5ca9..3d265b16c0ae 100644
-> > > > > > --- a/arch/powerpc/Makefile
-> > > > > > +++ b/arch/powerpc/Makefile
-> > > > > > @@ -42,18 +42,13 @@ machine-$(CONFIG_PPC64) +=3D 64
-> > > > > >  machine-$(CONFIG_CPU_LITTLE_ENDIAN) +=3D le
-> > > > > >  UTS_MACHINE :=3D $(subst $(space),,$(machine-y))
-> > > > > >
-> > > > > > -# XXX This needs to be before we override LD below
-> > > > > > -ifdef CONFIG_PPC32
-> > > > > > -KBUILD_LDFLAGS_MODULE +=3D arch/powerpc/lib/crtsavres.o
-> > > > > > -else
-> > > > > > -ifeq ($(call ld-ifversion, -ge, 22500, y),y)
-> > > > > > +ifeq ($(CONFIG_PPC64)$(CONFIG_LD_IS_BFD),yy)
-> > > > > >  # Have the linker provide sfpr if possible.
-> > > > > >  # There is a corresponding test in arch/powerpc/lib/Makefile
-> > > > > >  KBUILD_LDFLAGS_MODULE +=3D --save-restore-funcs
-> > > > > >  else
-> > > > > >  KBUILD_LDFLAGS_MODULE +=3D arch/powerpc/lib/crtsavres.o
-> > > > > >  endif
-> > > > > > -endif
-> > > > > >
-> > > > > >  ifdef CONFIG_CPU_LITTLE_ENDIAN
-> > > > > >  KBUILD_CFLAGS  +=3D -mlittle-endian
-> > > > > > @@ -389,8 +384,6 @@ vdso_prepare: prepare0
-> > > > > >                 $(build)=3Darch/powerpc/kernel/vdso include/gen=
-erated/vdso64-offsets.h)
-> > > > > >  endif
-> > > > > >
-> > > > > > -archprepare: checkbin
-> > > > > > -
-> > > > > >  archheaders:
-> > > > > >         $(Q)$(MAKE) $(build)=3Darch/powerpc/kernel/syscalls all
-> > > > > >
-> > > > > > @@ -405,16 +398,3 @@ else
-> > > > > >         $(eval KBUILD_CFLAGS +=3D -mstack-protector-guard-offse=
-t=3D$(shell awk '{if ($$2 =3D=3D "TASK_CANARY") print $$3;}' include/genera=
-ted/asm-offsets.h))
-> > > > > >  endif
-> > > > > >  endif
-> > > > > > -
-> > > > > > -PHONY +=3D checkbin
-> > > > > > -# Check toolchain versions:
-> > > > > > -# - gcc-4.6 is the minimum kernel-wide version so nothing requ=
-ired.
-> > > > > > -checkbin:
-> > > > > > -       @if test "x${CONFIG_LD_IS_LLD}" !=3D "xy" -a \
-> > > > > > -               "x$(call ld-ifversion, -le, 22400, y)" =3D "xy"=
- ; then \
-> > > > > > -               echo -n '*** binutils 2.24 miscompiles weak sym=
-bols ' ; \
-> > > > > > -               echo 'in some circumstances.' ; \
-> > > > > > -               echo    '*** binutils 2.23 do not define the TO=
-C symbol ' ; \
-> > > > > > -               echo -n '*** Please use a different binutils ve=
-rsion.' ; \
-> > > > > > -               false ; \
-> > > > > > -       fi
-> > > > > > diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makef=
-ile
-> > > > > > index 4de71cbf6e8e..c53618c34b70 100644
-> > > > > > --- a/arch/powerpc/lib/Makefile
-> > > > > > +++ b/arch/powerpc/lib/Makefile
-> > > > > > @@ -42,7 +42,7 @@ obj-$(CONFIG_FUNCTION_ERROR_INJECTION)       =
- +=3D error-inject.o
-> > > > > >  # 64-bit linker creates .sfpr on demand for final link (vmlinu=
-x),
-> > > > > >  # so it is only needed for modules, and only for older linkers=
- which
-> > > > > >  # do not support --save-restore-funcs
-> > > > > > -ifeq ($(call ld-ifversion, -lt, 22500, y),y)
-> > > > > > +ifndef CONFIG_LD_IS_BFD
-> > > > > >  extra-$(CONFIG_PPC64)  +=3D crtsavres.o
-> > > > > >  endif
-> >
-> > This test got inverted for LLD now AFAIKS?
+Gaurav Batra <gbatra@linux.vnet.ibm.com> writes:
+> Hello Michael,
 >
->
-> In my understanding,
-> For a BFD linker, use --save-restore-funcs.
-> Otherwise (i.e. CONFIG_LD_IS_BFD is unset), link crtsavres.o to modules.
->
-> I hope I did not change the logic.
+> Did you get a chance to look into this patch? I don't mean to rush you.=20
+> Just wondering if there is anything I can do to help make the patch to=20
+> Upstream.
 
-I think I misread it, ignore me.
->
->
->
-> >
-> > Does LLVM support --save-restore-funcs and supply .sfpr already I
-> > wonder? We could remove this stuff entirely.
->
-> I don't know.
->
-> If LLVM 11.0.0  (the minimum supported LLVM version) supports
-> --save-restore-funcs, you can remove this check entirely.
-> Even so, it should be done in a follow-up patch.
+I skimmed it and decided it wasn't a critical bug fix, and hoped someone
+else would review it - silly me :D
 
-True. I don't have an lld < 14 to test, but 14 does accept the option
-and emits the functions if needed. But my clang 14 does not even
-generate calls to them so I assume earlier ones do not either. So we
-might be able to get rid of this stuff. I'll open an issue for it.
+But the patch looks simple enough, and the explanation is very good so I
+think it looks good to merge.
 
-> This patch is just dropping dead code for BFD linker < 2.25,
-> which is now unsupported. Nothing else has changed (I believe).
+I'll apply it for v6.5.
 
-Seems okay then.
+cheers
 
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-
-Thanks,
-Nick
-
+> On 6/13/23 12:17 PM, Gaurav Batra wrote:
+>> Hello Michael,
+>>
+>> I found this bug while going though the code. This bug is exposed when=20
+>> DDW is smaller than the max memory of the LPAR. This will result in=20
+>> creating DDW which will have Dynamically mapped TCEs (no direct mapping).
+>>
+>> I would like to stress that this=C2=A0 bug is exposed only in Upstream=20
+>> kernel. Current kernel level in Distros are not exposed to this since=20
+>> they don't have the=C2=A0 concept of "dynamically mapped" DDW.
+>>
+>> I didn't have access to any of the P10 boxes with large amount of=20
+>> memory to=C2=A0 re-create the scenario. On P10 we have 2MB TCEs, which=20
+>> results in DDW large enough to be able to cover=C2=A0 max memory I could=
+=20
+>> have for the LPAR. As a result,=C2=A0 IO Bus Addresses generated were=20
+>> always within DDW limits and no H_PARAMETER was returned by HCALL.
+>>
+>> So, I hacked the kernel to force the use of 64K TCEs. This resulted in=20
+>> DDW smaller than max memory.
+>>
+>> When I tried to DLPAR ADD memory, it failed with error code of -4=20
+>> (H_PARAMETER) from HCALL (H_PUT_TCE/H_PUT_TCE_INDIRECT), when=20
+>> iommu_mem_notifier() invoked tce_setrange_multi_pSeriesLP().
+>>
+>> I didn't test the DLPAR REMOVE path, to verify if incorrect TCEs are=20
+>> removed by tce_clearrange_multi_pSeriesLP(), since I would need to=20
+>> hack kernel to force dynamically added TCEs to the high IO Bus=20
+>> Addresses. But, the concept is=C2=A0 same.
+>>
+>> Thanks,
+>>
+>> Gaurav
+>>
+>> On 6/13/23 12:16 PM, Gaurav Batra wrote:
+>>> When memory is dynamically added/removed, iommu_mem_notifier() is=20
+>>> invoked. This
+>>> routine traverses through all the DMA windows (DDW only, not default=20
+>>> windows)
+>>> to add/remove "direct" TCE mappings. The routines for this purpose are
+>>> tce_clearrange_multi_pSeriesLP() and tce_clearrange_multi_pSeriesLP().
+>>>
+>>> Both these routines are designed for Direct mapped DMA windows only.
+>>>
+>>> The issue is that there could be some DMA windows in the list which=20
+>>> are not
+>>> "direct" mapped. Calling these routines will either,
+>>>
+>>> 1) remove some dynamically mapped TCEs, Or
+>>> 2) try to add TCEs which are out of bounds and HCALL returns H_PARAMETER
+>>>
+>>> Here are the side affects when these routines are incorrectly invoked=20
+>>> for
+>>> "dynamically" mapped DMA windows.
+>>>
+>>> tce_setrange_multi_pSeriesLP()
+>>>
+>>> This adds direct mapped TCEs. Now, this could invoke HCALL to add=20
+>>> TCEs with
+>>> out-of-bound range. In this scenario, HCALL will return H_PARAMETER=20
+>>> and DLAR
+>>> ADD of memory will fail.
+>>>
+>>> tce_clearrange_multi_pSeriesLP()
+>>>
+>>> This will remove range of TCEs. The TCE range that is calculated,=20
+>>> depending on
+>>> the memory range being added, could infact be mapping some other memory
+>>> address (for dynamic DMA window scenario). This will wipe out those=20
+>>> TCEs.
+>>>
+>>> The solution is for iommu_mem_notifier() to only invoke these=20
+>>> routines for
+>>> "direct" mapped DMA windows.
+>>>
+>>> Signed-off-by: Gaurav Batra <gbatra@linux.vnet.ibm.com>
+>>> Reviewed-by: Brian King <brking@linux.vnet.ibm.com>
+>>> ---
+>>> =C2=A0 arch/powerpc/platforms/pseries/iommu.c | 17 +++++++++++++----
+>>> =C2=A0 1 file changed, 13 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/arch/powerpc/platforms/pseries/iommu.c=20
+>>> b/arch/powerpc/platforms/pseries/iommu.c
+>>> index 918f511837db..24dd61636400 100644
+>>> --- a/arch/powerpc/platforms/pseries/iommu.c
+>>> +++ b/arch/powerpc/platforms/pseries/iommu.c
+>>> @@ -363,6 +363,7 @@ struct dynamic_dma_window_prop {
+>>> =C2=A0 struct dma_win {
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct device_node *device;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const struct dynamic_dma_window_prop *pr=
+op;
+>>> +=C2=A0=C2=A0=C2=A0 bool=C2=A0=C2=A0=C2=A0 direct;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct list_head list;
+>>> =C2=A0 };
+>>>
+>>> @@ -1409,6 +1410,8 @@ static bool enable_ddw(struct pci_dev *dev,=20
+>>> struct device_node *pdn)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto out_del_pro=
+p;
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (direct_mapping) {
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 window->direct =3D true;
+>>> +
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* DDW maps the =
+whole partition, so enable direct DMA=20
+>>> mapping */
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret =3D walk_sys=
+tem_ram_range(0, memblock_end_of_DRAM() >>=20
+>>> PAGE_SHIFT,
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 win64->value,=20
+>>> tce_setrange_multi_pSeriesLP_walk);
+>>> @@ -1425,6 +1428,8 @@ static bool enable_ddw(struct pci_dev *dev,=20
+>>> struct device_node *pdn)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int i;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long st=
+art =3D 0, end =3D 0;
+>>>
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 window->direct =3D false;
+>>> +
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 for (i =3D 0; i =
+< ARRAY_SIZE(pci->phb->mem_resources); i++) {
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 const unsigned long mask =3D IORESOURCE_MEM_64 |=20
+>>> IORESOURCE_MEM;
+>>>
+>>> @@ -1587,8 +1592,10 @@ static int iommu_mem_notifier(struct=20
+>>> notifier_block *nb, unsigned long action,
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 case MEM_GOING_ONLINE:
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 spin_lock(&dma_w=
+in_list_lock);
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 list_for_each_en=
+try(window, &dma_win_list, list) {
+>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret=
+ |=3D tce_setrange_multi_pSeriesLP(arg->start_pfn,
+>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 arg->nr_pages, window->prop);
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if =
+(window->direct) {
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 ret |=3D tce_setrange_multi_pSeriesLP(arg->start_pfn,
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 arg->=
+nr_pages, window->prop);
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 /* XXX log error */
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 spin_unlock(&dma=
+_win_list_lock);
+>>> @@ -1597,8 +1604,10 @@ static int iommu_mem_notifier(struct=20
+>>> notifier_block *nb, unsigned long action,
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 case MEM_OFFLINE:
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 spin_lock(&dma_w=
+in_list_lock);
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 list_for_each_en=
+try(window, &dma_win_list, list) {
+>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret=
+ |=3D tce_clearrange_multi_pSeriesLP(arg->start_pfn,
+>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 arg->nr_pages, window->prop);
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if =
+(window->direct) {
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 ret |=3D tce_clearrange_multi_pSeriesLP(arg->start_pf=
+n,
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 arg->=
+nr_pages, window->prop);
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 /* XXX log error */
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 spin_unlock(&dma=
+_win_list_lock);
