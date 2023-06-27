@@ -1,92 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF6F174006F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jun 2023 18:10:24 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=eDS3y/jv;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XY59H5Hw;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AC797401B2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jun 2023 18:53:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qr8nV4pKrz30Kg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jun 2023 02:10:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qr9lC1Z1zz3bpp
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jun 2023 02:53:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=eDS3y/jv;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XY59H5Hw;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 88 seconds by postgrey-1.37 at boromir; Wed, 28 Jun 2023 02:09:22 AEST
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.221.182; helo=mail-vk1-f182.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qr8mL62HDz2yGY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jun 2023 02:09:22 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1687882148;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hJDOCrbidQ6SQFQe4MgEFJjZ7UTNPrXFah4ZUMjVF/Y=;
-	b=eDS3y/jvGupoHcrLTzZogG7E9mRhoscPT3+AycEMHvg9malp7aIRS3DpYFHdnxH6kx2xrF
-	avJCt3TSd9xBE3lk+Kn8KqYeNkCJeqgarybsF9ElcWgCj3eYElllccceE3YRVfRKYjXvOx
-	UEbJWG3nMp0HVrNOrtaIdmIHCbAhL5Y=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1687882152;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hJDOCrbidQ6SQFQe4MgEFJjZ7UTNPrXFah4ZUMjVF/Y=;
-	b=XY59H5Hw24AN38e7xxbRvY70F39amz2/iGyYKllY9OhV5TjLEO2ceDqorE03K+zeqUvUNz
-	K9NLcq9w4ztXcLh0B8uy2eXX+nA79qyKxN52Y5MndBlI2oq0oCUgdghb55/aqF9QTwMcAJ
-	lw1YrYD4582C7M2mPIfbZNPwEbsrto0=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-408-idJfyU_aNKaSG5GP6sLdKw-1; Tue, 27 Jun 2023 12:07:46 -0400
-X-MC-Unique: idJfyU_aNKaSG5GP6sLdKw-1
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-74faf5008bbso79690385a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jun 2023 09:07:46 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qr9kh61Zqz2y1d
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jun 2023 02:52:59 +1000 (AEST)
+Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-460eb67244eso1590327e0c.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jun 2023 09:52:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687882066; x=1690474066;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hJDOCrbidQ6SQFQe4MgEFJjZ7UTNPrXFah4ZUMjVF/Y=;
-        b=WGgm9eSMnz9dY26rlx4L0C699tmX3aSq5liPchV0izwnjZRo9tPOPK/6sl+uXa8P57
-         uui3/PYHRwa4mb396CHrI2Uronsdr4GE03Oba9d1Kq3vBVzM5CsCSA8LMTVrvPtdSzdT
-         9bFyAZY5ytGR4lTCFuyxD54KyhFfYQuaG2Yu+UViB4s1vBmp4Igc6M+/8dlYuEwlQwgZ
-         5bN0h++HIwm4/82SYB0/3c6dTfH+Xd/3s5JRuA4u9/CWbGk1H94vLL+0hVyqrZOJn/Ws
-         vEmW4/MT9sMQxjYt1Kx/aPkdHQ0WRddX33G1eQ9yUdskGgvGfzvXUXDq4zgdxxppsldK
-         KNdw==
-X-Gm-Message-State: AC+VfDy34e7piRM9gfNHFINICul2nSieoYSoj6QjFthG+5CIa7+4B5lO
-	fn+TrgzOSFt9oTfi44ToobW6rzsSbIWu2fHkIKK9XErxpSEm8FxGz7wd9RtJJ+8pKnHuCGgbv+E
-	3N+eVkdHsKN5eUwhV9jWGYFpyYA==
-X-Received: by 2002:a05:620a:4007:b0:765:7b61:46fc with SMTP id h7-20020a05620a400700b007657b6146fcmr12614182qko.7.1687882066188;
-        Tue, 27 Jun 2023 09:07:46 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7UY1eApNq4tXkhQSQVDzyCNrRRXMA0KLJ6oWun1WyljocOJD3jbWnq1iikbRngPAZ/IFjT9Q==
-X-Received: by 2002:a05:620a:4007:b0:765:7b61:46fc with SMTP id h7-20020a05620a400700b007657b6146fcmr12614153qko.7.1687882065917;
-        Tue, 27 Jun 2023 09:07:45 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
-        by smtp.gmail.com with ESMTPSA id m21-20020a05620a13b500b0075ecdc937ffsm1342302qki.41.2023.06.27.09.07.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Jun 2023 09:07:45 -0700 (PDT)
-Date: Tue, 27 Jun 2023 12:07:43 -0400
-From: Peter Xu <peterx@redhat.com>
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Subject: Re: [PATCH v6 03/33] pgtable: Create struct ptdesc
-Message-ID: <ZJsJT9dLtxaKlxVb@x1n>
-References: <20230627031431.29653-1-vishal.moola@gmail.com>
- <20230627031431.29653-4-vishal.moola@gmail.com>
+        d=1e100.net; s=20221208; t=1687884775; x=1690476775;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3lIZI96K9vdLoSwUwpQZZH+ZWrx3VsFWqYpi3+69yqU=;
+        b=U2Oe6CGjeu4D62Xq745bapg6QbPEiWTzWMJ6DylSkSGKmmRpKtm48fyxfco0T/fCBK
+         CteS7sNJcGWkf0CMuNNCaPEFIC1NBeXB8vjSIwgjsarlfFv5gSgiuGhKQQwQipFw8Rij
+         7kgKVqVeEr7KtIIliM7kMkbhVEPRWJjAqIgho43r3kd/DTeblC7K4LqcDctlJopAEnSo
+         gMoEkzZZ4cnhubmw3kI0oJkMFpD4Jzs1mykpOKvxACXueBjXjqRBSm+JsU2S8vq8mV6+
+         A+4xXTPvEKI/+rjjIh0gfWmmaUfz8q7Qnc/Rho6LZQ4TwjiWOd+kxxtweXyA/Yq680wZ
+         jttg==
+X-Gm-Message-State: AC+VfDxEmdNLAL2j8tcQqW9RVjKkPlO6eJIE5m3krMHwxUyXG1qPEjVz
+	V0i/C2MAxZIB8dhzU2eAbiqdYNZN89wU5D3r
+X-Google-Smtp-Source: ACHHUZ7tXEZ+9xso6ZcRhFtLDXuEkTGfeF4DWTU+0t2X6buanho6xJyqF+s2CftRYsgdgoqzYEAo0Q==
+X-Received: by 2002:a1f:5cd8:0:b0:470:5862:90c0 with SMTP id q207-20020a1f5cd8000000b00470586290c0mr15963274vkb.5.1687884774948;
+        Tue, 27 Jun 2023 09:52:54 -0700 (PDT)
+Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com. [209.85.217.47])
+        by smtp.gmail.com with ESMTPSA id j81-20020a1fa054000000b0047720d2aba1sm1529704vke.36.2023.06.27.09.52.54
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Jun 2023 09:52:54 -0700 (PDT)
+Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-440c14d6a5eso1536041137.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jun 2023 09:52:54 -0700 (PDT)
+X-Received: by 2002:a05:6358:f55:b0:132:d3b1:c34a with SMTP id
+ c21-20020a0563580f5500b00132d3b1c34amr12105551rwj.7.1687884753801; Tue, 27
+ Jun 2023 09:52:33 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20230627031431.29653-4-vishal.moola@gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+References: <20230327121317.4081816-1-arnd@kernel.org> <20230327121317.4081816-22-arnd@kernel.org>
+ <OS0PR01MB5922EDAFCD6DA0313DB99C5E86989@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+ <66899d69-1339-4a61-8612-6f8e452b0b26@app.fastmail.com>
+In-Reply-To: <66899d69-1339-4a61-8612-6f8e452b0b26@app.fastmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 27 Jun 2023 18:52:22 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdV5gT1GDLODsUe0XibPRsRHazF4K-UhxTOQCjtC9Ba4mQ@mail.gmail.com>
+Message-ID: <CAMuHMdV5gT1GDLODsUe0XibPRsRHazF4K-UhxTOQCjtC9Ba4mQ@mail.gmail.com>
+Subject: Re: [PATCH 21/21] dma-mapping: replace custom code with generic implementation
+To: Arnd Bergmann <arnd@arndb.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,85 +69,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Mike Rapoport <rppt@kernel.org>, kvm@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-sh@vger.kernel.org, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-csky@vger.kernel.org, linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, loongarch@lists.linux.dev, sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+Cc: Rich Felker <dalias@libc.org>, "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, Linus Walleij <linus.walleij@linaro.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, Max Filippov <jcmvbkbc@gmail.com>, "Conor.Dooley" <conor.dooley@microchip.com>, guoren <guoren@kernel.org>, "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>, Helge Deller <deller@gmx.de>, Russell King <linux@armlinux.org.uk>, Vineet Gupta <vgupta@kernel.org>, "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>, "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>, Neil Armstrong <neil.armstrong@linaro.org>, "Lad, Prabhakar" <prabhakar.mahadev-lad.rj@bp.renesas.com>, "l
+ inux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>, Emil Renner Berthing <emil.renner.berthing@canonical.com>, Paul Walmsley <paul.walmsley@sifive.com>, Biju Das <biju.das.jz@bp.renesas.com>, Stafford Horne <shorne@gmail.com>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, Brian Cain <bcain@quicinc.com>, Arnd Bergmann <arnd@kernel.org>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, "linux-openrisc@vger.kernel.org" <linux-openrisc@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>, "linux-oxnas@groups.io" <linux-oxnas@groups.io>, Robin Murphy <robin.murphy@arm.com>, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 26, 2023 at 08:14:01PM -0700, Vishal Moola (Oracle) wrote:
-> Currently, page table information is stored within struct page. As part
-> of simplifying struct page, create struct ptdesc for page table
-> information.
-> 
-> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-> Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
-> ---
->  include/linux/pgtable.h | 68 +++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 68 insertions(+)
-> 
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index 5063b482e34f..d46cb709ce08 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -987,6 +987,74 @@ static inline void ptep_modify_prot_commit(struct vm_area_struct *vma,
->  #endif /* __HAVE_ARCH_PTEP_MODIFY_PROT_TRANSACTION */
->  #endif /* CONFIG_MMU */
->  
-> +
-> +/**
-> + * struct ptdesc -    Memory descriptor for page tables.
-> + * @__page_flags:     Same as page flags. Unused for page tables.
-> + * @pt_rcu_head:      For freeing page table pages.
-> + * @pt_list:          List of used page tables. Used for s390 and x86.
-> + * @_pt_pad_1:        Padding that aliases with page's compound head.
-> + * @pmd_huge_pte:     Protected by ptdesc->ptl, used for THPs.
-> + * @_pt_s390_gaddr:   Aliases with page's mapping. Used for s390 gmap only.
+On Thu, Apr 13, 2023 at 2:52=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrote=
+:
+> On Thu, Apr 13, 2023, at 14:13, Biju Das wrote:
+> > FYI, this patch breaks on RZ/G2L SMARC EVK board and Arnd will send V2
+> > for fixing this issue.
+> >
+> > [10:53] <biju> [    3.384408] Unable to handle kernel paging request at
+> > virtual address 000000004afb0080
+>
+> Right, sorry about this, I accidentally removed the 'phys_to_virt()'
+> conversion on arm64.
 
-Should some arch-specific bits (and a few others) always under some
-#ifdefs, so it shouldn't appear on other archs?
+Meh, I missed that, so I ended up bisecting this same failure...
 
-> + * @pt_mm:            Used for x86 pgds.
-> + * @pt_frag_refcount: For fragmented page table tracking. Powerpc and s390 only.
-> + * @ptl:              Lock for the page table.
-> + * @__page_type:      Same as page->page_type. Unused for page tables.
-> + * @_refcount:        Same as page refcount. Used for s390 page tables.
-> + * @pt_memcg_data:    Memcg data. Tracked for page tables here.
-> + *
-> + * This struct overlays struct page for now. Do not modify without a good
-> + * understanding of the issues.
-> + */
-> +struct ptdesc {
-> +	unsigned long __page_flags;
-> +
-> +	union {
-> +		struct rcu_head pt_rcu_head;
-> +		struct list_head pt_list;
-> +		struct {
-> +			unsigned long _pt_pad_1;
-> +			pgtable_t pmd_huge_pte;
-> +		};
-> +	};
-> +	unsigned long _pt_s390_gaddr;
-> +
-> +	union {
-> +		struct mm_struct *pt_mm;
-> +		atomic_t pt_frag_refcount;
-> +	};
-> +
-> +	union {
-> +		unsigned long _pt_pad_2;
-> +#if ALLOC_SPLIT_PTLOCKS
-> +		spinlock_t *ptl;
-> +#else
-> +		spinlock_t ptl;
-> +#endif
-> +	};
-> +	unsigned int __page_type;
-> +	atomic_t _refcount;
-> +#ifdef CONFIG_MEMCG
-> +	unsigned long pt_memcg_data;
-> +#endif
-> +};
+This patch is now commit 801f1883c4bb70cc ("dma-mapping: replace
+custom code with generic implementation") in esmil/jh7100-dmapool,
+and broke booting on R-Car Gen3.
 
--- 
-Peter Xu
+The following gmail-whitespace-damaged patch fixes that:
 
+diff --git a/arch/arm64/mm/dma-mapping.c b/arch/arm64/mm/dma-mapping.c
+index 97b7cea5eb23aedd..77e0b68b43e5849a 100644
+--- a/arch/arm64/mm/dma-mapping.c
++++ b/arch/arm64/mm/dma-mapping.c
+@@ -15,17 +15,23 @@
+
+ static inline void arch_dma_cache_wback(phys_addr_t paddr, size_t size)
+ {
+-       dcache_clean_poc(paddr, paddr + size);
++       unsigned long start =3D (unsigned long)phys_to_virt(paddr);
++
++       dcache_clean_poc(start, start + size);
+ }
+
+ static inline void arch_dma_cache_inv(phys_addr_t paddr, size_t size)
+ {
+-       dcache_inval_poc(paddr, paddr + size);
++       unsigned long start =3D (unsigned long)phys_to_virt(paddr);
++
++       dcache_inval_poc(start, start + size);
+ }
+
+ static inline void arch_dma_cache_wback_inv(phys_addr_t paddr, size_t size=
+)
+ {
+-       dcache_clean_inval_poc(paddr, paddr + size);
++       unsigned long start =3D (unsigned long)phys_to_virt(paddr);
++
++       dcache_clean_inval_poc(start, start + size);
+ }
+
+ static inline bool arch_sync_dma_clean_before_fromdevice(void)
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
