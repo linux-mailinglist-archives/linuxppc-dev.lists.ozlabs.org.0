@@ -1,72 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63D9A740553
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jun 2023 22:54:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAFE474056B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jun 2023 23:02:27 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=AyDbzfEO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=EEAFfmkX;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QrH4y25C6z30XM
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jun 2023 06:54:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QrHGT5Qlnz30gs
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jun 2023 07:02:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=AyDbzfEO;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=EEAFfmkX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::22a; helo=mail-oi1-x22a.google.com; envelope-from=hughd@google.com; receiver=lists.ozlabs.org)
-Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com [IPv6:2607:f8b0:4864:20::22a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QrH464tNlz30Kf
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jun 2023 06:53:25 +1000 (AEST)
-Received: by mail-oi1-x22a.google.com with SMTP id 5614622812f47-3a1d9b64837so2523074b6e.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jun 2023 13:53:25 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QrHFX621Tz30Kf
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jun 2023 07:01:35 +1000 (AEST)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1b8062c1ee1so22693465ad.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jun 2023 14:01:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1687899202; x=1690491202;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=XFHD0hnOjuhPYILDUOJLbgwpgA6DIsDBsAhcitDEBFU=;
-        b=AyDbzfEOwQNJQ3Q6vCBJpIzejWz0XI+CwqIDE8UgstFVF4GBN1zCUvimRHgNDXa99Q
-         0A2XitElZYl4vkOr9ytUm0PmYJ5QsEPCI+4zrbGGcbdnAJac6UffXXzvU8rbykoGAN78
-         RiYeGRGQi0rsCCIEmUY28CGLOcGd0QWkwDLQhn+j3WVmaQn0hiL1rrTM2ApFwPn3rmOW
-         aIKz2rrQIuBq1j3yLWNWP1JGfXvLJejgPPRaYR2Sfe6YM1MfNiNFxfm4n9PGXCTAc+Ec
-         tpgYnKyue/RmYU1Emj+1xNmzsPduOW3Zz+V1MnsoHZ24+8K57GccuEEID0ga5vyglJnq
-         m0Uw==
+        d=gmail.com; s=20221208; t=1687899692; x=1690491692;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=P+M7tEnjJDtu150UIK78eMZjmbGUtM7e5Fjt8nWZ0yk=;
+        b=EEAFfmkXxvxLQKSckNGd2ZSV3KFogeID+Fu07F5vObGax9BbbGTHMjNPkWpqJAJVcH
+         pQvHfFi3MuvS2en7hgib7UJpPWUapwBCg8rlberKLmSq3DFWM7/xIZN7INLmmqEHLsUh
+         qitezyDQfhSscafezpHggVgt0WLI8tgIl0uMXCJdPAHvlcj4VIjJKb6j7/ZGCnIDizgv
+         wo2zP75PWYpQesW5XMNkIMNlUWOk9aqZVrMomyrANyuVHFRGKdh0f6XzxRPe0kewrYvm
+         0KzGKCqgMKcTqBBhxX7lyhj56QxI4SK/fKCSdPeLy85gsmtVFv88cBuoZEpsI4YCe97K
+         o/WQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687899202; x=1690491202;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XFHD0hnOjuhPYILDUOJLbgwpgA6DIsDBsAhcitDEBFU=;
-        b=QQNYmpM/E3NoZoKQJmoeYKClwtFqexpnATAXPvXqsl1EeNm0vH37j2YTdTcR/z7Ywg
-         n1d2uVYnt9jUlluXnoQuH7ZXuPf1OtmgHeJ9pudH7gJAFy3Lz5rerjn5M5tjnYHoCQ3L
-         8EP7VBo3cdDFxiUn6xEtssA/KACDmspgnVMszOmP8V5vdhDuOwVUre8srVGklKZ7h0Uj
-         d9qcbtsHbUxMqKYf5/2YVbydd66zyooC65i3jzogiUabvOZDpGDsXV5mgiCieywrT+uc
-         zPvqhCQociFZCVzw/gaj/RDVGBUK+XULHwlgx9t3thQkMvD3oCFI1J2bO5+sl6FEOYGp
-         ri6w==
-X-Gm-Message-State: AC+VfDxRHglSEx5hKPgaRyFX/XHU3pmYhWAps9aOKunB4BI45GX+trsQ
-	85ge6LmPKDKTC9FlcpSIMiygBQ==
-X-Google-Smtp-Source: ACHHUZ4cqZstCs1nyAEh2QwWGawSrsE1fPzwiUYItaOw1DYAGKznreSljpXPuAJlmNc2pAtztzw7zA==
-X-Received: by 2002:a05:6808:2a47:b0:3a1:df16:2e9e with SMTP id fa7-20020a0568082a4700b003a1df162e9emr6357738oib.12.1687899202175;
-        Tue, 27 Jun 2023 13:53:22 -0700 (PDT)
-Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id q131-20020a817589000000b00565eb8af1fesm2009195ywc.132.2023.06.27.13.53.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Jun 2023 13:53:21 -0700 (PDT)
-Date: Tue, 27 Jun 2023 13:53:17 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-X-X-Sender: hugh@ripple.attlocal.net
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [PATCH v2 05/12] powerpc: add pte_free_defer() for pgtables
- sharing page
-In-Reply-To: <ZJsV19f41CrfkFYa@ziepe.ca>
-Message-ID: <7b1be7d-9287-cbc6-ef7-55e44625e4e@google.com>
-References: <54cb04f-3762-987f-8294-91dafd8ebfb0@google.com> <5cd9f442-61da-4c3d-eca-b7f44d22aa5f@google.com> <ZJGRa4zvsXfc43vB@ziepe.ca> <2ad8b6cf-692a-ff89-ecc-586c20c5e07f@google.com> <ZJI7xkXWmjrE1yY3@ziepe.ca> <c8284d0-91cb-b65e-4c95-bfeb627234f@google.com>
- <ZJsV19f41CrfkFYa@ziepe.ca>
+        d=1e100.net; s=20221208; t=1687899692; x=1690491692;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=P+M7tEnjJDtu150UIK78eMZjmbGUtM7e5Fjt8nWZ0yk=;
+        b=SGb+isl8vr+Z9+pbgyq56isDheGnjTDmcYXTiU305/Y6fusWBOL/gAfQ9B5s9CLRWy
+         8QoWKBP8kK7He/wjcU5NB31yhS3+bDpOW7BqMsvDF95VPjyrgmNRwHg/JAfxAGn6QGk9
+         FNPbQVhmCXZg/lE0FOA1u43UKyJ1uVoYPXOw/rPEhH+Jx1VZxzWFUSroRVPmpMdLdxNQ
+         jdFhLmxom4vIBCR6jRCjf+Esx6DCm3Ee3BggLpJ2h7rmGMNQThRqM55N57kBNeD/ro2x
+         cqeRCJpUSyCXGv8shFFHCMQWTLrawP1nFJ++AhP3qMl1XJBjEipgZahknHbdZT59n1Hg
+         piXg==
+X-Gm-Message-State: AC+VfDxRUPb0Ck3hd3fRBmxdNbCy68IUmEIiaznVAx8P3JhKDxBnV1lt
+	kJLUF3rO1WCDoFsfnOo5BkM=
+X-Google-Smtp-Source: ACHHUZ5Ms+IS+/rtXxolIJxIsutHi1fnnUiL8cEAZTZ1vZL/Fg4JF6S5Mmuw32zf0DumOU0QNMHuig==
+X-Received: by 2002:a17:902:f542:b0:1b5:91:4693 with SMTP id h2-20020a170902f54200b001b500914693mr14752161plf.1.1687899692466;
+        Tue, 27 Jun 2023 14:01:32 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id jl3-20020a170903134300b001ac6b926621sm6363521plb.292.2023.06.27.14.01.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Jun 2023 14:01:31 -0700 (PDT)
+Message-ID: <2b7e8b1d-1697-6a25-434d-352f95e6fff2@roeck-us.net>
+Date: Tue, 27 Jun 2023 14:01:29 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v5 26/33] nios2: Convert __pte_free_tlb() to use ptdescs
+Content-Language: en-US
+To: Dinh Nguyen <dinguyen@kernel.org>, Vishal Moola <vishal.moola@gmail.com>
+References: <20230622205745.79707-1-vishal.moola@gmail.com>
+ <20230622205745.79707-27-vishal.moola@gmail.com>
+ <13bab37c-0f0a-431a-8b67-4379bf4dc541@roeck-us.net>
+ <CAOzc2px6VutRkMUTn+M5LFLf1YbRVZFgJ=q7StaApwYRxUWqQA@mail.gmail.com>
+ <cc954b15-63ab-9d9f-2d37-1aea78b7f65f@roeck-us.net>
+ <b6a5753b-8874-6465-f690-094ee753e038@roeck-us.net>
+ <CAOzc2pxdqeaRjYLfOqvMW-AEobTzD9xOP+MyP9nxgEbi1T2r7Q@mail.gmail.com>
+ <c3751051-7fc7-7129-b9a7-ead71c576ace@kernel.org>
+From: Guenter Roeck <linux@roeck-us.net>
+In-Reply-To: <c3751051-7fc7-7129-b9a7-ead71c576ace@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,28 +89,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Miaohe Lin <linmiaohe@huawei.com>, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Yang Shi <shy828301@gmail.com>, Peter Xu <peterx@redhat.com>, linux-kernel@vger.kernel.org, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Yu Zhao <yuzhao@google.com>, Ira Weiny <ira.weiny@intel.com>, Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, Steven Price <steven.price@arm.com>, Christoph Hellwig <hch@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Huang Ying <ying.huang@intel.com>, Axel Rasmussen <axelrasmussen@google.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Thomas Hellstrom <thomas.hellstrom@linux.intel.com>, Ralph Campbell <rcampbe
- ll@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, Vasily Gorbik <gor@linux.ibm.com>, Anshuman Khandual <anshuman.khandual@arm.com>, Heiko Carstens <hca@linux.ibm.com>, Qi Zheng <zhengqi.arch@bytedance.com>, Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, linux-arm-kernel@lists.infradead.org, SeongJae Park <sj@kernel.org>, Lorenzo Stoakes <lstoakes@gmail.com>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, Naoya Horiguchi <naoya.horiguchi@nec.com>, Zack Rusin <zackr@vmware.com>, Vishal Moola <vishal.moola@gmail.com>, Minchan Kim <minchan@kernel.org>, Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Mel Gorman <mgorman@techsingularity.net>, "David Sc. Miller" <davem@davemloft.net>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: kvm@vger.kernel.org, linux-sh@vger.kernel.org, linux-openrisc@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org, Hugh Dickins <hughd@google.com>, linux-csky@vger.kernel.org, xen-devel@lists.xenproject.org, Stephen Rothwell <sfr@canb.auug.org.au>, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, linux-mips@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 27 Jun 2023, Jason Gunthorpe wrote:
-> On Wed, Jun 21, 2023 at 07:36:11PM -0700, Hugh Dickins wrote:
-> > [PATCH v3 05/12] powerpc: add pte_free_defer() for pgtables sharing page
-...
-> Yes, this makes sense to me, very simple..
+On 6/27/23 13:05, Dinh Nguyen wrote:
 > 
-> I always for get these details but atomic_dec_and_test() is a release?
-> So the SetPageActive is guarenteed to be visible in another thread
-> that reaches 0?
+> 
+> On 6/27/23 14:56, Vishal Moola wrote:
+>> On Tue, Jun 27, 2023 at 12:14 PM Guenter Roeck <linux@roeck-us.net> wrote:
+>>>
+>>> On 6/27/23 12:10, Guenter Roeck wrote:
+>>>> On 6/27/23 10:42, Vishal Moola wrote:
+>>>>> On Mon, Jun 26, 2023 at 10:47 PM Guenter Roeck <linux@roeck-us.net> wrote:
+>>>>>>
+>>>>>> On Thu, Jun 22, 2023 at 01:57:38PM -0700, Vishal Moola (Oracle) wrote:
+>>>>>>> Part of the conversions to replace pgtable constructor/destructors with
+>>>>>>> ptdesc equivalents.
+>>>>>>>
+>>>>>>> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+>>>>>>> Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
+>>>>>>
+>>>>>> This patch causes all nios2 builds to fail.
+>>>>>
+>>>>> It looks like you tried to apply this patch on its own. This patch depends
+>>>>> on patches 01-12 of this patchset to compile properly. I've cross-compiled
+>>>>> this architecture and it worked, but let me know if something fails
+>>>>> when its applied on top of those patches (or the rest of the patchset).
+>>>>
+>>>>
+>>>> No, I did not try to apply this patch on its own. I tried to build yesterday's
+>>>> pending-fixes branch of linux-next.
+>>>>
+>>>
+>>> A quick check shows that the build fails with next-20230627. See log below.
+>>
+>> Ah it looks like this one slipped into -next on its own somehow? Stephen, please
+>> drop this patch from -next; it shouldn't be in without the rest of the
+>> patchset which
+>> I intend to have Andrew take through the mm tree.
+>>
+> 
+> I apologize, but I queue this patch up for Linus and it's been pulled for this merge window. I didn't realize you were going to take this patchset through another tree.
+> 
+> Sorry about that.
+> 
 
-Yes, that's my understanding - so the TestClearPageActive adds more
-to the guarantee than is actually needed.
+Yes, indeed, I just confirmed that all nios2 builds in the mainline kernel
+are now broken.
 
-"release": you speak the modern language, whereas I haven't advanced
-from olden-days barriers: atomic_dec_and_test() meets atomic_t.txt's
- - RMW operations that have a return value are fully ordered;
-which a quick skim of present-day memory-barriers.txt suggests would
-imply both ACQUIRE and RELEASE.  Please correct me if I'm mistaken!
+Guenter
 
-Hugh
