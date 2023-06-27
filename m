@@ -1,68 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 489C573F19E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jun 2023 05:16:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D74DB73F1D7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jun 2023 05:17:51 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=kFdRpygS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=Y5YNwg/Q;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qqqc51CJ6z3bX5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jun 2023 13:16:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qqqf22lY1z30jT
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jun 2023 13:17:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=kFdRpygS;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=Y5YNwg/Q;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::112c; helo=mail-yw1-x112c.google.com; envelope-from=vishal.moola@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::112f; helo=mail-yw1-x112f.google.com; envelope-from=vishal.moola@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qqqb8072hz2yKy
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qqqb76pqtz2yJT
 	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jun 2023 13:15:13 +1000 (AEST)
-Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-57059626276so44699037b3.3
+Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-57338656a8aso30873087b3.0
         for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Jun 2023 20:15:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687835708; x=1690427708;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=iYTDP3CVo/pn4MBpnsVYDf65SVee1q+w6kCUgJokK48=;
-        b=kFdRpygS4WguFY2TIXFMCd2xbUYUslDwOhJ095L7ozx9CL0OSI6zj/K4mM+s7TbWhS
-         9zIZyA70hoFifzCOd1aewZ1yhLO2rBPOLuIElBxKRi5m6cvGDxzOV5z6misqLTfIRCXL
-         XPKfCVIPeKEk1w/EtT2SlKc18aMxKl81RwWtDJHCQOOQwTat12hCBR/UJwcCsUByCQnp
-         xPIqCDYl6eeVttXMi5drV03T1r0uzwcB8eqR424vWOHJ9pfaxoKjvFS/+eIWFJtobwVv
-         zZV6muAWYcpIcnBMA6UzmFfsZ6RlIit91ynY1KCJiFuPe3YS3HQ1OCdsGe5+lkqZWZwe
-         tjMQ==
+        d=gmail.com; s=20221208; t=1687835710; x=1690427710;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DXYENedStYVsFXpaqy8X3+wmlabVR1q8JHyD5+dxFj0=;
+        b=Y5YNwg/QZrK+aHp3q3F/s+zHvk1fnDqd1/MV2/FtyEws8x/EU1okIb5gZ0g0bwjJIl
+         5VUUqN9Wuh0HLMtWdAEYbmMx90i6AJPptQg4hAlIbSGwOvljd5Q6n3O/2f8tA77gBCdK
+         YDhNGdvPzlezHyk8L+H+QUfnc3k/4+57L174UxCkkys5LGiYJFRoujM3bGB1Ibcn91ui
+         mqfwiux2PkGJoz2g2vjn5ccwHyr655voiBf0XjjuTxpjhEe8LJcN7Q6CvIBEB03riKFC
+         EsDpQXncNNWQyJs9hFhiDQn510NXqp1Pgv3vGtCcL2I6tmdj8XTW1jmQN/FUgbsQGPmI
+         XxjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687835708; x=1690427708;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=iYTDP3CVo/pn4MBpnsVYDf65SVee1q+w6kCUgJokK48=;
-        b=byjNccPX6IseNxLNTGHzOy4gcxkfyd0v4kdYfPxKuufyFpd34Hs2j1p87/aX8ZlybR
-         93y4EXR25nMSaT+9x/3uT9nKZ5R0O+BVnhK/x367uvv9k+5UFS5UHtCYcB/U0zedf4o1
-         nKzU7p4eO0AwWmY292NYr54stpo5AJGr9JuiUjRoqu9so+x4OQi3bTqpgN3JwlkVLl6B
-         nd00HlW8AMSqN/PbgA0Vk2Ug8tZ2xPtWZbCP/CmOIvpjQtcH9ONqcT8lgMaaEHGra0g+
-         U/a/zSXDjXpmvjiQK4xGOVMy5Xi+KTETMUAFeqZouanReqsYP/XSk5PjY9Y/ke15dAkH
-         zG7A==
-X-Gm-Message-State: AC+VfDzY97nBj46Qe7VmFZlLajSUMXpPpY87FQDufItC2bYyuDs+Li4/
-	9BDUuqohNt7BZCW3ApORBos=
-X-Google-Smtp-Source: ACHHUZ4ATK/fn+XGL+Tqd6Lbx5sr7g8FEnC/NPQWKHVXRjdEDS0JhBnwpRdiXqnqBIQnqfKuzcysxA==
-X-Received: by 2002:a81:83ce:0:b0:570:28c6:a321 with SMTP id t197-20020a8183ce000000b0057028c6a321mr38284183ywf.18.1687835707756;
-        Mon, 26 Jun 2023 20:15:07 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1687835710; x=1690427710;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DXYENedStYVsFXpaqy8X3+wmlabVR1q8JHyD5+dxFj0=;
+        b=jQ8SKxKAxWeXhDmu2vBatV369tBfVXujSJHuXdjaWL5SIvJD/X8HXPqYD41jDjfj99
+         yY2ngmVNoQYJDqK2bge/ZSWJz+xZXgq76MlXjwFJbfVBUM6/TinGEVpooXkEiX9YRk7x
+         BR20zMZNOd27qzUOKAl94PQWF4MrOa3yMyoD3URqbNPc2HG9KnyK/AqDvJpuCt99xo7P
+         evj3x2jlJ36R6wT0H7wuBeL8inRC9Vi2HfWhZhwh2A2yfzSkKHt9UuIpsb6Aei0Zp5ME
+         2zuU3e+51cVRdhfqzPpvES2KSNKCCb3oeg4IXRgZB425+HKhXuYSHIvhzfjRULPuyrNW
+         YvFA==
+X-Gm-Message-State: AC+VfDyNdZDLT3Qm4G6WHdElX60JJ1Ik3qtrXQ1Hqju/kDh7+N/OwqPn
+	QenOsovPd5sHw5FVPeDYrUE=
+X-Google-Smtp-Source: ACHHUZ6evDL0HWuUOw/E7eS1sxmpRauJbQh+5KyxG9iaYPnpfZgG5Wrtu7krHuwGR/MT62H3t8vWEA==
+X-Received: by 2002:a0d:d681:0:b0:561:81b:7319 with SMTP id y123-20020a0dd681000000b00561081b7319mr25124050ywd.32.1687835709872;
+        Mon, 26 Jun 2023 20:15:09 -0700 (PDT)
 Received: from unknowna0e70b2ca394.attlocal.net ([2600:1700:2f7d:1800::16])
-        by smtp.googlemail.com with ESMTPSA id s4-20020a0dd004000000b0057399b3bd26sm1614798ywd.33.2023.06.26.20.15.04
+        by smtp.googlemail.com with ESMTPSA id s4-20020a0dd004000000b0057399b3bd26sm1614798ywd.33.2023.06.26.20.15.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Jun 2023 20:15:07 -0700 (PDT)
+        Mon, 26 Jun 2023 20:15:09 -0700 (PDT)
 From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Matthew Wilcox <willy@infradead.org>
-Subject: [PATCH v6 00/33] Split ptdesc from struct page
-Date: Mon, 26 Jun 2023 20:13:58 -0700
-Message-Id: <20230627031431.29653-1-vishal.moola@gmail.com>
+Subject: [PATCH v6 01/33] mm: Add PAGE_TYPE_OP folio functions
+Date: Mon, 26 Jun 2023 20:13:59 -0700
+Message-Id: <20230627031431.29653-2-vishal.moola@gmail.com>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230627031431.29653-1-vishal.moola@gmail.com>
+References: <20230627031431.29653-1-vishal.moola@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -76,118 +79,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, linux-openrisc@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, linux-hexagon@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>, Hugh Dickins <hughd@google.com>, linux-csky@vger.kernel.org, Geert Uytterhoeven <geert@linux-m68k.org>, xen-devel@lists.xenproject.org, Jonas Bonn <jonas@southpole.se>, Arnd Bergmann <arnd@arndb.de>, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-mm@kvack.org, linux-mips@vger.kernel.org, "Vishal Moola \(Oracle\)" <vishal.moola@gmail.com>,
-  Dinh Nguyen <dinguyen@kernel.org>, Richard Weinberger <richard@nod.at>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, kvm@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-sh@vger.kernel.org, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-csky@vger.kernel.org, "Vishal Moola \(Oracle\)" <vishal.moola@gmail.com>, linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org, Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, loongarch@lists.linux.dev, sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The MM subsystem is trying to shrink struct page. This patchset
-introduces a memory descriptor for page table tracking - struct ptdesc.
+No folio equivalents for page type operations have been defined, so
+define them for later folio conversions.
 
-This patchset introduces ptdesc, splits ptdesc from struct page, and
-converts many callers of page table constructor/destructors to use ptdescs.
+Also changes the Page##uname macros to take in const struct page* since
+we only read the memory here.
 
-Ptdesc is a foundation to further standardize page tables, and eventually
-allow for dynamic allocation of page tables independent of struct page.
-However, the use of pages for page table tracking is quite deeply
-ingrained and varied across archictectures, so there is still a lot of
-work to be done before that can happen.
+Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
+---
+ include/linux/page-flags.h | 30 +++++++++++++++++++++++-------
+ 1 file changed, 23 insertions(+), 7 deletions(-)
 
-This is rebased on next-20230626.
-
-There is a minor conflict with patch 24 and the mm-unstable tree in
-arch/m68k/mm/motorola.c - The end result of applying the patch should
-be the same.
-
-v6:
-  Fix compiler warnings/errors
-
-v5:
-  More Acked-bys :)
-  Cleanup some documentation wording and formatting
-  Add pt_rcu_head to ptdesc
-  Add memcg to ptdesc (and align it with struct page)
-  Ensure all get_free_page() callers prohibit HIGHMEM for 32 bit support.
-  Renamed folio_{set, clear}_table() to folio_{set, clear}_pgtable()
-  Removed pagetable_clear() as it is not necessary right now
-  Dropped s390 _refcount to _pt_frag_refcount conversion
-
-Vishal Moola (Oracle) (33):
-  mm: Add PAGE_TYPE_OP folio functions
-  s390: Use _pt_s390_gaddr for gmap address tracking
-  pgtable: Create struct ptdesc
-  mm: add utility functions for ptdesc
-  mm: Convert pmd_pgtable_page() to pmd_ptdesc()
-  mm: Convert ptlock_alloc() to use ptdescs
-  mm: Convert ptlock_ptr() to use ptdescs
-  mm: Convert pmd_ptlock_init() to use ptdescs
-  mm: Convert ptlock_init() to use ptdescs
-  mm: Convert pmd_ptlock_free() to use ptdescs
-  mm: Convert ptlock_free() to use ptdescs
-  mm: Create ptdesc equivalents for pgtable_{pte,pmd}_page_{ctor,dtor}
-  powerpc: Convert various functions to use ptdescs
-  x86: Convert various functions to use ptdescs
-  s390: Convert various gmap functions to use ptdescs
-  s390: Convert various pgalloc functions to use ptdescs
-  mm: Remove page table members from struct page
-  pgalloc: Convert various functions to use ptdescs
-  arm: Convert various functions to use ptdescs
-  arm64: Convert various functions to use ptdescs
-  csky: Convert __pte_free_tlb() to use ptdescs
-  hexagon: Convert __pte_free_tlb() to use ptdescs
-  loongarch: Convert various functions to use ptdescs
-  m68k: Convert various functions to use ptdescs
-  mips: Convert various functions to use ptdescs
-  nios2: Convert __pte_free_tlb() to use ptdescs
-  openrisc: Convert __pte_free_tlb() to use ptdescs
-  riscv: Convert alloc_{pmd, pte}_late() to use ptdescs
-  sh: Convert pte_free_tlb() to use ptdescs
-  sparc64: Convert various functions to use ptdescs
-  sparc: Convert pgtable_pte_page_{ctor, dtor}() to ptdesc equivalents
-  um: Convert {pmd, pte}_free_tlb() to use ptdescs
-  mm: Remove pgtable_{pmd, pte}_page_{ctor, dtor}() wrappers
-
- Documentation/mm/split_page_table_lock.rst    |  12 +-
- .../zh_CN/mm/split_page_table_lock.rst        |  14 +-
- arch/arm/include/asm/tlb.h                    |  12 +-
- arch/arm/mm/mmu.c                             |   7 +-
- arch/arm64/include/asm/tlb.h                  |  14 +-
- arch/arm64/mm/mmu.c                           |   7 +-
- arch/csky/include/asm/pgalloc.h               |   4 +-
- arch/hexagon/include/asm/pgalloc.h            |   8 +-
- arch/loongarch/include/asm/pgalloc.h          |  27 ++-
- arch/loongarch/mm/pgtable.c                   |   7 +-
- arch/m68k/include/asm/mcf_pgalloc.h           |  47 ++--
- arch/m68k/include/asm/sun3_pgalloc.h          |   8 +-
- arch/m68k/mm/motorola.c                       |   4 +-
- arch/mips/include/asm/pgalloc.h               |  32 +--
- arch/mips/mm/pgtable.c                        |   8 +-
- arch/nios2/include/asm/pgalloc.h              |   8 +-
- arch/openrisc/include/asm/pgalloc.h           |   8 +-
- arch/powerpc/mm/book3s64/mmu_context.c        |  10 +-
- arch/powerpc/mm/book3s64/pgtable.c            |  32 +--
- arch/powerpc/mm/pgtable-frag.c                |  46 ++--
- arch/riscv/include/asm/pgalloc.h              |   8 +-
- arch/riscv/mm/init.c                          |  16 +-
- arch/s390/include/asm/pgalloc.h               |   4 +-
- arch/s390/include/asm/tlb.h                   |   4 +-
- arch/s390/mm/gmap.c                           | 207 ++++++++++--------
- arch/s390/mm/pgalloc.c                        | 108 ++++-----
- arch/sh/include/asm/pgalloc.h                 |   9 +-
- arch/sparc/mm/init_64.c                       |  17 +-
- arch/sparc/mm/srmmu.c                         |   5 +-
- arch/um/include/asm/pgalloc.h                 |  18 +-
- arch/x86/mm/pgtable.c                         |  47 ++--
- arch/x86/xen/mmu_pv.c                         |   2 +-
- include/asm-generic/pgalloc.h                 |  88 +++++---
- include/asm-generic/tlb.h                     |  11 +
- include/linux/mm.h                            | 153 +++++++++----
- include/linux/mm_types.h                      |  14 --
- include/linux/page-flags.h                    |  30 ++-
- include/linux/pgtable.h                       |  77 +++++++
- mm/memory.c                                   |   8 +-
- 39 files changed, 686 insertions(+), 455 deletions(-)
-
+diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+index 92a2063a0a23..9218028caf33 100644
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -908,6 +908,8 @@ static inline bool is_page_hwpoison(struct page *page)
+ 
+ #define PageType(page, flag)						\
+ 	((page->page_type & (PAGE_TYPE_BASE | flag)) == PAGE_TYPE_BASE)
++#define folio_test_type(folio, flag)					\
++	((folio->page.page_type & (PAGE_TYPE_BASE | flag)) == PAGE_TYPE_BASE)
+ 
+ static inline int page_type_has_type(unsigned int page_type)
+ {
+@@ -919,27 +921,41 @@ static inline int page_has_type(struct page *page)
+ 	return page_type_has_type(page->page_type);
+ }
+ 
+-#define PAGE_TYPE_OPS(uname, lname)					\
+-static __always_inline int Page##uname(struct page *page)		\
++#define PAGE_TYPE_OPS(uname, lname, fname)				\
++static __always_inline int Page##uname(const struct page *page)		\
+ {									\
+ 	return PageType(page, PG_##lname);				\
+ }									\
++static __always_inline int folio_test_##fname(const struct folio *folio)\
++{									\
++	return folio_test_type(folio, PG_##lname);			\
++}									\
+ static __always_inline void __SetPage##uname(struct page *page)		\
+ {									\
+ 	VM_BUG_ON_PAGE(!PageType(page, 0), page);			\
+ 	page->page_type &= ~PG_##lname;					\
+ }									\
++static __always_inline void __folio_set_##fname(struct folio *folio)	\
++{									\
++	VM_BUG_ON_FOLIO(!folio_test_type(folio, 0), folio);		\
++	folio->page.page_type &= ~PG_##lname;				\
++}									\
+ static __always_inline void __ClearPage##uname(struct page *page)	\
+ {									\
+ 	VM_BUG_ON_PAGE(!Page##uname(page), page);			\
+ 	page->page_type |= PG_##lname;					\
+-}
++}									\
++static __always_inline void __folio_clear_##fname(struct folio *folio)	\
++{									\
++	VM_BUG_ON_FOLIO(!folio_test_##fname(folio), folio);		\
++	folio->page.page_type |= PG_##lname;				\
++}									\
+ 
+ /*
+  * PageBuddy() indicates that the page is free and in the buddy system
+  * (see mm/page_alloc.c).
+  */
+-PAGE_TYPE_OPS(Buddy, buddy)
++PAGE_TYPE_OPS(Buddy, buddy, buddy)
+ 
+ /*
+  * PageOffline() indicates that the page is logically offline although the
+@@ -963,7 +979,7 @@ PAGE_TYPE_OPS(Buddy, buddy)
+  * pages should check PageOffline() and synchronize with such drivers using
+  * page_offline_freeze()/page_offline_thaw().
+  */
+-PAGE_TYPE_OPS(Offline, offline)
++PAGE_TYPE_OPS(Offline, offline, offline)
+ 
+ extern void page_offline_freeze(void);
+ extern void page_offline_thaw(void);
+@@ -973,12 +989,12 @@ extern void page_offline_end(void);
+ /*
+  * Marks pages in use as page tables.
+  */
+-PAGE_TYPE_OPS(Table, table)
++PAGE_TYPE_OPS(Table, table, pgtable)
+ 
+ /*
+  * Marks guardpages used with debug_pagealloc.
+  */
+-PAGE_TYPE_OPS(Guard, guard)
++PAGE_TYPE_OPS(Guard, guard, guard)
+ 
+ extern bool is_free_buddy_page(struct page *page);
+ 
 -- 
 2.40.1
 
