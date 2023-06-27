@@ -1,73 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA9A373F412
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jun 2023 07:48:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 550CA73F51D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jun 2023 09:13:56 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=CKCXCuWl;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=e4Tllnzh;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qqv0B5wKKz3bVp
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jun 2023 15:48:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QqwtV1ngbz3bcJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jun 2023 17:13:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=CKCXCuWl;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=e4Tllnzh;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::536; helo=mail-pg1-x536.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QqtzJ2bCRz2yy1
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jun 2023 15:47:54 +1000 (AEST)
-Received: by mail-pg1-x536.google.com with SMTP id 41be03b00d2f7-55767141512so1767488a12.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Jun 2023 22:47:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687844871; x=1690436871;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bjTPMlxWt9nC/sXrGsrew1h8LID7KP4FRrxfXfknacs=;
-        b=CKCXCuWl0gYpQ4q8YGqBYIHt4kiR1AhHpEiDPYQrq6u+C1EcCN199Rf+TEI2yZgN+R
-         yHF4vksLQaZZNCW1AKLUCeBUhO/zz1T+Q9/6Dn0kQ15ZW6K5TqPmtUB9rSpHUKgxZgiA
-         HSTUVKDZ4xM6L9+zGQEVzY8EH5rZJBCsvXHjcbbzvbKrE2StJxwwReSDEN5b3GfPvLfH
-         eqtt0xPcEOboGwjNakJZJtyOpw0n8CltvqJLvaWUUnjMuBH5yNe38AlJDiG6mzZTOhDy
-         hB/teSyin+eBzVwUgFatWumtP7LykGuBvZNNj+IJUNFfPVWNZBZUcFVQKEBMH4tHKOww
-         HTig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687844871; x=1690436871;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bjTPMlxWt9nC/sXrGsrew1h8LID7KP4FRrxfXfknacs=;
-        b=a3gdwaqR9Sq8OeHCBPhK34KA0rPTRwtNGGjXjjDezEY8Ebkd/X8myy+8LuHdb5bDHK
-         4c+L+/96v496WFkA9OoTC3GjUTglhXQhajMfI9G9eJy0YKsErOsIBGRlCcMrFS8sV60y
-         3m3CGQqatlHmZ/0DopgelXh5QL1y3anXdIwgLtaUKzXnNLOEiyJ7fgE9bhpLrkXoI2Gc
-         YCVBmSzDmdmeLx8La+FjPojsnbCgD5LHjbR4m0rxrs5RVxqz7S2wAg8Zu65KfBS0DZ0/
-         dcmSFhY9tqIRmFGi8msPhJVEY7YUrQudgoJrJmTIEMm62Fnlq1cYpfu1mZ9mKp8yJlp8
-         lQBg==
-X-Gm-Message-State: AC+VfDxOzMGfuL5JGfOQgwfPCf+aUYSx1P3OJ8XxwgiAjChlS65h6360
-	/LJ+RR7rejjH0O7xPCKnbvg=
-X-Google-Smtp-Source: ACHHUZ7JjW8b6fgOe+JthCsQbs9/NjABXgCew6ba8g3n2m02um8mxuD9LeyNll8XOwuywhMwRgh5kw==
-X-Received: by 2002:a05:6a20:7491:b0:126:8ddd:d786 with SMTP id p17-20020a056a20749100b001268dddd786mr5575003pzd.46.1687844870738;
-        Mon, 26 Jun 2023 22:47:50 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id je5-20020a170903264500b001b8004ff609sm3033756plb.270.2023.06.26.22.47.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Jun 2023 22:47:50 -0700 (PDT)
-Date: Mon, 26 Jun 2023 22:47:49 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Subject: Re: [PATCH v5 26/33] nios2: Convert __pte_free_tlb() to use ptdescs
-Message-ID: <13bab37c-0f0a-431a-8b67-4379bf4dc541@roeck-us.net>
-References: <20230622205745.79707-1-vishal.moola@gmail.com>
- <20230622205745.79707-27-vishal.moola@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QqwsY1spQz2xpj
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jun 2023 17:13:04 +1000 (AEST)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35R6lWGp015835;
+	Tue, 27 Jun 2023 07:12:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type : subject :
+ from : in-reply-to : date : cc : message-id : references : to :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=qENkCljCDflHY6/epHP+L8qvaPUneqDYTxiCjsxEAA8=;
+ b=e4Tllnzhh/O3oclWXQGJ14+cxcHjGgyQgI+5GKKYqUudGwNWRekOZy6jx9InHgJ+PPBU
+ BcXtJlvlPTlT3+enunNhtMHR05jxad8gUCWuQEF4gXVweTNSPj+ofDqWDNAtcYPfrFS/
+ yyeQ4fkLpcYyz5Hp+UNKWhxsFrJPyqUado/93ES8fXfYBUkwF1R+jXn114Sm6RMfT+Da
+ meEipSb7Dv7uJ3aHk+cj8OZzmUCyx36wzj9tnsBwNyCVqH8BUyugpIhR8lG7T4WnzRC0
+ D2adEoFmuexvxqGo6BVTDwHPxsAQzxx1/yBcH7dlWfTd7cscBe8tK63oGc3iNR7LgGHL JA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rfttfrqjx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 27 Jun 2023 07:12:56 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35R6mKWe018162;
+	Tue, 27 Jun 2023 07:12:55 GMT
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rfttfrqj4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 27 Jun 2023 07:12:55 +0000
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+	by ppma01fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35R0xZZp007897;
+	Tue, 27 Jun 2023 07:12:53 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma01fra.de.ibm.com (PPS) with ESMTPS id 3rdr451ap9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 27 Jun 2023 07:12:53 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 35R7CoUC3932888
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 27 Jun 2023 07:12:50 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F03B820040;
+	Tue, 27 Jun 2023 07:12:49 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6EB0920043;
+	Tue, 27 Jun 2023 07:12:47 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.109.215.188])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 27 Jun 2023 07:12:47 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
+Subject: Re: [PATCH 00/22] tools/perf: Fix shellcheck coding/formatting issues
+ of perf tool shell scripts
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <CAM9d7cj_7SBXtCuP66xra0R4ygNt851A6f20s6BtfyXCzZJrtQ@mail.gmail.com>
+Date: Tue, 27 Jun 2023 12:42:34 +0530
+Message-Id: <052F4C8C-4F35-44B3-BCE6-E155741A45F9@linux.vnet.ibm.com>
+References: <20230621083021.71203-1-atrajeev@linux.vnet.ibm.com>
+ <CAM9d7cj_7SBXtCuP66xra0R4ygNt851A6f20s6BtfyXCzZJrtQ@mail.gmail.com>
+To: Namhyung Kim <namhyung@kernel.org>
+X-Mailer: Apple Mail (2.3731.500.231)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: e_iv8czUoDpCR_Q9j3_bwksyMfkuO30k
+X-Proofpoint-ORIG-GUID: 8Bj0-cKzX8djvm9ZuszNER4mbKDZGZBh
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230622205745.79707-27-vishal.moola@gmail.com>
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-27_03,2023-06-26_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ impostorscore=0 mlxlogscore=999 phishscore=0 adultscore=0
+ lowpriorityscore=0 malwarescore=0 clxscore=1015 mlxscore=0 spamscore=0
+ suspectscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306270066
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,76 +101,140 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, linux-sh@vger.kernel.org, linux-openrisc@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org, Hugh Dickins <hughd@google.com>, linux-csky@vger.kernel.org, xen-devel@lists.xenproject.org, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, linux-mips@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
+Cc: Ian Rogers <irogers@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, john.g.garry@oracle.com, Kajol Jain <kjain@linux.ibm.com>, Ravi Bangoria <ravi.bangoria@amd.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-perf-users@vger.kernel.org, Jiri Olsa <jolsa@kernel.org>, Disha Goel <disgoel@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 22, 2023 at 01:57:38PM -0700, Vishal Moola (Oracle) wrote:
-> Part of the conversions to replace pgtable constructor/destructors with
-> ptdesc equivalents.
-> 
-> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-> Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
 
-This patch causes all nios2 builds to fail.
 
-Building nios2:allnoconfig ... failed
---------------
-Error log:
-<stdin>:1519:2: warning: #warning syscall clone3 not implemented [-Wcpp]
-In file included from mm/memory.c:85:
-mm/memory.c: In function 'free_pte_range':
-arch/nios2/include/asm/pgalloc.h:33:17: error: implicit declaration of function 'pagetable_pte_dtor'; did you mean 'pgtable_pte_page_dtor'? [-Werror=implicit-function-declaration]
-   33 |                 pagetable_pte_dtor(page_ptdesc(pte));                   \
-      |                 ^~~~~~~~~~~~~~~~~~
-include/asm-generic/tlb.h:666:17: note: in expansion of macro '__pte_free_tlb'
-  666 |                 __pte_free_tlb(tlb, ptep, address);             \
-      |                 ^~~~~~~~~~~~~~
-mm/memory.c:193:9: note: in expansion of macro 'pte_free_tlb'
-  193 |         pte_free_tlb(tlb, token, addr);
-      |         ^~~~~~~~~~~~
-arch/nios2/include/asm/pgalloc.h:33:36: error: implicit declaration of function 'page_ptdesc' [-Werror=implicit-function-declaration]
-   33 |                 pagetable_pte_dtor(page_ptdesc(pte));                   \
-      |                                    ^~~~~~~~~~~
-include/asm-generic/tlb.h:666:17: note: in expansion of macro '__pte_free_tlb'
-  666 |                 __pte_free_tlb(tlb, ptep, address);             \
-      |                 ^~~~~~~~~~~~~~
-mm/memory.c:193:9: note: in expansion of macro 'pte_free_tlb'
-  193 |         pte_free_tlb(tlb, token, addr);
-      |         ^~~~~~~~~~~~
-arch/nios2/include/asm/pgalloc.h:34:17: error: implicit declaration of function 'tlb_remove_page_ptdesc'; did you mean 'tlb_remove_page_size'? [-Werror=implicit-function-declaration]
-   34 |                 tlb_remove_page_ptdesc((tlb), (page_ptdesc(pte)));      \
-      |                 ^~~~~~~~~~~~~~~~~~~~~~
-include/asm-generic/tlb.h:666:17: note: in expansion of macro '__pte_free_tlb'
-  666 |                 __pte_free_tlb(tlb, ptep, address);             \
-      |                 ^~~~~~~~~~~~~~
-mm/memory.c:193:9: note: in expansion of macro 'pte_free_tlb'
-  193 |         pte_free_tlb(tlb, token, addr);
+> On 24-Jun-2023, at 5:10 AM, Namhyung Kim <namhyung@kernel.org> wrote:
+>=20
+> Hello,
+>=20
+> On Wed, Jun 21, 2023 at 1:30=E2=80=AFAM Athira Rajeev
+> <atrajeev@linux.vnet.ibm.com> wrote:
+>>=20
+>> Patchset covers a set of fixes for coding/formatting issues observed whi=
+le
+>> running shellcheck tool on the perf shell scripts.
+>>=20
+>> This cleanup is a pre-requisite to include a build option for shellcheck
+>> discussed here: https://www.spinics.net/lists/linux-perf-users/msg25553.=
+html
+>> First set of patches were posted here:
+>> https://lore.kernel.org/linux-perf-users/53B7D823-1570-4289-A632-2205EE2=
+B522C@linux.vnet.ibm.com/T/#t
+>>=20
+>> This patchset covers remaining set of shell scripts which needs
+>> fix. Patch 1 is resubmission of patch 6 from the initial series.
+>> Patch 15, 16 and 22 touches code from tools/perf/trace/beauty.
+>> Other patches are fixes for scripts from tools/perf/tests.
+>=20
+> Thanks for this work.  But it seems there are some issues
+> even after applying this series.
+>=20
+>  $ for F in $(find tests/shell/ -perm -o=3Dx -name '*.sh'); do
+>> shellcheck $F; done | grep -c -e '(info)' -e '(warning)'
+>  29
+>=20
+>  $ for F in $(find tests/shell/ -perm -o=3Dx -name '*.sh'); do
+>> shellcheck $F; done | grep ^In
+>  In tests/shell/pipe_test.sh line 10:
+>  In tests/shell/pipe_test.sh line 15:
+>  In tests/shell/pipe_test.sh line 20:
+>  In tests/shell/pipe_test.sh line 21:
+>  In tests/shell/pipe_test.sh line 26:
+>  In tests/shell/pipe_test.sh line 27:
+>  In tests/shell/pipe_test.sh line 33:
+>  In tests/shell/record+zstd_comp_decomp.sh line 16:
+>  In tests/shell/record+zstd_comp_decomp.sh line 22:
+>  In tests/shell/record+zstd_comp_decomp.sh line 27:
+>  In tests/shell/record+zstd_comp_decomp.sh line 28:
+>  In tests/shell/record+zstd_comp_decomp.sh line 29:
+>  In tests/shell/record+zstd_comp_decomp.sh line 30:
+>  In tests/shell/record+zstd_comp_decomp.sh line 36:
+>  In tests/shell/coresight/thread_loop_check_tid_2.sh line 8:
+>  In tests/shell/coresight/thread_loop_check_tid_2.sh line 11:
+>  In tests/shell/coresight/thread_loop_check_tid_2.sh line 14:
+>=20
+> Also unfortunately there's some update in the shell tests.
+> Please rebase onto the perf-tools-next.
 
-> ---
->  arch/nios2/include/asm/pgalloc.h | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/nios2/include/asm/pgalloc.h b/arch/nios2/include/asm/pgalloc.h
-> index ecd1657bb2ce..ce6bb8e74271 100644
-> --- a/arch/nios2/include/asm/pgalloc.h
-> +++ b/arch/nios2/include/asm/pgalloc.h
-> @@ -28,10 +28,10 @@ static inline void pmd_populate(struct mm_struct *mm, pmd_t *pmd,
->  
->  extern pgd_t *pgd_alloc(struct mm_struct *mm);
->  
-> -#define __pte_free_tlb(tlb, pte, addr)				\
-> -	do {							\
-> -		pgtable_pte_page_dtor(pte);			\
-> -		tlb_remove_page((tlb), (pte));			\
-> +#define __pte_free_tlb(tlb, pte, addr)					\
-> +	do {								\
-> +		pagetable_pte_dtor(page_ptdesc(pte));			\
-> +		tlb_remove_page_ptdesc((tlb), (page_ptdesc(pte)));	\
->  	} while (0)
->  
->  #endif /* _ASM_NIOS2_PGALLOC_H */
-> -- 
-> 2.40.1
-> 
-> 
+Hi Namhyung
+
+Thanks for checking. Will send an updated version on top of perf-tools-next
+
+Thanks
+Athira
+>=20
+> Thanks,
+> Namhyung
+>=20
+>=20
+>>=20
+>> Akanksha J N (1):
+>>  tools/perf/tests: Fix shellcheck warnings for
+>>    trace+probe_vfs_getname.sh
+>>=20
+>> Athira Rajeev (11):
+>>  tools/perf/tests: fix test_arm_spe_fork.sh signal case issues
+>>  tools/perf/tests: Fix unused variable references in
+>>    stat+csv_summary.sh testcase
+>>  tools/perf/tests: fix shellcheck warning for
+>>    test_perf_data_converter_json.sh testcase
+>>  tools/perf/tests: Fix shellcheck issue for stat_bpf_counters.sh
+>>    testcase
+>>  tools/perf/tests: Fix shellcheck issues in
+>>    tests/shell/stat+shadow_stat.sh tetscase
+>>  tools/perf/tests: Fix shellcheck warnings for
+>>    thread_loop_check_tid_10.sh
+>>  tools/perf/tests: Fix shellcheck warnings for unroll_loop_thread_10.sh
+>>  tools/perf/tests: Fix shellcheck warnings for lib/probe_vfs_getname.sh
+>>  tools/perf/tests: Fix the shellcheck wanrings in lib/waiting.sh
+>>  tools/perf/trace: Fix x86_arch_prctl.sh to address shellcheck warnings
+>>  tools/perf/arch/x86: Fix syscalltbl.sh to address shellcheck warnings
+>>=20
+>> Kajol Jain (10):
+>>  tools/perf/tests: Fix shellcheck warning for probe_vfs_getname.sh
+>>    testcase
+>>  tools/perf/tests: Fix shellcheck warning for record_offcpu.sh testcase
+>>  tools/perf/tests: Fix shellcheck issue for lock_contention.sh testcase
+>>  tools/perf/tests: Fix shellcheck issue for stat_bpf_counters_cgrp.sh
+>>    testcase
+>>  tools/perf/tests: Fix shellcheck warning for asm_pure_loop.sh shell
+>>    script
+>>  tools/perf/tests: Fix shellcheck warning for memcpy_thread_16k_10.sh
+>>    shell script
+>>  tools/perf/tests: Fix shellcheck warning for coresight.sh shell script
+>>  tools/perf/tests: Fix shellcheck warning for probe.sh shell script
+>>  tools/perf/trace: Fix shellcheck issue for arch_errno_names.sh script
+>>  tools/perf: Fix shellcheck issue for check-headers.sh script
+>>=20
+>> .../arch/x86/entry/syscalls/syscalltbl.sh     |  2 +-
+>> tools/perf/check-headers.sh                   |  6 ++--
+>> .../tests/shell/coresight/asm_pure_loop.sh    |  2 +-
+>> .../shell/coresight/memcpy_thread_16k_10.sh   |  2 +-
+>> .../coresight/thread_loop_check_tid_10.sh     |  2 +-
+>> .../shell/coresight/unroll_loop_thread_10.sh  |  2 +-
+>> tools/perf/tests/shell/lib/coresight.sh       |  3 +-
+>> tools/perf/tests/shell/lib/probe.sh           |  1 +
+>> .../perf/tests/shell/lib/probe_vfs_getname.sh |  5 ++--
+>> tools/perf/tests/shell/lib/waiting.sh         |  1 +
+>> tools/perf/tests/shell/lock_contention.sh     | 12 ++++----
+>> tools/perf/tests/shell/probe_vfs_getname.sh   |  4 +--
+>> tools/perf/tests/shell/record_offcpu.sh       |  6 ++--
+>> tools/perf/tests/shell/stat+csv_summary.sh    |  4 +--
+>> tools/perf/tests/shell/stat+shadow_stat.sh    |  4 +--
+>> tools/perf/tests/shell/stat_bpf_counters.sh   |  4 +--
+>> .../tests/shell/stat_bpf_counters_cgrp.sh     | 28 ++++++++-----------
+>> tools/perf/tests/shell/test_arm_spe_fork.sh   |  2 +-
+>> .../shell/test_perf_data_converter_json.sh    |  2 +-
+>> .../tests/shell/trace+probe_vfs_getname.sh    |  6 ++--
+>> tools/perf/trace/beauty/arch_errno_names.sh   | 15 ++++------
+>> tools/perf/trace/beauty/x86_arch_prctl.sh     |  6 ++--
+>> 22 files changed, 58 insertions(+), 61 deletions(-)
+>>=20
+>> --
+>> 2.39.1
+
+
