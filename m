@@ -1,74 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CFD77403DE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jun 2023 21:12:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A40407403F0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jun 2023 21:14:52 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=tIcBSsqa;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=bM9Je+tO;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QrDqV38Btz3bvB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jun 2023 05:12:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QrDtL42Bpz3c2b
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jun 2023 05:14:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=tIcBSsqa;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=bM9Je+tO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::833; helo=mail-qt1-x833.google.com; envelope-from=yuzhao@google.com; receiver=lists.ozlabs.org)
-Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::431; helo=mail-pf1-x431.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QrDpc2cxZz2xr6
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jun 2023 05:11:35 +1000 (AEST)
-Received: by mail-qt1-x833.google.com with SMTP id d75a77b69052e-40079620a83so57061cf.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jun 2023 12:11:35 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QrDsV1fzCz2xr6
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jun 2023 05:14:06 +1000 (AEST)
+Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-66869feb7d1so2817373b3a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jun 2023 12:14:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1687893092; x=1690485092;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jDQfwDeAKrSsrpidMk41ByVr7rAta0NMcFmnCRtDfIY=;
-        b=tIcBSsqafCGXLKenVt1fpFuS0HgcvXhoN1fscelTiFO0W+JMZvUfP2ocFlWD5XjFQZ
-         xDGPf60hvTiMEltt+PWPmEf75tVnHsurwQ4PCG26oPRdzBd/gf28dWs1r109NjisMP9z
-         d7701C/iv5K18kuWgut0yNAg5cxWnrFC4sTNFzkiVmnSuBV3XnpklCEJC1W5CqGQIPcL
-         KuY1yJXLoMTR35+2FzPgCxt0DB3tMfA1m1SoLK2PeSAaDBzykPyeSnhEZ56bVsWWk/3Q
-         90pywN1Fdll4rOwC0Q8kAfrJ8TtkqasqC414OWB85B9Zck56xfF1zPU8dE9BwisBvDfp
-         OgbQ==
+        d=gmail.com; s=20221208; t=1687893243; x=1690485243;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=kvHLvhv1Vboi73O1yp/Tlc9InhlPe7nOe1kq7T+MFRo=;
+        b=bM9Je+tOekLovPkvT+/l7nbya5CmvdUQjXrADEm1UMcV4/Dft3yRiRDI0ZDflduo0a
+         eCCHc/eGgHA3aTnPLKW75ZP3+msGkQAgAajr0fU475B6t9dnUbkeGDGaGhTQuEs9G8Em
+         fP/NIDTeV8LmgxO8Ql0wOGFl7SgfrLikcvULFnS16kiPfzK7oAB1YpIUgqh/lMxpHyod
+         tqWpPiE4/bUvsjhZfVbvFSWKmV4p5zoSojTJH1B4PXJkJ5GFHQt4ps0dwXEGoW/rFJ5j
+         7OEFRkR/4WYv521gDAmtenL688/6yjI/zD/BFplexhWDCjqz/HwvAM7QaYSh0oWP3Dui
+         ALeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687893092; x=1690485092;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jDQfwDeAKrSsrpidMk41ByVr7rAta0NMcFmnCRtDfIY=;
-        b=WOKkIWF8/RC8qedoT1sM1wbHnIMuBEP8BPu11NVElhrXtrrv09eP6hZFU06T/1ZVa7
-         S04HPCPB0bfvOmaGc3xnvvIvm2W3xUrSoC4jHE1xHRh7NaHnRYY8WbbiZVVe23JAMCv7
-         33SBK5d2QrvEx4MrAbOsyH2htZMgvkXM/EwwHzauJelTtCAFme52dJ9rMazQmpOx5OB5
-         gRt5ryizSFzFEPA8O7gLTb2gk63RRNAz8K5UXhF5hCdXdgrrwr2WSqj2LQfqWRa55/zU
-         jYnTW4qcoXy+Z312vQigHHKJAbHpMgaRACb1Oaqb11yCuyiVwGmkRv4KdHDkOymil8kB
-         bRQg==
-X-Gm-Message-State: AC+VfDzxOtJUWjynIPQ9dr8CTo+GW4GTFvekK8ZNtY26eNWvDOCAWZ4l
-	Qnrs6ebDsX/vbgFWgXN8YdIKuOm1KrBwNrQV8gKa6w==
-X-Google-Smtp-Source: ACHHUZ48452J+SqEq59D2HCrG9lok9BMOY13M2w9ux9yAiWWTZ9z9ehWMqAfmwUjcbSWe8cjbMSFWFBx8a++3hGisSM=
-X-Received: by 2002:ac8:5b46:0:b0:3f7:ffc8:2f6f with SMTP id
- n6-20020ac85b46000000b003f7ffc82f6fmr23879qtw.28.1687893091988; Tue, 27 Jun
- 2023 12:11:31 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1687893243; x=1690485243;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kvHLvhv1Vboi73O1yp/Tlc9InhlPe7nOe1kq7T+MFRo=;
+        b=DRWghxUpDQOcswSpEvKrHGG6h7ix4HCjSixMxxAFKmJcW5Uul7q71IxSYFcfELGl+o
+         6ZTyYfeKYBYFXbinJ0nsjfNxTtNX2K9ddZzObiK+pjgzyJ2lS1pzs72Ej14A+czkofjW
+         qmcncaJVvDHLjn1M19dqvoNadxKp+QT6ITk7lq+MqjUlB8D3deNX1o7VkMuUoKd1wRfs
+         tRfJo3aVO4y09P6V6WGGOW4qHrOJcjVJvUQ7jfeJ6eiqO175QFhnaH9SP7J4BOKMNyr/
+         i9EiDSkazsAFXsUM8VxzwFD/H1JbYIHle7mkq5mcULaPDhZZy39M7+tQLrg/1sKX6rlr
+         oEIQ==
+X-Gm-Message-State: AC+VfDz3yRXwxujQN1MYO/loo7zlal6f9MqgNH6p7sl+jcPLhUdESYo/
+	kGo4wHF0y7UcyAP9VduJLvw=
+X-Google-Smtp-Source: ACHHUZ7LJIGe+68y+/f7zW8IDz+Iq/yBUPpzssEQrXLR8wKbF9q9Wu20nywq5XNVdfXVbWMgiaxYCw==
+X-Received: by 2002:a05:6a00:2490:b0:668:7209:1856 with SMTP id c16-20020a056a00249000b0066872091856mr26446249pfv.14.1687893243046;
+        Tue, 27 Jun 2023 12:14:03 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id s1-20020aa78281000000b0065a1b05193asm5742654pfm.185.2023.06.27.12.14.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Jun 2023 12:14:02 -0700 (PDT)
+Message-ID: <b6a5753b-8874-6465-f690-094ee753e038@roeck-us.net>
+Date: Tue, 27 Jun 2023 12:14:00 -0700
 MIME-Version: 1.0
-References: <20230613120047.149573-1-aneesh.kumar@linux.ibm.com>
- <20230613120047.149573-3-aneesh.kumar@linux.ibm.com> <87bkh4x661.fsf@linux.ibm.com>
- <CAOUHufYM-gBNUyf8X9y3-OzCA5EeC5kR0VktV+F6pi8_6yC3Nw@mail.gmail.com>
- <959537fc-cee4-f5e8-d7be-5e4402feda9f@linux.ibm.com> <CAOUHufYZMddJXsy7xL=rG9U=caga=m6e3dfbme3KouuhdZN8Rw@mail.gmail.com>
- <e814b7e7-541b-518b-a63d-4fc2e7b87ab5@linux.ibm.com>
-In-Reply-To: <e814b7e7-541b-518b-a63d-4fc2e7b87ab5@linux.ibm.com>
-From: Yu Zhao <yuzhao@google.com>
-Date: Tue, 27 Jun 2023 13:10:55 -0600
-Message-ID: <CAOUHufZZFNXx9Zi1QRSQ+JrWvcHYo_D9-cEM_gEV7KSdgB73_A@mail.gmail.com>
-Subject: Re: [PATCH 3/3] mm/lru_gen: Don't build multi-gen LRU page table walk
- code on architecture not supported
-To: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v5 26/33] nios2: Convert __pte_free_tlb() to use ptdescs
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+To: Vishal Moola <vishal.moola@gmail.com>
+References: <20230622205745.79707-1-vishal.moola@gmail.com>
+ <20230622205745.79707-27-vishal.moola@gmail.com>
+ <13bab37c-0f0a-431a-8b67-4379bf4dc541@roeck-us.net>
+ <CAOzc2px6VutRkMUTn+M5LFLf1YbRVZFgJ=q7StaApwYRxUWqQA@mail.gmail.com>
+ <cc954b15-63ab-9d9f-2d37-1aea78b7f65f@roeck-us.net>
+In-Reply-To: <cc954b15-63ab-9d9f-2d37-1aea78b7f65f@roeck-us.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,119 +86,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "npiggin@gmail.com" <npiggin@gmail.com>
+Cc: kvm@vger.kernel.org, linux-sh@vger.kernel.org, linux-openrisc@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org, Hugh Dickins <hughd@google.com>, linux-csky@vger.kernel.org, xen-devel@lists.xenproject.org, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, linux-mips@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 27, 2023 at 5:48=E2=80=AFAM Aneesh Kumar K V
-<aneesh.kumar@linux.ibm.com> wrote:
->
-> On 6/26/23 10:34 PM, Yu Zhao wrote:
-> > On Mon, Jun 26, 2023 at 4:52=E2=80=AFAM Aneesh Kumar K V
-> > <aneesh.kumar@linux.ibm.com> wrote:
-> >>
-> >> On 6/26/23 1:04 AM, Yu Zhao wrote:
-> >>> On Sat, Jun 24, 2023 at 8:54=E2=80=AFAM Aneesh Kumar K.V
-> >>> <aneesh.kumar@linux.ibm.com> wrote:
-> >>>>
-> >>>> Hi Yu Zhao,
-> >>>>
-> >>>> "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
-> >>>>
-> >>>>> Not all architecture supports hardware atomic updates of access bit=
-s. On
-> >>>>> such an arch, we don't use page table walk to classify pages into
-> >>>>> generations. Add a kernel config option and remove adding all the p=
-age
-> >>>>> table walk code on such architecture.
-> >>>>>
-> >>>>> No preformance change observed with mongodb ycsb test:
-> >>>>>
-> >>>>> Patch details        Throughput(Ops/sec)
-> >>>>> without patch         93278
-> >>>>> With patch            93400
-> >>>>>
-> >>>>> Without patch:
-> >>>>> $ size mm/vmscan.o
-> >>>>>    text    data     bss     dec     hex filename
-> >>>>>  112102   42721      40  154863   25cef mm/vmscan.o
-> >>>>>
-> >>>>> With patch
-> >>>>>
-> >>>>> $ size  mm/vmscan.o
-> >>>>>    text    data     bss     dec     hex filename
-> >>>>>  105430   41333      24  146787   23d63 mm/vmscan.o
-> >>>>>
-> >>>>
-> >>>> Any feedback on this patch? Can we look at merging this change?
-> >>>
-> >>> Just want to make sure I fully understand the motivation: are there
-> >>> any other end goals besides reducing the footprint mentioned above?
-> >>> E.g., preparing for HCA, etc. (My current understanding is that HCA
-> >>> shouldn't care about it, since it's already runtime disabled if HCA
-> >>> doesn't want to use it.)
-> >>>
-> >>
-> >> My goal with this change was to remove all those dead code from gettin=
-g complied
-> >> in for ppc64.
-> >
-> > I see. But the first thing (lru_gen_add_folio()) you moved has nothing
-> > to do with this goal, because it's still compiled after the entire
-> > series.
-> >
->
-> Sure. will drop that change.
->
-> >>> Also as explained offline, solely relying on folio_activate() in
-> >>> lru_gen_look_around() can cause a measure regression on powerpc,
-> >>> because
-> >>> 1. PAGEVEC_SIZE is 15 whereas pglist_data->mm_walk.batched is
-> >>> virtually unlimited.
-> >>> 2. Once folio_activate() reaches that limit, it takes the LRU lock on
-> >>> top of the PTL, which can be shared by multiple page tables on
-> >>> powerpc.
-> >>>
-> >>> In fact, I think we try the opposite direction first, before arriving
-> >>> at any conclusions, i.e.,
-> >>>     #define arch_has_hw_pte_young() radix_enabled()
-> >>
-> >> The reason it is disabled on powerpc was that a reference bit update t=
-akes a pagefault
-> >> on powerpc irrespective of the translation mode.
-> >
-> > This is not true.
-> >
-> > From "IBM POWER9 Processor User Manual":
-> > https://openpowerfoundation.org/resources/ibmpower9usermanual/
-> >
-> >   4.10.14 Reference and Change Bits
-> >   ...
-> >   When performing HPT translation, the hardware performs the R and C
-> > bit updates nonatomically.
-> >   ...
-> >
-> > The radix case is more complex, and I'll leave it to you to interpret
-> > what it means:
-> >
-> > From "Power ISA Version 3.0 B":
-> > https://openpowerfoundation.org/specifications/isa/
-> >
-> >   5.7.12 Reference and Change Recording
-> >   ...
-> >   For Radix Tree translation, the Reference and Change bits are set ato=
-mically.
-> >   ...
-> >
->
-> it is atomic in that software use ldarx/stdcx to update these bits. Hardw=
-are/core won't
-> update this directly even though Nest can update this directly without ta=
-king a fault. So
-> for all purpose we can assume that on radix R/C bit is updated by page fa=
-ult handler.
+On 6/27/23 12:10, Guenter Roeck wrote:
+> On 6/27/23 10:42, Vishal Moola wrote:
+>> On Mon, Jun 26, 2023 at 10:47 PM Guenter Roeck <linux@roeck-us.net> wrote:
+>>>
+>>> On Thu, Jun 22, 2023 at 01:57:38PM -0700, Vishal Moola (Oracle) wrote:
+>>>> Part of the conversions to replace pgtable constructor/destructors with
+>>>> ptdesc equivalents.
+>>>>
+>>>> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+>>>> Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
+>>>
+>>> This patch causes all nios2 builds to fail.
+>>
+>> It looks like you tried to apply this patch on its own. This patch depends
+>> on patches 01-12 of this patchset to compile properly. I've cross-compiled
+>> this architecture and it worked, but let me know if something fails
+>> when its applied on top of those patches (or the rest of the patchset).
+> 
+> 
+> No, I did not try to apply this patch on its own. I tried to build yesterday's
+> pending-fixes branch of linux-next.
+> 
 
-Thanks. To me, it sounds like stating a function provided by h/w, not
-a requirement for s/w. (IMO, the latter would be something like
-"software must/should set the bits atomically.) But I'll take your
-word for it.
+A quick check shows that the build fails with next-20230627. See log below.
+
+Guenter
+
+---
+
+$ git describe
+next-20230627
+$ git describe --match 'v*'
+v6.4-12601-g53cdf865f90b
+
+Build reference: v6.4-12601-g53cdf865f90b
+Compiler version: nios2-linux-gcc (GCC) 11.4.0
+Assembler version: GNU assembler (GNU Binutils) 2.40
+
+Building nios2:allnoconfig ... failed
+--------------
+Error log:
+<stdin>:1519:2: warning: #warning syscall clone3 not implemented [-Wcpp]
+In file included from mm/memory.c:86:
+mm/memory.c: In function 'free_pte_range':
+arch/nios2/include/asm/pgalloc.h:33:17: error: implicit declaration of function 'pagetable_pte_dtor'; did you mean 'pgtable_pte_page_dtor'? [-Werror=implicit-function-declaration]
+    33 |                 pagetable_pte_dtor(page_ptdesc(pte));                   \
+       |                 ^~~~~~~~~~~~~~~~~~
+include/asm-generic/tlb.h:666:17: note: in expansion of macro '__pte_free_tlb'
+   666 |                 __pte_free_tlb(tlb, ptep, address);             \
+       |                 ^~~~~~~~~~~~~~
+mm/memory.c:194:9: note: in expansion of macro 'pte_free_tlb'
+   194 |         pte_free_tlb(tlb, token, addr);
+       |         ^~~~~~~~~~~~
+arch/nios2/include/asm/pgalloc.h:33:36: error: implicit declaration of function 'page_ptdesc' [-Werror=implicit-function-declaration]
+    33 |                 pagetable_pte_dtor(page_ptdesc(pte));                   \
+       |                                    ^~~~~~~~~~~
+include/asm-generic/tlb.h:666:17: note: in expansion of macro '__pte_free_tlb'
+   666 |                 __pte_free_tlb(tlb, ptep, address);             \
+       |                 ^~~~~~~~~~~~~~
+mm/memory.c:194:9: note: in expansion of macro 'pte_free_tlb'
+   194 |         pte_free_tlb(tlb, token, addr);
+       |         ^~~~~~~~~~~~
+arch/nios2/include/asm/pgalloc.h:34:17: error: implicit declaration of function 'tlb_remove_page_ptdesc'; did you mean 'tlb_remove_page_size'? [-Werror=implicit-function-declaration]
+    34 |                 tlb_remove_page_ptdesc((tlb), (page_ptdesc(pte)));      \
+       |                 ^~~~~~~~~~~~~~~~~~~~~~
+include/asm-generic/tlb.h:666:17: note: in expansion of macro '__pte_free_tlb'
+   666 |                 __pte_free_tlb(tlb, ptep, address);             \
+       |                 ^~~~~~~~~~~~~~
+mm/memory.c:194:9: note: in expansion of macro 'pte_free_tlb'
+   194 |         pte_free_tlb(tlb, token, addr);
+       |         ^~~~~~~~~~~~
+cc1: some warnings being treated as errors
+make[3]: *** [scripts/Makefile.build:243: mm/memory.o] Error 1
+make[3]: *** Waiting for unfinished jobs....
+make[2]: *** [scripts/Makefile.build:477: mm] Error 2
+make[2]: *** Waiting for unfinished jobs....
+make[1]: *** [Makefile:2022: .] Error 2
+make: *** [Makefile:226: __sub-make] Error 2
