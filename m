@@ -1,70 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4A4F7402AB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jun 2023 19:53:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 082AD7403D9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jun 2023 21:11:20 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=jU0XSQm/;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=BMqSkVfZ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QrC3y46p8z3bXf
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jun 2023 03:53:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QrDpF6bRSz3bYX
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jun 2023 05:11:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=jU0XSQm/;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=BMqSkVfZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::332; helo=mail-ot1-x332.google.com; envelope-from=vishal.moola@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1036; helo=mail-pj1-x1036.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QrC3343Xqz30Ct
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jun 2023 03:52:14 +1000 (AEST)
-Received: by mail-ot1-x332.google.com with SMTP id 46e09a7af769-6b5d7e60015so4283708a34.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jun 2023 10:52:14 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QrDnJ2XKTz2xpm
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jun 2023 05:10:27 +1000 (AEST)
+Received: by mail-pj1-x1036.google.com with SMTP id 98e67ed59e1d1-262ff3a4659so1576078a91.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jun 2023 12:10:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687888331; x=1690480331;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ya0gjT04wvrkPEwxsIo0SrjOZFrw43ACMJ5aI2sBKGs=;
-        b=jU0XSQm/UgQNqhqQcjqaxOHJKL3Tu8GM/GwEobHZGDkP+x8DVdgSjRkU85h/Lj/+te
-         oZwK4Q1yO37Pzbn1i7oZRsd+yfivOXZX9DLv/iX+OOzSZ/17s4ytR4cUrCKbaq8ScVjb
-         y4NBy98BQyt8WGI73+o5s1aq7cUaSdPW95ULfQ6FlPkdUprfA5PQkMvKjJsZAGVBcKqi
-         qlieckJVpQyRqbWlQMoi71Q4k95ldkAZz69rpAi1h8kLQ3wxt3idqYMSWF1Mqn3mJooy
-         Rs2GGbK0m2G7LUgnIAcus/1X+0dgeX1Usy3dZ/2MF2ihQvsHs5fE8nG3/WrSESAbmo+3
-         LPFw==
+        d=gmail.com; s=20221208; t=1687893024; x=1690485024;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=yS/xmFpqe6+k8T+yWQv7frf8UxF7B6Cm+1CNfhqUPlA=;
+        b=BMqSkVfZP75OxNlOqvaghKGJv9m0y4sm8KFw5SHceiXFQz/e0SiiKJT9I5B52iAH17
+         cMt4KC2GjU9iq0SnaoF95JUsMa0mk+JEcq2FkRIOzoow88IvYkDfH7aBL3K5PbCOKOue
+         txhLzT7BLkzfYn4DxxqSwsZ2KmDA6ILNOIWpC3UOJTW+EHWbeQQdlcmGoaBUyJofM5AY
+         lnVmBNLdubBt20V6jFfi37xAvQhhTT8MryCyACblmLywm5IjXVYJCWSIUi3pbGc+j98S
+         r4FtzORgbma5+HwlZ2RT9hRW9y3a8jxCdKlGNGBWvRri5+DzenA7COAJXTL5/EtGEK0g
+         cong==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687888331; x=1690480331;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ya0gjT04wvrkPEwxsIo0SrjOZFrw43ACMJ5aI2sBKGs=;
-        b=UyC5Mu7d3jNSzsIb0qCVYv8gv+cmlOChhG7ui5D57WhcoZBBFfDgMOoVir+7q8++S2
-         HS6kXGFqq72SZxRS3EvNffRf/jCjJNREfS0d8G7J8rHMrLCDvVjNcKolHE6hOLawF8Cd
-         sAhRfT8glXJJw4rkNOXtdavOwnwVcrPFDJaJPFxMFRq2shtAbZUkqkdVZxteSDX8Dvfs
-         9dnYyIw0ncuRna0ZR7+x9pjW8u8SUV1hI/e8M5HKFF6hKkvrp7n+0eCzhmnsxNXrhYuw
-         eV9zs8pODdf0q3nsNRwMCdoU6PLe0UCXMgYNWNI4dhK6LmwnerSz3YWKYsnEQG7YL7AG
-         MMqQ==
-X-Gm-Message-State: AC+VfDxniDJ6ccSLD5G2Z372A52ERoKWfw702/3aREcT+ps2+oP2tLRz
-	rzbeqAi+r7vllJO9oR9J5N+IPeT5L/dO0UaySq8=
-X-Google-Smtp-Source: ACHHUZ60PXVLGXFjCZbPL4+H89P+QaultgII2fPTXJpRhifF/y6voZRlslPkfFetToA56imkT1WhjHNqMU1RYiBUm6M=
-X-Received: by 2002:a05:6359:d23:b0:133:a55:7e26 with SMTP id
- gp35-20020a0563590d2300b001330a557e26mr5444430rwb.7.1687888330839; Tue, 27
- Jun 2023 10:52:10 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1687893024; x=1690485024;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yS/xmFpqe6+k8T+yWQv7frf8UxF7B6Cm+1CNfhqUPlA=;
+        b=QCA4Ucd22hr+TicRGegfJTx7qD+iOg5aCI/3fL3W9KmuBYLBRJVQQqyFlvp9eVWQQ/
+         X3EUhJL2UBvEsV6msv0ooPa/brrkfiR/hXkIcqYIWeaeNDMtmh8QclAs+tSDmEasruVx
+         sCfQYP9oFZd8DLqU9Vg5ceTTJOVTmvOmBrIFCGMbv3aJtHmxi7SEOLCDwXsN+w9lshIB
+         pSmgXQreGd3LSd6KidRWF3g/Sj+CrJKZ0RarsfZAV2nVxQXxU+4JXXHQ0BrwL8gVU0qH
+         mIWZq/eU+7xIWHBC4N5WD6s0BYYU48UWoN5QBvBmgThMkgqCf+M4Vo0qTj9Ee8pDVpNo
+         XTcg==
+X-Gm-Message-State: AC+VfDzKPl2/fBN/PlOCF4OJj/40OQCVL5Rzm00xuPb+ow/PhbFGVxvi
+	TofJv+OZjdU2ZtIoehhspQg=
+X-Google-Smtp-Source: ACHHUZ4TyTsIrCRAZ6UdXT5Omt1I9QGIq3lGO+AmEbof8hKm4unG6pcuoo4CdZZ1APibznjic8nqlQ==
+X-Received: by 2002:a17:90a:3cc6:b0:262:df8e:fcb6 with SMTP id k6-20020a17090a3cc600b00262df8efcb6mr9240150pjd.43.1687893024298;
+        Tue, 27 Jun 2023 12:10:24 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id n91-20020a17090a5ae400b002471deb13fcsm6684270pji.6.2023.06.27.12.10.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Jun 2023 12:10:23 -0700 (PDT)
+Message-ID: <cc954b15-63ab-9d9f-2d37-1aea78b7f65f@roeck-us.net>
+Date: Tue, 27 Jun 2023 12:10:20 -0700
 MIME-Version: 1.0
-References: <20230627031431.29653-1-vishal.moola@gmail.com>
- <20230627031431.29653-4-vishal.moola@gmail.com> <ZJsJT9dLtxaKlxVb@x1n>
-In-Reply-To: <ZJsJT9dLtxaKlxVb@x1n>
-From: Vishal Moola <vishal.moola@gmail.com>
-Date: Tue, 27 Jun 2023 10:51:59 -0700
-Message-ID: <CAOzc2pw2U2XvMcaEdy18UYe=5=PeCBn_qLR_3ns8_nWvgSSDQw@mail.gmail.com>
-Subject: Re: [PATCH v6 03/33] pgtable: Create struct ptdesc
-To: Peter Xu <peterx@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v5 26/33] nios2: Convert __pte_free_tlb() to use ptdescs
+Content-Language: en-US
+To: Vishal Moola <vishal.moola@gmail.com>
+References: <20230622205745.79707-1-vishal.moola@gmail.com>
+ <20230622205745.79707-27-vishal.moola@gmail.com>
+ <13bab37c-0f0a-431a-8b67-4379bf4dc541@roeck-us.net>
+ <CAOzc2px6VutRkMUTn+M5LFLf1YbRVZFgJ=q7StaApwYRxUWqQA@mail.gmail.com>
+From: Guenter Roeck <linux@roeck-us.net>
+In-Reply-To: <CAOzc2px6VutRkMUTn+M5LFLf1YbRVZFgJ=q7StaApwYRxUWqQA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,47 +85,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Mike Rapoport <rppt@kernel.org>, kvm@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-sh@vger.kernel.org, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-csky@vger.kernel.org, linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, loongarch@lists.linux.dev, sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+Cc: kvm@vger.kernel.org, linux-sh@vger.kernel.org, linux-openrisc@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org, Hugh Dickins <hughd@google.com>, linux-csky@vger.kernel.org, xen-devel@lists.xenproject.org, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, linux-mips@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 27, 2023 at 9:07=E2=80=AFAM Peter Xu <peterx@redhat.com> wrote:
->
-> On Mon, Jun 26, 2023 at 08:14:01PM -0700, Vishal Moola (Oracle) wrote:
-> > Currently, page table information is stored within struct page. As part
-> > of simplifying struct page, create struct ptdesc for page table
-> > information.
-> >
-> > Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-> > Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
-> > ---
-> >  include/linux/pgtable.h | 68 +++++++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 68 insertions(+)
-> >
-> > diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> > index 5063b482e34f..d46cb709ce08 100644
-> > --- a/include/linux/pgtable.h
-> > +++ b/include/linux/pgtable.h
-> > @@ -987,6 +987,74 @@ static inline void ptep_modify_prot_commit(struct =
-vm_area_struct *vma,
-> >  #endif /* __HAVE_ARCH_PTEP_MODIFY_PROT_TRANSACTION */
-> >  #endif /* CONFIG_MMU */
-> >
-> > +
-> > +/**
-> > + * struct ptdesc -    Memory descriptor for page tables.
-> > + * @__page_flags:     Same as page flags. Unused for page tables.
-> > + * @pt_rcu_head:      For freeing page table pages.
-> > + * @pt_list:          List of used page tables. Used for s390 and x86.
-> > + * @_pt_pad_1:        Padding that aliases with page's compound head.
-> > + * @pmd_huge_pte:     Protected by ptdesc->ptl, used for THPs.
-> > + * @_pt_s390_gaddr:   Aliases with page's mapping. Used for s390 gmap =
-only.
->
-> Should some arch-specific bits (and a few others) always under some
-> #ifdefs, so it shouldn't appear on other archs?
+On 6/27/23 10:42, Vishal Moola wrote:
+> On Mon, Jun 26, 2023 at 10:47 PM Guenter Roeck <linux@roeck-us.net> wrote:
+>>
+>> On Thu, Jun 22, 2023 at 01:57:38PM -0700, Vishal Moola (Oracle) wrote:
+>>> Part of the conversions to replace pgtable constructor/destructors with
+>>> ptdesc equivalents.
+>>>
+>>> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+>>> Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
+>>
+>> This patch causes all nios2 builds to fail.
+> 
+> It looks like you tried to apply this patch on its own. This patch depends
+> on patches 01-12 of this patchset to compile properly. I've cross-compiled
+> this architecture and it worked, but let me know if something fails
+> when its applied on top of those patches (or the rest of the patchset).
 
-Right now this struct completely overlays struct page, so the padding as
-well as any arch-specific fields have to stay. Whenever we get ptdescs
-independent of struct page we can cleanup any unnecessary fields, as
-well as omit unnecessary fields from unrelated architectures.
+
+No, I did not try to apply this patch on its own. I tried to build yesterday's
+pending-fixes branch of linux-next.
+
+Guenter
+
