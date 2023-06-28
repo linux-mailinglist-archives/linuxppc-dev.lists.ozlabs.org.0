@@ -1,60 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36A35740770
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jun 2023 03:08:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C52D74077D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jun 2023 03:10:34 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IA01MWms;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=qDYbBwy0;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QrNkp6TSPz30Jy
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jun 2023 11:08:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QrNml6z9tz2yyw
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jun 2023 11:10:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IA01MWms;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=qDYbBwy0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::32d; helo=mail-ot1-x32d.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ot1-x32d.google.com (mail-ot1-x32d.google.com [IPv6:2607:f8b0:4864:20::32d])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QrNjs4dh7z2yPY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jun 2023 11:07:55 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687914481; x=1719450481;
-  h=date:from:to:cc:subject:message-id;
-  bh=FMSThEVkc4+cPdz/NIz5x2AfkbS8sAjV0zSXN1ENRL4=;
-  b=IA01MWmsDdzCmggQCgntVEPWC4oC4DqYwFOaW5xYHfjy48JLRNjbv16j
-   bgGl/f+A6s7mBb4YpJYU3wW3xyIU6d2LdICVB9umVNS6C9KqhkSTE5Gxw
-   j8SrVkGWiBh8wQf7Kttf0m1QFwyISxErgG9bGHTvIA0AP9AH5g8I9BtLG
-   HNUJURQo3z9A69duBJMIZzDWNLgl6YdDM3ujvY/6TLOH/5fDI/ZQ0ZNWl
-   RWlXRqj76UdCwzO+1VIBtz129GUM2LOAsASwaRVd2HpA2CkDYrjnYtdpw
-   b1wAhVztXIlZK2SdbgBXkr3Qd81eNQC2hdCjcV2p7agRmF9U7hRBLbmCn
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10754"; a="360574466"
-X-IronPort-AV: E=Sophos;i="6.01,164,1684825200"; 
-   d="scan'208";a="360574466"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2023 18:07:31 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10754"; a="746448060"
-X-IronPort-AV: E=Sophos;i="6.01,164,1684825200"; 
-   d="scan'208";a="746448060"
-Received: from lkp-server01.sh.intel.com (HELO 783282924a45) ([10.239.97.150])
-  by orsmga008.jf.intel.com with ESMTP; 27 Jun 2023 18:07:30 -0700
-Received: from kbuild by 783282924a45 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1qEJeb-000CQF-08;
-	Wed, 28 Jun 2023 01:07:29 +0000
-Date: Wed, 28 Jun 2023 09:07:13 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS
- 034451183057cb1f6d0089f86214a8f8171bcaca
-Message-ID: <202306280910.l69lorTT-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QrNlw1RTVz2xCd
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jun 2023 11:09:47 +1000 (AEST)
+Received: by mail-ot1-x32d.google.com with SMTP id 46e09a7af769-6b74791c948so2742784a34.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jun 2023 18:09:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1687914582; x=1690506582;
+        h=in-reply-to:subject:cc:to:from:message-id:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=HW7JQ71sbb4a92jnmvwt7wlFbdVggC9/cbLPydvRNIQ=;
+        b=qDYbBwy0bqF4ACWJIkeR+LMgEM9XDHsWbUTFPkx99XcTcQzhemPO7x79dfE0F++p5r
+         4KrZZnA2ltLyKxMG3HC9C6/w6ABjsdHLmLz9SUouRsSz6YUMQSD2O+v3Tf45urXIY6AN
+         jDPSf16D86p4KcquPoY6O6I2QXzuF757ANFb3y/4qq1H7zGKvQM1ir3Vy5pohXuQxfIK
+         zwv2lhbENECC9D42Ky0rHGwvY2OMHaWfLBtQL8If/hjiSbzF8HqsEyRep8EwpYaKAv8J
+         mxiZGEDcD1usiE7Ccrym7T0MSzDPH3ub3/VIkziMkacUiHCZ+nrAxOpgsNs4IsVpnbba
+         4fuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687914582; x=1690506582;
+        h=in-reply-to:subject:cc:to:from:message-id:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=HW7JQ71sbb4a92jnmvwt7wlFbdVggC9/cbLPydvRNIQ=;
+        b=FTomRdV8fkJQsYCSB/KCZ/Ei5++5ggsAzMW/YRZtfKf7UH5Yhxv3E/gq21OnRlD6pB
+         oNo05gUJSENxsqfMN0vy2gAQifVHLY2vlAWM6bXyOVyUTTjjjbQIN0c2RFcXX01O+74U
+         jNoKyk8p657NgkajD0bjn9O4xWVJB3yDzKy1neT+0Q6gojnPA4e7eGc2yBl6iEVTf+Sb
+         iLzVa6krsxvyFCpLmItgIYtTHR+2gykCfZcM0x9dztteM/Tz8YAI6OxHA136p6K9hm0G
+         mQHwYX4tyvuheNlKpOoTsGcTQpFV1XcTQt3Pm9uNkqnCCv+YdbFBwHa7dqmJ44nADXA+
+         cO/A==
+X-Gm-Message-State: AC+VfDw+AlpRKyIkmKCR5BoRc3awwx/WRrudL2AEUFGv+kWkfnIg4NdG
+	B9iIAKMoXLb2fqkH7atC7Js=
+X-Google-Smtp-Source: ACHHUZ5JII6/UO5PrtGdL6Wo8WDeps9s3NRIovdwZCw+zmQQJErkrtuoJhL2Y/gJCcR8ycGuB8B4dg==
+X-Received: by 2002:aca:1c19:0:b0:3a2:f93e:d4ed with SMTP id c25-20020aca1c19000000b003a2f93ed4edmr2941640oic.33.1687914582286;
+        Tue, 27 Jun 2023 18:09:42 -0700 (PDT)
+Received: from dw-tp ([49.207.220.159])
+        by smtp.gmail.com with ESMTPSA id i20-20020aa787d4000000b00679325476dfsm3511018pfo.91.2023.06.27.18.09.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Jun 2023 18:09:41 -0700 (PDT)
+Date: Wed, 28 Jun 2023 06:39:30 +0530
+Message-Id: <87wmzoo0j9.fsf@doe.com>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-mm@kvack.org, akpm@linux-foundation.org, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, christophe.leroy@csgroup.eu
+Subject: Re: [PATCH v2 12/16] mm/vmemmap optimization: Split hugetlb and devdax vmemmap optimization
+In-Reply-To: <20230616110826.344417-13-aneesh.kumar@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,181 +72,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Muchun Song <muchun.song@linux.dev>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Dan Williams <dan.j.williams@intel.com>, Oscar Salvador <osalvador@suse.de>, Will Deacon <will@kernel.org>, Joao Martins <joao.m.martins@oracle.com>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: 034451183057cb1f6d0089f86214a8f8171bcaca  Automatic merge of 'next' into merge (2023-06-27 21:47)
+"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
 
-elapsed time: 741m
+> Arm disabled hugetlb vmemmap optimization [1] because hugetlb vmemmap
+> optimization includes an update of both the permissions (writeable to
+> read-only) and the output address (pfn) of the vmemmap ptes. That is not
+> supported without unmapping of pte(marking it invalid) by some
+> architectures.
+>
+> With DAX vmemmap optimization we don't require such pte updates and
+> architectures can enable DAX vmemmap optimization while having hugetlb
+> vmemmap optimization disabled. Hence split DAX optimization support into a
+> different config.
+>
+> loongarch and riscv don't have devdax support. So the DAX config is not
+> enabled for them. With this change, arm64 should be able to select DAX
+> optimization
+>
+> [1] commit 060a2c92d1b6 ("arm64: mm: hugetlb: Disable HUGETLB_PAGE_OPTIMIZE_VMEMMAP")
+>
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+>  arch/loongarch/Kconfig | 2 +-
+>  arch/riscv/Kconfig     | 2 +-
+>  arch/x86/Kconfig       | 3 ++-
+>  fs/Kconfig             | 2 +-
+>  include/linux/mm.h     | 2 +-
+>  mm/Kconfig             | 5 ++++-
+>  6 files changed, 10 insertions(+), 6 deletions(-)
 
-configs tested: 157
-configs skipped: 11
+what about s390?
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+git grep "ARCH_WANT_OPTIMIZE_VMEMMAP" .
+arch/s390/Kconfig:      select ARCH_WANT_OPTIMIZE_VMEMMAP
 
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r002-20230627   gcc  
-alpha                randconfig-r016-20230627   gcc  
-alpha                randconfig-r022-20230627   gcc  
-alpha                randconfig-r032-20230627   gcc  
-alpha                randconfig-r033-20230627   gcc  
-alpha                randconfig-r034-20230627   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r032-20230627   gcc  
-arc                  randconfig-r043-20230627   gcc  
-arc                        vdk_hs38_defconfig   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                            hisi_defconfig   gcc  
-arm                          pxa910_defconfig   gcc  
-arm                  randconfig-r006-20230627   clang
-arm                  randconfig-r021-20230627   gcc  
-arm                  randconfig-r046-20230627   gcc  
-arm                       spear13xx_defconfig   clang
-arm                           u8500_defconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r005-20230627   gcc  
-arm64                randconfig-r006-20230627   gcc  
-csky                                defconfig   gcc  
-hexagon              randconfig-r001-20230627   clang
-hexagon              randconfig-r003-20230627   clang
-hexagon              randconfig-r041-20230627   clang
-hexagon              randconfig-r045-20230627   clang
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-r004-20230627   gcc  
-i386         buildonly-randconfig-r005-20230627   gcc  
-i386         buildonly-randconfig-r006-20230627   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-i001-20230627   gcc  
-i386                 randconfig-i002-20230627   gcc  
-i386                 randconfig-i003-20230627   gcc  
-i386                 randconfig-i004-20230627   gcc  
-i386                 randconfig-i005-20230627   gcc  
-i386                 randconfig-i006-20230627   gcc  
-i386                 randconfig-i011-20230627   clang
-i386                 randconfig-i012-20230627   clang
-i386                 randconfig-i013-20230627   clang
-i386                 randconfig-i014-20230627   clang
-i386                 randconfig-i015-20230627   clang
-i386                 randconfig-i016-20230627   clang
-i386                 randconfig-r031-20230627   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r013-20230627   gcc  
-m68k                 randconfig-r031-20230627   gcc  
-m68k                 randconfig-r033-20230627   gcc  
-m68k                 randconfig-r036-20230627   gcc  
-m68k                          sun3x_defconfig   gcc  
-microblaze           randconfig-r016-20230627   gcc  
-microblaze           randconfig-r021-20230627   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                        bcm63xx_defconfig   clang
-mips                      maltasmvp_defconfig   gcc  
-mips                 randconfig-r014-20230627   gcc  
-mips                 randconfig-r033-20230627   clang
-nios2                               defconfig   gcc  
-nios2                randconfig-r013-20230627   gcc  
-nios2                randconfig-r014-20230627   gcc  
-nios2                randconfig-r025-20230627   gcc  
-openrisc             randconfig-r003-20230627   gcc  
-openrisc             randconfig-r012-20230627   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r012-20230627   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                       eiger_defconfig   gcc  
-powerpc                    gamecube_defconfig   clang
-powerpc                      makalu_defconfig   gcc  
-powerpc              randconfig-r001-20230627   gcc  
-powerpc              randconfig-r006-20230627   gcc  
-powerpc              randconfig-r012-20230627   clang
-powerpc              randconfig-r024-20230627   clang
-powerpc              randconfig-r036-20230627   gcc  
-powerpc                     redwood_defconfig   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r004-20230627   gcc  
-riscv                randconfig-r015-20230627   clang
-riscv                randconfig-r026-20230627   clang
-riscv                randconfig-r035-20230627   gcc  
-riscv                randconfig-r042-20230627   clang
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r001-20230627   gcc  
-s390                 randconfig-r015-20230627   clang
-s390                 randconfig-r026-20230627   clang
-s390                 randconfig-r035-20230627   gcc  
-s390                 randconfig-r044-20230627   clang
-sh                               allmodconfig   gcc  
-sh                   randconfig-r004-20230627   gcc  
-sh                   randconfig-r011-20230627   gcc  
-sh                   randconfig-r022-20230627   gcc  
-sh                   randconfig-r034-20230627   gcc  
-sh                          sdk7786_defconfig   gcc  
-sh                           se7705_defconfig   gcc  
-sh                           sh2007_defconfig   gcc  
-sh                            titan_defconfig   gcc  
-sh                              ul2_defconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64              randconfig-r023-20230627   gcc  
-sparc64              randconfig-r024-20230627   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                   randconfig-r004-20230627   clang
-um                   randconfig-r031-20230627   clang
-um                           x86_64_defconfig   gcc  
-x86_64                           allyesconfig   clang
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-r001-20230627   gcc  
-x86_64       buildonly-randconfig-r002-20230627   gcc  
-x86_64       buildonly-randconfig-r003-20230627   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-r005-20230627   gcc  
-x86_64               randconfig-r013-20230627   clang
-x86_64               randconfig-x001-20230627   clang
-x86_64               randconfig-x002-20230627   clang
-x86_64               randconfig-x003-20230627   clang
-x86_64               randconfig-x004-20230627   clang
-x86_64               randconfig-x005-20230627   clang
-x86_64               randconfig-x006-20230627   clang
-x86_64               randconfig-x011-20230627   gcc  
-x86_64               randconfig-x012-20230627   gcc  
-x86_64               randconfig-x013-20230627   gcc  
-x86_64               randconfig-x014-20230627   gcc  
-x86_64               randconfig-x015-20230627   gcc  
-x86_64               randconfig-x016-20230627   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                       common_defconfig   gcc  
-xtensa               randconfig-r002-20230627   gcc  
-xtensa               randconfig-r015-20230627   gcc  
-xtensa               randconfig-r036-20230627   gcc  
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index 7672a22647b4..7b388c10baab 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -461,7 +461,10 @@ config SPARSEMEM_VMEMMAP
+>  # Select this config option from the architecture Kconfig, if it is preferred
+>  # to enable the feature of HugeTLB/dev_dax vmemmap optimization.
+>  #
+> -config ARCH_WANT_OPTIMIZE_VMEMMAP
+> +config ARCH_WANT_OPTIMIZE_DAX_VMEMMAP
+> +	bool
+> +
+> +config ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP
+>  	bool
+>  
+>  config HAVE_MEMBLOCK_PHYS_MAP
+> -- 
+> 2.40.1
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+-ritesh
