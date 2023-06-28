@@ -1,53 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9687C7410B3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jun 2023 14:05:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 521E37410BC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jun 2023 14:07:13 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=PCaFIRrN;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QrgJb44bxz3bv9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jun 2023 22:05:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QrgLR1ZdDz3bn8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jun 2023 22:07:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=lanhao@huawei.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 1095 seconds by postgrey-1.37 at boromir; Wed, 28 Jun 2023 17:59:55 AEST
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QrYs73zJPz2yfc
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jun 2023 17:59:51 +1000 (AEST)
-Received: from dggpemm500005.china.huawei.com (unknown [172.30.72.53])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4QrYNB6tBxzMpWw;
-	Wed, 28 Jun 2023 15:38:18 +0800 (CST)
-Received: from [10.67.102.37] (10.67.102.37) by dggpemm500005.china.huawei.com
- (7.185.36.74) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 28 Jun
- 2023 15:41:29 +0800
-Subject: Re: [PATCH net-next 00/10] Remove unnecessary (void*) conversions
-To: wuych <yunchuan@nfschina.com>, <andrew@lunn.ch>, <f.fainelli@gmail.com>,
-	<olteanv@gmail.com>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <irusskikh@marvell.com>,
-	<yisen.zhuang@huawei.com>, <salil.mehta@huawei.com>,
-	<jesse.brandeburg@intel.com>, <anthony.l.nguyen@intel.com>,
-	<steve.glendinning@shawell.net>, <iyappan@os.amperecomputing.com>,
-	<keyur@os.amperecomputing.com>, <quan@os.amperecomputing.com>,
-	<hkallweit1@gmail.com>, <linux@armlinux.org.uk>, <mostrows@earthlink.net>,
-	<xeb@mail.ru>, <qiang.zhao@nxp.com>
-References: <20230628024121.1439149-1-yunchuan@nfschina.com>
-From: Hao Lan <lanhao@huawei.com>
-Message-ID: <1f5652f7-7eb2-11f0-4a07-c87f2992e509@huawei.com>
-Date: Wed, 28 Jun 2023 15:41:29 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.7.1
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=PCaFIRrN;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=163.com (client-ip=220.181.12.198; helo=m12.mail.163.com; envelope-from=make_ruc2021@163.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 967 seconds by postgrey-1.37 at boromir; Wed, 28 Jun 2023 18:31:47 AEST
+Received: from m12.mail.163.com (m12.mail.163.com [220.181.12.198])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QrZYv16B5z306B
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jun 2023 18:31:44 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=TZ63D
+	hoeDCYyBIbyvSorhwvX2zStbpYvqashuoDCgeQ=; b=PCaFIRrNDL2QDhpv5cWAJ
+	by/lH8bxQpMCrCbUpNXBwCr66VEGPn4PoHvA3G+XOaQgpfjFDNIbzieBYPibZpl8
+	lMA+28ZcPCOvGFe7jhar7j3n+5KuMn5hHimQH3AkHCzIIUFtprEbKXprSphB5GR3
+	eMbYipNr3P8JlL2jNnUhqk=
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by zwqz-smtp-mta-g3-2 (Coremail) with SMTP id _____wCntAEV7JtkwE1oBA--.64150S4;
+	Wed, 28 Jun 2023 16:15:27 +0800 (CST)
+From: Ma Ke <make_ruc2021@163.com>
+To: leoyang.li@nxp.com
+Subject: [PATCH] usb: gadget: fsl_qe_udc: validate endpoint index for ch9 udc
+Date: Wed, 28 Jun 2023 16:15:11 +0800
+Message-Id: <20230628081511.186850-1-make_ruc2021@163.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-In-Reply-To: <20230628024121.1439149-1-yunchuan@nfschina.com>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.102.37]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpemm500005.china.huawei.com (7.185.36.74)
-X-CFilter-Loop: Reflected
-X-Mailman-Approved-At: Wed, 28 Jun 2023 22:05:11 +1000
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: _____wCntAEV7JtkwE1oBA--.64150S4
+X-Coremail-Antispam: 1Uf129KBjvdXoWrur1rtFyrCw43Kw4DGryUKFg_yoWfJrb_u3
+	WUWrs7Wr17Ww129r17Za1Svr9293WkZ3Wkua4vqr9rAa45G3WfJryDXFs5Ca17uF43WFn5
+	A3yDJ3sIkw1SqjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU822MUUUUUU==
+X-Originating-IP: [183.174.60.14]
+X-CM-SenderInfo: 5pdnvshuxfjiisr6il2tof0z/xtbBFR+cC2B9nNSTkQAAsK
+X-Mailman-Approved-At: Wed, 28 Jun 2023 22:05:10 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,37 +56,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org, linux@rempel-privat.de, intel-wired-lan@lists.osuosl.org, yangyingliang@huawei.com, linuxppc-dev@lists.ozlabs.org, ansuelsmth@gmail.com
+Cc: gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Ma Ke <make_ruc2021@163.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+We should verify the bound of the array to assure that host
+may not manipulate the index to point past endpoint array.
 
+Signed-off-by: Ma Ke <make_ruc2021@163.com>
+---
+ drivers/usb/gadget/udc/fsl_qe_udc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-On 2023/6/28 10:41, wuych wrote:
-> Remove (void*) conversions under "drivers/net" directory.
-> According to the suggestion[1] of Jakub Kicinski, send these patches
-> in series of 10. 
-> 
-> wuych (10):
->   net: dsa: ar9331: remove unnecessary (void*) conversions
->   net: dsa: qca8k: remove unnecessary (void*) conversions
->   atlantic:hw_atl2:hw_atl2_utils_fw: Remove unnecessary (void*)
->     conversions
->   ice: Remove unnecessary (void*) conversions
->   ethernet: smsc: remove unnecessary (void*) conversions
->   net: hns: Remove unnecessary (void*) conversions
->   net: hns3: remove unnecessary (void*) conversions
->   net: mdio: Remove unnecessary (void*) conversions
->   net: ppp: remove unnecessary (void*) conversions
->   net: wan: Remove unnecessary (void*) conversions
-> 
+diff --git a/drivers/usb/gadget/udc/fsl_qe_udc.c b/drivers/usb/gadget/udc/fsl_qe_udc.c
+index 3b1cc8fa30c8..f4e5cbd193b7 100644
+--- a/drivers/usb/gadget/udc/fsl_qe_udc.c
++++ b/drivers/usb/gadget/udc/fsl_qe_udc.c
+@@ -1959,6 +1959,8 @@ static void ch9getstatus(struct qe_udc *udc, u8 request_type, u16 value,
+ 	} else if ((request_type & USB_RECIP_MASK) == USB_RECIP_ENDPOINT) {
+ 		/* Get endpoint status */
+ 		int pipe = index & USB_ENDPOINT_NUMBER_MASK;
++		if (pipe >= USB_MAX_ENDPOINTS)
++			goto stall;
+ 		struct qe_ep *target_ep = &udc->eps[pipe];
+ 		u16 usep;
+ 
+-- 
+2.37.2
 
-Hi wuych,
-Thank you for your patch.
-The following two patches conflict with the net-next branch, and others have modified the related code.
-Please compile your series in net and net-next branch and upload your series again.
-  net: dsa: ar9331: remove unnecessary (void*) conversions
-  net: dsa: qca8k: remove unnecessary (void*) conversions
-
-Yours,
-Hao Lan
