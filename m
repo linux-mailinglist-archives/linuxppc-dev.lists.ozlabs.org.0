@@ -1,85 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45023740605
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jun 2023 23:58:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36A35740770
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jun 2023 03:08:55 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=g+t5Rbdh;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IA01MWms;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QrJWT1D7Dz30gt
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jun 2023 07:58:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QrNkp6TSPz30Jy
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jun 2023 11:08:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=g+t5Rbdh;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IA01MWms;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QrJVb6C9Rz2xnK
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jun 2023 07:57:58 +1000 (AEST)
-Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-666ed230c81so4565153b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jun 2023 14:57:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687903076; x=1690495076;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=t1QqN2jdF+WL3G2Fn2F+gnSyyU4sNUKe3JWXuNtILlE=;
-        b=g+t5RbdhRiaLoYyDKYrUABIe+H7AyRcVTK6Ps8KX11dLH3rVyHHxTIp4jo1F1MLfJ/
-         7iNHUg8lMtHSGaBwqfjHucjm6wwc/jl78+I2QtBt+NVF52zFOTO8iGbXC2EXZcfaizxp
-         syPg/dBUX2hToZvcUTpD+czYfrRw5crN2vey7CoePIDlxvhbRn4jKEtVasFgYbYadRKT
-         uIII/cayZYqptv+yRMmyM+Wfpd5/UPoabOL1LFJ6elItbp/e6VHQDna35ucIS9DgJdAS
-         QwUA3GiJRf5dQk/OTJ3hXfUBDFz7VSwh76MedBtdvOPKN3bvoe9PwVVR6Es4OllczpXD
-         WRDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687903076; x=1690495076;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=t1QqN2jdF+WL3G2Fn2F+gnSyyU4sNUKe3JWXuNtILlE=;
-        b=XT1JDNYr+BywMglKxbOoWM8A2vCGplF00OfsTl+N0oFfv0qYraLkF+4St+Fn6HCIOh
-         rEWpcjmn2l3yVUfnwGlSVBLombXmGrBXHYslw7rulADCqgfZ+9rf/KEc/1i2brqdzd9u
-         pyCBCHXgMAFxYBrPb3djFvB1kaCQ4xvW67jhjHW5y1rRagAecDYLTtaDgAXAPAvc3IKd
-         ezSO39VyNjT97m2JIKY+bkzaMwzmh6lnWXEQmZh3kQkxFuNSJl+BR9vV5lnbsf+8ZCLt
-         URwosJA4Buqmb68Kg7RlGhKSEexHuSAarKfqSsDAdF8wQQiG/ydfFfCs20nH52zYNaAR
-         RbXA==
-X-Gm-Message-State: AC+VfDzEXkjVztGcHc4HTzcGEBfxfy/g+z8Bmi2piKa6Vn1ofqVbxjvf
-	e1+leoDCBr0t63fI4TJflF8=
-X-Google-Smtp-Source: ACHHUZ6lN48OedTSkLTDBhYcXWegZDranrwbL7k9xhFTjM3m37Ei4jw/mCpSF8qmoSte/cwaCNHhUw==
-X-Received: by 2002:a17:902:c407:b0:1ac:8717:d436 with SMTP id k7-20020a170902c40700b001ac8717d436mr14008978plk.60.1687903075769;
-        Tue, 27 Jun 2023 14:57:55 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id e16-20020a17090301d000b001b69303db65sm6438851plh.26.2023.06.27.14.57.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Jun 2023 14:57:55 -0700 (PDT)
-Message-ID: <a7e61e75-cc94-9771-4b56-d1a7c35c13f2@roeck-us.net>
-Date: Tue, 27 Jun 2023 14:57:52 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v5 26/33] nios2: Convert __pte_free_tlb() to use ptdescs
-Content-Language: en-US
-To: Dinh Nguyen <dinguyen@kernel.org>, Vishal Moola <vishal.moola@gmail.com>
-References: <20230622205745.79707-1-vishal.moola@gmail.com>
- <20230622205745.79707-27-vishal.moola@gmail.com>
- <13bab37c-0f0a-431a-8b67-4379bf4dc541@roeck-us.net>
- <CAOzc2px6VutRkMUTn+M5LFLf1YbRVZFgJ=q7StaApwYRxUWqQA@mail.gmail.com>
- <cc954b15-63ab-9d9f-2d37-1aea78b7f65f@roeck-us.net>
- <b6a5753b-8874-6465-f690-094ee753e038@roeck-us.net>
- <CAOzc2pxdqeaRjYLfOqvMW-AEobTzD9xOP+MyP9nxgEbi1T2r7Q@mail.gmail.com>
- <c3751051-7fc7-7129-b9a7-ead71c576ace@kernel.org>
- <2b7e8b1d-1697-6a25-434d-352f95e6fff2@roeck-us.net>
- <70776142-a778-9c20-5594-835ed6f7e7a2@kernel.org>
-From: Guenter Roeck <linux@roeck-us.net>
-In-Reply-To: <70776142-a778-9c20-5594-835ed6f7e7a2@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QrNjs4dh7z2yPY
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jun 2023 11:07:55 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1687914481; x=1719450481;
+  h=date:from:to:cc:subject:message-id;
+  bh=FMSThEVkc4+cPdz/NIz5x2AfkbS8sAjV0zSXN1ENRL4=;
+  b=IA01MWmsDdzCmggQCgntVEPWC4oC4DqYwFOaW5xYHfjy48JLRNjbv16j
+   bgGl/f+A6s7mBb4YpJYU3wW3xyIU6d2LdICVB9umVNS6C9KqhkSTE5Gxw
+   j8SrVkGWiBh8wQf7Kttf0m1QFwyISxErgG9bGHTvIA0AP9AH5g8I9BtLG
+   HNUJURQo3z9A69duBJMIZzDWNLgl6YdDM3ujvY/6TLOH/5fDI/ZQ0ZNWl
+   RWlXRqj76UdCwzO+1VIBtz129GUM2LOAsASwaRVd2HpA2CkDYrjnYtdpw
+   b1wAhVztXIlZK2SdbgBXkr3Qd81eNQC2hdCjcV2p7agRmF9U7hRBLbmCn
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10754"; a="360574466"
+X-IronPort-AV: E=Sophos;i="6.01,164,1684825200"; 
+   d="scan'208";a="360574466"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2023 18:07:31 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10754"; a="746448060"
+X-IronPort-AV: E=Sophos;i="6.01,164,1684825200"; 
+   d="scan'208";a="746448060"
+Received: from lkp-server01.sh.intel.com (HELO 783282924a45) ([10.239.97.150])
+  by orsmga008.jf.intel.com with ESMTP; 27 Jun 2023 18:07:30 -0700
+Received: from kbuild by 783282924a45 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1qEJeb-000CQF-08;
+	Wed, 28 Jun 2023 01:07:29 +0000
+Date: Wed, 28 Jun 2023 09:07:13 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS
+ 034451183057cb1f6d0089f86214a8f8171bcaca
+Message-ID: <202306280910.l69lorTT-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,66 +66,181 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, linux-sh@vger.kernel.org, linux-openrisc@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org, Hugh Dickins <hughd@google.com>, linux-csky@vger.kernel.org, xen-devel@lists.xenproject.org, Stephen Rothwell <sfr@canb.auug.org.au>, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, linux-mips@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/27/23 14:46, Dinh Nguyen wrote:
-> 
-> 
-> On 6/27/23 16:01, Guenter Roeck wrote:
->> On 6/27/23 13:05, Dinh Nguyen wrote:
->>>
->>>
->>> On 6/27/23 14:56, Vishal Moola wrote:
->>>> On Tue, Jun 27, 2023 at 12:14 PM Guenter Roeck <linux@roeck-us.net> wrote:
->>>>>
->>>>> On 6/27/23 12:10, Guenter Roeck wrote:
->>>>>> On 6/27/23 10:42, Vishal Moola wrote:
->>>>>>> On Mon, Jun 26, 2023 at 10:47 PM Guenter Roeck <linux@roeck-us.net> wrote:
->>>>>>>>
->>>>>>>> On Thu, Jun 22, 2023 at 01:57:38PM -0700, Vishal Moola (Oracle) wrote:
->>>>>>>>> Part of the conversions to replace pgtable constructor/destructors with
->>>>>>>>> ptdesc equivalents.
->>>>>>>>>
->>>>>>>>> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
->>>>>>>>> Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
->>>>>>>>
->>>>>>>> This patch causes all nios2 builds to fail.
->>>>>>>
->>>>>>> It looks like you tried to apply this patch on its own. This patch depends
->>>>>>> on patches 01-12 of this patchset to compile properly. I've cross-compiled
->>>>>>> this architecture and it worked, but let me know if something fails
->>>>>>> when its applied on top of those patches (or the rest of the patchset).
->>>>>>
->>>>>>
->>>>>> No, I did not try to apply this patch on its own. I tried to build yesterday's
->>>>>> pending-fixes branch of linux-next.
->>>>>>
->>>>>
->>>>> A quick check shows that the build fails with next-20230627. See log below.
->>>>
->>>> Ah it looks like this one slipped into -next on its own somehow? Stephen, please
->>>> drop this patch from -next; it shouldn't be in without the rest of the
->>>> patchset which
->>>> I intend to have Andrew take through the mm tree.
->>>>
->>>
->>> I apologize, but I queue this patch up for Linus and it's been pulled for this merge window. I didn't realize you were going to take this patchset through another tree.
->>>
->>> Sorry about that.
->>>
->>
->> Yes, indeed, I just confirmed that all nios2 builds in the mainline kernel
->> are now broken.
->>
-> 
-> Please let me know if you need to do anything. I'm going to out for a week starting tomorrow.
-> 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: 034451183057cb1f6d0089f86214a8f8171bcaca  Automatic merge of 'next' into merge (2023-06-27 21:47)
 
-Not sure I understand. It seems to me that it would have to be you to do something.
-After all, you are the nios2 maintainer, and nios2 builds in mainline are now
-broken. Maybe send a revert ? Am I missing something ?
+elapsed time: 741m
 
-Guenter
+configs tested: 157
+configs skipped: 11
 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r002-20230627   gcc  
+alpha                randconfig-r016-20230627   gcc  
+alpha                randconfig-r022-20230627   gcc  
+alpha                randconfig-r032-20230627   gcc  
+alpha                randconfig-r033-20230627   gcc  
+alpha                randconfig-r034-20230627   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r032-20230627   gcc  
+arc                  randconfig-r043-20230627   gcc  
+arc                        vdk_hs38_defconfig   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                            hisi_defconfig   gcc  
+arm                          pxa910_defconfig   gcc  
+arm                  randconfig-r006-20230627   clang
+arm                  randconfig-r021-20230627   gcc  
+arm                  randconfig-r046-20230627   gcc  
+arm                       spear13xx_defconfig   clang
+arm                           u8500_defconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r005-20230627   gcc  
+arm64                randconfig-r006-20230627   gcc  
+csky                                defconfig   gcc  
+hexagon              randconfig-r001-20230627   clang
+hexagon              randconfig-r003-20230627   clang
+hexagon              randconfig-r041-20230627   clang
+hexagon              randconfig-r045-20230627   clang
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-r004-20230627   gcc  
+i386         buildonly-randconfig-r005-20230627   gcc  
+i386         buildonly-randconfig-r006-20230627   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-i001-20230627   gcc  
+i386                 randconfig-i002-20230627   gcc  
+i386                 randconfig-i003-20230627   gcc  
+i386                 randconfig-i004-20230627   gcc  
+i386                 randconfig-i005-20230627   gcc  
+i386                 randconfig-i006-20230627   gcc  
+i386                 randconfig-i011-20230627   clang
+i386                 randconfig-i012-20230627   clang
+i386                 randconfig-i013-20230627   clang
+i386                 randconfig-i014-20230627   clang
+i386                 randconfig-i015-20230627   clang
+i386                 randconfig-i016-20230627   clang
+i386                 randconfig-r031-20230627   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+m68k                             allmodconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                 randconfig-r013-20230627   gcc  
+m68k                 randconfig-r031-20230627   gcc  
+m68k                 randconfig-r033-20230627   gcc  
+m68k                 randconfig-r036-20230627   gcc  
+m68k                          sun3x_defconfig   gcc  
+microblaze           randconfig-r016-20230627   gcc  
+microblaze           randconfig-r021-20230627   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                        bcm63xx_defconfig   clang
+mips                      maltasmvp_defconfig   gcc  
+mips                 randconfig-r014-20230627   gcc  
+mips                 randconfig-r033-20230627   clang
+nios2                               defconfig   gcc  
+nios2                randconfig-r013-20230627   gcc  
+nios2                randconfig-r014-20230627   gcc  
+nios2                randconfig-r025-20230627   gcc  
+openrisc             randconfig-r003-20230627   gcc  
+openrisc             randconfig-r012-20230627   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r012-20230627   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                       eiger_defconfig   gcc  
+powerpc                    gamecube_defconfig   clang
+powerpc                      makalu_defconfig   gcc  
+powerpc              randconfig-r001-20230627   gcc  
+powerpc              randconfig-r006-20230627   gcc  
+powerpc              randconfig-r012-20230627   clang
+powerpc              randconfig-r024-20230627   clang
+powerpc              randconfig-r036-20230627   gcc  
+powerpc                     redwood_defconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r004-20230627   gcc  
+riscv                randconfig-r015-20230627   clang
+riscv                randconfig-r026-20230627   clang
+riscv                randconfig-r035-20230627   gcc  
+riscv                randconfig-r042-20230627   clang
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r001-20230627   gcc  
+s390                 randconfig-r015-20230627   clang
+s390                 randconfig-r026-20230627   clang
+s390                 randconfig-r035-20230627   gcc  
+s390                 randconfig-r044-20230627   clang
+sh                               allmodconfig   gcc  
+sh                   randconfig-r004-20230627   gcc  
+sh                   randconfig-r011-20230627   gcc  
+sh                   randconfig-r022-20230627   gcc  
+sh                   randconfig-r034-20230627   gcc  
+sh                          sdk7786_defconfig   gcc  
+sh                           se7705_defconfig   gcc  
+sh                           sh2007_defconfig   gcc  
+sh                            titan_defconfig   gcc  
+sh                              ul2_defconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64              randconfig-r023-20230627   gcc  
+sparc64              randconfig-r024-20230627   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                   randconfig-r004-20230627   clang
+um                   randconfig-r031-20230627   clang
+um                           x86_64_defconfig   gcc  
+x86_64                           allyesconfig   clang
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-r001-20230627   gcc  
+x86_64       buildonly-randconfig-r002-20230627   gcc  
+x86_64       buildonly-randconfig-r003-20230627   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-r005-20230627   gcc  
+x86_64               randconfig-r013-20230627   clang
+x86_64               randconfig-x001-20230627   clang
+x86_64               randconfig-x002-20230627   clang
+x86_64               randconfig-x003-20230627   clang
+x86_64               randconfig-x004-20230627   clang
+x86_64               randconfig-x005-20230627   clang
+x86_64               randconfig-x006-20230627   clang
+x86_64               randconfig-x011-20230627   gcc  
+x86_64               randconfig-x012-20230627   gcc  
+x86_64               randconfig-x013-20230627   gcc  
+x86_64               randconfig-x014-20230627   gcc  
+x86_64               randconfig-x015-20230627   gcc  
+x86_64               randconfig-x016-20230627   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa                       common_defconfig   gcc  
+xtensa               randconfig-r002-20230627   gcc  
+xtensa               randconfig-r015-20230627   gcc  
+xtensa               randconfig-r036-20230627   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
