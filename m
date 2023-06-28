@@ -2,56 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C2F3740EE6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jun 2023 12:34:38 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=xen0n.name header.i=@xen0n.name header.a=rsa-sha256 header.s=mail header.b=sO40R4CE;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 9687C7410B3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jun 2023 14:05:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QrdHc0zlKz3bWp
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jun 2023 20:34:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QrgJb44bxz3bv9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jun 2023 22:05:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=xen0n.name header.i=@xen0n.name header.a=rsa-sha256 header.s=mail header.b=sO40R4CE;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=xen0n.name (client-ip=115.28.160.31; helo=mailbox.box.xen0n.name; envelope-from=kernel@xen0n.name; receiver=lists.ozlabs.org)
-X-Greylist: delayed 449 seconds by postgrey-1.37 at boromir; Wed, 28 Jun 2023 20:33:45 AEST
-Received: from mailbox.box.xen0n.name (mail.xen0n.name [115.28.160.31])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=lanhao@huawei.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 1095 seconds by postgrey-1.37 at boromir; Wed, 28 Jun 2023 17:59:55 AEST
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QrdGd49LLz305R
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jun 2023 20:33:44 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xen0n.name; s=mail;
-	t=1687947969; bh=CywiEZ2ioeoVRwvb3VhckHlwPQWISEuRuyDIMUh/SlE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sO40R4CELoyZP15+xzNfqv8fc7MUdkASAJSkqWSLOF+ywVO11MV3l+vbMWMg1dqiL
-	 S3XqzYIfgs3lH9JEuQ4NBON04QSxnL2skzqa8NCotSC1yJtWdJ9eUJkPUFbXxZTmd4
-	 Zxi4HVbihTOgYh7ZLnJNy6YsG4+r5nIfmYW+cbyA=
-Received: from [100.100.34.13] (unknown [220.248.53.61])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by mailbox.box.xen0n.name (Postfix) with ESMTPSA id 05B73600A6;
-	Wed, 28 Jun 2023 18:26:08 +0800 (CST)
-Message-ID: <dd7bd914-634a-115f-ab5c-80349493b1f6@xen0n.name>
-Date: Wed, 28 Jun 2023 18:26:08 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QrYs73zJPz2yfc
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jun 2023 17:59:51 +1000 (AEST)
+Received: from dggpemm500005.china.huawei.com (unknown [172.30.72.53])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4QrYNB6tBxzMpWw;
+	Wed, 28 Jun 2023 15:38:18 +0800 (CST)
+Received: from [10.67.102.37] (10.67.102.37) by dggpemm500005.china.huawei.com
+ (7.185.36.74) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 28 Jun
+ 2023 15:41:29 +0800
+Subject: Re: [PATCH net-next 00/10] Remove unnecessary (void*) conversions
+To: wuych <yunchuan@nfschina.com>, <andrew@lunn.ch>, <f.fainelli@gmail.com>,
+	<olteanv@gmail.com>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <irusskikh@marvell.com>,
+	<yisen.zhuang@huawei.com>, <salil.mehta@huawei.com>,
+	<jesse.brandeburg@intel.com>, <anthony.l.nguyen@intel.com>,
+	<steve.glendinning@shawell.net>, <iyappan@os.amperecomputing.com>,
+	<keyur@os.amperecomputing.com>, <quan@os.amperecomputing.com>,
+	<hkallweit1@gmail.com>, <linux@armlinux.org.uk>, <mostrows@earthlink.net>,
+	<xeb@mail.ru>, <qiang.zhao@nxp.com>
+References: <20230628024121.1439149-1-yunchuan@nfschina.com>
+From: Hao Lan <lanhao@huawei.com>
+Message-ID: <1f5652f7-7eb2-11f0-4a07-c87f2992e509@huawei.com>
+Date: Wed, 28 Jun 2023 15:41:29 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.7.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v3 06/19] arch/loongarch: Implement <asm/fb.h> with
- generic helpers
-Content-Language: en-US
-To: Thomas Zimmermann <tzimmermann@suse.de>, arnd@arndb.de,
- daniel.vetter@ffwll.ch, deller@gmx.de, javierm@redhat.com,
- gregkh@linuxfoundation.org
-References: <20230417125651.25126-1-tzimmermann@suse.de>
- <20230417125651.25126-7-tzimmermann@suse.de>
-From: WANG Xuerui <kernel@xen0n.name>
-In-Reply-To: <20230417125651.25126-7-tzimmermann@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <20230628024121.1439149-1-yunchuan@nfschina.com>
+Content-Type: text/plain; charset="windows-1252"
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.67.102.37]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpemm500005.china.huawei.com (7.185.36.74)
+X-CFilter-Loop: Reflected
+X-Mailman-Approved-At: Wed, 28 Jun 2023 22:05:11 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,60 +59,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-fbdev@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>, linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev, sparclinux@vger.kernel.org, linux-snps-arc@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: netdev@vger.kernel.org, kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org, linux@rempel-privat.de, intel-wired-lan@lists.osuosl.org, yangyingliang@huawei.com, linuxppc-dev@lists.ozlabs.org, ansuelsmth@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
 
-On 2023/4/17 20:56, Thomas Zimmermann wrote:
-> Replace the architecture's fbdev helpers with the generic
-> ones from <asm-generic/fb.h>. No functional changes.
+
+On 2023/6/28 10:41, wuych wrote:
+> Remove (void*) conversions under "drivers/net" directory.
+> According to the suggestion[1] of Jakub Kicinski, send these patches
+> in series of 10. 
 > 
-> v2:
-> 	* use default implementation for fb_pgprotect() (Arnd)
+> wuych (10):
+>   net: dsa: ar9331: remove unnecessary (void*) conversions
+>   net: dsa: qca8k: remove unnecessary (void*) conversions
+>   atlantic:hw_atl2:hw_atl2_utils_fw: Remove unnecessary (void*)
+>     conversions
+>   ice: Remove unnecessary (void*) conversions
+>   ethernet: smsc: remove unnecessary (void*) conversions
+>   net: hns: Remove unnecessary (void*) conversions
+>   net: hns3: remove unnecessary (void*) conversions
+>   net: mdio: Remove unnecessary (void*) conversions
+>   net: ppp: remove unnecessary (void*) conversions
+>   net: wan: Remove unnecessary (void*) conversions
 > 
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: Huacai Chen <chenhuacai@kernel.org>
-> Cc: WANG Xuerui <kernel@xen0n.name>
-> ---
->   arch/loongarch/include/asm/fb.h | 15 +--------------
->   1 file changed, 1 insertion(+), 14 deletions(-)
-> 
-> diff --git a/arch/loongarch/include/asm/fb.h b/arch/loongarch/include/asm/fb.h
-> index 3116bde8772d..ff82f20685c8 100644
-> --- a/arch/loongarch/include/asm/fb.h
-> +++ b/arch/loongarch/include/asm/fb.h
-> @@ -5,19 +5,6 @@
->   #ifndef _ASM_FB_H_
->   #define _ASM_FB_H_
->   
-> -#include <linux/fb.h>
-> -#include <linux/fs.h>
-> -#include <asm/page.h>
-> -
-> -static inline void fb_pgprotect(struct file *file, struct vm_area_struct *vma,
-> -				unsigned long off)
-> -{
-> -	vma->vm_page_prot = pgprot_writecombine(vma->vm_page_prot);
-> -}
-> -
-> -static inline int fb_is_primary_device(struct fb_info *info)
-> -{
-> -	return 0;
-> -}
-> +#include <asm-generic/fb.h>
->   
->   #endif /* _ASM_FB_H_ */
 
-Sorry for the late review. The change is fairly trivial, so:
+Hi wuych,
+Thank you for your patch.
+The following two patches conflict with the net-next branch, and others have modified the related code.
+Please compile your series in net and net-next branch and upload your series again.
+  net: dsa: ar9331: remove unnecessary (void*) conversions
+  net: dsa: qca8k: remove unnecessary (void*) conversions
 
-Reviewed-by: WANG Xuerui <git@xen0n.name>
-
-Thanks!
-
--- 
-WANG "xen0n" Xuerui
-
-Linux/LoongArch mailing list: https://lore.kernel.org/loongarch/
-
+Yours,
+Hao Lan
