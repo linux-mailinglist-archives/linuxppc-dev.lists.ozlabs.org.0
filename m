@@ -2,78 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C5ED7427B9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jun 2023 15:51:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31E047427DE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jun 2023 16:01:12 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=iMfm+/ek;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=xp7w81/H;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qV8F6si/;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QsKcD0X3hz3c4d
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jun 2023 23:51:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QsKqV0NQnz3bsQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Jun 2023 00:01:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=iMfm+/ek;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=xp7w81/H;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qV8F6si/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QsJsy4MT6z30BZ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Jun 2023 23:18:13 +1000 (AEST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 29F001FD64;
-	Thu, 29 Jun 2023 13:18:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1688044690; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K5LR3H2yhcLZRfkUpcC1pYuRSidZ3cqdCZg/hSroVmk=;
-	b=iMfm+/ekl0xfXphQ8TVMKTrT9ToRvi4MYfuPCVZZAy+JWtEwFNQpmWYIMp1ahVk0VzxEMc
-	9vdJjhaRzuPHB0EZlpDS2j4gGqL462DXX3aZ/YckBYoB9WMBTuLu9QNIxB5UgNdqSpVH7z
-	52WX/ny9kEUHZSPElxwmGtlhnjwzsns=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1688044690;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K5LR3H2yhcLZRfkUpcC1pYuRSidZ3cqdCZg/hSroVmk=;
-	b=xp7w81/HcKGr6AkcZ0NPWLrSaMy4em6tA16DRyZDyCoK4iK4hZmFtiZeOi0hbEeJ4JV0Im
-	oIingQYV0eMXi6Cw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id C7381139FF;
-	Thu, 29 Jun 2023 13:18:08 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id 6reCL5CEnWRzcwAAMHmgww
-	(envelope-from <tzimmermann@suse.de>); Thu, 29 Jun 2023 13:18:08 +0000
-Message-ID: <90726a74-69db-3f8e-819d-3a1a10e98992@suse.de>
-Date: Thu, 29 Jun 2023 15:18:07 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QsKpY4W4sz2xpx
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Jun 2023 00:00:21 +1000 (AEST)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35TDvSCY018330;
+	Thu, 29 Jun 2023 13:59:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=LrYbdcM0evC7Xy9CDimNEkxtdbpvB/BFhHVZyMGsjWc=;
+ b=qV8F6si/hA4BMAclDXBQy7EBDubLFaV1IUaBMl1NIzccoj5zCV2u77w6NVMJFtkznkr7
+ ln1Oo/k2hNHfVuzudYvAvWMvXEoTFkxnXEBzShSU0D6WY/Cz2rBjy0HfxEbpc2zr6fmP
+ eyeTGi/rLL1r1v/YRHvRsaWNFz6ptKjc1e2SbKrtxoqecgrANt4d9MN3C6N2f40/G59v
+ 8s53SGXTAAegChcxiBTp/H1hMkYuiyIemVNXovvrZxVX9xW/puzk/H9OmrdYihtTMFXI
+ BxoprZF/nsWn8XGRF24lWPl4TyTd2X1b9IT+NYD+e9N4ZAskKqxAzZbLBGlbHonfl8li /A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rhba183ms-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 Jun 2023 13:59:20 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35TDvdpg018759;
+	Thu, 29 Jun 2023 13:59:19 GMT
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rhba183gk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 Jun 2023 13:59:18 +0000
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+	by ppma01fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35T5nCVI014922;
+	Thu, 29 Jun 2023 13:59:16 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma01fra.de.ibm.com (PPS) with ESMTPS id 3rdr452hpd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 Jun 2023 13:59:16 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 35TDxCmc56885746
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 29 Jun 2023 13:59:12 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9F48C20043;
+	Thu, 29 Jun 2023 13:59:12 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4EA7020040;
+	Thu, 29 Jun 2023 13:59:09 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.171.2.247])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 29 Jun 2023 13:59:09 +0000 (GMT)
+Date: Thu, 29 Jun 2023 15:59:07 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Subject: Re: [PATCH v2 07/12] s390: add pte_free_defer() for pgtables sharing
+ page
+Message-ID: <ZJ2OK29zPB76i0Ga@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+References: <54cb04f-3762-987f-8294-91dafd8ebfb0@google.com>
+ <a722dbec-bd9e-1213-1edd-53cd547aa4f@google.com>
+ <20230628211624.531cdc58@thinkpad-T15>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 06/12] arch: Declare screen_info in <asm/screen_info.h>
-Content-Language: en-US
-To: Arnd Bergmann <arnd@arndb.de>, Helge Deller <deller@gmx.de>,
- Daniel Vetter <daniel@ffwll.ch>, Dave Airlie <airlied@gmail.com>
-References: <20230629121952.10559-1-tzimmermann@suse.de>
- <20230629121952.10559-7-tzimmermann@suse.de>
- <b31f42c1-4283-4793-b448-f7b9326be5d4@app.fastmail.com>
-From: Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <b31f42c1-4283-4793-b448-f7b9326be5d4@app.fastmail.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------lHNoVt04HU1vaNtq3nK0adnX"
-X-Mailman-Approved-At: Thu, 29 Jun 2023 23:48:03 +1000
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230628211624.531cdc58@thinkpad-T15>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: YMCVI8WX38wPGVoSaafWaumxPTpPmIfa
+X-Proofpoint-ORIG-GUID: BptJCD1qhVG-ySwo39DLjqgVEpX_NEnC
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-29_03,2023-06-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ adultscore=0 lowpriorityscore=0 bulkscore=0 impostorscore=0
+ mlxlogscore=999 suspectscore=0 malwarescore=0 clxscore=1011 mlxscore=0
+ spamscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306290122
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,130 +98,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, linux-efi@vger.kernel.org, linux-ia64@vger.kernel.org, Anshuman Khandual <anshuman.khandual@arm.com>, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Linus Walleij <linus.walleij@linaro.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, Rich Felker <dalias@libc.org>, guoren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, WANG Xuerui <kernel@xen0n.name>, Linux-Arch <linux-arch@vger.kernel.org>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, linux-hexagon@vger.kernel.org, linux-staging@lists.linux.dev, Russell King <linux@armlinux.org.uk>, "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>, Ard Bieshe
- uvel <ardb@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>, Sami Tolvanen <samitolvanen@google.com>, Juerg Haefliger <juerg.haefliger@canonical.com>, Matt Turner <mattst88@gmail.com>, Huacai Chen <chenhuacai@kernel.org>, Albert Ou <aou@eecs.berkeley.edu>, Kees Cook <keescook@chromium.org>, "Paul E. McKenney" <paulmck@kernel.org>, Chris Zankel <chris@zankel.net>, Frederic Weisbecker <frederic@kernel.org>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, Russell King <rmk+kernel@armlinux.org.uk>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>, Zi Yan <ziy@nvidia.com>, linux-arm-kernel@lists.infradead.org, Brian Cain <bcain@quicinc.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Sebastian Reichel <sebastian.reichel@collabora.com>, Niklas Schnelle <schnelle@lin
- ux.ibm.com>, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Mike Rapoport <rppt@kernel.org>, linux-alpha@vger.kernel.org, Borislav Petkov <bp@alien8.de>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>, x86@kernel.org
+Cc: Miaohe Lin <linmiaohe@huawei.com>, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Yang Shi <shy828301@gmail.com>, Peter Xu <peterx@redhat.com>, linux-kernel@vger.kernel.org, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Yu Zhao <yuzhao@google.com>, Ira Weiny <ira.weiny@intel.com>, Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, Steven Price <steven.price@arm.com>, Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Huang Ying <ying.huang@intel.com>, Axel Rasmussen <axelrasmussen@google.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Thomas Hellstrom <thomas.hellstrom@linux.intel.com>, Ralph Campbell <rcampbell@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, V
+ asily Gorbik <gor@linux.ibm.com>, Anshuman Khandual <anshuman.khandual@arm.com>, Heiko Carstens <hca@linux.ibm.com>, Qi Zheng <zhengqi.arch@bytedance.com>, Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, linux-arm-kernel@lists.infradead.org, SeongJae Park <sj@kernel.org>, Lorenzo Stoakes <lstoakes@gmail.com>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, Naoya Horiguchi <naoya.horiguchi@nec.com>, Zack Rusin <zackr@vmware.com>, Vishal Moola <vishal.moola@gmail.com>, Minchan Kim <minchan@kernel.org>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, Mel Gorman <mgorman@techsingularity.net>, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------lHNoVt04HU1vaNtq3nK0adnX
-Content-Type: multipart/mixed; boundary="------------NaZYgX4ZbucliJsCgNaPg0G7";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Arnd Bergmann <arnd@arndb.de>, Helge Deller <deller@gmx.de>,
- Daniel Vetter <daniel@ffwll.ch>, Dave Airlie <airlied@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
- "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
- linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-hyperv@vger.kernel.org,
- linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
- Linux-Arch <linux-arch@vger.kernel.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner
- <mattst88@gmail.com>, Russell King <linux@armlinux.org.uk>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- guoren <guoren@kernel.org>, Brian Cain <bcain@quicinc.com>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Dinh Nguyen <dinguyen@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- "David S . Miller" <davem@davemloft.net>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
- Kees Cook <keescook@chromium.org>, "Paul E. McKenney" <paulmck@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Frederic Weisbecker <frederic@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Ard Biesheuvel <ardb@kernel.org>,
- Sami Tolvanen <samitolvanen@google.com>,
- Juerg Haefliger <juerg.haefliger@canonical.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Niklas Schnelle <schnelle@linux.ibm.com>,
- Russell King <rmk+kernel@armlinux.org.uk>,
- Linus Walleij <linus.walleij@linaro.org>,
- Sebastian Reichel <sebastian.reichel@collabora.com>,
- Mike Rapoport <rppt@kernel.org>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Zi Yan <ziy@nvidia.com>
-Message-ID: <90726a74-69db-3f8e-819d-3a1a10e98992@suse.de>
-Subject: Re: [PATCH 06/12] arch: Declare screen_info in <asm/screen_info.h>
-References: <20230629121952.10559-1-tzimmermann@suse.de>
- <20230629121952.10559-7-tzimmermann@suse.de>
- <b31f42c1-4283-4793-b448-f7b9326be5d4@app.fastmail.com>
-In-Reply-To: <b31f42c1-4283-4793-b448-f7b9326be5d4@app.fastmail.com>
+On Wed, Jun 28, 2023 at 09:16:24PM +0200, Gerald Schaefer wrote:
+> On Tue, 20 Jun 2023 00:51:19 -0700 (PDT)
+> Hugh Dickins <hughd@google.com> wrote:
 
---------------NaZYgX4ZbucliJsCgNaPg0G7
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Hi Gerald, Hugh!
 
-SGkNCg0KQW0gMjkuMDYuMjMgdW0gMTU6MDMgc2NocmllYiBBcm5kIEJlcmdtYW5uOg0KPiBP
-biBUaHUsIEp1biAyOSwgMjAyMywgYXQgMTM6NDUsIFRob21hcyBaaW1tZXJtYW5uIHdyb3Rl
-Og0KPiANCj4+IGRpZmYgLS1naXQgYS9pbmNsdWRlL2FzbS1nZW5lcmljL3NjcmVlbl9pbmZv
-LmgNCj4+IGIvaW5jbHVkZS9hc20tZ2VuZXJpYy9zY3JlZW5faW5mby5oDQo+PiBuZXcgZmls
-ZSBtb2RlIDEwMDY0NA0KPj4gaW5kZXggMDAwMDAwMDAwMDAwMC4uNmZkMGU1MGZhYmZjZA0K
-Pj4gLS0tIC9kZXYvbnVsbA0KPj4gKysrIGIvaW5jbHVkZS9hc20tZ2VuZXJpYy9zY3JlZW5f
-aW5mby5oDQo+PiBAQCAtMCwwICsxLDEyIEBADQo+PiArLyogU1BEWC1MaWNlbnNlLUlkZW50
-aWZpZXI6IEdQTC0yLjAgKi8NCj4+ICsNCj4+ICsjaWZuZGVmIF9BU01fR0VORVJJQ19TQ1JF
-RU5fSU5GT19IDQo+PiArI2RlZmluZSBfQVNNX0dFTkVSSUNfU0NSRUVOX0lORk9fSA0KPj4g
-Kw0KPj4gKyNpbmNsdWRlIDx1YXBpL2xpbnV4L3NjcmVlbl9pbmZvLmg+DQo+PiArDQo+PiAr
-I2lmIGRlZmluZWQoQ09ORklHX0FSQ0hfSEFTX1NDUkVFTl9JTkZPKQ0KPj4gK2V4dGVybiBz
-dHJ1Y3Qgc2NyZWVuX2luZm8gc2NyZWVuX2luZm87DQo+PiArI2VuZGlmDQo+PiArDQo+PiAr
-I2VuZGlmIC8qIF9BU01fR0VORVJJQ19TQ1JFRU5fSU5GT19IICovDQo+PiBkaWZmIC0tZ2l0
-IGEvaW5jbHVkZS9saW51eC9zY3JlZW5faW5mby5oIGIvaW5jbHVkZS9saW51eC9zY3JlZW5f
-aW5mby5oDQo+PiBpbmRleCBlYWI3MDgxMzkyZDUwLi5jNzY0YjlhNTFjMjRiIDEwMDY0NA0K
-Pj4gLS0tIGEvaW5jbHVkZS9saW51eC9zY3JlZW5faW5mby5oDQo+PiArKysgYi9pbmNsdWRl
-L2xpbnV4L3NjcmVlbl9pbmZvLmgNCj4+IEBAIC00LDYgKzQsNiBAQA0KPj4NCj4+ICAgI2lu
-Y2x1ZGUgPHVhcGkvbGludXgvc2NyZWVuX2luZm8uaD4NCj4+DQo+PiAtZXh0ZXJuIHN0cnVj
-dCBzY3JlZW5faW5mbyBzY3JlZW5faW5mbzsNCj4+ICsjaW5jbHVkZSA8YXNtL3NjcmVlbl9p
-bmZvLmg+DQo+Pg0KPiANCj4gV2hhdCBpcyB0aGUgcHVycG9zZSBvZiBhZGRpbmcgYSBmaWxl
-IGluIGFzbS1nZW5lcmljPyBJZiBhbGwNCj4gYXJjaGl0ZWN0dXJlcyB1c2UgdGhlIHNhbWUg
-Z2VuZXJpYyBmaWxlLCBJJ2QganVzdCBsZWF2ZSB0aGUNCj4gZGVjbGFyYXRpb24gaW4gaW5j
-bHVkZS9saW51eC8uIEkgd291bGRuJ3QgYm90aGVyIGFkZGluZyB0aGUNCg0KVGhhdCBhcHBl
-YXJzIGEgYml0ICd1bi1jbGVhbicgZm9yIHNvbWV0aGluZyB0aGF0IGlzIGRlZmluZWQgaW4g
-DQphcmNoaXRlY3R1cmU/IEJ1dCBPSywgSSB3b3VsZCBub3Qgb2JqZWN0Lg0KDQo+ICNpZmRl
-ZiBlaXRoZXIsIGJ1dCBJIGNhbiBzZWUgaG93IHRoYXQgaGVscHMgdHVybiBhIGxpbmsNCj4g
-ZXJyb3IgaW50byBhbiBlYXJsaWVyIGNvbXBpbGUgZXJyb3IuDQoNClllcywgdGhhdCdzIGlu
-dGVudGlvbmFsLiBJZiB0aGVyZSdzIGEgS2NvbmZpZyB0b2tlbiBhbnl3YXksIHdlIGNhbiBh
-bHNvIA0KZmFpbCBlYXJseSBkdXJpbmcgdGhlIGJ1aWxkLg0KDQpCZXN0IHJlZ2FyZHMNClRo
-b21hcw0KDQo+IA0KPiAgICAgICAgQXJuZA0KDQotLSANClRob21hcyBaaW1tZXJtYW5uDQpH
-cmFwaGljcyBEcml2ZXIgRGV2ZWxvcGVyDQpTVVNFIFNvZnR3YXJlIFNvbHV0aW9ucyBHZXJt
-YW55IEdtYkgNCkZyYW5rZW5zdHJhc3NlIDE0NiwgOTA0NjEgTnVlcm5iZXJnLCBHZXJtYW55
-DQpHRjogSXZvIFRvdGV2LCBBbmRyZXcgTXllcnMsIEFuZHJldyBNY0RvbmFsZCwgQm91ZGll
-biBNb2VybWFuDQpIUkIgMzY4MDkgKEFHIE51ZXJuYmVyZykNCg==
+...
+> @@ -407,6 +445,88 @@ void __tlb_remove_table(void *_table)
+>  	__free_page(page);
+>  }
+>  
+> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> +static void pte_free_now0(struct rcu_head *head);
+> +static void pte_free_now1(struct rcu_head *head);
 
---------------NaZYgX4ZbucliJsCgNaPg0G7--
+What about pte_free_lower() / pte_free_upper()?
 
---------------lHNoVt04HU1vaNtq3nK0adnX
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
+...
+> +void pte_free_defer(struct mm_struct *mm, pgtable_t pgtable)
+> +{
+> +	unsigned int bit, mask;
+> +	struct page *page;
+> +
+> +	page = virt_to_page(pgtable);
+> +	if (mm_alloc_pgste(mm)) {
+> +		/*
+> +		 * TODO: Do we need gmap_unlink(mm, pgtable, addr), like in
+> +		 * page_table_free_rcu()?
+> +		 * If yes -> need addr parameter here, like in pte_free_tlb().
+> +		 */
+> +		call_rcu(&page->rcu_head, pte_free_pgste);
+> +		return;
+> +}
+> +	bit = ((unsigned long)pgtable & ~PAGE_MASK) / (PTRS_PER_PTE * sizeof(pte_t));
+> +
+> +	spin_lock_bh(&mm->context.lock);
+> +	mask = atomic_xor_bits(&page->_refcount, 0x15U << (bit + 24));
 
------BEGIN PGP SIGNATURE-----
+This  makes the bit logic increasingly complicated to me.
 
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmSdhI8FAwAAAAAACgkQlh/E3EQov+C6
-/A/9E2UeLuAYO4oVzr7MYxtHJqgMeXKL3iCmAlD5a1SYNi1ixD68cwakP+lI9m4szzDGyNU/sRYL
-Ce3i8WGXgRm991Ydm+ztZ8FO/ph9XOVhq7RFKwEYNy70l+7R56mDOd1ciNpH3MLjEfhoBJ5Xj0cD
-rPf/74n/ptJpdYGsFRJSqo+xj78uWljJdj9YQ6bpUNhOIFAJn+a91kvcreTWoVwBfaXlWevy3dHR
-lAFUpk+Ji1uldEboHSHzFB3V6FQ7odxZ/oW0ykURjjf2TyqrA4MwLtjZQYJqSr6i0cN1Qfn/IR1o
-CHZFJKzcQXgF+jqdXdEmgS3pDi+jmR7paLHGwX0pdlcczcjPuAJ9b0MqjQ5De1mJ1qNTKZCMUHrm
-n6BW6VGyUn4n7x/hieov6MXbqJkEXu9dAJgzNR9SQ/5Dszfwn8IJOGS3plNsPJSBYA1ZRAGmv5mv
-VtscxfEkzLP1f5IM+ukfQ4lfSC+P9B3jbsa6DqQfcr1IBMQiJkbK6XKI9TQwLqxfWlgkdUfjgp4d
-lDwmJfyb7JLxdMktscgr1rlA1KE/jlHX9wxTazYoUnY5uBtdeYco9NNe2fhvRv+c4mfJknGVZ/dR
-F72VPBGenSKLgGoPamSowIKZJ/CpjEecYs7IcjmIoSLJ01STOBrZDRjz8iMNHR7pdZRLjuUSHY+B
-wjM=
-=ZHT8
------END PGP SIGNATURE-----
+What if instead we set the rule "one bit at a time only"?
+That means an atomic group bit flip is only allowed between
+pairs of bits, namely:
 
---------------lHNoVt04HU1vaNtq3nK0adnX--
+bit flip	initiated from
+-----------	----------------------------------------
+P      <- A	page_table_free(), page_table_free_rcu()
+     H <- A	pte_free_defer()
+P <- H		pte_free_half()
+
+In the current model P bit could be on together with H
+bit simultaneously. That actually brings in equation
+nothing.
+
+Besides, this check in page_table_alloc() (while still
+correct) makes one (well, me) wonder "what about HH bits?":
+
+	mask = (mask | (mask >> 4)) & 0x03U;
+	if (mask != 0x03U) {
+		...
+	}
+
+By contrast, with "one bit at a time only" policy every
+of three bits effectevely indicates which state a page
+half is currently in.
+
+Thanks!
