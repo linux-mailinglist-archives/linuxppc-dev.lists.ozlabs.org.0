@@ -2,77 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF1A57426DF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jun 2023 15:02:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE2DB74274A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jun 2023 15:22:53 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=si2B6/wU;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=lrze9wdp;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=4uqnQG/Z;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=IbgfMem7;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QsJWL4Z0Pz3bng
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jun 2023 23:02:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QsJzH5gWtz3bhL
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jun 2023 23:22:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=si2B6/wU;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=lrze9wdp;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=4uqnQG/Z;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=IbgfMem7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=64.147.123.17; helo=wnew3-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from wnew3-smtp.messagingengine.com (wnew3-smtp.messagingengine.com [64.147.123.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QsJVQ2Kjfz309J
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Jun 2023 23:01:17 +1000 (AEST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id BA3AD2185F;
-	Thu, 29 Jun 2023 13:01:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1688043674; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4m+LxHrP4v5vDuAdscRPXrBhg7ZxGweHb/obubiZPnU=;
-	b=si2B6/wUmvLGD2VMznJt8GhKzcvK6hB4Sm3g0IU7DBWdt854TRtT+6KzgjHASsdcHT2qXk
-	HCPraip0LJ7GF8hGnLz+Li5PFau6wyGSGdtuH5p1TsbrSWE9WHMo/TJgIPtsD+nBI4LdkS
-	t3de5D5uJ1xmBO3TJMDA/rEcFDiX/Qo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1688043674;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4m+LxHrP4v5vDuAdscRPXrBhg7ZxGweHb/obubiZPnU=;
-	b=lrze9wdpBnC4u8EeddONENmfXDlROyI+lNkipjgMxJMypMKJCgGHMuhra1DagsLCA5P7ab
-	+ASGEZPEce8WvCBA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 160DE139FF;
-	Thu, 29 Jun 2023 13:01:14 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id AMtCBJqAnWSeagAAMHmgww
-	(envelope-from <tzimmermann@suse.de>); Thu, 29 Jun 2023 13:01:14 +0000
-Message-ID: <d3de124c-6aa8-e930-e238-7bd6dd7929a6@suse.de>
-Date: Thu, 29 Jun 2023 15:01:13 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 07/12] arch/x86: Declare edid_info in <asm/screen_info.h>
-To: Arnd Bergmann <arnd@arndb.de>, Helge Deller <deller@gmx.de>,
- Daniel Vetter <daniel@ffwll.ch>, Dave Airlie <airlied@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QsJyP4LrWz30XX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Jun 2023 23:22:05 +1000 (AEST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailnew.west.internal (Postfix) with ESMTP id D62232B00081;
+	Thu, 29 Jun 2023 09:22:00 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Thu, 29 Jun 2023 09:22:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:sender
+	:subject:subject:to:to; s=fm1; t=1688044920; x=1688052120; bh=sQ
+	O+tpzU86Ruad95sakzckO3PnIV53aaJirVNNGwiuo=; b=4uqnQG/Z1UuyNyyAek
+	0XEemltl5YoKfbuyK7idzOfGbk2sj8tW5sPhftwy7vAcMTe/lNT1CqLxPHHTqxXl
+	b+N4aIXSme583rtEDLHRQQE5RZfTFsD+lTdYY9RefCbOfAlhciUTlKT5u2JXw4I4
+	ztOXsWSrHvNADHnJ68PH1ClsbIkWEIcWMVseJvPUcBCt/bCpX9x+rZSZZO6oAAQb
+	x9SWYdHJXxBC2SICSWUYB8JczQyliaPFo8FiWTtVLKrXWw/KnLs9i/+IAnqxZm8k
+	yqkPPTEwfMl+/IelpxRjc4jeyf7SfLboZoIPnpuMmrGUGm6Jvxy4MC7RByrwgGdC
+	yACQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:sender:subject
+	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+	:x-sasl-enc; s=fm2; t=1688044920; x=1688052120; bh=sQO+tpzU86Rua
+	d95sakzckO3PnIV53aaJirVNNGwiuo=; b=IbgfMem7uDuQxpPEGhflBncHobvLW
+	vpdJgB9HlfrxSWZohr0Jpjmu+TTjCXIaQB0uQ+13MlfVT0itNPNX4vwmIqNieKC6
+	gPv4iflQLslU6lXHYDAvAm799+KHkiXlvXfZM777AHY2iwxEls+3U9z2bO1yeOef
+	wFpfTxWZmsHuvogMZSyJmnFyjemy8yi74cXqbPUy2ZTBAZ4KqNqWtoYlOjGYmlQy
+	PMPbNhtV1XvXdYg2lSN5WBQIEaNfObSZgMdkW8nfVQEunQCLpApHo/cwzRobpAQN
+	ZuHALvp9USqwqc7dcNooNTZaYpKwAFukGjJYFDScEYkfK4BGpwxbvs5wA==
+X-ME-Sender: <xms:eIWdZK2mhUMZoeD5ScJng_-Mw9sdRxOEu_Lgqc28dk7bZK70NYedTw>
+    <xme:eIWdZNGBGclYv6j7-IGwscmhWxPIRk4Bebhe_u_lemBUmyA0MfekuVd4tn5XkkmLX
+    tzaa5AupcGn4LfNDF0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrtdeggdeigecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
+    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
+    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
+    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
+    hnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:eIWdZC5kimzqKYQ1BPs7CvQbOgpGEss3M0RxRwWrIroNsq9V3om0TA>
+    <xmx:eIWdZL1nORBRiFJwbEufwbgzn_wdP_V0r9RSWhxWObhMpewEM8zlHA>
+    <xmx:eIWdZNG9JECFzRVSW1lGw4WP0yMQisPFaCR0eAsEec1IlVvAdRAh7Q>
+    <xmx:eIWdZPlLPgVMB-Zms1gBZ7XMicph5Ie9iaKcHZPRTF7XioY1Fsly84JuoI4>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id F305FB60086; Thu, 29 Jun 2023 09:21:59 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-499-gf27bbf33e2-fm-20230619.001-gf27bbf33
+Mime-Version: 1.0
+Message-Id: <0dbbdfc4-0e91-4be4-9ca0-d8ba6f18453d@app.fastmail.com>
+In-Reply-To: <d3de124c-6aa8-e930-e238-7bd6dd7929a6@suse.de>
 References: <20230629121952.10559-1-tzimmermann@suse.de>
  <20230629121952.10559-8-tzimmermann@suse.de>
  <80e3a583-805e-4e8f-a67b-ebe2e4b9a7e5@app.fastmail.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <80e3a583-805e-4e8f-a67b-ebe2e4b9a7e5@app.fastmail.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------SZ3Fp31sJnYOAqWyCv8ANxZ2"
+ <d3de124c-6aa8-e930-e238-7bd6dd7929a6@suse.de>
+Date: Thu, 29 Jun 2023 15:21:39 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Thomas Zimmermann" <tzimmermann@suse.de>, "Helge Deller" <deller@gmx.de>,
+ "Daniel Vetter" <daniel@ffwll.ch>, "Dave Airlie" <airlied@gmail.com>
+Subject: Re: [PATCH 07/12] arch/x86: Declare edid_info in <asm/screen_info.h>
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,96 +101,39 @@ Cc: linux-hyperv@vger.kernel.org, linux-efi@vger.kernel.org, linux-ia64@vger.ker
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------SZ3Fp31sJnYOAqWyCv8ANxZ2
-Content-Type: multipart/mixed; boundary="------------Fba4i0vDnEvGaqqh9SwG9WxN";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Arnd Bergmann <arnd@arndb.de>, Helge Deller <deller@gmx.de>,
- Daniel Vetter <daniel@ffwll.ch>, Dave Airlie <airlied@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
- "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
- linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-hyperv@vger.kernel.org,
- linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
- Linux-Arch <linux-arch@vger.kernel.org>, Thomas Gleixner
- <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- Kees Cook <keescook@chromium.org>, "Paul E. McKenney" <paulmck@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Frederic Weisbecker <frederic@kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>, Ard Biesheuvel <ardb@kernel.org>,
- Sami Tolvanen <samitolvanen@google.com>,
- Juerg Haefliger <juerg.haefliger@canonical.com>
-Message-ID: <d3de124c-6aa8-e930-e238-7bd6dd7929a6@suse.de>
-Subject: Re: [PATCH 07/12] arch/x86: Declare edid_info in <asm/screen_info.h>
-References: <20230629121952.10559-1-tzimmermann@suse.de>
- <20230629121952.10559-8-tzimmermann@suse.de>
- <80e3a583-805e-4e8f-a67b-ebe2e4b9a7e5@app.fastmail.com>
-In-Reply-To: <80e3a583-805e-4e8f-a67b-ebe2e4b9a7e5@app.fastmail.com>
+On Thu, Jun 29, 2023, at 15:01, Thomas Zimmermann wrote:
+> Am 29.06.23 um 14:35 schrieb Arnd Bergmann:
+>> On Thu, Jun 29, 2023, at 13:45, Thomas Zimmermann wrote:
+>>> The global variable edid_info contains the firmware's EDID information
+>>> as an extension to the regular screen_info on x86. Therefore move it to
+>>> <asm/screen_info.h>.
+>>>
+>>> Add the Kconfig token ARCH_HAS_EDID_INFO to guard against access on
+>>> architectures that don't provide edid_info. Select it on x86.
+>> 
+>> I'm not sure we need another symbol in addition to
+>> CONFIG_FIRMWARE_EDID. Since all the code behind that
+>> existing symbol is also x86 specific, would it be enough
+>> to just add either 'depends on X86' or 'depends on X86 ||
+>> COMPILE_TEST' there?
+>
+> FIRMWARE_EDID is a user-selectable feature, while ARCH_HAS_EDID_INFO 
+> announces an architecture feature. They do different things.
 
---------------Fba4i0vDnEvGaqqh9SwG9WxN
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+I still have trouble seeing the difference.
 
-SGkNCg0KQW0gMjkuMDYuMjMgdW0gMTQ6MzUgc2NocmllYiBBcm5kIEJlcmdtYW5uOg0KPiBP
-biBUaHUsIEp1biAyOSwgMjAyMywgYXQgMTM6NDUsIFRob21hcyBaaW1tZXJtYW5uIHdyb3Rl
-Og0KPj4gVGhlIGdsb2JhbCB2YXJpYWJsZSBlZGlkX2luZm8gY29udGFpbnMgdGhlIGZpcm13
-YXJlJ3MgRURJRCBpbmZvcm1hdGlvbg0KPj4gYXMgYW4gZXh0ZW5zaW9uIHRvIHRoZSByZWd1
-bGFyIHNjcmVlbl9pbmZvIG9uIHg4Ni4gVGhlcmVmb3JlIG1vdmUgaXQgdG8NCj4+IDxhc20v
-c2NyZWVuX2luZm8uaD4uDQo+Pg0KPj4gQWRkIHRoZSBLY29uZmlnIHRva2VuIEFSQ0hfSEFT
-X0VESURfSU5GTyB0byBndWFyZCBhZ2FpbnN0IGFjY2VzcyBvbg0KPj4gYXJjaGl0ZWN0dXJl
-cyB0aGF0IGRvbid0IHByb3ZpZGUgZWRpZF9pbmZvLiBTZWxlY3QgaXQgb24geDg2Lg0KPiAN
-Cj4gSSdtIG5vdCBzdXJlIHdlIG5lZWQgYW5vdGhlciBzeW1ib2wgaW4gYWRkaXRpb24gdG8N
-Cj4gQ09ORklHX0ZJUk1XQVJFX0VESUQuIFNpbmNlIGFsbCB0aGUgY29kZSBiZWhpbmQgdGhh
-dA0KPiBleGlzdGluZyBzeW1ib2wgaXMgYWxzbyB4ODYgc3BlY2lmaWMsIHdvdWxkIGl0IGJl
-IGVub3VnaA0KPiB0byBqdXN0IGFkZCBlaXRoZXIgJ2RlcGVuZHMgb24gWDg2JyBvciAnZGVw
-ZW5kcyBvbiBYODYgfHwNCj4gQ09NUElMRV9URVNUJyB0aGVyZT8NCg0KRklSTVdBUkVfRURJ
-RCBpcyBhIHVzZXItc2VsZWN0YWJsZSBmZWF0dXJlLCB3aGlsZSBBUkNIX0hBU19FRElEX0lO
-Rk8gDQphbm5vdW5jZXMgYW4gYXJjaGl0ZWN0dXJlIGZlYXR1cmUuIFRoZXkgZG8gZGlmZmVy
-ZW50IHRoaW5ncy4NCg0KUmlnaHQgbm93LCBBUkNIX0hBU19FRElEX0lORk8gb25seSB3b3Jr
-cyBvbiB0aGUgb2xkIEJJT1MtYmFzZWQgVkVTQSANCnN5c3RlbXMuIEluIHRoZSBmdXR1cmUs
-IEkgd2FudCB0byBhZGQgc3VwcG9ydCBmb3IgRURJRCBkYXRhIGZyb20gRUZJIGFuZCANCk9G
-IGFzIHdlbGwuIEl0IHdvdWxkIGJlIHN0b3JlZCBpbiBlZGlkX2luZm8uIEkgYXNzdW1lIHRo
-YXQgdGhlIG5ldyANCnN5bWJvbCB3aWxsIGJlY29tZSB1c2VmdWwgdGhlbi4NCg0KQmVmb3Jl
-IHRoaXMgcGF0Y2hzZXQsIEkgb3JpZ2luYWxseSB3YW50ZWQgdG8gbWFrZSB1c2Ugb2YgZWRp
-ZF9pbmZvIGluIA0KdGhlIHNpbXBsZWRybSBncmFwaGljcyBkcml2ZXIuIEJ1dCBJIGZvdW5k
-IHRoYXQgdGhlIHJzcCBjb2RlIGNvdWxkIHVzZSANCnNvbWUgd29yayBmaXJzdC4gTWF5YmUg
-dGhlIHBhdGNoc2V0IGFyZSBhbHJlYWR5IHRhaWxvcmVkIHRvd2FyZHMgdGhlIA0KZnV0dXJl
-IGNoYW5nZXMuDQoNCkJlc3QgcmVnYXJkcw0KVGhvbWFzDQoNCj4gDQo+ICAgICAgICBBcm5k
-DQoNCi0tIA0KVGhvbWFzIFppbW1lcm1hbm4NCkdyYXBoaWNzIERyaXZlciBEZXZlbG9wZXIN
-ClNVU0UgU29mdHdhcmUgU29sdXRpb25zIEdlcm1hbnkgR21iSA0KRnJhbmtlbnN0cmFzc2Ug
-MTQ2LCA5MDQ2MSBOdWVybmJlcmcsIEdlcm1hbnkNCkdGOiBJdm8gVG90ZXYsIEFuZHJldyBN
-eWVycywgQW5kcmV3IE1jRG9uYWxkLCBCb3VkaWVuIE1vZXJtYW4NCkhSQiAzNjgwOSAoQUcg
-TnVlcm5iZXJnKQ0K
+> Right now, ARCH_HAS_EDID_INFO only works on the old BIOS-based VESA 
+> systems. In the future, I want to add support for EDID data from EFI and 
+> OF as well. It would be stored in edid_info. I assume that the new 
+> symbol will become useful then.
 
---------------Fba4i0vDnEvGaqqh9SwG9WxN--
+I don't see why an OF based system would have the same limitation
+as legacy BIOS with supporting only a single monitor, if we need
+to have a generic representation of EDID data in DT, that would
+probably be in a per device property anyway.
 
---------------SZ3Fp31sJnYOAqWyCv8ANxZ2
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
+I suppose you could use FIRMWARE_EDID on EFI or OF systems without
+the need for a global edid_info structure, but that would not
+share any code with the current fb_firmware_edid() function.
 
------BEGIN PGP SIGNATURE-----
-
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmSdgJkFAwAAAAAACgkQlh/E3EQov+Cl
-bxAAm+hGmlLm1iLWXP6jD2U5nsiXRjJcsGyJdloLEa0TBl/4XdOzljHvQSLp2jQ9hLPoWaYoRyPd
-D9cWI1UaCcGh+9WCeX0mforFfLFs7K3CuOwUXPP9Dfe/c5d5wy+SubTjvPRw2+Z3jdwZrz8GZ1Tw
-HGtRvA1xIK12wyil9CFCyGKonc8sIItE1FWd8C0qIIG85oE4U4N1Zg+UgMeFt6AiyWuPiu6Lojse
-YbUMT9KLt/J5dKTeDe8oJtkFzlopQIyZkik9XyRTV12/zAWnzNXOS237Kqj6PkzyD7Y0ExWX/91F
-2y+e7rflzXYzEO2eUjEuZ1e8xsYZNuvXFHvCqYRh5QAUykF1GE5j73eNth0gY+y0AqRGDPCnBoJ9
-alTkBF9VnCAJgQBlJwUHMTXj6m5JmZvQNqH9hde1g9eqeu33rU9MgVqsjKzIZP2D2AIAFLwdZAM/
-u3ywiagO9K2LVWYORCJ0A3QGMxYm+bGOMUAn0lavFHENLB0Q/UAByw70L8cneLamlb2hiI0sqBKH
-gGvTY4ZOrQV2qVfh0KOM6phWAHMf9O78kpg4hHuNnbF2I6zeZKbW/rJKUTUJMevtpA+c9vceIOQC
-ni2rIZCmtVyAOh2lpbfiI1Ed9NMc1I7pB7dOpq9/3sG0DGptpxoGUwo0BrTkqqpxM34KSw/lQMQo
-Ql0=
-=PuWP
------END PGP SIGNATURE-----
-
---------------SZ3Fp31sJnYOAqWyCv8ANxZ2--
+     Arnd
