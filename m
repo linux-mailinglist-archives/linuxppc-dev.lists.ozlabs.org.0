@@ -2,42 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F042474243F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jun 2023 12:49:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0311E74249A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jun 2023 13:00:59 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=IJJG70VR;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QsFZd6nTRz3bs0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jun 2023 20:49:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QsFqX6Sl4z3bmm
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jun 2023 21:00:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=wangkefeng.wang@huawei.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 1174 seconds by postgrey-1.37 at boromir; Thu, 29 Jun 2023 20:49:19 AEST
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=IJJG70VR;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=festevam@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QsFZ71k9Lz30K1
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Jun 2023 20:49:16 +1000 (AEST)
-Received: from dggpemm100001.china.huawei.com (unknown [172.30.72.55])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4QsF4D3ZqWzqVBq;
-	Thu, 29 Jun 2023 18:26:52 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- dggpemm100001.china.huawei.com (7.185.36.93) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Thu, 29 Jun 2023 18:29:37 +0800
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 2/2] mm: make show_free_areas() static
-Date: Thu, 29 Jun 2023 18:43:57 +0800
-Message-ID: <20230629104357.35455-2-wangkefeng.wang@huawei.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230629104357.35455-1-wangkefeng.wang@huawei.com>
-References: <20230629104357.35455-1-wangkefeng.wang@huawei.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QsFpf5dJPz307V
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Jun 2023 21:00:09 +1000 (AEST)
+Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-66d6a9851f3so144182b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Jun 2023 04:00:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1688036403; x=1690628403;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SNuvCv0VFWJ1T/BA1jgFsWK/sbewukgBLN8NThITlGY=;
+        b=IJJG70VRTfv6SzZDiw5KgcGaeym0vz6jCVdSX8aL1AtgKYxIKxEz+FbieZyrRKMKt6
+         XCNCfb6e0kP4qrLVYCOdleUjQ0iPjzq7WtSDVVd1E/SnYE0lqHji5iXyEH54McdjI3Q6
+         aGP09g3gRxxOG3bTuanQqLSGUYvKcsHm5AbgJBGY2+BeZSDjm6FHWKrH5NokTFFFcK4n
+         5M0DelgYVruwm87q4YsvLXl0PCpvA7mJRxPfLrw0EJJgh1S2hE6eMETfer+m2znDNGz+
+         rx7t9Pn79B0zCEhWoBBcJnDez2ncEfQAzyDnYf6kYmZsBkPiLUqjN+/nFgPhNsy3lsLQ
+         N82w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688036403; x=1690628403;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SNuvCv0VFWJ1T/BA1jgFsWK/sbewukgBLN8NThITlGY=;
+        b=YR4ZPOtdwqimwvq5hHdoNzXEhuu5bF2E7FhNbuekEQzXPPTgOWJ938nIephra+I4o7
+         OVdltWvCQlHmxZNFeeCUeRTdT7oQcdWz/imMdphnQ6MwVcPDUHNrBcCOmoDvPc1rCQVw
+         FlGrKKZ2KvcmUDUoulBV9CvhTtsGcveQ4UqMnk66GwQfBwPHWOBBo09iJyNuCbmREnJd
+         eVjPAXa8g7WZIf00aFihS/9Iv/m2AS1T5ADxN7B6Hp9cwyStPIt3Ov4RSJnQszPoLfjC
+         zxrpRqtLgFQ56APNMc2b2EeMOOyEl2q4UCK1rGE3r7K4enkJcIEP68OadfvMNWEVacPj
+         Ft4w==
+X-Gm-Message-State: AC+VfDxOa9ZvTajnR8sewX+PCckmjUgM669C45wjWzdST97aPlluXmWe
+	5ixZ+04eOiEcymhRBm5IMMR08uFYWh9sB0zG7qQ=
+X-Google-Smtp-Source: ACHHUZ4241Q0Xok00mtSesZ0ScAf8EpY8gqClpDPFmqvjMGqm+Sl0vzMI5IyImuqQIvVL0JNHSy7d4g+Mx22zwDE2r4=
+X-Received: by 2002:a05:6a20:7295:b0:111:fba0:bd3b with SMTP id
+ o21-20020a056a20729500b00111fba0bd3bmr45440823pzk.1.1688036403198; Thu, 29
+ Jun 2023 04:00:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.175.113.25]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpemm100001.china.huawei.com (7.185.36.93)
-X-CFilter-Loop: Reflected
+References: <1688002673-28493-1-git-send-email-shengjiu.wang@nxp.com> <1688002673-28493-4-git-send-email-shengjiu.wang@nxp.com>
+In-Reply-To: <1688002673-28493-4-git-send-email-shengjiu.wang@nxp.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Thu, 29 Jun 2023 07:59:53 -0300
+Message-ID: <CAOMZO5DPHmm7YuHBfYHpx2-g4R6t1BQ93GBAZvyyb_rBz7+hFg@mail.gmail.com>
+Subject: Re: [PATCH 3/6] ASoC: fsl_easrc: define functions for memory to
+ memory usage
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,126 +76,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, linux-media@vger.kernel.org, Xiubo.Lee@gmail.com, lgirdwood@gmail.com, tiwai@suse.com, linux-kernel@vger.kernel.org, tfiga@chromium.org, nicoleotsuka@gmail.com, broonie@kernel.org, perex@perex.cz, mchehab@kernel.org, shengjiu.wang@gmail.com, m.szyprowski@samsung.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Directly use show_mem() instead of show_free_areas(0, NULL), then
-make show_free_areas() a static function.
+Hi Shengjiu,
 
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
----
- arch/sparc/kernel/setup_32.c |  2 +-
- include/linux/mm.h           | 12 ------------
- mm/internal.h                |  6 ++++++
- mm/nommu.c                   |  6 +++---
- mm/show_mem.c                |  4 ++--
- 5 files changed, 12 insertions(+), 18 deletions(-)
+On Wed, Jun 28, 2023 at 11:10=E2=80=AFPM Shengjiu Wang <shengjiu.wang@nxp.c=
+om> wrote:
+>
+> ASRC can be used on memory to memory case, define several
+> functions for m2m usage and export them as function pointer.
+>
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-diff --git a/arch/sparc/kernel/setup_32.c b/arch/sparc/kernel/setup_32.c
-index 1adf5c1c16b8..34ef7febf0d5 100644
---- a/arch/sparc/kernel/setup_32.c
-+++ b/arch/sparc/kernel/setup_32.c
-@@ -83,7 +83,7 @@ static void prom_sync_me(void)
- 			     "nop\n\t" : : "r" (&trapbase));
- 
- 	prom_printf("PROM SYNC COMMAND...\n");
--	show_free_areas(0, NULL);
-+	show_mem();
- 	if (!is_idle_task(current)) {
- 		local_irq_enable();
- 		ksys_sync();
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index ddb140e14f3a..0a1314a3ffae 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2218,18 +2218,6 @@ extern void pagefault_out_of_memory(void);
- #define offset_in_thp(page, p)	((unsigned long)(p) & (thp_size(page) - 1))
- #define offset_in_folio(folio, p) ((unsigned long)(p) & (folio_size(folio) - 1))
- 
--/*
-- * Flags passed to show_mem() and show_free_areas() to suppress output in
-- * various contexts.
-- */
--#define SHOW_MEM_FILTER_NODES		(0x0001u)	/* disallowed nodes */
--
--extern void __show_free_areas(unsigned int flags, nodemask_t *nodemask, int max_zone_idx);
--static void __maybe_unused show_free_areas(unsigned int flags, nodemask_t *nodemask)
--{
--	__show_free_areas(flags, nodemask, MAX_NR_ZONES - 1);
--}
--
- /*
-  * Parameter block passed down to zap_pte_range in exceptional cases.
-  */
-diff --git a/mm/internal.h b/mm/internal.h
-index a7d9e980429a..721ed07d7fd6 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -61,6 +61,12 @@ void page_writeback_init(void);
- #define COMPOUND_MAPPED		0x800000
- #define FOLIO_PAGES_MAPPED	(COMPOUND_MAPPED - 1)
- 
-+/*
-+ * Flags passed to __show_mem() and show_free_areas() to suppress output in
-+ * various contexts.
-+ */
-+#define SHOW_MEM_FILTER_NODES		(0x0001u)	/* disallowed nodes */
-+
- /*
-  * How many individual pages have an elevated _mapcount.  Excludes
-  * the folio's entire_mapcount.
-diff --git a/mm/nommu.c b/mm/nommu.c
-index f670d9979a26..5b179234ce89 100644
---- a/mm/nommu.c
-+++ b/mm/nommu.c
-@@ -990,7 +990,7 @@ static int do_mmap_private(struct vm_area_struct *vma,
- enomem:
- 	pr_err("Allocation of length %lu from process %d (%s) failed\n",
- 	       len, current->pid, current->comm);
--	show_free_areas(0, NULL);
-+	show_mem();
- 	return -ENOMEM;
- }
- 
-@@ -1223,13 +1223,13 @@ unsigned long do_mmap(struct file *file,
- 	kmem_cache_free(vm_region_jar, region);
- 	pr_warn("Allocation of vma for %lu byte allocation from process %d failed\n",
- 			len, current->pid);
--	show_free_areas(0, NULL);
-+	show_mem();
- 	return -ENOMEM;
- 
- error_getting_region:
- 	pr_warn("Allocation of vm region for %lu byte allocation from process %d failed\n",
- 			len, current->pid);
--	show_free_areas(0, NULL);
-+	show_mem();
- 	return -ENOMEM;
- 
- error_vma_iter_prealloc:
-diff --git a/mm/show_mem.c b/mm/show_mem.c
-index 01f8e9905817..09c7d036d49e 100644
---- a/mm/show_mem.c
-+++ b/mm/show_mem.c
-@@ -186,7 +186,7 @@ static bool node_has_managed_zones(pg_data_t *pgdat, int max_zone_idx)
-  * SHOW_MEM_FILTER_NODES: suppress nodes that are not allowed by current's
-  *   cpuset.
-  */
--void __show_free_areas(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
-+static void show_free_areas(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
- {
- 	unsigned long free_pcp = 0;
- 	int cpu, nid;
-@@ -406,7 +406,7 @@ void __show_mem(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
- 	struct zone *zone;
- 
- 	printk("Mem-Info:\n");
--	__show_free_areas(filter, nodemask, max_zone_idx);
-+	show_free_areas(filter, nodemask, max_zone_idx);
- 
- 	for_each_populated_zone(zone) {
- 
--- 
-2.41.0
+Could you please explain what is the benefit of using M2M in the EASRC driv=
+er?
 
+A few weeks ago, an imx8mn user reported that the EASRC with the
+mainline kernel introduces huge delays.
+
+Does M2M help with this aspect?
+
+Thanks
