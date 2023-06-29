@@ -2,57 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F7BA742262
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jun 2023 10:42:07 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=S0OaURq2;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id F21157423D6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jun 2023 12:18:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QsBlK1mXJz30h1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jun 2023 18:42:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QsDtg6txdz3bpG
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jun 2023 20:18:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=S0OaURq2;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66; helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de; receiver=lists.ozlabs.org)
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QsBkS0k3yz309t
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Jun 2023 18:41:18 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 15624614C9;
-	Thu, 29 Jun 2023 08:41:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274BCC433C8;
-	Thu, 29 Jun 2023 08:41:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1688028074;
-	bh=vlYpLQJZtSXpTdxzzf+x19uXJCjU4SjJ4HABmL6bQ1I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=S0OaURq2kmc5FgaPb1sSe+BgEZbOtTXQ5/3kv73tKzw9fyAoe2Ba0UjeKqU4d0cKA
-	 +mIurc+uOOwsEjJpqZHOFSu+DDKSv9sNUvFmcGI/rWqDVsEPtasTGzwp1MAuttg3Q8
-	 gAUbcpKPhXGP9aMN1rXSCZqqH0rlYIPghF8qt9qk=
-Date: Thu, 29 Jun 2023 10:41:11 +0200
-From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] usb: gadget: fsl_qe_udc: validate endpoint index for ch9
- udc
-Message-ID: <2023062958-graffiti-skyrocket-cfee@gregkh>
-References: <20230628081511.186850-1-make_ruc2021@163.com>
- <AM0PR04MB62893E77D085030A6E2C37B28F24A@AM0PR04MB6289.eurprd04.prod.outlook.com>
- <f321287d-8156-b805-26fd-58acfa26e324@csgroup.eu>
- <AM0PR04MB628929736762F5DF46C55D708F24A@AM0PR04MB6289.eurprd04.prod.outlook.com>
- <7975b5bf-c8e0-237e-d6f4-98e641d39959@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QsDt714HGz2yyw
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Jun 2023 20:18:05 +1000 (AEST)
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.95)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1qEoiq-000SNC-7D; Thu, 29 Jun 2023 12:17:56 +0200
+Received: from p57bd9486.dip0.t-ipconnect.de ([87.189.148.134] helo=[192.168.178.81])
+          by inpost2.zedat.fu-berlin.de (Exim 4.95)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1qEoip-001qhD-Vp; Thu, 29 Jun 2023 12:17:56 +0200
+Message-ID: <f1a0f2252cc38721e222530dc4026ed3834e3eb8.camel@physik.fu-berlin.de>
+Subject: Re: [FSL P50x0] [PASEMI] The Access to partitions on disks with an
+ Amiga partition table doesn't work anymore after the block updates
+ 2023-06-23
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: Christian Zigotzky <chzigotzky@xenosoft.de>, schmitzmic@gmail.com
+Date: Thu, 29 Jun 2023 12:17:55 +0200
+In-Reply-To: <024ce4fa-cc6d-50a2-9aae-3701d0ebf668@xenosoft.de>
+References: <024ce4fa-cc6d-50a2-9aae-3701d0ebf668@xenosoft.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.3 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7975b5bf-c8e0-237e-d6f4-98e641d39959@csgroup.eu>
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.189.148.134
+X-ZEDAT-Hint: PO
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,76 +55,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Ma Ke <make_ruc2021@163.com>, Leo Li <leoyang.li@nxp.com>
+Cc: axboe@kernel.dk, linux-m68k@vger.kernel.org, Darren Stevens <darren@stevens-zone.net>, mad skateman <madskateman@gmail.com>, linux-block@vger.kernel.org, Geert Uytterhoeven <geert@linux-m68k.org>, "R.T.Dickinson" <rtd2@xtra.co.nz>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 29, 2023 at 05:56:30AM +0000, Christophe Leroy wrote:
-> 
-> 
-> Le 28/06/2023 à 23:10, Leo Li a écrit :
-> > 
-> > 
-> >> -----Original Message-----
-> >> From: Christophe Leroy <christophe.leroy@csgroup.eu>
-> >> Sent: Wednesday, June 28, 2023 2:40 PM
-> >> To: Leo Li <leoyang.li@nxp.com>; Ma Ke <make_ruc2021@163.com>
-> >> Cc: gregkh@linuxfoundation.org; linux-usb@vger.kernel.org; linuxppc-
-> >> dev@lists.ozlabs.org; linux-kernel@vger.kernel.org
-> >> Subject: Re: [PATCH] usb: gadget: fsl_qe_udc: validate endpoint index for
-> >> ch9 udc
-> >>
-> >>
-> >>
-> >> Le 28/06/2023 à 19:04, Leo Li a écrit :
-> >>>
-> >>>
-> >>>> -----Original Message-----
-> >>>> From: Ma Ke <make_ruc2021@163.com>
-> >>>> Sent: Wednesday, June 28, 2023 3:15 AM
-> >>>> To: Leo Li <leoyang.li@nxp.com>
-> >>>> Cc: gregkh@linuxfoundation.org; linux-usb@vger.kernel.org; linuxppc-
-> >>>> dev@lists.ozlabs.org; linux-kernel@vger.kernel.org; Ma Ke
-> >>>> <make_ruc2021@163.com>
-> >>>> Subject: [PATCH] usb: gadget: fsl_qe_udc: validate endpoint index for
-> >>>> ch9 udc
-> >>>>
-> >>>> We should verify the bound of the array to assure that host may not
-> >>>> manipulate the index to point past endpoint array.
-> >>>>
-> >>>> Signed-off-by: Ma Ke <make_ruc2021@163.com>
-> >>>> ---
-> >>>>    drivers/usb/gadget/udc/fsl_qe_udc.c | 2 ++
-> >>>>    1 file changed, 2 insertions(+)
-> >>>>
-> >>>> diff --git a/drivers/usb/gadget/udc/fsl_qe_udc.c
-> >>>> b/drivers/usb/gadget/udc/fsl_qe_udc.c
-> >>>> index 3b1cc8fa30c8..f4e5cbd193b7 100644
-> >>>> --- a/drivers/usb/gadget/udc/fsl_qe_udc.c
-> >>>> +++ b/drivers/usb/gadget/udc/fsl_qe_udc.c
-> >>>> @@ -1959,6 +1959,8 @@ static void ch9getstatus(struct qe_udc *udc, u8
-> >>>> request_type, u16 value,
-> >>>>    	} else if ((request_type & USB_RECIP_MASK) ==
-> >>>> USB_RECIP_ENDPOINT) {
-> >>>>    		/* Get endpoint status */
-> >>>>    		int pipe = index & USB_ENDPOINT_NUMBER_MASK;
-> >>>> +		if (pipe >= USB_MAX_ENDPOINTS)
-> >>>> +			goto stall;
-> >>>
-> >>> Thanks.  This seems to be the right thing to do.  But normally we don't mix
-> >> declarations with code within a code block.  Could we re-arrange the code a
-> >> little bit so declarations stay on top?
-> >>
-> >> But we are at the start of a code block aren't we ?
-> > 
-> > But they were at the beginning of a { } block which is compliant with the C89 standard.  I know gcc is more relaxed from this.  But it is probably still good to stick to the standard?
-> 
-> Sorry I misread the patch and failed to see that the declaration block 
-> was continuing after the change.
-> 
-> So yes don't interleave code with declarations. Leave declaration at the 
-> top of a block with a blank line between declarations and code.
+Hello Christian!
 
-This is fine as-is, no need to change anything.
+On Thu, 2023-06-29 at 06:59 +0200, Christian Zigotzky wrote:
+> The access=C2=A0 to partitions on disks with an Amiga partition table (vi=
+a=20
+> the Rigid Disk Block RDB) doesn't work anymore on my Cyrus+ board with a=
+=20
+> FSL P50x0 PowerPC SoC [1] and on my P.A. Semi Nemo board [2] after the=
+=20
+> block updates 2023-06-23 [3].
+>=20
+> parted -l
+>=20
+> Model: ATA ST2000DM001-9YN1 (scsi)
+> Disk /dev/sda: 2000GB
+> Sector size (logical/physical): 512B/4096B
+> Partition Table: amiga
+> Disk Flags:
+>=20
+> Number=C2=A0 Start=C2=A0=C2=A0 End=C2=A0=C2=A0=C2=A0=C2=A0 Size=C2=A0=C2=
+=A0=C2=A0 File system=C2=A0 Name=C2=A0 Flags
+>  =C2=A01=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 1057kB=C2=A0 123MB=C2=A0=C2=A0 122=
+MB=C2=A0=C2=A0 affs7=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 BDH0=C2=A0 h=
+idden
+>  =C2=A02=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 123MB=C2=A0=C2=A0 2274MB=C2=A0 215=
+0MB=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 DH0=C2=A0=C2=A0 boot
+>  =C2=A03=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 2274MB=C2=A0 691GB=C2=A0=C2=A0 689=
+GB=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 DH2
+>  =C2=A04=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 691GB=C2=A0=C2=A0 1992GB=C2=A0 130=
+1GB=C2=A0 ext4=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dhx=C2=A0=C2=
+=A0 boot
 
-greg k-h
+What version of AmigaOS is that?
+
+> dmesg | grep -i sda
+>=20
+> [=C2=A0=C2=A0=C2=A0 4.208905] sd 0:0:0:0: [sda] 3907029168 512-byte logic=
+al blocks:=20
+> (2.00 TB/1.82 TiB)
+> [=C2=A0=C2=A0=C2=A0 4.253995] sd 0:0:0:0: [sda] 4096-byte physical blocks
+> [=C2=A0=C2=A0=C2=A0 4.254826] sd 0:0:0:0: [sda] Write Protect is off
+> [=C2=A0=C2=A0=C2=A0 4.300069] sd 0:0:0:0: [sda] Mode Sense: 00 3a 00 00
+> [=C2=A0=C2=A0=C2=A0 4.486476] sd 0:0:0:0: [sda] Write cache: enabled, rea=
+d cache:=20
+> enabled, doesn't support DPO or FUA
+> [=C2=A0=C2=A0=C2=A0 4.580507] sd 0:0:0:0: [sda] Preferred minimum I/O siz=
+e 4096 bytes
+> [=C2=A0=C2=A0=C2=A0 4.712624] Dev sda: unable to read partition block 429=
+4967295
+> [=C2=A0=C2=A0=C2=A0 4.761532]=C2=A0 sda: RDSK (512) sda1 (DOS^G)(res 2 sp=
+b 2) sda2=20
+> (SFS^B)(res 2 spb 1) sda3 (SFS^B)(res 2 spb 2) sda4 ((res 2 spb 1)=20
+> unable to read partition table
+> [=C2=A0=C2=A0=C2=A0 4.761892] sda: partition table beyond EOD,
+> [=C2=A0=C2=A0=C2=A0 4.861681] Dev sda: unable to read partition block 429=
+4967295
+> [=C2=A0=C2=A0=C2=A0 4.912094]=C2=A0 sda: RDSK (512) sda1 (DOS^G)(res 2 sp=
+b 2) sda2=20
+> (SFS^B)(res 2 spb 1) sda3 (SFS^B)(res 2 spb 2) sda4 ((res 2 spb 1)=20
+> unable to read partition table
+> [=C2=A0=C2=A0=C2=A0 4.963387] sda: partition table beyond EOD,
+> [=C2=A0=C2=A0=C2=A0 5.014769] sd 0:0:0:0: [sda] Attached SCSI disk
+
+Maybe the RDB is corrupted? Did you try on a freshly created RDB?
+
+> I created a patch for reverting the commit. [4]
+
+That can be done with just "git revert <commit hash>".
+
+> The access works again with this patch:
+>=20
+> [=C2=A0=C2=A0=C2=A0 0.000000] Kernel command line: root=3D/dev/sda4
+> [=C2=A0=C2=A0=C2=A0 3.987717] sd 0:0:0:0: [sda] 3907029168 512-byte logic=
+al blocks:=20
+> (2.00 TB/1.82 TiB)
+> [=C2=A0=C2=A0=C2=A0 4.031349] sd 0:0:0:0: [sda] 4096-byte physical blocks
+> [=C2=A0=C2=A0=C2=A0 4.123773] sd 0:0:0:0: [sda] Write Protect is off
+> [=C2=A0=C2=A0=C2=A0 4.168682] sd 0:0:0:0: [sda] Mode Sense: 00 3a 00 00
+> [=C2=A0=C2=A0=C2=A0 4.279304] sd 0:0:0:0: [sda] Write cache: enabled, rea=
+d cache:=20
+> enabled, doesn't support DPO or FUA
+> [=C2=A0=C2=A0=C2=A0 4.463508] sd 0:0:0:0: [sda] Preferred minimum I/O siz=
+e 4096 bytes
+> [=C2=A0=C2=A0=C2=A0 4.519477]=C2=A0 sda: RDSK (512) sda1 (DOS^G)(res 2 sp=
+b 2) sda2=20
+> (SFS^B)(res 2 spb 1) sda3 (SFS^B)(res 2 spb 2) sda4 ((res 2 spb 1)
+> [=C2=A0=C2=A0=C2=A0 4.720896] sda: p4 size 18446744071956107760 extends b=
+eyond EOD,
+> [=C2=A0=C2=A0=C2=A0 4.922550]=C2=A0 sda: RDSK (512) sda1 (DOS^G)(res 2 sp=
+b 2) sda2=20
+> (SFS^B)(res 2 spb 1) sda3 (SFS^B)(res 2 spb 2) sda4 ((res 2 spb 1)
+> [=C2=A0=C2=A0=C2=A0 4.948655] sda: p4 size 18446744071956107760 extends b=
+eyond EOD,=20
+> truncated
+
+Looks like the old code is complaining about your partition table as well.
+
+> Could you please check your commit?
+
+Please also make sure that your RDB is not corrupted.
+
+Adrian
+
+--=20
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
