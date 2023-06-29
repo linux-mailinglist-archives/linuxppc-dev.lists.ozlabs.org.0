@@ -2,78 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AC8474296D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jun 2023 17:23:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E91627429B1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jun 2023 17:31:52 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=bQ+QaBv9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=r0WnIICq;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QsMfJ1QFHz3brX
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Jun 2023 01:23:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QsMr65zyJz3c3M
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Jun 2023 01:31:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=bQ+QaBv9;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=r0WnIICq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::72c; helo=mail-qk1-x72c.google.com; envelope-from=jgg@ziepe.ca; receiver=lists.ozlabs.org)
-Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com [IPv6:2607:f8b0:4864:20::72c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1135; helo=mail-yw1-x1135.google.com; envelope-from=surenb@google.com; receiver=lists.ozlabs.org)
+Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QsMdM5KGWz3bTb
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Jun 2023 01:22:30 +1000 (AEST)
-Received: by mail-qk1-x72c.google.com with SMTP id af79cd13be357-7659dc74da1so74193885a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Jun 2023 08:22:30 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QsMqB5L3Pz3bTC
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Jun 2023 01:31:01 +1000 (AEST)
+Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-57725e1c24bso7826187b3.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Jun 2023 08:31:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1688052145; x=1690644145;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=52QGPi56OcZzeoQSr1+Puoh9x/N7TMLxPpl1Fa9yAkI=;
-        b=bQ+QaBv9kQgn0a/ZUWEzUp17QKK8mKbvu7OHRhiOucSgX3eSl924Wd32DWKpaETuWG
-         AJZQFb8MZEkw10neO7Emyiwf0zs4rexcslIhj26xYbfhNY61Fs/S3zXUfnMd8nKlLHbq
-         CU/gaxpgXz0Fcq+WROZl7v82TmZhyriMp8ghnPjAipqNQvOQZDcDHIDAAILg7qaaRj4g
-         cROZVqbL1LvLpBfUtSNqoHdAU+QoeC+43TKUBXk9yEuGi9WwmY8edNie6xIXgtH/0lEz
-         iYMbIENsQdCcb6GkheV3Ph/F1WPNpdDYyBYfX2SSNtzeR7J1HM4TRkmoUI53LbULfuQV
-         wSDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688052145; x=1690644145;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20221208; t=1688052658; x=1690644658;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=52QGPi56OcZzeoQSr1+Puoh9x/N7TMLxPpl1Fa9yAkI=;
-        b=hgs0UovXuq66sqF7nRPjkvRFefTT96ugREuHRLJmU+cmqxi6UlWxOkE69W3Zx+V6gs
-         peIC3LWx6aeC3jEnisYYAsv+N/YLgphG5eBPnRtYw+Pnf6hrucMNaE1lK/4A0GANDhMa
-         jwUa0ujx6gnB2eZFO1gtOYTO2Z4gqS0GBvDD54kd+xJxGMMwmwmvj+HAAnTjL1uCjYBE
-         jz+A8poO57RhJ2FURG59/MG1RhLPkKQGhG9/VdSrPJpYLUd2F9FS94yNnlIpydi8heaR
-         SZM0O/lBbKtortsQR5JuHBGWl1ejEjN82PShYinVnp+2zjayVBj6jTT1aZ8Irs2mYcaH
-         vSmw==
-X-Gm-Message-State: AC+VfDwROGD0SahieSOBFrNLlZABb2Wk7AGnxWajXm/H/J+Gk7+0A4ZG
-	2numFoLux9bLw1X7Mg/9Fxm4ZA==
-X-Google-Smtp-Source: ACHHUZ49j4zxCkMnm+oSSx+2qlaiByXDG1BTDACn1CIjXnwSTZE7XCbDUFEFLrSlPKTofnqYvOeuSg==
-X-Received: by 2002:a05:620a:e92:b0:767:90a:ae9e with SMTP id w18-20020a05620a0e9200b00767090aae9emr8621873qkm.65.1688052145311;
-        Thu, 29 Jun 2023 08:22:25 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-68-25-194.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.25.194])
-        by smtp.gmail.com with ESMTPSA id r15-20020a05620a03cf00b0074e0951c7e7sm6340805qkm.28.2023.06.29.08.22.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Jun 2023 08:22:24 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.95)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1qEtTU-009snj-1H;
-	Thu, 29 Jun 2023 12:22:24 -0300
-Date: Thu, 29 Jun 2023 12:22:24 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Hugh Dickins <hughd@google.com>
-Subject: Re: [PATCH v2 07/12] s390: add pte_free_defer() for pgtables sharing
- page
-Message-ID: <ZJ2hsM5Tn+yUZ5ZV@ziepe.ca>
-References: <54cb04f-3762-987f-8294-91dafd8ebfb0@google.com>
- <a722dbec-bd9e-1213-1edd-53cd547aa4f@google.com>
- <20230628211624.531cdc58@thinkpad-T15>
- <cd7c2851-1440-7220-6c53-16b343b1474@google.com>
+        bh=VL6wKBophCJT750RGEYyX1lE9eIiUgZcFU/NnUJTEDA=;
+        b=r0WnIICqLcQpC2z4k1OXqjdIHwbyPvk1Z8ri5rmK+ckoNK18AT6VPUSbdQmfmsx18M
+         wpL4jWqQfgb/a0s8JMpZaBrgwnhJIf1ZGhC2od40BCjr+QlmX2ql2nZl1ck/r7A8cgTa
+         n0RD9fpWUbCghdSpcnZNAOfA8ihWS+0uQ7L4MUsNXxfZoEYZsiYCuttP18dSP3+DAvuQ
+         Y0KT2h9YNtynUz89d0/QqugdvmBW+mUOFFNQLmfN9qfC1rZIqrqRPTUQIPAJEt1tnlQX
+         FC34JywB7aEarHByxfMPXtMTg/OEGYqBC8nbWMkvV1YAG76K9xeVTkeqDCIyr7z2EoiU
+         15Dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688052658; x=1690644658;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VL6wKBophCJT750RGEYyX1lE9eIiUgZcFU/NnUJTEDA=;
+        b=LyxsrHJV4EUmHa/NUe+Y8XiPVmXYnIYghDVLZ6ojQVIMtnFmsAAYOrgWaHwZsTfnbo
+         YGbHUxbHPJwFZviZ3ZGmZw4dNL56Ajex6R7yJTpUkheDOR473t47j03MdFc50NQX5NTJ
+         rdnfj//s5E2Z1QTmMDGwTpKoWgIgvURBtoFVvXNjPNOOI8O+NZ6LLsJoYjAymmu6ftUU
+         41f7SO4Wk1YL1MqBg19bOKSUFFeZsBOEB6JfgKZfayZsvCk8CqKh9lw6qBUKxP7BsJ4J
+         ypTQ5DX/cDpeMQLc7IaaltfOnOSu2nj9NxEgu3bNNWvgLoc7S/jvCoktJxI09MJ95RAd
+         npig==
+X-Gm-Message-State: ABy/qLYJS+aAJywhm2Ed0Jl0HXssgbEwS7oE+jWwwUL6teM4mIF9T/li
+	RJApbOi4ZhObGxZOCHFfN3yZQ7f3ySrCykmsK2FsHA==
+X-Google-Smtp-Source: APBJJlHpQCyFxGZ2wEWn3k5zfeZwCJEObRUSbe49PZI26MJdi9kBQNmWxonB8vDszBerZkC/zLjl3GPQlhEj+vvvXB0=
+X-Received: by 2002:a25:f603:0:b0:c11:565:debb with SMTP id
+ t3-20020a25f603000000b00c110565debbmr322761ybd.17.1688052657580; Thu, 29 Jun
+ 2023 08:30:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cd7c2851-1440-7220-6c53-16b343b1474@google.com>
+References: <20230227173632.3292573-1-surenb@google.com> <20230227173632.3292573-30-surenb@google.com>
+ <dbdef34c-3a07-5951-e1ae-e9c6e3cdf51b@kernel.org>
+In-Reply-To: <dbdef34c-3a07-5951-e1ae-e9c6e3cdf51b@kernel.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Thu, 29 Jun 2023 08:30:45 -0700
+Message-ID: <CAJuCfpF7LweMwpvXavjJZhAciK7wK-bdLz2aFhOZGSHeK5tA9A@mail.gmail.com>
+Subject: Re: [PATCH v4 29/33] x86/mm: try VMA lock-based page fault handling first
+To: Jiri Slaby <jirislaby@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,36 +76,138 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Miaohe Lin <linmiaohe@huawei.com>, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Yang Shi <shy828301@gmail.com>, Peter Xu <peterx@redhat.com>, linux-kernel@vger.kernel.org, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Yu Zhao <yuzhao@google.com>, Ira Weiny <ira.weiny@intel.com>, Alistair Popple <apopple@nvidia.com>, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, Steven Price <steven.price@arm.com>, Christoph Hellwig <hch@infradead.org>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Huang Ying <ying.huang@intel.com>, Axel Rasmussen <axelrasmussen@google.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Thomas Hellstrom <thomas.hellstrom@linux.intel.com>, Ralph Campbell <rcampbell@nvidia.com>, Pasha Tatashin <p
- asha.tatashin@soleen.com>, Vasily Gorbik <gor@linux.ibm.com>, Anshuman Khandual <anshuman.khandual@arm.com>, Heiko Carstens <hca@linux.ibm.com>, Qi Zheng <zhengqi.arch@bytedance.com>, Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, linux-arm-kernel@lists.infradead.org, SeongJae Park <sj@kernel.org>, Lorenzo Stoakes <lstoakes@gmail.com>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, Naoya Horiguchi <naoya.horiguchi@nec.com>, Zack Rusin <zackr@vmware.com>, Vishal Moola <vishal.moola@gmail.com>, Minchan Kim <minchan@kernel.org>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, Mel Gorman <mgorman@techsingularity.net>, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, will@kernel.org, arjunroy@google.com, chriscli@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, mingo@redhat.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, michalechner92@googlemail.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundati
+ on.org, tatashin@google.com, mgorman@techsingularity.net, rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 28, 2023 at 10:08:08PM -0700, Hugh Dickins wrote:
-> On Wed, 28 Jun 2023, Gerald Schaefer wrote:
-> > 
-> > As discussed in the other thread, we would rather go with less complexity,
-> > possibly switching to an approach w/o the list and fragment re-use in the
-> > future. For now, as a first step in that direction, we can try with not
-> > adding fragments back only for pte_free_defer(). Here is an adjusted
-> > version of your patch, copying most of your pte_free_defer() logic and
-> > also description, tested with LTP and all three of your patch series applied:
-> 
-> Thanks, Gerald: I don't mind abandoning my 13/12 SLAB_TYPESAFE_BY_RCU
-> patch (posted with fewer Cc's to the s390 list last week), and switching
-> to your simpler who-cares-if-we-sometimes-don't-make-maximal-use-of-page
-> patch.
-> 
-> But I didn't get deep enough into it today to confirm it - and disappointed
-> that you've found it necessary to play with pt_frag_refcount in addition to
-> _refcount and HH bits.  No real problem with that, but my instinct says it
-> should be simpler.
+On Thu, Jun 29, 2023 at 7:40=E2=80=AFAM Jiri Slaby <jirislaby@kernel.org> w=
+rote:
+>
+> Hi,
+>
+> On 27. 02. 23, 18:36, Suren Baghdasaryan wrote:
+> > Attempt VMA lock-based page fault handling first, and fall back to the
+> > existing mmap_lock-based handling if that fails.
+> >
+> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > ---
+> >   arch/x86/Kconfig    |  1 +
+> >   arch/x86/mm/fault.c | 36 ++++++++++++++++++++++++++++++++++++
+> >   2 files changed, 37 insertions(+)
+> >
+> > diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> > index a825bf031f49..df21fba77db1 100644
+> > --- a/arch/x86/Kconfig
+> > +++ b/arch/x86/Kconfig
+> > @@ -27,6 +27,7 @@ config X86_64
+> >       # Options that are inherently 64-bit kernel only:
+> >       select ARCH_HAS_GIGANTIC_PAGE
+> >       select ARCH_SUPPORTS_INT128 if CC_HAS_INT128
+> > +     select ARCH_SUPPORTS_PER_VMA_LOCK
+> >       select ARCH_USE_CMPXCHG_LOCKREF
+> >       select HAVE_ARCH_SOFT_DIRTY
+> >       select MODULES_USE_ELF_RELA
+> > diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+> > index a498ae1fbe66..e4399983c50c 100644
+> > --- a/arch/x86/mm/fault.c
+> > +++ b/arch/x86/mm/fault.c
+> > @@ -19,6 +19,7 @@
+> >   #include <linux/uaccess.h>          /* faulthandler_disabled()      *=
+/
+> >   #include <linux/efi.h>                      /* efi_crash_gracefully_o=
+n_page_fault()*/
+> >   #include <linux/mm_types.h>
+> > +#include <linux/mm.h>                        /* find_and_lock_vma() */
+> >
+> >   #include <asm/cpufeature.h>         /* boot_cpu_has, ...            *=
+/
+> >   #include <asm/traps.h>                      /* dotraplinkage, ...    =
+       */
+> > @@ -1333,6 +1334,38 @@ void do_user_addr_fault(struct pt_regs *regs,
+> >       }
+> >   #endif
+> >
+> > +#ifdef CONFIG_PER_VMA_LOCK
+> > +     if (!(flags & FAULT_FLAG_USER))
+> > +             goto lock_mmap;
+> > +
+> > +     vma =3D lock_vma_under_rcu(mm, address);
+> > +     if (!vma)
+> > +             goto lock_mmap;
+> > +
+> > +     if (unlikely(access_error(error_code, vma))) {
+> > +             vma_end_read(vma);
+> > +             goto lock_mmap;
+> > +     }
+> > +     fault =3D handle_mm_fault(vma, address, flags | FAULT_FLAG_VMA_LO=
+CK, regs);
+> > +     vma_end_read(vma);
+> > +
+> > +     if (!(fault & VM_FAULT_RETRY)) {
+> > +             count_vm_vma_lock_event(VMA_LOCK_SUCCESS);
+> > +             goto done;
+> > +     }
+> > +     count_vm_vma_lock_event(VMA_LOCK_RETRY);
+>
+> This is apparently not strong enough as it causes go build failures like:
+>
+> [  409s] strconv
+> [  409s] releasep: m=3D0x579e2000 m->p=3D0x5781c600 p->m=3D0x0 p->status=
+=3D2
+> [  409s] fatal error: releasep: invalid p state
+> [  409s]
+>
+> [  325s] hash/adler32
+> [  325s] hash/crc32
+> [  325s] cmd/internal/codesign
+> [  336s] fatal error: runtime: out of memory
 
-Is there any reason it should be any different at all from what PPC is
-doing?
+Hi Jiri,
+Thanks for reporting! I'm not familiar with go builds. Could you
+please explain the error to me or point me to some documentation to
+decipher that error?
+Thanks,
+Suren.
 
-I still think the right thing to do here is make the PPC code common
-(with Hugh's proposed RCU modification) and just use it in both
-arches....
-
-Jason
+>
+> There are many kinds of similar errors. It happens in 1-3 out of 20
+> builds only.
+>
+> If I revert the commit on top of 6.4, they all dismiss. Any idea?
+>
+> The downstream report:
+> https://bugzilla.suse.com/show_bug.cgi?id=3D1212775
+>
+> > +
+> > +     /* Quick path to respond to signals */
+> > +     if (fault_signal_pending(fault, regs)) {
+> > +             if (!user_mode(regs))
+> > +                     kernelmode_fixup_or_oops(regs, error_code, addres=
+s,
+> > +                                              SIGBUS, BUS_ADRERR,
+> > +                                              ARCH_DEFAULT_PKEY);
+> > +             return;
+> > +     }
+> > +lock_mmap:
+> > +#endif /* CONFIG_PER_VMA_LOCK */
+> > +
+> >       /*
+> >        * Kernel-mode access to the user address space should only occur
+> >        * on well-defined single instructions listed in the exception
+> > @@ -1433,6 +1466,9 @@ void do_user_addr_fault(struct pt_regs *regs,
+> >       }
+> >
+> >       mmap_read_unlock(mm);
+> > +#ifdef CONFIG_PER_VMA_LOCK
+> > +done:
+> > +#endif
+> >       if (likely(!(fault & VM_FAULT_ERROR)))
+> >               return;
+> >
+>
+> thanks,
+> --
+> js
+> suse labs
+>
