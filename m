@@ -1,90 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE2DB74274A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jun 2023 15:22:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0278274276E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jun 2023 15:32:43 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=4uqnQG/Z;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=IbgfMem7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=f2nihmCB;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QsJzH5gWtz3bhL
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jun 2023 23:22:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QsKBc6fd5z3bfK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jun 2023 23:32:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=4uqnQG/Z;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=IbgfMem7;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=f2nihmCB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=64.147.123.17; helo=wnew3-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from wnew3-smtp.messagingengine.com (wnew3-smtp.messagingengine.com [64.147.123.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QsJyP4LrWz30XX
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Jun 2023 23:22:05 +1000 (AEST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailnew.west.internal (Postfix) with ESMTP id D62232B00081;
-	Thu, 29 Jun 2023 09:22:00 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Thu, 29 Jun 2023 09:22:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm1; t=1688044920; x=1688052120; bh=sQ
-	O+tpzU86Ruad95sakzckO3PnIV53aaJirVNNGwiuo=; b=4uqnQG/Z1UuyNyyAek
-	0XEemltl5YoKfbuyK7idzOfGbk2sj8tW5sPhftwy7vAcMTe/lNT1CqLxPHHTqxXl
-	b+N4aIXSme583rtEDLHRQQE5RZfTFsD+lTdYY9RefCbOfAlhciUTlKT5u2JXw4I4
-	ztOXsWSrHvNADHnJ68PH1ClsbIkWEIcWMVseJvPUcBCt/bCpX9x+rZSZZO6oAAQb
-	x9SWYdHJXxBC2SICSWUYB8JczQyliaPFo8FiWTtVLKrXWw/KnLs9i/+IAnqxZm8k
-	yqkPPTEwfMl+/IelpxRjc4jeyf7SfLboZoIPnpuMmrGUGm6Jvxy4MC7RByrwgGdC
-	yACQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm2; t=1688044920; x=1688052120; bh=sQO+tpzU86Rua
-	d95sakzckO3PnIV53aaJirVNNGwiuo=; b=IbgfMem7uDuQxpPEGhflBncHobvLW
-	vpdJgB9HlfrxSWZohr0Jpjmu+TTjCXIaQB0uQ+13MlfVT0itNPNX4vwmIqNieKC6
-	gPv4iflQLslU6lXHYDAvAm799+KHkiXlvXfZM777AHY2iwxEls+3U9z2bO1yeOef
-	wFpfTxWZmsHuvogMZSyJmnFyjemy8yi74cXqbPUy2ZTBAZ4KqNqWtoYlOjGYmlQy
-	PMPbNhtV1XvXdYg2lSN5WBQIEaNfObSZgMdkW8nfVQEunQCLpApHo/cwzRobpAQN
-	ZuHALvp9USqwqc7dcNooNTZaYpKwAFukGjJYFDScEYkfK4BGpwxbvs5wA==
-X-ME-Sender: <xms:eIWdZK2mhUMZoeD5ScJng_-Mw9sdRxOEu_Lgqc28dk7bZK70NYedTw>
-    <xme:eIWdZNGBGclYv6j7-IGwscmhWxPIRk4Bebhe_u_lemBUmyA0MfekuVd4tn5XkkmLX
-    tzaa5AupcGn4LfNDF0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrtdeggdeigecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
-    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
-    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
-    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
-    hnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:eIWdZC5kimzqKYQ1BPs7CvQbOgpGEss3M0RxRwWrIroNsq9V3om0TA>
-    <xmx:eIWdZL1nORBRiFJwbEufwbgzn_wdP_V0r9RSWhxWObhMpewEM8zlHA>
-    <xmx:eIWdZNG9JECFzRVSW1lGw4WP0yMQisPFaCR0eAsEec1IlVvAdRAh7Q>
-    <xmx:eIWdZPlLPgVMB-Zms1gBZ7XMicph5Ie9iaKcHZPRTF7XioY1Fsly84JuoI4>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id F305FB60086; Thu, 29 Jun 2023 09:21:59 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-499-gf27bbf33e2-fm-20230619.001-gf27bbf33
-Mime-Version: 1.0
-Message-Id: <0dbbdfc4-0e91-4be4-9ca0-d8ba6f18453d@app.fastmail.com>
-In-Reply-To: <d3de124c-6aa8-e930-e238-7bd6dd7929a6@suse.de>
-References: <20230629121952.10559-1-tzimmermann@suse.de>
- <20230629121952.10559-8-tzimmermann@suse.de>
- <80e3a583-805e-4e8f-a67b-ebe2e4b9a7e5@app.fastmail.com>
- <d3de124c-6aa8-e930-e238-7bd6dd7929a6@suse.de>
-Date: Thu, 29 Jun 2023 15:21:39 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Thomas Zimmermann" <tzimmermann@suse.de>, "Helge Deller" <deller@gmx.de>,
- "Daniel Vetter" <daniel@ffwll.ch>, "Dave Airlie" <airlied@gmail.com>
-Subject: Re: [PATCH 07/12] arch/x86: Declare edid_info in <asm/screen_info.h>
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QsK9h6Pqpz30h8
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Jun 2023 23:31:52 +1000 (AEST)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35TDSkeu011219;
+	Thu, 29 Jun 2023 13:31:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=ZwvJ0eEbncN/kOCHI+wZaTlZPHMLkO5x//AAsn1W7tw=;
+ b=f2nihmCB0lv1o6hd0yn36xLbBfrjudJSsnmBK+uxpj9/AGaa+gMA2O3rfhTEZGhRQ5bo
+ e98bJF4vKIfIqVKrDfSz/3mhrneJplKoD9jgSeeBgbnpw2wK3j6+F/cBlVnPByqNoKwX
+ vgFJo2kpvkPD6WXGjUhyplSOotHQ7IiV90Hg/JrGLL3E7dz8unjOPWdJOvfas0ABzUrG
+ qTQgtc3AmOlvOrdZSOH+0ykRGOT8TVSoz1o9IQjH+aphdwSm4o+CMdfiI7VH1PzmrpVE
+ e7vg7/XbpSguo8arfAb6KYe5JrajatVsbdSI7nr1KRsf8BidBdOzlhrqGwOfMQtIJ0hi sw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rhavhg1q6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 Jun 2023 13:31:41 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35TDU8dt015383;
+	Thu, 29 Jun 2023 13:31:41 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rhavhg1nx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 Jun 2023 13:31:41 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35T9H6GI002392;
+	Thu, 29 Jun 2023 13:31:38 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3rdr453c4g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 Jun 2023 13:31:38 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 35TDVaG662193990
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 29 Jun 2023 13:31:36 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 02F0520043;
+	Thu, 29 Jun 2023 13:31:36 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C6C8120040;
+	Thu, 29 Jun 2023 13:31:33 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.43.91.77])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 29 Jun 2023 13:31:33 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.600.7\))
+Subject: Re: [PATCH v2 0/9]  Introduce SMT level and add PowerPC support
+From: Sachin Sant <sachinp@linux.ibm.com>
+In-Reply-To: <87edluh6ce.fsf@mail.lhotse>
+Date: Thu, 29 Jun 2023 19:01:22 +0530
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <E68433D6-F103-4B58-A0DC-AD1099F8CC05@linux.ibm.com>
+References: <20230628100558.43482-1-ldufour@linux.ibm.com>
+ <88E208A6-F4E0-4DE9-8752-C9652B978BC6@linux.ibm.com>
+ <87edluh6ce.fsf@mail.lhotse>
+To: Michael Ellerman <mpe@ellerman.id.au>
+X-Mailer: Apple Mail (2.3731.600.7)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: p9fIrhzuknG-wZ6s0tbFa0qN0XHpWfsu
+X-Proofpoint-ORIG-GUID: bil4KbMF-Z02xwvfg-W4hlsa2BwW-7Kw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-29_03,2023-06-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
+ adultscore=0 spamscore=0 bulkscore=0 lowpriorityscore=0 malwarescore=0
+ impostorscore=0 priorityscore=1501 mlxlogscore=999 clxscore=1015
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306290122
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,44 +100,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, linux-efi@vger.kernel.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Ard Biesheuvel <ardb@kernel.org>, Linux-Arch <linux-arch@vger.kernel.org>, linux-hexagon@vger.kernel.org, linux-staging@lists.linux.dev, "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>, Ingo Molnar <mingo@redhat.com>, Sami Tolvanen <samitolvanen@google.com>, Kees Cook <keescook@chromium.org>, "Paul E. McKenney" <paulmck@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, x86@kernel.org, linux-kernel@vger.kernel.org, Juerg Haef
- liger <juerg.haefliger@canonical.com>, linux-alpha@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, dave.hansen@linux.intel.com, open list <linux-kernel@vger.kernel.org>, npiggin@gmail.com, Ingo Molnar <mingo@redhat.com>, bp@alien8.de, tglx@linutronix.de, Laurent Dufour <ldufour@linux.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 29, 2023, at 15:01, Thomas Zimmermann wrote:
-> Am 29.06.23 um 14:35 schrieb Arnd Bergmann:
->> On Thu, Jun 29, 2023, at 13:45, Thomas Zimmermann wrote:
->>> The global variable edid_info contains the firmware's EDID information
->>> as an extension to the regular screen_info on x86. Therefore move it to
->>> <asm/screen_info.h>.
->>>
->>> Add the Kconfig token ARCH_HAS_EDID_INFO to guard against access on
->>> architectures that don't provide edid_info. Select it on x86.
->> 
->> I'm not sure we need another symbol in addition to
->> CONFIG_FIRMWARE_EDID. Since all the code behind that
->> existing symbol is also x86 specific, would it be enough
->> to just add either 'depends on X86' or 'depends on X86 ||
->> COMPILE_TEST' there?
->
-> FIRMWARE_EDID is a user-selectable feature, while ARCH_HAS_EDID_INFO 
-> announces an architecture feature. They do different things.
 
-I still have trouble seeing the difference.
+>>=20
+>> Without this option but changing SMT level during runtime using
+>> ppc64_cpu =E2=80=94smt=3D<level>, the SMT level is not retained after
+>> cpu core add.
+>=20
+> That's because ppc64_cpu is not using the sysfs SMT control file, it's
+> just onlining/offlining threads manually.
+>=20
+> If you run:
+> $ ppc64_cpu --smt=3D4=20
+>=20
+> And then also do:
+>=20
+> $ echo 4 > /sys/devices/system/cpu/smt/control
+>=20
+> It should work as expected?
 
-> Right now, ARCH_HAS_EDID_INFO only works on the old BIOS-based VESA 
-> systems. In the future, I want to add support for EDID data from EFI and 
-> OF as well. It would be stored in edid_info. I assume that the new 
-> symbol will become useful then.
+Thanks Michael. Yes this works. The SMT level is preserved
+after a core add.
 
-I don't see why an OF based system would have the same limitation
-as legacy BIOS with supporting only a single monitor, if we need
-to have a generic representation of EDID data in DT, that would
-probably be in a per device property anyway.
-
-I suppose you could use FIRMWARE_EDID on EFI or OF systems without
-the need for a global edid_info structure, but that would not
-share any code with the current fb_firmware_edid() function.
-
-     Arnd
+- Sachin
