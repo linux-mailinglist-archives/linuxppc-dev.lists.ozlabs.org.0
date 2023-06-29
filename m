@@ -2,70 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C2EB742684
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jun 2023 14:35:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A05C742667
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jun 2023 14:28:02 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=i9tojsqE;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=I9+YCVJO;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=LkHGO7ba;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=5mRgVk1/;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QsHwy2mKgz3cVj
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jun 2023 22:35:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QsHm002ggz3bqC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jun 2023 22:28:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=i9tojsqE;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=I9+YCVJO;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=LkHGO7ba;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=5mRgVk1/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2001:67c:2178:6::1d; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2001:67c:2178:6::1c; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QsHq20PPVz3cCG
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Jun 2023 22:30:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QsHj83t8Kz30hK
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Jun 2023 22:25:32 +1000 (AEST)
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id D30A41FD64;
-	Thu, 29 Jun 2023 12:19:55 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 4BAC6216DC;
+	Thu, 29 Jun 2023 12:19:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1688041195; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1688041196; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=x4OXpvb/zG5KxleDjQO59blDnCWqFfIAhLgAtrL7NVY=;
-	b=i9tojsqES2QC/qquHYUduiHTvKM/o2z/RvVrScPmnss/Wdpfc1J8AgYAxsShSe/L6fYT9Y
-	7FKNYHoHceSj+8mLJIQHIb+BY/XjPBkp5yhtd0KOIYPXpIqSZ6hSLBi6xqY1JazJYIi+Eb
-	gaKXUb1B5TosrsgCJYwvoV7PpYW+BMc=
+	bh=IXGU5X8lHgcy0xSrc3ZVVAstecW58Mhx3eVBaUQt3EA=;
+	b=LkHGO7baJX3zJX0cf+a+c/FoUp4pImvT9g1shyK677YQqnqHTwkq2/nbPfpIMVxGT5xDkj
+	aT1pTu4l3b7vpn/6c2VUCblTNZr1fAjD/lJ0StGaPRg75StQdS4Z+R+XnN2JzWnH/E34VU
+	zK/QygQuma782ceDLn96pVDkn5oZtOU=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1688041195;
+	s=susede2_ed25519; t=1688041196;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=x4OXpvb/zG5KxleDjQO59blDnCWqFfIAhLgAtrL7NVY=;
-	b=I9+YCVJOZ9ZGuHYgzDJK7LoqYWQPRbVAa5291fSN3Cmi2kbDsJnhF71kCDmXLS5Vh94PSm
-	QiCAtZG1UTuNHQDw==
+	bh=IXGU5X8lHgcy0xSrc3ZVVAstecW58Mhx3eVBaUQt3EA=;
+	b=5mRgVk1/pVfSDoygZItWVKC6R0IzmCwK6ZL98BBiHU3NrlL4mP9k6A6PayShKVnBSPBC2x
+	88su8LwJ20TmyWBQ==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 4D5F813A43;
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id CD9EE13905;
 	Thu, 29 Jun 2023 12:19:55 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
 	by imap2.suse-dmz.suse.de with ESMTPSA
-	id CJvwEet2nWRlVAAAMHmgww
+	id CAVJMet2nWRlVAAAMHmgww
 	(envelope-from <tzimmermann@suse.de>); Thu, 29 Jun 2023 12:19:55 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: arnd@arndb.de,
 	deller@gmx.de,
 	daniel@ffwll.ch,
 	airlied@gmail.com
-Subject: [PATCH 01/12] efi: Do not include <linux/screen_info.h> from EFI header
-Date: Thu, 29 Jun 2023 13:45:40 +0200
-Message-ID: <20230629121952.10559-2-tzimmermann@suse.de>
+Subject: [PATCH 02/12] fbdev/sm712fb: Do not include <linux/screen_info.h>
+Date: Thu, 29 Jun 2023 13:45:41 +0200
+Message-ID: <20230629121952.10559-3-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230629121952.10559-1-tzimmermann@suse.de>
 References: <20230629121952.10559-1-tzimmermann@suse.de>
@@ -82,96 +82,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, linux-efi@vger.kernel.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, linux-arch@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-staging@lists.linux.dev, Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org, loongarch@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, linux-hyperv@vger.kernel.org, linux-efi@vger.kernel.org, linux-ia64@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>, linux-sh@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org, linux-mips@vger.kernel.org, linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, loongarch@lists.linux.dev, linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Sudip Mukherjee <sudipm.mukherjee@gmail.com>, linux-arm-kernel@lists.infradead.org, Teddy Wang <teddy.wang@siliconmotion.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The header file <linux/efi.h> does not need anything from
-<linux/screen_info.h>. Declare struct screen_info and remove
-the include statements. Update a number of source files that
-require struct screen_info's definition.
+Sm712fb's dependency on <linux/screen_info.h> is artificial in that
+it only uses struct screen_info for its internals. Replace the use of
+struct screen_info with a custom data structure and remove the include
+of <linux/screen_info.h>.
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
+Cc: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Cc: Teddy Wang <teddy.wang@siliconmotion.com>
+Cc: Helge Deller <deller@gmx.de>
 ---
- arch/arm/kernel/efi.c                         | 2 ++
- arch/arm64/kernel/efi.c                       | 1 +
- drivers/firmware/efi/libstub/efi-stub-entry.c | 2 ++
- drivers/firmware/efi/libstub/screen_info.c    | 2 ++
- include/linux/efi.h                           | 3 ++-
- 5 files changed, 9 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/sm712fb.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/kernel/efi.c b/arch/arm/kernel/efi.c
-index e2b9d2618c672..e94655ef16bb3 100644
---- a/arch/arm/kernel/efi.c
-+++ b/arch/arm/kernel/efi.c
-@@ -5,6 +5,8 @@
- 
- #include <linux/efi.h>
- #include <linux/memblock.h>
-+#include <linux/screen_info.h>
-+
- #include <asm/efi.h>
- #include <asm/mach/map.h>
- #include <asm/mmu_context.h>
-diff --git a/arch/arm64/kernel/efi.c b/arch/arm64/kernel/efi.c
-index baab8dd3ead3c..3afbe503b066f 100644
---- a/arch/arm64/kernel/efi.c
-+++ b/arch/arm64/kernel/efi.c
-@@ -9,6 +9,7 @@
- 
- #include <linux/efi.h>
- #include <linux/init.h>
-+#include <linux/screen_info.h>
- 
- #include <asm/efi.h>
- #include <asm/stacktrace.h>
-diff --git a/drivers/firmware/efi/libstub/efi-stub-entry.c b/drivers/firmware/efi/libstub/efi-stub-entry.c
-index cc4dcaea67fa6..2f1902e5d4075 100644
---- a/drivers/firmware/efi/libstub/efi-stub-entry.c
-+++ b/drivers/firmware/efi/libstub/efi-stub-entry.c
-@@ -1,6 +1,8 @@
- // SPDX-License-Identifier: GPL-2.0-only
- 
- #include <linux/efi.h>
-+#include <linux/screen_info.h>
-+
- #include <asm/efi.h>
- 
- #include "efistub.h"
-diff --git a/drivers/firmware/efi/libstub/screen_info.c b/drivers/firmware/efi/libstub/screen_info.c
-index 4be1c4d1f922b..a51ec201ca3cb 100644
---- a/drivers/firmware/efi/libstub/screen_info.c
-+++ b/drivers/firmware/efi/libstub/screen_info.c
-@@ -1,6 +1,8 @@
- // SPDX-License-Identifier: GPL-2.0
- 
- #include <linux/efi.h>
-+#include <linux/screen_info.h>
-+
- #include <asm/efi.h>
- 
- #include "efistub.h"
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index 571d1a6e1b744..360895a5572c0 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -24,10 +24,11 @@
- #include <linux/range.h>
- #include <linux/reboot.h>
- #include <linux/uuid.h>
+diff --git a/drivers/video/fbdev/sm712fb.c b/drivers/video/fbdev/sm712fb.c
+index b7ad3c644e138..f929091da4e77 100644
+--- a/drivers/video/fbdev/sm712fb.c
++++ b/drivers/video/fbdev/sm712fb.c
+@@ -27,12 +27,17 @@
+ #include <linux/uaccess.h>
+ #include <linux/module.h>
+ #include <linux/console.h>
 -#include <linux/screen_info.h>
  
- #include <asm/page.h>
+ #include <linux/pm.h>
  
-+struct screen_info;
+ #include "sm712.h"
+ 
++struct smtcfb_screen_info {
++	u16 lfb_width;
++	u16 lfb_height;
++	u16 lfb_depth;
++};
 +
- #define EFI_SUCCESS		0
- #define EFI_LOAD_ERROR		( 1 | (1UL << (BITS_PER_LONG-1)))
- #define EFI_INVALID_PARAMETER	( 2 | (1UL << (BITS_PER_LONG-1)))
+ /*
+  * Private structure
+  */
+@@ -829,7 +834,7 @@ static const struct modeinit vgamode[] = {
+ 	},
+ };
+ 
+-static struct screen_info smtc_scr_info;
++static struct smtcfb_screen_info smtc_scr_info;
+ 
+ static char *mode_option;
+ 
 -- 
 2.41.0
 
