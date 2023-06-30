@@ -1,68 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE2247438AF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Jun 2023 11:50:13 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=MdD9GNu7;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75AFA7438B0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Jun 2023 11:50:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QsrCR4CG2z3c3c
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Jun 2023 19:50:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QsrD30FMkz3c8D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Jun 2023 19:50:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=MdD9GNu7;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::733; helo=mail-qk1-x733.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com [IPv6:2607:f8b0:4864:20::733])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.219.173; helo=mail-yb1-f173.google.com; envelope-from=namhyung@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qsgxh63gpz305g
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Jun 2023 13:37:43 +1000 (AEST)
-Received: by mail-qk1-x733.google.com with SMTP id af79cd13be357-765a7768f1dso135944385a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Jun 2023 20:37:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688096260; x=1690688260;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=2vp1WxV1X+3awcRK1E83g4O6ghnsdCU3yjKhzsqaIy0=;
-        b=MdD9GNu7sZzTrO/Wii7ecDZek1ixOHCfNdnLc7sTuyUOtdGWj3sojyHFgRQ4xvw3yQ
-         a8r49oDexRV3yLeAL/QvoCA+H8S00GzoWsG1HG/hZg+nkFBEP9pSGXMvO9DNl4dxZTCK
-         Qk+SB+WvcVm2iZFMaJELJFqFg86P2f5NtWVyE9XSFV9EJtUVzso7CzCLtCd68iI4VnmG
-         5KeSqz/hep3dJj12pur/2dZemGZDogEGJGCIY4nlQNuWwtDzs8p+miD6fA+jkuTDBamf
-         HmovSUaNQTj9ZHufOdZe5VLr0dAuYLreqnJ0bGLVHxhmIMvQ3+DcM52erwJQ/VFoYNHx
-         oyaw==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QskWy3RZ3z307V
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Jun 2023 15:34:05 +1000 (AEST)
+Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-bb3a77abd7bso1383541276.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Jun 2023 22:34:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688096260; x=1690688260;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2vp1WxV1X+3awcRK1E83g4O6ghnsdCU3yjKhzsqaIy0=;
-        b=GadEY3MU3mWVpjQxccz+jVzwd5/pZ1NCJCm2Qo4BjRFizpQ4h7jydekHqSj5LwZbFe
-         DQC5kcsDso9/+Fckz4RFHx0vx64jgM9K9bBr23bnKbmsbjVIsebl9wpVofi69XT2P5rb
-         vD6dJRCSdZna+IW3Mig+J2czVb7sanqiQW4pkg02W5Yq1by3Zvzxx/kNViZF6grv4voj
-         oPjocWx80zHmxD5AgHcPhw9EN16F67kdDXKYDJVsGJdcXryF0+E+uopEqEZl23OeAlXj
-         Qoh/ka9jKrNqGyRB1FV2nxMInagphbNR5vxMXXYzq8fgAsUwfYw3qeq4FR4Rsl6trUxO
-         DVrA==
-X-Gm-Message-State: ABy/qLbwcA7bw+pUzmx451sROCLn0CTK4RcHZu18lpdD6B8iQUFJ7gcE
-	ywPGbsPjarQSZVy+suPtaexRFloa2bYGTcJwb3DQs+EmXLY=
-X-Google-Smtp-Source: APBJJlFT8Jj143WWzJfRmgE75w9CVGXnb+cPsWTuEXJIzGZgDnRszVIt2ay4Hq6w9HuFogT4UgL9dU21voR3z25NXt8=
-X-Received: by 2002:a05:620a:ccb:b0:765:7c13:134f with SMTP id
- b11-20020a05620a0ccb00b007657c13134fmr976720qkj.69.1688096260599; Thu, 29 Jun
- 2023 20:37:40 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1688103243; x=1690695243;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rqe4oW6egP6ZYOUhmx0yHzT4spsp8DeajtOy9Dxl0N0=;
+        b=MQbZgS8j45VdyGte9dz0HYhN+9keD/jlffYR3K71XzC1NHBBeyIGeDx+rZN9yAsiUd
+         0U9UA0wR4qTu6ZrvwNJc4mjyeLJLzwOzEvCRIaMQzyij9VRfvh8DNhIMRQvz63LvmWIQ
+         Ebn/hi5J84qzzzMta/pcbPPHFA8O063bdnLJgstQJXewa6nLwkWa/748WK5xs5Sy0eyz
+         wO9ZaqWoVakMHCyi8GuiPMZeLXZus+AUv90AS8fin0mG9fgi78PT/kRECjbNDZjHEGHO
+         z9wp8oqp/1WLMz7NZSnitA5I9cprfeRJ0rKrSyweiGx6XXLi07JztU8i5e3uJl/V9Q/g
+         D6MA==
+X-Gm-Message-State: ABy/qLZBdobgBf/u3B2a5sVwrCBy33YjV54UU3AmvETf/FDIqh2x0Z8X
+	9zyc0cGMyuPUVlEqMaV4sEAG3xCRvVcdPrQRdqM=
+X-Google-Smtp-Source: APBJJlGsOWkMaxD3Bj5EXOi0ZRM8KsFOEr8Lg1uNKczc+6HZPSKDsYy2QxFxSi6Et+JGvnEpCG0zVQlZ9J+DNPB54vc=
+X-Received: by 2002:a25:3107:0:b0:c12:29ac:1d36 with SMTP id
+ x7-20020a253107000000b00c1229ac1d36mr1697430ybx.7.1688103242894; Thu, 29 Jun
+ 2023 22:34:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <1688002673-28493-1-git-send-email-shengjiu.wang@nxp.com>
- <1688002673-28493-5-git-send-email-shengjiu.wang@nxp.com> <f6598cb0-6773-4475-85e1-5dfacaa16de3@sirena.org.uk>
-In-Reply-To: <f6598cb0-6773-4475-85e1-5dfacaa16de3@sirena.org.uk>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Fri, 30 Jun 2023 11:37:29 +0800
-Message-ID: <CAA+D8ANbMYr9ATSfWnbq69ECHOPNTiOBc7QACEeHomCC+rTHng@mail.gmail.com>
-Subject: Re: [PATCH 4/6] ASoC: fsl_asrc: Add memory to memory driver
-To: Mark Brown <broonie@kernel.org>
-Content-Type: multipart/alternative; boundary="000000000000f5b50805ff5089a9"
+References: <20230628230935.1196180-1-sohil.mehta@intel.com> <08e273fc-49c5-dd09-1c9e-d85a080767f9@infradead.org>
+In-Reply-To: <08e273fc-49c5-dd09-1c9e-d85a080767f9@infradead.org>
+From: Namhyung Kim <namhyung@kernel.org>
+Date: Thu, 29 Jun 2023 22:33:51 -0700
+Message-ID: <CAM9d7ch0GtTUjhtbph5rmCDvRBAKjLCN+25mukn_QPv4bDsjGQ@mail.gmail.com>
+Subject: Re: [PATCH] syscalls: Cleanup references to sys_lookup_dcookie()
+To: Randy Dunlap <rdunlap@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Mailman-Approved-At: Fri, 30 Jun 2023 19:48:38 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -75,102 +58,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, mchehab@kernel.org, Xiubo.Lee@gmail.com, lgirdwood@gmail.com, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-kernel@vger.kernel.org, tfiga@chromium.org, nicoleotsuka@gmail.com, linuxppc-dev@lists.ozlabs.org, perex@perex.cz, linux-media@vger.kernel.org, festevam@gmail.com, m.szyprowski@samsung.com
+Cc: Mark Rutland <mark.rutland@arm.com>, Ian Rogers <irogers@google.com>, Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Max Filippov <jcmvbkbc@gmail.com>, Andreas Schwab <schwab@linux-m68k.org>, "H . Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, "Eric W . Biederman" <ebiederm@xmission.com>, Arnd Bergmann <arnd@arndb.de>, Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>, x86@kernel.org, Russell King <linux@armlinux.org.uk>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>, Lukas Bulw
+ ahn <lukas.bulwahn@gmail.com>, Matt Turner <mattst88@gmail.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Sergei Trofimovich <slyich@gmail.com>, Vasily Gorbik <gor@linux.ibm.com>, Brian Gerst <brgerst@gmail.com>, Heiko Carstens <hca@linux.ibm.com>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, linux-mips@vger.kernel.org, Rohan McLure <rmclure@linux.ibm.com>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Arnaldo Carvalho de Melo <acme@kernel.org>, Andy Lutomirski <luto@kernel.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Sohil Mehta <sohil.mehta@intel.com>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-api@vger.kernel.org, Adrian Hunter <adrian.hunter@intel.com>, linux-perf-users@vger.kernel.org, Sven Schnel
+ le <svens@linux.ibm.com>, Jiri Olsa <jolsa@kernel.org>, linux-alpha@vger.kernel.org, Borislav Petkov <bp@alien8.de>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---000000000000f5b50805ff5089a9
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Hello,
 
-On Thu, Jun 29, 2023 at 7:39=E2=80=AFPM Mark Brown <broonie@kernel.org> wro=
-te:
-
-> On Thu, Jun 29, 2023 at 09:37:51AM +0800, Shengjiu Wang wrote:
-> > Implement the ASRC memory to memory function using
-> > the v4l2 framework, user can use this function with
-> > v4l2 ioctl interface.
+On Wed, Jun 28, 2023 at 4:44=E2=80=AFPM Randy Dunlap <rdunlap@infradead.org=
+> wrote:
+>
+>
+>
+> On 6/28/23 16:09, Sohil Mehta wrote:
+> > commit 'be65de6b03aa ("fs: Remove dcookies support")' removed the
+> > syscall definition for lookup_dcookie.  However, syscall tables still
+> > point to the old sys_lookup_dcookie() definition. Update syscall tables
+> > of all architectures to directly point to sys_ni_syscall() instead.
 > >
-> > User send the output and capture buffer to driver and
-> > driver store the converted data to the capture buffer.
-> >
-> > This feature can be shared by ASRC and EASRC drivers
-> >
-> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > ---
-> >  sound/soc/fsl/Kconfig        |  13 +
-> >  sound/soc/fsl/Makefile       |   2 +
-> >  sound/soc/fsl/fsl_asrc_m2m.c | 878 +++++++++++++++++++++++++++++++++++
-> >  sound/soc/fsl/fsl_asrc_m2m.h |  48 ++
+> > Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 >
-> This feels like the bit where we interface v4l to ASoC should be a
-> separate library, there shouldn't be anything device specific about
-> getting an audio stream into a block of memory.  I'm thinking something
-> like the way we handle dmaengine here.
->
-> I've not dug into the code yet though.
->
+> Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
 
-Users may want to get the ASRC output in the user space, then
-do mixing with other streams before sending to ALSA.
+I was about to say that it'd be nice if you split the tools/perf part
+since it can support old kernels.  But if the syscall is only used for
+oprofile then probably perf doesn't need to care about it. :)
 
-As there is no such API in ASoC,  the best interface I found is
-the V4L2, but I need to do a little modification of the V4L2 API,
+For the perf part,
+Acked-by: Namhyung Kim <namhyung@kernel.org>
 
-extend it for audio usage.
-
-Could you please suggest more about the "separate library"?
-Should I place this "sound/soc/fsl/fsl_asrc_m2m.c" in another folder?
-
-best regards
-wang shengjiu
-
---000000000000f5b50805ff5089a9
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Thu, Jun 29, 2023 at 7:39=E2=80=AF=
-PM Mark Brown &lt;<a href=3D"mailto:broonie@kernel.org">broonie@kernel.org<=
-/a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0=
-px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">O=
-n Thu, Jun 29, 2023 at 09:37:51AM +0800, Shengjiu Wang wrote:<br>
-&gt; Implement the ASRC memory to memory function using<br>
-&gt; the v4l2 framework, user can use this function with<br>
-&gt; v4l2 ioctl interface.<br>
-&gt; <br>
-&gt; User send the output and capture buffer to driver and<br>
-&gt; driver store the converted data to the capture buffer.<br>
-&gt; <br>
-&gt; This feature can be shared by ASRC and EASRC drivers<br>
-&gt; <br>
-&gt; Signed-off-by: Shengjiu Wang &lt;<a href=3D"mailto:shengjiu.wang@nxp.c=
-om" target=3D"_blank">shengjiu.wang@nxp.com</a>&gt;<br>
-&gt; ---<br>
-&gt;=C2=A0 sound/soc/fsl/Kconfig=C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 13 +<br=
->
-&gt;=C2=A0 sound/soc/fsl/Makefile=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A02=
- +<br>
-&gt;=C2=A0 sound/soc/fsl/fsl_asrc_m2m.c | 878 +++++++++++++++++++++++++++++=
-++++++<br>
-&gt;=C2=A0 sound/soc/fsl/fsl_asrc_m2m.h |=C2=A0 48 ++<br>
-<br>
-This feels like the bit where we interface v4l to ASoC should be a<br>
-separate library, there shouldn&#39;t be anything device specific about<br>
-getting an audio stream into a block of memory.=C2=A0 I&#39;m thinking some=
-thing<br>
-like the way we handle dmaengine here.<br>
-<br>
-I&#39;ve not dug into the code yet though.<br></blockquote><div><br></div><=
-div><p class=3D"MsoNormal" style=3D"margin:0in;font-size:11pt;font-family:C=
-alibri,sans-serif">Users may want to get the ASRC output in the user space,=
- then <br>do mixing with other streams before sending to ALSA. <br><br>As t=
-here is no such API in ASoC, =C2=A0the best interface I found is<br>the V4L=
-2, but I need to do a little modification of the V4L2 API,</p><p class=3D"M=
-soNormal" style=3D"margin:0in;font-size:11pt;font-family:Calibri,sans-serif=
-">extend it for audio usage.<br><br>Could you please suggest more about the=
- &quot;separate library&quot;?<br>Should I place this &quot;sound/soc/fsl/f=
-sl_asrc_m2m.c&quot; in another folder?<br><br>best regards<br>wang shengjiu=
-<br></p></div></div></div>
-
---000000000000f5b50805ff5089a9--
+Thanks,
+Namhyung
