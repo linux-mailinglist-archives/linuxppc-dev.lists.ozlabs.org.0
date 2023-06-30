@@ -2,61 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BD30743723
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Jun 2023 10:28:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 801227438B1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Jun 2023 11:51:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QspPQ1ZZSz3bn3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Jun 2023 18:28:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QsrDZ3JDvz3c1q
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Jun 2023 19:51:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.128.54; helo=mail-wm1-f54.google.com; envelope-from=jirislaby@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=lichtvoll.de (client-ip=2001:67c:14c:12f::11:100; helo=mail.lichtvoll.de; envelope-from=martin@lichtvoll.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 311 seconds by postgrey-1.37 at boromir; Fri, 30 Jun 2023 18:40:48 AEST
+Received: from mail.lichtvoll.de (lichtvoll.de [IPv6:2001:67c:14c:12f::11:100])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QspNs1CpBz30Ct
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Jun 2023 18:28:12 +1000 (AEST)
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-3fbc244d386so10538665e9.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Jun 2023 01:28:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688113689; x=1690705689;
-        h=content-transfer-encoding:in-reply-to:subject:references:cc:to:from
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cRYyHPJ0l3JptHpg3mFpGfjchjllb0zu8LBlb7XT5hw=;
-        b=Fu560hvQv5TrbMaETdqygHXT8VmqyDCl9N3aE0Mj6YtFtco2C5qeGOR3V1AB7bkaSl
-         AZaPk4OKyUmKcAgNfFmOmG3UzBvQ0CTqxqYcEgkoU8O5qUpdUjpjJd4bbiyDO3yWSLs7
-         uBoMPDAThqr2vQ9Hw1flalXD5KNRMEp1eyVG1BSYU2rSV2FnLISCetumxIjvQ8icAHUm
-         DmPC1mgdKz6iu/Bqq2nLgnjKk0eOcYuCR3NkxN8h8NGGkUYXip/Dih7oZbkgGu8KMCwg
-         3uhvKmdfOSFk+n3PqO15Q3/1TwwewOH7rCvaac5mw+yAH/utokj9vpUSN1hAkm6fB68n
-         WhXA==
-X-Gm-Message-State: AC+VfDw3pn3OYOzFdtjOJSLj34xblcup7jRZWEVeLwRXCesVHL9mymyH
-	YJpTYnRmXcRTLOLD5BXjgB8=
-X-Google-Smtp-Source: ACHHUZ4ThngeqilmApKJMZhIhCcwEYSoxdwUR+ukZaaoc8YnAj64SIh0BEAZ3duaqDYdxup994pnqw==
-X-Received: by 2002:a7b:cb88:0:b0:3fb:b890:128e with SMTP id m8-20020a7bcb88000000b003fbb890128emr1255564wmi.33.1688113688346;
-        Fri, 30 Jun 2023 01:28:08 -0700 (PDT)
-Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:59? ([2a0b:e7c0:0:107::aaaa:59])
-        by smtp.gmail.com with ESMTPSA id o23-20020a05600c379700b003fae92e7a8dsm12201517wmr.27.2023.06.30.01.28.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 30 Jun 2023 01:28:07 -0700 (PDT)
-Message-ID: <f7ad7a42-13c8-a486-d0b7-01d5acf01e13@kernel.org>
-Date: Fri, 30 Jun 2023 10:28:05 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QspgN1fGRz3bYj
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Jun 2023 18:40:48 +1000 (AEST)
+Received: from 127.0.0.1 (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384)
+	(No client certificate requested)
+	by mail.lichtvoll.de (Postfix) with ESMTPSA id 85B3972727C;
+	Fri, 30 Jun 2023 10:35:17 +0200 (CEST)
+Authentication-Results: mail.lichtvoll.de;
+	auth=pass smtp.auth=martin smtp.mailfrom=martin@lichtvoll.de
+From: Martin Steigerwald <martin@lichtvoll.de>
+To: Christian Zigotzky <chzigotzky@xenosoft.de>,
+ Michael Schmitz <schmitzmic@gmail.com>
+Subject:  Re: [FSL P50x0] [PASEMI] The Access to partitions on disks with an Amiga
+ partition table doesn't work anymore after the block updates 2023-06-23
+Date: Fri, 30 Jun 2023 10:35:16 +0200
+Message-ID: <5866778.MhkbZ0Pkbq@lichtvoll.de>
+In-Reply-To: <a113cb83-9f82-fd39-f132-41ba4c259265@gmail.com>
+References:  <024ce4fa-cc6d-50a2-9aae-3701d0ebf668@xenosoft.de>
+ <a113cb83-9f82-fd39-f132-41ba4c259265@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-References: <20230227173632.3292573-1-surenb@google.com>
- <20230227173632.3292573-30-surenb@google.com>
- <dbdef34c-3a07-5951-e1ae-e9c6e3cdf51b@kernel.org>
- <CAJuCfpF7LweMwpvXavjJZhAciK7wK-bdLz2aFhOZGSHeK5tA9A@mail.gmail.com>
- <9a8d788c-b8ba-1b8a-fd79-0e25b1b60bed@kernel.org>
-Subject: Re: [PATCH v4 29/33] x86/mm: try VMA lock-based page fault handling
- first
-In-Reply-To: <9a8d788c-b8ba-1b8a-fd79-0e25b1b60bed@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+X-Mailman-Approved-At: Fri, 30 Jun 2023 19:48:38 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,175 +50,177 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, will@kernel.org, arjunroy@google.com, chriscli@google.com, dave@stgolabs.net, minchan@google.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, mingo@redhat.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, michalechner92@googlemail.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, shakeelb@google.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, akpm@linux-foundati
- on.org, tatashin@google.com, mgorman@techsingularity.net, rppt@kernel.org
+Cc: axboe@kernel.dk, linux-m68k@vger.kernel.org, Darren Stevens <darren@stevens-zone.net>, mad skateman <madskateman@gmail.com>, linux-block@vger.kernel.org, Geert Uytterhoeven <geert@linux-m68k.org>, "R.T.Dickinson" <rtd2@xtra.co.nz>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 30. 06. 23, 8:35, Jiri Slaby wrote:
-> On 29. 06. 23, 17:30, Suren Baghdasaryan wrote:
->> On Thu, Jun 29, 2023 at 7:40 AM Jiri Slaby <jirislaby@kernel.org> wrote:
->>>
->>> Hi,
->>>
->>> On 27. 02. 23, 18:36, Suren Baghdasaryan wrote:
->>>> Attempt VMA lock-based page fault handling first, and fall back to the
->>>> existing mmap_lock-based handling if that fails.
->>>>
->>>> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
->>>> ---
->>>>    arch/x86/Kconfig    |  1 +
->>>>    arch/x86/mm/fault.c | 36 ++++++++++++++++++++++++++++++++++++
->>>>    2 files changed, 37 insertions(+)
->>>>
->>>> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
->>>> index a825bf031f49..df21fba77db1 100644
->>>> --- a/arch/x86/Kconfig
->>>> +++ b/arch/x86/Kconfig
->>>> @@ -27,6 +27,7 @@ config X86_64
->>>>        # Options that are inherently 64-bit kernel only:
->>>>        select ARCH_HAS_GIGANTIC_PAGE
->>>>        select ARCH_SUPPORTS_INT128 if CC_HAS_INT128
->>>> +     select ARCH_SUPPORTS_PER_VMA_LOCK
->>>>        select ARCH_USE_CMPXCHG_LOCKREF
->>>>        select HAVE_ARCH_SOFT_DIRTY
->>>>        select MODULES_USE_ELF_RELA
->>>> diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
->>>> index a498ae1fbe66..e4399983c50c 100644
->>>> --- a/arch/x86/mm/fault.c
->>>> +++ b/arch/x86/mm/fault.c
->>>> @@ -19,6 +19,7 @@
->>>>    #include <linux/uaccess.h>          /* 
->>>> faulthandler_disabled()      */
->>>>    #include <linux/efi.h>                      /* 
->>>> efi_crash_gracefully_on_page_fault()*/
->>>>    #include <linux/mm_types.h>
->>>> +#include <linux/mm.h>                        /* find_and_lock_vma() */
->>>>
->>>>    #include <asm/cpufeature.h>         /* boot_cpu_has, 
->>>> ...            */
->>>>    #include <asm/traps.h>                      /* dotraplinkage, 
->>>> ...           */
->>>> @@ -1333,6 +1334,38 @@ void do_user_addr_fault(struct pt_regs *regs,
->>>>        }
->>>>    #endif
->>>>
->>>> +#ifdef CONFIG_PER_VMA_LOCK
->>>> +     if (!(flags & FAULT_FLAG_USER))
->>>> +             goto lock_mmap;
->>>> +
->>>> +     vma = lock_vma_under_rcu(mm, address);
->>>> +     if (!vma)
->>>> +             goto lock_mmap;
->>>> +
->>>> +     if (unlikely(access_error(error_code, vma))) {
->>>> +             vma_end_read(vma);
->>>> +             goto lock_mmap;
->>>> +     }
->>>> +     fault = handle_mm_fault(vma, address, flags | 
->>>> FAULT_FLAG_VMA_LOCK, regs);
->>>> +     vma_end_read(vma);
->>>> +
->>>> +     if (!(fault & VM_FAULT_RETRY)) {
->>>> +             count_vm_vma_lock_event(VMA_LOCK_SUCCESS);
->>>> +             goto done;
->>>> +     }
->>>> +     count_vm_vma_lock_event(VMA_LOCK_RETRY);
->>>
->>> This is apparently not strong enough as it causes go build failures 
->>> like:
->>>
->>> [  409s] strconv
->>> [  409s] releasep: m=0x579e2000 m->p=0x5781c600 p->m=0x0 p->status=2
->>> [  409s] fatal error: releasep: invalid p state
->>> [  409s]
->>>
->>> [  325s] hash/adler32
->>> [  325s] hash/crc32
->>> [  325s] cmd/internal/codesign
->>> [  336s] fatal error: runtime: out of memory
->>
->> Hi Jiri,
->> Thanks for reporting! I'm not familiar with go builds. Could you
->> please explain the error to me or point me to some documentation to
->> decipher that error?
-> 
-> Sorry, we are on the same boat -- me neither. It only popped up in our 
-> (openSUSE) build system and I only tracked it down by bisection. Let me 
-> know if I can try something (like a patch or gathering some debug info).
+Hi Michael, hi Christian.
 
-FWIW, a failed build log:
-https://decibel.fi.muni.cz/~xslaby/n/vma/log.txt
+Michael Schmitz - 29.06.23, 22:27:59 CEST:
+[=E2=80=A6]
+> On 29/06/23 16:59, Christian Zigotzky wrote:
+> > Hello,
+> >=20
+> > The access  to partitions on disks with an Amiga partition table
+> > (via the Rigid Disk Block RDB) doesn't work anymore on my Cyrus+=20
+> > board with a FSL P50x0 PowerPC SoC [1] and on my P.A. Semi Nemo=20
+> > board [2] after the block updates 2023-06-23 [3].
+> >=20
+> > parted -l
+[=E2=80=A6]
+> > dmesg | grep -i sda
+> >=20
+> > [    4.208905] sd 0:0:0:0: [sda] 3907029168 512-byte logical blocks:
+> > (2.00 TB/1.82 TiB)
 
-and a strace for it:
-https://decibel.fi.muni.cz/~xslaby/n/vma/strace.txt
+That is roughly the size of the disk that triggered my bug report from=20
+2012.
 
-An excerpt from the log:
+Jun 19 21:19:09 merkaba kernel: [ 7891.821315] ata8.00: 3907029168=20
+sectors, multi 0: LBA48 NCQ (depth 31/32)
 
-[   55s] runtime: marked free object in span 0x7fca6824bec8, 
-elemsize=192 freeindex=0 (bad use of unsafe.Pointer? try -d=checkptr)
-[   55s] 0xc0002f2000 alloc marked
-[   55s] 0xc0002f20c0 alloc marked
-[   55s] 0xc0002f2180 alloc marked
-[   55s] 0xc0002f2240 free  unmarked
-[   55s] 0xc0002f2300 alloc marked
-[   55s] 0xc0002f23c0 alloc marked
-[   55s] 0xc0002f2480 alloc marked
-[   55s] 0xc0002f2540 alloc marked
-[   55s] 0xc0002f2600 alloc marked
-[   55s] 0xc0002f26c0 alloc marked
-[   55s] 0xc0002f2780 alloc marked
-[   55s] 0xc0002f2840 alloc marked
-[   55s] 0xc0002f2900 alloc marked
-[   55s] 0xc0002f29c0 free  unmarked
-[   55s] 0xc0002f2a80 alloc marked
-[   55s] 0xc0002f2b40 alloc marked
-[   55s] 0xc0002f2c00 alloc marked
-[   55s] 0xc0002f2cc0 alloc marked
-[   55s] 0xc0002f2d80 alloc marked
-[   55s] 0xc0002f2e40 alloc marked
-[   55s] 0xc0002f2f00 alloc marked
-[   55s] 0xc0002f2fc0 alloc marked
-[   55s] 0xc0002f3080 alloc marked
-[   55s] 0xc0002f3140 alloc marked
-[   55s] 0xc0002f3200 alloc marked
-[   55s] 0xc0002f32c0 alloc marked
-[   55s] 0xc0002f3380 free  unmarked
-[   55s] 0xc0002f3440 free  marked   zombie
+Bug 43511 - Partitions: Amiga RDB partition on 2 TB disk way too big,=20
+while OK in AmigaOS 4.1
+
+https://bugzilla.kernel.org/show_bug.cgi?id=3D43511
+
+> > [    4.963387] sda: partition table beyond EOD,
+>=20
+> Haven't see this one in any of my tests. I wonder whether your
+> partitioning software used that value of 4294967295 (32 bit unsigned
+> int max.) as marker for the end of the partition list, instead of
+> NULL? It's clearly beyond the end of your disk, so cannot be a
+> legitimate partition block address. (The parted dump above (showing
+> only four partitions) appears to support that notion.)
+
+I don't know about "-1" for end of partition list. However, on reviewing=20
+my bug report I think I used Media Toolbox myself to create the=20
+partition table. However I am not completely sure about that. It has=20
+been a long time. I used Media Toolbox on AmigaOS 4.1 to extract the=20
+binary copy of the RDB, but I do not recall what I used to partition it.=20
+I bet it was Media Toolbox as well, likely on some development version=20
+of AmigaOS 4. I was member of the AmigaOS 4 team back then. The disk is=20
+repartitioned as GPT and I do not even know at the moment where it is.=20
+So that is all I can say.
+
+I could ask someone from the AmigaOS 4 team, however I am not a member=20
+of it anymore. And in any case, whether Media Toolbox or another tool=20
+writes a "-1" to end partition list or not, I'd not treat a signed value=20
+"-1" as valid partition size. We could also ask Joanne again, however=20
+she was not involved in AmigaOS 4 development and does not know about=20
+Media Toolbox. She created the "hdwrench.library" for AmigaOS 3.5/3.9=20
+HDToolBox. So maybe it is just good to assume "-1" as end of partition=20
+table, at least after confirming from the binary of the affected RDB that=20
+the "-1" is indeed at the end of the partition block list. Maybe also in=20
+the RDB from my bug report there is this "-1" again=E2=80=A6 however, the d=
+isk=20
+worked okay in Linux after testing with Joanne's initial patch from
+
+https://bugzilla.kernel.org/show_bug.cgi?id=3D43511#c7
+
+Subject: Re: Partitions: Amiga RDB partition on 2 TB disk way too big,=20
+while OK in AmigaOS 4.1
+
+https://lore.kernel.org/linux-m68k/
+201206192146.09327.Martin@lichtvoll.de/
 
 
-An excerpt from strace:
- > 2348 
-clone3({flags=CLONE_VM|CLONE_FS|CLONE_FILES|CLONE_SIGHAND|CLONE_THREAD|CLONE_SYSVSEM|CLONE_SETTLS|CLONE_PARENT_SETTID|CLONE_CHILD_CLEARTID, 
-child_tid=0x7fcaa6a1b990, parent_tid=0x7fcaa6a1b990, exit_signal=0, 
-stack=0x7fcaa621b000, stack_size=0x7ffe00, tls=0x7fcaa6a1b6c0} => 
-{parent_tid=[2350]}, 88) = 2350
+This comment from an AmigaOS developer is only about the maximum sizes=20
+and does not detail a "-1" as partition size =E2=80=93 however I did not as=
+k=20
+about it back then:
 
- > 2348 
-clone3({flags=CLONE_VM|CLONE_FS|CLONE_FILES|CLONE_SIGHAND|CLONE_THREAD|CLONE_SYSVSEM|CLONE_SETTLS|CLONE_PARENT_SETTID|CLONE_CHILD_CLEARTID, 
-child_tid=0x7fcaa5882990, parent_tid=0x7fcaa5882990, exit_signal=0, 
-stack=0x7fcaa5082000, stack_size=0x7ffe00, tls=0x7fcaa58826c0} => 
-{parent_tid=[2351]}, 88) = 2351
- > 2350  <... clone3 resumed> => {parent_tid=[2372]}, 88) = 2372
- > 2351  <... clone3 resumed> => {parent_tid=[2354]}, 88) = 2354
- > 2351  <... clone3 resumed> => {parent_tid=[2357]}, 88) = 2357
- > 2354  <... clone3 resumed> => {parent_tid=[2355]}, 88) = 2355
- > 2355  <... clone3 resumed> => {parent_tid=[2370]}, 88) = 2370
- > 2370  mmap(NULL, 262144, PROT_READ|PROT_WRITE, 
-MAP_PRIVATE|MAP_ANONYMOUS, -1, 0 <unfinished ...>
- > 2370  <... mmap resumed>)               = 0x7fca68249000
- > 2372  <... clone3 resumed> => {parent_tid=[2384]}, 88) = 2384
- > 2384  <... clone3 resumed> => {parent_tid=[2388]}, 88) = 2388
- > 2388  <... clone3 resumed> => {parent_tid=[2392]}, 88) = 2392
- > 2392  <... clone3 resumed> => {parent_tid=[2395]}, 88) = 2395
- > 2395  write(2, "runtime: marked free object in s"..., 36 <unfinished ...>
+https://lore.kernel.org/linux-m68k/
+201206182239.26647.Martin@lichtvoll.de/
 
-I.e. IIUC, all are threads (CLONE_VM) and thread 2370 mapped ANON 
-0x7fca68249000 - 0x7fca6827ffff and go in thread 2395 thinks for some 
-reason 0x7fca6824bec8 in that region is "bad".
+> > [ 5.014769] sd 0:0:0:0: [sda] Attached SCSI disk
+> >=20
+> > I created a patch for reverting the commit. [4]
+> >=20
+> > The access works again with this patch:
+[=E2=80=A6]
+> > bytes [    4.519477]  sda: RDSK (512) sda1 (DOS^G)(res 2 spb 2)
+> > sda2 (SFS^B)(res 2 spb 1) sda3 (SFS^B)(res 2 spb 2) sda4 ((res 2
+> > spb 1) [    4.720896] sda: p4 size 18446744071956107760 extends
+> > beyond EOD,
+>
+> That's the 32 bit overflow that the patch series was meant to correct.
+> Parsing the partition table ends before looking at the next partition
+> block in the list, so we never hit the bug you've seen above.
+>=20
+> By reverting my patch, you just reintroduce the old bug, which could
+> result in mis-parsing the partition table in a way that is not
+> detected by inane values of partition sizes as above, and as far as I
+> recall this bug was reported because it did cause data corruption. Do
+> I have that correct, Martin? Do you still have a copy of the
+> problematic RDB from the old bug report around?
 
-> thanks,-- 
--- 
-js
-suse labs
+It is in the first attachment of the bug report I mentioned above. The=20
+bug the patch fixed.
+
+In the bug report I wrote:
+
+"I had a BTRFS filesystem that had some checksum errors. Maybe thats=20
+somehow related to this issue and AmigaOS and/or Linux overwrote=20
+something it shouldn=C2=B4t have touched."
+
+(Meanwhile I bet it is safe to assume that in case the checksum error=20
+was from overwriting something it was not AmigaOS 4.)
+
+This is no proof, but as I re-read my bug report: It is clearly an=20
+overflow issue worsened by Linux back then truncating the too high=20
+partition sizes larger than the disk to the disk size instead of bailing=20
+out. So the partition I created for the Linux LVM in front of the Amiga=20
+partitions overflowed into the Amiga partitions. Had I used that place=20
+inside the PV for any LV and written to it=E2=80=A6 I bet it would have bee=
+n=20
+goodbye to the Amiga data.
+
+> > Could you please check your commit?
+>=20
+> The patch series has undergone the usual thirteen versions in review,
+> but the reviewers as well as myself may well have missed this point of
+> detail...
+
+I think the patch series has been very well reviewed, but I would not=20
+have spotted such an issue as I am not really an RDB expert and even=20
+then, with all the big endian conversions and what not inside of there=E2=
+=80=A6=20
+In my understanding the RDB format is not really as Rigid as the name=20
+implies. It is quite flexible, especially when compared to what had been=20
+used on PC back then and sometimes even now. So there is a chance for a=20
+RDB partitioning that triggers an oversight in the patch series.
+
+> Could you please check this (whitespace-damaged) patch?
+>=20
+>      block/partitions - Amiga partition overflow fix bugfix
+>=20
+>      Making 'blk' sector_t (i.e. 64 bit if LBD support is active)
+>      fails the 'blk>0' test in the partition block loop if a
+>      value of (signed int) -1 is used to mark the end of the
+>      partition block list.
+>=20
+>      Explicitly cast 'blk' to signed int to catch this.
+>=20
+>      Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+>=20
+> diff --git a/block/partitions/amiga.c b/block/partitions/amiga.c
+> index ed222b9c901b..506921095412 100644
+> --- a/block/partitions/amiga.c
+> +++ b/block/partitions/amiga.c
+> @@ -90,7 +90,7 @@ int amiga_partition(struct parsed_partitions *state)
+> }
+>          blk =3D be32_to_cpu(rdb->rdb_PartitionList);
+>          put_dev_sector(sect);
+> -       for (part =3D 1; blk>0 && part<=3D16; part++,=20
+> put_dev_sector(sect)) {=20
+> +       for (part =3D 1; (s32) blk>0 && part<=3D16; part++,
+> put_dev_sector(sect)) {
+
+Makes sense to me.
+
+Best,
+=2D-=20
+Martin
+
 
