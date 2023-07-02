@@ -2,75 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35B91744A88
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Jul 2023 18:23:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51F98744C15
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Jul 2023 05:04:31 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=Yu6rB9zp;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=GIbz09WV;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qtctj73Psz3btl
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Jul 2023 02:23:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qtv6P1ryyz3bv8
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Jul 2023 13:04:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=Yu6rB9zp;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=GIbz09WV;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::433; helo=mail-pf1-x433.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QtcsP50f2z30f4
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Jul 2023 02:22:16 +1000 (AEST)
-Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1b6824141b4so17634765ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 01 Jul 2023 09:22:16 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qtv5V130Lz3075
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Jul 2023 13:03:41 +1000 (AEST)
+Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-6686c74183cso2608479b3a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 01 Jul 2023 20:03:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688228533; x=1690820533;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:sender
+        d=gmail.com; s=20221208; t=1688267016; x=1690859016;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:sender
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=eqUKdurwe6L/lCzL+nDfeInRljPuUHPLpXkXa64hvDk=;
-        b=Yu6rB9zpV2iWzMFz2uX0HZdqH0Pl2/8o54zaJG2YsxZhs0H9E46zOk+5RFz+CH+HFe
-         C5lxxVmoyRIBmr9MYH4tMYF0dUGnz3hYvwGcfAXQbQfvZZkizPlP5CTNgP6vx7bUNhAu
-         PHOlQ/XacJPR9M62K8dxJILm0sRcumDIGr2J3yFcTk0pNvEhNpzuH3v5UoaAb9e/cHyW
-         XNcDCBAsGf0UcyVJoiPXroP8uI5BqeXpR4pWaF8OT/1kvLn5P9ocww2hBvauT+NixnPq
-         72vrW5plPqkejIVKgJfBm3RtbKTAl9ySfLfdLWBNK13aXiM/a1nQlCOfN570m96SKPIJ
-         W4ag==
+        bh=0+WkD1spmkCtSByMtGbTNiya9x18zjitcw6zTIWUJH4=;
+        b=GIbz09WVg7xNtgefGpf32hZ6ZxYca2OFbdDyTaszABCACg/4CH9MkOu4l4Nl3gxgWN
+         YubC5PWZmWa/GRi1Yvv5hyi5OzFxtuOaAMuf4jz8syzRofFApCctiDHpW4j2F5iFV6Sn
+         gX2dJXhNdW8cumMub8w/D25yGfhpOEcokRmyu6Q0vBLlXVq1Klrlx+hldFChw2Lx8fn5
+         fF+VNnsqA0IVp0wYhY0sSsZbwNFQOoy1NS5Gt/z3P5pcYNX6UXtlRbBIVqcYwT6Ahchs
+         GUYpAyq2sArhVdvrxeT3JLF/Ff7yZVAhYkcJ9W8ATeCBayghWoFCp2CO5ZTqPSWNhiD2
+         ZwMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688228533; x=1690820533;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:sender
+        d=1e100.net; s=20221208; t=1688267016; x=1690859016;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:sender
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eqUKdurwe6L/lCzL+nDfeInRljPuUHPLpXkXa64hvDk=;
-        b=lDWAziNNRedK1SFbv1Lbt0ugfzuFFQPqlwyqKLQPoFo70zcQHisozFeRHxDqadNSyD
-         Uq6PwzvbOPGuHZL5MA4iLrYJ4/GcuekYR6hswGCQJBoKkA76AyM2i+f1O0RWIxVylVyv
-         RvJETNGELab2OMtDpxvJ6wqu/Z1RVn1oGChOsIB+DeUaz10LDEZ5SzX7HKBUj1oOOYPe
-         qiNCcDFeZp3Ke2IEyMYTtwO6k9CFB6UrnLhZg2Az2Ku8bw9cLOZHHWBF0TubPRqIcYdl
-         IAjjK9MPiJ9pBoclS9X3qUaQsAys8ITNZuzNOHdZtC1oC0XyFVhgh/6c96d/6WokCjJQ
-         Qrbw==
-X-Gm-Message-State: ABy/qLY5ySfhdpihRAdNTy4hbj/zTUbz0XaISiAWuFuiSK2nARkvbGHM
-	UrkQbBlwriLkCH0apzrGJlM=
-X-Google-Smtp-Source: APBJJlF4DRTk5B+Ly7B1ketuD+8ABWyitJniEAI9zJpbQnWojtqCLeVtBTxW3tg6hE5OjUySzLE1lg==
-X-Received: by 2002:a17:902:c406:b0:1b6:783d:9ba7 with SMTP id k6-20020a170902c40600b001b6783d9ba7mr8807226plk.27.1688228533345;
-        Sat, 01 Jul 2023 09:22:13 -0700 (PDT)
+        bh=0+WkD1spmkCtSByMtGbTNiya9x18zjitcw6zTIWUJH4=;
+        b=eZHWLh2T1Owb1/0z0zm1uuWhHr4YeyhZchNmgtPilAM9gryXNZpllbweOYITL4oKZG
+         un1u5PwntkshCo4uNVF1IdQK1UIxTeOrQHb/hmFOlWpuaQ4O4lkYilokyZP/GSj0IUCe
+         NxTfkqqpFvCSq62j81n8jmFfW6ldWYev5OZSm6/SV9pqMjnhslrH5kgq37ipiMi6TAcg
+         GR6OM4IOvNox0ZVoj7PJctgfxcrIt+ajhIAHnOQe9UivLWqjOgzty+l//Yt/q+XlFJJS
+         A5XYJpBe+sja34FvT4y618Cb6aWLQehj1BG0NDoL31NzkWBvLX1ybcLaLrDPAid/QLXI
+         tqow==
+X-Gm-Message-State: ABy/qLbGl9TMkTlOFpvDRqkZb2GEDo+wWAB+Vgp6xrAcxtwzLztC4S5T
+	NwBrSNncsKRVO/jvAoNacOk=
+X-Google-Smtp-Source: APBJJlE3EOfGlv4GwutC6Fr9Wf5e7s+tgg0H+RBJMnTQRCrpa9+9+63Ln4KG7fGGJ8CZdXFrLQkyig==
+X-Received: by 2002:a05:6a00:1806:b0:66b:6021:10fe with SMTP id y6-20020a056a00180600b0066b602110femr9802737pfa.31.1688267015903;
+        Sat, 01 Jul 2023 20:03:35 -0700 (PDT)
 Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id g12-20020a170902740c00b001b6674b6140sm12524647pll.290.2023.07.01.09.22.11
+        by smtp.gmail.com with ESMTPSA id 5-20020aa79145000000b006688e3de86fsm11979372pfi.85.2023.07.01.20.03.34
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 01 Jul 2023 09:22:12 -0700 (PDT)
-Message-ID: <0025db66-545d-c52b-1c32-fa86e17ff0e7@roeck-us.net>
-Date: Sat, 1 Jul 2023 09:22:11 -0700
+        Sat, 01 Jul 2023 20:03:35 -0700 (PDT)
+Message-ID: <8d0e1a7c-3533-4b02-c1d6-3732f9680b2b@roeck-us.net>
+Date: Sat, 1 Jul 2023 20:03:33 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH v2 6/6] watchdog/hardlockup: Define
+ HARDLOCKUP_DETECTOR_ARCH
 To: Doug Anderson <dianders@chromium.org>
 References: <20230616150618.6073-1-pmladek@suse.com>
  <20230616150618.6073-7-pmladek@suse.com>
  <7cfc15f1-d8d0-4418-b7a1-5aa9e90e3fb3@roeck-us.net>
  <CAD=FV=UsgweS0pTpr=6xE-+Dx0fqXgjN=3Gf-4MQcNAzjL+64w@mail.gmail.com>
-From: Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH v2 6/6] watchdog/hardlockup: Define
- HARDLOCKUP_DETECTOR_ARCH
+Content-Language: en-US
 In-Reply-To: <CAD=FV=UsgweS0pTpr=6xE-+Dx0fqXgjN=3Gf-4MQcNAzjL+64w@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
@@ -134,11 +134,12 @@ On 7/1/23 09:08, Doug Anderson wrote:
 > https://lore.kernel.org/r/20230629124500.1.I55e2f4e7903d686c4484cb23c033c6a9e1a9d4c4@changeid
 > 
 
-Ah, I didn't find that one. Sorry for the noise.
+Sorry for the noise. I didn't find that one.
 
 Yes, that should work. It is a bit odd that including both linux/nmi.h
 and asm/nmi.h is required, but as it turns out that is actually quite common.
 
 Thanks,
 Guenter
+
 
