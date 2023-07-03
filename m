@@ -1,32 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A9987454EE
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 07:36:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 755567454FD
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 07:40:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QvZR13rfSz3cZv
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 15:36:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QvZXL2zvwz3dhs
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 15:40:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QvZP332pBz3bP2
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jul 2023 15:34:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QvZP94z3cz3c05
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jul 2023 15:34:37 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QvZP20DYTz4wxS;
-	Mon,  3 Jul 2023 15:34:30 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QvZP93m76z4wy0;
+	Mon,  3 Jul 2023 15:34:37 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>, "Paul E. McKenney" <paulmck@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <cover.1683892665.git.christophe.leroy@csgroup.eu>
-References: <cover.1683892665.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH 0/3] Extend KCSAN to all powerpc
-Message-Id: <168836201883.50010.16266070359338968346.b4-ty@ellerman.id.au>
+To: linuxppc-dev@lists.ozlabs.org, Naveen N Rao <naveen@kernel.org>
+In-Reply-To: <20230609034501.407971-1-naveen@kernel.org>
+References: <20230609034501.407971-1-naveen@kernel.org>
+Subject: Re: [PATCH] powerpc/ftrace: Disable ftrace on ppc32 if using clang
+Message-Id: <168836201892.50010.7027825800727422715.b4-ty@ellerman.id.au>
 Date: Mon, 03 Jul 2023 15:26:58 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,29 +42,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rohan McLure <rmclure@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com
+Cc: Nathan Chancellor <nathan@kernel.org>, llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 12 May 2023 17:31:16 +0200, Christophe Leroy wrote:
-> This series enables KCSAN on all powerpc.
+On Fri, 09 Jun 2023 09:15:01 +0530, Naveen N Rao wrote:
+> Ftrace on ppc32 expects a three instruction sequence at the beginning of
+> each function when specifying -pg:
+> 	mflr	r0
+> 	stw	r0,4(r1)
+> 	bl	_mcount
 > 
-> To do this, a fix is required to KCSAN core.
-> 
-> Once that fix is done, the stubs can also be removed from xtensa.
-> 
-> It would be nice if patch 1 could go in v6.4 as a fix, then patches 2 and 3
-> could be handled separately in each architecture in next cycle.
+> This is the case with all supported versions of gcc. Clang however emits
+> a branch to _mcount after the function prologue, similar to the pre
+> -mprofile-kernel ABI on ppc64. This is not supported.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/3] kcsan: Don't expect 64 bits atomic builtins from 32 bits architectures
-      https://git.kernel.org/powerpc/c/353e7300a1db928e427462f2745f9a2cd1625b3d
-[2/3] powerpc/{32,book3e}: kcsan: Extend KCSAN Support
-      https://git.kernel.org/powerpc/c/95567f46b4d20c047750a5e3029461afcdc67697
-[3/3] xtensa: Remove 64 bits atomic builtins stubs
-      https://git.kernel.org/powerpc/c/bcea4f7a70dc800e769ef02d8c3bc4df357ed893
+[1/1] powerpc/ftrace: Disable ftrace on ppc32 if using clang
+      https://git.kernel.org/powerpc/c/d24da1f85530a5b47590c0febd1395dd8fc73124
 
 cheers
