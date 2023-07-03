@@ -2,51 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5E13745B64
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 13:43:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32F1C745C02
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 14:16:29 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=DsCykzQA;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=MSnaBW3t;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=TZv7uZB7;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QvkZp51dhz3bvX
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 21:43:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QvlJp6vd3z3c0X
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 22:16:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=DsCykzQA;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=MSnaBW3t;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=TZv7uZB7;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=tiwai@suse.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 502 seconds by postgrey-1.37 at boromir; Mon, 03 Jul 2023 22:15:38 AEST
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QvkYw6Z3Kz30QD
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jul 2023 21:42:44 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1688384564;
-	bh=YP1dIoFq8VlflriUVMMU3qavwn5qp6pssvBClxyYvGQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=DsCykzQATMth4df5hd9JAuNbqZfUnuyhtN+ih9n3EK0Y/xaBEyUiaBUwzWQVUDorv
-	 BysRCgszOuhJV50/oZgpF2pILY9jF1OeQV5rxB3kdnA3K9JHG11dQfR7jTNVvwvM2p
-	 UURZoNsXDYz2I/9gIowIX5YSE8svKKFDtLSMVp5NO36NoKBAszflMiMJIKvhqaj8Xy
-	 pT0maaYt95YQ3l6PyfTqzkKJeol+Shb6SOjzIGZZuhYMXrzDVZdOeK6Le7gWWWLXlo
-	 dDPeECVIVDrwyYlF96OQWw0R7beFHvvSLR67/fmE8yZMIeU1MOwwfV7zdSC/aIYavs
-	 lMJDm98iP1nFg==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QvlHt5CtHz2xds
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jul 2023 22:15:38 +1000 (AEST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QvkYv5P9Kz4wZp;
-	Mon,  3 Jul 2023 21:42:43 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Andrew Morton <akpm@linux-foundation.org>, Douglas Anderson <dianders@chromium.org>
-In-Reply-To: <20230629124500.1.I55e2f4e7903d686c4484cb23c033c6a9e1a9d4c4@changeid>
-References: <20230629124500.1.I55e2f4e7903d686c4484cb23c033c6a9e1a9d4c4@changeid>
-Subject: Re: [PATCH] powerpc: Include asm/nmi.c in mobility.c for watchdog_hardlockup_set_timeout_pct()
-Message-Id: <168838439191.114505.4051178096870320792.b4-ty@ellerman.id.au>
-Date: Mon, 03 Jul 2023 21:39:51 +1000
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 95C3C1FDE6;
+	Mon,  3 Jul 2023 12:07:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1688386031; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Xjo1FzDRtH38qpOa18b49WUf8o6xwwrYzgUyVPfI1Ug=;
+	b=MSnaBW3tWbGFZz0kcWdaRRAiONNZgHvwQojeS7yZpiQGkqQMfUnzxPT5byVWm+RlHlGYNG
+	27LJ6jwAnZdCubsGtE+nv2QAgfOFyOjTouOKkc3jLboxCMi7lJ8aiv54w0vwuQZnwbDdk5
+	IGosnrq/0XU+lucTojpkNCDMmEhlUDg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1688386031;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Xjo1FzDRtH38qpOa18b49WUf8o6xwwrYzgUyVPfI1Ug=;
+	b=TZv7uZB7blqPoGJ1mqJ4gqnOKCajEF/BrJ41pDEkVx0xgIHod0Q3IaQZlHnu2OVPxP+N/2
+	uglZjjj8g9VBXOAg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 0AAB513276;
+	Mon,  3 Jul 2023 12:07:11 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id 0ml3Ae+5omT4agAAMHmgww
+	(envelope-from <tiwai@suse.de>); Mon, 03 Jul 2023 12:07:11 +0000
+Date: Mon, 03 Jul 2023 14:07:10 +0200
+Message-ID: <87h6ql5hch.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Shengjiu Wang <shengjiu.wang@gmail.com>
+Subject: Re: [PATCH 1/6] media: v4l2: Add audio capture and output support
+In-Reply-To: <CAA+D8AND1yZ7eZLjBGxVF=i3hLMecUm-j7AVHN9npJi-4=3VrA@mail.gmail.com>
+References: <1688002673-28493-1-git-send-email-shengjiu.wang@nxp.com>
+	<1688002673-28493-2-git-send-email-shengjiu.wang@nxp.com>
+	<ZJ6o5fT4V4HXivFa@valkosipuli.retiisi.eu>
+	<CAA+D8AND1yZ7eZLjBGxVF=i3hLMecUm-j7AVHN9npJi-4=3VrA@mail.gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,23 +84,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, Petr Mladek <pmladek@suse.com>, Jilin Yuan <yuanjilin@cdjrlc.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, Haren Myneni <haren@linux.ibm.com>, linux-kernel@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Tom Rix <trix@redhat.com>, Laurent Dufour <ldufour@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: hverkuil@xs4all.nl, alsa-devel@alsa-project.org, lgirdwood@gmail.com, Jacopo Mondi <jacopo@jmondi.org>, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-media@vger.kernel.org, tfiga@chromium.org, nicoleotsuka@gmail.com, linuxppc-dev@lists.ozlabs.org, broonie@kernel.org, Sakari Ailus <sakari.ailus@iki.fi>, perex@perex.cz, mchehab@kernel.org, festevam@gmail.com, m.szyprowski@samsung.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 29 Jun 2023 12:45:06 -0700, Douglas Anderson wrote:
-> The powerpc/platforms/pseries/mobility.c calls
-> watchdog_hardlockup_set_timeout_pct(), which is declared in
-> <asm/nmi.h>. We used to automatically get <asm/nmi.h> included, but
-> that changed as of commit 7ca8fe94aa92 ("watchdog/hardlockup: define
-> HARDLOCKUP_DETECTOR_ARCH"). Let's add the explicit include.
+On Mon, 03 Jul 2023 11:54:22 +0200,
+Shengjiu Wang wrote:
 > 
 > 
-> [...]
+> Hi Sakari
+> 
+> On Fri, Jun 30, 2023 at 6:05 PM Sakari Ailus <sakari.ailus@iki.fi> wrote:
+> 
+>     Hi Shengjiu,
+>    
+>     On Thu, Jun 29, 2023 at 09:37:48AM +0800, Shengjiu Wang wrote:
+>     > Audio signal processing has the requirement for memory to
+>     > memory similar as Video.
+>     >
+>     > This patch is to add this support in v4l2 framework, defined
+>     > new buffer type V4L2_BUF_TYPE_AUDIO_CAPTURE and
+>     > V4L2_BUF_TYPE_AUDIO_OUTPUT, defined new format v4l2_audio_format
+>     > for audio case usage.
+>    
+>     Why are you proposing to add this to V4L2 framework instead of doing this
+>     within ALSA?
+>    
+>     Also cc Hans and Jacopo.
+> 
+> There is no such memory to memory interface defined in ALSA.  Seems
+> ALSA is not designed for M2M cases.
 
-Applied to powerpc/next.
+There is no restriction to implement memory-to-memory capture in ALSA
+framework.  It'd be a matter of the setup of PCM capture source, and
+you can create a corresponding kcontrol element to switch the mode or
+assign a dedicated PCM substream, for example.  It's just that there
+was little demand for that.
 
-[1/1] powerpc: Include asm/nmi.c in mobility.c for watchdog_hardlockup_set_timeout_pct()
-      https://git.kernel.org/powerpc/c/6cb44bef35ac11724ef22c5ae4f1bc607e2ef3d8
+I'm not much against adding the audio capture feature to V4L2,
+though, if it really makes sense.  But creating a crafted /dev/audio*
+doesn't look like a great idea to me, at least.
 
-cheers
+
+thanks,
+
+Takashi
