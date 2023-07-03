@@ -1,103 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81BC97455AB
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 08:56:10 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HNx0kBpZ;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 023EA745689
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 09:55:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QvcCD3Ffjz3brB
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 16:56:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QvdX867NJz3c2H
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 17:55:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HNx0kBpZ;
-	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.219.53; helo=mail-qv1-f53.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QvcBJ3vYbz2xq1
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jul 2023 16:55:20 +1000 (AEST)
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4QvcBJ3Q6Kz4wqZ
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jul 2023 16:55:20 +1000 (AEST)
-Received: by gandalf.ozlabs.org (Postfix)
-	id 4QvcBJ3KrGz4wqX; Mon,  3 Jul 2023 16:55:20 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: gandalf.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HNx0kBpZ;
-	dkim-atps=neutral
-Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4QvcBH6BbYz4wbP;
-	Mon,  3 Jul 2023 16:55:19 +1000 (AEST)
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3636lPx8018620;
-	Mon, 3 Jul 2023 06:55:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : from : to : cc : references : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=fTL/o85lsPw/3VjmUUlsM9pb1Crg/uYmFbhqD3AMIFY=;
- b=HNx0kBpZwv4WdIvgUd/ZZAr/uQ/WTOeS6cucSHgpsA5jbxjF1ohYYdkH+GyHwLEqHjcz
- zSWhmn6nVopDdzZyk8WALcs3KsBEm4oEc6bhLQMV3ictFXUe5Oa67cNHkMS5Y6DeGk5o
- YqcoKsoqd08JYWyIdDwVy7h+Rxs6gBbggVrO134b4RL0buBkkXOIQT0p7U5uoA6Qu2m7
- rKh2PrRBK799fjfLjp/0x26b4NDzp3erx9L0/JKg23lT3VeUP+VnO+PGmSwySTOI6zjp
- /xIK9t4UjzrrQXWn9tUWj9rp1cYYxWALtQWrBWPb96CuminvBFoW6JFKKBC8WOW2Vc85 fA== 
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rksce06g5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Jul 2023 06:55:16 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
-	by ppma01fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3632roO1017239;
-	Mon, 3 Jul 2023 06:55:15 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma01fra.de.ibm.com (PPS) with ESMTPS id 3rjbs4rut1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Jul 2023 06:55:15 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3636tBg225428688
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 3 Jul 2023 06:55:11 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BAA052004D;
-	Mon,  3 Jul 2023 06:55:11 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 82DB42004B;
-	Mon,  3 Jul 2023 06:55:10 +0000 (GMT)
-Received: from [9.43.15.91] (unknown [9.43.15.91])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  3 Jul 2023 06:55:10 +0000 (GMT)
-Message-ID: <ed637200-537f-70a5-bf40-ceefb2092e1e@linux.ibm.com>
-Date: Mon, 3 Jul 2023 12:25:09 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QvdWb6Rlvz30fM
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jul 2023 17:55:23 +1000 (AEST)
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-635de6776bdso31408056d6.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 Jul 2023 00:55:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688370920; x=1690962920;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ap+98X7lUU4Mb/R2w4KrLGdPkASGfI2gOWe+xareG/w=;
+        b=La3zBCUFLLALMMI+WstRB9xg3NBYFbMrJlHiLmDAqBK9nZub7gWOqRbEemaLyz9RPk
+         MJ1jfet4A40rHDGz3iFFOAvmQ0rRU+tbAagSPPyc2S1wGrHuk0wJ9+sjQLpoq79+hwfF
+         LndtEudQoKeUF7XNz1cJZ4Gz2EHfetTl4Iw8l9wFbtHQxWKL+1vJ44fZdtjVZIQPvr5a
+         n/dNaDc1KwiQft1bvBvUTa1B3bs/hEYCpUneqJXmrAT8HbZ5oadkt5kmY7T1y50hpjqB
+         Xau/OunCuHubphWc1CAIkbEHRk5qBJxCI3BfPDkBaxJdoue1Q2v07MKmj0NSiFCE7BYw
+         xa9w==
+X-Gm-Message-State: ABy/qLZhp+mSjTxVGpE8TCV3L2riIxb4uiRKFmjlccT2LdwHTQQofJPR
+	eQuuDWYsqmofw7xYyVJtg0nKVswPhCAREA==
+X-Google-Smtp-Source: APBJJlGIlohfBQIvsbzmLYLxMzEEGVxJGzuovWOFbRanF8qgVCWOWOzz918JxQX87VpHSaHEZhmkyQ==
+X-Received: by 2002:a05:6214:238f:b0:635:4113:baed with SMTP id fw15-20020a056214238f00b006354113baedmr10887290qvb.33.1688370919568;
+        Mon, 03 Jul 2023 00:55:19 -0700 (PDT)
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com. [209.85.160.178])
+        by smtp.gmail.com with ESMTPSA id p15-20020a0cf68f000000b0063631be090csm4672433qvn.125.2023.07.03.00.55.19
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 03 Jul 2023 00:55:19 -0700 (PDT)
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4021451a4a4so33839111cf.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 Jul 2023 00:55:19 -0700 (PDT)
+X-Received: by 2002:a25:a287:0:b0:c1a:2928:74ab with SMTP id
+ c7-20020a25a287000000b00c1a292874abmr8554017ybi.31.1688370898299; Mon, 03 Jul
+ 2023 00:54:58 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] powerpc/fadump: reset dump area size variable if memblock
- reserve fails
-Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-To: linuxppc-dev@ozlabs.org, mpe@ellerman.id.au
-References: <20230608092246.343761-1-sourabhjain@linux.ibm.com>
-In-Reply-To: <20230608092246.343761-1-sourabhjain@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: qXN4nTvtJUFaQs-4uQEVsH9HFRcQvTP5
-X-Proofpoint-GUID: qXN4nTvtJUFaQs-4uQEVsH9HFRcQvTP5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-03_05,2023-06-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- mlxlogscore=999 clxscore=1015 priorityscore=1501 spamscore=0 adultscore=0
- malwarescore=0 suspectscore=0 impostorscore=0 mlxscore=0 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2307030060
+References: <20230327121317.4081816-1-arnd@kernel.org> <20230327121317.4081816-21-arnd@kernel.org>
+In-Reply-To: <20230327121317.4081816-21-arnd@kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 3 Jul 2023 09:54:46 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdW5bXeE=nr7+hHxL+xhm2q05udkJpMBM-BG7g9S7Nt7Zg@mail.gmail.com>
+Message-ID: <CAMuHMdW5bXeE=nr7+hHxL+xhm2q05udkJpMBM-BG7g9S7Nt7Zg@mail.gmail.com>
+Subject: Re: [PATCH 20/21] ARM: dma-mapping: split out arch_dma_mark_clean() helper
+To: Arnd Bergmann <arnd@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,42 +67,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mahesh@linux.vnet.ibm.com, Mahesh Salgaonkar <mahesh@linux.ibm.com>, hbathini@linux.ibm.com
+Cc: Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Linus Walleij <linus.walleij@linaro.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-mips@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, Conor Dooley <conor.dooley@microchip.com>, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>, Helge Deller <deller@gmx.de>, Russell King <linux@armlinux.org.uk>, Vineet Gupta <vgupta@kernel.org>, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>, Brian Cain <bcain@quicinc.com>, Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, linux-m68k@lists.linux-m68k.org, Emil Renner Berthing <emil.renner.berthing@canonical.com>, Paul Walmsley <paul.walmsley@sifive.com>, Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org, Neil Armstr
+ ong <neil.armstrong@linaro.org>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-openrisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-hexagon@vger.kernel.org, linux-oxnas@groups.io, Robin Murphy <robin.murphy@arm.com>, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Michael,
+Hi Arnd,
 
-Do you have any feedback or comments regarding this patch?
+On Mon, Mar 27, 2023 at 2:16=E2=80=AFPM Arnd Bergmann <arnd@kernel.org> wro=
+te:
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> The arm version of the arch_sync_dma_for_cpu() function annotates pages a=
+s
+> PG_dcache_clean after a DMA, but no other architecture does this here. On
+> ia64, the same thing is done in arch_sync_dma_for_cpu(), so it makes sens=
+e
+> to use the same hook in order to have identical arch_sync_dma_for_cpu()
+> semantics as all other architectures.
+>
+> Splitting this out has multiple effects:
+>
+>  - for dma-direct, this now gets called after arch_sync_dma_for_cpu()
+>    for DMA_FROM_DEVICE mappings, but not for DMA_BIDIRECTIONAL. While
+>    it would not be harmful to keep doing it for bidirectional mappings,
+>    those are apparently not used in any callers that care about the flag.
+>
+>  - Since arm has its own dma-iommu abstraction, this now also needs to
+>    call the same function, so the calls are added there to mirror the
+>    dma-direct version.
+>
+>  - Like dma-direct, the dma-iommu version now marks the dcache clean
+>    for both coherent and noncoherent devices after a DMA, but it only
+>    does this for DMA_FROM_DEVICE, not DMA_BIDIRECTIONAL.
+>
+> [ HELP NEEDED: can anyone confirm that it is a correct assumption
+>   on arm that a cache-coherent device writing to a page always results
+>   in it being in a PG_dcache_clean state like on ia64, or can a device
+>   write directly into the dcache?]
+>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-Thanks,
-Sourabh
+Thanks for your patch, which is now commit 322dbe898f82fd8a
+("ARM: dma-mapping: split out arch_dma_mark_clean() helper") in
+esmil/jh7100-dmapool.
 
-On 08/06/23 14:52, Sourabh Jain wrote:
-> If the memory reservation process (memblock_reserve) fails to reserve
-> the memory, the reserve dump variable retains the dump area size.
-> Consequently, the size of the dump area calculated for reservation
-> is displayed in /sys/kernel/fadump/mem_reserved.
+If CONFIG_ARM_DMA_USE_IOMMU=3Dy, the build fails.
+
+> --- a/arch/arm/mm/dma-mapping.c
+> +++ b/arch/arm/mm/dma-mapping.c
+
+> @@ -1294,6 +1298,17 @@ static int arm_iommu_map_sg(struct device *dev, st=
+ruct scatterlist *sg,
+>         return -EINVAL;
+>  }
 >
-> To resolve this issue, the reserve dump area size variable is set to 0
-> if the memblock_reserve fails to reserve memory.
+> +static void arm_iommu_sync_dma_for_cpu(phys_addr_t phys, size_t len,
+> +                                      enum dma_data_direction dir,
+> +                                      bool dma_coherent)
+> +{
+> +       if (!dma_coherent)
+> +               arch_sync_dma_for_cpu(phys, s->length, dir);
+
+s/s->length/len/
+
+> +
+> +       if (dir =3D=3D DMA_FROM_DEVICE)
+> +               arch_dma_mark_clean(phys, s->length);
+
+Likewise.
+
+> +}
+> +
+>  /**
+>   * arm_iommu_unmap_sg - unmap a set of SG buffers mapped by dma_map_sg
+>   * @dev: valid struct device pointer
+
+> @@ -1425,9 +1438,9 @@ static void arm_iommu_unmap_page(struct device *dev=
+, dma_addr_t handle,
+>         if (!iova)
+>                 return;
 >
-> Fixes: 8255da95e545 ("powerpc/fadump: release all the memory above boot memory size")
-> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-> Acked-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-> ---
->   arch/powerpc/kernel/fadump.c | 1 +
->   1 file changed, 1 insertion(+)
+> -       if (!dev->dma_coherent && !(attrs & DMA_ATTR_SKIP_CPU_SYNC)) {
+> +       if (!(attrs & DMA_ATTR_SKIP_CPU_SYNC))
+
+Missing opening curly brace.
+
+>                 phys =3D iommu_iova_to_phys(mapping->domain, handle);
+> -               arch_sync_dma_for_cpu(phys, size, dir);
+> +               arm_iommu_sync_dma_for_cpu(phys, size, dir, dev->dma_cohe=
+rent);
+>         }
 >
-> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-> index ea0a073abd96..a8f2c3b2fa1e 100644
-> --- a/arch/powerpc/kernel/fadump.c
-> +++ b/arch/powerpc/kernel/fadump.c
-> @@ -641,6 +641,7 @@ int __init fadump_reserve_mem(void)
->   			goto error_out;
->   
->   		if (memblock_reserve(base, size)) {
-> +			fw_dump.reserve_dump_area_size = 0;
->   			pr_err("Failed to reserve memory!\n");
->   			goto error_out;
->   		}
+>         iommu_unmap(mapping->domain, iova, len);
+
+With the above fixed, it builds and boots fine (on R-Car M2-W).
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
