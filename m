@@ -2,56 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1076B745B32
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 13:33:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4A5C745B72
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 13:45:11 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=cjOfTwTD;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=o/pTtt8L;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QvkMR6rPMz3bwY
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 21:33:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qvkcj5rFFz3c35
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 21:45:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=cjOfTwTD;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=o/pTtt8L;
 	dkim-atps=neutral
 Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QvkLX74CTz2xwD
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jul 2023 21:32:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QvkYx5wLFz30QD
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jul 2023 21:42:45 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1688383972;
-	bh=amKSxElUXOBsQ/ZeBWOs02uQ1wiOklOJIeiioUSfrbU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=cjOfTwTDAdyQWLk5OgoU+scBQqHcMgm1xrC+YKMj0qbh8OB31tJr1QzMaNC0oznvJ
-	 5X0JG5ai36xAcluxWkPzUNyXsx9HP7NnCyAAHIc5tCcUI0+X97GYSkWIniwW851GHM
-	 TLlSFRW2wZ2EMDgY2rh+blKYhn0GA7jOZEEzYZdMh551VhhBHulejM+xi7fe7g3pdV
-	 ydTC9xYNU76Kby9gUINFGbVxRipDDqGU6wPEVYAgO+EuxQCXEY8RgrYwWnuKhHTwzW
-	 JjaP823x4D8XKPAXeVOlcwaEHpocYrsmkcoXd3LMO4jkK02naIaG24u/e8dgsHSYz8
-	 H3wWvd3AHHkPQ==
+	s=201909; t=1688384565;
+	bh=U5YuiErzR98A6ucde78maFR8Nd+I4nB4/wMbbmnDPJg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=o/pTtt8L5lXobScjBYHMY1tIRIqaOZ04oySAid8aZM6sUKLX3ZN3qLCMGKKmn47FL
+	 qsA/LU0dK7bt1EFnKvepsIjmsEO0FV6zoQ4m/qRn6Luh2yBJSCI1LiJ9r3Zu7tKxs7
+	 /k+wFbuKgTV/Q/Bguc6LVOu15D1tbpg5cFZd6988zgHvDlZI+eeeDVBMJxjA0uzFFE
+	 OdIiQEs7fsy9hKZdyOmTAhN/9ka/M+9nrH1h3s3BGPqFb+ueqGG5nxhB8QLUD34qmO
+	 +YsBFVZf/xPLXKCawY4ryVfi1PuPkSZiUPdBqB3YSosMeOe5alnquOP1Sv9fzaPQyq
+	 iKTD4/epF5GrA==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QvkLW1b5Yz4wZp;
-	Mon,  3 Jul 2023 21:32:50 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QvkYx4M0Cz4wqZ;
+	Mon,  3 Jul 2023 21:42:45 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christian Zigotzky <chzigotzky@xenosoft.de>, Michael Ellerman
- <patch-notifications@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>, Rob Herring
- <robh@kernel.org>
-Subject: Re: [PATCH] powerpc: isa-bridge: Fix ISA mmapping when "ranges" is
- not present
-In-Reply-To: <1a205224-06d4-9337-5621-c9760c02f9e5@xenosoft.de>
-References: <20230505171816.3175865-1-robh@kernel.org>
- <168836167601.46386.17041701491443802315.b4-ty@ellerman.id.au>
- <1a205224-06d4-9337-5621-c9760c02f9e5@xenosoft.de>
-Date: Mon, 03 Jul 2023 21:32:50 +1000
-Message-ID: <873525w7q5.fsf@mail.lhotse>
+To: linux-kernel@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20230701054714.30512-1-rdunlap@infradead.org>
+References: <20230701054714.30512-1-rdunlap@infradead.org>
+Subject: Re: [PATCH v2] powerpc: allow PPC_EARLY_DEBUG_CPM only when SERIAL_CPM=y
+Message-Id: <168838439189.114505.9243193427099744583.b4-ty@ellerman.id.au>
+Date: Mon, 03 Jul 2023 21:39:51 +1000
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,33 +58,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, "R.T.Dickinson" <rtd2@xtra.co.nz>
+Cc: linuxppc-dev@lists.ozlabs.org, Pali Rohár <pali@kernel.org>, Kumar Gala <galak@kernel.crashing.org>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christian Zigotzky <chzigotzky@xenosoft.de> writes:
-> On 03.07.23 07:21, Michael Ellerman wrote:
->> On Fri, 05 May 2023 12:18:17 -0500, Rob Herring wrote:
->>> Commit e4ab08be5b49 ("powerpc/isa-bridge: Remove open coded "ranges"
->>> parsing") broke PASemi Nemo board booting. The issue is the ISA I/O
->>> range was not getting mapped as the logic to handle no "ranges" was
->>> inverted. If phb_io_base_phys is non-zero, then the ISA range defaults
->>> to the first 64K of the PCI I/O space. phb_io_base_phys should only be 0
->>> when looking for a non-PCI ISA region.
->>>
->>> [...]
->> Applied to powerpc/fixes.
->>
->> [1/1] powerpc: isa-bridge: Fix ISA mmapping when "ranges" is not present
->>        https://git.kernel.org/powerpc/c/79de36042eecb684e0f748d17ba52f365fde0d65
->>
->> cheers
-> Hello Michael,
->
-> This patch has already been applied. Link: 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=4927cb98f0eeaa5dbeac882e8372f4b16dc62624
+On Fri, 30 Jun 2023 22:47:12 -0700, Randy Dunlap wrote:
+> In a randconfig with CONFIG_SERIAL_CPM=m and
+> CONFIG_PPC_EARLY_DEBUG_CPM=y, there is a build error:
+> ERROR: modpost: "udbg_putc" [drivers/tty/serial/cpm_uart/cpm_uart.ko] undefined!
+> 
+> Prevent the build error by allowing PPC_EARLY_DEBUG_CPM only when
+> SERIAL_CPM=y.
+> 
+> [...]
 
-Yes, it's actually the same commit. I'm just catching up on sending the
-thanks emails. Sorry for the confusion.
+Applied to powerpc/next.
+
+[1/1] powerpc: allow PPC_EARLY_DEBUG_CPM only when SERIAL_CPM=y
+      https://git.kernel.org/powerpc/c/39f49684036d24af800ff194c33c7b2653c591d7
 
 cheers
