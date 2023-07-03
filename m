@@ -2,31 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B02CF7454CC
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 07:25:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A77D37454C9
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 07:23:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QvZB74dTjz3c5C
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 15:25:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QvZ8b4fS4z3bZ4
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 15:23:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QvZ8G0vr6z2yHs
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jul 2023 15:23:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QvZ8666RHz2yHs
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jul 2023 15:23:18 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QvZ893YGmz4wxW;
-	Mon,  3 Jul 2023 15:23:21 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QvZ864StMz4wqX;
+	Mon,  3 Jul 2023 15:23:18 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, Jason Gunthorpe <jgg@ziepe.ca>
-In-Reply-To: <0-v1-1421774b874b+167-ppc_device_group_jgg@nvidia.com>
-References: <0-v1-1421774b874b+167-ppc_device_group_jgg@nvidia.com>
-Subject: Re: [PATCH rc] iommu/power: Remove iommu_del_device()
-Message-Id: <168836167608.46386.6958520140413578635.b4-ty@ellerman.id.au>
+To: Gaurav Batra <gbatra@linux.vnet.ibm.com>
+In-Reply-To: <20230505184701.91613-1-gbatra@linux.vnet.ibm.com>
+References: <20230505184701.91613-1-gbatra@linux.vnet.ibm.com>
+Subject: Re: [PATCH] iommu/powerpc: Incorrect DDW Table is referenced for SR-IOV device
+Message-Id: <168836167609.46386.15513128327806769435.b4-ty@ellerman.id.au>
 Date: Mon, 03 Jul 2023 15:21:16 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,23 +42,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kevin Tian <kevin.tian@intel.com>, Joerg Roedel <jroedel@suse.de>, Alexey Kardashevskiy <aik@ozlabs.ru>, iommu@lists.linux.dev, Timothy Pearson <tpearson@raptorengineering.com>, Alex Williamson <alex.williamson@redhat.com>, Robin Murphy <robin.murphy@arm.com>, Lu Baolu <baolu.lu@linux.intel.com>
+Cc: brking@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, gjoyce@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 15 May 2023 21:12:31 -0300, Jason Gunthorpe wrote:
-> Now that power calls iommu_device_register() and populates its groups
-> using iommu_ops->device_group it should not be calling
-> iommu_group_remove_device().
+On Fri, 05 May 2023 13:47:01 -0500, Gaurav Batra wrote:
+> For an SR-IOV device, while enabling DDW, a new table is created and added
+> at index 1 in the group. In the below 2 scenarios, the table is incorrectly
+> referenced at index 0 (which is where the table is for default DMA window).
 > 
-> The core code owns the groups and all the other related iommu data, it
-> will clean it up automatically.
+> 1. When adding DDW
+> 
+>         This issue is exposed with "slub_debug". Error thrown out from
+>         dma_iommu_dma_supported()
 > 
 > [...]
 
 Applied to powerpc/fixes.
 
-[1/1] iommu/power: Remove iommu_del_device()
-      https://git.kernel.org/powerpc/c/ad593827db9b73f15eb65416ec975ec0311f773a
+[1/1] iommu/powerpc: Incorrect DDW Table is referenced for SR-IOV device
+      https://git.kernel.org/powerpc/c/1f7aacc5eb9ed2cc17be7a90da5cd559effb9d59
 
 cheers
