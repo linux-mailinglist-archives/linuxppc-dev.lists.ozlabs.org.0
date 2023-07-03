@@ -1,80 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B59B8745D21
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 15:26:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C83E0745D47
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 15:28:55 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=F05OyKor;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=tuFNu4N3;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cSMhxyW4;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cSMhxyW4;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qvms24YJdz3byX
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 23:25:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QvmwP3850z3bkM
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 23:28:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=F05OyKor;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=tuFNu4N3;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cSMhxyW4;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cSMhxyW4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=tiwai@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qvmr64nbFz2ym7
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jul 2023 23:25:10 +1000 (AEST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 8851A219D0;
-	Mon,  3 Jul 2023 13:25:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1688390705; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QvmvV1Fx8z2ym7
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jul 2023 23:28:05 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1688390883;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pecUI4xOagetnVa0y89RSrIZk+VfXoyy55j+EXMIhrE=;
-	b=F05OyKorIVsZtJqSMTMTx2t4OhAdEC/+OO3iv9HroaH4bvA/CM8OMjuNHFZ2+GEHEXkgqH
-	uFTcf7/rSKY7BW3dM7dhnk9sWJ+2GIYX9wQmt+rLnjVoSivGha8kzGX57U01sopLZEhHYB
-	IXoW6+Ab60AQaXMd1aiGey/SEvhI804=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1688390705;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	bh=ycsPEf+hk8Q2JnOBMERVIv1v1bxnQ/4XY8nDOt3hLFE=;
+	b=cSMhxyW41m4t5Q4N9WErBHPb/CLNqMsrOyV3IiJsxyv6rtxbgM+7UtTTzjCq7ECF/a7WAa
+	AzUuuRBa52Ay8BYgmQlC7NFaFEOBhDE4GBeUSRiwAKN28grmlEe9mcroaHvONRZb6KYG2/
+	6o+EzrBomK60Rhkmd0sNL7ihmtVHuR4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1688390883;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pecUI4xOagetnVa0y89RSrIZk+VfXoyy55j+EXMIhrE=;
-	b=tuFNu4N3pjt+/HNuE1JNIS8OM3bR2Y7JFd2FQpVfNUN1FcT+bRDEe+pgdO0Pspz50R1ewD
-	rihp3pAoxFfHeaBQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id EA3A6138FC;
-	Mon,  3 Jul 2023 13:25:04 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id 1n/1NzDMomQMGAAAMHmgww
-	(envelope-from <tiwai@suse.de>); Mon, 03 Jul 2023 13:25:04 +0000
-Date: Mon, 03 Jul 2023 15:25:04 +0200
-Message-ID: <8735255dqn.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Hans Verkuil <hverkuil@xs4all.nl>
-Subject: Re: [PATCH 1/6] media: v4l2: Add audio capture and output support
-In-Reply-To: <d78e6ec3-a531-8fd4-a785-29b6712f83ae@xs4all.nl>
-References: <1688002673-28493-1-git-send-email-shengjiu.wang@nxp.com>
-	<1688002673-28493-2-git-send-email-shengjiu.wang@nxp.com>
-	<ZJ6o5fT4V4HXivFa@valkosipuli.retiisi.eu>
-	<CAA+D8AND1yZ7eZLjBGxVF=i3hLMecUm-j7AVHN9npJi-4=3VrA@mail.gmail.com>
-	<87h6ql5hch.wl-tiwai@suse.de>
-	<43f0ecdf-7454-49ae-96b3-2eae5487e9a5@sirena.org.uk>
-	<d78e6ec3-a531-8fd4-a785-29b6712f83ae@xs4all.nl>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8bit
+	bh=ycsPEf+hk8Q2JnOBMERVIv1v1bxnQ/4XY8nDOt3hLFE=;
+	b=cSMhxyW41m4t5Q4N9WErBHPb/CLNqMsrOyV3IiJsxyv6rtxbgM+7UtTTzjCq7ECF/a7WAa
+	AzUuuRBa52Ay8BYgmQlC7NFaFEOBhDE4GBeUSRiwAKN28grmlEe9mcroaHvONRZb6KYG2/
+	6o+EzrBomK60Rhkmd0sNL7ihmtVHuR4=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-515-VDT2T9PjP6e2nJwIVJCPbg-1; Mon, 03 Jul 2023 09:28:02 -0400
+X-MC-Unique: VDT2T9PjP6e2nJwIVJCPbg-1
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4033a6deb00so24102111cf.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 Jul 2023 06:28:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688390881; x=1690982881;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ycsPEf+hk8Q2JnOBMERVIv1v1bxnQ/4XY8nDOt3hLFE=;
+        b=YzIDswyl/iWRxSyy/F7KB77OxErs5wSicECv4vNXRRsECeKWxXSWN/ECNVqn2mtvsJ
+         M9RUvAKSv7ghxpZt3PhvUFPnStDV5tgJHwTEPQ3QykESNn03wubvmOpfThzqNrnUS58N
+         mBQ/fFiR8MgkpOyZRdYmTzV6j/dcYEjkL0eXAdVgoawyMaMllTeYaHHLwstcjQmVRC7B
+         v202aTbiu7i++7FnNjBEoAfoiFfoejBDb5A53IsZhVLlu/sCBxvRtAEZwKh2xUPzahAY
+         G0la5yaxjWx/b+dHi6acjh8te6udXhnIxDC3e6fl54GWAUAbJ6AFixzIU/W4/jOOUbbS
+         MNIw==
+X-Gm-Message-State: AC+VfDwqlTEeEhLWyPEOwZqF5QKLUUJ7eU+7ae5RipQ97WSyBMoSxid2
+	d44IBekPpiwH+Vzq4jNjbyhZpinNf24rI/rSVxdtkWCoeCkqdTlWihwSsVHmyPRSGOg2CGA34kD
+	ITVD6Jk/GXUw7sdAVDfLi+KNmtg==
+X-Received: by 2002:a05:622a:1392:b0:400:9a53:75cf with SMTP id o18-20020a05622a139200b004009a5375cfmr18644555qtk.30.1688390881804;
+        Mon, 03 Jul 2023 06:28:01 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5pGep0ZvHdyMHlfEcnPcwLb3nLyZyg6SGhfYHWcOPFIl3YZF8OBAcIezkPj1r9OSXjvN/daw==
+X-Received: by 2002:a05:622a:1392:b0:400:9a53:75cf with SMTP id o18-20020a05622a139200b004009a5375cfmr18644535qtk.30.1688390881548;
+        Mon, 03 Jul 2023 06:28:01 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-176-127.web.vodafone.de. [109.43.176.127])
+        by smtp.gmail.com with ESMTPSA id n7-20020ac81e07000000b004033992e2dbsm4891888qtl.45.2023.07.03.06.28.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 03 Jul 2023 06:28:01 -0700 (PDT)
+Message-ID: <f2d4d019-4a77-7ba9-d564-6e39b194a5d8@redhat.com>
+Date: Mon, 3 Jul 2023 15:27:59 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+To: Nicholas Piggin <npiggin@gmail.com>, kvm@vger.kernel.org
+References: <20230608075826.86217-1-npiggin@gmail.com>
+From: Thomas Huth <thuth@redhat.com>
+Subject: Re: [kvm-unit-tests v4 00/12] powerpc: updates, P10, PNV support
+In-Reply-To: <20230608075826.86217-1-npiggin@gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,56 +101,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, lgirdwood@gmail.com, Jacopo Mondi <jacopo@jmondi.org>, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-media@vger.kernel.org, tfiga@chromium.org, nicoleotsuka@gmail.com, linuxppc-dev@lists.ozlabs.org, Mark Brown <broonie@kernel.org>, Sakari Ailus <sakari.ailus@iki.fi>, festevam@gmail.com, perex@perex.cz, mchehab@kernel.org, Shengjiu Wang <shengjiu.wang@gmail.com>, m.szyprowski@samsung.com
+Cc: Laurent Vivier <lvivier@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 03 Jul 2023 15:12:55 +0200,
-Hans Verkuil wrote:
-> 
-> On 03/07/2023 14:53, Mark Brown wrote:
-> > On Mon, Jul 03, 2023 at 02:07:10PM +0200, Takashi Iwai wrote:
-> >> Shengjiu Wang wrote:
-> > 
-> >>> There is no such memory to memory interface defined in ALSA.  Seems
-> >>> ALSA is not designed for M2M cases.
-> > 
-> >> There is no restriction to implement memory-to-memory capture in ALSA
-> >> framework.  It'd be a matter of the setup of PCM capture source, and
-> >> you can create a corresponding kcontrol element to switch the mode or
-> >> assign a dedicated PCM substream, for example.  It's just that there
-> >> was little demand for that.
-> > 
-> > Yeah, it's not a terrible idea.  We might use it more if we ever get
-> > better support for DSP audio, routing between the DSP and external
-> > devices if driven from the CPU would be a memory to memory thing.
-> > 
-> >> I'm not much against adding the audio capture feature to V4L2,
-> >> though, if it really makes sense.  But creating a crafted /dev/audio*
-> >> doesn't look like a great idea to me, at least.
-> > 
-> > I've still not looked at the code at all.
-> 
-> My main concern is that these cross-subsystem drivers are a pain to
-> maintain. So there have to be good reasons to do this.
-> 
-> Also it is kind of weird to have to use the V4L2 API in userspace to
-> deal with a specific audio conversion. Quite unexpected.
-> 
-> But in the end, that's a decision I can't make.
-> 
-> So I wait for that feedback. Note that if the decision is made that this
-> can use V4L2, then there is quite a lot more that needs to be done:
-> documentation, new compliance tests, etc. It's adding a new API, and that
-> comes with additional work...
+On 08/06/2023 09.58, Nicholas Piggin wrote:
+> Posting again, a couple of patches were merged and accounted for review
+> comments from last time.
 
-All agreed.  Especially in this case, it doesn't have to be in V4L2
-API, as it seems.
+Sorry for not being very responsive ... it's been a busy month.
 
-(Though, the support of audio on V4L2 might be useful if it's closely
-tied with the a stream.  But that's another story.)
+Anyway, I've now merged the first 5 patches and the VPA test since they look 
+fine to me.
+
+As Joel already wrote, there is an issue with the sprs patch, I also get an 
+error with the PIR register on the P8 box that I have access to as soon as I 
+apply the "Specify SPRs with data rather than code" patch. It would be good 
+to get that problem resolved before merging the remaining patches...
+
+  Thomas
 
 
-thanks,
-
-Takashi
