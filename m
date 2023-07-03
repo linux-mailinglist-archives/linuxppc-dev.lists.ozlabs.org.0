@@ -1,54 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 343A6745B13
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 13:30:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1076B745B32
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 13:33:42 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=bzAC5O3i;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=cjOfTwTD;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QvkHV0ykWz3bPV
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 21:30:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QvkMR6rPMz3bwY
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 21:33:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=bzAC5O3i;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=cjOfTwTD;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QvkGb2S6xz309D
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jul 2023 21:29:27 +1000 (AEST)
-Received: by gandalf.ozlabs.org (Postfix)
-	id 4QvkGY3BDGz4wxR; Mon,  3 Jul 2023 21:29:25 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QvkLX74CTz2xwD
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jul 2023 21:32:52 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1688383765;
-	bh=39RVXUU5lB2TgVWJpbZecvyXinVpmzEajxt6j7I3cEw=;
+	s=201909; t=1688383972;
+	bh=amKSxElUXOBsQ/ZeBWOs02uQ1wiOklOJIeiioUSfrbU=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=bzAC5O3ioZuX/Bjy+iGjMTBvtjN2OfgfaBLCFP5eCFocWzGc5+Jb1QNRqMd0Lg5Dg
-	 zLpS1hoB4G/EpsDuFT+WrtDw/LISM+3Upsg86k2G5QhWB83NxKVwtJhQR9qxH5pjWz
-	 rItN04lvNKeilvdFf5okUTIK/L6qmvdYgDrQYL2DxsGU537tKXsbMxQ26cXFZWplID
-	 gvvYT75e0rAyDFCErWo+L0utmVH4gZBSwuuWOHdMoE8qBmotfnR6RpKIs3vjDJSWru
-	 DDSKU9nConidzzs0eTlaOI1YCaj84tCCWMfZX7BL+9KSHvsidsfYX6rniCreU/0U7B
-	 tRkZzGE7C16nQ==
+	b=cjOfTwTDAdyQWLk5OgoU+scBQqHcMgm1xrC+YKMj0qbh8OB31tJr1QzMaNC0oznvJ
+	 5X0JG5ai36xAcluxWkPzUNyXsx9HP7NnCyAAHIc5tCcUI0+X97GYSkWIniwW851GHM
+	 TLlSFRW2wZ2EMDgY2rh+blKYhn0GA7jOZEEzYZdMh551VhhBHulejM+xi7fe7g3pdV
+	 ydTC9xYNU76Kby9gUINFGbVxRipDDqGU6wPEVYAgO+EuxQCXEY8RgrYwWnuKhHTwzW
+	 JjaP823x4D8XKPAXeVOlcwaEHpocYrsmkcoXd3LMO4jkK02naIaG24u/e8dgsHSYz8
+	 H3wWvd3AHHkPQ==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QvkGY1rz0z4wqZ;
-	Mon,  3 Jul 2023 21:29:25 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QvkLW1b5Yz4wZp;
+	Mon,  3 Jul 2023 21:32:50 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev@ozlabs.org
-Subject: Re: [PATCH] powerpc/fadump: reset dump area size variable if
- memblock reserve fails
-In-Reply-To: <ed637200-537f-70a5-bf40-ceefb2092e1e@linux.ibm.com>
-References: <20230608092246.343761-1-sourabhjain@linux.ibm.com>
- <ed637200-537f-70a5-bf40-ceefb2092e1e@linux.ibm.com>
-Date: Mon, 03 Jul 2023 21:29:17 +1000
-Message-ID: <875y71w7w2.fsf@mail.lhotse>
+To: Christian Zigotzky <chzigotzky@xenosoft.de>, Michael Ellerman
+ <patch-notifications@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, Rob Herring
+ <robh@kernel.org>
+Subject: Re: [PATCH] powerpc: isa-bridge: Fix ISA mmapping when "ranges" is
+ not present
+In-Reply-To: <1a205224-06d4-9337-5621-c9760c02f9e5@xenosoft.de>
+References: <20230505171816.3175865-1-robh@kernel.org>
+ <168836167601.46386.17041701491443802315.b4-ty@ellerman.id.au>
+ <1a205224-06d4-9337-5621-c9760c02f9e5@xenosoft.de>
+Date: Mon, 03 Jul 2023 21:32:50 +1000
+Message-ID: <873525w7q5.fsf@mail.lhotse>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -62,62 +63,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mahesh@linux.vnet.ibm.com, Mahesh Salgaonkar <mahesh@linux.ibm.com>, hbathini@linux.ibm.com
+Cc: Darren Stevens <darren@stevens-zone.net>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, "R.T.Dickinson" <rtd2@xtra.co.nz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sourabh Jain <sourabhjain@linux.ibm.com> writes:
+Christian Zigotzky <chzigotzky@xenosoft.de> writes:
+> On 03.07.23 07:21, Michael Ellerman wrote:
+>> On Fri, 05 May 2023 12:18:17 -0500, Rob Herring wrote:
+>>> Commit e4ab08be5b49 ("powerpc/isa-bridge: Remove open coded "ranges"
+>>> parsing") broke PASemi Nemo board booting. The issue is the ISA I/O
+>>> range was not getting mapped as the logic to handle no "ranges" was
+>>> inverted. If phb_io_base_phys is non-zero, then the ISA range defaults
+>>> to the first 64K of the PCI I/O space. phb_io_base_phys should only be 0
+>>> when looking for a non-PCI ISA region.
+>>>
+>>> [...]
+>> Applied to powerpc/fixes.
+>>
+>> [1/1] powerpc: isa-bridge: Fix ISA mmapping when "ranges" is not present
+>>        https://git.kernel.org/powerpc/c/79de36042eecb684e0f748d17ba52f365fde0d65
+>>
+>> cheers
 > Hello Michael,
 >
-> Do you have any feedback or comments regarding this patch?
->
-> Thanks,
-> Sourabh
->
-> On 08/06/23 14:52, Sourabh Jain wrote:
->> If the memory reservation process (memblock_reserve) fails to reserve
->> the memory, the reserve dump variable retains the dump area size.
->> Consequently, the size of the dump area calculated for reservation
->> is displayed in /sys/kernel/fadump/mem_reserved.
->>
->> To resolve this issue, the reserve dump area size variable is set to 0
->> if the memblock_reserve fails to reserve memory.
->>
->> Fixes: 8255da95e545 ("powerpc/fadump: release all the memory above boot memory size")
->> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
->> Acked-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
->> ---
->>   arch/powerpc/kernel/fadump.c | 1 +
->>   1 file changed, 1 insertion(+)
->>
->> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
->> index ea0a073abd96..a8f2c3b2fa1e 100644
->> --- a/arch/powerpc/kernel/fadump.c
->> +++ b/arch/powerpc/kernel/fadump.c
->> @@ -641,6 +641,7 @@ int __init fadump_reserve_mem(void)
->>   			goto error_out;
->>   
->>   		if (memblock_reserve(base, size)) {
->> +			fw_dump.reserve_dump_area_size = 0;
->>   			pr_err("Failed to reserve memory!\n");
->>   			goto error_out;
->>   		}
+> This patch has already been applied. Link: 
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=4927cb98f0eeaa5dbeac882e8372f4b16dc62624
 
-Shouldn't reserve_dump_area_size be set to zero at error_out, which
-already clears fadump_enabled?
-
-	return ret;
-error_out:
-	fw_dump.fadump_enabled = 0;
-	return 0;
-}
-
-
-Otherwise the code immediately above will suffer from the same issue
-won't it?
-
-		if (fw_dump.ops->fadump_setup_metadata &&
-		    (fw_dump.ops->fadump_setup_metadata(&fw_dump) < 0))
-			goto error_out;
+Yes, it's actually the same commit. I'm just catching up on sending the
+thanks emails. Sorry for the confusion.
 
 cheers
