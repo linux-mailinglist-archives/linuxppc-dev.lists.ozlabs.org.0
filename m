@@ -2,31 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4400C7454CB
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 07:24:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31B1D7454D2
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 07:27:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QvZ9d1QSdz3cJC
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 15:24:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QvZDw0pfNz3dBh
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 15:27:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QvZ8928wQz30fp
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jul 2023 15:23:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QvZ8M1wbRz3bdV
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jul 2023 15:23:31 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QvZ874DWqz4wxS;
-	Mon,  3 Jul 2023 15:23:19 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QvZ8K5xWTz4wxv;
+	Mon,  3 Jul 2023 15:23:29 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bpf@vger.kernel.org, Hari Bathini <hbathini@linux.ibm.com>
-In-Reply-To: <20230425065829.18189-1-hbathini@linux.ibm.com>
-References: <20230425065829.18189-1-hbathini@linux.ibm.com>
-Subject: Re: [PATCH v2] powerpc/bpf: populate extable entries only during the last pass
-Message-Id: <168836167606.46386.1266997701169825170.b4-ty@ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Rob Herring <robh@kernel.org>
+In-Reply-To: <20230505171816.3175865-1-robh@kernel.org>
+References: <20230505171816.3175865-1-robh@kernel.org>
+Subject: Re: [PATCH] powerpc: isa-bridge: Fix ISA mmapping when "ranges" is not present
+Message-Id: <168836167601.46386.17041701491443802315.b4-ty@ellerman.id.au>
 Date: Mon, 03 Jul 2023 15:21:16 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,24 +42,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Song Liu <songliubraving@fb.com>, Daniel Borkmann <daniel@iogearbox.net>, Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, stable@vger.kernel.org, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+Cc: Darren Stevens <darren@stevens-zone.net>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, "R.T.Dickinson" <rtd2@xtra.co.nz>, Christian Zigotzky <chzigotzky@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 25 Apr 2023 12:28:29 +0530, Hari Bathini wrote:
-> Since commit 85e031154c7c ("powerpc/bpf: Perform complete extra passes
-> to update addresses"), two additional passes are performed to avoid
-> space and CPU time wastage on powerpc. But these extra passes led to
-> WARN_ON_ONCE() hits in bpf_add_extable_entry() as extable entries are
-> populated again, during the extra pass, without resetting the index.
-> Fix it by resetting entry index before repopulating extable entries,
-> if and when there is an additional pass.
+On Fri, 05 May 2023 12:18:17 -0500, Rob Herring wrote:
+> Commit e4ab08be5b49 ("powerpc/isa-bridge: Remove open coded "ranges"
+> parsing") broke PASemi Nemo board booting. The issue is the ISA I/O
+> range was not getting mapped as the logic to handle no "ranges" was
+> inverted. If phb_io_base_phys is non-zero, then the ISA range defaults
+> to the first 64K of the PCI I/O space. phb_io_base_phys should only be 0
+> when looking for a non-PCI ISA region.
 > 
 > [...]
 
 Applied to powerpc/fixes.
 
-[1/1] powerpc/bpf: populate extable entries only during the last pass
-      https://git.kernel.org/powerpc/c/35a4b8ce4ac00e940b46b1034916ccb22ce9bdef
+[1/1] powerpc: isa-bridge: Fix ISA mmapping when "ranges" is not present
+      https://git.kernel.org/powerpc/c/79de36042eecb684e0f748d17ba52f365fde0d65
 
 cheers
