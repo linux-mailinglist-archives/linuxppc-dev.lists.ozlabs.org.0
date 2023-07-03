@@ -2,31 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EF8D745542
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 08:03:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E33D1745546
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 08:04:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qvb2h1nN0z3gnD
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 16:03:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qvb3B5ShHz3gqD
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 16:04:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QvZpK5NkJz3bh5
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jul 2023 15:52:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QvZpL1Nljz3c2m
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jul 2023 15:52:58 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QvZpB6zmWz4wy9;
-	Mon,  3 Jul 2023 15:52:50 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QvZpL09gZz4wxS;
+	Mon,  3 Jul 2023 15:52:58 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20230523195053.464138-1-u.kleine-koenig@pengutronix.de>
-References: <20230523195053.464138-1-u.kleine-koenig@pengutronix.de>
-Subject: Re: [PATCH] macintosh: Switch i2c drivers back to use .probe()
-Message-Id: <168836201889.50010.9813072875975366478.b4-ty@ellerman.id.au>
+To: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20230413061642.kqkor4wkt7lp2mhp@pengutronix.de>
+References: <20221228145129.31700-1-u.kleine-koenig@pengutronix.de> <20230412150524.ojsvukh47hing6db@pengutronix.de> <87zg7cabf6.fsf@mpe.ellerman.id.au> <20230413061642.kqkor4wkt7lp2mhp@pengutronix.de>
+Subject: Re: [PATCH] powerpc: Drop MPC5200 LocalPlus bus FIFO driver
+Message-Id: <168836201881.50010.11228113359819926077.b4-ty@ellerman.id.au>
 Date: Mon, 03 Jul 2023 15:26:58 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,23 +42,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Corey Minyard <cminyard@mvista.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, Ajay Gupta <ajayg@nvidia.com>, Peter Senna Tschudin <peter.senna@gmail.com>, Sebastian Reichel <sebastian.reichel@collabora.com>, Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Liang He <windhl@126.com>, Jean Delvare <jdelvare@suse.de>, Javier Martinez Canillas <javierm@redhat.com>, Adrien Grassein <adrien.grassein@gmail.com>, Nathan Chancellor <nathan@kernel.org>, Colin Leroy <colin@colino.net>, Krzysztof Hałasa <khalasa@piap.pl>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Petr Machata <petrm@nvidia.com>, Maximilian Luz <luzmaximilian@gmail.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, Wolfram Sang <wsa@kernel.org>, kernel@pengutronix.de, Hans Verkuil <hverkuil-cisco@xs4all.nl>, linuxppc-dev@lists.ozlabs.org, Peter Rosin <peda@axentia.se>
+Cc: Anatolij Gustschin <agust@denx.de>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 23 May 2023 21:50:53 +0200, Uwe Kleine-König wrote:
-> After commit b8a1a4cd5a98 ("i2c: Provide a temporary .probe_new()
-> call-back type"), all drivers being converted to .probe_new() and then
-> 03c835f498b5 ("i2c: Switch .probe() to not take an id parameter") convert
-> back to (the new) .probe() to be able to eventually drop .probe_new() from
-> struct i2c_driver.
-> 
+On Thu, 13 Apr 2023 08:16:42 +0200, Uwe Kleine-König wrote:
+> While mpc5200b.dtsi contains a device that this driver can bind to, the
+> only purpose of a bound device is to be used by the four exported functions
+> mpc52xx_lpbfifo_submit(), mpc52xx_lpbfifo_abort(), mpc52xx_lpbfifo_poll()
+> and mpc52xx_lpbfifo_start_xfer(). However there are no callers to this
+> function and so the driver is effectively superfluous and can be deleted.
+> Also drop some defines and a struct from <asm/mpc52xx.h> that are unused
+> now together with the declarations of the four mentioned functions.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] macintosh: Switch i2c drivers back to use .probe()
-      https://git.kernel.org/powerpc/c/922db7c571f55b1eab2d2c5da14d150aff1d0252
+[1/1] powerpc: Drop MPC5200 LocalPlus bus FIFO driver
+      https://git.kernel.org/powerpc/c/7d3ee229ea51a17afc1e53272e2a8f377cc82ba2
 
 cheers
