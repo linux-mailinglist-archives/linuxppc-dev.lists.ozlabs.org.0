@@ -2,31 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1688C7454F5
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 07:38:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E969A745524
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 07:56:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QvZTF05YNz3dHT
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 15:38:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QvZtD648Qz3d8p
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 15:56:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QvZP525pHz3bkD
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jul 2023 15:34:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QvZp221QSz30hG
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jul 2023 15:52:42 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QvZP50w9Cz4wxq;
-	Mon,  3 Jul 2023 15:34:33 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QvZp20trdz4wxp;
+	Mon,  3 Jul 2023 15:52:42 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org, Colin Ian King <colin.i.king@gmail.com>
-In-Reply-To: <20230608095849.1147969-1-colin.i.king@gmail.com>
-References: <20230608095849.1147969-1-colin.i.king@gmail.com>
-Subject: Re: [PATCH][next] powerpc/powernv/sriov: perform null check on iov before dereferencing iov
-Message-Id: <168836201891.50010.6948846603017935484.b4-ty@ellerman.id.au>
+To: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
+In-Reply-To: <20230606064830.184083-1-npiggin@gmail.com>
+References: <20230606064830.184083-1-npiggin@gmail.com>
+Subject: Re: [PATCH v2] powerpc/build: Remove -pipe from compilation flags
+Message-Id: <168836201884.50010.3863878974276690202.b4-ty@ellerman.id.au>
 Date: Mon, 03 Jul 2023 15:26:58 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,27 +42,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 08 Jun 2023 10:58:49 +0100, Colin Ian King wrote:
-> Currently pointer iov is being dereferenced before the null check of iov
-> which can lead to null pointer dereference errors. Fix this by moving the
-> iov null check before the dereferencing.
+On Tue, 06 Jun 2023 16:48:30 +1000, Nicholas Piggin wrote:
+> x86 removed -pipe in commit 437e88ab8f9e2 ("x86/build: Remove -pipe from
+> KBUILD_CFLAGS") and the newer arm64 and riscv seem to have never used it,
+> so that seems to be the way the world's going.
 > 
-> Detected using cppcheck static analysis:
-> linux/arch/powerpc/platforms/powernv/pci-sriov.c:597:12: warning: Either
-> the condition '!iov' is redundant or there is possible null pointer
-> dereference: iov. [nullPointerRedundantCheck]
->  num_vfs = iov->num_vfs;
->            ^
+> Compile performance building defconfig on a POWER10 PowerNV system
+> was in the noise after 10 builds each. No point in adding options unless
+> they help something, so remove it.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/powernv/sriov: perform null check on iov before dereferencing iov
-      https://git.kernel.org/powerpc/c/f4f913c980bc6abe0ccfe88fe3909c125afe4a2d
+[1/1] powerpc/build: Remove -pipe from compilation flags
+      https://git.kernel.org/powerpc/c/f5df87b855fd835ff0f4928575adbf4f5302bb40
 
 cheers
