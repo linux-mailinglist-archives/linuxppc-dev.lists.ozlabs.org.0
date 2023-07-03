@@ -1,32 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AFB47454EC
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 07:35:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93DCE745526
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 07:56:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QvZQV1QGNz3cW9
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 15:35:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QvZtl3pYSz3dFF
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Jul 2023 15:56:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QvZP15WZqz309D
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jul 2023 15:34:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QvZp25jjCz30ft
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Jul 2023 15:52:42 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QvZP10R2dz4wqZ;
-	Mon,  3 Jul 2023 15:34:29 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QvZp24J8xz4wxq;
+	Mon,  3 Jul 2023 15:52:42 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Benjamin Gray <bgray@linux.ibm.com>
-In-Reply-To: <20230616034846.311705-1-bgray@linux.ibm.com>
-References: <20230616034846.311705-1-bgray@linux.ibm.com>
-Subject: Re: [PATCH v3 00/11] Add static DEXCR support
-Message-Id: <168836201894.50010.3030313933357760845.b4-ty@ellerman.id.au>
+To: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
+In-Reply-To: <20230606132447.315714-1-npiggin@gmail.com>
+References: <20230606132447.315714-1-npiggin@gmail.com>
+Subject: Re: [PATCH v3 0/6] powerpc: merge _switch in 32/64
+Message-Id: <168836201885.50010.14207705804777232521.b4-ty@ellerman.id.au>
 Date: Mon, 03 Jul 2023 15:26:58 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,46 +42,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, npiggin@gmail.com, ruscur@russell.cc
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 16 Jun 2023 13:48:35 +1000, Benjamin Gray wrote:
-> v3:	* Expose (H)DEXCR in ptrace as 64 bits
-> 	* Remove build config for DEXCR, always enable NPHIE
-> 	* Fix up documentation to reflect this
-> 	* Some commit message fixes
+On Tue, 06 Jun 2023 23:24:41 +1000, Nicholas Piggin wrote:
+> Since v2:
+> - Add PPC_CREATE_STACK_FRAME() to abstract prologue differences.
+> - Build fix.
+> - Makefile tidy [Christophe]
+> - Fix a missing SOB.
 > 
-> Previous versions:
-> v2: https://lore.kernel.org/all/20230330055040.434133-1-bgray@linux.ibm.com/
-> v1: https://lore.kernel.org/all/20230322054612.1340573-1-bgray@linux.ibm.com/
-> RFC: https://lore.kernel.org/all/20221128024458.46121-1-bgray@linux.ibm.com/
+> Since v1:
+> - Don't re-order 32-bit prologue.
+> - Improve Kconfig conditional includes.
+> - Break out code changes into their own patches before merging,
+>   so merge patch leaves generated code unchanged.
+> - Change prom_entry.S to prom_entry_64.S.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[01/11] powerpc/book3s: Add missing <linux/sched.h> include
-        https://git.kernel.org/powerpc/c/7eec97b32e0b62f54b7f6afb5df189806b1bb87b
-[02/11] powerpc/ptrace: Add missing <linux/regset.h> include
-        https://git.kernel.org/powerpc/c/81e30a5412e4bcdc9d338ffa0cf1f4b90bc63abc
-[03/11] powerpc/dexcr: Add initial Dynamic Execution Control Register (DEXCR) support
-        https://git.kernel.org/powerpc/c/0ffd60b782ed79349baf28dd3259c872f39274e9
-[04/11] powerpc/dexcr: Handle hashchk exception
-        https://git.kernel.org/powerpc/c/5bcba4e6c13f0c889da1f9e67ee10accd9ca4c19
-[05/11] powerpc/dexcr: Support userspace ROP protection
-        https://git.kernel.org/powerpc/c/be98fcf7c10dea74e9c3e2cd0018e47bdee67442
-[06/11] powerpc/ptrace: Expose DEXCR and HDEXCR registers to ptrace
-        https://git.kernel.org/powerpc/c/884ad5c52da253e5d38f947cd8d1d9412a47429c
-[07/11] powerpc/ptrace: Expose HASHKEYR register to ptrace
-        https://git.kernel.org/powerpc/c/97228ca375c78bfd960767dcd4919c981add306f
-[08/11] Documentation: Document PowerPC kernel DEXCR interface
-        https://git.kernel.org/powerpc/c/65d6c884bfbd38235659e6df193345e5ad874043
-[09/11] selftests/powerpc: Add more utility macros
-        https://git.kernel.org/powerpc/c/b9125c9aa043a7556626e1aafb3190c61c1e2b2b
-[10/11] selftests/powerpc/dexcr: Add hashst/hashchk test
-        https://git.kernel.org/powerpc/c/bdb07f35a52f40c461c7da06ddcbaca1950fb9e0
-[11/11] selftests/powerpc/dexcr: Add DEXCR status utility lsdexcr
-        https://git.kernel.org/powerpc/c/a16e472c3546ba0b8a4be265c008d02ef6aed899
+[1/6] powerpc/64s: move stack SLB pinning out of line from _switch
+      https://git.kernel.org/powerpc/c/d6b87c3eb6b2e0b34ba747df549e08768b019fe9
+[2/6] powerpc/64: Rearrange 64-bit _switch to prepare for 32/64 merge
+      https://git.kernel.org/powerpc/c/0eb8088b5a7524f96cadfb27083f5bdd819d9d52
+[3/6] powerpc/32: Remove sync from _switch
+      https://git.kernel.org/powerpc/c/fc8562c9b69af9533c39903b1601c378742189b0
+[4/6] powerpc/32: Rearrange _switch to prepare for 32/64 merge
+      https://git.kernel.org/powerpc/c/6958ad05d5789a303afe4fa4495df43993d9b7cb
+[5/6] powerpc: merge 32-bit and 64-bit _switch implementation
+      https://git.kernel.org/powerpc/c/afc6386815a88d067d9f567dcc6266800286f626
+[6/6] powerpc/64: Rename entry_64.S to prom_entry_64.S
+      https://git.kernel.org/powerpc/c/27be2456332dcd69907f086cda327ad923b222cf
 
 cheers
