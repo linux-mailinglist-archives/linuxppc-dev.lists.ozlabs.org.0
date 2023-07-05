@@ -1,60 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12334747B4D
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 03:49:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6787E747B91
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 04:32:05 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=Uul3FU3A;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QwjJK0581z3brl
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 11:49:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QwkFZ5LLXz3bx8
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 12:32:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=loongson.cn (client-ip=114.242.206.163; helo=mail.loongson.cn; envelope-from=suijingfeng@loongson.cn; receiver=lists.ozlabs.org)
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qwj9D03MFz2y9d
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jul 2023 11:43:11 +1000 (AEST)
-Received: from loongson.cn (unknown [10.20.42.43])
-	by gateway (Coremail) with SMTP id _____8Ax1fCuyqRk5C4AAA--.940S3;
-	Wed, 05 Jul 2023 09:43:10 +0800 (CST)
-Received: from [10.20.42.43] (unknown [10.20.42.43])
-	by localhost.localdomain (Coremail) with SMTP id AQAAf8DxJ82tyqRkCM4bAA--.17672S3;
-	Wed, 05 Jul 2023 09:43:09 +0800 (CST)
-Message-ID: <dc239a28-4314-1661-f556-670946a0982b@loongson.cn>
-Date: Wed, 5 Jul 2023 09:43:09 +0800
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=Uul3FU3A;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::634; helo=mail-pl1-x634.google.com; envelope-from=joel.stan@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QwkDk16fYz2ym7
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jul 2023 12:31:17 +1000 (AEST)
+Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1b8ad356fe4so2206485ad.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Jul 2023 19:31:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1688524274; x=1691116274;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=tVa0lsFr8ZePx6XnfcGFA3JzWxl9e3hch7lpVLVOyx4=;
+        b=Uul3FU3ASw7P/zdx1iBGtH9pEEMTjyxBAJrxWUz5tGr0Xewg6/HnjopDz/xPd2wwkV
+         SQNQes+DoTpM7hcGId9uY/yai8Zl71ue0zrDZqWG97KacY0E3SeYviZIllSmfmIdBniF
+         a247dadU/+DRPGZUHLwYIJ8bB2m9DEJp3SGEUko3NEWzTvApNQKusyrF+KdxK02x70AI
+         NX+dj9K9XiPB+SqjNyyl6GOSX/YOYAARSF1sq+bi0rLk+IZHpSen9zWM38YKUVXDi30x
+         IWjCMy5VYUlux06oz+M0Hkzl6bmwhWpf/WJP4W7JeDJuYJGYP+++N6xmx0d9wytO0WUE
+         oKrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688524274; x=1691116274;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tVa0lsFr8ZePx6XnfcGFA3JzWxl9e3hch7lpVLVOyx4=;
+        b=gnuEl2yNIHgyFFwDEMOKtP8sJ0voPQ3UUwbEN0St0Ol5WfiJdpg+OEP3jWtJH7gqK+
+         CBUhoo0P3EtSAFGPNW84M39xqvr2QkQEEsMOVqTfO0aA9P0yclzBrKpczOT0Gi6asTvv
+         rLhzobx7gtpUmLoHjUFtyzXaH/PG5lp3juoxiHKrxMmz+ufBM2LgeQdsC6VtVAm0qGHk
+         VMUUZJdoi8lRi7jYLkA3sNMVxvCnRGo+fWAayqD+lE7MzzWTctOCfdxxdN/1BAx/3X9i
+         u1KZeCRegOcDlvni2sbFZrlOe0+Dw3Lh2z8SVxkIagkRmR/Cc3ur2uB0jE4pusYGAdsq
+         AWuQ==
+X-Gm-Message-State: ABy/qLaxMLr1/P7INIvCAGrVwBorFD6P0kvKNzWbBKUPy6hxYzxUf+3o
+	JjodY3sLElT9yPpbDX8sYq8v6hEQOgg=
+X-Google-Smtp-Source: APBJJlErLpFBjfK1Wc/QTyD2N1gwG3bhdRlecO/OwCK+gv1dp7lr6ETCM96PH39JAPjf+uitKjtcxQ==
+X-Received: by 2002:a17:902:e5c1:b0:1b7:ed6a:d8a5 with SMTP id u1-20020a170902e5c100b001b7ed6ad8a5mr13952256plf.61.1688524273579;
+        Tue, 04 Jul 2023 19:31:13 -0700 (PDT)
+Received: from localhost.localdomain (2403-5808-8af8-0-7926-51ea-3ff2-71dd.ip6.aussiebb.net. [2403:5808:8af8:0:7926:51ea:3ff2:71dd])
+        by smtp.gmail.com with ESMTPSA id w14-20020a170902e88e00b001b8b1f6619asm92338plg.75.2023.07.04.19.31.11
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Jul 2023 19:31:12 -0700 (PDT)
+From: Joel Stanley <joel@jms.id.au>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/config: Disable SLAB_DEBUG_ON in skiroot
+Date: Wed,  5 Jul 2023 12:00:56 +0930
+Message-Id: <20230705023056.16273-1-joel@jms.id.au>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [11/12] fbdev/core: Protect edid_info with
- CONFIG_ARCH_HAS_EDID_INFO
-Content-Language: en-US
-To: Thomas Zimmermann <tzimmermann@suse.de>, arnd@arndb.de, deller@gmx.de,
- daniel@ffwll.ch, airlied@gmail.com
-References: <20230629121952.10559-12-tzimmermann@suse.de>
-From: Sui Jingfeng <suijingfeng@loongson.cn>
-In-Reply-To: <20230629121952.10559-12-tzimmermann@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID: AQAAf8DxJ82tyqRkCM4bAA--.17672S3
-X-CM-SenderInfo: xvxlyxpqjiv03j6o00pqjv00gofq/
-X-Coremail-Antispam: 1Uk129KBj93XoW7ZF4rtF4rKw1kKFWkJF1fAFc_yoW8Gr1Upr
-	W0qa98trW8tr47W3y8Kws2vFW5X34rGFy29rZ7G3W5Kryqv3y5WFyUJrn0kr93ur4xAr4I
-	yryvqw13CFnruagCm3ZEXasCq-sJn29KB7ZKAUJUUUUf529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUQFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAF
-	wI0_Gr1j6F4UJwAaw2AFwI0_JF0_Jw1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2
-	xF0cIa020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_
-	Wrv_ZF1lYx0Ex4A2jsIE14v26r4UJVWxJr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcV
-	AKI48JM4x0Y40E4IxF1VCIxcxG6Fyj6r4UJwCYjI0SjxkI62AI1cAE67vIY487MxkF7I0E
-	n4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbc
-	kI1I0E14v26r126r1DMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_
-	JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r
-	yj6F1UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1lIxAIcVCF04k26cxKx2IYs7xG
-	6r1j6r1xMIIF0xvEx4A2jsIE14v26r4UJVWxJr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr
-	0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x07bYqXdUUUUU=
-X-Mailman-Approved-At: Wed, 05 Jul 2023 11:46:39 +1000
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,53 +76,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-hyperv@vger.kernel.org, linux-efi@vger.kernel.org, linux-ia64@vger.kernel.org, loongarch@lists.linux.dev, linux-sh@vger.kernel.org, linux-hexagon@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org, linux-mips@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>, linux-fbdev@vger.kernel.org, linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+In 5.10 commit 5e84dd547bce ("powerpc/configs/skiroot: Enable some more
+hardening options") set SLUB_DEUBG_ON.
 
+When 5.14 came around, commit 792702911f58 ("slub: force on
+no_hash_pointers when slub_debug is enabled") print all the
+pointers when SLUB_DEUBG_ON is set. This was fine, but in 5.12 commit
+5ead723a20e0 ("lib/vsprintf: no_hash_pointers prints all addresses as
+unhashed") added the warning at boot.
 
-On 2023/6/29 19:45, Thomas Zimmermann wrote:
-> Guard usage of edid_info with CONFIG_ARCH_HAS_EDID_INFO instead
-> of CONFIG_X86. No functional changes.
->
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Disable SLAB_DEBUG_ON as we don't want the nasty warning. We have
+CONFIG_EXPERT so SLAB_DEBUG is enabled. We do lose the settings in
+DEBUG_DEFAULT_FLAGS, but it's not clear that these should have been
+always-on anyway.
 
+Signed-off-by: Joel Stanley <joel@jms.id.au>
+---
+ arch/powerpc/configs/skiroot_defconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-Reviewed-by: Sui Jingfeng <suijingfeng@loongson.cn>
-
-
-> Cc: Daniel Vetter <daniel@ffwll.ch>
-> Cc: Helge Deller <deller@gmx.de>
-> Cc: Randy Dunlap <rdunlap@infradead.org>
-> ---
->   drivers/video/fbdev/core/fbmon.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/video/fbdev/core/fbmon.c b/drivers/video/fbdev/core/fbmon.c
-> index 35be4431f649a..9ae063021e431 100644
-> --- a/drivers/video/fbdev/core/fbmon.c
-> +++ b/drivers/video/fbdev/core/fbmon.c
-> @@ -1480,17 +1480,19 @@ int fb_validate_mode(const struct fb_var_screeninfo *var, struct fb_info *info)
->   		-EINVAL : 0;
->   }
->   
-> -#if defined(CONFIG_FIRMWARE_EDID) && defined(CONFIG_X86)
-> +#if defined(CONFIG_FIRMWARE_EDID)
->   const unsigned char *fb_firmware_edid(struct fb_info *info)
->   {
->   	unsigned char *edid = NULL;
->   
-> +#if defined(CONFIG_ARCH_HAS_EDID_INFO)
->   	/*
->   	 * We need to ensure that the EDID block is only
->   	 * returned for the primary graphics adapter.
->   	 */
->   	if (fb_is_primary_device(info))
->   		edid = edid_info.dummy;
-> +#endif
->   
->   	return edid;
->   }
+diff --git a/arch/powerpc/configs/skiroot_defconfig b/arch/powerpc/configs/skiroot_defconfig
+index 71cfb990a74f..8d3eacb50d56 100644
+--- a/arch/powerpc/configs/skiroot_defconfig
++++ b/arch/powerpc/configs/skiroot_defconfig
+@@ -289,7 +289,6 @@ CONFIG_LIBCRC32C=y
+ # CONFIG_XZ_DEC_SPARC is not set
+ CONFIG_PRINTK_TIME=y
+ CONFIG_MAGIC_SYSRQ=y
+-CONFIG_SLUB_DEBUG_ON=y
+ CONFIG_SCHED_STACK_END_CHECK=y
+ CONFIG_DEBUG_STACKOVERFLOW=y
+ CONFIG_PANIC_ON_OOPS=y
+-- 
+2.40.1
 
