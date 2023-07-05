@@ -1,49 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 834DB748B48
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 20:13:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB458748BC5
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 20:25:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qx77T3NQ6z3bnQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 04:13:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qx7Pq5hq2z3c1J
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 04:25:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.219.179; helo=mail-yb1-f179.google.com; envelope-from=namhyung@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.219.177; helo=mail-yb1-f177.google.com; envelope-from=namhyung@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qx77075PKz301r
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 04:12:44 +1000 (AEST)
-Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-c5079a9f1c8so4438443276.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Jul 2023 11:12:44 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qx7PG1mVHz301r
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 04:25:04 +1000 (AEST)
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-bd61dd9a346so7827883276.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Jul 2023 11:25:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688580762; x=1691172762;
+        d=1e100.net; s=20221208; t=1688581502; x=1691173502;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cUbJVrXykPtTwLEN35bp+YMF5Iwo0jRebaoRjMV9YYA=;
-        b=iXzh4y+0nQ3lBWLux1ERfpqYQd9LHFZGD6GW5RjKcpRln3fvdUVG6JBIUQSBPrHZK4
-         JSo1dSj3mP/HVFs5mEX2SF9PEp8RGcV2cnqVaIfGZJWpq0hBVdNmQ64hkX+X9633OjyN
-         fP2atW41wJ3SNGnmtOSz2BUsjOxuK9Kt9gywWngn+1b6yFcTUXPhNXAz3n/btQvyJ7aW
-         l5i+yVM98uTmYlgAlXZQ2pHQ+zrsqhJm77/dY7lzd0eKUtC/YKvlFKfx04pMr4+Z3W4v
-         QuRWt+nzMKqhyAtV0ouCsFMTrYcFvypNYWhcBd//oEZG4FC5TaIwJcJnv+ihNAsSmOa0
-         QH4w==
-X-Gm-Message-State: ABy/qLb//V3zJOtMD8ESpbR4bp8O9ncCYUnyqdE3NgwiXxmcmsXf1Uyu
-	S2TYSjAIXFBj1Xac1+xbD4Etbs1+sd0LTP/ADOzBxXUv
-X-Google-Smtp-Source: APBJJlGcCUd3OPl6x4E/KJ1bM1hcGmH0AfrHrP6WKUTWzS9wXHW/TUeQksD1seTwutGj57E0TY7DVsFceNN1APE9OeY=
-X-Received: by 2002:a25:4ac8:0:b0:c63:8058:f4a3 with SMTP id
- x191-20020a254ac8000000b00c638058f4a3mr1645891yba.58.1688580762285; Wed, 05
- Jul 2023 11:12:42 -0700 (PDT)
+        bh=fLQigBjvEsL4L4SEWiFAmw+5TP0gGuXu4MpzoGKUTGI=;
+        b=lESn49lTAkZ0C0mq2lqb5Lo81Wl+xoXxOaE4aIHO2qIjci2wInWwMlgnxc5rT42yTg
+         kRD/UITanF2ctOyN6DDmoYZ+06ByMyJ83rmzUnnCTVR83BbCdF5iBruIqgBk8AGJcIYf
+         13p9wMitUdgwvh9eK3XPGLFIbGnCVMtYTGExrEv8QcA9H9DV66Lbc30FrK5q9NavpJFh
+         iPtCDVEOSo5tWfIYHhblyhL3lo+1Fa81bCGcs0MVkDxO5Tr9wTfIgY4B1fRvwrRpZrDG
+         byGlAN31uYu9bqpfJUw1si8FuakU8BPVM8qB7Y4x+wv3xXXjjjBrZGDyiHp4D606XNqL
+         c1GA==
+X-Gm-Message-State: ABy/qLbcOuZ9oTXAmQBllEHvLOlunBIdUclZmYgG1JjXgyjIoudyYP07
+	9DKi4xUymg0j3fpeo3tvk3w9KfbixX5yWs8F0n4=
+X-Google-Smtp-Source: APBJJlEZp5VBkE7EXQVipl0ZmJqRv4vOXxGE3w348J8DHFyeF3664343o6i3s30KMoEQytttMjfQzMfNYTRdNgFwUHQ=
+X-Received: by 2002:a25:8b06:0:b0:c57:81fd:904d with SMTP id
+ i6-20020a258b06000000b00c5781fd904dmr6698484ybl.10.1688581501864; Wed, 05 Jul
+ 2023 11:25:01 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230704050353.14979-1-atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <20230704050353.14979-1-atrajeev@linux.vnet.ibm.com>
+References: <20230615073803.54481-1-atrajeev@linux.vnet.ibm.com> <AEE7B55C-BA6B-4E0E-A2E9-4E7EE09B4D50@linux.vnet.ibm.com>
+In-Reply-To: <AEE7B55C-BA6B-4E0E-A2E9-4E7EE09B4D50@linux.vnet.ibm.com>
 From: Namhyung Kim <namhyung@kernel.org>
-Date: Wed, 5 Jul 2023 11:12:31 -0700
-Message-ID: <CAM9d7cidXVFN41-jAtnJsw8EfrqCa1rYypJk0sj4WnYzfGC_6Q@mail.gmail.com>
-Subject: Re: [PATCH] tools/perf/tests: Fix objdump in Object code reading test
- to look for all sections
+Date: Wed, 5 Jul 2023 11:24:50 -0700
+Message-ID: <CAM9d7chEpdJkpWuxZD2-w89SFBm9CU28MpLA40LV+=GaLJXS1w@mail.gmail.com>
+Subject: Re: [PATCH 1/2] tools/perf/tests: perf all metrics test fails when
+ perf_event access is restricted
 To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -58,63 +58,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: irogers@google.com, ak@linux.intel.com, rnsastry@linux.ibm.com, acme@kernel.org, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, james.clark@arm.com, jolsa@kernel.org, kjain@linux.ibm.com, disgoel@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: irogers@google.com, maddy@linux.ibm.com, kjain@linux.ibm.com, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-perf-users@vger.kernel.org, jolsa@kernel.org, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Mon, Jul 3, 2023 at 10:04=E2=80=AFPM Athira Rajeev
 <atrajeev@linux.vnet.ibm.com> wrote:
 >
-> Object code reading test fails intermittently with below logs:
 >
->    Reading object code for memory address: 0xc008000001dd34fc
->    File is: /lib/modules/6.3.0-rc7+/kernel/fs/xfs/xfs.ko
->    On file address is: 0x11359c
->    Objdump command is: objdump -z -d --start-address=3D0x1134fc --stop-ad=
-dress=3D0x11357c /lib/modules/6.3.0-rc7+/kernel/fs/xfs/xfs.ko
->    objdump read too few bytes: 128
->    test child finished with -1
->    ---- end ----
->    Object code reading: FAILED!
 >
-> This issue happens ramdomly depending on the sample ip
-> captured during the test run. In some cases, the same ip falls
-> in the xfs module. The test does an objdump on the xfs.ko file and
-> compares it with the dump from the dso that perf captures. But
-> since the range of ip address falls in debug info section, it fails
+> > On 15-Jun-2023, at 1:08 PM, Athira Rajeev <atrajeev@linux.vnet.ibm.com>=
+ wrote:
+> >
+> > Perf all metrics test fails as below when perf_event access
+> > is restricted.
+> >
+> >    ./perf test -v "perf all metrics test"
+> >    Metric 'Memory_RD_BW_Chip' not printed in:
+> >    Error:
+> >    Access to performance monitoring and observability operations is lim=
+ited.
+> >    Enforced MAC policy settings (SELinux) can limit access to performan=
+ce
+> >    =E2=80=94
+> >    access to performance monitoring and observability operations for pr=
+ocesses
+> >    without CAP_PERFMON, CAP_SYS_PTRACE or CAP_SYS_ADMIN Linux capabilit=
+y.
+> >    =E2=80=94
+> >    test child finished with -1
+> >    ---- end ----
+> >    perf all metrics test: FAILED!
 
-This is strange.  Why did it fall into the debug section?
+In my system, it fails like below:
+
+  $ ./perf test -v 101
+  101: perf all metrics test                                           :
+  --- start ---
+  test child forked, pid 398458
+  Testing branch_misprediction_ratio
+  Testing all_remote_links_outbound
+  Metric 'all_remote_links_outbound' not printed in:
+  Error:
+  Invalid event (remote_outbound_data_controller_3:u) in per-thread
+mode, enable system wide with '-a'.
+  Testing nps1_die_to_dram
+  ...
 
 Thanks,
 Namhyung
 
-
-> to find the address range with objdump. Fix the objdump option so
-> as to disasseble all sections to check the address range.
 >
-> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> ---
->  tools/perf/tests/code-reading.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/tools/perf/tests/code-reading.c b/tools/perf/tests/code-read=
-ing.c
-> index ed3815163d1b..02132478856a 100644
-> --- a/tools/perf/tests/code-reading.c
-> +++ b/tools/perf/tests/code-reading.c
-> @@ -184,7 +184,7 @@ static int read_via_objdump(const char *filename, u64=
- addr, void *buf,
->         FILE *f;
->         int ret;
+> Hi,
 >
-> -       fmt =3D "%s -z -d --start-address=3D0x%"PRIx64" --stop-address=3D=
-0x%"PRIx64" %s";
-> +       fmt =3D "%s -z -D --start-address=3D0x%"PRIx64" --stop-address=3D=
-0x%"PRIx64" %s";
->         ret =3D snprintf(cmd, sizeof(cmd), fmt, "objdump", addr, addr + l=
-en,
->                        filename);
->         if (ret <=3D 0 || (size_t)ret >=3D sizeof(cmd))
-> --
-> 2.35.3
+> Looking for review comments on this patch.
+>
+> Thanks
+> >
+> > The perf all metrics test picks the input events from
+> > "perf list --raw-dump metrics" and runs "perf stat -M "$m""
+> > for each of the metrics in the list. It fails here for some
+> > of the metrics which needs access, since it collects system
+> > wide resource details/statistics. Fix the testcase to skip
+> > those metric events.
+> >
+> > Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> > ---
+> > tools/perf/tests/shell/stat_all_metrics.sh | 4 +++-
+> > 1 file changed, 3 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/tools/perf/tests/shell/stat_all_metrics.sh b/tools/perf/te=
+sts/shell/stat_all_metrics.sh
+> > index 54774525e18a..14b96484a359 100755
+> > --- a/tools/perf/tests/shell/stat_all_metrics.sh
+> > +++ b/tools/perf/tests/shell/stat_all_metrics.sh
+> > @@ -6,7 +6,9 @@ err=3D0
+> > for m in $(perf list --raw-dump metrics); do
+> >   echo "Testing $m"
+> >   result=3D$(perf stat -M "$m" true 2>&1)
+> > -  if [[ "$result" =3D~ ${m:0:50} ]] || [[ "$result" =3D~ "<not support=
+ed>" ]]
+> > +  # Skip if there is no access to perf_events monitoring
+> > +  # and observability operations
+> > +  if [[ "$result" =3D~ ${m:0:50} ]] || [[ "$result" =3D~ "<not support=
+ed>" ]] || [[ "$result" =3D~ "Access to performance monitoring and observab=
+ility operations is limited" ]]
+> >   then
+> >     continue
+> >   fi
+> > --
+> > 2.31.1
+> >
 >
