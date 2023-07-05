@@ -2,51 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB458748BC5
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 20:25:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D266748CD4
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 21:04:18 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=p6kAsrLT;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qx7Pq5hq2z3c1J
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 04:25:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qx8GS2pPSz3brc
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 05:04:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.219.177; helo=mail-yb1-f177.google.com; envelope-from=namhyung@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=p6kAsrLT;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=jlayton@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qx7PG1mVHz301r
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 04:25:04 +1000 (AEST)
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-bd61dd9a346so7827883276.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Jul 2023 11:25:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688581502; x=1691173502;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fLQigBjvEsL4L4SEWiFAmw+5TP0gGuXu4MpzoGKUTGI=;
-        b=lESn49lTAkZ0C0mq2lqb5Lo81Wl+xoXxOaE4aIHO2qIjci2wInWwMlgnxc5rT42yTg
-         kRD/UITanF2ctOyN6DDmoYZ+06ByMyJ83rmzUnnCTVR83BbCdF5iBruIqgBk8AGJcIYf
-         13p9wMitUdgwvh9eK3XPGLFIbGnCVMtYTGExrEv8QcA9H9DV66Lbc30FrK5q9NavpJFh
-         iPtCDVEOSo5tWfIYHhblyhL3lo+1Fa81bCGcs0MVkDxO5Tr9wTfIgY4B1fRvwrRpZrDG
-         byGlAN31uYu9bqpfJUw1si8FuakU8BPVM8qB7Y4x+wv3xXXjjjBrZGDyiHp4D606XNqL
-         c1GA==
-X-Gm-Message-State: ABy/qLbcOuZ9oTXAmQBllEHvLOlunBIdUclZmYgG1JjXgyjIoudyYP07
-	9DKi4xUymg0j3fpeo3tvk3w9KfbixX5yWs8F0n4=
-X-Google-Smtp-Source: APBJJlEZp5VBkE7EXQVipl0ZmJqRv4vOXxGE3w348J8DHFyeF3664343o6i3s30KMoEQytttMjfQzMfNYTRdNgFwUHQ=
-X-Received: by 2002:a25:8b06:0:b0:c57:81fd:904d with SMTP id
- i6-20020a258b06000000b00c5781fd904dmr6698484ybl.10.1688581501864; Wed, 05 Jul
- 2023 11:25:01 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qx8Fb6PMhz3bNm
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 05:03:31 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id D236061711;
+	Wed,  5 Jul 2023 19:03:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7F7BC433C8;
+	Wed,  5 Jul 2023 19:03:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1688583809;
+	bh=hW90uH7dSdyF/Nri3HQx0Av6AkeVn1n99HlMWuhoknQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=p6kAsrLTw8OX38qd6i4pQd0M+hsaDTabPFxVINuCdQ4xhS2k+c1hdfnWLgFt6GgHW
+	 +yjJdVfQBF5K9TMxRNt7ga07vAxzJRlLknE2ux8YsmXHOQqCuI6waffLLuJXyk1/gJ
+	 90myZ2C2Vgdq2KWqHkKsuK5wOeZCkFrnECC4J6+Nh7ve6XvsKCi2B1VG3m2mlX7eMF
+	 JvBnyss/OChDfLvw8Dxx521uTVcW8n1qbA6COWTfL/KgbQo0TXcTiRYHziAulEdyXa
+	 +o+qRoM2sgx3Jq6u2NcEck+Jow/G77bqQH3cykxTYaz3KAuVHOogrQ/4uCKSw8xLUV
+	 /eQALPLxJZX+w==
+From: Jeff Layton <jlayton@kernel.org>
+To: Christian Brauner <brauner@kernel.org>,
+	Jeremy Kerr <jk@ozlabs.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v2 15/92] spufs: convert to ctime accessor functions
+Date: Wed,  5 Jul 2023 15:00:40 -0400
+Message-ID: <20230705190309.579783-13-jlayton@kernel.org>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230705190309.579783-1-jlayton@kernel.org>
+References: <20230705185755.579053-1-jlayton@kernel.org>
+ <20230705190309.579783-1-jlayton@kernel.org>
 MIME-Version: 1.0
-References: <20230615073803.54481-1-atrajeev@linux.vnet.ibm.com> <AEE7B55C-BA6B-4E0E-A2E9-4E7EE09B4D50@linux.vnet.ibm.com>
-In-Reply-To: <AEE7B55C-BA6B-4E0E-A2E9-4E7EE09B4D50@linux.vnet.ibm.com>
-From: Namhyung Kim <namhyung@kernel.org>
-Date: Wed, 5 Jul 2023 11:24:50 -0700
-Message-ID: <CAM9d7chEpdJkpWuxZD2-w89SFBm9CU28MpLA40LV+=GaLJXS1w@mail.gmail.com>
-Subject: Re: [PATCH 1/2] tools/perf/tests: perf all metrics test fails when
- perf_event access is restricted
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,96 +67,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: irogers@google.com, maddy@linux.ibm.com, kjain@linux.ibm.com, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-perf-users@vger.kernel.org, jolsa@kernel.org, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Jan Kara <jack@suse.cz>, Al Viro <viro@zeniv.linux.org.uk>, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 3, 2023 at 10:04=E2=80=AFPM Athira Rajeev
-<atrajeev@linux.vnet.ibm.com> wrote:
->
->
->
-> > On 15-Jun-2023, at 1:08 PM, Athira Rajeev <atrajeev@linux.vnet.ibm.com>=
- wrote:
-> >
-> > Perf all metrics test fails as below when perf_event access
-> > is restricted.
-> >
-> >    ./perf test -v "perf all metrics test"
-> >    Metric 'Memory_RD_BW_Chip' not printed in:
-> >    Error:
-> >    Access to performance monitoring and observability operations is lim=
-ited.
-> >    Enforced MAC policy settings (SELinux) can limit access to performan=
-ce
-> >    =E2=80=94
-> >    access to performance monitoring and observability operations for pr=
-ocesses
-> >    without CAP_PERFMON, CAP_SYS_PTRACE or CAP_SYS_ADMIN Linux capabilit=
-y.
-> >    =E2=80=94
-> >    test child finished with -1
-> >    ---- end ----
-> >    perf all metrics test: FAILED!
+In later patches, we're going to change how the inode's ctime field is
+used. Switch to using accessor functions instead of raw accesses of
+inode->i_ctime.
 
-In my system, it fails like below:
+Acked-by: Jeremy Kerr <jk@ozlabs.org>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+---
+ arch/powerpc/platforms/cell/spufs/inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  $ ./perf test -v 101
-  101: perf all metrics test                                           :
-  --- start ---
-  test child forked, pid 398458
-  Testing branch_misprediction_ratio
-  Testing all_remote_links_outbound
-  Metric 'all_remote_links_outbound' not printed in:
-  Error:
-  Invalid event (remote_outbound_data_controller_3:u) in per-thread
-mode, enable system wide with '-a'.
-  Testing nps1_die_to_dram
-  ...
+diff --git a/arch/powerpc/platforms/cell/spufs/inode.c b/arch/powerpc/platforms/cell/spufs/inode.c
+index ea807aa0c31a..38c5be34c895 100644
+--- a/arch/powerpc/platforms/cell/spufs/inode.c
++++ b/arch/powerpc/platforms/cell/spufs/inode.c
+@@ -86,7 +86,7 @@ spufs_new_inode(struct super_block *sb, umode_t mode)
+ 	inode->i_mode = mode;
+ 	inode->i_uid = current_fsuid();
+ 	inode->i_gid = current_fsgid();
+-	inode->i_atime = inode->i_mtime = inode->i_ctime = current_time(inode);
++	inode->i_atime = inode->i_mtime = inode_set_ctime_current(inode);
+ out:
+ 	return inode;
+ }
+-- 
+2.41.0
 
-Thanks,
-Namhyung
-
->
->
-> Hi,
->
-> Looking for review comments on this patch.
->
-> Thanks
-> >
-> > The perf all metrics test picks the input events from
-> > "perf list --raw-dump metrics" and runs "perf stat -M "$m""
-> > for each of the metrics in the list. It fails here for some
-> > of the metrics which needs access, since it collects system
-> > wide resource details/statistics. Fix the testcase to skip
-> > those metric events.
-> >
-> > Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> > ---
-> > tools/perf/tests/shell/stat_all_metrics.sh | 4 +++-
-> > 1 file changed, 3 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/tools/perf/tests/shell/stat_all_metrics.sh b/tools/perf/te=
-sts/shell/stat_all_metrics.sh
-> > index 54774525e18a..14b96484a359 100755
-> > --- a/tools/perf/tests/shell/stat_all_metrics.sh
-> > +++ b/tools/perf/tests/shell/stat_all_metrics.sh
-> > @@ -6,7 +6,9 @@ err=3D0
-> > for m in $(perf list --raw-dump metrics); do
-> >   echo "Testing $m"
-> >   result=3D$(perf stat -M "$m" true 2>&1)
-> > -  if [[ "$result" =3D~ ${m:0:50} ]] || [[ "$result" =3D~ "<not support=
-ed>" ]]
-> > +  # Skip if there is no access to perf_events monitoring
-> > +  # and observability operations
-> > +  if [[ "$result" =3D~ ${m:0:50} ]] || [[ "$result" =3D~ "<not support=
-ed>" ]] || [[ "$result" =3D~ "Access to performance monitoring and observab=
-ility operations is limited" ]]
-> >   then
-> >     continue
-> >   fi
-> > --
-> > 2.31.1
-> >
->
