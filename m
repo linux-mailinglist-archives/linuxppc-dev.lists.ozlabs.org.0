@@ -1,62 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDC01747F12
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 10:08:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB19C747F54
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 10:19:11 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KzsxQxyJ;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=f1m05wOo;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=gtb/O4Za;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qwsk459GXz3bnQ
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 18:08:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qwsy54rDwz3br6
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 18:19:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KzsxQxyJ;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=f1m05wOo;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=gtb/O4Za;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=yu.c.zhang@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2001:67c:2178:6::1d; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QwsjC1w5Sz2ynx
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jul 2023 18:07:57 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1688544479; x=1720080479;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Cn1WBv4JrMsrgoasE/lasO/n0SnRwlADo/SoWnSzf8M=;
-  b=KzsxQxyJnhrixjauFw5DOS6Jqf3zeWi2daE3Rm+PlkujKOAJ41svLpml
-   Hi7OIxpeKkFOUg4aJgxs+RxewC99gAZHkBJKp5yWgjojiWywsioRuMWD4
-   TeNLvKw9ba/TgMZFouWgLDi10g7Tl6fmdeG2W0Cxu3YW2/UypnORb0yjk
-   c9mTPIXdf09729Ufw3ZEERjcbRgKfgaul4pp7jQ/2oYRf3znN42N5icwX
-   C0ffQhWLjJAxMrg+FqHdx5hBPb6tgIeV58bd6282RQfwNuNqB+SpviS2f
-   u2NxJrdGak+MLo87NlbIyhikN9TzUczJIpG+2ImOaKh1MihpyW7oXG3PH
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10761"; a="343610819"
-X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; 
-   d="scan'208";a="343610819"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2023 01:07:54 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10761"; a="669323671"
-X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; 
-   d="scan'208";a="669323671"
-Received: from jialinji-mobl4.ccr.corp.intel.com (HELO localhost) ([10.255.30.200])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2023 01:07:50 -0700
-Date: Wed, 5 Jul 2023 16:07:56 +0800
-From: Yu Zhang <yu.c.zhang@linux.intel.com>
-To: David Stevens <stevensd@chromium.org>
-Subject: Re: [PATCH v7 4/8] KVM: x86/mmu: Migrate to __kvm_follow_pfn
-Message-ID: <20230705080756.xv7fm3jxewipunvn@linux.intel.com>
-References: <20230704075054.3344915-1-stevensd@google.com>
- <20230704075054.3344915-5-stevensd@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QwsxD0dCsz2xpm
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jul 2023 18:18:23 +1000 (AEST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 210151F889;
+	Wed,  5 Jul 2023 08:18:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1688545100; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=W4UNbanusOFxqm7hkNbMAuWfI8njzbZ+1xH+95ErApk=;
+	b=f1m05wOooggnusYApEllJA4DHXKKKu62i1rkKSNolG6RSiDRMKyS6d2VnsKHmZ8xzEctgP
+	2uFR9SUawf/L7AX58ys1K0ADYPqUxnoHpg1XHgDcVjhPphPABiv3BNAKFSe9wj6pbNGgEY
+	29iqc7Q/KqHfbr7HBz8cCkvPeICaCO8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1688545100;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=W4UNbanusOFxqm7hkNbMAuWfI8njzbZ+1xH+95ErApk=;
+	b=gtb/O4Zal0aHIFkUGIjHzs3Xs2V7RNCILA5sbQaaw7ZE4XgZbEe5tDa00OtkRXs35FPUwp
+	QCeM4ulI7ec97LAw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 7965C13460;
+	Wed,  5 Jul 2023 08:18:19 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id +47LHEsnpWRgSAAAMHmgww
+	(envelope-from <tzimmermann@suse.de>); Wed, 05 Jul 2023 08:18:19 +0000
+Message-ID: <150c0fa2-bff2-0644-d6e5-c4dab7f79048@suse.de>
+Date: Wed, 5 Jul 2023 10:18:18 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230704075054.3344915-5-stevensd@google.com>
-User-Agent: NeoMutt/20171215
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 07/12] arch/x86: Declare edid_info in <asm/screen_info.h>
+Content-Language: en-US
+To: Arnd Bergmann <arnd@arndb.de>, Helge Deller <deller@gmx.de>,
+ Daniel Vetter <daniel@ffwll.ch>, Dave Airlie <airlied@gmail.com>
+References: <20230629121952.10559-1-tzimmermann@suse.de>
+ <20230629121952.10559-8-tzimmermann@suse.de>
+ <80e3a583-805e-4e8f-a67b-ebe2e4b9a7e5@app.fastmail.com>
+ <d3de124c-6aa8-e930-e238-7bd6dd7929a6@suse.de>
+ <0dbbdfc4-0e91-4be4-9ca0-d8ba6f18453d@app.fastmail.com>
+ <ef7b3899-7d18-8018-47fa-aac0efaa61f4@suse.de>
+ <dd5aa01e-afad-48d2-bf4c-4a58b74f1644@app.fastmail.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
+In-Reply-To: <dd5aa01e-afad-48d2-bf4c-4a58b74f1644@app.fastmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------2k3MbKSxf2z9hgV165j2f9MP"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,59 +88,153 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Marc Zyngier <maz@kernel.org>, kvm@vger.kernel.org, Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org, Peter Xu <peterx@redhat.com>, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: linux-hyperv@vger.kernel.org, linux-efi@vger.kernel.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Ard Biesheuvel <ardb@kernel.org>, Linux-Arch <linux-arch@vger.kernel.org>, linux-hexagon@vger.kernel.org, linux-staging@lists.linux.dev, "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>, Ingo Molnar <mingo@redhat.com>, Sami Tolvanen <samitolvanen@google.com>, Kees Cook <keescook@chromium.org>, "Paul E. McKenney" <paulmck@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, x86@kernel.org, linux-mips@vger.kernel.org, Juerg Haef
+ liger <juerg.haefliger@canonical.com>, linux-alpha@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 04, 2023 at 04:50:49PM +0900, David Stevens wrote:
-> From: David Stevens <stevensd@chromium.org>
-> 
-> Migrate from __gfn_to_pfn_memslot to __kvm_follow_pfn.
-> 
-> Signed-off-by: David Stevens <stevensd@chromium.org>
-> ---
->  arch/x86/kvm/mmu/mmu.c | 35 +++++++++++++++++++++++++----------
->  1 file changed, 25 insertions(+), 10 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index ec169f5c7dce..e44ab512c3a1 100644
-> --- a/arch/x86/kvm/mmu/mmu.c
-> +++ b/arch/x86/kvm/mmu/mmu.c
-> @@ -4296,7 +4296,12 @@ void kvm_arch_async_page_ready(struct kvm_vcpu *vcpu, struct kvm_async_pf *work)
->  static int __kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
->  {
->  	struct kvm_memory_slot *slot = fault->slot;
-> -	bool async;
-> +	struct kvm_follow_pfn foll = {
-> +		.slot = slot,
-> +		.gfn = fault->gfn,
-> +		.flags = FOLL_GET | (fault->write ? FOLL_WRITE : 0),
-> +		.allow_write_mapping = true,
-> +	};
->  
->  	/*
->  	 * Retry the page fault if the gfn hit a memslot that is being deleted
-> @@ -4325,12 +4330,14 @@ static int __kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
->  			return RET_PF_EMULATE;
->  	}
->  
-> -	async = false;
-> -	fault->pfn = __gfn_to_pfn_memslot(slot, fault->gfn, false, false, &async,
-> -					  fault->write, &fault->map_writable,
-> -					  &fault->hva);
-> -	if (!async)
-> -		return RET_PF_CONTINUE; /* *pfn has correct page already */
-> +	foll.flags |= FOLL_NOWAIT;
-> +	fault->pfn = __kvm_follow_pfn(&foll);
-> +
-> +	if (!is_error_noslot_pfn(fault->pfn))
-> +		goto success;
-> +
-> +	if (fault->pfn != KVM_PFN_ERR_NEEDS_IO)
-> +		return RET_PF_CONTINUE;
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------2k3MbKSxf2z9hgV165j2f9MP
+Content-Type: multipart/mixed; boundary="------------9nOsvmrIChEQyu9JM4jWfbbm";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: Arnd Bergmann <arnd@arndb.de>, Helge Deller <deller@gmx.de>,
+ Daniel Vetter <daniel@ffwll.ch>, Dave Airlie <airlied@gmail.com>
+Cc: linux-hyperv@vger.kernel.org, linux-efi@vger.kernel.org,
+ linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-fbdev@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+ linux-riscv@lists.infradead.org, Ard Biesheuvel <ardb@kernel.org>,
+ Linux-Arch <linux-arch@vger.kernel.org>, linux-hexagon@vger.kernel.org,
+ linux-staging@lists.linux.dev,
+ "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Sami Tolvanen <samitolvanen@google.com>,
+ Kees Cook <keescook@chromium.org>, "Paul E. McKenney" <paulmck@kernel.org>,
+ Frederic Weisbecker <frederic@kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>,
+ loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>,
+ linux-arm-kernel@lists.infradead.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org, Juerg Haefliger
+ <juerg.haefliger@canonical.com>, linux-alpha@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Message-ID: <150c0fa2-bff2-0644-d6e5-c4dab7f79048@suse.de>
+Subject: Re: [PATCH 07/12] arch/x86: Declare edid_info in <asm/screen_info.h>
+References: <20230629121952.10559-1-tzimmermann@suse.de>
+ <20230629121952.10559-8-tzimmermann@suse.de>
+ <80e3a583-805e-4e8f-a67b-ebe2e4b9a7e5@app.fastmail.com>
+ <d3de124c-6aa8-e930-e238-7bd6dd7929a6@suse.de>
+ <0dbbdfc4-0e91-4be4-9ca0-d8ba6f18453d@app.fastmail.com>
+ <ef7b3899-7d18-8018-47fa-aac0efaa61f4@suse.de>
+ <dd5aa01e-afad-48d2-bf4c-4a58b74f1644@app.fastmail.com>
+In-Reply-To: <dd5aa01e-afad-48d2-bf4c-4a58b74f1644@app.fastmail.com>
 
-IIUC, FOLL_NOWAIT is set only when we wanna an async fault. So
-KVM_PFN_ERR_NEEDS_IO may not be necessary? 
+--------------9nOsvmrIChEQyu9JM4jWfbbm
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-B.R.
-Yu
+SGkgQXJuZA0KDQpBbSAzMC4wNi4yMyB1bSAxMzo1MyBzY2hyaWViIEFybmQgQmVyZ21hbm46
+DQo+IE9uIEZyaSwgSnVuIDMwLCAyMDIzLCBhdCAwOTo0NiwgVGhvbWFzIFppbW1lcm1hbm4g
+d3JvdGU6DQo+PiBBbSAyOS4wNi4yMyB1bSAxNToyMSBzY2hyaWViIEFybmQgQmVyZ21hbm46
+DQo+Pj4gT24gVGh1LCBKdW4gMjksIDIwMjMsIGF0IDE1OjAxLCBUaG9tYXMgWmltbWVybWFu
+biB3cm90ZToNCj4+Pj4gQW0gMjkuMDYuMjMgdW0gMTQ6MzUgc2NocmllYiBBcm5kIEJlcmdt
+YW5uOg0KPj4+Pj4gT24gVGh1LCBKdW4gMjksIDIwMjMsIGF0IDEzOjQ1LCBUaG9tYXMgWmlt
+bWVybWFubiB3cm90ZToNCj4+DQo+Pj4+DQo+Pj4+IEZJUk1XQVJFX0VESUQgaXMgYSB1c2Vy
+LXNlbGVjdGFibGUgZmVhdHVyZSwgd2hpbGUgQVJDSF9IQVNfRURJRF9JTkZPDQo+Pj4+IGFu
+bm91bmNlcyBhbiBhcmNoaXRlY3R1cmUgZmVhdHVyZS4gVGhleSBkbyBkaWZmZXJlbnQgdGhp
+bmdzLg0KPj4+DQo+Pj4gSSBzdGlsbCBoYXZlIHRyb3VibGUgc2VlaW5nIHRoZSBkaWZmZXJl
+bmNlLg0KPj4NCj4+IFRoZSBpZGVhIGhlcmUgaXMgdGhhdCBBUkNIX0hBU18gc2lnbmFscyB0
+aGUgYXJjaGl0ZWN0dXJlJ3Mgc3VwcG9ydCBmb3INCj4+IHRoZSBmZWF0dXJlLiAgRHJpdmVy
+cyBzZXQgJ2RlcGVuZHMgb24nIGluIHRoZWlyIEtjb25maWcuDQo+Pg0KPj4gQW5vdGhlciBL
+Y29uZmlnIHRva2VuLCBWSURFT19TQ1JFRU5fSU5GTyBvciBGSVJNV0FSRV9FRElELCB3b3Vs
+ZCB0aGVuDQo+PiBhY3R1YWxseSBlbmFibGUgdGhlIGZlYXR1cmUuICBEcml2ZXJzIHNlbGVj
+dCBWSURFT19TQ1JFRU5fSU5GTyBvcg0KPj4gRklSTVdBUkVfRURJRCBhbmQgdGhlIGFyY2hp
+dGVjdHVyZXMgY29udGFpbnMgY29kZSBsaWtlDQo+IA0KPiBGYWlyIGVub3VnaC4gSW4gdGhh
+dCBjYXNlLCBJIGd1ZXNzIEZJUk1XQVJFX0VESUQgd2lsbCBqdXN0IGRlcGVuZCBvbg0KPiBB
+UkNIX0hBU19FRElEX0lORk8sIG9yIHBvc3NpYmx5ICJkZXBlbmRzIG9uIEZJUk1XQVJFX0VE
+SUQgfHwgRUZJIg0KPiBhZnRlciBpdCBzdGFydHMgY2FsbGluZyBpbnRvIGFuIEVGSSBzcGVj
+aWZpYyBmdW5jdGlvbiwgcmlnaHQ/DQo+IA0KPj4gI2lmZGVmIFZJREVPX1NDUkVFTl9JTkZP
+DQo+PiBzdHJ1Y3Qgc2NyZWVuX2luZm8gc2NyZWVuX2luZm8gPSB7DQo+PiAJLyogc2V0IHZh
+bHVlcyBoZXJlICovDQo+PiB9DQo+PiAjZW5kaWYNCj4+DQo+PiBUaGlzIGFsbG93cyB1cyB0
+byBkaXNhYmxlIGNvZGUgdGhhdCByZXF1aXJlcyBzY3JlZW5faW5mby9lZGlkX2luZm8sIGJ1
+dA0KPj4gYWxzbyBkaXNhYmxlIHNjcmVlbl9pbmZvL2VkaWRfaW5mbyB1bmxlc3Mgc3VjaCBj
+b2RlIGhhcyBiZWVuIGVuYWJsZWQgaW4NCj4+IHRoZSBrZXJuZWwgY29uZmlnLg0KPj4NCj4+
+IFNvbWUgYXJjaGl0ZWN0dXJlcyBjdXJyZW50bHkgbWltaWMgdGhpcyBieSBndWFyZGluZyBz
+Y3JlZW5faW5mbyB3aXRoDQo+PiBpZmRlZiBDT05GSUdfVlQgb3Igc2ltaWxhci4gSSdkIGxp
+a2UgdG8gbWFrZSB0aGlzIG1vcmUgZmxleGlibGUuIFRoZQ0KPj4gY29zdCBvZiBhIGZldyBt
+b3JlIGludGVybmFsIEtjb25maWcgdG9rZW5zIHNlZW1zIG5lZ2xpZ2libGUuDQo+IA0KPiBJ
+IGRlZmluaXRlbHkgZ2V0IGl0IGZvciB0aGUgc2NyZWVuX2luZm8sIHdoaWNoIG5lZWRzIHRo
+ZSBjb21wbGV4aXR5Lg0KPiBGb3IgQVJDSEFSQ0hfSEFTX0VESURfSU5GTyBJIHdvdWxkIGhv
+cGUgdGhhdCBpdCdzIG5ldmVyIHNlbGVjdGVkIGJ5DQo+IGFueXRoaW5nIG90aGVyIHRoYW4g
+eDg2LCBzbyBJIHdvdWxkIHN0aWxsIGdvIHdpdGgganVzdCBhIGRlcGVuZGVuY3kNCj4gb24g
+eDg2IGZvciBzaW1wbGljaXR5LCBidXQgSSBkb24ndCBtaW5kIGhhdmluZyB0aGUgZXh0cmEg
+c3ltYm9sIGlmIHRoYXQNCj4ga2VlcHMgaXQgbW9yZSBjb25zaXN0ZW50IHdpdGggaG93IHRo
+ZSBzY3JlZW5faW5mbyBpcyBoYW5kbGVkLg0KDQpXZWxsLCBJJ2QgbGlrZSB0byBhZGQgZWRp
+ZF9pbmZvIHRvIHBsYXRmb3JtcyB3aXRoIEVGSS4gV2hhdCB3b3VsZCBiZSANCmFybS9hcm02
+NCBhbmQgbG9vbmdhcmNoLCBJIGd1ZXNzLiBTZWUgYmVsb3cgZm9yIHRoZSBmdXR1cmUgcGxh
+bnMuDQoNCj4gDQo+Pj4gSSBzdXBwb3NlIHlvdSBjb3VsZCB1c2UgRklSTVdBUkVfRURJRCBv
+biBFRkkgb3IgT0Ygc3lzdGVtcyB3aXRob3V0DQo+Pj4gdGhlIG5lZWQgZm9yIGEgZ2xvYmFs
+IGVkaWRfaW5mbyBzdHJ1Y3R1cmUsIGJ1dCB0aGF0IHdvdWxkIG5vdA0KPj4+IHNoYXJlIGFu
+eSBjb2RlIHdpdGggdGhlIGN1cnJlbnQgZmJfZmlybXdhcmVfZWRpZCgpIGZ1bmN0aW9uLg0K
+Pj4NCj4+IFRoZSBjdXJyZW50IGNvZGUgaXMgYnVpbGQgb24gdG9wIG9mIHNjcmVlbl9pbmZv
+IGFuZCBlZGlkX2luZm8uIEknZA0KPj4gcHJlZmVyYWJseSBub3QgcmVwbGFjZSB0aGF0LCBp
+ZiBwb3NzaWJsZS4NCj4gDQo+IE9uZSB3YXkgSSBjb3VsZCBpbWFnaW5lIHRoaXMgbG9va2lu
+ZyBpbiB0aGUgZW5kIHdvdWxkIGJlDQo+IHNvbWV0aGluZyBsaWtlDQo+IA0KPiBzdHJ1Y3Qg
+c2NyZWVuX2luZm8gKmZiX3NjcmVlbl9pbmZvKHN0cnVjdCBkZXZpY2UgKmRldikNCj4gew0K
+PiAgICAgICAgc3RydWN0IHNjcmVlbl9pbmZvICpzaSA9IE5VTEw7DQo+IA0KPiAgICAgICAg
+aWYgKElTX0VOQUJMRUQoQ09ORklHX0VGSSkpDQo+ICAgICAgICAgICAgICBzaSA9IGVmaV9n
+ZXRfc2NyZWVuX2luZm8oZGV2KTsNCj4gDQo+ICAgICAgICBpZiAoSVNfRU5BQkxFRChDT05G
+SUdfQVJDSF9IQVNfU0NSRUVOX0lORk8pICYmICFzaSkNCj4gICAgICAgICAgICAgIHNpID0g
+c2NyZWVuX2luZm87DQo+IA0KPiAgICAgICAgcmV0dXJuIHNpOw0KPiB9DQo+IA0KPiBjb3Jy
+ZXNwb25kaW5nIHRvIGZiX2Zpcm13YXJlX2VkaWQoKS4gV2l0aCB0aGlzLCBhbnkgZHJpdmVy
+DQo+IHRoYXQgd2FudHMgdG8gYWNjZXNzIHNjcmVlbl9pbmZvIHdvdWxkIGNhbGwgdGhpcyBm
+dW5jdGlvbg0KPiBpbnN0ZWFkIG9mIHVzaW5nIHRoZSBnbG9iYWwgcG9pbnRlciwgcGx1cyBl
+aXRoZXIgTlVMTCBwb2ludGVyDQo+IGNoZWNrIG9yIGEgQ09ORklHX0FSQ0hfSEFTX1NDUkVF
+Tl9JTkZPIGRlcGVuZGVuY3kuDQo+IA0KPiBUaGlzIHdheSB3ZSBjb3VsZCBjb21wbGV0ZWx5
+IGVsaW1pbmF0ZSB0aGUgZ2xvYmFsIHNjcmVlbl9pbmZvDQo+IG9uIGFybTY0LCByaXNjdiwg
+YW5kIGxvb25nYXJjaCBidXQgc3RpbGwgdXNlIHRoZSBlZmkgYW5kDQo+IGh5cGVydiBmcmFt
+ZWJ1ZmZlci9kcm0gZHJpdmVycy4NCg0KSWYgcG9zc2libGUsIEknZCBsaWtlIHRvIHJlbW92
+ZSBnbG9iYWwgc2NyZWVuX2luZm8gYW5kIGVkaWRfaW5mbyANCmVudGlyZWx5IGZyb20gZmJk
+ZXYgYW5kIHRoZSB2YXJpb3VzIGNvbnNvbGVzLg0KDQpXZSBjdXJyZW50bHkgdXNlIHNjcmVl
+bl9pbmZvIHRvIHNldCB1cCB0aGUgZ2VuZXJpYyBmcmFtZWJ1ZmZlciBkZXZpY2UgaW4gDQpk
+cml2ZXJzL2Zpcm13YXJlL3N5c2ZiLmMuIEknZCBsaWtlIHRvIHVzZSBlZGlkX2luZm8gaGVy
+ZSBhcyB3ZWxsLCBzbyANCnRoYXQgdGhlIGdlbmVyaWMgZ3JhcGhpY3MgZHJpdmVycyBjYW4g
+Z2V0IEVESUQgaW5mb3JtYXRpb24uDQoNCkZvciB0aGUgZmV3IGZiZGV2IGRyaXZlcnMgYW5k
+IGNvbnNvbGVzIHRoYXQgcmVxdWlyZSB0aGUgZ2xvYmFsIA0Kc2NyZWVuX2luZm8vZWRpZF9p
+bmZvLCBJJ2QgcmF0aGVyIHByb3ZpZGUgbG9va3VwIGZ1bmN0aW9ucyBpbiBzeXNmYiANCihl
+LmcuLCBzeXNmYl9nZXRfc2NyZWVuX2luZm8oKSwgc3lzZmJfZ2V0X2VkaWRfaW5mbygpKS4g
+VGhlIGdsb2JhbCANCnNjcmVlbl9pbmZvL2VkaWRfaW5mbyBzdGF0ZSB3b3VsZCB0aGVuIGJl
+Y29tZSBhbiBpbnRlcm5hbCBhcnRpZmFjdCBvZiANCnRoZSBzeXNmYiBjb2RlLg0KDQpIb3Bl
+ZnVsbHkgdGhhdCBleHBsYWlucyBzb21lIG9mIHRoZSBkZWNpc2lvbnMgbWFkZSBpbiB0aGlz
+IHBhdGNoc2V0Lg0KDQpCZXN0IHJlZ2FyZHMNClRob21hcw0KDQo+IA0KPiAgICAgIEFybmQN
+Cg0KLS0gDQpUaG9tYXMgWmltbWVybWFubg0KR3JhcGhpY3MgRHJpdmVyIERldmVsb3Blcg0K
+U1VTRSBTb2Z0d2FyZSBTb2x1dGlvbnMgR2VybWFueSBHbWJIDQpGcmFua2Vuc3RyYXNzZSAx
+NDYsIDkwNDYxIE51ZXJuYmVyZywgR2VybWFueQ0KR0Y6IEl2byBUb3RldiwgQW5kcmV3IE15
+ZXJzLCBBbmRyZXcgTWNEb25hbGQsIEJvdWRpZW4gTW9lcm1hbg0KSFJCIDM2ODA5IChBRyBO
+dWVybmJlcmcpDQo=
+
+--------------9nOsvmrIChEQyu9JM4jWfbbm--
+
+--------------2k3MbKSxf2z9hgV165j2f9MP
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
+
+-----BEGIN PGP SIGNATURE-----
+
+wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmSlJ0oFAwAAAAAACgkQlh/E3EQov+Ar
+GBAAo4esabhlv1pv1eUJEjgRW+ns5YBTZSxnTNM1zBWU8t6X1q991ybNmrQv/epD+zuQeRoa97MN
+l1HgNdpESzfLQk9/SjPewRDC6ITHHLR2uBCxbrmdLnsMYYJ43lUFSFsusi1FLyQJV9RvIl7BlRYj
+S679/kx2vxzLto8BoxEU+AB1/zdCvICRrITF/2cflnGB0LPhKVU1QmpMEsvOCO2nnlkGZxWl1pIr
+NP0h5xgG+8DFgyWonyPJ93PMYja7LMpoPjTd9K2ErHriOEmFk++HFJTjIswsQz73XpaJBUqaJjjj
+i1WduG2dQFEWI0fOtDA/O0fV4AcZgGOpv6bk2G7/E1rRZtqPdq5DpNU/ep2+GesFjOy3f0voheUI
+I42NvvEBLh4PcIn2ScZTH8+O0KnIgRTgDgHH8J2rMcYqCIWJ1vi/gIK/DWc91nOyurlQ82ChZtcg
+Ps4ryHUs4XcXxARdFg+dbGtAEJX9w4WK+EpdwxXqCttR5AXouPgCC4ndmaJP9xOpOTBEz/llBrrd
+dR43H4TayV0zDNaWhCANKXA5yl14eFj0D7eursCdXweahKOEuAAfYKMxDLjXIV9aOy435JsF/3OG
+FeYNx3StYvNqRpP9PV0q3WENW7amHTXQ9yElDbo6j22jThA7DlmTln/RUQnSkN4zcrwG/w4mP1Yl
+ZK4=
+=mbrs
+-----END PGP SIGNATURE-----
+
+--------------2k3MbKSxf2z9hgV165j2f9MP--
