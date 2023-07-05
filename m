@@ -1,63 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55A3A7480CF
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 11:28:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF01E7481E6
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 12:18:48 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=eoo0Bvrw;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MZKUvR/+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QwvVD1wmgz3bmj
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 19:28:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qwwc66BTWz3blb
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 20:18:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=eoo0Bvrw;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MZKUvR/+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=yu.c.zhang@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QwvTL6hDyz2y3Y
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jul 2023 19:27:50 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id B4ABA61380;
-	Wed,  5 Jul 2023 09:27:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB110C433C7;
-	Wed,  5 Jul 2023 09:27:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1688549268;
-	bh=8Fx9fMjO8G9ugWAbuWMet+cg6+Joz5k8QhqzwC12qsY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eoo0Bvrw1UFedSuQIXZXLVU+9eSykKnlLCGNhX6WKDHSjWKzHs45W6Sc5+LEp8Yn2
-	 /DNzBXf9tV7vuTj14UGRu+D/lPt07gtCii7fqIBtyh8Z2HAouCMzNmVKrvzTL3yT/s
-	 lpXJcXQKTCcazzOuTFZLURKsfcEGQZNtF3QMf8uc=
-Date: Wed, 5 Jul 2023 10:27:45 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Subject: Re: Fwd: Memory corruption in multithreaded user space program while
- calling fork
-Message-ID: <2023070544-porous-prenatal-406a@gregkh>
-References: <5c7455db-4ed8-b54f-e2d5-d2811908123d@leemhuis.info>
- <CAJuCfpH7BOBYGEG=op09bZrh1x3WA8HMcGBXXRhe6M5RJaen5A@mail.gmail.com>
- <CAJuCfpH7t7gCV2FkctzG2eWTUVTFZD7CtD14-WuHqBqOYBo1jA@mail.gmail.com>
- <2023070359-evasive-regroup-f3b8@gregkh>
- <CAJuCfpF=XPpPYqp2Y1Vu-GUL=RBj4fyhXoXzjBY4EKtBnYE_eQ@mail.gmail.com>
- <2023070453-plod-swipe-cfbf@gregkh>
- <20230704091808.aa2ed3c11a5351d9bf217ac9@linux-foundation.org>
- <CAJuCfpE_WjRQoDT1XnvBghCH-kpqk+pfcBJGyDnK7DZLMVG5Mw@mail.gmail.com>
- <2023070509-undertow-pulverize-5adc@gregkh>
- <7668c45a-70b1-dc2f-d0f5-c0e76ec17145@leemhuis.info>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QwwbD3lTbz2xpx
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jul 2023 20:17:58 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1688552280; x=1720088280;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=oLxACQJJ5+O8I5OycraL/46XHwuWjbLPz8/XoWWOHjg=;
+  b=MZKUvR/+rjN9WF2mmIauYRIHmqGXtHynbtg1iRahWLSOU1oTLy7/EOut
+   XlSkUrS1DXHb7kiyyKf5iMgqS01BCMq5smT2NzYgTevtiUdaYCDeR9mUh
+   BGnG2LadCD/DxuNktPh2VsFuSMKIcN1WtTyQxIKFNhbcOFzJmSm9iOnDs
+   X8eWnwc/leXJAeRYfDJcMEVKgCta0s8B2qiPJ7MWqKH1/izloQCPYdu3X
+   p3+wvIdxnSatIHW2f2phgMy0YmIPwIxqICYo13jQMlOnmMtrYUUB/mF1e
+   tNMh4e3vBdJtK6lxFwaKSpDOfKfCXTlSnZLU/+3LjAFA/2cO55r7TERRs
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10761"; a="365873177"
+X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; 
+   d="scan'208";a="365873177"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2023 03:17:55 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10761"; a="965775138"
+X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; 
+   d="scan'208";a="965775138"
+Received: from jialinji-mobl4.ccr.corp.intel.com (HELO localhost) ([10.255.30.200])
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2023 03:17:51 -0700
+Date: Wed, 5 Jul 2023 18:18:00 +0800
+From: Yu Zhang <yu.c.zhang@linux.intel.com>
+To: David Stevens <stevensd@chromium.org>
+Subject: Re: [PATCH v7 5/8] KVM: x86/mmu: Don't pass FOLL_GET to
+ __kvm_follow_pfn
+Message-ID: <20230705101800.ut4c6topn6ylwczs@linux.intel.com>
+References: <20230704075054.3344915-1-stevensd@google.com>
+ <20230704075054.3344915-6-stevensd@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7668c45a-70b1-dc2f-d0f5-c0e76ec17145@leemhuis.info>
+In-Reply-To: <20230704075054.3344915-6-stevensd@google.com>
+User-Agent: NeoMutt/20171215
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,44 +69,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jacob Young <jacobly.alt@gmail.com>, Linux PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux Memory Management <linux-mm@kvack.org>, Bagas Sanjaya <bagasdotme@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, Laurent Dufour <ldufour@linux.ibm.com>, Suren Baghdasaryan <surenb@google.com>, Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: Marc Zyngier <maz@kernel.org>, kvm@vger.kernel.org, Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org, Peter Xu <peterx@redhat.com>, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jul 05, 2023 at 10:51:57AM +0200, Linux regression tracking (Thorsten Leemhuis) wrote:
-> On 05.07.23 09:08, Greg KH wrote:
-> > On Tue, Jul 04, 2023 at 01:22:54PM -0700, Suren Baghdasaryan wrote:
-> >> On Tue, Jul 4, 2023 at 9:18 AM Andrew Morton <akpm@linux-foundation.org> wrote:
-> >>> On Tue, 4 Jul 2023 09:00:19 +0100 Greg KH <gregkh@linuxfoundation.org> wrote:
-> >>>>>>>> Thanks! I'll investigate this later today. After discussing with
-> >>>>>>>> Andrew, we would like to disable CONFIG_PER_VMA_LOCK by default until
-> >>>>>>>> the issue is fixed. I'll post a patch shortly.
-> >>>>>>>
-> >>>>>>> Posted at: https://lore.kernel.org/all/20230703182150.2193578-1-surenb@google.com/
-> >>>>>>
-> >>>>>> As that change fixes something in 6.4, why not cc: stable on it as well?
-> >>>>>
-> >>>>> Sorry, I thought since per-VMA locks were introduced in 6.4 and this
-> >>>>> patch is fixing 6.4 I didn't need to send it to stable for older
-> >>>>> versions. Did I miss something?
-> >>>>
-> >>>> 6.4.y is a stable kernel tree right now, so yes, it needs to be included
-> >>>> there :)
-> >>>
-> >>> I'm in wait-a-few-days-mode on this.  To see if we have a backportable
-> >>> fix rather than disabling the feature in -stable.
+On Tue, Jul 04, 2023 at 04:50:50PM +0900, David Stevens wrote:
+> From: David Stevens <stevensd@chromium.org>
 > 
-> Andrew, how long will you remain in "wait-a-few-days-mode"? Given what
-> Greg said below and that we already had three reports I know of I'd
-> prefer if we could fix this rather sooner than later in mainline --
-> especially as Arch Linux and openSUSE Tumbleweed likely have switched to
-> 6.4.y already or will do so soon.
+> Stop passing FOLL_GET to __kvm_follow_pfn. This allows the host to map
+> memory into the guest that is backed by un-refcounted struct pages - for
+> example, higher order non-compound pages allocated by the amdgpu driver
+> via ttm_pool_alloc_page.
 
-Ick, yeah, and Fedora should be switching soon too, and I want to drop
-support for 6.3.y "any day now".  Is there just a revert we can do now
-first to resolve the regression and then work on fixing this up "better"
-for 6.6-rc1?
+I guess you mean the tail pages of the higher order non-compound pages?
+And as to the head page, it is said to be set to one coincidentally[*],
+and shall not be considered as refcounted.  IIUC, refcount of this head
+page will be increased and decreased soon in hva_to_pfn_remapped(), so
+this may not be a problem(?). But treating this head page differently,
+as a refcounted one(e.g., to set the A/D flags), is weired. 
 
-thanks,
+Or maybe I missed some context, e.g., can the head page be allocted to
+guest at all? 
 
-greg k-h
+
+> 
+> The bulk of this change is tracking the is_refcounted_page flag so that
+> non-refcounted pages don't trigger page_count() == 0 warnings. This is
+> done by storing the flag in an unused bit in the sptes.
+
+Also, maybe we should mention this only works on x86-64. 
+
+> 
+> Signed-off-by: David Stevens <stevensd@chromium.org>
+> ---
+>  arch/x86/kvm/mmu/mmu.c          | 44 +++++++++++++++++++++------------
+>  arch/x86/kvm/mmu/mmu_internal.h |  1 +
+>  arch/x86/kvm/mmu/paging_tmpl.h  |  9 ++++---
+>  arch/x86/kvm/mmu/spte.c         |  4 ++-
+>  arch/x86/kvm/mmu/spte.h         | 12 ++++++++-
+>  arch/x86/kvm/mmu/tdp_mmu.c      | 22 ++++++++++-------
+>  6 files changed, 62 insertions(+), 30 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> index e44ab512c3a1..b1607e314497 100644
+> --- a/arch/x86/kvm/mmu/mmu.c
+> +++ b/arch/x86/kvm/mmu/mmu.c
+
+...
+
+> @@ -2937,6 +2943,7 @@ static int mmu_set_spte(struct kvm_vcpu *vcpu, struct kvm_memory_slot *slot,
+>  	bool host_writable = !fault || fault->map_writable;
+>  	bool prefetch = !fault || fault->prefetch;
+>  	bool write_fault = fault && fault->write;
+> +	bool is_refcounted = !fault || fault->is_refcounted_page;
+
+Just wonder, what if a non-refcounted page is prefetched?  Or is it possible in
+practice?
+
+...
+>  
+> @@ -883,7 +884,7 @@ static gpa_t FNAME(gva_to_gpa)(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
+>   */
+>  static int FNAME(sync_spte)(struct kvm_vcpu *vcpu, struct kvm_mmu_page *sp, int i)
+>  {
+> -	bool host_writable;
+> +	bool host_writable, is_refcounted;
+>  	gpa_t first_pte_gpa;
+>  	u64 *sptep, spte;
+>  	struct kvm_memory_slot *slot;
+> @@ -940,10 +941,12 @@ static int FNAME(sync_spte)(struct kvm_vcpu *vcpu, struct kvm_mmu_page *sp, int
+>  	sptep = &sp->spt[i];
+>  	spte = *sptep;
+>  	host_writable = spte & shadow_host_writable_mask;
+> +	// TODO: is this correct?
+> +	is_refcounted = spte & SPTE_MMU_PAGE_REFCOUNTED;
+>  	slot = kvm_vcpu_gfn_to_memslot(vcpu, gfn);
+>  	make_spte(vcpu, sp, slot, pte_access, gfn,
+>  		  spte_to_pfn(spte), spte, true, false,
+> -		  host_writable, &spte);
+> +		  host_writable, is_refcounted, &spte);
+
+Could we restrict that a non-refcounted page shall not be used as shadow page?
+
+[*] https://lore.kernel.org/all/8caf3008-dcf3-985a-631e-e019b277c6f0@amd.com/
+
+B.R.
+Yu
