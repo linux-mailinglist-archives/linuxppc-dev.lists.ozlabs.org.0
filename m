@@ -1,87 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 654117486F1
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 16:54:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCF2F7486EB
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 16:52:59 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=itG5mPtz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fUP2f6sD;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qx2kQ2CGtz3bjV
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 00:54:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qx2hT53Y1z3bsQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 00:52:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=itG5mPtz;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fUP2f6sD;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qx2gc5p4Vz3Wtt
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 00:52:12 +1000 (AEST)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 365EoPVE000512;
-	Wed, 5 Jul 2023 14:51:52 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qx2gX54Tlz30F5
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 00:52:07 +1000 (AEST)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 365ElGWS003026;
+	Wed, 5 Jul 2023 14:51:53 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=zkE1J8q+iy0ZXdF2gFz55muLXm0WMv33WDOv1sOQgLw=;
- b=itG5mPtzCEEVrsUSV+AOZT7wssASwzKx3Y1t3zHBNC2ht0+sHnDdV1rmo/WBzWvvVrfe
- +QWcb1U1bAo+g0EPXuCF2YoBzAhMgJnCHP/W+IvmXMN7exUIqvhf4oo5Yg1/SBErJB4M
- CRrqwOsYiICUDGXh9yowgqkpC7g8zEZRkLOKy2FG3SFnx49HO7PByCbSvwsHGWoMnmuo
- YDv/KxDljrQPTQfAOU/j/ssHmpgoIkCGCO6P8PjR8YDWsFdcklZ9+sio38tOc16XwWkK
- pvivoBFqhr1EwctCYrOfd6fYFqZAL6SSCvut7aoHCkAae6bdb6y0mcSLiWcRvFlWLEu5 Xg== 
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=WfdHG/IFibjPqDV5js/ljbtxgQ4mhrxtxUvpA1+ay/Y=;
+ b=fUP2f6sD37eNq1w+y3JOd1a3RjqxE4EKI0Eav2kVx5OKFRqYY18wnMFWBBNL0Jaaq+rW
+ 3MyHw6EynkrbYUixtyYZtRsJgYRqQMvLKmjnjyOiMIIbmp9Gx9tUUPAFy7AmphpMwlIB
+ 2jit9HoaCpDbPTA0wWDBv5XIDdRvqvbt3Tn4z9eZ6L2Z9tmcaUyFGKKBdb0pqNuQCsR9
+ 6E5Npuai7ojWhrUycGZCh7J+GMqXhaXhibwh3v7h4XL1gzNcM1thZ0AbLd/zqlhoPnhF
+ IzBZU4ui6ueVnxK6PxP8kZvBHPTgxBDoI7wRiRol/pno89hOM0+Vs8XhlzWMziBIZwM4 3Q== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rnabx0nut-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rnak5g37s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Jul 2023 14:51:52 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 365ElwrU005006;
+	Wed, 5 Jul 2023 14:51:52 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rnak5g36d-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Wed, 05 Jul 2023 14:51:51 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 365EgJjv013773;
-	Wed, 5 Jul 2023 14:51:50 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rnabx0nua-1
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3650sFUn032566;
+	Wed, 5 Jul 2023 14:51:49 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3rjbs4tn97-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Jul 2023 14:51:50 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3652RRYu009805;
-	Wed, 5 Jul 2023 14:51:48 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3rjbs4tnj0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Jul 2023 14:51:48 +0000
+	Wed, 05 Jul 2023 14:51:49 +0000
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 365Epkt743909410
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 365Eplgc19268256
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 5 Jul 2023 14:51:46 GMT
+	Wed, 5 Jul 2023 14:51:47 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0B9612004B;
+	by IMSVA (Postfix) with ESMTP id 3CC3B20040;
+	Wed,  5 Jul 2023 14:51:47 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2F6092004D;
 	Wed,  5 Jul 2023 14:51:46 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 008C620040;
-	Wed,  5 Jul 2023 14:51:45 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.171.79.178])
 	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  5 Jul 2023 14:51:44 +0000 (GMT)
+	Wed,  5 Jul 2023 14:51:46 +0000 (GMT)
 From: Laurent Dufour <ldufour@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 00/10] Introduce SMT level and add PowerPC support
-Date: Wed,  5 Jul 2023 16:51:33 +0200
-Message-ID: <20230705145143.40545-1-ldufour@linux.ibm.com>
+Subject: [PATCH v4 01/10] cpu/hotplug: remove dependancy against cpu_primary_thread_mask
+Date: Wed,  5 Jul 2023 16:51:34 +0200
+Message-ID: <20230705145143.40545-2-ldufour@linux.ibm.com>
 X-Mailer: git-send-email 2.41.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: flHjRsTJgwwkIgOH1wpae1j0NbjDUp3i
-X-Proofpoint-GUID: Eh1q-CdM5eBF0snqoGpamWwoUMXWJ7un
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+In-Reply-To: <20230705145143.40545-1-ldufour@linux.ibm.com>
+References: <20230705145143.40545-1-ldufour@linux.ibm.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: h5_Kjgx80_GIwbjYFqO2hSx4w1lecSek
+X-Proofpoint-ORIG-GUID: ho0Gpv-QUkWpRbe_O5ZDGgt5gyT2EbpG
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-07-05_06,2023-07-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 clxscore=1015
- impostorscore=0 phishscore=0 spamscore=0 mlxlogscore=999 mlxscore=0
- malwarescore=0 suspectscore=0 adultscore=0 priorityscore=1501
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 phishscore=0
+ lowpriorityscore=0 suspectscore=0 adultscore=0 malwarescore=0
+ priorityscore=1501 spamscore=0 mlxlogscore=999 mlxscore=0 impostorscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2305260000 definitions=main-2307050131
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -98,84 +100,66 @@ Cc: linux-arch@vger.kernel.org, dave.hansen@linux.intel.com, linux-kernel@vger.k
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-I'm taking over the series Michael sent previously [1] which is smartly
-reviewing the initial series I sent [2].  This series is addressing the
-comments sent by Thomas and me on the Michael's one.
+The commit 18415f33e2ac ("cpu/hotplug: Allow "parallel" bringup up to
+CPUHP_BP_KICK_AP_STATE") introduce a dependancy against a global variable
+cpu_primary_thread_mask exported by the X86 code. This variable is only
+used when CONFIG_HOTPLUG_PARALLEL is set.
 
-Here is a short introduction to the issue this series is addressing:
+Since cpuhp_get_primary_thread_mask() and cpuhp_smt_aware() are only used
+when CONFIG_HOTPLUG_PARALLEL is set, don't define them when it is not set.
 
-When a new CPU is added, the kernel is activating all its threads. This
-leads to weird, but functional, result when adding CPU on a SMT 4 system
-for instance.
+There is no functional change introduce by that patch.
 
-Here the newly added CPU 1 has 8 threads while the other one has 4 threads
-active (system has been booted with the 'smt-enabled=4' kernel option):
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+---
+ kernel/cpu.c | 24 ++++++++++--------------
+ 1 file changed, 10 insertions(+), 14 deletions(-)
 
-ltcden3-lp12:~ # ppc64_cpu --info
-Core   0:    0*    1*    2*    3*    4     5     6     7
-Core   1:    8*    9*   10*   11*   12*   13*   14*   15*
-
-This mixed SMT level may confused end users and/or some applications.
-
-There is no SMT level recorded in the kernel (common code), neither in user
-space, as far as I know. Such a level is helpful when adding new CPU or
-when optimizing the energy efficiency (when reactivating CPUs).
-
-When SMP and HOTPLUG_SMT are defined, this series is adding a new SMT level
-(cpu_smt_num_threads) and few callbacks allowing the architecture code to
-fine control this value, setting a max and a "at boot" level, and
-controling whether a thread should be onlined or not.
-
-v4:
-  Rebase on top of 6.5's updates
-  Remove a dependancy against the X86's symbol cpu_primary_thread_mask
-v3:
-  Fix a build error in the patch 6/9
-v2:
-  As Thomas suggested,
-    Reword some commit's description
-    Remove topology_smt_supported()
-    Remove topology_smt_threads_supported()
-    Introduce CONFIG_SMT_NUM_THREADS_DYNAMIC
-    Remove switch() in __store_smt_control()
-  Update kernel-parameters.txt
-
-[1] https://lore.kernel.org/linuxppc-dev/20230524155630.794584-1-mpe@ellerman.id.au/
-[2] https://lore.kernel.org/linuxppc-dev/20230331153905.31698-1-ldufour@linux.ibm.com/
-
-
-Laurent Dufour (2):
-  cpu/hotplug: remove dependancy against cpu_primary_thread_mask
-  cpu/SMT: Remove topology_smt_supported()
-
-Michael Ellerman (8):
-  cpu/SMT: Move SMT prototypes into cpu_smt.h
-  cpu/SMT: Move smt/control simple exit cases earlier
-  cpu/SMT: Store the current/max number of threads
-  cpu/SMT: Create topology_smt_thread_allowed()
-  cpu/SMT: Allow enabling partial SMT states via sysfs
-  powerpc/pseries: Initialise CPU hotplug callbacks earlier
-  powerpc: Add HOTPLUG_SMT support
-  powerpc/pseries: Honour current SMT state when DLPAR onlining CPUs
-
- .../ABI/testing/sysfs-devices-system-cpu      |   1 +
- .../admin-guide/kernel-parameters.txt         |   4 +-
- arch/Kconfig                                  |   3 +
- arch/powerpc/Kconfig                          |   2 +
- arch/powerpc/include/asm/topology.h           |  15 ++
- arch/powerpc/kernel/smp.c                     |   8 +-
- arch/powerpc/platforms/pseries/hotplug-cpu.c  |  30 ++--
- arch/powerpc/platforms/pseries/pseries.h      |   2 +
- arch/powerpc/platforms/pseries/setup.c        |   2 +
- arch/x86/include/asm/topology.h               |   4 +-
- arch/x86/kernel/cpu/common.c                  |   2 +-
- arch/x86/kernel/smpboot.c                     |   8 -
- include/linux/cpu.h                           |  25 +--
- include/linux/cpu_smt.h                       |  33 ++++
- kernel/cpu.c                                  | 142 +++++++++++++-----
- 15 files changed, 196 insertions(+), 85 deletions(-)
- create mode 100644 include/linux/cpu_smt.h
-
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index 88a7ede322bd..03309f2f35a4 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -650,22 +650,8 @@ bool cpu_smt_possible(void)
+ }
+ EXPORT_SYMBOL_GPL(cpu_smt_possible);
+ 
+-static inline bool cpuhp_smt_aware(void)
+-{
+-	return topology_smt_supported();
+-}
+-
+-static inline const struct cpumask *cpuhp_get_primary_thread_mask(void)
+-{
+-	return cpu_primary_thread_mask;
+-}
+ #else
+ static inline bool cpu_smt_allowed(unsigned int cpu) { return true; }
+-static inline bool cpuhp_smt_aware(void) { return false; }
+-static inline const struct cpumask *cpuhp_get_primary_thread_mask(void)
+-{
+-	return cpu_present_mask;
+-}
+ #endif
+ 
+ static inline enum cpuhp_state
+@@ -1793,6 +1779,16 @@ static int __init parallel_bringup_parse_param(char *arg)
+ }
+ early_param("cpuhp.parallel", parallel_bringup_parse_param);
+ 
++static inline bool cpuhp_smt_aware(void)
++{
++	return topology_smt_supported();
++}
++
++static inline const struct cpumask *cpuhp_get_primary_thread_mask(void)
++{
++	return cpu_primary_thread_mask;
++}
++
+ /*
+  * On architectures which have enabled parallel bringup this invokes all BP
+  * prepare states for each of the to be onlined APs first. The last state
 -- 
 2.41.0
 
