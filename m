@@ -1,89 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C57674876A
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 17:05:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D19BF7486F8
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 16:55:29 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bjIuNrg5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rF4hg2Hn;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qx2zB71sWz3cGq
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 01:05:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qx2lM5Bhkz3bnQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 00:55:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bjIuNrg5;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rF4hg2Hn;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qx2yK6PwNz2ygr
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 01:04:57 +1000 (AEST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 365ElG3M025128;
-	Wed, 5 Jul 2023 15:04:43 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qx2gc5qrbz3bNs
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 00:52:12 +1000 (AEST)
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 365EmRvf021440;
+	Wed, 5 Jul 2023 14:51:55 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=I5NJo0VWHfd/AtjXszRvWrnq5hPYTYi77kf9Y39lCDM=;
- b=bjIuNrg5fjJ8M1iURG2wXAKZXN6jMdpY191a97UK18Uq0bCo2CJtvV0e5bDzIv79P6hN
- bliXo1uRaQbZJcQqrK4Hhn0ymrdaNUSZKFZqxLcZFFfnOzLRG+qNsXq6io0amnLq3Y8f
- GFyAZCg/UTfARlsw1S68owchnrN4DVrt+5CG80XBFseGmyEiDExxX2lnDJjHuhjIOMc2
- Ckf0FYFLm1wct+FGkZIG15vzILAZPdH1DBaJr2Hz/uEbZfNZXhFd5P9eMrYT+x78mxvY
- cjX/GAvXKbjetvs8MfZgrk98IWxh1nTclJ+YKb/A1/qwWfEjtu2tbqa/JV2FNniVMKiu bQ== 
+ bh=cG9/pDbZ6FXFTb7O2FLnvLgPQuiEQ1Jn4qTuiwFzTvA=;
+ b=rF4hg2HnHsiuL2q4ZnAjUwD5dVbILMTMdbSdw7o9slLwwj9WD0KXpN7HNpYDlF7kbH13
+ Nz/IrOXqbvg7D23opbt0TrOq0CcOZN7qLXGNuETqcIk2gEGa4e+8uAIDVhLbH9yjMjSK
+ nETLvFUCTbBPvtjoqlB/iIlvq5ww3qg20Ak9Qw34hbxpC01jdy7Z5QCXI1J90fBKdMUK
+ 3ke1U/4QntCVkxAxiVLMkIYZ+UneEo/qtc730ozHeFdAoPwUwaNicRhkf/lp9/P7H8Wr
+ YX2fma3aY7u7v0EZ3laEBL0Uxb9ZakFFqRMfRcUVtV/WbVB/xDhadSFmfN1Zg0QyAAgf LQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rnak40kvf-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rnakjg31d-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Jul 2023 15:04:42 +0000
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 365EmEQW027796;
-	Wed, 5 Jul 2023 15:04:42 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rnak40kua-1
+	Wed, 05 Jul 2023 14:51:54 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 365Enw0T027057;
+	Wed, 5 Jul 2023 14:51:54 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rnakjg309-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Jul 2023 15:04:42 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-	by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3650sFUo032566;
-	Wed, 5 Jul 2023 14:51:50 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3rjbs4tn98-1
+	Wed, 05 Jul 2023 14:51:54 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3654rDNT022555;
+	Wed, 5 Jul 2023 14:51:52 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3rjbde2n3u-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Jul 2023 14:51:50 +0000
+	Wed, 05 Jul 2023 14:51:52 +0000
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 365EpmCG15991500
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 365EpnZ121561962
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 5 Jul 2023 14:51:48 GMT
+	Wed, 5 Jul 2023 14:51:49 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7D3772004B;
+	by IMSVA (Postfix) with ESMTP id B948020043;
+	Wed,  5 Jul 2023 14:51:49 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A032620040;
 	Wed,  5 Jul 2023 14:51:48 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 61E1E20043;
-	Wed,  5 Jul 2023 14:51:47 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.171.79.178])
 	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  5 Jul 2023 14:51:47 +0000 (GMT)
+	Wed,  5 Jul 2023 14:51:48 +0000 (GMT)
 From: Laurent Dufour <ldufour@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 02/10] cpu/SMT: Move SMT prototypes into cpu_smt.h
-Date: Wed,  5 Jul 2023 16:51:35 +0200
-Message-ID: <20230705145143.40545-3-ldufour@linux.ibm.com>
+Subject: [PATCH v4 03/10] cpu/SMT: Move smt/control simple exit cases earlier
+Date: Wed,  5 Jul 2023 16:51:36 +0200
+Message-ID: <20230705145143.40545-4-ldufour@linux.ibm.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230705145143.40545-1-ldufour@linux.ibm.com>
 References: <20230705145143.40545-1-ldufour@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 8w4OFb0D3RTobjUnLAGpaCHu8uF0bnKB
-X-Proofpoint-GUID: aR52Uirc87Gq9s9ZAQWXvtp3Vif_bUIy
+X-Proofpoint-ORIG-GUID: AhOybAAUWlRm613PfmtCAgKhSQhaFbUH
+X-Proofpoint-GUID: 8AnUnclHJ25gcTnK1cj9J-FOkWU8hm9x
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-07-05_06,2023-07-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- lowpriorityscore=0 impostorscore=0 clxscore=1015 suspectscore=0 mlxscore=0
- adultscore=0 phishscore=0 priorityscore=1501 mlxlogscore=833 bulkscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ impostorscore=0 bulkscore=0 adultscore=0 mlxlogscore=999
+ lowpriorityscore=0 suspectscore=0 mlxscore=0 clxscore=1015 phishscore=0
+ spamscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2305260000 definitions=main-2307050131
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -102,127 +102,50 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Michael Ellerman <mpe@ellerman.id.au>
 
-In order to export the cpuhp_smt_control enum as part of the interface
-between generic and architecture code, the architecture code needs to
-include asm/topology.h.
+Move the simple exit cases, ie. which don't depend on the value written,
+earlier in the function. That makes it clearer that regardless of the
+input those states can not be transitioned out of.
 
-But that leads to circular header dependencies. So split the enum and
-related declarations into a separate header.
+That does have a user-visible effect, in that the error returned will
+now always be EPERM/ENODEV for those states, regardless of the value
+written. Previously writing an invalid value would return EINVAL even
+when in those states.
 
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-[ldufour: rewording the commit's description]
-Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
 ---
- arch/x86/include/asm/topology.h |  2 ++
- include/linux/cpu.h             | 25 +------------------------
- include/linux/cpu_smt.h         | 29 +++++++++++++++++++++++++++++
- kernel/cpu.c                    |  1 +
- 4 files changed, 33 insertions(+), 24 deletions(-)
- create mode 100644 include/linux/cpu_smt.h
+ kernel/cpu.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/include/asm/topology.h b/arch/x86/include/asm/topology.h
-index caf41c4869a0..ae49ed4417d0 100644
---- a/arch/x86/include/asm/topology.h
-+++ b/arch/x86/include/asm/topology.h
-@@ -136,6 +136,8 @@ static inline int topology_max_smt_threads(void)
- 	return __max_smt_threads;
- }
- 
-+#include <linux/cpu_smt.h>
-+
- int topology_update_package_map(unsigned int apicid, unsigned int cpu);
- int topology_update_die_map(unsigned int dieid, unsigned int cpu);
- int topology_phys_to_logical_pkg(unsigned int pkg);
-diff --git a/include/linux/cpu.h b/include/linux/cpu.h
-index 6e6e57ec69e8..6b326a9e8191 100644
---- a/include/linux/cpu.h
-+++ b/include/linux/cpu.h
-@@ -18,6 +18,7 @@
- #include <linux/compiler.h>
- #include <linux/cpumask.h>
- #include <linux/cpuhotplug.h>
-+#include <linux/cpu_smt.h>
- 
- struct device;
- struct device_node;
-@@ -204,30 +205,6 @@ void cpuhp_report_idle_dead(void);
- static inline void cpuhp_report_idle_dead(void) { }
- #endif /* #ifdef CONFIG_HOTPLUG_CPU */
- 
--enum cpuhp_smt_control {
--	CPU_SMT_ENABLED,
--	CPU_SMT_DISABLED,
--	CPU_SMT_FORCE_DISABLED,
--	CPU_SMT_NOT_SUPPORTED,
--	CPU_SMT_NOT_IMPLEMENTED,
--};
--
--#if defined(CONFIG_SMP) && defined(CONFIG_HOTPLUG_SMT)
--extern enum cpuhp_smt_control cpu_smt_control;
--extern void cpu_smt_disable(bool force);
--extern void cpu_smt_check_topology(void);
--extern bool cpu_smt_possible(void);
--extern int cpuhp_smt_enable(void);
--extern int cpuhp_smt_disable(enum cpuhp_smt_control ctrlval);
--#else
--# define cpu_smt_control		(CPU_SMT_NOT_IMPLEMENTED)
--static inline void cpu_smt_disable(bool force) { }
--static inline void cpu_smt_check_topology(void) { }
--static inline bool cpu_smt_possible(void) { return false; }
--static inline int cpuhp_smt_enable(void) { return 0; }
--static inline int cpuhp_smt_disable(enum cpuhp_smt_control ctrlval) { return 0; }
--#endif
--
- extern bool cpu_mitigations_off(void);
- extern bool cpu_mitigations_auto_nosmt(void);
- 
-diff --git a/include/linux/cpu_smt.h b/include/linux/cpu_smt.h
-new file mode 100644
-index 000000000000..722c2e306fef
---- /dev/null
-+++ b/include/linux/cpu_smt.h
-@@ -0,0 +1,29 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_CPU_SMT_H_
-+#define _LINUX_CPU_SMT_H_
-+
-+enum cpuhp_smt_control {
-+	CPU_SMT_ENABLED,
-+	CPU_SMT_DISABLED,
-+	CPU_SMT_FORCE_DISABLED,
-+	CPU_SMT_NOT_SUPPORTED,
-+	CPU_SMT_NOT_IMPLEMENTED,
-+};
-+
-+#if defined(CONFIG_SMP) && defined(CONFIG_HOTPLUG_SMT)
-+extern enum cpuhp_smt_control cpu_smt_control;
-+extern void cpu_smt_disable(bool force);
-+extern void cpu_smt_check_topology(void);
-+extern bool cpu_smt_possible(void);
-+extern int cpuhp_smt_enable(void);
-+extern int cpuhp_smt_disable(enum cpuhp_smt_control ctrlval);
-+#else
-+# define cpu_smt_control               (CPU_SMT_NOT_IMPLEMENTED)
-+static inline void cpu_smt_disable(bool force) { }
-+static inline void cpu_smt_check_topology(void) { }
-+static inline bool cpu_smt_possible(void) { return false; }
-+static inline int cpuhp_smt_enable(void) { return 0; }
-+static inline int cpuhp_smt_disable(enum cpuhp_smt_control ctrlval) { return 0; }
-+#endif
-+
-+#endif /* _LINUX_CPU_SMT_H_ */
 diff --git a/kernel/cpu.c b/kernel/cpu.c
-index 03309f2f35a4..e02204c4675a 100644
+index e02204c4675a..b6fe170c93e9 100644
 --- a/kernel/cpu.c
 +++ b/kernel/cpu.c
-@@ -592,6 +592,7 @@ static void lockdep_release_cpus_lock(void)
- void __weak arch_smt_update(void) { }
+@@ -2841,6 +2841,12 @@ __store_smt_control(struct device *dev, struct device_attribute *attr,
+ {
+ 	int ctrlval, ret;
  
- #ifdef CONFIG_HOTPLUG_SMT
++	if (cpu_smt_control == CPU_SMT_FORCE_DISABLED)
++		return -EPERM;
 +
- enum cpuhp_smt_control cpu_smt_control __read_mostly = CPU_SMT_ENABLED;
++	if (cpu_smt_control == CPU_SMT_NOT_SUPPORTED)
++		return -ENODEV;
++
+ 	if (sysfs_streq(buf, "on"))
+ 		ctrlval = CPU_SMT_ENABLED;
+ 	else if (sysfs_streq(buf, "off"))
+@@ -2850,12 +2856,6 @@ __store_smt_control(struct device *dev, struct device_attribute *attr,
+ 	else
+ 		return -EINVAL;
  
- void __init cpu_smt_disable(bool force)
+-	if (cpu_smt_control == CPU_SMT_FORCE_DISABLED)
+-		return -EPERM;
+-
+-	if (cpu_smt_control == CPU_SMT_NOT_SUPPORTED)
+-		return -ENODEV;
+-
+ 	ret = lock_device_hotplug_sysfs();
+ 	if (ret)
+ 		return ret;
 -- 
 2.41.0
 
