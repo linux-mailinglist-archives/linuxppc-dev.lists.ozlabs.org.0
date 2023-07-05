@@ -2,95 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66EE074838B
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 13:54:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5603D748397
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 13:57:38 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pAqESusD;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PFsnflyl;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qwykf2NY0z3brX
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 21:54:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qwyp81jJJz3bmQ
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 21:57:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pAqESusD;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PFsnflyl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=yu.c.zhang@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qwyjh3fZ4z2ydX
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jul 2023 21:53:43 +1000 (AEST)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 365Bi7Dj021846;
-	Wed, 5 Jul 2023 11:53:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=RM6BGoxAB5trXh244t7sn6H8ASPW31lkwjgvtqxQAe4=;
- b=pAqESusDye4cVH05DMf4Kpmp/CC0VTJvxwcjlirvtd31+7M/OodWO7EQofz1CUM1F2pD
- 46DpcTZx27Hr+ue/c1eA8Rbs+dpZX7CZD1QwhUqNOzePLJWQ1bDl2rMYcWQ8tikYM5Wo
- xwrNocbA5Cun7n09O3P/jJEut8grM8T1HdNOKfd60XfDHKEmzxyIEzU8viO679v2ffv7
- ikBiVYigTsP0tkRxq8dbO6jbegGH1nPAVxQbfss73pwj6p10SWnpup9g4yqTYMzTHVUE
- SJwa5QkL5fnbI/5c9AJVX0b7rnSHhKP9Udjh08vI5xPFOEpRRRjmm4Nsudo0F88tTidn ag== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rn7w6r74v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Jul 2023 11:53:17 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 365BjFjn026313;
-	Wed, 5 Jul 2023 11:53:16 GMT
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rn7w6r74f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Jul 2023 11:53:16 +0000
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
-	by ppma06fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36596LBW030966;
-	Wed, 5 Jul 2023 11:53:14 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma06fra.de.ibm.com (PPS) with ESMTPS id 3rjbddsve8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Jul 2023 11:53:14 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 365BrClC42205592
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 5 Jul 2023 11:53:12 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1571820043;
-	Wed,  5 Jul 2023 11:53:12 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2CB9720040;
-	Wed,  5 Jul 2023 11:53:11 +0000 (GMT)
-Received: from [9.171.79.178] (unknown [9.171.79.178])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  5 Jul 2023 11:53:11 +0000 (GMT)
-Message-ID: <a1276261-353a-f440-bc13-66fd49e08681@linux.ibm.com>
-Date: Wed, 5 Jul 2023 13:53:10 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v3 0/9] Introduce SMT level and add PowerPC support
-Content-Language: en-US
-To: "Zhang, Rui" <rui.zhang@intel.com>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <20230629143149.79073-1-ldufour@linux.ibm.com>
- <44bf8b00c960473e37e35571104b5a1b24673142.camel@intel.com>
-From: Laurent Dufour <ldufour@linux.ibm.com>
-In-Reply-To: <44bf8b00c960473e37e35571104b5a1b24673142.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: N4P2ig7ddIkXcU9iADb77eI_NafRDr1l
-X-Proofpoint-GUID: 2jxNtGr7yfx_aCflspM8uTWG1RSqMSor
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QwynG0Knyz2yyg
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jul 2023 21:56:48 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1688558210; x=1720094210;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Ynw6AXf7dszPcSqeI9Ih/R2B7n1Okp1K4vyVoT0Ge+c=;
+  b=PFsnflylPDd6FtabQ+ehW3b61h8xpD6RC8hAM4m1oX/AtRVmSO+h6i4O
+   ulMgppkV7ChmQjAjDFOggdLW++Sg4316iw4qD0SwqfGQe773vMSbB9f8e
+   1tnoLhCMeWLnaIzWt7+XVfHqqE5CZNMRldNelMFVLY02AtfqCjqnVCNMz
+   uHwgUKe3+LKNCmNcNMYu+C6MwEtiNVQir9dRz0ofjS/NB+1+13icMvPYV
+   rJ251uH769eHAV48yYmE1S8zp6NzpqW3uuSLx4Q06AXL1q9pZ6IsGry3k
+   CBiM/uA3CsWk3KHOQpEcd5OSKqQY4pzzWxVQS69Y3g885/Ci6WGX0opIy
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10761"; a="343651497"
+X-IronPort-AV: E=Sophos;i="6.01,183,1684825200"; 
+   d="scan'208";a="343651497"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2023 04:56:45 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10761"; a="1049670901"
+X-IronPort-AV: E=Sophos;i="6.01,183,1684825200"; 
+   d="scan'208";a="1049670901"
+Received: from jialinji-mobl4.ccr.corp.intel.com (HELO localhost) ([10.255.30.200])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2023 04:56:41 -0700
+Date: Wed, 5 Jul 2023 19:56:53 +0800
+From: Yu Zhang <yu.c.zhang@linux.intel.com>
+To: David Stevens <stevensd@chromium.org>
+Subject: Re: [PATCH v7 3/8] KVM: Make __kvm_follow_pfn not imply FOLL_GET
+Message-ID: <20230705115653.5whvhvcvmflqmcse@linux.intel.com>
+References: <20230704075054.3344915-1-stevensd@google.com>
+ <20230704075054.3344915-4-stevensd@google.com>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-05_02,2023-07-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- suspectscore=0 clxscore=1011 mlxscore=0 malwarescore=0 mlxlogscore=999
- lowpriorityscore=0 adultscore=0 phishscore=0 spamscore=0 bulkscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2307050102
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230704075054.3344915-4-stevensd@google.com>
+User-Agent: NeoMutt/20171215
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,114 +68,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "npiggin@gmail.com" <npiggin@gmail.com>, "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>, "tglx@linutronix.de" <tglx@linutronix.de>
+Cc: Marc Zyngier <maz@kernel.org>, kvm@vger.kernel.org, Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org, Peter Xu <peterx@redhat.com>, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Le 05/07/2023 à 05:04, Zhang, Rui a écrit :
-> Hi, Laurent,
+On Tue, Jul 04, 2023 at 04:50:48PM +0900, David Stevens wrote:
+> From: David Stevens <stevensd@chromium.org>
 > 
-> I want to test this patch set and found that it does not apply on top
-> of latest usptream git, because of some changes in this merge window,
-> so better rebase.
-
-Hi Rui,
-
-Thanks for your interest for this series.
-The latest Thomas's changes came into the PowerPC next branch.
-I'm working on a rebase.
-
-Cheers,
-Laurent.
-
-> thanks,
-> rui
+> Make it so that __kvm_follow_pfn does not imply FOLL_GET. This allows
+> callers to resolve a gfn when the associated pfn has a valid struct page
+> that isn't being actively refcounted (e.g. tail pages of non-compound
+> higher order pages). For a caller to safely omit FOLL_GET, all usages of
+> the returned pfn must be guarded by a mmu notifier.
 > 
-> On Thu, 2023-06-29 at 16:31 +0200, Laurent Dufour wrote:
->> I'm taking over the series Michael sent previously [1] which is
->> smartly
->> reviewing the initial series I sent [2].  This series is addressing
->> the
->> comments sent by Thomas and me on the Michael's one.
->>
->> Here is a short introduction to the issue this series is addressing:
->>
->> When a new CPU is added, the kernel is activating all its threads.
->> This
->> leads to weird, but functional, result when adding CPU on a SMT 4
->> system
->> for instance.
->>
->> Here the newly added CPU 1 has 8 threads while the other one has 4
->> threads
->> active (system has been booted with the 'smt-enabled=4' kernel
->> option):
->>
->> ltcden3-lp12:~ # ppc64_cpu --info
->> Core   0:    0*    1*    2*    3*    4     5     6     7
->> Core   1:    8*    9*   10*   11*   12*   13*   14*   15*
->>
->> This mixed SMT level may confused end users and/or some applications.
->>
->> There is no SMT level recorded in the kernel (common code), neither
->> in user
->> space, as far as I know. Such a level is helpful when adding new CPU
->> or
->> when optimizing the energy efficiency (when reactivating CPUs).
->>
->> When SMP and HOTPLUG_SMT are defined, this series is adding a new SMT
->> level
->> (cpu_smt_num_threads) and few callbacks allowing the architecture
->> code to
->> fine control this value, setting a max and a "at boot" level, and
->> controling whether a thread should be onlined or not.
->>
->> v3:
->>    Fix a build error in the patch 6/9
->> v2:
->>    As Thomas suggested,
->>      Reword some commit's description
->>      Remove topology_smt_supported()
->>      Remove topology_smt_threads_supported()
->>      Introduce CONFIG_SMT_NUM_THREADS_DYNAMIC
->>      Remove switch() in __store_smt_control()
->>    Update kernel-parameters.txt
->>
->> [1]
->> https://lore.kernel.org/linuxppc-dev/20230524155630.794584-1-mpe@ellerman.id.au/
->> [2]
->> https://lore.kernel.org/linuxppc-dev/20230331153905.31698-1-ldufour@linux.ibm.com/
->>
->> Laurent Dufour (1):
->>    cpu/SMT: Remove topology_smt_supported()
->>
->> Michael Ellerman (8):
->>    cpu/SMT: Move SMT prototypes into cpu_smt.h
->>    cpu/SMT: Move smt/control simple exit cases earlier
->>    cpu/SMT: Store the current/max number of threads
->>    cpu/SMT: Create topology_smt_thread_allowed()
->>    cpu/SMT: Allow enabling partial SMT states via sysfs
->>    powerpc/pseries: Initialise CPU hotplug callbacks earlier
->>    powerpc: Add HOTPLUG_SMT support
->>    powerpc/pseries: Honour current SMT state when DLPAR onlining CPUs
->>
->>   .../ABI/testing/sysfs-devices-system-cpu      |   1 +
->>   .../admin-guide/kernel-parameters.txt         |   4 +-
->>   arch/Kconfig                                  |   3 +
->>   arch/powerpc/Kconfig                          |   2 +
->>   arch/powerpc/include/asm/topology.h           |  15 +++
->>   arch/powerpc/kernel/smp.c                     |   8 +-
->>   arch/powerpc/platforms/pseries/hotplug-cpu.c  |  30 +++--
->>   arch/powerpc/platforms/pseries/pseries.h      |   2 +
->>   arch/powerpc/platforms/pseries/setup.c        |   2 +
->>   arch/x86/include/asm/topology.h               |   4 +-
->>   arch/x86/kernel/cpu/bugs.c                    |   3 +-
->>   arch/x86/kernel/smpboot.c                     |   8 --
->>   include/linux/cpu.h                           |  25 +---
->>   include/linux/cpu_smt.h                       |  33 +++++
->>   kernel/cpu.c                                  | 118 ++++++++++++++--
->> --
->>   15 files changed, 187 insertions(+), 71 deletions(-)
->>   create mode 100644 include/linux/cpu_smt.h
->>
+> This also adds a is_refcounted_page out parameter to kvm_follow_pfn that
+> is set when the returned pfn has an associated struct page with a valid
+> refcount. Callers that don't pass FOLL_GET should remember this value
+> and use it to avoid places like kvm_is_ad_tracked_page that assume a
+> non-zero refcount.
 > 
+> Signed-off-by: David Stevens <stevensd@chromium.org>
+> ---
+>  include/linux/kvm_host.h | 10 ++++++
+>  virt/kvm/kvm_main.c      | 67 +++++++++++++++++++++-------------------
+>  virt/kvm/pfncache.c      |  2 +-
+>  3 files changed, 47 insertions(+), 32 deletions(-)
+> 
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index ef2763c2b12e..a45308c7d2d9 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -1157,6 +1157,9 @@ unsigned long gfn_to_hva_memslot_prot(struct kvm_memory_slot *slot, gfn_t gfn,
+>  void kvm_release_page_clean(struct page *page);
+>  void kvm_release_page_dirty(struct page *page);
+>  
+> +void kvm_set_page_accessed(struct page *page);
+> +void kvm_set_page_dirty(struct page *page);
+> +
+>  struct kvm_follow_pfn {
+>  	const struct kvm_memory_slot *slot;
+>  	gfn_t gfn;
+> @@ -1164,10 +1167,17 @@ struct kvm_follow_pfn {
+>  	bool atomic;
+>  	/* Allow a read fault to create a writeable mapping. */
+>  	bool allow_write_mapping;
+> +	/*
+> +	 * Usage of the returned pfn will be guared by a mmu notifier. Must
+> +	 * be true if FOLL_GET is not set.
+> +	 */
+> +	bool guarded_by_mmu_notifier;
+
+And how? Any place to check the invalidate seq?
+
+B.R.
+Yu
