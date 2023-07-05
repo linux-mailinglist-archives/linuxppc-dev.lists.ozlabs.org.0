@@ -1,89 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7689174870F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 16:58:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34F287486FF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 16:57:09 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pI8AV6E9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QvWrpJRN;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qx2qC2WZBz3cTj
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 00:58:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qx2nH0kNcz3c4d
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 00:57:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pI8AV6E9;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QvWrpJRN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qx2gh1rqqz3bYX
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 00:52:15 +1000 (AEST)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 365Ekj68005598;
-	Wed, 5 Jul 2023 14:52:00 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qx2gf4f6Rz30hQ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 00:52:14 +1000 (AEST)
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 365EkHKY014911;
+	Wed, 5 Jul 2023 14:52:02 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : content-transfer-encoding
- : mime-version; s=pp1; bh=tJlxBeFLH1zJuNcKtOG9Kiw+Qsw7LANxcoxxZR0ZEeQ=;
- b=pI8AV6E95Ia99k/yZEQLfbjWMu0md0sN7fK7e7MJ8yqCjw0cz3QkGHYhENaJuKkTA634
- xfuTzoY2JUKm9nhOfuY+Nx5SLLzVYeV4E/WvtT7y1ijfoDCRmnvHi9cbTgWXWVejqD5I
- +E9GQiXdJyfrfd77coNW9EN+vzcrKFNLZuZcgmaYYfO8mBa+hHcqq/+wUWSlx2RM/g8M
- 4zNQ60ypxR+sP6ZvmVYo6BLhBKWEAv3v6sNMlwGxmMWadOwbrINX3bJ3JLAHkMd8ixe4
- 9iw8PueEQQ14oOeZqd3z37DSjM0Vd7edf/VDgS+K6kL4cDSO2xSZj5bFerW7JS/HLUFx hA== 
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=tx1at/2INEcqt7dGBW4108Z+7Xae9URY05LzYSvNwCU=;
+ b=QvWrpJRNz2Ir/rcNGbY21wEm3nQIaxRXfvJqJelHBXqyUQksixnqISYWCiGMVC8vTwfu
+ 5D2izSTDAyVcjrvmfpqnlT6ZbyitPD3FvGE0Oa4QGCMWA64AQ8jnQ0zFryqV8H/RXcKw
+ Q1RmdUh1Rvza3iR87ZBvl9J4G2o6ZMlNz3wM63mGTSpo7NPGzsXHneg3+ZK13PkY7oqN
+ GMa3cHQDCQyDMQqkQOjNKhQkk9m1mURacv33CEo6rQpG6XI1NRiRWh5TSIj39nbVr0Ht
+ aLesmfQbktPN3JH4kO2+DYYr5vb/cH34eEyiih+a38/8UPHU73jugUd7/eG0rGowHpIV FQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rnak2862w-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rnajp84ve-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Jul 2023 14:51:59 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 365El2gS007142;
-	Wed, 5 Jul 2023 14:51:59 GMT
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rnak28623-1
+	Wed, 05 Jul 2023 14:52:01 +0000
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 365El7vG017161;
+	Wed, 5 Jul 2023 14:52:01 GMT
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rnajp84th-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Jul 2023 14:52:00 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+	by ppma06fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36596LGM030966;
+	Wed, 5 Jul 2023 14:51:58 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma06fra.de.ibm.com (PPS) with ESMTPS id 3rjbddsxsm-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Wed, 05 Jul 2023 14:51:58 +0000
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
-	by ppma05fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 365ABBm1028795;
-	Wed, 5 Jul 2023 14:51:56 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma05fra.de.ibm.com (PPS) with ESMTPS id 3rjbs4sxyq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Jul 2023 14:51:56 +0000
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 365Epsx028443264
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 365EptEa8847998
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 5 Jul 2023 14:51:54 GMT
+	Wed, 5 Jul 2023 14:51:55 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7EF012004B;
+	by IMSVA (Postfix) with ESMTP id A82A620043;
+	Wed,  5 Jul 2023 14:51:55 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A266F20040;
 	Wed,  5 Jul 2023 14:51:54 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 68C3420040;
-	Wed,  5 Jul 2023 14:51:53 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.171.79.178])
 	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  5 Jul 2023 14:51:53 +0000 (GMT)
+	Wed,  5 Jul 2023 14:51:54 +0000 (GMT)
 From: Laurent Dufour <ldufour@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 07/10] cpu/SMT: Allow enabling partial SMT states via sysfs
-Date: Wed,  5 Jul 2023 16:51:40 +0200
-Message-ID: <20230705145143.40545-8-ldufour@linux.ibm.com>
+Subject: [PATCH v4 08/10] powerpc/pseries: Initialise CPU hotplug callbacks earlier
+Date: Wed,  5 Jul 2023 16:51:41 +0200
+Message-ID: <20230705145143.40545-9-ldufour@linux.ibm.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230705145143.40545-1-ldufour@linux.ibm.com>
 References: <20230705145143.40545-1-ldufour@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: HZk01MGvn19Coo4SBEer_4GEhH2N-XbY
-X-Proofpoint-ORIG-GUID: IUoF4MPGlBusBdlbgE583q2LrSihE0Hy
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: pZANAXBPp_kVmRJtXCaqVGjwhHfHESSA
+X-Proofpoint-ORIG-GUID: WMUAvUyjTTzSBwW5o4RmbopFQ12kdqhn
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-07-05_06,2023-07-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 clxscore=1015
- malwarescore=0 bulkscore=0 phishscore=0 spamscore=0 mlxscore=0
- adultscore=0 impostorscore=0 lowpriorityscore=0 priorityscore=1501
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ impostorscore=0 spamscore=0 malwarescore=0 clxscore=1015 phishscore=0
+ mlxlogscore=999 mlxscore=0 bulkscore=0 suspectscore=0 lowpriorityscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2305260000 definitions=main-2307050131
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -96,153 +96,119 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, kernel test robot <lkp@intel.com>, dave.hansen@linux.intel.com, linux-kernel@vger.kernel.org, mingo@redhat.com, bp@alien8.de, npiggin@gmail.com, tglx@linutronix.de, rui.zhang@intel.com
+Cc: linux-arch@vger.kernel.org, dave.hansen@linux.intel.com, linux-kernel@vger.kernel.org, mingo@redhat.com, bp@alien8.de, npiggin@gmail.com, tglx@linutronix.de, rui.zhang@intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 From: Michael Ellerman <mpe@ellerman.id.au>
 
-Add support to the /sys/devices/system/cpu/smt/control interface for
-enabling a specified number of SMT threads per core, including partial
-SMT states where not all threads are brought online.
+As part of the generic HOTPLUG_SMT code, there is support for disabling
+secondary SMT threads at boot time, by passing "nosmt" on the kernel
+command line.
 
-The current interface accepts "on" and "off", to enable either 1 or all
-SMT threads per core.
+The way that is implemented is the secondary threads are brought partly
+online, and then taken back offline again. That is done to support x86
+CPUs needing certain initialisation done on all threads. However powerpc
+has similar needs, see commit d70a54e2d085 ("powerpc/powernv: Ignore
+smt-enabled on Power8 and later").
 
-This commit allows writing an integer, between 1 and the number of SMT
-threads supported by the machine. Writing 1 is a synonym for "off", 2 or
-more enables SMT with the specified number of threads.
+For that to work the powerpc CPU hotplug callbacks need to be registered
+before secondary CPUs are brought online, otherwise __cpu_disable()
+fails due to smp_ops->cpu_disable being NULL.
 
-When reading the file, if all threads are online "on" is returned, to
-avoid changing behaviour for existing users. If some other number of
-threads is online then the integer value is returned.
-
-Architectures like x86 only supporting 1 thread or all threads, should not
-define CONFIG_SMT_NUM_THREADS_DYNAMIC. Architecture supporting partial SMT
-states, like PowerPC, should define it.
+So split the basic initialisation into pseries_cpu_hotplug_init() which
+can be called early from setup_arch(). The DLPAR related initialisation
+can still be done later, because it needs to do allocations.
 
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-[ldufour: slightly reword the commit's description]
-[ldufour: remove switch() in __store_smt_control()]
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202306282340.Ihqm0fLA-lkp@intel.com/
-[ldufour: fix build issue in control_show()]
-Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
 ---
- .../ABI/testing/sysfs-devices-system-cpu      |  1 +
- kernel/cpu.c                                  | 60 ++++++++++++++-----
- 2 files changed, 45 insertions(+), 16 deletions(-)
+ arch/powerpc/platforms/pseries/hotplug-cpu.c | 22 ++++++++++++--------
+ arch/powerpc/platforms/pseries/pseries.h     |  2 ++
+ arch/powerpc/platforms/pseries/setup.c       |  2 ++
+ 3 files changed, 17 insertions(+), 9 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-devices-system-cpu b/Documentation/ABI/testing/sysfs-devices-system-cpu
-index ecd585ca2d50..6dba65fb1956 100644
---- a/Documentation/ABI/testing/sysfs-devices-system-cpu
-+++ b/Documentation/ABI/testing/sysfs-devices-system-cpu
-@@ -555,6 +555,7 @@ Description:	Control Symmetric Multi Threading (SMT)
- 			 ================ =========================================
- 			 "on"		  SMT is enabled
- 			 "off"		  SMT is disabled
-+			 "<N>"		  SMT is enabled with N threads per core.
- 			 "forceoff"	  SMT is force disabled. Cannot be changed.
- 			 "notsupported"   SMT is not supported by the CPU
- 			 "notimplemented" SMT runtime toggling is not
-diff --git a/kernel/cpu.c b/kernel/cpu.c
-index 9a8d0685e055..7e8f1b044772 100644
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -2876,11 +2876,19 @@ static const struct attribute_group cpuhp_cpu_root_attr_group = {
+diff --git a/arch/powerpc/platforms/pseries/hotplug-cpu.c b/arch/powerpc/platforms/pseries/hotplug-cpu.c
+index 1a3cb313976a..61fb7cb00880 100644
+--- a/arch/powerpc/platforms/pseries/hotplug-cpu.c
++++ b/arch/powerpc/platforms/pseries/hotplug-cpu.c
+@@ -845,15 +845,9 @@ static struct notifier_block pseries_smp_nb = {
+ 	.notifier_call = pseries_smp_notifier,
+ };
  
- #ifdef CONFIG_HOTPLUG_SMT
+-static int __init pseries_cpu_hotplug_init(void)
++void __init pseries_cpu_hotplug_init(void)
+ {
+ 	int qcss_tok;
+-	unsigned int node;
+-
+-#ifdef CONFIG_ARCH_CPU_PROBE_RELEASE
+-	ppc_md.cpu_probe = dlpar_cpu_probe;
+-	ppc_md.cpu_release = dlpar_cpu_release;
+-#endif /* CONFIG_ARCH_CPU_PROBE_RELEASE */
  
-+static bool cpu_smt_num_threads_valid(unsigned int threads)
-+{
-+	if (IS_ENABLED(CONFIG_SMT_NUM_THREADS_DYNAMIC))
-+		return threads >= 1 && threads <= cpu_smt_max_threads;
-+	return threads == 1 || threads == cpu_smt_max_threads;
+ 	rtas_stop_self_token = rtas_function_token(RTAS_FN_STOP_SELF);
+ 	qcss_tok = rtas_function_token(RTAS_FN_QUERY_CPU_STOPPED_STATE);
+@@ -862,12 +856,22 @@ static int __init pseries_cpu_hotplug_init(void)
+ 			qcss_tok == RTAS_UNKNOWN_SERVICE) {
+ 		printk(KERN_INFO "CPU Hotplug not supported by firmware "
+ 				"- disabling.\n");
+-		return 0;
++		return;
+ 	}
+ 
+ 	smp_ops->cpu_offline_self = pseries_cpu_offline_self;
+ 	smp_ops->cpu_disable = pseries_cpu_disable;
+ 	smp_ops->cpu_die = pseries_cpu_die;
 +}
 +
- static ssize_t
- __store_smt_control(struct device *dev, struct device_attribute *attr,
- 		    const char *buf, size_t count)
- {
--	int ctrlval, ret;
-+	int ctrlval, ret, num_threads, orig_threads;
-+	bool force_off;
- 
- 	if (cpu_smt_control == CPU_SMT_FORCE_DISABLED)
- 		return -EPERM;
-@@ -2888,30 +2896,39 @@ __store_smt_control(struct device *dev, struct device_attribute *attr,
- 	if (cpu_smt_control == CPU_SMT_NOT_SUPPORTED)
- 		return -ENODEV;
- 
--	if (sysfs_streq(buf, "on"))
-+	if (sysfs_streq(buf, "on")) {
- 		ctrlval = CPU_SMT_ENABLED;
--	else if (sysfs_streq(buf, "off"))
-+		num_threads = cpu_smt_max_threads;
-+	} else if (sysfs_streq(buf, "off")) {
- 		ctrlval = CPU_SMT_DISABLED;
--	else if (sysfs_streq(buf, "forceoff"))
-+		num_threads = 1;
-+	} else if (sysfs_streq(buf, "forceoff")) {
- 		ctrlval = CPU_SMT_FORCE_DISABLED;
--	else
-+		num_threads = 1;
-+	} else if (kstrtoint(buf, 10, &num_threads) == 0) {
-+		if (num_threads == 1)
-+			ctrlval = CPU_SMT_DISABLED;
-+		else if (cpu_smt_num_threads_valid(num_threads))
-+			ctrlval = CPU_SMT_ENABLED;
-+		else
-+			return -EINVAL;
-+	} else {
- 		return -EINVAL;
-+	}
- 
- 	ret = lock_device_hotplug_sysfs();
- 	if (ret)
- 		return ret;
- 
--	if (ctrlval != cpu_smt_control) {
--		switch (ctrlval) {
--		case CPU_SMT_ENABLED:
--			ret = cpuhp_smt_enable();
--			break;
--		case CPU_SMT_DISABLED:
--		case CPU_SMT_FORCE_DISABLED:
--			ret = cpuhp_smt_disable(ctrlval);
--			break;
--		}
--	}
-+	orig_threads = cpu_smt_num_threads;
-+	cpu_smt_num_threads = num_threads;
++static int __init pseries_dlpar_init(void)
++{
++	unsigned int node;
 +
-+	force_off = ctrlval != cpu_smt_control && ctrlval == CPU_SMT_FORCE_DISABLED;
-+
-+	if (num_threads > orig_threads)
-+		ret = cpuhp_smt_enable();
-+	else if (num_threads < orig_threads || force_off)
-+		ret = cpuhp_smt_disable(ctrlval);
++#ifdef CONFIG_ARCH_CPU_PROBE_RELEASE
++	ppc_md.cpu_probe = dlpar_cpu_probe;
++	ppc_md.cpu_release = dlpar_cpu_release;
++#endif /* CONFIG_ARCH_CPU_PROBE_RELEASE */
  
- 	unlock_device_hotplug();
- 	return ret ? ret : count;
-@@ -2939,6 +2956,17 @@ static ssize_t control_show(struct device *dev,
- {
- 	const char *state = smt_states[cpu_smt_control];
+ 	/* Processors can be added/removed only on LPAR */
+ 	if (firmware_has_feature(FW_FEATURE_LPAR)) {
+@@ -886,4 +890,4 @@ static int __init pseries_cpu_hotplug_init(void)
  
-+#ifdef CONFIG_HOTPLUG_SMT
-+	/*
-+	 * If SMT is enabled but not all threads are enabled then show the
-+	 * number of threads. If all threads are enabled show "on". Otherwise
-+	 * show the state name.
-+	 */
-+	if (cpu_smt_control == CPU_SMT_ENABLED &&
-+	    cpu_smt_num_threads != cpu_smt_max_threads)
-+		return sysfs_emit(buf, "%d\n", cpu_smt_num_threads);
-+#endif
-+
- 	return snprintf(buf, PAGE_SIZE - 2, "%s\n", state);
+ 	return 0;
  }
+-machine_arch_initcall(pseries, pseries_cpu_hotplug_init);
++machine_arch_initcall(pseries, pseries_dlpar_init);
+diff --git a/arch/powerpc/platforms/pseries/pseries.h b/arch/powerpc/platforms/pseries/pseries.h
+index f8bce40ebd0c..f8893ba46e83 100644
+--- a/arch/powerpc/platforms/pseries/pseries.h
++++ b/arch/powerpc/platforms/pseries/pseries.h
+@@ -75,11 +75,13 @@ static inline int dlpar_hp_pmem(struct pseries_hp_errorlog *hp_elog)
  
+ #ifdef CONFIG_HOTPLUG_CPU
+ int dlpar_cpu(struct pseries_hp_errorlog *hp_elog);
++void pseries_cpu_hotplug_init(void);
+ #else
+ static inline int dlpar_cpu(struct pseries_hp_errorlog *hp_elog)
+ {
+ 	return -EOPNOTSUPP;
+ }
++static inline void pseries_cpu_hotplug_init(void) { }
+ #endif
+ 
+ /* PCI root bridge prepare function override for pseries */
+diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
+index e2a57cfa6c83..41451b76c6e5 100644
+--- a/arch/powerpc/platforms/pseries/setup.c
++++ b/arch/powerpc/platforms/pseries/setup.c
+@@ -816,6 +816,8 @@ static void __init pSeries_setup_arch(void)
+ 	/* Discover PIC type and setup ppc_md accordingly */
+ 	smp_init_pseries();
+ 
++	// Setup CPU hotplug callbacks
++	pseries_cpu_hotplug_init();
+ 
+ 	if (radix_enabled() && !mmu_has_feature(MMU_FTR_GTSE))
+ 		if (!firmware_has_feature(FW_FEATURE_RPT_INVALIDATE))
 -- 
 2.41.0
 
