@@ -2,76 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D63437484A9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 15:09:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D8327484AA
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 15:10:17 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=IwehquhG;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=ZGEq7iIM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=DUiGlPTW;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qx0P15QmYz3c1t
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 23:09:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qx0Pz3jkRz3c8W
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 23:10:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=IwehquhG;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=ZGEq7iIM;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=DUiGlPTW;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2001:67c:2178:6::1d; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12b; helo=mail-lf1-x12b.google.com; envelope-from=zhi.wang.linux@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QwsZY5JHjz300t
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jul 2023 18:02:13 +1000 (AEST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 55B9B1FD76;
-	Wed,  5 Jul 2023 08:02:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1688544130; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1537KsrqgtTf3qMTeFjDvl3IIymI/B25iZrixbbnSNE=;
-	b=IwehquhGrrxeA07eNql4jR23niZ/iiorDNs/g1jBq6KYVhLc7Q5aDspthVNETuks8N2182
-	TFa90v6mZYTq3TWYosoHRyG9pnWv2/s+/dMYyiftL4a3LbOfqAMl6Khxe8jIkwu2wfFtpK
-	V/FrYOxN1QnZgnOGjB3hNVLqYUkXl4I=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1688544130;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1537KsrqgtTf3qMTeFjDvl3IIymI/B25iZrixbbnSNE=;
-	b=ZGEq7iIM11LfGRt0DlOIzHPVm6XPL8FyNIYZ7x//Nfra+mVnCizN8ZPGkQyV/lCwixo7fv
-	oz/TdXngu4nAhFBA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 1C9EA13460;
-	Wed,  5 Jul 2023 08:02:09 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id WfgTBoEjpWRJPwAAMHmgww
-	(envelope-from <tzimmermann@suse.de>); Wed, 05 Jul 2023 08:02:09 +0000
-Message-ID: <96a9b754-ddf1-aa6b-fb25-16cb09a22bf2@suse.de>
-Date: Wed, 5 Jul 2023 10:02:08 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qwtb10426z2yTN
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jul 2023 18:47:40 +1000 (AEST)
+Received: by mail-lf1-x12b.google.com with SMTP id 2adb3069b0e04-4f13c41c957so1559917e87.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Jul 2023 01:47:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1688546856; x=1691138856;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2zr2sUZ7SOfrksXjNzs8Fb6GlNxPeyG5uVqIbAzN64E=;
+        b=DUiGlPTWW39RXZnUrevBhgioI7w+Gss5yLudrBT0GwQlL7jPaHLl2kC4pvHtC6rUoY
+         SDMzeL8G/9lKNJUrkxv/qHPoBaaVXKsKA4rnB+si3ZBSHEK1Ub9LiSnpie8OOgdnnh4i
+         P6HnWwOZYV/fIjHYA77uNEQJ0D1I+/IQ5nrssNoH5J0mLveYMpL46P3pIWVCjuefiG2/
+         AF8wYT93ozmZqhbtmplrBbXVZ808CAmtn+r6jaarzItzCFzZgyKptwRRi1biboJRWbU7
+         Z1aU01DFidFy3K7vpMimd3N/FS7jzPLXRRv2qyYFmBrZnJKDdHGvln27ywR97w2N1RLh
+         AlKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688546856; x=1691138856;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2zr2sUZ7SOfrksXjNzs8Fb6GlNxPeyG5uVqIbAzN64E=;
+        b=T4S4CkVE5tmeTALWgOakzB+4ao1qJL4qx8X/dR62xMdhCPqevoH7t13ZY6/YYVo/F7
+         q0hAu0YG/lWHmBr2UZ9IPx20Uz3VlJBxaSIP+d3TrU3jemHQM8fCzub0dfKoAVwwKViY
+         RmZ7AvpRR6sa79JaKAdMmtQUIkjsobWUjqVhJpbdXOI9phJhy3lLI3BWrxLL+K8begJa
+         7e7hErXMw7KyS5fg8UcozbdhhiSn3MtxR01hOAbD/cJ/XFtoDMBclJCq3oK574Axr6zg
+         +lA/mKDpbcLab7dTzKoNljf87qx+E0ByvIZZ3DQh1oMG00ZcKL/8Y80rzqiKpOytFZTS
+         6Ovw==
+X-Gm-Message-State: ABy/qLYOCLdyRbUCdoDUInu4GhbDHGN7LYgSBgq7OtMZVJHgZpc4Hb0I
+	wSW1MOq324KV0Lcjhk8x5ik=
+X-Google-Smtp-Source: APBJJlGwwUpsTPGSmjBgIwWwA6p5GXaeRLhpcLgAInEFyvPhfC9EmH5zFCxspQau0McHQpgcVqi4tw==
+X-Received: by 2002:ac2:538a:0:b0:4f6:86ba:283b with SMTP id g10-20020ac2538a000000b004f686ba283bmr9200910lfh.4.1688546855897;
+        Wed, 05 Jul 2023 01:47:35 -0700 (PDT)
+Received: from localhost (88-115-161-74.elisa-laajakaista.fi. [88.115.161.74])
+        by smtp.gmail.com with ESMTPSA id m17-20020ac24ad1000000b004fbaf131b1csm1963816lfp.130.2023.07.05.01.47.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Jul 2023 01:47:35 -0700 (PDT)
+Date: Wed, 5 Jul 2023 11:47:32 +0300
+From: Zhi Wang <zhi.wang.linux@gmail.com>
+To: David Stevens <stevensd@chromium.org>
+Subject: Re: [PATCH v7 2/8] KVM: Introduce __kvm_follow_pfn function
+Message-ID: <20230705114732.000005c6.zhi.wang.linux@gmail.com>
+In-Reply-To: <20230704075054.3344915-3-stevensd@google.com>
+References: <20230704075054.3344915-1-stevensd@google.com>
+	<20230704075054.3344915-3-stevensd@google.com>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [06/12] arch: Declare screen_info in <asm/screen_info.h>
-Content-Language: en-US
-To: Sui Jingfeng <suijingfeng@loongson.cn>, arnd@arndb.de, deller@gmx.de,
- daniel@ffwll.ch, airlied@gmail.com
-References: <20230629121952.10559-7-tzimmermann@suse.de>
- <02a6f36c-521f-4ff0-a0bf-1f8781c853e3@loongson.cn>
-From: Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <02a6f36c-521f-4ff0-a0bf-1f8781c853e3@loongson.cn>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------mvTV0S2N0xU0yyoORtj2zLF6"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Mailman-Approved-At: Wed, 05 Jul 2023 23:08:41 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -84,410 +81,430 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, linux-efi@vger.kernel.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, Sebastian Reichel <sebastian.reichel@collabora.com>, Max Filippov <jcmvbkbc@gmail.com>, Rich Felker <dalias@libc.org>, Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, WANG Xuerui <kernel@xen0n.name>, linux-arch@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, linux-staging@lists.linux.dev, Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>, Sami Tolvanen <samitolvanen@google.com>, Palmer Dabbelt <palmer@dabb
- elt.com>, Matt Turner <mattst88@gmail.com>, Huacai Chen <chenhuacai@kernel.org>, Albert Ou <aou@eecs.berkeley.edu>, Kees Cook <keescook@chromium.org>, "Paul E. McKenney" <paulmck@kernel.org>, Anshuman Khandual <anshuman.khandual@arm.com>, Frederic Weisbecker <frederic@kernel.org>, linux-alpha@vger.kernel.org, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, "Russell King \(Oracle\)" <rmk+kernel@armlinux.org.uk>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, loongarch@lists.linux.dev, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Thomas Gleixner <tglx@linutronix.de>, Zi Yan <ziy@nvidia.com>, linux-arm-kernel@lists.infradead.org, Brian Cain <bcain@quicinc.com>, Chris Zankel <chris@zankel.net>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Niklas Schnelle <schnelle@linux.ibm.com>, linux-mips@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Juerg Haefliger <juerg.haefliger@canonical.com>,
-  "Mike Rapoport \(IBM\)" <rppt@kernel.org>, linux-hexagon@vger.kernel.org, Borislav Petkov <bp@alien8.de>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Marc Zyngier <maz@kernel.org>, kvm@vger.kernel.org, Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org, Peter Xu <peterx@redhat.com>, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------mvTV0S2N0xU0yyoORtj2zLF6
-Content-Type: multipart/mixed; boundary="------------b2X5ouefEi1LmiskbVc9m302";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Sui Jingfeng <suijingfeng@loongson.cn>, arnd@arndb.de, deller@gmx.de,
- daniel@ffwll.ch, airlied@gmail.com
-Cc: linux-hyperv@vger.kernel.org, linux-efi@vger.kernel.org,
- linux-ia64@vger.kernel.org, Anshuman Khandual <anshuman.khandual@arm.com>,
- linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-mips@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>,
- Rich Felker <dalias@libc.org>, Guo Ren <guoren@kernel.org>,
- Michael Ellerman <mpe@ellerman.id.au>, "H. Peter Anvin" <hpa@zytor.com>,
- sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
- Will Deacon <will@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- linux-arch@vger.kernel.org,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, linux-hexagon@vger.kernel.org,
- linux-staging@lists.linux.dev, Russell King <linux@armlinux.org.uk>,
- linux-csky@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- Sami Tolvanen <samitolvanen@google.com>,
- Juerg Haefliger <juerg.haefliger@canonical.com>,
- Matt Turner <mattst88@gmail.com>, Huacai Chen <chenhuacai@kernel.org>,
- Albert Ou <aou@eecs.berkeley.edu>, Kees Cook <keescook@chromium.org>,
- "Paul E. McKenney" <paulmck@kernel.org>, Chris Zankel <chris@zankel.net>,
- Frederic Weisbecker <frederic@kernel.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Nicholas Piggin <npiggin@gmail.com>, Niklas Schnelle
- <schnelle@linux.ibm.com>, "Russell King (Oracle)"
- <rmk+kernel@armlinux.org.uk>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>,
- Thomas Gleixner <tglx@linutronix.de>, Zi Yan <ziy@nvidia.com>,
- linux-arm-kernel@lists.infradead.org, Brian Cain <bcain@quicinc.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Sebastian Reichel <sebastian.reichel@collabora.com>,
- linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, "Mike Rapoport (IBM)"
- <rppt@kernel.org>, linux-alpha@vger.kernel.org,
- Borislav Petkov <bp@alien8.de>, Andrew Morton <akpm@linux-foundation.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
- x86@kernel.org
-Message-ID: <96a9b754-ddf1-aa6b-fb25-16cb09a22bf2@suse.de>
-Subject: Re: [06/12] arch: Declare screen_info in <asm/screen_info.h>
-References: <20230629121952.10559-7-tzimmermann@suse.de>
- <02a6f36c-521f-4ff0-a0bf-1f8781c853e3@loongson.cn>
-In-Reply-To: <02a6f36c-521f-4ff0-a0bf-1f8781c853e3@loongson.cn>
+On Tue,  4 Jul 2023 16:50:47 +0900
+David Stevens <stevensd@chromium.org> wrote:
 
---------------b2X5ouefEi1LmiskbVc9m302
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+> From: David Stevens <stevensd@chromium.org>
+> 
+> Introduce __kvm_follow_pfn, which will replace __gfn_to_pfn_memslot.
+> __kvm_follow_pfn refactors the old API's arguments into a struct and,
+> where possible, combines the boolean arguments into a single flags
+> argument.
+> 
+> Signed-off-by: David Stevens <stevensd@chromium.org>
+> ---
+>  include/linux/kvm_host.h |  16 ++++
+>  virt/kvm/kvm_main.c      | 171 ++++++++++++++++++++++-----------------
+>  virt/kvm/kvm_mm.h        |   3 +-
+>  virt/kvm/pfncache.c      |   8 +-
+>  4 files changed, 122 insertions(+), 76 deletions(-)
+> 
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 9d3ac7720da9..ef2763c2b12e 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -97,6 +97,7 @@
+>  #define KVM_PFN_ERR_HWPOISON	(KVM_PFN_ERR_MASK + 1)
+>  #define KVM_PFN_ERR_RO_FAULT	(KVM_PFN_ERR_MASK + 2)
+>  #define KVM_PFN_ERR_SIGPENDING	(KVM_PFN_ERR_MASK + 3)
+> +#define KVM_PFN_ERR_NEEDS_IO	(KVM_PFN_ERR_MASK + 4)
+>  
+>  /*
+>   * error pfns indicate that the gfn is in slot but faild to
+> @@ -1156,6 +1157,21 @@ unsigned long gfn_to_hva_memslot_prot(struct kvm_memory_slot *slot, gfn_t gfn,
+>  void kvm_release_page_clean(struct page *page);
+>  void kvm_release_page_dirty(struct page *page);
+>  
+> +struct kvm_follow_pfn {
+> +	const struct kvm_memory_slot *slot;
+> +	gfn_t gfn;
+> +	unsigned int flags;
+> +	bool atomic;
+> +	/* Allow a read fault to create a writeable mapping. */
+> +	bool allow_write_mapping;
+> +
+> +	/* Outputs of __kvm_follow_pfn */
+> +	hva_t hva;
+> +	bool writable;
+> +};
+> +
+> +kvm_pfn_t __kvm_follow_pfn(struct kvm_follow_pfn *foll);
+> +
+>  kvm_pfn_t gfn_to_pfn(struct kvm *kvm, gfn_t gfn);
+>  kvm_pfn_t gfn_to_pfn_prot(struct kvm *kvm, gfn_t gfn, bool write_fault,
+>  		      bool *writable);
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 371bd783ff2b..b13f22861d2f 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -2486,24 +2486,22 @@ static inline int check_user_page_hwpoison(unsigned long addr)
+>   * true indicates success, otherwise false is returned.  It's also the
+>   * only part that runs if we can in atomic context.
+>   */
+> -static bool hva_to_pfn_fast(unsigned long addr, bool write_fault,
+> -			    bool *writable, kvm_pfn_t *pfn)
+> +static bool hva_to_pfn_fast(struct kvm_follow_pfn *foll, kvm_pfn_t *pfn)
+>  {
+>  	struct page *page[1];
+> +	bool write_fault = foll->flags & FOLL_WRITE;
+>  
+>  	/*
+>  	 * Fast pin a writable pfn only if it is a write fault request
+>  	 * or the caller allows to map a writable pfn for a read fault
+>  	 * request.
+>  	 */
+> -	if (!(write_fault || writable))
+> +	if (!(write_fault || foll->allow_write_mapping))
+>  		return false;
+>  
+> -	if (get_user_page_fast_only(addr, FOLL_WRITE, page)) {
+> +	if (get_user_page_fast_only(foll->hva, FOLL_WRITE, page)) {
+>  		*pfn = page_to_pfn(page[0]);
+> -
+> -		if (writable)
+> -			*writable = true;
+> +		foll->writable = foll->allow_write_mapping;
+>  		return true;
+>  	}
+>  
+> @@ -2514,35 +2512,26 @@ static bool hva_to_pfn_fast(unsigned long addr, bool write_fault,
+>   * The slow path to get the pfn of the specified host virtual address,
+>   * 1 indicates success, -errno is returned if error is detected.
+>   */
+> -static int hva_to_pfn_slow(unsigned long addr, bool *async, bool write_fault,
+> -			   bool interruptible, bool *writable, kvm_pfn_t *pfn)
+> +static int hva_to_pfn_slow(struct kvm_follow_pfn *foll, kvm_pfn_t *pfn)
+>  {
+> -	unsigned int flags = FOLL_HWPOISON;
+> +	unsigned int flags = FOLL_HWPOISON | FOLL_GET | foll->flags;
+>  	struct page *page;
+>  	int npages;
+>  
+>  	might_sleep();
+>  
+> -	if (writable)
+> -		*writable = write_fault;
+> -
+> -	if (write_fault)
+> -		flags |= FOLL_WRITE;
+> -	if (async)
+> -		flags |= FOLL_NOWAIT;
+> -	if (interruptible)
+> -		flags |= FOLL_INTERRUPTIBLE;
+> -
+> -	npages = get_user_pages_unlocked(addr, 1, &page, flags);
+> +	npages = get_user_pages_unlocked(foll->hva, 1, &page, flags);
+>  	if (npages != 1)
+>  		return npages;
+>  
+> +	foll->writable = (foll->flags & FOLL_WRITE) && foll->allow_write_mapping;
+> +
+>  	/* map read fault as writable if possible */
+> -	if (unlikely(!write_fault) && writable) {
+> +	if (unlikely(!foll->writable) && foll->allow_write_mapping) {
+>  		struct page *wpage;
+>  
+> -		if (get_user_page_fast_only(addr, FOLL_WRITE, &wpage)) {
+> -			*writable = true;
+> +		if (get_user_page_fast_only(foll->hva, FOLL_WRITE, &wpage)) {
+> +			foll->writable = true;
+>  			put_page(page);
+>  			page = wpage;
+>  		}
+> @@ -2572,23 +2561,23 @@ static int kvm_try_get_pfn(kvm_pfn_t pfn)
+>  	return get_page_unless_zero(page);
+>  }
+>  
+> -static int hva_to_pfn_remapped(struct vm_area_struct *vma,
+> -			       unsigned long addr, bool write_fault,
+> -			       bool *writable, kvm_pfn_t *p_pfn)
+> +static int hva_to_pfn_remapped(struct vm_area_struct *vma, struct kvm_follow_pfn *foll,
+> +			       kvm_pfn_t *p_pfn)
+>  {
+>  	kvm_pfn_t pfn;
+>  	pte_t *ptep;
+>  	spinlock_t *ptl;
+> +	bool write_fault = foll->flags & FOLL_WRITE;
+>  	int r;
+>  
+> -	r = follow_pte(vma->vm_mm, addr, &ptep, &ptl);
+> +	r = follow_pte(vma->vm_mm, foll->hva, &ptep, &ptl);
+>  	if (r) {
+>  		/*
+>  		 * get_user_pages fails for VM_IO and VM_PFNMAP vmas and does
+>  		 * not call the fault handler, so do it here.
+>  		 */
+>  		bool unlocked = false;
+> -		r = fixup_user_fault(current->mm, addr,
+> +		r = fixup_user_fault(current->mm, foll->hva,
+>  				     (write_fault ? FAULT_FLAG_WRITE : 0),
+>  				     &unlocked);
+>  		if (unlocked)
+> @@ -2596,7 +2585,7 @@ static int hva_to_pfn_remapped(struct vm_area_struct *vma,
+>  		if (r)
+>  			return r;
+>  
+> -		r = follow_pte(vma->vm_mm, addr, &ptep, &ptl);
+> +		r = follow_pte(vma->vm_mm, foll->hva, &ptep, &ptl);
+>  		if (r)
+>  			return r;
+>  	}
+> @@ -2606,8 +2595,7 @@ static int hva_to_pfn_remapped(struct vm_area_struct *vma,
+>  		goto out;
+>  	}
+>  
+> -	if (writable)
+> -		*writable = pte_write(*ptep);
+> +	foll->writable = pte_write(*ptep) && foll->allow_write_mapping;
+>  	pfn = pte_pfn(*ptep);
+>  
+>  	/*
+> @@ -2652,24 +2640,22 @@ static int hva_to_pfn_remapped(struct vm_area_struct *vma,
+>   * 2): @write_fault = false && @writable, @writable will tell the caller
+>   *     whether the mapping is writable.
+>   */
+> -kvm_pfn_t hva_to_pfn(unsigned long addr, bool atomic, bool interruptible,
+> -		     bool *async, bool write_fault, bool *writable)
+> +kvm_pfn_t hva_to_pfn(struct kvm_follow_pfn *foll)
+>  {
+>  	struct vm_area_struct *vma;
+>  	kvm_pfn_t pfn;
+>  	int npages, r;
+>  
+>  	/* we can do it either atomically or asynchronously, not both */
+> -	BUG_ON(atomic && async);
+> +	BUG_ON(foll->atomic && (foll->flags & FOLL_NOWAIT));
+>  
+> -	if (hva_to_pfn_fast(addr, write_fault, writable, &pfn))
+> +	if (hva_to_pfn_fast(foll, &pfn))
+>  		return pfn;
+>  
+> -	if (atomic)
+> +	if (foll->atomic)
+>  		return KVM_PFN_ERR_FAULT;
+>  
+> -	npages = hva_to_pfn_slow(addr, async, write_fault, interruptible,
+> -				 writable, &pfn);
+> +	npages = hva_to_pfn_slow(foll, &pfn);
+>  	if (npages == 1)
+>  		return pfn;
+>  	if (npages == -EINTR)
+> @@ -2677,83 +2663,122 @@ kvm_pfn_t hva_to_pfn(unsigned long addr, bool atomic, bool interruptible,
+>  
+>  	mmap_read_lock(current->mm);
+>  	if (npages == -EHWPOISON ||
+> -	      (!async && check_user_page_hwpoison(addr))) {
+> +	      (!(foll->flags & FOLL_NOWAIT) && check_user_page_hwpoison(foll->hva))) {
+>  		pfn = KVM_PFN_ERR_HWPOISON;
+>  		goto exit;
+>  	}
+>  
+>  retry:
+> -	vma = vma_lookup(current->mm, addr);
+> +	vma = vma_lookup(current->mm, foll->hva);
+>  
+>  	if (vma == NULL)
+>  		pfn = KVM_PFN_ERR_FAULT;
+>  	else if (vma->vm_flags & (VM_IO | VM_PFNMAP)) {
+> -		r = hva_to_pfn_remapped(vma, addr, write_fault, writable, &pfn);
+> +		r = hva_to_pfn_remapped(vma, foll, &pfn);
+>  		if (r == -EAGAIN)
+>  			goto retry;
+>  		if (r < 0)
+>  			pfn = KVM_PFN_ERR_FAULT;
+>  	} else {
+> -		if (async && vma_is_valid(vma, write_fault))
+> -			*async = true;
+> -		pfn = KVM_PFN_ERR_FAULT;
+> +		if ((foll->flags & FOLL_NOWAIT) &&
+> +		    vma_is_valid(vma, foll->flags & FOLL_WRITE))
+> +			pfn = KVM_PFN_ERR_NEEDS_IO;
+> +		else
+> +			pfn = KVM_PFN_ERR_FAULT;
+>  	}
+>  exit:
+>  	mmap_read_unlock(current->mm);
+>  	return pfn;
+>  }
+>  
+> -kvm_pfn_t __gfn_to_pfn_memslot(const struct kvm_memory_slot *slot, gfn_t gfn,
+> -			       bool atomic, bool interruptible, bool *async,
+> -			       bool write_fault, bool *writable, hva_t *hva)
+> +kvm_pfn_t __kvm_follow_pfn(struct kvm_follow_pfn *foll)
+>  {
+> -	unsigned long addr = __gfn_to_hva_many(slot, gfn, NULL, write_fault);
+> -
+> -	if (hva)
+> -		*hva = addr;
+> +	foll->hva = __gfn_to_hva_many(foll->slot, foll->gfn, NULL,
+> +				      foll->flags & FOLL_WRITE);
+>  
+> -	if (addr == KVM_HVA_ERR_RO_BAD) {
+> -		if (writable)
+> -			*writable = false;
+> +	if (foll->hva == KVM_HVA_ERR_RO_BAD)
+>  		return KVM_PFN_ERR_RO_FAULT;
+> -	}
+>  
 
-SGkNCg0KQW0gMDUuMDcuMjMgdW0gMDM6MjEgc2NocmllYiBTdWkgSmluZ2Zlbmc6DQo+IEhp
-LCBUaG9tYXMNCj4gDQo+IA0KPiBJIGxvdmUgeW91ciBwYXRjaCwgeWV0IGFmdGVyIGFwcGxp
-ZWQgeW91ciBwYXRjaCwgdGhlIGxpbnV4IGtlcm5lbCBmYWlsIA0KPiB0byBjb21waWxlIG9u
-IG15IExvb25nQXJjaCBtYWNoaW5lLg0KDQpzY3JlZW5faW5mbyBpcyBtaXNzaW5nLiBJIHRo
-aW5rIHRoaXMgc2hvdWxkIGJlIHNvbHZlZCB3aXRoIHlvdXIgdXBkYXRlIA0KdG8gcGF0Y2gg
-MS4NCg0KQmVzdCByZWdhcmRzDQpUaG9tYXMNCg0KPiANCj4gDQo+IGBgYA0KPiANCj4gIMKg
-IENDwqDCoMKgwqDCoCBhcmNoL2xvb25nYXJjaC9rZXJuZWwvZWZpLm8NCj4gYXJjaC9sb29u
-Z2FyY2gva2VybmVsL2VmaS5jOiBJbiBmdW5jdGlvbiDigJhpbml0X3NjcmVlbl9pbmZv4oCZ
-Og0KPiBhcmNoL2xvb25nYXJjaC9rZXJuZWwvZWZpLmM6Nzc6NTQ6IGVycm9yOiBpbnZhbGlk
-IGFwcGxpY2F0aW9uIG9mIA0KPiDigJhzaXplb2bigJkgdG8gaW5jb21wbGV0ZSB0eXBlIOKA
-mHN0cnVjdCBzY3JlZW5faW5mb+KAmQ0KPiAgwqDCoCA3NyB8wqDCoMKgwqDCoMKgwqDCoCBz
-aSA9IGVhcmx5X21lbXJlbWFwKHNjcmVlbl9pbmZvX3RhYmxlLCBzaXplb2YoKnNpKSk7DQo+
-ICDCoMKgwqDCoMKgIHzCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgIF4NCj4gYXJjaC9sb29uZ2FyY2gva2VybmVsL2VmaS5jOjgyOjk6IGVy
-cm9yOiDigJhzY3JlZW5faW5mb+KAmSB1bmRlY2xhcmVkIChmaXJzdCANCj4gdXNlIGluIHRo
-aXMgZnVuY3Rpb24pDQo+ICDCoMKgIDgyIHzCoMKgwqDCoMKgwqDCoMKgIHNjcmVlbl9pbmZv
-ID0gKnNpOw0KPiAgwqDCoMKgwqDCoCB8wqDCoMKgwqDCoMKgwqDCoCBefn5+fn5+fn5+fg0K
-PiBhcmNoL2xvb25nYXJjaC9rZXJuZWwvZWZpLmM6ODI6OTogbm90ZTogZWFjaCB1bmRlY2xh
-cmVkIGlkZW50aWZpZXIgaXMgDQo+IHJlcG9ydGVkIG9ubHkgb25jZSBmb3IgZWFjaCBmdW5j
-dGlvbiBpdCBhcHBlYXJzIGluDQo+IGFyY2gvbG9vbmdhcmNoL2tlcm5lbC9lZmkuYzo4Mjoy
-MzogZXJyb3I6IGludmFsaWQgdXNlIG9mIHVuZGVmaW5lZCB0eXBlIA0KPiDigJhzdHJ1Y3Qg
-c2NyZWVuX2luZm/igJkNCj4gIMKgwqAgODIgfMKgwqDCoMKgwqDCoMKgwqAgc2NyZWVuX2lu
-Zm8gPSAqc2k7DQo+ICDCoMKgwqDCoMKgIHzCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoCBeDQo+IGFyY2gvbG9vbmdhcmNoL2tlcm5lbC9lZmkuYzo4Mzoy
-OTogZXJyb3I6IGludmFsaWQgYXBwbGljYXRpb24gb2YgDQo+IOKAmHNpemVvZuKAmSB0byBp
-bmNvbXBsZXRlIHR5cGUg4oCYc3RydWN0IHNjcmVlbl9pbmZv4oCZDQo+ICDCoMKgIDgzIHzC
-oMKgwqDCoMKgwqDCoMKgIG1lbXNldChzaSwgMCwgc2l6ZW9mKCpzaSkpOw0KPiAgwqDCoMKg
-wqDCoCB8wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqAgXg0KPiBhcmNoL2xvb25nYXJjaC9rZXJuZWwvZWZpLmM6ODQ6MzQ6IGVycm9y
-OiBpbnZhbGlkIGFwcGxpY2F0aW9uIG9mIA0KPiDigJhzaXplb2bigJkgdG8gaW5jb21wbGV0
-ZSB0eXBlIOKAmHN0cnVjdCBzY3JlZW5faW5mb+KAmQ0KPiAgwqDCoCA4NCB8wqDCoMKgwqDC
-oMKgwqDCoCBlYXJseV9tZW11bm1hcChzaSwgc2l6ZW9mKCpzaSkpOw0KPiAgwqDCoMKgwqDC
-oCB8wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgIF4NCj4gbWFrZVszXTogKioqIFtzY3JpcHRzL01ha2VmaWxlLmJ1
-aWxkOjI1MjogYXJjaC9sb29uZ2FyY2gva2VybmVsL2VmaS5vXSANCj4gRXJyb3IgMQ0KPiBt
-YWtlWzNdOiAqKiogV2FpdGluZyBmb3IgdW5maW5pc2hlZCBqb2JzLi4uLg0KPiBtYWtlWzJd
-OiAqKiogW3NjcmlwdHMvTWFrZWZpbGUuYnVpbGQ6NDk0OiBhcmNoL2xvb25nYXJjaC9rZXJu
-ZWxdIEVycm9yIDINCj4gbWFrZVsxXTogKioqIFtzY3JpcHRzL01ha2VmaWxlLmJ1aWxkOjQ5
-NDogYXJjaC9sb29uZ2FyY2hdIEVycm9yIDINCj4gbWFrZVsxXTogKioqIFdhaXRpbmcgZm9y
-IHVuZmluaXNoZWQgam9icy4uLi4NCj4gbWFrZTogKioqIFtNYWtlZmlsZToyMDI2OiAuXSBF
-cnJvciAyDQo+IA0KPiBgYGANCj4gDQo+IE9uIDIwMjMvNi8yOSAxOTo0NSwgVGhvbWFzIFpp
-bW1lcm1hbm4gd3JvdGU6DQo+PiBUaGUgdmFyaWFibGUgc2NyZWVuX2luZm8gZG9lcyBub3Qg
-ZXhpc3Qgb24gYWxsIGFyY2hpdGVjdHVyZXMuIERlY2xhcmUNCj4+IGl0IGluIDxhc20tZ2Vu
-ZXJpYy9zY3JlZW5faW5mby5oPi4gQWxsIGFyY2hpdGVjdHVyZXMgdGhhdCBkbyBkZWNsYXJl
-IGl0DQo+PiB3aWxsIHByb3ZpZGUgaXQgdmlhIDxhc20vc2NyZWVuX2luZm8uaD4uDQo+Pg0K
-Pj4gQWRkIHRoZSBLY29uZmlnIHRva2VuIEFSQ0hfSEFTX1NDUkVFTl9JTkZPIHRvIGd1YXJk
-IGFnYWluc3QgYWNjZXNzIG9uDQo+PiBhcmNoaXRlY3R1cmVzIHRoYXQgZG9uJ3QgcHJvdmlk
-ZSBzY3JlZW5faW5mby4NCj4+DQo+PiBTaWduZWQtb2ZmLWJ5OiBUaG9tYXMgWmltbWVybWFu
-biA8dHppbW1lcm1hbm5Ac3VzZS5kZT4NCj4+IENjOiBSaWNoYXJkIEhlbmRlcnNvbiA8cmlj
-aGFyZC5oZW5kZXJzb25AbGluYXJvLm9yZz4NCj4+IENjOiBJdmFuIEtva3NoYXlza3kgPGlu
-a0BqdXJhc3NpYy5wYXJrLm1zdS5ydT4NCj4+IENjOiBNYXR0IFR1cm5lciA8bWF0dHN0ODhA
-Z21haWwuY29tPg0KPj4gQ2M6IFJ1c3NlbGwgS2luZyA8bGludXhAYXJtbGludXgub3JnLnVr
-Pg0KPj4gQ2M6IENhdGFsaW4gTWFyaW5hcyA8Y2F0YWxpbi5tYXJpbmFzQGFybS5jb20+DQo+
-PiBDYzogV2lsbCBEZWFjb24gPHdpbGxAa2VybmVsLm9yZz4NCj4+IENjOiBHdW8gUmVuIDxn
-dW9yZW5Aa2VybmVsLm9yZz4NCj4+IENjOiBCcmlhbiBDYWluIDxiY2FpbkBxdWljaW5jLmNv
-bT4NCj4+IENjOiBIdWFjYWkgQ2hlbiA8Y2hlbmh1YWNhaUBrZXJuZWwub3JnPg0KPj4gQ2M6
-IFdBTkcgWHVlcnVpIDxrZXJuZWxAeGVuMG4ubmFtZT4NCj4+IENjOiBUaG9tYXMgQm9nZW5k
-b2VyZmVyIDx0c2JvZ2VuZEBhbHBoYS5mcmFua2VuLmRlPg0KPj4gQ2M6IERpbmggTmd1eWVu
-IDxkaW5ndXllbkBrZXJuZWwub3JnPg0KPj4gQ2M6IE1pY2hhZWwgRWxsZXJtYW4gPG1wZUBl
-bGxlcm1hbi5pZC5hdT4NCj4+IENjOiBOaWNob2xhcyBQaWdnaW4gPG5waWdnaW5AZ21haWwu
-Y29tPg0KPj4gQ2M6IENocmlzdG9waGUgTGVyb3kgPGNocmlzdG9waGUubGVyb3lAY3Nncm91
-cC5ldT4NCj4+IENjOiBQYXVsIFdhbG1zbGV5IDxwYXVsLndhbG1zbGV5QHNpZml2ZS5jb20+
-DQo+PiBDYzogUGFsbWVyIERhYmJlbHQgPHBhbG1lckBkYWJiZWx0LmNvbT4NCj4+IENjOiBB
-bGJlcnQgT3UgPGFvdUBlZWNzLmJlcmtlbGV5LmVkdT4NCj4+IENjOiBZb3NoaW5vcmkgU2F0
-byA8eXNhdG9AdXNlcnMuc291cmNlZm9yZ2UuanA+DQo+PiBDYzogUmljaCBGZWxrZXIgPGRh
-bGlhc0BsaWJjLm9yZz4NCj4+IENjOiBKb2huIFBhdWwgQWRyaWFuIEdsYXViaXR6IDxnbGF1
-Yml0ekBwaHlzaWsuZnUtYmVybGluLmRlPg0KPj4gQ2M6ICJEYXZpZCBTLiBNaWxsZXIiIDxk
-YXZlbUBkYXZlbWxvZnQubmV0Pg0KPj4gQ2M6IFRob21hcyBHbGVpeG5lciA8dGdseEBsaW51
-dHJvbml4LmRlPg0KPj4gQ2M6IEluZ28gTW9sbmFyIDxtaW5nb0ByZWRoYXQuY29tPg0KPj4g
-Q2M6IEJvcmlzbGF2IFBldGtvdiA8YnBAYWxpZW44LmRlPg0KPj4gQ2M6IERhdmUgSGFuc2Vu
-IDxkYXZlLmhhbnNlbkBsaW51eC5pbnRlbC5jb20+DQo+PiBDYzogeDg2QGtlcm5lbC5vcmcN
-Cj4+IENjOiAiSC4gUGV0ZXIgQW52aW4iIDxocGFAenl0b3IuY29tPg0KPj4gQ2M6IENocmlz
-IFphbmtlbCA8Y2hyaXNAemFua2VsLm5ldD4NCj4+IENjOiBNYXggRmlsaXBwb3YgPGpjbXZi
-a2JjQGdtYWlsLmNvbT4NCj4+IENjOiBIZWxnZSBEZWxsZXIgPGRlbGxlckBnbXguZGU+DQo+
-PiBDYzogQXJuZCBCZXJnbWFubiA8YXJuZEBhcm5kYi5kZT4NCj4+IENjOiBLZWVzIENvb2sg
-PGtlZXNjb29rQGNocm9taXVtLm9yZz4NCj4+IENjOiAiUGF1bCBFLiBNY0tlbm5leSIgPHBh
-dWxtY2tAa2VybmVsLm9yZz4NCj4+IENjOiBQZXRlciBaaWpsc3RyYSA8cGV0ZXJ6QGluZnJh
-ZGVhZC5vcmc+DQo+PiBDYzogRnJlZGVyaWMgV2Vpc2JlY2tlciA8ZnJlZGVyaWNAa2VybmVs
-Lm9yZz4NCj4+IENjOiBBbmRyZXcgTW9ydG9uIDxha3BtQGxpbnV4LWZvdW5kYXRpb24ub3Jn
-Pg0KPj4gQ2M6IEFyZCBCaWVzaGV1dmVsIDxhcmRiQGtlcm5lbC5vcmc+DQo+PiBDYzogU2Ft
-aSBUb2x2YW5lbiA8c2FtaXRvbHZhbmVuQGdvb2dsZS5jb20+DQo+PiBDYzogSnVlcmcgSGFl
-ZmxpZ2VyIDxqdWVyZy5oYWVmbGlnZXJAY2Fub25pY2FsLmNvbT4NCj4+IENjOiBHZWVydCBV
-eXR0ZXJob2V2ZW4gPGdlZXJ0QGxpbnV4LW02OGsub3JnPg0KPj4gQ2M6IEFuc2h1bWFuIEto
-YW5kdWFsIDxhbnNodW1hbi5raGFuZHVhbEBhcm0uY29tPg0KPj4gQ2M6IE5pa2xhcyBTY2hu
-ZWxsZSA8c2NobmVsbGVAbGludXguaWJtLmNvbT4NCj4+IENjOiAiUnVzc2VsbCBLaW5nIChP
-cmFjbGUpIiA8cm1rK2tlcm5lbEBhcm1saW51eC5vcmcudWs+DQo+PiBDYzogTGludXMgV2Fs
-bGVpaiA8bGludXMud2FsbGVpakBsaW5hcm8ub3JnPg0KPj4gQ2M6IFNlYmFzdGlhbiBSZWlj
-aGVsIDxzZWJhc3RpYW4ucmVpY2hlbEBjb2xsYWJvcmEuY29tPg0KPj4gQ2M6ICJNaWtlIFJh
-cG9wb3J0IChJQk0pIiA8cnBwdEBrZXJuZWwub3JnPg0KPj4gQ2M6ICJLaXJpbGwgQS4gU2h1
-dGVtb3YiIDxraXJpbGwuc2h1dGVtb3ZAbGludXguaW50ZWwuY29tPg0KPj4gQ2M6IFppIFlh
-biA8eml5QG52aWRpYS5jb20+DQo+PiBBY2tlZC1ieTogV0FORyBYdWVydWkgPGdpdEB4ZW4w
-bi5uYW1lPiAjIGxvb25nYXJjaA0KPj4gLS0tDQo+PiDCoCBhcmNoL0tjb25maWfCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfMKgIDYgKysrKysrDQo+PiDC
-oCBhcmNoL2FscGhhL0tjb25maWfCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfMKg
-IDEgKw0KPj4gwqAgYXJjaC9hcm0vS2NvbmZpZ8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqAgfMKgIDEgKw0KPj4gwqAgYXJjaC9hcm02NC9LY29uZmlnwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgIHzCoCAxICsNCj4+IMKgIGFyY2gvY3NreS9LY29uZmlnwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfMKgIDEgKw0KPj4gwqAgYXJjaC9oZXhh
-Z29uL0tjb25maWfCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8wqAgMSArDQo+PiDCoCBh
-cmNoL2lhNjQvS2NvbmZpZ8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoCAx
-ICsNCj4+IMKgIGFyY2gvbG9vbmdhcmNoL0tjb25maWfCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-IHzCoCAxICsNCj4+IMKgIGFyY2gvbWlwcy9LY29uZmlnwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqAgfMKgIDEgKw0KPj4gwqAgYXJjaC9uaW9zMi9LY29uZmlnwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoCAxICsNCj4+IMKgIGFyY2gvcG93ZXJwYy9LY29u
-ZmlnwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfMKgIDEgKw0KPj4gwqAgYXJjaC9yaXNj
-di9LY29uZmlnwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoCAxICsNCj4+IMKg
-IGFyY2gvc2gvS2NvbmZpZ8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8
-wqAgMSArDQo+PiDCoCBhcmNoL3NwYXJjL0tjb25maWfCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqAgfMKgIDEgKw0KPj4gwqAgYXJjaC94ODYvS2NvbmZpZ8KgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqAgfMKgIDEgKw0KPj4gwqAgYXJjaC94dGVuc2EvS2NvbmZp
-Z8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfMKgIDEgKw0KPj4gwqAgZHJpdmVycy92
-aWRlby9LY29uZmlnwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoCAzICsrKw0KPj4gwqAg
-aW5jbHVkZS9hc20tZ2VuZXJpYy9LYnVpbGTCoMKgwqDCoMKgwqDCoCB8wqAgMSArDQo+PiDC
-oCBpbmNsdWRlL2FzbS1nZW5lcmljL3NjcmVlbl9pbmZvLmggfCAxMiArKysrKysrKysrKysN
-Cj4+IMKgIGluY2x1ZGUvbGludXgvc2NyZWVuX2luZm8uaMKgwqDCoMKgwqDCoCB8wqAgMiAr
-LQ0KPj4gwqAgMjAgZmlsZXMgY2hhbmdlZCwgMzggaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlv
-bigtKQ0KPj4gwqAgY3JlYXRlIG1vZGUgMTAwNjQ0IGluY2x1ZGUvYXNtLWdlbmVyaWMvc2Ny
-ZWVuX2luZm8uaA0KPj4NCj4+IGRpZmYgLS1naXQgYS9hcmNoL0tjb25maWcgYi9hcmNoL0tj
-b25maWcNCj4+IGluZGV4IDIwNWZkMjNlMGNhZGEuLjJmNTgyOTNmZDdiY2IgMTAwNjQ0DQo+
-PiAtLS0gYS9hcmNoL0tjb25maWcNCj4+ICsrKyBiL2FyY2gvS2NvbmZpZw0KPj4gQEAgLTE0
-NjYsNiArMTQ2NiwxMiBAQCBjb25maWcgQVJDSF9IQVNfTk9OTEVBRl9QTURfWU9VTkcNCj4+
-IMKgwqDCoMKgwqDCoMKgIGFkZHJlc3MgdHJhbnNsYXRpb25zLiBQYWdlIHRhYmxlIHdhbGtl
-cnMgdGhhdCBjbGVhciB0aGUgDQo+PiBhY2Nlc3NlZCBiaXQNCj4+IMKgwqDCoMKgwqDCoMKg
-IG1heSB1c2UgdGhpcyBjYXBhYmlsaXR5IHRvIHJlZHVjZSB0aGVpciBzZWFyY2ggc3BhY2Uu
-DQo+PiArY29uZmlnIEFSQ0hfSEFTX1NDUkVFTl9JTkZPDQo+PiArwqDCoMKgIGJvb2wNCj4+
-ICvCoMKgwqAgaGVscA0KPj4gK8KgwqDCoMKgwqAgU2VsZWN0ZWQgYnkgYXJjaGl0ZWN0dXJl
-cyB0aGF0IHByb3ZpZGUgYSBnbG9iYWwgaW5zdGFuY2Ugb2YNCj4+ICvCoMKgwqDCoMKgIHNj
-cmVlbl9pbmZvLg0KPj4gKw0KPj4gwqAgc291cmNlICJrZXJuZWwvZ2Nvdi9LY29uZmlnIg0K
-Pj4gwqAgc291cmNlICJzY3JpcHRzL2djYy1wbHVnaW5zL0tjb25maWciDQo+PiBkaWZmIC0t
-Z2l0IGEvYXJjaC9hbHBoYS9LY29uZmlnIGIvYXJjaC9hbHBoYS9LY29uZmlnDQo+PiBpbmRl
-eCBhNWMyYjFhYTQ2YjAyLi5kNzQ5MDExZDg4YjE0IDEwMDY0NA0KPj4gLS0tIGEvYXJjaC9h
-bHBoYS9LY29uZmlnDQo+PiArKysgYi9hcmNoL2FscGhhL0tjb25maWcNCj4+IEBAIC00LDYg
-KzQsNyBAQCBjb25maWcgQUxQSEENCj4+IMKgwqDCoMKgwqAgZGVmYXVsdCB5DQo+PiDCoMKg
-wqDCoMKgIHNlbGVjdCBBUkNIXzMyQklUX1VTVEFUX0ZfVElOT0RFDQo+PiDCoMKgwqDCoMKg
-IHNlbGVjdCBBUkNIX0hBU19DVVJSRU5UX1NUQUNLX1BPSU5URVINCj4+ICvCoMKgwqAgc2Vs
-ZWN0IEFSQ0hfSEFTX1NDUkVFTl9JTkZPDQo+PiDCoMKgwqDCoMKgIHNlbGVjdCBBUkNIX01J
-R0hUX0hBVkVfUENfUEFSUE9SVA0KPj4gwqDCoMKgwqDCoCBzZWxlY3QgQVJDSF9NSUdIVF9I
-QVZFX1BDX1NFUklPDQo+PiDCoMKgwqDCoMKgIHNlbGVjdCBBUkNIX05PX1BSRUVNUFQNCj4+
-IGRpZmYgLS1naXQgYS9hcmNoL2FybS9LY29uZmlnIGIvYXJjaC9hcm0vS2NvbmZpZw0KPj4g
-aW5kZXggMGZiNGIyMThmNjY1OC4uYTlkMDFlZTY3YTkwZSAxMDA2NDQNCj4+IC0tLSBhL2Fy
-Y2gvYXJtL0tjb25maWcNCj4+ICsrKyBiL2FyY2gvYXJtL0tjb25maWcNCj4+IEBAIC0xNSw2
-ICsxNSw3IEBAIGNvbmZpZyBBUk0NCj4+IMKgwqDCoMKgwqAgc2VsZWN0IEFSQ0hfSEFTX01F
-TUJBUlJJRVJfU1lOQ19DT1JFDQo+PiDCoMKgwqDCoMKgIHNlbGVjdCBBUkNIX0hBU19OT05f
-T1ZFUkxBUFBJTkdfQUREUkVTU19TUEFDRQ0KPj4gwqDCoMKgwqDCoCBzZWxlY3QgQVJDSF9I
-QVNfUFRFX1NQRUNJQUwgaWYgQVJNX0xQQUUNCj4+ICvCoMKgwqAgc2VsZWN0IEFSQ0hfSEFT
-X1NDUkVFTl9JTkZPDQo+PiDCoMKgwqDCoMKgIHNlbGVjdCBBUkNIX0hBU19TRVRVUF9ETUFf
-T1BTDQo+PiDCoMKgwqDCoMKgIHNlbGVjdCBBUkNIX0hBU19TRVRfTUVNT1JZDQo+PiDCoMKg
-wqDCoMKgIHNlbGVjdCBBUkNIX1NUQUNLV0FMSw0KPj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJt
-NjQvS2NvbmZpZyBiL2FyY2gvYXJtNjQvS2NvbmZpZw0KPj4gaW5kZXggMzQzZTFlMWNhZTEw
-YS4uMjFhZGRjNDcxNWJiMyAxMDA2NDQNCj4+IC0tLSBhL2FyY2gvYXJtNjQvS2NvbmZpZw0K
-Pj4gKysrIGIvYXJjaC9hcm02NC9LY29uZmlnDQo+PiBAQCAtMzYsNiArMzYsNyBAQCBjb25m
-aWcgQVJNNjQNCj4+IMKgwqDCoMKgwqAgc2VsZWN0IEFSQ0hfSEFTX05PTl9PVkVSTEFQUElO
-R19BRERSRVNTX1NQQUNFDQo+PiDCoMKgwqDCoMKgIHNlbGVjdCBBUkNIX0hBU19QVEVfREVW
-TUFQDQo+PiDCoMKgwqDCoMKgIHNlbGVjdCBBUkNIX0hBU19QVEVfU1BFQ0lBTA0KPj4gK8Kg
-wqDCoCBzZWxlY3QgQVJDSF9IQVNfU0NSRUVOX0lORk8NCj4+IMKgwqDCoMKgwqAgc2VsZWN0
-IEFSQ0hfSEFTX1NFVFVQX0RNQV9PUFMNCj4+IMKgwqDCoMKgwqAgc2VsZWN0IEFSQ0hfSEFT
-X1NFVF9ESVJFQ1RfTUFQDQo+PiDCoMKgwqDCoMKgIHNlbGVjdCBBUkNIX0hBU19TRVRfTUVN
-T1JZDQo+PiBkaWZmIC0tZ2l0IGEvYXJjaC9jc2t5L0tjb25maWcgYi9hcmNoL2Nza3kvS2Nv
-bmZpZw0KPj4gaW5kZXggNGRmMWY4YzlkMTcwYi4uMjg0NDRlNTgxZmMxZiAxMDA2NDQNCj4+
-IC0tLSBhL2FyY2gvY3NreS9LY29uZmlnDQo+PiArKysgYi9hcmNoL2Nza3kvS2NvbmZpZw0K
-Pj4gQEAgLTEwLDYgKzEwLDcgQEAgY29uZmlnIENTS1kNCj4+IMKgwqDCoMKgwqAgc2VsZWN0
-IEFSQ0hfVVNFX1FVRVVFRF9SV0xPQ0tTDQo+PiDCoMKgwqDCoMKgIHNlbGVjdCBBUkNIX1VT
-RV9RVUVVRURfU1BJTkxPQ0tTDQo+PiDCoMKgwqDCoMKgIHNlbGVjdCBBUkNIX0hBU19DVVJS
-RU5UX1NUQUNLX1BPSU5URVINCj4+ICvCoMKgwqAgc2VsZWN0IEFSQ0hfSEFTX1NDUkVFTl9J
-TkZPDQo+PiDCoMKgwqDCoMKgIHNlbGVjdCBBUkNIX0lOTElORV9SRUFEX0xPQ0sgaWYgIVBS
-RUVNUFRJT04NCj4+IMKgwqDCoMKgwqAgc2VsZWN0IEFSQ0hfSU5MSU5FX1JFQURfTE9DS19C
-SCBpZiAhUFJFRU1QVElPTg0KPj4gwqDCoMKgwqDCoCBzZWxlY3QgQVJDSF9JTkxJTkVfUkVB
-RF9MT0NLX0lSUSBpZiAhUFJFRU1QVElPTg0KPj4gZGlmZiAtLWdpdCBhL2FyY2gvaGV4YWdv
-bi9LY29uZmlnIGIvYXJjaC9oZXhhZ29uL0tjb25maWcNCj4+IGluZGV4IDU0ZWFkZjI2NTE3
-ODYuLmNjNjgzYzBhNDNkMzQgMTAwNjQ0DQo+PiAtLS0gYS9hcmNoL2hleGFnb24vS2NvbmZp
-Zw0KPj4gKysrIGIvYXJjaC9oZXhhZ29uL0tjb25maWcNCj4+IEBAIC01LDYgKzUsNyBAQCBj
-b21tZW50ICJMaW51eCBLZXJuZWwgQ29uZmlndXJhdGlvbiBmb3IgSGV4YWdvbiINCj4+IMKg
-IGNvbmZpZyBIRVhBR09ODQo+PiDCoMKgwqDCoMKgIGRlZl9ib29sIHkNCj4+IMKgwqDCoMKg
-wqAgc2VsZWN0IEFSQ0hfMzJCSVRfT0ZGX1QNCj4+ICvCoMKgwqAgc2VsZWN0IEFSQ0hfSEFT
-X1NDUkVFTl9JTkZPDQo+PiDCoMKgwqDCoMKgIHNlbGVjdCBBUkNIX0hBU19TWU5DX0RNQV9G
-T1JfREVWSUNFDQo+PiDCoMKgwqDCoMKgIHNlbGVjdCBBUkNIX05PX1BSRUVNUFQNCj4+IMKg
-wqDCoMKgwqAgc2VsZWN0IERNQV9HTE9CQUxfUE9PTA0KPj4gZGlmZiAtLWdpdCBhL2FyY2gv
-aWE2NC9LY29uZmlnIGIvYXJjaC9pYTY0L0tjb25maWcNCj4+IGluZGV4IGU3OWYxNWUzMmE0
-NTEuLjhiMWU3ODVlNmQ1M2QgMTAwNjQ0DQo+PiAtLS0gYS9hcmNoL2lhNjQvS2NvbmZpZw0K
-Pj4gKysrIGIvYXJjaC9pYTY0L0tjb25maWcNCj4+IEBAIC0xMCw2ICsxMCw3IEBAIGNvbmZp
-ZyBJQTY0DQo+PiDCoMKgwqDCoMKgIGJvb2wNCj4+IMKgwqDCoMKgwqAgc2VsZWN0IEFSQ0hf
-QklORk1UX0VMRl9FWFRSQV9QSERSUw0KPj4gwqDCoMKgwqDCoCBzZWxlY3QgQVJDSF9IQVNf
-RE1BX01BUktfQ0xFQU4NCj4+ICvCoMKgwqAgc2VsZWN0IEFSQ0hfSEFTX1NDUkVFTl9JTkZP
-DQo+PiDCoMKgwqDCoMKgIHNlbGVjdCBBUkNIX0hBU19TVFJOQ1BZX0ZST01fVVNFUg0KPj4g
-wqDCoMKgwqDCoCBzZWxlY3QgQVJDSF9IQVNfU1RSTkxFTl9VU0VSDQo+PiDCoMKgwqDCoMKg
-IHNlbGVjdCBBUkNIX01JR0hUX0hBVkVfUENfUEFSUE9SVA0KPj4gZGlmZiAtLWdpdCBhL2Fy
-Y2gvbG9vbmdhcmNoL0tjb25maWcgYi9hcmNoL2xvb25nYXJjaC9LY29uZmlnDQo+PiBpbmRl
-eCBkMzhiMDY2ZmM5MzFiLi42YWFiMmZiNzc1M2RhIDEwMDY0NA0KPj4gLS0tIGEvYXJjaC9s
-b29uZ2FyY2gvS2NvbmZpZw0KPj4gKysrIGIvYXJjaC9sb29uZ2FyY2gvS2NvbmZpZw0KPj4g
-QEAgLTEzLDYgKzEzLDcgQEAgY29uZmlnIExPT05HQVJDSA0KPj4gwqDCoMKgwqDCoCBzZWxl
-Y3QgQVJDSF9IQVNfRk9SVElGWV9TT1VSQ0UNCj4+IMKgwqDCoMKgwqAgc2VsZWN0IEFSQ0hf
-SEFTX05NSV9TQUZFX1RISVNfQ1BVX09QUw0KPj4gwqDCoMKgwqDCoCBzZWxlY3QgQVJDSF9I
-QVNfUFRFX1NQRUNJQUwNCj4+ICvCoMKgwqAgc2VsZWN0IEFSQ0hfSEFTX1NDUkVFTl9JTkZP
-DQo+PiDCoMKgwqDCoMKgIHNlbGVjdCBBUkNIX0hBU19USUNLX0JST0FEQ0FTVCBpZiBHRU5F
-UklDX0NMT0NLRVZFTlRTX0JST0FEQ0FTVA0KPj4gwqDCoMKgwqDCoCBzZWxlY3QgQVJDSF9J
-TkxJTkVfUkVBRF9MT0NLIGlmICFQUkVFTVBUSU9ODQo+PiDCoMKgwqDCoMKgIHNlbGVjdCBB
-UkNIX0lOTElORV9SRUFEX0xPQ0tfQkggaWYgIVBSRUVNUFRJT04NCj4+IGRpZmYgLS1naXQg
-YS9hcmNoL21pcHMvS2NvbmZpZyBiL2FyY2gvbWlwcy9LY29uZmlnDQo+PiBpbmRleCA2NzVh
-ODY2MGNiODVhLi5jMGFlMDk3ODljYjZkIDEwMDY0NA0KPj4gLS0tIGEvYXJjaC9taXBzL0tj
-b25maWcNCj4+ICsrKyBiL2FyY2gvbWlwcy9LY29uZmlnDQo+PiBAQCAtMTAsNiArMTAsNyBA
-QCBjb25maWcgTUlQUw0KPj4gwqDCoMKgwqDCoCBzZWxlY3QgQVJDSF9IQVNfS0NPVg0KPj4g
-wqDCoMKgwqDCoCBzZWxlY3QgQVJDSF9IQVNfTk9OX09WRVJMQVBQSU5HX0FERFJFU1NfU1BB
-Q0UgaWYgIUVWQQ0KPj4gwqDCoMKgwqDCoCBzZWxlY3QgQVJDSF9IQVNfUFRFX1NQRUNJQUwg
-aWYgISgzMkJJVCAmJiBDUFVfSEFTX1JJWEkpDQo+PiArwqDCoMKgIHNlbGVjdCBBUkNIX0hB
-U19TQ1JFRU5fSU5GTw0KPj4gwqDCoMKgwqDCoCBzZWxlY3QgQVJDSF9IQVNfU1RSTkNQWV9G
-Uk9NX1VTRVINCj4+IMKgwqDCoMKgwqAgc2VsZWN0IEFSQ0hfSEFTX1NUUk5MRU5fVVNFUg0K
-Pj4gwqDCoMKgwqDCoCBzZWxlY3QgQVJDSF9IQVNfVElDS19CUk9BRENBU1QgaWYgR0VORVJJ
-Q19DTE9DS0VWRU5UU19CUk9BRENBU1QNCj4+IGRpZmYgLS1naXQgYS9hcmNoL25pb3MyL0tj
-b25maWcgYi9hcmNoL25pb3MyL0tjb25maWcNCj4+IGluZGV4IGU1OTM2NDE3ZDNjZDMuLjcx
-ODNlZWEyODIyMTIgMTAwNjQ0DQo+PiAtLS0gYS9hcmNoL25pb3MyL0tjb25maWcNCj4+ICsr
-KyBiL2FyY2gvbmlvczIvS2NvbmZpZw0KPj4gQEAgLTMsNiArMyw3IEBAIGNvbmZpZyBOSU9T
-Mg0KPj4gwqDCoMKgwqDCoCBkZWZfYm9vbCB5DQo+PiDCoMKgwqDCoMKgIHNlbGVjdCBBUkNI
-XzMyQklUX09GRl9UDQo+PiDCoMKgwqDCoMKgIHNlbGVjdCBBUkNIX0hBU19ETUFfUFJFUF9D
-T0hFUkVOVA0KPj4gK8KgwqDCoCBzZWxlY3QgQVJDSF9IQVNfU0NSRUVOX0lORk8NCj4+IMKg
-wqDCoMKgwqAgc2VsZWN0IEFSQ0hfSEFTX1NZTkNfRE1BX0ZPUl9DUFUNCj4+IMKgwqDCoMKg
-wqAgc2VsZWN0IEFSQ0hfSEFTX1NZTkNfRE1BX0ZPUl9ERVZJQ0UNCj4+IMKgwqDCoMKgwqAg
-c2VsZWN0IEFSQ0hfSEFTX0RNQV9TRVRfVU5DQUNIRUQNCj4+IGRpZmYgLS1naXQgYS9hcmNo
-L3Bvd2VycGMvS2NvbmZpZyBiL2FyY2gvcG93ZXJwYy9LY29uZmlnDQo+PiBpbmRleCBiZmY1
-ODIwYjdjZGExLi5iMWFjYWQzMDc2MTgwIDEwMDY0NA0KPj4gLS0tIGEvYXJjaC9wb3dlcnBj
-L0tjb25maWcNCj4+ICsrKyBiL2FyY2gvcG93ZXJwYy9LY29uZmlnDQo+PiBAQCAtMTQ4LDYg
-KzE0OCw3IEBAIGNvbmZpZyBQUEMNCj4+IMKgwqDCoMKgwqAgc2VsZWN0IEFSQ0hfSEFTX1BU
-RV9ERVZNQVDCoMKgwqDCoMKgwqDCoCBpZiBQUENfQk9PSzNTXzY0DQo+PiDCoMKgwqDCoMKg
-IHNlbGVjdCBBUkNIX0hBU19QVEVfU1BFQ0lBTA0KPj4gwqDCoMKgwqDCoCBzZWxlY3QgQVJD
-SF9IQVNfU0NBTEVEX0NQVVRJTUXCoMKgwqDCoMKgwqDCoCBpZiANCj4+IFZJUlRfQ1BVX0FD
-Q09VTlRJTkdfTkFUSVZFICYmIFBQQ19CT09LM1NfNjQNCj4+ICvCoMKgwqAgc2VsZWN0IEFS
-Q0hfSEFTX1NDUkVFTl9JTkZPDQo+PiDCoMKgwqDCoMKgIHNlbGVjdCBBUkNIX0hBU19TRVRf
-TUVNT1JZDQo+PiDCoMKgwqDCoMKgIHNlbGVjdCBBUkNIX0hBU19TVFJJQ1RfS0VSTkVMX1JX
-WMKgwqDCoCBpZiAoUFBDX0JPT0szUyB8fCBQUENfOHh4IA0KPj4gfHwgNDB4KSAmJiAhSElC
-RVJOQVRJT04NCj4+IMKgwqDCoMKgwqAgc2VsZWN0IEFSQ0hfSEFTX1NUUklDVF9LRVJORUxf
-UldYwqDCoMKgIGlmIFBQQ184NXh4ICYmICFISUJFUk5BVElPTiANCj4+ICYmICFSQU5ET01J
-WkVfQkFTRQ0KPj4gZGlmZiAtLWdpdCBhL2FyY2gvcmlzY3YvS2NvbmZpZyBiL2FyY2gvcmlz
-Y3YvS2NvbmZpZw0KPj4gaW5kZXggNTk2NmFkOTdjMzBjMy4uYjVhNDhmODQyNGFmOSAxMDA2
-NDQNCj4+IC0tLSBhL2FyY2gvcmlzY3YvS2NvbmZpZw0KPj4gKysrIGIvYXJjaC9yaXNjdi9L
-Y29uZmlnDQo+PiBAQCAtMjksNiArMjksNyBAQCBjb25maWcgUklTQ1YNCj4+IMKgwqDCoMKg
-wqAgc2VsZWN0IEFSQ0hfSEFTX05PTl9PVkVSTEFQUElOR19BRERSRVNTX1NQQUNFDQo+PiDC
-oMKgwqDCoMKgIHNlbGVjdCBBUkNIX0hBU19QTUVNX0FQSQ0KPj4gwqDCoMKgwqDCoCBzZWxl
-Y3QgQVJDSF9IQVNfUFRFX1NQRUNJQUwNCj4+ICvCoMKgwqAgc2VsZWN0IEFSQ0hfSEFTX1ND
-UkVFTl9JTkZPDQo+PiDCoMKgwqDCoMKgIHNlbGVjdCBBUkNIX0hBU19TRVRfRElSRUNUX01B
-UCBpZiBNTVUNCj4+IMKgwqDCoMKgwqAgc2VsZWN0IEFSQ0hfSEFTX1NFVF9NRU1PUlkgaWYg
-TU1VDQo+PiDCoMKgwqDCoMKgIHNlbGVjdCBBUkNIX0hBU19TVFJJQ1RfS0VSTkVMX1JXWCBp
-ZiBNTVUgJiYgIVhJUF9LRVJORUwNCj4+IGRpZmYgLS1naXQgYS9hcmNoL3NoL0tjb25maWcg
-Yi9hcmNoL3NoL0tjb25maWcNCj4+IGluZGV4IDA0Yjk1NTBjZjAwNzAuLjAwMWY1MTQ5OTUy
-YjQgMTAwNjQ0DQo+PiAtLS0gYS9hcmNoL3NoL0tjb25maWcNCj4+ICsrKyBiL2FyY2gvc2gv
-S2NvbmZpZw0KPj4gQEAgLTEwLDYgKzEwLDcgQEAgY29uZmlnIFNVUEVSSA0KPj4gwqDCoMKg
-wqDCoCBzZWxlY3QgQVJDSF9IQVNfR0lHQU5USUNfUEFHRQ0KPj4gwqDCoMKgwqDCoCBzZWxl
-Y3QgQVJDSF9IQVNfR0NPVl9QUk9GSUxFX0FMTA0KPj4gwqDCoMKgwqDCoCBzZWxlY3QgQVJD
-SF9IQVNfUFRFX1NQRUNJQUwNCj4+ICvCoMKgwqAgc2VsZWN0IEFSQ0hfSEFTX1NDUkVFTl9J
-TkZPDQo+PiDCoMKgwqDCoMKgIHNlbGVjdCBBUkNIX0hBU19USUNLX0JST0FEQ0FTVCBpZiBH
-RU5FUklDX0NMT0NLRVZFTlRTX0JST0FEQ0FTVA0KPj4gwqDCoMKgwqDCoCBzZWxlY3QgQVJD
-SF9ISUJFUk5BVElPTl9QT1NTSUJMRSBpZiBNTVUNCj4+IMKgwqDCoMKgwqAgc2VsZWN0IEFS
-Q0hfTUlHSFRfSEFWRV9QQ19QQVJQT1JUDQo+PiBkaWZmIC0tZ2l0IGEvYXJjaC9zcGFyYy9L
-Y29uZmlnIGIvYXJjaC9zcGFyYy9LY29uZmlnDQo+PiBpbmRleCA4NTM1ZTE5MDYyZjY1Li5l
-NGJmYjgwYjQ4Y2ZlIDEwMDY0NA0KPj4gLS0tIGEvYXJjaC9zcGFyYy9LY29uZmlnDQo+PiAr
-KysgYi9hcmNoL3NwYXJjL0tjb25maWcNCj4+IEBAIC0xMyw2ICsxMyw3IEBAIGNvbmZpZyA2
-NEJJVA0KPj4gwqAgY29uZmlnIFNQQVJDDQo+PiDCoMKgwqDCoMKgIGJvb2wNCj4+IMKgwqDC
-oMKgwqAgZGVmYXVsdCB5DQo+PiArwqDCoMKgIHNlbGVjdCBBUkNIX0hBU19TQ1JFRU5fSU5G
-Tw0KPj4gwqDCoMKgwqDCoCBzZWxlY3QgQVJDSF9NSUdIVF9IQVZFX1BDX1BBUlBPUlQgaWYg
-U1BBUkM2NCAmJiBQQ0kNCj4+IMKgwqDCoMKgwqAgc2VsZWN0IEFSQ0hfTUlHSFRfSEFWRV9Q
-Q19TRVJJTw0KPj4gwqDCoMKgwqDCoCBzZWxlY3QgRE1BX09QUw0KPj4gZGlmZiAtLWdpdCBh
-L2FyY2gveDg2L0tjb25maWcgYi9hcmNoL3g4Ni9LY29uZmlnDQo+PiBpbmRleCA1M2JhYjEy
-M2E4ZWU0Li5kN2MyYmY0ZWU0MDNkIDEwMDY0NA0KPj4gLS0tIGEvYXJjaC94ODYvS2NvbmZp
-Zw0KPj4gKysrIGIvYXJjaC94ODYvS2NvbmZpZw0KPj4gQEAgLTkxLDYgKzkxLDcgQEAgY29u
-ZmlnIFg4Ng0KPj4gwqDCoMKgwqDCoCBzZWxlY3QgQVJDSF9IQVNfTk9OTEVBRl9QTURfWU9V
-TkfCoMKgwqAgaWYgUEdUQUJMRV9MRVZFTFMgPiAyDQo+PiDCoMKgwqDCoMKgIHNlbGVjdCBB
-UkNIX0hBU19VQUNDRVNTX0ZMVVNIQ0FDSEXCoMKgwqAgaWYgWDg2XzY0DQo+PiDCoMKgwqDC
-oMKgIHNlbGVjdCBBUkNIX0hBU19DT1BZX01DwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZiBY
-ODZfNjQNCj4+ICvCoMKgwqAgc2VsZWN0IEFSQ0hfSEFTX1NDUkVFTl9JTkZPDQo+PiDCoMKg
-wqDCoMKgIHNlbGVjdCBBUkNIX0hBU19TRVRfTUVNT1JZDQo+PiDCoMKgwqDCoMKgIHNlbGVj
-dCBBUkNIX0hBU19TRVRfRElSRUNUX01BUA0KPj4gwqDCoMKgwqDCoCBzZWxlY3QgQVJDSF9I
-QVNfU1RSSUNUX0tFUk5FTF9SV1gNCj4+IGRpZmYgLS1naXQgYS9hcmNoL3h0ZW5zYS9LY29u
-ZmlnIGIvYXJjaC94dGVuc2EvS2NvbmZpZw0KPj4gaW5kZXggM2M2ZTU0NzFmMDI1Yi4uYzZj
-YmQ3NDU5OTM5YyAxMDA2NDQNCj4+IC0tLSBhL2FyY2gveHRlbnNhL0tjb25maWcNCj4+ICsr
-KyBiL2FyY2gveHRlbnNhL0tjb25maWcNCj4+IEBAIC04LDYgKzgsNyBAQCBjb25maWcgWFRF
-TlNBDQo+PiDCoMKgwqDCoMKgIHNlbGVjdCBBUkNIX0hBU19ETUFfUFJFUF9DT0hFUkVOVCBp
-ZiBNTVUNCj4+IMKgwqDCoMKgwqAgc2VsZWN0IEFSQ0hfSEFTX0dDT1ZfUFJPRklMRV9BTEwN
-Cj4+IMKgwqDCoMKgwqAgc2VsZWN0IEFSQ0hfSEFTX0tDT1YNCj4+ICvCoMKgwqAgc2VsZWN0
-IEFSQ0hfSEFTX1NDUkVFTl9JTkZPDQo+PiDCoMKgwqDCoMKgIHNlbGVjdCBBUkNIX0hBU19T
-WU5DX0RNQV9GT1JfQ1BVIGlmIE1NVQ0KPj4gwqDCoMKgwqDCoCBzZWxlY3QgQVJDSF9IQVNf
-U1lOQ19ETUFfRk9SX0RFVklDRSBpZiBNTVUNCj4+IMKgwqDCoMKgwqAgc2VsZWN0IEFSQ0hf
-SEFTX0RNQV9TRVRfVU5DQUNIRUQgaWYgTU1VDQo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy92
-aWRlby9LY29uZmlnIGIvZHJpdmVycy92aWRlby9LY29uZmlnDQo+PiBpbmRleCA4YjJiOWFj
-MzdjM2RmLi5kNGE3MmJlYTU2YmUwIDEwMDY0NA0KPj4gLS0tIGEvZHJpdmVycy92aWRlby9L
-Y29uZmlnDQo+PiArKysgYi9kcml2ZXJzL3ZpZGVvL0tjb25maWcNCj4+IEBAIC0yMSw2ICsy
-MSw5IEBAIGNvbmZpZyBTVElfQ09SRQ0KPj4gwqAgY29uZmlnIFZJREVPX0NNRExJTkUNCj4+
-IMKgwqDCoMKgwqAgYm9vbA0KPj4gK2NvbmZpZyBBUkNIX0hBU19TQ1JFRU5fSU5GTw0KPj4g
-K8KgwqDCoCBib29sDQo+PiArDQo+PiDCoCBjb25maWcgVklERU9fTk9NT0RFU0VUDQo+PiDC
-oMKgwqDCoMKgIGJvb2wNCj4+IMKgwqDCoMKgwqAgZGVmYXVsdCBuDQo+PiBkaWZmIC0tZ2l0
-IGEvaW5jbHVkZS9hc20tZ2VuZXJpYy9LYnVpbGQgYi9pbmNsdWRlL2FzbS1nZW5lcmljL0ti
-dWlsZA0KPj4gaW5kZXggOTQxYmU1NzRiYmUwMC4uNWU1ZDQxNThhNGI0YiAxMDA2NDQNCj4+
-IC0tLSBhL2luY2x1ZGUvYXNtLWdlbmVyaWMvS2J1aWxkDQo+PiArKysgYi9pbmNsdWRlL2Fz
-bS1nZW5lcmljL0tidWlsZA0KPj4gQEAgLTQ3LDYgKzQ3LDcgQEAgbWFuZGF0b3J5LXkgKz0g
-cGVyY3B1LmgNCj4+IMKgIG1hbmRhdG9yeS15ICs9IHBnYWxsb2MuaA0KPj4gwqAgbWFuZGF0
-b3J5LXkgKz0gcHJlZW1wdC5oDQo+PiDCoCBtYW5kYXRvcnkteSArPSByd29uY2UuaA0KPj4g
-K21hbmRhdG9yeS15ICs9IHNjcmVlbl9pbmZvLmgNCj4+IMKgIG1hbmRhdG9yeS15ICs9IHNl
-Y3Rpb25zLmgNCj4+IMKgIG1hbmRhdG9yeS15ICs9IHNlcmlhbC5oDQo+PiDCoCBtYW5kYXRv
-cnkteSArPSBzaG1wYXJhbS5oDQo+PiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9hc20tZ2VuZXJp
-Yy9zY3JlZW5faW5mby5oIA0KPj4gYi9pbmNsdWRlL2FzbS1nZW5lcmljL3NjcmVlbl9pbmZv
-LmgNCj4+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0DQo+PiBpbmRleCAwMDAwMDAwMDAwMDAwLi42
-ZmQwZTUwZmFiZmNkDQo+PiAtLS0gL2Rldi9udWxsDQo+PiArKysgYi9pbmNsdWRlL2FzbS1n
-ZW5lcmljL3NjcmVlbl9pbmZvLmgNCj4+IEBAIC0wLDAgKzEsMTIgQEANCj4+ICsvKiBTUERY
-LUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMCAqLw0KPj4gKw0KPj4gKyNpZm5kZWYgX0FT
-TV9HRU5FUklDX1NDUkVFTl9JTkZPX0gNCj4+ICsjZGVmaW5lIF9BU01fR0VORVJJQ19TQ1JF
-RU5fSU5GT19IDQo+PiArDQo+PiArI2luY2x1ZGUgPHVhcGkvbGludXgvc2NyZWVuX2luZm8u
-aD4NCj4+ICsNCj4+ICsjaWYgZGVmaW5lZChDT05GSUdfQVJDSF9IQVNfU0NSRUVOX0lORk8p
-DQo+PiArZXh0ZXJuIHN0cnVjdCBzY3JlZW5faW5mbyBzY3JlZW5faW5mbzsNCj4+ICsjZW5k
-aWYNCj4+ICsNCj4+ICsjZW5kaWYgLyogX0FTTV9HRU5FUklDX1NDUkVFTl9JTkZPX0ggKi8N
-Cj4+IGRpZmYgLS1naXQgYS9pbmNsdWRlL2xpbnV4L3NjcmVlbl9pbmZvLmggYi9pbmNsdWRl
-L2xpbnV4L3NjcmVlbl9pbmZvLmgNCj4+IGluZGV4IGVhYjcwODEzOTJkNTAuLmM3NjRiOWE1
-MWMyNGIgMTAwNjQ0DQo+PiAtLS0gYS9pbmNsdWRlL2xpbnV4L3NjcmVlbl9pbmZvLmgNCj4+
-ICsrKyBiL2luY2x1ZGUvbGludXgvc2NyZWVuX2luZm8uaA0KPj4gQEAgLTQsNiArNCw2IEBA
-DQo+PiDCoCAjaW5jbHVkZSA8dWFwaS9saW51eC9zY3JlZW5faW5mby5oPg0KPj4gLWV4dGVy
-biBzdHJ1Y3Qgc2NyZWVuX2luZm8gc2NyZWVuX2luZm87DQo+PiArI2luY2x1ZGUgPGFzbS9z
-Y3JlZW5faW5mby5oPg0KPj4gwqAgI2VuZGlmIC8qIF9TQ1JFRU5fSU5GT19IICovDQo+IA0K
-DQotLSANClRob21hcyBaaW1tZXJtYW5uDQpHcmFwaGljcyBEcml2ZXIgRGV2ZWxvcGVyDQpT
-VVNFIFNvZnR3YXJlIFNvbHV0aW9ucyBHZXJtYW55IEdtYkgNCkZyYW5rZW5zdHJhc3NlIDE0
-NiwgOTA0NjEgTnVlcm5iZXJnLCBHZXJtYW55DQpHRjogSXZvIFRvdGV2LCBBbmRyZXcgTXll
-cnMsIEFuZHJldyBNY0RvbmFsZCwgQm91ZGllbiBNb2VybWFuDQpIUkIgMzY4MDkgKEFHIE51
-ZXJuYmVyZykNCg==
+Can you explain why updating foll->writable = false (previously *writeable
+= false) is omitted here?
 
---------------b2X5ouefEi1LmiskbVc9m302--
+In the caller where the struct kvm_follow_pfn is initialized, e.g.
+__gfn_to_pfn_memslot()/gfn_to_pfn_prot(), .writable is not initialized.
+IIUC, they expect __kvm_follow_pfn() to update it and return .writable to
+upper caller.
 
---------------mvTV0S2N0xU0yyoORtj2zLF6
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
+As the one of the output, it would be better to initalize it either in the
+caller or update it in __kvm_follow_pfn(). Or
+__gfn_to_pfn_memslot()/gfn_to_pfn_prot() will return random data in the
+stack to the caller via bool *writable. It doesn't sound nice.
 
------BEGIN PGP SIGNATURE-----
+BTW: It seems both "writable" and "writeable" are used in this patch. I am
+wondering maybe we can correct them.
 
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmSlI4AFAwAAAAAACgkQlh/E3EQov+DI
-0w/+PYJb9P5D0YHxaR79JQ9BgY8voxyNlpbj3JugWhVEK4lAPHN8z+HSRdwU4wfxOKsZX1FBTpfk
-bECSmBytyxhdDXkMtRL4gRLc49qGRdyGlT9+WI2awawdEmoq9+Ek960DInc9AHFLlLXkgaaaJ6Uj
-WvWoRYw61aYfvVjA9TYAlncUklR+YvyskWujVDdDvR31kRW+rWZzqqCmwGIiu/RGejvWR+K+5z57
-ytaiLWEbgdRotAfjTUOYA3AsuO9MNYSVyiYvJAU3NOQZ245oaW3DJ73UEZQuMB4lHh6CAMl+r2Az
-lbetwa4pgiJ3HBwK3WI5zMUlpEJ1MNOZ683EplCe+6F/30GbHtn0xNYSRhcnZn3Wztrtfb/NJiDS
-ub+fAYffkbCcleXSKJjUFZRsKRdpYZFWWrBmnP/6FM6LXdXzGU/qUewdy+v0DXr162f2hINbPN8D
-zmvuKrIlXMoWx0rgj3DkVaUFG3D59X4TUWcKwap1SsGhImHjX4VibaLu96eH2H9mEnRBUaiBz20u
-1uWWM+Cpug4xP+sDiGsGk55NRdoViH+hEhSj6dqCZYrYriGiwGdhcbT9hVzLWJVVUazIFFYkO9Ws
-q5YOCxp+LUlkRJhp7GkJ8jgK0b07LDMBc1v56u6b3nUtZfQl37lxNyfDtN2hZvNcrO5wYNKrt4UT
-Mb8=
-=Uq4J
------END PGP SIGNATURE-----
+> -	if (kvm_is_error_hva(addr)) {
+> -		if (writable)
+> -			*writable = false;
+> +	if (kvm_is_error_hva(foll->hva))
+>  		return KVM_PFN_NOSLOT;
+> -	}
+>  
+> -	/* Do not map writable pfn in the readonly memslot. */
+> -	if (writable && memslot_is_readonly(slot)) {
+> -		*writable = false;
+> -		writable = NULL;
+> -	}
+> +	if (memslot_is_readonly(foll->slot))
+> +		foll->allow_write_mapping = false;
+> +
+> +	return hva_to_pfn(foll);
+> +}
+> +EXPORT_SYMBOL_GPL(__kvm_follow_pfn);
+>  
+> -	return hva_to_pfn(addr, atomic, interruptible, async, write_fault,
+> -			  writable);
+> +kvm_pfn_t __gfn_to_pfn_memslot(const struct kvm_memory_slot *slot, gfn_t gfn,
+> +			       bool atomic, bool interruptible, bool *async,
+> +			       bool write_fault, bool *writable, hva_t *hva)
+> +{
+> +	kvm_pfn_t pfn;
+> +	struct kvm_follow_pfn foll = {
+> +		.slot = slot,
+> +		.gfn = gfn,
+> +		.flags = 0,
+> +		.atomic = atomic,
+> +		.allow_write_mapping = !!writable,
+> +	};
+> +
+> +	if (write_fault)
+> +		foll.flags |= FOLL_WRITE;
+> +	if (async)
+> +		foll.flags |= FOLL_NOWAIT;
+> +	if (interruptible)
+> +		foll.flags |= FOLL_INTERRUPTIBLE;
+> +
+> +	pfn = __kvm_follow_pfn(&foll);
+> +	if (pfn == KVM_PFN_ERR_NEEDS_IO) {
+> +		*async = true;
+> +		pfn = KVM_PFN_ERR_FAULT;
+> +	}
+> +	if (hva)
+> +		*hva = foll.hva;
+> +	if (writable)
+> +		*writable = foll.writable;
+> +	return pfn;
+>  }
+>  EXPORT_SYMBOL_GPL(__gfn_to_pfn_memslot);
+>  
+>  kvm_pfn_t gfn_to_pfn_prot(struct kvm *kvm, gfn_t gfn, bool write_fault,
+>  		      bool *writable)
+>  {
+> -	return __gfn_to_pfn_memslot(gfn_to_memslot(kvm, gfn), gfn, false, false,
+> -				    NULL, write_fault, writable, NULL);
+> +	kvm_pfn_t pfn;
+> +	struct kvm_follow_pfn foll = {
+> +		.slot = gfn_to_memslot(kvm, gfn),
+> +		.gfn = gfn,
+> +		.flags = write_fault ? FOLL_WRITE : 0,
+> +		.allow_write_mapping = !!writable,
+> +	};
+> +	pfn = __kvm_follow_pfn(&foll);
+> +	if (writable)
+> +		*writable = foll.writable;
+> +	return pfn;
+>  }
+>  EXPORT_SYMBOL_GPL(gfn_to_pfn_prot);
+>  
+>  kvm_pfn_t gfn_to_pfn_memslot(const struct kvm_memory_slot *slot, gfn_t gfn)
+>  {
+> -	return __gfn_to_pfn_memslot(slot, gfn, false, false, NULL, true,
+> -				    NULL, NULL);
+> +	struct kvm_follow_pfn foll = {
+> +		.slot = slot,
+> +		.gfn = gfn,
+> +		.flags = FOLL_WRITE,
+> +	};
+> +	return __kvm_follow_pfn(&foll);
+>  }
+>  EXPORT_SYMBOL_GPL(gfn_to_pfn_memslot);
+>  
+>  kvm_pfn_t gfn_to_pfn_memslot_atomic(const struct kvm_memory_slot *slot, gfn_t gfn)
+>  {
+> -	return __gfn_to_pfn_memslot(slot, gfn, true, false, NULL, true,
+> -				    NULL, NULL);
+> +	struct kvm_follow_pfn foll = {
+> +		.slot = slot,
+> +		.gfn = gfn,
+> +		.flags = FOLL_WRITE,
+> +		.atomic = true,
+> +	};
+> +	return __kvm_follow_pfn(&foll);
+>  }
+>  EXPORT_SYMBOL_GPL(gfn_to_pfn_memslot_atomic);
+>  
+> diff --git a/virt/kvm/kvm_mm.h b/virt/kvm/kvm_mm.h
+> index 180f1a09e6ba..ed896aee5396 100644
+> --- a/virt/kvm/kvm_mm.h
+> +++ b/virt/kvm/kvm_mm.h
+> @@ -20,8 +20,7 @@
+>  #define KVM_MMU_UNLOCK(kvm)		spin_unlock(&(kvm)->mmu_lock)
+>  #endif /* KVM_HAVE_MMU_RWLOCK */
+>  
+> -kvm_pfn_t hva_to_pfn(unsigned long addr, bool atomic, bool interruptible,
+> -		     bool *async, bool write_fault, bool *writable);
+> +kvm_pfn_t hva_to_pfn(struct kvm_follow_pfn *foll);
+>  
+>  #ifdef CONFIG_HAVE_KVM_PFNCACHE
+>  void gfn_to_pfn_cache_invalidate_start(struct kvm *kvm,
+> diff --git a/virt/kvm/pfncache.c b/virt/kvm/pfncache.c
+> index 2d6aba677830..e3fefa753a51 100644
+> --- a/virt/kvm/pfncache.c
+> +++ b/virt/kvm/pfncache.c
+> @@ -144,6 +144,12 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
+>  	kvm_pfn_t new_pfn = KVM_PFN_ERR_FAULT;
+>  	void *new_khva = NULL;
+>  	unsigned long mmu_seq;
+> +	struct kvm_follow_pfn foll = {
+> +		.slot = gpc->memslot,
+> +		.gfn = gpa_to_gfn(gpc->gpa),
+> +		.flags = FOLL_WRITE,
+> +		.hva = gpc->uhva,
+> +	};
+>  
+>  	lockdep_assert_held(&gpc->refresh_lock);
+>  
+> @@ -183,7 +189,7 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
+>  		}
+>  
+>  		/* We always request a writeable mapping */
+> -		new_pfn = hva_to_pfn(gpc->uhva, false, false, NULL, true, NULL);
+> +		new_pfn = hva_to_pfn(&foll);
+>  		if (is_error_noslot_pfn(new_pfn))
+>  			goto out_error;
+>  
 
---------------mvTV0S2N0xU0yyoORtj2zLF6--
