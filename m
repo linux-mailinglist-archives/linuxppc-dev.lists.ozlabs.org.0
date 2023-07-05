@@ -2,75 +2,96 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E00DC747D3B
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 08:43:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9476747D62
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 08:48:54 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=duK/kR6w;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aRu+YCjg;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qwqqg5PVCz30fk
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 16:43:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qwqxw5Vncz3bbt
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jul 2023 16:48:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=duK/kR6w;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aRu+YCjg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1136; helo=mail-yw1-x1136.google.com; envelope-from=surenb@google.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qwqpm2GFGz2ydR
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jul 2023 16:42:38 +1000 (AEST)
-Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-579dd20b1c8so47861607b3.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Jul 2023 23:42:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1688539350; x=1691131350;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RKSBJo7irT0I1bKzFBpDIxHtHbxTle2uX3bUt2F2nbk=;
-        b=duK/kR6wU/iAXJmniLW+LT8JJl6U+gozPaVd6mh03l+jOCB3j14H418NCc5cU5Rj7r
-         1C3INGUblOKvd3R+b28qXqXfFDE+g+DwxJvpWHp4otvTQSNEWrha+9ddRwCAEhz4wdms
-         uTA1sxh1BXm2tEAPz8c0wltHdkxl8jpxDgdT65YgoFmyqbApyvGNz1pH5fD/UvvqB3T5
-         C3ifZ7W8p/gZwvhuqcdzRVuNFob56kn+dP5I3vw7FZMa78TQedwHelowsOSVHQFCGAEc
-         8sVsEtXXQPzNOJDTyMTEFGlJXtUTwn87b9aQL0sEt/68f2v2QmugHo6Tmqf+aQKd53+q
-         hm4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688539350; x=1691131350;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RKSBJo7irT0I1bKzFBpDIxHtHbxTle2uX3bUt2F2nbk=;
-        b=IBr1CRstcE5I514oRZL4f2EmODoU9nlpbKBaqhSFCuiMkfEbZQJxXa+fe2ObWBI9HP
-         tKCv9xtanM9ZmppaTUwphAZJnU5QZu/VfYH+Y0Gc0R2vNEAk2gRzAPFplf7WCLqG53LL
-         cJV9RgZlQiTYk+PAiHx5sfXl9anMAZKKExFykJr20fz04OKXPTOePONEuVPrZRGoD9pu
-         J22zLAw3MOC7hAW0Z5CZxE3HfRHA/tHG1IIbbFy0fv8Z00C7vVe2Liz3Z7qr1pIPeXiZ
-         AByOiOdbC6okSdXbKO1L+I6UqT9ohrbIJbDmdXePjGfYmdRajwgPeiGt3KqT91wXs2Yb
-         vshw==
-X-Gm-Message-State: ABy/qLa1nMWjw/+cCivQXAQGXefILEPUACeCFlRe6RvSv4p/J7gJjy/l
-	84n/8Osiu1hbJoxT0Pl07nIzeHxC2waooMQvb9NcZQ==
-X-Google-Smtp-Source: APBJJlHAWgde7m2RXt1Ev1tbVGxPLjTAl4oWP3/x/U5RMysDIAF74aeukOVtDnUyOkuuv1arhWie5Ne6KoGdiAfYUAI=
-X-Received: by 2002:a0d:d9c3:0:b0:56f:fa56:4c32 with SMTP id
- b186-20020a0dd9c3000000b0056ffa564c32mr10994044ywe.52.1688539350394; Tue, 04
- Jul 2023 23:42:30 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qwqx36R9Cz2yyT
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jul 2023 16:48:07 +1000 (AEST)
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3656f1xm028694;
+	Wed, 5 Jul 2023 06:47:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=yv/FrLpT08L3Apc6b/gXrDeCk9yGnPzfjdRohkIs4Xg=;
+ b=aRu+YCjguXlaQs3KW57NglPu5FkypAP2AchYFw5pBdBy9y7U8L1iFj9tqPw43Wp9KWUM
+ h1uJfl0AS3xvPJmY5nt2yNJf2XbEWf4a6URxjTtmnCbK+1a7lkOxV3KwP6MYk9+LfPHM
+ dEvE0YrFYGaoWymxsQikjBSOSnCwMulfTGGJ6VoZuzrRVHvvDlj443Pi86yjGsxVawpf
+ JZFRMi3/b+p+TPgOyIXphdvtaT1LwTCNDRyg593RYD/6iVgKmhyBW4Vw7nKLNpy5uiE+
+ AkC7aaoVdUP10eZw3L8f2jMd3L+W/0xKo/3SiiYgaAVYB7OfQuvx8Cqe+BKGj0K+T7k5 6w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rn34arebt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Jul 2023 06:47:02 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3656gT3K032743;
+	Wed, 5 Jul 2023 06:46:56 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rn34are2f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Jul 2023 06:46:56 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3652HG3Z002094;
+	Wed, 5 Jul 2023 06:46:48 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3rjbs4tef2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Jul 2023 06:46:48 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3656kiFM38142352
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 5 Jul 2023 06:46:44 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B4E8E20040;
+	Wed,  5 Jul 2023 06:46:44 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DA85B20043;
+	Wed,  5 Jul 2023 06:46:41 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.171.53.49])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed,  5 Jul 2023 06:46:41 +0000 (GMT)
+Date: Wed, 5 Jul 2023 08:46:40 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Hugh Dickins <hughd@google.com>
+Subject: Re: [PATCH v2 07/12] s390: add pte_free_defer() for pgtables sharing
+ page
+Message-ID: <ZKUR0HItN2Va8J1D@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+References: <54cb04f-3762-987f-8294-91dafd8ebfb0@google.com>
+ <a722dbec-bd9e-1213-1edd-53cd547aa4f@google.com>
+ <20230628211624.531cdc58@thinkpad-T15>
+ <cd7c2851-1440-7220-6c53-16b343b1474@google.com>
+ <ZJ2hsM5Tn+yUZ5ZV@ziepe.ca>
+ <20230629175645.7654d0a8@thinkpad-T15>
+ <edaa96f-80c1-1252-acbb-71c4f045b035@google.com>
+ <7bef5695-fa4a-7215-7e9d-d4a83161c7ab@google.com>
 MIME-Version: 1.0
-References: <facbfec3-837a-51ed-85fa-31021c17d6ef@gmail.com>
- <5c7455db-4ed8-b54f-e2d5-d2811908123d@leemhuis.info> <CAJuCfpH7BOBYGEG=op09bZrh1x3WA8HMcGBXXRhe6M5RJaen5A@mail.gmail.com>
- <CAJuCfpH7t7gCV2FkctzG2eWTUVTFZD7CtD14-WuHqBqOYBo1jA@mail.gmail.com>
- <2023070359-evasive-regroup-f3b8@gregkh> <CAJuCfpF=XPpPYqp2Y1Vu-GUL=RBj4fyhXoXzjBY4EKtBnYE_eQ@mail.gmail.com>
- <2023070453-plod-swipe-cfbf@gregkh> <20230704091808.aa2ed3c11a5351d9bf217ac9@linux-foundation.org>
- <CAJuCfpE_WjRQoDT1XnvBghCH-kpqk+pfcBJGyDnK7DZLMVG5Mw@mail.gmail.com>
- <20230704142846.524daa14ff921ed7eb534594@linux-foundation.org> <CAJuCfpFA3NudeyUyL65B3rnt-8sk1cnoh0uESYuS+LaDsGZu+g@mail.gmail.com>
-In-Reply-To: <CAJuCfpFA3NudeyUyL65B3rnt-8sk1cnoh0uESYuS+LaDsGZu+g@mail.gmail.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 4 Jul 2023 23:42:19 -0700
-Message-ID: <CAJuCfpFkB3OoahH6URzWi+4L50daNGqDVPeUaF5GGuez5tLk8w@mail.gmail.com>
-Subject: Re: Fwd: Memory corruption in multithreaded user space program while
- calling fork
-To: Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7bef5695-fa4a-7215-7e9d-d4a83161c7ab@google.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: hruV8AkSHZl3ANlxXk4XPZerf2HqhW4w
+X-Proofpoint-GUID: qjKoYY9T1h-a6Vm3seAHuVTkQEuDrdL1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-04_16,2023-07-04_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ suspectscore=0 adultscore=0 impostorscore=0 priorityscore=1501 bulkscore=0
+ malwarescore=0 clxscore=1015 lowpriorityscore=0 mlxscore=0 spamscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2307050058
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,101 +103,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jacob Young <jacobly.alt@gmail.com>, Linux regressions mailing list <regressions@lists.linux.dev>, Greg KH <gregkh@linuxfoundation.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux Memory Management <linux-mm@kvack.org>, Bagas Sanjaya <bagasdotme@gmail.com>, Laurent Dufour <ldufour@linux.ibm.com>, Linux PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Yang Shi <shy828301@gmail.com>, Peter Xu <peterx@redhat.com>, linux-kernel@vger.kernel.org, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Yu Zhao <yuzhao@google.com>, Ira Weiny <ira.weiny@intel.com>, Alistair Popple <apopple@nvidia.com>, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, Steven Price <steven.price@arm.com>, Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Huang Ying <ying.huang@intel.com>, Axel Rasmussen <axelrasmussen@google.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Thomas Hellstrom <thomas.hellstrom@linux.intel.com>, Ralph Campbell <rcampbell@nvidia.com>, Pasha Tatashin <pasha.tatashi
+ n@soleen.com>, Vasily Gorbik <gor@linux.ibm.com>, Anshuman Khandual <anshuman.khandual@arm.com>, Heiko Carstens <hca@linux.ibm.com>, Qi Zheng <zhengqi.arch@bytedance.com>, Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, linux-arm-kernel@lists.infradead.org, SeongJae Park <sj@kernel.org>, Lorenzo Stoakes <lstoakes@gmail.com>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, Naoya Horiguchi <naoya.horiguchi@nec.com>, Zack Rusin <zackr@vmware.com>, Vishal Moola <vishal.moola@gmail.com>, Minchan Kim <minchan@kernel.org>, Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Mel Gorman <mgorman@techsingularity.net>, "David S. Miller" <davem@davemloft.net>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 4, 2023 at 3:04=E2=80=AFPM Suren Baghdasaryan <surenb@google.co=
-m> wrote:
->
-> On Tue, Jul 4, 2023 at 2:28=E2=80=AFPM Andrew Morton <akpm@linux-foundati=
-on.org> wrote:
-> >
-> > On Tue, 4 Jul 2023 13:22:54 -0700 Suren Baghdasaryan <surenb@google.com=
-> wrote:
-> >
-> > > On Tue, Jul 4, 2023 at 9:18=E2=80=AFAM Andrew Morton <akpm@linux-foun=
-dation.org> wrote:
-> > > >
-> > > > On Tue, 4 Jul 2023 09:00:19 +0100 Greg KH <gregkh@linuxfoundation.o=
-rg> wrote:
-> > > >
-> > > > > > > > > Thanks! I'll investigate this later today. After discussi=
-ng with
-> > > > > > > > > Andrew, we would like to disable CONFIG_PER_VMA_LOCK by d=
-efault until
-> > > > > > > > > the issue is fixed. I'll post a patch shortly.
-> > > > > > > >
-> > > > > > > > Posted at: https://lore.kernel.org/all/20230703182150.21935=
-78-1-surenb@google.com/
-> > > > > > >
-> > > > > > > As that change fixes something in 6.4, why not cc: stable on =
-it as well?
-> > > > > >
-> > > > > > Sorry, I thought since per-VMA locks were introduced in 6.4 and=
- this
-> > > > > > patch is fixing 6.4 I didn't need to send it to stable for olde=
-r
-> > > > > > versions. Did I miss something?
-> > > > >
-> > > > > 6.4.y is a stable kernel tree right now, so yes, it needs to be i=
-ncluded
-> > > > > there :)
-> > > >
-> > > > I'm in wait-a-few-days-mode on this.  To see if we have a backporta=
-ble
-> > > > fix rather than disabling the feature in -stable.
-> > >
-> > > Ok, I think we have a fix posted at [2]  and it's cleanly applies to
-> > > 6.4.y stable branch as well. However fork() performance might slightl=
-y
-> > > regress, therefore disabling per-VMA locks by default for now seems t=
-o
-> > > be preferable even with this fix (see discussion at
-> > > https://lore.kernel.org/all/54cd9ffb-8f4b-003f-c2d6-3b6b0d2cb7d9@goog=
-le.com/).
-> > > IOW, both [1] and [2] should be applied to 6.4.y stable. Both apply
-> > > cleanly and I CC'ed stable on [2]. Greg, should I send [1] separately
-> > > to stable@vger?
-> > >
-> > > [1] https://lore.kernel.org/all/20230703182150.2193578-1-surenb@googl=
-e.com/
-> >
-> > This one isn't sufficient for .configs which already have
-> > PER_VMA_LOCK=3Dy.  Using `depends on BROKEN' would be better.
-> >
-> > > [2] https://lore.kernel.org/all/20230704200656.2526715-1-surenb@googl=
-e.com/
-> > >
-> >
-> > We're still awaiting tester input on this?
->
-> Yeah, and it seems to be negative... Anyway, I'll post a dependency on BR=
-OKEN.
+On Sat, Jul 01, 2023 at 09:32:38PM -0700, Hugh Dickins wrote:
+> On Thu, 29 Jun 2023, Hugh Dickins wrote:
 
-I posted the patchset at
-https://lore.kernel.org/all/20230705063711.2670599-1-surenb@google.com/
-CC'ing stable@vger with the cover letter explaining the situation. The
-negative report might have been a fluke, so let's wait for more
-testing. In the meantime we can disable the feature by applying the
-last patch in that series.
+Hi Hugh,
 
->
-> >
-> > I think a clean new fully-changelogged two-patch series would be the
-> > best way to handle this.  Please ensure that the [0/2] intro clearly
-> > explains what we're proposing here, and why.
+...
 
-Done.
+> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> +void pte_free_defer(struct mm_struct *mm, pgtable_t pgtable)
+> +{
+> +	struct page *page;
 
-> >
-> > Also, "might slightly regress" is a bit weak.  These things are
-> > measurable, no?  Because a better solution would be to fix 6.4.x and
-> > mainline and leave it at that.
+If I got your and Claudio conversation right, you were going to add
+here WARN_ON_ONCE() in case of mm_alloc_pgste(mm)?
 
-They are measurable and they were included in the fix I posted. I
-added the numbers in the new cover letter as well.
-Thanks,
-Suren.
+> +	page = virt_to_page(pgtable);
+> +	SetPageActive(page);
+> +	page_table_free(mm, (unsigned long *)pgtable);
+> +}
+> +#endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+> +
+>  /*
+>   * Base infrastructure required to generate basic asces, region, segment,
+>   * and page tables that do not make use of enhanced features like EDAT1.
 
-> >
+Thanks!
