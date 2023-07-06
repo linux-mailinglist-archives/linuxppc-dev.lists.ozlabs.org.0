@@ -2,90 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C40497497FD
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 11:10:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 667F6749800
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 11:11:09 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aM1pXunm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eYMJZPLf;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QxW2c6yMNz3cn0
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 19:10:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QxW3Z42Q5z3btX
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 19:11:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aM1pXunm;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eYMJZPLf;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QxVpf2rX4z3bsQ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 18:59:54 +1000 (AEST)
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3668lcjn027656;
-	Thu, 6 Jul 2023 08:59:37 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QxVpm6zGvz3bw3
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 19:00:00 +1000 (AEST)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3668kiT6018556;
+	Thu, 6 Jul 2023 08:59:42 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=6kxLrFH9O/dgnOxiwQllt1opEKBmkSY2lqJtQlTEuI8=;
- b=aM1pXunmJrh1gwpCx6J3gcZns+AA7zOZ2rwspLHOD7dDdCtQz4VWJqqNSALhVh7o4lqY
- C/9H+6Lbqtwx7gRZleqAauJ3VTrsZlKj1qE9l29VhAcwLxXkUATRiozHE1TPFPlEEXvL
- T/c6nufLglrpusoAC3wecmfSreaMQWrC60iuTzdjmfAXSgWX0pfqHuP10m9CBrMTeIDu
- fq5nVUs3Yd6/l16Y1z1S0MDr+yHf9aTSsXU7uU4KXsGBcXfj50aDUuNhwWgsknNxpiBw
- hdE51QhPjVna5XmSRhjnV9uaJncLBj26pCHqzjVpdoEznSAkuJH0JdTWvjcgKgfeTN1J ow== 
+ bh=R5o3btXCmicCo4Tpp9Fg5DPacjE5pAaul14OJ0FkTj4=;
+ b=eYMJZPLfHRMVxuwwIVyJRH/HOGVBuorO1HApiaeoNPPC63EiOICXwXIdSOKBGRWNFw9b
+ DUhcRyK086xjQE+RTADaSqoWU3E5EShySGXIjnf33wv/XIfeMBEUtsx71AvkOWfeauMQ
+ 80yC46K+o8CuBBcgRxBx7Fh/H/psaNiq+7Ajc6f8j37rsPAj1xvCZajDF3663wWpIIlt
+ oR5VJnvF3+UNcruP/ev0ST7g58XmpKdB4aGsNLSkfaCv0NBVEGgd56d4UvvsjQlBY2MA
+ SvZpkgTKnitU0zonHyDZ9NB7lsg0k6WBDNTzT3ZjfGMPJyZgxqVPNw9AvCYU8pIuv1bc 8Q== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rntdpg8ca-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rntd80bt3-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Jul 2023 08:59:37 +0000
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3668laYu027524;
-	Thu, 6 Jul 2023 08:59:36 GMT
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rntdpg8by-1
+	Thu, 06 Jul 2023 08:59:42 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3668koB8018858;
+	Thu, 6 Jul 2023 08:59:41 GMT
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com [169.55.91.170])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rntd80bsg-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Jul 2023 08:59:36 +0000
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-	by ppma03dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3668Y8GK001878;
-	Thu, 6 Jul 2023 08:59:35 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([9.208.130.100])
-	by ppma03dal.us.ibm.com (PPS) with ESMTPS id 3rjbs583t0-1
+	Thu, 06 Jul 2023 08:59:41 +0000
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+	by ppma02wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3667oaNX014939;
+	Thu, 6 Jul 2023 08:59:40 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([9.208.130.101])
+	by ppma02wdc.us.ibm.com (PPS) with ESMTPS id 3rjbs67x4a-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Jul 2023 08:59:35 +0000
+	Thu, 06 Jul 2023 08:59:40 +0000
 Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3668xYXN55640546
+	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3668xdLG1376944
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 6 Jul 2023 08:59:34 GMT
+	Thu, 6 Jul 2023 08:59:39 GMT
 Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5A6135805D;
+	by IMSVA (Postfix) with ESMTP id B8FF858062;
+	Thu,  6 Jul 2023 08:59:39 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E419458059;
 	Thu,  6 Jul 2023 08:59:34 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9FE9258057;
-	Thu,  6 Jul 2023 08:59:29 +0000 (GMT)
 Received: from skywalker.in.ibm.com (unknown [9.109.212.144])
 	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  6 Jul 2023 08:59:29 +0000 (GMT)
+	Thu,  6 Jul 2023 08:59:34 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: linux-mm@kvack.org, akpm@linux-foundation.org, mpe@ellerman.id.au,
         linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
         christophe.leroy@csgroup.eu
-Subject: [PATCH v3 12/13] powerpc/book3s64/radix: Remove mmu_vmemmap_psize
-Date: Thu,  6 Jul 2023 14:28:18 +0530
-Message-ID: <20230706085819.827761-13-aneesh.kumar@linux.ibm.com>
+Subject: [PATCH v3 13/13] powerpc/book3s64/radix: Add debug message to give more details of vmemmap allocation
+Date: Thu,  6 Jul 2023 14:28:19 +0530
+Message-ID: <20230706085819.827761-14-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230706085819.827761-1-aneesh.kumar@linux.ibm.com>
 References: <20230706085819.827761-1-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: I6yQXQ_t4WZHt1CiojNjaT6B5BTrhU44
-X-Proofpoint-GUID: RPQhsPkU4-f7pY4ofFUewyBBCePrbR4k
+X-Proofpoint-GUID: ZEf-ItYJYP9ALjhsQNJsxs1vuqIAM4_N
+X-Proofpoint-ORIG-GUID: Z7SWV4WQcHepAh7_Kbdsv69gkpfSrNsp
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-07-06_05,2023-07-06_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 clxscore=1015
- priorityscore=1501 adultscore=0 lowpriorityscore=0 mlxlogscore=999
- phishscore=0 impostorscore=0 suspectscore=0 bulkscore=0 spamscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 clxscore=1015
+ malwarescore=0 suspectscore=0 adultscore=0 spamscore=0 bulkscore=0
+ impostorscore=0 mlxscore=0 priorityscore=1501 mlxlogscore=999
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2305260000 definitions=main-2307060075
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -102,79 +102,67 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, Muchun Song <muchun.song@linux.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is not used by radix anymore.
+Add some extra vmemmap pr_debug message that will indicate the type of
+vmemmap allocations.
+
+For ex: with DAX vmemmap optimization we can find the below details:
+[  187.166580] radix-mmu: PAGE_SIZE vmemmap mapping
+[  187.166587] radix-mmu: PAGE_SIZE vmemmap mapping
+[  187.166591] radix-mmu: Tail page reuse vmemmap mapping
+[  187.166594] radix-mmu: Tail page reuse vmemmap mapping
+[  187.166598] radix-mmu: Tail page reuse vmemmap mapping
+[  187.166601] radix-mmu: Tail page reuse vmemmap mapping
+[  187.166604] radix-mmu: Tail page reuse vmemmap mapping
+[  187.166608] radix-mmu: Tail page reuse vmemmap mapping
+[  187.166611] radix-mmu: Tail page reuse vmemmap mapping
+[  187.166614] radix-mmu: Tail page reuse vmemmap mapping
+[  187.166617] radix-mmu: Tail page reuse vmemmap mapping
+[  187.166620] radix-mmu: Tail page reuse vmemmap mapping
+[  187.166623] radix-mmu: Tail page reuse vmemmap mapping
+[  187.166626] radix-mmu: Tail page reuse vmemmap mapping
+[  187.166629] radix-mmu: Tail page reuse vmemmap mapping
+[  187.166632] radix-mmu: Tail page reuse vmemmap mapping
+
+And without vmemmap optimization
+[  293.549931] radix-mmu: PMD_SIZE vmemmap mapping
+[  293.549984] radix-mmu: PMD_SIZE vmemmap mapping
+[  293.550032] radix-mmu: PMD_SIZE vmemmap mapping
+[  293.550076] radix-mmu: PMD_SIZE vmemmap mapping
+[  293.550117] radix-mmu: PMD_SIZE vmemmap mapping
 
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- arch/powerpc/mm/book3s64/radix_pgtable.c | 11 -----------
- arch/powerpc/mm/init_64.c                | 21 ++++++++++++++-------
- 2 files changed, 14 insertions(+), 18 deletions(-)
+ arch/powerpc/mm/book3s64/radix_pgtable.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index c05783466562..dac56c883099 100644
+index dac56c883099..a62729f70f2a 100644
 --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
 +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -601,17 +601,6 @@ void __init radix__early_init_mmu(void)
- #else
- 	mmu_virtual_psize = MMU_PAGE_4K;
- #endif
--
--#ifdef CONFIG_SPARSEMEM_VMEMMAP
--	/* vmemmap mapping */
--	if (mmu_psize_defs[MMU_PAGE_2M].shift) {
--		/*
--		 * map vmemmap using 2M if available
--		 */
--		mmu_vmemmap_psize = MMU_PAGE_2M;
--	} else
--		mmu_vmemmap_psize = mmu_virtual_psize;
--#endif
- #endif
- 	/*
- 	 * initialize page table size
-diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
-index 5701faca39ef..6db7a063ba63 100644
---- a/arch/powerpc/mm/init_64.c
-+++ b/arch/powerpc/mm/init_64.c
-@@ -198,17 +198,12 @@ bool altmap_cross_boundary(struct vmem_altmap *altmap, unsigned long start,
- 	return false;
- }
+@@ -1026,6 +1026,7 @@ static pte_t * __meminit radix__vmemmap_pte_populate(pmd_t *pmdp, unsigned long
+ 				p = vmemmap_alloc_block_buf(PAGE_SIZE, node, NULL);
+ 			if (!p)
+ 				return NULL;
++			pr_debug("PAGE_SIZE vmemmap mapping\n");
+ 		} else {
+ 			/*
+ 			 * When a PTE/PMD entry is freed from the init_mm
+@@ -1038,6 +1039,7 @@ static pte_t * __meminit radix__vmemmap_pte_populate(pmd_t *pmdp, unsigned long
+ 			 */
+ 			get_page(reuse);
+ 			p = page_to_virt(reuse);
++			pr_debug("Tail page reuse vmemmap mapping\n");
+ 		}
  
--int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
--		struct vmem_altmap *altmap)
-+int __meminit __vmemmap_populate(unsigned long start, unsigned long end, int node,
-+				 struct vmem_altmap *altmap)
- {
- 	bool altmap_alloc;
- 	unsigned long page_size = 1 << mmu_psize_defs[mmu_vmemmap_psize].shift;
- 
--#ifdef CONFIG_PPC_BOOK3S_64
--	if (radix_enabled())
--		return radix__vmemmap_populate(start, end, node, altmap);
--#endif
--
- 	/* Align to the page size of the linear mapping. */
- 	start = ALIGN_DOWN(start, page_size);
- 
-@@ -277,6 +272,18 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
- 	return 0;
- }
- 
-+int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
-+			       struct vmem_altmap *altmap)
-+{
-+
-+#ifdef CONFIG_PPC_BOOK3S_64
-+	if (radix_enabled())
-+		return radix__vmemmap_populate(start, end, node, altmap);
-+#endif
-+
-+	return __vmemmap_populate(start, end, node, altmap);
-+}
-+
- #ifdef CONFIG_MEMORY_HOTPLUG
- static unsigned long vmemmap_list_free(unsigned long start)
- {
+ 		VM_BUG_ON(!PAGE_ALIGNED(addr));
+@@ -1147,6 +1149,7 @@ int __meminit radix__vmemmap_populate(unsigned long start, unsigned long end, in
+ 			p = vmemmap_alloc_block_buf(PMD_SIZE, node, altmap);
+ 			if (p) {
+ 				vmemmap_set_pmd(pmd, p, node, addr, next);
++				pr_debug("PMD_SIZE vmemmap mapping\n");
+ 				continue;
+ 			} else if (altmap) {
+ 				/*
 -- 
 2.41.0
 
