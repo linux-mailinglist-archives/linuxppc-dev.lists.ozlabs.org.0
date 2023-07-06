@@ -1,69 +1,107 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5098C749D4F
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 15:21:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F703749D53
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 15:22:10 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=aOtY4pQJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=DYU9YRbr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=TfDw4vxX;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QxccC1fk2z3c5l
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 23:21:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QxcdD3pw3z3cV9
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 23:22:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=aOtY4pQJ;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=DYU9YRbr;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=TfDw4vxX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42a; helo=mail-pf1-x42a.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.28; helo=out4-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QxYvz3D3gz3bqc
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 21:19:41 +1000 (AEST)
-Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-6726d5d92afso1232120b3a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jul 2023 04:19:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688642379; x=1691234379;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=S7Au9X7NkxtrT0jnVQVc4JQ7c3LuGMAw4J5ki5nmDTQ=;
-        b=aOtY4pQJTY1hbfFiaZCw8v+xyMzdLnKFqJ/7prHynKDB/+sCmMlWd/iDm7i9tEgTJu
-         mcRsNbYMSyIfMCm7Alfs5HvGUFPPqsRQR+fUhbYX9W7V9RUW/9D04D3+ZCZIXm05EOv7
-         jPBKS4oFA5wsiNExV3ZlQSd3JSfKY5tO/wVrPHJVuqsQlMNccz9t8E5/LlrVmKKKPmOF
-         xhpuj4t9/8v4SDCCc9dxyoXEirdvkdhBhMv4bJMAo4+0p3jQ6uFjUsqNd/x2CyirHv70
-         qS+nHNdEdgM113R3YBsn/c1tAxhNKqDcux8NgvL1Ep8rPdrLRP8nYjwosLSAcmHsrztL
-         Uzog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688642379; x=1691234379;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=S7Au9X7NkxtrT0jnVQVc4JQ7c3LuGMAw4J5ki5nmDTQ=;
-        b=QvnOaIjJCnodKgNHvS+NfLy51qCAln+tP91dThbFCojMUKwB2btICo/7nrtI6zz+f8
-         Wn87YhE1Hf7gvQwa4lSYLbfTXLdQFjDfsst36jqSk3NyOuaWN9V7Vbrs3dykF6X69z0X
-         Kz1DcjPEP+AgzlAbTCnsdpNe9Vxo0BOj9vgTJseO2ag+clMZmnV0y+Q2tNdnJG9zL8t2
-         3KBHm3T98oSl8nCt/ZF7sA50MhqiRQKYJedwe6e8FsU+wZ7Tnk9zViRo/em3G993JHkz
-         3t4lNCvVzqjnRw1XTCWFfAP32nVn6f7JBWOXPMFjBnu6iD7ZLVXX0Xy5SPye6nT5sb6s
-         NWBA==
-X-Gm-Message-State: ABy/qLat+NPdUpgGAm2Fjs8hOGA07/0ImqLP5vyoSnQs+lftpOgs/7ep
-	qEKSCHRrpXRcRPbpV622mf+m3JNZVc2X4eNQAMs=
-X-Google-Smtp-Source: APBJJlGuBOSrm41copfyuAHMoUBKp8B7KwOUqRPL2+y2WJlF8Q9LfBOzQAtN9zVSuZoBe7eqnCz3uoscwB5hMUU1528=
-X-Received: by 2002:a05:6a00:1886:b0:668:7494:384a with SMTP id
- x6-20020a056a00188600b006687494384amr2892558pfh.12.1688642379213; Thu, 06 Jul
- 2023 04:19:39 -0700 (PDT)
-MIME-Version: 1.0
-References: <1652963808-14515-1-git-send-email-shengjiu.wang@nxp.com>
- <CAOMZO5DtpoH0dLDX3=Sv4UUpX_=66VEZPsJUWQNnYviApfMLKQ@mail.gmail.com>
- <20230706084706.bzwsbi3zisx5m5rl@fatal.se> <CAOMZO5CCdaodWQrHUQgMizoES=jfEtw-sNJZG-DJMpRD8tZW9g@mail.gmail.com>
-In-Reply-To: <CAOMZO5CCdaodWQrHUQgMizoES=jfEtw-sNJZG-DJMpRD8tZW9g@mail.gmail.com>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Thu, 6 Jul 2023 19:19:28 +0800
-Message-ID: <CAA+D8ANAg7bs0A35c7Af3_-5sLaqvT1RoKfCbzYi=z=t_q9LUw@mail.gmail.com>
-Subject: Re: [PATCH] ASoC: fsl_sai: Enable MCTL_MCLK_EN bit for master mode
-To: Fabio Estevam <festevam@gmail.com>
-Content-Type: multipart/alternative; boundary="0000000000002a6df105ffcfb187"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QxbDS3Xmcz303l
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 22:19:02 +1000 (AEST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailout.nyi.internal (Postfix) with ESMTP id E8A865C02FA;
+	Thu,  6 Jul 2023 08:18:58 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Thu, 06 Jul 2023 08:18:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:sender
+	:subject:subject:to:to; s=fm2; t=1688645938; x=1688732338; bh=pm
+	sCsD6NfrkTosVBZWjph1ykYGb9O3Dg+fhXVNC3Rvk=; b=DYU9YRbrNhTzBJuXfZ
+	xZ+Y1O2XI7KfQRyTQF1V8a0rVq8MYc2l4H0B6U1/rBwlwbNvVvTCBUCgruY6Pxoc
+	VaYF1h3LDB2oPT+5yxaP3YTkLrgAaErAuxO/cxKMd7pHGKSppM0I++Q5lIWr9nzw
+	bxdZIxAaU+xs/SLqpbCdozn2UEGm5TT6M5c3WNNmobtsyNNvBu6KcsHLTywYQsSR
+	HtmKZFhQxqax14K0B8DsN6GQIZQck5yQSMFP6o4GM2GDC2jn0q3rPBVQqtylth+I
+	ISX60SEJu5ruEE8cuZmgIMGJq3+lbX3zaRBPrORf/LsaMI4hGMUkAx+lAYjUt2zg
+	o7Ng==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:sender:subject
+	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+	:x-sasl-enc; s=fm2; t=1688645938; x=1688732338; bh=pmsCsD6NfrkTo
+	sVBZWjph1ykYGb9O3Dg+fhXVNC3Rvk=; b=TfDw4vxXnxU9vNA6hgCsyajS/OCts
+	wQszxsaApShKlVvMRQdDbyNtIWQ+FkjIpzybYwnCBdjxcaVoWSCXr3brSE996vlG
+	1PKuiTvK/Eri8Cf5hnKLtqQy7v1D4Lrf+WDqzYrF2UBnOYiJw7iDiRnBmDhmYUyP
+	yR48T+Z9lKy0yu8WGApPh8AMbRFKyjIagsFjtaFjxi31mrREHRRtg9G+fJ35WLER
+	RTm5PTA/LfOkjDr0eolviLd3yvayhNR0dgWpj/KjK8FNFM6KUmlR6EChEssKMFxK
+	vPabKnTuSWQ0naxSVR4eWja+X3+iE1xWMOlFN7AHnoLKi74y/DdDnk2ug==
+X-ME-Sender: <xms:MbGmZCnXRz8rvIIm-02xlguovFCy3cCMiGr6P8JkTytqrGFEIwkBXg>
+    <xme:MbGmZJ2Op6wwSngvS53MLCr6dcHZ91rJIsWui0mJbwQRHkh8Mm2a0SzG137XXoPI5
+    B0vrIBwLhW2ykG5mdk>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudelgdehtdcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
+    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
+    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
+    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
+    hnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:MbGmZAoflaPhHqipkdsi5mRnq0UbEnAE7k1e13rOugyz-CK1O69kqA>
+    <xmx:MbGmZGmffC6G5IeDL4PkqNLjcETC6c9EAQF_I979pIoiYgbQnbq4DQ>
+    <xmx:MbGmZA36VwFVduytTatUjarqPPwSpX4vSvCVpKuq7oPx5XBXNbHlZw>
+    <xmx:MrGmZI5pH4RZaybwhVCry2F9J71hviXYyMNQoff1YN9MX9L3C13eWQ>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 3EF87B60086; Thu,  6 Jul 2023 08:18:57 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-531-gfdfa13a06d-fm-20230703.001-gfdfa13a0
+Mime-Version: 1.0
+Message-Id: <c057ba7a-3cc2-44ac-a961-fa062b909876@app.fastmail.com>
+In-Reply-To: <20230705142004.3605799-2-eric.devolder@oracle.com>
+References: <20230705142004.3605799-1-eric.devolder@oracle.com>
+ <20230705142004.3605799-2-eric.devolder@oracle.com>
+Date: Thu, 06 Jul 2023 14:18:36 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Eric DeVolder" <eric.devolder@oracle.com>,
+ "Russell King" <linux@armlinux.org.uk>,
+ "Catalin Marinas" <catalin.marinas@arm.com>,
+ "Will Deacon" <will@kernel.org>, "Huacai Chen" <chenhuacai@kernel.org>,
+ "Geert Uytterhoeven" <geert@linux-m68k.org>,
+ "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
+ "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+ "Helge Deller" <deller@gmx.de>,
+ "Yoshinori Sato" <ysato@users.sourceforge.jp>,
+ "Rich Felker" <dalias@libc.org>,
+ "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
+ "Thomas Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
+ "Borislav Petkov" <bp@alien8.de>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-ia64@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-sh@vger.kernel.org
+Subject: Re: [PATCH v4 01/13] kexec: consolidate kexec and crash options into
+ kernel/Kconfig.kexec
+Content-Type: text/plain
 X-Mailman-Approved-At: Thu, 06 Jul 2023 23:17:34 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -76,128 +114,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-ALSA <alsa-devel@alsa-project.org>, Xiubo Li <Xiubo.Lee@gmail.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Shengjiu Wang <shengjiu.wang@nxp.com>, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>, =?UTF-8?Q?Hans_S=C3=B6derlund?= <hans.soderlund@realbit.se>, Andreas Henriksson <andreas@fatal.se>, linux-kernel <linux-kernel@vger.kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>, Linus Walleij <linus.walleij@linaro.org>, Zhen Lei <thunder.leizhen@huawei.com>, "H. Peter Anvin" <hpa@zytor.com>, WANG Xuerui <kernel@xen0n.name>, Ard Biesheuvel <ardb@kernel.org>, tsi@tuyoix.net, Alexander Gordeev <agordeev@linux.ibm.com>, "Paul E. McKenney" <paulmck@kernel.org>, Baoquan He <bhe@redhat.com>, Masahiro Yamada <masahiroy@kernel.org>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, Sebastian Reichel <sebastian.reichel@collabora.com>, Sami Tolvanen <samitolvanen@google.com>, Miguel Ojeda <ojeda@kernel.org>, Juerg Haefliger <juerg.haefliger@canonical.com>, borntraeger@linux.ibm.com, Frederic Weisbecker <frederic@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>, Albert Ou <aou@eecs.berkeley.edu>, Kees Cook <keescook@chromium.org>, gor@linux.ibm.com, Anshuman Khandual <anshuman.khandual@arm.com>, Heiko Carstens <hca@linux.ibm.com>, Xin Li <xin3.li@intel.com>, Nicholas Piggin <npiggin@gmail.com>, Russell King <rmk+kernel@armlinu
+ x.org.uk>, Paul Walmsley <paul.walmsley@sifive.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Zi Yan <ziy@nvidia.com>, hbathini@linux.ibm.com, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Nick Desaulniers <ndesaulniers@google.com>, sourabhjain@linux.ibm.com, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, Tejun Heo <tj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---0000000000002a6df105ffcfb187
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Wed, Jul 5, 2023, at 16:19, Eric DeVolder wrote:
+> +
+> +config CRASH_DUMP
+> +	bool "kernel crash dumps"
+> +	depends on ARCH_SUPPORTS_CRASH_DUMP
+> +	select CRASH_CORE
+> +	select KEXEC
 
-On Thu, Jul 6, 2023 at 7:08=E2=80=AFPM Fabio Estevam <festevam@gmail.com> w=
-rote:
+Today's linux-next now runs into a warning on arm64 and
+presumably others, with the same problem as on arm earlier:
 
-> Hi Andreas,
->
-> On Thu, Jul 6, 2023 at 5:47=E2=80=AFAM Andreas Henriksson <andreas@fatal.=
-se>
-> wrote:
->
-> > We've been working on an i.MX8MP where MCLK needs to be input and found
-> > that this enables the MCLK as output despite not having set the
-> > `fsl,sai-mclk-direction-output;` devicetree property in our DT.
-> > Reverting the patch fixes the issues for us.
-> >
-> > I have to say that the code comment made me a bit confused, but once
-> > I found the commit message I understood why this code existed.
-> > If this is really i.MX8MM specific maybe mention that in the code
-> > comment and please make the code actually only trigger on i.MX8MM.
-> > It seems to me like these all fulfill the current criteria:
-> > imx7ulp, imx8mq, imx8mm, imx8mp, imx8ulp, imx93
-> >
-> > Should I report this in bugzilla.kernel.org ?
->
-> Should we do a fix like this?
->
-> --- a/sound/soc/fsl/fsl_sai.c
-> +++ b/sound/soc/fsl/fsl_sai.c
-> @@ -1453,7 +1453,7 @@ static int fsl_sai_probe(struct platform_device
-> *pdev)
->
->         /* Select MCLK direction */
->         if (sai->mclk_direction_output &&
-> -           sai->soc_data->max_register >=3D FSL_SAI_MCTL) {
-> +           sai->soc_data->max_register >=3D FSL_SAI_MCTL &&
-> sai->mclk_direction_output) {
->                 regmap_update_bits(sai->regmap, FSL_SAI_MCTL,
->                                    FSL_SAI_MCTL_MCLK_EN,
-> FSL_SAI_MCTL_MCLK_EN);
->         }
->
+WARNING: unmet direct dependencies detected for KEXEC
+  Depends on [n]: ARCH_SUPPORTS_KEXEC [=n]
+  Selected by [y]:
+  - CRASH_DUMP [=y] && ARCH_SUPPORTS_CRASH_DUMP [=y]
 
-No, this is the code in probe().
-The code with the issue is in fsl_sai_set_bclk().
+I think the easiest way to make this reliable would be
+this fixup:
 
-The clean way for fixing is to remove the code in fsl_sai_set_bclk()
-and add "fsl,sai-mclk-direction-output;" property in dts for some
-node.
+diff --git a/kernel/Kconfig.kexec b/kernel/Kconfig.kexec
+index d82a7ce59c051..e58ca6128d6ee 100644
+--- a/kernel/Kconfig.kexec
++++ b/kernel/Kconfig.kexec
+@@ -91,6 +91,7 @@ config KEXEC_JUMP
+ config CRASH_DUMP
+        bool "kernel crash dumps"
+        depends on ARCH_SUPPORTS_CRASH_DUMP
++       depends on ARCH_SUPPORTS_KEXEC
+        select CRASH_CORE
+        select KEXEC
+        help
 
-best regards
-wang shengjiu
-
---0000000000002a6df105ffcfb187
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Thu, Jul 6, 2023 at 7:08=E2=80=AFP=
-M Fabio Estevam &lt;<a href=3D"mailto:festevam@gmail.com">festevam@gmail.co=
-m</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin=
-:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"=
->Hi Andreas,<br>
-<br>
-On Thu, Jul 6, 2023 at 5:47=E2=80=AFAM Andreas Henriksson &lt;<a href=3D"ma=
-ilto:andreas@fatal.se" target=3D"_blank">andreas@fatal.se</a>&gt; wrote:<br=
->
-<br>
-&gt; We&#39;ve been working on an i.MX8MP where MCLK needs to be input and =
-found<br>
-&gt; that this enables the MCLK as output despite not having set the<br>
-&gt; `fsl,sai-mclk-direction-output;` devicetree property in our DT.<br>
-&gt; Reverting the patch fixes the issues for us.<br>
-&gt;<br>
-&gt; I have to say that the code comment made me a bit confused, but once<b=
-r>
-&gt; I found the commit message I understood why this code existed.<br>
-&gt; If this is really i.MX8MM specific maybe mention that in the code<br>
-&gt; comment and please make the code actually only trigger on i.MX8MM.<br>
-&gt; It seems to me like these all fulfill the current criteria:<br>
-&gt; imx7ulp, imx8mq, imx8mm, imx8mp, imx8ulp, imx93<br>
-&gt;<br>
-&gt; Should I report this in <a href=3D"http://bugzilla.kernel.org" rel=3D"=
-noreferrer" target=3D"_blank">bugzilla.kernel.org</a> ?<br>
-<br>
-Should we do a fix like this?<br>
-<br>
---- a/sound/soc/fsl/fsl_sai.c<br>
-+++ b/sound/soc/fsl/fsl_sai.c<br>
-@@ -1453,7 +1453,7 @@ static int fsl_sai_probe(struct platform_device *pdev=
-)<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 /* Select MCLK direction */<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (sai-&gt;mclk_direction_output &amp;&amp;<br=
->
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0sai-&gt;soc_data-&gt;max_register=
- &gt;=3D FSL_SAI_MCTL) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0sai-&gt;soc_data-&gt;max_register=
- &gt;=3D FSL_SAI_MCTL &amp;&amp;<br>
-sai-&gt;mclk_direction_output) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 regmap_update_bits(=
-sai-&gt;regmap, FSL_SAI_MCTL,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0FSL_SAI_MCTL_MCLK_EN, F=
-SL_SAI_MCTL_MCLK_EN);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br></blockquote><div><br></div><div>No, this =
-is the code in probe().</div><div>The code with the issue is in=C2=A0<span =
-style=3D"color:rgb(80,0,80)">fsl_sai_set_bclk().</span><br></div><div><span=
- style=3D"color:rgb(80,0,80)"><br></span></div><div><span style=3D"color:rg=
-b(80,0,80)">The clean way for fixing is to remove the code in=C2=A0</span><=
-span style=3D"color:rgb(80,0,80)">fsl_sai_set_bclk()</span></div><div><span=
- style=3D"color:rgb(80,0,80)">and add &quot;</span>fsl,sai-mclk-direction-o=
-utput;&quot; property in dts for some</div><div>node.</div><div><span style=
-=3D"color:rgb(80,0,80)"><br></span></div><div><span style=3D"color:rgb(80,0=
-,80)">best regards</span></div><div><span style=3D"color:rgb(80,0,80)">wang=
- shengjiu</span></div><div><span style=3D"color:rgb(80,0,80)"><br></span></=
-div></div></div>
-
---0000000000002a6df105ffcfb187--
+   Arnd
