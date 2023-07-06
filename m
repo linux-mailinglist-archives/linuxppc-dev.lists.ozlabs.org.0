@@ -1,92 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC91B749ABD
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 13:35:35 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=FMSfz4UQ;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=JgusLVIE;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F557749B08
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 13:44:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QxZGF5c7kz3bvn
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 21:35:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QxZS42LYCz3c3g
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 21:44:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=FMSfz4UQ;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=JgusLVIE;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.25; helo=out1-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.128.177; helo=mail-yw1-f177.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QxZFG3mV4z30hM
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 21:34:41 +1000 (AEST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailout.nyi.internal (Postfix) with ESMTP id D2AC55C01E1;
-	Thu,  6 Jul 2023 07:34:36 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Thu, 06 Jul 2023 07:34:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm2; t=1688643276; x=1688729676; bh=t3
-	/q+Yg2MyaI0HLj5wcLnTMw97EVKZ397JoVjZFMbmI=; b=FMSfz4UQudPJeTt9bj
-	WC9eVWhSdkVZVDDe4+xKy3kYSFTgGEykX2Saeokzx5CVACfuq6cFbtKj5pBKp7aq
-	F/xJtdQOttoIte0kGTl1wfYUgTPX8hdSnJdItsbruqQwXuHXNwdyBYaseuNoJpAQ
-	K09nzc/6amwj+3rXNfoIaRhXcZz9QKq1p5xARst0pgRqMhCcLFHIbdZlpHm7WU9m
-	/quk8LhxCJATG9ZATEWRl2z84T15Ok7GtYUDhxt5xyXZ66x1UkJDBBPRQpbH97RG
-	3TDvcHzvPcem5tT0fg6bgXxkw65dYVUO+1DFbSUPSad7KniZOWa38t6WWDtCLGaY
-	+nGg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm2; t=1688643276; x=1688729676; bh=t3/q+Yg2MyaI0
-	HLj5wcLnTMw97EVKZ397JoVjZFMbmI=; b=JgusLVIE1tEWMeIDMDlUKz/L/HNXh
-	WXLIYgGG/genxnLVqGgWHfri8GC3338hUWyrRsmaZzEpoSAuawo9wjH+qV1jby1L
-	rMYDEhvb36rY1+bXYFweeoK0Bmgn1bsKOuMb3hOeibrHckvbdP0aw6A3qfO4oJwf
-	OIkXT8SxOY659OVarF1c7oF3PTZtfypadg/Chxg2pG/J5KdizSQcLMBihbjhLYam
-	Kz/Fci301n1SVB1AjhY7Jbs6o204WBTMaJw5Bb0bqnblrqiI2tXzDn62Xg2UR6qp
-	RSLAo+1nioogftKm0GIfICM/oTUe26WDgHRmqv5KxXLaukUSlEr/LnIxg==
-X-ME-Sender: <xms:zKamZIifhhh3cYphtKnXVUusVqjfk00NZB2K_CNVbkOYM2FBMQUhRw>
-    <xme:zKamZBA5_K2Gr9r8TtB-5Ufvukb6BjCDR4KNkk24bEjQRpZCWRQiuS1Q4YHboNyW0
-    KCB16KGd12wYkY4mkM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudelgdegudcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
-    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
-    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
-    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
-    hnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:zKamZAEEySEYPRJfw1a14xVz8ITg-mjZqe9RFccGbPDIv7eA60XvcA>
-    <xmx:zKamZJQG_89fAhk6cYr31JaZ3cLILRBYK104hLs2RTFFToUMqDwUlA>
-    <xmx:zKamZFyJMlS-NV6ps_X_UlaEMQ80rlShTub9ZW0Ek9VNEO8IcmGD0g>
-    <xmx:zKamZMnuNI4Jd8k_yPJ4lV2CB2z-4QO_Rn2Dg5d55ubI4NHcmwdxyg>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 1B6EBB60086; Thu,  6 Jul 2023 07:34:35 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-531-gfdfa13a06d-fm-20230703.001-gfdfa13a0
-Mime-Version: 1.0
-Message-Id: <73b584cb-ceff-4e16-bac2-02de9903b973@app.fastmail.com>
-In-Reply-To: <20230705190309.579783-13-jlayton@kernel.org>
-References: <20230705185755.579053-1-jlayton@kernel.org>
- <20230705190309.579783-1-jlayton@kernel.org>
- <20230705190309.579783-13-jlayton@kernel.org>
-Date: Thu, 06 Jul 2023 13:34:14 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Jeff Layton" <jlayton@kernel.org>,
- "Christian Brauner" <brauner@kernel.org>, "Jeremy Kerr" <jk@ozlabs.org>,
- "Michael Ellerman" <mpe@ellerman.id.au>,
- "Nicholas Piggin" <npiggin@gmail.com>,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v2 15/92] spufs: convert to ctime accessor functions
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QxZRZ73pfz3bVJ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 21:43:38 +1000 (AEST)
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-5703cb4bcb4so7611607b3.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jul 2023 04:43:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688643815; x=1691235815;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3B1P5iTyw+q1EyirQ9/CZcpAFyHq3bZB1xtPbht2ZGU=;
+        b=KHwYmzUXn2BdFfEfEjrme9eWfBpyX1nKnHjQYhHo2pFhm88o20d++QlwWo6ezFdoY4
+         RF6px5PqOEZGFF2AGh1ajGKDOooac1ps2bmbn/NxeAANwiLuFwaJwwa+np4TEYU8sKEd
+         9kbb67ZxHoccFXztk40Gk2AHZpb5tEqkqjEm4H9X2I2mTbOD0bQpNsLRO5zUhPN5Nc2W
+         xbTu5JdBjD6K0QFP6H778bXXaX5nTi5wOeGBa8r06rKo/xwIxR+KBrflPgD1m9p9cMer
+         +pbNfY6BKYRzbProAVvb+5JgSgaaFxU45cu241hsTmBjOWeQSG/nwLvzqoXUbzQPDxp6
+         jM2Q==
+X-Gm-Message-State: ABy/qLZmptnF+fTjHlBwO0tRFsKe5UpXA2vqXRM4XBE7ZTQZVPqXnck+
+	PhKOo9KF8QS05dbkCoBQh3fR2LcalLEkkg==
+X-Google-Smtp-Source: APBJJlEyLQesUgSXcyGTsRToBTsEI3JLwj0zTYRgYRRV5HQfoG/3ms448ScwyzhwuCkYw2o7ba6M/w==
+X-Received: by 2002:a0d:d953:0:b0:54f:9cd0:990 with SMTP id b80-20020a0dd953000000b0054f9cd00990mr1908549ywe.18.1688643815169;
+        Thu, 06 Jul 2023 04:43:35 -0700 (PDT)
+Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com. [209.85.219.178])
+        by smtp.gmail.com with ESMTPSA id v126-20020a0dd384000000b0057a02887d4esm282083ywd.100.2023.07.06.04.43.34
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 06 Jul 2023 04:43:34 -0700 (PDT)
+Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-c4dd264359cso568054276.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jul 2023 04:43:34 -0700 (PDT)
+X-Received: by 2002:a25:4f03:0:b0:bff:5852:b112 with SMTP id
+ d3-20020a254f03000000b00bff5852b112mr1350536ybb.61.1688643814620; Thu, 06 Jul
+ 2023 04:43:34 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230705003024.1486757-1-bgray@linux.ibm.com> <4e94cb11-1f39-d631-fe0a-b945b301b77c@csgroup.eu>
+ <06d642f1e1245df1c68b6bd5fbd288233be027bc.camel@linux.ibm.com> <CAMuHMdUO_qEd2oVCMRGDZML6COquu-5=pS9fnFQ4pax6G4vxGQ@mail.gmail.com>
+In-Reply-To: <CAMuHMdUO_qEd2oVCMRGDZML6COquu-5=pS9fnFQ4pax6G4vxGQ@mail.gmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Thu, 6 Jul 2023 13:43:22 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdWL+1=dZHCXwxO7PmK8kU95Ey5boQrqCxUNQPed_5U+Hw@mail.gmail.com>
+Message-ID: <CAMuHMdWL+1=dZHCXwxO7PmK8kU95Ey5boQrqCxUNQPed_5U+Hw@mail.gmail.com>
+Subject: Re: [PATCH] rtc: Kconfig: select REGMAP for RTC_DRV_DS1307
+To: Benjamin Gray <bgray@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,17 +68,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Jan Kara <jack@suse.cz>, Alexander Viro <viro@zeniv.linux.org.uk>, linux-kernel@vger.kernel.org
+Cc: "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Joel Stanley <joel@jms.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jul 5, 2023, at 21:00, Jeff Layton wrote:
-> In later patches, we're going to change how the inode's ctime field is
-> used. Switch to using accessor functions instead of raw accesses of
-> inode->i_ctime.
+On Thu, Jul 6, 2023 at 9:50=E2=80=AFAM Geert Uytterhoeven <geert@linux-m68k=
+.org> wrote:
+> On Thu, Jul 6, 2023 at 8:14=E2=80=AFAM Benjamin Gray <bgray@linux.ibm.com=
+> wrote:
+> > On Thu, 2023-07-06 at 05:13 +0000, Christophe Leroy wrote:
+> > > Le 05/07/2023 =C3=A0 02:30, Benjamin Gray a =C3=A9crit :
+> > > > The drivers/rtc/rtc-ds1307.c driver has a direct dependency on
+> > > > struct regmap_config, which is guarded behind CONFIG_REGMAP.
+> > > >
+> > > > Commit 70a640c0efa7 ("regmap: REGMAP_KUNIT should not select
+> > > > REGMAP")
+> > > > exposed this by disabling the default pick unless KUNIT_ALL_TESTS
+> > > > is
+> > > > set, causing the ppc64be allnoconfig build to fail.
+> > > >
+> > > > Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
+> > > > ---
+> > > >   drivers/rtc/Kconfig | 1 +
+> > > >   1 file changed, 1 insertion(+)
+> > > >
+> > > > diff --git a/drivers/rtc/Kconfig b/drivers/rtc/Kconfig
+> > > > index ffca9a8bb878..7455ebd189fe 100644
+> > > > --- a/drivers/rtc/Kconfig
+> > > > +++ b/drivers/rtc/Kconfig
+> > > > @@ -246,6 +246,7 @@ config RTC_DRV_AS3722
+> > > >
+> > > >   config RTC_DRV_DS1307
+> > > >         tristate "Dallas/Maxim DS1307/37/38/39/40/41, ST M41T00,
+> > > > EPSON RX-8025, ISL12057"
+> > > > +       select REGMAP
+> > >
+> > > As far as I can see, REGMAP defaults to Y when REGMAP_I2C is
+> > > selected.
+> > > Can you explain more in details why you have to select it explicitely
+> > > ?
+> > > If there is something wrong with the logic, then the logic should be
+> > > fixed instead of just adding a selection of REGMAP for that
+> > > particular
+> > > RTC_DRV_DS1307. Because others like RTC_DRV_ABB5ZES3 or
+> > > RTC_DRV_ABEOZ9
+> > > might have the exact same problem.
+> >
+> > Right, yeah, I don't want to assert this patch is the correct solution,
+> > sending it was more to offer a fix and allow discussion if it should be
+> > resolved some other way (so thanks for replying, I appreciate it).
+> >
+> > In terms of why I made this patch, the way I see it, if a config option
+> > requires another config option be set, then "selects" is the natural
+> > way of phrasing this dependency. "default" on the REGMAP side seems
+> > weird. If it's a default, does that mean it can be overridden? But
+> > RTC_DRV_DS1307 *requires* REGMAP; it's not just a "would be nice". The
+> > build breaks without it.
+> >
+> > But maybe KConfig works differently to my assumptions. Maybe the
+> > referenced patch that causes the build failure is actually incorrect
+> > (CC Geert). I spoke with Joel Stanley (CC) and he indicated you're not
+> > supposed to depend on REGMAP like KUnit does?
 >
-> Acked-by: Jeremy Kerr <jk@ozlabs.org>
-> Reviewed-by: Jan Kara <jack@suse.cz>
-> Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> Thanks for CCing me!
+>
+> Looks like I made a really silly mistake here: my patch not only allows
+> the user to enable REGMAP manually (for the test), but also to disable
+> it manually, regardless if there are users or not :-(
+>
+> I think the proper fix is to replace the "default y if ..." by
+> "select REGMAP" for all users.
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+I have sent a patch to do so, followed by a few related fixes
+https://lore.kernel.org/r/525c37a568b10623ffb2d108850afd7e37f9350e.16886434=
+42.git.geert@linux-m68k.org
+
+Thanks!
+
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
