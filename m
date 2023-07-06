@@ -2,68 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B9F8749728
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 10:14:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BE167497B4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 10:52:11 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=ebgLCz/p;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AfGnGYFl;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QxTnj1txrz3bpp
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 18:14:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QxVdh1ZdJz3bqx
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 18:52:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=ebgLCz/p;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AfGnGYFl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::236; helo=mail-oi1-x236.google.com; envelope-from=zhouzhouyi@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QxTms1cSPz30XZ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 18:13:16 +1000 (AEST)
-Received: by mail-oi1-x236.google.com with SMTP id 5614622812f47-3a0423ea749so457959b6e.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jul 2023 01:13:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688631193; x=1691223193;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pgG4Ij8rmZfqMBm2oqM6Ju2PS6yYhcktMwLW4JNMQGU=;
-        b=ebgLCz/pKdH6r29bkq3wNtiOBu92/5gohz0mqsiCkHyMfi9lqkaYS6l2h2dj3IY8IG
-         uqi1S0meqlthR7q73+9Ph6hHlgauiN6eAQ7kzDWh+t9MlC8bm1LhP4UMaktOWBF5Nhp0
-         B6rmppTNSLgqixTmuTcHUmerHy57ZJxJj7JtHA8Rp31qItNVGXrDkXwBLezXO6QA2Ym+
-         c7Y0NNz4pfUqtskpVYMeY1xLimF7Vw6ukLPyzNIptcaF2r4EQKe7/n+A7fi1bfCoB7GA
-         2QBjmjOo2mNeLd8ez3jgLlo7e7sV+9Ru+jOwHQMZvl0b2zDagYmSbWa1RfG8C2Ite883
-         4pmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688631193; x=1691223193;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pgG4Ij8rmZfqMBm2oqM6Ju2PS6yYhcktMwLW4JNMQGU=;
-        b=ky7SAffHRTph7jw9xnuXhLC5xeuEsQe69LNfnr2yAZ2LfNXgMsikKgsruOgT5lqJFe
-         ZtvBonNaRqgLNdPGOq1iUnsjh2N+/2JEt7HxHPQUmxjThuGemKQTYHMi0POZk2cUWfcS
-         25/kUaBkyWR7uSoUZRUzMjY9+lPwKTdzBTP/sWsC+0EOFF0wCKELYdUu25jtCxk+WRi6
-         nwL0gdTixFGggIRpXThsNzZxh9NFXkwS1SZhJlNydSzoKvva5yCmjF2hek8fg1tmbXWo
-         gMp9YgR/7OQX9IdFDPRHCz46SU7VRx23pz1Jy8Yn5gc4Qq7vbsQuyKQU+o983j7lg71g
-         hdwQ==
-X-Gm-Message-State: ABy/qLZ+dNG6CNLU0vk1Iqyn3/JwJ968Tttmygyes9ZhZ7xIRxEbqdwS
-	NQGyKPTx943JWHgTvkjRZs5iBccfLoaf55MYaN4=
-X-Google-Smtp-Source: APBJJlEAKaFoLQ8q7jFdrQL2wgxZy73QnBJRgt25CMlyiYgd/cJg7/tYNqZpKrm9uEMQbnYiLrnmzqj57EhTmxYtRCM=
-X-Received: by 2002:aca:2b04:0:b0:3a3:6ae3:bd9 with SMTP id
- i4-20020aca2b04000000b003a36ae30bd9mr923814oik.55.1688631192886; Thu, 06 Jul
- 2023 01:13:12 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QxVck1StKz30Py
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 18:51:17 +1000 (AEST)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3668kiqZ018570;
+	Thu, 6 Jul 2023 08:51:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=+CrbEjk6aTrtuJPRY83Ysydi7/qhn9mc/IfEFwTSyPw=;
+ b=AfGnGYFlYml6N/peQNgxzPhTd7BQUuh7QEB/1JEYeI11xmN/SGofM+J5LQWBT6qtblzO
+ MUwToXEmMJc7mtJoTLQx0OgbzgQgunheICP5zRRa4C6e51D6jfcweRLvQt3Jzp2oeXVv
+ n9+UN+ZMO5v4LJnIZkqIXBuKl1f4lFkVZyS1ItSm2B5g7dMc98Lrp7uSO3an9P5yL8mI
+ KTW656J+QPhS7vR4LKqAsv8YXb44SfSaJmw7rhup+SrEjVgdnAiVsrqmbVKgQoXQKxjM
+ JhkEHgGin7lgPJKnNg3wmtBuhm6yfX+A/ZvEAAQ4hbL87f3vAhD7IS3MtG7iwM1xAfly hA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rntd805dc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Jul 2023 08:51:02 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3668l7wj019555;
+	Thu, 6 Jul 2023 08:51:01 GMT
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rntd805ck-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Jul 2023 08:51:01 +0000
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+	by ppma02dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3668lE0O016351;
+	Thu, 6 Jul 2023 08:51:00 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([9.208.130.101])
+	by ppma02dal.us.ibm.com (PPS) with ESMTPS id 3rjbs6n055-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Jul 2023 08:51:00 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3668oxig65470888
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 6 Jul 2023 08:50:59 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id ABD685805D;
+	Thu,  6 Jul 2023 08:50:59 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C63B458057;
+	Thu,  6 Jul 2023 08:50:55 +0000 (GMT)
+Received: from skywalker.in.ibm.com (unknown [9.109.212.144])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  6 Jul 2023 08:50:55 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linux-mm@kvack.org, akpm@linux-foundation.org, mpe@ellerman.id.au,
+        linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu
+Subject: [PATCH v2 0/5] Add support for memmap on memory feature on ppc64
+Date: Thu,  6 Jul 2023 14:20:36 +0530
+Message-ID: <20230706085041.826340-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: t_b_UdVqW-6diCA99dqDAMzvQIYnC1_i
+X-Proofpoint-ORIG-GUID: u0Dsn1j6EXWDFSycSLkFpWahlgYnxA_A
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-References: <20221121035140.118651-1-zhouzhouyi@gmail.com> <efd3ac99-d406-fc45-60e1-73eb8bce4c67@csgroup.eu>
-In-Reply-To: <efd3ac99-d406-fc45-60e1-73eb8bce4c67@csgroup.eu>
-From: Zhouyi Zhou <zhouzhouyi@gmail.com>
-Date: Thu, 6 Jul 2023 16:13:01 +0800
-Message-ID: <CAABZP2x5H3VQXe3o+Q-ar-o2VO=yLap0WGA0JFWK+U2=rdH53A@mail.gmail.com>
-Subject: Re: [PATCH linux-next][RFC]torture: avoid offline tick_do_timer_cpu
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-06_05,2023-07-06_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 clxscore=1015
+ malwarescore=0 suspectscore=0 adultscore=0 spamscore=0 bulkscore=0
+ impostorscore=0 mlxscore=0 priorityscore=1501 mlxlogscore=999
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2307060075
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,116 +96,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "dave@stgolabs.net" <dave@stgolabs.net>, "paulmck@kernel.org" <paulmck@kernel.org>, "fweisbec@gmail.com" <fweisbec@gmail.com>, "josh@joshtriplett.org" <josh@joshtriplett.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "tglx@linutronix.de" <tglx@linutronix.de>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "mingo@kernel.org" <mingo@kernel.org>
+Cc: Vishal Verma <vishal.l.verma@intel.com>, David Hildenbrand <david@redhat.com>, Michal Hocko <mhocko@suse.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 6, 2023 at 3:09=E2=80=AFPM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
->
->
->
-> Le 21/11/2022 =C3=A0 04:51, Zhouyi Zhou a =C3=A9crit :
-> > During CPU-hotplug torture (CONFIG_NO_HZ_FULL=3Dy), if we try to
-> > offline tick_do_timer_cpu, the operation will fail because in
-> > function tick_nohz_cpu_down:
-> > ```
-> > if (tick_nohz_full_running && tick_do_timer_cpu =3D=3D cpu)
-> >        return -EBUSY;
-> > ```
-> > Above bug was first discovered in torture tests performed in PPC VM
-> > of Open Source Lab of Oregon State University, and reproducable in RISC=
--V
-> > and X86-64 (with additional kernel commandline cpu0_hotplug).
-> >
-> > In this patch, we avoid offline tick_do_timer_cpu by distribute
-> > the offlining cpu among remaining cpus.
-> >
-> > Signed-off-by: Zhouyi Zhou <zhouzhouyi@gmail.com>
-> > ---
-> >   include/linux/tick.h        |  1 +
-> >   kernel/time/tick-common.c   |  1 +
-> >   kernel/time/tick-internal.h |  1 -
-> >   kernel/torture.c            | 10 ++++++++++
-> >   4 files changed, 12 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/include/linux/tick.h b/include/linux/tick.h
-> > index bfd571f18cfd..23cc0b205853 100644
-> > --- a/include/linux/tick.h
-> > +++ b/include/linux/tick.h
-> > @@ -14,6 +14,7 @@
-> >   #include <linux/rcupdate.h>
-> >
-> >   #ifdef CONFIG_GENERIC_CLOCKEVENTS
-> > +extern int tick_do_timer_cpu __read_mostly;
-> >   extern void __init tick_init(void);
-> >   /* Should be core only, but ARM BL switcher requires it */
-> >   extern void tick_suspend_local(void);
-> > diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
-> > index 46789356f856..87b9b9afa320 100644
-> > --- a/kernel/time/tick-common.c
-> > +++ b/kernel/time/tick-common.c
-> > @@ -48,6 +48,7 @@ ktime_t tick_next_period;
-> >    *    procedure also covers cpu hotplug.
-> >    */
-> >   int tick_do_timer_cpu __read_mostly =3D TICK_DO_TIMER_BOOT;
-> > +EXPORT_SYMBOL_GPL(tick_do_timer_cpu);
-> >   #ifdef CONFIG_NO_HZ_FULL
-> >   /*
-> >    * tick_do_timer_boot_cpu indicates the boot CPU temporarily owns
-> > diff --git a/kernel/time/tick-internal.h b/kernel/time/tick-internal.h
-> > index 649f2b48e8f0..8953dca10fdd 100644
-> > --- a/kernel/time/tick-internal.h
-> > +++ b/kernel/time/tick-internal.h
-> > @@ -15,7 +15,6 @@
-> >
-> >   DECLARE_PER_CPU(struct tick_device, tick_cpu_device);
-> >   extern ktime_t tick_next_period;
-> > -extern int tick_do_timer_cpu __read_mostly;
-> >
-> >   extern void tick_setup_periodic(struct clock_event_device *dev, int b=
-roadcast);
-> >   extern void tick_handle_periodic(struct clock_event_device *dev);
-> > diff --git a/kernel/torture.c b/kernel/torture.c
-> > index 789aeb0e1159..bccbdd33dda2 100644
-> > --- a/kernel/torture.c
-> > +++ b/kernel/torture.c
-> > @@ -33,6 +33,7 @@
-> >   #include <linux/delay.h>
-> >   #include <linux/stat.h>
-> >   #include <linux/slab.h>
-> > +#include <linux/tick.h>
-> >   #include <linux/trace_clock.h>
-> >   #include <linux/ktime.h>
-> >   #include <asm/byteorder.h>
-> > @@ -358,7 +359,16 @@ torture_onoff(void *arg)
-> >                       schedule_timeout_interruptible(HZ / 10);
-> >                       continue;
-> >               }
-> > +#ifdef CONFIG_NO_HZ_FULL
-> > +             /* do not offline tick do timer cpu */
-> > +             if (tick_nohz_full_running) {
->
-> Can you use fonction tick_nohz_full_enabled() instead and avoid the #ifde=
-f ?
-Thank Christophe for your wonderful advice, I will follow your advice
-next time I prepare a patch.
-For this false positive report, 58d766824264 ("tick/nohz: Fix
-cpu_is_hotpluggable() by checking with nohz subsystem") has beaten me
-in mainline.
+This patch series update memmap on memory feature to fall back to
+memmap allocation outside the memory block if the alignment rules are
+not met. This makes the feature more useful on architectures like
+ppc64 where alignment rules are different with 64K page size.
 
-Thanks again
-Zhouyi
->
-> > +                     cpu =3D (torture_random(&rand) >> 4) % maxcpu;
-> > +                     if (cpu >=3D tick_do_timer_cpu)
-> > +                             cpu =3D (cpu + 1) % (maxcpu + 1);
-> > +             } else
-> > +#else
-> >               cpu =3D (torture_random(&rand) >> 4) % (maxcpu + 1);
-> > +#endif
-> >               if (!torture_offline(cpu,
-> >                                    &n_offline_attempts, &n_offline_succ=
-esses,
-> >                                    &sum_offline, &min_offline, &max_off=
-line))
+This patch series is dependent on dax vmemmap optimization series
+posted here https://lore.kernel.org/linux-mm/20230616110826.344417-1-aneesh.kumar@linux.ibm.com
+
+Changes from v1:
+* update the memblock to store vmemmap_altmap details. This is required
+so that when we remove the memory we can find the altmap details which
+is needed on some architectures.
+* rebase to latest linus tree
+
+
+
+Aneesh Kumar K.V (5):
+  mm/hotplug: Embed vmem_altmap details in memory block
+  mm/hotplug: Allow architecture override for memmap on memory feature
+  mm/hotplug: Simplify the handling of MHP_MEMMAP_ON_MEMORY flag
+  mm/hotplug: Simplify ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE kconfig
+  powerpc/book3s64/memhotplug: Enable memmap on memory for radix
+
+ arch/arm64/Kconfig                            |  4 +-
+ arch/arm64/mm/mmu.c                           |  5 +
+ arch/powerpc/Kconfig                          |  1 +
+ arch/powerpc/mm/book3s64/radix_pgtable.c      | 28 ++++++
+ .../platforms/pseries/hotplug-memory.c        |  4 +-
+ arch/x86/Kconfig                              |  4 +-
+ arch/x86/mm/init_64.c                         |  6 ++
+ drivers/acpi/acpi_memhotplug.c                |  3 +-
+ drivers/base/memory.c                         | 28 ++++--
+ include/linux/memory.h                        | 25 +++--
+ include/linux/memory_hotplug.h                | 17 +++-
+ include/linux/memremap.h                      | 18 +---
+ mm/Kconfig                                    |  3 +
+ mm/memory_hotplug.c                           | 94 +++++++++----------
+ 14 files changed, 151 insertions(+), 89 deletions(-)
+
+-- 
+2.41.0
+
