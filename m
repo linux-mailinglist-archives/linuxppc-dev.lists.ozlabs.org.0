@@ -2,129 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E077C7494BD
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 06:38:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA14F7494C8
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 06:53:15 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=DcGfLsdR;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=UqUAH1NZ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QxP1J5tmLz3bkn
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 14:38:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QxPL15bvlz3br6
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 14:53:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=DcGfLsdR;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=UqUAH1NZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e18::621; helo=fra01-pr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from FRA01-PR2-obe.outbound.protection.outlook.com (mail-pr2fra01on20621.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e18::621])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2a00:1450:4864:20::231; helo=mail-lj1-x231.google.com; envelope-from=stevensd@chromium.org; receiver=lists.ozlabs.org)
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QxP0M1Y5Kz30f7
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 14:37:53 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fr8u+UHGoMkWdwT5M3TX+BJRAmGhPEY7kMEcJfIGo3A0ZpDCim1jrWIK1x1yrv8XWKyVbwBMn4tcbuG9fQV/Xap4+BwJtzJwctgp27BXOF6+rBEmToAfpu81Et6VsGjgw/w/+KypJsSFkUh/Z+vss/fHeMlaCvw9E+CmhtQ2rEMTb8wOAHDjiel9DnHFKg0d0TGp2gK/3Vt/MGGI4sFELc7NSZuQgGc+a5dnuqYH2B6SjOTeHGe/uzL5LryMFbCEEovYzx/NAyye3eM9VjmiFW/+EzhoVIpFbydLsYEjN8oGL9sFCOdlCh1mnjsHPPW1S7LXYspjnJeV7osL1ImXpw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2j3QZhni5ljeXq85YMoWF+mXmBDUHuwaba9qrzjn37c=;
- b=AnnPG7ky74Y3rBryyMQ0/o9R6quAevenh3ck8kwpBVBeUioXTHQ0EkeHuQObESDjPSikQ7baw8EgOheeHGRUau0uX7MXjN6p0/OB/hz0HOZvmNT8RzPw1vIv6PuxJU4BKknMSL/M1pcGB9BAr/WPTvCUF3vxc0qMLrCWzVUtmLdQybdJz9kfwVPuOigjhjOTGvPQ/wWL3CaTFm3UZa8MP7VilVfO5/IiwfqkyC3+oWNno+4WU+x4jcJrGUFhklbcrfGDr+Ou+fEjKUUlgYBXJu4PkG++9RhxPcRTAkN2d9IEKocxxOje56779qq1boUnKi4wXTkjubFx874HUuUF6A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2j3QZhni5ljeXq85YMoWF+mXmBDUHuwaba9qrzjn37c=;
- b=DcGfLsdR+CZcMrIpSfbhON6l74SyWQnWnXUNXji18xa3MYzP0ZkQHfs5w8t77Eg4zLXfEprV7k3yhfV/1Xi8RMPCoJvoBO1AVhOnzzGUjgL3WTv413V3JWMbTGz5bb0d0V/s6AcuzDFBqW4iStWnB+0kRCRlWLq7N/yhWHgGPxHSc1uzqOxKjbzXhAseF5Sx5Z7PcukDp3WjSzJbviNsZC/FrK+gk7hv3+hY6v1Ls/a4vcJYse1KktgWMYwQlNxFuWAzBsQ9Ir6xi+5hcEYjLN/IyGWQQ7BZOAa9vIhsVMDebS8graO2uc1gDiwyb76Ca4/0rLqlS6zj7MR14FpwVQ==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by MR1P264MB2178.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:3::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.17; Thu, 6 Jul
- 2023 04:37:31 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::802b:33:561c:4217]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::802b:33:561c:4217%4]) with mapi id 15.20.6565.016; Thu, 6 Jul 2023
- 04:37:31 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Gray <bgray@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org"
-	<linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH] powerpc/powermac: Use early_* IO variants in
- via_calibrate_decr
-Thread-Topic: [PATCH] powerpc/powermac: Use early_* IO variants in
- via_calibrate_decr
-Thread-Index: AQHZr6ZqPlrDUMFKqUivco/JNwVcma+sJ9eA
-Date: Thu, 6 Jul 2023 04:37:31 +0000
-Message-ID: <8bd31a9d-927e-819f-3f3c-4e586aa8608d@csgroup.eu>
-References: <20230706010816.72682-1-bgray@linux.ibm.com>
-In-Reply-To: <20230706010816.72682-1-bgray@linux.ibm.com>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|MR1P264MB2178:EE_
-x-ms-office365-filtering-correlation-id: 75435ad3-2f5a-44a1-c872-08db7ddab606
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  /5zK/amnUt1FKe7T6b14BaWrBQ/zUZn4Ah72Noh6aH+cFiGCcocfYKU3Ni5IkZB4FO3aSAHl5zJ9OMsVyJjcujlGGDoEzQRWuHBAD8ahUi5DIhUB+87mrlurtwC5Bd6SNy7jMxgtLJf+KJoPC2TwZrvruQViH5UB5LJAj6gn2gt453cLBotbysSoqpAFCyPdaDDHdCQrIRFaAWP2sHeiImsTDSomB26x99qw1Wfpu3jvhU2bCjp0S4AZo+iVcKIPFC9Yj9qzKsxpuPrm6LSkAYON0tESQGNn7dTAErvCp0nUUNO0LpdTw+oZZH2U+ylpldRzddDHwJlMDv4PzqT1X6+4LvCPZH7WMuXhfs9BkaqknRG3c9lFK1/anZG+fp/nbsvLJxPKoZ1obRQSAKDHMPB3sOT0R7ijp0n2fQrq3zL5v2XyRfg6yULJusz8YIX6Drfp77qssMZU2Umzcqg9606bap714X08mxYD0zJihk2KV/ZDERZ2X79oUSkEdQseY4RYgjwEJ2e6aQ0MNFPsTM5douhtT8H2wr7Ic/Y0JGZ7tMz1faTit5rj8HsrE1g2U9sl0XGOfN1F6Os5AuLxPTfNGTR68W8wkdzOaJj5scz9Cctox+6RDdZmCxpvURpT0bRtk+3Io/ojKc1YxsXiUOSGIs06fVP1EMi+Mbc6A4ZC6nLB1BWxnas9JwmwH4Vc
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(4636009)(346002)(376002)(39850400004)(366004)(396003)(136003)(451199021)(44832011)(5660300002)(8676002)(8936002)(41300700001)(316002)(2906002)(83380400001)(31686004)(122000001)(76116006)(6506007)(2616005)(91956017)(66476007)(64756008)(66946007)(66446008)(66556008)(38100700002)(86362001)(186003)(6512007)(26005)(110136005)(478600001)(6486002)(31696002)(38070700005)(36756003)(71200400001)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?MkxmQW83VERPc212SGRKaWVTUnFCZC9saHNaYVoxWmxaZlZFR21yY0p5YkRv?=
- =?utf-8?B?YVMwelZIcGh2bEI2UGpUVFgzclFZanhyTFQvSURzK0Nsc3NFZUZxODd4aDh4?=
- =?utf-8?B?SjltTW9HRkUwZU04OW0wOUk4MjNRc2RRREJSMVRyRHZwS0s3bGNNaVdHaXdJ?=
- =?utf-8?B?OUpjWHlJYXBWU2pPTzJKbndOa0pzWjNQS1F6OGdvTElUc1I3dGdwV0g1N01T?=
- =?utf-8?B?R0I5VERxY3FaM1plbnQydkZQTEpYcnVGNXRRcVFNK2l2eWFBcGpDOGQwL3pt?=
- =?utf-8?B?VU9CaWFtZG9PRDA2d1VJVWRPVmE3OEFnRjU3amwwZHBmRHhrV0RNemlYSk8w?=
- =?utf-8?B?ZHBvZ1lnOUUxdnJzSlVIT01UWmhWa0lqcWR1djdSY3QwbVJMc0Z5ZW5kVlFB?=
- =?utf-8?B?ZzFnM1RhYmtVc1ZvR1dXSWRsdGpCTTkwcDhoK1hoSGRJblg1aWdyaUwzOW52?=
- =?utf-8?B?NmxzVlFaZG9Ed2F4aGFLZXhHbkQwLytwS1FlTmpSTFVoUHN3WXVaMUVycTVY?=
- =?utf-8?B?YzhUeWNnZDZUVFlpWUhrc0d4MkpkRXhLY2FQeUdBK0hyWlJPR1dBeXRYamZG?=
- =?utf-8?B?REVmSGR5NTN5a1lXN1FVY04wQTM2bm4zM0U1OHB5QlNKbVJxNWk0L296cDNW?=
- =?utf-8?B?UTYrVUdWYVowS1QvK04zUU9tMlo0VC96K0tkMXZrYWtpU0dxZjhDTnpwZEp3?=
- =?utf-8?B?RllKSnkyWHFIcjVzUzdEVVR0TFUzTjhUaGRjaTBZazUzb3hBVnBGTGlDeG9r?=
- =?utf-8?B?bjZ3YUFML1BTVHZHakxFaHRPKy9CY0orWEhlWlRSSUFVeXlWaW1OWndxQ3VY?=
- =?utf-8?B?R28xL2hVdk9EZFhYU3Uyd2VsNmhZR3l5Z1VDcUdhZkJCUDJhbGZUMUkrT1Uv?=
- =?utf-8?B?TjVVVDJWS2Erd25lMlNEQlBoZUlPV0gyVjJ6YXRoWUdiWFQzL3dkWkRiWEFE?=
- =?utf-8?B?SWRCaXprM0t0UFVnQzE3bWZmQnk4YVRsNkJIV1VuUXhvNE5haVhPTUMvUnhn?=
- =?utf-8?B?MU9raWE0L1ZiNDZYeDBEK0crM04xQWpiT1orejJ6MkVqMWFmT0pORmVlSzNM?=
- =?utf-8?B?VUpGeXF0MFV4NWUzUE1PWnE2dGR1eER4bzBZUUZySmJNNFRkUXJ4R1R0ZjRp?=
- =?utf-8?B?a0h1MWdmdSs5SmFBeFM1UTFJVlFKODhFN1BSRUpNNDI1Y0ZMajNjNkFyRWpn?=
- =?utf-8?B?TzBXalByUXVNdjlwWWovTXBsWktMSWxoMkxXbWVwb0xnOTNid1YwSW1hQzJP?=
- =?utf-8?B?YnYyYjZXd05FUWE4VTgzZnNsbk9VKzVwUi9BK3JZT0VzZUFwclhCdk0yK3dT?=
- =?utf-8?B?WXFJcVNveVFTY2hxQzFrdzBNTWJlT1ZjRHlGWHhhWGsvWkZLOXdyYStXVHZK?=
- =?utf-8?B?Y25may9iMWMxSDQ0RmxLdklFK01mTllRaEZRVzRNZTU2K2dTR0padm1qUWVY?=
- =?utf-8?B?MU9adnFERmdmWTFBUHFkUjl1MzR5a1d5MTFNenBzTUxkNnFqbzdFaUlESVNh?=
- =?utf-8?B?OHFnVEtDbVJrYkI2SGg3ZGptY2Y5bEFkOFExSVFaeUlLY3VMZVo0aWxKcy9X?=
- =?utf-8?B?MW5CNWFueVora0N2cmd6STBYRlErU0dGQjNsTnozb0s5akRoU3V6alF2QnRJ?=
- =?utf-8?B?ZTdBc3ovTkxLT0JDWUxFeVlpd3NWd2pjeUpwcG11RHNkUHRDYTAzRUwxRWQr?=
- =?utf-8?B?emRGUjhNVUMzZE8yOE1QYjc5bUhBT2xpY2V1ZUpBTU4xNTFnNHg4NUNscDlt?=
- =?utf-8?B?MGJPVjJHanlxbFJjMnprZG1VVWE5WDVXR28zRkZwNVVVWFNJdTI1bFh5RHlx?=
- =?utf-8?B?RUxKS3FXVWtmNHJ4K1lOSXp4VDBESzBTZmNsTVJhQ1pHTXJ0ZjRIZUJBZW04?=
- =?utf-8?B?cUx6UW9zNGRLQUJKdlNYMVhXTXpqUm81ZCtpVWlQRm8wMTZLM1hVVG9iYnow?=
- =?utf-8?B?MlYrNnRQUnRmN1VBbHRaVHJISks2ZDAzT3ExbzlDenl6c0RveFVnVUNLL1ZO?=
- =?utf-8?B?S0trZ3I3RXJLV2pDWmdObUJTclNCckdUK3JUQUxyalRVYkk5UEhtME1VSW1q?=
- =?utf-8?B?RWtCRmorMmpyVU50MU81QzFFbVRMR3ovdTJsNElpak5BYThoZ1VpbldMbStl?=
- =?utf-8?Q?H1mEqU8go5k+GaUv0ZVSRLolX?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <488FCD958EA65542BA0FB36B1AFA31B0@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QxPK62cqFz30hb
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 14:52:23 +1000 (AEST)
+Received: by mail-lj1-x231.google.com with SMTP id 38308e7fff4ca-2b6afc1ceffso3166041fa.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Jul 2023 21:52:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1688619140; x=1691211140;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QwRjjzsaRyNYdKi/jrCTglo/MDQC7ke81mJ6ahjJPYc=;
+        b=UqUAH1NZ/gQh4yQRPq/oi7meCjDjvhAuIb9s8k6WygD9wkGEDov7tiGjEArq7MC+vv
+         8wgiZUBCtnhAy8z+2oyaKRXJGjVma9nOV9IobiKBf6zUWloDzXQmFWkZc056B/l33r4A
+         U9P2agugWFQJe4X2TqOoJOqr3SyDUx5EQkTiE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688619140; x=1691211140;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QwRjjzsaRyNYdKi/jrCTglo/MDQC7ke81mJ6ahjJPYc=;
+        b=QIwtyVvfurH2qC5d1EryQEHxyLrXC3Ej/X6MdhqjwPhhbHo1gT1BCO9XGwGAnC3hA2
+         +/T50a2ff5W4QUDAJULqgsRDMSDmwp6ElKS9NFuq8oUD4Hr56N3hevfUS/jYnGXCafh8
+         jQADKzwlnkcKhfVuLevipbimoUm1pNHCRU2mePW+DBBTWwiDhS56ojmoxaSRLrchdfNp
+         /KNVyPML4EVLaYkW1/BoxbI7aU22d3uVySIooiCaio03C/uEbSPEU+os8W0k8rEfQW7M
+         eCkItPw9TaJc75XoR05w7155ah22mK/WBKXUIJEvaIe5tYv9NvxdXORqP25wUAtMCA6K
+         1Weg==
+X-Gm-Message-State: ABy/qLa6gVWvhVYzWm8//J6Z5LwZ9QFXKRdrj3qIO0aWlfbRSA7kqc/B
+	/dmXiOp5SFhs4ZwJ5s0JOneHcRfREFYF6F6Kp07E/w==
+X-Google-Smtp-Source: APBJJlHQrJdoiiNz49lPTVOLd0RgP3a+MjJFWouX2dt0nDJM8HM8LVPtUWKWnEK+E8nSDpBgWxdf7yqgzIbxjxpaD0c=
+X-Received: by 2002:a2e:b0e8:0:b0:2b6:fd90:3f28 with SMTP id
+ h8-20020a2eb0e8000000b002b6fd903f28mr487010ljl.21.1688619139622; Wed, 05 Jul
+ 2023 21:52:19 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 75435ad3-2f5a-44a1-c872-08db7ddab606
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Jul 2023 04:37:31.2711
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: IKBdCfAXIbft3uUK6/+KfutoZlXlJXySGW8AaQtBbfAl7m863YZnwaVJ+K/Z0j87vBa0u/Yll76oD13PSxE2fI6zi0k9vqjkakT8uaExhEU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MR1P264MB2178
+References: <20230704075054.3344915-1-stevensd@google.com> <20230704075054.3344915-6-stevensd@google.com>
+ <20230705101800.ut4c6topn6ylwczs@linux.intel.com>
+In-Reply-To: <20230705101800.ut4c6topn6ylwczs@linux.intel.com>
+From: David Stevens <stevensd@chromium.org>
+Date: Thu, 6 Jul 2023 13:52:08 +0900
+Message-ID: <CAD=HUj41PAKC0x+c3zWAr-aCm59K7hs2zRh1uWs9778_Mai4UA@mail.gmail.com>
+Subject: Re: [PATCH v7 5/8] KVM: x86/mmu: Don't pass FOLL_GET to __kvm_follow_pfn
+To: Yu Zhang <yu.c.zhang@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -136,41 +73,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Marc Zyngier <maz@kernel.org>, kvm@vger.kernel.org, Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org, Peter Xu <peterx@redhat.com>, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDA2LzA3LzIwMjMgw6AgMDM6MDgsIEJlbmphbWluIEdyYXkgYSDDqWNyaXTCoDoNCj4g
-T24gYSBwb3dlcm1hYyBwbGF0Zm9ybSwgdW5kZXIgdGhlIGNhbGwgcGF0aA0KPiANCj4gICAgc3Rh
-cnRfa2VybmVsDQo+ICAgICB0aW1lX2luaXQNCj4gICAgICBwcGNfbWQuY2FsaWJyYXRlX2RlY3Ig
-KHBtYWNfY2FsaWJyYXRlX2RlY3IpDQo+ICAgICAgIHZpYV9jYWxpYnJhdGVfZGVjcg0KPiANCj4g
-d2UgcnVuIGlvcmVtYXAgYW5kIGlvdW5tYXAuIFRoZSB1bm1hcCBjYW4gZW5hYmxlIGludGVycnVw
-dHMNCj4gdW5leHBlY3RlZGx5IChjb25kX3Jlc2NoZWQgaW4gdnVubWFwX3BtZF9yYW5nZSksIHdo
-aWNoIGlzIHdhcm5lZCBhYm91dA0KPiBsYXRlciBpbiB0aGUgYm9vdCBzZXF1ZW5jZSBpbiBzdGFy
-dF9rZXJuZWwuDQo+IA0KPiBVc2UgdGhlIGVhcmx5XyogdmFyaWFudHMgb2YgdGhlc2UgSU8gZnVu
-Y3Rpb25zIHRvIHByZXZlbnQgdGhpcy4NCj4gDQo+IFRoZSBpc3N1ZSBpcyBwcmUtZXhpc3Rpbmcs
-IGJ1dCBpcyBzdXJmYWNlZCBieSBjb21taXQgNzIxMjU1Yjk4MjZiDQo+ICgiZ2VuaXJxOiBVc2Ug
-YSBtYXBsZSB0cmVlIGZvciBpbnRlcnJ1cHQgZGVzY3JpcHRvciBtYW5hZ2VtZW50IikuDQo+IEl0
-J3Mgbm90IGNsZWFyIHRvIG1lIHdoeSB0aGlzIGNhdXNlcyBpdCB0byBzdXJmYWNlLg0KPiANCj4g
-U2lnbmVkLW9mZi1ieTogQmVuamFtaW4gR3JheSA8YmdyYXlAbGludXguaWJtLmNvbT4NCg0KUmV2
-aWV3ZWQtYnk6IENocmlzdG9waGUgTGVyb3kgPGNocmlzdG9waGUubGVyb3lAY3Nncm91cC5ldT4N
-Cg0KPiAtLS0NCj4gICBhcmNoL3Bvd2VycGMvcGxhdGZvcm1zL3Bvd2VybWFjL3RpbWUuYyB8IDYg
-KysrLS0tDQo+ICAgMSBmaWxlIGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKSwgMyBkZWxldGlvbnMo
-LSkNCj4gDQo+IGRpZmYgLS1naXQgYS9hcmNoL3Bvd2VycGMvcGxhdGZvcm1zL3Bvd2VybWFjL3Rp
-bWUuYyBiL2FyY2gvcG93ZXJwYy9wbGF0Zm9ybXMvcG93ZXJtYWMvdGltZS5jDQo+IGluZGV4IDRj
-NTc5MGFmZjFiNS4uODYzMzg5MWI3YWE1IDEwMDY0NA0KPiAtLS0gYS9hcmNoL3Bvd2VycGMvcGxh
-dGZvcm1zL3Bvd2VybWFjL3RpbWUuYw0KPiArKysgYi9hcmNoL3Bvd2VycGMvcGxhdGZvcm1zL3Bv
-d2VybWFjL3RpbWUuYw0KPiBAQCAtMjYsOCArMjYsOCBAQA0KPiAgICNpbmNsdWRlIDxsaW51eC9y
-dGMuaD4NCj4gICAjaW5jbHVkZSA8bGludXgvb2ZfYWRkcmVzcy5oPg0KPiAgIA0KPiArI2luY2x1
-ZGUgPGFzbS9lYXJseV9pb3JlbWFwLmg+DQo+ICAgI2luY2x1ZGUgPGFzbS9zZWN0aW9ucy5oPg0K
-PiAtI2luY2x1ZGUgPGFzbS9pby5oPg0KPiAgICNpbmNsdWRlIDxhc20vbWFjaGRlcC5oPg0KPiAg
-ICNpbmNsdWRlIDxhc20vdGltZS5oPg0KPiAgICNpbmNsdWRlIDxhc20vbnZyYW0uaD4NCj4gQEAg
-LTE4Miw3ICsxODIsNyBAQCBzdGF0aWMgaW50IF9faW5pdCB2aWFfY2FsaWJyYXRlX2RlY3Iodm9p
-ZCkNCj4gICAJCXJldHVybiAwOw0KPiAgIAl9DQo+ICAgCW9mX25vZGVfcHV0KHZpYXMpOw0KPiAt
-CXZpYSA9IGlvcmVtYXAocnNyYy5zdGFydCwgcmVzb3VyY2Vfc2l6ZSgmcnNyYykpOw0KPiArCXZp
-YSA9IGVhcmx5X2lvcmVtYXAocnNyYy5zdGFydCwgcmVzb3VyY2Vfc2l6ZSgmcnNyYykpOw0KPiAg
-IAlpZiAodmlhID09IE5VTEwpIHsNCj4gICAJCXByaW50ayhLRVJOX0VSUiAiRmFpbGVkIHRvIG1h
-cCBWSUEgZm9yIHRpbWVyIGNhbGlicmF0aW9uICFcbiIpOw0KPiAgIAkJcmV0dXJuIDA7DQo+IEBA
-IC0yMDcsNyArMjA3LDcgQEAgc3RhdGljIGludCBfX2luaXQgdmlhX2NhbGlicmF0ZV9kZWNyKHZv
-aWQpDQo+ICAgDQo+ICAgCXBwY190Yl9mcmVxID0gKGRzdGFydCAtIGRlbmQpICogMTAwIC8gNjsN
-Cj4gICANCj4gLQlpb3VubWFwKHZpYSk7DQo+ICsJZWFybHlfaW91bm1hcCgodm9pZCAqKXZpYSwg
-cmVzb3VyY2Vfc2l6ZSgmcnNyYykpOw0KPiAgIA0KPiAgIAlyZXR1cm4gMTsNCj4gICB9DQo=
+On Wed, Jul 5, 2023 at 7:17=E2=80=AFPM Yu Zhang <yu.c.zhang@linux.intel.com=
+> wrote:
+>
+> On Tue, Jul 04, 2023 at 04:50:50PM +0900, David Stevens wrote:
+> > From: David Stevens <stevensd@chromium.org>
+> >
+> > Stop passing FOLL_GET to __kvm_follow_pfn. This allows the host to map
+> > memory into the guest that is backed by un-refcounted struct pages - fo=
+r
+> > example, higher order non-compound pages allocated by the amdgpu driver
+> > via ttm_pool_alloc_page.
+>
+> I guess you mean the tail pages of the higher order non-compound pages?
+> And as to the head page, it is said to be set to one coincidentally[*],
+> and shall not be considered as refcounted.  IIUC, refcount of this head
+> page will be increased and decreased soon in hva_to_pfn_remapped(), so
+> this may not be a problem(?). But treating this head page differently,
+> as a refcounted one(e.g., to set the A/D flags), is weired.
+>
+> Or maybe I missed some context, e.g., can the head page be allocted to
+> guest at all?
+
+Yes, this is to allow mapping the tail pages of higher order
+non-compound pages - I should have been more precise in my wording.
+The head pages can already be mapped into the guest.
+
+Treating the head and tail pages would require changing how KVM
+behaves in a situation it supports today (rather than just adding
+support for an unsupported situation). Currently, without this series,
+KVM can map VM_PFNMAP|VM_IO memory backed by refcounted pages into the
+guest. When that happens, KVM sets the A/D flags. I'm not sure whether
+that's actually valid behavior, nor do I know whether anyone actually
+cares about it. But it's what KVM does today, and I would shy away
+from modifying that behavior without good reason.
+
+> >
+> > The bulk of this change is tracking the is_refcounted_page flag so that
+> > non-refcounted pages don't trigger page_count() =3D=3D 0 warnings. This=
+ is
+> > done by storing the flag in an unused bit in the sptes.
+>
+> Also, maybe we should mention this only works on x86-64.
+>
+> >
+> > Signed-off-by: David Stevens <stevensd@chromium.org>
+> > ---
+> >  arch/x86/kvm/mmu/mmu.c          | 44 +++++++++++++++++++++------------
+> >  arch/x86/kvm/mmu/mmu_internal.h |  1 +
+> >  arch/x86/kvm/mmu/paging_tmpl.h  |  9 ++++---
+> >  arch/x86/kvm/mmu/spte.c         |  4 ++-
+> >  arch/x86/kvm/mmu/spte.h         | 12 ++++++++-
+> >  arch/x86/kvm/mmu/tdp_mmu.c      | 22 ++++++++++-------
+> >  6 files changed, 62 insertions(+), 30 deletions(-)
+> >
+> > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> > index e44ab512c3a1..b1607e314497 100644
+> > --- a/arch/x86/kvm/mmu/mmu.c
+> > +++ b/arch/x86/kvm/mmu/mmu.c
+>
+> ...
+>
+> > @@ -2937,6 +2943,7 @@ static int mmu_set_spte(struct kvm_vcpu *vcpu, st=
+ruct kvm_memory_slot *slot,
+> >       bool host_writable =3D !fault || fault->map_writable;
+> >       bool prefetch =3D !fault || fault->prefetch;
+> >       bool write_fault =3D fault && fault->write;
+> > +     bool is_refcounted =3D !fault || fault->is_refcounted_page;
+>
+> Just wonder, what if a non-refcounted page is prefetched?  Or is it possi=
+ble in
+> practice?
+
+Prefetching is still done via gfn_to_page_many_atomic, which sets
+FOLL_GET. That's fixable, but it's not something this series currently
+does.
+
+> ...
+> >
+> > @@ -883,7 +884,7 @@ static gpa_t FNAME(gva_to_gpa)(struct kvm_vcpu *vcp=
+u, struct kvm_mmu *mmu,
+> >   */
+> >  static int FNAME(sync_spte)(struct kvm_vcpu *vcpu, struct kvm_mmu_page=
+ *sp, int i)
+> >  {
+> > -     bool host_writable;
+> > +     bool host_writable, is_refcounted;
+> >       gpa_t first_pte_gpa;
+> >       u64 *sptep, spte;
+> >       struct kvm_memory_slot *slot;
+> > @@ -940,10 +941,12 @@ static int FNAME(sync_spte)(struct kvm_vcpu *vcpu=
+, struct kvm_mmu_page *sp, int
+> >       sptep =3D &sp->spt[i];
+> >       spte =3D *sptep;
+> >       host_writable =3D spte & shadow_host_writable_mask;
+> > +     // TODO: is this correct?
+> > +     is_refcounted =3D spte & SPTE_MMU_PAGE_REFCOUNTED;
+> >       slot =3D kvm_vcpu_gfn_to_memslot(vcpu, gfn);
+> >       make_spte(vcpu, sp, slot, pte_access, gfn,
+> >                 spte_to_pfn(spte), spte, true, false,
+> > -               host_writable, &spte);
+> > +               host_writable, is_refcounted, &spte);
+>
+> Could we restrict that a non-refcounted page shall not be used as shadow =
+page?
+
+I'm not very familiar with the shadow mmu, so my response might not
+make sense. But do you mean not allowing non-refcoutned pages as the
+guest page tables shadowed by a kvm_mmu_page? It would probably be
+possible to do that, and I doubt anyone would care about the
+restriction. But as far as I can tell, the guest page table is only
+accessed via kvm_vcpu_read_guest_atomic, which handles non-refcounted
+pages just fine.
+
+-David
