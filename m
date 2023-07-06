@@ -1,45 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FDB6749D30
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 15:18:19 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=t-8ch.de header.i=@t-8ch.de header.a=rsa-sha256 header.s=mail header.b=YPx73hGj;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46994749D3E
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 15:18:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QxcXn1bG2z3bvW
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 23:18:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QxcYN0xF1z3c3l
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 23:18:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=t-8ch.de header.i=@t-8ch.de header.a=rsa-sha256 header.s=mail header.b=YPx73hGj;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=t-8ch.de (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=thomas@t-8ch.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 432 seconds by postgrey-1.37 at boromir; Thu, 06 Jul 2023 16:41:37 AEST
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QxRl55smbz308W
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 16:41:37 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=t-8ch.de; s=mail;
-	t=1688625246; bh=wGh8sC6IYBYdKxlAz7SbNdKF40ye/5pg3jNi0szIZdE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YPx73hGjeInNwO8XW9YDw/0029Hl2CRVsf3+EbiYq9NJKba3B0wDjph7Wb4wbkhvx
-	 HSd+Wbs2wcVsfrDiBrP4zGaNOJkMyDayMjNbnCLhuPBB4LH6gEB9CnO/W99Oq4gzmr
-	 R/QxSRHb9Fy7oWFhaPvScKavywLnmvlrZ6TsMVW0=
-Date: Thu, 6 Jul 2023 08:34:05 +0200
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>
-To: Sachin Sant <sachinp@linux.ibm.com>
-Subject: Re: [next-20230705] kernel BUG mm/memcontrol.c:3715! (ltp/madvise06)
-Message-ID: <24c0f417-6577-48e6-8eb4-c37be11c5fbb@t-8ch.de>
-References: <7DF50AC5-83AC-4EE1-9422-62D1EA378EE9@linux.ibm.com>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=fatal.se (client-ip=94.255.170.6; helo=pi.fatal.se; envelope-from=ah@fatal.se; receiver=lists.ozlabs.org)
+X-Greylist: delayed 571 seconds by postgrey-1.37 at boromir; Thu, 06 Jul 2023 18:56:53 AEST
+Received: from pi.fatal.se (94-255-170-6.cust.bredband2.com [94.255.170.6])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QxVl922Y8z30hF
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 18:56:52 +1000 (AEST)
+Received: by pi.fatal.se (Postfix, from userid 1000)
+	id 49B302A8D9; Thu,  6 Jul 2023 10:47:06 +0200 (CEST)
+Date: Thu, 6 Jul 2023 10:47:06 +0200
+From: Andreas Henriksson <andreas@fatal.se>
+To: Fabio Estevam <festevam@gmail.com>
+Subject: Re: [PATCH] ASoC: fsl_sai: Enable MCTL_MCLK_EN bit for master mode
+Message-ID: <20230706084706.bzwsbi3zisx5m5rl@fatal.se>
+References: <1652963808-14515-1-git-send-email-shengjiu.wang@nxp.com>
+ <CAOMZO5DtpoH0dLDX3=Sv4UUpX_=66VEZPsJUWQNnYviApfMLKQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7DF50AC5-83AC-4EE1-9422-62D1EA378EE9@linux.ibm.com>
+In-Reply-To: <CAOMZO5DtpoH0dLDX3=Sv4UUpX_=66VEZPsJUWQNnYviApfMLKQ@mail.gmail.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-Mailman-Approved-At: Thu, 06 Jul 2023 23:17:34 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -52,91 +40,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-next@vger.kernel.org, mhocko@suse.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, open list <linux-kernel@vger.kernel.org>
+Cc: Linux-ALSA <alsa-devel@alsa-project.org>, Xiubo Li <Xiubo.Lee@gmail.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Shengjiu Wang <shengjiu.wang@nxp.com>, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>, Hans =?iso-8859-1?Q?S=F6derlund?= <hans.soderlund@realbit.se>, Shengjiu Wang <shengjiu.wang@gmail.com>, linux-kernel <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2023-07-06 11:41:38+0530, Sachin Sant wrote:
-> While running LTP tests (madvise06) on IBM Power9 LPAR booted with
-> 6.4.0-next-20230705 following crash is seen
-> 
-> Injecting memory failure for pfn 0x3f79 at process virtual address 0x7fff9b740000
-> Memory failure: 0x3f79: recovery action for clean LRU page: Recovered
-> madvise06 (133636): drop_caches: 3
-> ------------[ cut here ]------------
-> kernel BUG at mm/memcontrol.c:3715!
-> Oops: Exception in kernel mode, sig: 5 [#1]
-> LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=8192 NUMA pSeries
-> Modules linked in: brd overlay exfat vfat fat xfs loop sctp ip6_udp_tunnel udp_tunnel dm_mod nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 bonding ip_set tls rfkill nf_tables libcrc32c nfnetlink sunrpc pseries_rng vmx_crypto ext4 mbcache jbd2 sd_mod t10_pi crc64_rocksoft crc64 sg ibmvscsi scsi_transport_srp ibmveth fuse [last unloaded: init_module(O)]
-> CPU: 10 PID: 133636 Comm: madvise06 Tainted: G O 6.4.0-next-20230705 #1
-> Hardware name: IBM,8375-42A POWER9 (raw) 0x4e0202 0xf000005 of:IBM,FW950.80 (VL950_131) hv:phyp pSeries
-> NIP: c00000000054ea88 LR: c00000000028b2a8 CTR: c00000000054e8d0
-> REGS: c00000029dd7b890 TRAP: 0700 Tainted: G O (6.4.0-next-20230705)
-> MSR: 8000000000029033 <SF,EE,ME,IR,DR,RI,LE> CR: 28008288 XER: 00000000
-> CFAR: c00000000054e904 IRQMASK: 0 
-> GPR00: c00000000028b2a8 c00000029dd7bb30 c000000001431600 c0000002bc978000 
-> GPR04: c000000002b3b288 0000000000010192 0000000000000000 0000000000000001 
-> GPR08: c0000000f9abb180 0000000000020000 c0000002bc978580 0000000000000000 
-> GPR12: c00000000054e8d0 c00000001ec53f00 0000000000000000 0000000000000000 
-> GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
-> GPR20: c00000001b2e6578 0000000000400cc0 000000007fff0000 fffffffffffff000 
-> GPR24: c00000029dd7bd30 0000000000000000 c00000029dd7bd58 c00000001b2e6568 
-> GPR28: c00000029dd7bde0 0000000000000001 0000000000000001 c00000001b2e6540 
-> NIP [c00000000054ea88] mem_cgroup_read_u64+0x1b8/0x1d0
-> LR [c00000000028b2a8] cgroup_seqfile_show+0xb8/0x160
-> Call Trace:
-> [c00000029dd7bb50] [c00000000028b2a8] cgroup_seqfile_show+0xb8/0x160
-> [c00000029dd7bbc0] [c000000000673ba4] kernfs_seq_show+0x44/0x60
-> [c00000029dd7bbe0] [c0000000005c4238] seq_read_iter+0x238/0x620
-> [c00000029dd7bcb0] [c000000000675064] kernfs_fop_read_iter+0x1d4/0x2c0
-> [c00000029dd7bd00] [c00000000057fbac] vfs_read+0x26c/0x350
-> [c00000029dd7bdc0] [c00000000058077c] ksys_read+0x7c/0x140
-> [c00000029dd7be10] [c000000000036900] system_call_exception+0x140/0x350
-> [c00000029dd7be50] [c00000000000d6a0] system_call_common+0x160/0x2e4
-> --- interrupt: c00 at 0x7fff9eb41484
-> NIP: 00007fff9eb41484 LR: 0000000010008540 CTR: 0000000000000000
-> REGS: c00000029dd7be80 TRAP: 0c00 Tainted: G O (6.4.0-next-20230705)
-> MSR: 800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE> CR: 28002282 XER: 00000000
-> IRQMASK: 0 
-> GPR00: 0000000000000003 00007fffc33de7d0 00007fff9ec27300 0000000000000013 
-> GPR04: 00007fffc33e0aa0 0000000000001fff 0000000000000000 0000000000000013 
-> GPR08: 00007fffc33e0aa0 0000000000000000 0000000000000000 0000000000000000 
-> GPR12: 0000000000000000 00007fff9ecca3a0 0000000000000000 0000000000000000 
-> GPR16: ffffffffffffffff 0000000010035520 0000000010035b90 00000000100347a8 
-> GPR20: 000000001002fb68 0000000010063900 0000000000002000 000000001002fb68 
-> GPR24: 0000000000000000 000000000000004c 000000001002fa78 00007fffc33e0aa0 
-> GPR28: 0000000000000013 0000000000000000 0000000000001fff 0000000000001fff 
-> NIP [00007fff9eb41484] 0x7fff9eb41484
-> LR [0000000010008540] 0x10008540
-> --- interrupt: c00
-> Code: 7fa34800 409effc4 7c0802a6 38600001 f8010030 4bfffdfd e8010030 786383e4 7c0803a6 4bffff6c 7c0802a6 f8010030 <0fe00000> 7c0802a6 f8010030 0fe00000 
-> ---[ end trace 0000000000000000 ]---
-> pstore: backend (nvram) writing error (-1)
-> 
-> Kernel panic - not syncing: Fatal exception
-> Rebooting in 10 seconds..
-> 
-> Git bisect points to following patch:
-> 
-> commit 29bf1eb7d2abbdfc24c4ef7acf7a51b72dc43d2b
->     memcg: drop kmem.limit_in_bytes
-> 
-> Does the testcase madvise06 need an update?
-> 
-> 90         tst_res(TINFO, "\tCached: %ld Kb",
-> 91                 SAFE_READ_MEMINFO("Cached:") - init_cached);
-> 92       
-> 93         print_cgmem("memory.current");
-> 94         print_cgmem("memory.swap.current");
-> 95         print_cgmem("memory.kmem.usage_in_bytes”);  <<== this line. 
-> 96 }
-> 
-> If I comment line 95 from the testcase, it completes successfully.
+Hello Shengjiu, Fabio,
 
-The handling for _KMEM was removed from mem_cgroup_read_u64()
-incorrectly.
-It is used by the still existing kmem.*usage*_in_bytes in addition to
-the now removed kmem.*limit*_in_bytes.
-(And kmem.max_usage_in_bytes, kmem.failcnt)
+On Thu, May 19, 2022 at 10:23:06AM -0300, Fabio Estevam wrote:
+> Hi Shengjiu,
+> 
+> On Thu, May 19, 2022 at 9:49 AM Shengjiu Wang <shengjiu.wang@nxp.com> wrote:
+> 
+> > diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+> > index fa950dde5310..dae16a14f177 100644
+> > --- a/sound/soc/fsl/fsl_sai.c
+> > +++ b/sound/soc/fsl/fsl_sai.c
+> > @@ -437,6 +437,12 @@ static int fsl_sai_set_bclk(struct snd_soc_dai *dai, bool tx, u32 freq)
+> >                                    FSL_SAI_CR2_DIV_MASK | FSL_SAI_CR2_BYP,
+> >                                    savediv / 2 - 1);
+> >
+> > +       if (sai->soc_data->max_register >= FSL_SAI_MCTL) {
+> 
+> Isn't it a bit fragile to take this decision based on the number of
+> SAI registers in the SoC?
+> 
+> What about adding a specific field in soc_data for such a purpose?
 
-The testcase seems to be fine, it actually did its job.
+We've been working on an i.MX8MP where MCLK needs to be input and found
+that this enables the MCLK as output despite not having set the
+`fsl,sai-mclk-direction-output;` devicetree property in our DT.
+Reverting the patch fixes the issues for us.
+
+I have to say that the code comment made me a bit confused, but once
+I found the commit message I understood why this code existed.
+If this is really i.MX8MM specific maybe mention that in the code
+comment and please make the code actually only trigger on i.MX8MM.
+It seems to me like these all fulfill the current criteria:
+imx7ulp, imx8mq, imx8mm, imx8mp, imx8ulp, imx93
+
+Should I report this in bugzilla.kernel.org ?
+
+Regards,
+Andreas Henriksson
