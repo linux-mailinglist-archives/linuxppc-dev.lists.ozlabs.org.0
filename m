@@ -1,66 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 116707494FE
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 07:30:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3951D749525
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 07:54:02 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=oLDUHC7o;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=GZRLr3+/;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QxQ906zjpz3bv0
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 15:30:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QxQh815X1z3bwZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 15:54:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=oLDUHC7o;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=GZRLr3+/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2a00:1450:4864:20::235; helo=mail-lj1-x235.google.com; envelope-from=stevensd@chromium.org; receiver=lists.ozlabs.org)
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2a00:1450:4864:20::229; helo=mail-lj1-x229.google.com; envelope-from=stevensd@chromium.org; receiver=lists.ozlabs.org)
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QxQ862Crbz3bPV
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 15:29:39 +1000 (AEST)
-Received: by mail-lj1-x235.google.com with SMTP id 38308e7fff4ca-2b63e5f94f1so3378221fa.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Jul 2023 22:29:39 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QxQgF0P3Sz30MY
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 15:53:10 +1000 (AEST)
+Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2b703caf344so3444101fa.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Jul 2023 22:53:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1688621375; x=1691213375;
+        d=chromium.org; s=google; t=1688622786; x=1691214786;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FaztYOK3CeeSOgdOjNlGUDoiqmvgCpcAtf+Kjtl/Zxo=;
-        b=oLDUHC7o8LLIpKQ47Bka4IhCDsnUOJ8PJa0mHtGy5+xmtH0ph+DN7fT2bOCyxUZ/OK
-         voaasNoiVitwlvc6GdEXWSG+xw+zAyvNt5YIOkZ1Gv4N8GPo9GksM1sfnehNwooTJ6MC
-         TIGRcSt6tw1MrfY6kMBuzzrrO3OFxrZGWrz+M=
+        bh=MbLurLZ62LRhBoyKK/a+NkMCNn75BCIX5dmoVcJnOa4=;
+        b=GZRLr3+/iND4JiH/eec95IEfwzWiwvuMeewhoW9LLRb5Yu/99cTNAL1uQuRKsNRAbR
+         0wkM50R3efN4vAq8LK923KkRdgxTsnCIhWVut85AV4dlUZIUz26nPcE0AmQYEOorUmjh
+         k/ccFYU0ooJp8B2LxZPf8d8q1xZ3Oo6bDy+Lk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688621375; x=1691213375;
+        d=1e100.net; s=20221208; t=1688622786; x=1691214786;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=FaztYOK3CeeSOgdOjNlGUDoiqmvgCpcAtf+Kjtl/Zxo=;
-        b=bwfgV6m3IaqjBuCzACynQSPP0cW1fP9UJVZuiAooEpbxwRtJ+NTVVA3l/q6E7ykDnX
-         czyRqqJl+/1wTfHdBTwmKE9JoRRS+9KvwTo/N22LjTflML1U3BNknN0CNwYWDH7NNIPu
-         M1PqiSToAtXXsCDQm213vdS6TZVWCqG8esfQQ7udGQTsRZ4n+mJZwAzA9RGo6zUTj3Om
-         GEZNWgLW4X7sgJuZR9BOsd6+g8xJRYTOMMWAb8WUz8EcoAAgctqiLP32TphvvOAITlX9
-         1lu+ZzRlkOJ/8k++NRufVkDFS+IGuafUxy40OohYGdDVWxBdge3tY6nar3VNtROOoY7V
-         hPRw==
-X-Gm-Message-State: ABy/qLZQNlwtlvArBfb01oixWv7JwKa3cWZ90dKIM3V9Ytw1S7jZAQyL
-	H1CaMNPQz4ViKwXCWm64z2gWngY9oa80TLBs8PZPWztTZ6iJW4WGia4=
-X-Google-Smtp-Source: APBJJlFoQbGHquM/8F8vHFVN0DzDyQkinz8d9jngOAhWJR4+2GRUPIv/nW729Pai2dwCQYTiCsN6nZl/3HDPmf9AC/g=
-X-Received: by 2002:a05:651c:107b:b0:2b6:d7d2:1a65 with SMTP id
- y27-20020a05651c107b00b002b6d7d21a65mr1632317ljm.18.1688621375279; Wed, 05
- Jul 2023 22:29:35 -0700 (PDT)
+        bh=MbLurLZ62LRhBoyKK/a+NkMCNn75BCIX5dmoVcJnOa4=;
+        b=QjaqmpZp8Rlbn8pR4VDQtbon8sTnvVmuPoFCnUdANA8hWZOzkUE5TIehPE0GMx3zKv
+         ja4yJcQzzXiOVFBA7q4maCjr3QaolfM/zZ36UGrOvuEvijwDy0ruj27lkenixr1VSnU0
+         WicRp7VvVlF5FvwAbtkSl44msD8Q1VQBFT9v7LgKU5IHc5AIEXd26Sarhz1aN0dJ84J5
+         NZnrhtpABJcxyduTzuEbLTSw7jmKCtBGPATeeO8HOe/0/XDGbR1uzKJgVm83FU5xUSan
+         sUbdALPH48nNuETewO/An1IoS2usSw1on5+wKvRYAYp8kaxsq1apHQiV9fC3NYOU5Vw0
+         vw9A==
+X-Gm-Message-State: ABy/qLa8y0yOwZhJov7zVXbAgnEg8GxlNqZ0BszNrvr6GByl7EGTnZxp
+	OiW/jkzdUzE5WlaD0j3cp0pfAAYLKwVsygsHG2cXyA==
+X-Google-Smtp-Source: APBJJlF24HPQiLK/1UsY/Js5Vw/5R/DCo1JszMm+dpVp9f3gL+oA7VggoMNxpxtVwaFC87wS94UcWfopl/L3i9jY5zk=
+X-Received: by 2002:a2e:9015:0:b0:2b6:de41:b72f with SMTP id
+ h21-20020a2e9015000000b002b6de41b72fmr578113ljg.4.1688622786051; Wed, 05 Jul
+ 2023 22:53:06 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230704075054.3344915-1-stevensd@google.com> <20230704075054.3344915-3-stevensd@google.com>
- <20230705031002.xrxk42hli6oavtlt@linux.intel.com> <CAD=HUj6-VbznOOtn5WJee7Of_nh33ygg7_ph2G=hgnvNk_Cbsw@mail.gmail.com>
- <20230705105343.iounmlflfued7lco@linux.intel.com>
-In-Reply-To: <20230705105343.iounmlflfued7lco@linux.intel.com>
+ <20230706013423.GA3894444@ls.amr.corp.intel.com>
+In-Reply-To: <20230706013423.GA3894444@ls.amr.corp.intel.com>
 From: David Stevens <stevensd@chromium.org>
-Date: Thu, 6 Jul 2023 14:29:24 +0900
-Message-ID: <CAD=HUj5ezWt7rLAv2qOpFsMHyFU87Hqtw_p8pWNF5+oxbLhxDg@mail.gmail.com>
+Date: Thu, 6 Jul 2023 14:52:55 +0900
+Message-ID: <CAD=HUj4e3G6W74CyxicGH5k8mLmXt+JUK0ju5LCC6ESQ7EYgqQ@mail.gmail.com>
 Subject: Re: [PATCH v7 2/8] KVM: Introduce __kvm_follow_pfn function
-To: Yu Zhang <yu.c.zhang@linux.intel.com>
+To: Isaku Yamahata <isaku.yamahata@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -78,73 +77,57 @@ Cc: Marc Zyngier <maz@kernel.org>, kvm@vger.kernel.org, Sean Christopherson <sea
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jul 5, 2023 at 7:53=E2=80=AFPM Yu Zhang <yu.c.zhang@linux.intel.com=
-> wrote:
->
-> On Wed, Jul 05, 2023 at 06:22:59PM +0900, David Stevens wrote:
-> > On Wed, Jul 5, 2023 at 12:10=E2=80=AFPM Yu Zhang <yu.c.zhang@linux.inte=
+On Thu, Jul 6, 2023 at 10:34=E2=80=AFAM Isaku Yamahata <isaku.yamahata@gmai=
 l.com> wrote:
-> > >
-> > > > @@ -2514,35 +2512,26 @@ static bool hva_to_pfn_fast(unsigned long a=
-ddr, bool write_fault,
-> > > >   * The slow path to get the pfn of the specified host virtual addr=
-ess,
-> > > >   * 1 indicates success, -errno is returned if error is detected.
-> > > >   */
-> > > > -static int hva_to_pfn_slow(unsigned long addr, bool *async, bool w=
-rite_fault,
-> > > > -                        bool interruptible, bool *writable, kvm_pf=
-n_t *pfn)
-> > > > +static int hva_to_pfn_slow(struct kvm_follow_pfn *foll, kvm_pfn_t =
-*pfn)
-> > > >  {
-> > > > -     unsigned int flags =3D FOLL_HWPOISON;
-> > > > +     unsigned int flags =3D FOLL_HWPOISON | FOLL_GET | foll->flags=
-;
-> > > >       struct page *page;
-> > > >       int npages;
-> > > >
-> > > >       might_sleep();
-> > > >
-> > > > -     if (writable)
-> > > > -             *writable =3D write_fault;
-> > > > -
-> > > > -     if (write_fault)
-> > > > -             flags |=3D FOLL_WRITE;
-> > > > -     if (async)
-> > > > -             flags |=3D FOLL_NOWAIT;
-> > > > -     if (interruptible)
-> > > > -             flags |=3D FOLL_INTERRUPTIBLE;
-> > > > -
-> > > > -     npages =3D get_user_pages_unlocked(addr, 1, &page, flags);
-> > > > +     npages =3D get_user_pages_unlocked(foll->hva, 1, &page, flags=
-);
-> > > >       if (npages !=3D 1)
-> > > >               return npages;
-> > > >
-> > > > +     foll->writable =3D (foll->flags & FOLL_WRITE) && foll->allow_=
-write_mapping;
-> > > > +
-> > > >       /* map read fault as writable if possible */
-> > > > -     if (unlikely(!write_fault) && writable) {
-> > > > +     if (unlikely(!foll->writable) && foll->allow_write_mapping) {
-> > >
-> > > I guess !foll->writable should be !(foll->flags & FOLL_WRITE) here.
-> >
-> > The two statements are logically equivalent, although I guess using
-> > !(foll->flags & FOLL_WRITE) may be a little clearer, if a little more
-> > verbose.
 >
-> Well, as the comment says, we wanna try to map the read fault as writable
-> whenever possible. And __gfn_to_pfn_memslot() will only set the FOLL_WRIT=
-E
-> for write faults. So I guess using !foll->writable will not allow this.
-> Did I miss anything?
+> On Tue, Jul 04, 2023 at 04:50:47PM +0900,
+> David Stevens <stevensd@chromium.org> wrote:
+>
+> > From: David Stevens <stevensd@chromium.org>
+> >
+> > Introduce __kvm_follow_pfn, which will replace __gfn_to_pfn_memslot.
+> > __kvm_follow_pfn refactors the old API's arguments into a struct and,
+> > where possible, combines the boolean arguments into a single flags
+> > argument.
+> >
+> > Signed-off-by: David Stevens <stevensd@chromium.org>
+> > ---
+> >  include/linux/kvm_host.h |  16 ++++
+> >  virt/kvm/kvm_main.c      | 171 ++++++++++++++++++++++-----------------
+> >  virt/kvm/kvm_mm.h        |   3 +-
+> >  virt/kvm/pfncache.c      |   8 +-
+> >  4 files changed, 122 insertions(+), 76 deletions(-)
+> >
+> > diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> > index 9d3ac7720da9..ef2763c2b12e 100644
+> > --- a/include/linux/kvm_host.h
+> > +++ b/include/linux/kvm_host.h
+> > @@ -97,6 +97,7 @@
+> >  #define KVM_PFN_ERR_HWPOISON (KVM_PFN_ERR_MASK + 1)
+> >  #define KVM_PFN_ERR_RO_FAULT (KVM_PFN_ERR_MASK + 2)
+> >  #define KVM_PFN_ERR_SIGPENDING       (KVM_PFN_ERR_MASK + 3)
+> > +#define KVM_PFN_ERR_NEEDS_IO (KVM_PFN_ERR_MASK + 4)
+> >
+> >  /*
+> >   * error pfns indicate that the gfn is in slot but faild to
+> > @@ -1156,6 +1157,21 @@ unsigned long gfn_to_hva_memslot_prot(struct kvm=
+_memory_slot *slot, gfn_t gfn,
+> >  void kvm_release_page_clean(struct page *page);
+> >  void kvm_release_page_dirty(struct page *page);
+> >
+> > +struct kvm_follow_pfn {
+> > +     const struct kvm_memory_slot *slot;
+> > +     gfn_t gfn;
+> > +     unsigned int flags;
+> > +     bool atomic;
+> > +     /* Allow a read fault to create a writeable mapping. */
+> > +     bool allow_write_mapping;
+>
+> Maybe, make them const for input arguments?
 
-We just set the foll->writable out parameter to be equal to
-((foll->flags & FOLL_WRITE) && foll->allow_write_mapping). Taking a =3D
-foll->flags & FOLL_WRITE and b =3D foll->allow_write_mapping, we have
-!(a && b) && b -> (!a || !b) && b -> (!a && b) || (!b && b) -> !a &&
-b.
+Unfortunately using const isn't straightforward as long as the kernel
+continues to use -Wdeclaration-after-statement. If these fields were
+const, then they would need to be specified in the initializer when
+declaring the variable, but that's not necessarily always possible.
 
 -David
