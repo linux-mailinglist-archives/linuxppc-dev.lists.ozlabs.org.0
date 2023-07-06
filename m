@@ -1,81 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 545C774A758
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jul 2023 00:59:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 842E274A757
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jul 2023 00:58:57 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=q0IFs2Rc;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QxsRM2KMmz3cQs
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jul 2023 08:59:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QxsQl36rzz3c8q
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jul 2023 08:58:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=xmission.com (client-ip=166.70.13.232; helo=out02.mta.xmission.com; envelope-from=ebiederm@xmission.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 2729 seconds by postgrey-1.37 at boromir; Fri, 07 Jul 2023 02:02:38 AEST
-Received: from out02.mta.xmission.com (out02.mta.xmission.com [166.70.13.232])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=q0IFs2Rc;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QxhBQ0VGrz30hM;
-	Fri,  7 Jul 2023 02:02:36 +1000 (AEST)
-Received: from in01.mta.xmission.com ([166.70.13.51]:40568)
-	by out02.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.93)
-	(envelope-from <ebiederm@xmission.com>)
-	id 1qHQio-00FMgf-7e; Thu, 06 Jul 2023 09:16:42 -0600
-Received: from ip68-110-29-46.om.om.cox.net ([68.110.29.46]:55228 helo=email.froward.int.ebiederm.org.xmission.com)
-	by in01.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.93)
-	(envelope-from <ebiederm@xmission.com>)
-	id 1qHQim-00AsXt-Fk; Thu, 06 Jul 2023 09:16:41 -0600
-From: "Eric W. Biederman" <ebiederm@xmission.com>
-To: Jeff Layton <jlayton@kernel.org>
-References: <20230705185812.579118-1-jlayton@kernel.org>
-	<a4e6cfec345487fc9ac8ab814a817c79a61b123a.camel@kernel.org>
-Date: Thu, 06 Jul 2023 10:16:19 -0500
-In-Reply-To: <a4e6cfec345487fc9ac8ab814a817c79a61b123a.camel@kernel.org> (Jeff
-	Layton's message of "Wed, 05 Jul 2023 17:57:46 -0400")
-Message-ID: <87ilaxgjek.fsf@email.froward.int.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qxh6r18KFz30P0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jul 2023 01:59:31 +1000 (AEST)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 366FgAa9030838;
+	Thu, 6 Jul 2023 15:58:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=jjAfeSlWgg+dGbiwYeBow8jF6nVRG2uJUdHPsfaGRHI=;
+ b=q0IFs2Rczs+oBoivTwSre2ltXn8XEF9JFIsZhKRmT4uRW5Dkmqbsnw6C7N2RmpX1r4+I
+ WSGAPQmuBZzsv/3gL49TQfx1bdmjRmuwq8MgaN8yNyZvF46q/cy3T1hgSjbxGzIR95eE
+ QTCu+6M2QyQG8An3uvx9qg2OxpR9y+zZob/c0kPW2D2mzNBL0bwt6WD1+m/691y3Feu8
+ w3FPCn8U3bXaH3oSTeGUPFGKb0LZK6JaoujYcrX55xmbEqnIy+dPpm1a1aS3x7KvOQEC
+ 8IBCPBmz1PAaOLOWq7w0yxegYExf9mRQiY9qDi69Ross4ZajvNmjnnyyK5OSMbCZMwPJ /Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rp0fx0h7t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Jul 2023 15:58:34 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 366FgS7Y000441;
+	Thu, 6 Jul 2023 15:58:31 GMT
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rp0fx0h6a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Jul 2023 15:58:31 +0000
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+	by ppma01fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3669Hul0011059;
+	Thu, 6 Jul 2023 15:58:28 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma01fra.de.ibm.com (PPS) with ESMTPS id 3rjbs4tgxy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Jul 2023 15:58:28 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 366FwOEu49348944
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 6 Jul 2023 15:58:24 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A39772004E;
+	Thu,  6 Jul 2023 15:58:24 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E971C2004B;
+	Thu,  6 Jul 2023 15:58:22 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu,  6 Jul 2023 15:58:22 +0000 (GMT)
+Date: Thu, 6 Jul 2023 17:58:21 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Nathan Chancellor <nathan@kernel.org>,
+        Eric DeVolder <eric.devolder@oracle.com>
+Subject: Re: [PATCH v4 12/13] s390/kexec: refactor for kernel/Kconfig.kexec
+Message-ID: <ZKbknQoC1MkAjsqJ@tuxmaker.boeblingen.de.ibm.com>
+References: <20230705142004.3605799-1-eric.devolder@oracle.com>
+ <20230705142004.3605799-13-eric.devolder@oracle.com>
+ <20230705154958.GA3643511@dev-arch.thelio-3990X>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-SPF: eid=1qHQim-00AsXt-Fk;;;mid=<87ilaxgjek.fsf@email.froward.int.ebiederm.org>;;;hst=in01.mta.xmission.com;;;ip=68.110.29.46;;;frm=ebiederm@xmission.com;;;spf=pass
-X-XM-AID: U2FsdGVkX19hfnilZzLMqG1RlF+DuMto1+nqSkCNAbk=
-X-SA-Exim-Connect-IP: 68.110.29.46
-X-SA-Exim-Mail-From: ebiederm@xmission.com
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa06.xmission.com
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.2 required=8.0 tests=ALL_TRUSTED,BAYES_50,
-	DCC_CHECK_NEGATIVE,T_SCC_BODY_TEXT_LINE,T_TM2_M_HEADER_IN_MSG,
-	T_TooManySym_01,T_TooManySym_02,T_TooManySym_03 shortcircuit=no
-	autolearn=disabled version=3.4.2
-X-Spam-Report: 	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-	*  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-	*      [score: 0.5000]
-	*  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
-	* -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
-	*      [sa06 1397; Body=1 Fuz1=1 Fuz2=1]
-	*  0.0 T_TooManySym_02 5+ unique symbols in subject
-	*  0.0 T_TooManySym_03 6+ unique symbols in subject
-	* -0.0 T_SCC_BODY_TEXT_LINE No description available.
-	*  0.0 T_TooManySym_01 4+ unique symbols in subject
-X-Spam-DCC: XMission; sa06 1397; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: ;Jeff Layton <jlayton@kernel.org>
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 959 ms - load_scoreonly_sql: 0.04 (0.0%),
-	signal_user_changed: 12 (1.2%), b_tie_ro: 10 (1.1%), parse: 1.62
-	(0.2%), extract_message_metadata: 4.3 (0.4%), get_uri_detail_list:
-	1.88 (0.2%), tests_pri_-2000: 2.4 (0.3%), tests_pri_-1000: 10 (1.1%),
-	tests_pri_-950: 1.27 (0.1%), tests_pri_-900: 1.56 (0.2%),
-	tests_pri_-200: 0.85 (0.1%), tests_pri_-100: 4.3 (0.4%),
-	tests_pri_-90: 283 (29.5%), check_bayes: 278 (29.0%), b_tokenize: 27
-	(2.9%), b_tok_get_all: 20 (2.1%), b_comp_prob: 4.6 (0.5%),
-	b_tok_touch_all: 220 (23.0%), b_finish: 0.94 (0.1%), tests_pri_0: 616
-	(64.3%), check_dkim_signature: 0.56 (0.1%), check_dkim_adsp: 2.8
-	(0.3%), poll_dns_idle: 0.55 (0.1%), tests_pri_10: 2.2 (0.2%),
-	tests_pri_500: 9 (0.9%), rewrite_mail: 0.00 (0.0%)
-Subject: Re: [PATCH v2 00/89] fs: new accessors for inode->i_ctime
-X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
-X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230705154958.GA3643511@dev-arch.thelio-3990X>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: fRdpOUZjdtAMTOmk2K-csX7Bzx0RFgu9
+X-Proofpoint-ORIG-GUID: iUrSZgVFrrjm2QXnS9jxUKUHl5MpwGXP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-06_11,2023-07-06_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ priorityscore=1501 malwarescore=0 spamscore=0 clxscore=1011 adultscore=0
+ bulkscore=0 mlxlogscore=999 lowpriorityscore=0 mlxscore=0 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2307060140
 X-Mailman-Approved-At: Fri, 07 Jul 2023 08:57:20 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -88,63 +99,259 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: lucho@ionkov.net, rafael@kernel.org, djwong@kernel.org, al@alarsen.net, cmllamas@google.com, andrii@kernel.org, hughd@google.com, john.johansen@canonical.com, agordeev@linux.ibm.com, hch@lst.de, hubcap@omnibond.com, pc@manguebit.com, linux-xfs@vger.kernel.org, bvanassche@acm.org, jeffxu@chromium.org, john@keeping.me.uk, yi.zhang@huawei.com, jmorris@namei.org, code@tyhicks.com, stern@rowland.harvard.edu, borntraeger@linux.ibm.com, devel@lists.orangefs.org, mirimmad17@gmail.com, sprasad@microsoft.com, jaharkes@cs.cmu.edu, linux-um@lists.infradead.org, npiggin@gmail.com, viro@zeniv.linux.org.uk, ericvh@kernel.org, surenb@google.com, trond.myklebust@hammerspace.com, anton@tuxera.com, brauner@kernel.org, wsa+renesas@sang-engineering.com, gregkh@linuxfoundation.org, stephen.smalley.work@gmail.com, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, lsahlber@redhat.com, senozhatsky@chromium.org, arve@android.com, chuck.lever@oracle.com, svens@linux.ibm.com, jolsa@kernel.org, jack@s
- use.com, tj@kernel.org, akpm@linux-foundation.org, linux-trace-kernel@vger.kernel.org, xu.xin16@zte.com.cn, shaggy@kernel.org, dhavale@google.com, penguin-kernel@I-love.SAKURA.ne.jp, zohar@linux.ibm.com, linux-mm@kvack.org, joel@joelfernandes.org, edumazet@google.com, sdf@google.com, jomajm@gmail.com, linux-s390@vger.kernel.org, linux-nilfs@vger.kernel.org, paul@paul-moore.com, leon@kernel.org, john.fastabend@gmail.com, mcgrof@kernel.org, chi.minghao@zte.com.cn, codalist@coda.cs.cmu.edu, selinux@vger.kernel.org, zhangpeng362@huawei.com, quic_ugoswami@quicinc.com, yhs@fb.com, yzaikin@google.com, linkinjeon@kernel.org, mhiramat@kernel.org, ecryptfs@vger.kernel.org, tkjos@android.com, madkar@cs.stonybrook.edu, gor@linux.ibm.com, yuzhe@nfschina.com, linuxppc-dev@lists.ozlabs.org, reiserfs-devel@vger.kernel.org, miklos@szeredi.hu, huyue2@coolpad.com, jaegeuk@kernel.org, gargaditya08@live.com, maco@android.com, hirofumi@mail.parknet.co.jp, haoluo@google.com, tony.luck@intel.com, tytso@mit
- .edu, nico@fluxnic.net, linux-ntfs-dev@lists.sourceforge.net, muchun.song@linux.dev, roberto.sassu@huawei.com, linux-f2fs-devel@lists.sourceforge.net, yang.yang29@zte.com.cn, gpiccoli@igalia.com, anna@kernel.org, quic_uaggarwa@quicinc.com, bwarrum@linux.ibm.com, mike.kravetz@oracle.com, jingyuwang_vip@163.com, linux-efi@vger.kernel.org, error27@gmail.com, martin@omnibond.com, trix@redhat.com, ocfs2-devel@lists.linux.dev, ast@kernel.org, sebastian.reichel@collabora.com, clm@fb.com, linux-mtd@lists.infradead.org, willy@infradead.org, marc.dionne@auristor.com, linux-afs@lists.infradead.org, raven@themaw.net, naohiro.aota@wdc.com, daniel@iogearbox.net, dennis.dalessandro@cornelisnetworks.com, linux-rdma@vger.kernel.org, quic_linyyuan@quicinc.com, coda@cs.cmu.edu, slava@dubeyko.com, idryomov@gmail.com, pabeni@redhat.com, adobriyan@gmail.com, serge@hallyn.com, chengzhihao1@huawei.com, axboe@kernel.dk, amir73il@gmail.com, linuszeng@tencent.com, keescook@chromium.org, arnd@arndb.de, autofs@
- vger.kernel.org, rostedt@goodmis.org, yifeliu@cs.stonybrook.edu, dlemoal@kernel.org, eparis@parisplace.org, ceph-devel@vger.kernel.org, xiang@kernel.org, yijiangshan@kylinos.cn, dhowells@redhat.com, linux-nfs@vger.kernel.org, linux-ext4@vger.kernel.org, kolga@netapp.com, song@kernel.org, samba-technical@lists.samba.org, sfrench@samba.org, jk@ozlabs.org, netdev@vger.kernel.org, rpeterso@redhat.com, linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org, ntfs3@lists.linux.dev, linux-erofs@lists.ozlabs.org, davem@davemloft.net, jfs-discussion@lists.sourceforge.net, princekumarmaurya06@gmail.com, ebiggers@google.com, neilb@suse.de, asmadeus@codewreck.org, linux_oss@crudebyte.com, me@bobcopeland.com, kpsingh@kernel.org, okanatov@gmail.com, almaz.alexandrovich@paragon-software.com, joseph.qi@linux.alibaba.com, hayama@lineo.co.jp, adilger.kernel@dilger.ca, mikulas@artax.karlin.mff.cuni.cz, shaozhengchao@huawei.com, chenzhongjin@huawei.com, ardb@kernel.org, anton.ivanov@cambridgegreys.com, agru
- enba@redhat.com, richard@nod.at, mark@fasheh.com, shr@devkernel.io, Dai.Ngo@oracle.com, cluster-devel@redhat.com, jgg@ziepe.ca, kuba@kernel.org, riel@surriel.com, salah.triki@gmail.com, dushistov@mail.ru, linux-cifs@vger.kernel.org, hca@linux.ibm.com, chao@kernel.org, apparmor@lists.ubuntu.com, josef@toxicpanda.com, Liam.Howlett@Oracle.com, tom@talpey.com, hdegoede@redhat.com, linux-hardening@vger.kernel.org, aivazian.tigran@gmail.com, dchinner@redhat.com, dsterba@suse.com, xiubli@redhat.com, konishi.ryusuke@gmail.com, jgross@suse.com, jth@kernel.org, rituagar@linux.ibm.com, luisbg@kernel.org, martin.lau@linux.dev, v9fs@lists.linux.dev, fmdefrancesco@gmail.com, linux-unionfs@vger.kernel.org, lrh2000@pku.edu.cn, linux-security-module@vger.kernel.org, ezk@cs.stonybrook.edu, jefflexu@linux.alibaba.com, linux@treblig.org, hannes@cmpxchg.org, phillip@squashfs.org.uk, johannes@sipsolutions.net, sj1557.seo@samsung.com, dwmw2@infradead.org, linux-karma-devel@lists.sourceforge.net, linux-btr
- fs@vger.kernel.org, jlbec@evilplan.org
+Cc: chenhuacai@kernel.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, peterz@infradead.org, catalin.marinas@arm.com, linus.walleij@linaro.org, dave.hansen@linux.intel.com, linux-mips@vger.kernel.org, James.Bottomley@hansenpartnership.com, dalias@libc.org, hpa@zytor.com, linux-riscv@lists.infradead.org, will@kernel.org, kernel@xen0n.name, tsi@tuyoix.net, linux-s390@vger.kernel.org, rmk+kernel@armlinux.org.uk, paulmck@kernel.org, ysato@users.sourceforge.jp, deller@gmx.de, x86@kernel.org, linux@armlinux.org.uk, paul.walmsley@sifive.com, mingo@redhat.com, geert@linux-m68k.org, hbathini@linux.ibm.com, samitolvanen@google.com, Naresh Kamboju <naresh.kamboju@linaro.org>, ojeda@kernel.org, juerg.haefliger@canonical.com, borntraeger@linux.ibm.com, frederic@kernel.org, arnd@arndb.de, mhiramat@kernel.org, ardb@kernel.org, thunder.leizhen@huawei.com, aou@eecs.berkeley.edu, keescook@chromium.org, gor@linux.ibm.com, anshuman.khandual@arm.com, hca@linux.ibm.com, xin3.li@intel.com, npiggi
+ n@gmail.com, konrad.wilk@oracle.com, linux-m68k@lists.linux-m68k.org, bp@alien8.de, loongarch@lists.linux.dev, glaubitz@physik.fu-berlin.de, tglx@linutronix.de, ziy@nvidia.com, linux-arm-kernel@lists.infradead.org, boris.ostrovsky@oracle.com, tsbogend@alpha.franken.de, sebastian.reichel@collabora.com, bhe@redhat.com, linux-parisc@vger.kernel.org, gregkh@linuxfoundation.org, kirill.shutemov@linux.intel.com, ndesaulniers@google.com, linux-kernel@vger.kernel.org, sourabhjain@linux.ibm.com, palmer@dabbelt.com, svens@linux.ibm.com, tj@kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, masahiroy@kernel.org, rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Jeff Layton <jlayton@kernel.org> writes:
+On Wed, Jul 05, 2023 at 08:49:58AM -0700, Nathan Chancellor wrote:
+...
+> I just bisected the following build failure visible with 'ARCH=s390
+> allnoconfig' to this change as commit 842ce0e1dafa ("s390/kexec:
+> refactor for kernel/Kconfig.kexec") in -next.
+> 
+>   arch/s390/kernel/machine_kexec.c:120:37: warning: 'struct kimage' declared inside parameter list will not be visible outside of this definition or declaration
+>     120 | static bool kdump_csum_valid(struct kimage *image)
+>         |                                     ^~~~~~
+>   arch/s390/kernel/machine_kexec.c:188:34: warning: 'struct kimage' declared inside parameter list will not be visible outside of this definition or declaration
+>     188 | int machine_kexec_prepare(struct kimage *image)
+>         |                                  ^~~~~~
+>   arch/s390/kernel/machine_kexec.c: In function 'machine_kexec_prepare':
+>   arch/s390/kernel/machine_kexec.c:192:18: error: invalid use of undefined type 'struct kimage'
+>     192 |         if (image->type == KEXEC_TYPE_CRASH)
+>         |                  ^~
+>   arch/s390/kernel/machine_kexec.c:192:28: error: 'KEXEC_TYPE_CRASH' undeclared (first use in this function); did you mean 'KEXEC_ON_CRASH'?
+>     192 |         if (image->type == KEXEC_TYPE_CRASH)
+>         |                            ^~~~~~~~~~~~~~~~
+>         |                            KEXEC_ON_CRASH
+>   arch/s390/kernel/machine_kexec.c:192:28: note: each undeclared identifier is reported only once for each function it appears in
+>   arch/s390/kernel/machine_kexec.c:196:18: error: invalid use of undefined type 'struct kimage'
+>     196 |         if (image->type != KEXEC_TYPE_DEFAULT)
+>         |                  ^~
+>   arch/s390/kernel/machine_kexec.c:196:28: error: 'KEXEC_TYPE_DEFAULT' undeclared (first use in this function); did you mean 'KEXEC_ARCH_DEFAULT'?
+>     196 |         if (image->type != KEXEC_TYPE_DEFAULT)
+>         |                            ^~~~~~~~~~~~~~~~~~
+>         |                            KEXEC_ARCH_DEFAULT
+>   In file included from arch/s390/include/asm/thread_info.h:31,
+>                    from include/linux/thread_info.h:60,
+>                    from arch/s390/include/asm/preempt.h:6,
+>                    from include/linux/preempt.h:79,
+>                    from arch/s390/include/asm/percpu.h:5,
+>                    from include/linux/irqflags.h:18,
+>                    from include/linux/rcupdate.h:26,
+>                    from include/linux/rculist.h:11,
+>                    from include/linux/pid.h:5,
+>                    from include/linux/sched.h:14,
+>                    from include/linux/ratelimit.h:6,
+>                    from include/linux/dev_printk.h:16,
+>                    from include/linux/device.h:15,
+>                    from arch/s390/kernel/machine_kexec.c:9:
+>   arch/s390/kernel/machine_kexec.c:200:48: error: invalid use of undefined type 'struct kimage'
+>     200 |         reboot_code_buffer = page_to_virt(image->control_code_page);
+>         |                                                ^~
+>   arch/s390/include/asm/page.h:186:58: note: in definition of macro '__va'
+>     186 | #define __va(x)                 ((void *)(unsigned long)(x))
+>         |                                                          ^
+>   arch/s390/include/asm/page.h:194:38: note: in expansion of macro 'pfn_to_phys'
+>     194 | #define pfn_to_virt(pfn)        __va(pfn_to_phys(pfn))
+>         |                                      ^~~~~~~~~~~
+>   arch/s390/include/asm/page.h:199:33: note: in expansion of macro 'pfn_to_virt'
+>     199 | #define page_to_virt(page)      pfn_to_virt(page_to_pfn(page))
+>         |                                 ^~~~~~~~~~~
+>   include/asm-generic/memory_model.h:64:21: note: in expansion of macro '__page_to_pfn'
+>      64 | #define page_to_pfn __page_to_pfn
+>         |                     ^~~~~~~~~~~~~
+>   arch/s390/kernel/machine_kexec.c:200:30: note: in expansion of macro 'page_to_virt'
+>     200 |         reboot_code_buffer = page_to_virt(image->control_code_page);
+>         |                              ^~~~~~~~~~~~
+>   arch/s390/kernel/machine_kexec.c: At top level:
+>   arch/s390/kernel/machine_kexec.c:207:35: warning: 'struct kimage' declared inside parameter list will not be visible outside of this definition or declaration
+>     207 | void machine_kexec_cleanup(struct kimage *image)
+>         |                                   ^~~~~~
+>   arch/s390/kernel/machine_kexec.c: In function '__do_machine_kexec':
+>   arch/s390/kernel/machine_kexec.c:243:40: error: invalid use of undefined type 'struct kimage'
+>     243 |         data_mover = page_to_phys(image->control_code_page);
+>         |                                        ^~
+>   arch/s390/include/asm/page.h:189:35: note: in definition of macro 'pfn_to_phys'
+>     189 | #define pfn_to_phys(pfn)        ((pfn) << PAGE_SHIFT)
+>         |                                   ^~~
+>   include/asm-generic/memory_model.h:64:21: note: in expansion of macro '__page_to_pfn'
+>      64 | #define page_to_pfn __page_to_pfn
+>         |                     ^~~~~~~~~~~~~
+>   arch/s390/kernel/machine_kexec.c:243:22: note: in expansion of macro 'page_to_phys'
+>     243 |         data_mover = page_to_phys(image->control_code_page);
+>         |                      ^~~~~~~~~~~~
+>   arch/s390/kernel/machine_kexec.c:244:36: error: invalid use of undefined type 'struct kimage'
+>     244 |         entry = virt_to_phys(&image->head);
+>         |                                    ^~
+>   In file included from arch/s390/kernel/machine_kexec.c:27:
+>   arch/s390/kernel/machine_kexec.c:252:40: error: invalid use of undefined type 'struct kimage'
+>     252 |                    unsigned long, image->start,
+>         |                                        ^~
+>   arch/s390/include/asm/stacktrace.h:101:32: note: in definition of macro 'CALL_LARGS_2'
+>     101 |         long arg2 = (long)(t2)(a2)
+>         |                                ^~
+>   arch/s390/include/asm/stacktrace.h:216:9: note: in expansion of macro 'CALL_LARGS_3'
+>     216 |         CALL_LARGS_##nr(__VA_ARGS__);                                   \
+>         |         ^~~~~~~~~~~
+>   arch/s390/kernel/machine_kexec.c:250:9: note: in expansion of macro 'call_nodat'
+>     250 |         call_nodat(3, void, (relocate_kernel_t)data_mover,
+>         |         ^~~~~~~~~~
+>   In file included from include/linux/irqflags.h:15:
+>   arch/s390/kernel/machine_kexec.c:252:40: error: invalid use of undefined type 'struct kimage'
+>     252 |                    unsigned long, image->start,
+>         |                                        ^~
+>   include/linux/typecheck.h:11:16: note: in definition of macro 'typecheck'
+>      11 |         typeof(x) __dummy2; \
+>         |                ^
+>   arch/s390/include/asm/stacktrace.h:136:9: note: in expansion of macro 'CALL_TYPECHECK_2'
+>     136 |         CALL_TYPECHECK_2(__VA_ARGS__);                                  \
+>         |         ^~~~~~~~~~~~~~~~
+>   arch/s390/include/asm/stacktrace.h:219:9: note: in expansion of macro 'CALL_TYPECHECK_3'
+>     219 |         CALL_TYPECHECK_##nr(__VA_ARGS__);                               \
+>         |         ^~~~~~~~~~~~~~~
+>   arch/s390/kernel/machine_kexec.c:250:9: note: in expansion of macro 'call_nodat'
+>     250 |         call_nodat(3, void, (relocate_kernel_t)data_mover,
+>         |         ^~~~~~~~~~
+>   include/linux/typecheck.h:12:25: warning: comparison of distinct pointer types lacks a cast
+>      12 |         (void)(&__dummy == &__dummy2); \
+>         |                         ^~
+>   arch/s390/include/asm/stacktrace.h:134:9: note: in expansion of macro 'typecheck'
+>     134 |         typecheck(t, a)
+>         |         ^~~~~~~~~
+>   arch/s390/include/asm/stacktrace.h:136:9: note: in expansion of macro 'CALL_TYPECHECK_2'
+>     136 |         CALL_TYPECHECK_2(__VA_ARGS__);                                  \
+>         |         ^~~~~~~~~~~~~~~~
+>   arch/s390/include/asm/stacktrace.h:219:9: note: in expansion of macro 'CALL_TYPECHECK_3'
+>     219 |         CALL_TYPECHECK_##nr(__VA_ARGS__);                               \
+>         |         ^~~~~~~~~~~~~~~
+>   arch/s390/kernel/machine_kexec.c:250:9: note: in expansion of macro 'call_nodat'
+>     250 |         call_nodat(3, void, (relocate_kernel_t)data_mover,
+>         |         ^~~~~~~~~~
+>   arch/s390/kernel/machine_kexec.c: At top level:
+>   arch/s390/kernel/machine_kexec.c:278:27: warning: 'struct kimage' declared inside parameter list will not be visible outside of this definition or declaration
+>     278 | void machine_kexec(struct kimage *image)
+>         |                           ^~~~~~
+>   arch/s390/kernel/machine_kexec.c: In function 'machine_kexec':
+>   arch/s390/kernel/machine_kexec.c:280:18: error: invalid use of undefined type 'struct kimage'
+>     280 |         if (image->type == KEXEC_TYPE_CRASH && !kdump_csum_valid(image))
+>         |                  ^~
+>   arch/s390/kernel/machine_kexec.c:280:28: error: 'KEXEC_TYPE_CRASH' undeclared (first use in this function); did you mean 'KEXEC_ON_CRASH'?
+>     280 |         if (image->type == KEXEC_TYPE_CRASH && !kdump_csum_valid(image))
+>         |                            ^~~~~~~~~~~~~~~~
+>         |                            KEXEC_ON_CRASH
+>   arch/s390/kernel/machine_kexec.c:280:66: error: passing argument 1 of 'kdump_csum_valid' from incompatible pointer type [-Werror=incompatible-pointer-types]
+>     280 |         if (image->type == KEXEC_TYPE_CRASH && !kdump_csum_valid(image))
+>         |                                                                  ^~~~~
+>         |                                                                  |
+>         |                                                                  struct kimage *
+>   arch/s390/kernel/machine_kexec.c:120:45: note: expected 'struct kimage *' but argument is of type 'struct kimage *'
+>     120 | static bool kdump_csum_valid(struct kimage *image)
+>         |                              ~~~~~~~~~~~~~~~^~~~~
+>   cc1: some warnings being treated as errors
+> 
+> I don't think this change is equivalent for s390, which had
+> 
+>   config KEXEC
+>       def_bool y
+>       select KEXEC_CORE
+> 
+> but it is now the equivalent of
+> 
+>   config KEXEC
+>       bool "Enable kexec system call"
+>       default y
+> 
+> which enables KEXEC by default but it also allows KEXEC to be disabled
+> for s390 now, because it is a user-visible symbol, not one that is
+> unconditionally enabled no matter what. If s390 can tolerate KEXEC being
+> user selectable, then I assume the fix is just adjusting
+> arch/s390/kernel/Makefile to only build the machine_kexec files when
+> CONFIG_KEXEC_CORE is set:
+> 
+> diff --git a/arch/s390/kernel/Makefile b/arch/s390/kernel/Makefile
+> index 6b2a051e1f8a..a06b39da95f0 100644
+> --- a/arch/s390/kernel/Makefile
+> +++ b/arch/s390/kernel/Makefile
+> @@ -37,10 +37,10 @@ CFLAGS_unwind_bc.o	+= -fno-optimize-sibling-calls
+>  obj-y	:= head64.o traps.o time.o process.o earlypgm.o early.o setup.o idle.o vtime.o
+>  obj-y	+= processor.o syscall.o ptrace.o signal.o cpcmd.o ebcdic.o nmi.o
+>  obj-y	+= debug.o irq.o ipl.o dis.o diag.o vdso.o cpufeature.o
+> -obj-y	+= sysinfo.o lgr.o os_info.o machine_kexec.o
+> +obj-y	+= sysinfo.o lgr.o os_info.o
+>  obj-y	+= runtime_instr.o cache.o fpu.o dumpstack.o guarded_storage.o sthyi.o
+>  obj-y	+= entry.o reipl.o relocate_kernel.o kdebugfs.o alternative.o
+> -obj-y	+= nospec-branch.o ipl_vmparm.o machine_kexec_reloc.o unwind_bc.o
+> +obj-y	+= nospec-branch.o ipl_vmparm.o unwind_bc.o
+>  obj-y	+= smp.o text_amode31.o stacktrace.o abs_lowcore.o
+>  
+>  extra-y				+= vmlinux.lds
+> @@ -66,6 +66,7 @@ obj-$(CONFIG_CRASH_DUMP)	+= crash_dump.o
+>  obj-$(CONFIG_UPROBES)		+= uprobes.o
+>  obj-$(CONFIG_JUMP_LABEL)	+= jump_label.o
+>  
+> +obj-$(CONFIG_KEXEC_CORE)	+= machine_kexec.o machine_kexec_reloc.o
+>  obj-$(CONFIG_KEXEC_FILE)	+= machine_kexec_file.o kexec_image.o
+>  obj-$(CONFIG_KEXEC_FILE)	+= kexec_elf.o
+>  
+> 
+> Otherwise, the prompt for KEXEC could be made conditional on some ARCH
+> symbol so that architectures can opt out of it.
 
-> On Wed, 2023-07-05 at 14:58 -0400, Jeff Layton wrote:
->> v2:
->> - prepend patches to add missing ctime updates
->> - add simple_rename_timestamp helper function
->> - rename ctime accessor functions as inode_get_ctime/inode_set_ctime_*
->> - drop individual inode_ctime_set_{sec,nsec} helpers
->> 
->> I've been working on a patchset to change how the inode->i_ctime is
->> accessed in order to give us conditional, high-res timestamps for the
->> ctime and mtime. struct timespec64 has unused bits in it that we can use
->> to implement this. In order to do that however, we need to wrap all
->> accesses of inode->i_ctime to ensure that bits used as flags are
->> appropriately handled.
->> 
->> The patchset starts with reposts of some missing ctime updates that I
->> spotted in the tree. It then adds a new helper function for updating the
->> timestamp after a successful rename, and new ctime accessor
->> infrastructure.
->> 
->> The bulk of the patchset is individual conversions of different
->> subsysteme to use the new infrastructure. Finally, the patchset renames
->> the i_ctime field to __i_ctime to help ensure that I didn't miss
->> anything.
->> 
->> This should apply cleanly to linux-next as of this morning.
->> 
->> Most of this conversion was done via 5 different coccinelle scripts, run
->> in succession, with a large swath of by-hand conversions to clean up the
->> remainder.
->> 
->
-> A couple of other things I should note:
->
-> If you sent me an Acked-by or Reviewed-by in the previous set, then I
-> tried to keep it on the patch here, since the respun patches are mostly
-> just renaming stuff from v1. Let me know if I've missed any.
->
-> I've also pushed the pile to my tree as this tag:
->
->     https://git.kernel.org/pub/scm/linux/kernel/git/jlayton/linux.git/tag/?h=ctime.20230705
->
-> In case that's easier to work with.
+Hi Nathan,
 
-Are there any preliminary patches showing what you want your introduced
-accessors to turn into?  It is hard to judge the sanity of the
-introduction of wrappers without seeing what the wrappers are ultimately
-going to do.
+Thanks a lot for looking into it!
+With few modification the fix would looke like below.
+It probably needs to be a pre-requisite for this series:
 
-Eric
+
+[PATCH] s390/kexec: make machine_kexec depend on CONFIG_KEXEC_CORE
+
+Make machine_kexec.o and relocate_kernel.o depend on
+CONFIG_KEXEC_CORE option as other architectures do.
+
+Still generate machine_kexec_reloc.o unconditionally,
+since arch_kexec_do_relocs() function is neded by the
+decompressor.
+
+Probably, #include <asm/kexec.h> could be be removed from
+machine_kexec_reloc.c source as well, but that would revert
+commit 155e6c706125 ("s390/kexec: add missing include to
+machine_kexec_reloc.c").
+
+Suggested-by: Nathan Chancellor <nathan@kernel.org>
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+---
+ arch/s390/kernel/Makefile | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/arch/s390/kernel/Makefile b/arch/s390/kernel/Makefile
+index 8d7514c72bb8..0df2b88cc0da 100644
+--- a/arch/s390/kernel/Makefile
++++ b/arch/s390/kernel/Makefile
+@@ -37,9 +37,9 @@ CFLAGS_unwind_bc.o	+= -fno-optimize-sibling-calls
+ obj-y	:= head64.o traps.o time.o process.o earlypgm.o early.o setup.o idle.o vtime.o
+ obj-y	+= processor.o syscall.o ptrace.o signal.o cpcmd.o ebcdic.o nmi.o
+ obj-y	+= debug.o irq.o ipl.o dis.o diag.o vdso.o cpufeature.o
+-obj-y	+= sysinfo.o lgr.o os_info.o machine_kexec.o
++obj-y	+= sysinfo.o lgr.o os_info.o
+ obj-y	+= runtime_instr.o cache.o fpu.o dumpstack.o guarded_storage.o sthyi.o
+-obj-y	+= entry.o reipl.o relocate_kernel.o kdebugfs.o alternative.o
++obj-y	+= entry.o reipl.o kdebugfs.o alternative.o
+ obj-y	+= nospec-branch.o ipl_vmparm.o machine_kexec_reloc.o unwind_bc.o
+ obj-y	+= smp.o text_amode31.o stacktrace.o abs_lowcore.o
+ 
+@@ -63,6 +63,7 @@ obj-$(CONFIG_RETHOOK)		+= rethook.o
+ obj-$(CONFIG_FUNCTION_TRACER)	+= ftrace.o
+ obj-$(CONFIG_FUNCTION_TRACER)	+= mcount.o
+ obj-$(CONFIG_CRASH_DUMP)	+= crash_dump.o
++obj-$(CONFIG_KEXEC_CORE)	+= machine_kexec.o relocate_kernel.o
+ obj-$(CONFIG_UPROBES)		+= uprobes.o
+ obj-$(CONFIG_JUMP_LABEL)	+= jump_label.o
+ 
+> Cheers,
+> Nathan
+
+Thanks!
