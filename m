@@ -1,95 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8C5874A307
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 19:20:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C66574A486
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 21:46:24 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=psC8RYW6;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=lNzL+MZH;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qxjwg3zcJz3c5S
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jul 2023 03:20:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qxn8Z32Dqz3bxr
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jul 2023 05:46:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=psC8RYW6;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=lNzL+MZH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b31; helo=mail-yb1-xb31.google.com; envelope-from=hughd@google.com; receiver=lists.ozlabs.org)
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qxjvl4ykWz3brp
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jul 2023 03:20:03 +1000 (AEST)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 366HGguZ018549;
-	Thu, 6 Jul 2023 17:19:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=fpbgZAypLVutubvEgDeOpjatjldLvtjIaN/4OpbK9+I=;
- b=psC8RYW6ioXS1IY7+GSiRTzwM3nOZ/ZrFdflPoKjzUJRK1Bz2Z3eHo2eIs4o4DYCIlW+
- /4ViQc9okqDerplACGpEj2MDqSQqAyduVsxRP1WRt7SQhRiGkDlUkoxYn+YusNIA8Wr/
- mM8yBMem/Jnef+/p7DaTDhgMH23Nw0JK2sNKxnwcvUwCdBk713uqsX0dgBLMJqDSmviX
- aFeqvCqeraYwx0q+3nh9XBnJvA94lOjkeUQFE34jQzbnOe7OzVy3j7ln2NkITy+eAnMq
- Wjq9x04vKCqSCPD0XqeVb9ybm2XSbMn/nl9e2DcAJDmDj02tjFrhVtzkMgS2S/GeVmV5 hQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rp1v8030r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Jul 2023 17:19:45 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 366HGw13019423;
-	Thu, 6 Jul 2023 17:19:45 GMT
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rp1v80302-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Jul 2023 17:19:45 +0000
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
-	by ppma03wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 366Gdw4x017203;
-	Thu, 6 Jul 2023 17:19:43 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([9.208.130.98])
-	by ppma03wdc.us.ibm.com (PPS) with ESMTPS id 3rjbs61pd4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Jul 2023 17:19:43 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 366HJh8f60555728
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 6 Jul 2023 17:19:43 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1B5A65805A;
-	Thu,  6 Jul 2023 17:19:43 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5358858060;
-	Thu,  6 Jul 2023 17:19:37 +0000 (GMT)
-Received: from [9.171.87.7] (unknown [9.171.87.7])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  6 Jul 2023 17:19:36 +0000 (GMT)
-Message-ID: <de856969-5d78-f771-96ff-4afce3a6e776@linux.vnet.ibm.com>
-Date: Thu, 6 Jul 2023 22:49:35 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qxn7f5kSCz3bvW
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jul 2023 05:45:33 +1000 (AEST)
+Received: by mail-yb1-xb31.google.com with SMTP id 3f1490d57ef6-bacf685150cso1195437276.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jul 2023 12:45:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1688672727; x=1691264727;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jn2A84TyxlB9E6QwhZ/S3+QyShJtUiEedaODmn36QLU=;
+        b=lNzL+MZHVE5Tf5jrUoH6qartx9zzmTGqRlIdWHCjVAbfYsp6CttNZlOBa0hRzJvZTL
+         SocW3GJytbAfu6mxKOaeSgPA2iF9rnWdCYXvkrsIK9bHpmO7W6jRojvsd0W+wS+1M4ey
+         Cy0yHMaRcD9qOOww9osMC+/qv3AnBllJOa6CwnAgkMCGCbzwsgDwWZB/A/DaH1aXsVkX
+         GCRoPuBLf5rOxEvwKQVFZvVP2+nwXsMRUU4gYs9i3BpzNT/+y660I6oddp/GqxuJdZ4c
+         ZEiHuDoHp93DRZmouI1YYfnuJreSUTCXVkXN8Tu0HBsepWhWGMKQWmvcj8W8/LXjSWTi
+         jHsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688672727; x=1691264727;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jn2A84TyxlB9E6QwhZ/S3+QyShJtUiEedaODmn36QLU=;
+        b=OP1oasVGZ3W2g2t8qmqSpx5EvooclYBwJ16td7/6xX97PFxd6CHzH9mcokuFoFWXEy
+         Ip5ofCV7HpngAiajKGgKIECMGPa7GqLl/GuBpM/04XohwyMcHZ6EefsVJKEkfSOgNn4E
+         WFAtXVPF71vcjr5HzOC0GmXCJMoUbdc1hOUZdTtr24zyIsj03Gvu008BGiff+3EL5aCP
+         Lr/tvBfZ+XD+Z+SYQWeQVyL4NY8x98Irc+vZP9KxdY5QIdv5hCPn4K0094P1KXMBEVYg
+         RDap1NBeg8JUpgps/44NhiwzgTlT7J+lCsZT60dgcGRnfEPrfeS4xQwyt/WmKZSzIjay
+         qaSg==
+X-Gm-Message-State: ABy/qLa2PRf76zznH+svrUCPJa7UG768ZMbTorS/h6OLQqZfWImx95sA
+	G6NskXPqZ8VE2l3qlN878TASjg==
+X-Google-Smtp-Source: APBJJlHqKtby+pVoLzti7droMN1zKJuKs2lBA2W3Af+OZJMud2WnSKOd+NI5VCViV+RTettlilf/TQ==
+X-Received: by 2002:a81:5f09:0:b0:570:6667:1cfa with SMTP id t9-20020a815f09000000b0057066671cfamr3295624ywb.47.1688672726798;
+        Thu, 06 Jul 2023 12:45:26 -0700 (PDT)
+Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id z7-20020a81c207000000b005703cfc23c1sm539958ywc.104.2023.07.06.12.45.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Jul 2023 12:45:26 -0700 (PDT)
+Date: Thu, 6 Jul 2023 12:45:14 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+X-X-Sender: hugh@ripple.attlocal.net
+To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Subject: Re: [PATCH v2 07/12] s390: add pte_free_defer() for pgtables sharing
+ page
+In-Reply-To: <20230706170213.2ea63606@thinkpad-T15>
+Message-ID: <b454cfb1-85dc-743f-8f0-30d7e3d4376@google.com>
+References: <54cb04f-3762-987f-8294-91dafd8ebfb0@google.com> <a722dbec-bd9e-1213-1edd-53cd547aa4f@google.com> <20230628211624.531cdc58@thinkpad-T15> <cd7c2851-1440-7220-6c53-16b343b1474@google.com> <ZJ2hsM5Tn+yUZ5ZV@ziepe.ca> <20230629175645.7654d0a8@thinkpad-T15>
+ <edaa96f-80c1-1252-acbb-71c4f045b035@google.com> <7bef5695-fa4a-7215-7e9d-d4a83161c7ab@google.com> <20230704171905.1263478f@thinkpad-T15> <e678affb-5eee-a055-7af1-1d29a965663b@google.com> <20230705145516.7d9d554d@thinkpad-T15> <1014735-ecc4-b4bc-3ae7-48a4328ed149@google.com>
+ <20230706170213.2ea63606@thinkpad-T15>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [RFC 1/1] sched/fair: Consider asymmetric scheduler groups in
- load balancer
-Content-Language: en-US
-To: Tobias Huschle <huschle@linux.ibm.com>
-References: <20230515114601.12737-1-huschle@linux.ibm.com>
- <20230515114601.12737-2-huschle@linux.ibm.com>
-From: Shrikanth Hegde <sshegde@linux.vnet.ibm.com>
-In-Reply-To: <20230515114601.12737-2-huschle@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: uLZjPBL35LtqkYbUlwG2RmZkr_hMskng
-X-Proofpoint-ORIG-GUID: tD11YAvJDu0KgpgeKfpmzGAsLInLz6vi
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-06_12,2023-07-06_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- suspectscore=0 mlxscore=0 bulkscore=0 priorityscore=1501 impostorscore=0
- adultscore=0 clxscore=1011 spamscore=0 mlxlogscore=999 phishscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2307060154
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,166 +79,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com, vschneid@redhat.com, vincent.guittot@linaro.org, srikar@linux.vnet.ibm.com, peterz@infradead.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, rostedt@goodmis.org, bsegall@google.com, mingo@redhat.com, mgorman@suse.de, shrikanth hegde <sshegde@linux.vnet.ibm.com>, bristot@redhat.com, dietmar.eggemann@arm.com
+Cc: Miaohe Lin <linmiaohe@huawei.com>, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Yang Shi <shy828301@gmail.com>, Peter Xu <peterx@redhat.com>, linux-kernel@vger.kernel.org, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Yu Zhao <yuzhao@google.com>, Ira Weiny <ira.weiny@intel.com>, Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, Steven Price <steven.price@arm.com>, Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Huang Ying <ying.huang@intel.com>, Axel Rasmussen <axelrasmussen@google.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Thomas Hellstrom <thomas.hellstrom@linux.intel.com>, Ralph Campbell <rcampbell@nvidia.com>, P
+ asha Tatashin <pasha.tatashin@soleen.com>, Vasily Gorbik <gor@linux.ibm.com>, Anshuman Khandual <anshuman.khandual@arm.com>, Heiko Carstens <hca@linux.ibm.com>, Qi Zheng <zhengqi.arch@bytedance.com>, Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, linux-arm-kernel@lists.infradead.org, SeongJae Park <sj@kernel.org>, Lorenzo Stoakes <lstoakes@gmail.com>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, Naoya Horiguchi <naoya.horiguchi@nec.com>, Zack Rusin <zackr@vmware.com>, Vishal Moola <vishal.moola@gmail.com>, Minchan Kim <minchan@kernel.org>, Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Mel Gorman <mgorman@techsingularity.net>, "David S. Miller" <davem@davemloft.net>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 5/15/23 5:16 PM, Tobias Huschle wrote:
-> The current load balancer implementation implies that scheduler groups,
-> within the same domain, all host the same number of CPUs. This is
-> reflected in the condition, that a scheduler group, which is load
-> balancing and classified as having spare capacity, should pull work
-> from the busiest group, if the local group runs less processes than
-> the busiest one. This implies that these two groups should run the
-> same number of processes, which is problematic if the groups are not 
-> of the same size.
+On Thu, 6 Jul 2023, Gerald Schaefer wrote:
 > 
-> The assumption that scheduler groups within the same scheduler domain
-> host the same number of CPUs appears to be true for non-s390 
-> architectures. Nevertheless, s390 can have scheduler groups of unequal 
-> size.
+> Since none of my remarks on the comments seem valid or strictly necessary
+> any more, and I also could not find functional issues, I think you can add
+> this patch as new version for 07/12. And I can now give you this:
 > 
-> This introduces a performance degredation in the following scenario:
-> 
-> Consider a system with 8 CPUs, 6 CPUs are located on one CPU socket,
-> the remaining 2 are located on another socket:
-> 
-> Socket   -----1-----    -2-
-> CPU      1 2 3 4 5 6    7 8
-> 
-> Placing some workload ( x = one task ) yields the following
-> scenarios:
-> 
-> The first 5 tasks are distributed evenly across the two groups.
-> 
-> Socket   -----1-----    -2-
-> CPU      1 2 3 4 5 6    7 8
->          x x x          x x
-> 
-> Adding a 6th task yields the following distribution:
-> 
-> Socket   -----1-----    -2-
-> CPU      1 2 3 4 5 6    7 8
-> SMT1     x x x          x x
-> SMT2                    x
-> 
-> The task is added to the 2nd scheduler group, as the scheduler has the
-> assumption that scheduler groups are of the same size, so they should
-> also host the same number of tasks. This makes CPU 7 run into SMT 
-> thread, which comes with a performance penalty. This means, that in 
-> the window of 6-8 tasks, load balancing is done suboptimally, because 
-> SMT is used although there is no reason to do so as fully idle CPUs 
-> are still available.
-> 
-> Taking the weight of the scheduler groups into account, ensures that
-> a load balancing CPU within a smaller group will not try to pull tasks
-> from a bigger group while the bigger group still has idle CPUs
-> available.
-> 
-> Signed-off-by: Tobias Huschle <huschle@linux.ibm.com>
-> ---
->  kernel/sched/fair.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-> index 48b6f0ca13ac..b1307d7e4065 100644
-> --- a/kernel/sched/fair.c
-> +++ b/kernel/sched/fair.c
-> @@ -10426,7 +10426,8 @@ static struct sched_group *find_busiest_group(struct lb_env *env)
->  	 * group's child domain.
->  	 */
->  	if (sds.prefer_sibling && local->group_type == group_has_spare &&
-> -	    busiest->sum_nr_running > local->sum_nr_running + 1)
-> +	    busiest->sum_nr_running * local->group_weight >
-> +			local->sum_nr_running * busiest->group_weight + 1)
->  		goto force_balance;
-> 
+> Reviewed-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
 
+Great, thanks a lot Gerald.
+The one change I'm making to it is then this merged in:
 
-I assume its SMT2 here. sched group is enclosed in [busy_cpus/idle_cpus/weight] 
-
-Lets take an example:  we will begin the with the said imbalance.
-[3/9/12] -- local group 
-[3/1/4] -- busy group. 
-we will evaluate 3*12 > (4*(3+1)) is true and proceeds further to balance. 
-but calculate_imbalance will lead to zero as the imbalance no? in case of prefer sibling 
-case it find the difference of sum_nr_running of the two groups. It will be 3-3 = 0
-
-this would need modifications to calculate_imbalance. 
-Maybe something like this will help? NOT TESTED AT ALL. 
-
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index a80a73909dc2..e027d4086edc 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -10296,7 +10296,9 @@ static inline void calculate_imbalance(struct lb_env *env, struct sd_lb_stats *s
-                        return;
-                }
-
--               if (busiest->group_weight == 1 || sds->prefer_sibling) {
-+               if (busiest->group_weight == 1 ||
-+                       (sds->prefer_sibling &&
-+                        busiest->group_weight == local->group_weight)) {
-                        unsigned int nr_diff = busiest->sum_nr_running;
-                        /*
-                         * When prefer sibling, evenly spread running tasks on
-@@ -10305,6 +10307,11 @@ static inline void calculate_imbalance(struct lb_env *env, struct sd_lb_stats *s
-                        env->migration_type = migrate_task;
-                        lsub_positive(&nr_diff, local->sum_nr_running);
-                        env->imbalance = nr_diff;
-+               }
-+               if (sds->prefer_sibling &&
-+                   busiest->group_weight != local->group_weight) {
-+                       env->migration_type = migrate_task;
-+                       env->imbalance = 1;
-                } else {
-
-
----------------------------------------------------------------------------------------------------
-On a tangential dimension.
-
-
-Since prefer_siblings make inherent assumption that all groups have equal weight, 
-it will cause  complications when group_weights are different. I think that becomes very
-tricky when there are more than two groups. Depending on which cpu is doing 
-load_balance there can be unnecessary migrations. 
-
-
-Currently even in NUMA this can be similar case right? There will be unequal number of CPU's right? 
-If we fix that case and remove prefer siblings in your arch, will that work? 
-
-Maybe something like this? NOT TESTED AT ALL.
-
-
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index a80a73909dc2..fc6377f48ced 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -10514,6 +10514,7 @@ static struct sched_group *find_busiest_group(struct lb_env *env)
-                        goto out_balanced;
+--- a/arch/s390/mm/pgalloc.c
++++ b/arch/s390/mm/pgalloc.c
+@@ -455,6 +455,11 @@ void pte_free_defer(struct mm_struct *mm, pgtable_t pgtable)
+ 	page = virt_to_page(pgtable);
+ 	SetPageActive(page);
+ 	page_table_free(mm, (unsigned long *)pgtable);
++	/*
++	 * page_table_free() does not do the pgste gmap_unlink() which
++	 * page_table_free_rcu() does: warn us if pgste ever reaches here.
++	 */
++	WARN_ON_ONCE(mm_alloc_pgste(mm));
+ }
+ #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
  
-                if (busiest->group_weight > 1 &&
-+                   busiest->group_weight == local->group_weight &&
-                    local->idle_cpus <= (busiest->idle_cpus + 1))
-                        /*
-                         * If the busiest group is not overloaded
-@@ -10526,6 +10527,11 @@ static struct sched_group *find_busiest_group(struct lb_env *env)
-                         */
-                        goto out_balanced;
- 
-+               if ((busiest->group_weight != local->group_weight) &&
-+                     (local->idle_cpus * busiest->group_weight <=
-+                              local->group_weight * (busiest->idle_cpus + 1)))
-+                       goto out_balanced;
-+
-                if (busiest->sum_h_nr_running == 1)
-                        /*
-                         * busiest doesn't have any tasks waiting to run
-
-
-
-
-
->  	if (busiest->group_type != group_overloaded) {
