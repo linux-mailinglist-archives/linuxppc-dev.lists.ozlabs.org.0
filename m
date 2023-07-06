@@ -1,72 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D994F749354
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 03:55:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44EF6749388
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 04:11:12 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=DVvGohzI;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=SiGwLZkX;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QxKPG5crLz3bnB
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 11:55:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QxKl21S2hz30hQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 12:11:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=DVvGohzI;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=SiGwLZkX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::c35; helo=mail-oo1-xc35.google.com; envelope-from=isaku.yamahata@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-oo1-xc35.google.com (mail-oo1-xc35.google.com [IPv6:2607:f8b0:4864:20::c35])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42f; helo=mail-pf1-x42f.google.com; envelope-from=isaku.yamahata@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QxKNJ5q0Cz30GX
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 11:54:55 +1000 (AEST)
-Received: by mail-oo1-xc35.google.com with SMTP id 006d021491bc7-5634db21a78so117032eaf.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Jul 2023 18:54:55 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QxKk80TX9z2xJ4
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 12:10:21 +1000 (AEST)
+Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-666edfc50deso131275b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Jul 2023 19:10:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688608492; x=1691200492;
+        d=gmail.com; s=20221208; t=1688609419; x=1691201419;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1R7giHFFm9lzKa2KFRVnvuXui30YgtW+mLiZpS636v4=;
-        b=DVvGohzInocB2G0CE5BHhj00dNWqGoqrHPqrt2G17lPCsMUYKKsSVbf/v2qs4vd+BH
-         TVAuRlrgj7qFdyc7ySUeR1ptkT6VqY8g0PcTuoGbfj+zpJtxWVA3ExnG9inRg72NB8ya
-         97PvzrwpvZTE/IpWdnMQdtsBQKUgGylnqxFb0d+ku33oYPoxzLJqPitoAXs7P6qyNyOu
-         WBvlYk74ZsB1GmBvxmmGoVL2B7UDS4BtOjPnsr9uMZp+cLqX2sFGbdLdIRNR0a2Ixofc
-         kvxyXlICSAK6MZrMjNfH4kDVoONsBeKJXmSqNW6LuF2yi5fD78o/J6TRC+FmmtIvuU18
-         uIdQ==
+        bh=XP4DoYShnes9Cy59WziHKZBgrcvxKmEUSZdVCQbtmAo=;
+        b=SiGwLZkXRQbaBMbrgXGl2qlB55MI4HtE6Zz0Ahf+azm3H9frsgD3CHxeH0FMY/Ahga
+         k5/N/N58xOlRM2rRxrpaXh8GHc3W6erqhZba0QnxabUDJMcTstryJjjebQykhyI3gWpc
+         O+mJL3hfBfsidLjX5IzwfmAunrS2YBQeDsmnA0MIUUP+Ij5N9XkXDMEBpe8KbdfxOZ2i
+         pl5hyh/aDVkMSXaOdqrccRZZCT1iAGKzCsOrD0KKswMgxTTZI+leyZQtEK0YAILR0vEo
+         5Hg8tisFTY0f89837ayC6nQ/woPvdZPnsVLp/ROpM3QzHhjVCx2mN+LnzV3Dq3mV92Ly
+         mUsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688608492; x=1691200492;
+        d=1e100.net; s=20221208; t=1688609419; x=1691201419;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1R7giHFFm9lzKa2KFRVnvuXui30YgtW+mLiZpS636v4=;
-        b=U2II9l6H1h0ENZClcoHjhgGY6QPDbW/sdBoJckGCbjcKJnKjSjMe0W5NKHhWAw1Ry5
-         iavzDKMF/GRwJnhNacG4Vga00/u5X8RQykOO0h6PhqTqM5+AZixHNrSOuNV+QqWXDT30
-         vpUvtFs8qOBreCfpUMg0NqeMe3AEkGGWZT6NpcUmi+dpWiOKGMlPb1FQ5NUhiVeSviOM
-         jIB4gQWe4n+Jk6Z+H3KU/Qr0HSB3ATrPIB3ZVxSFlL16uXz9oDaY5m4BiRSd3CsJuCny
-         Yv1+19h8UyCFkda6ZF3A6G1vOoTTOxV2CQ4+0yHLtiBqnJySw5Y6hrEmEMZwx+CzLSA3
-         nGSQ==
-X-Gm-Message-State: ABy/qLZjSRATvDtvYqZuf3Ko0sH/8+cm/72hjxxbrGL6zF9BWNhXJPRh
-	lB2WiHt/hvcD6gfm+t7BME4=
-X-Google-Smtp-Source: APBJJlG1rcUiA7G6cfKIni/3YPqB6pOv+DveqzIRXSNVbOaD89TbpWJy4qWw7jhrSgFyIxdPitrcKA==
-X-Received: by 2002:a05:6358:98a2:b0:134:c530:c2fa with SMTP id q34-20020a05635898a200b00134c530c2famr436044rwa.30.1688608491138;
-        Wed, 05 Jul 2023 18:54:51 -0700 (PDT)
+        bh=XP4DoYShnes9Cy59WziHKZBgrcvxKmEUSZdVCQbtmAo=;
+        b=dRik62T2PTYcTXd15WX/utqofjY4azivROkb2gv5dBnPstcsJT6krA5uedKEbs2X9v
+         kTEsY3tEruX/+TxpWyNR48vYjOOJIsPcYvJiVsUGVX22+icNANGTJi7hCbUyxWzY8nns
+         sQ1nNcxv0MDVjIXXBkpZQ7392LkEi0WXh9INBMn1yBguK6OlL5QZ5cKsJKksDgP8fs8i
+         ZKHqJiIXOIujIi7GOdeFOmw/YZ2lmhLbxH/aHSfULpeRDxdTwAKmHeTZGTdjIo/nndBx
+         Qyjgi6aFzTDqXWB4qLEltADubSYqT3XXMScXUhWLo39TbZ4Iq8uW5ds8fSJwspdRCekW
+         c7+Q==
+X-Gm-Message-State: ABy/qLa/P13OYoHxHGVo8UKzd3UGhMM9XRuOkBbXd5z7SdQ15MaVTpiY
+	V9Fbt/OWMRlM1ZlxyRNyV24=
+X-Google-Smtp-Source: APBJJlFGIXMd21EZwNe+mHhmpVNVRsUEG4H560bcYgHix9NzfbeGSSSH0lTScJcFK2LuCN7La3jaWQ==
+X-Received: by 2002:aa7:85d2:0:b0:666:6c01:2e9e with SMTP id z18-20020aa785d2000000b006666c012e9emr4693901pfn.15.1688609418703;
+        Wed, 05 Jul 2023 19:10:18 -0700 (PDT)
 Received: from localhost ([192.55.54.50])
-        by smtp.gmail.com with ESMTPSA id e16-20020a17090301d000b001a5fccab02dsm122674plh.177.2023.07.05.18.54.50
+        by smtp.gmail.com with ESMTPSA id 10-20020aa7924a000000b0066a31111cc5sm159784pfp.152.2023.07.05.19.10.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Jul 2023 18:54:50 -0700 (PDT)
-Date: Wed, 5 Jul 2023 18:54:49 -0700
+        Wed, 05 Jul 2023 19:10:18 -0700 (PDT)
+Date: Wed, 5 Jul 2023 19:10:16 -0700
 From: Isaku Yamahata <isaku.yamahata@gmail.com>
 To: David Stevens <stevensd@chromium.org>
-Subject: Re: [PATCH v7 4/8] KVM: x86/mmu: Migrate to __kvm_follow_pfn
-Message-ID: <20230706015449.GB3894444@ls.amr.corp.intel.com>
+Subject: Re: [PATCH v7 5/8] KVM: x86/mmu: Don't pass FOLL_GET to
+ __kvm_follow_pfn
+Message-ID: <20230706021016.GC3894444@ls.amr.corp.intel.com>
 References: <20230704075054.3344915-1-stevensd@google.com>
- <20230704075054.3344915-5-stevensd@google.com>
+ <20230704075054.3344915-6-stevensd@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230704075054.3344915-5-stevensd@google.com>
+In-Reply-To: <20230704075054.3344915-6-stevensd@google.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,86 +83,36 @@ Cc: Marc Zyngier <maz@kernel.org>, kvm@vger.kernel.org, Sean Christopherson <sea
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 04, 2023 at 04:50:49PM +0900,
+On Tue, Jul 04, 2023 at 04:50:50PM +0900,
 David Stevens <stevensd@chromium.org> wrote:
 
-> From: David Stevens <stevensd@chromium.org>
-> 
-> Migrate from __gfn_to_pfn_memslot to __kvm_follow_pfn.
-> 
-> Signed-off-by: David Stevens <stevensd@chromium.org>
-> ---
->  arch/x86/kvm/mmu/mmu.c | 35 +++++++++++++++++++++++++----------
->  1 file changed, 25 insertions(+), 10 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index ec169f5c7dce..e44ab512c3a1 100644
-> --- a/arch/x86/kvm/mmu/mmu.c
-> +++ b/arch/x86/kvm/mmu/mmu.c
-> @@ -4296,7 +4296,12 @@ void kvm_arch_async_page_ready(struct kvm_vcpu *vcpu, struct kvm_async_pf *work)
->  static int __kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
+> diff --git a/arch/x86/kvm/mmu/spte.c b/arch/x86/kvm/mmu/spte.c
+> index cf2c6426a6fc..46c681dc45e6 100644
+> --- a/arch/x86/kvm/mmu/spte.c
+> +++ b/arch/x86/kvm/mmu/spte.c
+> @@ -138,7 +138,7 @@ bool make_spte(struct kvm_vcpu *vcpu, struct kvm_mmu_page *sp,
+>  	       const struct kvm_memory_slot *slot,
+>  	       unsigned int pte_access, gfn_t gfn, kvm_pfn_t pfn,
+>  	       u64 old_spte, bool prefetch, bool can_unsync,
+> -	       bool host_writable, u64 *new_spte)
+> +	       bool host_writable, bool is_refcounted, u64 *new_spte)
 >  {
->  	struct kvm_memory_slot *slot = fault->slot;
-> -	bool async;
-> +	struct kvm_follow_pfn foll = {
-> +		.slot = slot,
-> +		.gfn = fault->gfn,
-> +		.flags = FOLL_GET | (fault->write ? FOLL_WRITE : 0),
-> +		.allow_write_mapping = true,
-> +	};
+>  	int level = sp->role.level;
+>  	u64 spte = SPTE_MMU_PRESENT_MASK;
+> @@ -188,6 +188,8 @@ bool make_spte(struct kvm_vcpu *vcpu, struct kvm_mmu_page *sp,
 >  
->  	/*
->  	 * Retry the page fault if the gfn hit a memslot that is being deleted
-> @@ -4325,12 +4330,14 @@ static int __kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
->  			return RET_PF_EMULATE;
->  	}
->  
-> -	async = false;
-> -	fault->pfn = __gfn_to_pfn_memslot(slot, fault->gfn, false, false, &async,
-> -					  fault->write, &fault->map_writable,
-> -					  &fault->hva);
-> -	if (!async)
-> -		return RET_PF_CONTINUE; /* *pfn has correct page already */
-> +	foll.flags |= FOLL_NOWAIT;
-> +	fault->pfn = __kvm_follow_pfn(&foll);
-> +
-> +	if (!is_error_noslot_pfn(fault->pfn))
+>  	if (level > PG_LEVEL_4K)
+>  		spte |= PT_PAGE_SIZE_MASK;
+> +	else if (is_refcounted)
+> +		spte |= SPTE_MMU_PAGE_REFCOUNTED;
 
-We have pfn in struct kvm_follow_pfn as output. Can we make __kvm_follow_pfn()
-return int instead of kvm_pfn_t?  KVM_PFN_* seems widely used, though.
+Is REFCOUNTED for 4K page only?  What guarantees that large page doesn't have
+FOLL_GET? or can we set the bit for large page?
 
 
-> +		goto success;
-> +
-> +	if (fault->pfn != KVM_PFN_ERR_NEEDS_IO)
-> +		return RET_PF_CONTINUE;
 >  
->  	if (!fault->prefetch && kvm_can_do_async_pf(vcpu)) {
->  		trace_kvm_try_async_get_page(fault->addr, fault->gfn);
-> @@ -4348,9 +4355,17 @@ static int __kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
->  	 * to wait for IO.  Note, gup always bails if it is unable to quickly
->  	 * get a page and a fatal signal, i.e. SIGKILL, is pending.
->  	 */
-> -	fault->pfn = __gfn_to_pfn_memslot(slot, fault->gfn, false, true, NULL,
-> -					  fault->write, &fault->map_writable,
-> -					  &fault->hva);
-> +	foll.flags |= FOLL_INTERRUPTIBLE;
-> +	foll.flags &= ~FOLL_NOWAIT;
-> +	fault->pfn = __kvm_follow_pfn(&foll);
-> +
-> +	if (!is_error_noslot_pfn(fault->pfn))
-> +		goto success;
-> +
-> +	return RET_PF_CONTINUE;
-> +success:
-> +	fault->hva = foll.hva;
-> +	fault->map_writable = foll.writable;
->  	return RET_PF_CONTINUE;
->  }
->  
-> -- 
-> 2.41.0.255.g8b1d071c50-goog
-> 
+>  	if (shadow_memtype_mask)
+>  		spte |= static_call(kvm_x86_get_mt_mask)(vcpu, gfn,
 
 -- 
 Isaku Yamahata <isaku.yamahata@gmail.com>
