@@ -1,92 +1,101 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCE7A7497C3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 10:55:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A65E37497C7
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 10:56:29 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kpGTkZ1d;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XYv01TEf;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XYv01TEf;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QxVjh2DZCz3cJl
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 18:55:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QxVkf1gYBz3bw9
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 18:56:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kpGTkZ1d;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XYv01TEf;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XYv01TEf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QxVd41Dkvz3brl
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 18:51:36 +1000 (AEST)
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3668dgki025532;
-	Thu, 6 Jul 2023 08:51:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=7wIGBHIVWBJavonurc2vprDnaOE3vANQv3BfkW0LyfQ=;
- b=kpGTkZ1dJ6+dVrzXFlEwofmgplMEYut5urDnNg4KSoQ2kyKfI7yBLI/9C0ftYx7F6CxT
- fPHn+zmr/BWx/MkkUPjwneeaf2CoEQZXP3NADy5RbyN3RWeUfvD0qn2v5uBDHZo5W8DS
- W3GulED27qKk4RycqqZcsPwZpxp6a/Ev6VlXrwEhOVN6ol1YevYa/DYzEbau5ns+XeJX
- kTVDST/d2t9zzySHtcD7X0tyjDWFOp66AYFUfhBuGLibBszD7Q5icOI1Wj859dI92CbJ
- fThpaCxJ7pDAvvrhN703BBSDQeKi2FVWsTEhGKBVMvdpiC7LCttuoMYCMxLouGWnLN4V WA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rnsw08xq5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Jul 2023 08:51:24 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3668g051001612;
-	Thu, 6 Jul 2023 08:51:23 GMT
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rnsw08xph-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Jul 2023 08:51:23 +0000
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
-	by ppma01dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36683ZPi008598;
-	Thu, 6 Jul 2023 08:51:22 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([9.208.130.99])
-	by ppma01dal.us.ibm.com (PPS) with ESMTPS id 3rjbs6d33h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Jul 2023 08:51:22 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3668pLlv15729150
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 6 Jul 2023 08:51:21 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7DC5958059;
-	Thu,  6 Jul 2023 08:51:21 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 08C3A58062;
-	Thu,  6 Jul 2023 08:51:18 +0000 (GMT)
-Received: from skywalker.in.ibm.com (unknown [9.109.212.144])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  6 Jul 2023 08:51:17 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linux-mm@kvack.org, akpm@linux-foundation.org, mpe@ellerman.id.au,
-        linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu
-Subject: [PATCH v2 5/5] powerpc/book3s64/memhotplug: Enable memmap on memory for radix
-Date: Thu,  6 Jul 2023 14:20:41 +0530
-Message-ID: <20230706085041.826340-6-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230706085041.826340-1-aneesh.kumar@linux.ibm.com>
-References: <20230706085041.826340-1-aneesh.kumar@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QxVgc5RMTz3c5V
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 18:53:48 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1688633624;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=81qkwHowwcAcqm6FlMHXXHq0va4tVmVRF/nlPZhKaVo=;
+	b=XYv01TEft/2tvD0V9mmOseyLixlgWsIO6577TovaL/IoG/UpBTfsuVBWtlfss/3xwihkfW
+	VSrHEqdF3Be3icbCitez3ZHPaFzbxixQ8zsGUmFLcKFm3s4YzSckdo3yuFjYUhN39vX6t6
+	jYDvUQRbTpkBathJg9BFhONshNPVukQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1688633624;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=81qkwHowwcAcqm6FlMHXXHq0va4tVmVRF/nlPZhKaVo=;
+	b=XYv01TEft/2tvD0V9mmOseyLixlgWsIO6577TovaL/IoG/UpBTfsuVBWtlfss/3xwihkfW
+	VSrHEqdF3Be3icbCitez3ZHPaFzbxixQ8zsGUmFLcKFm3s4YzSckdo3yuFjYUhN39vX6t6
+	jYDvUQRbTpkBathJg9BFhONshNPVukQ=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-46-VCrIQ1NLPxG_hn9loMq3ww-1; Thu, 06 Jul 2023 04:53:42 -0400
+X-MC-Unique: VCrIQ1NLPxG_hn9loMq3ww-1
+Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-2b6e73c6da6so4812741fa.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jul 2023 01:53:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688633621; x=1691225621;
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=81qkwHowwcAcqm6FlMHXXHq0va4tVmVRF/nlPZhKaVo=;
+        b=d4U0Zr+1OLo6nHrlTgZKJLGxO7kLNrnu28CeFX3A8s+KEC6sfc2hSG3tssn9/G4q2y
+         Fep8nRgFPBN7ER64GRPUBTQWjYdYOBZBWzh8wbwEVHjVcfwBgN/7oNWhybF9os9owPLr
+         1rzSPtpd2VfQ8U/Qbg2DJDbBXDCZkriVbEJEICtOYPEhpSFCpHmow3ikMBGqd3LEYMiI
+         SLsyl9kW4fOQHUpIarYNxPYh8CBUcbZpY7UdLcHkHP80nh8sro8c2AmGiOT3JdavIv+/
+         YE4k2faoBSClQLemzmQiKixWg3DTHT33puCq05kJJkd9z3NhgYC6zzRelXnxU743MCj6
+         6U5g==
+X-Gm-Message-State: ABy/qLbCI6tozl6jEWiaoa007RUMJHwW9xfc4NI4ckaNpzbADI8SGdqO
+	o3JC/EO/p+J6T0h0l5ecpEFwlRFUKyACF/aSK2V2/7dKIbuI07CznXQSgR9xHbm5KDit9WifaPw
+	gjDt4IAhheJHmDiP8b9Dmjv83eg==
+X-Received: by 2002:a05:6512:10c3:b0:4fb:89cd:9616 with SMTP id k3-20020a05651210c300b004fb89cd9616mr1155469lfg.0.1688633621303;
+        Thu, 06 Jul 2023 01:53:41 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFn0LChzFLfH/50rYWYE0ovWOJVay0UrM+WH26hzPUG5tAX2N+T2RqjZX3zZr5NXTAsdUU47Q==
+X-Received: by 2002:a05:6512:10c3:b0:4fb:89cd:9616 with SMTP id k3-20020a05651210c300b004fb89cd9616mr1155456lfg.0.1688633620944;
+        Thu, 06 Jul 2023 01:53:40 -0700 (PDT)
+Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
+        by smtp.gmail.com with ESMTPSA id t19-20020a7bc3d3000000b003fb739d27aesm4438255wmj.35.2023.07.06.01.53.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 06 Jul 2023 01:53:40 -0700 (PDT)
+Message-ID: <136fb8f1-55b1-8fcf-2ab6-18b81a6f149e@redhat.com>
+Date: Thu, 6 Jul 2023 10:53:39 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ElV9GzfJ6QS4-LqUXCZc9nJBUhhw7uks
-X-Proofpoint-ORIG-GUID: iOMEvrcWC8A-rClTS3chMQbpQBaBS5GX
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-06_05,2023-07-06_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=0
- mlxscore=0 mlxlogscore=999 impostorscore=0 adultscore=0 clxscore=1015
- priorityscore=1501 phishscore=0 lowpriorityscore=0 bulkscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2307060075
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2 4/5] mm/hotplug: Simplify
+ ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE kconfig
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-mm@kvack.org,
+ akpm@linux-foundation.org, mpe@ellerman.id.au,
+ linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, christophe.leroy@csgroup.eu
+References: <20230706085041.826340-1-aneesh.kumar@linux.ibm.com>
+ <20230706085041.826340-5-aneesh.kumar@linux.ibm.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20230706085041.826340-5-aneesh.kumar@linux.ibm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,95 +107,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vishal Verma <vishal.l.verma@intel.com>, David Hildenbrand <david@redhat.com>, Michal Hocko <mhocko@suse.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Oscar Salvador <osalvador@suse.de>
+Cc: Vishal Verma <vishal.l.verma@intel.com>, Michal Hocko <mhocko@suse.com>, Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Radix vmemmap mapping can map things correctly at the PMD level or PTE
-level based on different device boundary checks. We also use altmap.reserve
-feature to align things correctly at pageblock granularity. We can end up
-loosing some pages in memory with this. For ex: with 256MB memory block
-size, we require 4 pages to map vmemmap pages, In order to align things
-correctly we end up adding a reserve of 28 pages. ie, for every 4096 pages
-28 pages get reserved.
+On 06.07.23 10:50, Aneesh Kumar K.V wrote:
+> Instead of adding menu entry with all supported architectures, add
+> mm/Kconfig variable and select the same from supported architectures.
+> 
+> No functional change in this patch.
+> 
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+>   arch/arm64/Kconfig | 4 +---
+>   arch/x86/Kconfig   | 4 +---
+>   mm/Kconfig         | 3 +++
+>   3 files changed, 5 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index 7856c3a3e35a..7e5985c018f8 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -78,6 +78,7 @@ config ARM64
+>   	select ARCH_INLINE_SPIN_UNLOCK_IRQ if !PREEMPTION
+>   	select ARCH_INLINE_SPIN_UNLOCK_IRQRESTORE if !PREEMPTION
+>   	select ARCH_KEEP_MEMBLOCK
+> +	select ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE
+>   	select ARCH_USE_CMPXCHG_LOCKREF
+>   	select ARCH_USE_GNU_PROPERTY
+>   	select ARCH_USE_MEMTEST
+> @@ -346,9 +347,6 @@ config GENERIC_CSUM
+>   config GENERIC_CALIBRATE_DELAY
+>   	def_bool y
+>   
+> -config ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE
+> -	def_bool y
+> -
+>   config SMP
+>   	def_bool y
+>   
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index 78224aa76409..d0258e92a8af 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -102,6 +102,7 @@ config X86
+>   	select ARCH_HAS_DEBUG_WX
+>   	select ARCH_HAS_ZONE_DMA_SET if EXPERT
+>   	select ARCH_HAVE_NMI_SAFE_CMPXCHG
+> +	select ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE
+>   	select ARCH_MIGHT_HAVE_ACPI_PDC		if ACPI
+>   	select ARCH_MIGHT_HAVE_PC_PARPORT
+>   	select ARCH_MIGHT_HAVE_PC_SERIO
+> @@ -2610,9 +2611,6 @@ config ARCH_HAS_ADD_PAGES
+>   	def_bool y
+>   	depends on ARCH_ENABLE_MEMORY_HOTPLUG
+>   
+> -config ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE
+> -	def_bool y
+> -
+>   menu "Power management and ACPI options"
+>   
+>   config ARCH_HIBERNATION_HEADER
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index 923bd35f81f2..2f9d28fee75d 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -570,6 +570,9 @@ config MHP_MEMMAP_ON_MEMORY
+>   	depends on MEMORY_HOTPLUG && SPARSEMEM_VMEMMAP
+>   	depends on ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE
+>   
+> +config ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE
+> +       bool
+> +
+>   endif # MEMORY_HOTPLUG
+>   
+>   # Heavily threaded applications may benefit from splitting the mm-wide
 
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- arch/powerpc/Kconfig                          |  1 +
- arch/powerpc/mm/book3s64/radix_pgtable.c      | 28 +++++++++++++++++++
- .../platforms/pseries/hotplug-memory.c        |  4 ++-
- 3 files changed, 32 insertions(+), 1 deletion(-)
+Acked-by: David Hildenbrand <david@redhat.com>
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 116d6add0bb0..f890907e5bbf 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -157,6 +157,7 @@ config PPC
- 	select ARCH_HAS_UBSAN_SANITIZE_ALL
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
- 	select ARCH_KEEP_MEMBLOCK
-+	select ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE	if PPC_RADIX_MMU
- 	select ARCH_MIGHT_HAVE_PC_PARPORT
- 	select ARCH_MIGHT_HAVE_PC_SERIO
- 	select ARCH_OPTIONAL_KERNEL_RWX		if ARCH_HAS_STRICT_KERNEL_RWX
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index a62729f70f2a..c0bd60b5fb64 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -1678,3 +1678,31 @@ int pmd_free_pte_page(pmd_t *pmd, unsigned long addr)
- 
- 	return 1;
- }
-+
-+/*
-+ * mm/memory_hotplug.c:mhp_supports_memmap_on_memory goes into details
-+ * some of the restrictions. We don't check for PMD_SIZE because our
-+ * vmemmap allocation code can fallback correctly. The pageblock
-+ * alignment requirement is met using altmap->reserve blocks.
-+ */
-+bool mhp_supports_memmap_on_memory(unsigned long size)
-+{
-+	if (!radix_enabled())
-+		return false;
-+	/*
-+	 * The pageblock alignment requirement is met by using
-+	 * reserve blocks in altmap.
-+	 */
-+	return size == memory_block_size_bytes();
-+}
-+
-+unsigned long memory_block_align_base(struct resource *res)
-+{
-+	unsigned long base_pfn = PHYS_PFN(res->start);
-+	unsigned long align, size = resource_size(res);
-+	unsigned long nr_vmemmap_pages = size >> PAGE_SHIFT;
-+	unsigned long vmemmap_size = (nr_vmemmap_pages * sizeof(struct page)) >> PAGE_SHIFT;
-+
-+	align = pageblock_align(base_pfn + vmemmap_size) - (base_pfn + vmemmap_size);
-+	return align;
-+}
-diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-index 9c62c2c3b3d0..326db26d773e 100644
---- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-+++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-@@ -617,6 +617,7 @@ static int dlpar_memory_remove_by_ic(u32 lmbs_to_remove, u32 drc_index)
- 
- static int dlpar_add_lmb(struct drmem_lmb *lmb)
- {
-+	mhp_t mhp_flags = MHP_NONE;
- 	unsigned long block_sz;
- 	int nid, rc;
- 
-@@ -637,7 +638,8 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
- 		nid = first_online_node;
- 
- 	/* Add the memory */
--	rc = __add_memory(nid, lmb->base_addr, block_sz, MHP_NONE);
-+	mhp_flags |= get_memmap_on_memory_flags();
-+	rc = __add_memory(nid, lmb->base_addr, block_sz, mhp_flags);
- 	if (rc) {
- 		invalidate_lmb_associativity_index(lmb);
- 		return rc;
 -- 
-2.41.0
+Cheers,
+
+David / dhildenb
 
