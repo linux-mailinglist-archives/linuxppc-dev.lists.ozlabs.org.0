@@ -2,71 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 340EE749AB3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 13:34:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC91B749ABD
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 13:35:35 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=JxJO+d4u;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=FMSfz4UQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=JgusLVIE;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QxZDT0n8dz3c4D
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 21:34:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QxZGF5c7kz3bvn
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 21:35:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=JxJO+d4u;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=FMSfz4UQ;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=JgusLVIE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::431; helo=mail-pf1-x431.google.com; envelope-from=festevam@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.25; helo=out1-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QxZCY3s1yz30fL
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 21:33:11 +1000 (AEST)
-Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-656bc570a05so129918b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jul 2023 04:33:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688643188; x=1691235188;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OBA///uk720bFWE3dLLyUaJz2IB5x6XkswygeQlz+4Q=;
-        b=JxJO+d4uzSTxJ2fF2toUC9woxojvsRwpyUY80xQLq8t2WNJGj/HNq8LIlhTp9+7bX2
-         BtIQlcsqjrjc8f1JkTTXTY1Gupt8OSQ2IZrxCzwQIIr1PGKbK0AqdgZUiHXq7iLP+Nss
-         q4/SUhu1n1adAYLLficaE/KFjO19z1hQO0m7oCo5hoIz2/uQyxBF4MhSHtKV3kie0b5Q
-         zJIG4yBT2SkdSceiEHpG7A4ZjmTIGZdPYQYYTU1/AT637rEh9dnURlnNZZgqRGlDw1mZ
-         lRk/nv7Y4kjWhSGp1y7ssfGFYMmRvayjk9FhQg4TuNUIY5vv7wODHj2uadbXh26TLZok
-         AQLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688643188; x=1691235188;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OBA///uk720bFWE3dLLyUaJz2IB5x6XkswygeQlz+4Q=;
-        b=A8izE8bjb8qdIkQthi3f4Xr40ngzj8P+QaZ2bnykTLaUjACY7Ss25HL6cTDfF6TS1L
-         Vqp4ofVRWAYtDwquBmJf+CdNkjzZZqJ3qwLMh46SfByKXpUxbib7uUMVY5eMM4ICOGSC
-         oKmHZ7BwOlQludNmB4FT/DLtyMdz88jXj2UUB+wT2dS1NSvDghfvF5dH6kwmLb/W9y+l
-         L61Bq1Bp7mLVFa0xf8MyHcNwWcatHfU1qDSuVMKkgb+HHGPDH6b6IqIyJMDNmcGzwzJl
-         1cDm3sjvT4qs/U/w7+YYXX4JS0Amb7PJaXDhSQ7H4U5pfUXGKWy0E1WucxxMN2cFqlwd
-         kKYQ==
-X-Gm-Message-State: ABy/qLbkE7jPweMl7k9UwfffySmH6RFs23LRNtBsv4W7YH8wobXstTXv
-	N6t4cFQAtncXeAc3wTIoIuztkKK32BP8XyyWf6s=
-X-Google-Smtp-Source: APBJJlGFh/kKWEOFbD8l2/GsLDJj5JTKw1DEIDejRqTb9QUKteSEj/kbrP0Li8/S3pvYkKSEWGyxurF18028Ok6EdhE=
-X-Received: by 2002:a05:6a20:54a9:b0:12d:77e:ba3 with SMTP id
- i41-20020a056a2054a900b0012d077e0ba3mr2051265pzk.0.1688643188564; Thu, 06 Jul
- 2023 04:33:08 -0700 (PDT)
-MIME-Version: 1.0
-References: <1652963808-14515-1-git-send-email-shengjiu.wang@nxp.com>
- <CAOMZO5DtpoH0dLDX3=Sv4UUpX_=66VEZPsJUWQNnYviApfMLKQ@mail.gmail.com>
- <20230706084706.bzwsbi3zisx5m5rl@fatal.se> <CAOMZO5CCdaodWQrHUQgMizoES=jfEtw-sNJZG-DJMpRD8tZW9g@mail.gmail.com>
- <CAA+D8ANAg7bs0A35c7Af3_-5sLaqvT1RoKfCbzYi=z=t_q9LUw@mail.gmail.com>
-In-Reply-To: <CAA+D8ANAg7bs0A35c7Af3_-5sLaqvT1RoKfCbzYi=z=t_q9LUw@mail.gmail.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Thu, 6 Jul 2023 08:32:57 -0300
-Message-ID: <CAOMZO5BtrKwrMwrjVDbYn3ivt2uV9rzbSDxd8qfiYjOBMvKBgg@mail.gmail.com>
-Subject: Re: [PATCH] ASoC: fsl_sai: Enable MCTL_MCLK_EN bit for master mode
-To: Shengjiu Wang <shengjiu.wang@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QxZFG3mV4z30hM
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 21:34:41 +1000 (AEST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailout.nyi.internal (Postfix) with ESMTP id D2AC55C01E1;
+	Thu,  6 Jul 2023 07:34:36 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Thu, 06 Jul 2023 07:34:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:sender
+	:subject:subject:to:to; s=fm2; t=1688643276; x=1688729676; bh=t3
+	/q+Yg2MyaI0HLj5wcLnTMw97EVKZ397JoVjZFMbmI=; b=FMSfz4UQudPJeTt9bj
+	WC9eVWhSdkVZVDDe4+xKy3kYSFTgGEykX2Saeokzx5CVACfuq6cFbtKj5pBKp7aq
+	F/xJtdQOttoIte0kGTl1wfYUgTPX8hdSnJdItsbruqQwXuHXNwdyBYaseuNoJpAQ
+	K09nzc/6amwj+3rXNfoIaRhXcZz9QKq1p5xARst0pgRqMhCcLFHIbdZlpHm7WU9m
+	/quk8LhxCJATG9ZATEWRl2z84T15Ok7GtYUDhxt5xyXZ66x1UkJDBBPRQpbH97RG
+	3TDvcHzvPcem5tT0fg6bgXxkw65dYVUO+1DFbSUPSad7KniZOWa38t6WWDtCLGaY
+	+nGg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:sender:subject
+	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+	:x-sasl-enc; s=fm2; t=1688643276; x=1688729676; bh=t3/q+Yg2MyaI0
+	HLj5wcLnTMw97EVKZ397JoVjZFMbmI=; b=JgusLVIE1tEWMeIDMDlUKz/L/HNXh
+	WXLIYgGG/genxnLVqGgWHfri8GC3338hUWyrRsmaZzEpoSAuawo9wjH+qV1jby1L
+	rMYDEhvb36rY1+bXYFweeoK0Bmgn1bsKOuMb3hOeibrHckvbdP0aw6A3qfO4oJwf
+	OIkXT8SxOY659OVarF1c7oF3PTZtfypadg/Chxg2pG/J5KdizSQcLMBihbjhLYam
+	Kz/Fci301n1SVB1AjhY7Jbs6o204WBTMaJw5Bb0bqnblrqiI2tXzDn62Xg2UR6qp
+	RSLAo+1nioogftKm0GIfICM/oTUe26WDgHRmqv5KxXLaukUSlEr/LnIxg==
+X-ME-Sender: <xms:zKamZIifhhh3cYphtKnXVUusVqjfk00NZB2K_CNVbkOYM2FBMQUhRw>
+    <xme:zKamZBA5_K2Gr9r8TtB-5Ufvukb6BjCDR4KNkk24bEjQRpZCWRQiuS1Q4YHboNyW0
+    KCB16KGd12wYkY4mkM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudelgdegudcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
+    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
+    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
+    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
+    hnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:zKamZAEEySEYPRJfw1a14xVz8ITg-mjZqe9RFccGbPDIv7eA60XvcA>
+    <xmx:zKamZJQG_89fAhk6cYr31JaZ3cLILRBYK104hLs2RTFFToUMqDwUlA>
+    <xmx:zKamZFyJMlS-NV6ps_X_UlaEMQ80rlShTub9ZW0Ek9VNEO8IcmGD0g>
+    <xmx:zKamZMnuNI4Jd8k_yPJ4lV2CB2z-4QO_Rn2Dg5d55ubI4NHcmwdxyg>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 1B6EBB60086; Thu,  6 Jul 2023 07:34:35 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-531-gfdfa13a06d-fm-20230703.001-gfdfa13a0
+Mime-Version: 1.0
+Message-Id: <73b584cb-ceff-4e16-bac2-02de9903b973@app.fastmail.com>
+In-Reply-To: <20230705190309.579783-13-jlayton@kernel.org>
+References: <20230705185755.579053-1-jlayton@kernel.org>
+ <20230705190309.579783-1-jlayton@kernel.org>
+ <20230705190309.579783-13-jlayton@kernel.org>
+Date: Thu, 06 Jul 2023 13:34:14 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Jeff Layton" <jlayton@kernel.org>,
+ "Christian Brauner" <brauner@kernel.org>, "Jeremy Kerr" <jk@ozlabs.org>,
+ "Michael Ellerman" <mpe@ellerman.id.au>,
+ "Nicholas Piggin" <npiggin@gmail.com>,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2 15/92] spufs: convert to ctime accessor functions
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,35 +98,17 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-ALSA <alsa-devel@alsa-project.org>, Xiubo Li <Xiubo.Lee@gmail.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Shengjiu Wang <shengjiu.wang@nxp.com>, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>, =?UTF-8?Q?Hans_S=C3=B6derlund?= <hans.soderlund@realbit.se>, Andreas Henriksson <andreas@fatal.se>, linux-kernel <linux-kernel@vger.kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Jan Kara <jack@suse.cz>, Alexander Viro <viro@zeniv.linux.org.uk>, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 6, 2023 at 8:19=E2=80=AFAM Shengjiu Wang <shengjiu.wang@gmail.c=
-om> wrote:
+On Wed, Jul 5, 2023, at 21:00, Jeff Layton wrote:
+> In later patches, we're going to change how the inode's ctime field is
+> used. Switch to using accessor functions instead of raw accesses of
+> inode->i_ctime.
+>
+> Acked-by: Jeremy Kerr <jk@ozlabs.org>
+> Reviewed-by: Jan Kara <jack@suse.cz>
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
 
-> No, this is the code in probe().
-> The code with the issue is in fsl_sai_set_bclk().
-
-Yes, I put it in the wrong place.
-
-> The clean way for fixing is to remove the code in fsl_sai_set_bclk()
-> and add "fsl,sai-mclk-direction-output;" property in dts for some
-> node.
-
-Yes, what about this?
-
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -507,7 +507,7 @@ static int fsl_sai_set_bclk(struct snd_soc_dai
-*dai, bool tx, u32 freq)
-                                   savediv / 2 - 1);
-        }
-
--       if (sai->soc_data->max_register >=3D FSL_SAI_MCTL) {
-+       if (sai->soc_data->max_register >=3D FSL_SAI_MCTL  &&
-sai->mclk_direction_output) {
-                /* SAI is in master mode at this point, so enable MCLK */
-                regmap_update_bits(sai->regmap, FSL_SAI_MCTL,
-                                   FSL_SAI_MCTL_MCLK_EN, FSL_SAI_MCTL_MCLK_=
-EN);
+Acked-by: Arnd Bergmann <arnd@arndb.de>
