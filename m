@@ -2,61 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A71F77496C9
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 09:51:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC2D87496D0
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 09:51:55 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=pZJlJ0lh;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QxTH74cyRz3c3x
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 17:50:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QxTJ967ZWz3c51
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jul 2023 17:51:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.219.171; helo=mail-yb1-f171.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=pZJlJ0lh;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62f; helo=mail-pl1-x62f.google.com; envelope-from=jniethe5@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QxTGc3Hj8z2xm3
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 17:50:30 +1000 (AEST)
-Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-bd0a359ca35so348301276.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jul 2023 00:50:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688629827; x=1691221827;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QxTHH1fnwz2yyX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jul 2023 17:51:06 +1000 (AEST)
+Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1b8ad8383faso2178485ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jul 2023 00:51:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1688629863; x=1691221863;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VBI3tfdffNzea+PFNOGJvTbzqg9cb+gZyrTlNogDBJ8=;
-        b=eltSbAo3bEU/WPH6LIl6UhtWi4NrGSMB+TT8YfO3Q+3L2OtQeMj2KIUh1h0LEZJnIK
-         xaBblDpJPvUx7/7stdQdwzKCelaQBKXyzUSKvHdrLCTeBDVmHrJwK/naIW3MnpqDCaaq
-         wD8XhkqA6b6AZW08hvE1/Jpx4qS0sCSmw+Qe808Z5uBq4zHkuGz1FkUs7yqhICpTsNWz
-         reEPMYSYcTCfcBLgPkGqlnHXPNtfoojPfjWCAeZfzkXD//Z4Abl8EDdMRCLUpfgXzxvS
-         wuDygFzFUwtY4YwGRakorZAgjik9Oso0IOzVeiJabAlY/rbt6ooFn2huapsu34g7DbUL
-         bAxQ==
-X-Gm-Message-State: ABy/qLbJTkKZFTdPKt6NpDhARdJF88UnjAYRmpkrEcoHSRJZYFu1H6b0
-	iVnb7MhdxW5v0BTJc0E+ZpDe72QOUtraZA==
-X-Google-Smtp-Source: APBJJlHrA2zK+kRoZk7kSdVqUP8+bOg8L71Kr/lYH1bWD9AR7K42FRxv5aOGgOIY0T3Zy7DWCRMYjw==
-X-Received: by 2002:a81:a0d3:0:b0:579:f14f:50e0 with SMTP id x202-20020a81a0d3000000b00579f14f50e0mr1171492ywg.36.1688629827110;
-        Thu, 06 Jul 2023 00:50:27 -0700 (PDT)
-Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com. [209.85.219.172])
-        by smtp.gmail.com with ESMTPSA id d199-20020a0ddbd0000000b005772fc5912dsm184831ywe.91.2023.07.06.00.50.26
-        for <linuxppc-dev@lists.ozlabs.org>
+        bh=QhmbPLkoVnQhuhvNhVkHDTHyTpdp4PNjj/xlZtzICCA=;
+        b=pZJlJ0lhz4RO8QoDrWADXtr8A5uaqPG0cwNebZMTSJRHlc338zrRGHFo3MIorFa2tQ
+         oq6MlKfAlG8KZ60E/115YlDf0YYqa4FJzW+ggBF+IfVqyzKcsWvhIlOtly2TXdIAtZIC
+         kQJ1mkIGoR3h9cWBkekYbDH7W1yTJaNw4IgML0FxAYY5e+Sw5eu+aMhdo/Ihcj/IhGkL
+         c5t+jlYZ2/9vc3tgLabzRqijUCaQebkqOnX1LXdznIo7jHagMovL4z991lH/lpNQ3sYZ
+         gkx7jmNwWPYxk5o9hpenRu5awvq/1Ifiy+KXJm5Q/c8apaSwVDVCHTajkHdmZ8HPJOpA
+         06jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688629863; x=1691221863;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QhmbPLkoVnQhuhvNhVkHDTHyTpdp4PNjj/xlZtzICCA=;
+        b=fBknktigWva6ozkgS/fRf61qgPLrDZWuEstQJgefMC67NVTSnv8g+CuQLecLMJDmAj
+         aNK1t/9/7jd/Aoev1v8f7Mggc2Pu6oLIp92fFLPsIM38OI3R9bdW63i7RTxsOZAa1zFN
+         Gy4I5tkC2FOdmW+zocFw8oL5k50NjuA2gv+lLmGhkDSNC6iPfkDtnVOebcBRQJ/1jKWd
+         kmrc/So3jEcA0gItn4uugsvv3NrYtcBWqNpgf4xYDFNtQzJVDui7xSmzYWNnTxoWf0qN
+         UwYFSv9ovcomPeni4SnrimuuVP2eyPg1nAqaUDQOM2R5tcu163oIltPCdD5N2gcWxLRk
+         WEcg==
+X-Gm-Message-State: ABy/qLajW++rgV02XfJpp+6b4U1vZ3j2FUyhs/PTmwknsPd5ojRtl3y1
+	JkUSqHo7XTx3rLh6/P1A6xg=
+X-Google-Smtp-Source: APBJJlHczXf/MN0VAPTai+IfIcf2/+/D8hnfRWRFIWPZptyNQl2VwFGl9sZr3ln/+QTcnNrzEnEylg==
+X-Received: by 2002:a17:902:f7d3:b0:1b8:b73d:a75b with SMTP id h19-20020a170902f7d300b001b8b73da75bmr1127393plw.44.1688629863140;
+        Thu, 06 Jul 2023 00:51:03 -0700 (PDT)
+Received: from localhost-live.default (110-175-254-242.static.tpgi.com.au. [110.175.254.242])
+        by smtp.gmail.com with ESMTPSA id g5-20020a1709026b4500b001b027221393sm750161plt.43.2023.07.06.00.51.00
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Jul 2023 00:50:26 -0700 (PDT)
-Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-c01e1c0402cso362476276.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jul 2023 00:50:26 -0700 (PDT)
-X-Received: by 2002:a5b:3c6:0:b0:c0f:c120:1a9b with SMTP id
- t6-20020a5b03c6000000b00c0fc1201a9bmr954054ybp.53.1688629826443; Thu, 06 Jul
- 2023 00:50:26 -0700 (PDT)
+        Thu, 06 Jul 2023 00:51:02 -0700 (PDT)
+Subject: Re: [PATCH] arch/powerpc: Remove unnecessary endian conversion code
+ in XICS
+To: Gautam Menghani <gautam@linux.ibm.com>, mpe@ellerman.id.au,
+ npiggin@gmail.com, christophe.leroy@csgroup.eu
+References: <20230630055628.17790-1-gautam@linux.ibm.com>
+From: Jordan Niethe <jniethe5@gmail.com>
+Message-ID: <39920b0f-f261-8417-af7a-eef791ad5726@gmail.com>
+Date: Thu, 6 Jul 2023 17:50:57 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-References: <20230705003024.1486757-1-bgray@linux.ibm.com> <4e94cb11-1f39-d631-fe0a-b945b301b77c@csgroup.eu>
- <06d642f1e1245df1c68b6bd5fbd288233be027bc.camel@linux.ibm.com>
-In-Reply-To: <06d642f1e1245df1c68b6bd5fbd288233be027bc.camel@linux.ibm.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 6 Jul 2023 09:50:14 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdUO_qEd2oVCMRGDZML6COquu-5=pS9fnFQ4pax6G4vxGQ@mail.gmail.com>
-Message-ID: <CAMuHMdUO_qEd2oVCMRGDZML6COquu-5=pS9fnFQ4pax6G4vxGQ@mail.gmail.com>
-Subject: Re: [PATCH] rtc: Kconfig: select REGMAP for RTC_DRV_DS1307
-To: Benjamin Gray <bgray@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20230630055628.17790-1-gautam@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,87 +83,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Joel Stanley <joel@jms.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Benjamin,
 
-On Thu, Jul 6, 2023 at 8:14=E2=80=AFAM Benjamin Gray <bgray@linux.ibm.com> =
-wrote:
-> On Thu, 2023-07-06 at 05:13 +0000, Christophe Leroy wrote:
-> > Le 05/07/2023 =C3=A0 02:30, Benjamin Gray a =C3=A9crit :
-> > > The drivers/rtc/rtc-ds1307.c driver has a direct dependency on
-> > > struct regmap_config, which is guarded behind CONFIG_REGMAP.
-> > >
-> > > Commit 70a640c0efa7 ("regmap: REGMAP_KUNIT should not select
-> > > REGMAP")
-> > > exposed this by disabling the default pick unless KUNIT_ALL_TESTS
-> > > is
-> > > set, causing the ppc64be allnoconfig build to fail.
-> > >
-> > > Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
-> > > ---
-> > >   drivers/rtc/Kconfig | 1 +
-> > >   1 file changed, 1 insertion(+)
-> > >
-> > > diff --git a/drivers/rtc/Kconfig b/drivers/rtc/Kconfig
-> > > index ffca9a8bb878..7455ebd189fe 100644
-> > > --- a/drivers/rtc/Kconfig
-> > > +++ b/drivers/rtc/Kconfig
-> > > @@ -246,6 +246,7 @@ config RTC_DRV_AS3722
-> > >
-> > >   config RTC_DRV_DS1307
-> > >         tristate "Dallas/Maxim DS1307/37/38/39/40/41, ST M41T00,
-> > > EPSON RX-8025, ISL12057"
-> > > +       select REGMAP
-> >
-> > As far as I can see, REGMAP defaults to Y when REGMAP_I2C is
-> > selected.
-> > Can you explain more in details why you have to select it explicitely
-> > ?
-> > If there is something wrong with the logic, then the logic should be
-> > fixed instead of just adding a selection of REGMAP for that
-> > particular
-> > RTC_DRV_DS1307. Because others like RTC_DRV_ABB5ZES3 or
-> > RTC_DRV_ABEOZ9
-> > might have the exact same problem.
->
-> Right, yeah, I don't want to assert this patch is the correct solution,
-> sending it was more to offer a fix and allow discussion if it should be
-> resolved some other way (so thanks for replying, I appreciate it).
->
-> In terms of why I made this patch, the way I see it, if a config option
-> requires another config option be set, then "selects" is the natural
-> way of phrasing this dependency. "default" on the REGMAP side seems
-> weird. If it's a default, does that mean it can be overridden? But
-> RTC_DRV_DS1307 *requires* REGMAP; it's not just a "would be nice". The
-> build breaks without it.
->
-> But maybe KConfig works differently to my assumptions. Maybe the
-> referenced patch that causes the build failure is actually incorrect
-> (CC Geert). I spoke with Joel Stanley (CC) and he indicated you're not
-> supposed to depend on REGMAP like KUnit does?
 
-Thanks for CCing me!
+On 30/6/23 3:56 pm, Gautam Menghani wrote:
+> Remove an unnecessary piece of code that does an endianness conversion but
+> does not use the result. The following warning was reported by Clang's
+> static analyzer:
+> 
+> arch/powerpc/sysdev/xics/ics-opal.c:114:2: warning: Value stored to
+> 'server' is never read [deadcode.DeadStores]
+>          server = be16_to_cpu(oserver);
+> 
+> As the result of endianness conversion is never used, delete the line
+> and fix the warning.
+> 
+> Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
 
-Looks like I made a really silly mistake here: my patch not only allows
-the user to enable REGMAP manually (for the test), but also to disable
-it manually, regardless if there are users or not :-(
+'server' was used as a parameter to opal_get_xive() in commit 
+5c7c1e9444d8 ("powerpc/powernv: Add OPAL ICS backend") when it was 
+introduced. 'server' was also used in an error message for the call to 
+opal_get_xive().
 
-I think the proper fix is to replace the "default y if ..." by
-"select REGMAP" for all users.
+'server' was always later set by a call to ics_opal_mangle_server() 
+before being used.
 
-Gr{oetje,eeting}s,
+Commit bf8e0f891a32 ("powerpc/powernv: Fix endian issues in OPAL ICS 
+backend") used a new variable 'oserver' as the parameter to 
+opal_get_xive() instead of 'server' for endian correctness. It also 
+removed 'server' from the error message for the call to opal_get_xive().
 
-                        Geert
+It was commit bf8e0f891a32 that added the unnecessary conversion and 
+never used the result.
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+Reviewed-by: Jordan Niethe <jniethe5@gmail.com>
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+
+> ---
+>   arch/powerpc/sysdev/xics/ics-opal.c | 1 -
+>   1 file changed, 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/sysdev/xics/ics-opal.c b/arch/powerpc/sysdev/xics/ics-opal.c
+> index 6cfbb4fac7fb..5fe73dabab79 100644
+> --- a/arch/powerpc/sysdev/xics/ics-opal.c
+> +++ b/arch/powerpc/sysdev/xics/ics-opal.c
+> @@ -111,7 +111,6 @@ static int ics_opal_set_affinity(struct irq_data *d,
+>   		       __func__, d->irq, hw_irq, rc);
+>   		return -1;
+>   	}
+> -	server = be16_to_cpu(oserver);
+>   
+>   	wanted_server = xics_get_irq_server(d->irq, cpumask, 1);
+>   	if (wanted_server < 0) {
+> 
