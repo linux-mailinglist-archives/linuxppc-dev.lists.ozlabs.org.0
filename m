@@ -1,51 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0E4D74AE21
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jul 2023 11:52:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9994574AE51
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jul 2023 11:56:18 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Z07rgcHB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Bx40Rryc;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qy7xK5Z0Lz3c4X
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jul 2023 19:52:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qy81D3hK0z3c33
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jul 2023 19:56:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Z07rgcHB;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Bx40Rryc;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qy7wP6kjNz3bf6
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jul 2023 19:52:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qy80D4Zkcz3c49
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jul 2023 19:55:24 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id D650761803;
-	Fri,  7 Jul 2023 09:52:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD0AAC433C7;
-	Fri,  7 Jul 2023 09:51:55 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id AB765612AE;
+	Fri,  7 Jul 2023 09:55:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8166EC433C8;
+	Fri,  7 Jul 2023 09:55:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1688723521;
+	s=k20201202; t=1688723722;
 	bh=yMWBZi7OWijpDNbPPVU11zT7Ofk6CC1w0krvsGmTO/Q=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Z07rgcHB9zc3yULQo5sHhLIv44yzQod9z2mXK8VAD2ky6t/sKWYV2RwpBSfsckmOs
-	 agjSwU4wXzrOoatycsFhpr/tbEEL/fP69Db446Ge2rJz9mePLl3mySa8jKvq+GyiTu
-	 4KWv6txOUukHX9wFw6zAalyyt0ZA7Ebj/AVQMqWWhUVheF2F5R/fyMF7TpsVLgmD7X
-	 shT+2s00P6kEvLIw1WqbApGnI1TejLDoiQ7J2yAN5K/Ulrz2OokpUU5d5LLVQA/dtl
-	 ZJiLtsDua4qi8vlm2W12s8HzAd4X6pykjOz3jsL1fYX2KFgKUbi6PXqdCCzGX7LPBk
-	 1qapI2AldOYXw==
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Bx40Rryc7emWROVA1OI+Fp/RxUN6o7E4nHT9VT58WXacXf2ozSjk5VBIyhlsgZAkr
+	 u2TwwPGKbwSH1Jn686GPOGDYyzRhNSXdfDbh0GX7fiSd/Q8SoLRWm81bbNGpy2LvUJ
+	 PhRsNMOwag/zbLeNtjsqSzeLonM1K0hAqZM1i3o1LWrschS5ccK6ArPWK+mDI+V+Cg
+	 r66yYBAJk5so9iN518mwMOg4/lTZpFgPvXcJ4Lf5e5MhMX/jyTnwECbxcWs7hobvgk
+	 c3viAIB8beT+3liXAVktBBRA7/rqn7zOv0uUvmp3KfvN6KOM6o747qiFkc1T1A7sWK
+	 NKZl3mjfiXXJw==
 From: Arnd Bergmann <arnd@kernel.org>
 To: Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 1/3] vgacon: rework screen_info #ifdef checks
-Date: Fri,  7 Jul 2023 11:50:38 +0200
-Message-Id: <20230707095144.1378789-1-arnd@kernel.org>
+Subject: [PATCH 2/4] vgacon: rework screen_info #ifdef checks
+Date: Fri,  7 Jul 2023 11:52:24 +0200
+Message-Id: <20230707095415.1449376-2-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230707095415.1449376-1-arnd@kernel.org>
+References: <20230707095415.1449376-1-arnd@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -59,7 +61,7 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, linux-ia64@vger.kernel.org, dri-devel@lists.freedesktop.org, javierm@redhat.com, WANG Xuerui <kernel@xen0n.name>, Ard Biesheuvel <ardb@kernel.org>, Helge Deller <deller@gmx.de>, Russell King <linux@armlinux.org.uk>, Matt Turner <mattst88@gmail.com>, linux-mips@vger.kernel.org, Albert Ou <aou@eecs.berkeley.edu>, Arnd Bergmann <arnd@arndb.de>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linux-fbdev@vger.kernel.org, linux-ia64@vger.kernel.org, dri-devel@lists.freedesktop.org, javierm@redhat.com, WANG Xuerui <kernel@xen0n.name>, Ard Biesheuvel <ardb@kernel.org>, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, Matt Turner <mattst88@gmail.com>, linux-mips@vger.kernel.org, Albert Ou <aou@eecs.berkeley.edu>, Arnd Bergmann <arnd@arndb.de>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
