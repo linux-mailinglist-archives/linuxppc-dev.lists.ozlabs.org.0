@@ -1,56 +1,199 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1783E74B8CC
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jul 2023 23:46:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC3B074B8D2
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jul 2023 23:47:25 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iyNIEkX0;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2023-03-30 header.b=fnWAQAh3;
+	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=Bk5EdBKe;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QyRmd1kysz3c5k
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jul 2023 07:46:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QyRnl5BQCz3cY4
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jul 2023 07:47:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iyNIEkX0;
+	dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2023-03-30 header.b=fnWAQAh3;
+	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=Bk5EdBKe;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=jlayton@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oracle.com (client-ip=205.220.165.32; helo=mx0a-00069f02.pphosted.com; envelope-from=eric.devolder@oracle.com; receiver=lists.ozlabs.org)
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QyCjV27mcz30P0;
-	Fri,  7 Jul 2023 22:42:54 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 46E6860DC0;
-	Fri,  7 Jul 2023 12:42:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96F41C433C7;
-	Fri,  7 Jul 2023 12:42:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1688733770;
-	bh=TyDDLyY/VcXA49d9KRhq25UQSsoE8KWu0+bfyRbBUqg=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=iyNIEkX0vplHsZRVLrECpVOA1mp+pn1xQk8anv4sNjl819MUB6L7g/QyZr09T8v7X
-	 4l5fvHniDmWHLBbdiHqiq9H2cTxWHaomnmD4P0h6lKZGmzU4smc5wAjNsqS84NFdll
-	 SSoDpJcqRJcJOvdAyIR3hUdTdGFP8DMxgpiVSBrtu8xsQGAVo33idlmhxRmj5xte2M
-	 GXiVu3pw23oyZWMMzp8kXFgZEQukowtqu+nAIcpDxVTKiHudvESqbwGfJcf0AdYGsm
-	 WEMofoo1motyhtMcUn2DtHPcG7Cqyp0rQarcusFg1CfwsyO+EeEA0qEhKts9ufRMsA
-	 P6UZP6VS0JBRg==
-Message-ID: <5e40891f6423feb5b68f025e31f26e9a50ae9390.camel@kernel.org>
-Subject: Re: [PATCH v2 00/89] fs: new accessors for inode->i_ctime
-From: Jeff Layton <jlayton@kernel.org>
-To: Christian Brauner <brauner@kernel.org>
-Date: Fri, 07 Jul 2023 08:42:31 -0400
-In-Reply-To: <20230705185812.579118-1-jlayton@kernel.org>
-References: <20230705185812.579118-1-jlayton@kernel.org>
-Content-Type: text/plain; charset="ISO-8859-15"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QyDB57110z30Pn
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jul 2023 23:04:12 +1000 (AEST)
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 367Cww7s001510;
+	Fri, 7 Jul 2023 13:03:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2023-03-30;
+ bh=M11N7DkMA32OWsbxb87YcdgtHEhpKrl6Ra9ToJvvd6U=;
+ b=fnWAQAh3YwnGhayNz2uGLaOZ4gA2fRoUtJA0NmQl/afxqTRf/jAPrKjndsr28shrpiMn
+ FhPgXXXK//fZoKODD3WuCH/lj+7RmPeEBUG7bBLDYfckKHZd4/WCOqFLgoHfUqmOuN2x
+ Jo1669pKIARC5vEWfVeggLfeLum+s0q7tW0WDp/6DX/js2ufPQPfJKeefN04GK3v90ch
+ V+JEmX0K7CsHsAfto2XsA0Kz/bTUk5mmyDHElSU0NQfzTRAZwvSbGajehpj9493cewb9
+ DKa2vfZwhlGEufI5/gzjS0raVNPBlWobVHnsuTAaNyWqVsbHSH54J9Lx3TiPNoMC31is Yg== 
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3rpjcsg2mn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 07 Jul 2023 13:03:37 +0000
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 367BuSIY007175;
+	Fri, 7 Jul 2023 13:03:35 GMT
+Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11lp2169.outbound.protection.outlook.com [104.47.58.169])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3rjaked9ew-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 07 Jul 2023 13:03:35 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=f+yGZHyQBruQus/aCKMu0Uu3E5ImiYIYi+iCvhfjoo4mUS+0ohVJ+/dZSIU+/CvTOolI0+SrmDp9TAjSjqndGk4fa4JppFhzOU0BYKcPwidwo0Lja7nligdNfw5Iy/Eq77sua2LYLwgj28467W9YJxbd7OVYv2ZaTCaUd0maKh5yOuzwgzAZ8DKyRtci+Zt8BB5oLsaVd6NRUwEdzav+wQCR0kGAWnyy4zDn1EBXwn2vnAPUEm2ziuRBTnIZuPzIw4qaHJm+3lTEYws0rfYMF8RIfJHo+v7gXi9Fpx62kmZneKZg2Hk9xkM1DD9ZP9u0bK1z2pgAl795OnhIloBJ+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=M11N7DkMA32OWsbxb87YcdgtHEhpKrl6Ra9ToJvvd6U=;
+ b=IuFSzfhP8GkSMZH8c2q0CxKdldMFyKCpd1659VOoKA/oWOup/9w4wX5anA0ch5tOUUZEC1hvfqRtOpVSNKAhbB7u32aFBI5p/TYvooCGWUAs+WJo6wgkcyIaoXre/KgNDgTMaT6t4OKpHKLhtzu+eKyKxn67ChClDDPhSzl98GIc5bQ70I8mrpfrTGcJps63uutdv6oIDFhVMUgxSyw3qfUOaTDndnmq64O/nldUs7Mdc6bNEsldMp0cgCXYM+62Ow5PuM6gYIPbS5TiY/9zakks7oEwym4xECyzvLfUwts2s3K8Aipm6v+61lvZ0dVjDeDuqf67HEyaqaSFCnvVRw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=M11N7DkMA32OWsbxb87YcdgtHEhpKrl6Ra9ToJvvd6U=;
+ b=Bk5EdBKeQ6/PX89SZpRkUbvAjMhLc+yja83Kzea6BIRbNsOFE7zxvBEott9COiDciWTQZ6+kzJFwKs8AC7PiWg1zFnz/WClgoSgG746/4TdlpSgGMK0GZkO9BOA5v/UfCO4P18+SGAd84gEOx9KxF0aRbFfiTSF+6AmeqpaHzMo=
+Received: from CO1PR10MB4531.namprd10.prod.outlook.com (2603:10b6:303:6c::22)
+ by SJ0PR10MB7689.namprd10.prod.outlook.com (2603:10b6:a03:51a::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.25; Fri, 7 Jul
+ 2023 13:03:32 +0000
+Received: from CO1PR10MB4531.namprd10.prod.outlook.com
+ ([fe80::8b8f:b4b1:bb78:b048]) by CO1PR10MB4531.namprd10.prod.outlook.com
+ ([fe80::8b8f:b4b1:bb78:b048%5]) with mapi id 15.20.6565.019; Fri, 7 Jul 2023
+ 13:03:32 +0000
+Message-ID: <918f700c-fb93-8bbd-e762-f9d864b0fb67@oracle.com>
+Date: Fri, 7 Jul 2023 08:03:09 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v5 11/13] riscv/kexec: refactor for kernel/Kconfig.kexec
+Content-Language: en-US
+To: Palmer Dabbelt <palmer@dabbelt.com>
+References: <mhng-c1c5d9c4-b2c8-45c4-ac0a-084cfecb3833@palmer-ri-x1c9a>
+From: Eric DeVolder <eric.devolder@oracle.com>
+In-Reply-To: <mhng-c1c5d9c4-b2c8-45c4-ac0a-084cfecb3833@palmer-ri-x1c9a>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: LO6P265CA0001.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:339::9) To CO1PR10MB4531.namprd10.prod.outlook.com
+ (2603:10b6:303:6c::22)
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PR10MB4531:EE_|SJ0PR10MB7689:EE_
+X-MS-Office365-Filtering-Correlation-Id: f87a8574-b53b-4577-c63a-08db7eea90c4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	HXCxp7jyqkbAT+O7MxjaYNzSdQ1seGsUs2IslT+U1wZoSdGMKRjOVJjZJ58mtXsLzyWNFt+gP0dLjfxxxiMTuc4rHVIX0eaTlAkALAs/894WZsnuwSNnOaZdCuQkCK8Eubra2EqBIdT5/Rf4FzoJ83KN/b1LqzK57KSYEumfF/pY3XCYI2LCpOKWrF5ppiYxACD3+tviAJ4PoM2CgpED9oLcbIzn8rjxmo4PmmpRSYOsLSAUzWOg6aRwBAa3qPoKwSVZJa6FhQeFCvgYwDImtDHzp5M4yXdsYmcSsIkUQ4jh6rzb77xW07yOhyKDTBvqEgonzjoG9R7jj6YXWd7zDvJReX+xUhUk1N9qDetfyvk3ryoBKaPLdnedaYMQiYlehaG4Of+IJadf+lBAar/+MVAeSQ1SoZhVxTRIITMXW0PhItz7QhAmMOyx40nTmAs3MG6ECg4orUGzWtlHTKim4bTwehCQG1KBTBCH6lyYK7L6b0ZnW5XdxO31MhxsY8mt7Kkvn6iV2Rq+XsqPpVmJDKua3y35Ujp+B1z/x+PhxJacK5738dueikeEN0IrgE7UUG8juLIXqIYghIGwW9EIeOy5Wz9nYdK+68X6V8vjc5sVnxIDTzQXxanV0/kXEjH5g469wz08RlZkCUeb/fnSbw==
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR10MB4531.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(346002)(396003)(136003)(366004)(39860400002)(376002)(451199021)(66946007)(6916009)(66556008)(66476007)(4326008)(2616005)(38100700002)(107886003)(186003)(31696002)(86362001)(26005)(53546011)(6506007)(83380400001)(36756003)(6666004)(478600001)(6512007)(6486002)(54906003)(41300700001)(7416002)(7406005)(7366002)(31686004)(5660300002)(8936002)(8676002)(2906002)(316002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?emt6R2VnbFVoTUNPQWJocFNmKzd0QWZna0Z6NTVqQzNEVmZPM3h2elVoMllV?=
+ =?utf-8?B?UlUxNVl3NnNodFdEeFhoL3ZrQm9VSlYwYjI1bkFtSklOY0RIcVhGcmhuYU5M?=
+ =?utf-8?B?ODZROUUvQmJIdFVJbFkyVXdUZkR1NUtRUVhSd2hMdjlYMkZrNmc5Mnl2MjRN?=
+ =?utf-8?B?RXIyRk9OQTUzeEticFVoNDlNQWxGcGtQMXhscFFGNFJhbzlDNEE0MnJEWHFt?=
+ =?utf-8?B?RnB6cFBHY1dUQ255QnkxVkJIS3A2QisyZDRHSjBXV1JlT0R4TVNacjdFNXN2?=
+ =?utf-8?B?RGRNNmtSWWwzQm9uYy9tT2N6WXZYNDl6Z0dNYW9FWWprRkJPRE5pcWRlQzd1?=
+ =?utf-8?B?VklyQ2RNZjNWYzZXT3pNN1BOSGFaWDlpQWVxZnlFTitwM3BWM1ViV01MeWht?=
+ =?utf-8?B?Z2E0M095T2lUNHRZUFNrdFVJSUR1bnpKQ1pUbGl2MHk3SzBEYTU0bWdXTlRJ?=
+ =?utf-8?B?QUdPTUZRd2lhbDBUanUxQXlYNVArNlhiVHdtdHhSbmNvNzI0RW9DQ1JENDNG?=
+ =?utf-8?B?ZXd4bitzZHVsQXJ6emV3eVY3SC90Q3RiK3BwSmhMRFJGeEVtWk1lMHQ1Ylpu?=
+ =?utf-8?B?ZVFYWHZmZVFpNWxvRlQ0bGptRmpxTUVWQzRtdVdSWFlYZzhxSjBoN2xFQTBj?=
+ =?utf-8?B?alF6amx3QlFNQjVHM3h5enBGU0xQYXF0YXJaeWMzUk5zQm9najRPWjJoMXM4?=
+ =?utf-8?B?TUhOUThjNUxEdzRhMjk4ZG9QTnUrcWJqaDZzS2wrRUtqWDZEbUlINzhoREpO?=
+ =?utf-8?B?bVNESWtHbUtRcU9xV1ZPT0JtYWJodjdNODlEZnBnOW1RZHBWaGJRbE1mV0Mx?=
+ =?utf-8?B?b0dEam1YMU5TY3dvamJSUi9vemRrUnpmYjlhN0xRZjRYUUw5WTh5ejNxOVJa?=
+ =?utf-8?B?QXNkNGhLRVBPQ0l5bEFuR2JPallaWm81blpKV1M1dURDRENwVEhKTHJyVEZL?=
+ =?utf-8?B?dTY4VlpOZE03cVg1OXd5VWpHSDdsdDN1anRKYy91Rjl5QW1jK01WdU0wT3ZR?=
+ =?utf-8?B?dU9CdVVwQW1haEQxY2dVb2xCZ0g5ZmF4RldDYkI5aXVTS01DMUYxUjhNWmpX?=
+ =?utf-8?B?QXluZ25CRkd1OXhTd0lEeE55WHF6ak9FMU44UXNkcDhxeWUvZ3lleko1amRa?=
+ =?utf-8?B?NXlKY2VvcnliY2lkRzFvbHBVZ2xLT3JsUURDUHhrZVNhWnNYMVlwTFVZamFw?=
+ =?utf-8?B?NFdYSEE4OUZHUERSN1loMnNqRDB6djFCZTVJbDBLRS9qSVlTdVV1eDV3emlk?=
+ =?utf-8?B?WnV0U0xrcmpGeFJjSThCUUR6bGl3TVQyVjNyWHdZaXNYRUl6YjRobVdBU2ZK?=
+ =?utf-8?B?S1dya1JuQ1FWZ3k4QUxXTTA4OE9LK0RqQzBmR2VTd29NK1dYYldsZHI3SlNa?=
+ =?utf-8?B?T25TVEhtUFB6MmV1eVh0LzE0a2s4SFhQRFZWVnBmbGdwY3hrR21wM3kyMnUv?=
+ =?utf-8?B?Sk02MVVtZ21Rc2pCWEpURFlocXdwdE9uMXN1LzhpckRWM2pDWG0zNE1Md0x0?=
+ =?utf-8?B?bGJodUR1VTJYVlg0QmxLazJHNXlvWjhKVUlnNjAvN3dLUWpOdm9VVzMyMVVL?=
+ =?utf-8?B?MVo4Mlk4emlwSFhiNkU3b3lDbk92cGpjMTlqWW9SSTJHSDk1aWFyMzRYTG53?=
+ =?utf-8?B?cTRzRVpHVGllSlljMVorKzJiVE9meUgreDhyQkFlNnRFUUVCd0RycE44enI1?=
+ =?utf-8?B?QVB6aEdFRjYvQ3JVOFA5djRBOEdYcCtmQTduSjdLeWNWelFNT3dNK3d0bTRq?=
+ =?utf-8?B?aDU1YUVpdy90eXRsT3dGeUhJWWNoa0l0UkpNYlVQKzBKQVBiOXJkTFMrNmxa?=
+ =?utf-8?B?a3JkUXA1MDZMSkxSczRsYktwb1dWZTY4VzFUWFkySmpETzJQeVR6ZDBlU2Zq?=
+ =?utf-8?B?T0grTmFPNE5BdDVPM0lDNGhtNGFlSVRzeFU2QVQxc254aXRVbUozNDFaazcr?=
+ =?utf-8?B?MTcxc3ZTaFdtNDUwVTF2dXFNWWRnTmlrbWFIb3VLZ0E1ZjUzUXh0Q1VXU25M?=
+ =?utf-8?B?SjRndTltSFJTS1dneU0zbzZ3VUtqcCsybnI4WEg4OUJEVmtIelBvdVRsVEQ4?=
+ =?utf-8?B?eVVwUnZ0ZnVwMk1ZSjVnT3dROTFLZUMrK3lSaFNoQmZCN3dockZrZDA5UTFt?=
+ =?utf-8?B?U0dvcDNOanU4WjFGaGhWZkRvUEwzRXZJdXBWYmVCZTE0UGNCSCszNk12Z1R6?=
+ =?utf-8?B?RHc9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 	=?utf-8?B?OHJ3a2VYQ3lLRHlqUVVFeUVELzJHN2ZCTjM5Q3NtM3dvNzMrWGllZCtQa3R2?=
+ =?utf-8?B?RzZjdDN0NFp1NmN5MFplQVN4Mk5ST1N5azBRbXJkbDVkOGNTNjBLU2dFcWhO?=
+ =?utf-8?B?WURCUE1kZzdSdldCYlpURnNVdEhjWTVOR3dNd1B4WEtKRmt2WjZQeWNGbXFE?=
+ =?utf-8?B?UFNYelBRaGxqZDYyQmRjQVQ0QWN3RXBVWlpBcjk3UVlGcjRNZ0daelRCUGl5?=
+ =?utf-8?B?ekd6WXhyczRBWTV0b3dmVTg4V1dYSGlObDVoenE2cmViWkpIRWROSTFOK3hB?=
+ =?utf-8?B?bmJZbVV1c3ErdlpwczY2VWs1OUNXL1RaT2J4QjRabGtLT2dPeEJyZ1o1ZXlZ?=
+ =?utf-8?B?ajhkS0pGdi9NOGtacG42bTdSbURqZkExRFI1RFcxeFRUY2xQa0ZMNjRsVUJ2?=
+ =?utf-8?B?TzJRdkhrTjRCNG9uV1pHVFZEU0sxREg1WjlEOWtQcVhuQUt6ZVF3NXJZQnNi?=
+ =?utf-8?B?WWl0M2dRbXFiZDd0c3hUcy83T2ZvTThFRXRpejczRDRZQ1pUWW1QcklaMmFa?=
+ =?utf-8?B?UE02aTUzUmRocjI0T2crOTdDaWhMdkhwZEFPc2dMMFRPZ1dDcGxML2hvby9l?=
+ =?utf-8?B?SlBuZzhrUzFQcFdyU1dST0wzVXBwOWlSNEpNZlZzSndGK2FvajZ5TXRIdlJi?=
+ =?utf-8?B?ejJseTdBMmlKeWlHRVRzU3N2RmFaN2lBSHU5Vko1M3ZIMEFaTWtub2RzZUcz?=
+ =?utf-8?B?TUdMVXh4T1JOVHBjbEU1UnlsODV2akpMY1Z0RjZnd0VyMVFKQkIyQkp6dlBh?=
+ =?utf-8?B?SXFHWWJSRWg3VmlvQXhFV1JaS2hCS0pnajRjTjhyU1ZCaXlSaGY1MmJEZTlv?=
+ =?utf-8?B?T3pySTVpTml0c1F2TXVjRis2eUpQVUtzcExnM2JtRmt5QzdtRm43Q3ZEMnhO?=
+ =?utf-8?B?SXJLaExLeDJIWEx5THM0Szh3UEpjVkVnVWd4RHVSd0FsV2RWY2xvdFFmQVFM?=
+ =?utf-8?B?alNhNjdmRDZ3b3diR09hclpIeVMrOE9IcVdjN1cvajFlbEF0RXFpZFc4Zm02?=
+ =?utf-8?B?MktqRTFaWGZNWk45K3ZSNG1rTTV6bXJuMTNnQ2xRNmMwV1RwTWV1eW1sOVRC?=
+ =?utf-8?B?emYyL25EaDdaZUd4VXJHSE1SelJqd3dibDNvWVRuOEVoRjEzL3QzT0t3MXc3?=
+ =?utf-8?B?NWlxaERIVE90Sm05c1A1ODlHMFBEbFBLaU9NSjh2SCt2RG1oTjZ6ZElCMkps?=
+ =?utf-8?B?QlRWT1JKVnhpNWx6cFZwM01oUGdLNm9CSjhTZEhTN05JOXcrSytnME11UkVu?=
+ =?utf-8?B?Sm5sUXpaQkk2OGVSYUhTd0VER2VQbEpXVU04N0gvbnN0Z2xUOHRCSlhPVHNP?=
+ =?utf-8?B?dG9jT1ptb0hGaE4xcnVXKzVVTm1tMHRBRWRNU3lEWVRkOXdJaHcyTDBIT0xu?=
+ =?utf-8?B?SUpyNFVQa0hXMDBvZEtJQlhVb1ZqSlBrOXJVZldkMDFUMHV6d1l0UzhaUjhz?=
+ =?utf-8?B?Yjc1bGI2cDdpWXBIbEpVVjV6SGtYdFgwbUtUTDFxTm9WcEdxeXVWWFBGYnEv?=
+ =?utf-8?B?d0orM1FMaitlNjM1ZEN6cGJZb1kxZitVUUtzeTF0ZldOSUFUOTRGTHBadE9U?=
+ =?utf-8?B?R1kyVC9vTG0rdXJkd281NWtJdHB5dUUxUkZJNllLTVd6YW0zdkJ3bFRCcFFy?=
+ =?utf-8?B?emNMZXduRjhXc0NJVVhlL3NKQUFRMFdRVGo0NFNjMStkSksxOVkvNG41VnlW?=
+ =?utf-8?B?ZmlWby9zZjJOM2xJQmFUcEcrQStQSTBEVEJtN09rRDd4RURQbVlQUVBoWWpK?=
+ =?utf-8?B?ODFGUi93eUxmaGhFWStFZ3FrWXlueDBVMWpMSXA2dHRXMVRxMDBhc0NpSDNZ?=
+ =?utf-8?B?N3FHcU1RWE5vMTZNTGZ2RnFSYjUrem9lbmE5MEcwbkpDd2s1WGh5SG81OTk3?=
+ =?utf-8?B?Y2FrdExjaXhZL0gyNlo2Z1FHQnlNVG1qTHBHYlBoZGtPKzEydTBFaGNiNnhQ?=
+ =?utf-8?B?Rm9tNGdVbG5hb1VxRzRCcGFhTHV6SDNabmJnV3psM2wxSENsaHdLaUhxZ2R0?=
+ =?utf-8?B?R1BBYkpJL3ZZK3pyNEgwaXU2UUErcjhPRWEzL3hNWEJhSkU3RTNGNUZjN05K?=
+ =?utf-8?B?WWtUbmJLMFA2a1Yyd05qRTFPdDFiSGNJMnl5dzFOR0VFWksyZmF2Z2Ntc0ZY?=
+ =?utf-8?B?N2w2QXdPM1NtZk9GdU1ZOG9ISjBhNlQ0S3R4UlUzMXJXT0hlbDdxc0xac1FT?=
+ =?utf-8?B?M2c2bStYY2Z1SFltOUhGQmFNOTZ1N0NJMEtIUDZBdXkxSEJTellzOE9jN1dE?=
+ =?utf-8?B?eWtMVEd2akxSblhZcmhrbUM5Uks2UGY4bnF4K04yK1FTcmswc3RDTk1yYU51?=
+ =?utf-8?B?NFl1Q1hLRXVSc3YrdjB6dGsvKzNBQ3J2RUVMQTRpZlR4bUxaSzhVWjFpU0xS?=
+ =?utf-8?Q?QrA/F3VZ16SylavuLMwdIp2G54jl0OTR/4xjW5ygRIaTp?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-1: 	GVAoVCCO8LgPEYllbm3OWEn7Sle0QHxPMt2Rhzu8TWGij6gCkAIy4qG2GjYquyZm8D+fIc9+EYe9+i0tmeGnQvlSRaVhzT0DxFypXBfVssjDw/xfUtFxiBLDzkCDvCF7Ipcv0HdoDUt31mC4a6YkK7+UZsL+DaG+gXWmMJlC3pfH+jqRzt+SbdZxUbTlFElsQ2520NahQpFt93oKZOwPs5ccKR8JRwXF1eRY6NDmuwTXG4Mmd7zExI4y1xFjWPedAGu8kUpN34NCYPxNTlw5PlgvANFonlNBKE42/IOJ5pXRiA/E6d0eMZBv7eKRhDV5wjG5mzydIn7dSkEaHUnrHY061Tegn3vnwGq0tcNdzxsobykdaBrZ0rXbbdpDP5pneu4D2+RA79Ajul4ZPS9BSlENb3f9A5vLAErT9yA81PLg5cUFsfNz8QVOL49+EVMQBYSPPvA1jc4krQ==
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f87a8574-b53b-4577-c63a-08db7eea90c4
+X-MS-Exchange-CrossTenant-AuthSource: CO1PR10MB4531.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2023 13:03:32.2802
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4NTo3AiOp19V5cPIyUZ2uw9EVP6DX6XvHuXBtiWAhncImhWmLuLARhMvjvGAif1XiAEiEV2+6ydYwdqopGYxhq9Jazndd7+pMuTd8Sbxqn0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB7689
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-07_08,2023-07-06_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxlogscore=999
+ suspectscore=0 bulkscore=0 spamscore=0 mlxscore=0 adultscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2307070122
+X-Proofpoint-ORIG-GUID: bLvbNTMkjUpoKSjuH3279WamCeZsgJ2g
+X-Proofpoint-GUID: bLvbNTMkjUpoKSjuH3279WamCeZsgJ2g
 X-Mailman-Approved-At: Sat, 08 Jul 2023 07:44:48 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -63,457 +206,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: lucho@ionkov.net, rafael@kernel.org, djwong@kernel.org, al@alarsen.net, cmllamas@google.com, andrii@kernel.org, hughd@google.com, john.johansen@canonical.com, agordeev@linux.ibm.com, hch@lst.de, hubcap@omnibond.com, pc@manguebit.com, linux-xfs@vger.kernel.org, bvanassche@acm.org, jeffxu@chromium.org, john@keeping.me.uk, yi.zhang@huawei.com, jmorris@namei.org, code@tyhicks.com, stern@rowland.harvard.edu, borntraeger@linux.ibm.com, devel@lists.orangefs.org, mirimmad17@gmail.com, sprasad@microsoft.com, jaharkes@cs.cmu.edu, linux-um@lists.infradead.org, npiggin@gmail.com, viro@zeniv.linux.org.uk, ericvh@kernel.org, surenb@google.com, trond.myklebust@hammerspace.com, anton@tuxera.com, brauner@kernel.org, wsa+renesas@sang-engineering.com, gregkh@linuxfoundation.org, stephen.smalley.work@gmail.com, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, lsahlber@redhat.com, senozhatsky@chromium.org, arve@android.com, chuck.lever@oracle.com, svens@linux.ibm.com, jolsa@kernel.org, jack@s
- use.com, tj@kernel.org, akpm@linux-foundation.org, linux-trace-kernel@vger.kernel.org, xu.xin16@zte.com.cn, shaggy@kernel.org, dhavale@google.com, penguin-kernel@I-love.SAKURA.ne.jp, zohar@linux.ibm.com, linux-mm@kvack.org, joel@joelfernandes.org, edumazet@google.com, sdf@google.com, jomajm@gmail.com, linux-s390@vger.kernel.org, linux-nilfs@vger.kernel.org, paul@paul-moore.com, leon@kernel.org, john.fastabend@gmail.com, mcgrof@kernel.org, chi.minghao@zte.com.cn, codalist@coda.cs.cmu.edu, selinux@vger.kernel.org, zhangpeng362@huawei.com, quic_ugoswami@quicinc.com, yhs@fb.com, yzaikin@google.com, linkinjeon@kernel.org, mhiramat@kernel.org, ecryptfs@vger.kernel.org, tkjos@android.com, madkar@cs.stonybrook.edu, gor@linux.ibm.com, yuzhe@nfschina.com, linuxppc-dev@lists.ozlabs.org, reiserfs-devel@vger.kernel.org, miklos@szeredi.hu, huyue2@coolpad.com, jaegeuk@kernel.org, gargaditya08@live.com, maco@android.com, hirofumi@mail.parknet.co.jp, haoluo@google.com, tony.luck@intel.com, tytso@mit
- .edu, nico@fluxnic.net, linux-ntfs-dev@lists.sourceforge.net, muchun.song@linux.dev, roberto.sassu@huawei.com, linux-f2fs-devel@lists.sourceforge.net, yang.yang29@zte.com.cn, gpiccoli@igalia.com, ebiederm@xmission.com, anna@kernel.org, quic_uaggarwa@quicinc.com, bwarrum@linux.ibm.com, mike.kravetz@oracle.com, jingyuwang_vip@163.com, linux-efi@vger.kernel.org, error27@gmail.com, martin@omnibond.com, trix@redhat.com, ocfs2-devel@lists.linux.dev, ast@kernel.org, sebastian.reichel@collabora.com, clm@fb.com, linux-mtd@lists.infradead.org, willy@infradead.org, marc.dionne@auristor.com, linux-afs@lists.infradead.org, raven@themaw.net, naohiro.aota@wdc.com, daniel@iogearbox.net, dennis.dalessandro@cornelisnetworks.com, linux-rdma@vger.kernel.org, quic_linyyuan@quicinc.com, coda@cs.cmu.edu, slava@dubeyko.com, idryomov@gmail.com, pabeni@redhat.com, adobriyan@gmail.com, serge@hallyn.com, chengzhihao1@huawei.com, axboe@kernel.dk, amir73il@gmail.com, linuszeng@tencent.com, keescook@chromium.org,
-  arnd@arndb.de, autofs@vger.kernel.org, rostedt@goodmis.org, yifeliu@cs.stonybrook.edu, dlemoal@kernel.org, eparis@parisplace.org, ceph-devel@vger.kernel.org, xiang@kernel.org, yijiangshan@kylinos.cn, dhowells@redhat.com, linux-nfs@vger.kernel.org, linux-ext4@vger.kernel.org, kolga@netapp.com, song@kernel.org, samba-technical@lists.samba.org, sfrench@samba.org, jk@ozlabs.org, netdev@vger.kernel.org, rpeterso@redhat.com, linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org, ntfs3@lists.linux.dev, linux-erofs@lists.ozlabs.org, davem@davemloft.net, jfs-discussion@lists.sourceforge.net, princekumarmaurya06@gmail.com, ebiggers@google.com, neilb@suse.de, asmadeus@codewreck.org, linux_oss@crudebyte.com, me@bobcopeland.com, kpsingh@kernel.org, okanatov@gmail.com, almaz.alexandrovich@paragon-software.com, joseph.qi@linux.alibaba.com, hayama@lineo.co.jp, adilger.kernel@dilger.ca, mikulas@artax.karlin.mff.cuni.cz, shaozhengchao@huawei.com, chenzhongjin@huawei.com, ardb@kernel.org, anton.ivanov@c
- ambridgegreys.com, agruenba@redhat.com, richard@nod.at, mark@fasheh.com, shr@devkernel.io, Dai.Ngo@oracle.com, cluster-devel@redhat.com, jgg@ziepe.ca, kuba@kernel.org, riel@surriel.com, salah.triki@gmail.com, dushistov@mail.ru, linux-cifs@vger.kernel.org, hca@linux.ibm.com, chao@kernel.org, apparmor@lists.ubuntu.com, josef@toxicpanda.com, Liam.Howlett@Oracle.com, tom@talpey.com, hdegoede@redhat.com, linux-hardening@vger.kernel.org, aivazian.tigran@gmail.com, dchinner@redhat.com, dsterba@suse.com, xiubli@redhat.com, konishi.ryusuke@gmail.com, jgross@suse.com, jth@kernel.org, rituagar@linux.ibm.com, luisbg@kernel.org, martin.lau@linux.dev, v9fs@lists.linux.dev, fmdefrancesco@gmail.com, linux-unionfs@vger.kernel.org, lrh2000@pku.edu.cn, linux-security-module@vger.kernel.org, ezk@cs.stonybrook.edu, jefflexu@linux.alibaba.com, linux@treblig.org, hannes@cmpxchg.org, phillip@squashfs.org.uk, johannes@sipsolutions.net, sj1557.seo@samsung.com, dwmw2@infradead.org, linux-karma-devel@lists.sou
- rceforge.net, linux-btrfs@vger.kernel.org, jlbec@evilplan.org
+Cc: chenhuacai@kernel.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, peterz@infradead.org, Catalin Marinas <catalin.marinas@arm.com>, linus.walleij@linaro.org, dave.hansen@linux.intel.com, linux-mips@vger.kernel.org, James.Bottomley@HansenPartnership.com, dalias@libc.org, hpa@zytor.com, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, kernel@xen0n.name, tsi@tuyoix.net, linux-s390@vger.kernel.org, agordeev@linux.ibm.com, rmk+kernel@armlinux.org.uk, paulmck@kernel.org, ysato@users.sourceforge.jp, deller@gmx.de, x86@kernel.org, linux@armlinux.org.uk, Paul Walmsley <paul.walmsley@sifive.com>, mingo@redhat.com, geert@linux-m68k.org, hbathini@linux.ibm.com, samitolvanen@google.com, ojeda@kernel.org, borntraeger@linux.ibm.com, frederic@kernel.org, Arnd Bergmann <arnd@arndb.de>, mhiramat@kernel.org, Ard Biesheuvel <ardb@kernel.org>, thunder.leizhen@huawei.com, aou@eecs.berkeley.edu, keescook@chromium.org, gor@linux.ibm.com, anshuman.khandual@arm.com, hca@linux.ibm.
+ com, xin3.li@intel.com, npiggin@gmail.com, konrad.wilk@oracle.com, linux-m68k@lists.linux-m68k.org, bp@alien8.de, loongarch@lists.linux.dev, glaubitz@physik.fu-berlin.de, tglx@linutronix.de, ziy@nvidia.com, linux-arm-kernel@lists.infradead.org, boris.ostrovsky@oracle.com, tsbogend@alpha.franken.de, sebastian.reichel@collabora.com, bhe@redhat.com, linux-parisc@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>, kirill.shutemov@linux.intel.com, ndesaulniers@google.com, linux-kernel@vger.kernel.org, sourabhjain@linux.ibm.com, juerg.haefliger@canonical.com, svens@linux.ibm.com, tj@kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, masahiroy@kernel.org, rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2023-07-05 at 14:58 -0400, Jeff Layton wrote:
-> v2:
-> - prepend patches to add missing ctime updates
-> - add simple_rename_timestamp helper function
-> - rename ctime accessor functions as inode_get_ctime/inode_set_ctime_*
-> - drop individual inode_ctime_set_{sec,nsec} helpers
->=20
 
-After review by Jan and others, and Jan's ext4 rework, the diff on top
-of the series I posted a couple of days ago is below. I don't really
-want to spam everyone with another ~100 patch v3 series, but I can if
-you think that's best.
 
-Christian, what would you like me to do here?
+On 7/6/23 17:32, Palmer Dabbelt wrote:
+> On Thu, 06 Jul 2023 15:20:25 PDT (-0700), eric.devolder@oracle.com wrote:
+>> The kexec and crash kernel options are provided in the common
+>> kernel/Kconfig.kexec. Utilize the common options and provide
+>> the ARCH_SUPPORTS_ and ARCH_SELECTS_ entries to recreate the
+>> equivalent set of KEXEC and CRASH options.
+>>
+>> Signed-off-by: Eric DeVolder <eric.devolder@oracle.com>
+>> ---
+>>  arch/riscv/Kconfig | 44 +++++++++++++-------------------------------
+>>  1 file changed, 13 insertions(+), 31 deletions(-)
+>>
+>> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+>> index b49793cf34eb..8a3af850597a 100644
+>> --- a/arch/riscv/Kconfig
+>> +++ b/arch/riscv/Kconfig
+>> @@ -647,48 +647,30 @@ config RISCV_BOOT_SPINWAIT
+>>
+>>        If unsure what to do here, say N.
+>>
+>> -config KEXEC
+>> -    bool "Kexec system call"
+>> -    depends on MMU
+>> +config ARCH_SUPPORTS_KEXEC
+>> +    def_bool MMU
+>> +
+>> +config ARCH_SELECTS_KEXEC
+>> +    def_bool y
+>> +    depends on KEXEC
+>>      select HOTPLUG_CPU if SMP
+>> -    select KEXEC_CORE
+>> -    help
+>> -      kexec is a system call that implements the ability to shutdown your
+>> -      current kernel, and to start another kernel. It is like a reboot
+>> -      but it is independent of the system firmware. And like a reboot
+>> -      you can start any kernel with it, not just Linux.
+>>
+>> -      The name comes from the similarity to the exec system call.
+>> +config ARCH_SUPPORTS_KEXEC_FILE
+>> +    def_bool 64BIT && MMU
+>>
+>> -config KEXEC_FILE
+>> -    bool "kexec file based systmem call"
+>> -    depends on 64BIT && MMU
+>> +config ARCH_SELECTS_KEXEC_FILE
+>> +    def_bool y
+>> +    depends on KEXEC_FILE
+>>      select HAVE_IMA_KEXEC if IMA
+>> -    select KEXEC_CORE
+>>      select KEXEC_ELF
+>> -    help
+>> -      This is new version of kexec system call. This system call is
+>> -      file based and takes file descriptors as system call argument
+>> -      for kernel and initramfs as opposed to list of segments as
+>> -      accepted by previous system call.
+>> -
+>> -      If you don't know what to do here, say Y.
+>>
+>>  config ARCH_HAS_KEXEC_PURGATORY
+>>      def_bool KEXEC_FILE
+>>      depends on CRYPTO=y
+>>      depends on CRYPTO_SHA256=y
+>>
+>> -config CRASH_DUMP
+>> -    bool "Build kdump crash kernel"
+>> -    help
+>> -      Generate crash dump after being started by kexec. This should
+>> -      be normally only set in special crash dump kernels which are
+>> -      loaded in the main kernel with kexec-tools into a specially
+>> -      reserved region and then later executed after a crash by
+>> -      kdump/kexec.
+>> -
+>> -      For more details see Documentation/admin-guide/kdump/kdump.rst
+>> +config ARCH_SUPPORTS_CRASH_DUMP
+>> +    def_bool y
+>>
+>>  config COMPAT
+>>      bool "Kernel support for 32-bit U-mode"
+> 
+> Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
 
-diff --git a/fs/ceph/inode.c b/fs/ceph/inode.c
-index bcdb1a0beccf..5f6e93714f5a 100644
---- a/fs/ceph/inode.c
-+++ b/fs/ceph/inode.c
-@@ -699,8 +699,7 @@ void ceph_fill_file_time(struct inode *inode, int issue=
-d,
- 		if (ci->i_version =3D=3D 0 ||
- 		    timespec64_compare(ctime, &ictime) > 0) {
- 			dout("ctime %lld.%09ld -> %lld.%09ld inc w/ cap\n",
--			     inode_get_ctime(inode).tv_sec,
--			     inode_get_ctime(inode).tv_nsec,
-+			     ictime.tv_sec, ictime.tv_nsec,
- 			     ctime->tv_sec, ctime->tv_nsec);
- 			inode_set_ctime_to_ts(inode, *ctime);
- 		}
-diff --git a/fs/erofs/inode.c b/fs/erofs/inode.c
-index 806374d866d1..567c0d305ea4 100644
---- a/fs/erofs/inode.c
-+++ b/fs/erofs/inode.c
-@@ -175,10 +175,7 @@ static void *erofs_read_inode(struct erofs_buf *buf,
- 		vi->chunkbits =3D sb->s_blocksize_bits +
- 			(vi->chunkformat & EROFS_CHUNK_FORMAT_BLKBITS_MASK);
- 	}
--	inode->i_mtime.tv_sec =3D inode_get_ctime(inode).tv_sec;
--	inode->i_atime.tv_sec =3D inode_get_ctime(inode).tv_sec;
--	inode->i_mtime.tv_nsec =3D inode_get_ctime(inode).tv_nsec;
--	inode->i_atime.tv_nsec =3D inode_get_ctime(inode).tv_nsec;
-+	inode->i_mtime =3D inode->i_atime =3D inode_get_ctime(inode);
-=20
- 	inode->i_flags &=3D ~S_DAX;
- 	if (test_opt(&sbi->opt, DAX_ALWAYS) && S_ISREG(inode->i_mode) &&
-diff --git a/fs/exfat/namei.c b/fs/exfat/namei.c
-index c007de6ac1c7..1b9f587f6cca 100644
---- a/fs/exfat/namei.c
-+++ b/fs/exfat/namei.c
-@@ -1351,7 +1351,7 @@ static int exfat_rename(struct mnt_idmap *idmap,
- 			exfat_warn(sb, "abnormal access to an inode dropped");
- 			WARN_ON(new_inode->i_nlink =3D=3D 0);
- 		}
--		EXFAT_I(new_inode)->i_crtime =3D inode_set_ctime_current(new_inode);
-+		EXFAT_I(new_inode)->i_crtime =3D current_time(new_inode);
- 	}
-=20
- unlock:
-diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
-index d502b930431b..d63543187359 100644
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -868,64 +868,63 @@ struct ext4_inode {
-  * affected filesystem before 2242.
-  */
-=20
--static inline __le32 ext4_encode_extra_time(struct timespec64 *time)
-+static inline __le32 ext4_encode_extra_time(struct timespec64 ts)
- {
--	u32 extra =3D((time->tv_sec - (s32)time->tv_sec) >> 32) & EXT4_EPOCH_MASK=
-;
--	return cpu_to_le32(extra | (time->tv_nsec << EXT4_EPOCH_BITS));
-+	u32 extra =3D ((ts.tv_sec - (s32)ts.tv_sec) >> 32) & EXT4_EPOCH_MASK;
-+	return cpu_to_le32(extra | (ts.tv_nsec << EXT4_EPOCH_BITS));
- }
-=20
--static inline void ext4_decode_extra_time(struct timespec64 *time,
--					  __le32 extra)
-+static inline struct timespec64 ext4_decode_extra_time(__le32 base,
-+						       __le32 extra)
- {
-+	struct timespec64 ts =3D { .tv_sec =3D le32_to_cpu(base) };
-+
- 	if (unlikely(extra & cpu_to_le32(EXT4_EPOCH_MASK)))
--		time->tv_sec +=3D (u64)(le32_to_cpu(extra) & EXT4_EPOCH_MASK) << 32;
--	time->tv_nsec =3D (le32_to_cpu(extra) & EXT4_NSEC_MASK) >> EXT4_EPOCH_BIT=
-S;
-+		ts.tv_sec +=3D (u64)(le32_to_cpu(extra) & EXT4_EPOCH_MASK) << 32;
-+	ts.tv_nsec =3D (le32_to_cpu(extra) & EXT4_NSEC_MASK) >> EXT4_EPOCH_BITS;
-+	return ts;
- }
-=20
--#define EXT4_INODE_SET_XTIME(xtime, inode, raw_inode)				\
-+#define EXT4_INODE_SET_XTIME_VAL(xtime, inode, raw_inode, ts)			\
- do {										\
--	if (EXT4_FITS_IN_INODE(raw_inode, EXT4_I(inode), xtime ## _extra))     {\
--		(raw_inode)->xtime =3D cpu_to_le32((inode)->xtime.tv_sec);	\
--		(raw_inode)->xtime ## _extra =3D					\
--				ext4_encode_extra_time(&(inode)->xtime);	\
--		}								\
--	else	\
--		(raw_inode)->xtime =3D cpu_to_le32(clamp_t(int32_t, (inode)->xtime.tv_se=
-c, S32_MIN, S32_MAX));	\
-+	if (EXT4_FITS_IN_INODE(raw_inode, EXT4_I(inode), xtime ## _extra)) {	\
-+		(raw_inode)->xtime =3D cpu_to_le32((ts).tv_sec);			\
-+		(raw_inode)->xtime ## _extra =3D ext4_encode_extra_time(ts);	\
-+	} else									\
-+		(raw_inode)->xtime =3D cpu_to_le32(clamp_t(int32_t, (ts).tv_sec, S32_MIN=
-, S32_MAX));	\
- } while (0)
-=20
-+#define EXT4_INODE_SET_XTIME(xtime, inode, raw_inode)				\
-+	EXT4_INODE_SET_XTIME_VAL(xtime, inode, raw_inode, (inode)->xtime)
-+
-+#define EXT4_INODE_SET_CTIME(inode, raw_inode)					\
-+	EXT4_INODE_SET_XTIME_VAL(i_ctime, inode, raw_inode, inode_get_ctime(inode=
-))
-+
- #define EXT4_EINODE_SET_XTIME(xtime, einode, raw_inode)			       \
--do {									       \
--	if (EXT4_FITS_IN_INODE(raw_inode, einode, xtime))		       \
--		(raw_inode)->xtime =3D cpu_to_le32((einode)->xtime.tv_sec);      \
--	if (EXT4_FITS_IN_INODE(raw_inode, einode, xtime ## _extra))	       \
--		(raw_inode)->xtime ## _extra =3D				       \
--				ext4_encode_extra_time(&(einode)->xtime);      \
--} while (0)
-+	EXT4_INODE_SET_XTIME_VAL(xtime, &((einode)->vfs_inode), raw_inode, (einod=
-e)->xtime)
-+
-+#define EXT4_INODE_GET_XTIME_VAL(xtime, inode, raw_inode)			\
-+	(EXT4_FITS_IN_INODE(raw_inode, EXT4_I(inode), xtime ## _extra) ?	\
-+		ext4_decode_extra_time((raw_inode)->xtime,				\
-+				       (raw_inode)->xtime ## _extra) :		\
-+		(struct timespec64) {						\
-+			.tv_sec =3D (signed)le32_to_cpu((raw_inode)->xtime)	\
-+		})
-=20
- #define EXT4_INODE_GET_XTIME(xtime, inode, raw_inode)				\
- do {										\
--	(inode)->xtime.tv_sec =3D (signed)le32_to_cpu((raw_inode)->xtime);	\
--	if (EXT4_FITS_IN_INODE(raw_inode, EXT4_I(inode), xtime ## _extra)) {	\
--		ext4_decode_extra_time(&(inode)->xtime,				\
--				       raw_inode->xtime ## _extra);		\
--		}								\
--	else									\
--		(inode)->xtime.tv_nsec =3D 0;					\
-+	(inode)->xtime =3D EXT4_INODE_GET_XTIME_VAL(xtime, inode, raw_inode);	\
- } while (0)
-=20
-+#define EXT4_INODE_GET_CTIME(inode, raw_inode)					\
-+do {										\
-+	inode_set_ctime_to_ts(inode,						\
-+		EXT4_INODE_GET_XTIME_VAL(i_ctime, inode, raw_inode));		\
-+} while (0)
-=20
- #define EXT4_EINODE_GET_XTIME(xtime, einode, raw_inode)			       \
- do {									       \
--	if (EXT4_FITS_IN_INODE(raw_inode, einode, xtime))		       \
--		(einode)->xtime.tv_sec =3D 				       \
--			(signed)le32_to_cpu((raw_inode)->xtime);	       \
--	else								       \
--		(einode)->xtime.tv_sec =3D 0;				       \
--	if (EXT4_FITS_IN_INODE(raw_inode, einode, xtime ## _extra))	       \
--		ext4_decode_extra_time(&(einode)->xtime,		       \
--				       raw_inode->xtime ## _extra);	       \
--	else								       \
--		(einode)->xtime.tv_nsec =3D 0;				       \
-+	(einode)->xtime =3D EXT4_INODE_GET_XTIME_VAL(xtime, &(einode->vfs_inode),=
- raw_inode);	\
- } while (0)
-=20
- #define i_disk_version osd1.linux1.l_i_version
-@@ -3823,27 +3822,6 @@ static inline int ext4_buffer_uptodate(struct buffer=
-_head *bh)
- 	return buffer_uptodate(bh);
- }
-=20
--static inline void ext4_inode_set_ctime(struct inode *inode, struct ext4_i=
-node *raw_inode)
--{
--	struct timespec64 ctime =3D inode_get_ctime(inode);
--
--	if (EXT4_FITS_IN_INODE(raw_inode, EXT4_I(inode), i_ctime_extra)) {
--		raw_inode->i_ctime =3D cpu_to_le32(ctime.tv_sec);
--		raw_inode->i_ctime_extra =3D ext4_encode_extra_time(&ctime);
--	} else {
--		raw_inode->i_ctime =3D cpu_to_le32(clamp_t(int32_t, ctime.tv_sec, S32_MI=
-N, S32_MAX));
--	}
--}
--
--static inline void ext4_inode_get_ctime(struct inode *inode, const struct =
-ext4_inode *raw_inode)
--{
--	struct timespec64 ctime =3D { .tv_sec =3D (signed)le32_to_cpu(raw_inode->=
-i_ctime) };
--
--	if (EXT4_FITS_IN_INODE(raw_inode, EXT4_I(inode), i_ctime_extra))
--		ext4_decode_extra_time(&ctime, raw_inode->i_ctime_extra);
--	inode_set_ctime(inode, ctime.tv_sec, ctime.tv_nsec);
--}
--
- #endif	/* __KERNEL__ */
-=20
- #define EFSBADCRC	EBADMSG		/* Bad CRC detected */
-diff --git a/fs/ext4/inode-test.c b/fs/ext4/inode-test.c
-index 7935ea6cf92c..f0c0fd507fbc 100644
---- a/fs/ext4/inode-test.c
-+++ b/fs/ext4/inode-test.c
-@@ -245,9 +245,9 @@ static void inode_test_xtimestamp_decoding(struct kunit=
- *test)
- 	struct timestamp_expectation *test_param =3D
- 			(struct timestamp_expectation *)(test->param_value);
-=20
--	timestamp.tv_sec =3D get_32bit_time(test_param);
--	ext4_decode_extra_time(&timestamp,
--			       cpu_to_le32(test_param->extra_bits));
-+	timestamp =3D ext4_decode_extra_time(
-+				cpu_to_le32(get_32bit_time(test_param)),
-+				cpu_to_le32(test_param->extra_bits));
-=20
- 	KUNIT_EXPECT_EQ_MSG(test,
- 			    test_param->expected.tv_sec,
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index bbc57954dfd3..c6a837b90af4 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -4249,7 +4249,7 @@ static int ext4_fill_raw_inode(struct inode *inode, s=
-truct ext4_inode *raw_inode
- 	}
- 	raw_inode->i_links_count =3D cpu_to_le16(inode->i_nlink);
-=20
--	ext4_inode_set_ctime(inode, raw_inode);
-+	EXT4_INODE_SET_CTIME(inode, raw_inode);
- 	EXT4_INODE_SET_XTIME(i_mtime, inode, raw_inode);
- 	EXT4_INODE_SET_XTIME(i_atime, inode, raw_inode);
- 	EXT4_EINODE_SET_XTIME(i_crtime, ei, raw_inode);
-@@ -4858,7 +4858,7 @@ struct inode *__ext4_iget(struct super_block *sb, uns=
-igned long ino,
- 		}
- 	}
-=20
--	ext4_inode_get_ctime(inode, raw_inode);
-+	EXT4_INODE_GET_CTIME(inode, raw_inode);
- 	EXT4_INODE_GET_XTIME(i_mtime, inode, raw_inode);
- 	EXT4_INODE_GET_XTIME(i_atime, inode, raw_inode);
- 	EXT4_EINODE_GET_XTIME(i_crtime, ei, raw_inode);
-@@ -4981,7 +4981,7 @@ static void __ext4_update_other_inode_time(struct sup=
-er_block *sb,
- 		spin_unlock(&inode->i_lock);
-=20
- 		spin_lock(&ei->i_raw_lock);
--		ext4_inode_get_ctime(inode, raw_inode);
-+		EXT4_INODE_SET_CTIME(inode, raw_inode);
- 		EXT4_INODE_SET_XTIME(i_mtime, inode, raw_inode);
- 		EXT4_INODE_SET_XTIME(i_atime, inode, raw_inode);
- 		ext4_inode_csum_set(inode, raw_inode, ei);
-diff --git a/fs/fat/inode.c b/fs/fat/inode.c
-index 2be40ff8a74f..cdd39b6020f3 100644
---- a/fs/fat/inode.c
-+++ b/fs/fat/inode.c
-@@ -1407,9 +1407,7 @@ static int fat_read_root(struct inode *inode)
- 	MSDOS_I(inode)->mmu_private =3D inode->i_size;
-=20
- 	fat_save_attrs(inode, ATTR_DIR);
--	inode->i_mtime.tv_sec =3D inode->i_atime.tv_sec =3D inode_set_ctime(inode=
-,
--									0, 0).tv_sec;
--	inode->i_mtime.tv_nsec =3D inode->i_atime.tv_nsec =3D 0;
-+	inode->i_mtime =3D inode->i_atime =3D inode_set_ctime(inode, 0, 0);
- 	set_nlink(inode, fat_subdirs(inode)+2);
-=20
- 	return 0;
-diff --git a/fs/hpfs/namei.c b/fs/hpfs/namei.c
-index 36babb78b510..f4eb8d6f5989 100644
---- a/fs/hpfs/namei.c
-+++ b/fs/hpfs/namei.c
-@@ -15,8 +15,7 @@ static void hpfs_update_directory_times(struct inode *dir=
-)
- 	if (t =3D=3D dir->i_mtime.tv_sec &&
- 	    t =3D=3D inode_get_ctime(dir).tv_sec)
- 		return;
--	dir->i_mtime.tv_sec =3D inode_set_ctime(dir, t, 0).tv_sec;
--	dir->i_mtime.tv_nsec =3D 0;
-+	dir->i_mtime =3D inode_set_ctime(dir, t, 0);
- 	hpfs_write_inode_nolock(dir);
- }
-=20
-@@ -59,11 +58,8 @@ static int hpfs_mkdir(struct mnt_idmap *idmap, struct in=
-ode *dir,
- 	result->i_ino =3D fno;
- 	hpfs_i(result)->i_parent_dir =3D dir->i_ino;
- 	hpfs_i(result)->i_dno =3D dno;
--	inode_set_ctime(result,
--			result->i_mtime.tv_sec =3D result->i_atime.tv_sec =3D local_to_gmt(dir-=
->i_sb, le32_to_cpu(dee.creation_date)),
--			0);
--	result->i_mtime.tv_nsec =3D 0;=20
--	result->i_atime.tv_nsec =3D 0;=20
-+	result->i_mtime =3D result->i_atime =3D
-+		inode_set_ctime(result, local_to_gmt(dir->i_sb, le32_to_cpu(dee.creation=
-_date)), 0);
- 	hpfs_i(result)->i_ea_size =3D 0;
- 	result->i_mode |=3D S_IFDIR;
- 	result->i_op =3D &hpfs_dir_iops;
-@@ -168,11 +164,8 @@ static int hpfs_create(struct mnt_idmap *idmap, struct=
- inode *dir,
- 	result->i_fop =3D &hpfs_file_ops;
- 	set_nlink(result, 1);
- 	hpfs_i(result)->i_parent_dir =3D dir->i_ino;
--	inode_set_ctime(result,
--			result->i_mtime.tv_sec =3D result->i_atime.tv_sec =3D local_to_gmt(dir-=
->i_sb, le32_to_cpu(dee.creation_date)),
--			0);
--	result->i_mtime.tv_nsec =3D 0;
--	result->i_atime.tv_nsec =3D 0;
-+	result->i_mtime =3D result->i_atime =3D
-+		inode_set_ctime(result, local_to_gmt(dir->i_sb, le32_to_cpu(dee.creation=
-_date)), 0);
- 	hpfs_i(result)->i_ea_size =3D 0;
- 	if (dee.read_only)
- 		result->i_mode &=3D ~0222;
-@@ -252,11 +245,8 @@ static int hpfs_mknod(struct mnt_idmap *idmap, struct =
-inode *dir,
- 	hpfs_init_inode(result);
- 	result->i_ino =3D fno;
- 	hpfs_i(result)->i_parent_dir =3D dir->i_ino;
--	inode_set_ctime(result,
--			result->i_mtime.tv_sec =3D result->i_atime.tv_sec =3D local_to_gmt(dir-=
->i_sb, le32_to_cpu(dee.creation_date)),
--			0);
--	result->i_mtime.tv_nsec =3D 0;
--	result->i_atime.tv_nsec =3D 0;
-+	result->i_mtime =3D result->i_atime =3D
-+		inode_set_ctime(result, local_to_gmt(dir->i_sb, le32_to_cpu(dee.creation=
-_date)), 0);
- 	hpfs_i(result)->i_ea_size =3D 0;
- 	result->i_uid =3D current_fsuid();
- 	result->i_gid =3D current_fsgid();
-@@ -329,11 +319,8 @@ static int hpfs_symlink(struct mnt_idmap *idmap, struc=
-t inode *dir,
- 	result->i_ino =3D fno;
- 	hpfs_init_inode(result);
- 	hpfs_i(result)->i_parent_dir =3D dir->i_ino;
--	inode_set_ctime(result,
--			result->i_mtime.tv_sec =3D result->i_atime.tv_sec =3D local_to_gmt(dir-=
->i_sb, le32_to_cpu(dee.creation_date)),
--			0);
--	result->i_mtime.tv_nsec =3D 0;
--	result->i_atime.tv_nsec =3D 0;
-+	result->i_mtime =3D result->i_atime =3D
-+		inode_set_ctime(result, local_to_gmt(dir->i_sb, le32_to_cpu(dee.creation=
-_date)), 0);
- 	hpfs_i(result)->i_ea_size =3D 0;
- 	result->i_mode =3D S_IFLNK | 0777;
- 	result->i_uid =3D current_fsuid();
-diff --git a/fs/isofs/inode.c b/fs/isofs/inode.c
-index 98a78200cff1..2ee21286ac8f 100644
---- a/fs/isofs/inode.c
-+++ b/fs/isofs/inode.c
-@@ -1422,13 +1422,8 @@ static int isofs_read_inode(struct inode *inode, int=
- relocated)
- 			inode->i_ino, de->flags[-high_sierra]);
- 	}
- #endif
--
--	inode->i_mtime.tv_sec =3D
--	inode->i_atime.tv_sec =3D inode_set_ctime(inode,
--						iso_date(de->date, high_sierra),
--						0).tv_sec;
--	inode->i_mtime.tv_nsec =3D
--	inode->i_atime.tv_nsec =3D 0;
-+	inode->i_mtime =3D inode->i_atime =3D
-+		inode_set_ctime(inode, iso_date(de->date, high_sierra), 0);
-=20
- 	ei->i_first_extent =3D (isonum_733(de->extent) +
- 			isonum_711(de->ext_attr_length));
-diff --git a/fs/minix/inode.c b/fs/minix/inode.c
-index 3715a3940bd4..8a4fc9420b36 100644
---- a/fs/minix/inode.c
-+++ b/fs/minix/inode.c
-@@ -501,11 +501,7 @@ static struct inode *V1_minix_iget(struct inode *inode=
-)
- 	i_gid_write(inode, raw_inode->i_gid);
- 	set_nlink(inode, raw_inode->i_nlinks);
- 	inode->i_size =3D raw_inode->i_size;
--	inode->i_mtime.tv_sec =3D inode->i_atime.tv_sec =3D inode_set_ctime(inode=
-,
--									raw_inode->i_time,
--									0).tv_sec;
--	inode->i_mtime.tv_nsec =3D 0;
--	inode->i_atime.tv_nsec =3D 0;
-+	inode->i_mtime =3D inode->i_atime =3D inode_set_ctime(inode, raw_inode->i=
-_time, 0);
- 	inode->i_blocks =3D 0;
- 	for (i =3D 0; i < 9; i++)
- 		minix_inode->u.i1_data[i] =3D raw_inode->i_zone[i];
-diff --git a/fs/overlayfs/file.c b/fs/overlayfs/file.c
-index 7acd3e3fe790..7e7876aae01c 100644
---- a/fs/overlayfs/file.c
-+++ b/fs/overlayfs/file.c
-@@ -255,7 +255,7 @@ static void ovl_file_accessed(struct file *file)
- 	if ((!timespec64_equal(&inode->i_mtime, &upperinode->i_mtime) ||
- 	     !timespec64_equal(&ctime, &uctime))) {
- 		inode->i_mtime =3D upperinode->i_mtime;
--		inode_set_ctime_to_ts(inode, inode_get_ctime(upperinode));
-+		inode_set_ctime_to_ts(inode, uctime);
- 	}
-=20
- 	touch_atime(&file->f_path);
-diff --git a/fs/romfs/super.c b/fs/romfs/super.c
-index 961b9d342e0e..d89739655f9e 100644
---- a/fs/romfs/super.c
-+++ b/fs/romfs/super.c
-@@ -322,8 +322,7 @@ static struct inode *romfs_iget(struct super_block *sb,=
- unsigned long pos)
-=20
- 	set_nlink(i, 1);		/* Hard to decide.. */
- 	i->i_size =3D be32_to_cpu(ri.size);
--	i->i_mtime.tv_sec =3D i->i_atime.tv_sec =3D inode_set_ctime(i, 0, 0).tv_s=
-ec;
--	i->i_mtime.tv_nsec =3D i->i_atime.tv_nsec =3D 0;
-+	i->i_mtime =3D i->i_atime =3D inode_set_ctime(i, 0, 0);
-=20
- 	/* set up mode and ops */
- 	mode =3D romfs_modemap[nextfh & ROMFH_TYPE];
-diff --git a/fs/smb/client/fscache.h b/fs/smb/client/fscache.h
-index a228964bc2ce..84f3b09367d2 100644
---- a/fs/smb/client/fscache.h
-+++ b/fs/smb/client/fscache.h
-@@ -56,7 +56,7 @@ void cifs_fscache_fill_coherency(struct inode *inode,
- 	cd->last_write_time_sec   =3D cpu_to_le64(cifsi->netfs.inode.i_mtime.tv_s=
-ec);
- 	cd->last_write_time_nsec  =3D cpu_to_le32(cifsi->netfs.inode.i_mtime.tv_n=
-sec);
- 	cd->last_change_time_sec  =3D cpu_to_le64(ctime.tv_sec);
--	cd->last_change_time_nsec  =3D cpu_to_le64(ctime.tv_nsec);
-+	cd->last_change_time_nsec =3D cpu_to_le32(ctime.tv_nsec);
- }
-=20
-=20
-
---=20
-Jeff Layton <jlayton@kernel.org>
+Thank you Palmer!
+eric
