@@ -1,62 +1,107 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D356A74B03B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jul 2023 13:47:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02A9474B091
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jul 2023 14:18:50 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jXdQbiZ5;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UEJqs0l5;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UEJqs0l5;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QyBV25P9Nz3cCs
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jul 2023 21:47:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QyC9g6M0lz3c5Z
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jul 2023 22:18:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jXdQbiZ5;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UEJqs0l5;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UEJqs0l5;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=jlayton@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qy9DS5Kfcz3bWQ;
-	Fri,  7 Jul 2023 20:51:04 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 9C4C3618BB;
-	Fri,  7 Jul 2023 10:51:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1904CC433C7;
-	Fri,  7 Jul 2023 10:50:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1688727060;
-	bh=YY2+JZ9K159BEA5iSbeX62sRGYZcpbUaLjQvLugmLbE=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=jXdQbiZ5Du/aIdze7VeTdm89AeKeYW1m4/7P1K420P54fp2uTq7aOaGBMwqlLnw11
-	 5T+jXE1w9xr2TFIydSymIs59E5/D60tiQwOrG5t4hwTmZ4+DNTLa0LgW/JlS7C6Rg0
-	 Mzl7zZGaHcBNbE8fs+RYzBh/pLfQTiwpAzbqUwnaVBq4Wks4CGEmJGniuijWbkznN9
-	 yKSAP4Wd0VGwzQyH6kGj1b/zaEVMosXLl47jzHBi50p2AWNvdkuhe4kCPVw/2GfwLp
-	 PcUD4QVeNETkqKyUuCjgzrA8gjstIliNy9GhxSwhdsoWExJoMegiOtBnIsuS31XbZX
-	 flM91ZzrsjFeA==
-Message-ID: <ff1f471a9d33ae01ad570644273e4e579204a3b6.camel@kernel.org>
-Subject: Re: [apparmor] [PATCH v2 08/92] fs: new helper:
- simple_rename_timestamp
-From: Jeff Layton <jlayton@kernel.org>
-To: Seth Arnold <seth.arnold@canonical.com>
-Date: Fri, 07 Jul 2023 06:50:40 -0400
-In-Reply-To: <20230706210236.GB3244704@millbarge>
-References: <20230705185812.579118-1-jlayton@kernel.org>
-	 <20230705185812.579118-3-jlayton@kernel.org>
-	 <3b403ef1-22e6-0220-6c9c-435e3444b4d3@kernel.org>
-	 <7c783969641b67d6ffdfb10e509f382d083c5291.camel@kernel.org>
-	 <20230706210236.GB3244704@millbarge>
-Content-Type: text/plain; charset="ISO-8859-15"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QyC8q1dSNz30P0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jul 2023 22:18:02 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1688732277;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3PKweTvYl5LiGyKuKPuX7PKGhw8DHWGK7bc17UzyC90=;
+	b=UEJqs0l5Nc2/xNMEIToJP488YCDZPb5hEPV7U37nbeynjY1b8FOO3z/GZd5ZdmjPHvppKk
+	w53SoGXiYwUFq+1nbtqGTWKkYhFvBey8MbXom42KlZOibldCsY2uX1oT0j7Wf8IDJtTpsp
+	PhQ162TeEEaEx+V7yredUsx0GW2UZTc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1688732277;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3PKweTvYl5LiGyKuKPuX7PKGhw8DHWGK7bc17UzyC90=;
+	b=UEJqs0l5Nc2/xNMEIToJP488YCDZPb5hEPV7U37nbeynjY1b8FOO3z/GZd5ZdmjPHvppKk
+	w53SoGXiYwUFq+1nbtqGTWKkYhFvBey8MbXom42KlZOibldCsY2uX1oT0j7Wf8IDJtTpsp
+	PhQ162TeEEaEx+V7yredUsx0GW2UZTc=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-132-KpgJMIESPoqgl6huhuR6EQ-1; Fri, 07 Jul 2023 08:17:54 -0400
+X-MC-Unique: KpgJMIESPoqgl6huhuR6EQ-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-3fbdf34184eso10982005e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Jul 2023 05:17:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688732273; x=1691324273;
+        h=content-transfer-encoding:in-reply-to:subject:organization:from
+         :references:cc:to:content-language:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3PKweTvYl5LiGyKuKPuX7PKGhw8DHWGK7bc17UzyC90=;
+        b=DWplEvxBFpvmmAOMzwuRFuiy+w45ezk2bAgNf8wQCX/WJoOPkd9Z/H2J06pZmNhXxh
+         sTJtM9h47+isowvt3cJBlkNgTLWxlYrlMMJMP5gBn59nmhMgx+H/aF4OzB3P+90eZ+aY
+         GAKNfKQNYch/sQmMvubTuha3J9cMJdoGF6z8khEVUY1h2krjiOiP/4UcTjo/hFltCKoX
+         tfA+TVNKSpSNUGTp2ZTtVcGv1Y/FnaXuzAy26qlokbzNypb3xLcnvPGddinryfXzwDVN
+         23o5bFekSEaopckcAeYKBjeN+shXio7z8a/iTHMdT4boE07nXAq4OE8sjEReg0Y+yEed
+         dKCw==
+X-Gm-Message-State: ABy/qLa3u7G26UXtAeXimZ6O0l+XQ57/BkIWN6DyvfEGuR3DDVA3NFSS
+	CHRlEbQK0E7urQFqocy2A4wjWA95gh8u4SPTDVE6u3aX3POdwQYqk7VMpp7V61r2PWkEZcFcAgd
+	N1ZP1N6fFgm2j5V/Q+tMWnHpxYA==
+X-Received: by 2002:a7b:ce0f:0:b0:3f9:b87c:10db with SMTP id m15-20020a7bce0f000000b003f9b87c10dbmr3690958wmc.3.1688732272809;
+        Fri, 07 Jul 2023 05:17:52 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHkVxtlC56TbBBzJDTyYz9QgBl2sPl89eMkHaXchfxXCDoV9DdYAzH3zqFfKdeoqyDcP7djkg==
+X-Received: by 2002:a7b:ce0f:0:b0:3f9:b87c:10db with SMTP id m15-20020a7bce0f000000b003f9b87c10dbmr3690937wmc.3.1688732272381;
+        Fri, 07 Jul 2023 05:17:52 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f04:3c00:248f:bf5b:b03e:aac7? (p200300d82f043c00248fbf5bb03eaac7.dip0.t-ipconnect.de. [2003:d8:2f04:3c00:248f:bf5b:b03e:aac7])
+        by smtp.gmail.com with ESMTPSA id 24-20020a05600c021800b003fbd597bccesm2272010wmi.41.2023.07.07.05.17.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 07 Jul 2023 05:17:51 -0700 (PDT)
+Message-ID: <87f1854d-5e91-2aaa-6c22-23be61529200@redhat.com>
+Date: Fri, 7 Jul 2023 14:17:50 +0200
 MIME-Version: 1.0
-X-Mailman-Approved-At: Fri, 07 Jul 2023 21:45:28 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+To: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>, linux-mm@kvack.org,
+ akpm@linux-foundation.org, mpe@ellerman.id.au,
+ linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, christophe.leroy@csgroup.eu
+References: <20230706085041.826340-1-aneesh.kumar@linux.ibm.com>
+ <20230706085041.826340-2-aneesh.kumar@linux.ibm.com>
+ <72488b8a-8f1e-c652-ab48-47e38290441f@redhat.com>
+ <996e226a-2835-5b53-2255-2005c6335f98@linux.ibm.com>
+ <e975f02b-1d35-8f22-9f3a-dfe0209306a1@redhat.com>
+ <9ca978e7-5c09-6d92-7983-03a731549b25@linux.ibm.com>
+ <256bd2f0-1b77-26dc-6393-b26dd363912f@redhat.com>
+ <1a35cb1c-5be5-3fba-d59f-132b36863312@linux.ibm.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+Subject: Re: [PATCH v2 1/5] mm/hotplug: Embed vmem_altmap details in memory
+ block
+In-Reply-To: <1a35cb1c-5be5-3fba-d59f-132b36863312@linux.ibm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,153 +113,118 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: lucho@ionkov.net, rafael@kernel.org, djwong@kernel.org, al@alarsen.net, cmllamas@google.com, andrii@kernel.org, hughd@google.com, john.johansen@canonical.com, agordeev@linux.ibm.com, hch@lst.de, hubcap@omnibond.com, pc@manguebit.com, linux-xfs@vger.kernel.org, bvanassche@acm.org, jeffxu@chromium.org, john@keeping.me.uk, yi.zhang@huawei.com, jmorris@namei.org, code@tyhicks.com, stern@rowland.harvard.edu, borntraeger@linux.ibm.com, devel@lists.orangefs.org, mirimmad17@gmail.com, sprasad@microsoft.com, jaharkes@cs.cmu.edu, linux-um@lists.infradead.org, npiggin@gmail.com, viro@zeniv.linux.org.uk, ericvh@kernel.org, surenb@google.com, trond.myklebust@hammerspace.com, anton@tuxera.com, brauner@kernel.org, wsa+renesas@sang-engineering.com, gregkh@linuxfoundation.org, stephen.smalley.work@gmail.com, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, lsahlber@redhat.com, senozhatsky@chromium.org, arve@android.com, chuck.lever@oracle.com, svens@linux.ibm.com, jolsa@kernel.org, jack@s
- use.com, tj@kernel.org, akpm@linux-foundation.org, linux-trace-kernel@vger.kernel.org, xu.xin16@zte.com.cn, shaggy@kernel.org, dhavale@google.com, penguin-kernel@I-love.SAKURA.ne.jp, zohar@linux.ibm.com, linux-mm@kvack.org, joel@joelfernandes.org, edumazet@google.com, sdf@google.com, jomajm@gmail.com, linux-s390@vger.kernel.org, linux-nilfs@vger.kernel.org, paul@paul-moore.com, leon@kernel.org, john.fastabend@gmail.com, mcgrof@kernel.org, chi.minghao@zte.com.cn, codalist@coda.cs.cmu.edu, selinux@vger.kernel.org, zhangpeng362@huawei.com, quic_ugoswami@quicinc.com, yhs@fb.com, yzaikin@google.com, linkinjeon@kernel.org, mhiramat@kernel.org, ecryptfs@vger.kernel.org, tkjos@android.com, madkar@cs.stonybrook.edu, gor@linux.ibm.com, yuzhe@nfschina.com, linuxppc-dev@lists.ozlabs.org, reiserfs-devel@vger.kernel.org, miklos@szeredi.hu, huyue2@coolpad.com, jaegeuk@kernel.org, gargaditya08@live.com, maco@android.com, hirofumi@mail.parknet.co.jp, haoluo@google.com, tony.luck@intel.com, tytso@mit
- .edu, nico@fluxnic.net, linux-ntfs-dev@lists.sourceforge.net, muchun.song@linux.dev, roberto.sassu@huawei.com, linux-f2fs-devel@lists.sourceforge.net, yang.yang29@zte.com.cn, gpiccoli@igalia.com, ebiederm@xmission.com, anna@kernel.org, quic_uaggarwa@quicinc.com, bwarrum@linux.ibm.com, mike.kravetz@oracle.com, jingyuwang_vip@163.com, linux-efi@vger.kernel.org, error27@gmail.com, martin@omnibond.com, trix@redhat.com, ocfs2-devel@lists.linux.dev, ast@kernel.org, sebastian.reichel@collabora.com, clm@fb.com, linux-mtd@lists.infradead.org, willy@infradead.org, marc.dionne@auristor.com, linux-afs@lists.infradead.org, raven@themaw.net, naohiro.aota@wdc.com, daniel@iogearbox.net, dennis.dalessandro@cornelisnetworks.com, linux-rdma@vger.kernel.org, quic_linyyuan@quicinc.com, coda@cs.cmu.edu, slava@dubeyko.com, idryomov@gmail.com, pabeni@redhat.com, adobriyan@gmail.com, serge@hallyn.com, chengzhihao1@huawei.com, axboe@kernel.dk, amir73il@gmail.com, linuszeng@tencent.com, keescook@chromium.org,
-  arnd@arndb.de, autofs@vger.kernel.org, rostedt@goodmis.org, yifeliu@cs.stonybrook.edu, Damien Le Moal <dlemoal@kernel.org>, eparis@parisplace.org, ceph-devel@vger.kernel.org, xiang@kernel.org, yijiangshan@kylinos.cn, dhowells@redhat.com, linux-nfs@vger.kernel.org, linux-ext4@vger.kernel.org, kolga@netapp.com, song@kernel.org, samba-technical@lists.samba.org, sfrench@samba.org, jk@ozlabs.org, netdev@vger.kernel.org, rpeterso@redhat.com, linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org, ntfs3@lists.linux.dev, linux-erofs@lists.ozlabs.org, davem@davemloft.net, jfs-discussion@lists.sourceforge.net, princekumarmaurya06@gmail.com, ebiggers@google.com, neilb@suse.de, asmadeus@codewreck.org, linux_oss@crudebyte.com, me@bobcopeland.com, kpsingh@kernel.org, okanatov@gmail.com, almaz.alexandrovich@paragon-software.com, joseph.qi@linux.alibaba.com, hayama@lineo.co.jp, adilger.kernel@dilger.ca, mikulas@artax.karlin.mff.cuni.cz, shaozhengchao@huawei.com, chenzhongjin@huawei.com, ardb@kernel.or
- g, anton.ivanov@cambridgegreys.com, agruenba@redhat.com, richard@nod.at, mark@fasheh.com, shr@devkernel.io, Dai.Ngo@oracle.com, cluster-devel@redhat.com, jgg@ziepe.ca, kuba@kernel.org, riel@surriel.com, salah.triki@gmail.com, dushistov@mail.ru, linux-cifs@vger.kernel.org, hca@linux.ibm.com, chao@kernel.org, apparmor@lists.ubuntu.com, josef@toxicpanda.com, Liam.Howlett@Oracle.com, tom@talpey.com, hdegoede@redhat.com, linux-hardening@vger.kernel.org, aivazian.tigran@gmail.com, dchinner@redhat.com, dsterba@suse.com, xiubli@redhat.com, konishi.ryusuke@gmail.com, jgross@suse.com, jth@kernel.org, rituagar@linux.ibm.com, luisbg@kernel.org, martin.lau@linux.dev, v9fs@lists.linux.dev, fmdefrancesco@gmail.com, linux-unionfs@vger.kernel.org, lrh2000@pku.edu.cn, linux-security-module@vger.kernel.org, ezk@cs.stonybrook.edu, jefflexu@linux.alibaba.com, linux@treblig.org, hannes@cmpxchg.org, phillip@squashfs.org.uk, johannes@sipsolutions.net, sj1557.seo@samsung.com, dwmw2@infradead.org, linux-karm
- a-devel@lists.sourceforge.net, linux-btrfs@vger.kernel.org, jlbec@evilplan.org
+Cc: Vishal Verma <vishal.l.verma@intel.com>, Michal Hocko <mhocko@suse.com>, Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2023-07-06 at 21:02 +0000, Seth Arnold wrote:
-> On Wed, Jul 05, 2023 at 08:04:41PM -0400, Jeff Layton wrote:
-> >=20
-> > I don't believe it's an issue. I've seen nothing in the POSIX spec that
-> > mandates that timestamp updates to different inodes involved in an
-> > operation be set to the _same_ value. It just says they must be updated=
-.
-> >=20
-> > It's also hard to believe that any software would depend on this either=
-,
-> > given that it's very inconsistent across filesystems today. AFAICT, thi=
-s
-> > was mostly done in the past just as a matter of convenience.
->=20
-> I've seen this assumption in several programs:
->=20
+On 06.07.23 18:06, Aneesh Kumar K V wrote:
+> On 7/6/23 6:29 PM, David Hildenbrand wrote:
+>> On 06.07.23 14:32, Aneesh Kumar K V wrote:
+>>> On 7/6/23 4:44 PM, David Hildenbrand wrote:
+>>>> On 06.07.23 11:36, Aneesh Kumar K V wrote:
+>>>>> On 7/6/23 2:48 PM, David Hildenbrand wrote:
+>>>>>> On 06.07.23 10:50, Aneesh Kumar K.V wrote:
+>>>>>>> With memmap on memory, some architecture needs more details w.r.t altmap
+>>>>>>> such as base_pfn, end_pfn, etc to unmap vmemmap memory.
+>>>>>>
+>>>>>> Can you elaborate why ppc64 needs that and x86-64 + aarch64 don't?
+>>>>>>
+>>>>>> IOW, why can't ppc64 simply allocate the vmemmap from the start of the memblock (-> base_pfn) and use the stored number of vmemmap pages to calculate the end_pfn?
+>>>>>>
+>>>>>> To rephrase: if the vmemmap is not at the beginning and doesn't cover full apgeblocks, memory onlining/offlining would be broken.
+>>>>>>
+>>>>>> [...]
+>>>>>
+>>>>>
+>>>>> With ppc64 and 64K pagesize and different memory block sizes, we can end up allocating vmemmap backing memory from outside altmap because
+>>>>> a single page vmemmap can cover 1024 pages (64 *1024/sizeof(struct page)). and that can point to pages outside the dev_pagemap range.
+>>>>> So on free we  check
+>>>>
+>>>> So you end up with a mixture of altmap and ordinarily-allocated vmemmap pages? That sound wrong (and is counter-intuitive to the feature in general, where we *don't* want to allocate the vmemmap from outside the altmap).
+>>>>
+>>>> (64 * 1024) / sizeof(struct page) -> 1024 pages
+>>>>
+>>>> 1024 pages * 64k = 64 MiB.
+>>>>
+>>>> What's the memory block size on these systems? If it's >= 64 MiB the vmemmap of a single memory block fits into a single page and we should be fine.
+>>>>
+>>>> Smells like you want to disable the feature on a 64k system.
+>>>>
+>>>
+>>> But that part of vmemmap_free is common for both dax,dax kmem and the new memmap on memory feature. ie, ppc64 vmemmap_free have checks which require
+>>> a full altmap structure with all the details in. So for memmap on memmory to work on ppc64 we do require similar altmap struct. Hence the idea
+>>> of adding vmemmap_altmap to  struct memory_block
+>>
+>> I'd suggest making sure that for the memmap_on_memory case your really *always* allocate from the altmap (that's what the feature is about after all), and otherwise block the feature (i.e., arch_mhp_supports_... should reject it).
+>>
+> 
+> Sure. How about?
+> 
+> bool mhp_supports_memmap_on_memory(unsigned long size)
+> {
+> 
+> 	unsigned long nr_pages = size >> PAGE_SHIFT;
+> 	unsigned long vmemmap_size = nr_pages * sizeof(struct page);
+> 
+> 	if (!radix_enabled())
+> 		return false;
+> 	/*
+> 	 * memmap on memory only supported with memory block size add/remove
+> 	 */
+> 	if (size != memory_block_size_bytes())
+> 		return false;
+> 	/*
+> 	 * Also make sure the vmemmap allocation is fully contianed
+> 	 * so that we always allocate vmemmap memory from altmap area.
+> 	 */
+> 	if (!IS_ALIGNED(vmemmap_size,  PAGE_SIZE))
+> 		return false;
+> 	/*
+> 	 * The pageblock alignment requirement is met by using
+> 	 * reserve blocks in altmap.
+> 	 */
+> 	return true;
+> }
 
-Thanks for looking into this!
+Better, but the PAGE_SIZE that could be added to common code as well.
 
-To be clear, POSIX doesn't require that _different_ inodes ever be set
-to the same timestamp value. IOW, it certainly doesn't require that the
-source and target directories on a rename() end up with the exact same
-timestamp value.
+... but, the pageblock check in common code implies a PAGE_SIZE check, 
+so why do we need any other check besides the radix_enabled() check for 
+arm64 and just keep all the other checks in common code as they are?
 
-Granted, POSIX is rather vague on timestamps in general, but most of the
-examples below involve comparing different timestamps on the _same_
-inode.
+If your vmemmap does not cover full pageblocks (which implies full 
+pages), the feature cannot be used *unless* we'd waste altmap space in 
+the vmemmap to cover one pageblock.
 
-
-> mutt buffy.c
-> https://sources.debian.org/src/mutt/2.2.9-1/buffy.c/?hl=3D625#L625
->=20
->   if (mailbox->newly_created &&
->       (sb->st_ctime !=3D sb->st_mtime || sb->st_ctime !=3D sb->st_atime))
->     mailbox->newly_created =3D 0;
->=20
-
-This should be fine with this patchset. Note that this is comparing
-a/c/mtime on the same inode, and our usual pattern on inode
-instantiation is:
-
-    inode->i_atime =3D inode->i_mtime =3D inode_set_ctime_current(inode);
-
-...which should result in all of inode's timestamps being synchronized.
-
->=20
-> neomutt mbox/mbox.c
-> https://sources.debian.org/src/neomutt/20220429+dfsg1-4.1/mbox/mbox.c/?hl=
-=3D1820#L1820
->=20
->   if (m->newly_created && ((st.st_ctime !=3D st.st_mtime) || (st.st_ctime=
- !=3D st.st_atime)))
->     m->newly_created =3D false;
->=20
-
-Ditto here.
-
->=20
-> screen logfile.c
-> https://sources.debian.org/src/screen/4.9.0-4/logfile.c/?hl=3D130#L130
->=20
->   if ((!s->st_dev && !s->st_ino) ||             /* stat failed, that's ne=
-w! */
->       !s->st_nlink ||                           /* red alert: file unlink=
-ed */
->       (s->st_size < o.st_size) ||               /*           file truncat=
-ed */
->       (s->st_mtime !=3D o.st_mtime) ||            /*            file modi=
-fied */
->       ((s->st_ctime !=3D o.st_ctime) &&           /*     file changed (mo=
-ved) */
->        !(s->st_mtime =3D=3D s->st_ctime &&          /*  and it was not a =
-change */
->          o.st_ctime < s->st_ctime)))            /* due to delayed nfs wri=
-te */
->   {
->=20
-
-This one is really weird. You have two different struct stat's, "o" and
-"s". I assume though that these should be stat values from the same
-inode, because otherwise this comparison would make no sense:
-
-      ((s->st_ctime !=3D o.st_ctime) &&           /*     file changed (move=
-d) */
-
-In general, we can never contrive to ensure that the ctime of two
-different inodes are the same, since that is always set by the kernel to
-the current time, and you'd have to ensure that they were created within
-the same jiffy (at least with today's code).
-
-> nemo libnemo-private/nemo-vfs-file.c
-> https://sources.debian.org/src/nemo/5.6.5-1/libnemo-private/nemo-vfs-file=
-.c/?hl=3D344#L344
->=20
-> 		/* mtime is when the contents changed; ctime is when the
-> 		 * contents or the permissions (inc. owner/group) changed.
-> 		 * So we can only know when the permissions changed if mtime
-> 		 * and ctime are different.
-> 		 */
-> 		if (file->details->mtime =3D=3D file->details->ctime) {
-> 			return FALSE;
-> 		}
->=20
-
-Ditto here with the first examples. This involves comparing timestamps
-on the same inode, which should be fine.
-
->=20
-> While looking for more examples, I found a perl test that seems to sugges=
-t
-> that at least Solaris, AFS, AmigaOS, DragonFly BSD do as you suggest:
-> https://sources.debian.org/src/perl/5.36.0-7/t/op/stat.t/?hl=3D158#L140
->=20
-
-(I kinda miss Perl. I wrote a bunch of stuff in it in the 90's and early
-naughties)
-
-I think this test is supposed to be testing whether the mtime changes on
-link() ?
-
------------------8<----------------
-    my($nlink, $mtime, $ctime) =3D (stat($tmpfile))[$NLINK, $MTIME, $CTIME]=
-;
-
-[...]
+Wasting hotplugged memory certainly sounds wrong?
 
 
-        skip "Solaris tmpfs has different mtime/ctime link semantics", 2
-                                     if $Is_Solaris and $cwd =3D~ m#^/tmp# =
-and
-                                        $mtime && $mtime =3D=3D $ctime;
------------------8<----------------
+So I appreciate if you could explain why the pageblock check should not 
+be had for ppc64?
 
-...again, I think this would be ok too since it's just comparing the
-mtime and ctime of the same inode. Granted this is a Solaris-specific
-test, but Linux would be fine here too.
+> 
+> 
+> 
+>   
+>> Then, you can reconstruct the altmap layout trivially
+>>
+>> base_pfn: start of the range to unplug
+>> end_pfn: base_pfn + nr_vmemmap_pages
+>>
+>> and pass that to the removal code, which will do the right thing, no?
+>>
+>>
+>> Sure, remembering the altmap might be a potential cleanup (eventually?), but the basic reasoning why this is required as patch #1 IMHO is wrong: if you say you support memmap_on_memory for a configuration, then you should also properly support it (allocate from the hotplugged memory), not silently fall back to something else.
+> 
+> I guess you want to keep the altmap introduction as a later patch in the series and not the preparatory patch? Or are you ok with just adding the additional check I mentioned above w.r.t size value and keep this patch as patch 1  as a generic cleanup (avoiding
+> the recomputation of altmap->alloc/base_pfn/end_pfn?
 
-So in conclusion, I don't think this patchset will cause problems with
-any of the above code.
---=20
-Jeff Layton <jlayton@kernel.org>
+Yes, if it's not required better remove it completely from this 
+patchset. We can alter discuss if keeping the altmap around is actually 
+a cleanup or rather unnecessary.
+
+-- 
+Cheers,
+
+David / dhildenb
+
