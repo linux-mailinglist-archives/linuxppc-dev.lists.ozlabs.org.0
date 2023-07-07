@@ -2,49 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 818A974B1BF
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jul 2023 15:27:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E717574B1F4
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jul 2023 15:41:21 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=bZplSR3g;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=G/uACz5Z;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=G/uACz5Z;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QyDhK3WtQz3c50
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jul 2023 23:26:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QyF0v5z41z3c5Z
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jul 2023 23:41:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=bZplSR3g;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=G/uACz5Z;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=G/uACz5Z;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=fmartine@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QyDgQ6Szpz3bnt
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jul 2023 23:26:10 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1688736370;
-	bh=RjFudN2v4bhzNxCuByoq2h/CbTispUzi4a0aD2emOMQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=bZplSR3gH/yZQCgcKsOr6CAhSBRiczQhttW/G7MXRUfDzOrK/fEFhZh88MGbUri6V
-	 1AJ/QCsz1xbGKx64Q4mhqlKOMS91kow2TGmQx5cNiG7pXvbygzZU1KHwU+4Dk/7ZFv
-	 nRY5TAFkwMPjLgf0dv5ibLfXYfUXgvOh/2Vj+9PM9VAnxCyb/FZGqBo/T/T50YuYe5
-	 BTwD1s9Grrevo8ptZcWsg3mw0SdfZ+k8hIrKsU61H8Pu1rpsjrqUjeZgLSxxyj8dux
-	 AwLk4unXiyD81nAuLlqRFUDtnw+q+g5PV3UnfmM2xme4J78PZv9FKfVG2lRWJsi7ed
-	 zFVBjvnaOCuDA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4QyDgQ4xsPz4wxP;
-	Fri,  7 Jul 2023 23:26:10 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.5-2 tag
-Date: Fri, 07 Jul 2023 23:26:06 +1000
-Message-ID: <875y6vluoh.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QyDzz1QK6z2xHK
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jul 2023 23:40:30 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1688737226;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eSLQOQX2Flx1G07KYazrMVvBAcWU6hFPEM6DlSyIig8=;
+	b=G/uACz5ZMYyUiBErHIFDax28DghqIzhNdXg9hD2UX3+2ZAdpZhDSwCYiENc5NKQsrCSYkY
+	pRAyDCVNqQLnsPZqG7gp8JjuN62Y7fATqb9sdDf/GtYHfW8aaG7c2r0a5RxAATckEYop3O
+	FBmJ8tsnHWG9swbK2UKdSBOQB7GAQbw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1688737226;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eSLQOQX2Flx1G07KYazrMVvBAcWU6hFPEM6DlSyIig8=;
+	b=G/uACz5ZMYyUiBErHIFDax28DghqIzhNdXg9hD2UX3+2ZAdpZhDSwCYiENc5NKQsrCSYkY
+	pRAyDCVNqQLnsPZqG7gp8JjuN62Y7fATqb9sdDf/GtYHfW8aaG7c2r0a5RxAATckEYop3O
+	FBmJ8tsnHWG9swbK2UKdSBOQB7GAQbw=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-527-eT1MkR-yPUGx32Y7AReiJg-1; Fri, 07 Jul 2023 09:40:24 -0400
+X-MC-Unique: eT1MkR-yPUGx32Y7AReiJg-1
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3142665f122so965004f8f.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Jul 2023 06:40:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688737223; x=1691329223;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=eSLQOQX2Flx1G07KYazrMVvBAcWU6hFPEM6DlSyIig8=;
+        b=hqwMkq6oOKqArC7mBeV8GpCLBrilvdqIED0pw0rOU1d9tj6pzfkUZi3iotanbaCcuO
+         TUvG6p87Xsz6ff1b5De8p4NxucxV1ExPKfDmQr0UxiHhi0e2E5KKBi4j0qpm9uSd7n6e
+         ZqaTsDHIU8EqSNqI/+ZWSYagqk5FfrllOBfZQprdYaD0HJ7q/VBD5s4+trtNAWk7V70h
+         JuuLHsa4gKex5AUVD+glGq1hslVEy1rJJKm9QbmpQBI+H22kVJVk5EgPoqLPy6/PHSVR
+         oUtjHt91la2AHk0cAZ9aAA4taAVbXahzV2zPTtLgi909xvCnzKIJUWG2JLApYsiSHdrf
+         tM4w==
+X-Gm-Message-State: ABy/qLb3jRymiIZrPnlNlFf9J/+CYdwkqmqHyKo9PK5lhdsql93XEFNW
+	QzvSU2Ek+UzQ/MhetMyczgAkSwZ4sMsW7hJk5PGrf7IZuy52kaejAcFx4HR20QWPX1OTggUlcYw
+	aNbIhI9RWWZrV07aDfTvZEtDIww==
+X-Received: by 2002:adf:fd84:0:b0:314:2c7a:d100 with SMTP id d4-20020adffd84000000b003142c7ad100mr3491302wrr.42.1688737223526;
+        Fri, 07 Jul 2023 06:40:23 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGembFVs9w4+Nx6kwExMzgs9gyKSxG86BN2Jn1gUhGo+dJC0cQ0C5x3R9/Olki3X8v+sW6RJQ==
+X-Received: by 2002:adf:fd84:0:b0:314:2c7a:d100 with SMTP id d4-20020adffd84000000b003142c7ad100mr3491295wrr.42.1688737223237;
+        Fri, 07 Jul 2023 06:40:23 -0700 (PDT)
+Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
+        by smtp.gmail.com with ESMTPSA id x4-20020a5d60c4000000b003112ab916cdsm4482161wrt.73.2023.07.07.06.40.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Jul 2023 06:40:23 -0700 (PDT)
+From: Javier Martinez Canillas <javierm@redhat.com>
+To: Arnd Bergmann <arnd@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>
+Subject: Re: [PATCH 2/4] vgacon: rework screen_info #ifdef checks
+In-Reply-To: <20230707095415.1449376-2-arnd@kernel.org>
+References: <20230707095415.1449376-1-arnd@kernel.org>
+ <20230707095415.1449376-2-arnd@kernel.org>
+Date: Fri, 07 Jul 2023 15:40:22 +0200
+Message-ID: <87jzvbyh4p.fsf@minerva.mail-host-address-is-not-set>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,71 +95,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: pali@kernel.org, rdunlap@infradead.org, linuxppc-dev@lists.ozlabs.org, dianders@chromium.org, linux-kernel@vger.kernel.org
+Cc: linux-fbdev@vger.kernel.org, linux-ia64@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>, Ard Biesheuvel <ardb@kernel.org>, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, Matt Turner <mattst88@gmail.com>, Albert Ou <aou@eecs.berkeley.edu>, Arnd Bergmann <arnd@arndb.de>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+Arnd Bergmann <arnd@kernel.org> writes:
 
-Hi Linus,
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> On non-x86 architectures, the screen_info variable is generally only
+> used for the VGA console where supported, and in some cases the EFI
+> framebuffer or vga16fb.
+>
+> Now that we have a definite list of which architectures actually use it
+> for what, use consistent #ifdef checks so the global variable is only
+> defined when it is actually used on those architectures.
+>
+> On powerpc, there is no support for vgacon, but there is support for
+> vga16fb. Loongarch and riscv have no support for vgacon or vga16fb, but
+> they support EFI firmware, so only that needs to be checked, and the
+> initialization can be removed because that is handled by EFI.
+> IA64 has both vgacon and EFI.
+>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
 
-Please pull a few powerpc fixes for 6.5:
+[...]
 
-The following changes since commit d8b0bd57c2d68eb500f356f0f9228e6183da94ae:
+> diff --git a/arch/ia64/kernel/setup.c b/arch/ia64/kernel/setup.c
+> index 5a55ac82c13a4..0c09ff7fde46b 100644
+> --- a/arch/ia64/kernel/setup.c
+> +++ b/arch/ia64/kernel/setup.c
+> @@ -86,9 +86,11 @@ EXPORT_SYMBOL(local_per_cpu_offset);
+>  #endif
+>  unsigned long ia64_cycles_per_usec;
+>  struct ia64_boot_param *ia64_boot_param;
+> +#if defined(CONFIG_VGA_CONSOLE) || defined(CONFIG_EFI)
+>  struct screen_info screen_info;
 
-  Merge tag 'powerpc-6.5-1' of git://git.kernel.org/pub/scm/linux/kernel/gi=
-t/powerpc/linux (2023-06-30 09:20:08 -0700)
+I think that only screen_info should be guarded by both symbols ?
 
-are available in the git repository at:
+>  unsigned long vga_console_iobase;
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/po=
-werpc-6.5-2
+It seems this variable was never used since it was introduced by commit
+66b7f8a30437 ("[IA64-SGI] pcdp: add PCDP pci interface support") ?
 
-for you to fetch changes up to abaa02fc944f2f9f2c2e1925ddaceaf35c48528c:
+>  unsigned long vga_console_membase;
 
-  powerpc: dts: turris1x.dts: Fix PCIe MEM size for pci2 node (2023-07-03 1=
-6:26:51 +1000)
+And this is only used by mdacon (not supported by ia64), vgacon and
+vga16fb (not supported by ia64 either).
 
-- ------------------------------------------------------------------
-powerpc fixes for 6.5 #2
+So this could just be guarded just by CONFIG_VGA_CONSOLE for ia64 ?
 
- - Fix PCIe MEM size for pci2 node on Turris 1.x boards.
+The rest of the patch looks good to me.
 
- - Two minor build fixes.
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
 
-Thanks to: Christophe Leroy, Douglas Anderson, Pali Roh=C3=A1r, Petr Mladek=
-, Randy Dunlap.
+-- 
+Best regards,
 
-- ------------------------------------------------------------------
-Douglas Anderson (1):
-      powerpc: Include asm/nmi.c in mobility.c for watchdog_hardlockup_set_=
-timeout_pct()
+Javier Martinez Canillas
+Core Platforms
+Red Hat
 
-Pali Roh=C3=A1r (1):
-      powerpc: dts: turris1x.dts: Fix PCIe MEM size for pci2 node
-
-Randy Dunlap (1):
-      powerpc: allow PPC_EARLY_DEBUG_CPM only when SERIAL_CPM=3Dy
-
-
- arch/powerpc/Kconfig.debug                | 2 +-
- arch/powerpc/boot/dts/turris1x.dts        | 6 +++---
- arch/powerpc/platforms/pseries/mobility.c | 1 +
- 3 files changed, 5 insertions(+), 4 deletions(-)
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmSoEjEACgkQUevqPMjh
-pYDReg/9Fa0T8KPBQYLQPMG0n8kHf2nDFv4UoB/jnf3TvxpdPqOVDFBveXZbr75p
-jvOw8EooS/zn460xni+SgJIE9nrgwJePBss7EX77wsIeY/OJ7BLgBUoXBGVWim0T
-7mx3t36DC3yqrTCeEnBndil4E+IBY/J9j63tyO3weY6N2qXZMwxZ4fpeLvo8/mM2
-OuaGvSgRg3KPjubHpkHtlowDiSQg5PfaNWI4t88BaQ8rIRWGZDmqUyAYLcM7ycSf
-XlSbSeV+aUBQLUTM41L5H521R4e6NssCRUEEMRIjXQDWr2E9qAloq1d0rm1XJopB
-5l13Pq+tfXliPdPLRbonqY0HuVDEBOSsChpFtg2teMin2XNJsV7UwR6Y52ay0fNk
-z6y4pv4LrnQmoiN/BjLCl/p9E6caLjTn38CIoaWSrI3+IDyzKy/lyb9pkr8s9x+O
-yXHnmIgZHUwR8z6vQt6wWF/wD8OabMMScKiNsq0hAs+EojsQbhiNf0p4w3faKRY5
-leIA7AK5zDrZpjShOv7ajnsbbMnRmwgaS289qNePULDDqhmIMSjXmN42vCJmMN1A
-qvyx21H0kKklTA3mo8hD84iKDkQKU0IWQHhkq19GeVI+9QScsxIz3Vqc7O9KNVN+
-OF3eckv7APwDGU8t8un3YIVNVRKCryZCeYeovSwiLHM2+9HjojM=3D
-=3DACih
------END PGP SIGNATURE-----
