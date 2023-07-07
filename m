@@ -2,64 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC9C674AC83
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jul 2023 10:09:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0E4D74AE21
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jul 2023 11:52:55 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=uSpmqn3m;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Z07rgcHB;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qy5fB5wLXz3c3K
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jul 2023 18:09:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qy7xK5Z0Lz3c4X
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jul 2023 19:52:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=uSpmqn3m;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Z07rgcHB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=suse.com (client-ip=2001:67c:2178:6::1d; helo=smtp-out2.suse.de; envelope-from=mhocko@suse.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 577 seconds by postgrey-1.37 at boromir; Fri, 07 Jul 2023 18:08:51 AEST
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qy5dH24cvz30XM
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jul 2023 18:08:49 +1000 (AEST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qy7wP6kjNz3bf6
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jul 2023 19:52:05 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id D76031FE6D;
-	Fri,  7 Jul 2023 07:59:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1688716744; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HFLQE9L1MZXYwAUTAzY1+nL+XIQNZC3uSrhfR2Cznt0=;
-	b=uSpmqn3mzdudAnHLo2AUSSD8/ginNvzQE8CySIwwRb9jsnz7Vro/X2ccBg07yMeO6cnDlA
-	SdwQOlpnl30zs2gB0CWnKoBKychGGtUOEzgirWvb5wi2mVCDj83PnIjbQN3OCWOyOAWQaa
-	lSChzb2WdHrgbjnJzNdnknzvH0mkmkw=
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id B8C06139E0;
-	Fri,  7 Jul 2023 07:59:04 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id Rq6NKsjFp2S/LAAAMHmgww
-	(envelope-from <mhocko@suse.com>); Fri, 07 Jul 2023 07:59:04 +0000
-Date: Fri, 7 Jul 2023 09:59:04 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas@t-8ch.de>
-Subject: Re: [next-20230705] kernel BUG mm/memcontrol.c:3715! (ltp/madvise06)
-Message-ID: <ZKfFyJP2ENnHqkaR@dhcp22.suse.cz>
-References: <7DF50AC5-83AC-4EE1-9422-62D1EA378EE9@linux.ibm.com>
- <24c0f417-6577-48e6-8eb4-c37be11c5fbb@t-8ch.de>
+	by dfw.source.kernel.org (Postfix) with ESMTPS id D650761803;
+	Fri,  7 Jul 2023 09:52:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD0AAC433C7;
+	Fri,  7 Jul 2023 09:51:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1688723521;
+	bh=yMWBZi7OWijpDNbPPVU11zT7Ofk6CC1w0krvsGmTO/Q=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Z07rgcHB9zc3yULQo5sHhLIv44yzQod9z2mXK8VAD2ky6t/sKWYV2RwpBSfsckmOs
+	 agjSwU4wXzrOoatycsFhpr/tbEEL/fP69Db446Ge2rJz9mePLl3mySa8jKvq+GyiTu
+	 4KWv6txOUukHX9wFw6zAalyyt0ZA7Ebj/AVQMqWWhUVheF2F5R/fyMF7TpsVLgmD7X
+	 shT+2s00P6kEvLIw1WqbApGnI1TejLDoiQ7J2yAN5K/Ulrz2OokpUU5d5LLVQA/dtl
+	 ZJiLtsDua4qi8vlm2W12s8HzAd4X6pykjOz3jsL1fYX2KFgKUbi6PXqdCCzGX7LPBk
+	 1qapI2AldOYXw==
+From: Arnd Bergmann <arnd@kernel.org>
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 1/3] vgacon: rework screen_info #ifdef checks
+Date: Fri,  7 Jul 2023 11:50:38 +0200
+Message-Id: <20230707095144.1378789-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <24c0f417-6577-48e6-8eb4-c37be11c5fbb@t-8ch.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,101 +59,218 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-next@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, open list <linux-kernel@vger.kernel.org>, Sachin Sant <sachinp@linux.ibm.com>
+Cc: linux-fbdev@vger.kernel.org, linux-ia64@vger.kernel.org, dri-devel@lists.freedesktop.org, javierm@redhat.com, WANG Xuerui <kernel@xen0n.name>, Ard Biesheuvel <ardb@kernel.org>, Helge Deller <deller@gmx.de>, Russell King <linux@armlinux.org.uk>, Matt Turner <mattst88@gmail.com>, linux-mips@vger.kernel.org, Albert Ou <aou@eecs.berkeley.edu>, Arnd Bergmann <arnd@arndb.de>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu 06-07-23 08:34:05, Thomas Weißschuh wrote:
-> On 2023-07-06 11:41:38+0530, Sachin Sant wrote:
-> > While running LTP tests (madvise06) on IBM Power9 LPAR booted with
-> > 6.4.0-next-20230705 following crash is seen
-> > 
-> > Injecting memory failure for pfn 0x3f79 at process virtual address 0x7fff9b740000
-> > Memory failure: 0x3f79: recovery action for clean LRU page: Recovered
-> > madvise06 (133636): drop_caches: 3
-> > ------------[ cut here ]------------
-> > kernel BUG at mm/memcontrol.c:3715!
-> > Oops: Exception in kernel mode, sig: 5 [#1]
-> > LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=8192 NUMA pSeries
-> > Modules linked in: brd overlay exfat vfat fat xfs loop sctp ip6_udp_tunnel udp_tunnel dm_mod nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 bonding ip_set tls rfkill nf_tables libcrc32c nfnetlink sunrpc pseries_rng vmx_crypto ext4 mbcache jbd2 sd_mod t10_pi crc64_rocksoft crc64 sg ibmvscsi scsi_transport_srp ibmveth fuse [last unloaded: init_module(O)]
-> > CPU: 10 PID: 133636 Comm: madvise06 Tainted: G O 6.4.0-next-20230705 #1
-> > Hardware name: IBM,8375-42A POWER9 (raw) 0x4e0202 0xf000005 of:IBM,FW950.80 (VL950_131) hv:phyp pSeries
-> > NIP: c00000000054ea88 LR: c00000000028b2a8 CTR: c00000000054e8d0
-> > REGS: c00000029dd7b890 TRAP: 0700 Tainted: G O (6.4.0-next-20230705)
-> > MSR: 8000000000029033 <SF,EE,ME,IR,DR,RI,LE> CR: 28008288 XER: 00000000
-> > CFAR: c00000000054e904 IRQMASK: 0 
-> > GPR00: c00000000028b2a8 c00000029dd7bb30 c000000001431600 c0000002bc978000 
-> > GPR04: c000000002b3b288 0000000000010192 0000000000000000 0000000000000001 
-> > GPR08: c0000000f9abb180 0000000000020000 c0000002bc978580 0000000000000000 
-> > GPR12: c00000000054e8d0 c00000001ec53f00 0000000000000000 0000000000000000 
-> > GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
-> > GPR20: c00000001b2e6578 0000000000400cc0 000000007fff0000 fffffffffffff000 
-> > GPR24: c00000029dd7bd30 0000000000000000 c00000029dd7bd58 c00000001b2e6568 
-> > GPR28: c00000029dd7bde0 0000000000000001 0000000000000001 c00000001b2e6540 
-> > NIP [c00000000054ea88] mem_cgroup_read_u64+0x1b8/0x1d0
-> > LR [c00000000028b2a8] cgroup_seqfile_show+0xb8/0x160
-> > Call Trace:
-> > [c00000029dd7bb50] [c00000000028b2a8] cgroup_seqfile_show+0xb8/0x160
-> > [c00000029dd7bbc0] [c000000000673ba4] kernfs_seq_show+0x44/0x60
-> > [c00000029dd7bbe0] [c0000000005c4238] seq_read_iter+0x238/0x620
-> > [c00000029dd7bcb0] [c000000000675064] kernfs_fop_read_iter+0x1d4/0x2c0
-> > [c00000029dd7bd00] [c00000000057fbac] vfs_read+0x26c/0x350
-> > [c00000029dd7bdc0] [c00000000058077c] ksys_read+0x7c/0x140
-> > [c00000029dd7be10] [c000000000036900] system_call_exception+0x140/0x350
-> > [c00000029dd7be50] [c00000000000d6a0] system_call_common+0x160/0x2e4
-> > --- interrupt: c00 at 0x7fff9eb41484
-> > NIP: 00007fff9eb41484 LR: 0000000010008540 CTR: 0000000000000000
-> > REGS: c00000029dd7be80 TRAP: 0c00 Tainted: G O (6.4.0-next-20230705)
-> > MSR: 800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE> CR: 28002282 XER: 00000000
-> > IRQMASK: 0 
-> > GPR00: 0000000000000003 00007fffc33de7d0 00007fff9ec27300 0000000000000013 
-> > GPR04: 00007fffc33e0aa0 0000000000001fff 0000000000000000 0000000000000013 
-> > GPR08: 00007fffc33e0aa0 0000000000000000 0000000000000000 0000000000000000 
-> > GPR12: 0000000000000000 00007fff9ecca3a0 0000000000000000 0000000000000000 
-> > GPR16: ffffffffffffffff 0000000010035520 0000000010035b90 00000000100347a8 
-> > GPR20: 000000001002fb68 0000000010063900 0000000000002000 000000001002fb68 
-> > GPR24: 0000000000000000 000000000000004c 000000001002fa78 00007fffc33e0aa0 
-> > GPR28: 0000000000000013 0000000000000000 0000000000001fff 0000000000001fff 
-> > NIP [00007fff9eb41484] 0x7fff9eb41484
-> > LR [0000000010008540] 0x10008540
-> > --- interrupt: c00
-> > Code: 7fa34800 409effc4 7c0802a6 38600001 f8010030 4bfffdfd e8010030 786383e4 7c0803a6 4bffff6c 7c0802a6 f8010030 <0fe00000> 7c0802a6 f8010030 0fe00000 
-> > ---[ end trace 0000000000000000 ]---
-> > pstore: backend (nvram) writing error (-1)
-> > 
-> > Kernel panic - not syncing: Fatal exception
-> > Rebooting in 10 seconds..
-> > 
-> > Git bisect points to following patch:
-> > 
-> > commit 29bf1eb7d2abbdfc24c4ef7acf7a51b72dc43d2b
-> >     memcg: drop kmem.limit_in_bytes
-> > 
-> > Does the testcase madvise06 need an update?
-> > 
-> > 90         tst_res(TINFO, "\tCached: %ld Kb",
-> > 91                 SAFE_READ_MEMINFO("Cached:") - init_cached);
-> > 92       
-> > 93         print_cgmem("memory.current");
-> > 94         print_cgmem("memory.swap.current");
-> > 95         print_cgmem("memory.kmem.usage_in_bytes”);  <<== this line. 
-> > 96 }
-> > 
-> > If I comment line 95 from the testcase, it completes successfully.
-> 
-> The handling for _KMEM was removed from mem_cgroup_read_u64()
-> incorrectly.
-> It is used by the still existing kmem.*usage*_in_bytes in addition to
-> the now removed kmem.*limit*_in_bytes.
-> (And kmem.max_usage_in_bytes, kmem.failcnt)
-> 
-> The testcase seems to be fine, it actually did its job.
+From: Arnd Bergmann <arnd@arndb.de>
 
-Correct. The updated patch has been already posted
-http://lkml.kernel.org/r/ZKe5wxdbvPi5Cwd7@dhcp22.suse.cz
+On non-x86 architectures, the screen_info variable is generally only
+used for the VGA console where supported, and in some cases the EFI
+framebuffer or vga16fb.
 
-Thanks for the report!
+Now that we have a definite list of which architectures actually use it
+for what, use consistent #ifdef checks so the global variable is only
+defined when it is actually used on those architectures.
 
+On powerpc, there is no support for vgacon, but there is support for
+vga16fb. Loongarch and riscv have no support for vgacon or vga16fb, but
+they support EFI firmware, so only that needs to be checked, and the
+initialization can be removed because that is handled by EFI.
+IA64 has both vgacon and EFI.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ arch/alpha/kernel/setup.c          |  2 ++
+ arch/alpha/kernel/sys_sio.c        |  2 ++
+ arch/ia64/kernel/setup.c           |  4 ++++
+ arch/loongarch/kernel/setup.c      |  2 ++
+ arch/mips/jazz/setup.c             |  2 +-
+ arch/mips/kernel/setup.c           |  2 +-
+ arch/mips/sibyte/swarm/setup.c     |  2 +-
+ arch/mips/sni/setup.c              |  2 +-
+ arch/powerpc/kernel/setup-common.c |  2 +-
+ arch/riscv/kernel/setup.c          | 11 ++---------
+ 10 files changed, 17 insertions(+), 14 deletions(-)
+
+diff --git a/arch/alpha/kernel/setup.c b/arch/alpha/kernel/setup.c
+index b650ff1cb022e..b4d2297765c02 100644
+--- a/arch/alpha/kernel/setup.c
++++ b/arch/alpha/kernel/setup.c
+@@ -131,6 +131,7 @@ static void determine_cpu_caches (unsigned int);
+ 
+ static char __initdata command_line[COMMAND_LINE_SIZE];
+ 
++#ifdef CONFIG_VGA_CONSOLE
+ /*
+  * The format of "screen_info" is strange, and due to early
+  * i386-setup code. This is just enough to make the console
+@@ -147,6 +148,7 @@ struct screen_info screen_info = {
+ };
+ 
+ EXPORT_SYMBOL(screen_info);
++#endif
+ 
+ /*
+  * The direct map I/O window, if any.  This should be the same
+diff --git a/arch/alpha/kernel/sys_sio.c b/arch/alpha/kernel/sys_sio.c
+index 7c420d8dac53d..7de8a5d2d2066 100644
+--- a/arch/alpha/kernel/sys_sio.c
++++ b/arch/alpha/kernel/sys_sio.c
+@@ -57,11 +57,13 @@ sio_init_irq(void)
+ static inline void __init
+ alphabook1_init_arch(void)
+ {
++#ifdef CONFIG_VGA_CONSOLE
+ 	/* The AlphaBook1 has LCD video fixed at 800x600,
+ 	   37 rows and 100 cols. */
+ 	screen_info.orig_y = 37;
+ 	screen_info.orig_video_cols = 100;
+ 	screen_info.orig_video_lines = 37;
++#endif
+ 
+ 	lca_init_arch();
+ }
+diff --git a/arch/ia64/kernel/setup.c b/arch/ia64/kernel/setup.c
+index 5a55ac82c13a4..0c09ff7fde46b 100644
+--- a/arch/ia64/kernel/setup.c
++++ b/arch/ia64/kernel/setup.c
+@@ -86,9 +86,11 @@ EXPORT_SYMBOL(local_per_cpu_offset);
+ #endif
+ unsigned long ia64_cycles_per_usec;
+ struct ia64_boot_param *ia64_boot_param;
++#if defined(CONFIG_VGA_CONSOLE) || defined(CONFIG_EFI)
+ struct screen_info screen_info;
+ unsigned long vga_console_iobase;
+ unsigned long vga_console_membase;
++#endif
+ 
+ static struct resource data_resource = {
+ 	.name	= "Kernel data",
+@@ -497,6 +499,7 @@ early_console_setup (char *cmdline)
+ static void __init
+ screen_info_setup(void)
+ {
++#ifdef CONFIG_VGA_CONSOLE
+ 	unsigned int orig_x, orig_y, num_cols, num_rows, font_height;
+ 
+ 	memset(&screen_info, 0, sizeof(screen_info));
+@@ -525,6 +528,7 @@ screen_info_setup(void)
+ 	screen_info.orig_video_mode = 3;	/* XXX fake */
+ 	screen_info.orig_video_isVGA = 1;	/* XXX fake */
+ 	screen_info.orig_video_ega_bx = 3;	/* XXX fake */
++#endif
+ }
+ 
+ static inline void
+diff --git a/arch/loongarch/kernel/setup.c b/arch/loongarch/kernel/setup.c
+index 78a00359bde3c..6b3932677f5de 100644
+--- a/arch/loongarch/kernel/setup.c
++++ b/arch/loongarch/kernel/setup.c
+@@ -57,7 +57,9 @@
+ #define SMBIOS_CORE_PACKAGE_OFFSET	0x23
+ #define LOONGSON_EFI_ENABLE		(1 << 3)
+ 
++#ifdef CONFIG_EFI
+ struct screen_info screen_info __section(".data");
++#endif
+ 
+ unsigned long fw_arg0, fw_arg1, fw_arg2;
+ DEFINE_PER_CPU(unsigned long, kernelsp);
+diff --git a/arch/mips/jazz/setup.c b/arch/mips/jazz/setup.c
+index ee044261eb223..3c14548353e47 100644
+--- a/arch/mips/jazz/setup.c
++++ b/arch/mips/jazz/setup.c
+@@ -76,7 +76,7 @@ void __init plat_mem_setup(void)
+ 
+ 	_machine_restart = jazz_machine_restart;
+ 
+-#ifdef CONFIG_VT
++#ifdef CONFIG_VGA_CONSOLE
+ 	screen_info = (struct screen_info) {
+ 		.orig_video_cols	= 160,
+ 		.orig_video_lines	= 64,
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index cb871eb784a7c..1aba7dc95132c 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -54,7 +54,7 @@ struct cpuinfo_mips cpu_data[NR_CPUS] __read_mostly;
+ 
+ EXPORT_SYMBOL(cpu_data);
+ 
+-#ifdef CONFIG_VT
++#ifdef CONFIG_VGA_CONSOLE
+ struct screen_info screen_info;
+ #endif
+ 
+diff --git a/arch/mips/sibyte/swarm/setup.c b/arch/mips/sibyte/swarm/setup.c
+index 76683993cdd3a..37df504d3ecbb 100644
+--- a/arch/mips/sibyte/swarm/setup.c
++++ b/arch/mips/sibyte/swarm/setup.c
+@@ -129,7 +129,7 @@ void __init plat_mem_setup(void)
+ 	if (m41t81_probe())
+ 		swarm_rtc_type = RTC_M41T81;
+ 
+-#ifdef CONFIG_VT
++#ifdef CONFIG_VGA_CONSOLE
+ 	screen_info = (struct screen_info) {
+ 		.orig_video_page	= 52,
+ 		.orig_video_mode	= 3,
+diff --git a/arch/mips/sni/setup.c b/arch/mips/sni/setup.c
+index efad85c8c823b..9984cf91be7d0 100644
+--- a/arch/mips/sni/setup.c
++++ b/arch/mips/sni/setup.c
+@@ -38,7 +38,7 @@ extern void sni_machine_power_off(void);
+ 
+ static void __init sni_display_setup(void)
+ {
+-#if defined(CONFIG_VT) && defined(CONFIG_VGA_CONSOLE) && defined(CONFIG_FW_ARC)
++#if defined(CONFIG_VGA_CONSOLE) && defined(CONFIG_FW_ARC)
+ 	struct screen_info *si = &screen_info;
+ 	DISPLAY_STATUS *di;
+ 
+diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
+index d2a446216444f..b717875a12a9a 100644
+--- a/arch/powerpc/kernel/setup-common.c
++++ b/arch/powerpc/kernel/setup-common.c
+@@ -98,6 +98,7 @@ int boot_cpu_hwid = -1;
+ int dcache_bsize;
+ int icache_bsize;
+ 
++#if IS_ENABLED(CONFIG_FB_VGA16)
+ /*
+  * This still seems to be needed... -- paulus
+  */ 
+@@ -109,7 +110,6 @@ struct screen_info screen_info = {
+ 	.orig_video_isVGA = 1,
+ 	.orig_video_points = 16
+ };
+-#if defined(CONFIG_FB_VGA16_MODULE)
+ EXPORT_SYMBOL(screen_info);
+ #endif
+ 
+diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
+index 971fe776e2f8b..a3dbe13f45fb3 100644
+--- a/arch/riscv/kernel/setup.c
++++ b/arch/riscv/kernel/setup.c
+@@ -39,15 +39,8 @@
+ 
+ #include "head.h"
+ 
+-#if defined(CONFIG_DUMMY_CONSOLE) || defined(CONFIG_EFI)
+-struct screen_info screen_info __section(".data") = {
+-	.orig_video_lines	= 30,
+-	.orig_video_cols	= 80,
+-	.orig_video_mode	= 0,
+-	.orig_video_ega_bx	= 0,
+-	.orig_video_isVGA	= 1,
+-	.orig_video_points	= 8
+-};
++#if defined(CONFIG_EFI)
++struct screen_info screen_info __section(".data");
+ #endif
+ 
+ /*
 -- 
-Michal Hocko
-SUSE Labs
+2.39.2
+
