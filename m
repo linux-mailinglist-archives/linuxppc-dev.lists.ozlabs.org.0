@@ -1,60 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A448A74BB80
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jul 2023 05:00:23 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SDJ2B+Hh;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F57774BD64
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jul 2023 13:36:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QyZks3lXRz3c3r
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jul 2023 13:00:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qyp9x3MYbz3cBs
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jul 2023 21:36:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SDJ2B+Hh;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=leemhuis.info (client-ip=80.237.130.52; helo=wp530.webpack.hosteurope.de; envelope-from=regressions@leemhuis.info; receiver=lists.ozlabs.org)
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QyZjw2k0Lz30GP
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Jul 2023 12:59:25 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1688785171; x=1720321171;
-  h=date:from:to:cc:subject:message-id;
-  bh=MDq9IJXcfzPdez73ktY0Uy6IO1zhEBfRjOtkgl0gc/s=;
-  b=SDJ2B+HhtQWI5DAjQvKR6hrbzY4f+iUPfIu97iHVGbVuQ2bNj3ZSgSmR
-   DzOf0zjeqOmfPe4OtkYgmfp+G0z+8AYMhGt4gnr6Rnj8Sd0CtPf+Ncz/U
-   JNtEyEjIeIoysQdYHXK+qwBd9go7Maht4sI+wdMFbObn8GMHTwuBOXwfD
-   jTM1bpkYlptfJzJoNr94kSLZz0qmRurX97j15bJafofvahNnww3qUmbBQ
-   af9YvphlorE71Tk5f2rGSfkgG4865LBCfcyyurUFB/JXB0x7Rm3Ps2jRA
-   vFnqK8dt3T3nT0Ahmth6AzylCkiPJ4tEb2gq8MET1HpKXgTr9OnhHkYFq
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10764"; a="348819348"
-X-IronPort-AV: E=Sophos;i="6.01,189,1684825200"; 
-   d="scan'208";a="348819348"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2023 19:59:19 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10764"; a="697410837"
-X-IronPort-AV: E=Sophos;i="6.01,189,1684825200"; 
-   d="scan'208";a="697410837"
-Received: from lkp-server01.sh.intel.com (HELO c544d7fc5005) ([10.239.97.150])
-  by orsmga006.jf.intel.com with ESMTP; 07 Jul 2023 19:59:19 -0700
-Received: from kbuild by c544d7fc5005 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1qHyAI-0002WA-1H;
-	Sat, 08 Jul 2023 02:59:18 +0000
-Date: Sat, 08 Jul 2023 10:59:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS
- 71e2dd0b47e7ebff429ca95750d6f8286a90ede4
-Message-ID: <202307081003.iAVGoV8D-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qyp9R00y8z30Nn
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Jul 2023 21:35:37 +1000 (AEST)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1qI6Dm-0004GA-MM; Sat, 08 Jul 2023 13:35:26 +0200
+Message-ID: <df1d7d39-56f3-699c-0d0f-fcc8774f182e@leemhuis.info>
+Date: Sat, 8 Jul 2023 13:35:25 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: Fwd: Memory corruption in multithreaded user space program while
+ calling fork
+Content-Language: en-US, de-DE
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>
+References: <facbfec3-837a-51ed-85fa-31021c17d6ef@gmail.com>
+ <5c7455db-4ed8-b54f-e2d5-d2811908123d@leemhuis.info>
+ <CAJuCfpH7BOBYGEG=op09bZrh1x3WA8HMcGBXXRhe6M5RJaen5A@mail.gmail.com>
+ <CAJuCfpH7t7gCV2FkctzG2eWTUVTFZD7CtD14-WuHqBqOYBo1jA@mail.gmail.com>
+ <2023070359-evasive-regroup-f3b8@gregkh>
+ <CAJuCfpF=XPpPYqp2Y1Vu-GUL=RBj4fyhXoXzjBY4EKtBnYE_eQ@mail.gmail.com>
+ <2023070453-plod-swipe-cfbf@gregkh>
+ <20230704091808.aa2ed3c11a5351d9bf217ac9@linux-foundation.org>
+ <CAJuCfpE_WjRQoDT1XnvBghCH-kpqk+pfcBJGyDnK7DZLMVG5Mw@mail.gmail.com>
+ <2023070509-undertow-pulverize-5adc@gregkh>
+ <7668c45a-70b1-dc2f-d0f5-c0e76ec17145@leemhuis.info>
+ <20230705084906.22eee41e6e72da588fce5a48@linux-foundation.org>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+In-Reply-To: <20230705084906.22eee41e6e72da588fce5a48@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1688816139;f13f31f2;
+X-HE-SMSGID: 1qI6Dm-0004GA-MM
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,170 +58,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Jacob Young <jacobly.alt@gmail.com>, Linux regressions mailing list <regressions@lists.linux.dev>, Linux PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux Memory Management <linux-mm@kvack.org>, Bagas Sanjaya <bagasdotme@gmail.com>, Greg KH <gregkh@linuxfoundation.org>, Laurent Dufour <ldufour@linux.ibm.com>, Suren Baghdasaryan <surenb@google.com>, Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: 71e2dd0b47e7ebff429ca95750d6f8286a90ede4  Automatic merge of 'next' into merge (2023-07-07 22:51)
+[adding Linus to the list of recipients to ensure the fix makes it into
+-rc1 (and can finally be backported to -stable).
 
-elapsed time: 774m
+Linus, here is the backstory, as I assume you haven't seen this yet:
 
-configs tested: 147
-configs skipped: 7
+CONFIG_PER_VMA_LOCK (which defaults to Y; merged for v6.4-rc1 in
+0bff0aaea03 ("x86/mm: try VMA lock-based page fault handling first"))
+sometimes causes memory corruption reported here:
+https://lore.kernel.org/all/dbdef34c-3a07-5951-e1ae-e9c6e3cdf51b@kernel.org/
+https://bugzilla.kernel.org/show_bug.cgi?id=217624
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+The plan since early this week is to mark CONFIG_PER_VMA_LOCK as broken;
+latest patch that does this is this one afaics:
+https://lore.kernel.org/all/20230706011400.2949242-3-surenb@google.com/
 
-tested configs:
-alpha                            alldefconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r002-20230707   gcc  
-alpha                randconfig-r011-20230707   gcc  
-alpha                randconfig-r022-20230707   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r034-20230707   gcc  
-arc                  randconfig-r043-20230707   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                     am200epdkit_defconfig   clang
-arm                         assabet_defconfig   gcc  
-arm                         axm55xx_defconfig   gcc  
-arm                         bcm2835_defconfig   clang
-arm                                 defconfig   gcc  
-arm                      integrator_defconfig   gcc  
-arm                       multi_v4t_defconfig   gcc  
-arm                       netwinder_defconfig   clang
-arm                       omap2plus_defconfig   gcc  
-arm                            qcom_defconfig   gcc  
-arm                  randconfig-r012-20230707   gcc  
-arm                  randconfig-r026-20230707   gcc  
-arm                  randconfig-r046-20230707   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-csky                                defconfig   gcc  
-csky                 randconfig-r004-20230707   gcc  
-hexagon              randconfig-r014-20230707   clang
-hexagon              randconfig-r041-20230707   clang
-hexagon              randconfig-r045-20230707   clang
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-r004-20230707   gcc  
-i386         buildonly-randconfig-r005-20230707   gcc  
-i386         buildonly-randconfig-r006-20230707   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-i001-20230707   gcc  
-i386                 randconfig-i002-20230707   gcc  
-i386                 randconfig-i003-20230707   gcc  
-i386                 randconfig-i004-20230707   gcc  
-i386                 randconfig-i005-20230707   gcc  
-i386                 randconfig-i006-20230707   gcc  
-i386                 randconfig-i011-20230707   clang
-i386                 randconfig-i012-20230707   clang
-i386                 randconfig-i013-20230707   clang
-i386                 randconfig-i014-20230707   clang
-i386                 randconfig-i015-20230707   clang
-i386                 randconfig-i016-20230707   clang
-i386                 randconfig-r003-20230707   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch                 loongson3_defconfig   gcc  
-m68k                             alldefconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                         amcore_defconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                       m5275evb_defconfig   gcc  
-m68k                 randconfig-r032-20230707   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                           gcw0_defconfig   gcc  
-mips                            gpr_defconfig   gcc  
-mips                           ip22_defconfig   clang
-mips                           ip28_defconfig   clang
-mips                          malta_defconfig   clang
-mips                        maltaup_defconfig   clang
-mips                       rbtx49xx_defconfig   clang
-nios2                               defconfig   gcc  
-nios2                randconfig-r013-20230707   gcc  
-nios2                randconfig-r031-20230707   gcc  
-nios2                randconfig-r036-20230707   gcc  
-openrisc                            defconfig   gcc  
-openrisc             randconfig-r033-20230707   gcc  
-openrisc                 simple_smp_defconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                     akebono_defconfig   clang
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                      chrp32_defconfig   gcc  
-powerpc                      cm5200_defconfig   gcc  
-powerpc                      ep88xc_defconfig   gcc  
-powerpc                        fsp2_defconfig   clang
-powerpc                    mvme5100_defconfig   clang
-powerpc                     ppa8548_defconfig   clang
-powerpc                       ppc64_defconfig   gcc  
-powerpc                      ppc6xx_defconfig   gcc  
-powerpc              randconfig-r021-20230707   clang
-powerpc                    socrates_defconfig   clang
-powerpc                  storcenter_defconfig   gcc  
-powerpc                     tqm8540_defconfig   clang
-powerpc                     tqm8541_defconfig   gcc  
-powerpc                     tqm8560_defconfig   clang
-powerpc                        warp_defconfig   gcc  
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r042-20230707   clang
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r016-20230707   clang
-s390                 randconfig-r035-20230707   gcc  
-s390                 randconfig-r044-20230707   clang
-sh                               allmodconfig   gcc  
-sh                                  defconfig   gcc  
-sh                   randconfig-r024-20230707   gcc  
-sh                             shx3_defconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64              randconfig-r015-20230707   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-r001-20230707   gcc  
-x86_64       buildonly-randconfig-r002-20230707   gcc  
-x86_64       buildonly-randconfig-r003-20230707   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-x001-20230707   clang
-x86_64               randconfig-x002-20230707   clang
-x86_64               randconfig-x003-20230707   clang
-x86_64               randconfig-x004-20230707   clang
-x86_64               randconfig-x005-20230707   clang
-x86_64               randconfig-x006-20230707   clang
-x86_64               randconfig-x011-20230707   gcc  
-x86_64               randconfig-x012-20230707   gcc  
-x86_64               randconfig-x013-20230707   gcc  
-x86_64               randconfig-x014-20230707   gcc  
-x86_64               randconfig-x015-20230707   gcc  
-x86_64               randconfig-x016-20230707   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa               randconfig-r001-20230707   gcc  
-xtensa                    smp_lx200_defconfig   gcc  
-xtensa                         virt_defconfig   gcc  
+But that change or something similar hasn't reached you yet afaics;
+note, this is the second patch of a series with two patches]
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+On 05.07.23 17:49, Andrew Morton wrote:
+> On Wed, 5 Jul 2023 10:51:57 +0200 "Linux regression tracking (Thorsten Leemhuis)" <regressions@leemhuis.info> wrote:
+> 
+>>>>> I'm in wait-a-few-days-mode on this.  To see if we have a backportable
+>>>>> fix rather than disabling the feature in -stable.
+>>
+>> Andrew, how long will you remain in "wait-a-few-days-mode"? Given what
+>> Greg said below and that we already had three reports I know of I'd
+>> prefer if we could fix this rather sooner than later in mainline --
+>> especially as Arch Linux and openSUSE Tumbleweed likely have switched to
+>> 6.4.y already or will do so soon.
+> 
+> I'll send today's 2-patch series to Linus today or tomorrow.
+
+That afaics did not happen until now. :-(
+
+This makes me regret that I did not CC Linus earlier. I always feel like
+a snitcher when I do that. But in retrospective it seems it would have
+been the right thing to do given the problem, as I suspect Linus would
+have quickly applied the patch or marked the feature as broken himself.
+
+So thx to this (and a handful of earlier, similar situations) I now
+fully made my peace with feeling like a snitcher (I always knew that
+it's kinda part of the position). When something in me says "Ick, this
+looks bad to my untrained eyes" I'll immediately CC Linus.
+
+Linus, if I take things to far just let me know. But I assume you get a
+lot of mails and won't mind a few more.
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
