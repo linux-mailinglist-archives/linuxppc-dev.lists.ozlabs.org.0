@@ -1,74 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F3A574BF41
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Jul 2023 23:19:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B238A74BFD7
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Jul 2023 00:37:21 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=Nb3QCbvk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=Jg/dnV7W;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Qz37Q2ggwz3c27
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Jul 2023 07:19:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qz4rv2j3sz3bw4
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Jul 2023 08:37:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=Nb3QCbvk;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=Jg/dnV7W;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::129; helo=mail-lf1-x129.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1134; helo=mail-yw1-x1134.google.com; envelope-from=surenb@google.com; receiver=lists.ozlabs.org)
+Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qz36V2wGpz30f0
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 Jul 2023 07:18:56 +1000 (AEST)
-Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-4fba8f2197bso5019717e87.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 08 Jul 2023 14:18:56 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qz4qz6TzCz30Kf
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 Jul 2023 08:36:30 +1000 (AEST)
+Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-579efc32377so38726077b3.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 08 Jul 2023 15:36:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1688851128; x=1691443128;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=NYkpMcCqLkVQ1Acc1vLb6z5Gk8ZLjHpR5RYSSOrvZGs=;
-        b=Nb3QCbvkIpeTDcpUQ65nqxbIAfPmInaCnV0Kn+S1p+cWlTmFngKhFoWR/L/+W5m6f1
-         AyBgaXE9ZNr/xXLKhklSQHcGCB0KoKMN5zQd8RVI6cKw9IyADeXsgg7JxiRDExhiBOiL
-         X/3IXLdza+9v4CmV3u+di3BhkYQFm7NBZzYrQ=
+        d=google.com; s=20221208; t=1688855787; x=1691447787;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GM81ytcQAbvY1rpHjBMQS8O2py0eRXT0atPhQXgjA54=;
+        b=Jg/dnV7WFpsjyNkLXFSJxvrYIbV5y67MbDJvmLrUOpsSl1LalBxzIJWHJrFfJSep+L
+         kfZUq9UEYRlcCIgngXW54qsHIAzed494k22aoeQDCFY4ti+EvUlIb1BGsWldwxkxHI+Z
+         T0O1rSIqZmQLXjw0ciOxBZnryw5KfH13QEmjeIwQpMHYqnDxWeFqRwsi0j+AkxhDt5Db
+         PubOIUcLGyJx197rF2uJfbZ9Yjwt9Z7yJB0/yJIrVGW9K8Wcc2dwI+q9RUKuLpMhIfMV
+         0O1pGeVudSwRXlE5gEeIlz84wqdwxg/t6UU9/nN9EWZGGgMME7nrCyrW+oIZPuLQydV4
+         +a4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688851128; x=1691443128;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NYkpMcCqLkVQ1Acc1vLb6z5Gk8ZLjHpR5RYSSOrvZGs=;
-        b=UTXvsrkV9LSenI+SDIR9SJWmSUeSFbDj42dZpori/kLZafWD+oNZFsNSFTHmZuzAaU
-         ttD7EMw4R2jM0EkW6UPT/6PZld9B2J1/h9r4N4ctRarLzbSV7NmdJlFpQqufqth/WnDp
-         ZpF8iUGjcj4YeiSTpmC7UJ2QNzT+FLhPhGB3TRj3dQFL+LKsMD13Aj4xZsatNBwFJhWk
-         OiEXuHe3i1ZzpVm94KIHZvACs0gvNxHz+y8kWn08+s2sio+HQncr4ksWOm5TAWSipp8j
-         3ji9wFeVmMnIGr8x+GCW3ZUzCBA99HGsYPngaCEfR3QE8u527/y+EAvIFYCTYmDzgtj6
-         G+Pg==
-X-Gm-Message-State: ABy/qLaspxdtOaY/DxmwlIbclNiSekuhRY/rET+mFaFgLQhJDMzTTB/l
-	SIsx3L86pzlj7aqGMqx9jf2Wq+oSFpRrMKGdjnRTok7F
-X-Google-Smtp-Source: APBJJlEur6pEEOgaavNHqEzVV82DeBaUybswr66jV1OTdu6pPpfJRfuGgPEPv5kbxf9kqL1Er26XZA==
-X-Received: by 2002:a19:7710:0:b0:4fb:8a92:4fd5 with SMTP id s16-20020a197710000000b004fb8a924fd5mr6131702lfc.54.1688851128253;
-        Sat, 08 Jul 2023 14:18:48 -0700 (PDT)
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com. [209.85.167.41])
-        by smtp.gmail.com with ESMTPSA id c11-20020a19760b000000b004fb7d6e3e81sm1126936lff.111.2023.07.08.14.18.46
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 08 Jul 2023 14:18:46 -0700 (PDT)
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-4fb73ba3b5dso5026262e87.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 08 Jul 2023 14:18:46 -0700 (PDT)
-X-Received: by 2002:a19:670b:0:b0:4f8:742f:3bed with SMTP id
- b11-20020a19670b000000b004f8742f3bedmr6097080lfc.37.1688851126226; Sat, 08
- Jul 2023 14:18:46 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1688855787; x=1691447787;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GM81ytcQAbvY1rpHjBMQS8O2py0eRXT0atPhQXgjA54=;
+        b=kbhEN1nwlo91PZfmxpWwxMuz+v30JoKekq81vZ7/vacthiDEza5u5O5KG7anox/fIM
+         4WEKQisJZh7DIimMCnjt3YMvhcVatldeNbsPN2roCVuKVugR7SeafKscUDF9dFdACJfR
+         UJ8TUdEDR/SFqExkomSBPIxwp7D+rAUfUR9Je1YfgXqQxwzYNxGZ8Kikttw6fiMxKvYG
+         Ohjz+SrdUV36iCgiQwhPLqP+0/hZQ19E7uw9NA+Dk0bEmwvSj21EEdG5qX9i7Ctf8ss7
+         K05ferJHxyAozzCG9KSn3yGYrmURtg4kImMoSeRXhPQ7hq5H8J55u1GoZG9g1aZc8KHl
+         a4gQ==
+X-Gm-Message-State: ABy/qLYAHrhLi1IXJZekBTMnoq/qRPk5sJcGavF8mBVx1A+IIDQq12cn
+	Ym2+A8o0aMn8IcaaKofNsN/NQjRagTDWBmTr7MnZxA==
+X-Google-Smtp-Source: APBJJlE9QX36fmJ1qqEKpR7UCT26mt3D5smIFQ/5C5ArBlb6gmqPuqIREas9VSsGWwWtUdtNurt1pOKbRKnjQvM5CU8=
+X-Received: by 2002:a81:7741:0:b0:570:63d3:9685 with SMTP id
+ s62-20020a817741000000b0057063d39685mr7997297ywc.25.1688855787129; Sat, 08
+ Jul 2023 15:36:27 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230708191212.4147700-1-surenb@google.com> <20230708191212.4147700-3-surenb@google.com>
-In-Reply-To: <20230708191212.4147700-3-surenb@google.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sat, 8 Jul 2023 14:18:29 -0700
-X-Gmail-Original-Message-ID: <CAHk-=whhXFQj0Vwzh7bnjnLs=SSTsxyiY6jeb7ovOGnCes4aWg@mail.gmail.com>
-Message-ID: <CAHk-=whhXFQj0Vwzh7bnjnLs=SSTsxyiY6jeb7ovOGnCes4aWg@mail.gmail.com>
+ <CAHk-=whhXFQj0Vwzh7bnjnLs=SSTsxyiY6jeb7ovOGnCes4aWg@mail.gmail.com>
+In-Reply-To: <CAHk-=whhXFQj0Vwzh7bnjnLs=SSTsxyiY6jeb7ovOGnCes4aWg@mail.gmail.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Sat, 8 Jul 2023 15:36:15 -0700
+Message-ID: <CAJuCfpHuFc1P=Wo6Oy0T0u-H1B_JsbRgqhVJxY7D64ZY1zh7Cg@mail.gmail.com>
 Subject: Re: [PATCH v2 3/3] fork: lock VMAs of the parent process when forking
-To: Suren Baghdasaryan <surenb@google.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,43 +80,55 @@ Cc: jacobly.alt@gmail.com, regressions@lists.linux.dev, Jiri Slaby <jirislaby@ke
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 8 Jul 2023 at 12:12, Suren Baghdasaryan <surenb@google.com> wrote:
+On Sat, Jul 8, 2023 at 2:18=E2=80=AFPM Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
 >
->  kernel/fork.c | 1 +
->  1 file changed, 1 insertion(+)
+> On Sat, 8 Jul 2023 at 12:12, Suren Baghdasaryan <surenb@google.com> wrote=
+:
+> >
+> >  kernel/fork.c | 1 +
+> >  1 file changed, 1 insertion(+)
+>
+> I ended up editing your explanation a lot.
+>
+> I'm not convinced that the bug has much to do with the delayed tlb flushi=
+ng.
+>
+> I think it's more fundamental than some tlb coherence issue: our VM
+> copying simply expects to not have any unrelated concurrent page fault
+> activity, and various random internal data structures simply rely on
+> that.
+>
+> I made up an example that I'm not sure is relevant to any of the
+> particular failures, but that I think is a non-TLB case: the parent
+> 'vma->anon_vma' chain is copied by dup_mmap() in anon_vma_fork(), and
+> it's possible that the parent vma didn't have any anon_vma associated
+> with it at that point.
+>
+> But a concurrent page fault to the same vma - even *before* the page
+> tables have been copied, and when the TLB is still entirely coherent -
+> could then cause a anon_vma_prepare() on that parent vma, and
+> associate one of the pages with that anon-vma.
+>
+> Then the page table copy happens, and that page gets marked read-only
+> again, and is added to both the parent and the child vma's, but the
+> child vma never got associated with the parents new anon_vma, because
+> it didn't exist when anon_vma_fork() happened.
+>
+> Does this ever happen? I have no idea. But it would seem to be an
+> example that really has nothing to do with any TLB state, and is just
+> simply "we cannot handle concurrent page faults while we're busy
+> copying the mm".
+>
+> Again - maybe I messed up, but it really feels like the missing
+> vma_start_write() was more fundamental, and not some "TLB coherency"
+> issue.
 
-I ended up editing your explanation a lot.
+Sounds plausible. I'll try to use the reproducer to verify if that's
+indeed happening here. It's likely there are multiple problematic
+scenarios due to this missing lock though.
+Thanks,
+Suren.
 
-I'm not convinced that the bug has much to do with the delayed tlb flushing.
-
-I think it's more fundamental than some tlb coherence issue: our VM
-copying simply expects to not have any unrelated concurrent page fault
-activity, and various random internal data structures simply rely on
-that.
-
-I made up an example that I'm not sure is relevant to any of the
-particular failures, but that I think is a non-TLB case: the parent
-'vma->anon_vma' chain is copied by dup_mmap() in anon_vma_fork(), and
-it's possible that the parent vma didn't have any anon_vma associated
-with it at that point.
-
-But a concurrent page fault to the same vma - even *before* the page
-tables have been copied, and when the TLB is still entirely coherent -
-could then cause a anon_vma_prepare() on that parent vma, and
-associate one of the pages with that anon-vma.
-
-Then the page table copy happens, and that page gets marked read-only
-again, and is added to both the parent and the child vma's, but the
-child vma never got associated with the parents new anon_vma, because
-it didn't exist when anon_vma_fork() happened.
-
-Does this ever happen? I have no idea. But it would seem to be an
-example that really has nothing to do with any TLB state, and is just
-simply "we cannot handle concurrent page faults while we're busy
-copying the mm".
-
-Again - maybe I messed up, but it really feels like the missing
-vma_start_write() was more fundamental, and not some "TLB coherency"
-issue.
-
-            Linus
+>
+>             Linus
