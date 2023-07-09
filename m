@@ -1,47 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C4EC74C32E
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Jul 2023 13:29:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49D4174C3A6
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Jul 2023 13:34:45 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=OVIniZoj;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=IUZR2w1p;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QzPzZ6x2Zz3c3P
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Jul 2023 21:29:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QzQ5v17Nnz3bxY
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Jul 2023 21:34:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=OVIniZoj;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=IUZR2w1p;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QzPyh0CjDz30K1
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 Jul 2023 21:28:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QzQ513Lqrz30PL
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 Jul 2023 21:33:56 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id DB5D460C01;
-	Sun,  9 Jul 2023 11:28:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFF1FC433C8;
-	Sun,  9 Jul 2023 11:28:22 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 6365960BC9;
+	Sun,  9 Jul 2023 11:33:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 430C0C433C8;
+	Sun,  9 Jul 2023 11:33:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1688902103;
-	bh=TsMM2clemeACUsTCzTeJUymJha9TsDKJPtDWybjLNVg=;
+	s=korg; t=1688902433;
+	bh=UFqRTG++XGUiJlHcEY3N6u9+wzkqsszNITspIE/UBxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OVIniZojA74BG+mX/MTJliZO+f+dFGGdqPCMdmAB9qpcyQjfrA4QDW3ayzRqq/AQO
-	 oFwgg+bqvDuGjr/sEtj7IQNJfH1BvvQm96zTI/E+ogTuglfa2X+yRyIBXOC6DAvU/3
-	 CvHBmpbNQoR0HYeq0e/HaRAyJhwRJZYShE5s4TsM=
+	b=IUZR2w1ppv1L9VtXAQW8xgDf6v53t3NDtWn5h9sj5DuzQ3zscjthH3TewfD9SI84w
+	 NIk5h5Fd0hJ6Z4MyBChVWNJTSMnLTX6wtCCa0vpwLlGJKLbiNdtDjpzRZDDnHcX6fA
+	 ETzDutmp4v4UqL4HVdJ/X76BAav+9XZCsShivANc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
-Subject: [PATCH 6.3 257/431] soc/fsl/qe: fix usb.c build errors
-Date: Sun,  9 Jul 2023 13:13:25 +0200
-Message-ID: <20230709111457.178835484@linuxfoundation.org>
+Subject: [PATCH 6.3 375/431] perf tests task_analyzer: Fix bad substitution ${$1}
+Date: Sun,  9 Jul 2023 13:15:23 +0200
+Message-ID: <20230709111459.954441484@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230709111451.101012554@linuxfoundation.org>
 References: <20230709111451.101012554@linuxfoundation.org>
@@ -60,62 +60,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Kumar Gala <galak@kernel.crashing.org>, kernel test robot <lkp@intel.com>, Nicolas Schier <nicolas@jasle.eu>, Masahiro Yamada <masahiroy@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, patches@lists.linux.dev, Leo Li <leoyang.li@nxp.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Qiang Zhao <qiang.zhao@nxp.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-arm-kernel@lists.infradead.org, Nicolas Schier <nicolas@fjasle.eu>
+Cc: Sasha Levin <sashal@kernel.org>, Ian Rogers <irogers@google.com>, Athira Rajeev <atrajeev@linux.vnet.ibm.com>, Arnaldo Carvalho de Melo <acme@redhat.com>, John Garry <john.g.garry@oracle.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Hagen Paul Pfeifer <hagen@jauu.net>, patches@lists.linux.dev, Disha Goel <disgoel@linux.vnet.ibm.com>, Ravi Bangoria <ravi.bangoria@amd.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Jiri Olsa <jolsa@kernel.org>, Kajol Jain <kjain@linux.ibm.com>, Petar Gligoric <petar.gligoric@rohde-schwarz.com>, Namhyung Kim <namhyung@kernel.org>, Aditya Gupta <adityag@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Aditya Gupta <adityag@linux.ibm.com>
 
-[ Upstream commit 7b1a78babd0d2cd27aa07255dee0c2d7ac0f31e3 ]
+[ Upstream commit 5c4396efb53ef07d046a2e9456b240880e0c3076 ]
 
-Fix build errors in soc/fsl/qe/usb.c when QUICC_ENGINE is not set.
-This happens when PPC_EP88XC is set, which selects CPM1 & CPM.
-When CPM is set, USB_FSL_QE can be set without QUICC_ENGINE
-being set. When USB_FSL_QE is set, QE_USB deafults to y, which
-causes build errors when QUICC_ENGINE is not set. Making
-QE_USB depend on QUICC_ENGINE prevents QE_USB from defaulting to y.
+${$1} gives bad substitution error on sh, bash, and zsh. This seems like
+a typo, and this patch modifies it to $1, since that is what it's usage
+looks like from wherever `check_exec_0` is called.
 
-Fixes these build errors:
+This issue due to ${$1} caused all function calls to give error in
+`find_str_or_fail` line, and so no test runs completely. But
+'perf test "perf script task-analyzer tests"' wrongly reports
+that tests passed with the status OK, which is wrong considering
+the tests didn't even run completely
 
-drivers/soc/fsl/qe/usb.o: in function `qe_usb_clock_set':
-usb.c:(.text+0x1e): undefined reference to `qe_immr'
-powerpc-linux-ld: usb.c:(.text+0x2a): undefined reference to `qe_immr'
-powerpc-linux-ld: usb.c:(.text+0xbc): undefined reference to `qe_setbrg'
-powerpc-linux-ld: usb.c:(.text+0xca): undefined reference to `cmxgcr_lock'
-powerpc-linux-ld: usb.c:(.text+0xce): undefined reference to `cmxgcr_lock'
-
-Fixes: 5e41486c408e ("powerpc/QE: add support for QE USB clocks routing")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Link: https://lore.kernel.org/all/202301101500.pillNv6R-lkp@intel.com/
-Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Leo Li <leoyang.li@nxp.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nicolas Schier <nicolas@fjasle.eu>
-Cc: Qiang Zhao <qiang.zhao@nxp.com>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: Kumar Gala <galak@kernel.crashing.org>
-Acked-by: Nicolas Schier <nicolas@jasle.eu>
-Signed-off-by: Li Yang <leoyang.li@nxp.com>
+Fixes: e8478b84d6ba9ccf ("perf test: add new task-analyzer tests")
+Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+Cc: Disha Goel <disgoel@linux.vnet.ibm.com>
+Cc: Hagen Paul Pfeifer <hagen@jauu.net>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: John Garry <john.g.garry@oracle.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Petar Gligoric <petar.gligoric@rohde-schwarz.com>
+Cc: Ravi Bangoria <ravi.bangoria@amd.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Link: https://lore.kernel.org/r/20230613164145.50488-16-atrajeev@linux.vnet.ibm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/fsl/qe/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/tests/shell/test_task_analyzer.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soc/fsl/qe/Kconfig b/drivers/soc/fsl/qe/Kconfig
-index 357c5800b112f..7afa796dbbb89 100644
---- a/drivers/soc/fsl/qe/Kconfig
-+++ b/drivers/soc/fsl/qe/Kconfig
-@@ -39,6 +39,7 @@ config QE_TDM
+diff --git a/tools/perf/tests/shell/test_task_analyzer.sh b/tools/perf/tests/shell/test_task_analyzer.sh
+index a98e4ab66040e..6b3343234a6b2 100755
+--- a/tools/perf/tests/shell/test_task_analyzer.sh
++++ b/tools/perf/tests/shell/test_task_analyzer.sh
+@@ -31,7 +31,7 @@ report() {
  
- config QE_USB
- 	bool
-+	depends on QUICC_ENGINE
- 	default y if USB_FSL_QE
- 	help
- 	  QE USB Controller support
+ check_exec_0() {
+ 	if [ $? != 0 ]; then
+-		report 1 "invokation of ${$1} command failed"
++		report 1 "invocation of $1 command failed"
+ 	fi
+ }
+ 
 -- 
 2.39.2
 
