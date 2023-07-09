@@ -2,88 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD72B74C74B
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Jul 2023 20:40:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB82674C74F
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Jul 2023 20:41:23 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=f799RoVg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BxcQcpF8;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QzbY34jjDz3cWp
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jul 2023 04:40:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4QzbZ94ktFz3cWd
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jul 2023 04:41:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=f799RoVg;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BxcQcpF8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QzbHk2YW2z3bsJ
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jul 2023 04:28:50 +1000 (AEST)
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 369IHfqM025531;
-	Sun, 9 Jul 2023 18:28:46 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4QzbHm51Wvz3bw4
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jul 2023 04:28:52 +1000 (AEST)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 369IHNq6018392;
+	Sun, 9 Jul 2023 18:28:49 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=lZkMxx45VUPcHCkAAZhUZnoJCV5jctk7Z2YBN7iCvqs=;
- b=f799RoVgH5ibwyAYn/2e1c0N+6hd4gEwER1uA7roK7KQdNK+477BujuLiXdFgHmSBPgr
- eashCEnFe0wrJiYPTdAVmB4+r/AZPHJ0QBGDPs6xbNMaeEGsaIezR64mG+2fzYCAQtDC
- H3tPG2PDjMJGEsL1j2McNJv1I96KLyDbYMt63GpcOhgVNdbwamsfMZhSOtmlrBonjDh+
- UKzuTwqbeWcQK3cNO/44aSmLTZP5Kopq6xXY4gUIzYP0J6nTjrP7SgENqLL6wnAfh/h8
- duLGuinNPizNATFsecqvvDTn7nRqD25b6QBlKZX4FBju3vyZa/rne0I2DEHmdlmSbNoo yg== 
+ bh=1JSoFdw7HHXHRBR4/DLK9dgg6En8RGPiiejBZ+3wFY0=;
+ b=BxcQcpF8EULRHwzeWY47mVmC6fYCn1AXYvJm/9qu07jPIIuZ6cRgN5TQ983rw4f3K/hH
+ yfi2BQ8ygXhN/IQv0ybmT63sym1PAdMYD59kwssvPFFoShbK3lBD6kazGZo54KMtc1+A
+ Xr5rty/gqqmDZCZ49LI81imqxjZBXovlCzd/QJK4om4cBPQ0SMOUlnO4Lod8ywf5aq5Z
+ 45vYzJGbJddXr7m2mLqPxUTHNfdp/zJFoMsJP2vJYKRRpTmtnHITvjZ+m+oFazQyqcbt
+ onBPgFdDu1IEvKCohsXNrx0pCU0wG2Oq94fzpYxoHL3Xhh5a96vWjFdCHNrUaABgtkJ6 HQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rr21m83uy-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rr21n03r9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 09 Jul 2023 18:28:49 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 369ISmPv011097;
+	Sun, 9 Jul 2023 18:28:48 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rr21n03qs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 09 Jul 2023 18:28:48 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 369CluOf001193;
+	Sun, 9 Jul 2023 18:28:46 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3rpy2e0v9n-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Sun, 09 Jul 2023 18:28:46 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 369ILxAJ001960;
-	Sun, 9 Jul 2023 18:28:45 GMT
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rr21m83uq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 09 Jul 2023 18:28:45 +0000
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
-	by ppma03fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 369Hgkoh016194;
-	Sun, 9 Jul 2023 18:28:43 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma03fra.de.ibm.com (PPS) with ESMTPS id 3rpye50mhe-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 09 Jul 2023 18:28:43 +0000
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 369ISe5w36962928
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 369ISgC841943728
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 9 Jul 2023 18:28:40 GMT
+	Sun, 9 Jul 2023 18:28:42 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4D63A20040;
+	by IMSVA (Postfix) with ESMTP id C482C20043;
+	Sun,  9 Jul 2023 18:28:42 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A3E3620040;
 	Sun,  9 Jul 2023 18:28:40 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0BCA120043;
-	Sun,  9 Jul 2023 18:28:38 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.43.24.202])
 	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sun,  9 Jul 2023 18:28:37 +0000 (GMT)
+	Sun,  9 Jul 2023 18:28:40 +0000 (GMT)
 From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 To: acme@kernel.org, jolsa@kernel.org, irogers@google.com, namhyung@kernel.org
-Subject: [PATCH V2 13/26] tools/perf/tests: Fix shellcheck warning for probe.sh shell script
-Date: Sun,  9 Jul 2023 23:57:47 +0530
-Message-Id: <20230709182800.53002-14-atrajeev@linux.vnet.ibm.com>
+Subject: [PATCH V2 14/26] tools/perf/trace: Fix shellcheck issue for arch_errno_names.sh script
+Date: Sun,  9 Jul 2023 23:57:48 +0530
+Message-Id: <20230709182800.53002-15-atrajeev@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20230709182800.53002-1-atrajeev@linux.vnet.ibm.com>
 References: <20230709182800.53002-1-atrajeev@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Fw3RC01YOYPGBDc0a9VSO2AUv135r6yq
-X-Proofpoint-GUID: WudXtrD-wukgzOipDBSZQzRYil9giuU-
+X-Proofpoint-GUID: __kpJ791IgSkM88zkfPPPnVg-Xw4zYp7
+X-Proofpoint-ORIG-GUID: IHasdl-upqD7a1zcnBhKSN3bdUlZy9E7
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-07-09_12,2023-07-06_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- spamscore=0 impostorscore=0 bulkscore=0 mlxlogscore=999 clxscore=1015
- malwarescore=0 lowpriorityscore=0 adultscore=0 phishscore=0 mlxscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 impostorscore=0
+ suspectscore=0 bulkscore=0 clxscore=1015 mlxscore=0 phishscore=0
+ priorityscore=1501 malwarescore=0 mlxlogscore=999 adultscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2305260000 definitions=main-2307090169
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -102,28 +102,84 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Kajol Jain <kjain@linux.ibm.com>
 
-Running shellcheck on probe.sh throws below warning:
+Running shellcheck on arch_errno_names.sh generates below warning:
 
-In lib/probe.sh line 1:
-^-- SC2148 (error): Tips depend on target shell and yours is unknown. Add a shebang or a 'shell' directive.
+In arch_errno_names.sh line 20:
+	local arch="$1"
+        ^--------^ SC3043 (warning): In POSIX sh, 'local' is undefined.
 
-Fixed the warnings by adding shell directive.
+......
+
+In arch_errno_names.sh line 61:
+	local arch
+        ^--------^ SC3043 (warning): In POSIX sh, 'local' is undefined.
+
+In arch_errno_names.sh line 67:
+		printf '\t\treturn errno_to_name__%s(err);\n' $(arch_string "$arch")
+                                                              ^--------------------^ SC2046 (warning): Quote this to prevent word splitting.
+
+In arch_errno_names.sh line 69:
+	printf '\treturn errno_to_name__%s(err);\n' $(arch_string "$default")
+                                                    ^-----------------------^ SC2046 (warning): Quote this to prevent word splitting.
+
+Fixed the warnings by:
+- Fixing shellcheck warnings for local usage, by removing
+  local from the variable names
+- Adding quotes to avoid word splitting
 
 Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
 ---
- tools/perf/tests/shell/lib/probe.sh | 1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/trace/beauty/arch_errno_names.sh | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/tools/perf/tests/shell/lib/probe.sh b/tools/perf/tests/shell/lib/probe.sh
-index 51e3f60baba0..5aa6e2ec5734 100644
---- a/tools/perf/tests/shell/lib/probe.sh
-+++ b/tools/perf/tests/shell/lib/probe.sh
-@@ -1,3 +1,4 @@
-+#!/bin/bash
- # SPDX-License-Identifier: GPL-2.0
- # Arnaldo Carvalho de Melo <acme@kernel.org>, 2017
+diff --git a/tools/perf/trace/beauty/arch_errno_names.sh b/tools/perf/trace/beauty/arch_errno_names.sh
+index 37c53bac5f56..cc09dcaa891e 100755
+--- a/tools/perf/trace/beauty/arch_errno_names.sh
++++ b/tools/perf/trace/beauty/arch_errno_names.sh
+@@ -17,8 +17,7 @@ arch_string()
  
+ asm_errno_file()
+ {
+-	local arch="$1"
+-	local header
++	arch="$1"
+ 
+ 	header="$toolsdir/arch/$arch/include/uapi/asm/errno.h"
+ 	if test -r "$header"; then
+@@ -30,8 +29,7 @@ asm_errno_file()
+ 
+ create_errno_lookup_func()
+ {
+-	local arch=$(arch_string "$1")
+-	local nr name
++	arch=$(arch_string "$1")
+ 
+ 	printf "static const char *errno_to_name__%s(int err)\n{\n\tswitch (err) {\n" $arch
+ 
+@@ -44,8 +42,8 @@ create_errno_lookup_func()
+ 
+ process_arch()
+ {
+-	local arch="$1"
+-	local asm_errno=$(asm_errno_file "$arch")
++	arch="$1"
++	asm_errno=$(asm_errno_file "$arch")
+ 
+ 	$gcc $CFLAGS $include_path -E -dM -x c $asm_errno \
+ 		|grep -hE '^#define[[:blank:]]+(E[^[:blank:]]+)[[:blank:]]+([[:digit:]]+).*' \
+@@ -56,9 +54,8 @@ process_arch()
+ 
+ create_arch_errno_table_func()
+ {
+-	local archlist="$1"
+-	local default="$2"
+-	local arch
++	archlist="$1"
++	default="$2"
+ 
+ 	printf 'const char *arch_syscalls__strerrno(const char *arch, int err)\n'
+ 	printf '{\n'
 -- 
 2.39.1
 
