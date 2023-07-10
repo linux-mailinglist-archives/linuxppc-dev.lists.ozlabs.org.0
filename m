@@ -2,82 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4753A74D1BF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jul 2023 11:37:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B14E174D6D2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jul 2023 15:03:51 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=osQyxuiy;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=e7w/Xl3H;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=2YmsAJmF;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QzzRr18ddz3dFF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jul 2023 19:37:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R042F4LZkz3cCh
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jul 2023 23:03:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=osQyxuiy;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=e7w/Xl3H;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=2YmsAJmF;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QzzFR0nGlz3bh5
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jul 2023 19:28:10 +1000 (AEST)
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36A9Ge90022472;
-	Mon, 10 Jul 2023 09:28:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=i5x9hN7ANbiNLDt7+OOrTkB2vSMbC0zBUseJtYa7g4Y=;
- b=osQyxuiyykVZ8Bajv8fgu3Fl8GIGma1Hf1GvVQJV6sqIUOiwmUKm6b1I7rdEdGcaJJZt
- FCCJOEB5Jt4pajHDd9mAL1mRnA2FptPsRU13Dv0lWQ7040DZ2D9A4Wp+gluDFhYS4T7d
- W/09mK++zjfCiy331PO1+Tqj9JgERgTMFw+YyBAz47PU5ZNWlOj8ZHyrkDlL/118gE79
- txk1Ru9k4lt7Q7PCMlHa5aJ7tncfC4LvOD8NnQtv4D+XhO8r5mPnqkBYU1c1go8UFi2J
- NPrFJb0y3UsY9M4S87mTAXdOCbADsCuRMoi3NAd90sQ3wIPI31cGCOz7+UUtB0vE+Xus gQ== 
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rrf7dg7vx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Jul 2023 09:28:06 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-	by ppma02fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36A6Imod008473;
-	Mon, 10 Jul 2023 09:28:04 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma02fra.de.ibm.com (PPS) with ESMTPS id 3rpye5gux1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Jul 2023 09:28:04 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36A9S0dP21824188
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 10 Jul 2023 09:28:01 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C920E20040;
-	Mon, 10 Jul 2023 09:28:00 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B0C0D2004B;
-	Mon, 10 Jul 2023 09:27:58 +0000 (GMT)
-Received: from li-e8dccbcc-2adc-11b2-a85c-bc1f33b9b810.ibm.com.com (unknown [9.43.85.154])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 10 Jul 2023 09:27:58 +0000 (GMT)
-From: Kajol Jain <kjain@linux.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH v2 10/10] docs: ABI: sysfs-bus-event_source-devices-hv_gpci: Document affinity_domain_via_partition sysfs interface file
-Date: Mon, 10 Jul 2023 14:57:17 +0530
-Message-Id: <20230710092717.55317-11-kjain@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20230710092717.55317-1-kjain@linux.ibm.com>
-References: <20230710092717.55317-1-kjain@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R03zN3l7vz3bNp
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jul 2023 23:01:19 +1000 (AEST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 0DCCA221B7;
+	Mon, 10 Jul 2023 13:01:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1688994075; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ynzR+asEmdddM2MtQxJUJQzhlQgoZE1NTlMZsErkt0w=;
+	b=e7w/Xl3Hw9wwGd1e5xnBwZ+JxFUOmymNR5fKqsDftYESWMjt9tCqJU6zrTR1MLii6b3jWl
+	Ab/erDdWMJKPJwB1cc0m1+8KkIA8r+llJxP22L1X8T64yKqz5NVHeGRj2TfRLZ4mvx6aSy
+	VjvEnoCmfKOYfENXo96rp4DBlqFfEKY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1688994075;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ynzR+asEmdddM2MtQxJUJQzhlQgoZE1NTlMZsErkt0w=;
+	b=2YmsAJmF2VZHLPUdB7v5MUFt26z8vBYO2gdre0w9vPW7oE1H5RJV14vgBDQS8LQqAHgRXW
+	rLO8r+62FjDS9ABg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 9DBE013A05;
+	Mon, 10 Jul 2023 13:01:14 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id /BeDJRoBrGTTFAAAMHmgww
+	(envelope-from <tzimmermann@suse.de>); Mon, 10 Jul 2023 13:01:14 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: deller@gmx.de,
+	javierm@redhat.com
+Subject: [PATCH 00/17] fbdev: Remove FBINFO_DEFAULT and FBINFO_FLAG_DEFAULT flags
+Date: Mon, 10 Jul 2023 14:50:04 +0200
+Message-ID: <20230710130113.14563-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: -gS1h5aMeMCCl7aJaaobzrPNW8_yadzj
-X-Proofpoint-ORIG-GUID: -gS1h5aMeMCCl7aJaaobzrPNW8_yadzj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-10_07,2023-07-06_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 spamscore=0
- suspectscore=0 bulkscore=0 priorityscore=1501 lowpriorityscore=0
- clxscore=1015 phishscore=0 malwarescore=0 mlxlogscore=999 adultscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2307100082
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,58 +77,168 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, disgoel@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linux-fbdev@vger.kernel.org, kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, linux-sh@vger.kernel.org, linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org, linux-geode@lists.infradead.org, dri-devel@lists.freedesktop.org, Thomas Zimmermann <tzimmermann@suse.de>, linux-input@vger.kernel.org, linux-nvidia@lists.surfsouth.com, linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add details of the new hv-gpci interface file called
-"affinity_domain_via_partition" in the ABI documentation.
+Remove the unused flags FBINFO_DEFAULT and FBINFO_FLAG_DEFAULT from
+fbdev and drivers, as briefly discussed at [1]. Both flags were maybe
+useful when fbdev had special handling for driver modules. With
+commit 376b3ff54c9a ("fbdev: Nuke FBINFO_MODULE"), they are both 0
+and have no further effect.
 
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
----
- .../sysfs-bus-event_source-devices-hv_gpci    | 32 +++++++++++++++++++
- 1 file changed, 32 insertions(+)
+Patches 1 to 7 remove FBINFO_DEFAULT from drivers. Patches 2 to 5
+split this by the way the fb_info struct is being allocated. All flags
+are cleared to zero during the allocation.
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-event_source-devices-hv_gpci b/Documentation/ABI/testing/sysfs-bus-event_source-devices-hv_gpci
-index d8e65b93d1f7..b03b2bd4b081 100644
---- a/Documentation/ABI/testing/sysfs-bus-event_source-devices-hv_gpci
-+++ b/Documentation/ABI/testing/sysfs-bus-event_source-devices-hv_gpci
-@@ -208,3 +208,35 @@ Description:	admin read only
- 			   more information.
- 
- 		* "-EFBIG" : System information exceeds PAGE_SIZE.
-+
-+What:		/sys/devices/hv_gpci/interface/affinity_domain_via_partition
-+Date:		July 2023
-+Contact:	Linux on PowerPC Developer List <linuxppc-dev@lists.ozlabs.org>
-+Description:	admin read only
-+		This sysfs file exposes the system topology information by making HCALL
-+		H_GET_PERF_COUNTER_INFO. The HCALL is made with counter request value
-+		AFFINITY_DOMAIN_INFORMATION_BY_PARTITION(0xB1).
-+
-+		* This sysfs file will be created only for power10 and above platforms.
-+
-+		* User needs root privileges to read data from this sysfs file.
-+
-+		* This sysfs file will be created, only when the HCALL returns "H_SUCESS",
-+		  "H_AUTHORITY" and "H_PARAMETER" as the return type.
-+
-+		  HCALL with return error type "H_AUTHORITY", can be resolved during
-+		  runtime by setting "Enable Performance Information Collection" option.
-+
-+		* The end user reading this sysfs file must decode the content as per
-+		  underlying platform/firmware.
-+
-+		Possible error codes while reading this sysfs file:
-+
-+		* "-EPERM" : Partition is not permitted to retrieve performance information,
-+			    required to set "Enable Performance Information Collection" option.
-+
-+		* "-EIO" : Can't retrieve system information because of invalid buffer length/invalid address
-+			   or because of some hardware error. Refer getPerfCountInfo documentation for
-+			   more information.
-+
-+		* "-EFBIG" : System information exceeds PAGE_SIZE.
+Patches 8 to 16 do the same for FBINFO_FLAG_DEFAULT. Patch 8 fixes
+an actual bug in how arch/sh uses the tokne for struct fb_videomode,
+which is unrelated.
+
+Patch 17 removes both flag constants from <linux/fb.h>
+
+[1] https://lore.kernel.org/dri-devel/877crer8fm.fsf@minerva.mail-host-address-is-not-set/
+
+Thomas Zimmermann (17):
+  drm: Remove flag FBINFO_DEFAULT from fbdev emulation
+  fbdev: Remove flag FBINFO_DEFAULT from fbdev drivers
+  fbdev: Remove flag FBINFO_DEFAULT from fbdev drivers
+  fbdev: Remove flag FBINFO_DEFAULT from fbdev drivers
+  fbdev: Remove flag FBINFO_DEFAULT from fbdev drivers
+  fbdev/fsl-diu-fb: Remove flag FBINFO_DEFAULT
+  vfio-mdev: Remove flag FBINFO_DEFAULT from fbdev sample driver
+  arch/sh: Do not assign FBINFO_FLAG_DEFAULT to fb_videomode.flag
+  auxdisplay: Remove flag FBINFO_FLAG_DEFAULT from fbdev drivers
+  hid/picolcd: Remove flag FBINFO_FLAG_DEFAULT from fbdev driver
+  media: Remove flag FBINFO_FLAG_DEFAULT from fbdev drivers
+  staging: Remove flag FBINFO_FLAG_DEFAULT from fbdev drivers
+  fbdev: Remove flag FBINFO_FLAG_DEFAULT from fbdev drivers
+  fbdev: Remove flag FBINFO_FLAG_DEFAULT from fbdev drivers
+  fbdev/atafb: Remove flag FBINFO_FLAG_DEFAULT
+  fbdev/pxafb: Remove flag FBINFO_FLAG_DEFAULT
+  fbdev: Remove FBINFO_DEFAULT and FBINFO_FLAG_DEFAULT
+
+ arch/sh/boards/mach-sh7763rdp/setup.c          | 1 -
+ drivers/auxdisplay/cfag12864bfb.c              | 1 -
+ drivers/auxdisplay/ht16k33.c                   | 1 -
+ drivers/gpu/drm/drm_fbdev_dma.c                | 1 -
+ drivers/gpu/drm/drm_fbdev_generic.c            | 1 -
+ drivers/gpu/drm/gma500/fbdev.c                 | 2 +-
+ drivers/gpu/drm/radeon/radeon_fbdev.c          | 2 +-
+ drivers/hid/hid-picolcd_fb.c                   | 1 -
+ drivers/media/pci/ivtv/ivtvfb.c                | 1 -
+ drivers/media/test-drivers/vivid/vivid-osd.c   | 1 -
+ drivers/staging/fbtft/fbtft-core.c             | 2 +-
+ drivers/staging/sm750fb/sm750.c                | 1 -
+ drivers/video/fbdev/68328fb.c                  | 2 +-
+ drivers/video/fbdev/acornfb.c                  | 2 +-
+ drivers/video/fbdev/amba-clcd.c                | 1 -
+ drivers/video/fbdev/amifb.c                    | 5 ++---
+ drivers/video/fbdev/arcfb.c                    | 1 -
+ drivers/video/fbdev/asiliantfb.c               | 1 -
+ drivers/video/fbdev/atafb.c                    | 1 -
+ drivers/video/fbdev/atmel_lcdfb.c              | 2 +-
+ drivers/video/fbdev/aty/aty128fb.c             | 1 -
+ drivers/video/fbdev/aty/atyfb_base.c           | 3 +--
+ drivers/video/fbdev/aty/radeon_base.c          | 3 +--
+ drivers/video/fbdev/broadsheetfb.c             | 2 +-
+ drivers/video/fbdev/bw2.c                      | 1 -
+ drivers/video/fbdev/carminefb.c                | 1 -
+ drivers/video/fbdev/cg14.c                     | 2 +-
+ drivers/video/fbdev/cg3.c                      | 1 -
+ drivers/video/fbdev/cg6.c                      | 2 +-
+ drivers/video/fbdev/chipsfb.c                  | 1 -
+ drivers/video/fbdev/cirrusfb.c                 | 3 +--
+ drivers/video/fbdev/clps711x-fb.c              | 1 -
+ drivers/video/fbdev/cobalt_lcdfb.c             | 1 -
+ drivers/video/fbdev/controlfb.c                | 2 +-
+ drivers/video/fbdev/cyber2000fb.c              | 2 +-
+ drivers/video/fbdev/da8xx-fb.c                 | 1 -
+ drivers/video/fbdev/efifb.c                    | 1 -
+ drivers/video/fbdev/ep93xx-fb.c                | 1 -
+ drivers/video/fbdev/ffb.c                      | 3 +--
+ drivers/video/fbdev/fm2fb.c                    | 1 -
+ drivers/video/fbdev/fsl-diu-fb.c               | 2 +-
+ drivers/video/fbdev/g364fb.c                   | 2 +-
+ drivers/video/fbdev/gbefb.c                    | 1 -
+ drivers/video/fbdev/geode/gx1fb_core.c         | 1 -
+ drivers/video/fbdev/geode/gxfb_core.c          | 1 -
+ drivers/video/fbdev/geode/lxfb_core.c          | 1 -
+ drivers/video/fbdev/goldfishfb.c               | 1 -
+ drivers/video/fbdev/grvga.c                    | 2 +-
+ drivers/video/fbdev/gxt4500.c                  | 3 +--
+ drivers/video/fbdev/hecubafb.c                 | 2 +-
+ drivers/video/fbdev/hgafb.c                    | 2 +-
+ drivers/video/fbdev/hitfb.c                    | 2 +-
+ drivers/video/fbdev/hpfb.c                     | 1 -
+ drivers/video/fbdev/hyperv_fb.c                | 2 --
+ drivers/video/fbdev/i740fb.c                   | 2 +-
+ drivers/video/fbdev/i810/i810_main.c           | 4 ++--
+ drivers/video/fbdev/imsttfb.c                  | 3 +--
+ drivers/video/fbdev/imxfb.c                    | 3 +--
+ drivers/video/fbdev/intelfb/intelfbdrv.c       | 5 ++---
+ drivers/video/fbdev/kyro/fbdev.c               | 1 -
+ drivers/video/fbdev/leo.c                      | 1 -
+ drivers/video/fbdev/macfb.c                    | 1 -
+ drivers/video/fbdev/matrox/matroxfb_crtc2.c    | 5 ++---
+ drivers/video/fbdev/maxinefb.c                 | 1 -
+ drivers/video/fbdev/mb862xx/mb862xxfbdrv.c     | 2 +-
+ drivers/video/fbdev/metronomefb.c              | 2 +-
+ drivers/video/fbdev/mmp/fb/mmpfb.c             | 2 +-
+ drivers/video/fbdev/mx3fb.c                    | 1 -
+ drivers/video/fbdev/neofb.c                    | 2 +-
+ drivers/video/fbdev/nvidia/nvidia.c            | 4 ++--
+ drivers/video/fbdev/offb.c                     | 2 +-
+ drivers/video/fbdev/omap/omapfb_main.c         | 1 -
+ drivers/video/fbdev/omap2/omapfb/omapfb-main.c | 1 -
+ drivers/video/fbdev/p9100.c                    | 1 -
+ drivers/video/fbdev/platinumfb.c               | 1 -
+ drivers/video/fbdev/pm2fb.c                    | 3 +--
+ drivers/video/fbdev/pm3fb.c                    | 3 +--
+ drivers/video/fbdev/pmag-aa-fb.c               | 1 -
+ drivers/video/fbdev/pmag-ba-fb.c               | 1 -
+ drivers/video/fbdev/pmagb-b-fb.c               | 1 -
+ drivers/video/fbdev/ps3fb.c                    | 2 +-
+ drivers/video/fbdev/pvr2fb.c                   | 2 +-
+ drivers/video/fbdev/pxa168fb.c                 | 2 +-
+ drivers/video/fbdev/pxafb.c                    | 2 --
+ drivers/video/fbdev/q40fb.c                    | 1 -
+ drivers/video/fbdev/riva/fbdev.c               | 3 +--
+ drivers/video/fbdev/s1d13xxxfb.c               | 4 ++--
+ drivers/video/fbdev/s3c-fb.c                   | 1 -
+ drivers/video/fbdev/sa1100fb.c                 | 1 -
+ drivers/video/fbdev/savage/savagefb_driver.c   | 3 +--
+ drivers/video/fbdev/sh_mobile_lcdcfb.c         | 2 --
+ drivers/video/fbdev/simplefb.c                 | 1 -
+ drivers/video/fbdev/sis/sis_main.c             | 5 +----
+ drivers/video/fbdev/skeletonfb.c               | 2 +-
+ drivers/video/fbdev/sm501fb.c                  | 2 +-
+ drivers/video/fbdev/sm712fb.c                  | 1 -
+ drivers/video/fbdev/smscufx.c                  | 2 +-
+ drivers/video/fbdev/sstfb.c                    | 1 -
+ drivers/video/fbdev/sunxvr1000.c               | 1 -
+ drivers/video/fbdev/sunxvr2500.c               | 1 -
+ drivers/video/fbdev/sunxvr500.c                | 1 -
+ drivers/video/fbdev/tcx.c                      | 1 -
+ drivers/video/fbdev/tdfxfb.c                   | 2 +-
+ drivers/video/fbdev/tgafb.c                    | 2 +-
+ drivers/video/fbdev/tridentfb.c                | 2 +-
+ drivers/video/fbdev/udlfb.c                    | 2 +-
+ drivers/video/fbdev/uvesafb.c                  | 3 +--
+ drivers/video/fbdev/valkyriefb.c               | 1 -
+ drivers/video/fbdev/vermilion/vermilion.c      | 2 +-
+ drivers/video/fbdev/vesafb.c                   | 2 +-
+ drivers/video/fbdev/vfb.c                      | 1 -
+ drivers/video/fbdev/vga16fb.c                  | 2 +-
+ drivers/video/fbdev/via/viafbdev.c             | 2 +-
+ drivers/video/fbdev/vt8500lcdfb.c              | 3 +--
+ drivers/video/fbdev/wm8505fb.c                 | 3 +--
+ drivers/video/fbdev/xen-fbfront.c              | 2 +-
+ drivers/video/fbdev/xilinxfb.c                 | 1 -
+ include/linux/fb.h                             | 3 ---
+ samples/vfio-mdev/mdpy-fb.c                    | 1 -
+ 119 files changed, 65 insertions(+), 150 deletions(-)
+
 -- 
-2.31.1
+2.41.0
 
