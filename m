@@ -2,77 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54EAE74D9CF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jul 2023 17:23:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9673874DAC2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jul 2023 18:10:09 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ezCgR6kK;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=wDueoqD1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ly1uqkRE;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R077D1b1Zz3c30
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 01:23:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R089B4TVjz3c2t
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 02:10:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ezCgR6kK;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=wDueoqD1;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ly1uqkRE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R076K2sVZz3bYR
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jul 2023 01:22:32 +1000 (AEST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 70CED2232F;
-	Mon, 10 Jul 2023 15:22:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1689002549; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f9YU6kgr3AZQPI61sCH8br42+ZI0/eMwmpIZNMLHoAU=;
-	b=ezCgR6kKuGW9mblw/tGNpY2UO/8YJ9bKkXOg4xTKLNGdaFJgQseaLq2Vc6QmZWUJezl8LN
-	M3rAgmeSHvU5hKJ3DAecHMtv2/yTk6g8P1nOPsAsCcyiM4pnjL4H6aCuQQd5Ygl/U6ybNX
-	o2t3cvD7nJP0LgPIFmZhoFAxDq7q81Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1689002549;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f9YU6kgr3AZQPI61sCH8br42+ZI0/eMwmpIZNMLHoAU=;
-	b=wDueoqD1Mdn9akcq6CIKGnH4rgtpH0NVskooCq4SrpwD9YhD3cZsyz4LBZ8BDaaOYCbr83
-	VtXhwhAmUptxwGBw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 11E851361C;
-	Mon, 10 Jul 2023 15:22:29 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id lz9gAzUirGTGXwAAMHmgww
-	(envelope-from <tzimmermann@suse.de>); Mon, 10 Jul 2023 15:22:29 +0000
-Message-ID: <733273ad-89e1-d952-37ee-bb75c3ab8188@suse.de>
-Date: Mon, 10 Jul 2023 17:22:28 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R088J02sZz3bX2
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jul 2023 02:09:19 +1000 (AEST)
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36AG0gke001389;
+	Mon, 10 Jul 2023 16:08:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=avsSqBmtIw8X7zth4yLOaE23VJsCf2jWt5uEhh/d5ko=;
+ b=ly1uqkRERRDpgHriegstan308Se3mtKg2zx7xXLSR1XswO1A8o7m4U0OEmbBaI45JOqi
+ Vb/FgAZ7YjqvbgDXQI8PMoNK3pKkm4PDXnkvYA57oIQcvOSXb0Wpyu0+PyvKLNC+lNu3
+ e4ud4miwPZYj1dcQXuBHKh4A/U/I+dy2CufnWesYCVuHdWYHMK/TKBaQ1G6WDCw9DAhF
+ nwhC9DyPdDRbDvQNV6Hfi92YDXDUn+GYFMCU3+tj5XuGo+DcuuvsV18NNsyKOKJw32tu
+ 2in/JpO9t2vsv0AAldvstPMqmzh7+tkRT2Zhr+w1dDgeBM5FTm5m7IbR1dqb3IxWkSI/ TQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rrn0d0dw4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 10 Jul 2023 16:08:54 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36AFt78I011262;
+	Mon, 10 Jul 2023 16:08:54 GMT
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rrn0d0dvc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 10 Jul 2023 16:08:54 +0000
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+	by ppma05wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36AG0ZUW014443;
+	Mon, 10 Jul 2023 16:08:52 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([9.208.130.97])
+	by ppma05wdc.us.ibm.com (PPS) with ESMTPS id 3rpye5jnd1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 10 Jul 2023 16:08:52 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36AG8pfS19530400
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 10 Jul 2023 16:08:51 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A76D45803F;
+	Mon, 10 Jul 2023 16:08:51 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E820058061;
+	Mon, 10 Jul 2023 16:08:45 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.43.9.86])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 10 Jul 2023 16:08:45 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linux-mm@kvack.org, akpm@linux-foundation.org, mpe@ellerman.id.au,
+        linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu
+Subject: [PATCH v4 00/13] Add support for DAX vmemmap optimization for ppc64
+Date: Mon, 10 Jul 2023 21:38:29 +0530
+Message-ID: <20230710160842.56300-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 09/17] auxdisplay: Remove flag FBINFO_FLAG_DEFAULT from
- fbdev drivers
-Content-Language: en-US
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-References: <20230710130113.14563-1-tzimmermann@suse.de>
- <20230710130113.14563-10-tzimmermann@suse.de>
- <CANiq72=9PoV3FOcXx9FdiSLePKXDG4BSY_5-jddBkqDL=ua3FA@mail.gmail.com>
-From: Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <CANiq72=9PoV3FOcXx9FdiSLePKXDG4BSY_5-jddBkqDL=ua3FA@mail.gmail.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------jUsPVU9eO41Mfau4JMej3ZiU"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: UHBRW4tIa1hm0FO60lQ40rtn1vUpwO01
+X-Proofpoint-ORIG-GUID: nUp1vSJKqpJQ5VYdhjvmaC0gyjMIyfLk
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-10_12,2023-07-06_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ spamscore=0 malwarescore=0 adultscore=0 lowpriorityscore=0 suspectscore=0
+ phishscore=0 mlxscore=0 clxscore=1015 impostorscore=0 mlxlogscore=999
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2307100145
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,80 +95,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, linux-sh@vger.kernel.org, Robin van der Gracht <robin@protonic.nl>, deller@gmx.de, linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org, javierm@redhat.com, dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, linux-nvidia@lists.surfsouth.com, linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-geode@lists.infradead.org, linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Muchun Song <muchun.song@linux.dev>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Dan Williams <dan.j.williams@intel.com>, Oscar Salvador <osalvador@suse.de>, Will Deacon <will@kernel.org>, Joao Martins <joao.m.martins@oracle.com>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------jUsPVU9eO41Mfau4JMej3ZiU
-Content-Type: multipart/mixed; boundary="------------isGioYLGE6aLAoHpvCKZCjXA";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: deller@gmx.de, javierm@redhat.com, linux-sh@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- amd-gfx@lists.freedesktop.org, linux-input@vger.kernel.org,
- linux-media@vger.kernel.org, linux-fbdev@vger.kernel.org,
- linux-staging@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-geode@lists.infradead.org, linux-nvidia@lists.surfsouth.com,
- linux-hyperv@vger.kernel.org, linux-omap@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
- Miguel Ojeda <ojeda@kernel.org>, Robin van der Gracht <robin@protonic.nl>
-Message-ID: <733273ad-89e1-d952-37ee-bb75c3ab8188@suse.de>
-Subject: Re: [PATCH 09/17] auxdisplay: Remove flag FBINFO_FLAG_DEFAULT from
- fbdev drivers
-References: <20230710130113.14563-1-tzimmermann@suse.de>
- <20230710130113.14563-10-tzimmermann@suse.de>
- <CANiq72=9PoV3FOcXx9FdiSLePKXDG4BSY_5-jddBkqDL=ua3FA@mail.gmail.com>
-In-Reply-To: <CANiq72=9PoV3FOcXx9FdiSLePKXDG4BSY_5-jddBkqDL=ua3FA@mail.gmail.com>
+This patch series implements changes required to support DAX vmemmap
+optimization for ppc64. The vmemmap optimization is only enabled with radix MMU
+translation and 1GB PUD mapping with 64K page size. The patch series also split
+hugetlb vmemmap optimization as a separate Kconfig variable so that
+architectures can enable DAX vmemmap optimization without enabling hugetlb
+vmemmap optimization. This should enable architectures like arm64 to enable DAX
+vmemmap optimization while they can't enable hugetlb vmemmap optimization. More
+details of the same are in patch "mm/vmemmap optimization: Split hugetlb and
+devdax vmemmap optimization"
 
---------------isGioYLGE6aLAoHpvCKZCjXA
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Changes from v3:
+* Rebase to latest linus tree
+* Build fix with SPARSEMEM_VMEMMP disabled
+* Add hash_pud_same outisde THP Kconfig
 
-SGkNCg0KQW0gMTAuMDcuMjMgdW0gMTY6MjQgc2NocmllYiBNaWd1ZWwgT2plZGE6DQo+IE9u
-IE1vbiwgSnVsIDEwLCAyMDIzIGF0IDM6MDHigK9QTSBUaG9tYXMgWmltbWVybWFubiA8dHpp
-bW1lcm1hbm5Ac3VzZS5kZT4gd3JvdGU6DQo+Pg0KPj4gVGhlIGZsYWcgRkJJTkZPX0ZMQUdf
-REVGQVVMVCBpcyAwIGFuZCBoYXMgbm8gZWZmZWN0LCBhcyBzdHJ1Y3QNCj4+IGZiaW5mby5m
-bGFncyBoYXMgYmVlbiBhbGxvY2F0ZWQgdG8gemVybyBieSBmcmFtZWJ1ZmZlcl9hbGxvYygp
-LiBTbyBkbw0KPj4gbm90IHNldCBpdC4NCj4gDQo+IGBmcmFtZWJ1ZmZlcl9hbGxvYygpYCBk
-b2VzIGluZGVlZCB1c2UgYGt6YWxsb2MoKWAsIGJ1dCB0aGUgZG9jcyBkbyBub3QNCj4gbWVu
-dGlvbiB0aGUgemVyb2luZy4gU2hvdWxkIHRoYXQgZ3VhcmFudGVlIGJlIGRvY3VtZW50ZWQ/
-DQoNCkknbGwgYXBwZW5kIGEgcGF0Y2ggdG8gdGhlIHNlcmllcyB0aGF0IGRvY3VtZW50cyB0
-aGlzLg0KDQo+IA0KPj4gRmxhZ3Mgc2hvdWxkIHNpZ25hbCBkaWZmZXJlbmNlcyBmcm9tIHRo
-ZSBkZWZhdWx0IHZhbHVlcy4gQWZ0ZXIgY2xlYW5pbmcNCj4+IHVwIGFsbCBvY2N1cmVuY2Vz
-IG9mIEZCSU5GT19GTEFHX0RFRkFVTFQsIHRoZSB0b2tlbiBjYW4gYmUgcmVtb3ZlZC4NCj4g
-DQo+IG9jY3VyZW5jZXMgLT4gb2NjdXJyZW5jZXMNCj4gDQo+IGNhbiAtPiB3aWxsIG1heWJl
-PyBTaW5jZSB0aGUgaW50ZW50aW9uIG9mIHRoZSBwYXRjaCBzZXJpZXMgaXMgdG8NCj4gcmVt
-b3ZlIGl0ICh0aGVtKSBhbHRvZ2V0aGVyKS4NCg0KU3VyZS4NCg0KQmVzdCByZWdhcmRzDQpU
-aG9tYXMNCg0KPiANCj4gVGhhbmtzIQ0KPiANCj4gQ2hlZXJzLA0KPiBNaWd1ZWwNCg0KLS0g
-DQpUaG9tYXMgWmltbWVybWFubg0KR3JhcGhpY3MgRHJpdmVyIERldmVsb3Blcg0KU1VTRSBT
-b2Z0d2FyZSBTb2x1dGlvbnMgR2VybWFueSBHbWJIDQpGcmFua2Vuc3RyYXNzZSAxNDYsIDkw
-NDYxIE51ZXJuYmVyZywgR2VybWFueQ0KR0Y6IEl2byBUb3RldiwgQW5kcmV3IE15ZXJzLCBB
-bmRyZXcgTWNEb25hbGQsIEJvdWRpZW4gTW9lcm1hbg0KSFJCIDM2ODA5IChBRyBOdWVybmJl
-cmcpDQo=
+Changes from v2:
+* Rebase to latest linus tree
+* Address review feedback
 
---------------isGioYLGE6aLAoHpvCKZCjXA--
+Changes from V1:
+* Fix make htmldocs warning
+* Fix vmemmap allocation bugs with different alignment values.
+* Correctly check for section validity to before we free vmemmap area
 
---------------jUsPVU9eO41Mfau4JMej3ZiU
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
 
------BEGIN PGP SIGNATURE-----
 
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmSsIjQFAwAAAAAACgkQlh/E3EQov+D4
-nQ/8D7mlMiLl4N+aerXFpIUKe6RRa+C9U1qxWDMdALRg57be/CZeoU44owAwYkvN4Jx4zPYal16M
-UQZFheDfymtdS8RFepV3E+U2K3PcgOvNPK98EZOF3feIlw5q8CScIy/xjBSeGTSG8AupE117C+OF
-MMI6G6GVt92ap4zsSx+i6gcgUB0BtdM+xfKqeHEfba+n76ZfKNAbTK4v8jPtc+0gAsBWsSJ5JiaC
-/QIyWDHgQN2dxXFmRmU+gBJsa/IrONfkK3hCseKd8ap3O1BfA5+KT2Sk6mBj1nuF0gbQJPBh1tGs
-7RJ4fGW45T2pNXrcmx7Y9no0iPUd21ogZKBd55zfO8pdIR0fLdVgY87oEABsadmVL6L4YAlH1hen
-0sriL3WOxFXWqXmZtbehB9xDyetXAndystyRjnz+CGHCJnd5kplrJpVeGiNsBiBhbeftk5sOLvf4
-U17WksvIF9WuBvvdf9pB5jK8EYNCoYTUdeME3uNfu2QqPwszn8/2GYP84Ywtn0woTPZFhnsMD1Ez
-nN8DPXKR0BKIufo/1U7AgfdUb27t5dGrIcCtgRVar60tsrwmX79ajodm2//KOvEeRcS3WidRXF1v
-KRC5d32icnvnTr6PC5jx1m/BsmPRdlPCEM2zqvJWi8URGSKFdS+rvoXLFfBXCw01YKUU4P6PI4ia
-7Ks=
-=lZHg
------END PGP SIGNATURE-----
+Aneesh Kumar K.V (13):
+  mm/hugepage pud: Allow arch-specific helper function to check huge
+    page pud support
+  mm: Change pudp_huge_get_and_clear_full take vm_area_struct as arg
+  mm/vmemmap: Improve vmemmap_can_optimize and allow architectures to
+    override
+  mm/vmemmap: Allow architectures to override how vmemmap optimization
+    works
+  mm: Add __HAVE_ARCH_PUD_SAME similar to __HAVE_ARCH_P4D_SAME
+  mm/huge pud: Use transparent huge pud helpers only with
+    CONFIG_TRANSPARENT_HUGEPAGE
+  mm/vmemmap optimization: Split hugetlb and devdax vmemmap optimization
+  powerpc/mm/trace: Convert trace event to trace event class
+  powerpc/book3s64/mm: Enable transparent pud hugepage
+  powerpc/book3s64/vmemmap: Switch radix to use a different vmemmap
+    handling function
+  powerpc/book3s64/radix: Add support for vmemmap optimization for radix
+  powerpc/book3s64/radix: Remove mmu_vmemmap_psize
+  powerpc/book3s64/radix: Add debug message to give more details of
+    vmemmap allocation
 
---------------jUsPVU9eO41Mfau4JMej3ZiU--
+ Documentation/mm/vmemmap_dedup.rst            |   1 +
+ Documentation/powerpc/index.rst               |   1 +
+ Documentation/powerpc/vmemmap_dedup.rst       | 101 +++
+ arch/loongarch/Kconfig                        |   2 +-
+ arch/powerpc/Kconfig                          |   1 +
+ arch/powerpc/include/asm/book3s/64/hash.h     |   9 +
+ arch/powerpc/include/asm/book3s/64/pgtable.h  | 155 ++++-
+ arch/powerpc/include/asm/book3s/64/radix.h    |  47 ++
+ .../include/asm/book3s/64/tlbflush-radix.h    |   2 +
+ arch/powerpc/include/asm/book3s/64/tlbflush.h |   8 +
+ arch/powerpc/include/asm/pgtable.h            |   4 +
+ arch/powerpc/mm/book3s64/hash_pgtable.c       |   2 +-
+ arch/powerpc/mm/book3s64/pgtable.c            |  78 +++
+ arch/powerpc/mm/book3s64/radix_pgtable.c      | 573 ++++++++++++++++--
+ arch/powerpc/mm/book3s64/radix_tlb.c          |   7 +
+ arch/powerpc/mm/init_64.c                     |  37 +-
+ arch/powerpc/platforms/Kconfig.cputype        |   1 +
+ arch/riscv/Kconfig                            |   2 +-
+ arch/s390/Kconfig                             |   2 +-
+ arch/x86/Kconfig                              |   3 +-
+ drivers/nvdimm/pfn_devs.c                     |   2 +-
+ fs/Kconfig                                    |   2 +-
+ include/linux/mm.h                            |  29 +-
+ include/linux/pgtable.h                       |  11 +-
+ include/trace/events/thp.h                    |  33 +-
+ mm/Kconfig                                    |   5 +-
+ mm/debug_vm_pgtable.c                         |   2 +-
+ mm/huge_memory.c                              |   2 +-
+ mm/mm_init.c                                  |   2 +-
+ mm/mremap.c                                   |   2 +-
+ mm/sparse-vmemmap.c                           |   3 +
+ 31 files changed, 1047 insertions(+), 82 deletions(-)
+ create mode 100644 Documentation/powerpc/vmemmap_dedup.rst
+
+-- 
+2.41.0
+
