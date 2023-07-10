@@ -1,90 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1992574C77C
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Jul 2023 20:51:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BCBF74C9E9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jul 2023 04:36:53 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sU5adctq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=WRw0UaQi;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4QzbpC4jmfz3dRm
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jul 2023 04:51:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Qzp6q2sCbz3c1q
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jul 2023 12:36:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sU5adctq;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=WRw0UaQi;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::112e; helo=mail-yw1-x112e.google.com; envelope-from=azeemshaikh38@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4QzbJN0GQ0z3c1n
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jul 2023 04:29:23 +1000 (AEST)
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 369IHGCH022391;
-	Sun, 9 Jul 2023 18:29:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=RtdqDdHK5Es6HtYX9w+EwyLHFgBm8aiReoprZJ72nxw=;
- b=sU5adctqC7jiP7A80Tkp3zpr1ibgW/ZCBmkyKaotSUiQ/qVo3TFaHiYAJmryYQfg02IF
- AKrG8JNJnIel9Comd4s0/pV8rrz02EgEt77zLY6QKQJYo4mhIl2hS7xoL3bHKJO18Wvt
- 4n3u5Yc6dgAeEBEf+mnLcvX/tz7KzE/UTp/alcjflcGL77RB0qKNkFz86jpLzUbacD39
- 4mRkMAA/hhZn3PO+rGmmLS1HrDRx5/R3sgpmzG7uIMQuVfTX7pbvvkoW+/nCKSJk+dPa
- e5NNyN+T1NzeD9TUNSC7BB2cqKbyIc/7DvtLrfc5JYWdaQ2umXDODDf87p3uGeNMwKUI vQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rr21hr446-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 09 Jul 2023 18:29:20 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 369ITKtR015694;
-	Sun, 9 Jul 2023 18:29:20 GMT
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rr21hr43w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 09 Jul 2023 18:29:20 +0000
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
-	by ppma04fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 369ERY6Q027357;
-	Sun, 9 Jul 2023 18:29:17 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma04fra.de.ibm.com (PPS) with ESMTPS id 3rpye58mr8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 09 Jul 2023 18:29:17 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 369ITEXu23003740
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 9 Jul 2023 18:29:14 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 00F0120040;
-	Sun,  9 Jul 2023 18:29:14 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D184C2004B;
-	Sun,  9 Jul 2023 18:29:11 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.43.24.202])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sun,  9 Jul 2023 18:29:11 +0000 (GMT)
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: acme@kernel.org, jolsa@kernel.org, irogers@google.com, namhyung@kernel.org
-Subject: [PATCH V2 26/26] tools/perf/tests: Fix shellcheck warning for stat+std_output.sh testcase
-Date: Sun,  9 Jul 2023 23:58:00 +0530
-Message-Id: <20230709182800.53002-27-atrajeev@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20230709182800.53002-1-atrajeev@linux.vnet.ibm.com>
-References: <20230709182800.53002-1-atrajeev@linux.vnet.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Qzp5x1RwFz30N3
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jul 2023 12:36:03 +1000 (AEST)
+Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-57045429f76so48256787b3.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 Jul 2023 19:36:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1688956557; x=1691548557;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6mF3L96LoTnWx2MEvXwnNhJXYkCF7/EN50oM+cK6gkY=;
+        b=WRw0UaQiekWxZPXDwkitHOIuxH2s6UHIsbZEgRkEdA6rCSYl96U7eWiGWscQ6qsUTC
+         gJV2rzrpDX6nxHsonY90dPDsKVFY+CGn81JqgnP1xB2JvjH98+rQhh/3KhaeMD4UnUc/
+         6XsxiSp+iq410adY0PfarKUskq7/45cLJ2Ffz9OG1f0QyMsMOJlndzVlkXdBlGQyEGA8
+         bCRwlJKBCClIni+Npc60hI+yK4L9n3KePYeOXwOogMKevsQpC5o83OTL59p5vU8Cg6Rc
+         EbBAxkKQ/VshaA8wHUl9D0GGLqRZ4Yg6bUjtLiBUcD/kGytJmiN8v6FF1lCV4ru4vqH1
+         JlxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688956557; x=1691548557;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6mF3L96LoTnWx2MEvXwnNhJXYkCF7/EN50oM+cK6gkY=;
+        b=f2QZm2aufFULZbUQmXdQli2OL/zZBeVoCLJgE9GmTrYMQ8NdtqZlDImzpmp3PiwFP9
+         TIHW2gA9M/2ouQNJ5BT5usDUyLi3VCExMH/nkgpXm+pwIbf1ue1lkFHdODkGysYl1w68
+         b2peFBLXKgaPUyJTHd3x0j4sPi+sE6KBl/bPi7wqHy/bBVe3THUT9KKQMcKRsu6j1XOZ
+         anWu+qvK+D8eF77xOkrT0PjfExpYxkuQ0JRsD9/6A2aFa0z0ds09+DKdWw9Ynh/aGxA0
+         NfHkNewwdR47kMAqu7XZCEDLpkBV1DaElFRUlpw6CBC0Hiah5vKXe+8g8gaPgkSXLsX4
+         AN0g==
+X-Gm-Message-State: ABy/qLZrZFo426NNr7tyC38Ru0dzQoiNl4ctkz0VEaSDnxpkY9NIo3G2
+	2Dma6vWD2uerb+uHPX5OS+M6QdZWApQQYoF2cc8=
+X-Google-Smtp-Source: APBJJlEePzrOeSKu/dCCO6swAe8NIexDP/nO5MptZzFfpfK5UueWI0VFmUhtLkKez2jxesbv31XOrlbcqTt17g/+qZk=
+X-Received: by 2002:a81:a001:0:b0:577:f47:3d92 with SMTP id
+ x1-20020a81a001000000b005770f473d92mr10556370ywg.23.1688956557447; Sun, 09
+ Jul 2023 19:35:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: IYGSjP81_XBPx3Z0tu-1IMV_tbGc6j48
-X-Proofpoint-GUID: u-zP9sWdO6cgKb65xEKnLGj9RF-FdhIO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-09_12,2023-07-06_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 clxscore=1015
- mlxscore=0 malwarescore=0 bulkscore=0 phishscore=0 impostorscore=0
- spamscore=0 lowpriorityscore=0 adultscore=0 priorityscore=1501
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2307090169
+References: <20230523021425.2406309-1-azeemshaikh38@gmail.com> <202305231020.37C95FD@keescook>
+In-Reply-To: <202305231020.37C95FD@keescook>
+From: Azeem Shaikh <azeemshaikh38@gmail.com>
+Date: Sun, 9 Jul 2023 22:35:46 -0400
+Message-ID: <CADmuW3UAHODqC5YAmjK1sOuo3C56noOa6hsHA+2Es2R9MT36_g@mail.gmail.com>
+Subject: Re: [PATCH] soc: fsl: qe: Replace all non-returning strlcpy with strscpy
+To: Kees Cook <keescook@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,50 +75,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, linux-hardening@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Running shellcheck on stat_std_output testcase throws
-below warning:
+On Tue, May 23, 2023 at 1:20=E2=80=AFPM Kees Cook <keescook@chromium.org> w=
+rote:
+>
+> On Tue, May 23, 2023 at 02:14:25AM +0000, Azeem Shaikh wrote:
+> > strlcpy() reads the entire source buffer first.
+> > This read may exceed the destination size limit.
+> > This is both inefficient and can lead to linear read
+> > overflows if a source string is not NUL-terminated [1].
+> > In an effort to remove strlcpy() completely [2], replace
+> > strlcpy() here with strscpy().
+> > No return values were used, so direct replacement is safe.
+> >
+> > [1] https://www.kernel.org/doc/html/latest/process/deprecated.html#strl=
+cpy
+> > [2] https://github.com/KSPP/linux/issues/89
+> >
+> > Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
+>
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+>
 
-   In tests/shell/stat+std_output.sh line 9:
-   . $(dirname $0)/lib/stat_output.sh
-     ^-----------^ SC2046 (warning): Quote this to prevent word splitting.
-
-   In tests/shell/stat+std_output.sh line 32:
-   	   local -i cnt=0
-                    ^-^ SC2034 (warning): cnt appears unused. Verify use (or export if used externally).
-
-Fixed the warning by adding quotes to avoid word splitting
-and removed unused variable "cnt" at line 32.
-
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
----
- tools/perf/tests/shell/stat+std_output.sh | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/tools/perf/tests/shell/stat+std_output.sh b/tools/perf/tests/shell/stat+std_output.sh
-index 98cc3356a04a..4bfef39baf0a 100755
---- a/tools/perf/tests/shell/stat+std_output.sh
-+++ b/tools/perf/tests/shell/stat+std_output.sh
-@@ -6,7 +6,7 @@
- 
- set -e
- 
--. $(dirname $0)/lib/stat_output.sh
-+. "$(dirname $0)"/lib/stat_output.sh
- 
- stat_output=$(mktemp /tmp/__perf_test.stat_output.std.XXXXX)
- 
-@@ -29,7 +29,6 @@ trap trap_cleanup EXIT TERM INT
- 
- function commachecker()
- {
--	local -i cnt=0
- 	local prefix=1
- 
- 	case "$1"
--- 
-2.39.1
-
+Friendly ping on this.
