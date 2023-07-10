@@ -1,49 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4318174DB27
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jul 2023 18:35:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E32974DB2E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jul 2023 18:36:27 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=z2G0+8/G;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=UuZrn4FN;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R08kb14vBz3bp7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 02:35:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R08lY1RSyz3byT
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 02:36:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=z2G0+8/G;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=UuZrn4FN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=lunn.ch (client-ip=156.67.10.101; helo=vps0.lunn.ch; envelope-from=andrew@lunn.ch; receiver=lists.ozlabs.org)
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1030; helo=mail-pj1-x1030.google.com; envelope-from=isaku.yamahata@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R08jh2qglz301f
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jul 2023 02:34:47 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=jLGZ8Kt5cT2lpnt9z22M2igMnkaIHF8gwZa/YIMfnqM=; b=z2G0+8/GJfV/RuF2lZu7GATCK4
-	wsXBdaF4/3pPUB5Nyp+xNiYERioTgNDxfkSML5BjoZGDbndl5UpmdyepkYpVVN41wC/CEmLQaWSqv
-	9iPHY5Os1WStwXUKOwkoM6bweMfJ5F8Z6IpqdRJXdKjNKGsGZDFEeRCqMJKusLJ16LRM=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1qItqK-000xlL-WE; Mon, 10 Jul 2023 18:34:33 +0200
-Date: Mon, 10 Jul 2023 18:34:32 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Su Hui <suhui@nfschina.com>
-Subject: Re: [PATCH net-next v2 01/10] net: wan: Remove unnecessary (void*)
- conversions
-Message-ID: <23e98085-8f07-4ee2-8487-8e3b439b69f4@lunn.ch>
-References: <20230710063933.172926-1-suhui@nfschina.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R08jp6KHkz3bnp
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jul 2023 02:34:53 +1000 (AEST)
+Received: by mail-pj1-x1030.google.com with SMTP id 98e67ed59e1d1-262dc1ced40so3443464a91.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jul 2023 09:34:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689006891; x=1691598891;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=McmzJB5w4UGeZqusQBhdxfjqigG3UhKtoIfFccLuj2s=;
+        b=UuZrn4FN/UbJwfewh85rKzjLye9uELQEX45+YZjjYTP/BYBPgS+1UF+XIPNG2dESCU
+         W86RtEBWvSwsPMW2x13eLsYhpVucWKpqju+x0agjnUbM9X4mJPFqV5rxvm4kT+xeCHJ2
+         VLT5n9dF1ENtaArZbX2UUhZour8m8LNq5DgukydBxaU2fh8GLhckDOL0rRtQHMK6r9Zy
+         jdOMwsf8im36X5gkixxf9GaLSAwdB6NrArpT95n6SO2ZLoGIlJK/Rxm4qX2jwfk/k1E7
+         Ou/qPcZpE/ua9W+K5ji+Kqm43nFA7KCT2k00BsUZLSUM4S3DFaj6X8Q0tH21tk5YJKRc
+         ar2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689006891; x=1691598891;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=McmzJB5w4UGeZqusQBhdxfjqigG3UhKtoIfFccLuj2s=;
+        b=NweCBv6euUMdScewwjhaz8RmXBaP2McgvOo20ZZfRjJz/Ex0lJKR/4GHaxdoxLAPQN
+         BzlMCyEtWR5/CfiedD45RGCtYOpkF6xFmwosbxgtzlKfpqBCKln/uFSzC8sln9S5ry1E
+         4lsF0MlzS9RdTxkYPM3QZJXeN3iHFa8RLFW6/n2uR4SQL2IHpqjYfb1nKb5LnHkC9jBm
+         etXkKZLXuLSAChN5KRFR9zCm5QnW5DvR9w3B1T74NTgLyHqgIwdRWd41A5/aBsreE9rz
+         Uv/yWeWjkGLR/3wqV2NHQLPVoqGMZUwgWqgCsnREGtsnh4LdEpo0aPp4pScwRfbPOUOx
+         De1Q==
+X-Gm-Message-State: ABy/qLbZUohojiAKQ2hpDoeadk+K9srbpCo1c+H+m7RwCudaXebtrGkA
+	PGsSLb5ZPSDLWvVCH5NnJ6E=
+X-Google-Smtp-Source: APBJJlFGgItLHZLzX11JZjIS73D9W6Es/hAVqOzRDVW3J19VHlBJaksBcwskjpiGnATOLXIP8QCxUQ==
+X-Received: by 2002:a17:90a:b315:b0:261:113e:50d2 with SMTP id d21-20020a17090ab31500b00261113e50d2mr13856226pjr.31.1689006890824;
+        Mon, 10 Jul 2023 09:34:50 -0700 (PDT)
+Received: from localhost ([192.55.54.50])
+        by smtp.gmail.com with ESMTPSA id t8-20020a17090aae0800b00263f40cf83esm6456783pjq.47.2023.07.10.09.34.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Jul 2023 09:34:50 -0700 (PDT)
+Date: Mon, 10 Jul 2023 09:34:48 -0700
+From: Isaku Yamahata <isaku.yamahata@gmail.com>
+To: David Stevens <stevensd@chromium.org>
+Subject: Re: [PATCH v7 5/8] KVM: x86/mmu: Don't pass FOLL_GET to
+ __kvm_follow_pfn
+Message-ID: <20230710163448.GE3894444@ls.amr.corp.intel.com>
+References: <20230704075054.3344915-1-stevensd@google.com>
+ <20230704075054.3344915-6-stevensd@google.com>
+ <20230705101800.ut4c6topn6ylwczs@linux.intel.com>
+ <CAD=HUj41PAKC0x+c3zWAr-aCm59K7hs2zRh1uWs9778_Mai4UA@mail.gmail.com>
+ <20230706155805.GD3894444@ls.amr.corp.intel.com>
+ <CAD=HUj6GiK3TSSe7UY8C2Jd+3tjZNBa-TLgk-UodyL=E+qKavg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230710063933.172926-1-suhui@nfschina.com>
+In-Reply-To: <CAD=HUj6GiK3TSSe7UY8C2Jd+3tjZNBa-TLgk-UodyL=E+qKavg@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,43 +83,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org, edumazet@google.com, wuych <yunchuan@nfschina.com>, kuba@kernel.org, pabeni@redhat.com, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net, qiang.zhao@nxp.com
+Cc: Marc Zyngier <maz@kernel.org>, kvm@vger.kernel.org, Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org, Peter Xu <peterx@redhat.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, Isaku Yamahata <isaku.yamahata@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 10, 2023 at 02:39:33PM +0800, Su Hui wrote:
-> From: wuych <yunchuan@nfschina.com>
-> 
-> Pointer variables of void * type do not require type cast.
-> 
-> Signed-off-by: wuych <yunchuan@nfschina.com>
-> ---
->  drivers/net/wan/fsl_ucc_hdlc.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
-> index 47c2ad7a3e42..73c73d8f4bb2 100644
-> --- a/drivers/net/wan/fsl_ucc_hdlc.c
-> +++ b/drivers/net/wan/fsl_ucc_hdlc.c
-> @@ -350,11 +350,11 @@ static int uhdlc_init(struct ucc_hdlc_private *priv)
->  static netdev_tx_t ucc_hdlc_tx(struct sk_buff *skb, struct net_device *dev)
->  {
->  	hdlc_device *hdlc = dev_to_hdlc(dev);
-> -	struct ucc_hdlc_private *priv = (struct ucc_hdlc_private *)hdlc->priv;
-> -	struct qe_bd *bd;
-> -	u16 bd_status;
-> +	struct ucc_hdlc_private *priv = hdlc->priv;
->  	unsigned long flags;
->  	__be16 *proto_head;
-> +	struct qe_bd *bd;
-> +	u16 bd_status;
+On Fri, Jul 07, 2023 at 10:35:02AM +0900,
+David Stevens <stevensd@chromium.org> wrote:
 
-When dealing with existing broken reverse Christmas tree, please don't
-make it worse with a change. But actually fixing it should be in a
-different patch.
+> > > > > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> > > > > index e44ab512c3a1..b1607e314497 100644
+> > > > > --- a/arch/x86/kvm/mmu/mmu.c
+> > > > > +++ b/arch/x86/kvm/mmu/mmu.c
+> > > >
+> > > > ...
+> > > >
+> > > > > @@ -2937,6 +2943,7 @@ static int mmu_set_spte(struct kvm_vcpu *vcpu, struct kvm_memory_slot *slot,
+> > > > >       bool host_writable = !fault || fault->map_writable;
+> > > > >       bool prefetch = !fault || fault->prefetch;
+> > > > >       bool write_fault = fault && fault->write;
+> > > > > +     bool is_refcounted = !fault || fault->is_refcounted_page;
+> > > >
+> > > > Just wonder, what if a non-refcounted page is prefetched?  Or is it possible in
+> > > > practice?
+> > >
+> > > Prefetching is still done via gfn_to_page_many_atomic, which sets
+> > > FOLL_GET. That's fixable, but it's not something this series currently
+> > > does.
+> >
+> > So if we prefetch a page, REFCOUNTED bit is cleared unconditionally with this
+> > hunk.  kvm_set_page_{dirty, accessed} won't be called as expected for prefetched
+> > spte.  If I read the patch correctly, REFCOUNTED bit in SPTE should represent
+> > whether the corresponding page is ref-countable or not, right?
+> >
+> > Because direct_pte_prefetch_many() is for legacy KVM MMU and FNAME(prefetch_pte)
+> > is shadow paging, we need to test it with legacy KVM MMU or shadow paging to hit
+> > the issue, though.
+> >
+> 
+> direct_pte_prefetch_many and prefetch_gpte both pass NULL for the
+> fault parameter, so is_refcounted will evaluate to true. So the spte's
+> refcounted bit will get set in that case.
 
-We want patches to be obviously correct. By removing the cast and
-moving variables around, it is less obvious it is correct, than having
-two patches.
-
-       Andrew
+Oops, my bad.  My point is "unconditionally".  Is the bit always set for
+non-refcountable pages?  Or non-refcountable pages are not prefeched?
+-- 
+Isaku Yamahata <isaku.yamahata@gmail.com>
