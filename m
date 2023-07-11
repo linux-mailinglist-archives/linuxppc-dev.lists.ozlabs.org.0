@@ -1,90 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D729874F527
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 18:27:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D730774F59E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 18:36:16 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=gP63zABR;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=m1UezYn4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=Oq97RDu6;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R0mVx5PmHz3cW0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 02:27:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R0mht5CBcz3clZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 02:36:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=gP63zABR;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=m1UezYn4;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=Oq97RDu6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.230; helo=new4-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from new4-smtp.messagingengine.com (new4-smtp.messagingengine.com [66.111.4.230])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b2b; helo=mail-yb1-xb2b.google.com; envelope-from=surenb@google.com; receiver=lists.ozlabs.org)
+Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0mTx137Fz2xgt
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 02:26:44 +1000 (AEST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailnew.nyi.internal (Postfix) with ESMTP id 84EC758017C;
-	Tue, 11 Jul 2023 12:26:40 -0400 (EDT)
-Received: from imap50 ([10.202.2.100])
-  by compute6.internal (MEProxy); Tue, 11 Jul 2023 12:26:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm2; t=1689092800; x=1689100000; bh=W5
-	R3dRJEuDedU4mfmE2aIPLz0te1yZv4ob1QkUmzMKM=; b=gP63zABRkc0l4ZDRzA
-	IcIlubpQx10krBxfi6pSfXeZPbUBJIuA+RSw0J6LLqQ+2BJKh5G/7DRrk5pXnrdx
-	U24FbW5DD/zOqQzMB8CBVZA2kbn+RVRF2Ghncu6DcB/0+3xZfCM2T4ywgpza7I3+
-	yAh05maGr6dkYVBnLow0XIE0FgZBQpVGCgT0T0QncwjOLaL9Oo/e+E5GHZVzPFH1
-	h7ULRPg+yuOEbXndaLZsHHEwYs6WCSXcD8zn3sxf3CZgxcWkqsrD7Zi9tNkSO/ue
-	VP2bgk2R9uCJHeQ+YiRTRj7zHMiib1NX20grN65M+eUZDoW7jczNd8ffT8+c8xw7
-	aY5g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm2; t=1689092800; x=1689100000; bh=W5R3dRJEuDedU
-	4mfmE2aIPLz0te1yZv4ob1QkUmzMKM=; b=m1UezYn4Zaq5khPovqjd8NiiXmvLm
-	0w9sms25pOrqRNO8M57L+8g0MRTbtp7OR2ei95a1m7lMkyiyDNoalIfc7TfoQY+5
-	bKH9VTWCvc4bmPEjubZEW8asIYrDMpk/DxAAwG4CN3Pxx7GenUUO3U4+7kL7apxS
-	QuXgezcdLRNUtjTqb5d7/IW1b4V+S4tpu6XVOSlkip5tg5XHk5RPrFf2Wc+1lX9i
-	MOWpFLR5qNJz4Inrq4cBaccsRwogrp15/y82ysT8TnBqtzi0q3SFfVoMW31B/aT6
-	ukQWwwWm+0aafmJpWePUj7GlIkNRTZkijalxzd8rrdWmrJ3CCpB5t3CKQ==
-X-ME-Sender: <xms:vYKtZE69711ZzrX1UfDAH_wKoV8StTKa7ojHt5ftztcoR9k9-OGNdg>
-    <xme:vYKtZF7KBdORSzhM4wNvO2XDDmElD90TlyzRX4_570VbiMw-c3clqgQP0TtQxeTfY
-    CotuIX7qGul8wElt5Y>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrfedtgddutddvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:vYKtZDf2TxeMAGBfVkoV3uAZUtvHIYPcVxEfb6Qcl0msm4N_19_3Tw>
-    <xmx:vYKtZJKr2LWiBxmL9EcO6DcfFSNv43PdZKjfBvnGIO_aJ8RJOMJmzA>
-    <xmx:vYKtZIL9QRrfHKZLVkXaIn76A4_BYMk3sVMAvOaTg-eQl07FtWdz2Q>
-    <xmx:wIKtZOTn3w0yspPsZlSmTu8WcSU0C03X-RbItER0PdanY6sWL9EObg>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id CE2AA1700090; Tue, 11 Jul 2023 12:26:37 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-531-gfdfa13a06d-fm-20230703.001-gfdfa13a0
-Mime-Version: 1.0
-Message-Id: <8d8cef73-1733-4e0b-bede-034895a820bd@app.fastmail.com>
-In-Reply-To:  <a677d521f048e4ca439e7080a5328f21eb8e960e.1689092120.git.legion@kernel.org>
-References: <cover.1689074739.git.legion@kernel.org>
- <cover.1689092120.git.legion@kernel.org>
- <a677d521f048e4ca439e7080a5328f21eb8e960e.1689092120.git.legion@kernel.org>
-Date: Tue, 11 Jul 2023 18:26:17 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Alexey Gladkov" <legion@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
- linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- "Alexander Viro" <viro@zeniv.linux.org.uk>
-Subject: Re: [PATCH v4 3/5] arch: Register fchmodat2, usually as syscall 452
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0mh14rX4z2y1b
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 02:35:28 +1000 (AEST)
+Received: by mail-yb1-xb2b.google.com with SMTP id 3f1490d57ef6-c6e4d4c59bcso6404228276.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jul 2023 09:35:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1689093325; x=1691685325;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FK+/RLEKHvFTc2cBA37SaSmlotAdLXzjwYXHeGn0zbM=;
+        b=Oq97RDu63Pf3YYxwzUoBG++FTpq8HiaaoJPKVEmYNFA5g8JgogfB3eLvNmR6xJKwM0
+         /hjQ/PeaHoBMNE7ZSek0VnMIX5lh+HUKjnJ7awc53ycJUT/KukZ5ecjo7HLohFTHZdEJ
+         g0Uk9kvWyZqrV7aI8KhBqZP/HFeBKqdy9HjK11RPzJ1ZzaUnZjbw+76tV3zCFJLqNfTu
+         CuY1ByNMFO1pgxjYZumpMua10+h4rH0YB1NkyanJaoXI1Uq19cvCj9TRnvODki+yAo6R
+         CAxAeeZe/2z/QUk9HmibAGd7ZoC+ncWYkfILRUYA2pk99E5DFi+79e6TF4s36p55XMLh
+         OXtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689093325; x=1691685325;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FK+/RLEKHvFTc2cBA37SaSmlotAdLXzjwYXHeGn0zbM=;
+        b=aGoYMFzMrDUJklW9P2FVjumRCfBt1o8J+O+qSINa+xmJGBUYdeuuWVRo8PmY40eYAQ
+         H6wONgRpSLyA5MAvdm6mkyKjJmoicE+4/pxiq8/vvAgKMuET+EhxoWDYUWVfqTrh129X
+         JLSqRVns9lScScDClCikPnBcWVpAOQS34293RyA0mf8hjMhF3qgPRwBBwQZD6OrxjM/f
+         Pf9dJnkRhigfcSyIogyTpy3MFCjCRdpNqtW1cgfJuu5XBt38ky/TsF5wsFApv9e8FI0V
+         sDXnh82PWzJrU+70O8psocqou0iDILrWCPrNF6+3/PvD9LxafUpv8BQXhm2QMPTd9WwX
+         fDSQ==
+X-Gm-Message-State: ABy/qLaZCzEDZS9dc5DecIfcu/Umj0Y8W4Q2m3RmgqhjGtccO0U2dxHn
+	Q0mpmcpsRjrdH2szpVa35QwqtutWNRZl4ohxBm3wOA==
+X-Google-Smtp-Source: APBJJlF8l0QV/lX8VvDE6yY9wAXanhWeF+yRLXHSEd2zoXjNKVmTOZy5uQO02NKxg9aQ90R6+AVbNyLvQyxhrGYEcdI=
+X-Received: by 2002:a25:f86:0:b0:bfe:c5cf:6e60 with SMTP id
+ 128-20020a250f86000000b00bfec5cf6e60mr12446560ybp.8.1689093324985; Tue, 11
+ Jul 2023 09:35:24 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230227173632.3292573-1-surenb@google.com> <20230711103541.GA190975@unreal>
+ <53676850-539f-2813-d55d-a8bc0ec88092@suse.cz> <20230711110141.GN41919@unreal>
+ <20230711110945.GO41919@unreal>
+In-Reply-To: <20230711110945.GO41919@unreal>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 11 Jul 2023 09:35:13 -0700
+Message-ID: <CAJuCfpG-dwzT++ZLY-sT2jn_9AHFVZsTfwJu17MwbB4oYJ4M+g@mail.gmail.com>
+Subject: Re: [PATCH v4 00/33] Per-VMA locks
+To: Leon Romanovsky <leon@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,19 +77,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, fenghua.yu@intel.com, Alexander Shishkin <alexander.shishkin@linux.intel.com>, Palmer Dabbelt <palmer@sifive.com>, x86@kernel.org, stefan@agner.ch, ldv@altlinux.org, David Howells <dhowells@redhat.com>, Kim Phillips <kim.phillips@arm.com>, Paul Mackerras <paulus@samba.org>, Deepa Dinamani <deepa.kernel@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, Will Deacon <will@kernel.org>, Linux-Arch <linux-arch@vger.kernel.org>, linux-s390@vger.kernel.org, hare@suse.com, Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>, linux-sh@vger.kernel.org, Russell King <linux@armlinux.org.uk>, Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>, Catalin Marinas <catalin.marinas@arm.com>, jhogan@kernel.org, Matt Turner <mattst88@gmail.com>, Florian Weimer <fweimer@redhat.com>, gor@linux.ibm.com, glebfm@altlinux.org, tycho@t
- ycho.ws, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-m68k@lists.linux-m68k.org, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, christian@brauner.io, Jens Axboe <axboe@kernel.dk>, "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>, Michal Simek <monstr@monstr.eu>, Tony Luck <tony.luck@intel.com>, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org, ralf@linux-mips.org, Peter Zijlstra <peterz@infradead.org>, linux-alpha@vger.kernel.org, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, Sachin Sant <sachinp@linux.ibm.com>, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, sergeyy@nvidia.com, will@kernel.org, arjunroy@google.com, Linux kernel regressions list <regressions@lists.linux.dev>, chriscli@google.com, dave@stgolabs.net, minchan@google.com, gal@nvidia.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, mingo@redhat.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, maorg@nvidia.com, ranro@nvidia.com, michalechner92@googlemail.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, regressions@leemhuis.info, shakeelb@google.com, drort@nvidia.com, luto@kernel.org, gthelen@google.com, Laurent Dufou
+ r <ldufour@linux.ibm.com>, Vlastimil Babka <vbabka@suse.cz>, posk@google.com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, idok@nvidia.com, hannes@cmpxchg.org, Andrew Morton <akpm@linux-foundation.org>, tatashin@google.com, mgorman@techsingularity.net, rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 11, 2023, at 18:16, Alexey Gladkov wrote:
-> From: Palmer Dabbelt <palmer@sifive.com>
+On Tue, Jul 11, 2023 at 4:09=E2=80=AFAM Leon Romanovsky <leon@kernel.org> w=
+rote:
 >
-> This registers the new fchmodat2 syscall in most places as nuber 452,
-> with alpha being the exception where it's 562.  I found all these sites
-> by grepping for fspick, which I assume has found me everything.
+> On Tue, Jul 11, 2023 at 02:01:41PM +0300, Leon Romanovsky wrote:
+> > On Tue, Jul 11, 2023 at 12:39:34PM +0200, Vlastimil Babka wrote:
+> > > On 7/11/23 12:35, Leon Romanovsky wrote:
+> > > >
+> > > > On Mon, Feb 27, 2023 at 09:35:59AM -0800, Suren Baghdasaryan wrote:
+> > > >
+> > > > <...>
+> > > >
+> > > >> Laurent Dufour (1):
+> > > >>   powerc/mm: try VMA lock-based page fault handling first
+> > > >
+> > > > Hi,
+> > > >
+> > > > This series and specifically the commit above broke docker over PPC=
+.
+> > > > It causes to docker service stuck while trying to activate. Revert =
+of
+> > > > this commit allows us to use docker again.
+> > >
+> > > Hi,
+> > >
+> > > there have been follow-up fixes, that are part of 6.4.3 stable (also
+> > > 6.5-rc1) Does that version work for you?
+> >
+> > I'll recheck it again on clean system, but for the record:
+> > 1. We are running 6.5-rc1 kernels.
+> > 2. PPC doesn't compile for us on -rc1 without this fix.
+> > https://lore.kernel.org/all/20230629124500.1.I55e2f4e7903d686c4484cb23c=
+033c6a9e1a9d4c4@changeid/
 >
-> Signed-off-by: Palmer Dabbelt <palmer@sifive.com>
-> Signed-off-by: Alexey Gladkov <legion@kernel.org>
+> Ohh, I see it in -rc1, let's recheck.
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+Hi Leon,
+Please let us know how it goes.
+
+>
+> > 3. I didn't see anything relevant -rc1 with "git log arch/powerpc/mm/fa=
+ult.c".
+
+The fixes Vlastimil was referring to are not in the fault.c, they are
+in the main mm and fork code. More specifically, check for these
+patches to exist in the branch you are testing:
+
+mm: lock newly mapped VMA with corrected ordering
+fork: lock VMAs of the parent process when forking
+mm: lock newly mapped VMA which can be modified after it becomes visible
+mm: lock a vma before stack expansion
+
+Thanks,
+Suren.
+
+> >
+> > Do you have in mind anything specific to check?
+> >
+> > Thanks
+> >
+>
+> --
+> To unsubscribe from this group and stop receiving emails from it, send an=
+ email to kernel-team+unsubscribe@android.com.
+>
