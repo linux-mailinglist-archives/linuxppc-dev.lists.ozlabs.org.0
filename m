@@ -2,98 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAFDA74F429
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 17:59:27 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=O/YKEt6v;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id C648D74F433
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 18:00:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R0ltP5Y6nz3btP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 01:59:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R0lv75LSZz3cHR
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 02:00:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=O/YKEt6v;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0lsT2N6Gz2yHs
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 01:58:37 +1000 (AEST)
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36BFqwaq012051;
-	Tue, 11 Jul 2023 15:58:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=LcmA3JLh1BgvTDSDbbInK4Bmp4CqtP7aO3w7K1dDC6Q=;
- b=O/YKEt6vT1spDnO1w39WI/XZ4aMuRMzpEtvmIIr5h/HcN4jtNnHe2Iz60tCx5sI6wHX0
- /e8ZAY+/eZ1LC9W+kjYKiF+B/IXBBWNcgnduwSUzRRjwQH2euShRbeZWe59msxIhEQJT
- TpywAk+dzTVfl1G5SYgxv30Wc5rO2yVqllDNGOlALIl+yLRiCkcP+OayYPeB14XuI88M
- YSnw/iuvoKJZHSL7tWlVdviPfZ0wIQ2zQqF8KFhYtbzilDU40Grlrvw5pVq0qmyNNW+g
- DVdRWhdgM10Pz4mQ8eY6pqbD0tt0z8/vh5y9+b6zsbTAuFwuns04paRSbWoGJNcEgGCC 6w== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rsa3u83mb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Jul 2023 15:58:22 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36BFse8W017052;
-	Tue, 11 Jul 2023 15:58:22 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rsa3u83km-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Jul 2023 15:58:22 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36BEEfN7018517;
-	Tue, 11 Jul 2023 15:58:20 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3rqmu0r63e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Jul 2023 15:58:20 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36BFwIEg22413972
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 11 Jul 2023 15:58:18 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AF70D20040;
-	Tue, 11 Jul 2023 15:58:18 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0C9E520043;
-	Tue, 11 Jul 2023 15:58:16 +0000 (GMT)
-Received: from [9.43.86.43] (unknown [9.43.86.43])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 11 Jul 2023 15:58:15 +0000 (GMT)
-Message-ID: <d6280b64-6ca3-6a0b-3be9-2338d3845bdc@linux.ibm.com>
-Date: Tue, 11 Jul 2023 21:28:14 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0ltX6btkz3c2n
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 01:59:30 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+	by localhost (Postfix) with ESMTP id 4R0ltP67GTz9sFF;
+	Tue, 11 Jul 2023 17:59:25 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 2rhQ6e6KCcfX; Tue, 11 Jul 2023 17:59:25 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4R0ltP5RbGz9sFB;
+	Tue, 11 Jul 2023 17:59:25 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id B473F8B77E;
+	Tue, 11 Jul 2023 17:59:25 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id 1TmYi9Rvc3T6; Tue, 11 Jul 2023 17:59:25 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.233.184])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 5A5A08B779;
+	Tue, 11 Jul 2023 17:59:25 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 36BFxOF33695831
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 11 Jul 2023 17:59:24 +0200
+Received: (from chleroy@localhost)
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 36BFxMpn3695820;
+	Tue, 11 Jul 2023 17:59:22 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
+Subject: [PATCH v3 0/9] Cleanup/Optimise KUAP (v3)
+Date: Tue, 11 Jul 2023 17:59:12 +0200
+Message-ID: <cover.1689091022.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v3 2/7] mm/hotplug: Allow memmap on memory hotplug request
- to fallback
-Content-Language: en-US
-To: David Hildenbrand <david@redhat.com>, linux-mm@kvack.org,
-        akpm@linux-foundation.org, mpe@ellerman.id.au,
-        linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu
-References: <20230711044834.72809-1-aneesh.kumar@linux.ibm.com>
- <20230711044834.72809-3-aneesh.kumar@linux.ibm.com>
- <d6e9f0d3-7c53-944a-2e02-33cc35d5f340@redhat.com>
-From: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>
-In-Reply-To: <d6e9f0d3-7c53-944a-2e02-33cc35d5f340@redhat.com>
-Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1689091151; l=2312; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=adFnaIZiJTeO6Cz2UZ7Q2Z0r73HSP64qXDq2uOoJDHg=; b=cJIwd0NwhGM51zL42j746sWOQgqcbuDCTQiEwCnaLwWrWXmLyT7thaJeWWl3TxvIN5P7kXb3Q rmWY9ebNuuSALHY6muQGk4xHeZgWct7If21U4uyKEWOy4jYxWkbvhKG
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Tpqy9uvOtIOlxsVDOiGagEHS0xR6q4qh
-X-Proofpoint-GUID: ZaKC_XMOjMZUSCgndrdngcpLU7P2WrBM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-11_08,2023-07-11_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 phishscore=0
- impostorscore=0 priorityscore=1501 suspectscore=0 mlxlogscore=848
- bulkscore=0 spamscore=0 lowpriorityscore=0 malwarescore=0 clxscore=1015
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2307110139
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,47 +65,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vishal Verma <vishal.l.verma@intel.com>, Michal Hocko <mhocko@suse.com>, Oscar Salvador <osalvador@suse.de>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/11/23 3:53 PM, David Hildenbrand wrote:
->> -bool mhp_supports_memmap_on_memory(unsigned long size)
->> +static bool mhp_supports_memmap_on_memory(unsigned long size)
->>   {
->>       unsigned long nr_vmemmap_pages = size / PAGE_SIZE;
->>       unsigned long vmemmap_size = nr_vmemmap_pages * sizeof(struct page);
->> @@ -1339,13 +1339,12 @@ int __ref add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
->>        * Self hosted memmap array
->>        */
->>       if (mhp_flags & MHP_MEMMAP_ON_MEMORY) {
->> -        if (!mhp_supports_memmap_on_memory(size)) {
->> -            ret = -EINVAL;
->> -            goto error;
->> +        if (mhp_supports_memmap_on_memory(size)) {
->> +            mhp_altmap.free = PHYS_PFN(size);
->> +            mhp_altmap.base_pfn = PHYS_PFN(start);
->> +            params.altmap = &mhp_altmap;
->>           }
->> -        mhp_altmap.free = PHYS_PFN(size);
->> -        mhp_altmap.base_pfn = PHYS_PFN(start);
->> -        params.altmap = &mhp_altmap;
->> +        /* fallback to not using altmap  */
->>       }
->>         /* call arch's memory hotadd */
-> 
-> In general, LGTM, but please extend the documentation of the parameter in memory_hotplug.h, stating that this is just a hint and that the core can decide to no do that.
-> 
+This series is cleaning up a bit KUAP in preparation of using objtool
+to validate UACCESS.
 
-will update
+There are two main changes in this series:
 
-modified   include/linux/memory_hotplug.h
-@@ -97,6 +97,8 @@ typedef int __bitwise mhp_t;
-  * To do so, we will use the beginning of the hot-added range to build
-  * the page tables for the memmap array that describes the entire range.
-  * Only selected architectures support it with SPARSE_VMEMMAP.
-+ * This is only a hint, core kernel can decide to not do this based on
-+ * different alignment checks.
-  */
- #define MHP_MEMMAP_ON_MEMORY   ((__force mhp_t)BIT(1))
+1/ Simplification of KUAP on book3s/32
+
+2/ Using ASM features on 32 bits and booke as suggested by Nic.
+
+Those changes will be required for objtool UACCESS validation, but
+even before they are worth it, especially the simplification on 32s.
+
+Changes in v3:
+- Rearranged book3s/32 simplification in order to ease objtool UACCESS
+check implementation (patches 7 and 9)
+
+Christophe Leroy (9):
+  powerpc/kuap: Avoid unnecessary reads of MD_AP
+  powerpc/kuap: Avoid useless jump_label on empty function
+  powerpc/kuap: Fold kuep_is_disabled() into its only user
+  powerpc/features: Add capability to update mmu features later
+  powerpc/kuap: MMU_FTR_BOOK3S_KUAP becomes MMU_FTR_KUAP
+  powerpc/kuap: Use MMU_FTR_KUAP on all and refactor disabling kuap
+  powerpc/kuap: Simplify KUAP lock/unlock on BOOK3S/32
+  powerpc/kuap: KUAP enabling/disabling functions must be
+    __always_inline
+  powerpc/kuap: Use ASM feature fixups instead of static branches
+
+ arch/powerpc/include/asm/book3s/32/kup.h      | 123 ++++++++----------
+ .../powerpc/include/asm/book3s/64/hash-pkey.h |   2 +-
+ arch/powerpc/include/asm/book3s/64/kup.h      |  54 ++++----
+ arch/powerpc/include/asm/bug.h                |   1 +
+ arch/powerpc/include/asm/feature-fixups.h     |   1 +
+ arch/powerpc/include/asm/kup.h                |  91 +++++--------
+ arch/powerpc/include/asm/mmu.h                |   4 +-
+ arch/powerpc/include/asm/nohash/32/kup-8xx.h  |  62 +++++----
+ arch/powerpc/include/asm/nohash/kup-booke.h   |  68 +++++-----
+ arch/powerpc/include/asm/uaccess.h            |   6 +-
+ arch/powerpc/kernel/cputable.c                |   4 +
+ arch/powerpc/kernel/syscall.c                 |   2 +-
+ arch/powerpc/kernel/traps.c                   |   2 +-
+ arch/powerpc/lib/feature-fixups.c             |  31 ++++-
+ arch/powerpc/mm/book3s32/kuap.c               |  20 +--
+ arch/powerpc/mm/book3s32/mmu_context.c        |   2 +-
+ arch/powerpc/mm/book3s64/pkeys.c              |   2 +-
+ arch/powerpc/mm/init_32.c                     |   2 +
+ arch/powerpc/mm/nohash/kup.c                  |   8 +-
+ 19 files changed, 222 insertions(+), 263 deletions(-)
+
+-- 
+2.41.0
 
