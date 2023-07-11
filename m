@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7434774F444
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 18:03:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A73F74F447
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 18:03:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R0lyb2tCKz3dSS
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 02:03:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R0lz717hsz3ddc
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 02:03:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
@@ -14,46 +14,46 @@ Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0lv01WGPz3cCn
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 01:59:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0lv31kntz3cFh
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 01:59:59 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4R0ltb1Wzqz9sFM;
-	Tue, 11 Jul 2023 17:59:35 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4R0ltc6zP2z9sFF;
+	Tue, 11 Jul 2023 17:59:36 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
 	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id k_gPEhSYbzxo; Tue, 11 Jul 2023 17:59:35 +0200 (CEST)
+	with ESMTP id HQ6Tu9c2erNl; Tue, 11 Jul 2023 17:59:36 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4R0ltZ39TLz9sFF;
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4R0ltZ4C1cz9sFJ;
 	Tue, 11 Jul 2023 17:59:34 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 6963D8B77B;
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 8B8868B779;
 	Tue, 11 Jul 2023 17:59:34 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id svtvSD4nAahM; Tue, 11 Jul 2023 17:59:34 +0200 (CEST)
+	with ESMTP id DoYnw-gIDp3K; Tue, 11 Jul 2023 17:59:34 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.233.184])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id CAB218B779;
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id CAAF08B763;
 	Tue, 11 Jul 2023 17:59:33 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 36BFxVdE3695867
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 36BFxVba3695859
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
 	Tue, 11 Jul 2023 17:59:31 +0200
 Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 36BFxV2u3695866;
-	Tue, 11 Jul 2023 17:59:31 +0200
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 36BFxUaT3695850;
+	Tue, 11 Jul 2023 17:59:30 +0200
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH v3 7/9] powerpc/kuap: Simplify KUAP lock/unlock on BOOK3S/32
-Date: Tue, 11 Jul 2023 17:59:19 +0200
-Message-ID: <8de8580513c1a6e880bad1ba9a69d3efad3d4fa5.1689091022.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v3 5/9] powerpc/kuap: MMU_FTR_BOOK3S_KUAP becomes MMU_FTR_KUAP
+Date: Tue, 11 Jul 2023 17:59:17 +0200
+Message-ID: <c8b6f7b8cd0eeaace96879ed0e0a157faa619451.1689091022.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <cover.1689091022.git.christophe.leroy@csgroup.eu>
 References: <cover.1689091022.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1689091151; l=7191; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=ZQrzF847yISI+GzGtwHQSW/yEnyJaXLj7oiMAtgcy1U=; b=ufIM/2GreoRLTrTEioVhDZS6a0RxANy0LEH8uipqKil5xUISlqnK+VLfm52zMv/MfSVnTA6Km Ub4sttfzcQDCvMeeP7o9KaJyDO+/oZVLH+z0nz8fzUUIXH6Y7HPMGxP
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1689091151; l=5595; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=+oAxwI9DAE5ntKeqFQadLRZTDbqmOCTS1lBhUW7f9qY=; b=COXKM/+O/W/s0AYLqDoFVAUEbeE8lD+PxaHeb5dRIOnP70Rd9efbnWGXVinrpM3UMI66FJFfT pbySWaJvNX3BTCxG1UAFXtyrleq0ltAmMeLOUJ1rjL580mt1gwjj56K
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -71,226 +71,164 @@ Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On book3s/32 KUAP is performed at segment level. At the moment,
-when enabling userspace access, only current segment is modified.
-Then if a write is performed on another user segment, a fault is
-taken and all other user segments get enabled for userspace
-access. This then require special attention when disabling
-userspace access.
-
-Having a userspace write access crossing a segment boundary is
-unlikely. Having a userspace write access crossing a segment boundary
-back and forth is even more unlikely. So, instead of enabling
-userspace access on all segments when a write fault occurs, just
-change which segment has userspace access enabled in order to
-eliminate the case when more than one segment has userspace access
-enabled. That simplifies userspace access deactivation.
-
-There is however a corner case which is even more unlikely but has
-to be handled anyway: an unaligned access which is crossing a
-segment boundary. That would definitely require at least having
-userspace access enabled on the two segments. To avoid complicating
-the likely case for a so unlikely happening, handle such situation
-like an alignment exception and emulate the store.
+In order to reuse MMU_FTR_BOOK3S_KUAP for other targets than BOOK3S,
+rename it MMU_FTR_KUAP.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/book3s/32/kup.h | 65 +++++++-----------------
- arch/powerpc/include/asm/bug.h           |  1 +
- arch/powerpc/kernel/traps.c              |  2 +-
- arch/powerpc/mm/book3s32/kuap.c          | 15 +-----
- 4 files changed, 23 insertions(+), 60 deletions(-)
+ arch/powerpc/include/asm/book3s/64/hash-pkey.h |  2 +-
+ arch/powerpc/include/asm/book3s/64/kup.h       | 18 +++++++++---------
+ arch/powerpc/include/asm/mmu.h                 |  4 ++--
+ arch/powerpc/kernel/syscall.c                  |  2 +-
+ arch/powerpc/mm/book3s64/pkeys.c               |  2 +-
+ 5 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/book3s/32/kup.h b/arch/powerpc/include/asm/book3s/32/kup.h
-index 4ca6122ef0e1..452d4efa84f5 100644
---- a/arch/powerpc/include/asm/book3s/32/kup.h
-+++ b/arch/powerpc/include/asm/book3s/32/kup.h
-@@ -14,7 +14,6 @@
- #include <linux/sched.h>
+diff --git a/arch/powerpc/include/asm/book3s/64/hash-pkey.h b/arch/powerpc/include/asm/book3s/64/hash-pkey.h
+index f1e60d579f6c..6c5564c4fae4 100644
+--- a/arch/powerpc/include/asm/book3s/64/hash-pkey.h
++++ b/arch/powerpc/include/asm/book3s/64/hash-pkey.h
+@@ -24,7 +24,7 @@ static inline u64 pte_to_hpte_pkey_bits(u64 pteflags, unsigned long flags)
+ 		    ((pteflags & H_PTE_PKEY_BIT1) ? HPTE_R_KEY_BIT1 : 0x0UL) |
+ 		    ((pteflags & H_PTE_PKEY_BIT0) ? HPTE_R_KEY_BIT0 : 0x0UL));
  
- #define KUAP_NONE	(~0UL)
--#define KUAP_ALL	(~1UL)
+-	if (mmu_has_feature(MMU_FTR_BOOK3S_KUAP) ||
++	if (mmu_has_feature(MMU_FTR_KUAP) ||
+ 	    mmu_has_feature(MMU_FTR_BOOK3S_KUEP)) {
+ 		if ((pte_pkey == 0) && (flags & HPTE_USE_KERNEL_KEY))
+ 			return HASH_DEFAULT_KERNEL_KEY;
+diff --git a/arch/powerpc/include/asm/book3s/64/kup.h b/arch/powerpc/include/asm/book3s/64/kup.h
+index 2a7bd3ecc556..72fc4263ed26 100644
+--- a/arch/powerpc/include/asm/book3s/64/kup.h
++++ b/arch/powerpc/include/asm/book3s/64/kup.h
+@@ -31,7 +31,7 @@
+ 	mfspr	\gpr2, SPRN_AMR
+ 	cmpd	\gpr1, \gpr2
+ 	beq	99f
+-	END_MMU_FTR_SECTION_NESTED_IFCLR(MMU_FTR_BOOK3S_KUAP, 68)
++	END_MMU_FTR_SECTION_NESTED_IFCLR(MMU_FTR_KUAP, 68)
  
- static inline void kuap_lock_one(unsigned long addr)
+ 	isync
+ 	mtspr	SPRN_AMR, \gpr1
+@@ -78,7 +78,7 @@
+ 	 * No need to restore IAMR when returning to kernel space.
+ 	 */
+ 100:
+-	END_MMU_FTR_SECTION_NESTED_IFSET(MMU_FTR_BOOK3S_KUAP, 67)
++	END_MMU_FTR_SECTION_NESTED_IFSET(MMU_FTR_KUAP, 67)
+ #endif
+ .endm
+ 
+@@ -91,7 +91,7 @@
+ 	LOAD_REG_IMMEDIATE(\gpr2, AMR_KUAP_BLOCKED)
+ 999:	tdne	\gpr1, \gpr2
+ 	EMIT_WARN_ENTRY 999b, __FILE__, __LINE__, (BUGFLAG_WARNING | BUGFLAG_ONCE)
+-	END_MMU_FTR_SECTION_NESTED_IFSET(MMU_FTR_BOOK3S_KUAP, 67)
++	END_MMU_FTR_SECTION_NESTED_IFSET(MMU_FTR_KUAP, 67)
+ #endif
+ .endm
+ #endif
+@@ -130,7 +130,7 @@
+ 	 */
+ 	BEGIN_MMU_FTR_SECTION_NESTED(68)
+ 	b	100f  // skip_save_amr
+-	END_MMU_FTR_SECTION_NESTED_IFCLR(MMU_FTR_PKEY | MMU_FTR_BOOK3S_KUAP, 68)
++	END_MMU_FTR_SECTION_NESTED_IFCLR(MMU_FTR_PKEY | MMU_FTR_KUAP, 68)
+ 
+ 	/*
+ 	 * if pkey is disabled and we are entering from userspace
+@@ -166,7 +166,7 @@
+ 	mtspr	SPRN_AMR, \gpr2
+ 	isync
+ 102:
+-	END_MMU_FTR_SECTION_NESTED_IFSET(MMU_FTR_BOOK3S_KUAP, 69)
++	END_MMU_FTR_SECTION_NESTED_IFSET(MMU_FTR_KUAP, 69)
+ 
+ 	/*
+ 	 * if entering from kernel we don't need save IAMR
+@@ -232,7 +232,7 @@ static inline u64 current_thread_iamr(void)
+ 
+ static __always_inline bool kuap_is_disabled(void)
  {
-@@ -28,41 +27,6 @@ static inline void kuap_unlock_one(unsigned long addr)
- 	isync();	/* Context sync required after mtsr() */
+-	return !mmu_has_feature(MMU_FTR_BOOK3S_KUAP);
++	return !mmu_has_feature(MMU_FTR_KUAP);
  }
  
--static inline void kuap_lock_all(void)
--{
--	update_user_segments(mfsr(0) | SR_KS);
--	isync();	/* Context sync required after mtsr() */
--}
--
--static inline void kuap_unlock_all(void)
--{
--	update_user_segments(mfsr(0) & ~SR_KS);
--	isync();	/* Context sync required after mtsr() */
--}
--
--void kuap_lock_all_ool(void);
--void kuap_unlock_all_ool(void);
--
--static inline void kuap_lock_addr(unsigned long addr, bool ool)
--{
--	if (likely(addr != KUAP_ALL))
--		kuap_lock_one(addr);
--	else if (!ool)
--		kuap_lock_all();
--	else
--		kuap_lock_all_ool();
--}
--
--static inline void kuap_unlock(unsigned long addr, bool ool)
--{
--	if (likely(addr != KUAP_ALL))
--		kuap_unlock_one(addr);
--	else if (!ool)
--		kuap_unlock_all();
--	else
--		kuap_unlock_all_ool();
--}
--
- static inline void __kuap_save_and_lock(struct pt_regs *regs)
- {
- 	unsigned long kuap = current->thread.kuap;
-@@ -72,7 +36,7 @@ static inline void __kuap_save_and_lock(struct pt_regs *regs)
+ static inline void kuap_user_restore(struct pt_regs *regs)
+@@ -243,7 +243,7 @@ static inline void kuap_user_restore(struct pt_regs *regs)
+ 	if (!mmu_has_feature(MMU_FTR_PKEY))
  		return;
  
- 	current->thread.kuap = KUAP_NONE;
--	kuap_lock_addr(kuap, false);
-+	kuap_lock_one(kuap);
- }
- #define __kuap_save_and_lock __kuap_save_and_lock
+-	if (!mmu_has_feature(MMU_FTR_BOOK3S_KUAP)) {
++	if (!mmu_has_feature(MMU_FTR_KUAP)) {
+ 		amr = mfspr(SPRN_AMR);
+ 		if (amr != regs->amr)
+ 			restore_amr = true;
+@@ -317,7 +317,7 @@ static inline unsigned long get_kuap(void)
+ 	 * This has no effect in terms of actually blocking things on hash,
+ 	 * so it doesn't break anything.
+ 	 */
+-	if (!mmu_has_feature(MMU_FTR_BOOK3S_KUAP))
++	if (!mmu_has_feature(MMU_FTR_KUAP))
+ 		return AMR_KUAP_BLOCKED;
  
-@@ -84,7 +48,7 @@ static inline void __kuap_kernel_restore(struct pt_regs *regs, unsigned long kua
+ 	return mfspr(SPRN_AMR);
+@@ -325,7 +325,7 @@ static inline unsigned long get_kuap(void)
+ 
+ static __always_inline void set_kuap(unsigned long value)
  {
- 	if (unlikely(kuap != KUAP_NONE)) {
- 		current->thread.kuap = KUAP_NONE;
--		kuap_lock_addr(kuap, false);
-+		kuap_lock_one(kuap);
- 	}
- 
- 	if (likely(regs->kuap == KUAP_NONE))
-@@ -92,7 +56,7 @@ static inline void __kuap_kernel_restore(struct pt_regs *regs, unsigned long kua
- 
- 	current->thread.kuap = regs->kuap;
- 
--	kuap_unlock(regs->kuap, false);
-+	kuap_unlock_one(regs->kuap);
- }
- 
- static inline unsigned long __kuap_get_and_assert_locked(void)
-@@ -127,7 +91,7 @@ static __always_inline void __prevent_user_access(unsigned long dir)
+-	if (!mmu_has_feature(MMU_FTR_BOOK3S_KUAP))
++	if (!mmu_has_feature(MMU_FTR_KUAP))
  		return;
  
- 	current->thread.kuap = KUAP_NONE;
--	kuap_lock_addr(kuap, true);
-+	kuap_lock_one(kuap);
- }
- 
- static inline unsigned long __prevent_user_access_return(void)
-@@ -136,7 +100,7 @@ static inline unsigned long __prevent_user_access_return(void)
- 
- 	if (flags != KUAP_NONE) {
- 		current->thread.kuap = KUAP_NONE;
--		kuap_lock_addr(flags, true);
-+		kuap_lock_one(flags);
- 	}
- 
- 	return flags;
-@@ -146,7 +110,7 @@ static inline void __restore_user_access(unsigned long flags)
- {
- 	if (flags != KUAP_NONE) {
- 		current->thread.kuap = flags;
--		kuap_unlock(flags, true);
-+		kuap_unlock_one(flags);
- 	}
- }
- 
-@@ -155,14 +119,23 @@ __bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
- {
- 	unsigned long kuap = regs->kuap;
- 
--	if (!is_write || kuap == KUAP_ALL)
-+	if (!is_write)
- 		return false;
- 	if (kuap == KUAP_NONE)
- 		return true;
- 
--	/* If faulting address doesn't match unlocked segment, unlock all */
--	if ((kuap ^ address) & 0xf0000000)
--		regs->kuap = KUAP_ALL;
-+	/*
-+	 * If faulting address doesn't match unlocked segment, change segment.
-+	 * In case of unaligned store crossing two segments, emulate store.
-+	 */
-+	if ((kuap ^ address) & 0xf0000000) {
-+		if (!(kuap & 0x0fffffff) && address > kuap - 4 && fix_alignment(regs)) {
-+			regs_add_return_ip(regs, 4);
-+			emulate_single_step(regs);
-+		} else {
-+			regs->kuap = address;
-+		}
-+	}
- 
- 	return false;
- }
-diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
-index ef42adb44aa3..492530adecc2 100644
---- a/arch/powerpc/include/asm/bug.h
-+++ b/arch/powerpc/include/asm/bug.h
-@@ -163,6 +163,7 @@ __label_warn_on:						\
- struct pt_regs;
- void hash__do_page_fault(struct pt_regs *);
- void bad_page_fault(struct pt_regs *, int);
-+void emulate_single_step(struct pt_regs *regs);
- extern void _exception(int, struct pt_regs *, int, unsigned long);
- extern void _exception_pkey(struct pt_regs *, unsigned long, int);
- extern void die(const char *, struct pt_regs *, long);
-diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-index e59ec6d32d37..ab95105c69ca 100644
---- a/arch/powerpc/kernel/traps.c
-+++ b/arch/powerpc/kernel/traps.c
-@@ -1158,7 +1158,7 @@ DEFINE_INTERRUPT_HANDLER(single_step_exception)
-  * pretend we got a single-step exception.  This was pointed out
-  * by Kumar Gala.  -- paulus
+ 	/*
+diff --git a/arch/powerpc/include/asm/mmu.h b/arch/powerpc/include/asm/mmu.h
+index 94b981152667..82af2e2c5eca 100644
+--- a/arch/powerpc/include/asm/mmu.h
++++ b/arch/powerpc/include/asm/mmu.h
+@@ -33,7 +33,7 @@
+  * key 0 controlling userspace addresses on radix
+  * Key 3 on hash
   */
--static void emulate_single_step(struct pt_regs *regs)
-+void emulate_single_step(struct pt_regs *regs)
- {
- 	if (single_stepping(regs))
- 		__single_step_exception(regs);
-diff --git a/arch/powerpc/mm/book3s32/kuap.c b/arch/powerpc/mm/book3s32/kuap.c
-index 24c1c686e6b9..3a8815555a48 100644
---- a/arch/powerpc/mm/book3s32/kuap.c
-+++ b/arch/powerpc/mm/book3s32/kuap.c
-@@ -3,22 +3,11 @@
- #include <asm/kup.h>
- #include <asm/smp.h>
+-#define MMU_FTR_BOOK3S_KUAP		ASM_CONST(0x00000200)
++#define MMU_FTR_KUAP		ASM_CONST(0x00000200)
  
--void kuap_lock_all_ool(void)
--{
--	kuap_lock_all();
--}
--EXPORT_SYMBOL(kuap_lock_all_ool);
--
--void kuap_unlock_all_ool(void)
--{
--	kuap_unlock_all();
--}
--EXPORT_SYMBOL(kuap_unlock_all_ool);
--
- void setup_kuap(bool disabled)
- {
- 	if (!disabled) {
--		kuap_lock_all_ool();
-+		update_user_segments(mfsr(0) | SR_KS);
-+		isync();        /* Context sync required after mtsr() */
- 		init_mm.context.sr0 |= SR_KS;
- 		current->thread.sr0 |= SR_KS;
+ /*
+  * Supports KUEP feature
+@@ -188,7 +188,7 @@ enum {
+ #endif /* CONFIG_PPC_RADIX_MMU */
+ #endif
+ #ifdef CONFIG_PPC_KUAP
+-	MMU_FTR_BOOK3S_KUAP |
++	MMU_FTR_KUAP |
+ #endif /* CONFIG_PPC_KUAP */
+ #ifdef CONFIG_PPC_MEM_KEYS
+ 	MMU_FTR_PKEY |
+diff --git a/arch/powerpc/kernel/syscall.c b/arch/powerpc/kernel/syscall.c
+index 18b9d325395f..77fedb190c93 100644
+--- a/arch/powerpc/kernel/syscall.c
++++ b/arch/powerpc/kernel/syscall.c
+@@ -46,7 +46,7 @@ notrace long system_call_exception(struct pt_regs *regs, unsigned long r0)
+ 		iamr = mfspr(SPRN_IAMR);
+ 		regs->amr  = amr;
+ 		regs->iamr = iamr;
+-		if (mmu_has_feature(MMU_FTR_BOOK3S_KUAP)) {
++		if (mmu_has_feature(MMU_FTR_KUAP)) {
+ 			mtspr(SPRN_AMR, AMR_KUAP_BLOCKED);
+ 			flush_needed = true;
+ 		}
+diff --git a/arch/powerpc/mm/book3s64/pkeys.c b/arch/powerpc/mm/book3s64/pkeys.c
+index 1d2675ab6711..125733962033 100644
+--- a/arch/powerpc/mm/book3s64/pkeys.c
++++ b/arch/powerpc/mm/book3s64/pkeys.c
+@@ -291,7 +291,7 @@ void setup_kuap(bool disabled)
+ 
+ 	if (smp_processor_id() == boot_cpuid) {
+ 		pr_info("Activating Kernel Userspace Access Prevention\n");
+-		cur_cpu_spec->mmu_features |= MMU_FTR_BOOK3S_KUAP;
++		cur_cpu_spec->mmu_features |= MMU_FTR_KUAP;
  	}
+ 
+ 	/*
 -- 
 2.41.0
 
