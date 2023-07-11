@@ -2,58 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AFD374ED88
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 14:03:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0068D74EF19
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 14:37:46 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=djo5kRUx;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OAhTb2hg;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Oc/6Nn1y;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R0fdc3Dt5z3dJv
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 22:03:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R0gPh6ZvJz3btJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 22:37:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=djo5kRUx;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OAhTb2hg;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Oc/6Nn1y;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=fweimer@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0fPH1pJKz2yxt
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jul 2023 21:52:19 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0fqG2Vt7z2y1b
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jul 2023 22:11:21 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1689077476;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jciyvh7bPAJKrnb358k+MOZYCgue2kVbXpRfHdO7VwM=;
+	b=OAhTb2hgauSJM/zUglDOdIX+JvWiKeqhZKgzsOMdK1OaamJa6tetk677HGlcaFyEopPRwJ
+	pst0UrEUTdww+NmpxF6RE+X/pPI73aAkQz6pfw5vc+UgYI4ufA5C+K8ugXOyCUxDTYirMz
+	pNhDZatVJ6kUcc5b+wIDWk8suY/9dlQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1689077477;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jciyvh7bPAJKrnb358k+MOZYCgue2kVbXpRfHdO7VwM=;
+	b=Oc/6Nn1y9AeOJ4QZG+kRddbD/PvZJtdfnlQ/T68QG3oHcZJIRQnTmaPzTv6YHIbZwcTndf
+	PLj08jbv9C80rEXnekvukv+mKKotL9o49PYQGLx9NkWVgzEpCNllqQOp9ZC/zT0s+xY2Kx
+	BYSy2y1VkQZSBOhM8GU6yTz2bY+iW3k=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-673-XU6uHA3jMOyx2Kr6qDivBg-1; Tue, 11 Jul 2023 08:11:13 -0400
+X-MC-Unique: XU6uHA3jMOyx2Kr6qDivBg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id B457F614A8;
-	Tue, 11 Jul 2023 11:52:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00B5DC433C8;
-	Tue, 11 Jul 2023 11:52:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1689076336;
-	bh=FEYwsW8eEVWKaDxjSpsLJzH203pRDz88SghdcKEI1Cc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=djo5kRUxcwGp9ZdqEH8AfNMhg0qsCG7bCvPx452SCCqbjaEm9+RUsFZgu/4Zib58z
-	 5wxZbVUvaLPjWynxuO9RjNWPxwRPiLlpBdpq7u67qP6VP0a5PV7Uq/N8eVnqF7Ktse
-	 bN/LatBa45dmE7fM0H3vOwVGIv+ESV5MlxzwYjjKXjjGFgQCBBr1R1dqqxW1RDhTHc
-	 BWhV6dQRSlMUIxiZQOE2JLF8NE1hMXxoZ08a4cE6AuaFymusAbOhm10YCvIc5/7Agj
-	 whDEvFt+uIB5AOK9f11RR8rXlvAFr5opLcAF5l/puWqcOG6Aj8zCTnMsnaYx+/nGRM
-	 iFCAZ/+dDnSMg==
-Date: Tue, 11 Jul 2023 13:52:01 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH v3 2/5] fs: Add fchmodat4()
-Message-ID: <20230711-demolieren-nilpferd-80ffe47563ad@brauner>
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2E2A9185A791;
+	Tue, 11 Jul 2023 12:11:11 +0000 (UTC)
+Received: from oldenburg.str.redhat.com (unknown [10.2.16.46])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id EA8111401C2E;
+	Tue, 11 Jul 2023 12:10:59 +0000 (UTC)
+From: Florian Weimer <fweimer@redhat.com>
+To: Alexey Gladkov <legion@kernel.org>
+Subject: Re: [PATCH v3 5/5] selftests: add fchmodat4(2) selftest
 References: <87o8pscpny.fsf@oldenburg2.str.redhat.com>
- <cover.1689074739.git.legion@kernel.org>
- <d11b93ad8e3b669afaff942e25c3fca65c6a983c.1689074739.git.legion@kernel.org>
- <83363cbb-2431-4520-81a9-0d71f420cb36@app.fastmail.com>
+	<cover.1689074739.git.legion@kernel.org>
+	<c3606ec38227d921fa8a3e11613ffdb2f3ea7636.1689074739.git.legion@kernel.org>
+Date: Tue, 11 Jul 2023 14:10:58 +0200
+In-Reply-To: <c3606ec38227d921fa8a3e11613ffdb2f3ea7636.1689074739.git.legion@kernel.org>
+	(Alexey Gladkov's message of "Tue, 11 Jul 2023 13:25:46 +0200")
+Message-ID: <87pm4ybqct.fsf@oldenburg.str.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <83363cbb-2431-4520-81a9-0d71f420cb36@app.fastmail.com>
-X-Mailman-Approved-At: Tue, 11 Jul 2023 21:56:57 +1000
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+X-Mailman-Approved-At: Tue, 11 Jul 2023 22:37:01 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,55 +84,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Alexander Shishkin <alexander.shishkin@linux.intel.com>, Catalin Marinas <catalin.marinas@arm.com>, Palmer Dabbelt <palmer@sifive.com>, heiko.carstens@de.ibm.com, stefan@agner.ch, ldv@altlinux.org, David Howells <dhowells@redhat.com>, Kim Phillips <kim.phillips@arm.com>, Paul Mackerras <paulus@samba.org>, Deepa Dinamani <deepa.kernel@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, Will Deacon <will@kernel.org>, Linux-Arch <linux-arch@vger.kernel.org>, linux-s390@vger.kernel.org, hare@suse.com, Florian Weimer <fweimer@redhat.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>, x86@kernel.org, Russell King <linux@armlinux.org.uk>, Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>, firoz.khan@linaro.org, linux-arm-kernel@lists.infradead.org, jhogan@kernel.org, Geert Uytterhoeven <geert@linux-m68k.org>, Matt Turner <ma
- ttst88@gmail.com>, linux-mips@vger.kernel.org, fenghua.yu@intel.com, tycho@tycho.ws, gor@linux.ibm.com, Peter Zijlstra <peterz@infradead.org>, glebfm@altlinux.org, linuxppc-dev@lists.ozlabs.org, Arnaldo Carvalho de Melo <acme@kernel.org>, schwidefsky@de.ibm.com, linux-m68k@lists.linux-m68k.org, Borislav Petkov <bp@alien8.de>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, christian@brauner.io, rth@twiddle.net, Jens Axboe <axboe@kernel.dk>, "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>, Michal Simek <monstr@monstr.eu>, Tony Luck <tony.luck@intel.com>, linux-parisc@vger.kernel.org, linux-api@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, ralf@linux-mips.org, paul.burton@mips.com, linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Alexey Gladkov <legion@kernel.org>, "David S . Miller" <davem@davemloft.net
- >
+Cc: dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, alexander.shishkin@linux.intel.com, catalin.marinas@arm.com, palmer@sifive.com, heiko.carstens@de.ibm.com, stefan@agner.ch, ldv@altlinux.org, dhowells@redhat.com, kim.phillips@arm.com, paulus@samba.org, deepa.kernel@gmail.com, hpa@zytor.com, sparclinux@vger.kernel.org, will@kernel.org, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, hare@suse.com, gor@linux.ibm.com, ysato@users.sourceforge.jp, deller@gmx.de, x86@kernel.org, linux@armlinux.org.uk, borntraeger@de.ibm.com, mingo@redhat.com, geert@linux-m68k.org, linux-arm-kernel@lists.infradead.org, jhogan@kernel.org, firoz.khan@linaro.org, mattst88@gmail.com, linux-mips@vger.kernel.org, fenghua.yu@intel.com, Arnd Bergmann <arnd@arndb.de>, peterz@infradead.org, glebfm@altlinux.org, tycho@tycho.ws, acme@kernel.org, schwidefsky@de.ibm.com, linux-m68k@lists.linux-m68k.org, bp@alien8.de, viro@zeniv.linux.org.uk, luto@kernel.org, namhyung@kernel.org, tglx@linu
+ tronix.de, christian@brauner.io, rth@twiddle.net, axboe@kernel.dk, James.Bottomley@HansenPartnership.com, monstr@monstr.eu, tony.luck@intel.com, linux-parisc@vger.kernel.org, linux-api@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, ralf@linux-mips.org, paul.burton@mips.com, linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org, ink@jurassic.park.msu.ru, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 11, 2023 at 01:42:19PM +0200, Arnd Bergmann wrote:
-> On Tue, Jul 11, 2023, at 13:25, Alexey Gladkov wrote:
-> > From: Palmer Dabbelt <palmer@sifive.com>
-> >
-> > On the userspace side fchmodat(3) is implemented as a wrapper
-> > function which implements the POSIX-specified interface. This
-> > interface differs from the underlying kernel system call, which does not
-> > have a flags argument. Most implementations require procfs [1][2].
-> >
-> > There doesn't appear to be a good userspace workaround for this issue
-> > but the implementation in the kernel is pretty straight-forward.
-> >
-> > The new fchmodat4() syscall allows to pass the AT_SYMLINK_NOFOLLOW flag,
-> > unlike existing fchmodat.
-> >
-> > [1] 
-> > https://sourceware.org/git/?p=glibc.git;a=blob;f=sysdeps/unix/sysv/linux/fchmodat.c;h=17eca54051ee28ba1ec3f9aed170a62630959143;hb=a492b1e5ef7ab50c6fdd4e4e9879ea5569ab0a6c#l35
-> > [2] 
-> > https://git.musl-libc.org/cgit/musl/tree/src/stat/fchmodat.c?id=718f363bc2067b6487900eddc9180c84e7739f80#n28
-> >
-> > Signed-off-by: Palmer Dabbelt <palmer@sifive.com>
-> > Signed-off-by: Alexey Gladkov <legion@kernel.org>
-> 
-> I don't know the history of why we ended up with the different
-> interface, or whether this was done intentionally in the kernel
-> or if we want this syscall.
-> 
-> Assuming this is in fact needed, I double-checked that the
-> implementation looks correct to me and is portable to all the
-> architectures, without the need for a compat wrapper.
-> 
-> Acked-by: Arnd Bergmann <arnd@arndb.de>
+* Alexey Gladkov:
 
-The system call itself is useful afaict. But please,
+> The test marks as skipped if a syscall with the AT_SYMLINK_NOFOLLOW flag
+> fails. This is because not all filesystems support changing the mode
+> bits of symlinks properly. These filesystems return an error but change
+> the mode bits:
+>
+> newfstatat(4, "regfile", {st_mode=3DS_IFREG|0640, st_size=3D0, ...}, AT_S=
+YMLINK_NOFOLLOW) =3D 0
+> newfstatat(4, "symlink", {st_mode=3DS_IFLNK|0777, st_size=3D7, ...}, AT_S=
+YMLINK_NOFOLLOW) =3D 0
+> syscall_0x1c3(0x4, 0x55fa1f244396, 0x180, 0x100, 0x55fa1f24438e, 0x34) =
+=3D -1 EOPNOTSUPP (Operation not supported)
+> newfstatat(4, "regfile", {st_mode=3DS_IFREG|0640, st_size=3D0, ...}, AT_S=
+YMLINK_NOFOLLOW) =3D 0
+>
+> This happens with btrfs and xfs:
+>
+>  $ /kernel/tools/testing/selftests/fchmodat4/fchmodat4_test
+>  TAP version 13
+>  1..1
+>  ok 1 # SKIP fchmodat4(symlink)
+>  # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:1 error:0
+>
+>  $ stat /tmp/ksft-fchmodat4.*/symlink
+>    File: /tmp/ksft-fchmodat4.3NCqlE/symlink -> regfile
+>    Size: 7               Blocks: 0          IO Block: 4096   symbolic link
+>  Device: 7,0     Inode: 133         Links: 1
+>  Access: (0600/lrw-------)  Uid: (    0/    root)   Gid: (    0/    root)
+>
+> Signed-off-by: Alexey Gladkov <legion@kernel.org>
 
-s/fchmodat4/fchmodat2/
+This looks like a bug in those file systems?
 
-With very few exceptions we don't version by argument number but by
-revision and we should stick to one scheme:
+As an extra test, =E2=80=9Cecho 3 > /proc/sys/vm/drop_caches=E2=80=9D somet=
+imes has
+strange effects in such cases because the bits are not actually stored
+on disk, only in the dentry cache.
 
-openat()->openat2()
-eventfd()->eventfd2()
-clone()/clone2()->clone3()
-dup()->dup2()->dup3() // coincides with nr of arguments
-pipe()->pipe2() // coincides with nr of arguments
-renameat()->renameat2()
+Thanks,
+Florian
+
