@@ -2,50 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43D8874ED77
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 13:59:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C24274ED79
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 14:00:30 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=HzF5Lj64;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=W1/NvmTR;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R0fYm1Xkvz3clg
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 21:59:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R0fZg5p3xz3c7g
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 22:00:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=softfail (domain owner discourages use of this host) smtp.mailfrom=kernel.org (client-ip=207.211.30.44; helo=us-smtp-delivery-44.mimecast.com; envelope-from=legion@kernel.org; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-44.mimecast.com (unknown [207.211.30.44])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=HzF5Lj64;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=W1/NvmTR;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.229; helo=new3-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from new3-smtp.messagingengine.com (new3-smtp.messagingengine.com [66.111.4.229])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0dsw5gSxz30PD
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jul 2023 21:28:36 +1000 (AEST)
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-136-RfFFoQQePe6MWI5MJJKy7Q-1; Tue, 11 Jul 2023 07:27:17 -0400
-X-MC-Unique: RfFFoQQePe6MWI5MJJKy7Q-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 14CA7185A78F;
-	Tue, 11 Jul 2023 11:27:15 +0000 (UTC)
-Received: from localhost.localdomain.com (unknown [10.45.225.44])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 7857FF66B9;
-	Tue, 11 Jul 2023 11:27:03 +0000 (UTC)
-From: Alexey Gladkov <legion@kernel.org>
-To: LKML <linux-kernel@vger.kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	viro@zeniv.linux.org.uk
-Subject: [PATCH v3 5/5] selftests: add fchmodat4(2) selftest
-Date: Tue, 11 Jul 2023 13:25:46 +0200
-Message-Id: <c3606ec38227d921fa8a3e11613ffdb2f3ea7636.1689074739.git.legion@kernel.org>
-In-Reply-To: <cover.1689074739.git.legion@kernel.org>
-References: <87o8pscpny.fsf@oldenburg2.str.redhat.com> <cover.1689074739.git.legion@kernel.org>
-MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: kernel.org
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=WINDOWS-1252; x-default=true
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0dy650R9z2xFl
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jul 2023 21:32:13 +1000 (AEST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailnew.nyi.internal (Postfix) with ESMTP id 9A8CA580178;
+	Tue, 11 Jul 2023 07:32:08 -0400 (EDT)
+Received: from imap50 ([10.202.2.100])
+  by compute6.internal (MEProxy); Tue, 11 Jul 2023 07:32:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:sender
+	:subject:subject:to:to; s=fm2; t=1689075128; x=1689082328; bh=/C
+	vj5KuDdmHIGd859qaJsBs/f1fpWATGo78ystxolZ8=; b=HzF5Lj64iIpTlqtt/U
+	sveabShinBsVWN7ZS+DWgyJMPU2GSeQFuSUCaVEID6zbvpBcUok2BlUF+h0n+Jsi
+	B+RLu5FWxwKLB8yYD47pAPBs2bab9DlxHcB6VwJMrbK3p9CDt7lAEtwhLFrqHyEX
+	7fV6jp/WUlNvYhzIeZmZ8ELheVWsz4lvwJI2VXV5H/zoLAgGGMs1cuBZ6wy6//Wo
+	lTcLFfuSlHypwPx3xDRLR/oHSmnqF/XLXxzMPsVIUzb0SlCzCAuF5XqLetfBfak0
+	atTp6UW4suxvLr2dJBHShODfomx0zMwaugwqmwH78MNM1MRfNA0cez5yZNpOlgRv
+	//UQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:sender:subject
+	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+	:x-sasl-enc; s=fm2; t=1689075128; x=1689082328; bh=/Cvj5KuDdmHIG
+	d859qaJsBs/f1fpWATGo78ystxolZ8=; b=W1/NvmTRCGX/QlW5oKWHfVETVTfbK
+	iiaOMfD5xZsr1wjerC+3qL19Z8aSprXPBEYBfWKdxhdG7CPF8CfT1WR3AD/U//Un
+	zxx8P3k3a+CRFx0FyzD8zVDjk8KMv1IFossSMGyzZMiE+N5ykkDG7SGHyOk1LSbz
+	Bz6m9f+D31N5JQ3EkKQlKNOB/I6NsYPUx+f0YLoOGoGzq72rYerylgYc3CtBcy/n
+	AZoZV8e4voliHZSlImIxGtDEa1Ir51MPftiA+USesbUwJs5AoAISF5B7ko8jQ9TV
+	ypO52hjhNBQOPxHsSQTj42667JQZjYerNOkA0APolagyhbQRUAfakKLNg==
+X-ME-Sender: <xms:tT2tZA4hH3o4izne3FbRuXG2qMPlVHT74IrMecBxjvaUy8gh3b_w0A>
+    <xme:tT2tZB7D0dtivUf9jNL7_gVkezoswV2Kx6PyxJ02Dc5k8dQp62kPCknJo5opBw8es
+    xJHdRKFCVHHYX0BEkU>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrfedtgdegudcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
+    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
+    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
+    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
+    hnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:tT2tZPdfpeh0H17Fj0xsMjjhRasXPz9RbEKCmDysDhuciVYRZAKqCQ>
+    <xmx:tT2tZFIyOZGu1rzltUq4P8BJSV6SxBs1g2wKFNcnL702pktE2075YA>
+    <xmx:tT2tZELda_T17jFWEHVJ_J6NJ6sYUjYLJpVzAfstvwJMmjZg5aOreQ>
+    <xmx:uD2tZKRIbzNeXyzIyAKNVN2Y2wBmljLCQoSWEDw5YnJyybhC98VOWQ>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id ECECE1700090; Tue, 11 Jul 2023 07:32:04 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-531-gfdfa13a06d-fm-20230703.001-gfdfa13a0
+Mime-Version: 1.0
+Message-Id: <55fee4b7-41f0-4f24-ad0e-a4527486bad1@app.fastmail.com>
+In-Reply-To:  <e48c4d4046de97205fd52a73f77e9b203c3b871e.1689074739.git.legion@kernel.org>
+References: <87o8pscpny.fsf@oldenburg2.str.redhat.com>
+ <cover.1689074739.git.legion@kernel.org>
+ <e48c4d4046de97205fd52a73f77e9b203c3b871e.1689074739.git.legion@kernel.org>
+Date: Tue, 11 Jul 2023 13:31:44 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Alexey Gladkov" <legion@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+ linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>
+Subject: Re: [PATCH v3 3/5] arch: Register fchmodat4, usually as syscall 451
+Content-Type: text/plain
 X-Mailman-Approved-At: Tue, 11 Jul 2023 21:56:57 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -58,253 +97,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dalias@libc.org, linux-ia64@vger.kernel.org, fenghua.yu@intel.com, alexander.shishkin@linux.intel.com, palmer@sifive.com, heiko.carstens@de.ibm.com, x86@kernel.org, stefan@agner.ch, ldv@altlinux.org, dhowells@redhat.com, kim.phillips@arm.com, paulus@samba.org, deepa.kernel@gmail.com, hpa@zytor.com, sparclinux@vger.kernel.org, will@kernel.org, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, hare@suse.com, ysato@users.sourceforge.jp, deller@gmx.de, linux-sh@vger.kernel.org, linux@armlinux.org.uk, borntraeger@de.ibm.com, mingo@redhat.com, geert@linux-m68k.org, linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com, jhogan@kernel.org, firoz.khan@linaro.org, mattst88@gmail.com, fweimer@redhat.com, gor@linux.ibm.com, peterz@infradead.org, glebfm@altlinux.org, tycho@tycho.ws, acme@kernel.org, linux-m68k@lists.linux-m68k.org, bp@alien8.de, luto@kernel.org, namhyung@kernel.org, tglx@linutronix.de, christian@brauner.io, rth@twiddle.net, axboe@kernel.dk, James.Bottomley@Hanse
- nPartnership.com, monstr@monstr.eu, tony.luck@intel.com, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org, ralf@linux-mips.org, paul.burton@mips.com, linux-alpha@vger.kernel.org, schwidefsky@de.ibm.com, ink@jurassic.park.msu.ru, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, fenghua.yu@intel.com, Alexander Shishkin <alexander.shishkin@linux.intel.com>, Palmer Dabbelt <palmer@sifive.com>, heiko.carstens@de.ibm.com, x86@kernel.org, stefan@agner.ch, ldv@altlinux.org, David Howells <dhowells@redhat.com>, Kim Phillips <kim.phillips@arm.com>, Paul Mackerras <paulus@samba.org>, Deepa Dinamani <deepa.kernel@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, Will Deacon <will@kernel.org>, Linux-Arch <linux-arch@vger.kernel.org>, linux-s390@vger.kernel.org, hare@suse.com, Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>, linux-sh@vger.kernel.org, Russell King <linux@armlinux.org.uk>, Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>, linux-arm-kernel@lists.infradead.org, Catalin Marinas <catalin.marinas@arm.com>, jhogan@kernel.org, firoz.khan@linaro.org, Matt Turner <mattst88@gmail.co
+ m>, Florian Weimer <fweimer@redhat.com>, gor@linux.ibm.com, Peter Zijlstra <peterz@infradead.org>, glebfm@altlinux.org, tycho@tycho.ws, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-m68k@lists.linux-m68k.org, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, christian@brauner.io, rth@twiddle.net, Jens Axboe <axboe@kernel.dk>, "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>, Michal Simek <monstr@monstr.eu>, Tony Luck <tony.luck@intel.com>, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org, ralf@linux-mips.org, paul.burton@mips.com, linux-alpha@vger.kernel.org, schwidefsky@de.ibm.com, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The test marks as skipped if a syscall with the AT_SYMLINK_NOFOLLOW flag
-fails. This is because not all filesystems support changing the mode
-bits of symlinks properly. These filesystems return an error but change
-the mode bits:
+On Tue, Jul 11, 2023, at 13:25, Alexey Gladkov wrote:
+> From: Palmer Dabbelt <palmer@sifive.com>
+>
+> This registers the new fchmodat4 syscall in most places as nuber 451,
+> with alpha being the exception where it's 561.  I found all these sites
+> by grepping for fspick, which I assume has found me everything.
+>
+> Signed-off-by: Palmer Dabbelt <palmer@sifive.com>
+> Signed-off-by: Alexey Gladkov <legion@kernel.org>
 
-newfstatat(4, "regfile", {st_mode=3DS_IFREG|0640, st_size=3D0, ...}, AT_SYM=
-LINK_NOFOLLOW) =3D 0
-newfstatat(4, "symlink", {st_mode=3DS_IFLNK|0777, st_size=3D7, ...}, AT_SYM=
-LINK_NOFOLLOW) =3D 0
-syscall_0x1c3(0x4, 0x55fa1f244396, 0x180, 0x100, 0x55fa1f24438e, 0x34) =3D =
--1 EOPNOTSUPP (Operation not supported)
-newfstatat(4, "regfile", {st_mode=3DS_IFREG|0640, st_size=3D0, ...}, AT_SYM=
-LINK_NOFOLLOW) =3D 0
+In linux-6.5-rc1, number 451 is used for __NR_cachestat, the
+next free one at the moment is 452.
 
-This happens with btrfs and xfs:
+>  arch/arm/tools/syscall.tbl                  | 1 +
+>  arch/arm64/include/asm/unistd32.h           | 2 ++
 
- $ /kernel/tools/testing/selftests/fchmodat4/fchmodat4_test
- TAP version 13
- 1..1
- ok 1 # SKIP fchmodat4(symlink)
- # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:1 error:0
+Unfortunately, you still also need to change __NR_compat_syscalls
+in arch/arm64/include/asm/unistd.h. Aside from these two issues,
+your patch is the correct way to hook up a new syscall.
 
- $ stat /tmp/ksft-fchmodat4.*/symlink
-   File: /tmp/ksft-fchmodat4.3NCqlE/symlink -> regfile
-   Size: 7               Blocks: 0          IO Block: 4096   symbolic link
- Device: 7,0     Inode: 133         Links: 1
- Access: (0600/lrw-------)  Uid: (    0/    root)   Gid: (    0/    root)
-
-Signed-off-by: Alexey Gladkov <legion@kernel.org>
----
- tools/testing/selftests/Makefile              |   1 +
- tools/testing/selftests/fchmodat4/.gitignore  |   2 +
- tools/testing/selftests/fchmodat4/Makefile    |   6 +
- .../selftests/fchmodat4/fchmodat4_test.c      | 151 ++++++++++++++++++
- 4 files changed, 160 insertions(+)
- create mode 100644 tools/testing/selftests/fchmodat4/.gitignore
- create mode 100644 tools/testing/selftests/fchmodat4/Makefile
- create mode 100644 tools/testing/selftests/fchmodat4/fchmodat4_test.c
-
-diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Mak=
-efile
-index 90a62cf75008..fe61fa55412d 100644
---- a/tools/testing/selftests/Makefile
-+++ b/tools/testing/selftests/Makefile
-@@ -17,6 +17,7 @@ TARGETS +=3D drivers/net/bonding
- TARGETS +=3D drivers/net/team
- TARGETS +=3D efivarfs
- TARGETS +=3D exec
-+TARGETS +=3D fchmodat4
- TARGETS +=3D filesystems
- TARGETS +=3D filesystems/binderfs
- TARGETS +=3D filesystems/epoll
-diff --git a/tools/testing/selftests/fchmodat4/.gitignore b/tools/testing/s=
-elftests/fchmodat4/.gitignore
-new file mode 100644
-index 000000000000..82a4846cbc4b
---- /dev/null
-+++ b/tools/testing/selftests/fchmodat4/.gitignore
-@@ -0,0 +1,2 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+/*_test
-diff --git a/tools/testing/selftests/fchmodat4/Makefile b/tools/testing/sel=
-ftests/fchmodat4/Makefile
-new file mode 100644
-index 000000000000..3d38a69c3c12
---- /dev/null
-+++ b/tools/testing/selftests/fchmodat4/Makefile
-@@ -0,0 +1,6 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+CFLAGS +=3D -Wall -O2 -g -fsanitize=3Daddress -fsanitize=3Dundefined
-+TEST_GEN_PROGS :=3D fchmodat4_test
-+
-+include ../lib.mk
-diff --git a/tools/testing/selftests/fchmodat4/fchmodat4_test.c b/tools/tes=
-ting/selftests/fchmodat4/fchmodat4_test.c
-new file mode 100644
-index 000000000000..50beb731d8ba
---- /dev/null
-+++ b/tools/testing/selftests/fchmodat4/fchmodat4_test.c
-@@ -0,0 +1,151 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+
-+#define _GNU_SOURCE
-+#include <fcntl.h>
-+#include <sys/stat.h>
-+#include <sys/types.h>
-+#include <syscall.h>
-+#include <unistd.h>
-+
-+#include "../kselftest.h"
-+
-+#ifndef __NR_fchmodat4
-+=09#if defined __alpha__
-+=09=09#define __NR_fchmodat4 561
-+=09#elif defined _MIPS_SIM
-+=09=09#if _MIPS_SIM =3D=3D _MIPS_SIM_ABI32=09/* o32 */
-+=09=09=09#define __NR_fchmodat4 (451 + 4000)
-+=09=09#endif
-+=09=09#if _MIPS_SIM =3D=3D _MIPS_SIM_NABI32=09/* n32 */
-+=09=09=09#define __NR_fchmodat4 (451 + 6000)
-+=09=09#endif
-+=09=09#if _MIPS_SIM =3D=3D _MIPS_SIM_ABI64=09/* n64 */
-+=09=09=09#define __NR_fchmodat4 (451 + 5000)
-+=09=09#endif
-+=09#elif defined __ia64__
-+=09=09#define __NR_fchmodat4 (451 + 1024)
-+=09#else
-+=09=09#define __NR_fchmodat4 451
-+=09#endif
-+#endif
-+
-+int sys_fchmodat4(int dfd, const char *filename, mode_t mode, int flags)
-+{
-+=09int ret =3D syscall(__NR_fchmodat4, dfd, filename, mode, flags);
-+=09return ret >=3D 0 ? ret : -errno;
-+}
-+
-+int setup_testdir(void)
-+{
-+=09int dfd, ret;
-+=09char dirname[] =3D "/tmp/ksft-fchmodat4.XXXXXX";
-+
-+=09/* Make the top-level directory. */
-+=09if (!mkdtemp(dirname))
-+=09=09ksft_exit_fail_msg("setup_testdir: failed to create tmpdir\n");
-+
-+=09dfd =3D open(dirname, O_PATH | O_DIRECTORY);
-+=09if (dfd < 0)
-+=09=09ksft_exit_fail_msg("setup_testdir: failed to open tmpdir\n");
-+
-+=09ret =3D openat(dfd, "regfile", O_CREAT | O_WRONLY | O_TRUNC, 0644);
-+=09if (ret < 0)
-+=09=09ksft_exit_fail_msg("setup_testdir: failed to create file in tmpdir\n=
-");
-+=09close(ret);
-+
-+=09ret =3D symlinkat("regfile", dfd, "symlink");
-+=09if (ret < 0)
-+=09=09ksft_exit_fail_msg("setup_testdir: failed to create symlink in tmpdi=
-r\n");
-+
-+=09return dfd;
-+}
-+
-+int expect_mode(int dfd, const char *filename, mode_t expect_mode)
-+{
-+=09struct stat st;
-+=09int ret =3D fstatat(dfd, filename, &st, AT_SYMLINK_NOFOLLOW);
-+
-+=09if (ret)
-+=09=09ksft_exit_fail_msg("expect_mode: %s: fstatat failed\n", filename);
-+
-+=09return (st.st_mode =3D=3D expect_mode);
-+}
-+
-+void test_regfile(void)
-+{
-+=09int dfd, ret;
-+
-+=09dfd =3D setup_testdir();
-+
-+=09ret =3D sys_fchmodat4(dfd, "regfile", 0640, 0);
-+
-+=09if (ret < 0)
-+=09=09ksft_exit_fail_msg("test_regfile: fchmodat4(noflag) failed\n");
-+
-+=09if (!expect_mode(dfd, "regfile", 0100640))
-+=09=09ksft_exit_fail_msg("test_regfile: wrong file mode bits after fchmoda=
-t4\n");
-+
-+=09ret =3D sys_fchmodat4(dfd, "regfile", 0600, AT_SYMLINK_NOFOLLOW);
-+
-+=09if (ret < 0)
-+=09=09ksft_exit_fail_msg("test_regfile: fchmodat4(AT_SYMLINK_NOFOLLOW) fai=
-led\n");
-+
-+=09if (!expect_mode(dfd, "regfile", 0100600))
-+=09=09ksft_exit_fail_msg("test_regfile: wrong file mode bits after fchmoda=
-t4 with nofollow\n");
-+
-+=09ksft_test_result_pass("fchmodat4(regfile)\n");
-+}
-+
-+void test_symlink(void)
-+{
-+=09int dfd, ret;
-+
-+=09dfd =3D setup_testdir();
-+
-+=09ret =3D sys_fchmodat4(dfd, "symlink", 0640, 0);
-+
-+=09if (ret < 0)
-+=09=09ksft_exit_fail_msg("test_symlink: fchmodat4(noflag) failed\n");
-+
-+=09if (!expect_mode(dfd, "regfile", 0100640))
-+=09=09ksft_exit_fail_msg("test_symlink: wrong file mode bits after fchmoda=
-t4\n");
-+
-+=09if (!expect_mode(dfd, "symlink", 0120777))
-+=09=09ksft_exit_fail_msg("test_symlink: wrong symlink mode bits after fchm=
-odat4\n");
-+
-+=09ret =3D sys_fchmodat4(dfd, "symlink", 0600, AT_SYMLINK_NOFOLLOW);
-+
-+=09/*
-+=09 * On certain filesystems (xfs or btrfs), chmod operation fails. So we
-+=09 * first check the symlink target but if the operation fails we mark th=
-e
-+=09 * test as skipped.
-+=09 *
-+=09 * https://sourceware.org/legacy-ml/libc-alpha/2020-02/msg00467.html
-+=09 */
-+=09if (ret =3D=3D 0 && !expect_mode(dfd, "symlink", 0120600))
-+=09=09ksft_exit_fail_msg("test_symlink: wrong symlink mode bits after fchm=
-odat4 with nofollow\n");
-+
-+=09if (!expect_mode(dfd, "regfile", 0100640))
-+=09=09ksft_exit_fail_msg("test_symlink: wrong file mode bits after fchmoda=
-t4 with nofollow\n");
-+
-+=09if (ret !=3D 0)
-+=09=09ksft_test_result_skip("fchmodat4(symlink)\n");
-+=09else
-+=09=09ksft_test_result_pass("fchmodat4(symlink)\n");
-+}
-+
-+#define NUM_TESTS 2
-+
-+int main(int argc, char **argv)
-+{
-+=09ksft_print_header();
-+=09ksft_set_plan(NUM_TESTS);
-+
-+=09test_regfile();
-+=09test_symlink();
-+
-+=09if (ksft_get_fail_cnt() + ksft_get_error_cnt() > 0)
-+=09=09ksft_exit_fail();
-+=09else
-+=09=09ksft_exit_pass();
-+}
---=20
-2.33.8
-
+   Arnd
