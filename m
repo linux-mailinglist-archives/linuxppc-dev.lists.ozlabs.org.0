@@ -1,64 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0245F74E744
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 08:26:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6336C74E742
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 08:25:33 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FbjrsA9V;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=kY8IJQi5;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=mBrGbWs9;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R0W9J6Kkvz3c39
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 16:26:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R0W8C21kcz3bnw
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 16:25:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FbjrsA9V;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=kY8IJQi5;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=mBrGbWs9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=ying.huang@intel.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 63 seconds by postgrey-1.37 at boromir; Tue, 11 Jul 2023 16:24:49 AEST
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0W7P60ZHz3bpq
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jul 2023 16:24:49 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689056690; x=1720592690;
-  h=from:to:cc:subject:references:date:in-reply-to:
-   message-id:mime-version;
-  bh=Utj6JC6vB3EVuXXeMiB2T5hPvq6339s1Q0PNQHyzVJM=;
-  b=FbjrsA9VMtWHlwvispkRoyAgZernxmZAch6vTBpUXVeCqac+of+pNvSD
-   53vsVbuwOTV12QPX4VS7gKLsae4yH2adNQm4URuhEX+MzZBuavaAjQU28
-   k0UfpP4vsB6qn6ZkZl7eB5x/fucWTtdMTmpYcTXheeSjZyGxK8nwW6syn
-   taHFPtNkxIw8MInXayMvsiIlsBtAcA0175+qDVDoleuISivB6KMm/iNG9
-   WnjyfNvYr4h7BdAk6FPuC06ITj2LzApYYQ3U6RnvkhEUO/WEwY4glALYr
-   CMlpns+iT+KjKuSMlgxgM6UbUH/ahhvEkq5sBN9WnsOneTFU8fK+k4+Vb
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10767"; a="363404257"
-X-IronPort-AV: E=Sophos;i="6.01,196,1684825200"; 
-   d="scan'208";a="363404257"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2023 23:23:41 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10767"; a="750617071"
-X-IronPort-AV: E=Sophos;i="6.01,196,1684825200"; 
-   d="scan'208";a="750617071"
-Received: from yhuang6-desk2.sh.intel.com (HELO yhuang6-desk2.ccr.corp.intel.com) ([10.238.208.55])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2023 23:23:38 -0700
-From: "Huang, Ying" <ying.huang@intel.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH v3 4/7] mm/hotplug: Allow pageblock alignment via altmap
- reservation
-References: <20230711044834.72809-1-aneesh.kumar@linux.ibm.com>
-	<20230711044834.72809-5-aneesh.kumar@linux.ibm.com>
-Date: Tue, 11 Jul 2023 14:21:49 +0800
-In-Reply-To: <20230711044834.72809-5-aneesh.kumar@linux.ibm.com> (Aneesh Kumar
-	K. V.'s message of "Tue, 11 Jul 2023 10:18:30 +0530")
-Message-ID: <87ilardl36.fsf@yhuang6-desk2.ccr.corp.intel.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0W7J5XrBz3bXl
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jul 2023 16:24:44 +1000 (AEST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 514E3203BA;
+	Tue, 11 Jul 2023 06:24:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1689056681; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9UTTOR73oFSTJb3AbCxsf/F9LdMKM9PZMaPQ/y7iNe8=;
+	b=kY8IJQi52EAVSaT9ihZdWh9AIenGqqZW7o/VDyXKIo95sEj0zTocTTbZ5oqRKUhZ7ttiAb
+	AL5duw/r4GZa1Ru0oA3tKwkrwxRbRq1J2ZaWw2Nco0R99OaW1BO3q4ejrbuQOJh0bXbYzp
+	1oc+CPRVF4Ih0rdJoFwEsGalxINRdl4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1689056681;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9UTTOR73oFSTJb3AbCxsf/F9LdMKM9PZMaPQ/y7iNe8=;
+	b=mBrGbWs91Pszsd5aoyT8MQRVbY/AEmZfCCJn2mneDCk4xuW4EAJkuRBEh8pfBtPp4mzC0g
+	Vrfx9S5JE1dymjDA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id EF5D91390F;
+	Tue, 11 Jul 2023 06:24:40 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id VlmOOaj1rGSTDQAAMHmgww
+	(envelope-from <tzimmermann@suse.de>); Tue, 11 Jul 2023 06:24:40 +0000
+Message-ID: <ab92f8d9-36ab-06bc-b85b-d52b7a1bfe9a@suse.de>
+Date: Tue, 11 Jul 2023 08:24:40 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 00/17] fbdev: Remove FBINFO_DEFAULT and
+ FBINFO_FLAG_DEFAULT flags
+Content-Language: en-US
+To: Sam Ravnborg <sam@ravnborg.org>
+References: <20230710130113.14563-1-tzimmermann@suse.de>
+ <20230710171903.GA14712@ravnborg.org>
+From: Thomas Zimmermann <tzimmermann@suse.de>
+In-Reply-To: <20230710171903.GA14712@ravnborg.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------N0aJus0T6gb70e5IfP9AME4R"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,152 +83,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, David Hildenbrand <david@redhat.com>, linux-mm@kvack.org, npiggin@gmail.com, Vishal Verma <vishal.l.verma@intel.com>, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, Oscar Salvador <osalvador@suse.de>
+Cc: linux-arm-kernel@lists.infradead.org, linux-hyperv@vger.kernel.org, kvm@vger.kernel.org, linux-sh@vger.kernel.org, deller@gmx.de, linux-staging@lists.linux.dev, javierm@redhat.com, amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org, linux-input@vger.kernel.org, linux-nvidia@lists.surfsouth.com, linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-geode@lists.infradead.org, linux-media@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------N0aJus0T6gb70e5IfP9AME4R
+Content-Type: multipart/mixed; boundary="------------rTbcb6wQVBeV2BUB8IDvgzl0";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: Sam Ravnborg <sam@ravnborg.org>
+Cc: deller@gmx.de, javierm@redhat.com, linux-fbdev@vger.kernel.org,
+ kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
+ amd-gfx@lists.freedesktop.org, linux-geode@lists.infradead.org,
+ dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org,
+ linux-nvidia@lists.surfsouth.com, linux-omap@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ linux-media@vger.kernel.org
+Message-ID: <ab92f8d9-36ab-06bc-b85b-d52b7a1bfe9a@suse.de>
+Subject: Re: [PATCH 00/17] fbdev: Remove FBINFO_DEFAULT and
+ FBINFO_FLAG_DEFAULT flags
+References: <20230710130113.14563-1-tzimmermann@suse.de>
+ <20230710171903.GA14712@ravnborg.org>
+In-Reply-To: <20230710171903.GA14712@ravnborg.org>
 
-> Add a new kconfig option that can be selected if we want to allow
-> pageblock alignment by reserving pages in the vmemmap altmap area.
-> This implies we will be reserving some pages for every memoryblock
-> This also allows the memmap on memory feature to be widely useful
-> with different memory block size values.
->
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> ---
->  mm/Kconfig          |  9 +++++++
->  mm/memory_hotplug.c | 59 +++++++++++++++++++++++++++++++++++++--------
->  2 files changed, 58 insertions(+), 10 deletions(-)
->
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index 932349271e28..88a1472b2086 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -570,6 +570,15 @@ config MHP_MEMMAP_ON_MEMORY
->  	depends on MEMORY_HOTPLUG && SPARSEMEM_VMEMMAP
->  	depends on ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE
->  
-> +config MHP_RESERVE_PAGES_MEMMAP_ON_MEMORY
-> +       bool "Allow Reserving pages for page block aligment"
-> +       depends on MHP_MEMMAP_ON_MEMORY
-> +       help
-> +	This option allows memmap on memory feature to be more useful
-> +	with different memory block sizes. This is achieved by marking some pages
-> +	in each memory block as reserved so that we can get page-block alignment
-> +	for the remaining pages.
-> +
->  endif # MEMORY_HOTPLUG
->  
->  config ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 07c99b0cc371..f36aec1f7626 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -1252,15 +1252,17 @@ static inline bool arch_supports_memmap_on_memory(unsigned long size)
->  {
->  	unsigned long nr_vmemmap_pages = size >> PAGE_SHIFT;
->  	unsigned long vmemmap_size = nr_vmemmap_pages * sizeof(struct page);
-> -	unsigned long remaining_size = size - vmemmap_size;
->  
-> -	return IS_ALIGNED(vmemmap_size, PMD_SIZE) &&
-> -		IS_ALIGNED(remaining_size, (pageblock_nr_pages << PAGE_SHIFT));
-> +	return IS_ALIGNED(vmemmap_size, PMD_SIZE);
->  }
->  #endif
->  
->  static bool mhp_supports_memmap_on_memory(unsigned long size)
->  {
-> +	unsigned long nr_vmemmap_pages = size >> PAGE_SHIFT;
-> +	unsigned long vmemmap_size = nr_vmemmap_pages * sizeof(struct page);
-> +	unsigned long remaining_size = size - vmemmap_size;
-> +
->  	/*
->  	 * Besides having arch support and the feature enabled at runtime, we
->  	 * need a few more assumptions to hold true:
-> @@ -1287,9 +1289,30 @@ static bool mhp_supports_memmap_on_memory(unsigned long size)
->  	 *       altmap as an alternative source of memory, and we do not exactly
->  	 *       populate a single PMD.
->  	 */
-> -	return mhp_memmap_on_memory() &&
-> -		size == memory_block_size_bytes() &&
-> -		arch_supports_memmap_on_memory(size);
-> +	if (!mhp_memmap_on_memory() || size != memory_block_size_bytes())
-> +		return false;
-> +	 /*
-> +	  * Without page reservation remaining pages should be pageblock aligned.
-> +	  */
-> +	if (!IS_ENABLED(CONFIG_MHP_RESERVE_PAGES_MEMMAP_ON_MEMORY) &&
-> +	    !IS_ALIGNED(remaining_size, (pageblock_nr_pages << PAGE_SHIFT)))
-> +		return false;
-> +
-> +	return arch_supports_memmap_on_memory(size);
-> +}
-> +
-> +static inline unsigned long memory_block_align_base(unsigned long size)
-> +{
-> +	if (IS_ENABLED(CONFIG_MHP_RESERVE_PAGES_MEMMAP_ON_MEMORY)) {
-> +		unsigned long align;
-> +		unsigned long nr_vmemmap_pages = size >> PAGE_SHIFT;
-> +		unsigned long vmemmap_size;
-> +
-> +		vmemmap_size = (nr_vmemmap_pages * sizeof(struct page)) >> PAGE_SHIFT;
+--------------rTbcb6wQVBeV2BUB8IDvgzl0
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-DIV_ROUND_UP()?
+SGkgU2FtDQoNCkFtIDEwLjA3LjIzIHVtIDE5OjE5IHNjaHJpZWIgU2FtIFJhdm5ib3JnOg0K
+PiBIaSBUaG9tYXMsDQo+IA0KPiBPbiBNb24sIEp1bCAxMCwgMjAyMyBhdCAwMjo1MDowNFBN
+ICswMjAwLCBUaG9tYXMgWmltbWVybWFubiB3cm90ZToNCj4+IFJlbW92ZSB0aGUgdW51c2Vk
+IGZsYWdzIEZCSU5GT19ERUZBVUxUIGFuZCBGQklORk9fRkxBR19ERUZBVUxUIGZyb20NCj4+
+IGZiZGV2IGFuZCBkcml2ZXJzLCBhcyBicmllZmx5IGRpc2N1c3NlZCBhdCBbMV0uIEJvdGgg
+ZmxhZ3Mgd2VyZSBtYXliZQ0KPj4gdXNlZnVsIHdoZW4gZmJkZXYgaGFkIHNwZWNpYWwgaGFu
+ZGxpbmcgZm9yIGRyaXZlciBtb2R1bGVzLiBXaXRoDQo+PiBjb21taXQgMzc2YjNmZjU0Yzlh
+ICgiZmJkZXY6IE51a2UgRkJJTkZPX01PRFVMRSIpLCB0aGV5IGFyZSBib3RoIDANCj4+IGFu
+ZCBoYXZlIG5vIGZ1cnRoZXIgZWZmZWN0Lg0KPj4NCj4+IFBhdGNoZXMgMSB0byA3IHJlbW92
+ZSBGQklORk9fREVGQVVMVCBmcm9tIGRyaXZlcnMuIFBhdGNoZXMgMiB0byA1DQo+PiBzcGxp
+dCB0aGlzIGJ5IHRoZSB3YXkgdGhlIGZiX2luZm8gc3RydWN0IGlzIGJlaW5nIGFsbG9jYXRl
+ZC4gQWxsIGZsYWdzDQo+PiBhcmUgY2xlYXJlZCB0byB6ZXJvIGR1cmluZyB0aGUgYWxsb2Nh
+dGlvbi4NCj4+DQo+PiBQYXRjaGVzIDggdG8gMTYgZG8gdGhlIHNhbWUgZm9yIEZCSU5GT19G
+TEFHX0RFRkFVTFQuIFBhdGNoIDggZml4ZXMNCj4+IGFuIGFjdHVhbCBidWcgaW4gaG93IGFy
+Y2gvc2ggdXNlcyB0aGUgdG9rbmUgZm9yIHN0cnVjdCBmYl92aWRlb21vZGUsDQo+PiB3aGlj
+aCBpcyB1bnJlbGF0ZWQuDQo+Pg0KPj4gUGF0Y2ggMTcgcmVtb3ZlcyBib3RoIGZsYWcgY29u
+c3RhbnRzIGZyb20gPGxpbnV4L2ZiLmg+DQo+IA0KPiBXZSBoYXZlIGEgZmV3IG1vcmUgZmxh
+Z3MgdGhhdCBhcmUgdW51c2VkIC0gc2hvdWxkIHRoZXkgYmUgbnVrZWQgdG9vPw0KPiBGQklO
+Rk9fSFdBQ0NFTF9GSUxMUkVDVA0KPiBGQklORk9fSFdBQ0NFTF9ST1RBVEUNCj4gRkJJTkZP
+X0hXQUNDRUxfWFBBTg0KDQpJdCBzZWVtcyB0aG9zZSBhcmUgdGhlcmUgZm9yIGNvbXBsZXRl
+bmVzcy4gTm90aGluZyBzZXRzIF9ST1RBVEUsIHRoZSANCm90aGVycyBhcmUgc2ltcGx5IG5l
+dmVyIGNoZWNrZWQuIEFjY29yZGluZyB0byB0aGUgY29tbWVudHMsIHNvbWUgYXJlIA0KcmVx
+dWlyZWQsIHNvbWUgYXJlIG9wdGlvbmFsLiBJIGRvbid0IGtub3cgd2hhdCB0aGF0IG1lYW5z
+Lg0KDQpJSVJDIHRoZXJlIHdlcmUgY29tcGxhaW5zIGFib3V0IHBlcmZvcm1hbmNlIHdoZW4g
+RGFuaWVsIHRyaWVkIHRvIHJlbW92ZSANCmZiY29uIGFjY2VsZXJhdGlvbiwgc28gbm90IGFs
+bCBfSFdBQ0NFTF8gZmxhZ3MgYXJlIHVubmVlZGVkLg0KDQpMZWF2aW5nIHRoZW0gaW4gZm9y
+IHJlZmVyZW5jZS9jb21wbGV0ZW5lc3MgbWlnaHQgYmUgYW4gb3B0aW9uOyBvciBub3QuIEkg
+DQpoYXZlIG5vIHN0cm9uZyBmZWVsaW5ncyBhYm91dCB0aG9zZSBmbGFncy4NCg0KPiANCj4g
+VW51c2VkIGFzIGluIG5vIHJlZmVyZW5jZXMgZnJvbSBmYmRldi9jb3JlLyoNCj4gDQo+IEkg
+d291bGQgcmF0aGVyIHNlZSBvbmUgc2VyaWVzIG51a2UgYWxsIHVudXNlZCBGQklORk8gZmxh
+Z3MgaW4gb25lIGdvLg0KPiBBc3N1bWluZyBteSBxdWljayBncmVwIGFyZSByaWdodCBhbmQg
+dGhlIGFib3ZlIGNhbiBiZSBkcm9wcGVkLg0KDQpJIHdvdWxkIG5vdCB3YW50IHRvIGV4dGVu
+ZCB0aGlzIHNlcmllcy4gSSdtIHJlbW92aW5nIF9ERUZBVUxUIGFzIGl0J3MgDQphYnNvbHV0
+ZWx5IHBvaW50bGVzcyBhbmQgY29uZnVzaW5nLg0KDQpCZXN0IHJlZ2FyZHMNClRob21hcw0K
+DQo+IA0KPiAJU2FtDQoNCi0tIA0KVGhvbWFzIFppbW1lcm1hbm4NCkdyYXBoaWNzIERyaXZl
+ciBEZXZlbG9wZXINClNVU0UgU29mdHdhcmUgU29sdXRpb25zIEdlcm1hbnkgR21iSA0KRnJh
+bmtlbnN0cmFzc2UgMTQ2LCA5MDQ2MSBOdWVybmJlcmcsIEdlcm1hbnkNCkdGOiBJdm8gVG90
+ZXYsIEFuZHJldyBNeWVycywgQW5kcmV3IE1jRG9uYWxkLCBCb3VkaWVuIE1vZXJtYW4NCkhS
+QiAzNjgwOSAoQUcgTnVlcm5iZXJnKQ0K
 
-> +		align = pageblock_align(vmemmap_size) - vmemmap_size;
-> +		return align;
-> +	} else
-> +		return 0;
->  }
->  
->  /*
-> @@ -1302,7 +1325,11 @@ int __ref add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
->  {
->  	struct mhp_params params = { .pgprot = pgprot_mhp(PAGE_KERNEL) };
->  	enum memblock_flags memblock_flags = MEMBLOCK_NONE;
-> -	struct vmem_altmap mhp_altmap = {};
-> +	struct vmem_altmap mhp_altmap = {
-> +		.base_pfn =  PHYS_PFN(res->start),
-> +		.end_pfn  =  PHYS_PFN(res->end),
-> +		.reserve  = memory_block_align_base(resource_size(res)),
-> +	};
->  	struct memory_group *group = NULL;
->  	u64 start, size;
->  	bool new_node = false;
-> @@ -1347,8 +1374,7 @@ int __ref add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
->  	 */
->  	if (mhp_flags & MHP_MEMMAP_ON_MEMORY) {
->  		if (mhp_supports_memmap_on_memory(size)) {
-> -			mhp_altmap.free = PHYS_PFN(size);
-> -			mhp_altmap.base_pfn = PHYS_PFN(start);
-> +			mhp_altmap.free = PHYS_PFN(size) - mhp_altmap.reserve;
->  			params.altmap = &mhp_altmap;
->  		}
->  		/* fallback to not using altmap  */
-> @@ -1360,7 +1386,7 @@ int __ref add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
->  		goto error;
->  
->  	/* create memory block devices after memory was added */
-> -	ret = create_memory_block_devices(start, size, mhp_altmap.alloc,
-> +	ret = create_memory_block_devices(start, size, mhp_altmap.alloc + mhp_altmap.reserve,
->  					  group);
->  	if (ret) {
->  		arch_remove_memory(start, size, NULL);
-> @@ -2260,3 +2286,16 @@ int offline_and_remove_memory(u64 start, u64 size)
->  }
->  EXPORT_SYMBOL_GPL(offline_and_remove_memory);
->  #endif /* CONFIG_MEMORY_HOTREMOVE */
-> +
-> +static int __init memory_hotplug_init(void)
-> +{
-> +
-> +	if (IS_ENABLED(CONFIG_MHP_RESERVE_PAGES_MEMMAP_ON_MEMORY) &&
-> +	    mhp_memmap_on_memory()) {
-> +		pr_info("Memory hotplug will reserve %ld pages in each memory block\n",
-> +			memory_block_align_base(memory_block_size_bytes()));
-> +
-> +	}
-> +	return 0;
-> +}
-> +module_init(memory_hotplug_init);
+--------------rTbcb6wQVBeV2BUB8IDvgzl0--
+
+--------------N0aJus0T6gb70e5IfP9AME4R
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
+
+-----BEGIN PGP SIGNATURE-----
+
+wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmSs9agFAwAAAAAACgkQlh/E3EQov+AA
+FBAAjEgZXRfNoPCjdkqDPZ9chxzmBV6i2k8QgPiwpivUyCN4sbTShTC2sd08UmqKeXqfcHV0P8qX
+q2NMiTtOfyBZuLqTlMRPbztbYOJIbkUfmc/SI1q+SIj8nYi3SzvE/+TI4TM1jmV8RvykfdN4y9tv
+z4C7BQhfVarR4AERMeSCuI+zicQ/WjGi9XmkKU1LPJq9sz20/9BonVFG3XYGwrH+wxRKQH51em7r
+U/rN+cWCG0/q/mHGzsXc4RfqK140jAczQS4SbY0tCBStdmvoKG6Ps7xdeJnHwXKGn6gnKmCGmstK
+W5QWG2q8UU+X1eppqvQ3t0zYdRkCDvETlHoTlsfHkSgjkf+EyFPP2hf9QpIyOFChPDRmo7vXFero
+XEdAojaSKM037GABmhkXl64d0LgOGy3YHmRPAMNhwMgkfESyQtok89ygiAR3mol9Sk+VH1lmIAiy
+t6iIBhSJG8FRb4k9MRtU+nmCVKwWeu6cI/gYnYk23ENEdErvo12aT79WuoWGJbXp4KyW81n8j6Dx
+ducg1+wueRxDVWQsz1iAbcm4Gdt94VirZ5/FL6Ds/s7D7GumFCtd394TazkGz32fIyL5csJljH+I
+ooEtrvaAJO+jmP7TPAxh1rXcKkIhn2rUPuhutzvOguAikyxcBL/TShsJUv572OYGUcd67xOnfcbM
++14=
+=3Opk
+-----END PGP SIGNATURE-----
+
+--------------N0aJus0T6gb70e5IfP9AME4R--
