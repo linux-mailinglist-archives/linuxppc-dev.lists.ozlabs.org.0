@@ -2,95 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10A7A74E8ED
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 10:21:58 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IzFEM/dE;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 5524774E9B1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 11:02:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R0YkW65B2z3bjV
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 18:21:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R0Zcq0MW3z3c7f
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 19:02:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IzFEM/dE;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=molgen.mpg.de (client-ip=141.14.17.11; helo=mx3.molgen.mpg.de; envelope-from=pmenzel@molgen.mpg.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 405 seconds by postgrey-1.37 at boromir; Tue, 11 Jul 2023 19:01:35 AEST
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0Yjb5SVGz3bXH
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jul 2023 18:21:07 +1000 (AEST)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36B8HYNC001507;
-	Tue, 11 Jul 2023 08:20:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=8u1I5/jiEeYXF+RpZUNNUbYm3YyOlWJRLkoP4oh0a+Q=;
- b=IzFEM/dEpB5ELRE/jmT5dsYpW4Lq7Gc3V8wry27iaL2xRm6IVwrsJeuogYXHicxWWGde
- QCmqogkOcQAEd9OaUXg0lN0qNRPzUapY95RpRaul+p5m/lrrYCJdOYlQyWlZix+pe8ac
- yaAm4V9PqF2b1c1uE0Xz97Qde0R0rFszi+znY4E4mAl2NaEx65pzcINH1Gt2beZRgEzR
- 8b1W/nbUjKWDuuzoZZFj3SMKiLC5c88fZ1tnxW5lIEQQRlt67Xc6LExHWcPgPr+QYf/R
- h7XAwOFitpTCtBepz3ZCMCfpPCn7FPouosTzMBkG3UCW5kIic8/irtBF5Oh+3xnYHH5e VA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rs3eq01ap-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Jul 2023 08:20:51 +0000
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36B8Kom5010745;
-	Tue, 11 Jul 2023 08:20:50 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rs3eq01a9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Jul 2023 08:20:50 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-	by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36B30JPD007910;
-	Tue, 11 Jul 2023 08:20:48 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3rpye59p3q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Jul 2023 08:20:48 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36B8KkHY47841694
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 11 Jul 2023 08:20:46 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 033D220043;
-	Tue, 11 Jul 2023 08:20:46 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7F2F620040;
-	Tue, 11 Jul 2023 08:20:43 +0000 (GMT)
-Received: from [9.43.86.43] (unknown [9.43.86.43])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 11 Jul 2023 08:20:43 +0000 (GMT)
-Message-ID: <a865e02b-cc61-ecf2-15d5-2ed67fa1fda3@linux.ibm.com>
-Date: Tue, 11 Jul 2023 13:50:42 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0ZcH1ybXz3bV3
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jul 2023 19:01:34 +1000 (AEST)
+Received: from [141.14.220.45] (g45.guest.molgen.mpg.de [141.14.220.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 8F44361E5FE01;
+	Tue, 11 Jul 2023 10:53:08 +0200 (CEST)
+Message-ID: <f1f9002c-ccc3-a2de-e4f5-d8fa1f8734e3@molgen.mpg.de>
+Date: Tue, 11 Jul 2023 10:53:07 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v3 4/7] mm/hotplug: Allow pageblock alignment via altmap
- reservation
-To: "Huang, Ying" <ying.huang@intel.com>
-References: <20230711044834.72809-1-aneesh.kumar@linux.ibm.com>
- <20230711044834.72809-5-aneesh.kumar@linux.ibm.com>
- <87ilardl36.fsf@yhuang6-desk2.ccr.corp.intel.com>
+ Thunderbird/102.13.0
+Subject: Re: [Intel-wired-lan] [PATCH net-next v2 00/10] Remove unnecessary
+ (void*) conversions
 Content-Language: en-US
-From: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>
-In-Reply-To: <87ilardl36.fsf@yhuang6-desk2.ccr.corp.intel.com>
-Content-Type: text/plain; charset=UTF-8
+To: Su Hui <suhui@nfschina.com>
+References: <20230710063828.172593-1-suhui@nfschina.com>
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+In-Reply-To: <20230710063828.172593-1-suhui@nfschina.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: dklQH766M5Jxqr848dkXvREICvzj6lPf
-X-Proofpoint-ORIG-GUID: l73puUuOGK_enMIY0Ir4ypxw7CZ1Z473
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-11_04,2023-07-06_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1015
- mlxscore=0 lowpriorityscore=0 bulkscore=0 phishscore=0 adultscore=0
- impostorscore=0 priorityscore=1501 mlxlogscore=999 spamscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2307110071
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,105 +49,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, David Hildenbrand <david@redhat.com>, linux-mm@kvack.org, npiggin@gmail.com, Vishal Verma <vishal.l.verma@intel.com>, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, Oscar Salvador <osalvador@suse.de>
+Cc: andrew@lunn.ch, irusskikh@marvell.com, kernel-janitors@vger.kernel.org, jesse.brandeburg@intel.com, edumazet@google.com, iyappan@os.amperecomputing.com, anthony.l.nguyen@intel.com, quan@os.amperecomputing.com, qiang.zhao@nxp.com, linux@armlinux.org.uk, xeb@mail.ru, intel-wired-lan@lists.osuosl.org, kuba@kernel.org, pabeni@redhat.com, yisen.zhuang@huawei.com, wg@grandegger.com, steve.glendinning@shawell.net, keyur@os.amperecomputing.com, linux-can@vger.kernel.org, mostrows@earthlink.net, mkl@pengutronix.de, salil.mehta@huawei.com, GR-Linux-NIC-Dev@marvell.com, uttenthaler@ems-wuensche.com, rmody@marvell.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, davem@davemloft.net, yunchuan@nfschina.com, linuxppc-dev@lists.ozlabs.org, skalluru@marvell.com, hkallweit1@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/11/23 11:51 AM, Huang, Ying wrote:
-> "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+Dear Su,
+
+
+Thank you for your patch.
+
+Am 10.07.23 um 08:38 schrieb Su Hui:
+> From: wuych <yunchuan@nfschina.com>
+
+Can you please write the full name correctly? Maybe Yun Chuan?
+
+     git config --global user.name "Yun Chuan"
+     git commit --amend --author="Yun Chuan <yunchuan@nfschina.com>"
+
+I only got the cover letter by the way.
+
+
+Kind regards,
+
+Paul
+
+
+> Changes in v2:
+> 	move declarations to be reverse xmas tree.
+> 	compile it in net and net-next branch.
+> 	remove some error patches in v1.
 > 
->> Add a new kconfig option that can be selected if we want to allow
->> pageblock alignment by reserving pages in the vmemmap altmap area.
->> This implies we will be reserving some pages for every memoryblock
->> This also allows the memmap on memory feature to be widely useful
->> with different memory block size values.
->>
->> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->> ---
->>  mm/Kconfig          |  9 +++++++
->>  mm/memory_hotplug.c | 59 +++++++++++++++++++++++++++++++++++++--------
->>  2 files changed, 58 insertions(+), 10 deletions(-)
->>
->> diff --git a/mm/Kconfig b/mm/Kconfig
->> index 932349271e28..88a1472b2086 100644
->> --- a/mm/Kconfig
->> +++ b/mm/Kconfig
->> @@ -570,6 +570,15 @@ config MHP_MEMMAP_ON_MEMORY
->>  	depends on MEMORY_HOTPLUG && SPARSEMEM_VMEMMAP
->>  	depends on ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE
->>  
->> +config MHP_RESERVE_PAGES_MEMMAP_ON_MEMORY
->> +       bool "Allow Reserving pages for page block aligment"
->> +       depends on MHP_MEMMAP_ON_MEMORY
->> +       help
->> +	This option allows memmap on memory feature to be more useful
->> +	with different memory block sizes. This is achieved by marking some pages
->> +	in each memory block as reserved so that we can get page-block alignment
->> +	for the remaining pages.
->> +
->>  endif # MEMORY_HOTPLUG
->>  
->>  config ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE
->> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
->> index 07c99b0cc371..f36aec1f7626 100644
->> --- a/mm/memory_hotplug.c
->> +++ b/mm/memory_hotplug.c
->> @@ -1252,15 +1252,17 @@ static inline bool arch_supports_memmap_on_memory(unsigned long size)
->>  {
->>  	unsigned long nr_vmemmap_pages = size >> PAGE_SHIFT;
->>  	unsigned long vmemmap_size = nr_vmemmap_pages * sizeof(struct page);
->> -	unsigned long remaining_size = size - vmemmap_size;
->>  
->> -	return IS_ALIGNED(vmemmap_size, PMD_SIZE) &&
->> -		IS_ALIGNED(remaining_size, (pageblock_nr_pages << PAGE_SHIFT));
->> +	return IS_ALIGNED(vmemmap_size, PMD_SIZE);
->>  }
->>  #endif
->>  
->>  static bool mhp_supports_memmap_on_memory(unsigned long size)
->>  {
->> +	unsigned long nr_vmemmap_pages = size >> PAGE_SHIFT;
->> +	unsigned long vmemmap_size = nr_vmemmap_pages * sizeof(struct page);
->> +	unsigned long remaining_size = size - vmemmap_size;
->> +
->>  	/*
->>  	 * Besides having arch support and the feature enabled at runtime, we
->>  	 * need a few more assumptions to hold true:
->> @@ -1287,9 +1289,30 @@ static bool mhp_supports_memmap_on_memory(unsigned long size)
->>  	 *       altmap as an alternative source of memory, and we do not exactly
->>  	 *       populate a single PMD.
->>  	 */
->> -	return mhp_memmap_on_memory() &&
->> -		size == memory_block_size_bytes() &&
->> -		arch_supports_memmap_on_memory(size);
->> +	if (!mhp_memmap_on_memory() || size != memory_block_size_bytes())
->> +		return false;
->> +	 /*
->> +	  * Without page reservation remaining pages should be pageblock aligned.
->> +	  */
->> +	if (!IS_ENABLED(CONFIG_MHP_RESERVE_PAGES_MEMMAP_ON_MEMORY) &&
->> +	    !IS_ALIGNED(remaining_size, (pageblock_nr_pages << PAGE_SHIFT)))
->> +		return false;
->> +
->> +	return arch_supports_memmap_on_memory(size);
->> +}
->> +
->> +static inline unsigned long memory_block_align_base(unsigned long size)
->> +{
->> +	if (IS_ENABLED(CONFIG_MHP_RESERVE_PAGES_MEMMAP_ON_MEMORY)) {
->> +		unsigned long align;
->> +		unsigned long nr_vmemmap_pages = size >> PAGE_SHIFT;
->> +		unsigned long vmemmap_size;
->> +
->> +		vmemmap_size = (nr_vmemmap_pages * sizeof(struct page)) >> PAGE_SHIFT;
+> PATCH v1 link:
+> https://lore.kernel.org/all/20230628024121.1439149-1-yunchuan@nfschina.com/
 > 
-> DIV_ROUND_UP()?
+> wuych (10):
+>    net: wan: Remove unnecessary (void*) conversions
+>    net: atlantic: Remove unnecessary (void*) conversions
+>    net: ppp: Remove unnecessary (void*) conversions
+>    net: hns3: remove unnecessary (void*) conversions
+>    net: hns: Remove unnecessary (void*) conversions
+>    ice: remove unnecessary (void*) conversions
+>    ethernet: smsc: remove unnecessary (void*) conversions
+>    net: mdio: Remove unnecessary (void*) conversions
+>    can: ems_pci: Remove unnecessary (void*) conversions
+>    net: bna: Remove unnecessary (void*) conversions
 > 
->
-
-yes. Will update.
-
-		vmemmap_size = DIV_ROUND_UP(nr_vmemmap_pages * sizeof(struct page), PAGE_SIZE);
-
--aneesh
-
+>   drivers/net/can/sja1000/ems_pci.c             |  6 +++---
+>   .../aquantia/atlantic/hw_atl2/hw_atl2.c       | 12 ++++++------
+>   .../atlantic/hw_atl2/hw_atl2_utils_fw.c       |  2 +-
+>   drivers/net/ethernet/brocade/bna/bnad.c       | 19 +++++++++----------
+>   .../ethernet/hisilicon/hns3/hns3_ethtool.c    |  2 +-
+>   drivers/net/ethernet/hisilicon/hns_mdio.c     | 10 +++++-----
+>   drivers/net/ethernet/intel/ice/ice_main.c     |  4 ++--
+>   drivers/net/ethernet/smsc/smsc911x.c          |  4 ++--
+>   drivers/net/ethernet/smsc/smsc9420.c          |  4 ++--
+>   drivers/net/mdio/mdio-xgene.c                 |  4 ++--
+>   drivers/net/ppp/pppoe.c                       |  4 ++--
+>   drivers/net/ppp/pptp.c                        |  4 ++--
+>   drivers/net/wan/fsl_ucc_hdlc.c                |  6 +++---
+>   13 files changed, 40 insertions(+), 41 deletions(-)
