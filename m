@@ -2,100 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A943874EBA9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 12:24:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64ADA74EC88
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 13:21:47 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SBV64bMV;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SBV64bMV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=b1nsnyWJ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R0cRZ3dvKz3bnN
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 20:24:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R0dk12QLqz2x9L
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 21:21:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SBV64bMV;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SBV64bMV;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=b1nsnyWJ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0cQj0rvcz2xgp
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jul 2023 20:23:24 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1689071002;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=up9Wd6IlUgX+685tcIeRwIiBa7KZEfihner4D6aXUpE=;
-	b=SBV64bMV/dl8Z+sGyLHl5T0O1kxQfzdHHc4Cv0hi+SSEwh5Ytd7T67yNJCYTaMeex1JGA6
-	CnD4H+P/UvlBTRH3BtnAj2slHLwjEqNFSebhfV8FFpLnEwKnN1AkH8+PGfdJ2DlAxApW4T
-	MMykRp8gcwvo5KFOE/c6Vm391d7d+D4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1689071002;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=up9Wd6IlUgX+685tcIeRwIiBa7KZEfihner4D6aXUpE=;
-	b=SBV64bMV/dl8Z+sGyLHl5T0O1kxQfzdHHc4Cv0hi+SSEwh5Ytd7T67yNJCYTaMeex1JGA6
-	CnD4H+P/UvlBTRH3BtnAj2slHLwjEqNFSebhfV8FFpLnEwKnN1AkH8+PGfdJ2DlAxApW4T
-	MMykRp8gcwvo5KFOE/c6Vm391d7d+D4=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-42-KzfuzVkuOCGQOsSdKR-Dyw-1; Tue, 11 Jul 2023 06:23:20 -0400
-X-MC-Unique: KzfuzVkuOCGQOsSdKR-Dyw-1
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-2f2981b8364so3291951f8f.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jul 2023 03:23:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689070999; x=1691662999;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=up9Wd6IlUgX+685tcIeRwIiBa7KZEfihner4D6aXUpE=;
-        b=DNMBmtatJhkx/LSgsHYsq/KHgGqfNxTSd9XFqJDZopYdgsFbId5kYD/k0/TTaGFMSY
-         ivVZ/AvLdx9C411Q0jxoZBJyKW72oLDx/QRepZNwtAycsOKk1VjYVoll+N7bm27p/Sq/
-         9ndg563SteO6fR3zDL3kV21qI49UxbypkdcaQVssEldoT1uSJ6e7PbGSnyztN3r1jZP0
-         avUynVTBfs42hm4bzlzSPVWSfgBgDppA3wITvkE/toeiniiElrvXGaz3gfRKcQy3fu8A
-         ziJJ7FnIqDqTH6Ks2NBhufNYejaLTYiw7T9qZAqwPlKLxo4C3zanJ5NNQpvFlpHkdahs
-         9Ymg==
-X-Gm-Message-State: ABy/qLb2QKGH7l+agct4p6VDmhhe7UQjCyDeDpvcaBGTjaBneNQ0/j4Q
-	6Yir2NpJCKJB72464aZ23l0mBNSgtSodtpkGFgYoARewXCoySXu4nzNFbTrZiSebs2yXjV4ox9H
-	Dg73GuSjdeOveMTQ/fYQ7RDhbAQ==
-X-Received: by 2002:adf:ef0e:0:b0:314:1e47:8bc2 with SMTP id e14-20020adfef0e000000b003141e478bc2mr16635779wro.0.1689070999710;
-        Tue, 11 Jul 2023 03:23:19 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHoNQ5m+ASdMSmYWODgj0vIAuLSCLYIfL7R+h+/NTLZfVZg+5f1lWHOKvgvXm/YtBwMFpahzg==
-X-Received: by 2002:adf:ef0e:0:b0:314:1e47:8bc2 with SMTP id e14-20020adfef0e000000b003141e478bc2mr16635756wro.0.1689070999380;
-        Tue, 11 Jul 2023 03:23:19 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c745:4000:13ad:ed64:37e6:115d? (p200300cbc745400013aded6437e6115d.dip0.t-ipconnect.de. [2003:cb:c745:4000:13ad:ed64:37e6:115d])
-        by smtp.gmail.com with ESMTPSA id o13-20020a5d684d000000b00314315071bbsm1877722wrw.38.2023.07.11.03.23.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Jul 2023 03:23:18 -0700 (PDT)
-Message-ID: <d6e9f0d3-7c53-944a-2e02-33cc35d5f340@redhat.com>
-Date: Tue, 11 Jul 2023 12:23:18 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0cj124xrz303l
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jul 2023 20:35:49 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 9D9A061457;
+	Tue, 11 Jul 2023 10:35:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 400C3C433C8;
+	Tue, 11 Jul 2023 10:35:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1689071746;
+	bh=RdirUcCE2pA/1z8207uTNCXjhMGAcU2jC5JA2KzMRoY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=b1nsnyWJfs1mcjVYHJe+HEUCi0LN15hY99BnaXhtfz0oB3h8EzQMDa9aeEPB4cHsG
+	 m0hzpx+fMmsE8WzKuxURAUSYoPOk1yyNeGjKmk6Oo1T+sxizOWkbUk2lnWZeZJq/OR
+	 t35F+euEtnNr2grYlFD6oJ2MJWvp/QNNOG1DuAJeBI5VAMb7y9WA/nlkd3eUTkr2Lb
+	 BRvBfq7P9mdE+wM/H6F8uotrR4TMskih7C1j7iuXPsrtoxNhX7cAuYqxh5Z1V2YE+p
+	 NfC0fI8jKAJTifgfTIIMFJicOPaZ5ZezvtKLTLYQgP5kZnonqVF+tNhSPdx4zGnzF9
+	 S3WTHtdee7iTg==
+Date: Tue, 11 Jul 2023 13:35:41 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>,
+	Laurent Dufour <ldufour@linux.ibm.com>,
+	Sachin Sant <sachinp@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v4 00/33] Per-VMA locks
+Message-ID: <20230711103541.GA190975@unreal>
+References: <20230227173632.3292573-1-surenb@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v3 2/7] mm/hotplug: Allow memmap on memory hotplug request
- to fallback
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-mm@kvack.org,
- akpm@linux-foundation.org, mpe@ellerman.id.au,
- linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, christophe.leroy@csgroup.eu
-References: <20230711044834.72809-1-aneesh.kumar@linux.ibm.com>
- <20230711044834.72809-3-aneesh.kumar@linux.ibm.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <20230711044834.72809-3-aneesh.kumar@linux.ibm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20230227173632.3292573-1-surenb@google.com>
+X-Mailman-Approved-At: Tue, 11 Jul 2023 21:21:01 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,41 +66,119 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vishal Verma <vishal.l.verma@intel.com>, Michal Hocko <mhocko@suse.com>, Oscar Salvador <osalvador@suse.de>
+Cc: michel@lespinasse.org, joelaf@google.com, songliubraving@fb.com, mhocko@suse.com, Linux kernel regressions list <regressions@lists.linux.dev>, leewalsh@google.com, david@redhat.com, peterz@infradead.org, bigeasy@linutronix.de, peterx@redhat.com, dhowells@redhat.com, linux-mm@kvack.org, edumazet@google.com, jglisse@google.com, punit.agrawal@bytedance.com, sergeyy@nvidia.com, will@kernel.org, arjunroy@google.com, chriscli@google.com, dave@stgolabs.net, minchan@google.com, gal@nvidia.com, x86@kernel.org, hughd@google.com, willy@infradead.org, gurua@google.com, mingo@redhat.com, linux-arm-kernel@lists.infradead.org, rientjes@google.com, axelrasmussen@google.com, kernel-team@android.com, maorg@nvidia.com, ranro@nvidia.com, michalechner92@googlemail.com, soheil@google.com, paulmck@kernel.org, jannh@google.com, liam.howlett@oracle.com, regressions@leemhuis.info, shakeelb@google.com, drort@nvidia.com, luto@kernel.org, gthelen@google.com, ldufour@linux.ibm.com, vbabka@suse.cz, posk@google
+ .com, lstoakes@gmail.com, peterjung1337@gmail.com, linuxppc-dev@lists.ozlabs.org, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, idok@nvidia.com, hannes@cmpxchg.org, tatashin@google.com, mgorman@techsingularity.net, rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> -bool mhp_supports_memmap_on_memory(unsigned long size)
-> +static bool mhp_supports_memmap_on_memory(unsigned long size)
->   {
->   	unsigned long nr_vmemmap_pages = size / PAGE_SIZE;
->   	unsigned long vmemmap_size = nr_vmemmap_pages * sizeof(struct page);
-> @@ -1339,13 +1339,12 @@ int __ref add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
->   	 * Self hosted memmap array
->   	 */
->   	if (mhp_flags & MHP_MEMMAP_ON_MEMORY) {
-> -		if (!mhp_supports_memmap_on_memory(size)) {
-> -			ret = -EINVAL;
-> -			goto error;
-> +		if (mhp_supports_memmap_on_memory(size)) {
-> +			mhp_altmap.free = PHYS_PFN(size);
-> +			mhp_altmap.base_pfn = PHYS_PFN(start);
-> +			params.altmap = &mhp_altmap;
->   		}
-> -		mhp_altmap.free = PHYS_PFN(size);
-> -		mhp_altmap.base_pfn = PHYS_PFN(start);
-> -		params.altmap = &mhp_altmap;
-> +		/* fallback to not using altmap  */
->   	}
->   
->   	/* call arch's memory hotadd */
 
-In general, LGTM, but please extend the documentation of the parameter 
-in memory_hotplug.h, stating that this is just a hint and that the core 
-can decide to no do that.
+On Mon, Feb 27, 2023 at 09:35:59AM -0800, Suren Baghdasaryan wrote:
 
--- 
-Cheers,
+<...>
 
-David / dhildenb
+> Laurent Dufour (1):
+>   powerc/mm: try VMA lock-based page fault handling first
 
+Hi,
+
+This series and specifically the commit above broke docker over PPC.
+It causes to docker service stuck while trying to activate. Revert of
+this commit allows us to use docker again.
+
+[user@ppc-135-3-200-205 ~]# sudo systemctl status docker
+=E2=97=8F docker.service - Docker Application Container Engine
+     Loaded: loaded (/usr/lib/systemd/system/docker.service; enabled; vendo=
+r preset: disabled)
+     Active: activating (start) since Mon 2023-06-26 14:47:07 IDT; 3h 50min=
+ ago
+TriggeredBy: =E2=97=8F docker.socket
+       Docs: https://docs.docker.com
+   Main PID: 276555 (dockerd)
+     Memory: 44.2M
+     CGroup: /system.slice/docker.service
+             =E2=94=94=E2=94=80 276555 /usr/bin/dockerd -H fd:// --containe=
+rd=3D/run/containerd/containerd.sock
+
+Jun 26 14:47:07 ppc-135-3-200-205 dockerd[276555]: time=3D"2023-06-26T14:47=
+:07.129383166+03:00" level=3Dinfo msg=3D"Graph migration to content-address=
+ability took 0.00 se>
+Jun 26 14:47:07 ppc-135-3-200-205 dockerd[276555]: time=3D"2023-06-26T14:47=
+:07.129666160+03:00" level=3Dwarning msg=3D"Your kernel does not support cg=
+roup cfs period"
+Jun 26 14:47:07 ppc-135-3-200-205 dockerd[276555]: time=3D"2023-06-26T14:47=
+:07.129684117+03:00" level=3Dwarning msg=3D"Your kernel does not support cg=
+roup cfs quotas"
+Jun 26 14:47:07 ppc-135-3-200-205 dockerd[276555]: time=3D"2023-06-26T14:47=
+:07.129697085+03:00" level=3Dwarning msg=3D"Your kernel does not support cg=
+roup rt period"
+Jun 26 14:47:07 ppc-135-3-200-205 dockerd[276555]: time=3D"2023-06-26T14:47=
+:07.129711513+03:00" level=3Dwarning msg=3D"Your kernel does not support cg=
+roup rt runtime"
+Jun 26 14:47:07 ppc-135-3-200-205 dockerd[276555]: time=3D"2023-06-26T14:47=
+:07.129720656+03:00" level=3Dwarning msg=3D"Unable to find blkio cgroup in =
+mounts"
+Jun 26 14:47:07 ppc-135-3-200-205 dockerd[276555]: time=3D"2023-06-26T14:47=
+:07.129805617+03:00" level=3Dwarning msg=3D"mountpoint for pids not found"
+Jun 26 14:47:07 ppc-135-3-200-205 dockerd[276555]: time=3D"2023-06-26T14:47=
+:07.130199070+03:00" level=3Dinfo msg=3D"Loading containers: start."
+Jun 26 14:47:07 ppc-135-3-200-205 dockerd[276555]: time=3D"2023-06-26T14:47=
+:07.132688568+03:00" level=3Dwarning msg=3D"Running modprobe bridge br_netf=
+ilter failed with me>
+Jun 26 14:47:07 ppc-135-3-200-205 dockerd[276555]: time=3D"2023-06-26T14:47=
+:07.271014050+03:00" level=3Dinfo msg=3D"Default bridge (docker0) is assign=
+ed with an IP addres>
+
+Python script which we used for bisect:
+
+import subprocess
+import time
+import sys
+
+
+def run_command(cmd):
+    print('running:', cmd)
+
+    p =3D subprocess.Popen(cmd, shell=3DTrue, stdout=3Dsubprocess.PIPE, std=
+err=3Dsubprocess.PIPE)
+
+    try:
+        stdout, stderr =3D p.communicate(timeout=3D30)
+
+    except subprocess.TimeoutExpired:
+        return True
+
+    print(stdout.decode())
+    print(stderr.decode())
+    print('rc:', p.returncode)
+
+    return False
+
+
+def main():
+    commands =3D [
+        'sudo systemctl stop docker',
+        'sudo systemctl status docker',
+        'sudo systemctl is-active docker',
+        'sudo systemctl start docker',
+        'sudo systemctl status docker',
+    ]
+
+    for i in range(1000):
+        title =3D f'Try no. {i + 1}'
+        print('*' * 50, title, '*' * 50)
+
+        for cmd in commands:
+            if run_command(cmd):
+                print(f'Reproduced on try no. {i + 1}!')
+                print(f'"{cmd}" is stuck!')
+
+                return 1
+
+            print('\n')
+        time.sleep(30)
+    return 0
+
+if __name__ =3D=3D '__main__':
+    sys.exit(main())
+
+Thanks
