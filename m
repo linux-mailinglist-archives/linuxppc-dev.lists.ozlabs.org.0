@@ -2,53 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDB9074E235
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 01:24:15 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=O03pMjvF;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 5803274E312
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 03:14:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R0Kp565nRz3c8h
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 09:24:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R0NF12KsBz3c76
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 11:14:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=O03pMjvF;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0KlK2lW9z30PN
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jul 2023 09:21:49 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id ADA0461262;
-	Mon, 10 Jul 2023 23:21:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E15C433C8;
-	Mon, 10 Jul 2023 23:21:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1689031307;
-	bh=2JtYW2FAXLQ8IiaHZeQqlEM207zTV5RiNltF8zVSvU8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O03pMjvFDkEjJ3HPx3J+xO4wSgoopx28xH9hy2035xQf5My4oVQDFXaYb2xclrUPz
-	 v/+ZifdXxQwENMyRcnRqXpV1IlgXe0cumqQkJowQs1dM0kuymbNurQ7pPHAKtCxDIK
-	 W8WZuurCq482vy7OehgQki2u7+HybImsKEds+PV1D0oBF5LHZWsnr0Nz4XkLyHPL3Q
-	 V9BtS6YhfFpbrVgZPoCKdvsjHkqR7e7AO+cVW2B0AB3/5ulC3dlhCkR06RhRnk3tyg
-	 fhK/ln78tFhL4mp7ecpVedBD5U7r4XoQNuM4wRZyLHy399MLBN3I+BzRIgRTShMSRb
-	 xwnYPJyNh7ObQ==
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: linux-pci@vger.kernel.org
-Subject: [PATCH 2/2] PCI/AER: Unexport pci_enable_pcie_error_reporting()
-Date: Mon, 10 Jul 2023 18:21:36 -0500
-Message-Id: <20230710232136.233034-3-helgaas@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230710232136.233034-1-helgaas@kernel.org>
-References: <20230710232136.233034-1-helgaas@kernel.org>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nfschina.com (client-ip=42.101.60.195; helo=mail.nfschina.com; envelope-from=yunchuan@nfschina.com; receiver=lists.ozlabs.org)
+Received: from mail.nfschina.com (unknown [42.101.60.195])
+	by lists.ozlabs.org (Postfix) with SMTP id 4R0NDS3McTz30fn
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jul 2023 11:13:43 +1000 (AEST)
+Received: from [172.30.11.106] (unknown [180.167.10.98])
+	by mail.nfschina.com (Maildata Gateway V2.8.8) with ESMTPSA id EFE6C602AC886;
+	Tue, 11 Jul 2023 09:13:31 +0800 (CST)
+Message-ID: <5ed0fff8-52dd-4059-797b-4275d54ae86b@nfschina.com>
+Date: Tue, 11 Jul 2023 09:13:31 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH net-next v2 01/10] net: wan: Remove unnecessary (void*)
+ conversions
+Content-Language: en-US
+To: Andrew Lunn <andrew@lunn.ch>
+X-MD-Sfrom: yunchuan@nfschina.com
+X-MD-SrcIP: 180.167.10.98
+From: yunchuan <yunchuan@nfschina.com>
+In-Reply-To: <23e98085-8f07-4ee2-8487-8e3b439b69f4@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -61,61 +42,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, linuxppc-dev@lists.ozlabs.org, Oliver O'Halloran <oohall@gmail.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, linux-kernel@vger.kernel.org
+Cc: netdev@vger.kernel.org, kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net, Dan Carpenter <dan.carpenter@linaro.org>, qiang.zhao@nxp.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+On 2023/7/11 00:34, Andrew Lunn wrote:
+> On Mon, Jul 10, 2023 at 02:39:33PM +0800, Su Hui wrote:
+>> From: wuych <yunchuan@nfschina.com>
+>>
+>> Pointer variables of void * type do not require type cast.
+>>
+>> Signed-off-by: wuych <yunchuan@nfschina.com>
+>> ---
+>>   drivers/net/wan/fsl_ucc_hdlc.c | 6 +++---
+>>   1 file changed, 3 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
+>> index 47c2ad7a3e42..73c73d8f4bb2 100644
+>> --- a/drivers/net/wan/fsl_ucc_hdlc.c
+>> +++ b/drivers/net/wan/fsl_ucc_hdlc.c
+>> @@ -350,11 +350,11 @@ static int uhdlc_init(struct ucc_hdlc_private *priv)
+>>   static netdev_tx_t ucc_hdlc_tx(struct sk_buff *skb, struct net_device *dev)
+>>   {
+>>   	hdlc_device *hdlc = dev_to_hdlc(dev);
+>> -	struct ucc_hdlc_private *priv = (struct ucc_hdlc_private *)hdlc->priv;
+>> -	struct qe_bd *bd;
+>> -	u16 bd_status;
+>> +	struct ucc_hdlc_private *priv = hdlc->priv;
+>>   	unsigned long flags;
+>>   	__be16 *proto_head;
+>> +	struct qe_bd *bd;
+>> +	u16 bd_status;
+> When dealing with existing broken reverse Christmas tree, please don't
+> make it worse with a change. But actually fixing it should be in a
+> different patch.
+>
+> We want patches to be obviously correct. By removing the cast and
+> moving variables around, it is less obvious it is correct, than having
+> two patches.
+Got it, thanks.
+I will resend the v3 later  which remove the change of reverse Christmas 
+tree.
+So sorry for this!
 
-pci_enable_pcie_error_reporting() is used only inside aer.c.  Stop exposing
-it outside the file.
+Wu Yunchuan
 
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
----
- drivers/pci/pcie/aer.c | 3 +--
- include/linux/aer.h    | 6 ------
- 2 files changed, 1 insertion(+), 8 deletions(-)
-
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index d4c948b7c449..645149608054 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -230,7 +230,7 @@ int pcie_aer_is_native(struct pci_dev *dev)
- 	return pcie_ports_native || host->native_aer;
- }
- 
--int pci_enable_pcie_error_reporting(struct pci_dev *dev)
-+static int pci_enable_pcie_error_reporting(struct pci_dev *dev)
- {
- 	int rc;
- 
-@@ -240,7 +240,6 @@ int pci_enable_pcie_error_reporting(struct pci_dev *dev)
- 	rc = pcie_capability_set_word(dev, PCI_EXP_DEVCTL, PCI_EXP_AER_FLAGS);
- 	return pcibios_err_to_errno(rc);
- }
--EXPORT_SYMBOL_GPL(pci_enable_pcie_error_reporting);
- 
- int pci_aer_clear_nonfatal_status(struct pci_dev *dev)
- {
-diff --git a/include/linux/aer.h b/include/linux/aer.h
-index aadc9242cb20..2dd175f5debd 100644
---- a/include/linux/aer.h
-+++ b/include/linux/aer.h
-@@ -41,14 +41,8 @@ struct aer_capability_regs {
- };
- 
- #if defined(CONFIG_PCIEAER)
--/* PCIe port driver needs this function to enable AER */
--int pci_enable_pcie_error_reporting(struct pci_dev *dev);
- int pci_aer_clear_nonfatal_status(struct pci_dev *dev);
- #else
--static inline int pci_enable_pcie_error_reporting(struct pci_dev *dev)
--{
--	return -EINVAL;
--}
- static inline int pci_aer_clear_nonfatal_status(struct pci_dev *dev)
- {
- 	return -EINVAL;
--- 
-2.34.1
-
+>
+>         Andrew
