@@ -1,51 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 147D474F24A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 16:32:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5389874F2A6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 16:49:55 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ravnborg.org header.i=@ravnborg.org header.a=rsa-sha256 header.s=rsa1 header.b=t1UZoY+O;
+	dkim=fail reason="signature verification failed" header.d=ravnborg.org header.i=@ravnborg.org header.a=ed25519-sha256 header.s=ed1 header.b=KzzqHm8t;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R0jy24L63z3c8n
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 00:32:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R0kL91f3mz3c1L
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 00:49:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33; helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=lists.ozlabs.org)
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ravnborg.org header.i=@ravnborg.org header.a=rsa-sha256 header.s=rsa1 header.b=t1UZoY+O;
+	dkim=pass header.d=ravnborg.org header.i=@ravnborg.org header.a=ed25519-sha256 header.s=ed1 header.b=KzzqHm8t;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mailrelay6-1.pub.mailoutpod2-cph3.one.com (client-ip=2a02:2350:5:405::1; helo=mailrelay6-1.pub.mailoutpod2-cph3.one.com; envelope-from=sam@ravnborg.org; receiver=lists.ozlabs.org)
+Received: from mailrelay6-1.pub.mailoutpod2-cph3.one.com (mailrelay6-1.pub.mailoutpod2-cph3.one.com [IPv6:2a02:2350:5:405::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0jxS4pNyz3bPV
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 00:31:55 +1000 (AEST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1qJEP7-00018z-13; Tue, 11 Jul 2023 16:31:49 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1qJEP4-00DfuY-K8; Tue, 11 Jul 2023 16:31:46 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1qJEP3-0043xA-UZ; Tue, 11 Jul 2023 16:31:45 +0200
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Anatolij Gustschin <agust@denx.de>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v2] powerpc/512x: lpbfifo: Convert to platform remove callback returning void
-Date: Tue, 11 Jul 2023 16:31:45 +0200
-Message-Id: <20230711143145.1192651-1-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230711131726.1108522-1-u.kleine-koenig@pengutronix.de>
-References: <20230711131726.1108522-1-u.kleine-koenig@pengutronix.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0kKC2DrJz30Pr
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 00:48:58 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=ravnborg.org; s=rsa1;
+	h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
+	 from:date:from;
+	bh=IzJnH7tearuxnA6Z+6SlVNN7/HpdHXO6OvjidkyffDc=;
+	b=t1UZoY+OgZB4qloOKAGoPzdxKiYC17C9++ltdd9VkKKSSJf/R5HyAsdaxr5chXo+LcqtCqMpEj2TA
+	 b8Z7yF6JHKQOlU7blN+narui79FThKq8hj2VwanKmhandBBtpyfKAhsU889SFEdFbXrVkiKx3hcR7H
+	 QKjso83LwxpCtsl1H23jeJIFNxLM2fJZpqpYaWgVJBzgpvhQLjm/hOp65N2Nj7rNyOZMvrxGPI6czh
+	 YS0MtrmIYLsQmwRyf7YF8HR5nxe+n7cXTvsKENehLpNtWPbi2L0wAhskoQ5ZCvD2WrQtbyYxsEJ/AP
+	 CUbin2WAzk67odxeRHKtnqDopCvMHJA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
+	d=ravnborg.org; s=ed1;
+	h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
+	 from:date:from;
+	bh=IzJnH7tearuxnA6Z+6SlVNN7/HpdHXO6OvjidkyffDc=;
+	b=KzzqHm8tLnuEHjgNWidySCjTk6o2+jW4abV9LJjbJcqDWTbuxi74O9whyYkZn2CXMR1EK8Adpr0Tp
+	 1xeW/n7CQ==
+X-HalOne-ID: e4c9d52a-1ff9-11ee-be66-6f01c1d0a443
+Received: from ravnborg.org (2-105-2-98-cable.dk.customer.tdc.net [2.105.2.98])
+	by mailrelay6 (Halon) with ESMTPSA
+	id e4c9d52a-1ff9-11ee-be66-6f01c1d0a443;
+	Tue, 11 Jul 2023 14:47:46 +0000 (UTC)
+Date: Tue, 11 Jul 2023 16:47:44 +0200
+From: Sam Ravnborg <sam@ravnborg.org>
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Subject: Re: [PATCH 00/17] fbdev: Remove FBINFO_DEFAULT and
+ FBINFO_FLAG_DEFAULT flags
+Message-ID: <20230711144744.GA117276@ravnborg.org>
+References: <20230710130113.14563-1-tzimmermann@suse.de>
+ <20230710171903.GA14712@ravnborg.org>
+ <ab92f8d9-36ab-06bc-b85b-d52b7a1bfe9a@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2210; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=79NllNMwbfAyFm3DVHngXhue7EC6U18jcoxTeqFLefU=; b=owGbwMvMwMXY3/A7olbonx/jabUkhpS16RckDLLjpsjvfNUnaJPCfWO/x4ngNWf4/Sq2yhtPu 673+eaSTkZjFgZGLgZZMUUW+8Y1mVZVcpGda/9dhhnEygQyhYGLUwAmctOD/b9XMLulI69Xinb6 3I6gjGTJOZu8jENmGU+L2J6gyrmX54J30Vcv0fbkaUJnP4RcVrjOFHD+23fJphp1TU3TG4F9KZ8 +8R9ced/KW03uvW/73WVrcv6LCFYKTXMzi/q4ffrBc5e0rJZFPmNkFeibJHQi8P6e08VGdrYfpQ 2c28t5i6Suyfyf8qRnzWXbrtW/Aj/X7r/0re2B5OFb05cy3JrUFvievVh0kqItw7Yw3ezOGaoBB Qla/8TtP3D6C35VEZNl5Qyuu18T5ev777/7JdGdDnw1Ju96/xhs23heOaPZtmzZrXcmq32kl62e Ys5y2zN0xiOtaHch+2/1N6ynVv/6X21z2TDtxQZlQwU5AA==
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ab92f8d9-36ab-06bc-b85b-d52b7a1bfe9a@suse.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,67 +70,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rob Herring <robh@kernel.org>, linuxppc-dev@lists.ozlabs.org, kernel@pengutronix.de, Nicholas Piggin <npiggin@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-hyperv@vger.kernel.org, kvm@vger.kernel.org, linux-sh@vger.kernel.org, deller@gmx.de, linux-staging@lists.linux.dev, javierm@redhat.com, amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org, linux-input@vger.kernel.org, linux-nvidia@lists.surfsouth.com, linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-geode@lists.infradead.org, linux-media@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is ignored (apart
-from emitting a warning) and this typically results in resource leaks.
-To improve here there is a quest to make the remove callback return
-void. In the first step of this quest all drivers are converted to
-.remove_new() which already returns void. Eventually after all drivers
-are converted, .remove_new() is renamed to .remove().
+Hi Thomas,
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
+On Tue, Jul 11, 2023 at 08:24:40AM +0200, Thomas Zimmermann wrote:
+> Hi Sam
+> 
+> Am 10.07.23 um 19:19 schrieb Sam Ravnborg:
+> > Hi Thomas,
+> > 
+> > On Mon, Jul 10, 2023 at 02:50:04PM +0200, Thomas Zimmermann wrote:
+> > > Remove the unused flags FBINFO_DEFAULT and FBINFO_FLAG_DEFAULT from
+> > > fbdev and drivers, as briefly discussed at [1]. Both flags were maybe
+> > > useful when fbdev had special handling for driver modules. With
+> > > commit 376b3ff54c9a ("fbdev: Nuke FBINFO_MODULE"), they are both 0
+> > > and have no further effect.
+> > > 
+> > > Patches 1 to 7 remove FBINFO_DEFAULT from drivers. Patches 2 to 5
+> > > split this by the way the fb_info struct is being allocated. All flags
+> > > are cleared to zero during the allocation.
+> > > 
+> > > Patches 8 to 16 do the same for FBINFO_FLAG_DEFAULT. Patch 8 fixes
+> > > an actual bug in how arch/sh uses the tokne for struct fb_videomode,
+> > > which is unrelated.
+> > > 
+> > > Patch 17 removes both flag constants from <linux/fb.h>
+> > 
+> > We have a few more flags that are unused - should they be nuked too?
+> > FBINFO_HWACCEL_FILLRECT
+> > FBINFO_HWACCEL_ROTATE
+> > FBINFO_HWACCEL_XPAN
+> 
+> It seems those are there for completeness. Nothing sets _ROTATE, the others
+> are simply never checked. According to the comments, some are required, some
+> are optional. I don't know what that means.
+> 
+> IIRC there were complains about performance when Daniel tried to remove
+> fbcon acceleration, so not all _HWACCEL_ flags are unneeded.
+> 
+> Leaving them in for reference/completeness might be an option; or not. I
+> have no strong feelings about those flags.
+> 
+> > 
+> > Unused as in no references from fbdev/core/*
+> > 
+> > I would rather see one series nuke all unused FBINFO flags in one go.
+> > Assuming my quick grep are right and the above can be dropped.
+> 
+> I would not want to extend this series. I'm removing _DEFAULT as it's
+> absolutely pointless and confusing.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
-Changes since (implicit) v1:
+OK, makes sense and thanks for the explanation.
 
- - provide an actually compilable patch :-\
-
-Best regards
-Uwe
-
- arch/powerpc/platforms/512x/mpc512x_lpbfifo.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c b/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
-index 1bfb29574caa..c1e981649bd9 100644
---- a/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
-+++ b/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
-@@ -477,7 +477,7 @@ static int mpc512x_lpbfifo_probe(struct platform_device *pdev)
- 	return ret;
- }
- 
--static int mpc512x_lpbfifo_remove(struct platform_device *pdev)
-+static void mpc512x_lpbfifo_remove(struct platform_device *pdev)
- {
- 	unsigned long flags;
- 	struct dma_device *dma_dev = lpbfifo.chan->device;
-@@ -494,8 +494,6 @@ static int mpc512x_lpbfifo_remove(struct platform_device *pdev)
- 	free_irq(lpbfifo.irq, &pdev->dev);
- 	irq_dispose_mapping(lpbfifo.irq);
- 	dma_release_channel(lpbfifo.chan);
--
--	return 0;
- }
- 
- static const struct of_device_id mpc512x_lpbfifo_match[] = {
-@@ -506,7 +504,7 @@ MODULE_DEVICE_TABLE(of, mpc512x_lpbfifo_match);
- 
- static struct platform_driver mpc512x_lpbfifo_driver = {
- 	.probe = mpc512x_lpbfifo_probe,
--	.remove = mpc512x_lpbfifo_remove,
-+	.remove_new = mpc512x_lpbfifo_remove,
- 	.driver = {
- 		.name = DRV_NAME,
- 		.of_match_table = mpc512x_lpbfifo_match,
-
-base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
--- 
-2.39.2
+The series is:
+Acked-by: Sam Ravnborg <sam@ravnborg.org>
 
