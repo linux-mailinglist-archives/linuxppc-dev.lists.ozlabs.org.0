@@ -1,57 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C952E74F97E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 22:59:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F9AF74FA2A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 23:55:30 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=4p5xsTNC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qnJ2jolN;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R0tXV53Gjz3c2y
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 06:59:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R0vnD3T4rz3c3w
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 07:55:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=4p5xsTNC;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qnJ2jolN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=lists.ozlabs.org)
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0tWf2j6qz2xSZ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 06:58:38 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=rvBE/i08FfMYAkT+V0OyrDavW6AmKWCwVooJMa1NWhU=; b=4p5xsTNCjZeB0MLgVViGjfib6o
-	H+Ca9BNAFsJo1ZR34Dfpq0fJ5dE6ApwB87J+2Ie8nm+sF2M/fR9Bbb0mBQffnqfY/IshaGCO69Mte
-	+J8BPepw6klMmA4+eK2NwPRBY9OOrvsC0Bf/J66iBcmr3EZij+4ASbKsKVxv0BvRGI+QG4FHP91WB
-	yr+NL1IssqNpyn00vSYcItSiTktTIw7+UK0MLrJsUGI/TOO+kcYpGZPUzgEAWqeQ31WxQ1flDnsUY
-	1Nm7W28fC2RNwFj3xbVeqTAVzZhwBckFKrK0Z1ENMPHEDB8qVt5SWIHDIq9UkXih0OfxTFMZjIlrg
-	ivhNOhhQ==;
-Received: from [2601:1c2:980:9ec0::2764]
-	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1qJKRP-00Fskt-04;
-	Tue, 11 Jul 2023 20:58:35 +0000
-Message-ID: <1fa020d1-1f4f-a6cf-7800-403264d38048@infradead.org>
-Date: Tue, 11 Jul 2023 13:58:34 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0vmH4nNlz3bWH
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 07:54:39 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 2845C615FF;
+	Tue, 11 Jul 2023 21:54:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 206ABC433C8;
+	Tue, 11 Jul 2023 21:54:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1689112474;
+	bh=EuiTP5R/M7ypb8hxPmxqp/u62cmZF8d2Lc6VA4N1Ag0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=qnJ2jolNq26WcgU0E799VXsleOypeG9zelUnqkZ5+jABNYvYAWxNut0umGQfjkrmg
+	 KPo6HeVpyz4N7M4nsaBAUqisaTs8Msff7+bQNZ2zVJgphEvUatGg/ubTIv2g9t6iUu
+	 AJp3yNLEFOpBomBfTLk+36mYPFS1EvDBr/oaC/B0rOlRu4V/AWIk3u3UARJWPNurxL
+	 btTHzbvoKCjnPum32Ev9dtfHBuONVAdru1+0e3gdyn6tF8chdKMZ5CH1fVUwYppXmz
+	 pCdPdYd66pv8BfkMjlJSsZK+BplJluEerKx4hB6/UAEKrmhNwMBaQf5Mq2/nwzsbEY
+	 uuOKDXaRSWsDw==
+Message-ID: <ec564375084b6edd7b7d77eb341f451e798fb50d.camel@kernel.org>
+Subject: Re: [PATCH v2 1/2] powerpc/tpm: Create linux,sml-base/size as big
+ endian
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Stefan Berger <stefanb@linux.ibm.com>, Michael Ellerman
+ <mpe@ellerman.id.au>,  linuxppc-dev@lists.ozlabs.org
+Date: Wed, 12 Jul 2023 00:54:31 +0300
+In-Reply-To: <0fb26243-0d63-118b-2737-05391ba0c69a@linux.ibm.com>
+References: <20230615123703.4028156-1-mpe@ellerman.id.au>
+	 <4d378d53225fc8b8cdc99dde900388d2eefaad4e.camel@kernel.org>
+	 <0fb26243-0d63-118b-2737-05391ba0c69a@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.1-0ubuntu1 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v2 10/10] docs: ABI:
- sysfs-bus-event_source-devices-hv_gpci: Document
- affinity_domain_via_partition sysfs interface file
-Content-Language: en-US
-To: Kajol Jain <kjain@linux.ibm.com>, mpe@ellerman.id.au
-References: <20230710092717.55317-1-kjain@linux.ibm.com>
- <20230710092717.55317-11-kjain@linux.ibm.com>
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20230710092717.55317-11-kjain@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,64 +66,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: atrajeev@linux.vnet.ibm.com, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, disgoel@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: jgg@ziepe.ca, linux-integrity@vger.kernel.org, eajames@linux.ibm.com, peterhuewe@gmx.de, yangyingliang@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+On Tue, 2023-07-11 at 08:47 -0400, Stefan Berger wrote:
+>=20
+> On 7/10/23 17:23, Jarkko Sakkinen wrote:
+> > On Thu, 2023-06-15 at 22:37 +1000, Michael Ellerman wrote:
+> > > There's code in prom_instantiate_sml() to do a "SML handover" (Stored
+> > > Measurement Log) from OF to Linux, before Linux shuts down Open
+> > > Firmware.
+> > >=20
+> > > This involves creating a buffer to hold the SML, and creating two dev=
+ice
+> > > tree properties to record its base address and size. The kernel then
+> > > later reads those properties from the device tree to find the SML.
+> > >=20
+> > > When the code was initially added in commit 4a727429abec ("PPC64: Add
+> > > support for instantiating SML from Open Firmware") the powerpc kernel
+> > > was always built big endian, so the properties were created big endia=
+n
+> > > by default.
+> > >=20
+> > > However since then little endian support was added to powerpc, and no=
+w
+> > > the code lacks conversions to big endian when creating the properties=
+.
+> > >=20
+> > > This means on little endian kernels the device tree properties are
+> > > little endian, which is contrary to the device tree spec, and in
+> > > contrast to all other device tree properties.
+> > >=20
+> > > To cope with that a workaround was added in tpm_read_log_of() to skip
+> > > the endian conversion if the properties were created via the SML
+> > > handover.
+> > >=20
+> > > A better solution is to encode the properties as big endian as they
+> > > should be, and remove the workaround.
+> > >=20
+> > > Typically changing the encoding of a property like this would present
+> > > problems for kexec. However the SML is not propagated across kexec, s=
+o
+> > > changing the encoding of the properties is a non-issue.
+> > >=20
+> > > Fixes: e46e22f12b19 ("tpm: enhance read_log_of() to support Physical =
+TPM event log")
+> > > Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> > > Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+> > > ---
+> > >   arch/powerpc/kernel/prom_init.c |  8 ++++++--
+> > >   drivers/char/tpm/eventlog/of.c  | 23 ++++-------------------
+> > >   2 files changed, 10 insertions(+), 21 deletions(-)
+> >=20
+> > Split into two patches (producer and consumer).
+>=20
+> I think this wouldn't be right since it would break the system when only =
+one patch is applied since it would be reading the fields in the wrong endi=
+aness.
 
-Same correction comments as in the other 4 patches (not repeated here).
+I think it would help if the commit message would better explain
+what is going on. It is somewhat difficult to decipher, if you
+don't have deep knowledge of the powerpc architecture.
 
-
-On 7/10/23 02:27, Kajol Jain wrote:
-> Add details of the new hv-gpci interface file called
-> "affinity_domain_via_partition" in the ABI documentation.
-> 
-> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-> ---
->  .../sysfs-bus-event_source-devices-hv_gpci    | 32 +++++++++++++++++++
->  1 file changed, 32 insertions(+)
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-event_source-devices-hv_gpci b/Documentation/ABI/testing/sysfs-bus-event_source-devices-hv_gpci
-> index d8e65b93d1f7..b03b2bd4b081 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-event_source-devices-hv_gpci
-> +++ b/Documentation/ABI/testing/sysfs-bus-event_source-devices-hv_gpci
-> @@ -208,3 +208,35 @@ Description:	admin read only
->  			   more information.
->  
->  		* "-EFBIG" : System information exceeds PAGE_SIZE.
-> +
-> +What:		/sys/devices/hv_gpci/interface/affinity_domain_via_partition
-> +Date:		July 2023
-> +Contact:	Linux on PowerPC Developer List <linuxppc-dev@lists.ozlabs.org>
-> +Description:	admin read only
-> +		This sysfs file exposes the system topology information by making HCALL
-> +		H_GET_PERF_COUNTER_INFO. The HCALL is made with counter request value
-> +		AFFINITY_DOMAIN_INFORMATION_BY_PARTITION(0xB1).
-> +
-> +		* This sysfs file will be created only for power10 and above platforms.
-> +
-> +		* User needs root privileges to read data from this sysfs file.
-> +
-> +		* This sysfs file will be created, only when the HCALL returns "H_SUCESS",
-> +		  "H_AUTHORITY" and "H_PARAMETER" as the return type.
-> +
-> +		  HCALL with return error type "H_AUTHORITY", can be resolved during
-> +		  runtime by setting "Enable Performance Information Collection" option.
-> +
-> +		* The end user reading this sysfs file must decode the content as per
-> +		  underlying platform/firmware.
-> +
-> +		Possible error codes while reading this sysfs file:
-> +
-> +		* "-EPERM" : Partition is not permitted to retrieve performance information,
-> +			    required to set "Enable Performance Information Collection" option.
-> +
-> +		* "-EIO" : Can't retrieve system information because of invalid buffer length/invalid address
-> +			   or because of some hardware error. Refer getPerfCountInfo documentation for
-> +			   more information.
-> +
-> +		* "-EFBIG" : System information exceeds PAGE_SIZE.
-
--- 
-~Randy
+BR, Jarkko
