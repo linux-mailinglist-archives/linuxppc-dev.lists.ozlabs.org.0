@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DD4A74F4A2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 18:15:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A9274F491
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 18:12:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R0mDr2kvqz3grX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 02:15:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R0m9R6CXWz3dlc
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 02:12:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
@@ -14,34 +14,34 @@ Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0m6Q1TZWz3dH1
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 02:09:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0m5v25wzz3dBg
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 02:09:23 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4R0m5Q1mhjz9sFK;
-	Tue, 11 Jul 2023 18:08:58 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4R0m5H4xHSz9sFC;
+	Tue, 11 Jul 2023 18:08:51 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
 	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 0Vf2evsGuJpJ; Tue, 11 Jul 2023 18:08:58 +0200 (CEST)
+	with ESMTP id sJunrGwSK_vC; Tue, 11 Jul 2023 18:08:51 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4R0m5C5XXqz9sFN;
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4R0m5C3qNTz9sFG;
 	Tue, 11 Jul 2023 18:08:47 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id B9C548B763;
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7F2228B763;
 	Tue, 11 Jul 2023 18:08:47 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id tEvDewORsNz5; Tue, 11 Jul 2023 18:08:47 +0200 (CEST)
+	with ESMTP id 9d1NI2BXQpaT; Tue, 11 Jul 2023 18:08:47 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.233.184])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id EA7CB8B787;
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id D14788B77B;
 	Tue, 11 Jul 2023 18:08:46 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 36BG8iGQ3696810
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 36BG8iwe3696820
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
 	Tue, 11 Jul 2023 18:08:44 +0200
 Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 36BG8ia83696809;
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 36BG8iCY3696819;
 	Tue, 11 Jul 2023 18:08:44 +0200
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
@@ -50,14 +50,14 @@ To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
         Peter Zijlstra <peterz@infradead.org>,
         Sathvika Vasireddy <sv@linux.ibm.com>,
         Naveen N Rao <naveen@kernel.org>
-Subject: [PATCH v4 04/15] objtool: Fix JUMP_ENTRY_SIZE for bi-arch like powerpc
-Date: Tue, 11 Jul 2023 18:08:30 +0200
-Message-ID: <e8c515247196b16c28cda52efebe81c94fa44402.1689091394.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v4 05/15] objtool: Add INSN_RETURN_CONDITIONAL
+Date: Tue, 11 Jul 2023 18:08:31 +0200
+Message-ID: <0b907f1cb4b85cba39b6c2b727c80d29e096e977.1689091394.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <cover.1689091394.git.christophe.leroy@csgroup.eu>
 References: <cover.1689091394.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1689091705; l=3047; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=qz7jSbzmc5vJWF0AXry/gPcX9XwHu3ADvNPxT3jglx8=; b=IlrArOABRXavVrlSzFNpqiP2MOt1eTZrX6ISJQihx8OOlhBaZLlsr3o0bxLdbCWM9v8pPz7Ki C/JLqGFer/WBOr5c1gjFOk3R4n/W2DhRP8DeA1eY0mOmCdxSQV9GX95
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1689091705; l=3391; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=RQvNZ3u/NPHor4suqgxX3vAfJ2dn/X79t365w/+p2nc=; b=B9G86bIXes9pIEokdlznNuX5AWjjZ0vaHIsr9dwCR0WD/GmjAkq4cSlQILjBFCpwqKqfNi2Vp F0BbI3cK4UZCuaFCjC7L8IJQ8BTZke0RpQbRghX+b2JMqDYRuFXOm7J
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -75,113 +75,98 @@ Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-	struct jump_entry {
-		s32 code;
-		s32 target;
-		long key;
-	};
+Most functions have an unconditional return at the end, like
+this one:
 
-It means that the size of the third argument depends on
-whether we are building a 32 bits or 64 bits kernel.
+	00000000 <is_exec_fault>:
+	   0:	81 22 04 d0 	lwz     r9,1232(r2)
+	   4:	38 60 00 00 	li      r3,0
+	   8:	2c 09 00 00 	cmpwi   r9,0
+	   c:	4d 82 00 20 	beqlr		<== Conditional return
+	  10:	80 69 00 a0 	lwz     r3,160(r9)
+	  14:	54 63 00 36 	clrrwi  r3,r3,4
+	  18:	68 63 04 00 	xori    r3,r3,1024
+	  1c:	7c 63 00 34 	cntlzw  r3,r3
+	  20:	54 63 d9 7e 	srwi    r3,r3,5
+	  24:	4e 80 00 20 	blr		<== Unconditional return
 
-Therefore JUMP_ENTRY_SIZE must depend on elf_class_addrsize(elf).
+But other functions like this other one below only have
+conditional returns:
 
-To allow that, entries[] table must be initialised at runtime. This is
-easily done by moving it into its only user which is special_get_alts().
+	00000028 <pte_update.isra.0>:
+	  28:	81 25 00 00 	lwz     r9,0(r5)
+	  2c:	2c 08 00 00 	cmpwi   r8,0
+	  30:	7d 29 30 78 	andc    r9,r9,r6
+	  34:	7d 27 3b 78 	or      r7,r9,r7
+	  38:	54 84 65 3a 	rlwinm  r4,r4,12,20,29
+	  3c:	81 23 00 18 	lwz     r9,24(r3)
+	  40:	41 82 00 58 	beq     98 <pte_update.isra.0+0x70>
+	  44:	7d 29 20 2e 	lwzx    r9,r9,r4
+	  48:	55 29 07 3a 	rlwinm  r9,r9,0,28,29
+	  4c:	2c 09 00 0c 	cmpwi   r9,12
+	  50:	41 82 00 08 	beq     58 <pte_update.isra.0+0x30>
+	  54:	39 00 00 80 	li      r8,128
+	  58:	2c 08 00 01 	cmpwi   r8,1
+	  5c:	90 e5 00 00 	stw     r7,0(r5)
+	  60:	4d a2 00 20 	beqlr+		<== Conditional return
+	  64:	7c e9 3b 78 	mr      r9,r7
+	  68:	39 40 00 00 	li      r10,0
+	  6c:	39 4a 00 04 	addi    r10,r10,4
+	  70:	7c 0a 40 00 	cmpw    r10,r8
+	  74:	91 25 00 04 	stw     r9,4(r5)
+	  78:	91 25 00 08 	stw     r9,8(r5)
+	  7c:	38 a5 00 10 	addi    r5,r5,16
+	  80:	91 25 ff fc 	stw     r9,-4(r5)
+	  84:	4c 80 00 20 	bgelr		<== Conditional return
+	  88:	55 49 60 26 	slwi    r9,r10,12
+	  8c:	7d 29 3a 14 	add     r9,r9,r7
+	  90:	91 25 00 00 	stw     r9,0(r5)
+	  94:	4b ff ff d8 	b       6c <pte_update.isra.0+0x44>
+	  98:	39 00 00 04 	li      r8,4
+	  9c:	4b ff ff bc 	b       58 <pte_update.isra.0+0x30>
+
+If conditional returns are decoded as INSN_OTHER, objtool considers
+that the second function never returns.
+
+If conditional returns are decoded as INSN_RETURN, objtool considers
+that code after that conditional return is dead.
+
+To overcome this situation, introduce INSN_RETURN_CONDITIONAL which
+is taken as a confirmation that a function is not noreturn but still
+sees following code as reachable.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 ---
- .../arch/powerpc/include/arch/special.h       |  2 +-
- tools/objtool/special.c                       | 55 +++++++++----------
- 2 files changed, 28 insertions(+), 29 deletions(-)
+ tools/objtool/check.c                | 2 +-
+ tools/objtool/include/objtool/arch.h | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/objtool/arch/powerpc/include/arch/special.h b/tools/objtool/arch/powerpc/include/arch/special.h
-index ffef9ada7133..b17802dcf436 100644
---- a/tools/objtool/arch/powerpc/include/arch/special.h
-+++ b/tools/objtool/arch/powerpc/include/arch/special.h
-@@ -6,7 +6,7 @@
- #define EX_ORIG_OFFSET 0
- #define EX_NEW_OFFSET 4
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 25f6df4713ed..ae0019412123 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -219,7 +219,7 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
+ 	func_for_each_insn(file, func, insn) {
+ 		empty = false;
  
--#define JUMP_ENTRY_SIZE 16
-+#define JUMP_ENTRY_SIZE (8 + elf_addr_size(elf)) /* 12 on PPC32, 16 on PPC64 */
- #define JUMP_ORIG_OFFSET 0
- #define JUMP_NEW_OFFSET 4
- #define JUMP_KEY_OFFSET 8
-diff --git a/tools/objtool/special.c b/tools/objtool/special.c
-index 91b1950f5bd8..b3f07e8beb85 100644
---- a/tools/objtool/special.c
-+++ b/tools/objtool/special.c
-@@ -26,34 +26,6 @@ struct special_entry {
- 	unsigned char key; /* jump_label key */
- };
+-		if (insn->type == INSN_RETURN)
++		if (insn->type == INSN_RETURN || insn->type == INSN_RETURN_CONDITIONAL)
+ 			return false;
+ 	}
  
--static const struct special_entry entries[] = {
--	{
--		.sec = ".altinstructions",
--		.group = true,
--		.size = ALT_ENTRY_SIZE,
--		.orig = ALT_ORIG_OFFSET,
--		.orig_len = ALT_ORIG_LEN_OFFSET,
--		.new = ALT_NEW_OFFSET,
--		.new_len = ALT_NEW_LEN_OFFSET,
--		.feature = ALT_FEATURE_OFFSET,
--	},
--	{
--		.sec = "__jump_table",
--		.jump_or_nop = true,
--		.size = JUMP_ENTRY_SIZE,
--		.orig = JUMP_ORIG_OFFSET,
--		.new = JUMP_NEW_OFFSET,
--		.key = JUMP_KEY_OFFSET,
--	},
--	{
--		.sec = "__ex_table",
--		.size = EX_ENTRY_SIZE,
--		.orig = EX_ORIG_OFFSET,
--		.new = EX_NEW_OFFSET,
--	},
--	{},
--};
--
- void __weak arch_handle_alternative(unsigned short feature, struct special_alt *alt)
- {
- }
-@@ -144,6 +116,33 @@ int special_get_alts(struct elf *elf, struct list_head *alts)
- 	unsigned int nr_entries;
- 	struct special_alt *alt;
- 	int idx, ret;
-+	const struct special_entry entries[] = {
-+		{
-+			.sec = ".altinstructions",
-+			.group = true,
-+			.size = ALT_ENTRY_SIZE,
-+			.orig = ALT_ORIG_OFFSET,
-+			.orig_len = ALT_ORIG_LEN_OFFSET,
-+			.new = ALT_NEW_OFFSET,
-+			.new_len = ALT_NEW_LEN_OFFSET,
-+			.feature = ALT_FEATURE_OFFSET,
-+		},
-+		{
-+			.sec = "__jump_table",
-+			.jump_or_nop = true,
-+			.size = JUMP_ENTRY_SIZE,
-+			.orig = JUMP_ORIG_OFFSET,
-+			.new = JUMP_NEW_OFFSET,
-+			.key = JUMP_KEY_OFFSET,
-+		},
-+		{
-+			.sec = "__ex_table",
-+			.size = EX_ENTRY_SIZE,
-+			.orig = EX_ORIG_OFFSET,
-+			.new = EX_NEW_OFFSET,
-+		},
-+		{},
-+	};
- 
- 	INIT_LIST_HEAD(alts);
- 
+diff --git a/tools/objtool/include/objtool/arch.h b/tools/objtool/include/objtool/arch.h
+index 2b6d2ce4f9a5..84ba75112934 100644
+--- a/tools/objtool/include/objtool/arch.h
++++ b/tools/objtool/include/objtool/arch.h
+@@ -19,6 +19,7 @@ enum insn_type {
+ 	INSN_CALL,
+ 	INSN_CALL_DYNAMIC,
+ 	INSN_RETURN,
++	INSN_RETURN_CONDITIONAL,
+ 	INSN_CONTEXT_SWITCH,
+ 	INSN_BUG,
+ 	INSN_NOP,
 -- 
 2.41.0
 
