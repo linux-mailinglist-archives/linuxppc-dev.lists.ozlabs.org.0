@@ -1,69 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65C9474E4EF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 05:00:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01FCE74E560
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 05:36:53 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=jbRRZbz4;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UvchCIrI;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TDmn/cTG;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R0QbQ26xYz3bcP
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 13:00:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R0RPZ6KZkz3bNs
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 13:36:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=jbRRZbz4;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UvchCIrI;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TDmn/cTG;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2a00:1450:4864:20::22a; helo=mail-lj1-x22a.google.com; envelope-from=stevensd@chromium.org; receiver=lists.ozlabs.org)
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0QZT2qPGz30PJ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jul 2023 12:59:26 +1000 (AEST)
-Received: by mail-lj1-x22a.google.com with SMTP id 38308e7fff4ca-2b6fdaf6eefso80042021fa.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jul 2023 19:59:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1689044360; x=1691636360;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+DBmSxEV9koNvPnH4f6fQb1MyHlXgygw1qw/AWmL9NU=;
-        b=jbRRZbz4ynuhPqqeV5apPzs0jqkJtDi55aZFCp3oS1Ky8RkTvPlwMnB4q/fiemRBoQ
-         /nqmDMG2P1A6auw8vdVkBVLFNlCCKg5J2gfTl+c6qkohrCouZIFJFDxXVd83G/CNdJVI
-         qpp4LD8m9YAEdXqPmRzBi1781HakxZf9US60Y=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689044360; x=1691636360;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+DBmSxEV9koNvPnH4f6fQb1MyHlXgygw1qw/AWmL9NU=;
-        b=UFs4qkPCJx7Zuiom7YQoPqfYJsSlNL/7auJZGfg39H02s+jJe9y4a4HCAcvzX5/IXw
-         G/QTIqltCcNAe37JVv86iHMiQtN+Z8raHqF5QFGhWd6QJ/8InQ4iOdMpC1PtiD3yLgBQ
-         aBPdAeKtY5F4mkNPwX3UU8JLiqN41J99aSjLnWdaPmINmCfquHw/bg3pQAhJBYXA3bMe
-         MGfQy2Cgs6xXa0ytme6qX+OLN0Hxyk2XVCkRPslR09EG0jnTsyDwehF3CEVHTH9zMGSz
-         m3qj1Q62ocv8jAMHXxEV5ypuRokrLfl1oh/7dH9wvlnl/8Uo9vm5sUZgIKrumH3XhrH4
-         H5ug==
-X-Gm-Message-State: ABy/qLZUZYNFMI/av2sXDlk5aGZ23R6uVAtIIUAcqDEIBJKXzCx1qrL9
-	2wr3JRaKTrCFqcw0JGQqZNPfV/kv0TjrEv9jua68qA==
-X-Google-Smtp-Source: APBJJlFhZxK1fGMNnOjl8Qk8f7Az5wy8Xg34SBiq6VLsMfXYX+pfTJMvsTItHqfjvno05fAVxl0LMgHzDd+1uLzcle4=
-X-Received: by 2002:a2e:7e12:0:b0:2b7:1b63:4657 with SMTP id
- z18-20020a2e7e12000000b002b71b634657mr5157080ljc.37.1689044359940; Mon, 10
- Jul 2023 19:59:19 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0RNg47kdz30fB
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jul 2023 13:36:02 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1689046559;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RAKJNLVa7Dz/gEOC8l+W1ubVM3SUfpJDz/d6N9kvm8w=;
+	b=UvchCIrIJ3Pf974kKJ9AdYMuL8pVjeyd0GDjCPxIUkKmJVgAMLDmla4mVd4pB9W+wAKx3n
+	e7CRs4OZrtmPTU0+UtA+ZxSMyUvhTKpGJRTfZTsvMCk8xL5oC2W1f4NLd2kmWBQ8sxAWCZ
+	kXiBDt0TnR93Kj2DsWrzdGWqKTNNX2s=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1689046560;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RAKJNLVa7Dz/gEOC8l+W1ubVM3SUfpJDz/d6N9kvm8w=;
+	b=TDmn/cTG1svhfcDOHbxw1FRLOq42ro+AYvaRAJ5YLX3M5EOrCX0dVnBi8Mn9ZnSK2RSWop
+	Oz9O3amuWmuqPyrBtRyaq1Fs4jcc5V2iONawmi2qdmBys6rsm581/XuemFKrWA/a1yiHUD
+	b1Wf30nrqeJSsoPgJgFJZVeRzCXkGHU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-498-rnGtRtxZNxW8idSVCPY9jA-1; Mon, 10 Jul 2023 23:35:56 -0400
+X-MC-Unique: rnGtRtxZNxW8idSVCPY9jA-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 765518028B2;
+	Tue, 11 Jul 2023 03:35:55 +0000 (UTC)
+Received: from localhost (ovpn-12-93.pek2.redhat.com [10.72.12.93])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 2547DC52D9C;
+	Tue, 11 Jul 2023 03:35:53 +0000 (UTC)
+Date: Tue, 11 Jul 2023 11:35:50 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Ming Lei <ming.lei@redhat.com>
+Subject: Re: [PATCH 2/2] nvme-pci: use blk_mq_max_nr_hw_queues() to calculate
+ io queues
+Message-ID: <ZKzOFkokjTVwd4Ry@MiWiFi-R3L-srv>
+References: <20230708020259.1343736-1-ming.lei@redhat.com>
+ <20230708020259.1343736-3-ming.lei@redhat.com>
+ <20230710064109.GB24519@lst.de>
+ <ZKvL58L58rY3GWnt@ovpn-8-31.pek2.redhat.com>
 MIME-Version: 1.0
-References: <20230704075054.3344915-1-stevensd@google.com> <20230704075054.3344915-6-stevensd@google.com>
- <20230705101800.ut4c6topn6ylwczs@linux.intel.com> <CAD=HUj41PAKC0x+c3zWAr-aCm59K7hs2zRh1uWs9778_Mai4UA@mail.gmail.com>
- <20230706155805.GD3894444@ls.amr.corp.intel.com> <CAD=HUj6GiK3TSSe7UY8C2Jd+3tjZNBa-TLgk-UodyL=E+qKavg@mail.gmail.com>
- <20230710163448.GE3894444@ls.amr.corp.intel.com>
-In-Reply-To: <20230710163448.GE3894444@ls.amr.corp.intel.com>
-From: David Stevens <stevensd@chromium.org>
-Date: Tue, 11 Jul 2023 11:59:08 +0900
-Message-ID: <CAD=HUj6ZEzVEFgn_J_9EPNMj5i-N=MSc0xZF8FweqrgTxUks0g@mail.gmail.com>
-Subject: Re: [PATCH v7 5/8] KVM: x86/mmu: Don't pass FOLL_GET to __kvm_follow_pfn
-To: Isaku Yamahata <isaku.yamahata@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZKvL58L58rY3GWnt@ovpn-8-31.pek2.redhat.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,64 +81,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Marc Zyngier <maz@kernel.org>, kvm@vger.kernel.org, Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org, Peter Xu <peterx@redhat.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Jens Axboe <axboe@kernel.dk>, linuxppc-dev@lists.ozlabs.org, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-nvme@lists.infradead.org, linux-block@vger.kernel.org, Wen Xiong <wenxiong@linux.ibm.com>, Keith Busch <kbusch@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Dave Young <dyoung@redhat.com>, Christoph Hellwig <hch@lst.de>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 11, 2023 at 1:34=E2=80=AFAM Isaku Yamahata <isaku.yamahata@gmai=
-l.com> wrote:
->
-> On Fri, Jul 07, 2023 at 10:35:02AM +0900,
-> David Stevens <stevensd@chromium.org> wrote:
->
-> > > > > > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> > > > > > index e44ab512c3a1..b1607e314497 100644
-> > > > > > --- a/arch/x86/kvm/mmu/mmu.c
-> > > > > > +++ b/arch/x86/kvm/mmu/mmu.c
-> > > > >
-> > > > > ...
-> > > > >
-> > > > > > @@ -2937,6 +2943,7 @@ static int mmu_set_spte(struct kvm_vcpu *=
-vcpu, struct kvm_memory_slot *slot,
-> > > > > >       bool host_writable =3D !fault || fault->map_writable;
-> > > > > >       bool prefetch =3D !fault || fault->prefetch;
-> > > > > >       bool write_fault =3D fault && fault->write;
-> > > > > > +     bool is_refcounted =3D !fault || fault->is_refcounted_pag=
-e;
-> > > > >
-> > > > > Just wonder, what if a non-refcounted page is prefetched?  Or is =
-it possible in
-> > > > > practice?
-> > > >
-> > > > Prefetching is still done via gfn_to_page_many_atomic, which sets
-> > > > FOLL_GET. That's fixable, but it's not something this series curren=
-tly
-> > > > does.
-> > >
-> > > So if we prefetch a page, REFCOUNTED bit is cleared unconditionally w=
-ith this
-> > > hunk.  kvm_set_page_{dirty, accessed} won't be called as expected for=
- prefetched
-> > > spte.  If I read the patch correctly, REFCOUNTED bit in SPTE should r=
-epresent
-> > > whether the corresponding page is ref-countable or not, right?
-> > >
-> > > Because direct_pte_prefetch_many() is for legacy KVM MMU and FNAME(pr=
-efetch_pte)
-> > > is shadow paging, we need to test it with legacy KVM MMU or shadow pa=
-ging to hit
-> > > the issue, though.
-> > >
-> >
-> > direct_pte_prefetch_many and prefetch_gpte both pass NULL for the
-> > fault parameter, so is_refcounted will evaluate to true. So the spte's
-> > refcounted bit will get set in that case.
->
-> Oops, my bad.  My point is "unconditionally".  Is the bit always set for
-> non-refcountable pages?  Or non-refcountable pages are not prefeched?
+On 07/10/23 at 05:14pm, Ming Lei wrote:
+> On Mon, Jul 10, 2023 at 08:41:09AM +0200, Christoph Hellwig wrote:
+> > On Sat, Jul 08, 2023 at 10:02:59AM +0800, Ming Lei wrote:
+> > > Take blk-mq's knowledge into account for calculating io queues.
+> > > 
+> > > Fix wrong queue mapping in case of kdump kernel.
+> > > 
+> > > On arm and ppc64, 'maxcpus=1' is passed to kdump command line, see
+> > > `Documentation/admin-guide/kdump/kdump.rst`, so num_possible_cpus()
+> > > still returns all CPUs.
+> > 
+> > That's simply broken.  Please fix the arch code to make sure
+> > it does not return a bogus num_possible_cpus value for these
+> 
+> That is documented in Documentation/admin-guide/kdump/kdump.rst.
+> 
+> On arm and ppc64, 'maxcpus=1' is passed for kdump kernel, and "maxcpu=1"
+> simply keep one of CPU cores as online, and others as offline.
 
-The bit is never set for non-refcounted pages, and is always set for
-refcounted pages. The current series never prefetches non-refcounted
-pages, since it continues to use the gfn_to_page_many_atomic API.
+I don't know maxcpus on arm and ppc64 well. But maxcpus=1 or nr_cpus=1
+are suggested parameter. Because usually nr_cpus=1 is enough to make
+kdump kernel work well to capture vmcore. However, user is allowed to
+specify nr_cpus=n (n>1) if they think multiple cpus are needed in kdump
+kernel. Your hard coding of cpu number in kdump kernel may be not so
+reasonable.
 
--David
+Please cc kexec mailing list when posting so that people can view the
+whole thread of discussion.
+
+Thanks
+Baoquan
+
+> 
+> So Cc our arch(arm & ppc64) & kdump guys wrt. passing 'maxcpus=1' for
+> kdump kernel.
+> 
+> > setups, otherwise you'll have to paper over it in all kind of
+> > drivers.
+> 
+> The issue is only triggered for drivers which use managed irq &
+> multiple hw queues.
+> 
+> 
+> Thanks,
+> Ming
+> 
+> 
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+> 
+
