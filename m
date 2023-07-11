@@ -2,60 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F42D74F448
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 18:04:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97ABA74F45B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 18:05:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R0lzn3cxMz3dl9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 02:04:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R0m1P3snNz3f8k
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 02:05:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.210.45; helo=mail-ot1-f45.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0lv66bSrz3byH
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 02:00:02 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4R0ltd1g1Mz9sFG;
-	Tue, 11 Jul 2023 17:59:37 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id neMODvMDcxLk; Tue, 11 Jul 2023 17:59:37 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4R0ltZ4C0Kz9sFB;
-	Tue, 11 Jul 2023 17:59:34 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 8BA768B77B;
-	Tue, 11 Jul 2023 17:59:34 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id kWCT7RFE0JJ1; Tue, 11 Jul 2023 17:59:34 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.233.184])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id CDAED8B77A;
-	Tue, 11 Jul 2023 17:59:33 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 36BFxV6J3695875
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 11 Jul 2023 17:59:31 +0200
-Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 36BFxVQY3695874;
-	Tue, 11 Jul 2023 17:59:31 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH v3 9/9] powerpc/kuap: Use ASM feature fixups instead of static branches
-Date: Tue, 11 Jul 2023 17:59:21 +0200
-Message-ID: <671948788024fd890ec4ed175bc332dab8664ea5.1689091022.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <cover.1689091022.git.christophe.leroy@csgroup.eu>
-References: <cover.1689091022.git.christophe.leroy@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0m0s2KRfz3bZK
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 02:05:00 +1000 (AEST)
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-6b708b97418so5224240a34.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jul 2023 09:05:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689091497; x=1691683497;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Y7zt5pO69xVTkx3WPA+RT/byFcn7lDWoK0rY+7VhmSY=;
+        b=Ny/QS9C/uXSDaG+tU914fu7Ne27RdePEZQbvamRCnGR1kOJYFqEJvBCBSzm2ZQFw7l
+         xfARvLRcfSgYDmU5FRNVOKr6Rkf15rd126A/hf0qrOrnOdhxH39pFnwQu/BIMBq/26cP
+         NjpxXs9w0T2CbtK1PWRuab0TqF5kaHw5fndovKp/M2EbC8nMB31x4sYA46uem4G1nLNf
+         GBI0CWVbwHmn39ykuI3Ytmjz5NtkSJXAsZFTq9tMRfrDXXEQaakmQ7WtT7yBtKTBxX1+
+         CgQj6cqdnwYJA0YuH37BTtOVt8Hp0agQqSx5kxpBuKdHr/AqBFJFGz6RK/JbQ7y10qpt
+         JCFg==
+X-Gm-Message-State: ABy/qLZwtD7cFnrvWo0rfXl6tgCX0RMM2edeWxH+ZMI3i/z6TVZNORqB
+	qvXKzPb/Oz54wioWQEtqPukKbmzLNCgKZA==
+X-Google-Smtp-Source: APBJJlEUrtgSZhTsEWsmFXAPdX7FiPm1y2EgDFBszl9hIfK1ouarZdHeIaRJZUgEHg7fy+N7cvB4aw==
+X-Received: by 2002:a9d:7d94:0:b0:6b9:741a:a410 with SMTP id j20-20020a9d7d94000000b006b9741aa410mr4888660otn.6.1689091497465;
+        Tue, 11 Jul 2023 09:04:57 -0700 (PDT)
+Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com. [209.85.167.181])
+        by smtp.gmail.com with ESMTPSA id r7-20020a9d7507000000b006b79a338581sm1026726otk.64.2023.07.11.09.04.56
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 11 Jul 2023 09:04:56 -0700 (PDT)
+Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-3a3b7fafd61so4811030b6e.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jul 2023 09:04:56 -0700 (PDT)
+X-Received: by 2002:a05:6358:4198:b0:132:7a2e:87bc with SMTP id
+ w24-20020a056358419800b001327a2e87bcmr13654687rwc.5.1689091495810; Tue, 11
+ Jul 2023 09:04:55 -0700 (PDT)
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1689091151; l=10352; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=HDutlhxM/AG7+2gYy99N4WQ/wLhVLobTq+tgbFoMpxE=; b=Tv0Mrnsc/khp/1oSgr4pAV+pz1tR6OQ2Lqbz0ukRi+tIDC6tKoDDPaQwwpyI05AjftLgjSKR8 CSaMMAnestxCy7UNKJaF302GuEb2f8Z8YDbfrxyTeqS95n7E7fHUYSl
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+References: <20230710130113.14563-1-tzimmermann@suse.de> <20230710171903.GA14712@ravnborg.org>
+ <ab92f8d9-36ab-06bc-b85b-d52b7a1bfe9a@suse.de> <20230711144744.GA117276@ravnborg.org>
+ <bf439387-6b13-0fd9-f61b-1a5cbf731187@gmx.de>
+In-Reply-To: <bf439387-6b13-0fd9-f61b-1a5cbf731187@gmx.de>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 11 Jul 2023 18:04:41 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdXnTDK6uZNhNR=NFTiy4F+2nLJd1E47vDoXUV3zFSCGOA@mail.gmail.com>
+Message-ID: <CAMuHMdXnTDK6uZNhNR=NFTiy4F+2nLJd1E47vDoXUV3zFSCGOA@mail.gmail.com>
+Subject: Re: [PATCH 00/17] fbdev: Remove FBINFO_DEFAULT and
+ FBINFO_FLAG_DEFAULT flags
+To: Helge Deller <deller@gmx.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,324 +70,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org, linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev, linux-hyperv@vger.kernel.org, amd-gfx@lists.freedesktop.org, javierm@redhat.com, dri-devel@lists.freedesktop.org, Thomas Zimmermann <tzimmermann@suse.de>, linux-input@vger.kernel.org, linux-nvidia@lists.surfsouth.com, linux-omap@vger.kernel.org, Sam Ravnborg <sam@ravnborg.org>, linux-geode@lists.infradead.org, linux-media@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-To avoid a useless nop on top of every uaccess enable/disable and
-make life easier for objtool, replace static branches by ASM feature
-fixups that will nop KUAP enabling instructions out in the unlikely
-case KUAP is disabled at boottime.
+Hi Helge,
 
-Leave it as is on book3s/64 for now, it will be handled later when
-objtool is activated on PPC64.
+On Tue, Jul 11, 2023 at 5:26=E2=80=AFPM Helge Deller <deller@gmx.de> wrote:
+> On 7/11/23 16:47, Sam Ravnborg wrote:
+> > On Tue, Jul 11, 2023 at 08:24:40AM +0200, Thomas Zimmermann wrote:
+> >> Am 10.07.23 um 19:19 schrieb Sam Ravnborg:
+> >>> On Mon, Jul 10, 2023 at 02:50:04PM +0200, Thomas Zimmermann wrote:
+> >>>> Remove the unused flags FBINFO_DEFAULT and FBINFO_FLAG_DEFAULT from
+> >>>> fbdev and drivers, as briefly discussed at [1]. Both flags were mayb=
+e
+> >>>> useful when fbdev had special handling for driver modules. With
+> >>>> commit 376b3ff54c9a ("fbdev: Nuke FBINFO_MODULE"), they are both 0
+> >>>> and have no further effect.
+> >>>>
+> >>>> Patches 1 to 7 remove FBINFO_DEFAULT from drivers. Patches 2 to 5
+> >>>> split this by the way the fb_info struct is being allocated. All fla=
+gs
+> >>>> are cleared to zero during the allocation.
+> >>>>
+> >>>> Patches 8 to 16 do the same for FBINFO_FLAG_DEFAULT. Patch 8 fixes
+> >>>> an actual bug in how arch/sh uses the tokne for struct fb_videomode,
+> >>>> which is unrelated.
+> >>>>
+> >>>> Patch 17 removes both flag constants from <linux/fb.h>
+> >>>
+> >>> We have a few more flags that are unused - should they be nuked too?
+> >>> FBINFO_HWACCEL_FILLRECT
+> >>> FBINFO_HWACCEL_ROTATE
+> >>> FBINFO_HWACCEL_XPAN
+> >>
+> >> It seems those are there for completeness. Nothing sets _ROTATE,
+>
+> I think some fbdev drivers had hardware acceleration for ROTATE in the
+> past. HWACCEL_XPAN is still in some drivers.
+>
+> >> the others are simply never checked. According to the comments,
+> >> some are required, some are optional. I don't know what that
+> >> means.
+>
+> I think it's OK if you remove those flags which aren't used anywhere,
+> e.g. FBINFO_HWACCEL_ROTATE.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/include/asm/book3s/32/kup.h     | 46 ++++++++++++++++----
- arch/powerpc/include/asm/kup.h               | 45 +++----------------
- arch/powerpc/include/asm/nohash/32/kup-8xx.h | 30 +++++++++----
- arch/powerpc/include/asm/nohash/kup-booke.h  | 38 +++++++++-------
- arch/powerpc/mm/nohash/kup.c                 |  2 +-
- 5 files changed, 87 insertions(+), 74 deletions(-)
+Indeed.
 
-diff --git a/arch/powerpc/include/asm/book3s/32/kup.h b/arch/powerpc/include/asm/book3s/32/kup.h
-index 931d200afe56..4e14a5427a63 100644
---- a/arch/powerpc/include/asm/book3s/32/kup.h
-+++ b/arch/powerpc/include/asm/book3s/32/kup.h
-@@ -27,6 +27,34 @@ static __always_inline void kuap_unlock_one(unsigned long addr)
- 	isync();	/* Context sync required after mtsr() */
- }
- 
-+static __always_inline void uaccess_begin_32s(unsigned long addr)
-+{
-+	unsigned long tmp;
-+
-+	asm volatile(ASM_MMU_FTR_IFSET(
-+		"mfsrin %0, %1;"
-+		"rlwinm %0, %0, 0, %2;"
-+		"mtsrin %0, %1;"
-+		"isync", "", %3)
-+		: "=&r"(tmp)
-+		: "r"(addr), "i"(~SR_KS), "i"(MMU_FTR_KUAP)
-+		: "memory");
-+}
-+
-+static __always_inline void uaccess_end_32s(unsigned long addr)
-+{
-+	unsigned long tmp;
-+
-+	asm volatile(ASM_MMU_FTR_IFSET(
-+		"mfsrin %0, %1;"
-+		"oris %0, %0, %2;"
-+		"mtsrin %0, %1;"
-+		"isync", "", %3)
-+		: "=&r"(tmp)
-+		: "r"(addr), "i"(SR_KS >> 16), "i"(MMU_FTR_KUAP)
-+		: "memory");
-+}
-+
- static __always_inline void __kuap_save_and_lock(struct pt_regs *regs)
- {
- 	unsigned long kuap = current->thread.kuap;
-@@ -69,8 +97,8 @@ static __always_inline unsigned long __kuap_get_and_assert_locked(void)
- }
- #define __kuap_get_and_assert_locked __kuap_get_and_assert_locked
- 
--static __always_inline void __allow_user_access(void __user *to, const void __user *from,
--						u32 size, unsigned long dir)
-+static __always_inline void allow_user_access(void __user *to, const void __user *from,
-+					      u32 size, unsigned long dir)
- {
- 	BUILD_BUG_ON(!__builtin_constant_p(dir));
- 
-@@ -78,10 +106,10 @@ static __always_inline void __allow_user_access(void __user *to, const void __us
- 		return;
- 
- 	current->thread.kuap = (__force u32)to;
--	kuap_unlock_one((__force u32)to);
-+	uaccess_begin_32s((__force u32)to);
- }
- 
--static __always_inline void __prevent_user_access(unsigned long dir)
-+static __always_inline void prevent_user_access(unsigned long dir)
- {
- 	u32 kuap = current->thread.kuap;
- 
-@@ -91,26 +119,26 @@ static __always_inline void __prevent_user_access(unsigned long dir)
- 		return;
- 
- 	current->thread.kuap = KUAP_NONE;
--	kuap_lock_one(kuap);
-+	uaccess_end_32s(kuap);
- }
- 
--static __always_inline unsigned long __prevent_user_access_return(void)
-+static __always_inline unsigned long prevent_user_access_return(void)
- {
- 	unsigned long flags = current->thread.kuap;
- 
- 	if (flags != KUAP_NONE) {
- 		current->thread.kuap = KUAP_NONE;
--		kuap_lock_one(flags);
-+		uaccess_end_32s(flags);
- 	}
- 
- 	return flags;
- }
- 
--static __always_inline void __restore_user_access(unsigned long flags)
-+static __always_inline void restore_user_access(unsigned long flags)
- {
- 	if (flags != KUAP_NONE) {
- 		current->thread.kuap = flags;
--		kuap_unlock_one(flags);
-+		uaccess_begin_32s(flags);
- 	}
- }
- 
-diff --git a/arch/powerpc/include/asm/kup.h b/arch/powerpc/include/asm/kup.h
-index 77adb9cd2da5..ad7e8c5aec3f 100644
---- a/arch/powerpc/include/asm/kup.h
-+++ b/arch/powerpc/include/asm/kup.h
-@@ -72,11 +72,11 @@ static __always_inline void __kuap_kernel_restore(struct pt_regs *regs, unsigned
-  * platforms.
-  */
- #ifndef CONFIG_PPC_BOOK3S_64
--static __always_inline void __allow_user_access(void __user *to, const void __user *from,
--						unsigned long size, unsigned long dir) { }
--static __always_inline void __prevent_user_access(unsigned long dir) { }
--static __always_inline unsigned long __prevent_user_access_return(void) { return 0UL; }
--static __always_inline void __restore_user_access(unsigned long flags) { }
-+static __always_inline void allow_user_access(void __user *to, const void __user *from,
-+					      unsigned long size, unsigned long dir) { }
-+static __always_inline void prevent_user_access(unsigned long dir) { }
-+static __always_inline unsigned long prevent_user_access_return(void) { return 0UL; }
-+static __always_inline void restore_user_access(unsigned long flags) { }
- #endif /* CONFIG_PPC_BOOK3S_64 */
- #endif /* CONFIG_PPC_KUAP */
- 
-@@ -132,41 +132,6 @@ static __always_inline void kuap_assert_locked(void)
- 		kuap_get_and_assert_locked();
- }
- 
--#ifndef CONFIG_PPC_BOOK3S_64
--static __always_inline void allow_user_access(void __user *to, const void __user *from,
--				     unsigned long size, unsigned long dir)
--{
--	if (kuap_is_disabled())
--		return;
--
--	__allow_user_access(to, from, size, dir);
--}
--
--static __always_inline void prevent_user_access(unsigned long dir)
--{
--	if (kuap_is_disabled())
--		return;
--
--	__prevent_user_access(dir);
--}
--
--static __always_inline unsigned long prevent_user_access_return(void)
--{
--	if (kuap_is_disabled())
--		return 0;
--
--	return __prevent_user_access_return();
--}
--
--static __always_inline void restore_user_access(unsigned long flags)
--{
--	if (kuap_is_disabled())
--		return;
--
--	__restore_user_access(flags);
--}
--#endif /* CONFIG_PPC_BOOK3S_64 */
--
- static __always_inline void allow_read_from_user(const void __user *from, unsigned long size)
- {
- 	barrier_nospec();
-diff --git a/arch/powerpc/include/asm/nohash/32/kup-8xx.h b/arch/powerpc/include/asm/nohash/32/kup-8xx.h
-index e231b3afed98..46bc5925e5fd 100644
---- a/arch/powerpc/include/asm/nohash/32/kup-8xx.h
-+++ b/arch/powerpc/include/asm/nohash/32/kup-8xx.h
-@@ -37,31 +37,43 @@ static __always_inline unsigned long __kuap_get_and_assert_locked(void)
- #define __kuap_get_and_assert_locked __kuap_get_and_assert_locked
- #endif
- 
--static __always_inline void __allow_user_access(void __user *to, const void __user *from,
--						unsigned long size, unsigned long dir)
-+static __always_inline void uaccess_begin_8xx(unsigned long val)
- {
--	mtspr(SPRN_MD_AP, MD_APG_INIT);
-+	asm(ASM_MMU_FTR_IFSET("mtspr %0, %1", "", %2) : :
-+	    "i"(SPRN_MD_AP), "r"(val), "i"(MMU_FTR_KUAP) : "memory");
- }
- 
--static __always_inline void __prevent_user_access(unsigned long dir)
-+static __always_inline void uaccess_end_8xx(void)
- {
--	mtspr(SPRN_MD_AP, MD_APG_KUAP);
-+	asm(ASM_MMU_FTR_IFSET("mtspr %0, %1", "", %2) : :
-+	    "i"(SPRN_MD_AP), "r"(MD_APG_KUAP), "i"(MMU_FTR_KUAP) : "memory");
-+}
-+
-+static __always_inline void allow_user_access(void __user *to, const void __user *from,
-+					      unsigned long size, unsigned long dir)
-+{
-+	uaccess_begin_8xx(MD_APG_INIT);
- }
- 
--static __always_inline unsigned long __prevent_user_access_return(void)
-+static __always_inline void prevent_user_access(unsigned long dir)
-+{
-+	uaccess_end_8xx();
-+}
-+
-+static __always_inline unsigned long prevent_user_access_return(void)
- {
- 	unsigned long flags;
- 
- 	flags = mfspr(SPRN_MD_AP);
- 
--	mtspr(SPRN_MD_AP, MD_APG_KUAP);
-+	uaccess_end_8xx();
- 
- 	return flags;
- }
- 
--static __always_inline void __restore_user_access(unsigned long flags)
-+static __always_inline void restore_user_access(unsigned long flags)
- {
--	mtspr(SPRN_MD_AP, flags);
-+	uaccess_begin_8xx(flags);
- }
- 
- static __always_inline bool
-diff --git a/arch/powerpc/include/asm/nohash/kup-booke.h b/arch/powerpc/include/asm/nohash/kup-booke.h
-index 98780a2d3dcd..0c7c3258134c 100644
---- a/arch/powerpc/include/asm/nohash/kup-booke.h
-+++ b/arch/powerpc/include/asm/nohash/kup-booke.h
-@@ -3,6 +3,7 @@
- #define _ASM_POWERPC_KUP_BOOKE_H_
- 
- #include <asm/bug.h>
-+#include <asm/mmu.h>
- 
- #ifdef CONFIG_PPC_KUAP
- 
-@@ -60,35 +61,42 @@ static __always_inline unsigned long __kuap_get_and_assert_locked(void)
- #define __kuap_get_and_assert_locked __kuap_get_and_assert_locked
- #endif
- 
--static __always_inline void __allow_user_access(void __user *to, const void __user *from,
--						unsigned long size, unsigned long dir)
-+static __always_inline void uaccess_begin_booke(unsigned long val)
- {
--	mtspr(SPRN_PID, current->thread.pid);
--	isync();
-+	asm(ASM_MMU_FTR_IFSET("mtspr %0, %1; isync", "", %2) : :
-+	    "i"(SPRN_PID), "r"(val), "i"(MMU_FTR_KUAP) : "memory");
- }
- 
--static __always_inline void __prevent_user_access(unsigned long dir)
-+static __always_inline void uaccess_end_booke(void)
- {
--	mtspr(SPRN_PID, 0);
--	isync();
-+	asm(ASM_MMU_FTR_IFSET("mtspr %0, %1; isync", "", %2) : :
-+	    "i"(SPRN_PID), "r"(0), "i"(MMU_FTR_KUAP) : "memory");
-+}
-+
-+static __always_inline void allow_user_access(void __user *to, const void __user *from,
-+					      unsigned long size, unsigned long dir)
-+{
-+	uaccess_begin_booke(current->thread.pid);
- }
- 
--static __always_inline unsigned long __prevent_user_access_return(void)
-+static __always_inline void prevent_user_access(unsigned long dir)
-+{
-+	uaccess_end_booke();
-+}
-+
-+static __always_inline unsigned long prevent_user_access_return(void)
- {
- 	unsigned long flags = mfspr(SPRN_PID);
- 
--	mtspr(SPRN_PID, 0);
--	isync();
-+	uaccess_end_booke();
- 
- 	return flags;
- }
- 
--static __always_inline void __restore_user_access(unsigned long flags)
-+static __always_inline void restore_user_access(unsigned long flags)
- {
--	if (flags) {
--		mtspr(SPRN_PID, current->thread.pid);
--		isync();
--	}
-+	if (flags)
-+		uaccess_begin_booke(current->thread.pid);
- }
- 
- static __always_inline bool
-diff --git a/arch/powerpc/mm/nohash/kup.c b/arch/powerpc/mm/nohash/kup.c
-index 94ff82b9ae60..e1f7de2e54ec 100644
---- a/arch/powerpc/mm/nohash/kup.c
-+++ b/arch/powerpc/mm/nohash/kup.c
-@@ -24,6 +24,6 @@ void setup_kuap(bool disabled)
- 
- 	pr_info("Activating Kernel Userspace Access Protection\n");
- 
--	__prevent_user_access(KUAP_READ_WRITE);
-+	prevent_user_access(KUAP_READ_WRITE);
- }
- #endif
--- 
-2.41.0
+> >> IIRC there were complains about performance when Daniel tried to remov=
+e
+> >> fbcon acceleration, so not all _HWACCEL_ flags are unneeded.
+>
+> Correct. I think COPYAREA and FILLRECT are the bare minimum to accelerate
+> fbcon, IMAGEBLIT is for showing the tux penguin (?),
+> XPAN/YPAN and YWRAP for some hardware screen panning needed by some drive=
+rs
+> (not sure if this is still used as I don't have such hardware, Geert?).
 
+Yes, they are used.  Anything that is handled in drivers/video/fbdev/core/
+is used:
+
+$ git grep  HWACCEL_ -- drivers/video/fbdev/core/
+drivers/video/fbdev/core/fbcon.c:       if ((info->flags &
+FBINFO_HWACCEL_COPYAREA) &&
+drivers/video/fbdev/core/fbcon.c:           !(info->flags &
+FBINFO_HWACCEL_DISABLED))
+drivers/video/fbdev/core/fbcon.c:       int good_pan =3D (cap &
+FBINFO_HWACCEL_YPAN) &&
+drivers/video/fbdev/core/fbcon.c:       int good_wrap =3D (cap &
+FBINFO_HWACCEL_YWRAP) &&
+drivers/video/fbdev/core/fbcon.c:       int fast_copyarea =3D (cap &
+FBINFO_HWACCEL_COPYAREA) &&
+drivers/video/fbdev/core/fbcon.c:               !(cap &
+FBINFO_HWACCEL_DISABLED);
+drivers/video/fbdev/core/fbcon.c:       int fast_imageblit =3D (cap &
+FBINFO_HWACCEL_IMAGEBLIT) &&
+drivers/video/fbdev/core/fbcon.c:               !(cap &
+FBINFO_HWACCEL_DISABLED);
+
+BTW, I'm surprised FBINFO_HWACCEL_FILLRECT is not handled.
+But looking at the full history, it never was...
+
+> >> Leaving them in for reference/completeness might be an option; or not.=
+ I
+> >> have no strong feelings about those flags.
+>
+> I'd say drop FBINFO_HWACCEL_ROTATE at least ?
+
+Agreed.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
