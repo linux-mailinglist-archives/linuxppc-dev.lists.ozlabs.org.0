@@ -2,83 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D464574E614
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 06:54:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6C7A74E61F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 06:55:59 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ItPoa9bt;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eqyS98/V;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R0T6m5KHZz3cN4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 14:54:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R0T8s4kdzz3byX
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 14:55:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ItPoa9bt;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eqyS98/V;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0T1R4ttQz3bpK
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jul 2023 14:49:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0T1m3H4Tz3bxZ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jul 2023 14:49:48 +1000 (AEST)
 Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36B4kwXo016793;
-	Tue, 11 Jul 2023 04:49:20 GMT
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36B4kwjF016806;
+	Tue, 11 Jul 2023 04:49:28 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=9hGLX82mpM7A1sG7cUX4F22RXgthqmPVRb138g4/vAU=;
- b=ItPoa9bt3C43BAS676bvRNT1jZcjwr1NAJmXMLZkqS63/ltVOYhgSaycan52ArAGCHqr
- TKTJXu+dnNDs+7cMap/dziHWV+/9GTFpAsI7ZQAWtWS5ERj8RjRb8ey0B9yHrjf0CMqd
- ZBGG4zito4yiygTY+rXZhJE5ZMNbBhA0wjTIC+8P7WlnsDuUn0w9ZVpzCa8EMFP3DJ64
- 7DDTDEVFjeGQZyv1y5GKd2cjKBm6AFWpw7KAW9Dxr+0zdBc2O/S4S5oIrPjqlY8Bqq6W
- U817niqRB0W3ZOhdBA84jO+my+xfKQ+m3GExlz6HYgtXTyzcJaLAg3v/Tjms9Ns55aAA rw== 
+ bh=izAKLkGXW4KeySMlKO+lq28yrDcfXnzVthdmbn/zMFQ=;
+ b=eqyS98/VjnrlSvhy86dKXl6ELjpYbS3P6rxJtEus+Fl1ZzujdgD4J6G+kakzx8KOPsTf
+ b6WXDb58lua7Jk6FPTcVDQkDNrKOuWbpKq/JfSmAIIpkn96GvJlHYmIgg4BNUWreBP2j
+ yCIfl4Do7J4xOPyOaXEejUaCW1HOSPjyjBbDhJGMJ/rrTHw0PT9uWIIbtlBo5S55NKtv
+ 2sBABPmCyIc74UoK8grOp4GDRpdTRlZsF6YshrNmsDL91ajmURzF0KGCepH1x/IZD2GM
+ 94FHswuBWGS/X7llC6nPFeIgcEyddqGjB++9XbWG4zbwf3JkaMKT11iPGmrIjcbTHW8D sA== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rs0btg4a2-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rs0btg4g1-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Jul 2023 04:49:20 +0000
+	Tue, 11 Jul 2023 04:49:27 +0000
 Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36B4kuEq016759;
-	Tue, 11 Jul 2023 04:49:19 GMT
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rs0btg497-1
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36B4kuF0016759;
+	Tue, 11 Jul 2023 04:49:27 GMT
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rs0btg4fe-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Jul 2023 04:49:19 +0000
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
-	by ppma01dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36B4ZL56017145;
-	Tue, 11 Jul 2023 04:49:18 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([9.208.129.114])
-	by ppma01dal.us.ibm.com (PPS) with ESMTPS id 3rpye6vedj-1
+	Tue, 11 Jul 2023 04:49:26 +0000
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+	by ppma03dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36AJnxOn026569;
+	Tue, 11 Jul 2023 04:49:26 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([9.208.130.99])
+	by ppma03dal.us.ibm.com (PPS) with ESMTPS id 3rpye5m6xx-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Jul 2023 04:49:18 +0000
+	Tue, 11 Jul 2023 04:49:26 +0000
 Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36B4nHCK34603388
+	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36B4nOUs21561760
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 11 Jul 2023 04:49:17 GMT
+	Tue, 11 Jul 2023 04:49:24 GMT
 Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0A78558055;
+	by IMSVA (Postfix) with ESMTP id 9351258067;
+	Tue, 11 Jul 2023 04:49:24 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A7EA25804B;
 	Tue, 11 Jul 2023 04:49:17 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2A5AB58063;
-	Tue, 11 Jul 2023 04:49:12 +0000 (GMT)
 Received: from skywalker.ibmuc.com (unknown [9.43.86.43])
 	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 11 Jul 2023 04:49:11 +0000 (GMT)
+	Tue, 11 Jul 2023 04:49:17 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: linux-mm@kvack.org, akpm@linux-foundation.org, mpe@ellerman.id.au,
         linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
         christophe.leroy@csgroup.eu
-Subject: [PATCH v3 5/7] powerpc/book3s64/memhotplug: Enable memmap on memory for radix
-Date: Tue, 11 Jul 2023 10:18:31 +0530
-Message-ID: <20230711044834.72809-6-aneesh.kumar@linux.ibm.com>
+Subject: [PATCH v3 6/7] dax/kmem: Always enroll hotplugged memory for memmap_on_memory
+Date: Tue, 11 Jul 2023 10:18:32 +0530
+Message-ID: <20230711044834.72809-7-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230711044834.72809-1-aneesh.kumar@linux.ibm.com>
 References: <20230711044834.72809-1-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: iew4llAaLdvPnwP5c6khYbjOxStUR01A
-X-Proofpoint-GUID: 06NDGcN6XjIVYL-dF1kmE_6ApCwGdXkg
+X-Proofpoint-ORIG-GUID: oa8R27GieEOayLSVPDKzsgEAIl9wm7HA
+X-Proofpoint-GUID: dhygPK-lH0NzJ-5CMxb87fS1U4hSZ6Ai
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-07-11_02,2023-07-06_02,2023-05-22_02
@@ -98,117 +98,162 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vishal Verma <vishal.l.verma@intel.com>, David Hildenbrand <david@redhat.com>, Michal Hocko <mhocko@suse.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Oscar Salvador <osalvador@suse.de>
+Cc: Michal Hocko <mhocko@suse.com>, Dave Jiang <dave.jiang@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Vishal Verma <vishal.l.verma@intel.com>, David Hildenbrand <david@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Huang Ying <ying.huang@intel.com>, Dan Williams <dan.j.williams@intel.com>, Oscar Salvador <osalvador@suse.de>, Len Brown <lenb@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Radix vmemmap mapping can map things correctly at the PMD level or PTE
-level based on different device boundary checks. Hence we skip the
-restrictions w.r.t vmemmap size to be multiple of PMD_SIZE. This also
-makes the feature widely useful because to use PMD_SIZE vmemmap area we
-require a memory block size of 2GiB
+From: Vishal Verma <vishal.l.verma@intel.com>
 
-We can also use MHP_RESERVE_PAGES_MEMMAP_ON_MEMORY to that the feature
-can work with a memory block size of 256MB. Using altmap.reserve feature
-to align things correctly at pageblock granularity. We can end up
-losing some pages in memory with this. For ex: with a 256MiB memory block
-size, we require 4 pages to map vmemmap pages, In order to align things
-correctly we end up adding a reserve of 28 pages. ie, for every 4096
-pages 28 pages get reserved.
+With DAX memory regions originating from CXL memory expanders or
+NVDIMMs, the kmem driver may be hot-adding huge amounts of system memory
+on a system without enough 'regular' main memory to support the memmap
+for it. To avoid this, ensure that all kmem managed hotplugged memory is
+added with the MHP_MEMMAP_ON_MEMORY flag to place the memmap on the
+new memory region being hot added.
 
+To do this, call add_memory() in chunks of memory_block_size_bytes() as
+that is a requirement for memmap_on_memory.
+
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Huang Ying <ying.huang@intel.com>
+Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- arch/powerpc/Kconfig                          |  1 +
- arch/powerpc/include/asm/pgtable.h            | 28 +++++++++++++++++++
- .../platforms/pseries/hotplug-memory.c        |  3 +-
- mm/memory_hotplug.c                           |  2 ++
- 4 files changed, 33 insertions(+), 1 deletion(-)
+ drivers/dax/kmem.c | 81 +++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 59 insertions(+), 22 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 116d6add0bb0..f890907e5bbf 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -157,6 +157,7 @@ config PPC
- 	select ARCH_HAS_UBSAN_SANITIZE_ALL
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
- 	select ARCH_KEEP_MEMBLOCK
-+	select ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE	if PPC_RADIX_MMU
- 	select ARCH_MIGHT_HAVE_PC_PARPORT
- 	select ARCH_MIGHT_HAVE_PC_SERIO
- 	select ARCH_OPTIONAL_KERNEL_RWX		if ARCH_HAS_STRICT_KERNEL_RWX
-diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
-index 68817ea7f994..8e6c92dde6ad 100644
---- a/arch/powerpc/include/asm/pgtable.h
-+++ b/arch/powerpc/include/asm/pgtable.h
-@@ -169,6 +169,34 @@ static inline bool is_ioremap_addr(const void *x)
- int __meminit vmemmap_populated(unsigned long vmemmap_addr, int vmemmap_map_size);
- bool altmap_cross_boundary(struct vmem_altmap *altmap, unsigned long start,
- 			   unsigned long page_size);
-+/*
-+ * mm/memory_hotplug.c:mhp_supports_memmap_on_memory goes into details
-+ * some of the restrictions. We don't check for PMD_SIZE because our
-+ * vmemmap allocation code can fallback correctly. The pageblock
-+ * alignment requirement is met using altmap->reserve blocks.
-+ */
-+#define arch_supports_memmap_on_memory arch_supports_memmap_on_memory
-+static inline bool arch_supports_memmap_on_memory(unsigned long size)
-+{
-+	unsigned long nr_pages = size >> PAGE_SHIFT;
-+	unsigned long vmemmap_size = nr_pages * sizeof(struct page);
+diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
+index 898ca9505754..840bf7b40a44 100644
+--- a/drivers/dax/kmem.c
++++ b/drivers/dax/kmem.c
+@@ -12,6 +12,7 @@
+ #include <linux/mm.h>
+ #include <linux/mman.h>
+ #include <linux/memory-tiers.h>
++#include <linux/memory_hotplug.h>
+ #include "dax-private.h"
+ #include "bus.h"
+ 
+@@ -105,6 +106,7 @@ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
+ 	data->mgid = rc;
+ 
+ 	for (i = 0; i < dev_dax->nr_range; i++) {
++		u64 cur_start, cur_len, remaining;
+ 		struct resource *res;
+ 		struct range range;
+ 
+@@ -137,21 +139,42 @@ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
+ 		res->flags = IORESOURCE_SYSTEM_RAM;
+ 
+ 		/*
+-		 * Ensure that future kexec'd kernels will not treat
+-		 * this as RAM automatically.
++		 * Add memory in chunks of memory_block_size_bytes() so that
++		 * it is considered for MHP_MEMMAP_ON_MEMORY
++		 * @range has already been aligned to memory_block_size_bytes(),
++		 * so the following loop will always break it down cleanly.
+ 		 */
+-		rc = add_memory_driver_managed(data->mgid, range.start,
+-				range_len(&range), kmem_name, MHP_NID_IS_MGID);
+-
+-		if (rc) {
+-			dev_warn(dev, "mapping%d: %#llx-%#llx memory add failed\n",
+-					i, range.start, range.end);
+-			remove_resource(res);
+-			kfree(res);
+-			data->res[i] = NULL;
+-			if (mapped)
+-				continue;
+-			goto err_request_mem;
++		cur_start = range.start;
++		cur_len = memory_block_size_bytes();
++		remaining = range_len(&range);
++		while (remaining) {
++			/*
++			 * If alignment rules are not satisified we will
++			 * fallback normal memmap allocation.
++			 */
++			mhp_t mhp_flags = MHP_NID_IS_MGID | MHP_MEMMAP_ON_MEMORY;
++			/*
++			 * Ensure that future kexec'd kernels will not treat
++			 * this as RAM automatically.
++			 */
++			rc = add_memory_driver_managed(data->mgid, cur_start,
++						       cur_len, kmem_name,
++						       mhp_flags);
 +
-+	if (!radix_enabled())
-+		return false;
++			if (rc) {
++				dev_warn(dev,
++					 "mapping%d: %#llx-%#llx memory add failed\n",
++					 i, cur_start, cur_start + cur_len - 1);
++				remove_resource(res);
++				kfree(res);
++				data->res[i] = NULL;
++				if (mapped)
++					continue;
++				goto err_request_mem;
++			}
 +
-+#ifdef CONFIG_PPC_4K_PAGES
-+	return IS_ALIGNED(vmemmap_size, PMD_SIZE);
-+#else
-+	/*
-+	 * Make sure the vmemmap allocation is fully contianed
-+	 * so that we always allocate vmemmap memory from altmap area.
-+	 * The pageblock alignment requirement is met by using
-+	 * reserve blocks in altmap.
-+	 */
-+	return IS_ALIGNED(vmemmap_size,  PAGE_SIZE);
-+#endif
-+}
-+
- #endif /* CONFIG_PPC64 */
- 
- #endif /* __ASSEMBLY__ */
-diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-index 9c62c2c3b3d0..1447509357a7 100644
---- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-+++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-@@ -617,6 +617,7 @@ static int dlpar_memory_remove_by_ic(u32 lmbs_to_remove, u32 drc_index)
- 
- static int dlpar_add_lmb(struct drmem_lmb *lmb)
- {
-+	mhp_t mhp_flags = MHP_NONE | MHP_MEMMAP_ON_MEMORY;
- 	unsigned long block_sz;
- 	int nid, rc;
- 
-@@ -637,7 +638,7 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
- 		nid = first_online_node;
- 
- 	/* Add the memory */
--	rc = __add_memory(nid, lmb->base_addr, block_sz, MHP_NONE);
-+	rc = __add_memory(nid, lmb->base_addr, block_sz, mhp_flags);
- 	if (rc) {
- 		invalidate_lmb_associativity_index(lmb);
- 		return rc;
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index f36aec1f7626..0c4d3fdd31a2 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -2108,6 +2108,8 @@ static int __ref try_remove_memory(u64 start, u64 size)
- 			 * right thing if we used vmem_altmap when hot-adding
- 			 * the range.
- 			 */
-+			mhp_altmap.base_pfn = PHYS_PFN(start);
-+			mhp_altmap.free = PHYS_PFN(size) - nr_vmemmap_pages;
- 			mhp_altmap.alloc = nr_vmemmap_pages;
- 			altmap = &mhp_altmap;
++			cur_start += cur_len;
++			remaining -= cur_len;
  		}
+ 		mapped++;
+ 	}
+@@ -186,25 +209,39 @@ static void dev_dax_kmem_remove(struct dev_dax *dev_dax)
+ 	 * unbind will succeed even if we return failure.
+ 	 */
+ 	for (i = 0; i < dev_dax->nr_range; i++) {
++
++		u64 cur_start, cur_len, remaining;
+ 		struct range range;
++		bool resource_remove;
+ 		int rc;
+ 
+ 		rc = dax_kmem_range(dev_dax, i, &range);
+ 		if (rc)
+ 			continue;
+ 
+-		rc = remove_memory(range.start, range_len(&range));
+-		if (rc == 0) {
++		resource_remove = true;
++		cur_start = range.start;
++		cur_len = memory_block_size_bytes();
++		remaining = range_len(&range);
++		while (remaining) {
++
++			rc = remove_memory(cur_start, cur_len);
++			if (rc) {
++				resource_remove = false;
++				dev_err(dev,
++					"mapping%d: %#llx-%#llx cannot be hotremoved until the next reboot\n",
++					i, cur_start, cur_len);
++			}
++			cur_start += cur_len;
++			remaining -= cur_len;
++		}
++		if (resource_remove) {
+ 			remove_resource(data->res[i]);
+ 			kfree(data->res[i]);
+ 			data->res[i] = NULL;
+ 			success++;
+-			continue;
+-		}
+-		any_hotremove_failed = true;
+-		dev_err(dev,
+-			"mapping%d: %#llx-%#llx cannot be hotremoved until the next reboot\n",
+-				i, range.start, range.end);
++		} else
++			any_hotremove_failed = true;
+ 	}
+ 
+ 	if (success >= dev_dax->nr_range) {
 -- 
 2.41.0
 
