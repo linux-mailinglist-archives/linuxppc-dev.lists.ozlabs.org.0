@@ -2,61 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6992E74F86C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 21:35:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EBAB74F95F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jul 2023 22:53:55 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oEo8yqXL;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=vhEIYW++;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R0rg82HSxz3cJ6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 05:35:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R0tQ933YXz3bkD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 06:53:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oEo8yqXL;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=legion@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=lists.ozlabs.org)
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0l5q0yrGz30JF
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 01:24:15 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 04CBD61548;
-	Tue, 11 Jul 2023 15:24:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E26C433C8;
-	Tue, 11 Jul 2023 15:23:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1689089052;
-	bh=nyE4suotIowU8lKnKt+Umw+WI2Pk9iMcLZepBf+apY8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oEo8yqXLBQcJ016nZmVI6o/nx3t9By5un0RV4fbIKnHDk0VPSpp+yaNMirBtqzWpT
-	 bol75aJRCGOWCT+N9yMrkrQVwEwDB8XWpgODtk3yI+ILPLq5smsYwABPzHWMi/M7KG
-	 kUQJPylWrx/7Ql611uTnEHF8Ca7MkikIUy5rcrlWGkGARPI3nHILM6AFuZYEin+imM
-	 n1HaEaVU7q0NQmuz7v6I6ZbkSVwp4NjRBykveJpCllqGcxPS/L657fKrCDqE1FNaLz
-	 6d5tD55ouC0ebYXHDNhkXWIbv52u/QY77xgQ0vpiUD4ePJr/j3HQZKSAuDU9No0IwC
-	 1j5Imns1pImTQ==
-Date: Tue, 11 Jul 2023 17:23:50 +0200
-From: Alexey Gladkov <legion@kernel.org>
-To: Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH v3 2/5] fs: Add fchmodat4()
-Message-ID: <ZK10BmqxjL/Njbmj@example.org>
-References: <87o8pscpny.fsf@oldenburg2.str.redhat.com>
- <cover.1689074739.git.legion@kernel.org>
- <d11b93ad8e3b669afaff942e25c3fca65c6a983c.1689074739.git.legion@kernel.org>
- <83363cbb-2431-4520-81a9-0d71f420cb36@app.fastmail.com>
- <20230711-demolieren-nilpferd-80ffe47563ad@brauner>
- <ZK1QNRidZuGcfOSd@example.org>
- <20230711-verpennen-turnier-717bb9682e19@brauner>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R0tP96xnQz3bkD
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 06:52:59 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=/emvWvYcr0PrfMBIZh/6opl6dgnt0C4Vtimd6uINPmo=; b=vhEIYW++/rGGI2u5ESqmPK9iEF
+	7dKcCjTGP3fOSwDNfGY76EeW9hXLyFT+uk5zWj+Xt3AbqE3fktc8Rew0bhuDzL8IGQpKTnVSV8Lx2
+	z4NUNZB9tQGlFZVG1L3luB2G3RBDVHT9T4zX7E571omlXT9e3WsnGJazIRjbXRZYQz2lfGfNpC5Nx
+	ESIwsBj4puASpAZEFLQdE/Yopqk8Rwmghu8mtkcObVi3K961vkbOAcU6WyWufYsAcBEYxnmp1Ggnb
+	+rpjMGSbRYyXI/ne3w+7Ts18BG4Mn/QpzzgkaDQdglgus1l/zzLx4/nYrCnDGJxIKqHaMiiTx5FrW
+	ft74jMzw==;
+Received: from [2601:1c2:980:9ec0::2764]
+	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+	id 1qJKLs-00Fs8h-13;
+	Tue, 11 Jul 2023 20:52:52 +0000
+Message-ID: <4418618a-ac75-f824-ec6d-984421dd5c6b@infradead.org>
+Date: Tue, 11 Jul 2023 13:52:51 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230711-verpennen-turnier-717bb9682e19@brauner>
-X-Mailman-Approved-At: Wed, 12 Jul 2023 05:30:07 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2 02/10] docs: ABI:
+ sysfs-bus-event_source-devices-hv_gpci: Document processor_bus_topology sysfs
+ interface file
+Content-Language: en-US
+To: Kajol Jain <kjain@linux.ibm.com>, mpe@ellerman.id.au
+References: <20230710092717.55317-1-kjain@linux.ibm.com>
+ <20230710092717.55317-3-kjain@linux.ibm.com>
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20230710092717.55317-3-kjain@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,61 +60,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Alexander Shishkin <alexander.shishkin@linux.intel.com>, Catalin Marinas <catalin.marinas@arm.com>, Palmer Dabbelt <palmer@sifive.com>, heiko.carstens@de.ibm.com, stefan@agner.ch, ldv@altlinux.org, David Howells <dhowells@redhat.com>, Kim Phillips <kim.phillips@arm.com>, Paul Mackerras <paulus@samba.org>, Deepa Dinamani <deepa.kernel@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, Will Deacon <will@kernel.org>, Linux-Arch <linux-arch@vger.kernel.org>, linux-s390@vger.kernel.org, hare@suse.com, Florian Weimer <fweimer@redhat.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>, x86@kernel.org, Russell King <linux@armlinux.org.uk>, Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>, firoz.khan@linaro.org, linux-arm-kernel@lists.infradead.org, jhogan@kernel.org, Geert Uytterhoeven <geert@linux-m68k.org>, Matt Turner <ma
- ttst88@gmail.com>, linux-mips@vger.kernel.org, gor@linux.ibm.com, fenghua.yu@intel.com, Arnd Bergmann <arnd@arndb.de>, Peter Zijlstra <peterz@infradead.org>, glebfm@altlinux.org, tycho@tycho.ws, Arnaldo Carvalho de Melo <acme@kernel.org>, schwidefsky@de.ibm.com, linux-m68k@lists.linux-m68k.org, Borislav Petkov <bp@alien8.de>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, christian@brauner.io, rth@twiddle.net, Jens Axboe <axboe@kernel.dk>, "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Michal Simek <monstr@monstr.eu>, Tony Luck <tony.luck@intel.com>, linux-parisc@vger.kernel.org, linux-api@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, ralf@linux-mips.org, paul.burton@mips.com, linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
+Cc: atrajeev@linux.vnet.ibm.com, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, disgoel@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 11, 2023 at 04:01:03PM +0200, Christian Brauner wrote:
-> On Tue, Jul 11, 2023 at 02:51:01PM +0200, Alexey Gladkov wrote:
-> > On Tue, Jul 11, 2023 at 01:52:01PM +0200, Christian Brauner wrote:
-> > > On Tue, Jul 11, 2023 at 01:42:19PM +0200, Arnd Bergmann wrote:
-> > > > On Tue, Jul 11, 2023, at 13:25, Alexey Gladkov wrote:
-> > > > > From: Palmer Dabbelt <palmer@sifive.com>
-> > > > >
-> > > > > On the userspace side fchmodat(3) is implemented as a wrapper
-> > > > > function which implements the POSIX-specified interface. This
-> > > > > interface differs from the underlying kernel system call, which does not
-> > > > > have a flags argument. Most implementations require procfs [1][2].
-> > > > >
-> > > > > There doesn't appear to be a good userspace workaround for this issue
-> > > > > but the implementation in the kernel is pretty straight-forward.
-> > > > >
-> > > > > The new fchmodat4() syscall allows to pass the AT_SYMLINK_NOFOLLOW flag,
-> > > > > unlike existing fchmodat.
-> > > > >
-> > > > > [1] 
-> > > > > https://sourceware.org/git/?p=glibc.git;a=blob;f=sysdeps/unix/sysv/linux/fchmodat.c;h=17eca54051ee28ba1ec3f9aed170a62630959143;hb=a492b1e5ef7ab50c6fdd4e4e9879ea5569ab0a6c#l35
-> > > > > [2] 
-> > > > > https://git.musl-libc.org/cgit/musl/tree/src/stat/fchmodat.c?id=718f363bc2067b6487900eddc9180c84e7739f80#n28
-> > > > >
-> > > > > Signed-off-by: Palmer Dabbelt <palmer@sifive.com>
-> > > > > Signed-off-by: Alexey Gladkov <legion@kernel.org>
-> > > > 
-> > > > I don't know the history of why we ended up with the different
-> > > > interface, or whether this was done intentionally in the kernel
-> > > > or if we want this syscall.
-> > > > 
-> > > > Assuming this is in fact needed, I double-checked that the
-> > > > implementation looks correct to me and is portable to all the
-> > > > architectures, without the need for a compat wrapper.
-> > > > 
-> > > > Acked-by: Arnd Bergmann <arnd@arndb.de>
-> > > 
-> > > The system call itself is useful afaict. But please,
-> > > 
-> > > s/fchmodat4/fchmodat2/
-> > 
-> > Sure. I will.
+Hi--
+
+On 7/10/23 02:27, Kajol Jain wrote:
+> Add details of the new hv-gpci interface file called
+> "processor_bus_topology" in the ABI documentation.
 > 
-> Thanks. Can you also wire this up for every architecture, please?
-> I don't see that this has been done in this series.
+> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+> ---
+>  .../sysfs-bus-event_source-devices-hv_gpci    | 32 +++++++++++++++++++
+>  1 file changed, 32 insertions(+)
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-bus-event_source-devices-hv_gpci b/Documentation/ABI/testing/sysfs-bus-event_source-devices-hv_gpci
+> index 12e2bf92783f..2eeeab9a20fa 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-event_source-devices-hv_gpci
+> +++ b/Documentation/ABI/testing/sysfs-bus-event_source-devices-hv_gpci
+> @@ -80,3 +80,35 @@ Contact:	Linux on PowerPC Developer List <linuxppc-dev@lists.ozlabs.org>
+>  Description:	read only
+>  		This sysfs file exposes the cpumask which is designated to make
+>  		HCALLs to retrieve hv-gpci pmu event counter data.
+> +
+> +What:		/sys/devices/hv_gpci/interface/processor_bus_topology
+> +Date:		July 2023
+> +Contact:	Linux on PowerPC Developer List <linuxppc-dev@lists.ozlabs.org>
+> +Description:	admin read only
+> +		This sysfs file exposes the system topology information by making HCALL
+> +		H_GET_PERF_COUNTER_INFO. The HCALL is made with counter request value
+> +		PROCESSOR_BUS_TOPOLOGY(0xD0).
+> +
+> +		* This sysfs file will be created only for power10 and above platforms.
+> +
+> +		* User needs root privileges to read data from this sysfs file.
+> +
+> +		* This sysfs file will be created, only when the HCALL returns "H_SUCESS",
 
-Sure. I have already added in all architectures as far as I can tell:
+		                                                                H_SUCCESS
 
-$ diff -s <(find arch/ -name '*.tbl' |sort -u) <(git grep -lw fchmodat2 arch/ |sort -u)
-Files /dev/fd/63 and /dev/fd/62 are identical
+> +		  "H_AUTHORITY" and "H_PARAMETER" as the return type.
+
+		            s/and/or/
+
+> +
+> +		  HCALL with return error type "H_AUTHORITY", can be resolved during
+
+		                             Drop the comma ^
+
+> +		  runtime by setting "Enable Performance Information Collection" option.
+> +
+> +		* The end user reading this sysfs file must decode the content as per
+> +		  underlying platform/firmware.
+> +
+> +		Possible error codes while reading this sysfs file:
+> +
+> +		* "-EPERM" : Partition is not permitted to retrieve performance information,
+> +			    required to set "Enable Performance Information Collection" option.
+> +
+> +		* "-EIO" : Can't retrieve system information because of invalid buffer length/invalid address
+> +			   or because of some hardware error. Refer getPerfCountInfo documentation for
+
+			                                      Refer to
+
+> +			   more information.
+> +
+> +		* "-EFBIG" : System information exceeds PAGE_SIZE.
 
 -- 
-Rgrds, legion
-
+~Randy
