@@ -2,76 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E49057509FC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 15:50:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BF417509EA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 15:46:50 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=HZPxYS2q;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=kRLBcL7B;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R1JzK5thZz3c5d
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 23:50:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R1Jtw1cFPz3bw9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 23:46:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=HZPxYS2q;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=kRLBcL7B;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::635; helo=mail-ej1-x635.google.com; envelope-from=matuszpd@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R1Hj40lPGz3bnw
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 22:53:09 +1000 (AEST)
-Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-98e39784a85so157869666b.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 05:53:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689166384; x=1691758384;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ef9ldj54LfSreJO+VbHq1Yil94yCCRtncr0AA0IgxoI=;
-        b=HZPxYS2q0wdP+oUdlVbS0bHA1gduL/QbI3aYqBTAD7g0jrxG3ckLP7O+qlZaCgpYtZ
-         uR4tL/+dPcz2X7WQA7Fx5G0jEmaDPw2Hhj0hWt2d2dgvDINwW3fJ9RFCZgPA9NDBkJb5
-         kZgq4OzAms76DQJFiMj/dA8201Fs9jVy+T1gw9BJIwYxEbnqt9CZPa1Yi9XAcVJYJGtm
-         dTuHFo/YgPTWVnjwjFDJgMYaMbkZMTOHkjl9hN/mRikq8ZEUDstWunwXChiIZQ93QvNf
-         N/sg+1KPo3DQA/CI8eCoAQaMO9n1/x2MW6pBZtB+m1YOE0718F6Wvr9mm4rOJU8SuPhc
-         u1zA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689166384; x=1691758384;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ef9ldj54LfSreJO+VbHq1Yil94yCCRtncr0AA0IgxoI=;
-        b=RlEh5SJQkSAOEoeTtlpPLchuOpvi/gnWgAxR8rFNlPZSfjuQG/mrr0T0cIYDFQo4cC
-         jpzH4ifouatVLwlQyr3LZWQTofhVZSJODl4tZMvVkSy8SBPvasZD3LjR+kOGGMxoyVes
-         8GFtsq0i+lFz/c5dn0QjLq333KMjRdZZTXifMcscHBHHv6t4+DH935r+rdVl4+5QHlyo
-         dJaRO9TAGoYzlkOD62d8YMmELN+ev6x3xhe4Ft2S+RgQCmIQ8FfvlpaghLNZkCjv4xjD
-         28/ezH3y6Hnpn0CiVGB6pAU1JsASIuZv/vck5IM21g5J6VrBI4rqRWYv7OR2ucn+2vDz
-         IUWw==
-X-Gm-Message-State: ABy/qLbtqw07nLaRPeyTCC/3YbGJ71OUUsVtKC9H8AOw94RXtm13QveO
-	TbJznXvQhSJT9ckUGeMUac4=
-X-Google-Smtp-Source: APBJJlEQwzCXnLSG9Db+b/tZpzul5Q8lvD7Ip0hLgkyKGo/6GNq4Xfrpf2kkMy9+NX6RlyZ+hk/4uQ==
-X-Received: by 2002:a17:906:64c2:b0:993:d632:2c3 with SMTP id p2-20020a17090664c200b00993d63202c3mr2421780ejn.21.1689166383605;
-        Wed, 12 Jul 2023 05:53:03 -0700 (PDT)
-Received: from localhost.localdomain ([2a01:c844:242b:b300:215:5dff:fe81:5e96])
-        by smtp.gmail.com with ESMTPSA id l6-20020a170906230600b00991faf3810esm2544506eja.146.2023.07.12.05.53.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Jul 2023 05:53:03 -0700 (PDT)
-From: Matus Gajdos <matuszpd@gmail.com>
-To: Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Xiubo Li <Xiubo.Lee@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Nicolin Chen <nicoleotsuka@gmail.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>
-Subject: [PATCH] ASoC: fsl_sai: Disable bit clock with transmitter
-Date: Wed, 12 Jul 2023 14:49:33 +0200
-Message-Id: <20230712124934.32232-1-matuszpd@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R1Jsz6Fr8z2xqw
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 23:45:59 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1689169559;
+	bh=BGGDWApWw1qGewX3yQf2hsIwdOZpaW3aeedRDBPfv2c=;
+	h=From:To:Cc:Subject:Date:From;
+	b=kRLBcL7BzQ6+7TOtBGqynopf5DHr9RVU7YoIMxPqhUNQfF6kSYHWzZSAW2AiNmahF
+	 Atyep7dF2KJX1zogiyBbvpukMBByTF194FJ9L8inrKSGokOupeYIxX8Dx6jx6OgyF7
+	 9nvl66sRpV3FoTSw8cyJAYSHiifxv7hbxQZEl6jtNY7L0XpkQX9nqy+Fhk1qEmuM/S
+	 sJG4SKSFCPDOY0GcL1mbtvJQQiwkmUnHK+qQA07jz8JggvfLoC1f5mz3qBz10NMXAD
+	 aTvkWqlJKM9SgaMMaKpkNa1ETW6pmQvW/C5xKJYACdA4u3j+8iHqNBSxdv7PwM0372
+	 zQRGnMK7ayABQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4R1Jsz4cs7z4wZJ;
+	Wed, 12 Jul 2023 23:45:59 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH v5] Revert "powerpc/bug: Provide better flexibility to WARN_ON/__WARN_FLAGS() with asm goto"
+Date: Wed, 12 Jul 2023 23:45:02 +1000
+Message-ID: <20230712134552.534955-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Wed, 12 Jul 2023 23:49:03 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,43 +56,218 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Matus Gajdos <matuszpd@gmail.com>, alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: naveen.n.rao@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Otherwise bit clock remains running writing invalid data to the DAC.
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-Signed-off-by: Matus Gajdos <matuszpd@gmail.com>
+This partly reverts commit 1e688dd2a3d6759d416616ff07afc4bb836c4213.
+
+That commit aimed at optimising the code around generation of
+WARN_ON/BUG_ON but this leads to a lot of dead code erroneously
+generated by GCC.
+
+That dead code becomes a problem when we start using objtool validation
+because objtool will abort validation with a warning as soon as it
+detects unreachable code. This is because unreachable code might
+be the indication that objtool doesn't properly decode object text.
+
+     text	   data	    bss	    dec	    hex	filename
+  9551585	3627834	 224376	13403795	 cc8693	vmlinux.before
+  9535281	3628358	 224376	13388015	 cc48ef	vmlinux.after
+
+Once this change is reverted, in a standard configuration (pmac32 +
+function tracer) the text is reduced by 16k which is around 1.7%
+
+We already had problem with it when starting to use objtool on powerpc
+as a replacement for recordmcount, see commit 93e3f45a2631 ("powerpc:
+Fix __WARN_FLAGS() for use with Objtool")
+
+There is also a problem with at least GCC 12, on ppc64_defconfig +
+CONFIG_CC_OPTIMIZE_FOR_SIZE=y + CONFIG_DEBUG_SECTION_MISMATCH=y :
+
+    LD      .tmp_vmlinux.kallsyms1
+  powerpc64-linux-ld: net/ipv4/tcp_input.o:(__ex_table+0xc4): undefined reference to `.L2136'
+  make[2]: *** [scripts/Makefile.vmlinux:36: vmlinux] Error 1
+  make[1]: *** [/home/chleroy/linux-powerpc/Makefile:1238: vmlinux] Error 2
+
+Taking into account that other problems are encountered with that
+'asm goto' in WARN_ON(), including build failures, keeping that
+change is not worth it allthough it is primarily a compiler bug.
+
+Revert it for now.
+
+mpe: Retain EMIT_WARN_ENTRY as a synonym for EMIT_BUG_ENTRY to reduce
+churn, as there are now nearly as many uses of EMIT_WARN_ENTRY as
+EMIT_BUG_ENTRY.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Acked-by: Naveen N Rao <naveen@kernel.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/a7d6d0c20deaccfcbc74c3149e782538461fd6fe.1689091394.git.christophe.leroy@csgroup.eu
 ---
- sound/soc/fsl/fsl_sai.c | 2 +-
- sound/soc/fsl/fsl_sai.h | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ arch/powerpc/include/asm/bug.h | 69 +++++++---------------------------
+ arch/powerpc/kernel/traps.c    |  9 +----
+ 2 files changed, 15 insertions(+), 63 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-index 5e09f634c61b..dcc7fbe7acac 100644
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -719,7 +719,7 @@ static void fsl_sai_config_disable(struct fsl_sai *sai, int dir)
- 	u32 xcsr, count = 100;
+v5: Keep EMIT_WARN_ENTRY.
+    I'll plan to take this as a fix.
+
+diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
+index ef42adb44aa3..00c6b0b4ede4 100644
+--- a/arch/powerpc/include/asm/bug.h
++++ b/arch/powerpc/include/asm/bug.h
+@@ -4,14 +4,13 @@
+ #ifdef __KERNEL__
  
- 	regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
--			   FSL_SAI_CSR_TERE, 0);
-+			   FSL_SAI_CSR_TERE | FSL_SAI_CSR_BCE, 0);
+ #include <asm/asm-compat.h>
+-#include <asm/extable.h>
  
- 	/* TERE will remain set till the end of current frame */
- 	do {
-diff --git a/sound/soc/fsl/fsl_sai.h b/sound/soc/fsl/fsl_sai.h
-index 8254c3547b87..550df87b6a06 100644
---- a/sound/soc/fsl/fsl_sai.h
-+++ b/sound/soc/fsl/fsl_sai.h
-@@ -91,6 +91,7 @@
- /* SAI Transmit/Receive Control Register */
- #define FSL_SAI_CSR_TERE	BIT(31)
- #define FSL_SAI_CSR_SE		BIT(30)
-+#define FSL_SAI_CSR_BCE		BIT(28)
- #define FSL_SAI_CSR_FR		BIT(25)
- #define FSL_SAI_CSR_SR		BIT(24)
- #define FSL_SAI_CSR_xF_SHIFT	16
+ #ifdef CONFIG_BUG
+ 
+ #ifdef __ASSEMBLY__
+ #include <asm/asm-offsets.h>
+ #ifdef CONFIG_DEBUG_BUGVERBOSE
+-.macro __EMIT_BUG_ENTRY addr,file,line,flags
++.macro EMIT_BUG_ENTRY addr,file,line,flags
+ 	 .section __bug_table,"aw"
+ 5001:	 .4byte \addr - .
+ 	 .4byte 5002f - .
+@@ -23,7 +22,7 @@
+ 	 .previous
+ .endm
+ #else
+-.macro __EMIT_BUG_ENTRY addr,file,line,flags
++.macro EMIT_BUG_ENTRY addr,file,line,flags
+ 	 .section __bug_table,"aw"
+ 5001:	 .4byte \addr - .
+ 	 .short \flags
+@@ -32,18 +31,6 @@
+ .endm
+ #endif /* verbose */
+ 
+-.macro EMIT_WARN_ENTRY addr,file,line,flags
+-	EX_TABLE(\addr,\addr+4)
+-	__EMIT_BUG_ENTRY \addr,\file,\line,\flags
+-.endm
+-
+-.macro EMIT_BUG_ENTRY addr,file,line,flags
+-	.if \flags & 1 /* BUGFLAG_WARNING */
+-	.err /* Use EMIT_WARN_ENTRY for warnings */
+-	.endif
+-	__EMIT_BUG_ENTRY \addr,\file,\line,\flags
+-.endm
+-
+ #else /* !__ASSEMBLY__ */
+ /* _EMIT_BUG_ENTRY expects args %0,%1,%2,%3 to be FILE, LINE, flags and
+    sizeof(struct bug_entry), respectively */
+@@ -73,16 +60,6 @@
+ 		  "i" (sizeof(struct bug_entry)),	\
+ 		  ##__VA_ARGS__)
+ 
+-#define WARN_ENTRY(insn, flags, label, ...)		\
+-	asm_volatile_goto(				\
+-		"1:	" insn "\n"			\
+-		EX_TABLE(1b, %l[label])			\
+-		_EMIT_BUG_ENTRY				\
+-		: : "i" (__FILE__), "i" (__LINE__),	\
+-		  "i" (flags),				\
+-		  "i" (sizeof(struct bug_entry)),	\
+-		  ##__VA_ARGS__ : : label)
+-
+ /*
+  * BUG_ON() and WARN_ON() do their best to cooperate with compile-time
+  * optimisations. However depending on the complexity of the condition
+@@ -95,16 +72,7 @@
+ } while (0)
+ #define HAVE_ARCH_BUG
+ 
+-#define __WARN_FLAGS(flags) do {				\
+-	__label__ __label_warn_on;				\
+-								\
+-	WARN_ENTRY("twi 31, 0, 0", BUGFLAG_WARNING | (flags), __label_warn_on); \
+-	barrier_before_unreachable();				\
+-	__builtin_unreachable();				\
+-								\
+-__label_warn_on:						\
+-	break;							\
+-} while (0)
++#define __WARN_FLAGS(flags) BUG_ENTRY("twi 31, 0, 0", BUGFLAG_WARNING | (flags))
+ 
+ #ifdef CONFIG_PPC64
+ #define BUG_ON(x) do {						\
+@@ -117,25 +85,15 @@ __label_warn_on:						\
+ } while (0)
+ 
+ #define WARN_ON(x) ({						\
+-	bool __ret_warn_on = false;				\
+-	do {							\
+-		if (__builtin_constant_p((x))) {		\
+-			if (!(x)) 				\
+-				break; 				\
++	int __ret_warn_on = !!(x);				\
++	if (__builtin_constant_p(__ret_warn_on)) {		\
++		if (__ret_warn_on)				\
+ 			__WARN();				\
+-			__ret_warn_on = true;			\
+-		} else {					\
+-			__label__ __label_warn_on;		\
+-								\
+-			WARN_ENTRY(PPC_TLNEI " %4, 0",		\
+-				   BUGFLAG_WARNING | BUGFLAG_TAINT(TAINT_WARN),	\
+-				   __label_warn_on,		\
+-				   "r" ((__force long)(x)));	\
+-			break;					\
+-__label_warn_on:						\
+-			__ret_warn_on = true;			\
+-		}						\
+-	} while (0);						\
++	} else {						\
++		BUG_ENTRY(PPC_TLNEI " %4, 0",			\
++			  BUGFLAG_WARNING | BUGFLAG_TAINT(TAINT_WARN),	\
++			  "r" (__ret_warn_on));	\
++	}							\
+ 	unlikely(__ret_warn_on);				\
+ })
+ 
+@@ -148,14 +106,13 @@ __label_warn_on:						\
+ #ifdef __ASSEMBLY__
+ .macro EMIT_BUG_ENTRY addr,file,line,flags
+ .endm
+-.macro EMIT_WARN_ENTRY addr,file,line,flags
+-.endm
+ #else /* !__ASSEMBLY__ */
+ #define _EMIT_BUG_ENTRY
+-#define _EMIT_WARN_ENTRY
+ #endif
+ #endif /* CONFIG_BUG */
+ 
++#define EMIT_WARN_ENTRY EMIT_BUG_ENTRY
++
+ #include <asm-generic/bug.h>
+ 
+ #ifndef __ASSEMBLY__
+diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+index e59ec6d32d37..7ef147e2a20d 100644
+--- a/arch/powerpc/kernel/traps.c
++++ b/arch/powerpc/kernel/traps.c
+@@ -1508,13 +1508,8 @@ static void do_program_check(struct pt_regs *regs)
+ 
+ 		if (!(regs->msr & MSR_PR) &&  /* not user-mode */
+ 		    report_bug(bugaddr, regs) == BUG_TRAP_TYPE_WARN) {
+-			const struct exception_table_entry *entry;
+-
+-			entry = search_exception_tables(bugaddr);
+-			if (entry) {
+-				regs_set_return_ip(regs, extable_fixup(entry) + regs->nip - bugaddr);
+-				return;
+-			}
++			regs_add_return_ip(regs, 4);
++			return;
+ 		}
+ 
+ 		if (cpu_has_feature(CPU_FTR_DEXCR_NPHIE) && user_mode(regs)) {
 -- 
-2.25.1
+2.41.0
 
