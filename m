@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9DEC74FE66
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 06:43:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 634BE74FE6D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 06:44:31 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=GZoRZcbx;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=kQgLOire;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R14qh5zKJz3cRr
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 14:43:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R14s927xhz30M1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 14:44:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=GZoRZcbx;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=kQgLOire;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b31; helo=mail-yb1-xb31.google.com; envelope-from=hughd@google.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1136; helo=mail-yw1-x1136.google.com; envelope-from=hughd@google.com; receiver=lists.ozlabs.org)
+Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R14pq5Q9Pz309q
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 14:42:27 +1000 (AEST)
-Received: by mail-yb1-xb31.google.com with SMTP id 3f1490d57ef6-c17534f4c63so7714774276.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jul 2023 21:42:27 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R14rK0Y2Zz2xFk
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 14:43:44 +1000 (AEST)
+Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-579d5d89b41so73803547b3.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jul 2023 21:43:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1689136944; x=1691728944;
+        d=google.com; s=20221208; t=1689137021; x=1691729021;
         h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Su/l5hM860ozuqpCkqwtzzC0FfEEdtSDi6e1iwuYpug=;
-        b=GZoRZcbxUGx8JmnbydjZ65tUfTG/RCwN/jSORiifmfhsG46/OVpitJnVjI7Tvfrx66
-         yQKLrj9HSgcav8y1NjkbsLVKwlBLhiB07ffHvy0W5j9nFzsbypZd0htmKlFz47fp9Brd
-         vb96MPWyt92vLrnMOzyhlT2f9c0j2h+mhC/orwGiKeqNf8uE52GrM39x9xkEKYzFJz/J
-         Y7nqbs80ZE9xDlpAf1eoisZIqt1BHL1m+rcz6cqjFJmL7Dpw/Q2zTxvLuFLsfewvvmcc
-         oBMm70r0MkpKOdO4rfwiGTYxRwmWgDWr98VsaQ1GlpPMjr10FdTViBtnADZdkEupuAWp
-         FhZw==
+        bh=32J2R02jsERy50AfXzN+Fv7mkbkTcayWxoVtpmMI0mo=;
+        b=kQgLOireKqLbQKrB+SyHisW6tHedPZ4G73Quib/4dgQ29ZxZF0aUUC9/AB1YAXJTmW
+         YfN2VLL4oxjBytasR0DDmdsA/5SwE00Qr2eUa6/BDHduLqwOHYcIxbv7cRXIJlWzEw2m
+         uoqeOZ8DbWFaiY63frmb1j9LBXR1ks+8b73KgPMot86t+OVw+MvtSmilEn/5eKnnRo9K
+         SAxgb45RUrxIr6smOzqkeoGVSl5EJPs5usxApXvZRRMwRcK/6dkO1aWOTsyUkX+UXkby
+         QrSLYbHURK0PWj/JH/BKH9qrF8fgxguY0Wuc8PElVG57pF2x2Uxoa29tGTGp97vsnB2j
+         jLjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689136944; x=1691728944;
+        d=1e100.net; s=20221208; t=1689137021; x=1691729021;
         h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Su/l5hM860ozuqpCkqwtzzC0FfEEdtSDi6e1iwuYpug=;
-        b=DLYMR6ifkje/qN+eoeza0t4ngj7kPshYaGxvKoVZ/bHZpNpsocow0vKtMOUm5aWnmh
-         lvgQAV89bwgTvO7r3vvrciZpgXkfLnTKRoAeuMbH9K/AL5hWDd2b3JWg7opJmOanWb1b
-         76ADNONyt6EkRcm2fOWBqAFs9dP8OMEe6PJTp9CYA7fxqZtaxJut3U7MyYsQe157sFTe
-         VcKoexoHCF9ZH1pYufu3NYytyKvcMPPqjpiNAEOC8pzOIRbvNU2GxKYXh0r0CsYCmXAn
-         NO5PL06UuZHO5AzRfsZFLbDBmEriFIqCzfz46N6zraruTvTt54V8M30uV+gD9HN8xrw8
-         Aqew==
-X-Gm-Message-State: ABy/qLZ/xe+G4WxA+305XjH/GF/DRPR6T4b3j0Gf1nrhikV6vDer1ydW
-	Vds3KvPomHv695DM240JUeQYFw==
-X-Google-Smtp-Source: APBJJlFyWWTfqTiLrJedDsm7ZDw08POtyd5zLp0uOv6BSUnlUd1ofH5+6axcSto3EVAkbgdVFZKvLA==
-X-Received: by 2002:a25:c343:0:b0:c16:8d80:228b with SMTP id t64-20020a25c343000000b00c168d80228bmr14716106ybf.37.1689136944086;
-        Tue, 11 Jul 2023 21:42:24 -0700 (PDT)
+        bh=32J2R02jsERy50AfXzN+Fv7mkbkTcayWxoVtpmMI0mo=;
+        b=byodavXtFYSva2s3Xmf9U1ftDeZK6wWkHIqOnHrqsHE3S3Z6CFBWeaS4wd8WNoFcKa
+         4ydQSXAp3LxjD5Cnmd7BhbjDlnuFZ4p8ogR7gJ4GysX5CzD/dwWVkeoj6SdZONe/KHJr
+         fhcfF7A+kNH7lg2Yg4YUyANVbaqtpHQpM+qR8Zhs+D22uchiVg+EDLWUPm0+3wLMxe/4
+         L0ZUexfJBivgvPhwhH5FuDdt+C7vRSTgt4EnkJWZsyQewlhIqgzLilPHJWjsTJoQf9NJ
+         yQ/o5cCCkSGFLruMpF0cFJ3ecDdw3VguqA8qE5CljCXP1OVMA9cEsHawV/kKJg45/rK2
+         Zwmg==
+X-Gm-Message-State: ABy/qLZojTwVWbfh+3fibt9a1WaBS9DyJ2+dSHplITlIw+nt9vr6iUgr
+	QBVyjqawNDdJdM9IkWoDgcEcEg==
+X-Google-Smtp-Source: APBJJlEKLBPT5DnCx42X0tK5DSIxj7Xpwg5AizJaj2C86j321LP85ClVc2RWHCxTTmThFbhjxFV/0w==
+X-Received: by 2002:a81:4e46:0:b0:577:42be:1804 with SMTP id c67-20020a814e46000000b0057742be1804mr17031953ywb.29.1689137021419;
+        Tue, 11 Jul 2023 21:43:41 -0700 (PDT)
 Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id m9-20020a258c89000000b00c4ec3a3f695sm752090ybl.46.2023.07.11.21.42.20
+        by smtp.gmail.com with ESMTPSA id h62-20020a815341000000b0057682d3f95fsm981159ywb.136.2023.07.11.21.43.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Jul 2023 21:42:23 -0700 (PDT)
-Date: Tue, 11 Jul 2023 21:42:19 -0700 (PDT)
+        Tue, 11 Jul 2023 21:43:41 -0700 (PDT)
+Date: Tue, 11 Jul 2023 21:43:36 -0700 (PDT)
 From: Hugh Dickins <hughd@google.com>
 X-X-Sender: hugh@ripple.attlocal.net
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v3 10/13] mm/khugepaged: collapse_pte_mapped_thp() with
- mmap_read_lock()
+Subject: [PATCH v3 11/13] mm/khugepaged: delete
+ khugepaged_collapse_pte_mapped_thps()
 In-Reply-To: <7cd843a9-aa80-14f-5eb2-33427363c20@google.com>
-Message-ID: <b53be6a4-7715-51f9-aad-f1347dcb7c4@google.com>
+Message-ID: <a5dce57-6dfa-5559-4698-e817eb2f993@google.com>
 References: <7cd843a9-aa80-14f-5eb2-33427363c20@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -82,316 +82,212 @@ Cc: Miaohe Lin <linmiaohe@huawei.com>, David Hildenbrand <david@redhat.com>, Pet
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Bring collapse_and_free_pmd() back into collapse_pte_mapped_thp().
-It does need mmap_read_lock(), but it does not need mmap_write_lock(),
-nor vma_start_write() nor i_mmap lock nor anon_vma lock.  All racing
-paths are relying on pte_offset_map_lock() and pmd_lock(), so use those.
+Now that retract_page_tables() can retract page tables reliably, without
+depending on trylocks, delete all the apparatus for khugepaged to try
+again later: khugepaged_collapse_pte_mapped_thps() etc; and free up the
+per-mm memory which was set aside for that in the khugepaged_mm_slot.
 
-Follow the pattern in retract_page_tables(); and using pte_free_defer()
-removes most of the need for tlb_remove_table_sync_one() here; but call
-pmdp_get_lockless_sync() to use it in the PAE case.
-
-First check the VMA, in case page tables are being torn down: from JannH.
-Confirm the preliminary find_pmd_or_thp_or_none() once page lock has been
-acquired and the page looks suitable: from then on its state is stable.
-
-However, collapse_pte_mapped_thp() was doing something others don't:
-freeing a page table still containing "valid" entries.  i_mmap lock did
-stop a racing truncate from double-freeing those pages, but we prefer
-collapse_pte_mapped_thp() to clear the entries as usual.  Their TLB
-flush can wait until the pmdp_collapse_flush() which follows, but the
-mmu_notifier_invalidate_range_start() has to be done earlier.
-
-Do the "step 1" checking loop without mmu_notifier: it wouldn't be good
-for khugepaged to keep on repeatedly invalidating a range which is then
-found unsuitable e.g. contains COWs.  "step 2", which does the clearing,
-must then be more careful (after dropping ptl to do mmu_notifier), with
-abort prepared to correct the accounting like "step 3".  But with those
-entries now cleared, "step 4" (after dropping ptl to do pmd_lock) is kept
-safe by the huge page lock, which stops new PTEs from being faulted in.
+But one part of that is worth keeping: when hpage_collapse_scan_file()
+found SCAN_PTE_MAPPED_HUGEPAGE, that address was noted in the mm_slot
+to be tried for retraction later - catching, for example, page tables
+where a reversible mprotect() of a portion had required splitting the
+pmd, but now it can be recollapsed.  Call collapse_pte_mapped_thp()
+directly in this case (why was it deferred before?  I assume an issue
+with needing mmap_lock for write, but now it's only needed for read).
 
 Signed-off-by: Hugh Dickins <hughd@google.com>
 ---
- mm/khugepaged.c | 172 ++++++++++++++++++++++----------------------------
- 1 file changed, 77 insertions(+), 95 deletions(-)
+ mm/khugepaged.c | 125 +++++++-------------------------------------------
+ 1 file changed, 16 insertions(+), 109 deletions(-)
 
 diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 3bb05147961b..46986eb4eebb 100644
+index 46986eb4eebb..7c7aaddbe130 100644
 --- a/mm/khugepaged.c
 +++ b/mm/khugepaged.c
-@@ -1483,7 +1483,7 @@ static bool khugepaged_add_pte_mapped_thp(struct mm_struct *mm,
- 	return ret;
+@@ -92,8 +92,6 @@ static DEFINE_READ_MOSTLY_HASHTABLE(mm_slots_hash, MM_SLOTS_HASH_BITS);
+ 
+ static struct kmem_cache *mm_slot_cache __read_mostly;
+ 
+-#define MAX_PTE_MAPPED_THP 8
+-
+ struct collapse_control {
+ 	bool is_khugepaged;
+ 
+@@ -107,15 +105,9 @@ struct collapse_control {
+ /**
+  * struct khugepaged_mm_slot - khugepaged information per mm that is being scanned
+  * @slot: hash lookup from mm to mm_slot
+- * @nr_pte_mapped_thp: number of pte mapped THP
+- * @pte_mapped_thp: address array corresponding pte mapped THP
+  */
+ struct khugepaged_mm_slot {
+ 	struct mm_slot slot;
+-
+-	/* pte-mapped THP in this mm */
+-	int nr_pte_mapped_thp;
+-	unsigned long pte_mapped_thp[MAX_PTE_MAPPED_THP];
+ };
+ 
+ /**
+@@ -1439,50 +1431,6 @@ static void collect_mm_slot(struct khugepaged_mm_slot *mm_slot)
  }
  
--/* hpage must be locked, and mmap_lock must be held in write */
-+/* hpage must be locked, and mmap_lock must be held */
- static int set_huge_pmd(struct vm_area_struct *vma, unsigned long addr,
- 			pmd_t *pmdp, struct page *hpage)
- {
-@@ -1495,7 +1495,7 @@ static int set_huge_pmd(struct vm_area_struct *vma, unsigned long addr,
- 	};
- 
- 	VM_BUG_ON(!PageTransHuge(hpage));
--	mmap_assert_write_locked(vma->vm_mm);
-+	mmap_assert_locked(vma->vm_mm);
- 
- 	if (do_set_pmd(&vmf, hpage))
- 		return SCAN_FAIL;
-@@ -1504,48 +1504,6 @@ static int set_huge_pmd(struct vm_area_struct *vma, unsigned long addr,
- 	return SCAN_SUCCEED;
- }
- 
+ #ifdef CONFIG_SHMEM
 -/*
-- * A note about locking:
-- * Trying to take the page table spinlocks would be useless here because those
-- * are only used to synchronize:
+- * Notify khugepaged that given addr of the mm is pte-mapped THP. Then
+- * khugepaged should try to collapse the page table.
 - *
-- *  - modifying terminal entries (ones that point to a data page, not to another
-- *    page table)
-- *  - installing *new* non-terminal entries
-- *
-- * Instead, we need roughly the same kind of protection as free_pgtables() or
-- * mm_take_all_locks() (but only for a single VMA):
-- * The mmap lock together with this VMA's rmap locks covers all paths towards
-- * the page table entries we're messing with here, except for hardware page
-- * table walks and lockless_pages_from_mm().
+- * Note that following race exists:
+- * (1) khugepaged calls khugepaged_collapse_pte_mapped_thps() for mm_struct A,
+- *     emptying the A's ->pte_mapped_thp[] array.
+- * (2) MADV_COLLAPSE collapses some file extent with target mm_struct B, and
+- *     retract_page_tables() finds a VMA in mm_struct A mapping the same extent
+- *     (at virtual address X) and adds an entry (for X) into mm_struct A's
+- *     ->pte-mapped_thp[] array.
+- * (3) khugepaged calls khugepaged_collapse_scan_file() for mm_struct A at X,
+- *     sees a pte-mapped THP (SCAN_PTE_MAPPED_HUGEPAGE) and adds an entry
+- *     (for X) into mm_struct A's ->pte-mapped_thp[] array.
+- * Thus, it's possible the same address is added multiple times for the same
+- * mm_struct.  Should this happen, we'll simply attempt
+- * collapse_pte_mapped_thp() multiple times for the same address, under the same
+- * exclusive mmap_lock, and assuming the first call is successful, subsequent
+- * attempts will return quickly (without grabbing any additional locks) when
+- * a huge pmd is found in find_pmd_or_thp_or_none().  Since this is a cheap
+- * check, and since this is a rare occurrence, the cost of preventing this
+- * "multiple-add" is thought to be more expensive than just handling it, should
+- * it occur.
 - */
--static void collapse_and_free_pmd(struct mm_struct *mm, struct vm_area_struct *vma,
--				  unsigned long addr, pmd_t *pmdp)
+-static bool khugepaged_add_pte_mapped_thp(struct mm_struct *mm,
+-					  unsigned long addr)
 -{
--	pmd_t pmd;
--	struct mmu_notifier_range range;
+-	struct khugepaged_mm_slot *mm_slot;
+-	struct mm_slot *slot;
+-	bool ret = false;
 -
--	mmap_assert_write_locked(mm);
--	if (vma->vm_file)
--		lockdep_assert_held_write(&vma->vm_file->f_mapping->i_mmap_rwsem);
--	/*
--	 * All anon_vmas attached to the VMA have the same root and are
--	 * therefore locked by the same lock.
--	 */
--	if (vma->anon_vma)
--		lockdep_assert_held_write(&vma->anon_vma->root->rwsem);
+-	VM_BUG_ON(addr & ~HPAGE_PMD_MASK);
 -
--	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm, addr,
--				addr + HPAGE_PMD_SIZE);
--	mmu_notifier_invalidate_range_start(&range);
--	pmd = pmdp_collapse_flush(vma, addr, pmdp);
--	tlb_remove_table_sync_one();
--	mmu_notifier_invalidate_range_end(&range);
--	mm_dec_nr_ptes(mm);
--	page_table_check_pte_clear_range(mm, addr, pmd);
--	pte_free(mm, pmd_pgtable(pmd));
+-	spin_lock(&khugepaged_mm_lock);
+-	slot = mm_slot_lookup(mm_slots_hash, mm);
+-	mm_slot = mm_slot_entry(slot, struct khugepaged_mm_slot, slot);
+-	if (likely(mm_slot && mm_slot->nr_pte_mapped_thp < MAX_PTE_MAPPED_THP)) {
+-		mm_slot->pte_mapped_thp[mm_slot->nr_pte_mapped_thp++] = addr;
+-		ret = true;
+-	}
+-	spin_unlock(&khugepaged_mm_lock);
+-	return ret;
 -}
 -
- /**
-  * collapse_pte_mapped_thp - Try to collapse a pte-mapped THP for mm at
-  * address haddr.
-@@ -1561,26 +1519,29 @@ static void collapse_and_free_pmd(struct mm_struct *mm, struct vm_area_struct *v
- int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
- 			    bool install_pmd)
- {
-+	struct mmu_notifier_range range;
-+	bool notified = false;
- 	unsigned long haddr = addr & HPAGE_PMD_MASK;
- 	struct vm_area_struct *vma = vma_lookup(mm, haddr);
- 	struct page *hpage;
- 	pte_t *start_pte, *pte;
--	pmd_t *pmd;
--	spinlock_t *ptl;
--	int count = 0, result = SCAN_FAIL;
-+	pmd_t *pmd, pgt_pmd;
-+	spinlock_t *pml, *ptl;
-+	int nr_ptes = 0, result = SCAN_FAIL;
- 	int i;
- 
--	mmap_assert_write_locked(mm);
-+	mmap_assert_locked(mm);
-+
-+	/* First check VMA found, in case page tables are being torn down */
-+	if (!vma || !vma->vm_file ||
-+	    !range_in_vma(vma, haddr, haddr + HPAGE_PMD_SIZE))
-+		return SCAN_VMA_CHECK;
- 
- 	/* Fast check before locking page if already PMD-mapped */
- 	result = find_pmd_or_thp_or_none(mm, haddr, &pmd);
- 	if (result == SCAN_PMD_MAPPED)
- 		return result;
- 
--	if (!vma || !vma->vm_file ||
--	    !range_in_vma(vma, haddr, haddr + HPAGE_PMD_SIZE))
--		return SCAN_VMA_CHECK;
--
- 	/*
- 	 * If we are here, we've succeeded in replacing all the native pages
- 	 * in the page cache with a single hugepage. If a mm were to fault-in
-@@ -1610,6 +1571,7 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
- 		goto drop_hpage;
- 	}
- 
-+	result = find_pmd_or_thp_or_none(mm, haddr, &pmd);
- 	switch (result) {
- 	case SCAN_SUCCEED:
- 		break;
-@@ -1623,27 +1585,10 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
- 		goto drop_hpage;
- 	}
- 
--	/* Lock the vma before taking i_mmap and page table locks */
--	vma_start_write(vma);
--
--	/*
--	 * We need to lock the mapping so that from here on, only GUP-fast and
--	 * hardware page walks can access the parts of the page tables that
--	 * we're operating on.
--	 * See collapse_and_free_pmd().
--	 */
--	i_mmap_lock_write(vma->vm_file->f_mapping);
--
--	/*
--	 * This spinlock should be unnecessary: Nobody else should be accessing
--	 * the page tables under spinlock protection here, only
--	 * lockless_pages_from_mm() and the hardware page walker can access page
--	 * tables while all the high-level locks are held in write mode.
--	 */
- 	result = SCAN_FAIL;
- 	start_pte = pte_offset_map_lock(mm, pmd, haddr, &ptl);
--	if (!start_pte)
--		goto drop_immap;
-+	if (!start_pte)		/* mmap_lock + page lock should prevent this */
-+		goto drop_hpage;
- 
- 	/* step 1: check all mapped PTEs are to the right huge page */
- 	for (i = 0, addr = haddr, pte = start_pte;
-@@ -1670,10 +1615,18 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
- 		 */
- 		if (hpage + i != page)
- 			goto abort;
--		count++;
- 	}
- 
--	/* step 2: adjust rmap */
-+	pte_unmap_unlock(start_pte, ptl);
-+	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm,
-+				haddr, haddr + HPAGE_PMD_SIZE);
-+	mmu_notifier_invalidate_range_start(&range);
-+	notified = true;
-+	start_pte = pte_offset_map_lock(mm, pmd, haddr, &ptl);
-+	if (!start_pte)		/* mmap_lock + page lock should prevent this */
-+		goto abort;
-+
-+	/* step 2: clear page table and adjust rmap */
- 	for (i = 0, addr = haddr, pte = start_pte;
- 	     i < HPAGE_PMD_NR; i++, addr += PAGE_SIZE, pte++) {
- 		struct page *page;
-@@ -1681,47 +1634,76 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
- 
- 		if (pte_none(ptent))
- 			continue;
--		page = vm_normal_page(vma, addr, ptent);
--		if (WARN_ON_ONCE(page && is_zone_device_page(page)))
-+		/*
-+		 * We dropped ptl after the first scan, to do the mmu_notifier:
-+		 * page lock stops more PTEs of the hpage being faulted in, but
-+		 * does not stop write faults COWing anon copies from existing
-+		 * PTEs; and does not stop those being swapped out or migrated.
-+		 */
-+		if (!pte_present(ptent)) {
-+			result = SCAN_PTE_NON_PRESENT;
- 			goto abort;
-+		}
-+		page = vm_normal_page(vma, addr, ptent);
-+		if (hpage + i != page)
-+			goto abort;
-+
-+		/*
-+		 * Must clear entry, or a racing truncate may re-remove it.
-+		 * TLB flush can be left until pmdp_collapse_flush() does it.
-+		 * PTE dirty? Shmem page is already dirty; file is read-only.
-+		 */
-+		pte_clear(mm, addr, pte);
- 		page_remove_rmap(page, vma, false);
-+		nr_ptes++;
- 	}
- 
- 	pte_unmap_unlock(start_pte, ptl);
- 
- 	/* step 3: set proper refcount and mm_counters. */
--	if (count) {
--		page_ref_sub(hpage, count);
--		add_mm_counter(vma->vm_mm, mm_counter_file(hpage), -count);
-+	if (nr_ptes) {
-+		page_ref_sub(hpage, nr_ptes);
-+		add_mm_counter(mm, mm_counter_file(hpage), -nr_ptes);
- 	}
- 
--	/* step 4: remove pte entries */
--	/* we make no change to anon, but protect concurrent anon page lookup */
--	if (vma->anon_vma)
--		anon_vma_lock_write(vma->anon_vma);
-+	/* step 4: remove page table */
- 
--	collapse_and_free_pmd(mm, vma, haddr, pmd);
-+	/* Huge page lock is still held, so page table must remain empty */
-+	pml = pmd_lock(mm, pmd);
-+	if (ptl != pml)
-+		spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
-+	pgt_pmd = pmdp_collapse_flush(vma, haddr, pmd);
-+	pmdp_get_lockless_sync();
-+	if (ptl != pml)
-+		spin_unlock(ptl);
-+	spin_unlock(pml);
- 
--	if (vma->anon_vma)
--		anon_vma_unlock_write(vma->anon_vma);
--	i_mmap_unlock_write(vma->vm_file->f_mapping);
-+	mmu_notifier_invalidate_range_end(&range);
-+
-+	mm_dec_nr_ptes(mm);
-+	page_table_check_pte_clear_range(mm, haddr, pgt_pmd);
-+	pte_free_defer(mm, pmd_pgtable(pgt_pmd));
- 
- maybe_install_pmd:
- 	/* step 5: install pmd entry */
- 	result = install_pmd
- 			? set_huge_pmd(vma, haddr, pmd, hpage)
- 			: SCAN_SUCCEED;
--
-+	goto drop_hpage;
-+abort:
-+	if (nr_ptes) {
-+		flush_tlb_mm(mm);
-+		page_ref_sub(hpage, nr_ptes);
-+		add_mm_counter(mm, mm_counter_file(hpage), -nr_ptes);
-+	}
-+	if (start_pte)
-+		pte_unmap_unlock(start_pte, ptl);
-+	if (notified)
-+		mmu_notifier_invalidate_range_end(&range);
- drop_hpage:
- 	unlock_page(hpage);
- 	put_page(hpage);
+ /* hpage must be locked, and mmap_lock must be held */
+ static int set_huge_pmd(struct vm_area_struct *vma, unsigned long addr,
+ 			pmd_t *pmdp, struct page *hpage)
+@@ -1706,29 +1654,6 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
  	return result;
--
--abort:
--	pte_unmap_unlock(start_pte, ptl);
--drop_immap:
--	i_mmap_unlock_write(vma->vm_file->f_mapping);
--	goto drop_hpage;
  }
  
- static void khugepaged_collapse_pte_mapped_thps(struct khugepaged_mm_slot *mm_slot)
-@@ -2855,9 +2837,9 @@ int madvise_collapse(struct vm_area_struct *vma, struct vm_area_struct **prev,
- 		case SCAN_PTE_MAPPED_HUGEPAGE:
- 			BUG_ON(mmap_locked);
- 			BUG_ON(*prev);
--			mmap_write_lock(mm);
-+			mmap_read_lock(mm);
- 			result = collapse_pte_mapped_thp(mm, addr, true);
--			mmap_write_unlock(mm);
-+			mmap_locked = true;
- 			goto handle_result;
- 		/* Whitelisted set of results where continuing OK */
- 		case SCAN_PMD_NULL:
+-static void khugepaged_collapse_pte_mapped_thps(struct khugepaged_mm_slot *mm_slot)
+-{
+-	struct mm_slot *slot = &mm_slot->slot;
+-	struct mm_struct *mm = slot->mm;
+-	int i;
+-
+-	if (likely(mm_slot->nr_pte_mapped_thp == 0))
+-		return;
+-
+-	if (!mmap_write_trylock(mm))
+-		return;
+-
+-	if (unlikely(hpage_collapse_test_exit(mm)))
+-		goto out;
+-
+-	for (i = 0; i < mm_slot->nr_pte_mapped_thp; i++)
+-		collapse_pte_mapped_thp(mm, mm_slot->pte_mapped_thp[i], false);
+-
+-out:
+-	mm_slot->nr_pte_mapped_thp = 0;
+-	mmap_write_unlock(mm);
+-}
+-
+ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
+ {
+ 	struct vm_area_struct *vma;
+@@ -2370,16 +2295,6 @@ static int hpage_collapse_scan_file(struct mm_struct *mm, unsigned long addr,
+ {
+ 	BUILD_BUG();
+ }
+-
+-static void khugepaged_collapse_pte_mapped_thps(struct khugepaged_mm_slot *mm_slot)
+-{
+-}
+-
+-static bool khugepaged_add_pte_mapped_thp(struct mm_struct *mm,
+-					  unsigned long addr)
+-{
+-	return false;
+-}
+ #endif
+ 
+ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+@@ -2409,7 +2324,6 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+ 		khugepaged_scan.mm_slot = mm_slot;
+ 	}
+ 	spin_unlock(&khugepaged_mm_lock);
+-	khugepaged_collapse_pte_mapped_thps(mm_slot);
+ 
+ 	mm = slot->mm;
+ 	/*
+@@ -2462,36 +2376,29 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+ 						khugepaged_scan.address);
+ 
+ 				mmap_read_unlock(mm);
+-				*result = hpage_collapse_scan_file(mm,
+-								   khugepaged_scan.address,
+-								   file, pgoff, cc);
+ 				mmap_locked = false;
++				*result = hpage_collapse_scan_file(mm,
++					khugepaged_scan.address, file, pgoff, cc);
++				if (*result == SCAN_PTE_MAPPED_HUGEPAGE) {
++					mmap_read_lock(mm);
++					mmap_locked = true;
++					if (hpage_collapse_test_exit(mm)) {
++						fput(file);
++						goto breakouterloop;
++					}
++					*result = collapse_pte_mapped_thp(mm,
++						khugepaged_scan.address, false);
++					if (*result == SCAN_PMD_MAPPED)
++						*result = SCAN_SUCCEED;
++				}
+ 				fput(file);
+ 			} else {
+ 				*result = hpage_collapse_scan_pmd(mm, vma,
+-								  khugepaged_scan.address,
+-								  &mmap_locked,
+-								  cc);
++					khugepaged_scan.address, &mmap_locked, cc);
+ 			}
+-			switch (*result) {
+-			case SCAN_PTE_MAPPED_HUGEPAGE: {
+-				pmd_t *pmd;
+ 
+-				*result = find_pmd_or_thp_or_none(mm,
+-								  khugepaged_scan.address,
+-								  &pmd);
+-				if (*result != SCAN_SUCCEED)
+-					break;
+-				if (!khugepaged_add_pte_mapped_thp(mm,
+-								   khugepaged_scan.address))
+-					break;
+-			} fallthrough;
+-			case SCAN_SUCCEED:
++			if (*result == SCAN_SUCCEED)
+ 				++khugepaged_pages_collapsed;
+-				break;
+-			default:
+-				break;
+-			}
+ 
+ 			/* move to next address */
+ 			khugepaged_scan.address += HPAGE_PMD_SIZE;
 -- 
 2.35.3
 
