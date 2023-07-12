@@ -2,104 +2,113 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0D747510F0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 21:07:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2738A7511A9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 22:08:47 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HrKVprYS;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Zd9LPH0I;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=gd6P6YQW;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R1S0T621cz3cBC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jul 2023 05:07:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R1TMd0SGkz3c3K
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jul 2023 06:08:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HrKVprYS;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Zd9LPH0I;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=gd6P6YQW;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f400:7e89::614; helo=nam10-mw2-obe.outbound.protection.outlook.com; envelope-from=jhubbard@nvidia.com; receiver=lists.ozlabs.org)
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on20614.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e89::614])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R1RzY2DVTz3bbW
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jul 2023 05:06:15 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1689188772;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TH8kSVdw6te9fZYouICsYG10z251roU+ykSRmjAwUKo=;
-	b=HrKVprYSFewBDyhCJHb7c+tDBrAN8ueEqJ3CabZ0z/O3VUhp8bHgzv8b7fwhcB0Kdz0Xkz
-	Vhl3DInMXqNt7vhzzmv5Kk+HuP/8BMmcW6a2QfapMuCUJpNP8JUV/5w/9yJRqdm7a2Gt3f
-	jvfDgzE3qAQA0LVcDcUaAtHrT+GadbM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1689188773;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TH8kSVdw6te9fZYouICsYG10z251roU+ykSRmjAwUKo=;
-	b=Zd9LPH0I0ovmIg9kn44OaRaudqz4sXUNA6IzMsBaaTqQsTAIMuNEzksIMqzSZFOoQ4vq2z
-	ruXMP5nh6bwe+yhmWdzVJ4oJgdxVBY043BTNonmw+0XzaF2nw1AZMh8xCT/WnCi24z166B
-	4vneULNvykR7auI/bkD4AO3XNdVdpKY=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-641-KRflGqzGM5WRbIBOdhbYGw-1; Wed, 12 Jul 2023 15:06:11 -0400
-X-MC-Unique: KRflGqzGM5WRbIBOdhbYGw-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-3fbe4cecd66so42692305e9.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 12:06:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689188769; x=1691780769;
-        h=content-transfer-encoding:in-reply-to:subject:organization:from
-         :references:cc:to:content-language:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TH8kSVdw6te9fZYouICsYG10z251roU+ykSRmjAwUKo=;
-        b=UPoFDamvGGLBfujlm7Af5pY9Tl7nxRmiI4UqDjBKCbgFq4Gy2SZEW9YR+Fz4U3ALOj
-         J23ja9gKfe5MacyAoXhCB8gkZFzS2inhaAtcofg4ScuNIp/k7wG7DTboXQaQHK9RfkWk
-         w8Y6GRyF0cIuOs4UyGaWjXjJtZ0adb39/pXtBfMEjiCknYfnyPoqEo+9tJQN5ekZ5XTp
-         /OvrhCSTA7grkiRLOusDxUpIDrCrI1m6OuGkdfRw1CidGBLsFfLIaRGAzTivac7hkWud
-         spC08RFfMVuVXmh/aGA3y2Tb8HauxoERBjaHDjVyTUgmV+iGBXHWk3YDW91fcO+jVsBA
-         syIA==
-X-Gm-Message-State: ABy/qLaUs+8nfi9/5eEkVL7rttEBstcxuNESH7kxqNwlPcdFmLunA1Vo
-	GvVLUeP+nHgR7aiSsb5BCAWTJrvhgQfWfW5APwyL7rqN+M+ovq5TtIpGycBJv9G+sGS8AVTTZvx
-	DaJ59Qgz/sRx+VKC7vMEJXqJYeA==
-X-Received: by 2002:a05:600c:3644:b0:3fc:627:ea31 with SMTP id y4-20020a05600c364400b003fc0627ea31mr13170857wmq.38.1689188769704;
-        Wed, 12 Jul 2023 12:06:09 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEJAY+2GhS4XJclXcXEd8YQMKAMPvGWx2HjQXRKwdVt2URQdeCbd85XkzInZ39IOwfgHTAaNA==
-X-Received: by 2002:a05:600c:3644:b0:3fc:627:ea31 with SMTP id y4-20020a05600c364400b003fc0627ea31mr13170839wmq.38.1689188769283;
-        Wed, 12 Jul 2023 12:06:09 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c707:3700:3eea:ace6:5bde:4478? (p200300cbc70737003eeaace65bde4478.dip0.t-ipconnect.de. [2003:cb:c707:3700:3eea:ace6:5bde:4478])
-        by smtp.gmail.com with ESMTPSA id q10-20020adfdfca000000b003144b95e1ecsm5745648wrn.93.2023.07.12.12.06.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Jul 2023 12:06:08 -0700 (PDT)
-Message-ID: <5b4dcee6-c72f-103a-dd7b-b829f5be948b@redhat.com>
-Date: Wed, 12 Jul 2023 21:06:07 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R1TLd5CGhz3bjK
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jul 2023 06:07:50 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=m3Xm/FMpJdc5x35i7TAJYnvpyMQEv2ulvRUa0RWU+curzfLWcOXk8GJ/67hGhwS859f6AJ2w/QnEo/6jtSUHSRn8plM+H2ytJHIrGIC1+Rr/VLYeP/0rrhBfljcaQ5SLQ9rxGTvruEZqFG2NfdbYSeAqYxLsdowjbzPZYHQ5mIQUjVaRbW3FXdLSllpjT+bOBsUZGU0AUOrM2mYzp6Qf2P/iWK0zVHe0k+KOzp4uSvpJ9UccLwHvaEttyUpZ2jR59SKZ0DNszxeEQaq/vCuGX2FTjPefB2eTEssPHmWbsMrBu7vlx0skfwj+W8PV0+NmMzpGdn8BxgWQXF2znc341Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3nTNA/NLXj4t2KHz6shPWV2xv/BRczwnRfupTcfXGkA=;
+ b=cbmdwAUD4PjPu9l44nugf8eFrPIGl1k3/rOM9FKXIoDWj1FpyOceqOjx2K/UlUOnpMkgoETodFXXpdgHLkR91rAdjQp5Hk/Zd+RdnBz9gOStxWsgj2Cm4oZlPRUe6cJCkkiip0PsKnhF4LHswv8orwX2NjhyU6yvZT7RhhiqFa1NZ1AcxL6l/oLFETIG7ItNhx4TAqV8/2FZBjYIkOaOmDRlrlsYVCbE3tcrcGmZvn7KEEsiCejJsKZBFTx8q6Sp+WC/HpiRy2fnCd3zl0yiwpoEOmeciz+6Qd1b9ucG161ruxfZ17vjCk0eN9XHEKWuLoJA8eIH2tw/dTqSRyFoUg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=redhat.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3nTNA/NLXj4t2KHz6shPWV2xv/BRczwnRfupTcfXGkA=;
+ b=gd6P6YQW1/xySPjmy3QI7/sEBpLimL3oJzG31+ayTwDxTgy3RiYQw+K4kbaJtlH+OBr9ydgG5M6HDkzPChbaAsbpZrgt5yVeWh5VdAe8WC6EOF6Xey9m+9tjaONP/DTec3mPdBYR6DKmoYxXGdT6Lvd4BzrpWj3cUEJmDX0kENC9t+FfVY4QpMYEOAhkv7RCEHA0xdQcVWSN0593wYtRtanHMYi2EVuQri4vkwyAYplXihxEhe6EuK7vMnctH9yhqSUk6cWZwod8RXWPvsZUdLM4ztX1WzCUhlDBk4LzZGvO/F4s4olrXDh1hw0/lhwcoDQdLt7Jisbtp25/K6iCyg==
+Received: from MW4PR04CA0252.namprd04.prod.outlook.com (2603:10b6:303:88::17)
+ by IA1PR12MB8078.namprd12.prod.outlook.com (2603:10b6:208:3f1::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.31; Wed, 12 Jul
+ 2023 20:07:27 +0000
+Received: from CO1NAM11FT007.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:303:88:cafe::1a) by MW4PR04CA0252.outlook.office365.com
+ (2603:10b6:303:88::17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.20 via Frontend
+ Transport; Wed, 12 Jul 2023 20:07:27 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CO1NAM11FT007.mail.protection.outlook.com (10.13.174.131) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6588.24 via Frontend Transport; Wed, 12 Jul 2023 20:07:27 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.5; Wed, 12 Jul 2023
+ 13:07:14 -0700
+Received: from [10.110.48.28] (10.126.230.35) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.37; Wed, 12 Jul
+ 2023 13:07:14 -0700
+Message-ID: <89d500a4-b639-bf00-ea65-6f2690c74867@nvidia.com>
+Date: Wed, 12 Jul 2023 13:07:13 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-mm@kvack.org,
- akpm@linux-foundation.org, mpe@ellerman.id.au,
- linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, christophe.leroy@csgroup.eu
-References: <20230711044834.72809-1-aneesh.kumar@linux.ibm.com>
- <20230711044834.72809-5-aneesh.kumar@linux.ibm.com>
- <b44ce7ab-7fcf-3f1b-4bca-3d5d12838812@redhat.com>
- <ccda3be5-1e44-145e-7b46-2e420935b1d6@linux.ibm.com>
- <57dd0568-ee56-ff8d-3ba3-a9089a2ab386@redhat.com>
- <87wmz56xyh.fsf@linux.ibm.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [PATCH v3 4/7] mm/hotplug: Allow pageblock alignment via altmap
- reservation
-In-Reply-To: <87wmz56xyh.fsf@linux.ibm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v3 3/7] mm/hotplug: Allow architecture to override memmap
+ on memory support check
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: David Hildenbrand <david@redhat.com>, Aneesh Kumar K V
+	<aneesh.kumar@linux.ibm.com>, <linux-mm@kvack.org>,
+	<akpm@linux-foundation.org>, <mpe@ellerman.id.au>,
+	<linuxppc-dev@lists.ozlabs.org>, <npiggin@gmail.com>,
+	<christophe.leroy@csgroup.eu>
+References: <20230711044834.72809-1-aneesh.kumar@linux.ibm.com>
+ <20230711044834.72809-4-aneesh.kumar@linux.ibm.com>
+ <6f6764f6-4b5a-dfa8-c409-ba4f2828891f@redhat.com>
+ <176cee16-f926-ab3b-92fe-98bebf79d43d@linux.ibm.com>
+ <641a4276-cfb9-bd1b-36a8-cb4bcae408f6@redhat.com>
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <641a4276-cfb9-bd1b-36a8-cb4bcae408f6@redhat.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.126.230.35]
+X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1NAM11FT007:EE_|IA1PR12MB8078:EE_
+X-MS-Office365-Filtering-Correlation-Id: e59b062a-883b-4997-ee09-08db83139d87
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	UjYgQ6jXZIY0uinvC43hQbLl88T2492YUdbMGxRsboIXmRumcen4KfOp3CmK0P5sY6otxuKjIJIIGe3VQ3sYo9lRAuQzaHzYzUhh3oICrW3bQkBLGOIcaU/FHjRlc0ZuTjyMnJc9SJPcWz4sekDh9CyGAXFyMSr3CQgPIMskwUh+144eCO9rUvHQIYEA8ErkBjyVS62hKBnjYKnULgnTbIAFLaTBKC9LDddy+3YQ1yyaSkuO179Z2RTMSnx7jVHiV0cR/Bz2W7Up02IfjVc++NodUYjEZSoNnxkmOCH6d5Umy28M48IREvWa5YeCa9HYl/ps1lNTv2q9hq3BECvzz+xnA9PYM5YjMo+cR1+TaFvU5LeT9dA5ycePNCKaYQ27bnJsByJx7q/MooRDMmq/TCH6e7Qu96PHIEOQ7F9wnhG0Y8OpwzpRHc/0Z3nB0XxUJKSnoLqmjcuvjpFQX2SokMiJxqzgcNKY+gd+Xhv4fknB0cMNLAPpYdg3uP3Sqz8K/0gfkt5FiAwpquynR/Az05a0nBXIrldHsb7lE47fmq4aQLKAkY7O7AQqKtkJ0hciSzPaE57svSu4QeoPBIPsQXdWY+m7pdcbkPQ/NxiDOvsOi1nXJPkjLO99Ltg10ZBbcrvoD4fqh2ZtM0+rNmv6K9dPH+urADM7bdWYiYZfRY1jwo7unfiqm8soYpePnzq+US/PkCwbnWX00o0yiuZeAz17VzKuS4oodoBeAuE7GwGz/3kldHGa4QbL/K4bwZmnbkEa2J/uJActleWZFcY6mg==
+X-Forefront-Antispam-Report: 	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230028)(4636009)(396003)(376002)(346002)(39860400002)(136003)(451199021)(40470700004)(46966006)(36840700001)(40460700003)(8676002)(8936002)(36860700001)(47076005)(83380400001)(336012)(82740400003)(356005)(426003)(2616005)(36756003)(7636003)(2906002)(31696002)(86362001)(82310400005)(7416002)(53546011)(40480700001)(5660300002)(26005)(16526019)(31686004)(4326008)(70586007)(54906003)(16576012)(70206006)(478600001)(110136005)(41300700001)(186003)(316002)(43740500002);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jul 2023 20:07:27.2043
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e59b062a-883b-4997-ee09-08db83139d87
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: 	CO1NAM11FT007.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8078
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -115,145 +124,43 @@ Cc: Vishal Verma <vishal.l.verma@intel.com>, Michal Hocko <mhocko@suse.com>, Osc
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12.07.23 15:50, Aneesh Kumar K.V wrote:
-> David Hildenbrand <david@redhat.com> writes:
-> 
->> On 12.07.23 05:16, Aneesh Kumar K V wrote:
->>> On 7/11/23 10:49 PM, David Hildenbrand wrote:
->>>> On 11.07.23 06:48, Aneesh Kumar K.V wrote:
->>>>> Add a new kconfig option that can be selected if we want to allow
->>>>> pageblock alignment by reserving pages in the vmemmap altmap area.
->>>>> This implies we will be reserving some pages for every memoryblock
->>>>> This also allows the memmap on memory feature to be widely useful
->>>>> with different memory block size values.
->>>>
->>>> "reserving pages" is a nice way of saying "wasting memory". :) Let's spell that out.
->>>>
->>>> I think we have to find a better name for this, and I think we should have a toggle similar to memory_hotplug.memmap_on_memory. This should be an admin decision, not some kernel config option.
->>>>
->>>>
->>>> memory_hotplug.force_memmap_on_memory
->>>>
->>>> "Enable the memmap on memory feature even if it could result in memory waste due to memmap size limitations. For example, if the memmap for a memory block requires 1 MiB, but the pageblock size is 2 MiB, 1 MiB
->>>> of hotplugged memory will be wasted. Note that there are still cases where the feature cannot be enforced: for example, if the memmap is smaller than a single page, or if the architecture does not support the forced mode in all configurations."
->>>>
->>>> Thoughts?
->>>>
->>>
->>> With module parameter, do we still need the Kconfig option?
+On 7/11/23 09:09, David Hildenbrand wrote:
+...
+>>> Can we make that a __weak function instead?
 >>
->> No.
+>> We can. It is confusing because we do have these two patterns within the kernel where we use
 >>
->> Sleeping over this, maybe we can convert the existing
->> memory_hotplug.memmap_on_memory parameter to also accept "force".
+>> #ifndef x
+>> #endif
+>>
+>> vs
+>>
+>> __weak x
+>>
+>> What is the recommended way to override ? I have mostly been using #ifndef for most of the arch overrides till now.
 >>
 > 
-> How about this?
+> I think when placing the implementation in a C file, it's __weak. But don't ask me :)
 > 
-> modified   mm/memory_hotplug.c
-> @@ -45,13 +45,67 @@
->   /*
->    * memory_hotplug.memmap_on_memory parameter
->    */
-> -static bool memmap_on_memory __ro_after_init;
-> -module_param(memmap_on_memory, bool, 0444);
-> -MODULE_PARM_DESC(memmap_on_memory, "Enable memmap on memory for memory hotplug");
-> +enum {
-> +	MEMMAP_ON_MEMORY_DISABLE = 0,
-> +	MEMMAP_ON_MEMORY_ENABLE,
-> +	FORCE_MEMMAP_ON_MEMORY,
-
-MEMMAP_ON_MEMORY_FORCE ?
-
-> +};
-> +static int memmap_mode __read_mostly = MEMMAP_ON_MEMORY_DISABLE;
-> +static const char *memmap_on_memory_to_str[] = {
-> +	[MEMMAP_ON_MEMORY_DISABLE]  = "disable",
-> +	[MEMMAP_ON_MEMORY_ENABLE]   = "enable",
-> +	[FORCE_MEMMAP_ON_MEMORY]    = "force",
-> +};
-> +
-> +static inline unsigned long memory_block_align_base(unsigned long size)
-> +{
-> +	if (memmap_mode == FORCE_MEMMAP_ON_MEMORY) {
-> +		unsigned long align;
-> +		unsigned long nr_vmemmap_pages = size >> PAGE_SHIFT;
-> +		unsigned long vmemmap_size;
-> +
-> +		vmemmap_size = DIV_ROUND_UP(nr_vmemmap_pages * sizeof(struct page), PAGE_SIZE);
-> +		align = pageblock_align(vmemmap_size) - vmemmap_size;
-> +		return align;
-> +	} else
-> +		return 0;
-
-^ have to see that in action :)
-
-> +}
-> +
-> +static int set_memmap_mode(const char *val, const struct kernel_param *kp)
-> +{
-> +	int ret = sysfs_match_string(memmap_on_memory_to_str, val);
-> +
-
-That would break existing cmdlines that eat Y/N/0/..., no?
-
-Maybe try parsing "force/FORCE" first and then fallback to the common 
-bool parsing (kstrtobool).
-
-Same when printing: handle "force" separately and then just print Y/N 
-like param_get_bool() used to do.
-
-So you'd end up with Y/N/FORCE as output and Y/N/0/.../FORCE/force as input.
-
-But I'm happy to hear about alternatives. Maybe a second parameter is 
-better ... but what name should it have "memmap_on_memory_force" sounds 
-wrong. We'd need a name that expresses that we might be wasting memory, 
-hm ...
-
-> +	if (ret < 0)
-> +		return ret;
-> +	*((int *)kp->arg) = ret;
-> +	if (ret == FORCE_MEMMAP_ON_MEMORY) {
-> +		pr_info("Memory hotplug will reserve %ld pages in each memory block\n",
-> +			memory_block_align_base(memory_block_size_bytes()));
-> +	}
-> +	return 0;
-> +}
-> +
-> +static int get_memmap_mode(char *buffer, const struct kernel_param *kp)
-> +{
-> +	return sprintf(buffer, "%s\n", memmap_on_memory_to_str[*((int *)kp->arg)]);
-> +}
-> +
-> +static const struct kernel_param_ops memmap_mode_ops = {
-> +	.set = set_memmap_mode,
-> +	.get = get_memmap_mode,
-> +};
-> +module_param_cb(memmap_on_memory, &memmap_mode_ops, &memmap_mode, 0644);
-> +MODULE_PARM_DESC(memmap_on_memory, "Enable memmap on memory for memory hotplug\n"
-> +	"With value \"force\" it could result in memory waste due to memmap size limitations \n"
-> +	"For example, if the memmap for a memory block requires 1 MiB, but the pageblock \n"
-> +	"size is 2 MiB, 1 MiB of hotplugged memory will be wasted. Note that there are \n"
-> +	"still cases where the feature cannot be enforced: for example, if the memmap is \n"
-> +	"smaller than a single page, or if the architecture does not support the forced \n"
-> +	"mode in all configurations. (disable/enable/force)");
->   
->   static inline bool mhp_memmap_on_memory(void)
->   {
-> -	return memmap_on_memory;
-> +	return !!memmap_mode;
->   }
->   #else
-> 
-> We can also enable runtime enable/disable/force the feature. We just
-> need to make sure on try_remove_memory we lookup for altmap correctly.
+> We do this already for arch_get_mappable_range() in mm/memory_hotplug.c and IMHO it looks quite nice.
 > 
 
-Yes, that's already been asked for. But let's do that as a separate 
-change later.
+It does look nice. I always forget which parts are supposed to be
+__weak, so I went to check Documentation/ , and it was quite
+entertaining. There are only two search hits: one trivial reference in
+Documentation/conf.py, and the other in checkpatch.rst, which says:
 
+   **WEAK_DECLARATION**
+     Using weak declarations like __attribute__((weak)) or __weak
+     can have unintended link defects.  Avoid using them.
+
+...which seems deeply out of touch with how arch layers work these days,
+doesn't it? (This is not rhetorical; I'm asking in order to get an
+opinion or two on the topic.)
+
+
+thanks,
 -- 
-Cheers,
-
-David / dhildenb
+John Hubbard
+NVIDIA
 
