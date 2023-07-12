@@ -2,87 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C8F9750BB2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 17:03:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83BD6750BE6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 17:09:27 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=INFsrzFr;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=INFsrzFr;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=jiqWTed+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R1Lbc1jqTz3c22
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jul 2023 01:03:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R1LkF30lMz3c4y
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jul 2023 01:09:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=INFsrzFr;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=INFsrzFr;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=jiqWTed+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=vschneid@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R1LZh6QFMz3bnt
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jul 2023 01:02:51 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1689174166;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Kvr3qVn5V77zWJcaKe9AHXcXT+HniwXcgFa7KzwlkrU=;
-	b=INFsrzFr97Uh1GhO/Sl2DckVZUds/DCYbd2lQQ8um48DYpZFotHFXmcSIRv8agkxkLqluL
-	OrvSgCCjFr017BBf7DK+YYlXm29OV3uYCGj2DB4VAg0YD2TkswALd++yyrFf7kH4sW3Q5D
-	pBBKgbNqwxQ16LAGSYISsCLaDeAFcKk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1689174166;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Kvr3qVn5V77zWJcaKe9AHXcXT+HniwXcgFa7KzwlkrU=;
-	b=INFsrzFr97Uh1GhO/Sl2DckVZUds/DCYbd2lQQ8um48DYpZFotHFXmcSIRv8agkxkLqluL
-	OrvSgCCjFr017BBf7DK+YYlXm29OV3uYCGj2DB4VAg0YD2TkswALd++yyrFf7kH4sW3Q5D
-	pBBKgbNqwxQ16LAGSYISsCLaDeAFcKk=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-7-D-fXpiexMpmNc0DT9vkykw-1; Wed, 12 Jul 2023 11:02:44 -0400
-X-MC-Unique: D-fXpiexMpmNc0DT9vkykw-1
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-767564705f5so823361585a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 08:02:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689174164; x=1691766164;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Kvr3qVn5V77zWJcaKe9AHXcXT+HniwXcgFa7KzwlkrU=;
-        b=fVjl4oocJ9n3dVrBwPvfVewGYC5R5ddF3Ied1w8lERHNGuQ0x7G7jgmnX7VXytpYkD
-         HkUlLVSIH0HM4GTbPW/7k7F1zMwhCqJ/sjBK/5VZtfiygwj7ibE/Uy8kAedDtmW/akhC
-         yGCsDBSRZ1ehF8gv9KO3dbVFR5DcJ1OFuSRnu1Pz9tBCoxtb79Tm6PuJ3nVwgHx9Xyk7
-         w6SHpbhYbYR2ujsKNgLtfXi+KwyhfZAogsfQ19pKM8yYMsgu0z4uXihlzN4jA1DUkE7B
-         HlfaR5Zt1OqCkUj5HXsqUYp7qix9SjMe9maLtobWTo3EBRsroE9YmiDZP8U5VVE+6Jtg
-         VMLw==
-X-Gm-Message-State: ABy/qLb4pYDIf/UnMohv5z/xBAFNNlxN2Go1Yhn3XNRu5dYPi47GyfnO
-	aI38JBn3T+7+bNsOg5iRzw0hyBPFXTdTmv/3NF2drhWVHs8oTUvR+QQIMvJtORHRkokYfOa6a+q
-	c2JhydVgEPnKcCIKL291rtOoexg==
-X-Received: by 2002:a0c:e545:0:b0:636:2169:4298 with SMTP id n5-20020a0ce545000000b0063621694298mr15517852qvm.1.1689174163864;
-        Wed, 12 Jul 2023 08:02:43 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlH++qRRrnEHCZes7rTAj13UdiM5e25ZcfTV6Uk9SSKDV/YGCPR9BTbMWih8KQjwtk707jkosQ==
-X-Received: by 2002:a0c:e545:0:b0:636:2169:4298 with SMTP id n5-20020a0ce545000000b0063621694298mr15517822qvm.1.1689174163605;
-        Wed, 12 Jul 2023 08:02:43 -0700 (PDT)
-Received: from vschneid.remote.csb ([154.57.232.159])
-        by smtp.gmail.com with ESMTPSA id o6-20020a0ccb06000000b0062ff0dd0332sm2251154qvk.38.2023.07.12.08.02.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Jul 2023 08:02:43 -0700 (PDT)
-From: Valentin Schneider <vschneid@redhat.com>
-To: Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R1LjM2Xjcz3bvd
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jul 2023 01:08:39 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=DNc/ePBoNgd+bEoPBcid3Rf/V7MDlOQu7ZJsXNCj0Mw=; b=jiqWTed+ZeLN2KTPCdu1HY3ZBo
+	wH5c3x89xYsxPuc/QHg8uV5veO+oAqZ8AmXA9rY0Q98FKHPJw+OiAe6dHd+NFpKwLxhvWknI6uMXq
+	Wcg903Vv3L9yDHlbBHFkDjr+1DAA5jBhb/YE8PD7rHARUVRRUk0lkM5C7TOWCaVhccxl8adTzE5Eb
+	rO4px1w5Nj3DcFx0QKzw0kVjHuMi3zhu9LU/2T5c1R3YOdlzMfzBwe4iYmlQ9h/D+LG9RJ0VprlSG
+	4BxIWdiLfUH9WK3mMzqlzC004PI9QICt61A+eXbUdghJDnkZ+i2o5ZgjpnknSikyCmebQfhFb/MR6
+	qlI+KlLg==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1qJbS0-00Gnv5-1z; Wed, 12 Jul 2023 15:08:20 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(Client did not present a certificate)
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 9F90030036B;
+	Wed, 12 Jul 2023 17:08:18 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 8781D240EBDA6; Wed, 12 Jul 2023 17:08:18 +0200 (CEST)
+Date: Wed, 12 Jul 2023 17:08:18 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Valentin Schneider <vschneid@redhat.com>
 Subject: Re: [RFC][PATCH] sched: Rename DIE domain
-In-Reply-To: <20230712141056.GI3100107@hirez.programming.kicks-ass.net>
+Message-ID: <20230712150818.GL3100107@hirez.programming.kicks-ass.net>
 References: <20230712141056.GI3100107@hirez.programming.kicks-ass.net>
-Date: Wed, 12 Jul 2023 16:02:38 +0100
-Message-ID: <xhsmh1qhduq9d.mognet@vschneid.remote.csb>
+ <xhsmh1qhduq9d.mognet@vschneid.remote.csb>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <xhsmh1qhduq9d.mognet@vschneid.remote.csb>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,71 +65,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com, peterz@infradead.org, dave.hansen@linux.intel.com, bsegall@google.com, hpa@zytor.com, agordeev@linux.ibm.com, linux-s390@vger.kernel.org, vincent.guittot@linaro.org, x86@kernel.org, mingo@redhat.com, mgorman@suse.de, borntraeger@linux.ibm.com, gor@linux.ibm.com, hca@linux.ibm.com, npiggin@gmail.com, bp@alien8.de, rostedt@goodmis.org, tglx@linutronix.de, dietmar.eggemann@arm.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, svens@linux.ibm.com, bristot@redhat.com
+Cc: juri.lelli@redhat.com, dave.hansen@linux.intel.com, bsegall@google.com, hpa@zytor.com, agordeev@linux.ibm.com, linux-s390@vger.kernel.org, vincent.guittot@linaro.org, x86@kernel.org, mingo@redhat.com, mgorman@suse.de, borntraeger@linux.ibm.com, gor@linux.ibm.com, hca@linux.ibm.com, npiggin@gmail.com, bp@alien8.de, rostedt@goodmis.org, Thomas Gleixner <tglx@linutronix.de>, dietmar.eggemann@arm.com, bristot@redhat.com, linux-kernel@vger.kernel.org, svens@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12/07/23 16:10, Peter Zijlstra wrote:
-> Hi
->
-> Thomas just tripped over the x86 topology setup creating a 'DIE' domain
-> for the package mask :-)
->
-> Since these names are SCHED_DEBUG only, rename them.
-> I don't think anybody *should* be relying on this, but who knows.
->
+On Wed, Jul 12, 2023 at 04:02:38PM +0100, Valentin Schneider wrote:
+> On 12/07/23 16:10, Peter Zijlstra wrote:
+> > Hi
+> >
+> > Thomas just tripped over the x86 topology setup creating a 'DIE' domain
+> > for the package mask :-)
+> >
+> > Since these names are SCHED_DEBUG only, rename them.
+> > I don't think anybody *should* be relying on this, but who knows.
+> >
+> 
+> FWIW I don't care much about the actual name.
 
-FWIW I don't care much about the actual name.
+Confusion is due to x86 growing an actual die topology and this not
+being it.
 
-There are some stray references to DIE in comments - see below. Bit funny
-to see:
-- *  - Package (DIE)
-+ *  - Package (PKG)
+Other than that, I can't be bothered too much about the silly name
+either.
 
-With that:
-Acked-by: Valentin Schneider <vschneid@redhat.com>
+> There are some stray references to DIE in comments - see below. Bit funny
+> to see:
+> - *  - Package (DIE)
+> + *  - Package (PKG)
+> 
+> With that:
+> Acked-by: Valentin Schneider <vschneid@redhat.com>
 
----
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index a80a73909dc2a..190a647534984 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -9439,7 +9439,7 @@ static bool sched_use_asym_prio(struct sched_domain *sd, int cpu)
-  * can only do it if @group is an SMT group and has exactly on busy CPU. Larger
-  * imbalances in the number of CPUS are dealt with in find_busiest_group().
-  *
-- * If we are balancing load within an SMT core, or at DIE domain level, always
-+ * If we are balancing load within an SMT core, or at PKG domain level, always
-  * proceed.
-  *
-  * Return: true if @env::dst_cpu can do with asym_packing load balance. False
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index e9d9cf776b7ab..2cdcfec1d1c89 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -1118,7 +1118,7 @@ build_overlap_sched_groups(struct sched_domain *sd, int cpu)
-  *
-  *  - Simultaneous multithreading (SMT)
-  *  - Multi-Core Cache (MC)
-- *  - Package (DIE)
-+ *  - Package (PKG)
-  *
-  * Where the last one more or less denotes everything up to a NUMA node.
-  *
-@@ -1140,13 +1140,13 @@ build_overlap_sched_groups(struct sched_domain *sd, int cpu)
-  *
-  * CPU   0   1   2   3   4   5   6   7
-  *
-- * DIE  [                             ]
-+ * PKG  [                             ]
-  * MC   [             ] [             ]
-  * SMT  [     ] [     ] [     ] [     ]
-  *
-  *  - or -
-  *
-- * DIE  0-7 0-7 0-7 0-7 0-7 0-7 0-7 0-7
-+ * PKG  0-7 0-7 0-7 0-7 0-7 0-7 0-7 0-7
-  * MC	0-3 0-3 0-3 0-3 4-7 4-7 4-7 4-7
-  * SMT  0-1 0-1 2-3 2-3 4-5 4-5 6-7 6-7
-  *
-
+Durr, I did a git-grep SD_INIT_NAME().. Thanks!
