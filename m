@@ -1,79 +1,103 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79BD874FF9F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 08:45:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B509750007
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 09:23:56 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=um9f/BNF;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=QWOqGp5b;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hxINpudt;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hxINpudt;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R17Xy2PSSz3byH
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 16:45:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R18P54lMxz3c1l
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 17:23:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=um9f/BNF;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=QWOqGp5b;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hxINpudt;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hxINpudt;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2001:67c:2178:6::1c; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R17X147mVz30f4
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 16:44:48 +1000 (AEST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 542932257C;
-	Wed, 12 Jul 2023 06:44:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1689144281; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R18N90tvHz3bkD
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 17:23:04 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1689146581;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=E3XnKIdyYzs9WzUUslFZfdtKZkW2mVfTAiy9Yfh4sv0=;
-	b=um9f/BNFht0hF6qfEMiGec1WN+rwJTel0EZVGynCUBznu+naWlk/+sSsvExpMvKu2fA+TF
-	e3cpze2sA7owkkecnk/V4YXnfwmlAxT6rqW7FxRf0F/0Af4v/KMvZvHVolenSGFhfbKMvY
-	d9RMt5QDxIw1HFGAPOtocjcVjh8L3q8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1689144281;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	bh=EeR3QS0to/DqY2bB2MsY9aijuKAPyyHA7YBvuvP948Y=;
+	b=hxINpudteX50rybup4QpUqNOEHTofMAPgqBJAWF4qEnFEyV0zWGOGiePpuvdOdRlSKvLzW
+	lbbXIObdPFpbRAWNvq8LbA0o0u+5whHJVcCoRh/NWDHf7kPEzgBaNm4/wnFye+CEd3wCGx
+	pMP2GgDRN6yuNr9Q97BiNoizsWy0onA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1689146581;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=E3XnKIdyYzs9WzUUslFZfdtKZkW2mVfTAiy9Yfh4sv0=;
-	b=QWOqGp5bh9cit+mxGXUzK2PdJyS+BJcR1fc5EKRw6uHa2kCnZ1oPtAWdiEqMdfRABSdVXt
-	4TPwQ84Doc2bduBg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id EDE32133DD;
-	Wed, 12 Jul 2023 06:44:40 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id we7SONhLrmRTEgAAMHmgww
-	(envelope-from <tzimmermann@suse.de>); Wed, 12 Jul 2023 06:44:40 +0000
-Message-ID: <b8d28b32-62ff-93fd-ad24-990f82efa38a@suse.de>
-Date: Wed, 12 Jul 2023 08:44:40 +0200
+	bh=EeR3QS0to/DqY2bB2MsY9aijuKAPyyHA7YBvuvP948Y=;
+	b=hxINpudteX50rybup4QpUqNOEHTofMAPgqBJAWF4qEnFEyV0zWGOGiePpuvdOdRlSKvLzW
+	lbbXIObdPFpbRAWNvq8LbA0o0u+5whHJVcCoRh/NWDHf7kPEzgBaNm4/wnFye+CEd3wCGx
+	pMP2GgDRN6yuNr9Q97BiNoizsWy0onA=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-371-OQxxi_lXN9CPQQclFhy6zg-1; Wed, 12 Jul 2023 03:22:59 -0400
+X-MC-Unique: OQxxi_lXN9CPQQclFhy6zg-1
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-30932d15a30so4201780f8f.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 00:22:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689146578; x=1691738578;
+        h=content-transfer-encoding:in-reply-to:organization:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EeR3QS0to/DqY2bB2MsY9aijuKAPyyHA7YBvuvP948Y=;
+        b=B0KkkrjVKgc18WPCaZAhDlw8QLsns+/3E6eISsarRJUnuiES5ZhMjMMCurSP1z0A2p
+         gZjX1wjmNrDc99kzqhGG2khKzQ5oTfW6NKVDUz2DAfXkIq6WiVF++GU0Lcembzzpqt+a
+         Fl3Hb0JeRQ/PLT4pmZdgTuOXZkedyNZJq6i3zZZ1KrYP11h30eaJc3NyFCOmOjrTFx2U
+         SBqnvw85SKuUg3bUzxxxKH2+5c2GK+kOgZqRP/dENLTEmil1jRIt/zkxtmg2wdrNkdnP
+         63yhr2ioSI2Zfz2V4stogW3aMALAYM375HErB/iMir5qrAQby9L9Y5u3mwB5Hi9t0M2c
+         iOQQ==
+X-Gm-Message-State: ABy/qLYPkcYhxf/UisvvkfDJXaVljPwTNsQllL5Yf0cqLXbf1JKl8H7n
+	rkAtlbC7qHTWIWc5ejFMDvMXyJilu6f1svYSQ2pb+KSFj+CVwHG+cW4hYyH0J5y27CbEmmf5c7M
+	lYS8nfKCx/gfdVLKZs3tNqybCKA==
+X-Received: by 2002:adf:fb01:0:b0:315:96ca:dcab with SMTP id c1-20020adffb01000000b0031596cadcabmr9622407wrr.35.1689146578407;
+        Wed, 12 Jul 2023 00:22:58 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGomYcWQ/XjYm7yp82hAebaVhQCX5yL7rEd66/QkdDzyKYkyHxNEVV3WcmmW7loEO8e5SBIQQ==
+X-Received: by 2002:adf:fb01:0:b0:315:96ca:dcab with SMTP id c1-20020adffb01000000b0031596cadcabmr9622388wrr.35.1689146578042;
+        Wed, 12 Jul 2023 00:22:58 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c707:3700:3eea:ace6:5bde:4478? (p200300cbc70737003eeaace65bde4478.dip0.t-ipconnect.de. [2003:cb:c707:3700:3eea:ace6:5bde:4478])
+        by smtp.gmail.com with ESMTPSA id p4-20020a5d4e04000000b00313de682eb3sm4200483wrt.65.2023.07.12.00.22.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 Jul 2023 00:22:57 -0700 (PDT)
+Message-ID: <57dd0568-ee56-ff8d-3ba3-a9089a2ab386@redhat.com>
+Date: Wed, 12 Jul 2023 09:22:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH 00/17] fbdev: Remove FBINFO_DEFAULT and
- FBINFO_FLAG_DEFAULT flags
-To: Sam Ravnborg <sam@ravnborg.org>
-References: <20230710130113.14563-1-tzimmermann@suse.de>
- <20230710171903.GA14712@ravnborg.org>
- <ab92f8d9-36ab-06bc-b85b-d52b7a1bfe9a@suse.de>
- <20230711144744.GA117276@ravnborg.org>
+Subject: Re: [PATCH v3 4/7] mm/hotplug: Allow pageblock alignment via altmap
+ reservation
+To: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>, linux-mm@kvack.org,
+ akpm@linux-foundation.org, mpe@ellerman.id.au,
+ linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, christophe.leroy@csgroup.eu
+References: <20230711044834.72809-1-aneesh.kumar@linux.ibm.com>
+ <20230711044834.72809-5-aneesh.kumar@linux.ibm.com>
+ <b44ce7ab-7fcf-3f1b-4bca-3d5d12838812@redhat.com>
+ <ccda3be5-1e44-145e-7b46-2e420935b1d6@linux.ibm.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <ccda3be5-1e44-145e-7b46-2e420935b1d6@linux.ibm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <20230711144744.GA117276@ravnborg.org>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------K7I6QDTtJR3cKkqc48HZx2aU"
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,104 +109,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, linux-media@vger.kernel.org, kvm@vger.kernel.org, linux-sh@vger.kernel.org, deller@gmx.de, linux-staging@lists.linux.dev, javierm@redhat.com, amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org, linux-input@vger.kernel.org, linux-nvidia@lists.surfsouth.com, linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, linux-geode@lists.infradead.org
+Cc: Vishal Verma <vishal.l.verma@intel.com>, Michal Hocko <mhocko@suse.com>, Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------K7I6QDTtJR3cKkqc48HZx2aU
-Content-Type: multipart/mixed; boundary="------------O4sBmtVossZBjDercKZUVHqN";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: linux-arm-kernel@lists.infradead.org, linux-hyperv@vger.kernel.org,
- kvm@vger.kernel.org, linux-sh@vger.kernel.org, deller@gmx.de,
- linux-staging@lists.linux.dev, javierm@redhat.com,
- amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
- linux-input@vger.kernel.org, linux-nvidia@lists.surfsouth.com,
- linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-geode@lists.infradead.org, linux-media@vger.kernel.org
-Message-ID: <b8d28b32-62ff-93fd-ad24-990f82efa38a@suse.de>
-Subject: Re: [PATCH 00/17] fbdev: Remove FBINFO_DEFAULT and
- FBINFO_FLAG_DEFAULT flags
-References: <20230710130113.14563-1-tzimmermann@suse.de>
- <20230710171903.GA14712@ravnborg.org>
- <ab92f8d9-36ab-06bc-b85b-d52b7a1bfe9a@suse.de>
- <20230711144744.GA117276@ravnborg.org>
-In-Reply-To: <20230711144744.GA117276@ravnborg.org>
+On 12.07.23 05:16, Aneesh Kumar K V wrote:
+> On 7/11/23 10:49 PM, David Hildenbrand wrote:
+>> On 11.07.23 06:48, Aneesh Kumar K.V wrote:
+>>> Add a new kconfig option that can be selected if we want to allow
+>>> pageblock alignment by reserving pages in the vmemmap altmap area.
+>>> This implies we will be reserving some pages for every memoryblock
+>>> This also allows the memmap on memory feature to be widely useful
+>>> with different memory block size values.
+>>
+>> "reserving pages" is a nice way of saying "wasting memory". :) Let's spell that out.
+>>
+>> I think we have to find a better name for this, and I think we should have a toggle similar to memory_hotplug.memmap_on_memory. This should be an admin decision, not some kernel config option.
+>>
+>>
+>> memory_hotplug.force_memmap_on_memory
+>>
+>> "Enable the memmap on memory feature even if it could result in memory waste due to memmap size limitations. For example, if the memmap for a memory block requires 1 MiB, but the pageblock size is 2 MiB, 1 MiB
+>> of hotplugged memory will be wasted. Note that there are still cases where the feature cannot be enforced: for example, if the memmap is smaller than a single page, or if the architecture does not support the forced mode in all configurations."
+>>
+>> Thoughts?
+>>
+> 
+> With module parameter, do we still need the Kconfig option?
 
---------------O4sBmtVossZBjDercKZUVHqN
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+No.
 
-DQoNCkFtIDExLjA3LjIzIHVtIDE2OjQ3IHNjaHJpZWIgU2FtIFJhdm5ib3JnOg0KPiBIaSBU
-aG9tYXMsDQo+IA0KPiBPbiBUdWUsIEp1bCAxMSwgMjAyMyBhdCAwODoyNDo0MEFNICswMjAw
-LCBUaG9tYXMgWmltbWVybWFubiB3cm90ZToNCj4+IEhpIFNhbQ0KPj4NCj4+IEFtIDEwLjA3
-LjIzIHVtIDE5OjE5IHNjaHJpZWIgU2FtIFJhdm5ib3JnOg0KPj4+IEhpIFRob21hcywNCj4+
-Pg0KPj4+IE9uIE1vbiwgSnVsIDEwLCAyMDIzIGF0IDAyOjUwOjA0UE0gKzAyMDAsIFRob21h
-cyBaaW1tZXJtYW5uIHdyb3RlOg0KPj4+PiBSZW1vdmUgdGhlIHVudXNlZCBmbGFncyBGQklO
-Rk9fREVGQVVMVCBhbmQgRkJJTkZPX0ZMQUdfREVGQVVMVCBmcm9tDQo+Pj4+IGZiZGV2IGFu
-ZCBkcml2ZXJzLCBhcyBicmllZmx5IGRpc2N1c3NlZCBhdCBbMV0uIEJvdGggZmxhZ3Mgd2Vy
-ZSBtYXliZQ0KPj4+PiB1c2VmdWwgd2hlbiBmYmRldiBoYWQgc3BlY2lhbCBoYW5kbGluZyBm
-b3IgZHJpdmVyIG1vZHVsZXMuIFdpdGgNCj4+Pj4gY29tbWl0IDM3NmIzZmY1NGM5YSAoImZi
-ZGV2OiBOdWtlIEZCSU5GT19NT0RVTEUiKSwgdGhleSBhcmUgYm90aCAwDQo+Pj4+IGFuZCBo
-YXZlIG5vIGZ1cnRoZXIgZWZmZWN0Lg0KPj4+Pg0KPj4+PiBQYXRjaGVzIDEgdG8gNyByZW1v
-dmUgRkJJTkZPX0RFRkFVTFQgZnJvbSBkcml2ZXJzLiBQYXRjaGVzIDIgdG8gNQ0KPj4+PiBz
-cGxpdCB0aGlzIGJ5IHRoZSB3YXkgdGhlIGZiX2luZm8gc3RydWN0IGlzIGJlaW5nIGFsbG9j
-YXRlZC4gQWxsIGZsYWdzDQo+Pj4+IGFyZSBjbGVhcmVkIHRvIHplcm8gZHVyaW5nIHRoZSBh
-bGxvY2F0aW9uLg0KPj4+Pg0KPj4+PiBQYXRjaGVzIDggdG8gMTYgZG8gdGhlIHNhbWUgZm9y
-IEZCSU5GT19GTEFHX0RFRkFVTFQuIFBhdGNoIDggZml4ZXMNCj4+Pj4gYW4gYWN0dWFsIGJ1
-ZyBpbiBob3cgYXJjaC9zaCB1c2VzIHRoZSB0b2tuZSBmb3Igc3RydWN0IGZiX3ZpZGVvbW9k
-ZSwNCj4+Pj4gd2hpY2ggaXMgdW5yZWxhdGVkLg0KPj4+Pg0KPj4+PiBQYXRjaCAxNyByZW1v
-dmVzIGJvdGggZmxhZyBjb25zdGFudHMgZnJvbSA8bGludXgvZmIuaD4NCj4+Pg0KPj4+IFdl
-IGhhdmUgYSBmZXcgbW9yZSBmbGFncyB0aGF0IGFyZSB1bnVzZWQgLSBzaG91bGQgdGhleSBi
-ZSBudWtlZCB0b28/DQo+Pj4gRkJJTkZPX0hXQUNDRUxfRklMTFJFQ1QNCj4+PiBGQklORk9f
-SFdBQ0NFTF9ST1RBVEUNCj4+PiBGQklORk9fSFdBQ0NFTF9YUEFODQo+Pg0KPj4gSXQgc2Vl
-bXMgdGhvc2UgYXJlIHRoZXJlIGZvciBjb21wbGV0ZW5lc3MuIE5vdGhpbmcgc2V0cyBfUk9U
-QVRFLCB0aGUgb3RoZXJzDQo+PiBhcmUgc2ltcGx5IG5ldmVyIGNoZWNrZWQuIEFjY29yZGlu
-ZyB0byB0aGUgY29tbWVudHMsIHNvbWUgYXJlIHJlcXVpcmVkLCBzb21lDQo+PiBhcmUgb3B0
-aW9uYWwuIEkgZG9uJ3Qga25vdyB3aGF0IHRoYXQgbWVhbnMuDQo+Pg0KPj4gSUlSQyB0aGVy
-ZSB3ZXJlIGNvbXBsYWlucyBhYm91dCBwZXJmb3JtYW5jZSB3aGVuIERhbmllbCB0cmllZCB0
-byByZW1vdmUNCj4+IGZiY29uIGFjY2VsZXJhdGlvbiwgc28gbm90IGFsbCBfSFdBQ0NFTF8g
-ZmxhZ3MgYXJlIHVubmVlZGVkLg0KPj4NCj4+IExlYXZpbmcgdGhlbSBpbiBmb3IgcmVmZXJl
-bmNlL2NvbXBsZXRlbmVzcyBtaWdodCBiZSBhbiBvcHRpb247IG9yIG5vdC4gSQ0KPj4gaGF2
-ZSBubyBzdHJvbmcgZmVlbGluZ3MgYWJvdXQgdGhvc2UgZmxhZ3MuDQo+Pg0KPj4+DQo+Pj4g
-VW51c2VkIGFzIGluIG5vIHJlZmVyZW5jZXMgZnJvbSBmYmRldi9jb3JlLyoNCj4+Pg0KPj4+
-IEkgd291bGQgcmF0aGVyIHNlZSBvbmUgc2VyaWVzIG51a2UgYWxsIHVudXNlZCBGQklORk8g
-ZmxhZ3MgaW4gb25lIGdvLg0KPj4+IEFzc3VtaW5nIG15IHF1aWNrIGdyZXAgYXJlIHJpZ2h0
-IGFuZCB0aGUgYWJvdmUgY2FuIGJlIGRyb3BwZWQuDQo+Pg0KPj4gSSB3b3VsZCBub3Qgd2Fu
-dCB0byBleHRlbmQgdGhpcyBzZXJpZXMuIEknbSByZW1vdmluZyBfREVGQVVMVCBhcyBpdCdz
-DQo+PiBhYnNvbHV0ZWx5IHBvaW50bGVzcyBhbmQgY29uZnVzaW5nLg0KPiANCj4gT0ssIG1h
-a2VzIHNlbnNlIGFuZCB0aGFua3MgZm9yIHRoZSBleHBsYW5hdGlvbi4NCj4gDQo+IFRoZSBz
-ZXJpZXMgaXM6DQo+IEFja2VkLWJ5OiBTYW0gUmF2bmJvcmcgPHNhbUByYXZuYm9yZy5vcmc+
-DQoNClRoYW5rcyBhIGxvdC4NCg0KPiANCg0KLS0gDQpUaG9tYXMgWmltbWVybWFubg0KR3Jh
-cGhpY3MgRHJpdmVyIERldmVsb3Blcg0KU1VTRSBTb2Z0d2FyZSBTb2x1dGlvbnMgR2VybWFu
-eSBHbWJIDQpGcmFua2Vuc3RyYXNzZSAxNDYsIDkwNDYxIE51ZXJuYmVyZywgR2VybWFueQ0K
-R0Y6IEl2byBUb3RldiwgQW5kcmV3IE15ZXJzLCBBbmRyZXcgTWNEb25hbGQsIEJvdWRpZW4g
-TW9lcm1hbg0KSFJCIDM2ODA5IChBRyBOdWVybmJlcmcpDQo=
+Sleeping over this, maybe we can convert the existing 
+memory_hotplug.memmap_on_memory parameter to also accept "force".
 
---------------O4sBmtVossZBjDercKZUVHqN--
+-- 
+Cheers,
 
---------------K7I6QDTtJR3cKkqc48HZx2aU
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
+David / dhildenb
 
------BEGIN PGP SIGNATURE-----
-
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmSuS9gFAwAAAAAACgkQlh/E3EQov+Bh
-IQ//T0PiPxd+GFmqKROILrPIawDb/I+fuq60CvxBHVfPPlvkdxBPBDUE4WuUFhGYCE/oZ6jRlZJX
-YKYHYEJ5vEcWCNRR8mfGpNGLyDbuJY9mqzUHWHqhbhHvrEPV2V7WnCjp7UrnMUvqnvnwDDifBkgA
-YXI94XN/fqrNmjRzAFvQitvZb1pz3pGlsldbPi/3va2wdNY2h4xtmY4WRd0I/wgVN5YfNjYGeEGb
-GQT466I6XnDIzQurY+q0dxDn3Ab3NQQZAr704nfyTZrFfOAJcIz89vrWU29+Qcr/yjEtFtdNamic
-WIEJ3DWexIdWBplaQDqxUySBlzU3c3pLLaFwE0SyVPwaUcI5qOpfhMeWgwEwZb1W6+Or4ehLxoIY
-muVgE8o2WeQSRihUXz0b/nAclqW/WDHaVhpjURRzviYnD+urODodyuQn0dt36yxciVfsmifL6PCe
-Y6X+ADFjH7mB4JZw4zJIl6XSOEGkMXRwkvU0WOXdNcsg8xYuZ8y2OI+ybBeWuLMyJcPQMlqRzbI8
-FZ0vgeM3VyTooQheJDh3psIr6oGhJabMlXIVsjocTCvbf9KjSQHwhF9qRcp30sh5PjRGBH4WRtua
-KmtCjiBbCfjcF8l9I4RiBoehwlJ4rIqyDx8KvMljftLG7YkgfWCariHTeYa7wA2l91erXQEi5RZc
-GMo=
-=HzCA
------END PGP SIGNATURE-----
-
---------------K7I6QDTtJR3cKkqc48HZx2aU--
