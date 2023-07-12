@@ -2,56 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF83D750A7E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 16:12:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3B9E750AC3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 16:24:59 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=Wz9OuEdT;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=v5oh8wZq;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R1KSF5JMjz3cCT
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jul 2023 00:12:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R1Kkx47CPz3c5r
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jul 2023 00:24:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=Wz9OuEdT;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=v5oh8wZq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R1KRL25ZTz3bts
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jul 2023 00:11:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R1Kk21pc0z30PJ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jul 2023 00:24:09 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Type:MIME-Version:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=/DWXQqdXB8XEBn9nrcxVpdVWWih+jjCwvlX2nEsLPTI=; b=Wz9OuEdTC/U+pAiGDh2QSB1rQh
-	estO8miU9AZSQNeT1ZfBneiErxb37LhSNHRZWtuGfrfLL1EYkRTytC/eqtBQ5flUhEkMN1zCFkngN
-	CVzVfJexnFAvgPRqAnyVh6g8uw/+7RiOaL7qFDbPWf+LxBDspZS1XQHRjPG10xiWCycFSlzSeQ2pS
-	qkhXaNVnuBwkoDhccV3f/fFDXhPTzT7MM2g/KNXJHQ/EEWc8ngzF5xbTsxRq1oXCgKmASiLZwPe8+
-	dX/EJQBH+CNoE/6rDxPZB9iyHwbKpAVKYbdYizbASNU7oByvubO1HFOqmYxrD49elB6ZmrjF3w4C2
-	y9jxJUrA==;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=uwMQV/RwpcjwXRB/9t5ugIb9Ny9N01YmFUxCFdhWhM4=; b=v5oh8wZqbSywmffQSV8Znini/p
+	E1dEpG2qjsfwlVVmyYAD+yIuDOvy1yXy6u+9SW/BMBJOV6yu/FGlzpQenjH7PyDq2vz2I9gF1oc+p
+	SZ7KdMRdobqgFZiJeDymChR89S5lfmk/arfoawNErpS2eWyURN6uFjEAtt5WM1iNAt0ya3+FX49wO
+	975dwqjMuQJtmKqsgZhLBZ2i6f8aJk5pUXqzzm38AcvB8Irok3P+YmiS1l1VOgmJNllWHjE/U2O6l
+	TbSjWWbILkoO4hsXm1+qQvOiSoitSkAm/yW3+PpqHCyOCfWfL0n88pzWvZyiVBmGZdRMo4+qU7oi5
+	+KIAD4sA==;
 Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1qJaYV-003fwd-0S;
-	Wed, 12 Jul 2023 14:10:59 +0000
+	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1qJaky-00GlfL-IF; Wed, 12 Jul 2023 14:23:52 +0000
 Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
 	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 5E17A30049D;
-	Wed, 12 Jul 2023 16:10:56 +0200 (CEST)
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id BCA8B3002CE;
+	Wed, 12 Jul 2023 16:23:51 +0200 (CEST)
 Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 46BDE200D8DF7; Wed, 12 Jul 2023 16:10:56 +0200 (CEST)
-Date: Wed, 12 Jul 2023 16:10:56 +0200
+	id A6628200D83BC; Wed, 12 Jul 2023 16:23:51 +0200 (CEST)
+Date: Wed, 12 Jul 2023 16:23:51 +0200
 From: Peter Zijlstra <peterz@infradead.org>
-To: Thomas Gleixner <tglx@linutronix.de>
-Subject: [RFC][PATCH] sched: Rename DIE domain
-Message-ID: <20230712141056.GI3100107@hirez.programming.kicks-ass.net>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v4 00/15] powerpc/objtool: uaccess validation for PPC32
+ (v4)
+Message-ID: <20230712142351.GJ3100107@hirez.programming.kicks-ass.net>
+References: <cover.1689091394.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <cover.1689091394.git.christophe.leroy@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,76 +65,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com, peterz@infradead.org, dave.hansen@linux.intel.com, bsegall@google.com, hpa@zytor.com, agordeev@linux.ibm.com, linux-s390@vger.kernel.org, vschneid@redhat.com, vincent.guittot@linaro.org, x86@kernel.org, mingo@redhat.com, mgorman@suse.de, borntraeger@linux.ibm.com, gor@linux.ibm.com, hca@linux.ibm.com, npiggin@gmail.com, bp@alien8.de, rostedt@goodmis.org, tglx@linutronix.de, dietmar.eggemann@arm.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, svens@linux.ibm.com, bristot@redhat.com
+Cc: linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>, Sathvika Vasireddy <sv@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Josh Poimboeuf <jpoimboe@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi
+On Tue, Jul 11, 2023 at 06:08:26PM +0200, Christophe Leroy wrote:
+> This series adds UACCESS validation for PPC32. It includes
+> a dozen of changes to objtool core.
+> 
+> It applies on top of series "Cleanup/Optimise KUAP (v3)"
+> https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=363368&state=*
 
-Thomas just tripped over the x86 topology setup creating a 'DIE' domain
-for the package mask :-)
+That contains:
 
-Since these names are SCHED_DEBUG only, rename them.
-I don't think anybody *should* be relying on this, but who knows.
++static __always_inline void uaccess_begin_32s(unsigned long addr)
++{
++	unsigned long tmp;
++
++	asm volatile(ASM_MMU_FTR_IFSET(
++		"mfsrin %0, %1;"
++		"rlwinm %0, %0, 0, %2;"
++		"mtsrin %0, %1;"
++		"isync", "", %3)
++		: "=&r"(tmp)
++		: "r"(addr), "i"(~SR_KS), "i"(MMU_FTR_KUAP)
++		: "memory");
++}
++
++static __always_inline void uaccess_end_32s(unsigned long addr)
++{
++	unsigned long tmp;
++
++	asm volatile(ASM_MMU_FTR_IFSET(
++		"mfsrin %0, %1;"
++		"oris %0, %0, %2;"
++		"mtsrin %0, %1;"
++		"isync", "", %3)
++		: "=&r"(tmp)
++		: "r"(addr), "i"(SR_KS >> 16), "i"(MMU_FTR_KUAP)
++		: "memory");
++}
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
----
- arch/powerpc/kernel/smp.c   | 2 +-
- arch/s390/kernel/topology.c | 2 +-
- arch/x86/kernel/smpboot.c   | 2 +-
- kernel/sched/topology.c     | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
+And I am a bit puzzled by the isync placement of uaccess_end, should
+that not start with the isync, to ensure completion of the uaccess
+region before disabling it?
 
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index fbbb695bae3d..5ed6b9fe5094 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -1050,7 +1050,7 @@ static struct sched_domain_topology_level powerpc_topology[] = {
- #endif
- 	{ shared_cache_mask, powerpc_shared_cache_flags, SD_INIT_NAME(CACHE) },
- 	{ cpu_mc_mask, SD_INIT_NAME(MC) },
--	{ cpu_cpu_mask, SD_INIT_NAME(DIE) },
-+	{ cpu_cpu_mask, SD_INIT_NAME(PKG) },
- 	{ NULL, },
- };
- 
-diff --git a/arch/s390/kernel/topology.c b/arch/s390/kernel/topology.c
-index 68adf1de8888..c803f5e6ab46 100644
---- a/arch/s390/kernel/topology.c
-+++ b/arch/s390/kernel/topology.c
-@@ -522,7 +522,7 @@ static struct sched_domain_topology_level s390_topology[] = {
- 	{ cpu_coregroup_mask, cpu_core_flags, SD_INIT_NAME(MC) },
- 	{ cpu_book_mask, SD_INIT_NAME(BOOK) },
- 	{ cpu_drawer_mask, SD_INIT_NAME(DRAWER) },
--	{ cpu_cpu_mask, SD_INIT_NAME(DIE) },
-+	{ cpu_cpu_mask, SD_INIT_NAME(PKG) },
- 	{ NULL, },
- };
- 
-diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index e1aa2cd7734b..09cc9d0aa358 100644
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -653,7 +653,7 @@ static void __init build_sched_topology(void)
- 	 */
- 	if (!x86_has_numa_in_package) {
- 		x86_topology[i++] = (struct sched_domain_topology_level){
--			cpu_cpu_mask, SD_INIT_NAME(DIE)
-+			cpu_cpu_mask, SD_INIT_NAME(PKG)
- 		};
- 	}
- 
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index d3a3b2646ec4..e9d9cf776b7a 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -1670,7 +1670,7 @@ static struct sched_domain_topology_level default_topology[] = {
- #ifdef CONFIG_SCHED_MC
- 	{ cpu_coregroup_mask, cpu_core_flags, SD_INIT_NAME(MC) },
- #endif
--	{ cpu_cpu_mask, SD_INIT_NAME(DIE) },
-+	{ cpu_cpu_mask, SD_INIT_NAME(PKG) },
- 	{ NULL, },
- };
- 
+Or is that not the purpose of the isync?
 
+> It is almost mature, performs code analysis for all PPC32.
+> 
+> In this version objtool switch table lookup has been enhanced to
+> handle nested switch tables.
+> 
+> Most object files are correctly decoded, only a few
+> 'unreachable instruction' warnings remain due to more complex
+> fonctions which include back and forth jumps or branches.
+> 
+> It allowed to detect some UACCESS mess in a few files. They've been
+> fixed through other patches.
+> 
+> Changes in v4:
+> - Split series in two parts, the powerpc uaccess rework is submitted
+> separately, see https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=363368&state=*
+> - Support of UACCESS on all PPC32 including book3s/32 which was missing in v3.
+> - More elaborated switch tables lookup.
+> - Patches 2, 7, 8, 9, 10, 11 are new
+> - Patch 11 in series v3 is now removed.
+
+The patches look eminently reasonable to me; Josh, could you please have
+a look?
