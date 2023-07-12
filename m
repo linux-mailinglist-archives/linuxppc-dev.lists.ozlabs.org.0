@@ -2,60 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 395A9750698
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 13:47:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9018E7509F5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 15:49:49 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ug77po3J;
+	dkim=fail reason="unknown key version" header.d=208.org header.i=@208.org header.a=rsa-sha256 header.s=dkim header.b=sKw/kWY/;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R1GFS12rYz3c4Z
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 21:47:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R1JyM3RqGz3c4T
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 23:49:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ug77po3J;
+	dkim=fail reason="unknown key version" header.d=208.org header.i=@208.org header.a=rsa-sha256 header.s=dkim header.b=sKw/kWY/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=208suo.com (client-ip=183.242.55.162; helo=mail.208.org; envelope-from=pangzizhen001@208suo.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 419 seconds by postgrey-1.37 at boromir; Wed, 12 Jul 2023 18:31:30 AEST
+Received: from mail.208.org (unknown [183.242.55.162])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R1GDb59PKz3bsQ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 21:46:55 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id C692961797;
-	Wed, 12 Jul 2023 11:46:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EE21C433CD;
-	Wed, 12 Jul 2023 11:46:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1689162411;
-	bh=JXAMcZrpRoE91F6XTSvxZwcYhk6D31xbdpQ1w4SM5Ns=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=Ug77po3JMwPWMfa4AgH0aTo577IWr7JHKnVhLNkT7MaYL7jRKqyYx9n7qmXYFms1F
-	 voLs+23dPqdWNMKTdRUW9Lti7Ynb2Te3lqf+1WarjmTBFRD+actcKwAE3Ht/QjArKi
-	 Jwa0dPaTXTU4WLNowXxlbesUOiY1YGQdey9ZNtdhQsQCVOEaOkV79J9bC+C3U1LitF
-	 1vlUyevOEuItBBWnt9mwXwolZG9ucqQfWvdxMIv5mxEIc4K37NtC0Q7vi3N9qrJUX3
-	 ZfwIsHV7tl3wm103IrqoN57DbjNBT+kTdH4MFQImTByu6QCJ8TBg5Hobmf43jgO3Gb
-	 sdufjRjTIFVgw==
-From: Mark Brown <broonie@kernel.org>
-To: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
- nicoleotsuka@gmail.com, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
- alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, Chancel Liu <chancel.liu@nxp.com>
-In-Reply-To: <20230625065412.651870-1-chancel.liu@nxp.com>
-References: <20230625065412.651870-1-chancel.liu@nxp.com>
-Subject: Re: [PATCH] ASoC: imx-pcm-rpmsg: Set PCM hardware parameters
- separately
-Message-Id: <168916240829.46574.4591447025609181967.b4-ty@kernel.org>
-Date: Wed, 12 Jul 2023 12:46:48 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R19v65rw2z30M1
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 18:31:30 +1000 (AEST)
+Received: from mail.208.org (email.208.org [127.0.0.1])
+	by mail.208.org (Postfix) with ESMTP id 4R19kl74bczB77YW
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 16:24:15 +0800 (CST)
+Authentication-Results: mail.208.org (amavisd-new); dkim=pass
+	reason="pass (just generated, assumed good)" header.d=208.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=208.org; h=
+	content-type:message-id:user-agent:references:in-reply-to
+	:subject:to:from:date:mime-version; s=dkim; t=1689150255; x=
+	1691742256; bh=B6fIx7ZYVVTgOrUfEyXLpwUKuYl1BQlMPn66PZlfVFc=; b=s
+	Kw/kWY/Wu6q9Izk03hP2xwxxEW82prr5V0V0eioeFUH/c15UCXjrN9UKJWlxMaow
+	40UMc6cwQPxc2R1/tbKhqmmSPcet+Eno2wCgme7m8Qc+ctBa3SnsNCCEDmJSyyTt
+	9CQrBse302n3HHcUovYJxq59gFkIFwYh3KK7/IB9z9szu85Rs71akBQp5wk3z1l3
+	3lZD26hkRCjhaAvH749N8x3DTYuDl6FMqAiHoUp0ff7vH0l410qx/RkpdaZwBB1Y
+	3XZ+H14lDNPyp9immOaTmGbKKDQloPKQ/S6NaE9o5Oi7OQ8/siLDuHVssz1HLWKf
+	AcZkBD1CSe/YcFbEaD2yg==
+X-Virus-Scanned: amavisd-new at mail.208.org
+Received: from mail.208.org ([127.0.0.1])
+	by mail.208.org (mail.208.org [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id sK6TIaM3LGVo for <linuxppc-dev@lists.ozlabs.org>;
+	Wed, 12 Jul 2023 16:24:15 +0800 (CST)
+Received: from localhost (email.208.org [127.0.0.1])
+	by mail.208.org (Postfix) with ESMTPSA id 4R19kl5DYWzBR5lP;
+	Wed, 12 Jul 2023 16:24:15 +0800 (CST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-099c9
+Date: Wed, 12 Jul 2023 16:24:15 +0800
+From: pangzizhen001@208suo.com
+To: mpe@ellerman.id.au, Jason@zx2c4.com
+Subject: Fwd: [PATCH] powerpc/kernel: Fix comment typo
+In-Reply-To: <20230712081541.29077-1-wangjianli@cdjrlc.com>
+References: <20230712081541.29077-1-wangjianli@cdjrlc.com>
+User-Agent: Roundcube Webmail
+Message-ID: <070e7321ca11e0cd57e46fe240812c0e@208suo.com>
+X-Sender: pangzizhen001@208suo.com
+Content-Type: multipart/alternative;
+ boundary="=_46ddd140eb1fbacb5104806f35683fed"
+X-Mailman-Approved-At: Wed, 12 Jul 2023 23:49:03 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,41 +70,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, 25 Jun 2023 14:54:12 +0800, Chancel Liu wrote:
-> Different PCM devices may have different PCM hardware parameters. It
-> requires PCM hardware parameters set separately if there is more than
-> one rpmsg sound card.
-> 
-> 
+--=_46ddd140eb1fbacb5104806f35683fed
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 
-Applied to
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-Thanks!
+Delete duplicate word "the"
 
-[1/1] ASoC: imx-pcm-rpmsg: Set PCM hardware parameters separately
-      commit: 82770b76abae2ff9d70f354a61983b921e63bae1
+Signed-off-by: Zizhen Pang <pangzizhen001@208suo.com>
+---
+  arch/powerpc/kernel/process.c | 2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+diff --git a/arch/powerpc/kernel/process.c 
+b/arch/powerpc/kernel/process.c
+index b68898ac07e1..6e35037282b6 100644
+--- a/arch/powerpc/kernel/process.c
++++ b/arch/powerpc/kernel/process.c
+@@ -173,7 +173,7 @@ void giveup_fpu(struct task_struct *tsk)
+  EXPORT_SYMBOL(giveup_fpu);
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+  /*
+- * Make sure the floating-point register state in the
++ * Make sure the floating-point register state in
+   * the thread_struct is up to date for task tsk.
+   */
+  void flush_fp_to_thread(struct task_struct *tsk)
+--=_46ddd140eb1fbacb5104806f35683fed
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset=UTF-8
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+<html><head><meta http-equiv=3D"Content-Type" content=3D"text/html; charset=
+=3DUTF-8" /></head><body style=3D'font-size: 12pt; font-family: Verdana,Gen=
+eva,sans-serif'>
+<p><span style=3D"font-family: monospace; font-size: 12pt;">Delete duplicat=
+e word "the"</span></p>
+<div class=3D"pre" style=3D"margin: 0; padding: 0; font-family: monospace">=
+<br />Signed-off-by: Zizhen Pang &lt;pangzizhen001@208suo.com&gt;<br />---<=
+br />&nbsp;arch/powerpc/kernel/process.c | 2 +-<br />&nbsp;1 file changed, =
+1 insertion(+), 1 deletion(-)<br /><br />diff --git a/arch/powerpc/kernel/p=
+rocess.c b/arch/powerpc/kernel/process.c<br />index b68898ac07e1..6e3503728=
+2b6 100644<br />--- a/arch/powerpc/kernel/process.c<br />+++ b/arch/powerpc=
+/kernel/process.c<br />@@ -173,7 +173,7 @@ void giveup_fpu(struct task_stru=
+ct *tsk)<br />&nbsp;EXPORT_SYMBOL(giveup_fpu);<br />&nbsp;<br />&nbsp;/*<br=
+ />- * Make sure the floating-point register state in the<br />+ * Make sur=
+e the floating-point register state in<br />&nbsp;&nbsp;* the thread_struct=
+ is up to date for task tsk.<br />&nbsp;&nbsp;*/<br />&nbsp;void flush_fp_t=
+o_thread(struct task_struct *tsk)</div>
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+</body></html>
 
-Thanks,
-Mark
-
+--=_46ddd140eb1fbacb5104806f35683fed--
