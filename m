@@ -2,56 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14014750883
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 14:40:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E49057509FC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 15:50:39 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=nOluD2tj;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=HZPxYS2q;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R1HQ16wkyz3c2j
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 22:40:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R1JzK5thZz3c5d
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 23:50:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=nOluD2tj;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=HZPxYS2q;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::635; helo=mail-ej1-x635.google.com; envelope-from=matuszpd@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R1HPB2fSzz30fl
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 22:39:26 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1689165566;
-	bh=T6VYKVVfdvano9tjQIzE080BQEj4ZRWAzPeP9tElmhY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=nOluD2tjGFa+bExvfZOwLud99ykHUhRE00PF+K2HOPFyA9Nx8NwYhHs851k3QFzId
-	 Qr51LbARimQvjkIbBrxlMqraHbR4X+s2kwUvrL2aywcsceNYnXmCSAAyHyN8gk4cRC
-	 7Ri8SM13HjnNfaKsq7kop8n0kO64dq4gkjLQNvQQznOCDSOoWsGl64+JeL36tDwWJ4
-	 T/6ZJJyNMW6g4ocrK8geUxAVuxukNNEA50KSQc8D/RL9BoNqUeDnajp7AmikFNZf7p
-	 eVDTWOGCn27X8+Vr0CbAW5rvwCjvqag6rAJJGZXGbbR0dImlQPixbmdq60ol4QNPE5
-	 mHhnQvaLpkBig==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4R1HPB11XDz4wxR;
-	Wed, 12 Jul 2023 22:39:26 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Jarkko Sakkinen <jarkko@kernel.org>, Stefan Berger
- <stefanb@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2 1/2] powerpc/tpm: Create linux,sml-base/size as big
- endian
-In-Reply-To: <ec564375084b6edd7b7d77eb341f451e798fb50d.camel@kernel.org>
-References: <20230615123703.4028156-1-mpe@ellerman.id.au>
- <4d378d53225fc8b8cdc99dde900388d2eefaad4e.camel@kernel.org>
- <0fb26243-0d63-118b-2737-05391ba0c69a@linux.ibm.com>
- <ec564375084b6edd7b7d77eb341f451e798fb50d.camel@kernel.org>
-Date: Wed, 12 Jul 2023 22:39:25 +1000
-Message-ID: <87r0pde22q.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R1Hj40lPGz3bnw
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 22:53:09 +1000 (AEST)
+Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-98e39784a85so157869666b.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 05:53:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689166384; x=1691758384;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ef9ldj54LfSreJO+VbHq1Yil94yCCRtncr0AA0IgxoI=;
+        b=HZPxYS2q0wdP+oUdlVbS0bHA1gduL/QbI3aYqBTAD7g0jrxG3ckLP7O+qlZaCgpYtZ
+         uR4tL/+dPcz2X7WQA7Fx5G0jEmaDPw2Hhj0hWt2d2dgvDINwW3fJ9RFCZgPA9NDBkJb5
+         kZgq4OzAms76DQJFiMj/dA8201Fs9jVy+T1gw9BJIwYxEbnqt9CZPa1Yi9XAcVJYJGtm
+         dTuHFo/YgPTWVnjwjFDJgMYaMbkZMTOHkjl9hN/mRikq8ZEUDstWunwXChiIZQ93QvNf
+         N/sg+1KPo3DQA/CI8eCoAQaMO9n1/x2MW6pBZtB+m1YOE0718F6Wvr9mm4rOJU8SuPhc
+         u1zA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689166384; x=1691758384;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ef9ldj54LfSreJO+VbHq1Yil94yCCRtncr0AA0IgxoI=;
+        b=RlEh5SJQkSAOEoeTtlpPLchuOpvi/gnWgAxR8rFNlPZSfjuQG/mrr0T0cIYDFQo4cC
+         jpzH4ifouatVLwlQyr3LZWQTofhVZSJODl4tZMvVkSy8SBPvasZD3LjR+kOGGMxoyVes
+         8GFtsq0i+lFz/c5dn0QjLq333KMjRdZZTXifMcscHBHHv6t4+DH935r+rdVl4+5QHlyo
+         dJaRO9TAGoYzlkOD62d8YMmELN+ev6x3xhe4Ft2S+RgQCmIQ8FfvlpaghLNZkCjv4xjD
+         28/ezH3y6Hnpn0CiVGB6pAU1JsASIuZv/vck5IM21g5J6VrBI4rqRWYv7OR2ucn+2vDz
+         IUWw==
+X-Gm-Message-State: ABy/qLbtqw07nLaRPeyTCC/3YbGJ71OUUsVtKC9H8AOw94RXtm13QveO
+	TbJznXvQhSJT9ckUGeMUac4=
+X-Google-Smtp-Source: APBJJlEQwzCXnLSG9Db+b/tZpzul5Q8lvD7Ip0hLgkyKGo/6GNq4Xfrpf2kkMy9+NX6RlyZ+hk/4uQ==
+X-Received: by 2002:a17:906:64c2:b0:993:d632:2c3 with SMTP id p2-20020a17090664c200b00993d63202c3mr2421780ejn.21.1689166383605;
+        Wed, 12 Jul 2023 05:53:03 -0700 (PDT)
+Received: from localhost.localdomain ([2a01:c844:242b:b300:215:5dff:fe81:5e96])
+        by smtp.gmail.com with ESMTPSA id l6-20020a170906230600b00991faf3810esm2544506eja.146.2023.07.12.05.53.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Jul 2023 05:53:03 -0700 (PDT)
+From: Matus Gajdos <matuszpd@gmail.com>
+To: Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>
+Subject: [PATCH] ASoC: fsl_sai: Disable bit clock with transmitter
+Date: Wed, 12 Jul 2023 14:49:33 +0200
+Message-Id: <20230712124934.32232-1-matuszpd@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Wed, 12 Jul 2023 23:49:03 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,72 +83,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jgg@ziepe.ca, linux-integrity@vger.kernel.org, eajames@linux.ibm.com, peterhuewe@gmx.de, yangyingliang@huawei.com
+Cc: Matus Gajdos <matuszpd@gmail.com>, alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Jarkko Sakkinen <jarkko@kernel.org> writes:
-> On Tue, 2023-07-11 at 08:47 -0400, Stefan Berger wrote:
->> On 7/10/23 17:23, Jarkko Sakkinen wrote:
->> > On Thu, 2023-06-15 at 22:37 +1000, Michael Ellerman wrote:
->> > > There's code in prom_instantiate_sml() to do a "SML handover" (Stored
->> > > Measurement Log) from OF to Linux, before Linux shuts down Open
->> > > Firmware.
->> > >=20
->> > > This involves creating a buffer to hold the SML, and creating two de=
-vice
->> > > tree properties to record its base address and size. The kernel then
->> > > later reads those properties from the device tree to find the SML.
->> > >=20
->> > > When the code was initially added in commit 4a727429abec ("PPC64: Add
->> > > support for instantiating SML from Open Firmware") the powerpc kernel
->> > > was always built big endian, so the properties were created big endi=
-an
->> > > by default.
->> > >=20
->> > > However since then little endian support was added to powerpc, and n=
-ow
->> > > the code lacks conversions to big endian when creating the propertie=
-s.
->> > >=20
->> > > This means on little endian kernels the device tree properties are
->> > > little endian, which is contrary to the device tree spec, and in
->> > > contrast to all other device tree properties.
->> > >=20
->> > > To cope with that a workaround was added in tpm_read_log_of() to skip
->> > > the endian conversion if the properties were created via the SML
->> > > handover.
->> > >=20
->> > > A better solution is to encode the properties as big endian as they
->> > > should be, and remove the workaround.
->> > >=20
->> > > Typically changing the encoding of a property like this would present
->> > > problems for kexec. However the SML is not propagated across kexec, =
-so
->> > > changing the encoding of the properties is a non-issue.
->> > >=20
->> > > Fixes: e46e22f12b19 ("tpm: enhance read_log_of() to support Physical=
- TPM event log")
->> > > Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
->> > > Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
->> > > ---
->> > >   arch/powerpc/kernel/prom_init.c |  8 ++++++--
->> > >   drivers/char/tpm/eventlog/of.c  | 23 ++++-------------------
->> > >   2 files changed, 10 insertions(+), 21 deletions(-)
->> >=20
->> > Split into two patches (producer and consumer).
->>=20
->> I think this wouldn't be right since it would break the system when only=
- one patch is applied since it would be reading the fields in the wrong end=
-ianess.
->
-> I think it would help if the commit message would better explain
-> what is going on. It is somewhat difficult to decipher, if you
-> don't have deep knowledge of the powerpc architecture.
+Otherwise bit clock remains running writing invalid data to the DAC.
 
-I mean, it's already 8 paragraphs =C2=AF\_(=E3=83=84)_/=C2=AF
+Signed-off-by: Matus Gajdos <matuszpd@gmail.com>
+---
+ sound/soc/fsl/fsl_sai.c | 2 +-
+ sound/soc/fsl/fsl_sai.h | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-But I'm happy to expand it. I just don't really know what extra detail
-is needed to make it clearer.
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index 5e09f634c61b..dcc7fbe7acac 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -719,7 +719,7 @@ static void fsl_sai_config_disable(struct fsl_sai *sai, int dir)
+ 	u32 xcsr, count = 100;
+ 
+ 	regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
+-			   FSL_SAI_CSR_TERE, 0);
++			   FSL_SAI_CSR_TERE | FSL_SAI_CSR_BCE, 0);
+ 
+ 	/* TERE will remain set till the end of current frame */
+ 	do {
+diff --git a/sound/soc/fsl/fsl_sai.h b/sound/soc/fsl/fsl_sai.h
+index 8254c3547b87..550df87b6a06 100644
+--- a/sound/soc/fsl/fsl_sai.h
++++ b/sound/soc/fsl/fsl_sai.h
+@@ -91,6 +91,7 @@
+ /* SAI Transmit/Receive Control Register */
+ #define FSL_SAI_CSR_TERE	BIT(31)
+ #define FSL_SAI_CSR_SE		BIT(30)
++#define FSL_SAI_CSR_BCE		BIT(28)
+ #define FSL_SAI_CSR_FR		BIT(25)
+ #define FSL_SAI_CSR_SR		BIT(24)
+ #define FSL_SAI_CSR_xF_SHIFT	16
+-- 
+2.25.1
 
-cheers
