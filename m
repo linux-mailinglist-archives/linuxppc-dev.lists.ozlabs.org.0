@@ -2,65 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C78D074FE2F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 06:28:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C18A74FE37
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 06:31:46 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=YjT2iggk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=RBETceKT;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R14VT3DvQz3bwd
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 14:28:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R14ZS1cPBz3c6c
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jul 2023 14:31:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=YjT2iggk;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=RBETceKT;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1132; helo=mail-yw1-x1132.google.com; envelope-from=hughd@google.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b2c; helo=mail-yb1-xb2c.google.com; envelope-from=hughd@google.com; receiver=lists.ozlabs.org)
+Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R14TY6hY1z304g
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 14:27:28 +1000 (AEST)
-Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-5701eaf0d04so72757487b3.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jul 2023 21:27:28 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R14YY4GbDz30F5
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jul 2023 14:30:57 +1000 (AEST)
+Received: by mail-yb1-xb2c.google.com with SMTP id 3f1490d57ef6-c4dd264359cso6099654276.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jul 2023 21:30:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1689136043; x=1691728043;
-        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=wiHFwa+qInqC9Ufc7qLGqz2T4+XJI6K3K6pkdSvL2BE=;
-        b=YjT2iggkRTiXtZMR1jMLANF/DCx6aBNBHMVDVVl8Gr0GinPbSloyq6adfQMkbwXuDy
-         4LOhxp9lsDQkNYPLAl5k89Ck7UzmU2gS51lf58HBHMNkZxeBrwzXKOfpjPMpHU7Xhn8z
-         K9b44iVOIzPUbQ6ymuTwqdYb3uxH5ZNNlppLByjfI27io4ZaUeNDCqifG61+Enltfq1W
-         Q4VeG3xJt0Bk+AP9vkRr0OjwSSW1svxOnjAGiUGPKap1kin/J6ow8NcPSugD6S/XzNDL
-         Pw7KzGLDDMHF/NqW9CZBI1VUfB0aeFWeRbgCBvTEtczkxjQmMIk8cik2x0kBWOU3eCTM
-         DkUQ==
+        d=google.com; s=20221208; t=1689136254; x=1691728254;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Lih86tpYDD3J7zG12H/yvKEagSCLBGtcWN3xnGIcrQ8=;
+        b=RBETceKTxUIdE5Wthq5VyXl1iuewXFCZtvj7DAV2aR3XnxKua3oR4hmOqLeBfiK+Bo
+         QX5kHPh+nmkLT9qkicOsu2l1qxImFf+42zqUi71fI6EVfsz6Wd8j8qUrewGd84C27fQF
+         z08YkGvSrNifDm+H1bjPb9jqoZlNdzHFdJ/PGyx79rM0dM13MzFCo6oGzmwGF3H2DHxK
+         jhmvYEXUAQ46tN3PfeVxdIIezDCwRgqWW3fiTQ5gpTM5B8KutupuJmp6cYEM5cSz9f5W
+         fLAc5DNp+0Wj3x5T2KO5EPXVkVyBxsI6lOPcm2rzPIqTF2kKG/dKpgqnKRkoKETZyp95
+         sIwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689136043; x=1691728043;
-        h=mime-version:message-id:subject:cc:to:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=wiHFwa+qInqC9Ufc7qLGqz2T4+XJI6K3K6pkdSvL2BE=;
-        b=UcbxnICusMxYC0Fs9GwFbFnP3aQ4N9RNElGR2Nt7WULBFTvakwmKF9OLoPW9ZItobk
-         Gqttq8zj9Rod6Mblqw0B+FaRLmnkG3eodbDReNnruy6/skDTEc2hKaRTY5Pz8yBpSRw+
-         QWhEJMRglIF/vmMZ8LSiX5JlJDz+ta4kzr6/kuAeXfxliu9Pym2tBwZP57KJn02WPGpr
-         zVXG73bMHGVg206eBC/aQkLZ0H6IoH/xFW45jS8wysRd6GWQoM2TYJ/B8yXdCtUl6mQe
-         mAW1kGPoquUxUltx6pPrXKzXLm3IPekK0xP5bX2mg5CpRxDtv+3j2w4hB65FEDWOIUFs
-         lSGA==
-X-Gm-Message-State: ABy/qLZzucMk37ypdYnj7Ctciqur7Zi4HUfvYf99VwiZLQmc/+qu2o0d
-	TD3mick2UH1WrrQaWUNOi01ZoA==
-X-Google-Smtp-Source: APBJJlF5lEOtFts7UwfGvvEUizjbQpUSNw8Id5rb3Vpn8mt/ge/Q6rrPqXyVhuX/GSF3C2Mj1ANz1w==
-X-Received: by 2002:a81:91d2:0:b0:559:deed:f363 with SMTP id i201-20020a8191d2000000b00559deedf363mr16696703ywg.2.1689136042885;
-        Tue, 11 Jul 2023 21:27:22 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1689136254; x=1691728254;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Lih86tpYDD3J7zG12H/yvKEagSCLBGtcWN3xnGIcrQ8=;
+        b=IUavTbdGhLyOLv7hi3l1PvzKv+Lt0Rwz190KEUJ92Pj5kYOkPhTtizYwt/GslZ2vWn
+         +PYkAQRgS/4d/fLaQA5TgCOH0QhPgd9CZUYLmRcSqg/mYULKyOiELGTLOMoiqxAZtqfu
+         X21djSuw4Gop/uTsBgzqNBUVlVHZxzqOrFVKMoHhd+9mdZ2J9aGOvcI7+ExKrjoxn/2R
+         WF6ByRBHOtJvbwDSm+WYu/gQGdOyG63vVpUy/mgK6ZYd76YhfxtLJNFpAMvI0XZl5jcv
+         CzibX3y8/Zy02L7T9i9bLGRwEx9H+8fHBpWQjZm6MNaIumk79depC3YRI+Gpm51Kzs5J
+         55Bg==
+X-Gm-Message-State: ABy/qLbmR5aaoXmSuasFYm8nMDVtDhR5yahf8ixd4Cq9zzPf7cbomHQA
+	6zoTghl3nMHwbt1JGxGz/sKA/g==
+X-Google-Smtp-Source: APBJJlG+aqkZgSinL0H+vGhJ8SPTaMZTSfjnzUjRq5ezvCFkxr+RV56UV3ToUF/QNi8B1m8dggx9Pw==
+X-Received: by 2002:a25:8a06:0:b0:c3d:25af:45ec with SMTP id g6-20020a258a06000000b00c3d25af45ecmr14975706ybl.41.1689136254058;
+        Tue, 11 Jul 2023 21:30:54 -0700 (PDT)
 Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id i67-20020a0df846000000b005772f3fc0acsm972965ywf.44.2023.07.11.21.27.18
+        by smtp.gmail.com with ESMTPSA id b8-20020a252e48000000b00c61af359b15sm750774ybn.43.2023.07.11.21.30.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Jul 2023 21:27:22 -0700 (PDT)
-Date: Tue, 11 Jul 2023 21:27:09 -0700 (PDT)
+        Tue, 11 Jul 2023 21:30:53 -0700 (PDT)
+Date: Tue, 11 Jul 2023 21:30:40 -0700 (PDT)
 From: Hugh Dickins <hughd@google.com>
 X-X-Sender: hugh@ripple.attlocal.net
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v3 00/13] mm: free retracted page table by RCU
-Message-ID: <7cd843a9-aa80-14f-5eb2-33427363c20@google.com>
+Subject: [PATCH v3 01/13] mm/pgtable: add rcu_read_lock() and
+ rcu_read_unlock()s
+In-Reply-To: <7cd843a9-aa80-14f-5eb2-33427363c20@google.com>
+Message-ID: <d3b01da5-2a6-833c-6681-67a3e024a16f@google.com>
+References: <7cd843a9-aa80-14f-5eb2-33427363c20@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -79,95 +82,61 @@ Cc: Miaohe Lin <linmiaohe@huawei.com>, David Hildenbrand <david@redhat.com>, Pet
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Here is v3 of the series of patches to mm (and a few architectures), based
-on v6.5-rc1 which includes the preceding two series (thank you!): in which
-khugepaged takes advantage of pte_offset_map[_lock]() allowing for pmd
-transitions.  Differences from v1 and v2 are noted patch by patch below.
+Before putting them to use (several commits later), add rcu_read_lock()
+to pte_offset_map(), and rcu_read_unlock() to pte_unmap().  Make this a
+separate commit, since it risks exposing imbalances: prior commits have
+fixed all the known imbalances, but we may find some have been missed.
 
-This replaces the v2 "mm: free retracted page table by RCU"
-https://lore.kernel.org/linux-mm/54cb04f-3762-987f-8294-91dafd8ebfb0@google.com/
-series of 12 posted on 2023-06-20.
+Signed-off-by: Hugh Dickins <hughd@google.com>
+---
+ include/linux/pgtable.h | 4 ++--
+ mm/pgtable-generic.c    | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-What is it all about?  Some mmap_lock avoidance i.e. latency reduction.
-Initially just for the case of collapsing shmem or file pages to THPs:
-the usefulness of MADV_COLLAPSE on shmem is being limited by that
-mmap_write_lock it currently requires.
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 5063b482e34f..5134edcec668 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -99,7 +99,7 @@ static inline pte_t *pte_offset_kernel(pmd_t *pmd, unsigned long address)
+ 	((pte_t *)kmap_local_page(pmd_page(*(pmd))) + pte_index((address)))
+ #define pte_unmap(pte)	do {	\
+ 	kunmap_local((pte));	\
+-	/* rcu_read_unlock() to be added later */	\
++	rcu_read_unlock();	\
+ } while (0)
+ #else
+ static inline pte_t *__pte_map(pmd_t *pmd, unsigned long address)
+@@ -108,7 +108,7 @@ static inline pte_t *__pte_map(pmd_t *pmd, unsigned long address)
+ }
+ static inline void pte_unmap(pte_t *pte)
+ {
+-	/* rcu_read_unlock() to be added later */
++	rcu_read_unlock();
+ }
+ #endif
+ 
+diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
+index 4d454953046f..400e5a045848 100644
+--- a/mm/pgtable-generic.c
++++ b/mm/pgtable-generic.c
+@@ -236,7 +236,7 @@ pte_t *__pte_offset_map(pmd_t *pmd, unsigned long addr, pmd_t *pmdvalp)
+ {
+ 	pmd_t pmdval;
+ 
+-	/* rcu_read_lock() to be added later */
++	rcu_read_lock();
+ 	pmdval = pmdp_get_lockless(pmd);
+ 	if (pmdvalp)
+ 		*pmdvalp = pmdval;
+@@ -250,7 +250,7 @@ pte_t *__pte_offset_map(pmd_t *pmd, unsigned long addr, pmd_t *pmdvalp)
+ 	}
+ 	return __pte_map(&pmdval, addr);
+ nomap:
+-	/* rcu_read_unlock() to be added later */
++	rcu_read_unlock();
+ 	return NULL;
+ }
+ 
+-- 
+2.35.3
 
-Likely to be relied upon later in other contexts e.g. freeing of
-empty page tables (but that's not work I'm doing).  mmap_write_lock
-avoidance when collapsing to anon THPs?  Perhaps, but again that's not
-work I've done: a quick attempt was not as easy as the shmem/file case.
-
-These changes (though of course not these exact patches) have been in
-Google's data centre kernel for three years now: we do rely upon them.
-
-Based on v6.5-rc1; and almost good on current mm-unstable or current
-linux-next - just one patch conflicts, the 12/13: I'll reply to that
-one with its mm-unstable or linux-next equivalent (vma_assert_locked()
-has been added next to where vma_try_start_write() is being removed).
-
-01/13 mm/pgtable: add rcu_read_lock() and rcu_read_unlock()s
-      v3: same as v1
-02/13 mm/pgtable: add PAE safety to __pte_offset_map()
-      v3: same as v2
-      v2: rename to pmdp_get_lockless_start/end() per Matthew;
-          so use inlines without _irq_save(flags) macro oddity;
-          add pmdp_get_lockless_sync() for use later in 09/13.
-03/13 arm: adjust_pte() use pte_offset_map_nolock()
-      v3: same as v1
-04/13 powerpc: assert_pte_locked() use pte_offset_map_nolock()
-      v3: same as v1
-05/13 powerpc: add pte_free_defer() for pgtables sharing page
-      v3: much simpler version, following suggestion by Jason
-      v2: fix rcu_head usage to cope with concurrent deferrals;
-          add para to commit message explaining rcu_head issue.
-06/13 sparc: add pte_free_defer() for pte_t *pgtable_t
-      v3: same as v2
-      v2: use page_address() instead of less common page_to_virt();
-          add para to commit message explaining simple conversion;
-          changed title since sparc64 pgtables do not share page.
-07/13 s390: add pte_free_defer() for pgtables sharing page
-      v3: much simpler version, following suggestion by Gerald
-      v2: complete rewrite, integrated with s390's existing pgtable
-          management; temporarily using a global mm_pgtable_list_lock,
-          to be restored to per-mm spinlock in a later followup patch.
-08/13 mm/pgtable: add pte_free_defer() for pgtable as page
-      v3: same as v2
-      v2: add comment on rcu_head to "Page table pages", per JannH
-09/13 mm/khugepaged: retract_page_tables() without mmap or vma lock
-      v3: same as v2
-      v2: repeat checks under ptl because UFFD, per PeterX and JannH;
-          bring back mmu_notifier calls for PMD, per JannH and Jason;
-          pmdp_get_lockless_sync() to issue missing interrupt if PAE.
-10/13 mm/khugepaged: collapse_pte_mapped_thp() with mmap_read_lock()
-      v3: updated to using ptent instead of *pte
-      v2: first check VMA, in case page tables torn down, per JannH;
-          pmdp_get_lockless_sync() to issue missing interrupt if PAE;
-          moved mmu_notifier after step 1, reworked final goto labels.
-11/13 mm/khugepaged: delete khugepaged_collapse_pte_mapped_thps()
-      v3: rediffed
-      v2: same as v1
-12/13 mm: delete mmap_write_trylock() and vma_try_start_write()
-      v3: rediffed (different diff needed for mm-unstable or linux-next)
-      v2: same as v1
-13/13 mm/pgtable: notes on pte_offset_map[_lock]()
-      v3: new: JannH asked for more helpful comment, this is my attempt;
-          could be moved to be the first in the series.
-
- arch/arm/mm/fault-armv.c            |   3 +-
- arch/powerpc/include/asm/pgalloc.h  |   4 +
- arch/powerpc/mm/pgtable-frag.c      |  29 +-
- arch/powerpc/mm/pgtable.c           |  16 +-
- arch/s390/include/asm/pgalloc.h     |   4 +
- arch/s390/mm/pgalloc.c              |  80 ++++-
- arch/sparc/include/asm/pgalloc_64.h |   4 +
- arch/sparc/mm/init_64.c             |  16 +
- include/linux/mm.h                  |  17 --
- include/linux/mm_types.h            |   4 +
- include/linux/mmap_lock.h           |  10 -
- include/linux/pgtable.h             |  10 +-
- mm/khugepaged.c                     | 481 +++++++++++-------------------
- mm/pgtable-generic.c                |  97 +++++-
- 14 files changed, 404 insertions(+), 371 deletions(-)
-
-Hugh
