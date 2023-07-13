@@ -1,33 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7678D751D83
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jul 2023 11:40:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDA7E751D9F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jul 2023 11:44:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R1qNk3DnCz3c4B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jul 2023 19:40:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R1qT655DMz3dFt
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jul 2023 19:44:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.255; helo=szxga08-in.huawei.com; envelope-from=wangkefeng.wang@huawei.com; receiver=lists.ozlabs.org)
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=wangkefeng.wang@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R1qNF184Tz3bcH
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jul 2023 19:40:29 +1000 (AEST)
-Received: from dggpemm500001.china.huawei.com (unknown [172.30.72.53])
-	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4R1qMT1xcPz18MB1;
-	Thu, 13 Jul 2023 17:39:49 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R1qNq4ZFTz3cDt
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jul 2023 19:40:59 +1000 (AEST)
+Received: from dggpemm500001.china.huawei.com (unknown [172.30.72.57])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4R1qJk00S7ztRVh;
+	Thu, 13 Jul 2023 17:37:25 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
  dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Thu, 13 Jul 2023 17:40:23 +0800
+ 15.1.2507.27; Thu, 13 Jul 2023 17:40:25 +0800
 From: Kefeng Wang <wangkefeng.wang@huawei.com>
 To: <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>,
 	<surenb@google.com>
-Subject: [PATCH rfc -next 02/10] x86: mm: use try_vma_locked_page_fault()
-Date: Thu, 13 Jul 2023 17:53:30 +0800
-Message-ID: <20230713095339.189715-3-wangkefeng.wang@huawei.com>
+Subject: [PATCH rfc -next 03/10] arm64: mm: use try_vma_locked_page_fault()
+Date: Thu, 13 Jul 2023 17:53:31 +0800
+Message-ID: <20230713095339.189715-4-wangkefeng.wang@huawei.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230713095339.189715-1-wangkefeng.wang@huawei.com>
 References: <20230713095339.189715-1-wangkefeng.wang@huawei.com>
@@ -59,61 +59,44 @@ No functional change intended.
 
 Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 ---
- arch/x86/mm/fault.c | 39 +++++++++++++++------------------------
- 1 file changed, 15 insertions(+), 24 deletions(-)
+ arch/arm64/mm/fault.c | 28 +++++-----------------------
+ 1 file changed, 5 insertions(+), 23 deletions(-)
 
-diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-index 56b4f9faf8c4..3f3b8b0a87de 100644
---- a/arch/x86/mm/fault.c
-+++ b/arch/x86/mm/fault.c
-@@ -1213,6 +1213,16 @@ do_kern_addr_fault(struct pt_regs *regs, unsigned long hw_error_code,
- }
- NOKPROBE_SYMBOL(do_kern_addr_fault);
- 
-+#ifdef CONFIG_PER_VMA_LOCK
-+int arch_vma_check_access(struct vm_area_struct *vma,
-+			  struct vm_locked_fault *vmlf)
-+{
-+	if (unlikely(access_error(vmlf->fault_code, vma)))
-+		return -EINVAL;
-+	return 0;
-+}
-+#endif
-+
- /*
-  * Handle faults in the user portion of the address space.  Nothing in here
-  * should check X86_PF_USER without a specific justification: for almost
-@@ -1231,6 +1241,7 @@ void do_user_addr_fault(struct pt_regs *regs,
- 	struct mm_struct *mm;
- 	vm_fault_t fault;
- 	unsigned int flags = FAULT_FLAG_DEFAULT;
+diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+index b8c80f7b8a5f..614bb53fc1bc 100644
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -537,6 +537,7 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
+ 	unsigned int mm_flags = FAULT_FLAG_DEFAULT;
+ 	unsigned long addr = untagged_addr(far);
+ 	struct vm_area_struct *vma;
 +	struct vm_locked_fault vmlf;
  
- 	tsk = current;
- 	mm = tsk->mm;
-@@ -1328,27 +1339,11 @@ void do_user_addr_fault(struct pt_regs *regs,
- 	}
- #endif
+ 	if (kprobe_page_fault(regs, esr))
+ 		return 0;
+@@ -587,27 +588,11 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
+ 
+ 	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, addr);
  
 -#ifdef CONFIG_PER_VMA_LOCK
--	if (!(flags & FAULT_FLAG_USER))
+-	if (!(mm_flags & FAULT_FLAG_USER))
 -		goto lock_mmap;
 -
--	vma = lock_vma_under_rcu(mm, address);
+-	vma = lock_vma_under_rcu(mm, addr);
 -	if (!vma)
 -		goto lock_mmap;
 -
--	if (unlikely(access_error(error_code, vma))) {
+-	if (!(vma->vm_flags & vm_flags)) {
 -		vma_end_read(vma);
 -		goto lock_mmap;
 -	}
--	fault = handle_mm_fault(vma, address, flags | FAULT_FLAG_VMA_LOCK, regs);
+-	fault = handle_mm_fault(vma, addr, mm_flags | FAULT_FLAG_VMA_LOCK, regs);
 -	if (!(fault & (VM_FAULT_RETRY | VM_FAULT_COMPLETED)))
 -		vma_end_read(vma);
 -
 -	if (!(fault & VM_FAULT_RETRY)) {
 -		count_vm_vma_lock_event(VMA_LOCK_SUCCESS);
-+	VM_LOCKED_FAULT_INIT(vmlf, mm, address, flags, 0, regs, error_code);
++	VM_LOCKED_FAULT_INIT(vmlf, mm, addr, mm_flags, vm_flags, regs, esr);
 +	if (try_vma_locked_page_fault(&vmlf, &fault))
 +		goto retry;
 +	else if (!(fault | VM_FAULT_RETRY))
@@ -123,25 +106,16 @@ index 56b4f9faf8c4..3f3b8b0a87de 100644
  
  	/* Quick path to respond to signals */
  	if (fault_signal_pending(fault, regs)) {
-@@ -1358,8 +1353,6 @@ void do_user_addr_fault(struct pt_regs *regs,
- 						 ARCH_DEFAULT_PKEY);
- 		return;
+@@ -615,9 +600,6 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
+ 			goto no_context;
+ 		return 0;
  	}
 -lock_mmap:
 -#endif /* CONFIG_PER_VMA_LOCK */
- 
+-
  retry:
- 	vma = lock_mm_and_find_vma(mm, address, regs);
-@@ -1419,9 +1412,7 @@ void do_user_addr_fault(struct pt_regs *regs,
- 	}
- 
- 	mmap_read_unlock(mm);
--#ifdef CONFIG_PER_VMA_LOCK
- done:
--#endif
- 	if (likely(!(fault & VM_FAULT_ERROR)))
- 		return;
- 
+ 	vma = lock_mm_and_find_vma(mm, addr, regs);
+ 	if (unlikely(!vma)) {
 -- 
 2.27.0
 
