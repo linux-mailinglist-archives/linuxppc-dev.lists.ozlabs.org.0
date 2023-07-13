@@ -2,69 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E483C752388
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jul 2023 15:22:38 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=eshePJRx;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 2152975244C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jul 2023 15:54:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R1wJX5qDJz3cTN
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jul 2023 23:22:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R1x1X0npPz3c5d
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jul 2023 23:54:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=eshePJRx;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::234; helo=mail-oi1-x234.google.com; envelope-from=miguel.ojeda.sandonis@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66; helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de; receiver=lists.ozlabs.org)
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R1wHd0QGgz3c3M
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jul 2023 23:21:48 +1000 (AEST)
-Received: by mail-oi1-x234.google.com with SMTP id 5614622812f47-392116b8f31so585828b6e.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jul 2023 06:21:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689254505; x=1691846505;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nMl5dn5Xz12gXOMX3oC+kNdFlWhzCPfH45LFdGwDg+c=;
-        b=eshePJRxBGfoEbxv/HATy/LbMrzsCDpyAiPdPWKP2+7M1zJL3N5KwDGRakUw3RzP4p
-         q0Cnwz0fdaQ+HyxVhl+a/PdVIYgV40UvVYeo6oku2ew3IT0bTt6UYAHjOIS6Vb6t9Mla
-         Zj8EL/FlPFPvHB5g71aE7gFP3zFqlG9d7Fbu8m/nhV/T9INJD8alH0sgU2iXPleyzim5
-         lINS3JcD7J0TOIOFW4pf/x8/SEpIIASy3dTyyqXfKshxdSJS0TlF/u7bPTHA+oWf2AYl
-         SPCY6gZL7ykEOqi+bfIKlTKf4FRPiV/L6IcHOgev/4QAZK/gwKYWQ5RBFTfBsMThGpXg
-         EmsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689254505; x=1691846505;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nMl5dn5Xz12gXOMX3oC+kNdFlWhzCPfH45LFdGwDg+c=;
-        b=V2crjwW849aURCA9PLOAsCN/yrw1DHZoiw9z7m5bYgcmBXXSdQhI+9qrkYfzznEiIv
-         R0d0Hns0tB7P8kIu9nIru5QvdvU1nyE+EPEEMdTq8TuxVnnrDbm3IKRg6o2J2fU72PWV
-         zYUflJLqhmpCGC9fCJ4IfazTVd3fexAGM0AZPq7lADXbiVQpJODwMe27sFhl/Lm6JKOK
-         EvVu3eSPpT4oZ8tc9FnZArxtaNG8qZ/11v4LFOFoxtcl1sM/AOn3vd0/kooHBezyRzyj
-         wX2WG9bhdviJwv7GUilV2l3fRoJ97BRnSkKjEC/VgEaodew1RbvD9cUGMfYsxIB3gOZf
-         m7wg==
-X-Gm-Message-State: ABy/qLZ7euurfVz0fL0962A+zqzHjqwUzbCjaLz+IaRWQKjG32EQ6LB8
-	/qebCC4Vkkc5Cslj/IXXoN2xUSQBzEviXv2QGCg=
-X-Google-Smtp-Source: APBJJlG+0WtfiM+r2sXZzO6HNFK4R91MA9ooy29hXDBdzlOr5q/1lWHuWptQzwph8RqHPwzWZYnIoYS2ozC9kDF6TM8=
-X-Received: by 2002:a05:6358:428e:b0:135:5934:2bba with SMTP id
- s14-20020a056358428e00b0013559342bbamr2356344rwc.8.1689254505432; Thu, 13 Jul
- 2023 06:21:45 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230713130338.31086-1-tzimmermann@suse.de> <20230713130338.31086-19-tzimmermann@suse.de>
-In-Reply-To: <20230713130338.31086-19-tzimmermann@suse.de>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 13 Jul 2023 15:21:34 +0200
-Message-ID: <CANiq72mbLmMKph8aiz4apNF9n3MtVO-nhM9rEWYApZbSVAO9Qw@mail.gmail.com>
-Subject: Re: [PATCH v2 18/18] fbdev: Document that framebuffer_alloc() returns
- zero'ed data
-To: Thomas Zimmermann <tzimmermann@suse.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R1x0z5HRTz30PB
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jul 2023 23:54:10 +1000 (AEST)
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.95)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1qJwlO-003u9E-2D; Thu, 13 Jul 2023 15:53:46 +0200
+Received: from p57bd9f0d.dip0.t-ipconnect.de ([87.189.159.13] helo=suse-laptop.fritz.box)
+          by inpost2.zedat.fu-berlin.de (Exim 4.95)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1qJwlN-002pvx-QH; Thu, 13 Jul 2023 15:53:45 +0200
+Message-ID: <4622810f8bceb66f212fa09d34b10f0d2d71a35d.camel@physik.fu-berlin.de>
+Subject: Re: [PATCH v2 08/18] sh: Assign FB_MODE_IS_UNKNOWN to struct
+ fb_videomode.flag
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: Thomas Zimmermann <tzimmermann@suse.de>, deller@gmx.de,
+ javierm@redhat.com
+Date: Thu, 13 Jul 2023 15:53:44 +0200
+In-Reply-To: <20230713130338.31086-9-tzimmermann@suse.de>
+References: <20230713130338.31086-1-tzimmermann@suse.de>
+	 <20230713130338.31086-9-tzimmermann@suse.de>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 
+MIME-Version: 1.0
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.189.159.13
+X-ZEDAT-Hint: PO
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,30 +56,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, linux-sh@vger.kernel.org, deller@gmx.de, linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org, javierm@redhat.com, dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, linux-nvidia@lists.surfsouth.com, linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-geode@lists.infradead.org, linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org
+Cc: linux-fbdev@vger.kernel.org, Rich Felker <dalias@libc.org>, kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, linux-sh@vger.kernel.org, Sam Ravnborg <sam@ravnborg.org>, linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org, linux-geode@lists.infradead.org, Yoshinori Sato <ysato@users.sourceforge.jp>, dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org, linux-nvidia@lists.surfsouth.com, linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 13, 2023 at 3:03=E2=80=AFPM Thomas Zimmermann <tzimmermann@suse=
-.de> wrote:
->
-> Most fbdev drivers depend on framebuffer_alloc() to initialize the
-> allocated memory to 0. Document this guarantee.
->
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+On Thu, 2023-07-13 at 14:58 +0200, Thomas Zimmermann wrote:
+> Assign FB_MODE_IS_UNKNOWN to sh7763fb_videomode.flag instead of
+> FBINFO_FLAG_DEFAULT. Both are 0, so the stored value does not change.
+>=20
+> FBINFO_FLAG_DEFAULT is a flag for a framebuffer in struct fb_info.
+> Flags for videomodes are prefixed with FB_MODE_.
+>=20
+> v2:
+> 	* assign FB_MODE_IS_UNKNOWN (Adrian)
+>=20
 > Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: Helge Deller <deller@gmx.de>
+> Acked-by: Sam Ravnborg <sam@ravnborg.org>
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Rich Felker <dalias@libc.org>
+> Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+> ---
+>  arch/sh/boards/mach-sh7763rdp/setup.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/arch/sh/boards/mach-sh7763rdp/setup.c b/arch/sh/boards/mach-=
+sh7763rdp/setup.c
+> index 97e715e4e9b3..e25193001ea0 100644
+> --- a/arch/sh/boards/mach-sh7763rdp/setup.c
+> +++ b/arch/sh/boards/mach-sh7763rdp/setup.c
+> @@ -119,7 +119,7 @@ static struct fb_videomode sh7763fb_videomode =3D {
+>  	.vsync_len =3D 1,
+>  	.sync =3D 0,
+>  	.vmode =3D FB_VMODE_NONINTERLACED,
+> -	.flag =3D FBINFO_FLAG_DEFAULT,
+> +	.flag =3D FB_MODE_IS_UNKNOWN,
+>  };
+> =20
+>  static struct sh7760fb_platdata sh7763fb_def_pdata =3D {
 
-Thanks for sending this! Maybe this would be best earlier in the
-series, so that later patches make more sense (since they use the
-guarantee), but it is not a big deal.
+Acked-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 
-> + * aligned to sizeof(long). Both, the instance of struct fb_info and
-> + * the driver private data, are cleared to zero.
-
-I think both commas may be best omitted (but I am not a native speaker).
-
-Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
-
-Cheers,
-Miguel
+--=20
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
