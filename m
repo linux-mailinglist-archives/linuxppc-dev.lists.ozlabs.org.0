@@ -2,62 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95749752DE4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jul 2023 01:19:43 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=j+ukf52d;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A48C752DE5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jul 2023 01:20:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R29YT3pcNz3cRs
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jul 2023 09:19:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R29Z445sbz3cWY
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jul 2023 09:20:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=j+ukf52d;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=thunder.leizhen@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R1qyN2qCBz3c1H
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jul 2023 20:06:36 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 0805160AB4;
-	Thu, 13 Jul 2023 10:06:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34C10C433D9;
-	Thu, 13 Jul 2023 10:06:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1689242793;
-	bh=+Df4cQ3XZPwLfFxJgIqPrDY4l9UAdwCjr9DGoW3/ojk=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=j+ukf52dvZ+nUEPwpL9/EYruyhEbJbg7d1yjKDMcd3GOYxX7RclutpFcH5UUHlkpI
-	 fnIEho3ycJz28JfRAPfizI9cf3F0lqh4jC9ZF+UZUl5JTb6HfdwpWlIJ9bsmZ0DsOQ
-	 PAjBHJokUk/yF6GqX5PHCHsaDKT13j+MVST75N+zeiC2em3PJTUKrCtRR1KKmsmMCX
-	 MYnQq0YQbswQU++9LLW3pgHXNsdqcZtbb04btB9J/lGIIF9SRPTFcmVmql2ih2n6bH
-	 BAMadKjZaQhxN2qUstf+rs137LSKZ/kMx1juo/8V60a80JJWvq1eqYcfgXe/BuR2sH
-	 +vKmJxA1p+x+A==
-From: Christian Brauner <brauner@kernel.org>
-Date: Thu, 13 Jul 2023 12:05:38 +0200
-Subject: [PATCH 2/2] eventfd: simplify eventfd_signal_mask()
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R1sSx6LwLz306t
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jul 2023 21:14:40 +1000 (AEST)
+Received: from dggpemm500006.china.huawei.com (unknown [172.30.72.56])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4R1sNg70PRztR5C;
+	Thu, 13 Jul 2023 19:10:59 +0800 (CST)
+Received: from [10.174.178.55] (10.174.178.55) by
+ dggpemm500006.china.huawei.com (7.185.36.236) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Thu, 13 Jul 2023 19:13:58 +0800
+Subject: Re: [PATCH v6 02/14] x86/kexec: refactor for kernel/Kconfig.kexec
+To: Eric DeVolder <eric.devolder@oracle.com>, <linux@armlinux.org.uk>,
+	<catalin.marinas@arm.com>, <will@kernel.org>, <chenhuacai@kernel.org>,
+	<geert@linux-m68k.org>, <tsbogend@alpha.franken.de>,
+	<James.Bottomley@HansenPartnership.com>, <deller@gmx.de>,
+	<ysato@users.sourceforge.jp>, <dalias@libc.org>,
+	<glaubitz@physik.fu-berlin.de>, <tglx@linutronix.de>, <mingo@redhat.com>,
+	<bp@alien8.de>, <dave.hansen@linux.intel.com>, <x86@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-ia64@vger.kernel.org>, <loongarch@lists.linux.dev>,
+	<linux-m68k@lists.linux-m68k.org>, <linux-mips@vger.kernel.org>,
+	<linux-parisc@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+	<linux-riscv@lists.infradead.org>, <linux-s390@vger.kernel.org>,
+	<linux-sh@vger.kernel.org>
+References: <20230712161545.87870-1-eric.devolder@oracle.com>
+ <20230712161545.87870-3-eric.devolder@oracle.com>
+From: "Leizhen (ThunderTown)" <thunder.leizhen@huawei.com>
+Message-ID: <d8ddd4bd-fbc9-dbe9-f5c3-daf8d89aa46d@huawei.com>
+Date: Thu, 13 Jul 2023 19:13:57 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
+In-Reply-To: <20230712161545.87870-3-eric.devolder@oracle.com>
 Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230713-vfs-eventfd-signal-v1-2-7fda6c5d212b@kernel.org>
-References: <20230713-vfs-eventfd-signal-v1-0-7fda6c5d212b@kernel.org>
-In-Reply-To: <20230713-vfs-eventfd-signal-v1-0-7fda6c5d212b@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-X-Mailer: b4 0.13-dev-099c9
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4338; i=brauner@kernel.org;
- h=from:subject:message-id; bh=+Df4cQ3XZPwLfFxJgIqPrDY4l9UAdwCjr9DGoW3/ojk=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaSsP1NbdfmkaWaxQvZah7/MWs/ufCrO2q82U2T1DIWDSy0u
- LwzX6ChhYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZiIshkjww4t2ytlzT8ElQsqm7Su/N
- b3T10XyfCvYZ2XvvOJclnpCIbvvh+/WjLaTozOzj3stenvds+qri//VkTNPGGwWHTi+Uc8AA==
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Originating-IP: [10.174.178.55]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggpemm500006.china.huawei.com (7.185.36.236)
+X-CFilter-Loop: Reflected
 X-Mailman-Approved-At: Fri, 14 Jul 2023 09:17:19 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -70,128 +64,157 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-aio@kvack.org, linux-usb@vger.kernel.org, Matthew Rosato <mjrosato@linux.ibm.com>, Paul Durrant <paul@xen.org>, Tom Rix <trix@redhat.com>, Jason Wang <jasowang@redhat.com>, Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, dri-devel@lists.freedesktop.org, Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org, Kirti Wankhede <kwankhede@nvidia.com>, Paolo Bonzini <pbonzini@redhat.com>, Jens Axboe <axboe@kernel.dk>, Vineeth Vijayan <vneethv@linux.ibm.com>, Diana Craciun <diana.craciun@oss.nxp.com>, netdev@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, David Airlie <airlied@gmail.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Shakeel Butt <shakeelb@google.com>, Vasily Gorbik <gor@linux.ibm.com>, Leon Romanovsky <leon@kernel.org>, Harald Freudenberger <freude@linux.ibm.com>, Fei Li <fei1.li@intel.com>, x86@kernel.org, Roman Gushchin <roman.gushchin@linux.dev>, Halil Pasic <pasic@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>, Ingo Molnar <mingo@redhat.com>, intel-gf
- x@lists.freedesktop.org, Christian Borntraeger <borntraeger@linux.ibm.com>, linux-fpga@vger.kernel.org, Zhi Wang <zhi.a.wang@intel.com>, Wu Hao <hao.wu@intel.com>, Jason Herne <jjherne@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Johannes Weiner <hannes@cmpxchg.org>, linuxppc-dev@lists.ozlabs.org, Zhenyu Wang <zhenyuw@linux.intel.com>, Eric Auger <eric.auger@redhat.com>, Alex Williamson <alex.williamson@redhat.com>, Borislav Petkov <bp@alien8.de>, Jani Nikula <jani.nikula@linux.intel.com>, kvm@vger.kernel.org, Rodrigo Vivi <rodrigo.vivi@intel.com>, cgroups@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, virtualization@lists.linux-foundation.org, intel-gvt-dev@lists.freedesktop.org, io-uring@vger.kernel.org, Tony Krowiak <akrowiak@linux.ibm.com>, Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, Ch
- ristian Brauner <brauner@kernel.org>, Pavel Begunkov <asml.silence@gmail.com>, Sean Christopherson <seanjc@google.com>, Oded Gabbay <ogabbay@kernel.org>, Muchun Song <muchun.song@linux.dev>, Peter Oberparleiter <oberpar@linux.ibm.com>, linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, Benjamin LaHaise <bcrl@kvack.org>, "Michael S. Tsirkin" <mst@redhat.com>, Sven Schnelle <svens@linux.ibm.com>, Daniel Vetter <daniel@ffwll.ch>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Frederic Barrat <fbarrat@linux.ibm.com>, Moritz Fischer <mdf@kernel.org>, Vitaly Kuznetsov <vkuznets@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Xu Yilun <yilun.xu@intel.com>
+Cc: peterz@infradead.org, linus.walleij@linaro.org, hpa@zytor.com, kernel@xen0n.name, ardb@kernel.org, tsi@tuyoix.net, agordeev@linux.ibm.com, paulmck@kernel.org, bhe@redhat.com, masahiroy@kernel.org, konrad.wilk@oracle.com, sebastian.reichel@collabora.com, samitolvanen@google.com, ojeda@kernel.org, juerg.haefliger@canonical.com, borntraeger@linux.ibm.com, frederic@kernel.org, arnd@arndb.de, mhiramat@kernel.org, aou@eecs.berkeley.edu, keescook@chromium.org, gor@linux.ibm.com, anshuman.khandual@arm.com, hca@linux.ibm.com, xin3.li@intel.com, npiggin@gmail.com, rmk+kernel@armlinux.org.uk, paul.walmsley@sifive.com, boris.ostrovsky@oracle.com, ziy@nvidia.com, hbathini@linux.ibm.com, gregkh@linuxfoundation.org, kirill.shutemov@linux.intel.com, ndesaulniers@google.com, sourabhjain@linux.ibm.com, palmer@dabbelt.com, svens@linux.ibm.com, tj@kernel.org, akpm@linux-foundation.org, rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The eventfd_signal_mask() helper was introduced for io_uring and similar
-to eventfd_signal() it always passed 1 for @n. So don't bother with that
-argument at all.
 
-Signed-off-by: Christian Brauner <brauner@kernel.org>
----
- drivers/gpu/drm/i915/gvt/interrupt.c | 2 +-
- fs/eventfd.c                         | 9 +++++----
- include/linux/eventfd.h              | 9 ++++-----
- io_uring/io_uring.c                  | 4 ++--
- 4 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gvt/interrupt.c b/drivers/gpu/drm/i915/gvt/interrupt.c
-index 3d9e09c2add4..31aff6f733d4 100644
---- a/drivers/gpu/drm/i915/gvt/interrupt.c
-+++ b/drivers/gpu/drm/i915/gvt/interrupt.c
-@@ -435,7 +435,7 @@ static int inject_virtual_interrupt(struct intel_vgpu *vgpu)
- 	 */
- 	if (!test_bit(INTEL_VGPU_STATUS_ATTACHED, vgpu->status))
- 		return -ESRCH;
--	if (vgpu->msi_trigger && eventfd_signal(vgpu->msi_trigger) != 1)
-+	if (vgpu->msi_trigger && !eventfd_signal(vgpu->msi_trigger))
- 		return -EFAULT;
- 	return 0;
- }
-diff --git a/fs/eventfd.c b/fs/eventfd.c
-index dc9e01053235..077be5da72bd 100644
---- a/fs/eventfd.c
-+++ b/fs/eventfd.c
-@@ -43,9 +43,10 @@ struct eventfd_ctx {
- 	int id;
- };
- 
--__u64 eventfd_signal_mask(struct eventfd_ctx *ctx, __u64 n, __poll_t mask)
-+bool eventfd_signal_mask(struct eventfd_ctx *ctx, __poll_t mask)
- {
- 	unsigned long flags;
-+	__u64 n = 1;
- 
- 	/*
- 	 * Deadlock or stack overflow issues can happen if we recurse here
-@@ -68,7 +69,7 @@ __u64 eventfd_signal_mask(struct eventfd_ctx *ctx, __u64 n, __poll_t mask)
- 	current->in_eventfd = 0;
- 	spin_unlock_irqrestore(&ctx->wqh.lock, flags);
- 
--	return n;
-+	return n == 1;
- }
- 
- /**
-@@ -82,9 +83,9 @@ __u64 eventfd_signal_mask(struct eventfd_ctx *ctx, __u64 n, __poll_t mask)
-  *
-  * Returns the amount by which the counter was incremented.
-  */
--__u64 eventfd_signal(struct eventfd_ctx *ctx)
-+bool eventfd_signal(struct eventfd_ctx *ctx)
- {
--	return eventfd_signal_mask(ctx, 1, 0);
-+	return eventfd_signal_mask(ctx, 0);
- }
- EXPORT_SYMBOL_GPL(eventfd_signal);
- 
-diff --git a/include/linux/eventfd.h b/include/linux/eventfd.h
-index 562089431551..0155ee25f7c8 100644
---- a/include/linux/eventfd.h
-+++ b/include/linux/eventfd.h
-@@ -35,8 +35,8 @@ void eventfd_ctx_put(struct eventfd_ctx *ctx);
- struct file *eventfd_fget(int fd);
- struct eventfd_ctx *eventfd_ctx_fdget(int fd);
- struct eventfd_ctx *eventfd_ctx_fileget(struct file *file);
--__u64 eventfd_signal(struct eventfd_ctx *ctx);
--__u64 eventfd_signal_mask(struct eventfd_ctx *ctx, __u64 n, __poll_t mask);
-+bool eventfd_signal(struct eventfd_ctx *ctx);
-+bool eventfd_signal_mask(struct eventfd_ctx *ctx, __poll_t mask);
- int eventfd_ctx_remove_wait_queue(struct eventfd_ctx *ctx, wait_queue_entry_t *wait,
- 				  __u64 *cnt);
- void eventfd_ctx_do_read(struct eventfd_ctx *ctx, __u64 *cnt);
-@@ -58,13 +58,12 @@ static inline struct eventfd_ctx *eventfd_ctx_fdget(int fd)
- 	return ERR_PTR(-ENOSYS);
- }
- 
--static inline int eventfd_signal(struct eventfd_ctx *ctx)
-+static inline bool eventfd_signal(struct eventfd_ctx *ctx)
- {
- 	return -ENOSYS;
- }
- 
--static inline int eventfd_signal_mask(struct eventfd_ctx *ctx, __u64 n,
--				      unsigned mask)
-+static inline bool eventfd_signal_mask(struct eventfd_ctx *ctx, unsigned mask)
- {
- 	return -ENOSYS;
- }
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index e8096d502a7c..a9359ef73935 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -537,7 +537,7 @@ static void io_eventfd_ops(struct rcu_head *rcu)
- 	int ops = atomic_xchg(&ev_fd->ops, 0);
- 
- 	if (ops & BIT(IO_EVENTFD_OP_SIGNAL_BIT))
--		eventfd_signal_mask(ev_fd->cq_ev_fd, 1, EPOLL_URING_WAKE);
-+		eventfd_signal_mask(ev_fd->cq_ev_fd, EPOLL_URING_WAKE);
- 
- 	/* IO_EVENTFD_OP_FREE_BIT may not be set here depending on callback
- 	 * ordering in a race but if references are 0 we know we have to free
-@@ -573,7 +573,7 @@ static void io_eventfd_signal(struct io_ring_ctx *ctx)
- 		goto out;
- 
- 	if (likely(eventfd_signal_allowed())) {
--		eventfd_signal_mask(ev_fd->cq_ev_fd, 1, EPOLL_URING_WAKE);
-+		eventfd_signal_mask(ev_fd->cq_ev_fd, EPOLL_URING_WAKE);
- 	} else {
- 		atomic_inc(&ev_fd->refs);
- 		if (!atomic_fetch_or(BIT(IO_EVENTFD_OP_SIGNAL_BIT), &ev_fd->ops))
+On 2023/7/13 0:15, Eric DeVolder wrote:
+> The kexec and crash kernel options are provided in the common
+> kernel/Kconfig.kexec. Utilize the common options and provide
+> the ARCH_SUPPORTS_ and ARCH_SELECTS_ entries to recreate the
+> equivalent set of KEXEC and CRASH options.
+> 
+> Signed-off-by: Eric DeVolder <eric.devolder@oracle.com>
+> ---
+>  arch/x86/Kconfig | 92 ++++++++++--------------------------------------
+>  1 file changed, 19 insertions(+), 73 deletions(-)
+> 
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index 7422db409770..9767a343f7c2 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -2040,88 +2040,34 @@ config EFI_RUNTIME_MAP
+>  
+>  source "kernel/Kconfig.hz"
+>  
+> -config KEXEC
+> -	bool "kexec system call"
+> -	select KEXEC_CORE
+> -	help
+> -	  kexec is a system call that implements the ability to shutdown your
+> -	  current kernel, and to start another kernel.  It is like a reboot
+> -	  but it is independent of the system firmware.   And like a reboot
+> -	  you can start any kernel with it, not just Linux.
+> -
+> -	  The name comes from the similarity to the exec system call.
+> -
+> -	  It is an ongoing process to be certain the hardware in a machine
+> -	  is properly shutdown, so do not be surprised if this code does not
+> -	  initially work for you.  As of this writing the exact hardware
+> -	  interface is strongly in flux, so no good recommendation can be
+> -	  made.
+> -
+> -config KEXEC_FILE
+> -	bool "kexec file based system call"
+> -	select KEXEC_CORE
+> -	select HAVE_IMA_KEXEC if IMA
+> -	depends on X86_64
+> -	depends on CRYPTO=y
+> -	depends on CRYPTO_SHA256=y
+> -	help
+> -	  This is new version of kexec system call. This system call is
+> -	  file based and takes file descriptors as system call argument
+> -	  for kernel and initramfs as opposed to list of segments as
+> -	  accepted by previous system call.
+> +config ARCH_SUPPORTS_KEXEC
+> +	def_bool y
+
+In v5, Joel Fernandes seems to suggest you change it to the following form:
+In arch/Kconfig:
++config ARCH_SUPPORTS_KEXEC
++	bool
+
+In arch/x86/Kconfig:
+config X86
+	... ...
++	select ARCH_SUPPORTS_KEXEC
+
+In arch/arm64/Kconfig:
+config ARM64
+	... ...
++	select ARCH_SUPPORTS_KEXEC if PM_SLEEP_SMP
+
+etc..
+
+You can refer to ARCH_HAS_DEBUG_VIRTUAL.
+
+>  
+> -config ARCH_HAS_KEXEC_PURGATORY
+> -	def_bool KEXEC_FILE
+> +config ARCH_SUPPORTS_KEXEC_FILE
+> +	def_bool X86_64 && CRYPTO && CRYPTO_SHA256
+>  
+> -config KEXEC_SIG
+> -	bool "Verify kernel signature during kexec_file_load() syscall"
+> +config ARCH_SELECTS_KEXEC_FILE
+> +	def_bool y
+>  	depends on KEXEC_FILE
+> -	help
+> +	select HAVE_IMA_KEXEC if IMA
+>  
+> -	  This option makes the kexec_file_load() syscall check for a valid
+> -	  signature of the kernel image.  The image can still be loaded without
+> -	  a valid signature unless you also enable KEXEC_SIG_FORCE, though if
+> -	  there's a signature that we can check, then it must be valid.
+> +config ARCH_HAS_KEXEC_PURGATORY
+> +	def_bool KEXEC_FILE
+>  
+> -	  In addition to this option, you need to enable signature
+> -	  verification for the corresponding kernel image type being
+> -	  loaded in order for this to work.
+> +config ARCH_SUPPORTS_KEXEC_SIG
+> +	def_bool y
+>  
+> -config KEXEC_SIG_FORCE
+> -	bool "Require a valid signature in kexec_file_load() syscall"
+> -	depends on KEXEC_SIG
+> -	help
+> -	  This option makes kernel signature verification mandatory for
+> -	  the kexec_file_load() syscall.
+> +config ARCH_SUPPORTS_KEXEC_SIG_FORCE
+> +	def_bool y
+>  
+> -config KEXEC_BZIMAGE_VERIFY_SIG
+> -	bool "Enable bzImage signature verification support"
+> -	depends on KEXEC_SIG
+> -	depends on SIGNED_PE_FILE_VERIFICATION
+> -	select SYSTEM_TRUSTED_KEYRING
+> -	help
+> -	  Enable bzImage signature verification support.
+> +config ARCH_SUPPORTS_KEXEC_BZIMAGE_VERIFY_SIG
+> +	def_bool y
+>  
+> -config CRASH_DUMP
+> -	bool "kernel crash dumps"
+> -	depends on X86_64 || (X86_32 && HIGHMEM)
+> -	help
+> -	  Generate crash dump after being started by kexec.
+> -	  This should be normally only set in special crash dump kernels
+> -	  which are loaded in the main kernel with kexec-tools into
+> -	  a specially reserved region and then later executed after
+> -	  a crash by kdump/kexec. The crash dump kernel must be compiled
+> -	  to a memory address not used by the main kernel or BIOS using
+> -	  PHYSICAL_START, or it must be built as a relocatable image
+> -	  (CONFIG_RELOCATABLE=y).
+> -	  For more details see Documentation/admin-guide/kdump/kdump.rst
+> +config ARCH_SUPPORTS_KEXEC_JUMP
+> +	def_bool y
+>  
+> -config KEXEC_JUMP
+> -	bool "kexec jump"
+> -	depends on KEXEC && HIBERNATION
+> -	help
+> -	  Jump between original kernel and kexeced kernel and invoke
+> -	  code in physical address mode via KEXEC
+> +config ARCH_SUPPORTS_CRASH_DUMP
+> +	def_bool X86_64 || (X86_32 && HIGHMEM)
+>  
+>  config PHYSICAL_START
+>  	hex "Physical address where the kernel is loaded" if (EXPERT || CRASH_DUMP)
+> 
 
 -- 
-2.34.1
-
+Regards,
+  Zhen Lei
