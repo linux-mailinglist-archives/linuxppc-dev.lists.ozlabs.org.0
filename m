@@ -2,35 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD090753594
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jul 2023 10:50:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94383753674
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jul 2023 11:29:58 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=M7ByKjPF;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=k+C8NSid;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R2QDV67Lzz3cBJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jul 2023 18:50:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R2R5c3ThRz3c50
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jul 2023 19:29:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gondor.apana.org.au (client-ip=167.179.156.38; helo=167-179-156-38.a7b39c.syd.nbn.aussiebb.net; envelope-from=herbert@gondor.apana.org.au; receiver=lists.ozlabs.org)
-Received: from 167-179-156-38.a7b39c.syd.nbn.aussiebb.net (167-179-156-38.a7b39c.syd.nbn.aussiebb.net [167.179.156.38])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=M7ByKjPF;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=k+C8NSid;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=mgorman@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R2QD16g1Kz3Wtt
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jul 2023 18:50:24 +1000 (AEST)
-Received: from gwarestrin.arnor.me.apana.org.au ([192.168.103.7])
-	by fornost.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
-	id 1qKEV3-001RdB-GM; Fri, 14 Jul 2023 18:50:06 +1000
-Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Fri, 14 Jul 2023 18:49:58 +1000
-Date: Fri, 14 Jul 2023 18:49:58 +1000
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Danny Tsen <dtsen@linux.ibm.com>
-Subject: Re: [PATCH v2 0/5] crypto: Accelerated Chacha20/Poly1305
- implementation
-Message-ID: <ZLEMNpZ4M4U/4t6j@gondor.apana.org.au>
-References: <20230426191147.60610-1-dtsen@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R2R4h0q5jz30PB
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jul 2023 19:29:08 +1000 (AEST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out2.suse.de (Postfix) with ESMTP id 52FBE1FD60;
+	Fri, 14 Jul 2023 09:29:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1689326944; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kJwS6jgM/F6rS04d9Wc7YkG+2OJLOoEr4udYg+BGyWw=;
+	b=M7ByKjPFDt0Rl68Wb1mvPnAjDU5b3pAE5iH9/ciB8X3D6xixrnXoSQrV8Rh3yToMKgUEJR
+	oPISriOh5bLfikITiwKuaJwUN6FaPBVWmMvx8nXWBTYMNZIeg+VjCkwG3EuRYshxXz7lPf
+	A/phey/kQFkpQVENnHfz6gZD0tWjx6Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1689326944;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kJwS6jgM/F6rS04d9Wc7YkG+2OJLOoEr4udYg+BGyWw=;
+	b=k+C8NSid4g/P8wTLz5Q9iHDOuQnYjvks/1FLJZmrLFGYlbJlJnkWj2ktRkgPOAZd1rNaqg
+	1m+w+8kfkkYyhwDg==
+Received: from suse.de (unknown [10.163.43.106])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by relay2.suse.de (Postfix) with ESMTPS id E6FD42C142;
+	Fri, 14 Jul 2023 09:29:00 +0000 (UTC)
+Date: Fri, 14 Jul 2023 10:28:53 +0100
+From: Mel Gorman <mgorman@suse.de>
+To: Valentin Schneider <vschneid@redhat.com>
+Subject: Re: [RFC][PATCH] sched: Rename DIE domain
+Message-ID: <20230714092853.tueulnlqloc3m4gw@suse.de>
+References: <20230712141056.GI3100107@hirez.programming.kicks-ass.net>
+ <xhsmh1qhduq9d.mognet@vschneid.remote.csb>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-15
 Content-Disposition: inline
-In-Reply-To: <20230426191147.60610-1-dtsen@linux.ibm.com>
+In-Reply-To: <xhsmh1qhduq9d.mognet@vschneid.remote.csb>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,47 +70,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dtsen@us.ibm.com, nayna@linux.ibm.com, linux-kernel@vger.kernel.org, appro@cryptogams.org, linux-crypto@vger.kernel.org, ltcgcw@linux.vnet.ibm.com, leitao@debian.org, linuxppc-dev@lists.ozlabs.org
+Cc: juri.lelli@redhat.com, Peter Zijlstra <peterz@infradead.org>, dave.hansen@linux.intel.com, bsegall@google.com, hpa@zytor.com, agordeev@linux.ibm.com, linux-s390@vger.kernel.org, vincent.guittot@linaro.org, x86@kernel.org, mingo@redhat.com, borntraeger@linux.ibm.com, gor@linux.ibm.com, hca@linux.ibm.com, npiggin@gmail.com, bp@alien8.de, rostedt@goodmis.org, Thomas Gleixner <tglx@linutronix.de>, dietmar.eggemann@arm.com, bristot@redhat.com, linux-kernel@vger.kernel.org, svens@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Apr 26, 2023 at 03:11:42PM -0400, Danny Tsen wrote:
-> This patch series provide an accelerated/optimized Chacha20 and Poly1305
-> implementation for Power10 or later CPU (ppc64le).  This module
-> implements algorithm specified in RFC7539.  The implementation
-> provides 3.5X better performance than the baseline for Chacha20 and
-> Poly1305 individually and 1.5X improvement for Chacha20/Poly1305
-> operation.
+On Wed, Jul 12, 2023 at 04:02:38PM +0100, Valentin Schneider wrote:
+> On 12/07/23 16:10, Peter Zijlstra wrote:
+> > Hi
+> >
+> > Thomas just tripped over the x86 topology setup creating a 'DIE' domain
+> > for the package mask :-)
+> >
+> > Since these names are SCHED_DEBUG only, rename them.
+> > I don't think anybody *should* be relying on this, but who knows.
+> >
 > 
-> This patch has been tested with the kernel crypto module tcrypt.ko and
-> has passed the selftest.  The patch is also tested with
-> CONFIG_CRYPTO_MANAGER_EXTRA_TESTS enabled.
+> FWIW I don't care much about the actual name.
 > 
+> There are some stray references to DIE in comments - see below. Bit funny
+> to see:
+> - *  - Package (DIE)
+> + *  - Package (PKG)
 > 
-> Danny Tsen (5):
->   An optimized Chacha20 implementation with 8-way unrolling for ppc64le.
->   Glue code for optmized Chacha20 implementation for ppc64le.
->   An optimized Poly1305 implementation with 4-way unrolling for ppc64le.
->   Glue code for optmized Poly1305 implementation for ppc64le.
->   Update Kconfig and Makefile.
+> With that:
+> Acked-by: Valentin Schneider <vschneid@redhat.com>
 > 
->  arch/powerpc/crypto/Kconfig             |   26 +
->  arch/powerpc/crypto/Makefile            |    4 +
->  arch/powerpc/crypto/chacha-p10-glue.c   |  221 +++++
->  arch/powerpc/crypto/chacha-p10le-8x.S   |  842 ++++++++++++++++++
->  arch/powerpc/crypto/poly1305-p10-glue.c |  186 ++++
->  arch/powerpc/crypto/poly1305-p10le_64.S | 1075 +++++++++++++++++++++++
->  6 files changed, 2354 insertions(+)
->  create mode 100644 arch/powerpc/crypto/chacha-p10-glue.c
->  create mode 100644 arch/powerpc/crypto/chacha-p10le-8x.S
->  create mode 100644 arch/powerpc/crypto/poly1305-p10-glue.c
->  create mode 100644 arch/powerpc/crypto/poly1305-p10le_64.S
-> 
-> -- 
-> 2.31.1
 
-All applied.  Thanks.
+No objection either, PKG is less ambiguous than DIE
+
+Acked-by: Mel Gorman <mgorman@suse.de>
+
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Mel Gorman
+SUSE Labs
