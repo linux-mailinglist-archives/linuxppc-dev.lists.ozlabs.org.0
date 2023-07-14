@@ -2,48 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45B2F752EED
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jul 2023 03:53:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFC2275327B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jul 2023 09:03:13 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=F9jCkLDw;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R2Dys1Y1Cz3c96
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jul 2023 11:53:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R2MrH4m96z3cDN
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jul 2023 17:03:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.255; helo=szxga08-in.huawei.com; envelope-from=wangkefeng.wang@huawei.com; receiver=lists.ozlabs.org)
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=F9jCkLDw;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R2DyL0659z30Q4
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jul 2023 11:52:53 +1000 (AEST)
-Received: from dggpemm500001.china.huawei.com (unknown [172.30.72.53])
-	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4R2DxQ4ZhTz18LhT;
-	Fri, 14 Jul 2023 09:52:10 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Fri, 14 Jul 2023 09:52:45 +0800
-Message-ID: <6f06f7d5-7d84-815e-699b-eef684e014b0@huawei.com>
-Date: Fri, 14 Jul 2023 09:52:45 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R2MqM343dz2xgv
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jul 2023 17:02:22 +1000 (AEST)
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36E6k8mC003711;
+	Fri, 14 Jul 2023 07:02:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=VSZ2cLwX/EHXnaRmoVY3Q/CXPd3lzNMShf9VQsHYbZM=;
+ b=F9jCkLDwZECEsSzd4c6/nNh7238079QEjvVzPfQGvKY7NYKkJe6sHLh2yBuemM8yVbD5
+ 1OgIqxdFL3buUzxlRvmqAbO5SAOrv9Q6lHVT4FhLaNmgJdyoIVad8ymQCBkcGBaraZIE
+ Q0YcddfEwR5OqccLNuwbPYgPmwmbfIKTTizg93pai56lKG8IoKTjbb3yooEm4WEniI4M
+ XBAZdlPseoF3Sp/8JwOuiitNDZdKv83I2wE6rJ/rRKU2iYoTDiv7sTuZcsJGuXiYeatm
+ bQC+7ESQqP2t1deFANp+x+mIRZeaPpqznkreVjBF5ocvnHzJHt9Sni2UMfZd3Up1DooA qQ== 
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ru1cjrbgq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Jul 2023 07:02:09 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36E4xAPA007392;
+	Fri, 14 Jul 2023 07:02:09 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3rtpvs1420-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Jul 2023 07:02:09 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36E726BT20578820
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 14 Jul 2023 07:02:06 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 00AD52004E;
+	Fri, 14 Jul 2023 07:02:06 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F3CE12004B;
+	Fri, 14 Jul 2023 07:02:03 +0000 (GMT)
+Received: from [9.43.21.134] (unknown [9.43.21.134])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 14 Jul 2023 07:02:03 +0000 (GMT)
+Message-ID: <d91cee25-19d6-2eaa-1ad3-94718fa253cb@linux.ibm.com>
+Date: Fri, 14 Jul 2023 12:32:02 +0530
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: [PATCH rfc -next 01/10] mm: add a generic VMA lock-based page
- fault handler
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2 02/10] docs: ABI:
+ sysfs-bus-event_source-devices-hv_gpci: Document processor_bus_topology sysfs
+ interface file
+To: Randy Dunlap <rdunlap@infradead.org>, mpe@ellerman.id.au
+References: <20230710092717.55317-1-kjain@linux.ibm.com>
+ <20230710092717.55317-3-kjain@linux.ibm.com>
+ <4418618a-ac75-f824-ec6d-984421dd5c6b@infradead.org>
 Content-Language: en-US
-To: Suren Baghdasaryan <surenb@google.com>, Matthew Wilcox
-	<willy@infradead.org>
-References: <20230713095339.189715-1-wangkefeng.wang@huawei.com>
- <20230713095339.189715-2-wangkefeng.wang@huawei.com>
- <ZLAjFQGgcjt4ykS7@casper.infradead.org>
- <CAJuCfpGBaAJof=5-Xh1saoN9dhOauMiHBZzb0crVNn9OyOeZHw@mail.gmail.com>
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <CAJuCfpGBaAJof=5-Xh1saoN9dhOauMiHBZzb0crVNn9OyOeZHw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- dggpemm500001.china.huawei.com (7.185.36.107)
-X-CFilter-Loop: Reflected
+From: kajoljain <kjain@linux.ibm.com>
+In-Reply-To: <4418618a-ac75-f824-ec6d-984421dd5c6b@infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: -6e-aaptf8lQBw9POaytQSMl9XXfYxQy
+X-Proofpoint-ORIG-GUID: -6e-aaptf8lQBw9POaytQSMl9XXfYxQy
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-14_03,2023-07-13_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
+ priorityscore=1501 spamscore=0 mlxlogscore=999 impostorscore=0
+ phishscore=0 lowpriorityscore=0 malwarescore=0 adultscore=0 mlxscore=0
+ bulkscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2307140059
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,114 +96,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, loongarch@lists.linux.dev, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, WANG Xuerui <kernel@xen0n.name>, linux-s390@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>
- , Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: atrajeev@linux.vnet.ibm.com, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, disgoel@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 2023/7/14 4:12, Suren Baghdasaryan wrote:
-> On Thu, Jul 13, 2023 at 9:15 AM Matthew Wilcox <willy@infradead.org> wrote:
->>
->>> +int try_vma_locked_page_fault(struct vm_locked_fault *vmlf, vm_fault_t *ret)
->>> +{
->>> +     struct vm_area_struct *vma;
->>> +     vm_fault_t fault;
->>
->>
->> On Thu, Jul 13, 2023 at 05:53:29PM +0800, Kefeng Wang wrote:
->>> +#define VM_LOCKED_FAULT_INIT(_name, _mm, _address, _fault_flags, _vm_flags, _regs, _fault_code) \
->>> +     _name.mm                = _mm;                  \
->>> +     _name.address           = _address;             \
->>> +     _name.fault_flags       = _fault_flags;         \
->>> +     _name.vm_flags          = _vm_flags;            \
->>> +     _name.regs              = _regs;                \
->>> +     _name.fault_code        = _fault_code
->>
->> More consolidated code is a good idea; no question.  But I don't think
->> this is the right way to do it.
 
-I agree it is not good enough, but the arch's vma check acess has
-different implementation, some use vm flags, some need fault code and
-regs, and some use both :(
 
->>
->>> +int __weak arch_vma_check_access(struct vm_area_struct *vma,
->>> +                              struct vm_locked_fault *vmlf);
->>
->> This should be:
->>
->> #ifndef vma_check_access
->> bool vma_check_access(struct vm_area_struct *vma, )
->> {
->>          return (vma->vm_flags & vm_flags) == 0;
->> }
->> #endif
->>
->> and then arches which want to do something different can just define
->> vma_check_access.
 
-Ok, I could convert to use this way.
 
->>
->>> +int try_vma_locked_page_fault(struct vm_locked_fault *vmlf, vm_fault_t *ret)
->>> +{
->>> +     struct vm_area_struct *vma;
->>> +     vm_fault_t fault;
->>
->> Declaring the vmf in this function and then copying it back is just wrong.
->> We need to declare vm_fault_t earlier (in the arch fault handler) and
->> pass it in.
 
-Actually I passed the vm_fault_t *ret(in the arch fault handler), we
-could directly use *ret instead of a new local variable, and no copy.
+
+
+
+Thanks Randy for the review comments, I will do these updates
+for all documentation patches in my next version of patchset.
+
+Thanks,
+Kajol Jain
+
+On 7/12/23 02:22, Randy Dunlap wrote:
+> Hi--
 > 
-> Did you mean to say "we need to declare vmf (struct vm_fault) earlier
-> (in the arch fault handler) and pass it in." ?
-> 
->>   I don't think that creating struct vm_locked_fault is the
->> right idea either.
-
-As mentioned above for vma check access, we need many arguments for a 
-function, a new struct looks possible better, is there better solution
-or any suggestion?
-
-Thanks.
-
+> On 7/10/23 02:27, Kajol Jain wrote:
+>> Add details of the new hv-gpci interface file called
+>> "processor_bus_topology" in the ABI documentation.
 >>
->>> +     if (!(vmlf->fault_flags & FAULT_FLAG_USER))
->>> +             return -EINVAL;
->>> +
->>> +     vma = lock_vma_under_rcu(vmlf->mm, vmlf->address);
->>> +     if (!vma)
->>> +             return -EINVAL;
->>> +
->>> +     if (arch_vma_check_access(vma, vmlf)) {
->>> +             vma_end_read(vma);
->>> +             return -EINVAL;
->>> +     }
->>> +
->>> +     fault = handle_mm_fault(vma, vmlf->address,
->>> +                             vmlf->fault_flags | FAULT_FLAG_VMA_LOCK,
->>> +                             vmlf->regs);
->>> +     *ret = fault;
->>> +
->>> +     if (!(fault & (VM_FAULT_RETRY | VM_FAULT_COMPLETED)))
->>> +             vma_end_read(vma);
->>> +
->>> +     if ((fault & VM_FAULT_RETRY))
->>> +             count_vm_vma_lock_event(VMA_LOCK_RETRY);
->>> +     else
->>> +             count_vm_vma_lock_event(VMA_LOCK_SUCCESS);
->>> +
->>> +     return 0;
->>> +}
->>> +
->>>   #endif /* CONFIG_PER_VMA_LOCK */
->>>
->>>   #ifndef __PAGETABLE_P4D_FOLDED
->>> --
->>> 2.27.0
->>>
->>>
+>> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+>> ---
+>>  .../sysfs-bus-event_source-devices-hv_gpci    | 32 +++++++++++++++++++
+>>  1 file changed, 32 insertions(+)
+>>
+>> diff --git a/Documentation/ABI/testing/sysfs-bus-event_source-devices-hv_gpci b/Documentation/ABI/testing/sysfs-bus-event_source-devices-hv_gpci
+>> index 12e2bf92783f..2eeeab9a20fa 100644
+>> --- a/Documentation/ABI/testing/sysfs-bus-event_source-devices-hv_gpci
+>> +++ b/Documentation/ABI/testing/sysfs-bus-event_source-devices-hv_gpci
+>> @@ -80,3 +80,35 @@ Contact:	Linux on PowerPC Developer List <linuxppc-dev@lists.ozlabs.org>
+>>  Description:	read only
+>>  		This sysfs file exposes the cpumask which is designated to make
+>>  		HCALLs to retrieve hv-gpci pmu event counter data.
+>> +
+>> +What:		/sys/devices/hv_gpci/interface/processor_bus_topology
+>> +Date:		July 2023
+>> +Contact:	Linux on PowerPC Developer List <linuxppc-dev@lists.ozlabs.org>
+>> +Description:	admin read only
+>> +		This sysfs file exposes the system topology information by making HCALL
+>> +		H_GET_PERF_COUNTER_INFO. The HCALL is made with counter request value
+>> +		PROCESSOR_BUS_TOPOLOGY(0xD0).
+>> +
+>> +		* This sysfs file will be created only for power10 and above platforms.
+>> +
+>> +		* User needs root privileges to read data from this sysfs file.
+>> +
+>> +		* This sysfs file will be created, only when the HCALL returns "H_SUCESS",
+> 
+> 		                                                                H_SUCCESS
+> 
+>> +		  "H_AUTHORITY" and "H_PARAMETER" as the return type.
+> 
+> 		            s/and/or/
+> 
+>> +
+>> +		  HCALL with return error type "H_AUTHORITY", can be resolved during
+> 
+> 		                             Drop the comma ^
+> 
+>> +		  runtime by setting "Enable Performance Information Collection" option.
+>> +
+>> +		* The end user reading this sysfs file must decode the content as per
+>> +		  underlying platform/firmware.
+>> +
+>> +		Possible error codes while reading this sysfs file:
+>> +
+>> +		* "-EPERM" : Partition is not permitted to retrieve performance information,
+>> +			    required to set "Enable Performance Information Collection" option.
+>> +
+>> +		* "-EIO" : Can't retrieve system information because of invalid buffer length/invalid address
+>> +			   or because of some hardware error. Refer getPerfCountInfo documentation for
+> 
+> 			                                      Refer to
+> 
+>> +			   more information.
+>> +
+>> +		* "-EFBIG" : System information exceeds PAGE_SIZE.
+> 
