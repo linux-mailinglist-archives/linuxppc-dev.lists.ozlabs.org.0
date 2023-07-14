@@ -1,74 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98E687534A2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jul 2023 10:08:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8DF37534D2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jul 2023 10:15:45 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Lh7vIr6c;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=QGMxHCNv;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=pPULnrhl;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R2PHd3Zqtz3dGm
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jul 2023 18:08:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R2PRz5Mbjz3cTM
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jul 2023 18:15:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Lh7vIr6c;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=QGMxHCNv;
+	dkim=pass (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=pPULnrhl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=canonical.com (client-ip=185.125.188.123; helo=smtp-relay-internal-1.canonical.com; envelope-from=kai.heng.feng@canonical.com; receiver=lists.ozlabs.org)
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R2Nwl2c4yz3bqw
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jul 2023 17:52:07 +1000 (AEST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R2PR16WN1z309D
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jul 2023 18:14:52 +1000 (AEST)
+Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com [209.85.161.71])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 83D7622163;
-	Fri, 14 Jul 2023 07:52:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1689321124; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fjE7evrec+6fTNNO2iEP5O884klzqzhDg9Mgv82xETg=;
-	b=Lh7vIr6ckxc/iABjsJgQyPX2+F649Ga1fLcw+t6ynF0XPltSHJcY7keOXADImMc/dbsXKp
-	xyUOTHFD9ZSU9WbwlNosGPDYqOHjdKPKebwbu8snAFn0N1/u3gpsb9A2fV2S9P5gnWwuAA
-	c11Id3xw4wVOPXXYVUeNCX9YszdHQ3s=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1689321124;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fjE7evrec+6fTNNO2iEP5O884klzqzhDg9Mgv82xETg=;
-	b=QGMxHCNv2iIjqPsDqSpcZCEXodf5ZsEvU0z7mPx0TmyWW116Sni3xmSwhsAgfcnLkU6nOS
-	SUzZMqMdOAUlo3Bw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 2D2A413A15;
-	Fri, 14 Jul 2023 07:52:04 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id sM0TCqT+sGQCQwAAMHmgww
-	(envelope-from <tzimmermann@suse.de>); Fri, 14 Jul 2023 07:52:04 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: deller@gmx.de,
-	javierm@redhat.com
-Subject: [PATCH v3 18/18] fbdev: Document that framebuffer_alloc() returns zero'ed data
-Date: Fri, 14 Jul 2023 09:49:44 +0200
-Message-ID: <20230714075155.5686-19-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230714075155.5686-1-tzimmermann@suse.de>
-References: <20230714075155.5686-1-tzimmermann@suse.de>
+	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 713693F18B
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jul 2023 08:14:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1689322485;
+	bh=3orHT4JM0Iv/tV5GPFY3h6ErKAXsnmT8WOqTtcRm+2w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type;
+	b=pPULnrhluQ6I1pvUTo9pzd9hVmFL2eYQnIHwU90v36zXdhlFhUu6PsvI0oJ56CZ+I
+	 vJaZqT5fqvtz/RhK+ACDyAMRPbuUUbc2g3U1aa28KAopBKcIQHMsgeGLvC9vM2THZW
+	 xRfsNxABIFc118BDwUVEomGVRi6KW1jAUSWUnTtbITHbB+yxmIGLESb4h+72aHIEH0
+	 OJb2OWowLuA/KNSgOuXEAU4XmuHI828RbroQpIKYuxTfYism1LJSZ25iHmEwXfBMOD
+	 NGXpoOOkUohZPpRjvWzr8dQOf1rIMNm17yzzLLZbuvns7NLkRam1totJDlJtlR7oo3
+	 f1ok9PhDLMDdA==
+Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-5649d12abe1so2376197eaf.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jul 2023 01:14:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689322484; x=1691914484;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3orHT4JM0Iv/tV5GPFY3h6ErKAXsnmT8WOqTtcRm+2w=;
+        b=dqMov531CU2pmPlKaEhmH7jUA7AIae+WvWbomkAABljL6HzdtW+a7I0ikWK0ZM08Ki
+         5WA7yrNGQSwP46SGdZIIHTRfOYdmOm82/okPLwSVwtFNZgEB6d7d1icb3ONNHQNFIpWx
+         Scpy4kl5JY+6khnWs6vg6mMLip77Md7W+8m93WSuSdhzv28boEcBIdMo7VjsrvQHt1kl
+         CoDu0V4onwLF+KYm6brFT40mDMz1dU9CBrnLXa2K1yshDfIyPjWm/20rhXG9HMviqCnn
+         ine+7pEHjwQp6n//ERWAj2OtDXMCKsJlOQNU4A0ZTDToOMwzHfKWsjyVkk5myWrg5bWY
+         jVow==
+X-Gm-Message-State: ABy/qLZb7XRsC96qKEtM/kMLLaZHWQbgvfS35LZ2dwog5rQqm355JTrZ
+	aRt8xN+aP4mI7lkCq4VU00VhxR7P981JwYaE051zNquGSm5RTWe/0o4QY1PSrDODOmIyxbyc+Gx
+	cOjrqsaTEYKwg3AxKA0CXX4maqfuFVFAeesW84xdT2v+pfGyyq2Ozrz6MtC0=
+X-Received: by 2002:a05:6358:5e0c:b0:134:ddad:2b51 with SMTP id q12-20020a0563585e0c00b00134ddad2b51mr4160621rwn.14.1689322484240;
+        Fri, 14 Jul 2023 01:14:44 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHUGLglEJ2G95ivnaP/bf04GjYDd7FiIIQuh2B1oRfEBSPuFJkdc0euxQBZvVLKwTeqwDaQ+Vo90vDAhQelD+8=
+X-Received: by 2002:a05:6358:5e0c:b0:134:ddad:2b51 with SMTP id
+ q12-20020a0563585e0c00b00134ddad2b51mr4160605rwn.14.1689322483950; Fri, 14
+ Jul 2023 01:14:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20230512000014.118942-1-kai.heng.feng@canonical.com> <20230512000014.118942-2-kai.heng.feng@canonical.com>
+In-Reply-To: <20230512000014.118942-2-kai.heng.feng@canonical.com>
+From: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Date: Fri, 14 Jul 2023 16:14:32 +0800
+Message-ID: <CAAd53p6KEMJzraFn5GWGfEWQQ6WJmKGxtuGRuP2esAib+6s+Lw@mail.gmail.com>
+Subject: Re: [PATCH v6 2/3] PCI/AER: Disable AER interrupt on suspend
+To: bhelgaas@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,38 +83,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, linux-sh@vger.kernel.org, linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org, linux-geode@lists.infradead.org, dri-devel@lists.freedesktop.org, Thomas Zimmermann <tzimmermann@suse.de>, linux-input@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, linux-nvidia@lists.surfsouth.com, linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org
+Cc: sathyanarayanan.kuppuswamy@linux.intel.com, mika.westerberg@linux.intel.com, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, linux-kernel@vger.kernel.org, koba.ko@canonical.com, Oliver O'Halloran <oohall@gmail.com>, linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Most fbdev drivers depend on framebuffer_alloc() to initialize the
-allocated memory to 0. Document this guarantee.
+On Fri, May 12, 2023 at 8:01=E2=80=AFAM Kai-Heng Feng
+<kai.heng.feng@canonical.com> wrote:
+>
+> PCIe services that share an IRQ with PME, such as AER or DPC, may cause a
+> spurious wakeup on system suspend. To prevent this, disable the AER inter=
+rupt
+> notification during the system suspend process.
+>
+> As Per PCIe Base Spec 5.0, section 5.2, titled "Link State Power Manageme=
+nt",
+> TLP and DLLP transmission are disabled for a Link in L2/L3 Ready (D3hot),=
+ L2
+> (D3cold with aux power) and L3 (D3cold) states. So disabling the AER
+> notification during suspend and re-enabling them during the resume proces=
+s
+> should not affect the basic functionality.
+>
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D216295
+> Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
 
-v3:
-	* slightly reword the sentence (Miguel)
+A gentle ping...
 
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
-Cc: Helge Deller <deller@gmx.de>
----
- drivers/video/fbdev/core/fb_info.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/video/fbdev/core/fb_info.c b/drivers/video/fbdev/core/fb_info.c
-index 8bdbefdd4b70..4847ebe50d7d 100644
---- a/drivers/video/fbdev/core/fb_info.c
-+++ b/drivers/video/fbdev/core/fb_info.c
-@@ -13,7 +13,8 @@
-  *
-  * Creates a new frame buffer info structure. Also reserves @size bytes
-  * for driver private data (info->par). info->par (if any) will be
-- * aligned to sizeof(long).
-+ * aligned to sizeof(long). The new instances of struct fb_info and
-+ * the driver private data are both cleared to zero.
-  *
-  * Returns the new structure, or NULL if an error occurred.
-  *
--- 
-2.41.0
-
+> ---
+> v6:
+> v5:
+>  - Wording.
+>
+> v4:
+> v3:
+>  - No change.
+>
+> v2:
+>  - Only disable AER IRQ.
+>  - No more check on PME IRQ#.
+>  - Use helper.
+>
+>  drivers/pci/pcie/aer.c | 22 ++++++++++++++++++++++
+>  1 file changed, 22 insertions(+)
+>
+> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> index 1420e1f27105..9c07fdbeb52d 100644
+> --- a/drivers/pci/pcie/aer.c
+> +++ b/drivers/pci/pcie/aer.c
+> @@ -1356,6 +1356,26 @@ static int aer_probe(struct pcie_device *dev)
+>         return 0;
+>  }
+>
+> +static int aer_suspend(struct pcie_device *dev)
+> +{
+> +       struct aer_rpc *rpc =3D get_service_data(dev);
+> +       struct pci_dev *pdev =3D rpc->rpd;
+> +
+> +       aer_disable_irq(pdev);
+> +
+> +       return 0;
+> +}
+> +
+> +static int aer_resume(struct pcie_device *dev)
+> +{
+> +       struct aer_rpc *rpc =3D get_service_data(dev);
+> +       struct pci_dev *pdev =3D rpc->rpd;
+> +
+> +       aer_enable_irq(pdev);
+> +
+> +       return 0;
+> +}
+> +
+>  /**
+>   * aer_root_reset - reset Root Port hierarchy, RCEC, or RCiEP
+>   * @dev: pointer to Root Port, RCEC, or RCiEP
+> @@ -1420,6 +1440,8 @@ static struct pcie_port_service_driver aerdriver =
+=3D {
+>         .service        =3D PCIE_PORT_SERVICE_AER,
+>
+>         .probe          =3D aer_probe,
+> +       .suspend        =3D aer_suspend,
+> +       .resume         =3D aer_resume,
+>         .remove         =3D aer_remove,
+>  };
+>
+> --
+> 2.34.1
+>
