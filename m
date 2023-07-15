@@ -1,76 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84464754B8B
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jul 2023 20:55:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 768F8754B8D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jul 2023 20:56:22 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=V6vRbybA;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Qb6n3Ujp;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=2L8inaUg;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=V8yGKt4F;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R3Hbj2wztz3cJl
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Jul 2023 04:55:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R3Hch2WkBz3cQS
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Jul 2023 04:56:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=V6vRbybA;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Qb6n3Ujp;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=2L8inaUg;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=V8yGKt4F;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R3HYn63cQz30hM
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R3HYn610xz30hF
 	for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 Jul 2023 04:53:49 +1000 (AEST)
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id EA2401F8CD;
-	Sat, 15 Jul 2023 18:53:45 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 5C7F61F8D6;
+	Sat, 15 Jul 2023 18:53:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1689447225; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	t=1689447226; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sWCVV7wJiemOx2M9P2wz1m/QXnYnbGSsQYJ48wiDA5o=;
-	b=V6vRbybAq9ARL34BJ9Sh74wyjFzK7XI+ob8Ne24DQYLrCN1fZvKaAZ4dghwNLDW/fzMe34
-	5uBvZQM4sF/puAy8vvZO6iFLFLP7AoK0ZTzquyJrHtN8uFwWIVqtr2felTmZ6ey495AJYC
-	lpy+O6h+HbERXK0n0MlCa1do4Hv2g1c=
+	bh=O1dLRNmtxhwC2llNhkrqnVft6mzD8Rh7lzcfwFYu3oQ=;
+	b=2L8inaUgxVtHG2+5DQuAdYmPIlaAZDLty+00bGFjfgoLa750wIXXqX2WJBssjU1B+4vIl7
+	BtIqREOelvcyN5hoqzshK2Beieim0BXaLvfsa8R1Fo/uKglx7LhRgfSM5Lewq/fV3GX/Pk
+	bAqJmGF8rXzUA/Hy04FYXC8PZs9c1F4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1689447225;
+	s=susede2_ed25519; t=1689447226;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sWCVV7wJiemOx2M9P2wz1m/QXnYnbGSsQYJ48wiDA5o=;
-	b=Qb6n3UjprVOu2U+9Zflrq0O3KQFf2uw2iVWhp4sr0hLo+gBevwrbaxeRvaeTvlDB7+rrD2
-	/74J/7XyPCWPFODQ==
+	bh=O1dLRNmtxhwC2llNhkrqnVft6mzD8Rh7lzcfwFYu3oQ=;
+	b=V8yGKt4FRzp/iHY3YWK5jmbQz+lc/8SWpmyt9IefGfUxzYnC6QUoa/zcZ6v0jbTqRBc8uP
+	W49qeoGwL2PuBUCw==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 7A56413A23;
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id F14BC133F7;
 	Sat, 15 Jul 2023 18:53:45 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
 	by imap2.suse-dmz.suse.de with ESMTPSA
-	id EIXpHDnrsmQCBwAAMHmgww
+	id gFLuOTnrsmQCBwAAMHmgww
 	(envelope-from <tzimmermann@suse.de>); Sat, 15 Jul 2023 18:53:45 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: deller@gmx.de,
 	javierm@redhat.com,
 	geert@linux-m68k.org,
 	dan.carpenter@linaro.org
-Subject: [PATCH v4 01/18] drm: Remove flag FBINFO_DEFAULT from fbdev emulation
-Date: Sat, 15 Jul 2023 20:51:43 +0200
-Message-ID: <20230715185343.7193-2-tzimmermann@suse.de>
+Subject: [PATCH v4 02/18] fbdev: Remove FBINFO_DEFAULT from static structs
+Date: Sat, 15 Jul 2023 20:51:44 +0200
+Message-ID: <20230715185343.7193-3-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230715185343.7193-1-tzimmermann@suse.de>
 References: <20230715185343.7193-1-tzimmermann@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -83,81 +82,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, linux-fbdev@vger.kernel.org, "Pan, Xinhui" <Xinhui.Pan@amd.com>, kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, linux-sh@vger.kernel.org, Sam Ravnborg <sam@ravnborg.org>, linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org, linux-geode@lists.infradead.org, dri-devel@lists.freedesktop.org, Thomas Zimmermann <tzimmermann@suse.de>, linux-input@vger.kernel.org, Alex Deucher <alexander.deucher@amd.com>, linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>, linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org
+Cc: linux-fbdev@vger.kernel.org, kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, linux-sh@vger.kernel.org, Sam Ravnborg <sam@ravnborg.org>, linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org, linux-geode@lists.infradead.org, dri-devel@lists.freedesktop.org, Thomas Zimmermann <tzimmermann@suse.de>, linux-input@vger.kernel.org, linux-omap@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 The flag FBINFO_DEFAULT is 0 and has no effect, as struct fbinfo.flags
-has been allocated to zero by framebuffer_alloc(). So do not set it.
+has been allocated to zero by a static declaration. So do not set it.
 
 Flags should signal differences from the default values. After cleaning
 up all occurrences of FBINFO_DEFAULT, the token will be removed.
 
+v4:
+	* clarify commit message (Geert, Dan)
 v2:
 	* fix commit message (Miguel)
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 Acked-by: Sam Ravnborg <sam@ravnborg.org>
-Cc: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: "Christian König" <christian.koenig@amd.com>
-Cc: "Pan, Xinhui" <Xinhui.Pan@amd.com>
+Cc: Helge Deller <deller@gmx.de>
 ---
- drivers/gpu/drm/drm_fbdev_dma.c       | 1 -
- drivers/gpu/drm/drm_fbdev_generic.c   | 1 -
- drivers/gpu/drm/gma500/fbdev.c        | 2 +-
- drivers/gpu/drm/radeon/radeon_fbdev.c | 2 +-
- 4 files changed, 2 insertions(+), 4 deletions(-)
+ drivers/video/fbdev/68328fb.c  | 2 +-
+ drivers/video/fbdev/acornfb.c  | 2 +-
+ drivers/video/fbdev/g364fb.c   | 2 +-
+ drivers/video/fbdev/hpfb.c     | 1 -
+ drivers/video/fbdev/macfb.c    | 1 -
+ drivers/video/fbdev/maxinefb.c | 1 -
+ 6 files changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_fbdev_dma.c b/drivers/gpu/drm/drm_fbdev_dma.c
-index f9b1f7cd31b7..ee7c265b0585 100644
---- a/drivers/gpu/drm/drm_fbdev_dma.c
-+++ b/drivers/gpu/drm/drm_fbdev_dma.c
-@@ -123,7 +123,6 @@ static int drm_fbdev_dma_helper_fb_probe(struct drm_fb_helper *fb_helper,
- 	drm_fb_helper_fill_info(info, fb_helper, sizes);
- 
- 	info->fbops = &drm_fbdev_dma_fb_ops;
--	info->flags = FBINFO_DEFAULT;
- 
- 	/* screen */
- 	info->flags |= FBINFO_VIRTFB; /* system memory */
-diff --git a/drivers/gpu/drm/drm_fbdev_generic.c b/drivers/gpu/drm/drm_fbdev_generic.c
-index b9343fb6cf13..a0ea042b1526 100644
---- a/drivers/gpu/drm/drm_fbdev_generic.c
-+++ b/drivers/gpu/drm/drm_fbdev_generic.c
-@@ -109,7 +109,6 @@ static int drm_fbdev_generic_helper_fb_probe(struct drm_fb_helper *fb_helper,
- 	drm_fb_helper_fill_info(info, fb_helper, sizes);
- 
- 	info->fbops = &drm_fbdev_generic_fb_ops;
--	info->flags = FBINFO_DEFAULT;
- 
- 	/* screen */
- 	info->flags |= FBINFO_VIRTFB | FBINFO_READS_FAST;
-diff --git a/drivers/gpu/drm/gma500/fbdev.c b/drivers/gpu/drm/gma500/fbdev.c
-index 054426549fc6..be8f5fbd5260 100644
---- a/drivers/gpu/drm/gma500/fbdev.c
-+++ b/drivers/gpu/drm/gma500/fbdev.c
-@@ -215,7 +215,7 @@ static int psb_fbdev_fb_probe(struct drm_fb_helper *fb_helper,
+diff --git a/drivers/video/fbdev/68328fb.c b/drivers/video/fbdev/68328fb.c
+index 07d6e8dc686b..956dd2399cc0 100644
+--- a/drivers/video/fbdev/68328fb.c
++++ b/drivers/video/fbdev/68328fb.c
+@@ -448,7 +448,7 @@ static int __init mc68x328fb_init(void)
+ 		fb_info.var.red.offset = fb_info.var.green.offset = fb_info.var.blue.offset = 0;
  	}
+ 	fb_info.pseudo_palette = &mc68x328fb_pseudo_palette;
+-	fb_info.flags = FBINFO_DEFAULT | FBINFO_HWACCEL_YPAN;
++	fb_info.flags = FBINFO_HWACCEL_YPAN;
  
- 	info->fbops = &psb_fbdev_fb_ops;
--	info->flags = FBINFO_DEFAULT;
-+
- 	/* Accessed stolen memory directly */
- 	info->screen_base = dev_priv->vram_addr + backing->offset;
- 	info->screen_size = size;
-diff --git a/drivers/gpu/drm/radeon/radeon_fbdev.c b/drivers/gpu/drm/radeon/radeon_fbdev.c
-index f941e2e7cae6..68c06ac9acce 100644
---- a/drivers/gpu/drm/radeon/radeon_fbdev.c
-+++ b/drivers/gpu/drm/radeon/radeon_fbdev.c
-@@ -253,7 +253,7 @@ static int radeon_fbdev_fb_helper_fb_probe(struct drm_fb_helper *fb_helper,
- 	}
+ 	if (fb_alloc_cmap(&fb_info.cmap, 256, 0))
+ 		return -ENOMEM;
+diff --git a/drivers/video/fbdev/acornfb.c b/drivers/video/fbdev/acornfb.c
+index 1b72edc01cfb..8fec21dfca09 100644
+--- a/drivers/video/fbdev/acornfb.c
++++ b/drivers/video/fbdev/acornfb.c
+@@ -694,7 +694,7 @@ static void acornfb_init_fbinfo(void)
+ 	first = 0;
  
- 	info->fbops = &radeon_fbdev_fb_ops;
--	info->flags = FBINFO_DEFAULT;
-+
- 	/* radeon resume is fragile and needs a vt switch to help it along */
- 	info->skip_vt_switch = false;
+ 	fb_info.fbops		= &acornfb_ops;
+-	fb_info.flags		= FBINFO_DEFAULT | FBINFO_HWACCEL_YPAN;
++	fb_info.flags		= FBINFO_HWACCEL_YPAN;
+ 	fb_info.pseudo_palette	= current_par.pseudo_palette;
+ 
+ 	strcpy(fb_info.fix.id, "Acorn");
+diff --git a/drivers/video/fbdev/g364fb.c b/drivers/video/fbdev/g364fb.c
+index c5b7673ddc6c..0825cbde116e 100644
+--- a/drivers/video/fbdev/g364fb.c
++++ b/drivers/video/fbdev/g364fb.c
+@@ -219,7 +219,7 @@ int __init g364fb_init(void)
+ 	fb_info.screen_base = (char *) G364_MEM_BASE;	/* virtual kernel address */
+ 	fb_info.var = fb_var;
+ 	fb_info.fix = fb_fix;
+-	fb_info.flags = FBINFO_DEFAULT | FBINFO_HWACCEL_YPAN;
++	fb_info.flags = FBINFO_HWACCEL_YPAN;
+ 
+ 	fb_alloc_cmap(&fb_info.cmap, 255, 0);
+ 
+diff --git a/drivers/video/fbdev/hpfb.c b/drivers/video/fbdev/hpfb.c
+index 77fbff47b1a8..406c1383cbda 100644
+--- a/drivers/video/fbdev/hpfb.c
++++ b/drivers/video/fbdev/hpfb.c
+@@ -287,7 +287,6 @@ static int hpfb_init_one(unsigned long phys_base, unsigned long virt_base)
+ 	else
+ 		strcat(fb_info.fix.id, "Catseye");
+ 	fb_info.fbops = &hpfb_ops;
+-	fb_info.flags = FBINFO_DEFAULT;
+ 	fb_info.var   = hpfb_defined;
+ 	fb_info.screen_base = (char *)fb_start;
+ 
+diff --git a/drivers/video/fbdev/macfb.c b/drivers/video/fbdev/macfb.c
+index 44ff860a3f37..5ca208d992cc 100644
+--- a/drivers/video/fbdev/macfb.c
++++ b/drivers/video/fbdev/macfb.c
+@@ -876,7 +876,6 @@ static int __init macfb_init(void)
+ 	fb_info.var		= macfb_defined;
+ 	fb_info.fix		= macfb_fix;
+ 	fb_info.pseudo_palette	= pseudo_palette;
+-	fb_info.flags		= FBINFO_DEFAULT;
+ 
+ 	err = fb_alloc_cmap(&fb_info.cmap, video_cmap_len, 0);
+ 	if (err)
+diff --git a/drivers/video/fbdev/maxinefb.c b/drivers/video/fbdev/maxinefb.c
+index 4e6b05232ae2..0ac1873b2acb 100644
+--- a/drivers/video/fbdev/maxinefb.c
++++ b/drivers/video/fbdev/maxinefb.c
+@@ -155,7 +155,6 @@ int __init maxinefb_init(void)
+ 	fb_info.screen_base = (char *)maxinefb_fix.smem_start;
+ 	fb_info.var = maxinefb_defined;
+ 	fb_info.fix = maxinefb_fix;
+-	fb_info.flags = FBINFO_DEFAULT;
+ 
+ 	fb_alloc_cmap(&fb_info.cmap, 256, 0);
  
 -- 
 2.41.0
