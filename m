@@ -2,53 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59D14755604
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Jul 2023 22:46:56 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=uU0ehauI;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DA587558D2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 02:22:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R3y1p1dsCz30hC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 06:46:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R42ny3ymsz3bfT
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 10:21:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=uU0ehauI;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33; helo=metis.ext.pengutronix.de; envelope-from=mkl@pengutronix.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 1094 seconds by postgrey-1.37 at boromir; Mon, 17 Jul 2023 03:21:58 AEST
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R3y0w0vlZz3031
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jul 2023 06:46:06 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R3sTL20lPz2yLV
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jul 2023 03:21:57 +1000 (AEST)
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1qL590-0006CU-2q; Sun, 16 Jul 2023 19:02:50 +0200
+Received: from pengutronix.de (unknown [172.20.34.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 4B75560EB0;
-	Sun, 16 Jul 2023 20:46:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B8E1C433C8;
-	Sun, 16 Jul 2023 20:46:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1689540363;
-	bh=Oc4BTr5K3vTeSxq00miA1QYT23jOa88djcW0k/clk4w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uU0ehauIWTAfzIUh3lo+GLcKlOsv9n5oGhFCw/HWiqf8vdAMgfQw0KGh9isGz1kkd
-	 tyuawZPKTaAasKXj0vdpVBGhvA/B1Lt0FC4D5E5CapLOUcbtvpEIuUGm7qsldbXwYH
-	 4j/mBpI7301zn4g/ypUQuOkt+wFrbE+SYu1qQeF8=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Subject: [PATCH 6.1 336/591] crypto: nx - fix build warnings when DEBUG_FS is not enabled
-Date: Sun, 16 Jul 2023 21:47:55 +0200
-Message-ID: <20230716194932.590657421@linuxfoundation.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230716194923.861634455@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
-User-Agent: quilt/0.67
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 1B66C1F1E34;
+	Sun, 16 Jul 2023 17:02:35 +0000 (UTC)
+Date: Sun, 16 Jul 2023 19:02:33 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH] net: Explicitly include correct DT includes
+Message-ID: <20230716-stout-grudging-1f91d771de85-mkl@pengutronix.de>
+References: <20230714174809.4060885-1-robh@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="g5fw27woy7qbit6d"
+Content-Disposition: inline
+In-Reply-To: <20230714174809.4060885-1-robh@kernel.org>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:b01:1d::7b
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+X-Mailman-Approved-At: Mon, 17 Jul 2023 10:21:33 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,89 +56,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Nayna Jain <nayna@linux.ibm.com>, Herbert Xu <herbert@gondor.apana.org.au>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, patches@lists.linux.dev, Nicholas Piggin <npiggin@gmail.com>, Paulo Flabiano Smorigo <pfsmorigo@gmail.com>, linux-crypto@vger.kernel.org, =?UTF-8?q?Breno=20Leit=C3=A3o?= <leitao@debian.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: Andrew Lunn <andrew@lunn.ch>, Kevin Brace <kevinbrace@bracecomputerlab.com>, Linus Walleij <linus.walleij@linaro.org>, Iyappan Subramanian <iyappan@os.amperecomputing.com>, Miquel Raynal <miquel.raynal@bootlin.com>, Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>, Horatiu Vultur <horatiu.vultur@microchip.com>, Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>, Jerome Brunet <jbrunet@baylibre.com>, Samuel Holland <samuel@sholland.org>, Sean Anderson <sean.anderson@seco.com>, Kevin Hilman <khilman@baylibre.com>, Madalin Bucur <madalin.bucur@nxp.com>, Jose Abreu <joabreu@synopsys.com>, NXP Linux Team <linux-imx@nxp.com>, Mark Lee <Mark-MC.Lee@mediatek.com>, Landen Chao <Landen.Chao@mediatek.com>, Sascha Hauer <s.hauer@pengutronix.de>, linux-omap@vger.kernel.org, Alex Elder <elder@kernel.org>, =?utf-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>, Douglas Miller <dougmill@linux.ibm.com>, Daniel Golle <daniel@makrotopia.org>, Pengutronix Kernel Team <kernel@pengutronix.de>
+ , Vladimir Oltean <olteanv@gmail.com>, linux-wpan@vger.kernel.org, Claudiu Beznea <claudiu.beznea@microchip.com>, Shayne Chen <shayne.chen@mediatek.com>, Steve Glendinning <steve.glendinning@shawell.net>, Alexandre Belloni <alexandre.belloni@bootlin.com>, =?utf-8?B?SsOpcsO0bWU=?= Pouille r <jerome.pouiller@silabs.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Chris Snook <chris.snook@gmail.com>, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Thierry Reding <thierry.reding@gmail.com>, wcn36xx@lists.infradead.org, Dario Binacchi <dario.binacchi@amarulasolutions.com>, SkyLake Huang <SkyLake.Huang@mediatek.com>, Jonathan Hunter <jonathanh@nvidia.com>, Stefan Schmidt <stefan@datenfreihafen.org>, Yisen Zhuang <yisen.zhuang@huawei.com>, Richard Cochran <richardcochran@gmail.com>, Wolfgang Grandegger <wg@grandegger.com>, Woojung Huh <woojung.huh@microchip.com>, Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Sean Wang <sean.wang@mediatek.com>, linux-ca
+ n@vger.kernel.org, Cla udiu Manoil <claudiu.manoil@nxp.com>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, Michal Simek <michal.simek@amd.com>, linux-arm-kernel@lists.infradead.org, Mirko Lindner <mlindner@marvell.com>, Neil Armstrong <neil.armstrong@linaro.org>, Chandrasekar Ramakrishnan <rcsekar@samsung.com>, UNGLinuxDriver@microchip.com, linux-renesas-soc@vger.kernel.org, Maxime Coquelin <mcoquelin.stm32@gmail.com>, linux-mediatek@lists.infradead.org, Heiner Kallweit <hkallweit1@gmail.com>, Tara s Chornyi <taras.chornyi@plvision.eu>, linux-wireless@vger.kernel.org, Emil Renner Berthing <kernel@esmil.dk>, Andreas Larsson <andreas@gaisler.com>, Kurt Kanzenbach <kurt@linutronix.de>, linux-tegra@vger.kernel.org, ath10k@lists.infradead.org, linux-amlogic@lists.infradead.org, Fabio Estevam <festevam@gmail.com>, Jernej Skrabec <jernej.skrabec@gmail.com>, Chen-Yu Tsai <wens@csie.org>, Shenwei Wang <shenwei.wang@nxp.com>, Samin Guo <samin.guo@starfivetech.com>, Francois Romieu <romieu@fr.z
+ oreil.com>, Paolo Abeni <pabeni@redhat.com>, Lorenzo Bianconi <lorenzo@kernel.org>, ath11k@lists.infradead.org, Grygorii Strashko <grygorii.strashko@ti.com>, Bhupesh Sharma <bhupesh.sharma@linaro.org>, John Crispin <john@phrozen.org>, Salil Mehta <salil.mehta@huawei.com>, Sergey Shtylyov <s.shtylyov@omp.ru>, Timur Tabi <timur@kernel.org>, =?utf-8?B?QXLEsW7DpyDDnE5BTA==?= <arinc.unal@arinc9.com>, linux-sunxi@lists.linux.dev, linux-oxnas@groups.io, Shawn Guo <shawnguo@kernel.org>, "David S. Miller" <davem@davemloft.net>, Alexander Aring <alex.aring@gmail.com>, linux-stm32@st-md-mailman.stormreply.com, Alexandre Torgue <alexandre.torgue@foss.st.com>, George McCollister <george.mccollister@gmail.com>, Ryder Lee <ryder.lee@mediatek.com>, Florian Fainelli <florian.fainelli@broadcom.com>, Russell King <linux@armlinux.org.uk>, Clark Wang <xiaoning.wang@nxp.com>, Jakub Kicinski <kuba@kernel.org>, devicetree@vger.kernel.org, Kalle Valo <kvalo@kernel.org>, Keyur Chudgar <keyur@os.amperecomputi
+ ng.com>, DENG Qingfang <dqfext@gmail.com>, Wei Fang <wei.fang@nxp.com>, Matthias Brugger <matthias.bgg@gmail.com>, Marcin Wojtas <mw@semihalf.com>, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Loic Poulain <loic.poulain@linaro.org>, netdev@vger.kernel.org, Nicolas Ferre <nicolas.ferre@microchip.com>, Li Yang <leoyang.li@nxp.com>, Stephen Hemminger <stephen@networkplumber.org>, Vinod Ko ul <vkoul@kernel.org>, Alvin =?utf-8?Q?=C5=A0ipraga?= <alsi@bang-olufsen.dk>, linuxppc-dev@lists.ozlabs.org, Felix Fietkau <nbd@nbd.name>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit b04b076fb56560b39d695ac3744db457e12278fd ]
-
-Fix build warnings when DEBUG_FS is not enabled by using an empty
-do-while loop instead of a value:
-
-In file included from ../drivers/crypto/nx/nx.c:27:
-../drivers/crypto/nx/nx.c: In function 'nx_register_algs':
-../drivers/crypto/nx/nx.h:173:33: warning: statement with no effect [-Wunused-value]
-  173 | #define NX_DEBUGFS_INIT(drv)    (0)
-../drivers/crypto/nx/nx.c:573:9: note: in expansion of macro 'NX_DEBUGFS_INIT'
-  573 |         NX_DEBUGFS_INIT(&nx_driver);
-../drivers/crypto/nx/nx.c: In function 'nx_remove':
-../drivers/crypto/nx/nx.h:174:33: warning: statement with no effect [-Wunused-value]
-  174 | #define NX_DEBUGFS_FINI(drv)    (0)
-../drivers/crypto/nx/nx.c:793:17: note: in expansion of macro 'NX_DEBUGFS_FINI'
-  793 |                 NX_DEBUGFS_FINI(&nx_driver);
-
-Also, there is no need to build nx_debugfs.o when DEBUG_FS is not
-enabled, so change the Makefile to accommodate that.
-
-Fixes: ae0222b7289d ("powerpc/crypto: nx driver code supporting nx encryption")
-Fixes: aef7b31c8833 ("powerpc/crypto: Build files for the nx device driver")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Breno Leitão <leitao@debian.org>
-Cc: Nayna Jain <nayna@linux.ibm.com>
-Cc: Paulo Flabiano Smorigo <pfsmorigo@gmail.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: linux-crypto@vger.kernel.org
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/crypto/nx/Makefile | 2 +-
- drivers/crypto/nx/nx.h     | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/crypto/nx/Makefile b/drivers/crypto/nx/Makefile
-index d00181a26dd65..483cef62acee8 100644
---- a/drivers/crypto/nx/Makefile
-+++ b/drivers/crypto/nx/Makefile
-@@ -1,7 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
- obj-$(CONFIG_CRYPTO_DEV_NX_ENCRYPT) += nx-crypto.o
- nx-crypto-objs := nx.o \
--		  nx_debugfs.o \
- 		  nx-aes-cbc.o \
- 		  nx-aes-ecb.o \
- 		  nx-aes-gcm.o \
-@@ -11,6 +10,7 @@ nx-crypto-objs := nx.o \
- 		  nx-sha256.o \
- 		  nx-sha512.o
- 
-+nx-crypto-$(CONFIG_DEBUG_FS) += nx_debugfs.o
- obj-$(CONFIG_CRYPTO_DEV_NX_COMPRESS_PSERIES) += nx-compress-pseries.o nx-compress.o
- obj-$(CONFIG_CRYPTO_DEV_NX_COMPRESS_POWERNV) += nx-compress-powernv.o nx-compress.o
- nx-compress-objs := nx-842.o
-diff --git a/drivers/crypto/nx/nx.h b/drivers/crypto/nx/nx.h
-index c6233173c612e..2697baebb6a35 100644
---- a/drivers/crypto/nx/nx.h
-+++ b/drivers/crypto/nx/nx.h
-@@ -170,8 +170,8 @@ struct nx_sg *nx_walk_and_build(struct nx_sg *, unsigned int,
- void nx_debugfs_init(struct nx_crypto_driver *);
- void nx_debugfs_fini(struct nx_crypto_driver *);
- #else
--#define NX_DEBUGFS_INIT(drv)	(0)
--#define NX_DEBUGFS_FINI(drv)	(0)
-+#define NX_DEBUGFS_INIT(drv)	do {} while (0)
-+#define NX_DEBUGFS_FINI(drv)	do {} while (0)
- #endif
- 
- #define NX_PAGE_NUM(x)		((u64)(x) & 0xfffffffffffff000ULL)
--- 
-2.39.2
+--g5fw27woy7qbit6d
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="vxeub4efr4nku2wd"
+Content-Disposition: inline
 
 
+--vxeub4efr4nku2wd
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="2mmyiduer253ii4f"
+Content-Disposition: inline
 
+
+--2mmyiduer253ii4f
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On 14.07.2023 11:48:00, Rob Herring wrote:
+> The DT of_device.h and of_platform.h date back to the separate
+> of_platform_bus_type before it as merged into the regular platform bus.
+> As part of that merge prepping Arm DT support 13 years ago, they
+> "temporarily" include each other. They also include platform_device.h
+> and of.h. As a result, there's a pretty much random mix of those include
+> files used throughout the tree. In order to detangle these headers and
+> replace the implicit includes with struct declarations, users need to
+> explicitly include the correct includes.
+>=20
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
+>  drivers/net/can/bxcan.c                                 | 1 -
+>  drivers/net/can/ifi_canfd/ifi_canfd.c                   | 1 -
+>  drivers/net/can/m_can/m_can.c                           | 1 -
+>  drivers/net/can/m_can/m_can.h                           | 1 -
+>  drivers/net/can/rcar/rcar_canfd.c                       | 1 -
+>  drivers/net/can/sja1000/sja1000_platform.c              | 1 -
+>  drivers/net/can/sun4i_can.c                             | 1 -
+>  drivers/net/can/ti_hecc.c                               | 1 -
+
+Acked-by: Marc Kleine-Budde <mkl@pengutronix.de> # for drivers/net/can
+
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--2mmyiduer253ii4f--
+
+--vxeub4efr4nku2wd--
+
+--g5fw27woy7qbit6d
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEDs2BvajyNKlf9TJQvlAcSiqKBOgFAmS0IqYACgkQvlAcSiqK
+BOhfLQgAnOPxJiYWHd0YYYBr6D5Xvaa7YD/llBx5YeP2Eol6zKlE5NW1xdwBoHP/
+oxs3PENqI/mVuAtWhs6sNCSEtOEssWtUWrx23I9bxRa2AE/DUWfpg/NP/sy3ZVsV
+sYgzGHOJqf+S+OMzalvZ9hIDu+a6xxhA9rUTaK2lNn0nBeWxEf92JhPV+nGREldR
+CHY3WW/trL1qHxxtn7ZWhI2IVounTWpkXZnJz9DRocIQrm1mPmNz5lcwkr+ST1th
+C92e2GJEahuxXdOMXfuuGMUSGzFqGZRtKT3WAx9/8l/lUsyKZ9Jhn1Rv7NE9zNPG
+R640Tfvr5cFRQIVusYrKVMlQ8URlUg==
+=ICgU
+-----END PGP SIGNATURE-----
+
+--g5fw27woy7qbit6d--
