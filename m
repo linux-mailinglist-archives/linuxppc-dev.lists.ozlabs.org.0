@@ -2,46 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B367C755333
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Jul 2023 22:16:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 241D7755348
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Jul 2023 22:17:25 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=ikQQ21/O;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=bGe9napx;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R3xLn4My6z3brB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 06:16:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R3xMl0Ghjz3c76
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 06:17:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=ikQQ21/O;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=bGe9napx;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R3xK05ypvz309D
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jul 2023 06:15:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R3xLV62DDz3bxH
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jul 2023 06:16:18 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 2A7FA60E65;
-	Sun, 16 Jul 2023 20:14:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 115D6C433C8;
-	Sun, 16 Jul 2023 20:14:58 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 0ACA260EB0;
+	Sun, 16 Jul 2023 20:16:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E407BC433C8;
+	Sun, 16 Jul 2023 20:16:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1689538498;
-	bh=WvwUjWJMfD0SL9pbZfYk/rYV+dUpluyu12Sr1ip0kUI=;
+	s=korg; t=1689538576;
+	bh=Oc4BTr5K3vTeSxq00miA1QYT23jOa88djcW0k/clk4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ikQQ21/O3/F5t01YhWyqBvxdoascI5TYChjXEHpbEnHkjBt7Q4cOM8Opssdw2ZjCW
-	 6YMzRcRRacZ1v8T/t0CkuXn9c26z4+eVigp0CBQd2W+DwTnL0z1FK0fAykNYAquref
-	 IYJk5EuIXcb+RW2x8vv7g1qhp7a65gSWnb6Z5wVA=
+	b=bGe9napxUyK/4tdwao8Ae0nlmRu8cUIHeGLMfCpCr7ZKkCeySuWJr5K4YVpA28qUB
+	 05N+GvS6GuaPl2r/KaQChWPhC6pJ7YaUVJfgeCbVbgKmFRfoV9ydzuK7VfasySDEZ4
+	 kj9DtzAILC/lvl83hekEBnG1NUpHvBeAkGnXOU/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
-Subject: [PATCH 6.4 473/800] perf tests task_analyzer: Skip tests if no libtraceevent support
-Date: Sun, 16 Jul 2023 21:45:26 +0200
-Message-ID: <20230716195000.067159112@linuxfoundation.org>
+Subject: [PATCH 6.4 501/800] crypto: nx - fix build warnings when DEBUG_FS is not enabled
+Date: Sun, 16 Jul 2023 21:45:54 +0200
+Message-ID: <20230716195000.731459159@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230716194949.099592437@linuxfoundation.org>
 References: <20230716194949.099592437@linuxfoundation.org>
@@ -60,108 +60,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Ian Rogers <irogers@google.com>, Athira Rajeev <atrajeev@linux.vnet.ibm.com>, Disha Goel <disgoel@linux.vnet.ibm.com>, John Garry <john.g.garry@oracle.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Ravi Bangoria <ravi.bangoria@amd.com>, patches@lists.linux.dev, Arnaldo Carvalho de Melo <acme@redhat.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Jiri Olsa <jolsa@kernel.org>, Kajol Jain <kjain@linux.ibm.com>, Petar Gligoric <petar.gligoric@rohde-schwarz.com>, Namhyung Kim <namhyung@kernel.org>, Aditya Gupta <adityag@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, Nayna Jain <nayna@linux.ibm.com>, Herbert Xu <herbert@gondor.apana.org.au>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, patches@lists.linux.dev, Nicholas Piggin <npiggin@gmail.com>, Paulo Flabiano Smorigo <pfsmorigo@gmail.com>, linux-crypto@vger.kernel.org, =?UTF-8?q?Breno=20Leit=C3=A3o?= <leitao@debian.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Aditya Gupta <adityag@linux.ibm.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit c3ac3b0779770acd3ad7eecb5099ab4419ef2e2e ]
+[ Upstream commit b04b076fb56560b39d695ac3744db457e12278fd ]
 
-Test "perf script task-analyzer tests" fails in environment with missing
-libtraceevent support, as perf record fails to create the perf.data
-file, which further tests depend on.
+Fix build warnings when DEBUG_FS is not enabled by using an empty
+do-while loop instead of a value:
 
-Instead, when perf is not compiled with libtraceevent support, skip
-those tests instead of failing them, by checking the output of `perf
-record --dry-run` to see if it prints the error "libtraceevent is
-necessary for tracepoint support"
+In file included from ../drivers/crypto/nx/nx.c:27:
+../drivers/crypto/nx/nx.c: In function 'nx_register_algs':
+../drivers/crypto/nx/nx.h:173:33: warning: statement with no effect [-Wunused-value]
+  173 | #define NX_DEBUGFS_INIT(drv)    (0)
+../drivers/crypto/nx/nx.c:573:9: note: in expansion of macro 'NX_DEBUGFS_INIT'
+  573 |         NX_DEBUGFS_INIT(&nx_driver);
+../drivers/crypto/nx/nx.c: In function 'nx_remove':
+../drivers/crypto/nx/nx.h:174:33: warning: statement with no effect [-Wunused-value]
+  174 | #define NX_DEBUGFS_FINI(drv)    (0)
+../drivers/crypto/nx/nx.c:793:17: note: in expansion of macro 'NX_DEBUGFS_FINI'
+  793 |                 NX_DEBUGFS_FINI(&nx_driver);
 
-For the following output, perf compiled with: `make NO_LIBTRACEEVENT=1`
+Also, there is no need to build nx_debugfs.o when DEBUG_FS is not
+enabled, so change the Makefile to accommodate that.
 
-Before the patch:
-
-108: perf script task-analyzer tests                                 :
-test child forked, pid 24105
-failed to open perf.data: No such file or directory  (try 'perf record' first)
-FAIL: "invokation of perf script report task-analyzer command failed" Error message: ""
-FAIL: "test_basic" Error message: "Failed to find required string:'Comm'."
-failed to open perf.data: No such file or directory  (try 'perf record' first)
-FAIL: "invokation of perf script report task-analyzer --ns --rename-comms-by-tids 0:random command failed" Error message: ""
-FAIL: "test_ns_rename" Error message: "Failed to find required string:'Comm'."
-failed to open perf.data: No such file or directory  (try 'perf record' first)
-<...>
-perf script task-analyzer tests: FAILED!
-
-With this patch, the script instead returns 2 signifying SKIP, and after
-the patch:
-
-108: perf script task-analyzer tests                                 :
-test child forked, pid 26010
-libtraceevent is necessary for tracepoint support
-WARN: Skipping tests. No libtraceevent support
-test child finished with -2
-perf script task-analyzer tests: Skip
-
-Fixes: e8478b84d6ba9ccf ("perf test: Add new task-analyzer tests")
-Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
-Cc: Disha Goel <disgoel@linux.vnet.ibm.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: John Garry <john.g.garry@oracle.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Petar Gligoric <petar.gligoric@rohde-schwarz.com>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
+Fixes: ae0222b7289d ("powerpc/crypto: nx driver code supporting nx encryption")
+Fixes: aef7b31c8833 ("powerpc/crypto: Build files for the nx device driver")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Breno Leitão <leitao@debian.org>
+Cc: Nayna Jain <nayna@linux.ibm.com>
+Cc: Paulo Flabiano Smorigo <pfsmorigo@gmail.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: linux-crypto@vger.kernel.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
 Cc: linuxppc-dev@lists.ozlabs.org
-Link: https://lore.kernel.org/r/20230613164145.50488-18-atrajeev@linux.vnet.ibm.com
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/shell/test_task_analyzer.sh | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/crypto/nx/Makefile | 2 +-
+ drivers/crypto/nx/nx.h     | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/tests/shell/test_task_analyzer.sh b/tools/perf/tests/shell/test_task_analyzer.sh
-index 6b3343234a6b2..1b7f3c1ec218b 100755
---- a/tools/perf/tests/shell/test_task_analyzer.sh
-+++ b/tools/perf/tests/shell/test_task_analyzer.sh
-@@ -44,9 +44,20 @@ find_str_or_fail() {
- 	fi
- }
+diff --git a/drivers/crypto/nx/Makefile b/drivers/crypto/nx/Makefile
+index d00181a26dd65..483cef62acee8 100644
+--- a/drivers/crypto/nx/Makefile
++++ b/drivers/crypto/nx/Makefile
+@@ -1,7 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
+ obj-$(CONFIG_CRYPTO_DEV_NX_ENCRYPT) += nx-crypto.o
+ nx-crypto-objs := nx.o \
+-		  nx_debugfs.o \
+ 		  nx-aes-cbc.o \
+ 		  nx-aes-ecb.o \
+ 		  nx-aes-gcm.o \
+@@ -11,6 +10,7 @@ nx-crypto-objs := nx.o \
+ 		  nx-sha256.o \
+ 		  nx-sha512.o
  
-+# check if perf is compiled with libtraceevent support
-+skip_no_probe_record_support() {
-+	perf record -e "sched:sched_switch" -a -- sleep 1 2>&1 | grep "libtraceevent is necessary for tracepoint support" && return 2
-+	return 0
-+}
-+
- prepare_perf_data() {
- 	# 1s should be sufficient to catch at least some switches
- 	perf record -e sched:sched_switch -a -- sleep 1 > /dev/null 2>&1
-+	# check if perf data file got created in above step.
-+	if [ ! -e "perf.data" ]; then
-+		printf "FAIL: perf record failed to create \"perf.data\" \n"
-+		return 1
-+	fi
- }
++nx-crypto-$(CONFIG_DEBUG_FS) += nx_debugfs.o
+ obj-$(CONFIG_CRYPTO_DEV_NX_COMPRESS_PSERIES) += nx-compress-pseries.o nx-compress.o
+ obj-$(CONFIG_CRYPTO_DEV_NX_COMPRESS_POWERNV) += nx-compress-powernv.o nx-compress.o
+ nx-compress-objs := nx-842.o
+diff --git a/drivers/crypto/nx/nx.h b/drivers/crypto/nx/nx.h
+index c6233173c612e..2697baebb6a35 100644
+--- a/drivers/crypto/nx/nx.h
++++ b/drivers/crypto/nx/nx.h
+@@ -170,8 +170,8 @@ struct nx_sg *nx_walk_and_build(struct nx_sg *, unsigned int,
+ void nx_debugfs_init(struct nx_crypto_driver *);
+ void nx_debugfs_fini(struct nx_crypto_driver *);
+ #else
+-#define NX_DEBUGFS_INIT(drv)	(0)
+-#define NX_DEBUGFS_FINI(drv)	(0)
++#define NX_DEBUGFS_INIT(drv)	do {} while (0)
++#define NX_DEBUGFS_FINI(drv)	do {} while (0)
+ #endif
  
- # check standard inkvokation with no arguments
-@@ -134,6 +145,13 @@ test_csvsummary_extended() {
- 	find_str_or_fail "Out-Out;" csvsummary ${FUNCNAME[0]}
- }
- 
-+skip_no_probe_record_support
-+err=$?
-+if [ $err -ne 0 ]; then
-+	echo "WARN: Skipping tests. No libtraceevent support"
-+	cleanup
-+	exit $err
-+fi
- prepare_perf_data
- test_basic
- test_ns_rename
+ #define NX_PAGE_NUM(x)		((u64)(x) & 0xfffffffffffff000ULL)
 -- 
 2.39.2
 
