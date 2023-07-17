@@ -2,113 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6085B756279
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 14:07:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF6FB756280
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 14:08:41 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=vivo.com header.i=@vivo.com header.a=rsa-sha256 header.s=selector2 header.b=d2BmIUtY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=PzSTLKrH;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R4LSP23r6z2yxK
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 22:07:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R4LTM5F05z30hY
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 22:08:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=vivo.com header.i=@vivo.com header.a=rsa-sha256 header.s=selector2 header.b=d2BmIUtY;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=PzSTLKrH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=vivo.com (client-ip=2a01:111:f400:feae::723; helo=apc01-psa-obe.outbound.protection.outlook.com; envelope-from=duminjie@vivo.com; receiver=lists.ozlabs.org)
-Received: from APC01-PSA-obe.outbound.protection.outlook.com (mail-psaapc01on20723.outbound.protection.outlook.com [IPv6:2a01:111:f400:feae::723])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1030; helo=mail-pj1-x1030.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4GvG00qwz2yF4
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jul 2023 19:27:20 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=MHv/uiSCuQb/ArDBC6e8GuXV64TpJmDWWG0MHwW7aw+WLS7mozZl4RPbbfNhEf570We7g9AZsOAr8hWlvooo5g3Ya4Wf5eOcSl4mR5pTvDSTEhbF1ZFcTgWKGQ3n8LQ6SjMvwtiMz/l7vY0+W4jipuApvwKyVgEhdbpaY0Ce4d2W6uMXbAXnDa6WQR23YVL3XsWbTKvvbFNgcf04Z4m4qEcouoUzTGGU01Odp/M54VIpRNVKqiZ4W4ah4a+XwN6yacn7QB31vtvbceiYyyiOArHzDR+9HN0fMyXC4JdorgLLKjnbbKQVmutCIM5i6jqmErAMj1VxVaKBOAfJrlG8XQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Q1vYn3t40360j4swAEotClg5FLDecqq1MG22BVS7oaE=;
- b=AFePu9LOcbYQDY2XpQQFUn8ssqmwLuQHqW9slRDuNLPIJUHzKbK/qMolvNTf/vUOKS3ACUTwklK29Ris3JzJel1KARWtJ2gSuLNRY0bHr1wKtkpvFod/OjbaCvvtby5OxhdfLWbB4egX+fKicz/05PMC65wClxkrqaInk7Loc9jAsYt/L4gCeJOWevSgHE9JP5W3WPwOyVMaO2CbMTGJipxXbZOT1vJN47ndHourKDhaQEkDJTmVA+wJQDY3RI7q8TTtknEbH1xK1f+AbAMZlAM9o+B5C7Th/zgbiNqlMAcvXJVOXrT4gV5d8MXlapfrl/z3nA0jRuhYOajaR+ICqg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Q1vYn3t40360j4swAEotClg5FLDecqq1MG22BVS7oaE=;
- b=d2BmIUtYsuTDXbXUOprq/i8EhdlnqdCAOZd8MEMefGttO/cKjvFcGGpyOAavCX1nTz2irrKYVNwZ4loIAS5Jnbljh+Af779Q8T5+/lQoi7/Q7xigwsl2K6adNRIfK/rPeuyajeQcDW4HAtTIBAIR8aEZqm2KzQoXRWw+qoLEg15Y7Uspr7HpSDuQA6j0TxMcrdSBm6iciIgzk6U2lpWz1KwV3wkvAfG8S6N8xpZ9JPk92R68WR+uN6ZZhsN7fIz+0YBiDU8yrCSFeF4vp+F5F+PbpuUW0X4hGIKUD2RTwB8wEdkhlLGXBVfhPWzNZOJOwa1WQu5HtL7hGNWKwNjShg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vivo.com;
-Received: from SG2PR06MB5288.apcprd06.prod.outlook.com (2603:1096:4:1dc::9) by
- KL1PR06MB6273.apcprd06.prod.outlook.com (2603:1096:820:ec::10) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6588.31; Mon, 17 Jul 2023 09:26:58 +0000
-Received: from SG2PR06MB5288.apcprd06.prod.outlook.com
- ([fe80::f9b8:80b5:844e:f49a]) by SG2PR06MB5288.apcprd06.prod.outlook.com
- ([fe80::f9b8:80b5:844e:f49a%6]) with mapi id 15.20.6565.037; Mon, 17 Jul 2023
- 09:26:58 +0000
-From: Minjie Du <duminjie@vivo.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Minjie Du <duminjie@vivo.com>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	linuxppc-dev@lists.ozlabs.org (open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v1] powerpc/pseries: use kfree_sensitive() in plpks_gen_password()
-Date: Mon, 17 Jul 2023 17:26:48 +0800
-Message-Id: <20230717092648.9752-1-duminjie@vivo.com>
-X-Mailer: git-send-email 2.39.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR04CA0160.apcprd04.prod.outlook.com (2603:1096:4::22)
- To SG2PR06MB5288.apcprd06.prod.outlook.com (2603:1096:4:1dc::9)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4Jdx19c9z2yFL
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jul 2023 20:45:55 +1000 (AEST)
+Received: by mail-pj1-x1030.google.com with SMTP id 98e67ed59e1d1-262ff3a4659so3042919a91.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jul 2023 03:45:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689590752; x=1690195552;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=eUAGq1bjx/BPoBhYV0omfN6CI0tBdhKBqPXS2ABCy3U=;
+        b=PzSTLKrH2RfSP9lTwgMp4OEStlvck4KdDxwL+snA8YZZhhfiG3kOoUSIf3LmAZAycp
+         2lixdta+PIUNtE07nbyU0udH3/GOBElYFSh2wPLtCuqnQLi4VEWyTdNDM/rXamg2kNcA
+         yDSLnBz9bVwYhSygn3odBX9KHbe15r5KwcZhSekQje07Q2M0j0srulU++aX6UexRmhoK
+         Xn3VRQsWeGksMMZ/jQsOWlQ60/JLOUO3OZ6KzRtIXkGroae63XNUZ31DqCAOJayK5bHG
+         J5GChlROMwTKuwuBj8Aa5SUZl/LXkjse+sNSi4i/p8VlJtsu3LVZh012BYEPTtNw7ZCM
+         8l1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689590752; x=1690195552;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eUAGq1bjx/BPoBhYV0omfN6CI0tBdhKBqPXS2ABCy3U=;
+        b=lGJ3F7P7tl+p05QopQ6umtID3QfNbw7ZqdbJbV1uGNibwGHeJHRlT5Xu+DIn+8Bzr+
+         3qgQsETOcv5KZuLNuyoUCyyqockdNYus0ZNbtMNdKC9/d/tcIsvd94xiRCg7K+CdrEkg
+         W30fO/pwSKd/E1zc8c2GSF2bocvthZHLzftfMl+G1ZQWYTMjRZev51qh/PNQerDj7w9V
+         +ozQ+74o8sh1S/YvRJp9ykLFaQ+lBwb73t0Ko8DYjD9ZZ0ystvynxnymheA2Ol7I+S7Q
+         eJM4MjU5r4TVK697qVtvjOAKaLKyBmr8UpRFaYgebkaqPaFdnM5KhUgC29uQnxx2xWMe
+         Ub5A==
+X-Gm-Message-State: ABy/qLZIsrSk0VCgjr9NEosyZx/5YcTJPmudpSm3sSE6MDYw/b9EibDl
+	0sWS+72kjIQj8x6zo5+G7mNQerzZ20s6bwAr8lI=
+X-Google-Smtp-Source: APBJJlHtEpAq0w+fiTyFHZYwHtUjXKpGutqItTzMX2S4gY+mUjtKAIeRPejvQTrDqeOQb12dwhV7URqBft+iPxx42Rw=
+X-Received: by 2002:a17:90b:709:b0:260:fd64:a20 with SMTP id
+ s9-20020a17090b070900b00260fd640a20mr11121947pjz.9.1689590752039; Mon, 17 Jul
+ 2023 03:45:52 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SG2PR06MB5288:EE_|KL1PR06MB6273:EE_
-X-MS-Office365-Filtering-Correlation-Id: 306dd2b7-a052-4862-3263-08db86a7f830
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	qv0DiIrSDZDEDS004KY52gklhli1N7eRaK1ctkiS+4s8+UIDfD9tqMyYK4tMRz9xf/pmd+dnmelBxmu+Mx760B8Oyx7eXQxz3F+SHFXI5EbJr9KfpHaRp47Ley0vKu0mhgm0E/S16u8wwlMynhE1+ni9L/Frd32VVLj/J5376tTTIWsXgTyQlcE7NVXE2fPNWg2PLpr50+7QigkpgrzPLwhBlh59JHjjYUKW+Xclp1vWcCey7BEsJMOox6godMfkWD3CyiJZT/6O2Iam3BRT4M8GqtuPLjfCfiiRDn/fYDwr+LGjme3CfdXuxIpV2H6MI4aZekXnrqr4womMgiuJsAvliyp9M/FqNSHN170XFC/INO6Us/QJiTVkLpe/ia9+z9J/uPSbmRr5SaDelC+9omAxpQgUfBLXqzm8p1hpHjutiPuL8YjYfXrGICKIpajhSfa93VptOyDTRVGOCCSbOTSUoIBzur5sRYGQ8w3uwDPYWhTIcgbj2zIW0ZI3txibv5drgBJwpIbnzKqDMSxlomSwtaxB/1F0C2dKuDcqAZ9AlcDV37c8yRJm675zbzLwzRGZlBP4NMab/mArNcrDFzFyBnDoLG9X3De03MKvihgJRBLvXCY1hJi66eVuRZk7
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SG2PR06MB5288.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(376002)(366004)(396003)(136003)(346002)(451199021)(83380400001)(52116002)(478600001)(4744005)(186003)(2616005)(86362001)(6486002)(26005)(1076003)(6506007)(6512007)(107886003)(66556008)(66946007)(38350700002)(38100700002)(110136005)(41300700001)(2906002)(36756003)(6666004)(4326008)(8676002)(316002)(5660300002)(8936002)(66476007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?WwYJhoL+o59mBmxu7n4YI3PleGMjiyf/vWaiduZGX5pPTNJfdcX5pJpftW3b?=
- =?us-ascii?Q?6Idt3lVuUJZNs6i7EcQKr5rOXm50yH3vJgVGWS8SFT2RHHosG8eOt1sd8S6X?=
- =?us-ascii?Q?WAXbGucUqFHehRHbarn6jXIAgZPw1oQLysrKdYdN7WosPtSBm6Wc2LXari3y?=
- =?us-ascii?Q?1R+ot2nhWlHFCDCGdzVbenIIgrh9AkBEfzR4QdZ6jEAHmqCGPYGnmjoQM2lT?=
- =?us-ascii?Q?XnK+sX9fx8Q0CfJgFzxvG7hCYeo4tWB/ypTU3PZfJ5fbn4YIeODsDUxd/VVM?=
- =?us-ascii?Q?GUj3LXzRcl2Dqf3uTYBEH+nWjGxjBlbVNfRx0btJJVX7eiDcUsP0AR7yyz/A?=
- =?us-ascii?Q?OrNX5WlfbpC9aWNp8Q8XvKGL16ykXPMRGtrb+07laJBYLxtScnD+l0e/YMAN?=
- =?us-ascii?Q?VZoqepKewjrKuDJUVXl1xH1OQbmSr708JXRZ9o+VlpTP4DcMGSxMIRd9LYuO?=
- =?us-ascii?Q?HVE6hO3wZ0KGoV4jzH2g70FZbuNFeqVSTwfPnqEu80Kx04k2h74XY5TXDeoz?=
- =?us-ascii?Q?DWghXnFpPq25KdSVhNnF2f/XOXjWJ3paCAag4iZiO1E5pneBiTg2roTYuUN9?=
- =?us-ascii?Q?WvxzN2oew5orSV7BdN7GMe4Xgcac6rCDaINkIGJqsIrlG69Mlj0BpbuwMOOU?=
- =?us-ascii?Q?q3XwxHGhKX6dokw+fKGfn1j/w68wQYpI/Ey4Pna9y7+3nmw1VCyv4R8lCl41?=
- =?us-ascii?Q?ngcIG3ljliWoGIvC0dXqQTlHAfFAukdQwvKzMDQk1shDhGo/fpcH/ClHqkgi?=
- =?us-ascii?Q?veikX0yhn7nDPKuN4DwsXJhrwetLL5hsQkp4CbuvMYCsjfzlgVH4RHtZuGBH?=
- =?us-ascii?Q?//xEDB35jTkesv0iR/jf8VIS93o1tUc1PGg10EGd5jpAWmA4ZBfgLGXEBzKT?=
- =?us-ascii?Q?yPu9S1fK8A/hWlfcSApBKnCthsPzJ7GAMWDFdgWEZ0LJ6+8foBpyiDgdKf4I?=
- =?us-ascii?Q?WF7btxiL1bU7Aq1cgPBcsr3hWjhavSE7hW9cA4E+T7BHFVmo+QCpdc5XqtBB?=
- =?us-ascii?Q?hNUoYkkPUpLjXDhQlcNBsSW0EwT0sQICNLZbsD8aLNV44BI8l0M07dulBVrV?=
- =?us-ascii?Q?KdtvHIiDVtf0q6aIhsAk3Dbqb0eNGfpqjkVmt6Q2qsOQpT/PCGmKI1p+Ee41?=
- =?us-ascii?Q?ItJNL0n7FmVS1hlGyegs3xjP3yzFprerI/Tpr9nVGE3oPmEVVJt+Uq9ftxsG?=
- =?us-ascii?Q?motCjLrdlDOY7fACeT/XCvXV9zCQSwwTpDU1DYEESqTF1Imys4gnAlu5H3EA?=
- =?us-ascii?Q?b4wDnxRMbrdVlcvzxsdvdPR22ghIngottv1EcehPKwmFNQN9lnfQhWqq0l3V?=
- =?us-ascii?Q?J1qY9fFfu4FALhjzkzpFZr+gGHmHqkKlA4d0Rw7rAh32uNpDEAbEuNtdCrn4?=
- =?us-ascii?Q?XMT4YCfpdiRtWN0lk5gLehPBr3LprZmN1cfrHeqnjNIsNWVRf6d6fRnY9v5b?=
- =?us-ascii?Q?n2V3ysVcukCiOu32Y1BWK1EaVpV6e0TSbpu8XoBqbFxerPmooyxJ6kDzxbai?=
- =?us-ascii?Q?xYCPdrDZfXu9e0njDzcmHIow3oDYHTYB3cm50YfsA0/ypT7y/u2zDR6VHFlm?=
- =?us-ascii?Q?TAlngjC3zsuuXLGU4fbDpOgf7jKJ28zczSsAFuC4?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 306dd2b7-a052-4862-3263-08db86a7f830
-X-MS-Exchange-CrossTenant-AuthSource: SG2PR06MB5288.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2023 09:26:58.6032
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 89Mp2nr11ycyIv7lvqLiqxY2NZ2pDx/drjGrI+HwKLy/dLUMnfxhG/N0QAhnKmGpPboog5IlPFyGtSv2GITwlA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: KL1PR06MB6273
+References: <20230712124934.32232-1-matuszpd@gmail.com>
+In-Reply-To: <20230712124934.32232-1-matuszpd@gmail.com>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Mon, 17 Jul 2023 18:45:40 +0800
+Message-ID: <CAA+D8AM0Pf02mC+vBkCi=jh5mcO0TBxEa20wogO=yrjtDDg0OA@mail.gmail.com>
+Subject: Re: [PATCH] ASoC: fsl_sai: Disable bit clock with transmitter
+To: Matus Gajdos <matuszpd@gmail.com>
+Content-Type: multipart/alternative; boundary="0000000000009756650600ac8025"
 X-Mailman-Approved-At: Mon, 17 Jul 2023 22:06:13 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -121,41 +74,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: opensource.kernel@vivo.com
+Cc: alsa-devel@alsa-project.org, Xiubo Li <Xiubo.Lee@gmail.com>, linuxppc-dev@lists.ozlabs.org, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>, Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-password might contain private information, so better use
-kfree_sensitive to free it.
-In plpks_gen_password() use kfree_sensitive().
+--0000000000009756650600ac8025
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Minjie Du <duminjie@vivo.com>
----
- arch/powerpc/platforms/pseries/plpks.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On Wed, Jul 12, 2023 at 8:53=E2=80=AFPM Matus Gajdos <matuszpd@gmail.com> w=
+rote:
 
-diff --git a/arch/powerpc/platforms/pseries/plpks.c b/arch/powerpc/platforms/pseries/plpks.c
-index b0658ea3e..3441e616e 100644
---- a/arch/powerpc/platforms/pseries/plpks.c
-+++ b/arch/powerpc/platforms/pseries/plpks.c
-@@ -150,7 +150,7 @@ static int plpks_gen_password(void)
- 		ospasswordlength = maxpwsize;
- 		ospassword = kzalloc(maxpwsize, GFP_KERNEL);
- 		if (!ospassword) {
--			kfree(password);
-+			kfree_sensitive(password);
- 			return -ENOMEM;
- 		}
- 		memcpy(ospassword, password, ospasswordlength);
-@@ -163,7 +163,7 @@ static int plpks_gen_password(void)
- 		}
- 	}
- out:
--	kfree(password);
-+	kfree_sensitive(password);
- 
- 	return pseries_status_to_err(rc);
- }
--- 
-2.39.0
+> Otherwise bit clock remains running writing invalid data to the DAC.
+>
+> Signed-off-by: Matus Gajdos <matuszpd@gmail.com>
+>
 
+Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
+
+Best regards
+Wang Shengjiu
+
+
+> ---
+>  sound/soc/fsl/fsl_sai.c | 2 +-
+>  sound/soc/fsl/fsl_sai.h | 1 +
+>  2 files changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+> index 5e09f634c61b..dcc7fbe7acac 100644
+> --- a/sound/soc/fsl/fsl_sai.c
+> +++ b/sound/soc/fsl/fsl_sai.c
+> @@ -719,7 +719,7 @@ static void fsl_sai_config_disable(struct fsl_sai
+> *sai, int dir)
+>         u32 xcsr, count =3D 100;
+>
+>         regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
+> -                          FSL_SAI_CSR_TERE, 0);
+> +                          FSL_SAI_CSR_TERE | FSL_SAI_CSR_BCE, 0);
+>
+>         /* TERE will remain set till the end of current frame */
+>         do {
+> diff --git a/sound/soc/fsl/fsl_sai.h b/sound/soc/fsl/fsl_sai.h
+> index 8254c3547b87..550df87b6a06 100644
+> --- a/sound/soc/fsl/fsl_sai.h
+> +++ b/sound/soc/fsl/fsl_sai.h
+> @@ -91,6 +91,7 @@
+>  /* SAI Transmit/Receive Control Register */
+>  #define FSL_SAI_CSR_TERE       BIT(31)
+>  #define FSL_SAI_CSR_SE         BIT(30)
+> +#define FSL_SAI_CSR_BCE                BIT(28)
+>  #define FSL_SAI_CSR_FR         BIT(25)
+>  #define FSL_SAI_CSR_SR         BIT(24)
+>  #define FSL_SAI_CSR_xF_SHIFT   16
+> --
+> 2.25.1
+>
+>
+
+--0000000000009756650600ac8025
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Wed, Jul 12, 2023 at 8:53=E2=80=AF=
+PM Matus Gajdos &lt;<a href=3D"mailto:matuszpd@gmail.com">matuszpd@gmail.co=
+m</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin=
+:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"=
+>Otherwise bit clock remains running writing invalid data to the DAC.<br>
+<br>
+Signed-off-by: Matus Gajdos &lt;<a href=3D"mailto:matuszpd@gmail.com" targe=
+t=3D"_blank">matuszpd@gmail.com</a>&gt;<br></blockquote><div><br></div><div=
+>Acked-by: Shengjiu Wang &lt;<a href=3D"mailto:shengjiu.wang@gmail.com">she=
+ngjiu.wang@gmail.com</a>&gt;</div><div><br></div><div>Best regards</div><di=
+v>Wang Shengjiu</div><div>=C2=A0</div><blockquote class=3D"gmail_quote" sty=
+le=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddi=
+ng-left:1ex">
+---<br>
+=C2=A0sound/soc/fsl/fsl_sai.c | 2 +-<br>
+=C2=A0sound/soc/fsl/fsl_sai.h | 1 +<br>
+=C2=A02 files changed, 2 insertions(+), 1 deletion(-)<br>
+<br>
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c<br>
+index 5e09f634c61b..dcc7fbe7acac 100644<br>
+--- a/sound/soc/fsl/fsl_sai.c<br>
++++ b/sound/soc/fsl/fsl_sai.c<br>
+@@ -719,7 +719,7 @@ static void fsl_sai_config_disable(struct fsl_sai *sai,=
+ int dir)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 u32 xcsr, count =3D 100;<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 regmap_update_bits(sai-&gt;regmap, FSL_SAI_xCSR=
+(tx, ofs),<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 FSL_SAI_CSR_TERE, 0);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 FSL_SAI_CSR_TERE | FSL_SAI_CSR_BCE, 0);<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 /* TERE will remain set till the end of current=
+ frame */<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 do {<br>
+diff --git a/sound/soc/fsl/fsl_sai.h b/sound/soc/fsl/fsl_sai.h<br>
+index 8254c3547b87..550df87b6a06 100644<br>
+--- a/sound/soc/fsl/fsl_sai.h<br>
++++ b/sound/soc/fsl/fsl_sai.h<br>
+@@ -91,6 +91,7 @@<br>
+=C2=A0/* SAI Transmit/Receive Control Register */<br>
+=C2=A0#define FSL_SAI_CSR_TERE=C2=A0 =C2=A0 =C2=A0 =C2=A0BIT(31)<br>
+=C2=A0#define FSL_SAI_CSR_SE=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0BIT(30)<br>
++#define FSL_SAI_CSR_BCE=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 BIT(28)<br>
+=C2=A0#define FSL_SAI_CSR_FR=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0BIT(25)<br>
+=C2=A0#define FSL_SAI_CSR_SR=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0BIT(24)<br>
+=C2=A0#define FSL_SAI_CSR_xF_SHIFT=C2=A0 =C2=A016<br>
+-- <br>
+2.25.1<br>
+<br>
+</blockquote></div></div>
+
+--0000000000009756650600ac8025--
