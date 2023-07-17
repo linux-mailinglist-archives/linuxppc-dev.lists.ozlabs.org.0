@@ -1,58 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62187756F38
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 23:59:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6691B756F4C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 00:00:07 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bcN+QDhT;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZEoHMX2J;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R4bZq22npz2yL0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 07:59:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R4bbn2Flbz2ytm
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 08:00:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bcN+QDhT;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZEoHMX2J;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4Rbp4GNwz2yFG
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 01:59:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4Sm60l4bz2xwD
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 02:51:50 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id BAE1D61130;
-	Mon, 17 Jul 2023 15:59:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8F28C433C8;
-	Mon, 17 Jul 2023 15:59:26 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id F381E6117E;
+	Mon, 17 Jul 2023 16:51:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 812EAC433C7;
+	Mon, 17 Jul 2023 16:51:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1689609572;
-	bh=mmNtx5DaCDSRpy/BMCSXBwbmRPuUIz4XFGeGgtAykCg=;
+	s=k20201202; t=1689612706;
+	bh=GDoZ+CsfFo9PibsTP4iZm+ttTgfHxn11DDJbAlCFH8E=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bcN+QDhTGO43S68G//SgxaH9wKR50gFXFbSk0rjCodtNU4hMLKoXmJhAycajkEXCU
-	 olADYw/g75sw6tM0wGiOQwUcMD5jsLdkNP+TAclWpDPQsAQfhUgzw7OcIVVm/odLfF
-	 uBYlGvZ6T9f9OhFVeCfhwwVpxC4ENk3506WGw66iy8eFCK8jY19gKzkAfZMieh2RWw
-	 GPSbuI9t7JyCC9dtdHulnvO4qqr8WmO9HhiFMCcp+qPuguiXw4fwEc4AOCtq/cQmHk
-	 yWSIiQiclE7hX4yLNzrEIOXfdkIK9olTBOp+fRxPA/kbsx3cHhA/c2ZXDy7fB7MDTA
-	 oaBYmzU9z2cpQ==
-Date: Mon, 17 Jul 2023 21:29:10 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH 2/2] PCI: layerscape: Add the workaround for lost link
- capablities during reset
-Message-ID: <20230717155910.GB35455@thinkpad>
-References: <20230615164113.2270698-1-Frank.Li@nxp.com>
- <20230615164113.2270698-2-Frank.Li@nxp.com>
+	b=ZEoHMX2JdQeUVyNkgdWBKI6yr5pe/INc5DfODCru+00fN8J5XJg/01FraxC5Uf+FG
+	 XLGyykcZarElT+yfQ88/qw3rxbdtmQwlMm4MVMWcjVA8W1BzI++pek5YZKKBwI7XR6
+	 Vc/WH98m5BnS7DdeM2++eaKr94hk2O0k89Bc1b9ybe/FsHvQBWZ/9PaJFm5XUvbhPh
+	 78TOOOqQ+Nd6w2oOqOYhgVZm+Y7ykGxydEmczeSZwjlePi5nZMkHrFdDg9hL8zxSio
+	 SCc95tvYUaXDed+x2C7VwVXHcnKo0+0JBdhxm/Vl4xw/gxBOwJrvOMJAyCgSMZ+3MK
+	 +O+f2UpDtYbxQ==
+Date: Mon, 17 Jul 2023 17:51:31 +0100
+From: Mark Brown <broonie@kernel.org>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Subject: Re: [PATCH v9 01/42] mm: Rename arch pte_mkwrite()'s to
+ pte_mkwrite_novma()
+Message-ID: <285d346e-14e7-4f43-9b5b-faded6205142@sirena.org.uk>
+References: <20230613001108.3040476-1-rick.p.edgecombe@intel.com>
+ <20230613001108.3040476-2-rick.p.edgecombe@intel.com>
+ <b389274a-abed-40dc-8e33-7ce922ea9b61@sirena.org.uk>
+ <87acbb49fa83b0e3f261315a531e105da9e5b9d6.camel@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="klyEM8Lfv/18WVhb"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230615164113.2270698-2-Frank.Li@nxp.com>
+In-Reply-To: <87acbb49fa83b0e3f261315a531e105da9e5b9d6.camel@intel.com>
+X-Cookie: Not a flying toy.
 X-Mailman-Approved-At: Tue, 18 Jul 2023 07:55:09 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -65,91 +68,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, imx@lists.linux.dev, Rob Herring <robh@kernel.org>, "open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-pci@vger.kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>, open list <linux-kernel@vger.kernel.org>, Minghuan Lian <minghuan.Lian@nxp.com>, "moderated list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-arm-kernel@lists.infradead.org>, Roy Zang <roy.zang@nxp.com>, Bjorn Helgaas <bhelgaas@google.com>, "open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linuxppc-dev@lists.ozlabs.org>, Mingkai Hu <mingkai.hu@nxp.com>
+Cc: "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>, "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, "david@redhat.com" <david@redhat.com>, "szabolcs.nagy@arm.com" <szabolcs.nagy@arm.com>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "Eranian, Stephane" <eranian@google.com>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "Yang, Weijiang" <weijiang.yang@intel.com>, "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>, "pavel@ucw.cz" <pavel@ucw.cz>, "hpa@zytor.com" <hpa@zytor.com>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "nadav.amit@gmail.com" <nadav.amit@gmail.com>, "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, "dethoma@microsoft.com" <dethoma@microsoft.com>, "torvalds@linuxfoundation.org" <torvalds@linuxfoundation.org>, "corbet@lwn.n
+ et" <corbet@lwn.net>, "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>, "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, "Syromiatnikov, Eugene" <esyr@redhat.com>, "jamorris@linux.microsoft.com" <jamorris@linux.microsoft.com>, "peterz@infradead.org" <peterz@infradead.org>, "mingo@redhat.com" <mingo@redhat.com>, "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>, "hjl.tools@gmail.com" <hjl.tools@gmail.com>, "keescook@chromium.org" <keescook@chromium.org>, "arnd@arndb.de" <arnd@arndb.de>, "jannh@google.com" <jannh@google.com>, "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>, "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>, "openrisc@lists.librecores.org" <openrisc@lists.librecores.org>, "bp@alien8.de" <bp@alien8.de>, "Lutomirski, Andy" <luto@kernel.o
+ rg>, "oleg@redhat.com" <oleg@redhat.com>, "tglx@linutronix.de" <tglx@linutronix.de>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "debug@rivosinc.com" <debug@rivosinc.com>, "fweimer@redhat.com" <fweimer@redhat.com>, "monstr@monstr.eu" <monstr@monstr.eu>, "john.allen@amd.com" <john.allen@amd.com>, "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, "kcc@google.com" <kcc@google.com>, "linux-api@vger.kernel.org" <linux-api@vger.kernel.org>, "Schimpe, Christina" <christina.schimpe@intel.com>, "rdunlap@infradead.org" <rdunlap@infradead.org>, "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "gorcunov@gmail.com" <gorcunov@gmail.com>, "dinguyen@kernel.org" <dinguyen@kernel.org>, "rppt@kernel.org" <rppt@kernel.org>, "andrew.cooper3@citrix.com" <andrew.cooper3@citrix.com>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "Torvalds, Linus" <torvalds@linux-foundation.org>,
+  "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>, "mike.kravetz@oracle.com" <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 15, 2023 at 12:41:12PM -0400, Frank Li wrote:
-> From: Xiaowei Bao <xiaowei.bao@nxp.com>
-> 
-> A workaround for the issue where the PCI Express Endpoint (EP) controller
-> loses the values of the Maximum Link Width and Supported Link Speed from
-> the Link Capabilities Register, which initially configured by the Reset
-> Configuration Word (RCW) during a link-down or hot reset event.
-> 
 
-If this fixes an issue, then there should be a Fixes tag.
+--klyEM8Lfv/18WVhb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
-> Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  drivers/pci/controller/dwc/pci-layerscape-ep.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> index 4e4fdd1dfea7..2ef02d827eeb 100644
-> --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> @@ -45,6 +45,7 @@ struct ls_pcie_ep {
->  	struct pci_epc_features		*ls_epc;
->  	const struct ls_pcie_ep_drvdata *drvdata;
->  	int				irq;
-> +	u32				lnkcap;
->  	bool				big_endian;
->  };
->  
-> @@ -73,6 +74,7 @@ static irqreturn_t ls_pcie_ep_event_handler(int irq, void *dev_id)
->  	struct ls_pcie_ep *pcie = dev_id;
->  	struct dw_pcie *pci = pcie->pci;
->  	u32 val, cfg;
-> +	u8 offset;
->  
->  	val = ls_lut_readl(pcie, PEX_PF0_PME_MES_DR);
->  	ls_lut_writel(pcie, PEX_PF0_PME_MES_DR, val);
-> @@ -81,6 +83,13 @@ static irqreturn_t ls_pcie_ep_event_handler(int irq, void *dev_id)
->  		return IRQ_NONE;
->  
->  	if (val & PEX_PF0_PME_MES_DR_LUD) {
-> +
+On Mon, Jul 17, 2023 at 03:55:50PM +0000, Edgecombe, Rick P wrote:
+> On Fri, 2023-07-14 at 23:57 +0100, Mark Brown wrote:
 
-Please add a comment on why the LNKCAP is being restored here.
+> > The same issue seems to apply with the version that was in -next
+> > based
+> > on v6.4-rc4 too.
 
-> +		offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-> +
-> +		dw_pcie_dbi_ro_wr_en(pci);
-> +		dw_pcie_writew_dbi(pci, offset + PCI_EXP_LNKCAP, pcie->lnkcap);
+> The version in your branch is not the same as the version in tip (which
+> had a squashed build fix). I was able to reproduce the build error with
+> your branch. But not with the one in tip rebased on v6.5-rc1. So can
+> you try this version:
+> https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/commit/?h=x86/shstk&id=899223d69ce9f338056f4c41ef870d70040fc860
 
-lnkcap is a 32-bit variable, so you should use dw_pcie_writel_dbi().
+Ah, I'd not seen that patch or that tip had been rebased - I'd actually
+been using literally the branch from tip as my base at whatever point I
+last noticed it changing up until I rebased onto -rc1.
 
-- Mani
+--klyEM8Lfv/18WVhb
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> +		dw_pcie_dbi_ro_wr_dis(pci);
-> +
->  		cfg = ls_lut_readl(pcie, PEX_PF0_CONFIG);
->  		cfg |= PEX_PF0_CFG_READY;
->  		ls_lut_writel(pcie, PEX_PF0_CONFIG, cfg);
-> @@ -216,6 +225,7 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
->  	struct ls_pcie_ep *pcie;
->  	struct pci_epc_features *ls_epc;
->  	struct resource *dbi_base;
-> +	u8 offset;
->  	int ret;
->  
->  	pcie = devm_kzalloc(dev, sizeof(*pcie), GFP_KERNEL);
-> @@ -252,6 +262,9 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
->  
->  	platform_set_drvdata(pdev, pcie);
->  
-> +	offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-> +	pcie->lnkcap = dw_pcie_readl_dbi(pci, offset + PCI_EXP_LNKCAP);
-> +
->  	ret = dw_pcie_ep_init(&pci->ep);
->  	if (ret)
->  		return ret;
-> -- 
-> 2.34.1
-> 
+-----BEGIN PGP SIGNATURE-----
 
--- 
-மணிவண்ணன் சதாசிவம்
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmS1cZIACgkQJNaLcl1U
+h9DfWwf/Qv2sx8Qywn2HA+F1wJsVWOOqaPIZzIVBQ5Kg2bysQK3YMNLLZWKdXMsh
+sTgXGVlr5oANLjP/hYxvcaxk16N1y51q6PuBh4lJN1w37tEdph1ZIcSejQY/jKpf
+fKFWHZ++2w+lXvIOB/7rYQe+XutmQzCVmL0Cod8zxf2UhC4WJe9/3RCKxi6rfxuV
+NXldTW7h7dqnurbev4TX4npwjcetNGofPUer7VZD7o1vRKXvX9VLG42UbeV4cu+g
+ICKZmGwC9G23gWg0Ql2QkeOr43PLBo4AocKhyO6B22uYLOrA8BQHJUrbnD4ZUyD+
+4rWq0iWXOnrixnw11LOSSIVZ2HkwmQ==
+=SaIl
+-----END PGP SIGNATURE-----
+
+--klyEM8Lfv/18WVhb--
