@@ -1,120 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB1D37565BC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 16:05:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 163A775661F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 16:15:33 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=Xu5mkt5O;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ucKzLgH+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R4P3q5Mp0z2yGK
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 00:05:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R4PHk6ng5z2yq0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 00:15:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=Xu5mkt5O;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ucKzLgH+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f400:fe1e::626; helo=eur01-he1-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org)
-Received: from EUR01-HE1-obe.outbound.protection.outlook.com (mail-he1eur01on0626.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe1e::626])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4P2x0CRRz2yD7
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 00:04:24 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=k+CAtboDvHE20SJA4YoXEhSt+vmOgkp6GjH2N6y+YsX7l4L3K+GKSL0TyqUzMsVOkNuX28iUEBJG2Oz8+2XMljUGM/FXlmWsPOfxfMiMShbzDhcPZ6djxBplaP/LsKz2Ds0xvasw7tcLPGqHPDuGpIlW74ysiD1suOH9MROBhcdQVZzQELjlt6syFzVEgEyoFGkUpclYhnn06vfnzegIn3OMqpNRscyfuLwUNjXnFo17xm18B/qnuE4z0oXU4fI+WQqSL0yGo4k1U2XBNPxDv4RO3vT14h4djwFKPd0to4rkIT99OwVKN+yBt+eTsdcMs9YVroJsYfgkY4JhQyWgcA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mkoGyVKFdFviGLewY+xFT3Ty6gaSA6LjQMbPZLTn1fU=;
- b=b6I1zPh2eqXkx3SRa4lOoAUQNzRqw2eDyx4xDVniORHr/sQEIw38n9YSt/34aiJwH0XskyCYPzWIZjcjd8CZB+Mn+id206LAAMp96FTS/aP9L3Zg9TTPqBR4Mv+gr4/umoF5e9TMidg+CwquBVeT54rCQ1Jo2Q+NzJtZMJvTgBcbF8oXBJ7zMS2TbN4Vl2deaxySCn3gt9/KSwNulqI8iLFwcZcTizTjapuVxUeO4L91SOFrpFNQtjv9CxWwjvIppwUOvK7j3Oh7AHGFSKQzaPqJPYUElSXmPQJ/3o/hR7T6jvfJBbJd6kReJI870FlWhs7Po+++G8GzHHbc60aJtQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mkoGyVKFdFviGLewY+xFT3Ty6gaSA6LjQMbPZLTn1fU=;
- b=Xu5mkt5OS5pN4wL8/1txJxc6mbhSyRMuQwEcrUoRG86ZdBvXI+XVhzpYKwEupf6Bzaq/1pItLGaMIsJbuBIl4q/P7CwRpdYiacXdBJQ+AcJy/m46MVin/kTOa+B9WwpH/pzZrcKB7huUkVWMcaKGRxfudC/jDOzUxrBV/W8QE2w=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by AS8PR04MB7736.eurprd04.prod.outlook.com (2603:10a6:20b:2af::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.31; Mon, 17 Jul
- 2023 14:04:05 +0000
-Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::6cc2:14b2:ca51:6c0]) by AM6PR04MB4838.eurprd04.prod.outlook.com
- ([fe80::6cc2:14b2:ca51:6c0%4]) with mapi id 15.20.6588.031; Mon, 17 Jul 2023
- 14:04:05 +0000
-Date: Mon, 17 Jul 2023 10:03:52 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: mani@kernel.org, Minghuan Lian <minghuan.Lian@nxp.com>,
-	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	"open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linuxppc-dev@lists.ozlabs.org>,
-	"open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-pci@vger.kernel.org>,
-	"moderated list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] PCI: layerscape: Add the workaround for lost link
- capablities during reset
-Message-ID: <ZLVKSKUkDQO+MlKp@lizhi-Precision-Tower-5810>
-References: <20230615164113.2270698-1-Frank.Li@nxp.com>
- <20230615164113.2270698-2-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230615164113.2270698-2-Frank.Li@nxp.com>
-X-ClientProxiedBy: BYAPR01CA0003.prod.exchangelabs.com (2603:10b6:a02:80::16)
- To AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|AS8PR04MB7736:EE_
-X-MS-Office365-Filtering-Correlation-Id: b34384ad-964e-43df-bcc5-08db86ceaead
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	eyR7Iuesww0PnWR1Xqezuo18NYUTKXpNwnAQ27MvIQqmqPCWq32qGFmogmzb8gUlda3wPHw1AUy8l4UEoOwTjYCFVyx0gp1kRXmuzEu7iL3SNEQy67pH58+96bmjpXtYTYu1szyF0avmFwuyIdBpoSehuO4ODY7D2qfqOnLJZLRHSMiCuup15zytN7YvTPbh5XzSrXE8+64Dxe789qVsAos58O8gcix8YyL9Qq6ZcPyG3FBWaNZ7c6WPAhr4QtoGLmltsS6SS8h3KS24QFfin3SVxCrk2vK3ebKvh/LynmyAH97XwFIQg3w1PNx15+HAona1n8uSSQYbLNlyMsnI+bH6vGXvqcB0l++EmhgGffV/aQ+kEzPSML0S2gKBYtzGSp+BOVvdQIOy3saQxmn5uUAKQ6/8Z7ApMtNoSqfdahZxl8epXwajOQl+HUMorBnaTTOBhxm/0xqNFSAwKxj6E9/d5BBdfYT0z4KW6xRPHDVh56roeHA7D2TjOhNcztcn5gdaV+amXr7Dv0EjjzTGlTHzPhuR6aACKCGJIzJ9+K4/pvD2mrFYbeBOhcmghb3VjSOS3pZk6I5A9uAKGl7dResTvN4G/VltGLJdpi/EwK4HrY1JQWho/HkGpQBjrRK2PL0InfTHMDsxymMs7t/6TdYi0MyLk1oXJE5dXtMl7PU=
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(7916004)(376002)(136003)(39860400002)(396003)(366004)(346002)(451199021)(9686003)(6512007)(26005)(6506007)(921005)(66476007)(8676002)(8936002)(5660300002)(33716001)(316002)(110136005)(41300700001)(66556008)(66946007)(38100700002)(38350700002)(6666004)(2906002)(52116002)(478600001)(86362001)(6486002)(186003)(67856001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?DwlRIizdUKu/rhonofVIF20Q2lXWNc0Q3wcRjCbdwwad7kFH89OjFzEFwB0I?=
- =?us-ascii?Q?thlsFtjhw4RcZs2n6bVKC9miLINPwcZlxJGN5HRP8fPTEPdqfQWKOdT1o9o1?=
- =?us-ascii?Q?2htflbk3GUyp6Sz3+9T2NVeTsAVkr31+AITA0fQwEF9WXtWmcGq4xngH++VA?=
- =?us-ascii?Q?YouHfhdYP0qdJwu6nJJu24N8IOBw8fPDh50GoaiKrQ8tR7CJY0HtsaXaIl7y?=
- =?us-ascii?Q?fXo+3gaIwzGW8iQ4fSm4VDfidpP9vlrjI2ch3GPOXnUACO24TykOYXjzhla9?=
- =?us-ascii?Q?fMS7ji2nGTrIeIF47z4QCDVovMenKHX7Cg66Uxj+vu2+QvBfPYGngS+BzMIB?=
- =?us-ascii?Q?+YiL7wCHjWTZHssu6NM3kfQ79bsjhzREPObXBLn0MnyrnWn3n11Z4+mom9SX?=
- =?us-ascii?Q?FsT/L7tdRZN2ZrR1aNDuybxOMvEzWPWZIOMSAF84XeSUH4GNrJ1dU+eRP0+i?=
- =?us-ascii?Q?mpahmZ9QH4qynyBJQ0MPzm2i6SGzdE4smjNlM+jO075SpMWYUlVbnYJtbgrQ?=
- =?us-ascii?Q?zxChfxGscI4rKe3pOOJ7Ll0DGJ0sf1wyJSLeTN2ZboHMkYevrqh/1BDf2T/D?=
- =?us-ascii?Q?Mlvle5udfD29DWT0+wIzeIfp1t3qVE4Aen3R6IYEjB9pHP2p+4yajH5M7SUH?=
- =?us-ascii?Q?vY9e46Q3h+gBxbgcQSq1BbJ6LBH6q+7D2tU2DG32JRsGdYrm1KqX8QSXXd9U?=
- =?us-ascii?Q?etFzfSaDWBVbPLC+aZdwCgcD/HUyCc6CB8rg1hlt8Tk4JaEdaeYNweVhvHo9?=
- =?us-ascii?Q?+NW81EQlMPHYFt3nECNxp0I1eujKYAsSLkmTEj43NVncysxEvmIa2a1Nrmsd?=
- =?us-ascii?Q?6cllDVNUYmCzV9BnMOMFFNg49DosgEnjzSygPD13RmKInZ9xDzK1MPJBxoMx?=
- =?us-ascii?Q?xiq+5rglCEOzrEyoBaQuM5naUcAp9xB6M+Pcx4xpLKHc0x5kFbbzL7DGw8Ze?=
- =?us-ascii?Q?M0EqHqciIrh7eQOZ7+K92exEEJOkCsoWsiOP/jOWdkJ2WtMRc/JDH9wkzPLR?=
- =?us-ascii?Q?fvZYYz85TifGYswR7U+ywMLt3oqH1EMjDk9ibmKrTz60OzUk/ocRJ/h36U/u?=
- =?us-ascii?Q?OBq2exy2yCZH/JOiv6K51aEhsXEkkgQ36QPpc4FrtTBNLbaPCMn7gjPZ9sLm?=
- =?us-ascii?Q?HW87gBG8Lj9K+uV2bZejpR3v3Byey2U9MF3yqv3IMXrfEy+whyfy+8cAoqkt?=
- =?us-ascii?Q?cgxE/Uj3gJFlxoRikg/lkqckxQQizn0mQQltpkJ4QRcZYJeYElgAEXIaree3?=
- =?us-ascii?Q?WMsUiWn7ePZo/AqSlPmtjMJjiON/nRNK+mFRIC76RpHEiWCnM+lGr+WIJLQp?=
- =?us-ascii?Q?dtDsb8j0fXZp8wTZ+uFSFS+A5/H74+qDLCaVqtgS63spZA+wRQyVbC9xVAff?=
- =?us-ascii?Q?l7JG0Xd3BCbzs9unkNMyqQ4xnaXRNEonaQMG+f0+NJNb8vLLACS5DOtrW2rJ?=
- =?us-ascii?Q?1Rfl2ScQbQ+aW/UeItRsZO1SBrBV68oKfoTg5NtPbP5fMuT2LAGRIZQMBgSo?=
- =?us-ascii?Q?am6IvNdNvRqMt7F2cjTRaF7qxkh/OQzh8asuEaKn51dOxLKpAs7ov7553+SB?=
- =?us-ascii?Q?3F/SN7YmTbxGw0NKHSe/MtYybIexYdy2ExWlq9Wk?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b34384ad-964e-43df-bcc5-08db86ceaead
-X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2023 14:04:05.6294
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: B5dNs5MyC0jaBDnaUBb0F75C+QRPrFe2QckZxo3hbG7861DMAUalSWiRTHcPm7e1NrqGDZn6mL+GBVYOSt7d2A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7736
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4PGq1Zfcz2xgw;
+	Tue, 18 Jul 2023 00:14:43 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id A0E6061083;
+	Mon, 17 Jul 2023 14:14:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66E21C433C7;
+	Mon, 17 Jul 2023 14:14:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1689603280;
+	bh=DsVLgJx2JovG0BwaBnx+6xFRFrkyvGDsH0nInttVSzE=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=ucKzLgH+gYQ2yeRHpjUzVozbucN60bF3TCnu8zVxmvt8XM4guK8u2YW5zz40XNW+o
+	 SxXAUnD8/tyKAjpZlzccK3s6pV7RsqSrUHQ6zBDGWZHqyIrsQF5rF+DKseMQK7glYr
+	 hFurZA14yZingf2xQNYQX6dlkCD/9ymz80dMUmsNMgX7mXuNMKJJjePpZpkoCS5cnd
+	 smDDnAFsvX7prND8pXk6QtXkaXkujMCGgjleIxOmNa8cZsuhMAbE77VWF8Bv19rQZK
+	 Z2F4xFH/0IJyUjraJg5PAlTtOnr7xTJ045g27ztrz6BTnuPcKNMwNJdSZhKfFjGCrs
+	 zFF3/nXHR/bYA==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 17 Jul 2023 14:14:30 +0000
+Message-Id: <CU4IDETDBZ0C.1N1XJ58T5O5K3@seitikki>
+Subject: Re: [PATCH] char: Explicitly include correct DT includes
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Rob Herring" <robh@kernel.org>, "David Airlie" <airlied@redhat.com>,
+ "Arnd Bergmann" <arnd@arndb.de>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Olivia Mackall" <olivia@selenic.com>,
+ "Herbert Xu" <herbert@gondor.apana.org.au>, "Nicolas Ferre"
+ <nicolas.ferre@microchip.com>, "Alexandre Belloni"
+ <alexandre.belloni@bootlin.com>, "Claudiu Beznea"
+ <claudiu.beznea@microchip.com>, "Florian Fainelli"
+ <florian.fainelli@broadcom.com>, "Broadcom internal kernel review list"
+ <bcm-kernel-feedback-list@broadcom.com>, "Ray Jui" <rjui@broadcom.com>,
+ "Scott Branden" <sbranden@broadcom.com>, "Avi Fishman"
+ <avifishman70@gmail.com>, "Tomer Maimon" <tmaimon77@gmail.com>, "Tali
+ Perry" <tali.perry1@gmail.com>, "Patrick Venture" <venture@google.com>,
+ "Nancy Yuen" <yuenn@google.com>, "Benjamin Fair" <benjaminfair@google.com>,
+ "Deepak Saxena" <dsaxena@plexity.net>, "Michael Ellerman"
+ <mpe@ellerman.id.au>, "Nicholas Piggin" <npiggin@gmail.com>, "Christophe
+ Leroy" <christophe.leroy@csgroup.eu>, "Maxime Coquelin"
+ <mcoquelin.stm32@gmail.com>, "Alexandre Torgue"
+ <alexandre.torgue@foss.st.com>, "Corey Minyard" <minyard@acm.org>, "Joel
+ Stanley" <joel@jms.id.au>, "Andrew Jeffery" <andrew@aj.id.au>, "Peter
+ Huewe" <peterhuewe@gmx.de>, "Jason Gunthorpe" <jgg@ziepe.ca>
+X-Mailer: aerc 0.14.0
+References: <20230714174315.4052438-1-robh@kernel.org>
+In-Reply-To: <20230714174315.4052438-1-robh@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -126,83 +81,328 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: devicetree@vger.kernel.org, linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-rpi-kernel@lists.infradead.org, linux-integrity@vger.kernel.org, openipmi-developer@lists.sourceforge.net, linuxppc-dev@lists.ozlabs.org, linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 15, 2023 at 12:41:12PM -0400, Frank Li wrote:
-> From: Xiaowei Bao <xiaowei.bao@nxp.com>
-> 
-> A workaround for the issue where the PCI Express Endpoint (EP) controller
-> loses the values of the Maximum Link Width and Supported Link Speed from
-> the Link Capabilities Register, which initially configured by the Reset
-> Configuration Word (RCW) during a link-down or hot reset event.
-> 
-> Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
-> Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+On Fri Jul 14, 2023 at 5:43 PM UTC, Rob Herring wrote:
+> The DT of_device.h and of_platform.h date back to the separate
+> of_platform_bus_type before it as merged into the regular platform bus.
+> As part of that merge prepping Arm DT support 13 years ago, they
+> "temporarily" include each other. They also include platform_device.h
+> and of.h. As a result, there's a pretty much random mix of those include
+> files used throughout the tree. In order to detangle these headers and
+> replace the implicit includes with struct declarations, users need to
+> explicitly include the correct includes.
+>
+> Signed-off-by: Rob Herring <robh@kernel.org>
 > ---
+>  drivers/char/agp/uninorth-agp.c        | 1 +
+>  drivers/char/bsr.c                     | 3 +--
+>  drivers/char/hw_random/atmel-rng.c     | 2 +-
+>  drivers/char/hw_random/bcm2835-rng.c   | 3 +--
+>  drivers/char/hw_random/ingenic-trng.c  | 2 +-
+>  drivers/char/hw_random/iproc-rng200.c  | 3 +--
+>  drivers/char/hw_random/npcm-rng.c      | 3 +--
+>  drivers/char/hw_random/omap-rng.c      | 2 --
+>  drivers/char/hw_random/omap3-rom-rng.c | 1 -
+>  drivers/char/hw_random/pasemi-rng.c    | 3 +--
+>  drivers/char/hw_random/pic32-rng.c     | 3 +--
+>  drivers/char/hw_random/stm32-rng.c     | 3 ++-
+>  drivers/char/hw_random/xgene-rng.c     | 5 ++---
+>  drivers/char/hw_random/xiphera-trng.c  | 1 -
+>  drivers/char/ipmi/kcs_bmc_aspeed.c     | 1 -
+>  drivers/char/tpm/tpm_ftpm_tee.c        | 1 -
+>  drivers/char/tpm/tpm_tis.c             | 1 -
+>  drivers/char/tpm/tpm_tis_spi_main.c    | 2 +-
+>  drivers/char/tpm/tpm_tis_synquacer.c   | 1 -
+>  19 files changed, 14 insertions(+), 27 deletions(-)
+>
+> diff --git a/drivers/char/agp/uninorth-agp.c b/drivers/char/agp/uninorth-=
+agp.c
+> index 62de7f4ba864..84411b13c49f 100644
+> --- a/drivers/char/agp/uninorth-agp.c
+> +++ b/drivers/char/agp/uninorth-agp.c
+> @@ -3,6 +3,7 @@
+>   * UniNorth AGPGART routines.
+>   */
+>  #include <linux/module.h>
+> +#include <linux/of.h>
+>  #include <linux/pci.h>
+>  #include <linux/slab.h>
+>  #include <linux/init.h>
+> diff --git a/drivers/char/bsr.c b/drivers/char/bsr.c
+> index 12143854aeac..70d31aed9011 100644
+> --- a/drivers/char/bsr.c
+> +++ b/drivers/char/bsr.c
+> @@ -6,11 +6,10 @@
+>   * Author: Sonny Rao <sonnyrao@us.ibm.com>
+>   */
+> =20
+> +#include <linux/device.h>
+>  #include <linux/kernel.h>
+>  #include <linux/of.h>
+>  #include <linux/of_address.h>
+> -#include <linux/of_device.h>
+> -#include <linux/of_platform.h>
+>  #include <linux/fs.h>
+>  #include <linux/module.h>
+>  #include <linux/cdev.h>
+> diff --git a/drivers/char/hw_random/atmel-rng.c b/drivers/char/hw_random/=
+atmel-rng.c
+> index b8effe77d80f..a37367ebcbac 100644
+> --- a/drivers/char/hw_random/atmel-rng.c
+> +++ b/drivers/char/hw_random/atmel-rng.c
+> @@ -15,7 +15,7 @@
+>  #include <linux/io.h>
+>  #include <linux/iopoll.h>
+>  #include <linux/hw_random.h>
+> -#include <linux/of_device.h>
+> +#include <linux/of.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/pm_runtime.h>
+> =20
+> diff --git a/drivers/char/hw_random/bcm2835-rng.c b/drivers/char/hw_rando=
+m/bcm2835-rng.c
+> index e98fcac578d6..e19b0f9f48b9 100644
+> --- a/drivers/char/hw_random/bcm2835-rng.c
+> +++ b/drivers/char/hw_random/bcm2835-rng.c
+> @@ -8,8 +8,7 @@
+>  #include <linux/io.h>
+>  #include <linux/kernel.h>
+>  #include <linux/module.h>
+> -#include <linux/of_address.h>
+> -#include <linux/of_platform.h>
+> +#include <linux/of.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/printk.h>
+>  #include <linux/clk.h>
+> diff --git a/drivers/char/hw_random/ingenic-trng.c b/drivers/char/hw_rand=
+om/ingenic-trng.c
+> index 0eb80f786f4d..759445d4f65a 100644
+> --- a/drivers/char/hw_random/ingenic-trng.c
+> +++ b/drivers/char/hw_random/ingenic-trng.c
+> @@ -11,8 +11,8 @@
+>  #include <linux/hw_random.h>
+>  #include <linux/io.h>
+>  #include <linux/iopoll.h>
+> +#include <linux/mod_devicetable.h>
+>  #include <linux/module.h>
+> -#include <linux/of_device.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/slab.h>
+> =20
+> diff --git a/drivers/char/hw_random/iproc-rng200.c b/drivers/char/hw_rand=
+om/iproc-rng200.c
+> index 06bc060534d8..34df3f0d3e45 100644
+> --- a/drivers/char/hw_random/iproc-rng200.c
+> +++ b/drivers/char/hw_random/iproc-rng200.c
+> @@ -12,8 +12,7 @@
+>  #include <linux/io.h>
+>  #include <linux/kernel.h>
+>  #include <linux/module.h>
+> -#include <linux/of_address.h>
+> -#include <linux/of_platform.h>
+> +#include <linux/mod_devicetable.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/delay.h>
+> =20
+> diff --git a/drivers/char/hw_random/npcm-rng.c b/drivers/char/hw_random/n=
+pcm-rng.c
+> index 9903d0357e06..8a304b754217 100644
+> --- a/drivers/char/hw_random/npcm-rng.c
+> +++ b/drivers/char/hw_random/npcm-rng.c
+> @@ -8,12 +8,11 @@
+>  #include <linux/init.h>
+>  #include <linux/random.h>
+>  #include <linux/err.h>
+> +#include <linux/of.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/hw_random.h>
+>  #include <linux/delay.h>
+> -#include <linux/of_irq.h>
+>  #include <linux/pm_runtime.h>
+> -#include <linux/of_device.h>
+> =20
+>  #define NPCM_RNGCS_REG		0x00	/* Control and status register */
+>  #define NPCM_RNGD_REG		0x04	/* Data register */
+> diff --git a/drivers/char/hw_random/omap-rng.c b/drivers/char/hw_random/o=
+map-rng.c
+> index 00ff96703dd2..be03f76a2a80 100644
+> --- a/drivers/char/hw_random/omap-rng.c
+> +++ b/drivers/char/hw_random/omap-rng.c
+> @@ -26,8 +26,6 @@
+>  #include <linux/slab.h>
+>  #include <linux/pm_runtime.h>
+>  #include <linux/of.h>
+> -#include <linux/of_device.h>
+> -#include <linux/of_address.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/clk.h>
+>  #include <linux/io.h>
+> diff --git a/drivers/char/hw_random/omap3-rom-rng.c b/drivers/char/hw_ran=
+dom/omap3-rom-rng.c
+> index f06e4f95114f..18dc46b1b58e 100644
+> --- a/drivers/char/hw_random/omap3-rom-rng.c
+> +++ b/drivers/char/hw_random/omap3-rom-rng.c
+> @@ -20,7 +20,6 @@
+>  #include <linux/err.h>
+>  #include <linux/io.h>
+>  #include <linux/of.h>
+> -#include <linux/of_device.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/pm_runtime.h>
+> =20
+> diff --git a/drivers/char/hw_random/pasemi-rng.c b/drivers/char/hw_random=
+/pasemi-rng.c
+> index 2498d4ef9fe2..6959d6edd44c 100644
+> --- a/drivers/char/hw_random/pasemi-rng.c
+> +++ b/drivers/char/hw_random/pasemi-rng.c
+> @@ -9,11 +9,10 @@
+> =20
+>  #include <linux/module.h>
+>  #include <linux/kernel.h>
+> +#include <linux/mod_devicetable.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/hw_random.h>
+>  #include <linux/delay.h>
+> -#include <linux/of_address.h>
+> -#include <linux/of_platform.h>
+>  #include <linux/io.h>
+> =20
+>  #define SDCRNG_CTL_REG			0x00
+> diff --git a/drivers/char/hw_random/pic32-rng.c b/drivers/char/hw_random/=
+pic32-rng.c
+> index 99c8bd0859a1..728b68b1a496 100644
+> --- a/drivers/char/hw_random/pic32-rng.c
+> +++ b/drivers/char/hw_random/pic32-rng.c
+> @@ -12,9 +12,8 @@
+>  #include <linux/hw_random.h>
+>  #include <linux/io.h>
+>  #include <linux/kernel.h>
+> +#include <linux/mod_devicetable.h>
+>  #include <linux/module.h>
+> -#include <linux/of.h>
+> -#include <linux/of_device.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/slab.h>
+> =20
+> diff --git a/drivers/char/hw_random/stm32-rng.c b/drivers/char/hw_random/=
+stm32-rng.c
+> index a6731cf0627a..efb6a9f9a11b 100644
+> --- a/drivers/char/hw_random/stm32-rng.c
+> +++ b/drivers/char/hw_random/stm32-rng.c
+> @@ -10,8 +10,9 @@
+>  #include <linux/iopoll.h>
+>  #include <linux/kernel.h>
+>  #include <linux/module.h>
+> +#include <linux/of.h>
+>  #include <linux/of_address.h>
+> -#include <linux/of_platform.h>
+> +#include <linux/platform_device.h>
+>  #include <linux/pm_runtime.h>
+>  #include <linux/reset.h>
+>  #include <linux/slab.h>
+> diff --git a/drivers/char/hw_random/xgene-rng.c b/drivers/char/hw_random/=
+xgene-rng.c
+> index 7c8f3cb7c6af..c25bb169563d 100644
+> --- a/drivers/char/hw_random/xgene-rng.c
+> +++ b/drivers/char/hw_random/xgene-rng.c
+> @@ -15,9 +15,8 @@
+>  #include <linux/init.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/module.h>
+> -#include <linux/of_platform.h>
+> -#include <linux/of_irq.h>
+> -#include <linux/of_address.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/platform_device.h>
+>  #include <linux/timer.h>
+> =20
+>  #define RNG_MAX_DATUM			4
+> diff --git a/drivers/char/hw_random/xiphera-trng.c b/drivers/char/hw_rand=
+om/xiphera-trng.c
+> index 2a9fea72b2e0..2c586d1fe8a9 100644
+> --- a/drivers/char/hw_random/xiphera-trng.c
+> +++ b/drivers/char/hw_random/xiphera-trng.c
+> @@ -7,7 +7,6 @@
+>  #include <linux/err.h>
+>  #include <linux/io.h>
+>  #include <linux/hw_random.h>
+> -#include <linux/of_device.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/delay.h>
+> =20
+> diff --git a/drivers/char/ipmi/kcs_bmc_aspeed.c b/drivers/char/ipmi/kcs_b=
+mc_aspeed.c
+> index 2dea8cd5a09a..72640da55380 100644
+> --- a/drivers/char/ipmi/kcs_bmc_aspeed.c
+> +++ b/drivers/char/ipmi/kcs_bmc_aspeed.c
+> @@ -14,7 +14,6 @@
+>  #include <linux/module.h>
+>  #include <linux/of.h>
+>  #include <linux/of_address.h>
+> -#include <linux/of_device.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/poll.h>
+>  #include <linux/regmap.h>
+> diff --git a/drivers/char/tpm/tpm_ftpm_tee.c b/drivers/char/tpm/tpm_ftpm_=
+tee.c
+> index 528f35b14fb6..76adb108076c 100644
+> --- a/drivers/char/tpm/tpm_ftpm_tee.c
+> +++ b/drivers/char/tpm/tpm_ftpm_tee.c
+> @@ -11,7 +11,6 @@
+> =20
+>  #include <linux/acpi.h>
+>  #include <linux/of.h>
+> -#include <linux/of_platform.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/tee_drv.h>
+>  #include <linux/tpm.h>
+> diff --git a/drivers/char/tpm/tpm_tis.c b/drivers/char/tpm/tpm_tis.c
+> index 7db3593941ea..e4030404c64e 100644
+> --- a/drivers/char/tpm/tpm_tis.c
+> +++ b/drivers/char/tpm/tpm_tis.c
+> @@ -25,7 +25,6 @@
+>  #include <linux/acpi.h>
+>  #include <linux/freezer.h>
+>  #include <linux/of.h>
+> -#include <linux/of_device.h>
+>  #include <linux/kernel.h>
+>  #include <linux/dmi.h>
+>  #include "tpm.h"
+> diff --git a/drivers/char/tpm/tpm_tis_spi_main.c b/drivers/char/tpm/tpm_t=
+is_spi_main.c
+> index 1f5207974a17..c6101914629d 100644
+> --- a/drivers/char/tpm/tpm_tis_spi_main.c
+> +++ b/drivers/char/tpm/tpm_tis_spi_main.c
+> @@ -28,7 +28,7 @@
+>  #include <linux/module.h>
+>  #include <linux/slab.h>
+> =20
+> -#include <linux/of_device.h>
+> +#include <linux/of.h>
+>  #include <linux/spi/spi.h>
+>  #include <linux/tpm.h>
+> =20
+> diff --git a/drivers/char/tpm/tpm_tis_synquacer.c b/drivers/char/tpm/tpm_=
+tis_synquacer.c
+> index 49278746b0e2..7f9b4bfceb6e 100644
+> --- a/drivers/char/tpm/tpm_tis_synquacer.c
+> +++ b/drivers/char/tpm/tpm_tis_synquacer.c
+> @@ -9,7 +9,6 @@
+>  #include <linux/module.h>
+>  #include <linux/slab.h>
+>  #include <linux/of.h>
+> -#include <linux/of_device.h>
+>  #include <linux/kernel.h>
+>  #include "tpm.h"
+>  #include "tpm_tis_core.h"
+> --=20
+> 2.40.1
 
-@lorenzo:
-	It is only for layerscape and workaround a small errata.
-	Could you please pick this up?
+drivers/char/tpm/**
 
-Frank
+Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
 
->  drivers/pci/controller/dwc/pci-layerscape-ep.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> index 4e4fdd1dfea7..2ef02d827eeb 100644
-> --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> @@ -45,6 +45,7 @@ struct ls_pcie_ep {
->  	struct pci_epc_features		*ls_epc;
->  	const struct ls_pcie_ep_drvdata *drvdata;
->  	int				irq;
-> +	u32				lnkcap;
->  	bool				big_endian;
->  };
->  
-> @@ -73,6 +74,7 @@ static irqreturn_t ls_pcie_ep_event_handler(int irq, void *dev_id)
->  	struct ls_pcie_ep *pcie = dev_id;
->  	struct dw_pcie *pci = pcie->pci;
->  	u32 val, cfg;
-> +	u8 offset;
->  
->  	val = ls_lut_readl(pcie, PEX_PF0_PME_MES_DR);
->  	ls_lut_writel(pcie, PEX_PF0_PME_MES_DR, val);
-> @@ -81,6 +83,13 @@ static irqreturn_t ls_pcie_ep_event_handler(int irq, void *dev_id)
->  		return IRQ_NONE;
->  
->  	if (val & PEX_PF0_PME_MES_DR_LUD) {
-> +
-> +		offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-> +
-> +		dw_pcie_dbi_ro_wr_en(pci);
-> +		dw_pcie_writew_dbi(pci, offset + PCI_EXP_LNKCAP, pcie->lnkcap);
-> +		dw_pcie_dbi_ro_wr_dis(pci);
-> +
->  		cfg = ls_lut_readl(pcie, PEX_PF0_CONFIG);
->  		cfg |= PEX_PF0_CFG_READY;
->  		ls_lut_writel(pcie, PEX_PF0_CONFIG, cfg);
-> @@ -216,6 +225,7 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
->  	struct ls_pcie_ep *pcie;
->  	struct pci_epc_features *ls_epc;
->  	struct resource *dbi_base;
-> +	u8 offset;
->  	int ret;
->  
->  	pcie = devm_kzalloc(dev, sizeof(*pcie), GFP_KERNEL);
-> @@ -252,6 +262,9 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
->  
->  	platform_set_drvdata(pdev, pcie);
->  
-> +	offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-> +	pcie->lnkcap = dw_pcie_readl_dbi(pci, offset + PCI_EXP_LNKCAP);
-> +
->  	ret = dw_pcie_ep_init(&pci->ep);
->  	if (ret)
->  		return ret;
-> -- 
-> 2.34.1
-> 
+BR, Jarkko
