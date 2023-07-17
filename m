@@ -2,44 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF61C756405
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 15:14:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37EA2756415
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 15:15:36 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Vngy0RuA;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R4Mx064Nyz3cgX
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 23:14:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R4MyZ0v0hz2yL0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 23:15:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=yangyicong@huawei.com; receiver=lists.ozlabs.org)
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Vngy0RuA;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4Mtp57qKz2yGm
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jul 2023 23:12:18 +1000 (AEST)
-Received: from canpemm500009.china.huawei.com (unknown [172.30.72.54])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4R4Mpt6HzczNmSV;
-	Mon, 17 Jul 2023 21:08:54 +0800 (CST)
-Received: from localhost.localdomain (10.50.163.32) by
- canpemm500009.china.huawei.com (7.192.105.203) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Mon, 17 Jul 2023 21:12:13 +0800
-From: Yicong Yang <yangyicong@huawei.com>
-To: <akpm@linux-foundation.org>, <catalin.marinas@arm.com>,
-	<linux-mm@kvack.org>, <linux-arm-kernel@lists.infradead.org>,
-	<x86@kernel.org>, <mark.rutland@arm.com>, <ryan.roberts@arm.com>,
-	<will@kernel.org>, <anshuman.khandual@arm.com>, <linux-doc@vger.kernel.org>
-Subject: [PATCH v11 4/4] arm64: support batched/deferred tlb shootdown during page reclamation/migration
-Date: Mon, 17 Jul 2023 21:10:04 +0800
-Message-ID: <20230717131004.12662-5-yangyicong@huawei.com>
-X-Mailer: git-send-email 2.31.0
-In-Reply-To: <20230717131004.12662-1-yangyicong@huawei.com>
-References: <20230717131004.12662-1-yangyicong@huawei.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.50.163.32]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- canpemm500009.china.huawei.com (7.192.105.203)
-X-CFilter-Loop: Reflected
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4Mvr2b1Lz3cH2
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jul 2023 23:13:12 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 8A8726106C;
+	Mon, 17 Jul 2023 13:13:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 614D2C433C7;
+	Mon, 17 Jul 2023 13:13:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1689599588;
+	bh=wHT5mhaK6CWjF4DwCFuFnkiGRJm4FTAEmWgUV7x6zpw=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=Vngy0RuAO0Y/kBmwMFM/QfmEdBlbeQz6a3qBPH4SZLHidHsnZk4jb1sFJsizMYJ5R
+	 HgrNUDo6Stchn3jffSA7jXnCotZ9UbIa59tW41nj7p76MVKMN/kMUKBjB4v6oP5Cm9
+	 KcCZkAMjaueiknuI4/PXfpZi02Ojue0x8z6mjxDK575AD2zx0tHTbB+sHDUCGe+Css
+	 ZMBOXYiz5ibYgHdQB1K4LEV5OulhBXEeGkNBBvTY0I3yqCag3WTCADEykxiUzE7Bjy
+	 LkGEn4Pj9E93eFMkr7pl3SV+m73u1j/gYy1NQsrg4icE0ieNaDYLAhp1jO9ecYZJj/
+	 3OZkHMeallqXQ==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 17 Jul 2023 13:13:04 +0000
+Message-Id: <CU4H2DNNWI45.29POSW833WLKO@seitikki>
+Subject: Re: [PATCH v2 1/2] powerpc/tpm: Create linux,sml-base/size as big
+ endian
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Michael Ellerman" <mpe@ellerman.id.au>, "Stefan Berger"
+ <stefanb@linux.ibm.com>, <linuxppc-dev@lists.ozlabs.org>
+X-Mailer: aerc 0.14.0
+References: <20230615123703.4028156-1-mpe@ellerman.id.au>
+ <4d378d53225fc8b8cdc99dde900388d2eefaad4e.camel@kernel.org>
+ <0fb26243-0d63-118b-2737-05391ba0c69a@linux.ibm.com>
+ <ec564375084b6edd7b7d77eb341f451e798fb50d.camel@kernel.org>
+ <87r0pde22q.fsf@mail.lhotse>
+In-Reply-To: <87r0pde22q.fsf@mail.lhotse>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,260 +68,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wangkefeng.wang@huawei.com, darren@os.amperecomputing.com, peterz@infradead.org, yangyicong@hisilicon.com, punit.agrawal@bytedance.com, Nadav Amit <namit@vmware.com>, guojian@oppo.com, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, zhangshiming@oppo.com, lipeifeng@oppo.com, corbet@lwn.net, Barry Song <21cnbao@gmail.com>, Mel Gorman <mgorman@suse.de>, linux-mips@vger.kernel.org, arnd@arndb.de, realmz6@gmail.com, Barry Song <v-songbaohua@oppo.com>, openrisc@lists.librecores.org, prime.zeng@hisilicon.com, Jonathan.Cameron@Huawei.com, xhao@linux.alibaba.com, linux-kernel@vger.kernel.org, huzhanyuan@oppo.com, linuxppc-dev@lists.ozlabs.org
+Cc: jgg@ziepe.ca, linux-integrity@vger.kernel.org, eajames@linux.ibm.com, peterhuewe@gmx.de, yangyingliang@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Barry Song <v-songbaohua@oppo.com>
+On Wed Jul 12, 2023 at 12:39 PM UTC, Michael Ellerman wrote:
+> Jarkko Sakkinen <jarkko@kernel.org> writes:
+> > On Tue, 2023-07-11 at 08:47 -0400, Stefan Berger wrote:
+> >> On 7/10/23 17:23, Jarkko Sakkinen wrote:
+> >> > On Thu, 2023-06-15 at 22:37 +1000, Michael Ellerman wrote:
+> >> > > There's code in prom_instantiate_sml() to do a "SML handover" (Sto=
+red
+> >> > > Measurement Log) from OF to Linux, before Linux shuts down Open
+> >> > > Firmware.
+> >> > >=20
+> >> > > This involves creating a buffer to hold the SML, and creating two =
+device
+> >> > > tree properties to record its base address and size. The kernel th=
+en
+> >> > > later reads those properties from the device tree to find the SML.
+> >> > >=20
+> >> > > When the code was initially added in commit 4a727429abec ("PPC64: =
+Add
+> >> > > support for instantiating SML from Open Firmware") the powerpc ker=
+nel
+> >> > > was always built big endian, so the properties were created big en=
+dian
+> >> > > by default.
+> >> > >=20
+> >> > > However since then little endian support was added to powerpc, and=
+ now
+> >> > > the code lacks conversions to big endian when creating the propert=
+ies.
+> >> > >=20
+> >> > > This means on little endian kernels the device tree properties are
+> >> > > little endian, which is contrary to the device tree spec, and in
+> >> > > contrast to all other device tree properties.
+> >> > >=20
+> >> > > To cope with that a workaround was added in tpm_read_log_of() to s=
+kip
+> >> > > the endian conversion if the properties were created via the SML
+> >> > > handover.
+> >> > >=20
+> >> > > A better solution is to encode the properties as big endian as the=
+y
+> >> > > should be, and remove the workaround.
+> >> > >=20
+> >> > > Typically changing the encoding of a property like this would pres=
+ent
+> >> > > problems for kexec. However the SML is not propagated across kexec=
+, so
+> >> > > changing the encoding of the properties is a non-issue.
+> >> > >=20
+> >> > > Fixes: e46e22f12b19 ("tpm: enhance read_log_of() to support Physic=
+al TPM event log")
+> >> > > Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> >> > > Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+> >> > > ---
+> >> > >   arch/powerpc/kernel/prom_init.c |  8 ++++++--
+> >> > >   drivers/char/tpm/eventlog/of.c  | 23 ++++-------------------
+> >> > >   2 files changed, 10 insertions(+), 21 deletions(-)
+> >> >=20
+> >> > Split into two patches (producer and consumer).
+> >>=20
+> >> I think this wouldn't be right since it would break the system when on=
+ly one patch is applied since it would be reading the fields in the wrong e=
+ndianess.
+> >
+> > I think it would help if the commit message would better explain
+> > what is going on. It is somewhat difficult to decipher, if you
+> > don't have deep knowledge of the powerpc architecture.
+>
+> I mean, it's already 8 paragraphs =C2=AF\_(=E3=83=84)_/=C2=AF
+>
+> But I'm happy to expand it. I just don't really know what extra detail
+> is needed to make it clearer.
 
-on x86, batched and deferred tlb shootdown has lead to 90%
-performance increase on tlb shootdown. on arm64, HW can do
-tlb shootdown without software IPI. But sync tlbi is still
-quite expensive.
+Adding more text is not the right way to clarify things. I'd start
+by explaining shortly SML and then move to the handover. It can't
+be that hard, right?
 
-Even running a simplest program which requires swapout can
-prove this is true,
- #include <sys/types.h>
- #include <unistd.h>
- #include <sys/mman.h>
- #include <string.h>
+Just adding new paragraphs would probably just make it even more
+confusing.
 
- int main()
- {
- #define SIZE (1 * 1024 * 1024)
-         volatile unsigned char *p = mmap(NULL, SIZE, PROT_READ | PROT_WRITE,
-                                          MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-
-         memset(p, 0x88, SIZE);
-
-         for (int k = 0; k < 10000; k++) {
-                 /* swap in */
-                 for (int i = 0; i < SIZE; i += 4096) {
-                         (void)p[i];
-                 }
-
-                 /* swap out */
-                 madvise(p, SIZE, MADV_PAGEOUT);
-         }
- }
-
-Perf result on snapdragon 888 with 8 cores by using zRAM
-as the swap block device.
-
- ~ # perf record taskset -c 4 ./a.out
- [ perf record: Woken up 10 times to write data ]
- [ perf record: Captured and wrote 2.297 MB perf.data (60084 samples) ]
- ~ # perf report
- # To display the perf.data header info, please use --header/--header-only options.
- # To display the perf.data header info, please use --header/--header-only options.
- #
- #
- # Total Lost Samples: 0
- #
- # Samples: 60K of event 'cycles'
- # Event count (approx.): 35706225414
- #
- # Overhead  Command  Shared Object      Symbol
- # ........  .......  .................  ......
- #
-    21.07%  a.out    [kernel.kallsyms]  [k] _raw_spin_unlock_irq
-     8.23%  a.out    [kernel.kallsyms]  [k] _raw_spin_unlock_irqrestore
-     6.67%  a.out    [kernel.kallsyms]  [k] filemap_map_pages
-     6.16%  a.out    [kernel.kallsyms]  [k] __zram_bvec_write
-     5.36%  a.out    [kernel.kallsyms]  [k] ptep_clear_flush
-     3.71%  a.out    [kernel.kallsyms]  [k] _raw_spin_lock
-     3.49%  a.out    [kernel.kallsyms]  [k] memset64
-     1.63%  a.out    [kernel.kallsyms]  [k] clear_page
-     1.42%  a.out    [kernel.kallsyms]  [k] _raw_spin_unlock
-     1.26%  a.out    [kernel.kallsyms]  [k] mod_zone_state.llvm.8525150236079521930
-     1.23%  a.out    [kernel.kallsyms]  [k] xas_load
-     1.15%  a.out    [kernel.kallsyms]  [k] zram_slot_lock
-
-ptep_clear_flush() takes 5.36% CPU in the micro-benchmark
-swapping in/out a page mapped by only one process. If the
-page is mapped by multiple processes, typically, like more
-than 100 on a phone, the overhead would be much higher as
-we have to run tlb flush 100 times for one single page.
-Plus, tlb flush overhead will increase with the number
-of CPU cores due to the bad scalability of tlb shootdown
-in HW, so those ARM64 servers should expect much higher
-overhead.
-
-Further perf annonate shows 95% cpu time of ptep_clear_flush
-is actually used by the final dsb() to wait for the completion
-of tlb flush. This provides us a very good chance to leverage
-the existing batched tlb in kernel. The minimum modification
-is that we only send async tlbi in the first stage and we send
-dsb while we have to sync in the second stage.
-
-With the above simplest micro benchmark, collapsed time to
-finish the program decreases around 5%.
-
-Typical collapsed time w/o patch:
- ~ # time taskset -c 4 ./a.out
- 0.21user 14.34system 0:14.69elapsed
-w/ patch:
- ~ # time taskset -c 4 ./a.out
- 0.22user 13.45system 0:13.80elapsed
-
-Also tested with benchmark in the commit on Kunpeng920 arm64 server
-and observed an improvement around 12.5% with command
-`time ./swap_bench`.
-        w/o             w/
-real    0m13.460s       0m11.771s
-user    0m0.248s        0m0.279s
-sys     0m12.039s       0m11.458s
-
-Originally it's noticed a 16.99% overhead of ptep_clear_flush()
-which has been eliminated by this patch:
-
-[root@localhost yang]# perf record -- ./swap_bench && perf report
-[...]
-16.99%  swap_bench  [kernel.kallsyms]  [k] ptep_clear_flush
-
-It is tested on 4,8,128 CPU platforms and shows to be beneficial on
-large systems but may not have improvement on small systems like on
-a 4 CPU platform.
-
-Also this patch improve the performance of page migration. Using pmbench
-and tries to migrate the pages of pmbench between node 0 and node 1 for
-100 times for 1G memory, this patch decrease the time used around 20%
-(prev 18.338318910 sec after 13.981866350 sec) and saved the time used
-by ptep_clear_flush().
-
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Nadav Amit <namit@vmware.com>
-Cc: Mel Gorman <mgorman@suse.de>
-Tested-by: Yicong Yang <yangyicong@hisilicon.com>
-Tested-by: Xin Hao <xhao@linux.alibaba.com>
-Tested-by: Punit Agrawal <punit.agrawal@bytedance.com>
-Signed-off-by: Barry Song <v-songbaohua@oppo.com>
-Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-Reviewed-by: Xin Hao <xhao@linux.alibaba.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
----
- .../features/vm/TLB/arch-support.txt          |  2 +-
- arch/arm64/Kconfig                            |  1 +
- arch/arm64/include/asm/tlbbatch.h             | 12 +++++
- arch/arm64/include/asm/tlbflush.h             | 44 +++++++++++++++++--
- 4 files changed, 55 insertions(+), 4 deletions(-)
- create mode 100644 arch/arm64/include/asm/tlbbatch.h
-
-diff --git a/Documentation/features/vm/TLB/arch-support.txt b/Documentation/features/vm/TLB/arch-support.txt
-index 7f049c251a79..76208db88f3b 100644
---- a/Documentation/features/vm/TLB/arch-support.txt
-+++ b/Documentation/features/vm/TLB/arch-support.txt
-@@ -9,7 +9,7 @@
-     |       alpha: | TODO |
-     |         arc: | TODO |
-     |         arm: | TODO |
--    |       arm64: | N/A  |
-+    |       arm64: |  ok  |
-     |        csky: | TODO |
-     |     hexagon: | TODO |
-     |        ia64: | TODO |
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 7856c3a3e35a..b1573257a4d6 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -96,6 +96,7 @@ config ARM64
- 	select ARCH_SUPPORTS_NUMA_BALANCING
- 	select ARCH_SUPPORTS_PAGE_TABLE_CHECK
- 	select ARCH_SUPPORTS_PER_VMA_LOCK
-+	select ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH
- 	select ARCH_WANT_COMPAT_IPC_PARSE_VERSION if COMPAT
- 	select ARCH_WANT_DEFAULT_BPF_JIT
- 	select ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT
-diff --git a/arch/arm64/include/asm/tlbbatch.h b/arch/arm64/include/asm/tlbbatch.h
-new file mode 100644
-index 000000000000..fedb0b87b8db
---- /dev/null
-+++ b/arch/arm64/include/asm/tlbbatch.h
-@@ -0,0 +1,12 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ARCH_ARM64_TLBBATCH_H
-+#define _ARCH_ARM64_TLBBATCH_H
-+
-+struct arch_tlbflush_unmap_batch {
-+	/*
-+	 * For arm64, HW can do tlb shootdown, so we don't
-+	 * need to record cpumask for sending IPI
-+	 */
-+};
-+
-+#endif /* _ARCH_ARM64_TLBBATCH_H */
-diff --git a/arch/arm64/include/asm/tlbflush.h b/arch/arm64/include/asm/tlbflush.h
-index 412a3b9a3c25..3456866c6a1d 100644
---- a/arch/arm64/include/asm/tlbflush.h
-+++ b/arch/arm64/include/asm/tlbflush.h
-@@ -254,17 +254,23 @@ static inline void flush_tlb_mm(struct mm_struct *mm)
- 	dsb(ish);
- }
- 
--static inline void flush_tlb_page_nosync(struct vm_area_struct *vma,
--					 unsigned long uaddr)
-+static inline void __flush_tlb_page_nosync(struct mm_struct *mm,
-+					   unsigned long uaddr)
- {
- 	unsigned long addr;
- 
- 	dsb(ishst);
--	addr = __TLBI_VADDR(uaddr, ASID(vma->vm_mm));
-+	addr = __TLBI_VADDR(uaddr, ASID(mm));
- 	__tlbi(vale1is, addr);
- 	__tlbi_user(vale1is, addr);
- }
- 
-+static inline void flush_tlb_page_nosync(struct vm_area_struct *vma,
-+					 unsigned long uaddr)
-+{
-+	return __flush_tlb_page_nosync(vma->vm_mm, uaddr);
-+}
-+
- static inline void flush_tlb_page(struct vm_area_struct *vma,
- 				  unsigned long uaddr)
- {
-@@ -272,6 +278,38 @@ static inline void flush_tlb_page(struct vm_area_struct *vma,
- 	dsb(ish);
- }
- 
-+static inline bool arch_tlbbatch_should_defer(struct mm_struct *mm)
-+{
-+#ifdef CONFIG_ARM64_WORKAROUND_REPEAT_TLBI
-+	/*
-+	 * TLB flush deferral is not required on systems which are affected by
-+	 * ARM64_WORKAROUND_REPEAT_TLBI, as __tlbi()/__tlbi_user() implementation
-+	 * will have two consecutive TLBI instructions with a dsb(ish) in between
-+	 * defeating the purpose (i.e save overall 'dsb ish' cost).
-+	 */
-+	if (unlikely(cpus_have_const_cap(ARM64_WORKAROUND_REPEAT_TLBI)))
-+		return false;
-+#endif
-+	return true;
-+}
-+
-+static inline void arch_tlbbatch_add_pending(struct arch_tlbflush_unmap_batch *batch,
-+					     struct mm_struct *mm,
-+					     unsigned long uaddr)
-+{
-+	__flush_tlb_page_nosync(mm, uaddr);
-+}
-+
-+static inline void arch_flush_tlb_batched_pending(struct mm_struct *mm)
-+{
-+	dsb(ish);
-+}
-+
-+static inline void arch_tlbbatch_flush(struct arch_tlbflush_unmap_batch *batch)
-+{
-+	dsb(ish);
-+}
-+
- /*
-  * This is meant to avoid soft lock-ups on large TLB flushing ranges and not
-  * necessarily a performance improvement.
--- 
-2.24.0
-
+BR, Jarkko
