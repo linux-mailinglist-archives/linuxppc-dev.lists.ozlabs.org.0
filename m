@@ -2,64 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AFC27566B9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 16:46:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A0D87566BB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 16:47:14 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DXcRR896;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=buRhAy3I;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R4PzL1Qkkz2ypq
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 00:46:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R4Q0J1qnzz2yxs
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 00:47:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DXcRR896;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=buRhAy3I;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4PyP68B0z2yFD
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 00:45:33 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 724A7610AB
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jul 2023 14:45:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9B2EC433CC
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jul 2023 14:45:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1689605129;
-	bh=6Lh/okJ/tlTuqTU1b/j/uErvTDrdoSJQUHuVEAFETts=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=DXcRR896EnZnRLJNO/6oE3vS17JskNmeBySR1a8GBnSZMpK8R09u2GHreDf2c0Dzo
-	 JLenvfB83kOgsDGMpX/l4sKSoMCJTkDOcZ1AMcrisUwBT45Hqkbl+XlzoIQD7J44xp
-	 BYFUcjgFWWPES+2nt7thJ9TOtx9ok3veYqLmGXwpUvNrkKD9uUi4kuNmjRjO8kvSv/
-	 Q22oXxhN3DW4SMHsd2yGH263wD6ee7T8xcq/guGZp7OF4Df7SJdXBFCdPf5RkCCV/3
-	 AAiKiz+alTYz/OnLZ5fgffEXHxAlU+vg0JkRSCtx7kTfPpi4mi5LtNw9VoqrLwYgPv
-	 lh5ICjbnogAkg==
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2b741cf99f8so68511181fa.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jul 2023 07:45:29 -0700 (PDT)
-X-Gm-Message-State: ABy/qLZ878DX+1kLtUtVJMezdvbwmkYzJi+fJ8wLrxBuNDKDllPlqsGb
-	e3c00YlOQmj5/+KdyPn1XECP1lPY2SaD2V8XTA==
-X-Google-Smtp-Source: APBJJlFFXYcLka0U2O/B1evPE/8dIeXS+VuPwNFdjWy1LSj2t3dI5YnbEtEP8rRsNBtPkvMxm/lDG3mrsq/u8ZWdw1Y=
-X-Received: by 2002:a2e:9d84:0:b0:2b6:e76b:1e50 with SMTP id
- c4-20020a2e9d84000000b002b6e76b1e50mr9074981ljj.41.1689605127886; Mon, 17 Jul
- 2023 07:45:27 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230615164113.2270698-1-Frank.Li@nxp.com> <20230615164113.2270698-2-Frank.Li@nxp.com>
-In-Reply-To: <20230615164113.2270698-2-Frank.Li@nxp.com>
-From: Rob Herring <robh@kernel.org>
-Date: Mon, 17 Jul 2023 08:45:14 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqL7o5ipaBkNRECkWZPZDTB1kSFrUV3YjKL6xj02f0x2Sw@mail.gmail.com>
-Message-ID: <CAL_JsqL7o5ipaBkNRECkWZPZDTB1kSFrUV3YjKL6xj02f0x2Sw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] PCI: layerscape: Add the workaround for lost link
- capablities during reset
-To: Frank Li <Frank.Li@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4PzB4pCHz2yW0
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 00:46:14 +1000 (AEST)
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36HEaQ04010337
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jul 2023 14:46:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : content-type :
+ content-transfer-encoding : mime-version : subject : message-id : date :
+ cc : to; s=pp1; bh=4O8ipgD1PqiCINYHpbglrwspTsNvQVxq2rW7GOBomx4=;
+ b=buRhAy3I4N33H1R89WsNKR+a41WOUWdNo2O4+/LP98HGeG9VWTRUhJwcknR3t3DWk7yf
+ YHJGIoCpkb0IvIy7h3il3AuEVcVPvkMuAXIzr+iYCXfeHTW0kEVhQMozmJm2h9ZqTqOu
+ CryeI63sFrtzAgbV4zBcPrL6LCbvVrR4XYyTRLMUkySZTrniK4kmUQSjmnB0pXO/BS+n
+ hepQvY/gmST2QSFHM8Jn+rgo5TYFWcF24N1YLtuLtwqstK82sUwQC95LyDdlVZhyAvsO
+ SnBimill+TxH2tnz+FHusJp5OTsrhsK3uQGiWrTC1AilFfWSbGLK9G6belim7VJ+1KYk tQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rw7cw0jxk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jul 2023 14:46:11 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36HEae7D011775
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jul 2023 14:46:11 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rw7cw0jwb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 Jul 2023 14:46:10 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36H9C41C016862;
+	Mon, 17 Jul 2023 14:46:09 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3rv5srkaya-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 Jul 2023 14:46:09 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36HEk6mI9896670
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 17 Jul 2023 14:46:06 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7B0F820043;
+	Mon, 17 Jul 2023 14:46:06 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5745720040;
+	Mon, 17 Jul 2023 14:46:05 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.43.42.123])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 17 Jul 2023 14:46:05 +0000 (GMT)
+From: Sachin Sant <sachinp@linux.ibm.com>
+Content-Type: text/plain;
+	charset=us-ascii
 Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.600.7\))
+Subject: Kernel Crash Dump (kdump) broken with 6.5
+Message-Id: <AB3C7C5C-86FD-4D86-9330-000CB9728F48@linux.ibm.com>
+Date: Mon, 17 Jul 2023 20:15:53 +0530
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Nicholas Piggin <npiggin@gmail.com>
+X-Mailer: Apple Mail (2.3731.600.7)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: bK44SgR4nhEMVQTva4HCsX0mik-zzCSj
+X-Proofpoint-ORIG-GUID: H3EZ_cxvbfrgOQVuq3Up_m-SUo8p4pzs
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-17_11,2023-07-13_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 malwarescore=0
+ suspectscore=0 phishscore=0 adultscore=0 mlxlogscore=605 spamscore=0
+ priorityscore=1501 mlxscore=0 impostorscore=0 clxscore=1015
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2307170133
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,87 +96,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, imx@lists.linux.dev, Roy Zang <roy.zang@nxp.com>, "open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-pci@vger.kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>, mani@kernel.org, open list <linux-kernel@vger.kernel.org>, Minghuan Lian <minghuan.Lian@nxp.com>, "moderated list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-arm-kernel@lists.infradead.org>, Bjorn Helgaas <bhelgaas@google.com>, "open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linuxppc-dev@lists.ozlabs.org>, Mingkai Hu <mingkai.hu@nxp.com>
+Cc: Sourabh Jain <sourabhjain@linux.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 15, 2023 at 10:41=E2=80=AFAM Frank Li <Frank.Li@nxp.com> wrote:
->
-> From: Xiaowei Bao <xiaowei.bao@nxp.com>
->
-> A workaround for the issue where the PCI Express Endpoint (EP) controller
-> loses the values of the Maximum Link Width and Supported Link Speed from
-> the Link Capabilities Register, which initially configured by the Reset
-> Configuration Word (RCW) during a link-down or hot reset event.
+Kdump seems to be broken with 6.5 for ppc64le.
 
-What makes this Layerscape specific? Seems like something internal to DWC.
+[ 14.200412] systemd[1]: Starting dracut pre-pivot and cleanup hook...
+[[0;32m OK [0m] Started dracut pre-pivot and cleanup hook.
+Starting Kdump Vmcore Save Service...
+[ 14.231669] systemd[1]: Started dracut pre-pivot and cleanup hook.
+[ 14.231801] systemd[1]: Starting Kdump Vmcore Save Service...
+[ 14.341035] kdump.sh[297]: kdump: saving to =
+/sysroot//var/crash//127.0.0.1-2023-07-14-13:32:34/
+[ 14.350053] EXT4-fs (sda2): re-mounted =
+e971a335-1ef8-4295-ab4e-3940f28e53fc r/w. Quota mode: none.
+[ 14.345979] kdump.sh[297]: kdump: saving vmcore-dmesg.txt to =
+/sysroot//var/crash//127.0.0.1-2023-07-14-13:32:34/
+[ 14.348742] kdump.sh[331]: Cannot open /proc/vmcore: No such file or =
+directory
+[ 14.348845] kdump.sh[297]: kdump: saving vmcore-dmesg.txt failed
+[ 14.349014] kdump.sh[297]: kdump: saving vmcore
+[ 14.443422] kdump.sh[332]: open_dump_memory: Can't open the dump =
+memory(/proc/vmcore). No such file or directory
+[ 14.456413] kdump.sh[332]: makedumpfile Failed.
+[ 14.456662] kdump.sh[297]: kdump: saving vmcore failed, _exitcode:1
+[ 14.456822] kdump.sh[297]: kdump: saving the =
+/run/initramfs/kexec-dmesg.log to =
+/sysroot//var/crash//127.0.0.1-2023-07-14-13:32:34/
+[ 14.487002] kdump.sh[297]: kdump: saving vmcore failed
+[[0;1;31mFAILED[0m] Failed to start Kdump Vmcore Save Service.
 
->
-> Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
-> Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  drivers/pci/controller/dwc/pci-layerscape-ep.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
->
-> diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci=
-/controller/dwc/pci-layerscape-ep.c
-> index 4e4fdd1dfea7..2ef02d827eeb 100644
-> --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> @@ -45,6 +45,7 @@ struct ls_pcie_ep {
->         struct pci_epc_features         *ls_epc;
->         const struct ls_pcie_ep_drvdata *drvdata;
->         int                             irq;
-> +       u32                             lnkcap;
->         bool                            big_endian;
->  };
->
-> @@ -73,6 +74,7 @@ static irqreturn_t ls_pcie_ep_event_handler(int irq, vo=
-id *dev_id)
->         struct ls_pcie_ep *pcie =3D dev_id;
->         struct dw_pcie *pci =3D pcie->pci;
->         u32 val, cfg;
-> +       u8 offset;
->
->         val =3D ls_lut_readl(pcie, PEX_PF0_PME_MES_DR);
->         ls_lut_writel(pcie, PEX_PF0_PME_MES_DR, val);
-> @@ -81,6 +83,13 @@ static irqreturn_t ls_pcie_ep_event_handler(int irq, v=
-oid *dev_id)
->                 return IRQ_NONE;
->
->         if (val & PEX_PF0_PME_MES_DR_LUD) {
-> +
-> +               offset =3D dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-> +
-> +               dw_pcie_dbi_ro_wr_en(pci);
-> +               dw_pcie_writew_dbi(pci, offset + PCI_EXP_LNKCAP, pcie->ln=
-kcap);
-> +               dw_pcie_dbi_ro_wr_dis(pci);
-> +
->                 cfg =3D ls_lut_readl(pcie, PEX_PF0_CONFIG);
->                 cfg |=3D PEX_PF0_CFG_READY;
->                 ls_lut_writel(pcie, PEX_PF0_CONFIG, cfg);
-> @@ -216,6 +225,7 @@ static int __init ls_pcie_ep_probe(struct platform_de=
-vice *pdev)
->         struct ls_pcie_ep *pcie;
->         struct pci_epc_features *ls_epc;
->         struct resource *dbi_base;
-> +       u8 offset;
->         int ret;
->
->         pcie =3D devm_kzalloc(dev, sizeof(*pcie), GFP_KERNEL);
-> @@ -252,6 +262,9 @@ static int __init ls_pcie_ep_probe(struct platform_de=
-vice *pdev)
->
->         platform_set_drvdata(pdev, pcie);
->
-> +       offset =3D dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-> +       pcie->lnkcap =3D dw_pcie_readl_dbi(pci, offset + PCI_EXP_LNKCAP);
-> +
->         ret =3D dw_pcie_ep_init(&pci->ep);
->         if (ret)
->                 return ret;
-> --
-> 2.34.1
->
+6.4 was good. Git bisect points to following patch
+
+commit 606787fed7268feb256957872586370b56af697a
+    powerpc/64s: Remove support for ELFv1 little endian userspace
+
+Reverting this patch allows a successful capture of vmcore.
+
+Does this change require any corresponding change to kdump
+and/or kexec tools?
+
+- Sachin
+
