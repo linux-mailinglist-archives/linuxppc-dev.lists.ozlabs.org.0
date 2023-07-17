@@ -2,69 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B3977563A2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 14:58:53 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=C4sMqbtn;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ED8F7563FE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 15:12:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R4MbH0zcWz2yV1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 22:58:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R4MvF2ljTz2yVm
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 23:12:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=C4sMqbtn;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=festevam@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.255; helo=szxga08-in.huawei.com; envelope-from=yangyicong@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4MZP45hdz2xVR
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jul 2023 22:58:04 +1000 (AEST)
-Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-682b1768a0bso1184384b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jul 2023 05:58:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689598682; x=1692190682;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yxuqeyRLaGsgNS7cAk/VqAg+8wOCZMSgEI8rvm938k4=;
-        b=C4sMqbtnpXDlshts60r/+0Ez4QLa3NwxAmYEzemv8uCYxfBgYZkk3It9ABO4G4/HZL
-         ZqJTnfu5Tj/VntYxD43FFdUgweGRwV82HJwLKJGCN7oHVvWpDYNF3CSkp3OJ3iO4MxoM
-         9u9kod6Pc2YAEZmirmWjjP5Pe3WupvJHsRS6/JUYtA1c4RBlgF/GTGq2YSIW4VQObMF/
-         iaKu7cO7YGhaU2Jf2YNViewo/iR+0/RKxGj6BrHrAYyFKS+qoX9oluTXCVY1hNq4aw/h
-         JH2OjUjktf3FTNrICRRUQhscQvDRfnf9S0ro9mh8daFPCLJ5ODEGnTgd8Wxg3cRjxOGj
-         kJIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689598682; x=1692190682;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yxuqeyRLaGsgNS7cAk/VqAg+8wOCZMSgEI8rvm938k4=;
-        b=eQZmmll82V3W/KRaUUO0dl8GX80jxCCX7QiIH446e3a1WhT65Xx8SBiuNOLqbEWsn6
-         S2qLFEhjKZu4O/axOkUC9es2HslU1waMYCfNxTimCmzCRpxfpRSDcNZqitLRD26QRmGX
-         uc9Mr+tiBXdCUFvnJRra1p2bcGjqBEe0EzaVyAh/qWuoCxA1mmwa1qWRyualWgxoZaYO
-         bzmINOEs1f5u09CIZlXwVfAEhsjVDogJ7vODSN1F62uQqZ61wnkyatHC0LjKPezAU9On
-         FqrXCSmM3t63NbNHqx+bu33gU6bfhMWSInFU7KVh1H/K9j18+NNHjxXn27G5vEok+UOi
-         JvJQ==
-X-Gm-Message-State: ABy/qLY9NhGheM6htOlhz9vOLkNDRQH/N9citcGtlTkVPMYekTP5T0Uu
-	WmrcFW/aN5Ng9FtuycopN5BG8/lMiRsXN8JAGC0=
-X-Google-Smtp-Source: APBJJlE+HoutIK0nYRGucBoutTN8r7cbUC50Qgs0XXpYoXMdjkD2MMidht1fWvrtSMB3N9kLad/8McQYvSeOZVpSZLI=
-X-Received: by 2002:a05:6a21:998b:b0:133:6e3d:68cd with SMTP id
- ve11-20020a056a21998b00b001336e3d68cdmr9189787pzb.3.1689598681751; Mon, 17
- Jul 2023 05:58:01 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4Mtl2FhXz2yDM
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jul 2023 23:12:10 +1000 (AEST)
+Received: from canpemm500009.china.huawei.com (unknown [172.30.72.55])
+	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4R4Msk3BL7z18LY9;
+	Mon, 17 Jul 2023 21:11:22 +0800 (CST)
+Received: from localhost.localdomain (10.50.163.32) by
+ canpemm500009.china.huawei.com (7.192.105.203) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Mon, 17 Jul 2023 21:12:03 +0800
+From: Yicong Yang <yangyicong@huawei.com>
+To: <akpm@linux-foundation.org>, <catalin.marinas@arm.com>,
+	<linux-mm@kvack.org>, <linux-arm-kernel@lists.infradead.org>,
+	<x86@kernel.org>, <mark.rutland@arm.com>, <ryan.roberts@arm.com>,
+	<will@kernel.org>, <anshuman.khandual@arm.com>, <linux-doc@vger.kernel.org>
+Subject: [PATCH v11 0/4] arm64: support batched/deferred tlb shootdown during page reclamation/migration
+Date: Mon, 17 Jul 2023 21:10:00 +0800
+Message-ID: <20230717131004.12662-1-yangyicong@huawei.com>
+X-Mailer: git-send-email 2.31.0
 MIME-Version: 1.0
-References: <20230712124934.32232-1-matuszpd@gmail.com> <CAOMZO5ATTK7UsTRPTF_7r86WbNmAhtpEphO2u896QqARTk2kpA@mail.gmail.com>
- <d2cbf249-32e1-4e19-8362-7087d6b7d3d8@sirena.org.uk>
-In-Reply-To: <d2cbf249-32e1-4e19-8362-7087d6b7d3d8@sirena.org.uk>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Mon, 17 Jul 2023 09:57:50 -0300
-Message-ID: <CAOMZO5A6YrUX58VwZtbzOV6UBsvE+AF3U5i8_Vr2E_VOb49zKw@mail.gmail.com>
-Subject: Re: [PATCH] ASoC: fsl_sai: Disable bit clock with transmitter
-To: Mark Brown <broonie@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.163.32]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ canpemm500009.china.huawei.com (7.192.105.203)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,14 +49,126 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, Xiubo Li <Xiubo.Lee@gmail.com>, linuxppc-dev@lists.ozlabs.org, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>, Matus Gajdos <matuszpd@gmail.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, linux-kernel@vger.kernel.org
+Cc: wangkefeng.wang@huawei.com, darren@os.amperecomputing.com, peterz@infradead.org, yangyicong@hisilicon.com, punit.agrawal@bytedance.com, guojian@oppo.com, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, zhangshiming@oppo.com, lipeifeng@oppo.com, corbet@lwn.net, Barry Song <21cnbao@gmail.com>, linux-mips@vger.kernel.org, arnd@arndb.de, realmz6@gmail.com, openrisc@lists.librecores.org, prime.zeng@hisilicon.com, Jonathan.Cameron@Huawei.com, xhao@linux.alibaba.com, linux-kernel@vger.kernel.org, huzhanyuan@oppo.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 17, 2023 at 9:55=E2=80=AFAM Mark Brown <broonie@kernel.org> wro=
-te:
+From: Yicong Yang <yangyicong@hisilicon.com>
 
-> I'll just put a non-specific Cc stable tag on it, that should be enough
-> to get it backported.
+Though ARM64 has the hardware to do tlb shootdown, the hardware broadcasting is
+not free. A simplest micro benchmark shows even on snapdragon 888 with only
+8 cores, the overhead for ptep_clear_flush is huge even for paging out one page
+mapped by only one process:
+5.36%  a.out    [kernel.kallsyms]  [k] ptep_clear_flush
 
-Sounds good. Thanks, Mark.
+While pages are mapped by multiple processes or HW has more CPUs, the cost should
+become even higher due to the bad scalability of tlb shootdown. The same benchmark
+can result in 16.99% CPU consumption on ARM64 server with around 100 cores
+according to the test on patch 4/4.
+
+This patchset leverages the existing BATCHED_UNMAP_TLB_FLUSH by
+1. only send tlbi instructions in the first stage -
+	arch_tlbbatch_add_mm()
+2. wait for the completion of tlbi by dsb while doing tlbbatch
+	sync in arch_tlbbatch_flush()
+
+Testing on snapdragon shows the overhead of ptep_clear_flush is removed by the
+patchset. The micro benchmark becomes 5% faster even for one page mapped by
+single process on snapdragon 888.
+
+Since BATCHED_UNMAP_TLB_FLUSH is implemented only on x86, the patchset does some
+renaming/extension for the current implementation first (Patch 1-3), then add the
+support on arm64 (Patch 4).
+
+-v11:
+- Enable ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH config unconditionally on arm64.
+Link: https://lore.kernel.org/linux-mm/20230710083914.18336-1-yangyicong@huawei.com/T/#mc343b7e7c4a090392ef43b620af85a3eea76abad
+
+-v10:
+1. Enable BATCHED_UNMAP_TLB_FLUSH regardless of CPU numbers, per Catalin.
+2. Split the renaming/extension works in a separate PATCH 2, per Catalin. Since
+   it's split from PATCH 2/2 in v9, so inherit the tags.
+3. Add arch_flush_tlb_batched_pending() to allow arch-specific implementation,
+   per Catalin. Since it's some kind of an optimization on arm64 so a separate
+   Patch 3/4.
+Link: https://lore.kernel.org/linux-mm/20230518065934.12877-1-yangyicong@huawei.com/
+
+-v9:
+1. Using a runtime tunable to control batched TLB flush, per Catalin in v7.
+   Sorry for missing this on v8.
+Link: https://lore.kernel.org/all/20230329035512.57392-1-yangyicong@huawei.com/
+
+-v8:
+1. Rebase on 6.3-rc4
+2. Tested the optimization on page migration and mentioned it in the commit
+3. Thanks the review from Anshuman.
+Link: https://lore.kernel.org/linux-mm/20221117082648.47526-1-yangyicong@huawei.com/
+
+-v7:
+1. rename arch_tlbbatch_add_mm() to arch_tlbbatch_add_pending() as suggested, since it
+   takes an extra address for arm64, per Nadav and Anshuman. Also mentioned in the commit.
+2. add tags from Xin Hao, thanks.
+Link: https://lore.kernel.org/lkml/20221115031425.44640-1-yangyicong@huawei.com/
+
+-v6:
+1. comment we don't defer TLB flush on platforms affected by ARM64_WORKAROUND_REPEAT_TLBI
+2. use cpus_have_const_cap() instead of this_cpu_has_cap()
+3. add tags from Punit, Thanks.
+4. default enable the feature when cpus >= 8 rather than > 8, since the original
+   improvement is observed on snapdragon 888 with 8 cores.
+Link: https://lore.kernel.org/lkml/20221028081255.19157-1-yangyicong@huawei.com/
+
+-v5:
+1. Make ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH depends on EXPERT for this stage on arm64.
+2. Make a threshold of CPU numbers for enabling batched TLP flush on arm64
+Link: https://lore.kernel.org/linux-arm-kernel/20220921084302.43631-1-yangyicong@huawei.com/T/
+
+-v4:
+1. Add tags from Kefeng and Anshuman, Thanks.
+2. Limit the TLB batch/defer on systems with >4 CPUs, per Anshuman
+3. Merge previous Patch 1,2-3 into one, per Anshuman
+Link: https://lore.kernel.org/linux-mm/20220822082120.8347-1-yangyicong@huawei.com/
+
+-v3:
+1. Declare arch's tlbbatch defer support by arch_tlbbatch_should_defer() instead
+   of ARCH_HAS_MM_CPUMASK, per Barry and Kefeng
+2. Add Tested-by from Xin Hao
+Link: https://lore.kernel.org/linux-mm/20220711034615.482895-1-21cnbao@gmail.com/
+
+-v2:
+1. Collected Yicong's test result on kunpeng920 ARM64 server;
+2. Removed the redundant vma parameter in arch_tlbbatch_add_mm()
+   according to the comments of Peter Zijlstra and Dave Hansen
+3. Added ARCH_HAS_MM_CPUMASK rather than checking if mm_cpumask
+   is empty according to the comments of Nadav Amit
+
+Thanks, Peter, Dave and Nadav for your testing or reviewing
+, and comments.
+
+-v1:
+https://lore.kernel.org/lkml/20220707125242.425242-1-21cnbao@gmail.com/
+
+Anshuman Khandual (1):
+  mm/tlbbatch: Introduce arch_tlbbatch_should_defer()
+
+Barry Song (2):
+  mm/tlbbatch: Rename and extend some functions
+  arm64: support batched/deferred tlb shootdown during page
+    reclamation/migration
+
+Yicong Yang (1):
+  mm/tlbbatch: Introduce arch_flush_tlb_batched_pending()
+
+ .../features/vm/TLB/arch-support.txt          |  2 +-
+ arch/arm64/Kconfig                            |  1 +
+ arch/arm64/include/asm/tlbbatch.h             | 12 +++++
+ arch/arm64/include/asm/tlbflush.h             | 44 +++++++++++++++++--
+ arch/x86/include/asm/tlbflush.h               | 22 +++++++++-
+ include/linux/mm_types_task.h                 |  4 +-
+ mm/rmap.c                                     | 23 ++++------
+ 7 files changed, 86 insertions(+), 22 deletions(-)
+ create mode 100644 arch/arm64/include/asm/tlbbatch.h
+
+-- 
+2.24.0
+
