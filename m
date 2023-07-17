@@ -2,88 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DA6F7569C3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 19:00:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFA74756A32
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 19:25:13 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=H9zzieJ6;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=U55TcGyi;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R4SxX2vdFz2yW0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 03:00:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R4TVb6V9xz2ygV
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 03:25:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=H9zzieJ6;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=U55TcGyi;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=luto@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4Swf5JGJz2xW7
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 02:59:13 +1000 (AEST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36HGlVG8008734
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jul 2023 16:59:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=s0RwxTSSzNkXt1j4bxmdMBrM44PJ0w2feHmLpPx+N9E=;
- b=H9zzieJ65AwwetNPVdaEc35+G2A+wkEDVQpFerjP4OgsAB4g5Yr0OVjpG4AKjb+nN37/
- fEIP1JsfAuwQOQ10o52VTY+OgxN7xAUa2t4iWTAy3lcazp18URPFFjcf5OE3rXsnfU9t
- DllBiUBRuqxRO+Ul1hMd20ioE3hNv6xdalTPaAzJX3KAGy798o5VQ1xAWViKBQjB6aJ4
- VpNTpt9yIbcIIz2ZfWEA5OfwDTXnh/3cy0DWAGK1MqUOIeUuWRFx1oLW4Y4JWsEpbru5
- YzUjV7AG3NJUqpHbfPaXf925gimdGYLvDUszI02J+HAGj8zz9WIuxEPl54Sco0HaxjiK rw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rw9fq08ty-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jul 2023 16:59:10 +0000
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36HGlS5u008674
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jul 2023 16:59:10 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rw9fq08t7-4
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Jul 2023 16:59:10 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36HDwpma008046;
-	Mon, 17 Jul 2023 16:38:41 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3rv80j0e6g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Jul 2023 16:38:41 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36HGcc8Q25952888
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 17 Jul 2023 16:38:38 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 809922004B;
-	Mon, 17 Jul 2023 16:38:38 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4F9EB20043;
-	Mon, 17 Jul 2023 16:38:37 +0000 (GMT)
-Received: from in.ibm.com (unknown [9.171.30.176])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 17 Jul 2023 16:38:37 +0000 (GMT)
-Date: Mon, 17 Jul 2023 22:08:34 +0530
-From: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
-To: Sachin Sant <sachinp@linux.ibm.com>
-Subject: Re: Kernel Crash Dump (kdump) broken with 6.5
-Message-ID: <udbe6orsg6jpzkwppupzekfwxjvn7e5q3rlzyqvm4xl3k44w7t@e7m2zjjwmh5c>
-References: <AB3C7C5C-86FD-4D86-9330-000CB9728F48@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <AB3C7C5C-86FD-4D86-9330-000CB9728F48@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: nLAZXF4GPYKAPPfdGSj_p-Z1hzwJkFzW
-X-Proofpoint-ORIG-GUID: MXTF_HNzal5tRHQX-dKNNV3JQmsTRUQj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-17_13,2023-07-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 spamscore=0
- impostorscore=0 bulkscore=0 lowpriorityscore=0 clxscore=1011 phishscore=0
- adultscore=0 priorityscore=1501 suspectscore=0 mlxscore=0 mlxlogscore=896
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
- definitions=main-2307170152
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4TTl6NsYz2yGT
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 03:24:27 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 196686118F;
+	Mon, 17 Jul 2023 17:24:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 249E2C433C8;
+	Mon, 17 Jul 2023 17:24:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1689614665;
+	bh=o+WgjDKzf9AD9b+kUzQGRClRYLlDB82OkTDYfv6a3Yk=;
+	h=In-Reply-To:References:Date:From:To:Cc:Subject:From;
+	b=U55TcGyi7YmJyhzLOTZnjrFVWw0H3+af918Yjk8mPHfHD/clSDnn9R44JznF10IRH
+	 Z8KK+n6r0jSrVIOFXY3K9zEUwgWJJmDl6U+xcWuKBgzWtStxy8DJ8vdgvW6lkDoW7B
+	 HjBUxuU9UxtzkC9l5ApN5DKkzBCr1VsqK7wmYWuXqa2OawFE6M2Oq9WP6fcTzeqAS1
+	 oQr1aLD/6waYS1NoUdY5C7XFt1xXn2X7vRDexou/Ye3pmNVTURfyjeGdd/9YrFIH9l
+	 MqvAuz5uF3yGQhNR2S/bV8TY4Zn4vPj0wIo0nVHW6MMTPN4UGDgaMVOo3Hl1Lknk4t
+	 QarZtUu8s3ucw==
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailauth.nyi.internal (Postfix) with ESMTP id 0594A27C0054;
+	Mon, 17 Jul 2023 13:24:22 -0400 (EDT)
+Received: from imap48 ([10.202.2.98])
+  by compute3.internal (MEProxy); Mon, 17 Jul 2023 13:24:23 -0400
+X-ME-Sender: <xms:RXm1ZG1tVKd235OTAKjb7YgspTMPR-qImOZNagZiOwv_r996Wpl_EA>
+    <xme:RXm1ZJGhtMeEyJx0NHmpmxK7orhG2xuLUV7eaWrGF_5mvemHNiGzAxoeoH8wHPKOx
+    Be-_jfsguKQ7NGLhQY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrgedvgdduuddvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtgfesthhqredtreerjeenucfhrhhomhepfdet
+    nhguhicunfhuthhomhhirhhskhhifdcuoehluhhtoheskhgvrhhnvghlrdhorhhgqeenuc
+    ggtffrrghtthgvrhhnpeduveffvdegvdefhfegjeejlefgtdffueekudfgkeduvdetvddu
+    ieeluefgjeeggfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfh
+    hrohhmpegrnhguhidomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudduiedu
+    keehieefvddqvdeifeduieeitdekqdhluhhtoheppehkvghrnhgvlhdrohhrgheslhhinh
+    hugidrlhhuthhordhush
+X-ME-Proxy: <xmx:RXm1ZO5oHfgOl5d-JsrWsEmT0wZ8c7lpn-wGY1Pk1MKOwuxnVn3prQ>
+    <xmx:RXm1ZH3tFnXsbSmPTR9ONplP-mkjz9Tn9-KQt1DQXW36vSF4M5jnmA>
+    <xmx:RXm1ZJEwoQUXW2HC-hvtBktlwQpPz6VjPtqSmOfmC010d9JGpLVfQw>
+    <xmx:Rnm1ZFKtTGUhG1K7QB02N33IARC_1h22efMRZVMJvVFaIkzEJg1UPw>
+Feedback-ID: ieff94742:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id D060531A0064; Mon, 17 Jul 2023 13:24:21 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-531-gfdfa13a06d-fm-20230703.001-gfdfa13a0
+Mime-Version: 1.0
+Message-Id: <d305b437-9eef-42da-821e-67365aad520b@app.fastmail.com>
+In-Reply-To:  <CAPhsuW4pDkd7rCWRM6938ve36rfhGxyu=8t1-GjcKnNajofpQA@mail.gmail.com>
+References: <20230616085038.4121892-1-rppt@kernel.org>
+ <20230616085038.4121892-3-rppt@kernel.org>
+ <f9a7eebe-d36e-4587-b99d-35d4edefdd14@app.fastmail.com>
+ <20230618080027.GA52412@kernel.org>
+ <a17c65c6-863f-4026-9c6f-a04b659e9ab4@app.fastmail.com>
+ <20230625161417.GK52412@kernel.org> <ZJmFFmexl_1GUhIL@FVFF77S0Q05N>
+ <CAPhsuW4pDkd7rCWRM6938ve36rfhGxyu=8t1-GjcKnNajofpQA@mail.gmail.com>
+Date: Mon, 17 Jul 2023 10:23:56 -0700
+From: "Andy Lutomirski" <luto@kernel.org>
+To: "Song Liu" <song@kernel.org>, "Mark Rutland" <mark.rutland@arm.com>
+Subject: Re: [PATCH v2 02/12] mm: introduce execmem_text_alloc() and jit_text_alloc()
+Content-Type: text/plain;charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,60 +94,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: mahesh@linux.ibm.com
-Cc: Hari Bathini <hbathini@linux.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Sourabh Jain <sourabhjain@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
+Cc: the arch/x86 maintainers <x86@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Nadav Amit <nadav.amit@gmail.com>, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, "Russell King \(Oracle\)" <linux@armlinux.org.uk>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linux-trace-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>, Will Deacon <will@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Puranjay Mohan <puranjay12@gmail.com>, netdev@vger.kernel.org, Kent Overstreet <kent.overstreet@linux.dev>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Dinh Nguyen <dinguyen@kerne
+ l.org>, Luis Chamberlain <mcgrof@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-modules@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2023-07-17 20:15:53 Mon, Sachin Sant wrote:
-> Kdump seems to be broken with 6.5 for ppc64le.
-> 
-> [ 14.200412] systemd[1]: Starting dracut pre-pivot and cleanup hook...
-> [[0;32m OK [0m] Started dracut pre-pivot and cleanup hook.
-> Starting Kdump Vmcore Save Service...
-> [ 14.231669] systemd[1]: Started dracut pre-pivot and cleanup hook.
-> [ 14.231801] systemd[1]: Starting Kdump Vmcore Save Service...
-> [ 14.341035] kdump.sh[297]: kdump: saving to /sysroot//var/crash//127.0.0.1-2023-07-14-13:32:34/
-> [ 14.350053] EXT4-fs (sda2): re-mounted e971a335-1ef8-4295-ab4e-3940f28e53fc r/w. Quota mode: none.
-> [ 14.345979] kdump.sh[297]: kdump: saving vmcore-dmesg.txt to /sysroot//var/crash//127.0.0.1-2023-07-14-13:32:34/
-> [ 14.348742] kdump.sh[331]: Cannot open /proc/vmcore: No such file or directory
-> [ 14.348845] kdump.sh[297]: kdump: saving vmcore-dmesg.txt failed
-> [ 14.349014] kdump.sh[297]: kdump: saving vmcore
-> [ 14.443422] kdump.sh[332]: open_dump_memory: Can't open the dump memory(/proc/vmcore). No such file or directory
-> [ 14.456413] kdump.sh[332]: makedumpfile Failed.
-> [ 14.456662] kdump.sh[297]: kdump: saving vmcore failed, _exitcode:1
-> [ 14.456822] kdump.sh[297]: kdump: saving the /run/initramfs/kexec-dmesg.log to /sysroot//var/crash//127.0.0.1-2023-07-14-13:32:34/
-> [ 14.487002] kdump.sh[297]: kdump: saving vmcore failed
-> [[0;1;31mFAILED[0m] Failed to start Kdump Vmcore Save Service.
 
-Thanks Sachin for catching this.
 
-> 
-> 6.4 was good. Git bisect points to following patch
-> 
-> commit 606787fed7268feb256957872586370b56af697a
->     powerpc/64s: Remove support for ELFv1 little endian userspace
-> 
-> Reverting this patch allows a successful capture of vmcore.
-> 
-> Does this change require any corresponding change to kdump
-> and/or kexec tools?
+On Mon, Jun 26, 2023, at 10:48 AM, Song Liu wrote:
+> On Mon, Jun 26, 2023 at 5:31=E2=80=AFAM Mark Rutland <mark.rutland@arm=
+.com> wrote:
+>>
+> [...]
+>> >
+>> > So the idea was that jit_text_alloc() will have a cache of large pa=
+ges
+>> > mapped ROX, will allocate memory from those caches and there will be
+>> > jit_update() that uses text poking for writing to that memory.
+>> >
+>> > Upon allocation of a large page to increase the cache, that large p=
+age will
+>> > be "invalidated" by filling it with breakpoint instructions (e.g in=
+t3 on
+>> > x86)
+>>
+>> Does that work on x86?
+>>
+>> That is in no way gauranteed for other architectures; on arm64 you ne=
+ed
+>> explicit cache maintenance (with I-cache maintenance at the VA to be =
+executed
+>> from) followed by context-synchronization-events (e.g. via ISB instru=
+ctions, or
+>> IPIs).
+>
+> I guess we need:
+> 1) Invalidate unused part of the huge ROX pages;
+> 2) Do not put two jit users (including module text, bpf, etc.) in the
+> same cache line;
+> 3) Explicit cache maintenance;
+> 4) context-synchronization-events.
+>
+> Would these (or a subset of them) be sufficient to protect us from tor=
+n read?
 
-Need to investigate that. It looks like vmcore_elf64_check_arch(&ehdr)
-check from fs/proc/vmcore.c is failing after above commit.
+Maybe?  #4 is sufficiently vague that I can't really interpret it.
 
-static int __init parse_crash_elf64_headers(void)
-{
-[...]
+I have a half-drafted email asking for official clarification on the rul=
+es that might help shed light on this.  I find that this type of request=
+ works best when it's really well written :)
 
-        /* Do some basic Verification. */
-        if (memcmp(ehdr.e_ident, ELFMAG, SELFMAG) != 0 ||
-                (ehdr.e_type != ET_CORE) ||
-                !vmcore_elf64_check_arch(&ehdr) ||
-[...]
-
-It looks like ehdr->e_flags are not set properly while generating vmcore
-ELF header. I see that in kexec_file_load, ehdr->e_flags left set to 0
-irrespective of IS_ENABLED(CONFIG_PPC64_ELF_ABI_V2) is true or false.
-
--Mahesh
+>
+> Thanks,
+> Song
