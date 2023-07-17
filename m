@@ -1,93 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93449755EB4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 10:46:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F583755EB5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 10:47:15 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BEpc9HQs;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=semihalf.com header.i=@semihalf.com header.a=rsa-sha256 header.s=google header.b=e52IJgo7;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R4Fzy3c1Kz30Db
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 18:46:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R4G0x0hTxz3cXL
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 18:47:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BEpc9HQs;
+	dkim=pass (2048-bit key; unprotected) header.d=semihalf.com header.i=@semihalf.com header.a=rsa-sha256 header.s=google header.b=e52IJgo7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=semihalf.com (client-ip=2607:f8b0:4864:20::134; helo=mail-il1-x134.google.com; envelope-from=jaz@semihalf.com; receiver=lists.ozlabs.org)
+Received: from mail-il1-x134.google.com (mail-il1-x134.google.com [IPv6:2607:f8b0:4864:20::134])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4FBD28nGz2yDN
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jul 2023 18:10:12 +1000 (AEST)
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36H7jwE9009953;
-	Mon, 17 Jul 2023 08:10:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
- message-id : date : mime-version : subject : to : cc : references : from :
- in-reply-to; s=pp1; bh=SBBYUx9ndl+ghkK33BCRs2eEPeKd41wqhr1CqHq5CGw=;
- b=BEpc9HQsl92BpQ1nCRRPxWwmhhTYnxnz6kHXGPaDcQx3+jLZrQxdESjJa9RxLvDJObCQ
- HKf3JR6wV9GCfgVOdoY01Gd2PVQQbl4y6OHHtF/Ixp1/ZsOWg07Z8tW53E9pdZKrtuk8
- h74SUgd/JBAN/94aArViWAKiX7Eb5dHheF4N3gdgr9lkIeNad2trL3eAZfJNLM5AeOjv
- S3FUaRSbYX+UlmCMRwRg0fiUvy3jvWJJWGna/H+Pvr8esq/k/7S8api3GACxn8rMgYFl
- 5lPzpM8RdXZBYXIzlrJWAPee+tSbYfxUMo4WDC0mjzFiWc8OdA8FHLfdQkLpU/BsA7H8 gQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rw0qs270y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Jul 2023 08:10:06 +0000
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36H7UM9Y006145;
-	Mon, 17 Jul 2023 08:10:06 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rw0qs270e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Jul 2023 08:10:05 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36H30ePx004179;
-	Mon, 17 Jul 2023 08:10:05 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3rv8g0t9n4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Jul 2023 08:10:05 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36H8A3685767884
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 17 Jul 2023 08:10:03 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8469820040;
-	Mon, 17 Jul 2023 08:10:03 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 44B5D20043;
-	Mon, 17 Jul 2023 08:10:02 +0000 (GMT)
-Received: from [9.43.50.197] (unknown [9.43.50.197])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 17 Jul 2023 08:10:02 +0000 (GMT)
-Content-Type: multipart/alternative;
- boundary="------------65TZ5HVj3pEZ0Wk3hbmab0KZ"
-Message-ID: <c2eff602-a6d0-2b8d-2c11-5a556b0f4493@linux.ibm.com>
-Date: Mon, 17 Jul 2023 13:40:01 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4Fcy69q1z2yDk
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jul 2023 18:29:52 +1000 (AEST)
+Received: by mail-il1-x134.google.com with SMTP id e9e14a558f8ab-345ff33d286so22420995ab.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jul 2023 01:29:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=semihalf.com; s=google; t=1689582586; x=1692174586;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KrEcIar0BkfpmBL+8BCmNKqe2TUSK3LL+WBdNYsOjsM=;
+        b=e52IJgo7nORao0Gl4I5dRpwwbrYRCXZTSuwaC/thRVodGrQS/Ih+iZx/Zsqn89WU3w
+         pQgXUWQS+Vk59/Fh6rrIEqzCQJkEny2i0gy7zEPOvxwj9yUxhnNvrizRbt8YsZpplHpx
+         RjVLFZyrzR9wafddakUgpMo5lLKlNumHP6uiacp/wGVyLbBbCgrHIUP/7snpf7XV2sof
+         jlaeLm95LpwgAuzcjO7UCvT+e3bh2UJ0I6TbCUpKBOZvGLRTw6wJXY5zbY52dacz1/1P
+         iPPOvh8ArwyYCroEOLn3Y8OJKVgd78PUACDF8tTPiPB+Om3hyy+66x8dhT2yU/74h83y
+         v2JA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689582586; x=1692174586;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KrEcIar0BkfpmBL+8BCmNKqe2TUSK3LL+WBdNYsOjsM=;
+        b=eSDiT6kMhpbbMz0sd1bf0LTnCHvNlVY4r8IfBoqkguESadcVMIITdqJEhVssryHpvX
+         /q2sTBEdWcd5bOkaI3ZlUnQVSK3DI1xMHwKSEq3r4WhEbrHSJtGMYcxviyeKfEuvKuRR
+         dhw/hcr1rWCa4tXTBrravnDzUczthjDtRRUFUEKTLWvmQ4IsQ71JU0i/9Z7v7W6zYU4H
+         +K82C4BoioIEvz4+7EGfd6sKBG4loMTTm4rX//b4yJ43TlAjFX7tIVu3mDN5nL9afmpW
+         rklNQC41MjfOVeKyx0snK1wjauURJAhGahI+FtN61ygXC5bhCZQWes2ud9LgbPrxWVaR
+         0qnQ==
+X-Gm-Message-State: ABy/qLb9VMbraUQ6l/22/i7Vx9Dl9byyWqe2SPIUwmDrl+pi1l+ectfy
+	NMAXLIGj4E2l4CWy4cZcWActuZU7PkP5uSS2Ti0UUQ==
+X-Google-Smtp-Source: APBJJlGE7jn73weZAb7Q+GH4ouydfCd9ILtA9ynYfWdyB1I4k5TGE6qNhhrOJBaOwSkah9YrBoRDKcKZ9t95G975sJc=
+X-Received: by 2002:a92:d4d2:0:b0:345:d470:baa6 with SMTP id
+ o18-20020a92d4d2000000b00345d470baa6mr9664500ilm.29.1689582586220; Mon, 17
+ Jul 2023 01:29:46 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [RFC 0/3] Asynchronous EEH recovery
-Content-Language: en-US
-To: "Oliver O'Halloran" <oohall@gmail.com>
-References: <20230613014337.286222-1-ganeshgr@linux.ibm.com>
- <CAOSf1CGzmbbs16zCAV8_NN49Sd8ifi-4Dvo7wXdVNDE-j76qPQ@mail.gmail.com>
-From: Ganesh G R <ganeshgr@linux.ibm.com>
-In-Reply-To: <CAOSf1CGzmbbs16zCAV8_NN49Sd8ifi-4Dvo7wXdVNDE-j76qPQ@mail.gmail.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: EwLYd9T_wFVacSkdoDCQK_0-KzXHFR1U
-X-Proofpoint-GUID: dH1JWrzBw0Y2QJfrztKTb1RX3XV4k8ff
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-17_06,2023-07-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
- malwarescore=0 suspectscore=0 mlxlogscore=999 lowpriorityscore=0
- bulkscore=0 impostorscore=0 spamscore=0 adultscore=0 clxscore=1011
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2307170072
+References: <20230630155936.3015595-1-jaz@semihalf.com> <20230714-gauner-unsolidarisch-fc51f96c61e8@brauner>
+In-Reply-To: <20230714-gauner-unsolidarisch-fc51f96c61e8@brauner>
+From: Grzegorz Jaszczyk <jaz@semihalf.com>
+Date: Mon, 17 Jul 2023 10:29:34 +0200
+Message-ID: <CAH76GKPF4BjJLrzLBW8k12ATaAGADeMYc2NQ9+j0KgRa0pomUw@mail.gmail.com>
+Subject: Re: [PATCH 0/2] eventfd: simplify signal helpers
+To: Christian Brauner <brauner@kernel.org>, Alex Williamson <alex.williamson@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Mailman-Approved-At: Mon, 17 Jul 2023 18:42:53 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -100,121 +76,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, mahesh@linux.ibm.com
+Cc: linux-aio@kvack.org, Muchun Song <muchun.song@linux.dev>, Tony Krowiak <akrowiak@linux.ibm.com>, Matthew Rosato <mjrosato@linux.ibm.com>, Paul Durrant <paul@xen.org>, Tom Rix <trix@redhat.com>, Jason Wang <jasowang@redhat.com>, Roman Gushchin <roman.gushchin@linux.dev>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, dri-devel@lists.freedesktop.org, Michal Hocko <mhocko@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, linux-mm@kvack.org, Kirti Wankhede <kwankhede@nvidia.com>, Vineeth Vijayan <vneethv@linux.ibm.com>, Diana Craciun <diana.craciun@oss.nxp.com>, Borislav Petkov <bp@alien8.de>, Alexander Gordeev <agordeev@linux.ibm.com>, Fei Li <fei1.li@intel.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Marcin Wojtas <mw@semihalf.com>, Arnd Bergmann <arnd@arndb.de>, Leon Romanovsky <leon@kernel.org>, linux-rdma@vger.kernel.org, x86@kernel.org, Halil Pasic <pasic@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>, Ingo Molnar <mingo@redhat.com>, Moritz Fischer <mdf@kernel.org>, Frederic 
+ Barrat <fbarrat@linux.ibm.com>, Xu Yilun <yilun.xu@intel.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, linux-fpga@vger.kernel.org, Zhi Wang <zhi.a.wang@intel.com>, Wu Hao <hao.wu@intel.com>, Jason Herne <jjherne@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Andrew Donnellan <ajd@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, linux-s390@vger.kernel.org, Dominik Behr <dbehr@chromium.org>, intel-gfx@lists.freedesktop.org, Sean Christopherson <seanjc@google.com>, Eric Auger <eric.auger@redhat.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, Harald Freudenberger <freude@linux.ibm.com>, kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, cgroups@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, virtualization@lists.linux-foundation.org, intel-gvt-dev@lists.freedesktop.org, io-uring@vger.kernel.org, Jens Axboe <axboe@kernel.dk>, Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, netdev@vger.kernel.org, Oded Gabbay <ogabba
+ y@kernel.org>, linux-usb@vger.kernel.org, Peter Oberparleiter <oberpar@linux.ibm.com>, linux-kernel@vger.kernel.org, Benjamin LaHaise <bcrl@kvack.org>, "Michael S. Tsirkin" <mst@redhat.com>, Sven Schnelle <svens@linux.ibm.com>, Johannes Weiner <hannes@cmpxchg.org>, linux-fsdevel@vger.kernel.org, Shakeel Butt <shakeelb@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, David Woodhouse <dwmw2@infradead.org>, linuxppc-dev@lists.ozlabs.org, Pavel Begunkov <asml.silence@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a multi-part message in MIME format.
---------------65TZ5HVj3pEZ0Wk3hbmab0KZ
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+pt., 14 lip 2023 o 09:05 Christian Brauner <brauner@kernel.org> napisa=C5=
+=82(a):
+>
+> On Thu, Jul 13, 2023 at 11:10:54AM -0600, Alex Williamson wrote:
+> > On Thu, 13 Jul 2023 12:05:36 +0200
+> > Christian Brauner <brauner@kernel.org> wrote:
+> >
+> > > Hey everyone,
+> > >
+> > > This simplifies the eventfd_signal() and eventfd_signal_mask() helper=
+s
+> > > by removing the count argument which is effectively unused.
+> >
+> > We have a patch under review which does in fact make use of the
+> > signaling value:
+> >
+> > https://lore.kernel.org/all/20230630155936.3015595-1-jaz@semihalf.com/
+>
+> Huh, thanks for the link.
+>
+> Quoting from
+> https://patchwork.kernel.org/project/kvm/patch/20230307220553.631069-1-ja=
+z@semihalf.com/#25266856
+>
+> > Reading an eventfd returns an 8-byte value, we generally only use it
+> > as a counter, but it's been discussed previously and IIRC, it's possibl=
+e
+> > to use that value as a notification value.
+>
+> So the goal is to pipe a specific value through eventfd? But it is
+> explicitly a counter. The whole thing is written around a counter and
+> each write and signal adds to the counter.
+>
+> The consequences are pretty well described in the cover letter of
+> v6 https://lore.kernel.org/all/20230630155936.3015595-1-jaz@semihalf.com/
+>
+> > Since the eventfd counter is used as ACPI notification value
+> > placeholder, the eventfd signaling needs to be serialized in order to
+> > not end up with notification values being coalesced. Therefore ACPI
+> > notification values are buffered and signalized one by one, when the
+> > previous notification value has been consumed.
+>
+> But isn't this a good indication that you really don't want an eventfd
+> but something that's explicitly designed to associate specific data with
+> a notification? Using eventfd in that manner requires serialization,
+> buffering, and enforces ordering.
+>
+> I have no skin in the game aside from having to drop this conversion
+> which I'm fine to do if there are actually users for this btu really,
+> that looks a lot like abusing an api that really wasn't designed for
+> this.
 
-
-On 6/13/23 8:06 AM, Oliver O'Halloran wrote:
-
-> On Tue, Jun 13, 2023 at 11:44 AM Ganesh Goudar<ganeshgr@linux.ibm.com>  wrote:
->> Hi,
->>
->> EEH recovery is currently serialized and these patches shorten
->> the time taken for EEH recovery by making the recovery to run
->> in parallel. The original author of these patches is Sam Bobroff,
->> I have rebased and tested these patches.
->>
->> On powervm with 64 VFs from same PHB,  I see approximately 48%
->> reduction in time taken in EEH recovery.
->>
->> On powernv with 9 network cards, Where 2 cards installed on one
->> PHB and 1 card on each of the rest of the PHBs, Providing 20 PFs
->> in total. I see approximately 33% reduction in time taken in EEH
->> recovery.
->>
->> These patches were originally posted as separate RFCs by Sam, And
->> I rebased and posted these patches almost a year back, I stopped
->> pursuing these patches as I was not able test this on powernv, Due
->> to the issues in drivers of cards I was testing this on, Which are
->> now resolved. Since I am re-posting this after long time, Posting
->> this as a fresh RFC, Please comment.
-> What changes have you made since the last time you posted this series?
-> If the patches are the same then the comments I posted last time still
-> apply.
-
-Hi Oliver, You asked about the way we are testing this on powervm, You expressed
-concerns about having this on powernv, suggested to have this feature just for
-powervm for now, and also expressed concerns on having two locks.
-
-On powervm using two port card we are instantiating 64 VFS, for an lpar and injecting
-the error on the bus from phyp, to observe the behavior.
-I was able to test this on powernv with 16 PFs from 8 cards installed on separate PHBs,
-Where I saw considerable performance improvement.
-Regarding two locks idea, I may not have tested it for all scenarios, So far I have not
-faced any issue, Are you suggesting a different approach.
-
-Thanks
-
---------------65TZ5HVj3pEZ0Wk3hbmab0KZ
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">
-      <pre>On 6/13/23 8:06 AM, Oliver O'Halloran wrote:</pre>
-    </div>
-    <blockquote type="cite"
-cite="mid:CAOSf1CGzmbbs16zCAV8_NN49Sd8ifi-4Dvo7wXdVNDE-j76qPQ@mail.gmail.com">
-      <pre class="moz-quote-pre" wrap="">On Tue, Jun 13, 2023 at 11:44 AM Ganesh Goudar <a class="moz-txt-link-rfc2396E" href="mailto:ganeshgr@linux.ibm.com">&lt;ganeshgr@linux.ibm.com&gt;</a> wrote:
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">
-Hi,
-
-EEH recovery is currently serialized and these patches shorten
-the time taken for EEH recovery by making the recovery to run
-in parallel. The original author of these patches is Sam Bobroff,
-I have rebased and tested these patches.
-
-On powervm with 64 VFs from same PHB,  I see approximately 48%
-reduction in time taken in EEH recovery.
-
-On powernv with 9 network cards, Where 2 cards installed on one
-PHB and 1 card on each of the rest of the PHBs, Providing 20 PFs
-in total. I see approximately 33% reduction in time taken in EEH
-recovery.
-
-These patches were originally posted as separate RFCs by Sam, And
-I rebased and posted these patches almost a year back, I stopped
-pursuing these patches as I was not able test this on powernv, Due
-to the issues in drivers of cards I was testing this on, Which are
-now resolved. Since I am re-posting this after long time, Posting
-this as a fresh RFC, Please comment.
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-What changes have you made since the last time you posted this series?
-If the patches are the same then the comments I posted last time still
-apply.
-</pre>
-    </blockquote>
-    <pre>Hi Oliver, You asked about the way we are testing this on powervm, You expressed
-concerns about having this on powernv, suggested to have this feature just for
-powervm for now, and also expressed concerns on having two locks.
-
-On powervm using two port card we are instantiating 64 VFS, for an lpar and injecting
-the error on the bus from phyp, to observe the behavior.
-I was able to test this on powernv with 16 PFs from 8 cards installed on separate PHBs,
-Where I saw considerable performance improvement.
-Regarding two locks idea, I may not have tested it for all scenarios, So far I have not
-faced any issue, Are you suggesting a different approach.
-
-Thanks    
-</pre>
-  </body>
-</html>
-
---------------65TZ5HVj3pEZ0Wk3hbmab0KZ--
-
+https://patchwork.kernel.org/project/kvm/patch/20230307220553.631069-1-jaz@=
+semihalf.com/
+was posted at the beginig of March and one of the main things we've
+discussed was the mechanism for propagating acpi notification value.
+We've endup with eventfd as the best mechanism and have actually been
+using it from v2. I really do not want to waste this effort, I think
+we are quite advanced with v6 now. Additionally we didn't actually
+modify any part of eventfd support that was in place, we only used it
+in a specific (and discussed beforehand) way.
