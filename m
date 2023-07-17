@@ -2,61 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37EA2756415
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 15:15:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9F9F75657A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 15:52:34 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Vngy0RuA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=XQxrKqum;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R4MyZ0v0hz2yL0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 23:15:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R4NnD57Dnz2ygc
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jul 2023 23:52:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Vngy0RuA;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=XQxrKqum;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::536; helo=mail-ed1-x536.google.com; envelope-from=vincent.guittot@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4Mvr2b1Lz3cH2
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jul 2023 23:13:12 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 8A8726106C;
-	Mon, 17 Jul 2023 13:13:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 614D2C433C7;
-	Mon, 17 Jul 2023 13:13:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1689599588;
-	bh=wHT5mhaK6CWjF4DwCFuFnkiGRJm4FTAEmWgUV7x6zpw=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=Vngy0RuAO0Y/kBmwMFM/QfmEdBlbeQz6a3qBPH4SZLHidHsnZk4jb1sFJsizMYJ5R
-	 HgrNUDo6Stchn3jffSA7jXnCotZ9UbIa59tW41nj7p76MVKMN/kMUKBjB4v6oP5Cm9
-	 KcCZkAMjaueiknuI4/PXfpZi02Ojue0x8z6mjxDK575AD2zx0tHTbB+sHDUCGe+Css
-	 ZMBOXYiz5ibYgHdQB1K4LEV5OulhBXEeGkNBBvTY0I3yqCag3WTCADEykxiUzE7Bjy
-	 LkGEn4Pj9E93eFMkr7pl3SV+m73u1j/gYy1NQsrg4icE0ieNaDYLAhp1jO9ecYZJj/
-	 3OZkHMeallqXQ==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 17 Jul 2023 13:13:04 +0000
-Message-Id: <CU4H2DNNWI45.29POSW833WLKO@seitikki>
-Subject: Re: [PATCH v2 1/2] powerpc/tpm: Create linux,sml-base/size as big
- endian
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Michael Ellerman" <mpe@ellerman.id.au>, "Stefan Berger"
- <stefanb@linux.ibm.com>, <linuxppc-dev@lists.ozlabs.org>
-X-Mailer: aerc 0.14.0
-References: <20230615123703.4028156-1-mpe@ellerman.id.au>
- <4d378d53225fc8b8cdc99dde900388d2eefaad4e.camel@kernel.org>
- <0fb26243-0d63-118b-2737-05391ba0c69a@linux.ibm.com>
- <ec564375084b6edd7b7d77eb341f451e798fb50d.camel@kernel.org>
- <87r0pde22q.fsf@mail.lhotse>
-In-Reply-To: <87r0pde22q.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4NmK15BBz2yDk
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jul 2023 23:51:42 +1000 (AEST)
+Received: by mail-ed1-x536.google.com with SMTP id 4fb4d7f45d1cf-51e57874bfdso6513837a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jul 2023 06:51:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1689601896; x=1692193896;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=NulYZ8ud4nInsNBQFR40gOVy/EmAPlV46bxx7L81M2Y=;
+        b=XQxrKqumcE5BJeMv4hSTn+OmzCSSE+ZvJaS9+fzmjERjYVI9DkoIxm7qHAwhh1FGtK
+         qSjzC5UPjBecrY1rlDFPNzhzE6q35bPflZHDjSBICuCjGZliXW/JPKfrxWhiYkjXwJxk
+         G96ok6hZ94+HTmSG6+n6+fGoHyiCmmowwZD/FmnA2SJls3LfQB/ntw5AmPmeEbs9O8q0
+         QXU6RACOZB3y/CdqS3zm9mpNlrrVQy/1WmoWiQmKZvwVDx1kYXjIgzQfCQ8CMOoV/j9Y
+         8RUv7mYOvNW7emgWj4SU/i4gO/YtbZxOjCikvlswf1TvktCfNg0ubhC5tiTYoAB14vQ0
+         Qzxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689601896; x=1692193896;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NulYZ8ud4nInsNBQFR40gOVy/EmAPlV46bxx7L81M2Y=;
+        b=PpJlPYiWWTiX7ckNXS/iIWlrZI1Ns2hYfZMOfCnHkxBx/kBSIR/7oAvhpXDffdBVPi
+         CJSLH8tx2Cc0Cp4FfMeJ9vKmQpKoS4cj0MOOgBuUDf1yJrQJnzxAG90qKOrykDRTzHlK
+         RozLD09FHph7dJKzVVchV0sgw7CGg46aqDWf96l9Vs1xx8dYbbuNYPYlJEvLKAyqYJs8
+         Vb7GIfBdBqbNq11WaZ7632n6VHaDZqWJZxB3CRWl1my/G8DP6kkolD5iY5o2dht2Oh6J
+         udERF972XwKZEiSnMqhJkJYsGK5bSG38tkYQusou4WhPRZaGiQhMMrr/QgvkyeZy1wyE
+         a6mA==
+X-Gm-Message-State: ABy/qLbeK9Ixmp8wHHumMj0j34x2RC2Nvzvnv5/tI1HhDJLdLbRFFR67
+	WjM2KSoz8XeOTdv9yvvy3EKSDMPnM1vEP29yZ9t7UA==
+X-Google-Smtp-Source: APBJJlHRA1Kd6KxmUkMK+sDmqVQDSQxRd9Zs6lwubeUK+Y99P8Hyjgw+sj58YmkdcatBITyjrQr3mA6+X5fviJN0q80=
+X-Received: by 2002:aa7:d98c:0:b0:521:8817:cc5d with SMTP id
+ u12-20020aa7d98c000000b005218817cc5dmr3807048eds.34.1689601896196; Mon, 17
+ Jul 2023 06:51:36 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230712141056.GI3100107@hirez.programming.kicks-ass.net>
+In-Reply-To: <20230712141056.GI3100107@hirez.programming.kicks-ass.net>
+From: Vincent Guittot <vincent.guittot@linaro.org>
+Date: Mon, 17 Jul 2023 15:51:25 +0200
+Message-ID: <CAKfTPtBga3CMVNGt5YEJiyfWDiWWQ0c+5_EAzY0spMFiUQBMmA@mail.gmail.com>
+Subject: Re: [RFC][PATCH] sched: Rename DIE domain
+To: Peter Zijlstra <peterz@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,87 +73,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jgg@ziepe.ca, linux-integrity@vger.kernel.org, eajames@linux.ibm.com, peterhuewe@gmx.de, yangyingliang@huawei.com
+Cc: juri.lelli@redhat.com, dave.hansen@linux.intel.com, bsegall@google.com, hpa@zytor.com, agordeev@linux.ibm.com, linux-s390@vger.kernel.org, vschneid@redhat.com, x86@kernel.org, mingo@redhat.com, mgorman@suse.de, borntraeger@linux.ibm.com, gor@linux.ibm.com, hca@linux.ibm.com, npiggin@gmail.com, bp@alien8.de, rostedt@goodmis.org, Thomas Gleixner <tglx@linutronix.de>, dietmar.eggemann@arm.com, bristot@redhat.com, linux-kernel@vger.kernel.org, svens@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed Jul 12, 2023 at 12:39 PM UTC, Michael Ellerman wrote:
-> Jarkko Sakkinen <jarkko@kernel.org> writes:
-> > On Tue, 2023-07-11 at 08:47 -0400, Stefan Berger wrote:
-> >> On 7/10/23 17:23, Jarkko Sakkinen wrote:
-> >> > On Thu, 2023-06-15 at 22:37 +1000, Michael Ellerman wrote:
-> >> > > There's code in prom_instantiate_sml() to do a "SML handover" (Sto=
-red
-> >> > > Measurement Log) from OF to Linux, before Linux shuts down Open
-> >> > > Firmware.
-> >> > >=20
-> >> > > This involves creating a buffer to hold the SML, and creating two =
-device
-> >> > > tree properties to record its base address and size. The kernel th=
-en
-> >> > > later reads those properties from the device tree to find the SML.
-> >> > >=20
-> >> > > When the code was initially added in commit 4a727429abec ("PPC64: =
-Add
-> >> > > support for instantiating SML from Open Firmware") the powerpc ker=
-nel
-> >> > > was always built big endian, so the properties were created big en=
-dian
-> >> > > by default.
-> >> > >=20
-> >> > > However since then little endian support was added to powerpc, and=
- now
-> >> > > the code lacks conversions to big endian when creating the propert=
-ies.
-> >> > >=20
-> >> > > This means on little endian kernels the device tree properties are
-> >> > > little endian, which is contrary to the device tree spec, and in
-> >> > > contrast to all other device tree properties.
-> >> > >=20
-> >> > > To cope with that a workaround was added in tpm_read_log_of() to s=
-kip
-> >> > > the endian conversion if the properties were created via the SML
-> >> > > handover.
-> >> > >=20
-> >> > > A better solution is to encode the properties as big endian as the=
-y
-> >> > > should be, and remove the workaround.
-> >> > >=20
-> >> > > Typically changing the encoding of a property like this would pres=
-ent
-> >> > > problems for kexec. However the SML is not propagated across kexec=
-, so
-> >> > > changing the encoding of the properties is a non-issue.
-> >> > >=20
-> >> > > Fixes: e46e22f12b19 ("tpm: enhance read_log_of() to support Physic=
-al TPM event log")
-> >> > > Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> >> > > Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-> >> > > ---
-> >> > >   arch/powerpc/kernel/prom_init.c |  8 ++++++--
-> >> > >   drivers/char/tpm/eventlog/of.c  | 23 ++++-------------------
-> >> > >   2 files changed, 10 insertions(+), 21 deletions(-)
-> >> >=20
-> >> > Split into two patches (producer and consumer).
-> >>=20
-> >> I think this wouldn't be right since it would break the system when on=
-ly one patch is applied since it would be reading the fields in the wrong e=
-ndianess.
-> >
-> > I think it would help if the commit message would better explain
-> > what is going on. It is somewhat difficult to decipher, if you
-> > don't have deep knowledge of the powerpc architecture.
+On Wed, 12 Jul 2023 at 16:11, Peter Zijlstra <peterz@infradead.org> wrote:
 >
-> I mean, it's already 8 paragraphs =C2=AF\_(=E3=83=84)_/=C2=AF
+> Hi
 >
-> But I'm happy to expand it. I just don't really know what extra detail
-> is needed to make it clearer.
+> Thomas just tripped over the x86 topology setup creating a 'DIE' domain
+> for the package mask :-)
 
-Adding more text is not the right way to clarify things. I'd start
-by explaining shortly SML and then move to the handover. It can't
-be that hard, right?
+May be a link to the change that triggers this patch could be useful
 
-Just adding new paragraphs would probably just make it even more
-confusing.
+>
+> Since these names are SCHED_DEBUG only, rename them.
+> I don't think anybody *should* be relying on this, but who knows.
 
-BR, Jarkko
+Apart the remaining reference to DIE already mentioned by others,
+looks good to me
+
+>
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> ---
+>  arch/powerpc/kernel/smp.c   | 2 +-
+>  arch/s390/kernel/topology.c | 2 +-
+>  arch/x86/kernel/smpboot.c   | 2 +-
+>  kernel/sched/topology.c     | 2 +-
+>  4 files changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+> index fbbb695bae3d..5ed6b9fe5094 100644
+> --- a/arch/powerpc/kernel/smp.c
+> +++ b/arch/powerpc/kernel/smp.c
+> @@ -1050,7 +1050,7 @@ static struct sched_domain_topology_level powerpc_topology[] = {
+>  #endif
+>         { shared_cache_mask, powerpc_shared_cache_flags, SD_INIT_NAME(CACHE) },
+>         { cpu_mc_mask, SD_INIT_NAME(MC) },
+> -       { cpu_cpu_mask, SD_INIT_NAME(DIE) },
+> +       { cpu_cpu_mask, SD_INIT_NAME(PKG) },
+>         { NULL, },
+>  };
+>
+> diff --git a/arch/s390/kernel/topology.c b/arch/s390/kernel/topology.c
+> index 68adf1de8888..c803f5e6ab46 100644
+> --- a/arch/s390/kernel/topology.c
+> +++ b/arch/s390/kernel/topology.c
+> @@ -522,7 +522,7 @@ static struct sched_domain_topology_level s390_topology[] = {
+>         { cpu_coregroup_mask, cpu_core_flags, SD_INIT_NAME(MC) },
+>         { cpu_book_mask, SD_INIT_NAME(BOOK) },
+>         { cpu_drawer_mask, SD_INIT_NAME(DRAWER) },
+> -       { cpu_cpu_mask, SD_INIT_NAME(DIE) },
+> +       { cpu_cpu_mask, SD_INIT_NAME(PKG) },
+>         { NULL, },
+>  };
+>
+> diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+> index e1aa2cd7734b..09cc9d0aa358 100644
+> --- a/arch/x86/kernel/smpboot.c
+> +++ b/arch/x86/kernel/smpboot.c
+> @@ -653,7 +653,7 @@ static void __init build_sched_topology(void)
+>          */
+>         if (!x86_has_numa_in_package) {
+>                 x86_topology[i++] = (struct sched_domain_topology_level){
+> -                       cpu_cpu_mask, SD_INIT_NAME(DIE)
+> +                       cpu_cpu_mask, SD_INIT_NAME(PKG)
+>                 };
+>         }
+>
+> diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+> index d3a3b2646ec4..e9d9cf776b7a 100644
+> --- a/kernel/sched/topology.c
+> +++ b/kernel/sched/topology.c
+> @@ -1670,7 +1670,7 @@ static struct sched_domain_topology_level default_topology[] = {
+>  #ifdef CONFIG_SCHED_MC
+>         { cpu_coregroup_mask, cpu_core_flags, SD_INIT_NAME(MC) },
+>  #endif
+> -       { cpu_cpu_mask, SD_INIT_NAME(DIE) },
+> +       { cpu_cpu_mask, SD_INIT_NAME(PKG) },
+>         { NULL, },
+>  };
+>
+>
