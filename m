@@ -1,65 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C3BC75786B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 11:49:51 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="unknown key version" header.d=208.org header.i=@208.org header.a=rsa-sha256 header.s=dkim header.b=iwXsN1BN;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E1F17578E6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 12:07:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R4vLj1XQ0z30QQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 19:49:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R4vl80PgZz3bNp
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 20:07:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="unknown key version" header.d=208.org header.i=@208.org header.a=rsa-sha256 header.s=dkim header.b=iwXsN1BN;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=208suo.com (client-ip=183.242.55.162; helo=mail.208.org; envelope-from=hanyu001@208suo.com; receiver=lists.ozlabs.org)
-Received: from mail.208.org (unknown [183.242.55.162])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=leemhuis.info (client-ip=80.237.130.52; helo=wp530.webpack.hosteurope.de; envelope-from=regressions@leemhuis.info; receiver=lists.ozlabs.org)
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4vKs60bnz2yDb
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 19:49:05 +1000 (AEST)
-Received: from mail.208.org (email.208.org [127.0.0.1])
-	by mail.208.org (Postfix) with ESMTP id 4R4vKm2LX4zBR1PD
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 17:49:00 +0800 (CST)
-Authentication-Results: mail.208.org (amavisd-new); dkim=pass
-	reason="pass (just generated, assumed good)" header.d=208.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=208.org; h=
-	content-transfer-encoding:content-type:message-id:user-agent
-	:references:in-reply-to:subject:to:from:date:mime-version; s=
-	dkim; t=1689673740; x=1692265741; bh=TctDzT3+olxS6nLFPLTr5LbWtg7
-	6T8LYhZ06EKd/PLQ=; b=iwXsN1BNAlju4Hudv35Whm8PobGEb/b+glPxZrfet6k
-	gZpqxiSudO2IBfH2CO9kYr3uvIc+DlkRgf7FPPMdoR841l4ZOU6nfdXWFBEBXywy
-	XhczobeD4g6cUCCvYPXKsn3U7CuKr5dgLe7F1Aw15Ts9gTDHgt7pAdy9ANhBvVj3
-	VFvO06H7SybSqlgdME5W6qU2VmZsrJDAiL1HeRboV2MoSpVThKh42tf06m75+Eze
-	kdzPo5mV41rh4DaSy0/xEVjb7REu4cVYkIHQ5e3o/NBV/RgFYo4jdsNrLMFZT2Kv
-	rGuL2/dYzyQXXpG+PVW/l06wtPQcB7FIX1XhaNKoIEw==
-X-Virus-Scanned: amavisd-new at mail.208.org
-Received: from mail.208.org ([127.0.0.1])
-	by mail.208.org (mail.208.org [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id zR8Y-RUy1gZa for <linuxppc-dev@lists.ozlabs.org>;
-	Tue, 18 Jul 2023 17:49:00 +0800 (CST)
-Received: from localhost (email.208.org [127.0.0.1])
-	by mail.208.org (Postfix) with ESMTPSA id 4R4vKl6WKqzBJBfd;
-	Tue, 18 Jul 2023 17:48:59 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4vkZ1yVfz2xbC
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 20:07:00 +1000 (AEST)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1qLhbX-0002Vt-7x; Tue, 18 Jul 2023 12:06:51 +0200
+Message-ID: <f5e6258b-ba76-001b-4942-588f4cbb0aa7@leemhuis.info>
+Date: Tue, 18 Jul 2023 12:06:50 +0200
 MIME-Version: 1.0
-Date: Tue, 18 Jul 2023 17:48:59 +0800
-From: hanyu001@208suo.com
-To: benh@kernel.crashing.org, mpe@ellerman.id.au, npiggin@gmail.com,
- christophe.leroy@csgroup.eu, windhl@126.com
-Subject: [PATCH] platforms: powermac: insert space before the open parenthesis
- '('
-In-Reply-To: <tencent_EA51887C68AF6A7DCE5504EAAB3F2AB5C609@qq.com>
-References: <tencent_EA51887C68AF6A7DCE5504EAAB3F2AB5C609@qq.com>
-User-Agent: Roundcube Webmail
-Message-ID: <a475a9b5702e1044296209daec102e69@208suo.com>
-X-Sender: hanyu001@208suo.com
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: linux-next: Tree for Jul 13 (drivers/video/fbdev/ps3fb.c)
+Content-Language: en-US, de-DE
+To: Bagas Sanjaya <bagasdotme@gmail.com>, Randy Dunlap
+ <rdunlap@infradead.org>, Thomas Zimmermann <tzimmermann@suse.de>
+References: <20230713123710.5d7d81e4@canb.auug.org.au>
+ <ccc63065-2976-88ef-1211-731330bf2866@infradead.org>
+ <ZLYHtVuS7AElXcCb@debian.me>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+In-Reply-To: <ZLYHtVuS7AElXcCb@debian.me>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1689674822;a2b58dee;
+X-HE-SMSGID: 1qLhbX-0002Vt-7x
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,42 +48,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>, linux-fbdev@vger.kernel.org, Linux Regressions <regressions@lists.linux.dev>, Helge Deller <deller@gmx.de>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Javier Martinez Canillas <javierm@redhat.com>, Linux Next Mailing List <linux-next@vger.kernel.org>, Linux PowerPC <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fixes checkpatch errors:
+On 18.07.23 05:32, Bagas Sanjaya wrote:
+> On Thu, Jul 13, 2023 at 09:11:10AM -0700, Randy Dunlap wrote:
+>> On 7/12/23 19:37, Stephen Rothwell wrote:
+>>> Changes since 20230712:
+>>
+>> on ppc64:
+>>
+>> In file included from ../include/linux/device.h:15,
+>>                  from ../arch/powerpc/include/asm/io.h:22,
+>>                  from ../include/linux/io.h:13,
+>>                  from ../include/linux/irq.h:20,
+>>                  from ../arch/powerpc/include/asm/hardirq.h:6,
+>>                  from ../include/linux/hardirq.h:11,
+>>                  from ../include/linux/interrupt.h:11,
+>>                  from ../drivers/video/fbdev/ps3fb.c:25:
+>> ../drivers/video/fbdev/ps3fb.c: In function 'ps3fb_probe':
+>> ../drivers/video/fbdev/ps3fb.c:1172:40: error: 'struct fb_info' has no member named 'dev'
+>>  1172 |                  dev_driver_string(info->dev), dev_name(info->dev),
+>>       |                                        ^~
+>> ../include/linux/dev_printk.h:110:37: note: in definition of macro 'dev_printk_index_wrap'
+>>   110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
+>>       |                                     ^~~~~~~~~~~
+>> ../drivers/video/fbdev/ps3fb.c:1171:9: note: in expansion of macro 'dev_info'
+>>  1171 |         dev_info(info->device, "%s %s, using %u KiB of video memory\n",
+>>       |         ^~~~~~~~
+>> ../drivers/video/fbdev/ps3fb.c:1172:61: error: 'struct fb_info' has no member named 'dev'
+>>  1172 |                  dev_driver_string(info->dev), dev_name(info->dev),
+>>       |                                                             ^~
+>> ../include/linux/dev_printk.h:110:37: note: in definition of macro 'dev_printk_index_wrap'
+>>   110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
+>>       |                                     ^~~~~~~~~~~
+>> ../drivers/video/fbdev/ps3fb.c:1171:9: note: in expansion of macro 'dev_info'
+>>  1171 |         dev_info(info->device, "%s %s, using %u KiB of video memory\n",
+>>       |         ^~~~~~~~
+> 
+> Hmm, there is no response from Thomas yet. I guess we should go with
+> reverting bdb616479eff419, right?
 
-/platforms/powermac/low_i2c.c:55:ERROR: space required before the open 
-parenthesis '('
-/platforms/powermac/low_i2c.c:63:ERROR: space required before the open 
-parenthesis '('
+I'm missing something here:
 
-Signed-off-by: Yu Han <hanyu001@208suo.com>
----
-  arch/powerpc/platforms/powermac/low_i2c.c | 4 ++--
-  1 file changed, 2 insertions(+), 2 deletions(-)
+* What makes you think this is caused by bdb616479eff419? I didn't see
+anything in the thread that claims this, but I might be missing something
+* related: if I understand Randy right, this is only happening in -next;
+so why is bdb616479eff419 the culprit, which is also in mainline since
+End of June?
 
-diff --git a/arch/powerpc/platforms/powermac/low_i2c.c 
-b/arch/powerpc/platforms/powermac/low_i2c.c
-index 40f3aa432fba..25cc6eec962f 100644
---- a/arch/powerpc/platforms/powermac/low_i2c.c
-+++ b/arch/powerpc/platforms/powermac/low_i2c.c
-@@ -52,7 +52,7 @@
-  #ifdef DEBUG
-  #define DBG(x...) do {\
-          printk(KERN_DEBUG "low_i2c:" x);    \
--    } while(0)
-+    } while (0)
-  #else
-  #define DBG(x...)
-  #endif
-@@ -60,7 +60,7 @@
-  #ifdef DEBUG_LOW
-  #define DBG_LOW(x...) do {\
-          printk(KERN_DEBUG "low_i2c:" x);    \
--    } while(0)
-+    } while (0)
-  #else
-  #define DBG_LOW(x...)
-  #endif
+And asking for a revert already is a bit jumping the gun; sure, it would
+be good to get this fixed, but remember: developers have a lot on their
+plate and thus sometimes are forced to set priorities; they also
+sometimes go on vacation or are afk for other reasons; and sometimes
+they just miss a mail or two. These are just a few reasons why there
+might be good reasons why Thomas didn't look into this yet, hence please
+first ask really kindly before asking for a revert.
+
+Ciao, Thorsten
