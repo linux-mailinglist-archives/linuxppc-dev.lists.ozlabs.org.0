@@ -2,59 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05882757252
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 05:31:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B02175725D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 05:34:34 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HGUx2eqf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=ZEPFLg7r;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R4kyh6kJgz30h8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 13:31:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R4l1h11ssz3ck0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 13:34:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HGUx2eqf;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=ZEPFLg7r;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42d; helo=mail-pf1-x42d.google.com; envelope-from=bagasdotme@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4kxl2SqRz2yVX
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 13:31:01 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689651068; x=1721187068;
-  h=date:from:to:cc:subject:message-id;
-  bh=ATix8w2R9LytWNP04dskjJ0g091AoBfp1d/K/DZSk+0=;
-  b=HGUx2eqfH8DubXqYihVUWd5QvB15tqzDkWhkaVx85jgQRcFW5p6m2pmw
-   z/gMKbJ9Cr6XoGPSE86O+diPVxll+xViEm4X7O+q45ZZiLruN8AYuedAm
-   3BB4H9eZ80x7KyX7diKN8HwqcOp0gqvLr9oB4aQPdJiQt6Ym8Nearhgmt
-   lkCeAsn2WsfNCFxSptQCsMTI88rdIzHi5EXbQK2YnO96Z9w9GhbhRO9P8
-   +fBbq/79EKOLPP6EC7D6SWLxx9vIpY367Y4VItdVHWkm3hzfI9TJ7XsAC
-   hAvKlRZYAHbVZmOe039mrWYqenS26xMzP5iW2FykyLudwpc2KOgQ8GA+F
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10774"; a="350960301"
-X-IronPort-AV: E=Sophos;i="6.01,213,1684825200"; 
-   d="scan'208";a="350960301"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2023 20:30:48 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10774"; a="847550414"
-X-IronPort-AV: E=Sophos;i="6.01,213,1684825200"; 
-   d="scan'208";a="847550414"
-Received: from lkp-server02.sh.intel.com (HELO 36946fcf73d7) ([10.239.97.151])
-  by orsmga004.jf.intel.com with ESMTP; 17 Jul 2023 20:30:47 -0700
-Received: from kbuild by 36946fcf73d7 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1qLbQE-00009u-29;
-	Tue, 18 Jul 2023 03:30:46 +0000
-Date: Tue, 18 Jul 2023 11:30:26 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD SUCCESS
- b059dfc41139ee194c9127b89dbea02afa409443
-Message-ID: <202307181124.VgDvtGZB-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4kz43njCz3bcH
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 13:32:15 +1000 (AEST)
+Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-666eec46206so5327632b3a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jul 2023 20:32:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689651130; x=1692243130;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qsCgfp2s3CRfk6nv+x0Mk0r1Oznh1MYu4hj6PzpztDM=;
+        b=ZEPFLg7rh5L4b7krkym5Ya+3jpyqEqMmL/f2boSjPTpbBG26VM+k7464Jo5583X0SD
+         a1Hw0wjSHGPNytPVL9TwTmmRBuq54jqOx6viOG/XyfQinG8Bjmw5k9NRMeQwdVcqYJuw
+         +Lm5xtcuXeY9RnnUpmW1s1zhsxPisZtikjU9KUPopAYpCiR82uGhq4dgb81vUAKKYm5x
+         rDIpRedktdlIfSkhJkVC7cTqJoWL1XbBorpIdJ9NtHJXVyiU17Nn/QlU9ya6Ad6aEYVA
+         Rx4Fffm3aba7pO1PPklVrsRr1dy1uTyApY745rTX/ZTXC7zxlXgsm+ya1+HKpNg50sMF
+         bhTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689651130; x=1692243130;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qsCgfp2s3CRfk6nv+x0Mk0r1Oznh1MYu4hj6PzpztDM=;
+        b=esFBAqP0uNYTpFLwv5s4I7JTNqpcFew4DWFTh7PXDhrIsCUSgTirI1NLl2qJAkpTnD
+         qXqD1Lr7g9/rYeIRkCr4CBCPudfmLzmLblWnWUT9jiPkOQoRNYWtMuwdA/zYIgyIwMca
+         4E2ghX3iLQclctSqvirOt/iZhfB9mHQHyfuiUyPIMrLKUBGHvfiZofyMz7jov1n08IPj
+         6NVrMwW9aVL44WCUjFKOB84WgTBAYfElZD3QjHm4XuiEwCM69WnRu127V4wmvY2E7fy2
+         dYL1u0gXdk1QGCjR6jodSaIGb8FFmhkZwxzd+qKY9dgczI+m7/AjpZ48fTgRv6TiYLEL
+         OoQQ==
+X-Gm-Message-State: ABy/qLaQfXZPRukHqkS69dB76ar/z1EbiCgVFvg3g6jpYiSdPHKM4N0x
+	Cr/AzqiKOW0Xhit1i15XzZc=
+X-Google-Smtp-Source: APBJJlFAwDoW4yADO2Pjd04stMQf1iujcnSKviiNjIZ3895AEfrruDatfQyAiKeDtImLL7XYcqiTtg==
+X-Received: by 2002:a05:6a21:7883:b0:133:215e:746d with SMTP id bf3-20020a056a21788300b00133215e746dmr17816681pzc.41.1689651130509;
+        Mon, 17 Jul 2023 20:32:10 -0700 (PDT)
+Received: from debian.me ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id j14-20020a170902758e00b001b9be2e2b3esm584344pll.277.2023.07.17.20.32.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Jul 2023 20:32:10 -0700 (PDT)
+Received: by debian.me (Postfix, from userid 1000)
+	id 5ED5E834F19C; Tue, 18 Jul 2023 10:32:05 +0700 (WIB)
+Date: Tue, 18 Jul 2023 10:32:05 +0700
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Randy Dunlap <rdunlap@infradead.org>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Linux Next Mailing List <linux-next@vger.kernel.org>
+Subject: Re: linux-next: Tree for Jul 13 (drivers/video/fbdev/ps3fb.c)
+Message-ID: <ZLYHtVuS7AElXcCb@debian.me>
+References: <20230713123710.5d7d81e4@canb.auug.org.au>
+ <ccc63065-2976-88ef-1211-731330bf2866@infradead.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ccc63065-2976-88ef-1211-731330bf2866@infradead.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,61 +82,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-fbdev@vger.kernel.org, Linux Regressions <regressions@lists.linux.dev>, Helge Deller <deller@gmx.de>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Javier Martinez Canillas <javierm@redhat.com>, Thomas Zimmermann <tzimmermann@suse.de>, Linux PowerPC <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
-branch HEAD: b059dfc41139ee194c9127b89dbea02afa409443  powerpc/64: Enable accelerated crypto algorithms in defconfig
+On Thu, Jul 13, 2023 at 09:11:10AM -0700, Randy Dunlap wrote:
+> 
+> 
+> On 7/12/23 19:37, Stephen Rothwell wrote:
+> > Hi all,
+> > 
+> > Changes since 20230712:
+> > 
+> 
+> on ppc64:
+> 
+> In file included from ../include/linux/device.h:15,
+>                  from ../arch/powerpc/include/asm/io.h:22,
+>                  from ../include/linux/io.h:13,
+>                  from ../include/linux/irq.h:20,
+>                  from ../arch/powerpc/include/asm/hardirq.h:6,
+>                  from ../include/linux/hardirq.h:11,
+>                  from ../include/linux/interrupt.h:11,
+>                  from ../drivers/video/fbdev/ps3fb.c:25:
+> ../drivers/video/fbdev/ps3fb.c: In function 'ps3fb_probe':
+> ../drivers/video/fbdev/ps3fb.c:1172:40: error: 'struct fb_info' has no member named 'dev'
+>  1172 |                  dev_driver_string(info->dev), dev_name(info->dev),
+>       |                                        ^~
+> ../include/linux/dev_printk.h:110:37: note: in definition of macro 'dev_printk_index_wrap'
+>   110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
+>       |                                     ^~~~~~~~~~~
+> ../drivers/video/fbdev/ps3fb.c:1171:9: note: in expansion of macro 'dev_info'
+>  1171 |         dev_info(info->device, "%s %s, using %u KiB of video memory\n",
+>       |         ^~~~~~~~
+> ../drivers/video/fbdev/ps3fb.c:1172:61: error: 'struct fb_info' has no member named 'dev'
+>  1172 |                  dev_driver_string(info->dev), dev_name(info->dev),
+>       |                                                             ^~
+> ../include/linux/dev_printk.h:110:37: note: in definition of macro 'dev_printk_index_wrap'
+>   110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
+>       |                                     ^~~~~~~~~~~
+> ../drivers/video/fbdev/ps3fb.c:1171:9: note: in expansion of macro 'dev_info'
+>  1171 |         dev_info(info->device, "%s %s, using %u KiB of video memory\n",
+>       |         ^~~~~~~~
+> 
+> 
 
-elapsed time: 796m
+Hmm, there is no response from Thomas yet. I guess we should go with
+reverting bdb616479eff419, right? Regardless, I'm adding this build regression
+to regzbot so that parties involved are aware of it:
 
-configs tested: 38
-configs skipped: 145
+#regzbot ^introduced: bdb616479eff419
+#regzbot title: build regression in PS3 framebuffer
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-arc                              allyesconfig   gcc  
-arm                          pxa910_defconfig   gcc  
-arm                        realview_defconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                        m5272c3_defconfig   gcc  
-m68k                        stmark2_defconfig   gcc  
-mips                             allmodconfig   gcc  
-powerpc                     akebono_defconfig   clang
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                     asp8347_defconfig   gcc  
-powerpc                       eiger_defconfig   gcc  
-powerpc                       maple_defconfig   gcc  
-powerpc                      ppc40x_defconfig   gcc  
-powerpc                         ps3_defconfig   gcc  
-powerpc              randconfig-r023-20230717   gcc  
-powerpc              randconfig-r026-20230717   gcc  
-sh                          lboxre2_defconfig   gcc  
-sh                   rts7751r2dplus_defconfig   gcc  
-sh                          sdk7786_defconfig   gcc  
-sh                   sh7724_generic_defconfig   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-x86_64                           allyesconfig   gcc  
-x86_64               randconfig-x002-20230717   gcc  
-x86_64               randconfig-x003-20230717   gcc  
-x86_64               randconfig-x004-20230717   gcc  
-x86_64               randconfig-x005-20230717   gcc  
-x86_64               randconfig-x006-20230717   gcc  
-x86_64               randconfig-x011-20230717   clang
-x86_64               randconfig-x012-20230717   clang
-x86_64               randconfig-x013-20230717   clang
-x86_64               randconfig-x014-20230717   clang
-x86_64               randconfig-x015-20230717   clang
-x86_64               randconfig-x016-20230717   clang
+Thanks.
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+An old man doll... just what I always wanted! - Clara
