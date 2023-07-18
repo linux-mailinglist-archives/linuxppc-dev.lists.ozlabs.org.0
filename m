@@ -2,95 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04A46757801
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 11:28:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B665757804
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 11:29:18 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aNWkkgM1;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aNWkkgM1;
+	dkim=fail reason="unknown key version" header.d=208.org header.i=@208.org header.a=rsa-sha256 header.s=dkim header.b=FfPFpEqK;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R4tsp6kQdz3bNj
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 19:28:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R4ttz6ZHfz3btp
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 19:29:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aNWkkgM1;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aNWkkgM1;
+	dkim=fail reason="unknown key version" header.d=208.org header.i=@208.org header.a=rsa-sha256 header.s=dkim header.b=FfPFpEqK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pabeni@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=208suo.com (client-ip=183.242.55.162; helo=mail.208.org; envelope-from=hanyu001@208suo.com; receiver=lists.ozlabs.org)
+Received: from mail.208.org (unknown [183.242.55.162])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4trr3n9fz2yFQ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 19:27:23 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1689672440;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=z0vyMeOfw7fSC/qxKnZBBj+xlz8lL8pZMksMNnnuzCg=;
-	b=aNWkkgM1zBvg1Olgb8tQO1tWVVgta2f3XE74q2uzWP1njdDnD1kGY12QJI1cwqEBa3f0RJ
-	59jnx+cYA4Q8OLQR+0+91TO34bhFFicbunH/26hmCvTpS/rM5LYSUd2g1K/d6PZOop6mpL
-	uDY/OuISDndlApBvxQkxedn8zIsb4SQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1689672440;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=z0vyMeOfw7fSC/qxKnZBBj+xlz8lL8pZMksMNnnuzCg=;
-	b=aNWkkgM1zBvg1Olgb8tQO1tWVVgta2f3XE74q2uzWP1njdDnD1kGY12QJI1cwqEBa3f0RJ
-	59jnx+cYA4Q8OLQR+0+91TO34bhFFicbunH/26hmCvTpS/rM5LYSUd2g1K/d6PZOop6mpL
-	uDY/OuISDndlApBvxQkxedn8zIsb4SQ=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-384-f0lvSpZJOD-PXUnYdQlJ1Q-1; Tue, 18 Jul 2023 05:27:16 -0400
-X-MC-Unique: f0lvSpZJOD-PXUnYdQlJ1Q-1
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4032a3ad8c0so8395371cf.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 02:27:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689672436; x=1690277236;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=z0vyMeOfw7fSC/qxKnZBBj+xlz8lL8pZMksMNnnuzCg=;
-        b=MZpDatkfzhx2RBmX1Dhj4ozsMlJdd43RVHXaO8P+vWSNFywN5lV36w5Pw+gvD1U59e
-         UkmqxBIxCgWHhvG93RHn+gnGO0Y2sElPzDwQ1r0R0gvWAENkT42v+kw5JPwe8MAxy2H3
-         oT+rsWrotOefrjb1ygBW+XdGSxARK0OtA8ZomEUSrDHbKgH8zJGUncqwy3UpOi6kDc9y
-         fRzMTyKoFbJohRiLWpop0lQPQiVkM6wyG2nL27D6diSSZwuWwVHaVreh0CT0vXK2ow4H
-         gDk14D37CQXXw6NeA+Zzdc+/KGQ7LGT3UZiMOGv8UXTB+JJBwzKrD4dp/62t8khrRtgk
-         CV9w==
-X-Gm-Message-State: ABy/qLaymAgNKVFqZyZFVU/bgJZGyBLgS2pcvbHyoGI28B76ayzHKWJo
-	fIjq3WivY1X+7pDqJHTqK+/7LyTC90Pj17mSOYquSPM8eJYwKzDfkXkvpNoe3VQm0OkR5Dl/DYu
-	PWrn62NJSSuKNaSOkG9FpIuVZgQ==
-X-Received: by 2002:a05:6214:509d:b0:63c:7427:e7e9 with SMTP id kk29-20020a056214509d00b0063c7427e7e9mr12261354qvb.6.1689672436187;
-        Tue, 18 Jul 2023 02:27:16 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFYFNw7x3jThmvZICEe6iXFu0qG+zQql7vEpRKMvc0qVPxJUK7o8zW+ji84Z85dUEkIw+qD2g==
-X-Received: by 2002:a05:6214:509d:b0:63c:7427:e7e9 with SMTP id kk29-20020a056214509d00b0063c7427e7e9mr12261327qvb.6.1689672435965;
-        Tue, 18 Jul 2023 02:27:15 -0700 (PDT)
-Received: from gerbillo.redhat.com (146-241-226-170.dyn.eolo.it. [146.241.226.170])
-        by smtp.gmail.com with ESMTPSA id h10-20020a0cf20a000000b00635fc10afd6sm592785qvk.70.2023.07.18.02.27.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Jul 2023 02:27:15 -0700 (PDT)
-Message-ID: <ee31215ededd386eba19fb62b0de8d0bad78d687.camel@redhat.com>
-Subject: Re: [PATCH] net: Explicitly include correct DT includes
-From: Paolo Abeni <pabeni@redhat.com>
-To: Alex Elder <elder@ieee.org>, Rob Herring <robh@kernel.org>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>,  Alex Elder <elder@kernel.org>
-Date: Tue, 18 Jul 2023 11:27:10 +0200
-In-Reply-To: <1c6175fc-496a-843c-c8c5-2173e065eaa8@ieee.org>
-References: <20230714174809.4060885-1-robh@kernel.org>
-	 <1c6175fc-496a-843c-c8c5-2173e065eaa8@ieee.org>
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4tt75C2rz2yFQ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 19:28:30 +1000 (AEST)
+Received: from mail.208.org (email.208.org [127.0.0.1])
+	by mail.208.org (Postfix) with ESMTP id 4R4tsz4lHxzBR1PC
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 17:28:23 +0800 (CST)
+Authentication-Results: mail.208.org (amavisd-new); dkim=pass
+	reason="pass (just generated, assumed good)" header.d=208.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=208.org; h=
+	content-transfer-encoding:content-type:message-id:user-agent
+	:references:in-reply-to:subject:to:from:date:mime-version; s=
+	dkim; t=1689672503; x=1692264504; bh=hAS+grwZbIyw2t0g0PBTUpkLyXc
+	bK0qGakiu0DaoB3c=; b=FfPFpEqKrEKyiCQ9RAqBWlLjwXKzjMx7fzDngsHIZ+F
+	XRSjxeqcXxcSOk5rteA4BIQrD5zgFn4DMV1G/1tqOKnJ58eFuVucXOhuy2sKIT2p
+	Pv5tjf9WAzr+YZQF3bzRPVHc1QHUszlNayE2rBo3y8kmzW5TiyP+SUIExbvhVCWl
+	PYmHF+67YktZWq0u1UY5aky71qgwLfsoHMDEStBZZCfhbKb2oDCgHvNUWIu8FVAu
+	xRKwy2n549DbElboGJJO9yu+qMvCov36YCe22ErfHAm2PbM/5HVcojDwECCc3NRC
+	h3Nm/jNnGRZnXE0q9goSnaTLEIQmyNCYmFZvvy40wuA==
+X-Virus-Scanned: amavisd-new at mail.208.org
+Received: from mail.208.org ([127.0.0.1])
+	by mail.208.org (mail.208.org [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id YO-bTexOdzEm for <linuxppc-dev@lists.ozlabs.org>;
+	Tue, 18 Jul 2023 17:28:23 +0800 (CST)
+Received: from localhost (email.208.org [127.0.0.1])
+	by mail.208.org (Postfix) with ESMTPSA id 4R4tsz21h1zBJBfd;
+	Tue, 18 Jul 2023 17:28:23 +0800 (CST)
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Date: Tue, 18 Jul 2023 17:28:23 +0800
+From: hanyu001@208suo.com
+To: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu
+Subject: [PATCH] powerpc: platforms: chrp: Add require space after that ','
+In-Reply-To: <tencent_541AA1B260FC8E0892D6A696F01C5600AD05@qq.com>
+References: <tencent_541AA1B260FC8E0892D6A696F01C5600AD05@qq.com>
+User-Agent: Roundcube Webmail
+Message-ID: <8e586ffecc673079ad58045ddc6e3ea6@208suo.com>
+X-Sender: hanyu001@208suo.com
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,39 +69,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linux-omap@vger.kernel.org, linux-wireless@vger.kernel.org, netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, linux-kernel@vger.kernel.org, ath10k@lists.infradead.org, linux-can@vger.kernel.org, linux-renesas-soc@vger.kernel.org, linux-wpan@vger.kernel.org, linux-mediatek@lists.infradead.org, ath11k@lists.infradead.org, wcn36xx@lists.infradead.org, linux-tegra@vger.kernel.org, linux-amlogic@lists.infradead.org, linux-oxnas@groups.io, linuxppc-dev@lists.ozlabs.org, linux-sunxi@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+Fixes checkpatch errors:
 
-On Sat, 2023-07-15 at 10:11 -0500, Alex Elder wrote:
-> On 7/14/23 12:48 PM, Rob Herring wrote:
-> > The DT of_device.h and of_platform.h date back to the separate
-> > of_platform_bus_type before it as merged into the regular platform bus.
-> > As part of that merge prepping Arm DT support 13 years ago, they
-> > "temporarily" include each other. They also include platform_device.h
-> > and of.h. As a result, there's a pretty much random mix of those includ=
-e
-> > files used throughout the tree. In order to detangle these headers and
-> > replace the implicit includes with struct declarations, users need to
-> > explicitly include the correct includes.
-> >=20
-> > Signed-off-by: Rob Herring <robh@kernel.org>
->=20
-> (I significantly reduced the addressee list to permit the message
-> to be sent.)
->=20
-> For "drivers/net/ipa/ipa_main.c":
->=20
-> Acked-by: Alex Elder <elder@linaro.org>
+./arch/powerpc/platforms/chrp/time.c:109: ERROR: space required after 
+that ',' (ctx:VxV)
+./arch/powerpc/platforms/chrp/time.c:110: ERROR: space required after 
+that ',' (ctx:VxV)
+./arch/powerpc/platforms/chrp/time.c:111: ERROR: space required after 
+that ',' (ctx:VxV)
+./arch/powerpc/platforms/chrp/time.c:112: ERROR: space required after 
+that ',' (ctx:VxV)
+./arch/powerpc/platforms/chrp/time.c:113: ERROR: space required after 
+that ',' (ctx:VxV)
+./arch/powerpc/platforms/chrp/time.c:114: ERROR: space required after 
+that ',' (ctx:VxV)
 
-The patch does not apply cleanly to net-next. Rob, could you please re-
-spin it? While at that, have you considered splitting it in a few
-smaller patches (e.g. can, dsa, freescale, ibm, marvel, mediatek,
-stmmicro,  sun, ti, xilinx, wireless, remaining)?
+Signed-off-by: Yu Han <hanyu001@208suo.com>
+---
+  arch/powerpc/platforms/chrp/time.c | 12 ++++++------
+  1 file changed, 6 insertions(+), 6 deletions(-)
 
-Thanks!
+diff --git a/arch/powerpc/platforms/chrp/time.c 
+b/arch/powerpc/platforms/chrp/time.c
+index d46417e3d8e0..6bd40be22c33 100644
+--- a/arch/powerpc/platforms/chrp/time.c
++++ b/arch/powerpc/platforms/chrp/time.c
+@@ -106,12 +106,12 @@ int chrp_set_rtc_time(struct rtc_time *tmarg)
+          tm.tm_mday = bin2bcd(tm.tm_mday);
+          tm.tm_year = bin2bcd(tm.tm_year);
+      }
+-    chrp_cmos_clock_write(tm.tm_sec,RTC_SECONDS);
+-    chrp_cmos_clock_write(tm.tm_min,RTC_MINUTES);
+-    chrp_cmos_clock_write(tm.tm_hour,RTC_HOURS);
+-    chrp_cmos_clock_write(tm.tm_mon,RTC_MONTH);
+-    chrp_cmos_clock_write(tm.tm_mday,RTC_DAY_OF_MONTH);
+-    chrp_cmos_clock_write(tm.tm_year,RTC_YEAR);
++    chrp_cmos_clock_write(tm.tm_sec, RTC_SECONDS);
++    chrp_cmos_clock_write(tm.tm_min, RTC_MINUTES);
++    chrp_cmos_clock_write(tm.tm_hour, RTC_HOURS);
++    chrp_cmos_clock_write(tm.tm_mon, RTC_MONTH);
++    chrp_cmos_clock_write(tm.tm_mday, RTC_DAY_OF_MONTH);
++    chrp_cmos_clock_write(tm.tm_year, RTC_YEAR);
 
-Paolo
-
+      /* The following flags have to be released exactly in this order,
+       * otherwise the DS12887 (popular MC146818A clone with integrated
