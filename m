@@ -1,91 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F8947571CA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 04:33:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94C497571CE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 04:34:28 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aV7G7Sk9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fOOqaKKe;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R4jgP6qMZz3cbR
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 12:33:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R4jhL3Y2Cz3cl2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 12:34:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aV7G7Sk9;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fOOqaKKe;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4jbg4PJ0z2yFD
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 12:30:23 +1000 (AEST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36I2HuA9004145;
-	Tue, 18 Jul 2023 02:30:04 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4jbk4Rsbz2ytp
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 12:30:26 +1000 (AEST)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36I2PsES019814;
+	Tue, 18 Jul 2023 02:30:09 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=T4CIGxYsn2ZY3t+396XjS8G0EOxy7nPVMwImDAF6xkk=;
- b=aV7G7Sk92L5cCffO7oaWU1WZDx3RAYvqD0DSkwBhZLx1KksZWleRqr40/ZBsYzdbsnnP
- fx8B4U2Yb3Ib+HyoxVVkZli4nH3RW+x8IWDMRADo5UApuDdHKdHaogkv3hP8cxZ7+y1n
- sn5hoErbAUKSFaPXhpkC6ht+bGDCcgvfKl8h7h8U/U2fN/xrTYHLBNvXyIsoP+C6neQ8
- ua1qmBZv+K9XJ1EgpA0iDZ2eM5iY5W+x29xqnPa8jijuQmgdsVuwLh5qBcEByCsRHou6
- GgGVozxoClEpSNoZikEhYmrjJghi4+3RqF5AJzhWVZ/xH2ZBAO+7C/AZcJvCptfhILYQ aw== 
+ bh=LTGdpg9vP6Z9t1EVUl4AJKSRgiUAw7qTPzDp7kO8kxk=;
+ b=fOOqaKKeUVbNSYSyOIz15caFNgpr9X/B4xcsQ79d3LscgFfgQAmVkqeC+F8JpfHtshS3
+ QES+6dFP9cUOT5C/2S8yUpKRBSJ0AIEHQvplTWwFfqSF9Lqal/yxB3Cs1+G+IB1LqJLp
+ uzt5HBp1UJAgLsQDP9wN5MCWzNjOszrdx0IrmYtRU9QR06cJidg00uSTj2euHx7zq8Zt
+ Gqn3FFIXuSYR1EEyAnPCMEg0hOAYkGpytu6ioqvonlyrJuuAvuw/+pul1eVtas1cnncL
+ bjc/g2eb70BjvBEqhsmNdf6PJg2VNunJzm8wQ55wOIWGYZcdg7FvaqQVtLRj66cMLmV/ ig== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rwhu0g66n-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rwhxv02kj-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Jul 2023 02:30:02 +0000
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36I2KYo0009773;
-	Tue, 18 Jul 2023 02:30:02 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rwhu0g668-1
+	Tue, 18 Jul 2023 02:30:08 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36I2Q47c020496;
+	Tue, 18 Jul 2023 02:30:08 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rwhxv02jy-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Jul 2023 02:30:02 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36I0UBak004479;
-	Tue, 18 Jul 2023 02:30:01 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3rv8g0vhx7-1
+	Tue, 18 Jul 2023 02:30:08 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36HJpfAZ031282;
+	Tue, 18 Jul 2023 02:30:07 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3rv79jhgw8-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Jul 2023 02:30:01 +0000
+	Tue, 18 Jul 2023 02:30:07 +0000
 Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36I2U1lY36176292
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36I2U7un29491816
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 18 Jul 2023 02:30:01 GMT
+	Tue, 18 Jul 2023 02:30:07 GMT
 Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 10A355806D;
+	by IMSVA (Postfix) with ESMTP id DD3D258057;
+	Tue, 18 Jul 2023 02:30:06 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A251B58063;
 	Tue, 18 Jul 2023 02:30:01 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 073275805D;
-	Tue, 18 Jul 2023 02:29:56 +0000 (GMT)
 Received: from skywalker.ibmuc.com (unknown [9.43.62.199])
 	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 18 Jul 2023 02:29:55 +0000 (GMT)
+	Tue, 18 Jul 2023 02:30:01 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: linux-mm@kvack.org, akpm@linux-foundation.org, mpe@ellerman.id.au,
         linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
         christophe.leroy@csgroup.eu
-Subject: [PATCH v5 03/13] mm/vmemmap: Improve vmemmap_can_optimize and allow architectures to override
-Date: Tue, 18 Jul 2023 07:59:23 +0530
-Message-ID: <20230718022934.90447-4-aneesh.kumar@linux.ibm.com>
+Subject: [PATCH v5 04/13] mm/vmemmap: Allow architectures to override how vmemmap optimization works
+Date: Tue, 18 Jul 2023 07:59:24 +0530
+Message-ID: <20230718022934.90447-5-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230718022934.90447-1-aneesh.kumar@linux.ibm.com>
 References: <20230718022934.90447-1-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: H-niJDl6tndVBlgUkGFBwAfDB0akcG6a
-X-Proofpoint-ORIG-GUID: Yn_dCHohjLvOGRxGviNHvSMLo4qaEfB_
+X-Proofpoint-GUID: 4F2PEm_-2Xa0PIbil-uLAoe49QfY84es
+X-Proofpoint-ORIG-GUID: 6D-tzirphg-NKheSGEm5AarzoEFL2Frd
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-07-17_15,2023-07-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 spamscore=0
- clxscore=1015 mlxlogscore=999 malwarescore=0 suspectscore=0 mlxscore=0
- priorityscore=1501 impostorscore=0 bulkscore=0 lowpriorityscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ priorityscore=1501 mlxscore=0 bulkscore=0 clxscore=1015 impostorscore=0
+ adultscore=0 phishscore=0 spamscore=0 malwarescore=0 mlxlogscore=999
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2306200000 definitions=main-2307180017
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -102,75 +102,37 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, Muchun Song <muchun.song@linux.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-dax vmemmap optimization requires a minimum of 2 PAGE_SIZE area within
-vmemmap such that tail page mapping can point to the second PAGE_SIZE area.
-Enforce that in vmemmap_can_optimize() function.
+Architectures like powerpc will like to use different page table allocators
+and mapping mechanisms to implement vmemmap optimization. Similar to
+vmemmap_populate allow architectures to implement
+vmemap_populate_compound_pages
 
-Architectures like powerpc also want to enable vmemmap optimization
-conditionally (only with radix MMU translation). Hence allow architecture
-override.
-
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- include/linux/mm.h | 27 +++++++++++++++++++++++----
- mm/mm_init.c       |  2 +-
- 2 files changed, 24 insertions(+), 5 deletions(-)
+ mm/sparse-vmemmap.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 2dd73e4f3d8e..1a2234ee14d2 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3639,13 +3639,32 @@ void vmemmap_free(unsigned long start, unsigned long end,
- 		struct vmem_altmap *altmap);
- #endif
- 
-+#define VMEMMAP_RESERVE_NR	2
- #ifdef CONFIG_ARCH_WANT_OPTIMIZE_VMEMMAP
--static inline bool vmemmap_can_optimize(struct vmem_altmap *altmap,
--					   struct dev_pagemap *pgmap)
-+static inline bool __vmemmap_can_optimize(struct vmem_altmap *altmap,
-+					  struct dev_pagemap *pgmap)
- {
--	return is_power_of_2(sizeof(struct page)) &&
--		pgmap && (pgmap_vmemmap_nr(pgmap) > 1) && !altmap;
-+	unsigned long nr_pages;
-+	unsigned long nr_vmemmap_pages;
-+
-+	if (!pgmap || !is_power_of_2(sizeof(struct page)))
-+		return false;
-+
-+	nr_pages = pgmap_vmemmap_nr(pgmap);
-+	nr_vmemmap_pages = ((nr_pages * sizeof(struct page)) >> PAGE_SHIFT);
-+	/*
-+	 * For vmemmap optimization with DAX we need minimum 2 vmemmap
-+	 * pages. See layout diagram in Documentation/mm/vmemmap_dedup.rst
-+	 */
-+	return !altmap && (nr_vmemmap_pages > VMEMMAP_RESERVE_NR);
+diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+index a044a130405b..a2cbe44c48e1 100644
+--- a/mm/sparse-vmemmap.c
++++ b/mm/sparse-vmemmap.c
+@@ -358,6 +358,7 @@ int __meminit vmemmap_populate_hugepages(unsigned long start, unsigned long end,
+ 	return 0;
  }
-+/*
-+ * If we don't have an architecture override, use the generic rule
-+ */
-+#ifndef vmemmap_can_optimize
-+#define vmemmap_can_optimize __vmemmap_can_optimize
+ 
++#ifndef vmemmap_populate_compound_pages
+ /*
+  * For compound pages bigger than section size (e.g. x86 1G compound
+  * pages with 2M subsection size) fill the rest of sections as tail
+@@ -446,6 +447,8 @@ static int __meminit vmemmap_populate_compound_pages(unsigned long start_pfn,
+ 	return 0;
+ }
+ 
 +#endif
 +
- #else
- static inline bool vmemmap_can_optimize(struct vmem_altmap *altmap,
- 					   struct dev_pagemap *pgmap)
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index a1963c3322af..245ac69b66a5 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -1020,7 +1020,7 @@ static inline unsigned long compound_nr_pages(struct vmem_altmap *altmap,
- 	if (!vmemmap_can_optimize(altmap, pgmap))
- 		return pgmap_vmemmap_nr(pgmap);
- 
--	return 2 * (PAGE_SIZE / sizeof(struct page));
-+	return VMEMMAP_RESERVE_NR * (PAGE_SIZE / sizeof(struct page));
- }
- 
- static void __ref memmap_init_compound(struct page *head,
+ struct page * __meminit __populate_section_memmap(unsigned long pfn,
+ 		unsigned long nr_pages, int nid, struct vmem_altmap *altmap,
+ 		struct dev_pagemap *pgmap)
 -- 
 2.41.0
 
