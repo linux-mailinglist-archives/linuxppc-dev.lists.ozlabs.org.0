@@ -1,55 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C6B5757CE7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 15:09:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 674A3757CED
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 15:10:32 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Jx99k83l;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZiqeV+Bn;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R4zn93LBdz3dD6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 23:09:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R4zpG2KLfz3dXS
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 23:10:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Jx99k83l;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZiqeV+Bn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4zZV2NpLz3bXH
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 23:00:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4zZZ5Rppz3bZ4
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 23:00:22 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id AA2FE61593;
-	Tue, 18 Jul 2023 13:00:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A5AEC433C9;
-	Tue, 18 Jul 2023 13:00:11 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 0BC1861582;
+	Tue, 18 Jul 2023 13:00:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 178C6C433CA;
+	Tue, 18 Jul 2023 13:00:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1689685215;
-	bh=/qQ5zVEDSQWgAAFuZ3X4YFEm+OAHRe8ZGR+DuY6dhnM=;
+	s=k20201202; t=1689685220;
+	bh=M7WgPUSIPoeRnhagLleZw11JZUjXzh7EjhC9ItdylhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jx99k83lQTosnEHIoqMPL/v8Bcu8QRVWYXkMeIHwWA0/2ffcR8hW88jOogx+7sbs2
-	 Oo0pYl+hIX4Pp22IFS4oa4moekRcfNQR08hTZRALfNVDK3/pqs25UAlPVlXZLlP6+q
-	 EpJutwNEnIA3Kw/vQkY38tASNdoCxNS9tY223solGfyGasrwwptAjoZTGe48e0h+zI
-	 TPSrbDUlsOM7TUNxUydKXy3WngrJOdvZAQOzSQ1TYX6m3kWmykBY+K8EtgbRlW6QZu
-	 C2p+dkrPWItiJW8Awli+goF89CkHLWZIblno2gdx8bL3KgdPNOpqvgiG51Hlqcq692
-	 niwAFwT5xfQYw==
+	b=ZiqeV+BnZp3cLfA0MbxVPtz12ltzOoRSGxIORn0Gi//Rft3vveQhu0SjmWQWBCr6y
+	 CimWcYY2BnWLFZOpS1dkdgCF5KhOgCmOumRRbE3tgC1vamXZSIUoCzOjWeBAuvHkoT
+	 bmlK9VgojWthOUgQshf1e6xPJkY34b9KQAf7cy1o1KkiB1KulcsBBCsvs+QENZM6tU
+	 WJdFfgfWftd+tcznULjDoG+tps1F3jrdnP95FxyqkRnzApk8jXjonDy+83onKlSagl
+	 gyS7vLkWPZ7ChOnN1uQz9FZv57FvLZY/5pbGnW1DEoxc/JNtoaCd0DVyc0khrwyZ3h
+	 Nq8L4k3r0uh1w==
 From: Ard Biesheuvel <ardb@kernel.org>
 To: linux-crypto@vger.kernel.org
-Subject: [RFC PATCH 10/21] crypto: 842 - drop obsolete 'comp' implementation
-Date: Tue, 18 Jul 2023 14:58:36 +0200
-Message-Id: <20230718125847.3869700-11-ardb@kernel.org>
+Subject: [RFC PATCH 11/21] crypto: deflate - drop obsolete 'comp' implementation
+Date: Tue, 18 Jul 2023 14:58:37 +0200
+Message-Id: <20230718125847.3869700-12-ardb@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230718125847.3869700-1-ardb@kernel.org>
 References: <20230718125847.3869700-1-ardb@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3099; i=ardb@kernel.org; h=from:subject; bh=/qQ5zVEDSQWgAAFuZ3X4YFEm+OAHRe8ZGR+DuY6dhnM=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIWVbT+X11++23f3U8DQ/9SjHpLTS1Zpciya+eWBSvZ27J L2uX6K1o5SFQYyDQVZMkUVg9t93O09PlKp1niULM4eVCWQIAxenAExkhyjDf8+UdoabXwN4JvLV Kytb6q24N/1Ktl310bavz+7GLps7dS3DPxW9sh8cy1YXXAkw+/uyssR275cJZ4TP/Ptjmnv63AW eaGYA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3314; i=ardb@kernel.org; h=from:subject; bh=M7WgPUSIPoeRnhagLleZw11JZUjXzh7EjhC9ItdylhI=; b=owGbwMvMwCFmkMcZplerG8N4Wi2JIWVbT9Vz0SiZCzNmlVRdnKSfvtS574N93b97iX832bmU3 QlKyPrVUcrCIMbBICumyCIw+++7nacnStU6z5KFmcPKBDKEgYtTACYivYGRoYGZ/d62qVNZEw5b bVxzpfjx1dxEiRczJu3OYWisXWV4xZKRof3PC46/975fuv+B+8HuefcX7pyd+fLPBHOJ5XPWmt0 6Ks8GAA==
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -67,95 +67,99 @@ Cc: Giovanni Cabiddu <giovanni.cabiddu@intel.com>, Eric Dumazet <edumazet@google
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The 'comp' API is obsolete and will be removed, so remove this comp
-implementation.
+No users of the obsolete 'comp' crypto compression API remain, so let's
+drop the software deflate version of it.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- crypto/842.c | 63 +-------------------
- 1 file changed, 1 insertion(+), 62 deletions(-)
+ crypto/deflate.c | 58 +-------------------
+ 1 file changed, 1 insertion(+), 57 deletions(-)
 
-diff --git a/crypto/842.c b/crypto/842.c
-index e59e54d769609ba6..5001d88cf727f74e 100644
---- a/crypto/842.c
-+++ b/crypto/842.c
-@@ -39,38 +39,11 @@ static void *crypto842_alloc_ctx(struct crypto_scomp *tfm)
+diff --git a/crypto/deflate.c b/crypto/deflate.c
+index f4f127078fe2a5aa..0955040ca9e64146 100644
+--- a/crypto/deflate.c
++++ b/crypto/deflate.c
+@@ -130,13 +130,6 @@ static void *deflate_alloc_ctx(struct crypto_scomp *tfm)
  	return ctx;
  }
  
--static int crypto842_init(struct crypto_tfm *tfm)
+-static int deflate_init(struct crypto_tfm *tfm)
 -{
--	struct crypto842_ctx *ctx = crypto_tfm_ctx(tfm);
+-	struct deflate_ctx *ctx = crypto_tfm_ctx(tfm);
 -
--	ctx->wmem = crypto842_alloc_ctx(NULL);
--	if (IS_ERR(ctx->wmem))
--		return -ENOMEM;
--
--	return 0;
+-	return __deflate_init(ctx);
 -}
 -
- static void crypto842_free_ctx(struct crypto_scomp *tfm, void *ctx)
+ static void __deflate_exit(void *ctx)
  {
- 	kfree(ctx);
+ 	deflate_comp_exit(ctx);
+@@ -149,13 +142,6 @@ static void deflate_free_ctx(struct crypto_scomp *tfm, void *ctx)
+ 	kfree_sensitive(ctx);
  }
  
--static void crypto842_exit(struct crypto_tfm *tfm)
+-static void deflate_exit(struct crypto_tfm *tfm)
 -{
--	struct crypto842_ctx *ctx = crypto_tfm_ctx(tfm);
+-	struct deflate_ctx *ctx = crypto_tfm_ctx(tfm);
 -
--	crypto842_free_ctx(NULL, ctx->wmem);
+-	__deflate_exit(ctx);
 -}
 -
--static int crypto842_compress(struct crypto_tfm *tfm,
--			      const u8 *src, unsigned int slen,
--			      u8 *dst, unsigned int *dlen)
--{
--	struct crypto842_ctx *ctx = crypto_tfm_ctx(tfm);
--
--	return sw842_compress(src, slen, dst, dlen, ctx->wmem);
--}
--
- static int crypto842_scompress(struct crypto_scomp *tfm,
- 			       const u8 *src, unsigned int slen,
- 			       u8 *dst, unsigned int *dlen, void *ctx)
-@@ -78,13 +51,6 @@ static int crypto842_scompress(struct crypto_scomp *tfm,
- 	return sw842_compress(src, slen, dst, dlen, ctx);
+ static int __deflate_compress(const u8 *src, unsigned int slen,
+ 			      u8 *dst, unsigned int *dlen, void *ctx)
+ {
+@@ -185,14 +171,6 @@ static int __deflate_compress(const u8 *src, unsigned int slen,
+ 	return ret;
  }
  
--static int crypto842_decompress(struct crypto_tfm *tfm,
--				const u8 *src, unsigned int slen,
--				u8 *dst, unsigned int *dlen)
+-static int deflate_compress(struct crypto_tfm *tfm, const u8 *src,
+-			    unsigned int slen, u8 *dst, unsigned int *dlen)
 -{
--	return sw842_decompress(src, slen, dst, dlen);
+-	struct deflate_ctx *dctx = crypto_tfm_ctx(tfm);
+-
+-	return __deflate_compress(src, slen, dst, dlen, dctx);
 -}
 -
- static int crypto842_sdecompress(struct crypto_scomp *tfm,
- 				 const u8 *src, unsigned int slen,
- 				 u8 *dst, unsigned int *dlen, void *ctx)
-@@ -92,20 +58,6 @@ static int crypto842_sdecompress(struct crypto_scomp *tfm,
- 	return sw842_decompress(src, slen, dst, dlen);
+ static int deflate_scompress(struct crypto_scomp *tfm, const u8 *src,
+ 			     unsigned int slen, u8 *dst, unsigned int *dlen,
+ 			     void *ctx)
+@@ -241,14 +219,6 @@ static int __deflate_decompress(const u8 *src, unsigned int slen,
+ 	return ret;
+ }
+ 
+-static int deflate_decompress(struct crypto_tfm *tfm, const u8 *src,
+-			      unsigned int slen, u8 *dst, unsigned int *dlen)
+-{
+-	struct deflate_ctx *dctx = crypto_tfm_ctx(tfm);
+-
+-	return __deflate_decompress(src, slen, dst, dlen, dctx);
+-}
+-
+ static int deflate_sdecompress(struct crypto_scomp *tfm, const u8 *src,
+ 			       unsigned int slen, u8 *dst, unsigned int *dlen,
+ 			       void *ctx)
+@@ -256,19 +226,6 @@ static int deflate_sdecompress(struct crypto_scomp *tfm, const u8 *src,
+ 	return __deflate_decompress(src, slen, dst, dlen, ctx);
  }
  
 -static struct crypto_alg alg = {
--	.cra_name		= "842",
--	.cra_driver_name	= "842-generic",
--	.cra_priority		= 100,
+-	.cra_name		= "deflate",
+-	.cra_driver_name	= "deflate-generic",
 -	.cra_flags		= CRYPTO_ALG_TYPE_COMPRESS,
--	.cra_ctxsize		= sizeof(struct crypto842_ctx),
+-	.cra_ctxsize		= sizeof(struct deflate_ctx),
 -	.cra_module		= THIS_MODULE,
--	.cra_init		= crypto842_init,
--	.cra_exit		= crypto842_exit,
+-	.cra_init		= deflate_init,
+-	.cra_exit		= deflate_exit,
 -	.cra_u			= { .compress = {
--	.coa_compress		= crypto842_compress,
--	.coa_decompress		= crypto842_decompress } }
+-	.coa_compress 		= deflate_compress,
+-	.coa_decompress  	= deflate_decompress } }
 -};
 -
  static struct scomp_alg scomp = {
- 	.alloc_ctx		= crypto842_alloc_ctx,
- 	.free_ctx		= crypto842_free_ctx,
-@@ -121,25 +73,12 @@ static struct scomp_alg scomp = {
+ 	.alloc_ctx		= deflate_alloc_ctx,
+ 	.free_ctx		= deflate_free_ctx,
+@@ -283,24 +240,11 @@ static struct scomp_alg scomp = {
  
- static int __init crypto842_mod_init(void)
+ static int __init deflate_mod_init(void)
  {
 -	int ret;
 -
@@ -172,14 +176,13 @@ index e59e54d769609ba6..5001d88cf727f74e 100644
 -	return ret;
 +	return crypto_register_scomp(&scomp);
  }
- subsys_initcall(crypto842_mod_init);
  
- static void __exit crypto842_mod_exit(void)
+ static void __exit deflate_mod_fini(void)
  {
 -	crypto_unregister_alg(&alg);
  	crypto_unregister_scomp(&scomp);
  }
- module_exit(crypto842_mod_exit);
+ 
 -- 
 2.39.2
 
