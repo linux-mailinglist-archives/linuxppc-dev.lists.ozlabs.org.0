@@ -1,57 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87A0D757482
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 08:42:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 970677575D3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 09:56:58 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=lVsAfqer;
+	dkim=fail reason="unknown key version" header.d=208.org header.i=@208.org header.a=rsa-sha256 header.s=dkim header.b=IHtLeQZU;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R4qBd37T2z30N2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 16:42:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R4rrS3X01z30PL
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 17:56:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=lVsAfqer;
+	dkim=fail reason="unknown key version" header.d=208.org header.i=@208.org header.a=rsa-sha256 header.s=dkim header.b=IHtLeQZU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::240; helo=mslow1.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 578 seconds by postgrey-1.37 at boromir; Tue, 18 Jul 2023 16:41:46 AEST
-Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [IPv6:2001:4b98:dc4:8::240])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=208suo.com (client-ip=183.242.55.162; helo=mail.208.org; envelope-from=hanyu001@208suo.com; receiver=lists.ozlabs.org)
+Received: from mail.208.org (unknown [183.242.55.162])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4q9k1yfkz300C
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 16:41:45 +1000 (AEST)
-Received: from relay7-d.mail.gandi.net (unknown [217.70.183.200])
-	by mslow1.mail.gandi.net (Postfix) with ESMTP id 980E4D0972
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 06:32:09 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id E080220008;
-	Tue, 18 Jul 2023 06:31:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1689661919;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RpKAtUiUinq9Lhw+v54h3QcTHPMMcdg2W9j58F9msCI=;
-	b=lVsAfqer8xWiySiEq4z7Whp9otUwyCQXKtPI1tRr5f7imi5WmvidsvbXpCUGXwxk1c+lvE
-	oUHmSljh698Kg7YXWz38yD7YKynczdgakNvh9W31vXeG3ASFtYmUbHMMJvu2jAXs6WXMFe
-	qDOvnq5fNCwuhkU5Pv9JkSJ8uAbs1yjvZIjT+WnxMiQeDJLtUHfZO7aM8YIAG7auX7E6KB
-	neoUdUzoHRJnTzkhM6WLVgYwYyzcHYvDk8cc5I9mppjSrEmHREOSYJaDUdNw61xuiMD/34
-	m7I4N+6JbCgr4Op1Mxo+kriyEeSldJsgWRrKtcIj3mGk+C0lffE+F3dHz9dysw==
-Date: Tue, 18 Jul 2023 08:31:49 +0200
-From: Herve Codina <herve.codina@bootlin.com>
-To: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH] usb: Explicitly include correct DT includes
-Message-ID: <20230718083149.77fa57ef@bootlin.com>
-In-Reply-To: <20230714175027.4065135-1-robh@kernel.org>
-References: <20230714175027.4065135-1-robh@kernel.org>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4rqY6pcdz2ytg
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 17:56:09 +1000 (AEST)
+Received: from mail.208.org (email.208.org [127.0.0.1])
+	by mail.208.org (Postfix) with ESMTP id 4R4rqG2gghzBQskv
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 15:55:54 +0800 (CST)
+Authentication-Results: mail.208.org (amavisd-new); dkim=pass
+	reason="pass (just generated, assumed good)" header.d=208.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=208.org; h=
+	content-transfer-encoding:content-type:message-id:user-agent
+	:references:in-reply-to:subject:to:from:date:mime-version; s=
+	dkim; t=1689666954; x=1692258955; bh=zWNni/qECU+wKhB4Mx0VGVeY3nW
+	IHBQLKgy0+7TuklE=; b=IHtLeQZUhGryuLc1l44IuMr+WR86/I9bbmn8+dq9rzj
+	uzRAvy1lXohHrI74wvKZIZw1ZyPPgHWaykBx2bN0ECWub3H3zlmdWzqFPGCbHiBc
+	eKErWeIEccWeCVXyVNMVl/hmnO0X+Q3+dPljWpyq+6ct+NesntN5HnCZACi/CIce
+	icDbEQMGkUQG61PlUbN4yjDZB+IL5xPCqqL6TumNlobHokk5Fl05qqqBZAYhwujQ
+	cSJwEMHAyw8BsDTpajghGon9Ycr0O7OaWPKkSHl2jtV8DL83WbD2j67Rh4ShMj0L
+	Bxn+ypOcTN9eF5GLOE7ZnS5TEI3dXfiL3IjL3tNa16w==
+X-Virus-Scanned: amavisd-new at mail.208.org
+Received: from mail.208.org ([127.0.0.1])
+	by mail.208.org (mail.208.org [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id t0_qSPkSQ9WH for <linuxppc-dev@lists.ozlabs.org>;
+	Tue, 18 Jul 2023 15:55:54 +0800 (CST)
+Received: from localhost (email.208.org [127.0.0.1])
+	by mail.208.org (Postfix) with ESMTPSA id 4R4rqG0jShzBHXh4;
+	Tue, 18 Jul 2023 15:55:54 +0800 (CST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
+Date: Tue, 18 Jul 2023 15:55:54 +0800
+From: hanyu001@208suo.com
+To: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu
+Subject: =?UTF-8?Q?=5BPATCH=5D_powerpc=3A_boot=3A=C2=A0insert_space_befor?=
+ =?UTF-8?Q?e_the_open_parenthesis_=27=28=27?=
+In-Reply-To: <tencent_66874A8B7152A23DDA815AEB731181CFEA07@qq.com>
+References: <tencent_66874A8B7152A23DDA815AEB731181CFEA07@qq.com>
+User-Agent: Roundcube Webmail
+Message-ID: <b1818ba6b3b305311f992885748494c9@208suo.com>
+X-Sender: hanyu001@208suo.com
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,50 +70,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, Richard Leitner <richard.leitner@linux.dev>, linux-kernel@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>, Aswath Govindraju <a-govindraju@ti.com>, Conor Dooley <conor.dooley@microchip.com>, Thierry Reding <thierry.reding@gmail.com>, linux-riscv@lists.infradead.org, Fabio Estevam <festevam@gmail.com>, Bjorn Andersson <andersson@kernel.org>, Samuel Holland <samuel@sholland.org>, Robert Jarzmik <robert.jarzmik@free.fr>, Jernej Skrabec <jernej.skrabec@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, Chen-Yu Tsai <wens@csie.org>, Andy Gross <agross@kernel.org>, Alan Stern <stern@rowland.harvard.edu>, NXP Linux Team <linux-imx@nxp.com>, linux-renesas-soc@vger.kernel.org, Chunfeng Yun <chunfeng.yun@mediatek.com>, Bryan O'Donoghue <bryan.odonoghue@linaro.org>, linux-mips@vger.kernel.org, linux-sunxi@lists.linux.dev, Guenter Roeck <linux@roeck-us.net>, Matthias Brugger <matthias
- .bgg@gmail.com>, devicetree@vger.kernel.org, Pawel Laszczak <pawell@cadence.com>, linux-tegra@vger.kernel.org, Mathias Nyman <mathias.nyman@intel.com>, linux-arm-msm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, Haojian Zhuang <haojian.zhuang@gmail.com>, Roger Quadros <rogerq@kernel.org>, linux-mediatek@lists.infradead.org, Minas Harutyunyan <hminas@synopsys.com>, Michal Simek <michal.simek@amd.com>, Bin Liu <b-liu@ti.com>, linux-arm-kernel@lists.infradead.org, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Daire McNamara <daire.mcnamara@microchip.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Peter Chen <peter.chen@kernel.org>, linux-usb@vger.kernel.org, Nicolas Ferre <nicolas.ferre@microchip.com>, Li Yang <leoyang.li@nxp.com>, Konrad Dybcio <konrad.dybcio@linaro.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Thinh Nguyen <Thinh.Nguyen@synopsys.com>, Shawn Guo <shawnguo@kernel.org>, Claudiu Beznea <clau
- diu.beznea@microchip.com>, Daniel Mack <daniel@zonque.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Rob,
+Fixes checkpatch error:
 
-On Fri, 14 Jul 2023 11:50:23 -0600
-Rob Herring <robh@kernel.org> wrote:
+./arch/powerpc/boot/main.c:273: ERROR: space required before the open 
+parenthesis '('
 
-> The DT of_device.h and of_platform.h date back to the separate
-> of_platform_bus_type before it as merged into the regular platform bus.
-> As part of that merge prepping Arm DT support 13 years ago, they
-> "temporarily" include each other. They also include platform_device.h
-> and of.h. As a result, there's a pretty much random mix of those include
-> files used throughout the tree. In order to detangle these headers and
-> replace the implicit includes with struct declarations, users need to
-> explicitly include the correct includes.
-> 
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
+Signed-off-by: Yu Han <hanyu001@208suo.com>
+---
+  arch/powerpc/boot/main.c | 2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
 
-[...]
+diff --git a/arch/powerpc/boot/main.c b/arch/powerpc/boot/main.c
+index 64a3d6586321..c8ebd552d1e8 100644
+--- a/arch/powerpc/boot/main.c
++++ b/arch/powerpc/boot/main.c
+@@ -270,7 +270,7 @@ void start(void)
 
-> diff --git a/drivers/usb/gadget/udc/renesas_usbf.c b/drivers/usb/gadget/udc/renesas_usbf.c
-> index 6cd0af83e91e..3482b41d0646 100644
-> --- a/drivers/usb/gadget/udc/renesas_usbf.c
-> +++ b/drivers/usb/gadget/udc/renesas_usbf.c
-> @@ -12,10 +12,9 @@
->  #include <linux/iopoll.h>
->  #include <linux/kernel.h>
->  #include <linux/kfifo.h>
-> +#include <linux/mod_devicetable.h>
->  #include <linux/module.h>
-> -#include <linux/of_address.h>
-> -#include <linux/of_irq.h>
-> -#include <linux/of_platform.h>
-> +#include <linux/platform_device.h>
->  #include <linux/pm_runtime.h>
->  #include <linux/types.h>
->  #include <linux/usb/composite.h>
-
-Acked-by: Herve Codina <herve.codina@bootlin.com>
-
-Best regards,
-Hervé
+      kentry = (kernel_entry_t) vmlinux.addr;
+      if (ft_addr) {
+-        if(platform_ops.kentry)
++        if (platform_ops.kentry)
+              platform_ops.kentry(ft_addr, vmlinux.addr);
+          else
+              kentry(ft_addr, 0, NULL);
