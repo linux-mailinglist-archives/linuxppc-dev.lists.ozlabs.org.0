@@ -2,77 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D04047584D5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 20:30:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DAF97584E9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 20:37:10 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=i3PLfLk9;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=rSwv4V3D;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R56vL5Gw9z30gL
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 04:30:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R57382yb2z30YT
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 04:37:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=i3PLfLk9;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=rSwv4V3D;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::42d; helo=mail-pf1-x42d.google.com; envelope-from=jgg@ziepe.ca; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R56tP0v90z2yFC
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 04:29:31 +1000 (AEST)
-Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-666ecf9a081so6037593b3a.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 11:29:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1689704969; x=1692296969;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=S7o51YlRNS3zPl1LsUYTJR0KoGseri+clhYp1sqA+7o=;
-        b=i3PLfLk9r7NY7Uevj6PA3cYqDyv4GmY8ZTpAyOTEMVm18YLHoILcZ61oG+F9iFTHtV
-         OX8jgLzmPYLYjT5nTvuf48EZuGhjT3nXDpUtIzZoLmFT/vwScgj8TKUey6e+GcVODdO/
-         aR6/yFWorh49MLpPBPS4KJKiFuCN20/QPxl/yYbUzWAditSFcUD4YBXKid/OyWwMGSU4
-         hTdhkYgK99mIeIotW/7zP2M7qvX9TABdVEY82e39977TCXOnZTAAMs6Q2HmEVszoN4iv
-         VRVVMQY0DZtRHIz7VWFEh8j8Dqyv1YGRYWzfSCH0PzDWSbsFyOPnQYwqfHvs+eC+iMQF
-         VveA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689704969; x=1692296969;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=S7o51YlRNS3zPl1LsUYTJR0KoGseri+clhYp1sqA+7o=;
-        b=Y+RLTVGVJR89573I7f2MqjxHawOPUw6Yc/2KxdFpRa0iQuhmOpr1E/CygRAGDHv6C+
-         +r5DScTKRw47R/+QwqcRnMmiHr52u6OoB/MFOlpVTyOb8UZw0vESr8Ud9wb2iHFoIGm1
-         f2tzx6sZ6UYaeL693ggZb7+8V6Swe3FZ037kzjTOpbp14V2K2iimN+ZhANtifkgt3NRg
-         GNKmaPdhPcRPPq0kJQvB/egc4QKgqyIy1fY4LRWBxEtw6vkjzJUQhuNkuXiXB0ZMrlZ9
-         gzNGPzbMvUJXgsuXkBE9yehCxYZFAfYLOgMpG/zo6xjdGCS/m1bj4HNr/nzIAKpTfQfV
-         d/wQ==
-X-Gm-Message-State: ABy/qLbOH25Hk/A7ezWvPfcW6GdiDlNo2yWp39RccxT8kMBGg59Xs9JW
-	o0GuQrcnBg44mXgpOkyin0QQTw==
-X-Google-Smtp-Source: APBJJlGRXuPRhwkyVNmCMc2KhNqjSUeDWEj142071UHQ2p4xg0uemtxHiHrQn61P1ux7F7gEcQuZIA==
-X-Received: by 2002:a05:6a00:3a1d:b0:668:8705:57cf with SMTP id fj29-20020a056a003a1d00b00668870557cfmr19016531pfb.25.1689704968961;
-        Tue, 18 Jul 2023 11:29:28 -0700 (PDT)
-Received: from ziepe.ca ([206.223.160.26])
-        by smtp.gmail.com with ESMTPSA id u21-20020aa78395000000b0065434edd521sm1797726pfm.196.2023.07.18.11.29.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Jul 2023 11:29:28 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.95)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1qLpRu-002ayW-Jq;
-	Tue, 18 Jul 2023 15:29:26 -0300
-Date: Tue, 18 Jul 2023 15:29:26 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 3/4] mmu_notifiers: Call arch_invalidate_secondary_tlbs()
- when invalidating TLBs
-Message-ID: <ZLbaBpfaAqigFzIT@ziepe.ca>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R572K0K45z2xTR
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 04:36:23 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 33063616A8;
+	Tue, 18 Jul 2023 18:36:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE9F2C433C8;
+	Tue, 18 Jul 2023 18:36:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1689705381;
+	bh=JgrHe5DZ5UnZ31Le+DdrjV7UqhJAEhx+BMwzO0I0pyk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=rSwv4V3DUswnOOwtuqviHoHg8mtQl8Mycp8naGrr017s7gsEUs+LUFgW78b59OlD6
+	 RJ07+aYugwPVV2ffN02N+TbXLoW/RPNxLL/RW1q/hReBJmWPBWvyF6ARM4VWnVkHi/
+	 WwOrnVSIGZK5bXjK7yuuDSaj1cyDMcQJVsSO4MIU=
+Date: Tue, 18 Jul 2023 11:36:20 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Subject: Re: [PATCH 1/4] mm_notifiers: Rename invalidate_range notifier
+Message-Id: <20230718113620.fb29217344238307c3be76d7@linux-foundation.org>
+In-Reply-To: <ZLbSeO+XjSx1W795@ziepe.ca>
 References: <cover.b4454f7f3d0afbfe1965e8026823cd50a42954b4.1689666760.git-series.apopple@nvidia.com>
- <791a6c1c4a79de6f99bffc594b53a39a6234e87f.1689666760.git-series.apopple@nvidia.com>
- <20230718111759.5642b4c4ffd72ddd9c8aa29f@linux-foundation.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230718111759.5642b4c4ffd72ddd9c8aa29f@linux-foundation.org>
+	<c0daf0870f7220bbf815713463aff86970a5d0fa.1689666760.git-series.apopple@nvidia.com>
+	<ZLbSeO+XjSx1W795@ziepe.ca>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,32 +65,30 @@ Cc: kevin.tian@intel.com, x86@kernel.org, ajd@linux.ibm.com, kvm@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 18, 2023 at 11:17:59AM -0700, Andrew Morton wrote:
-> On Tue, 18 Jul 2023 17:56:17 +1000 Alistair Popple <apopple@nvidia.com> wrote:
-> 
-> > The arch_invalidate_secondary_tlbs() is an architecture specific mmu
-> > notifier used to keep the TLB of secondary MMUs such as an IOMMU in
-> > sync with the CPU page tables. Currently it is called from separate
-> > code paths to the main CPU TLB invalidations. This can lead to a
-> > secondary TLB not getting invalidated when required and makes it hard
-> > to reason about when exactly the secondary TLB is invalidated.
-> > 
-> > To fix this move the notifier call to the architecture specific TLB
-> > maintenance functions for architectures that have secondary MMUs
-> > requiring explicit software invalidations.
-> > 
-> > This fixes a SMMU bug on ARM64. On ARM64 PTE permission upgrades
-> > require a TLB invalidation. This invalidation is done by the
-> > architecutre specific ptep_set_access_flags() which calls
-> > flush_tlb_page() if required. However this doesn't call the notifier
-> > resulting in infinite faults being generated by devices using the SMMU
-> > if it has previously cached a read-only PTE in it's TLB.
-> 
-> This sounds like a pretty serious bug.  Can it happen in current
-> released kernels?  If so, is a -stable backport needed?
+On Tue, 18 Jul 2023 14:57:12 -0300 Jason Gunthorpe <jgg@ziepe.ca> wrote:
 
-There are currently no in-kernel drivers using the IOMMU SVA API, so
-the impact for -stable is sort of muted. But it is serious if you are
-unlucky to hit it.
+> On Tue, Jul 18, 2023 at 05:56:15PM +1000, Alistair Popple wrote:
+> > diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
+> > index b466172..48c81b9 100644
+> > --- a/include/asm-generic/tlb.h
+> > +++ b/include/asm-generic/tlb.h
+> > @@ -456,7 +456,7 @@ static inline void tlb_flush_mmu_tlbonly(struct mmu_gather *tlb)
+> >  		return;
+> >  
+> >  	tlb_flush(tlb);
+> > -	mmu_notifier_invalidate_range(tlb->mm, tlb->start, tlb->end);
+> > +	mmu_notifier_invalidate_secondary_tlbs(tlb->mm, tlb->start, tlb->end);
+> >  	__tlb_reset_range(tlb);
+> 
+> Does this compile? I don't see
+> "mmu_notifier_invalidate_secondary_tlbs" ?
 
-Jason
+Seems this call gets deleted later in the series.
+
+> But I think the approach in this series looks fine, it is so much
+> cleaner after we remove all the cruft in patch 4, just look at the
+> diffstat..
+
+I'll push this into -next if it compiles OK for me, but yes, a redo is
+desirable please.
+
