@@ -2,51 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A801757D2B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 15:20:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB516757F11
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 16:10:09 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=LOe1gK4P;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DN7XKMRA;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R501V2Lj1z3dJ4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 23:20:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R51736RXqz3c4C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 00:10:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=LOe1gK4P;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DN7XKMRA;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 66 seconds by postgrey-1.37 at boromir; Wed, 19 Jul 2023 00:09:22 AEST
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R500d5KGrz2xFm
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 23:19:29 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1689686364;
-	bh=dFkPjTr4j/o5dl2AwZU6kHQTAigDCbFFJcPknMTfSjc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=LOe1gK4PmPFxiVVpqvK6ArsER1zGoKtcIpBF8fF5nDj5DDVScWq/1RU2QntbNqk7X
-	 HpPB5mSFIMGk9y5WSBuoPFUEHHRrkM2J45CvOJU2c4yqVmlBB+rqC+GoNad8GiFStA
-	 5IbK+CZFXU+rsehNyXKLFUH4d5RV2z+IQ9XwRweeLNfA3z7Ux6xjEj+IXNCU/T0YQn
-	 K1cgNImqSBF72W6CsgwLLlybfpN28ds4weH1y5Ci5USinHPfr5A11iT8bjfEwSVYRG
-	 TFiG1Mb3Id+18myKTJaRDyCPeCsvEYU/G43IQ3HRpo19AJBUI9GRF2pGMsMTCFWOEv
-	 U5NK/JC3HbR8g==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4R500X38fKz4wjG;
-	Tue, 18 Jul 2023 23:19:24 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: mahesh@linux.ibm.com, Sachin Sant <sachinp@linux.ibm.com>
-Subject: Re: Kernel Crash Dump (kdump) broken with 6.5
-In-Reply-To: <udbe6orsg6jpzkwppupzekfwxjvn7e5q3rlzyqvm4xl3k44w7t@e7m2zjjwmh5c>
-References: <AB3C7C5C-86FD-4D86-9330-000CB9728F48@linux.ibm.com>
- <udbe6orsg6jpzkwppupzekfwxjvn7e5q3rlzyqvm4xl3k44w7t@e7m2zjjwmh5c>
-Date: Tue, 18 Jul 2023 23:19:23 +1000
-Message-ID: <87wmyxich0.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R516B3LNnz2yts
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 00:09:21 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1689689362; x=1721225362;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=YhzlfQtbZbvU7crsK9NP3Zkf40qmEHwn35CPkp07c3s=;
+  b=DN7XKMRAiHbN3poXB2X02Zl0+2c1N4WKi8F0jrANLxUjscnHBI53doIA
+   CEUX9ina3slCa+QzEeHjKptcFXmpaQaF4Xw5BYvWQbFNC0MJlm5E4UZi2
+   FSyV+Q1TPzj0y3qIZoxM+JEtKh3Nb+ID8Dtk97xmfT6GXm/RSFCw4BMqp
+   t78InjyEJG/Bac4prSJtoVk39YkyrZwhmZft52kturvwnetAVNQSqSXgL
+   AkhEHu9/CFXKWVOd6z/wNyJloQP7bogeaDxOs/vRwRGzQz2Q4l/4AtiBj
+   fQT/Nok0aL2BVmMwo8c+hZMSfcEZwC+PQ83XW1kR0ied+F95Pik9O6qlc
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="397053557"
+X-IronPort-AV: E=Sophos;i="6.01,214,1684825200"; 
+   d="scan'208";a="397053557"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2023 07:08:08 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="758804280"
+X-IronPort-AV: E=Sophos;i="6.01,214,1684825200"; 
+   d="scan'208";a="758804280"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga001.jf.intel.com with ESMTP; 18 Jul 2023 07:08:06 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1qLlMy-00GQUQ-0w;
+	Tue, 18 Jul 2023 17:08:04 +0300
+Date: Tue, 18 Jul 2023 17:08:04 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: hanyu001@208suo.com
+Subject: Re: [PATCH] platforms: 52xx: Remove space after '(' and before ')'
+Message-ID: <ZLacxHz/IGgketWx@smile.fi.intel.com>
+References: <tencent_ADAD5C6DD5F9824047356B25D53801910A06@qq.com>
+ <c5c33e6e390f6784b5599b8ea13b8e01@208suo.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c5c33e6e390f6784b5599b8ea13b8e01@208suo.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,65 +73,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Sourabh Jain <sourabhjain@linux.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
+Cc: kw@linux.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, npiggin@gmail.com, bhelgaas@google.com, agust@denx.de, mika.westerberg@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Mahesh J Salgaonkar <mahesh@linux.ibm.com> writes:
-> On 2023-07-17 20:15:53 Mon, Sachin Sant wrote:
->> Kdump seems to be broken with 6.5 for ppc64le.
->> 
->> [ 14.200412] systemd[1]: Starting dracut pre-pivot and cleanup hook...
->> [[0;32m OK [0m] Started dracut pre-pivot and cleanup hook.
->> Starting Kdump Vmcore Save Service...
->> [ 14.231669] systemd[1]: Started dracut pre-pivot and cleanup hook.
->> [ 14.231801] systemd[1]: Starting Kdump Vmcore Save Service...
->> [ 14.341035] kdump.sh[297]: kdump: saving to /sysroot//var/crash//127.0.0.1-2023-07-14-13:32:34/
->> [ 14.350053] EXT4-fs (sda2): re-mounted e971a335-1ef8-4295-ab4e-3940f28e53fc r/w. Quota mode: none.
->> [ 14.345979] kdump.sh[297]: kdump: saving vmcore-dmesg.txt to /sysroot//var/crash//127.0.0.1-2023-07-14-13:32:34/
->> [ 14.348742] kdump.sh[331]: Cannot open /proc/vmcore: No such file or directory
->> [ 14.348845] kdump.sh[297]: kdump: saving vmcore-dmesg.txt failed
->> [ 14.349014] kdump.sh[297]: kdump: saving vmcore
->> [ 14.443422] kdump.sh[332]: open_dump_memory: Can't open the dump memory(/proc/vmcore). No such file or directory
->> [ 14.456413] kdump.sh[332]: makedumpfile Failed.
->> [ 14.456662] kdump.sh[297]: kdump: saving vmcore failed, _exitcode:1
->> [ 14.456822] kdump.sh[297]: kdump: saving the /run/initramfs/kexec-dmesg.log to /sysroot//var/crash//127.0.0.1-2023-07-14-13:32:34/
->> [ 14.487002] kdump.sh[297]: kdump: saving vmcore failed
->> [[0;1;31mFAILED[0m] Failed to start Kdump Vmcore Save Service.
->
-> Thanks Sachin for catching this.
->
->> 
->> 6.4 was good. Git bisect points to following patch
->> 
->> commit 606787fed7268feb256957872586370b56af697a
->>     powerpc/64s: Remove support for ELFv1 little endian userspace
->> 
->> Reverting this patch allows a successful capture of vmcore.
->> 
->> Does this change require any corresponding change to kdump
->> and/or kexec tools?
->
-> Need to investigate that. It looks like vmcore_elf64_check_arch(&ehdr)
-> check from fs/proc/vmcore.c is failing after above commit.
->
-> static int __init parse_crash_elf64_headers(void)
-> {
-> [...]
->
->         /* Do some basic Verification. */
->         if (memcmp(ehdr.e_ident, ELFMAG, SELFMAG) != 0 ||
->                 (ehdr.e_type != ET_CORE) ||
->                 !vmcore_elf64_check_arch(&ehdr) ||
-> [...]
+On Tue, Jul 18, 2023 at 05:02:39PM +0800, hanyu001@208suo.com wrote:
+> The patch fixes the following errors detected by checkpatch:
+> 
+> platforms/52xx/mpc52xx_pci.c:346:ERROR: space prohibited after that open
+> parenthesis '('
+> platforms/52xx/mpc52xx_pci.c:347:ERROR: space prohibited after that open
+> parenthesis '('
+> platforms/52xx/mpc52xx_pci.c:348:ERROR: space prohibited before that close
+> parenthesis ')'
 
-Where vmcore_elf64_check_arch() calls elf_check_arch(), which was
-modified by the commit, so that makes sense.
+First of all, your patch is mangled and may not be applied.
+Second, we usually don't do this kind of patches at all.
+Besides the fact that we don't run checkpatch on the files
+which are already in upstream (esp. so-o-o old as this one).
 
-> It looks like ehdr->e_flags are not set properly while generating vmcore
-> ELF header. I see that in kexec_file_load, ehdr->e_flags left set to 0
-> irrespective of IS_ENABLED(CONFIG_PPC64_ELF_ABI_V2) is true or false.
+NAK.
 
-Does initialising it in crash_prepare_elf64_headers() fix the issue?
+...
 
-cheers
+> +    if ((dev->vendor == PCI_VENDOR_ID_MOTOROLA) &&
+> +         (dev->device == PCI_DEVICE_ID_MOTOROLA_MPC5200
+> +          || dev->device == PCI_DEVICE_ID_MOTOROLA_MPC5200B)) {
+
+Also note, you can move this to use pci_match_id().
+That kind of patch might be approved.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
