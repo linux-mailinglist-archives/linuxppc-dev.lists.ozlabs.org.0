@@ -2,58 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04FA7757AE4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 13:48:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94234757AE6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 13:49:18 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NiyIriaV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YEPnsELM;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R4xzZ6SxLz30fb
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 21:48:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R4y0X2Ng5z3c36
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 21:49:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NiyIriaV;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YEPnsELM;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4xyk4y3sz2ykb
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 21:47:42 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id A6AB7614FB;
-	Tue, 18 Jul 2023 11:47:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1932C433C8;
-	Tue, 18 Jul 2023 11:47:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1689680860;
-	bh=ZvqThxrRF3azwHa8S6/JSLLxksS+HHQlbfFAk7L6Oe4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=NiyIriaVDpbfpBBavIbmRiv2u8PnwyYoC11x/yVLsL8p8CCjVEDh2j4KeymwMZmkJ
-	 p8wsaLShwILFEDbEuSei/n/AQ+DZfB8bhV67lMZseBDXL5HwxxG4eh4TprvyACTwb6
-	 MBuHauz7LZm0c0omsmB7nO3KtGyB/RH7SetrcWypVSEdZC1uBeHTOD7vKhkwXS+gc9
-	 4mnK2i9Mi6W5ybAsdow/KBDfBwm76sdzKItlfTStf52ceFbxabgRi8O83C4BLEzCjY
-	 +Sr+BP4iatGJjSAKSsQhJAteHieNHZT6chdS3DmTyauRHyBvrdgGVQj50ERgnJv+DO
-	 fL8t9lbrIuotQ==
-From: Mark Brown <broonie@kernel.org>
-To: Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
- Fabio Estevam <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
- Takashi Iwai <tiwai@suse.com>, Matus Gajdos <matuszpd@gmail.com>
-In-Reply-To: <20230712124934.32232-1-matuszpd@gmail.com>
-References: <20230712124934.32232-1-matuszpd@gmail.com>
-Subject: Re: [PATCH] ASoC: fsl_sai: Disable bit clock with transmitter
-Message-Id: <168968085762.37584.16109191743669606574.b4-ty@kernel.org>
-Date: Tue, 18 Jul 2023 12:47:37 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4xzJ5gKwz3bTC
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 21:48:12 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1689680892;
+	bh=qkoJ1TZtcbRhGyivE/SKxy/6onKpIFRvIjW5wMAgnBM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=YEPnsELMRu2D63Po1X6IMo2QJZo1eeq40G3q70WNISWlYL4FRhEQ37pMLkjrQ4mBJ
+	 5xNE2tapB5aAsebvtRoEMWnJHZJHmRjcjvPQxEzbUGzfGCN0z3SgXv3Uq8G67davGC
+	 yCQFDYEKUu6fF7/8ssxM376PlGMPjTbRjCKwtC+uUHfyIGoRvXbuUKPSBkqDIDq5q7
+	 JcTEVmEwbilBc37Z9U3ob+DNVY9aeD8LGCJ4AlAZSxnwgoSkhyVSCn7AzDSyxV2WCM
+	 az8MGdjlTUrwvozShNmcwBuTGqiXLAPAmWYSKo0MeWf+ZGMWkn85vFDjMsOC12FZ5p
+	 SUB7lDSRwQTRQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4R4xzG5srnz4wxV;
+	Tue, 18 Jul 2023 21:48:10 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Bagas Sanjaya <bagasdotme@gmail.com>, Randy Dunlap
+ <rdunlap@infradead.org>, Stephen Rothwell <sfr@canb.auug.org.au>, Linux
+ Next Mailing List <linux-next@vger.kernel.org>
+Subject: Re: linux-next: Tree for Jul 13 (drivers/video/fbdev/ps3fb.c)
+In-Reply-To: <ZLYHtVuS7AElXcCb@debian.me>
+References: <20230713123710.5d7d81e4@canb.auug.org.au>
+ <ccc63065-2976-88ef-1211-731330bf2866@infradead.org>
+ <ZLYHtVuS7AElXcCb@debian.me>
+Date: Tue, 18 Jul 2023 21:48:05 +1000
+Message-ID: <874jm1jv9m.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-099c9
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,40 +61,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-fbdev@vger.kernel.org, Linux Regressions <regressions@lists.linux.dev>, Geoff Levand <geoff@infradead.org>, Helge Deller <deller@gmx.de>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Javier Martinez Canillas <javierm@redhat.com>, Thomas Zimmermann <tzimmermann@suse.de>, Linux PowerPC <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 12 Jul 2023 14:49:33 +0200, Matus Gajdos wrote:
-> Otherwise bit clock remains running writing invalid data to the DAC.
-> 
-> 
+Bagas Sanjaya <bagasdotme@gmail.com> writes:
+> On Thu, Jul 13, 2023 at 09:11:10AM -0700, Randy Dunlap wrote:
+>> on ppc64:
+>> 
+>> In file included from ../include/linux/device.h:15,
+>>                  from ../arch/powerpc/include/asm/io.h:22,
+>>                  from ../include/linux/io.h:13,
+>>                  from ../include/linux/irq.h:20,
+>>                  from ../arch/powerpc/include/asm/hardirq.h:6,
+>>                  from ../include/linux/hardirq.h:11,
+>>                  from ../include/linux/interrupt.h:11,
+>>                  from ../drivers/video/fbdev/ps3fb.c:25:
+>> ../drivers/video/fbdev/ps3fb.c: In function 'ps3fb_probe':
+>> ../drivers/video/fbdev/ps3fb.c:1172:40: error: 'struct fb_info' has no member named 'dev'
+>>  1172 |                  dev_driver_string(info->dev), dev_name(info->dev),
+>>       |                                        ^~
+>> ../include/linux/dev_printk.h:110:37: note: in definition of macro 'dev_printk_index_wrap'
+>>   110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
+>>       |                                     ^~~~~~~~~~~
+>> ../drivers/video/fbdev/ps3fb.c:1171:9: note: in expansion of macro 'dev_info'
+>>  1171 |         dev_info(info->device, "%s %s, using %u KiB of video memory\n",
+>>       |         ^~~~~~~~
+>> ../drivers/video/fbdev/ps3fb.c:1172:61: error: 'struct fb_info' has no member named 'dev'
+>>  1172 |                  dev_driver_string(info->dev), dev_name(info->dev),
+>>       |                                                             ^~
+>> ../include/linux/dev_printk.h:110:37: note: in definition of macro 'dev_printk_index_wrap'
+>>   110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
+>>       |                                     ^~~~~~~~~~~
+>> ../drivers/video/fbdev/ps3fb.c:1171:9: note: in expansion of macro 'dev_info'
+>>  1171 |         dev_info(info->device, "%s %s, using %u KiB of video memory\n",
+>>       |         ^~~~~~~~
+>> 
+>> 
+>
+> Hmm, there is no response from Thomas yet. I guess we should go with
+> reverting bdb616479eff419, right? Regardless, I'm adding this build regression
+> to regzbot so that parties involved are aware of it:
+>
+> #regzbot ^introduced: bdb616479eff419
+> #regzbot title: build regression in PS3 framebuffer
 
-Applied to
+Does regzbot track issues in linux-next?
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+They're not really regressions because they're not in a release yet.
 
-Thanks!
+Anyway I don't see where bdb616479eff419 comes from.
 
-[1/1] ASoC: fsl_sai: Disable bit clock with transmitter
-      commit: 269f399dc19f0e5c51711c3ba3bd06e0ef6ef403
+The issue was introduced by:
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+  701d2054fa31 fbdev: Make support for userspace interfaces configurable
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+The driver seems to only use info->dev in that one dev_info() line,
+which seems purely cosmetic, so I think it could just be removed, eg:
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+diff --git a/drivers/video/fbdev/ps3fb.c b/drivers/video/fbdev/ps3fb.c
+index d4abcf8aff75..a304a39d712b 100644
+--- a/drivers/video/fbdev/ps3fb.c
++++ b/drivers/video/fbdev/ps3fb.c
+@@ -1168,8 +1168,7 @@ static int ps3fb_probe(struct ps3_system_bus_device *dev)
+ 
+ 	ps3_system_bus_set_drvdata(dev, info);
+ 
+-	dev_info(info->device, "%s %s, using %u KiB of video memory\n",
+-		 dev_driver_string(info->dev), dev_name(info->dev),
++	dev_info(info->device, "using %u KiB of video memory\n",
+ 		 info->fix.smem_len >> 10);
+ 
+ 	task = kthread_run(ps3fbd, info, DEVICE_NAME);
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
 
-Thanks,
-Mark
-
+cheers
