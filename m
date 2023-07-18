@@ -2,79 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49D787581DF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 18:16:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86DD57583F5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 19:58:11 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=nMRD3rJU;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=mMpImavf;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R53wS6zsZz3bx0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 02:16:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R56B91Njmz30fd
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 03:58:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=nMRD3rJU;
+	dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=mMpImavf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::429; helo=mail-pf1-x429.google.com; envelope-from=rd.dunlab@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::634; helo=mail-pl1-x634.google.com; envelope-from=jgg@ziepe.ca; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R53vX4D3Lz2ykc
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 02:15:19 +1000 (AEST)
-Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-6686a05bc66so4296397b3a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 09:15:19 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R569G4RLmz30Db
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 03:57:20 +1000 (AEST)
+Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1b8b2b60731so33532885ad.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 10:57:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689696917; x=1692288917;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Na1N69oGSFxdRjjEQS9A1nDY6v0D8diedcdZ35e5WcM=;
-        b=nMRD3rJUi6U8jz3ZNN70bMZlnHnFExyIvu7PL2U08n7xmhZRD2Uxp3TBUHEKvJ022I
-         D/NCip+bMpmnWyYN8xP1yAXupduOJLvtz/Rl2MRIPpcwJlFurHpiqewlg8Y0pgDZorti
-         jFNtGE0OVDY/DYOa+x7p5AsNCcWDkDlwKiAGygPI3HqOX+2pRknd0W+olS7ugFUTUGqG
-         ARLUmIld50DGpS/GhxTLk4RRzN90t90GmEA+4aU8rIpS08lsWow1AZkqAj3iXUE0HaPU
-         8EALiVUtGerXVNeBwsPPBeY1afnVqipHBuYQEUc3rOcmy7Exbo2m5cbrjJN5FAMX7FhV
-         /xvg==
+        d=ziepe.ca; s=google; t=1689703035; x=1692295035;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=cRD9blNIxHluSUPOIYULRJbi8uFOds7uOEZDc3kDErE=;
+        b=mMpImavfY2ADOOfTsM0dULPAztPWwAkAxaN5EBRdgTONlUbuDv0bc/jnql1JEnUeOO
+         bda5Tj4uvdDQ4B+NJ/gmvkMeUhOrHdA5CxK42FliEYPeTWhjOiI8i0+G+nUodHSTQx/g
+         HanMLQr/dHe8w7iHPBOx35pnzrQWodjmfukbs1BbseIHXHWTRnEizqCumzGYhUaGm+dQ
+         jRxPO5RqjGL1hwX87TamgliuO3lsmronneNDvHaIucdFlccgiBcVHg4FAmdI6hkUO0Ji
+         3UXm13B3+3pT+2iToWzn8Ie1OvrVbaXYWR6AEsbzg//AwTK48dHUa2cpqzFIrDJGPtWZ
+         5PWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689696917; x=1692288917;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Na1N69oGSFxdRjjEQS9A1nDY6v0D8diedcdZ35e5WcM=;
-        b=T51/tuL6Lzu+og83jo/n6F7uWA7WdBwYQ4/LGf1nPdYmKB4C/mwSJPkPe+nQkpj10S
-         GN89FTr0kUjyqQpUaU7+MYITe+NE9jgnIFtAC0oh5BA5zF5cGExJoUolqxBZoV68yZt+
-         PCqjU15Z23UCbBrCEJeJa3aEi2RKUgadZDnrD2h7Jg3pwkuXiH9YFc0x+TidVXCTLVmc
-         Zai+6sCa3kg+AJy0lBdUatzThUOOVLI8Tr3hjqSW/nrphjby6zuTr7yiE9TT/N8xnjIr
-         7N1AFbLcB9ijWdnLae8LTHIgkMDySWqJWdR3rPyCaJuQsHtB0yNaDdh/wt01LSTNnvAK
-         ICXQ==
-X-Gm-Message-State: ABy/qLaNuK56EDqo0E4/J4x3tNHpzclP7sRDFNV5q0Q6ck/22b7BsR3n
-	QOxKoBxjgHWB8s9dGWvGYjc=
-X-Google-Smtp-Source: APBJJlGDZgvnQDrQyjvF2Kc+/Eo1CpJR0XBffNwdVBMhPEbrYP8yTMy9F+vHwnEHtA4wvSI4YnvWtA==
-X-Received: by 2002:a17:903:50b:b0:1b7:c166:f197 with SMTP id jn11-20020a170903050b00b001b7c166f197mr2151693plb.29.1689696917397;
-        Tue, 18 Jul 2023 09:15:17 -0700 (PDT)
-Received: from ?IPV6:2601:1c2:980:9ec0::2764? ([2601:1c2:980:9ec0::2764])
-        by smtp.gmail.com with ESMTPSA id iw10-20020a170903044a00b001b9be3b94d3sm2069605plb.140.2023.07.18.09.15.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Jul 2023 09:15:17 -0700 (PDT)
-Message-ID: <d9616a67-23e8-118f-dc0a-7ed4afd4bffd@gmail.com>
-Date: Tue, 18 Jul 2023 09:15:16 -0700
+        d=1e100.net; s=20221208; t=1689703035; x=1692295035;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cRD9blNIxHluSUPOIYULRJbi8uFOds7uOEZDc3kDErE=;
+        b=ZBWB0fCvU1mKOZGDBd4yTnNDJJzLD+sE5CYvbGkG4O9R/M9tvfWGkzqEixSG7JDGNa
+         tf2iuTgSqchzQfp4bRpfcx/g8VawwLJxjP+m1spAuGpmYS0kYDQuIDx933CSkH8zGrag
+         hbj/5bqHrSHDj44MOvyoTMIyVwScubCP6zcm8RBoy2k1zcnpKq/XytGocdnVTsgsF75j
+         m4acKXQIOh5RHLfl/Zp07bglQJsDDsNk/rltQIqkQ0sRa7AIziXVeH9GOYhrKOTLuuQq
+         Oze5by/4dryBq72yYI65WTbenSgqX458zLxxQ714B05lrSJXKcWb02/st4Ht+vyIdO+7
+         ZJjg==
+X-Gm-Message-State: ABy/qLaD/cZf6stZalu5mj4JByi1x82y3TztSbZfuWFQqhQ+QztmSkOp
+	9gJyHNb6eSpvBg5fKst+79RBdA==
+X-Google-Smtp-Source: APBJJlH/DFdDcamBY608z6if+lXRDqfUJnrs4w53GX7UPxfbPo+Y0+UeHJe6ZmJVTzN0SvAK3Kq8RA==
+X-Received: by 2002:a17:902:e549:b0:1b8:aef2:773e with SMTP id n9-20020a170902e54900b001b8aef2773emr17009609plf.46.1689703034916;
+        Tue, 18 Jul 2023 10:57:14 -0700 (PDT)
+Received: from ziepe.ca ([206.223.160.26])
+        by smtp.gmail.com with ESMTPSA id iw10-20020a170903044a00b001b89612dc7dsm2167740plb.142.2023.07.18.10.57.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Jul 2023 10:57:13 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.95)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1qLowi-002aex-Bi;
+	Tue, 18 Jul 2023 14:57:12 -0300
+Date: Tue, 18 Jul 2023 14:57:12 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Alistair Popple <apopple@nvidia.com>
+Subject: Re: [PATCH 1/4] mm_notifiers: Rename invalidate_range notifier
+Message-ID: <ZLbSeO+XjSx1W795@ziepe.ca>
+References: <cover.b4454f7f3d0afbfe1965e8026823cd50a42954b4.1689666760.git-series.apopple@nvidia.com>
+ <c0daf0870f7220bbf815713463aff86970a5d0fa.1689666760.git-series.apopple@nvidia.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: linux-next: Tree for Jul 13 (drivers/video/fbdev/ps3fb.c)
-Content-Language: en-US
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Bagas Sanjaya <bagasdotme@gmail.com>, Randy Dunlap <rdunlap@infradead.org>,
- Stephen Rothwell <sfr@canb.auug.org.au>,
- Linux Next Mailing List <linux-next@vger.kernel.org>
-References: <20230713123710.5d7d81e4@canb.auug.org.au>
- <ccc63065-2976-88ef-1211-731330bf2866@infradead.org>
- <ZLYHtVuS7AElXcCb@debian.me> <874jm1jv9m.fsf@mail.lhotse>
-From: Randy Dunlap <rd.dunlab@gmail.com>
-In-Reply-To: <874jm1jv9m.fsf@mail.lhotse>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c0daf0870f7220bbf815713463aff86970a5d0fa.1689666760.git-series.apopple@nvidia.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,84 +82,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, Linux Regressions <regressions@lists.linux.dev>, Geoff Levand <geoff@infradead.org>, Helge Deller <deller@gmx.de>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Javier Martinez Canillas <javierm@redhat.com>, Thomas Zimmermann <tzimmermann@suse.de>, Linux PowerPC <linuxppc-dev@lists.ozlabs.org>
+Cc: kevin.tian@intel.com, x86@kernel.org, ajd@linux.ibm.com, kvm@vger.kernel.org, catalin.marinas@arm.com, seanjc@google.com, will@kernel.org, linux-kernel@vger.kernel.org, npiggin@gmail.com, zhi.wang.linux@gmail.com, linux-mm@kvack.org, iommu@lists.linux.dev, nicolinc@nvidia.com, jhubbard@nvidia.com, fbarrat@linux.ibm.com, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, robin.murphy@arm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/18/23 04:48, Michael Ellerman wrote:
-> Bagas Sanjaya <bagasdotme@gmail.com> writes:
->> On Thu, Jul 13, 2023 at 09:11:10AM -0700, Randy Dunlap wrote:
->>> on ppc64:
->>>
->>> In file included from ../include/linux/device.h:15,
->>>                  from ../arch/powerpc/include/asm/io.h:22,
->>>                  from ../include/linux/io.h:13,
->>>                  from ../include/linux/irq.h:20,
->>>                  from ../arch/powerpc/include/asm/hardirq.h:6,
->>>                  from ../include/linux/hardirq.h:11,
->>>                  from ../include/linux/interrupt.h:11,
->>>                  from ../drivers/video/fbdev/ps3fb.c:25:
->>> ../drivers/video/fbdev/ps3fb.c: In function 'ps3fb_probe':
->>> ../drivers/video/fbdev/ps3fb.c:1172:40: error: 'struct fb_info' has no member named 'dev'
->>>  1172 |                  dev_driver_string(info->dev), dev_name(info->dev),
->>>       |                                        ^~
->>> ../include/linux/dev_printk.h:110:37: note: in definition of macro 'dev_printk_index_wrap'
->>>   110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
->>>       |                                     ^~~~~~~~~~~
->>> ../drivers/video/fbdev/ps3fb.c:1171:9: note: in expansion of macro 'dev_info'
->>>  1171 |         dev_info(info->device, "%s %s, using %u KiB of video memory\n",
->>>       |         ^~~~~~~~
->>> ../drivers/video/fbdev/ps3fb.c:1172:61: error: 'struct fb_info' has no member named 'dev'
->>>  1172 |                  dev_driver_string(info->dev), dev_name(info->dev),
->>>       |                                                             ^~
->>> ../include/linux/dev_printk.h:110:37: note: in definition of macro 'dev_printk_index_wrap'
->>>   110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
->>>       |                                     ^~~~~~~~~~~
->>> ../drivers/video/fbdev/ps3fb.c:1171:9: note: in expansion of macro 'dev_info'
->>>  1171 |         dev_info(info->device, "%s %s, using %u KiB of video memory\n",
->>>       |         ^~~~~~~~
->>>
->>>
->>
->> Hmm, there is no response from Thomas yet. I guess we should go with
->> reverting bdb616479eff419, right? Regardless, I'm adding this build regression
->> to regzbot so that parties involved are aware of it:
->>
->> #regzbot ^introduced: bdb616479eff419
->> #regzbot title: build regression in PS3 framebuffer
-> 
-> Does regzbot track issues in linux-next?
-> 
-> They're not really regressions because they're not in a release yet.
-> 
-> Anyway I don't see where bdb616479eff419 comes from.
-> 
-> The issue was introduced by:
-> 
->   701d2054fa31 fbdev: Make support for userspace interfaces configurable
-> 
-> The driver seems to only use info->dev in that one dev_info() line,
-> which seems purely cosmetic, so I think it could just be removed, eg:
-> 
-> diff --git a/drivers/video/fbdev/ps3fb.c b/drivers/video/fbdev/ps3fb.c
-> index d4abcf8aff75..a304a39d712b 100644
-> --- a/drivers/video/fbdev/ps3fb.c
-> +++ b/drivers/video/fbdev/ps3fb.c
-> @@ -1168,8 +1168,7 @@ static int ps3fb_probe(struct ps3_system_bus_device *dev)
+On Tue, Jul 18, 2023 at 05:56:15PM +1000, Alistair Popple wrote:
+> diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
+> index b466172..48c81b9 100644
+> --- a/include/asm-generic/tlb.h
+> +++ b/include/asm-generic/tlb.h
+> @@ -456,7 +456,7 @@ static inline void tlb_flush_mmu_tlbonly(struct mmu_gather *tlb)
+>  		return;
 >  
->  	ps3_system_bus_set_drvdata(dev, info);
->  
-> -	dev_info(info->device, "%s %s, using %u KiB of video memory\n",
-> -		 dev_driver_string(info->dev), dev_name(info->dev),
-> +	dev_info(info->device, "using %u KiB of video memory\n",
->  		 info->fix.smem_len >> 10);
->  
->  	task = kthread_run(ps3fbd, info, DEVICE_NAME);
+>  	tlb_flush(tlb);
+> -	mmu_notifier_invalidate_range(tlb->mm, tlb->start, tlb->end);
+> +	mmu_notifier_invalidate_secondary_tlbs(tlb->mm, tlb->start, tlb->end);
+>  	__tlb_reset_range(tlb);
 
+Does this compile? I don't see
+"mmu_notifier_invalidate_secondary_tlbs" ?
 
-Tested-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
+Maybe we don't need to rename this function since you pretty much
+remove it in the next patches?
 
-Thanks.
+> diff --git a/mm/mmu_notifier.c b/mm/mmu_notifier.c
+> index 50c0dde..34c5a84 100644
+> --- a/mm/mmu_notifier.c
+> +++ b/mm/mmu_notifier.c
+> @@ -207,7 +207,7 @@ mmu_interval_read_begin(struct mmu_interval_notifier *interval_sub)
+>  	 *    spin_lock
+>  	 *     seq = ++subscriptions->invalidate_seq
+>  	 *    spin_unlock
+> -	 *     op->invalidate_range():
+> +	 *     op->invalidate_secondary_tlbs():
 
--- 
-~Randy
+The later patch should delete this stuff from the comment too, we
+no longer guarantee this relationship?
+
+> @@ -560,23 +560,23 @@ mn_hlist_invalidate_end(struct mmu_notifier_subscriptions *subscriptions,
+>  	hlist_for_each_entry_rcu(subscription, &subscriptions->list, hlist,
+>  				 srcu_read_lock_held(&srcu)) {
+>  		/*
+> -		 * Call invalidate_range here too to avoid the need for the
+> -		 * subsystem of having to register an invalidate_range_end
+> -		 * call-back when there is invalidate_range already. Usually a
+> -		 * subsystem registers either invalidate_range_start()/end() or
+> -		 * invalidate_range(), so this will be no additional overhead
+> -		 * (besides the pointer check).
+> +		 * Subsystems should register either invalidate_secondary_tlbs()
+> +		 * or invalidate_range_start()/end() callbacks.
+>  		 *
+> -		 * We skip call to invalidate_range() if we know it is safe ie
+> -		 * call site use mmu_notifier_invalidate_range_only_end() which
+> -		 * is safe to do when we know that a call to invalidate_range()
+> -		 * already happen under page table lock.
+> +		 * We call invalidate_secondary_tlbs() here so that subsystems
+> +		 * can use larger range based invalidations. In some cases
+> +		 * though invalidate_secondary_tlbs() needs to be called while
+> +		 * holding the page table lock. In that case call sites use
+> +		 * mmu_notifier_invalidate_range_only_end() and we know it is
+> +		 * safe to skip secondary TLB invalidation as it will have
+> +		 * already been done.
+>  		 */
+> -		if (!only_end && subscription->ops->invalidate_range)
+> -			subscription->ops->invalidate_range(subscription,
+> -							    range->mm,
+> -							    range->start,
+> -							    range->end);
+> +		if (!only_end && subscription->ops->invalidate_secondary_tlbs)
+> +			subscription->ops->invalidate_secondary_tlbs(
+
+More doesn't compile, and the comment has the same issue..
+
+But I think the approach in this series looks fine, it is so much
+cleaner after we remove all the cruft in patch 4, just look at the
+diffstat..
+
+Jason
