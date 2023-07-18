@@ -1,60 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F8B7757304
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 07:05:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87A0D757482
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 08:42:35 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KgZpLAS9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=lVsAfqer;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R4n2772M0z3072
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 15:05:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R4qBd37T2z30N2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 16:42:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KgZpLAS9;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=lVsAfqer;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::240; helo=mslow1.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 578 seconds by postgrey-1.37 at boromir; Tue, 18 Jul 2023 16:41:46 AEST
+Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [IPv6:2001:4b98:dc4:8::240])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4n1F4q1Nz2yV5
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 15:04:17 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id A9DF06144A;
-	Tue, 18 Jul 2023 05:04:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D7CC433C7;
-	Tue, 18 Jul 2023 05:04:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1689656654;
-	bh=QCK4V4hDtJGQLnp4sGW8ftod2l3sAzUjJYomCPofwno=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KgZpLAS9q7ytfh87v/z6cQJRO9pkuSykk/2ibzEUpJzhDYQliDqk/fqXMrdHS4Rik
-	 ZJ8PuS33pvz3HFI0Wv3LjDAvAU+OZBmpeeEM3uo1ISBIdU7c9pHhY4nIKAb3EdsSSw
-	 Jc9Oxbsmfipnzi8MsEh+STtVdQBjBTM9UtXe+XWEll4ERCcsQ9amk8BaFPOPCVd29z
-	 /DDOWqlu9ocJBYx4gku9O2st+Vn+Qrl24/5+NyC/xvn5VGYokPw9GsNr20h3HRt/GO
-	 r8DzBCwMhV99j6S5N9Ds6Qmjtq/+e/jBpkmmzJakpLe+4XRS75brwn+Gs0EbMikpr5
-	 y1YA2Iq/HWQRA==
-Date: Tue, 18 Jul 2023 10:33:59 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Subject: Re: [PATCH 2/2] PCI: layerscape: Add the workaround for lost link
- capablities during reset
-Message-ID: <20230718050359.GA4771@thinkpad>
-References: <20230615164113.2270698-1-Frank.Li@nxp.com>
- <20230615164113.2270698-2-Frank.Li@nxp.com>
- <20230717155910.GB35455@thinkpad>
- <ZLWMQ0w/QDdsL7yF@lizhi-Precision-Tower-5810>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4q9k1yfkz300C
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 16:41:45 +1000 (AEST)
+Received: from relay7-d.mail.gandi.net (unknown [217.70.183.200])
+	by mslow1.mail.gandi.net (Postfix) with ESMTP id 980E4D0972
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 06:32:09 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id E080220008;
+	Tue, 18 Jul 2023 06:31:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1689661919;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RpKAtUiUinq9Lhw+v54h3QcTHPMMcdg2W9j58F9msCI=;
+	b=lVsAfqer8xWiySiEq4z7Whp9otUwyCQXKtPI1tRr5f7imi5WmvidsvbXpCUGXwxk1c+lvE
+	oUHmSljh698Kg7YXWz38yD7YKynczdgakNvh9W31vXeG3ASFtYmUbHMMJvu2jAXs6WXMFe
+	qDOvnq5fNCwuhkU5Pv9JkSJ8uAbs1yjvZIjT+WnxMiQeDJLtUHfZO7aM8YIAG7auX7E6KB
+	neoUdUzoHRJnTzkhM6WLVgYwYyzcHYvDk8cc5I9mppjSrEmHREOSYJaDUdNw61xuiMD/34
+	m7I4N+6JbCgr4Op1Mxo+kriyEeSldJsgWRrKtcIj3mGk+C0lffE+F3dHz9dysw==
+Date: Tue, 18 Jul 2023 08:31:49 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH] usb: Explicitly include correct DT includes
+Message-ID: <20230718083149.77fa57ef@bootlin.com>
+In-Reply-To: <20230714175027.4065135-1-robh@kernel.org>
+References: <20230714175027.4065135-1-robh@kernel.org>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZLWMQ0w/QDdsL7yF@lizhi-Precision-Tower-5810>
+X-GND-Sasl: herve.codina@bootlin.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,108 +63,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, imx@lists.linux.dev, Rob Herring <robh@kernel.org>, "open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-pci@vger.kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>, open list <linux-kernel@vger.kernel.org>, Minghuan Lian <minghuan.Lian@nxp.com>, "moderated list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-arm-kernel@lists.infradead.org>, Roy Zang <roy.zang@nxp.com>, Bjorn Helgaas <bhelgaas@google.com>, "open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linuxppc-dev@lists.ozlabs.org>, Mingkai Hu <mingkai.hu@nxp.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, Richard Leitner <richard.leitner@linux.dev>, linux-kernel@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>, Aswath Govindraju <a-govindraju@ti.com>, Conor Dooley <conor.dooley@microchip.com>, Thierry Reding <thierry.reding@gmail.com>, linux-riscv@lists.infradead.org, Fabio Estevam <festevam@gmail.com>, Bjorn Andersson <andersson@kernel.org>, Samuel Holland <samuel@sholland.org>, Robert Jarzmik <robert.jarzmik@free.fr>, Jernej Skrabec <jernej.skrabec@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, Chen-Yu Tsai <wens@csie.org>, Andy Gross <agross@kernel.org>, Alan Stern <stern@rowland.harvard.edu>, NXP Linux Team <linux-imx@nxp.com>, linux-renesas-soc@vger.kernel.org, Chunfeng Yun <chunfeng.yun@mediatek.com>, Bryan O'Donoghue <bryan.odonoghue@linaro.org>, linux-mips@vger.kernel.org, linux-sunxi@lists.linux.dev, Guenter Roeck <linux@roeck-us.net>, Matthias Brugger <matthias
+ .bgg@gmail.com>, devicetree@vger.kernel.org, Pawel Laszczak <pawell@cadence.com>, linux-tegra@vger.kernel.org, Mathias Nyman <mathias.nyman@intel.com>, linux-arm-msm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, Haojian Zhuang <haojian.zhuang@gmail.com>, Roger Quadros <rogerq@kernel.org>, linux-mediatek@lists.infradead.org, Minas Harutyunyan <hminas@synopsys.com>, Michal Simek <michal.simek@amd.com>, Bin Liu <b-liu@ti.com>, linux-arm-kernel@lists.infradead.org, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Daire McNamara <daire.mcnamara@microchip.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Peter Chen <peter.chen@kernel.org>, linux-usb@vger.kernel.org, Nicolas Ferre <nicolas.ferre@microchip.com>, Li Yang <leoyang.li@nxp.com>, Konrad Dybcio <konrad.dybcio@linaro.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Thinh Nguyen <Thinh.Nguyen@synopsys.com>, Shawn Guo <shawnguo@kernel.org>, Claudiu Beznea <clau
+ diu.beznea@microchip.com>, Daniel Mack <daniel@zonque.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 17, 2023 at 02:45:23PM -0400, Frank Li wrote:
-> On Mon, Jul 17, 2023 at 09:29:10PM +0530, Manivannan Sadhasivam wrote:
-> > On Thu, Jun 15, 2023 at 12:41:12PM -0400, Frank Li wrote:
-> > > From: Xiaowei Bao <xiaowei.bao@nxp.com>
-> > > 
-> > > A workaround for the issue where the PCI Express Endpoint (EP) controller
-> > > loses the values of the Maximum Link Width and Supported Link Speed from
-> > > the Link Capabilities Register, which initially configured by the Reset
-> > > Configuration Word (RCW) during a link-down or hot reset event.
-> > > 
-> > 
-> > If this fixes an issue, then there should be a Fixes tag.
+Hi Rob,
+
+On Fri, 14 Jul 2023 11:50:23 -0600
+Rob Herring <robh@kernel.org> wrote:
+
+> The DT of_device.h and of_platform.h date back to the separate
+> of_platform_bus_type before it as merged into the regular platform bus.
+> As part of that merge prepping Arm DT support 13 years ago, they
+> "temporarily" include each other. They also include platform_device.h
+> and of.h. As a result, there's a pretty much random mix of those include
+> files used throughout the tree. In order to detangle these headers and
+> replace the implicit includes with struct declarations, users need to
+> explicitly include the correct includes.
 > 
-> It is not fixed a exist software issue, just workaround a hardwre errata.
-> 
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
 
-But the hardware errata is there from the start, right? So technically this
-driver doesn't address that so far and so this patch looks like a fix to me.
+[...]
 
-Plus adding a fixes tag and CCing stable list will allow this patch to be
-backported to stable kernels.
+> diff --git a/drivers/usb/gadget/udc/renesas_usbf.c b/drivers/usb/gadget/udc/renesas_usbf.c
+> index 6cd0af83e91e..3482b41d0646 100644
+> --- a/drivers/usb/gadget/udc/renesas_usbf.c
+> +++ b/drivers/usb/gadget/udc/renesas_usbf.c
+> @@ -12,10 +12,9 @@
+>  #include <linux/iopoll.h>
+>  #include <linux/kernel.h>
+>  #include <linux/kfifo.h>
+> +#include <linux/mod_devicetable.h>
+>  #include <linux/module.h>
+> -#include <linux/of_address.h>
+> -#include <linux/of_irq.h>
+> -#include <linux/of_platform.h>
+> +#include <linux/platform_device.h>
+>  #include <linux/pm_runtime.h>
+>  #include <linux/types.h>
+>  #include <linux/usb/composite.h>
 
-- Mani
+Acked-by: Herve Codina <herve.codina@bootlin.com>
 
-> > 
-> > > Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
-> > > Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > >  drivers/pci/controller/dwc/pci-layerscape-ep.c | 13 +++++++++++++
-> > >  1 file changed, 13 insertions(+)
-> > > 
-> > > diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> > > index 4e4fdd1dfea7..2ef02d827eeb 100644
-> > > --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> > > +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> > > @@ -45,6 +45,7 @@ struct ls_pcie_ep {
-> > >  	struct pci_epc_features		*ls_epc;
-> > >  	const struct ls_pcie_ep_drvdata *drvdata;
-> > >  	int				irq;
-> > > +	u32				lnkcap;
-> > >  	bool				big_endian;
-> > >  };
-> > >  
-> > > @@ -73,6 +74,7 @@ static irqreturn_t ls_pcie_ep_event_handler(int irq, void *dev_id)
-> > >  	struct ls_pcie_ep *pcie = dev_id;
-> > >  	struct dw_pcie *pci = pcie->pci;
-> > >  	u32 val, cfg;
-> > > +	u8 offset;
-> > >  
-> > >  	val = ls_lut_readl(pcie, PEX_PF0_PME_MES_DR);
-> > >  	ls_lut_writel(pcie, PEX_PF0_PME_MES_DR, val);
-> > > @@ -81,6 +83,13 @@ static irqreturn_t ls_pcie_ep_event_handler(int irq, void *dev_id)
-> > >  		return IRQ_NONE;
-> > >  
-> > >  	if (val & PEX_PF0_PME_MES_DR_LUD) {
-> > > +
-> > 
-> > Please add a comment on why the LNKCAP is being restored here.
-> > 
-> > > +		offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-> > > +
-> > > +		dw_pcie_dbi_ro_wr_en(pci);
-> > > +		dw_pcie_writew_dbi(pci, offset + PCI_EXP_LNKCAP, pcie->lnkcap);
-> > 
-> > lnkcap is a 32-bit variable, so you should use dw_pcie_writel_dbi().
-> > 
-> > - Mani
-> > 
-> > > +		dw_pcie_dbi_ro_wr_dis(pci);
-> > > +
-> > >  		cfg = ls_lut_readl(pcie, PEX_PF0_CONFIG);
-> > >  		cfg |= PEX_PF0_CFG_READY;
-> > >  		ls_lut_writel(pcie, PEX_PF0_CONFIG, cfg);
-> > > @@ -216,6 +225,7 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
-> > >  	struct ls_pcie_ep *pcie;
-> > >  	struct pci_epc_features *ls_epc;
-> > >  	struct resource *dbi_base;
-> > > +	u8 offset;
-> > >  	int ret;
-> > >  
-> > >  	pcie = devm_kzalloc(dev, sizeof(*pcie), GFP_KERNEL);
-> > > @@ -252,6 +262,9 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
-> > >  
-> > >  	platform_set_drvdata(pdev, pcie);
-> > >  
-> > > +	offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-> > > +	pcie->lnkcap = dw_pcie_readl_dbi(pci, offset + PCI_EXP_LNKCAP);
-> > > +
-> > >  	ret = dw_pcie_ep_init(&pci->ep);
-> > >  	if (ret)
-> > >  		return ret;
-> > > -- 
-> > > 2.34.1
-> > > 
-> > 
-> > -- 
-> > மணிவண்ணன் சதாசிவம்
-
--- 
-மணிவண்ணன் சதாசிவம்
+Best regards,
+Hervé
