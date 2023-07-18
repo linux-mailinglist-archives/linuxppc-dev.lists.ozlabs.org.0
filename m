@@ -2,52 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65BA4757FA8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 16:33:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBBA8757FAC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 16:34:28 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hfhdhA9E;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KxmSJMgB;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R51f124Pdz3cYx
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 00:33:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R51g64kLPz3ccj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 00:34:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hfhdhA9E;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KxmSJMgB;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=srs0=7l2b=de=robh_at_kernel.org=rob@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R51c36Xn4z3bWy
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 00:31:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R51cq6GlDz3c3X
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 00:32:27 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 3262761601;
-	Tue, 18 Jul 2023 14:31:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 003F7C433C8;
-	Tue, 18 Jul 2023 14:31:40 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 28154615DD;
+	Tue, 18 Jul 2023 14:32:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2D86C433C7;
+	Tue, 18 Jul 2023 14:32:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1689690705;
-	bh=70cuzw2gc455uN2uJfTfcohrRKp2MyYUfjNgt4cg/N8=;
+	s=k20201202; t=1689690745;
+	bh=RsM2AOmUuPIuRJHzlTp0sDymIJ887Qkx08Ubl6mdyqU=;
 	h=From:To:Cc:Subject:Date:From;
-	b=hfhdhA9EH++2H+s5xeXMFY84x2ApHhGajiSepP85szjEn7BKRUdVn8JcRbwE6F4NO
-	 cZpGPbHLbBfypwXmWzkUzQlyxxnRBMO8rravJKOZ1EmaGgPgZ2fzbBoPgY7PX/T6b3
-	 omC/jCEyVMEfjvUioBRnNnUi9baWC30dhpN9bIOzWprB0YdWAOWep6GSzKpB+jOB1G
-	 Ljjd5bbjjxDm/j2rA9eQLnrRqroQ+wXPSqOvuSfdJxvrf0wUg3ltjStum5IuXoFN43
-	 qZNVdXc68PwOWfRjSS2a9FTqjirvdz0f8ZDnbv5fIJzoV4a76VILXTheyPVSd23uAg
-	 M2NRawA8lvNXA==
-Received: (nullmailer pid 1066292 invoked by uid 1000);
-	Tue, 18 Jul 2023 14:31:39 -0000
+	b=KxmSJMgB/BG2CMSgi7GF1tI+CdEqGi1h7LhxYkLqLt5ZaSgw9Ns5dCMwBRjg0kFm+
+	 PXzRLCpgHgoNR1pMSliTBVsqQIu67ay1tepM7dmo7qFOf7YBLVstsJvdtp1lr0tTBX
+	 0E8DYz1OEIrux3tvUF8lh3LRwpNB2boty5Fi5qJsxwC1fTowICJFpkKFLTxXut8VVR
+	 BgzFgSH27QSF6ivLRlAifP+pWs7u1ivXg21yYChE/Ef1sOL3zTDfmQx+pEWZmTIP0N
+	 RjaoT5SewBOcT71aL7LETUAoYx9fN0702KNPzZvxWzyXDPq63L8OGMzJxsteGUnaAr
+	 ipC6aM0OWmv4Q==
+Received: (nullmailer pid 1067128 invoked by uid 1000);
+	Tue, 18 Jul 2023 14:32:23 -0000
 From: Rob Herring <robh@kernel.org>
-To: Hector Martin <marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>, Alyssa Rosenzweig <alyssa@rosenzweig.io>, Vinod Koul <vkoul@kernel.org>, Ludovic Desroches <ludovic.desroches@microchip.com>, Tudor Ambarus <tudor.ambarus@linaro.org>, Paul Cercueil <paul@crapouillou.net>, Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>, Viresh Kumar <vireshk@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Li Yang <leoyang.li@nxp.com>, Zhang Wei <zw@zh-kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>, Vladimir Zapolskiy <vz@mleia.com>, Sean Wang <sean.wang@mediatek.com>, Matthias Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, =?UTF-8?q?Andreas=20F=C3=A4rber?= <afaerber@suse.de>, Manivannan Sadhasivam <mani@kernel.org>, Sinan Kaya <okaya@kernel.org>, Andy Gross <agross@ker
- nel.org>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, Orson Zhai <orsonzhai@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Chunyan Zhang <zhang.lyra@gmail.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, Laxman Dewangan <ldewangan@nvidia.com>, Jon Hunter <jonathanh@nvidia.com>, Thierry Reding <thierry.reding@gmail.com>, Peter Ujfalusi <peter.ujfalusi@gmail.com>, Michal Simek <michal.simek@amd.com>
-Subject: [PATCH v2] dmaengine: Explicitly include correct DT includes
-Date: Tue, 18 Jul 2023 08:31:35 -0600
-Message-Id: <20230718143138.1066177-1-robh@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Anatolij Gustschin <agust@denx.de>, Scott Wood <oss@buserror.net>, Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH v2] powerpc: Explicitly include correct DT includes
+Date: Tue, 18 Jul 2023 08:32:17 -0600
+Message-Id: <20230718143222.1066992-1-robh@kernel.org>
 X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -62,7 +61,7 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linux-tegra@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-actions@lists.infradead.org, linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, linux-sunxi@lists.linux.dev, linux-mediatek@lists.infradead.org, asahi@lists.linux.dev, dmaengine@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org
+Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
@@ -78,601 +77,1027 @@ explicitly include the correct includes.
 Signed-off-by: Rob Herring <robh@kernel.org>
 ---
 v2:
-- Fix build error on bestcomm
+- Fix double include of of.h
 ---
- drivers/dma/apple-admac.c                      | 3 ++-
- drivers/dma/at_hdmac.c                         | 2 +-
- drivers/dma/bcm-sba-raid.c                     | 4 +++-
- drivers/dma/bestcomm/bestcomm.c                | 3 +--
- drivers/dma/dma-jz4780.c                       | 1 -
- drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c | 1 -
- drivers/dma/dw/rzn1-dmamux.c                   | 4 +++-
- drivers/dma/fsl-qdma.c                         | 4 ++--
- drivers/dma/fsl_raid.c                         | 3 ++-
- drivers/dma/fsldma.c                           | 3 ++-
- drivers/dma/img-mdc-dma.c                      | 1 -
- drivers/dma/imx-dma.c                          | 2 +-
- drivers/dma/imx-sdma.c                         | 1 -
- drivers/dma/lpc18xx-dmamux.c                   | 4 +++-
- drivers/dma/mediatek/mtk-cqdma.c               | 1 -
- drivers/dma/mediatek/mtk-hsdma.c               | 1 -
- drivers/dma/mediatek/mtk-uart-apdma.c          | 1 -
- drivers/dma/mpc512x_dma.c                      | 4 ++--
- drivers/dma/mxs-dma.c                          | 1 -
- drivers/dma/nbpfaxi.c                          | 1 -
- drivers/dma/owl-dma.c                          | 3 ++-
- drivers/dma/ppc4xx/adma.c                      | 2 +-
- drivers/dma/qcom/hidma.c                       | 2 +-
- drivers/dma/sh/shdmac.c                        | 1 -
- drivers/dma/sprd-dma.c                         | 2 +-
- drivers/dma/stm32-dmamux.c                     | 4 +++-
- drivers/dma/stm32-mdma.c                       | 1 -
- drivers/dma/sun6i-dma.c                        | 2 +-
- drivers/dma/tegra186-gpc-dma.c                 | 2 +-
- drivers/dma/tegra20-apb-dma.c                  | 1 -
- drivers/dma/tegra210-adma.c                    | 3 ++-
- drivers/dma/ti/dma-crossbar.c                  | 5 +++--
- drivers/dma/ti/edma.c                          | 1 -
- drivers/dma/ti/k3-udma-private.c               | 2 ++
- drivers/dma/ti/k3-udma.c                       | 1 -
- drivers/dma/ti/omap-dma.c                      | 2 +-
- drivers/dma/xgene-dma.c                        | 3 ++-
- drivers/dma/xilinx/xilinx_dma.c                | 4 ++--
- drivers/dma/xilinx/zynqmp_dma.c                | 3 ++-
- 39 files changed, 46 insertions(+), 43 deletions(-)
+ arch/powerpc/include/asm/ibmebus.h              | 2 ++
+ arch/powerpc/include/asm/macio.h                | 3 ++-
+ arch/powerpc/kernel/legacy_serial.c             | 2 +-
+ arch/powerpc/kernel/of_platform.c               | 4 +---
+ arch/powerpc/kernel/setup-common.c              | 4 ++--
+ arch/powerpc/kexec/file_load_64.c               | 2 +-
+ arch/powerpc/kexec/ranges.c                     | 2 +-
+ arch/powerpc/platforms/4xx/cpm.c                | 2 +-
+ arch/powerpc/platforms/4xx/hsta_msi.c           | 2 +-
+ arch/powerpc/platforms/4xx/soc.c                | 2 +-
+ arch/powerpc/platforms/512x/mpc5121_ads.c       | 2 +-
+ arch/powerpc/platforms/512x/mpc512x_generic.c   | 2 +-
+ arch/powerpc/platforms/512x/mpc512x_lpbfifo.c   | 2 +-
+ arch/powerpc/platforms/512x/pdm360ng.c          | 3 ++-
+ arch/powerpc/platforms/52xx/mpc52xx_gpt.c       | 3 +--
+ arch/powerpc/platforms/82xx/ep8248e.c           | 1 +
+ arch/powerpc/platforms/83xx/km83xx.c            | 4 ++--
+ arch/powerpc/platforms/83xx/suspend.c           | 2 +-
+ arch/powerpc/platforms/85xx/bsc913x_qds.c       | 2 +-
+ arch/powerpc/platforms/85xx/bsc913x_rdb.c       | 2 +-
+ arch/powerpc/platforms/85xx/c293pcie.c          | 3 +--
+ arch/powerpc/platforms/85xx/ge_imp3a.c          | 2 +-
+ arch/powerpc/platforms/85xx/ksi8560.c           | 3 ++-
+ arch/powerpc/platforms/85xx/mpc8536_ds.c        | 2 +-
+ arch/powerpc/platforms/85xx/mpc85xx_ds.c        | 2 +-
+ arch/powerpc/platforms/85xx/mpc85xx_mds.c       | 4 ++--
+ arch/powerpc/platforms/85xx/mpc85xx_rdb.c       | 3 ++-
+ arch/powerpc/platforms/85xx/p1010rdb.c          | 2 +-
+ arch/powerpc/platforms/85xx/p1022_ds.c          | 2 +-
+ arch/powerpc/platforms/85xx/p1022_rdk.c         | 2 +-
+ arch/powerpc/platforms/85xx/p1023_rdb.c         | 3 +--
+ arch/powerpc/platforms/85xx/socrates.c          | 2 +-
+ arch/powerpc/platforms/85xx/socrates_fpga_pic.c | 1 -
+ arch/powerpc/platforms/85xx/stx_gp3.c           | 2 +-
+ arch/powerpc/platforms/85xx/tqm85xx.c           | 2 +-
+ arch/powerpc/platforms/85xx/twr_p102x.c         | 3 ++-
+ arch/powerpc/platforms/85xx/xes_mpc85xx.c       | 2 +-
+ arch/powerpc/platforms/86xx/gef_ppc9a.c         | 2 +-
+ arch/powerpc/platforms/86xx/gef_sbc310.c        | 2 +-
+ arch/powerpc/platforms/86xx/gef_sbc610.c        | 2 +-
+ arch/powerpc/platforms/86xx/mvme7100.c          | 1 -
+ arch/powerpc/platforms/86xx/pic.c               | 2 +-
+ arch/powerpc/platforms/cell/axon_msi.c          | 3 ++-
+ arch/powerpc/platforms/cell/cbe_regs.c          | 3 +--
+ arch/powerpc/platforms/cell/iommu.c             | 2 +-
+ arch/powerpc/platforms/cell/setup.c             | 1 +
+ arch/powerpc/platforms/cell/spider-pci.c        | 1 -
+ arch/powerpc/platforms/embedded6xx/holly.c      | 2 +-
+ arch/powerpc/platforms/maple/setup.c            | 4 ++--
+ arch/powerpc/platforms/pasemi/gpio_mdio.c       | 2 +-
+ arch/powerpc/platforms/pasemi/setup.c           | 2 ++
+ arch/powerpc/platforms/powermac/setup.c         | 2 +-
+ arch/powerpc/platforms/powernv/opal-imc.c       | 1 -
+ arch/powerpc/platforms/powernv/opal-rtc.c       | 3 ++-
+ arch/powerpc/platforms/powernv/opal-secvar.c    | 2 +-
+ arch/powerpc/platforms/powernv/opal-sensor.c    | 2 ++
+ arch/powerpc/platforms/pseries/ibmebus.c        | 1 +
+ arch/powerpc/sysdev/cpm_common.c                | 2 --
+ arch/powerpc/sysdev/cpm_gpio.c                  | 3 ++-
+ arch/powerpc/sysdev/fsl_pmc.c                   | 4 ++--
+ arch/powerpc/sysdev/fsl_rio.c                   | 4 ++--
+ arch/powerpc/sysdev/fsl_rmu.c                   | 1 -
+ arch/powerpc/sysdev/fsl_soc.c                   | 1 -
+ arch/powerpc/sysdev/mpic_msgr.c                 | 3 ++-
+ arch/powerpc/sysdev/mpic_timer.c                | 1 -
+ arch/powerpc/sysdev/of_rtc.c                    | 4 ++--
+ arch/powerpc/sysdev/pmi.c                       | 4 ++--
+ 67 files changed, 79 insertions(+), 76 deletions(-)
 
-diff --git a/drivers/dma/apple-admac.c b/drivers/dma/apple-admac.c
-index 4cf8da77bdd9..3af795635c5c 100644
---- a/drivers/dma/apple-admac.c
-+++ b/drivers/dma/apple-admac.c
-@@ -10,8 +10,9 @@
- #include <linux/device.h>
- #include <linux/init.h>
- #include <linux/module.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
- #include <linux/of_dma.h>
-+#include <linux/platform_device.h>
- #include <linux/reset.h>
- #include <linux/spinlock.h>
- #include <linux/interrupt.h>
-diff --git a/drivers/dma/at_hdmac.c b/drivers/dma/at_hdmac.c
-index ee3a219e3a89..b2876f67471f 100644
---- a/drivers/dma/at_hdmac.c
-+++ b/drivers/dma/at_hdmac.c
-@@ -20,7 +20,7 @@
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/overflow.h>
--#include <linux/of_device.h>
-+#include <linux/of_platform.h>
- #include <linux/of_dma.h>
- #include <linux/platform_device.h>
- #include <linux/slab.h>
-diff --git a/drivers/dma/bcm-sba-raid.c b/drivers/dma/bcm-sba-raid.c
-index 064761289a73..94ea35330eb5 100644
---- a/drivers/dma/bcm-sba-raid.c
-+++ b/drivers/dma/bcm-sba-raid.c
-@@ -35,7 +35,9 @@
- #include <linux/mailbox_client.h>
- #include <linux/mailbox/brcm-message.h>
- #include <linux/module.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
-+#include <linux/of_platform.h>
-+#include <linux/platform_device.h>
- #include <linux/slab.h>
- #include <linux/raid/pq.h>
- 
-diff --git a/drivers/dma/bestcomm/bestcomm.c b/drivers/dma/bestcomm/bestcomm.c
-index eabbcfcaa7cb..80096f94032d 100644
---- a/drivers/dma/bestcomm/bestcomm.c
-+++ b/drivers/dma/bestcomm/bestcomm.c
-@@ -14,9 +14,8 @@
- #include <linux/slab.h>
- #include <linux/of.h>
- #include <linux/of_address.h>
--#include <linux/of_device.h>
- #include <linux/of_irq.h>
--#include <linux/of_platform.h>
-+#include <linux/platform_device.h>
- #include <asm/io.h>
- #include <asm/irq.h>
- #include <asm/mpc52xx.h>
-diff --git a/drivers/dma/dma-jz4780.c b/drivers/dma/dma-jz4780.c
-index 9c1a6e9a9c03..adbd47bd6adf 100644
---- a/drivers/dma/dma-jz4780.c
-+++ b/drivers/dma/dma-jz4780.c
-@@ -13,7 +13,6 @@
- #include <linux/interrupt.h>
- #include <linux/module.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
- #include <linux/of_dma.h>
- #include <linux/platform_device.h>
- #include <linux/slab.h>
-diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
-index 796b6caf0bab..dd02f84e404d 100644
---- a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
-+++ b/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
-@@ -21,7 +21,6 @@
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
- #include <linux/of_dma.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
-diff --git a/drivers/dma/dw/rzn1-dmamux.c b/drivers/dma/dw/rzn1-dmamux.c
-index f9912c3dd4d7..4fb8508419db 100644
---- a/drivers/dma/dw/rzn1-dmamux.c
-+++ b/drivers/dma/dw/rzn1-dmamux.c
-@@ -5,8 +5,10 @@
-  * Based on TI crossbar driver written by Peter Ujfalusi <peter.ujfalusi@ti.com>
-  */
- #include <linux/bitops.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
- #include <linux/of_dma.h>
-+#include <linux/of_platform.h>
-+#include <linux/platform_device.h>
- #include <linux/slab.h>
- #include <linux/soc/renesas/r9a06g032-sysctrl.h>
- #include <linux/types.h>
-diff --git a/drivers/dma/fsl-qdma.c b/drivers/dma/fsl-qdma.c
-index eddb2688f234..a8cc8a4bc610 100644
---- a/drivers/dma/fsl-qdma.c
-+++ b/drivers/dma/fsl-qdma.c
-@@ -13,10 +13,10 @@
- 
- #include <linux/module.h>
- #include <linux/delay.h>
--#include <linux/of_irq.h>
--#include <linux/of_platform.h>
-+#include <linux/of.h>
- #include <linux/of_dma.h>
- #include <linux/dma-mapping.h>
-+#include <linux/platform_device.h>
- 
- #include "virt-dma.h"
- #include "fsldma.h"
-diff --git a/drivers/dma/fsl_raid.c b/drivers/dma/fsl_raid.c
-index fdf3500d96a9..0b9ca93ce3dc 100644
---- a/drivers/dma/fsl_raid.c
-+++ b/drivers/dma/fsl_raid.c
-@@ -60,9 +60,10 @@
-  */
- #include <linux/interrupt.h>
- #include <linux/module.h>
-+#include <linux/of.h>
- #include <linux/of_irq.h>
--#include <linux/of_address.h>
+diff --git a/arch/powerpc/include/asm/ibmebus.h b/arch/powerpc/include/asm/ibmebus.h
+index 088f95b2e14f..6f33253a364a 100644
+--- a/arch/powerpc/include/asm/ibmebus.h
++++ b/arch/powerpc/include/asm/ibmebus.h
+@@ -46,6 +46,8 @@
+ #include <linux/of_device.h>
  #include <linux/of_platform.h>
+ 
++struct platform_driver;
++
+ extern struct bus_type ibmebus_bus_type;
+ 
+ int ibmebus_register_driver(struct platform_driver *drv);
+diff --git a/arch/powerpc/include/asm/macio.h b/arch/powerpc/include/asm/macio.h
+index ff5fd82d9ff0..3a07c62973aa 100644
+--- a/arch/powerpc/include/asm/macio.h
++++ b/arch/powerpc/include/asm/macio.h
+@@ -3,7 +3,8 @@
+ #define __MACIO_ASIC_H__
+ #ifdef __KERNEL__
+ 
+-#include <linux/of_device.h>
++#include <linux/of.h>
 +#include <linux/platform_device.h>
- #include <linux/dma-mapping.h>
- #include <linux/dmapool.h>
- #include <linux/dmaengine.h>
-diff --git a/drivers/dma/fsldma.c b/drivers/dma/fsldma.c
-index f8459cc5315d..ddcf736d283d 100644
---- a/drivers/dma/fsldma.c
-+++ b/drivers/dma/fsldma.c
-@@ -28,9 +28,10 @@
- #include <linux/delay.h>
- #include <linux/dma-mapping.h>
- #include <linux/dmapool.h>
+ 
+ extern struct bus_type macio_bus_type;
+ 
+diff --git a/arch/powerpc/kernel/legacy_serial.c b/arch/powerpc/kernel/legacy_serial.c
+index 6ee65741dbd5..1da2f6e7d2a1 100644
+--- a/arch/powerpc/kernel/legacy_serial.c
++++ b/arch/powerpc/kernel/legacy_serial.c
+@@ -5,8 +5,8 @@
+ #include <linux/serial_core.h>
+ #include <linux/console.h>
+ #include <linux/pci.h>
 +#include <linux/of.h>
  #include <linux/of_address.h>
+-#include <linux/of_device.h>
  #include <linux/of_irq.h>
+ #include <linux/serial_reg.h>
+ #include <asm/io.h>
+diff --git a/arch/powerpc/kernel/of_platform.c b/arch/powerpc/kernel/of_platform.c
+index f89376ff633e..adc76fa58d1e 100644
+--- a/arch/powerpc/kernel/of_platform.c
++++ b/arch/powerpc/kernel/of_platform.c
+@@ -13,9 +13,7 @@
+ #include <linux/export.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/pci.h>
+-#include <linux/of.h>
+-#include <linux/of_device.h>
 -#include <linux/of_platform.h>
 +#include <linux/platform_device.h>
- #include <linux/fsldma.h>
- #include "dmaengine.h"
- #include "fsldma.h"
-diff --git a/drivers/dma/img-mdc-dma.c b/drivers/dma/img-mdc-dma.c
-index ad084552640f..9be0d3226e19 100644
---- a/drivers/dma/img-mdc-dma.c
-+++ b/drivers/dma/img-mdc-dma.c
-@@ -17,7 +17,6 @@
- #include <linux/mfd/syscon.h>
- #include <linux/module.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
- #include <linux/of_dma.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
-diff --git a/drivers/dma/imx-dma.c b/drivers/dma/imx-dma.c
-index f040751690af..114f254b9f50 100644
---- a/drivers/dma/imx-dma.c
-+++ b/drivers/dma/imx-dma.c
-@@ -21,7 +21,7 @@
- #include <linux/clk.h>
- #include <linux/dmaengine.h>
- #include <linux/module.h>
+ #include <linux/atomic.h>
+ 
+ #include <asm/errno.h>
+diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
+index d2a446216444..e506699904ec 100644
+--- a/arch/powerpc/kernel/setup-common.c
++++ b/arch/powerpc/kernel/setup-common.c
+@@ -31,9 +31,9 @@
+ #include <linux/serial_8250.h>
+ #include <linux/percpu.h>
+ #include <linux/memblock.h>
+-#include <linux/of_irq.h>
++#include <linux/of.h>
+ #include <linux/of_fdt.h>
+-#include <linux/of_platform.h>
++#include <linux/of_irq.h>
+ #include <linux/hugetlb.h>
+ #include <linux/pgtable.h>
+ #include <asm/io.h>
+diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
+index 110d28bede2a..7e69be55451a 100644
+--- a/arch/powerpc/kexec/file_load_64.c
++++ b/arch/powerpc/kexec/file_load_64.c
+@@ -17,7 +17,7 @@
+ #include <linux/kexec.h>
+ #include <linux/of_fdt.h>
+ #include <linux/libfdt.h>
 -#include <linux/of_device.h>
 +#include <linux/of.h>
- #include <linux/of_dma.h>
+ #include <linux/memblock.h>
+ #include <linux/slab.h>
+ #include <linux/vmalloc.h>
+diff --git a/arch/powerpc/kexec/ranges.c b/arch/powerpc/kexec/ranges.c
+index 5fc53a5fcfdf..fb3e12f15214 100644
+--- a/arch/powerpc/kexec/ranges.c
++++ b/arch/powerpc/kexec/ranges.c
+@@ -18,7 +18,7 @@
  
- #include <asm/irq.h>
-diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
-index 7a912f90c2a9..51012bd39900 100644
---- a/drivers/dma/imx-sdma.c
-+++ b/drivers/dma/imx-sdma.c
-@@ -31,7 +31,6 @@
- #include <linux/dmaengine.h>
- #include <linux/of.h>
- #include <linux/of_address.h>
--#include <linux/of_device.h>
- #include <linux/of_dma.h>
- #include <linux/workqueue.h>
- 
-diff --git a/drivers/dma/lpc18xx-dmamux.c b/drivers/dma/lpc18xx-dmamux.c
-index df98cae8792b..2b6436f4b193 100644
---- a/drivers/dma/lpc18xx-dmamux.c
-+++ b/drivers/dma/lpc18xx-dmamux.c
-@@ -12,8 +12,10 @@
- #include <linux/err.h>
- #include <linux/init.h>
- #include <linux/mfd/syscon.h>
+ #include <linux/sort.h>
+ #include <linux/kexec.h>
 -#include <linux/of_device.h>
 +#include <linux/of.h>
- #include <linux/of_dma.h>
-+#include <linux/of_platform.h>
-+#include <linux/platform_device.h>
- #include <linux/regmap.h>
- #include <linux/spinlock.h>
+ #include <linux/slab.h>
+ #include <asm/sections.h>
+ #include <asm/kexec_ranges.h>
+diff --git a/arch/powerpc/platforms/4xx/cpm.c b/arch/powerpc/platforms/4xx/cpm.c
+index 182e12855c27..670f8ad4465b 100644
+--- a/arch/powerpc/platforms/4xx/cpm.c
++++ b/arch/powerpc/platforms/4xx/cpm.c
+@@ -18,7 +18,7 @@
+  */
  
-diff --git a/drivers/dma/mediatek/mtk-cqdma.c b/drivers/dma/mediatek/mtk-cqdma.c
-index 9ae92b8940ef..324b7387b1b9 100644
---- a/drivers/dma/mediatek/mtk-cqdma.c
-+++ b/drivers/dma/mediatek/mtk-cqdma.c
-@@ -18,7 +18,6 @@
- #include <linux/list.h>
- #include <linux/module.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
- #include <linux/of_dma.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
-diff --git a/drivers/dma/mediatek/mtk-hsdma.c b/drivers/dma/mediatek/mtk-hsdma.c
-index 69cc61c0b262..64120767d983 100644
---- a/drivers/dma/mediatek/mtk-hsdma.c
-+++ b/drivers/dma/mediatek/mtk-hsdma.c
-@@ -17,7 +17,6 @@
- #include <linux/list.h>
- #include <linux/module.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
- #include <linux/of_dma.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
-diff --git a/drivers/dma/mediatek/mtk-uart-apdma.c b/drivers/dma/mediatek/mtk-uart-apdma.c
-index a1517ef1f4a0..69366ba5db65 100644
---- a/drivers/dma/mediatek/mtk-uart-apdma.c
-+++ b/drivers/dma/mediatek/mtk-uart-apdma.c
-@@ -16,7 +16,6 @@
  #include <linux/kernel.h>
- #include <linux/list.h>
- #include <linux/module.h>
--#include <linux/of_device.h>
- #include <linux/of_dma.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
-diff --git a/drivers/dma/mpc512x_dma.c b/drivers/dma/mpc512x_dma.c
-index 4a51fdbf5aa9..1104017320b8 100644
---- a/drivers/dma/mpc512x_dma.c
-+++ b/drivers/dma/mpc512x_dma.c
-@@ -36,11 +36,11 @@
+-#include <linux/of_platform.h>
++#include <linux/of.h>
+ #include <linux/sysfs.h>
+ #include <linux/cpu.h>
+ #include <linux/suspend.h>
+diff --git a/arch/powerpc/platforms/4xx/hsta_msi.c b/arch/powerpc/platforms/4xx/hsta_msi.c
+index e11b57a62b05..c6bd846b0d65 100644
+--- a/arch/powerpc/platforms/4xx/hsta_msi.c
++++ b/arch/powerpc/platforms/4xx/hsta_msi.c
+@@ -11,7 +11,7 @@
+ #include <linux/msi.h>
+ #include <linux/of.h>
+ #include <linux/of_irq.h>
+-#include <linux/of_platform.h>
++#include <linux/platform_device.h>
+ #include <linux/pci.h>
+ #include <linux/semaphore.h>
+ #include <asm/msi_bitmap.h>
+diff --git a/arch/powerpc/platforms/4xx/soc.c b/arch/powerpc/platforms/4xx/soc.c
+index ac1cd8b17879..f91df0827877 100644
+--- a/arch/powerpc/platforms/4xx/soc.c
++++ b/arch/powerpc/platforms/4xx/soc.c
+@@ -15,8 +15,8 @@
+ #include <linux/errno.h>
  #include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/slab.h>
+ #include <linux/irq.h>
 +#include <linux/of.h>
- #include <linux/of_address.h>
--#include <linux/of_device.h>
- #include <linux/of_irq.h>
- #include <linux/of_dma.h>
--#include <linux/of_platform.h>
-+#include <linux/platform_device.h>
- 
- #include <linux/random.h>
- 
-diff --git a/drivers/dma/mxs-dma.c b/drivers/dma/mxs-dma.c
-index acc4d53e4630..cfb9962417ef 100644
---- a/drivers/dma/mxs-dma.c
-+++ b/drivers/dma/mxs-dma.c
-@@ -21,7 +21,6 @@
- #include <linux/module.h>
- #include <linux/stmp_device.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
- #include <linux/of_dma.h>
- #include <linux/list.h>
- #include <linux/dma/mxs-dma.h>
-diff --git a/drivers/dma/nbpfaxi.c b/drivers/dma/nbpfaxi.c
-index e72e8c10355e..0b2f96fd8bf0 100644
---- a/drivers/dma/nbpfaxi.c
-+++ b/drivers/dma/nbpfaxi.c
-@@ -15,7 +15,6 @@
- #include <linux/log2.h>
- #include <linux/module.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
- #include <linux/of_dma.h>
- #include <linux/platform_device.h>
- #include <linux/slab.h>
-diff --git a/drivers/dma/owl-dma.c b/drivers/dma/owl-dma.c
-index 95a462a1f511..e745f0c67094 100644
---- a/drivers/dma/owl-dma.c
-+++ b/drivers/dma/owl-dma.c
-@@ -20,8 +20,9 @@
- #include <linux/io.h>
- #include <linux/mm.h>
- #include <linux/module.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
- #include <linux/of_dma.h>
-+#include <linux/platform_device.h>
- #include <linux/slab.h>
- #include "virt-dma.h"
- 
-diff --git a/drivers/dma/ppc4xx/adma.c b/drivers/dma/ppc4xx/adma.c
-index 686c270ef710..f9b82dff3387 100644
---- a/drivers/dma/ppc4xx/adma.c
-+++ b/drivers/dma/ppc4xx/adma.c
-@@ -28,7 +28,7 @@
- #include <linux/of.h>
- #include <linux/of_address.h>
  #include <linux/of_irq.h>
 -#include <linux/of_platform.h>
-+#include <linux/platform_device.h>
+ 
  #include <asm/dcr.h>
  #include <asm/dcr-regs.h>
- #include "adma.h"
-diff --git a/drivers/dma/qcom/hidma.c b/drivers/dma/qcom/hidma.c
-index 344525c3a32f..5baf7e593ea5 100644
---- a/drivers/dma/qcom/hidma.c
-+++ b/drivers/dma/qcom/hidma.c
-@@ -45,12 +45,12 @@
- #include <linux/dmaengine.h>
- #include <linux/dma-mapping.h>
- #include <linux/list.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
- #include <linux/platform_device.h>
- #include <linux/slab.h>
- #include <linux/spinlock.h>
- #include <linux/of_dma.h>
--#include <linux/of_device.h>
- #include <linux/property.h>
- #include <linux/delay.h>
- #include <linux/acpi.h>
-diff --git a/drivers/dma/sh/shdmac.c b/drivers/dma/sh/shdmac.c
-index 5aafe548ca5f..6f881d7d2f79 100644
---- a/drivers/dma/sh/shdmac.c
-+++ b/drivers/dma/sh/shdmac.c
-@@ -23,7 +23,6 @@
- #include <linux/module.h>
- #include <linux/notifier.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
- #include <linux/rculist.h>
-diff --git a/drivers/dma/sprd-dma.c b/drivers/dma/sprd-dma.c
-index 2b639adb48ba..168aa0bd73a0 100644
---- a/drivers/dma/sprd-dma.c
-+++ b/drivers/dma/sprd-dma.c
-@@ -15,7 +15,7 @@
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/of_dma.h>
--#include <linux/of_device.h>
-+#include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
- #include <linux/slab.h>
+diff --git a/arch/powerpc/platforms/512x/mpc5121_ads.c b/arch/powerpc/platforms/512x/mpc5121_ads.c
+index 80b25ce076bc..a18f85b3ef36 100644
+--- a/arch/powerpc/platforms/512x/mpc5121_ads.c
++++ b/arch/powerpc/platforms/512x/mpc5121_ads.c
+@@ -10,7 +10,7 @@
  
-diff --git a/drivers/dma/stm32-dmamux.c b/drivers/dma/stm32-dmamux.c
-index e415bd9f4f2b..8d77e2a7939a 100644
---- a/drivers/dma/stm32-dmamux.c
-+++ b/drivers/dma/stm32-dmamux.c
-@@ -15,8 +15,10 @@
- #include <linux/err.h>
- #include <linux/init.h>
- #include <linux/module.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
- #include <linux/of_dma.h>
-+#include <linux/of_platform.h>
-+#include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
- #include <linux/reset.h>
- #include <linux/slab.h>
-diff --git a/drivers/dma/stm32-mdma.c b/drivers/dma/stm32-mdma.c
-index 1d0e9dd72ab3..0de234022c6d 100644
---- a/drivers/dma/stm32-mdma.c
-+++ b/drivers/dma/stm32-mdma.c
-@@ -24,7 +24,6 @@
- #include <linux/log2.h>
- #include <linux/module.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
- #include <linux/of_dma.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
-diff --git a/drivers/dma/sun6i-dma.c b/drivers/dma/sun6i-dma.c
-index ebfd29888b2f..2469efddf540 100644
---- a/drivers/dma/sun6i-dma.c
-+++ b/drivers/dma/sun6i-dma.c
-@@ -14,8 +14,8 @@
- #include <linux/dmapool.h>
- #include <linux/interrupt.h>
- #include <linux/module.h>
-+#include <linux/of.h>
- #include <linux/of_dma.h>
--#include <linux/of_device.h>
- #include <linux/platform_device.h>
- #include <linux/reset.h>
- #include <linux/slab.h>
-diff --git a/drivers/dma/tegra186-gpc-dma.c b/drivers/dma/tegra186-gpc-dma.c
-index 8f67f453a492..33b101001100 100644
---- a/drivers/dma/tegra186-gpc-dma.c
-+++ b/drivers/dma/tegra186-gpc-dma.c
-@@ -13,7 +13,7 @@
- #include <linux/iopoll.h>
- #include <linux/minmax.h>
- #include <linux/module.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
- #include <linux/of_dma.h>
- #include <linux/platform_device.h>
- #include <linux/reset.h>
-diff --git a/drivers/dma/tegra20-apb-dma.c b/drivers/dma/tegra20-apb-dma.c
-index cc6b91f48979..063022f9df76 100644
---- a/drivers/dma/tegra20-apb-dma.c
-+++ b/drivers/dma/tegra20-apb-dma.c
-@@ -17,7 +17,6 @@
- #include <linux/mm.h>
- #include <linux/module.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
- #include <linux/of_dma.h>
- #include <linux/platform_device.h>
- #include <linux/pm.h>
-diff --git a/drivers/dma/tegra210-adma.c b/drivers/dma/tegra210-adma.c
-index b97004036071..e557bada1510 100644
---- a/drivers/dma/tegra210-adma.c
-+++ b/drivers/dma/tegra210-adma.c
-@@ -8,9 +8,10 @@
- #include <linux/clk.h>
- #include <linux/iopoll.h>
- #include <linux/module.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
- #include <linux/of_dma.h>
- #include <linux/of_irq.h>
-+#include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
- #include <linux/slab.h>
- 
-diff --git a/drivers/dma/ti/dma-crossbar.c b/drivers/dma/ti/dma-crossbar.c
-index f744ddbbbad7..7f17ee87a6dc 100644
---- a/drivers/dma/ti/dma-crossbar.c
-+++ b/drivers/dma/ti/dma-crossbar.c
-@@ -3,14 +3,15 @@
-  *  Copyright (C) 2015 Texas Instruments Incorporated - http://www.ti.com
-  *  Author: Peter Ujfalusi <peter.ujfalusi@ti.com>
-  */
-+#include <linux/platform_device.h>
- #include <linux/slab.h>
- #include <linux/err.h>
- #include <linux/init.h>
- #include <linux/list.h>
+ #include <linux/kernel.h>
  #include <linux/io.h>
--#include <linux/of_address.h>
+-#include <linux/of_platform.h>
++#include <linux/of.h>
+ 
+ #include <asm/machdep.h>
+ #include <asm/ipic.h>
+diff --git a/arch/powerpc/platforms/512x/mpc512x_generic.c b/arch/powerpc/platforms/512x/mpc512x_generic.c
+index 97dfaac8f7ff..0d58ab257cd9 100644
+--- a/arch/powerpc/platforms/512x/mpc512x_generic.c
++++ b/arch/powerpc/platforms/512x/mpc512x_generic.c
+@@ -9,7 +9,7 @@
+  */
+ 
+ #include <linux/kernel.h>
+-#include <linux/of_platform.h>
++#include <linux/of.h>
+ 
+ #include <asm/machdep.h>
+ #include <asm/ipic.h>
+diff --git a/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c b/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
+index 1bfb29574caa..6edbbe6918f1 100644
+--- a/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
++++ b/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
+@@ -10,9 +10,9 @@
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+-#include <linux/of_platform.h>
+ #include <linux/of_address.h>
+ #include <linux/of_irq.h>
++#include <linux/platform_device.h>
+ #include <asm/mpc5121.h>
+ #include <asm/io.h>
+ #include <linux/spinlock.h>
+diff --git a/arch/powerpc/platforms/512x/pdm360ng.c b/arch/powerpc/platforms/512x/pdm360ng.c
+index 4bdec1c25de7..ce51cfeeb066 100644
+--- a/arch/powerpc/platforms/512x/pdm360ng.c
++++ b/arch/powerpc/platforms/512x/pdm360ng.c
+@@ -7,11 +7,12 @@
+  * PDM360NG board setup
+  */
+ 
++#include <linux/device.h>
+ #include <linux/kernel.h>
+ #include <linux/io.h>
++#include <linux/of.h>
+ #include <linux/of_address.h>
+ #include <linux/of_fdt.h>
+-#include <linux/of_platform.h>
+ 
+ #include <asm/machdep.h>
+ #include <asm/ipic.h>
+diff --git a/arch/powerpc/platforms/52xx/mpc52xx_gpt.c b/arch/powerpc/platforms/52xx/mpc52xx_gpt.c
+index 3fce4e1c3af6..581059527c36 100644
+--- a/arch/powerpc/platforms/52xx/mpc52xx_gpt.c
++++ b/arch/powerpc/platforms/52xx/mpc52xx_gpt.c
+@@ -48,7 +48,6 @@
+  * the output mode.  This driver does not change the output mode setting.
+  */
+ 
+-#include <linux/device.h>
+ #include <linux/irq.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
+@@ -57,8 +56,8 @@
+ #include <linux/of.h>
+ #include <linux/of_address.h>
+ #include <linux/of_irq.h>
+-#include <linux/of_platform.h>
+ #include <linux/of_gpio.h>
++#include <linux/platform_device.h>
+ #include <linux/kernel.h>
+ #include <linux/property.h>
+ #include <linux/slab.h>
+diff --git a/arch/powerpc/platforms/82xx/ep8248e.c b/arch/powerpc/platforms/82xx/ep8248e.c
+index 8f1856ba692e..16808536f788 100644
+--- a/arch/powerpc/platforms/82xx/ep8248e.c
++++ b/arch/powerpc/platforms/82xx/ep8248e.c
+@@ -13,6 +13,7 @@
+ #include <linux/of_mdio.h>
+ #include <linux/slab.h>
+ #include <linux/of_platform.h>
++#include <linux/platform_device.h>
+ 
+ #include <asm/io.h>
+ #include <asm/cpm2.h>
+diff --git a/arch/powerpc/platforms/83xx/km83xx.c b/arch/powerpc/platforms/83xx/km83xx.c
+index 26ddc7136547..2b5d187d9b62 100644
+--- a/arch/powerpc/platforms/83xx/km83xx.c
++++ b/arch/powerpc/platforms/83xx/km83xx.c
+@@ -20,8 +20,8 @@
+ #include <linux/seq_file.h>
+ #include <linux/root_dev.h>
+ #include <linux/initrd.h>
+-#include <linux/of_platform.h>
 -#include <linux/of_device.h>
 +#include <linux/of.h>
- #include <linux/of_dma.h>
-+#include <linux/of_platform.h>
++#include <linux/of_address.h>
  
- #define TI_XBAR_DRA7		0
- #define TI_XBAR_AM335X		1
-diff --git a/drivers/dma/ti/edma.c b/drivers/dma/ti/edma.c
-index 9ea91c640c32..aa8e2e8ac260 100644
---- a/drivers/dma/ti/edma.c
-+++ b/drivers/dma/ti/edma.c
-@@ -20,7 +20,6 @@
- #include <linux/of_dma.h>
+ #include <linux/atomic.h>
+ #include <linux/time.h>
+diff --git a/arch/powerpc/platforms/83xx/suspend.c b/arch/powerpc/platforms/83xx/suspend.c
+index 3fa8979ac8a6..9833c36bda83 100644
+--- a/arch/powerpc/platforms/83xx/suspend.c
++++ b/arch/powerpc/platforms/83xx/suspend.c
+@@ -19,7 +19,7 @@
+ #include <linux/fsl_devices.h>
+ #include <linux/of_address.h>
  #include <linux/of_irq.h>
+-#include <linux/of_platform.h>
++#include <linux/platform_device.h>
+ #include <linux/export.h>
+ 
+ #include <asm/reg.h>
+diff --git a/arch/powerpc/platforms/85xx/bsc913x_qds.c b/arch/powerpc/platforms/85xx/bsc913x_qds.c
+index a029aa090538..2eb62bff86d4 100644
+--- a/arch/powerpc/platforms/85xx/bsc913x_qds.c
++++ b/arch/powerpc/platforms/85xx/bsc913x_qds.c
+@@ -9,7 +9,7 @@
+  * Copyright 2014 Freescale Semiconductor Inc.
+  */
+ 
+-#include <linux/of_platform.h>
++#include <linux/of.h>
+ #include <linux/pci.h>
+ #include <asm/mpic.h>
+ #include <sysdev/fsl_soc.h>
+diff --git a/arch/powerpc/platforms/85xx/bsc913x_rdb.c b/arch/powerpc/platforms/85xx/bsc913x_rdb.c
+index 361b4371d073..161f006cb3bb 100644
+--- a/arch/powerpc/platforms/85xx/bsc913x_rdb.c
++++ b/arch/powerpc/platforms/85xx/bsc913x_rdb.c
+@@ -7,7 +7,7 @@
+  * Copyright 2011-2012 Freescale Semiconductor Inc.
+  */
+ 
+-#include <linux/of_platform.h>
++#include <linux/of.h>
+ #include <linux/pci.h>
+ #include <asm/mpic.h>
+ #include <sysdev/fsl_soc.h>
+diff --git a/arch/powerpc/platforms/85xx/c293pcie.c b/arch/powerpc/platforms/85xx/c293pcie.c
+index 34975708be79..7a63a3ad5e8a 100644
+--- a/arch/powerpc/platforms/85xx/c293pcie.c
++++ b/arch/powerpc/platforms/85xx/c293pcie.c
+@@ -7,8 +7,7 @@
+ 
+ #include <linux/stddef.h>
+ #include <linux/kernel.h>
+-#include <linux/of_fdt.h>
+-#include <linux/of_platform.h>
++#include <linux/of.h>
+ 
+ #include <asm/machdep.h>
+ #include <asm/udbg.h>
+diff --git a/arch/powerpc/platforms/85xx/ge_imp3a.c b/arch/powerpc/platforms/85xx/ge_imp3a.c
+index 3678a1fbf5ad..9c3b44a1952e 100644
+--- a/arch/powerpc/platforms/85xx/ge_imp3a.c
++++ b/arch/powerpc/platforms/85xx/ge_imp3a.c
+@@ -17,8 +17,8 @@
+ #include <linux/delay.h>
+ #include <linux/seq_file.h>
+ #include <linux/interrupt.h>
++#include <linux/of.h>
+ #include <linux/of_address.h>
+-#include <linux/of_platform.h>
+ 
+ #include <asm/time.h>
+ #include <asm/machdep.h>
+diff --git a/arch/powerpc/platforms/85xx/ksi8560.c b/arch/powerpc/platforms/85xx/ksi8560.c
+index af38c3aec042..1b6326a4b0f2 100644
+--- a/arch/powerpc/platforms/85xx/ksi8560.c
++++ b/arch/powerpc/platforms/85xx/ksi8560.c
+@@ -18,7 +18,8 @@
+ #include <linux/kdev_t.h>
+ #include <linux/delay.h>
+ #include <linux/seq_file.h>
+-#include <linux/of_platform.h>
++#include <linux/of.h>
++#include <linux/of_address.h>
+ 
+ #include <asm/time.h>
+ #include <asm/machdep.h>
+diff --git a/arch/powerpc/platforms/85xx/mpc8536_ds.c b/arch/powerpc/platforms/85xx/mpc8536_ds.c
+index 58ab3831913f..e966b2ad8ecd 100644
+--- a/arch/powerpc/platforms/85xx/mpc8536_ds.c
++++ b/arch/powerpc/platforms/85xx/mpc8536_ds.c
+@@ -12,7 +12,7 @@
+ #include <linux/delay.h>
+ #include <linux/seq_file.h>
+ #include <linux/interrupt.h>
+-#include <linux/of_platform.h>
++#include <linux/of.h>
+ 
+ #include <asm/time.h>
+ #include <asm/machdep.h>
+diff --git a/arch/powerpc/platforms/85xx/mpc85xx_ds.c b/arch/powerpc/platforms/85xx/mpc85xx_ds.c
+index 4347d629b567..2856148321b3 100644
+--- a/arch/powerpc/platforms/85xx/mpc85xx_ds.c
++++ b/arch/powerpc/platforms/85xx/mpc85xx_ds.c
+@@ -15,8 +15,8 @@
+ #include <linux/delay.h>
+ #include <linux/seq_file.h>
+ #include <linux/interrupt.h>
++#include <linux/of.h>
+ #include <linux/of_irq.h>
+-#include <linux/of_platform.h>
+ 
+ #include <asm/time.h>
+ #include <asm/machdep.h>
+diff --git a/arch/powerpc/platforms/85xx/mpc85xx_mds.c b/arch/powerpc/platforms/85xx/mpc85xx_mds.c
+index 0546f19416c2..c19490cf6376 100644
+--- a/arch/powerpc/platforms/85xx/mpc85xx_mds.c
++++ b/arch/powerpc/platforms/85xx/mpc85xx_mds.c
+@@ -26,8 +26,8 @@
+ #include <linux/seq_file.h>
+ #include <linux/initrd.h>
+ #include <linux/fsl_devices.h>
+-#include <linux/of_platform.h>
+-#include <linux/of_device.h>
++#include <linux/of.h>
++#include <linux/of_address.h>
+ #include <linux/phy.h>
+ #include <linux/memblock.h>
+ #include <linux/fsl/guts.h>
+diff --git a/arch/powerpc/platforms/85xx/mpc85xx_rdb.c b/arch/powerpc/platforms/85xx/mpc85xx_rdb.c
+index c42a68da6dfd..ec9f60fbebc7 100644
+--- a/arch/powerpc/platforms/85xx/mpc85xx_rdb.c
++++ b/arch/powerpc/platforms/85xx/mpc85xx_rdb.c
+@@ -12,7 +12,8 @@
+ #include <linux/delay.h>
+ #include <linux/seq_file.h>
+ #include <linux/interrupt.h>
+-#include <linux/of_platform.h>
++#include <linux/of.h>
++#include <linux/of_address.h>
+ #include <linux/fsl/guts.h>
+ 
+ #include <asm/time.h>
+diff --git a/arch/powerpc/platforms/85xx/p1010rdb.c b/arch/powerpc/platforms/85xx/p1010rdb.c
+index 14ec79a32746..10d6f1fa3327 100644
+--- a/arch/powerpc/platforms/85xx/p1010rdb.c
++++ b/arch/powerpc/platforms/85xx/p1010rdb.c
+@@ -10,7 +10,7 @@
+ #include <linux/pci.h>
+ #include <linux/delay.h>
+ #include <linux/interrupt.h>
+-#include <linux/of_platform.h>
++#include <linux/of.h>
+ 
+ #include <asm/time.h>
+ #include <asm/machdep.h>
+diff --git a/arch/powerpc/platforms/85xx/p1022_ds.c b/arch/powerpc/platforms/85xx/p1022_ds.c
+index 23d0926298b9..0dd786a061a6 100644
+--- a/arch/powerpc/platforms/85xx/p1022_ds.c
++++ b/arch/powerpc/platforms/85xx/p1022_ds.c
+@@ -18,8 +18,8 @@
+ 
+ #include <linux/fsl/guts.h>
+ #include <linux/pci.h>
++#include <linux/of.h>
+ #include <linux/of_address.h>
+-#include <linux/of_platform.h>
+ #include <asm/div64.h>
+ #include <asm/mpic.h>
+ #include <asm/swiotlb.h>
+diff --git a/arch/powerpc/platforms/85xx/p1022_rdk.c b/arch/powerpc/platforms/85xx/p1022_rdk.c
+index d1159150c3b5..25ab6e9c1470 100644
+--- a/arch/powerpc/platforms/85xx/p1022_rdk.c
++++ b/arch/powerpc/platforms/85xx/p1022_rdk.c
+@@ -14,8 +14,8 @@
+ 
+ #include <linux/fsl/guts.h>
+ #include <linux/pci.h>
++#include <linux/of.h>
+ #include <linux/of_address.h>
+-#include <linux/of_platform.h>
+ #include <asm/div64.h>
+ #include <asm/mpic.h>
+ #include <asm/swiotlb.h>
+diff --git a/arch/powerpc/platforms/85xx/p1023_rdb.c b/arch/powerpc/platforms/85xx/p1023_rdb.c
+index 9df0439a9382..e4fa8731fd2d 100644
+--- a/arch/powerpc/platforms/85xx/p1023_rdb.c
++++ b/arch/powerpc/platforms/85xx/p1023_rdb.c
+@@ -15,9 +15,8 @@
+ #include <linux/delay.h>
+ #include <linux/module.h>
+ #include <linux/fsl_devices.h>
++#include <linux/of.h>
+ #include <linux/of_address.h>
+-#include <linux/of_platform.h>
+-#include <linux/of_device.h>
+ 
+ #include <asm/time.h>
+ #include <asm/machdep.h>
+diff --git a/arch/powerpc/platforms/85xx/socrates.c b/arch/powerpc/platforms/85xx/socrates.c
+index 9fa1338bc002..403367b318db 100644
+--- a/arch/powerpc/platforms/85xx/socrates.c
++++ b/arch/powerpc/platforms/85xx/socrates.c
+@@ -23,7 +23,7 @@
+ #include <linux/kdev_t.h>
+ #include <linux/delay.h>
+ #include <linux/seq_file.h>
+-#include <linux/of_platform.h>
++#include <linux/of.h>
+ 
+ #include <asm/time.h>
+ #include <asm/machdep.h>
+diff --git a/arch/powerpc/platforms/85xx/socrates_fpga_pic.c b/arch/powerpc/platforms/85xx/socrates_fpga_pic.c
+index 3768c86b9629..baa12eff6d5d 100644
+--- a/arch/powerpc/platforms/85xx/socrates_fpga_pic.c
++++ b/arch/powerpc/platforms/85xx/socrates_fpga_pic.c
+@@ -6,7 +6,6 @@
+ #include <linux/irq.h>
+ #include <linux/of_address.h>
+ #include <linux/of_irq.h>
+-#include <linux/of_platform.h>
+ #include <linux/io.h>
+ 
+ /*
+diff --git a/arch/powerpc/platforms/85xx/stx_gp3.c b/arch/powerpc/platforms/85xx/stx_gp3.c
+index 5e2646b4c039..c10efc45894c 100644
+--- a/arch/powerpc/platforms/85xx/stx_gp3.c
++++ b/arch/powerpc/platforms/85xx/stx_gp3.c
+@@ -22,7 +22,7 @@
+ #include <linux/kdev_t.h>
+ #include <linux/delay.h>
+ #include <linux/seq_file.h>
+-#include <linux/of_platform.h>
++#include <linux/of.h>
+ 
+ #include <asm/time.h>
+ #include <asm/machdep.h>
+diff --git a/arch/powerpc/platforms/85xx/tqm85xx.c b/arch/powerpc/platforms/85xx/tqm85xx.c
+index 80effb028bf4..6be1b9809db6 100644
+--- a/arch/powerpc/platforms/85xx/tqm85xx.c
++++ b/arch/powerpc/platforms/85xx/tqm85xx.c
+@@ -20,7 +20,7 @@
+ #include <linux/kdev_t.h>
+ #include <linux/delay.h>
+ #include <linux/seq_file.h>
+-#include <linux/of_platform.h>
++#include <linux/of.h>
+ 
+ #include <asm/time.h>
+ #include <asm/machdep.h>
+diff --git a/arch/powerpc/platforms/85xx/twr_p102x.c b/arch/powerpc/platforms/85xx/twr_p102x.c
+index b88e23a334a4..c0a0456f1674 100644
+--- a/arch/powerpc/platforms/85xx/twr_p102x.c
++++ b/arch/powerpc/platforms/85xx/twr_p102x.c
+@@ -13,7 +13,8 @@
+ #include <linux/errno.h>
+ #include <linux/fsl/guts.h>
+ #include <linux/pci.h>
+-#include <linux/of_platform.h>
++#include <linux/of.h>
++#include <linux/of_address.h>
+ 
+ #include <asm/pci-bridge.h>
+ #include <asm/udbg.h>
+diff --git a/arch/powerpc/platforms/85xx/xes_mpc85xx.c b/arch/powerpc/platforms/85xx/xes_mpc85xx.c
+index 184013e6601e..45f257fc1ade 100644
+--- a/arch/powerpc/platforms/85xx/xes_mpc85xx.c
++++ b/arch/powerpc/platforms/85xx/xes_mpc85xx.c
+@@ -16,8 +16,8 @@
+ #include <linux/delay.h>
+ #include <linux/seq_file.h>
+ #include <linux/interrupt.h>
++#include <linux/of.h>
+ #include <linux/of_address.h>
+-#include <linux/of_platform.h>
+ 
+ #include <asm/time.h>
+ #include <asm/machdep.h>
+diff --git a/arch/powerpc/platforms/86xx/gef_ppc9a.c b/arch/powerpc/platforms/86xx/gef_ppc9a.c
+index f0512e51300c..f7f98cca7b91 100644
+--- a/arch/powerpc/platforms/86xx/gef_ppc9a.c
++++ b/arch/powerpc/platforms/86xx/gef_ppc9a.c
+@@ -18,8 +18,8 @@
+ #include <linux/kdev_t.h>
+ #include <linux/delay.h>
+ #include <linux/seq_file.h>
++#include <linux/of.h>
+ #include <linux/of_address.h>
+-#include <linux/of_platform.h>
+ 
+ #include <asm/time.h>
+ #include <asm/machdep.h>
+diff --git a/arch/powerpc/platforms/86xx/gef_sbc310.c b/arch/powerpc/platforms/86xx/gef_sbc310.c
+index 1430b524d982..689835f7f088 100644
+--- a/arch/powerpc/platforms/86xx/gef_sbc310.c
++++ b/arch/powerpc/platforms/86xx/gef_sbc310.c
+@@ -18,8 +18,8 @@
+ #include <linux/kdev_t.h>
+ #include <linux/delay.h>
+ #include <linux/seq_file.h>
++#include <linux/of.h>
+ #include <linux/of_address.h>
+-#include <linux/of_platform.h>
+ 
+ #include <asm/time.h>
+ #include <asm/machdep.h>
+diff --git a/arch/powerpc/platforms/86xx/gef_sbc610.c b/arch/powerpc/platforms/86xx/gef_sbc610.c
+index c92af0d964e1..365f511186ca 100644
+--- a/arch/powerpc/platforms/86xx/gef_sbc610.c
++++ b/arch/powerpc/platforms/86xx/gef_sbc610.c
+@@ -18,8 +18,8 @@
+ #include <linux/kdev_t.h>
+ #include <linux/delay.h>
+ #include <linux/seq_file.h>
++#include <linux/of.h>
+ #include <linux/of_address.h>
+-#include <linux/of_platform.h>
+ 
+ #include <asm/time.h>
+ #include <asm/machdep.h>
+diff --git a/arch/powerpc/platforms/86xx/mvme7100.c b/arch/powerpc/platforms/86xx/mvme7100.c
+index c0ac40514361..cee49ecd32d2 100644
+--- a/arch/powerpc/platforms/86xx/mvme7100.c
++++ b/arch/powerpc/platforms/86xx/mvme7100.c
+@@ -20,7 +20,6 @@
+ #include <linux/pci.h>
+ #include <linux/of.h>
+ #include <linux/of_fdt.h>
+-#include <linux/of_platform.h>
+ #include <linux/of_address.h>
+ #include <asm/udbg.h>
+ #include <asm/mpic.h>
+diff --git a/arch/powerpc/platforms/86xx/pic.c b/arch/powerpc/platforms/86xx/pic.c
+index 2c32c3488afb..5c7bd925653d 100644
+--- a/arch/powerpc/platforms/86xx/pic.c
++++ b/arch/powerpc/platforms/86xx/pic.c
+@@ -6,8 +6,8 @@
+ #include <linux/stddef.h>
+ #include <linux/kernel.h>
+ #include <linux/interrupt.h>
++#include <linux/of.h>
+ #include <linux/of_irq.h>
+-#include <linux/of_platform.h>
+ 
+ #include <asm/mpic.h>
+ #include <asm/i8259.h>
+diff --git a/arch/powerpc/platforms/cell/axon_msi.c b/arch/powerpc/platforms/cell/axon_msi.c
+index 106000449d3b..28dc86744cac 100644
+--- a/arch/powerpc/platforms/cell/axon_msi.c
++++ b/arch/powerpc/platforms/cell/axon_msi.c
+@@ -10,10 +10,11 @@
+ #include <linux/pci.h>
+ #include <linux/msi.h>
+ #include <linux/export.h>
+-#include <linux/of_platform.h>
+ #include <linux/slab.h>
+ #include <linux/debugfs.h>
++#include <linux/of.h>
+ #include <linux/of_irq.h>
++#include <linux/platform_device.h>
+ 
+ #include <asm/dcr.h>
+ #include <asm/machdep.h>
+diff --git a/arch/powerpc/platforms/cell/cbe_regs.c b/arch/powerpc/platforms/cell/cbe_regs.c
+index fb4023f9ea6b..99b3558753e9 100644
+--- a/arch/powerpc/platforms/cell/cbe_regs.c
++++ b/arch/powerpc/platforms/cell/cbe_regs.c
+@@ -10,9 +10,8 @@
+ #include <linux/percpu.h>
+ #include <linux/types.h>
+ #include <linux/export.h>
++#include <linux/of.h>
  #include <linux/of_address.h>
 -#include <linux/of_device.h>
- #include <linux/pm_runtime.h>
+-#include <linux/of_platform.h>
+ #include <linux/pgtable.h>
  
- #include <linux/platform_data/edma.h>
-diff --git a/drivers/dma/ti/k3-udma-private.c b/drivers/dma/ti/k3-udma-private.c
-index 85e00701473c..05228bf00033 100644
---- a/drivers/dma/ti/k3-udma-private.c
-+++ b/drivers/dma/ti/k3-udma-private.c
-@@ -3,6 +3,8 @@
-  *  Copyright (C) 2019 Texas Instruments Incorporated - http://www.ti.com
-  *  Author: Peter Ujfalusi <peter.ujfalusi@ti.com>
-  */
-+#include <linux/of.h>
-+#include <linux/of_platform.h>
- 
- int xudma_navss_psil_pair(struct udma_dev *ud, u32 src_thread, u32 dst_thread)
- {
-diff --git a/drivers/dma/ti/k3-udma.c b/drivers/dma/ti/k3-udma.c
-index eb4dc5fffe64..30fd2f386f36 100644
---- a/drivers/dma/ti/k3-udma.c
-+++ b/drivers/dma/ti/k3-udma.c
-@@ -20,7 +20,6 @@
- #include <linux/sys_soc.h>
+ #include <asm/io.h>
+diff --git a/arch/powerpc/platforms/cell/iommu.c b/arch/powerpc/platforms/cell/iommu.c
+index 8c7133039566..1202a69b0a20 100644
+--- a/arch/powerpc/platforms/cell/iommu.c
++++ b/arch/powerpc/platforms/cell/iommu.c
+@@ -16,7 +16,7 @@
+ #include <linux/notifier.h>
  #include <linux/of.h>
- #include <linux/of_dma.h>
--#include <linux/of_device.h>
+ #include <linux/of_address.h>
+-#include <linux/of_platform.h>
++#include <linux/platform_device.h>
+ #include <linux/slab.h>
+ #include <linux/memblock.h>
+ 
+diff --git a/arch/powerpc/platforms/cell/setup.c b/arch/powerpc/platforms/cell/setup.c
+index 9e07d101bcee..f64a1ef98aa8 100644
+--- a/arch/powerpc/platforms/cell/setup.c
++++ b/arch/powerpc/platforms/cell/setup.c
+@@ -27,6 +27,7 @@
+ #include <linux/mutex.h>
+ #include <linux/memory_hotplug.h>
+ #include <linux/of_platform.h>
++#include <linux/platform_device.h>
+ 
+ #include <asm/mmu.h>
+ #include <asm/processor.h>
+diff --git a/arch/powerpc/platforms/cell/spider-pci.c b/arch/powerpc/platforms/cell/spider-pci.c
+index e36ebd84f55b..68439445b1c3 100644
+--- a/arch/powerpc/platforms/cell/spider-pci.c
++++ b/arch/powerpc/platforms/cell/spider-pci.c
+@@ -9,7 +9,6 @@
+ 
+ #include <linux/kernel.h>
+ #include <linux/of_address.h>
+-#include <linux/of_platform.h>
+ #include <linux/slab.h>
+ #include <linux/io.h>
+ 
+diff --git a/arch/powerpc/platforms/embedded6xx/holly.c b/arch/powerpc/platforms/embedded6xx/holly.c
+index 02ff260ae1ee..ce9e58ee9754 100644
+--- a/arch/powerpc/platforms/embedded6xx/holly.c
++++ b/arch/powerpc/platforms/embedded6xx/holly.c
+@@ -22,9 +22,9 @@
+ #include <linux/serial.h>
+ #include <linux/tty.h>
+ #include <linux/serial_core.h>
++#include <linux/of.h>
+ #include <linux/of_address.h>
  #include <linux/of_irq.h>
- #include <linux/workqueue.h>
- #include <linux/completion.h>
-diff --git a/drivers/dma/ti/omap-dma.c b/drivers/dma/ti/omap-dma.c
-index 02e1c08c596d..cf96cf915c0c 100644
---- a/drivers/dma/ti/omap-dma.c
-+++ b/drivers/dma/ti/omap-dma.c
-@@ -16,8 +16,8 @@
+-#include <linux/of_platform.h>
+ #include <linux/extable.h>
+ 
+ #include <asm/time.h>
+diff --git a/arch/powerpc/platforms/maple/setup.c b/arch/powerpc/platforms/maple/setup.c
+index a4a79d77eca2..665d37e437ce 100644
+--- a/arch/powerpc/platforms/maple/setup.c
++++ b/arch/powerpc/platforms/maple/setup.c
+@@ -3,7 +3,7 @@
+  *  Maple (970 eval board) setup code
+  *
+  *  (c) Copyright 2004 Benjamin Herrenschmidt (benh@kernel.crashing.org),
+- *                     IBM Corp. 
++ *                     IBM Corp.
+  */
+ 
+ #undef DEBUG
+@@ -36,8 +36,8 @@
+ #include <linux/serial.h>
+ #include <linux/smp.h>
+ #include <linux/bitops.h>
++#include <linux/of.h>
+ #include <linux/of_address.h>
+-#include <linux/of_device.h>
+ #include <linux/memblock.h>
+ 
+ #include <asm/processor.h>
+diff --git a/arch/powerpc/platforms/pasemi/gpio_mdio.c b/arch/powerpc/platforms/pasemi/gpio_mdio.c
+index 913b77b92cea..fd130fe7a65a 100644
+--- a/arch/powerpc/platforms/pasemi/gpio_mdio.c
++++ b/arch/powerpc/platforms/pasemi/gpio_mdio.c
+@@ -20,7 +20,7 @@
+ #include <linux/phy.h>
+ #include <linux/of_address.h>
+ #include <linux/of_mdio.h>
+-#include <linux/of_platform.h>
++#include <linux/platform_device.h>
+ 
+ #define DELAY 1
+ 
+diff --git a/arch/powerpc/platforms/pasemi/setup.c b/arch/powerpc/platforms/pasemi/setup.c
+index 5c5b4a034f9e..ef985ba2bf21 100644
+--- a/arch/powerpc/platforms/pasemi/setup.c
++++ b/arch/powerpc/platforms/pasemi/setup.c
+@@ -16,7 +16,9 @@
+ #include <linux/console.h>
+ #include <linux/export.h>
+ #include <linux/pci.h>
++#include <linux/of.h>
+ #include <linux/of_platform.h>
++#include <linux/platform_device.h>
+ #include <linux/gfp.h>
+ #include <linux/irqdomain.h>
+ 
+diff --git a/arch/powerpc/platforms/powermac/setup.c b/arch/powerpc/platforms/powermac/setup.c
+index 0c41f4b005bc..6de1cd5d8a58 100644
+--- a/arch/powerpc/platforms/powermac/setup.c
++++ b/arch/powerpc/platforms/powermac/setup.c
+@@ -45,7 +45,7 @@
+ #include <linux/root_dev.h>
+ #include <linux/bitops.h>
+ #include <linux/suspend.h>
+-#include <linux/of_device.h>
++#include <linux/of.h>
+ #include <linux/of_platform.h>
+ 
+ #include <asm/reg.h>
+diff --git a/arch/powerpc/platforms/powernv/opal-imc.c b/arch/powerpc/platforms/powernv/opal-imc.c
+index 348a8cdaecd6..828fc4d88471 100644
+--- a/arch/powerpc/platforms/powernv/opal-imc.c
++++ b/arch/powerpc/platforms/powernv/opal-imc.c
+@@ -11,7 +11,6 @@
  #include <linux/platform_device.h>
- #include <linux/slab.h>
- #include <linux/spinlock.h>
-+#include <linux/of.h>
- #include <linux/of_dma.h>
--#include <linux/of_device.h>
- 
- #include "../virt-dma.h"
- 
-diff --git a/drivers/dma/xgene-dma.c b/drivers/dma/xgene-dma.c
-index 3589b4ef50b8..bb4ff8c86733 100644
---- a/drivers/dma/xgene-dma.c
-+++ b/drivers/dma/xgene-dma.c
-@@ -18,8 +18,9 @@
- #include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/irq.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
--#include <linux/of_device.h>
-+#include <linux/platform_device.h>
- 
- #include "dmaengine.h"
- 
-diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
-index ac09f0e5f58d..8a4c98d28dfc 100644
---- a/drivers/dma/xilinx/xilinx_dma.c
-+++ b/drivers/dma/xilinx/xilinx_dma.c
-@@ -41,10 +41,10 @@
- #include <linux/io.h>
- #include <linux/iopoll.h>
- #include <linux/module.h>
--#include <linux/of_address.h>
-+#include <linux/of.h>
- #include <linux/of_dma.h>
+ #include <linux/of.h>
+ #include <linux/of_address.h>
 -#include <linux/of_platform.h>
- #include <linux/of_irq.h>
-+#include <linux/platform_device.h>
- #include <linux/slab.h>
- #include <linux/clk.h>
- #include <linux/io-64-nonatomic-lo-hi.h>
-diff --git a/drivers/dma/xilinx/zynqmp_dma.c b/drivers/dma/xilinx/zynqmp_dma.c
-index 9360f43b8e0f..bd8c3cc2eaab 100644
---- a/drivers/dma/xilinx/zynqmp_dma.c
-+++ b/drivers/dma/xilinx/zynqmp_dma.c
+ #include <linux/crash_dump.h>
+ #include <linux/debugfs.h>
+ #include <asm/opal.h>
+diff --git a/arch/powerpc/platforms/powernv/opal-rtc.c b/arch/powerpc/platforms/powernv/opal-rtc.c
+index a9bcf9217e64..79011a263aa6 100644
+--- a/arch/powerpc/platforms/powernv/opal-rtc.c
++++ b/arch/powerpc/platforms/powernv/opal-rtc.c
 @@ -11,8 +11,9 @@
- #include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/module.h>
+ #include <linux/bcd.h>
+ #include <linux/rtc.h>
+ #include <linux/delay.h>
+-#include <linux/platform_device.h>
 +#include <linux/of.h>
- #include <linux/of_dma.h>
+ #include <linux/of_platform.h>
++#include <linux/platform_device.h>
+ 
+ #include <asm/opal.h>
+ #include <asm/firmware.h>
+diff --git a/arch/powerpc/platforms/powernv/opal-secvar.c b/arch/powerpc/platforms/powernv/opal-secvar.c
+index a8436bf35e2f..6ac410f4d3c7 100644
+--- a/arch/powerpc/platforms/powernv/opal-secvar.c
++++ b/arch/powerpc/platforms/powernv/opal-secvar.c
+@@ -12,8 +12,8 @@
+ #define pr_fmt(fmt) "secvar: "fmt
+ 
+ #include <linux/types.h>
++#include <linux/of.h>
+ #include <linux/platform_device.h>
+-#include <linux/of_platform.h>
+ #include <asm/opal.h>
+ #include <asm/secvar.h>
+ #include <asm/secure_boot.h>
+diff --git a/arch/powerpc/platforms/powernv/opal-sensor.c b/arch/powerpc/platforms/powernv/opal-sensor.c
+index 3192c614a1e1..8880a1c14573 100644
+--- a/arch/powerpc/platforms/powernv/opal-sensor.c
++++ b/arch/powerpc/platforms/powernv/opal-sensor.c
+@@ -6,7 +6,9 @@
+  */
+ 
+ #include <linux/delay.h>
++#include <linux/of.h>
+ #include <linux/of_platform.h>
++#include <linux/platform_device.h>
+ #include <asm/opal.h>
+ #include <asm/machdep.h>
+ 
+diff --git a/arch/powerpc/platforms/pseries/ibmebus.c b/arch/powerpc/platforms/pseries/ibmebus.c
+index da7eccaeac63..5848f2a08750 100644
+--- a/arch/powerpc/platforms/pseries/ibmebus.c
++++ b/arch/powerpc/platforms/pseries/ibmebus.c
+@@ -46,6 +46,7 @@
+ #include <linux/of.h>
+ #include <linux/of_device.h>
+ #include <linux/of_platform.h>
++#include <linux/platform_device.h>
+ #include <linux/slab.h>
+ #include <linux/stat.h>
+ #include <asm/ibmebus.h>
+diff --git a/arch/powerpc/sysdev/cpm_common.c b/arch/powerpc/sysdev/cpm_common.c
+index 8234013a8772..47db732981a8 100644
+--- a/arch/powerpc/sysdev/cpm_common.c
++++ b/arch/powerpc/sysdev/cpm_common.c
+@@ -15,11 +15,9 @@
+  */
+ 
+ #include <linux/init.h>
+-#include <linux/of_device.h>
+ #include <linux/spinlock.h>
+ #include <linux/export.h>
+ #include <linux/of.h>
+-#include <linux/of_address.h>
+ #include <linux/slab.h>
+ 
+ #include <asm/udbg.h>
+diff --git a/arch/powerpc/sysdev/cpm_gpio.c b/arch/powerpc/sysdev/cpm_gpio.c
+index 0695d26bd301..40f57111e93e 100644
+--- a/arch/powerpc/sysdev/cpm_gpio.c
++++ b/arch/powerpc/sysdev/cpm_gpio.c
+@@ -9,7 +9,8 @@
+  */
+ 
+ #include <linux/module.h>
+-#include <linux/of_device.h>
++#include <linux/of.h>
++#include <linux/platform_device.h>
+ 
+ #include <asm/cpm.h>
+ #ifdef CONFIG_8xx_GPIO
+diff --git a/arch/powerpc/sysdev/fsl_pmc.c b/arch/powerpc/sysdev/fsl_pmc.c
+index 76896de970ca..9f6dd11c1344 100644
+--- a/arch/powerpc/sysdev/fsl_pmc.c
++++ b/arch/powerpc/sysdev/fsl_pmc.c
+@@ -13,9 +13,9 @@
+ #include <linux/export.h>
+ #include <linux/suspend.h>
+ #include <linux/delay.h>
+-#include <linux/device.h>
++#include <linux/mod_devicetable.h>
+ #include <linux/of_address.h>
+-#include <linux/of_platform.h>
++#include <linux/platform_device.h>
+ 
+ struct pmc_regs {
+ 	__be32 devdisr;
+diff --git a/arch/powerpc/sysdev/fsl_rio.c b/arch/powerpc/sysdev/fsl_rio.c
+index 0331962bc6d2..efd8f6291ea6 100644
+--- a/arch/powerpc/sysdev/fsl_rio.c
++++ b/arch/powerpc/sysdev/fsl_rio.c
+@@ -23,10 +23,10 @@
+ #include <linux/types.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/interrupt.h>
+-#include <linux/device.h>
++#include <linux/of.h>
+ #include <linux/of_address.h>
+ #include <linux/of_irq.h>
+-#include <linux/of_platform.h>
++#include <linux/platform_device.h>
+ #include <linux/delay.h>
+ #include <linux/slab.h>
+ 
+diff --git a/arch/powerpc/sysdev/fsl_rmu.c b/arch/powerpc/sysdev/fsl_rmu.c
+index c1f724973589..58221b6e1465 100644
+--- a/arch/powerpc/sysdev/fsl_rmu.c
++++ b/arch/powerpc/sysdev/fsl_rmu.c
+@@ -25,7 +25,6 @@
+ #include <linux/interrupt.h>
+ #include <linux/of_address.h>
+ #include <linux/of_irq.h>
+-#include <linux/of_platform.h>
+ #include <linux/slab.h>
+ 
+ #include "fsl_rio.h"
+diff --git a/arch/powerpc/sysdev/fsl_soc.c b/arch/powerpc/sysdev/fsl_soc.c
+index 68709743450e..e71b3ede147e 100644
+--- a/arch/powerpc/sysdev/fsl_soc.c
++++ b/arch/powerpc/sysdev/fsl_soc.c
+@@ -19,7 +19,6 @@
+ #include <linux/device.h>
+ #include <linux/platform_device.h>
+ #include <linux/of.h>
+-#include <linux/of_platform.h>
+ #include <linux/phy.h>
+ #include <linux/spi/spi.h>
+ #include <linux/fsl_devices.h>
+diff --git a/arch/powerpc/sysdev/mpic_msgr.c b/arch/powerpc/sysdev/mpic_msgr.c
+index 1a3ac0b5dd89..7b449cc51aef 100644
+--- a/arch/powerpc/sysdev/mpic_msgr.c
++++ b/arch/powerpc/sysdev/mpic_msgr.c
+@@ -7,9 +7,10 @@
+  */
+ 
+ #include <linux/list.h>
++#include <linux/of.h>
+ #include <linux/of_address.h>
+ #include <linux/of_irq.h>
+-#include <linux/of_platform.h>
++#include <linux/platform_device.h>
+ #include <linux/errno.h>
+ #include <linux/err.h>
+ #include <linux/export.h>
+diff --git a/arch/powerpc/sysdev/mpic_timer.c b/arch/powerpc/sysdev/mpic_timer.c
+index b2f0a73e8f93..7166e2e0baaf 100644
+--- a/arch/powerpc/sysdev/mpic_timer.c
++++ b/arch/powerpc/sysdev/mpic_timer.c
+@@ -16,7 +16,6 @@
+ #include <linux/slab.h>
+ #include <linux/of.h>
+ #include <linux/of_address.h>
+-#include <linux/of_device.h>
+ #include <linux/of_irq.h>
+ #include <linux/syscore_ops.h>
+ #include <sysdev/fsl_soc.h>
+diff --git a/arch/powerpc/sysdev/of_rtc.c b/arch/powerpc/sysdev/of_rtc.c
+index 420f949b7485..2211937d3788 100644
+--- a/arch/powerpc/sysdev/of_rtc.c
++++ b/arch/powerpc/sysdev/of_rtc.c
+@@ -5,10 +5,10 @@
+  * Copyright 2007 David Gibson <dwg@au1.ibm.com>, IBM Corporation.
+  */
+ #include <linux/kernel.h>
+-#include <linux/of.h>
+ #include <linux/init.h>
++#include <linux/of.h>
+ #include <linux/of_address.h>
 -#include <linux/of_platform.h>
 +#include <linux/platform_device.h>
  #include <linux/slab.h>
- #include <linux/clk.h>
- #include <linux/io-64-nonatomic-lo-hi.h>
+ 
+ #include <asm/prom.h>
+diff --git a/arch/powerpc/sysdev/pmi.c b/arch/powerpc/sysdev/pmi.c
+index 9dabb50c36eb..fcf8d1516210 100644
+--- a/arch/powerpc/sysdev/pmi.c
++++ b/arch/powerpc/sysdev/pmi.c
+@@ -16,11 +16,11 @@
+ #include <linux/completion.h>
+ #include <linux/spinlock.h>
+ #include <linux/module.h>
++#include <linux/mod_devicetable.h>
+ #include <linux/workqueue.h>
+ #include <linux/of_address.h>
+-#include <linux/of_device.h>
+ #include <linux/of_irq.h>
+-#include <linux/of_platform.h>
++#include <linux/platform_device.h>
+ 
+ #include <asm/io.h>
+ #include <asm/pmi.h>
 -- 
 2.40.1
 
