@@ -1,91 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EA417571D3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 04:36:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16BAC7571D5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 04:37:04 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bHK5UlW8;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VbWaxo7/;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R4jkN17nxz3dFj
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 12:36:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R4jlK2xBsz3cQK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jul 2023 12:37:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bHK5UlW8;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VbWaxo7/;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4jc15k3cz30P0
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 12:30:41 +1000 (AEST)
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36I2BosA000475;
-	Tue, 18 Jul 2023 02:30:21 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R4jc70hV8z30NY
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 12:30:46 +1000 (AEST)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36I2I2pJ004253;
+	Tue, 18 Jul 2023 02:30:25 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=7nW9q7tdZJxOOlA6qcPKIyqZf0s0/C0nAEYZfH3pzyA=;
- b=bHK5UlW83pBy+mvT7kAj5FpzsiWOtQRArkO99xqrlbNTBzkIdcqm5PUck+1QPdkkPFSi
- tJ9JwGIb3g9R8ld3CwrWlS8SDKJdybSxb8AIXOTk0Um6xJO/v5JT4Ge0T5exiHxexquJ
- 1wStDZb8GU/92iFAXd+ENobLEa/xpR3UbuIRcHZcxdBFOnRhIClb7PPJhCTR67pYjfjk
- HegkrIeb0ppaVfqvthROyacHKxkpX60yHUAZ6wZd6ICXhv6ozEWoze4VesH3Lg+x4sr2
- sTBzgn5ckv23RWGwNnVAnKU7EftA9G6KQko43Gc5lX5LFGrWdRX4wVTPYymioF+YtFrS yA== 
+ bh=P+AZIqnopT1dy9laW4Ph6z8M3DAEFIp4FvwjX5DVsDo=;
+ b=VbWaxo7/V4KprK7Xd9lMoV0bcXMlOBv03gMlUweWcmJKQIJpyBEA5snPSYiDlWTGgz9x
+ Wy1LceYnUho7OdalrtAfkPAV57Im9Q/5XAKGewJ4/dOWcSy1hDqOSIvS75vjEvlzkKZ5
+ AzxoL8tX/TM1cH9va3lmuL9NqelTY9UlrROf2jrt74/BhfZIrFmhA8JZFvgaqs7F2mXY
+ G0SFqA6SQqSVAQvQdCAz4OVEBIXVtqOYbNw5qiKR4o6rh/vqAfKvrq+FKB8hirAyJOIx
+ NVWiPSLpGcNfyKnDSFsRx2DTU0KDvZ/puwxugNZXWHeuImu2+WcILhdPBVJava2ZZrXg YA== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rwgy4s2uf-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rwhu0g6kd-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Jul 2023 02:30:20 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36I2DQ40004343;
-	Tue, 18 Jul 2023 02:30:20 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rwgy4s2u4-1
+	Tue, 18 Jul 2023 02:30:25 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36I2LTqR011154;
+	Tue, 18 Jul 2023 02:30:25 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rwhu0g6k7-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Jul 2023 02:30:20 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36HK400t008046;
-	Tue, 18 Jul 2023 02:30:19 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3rv80j1gu8-1
+	Tue, 18 Jul 2023 02:30:24 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36HK7mEd030687;
+	Tue, 18 Jul 2023 02:30:24 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3rv79jhgx7-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Jul 2023 02:30:19 +0000
+	Tue, 18 Jul 2023 02:30:24 +0000
 Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36I2UIjv62128634
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36I2UNPe1114682
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 18 Jul 2023 02:30:18 GMT
+	Tue, 18 Jul 2023 02:30:23 GMT
 Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EBA7258059;
-	Tue, 18 Jul 2023 02:30:17 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 73CCC58058;
+	Tue, 18 Jul 2023 02:30:23 +0000 (GMT)
 Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3DE2658061;
-	Tue, 18 Jul 2023 02:30:13 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 8D3DD5805D;
+	Tue, 18 Jul 2023 02:30:18 +0000 (GMT)
 Received: from skywalker.ibmuc.com (unknown [9.43.62.199])
 	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 18 Jul 2023 02:30:12 +0000 (GMT)
+	Tue, 18 Jul 2023 02:30:18 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: linux-mm@kvack.org, akpm@linux-foundation.org, mpe@ellerman.id.au,
         linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
         christophe.leroy@csgroup.eu
-Subject: [PATCH v5 06/13] mm/huge pud: Use transparent huge pud helpers only with CONFIG_TRANSPARENT_HUGEPAGE
-Date: Tue, 18 Jul 2023 07:59:26 +0530
-Message-ID: <20230718022934.90447-7-aneesh.kumar@linux.ibm.com>
+Subject: [PATCH v5 07/13] mm/vmemmap optimization: Split hugetlb and devdax vmemmap optimization
+Date: Tue, 18 Jul 2023 07:59:27 +0530
+Message-ID: <20230718022934.90447-8-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230718022934.90447-1-aneesh.kumar@linux.ibm.com>
 References: <20230718022934.90447-1-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 7ES02WVMAErXakCwqbD2hpQ7s__tECIf
-X-Proofpoint-GUID: pIxa-hk4w24V8T-V78Ld5Ptd048HzFlZ
+X-Proofpoint-GUID: FN_p57B2jx5fv8-foimsawKdrFemcTJh
+X-Proofpoint-ORIG-GUID: S24HR4olDwjEJqfR13_vt3hK028Bwmx4
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-07-17_15,2023-07-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
- phishscore=0 clxscore=1015 spamscore=0 mlxlogscore=999 adultscore=0
- impostorscore=0 lowpriorityscore=0 bulkscore=0 malwarescore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 spamscore=0
+ clxscore=1015 mlxlogscore=999 malwarescore=0 suspectscore=0 mlxscore=0
+ priorityscore=1501 impostorscore=0 bulkscore=0 lowpriorityscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2306200000 definitions=main-2307180017
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -102,51 +102,129 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, Muchun Song <muchun.song@linux.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-pudp_set_wrprotect and move_huge_pud helpers are only used when
-CONFIG_TRANSPARENT_HUGEPAGE is enabled. Similar to pmdp_set_wrprotect and
-move_huge_pmd_helpers use architecture override only if
-CONFIG_TRANSPARENT_HUGEPAGE is set
+Arm disabled hugetlb vmemmap optimization [1] because hugetlb vmemmap
+optimization includes an update of both the permissions (writeable to
+read-only) and the output address (pfn) of the vmemmap ptes. That is not
+supported without unmapping of pte(marking it invalid) by some
+architectures.
 
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+With DAX vmemmap optimization we don't require such pte updates and
+architectures can enable DAX vmemmap optimization while having hugetlb
+vmemmap optimization disabled. Hence split DAX optimization support into a
+different config.
+
+s390, loongarch and riscv don't have devdax support. So the DAX config is not
+enabled for them. With this change, arm64 should be able to select DAX
+optimization
+
+[1] commit 060a2c92d1b6 ("arm64: mm: hugetlb: Disable HUGETLB_PAGE_OPTIMIZE_VMEMMAP")
+
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- include/linux/pgtable.h | 2 ++
- mm/mremap.c             | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ arch/loongarch/Kconfig | 2 +-
+ arch/riscv/Kconfig     | 2 +-
+ arch/s390/Kconfig      | 2 +-
+ arch/x86/Kconfig       | 3 ++-
+ fs/Kconfig             | 2 +-
+ include/linux/mm.h     | 2 +-
+ mm/Kconfig             | 5 ++++-
+ 7 files changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index ca67ecbd9a66..bc9d6b681e25 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -558,6 +558,7 @@ static inline void pmdp_set_wrprotect(struct mm_struct *mm,
- #endif
- #ifndef __HAVE_ARCH_PUDP_SET_WRPROTECT
- #ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
- static inline void pudp_set_wrprotect(struct mm_struct *mm,
- 				      unsigned long address, pud_t *pudp)
- {
-@@ -571,6 +572,7 @@ static inline void pudp_set_wrprotect(struct mm_struct *mm,
- {
- 	BUILD_BUG();
- }
-+#endif /* CONFIG_TRANSPARENT_HUGEPAGE */
- #endif /* CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD */
+diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
+index e55511af4c77..537ca2a4005a 100644
+--- a/arch/loongarch/Kconfig
++++ b/arch/loongarch/Kconfig
+@@ -59,7 +59,7 @@ config LOONGARCH
+ 	select ARCH_USE_QUEUED_SPINLOCKS
+ 	select ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT
+ 	select ARCH_WANT_LD_ORPHAN_WARN
+-	select ARCH_WANT_OPTIMIZE_VMEMMAP
++	select ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP
+ 	select ARCH_WANTS_NO_INSTR
+ 	select BUILDTIME_TABLE_SORT
+ 	select COMMON_CLK
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 4c07b9189c86..6943d34c1ec1 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -53,7 +53,7 @@ config RISCV
+ 	select ARCH_WANT_GENERAL_HUGETLB if !RISCV_ISA_SVNAPOT
+ 	select ARCH_WANT_HUGE_PMD_SHARE if 64BIT
+ 	select ARCH_WANT_LD_ORPHAN_WARN if !XIP_KERNEL
+-	select ARCH_WANT_OPTIMIZE_VMEMMAP
++	select ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP
+ 	select ARCH_WANTS_THP_SWAP if HAVE_ARCH_TRANSPARENT_HUGEPAGE
+ 	select BINFMT_FLAT_NO_DATA_START_OFFSET if !MMU
+ 	select BUILDTIME_TABLE_SORT if MMU
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index 5b39918b7042..975fd06e4f4d 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -127,7 +127,7 @@ config S390
+ 	select ARCH_WANTS_NO_INSTR
+ 	select ARCH_WANT_DEFAULT_BPF_JIT
+ 	select ARCH_WANT_IPC_PARSE_VERSION
+-	select ARCH_WANT_OPTIMIZE_VMEMMAP
++	select ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP
+ 	select BUILDTIME_TABLE_SORT
+ 	select CLONE_BACKWARDS2
+ 	select DMA_OPS if PCI
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 7422db409770..78224aa76409 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -128,7 +128,8 @@ config X86
+ 	select ARCH_WANT_GENERAL_HUGETLB
+ 	select ARCH_WANT_HUGE_PMD_SHARE
+ 	select ARCH_WANT_LD_ORPHAN_WARN
+-	select ARCH_WANT_OPTIMIZE_VMEMMAP	if X86_64
++	select ARCH_WANT_OPTIMIZE_DAX_VMEMMAP	if X86_64
++	select ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP	if X86_64
+ 	select ARCH_WANTS_THP_SWAP		if X86_64
+ 	select ARCH_HAS_PARANOID_L1D_FLUSH
+ 	select BUILDTIME_TABLE_SORT
+diff --git a/fs/Kconfig b/fs/Kconfig
+index 18d034ec7953..9c104c130a6e 100644
+--- a/fs/Kconfig
++++ b/fs/Kconfig
+@@ -252,7 +252,7 @@ config HUGETLB_PAGE
+ 
+ config HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+ 	def_bool HUGETLB_PAGE
+-	depends on ARCH_WANT_OPTIMIZE_VMEMMAP
++	depends on ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP
+ 	depends on SPARSEMEM_VMEMMAP
+ 
+ config HUGETLB_PAGE_OPTIMIZE_VMEMMAP_DEFAULT_ON
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 1a2234ee14d2..83f51ec0897d 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3640,7 +3640,7 @@ void vmemmap_free(unsigned long start, unsigned long end,
  #endif
  
-diff --git a/mm/mremap.c b/mm/mremap.c
-index 11e06e4ab33b..056478c106ee 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -349,7 +349,7 @@ static inline bool move_normal_pud(struct vm_area_struct *vma,
- }
- #endif
- 
--#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
-+#if defined(CONFIG_TRANSPARENT_HUGEPAGE) && defined(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
- static bool move_huge_pud(struct vm_area_struct *vma, unsigned long old_addr,
- 			  unsigned long new_addr, pud_t *old_pud, pud_t *new_pud)
+ #define VMEMMAP_RESERVE_NR	2
+-#ifdef CONFIG_ARCH_WANT_OPTIMIZE_VMEMMAP
++#ifdef CONFIG_ARCH_WANT_OPTIMIZE_DAX_VMEMMAP
+ static inline bool __vmemmap_can_optimize(struct vmem_altmap *altmap,
+ 					  struct dev_pagemap *pgmap)
  {
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 09130434e30d..923bd35f81f2 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -487,7 +487,10 @@ config SPARSEMEM_VMEMMAP
+ # Select this config option from the architecture Kconfig, if it is preferred
+ # to enable the feature of HugeTLB/dev_dax vmemmap optimization.
+ #
+-config ARCH_WANT_OPTIMIZE_VMEMMAP
++config ARCH_WANT_OPTIMIZE_DAX_VMEMMAP
++	bool
++
++config ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP
+ 	bool
+ 
+ config HAVE_MEMBLOCK_PHYS_MAP
 -- 
 2.41.0
 
