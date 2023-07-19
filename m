@@ -2,103 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 596D9759B98
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 18:56:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDE28759C1D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 19:11:54 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GywAJTHH;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GywAJTHH;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=VCV7i/rq;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=D9aexrnq;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R5hmW1n6gz30CT
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jul 2023 02:56:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R5j6J6DtFz3bnP
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jul 2023 03:11:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GywAJTHH;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GywAJTHH;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=VCV7i/rq;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=D9aexrnq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=john.ogness@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R5hlX0yv2z2yF1
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jul 2023 02:55:35 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1689785732;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R5j5N2kzMz2ytZ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jul 2023 03:11:04 +1000 (AEST)
+From: John Ogness <john.ogness@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1689786653;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ybZMnwXlmIEE0ADI9FsKUlcEynrHTdW2zV41y3cU4q8=;
-	b=GywAJTHHLcxJVwUJVakntTMUsC9ImefzxWcs8ba2GGuU7mN0qPIBWmkS6OiMKea8ncFEmX
-	GqmxHuyFFHDhYM5yhA6J+t4roOPPCnCIaXDkG4qsKtkkTzaNZ1kPGNB4hsHV+fZywytjKw
-	m1nR9lV36gw3ZVAxhygmL3U5yVEGzxY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1689785732;
+	bh=HirW/v5+b+1SdqjL/ANp5wg8zZf/k+V30O9KLgN/N70=;
+	b=VCV7i/rq/r0OL4jnSJIIRL/zVJue6doxKGkZH+i7m0hs/Cfhjz/jegsB5NdLDGwXEHdjyw
+	/ZOmHHfes+BqR6Q/h1EPFYzm20N5ipMdgPzOhtq+8js88qDlgxvA2bIonXFZ47B6CNNoyz
+	7QOPGWnRjFfFC4KsRkXdKclpJJv3lNkO67MscLxuiabDWHqb+802i2C0vmdublGmeW77d4
+	D56pKH3R562QDJpYiHlmAgMZYVPE6n+nOZjxo5n3xTHvmLLCtymhjdeN2F4frQi2fXqwoT
+	EwehAjolwLasKc5mSGO1lQCoYL6m+d7AcG4Nv/uNFFyL03bOPpTarIRB+YSiHA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1689786653;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ybZMnwXlmIEE0ADI9FsKUlcEynrHTdW2zV41y3cU4q8=;
-	b=GywAJTHHLcxJVwUJVakntTMUsC9ImefzxWcs8ba2GGuU7mN0qPIBWmkS6OiMKea8ncFEmX
-	GqmxHuyFFHDhYM5yhA6J+t4roOPPCnCIaXDkG4qsKtkkTzaNZ1kPGNB4hsHV+fZywytjKw
-	m1nR9lV36gw3ZVAxhygmL3U5yVEGzxY=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-620-DS969UGFMR6SluzLoTruQg-1; Wed, 19 Jul 2023 12:55:30 -0400
-X-MC-Unique: DS969UGFMR6SluzLoTruQg-1
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-521a38098faso1732824a12.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 09:55:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689785729; x=1692377729;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ybZMnwXlmIEE0ADI9FsKUlcEynrHTdW2zV41y3cU4q8=;
-        b=MObAnXexYfAd+w471E9I5LCTvbozBRMfOAUz3AfQmM8SyZ8E3HaLSFIqld+n1z/+ow
-         3lKcqD3WKlzUD1MmanyicAQYOlbRRJS7z9zM6v0L5NavYpLL+t6IBF+5cuLlpzexdMql
-         qMhl8P7a0IBKn4jwNw1hfLb3bw18evs7uXXmEIlkejHhz/y3a3QhinfHv+uE0pgNzA/v
-         qgDjUIXqM71Y/jr731sGGjPJ12A0O46Pu/iDlHr3NO+cKyR0RjZmiVL6a5+KhX6w1LXP
-         Yso1cYEOsLc/EWPqDv+uVUCSUpkuRfMFLoXFzeev5HVn3n9FoXTx/SggfbC/riTXqbGX
-         OSdg==
-X-Gm-Message-State: ABy/qLY7gWmL9eYREftMbYS5ZXoAvaSc9+vHYy3FPBiApxNozgJ8fH0i
-	8aKy5GPHPgvPIiQzfAEurg0CvYf3Aya/gchDzqFFXTBBLx7F0tm4Vs4fbuZwHVVNvDEui3PaNf5
-	a2mvqMlCmQwcVxbDZva4MHYsdZg==
-X-Received: by 2002:aa7:df12:0:b0:51e:28e6:3838 with SMTP id c18-20020aa7df12000000b0051e28e63838mr2675097edy.17.1689785729747;
-        Wed, 19 Jul 2023 09:55:29 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEE4qOGG9V7ZI8+WFW37awHpPD5aiip3zVhw1ks31Z/kpX3OD6eusNtSgp6OKt44xHjSBz/kg==
-X-Received: by 2002:aa7:df12:0:b0:51e:28e6:3838 with SMTP id c18-20020aa7df12000000b0051e28e63838mr2675066edy.17.1689785729461;
-        Wed, 19 Jul 2023 09:55:29 -0700 (PDT)
-Received: from ?IPV6:2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e? ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
-        by smtp.googlemail.com with ESMTPSA id r18-20020aa7d592000000b0051df5eefa20sm2911736edq.76.2023.07.19.09.55.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Jul 2023 09:55:28 -0700 (PDT)
-Message-ID: <711f74d6-fe15-6bd4-a9b9-c4f178d95bf3@redhat.com>
-Date: Wed, 19 Jul 2023 18:55:25 +0200
+	bh=HirW/v5+b+1SdqjL/ANp5wg8zZf/k+V30O9KLgN/N70=;
+	b=D9aexrnqUIp5mA5MRwcJyGhIXmpsWaxRLo3Bkm64oVqLbuydeZ3Ed3SAlRECuCskCaNEmK
+	2Nl6q/BAahE/TFBQ==
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH] powerpc/build: vdso linker warning for orphan sections
+In-Reply-To: <87ttu0i095.fsf@mail.lhotse>
+References: <20230609051002.3342-1-npiggin@gmail.com>
+ <871qh6wcgb.fsf@jogness.linutronix.de> <871qh5jrz2.fsf@mail.lhotse>
+ <87o7k9l2oj.fsf@jogness.linutronix.de> <87ttu0i095.fsf@mail.lhotse>
+Date: Wed, 19 Jul 2023 19:16:50 +0206
+Message-ID: <87v8efu8rp.fsf@jogness.linutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [RFC PATCH v11 01/29] KVM: Wrap kvm_gfn_range.pte in a per-action
- union
-To: Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>,
- Oliver Upton <oliver.upton@linux.dev>, Huacai Chen <chenhuacai@kernel.org>,
- Michael Ellerman <mpe@ellerman.id.au>, Anup Patel <anup@brainfault.org>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>, Paul Moore <paul@paul-moore.com>,
- James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>
-References: <20230718234512.1690985-1-seanjc@google.com>
- <20230718234512.1690985-2-seanjc@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <20230718234512.1690985-2-seanjc@google.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,24 +65,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, linux-security-module@vger.kernel.org, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, kvmarm@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>, linux-arm-kernel@lists.infradead.org, Quentin Perret <qperret@google.com>, linux-mips@vger.kernel.org, Jarkko Sakkinen <jarkko@kernel.org>, Yu Zhang <yu.c.zhang@linux.intel.com>, kvm-riscv@lists.infradead.org, linux-fsdevel@vger.kernel.org, Liam Merwick <liam.merwick@oracle.com>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/19/23 01:44, Sean Christopherson wrote:
-> +	BUILD_BUG_ON(sizeof(gfn_range.arg) != sizeof(gfn_range.arg.raw));
-> +	BUILD_BUG_ON(sizeof(range->arg) != sizeof(range->arg.raw));
+Hi Michael,
 
-I think these should be static assertions near the definition of the 
-structs.  However another possibility is to remove 'raw' and just assign 
-the whole union.
+On 2023-07-19, Michael Ellerman <mpe@ellerman.id.au> wrote:
+> I regularly test with a gcc 5.5.0 / ld 2.29 toolchain and gcc 13.1.1 /
+> ld 2.39, and I haven't seen the warning. I tried a bunch of others and
+> can't reproduce it.
 
-Apart from this,
+I will send my config in a separate email (without the lists in
+CC). Building the vdso_prepare target is all that is needed.
 
-Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
+> Can you confirm that this makes the warning go away?
+>
+> diff --git a/arch/powerpc/kernel/vdso/vdso64.lds.S b/arch/powerpc/kernel/vdso/vdso64.lds.S
+> index bda6c8cdd459..286e1597c548 100644
+> --- a/arch/powerpc/kernel/vdso/vdso64.lds.S
+> +++ b/arch/powerpc/kernel/vdso/vdso64.lds.S
+> @@ -85,7 +85,7 @@ SECTIONS
+>  		*(.branch_lt)
+>  		*(.data .data.* .gnu.linkonce.d.* .sdata*)
+>  		*(.bss .sbss .dynbss .dynsbss)
+> -		*(.opd)
+> +		*(.opd .rela.opd)
+>  		*(.glink .iplt .plt .rela*)
 
-Paolo
+Hmmm. Not sure what that would change. And indeed it does not make the
+warning go away.
 
-> +	BUILD_BUG_ON(sizeof(gfn_range.arg) != sizeof(range->arg));
+Doing some testing it seems that previously .rela.opd was being silently
+placed in the .rela.dyn section. So doing that explicitly obviously gets
+rid of the warning:
 
+Index: linux-6.5-rc2/arch/powerpc/kernel/vdso/vdso64.lds.S
+===================================================================
+--- linux-6.5-rc2.orig/arch/powerpc/kernel/vdso/vdso64.lds.S
++++ linux-6.5-rc2/arch/powerpc/kernel/vdso/vdso64.lds.S
+@@ -69,7 +69,7 @@ SECTIONS
+ 	.eh_frame_hdr	: { *(.eh_frame_hdr) }		:text	:eh_frame_hdr
+ 	.eh_frame	: { KEEP (*(.eh_frame)) }	:text
+ 	.gcc_except_table : { *(.gcc_except_table) }
+-	.rela.dyn ALIGN(8) : { *(.rela.dyn) }
++	.rela.dyn ALIGN(8) : { *(.rela.dyn) *(.rela.opd) }
+ 
+ 	.got ALIGN(8)	: { *(.got .toc) }
 
+But if the goal is to get rid of .rela.opd then the question is: why is
+the linker complaining about it being discarded?
+
+John
