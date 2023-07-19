@@ -2,52 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFAFD7595C6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 14:42:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C8A17595CC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 14:43:31 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VZOm7QC5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kLu0o+AM;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R5b7X5zT1z3cRB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 22:42:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R5b8d1lGbz3c5N
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 22:43:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VZOm7QC5;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kLu0o+AM;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R5b592XBZz30YZ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 22:40:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R5b5N560vz3bTC
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 22:40:40 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 8152361638;
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 5591A616B1;
+	Wed, 19 Jul 2023 12:40:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC10C433C7;
 	Wed, 19 Jul 2023 12:40:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A953C433C8;
-	Wed, 19 Jul 2023 12:40:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1689770426;
-	bh=1xxJ92HMZHkMrmgB3qJ3qga4AePLoEhCYGynQ3AK3kw=;
+	s=k20201202; t=1689770437;
+	bh=VpF6OsRFZPIlruH3a+6MdFFoHowjkcTVP3QV/GMSTJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VZOm7QC5zE9qow5z/O0EDrGX8NJ9D8oaachbTEVb6dqMZyd9CkI3ve99wALqTHxvv
-	 +0ztzgJSXF9aHuZ/o3AQSULXwlMSUjxU9CUHA9nlt9gmMg22pdnaE4oDrngr4qn3fG
-	 AF4sv+8wBgGUeXv0EF8lso8ikCxi+yWjNyOplvx8QbaNjmFdADYWpe6t/Pm1ff3FAa
-	 fO2s7aOOg5G2+dnygK5mltsm+LkrLRwoVQv4oHc9cBAFCX5TtO3O4DU+QFQGrG4kWQ
-	 Y96BjxgrLASmygoxIHOP10UeNkX0ZfqP48yrARJeixgalG/NuOUaIOmgXoPRNFyyVI
-	 8mhS4YO6UI+ig==
+	b=kLu0o+AM59zDqOSuHvQf1xyyht6DA3UDDCMzWz8oOzgZwgfUqBZah/BCAR6IYAx2G
+	 Zovn7/vsuxpAzgzbGPUlv4oXIILODdQ1iQWmupu6B2FjYNoOlKM0BwJqgrfh33SkDV
+	 avkW7+6w7HuGQpm0j775UN3Y0NbEQTTz8CjefhtC5WB+IK8I8BajFX7UnXVEqYA6aV
+	 nGcCxf0nLaBPIIj7I8+Rn004bgs9Ug5KA6530Q5m8RBKmJjI0LhSkW7TgdCXQ9BzS0
+	 VLKJwrGdui8TogUJYxmulPomi18zSuJD1mkvC33kR3VGy6c19VnjM9GCXn6NTqMK3g
+	 5Nq81f8bKBVHg==
 From: Arnd Bergmann <arnd@kernel.org>
 To: linux-fbdev@vger.kernel.org,
 	Thomas Zimmermann <tzimmermann@suse.de>,
 	Helge Deller <deller@gmx.de>,
 	Javier Martinez Canillas <javierm@redhat.com>
-Subject: [PATCH v2 2/9] vgacon: rework screen_info #ifdef checks
-Date: Wed, 19 Jul 2023 14:39:37 +0200
-Message-Id: <20230719123944.3438363-3-arnd@kernel.org>
+Subject: [PATCH v2 3/9] dummycon: limit Arm console size hack to footbridge
+Date: Wed, 19 Jul 2023 14:39:38 +0200
+Message-Id: <20230719123944.3438363-4-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230719123944.3438363-1-arnd@kernel.org>
 References: <20230719123944.3438363-1-arnd@kernel.org>
@@ -71,185 +71,103 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-On non-x86 architectures, the screen_info variable is generally only
-used for the VGA console where supported, and in some cases the EFI
-framebuffer or vga16fb.
+The dummycon default console size used to be determined by architecture,
+but now this is a Kconfig setting on everything except ARM. Tracing this
+back in the historic git trees, this was used to match the size of VGA
+console or VGA framebuffer on early machines, but nowadays that code is
+no longer used, except probably on the old footbridge/netwinder since
+that is the only one that supports vgacon.
 
-Now that we have a definite list of which architectures actually use it
-for what, use consistent #ifdef checks so the global variable is only
-defined when it is actually used on those architectures.
+On machines with a framebuffer, booting with DT so far results in always
+using the hardcoded 80x30 size in dummycon, while on ATAGS the setting
+can come from a bootloader specific override. Both seem to be worse
+choices than the Kconfig setting, since the actual text size for fbcon
+also depends on the selected font.
 
-Loongarch and riscv have no support for vgacon or vga16fb, but
-they support EFI firmware, so only that needs to be checked, and the
-initialization can be removed because that is handled by EFI.
-IA64 has both vgacon and EFI, though EFI apparently never uses
-a framebuffer here.
+Make this work the same way as everywhere else and use the normal
+Kconfig setting, except for the footbridge with vgacon, which keeps
+using the traditional code. If vgacon is disabled, footbridge can
+also ignore the setting. This means the screen_info only has to be
+provided when either vgacon or EFI are enabled now.
 
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+To limit the amount of surprises on Arm, change the Kconfig default
+to the previously used 80x30 setting instead of the usual 80x25.
+
 Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Tested-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
-v2 changes:
- - split out mips/jazz change
- - improve ia64 #ifdef changes
----
- arch/alpha/kernel/setup.c      |  2 ++
- arch/alpha/kernel/sys_sio.c    |  2 ++
- arch/ia64/kernel/setup.c       |  6 ++++++
- arch/loongarch/kernel/setup.c  |  2 ++
- arch/mips/kernel/setup.c       |  2 +-
- arch/mips/sibyte/swarm/setup.c |  2 +-
- arch/mips/sni/setup.c          |  2 +-
- arch/riscv/kernel/setup.c      | 11 ++---------
- 8 files changed, 17 insertions(+), 12 deletions(-)
+ arch/arm/kernel/atags_parse.c    | 2 +-
+ arch/arm/kernel/setup.c          | 3 +--
+ drivers/video/console/Kconfig    | 5 +++--
+ drivers/video/console/dummycon.c | 2 +-
+ 4 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/alpha/kernel/setup.c b/arch/alpha/kernel/setup.c
-index b650ff1cb022e..b4d2297765c02 100644
---- a/arch/alpha/kernel/setup.c
-+++ b/arch/alpha/kernel/setup.c
-@@ -131,6 +131,7 @@ static void determine_cpu_caches (unsigned int);
+diff --git a/arch/arm/kernel/atags_parse.c b/arch/arm/kernel/atags_parse.c
+index 33f6eb5213a5a..4c815da3b77b0 100644
+--- a/arch/arm/kernel/atags_parse.c
++++ b/arch/arm/kernel/atags_parse.c
+@@ -69,7 +69,7 @@ static int __init parse_tag_mem32(const struct tag *tag)
  
- static char __initdata command_line[COMMAND_LINE_SIZE];
+ __tagtable(ATAG_MEM, parse_tag_mem32);
  
-+#ifdef CONFIG_VGA_CONSOLE
- /*
-  * The format of "screen_info" is strange, and due to early
-  * i386-setup code. This is just enough to make the console
-@@ -147,6 +148,7 @@ struct screen_info screen_info = {
- };
- 
- EXPORT_SYMBOL(screen_info);
-+#endif
- 
- /*
-  * The direct map I/O window, if any.  This should be the same
-diff --git a/arch/alpha/kernel/sys_sio.c b/arch/alpha/kernel/sys_sio.c
-index 7c420d8dac53d..7de8a5d2d2066 100644
---- a/arch/alpha/kernel/sys_sio.c
-+++ b/arch/alpha/kernel/sys_sio.c
-@@ -57,11 +57,13 @@ sio_init_irq(void)
- static inline void __init
- alphabook1_init_arch(void)
+-#if defined(CONFIG_VGA_CONSOLE) || defined(CONFIG_DUMMY_CONSOLE)
++#if defined(CONFIG_ARCH_FOOTBRIDGE) && defined(CONFIG_VGA_CONSOLE)
+ static int __init parse_tag_videotext(const struct tag *tag)
  {
-+#ifdef CONFIG_VGA_CONSOLE
- 	/* The AlphaBook1 has LCD video fixed at 800x600,
- 	   37 rows and 100 cols. */
- 	screen_info.orig_y = 37;
- 	screen_info.orig_video_cols = 100;
- 	screen_info.orig_video_lines = 37;
-+#endif
- 
- 	lca_init_arch();
+ 	screen_info.orig_x            = tag->u.videotext.x;
+diff --git a/arch/arm/kernel/setup.c b/arch/arm/kernel/setup.c
+index c66b560562b30..40326a35a179b 100644
+--- a/arch/arm/kernel/setup.c
++++ b/arch/arm/kernel/setup.c
+@@ -928,8 +928,7 @@ static void __init request_standard_resources(const struct machine_desc *mdesc)
+ 		request_resource(&ioport_resource, &lp2);
  }
-diff --git a/arch/ia64/kernel/setup.c b/arch/ia64/kernel/setup.c
-index 5a55ac82c13a4..d2c66efdde560 100644
---- a/arch/ia64/kernel/setup.c
-+++ b/arch/ia64/kernel/setup.c
-@@ -86,9 +86,13 @@ EXPORT_SYMBOL(local_per_cpu_offset);
- #endif
- unsigned long ia64_cycles_per_usec;
- struct ia64_boot_param *ia64_boot_param;
+ 
+-#if defined(CONFIG_VGA_CONSOLE) || defined(CONFIG_DUMMY_CONSOLE) || \
+-    defined(CONFIG_EFI)
 +#if defined(CONFIG_VGA_CONSOLE) || defined(CONFIG_EFI)
- struct screen_info screen_info;
-+#endif
-+#ifdef CONFIG_VGA_CONSOLE
- unsigned long vga_console_iobase;
- unsigned long vga_console_membase;
-+#endif
+ struct screen_info screen_info = {
+  .orig_video_lines	= 30,
+  .orig_video_cols	= 80,
+diff --git a/drivers/video/console/Kconfig b/drivers/video/console/Kconfig
+index 6af90db6d2da9..b575cf54174af 100644
+--- a/drivers/video/console/Kconfig
++++ b/drivers/video/console/Kconfig
+@@ -52,7 +52,7 @@ config DUMMY_CONSOLE
  
- static struct resource data_resource = {
- 	.name	= "Kernel data",
-@@ -497,6 +501,7 @@ early_console_setup (char *cmdline)
- static void __init
- screen_info_setup(void)
- {
-+#ifdef CONFIG_VGA_CONSOLE
- 	unsigned int orig_x, orig_y, num_cols, num_rows, font_height;
+ config DUMMY_CONSOLE_COLUMNS
+ 	int "Initial number of console screen columns"
+-	depends on DUMMY_CONSOLE && !ARM
++	depends on DUMMY_CONSOLE && !ARCH_FOOTBRIDGE
+ 	default 160 if PARISC
+ 	default 80
+ 	help
+@@ -62,8 +62,9 @@ config DUMMY_CONSOLE_COLUMNS
  
- 	memset(&screen_info, 0, sizeof(screen_info));
-@@ -525,6 +530,7 @@ screen_info_setup(void)
- 	screen_info.orig_video_mode = 3;	/* XXX fake */
- 	screen_info.orig_video_isVGA = 1;	/* XXX fake */
- 	screen_info.orig_video_ega_bx = 3;	/* XXX fake */
-+#endif
- }
+ config DUMMY_CONSOLE_ROWS
+ 	int "Initial number of console screen rows"
+-	depends on DUMMY_CONSOLE && !ARM
++	depends on DUMMY_CONSOLE && !ARCH_FOOTBRIDGE
+ 	default 64 if PARISC
++	default 30 if ARM
+ 	default 25
+ 	help
+ 	  On PA-RISC, the default value is 64, which should fit a 1280x1024
+diff --git a/drivers/video/console/dummycon.c b/drivers/video/console/dummycon.c
+index f1711b2f9ff05..70549fecee12c 100644
+--- a/drivers/video/console/dummycon.c
++++ b/drivers/video/console/dummycon.c
+@@ -18,7 +18,7 @@
+  *  Dummy console driver
+  */
  
- static inline void
-diff --git a/arch/loongarch/kernel/setup.c b/arch/loongarch/kernel/setup.c
-index 95e6b579dfdd1..77e7a3722caa6 100644
---- a/arch/loongarch/kernel/setup.c
-+++ b/arch/loongarch/kernel/setup.c
-@@ -57,7 +57,9 @@
- #define SMBIOS_CORE_PACKAGE_OFFSET	0x23
- #define LOONGSON_EFI_ENABLE		(1 << 3)
- 
-+#ifdef CONFIG_EFI
- struct screen_info screen_info __section(".data");
-+#endif
- 
- unsigned long fw_arg0, fw_arg1, fw_arg2;
- DEFINE_PER_CPU(unsigned long, kernelsp);
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index cb871eb784a7c..1aba7dc95132c 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -54,7 +54,7 @@ struct cpuinfo_mips cpu_data[NR_CPUS] __read_mostly;
- 
- EXPORT_SYMBOL(cpu_data);
- 
--#ifdef CONFIG_VT
-+#ifdef CONFIG_VGA_CONSOLE
- struct screen_info screen_info;
- #endif
- 
-diff --git a/arch/mips/sibyte/swarm/setup.c b/arch/mips/sibyte/swarm/setup.c
-index 76683993cdd3a..37df504d3ecbb 100644
---- a/arch/mips/sibyte/swarm/setup.c
-+++ b/arch/mips/sibyte/swarm/setup.c
-@@ -129,7 +129,7 @@ void __init plat_mem_setup(void)
- 	if (m41t81_probe())
- 		swarm_rtc_type = RTC_M41T81;
- 
--#ifdef CONFIG_VT
-+#ifdef CONFIG_VGA_CONSOLE
- 	screen_info = (struct screen_info) {
- 		.orig_video_page	= 52,
- 		.orig_video_mode	= 3,
-diff --git a/arch/mips/sni/setup.c b/arch/mips/sni/setup.c
-index efad85c8c823b..9984cf91be7d0 100644
---- a/arch/mips/sni/setup.c
-+++ b/arch/mips/sni/setup.c
-@@ -38,7 +38,7 @@ extern void sni_machine_power_off(void);
- 
- static void __init sni_display_setup(void)
- {
--#if defined(CONFIG_VT) && defined(CONFIG_VGA_CONSOLE) && defined(CONFIG_FW_ARC)
-+#if defined(CONFIG_VGA_CONSOLE) && defined(CONFIG_FW_ARC)
- 	struct screen_info *si = &screen_info;
- 	DISPLAY_STATUS *di;
- 
-diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
-index 971fe776e2f8b..a3dbe13f45fb3 100644
---- a/arch/riscv/kernel/setup.c
-+++ b/arch/riscv/kernel/setup.c
-@@ -39,15 +39,8 @@
- 
- #include "head.h"
- 
--#if defined(CONFIG_DUMMY_CONSOLE) || defined(CONFIG_EFI)
--struct screen_info screen_info __section(".data") = {
--	.orig_video_lines	= 30,
--	.orig_video_cols	= 80,
--	.orig_video_mode	= 0,
--	.orig_video_ega_bx	= 0,
--	.orig_video_isVGA	= 1,
--	.orig_video_points	= 8
--};
-+#if defined(CONFIG_EFI)
-+struct screen_info screen_info __section(".data");
- #endif
- 
- /*
+-#if defined(__arm__)
++#if defined(CONFIG_ARCH_FOOTBRIDGE) && defined(CONFIG_VGA_CONSOLE)
+ #define DUMMY_COLUMNS	screen_info.orig_video_cols
+ #define DUMMY_ROWS	screen_info.orig_video_lines
+ #else
 -- 
 2.39.2
 
