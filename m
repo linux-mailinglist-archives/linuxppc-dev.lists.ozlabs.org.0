@@ -1,49 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE09875A087
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 23:24:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06E7475A09B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 23:32:16 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=Ai77xjd4;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R5pjq5Lzvz3cGD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jul 2023 07:24:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R5ptj6WnSz3c58
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jul 2023 07:32:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=chengzhihao1@huawei.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 1014 seconds by postgrey-1.37 at boromir; Thu, 20 Jul 2023 00:40:44 AEST
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=Ai77xjd4;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62a; helo=mail-ej1-x62a.google.com; envelope-from=matuszpd@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R5dlw1WG1z3c1n
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jul 2023 00:40:43 +1000 (AEST)
-Received: from kwepemm600013.china.huawei.com (unknown [172.30.72.54])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4R5dJQ0gzxzNmKd;
-	Wed, 19 Jul 2023 22:20:22 +0800 (CST)
-Received: from [10.174.178.46] (10.174.178.46) by
- kwepemm600013.china.huawei.com (7.193.23.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Wed, 19 Jul 2023 22:23:40 +0800
-Subject: Re: [RFC PATCH 05/21] ubifs: Pass worst-case buffer size to
- compression routines
-To: Ard Biesheuvel <ardb@kernel.org>, Eric Biggers <ebiggers@kernel.org>
-References: <20230718125847.3869700-1-ardb@kernel.org>
- <20230718125847.3869700-6-ardb@kernel.org>
- <20230718223813.GC1005@sol.localdomain>
- <CAMj1kXE1fND2h8ts6Xtfn19wkt=vAnj1TumxvoBCuEn7z3V4Aw@mail.gmail.com>
-From: Zhihao Cheng <chengzhihao1@huawei.com>
-Message-ID: <3330004f-acac-81b4-e382-a17221a0a128@huawei.com>
-Date: Wed, 19 Jul 2023 22:23:39 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R5hFT46nhz2yVX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jul 2023 02:33:00 +1000 (AEST)
+Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-992f6d7c7fbso994714066b.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 09:33:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689784374; x=1692376374;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ezYh9TdYf9SPGlHOq/YkmRIkBcOvB6bLPP8t0cvosPU=;
+        b=Ai77xjd4Papa7mIdUTLLLOt0HjEVd4UaRKKLVWju83yIoffIwGYoOAGpHNGPTBkW7R
+         xzjBMM3CdMTo9T4RB9oSbJ75u9EW9fTtiCbZN8tfdNpmmrilnk8lNUNQTUFeECk61y56
+         jkeI/OeVa4PUEAV7qe9J6W64tzVgBxb/uOUch8GEPWxL83j9+7RYdDFueAzwh9u3s9ET
+         JrqViZoYcaeJku2l6lKHWbFdDFIwVlXGoDaG72e33Rrlz9B097nXYrVup6zSuA9iomFI
+         yhl7MOnt+FU3nyXRgZWaikNNV3lKagEaqODe+zmbirKNVvfNK+S8rUpIgAFCDfSRXVdo
+         3Fpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689784374; x=1692376374;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ezYh9TdYf9SPGlHOq/YkmRIkBcOvB6bLPP8t0cvosPU=;
+        b=ixiAlMi9UJBhsENw0tHKYkw+aM1YjEqAjmY7IIlGYbQC3jJl/CSbcgZt9L+Y9RnaIM
+         V3HE2EmPddZblaw5QIHuPPJXbXUHIreI4y+7o+X5B1vP0THwLxTjzuOqOVq90F8YDFW2
+         bdBMNZfixcVSdzZejUyLaCLenwqxZS5XGH8a0g3DIWSUe/8XF4MBhxSPY46YpXSHHtJP
+         WFzVpqpnVpTK0wovDoiu0R0Zy/yhBv2xJ+dXeDojAB2FScxIq1XGx2VKya1Ac/AgjWLD
+         kJAL4fIuvP2qvfeLy9Jzj1IRd9HqwA+6/9z+jRyITpZFzs7Zs9k54jKrOdZTCOonpKmf
+         B5vA==
+X-Gm-Message-State: ABy/qLYZTrvVcYfhLBq37RoAO1bCanJMLdeXRu8T6TJbtD0WgWdO7A65
+	MFtsCXP2cJD+P+CkVxCy7WY=
+X-Google-Smtp-Source: APBJJlHZwwjBvT87CgsBUjDjYtMiifOSzfmRfPiW+vi01bUGZ/rvbUobuTctzgwoF66GEBo+mJgTOA==
+X-Received: by 2002:a17:906:290:b0:999:37ff:be94 with SMTP id 16-20020a170906029000b0099937ffbe94mr2432672ejf.71.1689784373757;
+        Wed, 19 Jul 2023 09:32:53 -0700 (PDT)
+Received: from localhost.localdomain ([2a01:c844:242b:b300:215:5dff:fe9c:4c81])
+        by smtp.gmail.com with ESMTPSA id o21-20020a17090637d500b0098e025cda3bsm2571044ejc.141.2023.07.19.09.32.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Jul 2023 09:32:53 -0700 (PDT)
+From: Matus Gajdos <matuszpd@gmail.com>
+To: Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>
+Subject: [PATCH] ASoC: fsl_spdif: Add support for 22.05 kHz sample rate
+Date: Wed, 19 Jul 2023 18:31:53 +0200
+Message-Id: <20230719163154.19492-1-matuszpd@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <CAMj1kXE1fND2h8ts6Xtfn19wkt=vAnj1TumxvoBCuEn7z3V4Aw@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.46]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- kwepemm600013.china.huawei.com (7.193.23.68)
-X-CFilter-Loop: Reflected
-X-Mailman-Approved-At: Thu, 20 Jul 2023 07:24:07 +1000
+X-Mailman-Approved-At: Thu, 20 Jul 2023 07:31:30 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,71 +83,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jens Axboe <axboe@kernel.dk>, Giovanni Cabiddu <giovanni.cabiddu@intel.com>, Steffen Klassert <steffen.klassert@secunet.com>, Kees Cook <keescook@chromium.org>, qat-linux@intel.com, Sergey Senozhatsky <senozhatsky@chromium.org>, Richard Weinberger <richard@nod.at>, David Ahern <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>, linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, Minchan Kim <minchan@kernel.org>, Nick Terrell <terrelln@fb.com>, netdev@vger.kernel.org, linux-mtd@lists.infradead.org, Jakub Kicinski <kuba@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org
+Cc: Matus Gajdos <matuszpd@gmail.com>, alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-在 2023/7/19 16:33, Ard Biesheuvel 写道:
-> On Wed, 19 Jul 2023 at 00:38, Eric Biggers <ebiggers@kernel.org> wrote:
->>
->> On Tue, Jul 18, 2023 at 02:58:31PM +0200, Ard Biesheuvel wrote:
->>> Currently, the ubifs code allocates a worst case buffer size to
->>> recompress a data node, but does not pass the size of that buffer to the
->>> compression code. This means that the compression code will never use
+Add support for 22.05 kHz sample rate for TX.
 
-I think you mean the 'out_len' which describes the lengh of 'buf' is 
-passed into ubifs_decompress, which effects the result of 
-decompressor(eg. lz4 uses length to calculate the buffer end pos).
-So, we should pass the real lenghth of 'buf'.
+Signed-off-by: Matus Gajdos <matuszpd@gmail.com>
+---
+ sound/soc/fsl/fsl_spdif.c | 8 ++++++--
+ sound/soc/fsl/fsl_spdif.h | 6 ++++--
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-
->>> the additional space, and might fail spuriously due to lack of space.
->>>
->>> So let's multiply out_len by WORST_COMPR_FACTOR after allocating the
->>> buffer. Doing so is guaranteed not to overflow, given that the preceding
->>> kmalloc_array() call would have failed otherwise.
->>>
->>> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
->>> ---
->>>   fs/ubifs/journal.c | 2 ++
->>>   1 file changed, 2 insertions(+)
->>>
->>> diff --git a/fs/ubifs/journal.c b/fs/ubifs/journal.c
->>> index dc52ac0f4a345f30..4e5961878f336033 100644
->>> --- a/fs/ubifs/journal.c
->>> +++ b/fs/ubifs/journal.c
->>> @@ -1493,6 +1493,8 @@ static int truncate_data_node(const struct ubifs_info *c, const struct inode *in
->>>        if (!buf)
->>>                return -ENOMEM;
->>>
->>> +     out_len *= WORST_COMPR_FACTOR;
->>> +
->>>        dlen = le32_to_cpu(dn->ch.len) - UBIFS_DATA_NODE_SZ;
->>>        data_size = dn_size - UBIFS_DATA_NODE_SZ;
->>>        compr_type = le16_to_cpu(dn->compr_type);
->>
->> This looks like another case where data that would be expanded by compression
->> should just be stored uncompressed instead.
->>
->> In fact, it seems that UBIFS does that already.  ubifs_compress() has this:
->>
->>          /*
->>           * If the data compressed only slightly, it is better to leave it
->>           * uncompressed to improve read speed.
->>           */
->>          if (in_len - *out_len < UBIFS_MIN_COMPRESS_DIFF)
->>                  goto no_compr;
->>
->> So it's unclear why the WORST_COMPR_FACTOR thing is needed at all.
->>
-> 
-> It is not. The buffer is used for decompression in the truncation
-> path, so none of this logic even matters. Even if the subsequent
-> recompression of the truncated data node could result in expansion
-> beyond the uncompressed size of the original data (which seems
-> impossible to me), increasing the size of this buffer would not help
-> as it is the input buffer for the compression not the output buffer.
-> .
-> 
+diff --git a/sound/soc/fsl/fsl_spdif.c b/sound/soc/fsl/fsl_spdif.c
+index 015c3708aa04..95e639711eba 100644
+--- a/sound/soc/fsl/fsl_spdif.c
++++ b/sound/soc/fsl/fsl_spdif.c
+@@ -514,6 +514,10 @@ static int spdif_set_sample_rate(struct snd_pcm_substream *substream,
+ 	int ret;
+ 
+ 	switch (sample_rate) {
++	case 22050:
++		rate = SPDIF_TXRATE_22050;
++		csfs = IEC958_AES3_CON_FS_22050;
++		break;
+ 	case 32000:
+ 		rate = SPDIF_TXRATE_32000;
+ 		csfs = IEC958_AES3_CON_FS_32000;
+@@ -1422,7 +1426,7 @@ static u32 fsl_spdif_txclk_caldiv(struct fsl_spdif_priv *spdif_priv,
+ 				struct clk *clk, u64 savesub,
+ 				enum spdif_txrate index, bool round)
+ {
+-	static const u32 rate[] = { 32000, 44100, 48000, 88200, 96000, 176400,
++	static const u32 rate[] = { 22050, 32000, 44100, 48000, 88200, 96000, 176400,
+ 				    192000, };
+ 	bool is_sysclk = clk_is_match(clk, spdif_priv->sysclk);
+ 	u64 rate_ideal, rate_actual, sub;
+@@ -1483,7 +1487,7 @@ static u32 fsl_spdif_txclk_caldiv(struct fsl_spdif_priv *spdif_priv,
+ static int fsl_spdif_probe_txclk(struct fsl_spdif_priv *spdif_priv,
+ 				enum spdif_txrate index)
+ {
+-	static const u32 rate[] = { 32000, 44100, 48000, 88200, 96000, 176400,
++	static const u32 rate[] = { 22050, 32000, 44100, 48000, 88200, 96000, 176400,
+ 				    192000, };
+ 	struct platform_device *pdev = spdif_priv->pdev;
+ 	struct device *dev = &pdev->dev;
+diff --git a/sound/soc/fsl/fsl_spdif.h b/sound/soc/fsl/fsl_spdif.h
+index 75b42a692c90..2bc1b10c17d4 100644
+--- a/sound/soc/fsl/fsl_spdif.h
++++ b/sound/soc/fsl/fsl_spdif.h
+@@ -175,7 +175,8 @@ enum spdif_gainsel {
+ 
+ /* SPDIF tx rate */
+ enum spdif_txrate {
+-	SPDIF_TXRATE_32000 = 0,
++	SPDIF_TXRATE_22050 = 0,
++	SPDIF_TXRATE_32000,
+ 	SPDIF_TXRATE_44100,
+ 	SPDIF_TXRATE_48000,
+ 	SPDIF_TXRATE_88200,
+@@ -191,7 +192,8 @@ enum spdif_txrate {
+ #define SPDIF_QSUB_SIZE			(SPDIF_UBITS_SIZE / 8)
+ 
+ 
+-#define FSL_SPDIF_RATES_PLAYBACK	(SNDRV_PCM_RATE_32000 |	\
++#define FSL_SPDIF_RATES_PLAYBACK	(SNDRV_PCM_RATE_22050 |	\
++					 SNDRV_PCM_RATE_32000 |	\
+ 					 SNDRV_PCM_RATE_44100 |	\
+ 					 SNDRV_PCM_RATE_48000 |	\
+ 					 SNDRV_PCM_RATE_88200 | \
+-- 
+2.25.1
 
