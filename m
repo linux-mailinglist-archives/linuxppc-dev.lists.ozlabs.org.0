@@ -2,85 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BAA07597FF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 16:18:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C7E175982C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 16:24:50 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PBFPnKRH;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PBFPnKRH;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DGl5JY9H;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DGl5JY9H;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R5dGP1Dj3z3bmQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jul 2023 00:18:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R5dPX0zfXz30hQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jul 2023 00:24:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PBFPnKRH;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PBFPnKRH;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DGl5JY9H;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DGl5JY9H;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=fmartine@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=fmartine@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R5dDr3mJmz30Q3
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jul 2023 00:17:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R5dNg26DDz2yDd
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jul 2023 00:24:02 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1689776232;
+	s=mimecast20190719; t=1689776639;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YjdFQRNR08a24eSSE2jcx3RnjwPdI3D1UG9L8u3hsoE=;
-	b=PBFPnKRHPfxRQZ0KnBfWne0Zv04tU/3OZCyU0RgD1VC9UbR+yX08xfJVl8HtR/B+XOEu/9
-	iFK1u2pYF5WctsOUv3ROM54TF71ekjIpRqJkgktFXvzOk7b7+XvCdzzRwp6n+s5WqtJEKG
-	DH1ZAnW3FDKZZQ8PIVwDlcTYATlp1Ao=
+	bh=AYL0WxfELPHjwx6ZiDqavEiQQIijrcopNRfhrvLV03A=;
+	b=DGl5JY9HyulFIN/2+f+illzXjr1CUuSPQJD1122DRrwP6xZ92xeN2pjhyAJKxa+HgV3FIl
+	MynIC41Cm5gBRFdGnOCNo1AIeuuXPtrvlxSorh2+q4UwJ7JZyfc3uHorXVkAiFh5mHtz0H
+	ecT14gFgxtldx91wuKFNLDzERZKBYqE=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1689776232;
+	s=mimecast20190719; t=1689776639;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YjdFQRNR08a24eSSE2jcx3RnjwPdI3D1UG9L8u3hsoE=;
-	b=PBFPnKRHPfxRQZ0KnBfWne0Zv04tU/3OZCyU0RgD1VC9UbR+yX08xfJVl8HtR/B+XOEu/9
-	iFK1u2pYF5WctsOUv3ROM54TF71ekjIpRqJkgktFXvzOk7b7+XvCdzzRwp6n+s5WqtJEKG
-	DH1ZAnW3FDKZZQ8PIVwDlcTYATlp1Ao=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=AYL0WxfELPHjwx6ZiDqavEiQQIijrcopNRfhrvLV03A=;
+	b=DGl5JY9HyulFIN/2+f+illzXjr1CUuSPQJD1122DRrwP6xZ92xeN2pjhyAJKxa+HgV3FIl
+	MynIC41Cm5gBRFdGnOCNo1AIeuuXPtrvlxSorh2+q4UwJ7JZyfc3uHorXVkAiFh5mHtz0H
+	ecT14gFgxtldx91wuKFNLDzERZKBYqE=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-42-tg6CNeaiNGOaKmjDzKnnkg-1; Wed, 19 Jul 2023 10:17:10 -0400
-X-MC-Unique: tg6CNeaiNGOaKmjDzKnnkg-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-3fbe4cecd66so39440475e9.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 07:17:10 -0700 (PDT)
+ us-mta-97-6T-bTnQiOwm4TBv9DMvG2A-1; Wed, 19 Jul 2023 10:23:56 -0400
+X-MC-Unique: 6T-bTnQiOwm4TBv9DMvG2A-1
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-314394a798dso398051f8f.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 07:23:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689776229; x=1690381029;
+        d=1e100.net; s=20221208; t=1689776635; x=1690381435;
         h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
          :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YjdFQRNR08a24eSSE2jcx3RnjwPdI3D1UG9L8u3hsoE=;
-        b=baXihaJyWR7PLZ3YYYXTM4dJ5Br+UcBmnjzVwGt3rjrg7QMZh+Trgz33gUEJ3/opiw
-         tgbbZmZnmW52qiEGU4c3ehbDbjY8rwBpIXpsPi8PCJ8iOjArPI6pnGbIBeavx9ZqVeE8
-         m16V88DR9E9fdKuXnMexMBaPxMCCOZm9BCvDii8ZngtVRxp04Aw8Ienoi2l7Dbvfr6BE
-         Q8H1/o4Ja3txpjqWRj50YpTvBfuMkAgyApiRd0QHprFA3NJsZVWU2eJ6sv38nowQ2+8F
-         VhVaZ6gchOczP2LPXE5qduZGj0cQ0IdmdrJRzZNnfVl5XWYiTE3fD6qOwMKTZaph3awn
-         +TJQ==
-X-Gm-Message-State: ABy/qLbd50L1RSxfHJPbw/Pqgti598rOdC/8vRO3WJpEtIxwFLC0A6WI
-	xbzki5OhUBPFkWdjvlO4KL2F9TXR9aizzck3Qvsej7ZopYGAjyvPcdowBRgvMKhIHuWWqB8x+A+
-	VLOaB/IAHvnUWttZp0STUlcU+WQ==
-X-Received: by 2002:a05:600c:3651:b0:3fc:627:ea31 with SMTP id y17-20020a05600c365100b003fc0627ea31mr2123093wmq.38.1689776229114;
-        Wed, 19 Jul 2023 07:17:09 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHY6b0TgUW8MDG3POksnXdAxeQBRH+KD9U9aN090eyMWJPzhTreLBf0F2Av+qSumHgaL9gGUQ==
-X-Received: by 2002:a05:600c:3651:b0:3fc:627:ea31 with SMTP id y17-20020a05600c365100b003fc0627ea31mr2123053wmq.38.1689776228833;
-        Wed, 19 Jul 2023 07:17:08 -0700 (PDT)
+        bh=AYL0WxfELPHjwx6ZiDqavEiQQIijrcopNRfhrvLV03A=;
+        b=ld2MB5hueAJ3XnFEytf420asXCFk082DX0eCVOvyAaLvbzCmq63056GZTJRSoYPJbG
+         +dq3q5s8pJ2RHbJBL2oIW4zP+K/ISRlnrdmobVLQMrFz7gmuNHkXvb7+at4tGDsS3yl2
+         iXWA3lzrQOJNe6bF9rj3MEmZz+tDYfGLXpr1733zCWcvOVP6BT6bOapB/9l1xm68ttjJ
+         6NH7W/IHuv0yZkkXuhy/guYkZo9XOlDYahZh4faVjde2Uanqw+4p3zE1yFNXxoWeIqQ1
+         3o9Fp2Yfq8MedF5OISpxooAw29vF7WVtMmQgLKLVm46H9vW4BoFhngp2NDS5zqJkFg+O
+         xzow==
+X-Gm-Message-State: ABy/qLZfKrNjN7mqRGmRvBnYvgAXU9f//3nWCQSdcKVRMpMvNbaUVI0e
+	aUV0T0k9Wft5ZX6dK78B9qsohNlteoYK6ElDWrhbc57yxiJtKt1b3ULAOTdQl/FFYyDTaVP5IpD
+	EcQwex6MGY1jUc40cJB8JfiJVSQ==
+X-Received: by 2002:adf:f406:0:b0:317:15f5:a1cc with SMTP id g6-20020adff406000000b0031715f5a1ccmr41816wro.22.1689776635704;
+        Wed, 19 Jul 2023 07:23:55 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHAuWaDn4wkaE25f0gFYugdobiggD0h46Z8p4U2s3LOHj24u3Bx+1zUs1XU1djJ3aSjiu0SQg==
+X-Received: by 2002:adf:f406:0:b0:317:15f5:a1cc with SMTP id g6-20020adff406000000b0031715f5a1ccmr41757wro.22.1689776635405;
+        Wed, 19 Jul 2023 07:23:55 -0700 (PDT)
 Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id h21-20020a1ccc15000000b003fbacc853ccsm1833816wmb.18.2023.07.19.07.17.08
+        by smtp.gmail.com with ESMTPSA id q19-20020a056000137300b003143d80d11dsm5429196wrz.112.2023.07.19.07.23.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Jul 2023 07:17:08 -0700 (PDT)
+        Wed, 19 Jul 2023 07:23:54 -0700 (PDT)
 From: Javier Martinez Canillas <javierm@redhat.com>
 To: Arnd Bergmann <arnd@kernel.org>, linux-fbdev@vger.kernel.org, Thomas
  Zimmermann <tzimmermann@suse.de>, Helge Deller <deller@gmx.de>
-Subject: Re: [PATCH v2 6/9] vgacon: clean up global screen_info instances
-In-Reply-To: <20230719123944.3438363-7-arnd@kernel.org>
+Subject: Re: [PATCH v2 7/9] vga16fb: drop powerpc support
+In-Reply-To: <20230719123944.3438363-8-arnd@kernel.org>
 References: <20230719123944.3438363-1-arnd@kernel.org>
- <20230719123944.3438363-7-arnd@kernel.org>
-Date: Wed, 19 Jul 2023 16:17:07 +0200
-Message-ID: <87cz0ohtp8.fsf@minerva.mail-host-address-is-not-set>
+ <20230719123944.3438363-8-arnd@kernel.org>
+Date: Wed, 19 Jul 2023 16:23:53 +0200
+Message-ID: <87a5vshtdy.fsf@minerva.mail-host-address-is-not-set>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
@@ -105,35 +105,25 @@ Arnd Bergmann <arnd@kernel.org> writes:
 
 > From: Arnd Bergmann <arnd@arndb.de>
 >
-> To prepare for completely separating the VGA console screen_info from
-> the one used in EFI/sysfb, rename the vgacon instances and make them
-> local as much as possible.
+> I noticed that commit 0db5b61e0dc07 ("fbdev/vga16fb: Create
+> EGA/VGA devices in sysfb code") broke vga16fb on non-x86 platforms,
+> because the sysfb code never creates a vga-framebuffer device when
+> screen_info.orig_video_isVGA is set to '1' instead of VIDEO_TYPE_VGAC.
 >
-> ia64 and arm both have confurations with vgacon and efi, but the contents
-
-is this a typo for configurations ?
-
-> never overlaps because ia64 has no EFI framebuffer, and arm only has
-> vga console on legacy platforms without EFI. Renaming these is required
-> before the EFI screen_info can be moved into drivers/firmware.
+> However, it turns out that the only architecture that has allowed
+> building vga16fb in the past 20 years is powerpc, and this only worked
+> on two 32-bit platforms and never on 64-bit powerpc. The last machine
+> that actually used this was removed in linux-3.10, so this is all dead
+> code and can be removed.
 >
-> The ia64 vga console is actually registered in two places from
-> setup_arch(), but one of them is wrong, so drop the one in pcdp.c and
-> the fix the one in setup.c to use the correct conditional.
+> The big-endian support in vga16fb.c could also be removed, but I'd just
+> leave this in place.
 >
-
-s/the fix the/fix the
-
-> x86 has to keep them together, as the boot protocol is used to switch
-> between VGA text console and framebuffer through the screen_info data.
->
+> Fixes: 933ee7119fb14 ("powerpc: remove PReP platform")
 > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 > ---
 
-Patch looks good to me, but I'm not that familiar with some of the arches
-to give a proper reviewed-by.
-
-Acked-by: Javier Martinez Canillas <javierm@redhat.com>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
 
 -- 
 Best regards,
