@@ -2,65 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ED44759890
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 16:39:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DF167598A3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 16:40:56 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JQGGh5TF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=F6uhOe0x;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=RT3ufktF;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R5dkG3Qfmz3bn0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jul 2023 00:39:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R5dm572hKz3cBb
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jul 2023 00:40:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JQGGh5TF;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=F6uhOe0x;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=RT3ufktF;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.221; helo=new1-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from new1-smtp.messagingengine.com (new1-smtp.messagingengine.com [66.111.4.221])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R5djL0xdHz2yDd
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jul 2023 00:38:30 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 188C56170C
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 14:38:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57D2DC433CB
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 14:38:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1689777506;
-	bh=GezNb42kEpgmegboqOOBAyzMgqyuAvFtS/mLgu3jRUg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=JQGGh5TFecokR/YKhLaMZWg52yo4ZZ3M1avMllGsOMgEUKzc/OUk3I392cKcffGbF
-	 OMwzv1r99z3uGG/O+qT0B88iGlu5vx56jVkkni5i8KUC2HPPZ3p90oE1s4nYFjg/0L
-	 yhZ34YIsrHnwHZH6L6D59sGcRpi1RG33m+tXVrMD6gDQlHRQMf1wAKXtKsQoF683rg
-	 dVYJ9CKiNUKdy92GNh8DmNn8MpQZoqlGhP5kq2k8jJR36tDit2xDdksKkszaf/mOpu
-	 JjZQdo5olGWa1rCh677vPUAak9wQVdTqxZdO2AyOyg9Hobi8BzRyS9L781CjQ/Edy1
-	 ibmQ54otiiz/A==
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2b95efb9d89so6925921fa.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 07:38:26 -0700 (PDT)
-X-Gm-Message-State: ABy/qLaSDif370gUjvau47bQSXVFu/c4n0WUiRoWgJPPMQY6TShLIxUi
-	4ref3S80TndLNOsNdK4RxLg+yJhE2+Dk5tFBhMg=
-X-Google-Smtp-Source: APBJJlED2jiKRWrm/tbkjsu0sNov4aKWyhqBk9Z1aEui4cjKtLxhvU+nz2Q0ttRwt0rpd3EDFIeTI764n9rYrpoAI4M=
-X-Received: by 2002:a2e:7a09:0:b0:2b5:95a8:4126 with SMTP id
- v9-20020a2e7a09000000b002b595a84126mr23133ljc.52.1689777504291; Wed, 19 Jul
- 2023 07:38:24 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230718125847.3869700-1-ardb@kernel.org> <20230718125847.3869700-6-ardb@kernel.org>
- <20230718223813.GC1005@sol.localdomain> <CAMj1kXE1fND2h8ts6Xtfn19wkt=vAnj1TumxvoBCuEn7z3V4Aw@mail.gmail.com>
- <3330004f-acac-81b4-e382-a17221a0a128@huawei.com>
-In-Reply-To: <3330004f-acac-81b4-e382-a17221a0a128@huawei.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 19 Jul 2023 16:38:13 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGq=WiJXsQG6R0jEFYu_Mdom_KY+DE=NGqVSF6QmqhKeA@mail.gmail.com>
-Message-ID: <CAMj1kXGq=WiJXsQG6R0jEFYu_Mdom_KY+DE=NGqVSF6QmqhKeA@mail.gmail.com>
-Subject: Re: [RFC PATCH 05/21] ubifs: Pass worst-case buffer size to
- compression routines
-To: Zhihao Cheng <chengzhihao1@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R5dl50s6Mz2ynB
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jul 2023 00:40:00 +1000 (AEST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailnew.nyi.internal (Postfix) with ESMTP id C6F93580210;
+	Wed, 19 Jul 2023 10:39:55 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Wed, 19 Jul 2023 10:39:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:sender:subject:subject:to:to; s=fm2; t=
+	1689777595; x=1689784795; bh=nZU6p3n7fickF5wKWXmSN8Sc6/MSvsFTYGP
+	0irgDDx8=; b=F6uhOe0xlOcUS4dDy1oq5df2GK1xAMcbSu8LZgoyXmvhlUzRu78
+	bGWxTgJiJi6zrRqVfawYfkrNgFxRyoDY1fhSxgqhl2HFLNsxG4oCXLOUvtc1H1J9
+	yKpHN5YOXPSGucUUa4WBBwirLFW7BcNoa9nEJIN8VY/wxM9DZRnEh0QMcm0tWtCR
+	dKTHuIxJjhaZFzLsV9DTjnLCbGrttI4s9sB6wKBYnGTTcqvQf0+2gn/VHNspuTtL
+	UCPm3ZVAMHyA6sMFGbrinOOlTU5JT8hRDtp3UUk+cM86plnrvFOW8ztaQcBfW6T8
+	F6uE/5iwV3Pzt0P1Egm7uCnyHKH+4DwB/7g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:sender:subject:subject:to:to:x-me-proxy
+	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1689777595; x=1689784795; bh=nZU6p3n7fickF5wKWXmSN8Sc6/MSvsFTYGP
+	0irgDDx8=; b=RT3ufktFiEmOaEJtwn2kNPwX1CxJHO84CaryEahSFHfcxzKAOKP
+	GbsmwKdkij2/wPBd7ZceYMaF8fRakoZMD4mqWlf0Zxmc3G8CDJFEJnfyubpj4GpK
+	BTGeK/U7hKm6Xv3VxJI6XGVSS5z+dkFKgATEYbUSs/PzvBavnLdZpIWHdDX7DPwN
+	15x30i+ixySDP0gi6hrqw9TjDxXFUe4m0DoLzGSNryLWDKksDFvYLsm8ExaZoHgl
+	VF+nPTLS/vCYm/jinaZDPIrkGemb4sE71T5g0dm8v0j1hZVFJOBDNUTynb37Cocc
+	llP48wfwjZ64vJQYBWEmvFIXuwbXcmFTjiw==
+X-ME-Sender: <xms:ufW3ZC1LS5m9UKqBhQuPj22bYT-l75QF5t_3QZRuDsR0diLe9lLwGw>
+    <xme:ufW3ZFGMC4Z62j2k7HNixKVxkcNQLWa51LhFl6gqjTpK2ZIicA3j_emCMD3xuz8zQ
+    hmPOfevWc3CjAvXV24>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrgeekgdeivdcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefofgggkfgjfhffhffvvefutgfgsehtqhertderreejnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepgeefjeehvdelvdffieejieejiedvvdfhleeivdelveehjeelteegudektdfg
+    jeevnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:ufW3ZK7cBwP-5t-w3Jii5GSAwmRO2vIKKvzkCybK4fyj3fTpVbuJ2w>
+    <xmx:ufW3ZD226POzlBb4fCk2wx_vpHfAiQhRjkNsitzyPc0-y9jpD7VJsQ>
+    <xmx:ufW3ZFEqUBBuoMKH8obMLFVqcVdLIfR3eGLzM9iysb6atqfn6fvnvQ>
+    <xmx:u_W3ZHdVkYp3ilmsy75YQ8mHYcQu1Ydj0R4Y7tJxHDydj5XN6uRexQ>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 8026EB60086; Wed, 19 Jul 2023 10:39:53 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-531-gfdfa13a06d-fm-20230703.001-gfdfa13a0
+Mime-Version: 1.0
+Message-Id: <3b047cd4-a61f-44b6-830b-b4e35bfccd72@app.fastmail.com>
+In-Reply-To: <32595080-dd79-5cf0-46e7-b82d0df8f067@linaro.org>
+References: <20230719123944.3438363-1-arnd@kernel.org>
+ <20230719123944.3438363-6-arnd@kernel.org>
+ <32595080-dd79-5cf0-46e7-b82d0df8f067@linaro.org>
+Date: Wed, 19 Jul 2023 16:38:57 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: =?UTF-8?Q?Phil_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Arnd Bergmann" <arnd@kernel.org>, linux-fbdev@vger.kernel.org,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "Helge Deller" <deller@gmx.de>,
+ "Javier Martinez Canillas" <javierm@redhat.com>
+Subject: Re: [PATCH v2 5/9] vgacon: remove screen_info dependency
+Content-Type: text/plain;charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -73,65 +99,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Giovanni Cabiddu <giovanni.cabiddu@intel.com>, Eric Dumazet <edumazet@google.com>, linux-mtd@lists.infradead.org, Steffen Klassert <steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>, Minchan Kim <minchan@kernel.org>, Richard Weinberger <richard@nod.at>, qat-linux@intel.com, Eric Biggers <ebiggers@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Kees Cook <keescook@chromium.org>, linux-block@vger.kernel.org, Nick Terrell <terrelln@fb.com>, Jens Axboe <axboe@kernel.dk>, netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>, linux-kernel@vger.kernel.org, Sergey Senozhatsky <senozhatsky@chromium.org>, linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linux-hyperv@vger.kernel.org, x86@kernel.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Linus Walleij <linus.walleij@linaro.org>, Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, linux-efi@vger.kernel.org, guoren <guoren@kernel.org>, sparclinux@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>, "K. Y. Srinivasan" <kys@microsoft.com>, Dave Airlie <airlied@gmail.com>, Ard Biesheuvel <ardb@kernel.org>, Wei Liu <wei.liu@kernel.org>, linux-hexagon@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>, Dexuan Cui <decui@microsoft.com>, Russell King <linux@armlinux.org.uk>, "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>, Deepak Rawat <drawat.floss@gmail.com>, Ingo Molnar <mingo@redhat.com>, Matt Turner <mattst88@gmail.com>, Will Deacon <will@kernel.org>, Haiyang Zhang <haiyangz@microsoft.com>, Nicholas Piggin <npiggin@gmail.com>, Bor
+ islav Petkov <bp@alien8.de>, loongarch@lists.linux.dev, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Khalid Aziz <khalid@gonehiking.org>, Brian Cain <bcain@quicinc.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, Daniel Vetter <daniel@ffwll.ch>, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 19 Jul 2023 at 16:23, Zhihao Cheng <chengzhihao1@huawei.com> wrote:
+On Wed, Jul 19, 2023, at 15:49, Philippe Mathieu-Daud=C3=A9 wrote:
+> On 19/7/23 14:39, Arnd Bergmann wrote:
+
+>> @@ -1074,13 +1077,13 @@ static int vgacon_resize(struct vc_data *c, u=
+nsigned int width,
+>>   		 * Ho ho!  Someone (svgatextmode, eh?) may have reprogrammed
+>>   		 * the video mode!  Set the new defaults then and go away.
+>>   		 */
+>> -		screen_info.orig_video_cols =3D width;
+>> -		screen_info.orig_video_lines =3D height;
+>> +		vga_si->orig_video_cols =3D width;
+>> +		vga_si->orig_video_lines =3D height;
+>>   		vga_default_font_height =3D c->vc_cell_height;
+>>   		return 0;
+>>   	}
+>> -	if (width % 2 || width > screen_info.orig_video_cols ||
+>> -	    height > (screen_info.orig_video_lines * vga_default_font_heigh=
+t)/
+>> +	if (width % 2 || width > vga_si->orig_video_cols ||
+>> +	    height > (vga_si->orig_video_lines * vga_default_font_height)/
+>>   	    c->vc_cell_height)
+>>   		return -EINVAL;
+>>  =20
+>> @@ -1110,8 +1113,8 @@ static void vgacon_save_screen(struct vc_data *=
+c)
+>>   		 * console initialization routines.
+>>   		 */
+>>   		vga_bootup_console =3D 1;
+>> -		c->state.x =3D screen_info.orig_x;
+>> -		c->state.y =3D screen_info.orig_y;
+>> +		c->state.x =3D vga_si->orig_x;
+>> +		c->state.y =3D vga_si->orig_y;
 >
-> =E5=9C=A8 2023/7/19 16:33, Ard Biesheuvel =E5=86=99=E9=81=93:
-> > On Wed, 19 Jul 2023 at 00:38, Eric Biggers <ebiggers@kernel.org> wrote:
-> >>
-> >> On Tue, Jul 18, 2023 at 02:58:31PM +0200, Ard Biesheuvel wrote:
-> >>> Currently, the ubifs code allocates a worst case buffer size to
-> >>> recompress a data node, but does not pass the size of that buffer to =
-the
-> >>> compression code. This means that the compression code will never use
->
-> I think you mean the 'out_len' which describes the lengh of 'buf' is
-> passed into ubifs_decompress, which effects the result of
-> decompressor(eg. lz4 uses length to calculate the buffer end pos).
-> So, we should pass the real lenghth of 'buf'.
+> Not really my area, so bare with me if this is obviously not
+> possible :) If using DUMMY_CONSOLE, can we trigger a save_screen
+> / resize? If so, we'd reach here with vga_si=3DNULL.
 >
 
-Yes, that is what I meant.
+I think it cannot happen because the only way that anything calls
+into vgacon.c is through the "conswitchp =3D &vga_con;" that now happens
+at the same time as the "vga_si =3D &screen_info;". It's definitely
+possible that I'm missing something as well here.
 
-But Eric makes a good point, and looking a bit more closely, there is
-really no need for the multiplication here: we know the size of the
-decompressed data, so we don't need the additional space.
-
-I intend to drop this patch, and replace it with the following:
-
-----------------8<--------------
-
-Currently, when truncating a data node, a decompression buffer is
-allocated that is twice the size of the data node's uncompressed size.
-However, the fact that this space is available is not communicated to
-the compression routines, as out_len itself is not updated.
-
-The additional space is not needed even in the theoretical worst case
-where compression might lead to inadvertent expansion: first of all,
-increasing the size of the input buffer does not help mitigate that
-issue. And given the truncation of the data node and the fact that the
-original data compressed well enough to pass the UBIFS_MIN_COMPRESS_DIFF
-test, there is no way on this particular code path that compression
-could result in expansion beyond the original decompressed size, and so
-no mitigation is necessary to begin with.
-
-So let's just drop WORST_COMPR_FACTOR here.
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-
-diff --git a/fs/ubifs/journal.c b/fs/ubifs/journal.c
-index dc52ac0f4a345f30..0b55cbfe0c30505e 100644
---- a/fs/ubifs/journal.c
-+++ b/fs/ubifs/journal.c
-@@ -1489,7 +1489,7 @@ static int truncate_data_node(const struct
-ubifs_info *c, const struct inode *in
-        int err, dlen, compr_type, out_len, data_size;
-
-        out_len =3D le32_to_cpu(dn->size);
--       buf =3D kmalloc_array(out_len, WORST_COMPR_FACTOR, GFP_NOFS);
-+       buf =3D kmalloc(out_len, GFP_NOFS);
-        if (!buf)
-                return -ENOMEM;
+     Arnd
