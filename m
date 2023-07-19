@@ -2,77 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43A3E75A09E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 23:33:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9458C75A089
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 23:25:20 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=Y0sBPXTz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=yA9Vox81;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R5pvg19HBz3cYh
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jul 2023 07:33:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R5pkk3d1gz3cHC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jul 2023 07:25:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=Y0sBPXTz;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=yA9Vox81;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::52e; helo=mail-ed1-x52e.google.com; envelope-from=matuszpd@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::630; helo=mail-ej1-x630.google.com; envelope-from=vannapurve@google.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R5hbB2nHNz2yq4
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jul 2023 02:48:20 +1000 (AEST)
-Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-51de9c2bc77so9778639a12.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 09:48:19 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R5jLC6pxcz2ytf
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jul 2023 03:22:10 +1000 (AEST)
+Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-991ef0b464cso230299966b.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 10:22:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689785296; x=1692377296;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=yixFqSzT/c4E0mvGw1Uo9KfL2QY9NEvmj8leiEc3puY=;
-        b=Y0sBPXTz9dyJZPRwFkzpcMAF8C1+t5QmrsdtFb5qSp1+uPUnaGSzooAFfj2OI2jVWj
-         jXB5pXt+6XqggnKKndNnkx0iufj5VXa70c5mH8xOC0FXX7T++VZIlcySPT14vXHduATU
-         HsQa6hNZPhbnOmZQOUp6D8ajoMITXzwzGD0dRYoCMLmaqb0gN4AQY727/hfxPSuFik16
-         tK4Bq8uQdo820l+L3JHF5LFE/DaQZvenIfCYOUtOuyHHm+an7aqRO/nV05GUQzCYciPc
-         oqZJPtv4nR8xNP9OXIgVXRJXvQwy4Q9D88KHaHF7OX1QtbdhcOziKcFxEtGUOB9sFZhG
-         jXnw==
+        d=google.com; s=20221208; t=1689787326; x=1692379326;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=muf27eIntjXr3Sa3gdcQLPN4y9AYfVWt2TffDnLSMcw=;
+        b=yA9Vox816zD+aJ/FVd+gHS1eUUrpLebV0UPRWoTOQXRhwbDjiEzKfZKLt7ZPO+mtvH
+         SaibLGPqQv8DRVnknibkmwFWbPPfcXmr6c+ujgDGBFuCW/F/BitDoK4IVXsvCkVTbM2a
+         UUXFrIHyb9EtmF0G0jSo223YyW0H9eb4QyBBeSzBXy3UqItMc2tyGgaUGUFrdupt+8A5
+         dLZgmELLzzoUW2SKSL+4MBdgHsq0BaZC4v7p3QuLBtrY+JwzHEa0w4RaSfJgn6bTpTvs
+         oKq8cg7sWg40yA0HzTTcfPzlRvV46kkywbP49vwd3eHSPLgVvqkoTlu6Tp2eaYz6GzrZ
+         sQlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689785296; x=1692377296;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yixFqSzT/c4E0mvGw1Uo9KfL2QY9NEvmj8leiEc3puY=;
-        b=Jwp3+uw7sJFt4pBt/dht0JXUCxln3TyptrYVmqGKbJeC++cyTlb/v54FnILhCP6uEw
-         16W7uE9qVd0Zls/swQ2Dh/MzJkr+Li3Yqmae4LqY/k4bQSLSCpnc4okNy+cJm/9kZMwa
-         X/n5Uy33Rn1ENc6peUUXOVzx8JkkCsrxj+49skUbNmSRs/8v/BE6qqRs/7fcQyI9sJD1
-         si7pIrrq91FLBKov6DVVd/AhzqNb1jQn7S9Nl8sBZq2JoDkvVzUKHqh3qF+jTPFAAhfM
-         AOzs57KR6Si2dDHgynY7z7l0AyGg3iahQ1eczcjN3IaQcHdXmriD74t4RihEotmiWjHN
-         2tnA==
-X-Gm-Message-State: ABy/qLb6Pq7VbilG9+XtEwDRjSAyby0NRAzbHrqxOyhF/l2ZTNRQG4KP
-	cClX5XqECPE3RcjhMmuVlFZKLsmN1ES90A==
-X-Google-Smtp-Source: APBJJlEHbfz/pFyUepLd7VKG/NuQoD7KORKklONmdm98pXW6g5MHna6cHYzQND91adVXuiGLISQbhg==
-X-Received: by 2002:a17:907:6d25:b0:982:9daf:9fcf with SMTP id sa37-20020a1709076d2500b009829daf9fcfmr3870702ejc.66.1689785295815;
-        Wed, 19 Jul 2023 09:48:15 -0700 (PDT)
-Received: from localhost.localdomain ([2a01:c844:242b:b300:215:5dff:fe9c:4c81])
-        by smtp.gmail.com with ESMTPSA id gl7-20020a170906e0c700b00989027eb30asm2566959ejb.158.2023.07.19.09.48.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Jul 2023 09:48:15 -0700 (PDT)
-From: Matus Gajdos <matuszpd@gmail.com>
-To: Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Xiubo Li <Xiubo.Lee@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Nicolin Chen <nicoleotsuka@gmail.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Stephen Warren <swarren@nvidia.com>
-Subject: [PATCH] ASoC: fsl_spdif: Silence output on stop
-Date: Wed, 19 Jul 2023 18:47:29 +0200
-Message-Id: <20230719164729.19969-1-matuszpd@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        d=1e100.net; s=20221208; t=1689787326; x=1692379326;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=muf27eIntjXr3Sa3gdcQLPN4y9AYfVWt2TffDnLSMcw=;
+        b=FaG36zfptmZEylayEVtpv2uGwv8twpAEg5Qo0MTLDt9H5IYf9uRLqNldQ89DYVLAhE
+         ++pHIf7hRaAixLHol7kBEUUjVhd7UvCB3Ld//PTe/t/BDiNJRUq2oZagVLtlthYVDNJS
+         gBaVFuDValN80HVKJ8x/HowtrvXqc/a6QsHFoABzSOqm5ZCe4H+sIvaBfLPlQj0spp7c
+         Dw9cbcrhLBtYvc4ckz0FmsD+yAdx0zw1jXhYPdAqq0hloqXwqIhrE75dlF4A2nSD62I+
+         d2i1lk3ynGHI8ZQRBQSiRHiAAWs00syuxUOjZNkUP+Aj6l138KobnBHqdN/+uMB9iPPB
+         xBBA==
+X-Gm-Message-State: ABy/qLb5PXJJUh/VHJzM61pKatIKiNCd4Jt1UqBGVD6eW7BzPZ7goaxh
+	w+r/FOS9pTa+FFifCelfztAFS4YyTABhhXh97AsItA==
+X-Google-Smtp-Source: APBJJlHLONYvTW7m5Fbx16RlTb/fOqinzIvyTzihLXJQXLhrTmtvBuSogp90ZclD7PbARqJZdKXYR/WVY9tuMb+Y5tE=
+X-Received: by 2002:a17:906:292:b0:97e:17cc:cc95 with SMTP id
+ 18-20020a170906029200b0097e17cccc95mr3045374ejf.36.1689787326540; Wed, 19 Jul
+ 2023 10:22:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Thu, 20 Jul 2023 07:31:30 +1000
+References: <20230718234512.1690985-1-seanjc@google.com> <20230718234512.1690985-13-seanjc@google.com>
+In-Reply-To: <20230718234512.1690985-13-seanjc@google.com>
+From: Vishal Annapurve <vannapurve@google.com>
+Date: Wed, 19 Jul 2023 10:21:55 -0700
+Message-ID: <CAGtprH9a2jX-hdww9GPuMrO9noNeXkoqE8oejtVn2vD0AZa3zA@mail.gmail.com>
+Subject: Re: [RFC PATCH v11 12/29] KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for
+ guest-specific backing memory
+To: Sean Christopherson <seanjc@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Mailman-Approved-At: Thu, 20 Jul 2023 07:24:07 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,32 +77,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Matus Gajdos <matuszpd@gmail.com>, alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@linaro.org>
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Paul Moore <paul@paul-moore.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, James Morris <jmorris@namei.org>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, "Serge E. Hallyn" <serge@hallyn.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Vlastimil Babka <vbabka@suse.cz>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Quentin Perret <qperret@google.com>, Liam Merwick <liam.merwick@oracle.com>, linux-mips@vger.kernel.org, Oliver
+  Upton <oliver.upton@linux.dev>, linux-security-module@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Clear TX registers on stop to prevent the SPDIF interface from sending
-last written word over and over again.
+On Tue, Jul 18, 2023 at 4:49=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
+> ...
+> +static int kvm_gmem_error_page(struct address_space *mapping, struct pag=
+e *page)
+> +{
+> +       struct list_head *gmem_list =3D &mapping->private_list;
+> +       struct kvm_memory_slot *slot;
+> +       struct kvm_gmem *gmem;
+> +       unsigned long index;
+> +       pgoff_t start, end;
+> +       gfn_t gfn;
+> +
+> +       filemap_invalidate_lock_shared(mapping);
+> +
+> +       start =3D page->index;
+> +       end =3D start + thp_nr_pages(page);
+> +
+> +       list_for_each_entry(gmem, gmem_list, entry) {
+> +               xa_for_each_range(&gmem->bindings, index, slot, start, en=
+d - 1) {
+> +                       for (gfn =3D start; gfn < end; gfn++) {
+> +                               if (WARN_ON_ONCE(gfn < slot->base_gfn ||
+> +                                               gfn >=3D slot->base_gfn +=
+ slot->npages))
+> +                                       continue;
+> +
+> +                               /*
+> +                                * FIXME: Tell userspace that the *privat=
+e*
+> +                                * memory encountered an error.
+> +                                */
+> +                               send_sig_mceerr(BUS_MCEERR_AR,
+> +                                               (void __user *)gfn_to_hva=
+_memslot(slot, gfn),
+> +                                               PAGE_SHIFT, current);
 
-Fixes: a2388a498ad2 ("ASoC: fsl: Add S/PDIF CPU DAI driver")
-Signed-off-by: Matus Gajdos <matuszpd@gmail.com>
----
- sound/soc/fsl/fsl_spdif.c | 2 ++
- 1 file changed, 2 insertions(+)
+Does it make sense to replicate what happens with MCE handling on
+tmpfs backed guest memory:
+1) Unmap gpa from guest
+2) On the next guest EPT fault, exit to userspace to handle/log the
+mce error for the gpa.
 
-diff --git a/sound/soc/fsl/fsl_spdif.c b/sound/soc/fsl/fsl_spdif.c
-index 95e639711eba..95bb8b10494a 100644
---- a/sound/soc/fsl/fsl_spdif.c
-+++ b/sound/soc/fsl/fsl_spdif.c
-@@ -755,6 +755,8 @@ static int fsl_spdif_trigger(struct snd_pcm_substream *substream,
- 	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
- 		regmap_update_bits(regmap, REG_SPDIF_SCR, dmaen, 0);
- 		regmap_update_bits(regmap, REG_SPDIF_SIE, intr, 0);
-+		regmap_write(regmap, REG_SPDIF_STL, 0x0);
-+		regmap_write(regmap, REG_SPDIF_STR, 0x0);
- 		break;
- 	default:
- 		return -EINVAL;
--- 
-2.25.1
+IIUC, such MCEs could be asynchronous and "current" might not always
+be the intended recipient of this signal.
 
+> +                       }
+> +               }
+> +       }
+> +
+> +       filemap_invalidate_unlock_shared(mapping);
+> +
+> +       return 0;
+> +}
+> +
