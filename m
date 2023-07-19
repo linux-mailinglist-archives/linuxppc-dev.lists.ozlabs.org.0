@@ -2,78 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBB6475953E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 14:37:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B274B759578
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 14:40:56 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=UNoXC15E;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JrzZEGAA;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R5b1y5bgTz3bfS
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 22:37:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R5b5f4S3jz30CT
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 22:40:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=UNoXC15E;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JrzZEGAA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::434; helo=mail-pf1-x434.google.com; envelope-from=bagasdotme@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R5b146fgMz2yL0
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 22:36:55 +1000 (AEST)
-Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-6686a05bc66so5067834b3a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 05:36:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689770213; x=1692362213;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=V2RDjShEnxx2CITlna+cx0sylIfu7E+lS3FgCJq6HD0=;
-        b=UNoXC15EsWDFkjQoZnZY4lnoy8K5+rhFAfW6hitGkvfYJI9XJCRWsq6EwAki92xBNn
-         /0oNaXsP/U6xsEiDgwbrog7fQTwE44ZDy1Qc9+PakqjY/e060iSu39wJv0eCaG4ofmxa
-         dxSGPtq9ty38PsG/f/1ovUpZ9a/EYlNZVfmqWaHcEUU6R/Sxt3KBeq596HpVP7kkVpqw
-         l2Cfxab1A/Pr9AoE/4S2a4F2NtjXf9FnD0Z6MSiQTEGBCYAxXP+KEvV+Tw0z6MkQ0nCI
-         O4uni1skj8s9mlYU1eju2GrB5H9lvVdkGajzazCX6NyCiGiHP2qSPrkZbX96jDsR2UMJ
-         BRAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689770213; x=1692362213;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=V2RDjShEnxx2CITlna+cx0sylIfu7E+lS3FgCJq6HD0=;
-        b=CgJecJ17RAyhxplpzGOvHvgQ+IwgEPdAylKBjkmTBJ0scsdyqbPVVYi06V7sNlIW8G
-         xLZMk0RF1MvwyeN/+Rnhgw/Mj3ZhdscCSuezsvIDxDmGFtKY/HBRdTqFIltZ30F+i7ME
-         BtWONv54eLpmZgEDVOscqPAudvlE/8BtpH6xSCBU9j76izvM3O4oFBFiESXGwO4xfHMe
-         tgWwR74eyGRJE4ICkkmrnEkkWcoqbUa/0P5JmZsjCAo9HMUbe+svJ83Hnj+9hjnQWguD
-         aOepvRogmuQ2DyrqtxGMn/yKC5rL7WYbUw5V8XMHIT450vKtFoOSoMH+rNynhzgWQ8xY
-         cL8g==
-X-Gm-Message-State: ABy/qLYcNGqgxxRoHom7B8Qqz42OrIjUcv3tkcjGiaksH8lXAb/hUBqh
-	B+t/xc3Y1K1jy3pCVstnXzKMqFuU0Rge+w==
-X-Google-Smtp-Source: APBJJlEDIe9vpBDJWHhVQgQNRN7veJEG2fM1DUO/yd5SkFEj75LXilVEy9YB9KT/RL+4rZvyMDFjgQ==
-X-Received: by 2002:a05:6a21:6da6:b0:134:40f0:5d04 with SMTP id wl38-20020a056a216da600b0013440f05d04mr6036578pzb.13.1689770212730;
-        Wed, 19 Jul 2023 05:36:52 -0700 (PDT)
-Received: from [192.168.0.104] ([103.131.18.64])
-        by smtp.gmail.com with ESMTPSA id k6-20020aa790c6000000b006765cb3255asm3186759pfk.68.2023.07.19.05.36.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Jul 2023 05:36:52 -0700 (PDT)
-Message-ID: <5983cf9d-dc1e-75bd-3624-770951661245@gmail.com>
-Date: Wed, 19 Jul 2023 19:36:46 +0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R5b4n0hdcz2yGk
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 22:40:09 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id CE7DB61626;
+	Wed, 19 Jul 2023 12:40:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE75DC433C8;
+	Wed, 19 Jul 2023 12:39:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1689770405;
+	bh=DIdJB1tKscR1rR3ujrBSJpnHyT/V+Wqlv5mxqgqFyfo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=JrzZEGAAyAH1UDXHME4ojHdWqSujNUNi7s/2QLjU4KPdJmC4YzkCnfpLJWsy1giIi
+	 4GfKf/YtkVIiRQh3ABlUkf77h0sv4JdaKf/Vl1FPgqFZ7Q9AP+FJHMyVanaiYlHRyn
+	 XhjbT1VbweWLETJajH46boExznIVXhvkYxrEgo9zFKUJiFKlNAz6apD8S1DPsT367D
+	 TDWhXjATRbaPWUN7/4LHlap/dNyW9Fz5CEvycj2DQjpc0EtPyXvbYt5ePy6xhhwmbd
+	 /BIf4DyZD3QTQDe2SgMuY/ua/2MJlpwAR6VLqGrW9QwblGXER1IPEh6DejVsQa5tGr
+	 UD0g9QPf5fqPw==
+From: Arnd Bergmann <arnd@kernel.org>
+To: linux-fbdev@vger.kernel.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Helge Deller <deller@gmx.de>,
+	Javier Martinez Canillas <javierm@redhat.com>
+Subject: [PATCH v2 0/9] video: screen_info cleanups
+Date: Wed, 19 Jul 2023 14:39:35 +0200
+Message-Id: <20230719123944.3438363-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: linux-next: Tree for Jul 13 (drivers/video/fbdev/ps3fb.c)
-Content-Language: en-US
-To: Thorsten Leemhuis <regressions@leemhuis.info>,
- Randy Dunlap <rdunlap@infradead.org>, Thomas Zimmermann <tzimmermann@suse.de>
-References: <20230713123710.5d7d81e4@canb.auug.org.au>
- <ccc63065-2976-88ef-1211-731330bf2866@infradead.org>
- <ZLYHtVuS7AElXcCb@debian.me>
- <f5e6258b-ba76-001b-4942-588f4cbb0aa7@leemhuis.info>
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-In-Reply-To: <f5e6258b-ba76-001b-4942-588f4cbb0aa7@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,27 +62,140 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>, linux-fbdev@vger.kernel.org, Linux Regressions <regressions@lists.linux.dev>, Helge Deller <deller@gmx.de>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Javier Martinez Canillas <javierm@redhat.com>, Linux Next Mailing List <linux-next@vger.kernel.org>, Linux PowerPC <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-hyperv@vger.kernel.org, x86@kernel.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Linus Walleij <linus.walleij@linaro.org>, Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, Will Deacon <will@kernel.org>, linux-efi@vger.kernel.org, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>, "K. Y. Srinivasan" <kys@microsoft.com>, David Airlie <airlied@gmail.com>, Ard Biesheuvel <ardb@kernel.org>, Wei Liu <wei.liu@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Dexuan Cui <decui@microsoft.com>, Russell King <linux@armlinux.org.uk>, Deepak Rawat <drawat.floss@gmail.com>, Ingo Molnar <mingo@redhat.com>, Matt Turner <mattst88@gmail.com>, Arnd Bergmann <arnd@arndb.de>, Haiyang Zhang <haiyangz@microsoft.com>, Nicholas Piggin <npiggin@gmail.com>, Bor
+ islav Petkov <bp@alien8.de>, loongarch@lists.linux.dev, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Khalid Aziz <khalid@gonehiking.org>, Brian Cain <bcain@quicinc.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, Daniel Vetter <daniel@ffwll.ch>, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/18/23 17:06, Thorsten Leemhuis wrote:
-> I'm missing something here:
-> 
-> * What makes you think this is caused by bdb616479eff419? I didn't see
-> anything in the thread that claims this, but I might be missing something
-> * related: if I understand Randy right, this is only happening in -next;
-> so why is bdb616479eff419 the culprit, which is also in mainline since
-> End of June?
-> 
+From: Arnd Bergmann <arnd@arndb.de>
 
-Actually drivers/video/fbdev/ps3bf.c only had two non-merge commits during
-previous cycle: 25ec15abb06194 and bdb616479eff419. The former was simply
-adding .owner field in ps3fb_ops (hence trivial), so I inferred that the
-culprit was likely the latter (due to it was being authored by Thomas).
+I refreshed the first four patches that I sent before with very minor
+updates, and then added some more to further disaggregate the use
+of screen_info:
 
-Thanks for the question.
+ - I found that powerpc wasn't using vga16fb any more
+
+ - vgacon can be almost entirely separated from the global
+   screen_info, except on x86
+
+ - similarly, the EFI framebuffer initialization can be
+   kept separate, except on x86.
+
+I did extensive build testing on arm/arm64/x86 and the normal built bot
+testing for the other architectures.
+
+Which tree should this get merged through?
+
+Link: https://lore.kernel.org/lkml/20230707095415.1449376-1-arnd@kernel.org/
+
+Arnd Bergmann (9):
+  vgacon: rework Kconfig dependencies
+  vgacon: rework screen_info #ifdef checks
+  dummycon: limit Arm console size hack to footbridge
+  vgacon, arch/*: remove unused screen_info definitions
+  vgacon: remove screen_info dependency
+  vgacon: clean up global screen_info instances
+  vga16fb: drop powerpc support
+  hyperv: avoid dependency on screen_info
+  efi: move screen_info into efi init code
+
+ arch/alpha/kernel/proto.h                     |  2 +
+ arch/alpha/kernel/setup.c                     |  8 +--
+ arch/alpha/kernel/sys_sio.c                   |  8 ++-
+ arch/arm/include/asm/setup.h                  |  5 ++
+ arch/arm/kernel/atags_parse.c                 | 20 +++---
+ arch/arm/kernel/efi.c                         |  6 --
+ arch/arm/kernel/setup.c                       |  7 +-
+ arch/arm64/kernel/efi.c                       |  4 --
+ arch/arm64/kernel/image-vars.h                |  2 +
+ arch/csky/kernel/setup.c                      | 12 ----
+ arch/hexagon/kernel/Makefile                  |  2 -
+ arch/hexagon/kernel/screen_info.c             |  3 -
+ arch/ia64/kernel/setup.c                      | 51 +++++++-------
+ arch/loongarch/kernel/efi.c                   |  3 +-
+ arch/loongarch/kernel/image-vars.h            |  2 +
+ arch/loongarch/kernel/setup.c                 |  3 -
+ arch/mips/jazz/setup.c                        |  9 ---
+ arch/mips/kernel/setup.c                      | 11 ---
+ arch/mips/mti-malta/malta-setup.c             |  4 +-
+ arch/mips/sibyte/swarm/setup.c                | 26 ++++---
+ arch/mips/sni/setup.c                         | 18 ++---
+ arch/nios2/kernel/setup.c                     |  5 --
+ arch/powerpc/kernel/setup-common.c            | 16 -----
+ arch/riscv/kernel/setup.c                     | 12 ----
+ arch/sh/kernel/setup.c                        |  5 --
+ arch/sparc/kernel/setup_32.c                  | 13 ----
+ arch/sparc/kernel/setup_64.c                  | 13 ----
+ arch/x86/kernel/setup.c                       |  2 +-
+ arch/xtensa/kernel/setup.c                    | 12 ----
+ drivers/firmware/efi/efi-init.c               | 14 +++-
+ drivers/firmware/efi/libstub/efi-stub-entry.c |  8 ++-
+ drivers/firmware/pcdp.c                       |  1 -
+ drivers/gpu/drm/hyperv/hyperv_drm_drv.c       |  7 +-
+ drivers/hv/vmbus_drv.c                        |  6 +-
+ drivers/video/console/Kconfig                 | 11 +--
+ drivers/video/console/dummycon.c              |  2 +-
+ drivers/video/console/vgacon.c                | 68 +++++++++++--------
+ drivers/video/fbdev/Kconfig                   |  2 +-
+ drivers/video/fbdev/hyperv_fb.c               |  8 +--
+ drivers/video/fbdev/vga16fb.c                 |  9 +--
+ include/linux/console.h                       |  7 ++
+ 41 files changed, 178 insertions(+), 249 deletions(-)
+ delete mode 100644 arch/hexagon/kernel/screen_info.c
 
 -- 
-An old man doll... just what I always wanted! - Clara
+2.39.2
+
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: "K. Y. Srinivasan" <kys@microsoft.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Brian Cain <bcain@quicinc.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Deepak Rawat <drawat.floss@gmail.com>
+Cc: Dexuan Cui <decui@microsoft.com>
+Cc: Dinh Nguyen <dinguyen@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Guo Ren <guoren@kernel.org>
+Cc: Haiyang Zhang <haiyangz@microsoft.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Khalid Aziz <khalid@gonehiking.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Cc: Matt Turner <mattst88@gmail.com>
+Cc: Max Filippov <jcmvbkbc@gmail.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: WANG Xuerui <kernel@xen0n.name>
+Cc: Wei Liu <wei.liu@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: x86@kernel.org
+Cc: linux-alpha@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-efi@vger.kernel.org
+Cc: linux-csky@vger.kernel.org
+Cc: linux-hexagon@vger.kernel.org
+Cc: linux-ia64@vger.kernel.org
+Cc: loongarch@lists.linux.dev
+Cc: linux-mips@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-riscv@lists.infradead.org
+Cc: linux-sh@vger.kernel.org
+Cc: sparclinux@vger.kernel.org
+Cc: linux-hyperv@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-fbdev@vger.kernel.org
 
