@@ -1,80 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DBC1758D74
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 08:10:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CA9A758D80
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 08:13:52 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=thvydvDk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=h+MS0CIF;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R5QQy544kz30D2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 16:10:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R5QW22pTDz308W
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 16:13:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=thvydvDk;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=h+MS0CIF;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R5QQ50pHFz2ykb
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 16:09:32 +1000 (AEST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36J63CHZ024876;
-	Wed, 19 Jul 2023 06:09:23 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R5QV60M3bz2xgt
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 16:13:01 +1000 (AEST)
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36J659ER012739;
+	Wed, 19 Jul 2023 06:12:54 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : mime-version : content-transfer-encoding; s=pp1;
  bh=V39H711HKU9/skviqQuB5rlaLN3pdUAYy7qVwSsavpo=;
- b=thvydvDkjuNczqJTv/FZl5HQUfI23eLsauF2+AWGbccPat1x5jrmroSbFTRFtZXuJjjM
- jm1x8mJpN1OsWg+oTOcHaAFDaVTAsNy6ooW0wTKF0LRA3+7Xv+4n69r1FDViaXyw5X1X
- Ieeu3K0L5iNFb8r3cx6z3pRlECOsTbnwImPPL4KiClsVn+/FM2ui6qp9+0RIxmolAbs0
- wj6zIg78waGay2MxDYnsj08jTNc6JtXSqlTQ6AFma2abIkpfc0kXt2+OcK0D2+P6r20t
- MBiB+rCaEWs6Ihl+BfVQWJ1Dk12SuhJ4edqrx15euEkxQ5GW4xXNNGBcygR0WfQiyTOZ fA== 
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rxa7hrdyd-1
+ b=h+MS0CIFIo5RcPVOchnE4Xis0/0pkagyZ9OiHQolpHqf1CUNeV9y3MzTVDZG1cun65cK
+ 1OxTT3mbwTziPwdI6PtfRu6vnAttp2ocxXJbLSg2EaIgKqp0yWO5VIUQCLV5runY7Qi4
+ u7PMyngKeO956d2cDhpSywqm1eJ0gH9zBtX62K3MPPahTTwmwip7XIjxOKtcmhR5i8yM
+ O3uZHxTYfGLPCmz2ueCcnPL2Kgfd4Vx8eMzxyFMQjA+YvjyowZlWrkv/pSfa5c1t2Cr3
+ SHqu67Q64Lu16iqYrNQSQ5QLOD4pf7UudCOI9T/lX1Qbez5d2AKmEuFFkDsrqPGhdzQ9 XQ== 
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rx8r521h9-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Jul 2023 06:09:21 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36J2fGoc004510;
-	Wed, 19 Jul 2023 06:07:19 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3rv80j5wqa-1
+	Wed, 19 Jul 2023 06:12:54 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36J4FVLD003394;
+	Wed, 19 Jul 2023 06:12:52 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3rv65xg9wx-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Jul 2023 06:07:19 +0000
+	Wed, 19 Jul 2023 06:12:52 +0000
 Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36J67GE445351566
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36J6Cn2u26084058
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 19 Jul 2023 06:07:16 GMT
+	Wed, 19 Jul 2023 06:12:49 GMT
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4803120043;
-	Wed, 19 Jul 2023 06:07:16 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 69ACC2004B;
+	Wed, 19 Jul 2023 06:12:49 +0000 (GMT)
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DF5BD20040;
-	Wed, 19 Jul 2023 06:07:10 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id D195F20043;
+	Wed, 19 Jul 2023 06:12:41 +0000 (GMT)
 Received: from li-e8dccbcc-2adc-11b2-a85c-bc1f33b9b810.ibm.com.com (unknown [9.43.119.126])
 	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 19 Jul 2023 06:07:10 +0000 (GMT)
+	Wed, 19 Jul 2023 06:12:41 +0000 (GMT)
 From: Kajol Jain <kjain@linux.ibm.com>
 To: mpe@ellerman.id.au
 Subject: [PATCH v3 00/10] Add sysfs interface files to hv_gpci device to expose system information
-Date: Wed, 19 Jul 2023 11:36:42 +0530
-Message-Id: <20230719060652.625387-1-kjain@linux.ibm.com>
+Date: Wed, 19 Jul 2023 11:42:21 +0530
+Message-Id: <20230719061231.631410-1-kjain@linux.ibm.com>
 X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: v_kyyCPmHtdRquiGc8LGAiZ2cYwS6ps-
-X-Proofpoint-ORIG-GUID: v_kyyCPmHtdRquiGc8LGAiZ2cYwS6ps-
+X-Proofpoint-GUID: UExQLTK3jIWcCPoRbaouRauOYSoc68xt
+X-Proofpoint-ORIG-GUID: UExQLTK3jIWcCPoRbaouRauOYSoc68xt
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-07-19_02,2023-07-18_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 suspectscore=0
- phishscore=0 mlxlogscore=999 spamscore=0 priorityscore=1501
- impostorscore=0 clxscore=1015 lowpriorityscore=0 mlxscore=0 adultscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2307190056
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
+ suspectscore=0 spamscore=0 mlxlogscore=999 impostorscore=0 adultscore=0
+ phishscore=0 lowpriorityscore=0 mlxscore=0 bulkscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
+ definitions=main-2307190056
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
