@@ -1,90 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF39F759758
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 15:50:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C737759761
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 15:51:05 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KJVvEZat;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KJVvEZat;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=mSLGK2c7;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R5cdb6TBhz3bcD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 23:50:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R5cfb0bcBz3bnV
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 23:51:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KJVvEZat;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KJVvEZat;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=mSLGK2c7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=fmartine@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::436; helo=mail-wr1-x436.google.com; envelope-from=philmd@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R5ccg5hK8z2ytf
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 23:49:22 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1689774557;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7gvBqRrgzjiPOFgHQxEB0Nm34S2dkYf27eWyqPPlFhY=;
-	b=KJVvEZatHoppvFwBWUxQq7s6QEbVmghGy33UzWvbupWugdHY890+Z8FIO+6JozgEmZ99ag
-	XoMkEcE8Jv9tPNZG9nZCqE1DjyQaVkFgDFwOakW+cz7SbL1S6J3YEvbQgEJfc3jlHd/XSX
-	MCmUAbxK0vtlhhCvBYrzhic9pViDW+c=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1689774557;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7gvBqRrgzjiPOFgHQxEB0Nm34S2dkYf27eWyqPPlFhY=;
-	b=KJVvEZatHoppvFwBWUxQq7s6QEbVmghGy33UzWvbupWugdHY890+Z8FIO+6JozgEmZ99ag
-	XoMkEcE8Jv9tPNZG9nZCqE1DjyQaVkFgDFwOakW+cz7SbL1S6J3YEvbQgEJfc3jlHd/XSX
-	MCmUAbxK0vtlhhCvBYrzhic9pViDW+c=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-323-oQ4ycxSeNGOJBXiwUJst6w-1; Wed, 19 Jul 2023 09:49:13 -0400
-X-MC-Unique: oQ4ycxSeNGOJBXiwUJst6w-1
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-314394a798dso378672f8f.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 06:49:13 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R5ccv0vp3z30Np
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 23:49:33 +1000 (AEST)
+Received: by mail-wr1-x436.google.com with SMTP id ffacd0b85a97d-31454996e06so6503962f8f.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 06:49:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1689774570; x=1692366570;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=JeaSSoZd0P4aBDcnBZ8BgOhayrU2NW5OGYbO05NkL/4=;
+        b=mSLGK2c7L5EE4FfadrFnGKrx8rHqMorl3CkK/H11fHsq3cy4XSsKtutECoQcxj7VUH
+         6217O/9tcynPgDcZCiS5kwgKPRQ9yaxcBfet9pGpjP3OtetZCluXE3f4KQeLL37dXcdq
+         Shyafc4xZzvzAf3/I3duYT0A6Lan59ePh67EPf8B6LGZv9LJEeK4tH3b6lkOaji6veEW
+         jV3wN5L8eRb0FEZEQdFL5i8bBvckl20VHoXJydGdhlh18d4M6Z7KwE4oD2NfJGaix4SY
+         m60NOgE8+OkCmcQdiCC141H+NDbenv1Kvjlt/AYNlG4in4PaDFI5cUWT/kWWjIB6GhTf
+         8q+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689774552; x=1690379352;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7gvBqRrgzjiPOFgHQxEB0Nm34S2dkYf27eWyqPPlFhY=;
-        b=l26/VDheHLE81WVqtuPAeZ3jinh1gmEww/lWjxRq7oAWMqUsYDZ1tE8wi8yPFfuj3D
-         DqEM4jPP/L2pgnDApKWT23xvB8ST6A8JropaURdyIpbElwOaUBEDQfahLpSt+5xCmPyX
-         F21oUfKyojn5uDcDSVP/bWzAo+vbTq0IZmi3N7SeHtS0SgUseqU1lLA/X2iirkcC7Q80
-         W3rUVMFOZ4TB9LTj0D3gI3d9Qaay1CbkeqB4jED985Sd//e8L8xMYlCm2UfSMrv67g9r
-         kqD82moeb58Voqh0WqL/tNNPoU6q+lgg5BmXBCMAgh+LLdOTt/OKhTD3I5PVDaUNkDwj
-         gJ4Q==
-X-Gm-Message-State: ABy/qLae+JpL+jn9XUwmbP/Y8NzuXGESWPFR+3xWz6shZjlgRj3wxqPC
-	CYT2qE4KYQJb2kQyD7M+qNxWaUETJRrM29WQJZjDH4kJlCK0RsBXlelrxgxsWmEkzKDSec1I+wO
-	zYHa9AhMwR2CJRIkUuTX+t/e6OQ==
-X-Received: by 2002:a5d:6a04:0:b0:314:3369:df57 with SMTP id m4-20020a5d6a04000000b003143369df57mr1948321wru.5.1689774552640;
-        Wed, 19 Jul 2023 06:49:12 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFD8G6VPVcqqGeSjptpNDnOnSs3W+CAZM63rDbbbVz9hymKgoyuOl3Kik6r5ce0mC8oQNhizg==
-X-Received: by 2002:a5d:6a04:0:b0:314:3369:df57 with SMTP id m4-20020a5d6a04000000b003143369df57mr1948300wru.5.1689774552274;
-        Wed, 19 Jul 2023 06:49:12 -0700 (PDT)
-Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id q2-20020a5d6582000000b003143bb5ecd5sm5381303wru.69.2023.07.19.06.49.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Jul 2023 06:49:11 -0700 (PDT)
-From: Javier Martinez Canillas <javierm@redhat.com>
-To: Arnd Bergmann <arnd@kernel.org>, linux-fbdev@vger.kernel.org, Thomas
- Zimmermann <tzimmermann@suse.de>, Helge Deller <deller@gmx.de>
+        d=1e100.net; s=20221208; t=1689774570; x=1692366570;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JeaSSoZd0P4aBDcnBZ8BgOhayrU2NW5OGYbO05NkL/4=;
+        b=ITnV7UtNU6GLZuX7UcgNR7SKKp8IvB95YQFMw/+u+qG/bs0XIb86ExC9yGnrN4wUXo
+         kVCi4BMEQ0RXL2kkcD43jTB9VJLCUDr4CKfsS8nSoR5tg5zXUHGM7qCSJxfjd/Utx+Ln
+         dbmXpaAUpqLZqv3b+e2gL8eeluxXNJ+wNsBDN++EIhrpG8iyoUYl5iDqZveziJLhnsdw
+         1zxQsvOEi6GSxe+c1DDxVx2Ka6FK4zjAGs7S1cwo1o9K8/1Zke8HQqeqEiPbLUficmlU
+         P01WUHc4StbRl0pt33RTQgG22eXnN9yUm8rqsbqu82vLNfjwkfnD61bWer0+ctVE404X
+         eW/g==
+X-Gm-Message-State: ABy/qLZXU0Acqsa/0aB/1b35G2PPiaNmhCW5km3UkgZcRP9AHFTChx+4
+	SGU8wzgH5fD+hjQwDv9An9VBJg==
+X-Google-Smtp-Source: APBJJlEbRVrqi3m5ZvwiJaNOZocZP7fbMQ7EmoV04cKWj5tMJSoThE8C5X94lSqKcc5w5KB/JoRc7Q==
+X-Received: by 2002:adf:d0d1:0:b0:314:824:3777 with SMTP id z17-20020adfd0d1000000b0031408243777mr13524380wrh.48.1689774570336;
+        Wed, 19 Jul 2023 06:49:30 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.201.220])
+        by smtp.gmail.com with ESMTPSA id w17-20020adfde91000000b00315a57f1128sm5357828wrl.115.2023.07.19.06.49.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 19 Jul 2023 06:49:29 -0700 (PDT)
+Message-ID: <32595080-dd79-5cf0-46e7-b82d0df8f067@linaro.org>
+Date: Wed, 19 Jul 2023 15:49:22 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.13.0
 Subject: Re: [PATCH v2 5/9] vgacon: remove screen_info dependency
-In-Reply-To: <20230719123944.3438363-6-arnd@kernel.org>
+Content-Language: en-US
+To: Arnd Bergmann <arnd@kernel.org>, linux-fbdev@vger.kernel.org,
+ Thomas Zimmermann <tzimmermann@suse.de>, Helge Deller <deller@gmx.de>,
+ Javier Martinez Canillas <javierm@redhat.com>
 References: <20230719123944.3438363-1-arnd@kernel.org>
  <20230719123944.3438363-6-arnd@kernel.org>
-Date: Wed, 19 Jul 2023 15:49:11 +0200
-Message-ID: <87fs5khuzs.fsf@minerva.mail-host-address-is-not-set>
-MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230719123944.3438363-6-arnd@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,26 +89,75 @@ Cc: linux-hyperv@vger.kernel.org, x86@kernel.org, linux-ia64@vger.kernel.org, li
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Arnd Bergmann <arnd@kernel.org> writes:
+Hi Arnd,
 
+On 19/7/23 14:39, Arnd Bergmann wrote:
 > From: Arnd Bergmann <arnd@arndb.de>
->
+> 
 > The vga console driver is fairly self-contained, and only used by
 > architectures that explicitly initialize the screen_info settings.
->
+> 
 > Chance every instance that picks the vga console by setting conswitchp
 > to call a function instead, and pass a reference to the screen_info
 > there.
->
+> 
 > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 > ---
+>   arch/alpha/kernel/setup.c      |  2 +-
+>   arch/arm/kernel/setup.c        |  2 +-
+>   arch/ia64/kernel/setup.c       |  2 +-
+>   arch/mips/kernel/setup.c       |  2 +-
+>   arch/x86/kernel/setup.c        |  2 +-
+>   drivers/firmware/pcdp.c        |  2 +-
+>   drivers/video/console/vgacon.c | 68 ++++++++++++++++++++--------------
+>   include/linux/console.h        |  7 ++++
+>   8 files changed, 53 insertions(+), 34 deletions(-)
 
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
 
--- 
-Best regards,
+> @@ -1074,13 +1077,13 @@ static int vgacon_resize(struct vc_data *c, unsigned int width,
+>   		 * Ho ho!  Someone (svgatextmode, eh?) may have reprogrammed
+>   		 * the video mode!  Set the new defaults then and go away.
+>   		 */
+> -		screen_info.orig_video_cols = width;
+> -		screen_info.orig_video_lines = height;
+> +		vga_si->orig_video_cols = width;
+> +		vga_si->orig_video_lines = height;
+>   		vga_default_font_height = c->vc_cell_height;
+>   		return 0;
+>   	}
+> -	if (width % 2 || width > screen_info.orig_video_cols ||
+> -	    height > (screen_info.orig_video_lines * vga_default_font_height)/
+> +	if (width % 2 || width > vga_si->orig_video_cols ||
+> +	    height > (vga_si->orig_video_lines * vga_default_font_height)/
+>   	    c->vc_cell_height)
+>   		return -EINVAL;
+>   
+> @@ -1110,8 +1113,8 @@ static void vgacon_save_screen(struct vc_data *c)
+>   		 * console initialization routines.
+>   		 */
+>   		vga_bootup_console = 1;
+> -		c->state.x = screen_info.orig_x;
+> -		c->state.y = screen_info.orig_y;
+> +		c->state.x = vga_si->orig_x;
+> +		c->state.y = vga_si->orig_y;
 
-Javier Martinez Canillas
-Core Platforms
-Red Hat
+Not really my area, so bare with me if this is obviously not
+possible :) If using DUMMY_CONSOLE, can we trigger a save_screen
+/ resize? If so, we'd reach here with vga_si=NULL.
+
+>   	}
+>   
+>   	/* We can't copy in more than the size of the video buffer,
+> @@ -1204,4 +1207,13 @@ const struct consw vga_con = {
+>   };
+>   EXPORT_SYMBOL(vga_con);
+>   
+> +void vgacon_register_screen(struct screen_info *si)
+> +{
+> +	if (!si || vga_si)
+> +		return;
+> +
+> +	conswitchp = &vga_con;
+> +	vga_si = si;
+> +}
 
