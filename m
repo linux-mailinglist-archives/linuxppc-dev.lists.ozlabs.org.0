@@ -2,64 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FFA375905E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 10:35:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 791A67590A0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 10:50:18 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=npivonAo;
+	dkim=fail reason="unknown key version" header.d=208.org header.i=@208.org header.a=rsa-sha256 header.s=dkim header.b=XDrL0lOk;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R5Tdv1rZqz30YM
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 18:34:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R5TzX2n0Bz30f9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 18:50:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=npivonAo;
+	dkim=fail reason="unknown key version" header.d=208.org header.i=@208.org header.a=rsa-sha256 header.s=dkim header.b=XDrL0lOk;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=208suo.com (client-ip=183.242.55.162; helo=mail.208.org; envelope-from=hanyu001@208suo.com; receiver=lists.ozlabs.org)
+Received: from mail.208.org (unknown [183.242.55.162])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R5Td26gC4z2yDC
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 18:34:14 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id A11CC6131C
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 08:34:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36AB6C433B7
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 08:34:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1689755649;
-	bh=WMX//Zd4vQHTl2wSNqngG3i/KSedW7bESZCEVdywQQg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=npivonAoU/JLz34y+sU/NQYHPvNpLVQT+U0/+j+878TThXUt2K/EknBClxtbnhFJS
-	 GgrvtoIgMqCqeZGw7UEkZRjZzrsr5BhPFx3T8EdDuxBipmyDyGB+J1ClvT1lOAsDgr
-	 l5rDJbQBqAualqYJ7CgBqQKBilcA8larUuWgBBWmi4RO7OMatAn8VPgF7/bNLiAq9E
-	 S5HIMsTnGT0sdXVOVV1YkwWJl72Whv/nA8r38/EWZNq9VEjelxvff1tKjzTSSewPmh
-	 yorAW1NVYQIVtHiKYhZZKK8eyOcxMZhZfC43m6ucmTjEhDqTWGtIEiLMM7Q9gcFSrC
-	 bEYx1FSSR02sQ==
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-4fbb281eec6so10747017e87.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 01:34:09 -0700 (PDT)
-X-Gm-Message-State: ABy/qLbuDK5u5ZXvOLv4LDusAgCN4PNV13AYHE2tDX2ksGdlTtWzYBTl
-	zkXdwv2QAKJ2v6TOZR7gRONa670PN40PbYPqHRE=
-X-Google-Smtp-Source: APBJJlGeSF5V0ZncchYeqcmkqwpUY28YQJ5DiF5w2vBv40Stfz5hfjtiPkQFB2dDWAAbFdheF+NmWD6HTwZKJ8tR1ic=
-X-Received: by 2002:ac2:4db2:0:b0:4fd:c8dc:2f55 with SMTP id
- h18-20020ac24db2000000b004fdc8dc2f55mr3519001lfe.66.1689755647078; Wed, 19
- Jul 2023 01:34:07 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R5Tyg2JXTz2ypx
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 18:49:30 +1000 (AEST)
+Received: from mail.208.org (email.208.org [127.0.0.1])
+	by mail.208.org (Postfix) with ESMTP id 4R5TyL5sSdzBHYMG
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 16:49:14 +0800 (CST)
+Authentication-Results: mail.208.org (amavisd-new); dkim=pass
+	reason="pass (just generated, assumed good)" header.d=208.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=208.org; h=
+	content-transfer-encoding:content-type:message-id:user-agent
+	:references:in-reply-to:subject:to:from:date:mime-version; s=
+	dkim; t=1689756554; x=1692348555; bh=5pj+9SB9XL67KdC10MygRAqL6Th
+	a9QqQRVIGmyiPYck=; b=XDrL0lOkiruk2A4pSWjZQt171qgTQDWtCO4rpNisxeL
+	/JON7vGQvw3kGbumw9O5cR3pTSJdRfMTe2aj3ooPqAWbmfwFU2xrsP2kL2OfqKAG
+	XQANlwCWi6vr1Kjvu/ZvHsADhepAioDGOnCQyPGgPzByrnxbjjExUBgmI/cBZ2P2
+	6Ebyvt5P43rENidmG8RHctHIN2kC4G1ZryJOZq3arC0A+zteUHqyJNkkdFIuBLs/
+	ShTq4NK35WOWCUmGnDoXQP72XdwCMo+PUdKgqgHpCNBx6vUp36qPAu96T5yczcdx
+	ukdHaZEi4xJk+YmqRboI8xwLkEgC0qYcTKyx8966wKw==
+X-Virus-Scanned: amavisd-new at mail.208.org
+Received: from mail.208.org ([127.0.0.1])
+	by mail.208.org (mail.208.org [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id ppgVHkZWVax9 for <linuxppc-dev@lists.ozlabs.org>;
+	Wed, 19 Jul 2023 16:49:14 +0800 (CST)
+Received: from localhost (email.208.org [127.0.0.1])
+	by mail.208.org (Postfix) with ESMTPSA id 4R5TyL4PZHzBHXhP;
+	Wed, 19 Jul 2023 16:49:14 +0800 (CST)
 MIME-Version: 1.0
-References: <20230718125847.3869700-1-ardb@kernel.org> <20230718125847.3869700-6-ardb@kernel.org>
- <20230718223813.GC1005@sol.localdomain>
-In-Reply-To: <20230718223813.GC1005@sol.localdomain>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 19 Jul 2023 10:33:55 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXE1fND2h8ts6Xtfn19wkt=vAnj1TumxvoBCuEn7z3V4Aw@mail.gmail.com>
-Message-ID: <CAMj1kXE1fND2h8ts6Xtfn19wkt=vAnj1TumxvoBCuEn7z3V4Aw@mail.gmail.com>
-Subject: Re: [RFC PATCH 05/21] ubifs: Pass worst-case buffer size to
- compression routines
-To: Eric Biggers <ebiggers@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Date: Wed, 19 Jul 2023 16:49:14 +0800
+From: hanyu001@208suo.com
+To: benh@kernel.crashing.org, mpe@ellerman.id.au, npiggin@gmail.com,
+ christophe.leroy@csgroup.eu
+Subject: [PATCH] platforms: powermac: Add require space after that ','
+In-Reply-To: <tencent_D88DA71125D0DAD5369DE30A8055B355A20A@qq.com>
+References: <tencent_D88DA71125D0DAD5369DE30A8055B355A20A@qq.com>
+User-Agent: Roundcube Webmail
+Message-ID: <96c612b1e07dfde74413322609dfc4fe@208suo.com>
+X-Sender: hanyu001@208suo.com
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,59 +70,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jens Axboe <axboe@kernel.dk>, Giovanni Cabiddu <giovanni.cabiddu@intel.com>, Steffen Klassert <steffen.klassert@secunet.com>, Kees Cook <keescook@chromium.org>, qat-linux@intel.com, Sergey Senozhatsky <senozhatsky@chromium.org>, Richard Weinberger <richard@nod.at>, David Ahern <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>, linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, Minchan Kim <minchan@kernel.org>, Nick Terrell <terrelln@fb.com>, netdev@vger.kernel.org, linux-mtd@lists.infradead.org, Jakub Kicinski <kuba@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 19 Jul 2023 at 00:38, Eric Biggers <ebiggers@kernel.org> wrote:
->
-> On Tue, Jul 18, 2023 at 02:58:31PM +0200, Ard Biesheuvel wrote:
-> > Currently, the ubifs code allocates a worst case buffer size to
-> > recompress a data node, but does not pass the size of that buffer to the
-> > compression code. This means that the compression code will never use
-> > the additional space, and might fail spuriously due to lack of space.
-> >
-> > So let's multiply out_len by WORST_COMPR_FACTOR after allocating the
-> > buffer. Doing so is guaranteed not to overflow, given that the preceding
-> > kmalloc_array() call would have failed otherwise.
-> >
-> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > ---
-> >  fs/ubifs/journal.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > diff --git a/fs/ubifs/journal.c b/fs/ubifs/journal.c
-> > index dc52ac0f4a345f30..4e5961878f336033 100644
-> > --- a/fs/ubifs/journal.c
-> > +++ b/fs/ubifs/journal.c
-> > @@ -1493,6 +1493,8 @@ static int truncate_data_node(const struct ubifs_info *c, const struct inode *in
-> >       if (!buf)
-> >               return -ENOMEM;
-> >
-> > +     out_len *= WORST_COMPR_FACTOR;
-> > +
-> >       dlen = le32_to_cpu(dn->ch.len) - UBIFS_DATA_NODE_SZ;
-> >       data_size = dn_size - UBIFS_DATA_NODE_SZ;
-> >       compr_type = le16_to_cpu(dn->compr_type);
->
-> This looks like another case where data that would be expanded by compression
-> should just be stored uncompressed instead.
->
-> In fact, it seems that UBIFS does that already.  ubifs_compress() has this:
->
->         /*
->          * If the data compressed only slightly, it is better to leave it
->          * uncompressed to improve read speed.
->          */
->         if (in_len - *out_len < UBIFS_MIN_COMPRESS_DIFF)
->                 goto no_compr;
->
-> So it's unclear why the WORST_COMPR_FACTOR thing is needed at all.
->
+Fix below checkpatch errors:
 
-It is not. The buffer is used for decompression in the truncation
-path, so none of this logic even matters. Even if the subsequent
-recompression of the truncated data node could result in expansion
-beyond the uncompressed size of the original data (which seems
-impossible to me), increasing the size of this buffer would not help
-as it is the input buffer for the compression not the output buffer.
+platforms/powermac/pfunc_core.c:22: ERROR: space required after that ',' 
+(ctx:VxV)
+platforms/powermac/pfunc_core.c:22: ERROR: space required after that ',' 
+(ctx:VxV)
+
+Signed-off-by: Yu Han <hanyu001@208suo.com>
+---
+  arch/powerpc/platforms/powermac/pfunc_core.c | 2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/platforms/powermac/pfunc_core.c 
+b/arch/powerpc/platforms/powermac/pfunc_core.c
+index 22741ddfd5b2..07555c1bb484 100644
+--- a/arch/powerpc/platforms/powermac/pfunc_core.c
++++ b/arch/powerpc/platforms/powermac/pfunc_core.c
+@@ -19,7 +19,7 @@
+  /* Debug */
+  #define LOG_PARSE(fmt...)
+  #define LOG_ERROR(fmt...)    printk(fmt)
+-#define LOG_BLOB(t,b,c)
++#define LOG_BLOB(t, b, c)
+
+  #undef DEBUG
+  #ifdef DEBUG
