@@ -1,151 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FD5375979E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 16:00:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A8997597A3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 16:01:23 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZAYxCY6c;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=r3u1mbbq;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R5csV0fTMz30Ng
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jul 2023 00:00:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R5ctT3Cr3z30gy
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jul 2023 00:01:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZAYxCY6c;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=r3u1mbbq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=yan.y.zhao@intel.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 65 seconds by postgrey-1.37 at boromir; Wed, 19 Jul 2023 16:37:02 AEST
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::430; helo=mail-pf1-x430.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R5R1p1R4Mz2yDj
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 16:37:01 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689748622; x=1721284622;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=OT4WTVvH9tf5/dlVvTiAr/1zEZ3n1sLnHsNy7hD8IkQ=;
-  b=ZAYxCY6cvSlRJ1rsPVwo6V8BcoznlT2fvz1ffKVSJZQOPYhTYkG7HNwN
-   StxGD1WieFawPnpJ9zGZFvcvADUGVekpdKUaCc740RvOe+tgNHTuGxnEg
-   oooy4+CkmFg1ZsyjgNbljdoXBntw2ZawdncmZaCzlC/EjTAVa0mYuMaxC
-   bq7zf4kpSgbnwd4LP27b7nfwz+5QL5WUR3nXynE5JcQcxNjQ70Tbx5yxK
-   EUNk7UAr//FzVxo8ihkvCs+eAWT3KPnoDmwaoGgUBiPxc13lxQT9Ve1rZ
-   Zh2Gk3TcCywse74L4Tl3kb1ohFutbubws7g8mRUOV8bjKR14gO21r24oR
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="369031187"
-X-IronPort-AV: E=Sophos;i="6.01,216,1684825200"; 
-   d="scan'208";a="369031187"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2023 23:35:50 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="814025207"
-X-IronPort-AV: E=Sophos;i="6.01,216,1684825200"; 
-   d="scan'208";a="814025207"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
-  by FMSMGA003.fm.intel.com with ESMTP; 18 Jul 2023 23:35:50 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Tue, 18 Jul 2023 23:35:50 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Tue, 18 Jul 2023 23:35:49 -0700
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27 via Frontend Transport; Tue, 18 Jul 2023 23:35:49 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.171)
- by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.27; Tue, 18 Jul 2023 23:35:49 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BKXtGXvpOUFXXCO7uy+xAmxdkzFBc68nibNoP2mQRO3bzfqQBBwJyYZq90mSNqk9gosnHvPHJ98CiaAK4cBZuFQdbY1vJtQi+Q2yMSKFTUscAJEkJAz6ZjEZYzsP7nib+1xxQWpPzZZikV1pSghXtc70MQ6nzidduzt0UONUhtDxOMmIL1iJT4SK5HuzDS2A4PHz/QCVvF6lzx++k8FsJ/ygQME/fKRlBQEYTljsOzCqZ+oidXaEszX0iqHG19wqByLaUit1iCREVVxt/MYff+XJ3sxCFIHi89gLw8JrNt4hzcp4C86eWkJRVAPzNIVA0QfeG9fRTQws+pZsb6tniA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7EzO6VSU5nSON2Ssfz6O7lb7gePKocrSMN9+YaPeXKk=;
- b=jEg0C9cwReE/Ozp5LY8VjdnJlytInyGhM0LkkCz8LhxJsnj52fT9lPb4ANofBsPGqEZee1NEQKrMyU9CbAH/rTWaEgARPT02h33J9/is68Yh8PSP6atLUnhvftGvtRDV7kxxldciivMXOlxDNqAQnCpzW0oEaP5ZPzTI/W4fNj/qG38hDGiu/Sy6/UzHXtXzCQBj3jUTvNuD055Aj1R3CjuP1Phz6glQ0cgWOmDItTMYpvJtFT+v8UcvDupQuKS4RMWtog+5vSZ2F+ebz89E5K/rQ3yqfa2KnLDwHO8AjXG2g/uEhtWxEe0q6kcEzAUe6ILjeCzCFOs0XGXB7ZNp6Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS7PR11MB5966.namprd11.prod.outlook.com (2603:10b6:8:71::6) by
- BL3PR11MB6483.namprd11.prod.outlook.com (2603:10b6:208:3be::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.32; Wed, 19 Jul
- 2023 06:35:46 +0000
-Received: from DS7PR11MB5966.namprd11.prod.outlook.com
- ([fe80::1b1a:af8e:7514:6f63]) by DS7PR11MB5966.namprd11.prod.outlook.com
- ([fe80::1b1a:af8e:7514:6f63%2]) with mapi id 15.20.6609.024; Wed, 19 Jul 2023
- 06:35:46 +0000
-Date: Wed, 19 Jul 2023 14:09:01 +0800
-From: Yan Zhao <yan.y.zhao@intel.com>
-To: David Stevens <stevensd@chromium.org>
-Subject: Re: [PATCH v7 5/8] KVM: x86/mmu: Don't pass FOLL_GET to
- __kvm_follow_pfn
-Message-ID: <ZLd9/V6EAxSwEAzY@yzhao56-desk.sh.intel.com>
-References: <20230704075054.3344915-1-stevensd@google.com>
- <20230704075054.3344915-6-stevensd@google.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20230704075054.3344915-6-stevensd@google.com>
-X-ClientProxiedBy: SI2PR01CA0039.apcprd01.prod.exchangelabs.com
- (2603:1096:4:193::16) To DS7PR11MB5966.namprd11.prod.outlook.com
- (2603:10b6:8:71::6)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R5VY52D2Lz2ykb
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 19:15:51 +1000 (AEST)
+Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-66f3fc56ef4so413887b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 02:15:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689758148; x=1690362948;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=4xYMJ2qwFt3ysotZG6vyN3zgxfKZNUX3IXUBQy5PH3w=;
+        b=r3u1mbbqB53w+AXZUQHRVaZwpdH/uEAb82ktK3H7HPMQE/lFGH1E5UfrLNwX7BkScX
+         JJcmaHoKjxNKORJV85KF6OSLq+Y/nuPeK1QK+IU3m32teZhwNzBChVHWiKkZXRz0KQZt
+         1QoDu8Oc1oktDIYUIr4dMS5Bm1flQzEPEQc7akpWWL/RhXrx6Qpo24zfU87loejANJud
+         H7KFHYM9jRpM0o6BWfGdYZ8cMRjoR1Mm44pEsqKfb7KlfxYGbSULS0ZzBCAevhWv/D98
+         XMCxVJM9MDzihB82e+tThP5A0gG+mmJ8XenfftlpHY1zDzSf5afL7Wn6paU2WNT4hBeA
+         09qQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689758148; x=1690362948;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4xYMJ2qwFt3ysotZG6vyN3zgxfKZNUX3IXUBQy5PH3w=;
+        b=fMotS9iooyH64rXnBDZIvvmbcIfGswF7CEdKk6ypWenpG070YS/mVESfE/56cbXDS4
+         PrH0PvCWlHGVQALyka+diKNLdmqYtzc6JbyCDJCznj5Dv8xXi39aYdHwYkDVqa8dEZAk
+         YPxHJYazOXklYo3rXZ40ncNJkYTz+DqUvG/RuXVecQI8jNziO47RNSOavIcObDlcHdKK
+         i5awQQEn1WFGR9FEZRQJwfnoKPRGQzBKoL7LBFuWyFHESXFO/ieZpNLeX5UDYZL8vhNT
+         hZZpWJBBcc2nPJnxbOwFRco4gWAdQRe3txIVAPuqkzsVOgnfciCkoLNS/qwR1MesItcf
+         ZADw==
+X-Gm-Message-State: ABy/qLZSuK4qxRoqf6LGGFRIrICQwkd9YSYg305sC4+dE+8nl9NSrVkV
+	JPZwAv5mXEFF5+IB+emuZjztEj4VP2bVoT4pl8I=
+X-Google-Smtp-Source: APBJJlFN9CjpCw8/0jcD6IysUeUwKyNP9eYGqm+T3UXh7ICdwsLpt8yXN7FmTeZ/HzLXjeEQcMFLjDbuLAyz6vfpfHk=
+X-Received: by 2002:a17:90b:4a91:b0:253:3eb5:3ade with SMTP id
+ lp17-20020a17090b4a9100b002533eb53ademr2100966pjb.8.1689758148096; Wed, 19
+ Jul 2023 02:15:48 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR11MB5966:EE_|BL3PR11MB6483:EE_
-X-MS-Office365-Filtering-Correlation-Id: cf01554f-c24f-4ac6-caca-08db882261fe
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: i+uJ14KCQkehmcVeFsjsxN5qWboimT/LwipHJM76Uxq7neoMetaLC5U7PTKs0Q5wcvKTZkITkhPMGaAqxaaMKsmPB4WTJXHNIUHQDpSweluSath3AIcHOX7Z2JCnJWltQICCCOU/0O4zNHveWcj9lfmWBoeQnIz3cSpN2ZXnQYh39+0tAavZ/UceuSMk4hjkteCEY8055ptb8zWYA/CHGiFqNvPsvWD5XG1r9HhkFliprDqaIGfAKqWul0RIqtdst1qesj9HnPwRwsx0Z/0cZuO8+d1JozyuB59PTgl0pl4c4PeAKJYu938u87+FLH/TyxdqU+0FYhvxu7QalxQwqNdI1cSb4q/R/AR+Hz9+Zx06oNP9bTxvnCM2P/E6MPAyNQ1yBXaOaZAwDetlJRlwufFA3lFWObj8heIIYb022ChmwuhK1n3FpbDkJXncOmBrTXCiceNTSvPB4x93Z9d5mE/zUPyUtC31F7XZ1ASa0AJreD2p5XAGMEtGH7P0wxhOyHu35h5dem57aR+6PmRpnADTxIFdQenf0NS9JTtXLuEVK7zD/tPQMISO9Z5leQWB
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB5966.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(396003)(366004)(136003)(346002)(376002)(39860400002)(451199021)(6666004)(6486002)(478600001)(82960400001)(7416002)(8676002)(2906002)(54906003)(3450700001)(8936002)(5660300002)(86362001)(4326008)(6916009)(38100700002)(66946007)(66556008)(66476007)(316002)(6506007)(41300700001)(26005)(83380400001)(186003)(6512007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?sbxNv5NUZEgP8FrcXUtPj5X8cf6uBGJkOV0/xjfVrVgrYshHCOcj3tn1C3kO?=
- =?us-ascii?Q?xwh+a91XGxp1WHraFZPfjnvDqyH+/xNPQQew9RvpDafr+mW1RT1vj3mZNwJA?=
- =?us-ascii?Q?Gfn4jGrm3lHC3BhuZPf4DR5EQbxq/EakKqv6dwrNCAzzMrulJKicNLX+0hXJ?=
- =?us-ascii?Q?GFW7IXD1NZ5wegFT40bAMAmyEtPXXtYFIxRyqd64M8JwwH3mdHjQNRNVmp2P?=
- =?us-ascii?Q?JVneMWh9Joo7mplNhRystvjL4NKjfOh8eUkwdA2f/2NJ8BNFjuMtaDB0C2SE?=
- =?us-ascii?Q?OFKTfOz0eVYwY7ztiNA1S8Srt2E3VMBnAaDICBJMlcV89y+p71WafL3DwasC?=
- =?us-ascii?Q?kIjBFjLo34tjDb0k12IOX93dIR5gef7nkyuuiG7N7xqJeYLHWhwKvK25pvAj?=
- =?us-ascii?Q?QnnVQnFYQ6lW1oQxmX5sBmO1skxlPOYmXKp5SMGWFHey1ITX5Osne0DdUkzT?=
- =?us-ascii?Q?8niSAqVlw4jVGlNZcrUcTiybtL9jaIpA3P693GM0qlMQ1xIJhTpk12c0yuH3?=
- =?us-ascii?Q?ppIFsjHHzRqufQ2+GYNKVMsARDLekB5vVolc6m++2vlnqg3BT7PR72aB/n/b?=
- =?us-ascii?Q?j8sjHIIloul8ys26t96qsmQ/ecnvxTpsdg6Rp+wlnzUc5ttB9ZVjX8sKHOlQ?=
- =?us-ascii?Q?kk0WMnfiKGAsPxOr2+wPdpJrOTmZLJuJxOnuNwBNggB27AorSmasZbMRqxWE?=
- =?us-ascii?Q?0X8Nz/L0Pji1j875QsqE4ZH8kSOXZztwdny6LDYO6aDNLghbgmTrjO+B0qRb?=
- =?us-ascii?Q?me1gbrD+jfN2s2kOFxeKE4YnLvGD2csXWSFEB4b29tznRDYY7IpnzDUPAiUZ?=
- =?us-ascii?Q?BP2SHBWowR/wtMgmwsiFRcjEHzOiDMnte1kXZPolz9nisUT09IzMvjTOz9GC?=
- =?us-ascii?Q?PpGttKCXLPl2GQhh/cHGyfGA2QJ0u/W6pGp9a/mSXxecc5fa455VTrmWDhnm?=
- =?us-ascii?Q?OL4nUEY7CYczrlzdpS8v8hx6DA5XJfrOg6SDpkxN8KCn9CBVdHZooYVaND7V?=
- =?us-ascii?Q?yDItgnnZoCXmbdDjcESsBpRjyB0aUANT+fSvxsOfsUZ1SCYGp3HLAx/qJ381?=
- =?us-ascii?Q?PylF0rkJdnFPUWjt800hsdStLb8s5X5pC0LtWBww/Bnraacpsg0gKB5dIxiA?=
- =?us-ascii?Q?s0sGDSuWrPrpItMd634GLKF8Afi47pQ6yYoN49WlLsgT/6Gtrex06S0WE/mR?=
- =?us-ascii?Q?moGXvwDPiu23TJzx8UJ5kN8fvySUgnUXh6TFdgPFPGtjytI3qEwqQl0HjoHE?=
- =?us-ascii?Q?ZHVU6hgJ65TStpIMz7WlFuqUeCmlBcA8YwQbFTII9xA5nmwivVOHCifh2kd9?=
- =?us-ascii?Q?b/mc79javAzGwgByp2j1V0RDamRzAL/DsupyyCbPRTbNxiN9TPj2ahJ65zVc?=
- =?us-ascii?Q?eml87c/pZjGzal58yHdiz59rQz6BOTT99JBkXsYbjEaA7k1Jz7EcCVq3PolT?=
- =?us-ascii?Q?mJW8GZwbpsf7rST/hUX4i4GMsKDKkhBh4hGmF+VJbMXdUZH46aJ8gh/tCUzx?=
- =?us-ascii?Q?99oHLxElL31CYWFfWJjSQoS+rnpBJs5h295lTexXZneGcLin5SqA6mjLFcCa?=
- =?us-ascii?Q?fLWNtggDEO0tgUamApjFWWOG1skLjBX995peA52o?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: cf01554f-c24f-4ac6-caca-08db882261fe
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB5966.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jul 2023 06:35:45.9252
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QWuJJL+xWPZkh52/xeExwvrFqCkTp/GLoL84zlqPcOKBuyL7aUvS7AeAyHA3WOdfAavtDuJmRdUJV6tlvt0a7g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR11MB6483
-X-OriginatorOrg: intel.com
+References: <1688002673-28493-1-git-send-email-shengjiu.wang@nxp.com>
+ <1688002673-28493-2-git-send-email-shengjiu.wang@nxp.com> <ZJ6o5fT4V4HXivFa@valkosipuli.retiisi.eu>
+ <CAA+D8AND1yZ7eZLjBGxVF=i3hLMecUm-j7AVHN9npJi-4=3VrA@mail.gmail.com>
+ <87h6ql5hch.wl-tiwai@suse.de> <43f0ecdf-7454-49ae-96b3-2eae5487e9a5@sirena.org.uk>
+ <d78e6ec3-a531-8fd4-a785-29b6712f83ae@xs4all.nl> <090cc065-b078-4f2c-9b2d-3b0b7418461d@sirena.org.uk>
+ <CAA+D8AMTnZb-Sm9gh_jDDSz3y9jXY-mD9S6vXPekAbdfCJaKHA@mail.gmail.com> <CAA+D8AMNqU0J1EC--BBVYbXMf1dRGdS-ez5hs2E8M_hYtwq60w@mail.gmail.com>
+In-Reply-To: <CAA+D8AMNqU0J1EC--BBVYbXMf1dRGdS-ez5hs2E8M_hYtwq60w@mail.gmail.com>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Wed, 19 Jul 2023 17:15:36 +0800
+Message-ID: <CAA+D8ANLjOOHuc5OqhsdFX1_N_=fbdDnFEAsSBs06zDGpJ8TZg@mail.gmail.com>
+Subject: Re: [PATCH 1/6] media: v4l2: Add audio capture and output support
+To: Mark Brown <broonie@kernel.org>
+Content-Type: multipart/alternative; boundary="0000000000002c76970600d37a50"
 X-Mailman-Approved-At: Wed, 19 Jul 2023 23:59:42 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -158,40 +79,168 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: Marc Zyngier <maz@kernel.org>, kvm@vger.kernel.org, Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org, Peter Xu <peterx@redhat.com>, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: nicoleotsuka@gmail.com, alsa-devel@alsa-project.org, lgirdwood@gmail.com, Jacopo Mondi <jacopo@jmondi.org>, Xiubo.Lee@gmail.com, Takashi Iwai <tiwai@suse.de>, linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-media@vger.kernel.org, tfiga@chromium.org, Hans Verkuil <hverkuil@xs4all.nl>, linuxppc-dev@lists.ozlabs.org, Sakari Ailus <sakari.ailus@iki.fi>, perex@perex.cz, mchehab@kernel.org, festevam@gmail.com, m.szyprowski@samsung.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 04, 2023 at 04:50:50PM +0900, David Stevens wrote:
-> @@ -4451,7 +4461,8 @@ static int direct_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
->  
->  out_unlock:
->  	write_unlock(&vcpu->kvm->mmu_lock);
-> -	kvm_release_pfn_clean(fault->pfn);
-> +	if (fault->is_refcounted_page)
-> +		kvm_set_page_accessed(pfn_to_page(fault->pfn));
-For a refcounted page, as now KVM puts its ref early in kvm_faultin_pfn(),
-should this kvm_set_page_accessed() be placed before unlocking mmu_lock?
+--0000000000002c76970600d37a50
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Otherwise, if the user unmaps a region (which triggers kvm_unmap_gfn_range()
-with mmu_lock holding for write), and release the page, and if the two
-steps happen after checking page_count() in kvm_set_page_accessed() and
-before mark_page_accessed(), the latter function may mark accessed to a page
-that is released or does not belong to current process.
+Hi Mark
 
-Is it true?
+On Fri, Jul 7, 2023 at 11:13=E2=80=AFAM Shengjiu Wang <shengjiu.wang@gmail.=
+com>
+wrote:
 
->  	return r;
->  }
->  
-> @@ -4529,7 +4540,8 @@ static int kvm_tdp_mmu_page_fault(struct kvm_vcpu *vcpu,
->  
->  out_unlock:
->  	read_unlock(&vcpu->kvm->mmu_lock);
-> -	kvm_release_pfn_clean(fault->pfn);
-> +	if (fault->is_refcounted_page)
-> +		kvm_set_page_accessed(pfn_to_page(fault->pfn));
->  	return r;
->  }
-Ditto.
+> Hi Mark
+>
+> On Tue, Jul 4, 2023 at 12:03=E2=80=AFPM Shengjiu Wang <shengjiu.wang@gmai=
+l.com>
+> wrote:
+>
+>>
+>>
+>> On Tue, Jul 4, 2023 at 1:59=E2=80=AFAM Mark Brown <broonie@kernel.org> w=
+rote:
+>>
+>>> On Mon, Jul 03, 2023 at 03:12:55PM +0200, Hans Verkuil wrote:
+>>>
+>>> > My main concern is that these cross-subsystem drivers are a pain to
+>>> > maintain. So there have to be good reasons to do this.
+>>>
+>>> > Also it is kind of weird to have to use the V4L2 API in userspace to
+>>> > deal with a specific audio conversion. Quite unexpected.
+>>>
+>>> > But in the end, that's a decision I can't make.
+>>>
+>>> > So I wait for that feedback. Note that if the decision is made that
+>>> this
+>>> > can use V4L2, then there is quite a lot more that needs to be done:
+>>> > documentation, new compliance tests, etc. It's adding a new API, and
+>>> that
+>>> > comes with additional work...
+>>>
+>>> Absolutely, I agree with all of this - my impression was that the targe=
+t
+>>> here would be bypass of audio streams to/from a v4l2 device, without
+>>> bouncing through an application layer.  If it's purely for audio usage
+>>> with no other tie to v4l2 then involving v4l2 does just seem like
+>>> complication.
+>>>
+>>
+>> This audio use case is using the v4l2 application layer. in the user spa=
+ce
+>> I need to call below v4l2 ioctls to implement the feature:
+>> VIDIOC_QUERYCAP
+>> VIDIOC_TRY_FMT
+>> VIDIOC_S_FMT
+>> VIDIOC_REQBUFS
+>> VIDIOC_QUERYBUF
+>> VIDIOC_STREAMON
+>> VIDIOC_QBUF
+>> VIDIOC_DQBUF
+>> VIDIOC_STREAMOFF
+>>
+>> why the driver was put in the ALSA, because previously we implemented
+>> the ASRC M2P (memory to peripheral) in ALSA,  so I think it is better to
+>> add M2M driver in ALSA.  The hardware IP is the same. The compatible
+>> string is the same.
+>>
+>>
+>> Could you please share more of your ideas about this patch? and could
+> you please check further about this implementation.
+>
+> I tried to find a good interface in ALSA for this m2m request, but didn't
+> find one,  then I try the V4L2, find it is good this audio case.
+>
+> but it needs to extend the V4L2 API.
+>
+> I have no idea how to go on, could you please recommend?
+>
+>
+Should I implement the asrc m2m driver as a separate v4l2 driver?
+And move it to the /driver/media folder ? In ALSA part, just need
+register the platform device.
+
+The bridge between ALSA and V4L2 framework can be the header
+file in /include/sound/
+
+Does it sound better?
+
+Best regards
+Wang Shengjiu
+
+--0000000000002c76970600d37a50
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Hi Mark</div><br><div class=3D"gmail_quote"><div dir=
+=3D"ltr" class=3D"gmail_attr">On Fri, Jul 7, 2023 at 11:13=E2=80=AFAM Sheng=
+jiu Wang &lt;<a href=3D"mailto:shengjiu.wang@gmail.com">shengjiu.wang@gmail=
+.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"mar=
+gin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1=
+ex"><div dir=3D"ltr"><div>Hi Mark</div><br><div class=3D"gmail_quote"><div =
+dir=3D"ltr" class=3D"gmail_attr">On Tue, Jul 4, 2023 at 12:03=E2=80=AFPM Sh=
+engjiu Wang &lt;<a href=3D"mailto:shengjiu.wang@gmail.com" target=3D"_blank=
+">shengjiu.wang@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmai=
+l_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,20=
+4,204);padding-left:1ex"><div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><d=
+iv class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Jul =
+4, 2023 at 1:59=E2=80=AFAM Mark Brown &lt;<a href=3D"mailto:broonie@kernel.=
+org" target=3D"_blank">broonie@kernel.org</a>&gt; wrote:<br></div><blockquo=
+te class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px =
+solid rgb(204,204,204);padding-left:1ex">On Mon, Jul 03, 2023 at 03:12:55PM=
+ +0200, Hans Verkuil wrote:<br>
+<br>
+&gt; My main concern is that these cross-subsystem drivers are a pain to<br=
+>
+&gt; maintain. So there have to be good reasons to do this.<br>
+<br>
+&gt; Also it is kind of weird to have to use the V4L2 API in userspace to<b=
+r>
+&gt; deal with a specific audio conversion. Quite unexpected.<br>
+<br>
+&gt; But in the end, that&#39;s a decision I can&#39;t make.<br>
+<br>
+&gt; So I wait for that feedback. Note that if the decision is made that th=
+is<br>
+&gt; can use V4L2, then there is quite a lot more that needs to be done:<br=
+>
+&gt; documentation, new compliance tests, etc. It&#39;s adding a new API, a=
+nd that<br>
+&gt; comes with additional work...<br>
+<br>
+Absolutely, I agree with all of this - my impression was that the target<br=
+>
+here would be bypass of audio streams to/from a v4l2 device, without<br>
+bouncing through an application layer.=C2=A0 If it&#39;s purely for audio u=
+sage<br>
+with no other tie to v4l2 then involving v4l2 does just seem like<br>
+complication.<br></blockquote><div><br></div><div>This audio use case is us=
+ing the v4l2 application layer. in the user space</div><div>I need to call =
+below v4l2 ioctls to implement the feature:=C2=A0</div><div>VIDIOC_QUERYCAP=
+<br></div><div>VIDIOC_TRY_FMT<br></div><div>VIDIOC_S_FMT<br></div><div>VIDI=
+OC_REQBUFS<br></div><div>VIDIOC_QUERYBUF<br></div><div>VIDIOC_STREAMON<br><=
+/div><div>VIDIOC_QBUF<br></div><div>VIDIOC_DQBUF<br></div><div>VIDIOC_STREA=
+MOFF<br></div><div><br></div><div>why the driver was put in the ALSA, becau=
+se previously we implemented</div><div>the ASRC M2P (memory to peripheral) =
+in ALSA,=C2=A0 so I think it is better to</div><div>add M2M driver in ALSA.=
+=C2=A0 The hardware IP is the same. The compatible</div><div>string is the =
+same.=C2=A0</div><div><br></div><div><br></div></div></div></blockquote><di=
+v>Could you please share more of your=C2=A0ideas about this patch? and coul=
+d</div><div>you please check further about this implementation.</div><div><=
+br></div><div>I tried to find a good interface in ALSA for this m2m request=
+, but didn&#39;t</div><div>find one,=C2=A0 then I try the V4L2, find it is =
+good this audio case.</div><div><br></div><div>but it needs to extend the V=
+4L2 API.=C2=A0</div><div><br></div><div>I have no idea how to go on, could =
+you please recommend?=C2=A0=C2=A0</div><div><br></div></div></div></blockqu=
+ote><div><br></div><div>Should I implement the asrc m2m driver as a separat=
+e v4l2 driver?</div><div>And move it to the /driver/media folder ? In ALSA =
+part, just need</div><div>register the platform device.</div><div><br></div=
+><div>The bridge between ALSA and V4L2 framework can be the header</div><di=
+v>file in /include/sound/=C2=A0</div><div><br></div><div>Does it sound bett=
+er?=C2=A0<br></div><div><br></div><div>Best regards</div><div>Wang Shengjiu=
+</div></div></div>
+
+--0000000000002c76970600d37a50--
