@@ -2,57 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B4EC758C9F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 06:30:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93DE7758CDA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 07:05:13 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QQ8I5AId;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=bsfPCapy;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R5ND03xykz3bv0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 14:30:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R5Nzq3VgYz3bx1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jul 2023 15:05:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QQ8I5AId;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=bsfPCapy;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1131; helo=mail-yw1-x1131.google.com; envelope-from=hughd@google.com; receiver=lists.ozlabs.org)
+Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R5NC50xJRz2yL0
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 14:29:53 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 438D760DC4;
-	Wed, 19 Jul 2023 04:29:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD7F7C433C7;
-	Wed, 19 Jul 2023 04:29:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1689740989;
-	bh=VsupOhAw0dkjCQ85UwV+mlGN3pD2O9GWV2eVO3RP9o8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QQ8I5AIdXpyK55Mzzf/2HAnG3XS0KMKKjNJTQcWMnBJ7ngAsNyVlFqPF+Qdu4ovOW
-	 yWeGURj5MhyTQdhYUK9c9em02iktKVNnkBVveVRdxBOtShcUKm3zZGXXPsfWr6OyVl
-	 ZCO2dfRKMue8ng7w0dzyqvggMqnG2ouswxCj2tZorTSY35P7ktcFvI+eyQcse9MXO3
-	 rkXQcLsuzz+5onPv93gJ+GZKPwvhhwGOLvy/UwcnEqWyNLnKjMoF8HXoJpYVbq45dp
-	 tmtGidHlV+E8zudwWQE3mIcYTSvmcc+tGu1BKgF0JmZjCKamGe8yphhYRHJRj/Dg1t
-	 Yr+VgiB8Ci7hQ==
-Date: Wed, 19 Jul 2023 09:59:13 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v2 2/2] PCI: layerscape: Add the workaround for lost link
- capablities during reset
-Message-ID: <20230719042913.GA5990@thinkpad>
-References: <20230718182142.1864070-1-Frank.Li@nxp.com>
- <20230718182142.1864070-2-Frank.Li@nxp.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R5Nyw31QRz2yFC
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jul 2023 15:04:23 +1000 (AEST)
+Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-5835388d632so16106877b3.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jul 2023 22:04:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1689743060; x=1692335060;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=f4gbnMS0W6E9Awn5g41KlL6GZi3HN5/R/yFQL1nQXJg=;
+        b=bsfPCapysjnAZODvh7VQx88fm7IvMM72XC0oEOupCXke50rzUpxBzJjYQpi6er51fb
+         D4bBL8Bh1D+h6gJQCrL3ilyuQNC5vtgJJbqXXVdUX3wGIHEmUxC4mo1pR0Z+lwJSnYwK
+         meVLK3418dgqsYosj9vCSuNEJNkdRzYHJy0dpVlfsGSOV8HIHO4e1UNyCrc3kkrhsuYl
+         F7Nsl4WNKMNEHKdGgWak0LJ4fwxrpogQk/dx/JNial3Rw8ApbYcti+VqcZ3cqR3TmrjR
+         HLyZAxKWibz4mBf1B911Dg5ToxkxCT+TuKgSTuRLqJQNqiyCWpJGUeH03fYVv65KsNEv
+         GKdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689743060; x=1692335060;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=f4gbnMS0W6E9Awn5g41KlL6GZi3HN5/R/yFQL1nQXJg=;
+        b=OdOvO4p7DX2dQkk97RilmmKqZjbaLY+8BrVK6D1p1k1WzlVkK+TeqIv8m2RR5CuDTS
+         94e8TPTkCTz8d+7D+E+i+3uamkVP1UeFGvJoRNXCISpiFERWCYEOfjzr3s7eNbWVzlnU
+         O9MyvhkQ0W9Gk+yI4WPt0b29zFbl7XwOucsVALzyTNqi8sz1Yp8elgr8JOGes20hwiwq
+         TTUhHDiG9qDntoQsviYxe2YA2oeTceXrUlBTw3KxmmtTKP9HR8Um4zhCeKI0sXWSvBai
+         B5f2hqR8yzcG3MGzF64atc5CsjgQvxyl3cckVSjLR8TmXWf8iSKyexg8mhtn73Z93jLa
+         C9Mg==
+X-Gm-Message-State: ABy/qLYYz9WVtTzWACJoYGC/NxFSI0AWtIqXjgtk5wFxhgFhWSL0pl9w
+	L+0Mii5lkiTAGWLlUZ7Bvpuvkw==
+X-Google-Smtp-Source: APBJJlFfOyYeGiVCuczZwoUNyN9JCPq13oUH5g6h02u0hokVq61z1GN7QWMboOKVDLBaFX+57WnbTA==
+X-Received: by 2002:a81:a00d:0:b0:573:d3cd:3d2a with SMTP id x13-20020a81a00d000000b00573d3cd3d2amr19838242ywg.28.1689743060542;
+        Tue, 18 Jul 2023 22:04:20 -0700 (PDT)
+Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id b125-20020a0df283000000b0056d304e224dsm847329ywf.90.2023.07.18.22.04.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Jul 2023 22:04:19 -0700 (PDT)
+Date: Tue, 18 Jul 2023 22:04:08 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+X-X-Sender: hugh@ripple.attlocal.net
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH v3 04/13] powerpc: assert_pte_locked() use
+ pte_offset_map_nolock()
+In-Reply-To: <87msztbiy8.fsf@linux.ibm.com>
+Message-ID: <392f311f-83ac-a5a2-d16e-2c7736d1b577@google.com>
+References: <7cd843a9-aa80-14f-5eb2-33427363c20@google.com> <e8d56c95-c132-a82e-5f5f-7bb1b738b057@google.com> <87msztbiy8.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230718182142.1864070-2-Frank.Li@nxp.com>
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,96 +77,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: imx@lists.linux.dev, kw@linux.com, linux-pci@vger.kernel.org, lpieralisi@kernel.org, linux-kernel@vger.kernel.org, minghuan.Lian@nxp.com, mingkai.hu@nxp.com, roy.zang@nxp.com, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org, robh@kernel.org, linux-arm-kernel@lists.infradead.org
+Cc: Miaohe Lin <linmiaohe@huawei.com>, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Yang Shi <shy828301@gmail.com>, Peter Xu <peterx@redhat.com>, linux-kernel@vger.kernel.org, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Yu Zhao <yuzhao@google.com>, Ira Weiny <ira.weiny@intel.com>, Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, Steven Price <steven.price@arm.com>, Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, linux-arm-kernel@lists.infradead.org, Zi Yan <ziy@nvidia.com>, Huang Ying <ying.huang@intel.com>, Axel Rasmussen <axelrasmussen@google.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Thomas Hellstrom <thomas.hells
+ trom@linux.intel.com>, Ralph Campbell <rcampbell@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, Vasily Gorbik <gor@linux.ibm.com>, Anshuman Khandual <anshuman.khandual@arm.com>, Heiko Carstens <hca@linux.ibm.com>, Qi Zheng <zhengqi.arch@bytedance.com>, Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, SeongJae Park <sj@kernel.org>, Lorenzo Stoakes <lstoakes@gmail.com>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, Naoya Horiguchi <naoya.horiguchi@nec.com>, Zack Rusin <zackr@vmware.com>, Vishal Moola <vishal.moola@gmail.com>, Minchan Kim <minchan@kernel.org>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, Mel Gorman <mgorman@techsingularity.net>, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 18, 2023 at 02:21:42PM -0400, Frank Li wrote:
-> From: Xiaowei Bao <xiaowei.bao@nxp.com>
+On Tue, 18 Jul 2023, Aneesh Kumar K.V wrote:
+> Hugh Dickins <hughd@google.com> writes:
 > 
-> A workaround for the issue where the PCI Express Endpoint (EP) controller
-> loses the values of the Maximum Link Width and Supported Link Speed from
-> the Link Capabilities Register, which initially configured by the Reset
-> Configuration Word (RCW) during a link-down or hot reset event.
+> > Instead of pte_lockptr(), use the recently added pte_offset_map_nolock()
+> > in assert_pte_locked().  BUG if pte_offset_map_nolock() fails: this is
+> > stricter than the previous implementation, which skipped when pmd_none()
+> > (with a comment on khugepaged collapse transitions): but wouldn't we want
+> > to know, if an assert_pte_locked() caller can be racing such transitions?
+> >
 > 
-> Fixes: a805770d8a22 ("PCI: layerscape: Add EP mode support")
-> Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
-> Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> The reason we had that pmd_none check there was to handle khugpaged. In
+> case of khugepaged we do pmdp_collapse_flush and then do a ptep_clear.
+> ppc64 had the assert_pte_locked check inside that ptep_clear.
+> 
+> _pmd = pmdp_collapse_flush(vma, address, pmd);
+> ..
+> ptep_clear()
+> -> asset_ptep_locked()
+> ---> pmd_none
+> -----> BUG
+> 
+> 
+> The problem is how assert_pte_locked() verify whether we are holding
+> ptl. It does that by walking the page table again and in this specific
+> case by the time we call the function we already had cleared pmd .
 
-Acked-by: Manivannan Sadhasivam <mani@kernel.org>
+Aneesh, please clarify, I've spent hours on this.
 
-- Mani
+From all your use of past tense ("had"), I thought you were Acking my
+patch; but now, after looking again at v3.11 source and today's,
+I think you are NAKing my patch in its present form.
 
-> ---
-> change from v1 to v2:
->  - add comments at restore register
->  - add fixes tag
-> 
->  .../pci/controller/dwc/pci-layerscape-ep.c    | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> index e0969ff2ddf7..b1faf41a2fae 100644
-> --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-> @@ -45,6 +45,7 @@ struct ls_pcie_ep {
->  	struct pci_epc_features		*ls_epc;
->  	const struct ls_pcie_ep_drvdata *drvdata;
->  	int				irq;
-> +	u32				lnkcap;
->  	bool				big_endian;
->  };
->  
-> @@ -73,6 +74,7 @@ static irqreturn_t ls_pcie_ep_event_handler(int irq, void *dev_id)
->  	struct ls_pcie_ep *pcie = dev_id;
->  	struct dw_pcie *pci = pcie->pci;
->  	u32 val, cfg;
-> +	u8 offset;
->  
->  	val = ls_lut_readl(pcie, PEX_PF0_PME_MES_DR);
->  	ls_lut_writel(pcie, PEX_PF0_PME_MES_DR, val);
-> @@ -81,6 +83,19 @@ static irqreturn_t ls_pcie_ep_event_handler(int irq, void *dev_id)
->  		return IRQ_NONE;
->  
->  	if (val & PEX_PF0_PME_MES_DR_LUD) {
-> +
-> +		offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-> +
-> +		/*
-> +		 * The values of the Maximum Link Width and Supported Link
-> +		 * Speed from the Link Capabilities Register will be lost
-> +		 * during link down or hot reset. Restore initial value
-> +		 * that configured by the Reset Configuration Word (RCW).
-> +		 */
-> +		dw_pcie_dbi_ro_wr_en(pci);
-> +		dw_pcie_writel_dbi(pci, offset + PCI_EXP_LNKCAP, pcie->lnkcap);
-> +		dw_pcie_dbi_ro_wr_dis(pci);
-> +
->  		cfg = ls_lut_readl(pcie, PEX_PF0_CONFIG);
->  		cfg |= PEX_PF0_CFG_READY;
->  		ls_lut_writel(pcie, PEX_PF0_CONFIG, cfg);
-> @@ -216,6 +231,7 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
->  	struct ls_pcie_ep *pcie;
->  	struct pci_epc_features *ls_epc;
->  	struct resource *dbi_base;
-> +	u8 offset;
->  	int ret;
->  
->  	pcie = devm_kzalloc(dev, sizeof(*pcie), GFP_KERNEL);
-> @@ -252,6 +268,9 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
->  
->  	platform_set_drvdata(pdev, pcie);
->  
-> +	offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-> +	pcie->lnkcap = dw_pcie_readl_dbi(pci, offset + PCI_EXP_LNKCAP);
-> +
->  	ret = dw_pcie_ep_init(&pci->ep);
->  	if (ret)
->  		return ret;
-> -- 
-> 2.34.1
-> 
+You are pointing out that anon THP's __collapse_huge_page_copy_succeeded()
+uses ptep_clear() at a point after pmdp_collapse_flush() already cleared
+*pmd, so my patch now leads that one use of assert_pte_locked() to BUG.
+Is that your point?
 
--- 
-மணிவண்ணன் சதாசிவம்
+I can easily restore that khugepaged comment (which had appeared to me
+out of date at the time, but now looks still relevant) and pmd_none(*pmd)
+check: but please clarify.
+
+Thanks,
+Hugh
+
+> >
+> > This mod might cause new crashes: which either expose my ignorance, or
+> > indicate issues to be fixed, or limit the usage of assert_pte_locked().
+> >
+> > Signed-off-by: Hugh Dickins <hughd@google.com>
+> > ---
+> >  arch/powerpc/mm/pgtable.c | 16 ++++++----------
+> >  1 file changed, 6 insertions(+), 10 deletions(-)
+> >
+> > diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
+> > index cb2dcdb18f8e..16b061af86d7 100644
+> > --- a/arch/powerpc/mm/pgtable.c
+> > +++ b/arch/powerpc/mm/pgtable.c
+> > @@ -311,6 +311,8 @@ void assert_pte_locked(struct mm_struct *mm, unsigned long addr)
+> >  	p4d_t *p4d;
+> >  	pud_t *pud;
+> >  	pmd_t *pmd;
+> > +	pte_t *pte;
+> > +	spinlock_t *ptl;
+> >  
+> >  	if (mm == &init_mm)
+> >  		return;
+> > @@ -321,16 +323,10 @@ void assert_pte_locked(struct mm_struct *mm, unsigned long addr)
+> >  	pud = pud_offset(p4d, addr);
+> >  	BUG_ON(pud_none(*pud));
+> >  	pmd = pmd_offset(pud, addr);
+> > -	/*
+> > -	 * khugepaged to collapse normal pages to hugepage, first set
+> > -	 * pmd to none to force page fault/gup to take mmap_lock. After
+> > -	 * pmd is set to none, we do a pte_clear which does this assertion
+> > -	 * so if we find pmd none, return.
+> > -	 */
+> > -	if (pmd_none(*pmd))
+> > -		return;
+> > -	BUG_ON(!pmd_present(*pmd));
+> > -	assert_spin_locked(pte_lockptr(mm, pmd));
+> > +	pte = pte_offset_map_nolock(mm, pmd, addr, &ptl);
+> > +	BUG_ON(!pte);
+> > +	assert_spin_locked(ptl);
+> > +	pte_unmap(pte);
+> >  }
+> >  #endif /* CONFIG_DEBUG_VM */
+> >  
+> > -- 
+> > 2.35.3
