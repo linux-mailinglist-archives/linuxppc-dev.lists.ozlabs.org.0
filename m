@@ -2,64 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2E0B75B78E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jul 2023 21:10:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84D3C75B899
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jul 2023 22:21:08 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=LfzRbTyA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=mbsHztlE;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R6Mhs5sQ0z3cCQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jul 2023 05:10:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R6PGB3H2pz2ykc
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jul 2023 06:21:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=LfzRbTyA;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=mbsHztlE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=3_za5zaykdd4xjfsohlttlqj.htrqnsz2uuh-ij0qnxyx.t4qfgx.twl@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R6Mgy2gPkz2yq4
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jul 2023 05:09:44 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689880190; x=1721416190;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=4Wfb2inEMSDHDJojVV6mLPU3xJG55Y/mqso7z8ONCk4=;
-  b=LfzRbTyAUpjI3Xp6qawkpTwuokLR7j3ERHofgYGjbHOXGBVTLIcGGKoy
-   hUCc0K9ir984Vlsalt4BGDilI41/0WWze+G/RrCzK4wpAhK8sJe+uX5d6
-   Gg9smPpF836suBlWRPB0/dP+QY75ZORLBz9m7+HKh0tSv+3YNy+d8XBKF
-   6V2oDVIk+vfi6fka+JjeIwEjbHQidK3Yg4CTYJvH0H+0AewYxaDXhK8na
-   sV2fcrmRAWs1bB8+5pLnEfbUYHRAKO2X4d5CI2rdjpRU8QcssHqRumPv0
-   5OnpLid8w4KYmqcaoMQwekU8dluwopJ2Qg2VqqyMvik9fg877H5CJpc2y
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="366875438"
-X-IronPort-AV: E=Sophos;i="6.01,219,1684825200"; 
-   d="scan'208";a="366875438"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2023 12:09:23 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="718543445"
-X-IronPort-AV: E=Sophos;i="6.01,219,1684825200"; 
-   d="scan'208";a="718543445"
-Received: from lkp-server02.sh.intel.com (HELO 36946fcf73d7) ([10.239.97.151])
-  by orsmga007.jf.intel.com with ESMTP; 20 Jul 2023 12:09:14 -0700
-Received: from kbuild by 36946fcf73d7 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1qMZ1V-0006Pp-2O;
-	Thu, 20 Jul 2023 19:09:13 +0000
-Date: Fri, 21 Jul 2023 03:08:41 +0800
-From: kernel test robot <lkp@intel.com>
-To: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] kdump fix
-Message-ID: <202307210220.4FoNS76V-lkp@intel.com>
-References: <2ogfzwjumrd44kxv7njfpot6fhtkzpqu77qv3bspfixdmsxcwc@umt35y2hmslm>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2ogfzwjumrd44kxv7njfpot6fhtkzpqu77qv3bspfixdmsxcwc@umt35y2hmslm>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R6PFG0Zvrz3bX5
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jul 2023 06:20:16 +1000 (AEST)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-bd69bb4507eso1031183276.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jul 2023 13:20:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1689884413; x=1690489213;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=s1/m4T5EZ9UQZdIAs+CFQOUhGGMJn3z6NAlZtvxtssM=;
+        b=mbsHztlENnOTDgeCIXRdF8x4x9OfLSlTRQf7EJhk2yHC8ssudjPjJb663muGwwAUde
+         HXusCSecX8QAy71He4xwRicW2VAZ7RFVOVmJQZun5eygpfocaFcEhJVdz1DXPqrP14f5
+         Q9r/63tqP/iMmto5FytBtXhV7bicbpwNBGhhzc7AVroN6uvn7SvVpiEQCLnIHWcphWhi
+         L6PAVpT/JWEQDmjGRRbXmNFkgwEJImoyKV1xDjpLesAAmXECVa9yb/PUNJmSrVHElsLh
+         RUk/Cxj/0yokxjf+pISM5EmdcaPLl3odQz7EeG720kJEtO6hviZvCg7ubhY+cpI9tJBr
+         NkXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689884413; x=1690489213;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=s1/m4T5EZ9UQZdIAs+CFQOUhGGMJn3z6NAlZtvxtssM=;
+        b=J/hrvTRCbOCxsMNRyKthEB8A5pVmC3DQTUdnmDO0jhTp3fvUoZ0E6Qor4cj1Zo51Md
+         qXrYths395C7NCU6+kPrcedelSloQukbWzNHt64ci0ThRL2o2Yrmxgk4SJjFRehfLqn+
+         9hQibTqcSXx4KnQc8kbF/6sUNl8GdjGXK6jbY7CDpHfaPkqhWMLOVnhRHoEvHMkhyc1s
+         b5W5l6Su4TcRhBQ1JxX6bpqHs2NZfm/ynK+xjuFuWlMVEPhWPf4Ut7PB3riiozAJhmJH
+         viHlV9mGMqCXIGafROg8sHG4g61l+Xr7sS4zY6osvK8nSpAkUa4pTjTORqAN50TTNF0z
+         Hwqg==
+X-Gm-Message-State: ABy/qLYQ9c45+ZNyWLS/rLBhccE3AHmec5DXkR0TdBndblhRgcFGgL3v
+	fsyvO2q1QuaFcmhK1HEIyPv7ZjBy2cA=
+X-Google-Smtp-Source: APBJJlHJCm6H269xOtL/2AMirqWxt3kOhxlKiB8lLLwF2CbQnv6wXW7fNhFjFSiI4U52DqkXiLsyKn98s/w=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a25:4d08:0:b0:c6c:6122:5b69 with SMTP id
+ a8-20020a254d08000000b00c6c61225b69mr236ybb.8.1689884413509; Thu, 20 Jul 2023
+ 13:20:13 -0700 (PDT)
+Date: Thu, 20 Jul 2023 13:20:11 -0700
+In-Reply-To: <20230720190211.GF25699@ls.amr.corp.intel.com>
+Mime-Version: 1.0
+References: <20230718234512.1690985-1-seanjc@google.com> <20230718234512.1690985-9-seanjc@google.com>
+ <20230720080912.g56zi5hywazrhnam@yy-desk-7060> <20230720190211.GF25699@ls.amr.corp.intel.com>
+Message-ID: <ZLmW+9G6EbKLkOOz@google.com>
+Subject: Re: [RFC PATCH v11 08/29] KVM: Introduce per-page memory attributes
+From: Sean Christopherson <seanjc@google.com>
+To: Isaku Yamahata <isaku.yamahata@gmail.com>
+Content-Type: text/plain; charset="us-ascii"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,91 +74,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: llvm@lists.linux.dev, Sourabh Jain <sourabhjain@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Sachin Sant <sachinp@linux.ibm.com>, oe-kbuild-all@lists.linux.dev, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Hari Bathini <hbathini@linux.ibm.com>
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Marc Zyngier <maz@kernel.org>, Paul Moore <paul@paul-moore.com>, Huacai Chen <chenhuacai@kernel.org>, James Morris <jmorris@namei.org>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, "Serge E. Hallyn" <serge@hallyn.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Vlastimil Babka <vbabka@suse.cz>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Yuan Yao <yuan.yao@linux.intel.com>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Quentin Perret <qperret@google.com>, Liam Merwick <liam.merwick@oracle.com>, linux-mips@vger.kernel.org, Oliver Upton
+  <oliver.upton@linux.dev>, linux-security-module@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Mahesh,
+On Thu, Jul 20, 2023, Isaku Yamahata wrote:
+> On Thu, Jul 20, 2023 at 04:09:12PM +0800,
+> Yuan Yao <yuan.yao@linux.intel.com> wrote:
+> 
+> > On Tue, Jul 18, 2023 at 04:44:51PM -0700, Sean Christopherson wrote:
+> > > @@ -2301,4 +2305,14 @@ static inline void kvm_account_pgtable_pages(void *virt, int nr)
+> > >  /* Max number of entries allowed for each kvm dirty ring */
+> > >  #define  KVM_DIRTY_RING_MAX_ENTRIES  65536
+> > >
+> > > +#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+> > > +static inline unsigned long kvm_get_memory_attributes(struct kvm *kvm, gfn_t gfn)
+> > > +{
+> > > +	return xa_to_value(xa_load(&kvm->mem_attr_array, gfn));
+> > > +}
+> > > +
+> > > +bool kvm_arch_post_set_memory_attributes(struct kvm *kvm,
+> > > +					 struct kvm_gfn_range *range);
+> > 
+> > Used but no definition in this patch, it's defined in next patch 09.
+> > How about add weak version in this patch and let ARCHs to overide it ?
+> 
+> It is guarded by CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES.
 
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on linus/master]
-[also build test ERROR on v6.5-rc2 next-20230720]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Mahesh-J-Salgaonkar/kdump-fix/20230720-021115
-base:   linus/master
-patch link:    https://lore.kernel.org/r/2ogfzwjumrd44kxv7njfpot6fhtkzpqu77qv3bspfixdmsxcwc%40umt35y2hmslm
-patch subject: [PATCH] kdump fix
-config: x86_64-randconfig-r021-20230720 (https://download.01.org/0day-ci/archive/20230721/202307210220.4FoNS76V-lkp@intel.com/config)
-compiler: clang version 15.0.7 (https://github.com/llvm/llvm-project.git 8dfdcc7b7bf66834a761bd8de445840ef68e4d1a)
-reproduce: (https://download.01.org/0day-ci/archive/20230721/202307210220.4FoNS76V-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202307210220.4FoNS76V-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> kernel/kexec_file.c:1282:18: error: use of undeclared identifier 'ELF_CORE_EFLAGS'
-           ehdr->e_flags = ELF_CORE_EFLAGS;
-                           ^
-   1 error generated.
-
-
-vim +/ELF_CORE_EFLAGS +1282 kernel/kexec_file.c
-
-  1236	
-  1237	int crash_prepare_elf64_headers(struct crash_mem *mem, int need_kernel_map,
-  1238				  void **addr, unsigned long *sz)
-  1239	{
-  1240		Elf64_Ehdr *ehdr;
-  1241		Elf64_Phdr *phdr;
-  1242		unsigned long nr_cpus = num_possible_cpus(), nr_phdr, elf_sz;
-  1243		unsigned char *buf;
-  1244		unsigned int cpu, i;
-  1245		unsigned long long notes_addr;
-  1246		unsigned long mstart, mend;
-  1247	
-  1248		/* extra phdr for vmcoreinfo ELF note */
-  1249		nr_phdr = nr_cpus + 1;
-  1250		nr_phdr += mem->nr_ranges;
-  1251	
-  1252		/*
-  1253		 * kexec-tools creates an extra PT_LOAD phdr for kernel text mapping
-  1254		 * area (for example, ffffffff80000000 - ffffffffa0000000 on x86_64).
-  1255		 * I think this is required by tools like gdb. So same physical
-  1256		 * memory will be mapped in two ELF headers. One will contain kernel
-  1257		 * text virtual addresses and other will have __va(physical) addresses.
-  1258		 */
-  1259	
-  1260		nr_phdr++;
-  1261		elf_sz = sizeof(Elf64_Ehdr) + nr_phdr * sizeof(Elf64_Phdr);
-  1262		elf_sz = ALIGN(elf_sz, ELF_CORE_HEADER_ALIGN);
-  1263	
-  1264		buf = vzalloc(elf_sz);
-  1265		if (!buf)
-  1266			return -ENOMEM;
-  1267	
-  1268		ehdr = (Elf64_Ehdr *)buf;
-  1269		phdr = (Elf64_Phdr *)(ehdr + 1);
-  1270		memcpy(ehdr->e_ident, ELFMAG, SELFMAG);
-  1271		ehdr->e_ident[EI_CLASS] = ELFCLASS64;
-  1272		ehdr->e_ident[EI_DATA] = ELFDATA2LSB;
-  1273		ehdr->e_ident[EI_VERSION] = EV_CURRENT;
-  1274		ehdr->e_ident[EI_OSABI] = ELF_OSABI;
-  1275		memset(ehdr->e_ident + EI_PAD, 0, EI_NIDENT - EI_PAD);
-  1276		ehdr->e_type = ET_CORE;
-  1277		ehdr->e_machine = ELF_ARCH;
-  1278		ehdr->e_version = EV_CURRENT;
-  1279		ehdr->e_phoff = sizeof(Elf64_Ehdr);
-  1280		ehdr->e_ehsize = sizeof(Elf64_Ehdr);
-  1281		ehdr->e_phentsize = sizeof(Elf64_Phdr);
-> 1282		ehdr->e_flags = ELF_CORE_EFLAGS;
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Yep.  I don't love the ordering, e.g. this patch can't even be compile tested
+until later in the series, but I wanted to separate x86 usage from the generic
+support code.
