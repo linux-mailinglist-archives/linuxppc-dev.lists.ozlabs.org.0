@@ -1,112 +1,112 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C32F75A986
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jul 2023 10:43:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E43775A98A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jul 2023 10:44:35 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=PlVmjHQs;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=pzkVvYJz;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R65nV6kMQz3c30
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jul 2023 18:43:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R65pT13l0z3cCj
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jul 2023 18:44:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=PlVmjHQs;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=pzkVvYJz;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f400:fe5a::61e; helo=nam12-mw2-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org)
 Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2061e.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe5a::61e])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R65jM0S74z3bZK
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jul 2023 18:40:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R65jM3zMzz3bZK
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jul 2023 18:40:07 +1000 (AEST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ECvaaA3ySZDw5vHoY+JC9P8vXLYkaBk8MF4sYWcdmjMjl866XZlPdPmXXspCr2Fs64JXZuKEw/QfmJd4IZTj/gF9LCrNhCH3KTXtH/iRpa/Cr4x5K61RLU6Ql3bopGPA5J6gc1btkf60ZZQc2FJ0EZvrHQVLP+qpnX5gTQ+bkcoQSHkXxc8ppnhgo7MDtVvDDed6hlZ3CI+3bEnARdUniHs6L2arz98HuPg1V9eTm7/WjqeT13e+evf0C1PiS3UkFJYkVya0GyeIW/ln1eSszVyo15PUaQpqFPmdcUXOt1uR+6HT5HRzZLyspsXvCANqUTj5cdRE5DqEae75NhUQXQ==
+ b=N0Urp2JJb8Bsyj5XPSrYP1ZnUykYXDayVn9hFknzDkJs1mRr1Cv1LYNrGqmo2iqx/Gl5lcr1I9EIbb77tutGMNi3DyVwT+UDYj0XGcCnmXCjc5E5x4cm/kbkOPzMzvseV3+nrePAvTI3Ib0KrSyZaFN9enQTd60bxzigRumWtBQMYc3McdO0k+sC7Ac+8NDfITwNPgC/ebngsuwEhiZ3q9zBj7SV/zizHr6mFdsIQnvkDaitKXzPTgq7qPbMFYY+SDMD65tVt6fRCqiLUvraeyx+dyJQmlITpuGi7oabVtM1N7VlSscqgEjWSgF+4FWb1hnwTWxckFx3Cjt6Ysq/kQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=D/cCYj8Xd7PDxmlOmxc7ZGo63wZ++XgwVNU3j4KQgOc=;
- b=HOwjuVjj3bdkRRRf0+MyuOjBoIv6ui061C9eMFXHos//+uKfc4kQTUswHKR/xaKiZgGKv91Dqr7cToZCVhUKnaCuGGOfHqGHyp6zOgGX2G+OO2BVBDUCV0aCiKDv8fSGrPPJKJWJX+UKdWFZB7SANkAKfdp0I9brzdvN6/oe8Wl+oKlcH2j7DlwEpOpamGQhovIOBBYkHX9JHeSuO7Fb87EBZeU1kL6zJH8ONsIEKxK8gtta3vpJsWYHAa3MEmOLGAD1Ta2LlKYnWSvqqNcdADr7SxUwdUOL+EDT0sZB44ZaWvutveWbf05h3qLFBOfpEFmjnE+nE/coKbrTTwMp/w==
+ bh=kyTjkl32gx9e58egMAR68Ym72eF/grtnHpGANsDW46c=;
+ b=MIEHN7NSHcczrXuQ7uBNCBg/rwRO8xNzNvqQXMz3OTIof2EdelROairMuKzjEou7VIpkBGyt2HBqpQPB2jSXaJkabdUWwcsDhmGjX4zLkwOoUhtjfIiqkCZo7WS2aIu8e47U9EKmT1vzKn4GiiwzPg8ggJvIAbk5mndYbiFAk3ZQrNcFnhZygmduNZRLJt9pg4cekXbPry54Nswiucg9cEKDcHi2Gk79ZG7Z3gyKedtYBJpR2lDFndk8/101EbVRRDLG6Z1yctT3sejJGqGMln/bK58M5x5+Y5K4F41lXmcMyllyyadgtw5eMm0sFGAV/Ec38Cm8slJLC2jL0msrYA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=D/cCYj8Xd7PDxmlOmxc7ZGo63wZ++XgwVNU3j4KQgOc=;
- b=PlVmjHQsWvDa8c0m9WSwFzKwG7DCZ4Z290hPqi2PT5toTVVL+SGoB8m8A+DdY+UGmG191MmxMkTc9dVPDcqSNsuve3OZWnF62qlYJL8WL7ZlD9ohDSaPtdmiPMcv9IG2+XQEV3R/yrB38DUqsWwag8DPey4DBspxKGleN92Zs48XrAnAM2Pu0srKAfLZHirUsbNiBr+6p24bvAVFJILEeH0X8LYoQOO/C41y4gL11bvtuTMA2RoOFwcb9v7WinQmdIg80Lm5X7xqI+0hXwyIdjvZCsJl2qczjiW1i0n9Jv7Tyc8EzGFamsZZHkN1nd6rxfizEvOGlgaeS4zKxKgqVw==
+ bh=kyTjkl32gx9e58egMAR68Ym72eF/grtnHpGANsDW46c=;
+ b=pzkVvYJzcqb+S4IieNcTuiq3SqCpx4UQZyGpRX8v1G+xz4RmfCmwH7iDq3+w9j8MuKdr8t21+zyJ/uNedHAlPFUmYOjY0S9/0OU2S2dIK0WL3ty0Uq/Lo69sE95g5yJD92OK55S6kWbD4sIp42Ova6gcY62WKbIRpRYjVP2QN9UJXNavSkceTLV5G67FU5za3mnPi6g88hhIpWYOiDIti9hQ9zYkwvGk8QL4j05Db+HoCI7udkLo+ok1rB47ihBUwvWrrkiFSNSt4bOcEiWtxcP+GtMbXOiXNjCdxmAq1K37x7QDKYbLibBl6C0YQNKDf5i2k9ORCA6eSQNqS5cRsA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from BYAPR12MB3176.namprd12.prod.outlook.com (2603:10b6:a03:134::26)
  by PH8PR12MB7025.namprd12.prod.outlook.com (2603:10b6:510:1bc::22) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.24; Thu, 20 Jul
- 2023 08:39:52 +0000
+ 2023 08:40:00 +0000
 Received: from BYAPR12MB3176.namprd12.prod.outlook.com
  ([fe80::cd5e:7e33:c2c9:fb74]) by BYAPR12MB3176.namprd12.prod.outlook.com
  ([fe80::cd5e:7e33:c2c9:fb74%7]) with mapi id 15.20.6609.025; Thu, 20 Jul 2023
- 08:39:52 +0000
+ 08:39:59 +0000
 From: Alistair Popple <apopple@nvidia.com>
 To: akpm@linux-foundation.org
-Subject: [PATCH v3 2/5] mmu_notifiers: Fixup comment in mmu_interval_read_begin()
-Date: Thu, 20 Jul 2023 18:39:24 +1000
-Message-Id: <06fa82756e4d6458895962a7743cc7f162658a54.1689842332.git-series.apopple@nvidia.com>
+Subject: [PATCH v3 3/5] mmu_notifiers: Call invalidate_range() when invalidating TLBs
+Date: Thu, 20 Jul 2023 18:39:25 +1000
+Message-Id: <86a0bf86394f1765fcbf9890bbabb154ba8dd980.1689842332.git-series.apopple@nvidia.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.b24362332ec6099bc8db4e8e06a67545c653291d.1689842332.git-series.apopple@nvidia.com>
 References: <cover.b24362332ec6099bc8db4e8e06a67545c653291d.1689842332.git-series.apopple@nvidia.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SY5P282CA0076.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:10:201::6) To BYAPR12MB3176.namprd12.prod.outlook.com
+X-ClientProxiedBy: SY5P282CA0027.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:10:202::13) To BYAPR12MB3176.namprd12.prod.outlook.com
  (2603:10b6:a03:134::26)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: BYAPR12MB3176:EE_|PH8PR12MB7025:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1b834c26-30b5-4686-5146-08db88fce2b4
+X-MS-Office365-Filtering-Correlation-Id: 4e63b837-3c96-45cc-262f-08db88fce669
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	NKFgrMSkEbwVZAmEFXKbnVft15qBKTzeInwePEcG1hrohOUbz6IiSkRTPGx9PLj1Y8p2la6CZoX+RYqMweJwM8eEWc5lPu31BfApk1Rqov10/F0xgEia8id4Mv9WkWcKlAr4cUGw9xyZxn8UA5LIJWtxxIDMyXgmBJmR7ugeUGIcA9fvda6z13SHnJE29cOEZePN2hAzVqkZhAz9Hu154e3T5IYyxznDhB4lP8GPbde58T2NCOBIzo6c00DEvAkzOmhB+iOVavCxksdbmLPjmZC1qhywVgVfceFP6K4Arur0Bv1OK6g2udVgvo7pBAZ+1QMsbJv0Q0fGk8iS+5xYkI5NbmF/+RN8eiQ+7WitilRrpyzJND75e+1b1+yg4aAOK7GfpdgRUTmSquC5HeCWAsZaLpEbkoKV87Po/V2TzBXzqnOpXJjA7+ZF9Pa6EQodp1YDMG/vA/UGhXDgMJMcRjAqUpErNHiCQS47Ajl8KqAhqDpVU12isoLV2xjdAoqtYUtyhOEOY8H4/y4ONMTFfo6UZUvrJF+Yn4dfEP6hfS8Cwkpe9NHXBShpqNSgtaOt
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB3176.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(136003)(396003)(376002)(346002)(39860400002)(451199021)(36756003)(86362001)(38100700002)(186003)(7416002)(478600001)(6506007)(6666004)(26005)(41300700001)(66476007)(66946007)(4326008)(66556008)(6916009)(5660300002)(316002)(2616005)(8936002)(8676002)(83380400001)(6512007)(107886003)(6486002)(2906002);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: 	6tot57rTTfJnVhe6fp8DjkoKozXl1dpztfU9J9WUI4tb58AlpmEJDnzBjdJTh7XwmkkxhqauuOMRSVeTGHE0u4WLGmzGzN0TKJIm89mDKuRVV86Idy6ionB+dDlBS+pU7Zy/KZpvVgDGJ3PoDFg0oayuxdjRPrcNBE9DNDP4FQY3ZO9b79GxAGxv858lixRqbuZABj/BX+4vOG2OJJDUH+ib2kUxP+moHiNh1saqvDTgwXKSxzm1xmUdAJ6wIbr6fGT4/CKnreT1a+/+5E7BOxq0jazFHfmbEYqBOFdIPxhnRGtJQxbySNIhFbLaHaliMI3Im0DcTnK2gybJbuodV1ovkazXbEksQrfXmyegLzFShwwCzeEsVsrJ7YhxDcc4D6PQhVZJP/Ym8rcTK1diCT4T+kqTkQs+8zytOajTtyYamd5Uvnx0hvcL+PCxtcAd86WCYCD3hoYW15bsFHypnpt9IVzwATN6jScqzbE8INGYLaspenukshNNUgebDKSUhqA1CjsN7j9VsL+O+Km0wR8Ujo+F9FZZsaAO+PVMhK3nihEHVbwu0B394P9Utnv7G1QWNduuaa6uFfB68uJDlHsuBXjCq4f9jQiLTtxIHJNKcOHT0mQ92568KXjIAcnZ
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB3176.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(136003)(396003)(376002)(346002)(39860400002)(451199021)(36756003)(86362001)(38100700002)(186003)(7416002)(478600001)(6506007)(6666004)(26005)(41300700001)(66476007)(66946007)(4326008)(66556008)(6916009)(5660300002)(316002)(2616005)(8936002)(8676002)(83380400001)(6512007)(107886003)(6486002)(2906002)(473944003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?qCUN7qdsU7Ongh1mMS76qCO72xN+/RqD5YHQAwUkrveGbNzXZ7WuMZEi/RF8?=
- =?us-ascii?Q?xZwgBd3ng2KbxVo+SWsqgRhv2fze2oIr6mO639CtOmCxRLgFo01AJ6DknYsC?=
- =?us-ascii?Q?6IwswUZWHPAXkWT5XFQvL8DvnBFkDQb4iSnk+/ZgOh+YfpF6+5VPoPnKA5K6?=
- =?us-ascii?Q?gtCWmBjj65s9zwHTbFzk06WS6P0Ec1VpWpUTpDBDlOONZv+OK2OsWhH2x8cm?=
- =?us-ascii?Q?tF1gyJsuQGIHgV++Rp7Svia15rjEvT/F1GbW8dQUWk9oLixC+5R2mINHLfG0?=
- =?us-ascii?Q?EPywjbjqu6x1OUiO9I+Cz3DH0o1goI+ZlOed71HHr40+RvA6Y0A7TAbGw6k7?=
- =?us-ascii?Q?3m3zrbDGc5rG/1hRkubpDuysJfnYby4c7Y9ooeTatqBJJOQTmRvecy2RY7qE?=
- =?us-ascii?Q?QB3DJitBojNpvAHmv0Naj5gpWGxWQdI3ioOJcCgrELdPdDg7Mk8rUra/MyrU?=
- =?us-ascii?Q?Mqf3qldeLoe+J/H6EqI/Yye7H/cNy1lNDOS0vkpjceaUjeG1SHTjNbgW1xoU?=
- =?us-ascii?Q?7b3iJceZ8wbGd4VDUZD+TW6qjTha88Wd7gVCewwQ2uecV8ysQQHbO9NeIIVa?=
- =?us-ascii?Q?nr2kFtvoBw3rJCm7w+qYvG6MKDPI+FtuN6x756A/7x0ntL6xLOVSVjhzEG5M?=
- =?us-ascii?Q?fES+YZW2MxQ+kCI3CUARcCvS+igFf5kbT4AV+Cnnaf8EnW5KMHgS/5O3NVwT?=
- =?us-ascii?Q?OC5RC/6CPtJKjNJQBfbjSo4kK8dGcgeEWwokQ2lFAbWfRtc8k2yQCcBhkp5B?=
- =?us-ascii?Q?oGmTAv9Hx4Ljaysbp89Hy0g9LA+L8XqA7yBTdCfD5Pmf7YG81fo34B4iVmMb?=
- =?us-ascii?Q?Ty+dkPGYcbnYprEkXHHpsyNgvd7mNpTE15274Xfosb8+oqszrN4OxufdiReB?=
- =?us-ascii?Q?2d7vkaGMs1mzLofRsPWVpH5AiZUL5uCR8HgUrH3s4bklc86ur2VDBzEVnexO?=
- =?us-ascii?Q?wMvbVAq/oNofAD1d/FppOpMK3mYhy03+jNwcalo7q/EoGVwrN2dF5nvmPN67?=
- =?us-ascii?Q?Qxq/OyxHOjuiEh5whqGkWDnvvAajdmMXPSC5lC43owilhQhGLA5HVlITKSKg?=
- =?us-ascii?Q?GGeMT0rvm0iuXLMqEOQcUxe3iig6WqLJrfAyD42tpKYkYcdGwufxSWYTVgSH?=
- =?us-ascii?Q?mx0C72HaBS5LdQnbhi6n2zlzZwntmYk5LKYSI9rfUsM7nI7L+itvBa6HRwYY?=
- =?us-ascii?Q?ctzLj/Qyo8aicfCyiDj+zMT4TpXKgeRB5sWdH062c1/wccQHaYBI8HJ52CUc?=
- =?us-ascii?Q?6nUfoiyumZhg75RMwVi7iUhdXUVEAsBwhMCpt5qkf4wLweCPALlcp+UIwOJx?=
- =?us-ascii?Q?iY24VlmuUHmhvxPn637597fJmCvumnCfz2BRD873WMieAiw0hnOy9aC2J3BI?=
- =?us-ascii?Q?rCNZbkpyfA7nANbDLTNUJPob55a+f7uS2ekOBb3DcCF2AjbVdtHQiwUw9xse?=
- =?us-ascii?Q?vW0yxr48z0MZ3MEsXhMoBF+fkcerSRv8v4ViY6qbeVJChUjMiAzD8A5vxkY2?=
- =?us-ascii?Q?W1YfdJBoqN3zvpW4X68fFb8rydn8BPV3Lr5sOLP4Ienwsjap6/ydsWRy5XnI?=
- =?us-ascii?Q?Voa4FOTLCsPixPjk5Qj3J8NhgQNTZK0t/NVbGX8r?=
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?/7HaGLIpXgQ8vHorvsI0YgpPv4wQ8MA9xwOxLIDX6vRO3AJJ5IP6DXoxBtzL?=
+ =?us-ascii?Q?uVgMm61Q9VrHrMkGsWk2aw0q3fLr3wsdyWR2JcYaye8AY00ryRNrtrDuJCic?=
+ =?us-ascii?Q?9g8UV9Ojdzyi0+N0iVEKYZsQ3BeIU3hrHs2uYXwzCYtD5wx51CYaj2IcIUXO?=
+ =?us-ascii?Q?Wnguc6wM7lByDcH85bZdfMFaewNrtzJEZaJO1N+Qiw+1NTQHYGYeLzgriK0U?=
+ =?us-ascii?Q?NRaHjlT5t42yBGr0MfgSsd+yIf6Qri/53qMs3x9vLl6PD2RoFGTjSuNsQzvH?=
+ =?us-ascii?Q?twqs7l81n8qh+WsDClLA+CtN6CQAFxjdrBnQFnF7nS9VdyGFPIGaWOHtfJec?=
+ =?us-ascii?Q?C42yiVLyBqXoKpqopr+YNQtH9+R9XTOexYo9zNEVb1pINZ/sowfxKj/m44Lv?=
+ =?us-ascii?Q?8CdSLj+aRiZyA0G0bpCaHXalKk4ZbTEgG43X+ydXYp10mFHAlj0VGsOrDc4L?=
+ =?us-ascii?Q?cpHmL4fEXqIvLo2ebJT8S74hCFGiuvjQtOg3ISi3y73H/4HENFLpA/wUZkTF?=
+ =?us-ascii?Q?htOYkwCXgdf750AKk1TNkroJ/r2f7BzN7BsPOmr24aHY1EyOkBiL2kDLyQUw?=
+ =?us-ascii?Q?XpPEg5bYzKLpnKtmwi2rV4MsJ0TV6wXHPvecq88FuDEQrvIB8jmuQ4PYHj//?=
+ =?us-ascii?Q?Duy6n8Zbj/eJy4e/t6Kls1l08kl24TNp07XaElkqL6crq8HT8/K/2omkcQCI?=
+ =?us-ascii?Q?k8UhQKmjqyrjIhJO4/LQ86IWs2Un7eRQbABSJQO6wj1NErKsmELStDJ+WY4p?=
+ =?us-ascii?Q?MTBDgRriWaF6rJanVBktJKvenMbbevh2sXgnlm2NQ+i4FBITBhUQ80ujk21L?=
+ =?us-ascii?Q?Vk/HXydHkciuwpOXvbQDOSwsmZouLrNFNjGHJ338K/nReuo0lSlCAnt8IVfx?=
+ =?us-ascii?Q?PksL5RsMFeHXQAv6O0xVXMibn0+KWGkeVt9aEFxFhvtaIi3I8V8p082faEUT?=
+ =?us-ascii?Q?6MVt4yJ9921Rft1NgmRdaJhVRND1wzUhBfgLy4kYeGv5sn5tpALRsi3KotP1?=
+ =?us-ascii?Q?WvgbZxJidmZgD2l89vKGVEomMfQImettCy1vj9zsyR064n3ywsyVSn9CiklX?=
+ =?us-ascii?Q?SRQgchWtSINi4ix4Rf/ctMASPWJb5NShhebNwW/sSV4FL1loPbTTQZ/3tM7O?=
+ =?us-ascii?Q?Gvm43NvIeaSSpaegrcZ2DfdGcYTSyGHVfY0vQYaCvLw1gaOgyqGdbaVEXdaK?=
+ =?us-ascii?Q?Bcdx0lHxUoXF3810Efrg4XkziuQDNZhO+vkZOEFnGJhQGLF8ezwMwbbMLvR6?=
+ =?us-ascii?Q?qmSA4uvnjzb5EhcPSmTvzwWeXgevT1+dn/xcaiWSpySNZyuMV+QDQGQ1bkow?=
+ =?us-ascii?Q?eOWGXk7MNpknimL2NpYwDKyzXayhrfPksb4Ci1ht6VdaEija8g9H+6kMOCL+?=
+ =?us-ascii?Q?8KJw4dlnis6PgPUX4g+m/2zMgwY7cfeImCTUhHli4Xzroer6StstUquviHMB?=
+ =?us-ascii?Q?ghqnB1J8OQ37Gcgv2RhsiqbPxTNEB+k96hAvgTRHZTWpIK8oaqbemnSbm9zv?=
+ =?us-ascii?Q?7E6kJ5VCExHfFXtrJ+57AE+hcaSww8F54N3usj4zpUBrtuL137jSAjLzZ4Po?=
+ =?us-ascii?Q?GmPU8oOd2RTK2qfe1OY3ydf/SmFROUCaowe/rF43?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1b834c26-30b5-4686-5146-08db88fce2b4
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4e63b837-3c96-45cc-262f-08db88fce669
 X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB3176.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2023 08:39:52.0953
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2023 08:39:59.8060
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tInQ6FJ2kzkNrjSLGbp/KoHQPBAJiteOD2LGi/O4vC0tNaD3WT7sJxlDmWe5wvnMCUeuRbjF3GBNIzxUnNJUaA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: I0WbJ6hjFPqz9JkPDEgkJtq+Z0pPoQ2oupaF0DF15p5eatu+NmOCruQ/QR1C1X0PufRN7RqADUfhi5NZ13wzJw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7025
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -123,37 +123,199 @@ Cc: x86@kernel.org, zhi.wang.linux@gmail.com, kvm@vger.kernel.org, catalin.marin
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The comment in mmu_interval_read_begin() refers to a function that
-doesn't exist and uses the wrong call-back name. The op for mmu
-interval notifiers is mmu_interval_notifier_ops->invalidate() so fix
-the comment up to reflect that.
+The invalidate_range() is going to become an architecture specific mmu
+notifier used to keep the TLB of secondary MMUs such as an IOMMU in
+sync with the CPU page tables. Currently it is called from separate
+code paths to the main CPU TLB invalidations. This can lead to a
+secondary TLB not getting invalidated when required and makes it hard
+to reason about when exactly the secondary TLB is invalidated.
+
+To fix this move the notifier call to the architecture specific TLB
+maintenance functions for architectures that have secondary MMUs
+requiring explicit software invalidations.
+
+This fixes a SMMU bug on ARM64. On ARM64 PTE permission upgrades
+require a TLB invalidation. This invalidation is done by the
+architecutre specific ptep_set_access_flags() which calls
+flush_tlb_page() if required. However this doesn't call the notifier
+resulting in infinite faults being generated by devices using the SMMU
+if it has previously cached a read-only PTE in it's TLB.
+
+Moving the invalidations into the TLB invalidation functions ensures
+all invalidations happen at the same time as the CPU invalidation. The
+architecture specific flush_tlb_all() routines do not call the
+notifier as none of the IOMMUs require this.
 
 Signed-off-by: Alistair Popple <apopple@nvidia.com>
+Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
+Tested-by: SeongJae Park <sj@kernel.org>
 ---
- mm/mmu_notifier.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/tlbflush.h             | 5 +++++
+ arch/powerpc/include/asm/book3s/64/tlbflush.h | 1 +
+ arch/powerpc/mm/book3s64/radix_hugetlbpage.c  | 1 +
+ arch/powerpc/mm/book3s64/radix_tlb.c          | 6 ++++++
+ arch/x86/include/asm/tlbflush.h               | 2 ++
+ arch/x86/mm/tlb.c                             | 2 ++
+ include/asm-generic/tlb.h                     | 1 -
+ 7 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/mm/mmu_notifier.c b/mm/mmu_notifier.c
-index 50c0dde..b7ad155 100644
---- a/mm/mmu_notifier.c
-+++ b/mm/mmu_notifier.c
-@@ -199,7 +199,7 @@ mmu_interval_read_begin(struct mmu_interval_notifier *interval_sub)
- 	 * invalidate_start/end and is colliding.
- 	 *
- 	 * The locking looks broadly like this:
--	 *   mn_tree_invalidate_start():          mmu_interval_read_begin():
-+	 *   mn_itree_inv_start():                 mmu_interval_read_begin():
- 	 *                                         spin_lock
- 	 *                                          seq = READ_ONCE(interval_sub->invalidate_seq);
- 	 *                                          seq == subs->invalidate_seq
-@@ -207,7 +207,7 @@ mmu_interval_read_begin(struct mmu_interval_notifier *interval_sub)
- 	 *    spin_lock
- 	 *     seq = ++subscriptions->invalidate_seq
- 	 *    spin_unlock
--	 *     op->invalidate_range():
-+	 *     op->invalidate():
- 	 *       user_lock
- 	 *        mmu_interval_set_seq()
- 	 *         interval_sub->invalidate_seq = seq
+diff --git a/arch/arm64/include/asm/tlbflush.h b/arch/arm64/include/asm/tlbflush.h
+index 3456866..a99349d 100644
+--- a/arch/arm64/include/asm/tlbflush.h
++++ b/arch/arm64/include/asm/tlbflush.h
+@@ -13,6 +13,7 @@
+ #include <linux/bitfield.h>
+ #include <linux/mm_types.h>
+ #include <linux/sched.h>
++#include <linux/mmu_notifier.h>
+ #include <asm/cputype.h>
+ #include <asm/mmu.h>
+ 
+@@ -252,6 +253,7 @@ static inline void flush_tlb_mm(struct mm_struct *mm)
+ 	__tlbi(aside1is, asid);
+ 	__tlbi_user(aside1is, asid);
+ 	dsb(ish);
++	mmu_notifier_invalidate_range(mm, 0, -1UL);
+ }
+ 
+ static inline void __flush_tlb_page_nosync(struct mm_struct *mm,
+@@ -263,6 +265,8 @@ static inline void __flush_tlb_page_nosync(struct mm_struct *mm,
+ 	addr = __TLBI_VADDR(uaddr, ASID(mm));
+ 	__tlbi(vale1is, addr);
+ 	__tlbi_user(vale1is, addr);
++	mmu_notifier_invalidate_range(mm, uaddr & PAGE_MASK,
++						(uaddr & PAGE_MASK) + PAGE_SIZE);
+ }
+ 
+ static inline void flush_tlb_page_nosync(struct vm_area_struct *vma,
+@@ -396,6 +400,7 @@ static inline void __flush_tlb_range(struct vm_area_struct *vma,
+ 		scale++;
+ 	}
+ 	dsb(ish);
++	mmu_notifier_invalidate_range(vma->vm_mm, start, end);
+ }
+ 
+ static inline void flush_tlb_range(struct vm_area_struct *vma,
+diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush.h b/arch/powerpc/include/asm/book3s/64/tlbflush.h
+index 0d0c144..dca0477 100644
+--- a/arch/powerpc/include/asm/book3s/64/tlbflush.h
++++ b/arch/powerpc/include/asm/book3s/64/tlbflush.h
+@@ -5,6 +5,7 @@
+ #define MMU_NO_CONTEXT	~0UL
+ 
+ #include <linux/mm_types.h>
++#include <linux/mmu_notifier.h>
+ #include <asm/book3s/64/tlbflush-hash.h>
+ #include <asm/book3s/64/tlbflush-radix.h>
+ 
+diff --git a/arch/powerpc/mm/book3s64/radix_hugetlbpage.c b/arch/powerpc/mm/book3s64/radix_hugetlbpage.c
+index 5e31955..f3fb49f 100644
+--- a/arch/powerpc/mm/book3s64/radix_hugetlbpage.c
++++ b/arch/powerpc/mm/book3s64/radix_hugetlbpage.c
+@@ -39,6 +39,7 @@ void radix__flush_hugetlb_tlb_range(struct vm_area_struct *vma, unsigned long st
+ 		radix__flush_tlb_pwc_range_psize(vma->vm_mm, start, end, psize);
+ 	else
+ 		radix__flush_tlb_range_psize(vma->vm_mm, start, end, psize);
++	mmu_notifier_invalidate_range(vma->vm_mm, start, end);
+ }
+ 
+ void radix__huge_ptep_modify_prot_commit(struct vm_area_struct *vma,
+diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
+index 0bd4866..9724b26 100644
+--- a/arch/powerpc/mm/book3s64/radix_tlb.c
++++ b/arch/powerpc/mm/book3s64/radix_tlb.c
+@@ -752,6 +752,8 @@ void radix__local_flush_tlb_page(struct vm_area_struct *vma, unsigned long vmadd
+ 		return radix__local_flush_hugetlb_page(vma, vmaddr);
+ #endif
+ 	radix__local_flush_tlb_page_psize(vma->vm_mm, vmaddr, mmu_virtual_psize);
++	mmu_notifier_invalidate_range(vma->vm_mm, vmaddr,
++						vmaddr + mmu_virtual_psize);
+ }
+ EXPORT_SYMBOL(radix__local_flush_tlb_page);
+ 
+@@ -987,6 +989,7 @@ void radix__flush_tlb_mm(struct mm_struct *mm)
+ 		}
+ 	}
+ 	preempt_enable();
++	mmu_notifier_invalidate_range(mm, 0, -1UL);
+ }
+ EXPORT_SYMBOL(radix__flush_tlb_mm);
+ 
+@@ -1020,6 +1023,7 @@ static void __flush_all_mm(struct mm_struct *mm, bool fullmm)
+ 			_tlbiel_pid_multicast(mm, pid, RIC_FLUSH_ALL);
+ 	}
+ 	preempt_enable();
++	mmu_notifier_invalidate_range(mm, 0, -1UL);
+ }
+ 
+ void radix__flush_all_mm(struct mm_struct *mm)
+@@ -1228,6 +1232,7 @@ static inline void __radix__flush_tlb_range(struct mm_struct *mm,
+ 	}
+ out:
+ 	preempt_enable();
++	mmu_notifier_invalidate_range(mm, start, end);
+ }
+ 
+ void radix__flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
+@@ -1392,6 +1397,7 @@ static void __radix__flush_tlb_range_psize(struct mm_struct *mm,
+ 	}
+ out:
+ 	preempt_enable();
++	mmu_notifier_invalidate_range(mm, start, end);
+ }
+ 
+ void radix__flush_tlb_range_psize(struct mm_struct *mm, unsigned long start,
+diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
+index 837e4a5..0a54323 100644
+--- a/arch/x86/include/asm/tlbflush.h
++++ b/arch/x86/include/asm/tlbflush.h
+@@ -3,6 +3,7 @@
+ #define _ASM_X86_TLBFLUSH_H
+ 
+ #include <linux/mm_types.h>
++#include <linux/mmu_notifier.h>
+ #include <linux/sched.h>
+ 
+ #include <asm/processor.h>
+@@ -282,6 +283,7 @@ static inline void arch_tlbbatch_add_pending(struct arch_tlbflush_unmap_batch *b
+ {
+ 	inc_mm_tlb_gen(mm);
+ 	cpumask_or(&batch->cpumask, &batch->cpumask, mm_cpumask(mm));
++	mmu_notifier_invalidate_range(mm, 0, -1UL);
+ }
+ 
+ static inline void arch_flush_tlb_batched_pending(struct mm_struct *mm)
+diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
+index 267acf2..93b2f81 100644
+--- a/arch/x86/mm/tlb.c
++++ b/arch/x86/mm/tlb.c
+@@ -10,6 +10,7 @@
+ #include <linux/debugfs.h>
+ #include <linux/sched/smt.h>
+ #include <linux/task_work.h>
++#include <linux/mmu_notifier.h>
+ 
+ #include <asm/tlbflush.h>
+ #include <asm/mmu_context.h>
+@@ -1036,6 +1037,7 @@ void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
+ 
+ 	put_flush_tlb_info();
+ 	put_cpu();
++	mmu_notifier_invalidate_range(mm, start, end);
+ }
+ 
+ 
+diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
+index b466172..bc32a22 100644
+--- a/include/asm-generic/tlb.h
++++ b/include/asm-generic/tlb.h
+@@ -456,7 +456,6 @@ static inline void tlb_flush_mmu_tlbonly(struct mmu_gather *tlb)
+ 		return;
+ 
+ 	tlb_flush(tlb);
+-	mmu_notifier_invalidate_range(tlb->mm, tlb->start, tlb->end);
+ 	__tlb_reset_range(tlb);
+ }
+ 
 -- 
 git-series 0.9.1
