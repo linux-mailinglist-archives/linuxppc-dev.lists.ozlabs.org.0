@@ -2,60 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A21875CAEF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jul 2023 17:08:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8516D75CAF6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jul 2023 17:09:12 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fu8DkLeC;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NbArCk/u;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NbArCk/u;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R6tGl5P1Cz3cWR
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jul 2023 01:08:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R6tHp33kqz3cbh
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jul 2023 01:09:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fu8DkLeC;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NbArCk/u;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NbArCk/u;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mga06.intel.com; envelope-from=xiaoyao.li@intel.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 63 seconds by postgrey-1.37 at boromir; Sat, 22 Jul 2023 01:07:25 AEST
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R6tFn2f3Gz3bwF
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jul 2023 01:07:25 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689952045; x=1721488045;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=m75I2ERfRQTCcOTwNioBlzNNFor8J6AUk5uhhkX1LBE=;
-  b=fu8DkLeCxQBTxVSTbIBBf5bCSZ5YK73RjKzCa5EPWrF0aR9K/TWJwvZV
-   tEEn9FhpzGig8SBGlA88Ac7TJFgX1gBqWyHevbp03oF1FuMVkeh6ew5/i
-   XoQjtRBAQnuc8FGiAYebxuBqH3UmwNGqmckvlp74hIjwJB5V6i6XEOA94
-   HE381JfwMgYKzr8u7/J3dzQ/Z1iOHrjcD12OtajqzZwsVoo5K99i5CWAF
-   WgnAqkB5kxW+24CJiJ0icphlS2gwvXVAi4BO71bKGRztHNrXSYMrCEIPD
-   fDe2/2Y0G7KOfigMz/w+e7FZsfu1iIVLprWJ/4zg4qT3TQMxLwbCk/D5N
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10778"; a="430835120"
-X-IronPort-AV: E=Sophos;i="6.01,220,1684825200"; 
-   d="scan'208";a="430835120"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2023 08:06:07 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10778"; a="790229682"
-X-IronPort-AV: E=Sophos;i="6.01,222,1684825200"; 
-   d="scan'208";a="790229682"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.6.77]) ([10.93.6.77])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2023 08:05:57 -0700
-Message-ID: <fdc155f5-041b-a1b1-15aa-8f970180a13a@intel.com>
-Date: Fri, 21 Jul 2023 23:05:53 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R6tG23jh3z3c7K
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jul 2023 01:07:37 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1689952054;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2LT31EnQdwzSm3B5EwQJfjJehEaFosn84rDtB5FWxnI=;
+	b=NbArCk/uVETr7FGx3n6NZP6Q+FqYZIGaM2sJynHi57b4KIobeOGnHYxBfHaUVs2SwlrZrY
+	YmvLfGR6qTMk7mSz1820n770HRrK0mFMkJQG6q9S8yGna2tsolsOKc240wm7s4fuZV5+Wr
+	ExPOSeCJE76J/bSvqxfKXq+GkwOD4gY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1689952054;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2LT31EnQdwzSm3B5EwQJfjJehEaFosn84rDtB5FWxnI=;
+	b=NbArCk/uVETr7FGx3n6NZP6Q+FqYZIGaM2sJynHi57b4KIobeOGnHYxBfHaUVs2SwlrZrY
+	YmvLfGR6qTMk7mSz1820n770HRrK0mFMkJQG6q9S8yGna2tsolsOKc240wm7s4fuZV5+Wr
+	ExPOSeCJE76J/bSvqxfKXq+GkwOD4gY=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-251-kfR2M1uJNKKtMbzd4VCNOQ-1; Fri, 21 Jul 2023 11:07:32 -0400
+X-MC-Unique: kfR2M1uJNKKtMbzd4VCNOQ-1
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-51e10b6148cso2526636a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jul 2023 08:07:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689952051; x=1690556851;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2LT31EnQdwzSm3B5EwQJfjJehEaFosn84rDtB5FWxnI=;
+        b=V0UCL8XG0CzCRULbC7hyARtM3zos1gOOAWQgkocbgaWIZCUSBXQlSpPrklt8mJboID
+         gpy4wEeTGUzK7+0C+kzjgqVs9R31NG3I6kagnrvf3+VkEM5wdy8XRj8e7ncIRgqOOzOF
+         floXLmAbZ3uoZT8hopPIZcZC2HYa2OqPUqGFznRsjW+Z1RDjWba292JF2hwI11RZD5Ys
+         7vAeyZZxO9c6QahY9svE/PIIfNOKlSvFIeYuyf6cRl0VSMYkK1vYmqNEzULBEtjpeyRo
+         jd2KiggozHPpT+Di+OMtNmjZw8p5Hhi4xfM6ApU8ki66ZUaxaTlwDCWf7wlt5jD4UFDd
+         n5Ow==
+X-Gm-Message-State: ABy/qLb0Tb3IS5iD4il1gkVLu8DsE6E4un3uLFOQZod7tvqmMSdhwUft
+	h+tWv+h7Rb6Ns8QhmdmRX9JPus9pXReqpSNud7cL+SREOaj4ePDHKd3b/JDf9ZBIl+n9vktOCwp
+	IjxDSSxjdUwzkdRFiwcxdOLwOZg==
+X-Received: by 2002:a05:6402:3596:b0:521:ae30:787d with SMTP id y22-20020a056402359600b00521ae30787dmr8297794edc.21.1689952051254;
+        Fri, 21 Jul 2023 08:07:31 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEmyaXBPPcDeACqrampuhZk7coBp7sKkHctpw4dd03JKW9PMu58s3JgUnfUUPbC+bjZ7T2rgQ==
+X-Received: by 2002:a05:6402:3596:b0:521:ae30:787d with SMTP id y22-20020a056402359600b00521ae30787dmr8297753edc.21.1689952050947;
+        Fri, 21 Jul 2023 08:07:30 -0700 (PDT)
+Received: from ?IPV6:2001:b07:6468:f312:9af8:e5f5:7516:fa89? ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
+        by smtp.googlemail.com with ESMTPSA id w10-20020aa7d28a000000b00521f4ee396fsm127596edq.12.2023.07.21.08.07.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 21 Jul 2023 08:07:30 -0700 (PDT)
+Message-ID: <84a908ae-04c7-51c7-c9a8-119e1933a189@redhat.com>
+Date: Fri, 21 Jul 2023 17:07:27 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.13.0
-Subject: Re: [RFC PATCH v11 12/29] KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for
- guest-specific backing memory
-Content-Language: en-US
-To: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [RFC PATCH v11 13/29] KVM: Add transparent hugepage support for
+ dedicated guest memory
+To: Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>,
  Oliver Upton <oliver.upton@linux.dev>, Huacai Chen <chenhuacai@kernel.org>,
  Michael Ellerman <mpe@ellerman.id.au>, Anup Patel <anup@brainfault.org>,
  Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
@@ -64,9 +91,12 @@ To: Sean Christopherson <seanjc@google.com>,
  Andrew Morton <akpm@linux-foundation.org>, Paul Moore <paul@paul-moore.com>,
  James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>
 References: <20230718234512.1690985-1-seanjc@google.com>
- <20230718234512.1690985-13-seanjc@google.com>
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20230718234512.1690985-13-seanjc@google.com>
+ <20230718234512.1690985-14-seanjc@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <20230718234512.1690985-14-seanjc@google.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -84,21 +114,18 @@ Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-kernel@vger
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/19/2023 7:44 AM, Sean Christopherson wrote:
-> @@ -6255,12 +6298,17 @@ int kvm_init(unsigned vcpu_size, unsigned vcpu_align, struct module *module)
->   	if (r)
->   		goto err_async_pf;
+On 7/19/23 01:44, Sean Christopherson wrote:
 >   
-> +	r = kvm_gmem_init();
-> +	if (r)
-> +		goto err_gmem;
+> @@ -413,6 +454,9 @@ int kvm_gmem_create(struct kvm *kvm, struct kvm_create_guest_memfd *args)
+>   	u64 flags = args->flags;
+>   	u64 valid_flags = 0;
+>   
+> +	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
+> +		valid_flags |= KVM_GUEST_MEMFD_ALLOW_HUGEPAGE;
 > +
->   	kvm_chardev_ops.owner = module;
->   
->   	kvm_preempt_ops.sched_in = kvm_sched_in;
->   	kvm_preempt_ops.sched_out = kvm_sched_out;
->   
->   	kvm_init_debug();
-> +	kvm_gmem_init();
 
-why kvm_gmem_init() needs to be called again? by mistake?
+I think it should be always allowed.  The outcome would just be "never 
+have a hugepage" if thp is not enabled in the kernel.
+
+Paolo
+
