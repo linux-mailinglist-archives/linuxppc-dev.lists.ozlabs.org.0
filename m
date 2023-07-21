@@ -1,52 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89B1175BD97
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jul 2023 07:00:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF1DD75BD99
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jul 2023 07:01:30 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Vz9fUc/R;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=kMSCklil;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R6cnW1fdZz3cCQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jul 2023 15:00:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R6cpc5ndkz3cCj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jul 2023 15:01:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Vz9fUc/R;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=kMSCklil;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R6cmZ2ph1z2ygX
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jul 2023 14:59:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R6cnk2Tlcz305R
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jul 2023 15:00:42 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1689915579;
-	bh=E8y/g9Khd0fFkgBzOo2hgfNC9FxKvpUwWSNkgdFASms=;
+	s=201909; t=1689915638;
+	bh=zOaO/BDiMViyIwV25A6Bb8YgrTQHlQUOzuaNQJEjFbI=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Vz9fUc/RXTu27vyeQvrCGoaE8JdmFqjso1U7IKft3F4+AMIPMbJxbd6+vpUogCok2
-	 jjqvREfJvYqz3QSGYRTfM9NbVcZw6ETTGk+G5ORy8Ef27KmVipGpAru/++iMcP0ZIY
-	 irL63A70ZpZtpSAA842FIXFsBi3K9pkiGHMiMA9uGES1k6AQTlIav7DvOXvaXW5lr1
-	 +C0AtN1LzNzfZWs6cqLKzQSLR9CakXGeTo5RmwHO24fURCoJ28UFMNlTF5RfwYFygo
-	 JIBkIXyWk0zwzOR6aKsdnuJSg4XvmCPd8c6HNDSu/dKGG51lsM7dl8r9XMYvtkwX6A
-	 gBrLXrGghZj8Q==
+	b=kMSCklilWZrrZg224QJpabopJPo7ZDKutmdB2yp5BfMhoOC8ytdTiPCgv1tuqMpM9
+	 JDwhRDIVruD0cm3BHtEo9ZchHtb9yLW3Va1h9p/ZfEfzDFqIE6oZiNpC5ZJuFuKNCB
+	 G+kl6hkBtS2kAcIwjmZZ4XdNxHATlUKSb+mNsRJkOmxXRqdKFOmdDLUvQPQ3bZKDru
+	 XBHiNpdW1cxCSo14NGh0Uo7VwsgdUR/dPXFOYXGjkT1Ms/N/Xv6eavsPWxPsU1TnWA
+	 Tr5qRQrxX5LSMkC+MyLx8N9vtvB1JuUKZJ1m1KrAlWPxgDDu9bIdl2A0+fdyZyNNZj
+	 sGeqSFaV9P/cA==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4R6cmH4jNJz4wqW;
-	Fri, 21 Jul 2023 14:59:27 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4R6cnf1zwhz4wxx;
+	Fri, 21 Jul 2023 15:00:38 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Arnd Bergmann <arnd@kernel.org>, linux-fbdev@vger.kernel.org, Thomas
- Zimmermann <tzimmermann@suse.de>, Helge Deller <deller@gmx.de>, Javier
- Martinez Canillas <javierm@redhat.com>
-Subject: Re: [PATCH v2 1/9] vgacon: rework Kconfig dependencies
-In-Reply-To: <20230719123944.3438363-2-arnd@kernel.org>
-References: <20230719123944.3438363-1-arnd@kernel.org>
- <20230719123944.3438363-2-arnd@kernel.org>
-Date: Fri, 21 Jul 2023 14:59:24 +1000
-Message-ID: <87pm4lj1w3.fsf@mail.lhotse>
+To: Michael Ellerman <patch-notifications@ellerman.id.au>, Nicholas Piggin
+ <npiggin@gmail.com>, Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra
+ <peterz@infradead.org>, Sathvika Vasireddy <sv@linux.ibm.com>, Naveen N
+ Rao <naveen@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: (subset) [PATCH v4 00/15] powerpc/objtool: uaccess validation
+ for PPC32 (v4)
+In-Reply-To: <168986105076.1117384.18255319220057556882.b4-ty@ellerman.id.au>
+References: <cover.1689091394.git.christophe.leroy@csgroup.eu>
+ <168986105076.1117384.18255319220057556882.b4-ty@ellerman.id.au>
+Date: Fri, 21 Jul 2023 15:00:38 +1000
+Message-ID: <87mszpj1u1.fsf@mail.lhotse>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -60,27 +62,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, x86@kernel.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Linus Walleij <linus.walleij@linaro.org>, Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, linux-efi@vger.kernel.org, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>, "K. Y. Srinivasan" <kys@microsoft.com>, David Airlie <airlied@gmail.com>, Ard Biesheuvel <ardb@kernel.org>, Wei Liu <wei.liu@kernel.org>, Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Dexuan Cui <decui@microsoft.com>, Russell King <linux@armlinux.org.uk>, Deepak Rawat <drawat.floss@gmail.com>, Ingo Molnar <mingo@redhat.com>, Matt Turner <mattst88@gmail.com>, Arnd Bergmann <arnd@arndb.de>, Haiyang Zhang <haiyangz@microsoft.com>, Nicholas Piggin <npiggin@gmail.com>, Bor
- islav Petkov <bp@alien8.de>, loongarch@lists.linux.dev, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Khalid Aziz <khalid@gonehiking.org>, Brian Cain <bcain@quicinc.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, Daniel Vetter <daniel@ffwll.ch>, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Arnd Bergmann <arnd@kernel.org> writes:
-> From: Arnd Bergmann <arnd@arndb.de>
+Michael Ellerman <patch-notifications@ellerman.id.au> writes:
+> On Tue, 11 Jul 2023 18:08:26 +0200, Christophe Leroy wrote:
+>> This series adds UACCESS validation for PPC32. It includes
+>> a dozen of changes to objtool core.
+>> 
+>> It applies on top of series "Cleanup/Optimise KUAP (v3)"
+>> https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=363368&state=*
+>> 
+>> It is almost mature, performs code analysis for all PPC32.
+>> 
+>> [...]
 >
-> The list of dependencies here is phrased as an opt-out, but this is missing
-> a lot of architectures that don't actually support VGA consoles, and some
-> of the entries are stale:
+> Applied to powerpc/fixes.
 >
->  - powerpc used to support VGA consoles in the old arch/ppc codebase, but
->    the merged arch/powerpc never did
+> [01/15] Revert "powerpc/bug: Provide better flexibility to WARN_ON/__WARN_FLAGS() with asm goto"
+>         https://git.kernel.org/powerpc/c/b49e578b9314db051da0ad72bba24094193f9bd0
 
-Not disputing this, but how did you come to that conclusion? I grepped
-around and couldn't convince myself whether it can work on powerpc or
-not. ie. currently it's possible to enable CONFIG_VGA_CONSOLE and
-powerpc does have a struct screen_info defined which seems like it would
-allow vgacon_startup() to complete.
+Sorry that's b4 getting confused, I actually applied the v5 that I sent:
 
-My only concern is that someone could be using it with Qemu?
+https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20230712134552.534955-1-mpe@ellerman.id.au/
 
 cheers
