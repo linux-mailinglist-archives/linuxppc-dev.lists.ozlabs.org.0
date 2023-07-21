@@ -1,69 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 322D175D0E6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jul 2023 19:50:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC15475D25F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jul 2023 20:59:00 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=lZQ3ytVA;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=DUUK9qXX;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R6xtS1RDXz3cT1
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jul 2023 03:50:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R6zNy5dYWz3cWp
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jul 2023 04:58:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=lZQ3ytVA;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=DUUK9qXX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com; envelope-from=3t8w6zaykdpakwsfbuyggydw.ugedafmphhu-vwndaklk.grdstk.gjy@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R6xsb56knz2ytm
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jul 2023 03:50:09 +1000 (AEST)
-Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-d00a63fcdefso1479678276.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jul 2023 10:50:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1689961807; x=1690566607;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cGq520d0DqyrCnCF7s5Hdb0rD6NYwtkYzvVScy9HYVY=;
-        b=lZQ3ytVABaMbgeRDyRyj2Y4aroG9rwZE4tos1KIi9+yVur8kHjUJfNDjBsWbA5klWv
-         TLcM88saeccS8fNt+F3rMDPeeLUphdScBaSRyrIwijc1R9havyOwlUNE/IQcuJNK+B8L
-         fg4nRh9mVWUewpR8WoS4y2UShReGqGQI/p2sPXI0/xi9S/4bLyRSoR+wjHm8ngFldPX/
-         svRbdc4YBfOK5kZ24vC9n3F8L7Li2/2X6A5zsHfs5DeCFBQGgpDd6R/Lv+3ONLhdKh+D
-         zucg4UeBA4sEAN2XLHlR2RolIKqE8NS9aws4SoQANyJbQckavpkDoby1VzLjItanYN4z
-         z0Aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689961807; x=1690566607;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cGq520d0DqyrCnCF7s5Hdb0rD6NYwtkYzvVScy9HYVY=;
-        b=IGbnBXwZ/UvD8FrRGQ2nMha+UwCPuOlNImPLtkDaJ4qMPRpoU5Ok+la16+0Mkvs2ls
-         FBGOt6YF+i6w60bDHmTf1ebwGGiWtVKFOrrW/BYv5FCo5Ik2a2W8Uxir0jVHZE19wX0v
-         pE3je55hmR+gLvsJrgHFTYrDmC3314MYl0cciDSuJvn2OuPLnsZ3WW9u0fyJLykLHs+H
-         +edoASQXzr1DNqjQQOBwiBvE3Fm444hIAIsEElzJI2a+S81h1NrGEgq4s1ldJt3pXQ4p
-         9pO1HyP6c7l0EcX1mh1ra+8fnMLX+AioOviRxG2r4hD5MGN2AEeLHdNHB7oHYQqXXId9
-         tzAw==
-X-Gm-Message-State: ABy/qLZSTLeO83GuRhSwiS1my3+YTiACKr3V0+SOSGVXMMW1my3b41+q
-	46IAwC/hKANdiDmuhtyNUVQE27jYYhM=
-X-Google-Smtp-Source: APBJJlGQVjm5RzrpH36bdluvnqR1OmovIF/Mv2HtKZQ0PUD+Zj6xyTxIa85gQ91Vm5Bag6YHDA7hXUEb4so=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:6902:10cd:b0:c1c:df23:44ee with SMTP id
- w13-20020a05690210cd00b00c1cdf2344eemr19769ybu.0.1689961807734; Fri, 21 Jul
- 2023 10:50:07 -0700 (PDT)
-Date: Fri, 21 Jul 2023 10:50:06 -0700
-In-Reply-To: <8ad7a846-64e9-a3f1-4bf1-731a994d62cb@redhat.com>
-Mime-Version: 1.0
-References: <20230718234512.1690985-1-seanjc@google.com> <20230718234512.1690985-13-seanjc@google.com>
- <8ad7a846-64e9-a3f1-4bf1-731a994d62cb@redhat.com>
-Message-ID: <ZLrFTq2f1NXtlJWd@google.com>
-Subject: Re: [RFC PATCH v11 12/29] KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for
- guest-specific backing memory
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="us-ascii"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R6zN30RsYz3c4s
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jul 2023 04:58:09 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id ED9BE61D5F;
+	Fri, 21 Jul 2023 18:58:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEDEEC433C8;
+	Fri, 21 Jul 2023 18:58:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1689965887;
+	bh=TsMM2clemeACUsTCzTeJUymJha9TsDKJPtDWybjLNVg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=DUUK9qXXNnk+7PWGdY2+EMhxvcl+rtNHIVbI5P8D/baoMGFIkckx+EjLsGL0A/EwF
+	 QcuNLQ25h6Q0yULElGoGs3tQ++jK6TnuhIMUYTmZq1sxLIIFy6ezAH/fxMJlHS/WkU
+	 ZlSTwzLEHeRdpuW3mkT0DlYn6AjEUh4lwYPqTuGU=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Subject: [PATCH 5.15 149/532] soc/fsl/qe: fix usb.c build errors
+Date: Fri, 21 Jul 2023 18:00:53 +0200
+Message-ID: <20230721160622.521959157@linuxfoundation.org>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230721160614.695323302@linuxfoundation.org>
+References: <20230721160614.695323302@linuxfoundation.org>
+User-Agent: quilt/0.67
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,31 +60,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Paul Moore <paul@paul-moore.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, James Morris <jmorris@namei.org>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, "Serge E. Hallyn" <serge@hallyn.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Vlastimil Babka <vbabka@suse.cz>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Quentin Perret <qperret@google.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, linux-s
- ecurity-module@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-fsdevel@vger.kernel.org, Liam Merwick <liam.merwick@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Sasha Levin <sashal@kernel.org>, Kumar Gala <galak@kernel.crashing.org>, kernel test robot <lkp@intel.com>, Nicolas Schier <nicolas@jasle.eu>, Masahiro Yamada <masahiroy@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, patches@lists.linux.dev, Leo Li <leoyang.li@nxp.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Qiang Zhao <qiang.zhao@nxp.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-arm-kernel@lists.infradead.org, Nicolas Schier <nicolas@fjasle.eu>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jul 21, 2023, Paolo Bonzini wrote:
-> On 7/19/23 01:44, Sean Christopherson wrote:
-> > +	inode = alloc_anon_inode(mnt->mnt_sb);
-> > +	if (IS_ERR(inode))
-> > +		return PTR_ERR(inode);
-> > +
-> > +	err = security_inode_init_security_anon(inode, &qname, NULL);
-> > +	if (err)
-> > +		goto err_inode;
-> > +
-> 
-> I don't understand the need to have a separate filesystem.  If it is to
-> fully setup the inode before it's given a struct file, why not just export
-> anon_inode_make_secure_inode instead of security_inode_init_security_anon?
+From: Randy Dunlap <rdunlap@infradead.org>
 
-Ugh, this is why comments are important, I can't remember either.
+[ Upstream commit 7b1a78babd0d2cd27aa07255dee0c2d7ac0f31e3 ]
 
-I suspect I implemented a dedicated filesystem to kinda sorta show that we could
-allow userspace to provide the mount point with e.g. NUMA hints[*].  But my
-preference would be to not support a userspace provided mount and instead implement
-fbind() to let userspace control NUMA and whatnot.
+Fix build errors in soc/fsl/qe/usb.c when QUICC_ENGINE is not set.
+This happens when PPC_EP88XC is set, which selects CPM1 & CPM.
+When CPM is set, USB_FSL_QE can be set without QUICC_ENGINE
+being set. When USB_FSL_QE is set, QE_USB deafults to y, which
+causes build errors when QUICC_ENGINE is not set. Making
+QE_USB depend on QUICC_ENGINE prevents QE_USB from defaulting to y.
 
-[*] https://lore.kernel.org/all/ef48935e5e6f947f6f0c6d748232b14ef5d5ad70.1681176340.git.ackerleytng@google.com
+Fixes these build errors:
+
+drivers/soc/fsl/qe/usb.o: in function `qe_usb_clock_set':
+usb.c:(.text+0x1e): undefined reference to `qe_immr'
+powerpc-linux-ld: usb.c:(.text+0x2a): undefined reference to `qe_immr'
+powerpc-linux-ld: usb.c:(.text+0xbc): undefined reference to `qe_setbrg'
+powerpc-linux-ld: usb.c:(.text+0xca): undefined reference to `cmxgcr_lock'
+powerpc-linux-ld: usb.c:(.text+0xce): undefined reference to `cmxgcr_lock'
+
+Fixes: 5e41486c408e ("powerpc/QE: add support for QE USB clocks routing")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Link: https://lore.kernel.org/all/202301101500.pillNv6R-lkp@intel.com/
+Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Leo Li <leoyang.li@nxp.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>
+Cc: Qiang Zhao <qiang.zhao@nxp.com>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: Kumar Gala <galak@kernel.crashing.org>
+Acked-by: Nicolas Schier <nicolas@jasle.eu>
+Signed-off-by: Li Yang <leoyang.li@nxp.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/soc/fsl/qe/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/soc/fsl/qe/Kconfig b/drivers/soc/fsl/qe/Kconfig
+index 357c5800b112f..7afa796dbbb89 100644
+--- a/drivers/soc/fsl/qe/Kconfig
++++ b/drivers/soc/fsl/qe/Kconfig
+@@ -39,6 +39,7 @@ config QE_TDM
+ 
+ config QE_USB
+ 	bool
++	depends on QUICC_ENGINE
+ 	default y if USB_FSL_QE
+ 	help
+ 	  QE USB Controller support
+-- 
+2.39.2
+
+
+
