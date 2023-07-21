@@ -1,103 +1,115 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17C6475C262
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jul 2023 11:04:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3232575C2B0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jul 2023 11:13:20 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EzYRJRs1;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EzYRJRs1;
+	dkim=pass (1024-bit key; unprotected) header.d=corigine.onmicrosoft.com header.i=@corigine.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-corigine-onmicrosoft-com header.b=gNsayK3s;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R6kCV05mSz3cHF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jul 2023 19:04:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R6kPB12L6z3cZT
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jul 2023 19:13:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EzYRJRs1;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EzYRJRs1;
+	dkim=pass (1024-bit key; unprotected) header.d=corigine.onmicrosoft.com header.i=@corigine.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-corigine-onmicrosoft-com header.b=gNsayK3s;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=corigine.com (client-ip=2a01:111:f400:7eaa::71c; helo=nam11-dm6-obe.outbound.protection.outlook.com; envelope-from=simon.horman@corigine.com; receiver=lists.ozlabs.org)
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2071c.outbound.protection.outlook.com [IPv6:2a01:111:f400:7eaa::71c])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R6kBW5c5mz3bWr
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jul 2023 19:04:02 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1689930238;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UkppB3amY8e+ZFUORFAPfGoR63QBz1mTawh0tzwUFzU=;
-	b=EzYRJRs1FRwxZFKV2KR+oejn212mnUAqD1y3yDNp74EgXxXFXPKvXNHX+iANedMeyhyoPv
-	tUPV/ehJK5Va677fhJhjoUEHX6Xhc7UmMNbpK/gPZOyuTnSd2GqwgAK8xVHDNb1e211UxR
-	0Nzxx4hvwzkeQK/XWDZiX5rCvW8T+80=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1689930238;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UkppB3amY8e+ZFUORFAPfGoR63QBz1mTawh0tzwUFzU=;
-	b=EzYRJRs1FRwxZFKV2KR+oejn212mnUAqD1y3yDNp74EgXxXFXPKvXNHX+iANedMeyhyoPv
-	tUPV/ehJK5Va677fhJhjoUEHX6Xhc7UmMNbpK/gPZOyuTnSd2GqwgAK8xVHDNb1e211UxR
-	0Nzxx4hvwzkeQK/XWDZiX5rCvW8T+80=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-503-eCLSDdHeMnm_6J_Orxa31A-1; Fri, 21 Jul 2023 05:03:56 -0400
-X-MC-Unique: eCLSDdHeMnm_6J_Orxa31A-1
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-992e6840901so208532966b.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jul 2023 02:03:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689930235; x=1690535035;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UkppB3amY8e+ZFUORFAPfGoR63QBz1mTawh0tzwUFzU=;
-        b=LWuZYbD2ZmmmWiSzQz2aIZRVktlqgPTAoi9gRhXjkoyqPbj0YoJmuJuaAvCd6SiHqs
-         Wq8HZYOP+nxii9aK6MkBlS/aR9n6Hq/WApsSWNrzaSioKcMNvi5cNDJSDntgFbT6DLxS
-         8LDf1ZZaGBkTIjDgXEeDjdyCB9mUdnSpG3211QbYtBpWalZs4KFSQMWCcVxj41yMDucf
-         Bp6BWRUfblF/y6EeCTej0jdT1Ohg3OL/vYQq90dBAVvHu6AocXS8oUFfBYzHlQCU52oc
-         hy07GVL5c5VT/eotYOVlUCcBkctoQ9I7ivAeQVC5r93IDUYGjzpXc7ZYlnnKnDjKMh6a
-         Afzw==
-X-Gm-Message-State: ABy/qLbXDuyIn1ieYoFJVSgGqyD92PwtaoQErLCXHdv+Rwl+fbBPBg3p
-	Kt9vVH4PdXnsZbh+t+3/TrHRSBSe0oO3ElcV4L3OibJABaBrUU1FcHdaCJBgyeKcowLimuh3X1a
-	IJfy0ZMTXpMdCy2ei0HTTSW1Sgw==
-X-Received: by 2002:a17:907:6d8c:b0:98d:abd4:4000 with SMTP id sb12-20020a1709076d8c00b0098dabd44000mr7889146ejc.35.1689930234810;
-        Fri, 21 Jul 2023 02:03:54 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGH6YzYN7wVD16W6bBWRZvka9R57MaW1yVsDxFFu0qfog7UhF1jWQDyj4gC4NTPLd7VWeWUJA==
-X-Received: by 2002:a17:907:6d8c:b0:98d:abd4:4000 with SMTP id sb12-20020a1709076d8c00b0098dabd44000mr7889108ejc.35.1689930234273;
-        Fri, 21 Jul 2023 02:03:54 -0700 (PDT)
-Received: from ?IPV6:2001:b07:6468:f312:9af8:e5f5:7516:fa89? ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
-        by smtp.googlemail.com with ESMTPSA id rv7-20020a17090710c700b00993a9a951fasm1915159ejb.11.2023.07.21.02.03.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 Jul 2023 02:03:53 -0700 (PDT)
-Message-ID: <47c5f57c-a191-1983-b4ef-6e0c59c0c446@redhat.com>
-Date: Fri, 21 Jul 2023 11:03:51 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R6kM65t60z3dMN
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jul 2023 19:11:29 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=gLgPhihFb46UTnX6umWxqdBwKK2wZ10U72XwVCl8kZfOEulzo/GMtfA0JVvm9XqAyp944opOsaqpa+P2vDHOBNMPZ0HMM8CY+1I1yn1CJ+d9JlvPG6vOMskymIfmyUDylSlpCbwW1FiRWSYYDiJUx5TjmQ4NZEZhVIGAuRIYJSyxSCUaijyQDpfN3uzrXTWyGcBkAQjOzY5nuIcbI8l0kxlMdLQrTfx169cIrK2/q7xUR26gPngU16UZie+rk2XqMulWz1cuJRiMYECDrg5uUmgizqootrjGT9z4Kb/gizyWmH86SC9S9GmGSJ0Zg2xyeNtkkaOkFWsPAzrh7LKV8g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SPeo7niqCvYYeGv0178HaOPaMz1/1PEUYlcsPVgF++c=;
+ b=UvjVvyM5sm9YV+Iy3BOu3gAAf/rJmw4UAvSQXe/3ww8unlKGOtxG/lNQgNgmeaf+MGWmd1opD0CcFOSZLN6ZlueHWJvfOBLI5gkl41GPTko92bP02Poz55/dbwKU/o0tumTzctokhugitLx4juMsC1rBn4hWa3xoW9YJ9qL0ZdL1N6w8Tcd3NkeYX9hCcNEByAJVtp6ezAtkRledyr2NHZi9cp3hgKJkRc7AfiwykqlgsrlCxQ0RUPqTbPDnu5/kQTKGRjehIWLbVn0dizSEREzODJtpQxXPYMdT0kSs3uuZYikZz1xtB6ROA1g8w10MZB3id3ah4+87eUASbYkVEw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
+ dkim=pass header.d=corigine.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=SPeo7niqCvYYeGv0178HaOPaMz1/1PEUYlcsPVgF++c=;
+ b=gNsayK3sE4KdvyXAsPVAFwnK6oRMZkPCKCEIgSMdtgNx3wc39Bf2cE6M/NFPOp6tgPvPyU8foNH7+WiazjeintsePpXOCNSLYPSNQhqmHhuPa3OiKGWeyJ9I/bcxM+lmsu3323pZ4IsG8J+aFmeHiKQKb9WzWup6MhHofQFQ50I=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=corigine.com;
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
+ by BY5PR13MB4437.namprd13.prod.outlook.com (2603:10b6:a03:1de::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.28; Fri, 21 Jul
+ 2023 09:11:05 +0000
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::fde7:9821:f2d9:101d]) by PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::fde7:9821:f2d9:101d%7]) with mapi id 15.20.6609.025; Fri, 21 Jul 2023
+ 09:11:04 +0000
+Date: Fri, 21 Jul 2023 10:10:55 +0100
+From: Simon Horman <simon.horman@corigine.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [RFC PATCH 01/21] crypto: scomp - Revert "add support for
+ deflate rfc1950 (zlib)"
+Message-ID: <ZLpLnx4vtdYPuxrH@corigine.com>
+References: <20230718125847.3869700-1-ardb@kernel.org>
+ <20230718125847.3869700-2-ardb@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230718125847.3869700-2-ardb@kernel.org>
+X-ClientProxiedBy: LO4P265CA0086.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2bd::19) To PH0PR13MB4842.namprd13.prod.outlook.com
+ (2603:10b6:510:78::6)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [RFC PATCH v11 06/29] KVM: Introduce KVM_SET_USER_MEMORY_REGION2
-To: Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>,
- Oliver Upton <oliver.upton@linux.dev>, Huacai Chen <chenhuacai@kernel.org>,
- Michael Ellerman <mpe@ellerman.id.au>, Anup Patel <anup@brainfault.org>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>, Paul Moore <paul@paul-moore.com>,
- James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>
-References: <20230718234512.1690985-1-seanjc@google.com>
- <20230718234512.1690985-7-seanjc@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <20230718234512.1690985-7-seanjc@google.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|BY5PR13MB4437:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0ced8cd5-32b5-449a-331e-08db89ca6935
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	YAp4qMA+UIP2w/m7e+mdHyuO/BVVQlw1C+f5fXu48cOhszkfLSbfis5mmoYXlqr6Wc36oRdrnVD7/nhvssRahPt2Iueuwu7aoA/NjJQ5eCz+K8N5NH8n4kGWyobKnhwwCtje3j1vXS4YdkHF79/PG8XZ2+Lk/31IkGajkaufd10vYtS9k3vYxvRuokS+ZGWR1YItPSpcyCAemnL3GiIKqzjbSIzMnsf8wlLsuECsaR+uAZkorgCnUjg8X0M1k6vUCT1EE2OBvjR8ebbWVZTdGXW7RZ8GgS8fJJ4M3fZpG+PqbrfEoCnaRKj+ZScpasuqaAUtoqJ56gPPScjdNo/ybr5At6iHv+0fQr26+pQNKh3kYdoG5yD2djm2aRPlXy7fim8f5zbdRfKTTtEp1tbaNh/ZWD9IzadAN837/Dm/Amb8Y/ht/64LUV4h8qY5c3G1m7QcjeQiabbmuOd0ZMJiUwAaMwJIbpW5mpgO+UblZICnJPqMv9eeMPrx2BiQtoZlLg21DmgEk/CBGlOvwx0i8/SYv9dCjaWx7gEtSolA6EftDUjrdlI3CaLGXaZusbSWc0XQzQH914qDQHB31Ti6O5rwCZKGrj1BfNtyNP0kP8o=
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(136003)(366004)(396003)(346002)(39830400003)(376002)(451199021)(86362001)(36756003)(6666004)(478600001)(66556008)(66476007)(54906003)(6916009)(26005)(55236004)(4326008)(6506007)(6486002)(66946007)(6512007)(2906002)(44832011)(41300700001)(316002)(5660300002)(8676002)(7416002)(38100700002)(2616005)(186003)(83380400001)(8936002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?zQblw/bQw51fmROv7tDJNln+3IUqWID30UIPh+Ztoec+383ff4xzezVDRE5u?=
+ =?us-ascii?Q?iVwS1jLyw08fM+x7Xjm2LnwawLDjOAUm2WLr8FBubO0ynQc0pE7fJAv1PSUI?=
+ =?us-ascii?Q?nxsmMljyuxP2fQ0b0fagnX7r/VMipPcrY1Q0nnLao5fjLX/E4TJ3n6b+DMUv?=
+ =?us-ascii?Q?PsYpRaNzUTFA6Amtu0WGdbYWKLONkJQTD/zPI+1rEYHLnHgyrwNebAJHsFbC?=
+ =?us-ascii?Q?qqQwoBreWvFvBLSYCMb7m5kRLkmRgNafL47u1vsmSbUfMufNieezegvZhCOv?=
+ =?us-ascii?Q?jL9LKklJzblgSoKZHkw9e4jrLxslPb+dQqdOABTnZTFsU40LRifmFB5X9HH0?=
+ =?us-ascii?Q?QoICcVhrP++mWAnAHkhsqVuAwL9uh8fcCrN3p5df3rJZ+wqzW1XDb5znFlWM?=
+ =?us-ascii?Q?F6BZknWRwueOFN6Y/C0Hf320FMwUSwlKwqe/PmxRS9v66MGArXZJwEq3NFRF?=
+ =?us-ascii?Q?KxrhY/T9DXQDu1J83GwNZ8c6MSw5VmJTjx4BCTqv3/LWEn6v3XUDXTP4tm6D?=
+ =?us-ascii?Q?3ZzyqzQadVpWxe17Yy7yHWoXfZ036ZjJAYhk9l4qbr+/LIF2rg6vx9LrRW1W?=
+ =?us-ascii?Q?c5A0GecH7jZWDKMC6/hhKX+bolatMXn2ckzCOSs/zkCVBKjLu6tW/Jh6gnM1?=
+ =?us-ascii?Q?HFq2GT/CLGnJLwClbk2Wd6GELMah4O8Y4Wzjw5i+ZqceyjXxYg2Wii5iKzPX?=
+ =?us-ascii?Q?y16ZUyqvHxP1oGMTV+R56tkRsCLS5ESbuXka/DsIqQLzC+6/evuk1Sq2bXCl?=
+ =?us-ascii?Q?URfJ+4Oz92m7xoHZCOt9vp5WicEacSrebqA/U/aaHxoDAUArkO4RsGPZb/XQ?=
+ =?us-ascii?Q?THURTOKEaK46VHV7ziEctZVhnTTcgMRsvgq+7htJZHZWBP4Agx1CuiIzRK1t?=
+ =?us-ascii?Q?FCC9xSvNIDVEXa77HAkHDbQKExQhk9fdrgHwilWUof2u5WEfLVTyuRYdiYQs?=
+ =?us-ascii?Q?mitz71Joqj6n2hXHIeMNsiX/j/BgtHjl5fzgptleeOeAQxUbg6MnMJwuRkmf?=
+ =?us-ascii?Q?hl2U3plAFymsLBW8Ml2xh+gUJI+atNmO1wFVfiFUldWE+GXbUJOeLvtuHp/o?=
+ =?us-ascii?Q?B4nzvsIfjlTXkpMIpxTX73R9Zte+f3AnfMlGTH/bjMhkMGOAmBB6/2NIuKjj?=
+ =?us-ascii?Q?pmq/2G7YL3JN+bIcS43jPb51aRfKztdai9w4/OTW5pyR0HJ8oBrGJkj96TUv?=
+ =?us-ascii?Q?WsFihB05NR378+PPAs+ryRnc37YwaiylogKoyvtddO6yJ7YOh0R5paBF8VC7?=
+ =?us-ascii?Q?RS8emYrVqcVLyuZRIk5/YWocuo75tWY81u4RxQoOUFF/8MWZsUUWU/QQqNvq?=
+ =?us-ascii?Q?ByPm6cg8VVDcQbQ6MniXINS1fXo5BqwnI7qbJ+oQeBT0SglqE6mE900COBho?=
+ =?us-ascii?Q?mYoo/FjK6ds4QZzhUR41ToNN0gyojf09EQV+GSCXa1CfgUL46YD5xcshDBtM?=
+ =?us-ascii?Q?yXyYp4v46PVZECckt/VW4IGIAFhgBvAkCiz+oFEIehbqkJOuGMn765MINOKg?=
+ =?us-ascii?Q?Wo2t49o/GOeM08tQ6Vuk63mhHsud1VUJ5wgBuxv/Y7p8yxDtnBvE5BSCOa0V?=
+ =?us-ascii?Q?R9PuxhQq4czZGi43tgVgf4nzzAyBMFBPT2ayaFWdeRbr4QIm1I6++oSAOueI?=
+ =?us-ascii?Q?XQ=3D=3D?=
+X-OriginatorOrg: corigine.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0ced8cd5-32b5-449a-331e-08db89ca6935
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jul 2023 09:11:04.7827
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tlK+HylJSvJreeg1sn4yeWime7V1tP1Vr4k3SRLWJ2r8ni9H2VglORLH9LlBfrfJ5m6xC5D2b9T+oeh4KaoVvTTb1Cjvpi5mJNJVd2p0Law=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR13MB4437
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,183 +121,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, linux-security-module@vger.kernel.org, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, kvmarm@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>, linux-arm-kernel@lists.infradead.org, Quentin Perret <qperret@google.com>, linux-mips@vger.kernel.org, Jarkko Sakkinen <jarkko@kernel.org>, Yu Zhang <yu.c.zhang@linux.intel.com>, kvm-riscv@lists.infradead.org, linux-fsdevel@vger.kernel.org, Liam Merwick <liam.merwick@oracle.com>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Giovanni Cabiddu <giovanni.cabiddu@intel.com>, Eric Dumazet <edumazet@google.com>, linux-mtd@lists.infradead.org, Steffen Klassert <steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>, Minchan Kim <minchan@kernel.org>, Richard Weinberger <richard@nod.at>, qat-linux@intel.com, Eric Biggers <ebiggers@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Kees Cook <keescook@chromium.org>, linux-block@vger.kernel.org, Nick Terrell <terrelln@fb.com>, Jens Axboe <axboe@kernel.dk>, netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>, linux-kernel@vger.kernel.org, Sergey Senozhatsky <senozhatsky@chromium.org>, linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/19/23 01:44, Sean Christopherson wrote:
-> Cc: Jarkko Sakkinen <jarkko@kernel.org>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->   arch/x86/kvm/x86.c       |  2 +-
->   include/linux/kvm_host.h |  4 ++--
->   include/uapi/linux/kvm.h | 13 +++++++++++++
->   virt/kvm/kvm_main.c      | 38 ++++++++++++++++++++++++++++++--------
->   4 files changed, 46 insertions(+), 11 deletions(-)
+On Tue, Jul 18, 2023 at 02:58:27PM +0200, Ard Biesheuvel wrote:
+> This reverts commit a368f43d6e3a001e684e9191a27df384fbff12f5.
 > 
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index a6b9bea62fb8..92e77afd3ffd 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -12420,7 +12420,7 @@ void __user * __x86_set_memory_region(struct kvm *kvm, int id, gpa_t gpa,
->   	}
->   
->   	for (i = 0; i < KVM_ADDRESS_SPACE_NUM; i++) {
-> -		struct kvm_userspace_memory_region m;
-> +		struct kvm_userspace_memory_region2 m;
->   
->   		m.slot = id | (i << 16);
->   		m.flags = 0;
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index d2d3e083ec7f..e9ca49d451f3 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -1130,9 +1130,9 @@ enum kvm_mr_change {
->   };
->   
->   int kvm_set_memory_region(struct kvm *kvm,
-> -			  const struct kvm_userspace_memory_region *mem);
-> +			  const struct kvm_userspace_memory_region2 *mem);
->   int __kvm_set_memory_region(struct kvm *kvm,
-> -			    const struct kvm_userspace_memory_region *mem);
-> +			    const struct kvm_userspace_memory_region2 *mem);
->   void kvm_arch_free_memslot(struct kvm *kvm, struct kvm_memory_slot *slot);
->   void kvm_arch_memslots_updated(struct kvm *kvm, u64 gen);
->   int kvm_arch_prepare_memory_region(struct kvm *kvm,
-> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> index f089ab290978..4d4b3de8ac55 100644
-> --- a/include/uapi/linux/kvm.h
-> +++ b/include/uapi/linux/kvm.h
-> @@ -95,6 +95,16 @@ struct kvm_userspace_memory_region {
->   	__u64 userspace_addr; /* start of the userspace allocated memory */
->   };
->   
-> +/* for KVM_SET_USER_MEMORY_REGION2 */
-> +struct kvm_userspace_memory_region2 {
-> +	__u32 slot;
-> +	__u32 flags;
-> +	__u64 guest_phys_addr;
-> +	__u64 memory_size;
-> +	__u64 userspace_addr;
-> +	__u64 pad[16];
-> +};
-> +
->   /*
->    * The bit 0 ~ bit 15 of kvm_userspace_memory_region::flags are visible for
->    * userspace, other bits are reserved for kvm internal use which are defined
-> @@ -1192,6 +1202,7 @@ struct kvm_ppc_resize_hpt {
->   #define KVM_CAP_COUNTER_OFFSET 227
->   #define KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE 228
->   #define KVM_CAP_ARM_SUPPORTED_BLOCK_SIZES 229
-> +#define KVM_CAP_USER_MEMORY2 230
->   
->   #ifdef KVM_CAP_IRQ_ROUTING
->   
-> @@ -1466,6 +1477,8 @@ struct kvm_vfio_spapr_tce {
->   					struct kvm_userspace_memory_region)
->   #define KVM_SET_TSS_ADDR          _IO(KVMIO,   0x47)
->   #define KVM_SET_IDENTITY_MAP_ADDR _IOW(KVMIO,  0x48, __u64)
-> +#define KVM_SET_USER_MEMORY_REGION2 _IOW(KVMIO, 0x49, \
-> +					 struct kvm_userspace_memory_region2)
->   
->   /* enable ucontrol for s390 */
->   struct kvm_s390_ucas_mapping {
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 53346bc2902a..c14adf93daec 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -1549,7 +1549,7 @@ static void kvm_replace_memslot(struct kvm *kvm,
->   	}
->   }
->   
-> -static int check_memory_region_flags(const struct kvm_userspace_memory_region *mem)
-> +static int check_memory_region_flags(const struct kvm_userspace_memory_region2 *mem)
->   {
->   	u32 valid_flags = KVM_MEM_LOG_DIRTY_PAGES;
->   
-> @@ -1951,7 +1951,7 @@ static bool kvm_check_memslot_overlap(struct kvm_memslots *slots, int id,
->    * Must be called holding kvm->slots_lock for write.
->    */
->   int __kvm_set_memory_region(struct kvm *kvm,
-> -			    const struct kvm_userspace_memory_region *mem)
-> +			    const struct kvm_userspace_memory_region2 *mem)
->   {
->   	struct kvm_memory_slot *old, *new;
->   	struct kvm_memslots *slots;
-> @@ -2055,7 +2055,7 @@ int __kvm_set_memory_region(struct kvm *kvm,
->   EXPORT_SYMBOL_GPL(__kvm_set_memory_region);
->   
->   int kvm_set_memory_region(struct kvm *kvm,
-> -			  const struct kvm_userspace_memory_region *mem)
-> +			  const struct kvm_userspace_memory_region2 *mem)
->   {
->   	int r;
->   
-> @@ -2067,7 +2067,7 @@ int kvm_set_memory_region(struct kvm *kvm,
->   EXPORT_SYMBOL_GPL(kvm_set_memory_region);
->   
->   static int kvm_vm_ioctl_set_memory_region(struct kvm *kvm,
-> -					  struct kvm_userspace_memory_region *mem)
-> +					  struct kvm_userspace_memory_region2 *mem)
->   {
->   	if ((u16)mem->slot >= KVM_USER_MEM_SLOTS)
->   		return -EINVAL;
-> @@ -4514,6 +4514,7 @@ static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
->   {
->   	switch (arg) {
->   	case KVM_CAP_USER_MEMORY:
-> +	case KVM_CAP_USER_MEMORY2:
->   	case KVM_CAP_DESTROY_MEMORY_REGION_WORKS:
->   	case KVM_CAP_JOIN_MEMORY_REGIONS_WORKS:
->   	case KVM_CAP_INTERNAL_ERROR_DATA:
-> @@ -4757,6 +4758,14 @@ static int kvm_vm_ioctl_get_stats_fd(struct kvm *kvm)
->   	return fd;
->   }
->   
-> +#define SANITY_CHECK_MEM_REGION_FIELD(field)					\
-> +do {										\
-> +	BUILD_BUG_ON(offsetof(struct kvm_userspace_memory_region, field) !=		\
-> +		     offsetof(struct kvm_userspace_memory_region2, field));	\
-> +	BUILD_BUG_ON(sizeof_field(struct kvm_userspace_memory_region, field) !=		\
-> +		     sizeof_field(struct kvm_userspace_memory_region2, field));	\
-> +} while (0)
-> +
->   static long kvm_vm_ioctl(struct file *filp,
->   			   unsigned int ioctl, unsigned long arg)
->   {
-> @@ -4779,15 +4788,28 @@ static long kvm_vm_ioctl(struct file *filp,
->   		r = kvm_vm_ioctl_enable_cap_generic(kvm, &cap);
->   		break;
->   	}
-> +	case KVM_SET_USER_MEMORY_REGION2:
->   	case KVM_SET_USER_MEMORY_REGION: {
-> -		struct kvm_userspace_memory_region kvm_userspace_mem;
-> +		struct kvm_userspace_memory_region2 mem;
-> +		unsigned long size;
-> +
-> +		if (ioctl == KVM_SET_USER_MEMORY_REGION)
-> +			size = sizeof(struct kvm_userspace_memory_region);
-> +		else
-> +			size = sizeof(struct kvm_userspace_memory_region2);
-> +
-> +		/* Ensure the common parts of the two structs are identical. */
-> +		SANITY_CHECK_MEM_REGION_FIELD(slot);
-> +		SANITY_CHECK_MEM_REGION_FIELD(flags);
-> +		SANITY_CHECK_MEM_REGION_FIELD(guest_phys_addr);
-> +		SANITY_CHECK_MEM_REGION_FIELD(memory_size);
-> +		SANITY_CHECK_MEM_REGION_FIELD(userspace_addr);
->   
->   		r = -EFAULT;
-> -		if (copy_from_user(&kvm_userspace_mem, argp,
-> -						sizeof(kvm_userspace_mem)))
-> +		if (copy_from_user(&mem, argp, size))
->   			goto out;
->   
-> -		r = kvm_vm_ioctl_set_memory_region(kvm, &kvm_userspace_mem);
-> +		r = kvm_vm_ioctl_set_memory_region(kvm, &mem);
->   		break;
->   	}
->   	case KVM_GET_DIRTY_LOG: {
+> "zlib-deflate" was introduced 6 years ago, but it does not have any
+> users. So let's remove the generic implementation and the test vectors,
+> but retain the "zlib-deflate" entry in the testmgr code to avoid
+> introducing warning messages on systems that implement zlib-deflate in
+> hardware.
+> 
+> Note that RFC 1950 which forms the basis of this algorithm dates back to
+> 1996, and predates RFC 1951, on which the existing IPcomp is based and
+> which we have supported in the kernel since 2003. So it seems rather
+> unlikely that we will ever grow the need to support zlib-deflate.
+> 
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  crypto/deflate.c | 61 +++++-----------
+>  crypto/testmgr.c |  8 +--
+>  crypto/testmgr.h | 75 --------------------
+>  3 files changed, 18 insertions(+), 126 deletions(-)
+> 
+> diff --git a/crypto/deflate.c b/crypto/deflate.c
+> index b2a46f6dc961e71d..f4f127078fe2a5aa 100644
+> --- a/crypto/deflate.c
+> +++ b/crypto/deflate.c
+> @@ -39,24 +39,20 @@ struct deflate_ctx {
+>  	struct z_stream_s decomp_stream;
+>  };
+>  
+> -static int deflate_comp_init(struct deflate_ctx *ctx, int format)
+> +static int deflate_comp_init(struct deflate_ctx *ctx)
+>  {
+>  	int ret = 0;
+>  	struct z_stream_s *stream = &ctx->comp_stream;
+>  
+>  	stream->workspace = vzalloc(zlib_deflate_workspacesize(
+> -				    MAX_WBITS, MAX_MEM_LEVEL));
+> +				-DEFLATE_DEF_WINBITS, DEFLATE_DEF_MEMLEVEL));
+>  	if (!stream->workspace) {
+>  		ret = -ENOMEM;
+>  		goto out;
+>  	}
+> -	if (format)
+> -		ret = zlib_deflateInit(stream, 3);
+> -	else
+> -		ret = zlib_deflateInit2(stream, DEFLATE_DEF_LEVEL, Z_DEFLATED,
+> -					-DEFLATE_DEF_WINBITS,
+> -					DEFLATE_DEF_MEMLEVEL,
+> -					Z_DEFAULT_STRATEGY);
+> +	ret = zlib_deflateInit2(stream, DEFLATE_DEF_LEVEL, Z_DEFLATED,
+> +	                        -DEFLATE_DEF_WINBITS, DEFLATE_DEF_MEMLEVEL,
+> +	                        Z_DEFAULT_STRATEGY);
 
-Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
+nit: The two lines above partially use spaces instead of tabs for
+      indentation.
 
+...
