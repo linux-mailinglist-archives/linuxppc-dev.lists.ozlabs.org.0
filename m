@@ -1,103 +1,114 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B33975C522
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jul 2023 12:58:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83AA675C57C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jul 2023 13:09:13 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SiAePRvN;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VEz5gCws;
+	dkim=pass (1024-bit key; unprotected) header.d=corigine.onmicrosoft.com header.i=@corigine.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-corigine-onmicrosoft-com header.b=sLhWtTNn;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R6mk92ZDyz3cBH
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jul 2023 20:58:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R6myv38jsz3cKK
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jul 2023 21:09:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SiAePRvN;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VEz5gCws;
+	dkim=pass (1024-bit key; unprotected) header.d=corigine.onmicrosoft.com header.i=@corigine.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-corigine-onmicrosoft-com header.b=sLhWtTNn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=corigine.com (client-ip=2a01:111:f400:7eab::70f; helo=nam11-co1-obe.outbound.protection.outlook.com; envelope-from=simon.horman@corigine.com; receiver=lists.ozlabs.org)
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2070f.outbound.protection.outlook.com [IPv6:2a01:111:f400:7eab::70f])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R6mjD5Lwhz2yF9
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jul 2023 20:57:19 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1689937035;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JCcb9xtScqAyMOStlm7ewhQnyFA6r02pOvdu3ozJ8ms=;
-	b=SiAePRvNJr9R9f0/coSAadNl1sPpJUg4WJnYbnS+td6QjG068tu6JYm488GLI07gDstLJf
-	Fo+Q1LyAXYuINlNK/myGfoFgRO/qqg/SKMGro4N9SvL6rP17KfZi5zvQQWx+812+RxjwqU
-	V10UMW0xcpXWd/Lob/tw3BBDhUSaj30=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1689937036;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JCcb9xtScqAyMOStlm7ewhQnyFA6r02pOvdu3ozJ8ms=;
-	b=VEz5gCwscuh5LqfXyEnzS8lrA/fMhZxeXyAVnZa0fOpQLFzAEFwXZ9pnpnEhqbTHNsfISf
-	A8E7m9iD49Risgcv68+gM04ENe4w4M2/Haa7r4VRTLEXvWylwE5SyLayikfBwRyZsFGdnw
-	L9fZUHBmw4IkegdWMF4KrW8mS5rHyMo=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-630-DLvzDS4JNsyDmyfGV8fnNQ-1; Fri, 21 Jul 2023 06:57:11 -0400
-X-MC-Unique: DLvzDS4JNsyDmyfGV8fnNQ-1
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-98e1085308eso338395266b.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jul 2023 03:57:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689937031; x=1690541831;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JCcb9xtScqAyMOStlm7ewhQnyFA6r02pOvdu3ozJ8ms=;
-        b=OrNuEEbRV2nDORZSw66Z1lYWy2V+mWLC+OQggk6hc3ekN6DHGxOICw4yPUzwReSgFl
-         3lSmWQY1I5Za5BMcWhnlxPT2eqoi+yt7NdjAbfH8riTVaT0fX2YagJ7FB3A4Rfnm7Jqv
-         C1B+vEvBlC+FGRI9A37eEwlGv3E5BsAZPTdum0dT7xO1a2A2ZcA4k9NhWMJkG7yHAVys
-         BwNuM2GABpY3L33+UVgoRC6EtXmP8bjxLsyiY4NXBFPawHayTmX4lGpNHqh5pLa1zykb
-         95veXvspEi0zPmFwaDzz3Gw/+dpRNUrWje8yjbeCqF36TlunMG5yexEKxivE+5o4mLIa
-         LhzQ==
-X-Gm-Message-State: ABy/qLbIYxXyuJcf324vOjMG4HsY9lUdqDFJz8ZRHCLRd/IwKQZ7jt7z
-	GqJipe53CGHBQigXyrDxlcLyq1FYDRa74BlHml5qph/IJY6N6E1wPZcw2pPOQNsElB81+tHGmW6
-	ecnDKy7BhNcmjsGXdQASOiVbqrg==
-X-Received: by 2002:a17:907:d8a:b0:991:d414:d889 with SMTP id go10-20020a1709070d8a00b00991d414d889mr8230244ejc.15.1689937030832;
-        Fri, 21 Jul 2023 03:57:10 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHG8R7IreJRTfdc0Wq/Yo7PIzOhZZy/jcnGLgxDY0N1OVv0CFUqys6sH346KYqEVj6MNTbrkQ==
-X-Received: by 2002:a17:907:d8a:b0:991:d414:d889 with SMTP id go10-20020a1709070d8a00b00991d414d889mr8230204ejc.15.1689937030548;
-        Fri, 21 Jul 2023 03:57:10 -0700 (PDT)
-Received: from ?IPV6:2001:b07:6468:f312:9af8:e5f5:7516:fa89? ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
-        by smtp.googlemail.com with ESMTPSA id f21-20020a170906049500b0099364d9f0e9sm2025435eja.102.2023.07.21.03.57.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 Jul 2023 03:57:09 -0700 (PDT)
-Message-ID: <0c033063-5d20-4522-87e2-80ad3cca3602@redhat.com>
-Date: Fri, 21 Jul 2023 12:57:07 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R6mxz3CgNz2ytT
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jul 2023 21:08:22 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=GhbV+DNu0Jr4p3Umg+Ta7AEwjSZjm6lXbzPmiVfKOy6i6wK8z0QV0FeeKK/1mA6IyqbePXWlLRg3+BqL+Nwvr0tRYIONm1WvywbB/lKbFgJxi8dswVUX3zBoDlbBmN1RAn+hjIxZ9q2LvscT2td4JDi3tTOpZiyARd/LNYvvcbA4FflXemLE0ZpnbzRMSlZp8oiFEw8Lz7v4XCsOUVEULRnEmAW1QVPa+rVZeY4z1xGG3M5dwVlXxTqb8WXhR6Ew/MlI1SOoBPOVzxFI5EeFBc8XJsbKqUSWN817j9Cl9v8IIXiGS3jUXLAQ3SE7U81Yu/XB1D94HY4xunXfzACt5A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=P6betak6CqJ7siQQ0bzq4F+rFMVsodn40Hxgd8rzwu0=;
+ b=TObkFa/ZkJUfbe5wAc+YAMHktIcq0WsIIsu92VeIxVGAqW6VMWmcq4030sigo3JUQBfFQjeUqu5Bv3W33QSIlv9R9SPY8qNy5c2p2bmottVyiU06u1ZtUPjDusA1IPyjBYFvYDMGlnc4ocygPgJrt6p9Gz4ESR4AxWXjj1aiZXWt6pk7MwON/CDk14LwLoUJXzWLDCJQRrZDIRZsxsoTJLjgYwlWsHFZZ4sEgPW1iClG0tVjyuZRJbKtrvUH71PU7nYhN6BbexshI24ydBNG4HluAPzfiYn5pOpqbF8L5+JUAigJyGVek42UsJ9kYHe74TyoUcT5MklHT091oLMCSQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
+ dkim=pass header.d=corigine.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=P6betak6CqJ7siQQ0bzq4F+rFMVsodn40Hxgd8rzwu0=;
+ b=sLhWtTNnmDT8kJVp3mqWlHGYxQnqthyQOcEnw8ADdCvgQuQpVXw8mwLZtBSG3GGDZoQPY42kjAtR5xrrr/Je3BqQQ9OpPROejWzpQEJ1thOO7NplAB9Wc2jBreXJg+jzRJQRH5sM2nlHf/ycJMvKyo4yAiZAejVHd3nYjqjQxZA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=corigine.com;
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
+ by DM6PR13MB4496.namprd13.prod.outlook.com (2603:10b6:5:1be::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.28; Fri, 21 Jul
+ 2023 11:07:59 +0000
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::fde7:9821:f2d9:101d]) by PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::fde7:9821:f2d9:101d%7]) with mapi id 15.20.6609.025; Fri, 21 Jul 2023
+ 11:07:58 +0000
+Date: Fri, 21 Jul 2023 12:07:48 +0100
+From: Simon Horman <simon.horman@corigine.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [RFC PATCH 19/21] crypto: remove obsolete 'comp' compression API
+Message-ID: <ZLpnBN5zMuWlGFoh@corigine.com>
+References: <20230718125847.3869700-1-ardb@kernel.org>
+ <20230718125847.3869700-20-ardb@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230718125847.3869700-20-ardb@kernel.org>
+X-ClientProxiedBy: LNXP123CA0019.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:d2::31) To PH0PR13MB4842.namprd13.prod.outlook.com
+ (2603:10b6:510:78::6)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [RFC PATCH v11 08/29] KVM: Introduce per-page memory attributes
-To: Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>,
- Oliver Upton <oliver.upton@linux.dev>, Huacai Chen <chenhuacai@kernel.org>,
- Michael Ellerman <mpe@ellerman.id.au>, Anup Patel <anup@brainfault.org>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>, Paul Moore <paul@paul-moore.com>,
- James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>
-References: <20230718234512.1690985-1-seanjc@google.com>
- <20230718234512.1690985-9-seanjc@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <20230718234512.1690985-9-seanjc@google.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|DM6PR13MB4496:EE_
+X-MS-Office365-Filtering-Correlation-Id: 772f0c19-7c49-479c-13c7-08db89dabde0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	RQbvOMkRd51CPUzl588h4gbjaiaR3RU7YQGabIkXwNEr7MMnoe5iwgFbfZBa+JgazAI8YM/ghzwOJS5L4BKZgVbioS0+Z2UolHRVx7jJhY2j/dDNk3+1UNfYG7GrzZG0rG1s+yD/IEXhEuKzqxSwrFt1YFU4VERqbOiQjc8nFR4jHNklb2EotznO4dzL4DOh6xa9HWShJX8RE78C1qR0SLKP3LUQ49DsKTCCynEwbLWbmnzl+7QU67bOowjWeeDbBwT2Md4zpsj4ojwTyJD74LQlk1rNlWbA+mib3ib6WzdWoa/0nGTcslJQKL0aIlnmS2bPMb6ktp/nxg/lZa6E6RZ1T39lR61txOWrmRuf7jo01nBmPeqeMsd3ndFSRlfzXpYsm651fn31QFYT2pLPgzm6C+bkFMJJ5MzHhhfOeDn7iTbx5+lz/Z3GM1fW/wa0BM6277eUHImEKR5MhhNOEqYsHX1H8Xjypzh++fg5eQbO51QefTMG7oKrvm2ouGJNCemkxUkXK1bzjeQpOAO4F+Iw1Y+oiNNyewOTjuDYF/7+zeudJSYz7a0Lk388szDiXpmqlD0lmrLgwY6QziTMGfHcvFMwGVA8mE1Ve84RtgE=
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(346002)(136003)(376002)(366004)(39840400004)(396003)(451199021)(6512007)(6666004)(6916009)(66946007)(66476007)(66556008)(36756003)(6486002)(2906002)(4326008)(316002)(478600001)(54906003)(86362001)(6506007)(55236004)(83380400001)(2616005)(186003)(38100700002)(5660300002)(4744005)(8676002)(8936002)(41300700001)(26005)(7416002)(44832011);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?KID24e69QFUyrZSpFz2oLXssfr9pGxI1fxYj5o4aNs4Dm7q+oSCXEY+eXWly?=
+ =?us-ascii?Q?v5MPrf09l8EUZimCXKv3Cda3Xo3WoM1atSaaGeCfXMr5KacoElo/yvDHdj3Z?=
+ =?us-ascii?Q?9e3Qxb0qR/b5oRkppaDUlRYL7TuWvjUviEUgrzmmR0Yyek7zmQTGl85ZthYd?=
+ =?us-ascii?Q?qNebq518o56+LQ4KMJu1ek9YZ1rUI4j9+CKWKlMZSB9LNFX/KGaDae6Fr/pr?=
+ =?us-ascii?Q?qBZcZX6q85+SKWg6UfoFdPgIRB1uVZElfxylPsDmTyyYKulLamR1lSx6pSoi?=
+ =?us-ascii?Q?xBxRVPuAmrBSlPhO2rxNKVIfqlO90jMc2kilLR3/GCDArJaXojRL/r5wPt2J?=
+ =?us-ascii?Q?rI9AF/hfgIRQrBAnVeAZktgBxgTrTMR+EtH/3KG0/GNNEfxraE5hFeM3FulT?=
+ =?us-ascii?Q?u+wzc0UU3+aZYrYL4xQH3A2gbCAnOayQc6hw7VszQJxcbvyGZnfLZwzXdB/Y?=
+ =?us-ascii?Q?NIa3JtoZcbwWraAZpe8Vkt6HJwFsYwKHX7teM51cV1CiVwOI47+c0Gqm6tv4?=
+ =?us-ascii?Q?JFldYmQm0c52/x/M/Jm9X4B8TUePToZL48+et1fcSRr70/HqIJJaHikDHFrP?=
+ =?us-ascii?Q?098k8pwyKXQkKVE8XBaALzJlVFtTo8k2bOdq0dhT1S/yoCY68qJlIeDyG1/H?=
+ =?us-ascii?Q?rXo+MxhyQEoR9iNxHmaVwfRe/mBzss/Cs4PQEPl+PChlQtwFeRgOzVajagNS?=
+ =?us-ascii?Q?g7d1AUEGEIf/L4oajkGmgfMUcQSFLE6kMaMwR0ixseQc8LPC2Rj+psdQn42T?=
+ =?us-ascii?Q?IVq7P3hnqo8rCIcu6lC36/480D237O5hoserYt8MRwmRxO/vJgDtJ4/Rd5Ss?=
+ =?us-ascii?Q?nYGysd5aT6ozr/1fKK24RzIj7Gp9Ae0lZBOsVCqsOYDrZx+AtdtAQl+J3eqI?=
+ =?us-ascii?Q?BLxITQHILs3W/MjJsUC1J75p4Dm9TVAXk6Wd8J6ghbqHFJoXrqzY21TYATgv?=
+ =?us-ascii?Q?YToqQpRU1qvZg9IHflrtqOuSl0lx+esCwgA6Tvmz8CgzMgGD0bQhIPeSxCth?=
+ =?us-ascii?Q?jQutke6X+DcVgx6dRzPHsDzRioE7to28knCmptSspnEsu0vNQF2WXpuPwpfj?=
+ =?us-ascii?Q?ssAVe9PtLyM9hGF4w9lNU8DklRt2KWzBhBAUBiNYMJZuAJ6OHYubbIwMl+rS?=
+ =?us-ascii?Q?zzEYlbumu+x4xA7Ur8qoUDO1uMoZxSD7NzWXkXM7OeriHu928Kj13y9Dpbj0?=
+ =?us-ascii?Q?6U2on4umWSLpPeAdcK3vcSQz9V436V1rqBEAapJakJWIPDVX2yIAfhfxA7SI?=
+ =?us-ascii?Q?LXdObFadaqUjEfFnHb4NC0FlSP+dcU8GgOmwkt4C82x0ZtYRdRZBJjHFAqYz?=
+ =?us-ascii?Q?MMnDxbbGbTgvZlajgAUoriyhASwn0J2xIs0A83ZpsqrzvcSnp5Vv7RatNpuk?=
+ =?us-ascii?Q?tGjyfKM7YFdeG/+lzGllHslZ5Xo01txsehxDTdVlNcm1G7C7DIKPPNvrhhmL?=
+ =?us-ascii?Q?sogiHQiECTDbbtS6PXc152HHBWnjx+fDgd1Xa7I3aaZ0V6eKIDMJrszCP/uF?=
+ =?us-ascii?Q?G0c0t95Id5WVeD9YgizNenV05meCqkXCZUwC3ce2MwX9GbDExO1QVDbzUOr0?=
+ =?us-ascii?Q?tu+CxewWpZhgI8kLPxO/uqUXvExA791/psw8icYvPqC4NP6FsdRmJuhKlSGW?=
+ =?us-ascii?Q?IA=3D=3D?=
+X-OriginatorOrg: corigine.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 772f0c19-7c49-479c-13c7-08db89dabde0
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jul 2023 11:07:58.7283
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: SXn6gPzFCOz/xCquHmtPgzwJYSKdSzz643PC0KMZVR5fKjUPFKvbxhkduRG4+BnnQUvKCowlhjHiwXusHDMrgvSmYOAf8o478bXv7FcIITc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR13MB4496
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,49 +120,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, linux-security-module@vger.kernel.org, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, kvmarm@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>, linux-arm-kernel@lists.infradead.org, Quentin Perret <qperret@google.com>, linux-mips@vger.kernel.org, Jarkko Sakkinen <jarkko@kernel.org>, Yu Zhang <yu.c.zhang@linux.intel.com>, kvm-riscv@lists.infradead.org, linux-fsdevel@vger.kernel.org, Liam Merwick <liam.merwick@oracle.com>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Giovanni Cabiddu <giovanni.cabiddu@intel.com>, Eric Dumazet <edumazet@google.com>, linux-mtd@lists.infradead.org, Steffen Klassert <steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>, Minchan Kim <minchan@kernel.org>, Richard Weinberger <richard@nod.at>, qat-linux@intel.com, Eric Biggers <ebiggers@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Kees Cook <keescook@chromium.org>, linux-block@vger.kernel.org, Nick Terrell <terrelln@fb.com>, Jens Axboe <axboe@kernel.dk>, netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>, linux-kernel@vger.kernel.org, Sergey Senozhatsky <senozhatsky@chromium.org>, linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/19/23 01:44, Sean Christopherson wrote:
-> From: Chao Peng <chao.p.peng@linux.intel.com>
-> 
-> In confidential computing usages, whether a page is private or shared is
-> necessary information for KVM to perform operations like page fault
-> handling, page zapping etc. There are other potential use cases for
-> per-page memory attributes, e.g. to make memory read-only (or no-exec,
-> or exec-only, etc.) without having to modify memslots.
-> 
-> Introduce two ioctls (advertised by KVM_CAP_MEMORY_ATTRIBUTES) to allow
-> userspace to operate on the per-page memory attributes.
->    - KVM_SET_MEMORY_ATTRIBUTES to set the per-page memory attributes to
->      a guest memory range.
->    - KVM_GET_SUPPORTED_MEMORY_ATTRIBUTES to return the KVM supported
->      memory attributes.
-> 
-> Use an xarray to store the per-page attributes internally, with a naive,
-> not fully optimized implementation, i.e. prioritize correctness over
-> performance for the initial implementation.
-> 
-> Because setting memory attributes is roughly analogous to mprotect() on
-> memory that is mapped into the guest, zap existing mappings prior to
-> updating the memory attributes.  Opportunistically provide an arch hook
-> for the post-set path (needed to complete invalidation anyways) in
-> anticipation of x86 needing the hook to update metadata related to
-> determining whether or not a given gfn can be backed with various sizes
-> of hugepages.
-> 
-> It's possible that future usages may not require an invalidation, e.g.
-> if KVM ends up supporting RWX protections and userspace grants _more_
-> protections, but again opt for simplicity and punt optimizations to
-> if/when they are needed.
-> 
-> Suggested-by: Sean Christopherson <seanjc@google.com>
-> Link: https://lore.kernel.org/all/Y2WB48kD0J4VGynX@google.com
-> Cc: Fuad Tabba <tabba@google.com>
-> Signed-off-by: Chao Peng <chao.p.peng@linux.intel.com>
-> Co-developed-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+On Tue, Jul 18, 2023 at 02:58:45PM +0200, Ard Biesheuvel wrote:
 
-Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
+...
 
+> diff --git a/crypto/crypto_user_stat.c b/crypto/crypto_user_stat.c
+> index d4f3d39b51376973..d3133eda2f528d17 100644
+> --- a/crypto/crypto_user_stat.c
+> +++ b/crypto/crypto_user_stat.c
+> @@ -86,10 +86,6 @@ static int crypto_reportstat_one(struct crypto_alg *alg,
+>  		if (crypto_report_cipher(skb, alg))
+>  			goto nla_put_failure;
+>  		break;
+> -	case CRYPTO_ALG_TYPE_COMPRESS:
+> -		if (crypto_report_comp(skb, alg))
+> -			goto nla_put_failure;
+> -		break;
+
+Hi Ard,
+
+It seems that there is an implementation of crypto_report_comp() in this file
+which is now unused and can be removed.
+
+>  	default:
+>  		pr_err("ERROR: Unhandled alg %d in %s\n",
+>  		       alg->cra_flags & (CRYPTO_ALG_TYPE_MASK | CRYPTO_ALG_LARVAL),
+
+...
