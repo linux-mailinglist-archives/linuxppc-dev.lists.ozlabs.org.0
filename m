@@ -2,63 +2,103 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0DC075C5C5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jul 2023 13:19:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FA8975C648
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jul 2023 14:00:40 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZkemUooe;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YHXM7KcA;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SI/EYGMP;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R6nBG4rbLz3cBP
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jul 2023 21:19:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R6p6F71Lsz3cNB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jul 2023 22:00:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZkemUooe;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YHXM7KcA;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SI/EYGMP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R6n9N1mP8z2yDQ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jul 2023 21:18:16 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 36C2361A7B
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jul 2023 11:18:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE59FC433C7
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jul 2023 11:18:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1689938290;
-	bh=+1pRznIJZVGaXfyHrneWrC6bYAtsOlit/tS0KrtG2yM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ZkemUooeRUEBMXoT+eZuwXtiItz8nm/fDLuhMM6XoA0+EU916wGv+BgIRm9/xgMuX
-	 SHioymbBApSyxanIRzsRJlh1H1xIrmrEecxMCb2eiIpMa2MDza+a4Lq7s8MEmglIDe
-	 ez4c8dEMJ4yU8fNNE27hJRQDS67tU5s8hkkkchIZQ2TJUr2H0Pp5kPNTLBrZ7BE1tE
-	 XtM4lvoh9Le7pYU5tDl1ZWsi1wmd04lf2V4ROGk/Ku3L6+VkMgVjYdls3FN1H/kiR2
-	 xtTShhij+hbZh33BcJIHIG5mmO1W021HSeM9yzvPFkgCtgYQYflWAvK86K6XkJEDCq
-	 e88ULpSvyQglQ==
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-4fb41682472so2899820e87.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jul 2023 04:18:10 -0700 (PDT)
-X-Gm-Message-State: ABy/qLZAP4YEZmGia1OK7Skr2C2IpLPE+29r2V570exeXdUlw1ZjYTK5
-	55Kbz7vgskvzs86YT0tp9yFsPbdfeHhyFlpcF50=
-X-Google-Smtp-Source: APBJJlGgzNV4bS4ZImEmRoMMfW0jhmUui+8qThAJBRzr+dpV1Qj1REJCRGaubl5KmDySuU4gh04KMBTQZciuHQWvik4=
-X-Received: by 2002:a05:6512:6d4:b0:4f9:58ed:7bba with SMTP id
- u20-20020a05651206d400b004f958ed7bbamr1221034lff.16.1689938288556; Fri, 21
- Jul 2023 04:18:08 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R6p5K1BpRz3bZ4
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jul 2023 21:59:47 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1689940784;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4Y7rbnaDJbn/YejSF4mQVA8Z4grlfMZHjKPnDFxLZ8A=;
+	b=YHXM7KcASdfLkCmk6CoRB72/QDK4OrdLrBvJOV0dmj6dvtr5W4iyzaQ8zq5ogSIW2K8sd2
+	AyrJDQhEqno3eUs4XUImLLHNqJ+5X7vtpDt+XkEJiEODpN8WBJJ3vyZr7sWNMiH0QK1Cq8
+	BFx00o/DhAWw79gVMgpmqqsHqxndlNQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1689940785;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4Y7rbnaDJbn/YejSF4mQVA8Z4grlfMZHjKPnDFxLZ8A=;
+	b=SI/EYGMPxs3sG0Shg+mAasgdK1Wr6g2Do0jHrrOve0q6stPYvVWL2LPrG2ZkSWzWOLNOP4
+	AyvrGguHF6snlrCbgDU0e8eXg6aHYdwRB2AO4nFliTDOyMgicfULEBLBeu9QRY7sNPoDuy
+	IfMUVBN5S/dHd9qLjQRNsw6jR2o0NvA=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-532-_igoYDMcOXyYSW77IVCNiw-1; Fri, 21 Jul 2023 07:59:41 -0400
+X-MC-Unique: _igoYDMcOXyYSW77IVCNiw-1
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-993c2d9e496so119393266b.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jul 2023 04:59:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689940780; x=1690545580;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4Y7rbnaDJbn/YejSF4mQVA8Z4grlfMZHjKPnDFxLZ8A=;
+        b=XQPKizXYCsVP9s0tObnVOsrZHcwlov7XgHP7CKQSXccYYnJ/aS4mjlJKvGKxyS34JO
+         O5AAJIsvqOfyocSQ0J4IBLeXUh47hnbCfeAN5VAJ9Dnnz+PlYK0FGYgBPAYnDduntwrE
+         LsCvJx4JE+MsZ/cf/5ux9DbX83YZMC4MMXGn5KbpraGsLW4EEHhA05pShZMr5zf8RBfQ
+         XEkTwpdUtVEjOWvKty8EhTX1gLFJxOSXhydPqfYuVQIdDmVmneDsG04iycibS9kJvtZB
+         29gQQDEluXflRb2PgHm4QxPzb3yaPFxBZWD033m50MQqfDOLmNqi6PXOJZFaf9zii7GU
+         KgNg==
+X-Gm-Message-State: ABy/qLbg0+wz5kML3Q4sA2NhavCH9DZdT0DUPqHgIYy5JvnJw51gYfTu
+	FzoLba9XlBI30HQ6AB2TR4jJ52SdCY3jEu3eGljdXbgcob8cS2iM55+91b/0WT+4vzZtMm8apIM
+	qUBykHLM57KX+ObzJKDtYF4P7ng==
+X-Received: by 2002:a17:906:2da:b0:994:54af:e282 with SMTP id 26-20020a17090602da00b0099454afe282mr1360618ejk.10.1689940779999;
+        Fri, 21 Jul 2023 04:59:39 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEk/l1rT7vVGyK6B+M0/vN6OF6CipTv2G0AE0UWGqg9sgFPNWcoUSGmc+Sw2v1G9OPem3PIcQ==
+X-Received: by 2002:a17:906:2da:b0:994:54af:e282 with SMTP id 26-20020a17090602da00b0099454afe282mr1360600ejk.10.1689940779630;
+        Fri, 21 Jul 2023 04:59:39 -0700 (PDT)
+Received: from ?IPV6:2001:b07:6468:f312:9af8:e5f5:7516:fa89? ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
+        by smtp.googlemail.com with ESMTPSA id um15-20020a170906cf8f00b00992b3ea1ee3sm2078970ejb.159.2023.07.21.04.59.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 21 Jul 2023 04:59:38 -0700 (PDT)
+Message-ID: <6118063e-5c91-acc4-129f-3bacc19f25ce@redhat.com>
+Date: Fri, 21 Jul 2023 13:59:36 +0200
 MIME-Version: 1.0
-References: <20230718125847.3869700-1-ardb@kernel.org> <20230718125847.3869700-21-ardb@kernel.org>
- <ZLpoDumeF/+xax/V@corigine.com>
-In-Reply-To: <ZLpoDumeF/+xax/V@corigine.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 21 Jul 2023 13:17:57 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXE4BFjracdzsM87Kq40t683RnT4VXEZjU0d0gRVwso=vA@mail.gmail.com>
-Message-ID: <CAMj1kXE4BFjracdzsM87Kq40t683RnT4VXEZjU0d0gRVwso=vA@mail.gmail.com>
-Subject: Re: [RFC PATCH 20/21] crypto: deflate - implement acomp API directly
-To: Simon Horman <simon.horman@corigine.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [RFC PATCH v11 09/29] KVM: x86: Disallow hugepages when memory
+ attributes are mixed
+To: Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>,
+ Oliver Upton <oliver.upton@linux.dev>, Huacai Chen <chenhuacai@kernel.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, Anup Patel <anup@brainfault.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Paul Moore <paul@paul-moore.com>,
+ James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>
+References: <20230718234512.1690985-1-seanjc@google.com>
+ <20230718234512.1690985-10-seanjc@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <20230718234512.1690985-10-seanjc@google.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,107 +110,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Giovanni Cabiddu <giovanni.cabiddu@intel.com>, Eric Dumazet <edumazet@google.com>, linux-mtd@lists.infradead.org, Steffen Klassert <steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>, Minchan Kim <minchan@kernel.org>, Richard Weinberger <richard@nod.at>, qat-linux@intel.com, Eric Biggers <ebiggers@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Kees Cook <keescook@chromium.org>, linux-block@vger.kernel.org, Nick Terrell <terrelln@fb.com>, Jens Axboe <axboe@kernel.dk>, netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>, linux-kernel@vger.kernel.org, Sergey Senozhatsky <senozhatsky@chromium.org>, linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, linux-security-module@vger.kernel.org, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, kvmarm@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>, linux-arm-kernel@lists.infradead.org, Quentin Perret <qperret@google.com>, linux-mips@vger.kernel.org, Jarkko Sakkinen <jarkko@kernel.org>, Yu Zhang <yu.c.zhang@linux.intel.com>, kvm-riscv@lists.infradead.org, linux-fsdevel@vger.kernel.org, Liam Merwick <liam.merwick@oracle.com>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 21 Jul 2023 at 13:12, Simon Horman <simon.horman@corigine.com> wrote:
->
-> On Tue, Jul 18, 2023 at 02:58:46PM +0200, Ard Biesheuvel wrote:
->
-> ...
->
-> > -static int deflate_comp_init(struct deflate_ctx *ctx)
-> > +static int deflate_process(struct acomp_req *req, struct z_stream_s *stream,
-> > +                        int (*process)(struct z_stream_s *, int))
-> >  {
-> > -     int ret = 0;
-> > -     struct z_stream_s *stream = &ctx->comp_stream;
-> > +     unsigned int slen = req->slen;
-> > +     unsigned int dlen = req->dlen;
-> > +     struct scatter_walk src, dst;
-> > +     unsigned int scur, dcur;
-> > +     int ret;
-> >
-> > -     stream->workspace = vzalloc(zlib_deflate_workspacesize(
-> > -                             -DEFLATE_DEF_WINBITS, DEFLATE_DEF_MEMLEVEL));
-> > -     if (!stream->workspace) {
-> > -             ret = -ENOMEM;
-> > -             goto out;
-> > -     }
-> > +     stream->avail_in = stream->avail_out = 0;
-> > +
-> > +     scatterwalk_start(&src, req->src);
-> > +     scatterwalk_start(&dst, req->dst);
-> > +
-> > +     scur = dcur = 0;
-> > +
-> > +     do {
-> > +             if (stream->avail_in == 0) {
-> > +                     if (scur) {
-> > +                             slen -= scur;
-> > +
-> > +                             scatterwalk_unmap(stream->next_in - scur);
-> > +                             scatterwalk_advance(&src, scur);
-> > +                             scatterwalk_done(&src, 0, slen);
-> > +                     }
-> > +
-> > +                     scur = scatterwalk_clamp(&src, slen);
-> > +                     if (scur) {
-> > +                             stream->next_in = scatterwalk_map(&src);
-> > +                             stream->avail_in = scur;
-> > +                     }
-> > +             }
-> > +
-> > +             if (stream->avail_out == 0) {
-> > +                     if (dcur) {
-> > +                             dlen -= dcur;
-> > +
-> > +                             scatterwalk_unmap(stream->next_out - dcur);
-> > +                             scatterwalk_advance(&dst, dcur);
-> > +                             scatterwalk_done(&dst, 1, dlen);
-> > +                     }
-> > +
-> > +                     dcur = scatterwalk_clamp(&dst, dlen);
-> > +                     if (!dcur)
-> > +                             break;
->
-> Hi Ard,
->
-> I'm unsure if this can happen. But if this break occurs in the first
-> iteration of this do loop, then ret will be used uninitialised below.
->
-> Smatch noticed this.
->
+On 7/19/23 01:44, Sean Christopherson wrote:
+> +static bool range_has_attrs(struct kvm *kvm, gfn_t start, gfn_t end,
+> +			    unsigned long attrs)
+> +{
+> +	XA_STATE(xas, &kvm->mem_attr_array, start);
+> +	unsigned long index;
+> +	bool has_attrs;
+> +	void *entry;
+> +
+> +	rcu_read_lock();
+> +
+> +	if (!attrs) {
+> +		has_attrs = !xas_find(&xas, end);
+> +		goto out;
+> +	}
+> +
+> +	has_attrs = true;
+> +	for (index = start; index < end; index++) {
+> +		do {
+> +			entry = xas_next(&xas);
+> +		} while (xas_retry(&xas, entry));
+> +
+> +		if (xas.xa_index != index || xa_to_value(entry) != attrs) {
+> +			has_attrs = false;
+> +			break;
+> +		}
+> +	}
+> +
+> +out:
+> +	rcu_read_unlock();
+> +	return has_attrs;
+> +}
+> +
 
-Thanks.
+Can you move this function to virt/kvm/kvm_main.c?
 
-This should not happen - it would mean req->dlen == 0, which is
-rejected before this function is even called.
+Thanks,
 
-Whether or not it might ever happen in practice is a different matter,
-of course, so I should probably initialize 'ret' to something sane.
+Paolo
 
-
-
-> > +
-> > +                     stream->next_out = scatterwalk_map(&dst);
-> > +                     stream->avail_out = dcur;
-> > +             }
-> > +
-> > +             ret = process(stream, (slen == scur) ? Z_FINISH : Z_SYNC_FLUSH);
-> > +     } while (ret == Z_OK);
-> > +
-> > +     if (scur)
-> > +             scatterwalk_unmap(stream->next_in - scur);
-> > +     if (dcur)
-> > +             scatterwalk_unmap(stream->next_out - dcur);
-> > +
-> > +     if (ret != Z_STREAM_END)
-> > +             return -EINVAL;
-> > +
-> > +     req->dlen = stream->total_out;
-> > +     return 0;
-> > +}
->
-> ...
