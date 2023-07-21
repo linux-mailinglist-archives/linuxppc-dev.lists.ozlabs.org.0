@@ -2,68 +2,103 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AF4075D06D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jul 2023 19:14:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E18A75D07E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jul 2023 19:18:40 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=saEUf444;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aGpEsayE;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aGpEsayE;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R6x4Y1NkBz3cWf
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jul 2023 03:14:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R6x9B1SK8z3cGq
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jul 2023 03:18:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=saEUf444;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aGpEsayE;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aGpEsayE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::114a; helo=mail-yw1-x114a.google.com; envelope-from=3y7y6zaykdfwm84hd6aiiaf8.6igfchorjj6-78pfcmnm.itf45m.ila@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R6x3h4Yg5z3brc
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jul 2023 03:13:51 +1000 (AEST)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-569e7aec37bso22523387b3.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jul 2023 10:13:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1689959628; x=1690564428;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7shZuEDiffXRYK22UXnQcffVUND6wfTW4U7DmHj+BWc=;
-        b=saEUf4445sfHkPWRX975heL8zENfXcs3PgCyCgvEVdQjEpNK/pp+iAjdHt4YEb3A4E
-         Wx6AMp1fx4AxdUC7quE/wuY8PzajpllFI1PSVxa0GJ6TCvZZ95BwZYWsRgoM01BQ4SqE
-         g1i1UMNIUCRiN6vVjQF+QtV7pxLVFxnr+vtjGFTshuCRS/R0Np16E0/qf+bH5mnx7XFz
-         ZsljdMjRbBLWTIazxQedjqyAevMpWeXTTd8MiT3v+VX/sBebfo66Po7WIiS0jw2kNrZS
-         H5psY9S7R0h0zicR7miAPapKCtbYppPvDwh7bNN96b+Zux6kO9omgHgr2n7bbHvjHh23
-         55GA==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R6x8F5m6fz3brc
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jul 2023 03:17:49 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1689959866;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kQftevPX0XUeLPrBO0NAWxPIrge3Hp6/1+H4UC+Ikhg=;
+	b=aGpEsayEMem0cQqB5aOt2SUVg8DQE1B3mFYgL4PpxE87aXikhL5twTM45vbLLM/+R4Fs5R
+	O9AjnxRAbM0f36qfWn6wfDodxw9KCCtapAuOJ7Sp+4pz5P2vXNSYXXS1UDWboMILWZ8jRS
+	JAEPIkaVq3UOYP28oXggesOgB4YK97o=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1689959866;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kQftevPX0XUeLPrBO0NAWxPIrge3Hp6/1+H4UC+Ikhg=;
+	b=aGpEsayEMem0cQqB5aOt2SUVg8DQE1B3mFYgL4PpxE87aXikhL5twTM45vbLLM/+R4Fs5R
+	O9AjnxRAbM0f36qfWn6wfDodxw9KCCtapAuOJ7Sp+4pz5P2vXNSYXXS1UDWboMILWZ8jRS
+	JAEPIkaVq3UOYP28oXggesOgB4YK97o=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-627-h9plkLUiOcqidxIAawkBAQ-1; Fri, 21 Jul 2023 13:17:42 -0400
+X-MC-Unique: h9plkLUiOcqidxIAawkBAQ-1
+Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-521a38098faso1345603a12.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jul 2023 10:17:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689959628; x=1690564428;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7shZuEDiffXRYK22UXnQcffVUND6wfTW4U7DmHj+BWc=;
-        b=O7EdTWPEYl4rXbSBW1ewH0P2xvHgn4SF5Er4l0+BqQ8zzY6A41sGI2rfH/IPzaiW90
-         b0RWbzQP1QCjLtrRLhLHh6NvUQl55dJI965TLI7mY5KWZn+mN9b5jGi7yetAqYTWmnI3
-         YZpCkBDwPf+83J7ZTLmaLuhqGuElYKBfr6fqsAlSgdGk17tYpaJ8TMOuJpApEfEAT2GH
-         Yx3hF/Rpy4TvZR/8OPm9fEbA5CBAtlCVO+EuGXq46lKjuAizO/BrWbhVM01yOZ7/fJ0c
-         BNxqhqKUNURCRerHHxVUw0nyZKhXJPjtu3hP+GcPpiKE21X0nrkLFSkN2vkegQCm7SEy
-         acnw==
-X-Gm-Message-State: ABy/qLZSG+ZeLIntUkSQHit+KqHf9opUSuMWvs3WlXm8Qwchpn28MEEb
-	aa1RzPjNU2JwfzK5k1CfumBjyGX6j48=
-X-Google-Smtp-Source: APBJJlHTu6oxQip7Fs57WKX81frcXYslN0cZxNmgdAvx9eWDlCTFu1+cjXODNvw8IvlIlsVUOd7h6YXth7Y=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a25:a28f:0:b0:c6e:fe1a:3657 with SMTP id
- c15-20020a25a28f000000b00c6efe1a3657mr16139ybi.3.1689959627795; Fri, 21 Jul
- 2023 10:13:47 -0700 (PDT)
-Date: Fri, 21 Jul 2023 10:13:46 -0700
-In-Reply-To: <84a908ae-04c7-51c7-c9a8-119e1933a189@redhat.com>
-Mime-Version: 1.0
-References: <20230718234512.1690985-1-seanjc@google.com> <20230718234512.1690985-14-seanjc@google.com>
- <84a908ae-04c7-51c7-c9a8-119e1933a189@redhat.com>
-Message-ID: <ZLq8ylTsFQ1s4BAZ@google.com>
-Subject: Re: [RFC PATCH v11 13/29] KVM: Add transparent hugepage support for
- dedicated guest memory
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="us-ascii"
+        d=1e100.net; s=20221208; t=1689959861; x=1690564661;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kQftevPX0XUeLPrBO0NAWxPIrge3Hp6/1+H4UC+Ikhg=;
+        b=YO4T0m430/XrdXJb/kjv5KDtpQyXz3+T8w0lqJzwkgCnJUm1cm+POyT8B9jb17eMqm
+         fG/FF2sEt4NKA8DANp8D4G3MvDRNi+LkyVa47oZjuAszQ29YANlaMwwmHqmU0ztfT/AD
+         DtpJY3sy+dAmkLZXYI6wR8IVdh1QE+QL+TyJNAfK91e+c9DdsSlfA5wznApTFaLT7MfK
+         0Efi49iDlHH8oqoF1o+Fo39XXtxBn1BTRTTGbjvsUKSGTutLA+Gjdw2JpT3hvlYEra3U
+         CjZcSyeUiV/AMJS+yhFoz2uEAFk4yBX7pfcynsEkA7zDRrgnWiVhIy0ysFMFy7sg+DlH
+         jshA==
+X-Gm-Message-State: ABy/qLZb7Fd3BDuVz8hpwL7k+O2wo6RYKVHuB0HIeeCYaAIAXUu55V+o
+	BOb2lDNlRlfhOk8uA5/WoX5xHdjWJ/CZBVzaz3dCy4udYaVe1Zbh8NzhVPxE8mW7ygiNwfQijYE
+	9MAWutyBNmDsOD76CbHTVxKTBag==
+X-Received: by 2002:aa7:c753:0:b0:51e:1a51:d414 with SMTP id c19-20020aa7c753000000b0051e1a51d414mr1878187eds.32.1689959861040;
+        Fri, 21 Jul 2023 10:17:41 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFyyf9U2FFYwtGg7Nfx7TqscSvBa0fBBUyOLoWSpgQImoylEzXmYhbWs/84TcbA6dVob4NtSg==
+X-Received: by 2002:aa7:c753:0:b0:51e:1a51:d414 with SMTP id c19-20020aa7c753000000b0051e1a51d414mr1878159eds.32.1689959860744;
+        Fri, 21 Jul 2023 10:17:40 -0700 (PDT)
+Received: from ?IPV6:2001:b07:6468:f312:9af8:e5f5:7516:fa89? ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
+        by smtp.googlemail.com with ESMTPSA id l9-20020aa7c309000000b0051d87e72159sm2346640edq.13.2023.07.21.10.17.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 21 Jul 2023 10:17:40 -0700 (PDT)
+Message-ID: <8ad7a846-64e9-a3f1-4bf1-731a994d62cb@redhat.com>
+Date: Fri, 21 Jul 2023 19:17:37 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+To: Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>,
+ Oliver Upton <oliver.upton@linux.dev>, Huacai Chen <chenhuacai@kernel.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, Anup Patel <anup@brainfault.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Paul Moore <paul@paul-moore.com>,
+ James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>
+References: <20230718234512.1690985-1-seanjc@google.com>
+ <20230718234512.1690985-13-seanjc@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [RFC PATCH v11 12/29] KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for
+ guest-specific backing memory
+In-Reply-To: <20230718234512.1690985-13-seanjc@google.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,23 +110,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Paul Moore <paul@paul-moore.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, James Morris <jmorris@namei.org>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, "Serge E. Hallyn" <serge@hallyn.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Vlastimil Babka <vbabka@suse.cz>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Quentin Perret <qperret@google.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, linux-s
- ecurity-module@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-fsdevel@vger.kernel.org, Liam Merwick <liam.merwick@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, linux-security-module@vger.kernel.org, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, kvmarm@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>, linux-arm-kernel@lists.infradead.org, Quentin Perret <qperret@google.com>, linux-mips@vger.kernel.org, Jarkko Sakkinen <jarkko@kernel.org>, Yu Zhang <yu.c.zhang@linux.intel.com>, kvm-riscv@lists.infradead.org, linux-fsdevel@vger.kernel.org, Liam Merwick <liam.merwick@oracle.com>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jul 21, 2023, Paolo Bonzini wrote:
-> On 7/19/23 01:44, Sean Christopherson wrote:
-> > @@ -413,6 +454,9 @@ int kvm_gmem_create(struct kvm *kvm, struct kvm_create_guest_memfd *args)
-> >   	u64 flags = args->flags;
-> >   	u64 valid_flags = 0;
-> > +	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
-> > +		valid_flags |= KVM_GUEST_MEMFD_ALLOW_HUGEPAGE;
-> > +
-> 
-> I think it should be always allowed.  The outcome would just be "never have
-> a hugepage" if thp is not enabled in the kernel.
+On 7/19/23 01:44, Sean Christopherson wrote:
+> +	inode = alloc_anon_inode(mnt->mnt_sb);
+> +	if (IS_ERR(inode))
+> +		return PTR_ERR(inode);
+> +
+> +	err = security_inode_init_security_anon(inode, &qname, NULL);
+> +	if (err)
+> +		goto err_inode;
+> +
 
-I don't have a strong preference.  My thinking was that userspace would probably
-rather have an explicit error, as opposed to silently running with a misconfigured
-setup.
+I don't understand the need to have a separate filesystem.  If it is to 
+fully setup the inode before it's given a struct file, why not just 
+export anon_inode_make_secure_inode instead of 
+security_inode_init_security_anon?
+
+Paolo
+
