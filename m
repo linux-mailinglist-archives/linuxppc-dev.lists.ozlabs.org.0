@@ -2,64 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D581175D89E
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jul 2023 03:23:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35DC675DC98
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jul 2023 14:39:20 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qX6KSrLj;
+	dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=PBg6aGLa;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R77wc6k8Fz3c4s
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jul 2023 11:23:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R7QwP0C18z2xBV
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jul 2023 22:39:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qX6KSrLj;
+	dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=PBg6aGLa;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=kuba@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R77vh6T8kz3bt5
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jul 2023 11:22:40 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 0344D61DB8;
-	Sat, 22 Jul 2023 01:22:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A5AEC433C7;
-	Sat, 22 Jul 2023 01:22:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1689988957;
-	bh=ymdnVGyJNnGUv2HZI8/M1PK0lCyu640ix4SSxWqfV44=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qX6KSrLjUNhNPi02nh+6ca0mclsiX8ngx6MgAoXToVEXfxGVJDqDd+M/xrQSvGPdo
-	 HnjJABDZ+OFRbofb+JDvnjIEveDSuko/ikgRmWfqsjkq952i36BAMvINTGaChjawkN
-	 B6OgwD+8AJO8pd8z/xs4a/6K9P/a/2QBnvpuWam+MrqHhLdmuXK4SwdOcmYgpxe7vM
-	 22q4vDY9qAL+C5nUG3OBKyhHxxOwDvkPnHotsHGxEf6IGBGHRf44LFpW0ECov/5dH/
-	 YZurOS/9kOxHoWBIWBcbE7057VWjExGXUHZp3YSqZogBmtq6DHFSz4dzR5vmf0EeHL
-	 9OCfZ4ADrf3gQ==
-Date: Fri, 21 Jul 2023 18:22:35 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Steven Rostedt <rostedt@goodmis.org>
-Subject: Re: [PATCH] tracing: Have all levels of checks prevent recursion
-Message-ID: <20230721182235.6617a466@kernel.org>
-In-Reply-To: <20230721122632.56b4df6c@gandalf.local.home>
-References: <20211015110035.14813389@gandalf.local.home>
-	<20211015161702.GF174703@worktop.programming.kicks-ass.net>
-	<20211015133504.6c0a9fcc@gandalf.local.home>
-	<20211015135806.72d1af23@gandalf.local.home>
-	<20211015180429.GK174703@worktop.programming.kicks-ass.net>
-	<20211015142033.72605b47@gandalf.local.home>
-	<20211015142541.4badd8a9@gandalf.local.home>
-	<1b402c0c-1beb-d93f-ff6d-955350995ca3@intel.com>
-	<20230721120040.6ed2c02a@gandalf.local.home>
-	<035cee53-255b-11a3-d7ac-ca46c05b907b@intel.com>
-	<20230721122632.56b4df6c@gandalf.local.home>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=163.com (client-ip=220.181.12.196; helo=m12.mail.163.com; envelope-from=ruc_gongyuanjun@163.com; receiver=lists.ozlabs.org)
+Received: from m12.mail.163.com (m12.mail.163.com [220.181.12.196])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R7QvT0ntcz301f
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jul 2023 22:38:24 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-Id; bh=FZd87sezY+M7cLoVe0
+	n9W2LUt1uTkSIVvAU1mMdhtzw=; b=PBg6aGLabMA7Kuije/9IgwFKTaFhvWWoNN
+	3dPAZdz9zdIj3VTzbOdjaM0x+5pZ5m/yV+FMh1VQI6pYMU6jTSxhRk4b7iAJejHs
+	5Pc/j3yXxZtzFOaxYXgr8y0pRGRFbiA+4kkXgReRuSeb+7vjwB0kF+/zM199yXYW
+	WtiKBilpI=
+Received: from localhost.localdomain (unknown [202.112.113.212])
+	by zwqz-smtp-mta-g1-4 (Coremail) with SMTP id _____wDHNEKWzbtkd2XqAw--.21486S4;
+	Sat, 22 Jul 2023 20:38:15 +0800 (CST)
+From: Yuanjun Gong <ruc_gongyuanjun@163.com>
+To: shengjiu.wang@gmail.com
+Subject: [PATCH v2 1/1] ASoC: imx-audmux: fix return value checks of clk_prepare_enable()
+Date: Sat, 22 Jul 2023 20:36:35 +0800
+Message-Id: <20230722123635.26623-1-ruc_gongyuanjun@163.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <CAA+D8AP-3SWJe21qfMVz0j3umvS9bzDkeuQtab4OFrc2Ur+eVw@mail.gmail.com>
+References: <CAA+D8AP-3SWJe21qfMVz0j3umvS9bzDkeuQtab4OFrc2Ur+eVw@mail.gmail.com>
+X-CM-TRANSID: _____wDHNEKWzbtkd2XqAw--.21486S4
+X-Coremail-Antispam: 1Uf129KBjvJXoWrKFyfArW3WFWkKF43CF18AFb_yoW8Jr43pr
+	Z2yrWYgrW8JrZ5Gw4fGr1kCF13ArZ2kF47Z397Gan2q3ZxArnrX3WFqrn0vFs5Kr9YkF98
+	GF4DGFyrAw1jyr7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piy89_UUUUU=
+X-Originating-IP: [202.112.113.212]
+X-CM-SenderInfo: 5uxfsw5rqj53pdqm30i6rwjhhfrp/1tbiJxi05V5vE3swbwAAso
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,21 +54,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?UTF-8?B?546L6LSH?= <yun.wang@linux.alibaba.com>, Peter Zijlstra <peterz@infradead.org>, Paul Walmsley <paul.walmsley@sifive.com>, "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, Paul Mackerras <paulus@samba.org>, Jisheng Zhang <jszhang@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, live-patching@vger.kernel.org, linux-riscv@lists.infradead.org, Miroslav Benes <mbenes@suse.cz>, Joe Lawrence <joe.lawrence@redhat.com>, Helge Deller <deller@gmx.de>, x86@kernel.org, linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, Petr Mladek <pmladek@suse.com>, Albert Ou <aou@eecs.berkeley.edu>, Jiri Kosina <jikos@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Josh Poimboeuf <jpoimboe@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, linux-parisc@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, Alexander Lobakin <aleksander.lobakin@intel.com>, Palmer Dabbelt <palmer@dabbelt.com>, Masami Hiramatsu <mhiramat@kernel.org>, Guo Ren <guo
- ren@kernel.org>, Colin Ian King <colin.king@canonical.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, ruc_gongyuanjun@163.com, festevam@gmail.com, Xiubo.Lee@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 21 Jul 2023 12:26:32 -0400 Steven Rostedt wrote:
-> > if (!(in_hardirq() || irqs_disabled()))
-> >   
-> 
-> Yeah, probably.
-> 
-> > , nothing more elegant / already existing / ...?  
-> 
-> It's not a common check. What would you call that?
+check the return value of clk_prepare_enable(), and if
+clk_prepare_enable() gets an unexpected return value,
+imx_audmux_suspend() and imx_audmux_resume() should return
+the error value.
 
-Looks like Olek started the weekend already so let me answer.
-He's trying to check if we can use a fast path cache which takes
-a _bh spin lock.
+Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
+---
+ sound/soc/fsl/imx-audmux.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/sound/soc/fsl/imx-audmux.c b/sound/soc/fsl/imx-audmux.c
+index be003a117b39..9791e56158ef 100644
+--- a/sound/soc/fsl/imx-audmux.c
++++ b/sound/soc/fsl/imx-audmux.c
+@@ -325,8 +325,11 @@ static void imx_audmux_remove(struct platform_device *pdev)
+ static int imx_audmux_suspend(struct device *dev)
+ {
+ 	int i;
++	ssize_t ret;
+ 
+-	clk_prepare_enable(audmux_clk);
++	ret = clk_prepare_enable(audmux_clk);
++	if (ret)
++		return ret;
+ 
+ 	for (i = 0; i < reg_max; i++)
+ 		regcache[i] = readl(audmux_base + i * 4);
+@@ -339,8 +342,11 @@ static int imx_audmux_suspend(struct device *dev)
+ static int imx_audmux_resume(struct device *dev)
+ {
+ 	int i;
++	ssize_t ret;
+ 
+-	clk_prepare_enable(audmux_clk);
++	ret = clk_prepare_enable(audmux_clk);
++	if (ret)
++		return ret;
+ 
+ 	for (i = 0; i < reg_max; i++)
+ 		writel(regcache[i], audmux_base + i * 4);
+-- 
+2.17.1
+
