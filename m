@@ -1,69 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A494275D78E
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jul 2023 00:34:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D581175D89E
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jul 2023 03:23:31 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=N3JmIIRF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qX6KSrLj;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R749F41Y2z3c4C
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jul 2023 08:34:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R77wc6k8Fz3c4s
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jul 2023 11:23:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=N3JmIIRF;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qX6KSrLj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::114a; helo=mail-yw1-x114a.google.com; envelope-from=3rqe7zaykdnqi40d926ee6b4.2ecb8dknff2-34lb8iji.epb01i.eh6@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=kuba@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R748K3jPdz3bX5
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jul 2023 08:33:19 +1000 (AEST)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-573d70da2dcso24458287b3.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jul 2023 15:33:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1689978797; x=1690583597;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7T9EVRBobAr4a8JPgfiIjIX72kF/VyhERBKOIDOEvTo=;
-        b=N3JmIIRFuucWrTRji2j76NW5FMl4jS4wLA3POQW0VLRrR4sFhmKgj7pRUj3gSs0yqe
-         WZvjiVqpyglaAnq94LWefXiOIlgXr/PrbktD6W+TBAFf6s+alvi+gxgQyH8TNpVAsODx
-         OCRkSmym8Xr89af+taUXT0Vhz6Xh0SqYzK++E+LxDlItaWIfk/xiv3hy/q9bOsyCLBei
-         XOyxBMd+5ThifDUK6/o5f+QTqfW/eyfYM90Y+kU5f1e/gaMgZLzn2OVn9bd0Flf7Aat3
-         ovp2GWeXuTu2BrzRvrwJog7aZBAUD7Ob8wE6NUPaB8bQmPi6OopUS5w2j6M71SZpRLW7
-         K0fQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689978797; x=1690583597;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7T9EVRBobAr4a8JPgfiIjIX72kF/VyhERBKOIDOEvTo=;
-        b=i2UQXA82ifgEOq49Ic+1CXAyanFc4ifxfpUgMxZw2Brz1srloJTJ1KfJA3C4zDdZXG
-         WNeCXv7GX9T5L9kDE5FdRGYoCmHboyE4g20HAUSqBqfPzqRzIeZbExbXTf/G3/lVAvzS
-         s6CWfFi0DwoV0NT5JOxkrSVXoOCVRZctSRqwCdxC46qmu68f61G/ayAHyf1SECBYcNTs
-         NzFFDZP3u+Y0NTJoAJ+0WqOlGybRoeUXVggeauWBGdSAsQTmG1h6rzEuP1ZgTVECD5SP
-         p9rVtk9Hd1RC/YHAOA1NmTQDBubYcJTx0eoORGY06dM6XJMZkxpC3HKVGhSDBaRBcuYU
-         EKbQ==
-X-Gm-Message-State: ABy/qLYrV3wWPZKO11pLnzTHen2CpPf7hA9r9y3e/rpW116wbstoVBaL
-	otWumMGsb+DYVp5YzWYW0nyPGQ8ohEM=
-X-Google-Smtp-Source: APBJJlHilhePzxpErmYmDQimNKPr2Kn3t6yMJLQXIDH2a2VxS3jSVStiMTfJxkBt/UbXzPR1R9iVHrOiOZs=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a25:ce82:0:b0:d04:faa6:e62b with SMTP id
- x124-20020a25ce82000000b00d04faa6e62bmr11683ybe.6.1689978797172; Fri, 21 Jul
- 2023 15:33:17 -0700 (PDT)
-Date: Fri, 21 Jul 2023 15:33:15 -0700
-In-Reply-To: <20230721222704.GJ25699@ls.amr.corp.intel.com>
-Mime-Version: 1.0
-References: <20230718234512.1690985-1-seanjc@google.com> <20230718234512.1690985-13-seanjc@google.com>
- <20230721061314.3ls6stdawz53drv3@yy-desk-7060> <20230721222704.GJ25699@ls.amr.corp.intel.com>
-Message-ID: <ZLsHq69sMG7pmRiz@google.com>
-Subject: Re: [RFC PATCH v11 12/29] KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for
- guest-specific backing memory
-From: Sean Christopherson <seanjc@google.com>
-To: Isaku Yamahata <isaku.yamahata@gmail.com>
-Content-Type: text/plain; charset="us-ascii"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R77vh6T8kz3bt5
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jul 2023 11:22:40 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 0344D61DB8;
+	Sat, 22 Jul 2023 01:22:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A5AEC433C7;
+	Sat, 22 Jul 2023 01:22:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1689988957;
+	bh=ymdnVGyJNnGUv2HZI8/M1PK0lCyu640ix4SSxWqfV44=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=qX6KSrLjUNhNPi02nh+6ca0mclsiX8ngx6MgAoXToVEXfxGVJDqDd+M/xrQSvGPdo
+	 HnjJABDZ+OFRbofb+JDvnjIEveDSuko/ikgRmWfqsjkq952i36BAMvINTGaChjawkN
+	 B6OgwD+8AJO8pd8z/xs4a/6K9P/a/2QBnvpuWam+MrqHhLdmuXK4SwdOcmYgpxe7vM
+	 22q4vDY9qAL+C5nUG3OBKyhHxxOwDvkPnHotsHGxEf6IGBGHRf44LFpW0ECov/5dH/
+	 YZurOS/9kOxHoWBIWBcbE7057VWjExGXUHZp3YSqZogBmtq6DHFSz4dzR5vmf0EeHL
+	 9OCfZ4ADrf3gQ==
+Date: Fri, 21 Jul 2023 18:22:35 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH] tracing: Have all levels of checks prevent recursion
+Message-ID: <20230721182235.6617a466@kernel.org>
+In-Reply-To: <20230721122632.56b4df6c@gandalf.local.home>
+References: <20211015110035.14813389@gandalf.local.home>
+	<20211015161702.GF174703@worktop.programming.kicks-ass.net>
+	<20211015133504.6c0a9fcc@gandalf.local.home>
+	<20211015135806.72d1af23@gandalf.local.home>
+	<20211015180429.GK174703@worktop.programming.kicks-ass.net>
+	<20211015142033.72605b47@gandalf.local.home>
+	<20211015142541.4badd8a9@gandalf.local.home>
+	<1b402c0c-1beb-d93f-ff6d-955350995ca3@intel.com>
+	<20230721120040.6ed2c02a@gandalf.local.home>
+	<035cee53-255b-11a3-d7ac-ca46c05b907b@intel.com>
+	<20230721122632.56b4df6c@gandalf.local.home>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,43 +71,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Marc Zyngier <maz@kernel.org>, Paul Moore <paul@paul-moore.com>, Huacai Chen <chenhuacai@kernel.org>, James Morris <jmorris@namei.org>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, "Serge E. Hallyn" <serge@hallyn.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Vlastimil Babka <vbabka@suse.cz>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Yuan Yao <yuan.yao@linux.intel.com>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Quentin Perret <qperret@google.com>, Liam Merwick <liam.merwick@oracle.com>, linux-mips@vger.kernel.org, Oliver Upton
-  <oliver.upton@linux.dev>, linux-security-module@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: =?UTF-8?B?546L6LSH?= <yun.wang@linux.alibaba.com>, Peter Zijlstra <peterz@infradead.org>, Paul Walmsley <paul.walmsley@sifive.com>, "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, Paul Mackerras <paulus@samba.org>, Jisheng Zhang <jszhang@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, live-patching@vger.kernel.org, linux-riscv@lists.infradead.org, Miroslav Benes <mbenes@suse.cz>, Joe Lawrence <joe.lawrence@redhat.com>, Helge Deller <deller@gmx.de>, x86@kernel.org, linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, Petr Mladek <pmladek@suse.com>, Albert Ou <aou@eecs.berkeley.edu>, Jiri Kosina <jikos@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Josh Poimboeuf <jpoimboe@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, linux-parisc@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, Alexander Lobakin <aleksander.lobakin@intel.com>, Palmer Dabbelt <palmer@dabbelt.com>, Masami Hiramatsu <mhiramat@kernel.org>, Guo Ren <guo
+ ren@kernel.org>, Colin Ian King <colin.king@canonical.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jul 21, 2023, Isaku Yamahata wrote:
-> On Fri, Jul 21, 2023 at 02:13:14PM +0800,
-> Yuan Yao <yuan.yao@linux.intel.com> wrote:
-> > > +static int kvm_gmem_error_page(struct address_space *mapping, struct page *page)
-> > > +{
-> > > +	struct list_head *gmem_list = &mapping->private_list;
-> > > +	struct kvm_memory_slot *slot;
-> > > +	struct kvm_gmem *gmem;
-> > > +	unsigned long index;
-> > > +	pgoff_t start, end;
-> > > +	gfn_t gfn;
-> > > +
-> > > +	filemap_invalidate_lock_shared(mapping);
-> > > +
-> > > +	start = page->index;
-> > > +	end = start + thp_nr_pages(page);
-> > > +
-> > > +	list_for_each_entry(gmem, gmem_list, entry) {
-> > > +		xa_for_each_range(&gmem->bindings, index, slot, start, end - 1) {
-> > > +			for (gfn = start; gfn < end; gfn++) {
-> > 
-> > Why the start end range used as gfn here ?
-
-Math is hard?  I almost always mess up these types of things, and then catch my
-bugs via tests.  But I don't have tests for this particular flow...   Which
-reminds me, we need tests for this :-)  Hopefully error injection provides most
-of what we need?
-
-> > the page->index is offset of inode's page cache mapping and
-> > gmem address space, IIUC, gfn calculation should follow same
-> > way as kvm_gmem_invalidate_begin().
+On Fri, 21 Jul 2023 12:26:32 -0400 Steven Rostedt wrote:
+> > if (!(in_hardirq() || irqs_disabled()))
+> >   
 > 
-> Also instead of sending signal multiple times, we can utilize lsb argument.
+> Yeah, probably.
+> 
+> > , nothing more elegant / already existing / ...?  
+> 
+> It's not a common check. What would you call that?
 
-As Vishal pointed out, this code shouldn't be sending signals in the first place.
+Looks like Olek started the weekend already so let me answer.
+He's trying to check if we can use a fast path cache which takes
+a _bh spin lock.
