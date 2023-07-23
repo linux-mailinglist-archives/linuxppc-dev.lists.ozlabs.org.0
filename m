@@ -1,69 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4885275DCA1
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jul 2023 14:41:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B94A775DF95
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Jul 2023 03:35:45 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=W8fcx9Ka;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=h4UZcCEr;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R7QzQ1N9Gz3cCt
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jul 2023 22:41:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R7m8H4yrYz3c9y
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Jul 2023 11:35:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=W8fcx9Ka;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=h4UZcCEr;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1029; helo=mail-pj1-x1029.google.com; envelope-from=festevam@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R7QyS62kzz2xBV
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jul 2023 22:41:03 +1000 (AEST)
-Received: by mail-pj1-x1029.google.com with SMTP id 98e67ed59e1d1-265c94064b8so376443a91.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jul 2023 05:41:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690029660; x=1690634460;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yi63nkdWEyg5JwW9Rp8ZnJaJZCtE++qAWqrDJGDd/lI=;
-        b=W8fcx9Kauon7u1tfJGaqXbkNF4ma27irNc0xLsic9TvtlRXW7YqoPak9NK+KNyn9EW
-         VW5QQUOI8VWljMHyE3Ayfi/srm/r7wmd7apwA/ghy/bfgaWlWC7EwWKuKxvlIt9Gk5hN
-         6lj0Q+1kc9xERPYNq36rtIkigDopYtMd5/RPAHOL6LdVJxh3KMuQNl4821rvnjzo+Jfv
-         7BBaSIeIUSPGHcZ1rTtPrBCpHkeRsubsFb1FFtRI/4WCCALYF7lsycZjwUA1KC4Dpda7
-         XxaJDNKMF3Csw8w4qWxqgfYliRhbmiE5USO7G67PJlcHQZWnBDb5gZCdRWLoBqb7voay
-         pxNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690029660; x=1690634460;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yi63nkdWEyg5JwW9Rp8ZnJaJZCtE++qAWqrDJGDd/lI=;
-        b=cPGdZfulwCvzrUOAO4D7rDSzaRwUucY48PQlSMOIK9+VVCvIWyVBaWXGB9r2t4uRa0
-         a+6m0LQokuP4JYohA8+kn1UNMcPQtD3Hn4m0DWK95RNrT6uZywLlX41E8RZIH297I4R6
-         u8+Exw5SRUezEG2QBHEyVyi9xrX3wMhiuL36FM8iL46BbSEdaxe3Y9rhOzhFRoVcL7jU
-         rbWMYmR5rUroYDEJPmhKJvAz67z3GQVIiBdUKRQR7dloPRTgM+pMLJ7cVn1isiI/wekS
-         +mGpEqEdmHD9U9YtDoY+lQg4gdRQLsTGXKsakKrms8Zj97eJKm8x4wM3vUS65qD8IO9R
-         ySFQ==
-X-Gm-Message-State: ABy/qLazvTutQe5J83T7R/o6ZQ0uw6EuN0kKOMjgHU7fgAAKEEDasMZ+
-	SVFerr5BHoJOUeN1m9sqoDH/kym/D+q6hRwBE5Y=
-X-Google-Smtp-Source: APBJJlHDJwm1Gdh/SrlkFWDGs0nHM85oDjl3b/YvrjxKpekorxgmRlDCqBsg6UQcPXmybfu+3/BuGsUHZkhz1JFeaug=
-X-Received: by 2002:a17:90a:b81:b0:25c:1ad3:a4a1 with SMTP id
- 1-20020a17090a0b8100b0025c1ad3a4a1mr4159849pjr.1.1690029659665; Sat, 22 Jul
- 2023 05:40:59 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R7m7M1ClPz2ykc
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Jul 2023 11:34:55 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1690076090;
+	bh=1TKytknFGuphttPIya8TKJDLqOtMLU5bs0nxrsTcGL8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=h4UZcCEr/P8cJH05rZo2ayzoFlUo7p43V27VeHuBCxz9foBmep8zRdHp36DKjgDRb
+	 VREX/i76Xv4Ikdv6Pg3Uvgxvwb8Q6Ue6tn3NXUV/etFlwGYHxHjBUaHRsHQGMW20N7
+	 faksyP30bELyIsSYUltqKfaHdH6u8gvDc1pznkNYiLXp1QFbIfOxyYgbOQ3ok+/E2o
+	 yDlFad/61AKO1AlqAvdcoAZmH20Eg4YrZ4xNBfgwMICv/9hiICsxherE4VC1AliiDq
+	 yI+d/x+hVkVx312F+XyoTrKtO0B9PeTPJIQHOI5SESva0UeX3wXhsHvfb0RI+08Wea
+	 I1KR9o9em+wEg==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4R7m7D4lJMz4wyQ;
+	Sun, 23 Jul 2023 11:34:48 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.5-4 tag
+Date: Sun, 23 Jul 2023 11:34:48 +1000
+Message-ID: <87sf9fpg07.fsf@mail.lhotse>
 MIME-Version: 1.0
-References: <CAA+D8AP-3SWJe21qfMVz0j3umvS9bzDkeuQtab4OFrc2Ur+eVw@mail.gmail.com>
- <20230722123635.26623-1-ruc_gongyuanjun@163.com>
-In-Reply-To: <20230722123635.26623-1-ruc_gongyuanjun@163.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Sat, 22 Jul 2023 09:40:48 -0300
-Message-ID: <CAOMZO5AXY7ThO0dTLc47xE7a61k9QEXMTbgSAx2Dqy_3RJxoTg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] ASoC: imx-audmux: fix return value checks of clk_prepare_enable()
-To: Yuanjun Gong <ruc_gongyuanjun@163.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -76,32 +56,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com
+Cc: ajd@linux.ibm.com, ruscur@russell.cc, haren@linux.ibm.com, linux-kernel@vger.kernel.org, naveen@kernel.org, bgray@linux.ibm.com, u.kleine-koenig@pengutronix.de, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Jul 22, 2023 at 9:38=E2=80=AFAM Yuanjun Gong <ruc_gongyuanjun@163.c=
-om> wrote:
->
-> check the return value of clk_prepare_enable(), and if
-> clk_prepare_enable() gets an unexpected return value,
-> imx_audmux_suspend() and imx_audmux_resume() should return
-> the error value.
->
-> Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
-> ---
->  sound/soc/fsl/imx-audmux.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
->
-> diff --git a/sound/soc/fsl/imx-audmux.c b/sound/soc/fsl/imx-audmux.c
-> index be003a117b39..9791e56158ef 100644
-> --- a/sound/soc/fsl/imx-audmux.c
-> +++ b/sound/soc/fsl/imx-audmux.c
-> @@ -325,8 +325,11 @@ static void imx_audmux_remove(struct platform_device=
- *pdev)
->  static int imx_audmux_suspend(struct device *dev)
->  {
->         int i;
-> +       ssize_t ret;
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
 
-Why not simply "int ret" instead?
+Hi Linus,
+
+Please pull some more powerpc fixes for 6.5:
+
+The following changes since commit fdf0eaf11452d72945af31804e2a1048ee1b574c:
+
+  Linux 6.5-rc2 (2023-07-16 15:10:37 -0700)
+
+are available in the git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/po=
+werpc-6.5-4
+
+for you to fetch changes up to 106ea7ffd56b0f9454cd4f625474967f12ac4dbd:
+
+  Revert "powerpc/64s: Remove support for ELFv1 little endian userspace" (2=
+023-07-19 21:28:35 +1000)
+
+- ------------------------------------------------------------------
+powerpc fixes for 6.5 #4
+
+ - Reinstate support for little endian ELFv1 binaries, which it turns out s=
+till
+   exist in the wild.
+
+ - Revert a change which used asm goto for WARN_ON/__WARN_FLAGS, as it lead=
+ to
+   dead code generation and seemed to trigger compiler bugs in some edge ca=
+ses.
+
+ - Fix a deadlock in the pseries VAS code, between live migration and the
+   driver's mmap handler.
+
+ - Disable KCOV instrumentation in the powerpc KASAN code.
+
+Thanks to: Andrew Donnellan, Benjamin Gray, Christophe Leroy, Haren Myneni,
+Russell Currey, Uwe Kleine-K=C3=B6nig.
+
+- ------------------------------------------------------------------
+Andrew Donnellan (1):
+      Revert "powerpc/64s: Remove support for ELFv1 little endian userspace"
+
+Benjamin Gray (1):
+      powerpc/kasan: Disable KCOV in KASAN code
+
+Christophe Leroy (1):
+      Revert "powerpc/bug: Provide better flexibility to WARN_ON/__WARN_FLA=
+GS() with asm goto"
+
+Haren Myneni (1):
+      powerpc/pseries/vas: Hold mmap_mutex after mmap lock during window cl=
+ose
+
+Russell Currey (1):
+      powerpc/crypto: Add gitignore for generated P10 AES/GCM .S files
+
+Uwe Kleine-K=C3=B6nig (1):
+      powerpc/512x: lpbfifo: Convert to platform remove callback returning =
+void
+
+
+ arch/powerpc/crypto/.gitignore                |  3 +
+ arch/powerpc/include/asm/bug.h                | 69 ++++----------------
+ arch/powerpc/include/asm/elf.h                |  6 --
+ arch/powerpc/include/asm/thread_info.h        |  6 +-
+ arch/powerpc/kernel/traps.c                   |  9 +--
+ arch/powerpc/mm/kasan/Makefile                |  1 +
+ arch/powerpc/platforms/512x/mpc512x_lpbfifo.c |  6 +-
+ arch/powerpc/platforms/pseries/vas.c          |  9 ++-
+ 8 files changed, 29 insertions(+), 80 deletions(-)
+ create mode 100644 arch/powerpc/crypto/.gitignore
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmS8guQACgkQUevqPMjh
+pYBJ2A//f8zyL2FfBB7JRFoA6B06TmEg7GR1NlxRBrW0HWNaaxbAqureHJNElcm4
+0eyi0aUy1ky2IkkyqBTJWZxwewlGkPOZTDdXvGam76B8Y5U+/beHwaKlOYkb/GHs
+lnlsZsMpEiHI6T7b8PFqWn+bE3O5EaJ3eamxIiPQv5XIRk84D0ny9OH4jRcbQIY3
+AMZRcJIvWFSCe043JzYjj3CVfL5ySxWEjYYWNgSuhJ9zOnDb9CtZBKjHyNk0/paW
+vFnG309jyOKvl+2J66+JHgCvjV8Dl2nZCjQpQ42/FX5cdRTjr/b+6FE57ygC5ZvS
+jsSR/EFACAPHPOLRfdBXaRb7PJ1zDb4YCVtNTxwJ4059XBzKzvdBd5dc1UO4+WCR
+dxtn4pvWHv6mCJ5YLKcJXSOgvdVq4aLtnkirwuqoY/QY7XhuYosqB305CevRJrWp
+upDhMtzvofmEVN81SCB48TnzTYXyxNrSEvNjJgFby9pIXgTnXkwJvgU7LKvSrSox
+cbsCZEcgIy1iUjFQZENQ3GWve1RRea77C0RAsNWSPvgLna3ITNDiKlWFo4vEtrt6
+9wKKegRvOsz4yCJAEfYe62qLDu/4tqIknPxqxuapnhNj+N2+f+5wjcV8D7E7hSaP
+f1y8QXbN2+yRvFGIRhdqwE0+4BEP6B/fq4XXQ1fjmw4aIrNWoSc=3D
+=3DBUmd
+-----END PGP SIGNATURE-----
