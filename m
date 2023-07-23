@@ -2,49 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B94A775DF95
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Jul 2023 03:35:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5BE375DFD1
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Jul 2023 06:01:31 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=h4UZcCEr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KVslx0ST;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R7m8H4yrYz3c9y
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Jul 2023 11:35:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R7qNT4CsWz3c4d
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Jul 2023 14:01:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=h4UZcCEr;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KVslx0ST;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R7m7M1ClPz2ykc
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Jul 2023 11:34:55 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1690076090;
-	bh=1TKytknFGuphttPIya8TKJDLqOtMLU5bs0nxrsTcGL8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=h4UZcCEr/P8cJH05rZo2ayzoFlUo7p43V27VeHuBCxz9foBmep8zRdHp36DKjgDRb
-	 VREX/i76Xv4Ikdv6Pg3Uvgxvwb8Q6Ue6tn3NXUV/etFlwGYHxHjBUaHRsHQGMW20N7
-	 faksyP30bELyIsSYUltqKfaHdH6u8gvDc1pznkNYiLXp1QFbIfOxyYgbOQ3ok+/E2o
-	 yDlFad/61AKO1AlqAvdcoAZmH20Eg4YrZ4xNBfgwMICv/9hiICsxherE4VC1AliiDq
-	 yI+d/x+hVkVx312F+XyoTrKtO0B9PeTPJIQHOI5SESva0UeX3wXhsHvfb0RI+08Wea
-	 I1KR9o9em+wEg==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R7qMX3cfTz2yKy
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Jul 2023 14:00:40 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4R7m7D4lJMz4wyQ;
-	Sun, 23 Jul 2023 11:34:48 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.5-4 tag
-Date: Sun, 23 Jul 2023 11:34:48 +1000
-Message-ID: <87sf9fpg07.fsf@mail.lhotse>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 0044A60C26;
+	Sun, 23 Jul 2023 04:00:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 56E72C433C7;
+	Sun, 23 Jul 2023 04:00:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1690084835;
+	bh=aOAhlx9e9NI1x1a3K57OexMdndgB8jGcH2RhMZmcONE=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=KVslx0STV7bc9HQt5vqJowF7FZdZo69To2IcolmYMKiA1UPlnCLv08IfoL7ZNkmot
+	 3vb9ADvEVQ9OHkbFdBzHVCfxpZFY1Xuqs7QTuSPALONGHR7/AE+1D5e4jc1/oVKSUV
+	 nAW//GlbADTYvtJP8Sp7E3fJxdkyMFo9YPLpBShlYwelxBtT1l7bU6KJXSB5etE6xV
+	 5xX3pq6L0zsOiHAfS3zlKG0d0japqvoiyhHcTx62sDTgWiH+8KaQ87Q6a6fbMZG8W9
+	 tJfl65O0BFD1wqXxuVmyTupGMuQZ6/PhXBCkLqYiaHT64dXT/xU1gl4JqtIHIxFXKY
+	 tlXdFeVqyJoFA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 3F73DC595C2;
+	Sun, 23 Jul 2023 04:00:35 +0000 (UTC)
+Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.5-4 tag
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <87sf9fpg07.fsf@mail.lhotse>
+References: <87sf9fpg07.fsf@mail.lhotse>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <87sf9fpg07.fsf@mail.lhotse>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.5-4
+X-PR-Tracked-Commit-Id: 106ea7ffd56b0f9454cd4f625474967f12ac4dbd
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: c2782531397f5cb19ca3f8f9c17727f1cdf5bee8
+Message-Id: <169008483525.25429.3303454837491361344.pr-tracker-bot@kernel.org>
+Date: Sun, 23 Jul 2023 04:00:35 +0000
+To: Michael Ellerman <mpe@ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,97 +68,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, ruscur@russell.cc, haren@linux.ibm.com, linux-kernel@vger.kernel.org, naveen@kernel.org, bgray@linux.ibm.com, u.kleine-koenig@pengutronix.de, linuxppc-dev@lists.ozlabs.org
+Cc: ajd@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, ruscur@russell.cc, haren@linux.ibm.com, linux-kernel@vger.kernel.org, naveen@kernel.org, bgray@linux.ibm.com, u.kleine-koenig@pengutronix.de, Linus Torvalds <torvalds@linux-foundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+The pull request you sent on Sun, 23 Jul 2023 11:34:48 +1000:
 
-Hi Linus,
+> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.5-4
 
-Please pull some more powerpc fixes for 6.5:
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/c2782531397f5cb19ca3f8f9c17727f1cdf5bee8
 
-The following changes since commit fdf0eaf11452d72945af31804e2a1048ee1b574c:
+Thank you!
 
-  Linux 6.5-rc2 (2023-07-16 15:10:37 -0700)
-
-are available in the git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/po=
-werpc-6.5-4
-
-for you to fetch changes up to 106ea7ffd56b0f9454cd4f625474967f12ac4dbd:
-
-  Revert "powerpc/64s: Remove support for ELFv1 little endian userspace" (2=
-023-07-19 21:28:35 +1000)
-
-- ------------------------------------------------------------------
-powerpc fixes for 6.5 #4
-
- - Reinstate support for little endian ELFv1 binaries, which it turns out s=
-till
-   exist in the wild.
-
- - Revert a change which used asm goto for WARN_ON/__WARN_FLAGS, as it lead=
- to
-   dead code generation and seemed to trigger compiler bugs in some edge ca=
-ses.
-
- - Fix a deadlock in the pseries VAS code, between live migration and the
-   driver's mmap handler.
-
- - Disable KCOV instrumentation in the powerpc KASAN code.
-
-Thanks to: Andrew Donnellan, Benjamin Gray, Christophe Leroy, Haren Myneni,
-Russell Currey, Uwe Kleine-K=C3=B6nig.
-
-- ------------------------------------------------------------------
-Andrew Donnellan (1):
-      Revert "powerpc/64s: Remove support for ELFv1 little endian userspace"
-
-Benjamin Gray (1):
-      powerpc/kasan: Disable KCOV in KASAN code
-
-Christophe Leroy (1):
-      Revert "powerpc/bug: Provide better flexibility to WARN_ON/__WARN_FLA=
-GS() with asm goto"
-
-Haren Myneni (1):
-      powerpc/pseries/vas: Hold mmap_mutex after mmap lock during window cl=
-ose
-
-Russell Currey (1):
-      powerpc/crypto: Add gitignore for generated P10 AES/GCM .S files
-
-Uwe Kleine-K=C3=B6nig (1):
-      powerpc/512x: lpbfifo: Convert to platform remove callback returning =
-void
-
-
- arch/powerpc/crypto/.gitignore                |  3 +
- arch/powerpc/include/asm/bug.h                | 69 ++++----------------
- arch/powerpc/include/asm/elf.h                |  6 --
- arch/powerpc/include/asm/thread_info.h        |  6 +-
- arch/powerpc/kernel/traps.c                   |  9 +--
- arch/powerpc/mm/kasan/Makefile                |  1 +
- arch/powerpc/platforms/512x/mpc512x_lpbfifo.c |  6 +-
- arch/powerpc/platforms/pseries/vas.c          |  9 ++-
- 8 files changed, 29 insertions(+), 80 deletions(-)
- create mode 100644 arch/powerpc/crypto/.gitignore
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmS8guQACgkQUevqPMjh
-pYBJ2A//f8zyL2FfBB7JRFoA6B06TmEg7GR1NlxRBrW0HWNaaxbAqureHJNElcm4
-0eyi0aUy1ky2IkkyqBTJWZxwewlGkPOZTDdXvGam76B8Y5U+/beHwaKlOYkb/GHs
-lnlsZsMpEiHI6T7b8PFqWn+bE3O5EaJ3eamxIiPQv5XIRk84D0ny9OH4jRcbQIY3
-AMZRcJIvWFSCe043JzYjj3CVfL5ySxWEjYYWNgSuhJ9zOnDb9CtZBKjHyNk0/paW
-vFnG309jyOKvl+2J66+JHgCvjV8Dl2nZCjQpQ42/FX5cdRTjr/b+6FE57ygC5ZvS
-jsSR/EFACAPHPOLRfdBXaRb7PJ1zDb4YCVtNTxwJ4059XBzKzvdBd5dc1UO4+WCR
-dxtn4pvWHv6mCJ5YLKcJXSOgvdVq4aLtnkirwuqoY/QY7XhuYosqB305CevRJrWp
-upDhMtzvofmEVN81SCB48TnzTYXyxNrSEvNjJgFby9pIXgTnXkwJvgU7LKvSrSox
-cbsCZEcgIy1iUjFQZENQ3GWve1RRea77C0RAsNWSPvgLna3ITNDiKlWFo4vEtrt6
-9wKKegRvOsz4yCJAEfYe62qLDu/4tqIknPxqxuapnhNj+N2+f+5wjcV8D7E7hSaP
-f1y8QXbN2+yRvFGIRhdqwE0+4BEP6B/fq4XXQ1fjmw4aIrNWoSc=3D
-=3DBUmd
------END PGP SIGNATURE-----
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
