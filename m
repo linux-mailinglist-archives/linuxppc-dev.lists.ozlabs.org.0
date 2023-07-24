@@ -2,86 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9767F75FCCA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jul 2023 18:59:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76F0E75FCD6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jul 2023 19:01:31 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mEmhHGWw;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=iUh3Wr2E;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R8mbf3nM8z30N2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 02:59:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R8mf12mNfz30Kf
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 03:01:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mEmhHGWw;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=iUh3Wr2E;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3nk6-zaykdlcpbxkgzdlldib.zljifkrummz-absifpqp.lwixyp.lod@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x104a.google.com (mail-pj1-x104a.google.com [IPv6:2607:f8b0:4864:20::104a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R8mZk5NmSz2yVM
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jul 2023 02:58:37 +1000 (AEST)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36OGbnPM025792;
-	Mon, 24 Jul 2023 16:58:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=SEeEt1/gcnQOQ2uaDKY1YS9JdPPgF+gNd/5X/HLnQ0o=;
- b=mEmhHGWwAB3qw/zBN0zYtmpiEp3XPf/zMFXUKToiphjlgdHGXTsQLaKibjWND3Rl+vyN
- ZL+OHmv0Az8bNOYquIp0po6Jdb7uNRPH503px3ytSg99b9bzEh3XcG2zx3vLx7QJwZyX
- k4k29cVrN+X+Bv6HNLA8YdZUa8ej05biZlkDsCBuBrdKS4BGJpimwqDQ8I6uZWqSYw/d
- qlUZGf7lDMy4j5aihg5rqL5Qc3kklMJ3uUAywBPFfAkToZ09b/nzPHK0rF5IFcrZkXBe
- YQvgpMSkHvy3d6eS0HcXxsZ9BWI0VOb3N5/fkx3nfzJnJodg7N/Dhjvf94QbaW9Cki5U Pg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s1t2ep674-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Jul 2023 16:58:26 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36OGcNYL030357;
-	Mon, 24 Jul 2023 16:58:26 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s1t2ep66m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Jul 2023 16:58:26 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36OFApb8014406;
-	Mon, 24 Jul 2023 16:58:24 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3s0stxn4pk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Jul 2023 16:58:24 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36OGwLk544040862
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 24 Jul 2023 16:58:21 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 672B720043;
-	Mon, 24 Jul 2023 16:58:21 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B242A20040;
-	Mon, 24 Jul 2023 16:58:18 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.43.66.145])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 24 Jul 2023 16:58:18 +0000 (GMT)
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: acme@kernel.org, jolsa@kernel.org, irogers@google.com, namhyung@kernel.org
-Subject: [PATCH] tools/perf: Fix addr location init during arch_skip_callchain_idx function
-Date: Mon, 24 Jul 2023 22:28:15 +0530
-Message-Id: <20230724165815.17810-1-atrajeev@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.35.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 5DxQflGR6DcLF8xNGTTXg83EhE5bI9W1
-X-Proofpoint-GUID: FbdRUrbGBbRjgiFbRGkmCa70pIuSjBG3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-24_12,2023-07-24_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- mlxlogscore=999 priorityscore=1501 malwarescore=0 bulkscore=0
- lowpriorityscore=0 spamscore=0 mlxscore=0 adultscore=0 phishscore=0
- clxscore=1015 suspectscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2306200000 definitions=main-2307240148
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R8md53sD7z2yVM
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jul 2023 03:00:39 +1000 (AEST)
+Received: by mail-pj1-x104a.google.com with SMTP id 98e67ed59e1d1-2683548c37cso3875a91.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jul 2023 10:00:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1690218036; x=1690822836;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=RiFFb9olEr1IXMurVCQB0i8J9xB8UVFiN6yE37xYj5w=;
+        b=iUh3Wr2Es7ZayOSlRIyCXv0ISRPLliUqI/wxpz9npizX1RGnl3Zt97AZrYUR8pVjnH
+         OwuM0g2/mnG2Ws1vH1RTNrF8tqURzEVkr4hahdERkph4Nww3rEaO/unCqdjsW1luIjbU
+         y9Vd6q8CcxdQP+GEmRHglSZNO6vM+UxAwTBpxBMCbqTq0hlf3MD2sKnPBjpHoFEjKPFr
+         Tmb3ea8A/X/JO92m7TD8v5eZc4l7fpKAQniXW7MS+8KISe8P4Nbdl//npN/iD7LNKC4a
+         rVBOiRv2FN5pQA6p+V2In5eaYYH21fAVeDedlt36+Mezc1EEot9BPPcgeqHdCs8LHv6O
+         cdZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690218036; x=1690822836;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RiFFb9olEr1IXMurVCQB0i8J9xB8UVFiN6yE37xYj5w=;
+        b=YkIhq3eeRs4m9x/L8FS7xrrfip1Z6v/Gxe0RNmbJrMJiGVM4y9rhiQiVrVGDbjME5z
+         TrS7clPPnsVFOLJBqkK/XnNoY5VT4BP19gmBbRms2tbtp9jYmk4x4d1N+LKfxdsXJHCx
+         cmCjpI3nM4dXImGM16E9pz+LyPt2wcXaHtigLaiWI5zNOqMoi6H0NIDvzZnfLTik7rvo
+         BMKaGJaxjsOqfvF45ZqA5OytZtq0mr01l7JbhYln6rwxAW3St8TRTOX92UC4HURlPr9A
+         kwMHTGGjrff1TBXkooQxlYXewkh6XqLwXqG2X3XkFUNcNfEmprly/7mXEbdBegvtvByn
+         4V5w==
+X-Gm-Message-State: ABy/qLY1alSaZDBxVbHUuhChHoXhiF5uh0/5Z38lk1gR4q6JuZVUcXmp
+	kj5GFnKlY8etZdfvqj7eW+7f63XbERo=
+X-Google-Smtp-Source: APBJJlGFNY8Nsd+UpmzZCGDOgI47OKk03bkzsFP32ko2G/RNTdNXayC/49Rk0sPPfbjIVmYJcM3mAoRuscc=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a17:903:2308:b0:1b8:80c9:a98e with SMTP id
+ d8-20020a170903230800b001b880c9a98emr42778plh.13.1690218036394; Mon, 24 Jul
+ 2023 10:00:36 -0700 (PDT)
+Date: Mon, 24 Jul 2023 10:00:34 -0700
+In-Reply-To: <110f1aa0-7fcd-1287-701a-89c2203f0ac2@amd.com>
+Mime-Version: 1.0
+References: <20230718234512.1690985-1-seanjc@google.com> <110f1aa0-7fcd-1287-701a-89c2203f0ac2@amd.com>
+Message-ID: <ZL6uMk/8UeuGj8CP@google.com>
+Subject: Re: [RFC PATCH v11 00/29] KVM: guest_memfd() and per-page attributes
+From: Sean Christopherson <seanjc@google.com>
+To: "Nikunj A. Dadhania" <nikunj@amd.com>
+Content-Type: text/plain; charset="us-ascii"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,82 +73,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Paul Moore <paul@paul-moore.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, James Morris <jmorris@namei.org>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, "Serge E. Hallyn" <serge@hallyn.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Vlastimil Babka <vbabka@suse.cz>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Quentin Perret <qperret@google.com>, Liam Merwick <liam.merwick@oracle.com>, linux-mips@vger.kernel.org, Oliver
+  Upton <oliver.upton@linux.dev>, linux-security-module@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-perf record with callchain recording fails as below
-in powerpc:
+On Mon, Jul 24, 2023, Nikunj A. Dadhania wrote:
+> On 7/19/2023 5:14 AM, Sean Christopherson wrote:
+> > This is the next iteration of implementing fd-based (instead of vma-based)
+> > memory for KVM guests.  If you want the full background of why we are doing
+> > this, please go read the v10 cover letter[1].
+> > 
+> > The biggest change from v10 is to implement the backing storage in KVM
+> > itself, and expose it via a KVM ioctl() instead of a "generic" sycall.
+> > See link[2] for details on why we pivoted to a KVM-specific approach.
+> > 
+> > Key word is "biggest".  Relative to v10, there are many big changes.
+> > Highlights below (I can't remember everything that got changed at
+> > this point).
+> > 
+> > Tagged RFC as there are a lot of empty changelogs, and a lot of missing
+> > documentation.  And ideally, we'll have even more tests before merging.
+> > There are also several gaps/opens (to be discussed in tomorrow's PUCK).
+> 
+> As per our discussion on the PUCK call, here are the memory/NUMA accounting 
+> related observations that I had while working on SNP guest secure page migration:
+> 
+> * gmem allocations are currently treated as file page allocations
+>   accounted to the kernel and not to the QEMU process.
 
-    ./perf record -a -gR sleep 10
-    ./perf report
-    perf: Segmentation fault
+We need to level set on terminology: these are all *stats*, not accounting.  That
+distinction matters because we have wiggle room on stats, e.g. we can probably get
+away with just about any definition of how guest_memfd memory impacts stats, so
+long as the information that is surfaced to userspace is useful and expected.
 
-gdb trace points to thread__find_map
+But we absolutely need to get accounting correct, specifically the allocations
+need to be correctly accounted in memcg.  And unless I'm missing something,
+nothing in here shows anything related to memcg.
 
-    0  0x00000000101df314 in atomic_cmpxchg (newval=1818846826, oldval=1818846827, v=0x1001a8f3) at /home/athira/linux/tools/include/asm-generic/atomic-gcc.h:70
-    1  refcount_sub_and_test (i=1, r=0x1001a8f3) at /home/athira/linux/tools/include/linux/refcount.h:135
-    2  refcount_dec_and_test (r=0x1001a8f3) at /home/athira/linux/tools/include/linux/refcount.h:148
-    3  map__put (map=0x1001a8b3) at util/map.c:311
-    4  0x000000001016842c in __map__zput (map=0x7fffffffa368) at util/map.h:190
-    5  thread__find_map (thread=0x105b92f0, cpumode=<optimized out>, addr=13835058055283572736, al=al@entry=0x7fffffffa358) at util/event.c:582
-    6  0x000000001016882c in thread__find_symbol (thread=<optimized out>, cpumode=<optimized out>, addr=<optimized out>, al=0x7fffffffa358) at util/event.c:656
-    7  0x00000000102e12b4 in arch_skip_callchain_idx (thread=<optimized out>, chain=<optimized out>) at arch/powerpc/util/skip-callchain-idx.c:255
-    8  0x00000000101d3bf4 in thread__resolve_callchain_sample (thread=0x105b92f0, cursor=0x1053d160, evsel=<optimized out>, sample=0x7fffffffa908, parent=0x7fffffffa778, root_al=0x7fffffffa710,
-        max_stack=<optimized out>) at util/machine.c:2940
-    9  0x00000000101cd210 in sample__resolve_callchain (sample=<optimized out>, cursor=<optimized out>, parent=<optimized out>, evsel=<optimized out>, al=<optimized out>, max_stack=<optimized out>)
-        at util/callchain.c:1112
-    10 0x000000001022a9d8 in hist_entry_iter__add (iter=0x7fffffffa750, al=0x7fffffffa710, max_stack_depth=<optimized out>, arg=0x7fffffffbbd0) at util/hist.c:1232
-    11 0x0000000010056d98 in process_sample_event (tool=0x7fffffffbbd0, event=0x7ffff6223c38, sample=0x7fffffffa908, evsel=<optimized out>, machine=0x10524ef8) at builtin-report.c:332
+>   Starting an SNP guest with 40G memory with memory interleave between
+>   Node2 and Node3
+> 
+>   $ numactl -i 2,3 ./bootg_snp.sh
+> 
+>     PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+>  242179 root      20   0   40.4g  99580  51676 S  78.0   0.0   0:56.58 qemu-system-x86
+> 
+>   -> Incorrect process resident memory and shared memory is reported
 
-Here arch_skip_callchain_idx calls thread__find_symbol and which
-invokes thread__find_map with uninitialised "addr_location".
-Snippet:
+I don't know that I would call these "incorrect".  Shared memory definitely is
+correct, because by definition guest_memfd isn't shared.  RSS is less clear cut;
+gmem memory is resident in RAM, but if we show gmem in RSS then we'll end up with
+scenarios where RSS > VIRT, which will be quite confusing for unaware users (I'm
+assuming the 40g of VIRT here comes from QEMU mapping the shared half of gmem
+memslots).
 
-thread__find_symbol(thread, PERF_RECORD_MISC_USER, ip, &al);
+>   Accounting of the memory happens in the host page fault handler path,
+>   but for private guest pages we will never hit that.
+> 
+> * NUMA allocation does use the process mempolicy for appropriate node 
+>   allocation (Node2 and Node3), but they again do not get attributed to 
+>   the QEMU process
+> 
+>   Every 1.0s: sudo numastat  -m -p qemu-system-x86 | egrep -i "qemu|PID|Node|Filepage"   gomati: Mon Jul 24 11:51:34 2023
+> 
+>   Per-node process memory usage (in MBs)
+>   PID                               Node 0          Node 1          Node 2          Node 3           Total
+>   242179 (qemu-system-x86)           21.14            1.61           39.44           39.38          101.57
+>   Per-node system memory usage (in MBs):
+>                             Node 0          Node 1          Node 2          Node 3           Total
+>   FilePages                2475.63         2395.83        23999.46        23373.22        52244.14
+> 
+> 
+> * Most of the memory accounting relies on the VMAs and as private-fd of 
+>   gmem doesn't have a VMA(and that was the design goal), user-space fails 
+>   to attribute the memory appropriately to the process.
+>
+>   /proc/<qemu pid>/numa_maps
+>   7f528be00000 interleave:2-3 file=/memfd:memory-backend-memfd-shared\040(deleted) anon=1070 dirty=1070 mapped=1987 mapmax=256 active=1956 N2=582 N3=1405 kernelpagesize_kB=4
+>   7f5c90200000 interleave:2-3 file=/memfd:rom-backend-memfd-shared\040(deleted)
+>   7f5c90400000 interleave:2-3 file=/memfd:rom-backend-memfd-shared\040(deleted) dirty=32 active=0 N2=32 kernelpagesize_kB=4
+>   7f5c90800000 interleave:2-3 file=/memfd:rom-backend-memfd-shared\040(deleted) dirty=892 active=0 N2=512 N3=380 kernelpagesize_kB=4
+> 
+>   /proc/<qemu pid>/smaps
+>   7f528be00000-7f5c8be00000 rw-p 00000000 00:01 26629                      /memfd:memory-backend-memfd-shared (deleted)
+>   7f5c90200000-7f5c90220000 rw-s 00000000 00:01 44033                      /memfd:rom-backend-memfd-shared (deleted)
+>   7f5c90400000-7f5c90420000 rw-s 00000000 00:01 44032                      /memfd:rom-backend-memfd-shared (deleted)
+>   7f5c90800000-7f5c90b7c000 rw-s 00000000 00:01 1025                       /memfd:rom-backend-memfd-shared (deleted)
 
-Recent change with commit 0dd5041c9a0ea ("perf addr_location:
-Add init/exit/copy functions"), introduced "maps__zput" in the
-function thread__find_map. This could result in segfault while
-accessing uninitialised map from "struct addr_location". Fix this
-by adding addr_location__init and addr_location__exit in
-arch_skip_callchain_idx.
+This is all expected, and IMO correct.  There are no userspace mappings, and so
+not accounting anything is working as intended.
 
-Fixes: 0dd5041c9a0ea ("perf addr_location: Add init/exit/copy functions")
-Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
----
- tools/perf/arch/powerpc/util/skip-callchain-idx.c | 4 ++++
- 1 file changed, 4 insertions(+)
+> * QEMU based NUMA bindings will not work. Memory backend uses mbind() 
+>   to set the policy for a particular virtual memory range but gmem 
+>   private-FD does not have a virtual memory range visible in the host.
 
-diff --git a/tools/perf/arch/powerpc/util/skip-callchain-idx.c b/tools/perf/arch/powerpc/util/skip-callchain-idx.c
-index b7223feec770..5f3edb3004d8 100644
---- a/tools/perf/arch/powerpc/util/skip-callchain-idx.c
-+++ b/tools/perf/arch/powerpc/util/skip-callchain-idx.c
-@@ -250,6 +250,7 @@ int arch_skip_callchain_idx(struct thread *thread, struct ip_callchain *chain)
- 	if (!chain || chain->nr < 3)
- 		return skip_slot;
- 
-+	addr_location__init(&al);
- 	ip = chain->ips[1];
- 
- 	thread__find_symbol(thread, PERF_RECORD_MISC_USER, ip, &al);
-@@ -259,6 +260,7 @@ int arch_skip_callchain_idx(struct thread *thread, struct ip_callchain *chain)
- 
- 	if (!dso) {
- 		pr_debug("%" PRIx64 " dso is NULL\n", ip);
-+		addr_location__exit(&al);
- 		return skip_slot;
- 	}
- 
-@@ -279,5 +281,7 @@ int arch_skip_callchain_idx(struct thread *thread, struct ip_callchain *chain)
- 		 */
- 		skip_slot = 3;
- 	}
-+
-+	addr_location__exit(&al);
- 	return skip_slot;
- }
--- 
-2.25.1
-
+Yes, adding a generic fbind() is the way to solve silve.
