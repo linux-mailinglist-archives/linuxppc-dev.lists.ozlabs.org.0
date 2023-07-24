@@ -1,53 +1,99 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15D8775FE4A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jul 2023 19:47:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D9C075FE6C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jul 2023 19:47:50 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=YhwcS0K0;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=F3BkXXBc;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=F3BkXXBc;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R8nfW6z8yz3cn5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 03:46:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R8ngS1xf4z3fjR
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 03:47:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=YhwcS0K0;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=F3BkXXBc;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=F3BkXXBc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R8nJM2wrdz3d97
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jul 2023 03:31:15 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 77861612FD;
-	Mon, 24 Jul 2023 17:31:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15918C433C8;
-	Mon, 24 Jul 2023 17:31:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1690219870;
-	bh=zNCBeajixSHrOgH+vIA9vSXLR0PGQezzEzXOOJ0DR4I=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YhwcS0K07HBp9ROhy/4D4s3X2TFa/quAZ17n3/2LjbAAhmu87m0fbQ3bZ4boNoqyT
-	 BNKVy/c3Hw2y+7qPzROU/oUaMQt2Q7UcBb59UuOw8RTe4eQ1oKj3/PJPA+hPR6CDTc
-	 G5MaP9XwYjeENBDepB+XN1T8LxHyQefflyP9bhWM=
-Date: Mon, 24 Jul 2023 10:31:09 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R8ndY1yqlz3gYT
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jul 2023 03:46:08 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1690220766;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6FRWZJ/fDw36fFqA2tPcKXhBoI/uBj001G4LAAA214E=;
+	b=F3BkXXBc4svWnczmP38/0l2kYSg1oQ45tHU83inqm5kXfC4nl996HFqKwymzDIYhUa8cwk
+	zutt4w2SK7U9yqPDb6H+PCcDrnGkz3AnXMAFT2HqwF1DpHI8hvB9NFXkgMPC1ZpLHjPQ3k
+	6hl2CM33rj/ZrlZELasYUcjUL2vBraI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1690220766;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6FRWZJ/fDw36fFqA2tPcKXhBoI/uBj001G4LAAA214E=;
+	b=F3BkXXBc4svWnczmP38/0l2kYSg1oQ45tHU83inqm5kXfC4nl996HFqKwymzDIYhUa8cwk
+	zutt4w2SK7U9yqPDb6H+PCcDrnGkz3AnXMAFT2HqwF1DpHI8hvB9NFXkgMPC1ZpLHjPQ3k
+	6hl2CM33rj/ZrlZELasYUcjUL2vBraI=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-350-8tklTbt6OR-eDnqybyCz9A-1; Mon, 24 Jul 2023 13:46:04 -0400
+X-MC-Unique: 8tklTbt6OR-eDnqybyCz9A-1
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-3fc08d6a40cso22603785e9.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jul 2023 10:46:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690220763; x=1690825563;
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6FRWZJ/fDw36fFqA2tPcKXhBoI/uBj001G4LAAA214E=;
+        b=kIhsF8oephZ9gSvZm2ko5jo1jFEOff6PWijYPBQ/iBUCWaW8buBfy11/Phw13r+kRJ
+         Bp2MKHWoLXlB1fQsJoA/U3ahAWqQgEQRkA5X4Ws3KecRQYKIW9mu/Oe6QPrZs+ERRmql
+         vfr5IyCD16DT84ealMtdfA7qodNdRcW5YWMXDdsPAMaMm+70HkmiPwsnG2Jl/SN7czAB
+         4HSGLtGiknhHdpLxbaOqOGqF3h2JnPgolGvS9Itz90/Y42Kf03XazJjm9ED3joRkh1j5
+         zD1prTinZYPmRwUTJePGRhdv6KopD2jClFWTLtiu+dCXTT0HBaYMhOQBq/GfhloF/0AS
+         69xQ==
+X-Gm-Message-State: ABy/qLbWSKK1ShLiqdYgtEWRsKMMUhYMOr/L5vlNFr8aFCYgBC7xU7g/
+	EnuAGg0qxiDHvB3Y3+bZhrINCRZ1IK6Dk3qb68bVh+AG0PBlHEvjLk2KmiMBUJEi+0Ecs2tLF6v
+	p+EnYReaAQqAYxnEsD25+t4xxXA==
+X-Received: by 2002:a1c:7708:0:b0:3fb:b299:6eba with SMTP id t8-20020a1c7708000000b003fbb2996ebamr6772974wmi.4.1690220763701;
+        Mon, 24 Jul 2023 10:46:03 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlF5EDHbgFb6RXGK3wM5neBkQri14lj+/TEWEXiAVsZh2WU/Hcxoi/qkpo7XoIBkcGerhboyQg==
+X-Received: by 2002:a1c:7708:0:b0:3fb:b299:6eba with SMTP id t8-20020a1c7708000000b003fbb2996ebamr6772952wmi.4.1690220763254;
+        Mon, 24 Jul 2023 10:46:03 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c73d:bb00:91a5:d1c:3a7e:4c77? (p200300cbc73dbb0091a50d1c3a7e4c77.dip0.t-ipconnect.de. [2003:cb:c73d:bb00:91a5:d1c:3a7e:4c77])
+        by smtp.gmail.com with ESMTPSA id o5-20020adfcf05000000b003172510d19dsm13752366wrj.73.2023.07.24.10.46.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Jul 2023 10:46:02 -0700 (PDT)
+Message-ID: <020d06cf-29ec-d292-8cf1-19a4af649d67@redhat.com>
+Date: Mon, 24 Jul 2023 19:46:01 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
 Subject: Re: [PATCH] mm/hotplug: Enable runtime update of memmap_on_memory
  parameter
-Message-Id: <20230724103109.37e166fefa57f918492b1fa8@linux-foundation.org>
-In-Reply-To: <20230721131951.306706-1-aneesh.kumar@linux.ibm.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 References: <20230721131951.306706-1-aneesh.kumar@linux.ibm.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+ <20230724103109.37e166fefa57f918492b1fa8@linux-foundation.org>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20230724103109.37e166fefa57f918492b1fa8@linux-foundation.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -60,19 +106,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, David Hildenbrand <david@redhat.com>, linux-mm@kvack.org, npiggin@gmail.com, Vishal Verma <vishal.l.verma@intel.com>, linuxppc-dev@lists.ozlabs.org, Oscar Salvador <osalvador@suse.de>
+Cc: Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, npiggin@gmail.com, Vishal Verma <vishal.l.verma@intel.com>, linuxppc-dev@lists.ozlabs.org, Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 21 Jul 2023 18:49:50 +0530 "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> wrote:
+On 24.07.23 19:31, Andrew Morton wrote:
+> On Fri, 21 Jul 2023 18:49:50 +0530 "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> wrote:
+> 
+>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+>> ---
+>> This is dependent on patches posted at
+>> https://lore.kernel.org/linux-mm/20230718024409.95742-1-aneesh.kumar@linux.ibm.com/
+> 
+> It appears that the above-linked series is to be updated, so
+> would it be appropriate to append this patch to that series?
+> 
+> If not, please resend this once the above-linked series has landed
+> in mm-unstable, thanks.
+> 
 
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> ---
-> This is dependent on patches posted at
-> https://lore.kernel.org/linux-mm/20230718024409.95742-1-aneesh.kumar@linux.ibm.com/
+Yes, let's include that patch in that series.
 
-It appears that the above-linked series is to be updated, so
-would it be appropriate to append this patch to that series?
+In general, LGTM. Toggling it at runtime, however, makes it harder for a 
+driver to stabilize on the value. In the context of virtio-mem this 
+would get important (once supporting memmap_on_memory).
 
-If not, please resend this once the above-linked series has landed
-in mm-unstable, thanks.
+-- 
+Cheers,
+
+David / dhildenb
+
