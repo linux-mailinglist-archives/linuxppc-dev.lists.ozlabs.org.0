@@ -1,88 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D41175FEDE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jul 2023 20:14:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8CE375FEEB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jul 2023 20:19:30 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JREhL4IV;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=ALkl62Ci;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R8pGH2yCdz30MD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 04:14:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R8pN04BLsz301R
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 04:19:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JREhL4IV;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=ALkl62Ci;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=mcgrof@infradead.org; receiver=lists.ozlabs.org)
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R8pFM15C4z2yF0
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jul 2023 04:13:42 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36OI76lX025657;
-	Mon, 24 Jul 2023 18:13:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=TCPq3jBk7A2/Vhc/ZVXLmS6YZBLgvYZGhkI8Gv2TNgI=;
- b=JREhL4IVW2PsA6qgXKyy1rJQSb69OR34PCSbTHF9qjbnnD+Fg54qgS66YZrb21DH3/We
- cdyTGIjERzbyTiQwq2RjiP5oxQp2aMBAEILLKpbfG9Zu2fO/SkANy8HuGEWMWYgWB84w
- 6HZKrK1S+WG8IBZm2ztkMRBycZACbP0fqh3Sd4HqrtjaN74xetGNrSITaDRP0MKY45Fg
- XB22QD3k1dmoYFN9gHSlu6DUtiEGWMqBSQPfP7/6Ee5QXSQdHMaScMdmCIbYokBiieyW
- JsX3JJQBflOgtGF//nGs57LTJnHxzqDkFd4qnMi9D8cQmjrB+hqqwAatZ/O3c0IU875R TQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s1x2qgea7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Jul 2023 18:13:33 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36OI9TWG004130;
-	Mon, 24 Jul 2023 18:13:32 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s1x2qge92-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Jul 2023 18:13:32 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36OHZFoH002024;
-	Mon, 24 Jul 2023 18:13:31 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3s0temndxq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Jul 2023 18:13:31 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36OIDUIT62259700
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 24 Jul 2023 18:13:30 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8A9BB5803F;
-	Mon, 24 Jul 2023 18:13:30 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 060AC58056;
-	Mon, 24 Jul 2023 18:13:28 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.177.66.22])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 24 Jul 2023 18:13:27 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu
-Subject: [PATCH] powerpc/mm/altmap: Fix altmap boundary check
-Date: Mon, 24 Jul 2023 23:43:20 +0530
-Message-ID: <20230724181320.471386-1-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.41.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R8pM44J3gz2xdp
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jul 2023 04:18:40 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=FftEnjrfbBAd3Ww9EqN8sppXbEA0boEKYQQaC3XYChY=; b=ALkl62CiRE28E2LSizMN3y7fEY
+	kJycbVRJZEvZWmguJTa9cV8saw4voW845Dk7ZUIQ/EpBqHehcYEObAuEhAbV5cICUXMxpEHgWD1xY
+	0G6eQD7tzvNPI+5LLNz+rczyJT/b6KyVcZ+bYO3jrw6raTDm6jxMaJpIvIG1XxtiGTStkaoeXQ5ux
+	i2K6PllfRHRUSgqlIGCCkFHMYoEy4mFvIGC8wSVGTqOtUaudgrq/YQeHfsLxDw4QBvQ2/XP3rLron
+	/nYKqQX7yUCVJiO+cQev86wNP91/7Iz+oGCh9AS1aLKpPK5iq4sDhzycio7fP17V8xO0Lv6e1RKak
+	XdsSA3Lg==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
+	id 1qO08S-005BNK-31;
+	Mon, 24 Jul 2023 18:18:20 +0000
+Date: Mon, 24 Jul 2023 11:18:20 -0700
+From: Luis Chamberlain <mcgrof@kernel.org>
+To: Alistair Popple <apopple@nvidia.com>, linux-fsdevel@vger.kernel.org,
+	linux-xfs@vger.kernel.org, Pankaj Raghav <p.raghav@samsung.com>
+Subject: Re: [PATCH v2 3/5] mmu_notifiers: Call invalidate_range() when
+ invalidating TLBs
+Message-ID: <ZL7AbLJ+RUUgzt8O@bombadil.infradead.org>
+References: <8f293bb51a423afa71ddc3ba46e9f323ee9ffbc7.1689768831.git-series.apopple@nvidia.com>
+ <20230719225105.1934-1-sj@kernel.org>
+ <877cqvl7vr.fsf@nvdebian.thelocal>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 7wVNwv09-i2ai-heEnEGEjKuTZDPWy4m
-X-Proofpoint-GUID: 3L-hGvgoTlvBFrxij0VfDSb4rjad7f7b
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-24_14,2023-07-24_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 impostorscore=0
- spamscore=0 priorityscore=1501 adultscore=0 clxscore=1015 mlxscore=0
- suspectscore=0 malwarescore=0 mlxlogscore=999 lowpriorityscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2307240161
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <877cqvl7vr.fsf@nvdebian.thelocal>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,36 +60,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Dan Williams <dan.j.williams@intel.com>, David Hildenbrand <david@redhat.com>
+Cc: zhi.wang.linux@gmail.com, kvm@vger.kernel.org, catalin.marinas@arm.com, linux-mm@kvack.org, will@kernel.org, x86@kernel.org, jgg@ziepe.ca, iommu@lists.linux.dev, nicolinc@nvidia.com, kevin.tian@intel.com, ajd@linux.ibm.com, jhubbard@nvidia.com, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, linux-arm-kernel@lists.infradead.org, SeongJae Park <sj@kernel.org>, seanjc@google.com, linux-kernel@vger.kernel.org, mcgrof@kernel.org, fbarrat@linux.ibm.com, akpm@linux-foundation.org, robin.murphy@arm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-altmap->free includes the entire free space from which altmap blocks
-can be allocated. So when checking whether the kernel is doing altmap
-block free, compute the boundary correctly.
+Cc'ing fsdevel + xfs folks as this fixes a regression tests with
+XFS with generic/176.
 
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Fixes: 9ef34630a461 ("powerpc/mm: Fallback to RAM if the altmap is unusable")
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- arch/powerpc/mm/init_64.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+On Thu, Jul 20, 2023 at 10:52:59AM +1000, Alistair Popple wrote:
+> 
+> SeongJae Park <sj@kernel.org> writes:
+> 
+> > Hi Alistair,
+> >
+> > On Wed, 19 Jul 2023 22:18:44 +1000 Alistair Popple <apopple@nvidia.com> wrote:
+> >
+> >> The invalidate_range() is going to become an architecture specific mmu
+> >> notifier used to keep the TLB of secondary MMUs such as an IOMMU in
+> >> sync with the CPU page tables. Currently it is called from separate
+> >> code paths to the main CPU TLB invalidations. This can lead to a
+> >> secondary TLB not getting invalidated when required and makes it hard
+> >> to reason about when exactly the secondary TLB is invalidated.
+> >> 
+> >> To fix this move the notifier call to the architecture specific TLB
+> >> maintenance functions for architectures that have secondary MMUs
+> >> requiring explicit software invalidations.
+> >> 
+> >> This fixes a SMMU bug on ARM64. On ARM64 PTE permission upgrades
+> >> require a TLB invalidation. This invalidation is done by the
+> >> architecutre specific ptep_set_access_flags() which calls
+> >> flush_tlb_page() if required. However this doesn't call the notifier
+> >> resulting in infinite faults being generated by devices using the SMMU
+> >> if it has previously cached a read-only PTE in it's TLB.
+> >> 
+> >> Moving the invalidations into the TLB invalidation functions ensures
+> >> all invalidations happen at the same time as the CPU invalidation. The
+> >> architecture specific flush_tlb_all() routines do not call the
+> >> notifier as none of the IOMMUs require this.
+> >> 
+> >> Signed-off-by: Alistair Popple <apopple@nvidia.com>
+> >> Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
+> >
+> > I found below kernel NULL-dereference issue on latest mm-unstable tree, and
+> > bisect points me to the commit of this patch, namely
+> > 75c400f82d347af1307010a3e06f3aa5d831d995.
+> >
+> > To reproduce, I use 'stress-ng --bigheap $(nproc)'.  The issue happens as soon
+> > as it starts reclaiming memory.  I didn't dive deep into this yet, but
+> > reporting this issue first, since you might have an idea already.
+> 
+> Thanks for the report SJ!
+> 
+> I see the problem - current->mm can (obviously!) be NULL which is what's
+> leading to the NULL dereference. Instead I think on x86 I need to call
+> the notifier when adding the invalidate to the tlbbatch in
+> arch_tlbbatch_add_pending() which is equivalent to what ARM64 does.
+> 
+> The below should fix it. Will do a respin with this.
+> 
+> ---
+> 
+> diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
+> index 837e4a50281a..79c46da919b9 100644
+> --- a/arch/x86/include/asm/tlbflush.h
+> +++ b/arch/x86/include/asm/tlbflush.h
+> @@ -4,6 +4,7 @@
+>  
+>  #include <linux/mm_types.h>
+>  #include <linux/sched.h>
+> +#include <linux/mmu_notifier.h>
+>  
+>  #include <asm/processor.h>
+>  #include <asm/cpufeature.h>
+> @@ -282,6 +283,7 @@ static inline void arch_tlbbatch_add_pending(struct arch_tlbflush_unmap_batch *b
+>  {
+>  	inc_mm_tlb_gen(mm);
+>  	cpumask_or(&batch->cpumask, &batch->cpumask, mm_cpumask(mm));
+> +	mmu_notifier_arch_invalidate_secondary_tlbs(mm, 0, -1UL);
+>  }
+>  
+>  static inline void arch_flush_tlb_batched_pending(struct mm_struct *mm)
+> diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
+> index 0b990fb56b66..2d253919b3e8 100644
+> --- a/arch/x86/mm/tlb.c
+> +++ b/arch/x86/mm/tlb.c
+> @@ -1265,7 +1265,6 @@ void arch_tlbbatch_flush(struct arch_tlbflush_unmap_batch *batch)
+>  
+>  	put_flush_tlb_info();
+>  	put_cpu();
+> -	mmu_notifier_arch_invalidate_secondary_tlbs(current->mm, 0, -1UL);
+>  }
+>  
+>  /*
 
-diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
-index fe1b83020e0d..0ec5b45b1e86 100644
---- a/arch/powerpc/mm/init_64.c
-+++ b/arch/powerpc/mm/init_64.c
-@@ -314,8 +314,7 @@ void __ref vmemmap_free(unsigned long start, unsigned long end,
- 	start = ALIGN_DOWN(start, page_size);
- 	if (altmap) {
- 		alt_start = altmap->base_pfn;
--		alt_end = altmap->base_pfn + altmap->reserve +
--			  altmap->free + altmap->alloc + altmap->align;
-+		alt_end = altmap->base_pfn + altmap->reserve + altmap->free;
- 	}
- 
- 	pr_debug("vmemmap_free %lx...%lx\n", start, end);
--- 
-2.41.0
+This patch also fixes a regression introduced on linux-next, the same
+crash on arch_tlbbatch_flush() is reproducible with fstests generic/176
+on XFS. This patch fixes that regression [0]. This should also close out
+the syzbot crash too [1]
 
+[0] https://gist.github.com/mcgrof/b37fc8cf7e6e1b3935242681de1a83e2
+[1] https://lore.kernel.org/all/0000000000003afcb4060135a664@google.com/
+
+Tested-by: Luis Chamberlain <mcgrof@kernel.org>
+
+  Luis
