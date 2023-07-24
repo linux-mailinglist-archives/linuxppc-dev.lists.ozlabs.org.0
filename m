@@ -1,96 +1,96 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7793D75F9F5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jul 2023 16:34:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2B8475F9FC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jul 2023 16:35:52 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hC4layOn;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hC4layOn;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JSezAyhE;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=eHQGc7jO;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R8jNd2kH0z303d
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 00:34:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R8jPy5Bdzz30Yb
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 00:35:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hC4layOn;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hC4layOn;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JSezAyhE;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=eHQGc7jO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R8jMn2cDpz2xgp
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jul 2023 00:33:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R8jP337Fyz2yDF
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jul 2023 00:35:03 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1690209234;
+	s=mimecast20190719; t=1690209300;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=QuAwZXj3hY8+uff4gHFej9mLNWJqFkLD2znR2KTvWws=;
-	b=hC4layOn+WeJn+A2qkQDgoOKU/5MN5HuQoO+T+g9J349gkisHf6ffM+R83zFclT2pVVV+I
-	KcLKamKG+3vZ6xpPvCgimR4AMbPnyP91vwgWlFN+gaooy0GKPt+Z3CU/lg0spM/th4i3ix
-	6T4DPmCE7p2YdQE1f16JZjWMT5khv/w=
+	bh=cv1BGKEgPfA0f21ZhgeV0Mg+YALdKw9yFeoZhStnjTA=;
+	b=JSezAyhEoY9E1MhOm8JYZS3sJXAb+81I6FB1JCOGcCpU+plcQAhdWBVhRj3McK6sXitCPj
+	rttP1gmdaXvxN4HDFYhIw7aLDAuWR0iDO2FP2LjqKG8f47BS6Y8Ao0v7qIzqmuWrtjMA0y
+	vT5YxqHGoChTa1AFInxime5Xd+O1F7I=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1690209234;
+	s=mimecast20190719; t=1690209301;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=QuAwZXj3hY8+uff4gHFej9mLNWJqFkLD2znR2KTvWws=;
-	b=hC4layOn+WeJn+A2qkQDgoOKU/5MN5HuQoO+T+g9J349gkisHf6ffM+R83zFclT2pVVV+I
-	KcLKamKG+3vZ6xpPvCgimR4AMbPnyP91vwgWlFN+gaooy0GKPt+Z3CU/lg0spM/th4i3ix
-	6T4DPmCE7p2YdQE1f16JZjWMT5khv/w=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=cv1BGKEgPfA0f21ZhgeV0Mg+YALdKw9yFeoZhStnjTA=;
+	b=eHQGc7jO+aBdHKL+V176Kwo2kmYKqn8/9TKyraNVKztkVDWIH44LODZk+GJ+I2nDWIFAbo
+	VGlM6ZydGhjNDUwtQE2+ukpxEQNltCwGZz0NdcUGTWT+boloFi1RwiA/POy/k1ie0oq5zz
+	u8oEOmNUQKSNuBUxkdCaul/hqnwELRs=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-153-3Zn9-mJPP6ihnw9ke16Q_w-1; Mon, 24 Jul 2023 10:33:53 -0400
-X-MC-Unique: 3Zn9-mJPP6ihnw9ke16Q_w-1
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-31400956ce8so2158079f8f.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jul 2023 07:33:53 -0700 (PDT)
+ us-mta-170-1hOqymozPu-ln_pY1ZxOBw-1; Mon, 24 Jul 2023 10:34:59 -0400
+X-MC-Unique: 1hOqymozPu-ln_pY1ZxOBw-1
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-3fd2e59bc53so8787875e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jul 2023 07:34:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690209232; x=1690814032;
-        h=content-transfer-encoding:in-reply-to:subject:organization:from
-         :references:cc:to:content-language:user-agent:mime-version:date
+        d=1e100.net; s=20221208; t=1690209298; x=1690814098;
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=QuAwZXj3hY8+uff4gHFej9mLNWJqFkLD2znR2KTvWws=;
-        b=Tz3F6HgfkaJ5vbvKQKAcg7kxbxm8rSOJOULAin6+EEtw3n1pJ94RTWryyN6l3K0w0u
-         2jiU5zRBOD19r2THPfmF2keL2l2RO0pPmNzo2aKOPiVugtIZL9uS10iGWaXBtiCjrg6a
-         O8s8hBh3b2kmiAdwZ0lyFpL9iKoREggOE2HzOII6WblwkT+bR11CLqLH7KK8lMFw4RpW
-         AA+8udVr5gK6ihDasQM0VBGc4lJ0gjEG5l5WRQCohv0QMastWa1+i6V+FcwHyudEQqV0
-         X0VQPiiC4J51x9ERC6JNqGPzXp/Al7ALCXMYxyHljXxzLNNE+cR9AwZG4OWaeibioK91
-         8lvQ==
-X-Gm-Message-State: ABy/qLa0O59piTy+dugP5dnDrcCYlPRrACs7E6qKae2DHUAgPQBqK3Hj
-	L0X+fy2j5fbqv8ZY4Iz3lt/XEm48BnxqJWjqSOSypVDrUsVWy5gpgg3zfWdMhSvgGUwb3+lGtqK
-	dXXveCftd7wrB7OBq9i7VtuOiY+z72wfGug==
-X-Received: by 2002:adf:e70d:0:b0:313:ede8:9f13 with SMTP id c13-20020adfe70d000000b00313ede89f13mr6911137wrm.32.1690209231982;
-        Mon, 24 Jul 2023 07:33:51 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEPtHEZfW45h1GMyO5AvAf8f8oOZ5lizueDmlksmAWhGklwwVI9CZukkB7lJTtAERgsDlMM9Q==
-X-Received: by 2002:adf:e70d:0:b0:313:ede8:9f13 with SMTP id c13-20020adfe70d000000b00313ede89f13mr6911119wrm.32.1690209231524;
-        Mon, 24 Jul 2023 07:33:51 -0700 (PDT)
+        bh=cv1BGKEgPfA0f21ZhgeV0Mg+YALdKw9yFeoZhStnjTA=;
+        b=CJ3R+RZAuGUcBTY03u5fYThH0vrZXZ4Rf5I0BcEDqJcgBjZfyIAr8o6t2pGSFHZlm8
+         une00A7HiH2i7daJkG189cWvW3hkJCQUKpIZAJmIrLC/h0Qhumfmnjf6ztBsWSU1/F5z
+         FhOOBqILC1FURSJwRmishtxHB7Fuf2asNEGs2BTFmDfK7A8uFUczWADWGUzGemBs/cTB
+         hiRLM9fyfb1pw6gkw1q5CQ/8ur539xOzuvQcUpo1EkU9o0rbFCbVogPs8TOT1w8yycK8
+         79MMc4YvVcH6eeHX0Bdn5Tu8QgDWv7XA8eydHcCADaG5q8dnGIdjWwYKsrY1Cas2vaa5
+         gVyA==
+X-Gm-Message-State: ABy/qLaHEcbNzErlw1jOHqrjFFCI7MhI9i1qLUcjGqrOhrr0wcJvGV/q
+	7vUBpY0RmifkRQp6PLupZbAgbR/PWFnL/OCH4GNT3ACEFlBdQaeMLEB9+y97eW6MixAPpKj8qHb
+	BH/nD1HP/fuPhe7cozpDlcfNVdg==
+X-Received: by 2002:a05:600c:220d:b0:3f8:f6fe:26bf with SMTP id z13-20020a05600c220d00b003f8f6fe26bfmr5994142wml.12.1690209297853;
+        Mon, 24 Jul 2023 07:34:57 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEK+6UVxrOXzI9dzV9dWjdpAkLQ8U1H2g0L4PcZh4lTRXibDfQksnRU4A0Vjft2TQ/8SaDckQ==
+X-Received: by 2002:a05:600c:220d:b0:3f8:f6fe:26bf with SMTP id z13-20020a05600c220d00b003f8f6fe26bfmr5994130wml.12.1690209297466;
+        Mon, 24 Jul 2023 07:34:57 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c73d:bb00:91a5:d1c:3a7e:4c77? (p200300cbc73dbb0091a50d1c3a7e4c77.dip0.t-ipconnect.de. [2003:cb:c73d:bb00:91a5:d1c:3a7e:4c77])
-        by smtp.gmail.com with ESMTPSA id a23-20020a5d4577000000b00314315071bbsm13111541wrc.38.2023.07.24.07.33.50
+        by smtp.gmail.com with ESMTPSA id x21-20020a05600c21d500b003fb41491670sm13113901wmj.24.2023.07.24.07.34.56
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Jul 2023 07:33:51 -0700 (PDT)
-Message-ID: <f9597236-866d-17cd-d549-938ea80eacbe@redhat.com>
-Date: Mon, 24 Jul 2023 16:33:50 +0200
+        Mon, 24 Jul 2023 07:34:57 -0700 (PDT)
+Message-ID: <7d3a0d68-1d65-a34a-c6c7-80234face7ce@redhat.com>
+Date: Mon, 24 Jul 2023 16:34:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
+Subject: Re: [PATCH v4 5/6] powerpc/book3s64/memhotplug: Enable memmap on
+ memory for radix
 To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-mm@kvack.org,
  akpm@linux-foundation.org, mpe@ellerman.id.au,
  linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, christophe.leroy@csgroup.eu
 References: <20230718024409.95742-1-aneesh.kumar@linux.ibm.com>
- <20230718024409.95742-5-aneesh.kumar@linux.ibm.com>
+ <20230718024409.95742-6-aneesh.kumar@linux.ibm.com>
 From: David Hildenbrand <david@redhat.com>
 Organization: Red Hat
-Subject: Re: [PATCH v4 4/6] mm/hotplug: Allow pageblock alignment via altmap
- reservation
-In-Reply-To: <20230718024409.95742-5-aneesh.kumar@linux.ibm.com>
+In-Reply-To: <20230718024409.95742-6-aneesh.kumar@linux.ibm.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -112,246 +112,119 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 18.07.23 04:44, Aneesh Kumar K.V wrote:
-> Add a new kconfig option that can be selected if we want to allow
-
-That description seems outdated.
-
-> pageblock alignment by reserving pages in the vmemmap altmap area.
-> This implies we will be reserving some pages for every memoryblock
-> This also allows the memmap on memory feature to be widely useful
-> with different memory block size values.
-
-Can you add some more meat to the description, and especially, in
-which cases this might be desired and in which cases it might be
-completely undesired?
-
-
-Let's assume we hotplug a 1 GiB DIMM on arm64/64k. With 512 MiB pageblocks,
-we'd waste 50% of the hotplugged memory.
-
-Also, see below on the case where we could end up with 100% wasted memory,
-which we want to block compeltely.
-
-
-Also, I wonder if we can avoid talking about "page reservation" or "altmap reservation",
-that's rather an implementation detail.
-
-For example, I'd call this patch
-
-"mm/hotplug: Support memmap_on_memory when memmap is not aligned to pageblocks"
-
-
-
+> Radix vmemmap mapping can map things correctly at the PMD level or PTE
+> level based on different device boundary checks. Hence we skip the
+> restrictions w.r.t vmemmap size to be multiple of PMD_SIZE. This also
+> makes the feature widely useful because to use PMD_SIZE vmemmap area we
+> require a memory block size of 2GiB
+> 
+> We can also use MHP_RESERVE_PAGES_MEMMAP_ON_MEMORY to that the feature
+> can work with a memory block size of 256MB. Using altmap.reserve feature
+> to align things correctly at pageblock granularity. We can end up
+> losing some pages in memory with this. For ex: with a 256MiB memory block
+> size, we require 4 pages to map vmemmap pages, In order to align things
+> correctly we end up adding a reserve of 28 pages. ie, for every 4096
+> pages 28 pages get reserved.
 > 
 > Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 > ---
->   mm/memory_hotplug.c | 109 ++++++++++++++++++++++++++++++++++++++------
->   1 file changed, 96 insertions(+), 13 deletions(-)
+>   arch/powerpc/Kconfig                          |  1 +
+>   arch/powerpc/include/asm/pgtable.h            | 24 +++++++++++++++++++
+>   .../platforms/pseries/hotplug-memory.c        |  3 ++-
+>   mm/memory_hotplug.c                           |  2 ++
+>   4 files changed, 29 insertions(+), 1 deletion(-)
 > 
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index 116d6add0bb0..f890907e5bbf 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -157,6 +157,7 @@ config PPC
+>   	select ARCH_HAS_UBSAN_SANITIZE_ALL
+>   	select ARCH_HAVE_NMI_SAFE_CMPXCHG
+>   	select ARCH_KEEP_MEMBLOCK
+> +	select ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE	if PPC_RADIX_MMU
+>   	select ARCH_MIGHT_HAVE_PC_PARPORT
+>   	select ARCH_MIGHT_HAVE_PC_SERIO
+>   	select ARCH_OPTIONAL_KERNEL_RWX		if ARCH_HAS_STRICT_KERNEL_RWX
+> diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
+> index 68817ea7f994..3d35371395a9 100644
+> --- a/arch/powerpc/include/asm/pgtable.h
+> +++ b/arch/powerpc/include/asm/pgtable.h
+> @@ -169,6 +169,30 @@ static inline bool is_ioremap_addr(const void *x)
+>   int __meminit vmemmap_populated(unsigned long vmemmap_addr, int vmemmap_map_size);
+>   bool altmap_cross_boundary(struct vmem_altmap *altmap, unsigned long start,
+>   			   unsigned long page_size);
+> +/*
+> + * mm/memory_hotplug.c:mhp_supports_memmap_on_memory goes into details
+> + * some of the restrictions. We don't check for PMD_SIZE because our
+> + * vmemmap allocation code can fallback correctly. The pageblock
+> + * alignment requirement is met using altmap->reserve blocks.
+> + */
+> +#define arch_supports_memmap_on_memory arch_supports_memmap_on_memory
+> +static inline bool arch_supports_memmap_on_memory(unsigned long size)
+> +{
+> +	unsigned long nr_pages = size >> PAGE_SHIFT;
+> +	unsigned long vmemmap_size = nr_pages * sizeof(struct page);
+> +
+> +	if (!radix_enabled())
+> +		return false;
+> +
+> +	if (IS_ENABLED(CONFIG_PPC_4K_PAGES))
+> +		return IS_ALIGNED(vmemmap_size, PMD_SIZE);
+
+Can you add a comment why we care about that in the 4K case only?
+
+> +	/*
+> +	 * The pageblock alignment requirement is met by using
+> +	 * reserve blocks in altmap.
+> +	 */
+
+Just drop that comment, that's handled by common code now.
+
+> +	return true;
+> +}
+> +
+>   #endif /* CONFIG_PPC64 */
+>   
+>   #endif /* __ASSEMBLY__ */
+> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+> index 9c62c2c3b3d0..1447509357a7 100644
+> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
+> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+> @@ -617,6 +617,7 @@ static int dlpar_memory_remove_by_ic(u32 lmbs_to_remove, u32 drc_index)
+>   
+>   static int dlpar_add_lmb(struct drmem_lmb *lmb)
+>   {
+> +	mhp_t mhp_flags = MHP_NONE | MHP_MEMMAP_ON_MEMORY;
+>   	unsigned long block_sz;
+>   	int nid, rc;
+>   
+> @@ -637,7 +638,7 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
+>   		nid = first_online_node;
+>   
+>   	/* Add the memory */
+> -	rc = __add_memory(nid, lmb->base_addr, block_sz, MHP_NONE);
+> +	rc = __add_memory(nid, lmb->base_addr, block_sz, mhp_flags);
+>   	if (rc) {
+>   		invalidate_lmb_associativity_index(lmb);
+>   		return rc;
 > diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 5921c81fcb70..c409f5ff6a59 100644
+> index c409f5ff6a59..6da063c80733 100644
 > --- a/mm/memory_hotplug.c
 > +++ b/mm/memory_hotplug.c
-> @@ -41,17 +41,85 @@
->   #include "internal.h"
->   #include "shuffle.h"
->   
-> +enum {
-> +	MEMMAP_ON_MEMORY_DISABLE = 0,
-> +	MEMMAP_ON_MEMORY_ENABLE,
-> +	MEMMAP_ON_MEMORY_FORCE,
-> +};
-> +
-> +static int memmap_mode __read_mostly = MEMMAP_ON_MEMORY_DISABLE;
-> +
-> +static inline unsigned long memory_block_align_base(unsigned long size)
-> +{
-
-Can we start with something like this instead?
-
-memory_block_memmap_size() might be reasonable to put into the previous patch.
+> @@ -2174,6 +2174,8 @@ static int __ref try_remove_memory(u64 start, u64 size)
+>   			 * right thing if we used vmem_altmap when hot-adding
+>   			 * the range.
+>   			 */
+> +			mhp_altmap.base_pfn = PHYS_PFN(start);
+> +			mhp_altmap.free = PHYS_PFN(size) - nr_vmemmap_pages;
 
 
-static inline unsigned long memory_block_memmap_size(void)
-{
-	return PHYS_PFN(memory_block_size_bytes()) * sizeof(struct page);
-}
+That change does not belong into this patch.
 
-/*
-  * In "forced" memmap_on_memory mode, we always align the vmemmap size up to cover
-  * full pageblocks. That way, we can add memory even if the vmemmap size is not properly
-  * aligned, however, we might waste memory.
-  */
-static inline unsigned long memory_block_memmap_on_memory_size(void)
-{
-	unsigned long size = memory_block_memmap_size();
-
-	if (memmap_mode != MEMMAP_ON_MEMORY_FORCE)
-		return size;
-	return ALIGN(size, PFN_PHYS(pageblock_nr_pages));
-}
-	
-
-
-> +	if (memmap_mode == MEMMAP_ON_MEMORY_FORCE) {
-> +		unsigned long align;
-> +		unsigned long nr_vmemmap_pages = size >> PAGE_SHIFT;
-> +		unsigned long vmemmap_size;
-> +
-> +		vmemmap_size = DIV_ROUND_UP(nr_vmemmap_pages * sizeof(struct page), PAGE_SIZE);
-> +		align = pageblock_align(vmemmap_size) - vmemmap_size;
-> +		return align;
-> +	} else
-> +		return 0;
-> +}
-> +
->   #ifdef CONFIG_MHP_MEMMAP_ON_MEMORY
->   /*
->    * memory_hotplug.memmap_on_memory parameter
->    */
-> -static bool memmap_on_memory __ro_after_init;
-> -module_param(memmap_on_memory, bool, 0444);
-> -MODULE_PARM_DESC(memmap_on_memory, "Enable memmap on memory for memory hotplug");
-> +static int set_memmap_mode(const char *val, const struct kernel_param *kp)
-> +{
-> +	int ret, mode;
-> +	bool enabled;
-> +
-> +	if (sysfs_streq(val, "force") ||  sysfs_streq(val, "FORCE")) {
-> +		mode =  MEMMAP_ON_MEMORY_FORCE;
-> +		goto matched;
-> +	}
-> +
-> +	ret = kstrtobool(val, &enabled);
-> +	if (ret < 0)
-> +		return ret;
-> +	if (enabled)
-> +		mode =  MEMMAP_ON_MEMORY_ENABLE;
-> +	else
-> +		mode =  MEMMAP_ON_MEMORY_DISABLE;
-> +
-> +matched:
-> +	*((int *)kp->arg) =  mode;
-> +	if (mode == MEMMAP_ON_MEMORY_FORCE) {
-> +		pr_info("Memory hotplug will reserve %ld pages in each memory block\n",
-> +			memory_block_align_base(memory_block_size_bytes()));
-> +	}
-> +	return 0;
-> +}
-> +
-> +static int get_memmap_mode(char *buffer, const struct kernel_param *kp)
-> +{
-> +	if (*((int *)kp->arg) == MEMMAP_ON_MEMORY_FORCE)
-> +		return sprintf(buffer,  "force\n");
-> +	if (*((int *)kp->arg) == MEMMAP_ON_MEMORY_ENABLE)
-> +		return sprintf(buffer,  "y\n");
-> +
-> +	return sprintf(buffer,  "n\n");
-
-param_get_bool() uses uppercase Y / N. Maybe just return the uppercase variants here as well.
-
-> +}
-> +
-> +static const struct kernel_param_ops memmap_mode_ops = {
-> +	.set = set_memmap_mode,
-> +	.get = get_memmap_mode,
-> +};
-> +module_param_cb(memmap_on_memory, &memmap_mode_ops, &memmap_mode, 0444);
-> +MODULE_PARM_DESC(memmap_on_memory, "Enable memmap on memory for memory hotplug\n"
-> +	"With value \"force\" it could result in memory wastage due to memmap size limitations \n"
-> +	"For example, if the memmap for a memory block requires 1 MiB, but the pageblock \n"
-> +	"size is 2 MiB, 1 MiB of hotplugged memory will be wasted. Note that there are \n"
-> +	"still cases where the feature cannot be enforced: for example, if the memmap is \n"
-> +	"smaller than a single page, or if the architecture does not support the forced \n"
-> +	"mode in all configurations. (y/n/force)");
-
-That's a bit mouthful. Can we simplify and put the full doc into
-
-Documentation/admin-guide/mm/memory-hotplug.rst
-
-?
-
->   
->   static inline bool mhp_memmap_on_memory(void)
->   {
-> -	return memmap_on_memory;
-> +	return !!memmap_mode;
-
-Maybe better  "memmap_mode != MEMMAP_ON_MEMORY_DISABLE"
-
->   }
->   #else
->   static inline bool mhp_memmap_on_memory(void)
-> @@ -1264,7 +1332,6 @@ static inline bool arch_supports_memmap_on_memory(unsigned long size)
->   
->   static bool mhp_supports_memmap_on_memory(unsigned long size)
->   {
-> -
->   	unsigned long nr_vmemmap_pages = size >> PAGE_SHIFT;
->   	unsigned long vmemmap_size = nr_vmemmap_pages * sizeof(struct page);
->   	unsigned long remaining_size = size - vmemmap_size;
-> @@ -1295,10 +1362,23 @@ static bool mhp_supports_memmap_on_memory(unsigned long size)
->   	 *       altmap as an alternative source of memory, and we do not exactly
->   	 *       populate a single PMD.
->   	 */
-> -	return mhp_memmap_on_memory() &&
-> -	       size == memory_block_size_bytes() &&
-> -	       IS_ALIGNED(remaining_size, (pageblock_nr_pages << PAGE_SHIFT)) &&
-> -	       arch_supports_memmap_on_memory(size);
-> +	if (!mhp_memmap_on_memory() || size != memory_block_size_bytes())
-> +		return false;
-> +
-> +	/*
-> +	 * Make sure the vmemmap allocation is fully contained
-> +	 * so that we always allocate vmemmap memory from altmap area.
-> +	 */
-> +	if (!IS_ALIGNED(vmemmap_size,  PAGE_SIZE))
-> +		return false;
-> +	 /*
-> +	  * Without page reservation remaining pages should be pageblock aligned.
-> +	  */
-> +	if (memmap_mode != MEMMAP_ON_MEMORY_FORCE &&
-> +	    !IS_ALIGNED(remaining_size, (pageblock_nr_pages << PAGE_SHIFT)))
-> +		return false;
-
-With our new helper, this becomes the following:
-
-memmap_on_memory_size = memory_block_memmap_on_memory_size();
-
-if (!IS_ALIGNED(memmap_on_memory_size, PFN_PHYS(pageblock_nr_pages))
-	/* We're not allowed to waste any memory for the memmap. */
-	return false;
-
-if (memmap_on_memory_size == memory_block_size_bytes())
-	/* No effective hotplugged memory doesn't make sense. */
-	return false;	
-
-> +	return arch_supports_memmap_on_memory(size);
->   }
->   
->   /*
-> @@ -1311,7 +1391,11 @@ int __ref add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
->   {
->   	struct mhp_params params = { .pgprot = pgprot_mhp(PAGE_KERNEL) };
->   	enum memblock_flags memblock_flags = MEMBLOCK_NONE;
-> -	struct vmem_altmap mhp_altmap = {};
-> +	struct vmem_altmap mhp_altmap = {
-> +		.base_pfn =  PHYS_PFN(res->start),
-> +		.end_pfn  =  PHYS_PFN(res->end),
-> +		.reserve  = memory_block_align_base(resource_size(res)),
-
-Can you remind me why we have to set reserve here at all?
-
-IOW, can't we simply set
-
-.free = memory_block_memmap_on_memory_size();
-
-end then pass
-
-mhp_altmap.alloc + mhp_altmap.free
-
-to create_memory_block_devices() instead?
-
+>   			mhp_altmap.alloc = nr_vmemmap_pages;
+>   			altmap = &mhp_altmap;
+>   		}
 
 -- 
 Cheers,
