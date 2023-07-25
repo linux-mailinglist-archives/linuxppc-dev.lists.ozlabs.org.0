@@ -2,83 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A05976103B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 12:06:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55E9D761043
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 12:07:53 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PoOjFh9I;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lmAdjlXV;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R9CND3Ffkz3dFQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 20:06:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R9CQH1ly2z3dTb
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 20:07:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PoOjFh9I;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lmAdjlXV;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R9CJZ1YYrz30gy
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jul 2023 20:02:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R9CKF23bgz3cVt
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jul 2023 20:03:29 +1000 (AEST)
 Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36P9dIjp027204;
-	Tue, 25 Jul 2023 10:02:42 GMT
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36P9dGLd027140;
+	Tue, 25 Jul 2023 10:02:45 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=m/N/ZGS4poz7rvG6PnELWOzMCVASA/Tj6XRMe7JZvjw=;
- b=PoOjFh9INOvArDvZ2x0rlM5C8LXM6A1p8G/Oavu4Ux7sKuvSNN/DrmAvnaoOv5IQ86IT
- ooNYM9qCYT7+li/kIZtWP25qTYWb7cDVbQxhraM4TTp6mWrN++xZg3qO08oVhFH3tbhX
- J770FAEHPVA2jvY+4zwwc8zm+VCbKpRq0FMgupZgxnchgWNB/btEeK3nCCITQvWBo35t
- pBf1LixkbmrX0ewwUJEYZ7NUjTzHun+sQ0QflMC5OutSE5cGDf+HicURBKiVVKDrnMG/
- WKJ7LeNBJFF2MOmAK6SChZZFNt4E5FMgnYBylaK/CuLsde/jQQ+Hb35PFBE4ilOi1ad/ Ig== 
+ bh=9FoAFYimQvxvhq6QRw3I1G6YmiFvhLpdqTM8y0x/APg=;
+ b=lmAdjlXVKRGi4Fx1mVaPB7vwC2QRrGhZl4muqaU789kVQoI4uAryTav5shupbpD4ZwTK
+ Zcd0/5H/fsOymT5mj1FG7Y0rpxpjYUKBP2hP9wzjYZu49JcpHztGPD8FgKEH254mETj4
+ JDbCkGjsCvVjOQN2F2+dK0kYuz23/AHI+UNdt/aJPNfuL6T3CHQFdcFckSSvhlzbYJaX
+ RGijA4BxEhzcMrU9roS7tHXUSSn3QLn8gn/0dB5bzYB5UzbIscU/26ZuKOY8BBDUUt4/
+ BogMHrdkB/sIVzNLsZSw+E1RRfAi56bmjg9ceAQs+5e6ImYO9OaepQywW8P9cp1DEaaD Og== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s206365k7-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s206365n0-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Jul 2023 10:02:42 +0000
+	Tue, 25 Jul 2023 10:02:45 +0000
 Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36P9e96V030089;
-	Tue, 25 Jul 2023 10:02:41 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s206365j1-1
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36P9eO3P030851;
+	Tue, 25 Jul 2023 10:02:44 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s206365md-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Jul 2023 10:02:41 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36P8S1DM002059;
-	Tue, 25 Jul 2023 10:02:39 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3s0temu1bu-1
+	Tue, 25 Jul 2023 10:02:44 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36P9hPjx002281;
+	Tue, 25 Jul 2023 10:02:43 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3s0unjam31-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Jul 2023 10:02:39 +0000
+	Tue, 25 Jul 2023 10:02:43 +0000
 Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36PA2dUB33292804
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36PA2hDE6226474
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 25 Jul 2023 10:02:39 GMT
+	Tue, 25 Jul 2023 10:02:43 GMT
 Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 11D0858062;
+	by IMSVA (Postfix) with ESMTP id 43D945805C;
+	Tue, 25 Jul 2023 10:02:43 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 904AD5805E;
 	Tue, 25 Jul 2023 10:02:39 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5092A5805E;
-	Tue, 25 Jul 2023 10:02:35 +0000 (GMT)
 Received: from skywalker.in.ibm.com (unknown [9.109.212.144])
 	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 25 Jul 2023 10:02:35 +0000 (GMT)
+	Tue, 25 Jul 2023 10:02:39 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: linux-mm@kvack.org, akpm@linux-foundation.org, mpe@ellerman.id.au,
         linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
         christophe.leroy@csgroup.eu
-Subject: [PATCH v5 4/7] mm/hotplug: Support memmap_on_memory when memmap is not aligned to pageblocks
-Date: Tue, 25 Jul 2023 15:32:09 +0530
-Message-ID: <20230725100212.531277-5-aneesh.kumar@linux.ibm.com>
+Subject: [PATCH v5 5/7] powerpc/book3s64/memhotplug: Enable memmap on memory for radix
+Date: Tue, 25 Jul 2023 15:32:10 +0530
+Message-ID: <20230725100212.531277-6-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230725100212.531277-1-aneesh.kumar@linux.ibm.com>
 References: <20230725100212.531277-1-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: mexUxeru00NjjcMvWOlGxMknQ1u94Xm7
-X-Proofpoint-ORIG-GUID: lvvumE8sev8_oknKHlQ6RnkRzSV8q_w_
+X-Proofpoint-GUID: _2Vuo1r6chdVRnOGmwrE8Y-t0v0rAhzE
+X-Proofpoint-ORIG-GUID: gKeHGuOleK4aWSfjOu3s69fgMSI6iccV
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-07-25_04,2023-07-24_01,2023-05-22_02
@@ -102,232 +102,95 @@ Cc: Vishal Verma <vishal.l.verma@intel.com>, David Hildenbrand <david@redhat.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently, memmap_on_memory feature is only supported with memory block
-sizes that result in vmemmap pages covering full page blocks. This is
-because memory onlining/offlining code requires applicable ranges to be
-pageblock-aligned, for example, to set the migratetypes properly.
+Radix vmemmap mapping can map things correctly at the PMD level or PTE
+level based on different device boundary checks. Hence we skip the
+restrictions w.r.t vmemmap size to be multiple of PMD_SIZE. This also
+makes the feature widely useful because to use PMD_SIZE vmemmap area we
+require a memory block size of 2GiB
 
-This patch helps to lift that restriction by reserving more pages than
-required for vmemmap space. This helps the start address to be page
-block aligned with different memory block sizes. Using this facility
-implies the kernel will be reserving some pages for every memoryblock.
-This allows the memmap on memory feature to be widely useful with
-different memory block size values.
-
-For ex: with 64K page size and 256MiB memory block size, we require 4
-pages to map vmemmap pages, To align things correctly we end up adding a
-reserve of 28 pages. ie, for every 4096 pages 28 pages get reserved.
+We can also use MHP_RESERVE_PAGES_MEMMAP_ON_MEMORY to that the feature
+can work with a memory block size of 256MB. Using altmap.reserve feature
+to align things correctly at pageblock granularity. We can end up
+losing some pages in memory with this. For ex: with a 256MiB memory block
+size, we require 4 pages to map vmemmap pages, In order to align things
+correctly we end up adding a reserve of 28 pages. ie, for every 4096
+pages 28 pages get reserved.
 
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- .../admin-guide/mm/memory-hotplug.rst         |  12 ++
- mm/memory_hotplug.c                           | 121 ++++++++++++++++--
- 2 files changed, 119 insertions(+), 14 deletions(-)
+ arch/powerpc/Kconfig                          |  1 +
+ arch/powerpc/include/asm/pgtable.h            | 24 +++++++++++++++++++
+ .../platforms/pseries/hotplug-memory.c        |  3 ++-
+ 3 files changed, 27 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/admin-guide/mm/memory-hotplug.rst b/Documentation/admin-guide/mm/memory-hotplug.rst
-index bd77841041af..2994958c7ce8 100644
---- a/Documentation/admin-guide/mm/memory-hotplug.rst
-+++ b/Documentation/admin-guide/mm/memory-hotplug.rst
-@@ -433,6 +433,18 @@ The following module parameters are currently defined:
- 				 memory in a way that huge pages in bigger
- 				 granularity cannot be formed on hotplugged
- 				 memory.
-+
-+				 With value "force" it could result in memory
-+				 wastage due to memmap size limitations. For
-+				 example, if the memmap for a memory block
-+				 requires 1 MiB, but the pageblock size is 2
-+				 MiB, 1 MiB of hotplugged memory will be wasted.
-+				 Note that there are still cases where the
-+				 feature cannot be enforced: for example, if the
-+				 memmap is smaller than a single page, or if the
-+				 architecture does not support the forced mode
-+				 in all configurations.
-+
- ``online_policy``		 read-write: Set the basic policy used for
- 				 automatic zone selection when onlining memory
- 				 blocks without specifying a target zone.
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 457824a6ecb8..5b472e137898 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -41,17 +41,89 @@
- #include "internal.h"
- #include "shuffle.h"
- 
-+enum {
-+	MEMMAP_ON_MEMORY_DISABLE = 0,
-+	MEMMAP_ON_MEMORY_ENABLE,
-+	MEMMAP_ON_MEMORY_FORCE,
-+};
-+
-+static int memmap_mode __read_mostly = MEMMAP_ON_MEMORY_DISABLE;
-+
-+static inline unsigned long memory_block_memmap_pages(void)
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index d0497d13f5b4..938294c996dc 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -157,6 +157,7 @@ config PPC
+ 	select ARCH_HAS_UBSAN_SANITIZE_ALL
+ 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
+ 	select ARCH_KEEP_MEMBLOCK
++	select ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE	if PPC_RADIX_MMU
+ 	select ARCH_MIGHT_HAVE_PC_PARPORT
+ 	select ARCH_MIGHT_HAVE_PC_SERIO
+ 	select ARCH_OPTIONAL_KERNEL_RWX		if ARCH_HAS_STRICT_KERNEL_RWX
+diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
+index a4893b17705a..9b4a1fd24025 100644
+--- a/arch/powerpc/include/asm/pgtable.h
++++ b/arch/powerpc/include/asm/pgtable.h
+@@ -161,6 +161,30 @@ static inline pgtable_t pmd_pgtable(pmd_t pmd)
+ int __meminit vmemmap_populated(unsigned long vmemmap_addr, int vmemmap_map_size);
+ bool altmap_cross_boundary(struct vmem_altmap *altmap, unsigned long start,
+ 			   unsigned long page_size);
++/*
++ * mm/memory_hotplug.c:mhp_supports_memmap_on_memory goes into details
++ * some of the restrictions. We don't check for PMD_SIZE because our
++ * vmemmap allocation code can fallback correctly. The pageblock
++ * alignment requirement is met using altmap->reserve blocks.
++ */
++#define arch_supports_memmap_on_memory arch_supports_memmap_on_memory
++static inline bool arch_supports_memmap_on_memory(unsigned long size)
 +{
-+	unsigned long memmap_size;
++	unsigned long nr_pages = size >> PAGE_SHIFT;
++	unsigned long vmemmap_size = nr_pages * sizeof(struct page);
 +
-+	memmap_size = PHYS_PFN(memory_block_size_bytes()) * sizeof(struct page);
-+	return memmap_size >> PAGE_SHIFT;
-+}
-+
-+static inline unsigned long memory_block_memmap_on_memory_pages(void)
-+{
-+	unsigned long nr_pages = memory_block_memmap_pages();
-+
++	if (!radix_enabled())
++		return false;
 +	/*
-+	 * In "forced" memmap_on_memory mode, we add extra pages to align the
-+	 * vmemmap size to cover full pageblocks. That way, we can add memory
-+	 * even if the vmemmap size is not properly aligned, however, we might waste
-+	 * memory.
++	 * With 4K page size and 2M PMD_SIZE, we can align
++	 * things better with memory block size value
++	 * starting from 128MB. Hence align things with PMD_SIZE.
 +	 */
-+	if (memmap_mode == MEMMAP_ON_MEMORY_FORCE)
-+		return pageblock_align(nr_pages);
-+	return nr_pages;
++	if (IS_ENABLED(CONFIG_PPC_4K_PAGES))
++		return IS_ALIGNED(vmemmap_size, PMD_SIZE);
++	return true;
 +}
 +
- #ifdef CONFIG_MHP_MEMMAP_ON_MEMORY
- /*
-  * memory_hotplug.memmap_on_memory parameter
-  */
--static bool memmap_on_memory __ro_after_init;
--module_param(memmap_on_memory, bool, 0444);
--MODULE_PARM_DESC(memmap_on_memory, "Enable memmap on memory for memory hotplug");
-+static int set_memmap_mode(const char *val, const struct kernel_param *kp)
-+{
-+	int ret, mode;
-+	bool enabled;
-+
-+	if (sysfs_streq(val, "force") ||  sysfs_streq(val, "FORCE")) {
-+		mode =  MEMMAP_ON_MEMORY_FORCE;
-+		goto matched;
-+	}
-+
-+	ret = kstrtobool(val, &enabled);
-+	if (ret < 0)
-+		return ret;
-+	if (enabled)
-+		mode =  MEMMAP_ON_MEMORY_ENABLE;
-+	else
-+		mode =  MEMMAP_ON_MEMORY_DISABLE;
-+
-+matched:
-+	*((int *)kp->arg) =  mode;
-+	if (mode == MEMMAP_ON_MEMORY_FORCE) {
-+		unsigned long memmap_pages = memory_block_memmap_on_memory_pages();
-+
-+		pr_info("Memory hotplug will reserve %ld pages in each memory block\n",
-+			memmap_pages - memory_block_memmap_pages());
-+	}
-+	return 0;
-+}
-+
-+static int get_memmap_mode(char *buffer, const struct kernel_param *kp)
-+{
-+	if (*((int *)kp->arg) == MEMMAP_ON_MEMORY_FORCE)
-+		return sprintf(buffer,  "force\n");
-+	return param_get_bool(buffer, kp);
-+}
-+
-+static const struct kernel_param_ops memmap_mode_ops = {
-+	.set = set_memmap_mode,
-+	.get = get_memmap_mode,
-+};
-+module_param_cb(memmap_on_memory, &memmap_mode_ops, &memmap_mode, 0444);
-+MODULE_PARM_DESC(memmap_on_memory, "Enable memmap on memory for memory hotplug\n"
-+		 "With value \"force\" it could result in memory wastage due "
-+		 "to memmap size limitations (Y/N/force)");
+ #endif /* CONFIG_PPC64 */
  
- static inline bool mhp_memmap_on_memory(void)
+ #endif /* __ASSEMBLY__ */
+diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+index 9c62c2c3b3d0..1447509357a7 100644
+--- a/arch/powerpc/platforms/pseries/hotplug-memory.c
++++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+@@ -617,6 +617,7 @@ static int dlpar_memory_remove_by_ic(u32 lmbs_to_remove, u32 drc_index)
+ 
+ static int dlpar_add_lmb(struct drmem_lmb *lmb)
  {
--	return memmap_on_memory;
-+	return memmap_mode != MEMMAP_ON_MEMORY_DISABLE;
- }
- #else
- static inline bool mhp_memmap_on_memory(void)
-@@ -1266,7 +1338,7 @@ static bool mhp_supports_memmap_on_memory(unsigned long size)
- {
- 	unsigned long nr_vmemmap_pages = size >> PAGE_SHIFT;
- 	unsigned long vmemmap_size = nr_vmemmap_pages * sizeof(struct page);
--	unsigned long remaining_size = size - vmemmap_size;
-+	unsigned long memmap_pages = memory_block_memmap_on_memory_pages();
++	mhp_t mhp_flags = MHP_NONE | MHP_MEMMAP_ON_MEMORY;
+ 	unsigned long block_sz;
+ 	int nid, rc;
  
- 	/*
- 	 * Besides having arch support and the feature enabled at runtime, we
-@@ -1294,10 +1366,28 @@ static bool mhp_supports_memmap_on_memory(unsigned long size)
- 	 *       altmap as an alternative source of memory, and we do not exactly
- 	 *       populate a single PMD.
- 	 */
--	return mhp_memmap_on_memory() &&
--	       size == memory_block_size_bytes() &&
--	       IS_ALIGNED(remaining_size, (pageblock_nr_pages << PAGE_SHIFT)) &&
--	       arch_supports_memmap_on_memory(size);
-+	if (!mhp_memmap_on_memory() || size != memory_block_size_bytes())
-+		return false;
-+
-+	/*
-+	 * Make sure the vmemmap allocation is fully contained
-+	 * so that we always allocate vmemmap memory from altmap area.
-+	 */
-+	if (!IS_ALIGNED(vmemmap_size, PAGE_SIZE))
-+		return false;
-+
-+	/*
-+	 * start pfn should be pageblock_nr_pages aligned for correctly
-+	 * setting migrate types
-+	 */
-+	if (!pageblock_aligned(memmap_pages))
-+		return false;
-+
-+	if (memmap_pages == PHYS_PFN(memory_block_size_bytes()))
-+		/* No effective hotplugged memory doesn't make sense. */
-+		return false;
-+
-+	return arch_supports_memmap_on_memory(size);
- }
+@@ -637,7 +638,7 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
+ 		nid = first_online_node;
  
- /*
-@@ -1310,7 +1400,10 @@ int __ref add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
- {
- 	struct mhp_params params = { .pgprot = pgprot_mhp(PAGE_KERNEL) };
- 	enum memblock_flags memblock_flags = MEMBLOCK_NONE;
--	struct vmem_altmap mhp_altmap = {};
-+	struct vmem_altmap mhp_altmap = {
-+		.base_pfn =  PHYS_PFN(res->start),
-+		.end_pfn  =  PHYS_PFN(res->end),
-+	};
- 	struct memory_group *group = NULL;
- 	u64 start, size;
- 	bool new_node = false;
-@@ -1355,8 +1448,7 @@ int __ref add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
- 	 */
- 	if (mhp_flags & MHP_MEMMAP_ON_MEMORY) {
- 		if (mhp_supports_memmap_on_memory(size)) {
--			mhp_altmap.free = PHYS_PFN(size);
--			mhp_altmap.base_pfn = PHYS_PFN(start);
-+			mhp_altmap.free = memory_block_memmap_on_memory_pages();
- 			params.altmap = &mhp_altmap;
- 		}
- 		/* fallback to not using altmap  */
-@@ -1368,8 +1460,7 @@ int __ref add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
- 		goto error;
- 
- 	/* create memory block devices after memory was added */
--	ret = create_memory_block_devices(start, size, mhp_altmap.alloc,
--					  group);
-+	ret = create_memory_block_devices(start, size, mhp_altmap.free, group);
- 	if (ret) {
- 		arch_remove_memory(start, size, NULL);
- 		goto error;
-@@ -2095,6 +2186,8 @@ static int __ref try_remove_memory(u64 start, u64 size)
- 			 * right thing if we used vmem_altmap when hot-adding
- 			 * the range.
- 			 */
-+			mhp_altmap.base_pfn = PHYS_PFN(start);
-+			mhp_altmap.free = nr_vmemmap_pages;
- 			mhp_altmap.alloc = nr_vmemmap_pages;
- 			altmap = &mhp_altmap;
- 		}
+ 	/* Add the memory */
+-	rc = __add_memory(nid, lmb->base_addr, block_sz, MHP_NONE);
++	rc = __add_memory(nid, lmb->base_addr, block_sz, mhp_flags);
+ 	if (rc) {
+ 		invalidate_lmb_associativity_index(lmb);
+ 		return rc;
 -- 
 2.41.0
 
