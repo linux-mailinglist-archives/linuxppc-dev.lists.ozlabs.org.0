@@ -2,85 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26F377609DD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 07:54:44 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PrzHE9ME;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id EF65C760AC9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 08:46:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R95pB0PxFz3c5y
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 15:54:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R96yG6YXSz3bZF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 16:46:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PrzHE9ME;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.13; helo=inva020.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R95nG26j2z2xZp
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jul 2023 15:53:54 +1000 (AEST)
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36P5a4rn003524;
-	Tue, 25 Jul 2023 05:53:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=73b5IEFhrpzhzei5MhvJ+VRozwcxxuRxmymx0ijdhRY=;
- b=PrzHE9MEpO1Ke5E3yIQV8a74GrE3iP+1Ymb/gUwsMB0m9NA1a1j/CPawkgkfG9gtSMjK
- a8HbNN0kQl3Kbia56E5m/pI6sysjktjen9wLjai3Qgccm5hi3IvmXeVNtwZgZSUz+t2m
- 1yBpj2HTl6OBNhjR2w+CE8l5BThwIolN7fXLVnFL0m4Ht2lbgHvi2B3F2AAQiCFVBoeM
- HT3v9OgybWpDwChbj26nEWV5khnE5+okNaNbf1xkHIMXEGuF2uT28u/wKCO4q2c+EcBO
- 5ZloYww3yQms815zkNdeQDAwGSXl4YT/cvXhAQ+fpdIbQJCRONyOO4T95SByKyNctaHY qQ== 
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s27shgyws-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Jul 2023 05:53:41 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36P5GwO0016644;
-	Tue, 25 Jul 2023 05:53:40 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3s0v510wc6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Jul 2023 05:53:40 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36P5rb2t19989238
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 25 Jul 2023 05:53:37 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8FA1C2004B;
-	Tue, 25 Jul 2023 05:53:37 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9769E20040;
-	Tue, 25 Jul 2023 05:53:35 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.43.73.40])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 25 Jul 2023 05:53:35 +0000 (GMT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.500.231\))
-Subject: Re: [PATCH v3 00/10] Add sysfs interface files to hv_gpci device to
- expose system information
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <20230719061231.631410-1-kjain@linux.ibm.com>
-Date: Tue, 25 Jul 2023 11:23:23 +0530
-Content-Transfer-Encoding: 7bit
-Message-Id: <D884EDCC-EC77-4C80-A4D4-06B50ABE4AF8@linux.vnet.ibm.com>
-References: <20230719061231.631410-1-kjain@linux.ibm.com>
-To: Kajol Jain <kjain@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-X-Mailer: Apple Mail (2.3731.500.231)
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: nRRJxsTU-PYSn6VfvkYHmfyIpzED52qG
-X-Proofpoint-ORIG-GUID: nRRJxsTU-PYSn6VfvkYHmfyIpzED52qG
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-25_02,2023-07-24_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 malwarescore=0
- mlxlogscore=999 priorityscore=1501 spamscore=0 impostorscore=0
- suspectscore=0 bulkscore=0 phishscore=0 mlxscore=0 adultscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2307250050
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R96xp2T2fz30jT
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jul 2023 16:46:20 +1000 (AEST)
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 14BF31A161D;
+	Tue, 25 Jul 2023 08:46:17 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id CEC341A1614;
+	Tue, 25 Jul 2023 08:46:16 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id D18501800319;
+	Tue, 25 Jul 2023 14:46:14 +0800 (+08)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: hverkuil@xs4all.nl,
+	sakari.ailus@iki.fi,
+	tfiga@chromium.org,
+	m.szyprowski@samsung.com,
+	mchehab@kernel.org,
+	linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	festevam@gmail.com,
+	nicoleotsuka@gmail.com,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	alsa-devel@alsa-project.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [RFC PATCH v2 0/7] Add audio support in v4l2 framework
+Date: Tue, 25 Jul 2023 14:12:13 +0800
+Message-Id: <1690265540-25999-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,89 +58,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, Randy Dunlap <rdunlap@infradead.org>, LKML <linux-kernel@vger.kernel.org>, linux-perf-users@vger.kernel.org, disgoel@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Audio signal processing has the requirement for memory to
+memory similar as Video.
 
+This patch is to add this support in v4l2 framework, defined
+new buffer type V4L2_BUF_TYPE_AUDIO_CAPTURE and
+V4L2_BUF_TYPE_AUDIO_OUTPUT, defined new format v4l2_audio_format
+for audio case usage.
 
-> On 19-Jul-2023, at 11:42 AM, Kajol Jain <kjain@linux.ibm.com> wrote:
-> 
-> The hcall H_GET_PERF_COUNTER_INFO can be used to get data related to
-> chips, dimms and system topology, by passing different counter request
-> values.
-> Patchset adds sysfs files to "/sys/devices/hv_gpci/interface/"
-> of hv_gpci pmu driver, which will expose system topology information
-> using H_GET_PERF_COUNTER_INFO hcall. The added sysfs files are
-> available for power10 and above platforms and needs root access
-> to read the data.
-> 
-> Patches 1,3,5,7,9 adds sysfs interface files to the hv_gpci
-> pmu driver, to get system topology information.
-> 
-> List of added sysfs files:
-> -> processor_bus_topology (Counter request value : 0xD0)
-> -> processor_config (Counter request value : 0x90)
-> -> affinity_domain_via_virtual_processor (Counter request value : 0xA0)
-> -> affinity_domain_via_domain (Counter request value : 0xB0)
-> -> affinity_domain_via_partition (Counter request value : 0xB1)
-> 
-> Patches 2,4,6,8,10 adds details of the newly added hv_gpci
-> interface files listed above in the ABI documentation.
-> 
-> Patches 2,4,6,8,10 adds details of the newly added hv_gpci
-> interface files listed above in the ABI documentation.
+The created audio device is named "/dev/audioX".
 
-Reviewed-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+And add memory to memory support for two kinds of i.MX ASRC
+module
 
-Thanks
-Athira
-> 
-> Changelog:
-> v2 -> v3
-> -> Make nit changes in documentation patches as suggested by Randy Dunlap.
-> 
-> v1 -> v2
-> -> Incase the HCALL fails with errors that can be resolve during runtime,
->   then only add sysinfo interface attributes to the interface_attrs
->   attribute array. Even if one of the counter request value HCALL fails,
->   don't add any sysinfo attribute to the interface_attrs attribute array.
->   Add the code changes to make sure sysinfo interface added only when all
->   the requirements met as suggested by Michael Ellerman.
-> -> Make changes in documentation, adds detail of errors type
->   which can be resolved at runtime as suggested by Michael Ellerman.
-> -> Add new enum and sysinfo_counter_request array to get required
->   counter request value in hv-gpci.c file.
-> -> Move the macros for interface attribute array index to hv-gpci.c, as
->   these macros currently only used in hv-gpci.c file.
-> 
-> Kajol Jain (10):
->  powerpc/hv_gpci: Add sysfs file inside hv_gpci device to show
->    processor bus topology information
->  docs: ABI: sysfs-bus-event_source-devices-hv_gpci: Document
->    processor_bus_topology sysfs interface file
->  powerpc/hv_gpci: Add sysfs file inside hv_gpci device to show
->    processor config information
->  docs: ABI: sysfs-bus-event_source-devices-hv_gpci: Document
->    processor_config sysfs interface file
->  powerpc/hv_gpci: Add sysfs file inside hv_gpci device to show affinity
->    domain via virtual processor information
->  docs: ABI: sysfs-bus-event_source-devices-hv_gpci: Document
->    affinity_domain_via_virtual_processor sysfs interface file
->  powerpc/hv_gpci: Add sysfs file inside hv_gpci device to show affinity
->    domain via domain information
->  docs: ABI: sysfs-bus-event_source-devices-hv_gpci: Document
->    affinity_domain_via_domain sysfs interface file
->  powerpc/hv_gpci: Add sysfs file inside hv_gpci device to show affinity
->    domain via partition information
->  docs: ABI: sysfs-bus-event_source-devices-hv_gpci: Document
->    affinity_domain_via_partition sysfs interface file
-> 
-> .../sysfs-bus-event_source-devices-hv_gpci    | 160 +++++
-> arch/powerpc/perf/hv-gpci.c                   | 640 +++++++++++++++++-
-> 2 files changed, 798 insertions(+), 2 deletions(-)
-> 
-> -- 
-> 2.39.3
-> 
+changes in v2:
+- decouple the implementation in v4l2 and ALSA
+- implement the memory to memory driver as a platfrom driver
+  and move it to driver/media
+- move fsl_asrc_common.h to include/sound folder
+
+Shengjiu Wang (7):
+  ASoC: fsl_asrc: define functions for memory to memory usage
+  ASoC: fsl_easrc: define functions for memory to memory usage
+  ASoC: fsl_asrc: move fsl_asrc_common.h to include/sound
+  media: v4l2: Add audio capture and output support
+  media: imx: fsl_asrc: Add memory to memory driver
+  ASoC: fsl_asrc: register m2m platform device
+  ASoC: fsl_easrc: register m2m platform device
+
+ .../media/common/videobuf2/videobuf2-v4l2.c   |   4 +
+ drivers/media/platform/nxp/Kconfig            |  12 +
+ drivers/media/platform/nxp/Makefile           |   1 +
+ drivers/media/platform/nxp/fsl_asrc_m2m.c     | 962 ++++++++++++++++++
+ drivers/media/v4l2-core/v4l2-dev.c            |  17 +
+ drivers/media/v4l2-core/v4l2-ioctl.c          |  52 +
+ include/media/v4l2-dev.h                      |   2 +
+ include/media/v4l2-ioctl.h                    |  34 +
+ .../fsl => include/sound}/fsl_asrc_common.h   |  48 +
+ include/uapi/linux/videodev2.h                |  19 +
+ sound/soc/fsl/fsl_asrc.c                      | 150 +++
+ sound/soc/fsl/fsl_asrc.h                      |   4 +-
+ sound/soc/fsl/fsl_asrc_dma.c                  |   2 +-
+ sound/soc/fsl/fsl_easrc.c                     | 227 +++++
+ sound/soc/fsl/fsl_easrc.h                     |   8 +-
+ 15 files changed, 1539 insertions(+), 3 deletions(-)
+ create mode 100644 drivers/media/platform/nxp/fsl_asrc_m2m.c
+ rename {sound/soc/fsl => include/sound}/fsl_asrc_common.h (63%)
+
+-- 
+2.34.1
 
