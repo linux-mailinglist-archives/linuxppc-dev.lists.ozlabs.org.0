@@ -1,110 +1,112 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28DD6761A3F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 15:43:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A5ED761A45
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 15:44:24 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=TBcCSAbk;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=AMbL0Ds+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R9JC70kB5z3bYt
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 23:43:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R9JD6014dz3cYC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 23:44:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=TBcCSAbk;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=AMbL0Ds+;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f400:7e89::609; helo=nam10-mw2-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org)
 Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on20609.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e89::609])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R9JBD0G75z30gM
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jul 2023 23:42:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R9JBF11CYz30gM
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jul 2023 23:42:45 +1000 (AEST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=eRoI4/8VunNQhvRDqeFGG+nav21zmlRcfEPyYfrhQC/4Rs4/Z5fpj5mkKNPFDQr4AX4jq+5zwLC+hIKosNdf/bK9LtRI5fiWej0rs9AXZgtR0Sct3GPX9TOgJXmeHZJB+e0Kzct6U84PlQ3ovtwaNhNjyQz+C77pSEGAyTGn0CnnaaD+szv42ML40kZj7g/eHRgdCYm6ua7qmhSkskdHi2JYl2AhBZAofOUkFBB10DyQ0kLsNzoW/F6t2/ekxtRQLybPIfocW2HvvjV2TfsBa4xQkLXwJ5VzlHKTk0cVgWTrg9rDGpHrB1RGa9vjRGBHrWkHR61gZU9g/CVJ3aPSvg==
+ b=V5MYlfHsOOM/TgiAj4kC7ZGaBreeq8RswRZSpt44YW1i7+MwC+N9UxSKOQgLYzNJ9qdJzumLX04rCkh894Ch/jNr22SXp51wH5Te3o7BgIc6TnHIoX6w5UNnVbG2I1GAlqZfAwVbzmT4meeYjs8ZYYy7hEwFOp4KeWRXWlDq+tk0cdAqFdWf3V3MP4ucs+uRKLrLiSBQ2cL87ENGnfhFhgNElE/DIDl4pzqp5y3+lDjhxBtd5rZF3ma4riLxg7mLNbhA22hqdcfh+xEVKNWeTB+/h0FDLwS/2L+ow1YzrbIDNdPgaZzRhnHs+vUob6ZiHlMw7y+VwouL0iefB3o1Sw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VyyDarhn0EZOYCN+tIdqU4Xq964oX7IdVcVrjs3dUuI=;
- b=fsPkjnTvJpDo/M0Np4AfXQZjitWz4+NIMkiOtrtI2N9Q05xSSsXcjHR2rC+tKXp68JInKEkrfu0xH9w/cYnHkW9fytl5tiB8GgJ+/avcJ62ssPWfx+3CYc8kyKuD8dh7kd2RcuBNKcH4Ots6cUCZHdPO55z8lFtZdGtVXnHqG6kGxaXAeGpWtMcTInIqMV4XvPdrmpygzo9UnCe1h0GsYMvGw+T7WmsF1QVo2W8M3mahWVb6ji697zh3ECKGLPA1xrb0chglFWCmQkC+rpBMjxucsuM1nBRVXuaBy5W8WtnwXY9PvinhXs5RQ3oQXpEmLScAmnz699/za9gSLyhvzw==
+ bh=TrAVgpar1B+CtuS2I5HzmH3wTKJ4n7roSxVUZcTgcDQ=;
+ b=VIUTgXmB56XROCitu94jNf74YrIPKSERe3g/dux0cUYlzFTIgSBdihDSkB+0XEYESIVrrNNvS2e7vYyOL2WyZ0+FUtJLeYljXctRWu1zCtkpBvAcs4o3I/uITnpEUBc7nM8WZsHY8n58STnvgL32sgLjWJKNipS1/q6/Midz1t3niypJw31b68IcYiA7+hfq3sjWMRzKgBqZJ0VN7FV+NmvQVOkAHK0W3u4PYjMo030xBSEJTgIBH8WeZprLsi7q9+YrEHiluFtAIuzwkWtXvSev0qL7uGQ41WnugbBw70/tagiXG5bPFIajfxin6Ipw2FptPKbX6Nw9fX9Vgrhqxw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VyyDarhn0EZOYCN+tIdqU4Xq964oX7IdVcVrjs3dUuI=;
- b=TBcCSAbkEQ136vesp9E+6H0MFq/p2crCSeoyb8wlDmayJg35Em+Qbt1ASu0r0HrtKVIcjp0NUr1iLQYm8j4m9ImgrROC6QIZzKp6LGJIAehI7bsPsk9pbp7Ux1PsrTZC052lK2MEEzR988u3/RvExkfsNyrFr2dEVAYlXSOkiLIeEBVF0zJ617cXOXygrWX1IfK1rDaTucyjaS5Omjv697IKE4BNZBc0p2YTR7NM4VrfLUlHrsWaKY2FgQxH6C/40ClmfAykZ23ZnZ3ObFJHLywAGyYLLBRkw17rETJa74hd0oS8mV0qRo9b8b6sqmVtokicK/KSAhqA634y1W+d7g==
+ bh=TrAVgpar1B+CtuS2I5HzmH3wTKJ4n7roSxVUZcTgcDQ=;
+ b=AMbL0Ds+6GX+qKWx88CVf8QfOWsctqmIcrGJNwSjN8t35HKQnr6ik2KRHlkeQYoXfKjyn428x+D2cdD4z0Hl39NSbJWLKJk0CLZCQojhdtcfpjD2ZImizzG09aOy6Wk4h7/sxCHpHDyo3aIFOGKf8yZddDv1BKVfJU7OvZa7PIoYZTTvhgM4pdy9Qo0p91l4eyNJMcYZZSfk5EIGciSSXoPY31LDjlWdleF07+tC7CNVHBTX9tO5WuO7wmtpnONIUdy+plOolrYOBQa2sjYyta+uK+S2yTovG4QBfL+IdfBCvxEsUzChGYhZky/8cc3eiZeazBx1RVKSa+UD9LBNyA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from BYAPR12MB3176.namprd12.prod.outlook.com (2603:10b6:a03:134::26)
  by PH8PR12MB7327.namprd12.prod.outlook.com (2603:10b6:510:215::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.33; Tue, 25 Jul
- 2023 13:42:19 +0000
+ 2023 13:42:25 +0000
 Received: from BYAPR12MB3176.namprd12.prod.outlook.com
  ([fe80::c833:9a5c:258e:3351]) by BYAPR12MB3176.namprd12.prod.outlook.com
  ([fe80::c833:9a5c:258e:3351%4]) with mapi id 15.20.6609.032; Tue, 25 Jul 2023
- 13:42:18 +0000
+ 13:42:25 +0000
 From: Alistair Popple <apopple@nvidia.com>
 To: akpm@linux-foundation.org
-Subject: [PATCH v4 0/5] Invalidate secondary IOMMU TLB on permission upgrade
-Date: Tue, 25 Jul 2023 23:42:02 +1000
-Message-Id: <cover.1eca029b8603ef4eebe5b41eae51facfc5920c41.1690292440.git-series.apopple@nvidia.com>
+Subject: [PATCH v4 1/5] arm64/smmu: Use TLBI ASID when invalidating entire range
+Date: Tue, 25 Jul 2023 23:42:03 +1000
+Message-Id: <ba5f0ec5fbc2ab188797524d3687e075e2412a2b.1690292440.git-series.apopple@nvidia.com>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <cover.1eca029b8603ef4eebe5b41eae51facfc5920c41.1690292440.git-series.apopple@nvidia.com>
+References: <cover.1eca029b8603ef4eebe5b41eae51facfc5920c41.1690292440.git-series.apopple@nvidia.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SY5P282CA0145.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:10:205::9) To BYAPR12MB3176.namprd12.prod.outlook.com
+X-ClientProxiedBy: SY5PR01CA0042.ausprd01.prod.outlook.com
+ (2603:10c6:10:1f8::14) To BYAPR12MB3176.namprd12.prod.outlook.com
  (2603:10b6:a03:134::26)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: BYAPR12MB3176:EE_|PH8PR12MB7327:EE_
-X-MS-Office365-Filtering-Correlation-Id: bfa33fd3-bddb-42b6-9968-08db8d14f707
+X-MS-Office365-Filtering-Correlation-Id: 88254ad6-a240-4724-a4c8-08db8d14fb14
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	4yr+8pL7Xtf5U4AuATof+mgWpUUvzYMXQGSqJZrzSWVIlmaR0/qH64As4e2lh6E4lLn187KReFEn/Ti4Li+tK60gCHD5hCHdPA0ea3JE2Ha9fuVMGJ+s9CHi8V24em2E2TXKUsNdEVBkgujSE2f7GdtQIOhJ8dYkaVfUfT6o14ix24KflNRBQ4QyNdzmf3SO/vUds+3JB/fPgOQSWvbtXn0/Lhg0s8w6EHlXKKNVsC9r1IBnsT8mwUZKQ0MoH23omylcFXX/5XLpDBav2Orj6ESXHx6l0cwWSfHC3E1oBP7FYkT2WnbXXtYZ4JSxBNYucykqEecHDoNGtWCgwDFaDP9bhZ8EpfQNjZizF6s4W3tKIWsSgFygznK/ryUvWu4LXzTkgdt52cWSCnN/j2E/3xpU7CcZH1YwyyGvBekYbGpDelRJ1S9pJKSjQhzIcdeRfz4tYP/WjMF7Ffen3k02HyK1TFZyy4F7+0iJrEEx+YJq95IOnDYEWS/O6J2w2F6k0NW0dAQjQl4sE9TxiMMGC6SOmQWgqKI13ZLcz9CgoDuBSXzgYnVnC3tNneCvjy0PsPum126h9OIAvQLqPTlNprldufP5bkXMtxh0EKDVOUzFC6e4dv/FMIdhShnhrAZ9P95zQdeHqi6IPvfmUABe+w==
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB3176.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(346002)(136003)(376002)(396003)(366004)(451199021)(6512007)(966005)(66899021)(186003)(2616005)(26005)(6506007)(107886003)(316002)(41300700001)(66556008)(36756003)(6486002)(66476007)(7416002)(5660300002)(66946007)(38100700002)(2906002)(4326008)(6916009)(8676002)(8936002)(83380400001)(478600001)(86362001)(6666004);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: 	4GSVUR+TEFPTu3RvwBuYstVW2dEtKl6CjhB+qegzO1NvJlPZ9rjbPiDtvKuYPsRYaZ6QCL7Mx3M7rDKpVgZs7GjqC+DubNrSD1YqHFJm204y2T5/XDNm40nsxDejFpBLDzFOkrrRzu/eY0lVwHo8rb2h4WqU7YXNGIGMQKsdF8jqpGth7Btw/ftVq15t1NAPUKc/CEgKmq5CVQCf8TQPYx+e1679uFiNfIluYd6L7+pBXgwGP6i22ZPt2ZQnd90qDqAn/WC+x/BvwoIaSF2j/R+NsQgOqfMkROgiIoJ7156IFtZyuH+XXs9ZOEKK949St509iJB/bUjiKZG3lyJ6njLUxukzbyEFYhN5xqkWpuBdqgFEVUlBp59MXfIUSUTS4T7MjKdmpxoQwzxAm6IZTQDJlM8+Yox2/0RBZnNRZNbswupgqFQNMlqBe+ObbSJ3iSMvHbk9egjJcxdbvrsEmPAKxdDVE9ryCiWyxywWpt0EHimZIuIjQ57Rwr0aHvXRkuFIoqhPxvjcN/fjShBgcbOmwwk9aLkhVmqwvXIvCGzr0S/t4uypP7LaL2y7RiSi
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB3176.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(346002)(136003)(376002)(396003)(366004)(451199021)(6512007)(66899021)(186003)(2616005)(26005)(6506007)(107886003)(316002)(41300700001)(66556008)(36756003)(6486002)(66476007)(7416002)(5660300002)(66946007)(38100700002)(2906002)(4326008)(6916009)(8676002)(8936002)(83380400001)(54906003)(478600001)(86362001)(6666004);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?ZGPd82TY9cWOGJ98hYIVe4gAbqdlGukOP9KCiGTIw1S+6tM+W8keTK+FpWOz?=
- =?us-ascii?Q?fPGux4+NfdvCbXPM5pkgIA+XMkvcGRnktKN80qUmhc6oHjbzU7yb1l8Pxi+n?=
- =?us-ascii?Q?zdaMsPrj88DaYXZA6maOjfa8FrvCGNbYXeYGT7UVb3KUOPveZaEbBZ61Sx7Z?=
- =?us-ascii?Q?BQqFwpLH15NCdrccPcIvAXOn9ZPJ/DrJxgsMtj427NhrpWgYw5PZxvpJWuGg?=
- =?us-ascii?Q?/eOXdGO1FianH3BeanGIJeidxS8M+M7RJAPBoklsjqHo0LXwdbC61fzWzx3D?=
- =?us-ascii?Q?pu1YDpraf8bvzG8fZRvfzJUHmwPxCl+OUkkglnACtUFA+oN+qkbg5lStTKL0?=
- =?us-ascii?Q?vFUHrJpNnMMdIplylTtcNLXnZ0bhkDF7u+ALuCWUZ2GsbYI1AQY9H71RHf2p?=
- =?us-ascii?Q?5SiytSVUVIRwWl/yhpALJfEnM6ZNI3CAsOc2dpUnL6Wmr/5Fnv3idXlg6JUx?=
- =?us-ascii?Q?ilEOYPgsKxQA7bwUQDWV7C8TW2rg6v3bWZoA1Xlj/RqLPF4cK9+b1K3tTXEh?=
- =?us-ascii?Q?uW/n6hXc8031SSLkWSJb/XiIp6XQYyoiMohqHLYfKNn+ZmJymIZXkra3JhNA?=
- =?us-ascii?Q?FBDELM7ohADrqyNL9nqaG9ROwxNUQtDQPtjd0/kw0LOlK28G/4XzqqpbMaZu?=
- =?us-ascii?Q?IBjbrB0d+wLED/CDlJx82pgETpAa04kk6BxP6aZeOQ+uGdZ3xxkM5X6lSUVl?=
- =?us-ascii?Q?mvMsk987752MaMfZODKlMTeEbSpXqY8YsIEpGG+B7mPU/lNLFsFQW7U+FkGo?=
- =?us-ascii?Q?vkyNqdTRZ//e/QVt0z45H75C54bXmdwbp9HBI5zIYX/MqvsmI8VDViq6NIpz?=
- =?us-ascii?Q?A9MSzs2jWT+DxhSNP13nR57CqZ9jqWEV6y9EA30IQRRHjyCrQszSiKLw0dX6?=
- =?us-ascii?Q?rHXt7wkJCpDnfFk+MjEYVG/jE79kL/f3PjKqVtlFzWpeMU/Ies4Wuvm9fOx9?=
- =?us-ascii?Q?uAXEBtRupQ+aQKl+MOmUnYtccv93OorolhEuxx8a6I7ShbvjWpZ+HO4OQwv/?=
- =?us-ascii?Q?QZZYu1haqRiXWs+tW2elsiVmGptLqfK5qbWBNZ2CwLpao1sD3wkK8MaEnaRl?=
- =?us-ascii?Q?N4mXMPVF0SezoFL/WjOSZgvASU8Xym6XGgw3AgKoCNrrLsjpy3SlBjK46Xl3?=
- =?us-ascii?Q?XUS0wJ0c+7OdFFzRoQH3LUbpmV9rEg6WTpE20jLAGbH38qjCe7jwA/0BYBM8?=
- =?us-ascii?Q?5vc9Rc/o69oXhid5c3FiRLPQEfMw+dwS7SbIrt+2Rp0S/SEYfmiroelqmgy+?=
- =?us-ascii?Q?HsZy3ZMuJv1E/dgxEgQQtBUTdRLsRiw3quJvdA4Q0ajkM0kndIQht//xsu/1?=
- =?us-ascii?Q?JS5AGZYaF+Ks7j5UZLfYqzu+SzlAEgyauyS0Rmjuw3lf8tK22J+kfvdCzu5n?=
- =?us-ascii?Q?uc+hqrxdaqluFpqfjJky4VtpkrzCptp45r9w5736ZNmOUzyuDaHfzlEqtaGU?=
- =?us-ascii?Q?UyO5p0ikwzTKSx6S+OHiHR8ToztkQO7KuiX1K1llG/AGlHrxez++3fsLvnV+?=
- =?us-ascii?Q?KMVjaYv4YkTRuhrEugeCVLkFKyp1ZxMohm2iCchwQoj6coY4kIgLDbGZKHNC?=
- =?us-ascii?Q?b5yxzwYa1MgdmtU8nujGztwKH9Et/GKC+kIgJI6a?=
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?wmMO/tYgFBiAPcuu3NVUkGIoW/mnorpkUaqMoDv4JcjuoclVC9tlrvW5MNpG?=
+ =?us-ascii?Q?U23JGSPPQegTJTHErQx81HYbMXyEXsvXO8TmGKaz3D8UvaTySWlatDLlEvCM?=
+ =?us-ascii?Q?biGoRCEcmN5GZeS98tU7dJNaX4WFjWOHNlj55i7e1XSHX03pytPrj93hj4n9?=
+ =?us-ascii?Q?mdb5HPIs+HYK9o2ZunpT4QCXVvCpMRKTAdtBBix3Nex417wdFDz7lUG3u6p+?=
+ =?us-ascii?Q?qMklnatiX0tZeBs3cL80tY2cuz3ABUCdWd+zRddi7cvrdA3u8CUMZoO9+RaM?=
+ =?us-ascii?Q?uhbZxL79JZg1/CVXwbKShRsBMTMJcVS6/NchoYQY6tmq16/h1yPrGpjZ/DHi?=
+ =?us-ascii?Q?rGcwlLvslY/2xvHhmu4PqkNiBPbpqwS1AtBWwS/guPxj/FQAuJVsj3/6QEWa?=
+ =?us-ascii?Q?47AP6fKswexwxreEK+uIM3tW2Ryf5i2ULe64CFEOuO38pit5q2KhcEO5tIJb?=
+ =?us-ascii?Q?1IBw5MX+NhEJYOMmXTCVoMDux0M6PMW6C5VbLsoiUb+Q22mD8LesQVbqPOvq?=
+ =?us-ascii?Q?7o4vXwFlbyNqvNW0Wgsw7FcJTJ/vGLWSaZpgNgNyLZwXy+LyFJJTxMjmf8uI?=
+ =?us-ascii?Q?qtzvERIYdb6kJyVi95QubGxjCdvQ4BRmt6cHC27syjf4EvoFBGO8lPfXDNVg?=
+ =?us-ascii?Q?R8Cy7VQhuKrDOV0QyVI2AnVGj8x7QTexJeQ5EfD6b/bVFJMlG3sfHJaCyuEG?=
+ =?us-ascii?Q?P4W6WFNWsof7bCP84MPG9dNSQ3+kN8VDVosuI2bdB5gsgDzDXk4U8K7bCAWn?=
+ =?us-ascii?Q?IMdVUtrLF7mqVi79p8oxMd7RJyMIdkCsdYeNCLvgfztgqn1SZXqREQxlOYG5?=
+ =?us-ascii?Q?sEu90ZmRWZP+JeCsJvg9+MdM2tLPVT0eEHoc+sqobrYr8sgBKh/MJIhY5WtU?=
+ =?us-ascii?Q?4CWpgxDdY/G3SLbizaMw81wfX280W/oFej6ms0jTEgp+nrK8A8sZdEA5v1Tz?=
+ =?us-ascii?Q?dFkuMbGAXfUzg/sUihcHsIlpk7QI+scZOIQ6/7Xtkv4kwtkADcYkGlcYKXxk?=
+ =?us-ascii?Q?L5/zd0TlYortWCg2fcxma0j1Xfk8rnxOp6/juk5Ckb4vTG3T7lOHy6a9hFap?=
+ =?us-ascii?Q?SUH5lIqL8TphDMTWXzDZoqnr3suCQxSDnnAEWIOmArAa6+j9X3wZUFb5Lobl?=
+ =?us-ascii?Q?nAeAI7k9I5w4gGolt7LKot/e8SqnLRIRBNpXGrR5QJNJACjnY1oODZZbSpw9?=
+ =?us-ascii?Q?tSd4Nh1fNW8eUgGY30AeAo1GXWkfuuqoOt85HngrjUO1gHjVNMVbGlXXOeNr?=
+ =?us-ascii?Q?EpK4tw3tfxg2/Y4qfZ5iKxNhWsvOhaYTt7QaWyZNOSVZUXcH167DRiw9Z0mA?=
+ =?us-ascii?Q?7ITCRmOWQf1XfJ3FgEBt3czBzByq60zpevdFxSDo9gdJsGLDDdocfvr95vk9?=
+ =?us-ascii?Q?HF5XKIhDVX0KR3QB+2tusnYmHmGfLh2E7UXIuWq33mDnxR+V7AGS9HwqcRnY?=
+ =?us-ascii?Q?WrCTjXYISBLtOWSrmDGqzgSwrh3ntF7nNkKpl6ak3T2cGA7QZ7n3vJacOEkJ?=
+ =?us-ascii?Q?i+oic/TT/183vbQy8aZJhcEHYDCGr/y+ypDCe+5IzBXnlSy5SDTbcwt/dt2O?=
+ =?us-ascii?Q?VuiB2JhujPU3fXni55+mU3s5/imFGRgqeUvDQRqu?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bfa33fd3-bddb-42b6-9968-08db8d14f707
+X-MS-Exchange-CrossTenant-Network-Message-Id: 88254ad6-a240-4724-a4c8-08db8d14fb14
 X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB3176.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jul 2023 13:42:18.7391
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jul 2023 13:42:25.5347
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0Dh2Il8UKoz1k5InVFSyoYVHRUBMdJnFLOzvAjWKBh+o2JYBMaPiwIHje4Q4wTRdr8Ru/EPgtFwpzHPHbVR6jQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: BhEEdmntSW4YuqFX1PBciLerTnFPudZgH3cZytQZMXQhxVg9Srq6WNV1zNEB6oFsBiDvhYKWv8YXSi9YrgQszg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7327
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -117,132 +119,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alistair Popple <apopple@nvidia.com>, zhi.wang.linux@gmail.com, kvm@vger.kernel.org, catalin.marinas@arm.com, linux-mm@kvack.org, will@kernel.org, x86@kernel.org, jgg@ziepe.ca, iommu@lists.linux.dev, nicolinc@nvidia.com, kevin.tian@intel.com, ajd@linux.ibm.com, jhubbard@nvidia.com, intel-gfx@lists.freedesktop.org, robin.murphy@arm.com, npiggin@gmail.com, chaitanya.kumar.borah@intel.com, linux-arm-kernel@lists.infradead.org, tvrtko.ursulin@linux.intel.com, seanjc@google.com, linux-kernel@vger.kernel.org, fbarrat@linux.ibm.com, rtummala@nvidia.com, linuxppc-dev@lists.ozlabs.org
+Cc: Alistair Popple <apopple@nvidia.com>, zhi.wang.linux@gmail.com, kvm@vger.kernel.org, catalin.marinas@arm.com, linux-mm@kvack.org, will@kernel.org, x86@kernel.org, jgg@ziepe.ca, iommu@lists.linux.dev, nicolinc@nvidia.com, Jason Gunthorpe <jgg@nvidia.com>, kevin.tian@intel.com, ajd@linux.ibm.com, jhubbard@nvidia.com, intel-gfx@lists.freedesktop.org, robin.murphy@arm.com, npiggin@gmail.com, chaitanya.kumar.borah@intel.com, linux-arm-kernel@lists.infradead.org, tvrtko.ursulin@linux.intel.com, seanjc@google.com, linux-kernel@vger.kernel.org, fbarrat@linux.ibm.com, rtummala@nvidia.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The main change is to move secondary TLB invalidation mmu notifier
-callbacks into the architecture specific TLB flushing functions. This
-makes secondary TLB invalidation mostly match CPU invalidation while
-still allowing efficient range based invalidations based on the
-existing TLB batching code.
+The ARM SMMU has a specific command for invalidating the TLB for an
+entire ASID. Currently this is used for the IO_PGTABLE API but not for
+ATS when called from the MMU notifier.
 
-Changes for v4:
+The current implementation of notifiers does not attempt to invalidate
+such a large address range, instead walking each VMA and invalidating
+each range individually during mmap removal. However in future SMMU
+TLB invalidations are going to be sent as part of the normal
+flush_tlb_*() kernel calls. To better deal with that add handling to
+use TLBI ASID when invalidating the entire address space.
 
- - Fixed a NULL pointer dereference when registering the first
-   notifier with mmu_interval_notifier_insert() instead of
-   mmu_notifier_register() - Thanks Dan and Chaitanya for the bug
-   reports.
+Signed-off-by: Alistair Popple <apopple@nvidia.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+---
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
- - Collected Acked/Reviewed tags.
-
- - Don't call the notifier from radix__local_flush_tlb_page() on
-   PowerPC.
-
-Changes for v3:
-
- - On x86 call the invalidation when adding pending TLB invalidates
-   rather than when flushing the batch. This is because the mm is
-   required. It also matches what happens on ARM64. Fixes a bug
-   reported by SeongJae Park (thanks!)
-
-Changes for v2:
-
- - Rebased on linux-next commit 906fa30154ef ("mm/rmap: correct stale
-   comment of rmap_walk_anon and rmap_walk_file") to fix a minor
-   integration conflict with "arm64: support batched/deferred tlb
-   shootdown during page reclamation/migration". This series will need
-   to be applied after the conflicting patch.
-
- - Reordered the function rename until the end of the series as many
-   places that were getting renamed ended up being removed anyway.
-
- - Fixed a couple of build issues which broke bisection.
-
- - Added a minor patch to fix up a stale/incorrect comment.
-
-==========
-Background
-==========
-
-The arm64 architecture specifies TLB permission bits may be cached and
-therefore the TLB must be invalidated during permission upgrades. For
-the CPU this currently occurs in the architecture specific
-ptep_set_access_flags() routine.
-
-Secondary TLBs such as implemented by the SMMU IOMMU match the CPU
-architecture specification and may also cache permission bits and
-require the same TLB invalidations. This may be achieved in one of two
-ways.
-
-Some SMMU implementations implement broadcast TLB maintenance
-(BTM). This snoops CPU TLB invalidates and will invalidate any
-secondary TLB at the same time as the CPU. However implementations are
-not required to implement BTM.
-
-Implementations without BTM rely on mmu notifier callbacks to send
-explicit TLB invalidation commands to invalidate SMMU TLB. Therefore
-either generic kernel code or architecture specific code needs to call
-the mmu notifier on permission upgrade.
-
-Currently that doesn't happen so devices will fault indefinitely when
-writing to a PTE that was previously read-only as nothing invalidates
-the SMMU TLB.
-
-========
-Solution
-========
-
-To fix this the series first renames the .invalidate_range() callback
-to .arch_invalidate_secondary_tlbs() as suggested by Jason and Sean to
-make it clear this callback is only used for secondary TLBs. That was
-made possible thanks to Sean's series [1] to remove KVM's incorrect
-usage.
-
-Based on feedback from Jason [2] the proposed solution to the bug is
-to move the calls to mmu_notifier_arch_invalidate_secondary_tlbs()
-closer to the architecture specific TLB invalidation code. This
-ensures the secondary TLB won't miss invalidations, including the
-existing invalidation in the ARM64 code to deal with permission
-upgrade.
-
-Currently only ARM64, PowerPC and x86 have IOMMU with secondary TLBs
-requiring SW invalidation so the notifier is only called for those
-architectures. It is also not called for invalidation of kernel
-mappings as no secondary IOMMU implementations can access those and
-hence it is not required.
-
-[1] - https://lore.kernel.org/all/20230602011518.787006-1-seanjc@google.com/
-[2] - https://lore.kernel.org/linux-mm/ZJMR5bw8l+BbzdJ7@ziepe.ca/
-
-Alistair Popple (5):
-  arm64/smmu: Use TLBI ASID when invalidating entire range
-  mmu_notifiers: Fixup comment in mmu_interval_read_begin()
-  mmu_notifiers: Call invalidate_range() when invalidating TLBs
-  mmu_notifiers: Don't invalidate secondary TLBs as part of mmu_notifier_invalidate_range_end()
-  mmu_notifiers: Rename invalidate_range notifier
-
- arch/arm64/include/asm/tlbflush.h               |   5 +-
- arch/powerpc/include/asm/book3s/64/tlbflush.h   |   1 +-
- arch/powerpc/mm/book3s64/radix_hugetlbpage.c    |   1 +-
- arch/powerpc/mm/book3s64/radix_tlb.c            |   4 +-
- arch/x86/include/asm/tlbflush.h                 |   2 +-
- arch/x86/mm/tlb.c                               |   2 +-
- drivers/iommu/amd/iommu_v2.c                    |  10 +-
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c |  29 +++--
- drivers/iommu/intel/svm.c                       |   8 +-
- drivers/misc/ocxl/link.c                        |   8 +-
- include/asm-generic/tlb.h                       |   1 +-
- include/linux/mmu_notifier.h                    | 104 ++++-------------
- kernel/events/uprobes.c                         |   2 +-
- mm/huge_memory.c                                |  29 +----
- mm/hugetlb.c                                    |   8 +-
- mm/memory.c                                     |   8 +-
- mm/migrate_device.c                             |   9 +-
- mm/mmu_notifier.c                               |  50 +++-----
- mm/rmap.c                                       |  40 +-------
- 19 files changed, 110 insertions(+), 211 deletions(-)
-
-base-commit: 906fa30154ef42f93d28d7322860e76c6ae392ac
+diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c
+index a5a63b1..2a19784 100644
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c
+@@ -200,10 +200,20 @@ static void arm_smmu_mm_invalidate_range(struct mmu_notifier *mn,
+ 	 * range. So do a simple translation here by calculating size correctly.
+ 	 */
+ 	size = end - start;
++	if (size == ULONG_MAX)
++		size = 0;
++
++	if (!(smmu_domain->smmu->features & ARM_SMMU_FEAT_BTM)) {
++		if (!size)
++			arm_smmu_tlb_inv_asid(smmu_domain->smmu,
++					      smmu_mn->cd->asid);
++		else
++			arm_smmu_tlb_inv_range_asid(start, size,
++						    smmu_mn->cd->asid,
++						    PAGE_SIZE, false,
++						    smmu_domain);
++	}
+ 
+-	if (!(smmu_domain->smmu->features & ARM_SMMU_FEAT_BTM))
+-		arm_smmu_tlb_inv_range_asid(start, size, smmu_mn->cd->asid,
+-					    PAGE_SIZE, false, smmu_domain);
+ 	arm_smmu_atc_inv_domain(smmu_domain, mm->pasid, start, size);
+ }
+ 
 -- 
 git-series 0.9.1
