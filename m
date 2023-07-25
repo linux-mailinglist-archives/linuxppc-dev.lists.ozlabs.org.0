@@ -1,68 +1,101 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AAAC7620FB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 20:06:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2B57762102
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 20:07:18 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=7nXQcBRp;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XDJKnAna;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HzQhJ0em;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R9Q2V41wcz3cXV
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jul 2023 04:06:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R9Q3S6GHCz3cQL
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jul 2023 04:07:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=7nXQcBRp;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XDJKnAna;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HzQhJ0em;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=36w7azaykddykwsfbuyggydw.ugedafmphhu-vwndaklk.grdstk.gjy@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R9Q1X75grz3bP2
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jul 2023 04:05:34 +1000 (AEST)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-583da2ac09fso35150867b3.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jul 2023 11:05:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1690308331; x=1690913131;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BIo8qHauKdQX+T8FT8wbaojm6/JdQZAwM03PT/kIykI=;
-        b=7nXQcBRpxoTRBB3DVtfi1G3SLzO+8rbX0pZK3GqB/ZiRovVnhgEY5C+Gs70dPcpJKC
-         v8EbJPLKK/PtzLxWiGJ5qeO4LJqB7HN3pWAhYbANBnQSVYoMTUMzCaeCD3zEfSqoM+r2
-         fDpLY03C1R0xadVk8zh9oHGZMZqSmWV+dliNXRuRczTowFXc/oEsFJjHeqmHR0h/7zjV
-         1SaakHlCZawqmTagIefeOP2xnfIobskVh1rmXibU4Cwg3i96EQeqcAc0By/i+P6tJXi9
-         1AMdfmti0ZHyvBS0qJY6Ig052U8rUWQC7aHvZS0sxZXtvMY234BUecIw+5qK/UmUColq
-         VbWA==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R9Q2K4yyMz3cTq
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jul 2023 04:06:17 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1690308374;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VyRd3M8p7RXXamr68HvIAH9l9kBVFDDur1Wgkf6GWSc=;
+	b=XDJKnAnaXVKUTNGyGUGt5BfOgC2ohd/7q7FhHvL/ULMBHBWt3rAFREfEpEXA9CUPzBdAY/
+	vwSNttcskQai/eJhFnvUSImnFW2ZppRRfF/BKb8OEOTN2bd2CEUOHPm7+XFG27ykqkq2WE
+	laTNXMSNFNI7v3jUdQpODDUgj0jGwZs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1690308375;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VyRd3M8p7RXXamr68HvIAH9l9kBVFDDur1Wgkf6GWSc=;
+	b=HzQhJ0emYyUnW2RocYwVbkJIuFOaVA6T7gi8Rqc8nlJylz4MqSrL7aMcu0xnTH1bpBfGa2
+	d3HxJkGBCVVfsk5sFFclOt18gaL2sUYZ4NUjIoPQ85h/c5FRMvQghyG43LzcJ/gFUp73WQ
+	h5adr/pjo0DYlm3BTfHKiJS2fB5I3no=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-225-5kCqBol3OHy7W8xVEtwTDw-1; Tue, 25 Jul 2023 14:06:13 -0400
+X-MC-Unique: 5kCqBol3OHy7W8xVEtwTDw-1
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-3fbdf341934so34166485e9.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jul 2023 11:06:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690308331; x=1690913131;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BIo8qHauKdQX+T8FT8wbaojm6/JdQZAwM03PT/kIykI=;
-        b=bhDaHCT8DFAlY13BkwDe7Ju/kZaKFvnOdlXbMRxI691p2w5t0uwuZdAcTBS1S1ooIv
-         m6LMJ6EVAAA1AKqQ/X8T1W/Teum3pjruRr+aOgHeavmJfCSew4bokVkbHJtsekBs2dXj
-         UOm+/esKZMaItQYTqbZ50fHSHOdv/Ft3wbLZZEOjvNLyNx0YaIgeuQNO72BTialDlHaR
-         1FstS01yUdDJI302CplcfJNeQurXTEM6HW1rrIBFC2txgeoD0LWWJ+eg8HHQuXzS53es
-         75tyyg7sUITk+sugXo20nWCtviP5HcPvjr1TGzfkZRDf6+b+rCrsbRkl06cEZf5rXB8S
-         zYoQ==
-X-Gm-Message-State: ABy/qLahC0rdkKi9WyjsLCZLeUyBCnsoTCtGAvRbKf8+LrPSR2DthtMG
-	m2deC4wTSxmVSGDfKqARPKqBNhl3rLc=
-X-Google-Smtp-Source: APBJJlG+f5K6Guu8BWDh2M0jvEhmql8458IaH+LCw2ABsy+ZDoDj1Vv7TcavygUx+nDEGvPQs1RCmsWjSr8=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a81:4509:0:b0:573:5797:4b9e with SMTP id
- s9-20020a814509000000b0057357974b9emr213ywa.1.1690308331572; Tue, 25 Jul 2023
- 11:05:31 -0700 (PDT)
-Date: Tue, 25 Jul 2023 11:05:29 -0700
-In-Reply-To: <ZLphxpSTL9Fpn1ye@yilunxu-OptiPlex-7050>
-Mime-Version: 1.0
-References: <20230718234512.1690985-1-seanjc@google.com> <20230718234512.1690985-2-seanjc@google.com>
- <ZLolA2U83tP75Qdd@yzhao56-desk.sh.intel.com> <ZLphxpSTL9Fpn1ye@yilunxu-OptiPlex-7050>
-Message-ID: <ZMAO6bhan9l6ybQM@google.com>
-Subject: Re: [RFC PATCH v11 01/29] KVM: Wrap kvm_gfn_range.pte in a per-action union
-From: Sean Christopherson <seanjc@google.com>
-To: Xu Yilun <yilun.xu@intel.com>
-Content-Type: text/plain; charset="us-ascii"
+        d=1e100.net; s=20221208; t=1690308372; x=1690913172;
+        h=content-transfer-encoding:in-reply-to:subject:organization:from
+         :references:cc:to:content-language:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VyRd3M8p7RXXamr68HvIAH9l9kBVFDDur1Wgkf6GWSc=;
+        b=KYNizbdmZVdIco2zHLnXe543pB4Ho6ZtwVd7XifuJzGuW5vTb6EeVCL+YlItEVVita
+         ktZN16YgZB6S0Ryy74S1cU0MWSfC/98nvTr6pQ7tl67IrUKh2RDDVOYkqyOLH5t27ONs
+         4vI0aYmxbSEeEf+5QscO3Q3KBl6RRClzKiENrMwTHEChCpuzD2avW3/hXg3OCBbRhOaV
+         0Zw8Btm5dGxurM89UAz22k0QHUEMPaWR9wmJOhxsLfQaD/er+xMvmgwcoyiTcQv+Nalh
+         0+yDY0aA9pAxOdfIEgJ0P537neOIRLwkxLGflL49e188247v62m3PIayoUwQtWZLc5j+
+         8g/g==
+X-Gm-Message-State: ABy/qLYS2GXzqxhHGxuhLDGyGn2GZ3NzawRgRgiK34EqBp0qcES1tNan
+	cBe0Y9kr9sygct0Tn7JF9+d5FeVWlBgRLAGVxVyvMMDv18BYzOvo3vSHy3sc0jnEkxfrbBRd4an
+	HqFCibnelkvmM0/E6RnXYAd/PWw==
+X-Received: by 2002:a7b:ce12:0:b0:3fc:25:ced6 with SMTP id m18-20020a7bce12000000b003fc0025ced6mr11324583wmc.13.1690308372260;
+        Tue, 25 Jul 2023 11:06:12 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEfbMalZnC5jaLstg+fMvdW4Ua3uzmPfgZdS36IlfqNJbN2At02wxkl8lUBzKqR/39Zu56B+A==
+X-Received: by 2002:a7b:ce12:0:b0:3fc:25:ced6 with SMTP id m18-20020a7bce12000000b003fc0025ced6mr11324558wmc.13.1690308371757;
+        Tue, 25 Jul 2023 11:06:11 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c73f:e900:3b0d:87a6:2953:20d1? (p200300cbc73fe9003b0d87a6295320d1.dip0.t-ipconnect.de. [2003:cb:c73f:e900:3b0d:87a6:2953:20d1])
+        by smtp.gmail.com with ESMTPSA id n19-20020a7bc5d3000000b003fc02e8ea68sm16835585wmk.13.2023.07.25.11.06.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Jul 2023 11:06:11 -0700 (PDT)
+Message-ID: <e1a4430e-d3ae-711b-7efa-5085934b62fd@redhat.com>
+Date: Tue, 25 Jul 2023 20:06:10 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-mm@kvack.org,
+ akpm@linux-foundation.org, mpe@ellerman.id.au,
+ linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, christophe.leroy@csgroup.eu
+References: <20230725100212.531277-1-aneesh.kumar@linux.ibm.com>
+ <20230725100212.531277-5-aneesh.kumar@linux.ibm.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+Subject: Re: [PATCH v5 4/7] mm/hotplug: Support memmap_on_memory when memmap
+ is not aligned to pageblocks
+In-Reply-To: <20230725100212.531277-5-aneesh.kumar@linux.ibm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,89 +107,227 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Marc Zyngier <maz@kernel.org>, Paul Moore <paul@paul-moore.com>, Huacai Chen <chenhuacai@kernel.org>, James Morris <jmorris@namei.org>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, "Serge E. Hallyn" <serge@hallyn.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Yan Zhao <yan.y.zhao@intel.com>, Vlastimil Babka <vbabka@suse.cz>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Quentin Perret <qperret@google.com>, Liam Merwick <liam.merwick@oracle.com>, l
- inux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, linux-security-module@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Vishal Verma <vishal.l.verma@intel.com>, Michal Hocko <mhocko@suse.com>, Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jul 21, 2023, Xu Yilun wrote:
-> On 2023-07-21 at 14:26:11 +0800, Yan Zhao wrote:
-> > On Tue, Jul 18, 2023 at 04:44:44PM -0700, Sean Christopherson wrote:
-> > 
-> > May I know why KVM now needs to register to callback .change_pte()?
+On 25.07.23 12:02, Aneesh Kumar K.V wrote:
+> Currently, memmap_on_memory feature is only supported with memory block
+> sizes that result in vmemmap pages covering full page blocks. This is
+> because memory onlining/offlining code requires applicable ranges to be
+> pageblock-aligned, for example, to set the migratetypes properly.
 > 
-> I can see the original purpose is to "setting a pte in the shadow page
-> table directly, instead of flushing the shadow page table entry and then
-> getting vmexit to set it"[1].
+> This patch helps to lift that restriction by reserving more pages than
+> required for vmemmap space. This helps the start address to be page
+> block aligned with different memory block sizes. Using this facility
+> implies the kernel will be reserving some pages for every memoryblock.
+> This allows the memmap on memory feature to be widely useful with
+> different memory block size values.
 > 
-> IIUC, KVM is expected to directly make the new pte present for new
-> pages in this callback, like for COW.
-
-Yes.
-
-> > As also commented in kvm_mmu_notifier_change_pte(), .change_pte() must be
-> > surrounded by .invalidate_range_{start,end}().
-> > 
-> > While kvm_mmu_notifier_invalidate_range_start() has called kvm_unmap_gfn_range()
-> > to zap all leaf SPTEs, and page fault path will not install new SPTEs
-> > successfully before kvm_mmu_notifier_invalidate_range_end(),
-> > kvm_set_spte_gfn() should not be able to find any shadow present leaf entries to
-> > update PFN.
+> For ex: with 64K page size and 256MiB memory block size, we require 4
+> pages to map vmemmap pages, To align things correctly we end up adding a
+> reserve of 28 pages. ie, for every 4096 pages 28 pages get reserved.
 > 
-> I also failed to figure out how the kvm_set_spte_gfn() could pass
-> several !is_shadow_present_pte(iter.old_spte) check then write the new
-> pte.
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+>   .../admin-guide/mm/memory-hotplug.rst         |  12 ++
+>   mm/memory_hotplug.c                           | 121 ++++++++++++++++--
+>   2 files changed, 119 insertions(+), 14 deletions(-)
+> 
+> diff --git a/Documentation/admin-guide/mm/memory-hotplug.rst b/Documentation/admin-guide/mm/memory-hotplug.rst
+> index bd77841041af..2994958c7ce8 100644
+> --- a/Documentation/admin-guide/mm/memory-hotplug.rst
+> +++ b/Documentation/admin-guide/mm/memory-hotplug.rst
+> @@ -433,6 +433,18 @@ The following module parameters are currently defined:
+>   				 memory in a way that huge pages in bigger
+>   				 granularity cannot be formed on hotplugged
+>   				 memory.
+> +
+> +				 With value "force" it could result in memory
+> +				 wastage due to memmap size limitations. For
+> +				 example, if the memmap for a memory block
+> +				 requires 1 MiB, but the pageblock size is 2
+> +				 MiB, 1 MiB of hotplugged memory will be wasted.
+> +				 Note that there are still cases where the
+> +				 feature cannot be enforced: for example, if the
+> +				 memmap is smaller than a single page, or if the
+> +				 architecture does not support the forced mode
+> +				 in all configurations.
+> +
+>   ``online_policy``		 read-write: Set the basic policy used for
+>   				 automatic zone selection when onlining memory
+>   				 blocks without specifying a target zone.
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index 457824a6ecb8..5b472e137898 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -41,17 +41,89 @@
+>   #include "internal.h"
+>   #include "shuffle.h"
+>   
+> +enum {
+> +	MEMMAP_ON_MEMORY_DISABLE = 0,
+> +	MEMMAP_ON_MEMORY_ENABLE,
+> +	MEMMAP_ON_MEMORY_FORCE,
+> +};
+> +
+> +static int memmap_mode __read_mostly = MEMMAP_ON_MEMORY_DISABLE;
+> +
+> +static inline unsigned long memory_block_memmap_pages(void)
+> +{
+> +	unsigned long memmap_size;
+> +
+> +	memmap_size = PHYS_PFN(memory_block_size_bytes()) * sizeof(struct page);
+> +	return memmap_size >> PAGE_SHIFT;
 
-It can't.  .change_pte() has been dead code on x86 for 10+ years at this point,
-and if my assessment from a few years back still holds true, it's dead code on
-all architectures.
+I'd really move a !page variant (memory_block_memmap_size()) to the 
+previous patch and use it in mhp_supports_memmap_on_memory() and 
+arch_supports_memmap_on_memory().
 
-The only reason I haven't formally proposed dropping the hook is that I don't want
-to risk the patch backfiring, i.e. I don't want to prompt someone to care enough
-to try and fix it.
+Then, in this patch, reuse that function in 
+memory_block_memmap_on_memory_pages() and ...
 
-commit c13fda237f08a388ba8a0849785045944bf39834
-Author: Sean Christopherson <seanjc@google.com>
-Date:   Fri Apr 2 02:56:49 2021 +0200
+> +}
+> +
+> +static inline unsigned long memory_block_memmap_on_memory_pages(void)
+> +{
+> +	unsigned long nr_pages = memory_block_memmap_pages();
 
-    KVM: Assert that notifier count is elevated in .change_pte()
-    
-    In KVM's .change_pte() notification callback, replace the notifier
-    sequence bump with a WARN_ON assertion that the notifier count is
-    elevated.  An elevated count provides stricter protections than bumping
-    the sequence, and the sequence is guarnateed to be bumped before the
-    count hits zero.
-    
-    When .change_pte() was added by commit 828502d30073 ("ksm: add
-    mmu_notifier set_pte_at_notify()"), bumping the sequence was necessary
-    as .change_pte() would be invoked without any surrounding notifications.
-    
-    However, since commit 6bdb913f0a70 ("mm: wrap calls to set_pte_at_notify
-    with invalidate_range_start and invalidate_range_end"), all calls to
-    .change_pte() are guaranteed to be surrounded by start() and end(), and
-    so are guaranteed to run with an elevated notifier count.
-    
-    Note, wrapping .change_pte() with .invalidate_range_{start,end}() is a
-    bug of sorts, as invalidating the secondary MMU's (KVM's) PTE defeats
-    the purpose of .change_pte().  Every arch's kvm_set_spte_hva() assumes
-    .change_pte() is called when the relevant SPTE is present in KVM's MMU,
-    as the original goal was to accelerate Kernel Samepage Merging (KSM) by
-    updating KVM's SPTEs without requiring a VM-Exit (due to invalidating
-    the SPTE).  I.e. it means that .change_pte() is effectively dead code
-    on _all_ architectures.
-    
-    x86 and MIPS are clearcut nops if the old SPTE is not-present, and that
-    is guaranteed due to the prior invalidation.  PPC simply unmaps the SPTE,
-    which again should be a nop due to the invalidation.  arm64 is a bit
-    murky, but it's also likely a nop because kvm_pgtable_stage2_map() is
-    called without a cache pointer, which means it will map an entry if and
-    only if an existing PTE was found.
-    
-    For now, take advantage of the bug to simplify future consolidation of
-    KVMs's MMU notifier code.   Doing so will not greatly complicate fixing
-    .change_pte(), assuming it's even worth fixing.  .change_pte() has been
-    broken for 8+ years and no one has complained.  Even if there are
-    KSM+KVM users that care deeply about its performance, the benefits of
-    avoiding VM-Exits via .change_pte() need to be reevaluated to justify
-    the added complexity and testing burden.  Ripping out .change_pte()
-    entirely would be a lot easier.
+... do here a
+
+nr_pages = PHYS_PFN(memory_block_memmap_size());
+
+
+Conceptually, it would be even cleaner to have here
+
+nr_pages = PFN_UP(memory_block_memmap_size());
+
+even though one can argue that mhp_supports_memmap_on_memory() will make 
+sure that the unaligned value (memory_block_memmap_size()) covers full 
+pages, but at least to me it looks cleaner that way. No strong opinion.
+
+
+> +
+> +	/*
+> +	 * In "forced" memmap_on_memory mode, we add extra pages to align the
+> +	 * vmemmap size to cover full pageblocks. That way, we can add memory
+> +	 * even if the vmemmap size is not properly aligned, however, we might waste
+> +	 * memory.
+> +	 */
+> +	if (memmap_mode == MEMMAP_ON_MEMORY_FORCE)
+> +		return pageblock_align(nr_pages);
+> +	return nr_pages;
+> +}
+> +
+>   #ifdef CONFIG_MHP_MEMMAP_ON_MEMORY
+>   /*
+>    * memory_hotplug.memmap_on_memory parameter
+>    */
+> -static bool memmap_on_memory __ro_after_init;
+> -module_param(memmap_on_memory, bool, 0444);
+> -MODULE_PARM_DESC(memmap_on_memory, "Enable memmap on memory for memory hotplug");
+> +static int set_memmap_mode(const char *val, const struct kernel_param *kp)
+> +{
+> +	int ret, mode;
+> +	bool enabled;
+> +
+> +	if (sysfs_streq(val, "force") ||  sysfs_streq(val, "FORCE")) {
+> +		mode =  MEMMAP_ON_MEMORY_FORCE;
+> +		goto matched;
+> +	}
+
+Avoid the goto + label
+
+} else {
+	ret = kstrtobool(val, &enabled);
+	...
+}
+
+*((int *)kp->arg) =  mode;
+
+> +
+> +	ret = kstrtobool(val, &enabled);
+> +	if (ret < 0)
+> +		return ret;
+> +	if (enabled)
+> +		mode =  MEMMAP_ON_MEMORY_ENABLE;
+> +	else
+> +		mode =  MEMMAP_ON_MEMORY_DISABLE;
+> +
+> +matched:
+> +	*((int *)kp->arg) =  mode;
+> +	if (mode == MEMMAP_ON_MEMORY_FORCE) {
+> +		unsigned long memmap_pages = memory_block_memmap_on_memory_pages();
+> +
+> +		pr_info("Memory hotplug will reserve %ld pages in each memory block\n",
+> +			memmap_pages - memory_block_memmap_pages());
+
+pr_info_once() ?
+
+> +	}
+> +	return 0;
+> +}
+> +
+
+[...]
+
+>   	/*
+>   	 * Besides having arch support and the feature enabled at runtime, we
+> @@ -1294,10 +1366,28 @@ static bool mhp_supports_memmap_on_memory(unsigned long size)
+>   	 *       altmap as an alternative source of memory, and we do not exactly
+>   	 *       populate a single PMD.
+>   	 */
+> -	return mhp_memmap_on_memory() &&
+> -	       size == memory_block_size_bytes() &&
+> -	       IS_ALIGNED(remaining_size, (pageblock_nr_pages << PAGE_SHIFT)) &&
+> -	       arch_supports_memmap_on_memory(size);
+> +	if (!mhp_memmap_on_memory() || size != memory_block_size_bytes())
+> +		return false;
+> +
+> +	/*
+> +	 * Make sure the vmemmap allocation is fully contained
+> +	 * so that we always allocate vmemmap memory from altmap area.
+> +	 */
+> +	if (!IS_ALIGNED(vmemmap_size, PAGE_SIZE))
+> +		return false;
+> +
+> +	/*
+> +	 * start pfn should be pageblock_nr_pages aligned for correctly
+> +	 * setting migrate types
+> +	 */
+> +	if (!pageblock_aligned(memmap_pages))
+> +		return false;
+> +
+> +	if (memmap_pages == PHYS_PFN(memory_block_size_bytes()))
+> +		/* No effective hotplugged memory doesn't make sense. */
+> +		return false;
+> +
+> +	return arch_supports_memmap_on_memory(size);
+>   }
+>   
+>   /*
+> @@ -1310,7 +1400,10 @@ int __ref add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
+>   {
+>   	struct mhp_params params = { .pgprot = pgprot_mhp(PAGE_KERNEL) };
+>   	enum memblock_flags memblock_flags = MEMBLOCK_NONE;
+> -	struct vmem_altmap mhp_altmap = {};
+> +	struct vmem_altmap mhp_altmap = {
+> +		.base_pfn =  PHYS_PFN(res->start),
+> +		.end_pfn  =  PHYS_PFN(res->end),
+
+Is it required to set .end_pfn, and if so, shouldn't we also set it to 
+base_pfn + memory_block_memmap_on_memory_pages()) ?
+
+We also don't set it on the try_remove_memory() part,.
+
+
+
+With these things addressed, feel free to add
+
+Acked-by: David Hildenbrand <david@redhat.com>
+
+-- 
+Cheers,
+
+David / dhildenb
+
