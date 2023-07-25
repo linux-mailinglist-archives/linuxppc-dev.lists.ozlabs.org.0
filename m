@@ -1,36 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B306C7621F2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 21:00:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A99E762246
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 21:30:56 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=c7KZ8NqR;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R9RDy4hRlz3cY2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jul 2023 05:00:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R9Rvy26hcz3cXH
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jul 2023 05:30:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=libc.org (client-ip=216.12.86.13; helo=brightrain.aerifal.cx; envelope-from=dalias@libc.org; receiver=lists.ozlabs.org)
-X-Greylist: delayed 915 seconds by postgrey-1.37 at boromir; Wed, 26 Jul 2023 05:00:04 AEST
-Received: from brightrain.aerifal.cx (brightrain.aerifal.cx [216.12.86.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=c7KZ8NqR;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R9RDN5GJpz3bcS
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jul 2023 05:00:03 +1000 (AEST)
-Date: Tue, 25 Jul 2023 14:44:43 -0400
-From: Rich Felker <dalias@libc.org>
-To: David Howells <dhowells@redhat.com>
-Subject: Re: Add fchmodat2() - or add a more general syscall?
-Message-ID: <20230725184443.GA20050@brightrain.aerifal.cx>
-References: <87fs5c3rbl.fsf@oldenburg3.str.redhat.com>
- <cover.1689092120.git.legion@kernel.org>
- <cover.1689074739.git.legion@kernel.org>
- <104971.1690300714@warthog.procyon.org.uk>
- <107290.1690310391@warthog.procyon.org.uk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <107290.1690310391@warthog.procyon.org.uk>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R9Rv24pnxz30ht
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jul 2023 05:30:05 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 29B20617B9;
+	Tue, 25 Jul 2023 19:30:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E90CC433C8;
+	Tue, 25 Jul 2023 19:30:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1690313400;
+	bh=OoSjqjANODd3KfCGOV5QoBOToju0dohDhyNGk30onVI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=c7KZ8NqR9D1lUt5VVPt4OEtIejA2HJp/Z5r1YCj9WDgNDXATlwmQ9uFGel4lE9Sb3
+	 uF8SXTGuepx56KwB5CTOFOC+tvVzR3Nzvth7GsqRYTxXNTqcd7thesPmqlExKgbiv3
+	 wM5l31aYjOPZI0bUoN0VNAXehAn3h+jrmwmAicBM=
+Date: Tue, 25 Jul 2023 12:29:59 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH v6 00/13] Add support for DAX vmemmap optimization for
+ ppc64
+Message-Id: <20230725122959.e9b79e7528cd3084802fa6d0@linux-foundation.org>
+In-Reply-To: <20230724190759.483013-1-aneesh.kumar@linux.ibm.com>
+References: <20230724190759.483013-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,35 +60,17 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kim.phillips@arm.com, linux-ia64@vger.kernel.org, fenghua.yu@intel.com, alexander.shishkin@linux.intel.com, x86@kernel.org, stefan@agner.ch, ldv@altlinux.org, James.Bottomley@HansenPartnership.com, paulus@samba.org, deepa.kernel@gmail.com, hpa@zytor.com, sparclinux@vger.kernel.org, linux-api@vger.kernel.org, will@kernel.org, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, hare@suse.com, Arnd Bergmann <arnd@arndb.de>, ysato@users.sourceforge.jp, deller@gmx.de, linux-sh@vger.kernel.org, linux@armlinux.org.uk, borntraeger@de.ibm.com, mingo@redhat.com, geert@linux-m68k.org, catalin.marinas@arm.com, jhogan@kernel.org, mattst88@gmail.com, axboe@kernel.dk, gor@linux.ibm.com, glebfm@altlinux.org, tycho@tycho.ws, acme@kernel.org, linux-m68k@lists.linux-m68k.org, ink@jurassic.park.msu.ru, viro@zeniv.linux.org.uk, luto@kernel.org, namhyung@kernel.org, tglx@linutronix.de, christian@brauner.io, Florian Weimer <fweimer@redhat.com>, monstr@monstr.eu, tony.luck@intel.com, linux-parisc@vg
- er.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org, ralf@linux-mips.org, LKML <linux-kernel@vger.kernel.org>, peterz@infradead.org, linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org, bp@alien8.de, Alexey Gladkov <legion@kernel.org>, davem@davemloft.net
+Cc: Will Deacon <will@kernel.org>, Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org, npiggin@gmail.com, Catalin Marinas <catalin.marinas@arm.com>, Dan Williams <dan.j.williams@intel.com>, Mike Kravetz <mike.kravetz@oracle.com>, linuxppc-dev@lists.ozlabs.org, Joao Martins <joao.m.martins@oracle.com>, Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 25, 2023 at 07:39:51PM +0100, David Howells wrote:
-> Florian Weimer <fweimer@redhat.com> wrote:
-> 
-> > > Rather than adding a fchmodat2() syscall, should we add a
-> > > "set_file_attrs()" syscall that takes a mask and allows you to set a bunch
-> > > of stuff all in one go?  Basically, an interface to notify_change() in the
-> > > kernel that would allow several stats to be set atomically.  This might be
-> > > of particular interest to network filesystems.
-> > 
-> > Do you mean atomically as in compare-and-swap (update only if old values
-> > match), or just a way to update multiple file attributes with a single
-> > system call?
-> 
-> I was thinking more in terms of the latter.  AFAIK, there aren't any network
-> filesystems support a CAS interface on file attributes like that.  To be able
-> to do a CAS operation, we'd need to pass in the old values as well as the new.
-> 
-> Another thing we could look at is doing "create_and_set_attrs()", possibly
-> allowing it to take a list of xattrs also.
+On Tue, 25 Jul 2023 00:37:46 +0530 "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> wrote:
 
-Can we please not let " hey let's invent a new interface to do
-something that will be hard for underlying filesystems to even provide
-and that nothing needs because there's no standard API to do it" be
-the enemy of "fixing a known problem implementing an existing standard
-API that just requires a simple, clearly-scoped syscall to do it"?
+> This patch series implements changes required to support DAX vmemmap
+> optimization for ppc64.
 
-Rich
+Do we have any measurements to help us understand the magnitude
+of this optimization?
+
+And any documentation which helps users understand whether and
+why they should enable this feature?
