@@ -1,99 +1,115 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11EC87609C2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 07:51:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79F1A7609D4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 07:53:47 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GZU72zMA;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Fr99toB5;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R95ky6lHmz3c5R
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 15:51:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R95n525vVz3bx0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 15:53:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GZU72zMA;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Fr99toB5;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f400:fe5a::609; helo=nam12-mw2-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org)
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on20609.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe5a::609])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R95k11SWNz3bT8
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jul 2023 15:51:04 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36P5YSPJ030406;
-	Tue, 25 Jul 2023 05:50:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type : subject :
- from : in-reply-to : date : cc : message-id : references : to :
- content-transfer-encoding : mime-version; s=pp1;
- bh=9VhP5synuBkn8l9QHwHLwIIsVPg8oD9RbvsgOyx6Obc=;
- b=GZU72zMAURmHXRpAFHDevjYGd8fHAuj3PzA3KcMGtluG1h35bAevH7YWqZh4b30y+fEB
- xUrV/dGM4EFBIPwxTswykn27IJg6NyNEUAuLxH/xcVAFJRTCrtfqqUe+uXu5Wn6BwCHQ
- 2G5nWX+y0vLZP6OnXNYnupct977Orter0EqQqWru615CLvvjCqvdWoKwN1Y5ZgAxpiQS
- zI2MMi8RJ4OgdB4OtyYnJIwh5jp4OfdpgpnVka5S7SoGMCVMOpw9Iv+YyfnaHtwiBpH4
- nQd3jfkfUqsiHSUfLv7U25Ze8NoT8gqtmASGNKmVh6maN+q1OU8o3BRcs34gvM19JNkB vw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s20jt9mjt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Jul 2023 05:50:58 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36P5ZlBq003313;
-	Tue, 25 Jul 2023 05:50:58 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s20jt9mjk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Jul 2023 05:50:58 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36P55Et2016574;
-	Tue, 25 Jul 2023 05:50:57 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3s0v510vwv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Jul 2023 05:50:57 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36P5oqE514352916
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 25 Jul 2023 05:50:53 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 341732004D;
-	Tue, 25 Jul 2023 05:50:52 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 164EA20040;
-	Tue, 25 Jul 2023 05:50:50 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.43.73.40])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 25 Jul 2023 05:50:49 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
-Subject: Re: [PATCH V2 00/26] tools/perf: Fix shellcheck coding/formatting
- issues of perf tool shell scripts
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <1f1e9978-a176-0ae9-6dac-8cc275c5f905@linux.ibm.com>
-Date: Tue, 25 Jul 2023 11:20:37 +0530
-Message-Id: <89C3584E-97E6-4FCF-ABFA-C94AD3F65BC4@linux.vnet.ibm.com>
-References: <20230709182800.53002-1-atrajeev@linux.vnet.ibm.com>
- <1fbdbb26-4fce-ea25-a96a-99982b3f1603@linux.ibm.com>
- <CAP-5=fWZy-y9kiuAFQsaNeRYn8PJofFR5DHj5qA53FhB3+UrfQ@mail.gmail.com>
- <D52339A7-30C6-4066-AE05-4BF8E9DCCFF4@linux.vnet.ibm.com>
- <1f1e9978-a176-0ae9-6dac-8cc275c5f905@linux.ibm.com>
-To: kajoljain <kjain@linux.ibm.com>, Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>
-X-Mailer: Apple Mail (2.3731.500.231)
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: vuVA6CNK4pkpjoiEaaQpl9ffVamy-T4Q
-X-Proofpoint-GUID: 7JBDLpYQgz5z8cmVWI0IYKPiiGuWQhJW
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R95m82Z5gz2yGK
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jul 2023 15:52:53 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=VkRMeMSwdKYd/hAQC/UJuI7b5/rI6R00VJvlJf77mOO5mHLp1comOhl+uYp9RrWCijEW/gFtsqiyQWe0ZIapCNGUJ3eXRWnlmpzLc8/63IqT8ajd1SmuSTyRo3wNRTUDYEMzTP0etXu8A4KKOrpMfxDfJ42vicr2/g1+QTtXW1+UNo6mHm3BMZKv1LvXT73p+ABy/0togJPK8iqD2O53gLJamXYha1qZyBMwaL5fYV9g79y1/qqnkUlK6rB6+t6hLCaoTVzDEK3hGZ0Z9P4RtSG3WncoqWTuQXAFnRhPHxPwOzkZQ5cPC2znwIJlQw+JGLtHe3c5ZrY2BHDlyPvtiw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KVRsRx/qCl66tZQns7a9SAjqWphTcuxR3mogN0pmwqM=;
+ b=dV90rJ0ZFFEJArMaF10RzNbk0hpKq4qN7O953DIIxLhIS1aT76/bC8iFi4/W8DpyfG0mr7kF2diNmBf1tLyRAjRomxWEu65uPMROZMvFvN0TcnXhZcq8FAN5tF2IUcP/logtdVVV5tf34HIIS8r43BgO3iWaWd3Skam7ob5toTNH0Lc3807rnda/BeNWRg8PVaxHA3MQxMfzvHcZF8bso/vPZEmxUk5Nf4+N/MJ/6m7tQzBz9oZAhiYpW7daYLoWPVd1KvisOaR2jdXLqe93Hl2538toYw+ffCytRTZCaYeaTmnGz3RPKIwq+ApurZLNac0tDTYcN2DLCsTF/eKkbw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KVRsRx/qCl66tZQns7a9SAjqWphTcuxR3mogN0pmwqM=;
+ b=Fr99toB5RJkgnIC2ok1gqM/d00m0nJA4iKY0pt8djAVt3R+hEKEItQUZK+4P2yiBdoXdzqP2gWCUtrITw23ak2RWklLFilTn9N/GlipiEtjdUKUVXgWHHcpfaoICoOpr0pUBOdFGlRWsr0aHNXsx0M+j74MtdiaOe2ErN1OgMqeaqvsWHh3EpeC0Xcmn3pqh/X9pCumWqPRJQbtJowzh9//s4cNVhQLofQgFiGqAZmH64Sg04qg3RaoagtVM5rRYuli/CHFut8Zg/ZsU842X+ilsqYR/wI6cZBM/PP6Sevq0kS6ErmlbkQ0u2nbjlJQyC/OKW4FOJNnOreEN8J7Aqg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BYAPR12MB3176.namprd12.prod.outlook.com (2603:10b6:a03:134::26)
+ by IA1PR12MB8553.namprd12.prod.outlook.com (2603:10b6:208:44e::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.33; Tue, 25 Jul
+ 2023 05:52:32 +0000
+Received: from BYAPR12MB3176.namprd12.prod.outlook.com
+ ([fe80::c833:9a5c:258e:3351]) by BYAPR12MB3176.namprd12.prod.outlook.com
+ ([fe80::c833:9a5c:258e:3351%4]) with mapi id 15.20.6609.032; Tue, 25 Jul 2023
+ 05:52:32 +0000
+References: <cover.de78568883814904b78add6317c263bf5bc20234.1689768831.git-series.apopple@nvidia.com>
+ <8f293bb51a423afa71ddc3ba46e9f323ee9ffbc7.1689768831.git-series.apopple@nvidia.com>
+ <87y1j4y7w8.fsf@mail.lhotse>
+User-agent: mu4e 1.8.13; emacs 28.2
+From: Alistair Popple <apopple@nvidia.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v2 3/5] mmu_notifiers: Call invalidate_range() when
+ invalidating TLBs
+Date: Tue, 25 Jul 2023 15:51:45 +1000
+In-reply-to: <87y1j4y7w8.fsf@mail.lhotse>
+Message-ID: <871qgwzgfa.fsf@nvdebian.thelocal>
+Content-Type: text/plain
+X-ClientProxiedBy: SYBPR01CA0078.ausprd01.prod.outlook.com
+ (2603:10c6:10:3::18) To BYAPR12MB3176.namprd12.prod.outlook.com
+ (2603:10b6:a03:134::26)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-25_02,2023-07-24_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 clxscore=1015
- priorityscore=1501 impostorscore=0 phishscore=0 mlxscore=0 bulkscore=0
- malwarescore=0 spamscore=0 suspectscore=0 lowpriorityscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
- definitions=main-2307250050
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BYAPR12MB3176:EE_|IA1PR12MB8553:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6872f7de-13c4-45dc-8cf4-08db8cd35683
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	eSCyyHILk5M/wZ25f+GZ5hyEyHJ7f6Dlw65NSaY3DsD86E6sXB2QFFU+PG8SpJFi4/BHF7JJrk/9gi24gsfjJglO3dcIC9KZAf2hFtkJvcTkLSt2jziZP588p4KHA5iGqJrZzwZQ8y7EDklP5Dq5bpLy3Q2Nxhbkb6oIqnLIbIK3hbsoXzLhFtXYQWLIetMwMgQASc9bXakPzQmF4dygXjLpHlEsfxE76Rm5JkhcCl6r0H+j7q0djsjQUHGAFbUnPIIAt3HUPq+hJi7E1u3EysmfFobR+/JTPeupNc0gU4PPb9QDAyjjYG9UUl1nYOaDlj+aRRDDi4mDV8M/sMRuv3P9zWnqriZRmMsEqsNsb7Izz/AgUW87wM8F+Bt+DeAFL1/AprFubduhWlVHSjjffl/syvgYsQ05AfjD25iiJG6cqMs6cTTaYpHt9mo4p/kJKKm9K4a9ZtAeWBpd0uMLIGL893coedtYD08osHAJ68I632ZsbcTKCKEKGFzWjky9yLgEcJ/EpxX0u9tRtweUjdfeuiSjosoyzIJI84zgQQTALxPa1vBaDWoSVGS35N9k
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB3176.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(346002)(136003)(366004)(39860400002)(396003)(451199021)(186003)(6506007)(26005)(83380400001)(478600001)(6666004)(86362001)(6486002)(316002)(41300700001)(4326008)(66946007)(66556008)(66476007)(6916009)(38100700002)(2906002)(8676002)(8936002)(5660300002)(7416002)(6512007)(9686003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?umweCAJ7PqN6IM+z9GCVFDt2lQL1rTjIWH3TFF18HB9hlyw13wmZLuySyzP2?=
+ =?us-ascii?Q?WD3vot6u5vg/tbdw+wmhMPNG/zvv5UlJbYRPFPagLE+OA8m8ncL1pn9MCvBw?=
+ =?us-ascii?Q?zkN6iFOJUHDXESsiRo79cVpWkKVKSv9mB9UuP1bQgfFl0/H9hAjISdZS4cdG?=
+ =?us-ascii?Q?cgrc6hAtqGaEGoHzsCGFzf0LyPqWbi3DBHLx7DDdyhQA/7cNJxIPBnec7+N/?=
+ =?us-ascii?Q?KmD5MdaW839YsBVDUbcS4hgYWlQd6opFjby1vrMqXhYg/22qcA6fZzxcH5QN?=
+ =?us-ascii?Q?Ze6pQ1ajErAlrnSNwZ1bxNt7jRYbx5SDQynxLTPa/MSAuxJQhoaribfGbgly?=
+ =?us-ascii?Q?ugpmN+5e16W0AFfYaeNh5v1TuPuH33tvq9H/7yfh+4ABMQNGRrD7HYgXTB4L?=
+ =?us-ascii?Q?iLmeplwLZTOPgx3713arCQ6w4MIMoJ5YqATklXgzGcMevrMQgL0liYBIXd72?=
+ =?us-ascii?Q?VvVevTVC+uMJ+DqTB2Zk2qYLLFO2eRdBmLVPeQGBFoEvkKdBdNgNJtX2dUNK?=
+ =?us-ascii?Q?W2QmEyQutNG4z0rbNf56Buip6rbP0y68V4jecjkR9ENjtjgR7LLJTOLzggBf?=
+ =?us-ascii?Q?LsWKk8v5xGsSXGXCqWvvinKGot+ipXBheifVZV47uK94N4WIHld6RsriII+1?=
+ =?us-ascii?Q?aDQ3sJfT9X317dkcjQ/ovEU3+gJoJkulKIp/MfMy7QRhChBdV9glfG8YxTS0?=
+ =?us-ascii?Q?ICGoGtOSeoi2X8Yydf/8RY7wQfY+fec6I5IgD4yzv2XkCoDrrt7EtuKI81FE?=
+ =?us-ascii?Q?nQGTnVThtXNmYGskIzBDP7k7W38nJMcseznOaDBMyuISakUNilEN0rSmVkIS?=
+ =?us-ascii?Q?QMxoFvUsa223Zu63f9aDemtDA+WIWfvDbkeCmK0Jh9MFQl5D/YBYNO5gPzhI?=
+ =?us-ascii?Q?xqi0pBqVwmO02y+uFLGZPYAip0g6mGy70MtQRBc9JWxQpg++ZDGv90ph5CJy?=
+ =?us-ascii?Q?KT1PWeAxglNnUf4WW3KlhVrJ5nBt4b6so0rkJmDiJiUQWS/N3hGgadsuedeq?=
+ =?us-ascii?Q?XG0dcOcczDIpGCrriiPdtGITmiPTkINNHoyMA0/DqAZZe1uSmxIzpVvhohgp?=
+ =?us-ascii?Q?ajlyfb4vpHDX+mlsbAGylfSlO9pDXFv+VUPeVDmrq6rTXWHVavNjc5EE4F6l?=
+ =?us-ascii?Q?jtfgCC0FRMIjw5ZwrP1GiU6XWEmr49GSqF60ChOPcxLMLRmvuUoBtfyizlsy?=
+ =?us-ascii?Q?NTAArwjq+2ytgafh/T3PudMmrMoisdB9+/0vWLNT7Ui8FIqLA31MEdPfE7MO?=
+ =?us-ascii?Q?OyCCl3kviAJ5iiJ+fa5puoFJO7wwUPaBXacvup++71x2EHRfXXKVaFCsHokr?=
+ =?us-ascii?Q?f3NEflSTjIybw8baBxqn5Gtneg1wS6WwinizZYDOExcyCHxV3qOwExlu9WBY?=
+ =?us-ascii?Q?pxykdscqwbxGPcv7ilkcJqPv28VSEM/yTakJhAAAo7rRYOaVcZieZHsO/qn7?=
+ =?us-ascii?Q?8yK/kNOqIbI16fKARD9rI97Klv7bn1H/6+i6UtbyZDJcDkwg24LAdtCIupIa?=
+ =?us-ascii?Q?8W6Y1Jq80vdqKj+WNsJVuP2Hne5Cja4Od/LVH487AQkORTqZIjUPcSCjivCS?=
+ =?us-ascii?Q?WpqdL21itfhKd5pl58/LRaFb+lkGTTm+nhXFce8p?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6872f7de-13c4-45dc-8cf4-08db8cd35683
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB3176.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jul 2023 05:52:32.2949
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: B56+fTPImOKdKhpcWTtAhSNZX5zycA+alLFiSTYno1+gVWV5tDK6TSqLkYuH0XPZYLNzAphcpk93en6+ETFpDw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8553
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,205 +121,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ian Rogers <irogers@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, linux-perf-users@vger.kernel.org, Jiri Olsa <jolsa@kernel.org>, Disha Goel <disgoel@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: kevin.tian@intel.com, x86@kernel.org, ajd@linux.ibm.com, kvm@vger.kernel.org, linux-mm@kvack.org, catalin.marinas@arm.com, seanjc@google.com, will@kernel.org, linux-kernel@vger.kernel.org, npiggin@gmail.com, zhi.wang.linux@gmail.com, jgg@ziepe.ca, iommu@lists.linux.dev, nicolinc@nvidia.com, jhubbard@nvidia.com, fbarrat@linux.ibm.com, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, robin.murphy@arm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
+Michael Ellerman <mpe@ellerman.id.au> writes:
 
-> On 20-Jul-2023, at 10:48 AM, kajoljain <kjain@linux.ibm.com> wrote:
->=20
->=20
->=20
-> On 7/20/23 10:42, Athira Rajeev wrote:
->>=20
->>=20
->>> On 19-Jul-2023, at 11:16 PM, Ian Rogers <irogers@google.com> wrote:
->>>=20
->>> On Tue, Jul 18, 2023 at 11:17=E2=80=AFPM kajoljain <kjain@linux.ibm.com=
-> wrote:
->>>>=20
->>>> Hi,
->>>>=20
->>>> Looking for review comments on this patchset.
->>>>=20
->>>> Thanks,
->>>> Kajol Jain
->>>>=20
->>>>=20
->>>> On 7/9/23 23:57, Athira Rajeev wrote:
->>>>> Patchset covers a set of fixes for coding/formatting issues observed =
-while
->>>>> running shellcheck tool on the perf shell scripts.
->>>>>=20
->>>>> This cleanup is a pre-requisite to include a build option for shellch=
-eck
->>>>> discussed here: https://www.spinics.net/lists/linux-perf-users/msg255=
-53.html
->>>>> First set of patches were posted here:
->>>>> https://lore.kernel.org/linux-perf-users/53B7D823-1570-4289-A632-2205=
-EE2B522C@linux.vnet.ibm.com/T/#t
->>>>>=20
->>>>> This patchset covers remaining set of shell scripts which needs
->>>>> fix. Patch 1 is resubmission of patch 6 from the initial series.
->>>>> Patch 15, 16 and 22 touches code from tools/perf/trace/beauty.
->>>>> Other patches are fixes for scripts from tools/perf/tests.
->>>>>=20
->>>>> The shellcheck is run for severity level for errors and warnings.
->>>>> Command used:
->>>>>=20
->>>>> # for F in $(find tests/shell/ -perm -o=3Dx -name '*.sh'); do shellch=
-eck -S warning $F; done
->>>>> # echo $?
->>>>> 0
->>>>>=20
->>>=20
->>> I don't see anything objectionable in the changes so for the series:
->>> Acked-by: Ian Rogers <irogers@google.com>
->>>=20
->>> Some thoughts:
->>> - Adding "#!/bin/bash" to scripts in tools/perf/tests/lib - I think
->>> we didn't do this to avoid these being included as tests. There are
->>> now extra checks when finding shell tests, so I can imagine doing this
->>> isn't a regression but just a heads up.
->>> - I think James' comment was addressed:
->>> https://lore.kernel.org/linux-perf-users/334989bf-5501-494c-f246-81878f=
-d2fed8@arm.com/
->>> - Why aren't these changes being mailed to LKML? The wider community
->>> on LKML have thoughts on shell scripts, plus it makes the changes miss
->>> my mail filters.
->>> - Can we automate this testing into the build? For example, following
->>> a similar kernel build pattern we run a python test and make the log
->>> output a requirement here:
->>> https://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.gi=
-t/tree/tools/perf/pmu-events/Build?h=3Dperf-tools-next#n30
->>>  I think we can translate:
->>> for F in $(find tests/shell/ -perm -o=3Dx -name '*.sh'); do shellcheck
->>> -S warning $F; done
->>>  into a rule in make for log files that are then a dependency on the
->>> perf binary. We can then parallel shellcheck during the build and
->>> avoid regressions. We probably need a CONFIG_SHELLCHECK feature check
->>> in the build to avoid not having shellcheck breaking the build.
->>=20
->> Hi Ian
->>=20
->> Thanks for the comments.
->> Yes, next step after this is to include build option for shellcheck by u=
-pdating Makefile.
->> We will surely get into that build option enablement patch once we have =
-all these corrections in place.
->>=20
->> Thanks
->> Athira
->>>=20
->=20
-> Hi Ian,
->   Thanks for reviewing the patches. As athira mentioned our next is to
-> include build option. So, we will work on it next once all the
-> correction done.
->=20
-> Thanks,
-> Kajol Jain
+> Alistair Popple <apopple@nvidia.com> writes:
+>> The invalidate_range() is going to become an architecture specific mmu
+>> notifier used to keep the TLB of secondary MMUs such as an IOMMU in
+>> sync with the CPU page tables. Currently it is called from separate
+>> code paths to the main CPU TLB invalidations. This can lead to a
+>> secondary TLB not getting invalidated when required and makes it hard
+>> to reason about when exactly the secondary TLB is invalidated.
+>>
+>> To fix this move the notifier call to the architecture specific TLB
+>> maintenance functions for architectures that have secondary MMUs
+>> requiring explicit software invalidations.
+>>
+>> This fixes a SMMU bug on ARM64. On ARM64 PTE permission upgrades
+>> require a TLB invalidation. This invalidation is done by the
+>> arahitecutre specific ptep_set_access_flags() which calls
+>   ^
+>   architecture
 
-Hi Arnaldo,  Namhyung
+Oh. I'd forgotten to apt install codespell ;-)
+  
+>> flush_tlb_page() if required. However this doesn't call the notifier
+>> resulting in infinite faults being generated by devices using the SMMU
+>> if it has previously cached a read-only PTE in it's TLB.
+>>
+>> Moving the invalidations into the TLB invalidation functions ensures
+>> all invalidations happen at the same time as the CPU invalidation. The
+>> architecture specific flush_tlb_all() routines do not call the
+>> notifier as none of the IOMMUs require this.
+>>
+>> Signed-off-by: Alistair Popple <apopple@nvidia.com>
+>> Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
+>> 
+> ...
+>
+>> diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
+>> index 0bd4866..9724b26 100644
+>> --- a/arch/powerpc/mm/book3s64/radix_tlb.c
+>> +++ b/arch/powerpc/mm/book3s64/radix_tlb.c
+>> @@ -752,6 +752,8 @@ void radix__local_flush_tlb_page(struct vm_area_struct *vma, unsigned long vmadd
+>>  		return radix__local_flush_hugetlb_page(vma, vmaddr);
+>>  #endif
+>>  	radix__local_flush_tlb_page_psize(vma->vm_mm, vmaddr, mmu_virtual_psize);
+>> +	mmu_notifier_invalidate_range(vma->vm_mm, vmaddr,
+>> +						vmaddr + mmu_virtual_psize);
+>>  }
+>>  EXPORT_SYMBOL(radix__local_flush_tlb_page);
+>
+> I think we can skip calling the notifier there? It's explicitly a local flush.
 
-Can you have this patchset applied along with Acked-by from Ian ?
-Our next step is to add a build option for shellcheck by updating Makefile =
-and will be working on that.
+I suspect you're correct. It's been a while since I last worked on PPC
+TLB invalidation code though and it's changed a fair bit since then so
+was being conservative and appreciate any comments there. Was worried I
+may have missed some clever optimisation that detects a local flush is
+all that's needed, but I see OCXL calls mm_context_add_copro() though so
+that should be ok. Will respin and drop it.
 
-Thanks
-Athira=20
->=20
->>> Thanks,
->>> Ian
->>>=20
->>>>> Changelog:
->>>>> v1 -> v2:
->>>>> - Rebased on top of perf-tools-next from:
->>>>> https://git.kernel.org/pub/scm/linux/kernel/git/acme/linux.git/log/?h=
-=3Dperf-tools-next
->>>>>=20
->>>>> - Fixed shellcheck errors and warnings reported for newly
->>>>>   added changes from perf-tools-next branch
->>>>>=20
->>>>> - Addressed review comment from James clark for patch
->>>>>   number 13 from V1. The changes in patch 13 were not necessary
->>>>>   since the file "tests/shell/lib/coresight.sh" is sourced from
->>>>>   other test files.
->>>>>=20
->>>>> Akanksha J N (1):
->>>>> tools/perf/tests: Fix shellcheck warnings for
->>>>>   trace+probe_vfs_getname.sh
->>>>>=20
->>>>> Athira Rajeev (14):
->>>>> tools/perf/tests: fix test_arm_spe_fork.sh signal case issues
->>>>> tools/perf/tests: Fix unused variable references in
->>>>>   stat+csv_summary.sh testcase
->>>>> tools/perf/tests: fix shellcheck warning for
->>>>>   test_perf_data_converter_json.sh testcase
->>>>> tools/perf/tests: Fix shellcheck issue for stat_bpf_counters.sh
->>>>>   testcase
->>>>> tools/perf/tests: Fix shellcheck issues in
->>>>>   tests/shell/stat+shadow_stat.sh tetscase
->>>>> tools/perf/tests: Fix shellcheck warnings for
->>>>>   thread_loop_check_tid_10.sh
->>>>> tools/perf/tests: Fix shellcheck warnings for unroll_loop_thread_10.sh
->>>>> tools/perf/tests: Fix shellcheck warnings for lib/probe_vfs_getname.sh
->>>>> tools/perf/tests: Fix the shellcheck warnings in lib/waiting.sh
->>>>> tools/perf/trace: Fix x86_arch_prctl.sh to address shellcheck warnings
->>>>> tools/perf/arch/x86: Fix syscalltbl.sh to address shellcheck warnings
->>>>> tools/perf/tests/shell: Fix the shellcheck warnings in
->>>>>   record+zstd_comp_decomp.sh
->>>>> tools/perf/tests/shell: Fix shellcheck warning for stat+std_output.sh
->>>>>   testcase
->>>>> tools/perf/tests: Fix shellcheck warning for stat+std_output.sh
->>>>>   testcase
->>>>>=20
->>>>> Kajol Jain (11):
->>>>> tools/perf/tests: Fix shellcheck warning for probe_vfs_getname.sh
->>>>>   testcase
->>>>> tools/perf/tests: Fix shellcheck warning for record_offcpu.sh testcase
->>>>> tools/perf/tests: Fix shellcheck issue for lock_contention.sh testcase
->>>>> tools/perf/tests: Fix shellcheck issue for stat_bpf_counters_cgrp.sh
->>>>>   testcase
->>>>> tools/perf/tests: Fix shellcheck warning for asm_pure_loop.sh shell
->>>>>   script
->>>>> tools/perf/tests: Fix shellcheck warning for memcpy_thread_16k_10.sh
->>>>>   shell script
->>>>> tools/perf/tests: Fix shellcheck warning for probe.sh shell script
->>>>> tools/perf/trace: Fix shellcheck issue for arch_errno_names.sh script
->>>>> tools/perf: Fix shellcheck issue for check-headers.sh script
->>>>> tools/shell/coresight: Fix shellcheck warning for
->>>>>   thread_loop_check_tid_2.sh shell script
->>>>> tools/perf/tests/shell/lib: Fix shellcheck warning for stat_output.sh
->>>>>   shell script
->>>>>=20
->>>>> .../arch/x86/entry/syscalls/syscalltbl.sh     |  2 +-
->>>>> tools/perf/check-headers.sh                   |  6 ++--
->>>>> .../tests/shell/coresight/asm_pure_loop.sh    |  2 +-
->>>>> .../shell/coresight/memcpy_thread_16k_10.sh   |  2 +-
->>>>> .../coresight/thread_loop_check_tid_10.sh     |  2 +-
->>>>> .../coresight/thread_loop_check_tid_2.sh      |  2 +-
->>>>> .../shell/coresight/unroll_loop_thread_10.sh  |  2 +-
->>>>> tools/perf/tests/shell/lib/probe.sh           |  1 +
->>>>> .../perf/tests/shell/lib/probe_vfs_getname.sh |  5 ++--
->>>>> tools/perf/tests/shell/lib/stat_output.sh     |  1 +
->>>>> tools/perf/tests/shell/lib/waiting.sh         |  1 +
->>>>> tools/perf/tests/shell/lock_contention.sh     | 12 ++++----
->>>>> tools/perf/tests/shell/probe_vfs_getname.sh   |  4 +--
->>>>> .../tests/shell/record+zstd_comp_decomp.sh    | 14 +++++-----
->>>>> tools/perf/tests/shell/record_offcpu.sh       |  6 ++--
->>>>> tools/perf/tests/shell/stat+csv_output.sh     |  2 +-
->>>>> tools/perf/tests/shell/stat+csv_summary.sh    |  4 +--
->>>>> tools/perf/tests/shell/stat+shadow_stat.sh    |  4 +--
->>>>> tools/perf/tests/shell/stat+std_output.sh     |  3 +-
->>>>> tools/perf/tests/shell/stat_bpf_counters.sh   |  4 +--
->>>>> .../tests/shell/stat_bpf_counters_cgrp.sh     | 28 ++++++++-----------
->>>>> tools/perf/tests/shell/test_arm_spe_fork.sh   |  2 +-
->>>>> .../shell/test_perf_data_converter_json.sh    |  2 +-
->>>>> .../tests/shell/trace+probe_vfs_getname.sh    |  6 ++--
->>>>> tools/perf/trace/beauty/arch_errno_names.sh   | 15 ++++------
->>>>> tools/perf/trace/beauty/x86_arch_prctl.sh     |  6 ++--
->>>>> 26 files changed, 67 insertions(+), 71 deletions(-)
-
+> cheers
 
