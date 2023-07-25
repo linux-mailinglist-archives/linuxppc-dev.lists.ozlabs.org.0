@@ -1,52 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D99ED7618E8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 14:53:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ED337619F1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 15:29:05 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=UgAJBFRL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jVResWyd;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R9H5N5WTmz3cXV
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 22:53:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R9HtR30F4z3cX0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 23:29:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=UgAJBFRL;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jVResWyd;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=lists.ozlabs.org)
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R9H4P6kWBz3bl7
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jul 2023 22:52:37 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=cip1L4+WNN72lEdlEtgKKz6+Th/GNW6kyU+RnxFbZZ8=; b=UgAJBFRLO20d1Q4UeecSqlBQIs
-	PFHuz0NUmB/1Y+2cEVFvwqnHb1BSxWW4RhQ2P8kvsu3ACbwOqr57viJKTa7uG+qe1fdufl5rqF2qr
-	jHy5L3HlBpbKr1Vl5EefvCAyn8+oe9n/K+eN0UUCvHZ3OgwtPhyspcNh4yAoE49KOIUkQVp2v0HR9
-	+xKnn/gm3dSYH0IDK2KkKvdpo4YPQW6CLliHGifFEImfRxrevzUzbI0xJBT7SCfU6e7LIrXsQ1mlT
-	uc0IdyK39Z/Ut2VF+t8tpW9pm9g50y0Q3SwS/URKZyTPqyVYvUikuYgn7PDUb1oSxM38pOnLhiEyt
-	M5/wJdyg==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1qOHW7-005Tcv-AA; Tue, 25 Jul 2023 12:51:55 +0000
-Date: Tue, 25 Jul 2023 13:51:55 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: Re: [RFC PATCH v11 10/29] mm: Add AS_UNMOVABLE to mark mapping as
- completely unmovable
-Message-ID: <ZL/Fa4W2Ne9EVxoh@casper.infradead.org>
-References: <20230718234512.1690985-1-seanjc@google.com>
- <20230718234512.1690985-11-seanjc@google.com>
- <20230725102403.xywjqlhyqkrzjok6@box.shutemov.name>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R9HsV4kvLz30PH
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jul 2023 23:28:14 +1000 (AEST)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36PDIex1001725;
+	Tue, 25 Jul 2023 13:28:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=ScBeMQJtACtTTVvCGaQDEriMO5xmnQB2RFXLrwpb+aw=;
+ b=jVResWydb2NX3H74ZjENe/4e40SXCswJ2deXahwHM99UKmPTafb/NPbF2tQOH3/uOT37
+ P3tUj8ujS13LeE8ahJFYFXldogIDSghoQeD8pdI3vnkehxQZIiSisZzm5vUBduysdJLX
+ 6KaJ7MAofSD/kFZZvugICu1FszLkPLKNAB94HbaSpBFN0LQmqG7Ey0hFuvw0cgbuhvtb
+ 78Eb7MdAt4DoMLVnwUQmQRh3OxSKCr3m/AD7ZYr+1nF1l27KgLf6Y37+5nY5+947cStC
+ DKUPH5saSVUXNvQPBUHsVorRss5BJfIK+Oz6+CNMa0lcp8IE6KekPzLDvlR2ythQgZS9 8A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s261dn1mu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 25 Jul 2023 13:28:03 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36PDAA53022710;
+	Tue, 25 Jul 2023 13:28:02 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s261dn1mj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 25 Jul 2023 13:28:02 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36PD2n4n001973;
+	Tue, 25 Jul 2023 13:28:02 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3s0temv8et-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 25 Jul 2023 13:28:01 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36PDS0t41704674
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 25 Jul 2023 13:28:00 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E38232004E;
+	Tue, 25 Jul 2023 13:27:59 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9305420043;
+	Tue, 25 Jul 2023 13:27:59 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.101.4.33])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 25 Jul 2023 13:27:59 +0000 (GMT)
+From: Laurent Dufour <ldufour@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/kexec: fix minor typo
+Date: Tue, 25 Jul 2023 15:27:59 +0200
+Message-ID: <20230725132759.53975-1-ldufour@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: azVhwk3TXr_dr9MmxTr2I4Okg6aTTwun
+X-Proofpoint-ORIG-GUID: RTqabtWPqNv_g2SFdHc7ZXSSg5FtDjYt
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230725102403.xywjqlhyqkrzjok6@box.shutemov.name>
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-25_07,2023-07-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 impostorscore=0
+ phishscore=0 malwarescore=0 clxscore=1015 spamscore=0 adultscore=0
+ lowpriorityscore=0 bulkscore=0 mlxlogscore=999 suspectscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2307250115
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,57 +94,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Fuad Tabba <tabba@google.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Marc Zyngier <maz@kernel.org>, Paul Moore <paul@paul-moore.com>, Anup Patel <anup@brainfault.org>, Huacai Chen <chenhuacai@kernel.org>, James Morris <jmorris@namei.org>, Wang <wei.w.wang@intel.com>, Vlastimil Babka <vbabka@suse.cz>, Jarkko Sakkinen <jarkko@kernel.org>, "Serge E. Hallyn" <serge@hallyn.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Quentin Perret <qperret@google.com>, Sean Christopherson <seanjc@google.com>, Liam Merwick <liam.merwick@oracle.com>, linux-mips
- @vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, linux-security-module@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org
+Cc: npiggin@gmail.com, kernel test robot <lkp@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 25, 2023 at 01:24:03PM +0300, Kirill A . Shutemov wrote:
-> On Tue, Jul 18, 2023 at 04:44:53PM -0700, Sean Christopherson wrote:
-> > diff --git a/mm/compaction.c b/mm/compaction.c
-> > index dbc9f86b1934..a3d2b132df52 100644
-> > --- a/mm/compaction.c
-> > +++ b/mm/compaction.c
-> > @@ -1047,6 +1047,10 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
-> >  		if (!mapping && (folio_ref_count(folio) - 1) > folio_mapcount(folio))
-> >  			goto isolate_fail_put;
-> >  
-> > +		/* The mapping truly isn't movable. */
-> > +		if (mapping && mapping_unmovable(mapping))
-> > +			goto isolate_fail_put;
-> > +
-> 
-> I doubt that it is safe to dereference mapping here. I believe the folio
-> can be truncated from under us and the mapping freed with the inode.
-> 
-> The folio has to be locked to dereference mapping safely (given that the
-> mapping is still tied to the folio).
+Function name in the descriptor was not correct.
 
-There's even a comment to that effect later on in the function:
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202307251721.bUGcsCeQ-lkp@intel.com/
+Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+---
+ arch/powerpc/kexec/file_load_64.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-                        /*
-                         * Only pages without mappings or that have a
-                         * ->migrate_folio callback are possible to migrate
-                         * without blocking. However, we can be racing with
-                         * truncation so it's necessary to lock the page
-                         * to stabilise the mapping as truncation holds
-                         * the page lock until after the page is removed
-                         * from the page cache.
-                         */
-
-(that could be reworded to make it clear how dangerous dereferencing
-->mapping is without the lock ... and it does need to be changed to say
-"folio lock" instead of "page lock", so ...)
-
-How does this look?
-
-                        /*
-                         * Only folios without mappings or that have
-                         * a ->migrate_folio callback are possible to
-                         * migrate without blocking. However, we can
-                         * be racing with truncation, which can free
-                         * the mapping.  Truncation holds the folio lock
-                         * until after the folio is removed from the page
-                         * cache so holding it ourselves is sufficient.
-                         */
+diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
+index 110d28bede2a..73e492d18804 100644
+--- a/arch/powerpc/kexec/file_load_64.c
++++ b/arch/powerpc/kexec/file_load_64.c
+@@ -933,9 +933,9 @@ int setup_purgatory_ppc64(struct kimage *image, const void *slave_code,
+ }
+ 
+ /**
+- * get_cpu_node_size - Compute the size of a CPU node in the FDT.
+- *                     This should be done only once and the value is stored in
+- *                     a static variable.
++ * cpu_node_size - Compute the size of a CPU node in the FDT.
++ *                 This should be done only once and the value is stored in
++ *                 a static variable.
+  * Returns the max size of a CPU node in the FDT.
+  */
+ static unsigned int cpu_node_size(void)
+-- 
+2.41.0
 
