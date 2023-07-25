@@ -1,75 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D73A761DE7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 17:59:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11C59761DFC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jul 2023 18:04:57 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=griUMn1q;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AKC+T8h9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=dW59zwmr;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R9MDN3lNKz3cQs
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jul 2023 01:59:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R9MLG6hN3z3cXx
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jul 2023 02:04:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=griUMn1q;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AKC+T8h9;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=dW59zwmr;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhowells@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::114a; helo=mail-yw1-x114a.google.com; envelope-from=3cfk_zaykdiiykgtpimuumrk.iusrot03vvi-jk1royzy.u5rghy.uxm@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R9MCS1lXnz2ygG
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jul 2023 01:58:58 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1690300733;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DCrVdTZAI+0vQC3PoQE4vcBJ0YMLagHeZdYmArSL1lk=;
-	b=griUMn1q4eeP1zmcvhaRXefAef156UStd0wpGMerGjloMA7xTAqBRTVLqWG2n5Q3Iz1vPd
-	n8lQ4HZqrT9ySAl47rq1+AlnpzBwcFFDujv8Yh05RM4LXljUHJsHmGcCRyRYOKSOd7UXbZ
-	U68Ohtncgb0upf2l7gQlT84Y2nSRisg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1690300734;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DCrVdTZAI+0vQC3PoQE4vcBJ0YMLagHeZdYmArSL1lk=;
-	b=AKC+T8h9RwiWpakAD+oF4qSMen3scsdNgjSE9JHf4vh4WlLXhifO/9fZCk5/+ft1Ly/HZt
-	lC2W+qruSMGIfnYhBy9vpSbZED9syovHQtyXzFTP2D501gtfst39NFWKnRraAoa/tiMKlS
-	XzziHCahZk0KSRGRYkQjCM7SpcM1MQg=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-410-WI-G73yFMfKYvUZh17UjEQ-1; Tue, 25 Jul 2023 11:58:46 -0400
-X-MC-Unique: WI-G73yFMfKYvUZh17UjEQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DD0281C16600;
-	Tue, 25 Jul 2023 15:58:43 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.242])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id D7BA0201EC58;
-	Tue, 25 Jul 2023 15:58:34 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <cover.1689092120.git.legion@kernel.org>
-References: <cover.1689092120.git.legion@kernel.org> <cover.1689074739.git.legion@kernel.org>
-To: Alexey Gladkov <legion@kernel.org>
-Subject: Add fchmodat2() - or add a more general syscall?
-MIME-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R9MKN1JjHz30Ql
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jul 2023 02:04:05 +1000 (AEST)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-584139b6b03so19313547b3.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jul 2023 09:04:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1690301041; x=1690905841;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=JzfMU5Qs8JliFSPK4e1C5em4CWxZCGfzp6e2iymS9Yg=;
+        b=dW59zwmrsLAamcGnirE6A1LfKT51T61DtWDAOhx4/cSvK3sOAiDmr+BlK4XiPthtzP
+         CN9MlQi3HhBVcH71uuUqq+M14CfwGnGPEE/BpfevOBdEFKHG7J0iaICViLaRAky8BhEp
+         HFcQ65KDccgqhPQn/ChYInnlcEfq7qr0Ma/Jgkr7SmWI+05vO/bEbUCWl8Rn7I2emovI
+         UeVOyMZohBruEuz8fBipp3NgVzf/qbnB/hnqT0XX1CDCZ3KOl7DJQE2yXx50QpLL6+Az
+         IlluRAj7yyIarMAgzXmFlQrKZdiqjqFyPfBBVM/tbJmItA4hkVu10uPsnU/tUYfyPMpN
+         N63Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690301041; x=1690905841;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JzfMU5Qs8JliFSPK4e1C5em4CWxZCGfzp6e2iymS9Yg=;
+        b=a7gfggJ1/irtYqXfYlOGIzd8CWUX8wqGXzjeHgUblH0VBF2yN3ifjWusDumRqd2+Tp
+         WjyAqu9+6W9RmW49OskiZxAe7MrL0FeacB5l2lrzg3aX+4PVg7y5zH0JCzqIPLxA1XxY
+         I0n8zcXpnf5sRdcnxkD3SqrKCfWIjzXk8uEfYpUHpcU49+2qWrv03KSGZ/ocpxoNitSd
+         gzeodCqgJFTXa5YaMhRvqbm+/mY7pI+vrujVGTEZMqMQ7DiJW9cH7Pp4uTjigNOp05rP
+         IudMbcTeL8SrM3rFApsv1qkHJy6VA5MT9vQDPR+Vgd2+GmE03OdLam+adU+rKeppzB5I
+         KPZA==
+X-Gm-Message-State: ABy/qLaRvZyS+b3QMMk6oG7j7tBmA0Gj5TvUZIWN+gtkrSCQ4ivucpfj
+	k33Uij2IpYKaCADLV120YtWdxxeD9qs=
+X-Google-Smtp-Source: APBJJlH1niyzp4cjBeRls9BsaNe03YLK4iKuUQJEO3t7N9JW3OW9U+d5kcfXqA22KUPE/pwVy1vkIiRVphQ=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a25:46d4:0:b0:cf9:3564:33cc with SMTP id
+ t203-20020a2546d4000000b00cf9356433ccmr81585yba.13.1690301041144; Tue, 25 Jul
+ 2023 09:04:01 -0700 (PDT)
+Date: Tue, 25 Jul 2023 09:03:59 -0700
+In-Reply-To: <DS0PR11MB637386533A4A10667BA6DF03DC03A@DS0PR11MB6373.namprd11.prod.outlook.com>
+Mime-Version: 1.0
+References: <20230718234512.1690985-1-seanjc@google.com> <20230718234512.1690985-13-seanjc@google.com>
+ <DS0PR11MB637386533A4A10667BA6DF03DC03A@DS0PR11MB6373.namprd11.prod.outlook.com>
+Message-ID: <ZL/yb4wL4Nhf9snZ@google.com>
+Subject: Re: [RFC PATCH v11 12/29] KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for
+ guest-specific backing memory
+From: Sean Christopherson <seanjc@google.com>
+To: Wei W Wang <wei.w.wang@intel.com>
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <104970.1690300714.1@warthog.procyon.org.uk>
-Date: Tue, 25 Jul 2023 16:58:34 +0100
-Message-ID: <104971.1690300714@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,16 +75,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dalias@libc.org, linux-ia64@vger.kernel.org, fenghua.yu@intel.com, alexander.shishkin@linux.intel.com, x86@kernel.org, stefan@agner.ch, ldv@altlinux.org, James.Bottomley@HansenPartnership.com, kim.phillips@arm.com, paulus@samba.org, deepa.kernel@gmail.com, hpa@zytor.com, sparclinux@vger.kernel.org, will@kernel.org, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, hare@suse.com, Arnd Bergmann <arnd@arndb.de>, ysato@users.sourceforge.jp, deller@gmx.de, linux-sh@vger.kernel.org, linux@armlinux.org.uk, borntraeger@de.ibm.com, mingo@redhat.com, geert@linux-m68k.org, catalin.marinas@arm.com, jhogan@kernel.org, mattst88@gmail.com, fweimer@redhat.com, gor@linux.ibm.com, glebfm@altlinux.org, tycho@tycho.ws, acme@kernel.org, linux-m68k@lists.linux-m68k.org, ink@jurassic.park.msu.ru, viro@zeniv.linux.org.uk, luto@kernel.org, namhyung@kernel.org, tglx@linutronix.de, christian@brauner.io, axboe@kernel.dk, dhowells@redhat.com, monstr@monstr.eu, tony.luck@intel.com, linux-parisc@vger.ker
- nel.org, linux-api@vger.kernel.org, linux-mips@vger.kernel.org, ralf@linux-mips.org, LKML <linux-kernel@vger.kernel.org>, peterz@infradead.org, linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org, bp@alien8.de, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, David Hildenbrand <david@redhat.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, Chao Peng <chao.p.peng@linux.intel.com>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, Isaku Yamahata <isaku.yamahata@gmail.com>, Paul Moore <paul@paul-moore.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, James Morris <jmorris@namei.org>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Fuad Tabba <tabba@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, "Serge E. Hallyn" <serge@hallyn.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Vlastimil Babka <vbabka@suse.cz>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, "linux-arm-kernel@lists.infradead.o
+ rg" <linux-arm-kernel@lists.infradead.org>, Quentin Perret <qperret@google.com>, Liam Merwick <liam.merwick@oracle.com>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, Oliver Upton <oliver.upton@linux.dev>, "linux-security-module@vger.kernel.org" <linux-security-module@vger.kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, "kvm-riscv@lists.infradead.org" <kvm-riscv@lists.infradead.org>, Anup Patel <anup@brainfault.org>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Rather than adding a fchmodat2() syscall, should we add a "set_file_attrs()"
-syscall that takes a mask and allows you to set a bunch of stuff all in one
-go?  Basically, an interface to notify_change() in the kernel that would allow
-several stats to be set atomically.  This might be of particular interest to
-network filesystems.
+On Tue, Jul 25, 2023, Wei W Wang wrote:
+> On Wednesday, July 19, 2023 7:45 AM, Sean Christopherson wrote:
+> > +int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+> > +		     gfn_t gfn, kvm_pfn_t *pfn, int *max_order) {
+> > +	pgoff_t index = gfn - slot->base_gfn + slot->gmem.pgoff;
+> > +	struct kvm_gmem *gmem;
+> > +	struct folio *folio;
+> > +	struct page *page;
+> > +	struct file *file;
+> > +
+> > +	file = kvm_gmem_get_file(slot);
+> > +	if (!file)
+> > +		return -EFAULT;
+> > +
+> > +	gmem = file->private_data;
+> > +
+> > +	if (WARN_ON_ONCE(xa_load(&gmem->bindings, index) != slot)) {
+> > +		fput(file);
+> > +		return -EIO;
+> > +	}
+> > +
+> > +	folio = kvm_gmem_get_folio(file_inode(file), index);
+> > +	if (!folio) {
+> > +		fput(file);
+> > +		return -ENOMEM;
+> > +	}
+> > +
+> > +	page = folio_file_page(folio, index);
+> > +
+> > +	*pfn = page_to_pfn(page);
+> > +	*max_order = compound_order(compound_head(page));
+> 
+> Maybe better to check if caller provided a buffer to get the max_order:
+> if (max_order)
+> 	*max_order = compound_order(compound_head(page));
+> 
+> This is what the previous version did (restrictedmem_get_page),
+> so that callers who only want to get a pfn don't need to define
+> an unused "order" param.
 
-David
-
+My preference would be to require @max_order.  I can kinda sorta see why a generic
+implementation (restrictedmem) would make the param optional, but with gmem being
+KVM-internal I think it makes sense to require the param.  Even if pKVM doesn't
+_currently_ need/want the order of the backing allocation, presumably that's because
+hugepage support is still on the TODO list, not because pKVM fundamentally doesn't
+need to know the order of the backing allocation.
