@@ -2,88 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F173762B61
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jul 2023 08:26:44 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WlPT7AGo;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 682E5762F6A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jul 2023 10:15:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R9kSf0s4cz3c1W
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jul 2023 16:26:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R9mt22f5Kz3cHH
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jul 2023 18:15:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WlPT7AGo;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.93; helo=mga11.intel.com; envelope-from=baolu.lu@linux.intel.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 65 seconds by postgrey-1.37 at boromir; Wed, 26 Jul 2023 16:25:56 AEST
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33; helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=lists.ozlabs.org)
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R9kRm59y5z2ykT
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jul 2023 16:25:56 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690352757; x=1721888757;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=DlKsXPAKvUQNyaHWuLEMn+YeZGej9B0RE5XdM6qJwbQ=;
-  b=WlPT7AGoTv8mjZ13bedNPtqxqA6YV01FVBPt5ZZOeWGcdbykex7drsq2
-   kR7PuxXIHE0oz0GTghHoF1tYcvV64ypU3vC7lo6attFO/Qx0y3kHJcCFR
-   0/FPunU2ZuMOwEe7fha8x0A+uT0H7MxtZHfnZZ6OdTTh5b/nDew1vidP9
-   c1Gzq0r0wovBLNJNry43PGDg1hiNbf/e9p8ZGWN/bbj6VR02VIHlYsjEO
-   Svc3lzb4Go1g1Vy4CyYW2cviKb8gdRM3OApuYlPBn7k3EcGWtN5ImEbi6
-   dK/Vo4BtyL/iozB1MT2gCwsPB71V74kdtrlZsLp0mPk1dxK0/bkmkQcCs
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10782"; a="365384346"
-X-IronPort-AV: E=Sophos;i="6.01,231,1684825200"; 
-   d="scan'208";a="365384346"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2023 23:24:30 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10782"; a="1057075644"
-X-IronPort-AV: E=Sophos;i="6.01,231,1684825200"; 
-   d="scan'208";a="1057075644"
-Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.254.208.129]) ([10.254.208.129])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2023 23:24:20 -0700
-Message-ID: <7186790f-abed-61ba-2d19-6ab66640f30a@linux.intel.com>
-Date: Wed, 26 Jul 2023 14:24:18 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R9msV4mRqz2ygx
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jul 2023 18:14:53 +1000 (AEST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1qOZfV-0000Zj-JB; Wed, 26 Jul 2023 10:14:49 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1qOZfR-002C2Y-Jo; Wed, 26 Jul 2023 10:14:45 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1qOZfQ-007stT-W4; Wed, 26 Jul 2023 10:14:45 +0200
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH] powerpc/ep8248e: Mark driver as non removable
+Date: Wed, 26 Jul 2023 10:14:42 +0200
+Message-Id: <20230726081442.461026-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v5 02/25] iommu: Add IOMMU_DOMAIN_PLATFORM
-Content-Language: en-US
-To: Jason Gunthorpe <jgg@nvidia.com>, Andy Gross <agross@kernel.org>,
- Alim Akhtar <alim.akhtar@samsung.com>, Bjorn Andersson
- <andersson@kernel.org>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Stuebner <heiko@sntech.de>, iommu@lists.linux.dev,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Jonathan Hunter <jonathanh@nvidia.com>, Joerg Roedel <joro@8bytes.org>,
- Kevin Tian <kevin.tian@intel.com>, Konrad Dybcio <konrad.dybcio@linaro.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
- linux-mediatek@lists.infradead.org, linux-rockchip@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
- linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
- Russell King <linux@armlinux.org.uk>, linuxppc-dev@lists.ozlabs.org,
- Matthias Brugger <matthias.bgg@gmail.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Orson Zhai <orsonzhai@gmail.com>, Rob Clark <robdclark@gmail.com>,
- Robin Murphy <robin.murphy@arm.com>, Samuel Holland <samuel@sholland.org>,
- Thierry Reding <thierry.reding@gmail.com>, Krishna Reddy
- <vdumpa@nvidia.com>, Chen-Yu Tsai <wens@csie.org>,
- Will Deacon <will@kernel.org>, Yong Wu <yong.wu@mediatek.com>,
- Chunyan Zhang <zhang.lyra@gmail.com>
-References: <2-v5-d0a204c678c7+3d16a-iommu_all_defdom_jgg@nvidia.com>
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <2-v5-d0a204c678c7+3d16a-iommu_all_defdom_jgg@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1347; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=PDWs5JAlrNOGIjp5YqlSuu43p8NmbNVpVUAxrqR3Q1w=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBkwNXxr7pTKKEQaiTWvalMjlgR6MTU8tm47sshP /TUSK8LvCyJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZMDV8QAKCRCPgPtYfRL+ Tv2UB/9bK+LJ4j/S50aD1SeweG0pS+RatV/XvCSYazitR+YuNPY+Dl9kfktM23ppZDRMQzpCPo4 18CplkiiE04FQKv9Jyl5eCzjuS3OcRgiyfeH7q909PZbckZi2GU8xxwATCbGGlOxPHPyVo7ktwH kw7tA6xyDu1cDZ+wN8+pfnj9XNw3/m0RflIMXblV6GZBf9PUMPpA7A2ZqCFFr2MsjdYCqE6NMf2 q6UyJoq3apVVkMScidQw6/M7L4ZSMZAvCYfSKFz0aPX37QiXIhVuU4uKFzajorrEYLV9GNWgGmw LIGA7cpbwdY4zYWN1T24HQSzq11cGSRtIKrHSVJwP1PfCAkC
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,22 +54,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thierry Reding <treding@nvidia.com>, Niklas Schnelle <schnelle@linux.ibm.com>, Steven Price <steven.price@arm.com>, Nicolin Chen <nicolinc@nvidia.com>, Dmitry Osipenko <digetx@gmail.com>, baolu.lu@linux.intel.com, Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: kernel@pengutronix.de, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2023/7/25 1:21, Jason Gunthorpe wrote:
-> This is used when the iommu driver is taking control of the dma_ops,
-> currently only on S390 and power spapr. It is designed to preserve the
-> original ops->detach_dev() semantic that these S390 was built around.
-> 
-> Provide an opaque domain type and a 'default_domain' ops value that allows
-> the driver to trivially force any single domain as the default domain.
-> 
-> Signed-off-by: Jason Gunthorpe<jgg@nvidia.com>
-> ---
->   drivers/iommu/iommu.c | 14 +++++++++++++-
->   include/linux/iommu.h |  6 ++++++
->   2 files changed, 19 insertions(+), 1 deletion(-)
+Instead of resorting to BUG() ensure that the driver isn't unbound by
+suppressing its bind and unbind sysfs attributes. As the driver is
+built-in there is no way to remove a device once bound.
 
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+As a nice side effect this allows to drop the remove function.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ arch/powerpc/platforms/82xx/ep8248e.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
+
+diff --git a/arch/powerpc/platforms/82xx/ep8248e.c b/arch/powerpc/platforms/82xx/ep8248e.c
+index 8f1856ba692e..3409cf04b630 100644
+--- a/arch/powerpc/platforms/82xx/ep8248e.c
++++ b/arch/powerpc/platforms/82xx/ep8248e.c
+@@ -140,12 +140,6 @@ static int ep8248e_mdio_probe(struct platform_device *ofdev)
+ 	return ret;
+ }
+ 
+-static int ep8248e_mdio_remove(struct platform_device *ofdev)
+-{
+-	BUG();
+-	return 0;
+-}
+-
+ static const struct of_device_id ep8248e_mdio_match[] = {
+ 	{
+ 		.compatible = "fsl,ep8248e-mdio-bitbang",
+@@ -157,9 +151,9 @@ static struct platform_driver ep8248e_mdio_driver = {
+ 	.driver = {
+ 		.name = "ep8248e-mdio-bitbang",
+ 		.of_match_table = ep8248e_mdio_match,
++		.suppress_bind_attrs = true,
+ 	},
+ 	.probe = ep8248e_mdio_probe,
+-	.remove = ep8248e_mdio_remove,
+ };
+ 
+ struct cpm_pin {
+
+base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
+-- 
+2.39.2
+
