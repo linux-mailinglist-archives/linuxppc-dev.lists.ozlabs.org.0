@@ -1,57 +1,105 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F5EC763C2E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jul 2023 18:17:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73880763CA3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jul 2023 18:40:37 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=N6BxAX76;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OQR1mITt;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OQR1mITt;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R9zZ90Sy6z3cJB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 02:17:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RB04z2mk1z3cRt
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 02:40:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=N6BxAX76;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OQR1mITt;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OQR1mITt;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.200; helo=relay7-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R9zYF0VC2z30YV
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jul 2023 02:16:31 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPA id CB81420003;
-	Wed, 26 Jul 2023 16:16:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1690388186;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RB0421R3dz2yGv
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jul 2023 02:39:45 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1690389582;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=eBmzEf3kjVQ82BbqkAs+ELGEXlJ8CUzuDkLRObIRhk4=;
-	b=N6BxAX76EenROMlARU/JmssigVE/7f+lesvsSK/kILa36HBHNRwtPOP1C/NA8GneXVZWlo
-	vwidYrwh4GOQ7EQWfGtYjcJIsu9vsAZ24pXLxDAjV6aWECeREVMNS0+TtlGuuLxzAzdEv7
-	hTixV+QT0O9oFHPfYJHM3x7zLuMoq3x8VN68tjceNpjiTvTsnUgoEpeaFRhUvZeij+bfX7
-	gPinUZg2zf75u1p9QXu4K/ZDUaRYE1EL0khQUcBr7IlqLu5uW+UM7N6c4E7U8LyuoFUu5l
-	3W6JvMGmhe7koaf81QJ5s0Z4aBWTKumknM2zq7NyO9B2zd5f4rtOeDdZekfD4A==
-From: Herve Codina <herve.codina@bootlin.com>
-To: Herve Codina <herve.codina@bootlin.com>,
-	Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Xiubo Li <Xiubo.Lee@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Nicolin Chen <nicoleotsuka@gmail.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 1/1] ASoC: fsl: fsl_qmc_audio: Fix snd_pcm_format_t values handling
-Date: Wed, 26 Jul 2023 18:16:20 +0200
-Message-ID: <20230726161620.495298-1-herve.codina@bootlin.com>
-X-Mailer: git-send-email 2.41.0
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mBRwboZ65s2wEyxE4FPIAJKpqYqzXSa2YWMDeQT0bz4=;
+	b=OQR1mITt3QLCqs1bKqzbpSfFoBcnv9qUfhrJ43+HwyvlCE76vHdrxkspyJm7Iw/3atvJzb
+	c4CRGJXvSWoYR9lURG/xThcgYEjxQ2TfST0/+FcPGb4nailAwq1C2YMENwYiOJFExfZn6B
+	3xD6n2YKinZYWJ4HJMEPXK+cxVuAkKc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1690389582;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mBRwboZ65s2wEyxE4FPIAJKpqYqzXSa2YWMDeQT0bz4=;
+	b=OQR1mITt3QLCqs1bKqzbpSfFoBcnv9qUfhrJ43+HwyvlCE76vHdrxkspyJm7Iw/3atvJzb
+	c4CRGJXvSWoYR9lURG/xThcgYEjxQ2TfST0/+FcPGb4nailAwq1C2YMENwYiOJFExfZn6B
+	3xD6n2YKinZYWJ4HJMEPXK+cxVuAkKc=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-657-z8lewEvdNGyiyOrlZBIrHw-1; Wed, 26 Jul 2023 12:39:40 -0400
+X-MC-Unique: z8lewEvdNGyiyOrlZBIrHw-1
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-314394a798dso636546f8f.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jul 2023 09:39:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690389578; x=1690994378;
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mBRwboZ65s2wEyxE4FPIAJKpqYqzXSa2YWMDeQT0bz4=;
+        b=gaPaDMxjEP5X0e7Rb6/G2gwU9ST6OFx7huVlRpiVFRRe8PLyqltnMolr9Pj0Kr8f4V
+         4N6z9BsdnSjoHjCoiDvSnW+Zq4eHRwbtFAb6uDdqyh64YUzRbfFWDzqPuSPjnv3+pXSs
+         3++i7eGouZfRwlBP6EBjdblL8WsegIiW+dj7rgioG0yC8IH78mcU8qWo88wE1+zZsltq
+         PkGC8tpBhG4FUa/XIxaBlXczGQ97ofL04YJMQ57vG1WKBARbmgEClWEeiMicNhsCYLqz
+         ynnMrsNls2hYAyH+f7RE5EPUY78Dw0MDdbnVORQV7Lr/ggAe87p5iBTUpfUKLVA6fVQK
+         UomQ==
+X-Gm-Message-State: ABy/qLaYIdEKnvjWpshR2qk6TwN25ismivP1x7sWIRVxyQzDBIruyX1H
+	zWWbGdFxZSebWszHtfSm3gYmpMJJ3IseReKxezzPVzJd3os0PXuiHPQr24YP/7LcK1dKsyInVsy
+	QdYaTvJtPC8+N98ko9AKNgWmhFQ==
+X-Received: by 2002:adf:dcd0:0:b0:314:98f:2495 with SMTP id x16-20020adfdcd0000000b00314098f2495mr31561wrm.12.1690389578675;
+        Wed, 26 Jul 2023 09:39:38 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFPADryZnRWsCJW+Me4oefqTHt3zQ2NSSl2lc70Hw6KN5yXHJYzRYB1UeLeLRegTJnEIqxq/Q==
+X-Received: by 2002:adf:dcd0:0:b0:314:98f:2495 with SMTP id x16-20020adfdcd0000000b00314098f2495mr31543wrm.12.1690389578273;
+        Wed, 26 Jul 2023 09:39:38 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c705:f600:a519:c50:799b:f1e3? (p200300cbc705f600a5190c50799bf1e3.dip0.t-ipconnect.de. [2003:cb:c705:f600:a519:c50:799b:f1e3])
+        by smtp.gmail.com with ESMTPSA id z17-20020a5d6411000000b003140f47224csm2309648wru.15.2023.07.26.09.39.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 26 Jul 2023 09:39:37 -0700 (PDT)
+Message-ID: <e435e31d-a22c-1723-d48e-1385d69794eb@redhat.com>
+Date: Wed, 26 Jul 2023 18:39:36 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v5 4/7] mm/hotplug: Support memmap_on_memory when memmap
+ is not aligned to pageblocks
+To: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>, linux-mm@kvack.org,
+ akpm@linux-foundation.org, mpe@ellerman.id.au,
+ linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, christophe.leroy@csgroup.eu
+References: <20230725100212.531277-1-aneesh.kumar@linux.ibm.com>
+ <20230725100212.531277-5-aneesh.kumar@linux.ibm.com>
+ <e1a4430e-d3ae-711b-7efa-5085934b62fd@redhat.com>
+ <875y67xpsi.fsf@linux.ibm.com>
+ <aeab0767-457a-a2d1-8b23-4dde5acf48f4@redhat.com>
+ <9d1448d3-a43a-5305-68aa-d82111fe077a@linux.ibm.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <9d1448d3-a43a-5305-68aa-d82111fe077a@linux.ibm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,109 +111,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Cc: Vishal Verma <vishal.l.verma@intel.com>, Michal Hocko <mhocko@suse.com>, Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Running sparse on fsl_qmc_audio (make C=1) raises the following warnings:
- fsl_qmc_audio.c:387:26: warning: restricted snd_pcm_format_t degrades to integer
- fsl_qmc_audio.c:389:59: warning: incorrect type in argument 1 (different base types)
- fsl_qmc_audio.c:389:59:    expected restricted snd_pcm_format_t [usertype] format
- fsl_qmc_audio.c:389:59:    got unsigned int [assigned] i
- fsl_qmc_audio.c:564:26: warning: restricted snd_pcm_format_t degrades to integer
- fsl_qmc_audio.c:569:50: warning: incorrect type in argument 1 (different base types)
- fsl_qmc_audio.c:569:50:    expected restricted snd_pcm_format_t [usertype] format
- fsl_qmc_audio.c:569:50:    got int [assigned] i
- fsl_qmc_audio.c:573:62: warning: incorrect type in argument 1 (different base types)
- fsl_qmc_audio.c:573:62:    expected restricted snd_pcm_format_t [usertype] format
- fsl_qmc_audio.c:573:62:    got int [assigned] i
+On 26.07.23 11:57, Aneesh Kumar K V wrote:
+> On 7/26/23 2:34 PM, David Hildenbrand wrote:
+>>
+>>>>>     /*
+>>>>> @@ -1310,7 +1400,10 @@ int __ref add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
+>>>>>     {
+>>>>>         struct mhp_params params = { .pgprot = pgprot_mhp(PAGE_KERNEL) };
+>>>>>         enum memblock_flags memblock_flags = MEMBLOCK_NONE;
+>>>>> -    struct vmem_altmap mhp_altmap = {};
+>>>>> +    struct vmem_altmap mhp_altmap = {
+>>>>> +        .base_pfn =  PHYS_PFN(res->start),
+>>>>> +        .end_pfn  =  PHYS_PFN(res->end),
+>>>>
+>>>> Is it required to set .end_pfn, and if so, shouldn't we also set it to
+>>>> base_pfn + memory_block_memmap_on_memory_pages()) ?
+>>>>
+>>>
+>>> We use that in ppc64 for checking altmap boundary condition. As we
+>>> discussed earlier, ppc64 due to vmemmap mapping size restrictions can't
+>>> always allocate vmemmap pages from altmap area even if requested. We
+>>> fallback to regular memory alocation in that case (only used now with
+>>> pmem). We use altmap.end_pfn for that boundary check. You can refer to
+>>> altmap_cross_boundary() for more details.
+>>
+>> But even then, setting the end to the end of the resource size is wrong, no? We don't want anybody to allocate beyond base_pfn + memory_block_memmap_on_memory_pages().
+>>
+> 
+> altmap.end is the end pfn of the resource
 
-These warnings are due to snd_pcm_format_t values handling done in the
-driver. Some macros and functions exist to handle safely these values.
+Oh, thanks for pointing that out. I wonder why the altmap even has to 
+care about that ...
 
-Use dedicated macros and functions to remove these warnings.
-
-Fixes: 075c7125b11c ("ASoC: fsl: Add support for QMC audio")
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
----
- sound/soc/fsl/fsl_qmc_audio.c | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
-
-diff --git a/sound/soc/fsl/fsl_qmc_audio.c b/sound/soc/fsl/fsl_qmc_audio.c
-index 7cbb8e4758cc..56d6b0b039a2 100644
---- a/sound/soc/fsl/fsl_qmc_audio.c
-+++ b/sound/soc/fsl/fsl_qmc_audio.c
-@@ -372,8 +372,8 @@ static int qmc_dai_hw_rule_format_by_channels(struct qmc_dai *qmc_dai,
- 	struct snd_mask *f_old = hw_param_mask(params, SNDRV_PCM_HW_PARAM_FORMAT);
- 	unsigned int channels = params_channels(params);
- 	unsigned int slot_width;
-+	snd_pcm_format_t format;
- 	struct snd_mask f_new;
--	unsigned int i;
- 
- 	if (!channels || channels > nb_ts) {
- 		dev_err(qmc_dai->dev, "channels %u not supported\n",
-@@ -384,10 +384,10 @@ static int qmc_dai_hw_rule_format_by_channels(struct qmc_dai *qmc_dai,
- 	slot_width = (nb_ts / channels) * 8;
- 
- 	snd_mask_none(&f_new);
--	for (i = 0; i <= SNDRV_PCM_FORMAT_LAST; i++) {
--		if (snd_mask_test(f_old, i)) {
--			if (snd_pcm_format_physical_width(i) <= slot_width)
--				snd_mask_set(&f_new, i);
-+	pcm_for_each_format(format) {
-+		if (snd_mask_test_format(f_old, format)) {
-+			if (snd_pcm_format_physical_width(format) <= slot_width)
-+				snd_mask_set_format(&f_new, format);
- 		}
- 	}
- 
-@@ -551,26 +551,26 @@ static const struct snd_soc_dai_ops qmc_dai_ops = {
- 
- static u64 qmc_audio_formats(u8 nb_ts)
- {
--	u64 formats;
--	unsigned int chan_width;
- 	unsigned int format_width;
--	int i;
-+	unsigned int chan_width;
-+	snd_pcm_format_t format;
-+	u64 formats_mask;
- 
- 	if (!nb_ts)
- 		return 0;
- 
--	formats = 0;
-+	formats_mask = 0;
- 	chan_width = nb_ts * 8;
--	for (i = 0; i <= SNDRV_PCM_FORMAT_LAST; i++) {
-+	pcm_for_each_format(format) {
- 		/*
- 		 * Support format other than little-endian (ie big-endian or
- 		 * without endianness such as 8bit formats)
- 		 */
--		if (snd_pcm_format_little_endian(i) == 1)
-+		if (snd_pcm_format_little_endian(format) == 1)
- 			continue;
- 
- 		/* Support physical width multiple of 8bit */
--		format_width = snd_pcm_format_physical_width(i);
-+		format_width = snd_pcm_format_physical_width(format);
- 		if (format_width == 0 || format_width % 8)
- 			continue;
- 
-@@ -581,9 +581,9 @@ static u64 qmc_audio_formats(u8 nb_ts)
- 		if (format_width > chan_width || chan_width % format_width)
- 			continue;
- 
--		formats |= (1ULL << i);
-+		formats_mask |= pcm_format_to_bits(format);
- 	}
--	return formats;
-+	return formats_mask;
- }
- 
- static int qmc_audio_dai_parse(struct qmc_audio *qmc_audio, struct device_node *np,
 -- 
-2.41.0
+Cheers,
+
+David / dhildenb
 
