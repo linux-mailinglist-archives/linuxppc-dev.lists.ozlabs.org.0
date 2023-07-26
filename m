@@ -2,57 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AF8F7637FA
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jul 2023 15:47:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAC27763859
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jul 2023 16:07:09 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iLrm54/O;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YblzQ9fx;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R9wDj6byMz3cHr
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jul 2023 23:47:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R9wgv4gVxz2yF9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 00:07:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iLrm54/O;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YblzQ9fx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=legion@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R9wCp0XH5z2yVb
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jul 2023 23:46:13 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id F3D2861AC3;
-	Wed, 26 Jul 2023 13:46:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31A6EC433C7;
-	Wed, 26 Jul 2023 13:46:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1690379171;
-	bh=YMmxomfMr9G4i/xBDFo8a+tJ6BzX3X5lQtLwpyL37dM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iLrm54/OyVAkeX7XRTdQI6vJKk7fvA9E8WFuxeM1GUgON2oCeY1wjM8yTYrtIi4IQ
-	 Oo3FMgcMnRzknsY84kWAeTJ0inxm7fg97Q/tOUTzG6ZMmI5ATwnzUC945HbXcM2RRW
-	 HKanW7qmiSF3lCZhc3wQfBbpJJOtev2Fm0SsXZJptqvFFvEwrKyC1aKGldedLK/9Vz
-	 62DImdurXvwbmhgOteOs/aXLApFhcpwiLDIG+sQUeQFLsagl1k2OVSVn88v78BFAcl
-	 Vj6NEoPbw1eyE9ZIq7xYhoiahGzuo+q0Lii/UprIQXPLwFPgjeIIKj3g1kimIqX0ng
-	 b/060n7yg03AQ==
-Date: Wed, 26 Jul 2023 15:45:56 +0200
-From: Alexey Gladkov <legion@kernel.org>
-To: Aleksa Sarai <cyphar@cyphar.com>
-Subject: Re: [PATCH v4 2/5] fs: Add fchmodat2()
-Message-ID: <ZMEjlDNJkFpYERr1@example.org>
-References: <cover.1689074739.git.legion@kernel.org>
- <cover.1689092120.git.legion@kernel.org>
- <f2a846ef495943c5d101011eebcf01179d0c7b61.1689092120.git.legion@kernel.org>
- <njnhwhgmsk64e6vf3ur7fifmxlipmzez3r5g7ejozsrkbwvq7w@tu7w3ieystcq>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R9wg14sKpz2xjw
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jul 2023 00:06:21 +1000 (AEST)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36QE5Wq6021272;
+	Wed, 26 Jul 2023 14:05:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=yeaLeTtMBd2tYjnSKL4qtKVPyNbLKpbedm5tAvGX+c4=;
+ b=YblzQ9fxx7PaEhG8VDERBLmyYnYsAVwyXyGr9+vKZnFRx5tqvjU+TddmomgxHtzvLdiL
+ /elFqvgcEFPm09n2JaMt0eSHcN7wXfPm5nvGQLaJFyE/ChMIxIqFIHYzwBpGJkkq4jEU
+ bUx98yQXyoaVPsvlLF55I7FDQKpyiIYj6f0pWRaIgk/6/z8KPkJMGrg1sLBGKeKe2aRv
+ Ph9nRweObkTRsaX9kZB/zXKhsWaHkELMUXQ6TIcscZ3OaJ5UBXAVu85haRUIQWrEL4xD
+ xQUNbgZqGj4Jb/6VECJBFppSRWYzyBraMSOZFK/kfbMun7q80yDye7MaLvFTXSZzUgIl mQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s34pvgdwg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 26 Jul 2023 14:05:53 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36QE5i6b021853;
+	Wed, 26 Jul 2023 14:05:51 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s34pvgdtw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 26 Jul 2023 14:05:51 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36QDFVuC002059;
+	Wed, 26 Jul 2023 14:05:47 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3s0ten59bx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 26 Jul 2023 14:05:47 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36QE5kLj64815606
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 26 Jul 2023 14:05:46 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7E2E358051;
+	Wed, 26 Jul 2023 14:05:46 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 786655805C;
+	Wed, 26 Jul 2023 14:05:41 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.43.89.11])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 26 Jul 2023 14:05:41 +0000 (GMT)
+X-Mailer: emacs 29.0.91 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linux-mm@kvack.org, akpm@linux-foundation.org, mpe@ellerman.id.au,
+        linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu
+Subject: [PATCH v6 11/13 -fix] powerpc/book3s64/radix: Add support for
+ vmemmap optimization for radix
+In-Reply-To: <20230724190759.483013-12-aneesh.kumar@linux.ibm.com>
+References: <20230724190759.483013-1-aneesh.kumar@linux.ibm.com>
+ <20230724190759.483013-12-aneesh.kumar@linux.ibm.com>
+Date: Wed, 26 Jul 2023 19:35:39 +0530
+Message-ID: <87jzumwyx8.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <njnhwhgmsk64e6vf3ur7fifmxlipmzez3r5g7ejozsrkbwvq7w@tu7w3ieystcq>
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: nWDJPWfIodfSy03eu95zUxb5V7dDNKQd
+X-Proofpoint-ORIG-GUID: yPnePfkPfSRsoarV2Fd5k66xUtS696dQ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-26_06,2023-07-26_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ malwarescore=0 suspectscore=0 adultscore=0 mlxlogscore=999 bulkscore=0
+ spamscore=0 clxscore=1015 impostorscore=0 phishscore=0 mlxscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2307260124
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,79 +99,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dalias@libc.org, linux-ia64@vger.kernel.org, fenghua.yu@intel.com, alexander.shishkin@linux.intel.com, catalin.marinas@arm.com, Palmer Dabbelt <palmer@sifive.com>, x86@kernel.org, stefan@agner.ch, ldv@altlinux.org, dhowells@redhat.com, kim.phillips@arm.com, paulus@samba.org, deepa.kernel@gmail.com, hpa@zytor.com, sparclinux@vger.kernel.org, will@kernel.org, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, hare@suse.com, gor@linux.ibm.com, ysato@users.sourceforge.jp, deller@gmx.de, linux-sh@vger.kernel.org, linux@armlinux.org.uk, borntraeger@de.ibm.com, mingo@redhat.com, geert@linux-m68k.org, jhogan@kernel.org, mattst88@gmail.com, linux-mips@vger.kernel.org, fweimer@redhat.com, Arnd Bergmann <arnd@arndb.de>, glebfm@altlinux.org, tycho@tycho.ws, acme@kernel.org, linux-m68k@lists.linux-m68k.org, bp@alien8.de, viro@zeniv.linux.org.uk, luto@kernel.org, namhyung@kernel.org, tglx@linutronix.de, christian@brauner.io, axboe@kernel.dk, James.Bottomley@hansenpartnership.com, monstr@m
- onstr.eu, tony.luck@intel.com, linux-parisc@vger.kernel.org, linux-api@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, ralf@linux-mips.org, peterz@infradead.org, linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org, ink@jurassic.park.msu.ru, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Muchun Song <muchun.song@linux.dev>, Dan Williams <dan.j.williams@intel.com>, Oscar Salvador <osalvador@suse.de>, Will Deacon <will@kernel.org>, Joao Martins <joao.m.martins@oracle.com>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jul 26, 2023 at 02:36:25AM +1000, Aleksa Sarai wrote:
-> On 2023-07-11, Alexey Gladkov <legion@kernel.org> wrote:
-> > On the userspace side fchmodat(3) is implemented as a wrapper
-> > function which implements the POSIX-specified interface. This
-> > interface differs from the underlying kernel system call, which does not
-> > have a flags argument. Most implementations require procfs [1][2].
-> > 
-> > There doesn't appear to be a good userspace workaround for this issue
-> > but the implementation in the kernel is pretty straight-forward.
-> > 
-> > The new fchmodat2() syscall allows to pass the AT_SYMLINK_NOFOLLOW flag,
-> > unlike existing fchmodat.
-> > 
-> > [1] https://sourceware.org/git/?p=glibc.git;a=blob;f=sysdeps/unix/sysv/linux/fchmodat.c;h=17eca54051ee28ba1ec3f9aed170a62630959143;hb=a492b1e5ef7ab50c6fdd4e4e9879ea5569ab0a6c#l35
-> > [2] https://git.musl-libc.org/cgit/musl/tree/src/stat/fchmodat.c?id=718f363bc2067b6487900eddc9180c84e7739f80#n28
-> > 
-> > Co-developed-by: Palmer Dabbelt <palmer@sifive.com>
-> > Signed-off-by: Palmer Dabbelt <palmer@sifive.com>
-> > Signed-off-by: Alexey Gladkov <legion@kernel.org>
-> > Acked-by: Arnd Bergmann <arnd@arndb.de>
-> > ---
-> >  fs/open.c                | 18 ++++++++++++++----
-> >  include/linux/syscalls.h |  2 ++
-> >  2 files changed, 16 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/fs/open.c b/fs/open.c
-> > index 0c55c8e7f837..39a7939f0d00 100644
-> > --- a/fs/open.c
-> > +++ b/fs/open.c
-> > @@ -671,11 +671,11 @@ SYSCALL_DEFINE2(fchmod, unsigned int, fd, umode_t, mode)
-> >  	return err;
-> >  }
-> >  
-> > -static int do_fchmodat(int dfd, const char __user *filename, umode_t mode)
-> > +static int do_fchmodat(int dfd, const char __user *filename, umode_t mode, int lookup_flags)
-> 
-> I think it'd be much neater to do the conversion of AT_ flags here and
-> pass 0 as a flags argument for all of the wrappers (this is how most of
-> the other xyz(), fxyz(), fxyzat() syscall wrappers are done IIRC).
 
-I just addressed the Al Viro's suggestion.
+From 9252360e483246e13e6bb28cd6773af2b99eeb55 Mon Sep 17 00:00:00 2001
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Date: Wed, 26 Jul 2023 10:54:14 +0530
+Subject: [PATCH] -next build fixup
 
-https://lore.kernel.org/lkml/20190717014802.GS17978@ZenIV.linux.org.uk/
+Fix build error
 
-> >  {
-> >  	struct path path;
-> >  	int error;
-> > -	unsigned int lookup_flags = LOOKUP_FOLLOW;
-> > +
-> >  retry:
-> >  	error = user_path_at(dfd, filename, lookup_flags, &path);
-> >  	if (!error) {
-> > @@ -689,15 +689,25 @@ static int do_fchmodat(int dfd, const char __user *filename, umode_t mode)
-> >  	return error;
-> >  }
-> >  
-> > +SYSCALL_DEFINE4(fchmodat2, int, dfd, const char __user *, filename,
-> > +		umode_t, mode, int, flags)
-> > +{
-> > +	if (unlikely(flags & ~AT_SYMLINK_NOFOLLOW))
-> > +		return -EINVAL;
-> 
-> We almost certainly want to support AT_EMPTY_PATH at the same time.
-> Otherwise userspace will still need to go through /proc when trying to
-> chmod a file handle they have.
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+ arch/powerpc/include/asm/book3s/64/radix.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-I'm not sure I understand. Can you explain what you mean?
-
+diff --git a/arch/powerpc/include/asm/book3s/64/radix.h b/arch/powerpc/include/asm/book3s/64/radix.h
+index 3195f268ed7f..357e23a403d3 100644
+--- a/arch/powerpc/include/asm/book3s/64/radix.h
++++ b/arch/powerpc/include/asm/book3s/64/radix.h
+@@ -364,8 +364,10 @@ int radix__remove_section_mapping(unsigned long start, unsigned long end);
+ 
+ void radix__kernel_map_pages(struct page *page, int numpages, int enable);
+ 
++#ifdef CONFIG_ARCH_WANT_OPTIMIZE_DAX_VMEMMAP
+ #define vmemmap_can_optimize vmemmap_can_optimize
+ bool vmemmap_can_optimize(struct vmem_altmap *altmap, struct dev_pagemap *pgmap);
++#endif
+ 
+ #define vmemmap_populate_compound_pages vmemmap_populate_compound_pages
+ int __meminit vmemmap_populate_compound_pages(unsigned long start_pfn,
 -- 
-Rgrds, legion
+2.41.0
 
