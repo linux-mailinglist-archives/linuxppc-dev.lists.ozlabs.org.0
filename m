@@ -1,67 +1,130 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEB69763528
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jul 2023 13:38:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 808AF763610
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jul 2023 14:17:06 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DV7cjIMW;
+	dkim=pass (2048-bit key; unprotected) header.d=vivo.com header.i=@vivo.com header.a=rsa-sha256 header.s=selector2 header.b=YKw3PljO;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R9sNX4CN9z3cPD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jul 2023 21:38:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R9tDw3265z3cJl
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jul 2023 22:17:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DV7cjIMW;
+	dkim=pass (2048-bit key; unprotected) header.d=vivo.com header.i=@vivo.com header.a=rsa-sha256 header.s=selector2 header.b=YKw3PljO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=134.134.136.65; helo=mga03.intel.com; envelope-from=kirill.shutemov@linux.intel.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 65 seconds by postgrey-1.37 at boromir; Wed, 26 Jul 2023 21:37:47 AEST
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=vivo.com (client-ip=2a01:111:f403:704b::719; helo=apc01-tyz-obe.outbound.protection.outlook.com; envelope-from=machel@vivo.com; receiver=lists.ozlabs.org)
+Received: from APC01-TYZ-obe.outbound.protection.outlook.com (mail-tyzapc01on20719.outbound.protection.outlook.com [IPv6:2a01:111:f403:704b::719])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R9sMb53ntz2ygj
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jul 2023 21:37:47 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690371468; x=1721907468;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=SuZ1oLRGv+DogObqtc+f4FAjzMjj7hxAmbmabhNK8B0=;
-  b=DV7cjIMW9FD3vAAz3UEWZ5iilYWhDFlBmmrlqCEnKWPMGX+cYt7eccpU
-   O8noEhJNKjg8ZpWfkUhlf7+acSWqkdMQtN6cOtJiS0up4QMMyG4Mt6u5R
-   xmMmB6o0ijgrk+GQ9ob+v7cDbCNmL46OgWuZnpKN/fno57xQTxiiXR4KI
-   mY9vMHVWU1bfcdKkJGAD9AqMXGsBHVVlIKsLr+mO2px2c2v/OQ4aoPcH5
-   Zx1dtazL345Mbfs7lwVWJ2auBl3QrlB97CxGZHN2QJbTF/MELfPdKbtco
-   zWoZsQnCwnr9pnjIJmqXCB/KE7Bcx0ijHIq0F/dZMrXskQqEOJCTq0XlJ
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10782"; a="371598754"
-X-IronPort-AV: E=Sophos;i="6.01,231,1684825200"; 
-   d="scan'208";a="371598754"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2023 04:36:35 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10782"; a="729807753"
-X-IronPort-AV: E=Sophos;i="6.01,231,1684825200"; 
-   d="scan'208";a="729807753"
-Received: from mbrdon-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.251.209.47])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2023 04:36:21 -0700
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 8BCEB109503; Wed, 26 Jul 2023 14:36:17 +0300 (+03)
-Date: Wed, 26 Jul 2023 14:36:17 +0300
-From: "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
-To: Matthew Wilcox <willy@infradead.org>
-Subject: Re: [RFC PATCH v11 10/29] mm: Add AS_UNMOVABLE to mark mapping as
- completely unmovable
-Message-ID: <20230726113617.432nuovswn6odcmx@box>
-References: <20230718234512.1690985-1-seanjc@google.com>
- <20230718234512.1690985-11-seanjc@google.com>
- <20230725102403.xywjqlhyqkrzjok6@box.shutemov.name>
- <ZL/Fa4W2Ne9EVxoh@casper.infradead.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R9tD00Pqbz2yN0
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jul 2023 22:16:14 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=POnt5mHlqor1BTkdcXLNgVWTSxz8G7FlFvLWUQJyunHrvJR3XmuKLPOqpBEprRuPqclr4ii7BGF4ztorBO5PTNofWYJtT9ebM/if4JMip6n5HrXM2NhLdU3aYBvkH5e12SL7EniAcfyThiXCzfKxXeIdnZFEgU+VBE2X3HQFr6RvjDo7yl2iBSc+pcxbTBcInfCE2eaoc1Smp16d5uT2WwobVVB0x/Y8DYfg9QOK6xsTJ/1VlV7fz+ub+X7ssv3i0tPajhfseg4ztMmcxzFcI7s11pLnk/qaaeqA70gUnpv3oOHkTaVK+ROV0Z3f/qkJPyQpqigLiU16OJaHKT3FlA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aaHezA6DgZDvq91FczRErIRPQfvMDQ4j6pOMKlaVJUw=;
+ b=baCBl2+MFcJEYDeLiS2Puhy/s2BCbhd/oTs9jScf9HJC62hQ5dNNJm0yCfpazqbdR4gfOXbun/fYNd2UUogO319+jYXEw9GSNtpjD8IXwLGS+YNiTWQlc/GC3YgspwPR4TQIgXH1CTN2hpGFaM5WZfCSK8rSyP/zIcJ8A5tiIVWPyb366Xpe62YedUqEQkekO+ADDmmbJ9/eOIk+tlk2rTt31LahZJX5C710Ub8SywN9TQEtZn1VYDWg58Ikmfg4/SS8Ml6p9iXBMbzN5+f7B3mJQ/084NsxNxslgV3l0uDVXsTOsnKdpeoeze/6AKzbC5D6rn1iXorEXVf9biTGZw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
+ dkim=pass header.d=vivo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aaHezA6DgZDvq91FczRErIRPQfvMDQ4j6pOMKlaVJUw=;
+ b=YKw3PljO6GDu+RsWLkZ26N/m04WyztA+dVR59T7m6MPnBohQKAWQv+GKnlxJ5em0otfUVVt09hYjgV7nazIxceSNHKJvYckVYDIPHN2Pp1qHpj8SzrNJm0MQmMv1cvuZsgPOnnkgpdXTxm+5ZTRwWVhDTfwPESbhL/9RU4qbXA95ekXokLMNeGDMY/Q2AjxnXUbVKLFMekuOThaNKydwB2PeuweC7XBuT/l0Jgv0vbYRddjtVMT3eCPPCfeS/oNbiCXUNGgwTDU9mKvqcho+XKAs4IxiVZUx04T+7P+N8AWHz2s278Y19bi3U48hkfQ64mQnm/18t0bsXxJNdLirYA==
+Received: from SG2PR06MB3743.apcprd06.prod.outlook.com (2603:1096:4:d0::18) by
+ SEZPR06MB6331.apcprd06.prod.outlook.com (2603:1096:101:12c::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6609.33; Wed, 26 Jul 2023 12:15:53 +0000
+Received: from SG2PR06MB3743.apcprd06.prod.outlook.com
+ ([fe80::535e:25af:a3bc:d600]) by SG2PR06MB3743.apcprd06.prod.outlook.com
+ ([fe80::535e:25af:a3bc:d600%4]) with mapi id 15.20.6631.026; Wed, 26 Jul 2023
+ 12:15:52 +0000
+From: =?utf-8?B?546L5piOLei9r+S7tuW6leWxguaKgOacr+mDqA==?= <machel@vivo.com>
+To: =?utf-8?B?546L5piOLei9r+S7tuW6leWxguaKgOacr+mDqA==?= <machel@vivo.com>,
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Andrew Donnellan
+	<ajd@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org"
+	<linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] powerpc:platforms:Fix an NULL vs IS_ERR() bug for
+ debugfs_create_dir()
+Thread-Topic: [PATCH v2] powerpc:platforms:Fix an NULL vs IS_ERR() bug for
+ debugfs_create_dir()
+Thread-Index: AQHZtGwetP9wGPYWaU2hVhcrlEssQK/MDP2A
+Date: Wed, 26 Jul 2023 12:15:52 +0000
+Message-ID: <bc623bc4-63b1-9c01-79ea-9b6152181935@vivo.com>
+References: <20230712025250.6512-1-machel@vivo.com>
+In-Reply-To: <20230712025250.6512-1-machel@vivo.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=vivo.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SG2PR06MB3743:EE_|SEZPR06MB6331:EE_
+x-ms-office365-filtering-correlation-id: 76974228-a0d5-4c01-f27f-08db8dd20e35
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  K0myGwxJq5q3XxUI2AeUYZW/e6PH//Ducto0yIt3H1gszZAnVCzbpYs7su2IKarnSgpE9IbwTMw2xdK8UB/4OHPlaXtenKQ4uAJYfNO7U4geWXTI9PAogkYR/b3w+gpHPLrvJCViSCCdqtNrceqR27I1XJ+mpyEyLJJ4gNYAl43Of3nQRph4VTRPNc7oF1UJIAoNHnj9kZR1rpaTCzEkcEW5741eWWmiTJiDIIj6Qq8+cfJko70TDMF2zwnakM8vA14lTg6jxAHgShJimH3Uu3pt7R61iLOwn/nVxFZO2c777bkpPi8q5xOeLnSc97rRxCAE73OzEqPapmBStvZbgUh8ZgKAnhce8GALFqPajdVGe3uhWCTUd1TK981gj6fHIA6OU7GyxNZadFW5XOY/BcBj/uigIx2MJ37Jl9mJ+JQ+HRxb/lqBTY2XR+Cu1D08GkY9MB1aYERUweNrI2M8roNyylBHU8cmCmNniRtaHu7iEsqFqdNE7mldAA+RxL189V/vpKmHPhZoucK3lXlgh6ua6VhGym65eXxWetOH+82Tg5ta913plKiwEG/8MjV/LCT4YSP6ITVtNlAsMy0+snxHup4yJieYHwiz2vtaX2mVBBCxyBbv+NjTHE3n48dhqT7G0/aZoJ9PllrIJJi90A==
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SG2PR06MB3743.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(396003)(366004)(376002)(136003)(346002)(451199021)(107886003)(186003)(71200400001)(6506007)(26005)(2616005)(64756008)(83380400001)(76116006)(66476007)(66556008)(66446008)(4326008)(66946007)(316002)(5660300002)(8676002)(41300700001)(6486002)(6512007)(966005)(8936002)(2906002)(478600001)(110136005)(38100700002)(122000001)(38070700005)(31696002)(86362001)(85182001)(36756003)(31686004)(45980500001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?V0FnVjBmVVNoOW1yZjVVS3hWYWpIY1VTQXV3WWdWdEx6cDNKclcyQkpWZk1i?=
+ =?utf-8?B?RlJsbWhCOUFTbTJaOXhQQmFoakJzT1BpaHlKSmtCbkc5elpHaGJIeGJSMjJk?=
+ =?utf-8?B?QzJOUmFmU2FvY0dBOGJ1bmZZbXlQVDJ4KzJ1RnVEZHY4aFJSZXJhRlNJNHZC?=
+ =?utf-8?B?Uk1va2dmM01wd01OVnJVUzF6ZVFQa3hvTXo0R1hiNkNGYk9ZUk91VGdCRi9Q?=
+ =?utf-8?B?am9OcFREcGZyRUQwbVIxQTIrOGU2ZHhsNjZkT2dUSnRvZG4xV0ZPbGkwNCth?=
+ =?utf-8?B?aWpSNXRjU3lHNG03SWlSSTUya0pOYk9QR1pPaURQZlg0VUo3WEJyYTJZN0I3?=
+ =?utf-8?B?TCtDZUo2S3AwalU3VHpWUElYdG1mNzREQysxZWZLOTFKYTBGWHZ6WnI5Z05i?=
+ =?utf-8?B?a1NNcUpOQU9DRTM2V1JweHBXUmxhT1F3ZFA4V1FrSmNOVHQ3enhsOStJa2JW?=
+ =?utf-8?B?dzJYTTJMUEM3TlNPYnpXRnVhUHFiQkx4SDhURnBRSy9yTFlSTDdaRXBTV3pV?=
+ =?utf-8?B?VkNiaWhnZWY2bHAxRWozenZ5M21EbVdUeHd5dDhNLytUVGhIZG5ObXl2SFc5?=
+ =?utf-8?B?bnNseGpsNXh6WUJESGQvN1ZaUnV0SHpuVXIyT3BnSHo2djZJRTBMMmdKSlUr?=
+ =?utf-8?B?RGJ3Y1F4NjVSL3h3eTJKOUphY1o5Q3hFdHllNWdzeWNvcEZndUdTaWxUOUhV?=
+ =?utf-8?B?bk9oanRDK2JtTXl5dStscU9iSkltTnA2VEtXUGxMYXV3b3E3dzBZdFFGb0M1?=
+ =?utf-8?B?NmxDd3NYOGhoOTMyVWxIUVF0c2ltNXlVMENKZWFRZjhqZ0Qvd0ZGTzh2K2Ny?=
+ =?utf-8?B?NnVzZzkyL1dnb05nOW9mZjFlOTNSejVlK0VKWit3MWtGZ2pvZTF1alpBNTZE?=
+ =?utf-8?B?VHRVbnBKb0VwaTJGNUc0Wk9aOGowN0REOTh0WllBa2NHZkhNa01Ea2h4TjB5?=
+ =?utf-8?B?VThUVUYzN1p6K25PWk96QWRQUE9lclQ2YjFSdHltNjJFMStiRHlad3NSYWIw?=
+ =?utf-8?B?OUVhUHUxa1VMQVB0Y0VDTWdPY25CQ3VYQmEvYm9NZDFtMGJFUk85NEhzdXc2?=
+ =?utf-8?B?TnhYcjZXVGpEcU5MRjdOUHlFTVQrcFBnTERvc0ZidHdVUWoveGs4TG5FRDU5?=
+ =?utf-8?B?VnJrL3ZVOVZzTzFSdW9jRFdTU2QxeEV1eVI3Z1U2MTRESmRmTUltTnBPM0RT?=
+ =?utf-8?B?R3U0TjBkWkliU3hvanJFVXh0L25OL0VSRFNQWnVHVmRlSkxKZEt0K0RpdUdN?=
+ =?utf-8?B?eHhHaG94TUlSajZBTDhIWnFPZk5tMG13SE14aFNpWHl1RlVHSlVDSThTQXc2?=
+ =?utf-8?B?ZWhncVJ4WXpFWUlGT0FKRWZMem4xcjNNbnMwUXhPY01VbGlFKzZaWndXdG9r?=
+ =?utf-8?B?d242dHRwd1lwOFJUVm11TEt5Q0ZPM2hkN0dDVVlqRDlVcnBNZ3ZFOERNZDBQ?=
+ =?utf-8?B?ME1RRERRcnFjU3NKTFE4NDRCUkN6S0JmQ2R0TS9KQlpSM3VOQjhLTEJQMEo5?=
+ =?utf-8?B?NXpWR1RaU2V4dU5uTE9ackcvcnNJQklXZmhjYnZjd2dNU1dNWENJdEZBWlJ4?=
+ =?utf-8?B?OTM3Nk9pSnNiZ0NMS1ZOSVZTVzNSaUxDck1PNzFFZkxTekZiakN6THdaOWY5?=
+ =?utf-8?B?Z0ZpTGhQUkFxTDlVcUVFdEhrUGhNQ0x6N2J4WkFabEN0cE8veXNTTGVzTHJz?=
+ =?utf-8?B?ZEoxcVU3L3dHNTFtSGJON3BUOUxXQVFPb1ljWkRHSFErN1BpL3RlcXppZW9t?=
+ =?utf-8?B?c1dhUmY4cC9DUjZIcElCT0t4WDFkaGFCSVZWdlRwSUVJb05laXZZL1B3ZVRn?=
+ =?utf-8?B?TzRlZ0xjemJyUWxCcnZBZ3ZNY1BvS1dIRUt0NHVaUkhmMHliclVaU09SSGhm?=
+ =?utf-8?B?c0N5Rm5uZ3NadkdIR2hFZEVNWmNteEE5U0o0MExtME1XOGdhTHpubDhOWk1K?=
+ =?utf-8?B?V3BaNUVsZ0xtSXlJdUpqWGRha1h5cGl6S21HdTgrcE9rWFJLUW9KMEh5cU8x?=
+ =?utf-8?B?cEpuQTF6RHFpdjlaUmFyVHpJcXo3cHYzQW15dDhWV0xLYk5KM3BQMnllSzNY?=
+ =?utf-8?B?ckF2NUhVdDZOQzVMaTNYTjdodHFZcnlJend0K1R1RldDUDBzc2ZoQ3p6QUxF?=
+ =?utf-8?Q?/+08=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <1B5D3AAF81B02248946E2A48195B66B5@apcprd06.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZL/Fa4W2Ne9EVxoh@casper.infradead.org>
+X-OriginatorOrg: vivo.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SG2PR06MB3743.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 76974228-a0d5-4c01-f27f-08db8dd20e35
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Jul 2023 12:15:52.4058
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: dwYPpGE9Icl9c4fVGoZ7c6sJiN/lxkEddOzhE39+W4qEV4xv/C/AWxYOBACRuU2jNSmSk4Zkk2/MCgGd3/3TiA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEZPR06MB6331
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,63 +136,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Fuad Tabba <tabba@google.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Marc Zyngier <maz@kernel.org>, Paul Moore <paul@paul-moore.com>, Anup Patel <anup@brainfault.org>, Huacai Chen <chenhuacai@kernel.org>, James Morris <jmorris@namei.org>, Wang <wei.w.wang@intel.com>, Vlastimil Babka <vbabka@suse.cz>, Jarkko Sakkinen <jarkko@kernel.org>, "Serge E. Hallyn" <serge@hallyn.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Quentin Perret <qperret@google.com>, Sean Christopherson <seanjc@google.com>, Liam Merwick <liam.merwick@oracle.com>, linux-mips
- @vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, linux-security-module@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org
+Cc: "opensource.kernel" <opensource.kernel@vivo.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 25, 2023 at 01:51:55PM +0100, Matthew Wilcox wrote:
-> On Tue, Jul 25, 2023 at 01:24:03PM +0300, Kirill A . Shutemov wrote:
-> > On Tue, Jul 18, 2023 at 04:44:53PM -0700, Sean Christopherson wrote:
-> > > diff --git a/mm/compaction.c b/mm/compaction.c
-> > > index dbc9f86b1934..a3d2b132df52 100644
-> > > --- a/mm/compaction.c
-> > > +++ b/mm/compaction.c
-> > > @@ -1047,6 +1047,10 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
-> > >  		if (!mapping && (folio_ref_count(folio) - 1) > folio_mapcount(folio))
-> > >  			goto isolate_fail_put;
-> > >  
-> > > +		/* The mapping truly isn't movable. */
-> > > +		if (mapping && mapping_unmovable(mapping))
-> > > +			goto isolate_fail_put;
-> > > +
-> > 
-> > I doubt that it is safe to dereference mapping here. I believe the folio
-> > can be truncated from under us and the mapping freed with the inode.
-> > 
-> > The folio has to be locked to dereference mapping safely (given that the
-> > mapping is still tied to the folio).
-> 
-> There's even a comment to that effect later on in the function:
-> 
->                         /*
->                          * Only pages without mappings or that have a
->                          * ->migrate_folio callback are possible to migrate
->                          * without blocking. However, we can be racing with
->                          * truncation so it's necessary to lock the page
->                          * to stabilise the mapping as truncation holds
->                          * the page lock until after the page is removed
->                          * from the page cache.
->                          */
-> 
-> (that could be reworded to make it clear how dangerous dereferencing
-> ->mapping is without the lock ... and it does need to be changed to say
-> "folio lock" instead of "page lock", so ...)
-> 
-> How does this look?
-> 
->                         /*
->                          * Only folios without mappings or that have
->                          * a ->migrate_folio callback are possible to
->                          * migrate without blocking. However, we can
->                          * be racing with truncation, which can free
->                          * the mapping.  Truncation holds the folio lock
->                          * until after the folio is removed from the page
->                          * cache so holding it ourselves is sufficient.
->                          */
-> 
-
-Looks good to me.
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+5ZyoIDIwMjMvNy8xMiAxMDo1MiwgV2FuZyBNaW5nIOWGmemBkzoNCj4gVGhlIGRlYnVnZnNfY3Jl
+YXRlX2RpcigpIGZ1bmN0aW9uIHJldHVybnMgZXJyb3IgcG9pbnRlcnMuDQo+IEl0IG5ldmVyIHJl
+dHVybnMgTlVMTC4gTW9zdCBpbmNvcnJlY3QgZXJyb3IgY2hlY2tzIHdlcmUgZml4ZWQsDQo+IGJ1
+dCB0aGUgb25lIGluIHNjb21fZGVidWdfaW5pdCgpIHdhcyBmb3Jnb3R0ZW4sIHRoZSBvdGhlciBv
+bmUgaW4NCj4gc2NvbV9kZWJ1Z19pbml0X29uZSgpIHdhcyBhbHNvIGZvcmdvdHRlbi4NCj4NCj4g
+Rml4IHRoZSByZW1haW5pbmcgZXJyb3IgY2hlY2suDQo+DQo+IFNpZ25lZC1vZmYtYnk6IFdhbmcg
+TWluZyA8bWFjaGVsQHZpdm8uY29tPg0KPg0KPiBGaXhlczogYmZkMmYwZDQ5YWVmICgicG93ZXJw
+Yy9wb3dlcm52OiBHZXQgcmlkIG9mIG9sZCBzY29tX2NvbnRyb2xsZXIgYWJzdHJhY3Rpb24iKQ0K
+PiAtLS0NCj4gICBhcmNoL3Bvd2VycGMvcGxhdGZvcm1zL3Bvd2VybnYvb3BhbC14c2NvbS5jIHwg
+NCArKy0tDQo+ICAgMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMo
+LSkNCj4NCj4gZGlmZiAtLWdpdCBhL2FyY2gvcG93ZXJwYy9wbGF0Zm9ybXMvcG93ZXJudi9vcGFs
+LXhzY29tLmMgYi9hcmNoL3Bvd2VycGMvcGxhdGZvcm1zL3Bvd2VybnYvb3BhbC14c2NvbS5jDQo+
+IGluZGV4IDZiNGVlZDJlZjRmYS4uMjYyY2Q2ZmFjOTA3IDEwMDY0NA0KPiAtLS0gYS9hcmNoL3Bv
+d2VycGMvcGxhdGZvcm1zL3Bvd2VybnYvb3BhbC14c2NvbS5jDQo+ICsrKyBiL2FyY2gvcG93ZXJw
+Yy9wbGF0Zm9ybXMvcG93ZXJudi9vcGFsLXhzY29tLmMNCj4gQEAgLTE2OCw3ICsxNjgsNyBAQCBz
+dGF0aWMgaW50IHNjb21fZGVidWdfaW5pdF9vbmUoc3RydWN0IGRlbnRyeSAqcm9vdCwgc3RydWN0
+IGRldmljZV9ub2RlICpkbiwNCj4gICAJZW50LT5wYXRoLnNpemUgPSBzdHJsZW4oKGNoYXIgKill
+bnQtPnBhdGguZGF0YSk7DQo+ICAgDQo+ICAgCWRpciA9IGRlYnVnZnNfY3JlYXRlX2RpcihlbnQt
+Pm5hbWUsIHJvb3QpOw0KPiAtCWlmICghZGlyKSB7DQo+ICsJaWYgKElTX0VSUihkaXIpKSB7DQo+
+ICAgCQlrZnJlZShlbnQtPnBhdGguZGF0YSk7DQo+ICAgCQlrZnJlZShlbnQpOw0KPiAgIAkJcmV0
+dXJuIC0xOw0KPiBAQCAtMTkwLDcgKzE5MCw3IEBAIHN0YXRpYyBpbnQgc2NvbV9kZWJ1Z19pbml0
+KHZvaWQpDQo+ICAgCQlyZXR1cm4gMDsNCj4gICANCj4gICAJcm9vdCA9IGRlYnVnZnNfY3JlYXRl
+X2Rpcigic2NvbSIsIGFyY2hfZGVidWdmc19kaXIpOw0KPiAtCWlmICghcm9vdCkNCj4gKwlpZiAo
+SVNfRVJSKHJvb3QpKQ0KPiAgIAkJcmV0dXJuIC0xOw0KPiAgIA0KPiAgIAlyYyA9IDA7DQoNCmhp
+DQoNClRoaXMgcGF0Y2ggaGFzIG5vdCByZWNlaXZlZCBhbnkgcmVwbHkgc28gZmFyLCBwbGVhc2Ug
+Y2hlY2sgaXQNCg0KcGluZzogaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvYWxsLzIwMjMwNzEyMDI1
+MjUwLjY1MTItMS1tYWNoZWxAdml2by5jb20vDQoNCg==
