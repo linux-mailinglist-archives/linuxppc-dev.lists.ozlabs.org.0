@@ -1,95 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36157762ACE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jul 2023 07:30:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17868762B2C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jul 2023 08:13:18 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZFSnJbIB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NiRmdLw+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R9jDG2LKKz3cM5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jul 2023 15:30:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R9k9805vcz2ytH
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jul 2023 16:13:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZFSnJbIB;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NiRmdLw+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=134.134.136.100; helo=mga07.intel.com; envelope-from=baolu.lu@linux.intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 65 seconds by postgrey-1.37 at boromir; Wed, 26 Jul 2023 16:12:28 AEST
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R9jCK6nC4z2yh0
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jul 2023 15:30:05 +1000 (AEST)
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36Q5NFIS021884;
-	Wed, 26 Jul 2023 05:29:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=Ftq0KhxaGBwO5g0s72Z/qk0VchyD9N3H7MwXRRnN6b0=;
- b=ZFSnJbIBDNnyLrTnSXMsU5XGNbPDwREXF/FnVRgM21FwSs/owEeagVJzk5ilT2JN/p/o
- BDRdPkJCHGY/tAMN/M3O1273njSgBxEnbCw15IfGsnBzK8I/DcHqgTakIw5W9np0HFTI
- 8ZH09xwrGhVo4XWKTst3TlPmr4AAgB6n3OM1XWIN3PUFijhpqEtWkZ5F4MaGId53Hb6U
- B1Z3kM5IbrA/HVHH1qfnBjB/2sNlrGx7/3vAA3nJHJdhsWeP25DOfo30/iHIOFhM6Ku9
- CUDJBHxbHHtVTsR0y1h0TRgyRqhfB0sU1dwyq1h/e/Q6ZIFlLCysaZZ/dM9W7D3uO9cG hg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s2w9sg3tb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 26 Jul 2023 05:29:39 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36Q5PYag027699;
-	Wed, 26 Jul 2023 05:29:39 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s2w9sg3t0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 26 Jul 2023 05:29:39 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36Q4ekAI026189;
-	Wed, 26 Jul 2023 05:29:38 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3s0ses2mwb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 26 Jul 2023 05:29:38 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36Q5TaWc19792598
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 26 Jul 2023 05:29:36 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5841120043;
-	Wed, 26 Jul 2023 05:29:36 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 445A220040;
-	Wed, 26 Jul 2023 05:29:33 +0000 (GMT)
-Received: from [9.43.89.11] (unknown [9.43.89.11])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 26 Jul 2023 05:29:32 +0000 (GMT)
-Message-ID: <47feb4fe-f461-a2c2-1368-5480d00d0f1d@linux.ibm.com>
-Date: Wed, 26 Jul 2023 10:59:32 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R9k8D06wRz2yVV
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jul 2023 16:12:27 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1690351948; x=1721887948;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=WDQtGHcWzopAoO6Fwuln0OAiUSdM4jJjH8FxFV/d+w0=;
+  b=NiRmdLw+VVye+dAvTQGVQEaMAChlEXb7tgh1qxo9IbBvnDZL28ZXdNrP
+   7jcklxRVQSCUXcGHkxTm5uXukwr/nRw8ELZrI1W6p2UXnKS0suJIQjJSu
+   GngdqKaG8fFFAS/7zkJ5m+/vqeuCDwX0PZpml5qn7dpc96NpVyZZZ8Wza
+   7DsoLLHCWZ0NRKr+r3YjOhVSoSHlmVk0BEbGR3fF+ebHoBrkupr1eylvi
+   4lzSLp7GD4uXmErJGE7mh+fu4m7VFqwRL2C5ZtJPPcZYhcoKFPc38Kj+f
+   r1EW34ysrWXQwSOq6AmlyeoilXqdKHH4rw60hHpXJNhi4bQNPq0sdQac6
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10782"; a="434186772"
+X-IronPort-AV: E=Sophos;i="6.01,231,1684825200"; 
+   d="scan'208";a="434186772"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2023 23:11:16 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10782"; a="816538258"
+X-IronPort-AV: E=Sophos;i="6.01,231,1684825200"; 
+   d="scan'208";a="816538258"
+Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.254.208.129]) ([10.254.208.129])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2023 23:11:06 -0700
+Message-ID: <aa41d168-09b7-22c0-191d-28ecec023152@linux.intel.com>
+Date: Wed, 26 Jul 2023 14:11:04 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v6 00/13] Add support for DAX vmemmap optimization for
- ppc64
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v5 01/25] iommu: Add iommu_ops->identity_domain
 Content-Language: en-US
-To: Andrew Morton <akpm@linux-foundation.org>
-References: <20230724190759.483013-1-aneesh.kumar@linux.ibm.com>
- <20230725122959.e9b79e7528cd3084802fa6d0@linux-foundation.org>
-From: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>
-In-Reply-To: <20230725122959.e9b79e7528cd3084802fa6d0@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
+To: Jason Gunthorpe <jgg@nvidia.com>, Andy Gross <agross@kernel.org>,
+ Alim Akhtar <alim.akhtar@samsung.com>, Bjorn Andersson
+ <andersson@kernel.org>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Stuebner <heiko@sntech.de>, iommu@lists.linux.dev,
+ Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Joerg Roedel <joro@8bytes.org>,
+ Kevin Tian <kevin.tian@intel.com>, Konrad Dybcio <konrad.dybcio@linaro.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, linux-rockchip@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+ linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
+ Russell King <linux@armlinux.org.uk>, linuxppc-dev@lists.ozlabs.org,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Orson Zhai <orsonzhai@gmail.com>, Rob Clark <robdclark@gmail.com>,
+ Robin Murphy <robin.murphy@arm.com>, Samuel Holland <samuel@sholland.org>,
+ Thierry Reding <thierry.reding@gmail.com>, Krishna Reddy
+ <vdumpa@nvidia.com>, Chen-Yu Tsai <wens@csie.org>,
+ Will Deacon <will@kernel.org>, Yong Wu <yong.wu@mediatek.com>,
+ Chunyan Zhang <zhang.lyra@gmail.com>
+References: <1-v5-d0a204c678c7+3d16a-iommu_all_defdom_jgg@nvidia.com>
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <1-v5-d0a204c678c7+3d16a-iommu_all_defdom_jgg@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: mh1BfZWWov14B13RHnprQ-dgVT7UJcGr
-X-Proofpoint-ORIG-GUID: jWIvwFR1TKpmylsgApLpJBaMM3Dk2rio
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-25_14,2023-07-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 bulkscore=0
- phishscore=0 spamscore=0 clxscore=1015 priorityscore=1501 impostorscore=0
- mlxlogscore=999 malwarescore=0 mlxscore=0 adultscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
- definitions=main-2307260043
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,24 +95,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Will Deacon <will@kernel.org>, Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org, npiggin@gmail.com, Catalin Marinas <catalin.marinas@arm.com>, Dan Williams <dan.j.williams@intel.com>, Mike Kravetz <mike.kravetz@oracle.com>, linuxppc-dev@lists.ozlabs.org, Joao Martins <joao.m.martins@oracle.com>, Oscar Salvador <osalvador@suse.de>
+Cc: Thierry Reding <treding@nvidia.com>, Niklas Schnelle <schnelle@linux.ibm.com>, Steven Price <steven.price@arm.com>, Nicolin Chen <nicolinc@nvidia.com>, Dmitry Osipenko <digetx@gmail.com>, baolu.lu@linux.intel.com, Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/26/23 12:59 AM, Andrew Morton wrote:
-> On Tue, 25 Jul 2023 00:37:46 +0530 "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> wrote:
+On 2023/7/25 1:21, Jason Gunthorpe wrote:
+> This allows a driver to set a global static to an IDENTITY domain and
+> the core code will automatically use it whenever an IDENTITY domain
+> is requested.
 > 
->> This patch series implements changes required to support DAX vmemmap
->> optimization for ppc64.
+> By making it always available it means the IDENTITY can be used in error
+> handling paths to force the iommu driver into a known state. Devices
+> implementing global static identity domains should avoid failing their
+> attach_dev ops.
 > 
-> Do we have any measurements to help us understand the magnitude
-> of this optimization?
+> Convert rockchip to use the new mechanism.
 > 
-> And any documentation which helps users understand whether and
-> why they should enable this feature?
+> Tested-by: Steven Price<steven.price@arm.com>
+> Tested-by: Marek Szyprowski<m.szyprowski@samsung.com>
+> Tested-by: Nicolin Chen<nicolinc@nvidia.com>
+> Signed-off-by: Jason Gunthorpe<jgg@nvidia.com>
+> ---
+>   drivers/iommu/iommu.c          | 3 +++
+>   drivers/iommu/rockchip-iommu.c | 9 +--------
+>   include/linux/iommu.h          | 3 +++
+>   3 files changed, 7 insertions(+), 8 deletions(-)
 
-That is memory space optimization due to kernel reusing the tail page struct pages. The details
-of the optimization is documented in patch 11. We document there the impact with both 4k and
-64K page size.
+I will later convert the VT-d driver to use iommu_ops->identity_domain.
 
--aneesh
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
