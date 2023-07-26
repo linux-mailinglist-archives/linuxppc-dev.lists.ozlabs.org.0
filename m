@@ -1,57 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17868762B2C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jul 2023 08:13:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F173762B61
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jul 2023 08:26:44 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NiRmdLw+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WlPT7AGo;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4R9k9805vcz2ytH
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jul 2023 16:13:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4R9kSf0s4cz3c1W
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jul 2023 16:26:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NiRmdLw+;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WlPT7AGo;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=134.134.136.100; helo=mga07.intel.com; envelope-from=baolu.lu@linux.intel.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 65 seconds by postgrey-1.37 at boromir; Wed, 26 Jul 2023 16:12:28 AEST
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.93; helo=mga11.intel.com; envelope-from=baolu.lu@linux.intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 65 seconds by postgrey-1.37 at boromir; Wed, 26 Jul 2023 16:25:56 AEST
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4R9k8D06wRz2yVV
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jul 2023 16:12:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4R9kRm59y5z2ykT
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jul 2023 16:25:56 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690351948; x=1721887948;
+  t=1690352757; x=1721888757;
   h=message-id:date:mime-version:cc:subject:to:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=WDQtGHcWzopAoO6Fwuln0OAiUSdM4jJjH8FxFV/d+w0=;
-  b=NiRmdLw+VVye+dAvTQGVQEaMAChlEXb7tgh1qxo9IbBvnDZL28ZXdNrP
-   7jcklxRVQSCUXcGHkxTm5uXukwr/nRw8ELZrI1W6p2UXnKS0suJIQjJSu
-   GngdqKaG8fFFAS/7zkJ5m+/vqeuCDwX0PZpml5qn7dpc96NpVyZZZ8Wza
-   7DsoLLHCWZ0NRKr+r3YjOhVSoSHlmVk0BEbGR3fF+ebHoBrkupr1eylvi
-   4lzSLp7GD4uXmErJGE7mh+fu4m7VFqwRL2C5ZtJPPcZYhcoKFPc38Kj+f
-   r1EW34ysrWXQwSOq6AmlyeoilXqdKHH4rw60hHpXJNhi4bQNPq0sdQac6
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10782"; a="434186772"
+  bh=DlKsXPAKvUQNyaHWuLEMn+YeZGej9B0RE5XdM6qJwbQ=;
+  b=WlPT7AGoTv8mjZ13bedNPtqxqA6YV01FVBPt5ZZOeWGcdbykex7drsq2
+   kR7PuxXIHE0oz0GTghHoF1tYcvV64ypU3vC7lo6attFO/Qx0y3kHJcCFR
+   0/FPunU2ZuMOwEe7fha8x0A+uT0H7MxtZHfnZZ6OdTTh5b/nDew1vidP9
+   c1Gzq0r0wovBLNJNry43PGDg1hiNbf/e9p8ZGWN/bbj6VR02VIHlYsjEO
+   Svc3lzb4Go1g1Vy4CyYW2cviKb8gdRM3OApuYlPBn7k3EcGWtN5ImEbi6
+   dK/Vo4BtyL/iozB1MT2gCwsPB71V74kdtrlZsLp0mPk1dxK0/bkmkQcCs
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10782"; a="365384346"
 X-IronPort-AV: E=Sophos;i="6.01,231,1684825200"; 
-   d="scan'208";a="434186772"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2023 23:11:16 -0700
+   d="scan'208";a="365384346"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2023 23:24:30 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10782"; a="816538258"
+X-IronPort-AV: E=McAfee;i="6600,9927,10782"; a="1057075644"
 X-IronPort-AV: E=Sophos;i="6.01,231,1684825200"; 
-   d="scan'208";a="816538258"
+   d="scan'208";a="1057075644"
 Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.254.208.129]) ([10.254.208.129])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2023 23:11:06 -0700
-Message-ID: <aa41d168-09b7-22c0-191d-28ecec023152@linux.intel.com>
-Date: Wed, 26 Jul 2023 14:11:04 +0800
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2023 23:24:20 -0700
+Message-ID: <7186790f-abed-61ba-2d19-6ab66640f30a@linux.intel.com>
+Date: Wed, 26 Jul 2023 14:24:18 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v5 01/25] iommu: Add iommu_ops->identity_domain
+Subject: Re: [PATCH v5 02/25] iommu: Add IOMMU_DOMAIN_PLATFORM
 Content-Language: en-US
 To: Jason Gunthorpe <jgg@nvidia.com>, Andy Gross <agross@kernel.org>,
  Alim Akhtar <alim.akhtar@samsung.com>, Bjorn Andersson
@@ -79,9 +79,9 @@ To: Jason Gunthorpe <jgg@nvidia.com>, Andy Gross <agross@kernel.org>,
  <vdumpa@nvidia.com>, Chen-Yu Tsai <wens@csie.org>,
  Will Deacon <will@kernel.org>, Yong Wu <yong.wu@mediatek.com>,
  Chunyan Zhang <zhang.lyra@gmail.com>
-References: <1-v5-d0a204c678c7+3d16a-iommu_all_defdom_jgg@nvidia.com>
+References: <2-v5-d0a204c678c7+3d16a-iommu_all_defdom_jgg@nvidia.com>
 From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <1-v5-d0a204c678c7+3d16a-iommu_all_defdom_jgg@nvidia.com>
+In-Reply-To: <2-v5-d0a204c678c7+3d16a-iommu_all_defdom_jgg@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -100,27 +100,17 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 2023/7/25 1:21, Jason Gunthorpe wrote:
-> This allows a driver to set a global static to an IDENTITY domain and
-> the core code will automatically use it whenever an IDENTITY domain
-> is requested.
+> This is used when the iommu driver is taking control of the dma_ops,
+> currently only on S390 and power spapr. It is designed to preserve the
+> original ops->detach_dev() semantic that these S390 was built around.
 > 
-> By making it always available it means the IDENTITY can be used in error
-> handling paths to force the iommu driver into a known state. Devices
-> implementing global static identity domains should avoid failing their
-> attach_dev ops.
+> Provide an opaque domain type and a 'default_domain' ops value that allows
+> the driver to trivially force any single domain as the default domain.
 > 
-> Convert rockchip to use the new mechanism.
-> 
-> Tested-by: Steven Price<steven.price@arm.com>
-> Tested-by: Marek Szyprowski<m.szyprowski@samsung.com>
-> Tested-by: Nicolin Chen<nicolinc@nvidia.com>
 > Signed-off-by: Jason Gunthorpe<jgg@nvidia.com>
 > ---
->   drivers/iommu/iommu.c          | 3 +++
->   drivers/iommu/rockchip-iommu.c | 9 +--------
->   include/linux/iommu.h          | 3 +++
->   3 files changed, 7 insertions(+), 8 deletions(-)
-
-I will later convert the VT-d driver to use iommu_ops->identity_domain.
+>   drivers/iommu/iommu.c | 14 +++++++++++++-
+>   include/linux/iommu.h |  6 ++++++
+>   2 files changed, 19 insertions(+), 1 deletion(-)
 
 Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
