@@ -1,58 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 219EA764F7E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 11:23:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15D34764F95
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 11:24:41 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YRHlRDEe;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=IqS4TyJA;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RBQKk07dWz3cQM
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 19:23:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RBQMV6vSXz3cGl
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 19:24:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YRHlRDEe;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=IqS4TyJA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=lee@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=mhocko@suse.com; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RBQJs0JnVz3c6H
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jul 2023 19:22:20 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RBQLd3hTlz3c3C
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jul 2023 19:23:52 +1000 (AEST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id AD68E61DE1;
-	Thu, 27 Jul 2023 09:22:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5763DC433C7;
-	Thu, 27 Jul 2023 09:22:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1690449738;
-	bh=brE446l0NnbsBdNTMz1eRg2anjy9QOxiUBOilEyPeeg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YRHlRDEeh2LbCOuSCaecwWzcjh/d/VRacQTDWyJZtGVeSclDSuaWppMwW2Jwuabcz
-	 j5H7GBDTiQkLArSUNoX7MVpsKX2Jx4U81JMF9wSXoAGyrU/kkr9qOadAHd7qFHtqXe
-	 lEuJpA10KIyKZn+bcTrj2P56hBcPXOsombqB+jeAX8sEO+SUUW1IBVCbkYO/j8vZmJ
-	 MKJ3XXz6A0l3S/S3CuGJyywmVXvgaHYFDFetAI+ylH2b/wCW/iE/B/E4CklyuK25pG
-	 U3/MVc260hsoEO5Fn78tyPIrcubBH49N5rNivS/jrIZsL6vBuu7n2qVTMKCFErFDvn
-	 8kVC0m+MhinKQ==
-Date: Thu, 27 Jul 2023 10:22:09 +0100
-From: Lee Jones <lee@kernel.org>
-To: Herve Codina <herve.codina@bootlin.com>
-Subject: Re: [PATCH v2 22/28] mfd: core: Ensure disabled devices are skiped
- without aborting
-Message-ID: <20230727092209.GA8175@google.com>
-References: <20230726150225.483464-1-herve.codina@bootlin.com>
- <20230726150225.483464-23-herve.codina@bootlin.com>
+	by smtp-out2.suse.de (Postfix) with ESMTPS id C93991F747;
+	Thu, 27 Jul 2023 09:23:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1690449828; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t3a2K2H5eWN5+vuGQTox2mxK0yUNiYLQL2611PJPb2c=;
+	b=IqS4TyJA8FZGO3n04s/JboWGbbBZ93RMXtbGr2dy2wzyay9clXBqg50VKhhWNTNNQ2ocPu
+	5MErvY/+Wk4Rm1dItFNlhkCeLU8yTXt7715OwF+c3PAl64rnydzV2PVhPHvoIHv6a2kcOQ
+	ZYiqpjBW45GLCQtXN/rr15gRN/gJAQE=
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A6B2C138E5;
+	Thu, 27 Jul 2023 09:23:48 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id DfeeJaQ3wmSIagAAMHmgww
+	(envelope-from <mhocko@suse.com>); Thu, 27 Jul 2023 09:23:48 +0000
+Date: Thu, 27 Jul 2023 11:23:47 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH v6 4/7] mm/memory_hotplug: Support memmap_on_memory when
+ memmap is not aligned to pageblocks
+Message-ID: <ZMI3o8k/+QKbhRol@dhcp22.suse.cz>
+References: <20230727080232.667439-1-aneesh.kumar@linux.ibm.com>
+ <20230727080232.667439-5-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230726150225.483464-23-herve.codina@bootlin.com>
+In-Reply-To: <20230727080232.667439-5-aneesh.kumar@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,86 +69,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, alsa-devel@alsa-project.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Linus Walleij <linus.walleij@linaro.org>, Liam Girdwood <lgirdwood@gmail.com>, Eric Dumazet <edumazet@google.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Fabio Estevam <festevam@gmail.com>, Qiang Zhao <qiang.zhao@nxp.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, Nicolin Chen <nicoleotsuka@gmail.com>, linux-gpio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Jaroslav Kysela <perex@perex.cz>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>, Takashi Iwai <tiwai@suse.com>, Li Yang <leoyang.li@nxp.com>, Mark Brown <broonie@kernel.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: David Hildenbrand <david@redhat.com>, linux-mm@kvack.org, npiggin@gmail.com, Vishal Verma <vishal.l.verma@intel.com>, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 26 Jul 2023, Herve Codina wrote:
-
-> The loop searching for a matching device based on its compatible
-> string is aborted when a matching disabled device is found.
-> This abort avoid to add devices as soon as one disabled device
-> is found.
-> 
-> Continue searching for an other device instead of aborting on the
-> first disabled one fixes the issue.
-> 
-> Fixes: 22380b65dc70 ("mfd: mfd-core: Ensure disabled devices are ignored without error")
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> ---
->  drivers/mfd/mfd-core.c | 18 +++++++++++++-----
->  1 file changed, 13 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/mfd/mfd-core.c b/drivers/mfd/mfd-core.c
-> index 0ed7c0d7784e..bcc26e64639a 100644
-> --- a/drivers/mfd/mfd-core.c
-> +++ b/drivers/mfd/mfd-core.c
-> @@ -146,6 +146,7 @@ static int mfd_add_device(struct device *parent, int id,
->  	struct platform_device *pdev;
->  	struct device_node *np = NULL;
->  	struct mfd_of_node_entry *of_entry, *tmp;
-> +	bool disabled;
->  	int ret = -ENOMEM;
->  	int platform_id;
->  	int r;
-> @@ -181,13 +182,13 @@ static int mfd_add_device(struct device *parent, int id,
->  		goto fail_res;
->  
->  	if (IS_ENABLED(CONFIG_OF) && parent->of_node && cell->of_compatible) {
-> +		disabled = false;
-
-This does not appear to reside in a loop.
-
-Why not set it to false on declaration?
-
->  		for_each_child_of_node(parent->of_node, np) {
->  			if (of_device_is_compatible(np, cell->of_compatible)) {
-> -				/* Ignore 'disabled' devices error free */
-> +				/* Skip 'disabled' devices */
->  				if (!of_device_is_available(np)) {
-> -					of_node_put(np);
-
-Doesn't this result in a resource leak?
-
-> -					ret = 0;
-> -					goto fail_alias;
-> +					disabled = true;
-> +					continue;
->  				}
->  
->  				ret = mfd_match_of_node_to_dev(pdev, np, cell);
-> @@ -197,10 +198,17 @@ static int mfd_add_device(struct device *parent, int id,
->  				if (ret)
->  					goto fail_alias;
->  
-> -				break;
-> +				goto match;
->  			}
->  		}
->  
-> +		if (disabled) {
-> +			/* Ignore 'disabled' devices error free */
-> +			ret = 0;
-> +			goto fail_alias;
-> +		}
+On Thu 27-07-23 13:32:29, Aneesh Kumar K.V wrote:
+[...]
+> +	if (mode == MEMMAP_ON_MEMORY_FORCE) {
+> +		unsigned long memmap_pages = memory_block_memmap_on_memory_pages();
 > +
-> +match:
->  		if (!pdev->dev.of_node)
->  			pr_warn("%s: Failed to locate of_node [id: %d]\n",
->  				cell->name, platform_id);
-> -- 
-> 2.41.0
-> 
+> +		pr_info_once("Memory hotplug will reserve %ld pages in each memory block\n",
+> +			     memmap_pages - PFN_UP(memory_block_memmap_size()));
+> +	}
+> +	return 0;
+> +}
+
+Why should we print this only for the forced case? Isn't that
+interesting for any on memory memmap? Also is this the above sufficient
+on its own? the size depends on the block size and that can vary.
+I think it would make more sense to print the block size and the vmemmap
+reservation and for the force case also any wasted amount on top (if
+any).
 
 -- 
-Lee Jones [李琼斯]
+Michal Hocko
+SUSE Labs
