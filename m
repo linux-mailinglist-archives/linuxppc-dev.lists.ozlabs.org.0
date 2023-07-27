@@ -1,65 +1,101 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D69357651BB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 12:57:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A2EC76521B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 13:18:42 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=Bs32wHo/;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FKKJ1yCs;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FKKJ1yCs;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RBSQV5ZSMz3cQC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 20:57:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RBSv42PBdz3cNN
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 21:18:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=Bs32wHo/;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FKKJ1yCs;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FKKJ1yCs;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2001:67c:2178:6::1c; helo=smtp-out1.suse.de; envelope-from=mhocko@suse.com; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RBSPf34zWz2yGm
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jul 2023 20:56:38 +1000 (AEST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 8C2D321B11;
-	Thu, 27 Jul 2023 10:56:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1690455390; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RBSt94hgHz3cJ4
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jul 2023 21:17:52 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1690456668;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HBj4cGQdUfaO0gEFLKE5gfaRoYQmAgMBhZy7l0DncPw=;
-	b=Bs32wHo/vJlyXi4LNL7J8WxTQWyfU9jX5EAVkVlNnFij9rOAylREYV3bULFB6YVWfF5yVH
-	Uu2J7XE6oZiB/7wjH7+M+qxPkxQbAx/tblKa8i+mPSuENGPIWtPIGQtJ2doe/lljq9NaMG
-	PEaQUc3gDaAG1PX+yRT+YrFS67zjssY=
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 6AF7B13902;
-	Thu, 27 Jul 2023 10:56:30 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id Oj2MFl5NwmQwGgAAMHmgww
-	(envelope-from <mhocko@suse.com>); Thu, 27 Jul 2023 10:56:30 +0000
-Date: Thu, 27 Jul 2023 12:56:29 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>
+	bh=joTIkPI209sObt2TiAmgvJZNWubEOBjzxcWIZzxaGo0=;
+	b=FKKJ1yCsjRYG9xSibyF8oP6qp7qmyimAqr3y7ePURoAZgMp+43aXhjFsWEB7U7DeJdBZBN
+	sZjx1898N3sEA2GuAYTQT8WI0nVB8YWvMFOx1rLS8jc2QRbB7uCzauyqUp9EG0RVCiRQaf
+	fxK0xaQL5yB7fh6pE7n2KPzDBN8iTGg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1690456668;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=joTIkPI209sObt2TiAmgvJZNWubEOBjzxcWIZzxaGo0=;
+	b=FKKJ1yCsjRYG9xSibyF8oP6qp7qmyimAqr3y7ePURoAZgMp+43aXhjFsWEB7U7DeJdBZBN
+	sZjx1898N3sEA2GuAYTQT8WI0nVB8YWvMFOx1rLS8jc2QRbB7uCzauyqUp9EG0RVCiRQaf
+	fxK0xaQL5yB7fh6pE7n2KPzDBN8iTGg=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-549-Whe6IfZdPvKjDWHhbSOx1A-1; Thu, 27 Jul 2023 07:17:46 -0400
+X-MC-Unique: Whe6IfZdPvKjDWHhbSOx1A-1
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-3fbffd088a9so4875495e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jul 2023 04:17:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690456666; x=1691061466;
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=joTIkPI209sObt2TiAmgvJZNWubEOBjzxcWIZzxaGo0=;
+        b=Ag2BGzTUFW01CBKkEc9sNpLx44mv7IODmnaolPcIpLGhKwMFSsS7bnRrYTydHpQWrP
+         7TO9L3612nRPN3xahdu+lh4Wpo4zcCWH4hEcFpR0JqHgyPE9wz+shB/6UxklXlAWb4qG
+         UJNu2jZxinEDRDx47npd7EFKK4b9ptCBNrsyBD8VcSmDF2wllIwWSCitfkSh8qnrj0y0
+         3Be/opb7DAtq+rtc/D7DvUoNg7tOoEHZzoZHRdVzvzC3vewRBdQo+zv+8DvXuH0l3nkN
+         68zXQMG1j46DAzx/iMybxHKpXWDGV1GfCiHDnfE9Iu5Ps1O/wiCkxyHnuFJJB56Ia+Gu
+         6Peg==
+X-Gm-Message-State: ABy/qLaE+P+gRF892k68zJEQJ28Dqlso39E3uM8bdJAH6v+my46O5jdb
+	NrOSMzBxrqndNwVRxGY/xDEfGIKizCffX8xkAncv0Iu5rdNsX6NxqtJvwVOX1F5DI704c3neY6H
+	XexMZ/NenGfiR9poqymrFqhzznQ==
+X-Received: by 2002:a7b:cd15:0:b0:3fb:e1d5:7f48 with SMTP id f21-20020a7bcd15000000b003fbe1d57f48mr1402318wmj.5.1690456665785;
+        Thu, 27 Jul 2023 04:17:45 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEY5DqEGXXJW18qdo/6Ci5D9mGeSpbBJjJ6RB4X9iml5q95jsP91Fq+Tv53BM9RaPEt2tTOmQ==
+X-Received: by 2002:a7b:cd15:0:b0:3fb:e1d5:7f48 with SMTP id f21-20020a7bcd15000000b003fbe1d57f48mr1402304wmj.5.1690456665395;
+        Thu, 27 Jul 2023 04:17:45 -0700 (PDT)
+Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
+        by smtp.gmail.com with ESMTPSA id p1-20020a7bcc81000000b003fa96fe2bebsm1558089wma.41.2023.07.27.04.17.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Jul 2023 04:17:44 -0700 (PDT)
+Message-ID: <4d6a1911-e2e2-a230-eb48-37bf0df9bbb0@redhat.com>
+Date: Thu, 27 Jul 2023 13:17:44 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
 Subject: Re: [PATCH v6 6/7] mm/memory_hotplug: Embed vmem_altmap details in
  memory block
-Message-ID: <ZMJNXfKdKul8tRCO@dhcp22.suse.cz>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-mm@kvack.org,
+ akpm@linux-foundation.org, mpe@ellerman.id.au,
+ linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, christophe.leroy@csgroup.eu
 References: <20230727080232.667439-1-aneesh.kumar@linux.ibm.com>
  <20230727080232.667439-7-aneesh.kumar@linux.ibm.com>
- <ZMI39umu4DZbQ8Iw@dhcp22.suse.cz>
- <b8068200-c692-79fc-3413-8dc05619e228@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b8068200-c692-79fc-3413-8dc05619e228@linux.ibm.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20230727080232.667439-7-aneesh.kumar@linux.ibm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,56 +107,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Hildenbrand <david@redhat.com>, linux-mm@kvack.org, npiggin@gmail.com, Vishal Verma <vishal.l.verma@intel.com>, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, Oscar Salvador <osalvador@suse.de>
+Cc: Vishal Verma <vishal.l.verma@intel.com>, Michal Hocko <mhocko@suse.com>, Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu 27-07-23 15:02:12, Aneesh Kumar K V wrote:
-> On 7/27/23 2:55 PM, Michal Hocko wrote:
-> > On Thu 27-07-23 13:32:31, Aneesh Kumar K.V wrote:
-> >> With memmap on memory, some architecture needs more details w.r.t altmap
-> >> such as base_pfn, end_pfn, etc to unmap vmemmap memory. Instead of
-> >> computing them again when we remove a memory block, embed vmem_altmap
-> >> details in struct memory_block if we are using memmap on memory block
-> >> feature.
-> >>
-> >> No functional change in this patch
-> >>
-> >> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> >> ---
-> >>  drivers/base/memory.c  | 25 +++++++++++-------
-> >>  include/linux/memory.h |  8 ++----
-> >>  mm/memory_hotplug.c    | 58 +++++++++++++++++++++++++++---------------
-> >>  3 files changed, 55 insertions(+), 36 deletions(-)
-> >>
-> >> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-> >> index b456ac213610..57ed61212277 100644
-> >> --- a/drivers/base/memory.c
-> >> +++ b/drivers/base/memory.c
-> >> @@ -106,6 +106,7 @@ static void memory_block_release(struct device *dev)
-> >>  {
-> >>  	struct memory_block *mem = to_memory_block(dev);
-> >>  
-> >> +	WARN_ON(mem->altmap);
-> > 
-> > What is this supposed to catch? A comment would be handy so that we know
-> > what to look at should it ever trigger.
-> > 
-> 
-> I did add a comment where we clear the altmap in try_remove_memory(). I will also add
-> more details here.
-> 
-> +			 * Mark altmap NULL so that we can add a debug
-> +			 * check on memblock free.
->  			 */
-> 
-> WARN_ON is an indication of memory leak because if we have mem->altmap != NULL
-> then the allocated altmap is not freed . It also indicate that memblock got freed
-> without going through the try_remove_memory(). 
 
-I think it would be better to be explicit here (who should free up but
-hasn't).
+> +	/*
+> +	 * Now that we are tracking alloc and free correctly
+> +	 * we can add check to verify altmap free pages.
+> +	 */
+
+Better remove the history lesson from the comment.
+
+"Verify that all vmemmap pages have actually been freed."
+
+> +	if (altmap) {
+> +		WARN(altmap->alloc, "Altmap not fully unmapped");
+> +		kfree(altmap);
+> +	}
+> +
+>   	if (IS_ENABLED(CONFIG_ARCH_KEEP_MEMBLOCK)) {
+>   		memblock_phys_free(start, size);
+>   		memblock_remove(start, size);
+
+Acked-by: David Hildenbrand <david@redhat.com>
 
 -- 
-Michal Hocko
-SUSE Labs
+Cheers,
+
+David / dhildenb
+
