@@ -2,24 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C6C1765FF6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 00:52:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45501765FF7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 00:52:52 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VxumH8hG;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RBmH81s4jz3cVW
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 08:52:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RBmJ21HQCz3cZC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 08:52:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=libc.org (client-ip=216.12.86.13; helo=brightrain.aerifal.cx; envelope-from=dalias@libc.org; receiver=lists.ozlabs.org)
-Received: from brightrain.aerifal.cx (brightrain.aerifal.cx [216.12.86.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VxumH8hG;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RBcml27D0z3cR1
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jul 2023 03:13:41 +1000 (AEST)
-Date: Thu, 27 Jul 2023 13:13:37 -0400
-From: "dalias@libc.org" <dalias@libc.org>
-To: Christian Brauner <brauner@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RBdHB5SS5z2yDY
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jul 2023 03:36:38 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id A150861EF1;
+	Thu, 27 Jul 2023 17:36:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD2AC433C8;
+	Thu, 27 Jul 2023 17:36:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1690479396;
+	bh=iU7zvXpvxPSg5KiGe2n535PFFdPoC8EIhqciU1h+3Zw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VxumH8hGN053L+FyKWAl7yNCuep6zB52SgRtI5W/3VmZXm+mmZ4jBeoyIQx8UEPBz
+	 KB2g3ckpL1rFkA8SxtOo/2sVYVEfDaKNkKBz1lQ8P2ADzxBiSuYz1s4+mgNIaH8PHC
+	 mgTZjyPGv647aIhCLp9wnBJ2zOHZU59iFOFLNAEflHY4ZPUF7p4ROHHXQAz2E75cTe
+	 Vin+UGvlA56e4nxESt9X2PQkCsoXkmtj+oV/UF3bLR5Ny1I9LiKjhW+1r+2WJ/O6Yd
+	 TgUSACO81o4AuGEsdvCy68dJhSXgXujDC+IFg4xwGOBHFACldMWcZVQg7TP9JlZNoG
+	 348a+hccYCeEA==
+Date: Thu, 27 Jul 2023 19:36:21 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: "dalias@libc.org" <dalias@libc.org>
 Subject: Re: [PATCH v4 2/5] fs: Add fchmodat2()
-Message-ID: <20230727171336.GC20050@brightrain.aerifal.cx>
+Message-ID: <20230727-boxte-wohnviertel-74b8541d27ec@brauner>
 References: <cover.1689074739.git.legion@kernel.org>
  <cover.1689092120.git.legion@kernel.org>
  <f2a846ef495943c5d101011eebcf01179d0c7b61.1689092120.git.legion@kernel.org>
@@ -27,11 +52,11 @@ References: <cover.1689074739.git.legion@kernel.org>
  <d052e1266bf042f9b4961bbf42261a55@AcuMS.aculab.com>
  <87ila5jp2y.fsf@igel.home>
  <20230727-zerrt-leitmotiv-9e8b60abf690@brauner>
+ <20230727171336.GC20050@brightrain.aerifal.cx>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230727-zerrt-leitmotiv-9e8b60abf690@brauner>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+In-Reply-To: <20230727171336.GC20050@brightrain.aerifal.cx>
 X-Mailman-Approved-At: Fri, 28 Jul 2023 08:48:48 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -50,47 +75,48 @@ Cc: "kim.phillips@arm.com" <kim.phillips@arm.com>, "linux-ia64@vger.kernel.org" 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 27, 2023 at 07:02:53PM +0200, Christian Brauner wrote:
-> On Thu, Jul 27, 2023 at 06:28:53PM +0200, Andreas Schwab wrote:
-> > On Jul 27 2023, David Laight wrote:
+On Thu, Jul 27, 2023 at 01:13:37PM -0400, dalias@libc.org wrote:
+> On Thu, Jul 27, 2023 at 07:02:53PM +0200, Christian Brauner wrote:
+> > On Thu, Jul 27, 2023 at 06:28:53PM +0200, Andreas Schwab wrote:
+> > > On Jul 27 2023, David Laight wrote:
+> > > 
+> > > > From: Aleksa Sarai
+> > > >> Sent: 25 July 2023 17:36
+> > > > ...
+> > > >> We almost certainly want to support AT_EMPTY_PATH at the same time.
+> > > >> Otherwise userspace will still need to go through /proc when trying to
+> > > >> chmod a file handle they have.
+> > > >
+> > > > That can't be allowed.
+> > > 
+> > > IIUC, fchmodat2(fd, "", m, AT_EMPTY_PATH) is equivalent to fchmod(fd,
+> > > m).  With that, new architectures only need to implement the fchmodat2
+> > > syscall to cover all chmod variants.
 > > 
-> > > From: Aleksa Sarai
-> > >> Sent: 25 July 2023 17:36
-> > > ...
-> > >> We almost certainly want to support AT_EMPTY_PATH at the same time.
-> > >> Otherwise userspace will still need to go through /proc when trying to
-> > >> chmod a file handle they have.
-> > >
-> > > That can't be allowed.
+> > There's a difference though as fchmod() doesn't work with O_PATH file
+> > descriptors while AT_EMPTY_PATH does. Similar to how fchown() doesn't
+> > work with O_PATH file descriptors.
 > > 
-> > IIUC, fchmodat2(fd, "", m, AT_EMPTY_PATH) is equivalent to fchmod(fd,
-> > m).  With that, new architectures only need to implement the fchmodat2
-> > syscall to cover all chmod variants.
+> > However, we do allow AT_EMPTY_PATH with fchownat() so there's no reason
+> > to not allow it for fchmodat2().
+> > 
+> > But it's a bit of a shame that O_PATH looks less and less like O_PATH.
+> > It came from can-do-barely-anything to can-do-quite-a-lot-of-things over
+> > the years.
+> > 
+> > In any case, AT_EMPTY_PATH for fchmodat2() can be an additional patch on
+> > top.
 > 
-> There's a difference though as fchmod() doesn't work with O_PATH file
-> descriptors while AT_EMPTY_PATH does. Similar to how fchown() doesn't
-> work with O_PATH file descriptors.
-> 
-> However, we do allow AT_EMPTY_PATH with fchownat() so there's no reason
-> to not allow it for fchmodat2().
-> 
-> But it's a bit of a shame that O_PATH looks less and less like O_PATH.
-> It came from can-do-barely-anything to can-do-quite-a-lot-of-things over
-> the years.
-> 
-> In any case, AT_EMPTY_PATH for fchmodat2() can be an additional patch on
-> top.
+> From a standpoint of implementing O_SEARCH/O_EXEC using it, I don't
+> see any reason fchown/fchmod should not work on O_PATH file
+> descriptors. And indeed when you have procfs available to emulate them
+> via procfs, it already does. So I don't see this as unwanted
 
-From a standpoint of implementing O_SEARCH/O_EXEC using it, I don't
-see any reason fchown/fchmod should not work on O_PATH file
-descriptors. And indeed when you have procfs available to emulate them
-via procfs, it already does. So I don't see this as unwanted
-functionality or an access control regression. I see it as things
-behaving as expected.
+I'm really not talking about the fact that proc is a giant loophole for
+basically everyhing related to O_PATH and reopening fds.
 
-Semantically, O_PATH is a reference to the inode, not to the dirent.
-So there is no reason you should not be able to do things that need
-permission to the inode (changing permissions on it) rather than to
-the dirent (renaming/moving).
+I'm saying that both fchmod() and fchown() don't work on O_PATH fds.
+They explicitly reject them.
 
-Rich
+AT_EMPTY_PATH and therefore O_PATH for fchmodat2() is fine given that we
+do it for fchownat() already.
