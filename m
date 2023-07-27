@@ -2,68 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC07E7659C2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 19:14:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A8FA765A99
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 19:40:57 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=uR617wLp;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=cyphar.com header.i=@cyphar.com header.a=rsa-sha256 header.s=MBO0001 header.b=LebiUGvn;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RBcp05yQmz3cS0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 03:14:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RBdN71rvrz3cSK
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 03:40:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=uR617wLp;
+	dkim=pass (2048-bit key; secure) header.d=cyphar.com header.i=@cyphar.com header.a=rsa-sha256 header.s=MBO0001 header.b=LebiUGvn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::64a; helo=mail-pl1-x64a.google.com; envelope-from=3paxczaykdcgwierngksskpi.gsqpmrybttg-hizpmwxw.sdpefw.svk@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x64a.google.com (mail-pl1-x64a.google.com [IPv6:2607:f8b0:4864:20::64a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cyphar.com (client-ip=80.241.56.161; helo=mout-p-103.mailbox.org; envelope-from=cyphar@cyphar.com; receiver=lists.ozlabs.org)
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RBcmC5b2sz3c3s
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jul 2023 03:13:13 +1000 (AEST)
-Received: by mail-pl1-x64a.google.com with SMTP id d9443c01a7336-1bbb34b091dso8228825ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jul 2023 10:13:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1690477989; x=1691082789;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=F7oDMpfc0bW6NSyfuHNNNYlN2HFPFEuCSHvjU51+NBs=;
-        b=uR617wLpg6qNB677nCTpj/mRcHCn7jeMQ6T975dwFWafb05LBOA5GXBHggNBovfIzX
-         O/7M392ccdTOGZqesE1qC7szLmXDUVbpTkdUSAnDKesUZGTHf6YrHw7iRdcLemcslWSD
-         KrRYixDmKkhke5BhBNDcGGoexHbctICnVSugeNNjkFTNcd3g+7vTx3m4xPX98nUwGt3/
-         mWhf+uFvINzhg7lFN3O3GR8jmx04AReHHh1Ek1sP09ZwG+oxGwlWe7n39MiREf5a36wi
-         QECqs1dJt2n4+euTMFmAQH0Oiz0RKLy4HgS6MVL8RVa78gxf6JRosPxL/mvaakJouVeF
-         ho3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690477989; x=1691082789;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=F7oDMpfc0bW6NSyfuHNNNYlN2HFPFEuCSHvjU51+NBs=;
-        b=iAq8GxUB1jOHdgFWJvOih3E7CMF7TlK1whiMQqVnb+XZN9omttPmHKhVMZeJKB5L1R
-         FwVaOjSvRbki7XG91G7ry/9OrGRTLrpdx7tUNWEZqZFSnCd6ivFA/M/vhxwyTuL6g8/N
-         vbonYzQqi4+TwFkAYTbOAjDlZ9+16qzjuSm3uKDfMuld5azt/E15wGAWtZV2bpMHN+gL
-         ECjNI747csLuU7Y0vugrxKG1S0G4rKwSBnZfEPsjxuNHVCJocpRHdYqzACtE/YkYqas5
-         uWVQgicXG2NEiAbQX3+S+EydmJy/jy7H9S7UYF8u6J+UlOEXoxI2oKpUi9yBR8A22y8E
-         ntFw==
-X-Gm-Message-State: ABy/qLahSQf97g0zhpZ/+fdha2EPBntvY8iJPO1vbtYaRRbwMDY3L9g4
-	bKSdxLGykdjzpo7V4nqNepERgLuZj9k=
-X-Google-Smtp-Source: APBJJlEiCX9DyxliShqr2xPxTiyej7fUi+PkS+4LO77eNeghg1Fiv4b0fvD5YH2w9mP2/cy4q9w9vNXHRRI=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:903:22c6:b0:1b5:2b14:5f2c with SMTP id
- y6-20020a17090322c600b001b52b145f2cmr24803plg.4.1690477989357; Thu, 27 Jul
- 2023 10:13:09 -0700 (PDT)
-Date: Thu, 27 Jul 2023 10:13:07 -0700
-In-Reply-To: <CA+EHjTzP2fypgkJbRpSPrKaWytW7v8ANEifofMnQCkdvYaX6Eg@mail.gmail.com>
-Mime-Version: 1.0
-References: <20230718234512.1690985-1-seanjc@google.com> <20230718234512.1690985-13-seanjc@google.com>
- <CA+EHjTzP2fypgkJbRpSPrKaWytW7v8ANEifofMnQCkdvYaX6Eg@mail.gmail.com>
-Message-ID: <ZMKlo+Fe8n/eLQ82@google.com>
-Subject: Re: [RFC PATCH v11 12/29] KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for
- guest-specific backing memory
-From: Sean Christopherson <seanjc@google.com>
-To: Fuad Tabba <tabba@google.com>
-Content-Type: text/plain; charset="us-ascii"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RBdMB5lgVz3bVf
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jul 2023 03:40:04 +1000 (AEST)
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4RBdM30DJxz9sZf;
+	Thu, 27 Jul 2023 19:39:59 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cyphar.com; s=MBO0001;
+	t=1690479599;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GQKpQzTtuTgmV4ZqIE3KcLbmLNqhQUqywqcDE85QggY=;
+	b=LebiUGvnmtqBMdP9UCAXiJ1Pl3CSQBkvviLbrj5UXcmxN5/WOT3jGv4M6e/OMZFj1IjTTh
+	q92VoAmt1GCyjvN9SWRIRmkkq0G+4f6DJyWrJJ7Ci5EL+qPRpEuF8iCJgNq2ZkvB4YIsg9
+	5z5DAqtXdnKbOtKaN6f4KCLgSwczrTdk/5G6CdujS8OwaweZAlRUCP2subTKn8iMslIiKN
+	NFtlIHVzPl+Wvr4O77YPZUlEefc00Y27y+Il6NsHRe4p4cev83K/+LGgsj27HdU32FLMuM
+	RtguNMSI0mT10u6+If44Y+VD0IboQGWEKQZ9Ivg9QxsTS7dtAOJEy7ZntsHvWw==
+Date: Fri, 28 Jul 2023 03:39:30 +1000
+From: Aleksa Sarai <cyphar@cyphar.com>
+To: Alexey Gladkov <legion@kernel.org>
+Subject: Re: [PATCH v4 2/5] fs: Add fchmodat2()
+Message-ID: <20230727.173441-loving.habit.lame.acrobat-V6VTPe8G4FRI@cyphar.com>
+References: <cover.1689074739.git.legion@kernel.org>
+ <cover.1689092120.git.legion@kernel.org>
+ <f2a846ef495943c5d101011eebcf01179d0c7b61.1689092120.git.legion@kernel.org>
+ <njnhwhgmsk64e6vf3ur7fifmxlipmzez3r5g7ejozsrkbwvq7w@tu7w3ieystcq>
+ <ZMEjlDNJkFpYERr1@example.org>
+ <20230727.041348-imposing.uptake.velvet.nylon-712tDwzCAbCCoSGx@cyphar.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="e7zcgctqub3jhgoj"
+Content-Disposition: inline
+In-Reply-To: <20230727.041348-imposing.uptake.velvet.nylon-712tDwzCAbCCoSGx@cyphar.com>
+X-Rspamd-Queue-Id: 4RBdM30DJxz9sZf
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,83 +67,155 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Paul Moore <paul@paul-moore.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, James Morris <jmorris@namei.org>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Wang <wei.w.wang@intel.com>, Vlastimil Babka <vbabka@suse.cz>, Jarkko Sakkinen <jarkko@kernel.org>, "Serge E. Hallyn" <serge@hallyn.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Quentin Perret <qperret@google.com>, Liam Merwick <liam.merwick@oracle.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>
- , linux-security-module@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: dalias@libc.org, linux-ia64@vger.kernel.org, fenghua.yu@intel.com, alexander.shishkin@linux.intel.com, catalin.marinas@arm.com, Palmer Dabbelt <palmer@sifive.com>, x86@kernel.org, stefan@agner.ch, ldv@altlinux.org, dhowells@redhat.com, kim.phillips@arm.com, paulus@samba.org, deepa.kernel@gmail.com, hpa@zytor.com, sparclinux@vger.kernel.org, will@kernel.org, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, hare@suse.com, gor@linux.ibm.com, ysato@users.sourceforge.jp, deller@gmx.de, linux-sh@vger.kernel.org, linux@armlinux.org.uk, borntraeger@de.ibm.com, mingo@redhat.com, geert@linux-m68k.org, jhogan@kernel.org, mattst88@gmail.com, linux-mips@vger.kernel.org, fweimer@redhat.com, Arnd Bergmann <arnd@arndb.de>, glebfm@altlinux.org, tycho@tycho.ws, acme@kernel.org, linux-m68k@lists.linux-m68k.org, bp@alien8.de, viro@zeniv.linux.org.uk, luto@kernel.org, namhyung@kernel.org, tglx@linutronix.de, christian@brauner.io, axboe@kernel.dk, James.Bottomley@hansenpartnership.com, monstr@m
+ onstr.eu, tony.luck@intel.com, linux-parisc@vger.kernel.org, linux-api@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, ralf@linux-mips.org, peterz@infradead.org, linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org, ink@jurassic.park.msu.ru, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 27, 2023, Fuad Tabba wrote:
-> Hi Sean,
-> 
-> <snip>
-> ...
-> 
-> > @@ -5134,6 +5167,16 @@ static long kvm_vm_ioctl(struct file *filp,
-> >         case KVM_GET_STATS_FD:
-> >                 r = kvm_vm_ioctl_get_stats_fd(kvm);
-> >                 break;
-> > +       case KVM_CREATE_GUEST_MEMFD: {
-> > +               struct kvm_create_guest_memfd guest_memfd;
-> > +
-> > +               r = -EFAULT;
-> > +               if (copy_from_user(&guest_memfd, argp, sizeof(guest_memfd)))
-> > +                       goto out;
-> > +
-> > +               r = kvm_gmem_create(kvm, &guest_memfd);
-> > +               break;
-> > +       }
-> 
-> I'm thinking line of sight here, by having this as a vm ioctl (rather
-> than a system iocl), would it complicate making it possible in the
-> future to share/donate memory between VMs?
 
-Maybe, but I hope not?
+--e7zcgctqub3jhgoj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-There would still be a primary owner of the memory, i.e. the memory would still
-need to be allocated in the context of a specific VM.  And the primary owner should
-be able to restrict privileges, e.g. allow a different VM to read but not write
-memory.
+On 2023-07-28, Aleksa Sarai <cyphar@cyphar.com> wrote:
+> On 2023-07-26, Alexey Gladkov <legion@kernel.org> wrote:
+> > On Wed, Jul 26, 2023 at 02:36:25AM +1000, Aleksa Sarai wrote:
+> > > On 2023-07-11, Alexey Gladkov <legion@kernel.org> wrote:
+> > > > On the userspace side fchmodat(3) is implemented as a wrapper
+> > > > function which implements the POSIX-specified interface. This
+> > > > interface differs from the underlying kernel system call, which doe=
+s not
+> > > > have a flags argument. Most implementations require procfs [1][2].
+> > > >=20
+> > > > There doesn't appear to be a good userspace workaround for this iss=
+ue
+> > > > but the implementation in the kernel is pretty straight-forward.
+> > > >=20
+> > > > The new fchmodat2() syscall allows to pass the AT_SYMLINK_NOFOLLOW =
+flag,
+> > > > unlike existing fchmodat.
+> > > >=20
+> > > > [1] https://sourceware.org/git/?p=3Dglibc.git;a=3Dblob;f=3Dsysdeps/=
+unix/sysv/linux/fchmodat.c;h=3D17eca54051ee28ba1ec3f9aed170a62630959143;hb=
+=3Da492b1e5ef7ab50c6fdd4e4e9879ea5569ab0a6c#l35
+> > > > [2] https://git.musl-libc.org/cgit/musl/tree/src/stat/fchmodat.c?id=
+=3D718f363bc2067b6487900eddc9180c84e7739f80#n28
+> > > >=20
+> > > > Co-developed-by: Palmer Dabbelt <palmer@sifive.com>
+> > > > Signed-off-by: Palmer Dabbelt <palmer@sifive.com>
+> > > > Signed-off-by: Alexey Gladkov <legion@kernel.org>
+> > > > Acked-by: Arnd Bergmann <arnd@arndb.de>
+> > > > ---
+> > > >  fs/open.c                | 18 ++++++++++++++----
+> > > >  include/linux/syscalls.h |  2 ++
+> > > >  2 files changed, 16 insertions(+), 4 deletions(-)
+> > > >=20
+> > > > diff --git a/fs/open.c b/fs/open.c
+> > > > index 0c55c8e7f837..39a7939f0d00 100644
+> > > > --- a/fs/open.c
+> > > > +++ b/fs/open.c
+> > > > @@ -671,11 +671,11 @@ SYSCALL_DEFINE2(fchmod, unsigned int, fd, umo=
+de_t, mode)
+> > > >  	return err;
+> > > >  }
+> > > > =20
+> > > > -static int do_fchmodat(int dfd, const char __user *filename, umode=
+_t mode)
+> > > > +static int do_fchmodat(int dfd, const char __user *filename, umode=
+_t mode, int lookup_flags)
+> > >=20
+> > > I think it'd be much neater to do the conversion of AT_ flags here and
+> > > pass 0 as a flags argument for all of the wrappers (this is how most =
+of
+> > > the other xyz(), fxyz(), fxyzat() syscall wrappers are done IIRC).
+> >=20
+> > I just addressed the Al Viro's suggestion.
+> >=20
+> > https://lore.kernel.org/lkml/20190717014802.GS17978@ZenIV.linux.org.uk/
+>=20
+> I think Al misspoke, because he also said "pass it 0 as an extra
+> argument", but you actually have to pass LOOKUP_FOLLOW from the
+> wrappers. If you look at how faccessat2 and faccessat are implemented,
+> it follows the behaviour I described.
+>=20
+> > > >  {
+> > > >  	struct path path;
+> > > >  	int error;
+> > > > -	unsigned int lookup_flags =3D LOOKUP_FOLLOW;
+> > > > +
+> > > >  retry:
+> > > >  	error =3D user_path_at(dfd, filename, lookup_flags, &path);
+> > > >  	if (!error) {
+> > > > @@ -689,15 +689,25 @@ static int do_fchmodat(int dfd, const char __=
+user *filename, umode_t mode)
+> > > >  	return error;
+> > > >  }
+> > > > =20
+> > > > +SYSCALL_DEFINE4(fchmodat2, int, dfd, const char __user *, filename,
+> > > > +		umode_t, mode, int, flags)
+> > > > +{
+> > > > +	if (unlikely(flags & ~AT_SYMLINK_NOFOLLOW))
+> > > > +		return -EINVAL;
+> > >=20
+> > > We almost certainly want to support AT_EMPTY_PATH at the same time.
+> > > Otherwise userspace will still need to go through /proc when trying to
+> > > chmod a file handle they have.
+> >=20
+> > I'm not sure I understand. Can you explain what you mean?
+>=20
+> You should add support for AT_EMPTY_PATH (LOOKUP_EMPTY) as well as
+> AT_SYMLINK_NOFOLLOW. It would only require something like:
+>=20
+> 	unsigned int lookup_flags =3D LOOKUP_FOLLOW;
+>=20
+> 	if (flags & ~(AT_EMPTY_PATH | AT_SYMLINK_NOFOLLOW))
+> 		return -EINVAL;
+>=20
+> 	if (flags & AT_EMPTY_PATH)
+> 		lookup_flags |=3D LOOKUP_EMPTY;
+> 	if (flags & AT_SYMLINK_NOFOLLOW)
+> 		lookup_flags &=3D ~LOOKUP_FOLLOW;
+>=20
+> 	/* ... */
+>=20
+> This would be effectively equivalent to fchmod(fd, mode). (I was wrong
+> when I said this wasn't already possible -- I forgot about fchmod(2).)
 
-My current thinking is to (a) tie the lifetime of the backing pages to the inode,
-i.e. allow allocations to outlive the original VM, and (b) create a new file each
-time memory is shared/donated with a different VM (or other entity in the kernel).
+=2E.. with the exception (as Christian mentioned) of O_PATH descriptors.
+However, there are two counter-points to this:
 
-That should make it fairly straightforward to provide different permissions, e.g.
-track them per-file, and I think should also avoid the need to change the memslot
-binding logic since each VM would have it's own view/bindings.
+ * fchownat(AT_EMPTY_PATH) exists but fchown() doesn't work on O_PATH
+   descriptors *by design* (according to open(2)).
+ * chmod(/proc/self/fd/$n) works on O_PATH descriptors, meaning this
+   behaviour is already allowed and all that AT_EMPTY_PATH would do is
+   allow programs to avoid depending on procfs for this.
 
-Copy+pasting a relevant snippet from a lengthier response in a different thread[*]:
+FWIW, I agree with Christian that these behaviours are not ideal (and
+I'm working on a series that might allow for these things to be properly
+blocked in the future) but there's also the consistency argument -- I
+don't think fchownat() is much safer to allow in this way than
+fchmodat() and (again) this behaviour is already possible through
+procfs.
 
-  Conceptually, I think KVM should to bind to the file.  The inode is effectively
-  the raw underlying physical storage, while the file is the VM's view of that
-  storage. 
-  
-  Practically, I think that gives us a clean, intuitive way to handle intra-host
-  migration.  Rather than transfer ownership of the file, instantiate a new file
-  for the target VM, using the gmem inode from the source VM, i.e. create a hard
-  link.  That'd probably require new uAPI, but I don't think that will be hugely
-  problematic.  KVM would need to ensure the new VM's guest_memfd can't be mapped
-  until KVM_CAP_VM_MOVE_ENC_CONTEXT_FROM (which would also need to verify the
-  memslots/bindings are identical), but that should be easy enough to enforce.
-  
-  That way, a VM, its memslots, and its SPTEs are tied to the file, while allowing
-  the memory and the *contents* of memory to outlive the VM, i.e. be effectively
-  transfered to the new target VM.  And we'll maintain the invariant that each
-  guest_memfd is bound 1:1 with a single VM.
-  
-  As above, that should also help us draw the line between mapping memory into a
-  VM (file), and freeing/reclaiming the memory (inode).
-  
-  There will be extra complexity/overhead as we'll have to play nice with the
-  possibility of multiple files per inode, e.g. to zap mappings across all files
-  when punching a hole, but the extra complexity is quite small, e.g. we can use
-  address_space.private_list to keep track of the guest_memfd instances associated
-  with the inode.
-  
-  Setting aside TDX and SNP for the moment, as it's not clear how they'll support
-  memory that is "private" but shared between multiple VMs, I think per-VM files
-  would work well for sharing gmem between two VMs.  E.g. would allow a give page
-  to be bound to a different gfn for each VM, would allow having different permissions
-  for each file (e.g. to allow fallocate() only from the original owner).
+Ultimately, we can always add AT_EMPTY_PATH later. It just seemed like
+an obvious omission to me that would be easy to resolve.
 
-[*] https://lore.kernel.org/all/ZLGiEfJZTyl7M8mS@google.com
+--=20
+Aleksa Sarai
+Senior Software Engineer (Containers)
+SUSE Linux GmbH
+<https://www.cyphar.com/>
+
+--e7zcgctqub3jhgoj
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHQEABYKAB0WIQS2TklVsp+j1GPyqQYol/rSt+lEbwUCZMKr0QAKCRAol/rSt+lE
+bxOTAPjqvyH1UP+6mwe27KnhSozfZ2ESIjoNHwsnKv4yQR4pAP9MxrQ+haWjNEfZ
+ZZDcWZoKyujVbOOH33jx88GCIDrFDQ==
+=2N8j
+-----END PGP SIGNATURE-----
+
+--e7zcgctqub3jhgoj--
