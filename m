@@ -2,100 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2A9276521D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 13:19:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37CC37653CB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 14:27:09 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Q0tQRdsh;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Q0tQRdsh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=G1IXjkAL;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RBSw13BXhz3cRc
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 21:19:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RBVQ319gWz3cPS
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 22:27:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Q0tQRdsh;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Q0tQRdsh;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=G1IXjkAL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RBStl2bXrz3cJ4
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jul 2023 21:18:23 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1690456700;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=J5aSglhBSh7Q6jT77+XYZea18X5UXNoMlG4BeMpxQmA=;
-	b=Q0tQRdsh5qiwf/eZx0HxKw5LQuPQzqPd6Bl3dAyeQ4IIt7vk2rLuKR2CQBbG9hkuN3nBax
-	XC+mZDmQW4mLG2CDAImlY2eikAjyNo6ikUR0Ly8Qyja9sAtwC3yW+rqF62/xRvY7yv7XHH
-	ZpjObrV65TF+bL9EJNBeueTY2E/V7tc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1690456700;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=J5aSglhBSh7Q6jT77+XYZea18X5UXNoMlG4BeMpxQmA=;
-	b=Q0tQRdsh5qiwf/eZx0HxKw5LQuPQzqPd6Bl3dAyeQ4IIt7vk2rLuKR2CQBbG9hkuN3nBax
-	XC+mZDmQW4mLG2CDAImlY2eikAjyNo6ikUR0Ly8Qyja9sAtwC3yW+rqF62/xRvY7yv7XHH
-	ZpjObrV65TF+bL9EJNBeueTY2E/V7tc=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-226-pePiulysNLC3hQ1N-AOiCQ-1; Thu, 27 Jul 2023 07:18:16 -0400
-X-MC-Unique: pePiulysNLC3hQ1N-AOiCQ-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-3fbdf341934so4374295e9.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jul 2023 04:18:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690456691; x=1691061491;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=J5aSglhBSh7Q6jT77+XYZea18X5UXNoMlG4BeMpxQmA=;
-        b=RlZfSY2xMBLB3wCvZlRtSCE2dx18iyWc7t0xegyjHx5szNJDDDtlwsMSjHvBaL0xrY
-         8Ch1JOFRQqDitVpsdUP+dvnnZ+ACQLy1Z5rRFRR+kzgkcEKWuOakUAocxXD4ER+xkHKj
-         gE+x5la4LctTguuFsXGIclD9UfXcD7JHLisWOstF9XSTCDFgckScQP8zwTMab21WHoWT
-         EKOlwuNvBOoyoAcZt87Lr9jqVwVVGtnAAlQEP2aU+FjIWCm1dQQVW4LcayMXEio6yrge
-         8mVk0YXSlBp0HvDA7gtnAMvN/Hp/QJb5FfmTuqFwJC/4193JyP88hHiaO++6imylJ+26
-         aVHg==
-X-Gm-Message-State: ABy/qLZJqV2/veNxJm+crlM/oFPW94FC/W3ei9qifHXY+V0Mb7GtC+FF
-	fAe2uvRwpaiSNmpv9EEwdZnBMwDdVsGCiUGsDZ9s7luUqUEEz/Dy/zeCo+YuwMmD9seZYA2sXgc
-	+Vgxcl/eZS4fvYnszX6UvMpPSO9cTiRCKEA==
-X-Received: by 2002:a1c:e908:0:b0:3fc:5bcc:a91a with SMTP id q8-20020a1ce908000000b003fc5bcca91amr1662985wmc.6.1690456691333;
-        Thu, 27 Jul 2023 04:18:11 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlH0ZToprIgSDfwJmmp3kGZee2OelfjDJ8Mj+brRBQssO3Ov83L9J2RbIhEq7LfPgIeu9SrYDQ==
-X-Received: by 2002:a1c:e908:0:b0:3fc:5bcc:a91a with SMTP id q8-20020a1ce908000000b003fc5bcca91amr1662966wmc.6.1690456690984;
-        Thu, 27 Jul 2023 04:18:10 -0700 (PDT)
-Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
-        by smtp.gmail.com with ESMTPSA id l19-20020a1c7913000000b003fc07e17d4esm4384584wme.2.2023.07.27.04.18.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Jul 2023 04:18:10 -0700 (PDT)
-Message-ID: <8735f065-cdf7-6383-d9e3-98a022e6f0e2@redhat.com>
-Date: Thu, 27 Jul 2023 13:18:09 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RBVP73r9tz3c8n
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jul 2023 22:26:19 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id CE33B61E52;
+	Thu, 27 Jul 2023 12:26:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D51C7C433C8;
+	Thu, 27 Jul 2023 12:26:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1690460775;
+	bh=27hdkgrWFVckIqtGKwcqckK1Jo4k5q7PyN7ZJPYm1Ek=;
+	h=From:To:Cc:Subject:Date:From;
+	b=G1IXjkALkleX4HzpP/GBUU4jC0fioQoVwq9nLLdOBjMTiQUNvINgLBZWZSKZRzFjp
+	 rPNxwdh576pES6qHQaW63U5RrOmgCMISK0DCvCcjlsS0F0CVfpmd2mvuyHNGB8lByr
+	 XJfIsEAigySm7RvZBH/ymFF5ooJ7tHkC+pqepI3potipnIRue/OQfyjH3lK2i9qOGw
+	 TTMEdeWmERD7kuxrWK/kHWbcAE8fEIeHPV8VUE7PnNQbqQsatYfsLSU+lZHaTQcLP/
+	 OLylrNrJgkBI21vtBnota2Sd4H4ehNblQw5px/x0jcXDNPZjKeeOP3wcFTuPwxCxgM
+	 gQtvCfdH30sSw==
+From: Arnd Bergmann <arnd@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+	Christoph Hellwig <hch@lst.de>,
+	Marek Szyprowski <m.szyprowski@samsung.com>
+Subject: [PATCH] dma-mapping: move arch_dma_set_mask() declaration to header
+Date: Thu, 27 Jul 2023 14:25:42 +0200
+Message-Id: <20230727122608.2507415-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v6 7/7] mm/memory_hotplug: Enable runtime update of
- memmap_on_memory parameter
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-mm@kvack.org,
- akpm@linux-foundation.org, mpe@ellerman.id.au,
- linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, christophe.leroy@csgroup.eu
-References: <20230727080232.667439-1-aneesh.kumar@linux.ibm.com>
- <20230727080232.667439-8-aneesh.kumar@linux.ibm.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <20230727080232.667439-8-aneesh.kumar@linux.ibm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,33 +61,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vishal Verma <vishal.l.verma@intel.com>, Michal Hocko <mhocko@suse.com>, Oscar Salvador <osalvador@suse.de>
+Cc: Arnd Bergmann <arnd@arndb.de>, Robin Murphy <robin.murphy@arm.com>, linux-kernel@vger.kernel.org, iommu@lists.linux.dev, Nicholas Piggin <npiggin@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 27.07.23 10:02, Aneesh Kumar K.V wrote:
-> Acked-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> ---
->   mm/memory_hotplug.c | 35 +++++++++++++++++++----------------
->   1 file changed, 19 insertions(+), 16 deletions(-)
-> 
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index aa8724bd1d53..7c877756b363 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -89,7 +89,12 @@ static int set_memmap_mode(const char *val, const struct kernel_param *kp)
->   		else
->   			mode = MEMMAP_ON_MEMORY_DISABLE;
->   	}
-> +	/*
-> +	 * Avoid changing memmap mode during hotplug.
-> +	 */
+From: Arnd Bergmann <arnd@arndb.de>
 
-Nit: comment fits into a single line.
+This function has a __weak definition and an override that is only used on
+freescale powerpc chips. The powerpc definition however does not see the
+declaration that is in a .c file:
 
+arch/powerpc/kernel/dma-mask.c:7:6: error: no previous prototype for 'arch_dma_set_mask' [-Werror=missing-prototypes]
+
+Move it into the linux/dma-map-ops.h header where the other arch_dma_* functions
+are declared.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ arch/powerpc/kernel/dma-mask.c | 1 +
+ include/linux/dma-map-ops.h    | 6 ++++++
+ kernel/dma/mapping.c           | 6 ------
+ 3 files changed, 7 insertions(+), 6 deletions(-)
+
+diff --git a/arch/powerpc/kernel/dma-mask.c b/arch/powerpc/kernel/dma-mask.c
+index ffbbbc4326126..5b07ca7b73aac 100644
+--- a/arch/powerpc/kernel/dma-mask.c
++++ b/arch/powerpc/kernel/dma-mask.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
+ #include <linux/dma-mapping.h>
++#include <linux/dma-map-ops.h>
+ #include <linux/export.h>
+ #include <asm/machdep.h>
+ 
+diff --git a/include/linux/dma-map-ops.h b/include/linux/dma-map-ops.h
+index 9bf19b5bf7559..bb5e06fd359d5 100644
+--- a/include/linux/dma-map-ops.h
++++ b/include/linux/dma-map-ops.h
+@@ -343,6 +343,12 @@ void *arch_dma_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle,
+ void arch_dma_free(struct device *dev, size_t size, void *cpu_addr,
+ 		dma_addr_t dma_addr, unsigned long attrs);
+ 
++#ifdef CONFIG_ARCH_HAS_DMA_SET_MASK
++void arch_dma_set_mask(struct device *dev, u64 mask);
++#else
++#define arch_dma_set_mask(dev, mask)	do { } while (0)
++#endif
++
+ #ifdef CONFIG_MMU
+ /*
+  * Page protection so that devices that can't snoop CPU caches can use the
+diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
+index 9a4db5cce6004..e323ca48f7f2a 100644
+--- a/kernel/dma/mapping.c
++++ b/kernel/dma/mapping.c
+@@ -760,12 +760,6 @@ bool dma_pci_p2pdma_supported(struct device *dev)
+ }
+ EXPORT_SYMBOL_GPL(dma_pci_p2pdma_supported);
+ 
+-#ifdef CONFIG_ARCH_HAS_DMA_SET_MASK
+-void arch_dma_set_mask(struct device *dev, u64 mask);
+-#else
+-#define arch_dma_set_mask(dev, mask)	do { } while (0)
+-#endif
+-
+ int dma_set_mask(struct device *dev, u64 mask)
+ {
+ 	/*
 -- 
-Cheers,
-
-David / dhildenb
+2.39.2
 
