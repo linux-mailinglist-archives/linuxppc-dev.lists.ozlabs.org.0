@@ -2,68 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CFCD76529E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 13:38:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4566F7651B7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 12:56:07 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=BRo0MX+z;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=HoIxeaM2;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RBTKs3N6Vz3cNc
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 21:38:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RBSP11Bcmz3cRy
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 20:56:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=BRo0MX+z;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=HoIxeaM2;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::f29; helo=mail-qv1-xf29.google.com; envelope-from=tabba@google.com; receiver=lists.ozlabs.org)
-Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2001:67c:2178:6::1d; helo=smtp-out2.suse.de; envelope-from=mhocko@suse.com; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RBS2q5K6Qz3c3c
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jul 2023 20:40:18 +1000 (AEST)
-Received: by mail-qv1-xf29.google.com with SMTP id 6a1803df08f44-63d09d886a6so5741036d6.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jul 2023 03:40:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1690454415; x=1691059215;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=sndfUp5VQwyYdDkfd9c4UQTPXsXPqaVmv/x1Ijy8DrI=;
-        b=BRo0MX+z2r1SS6yWvALim/6/nbcuIraz/dvlfYWOZ9asJfVrKNdNm2FzRqaxLf+dSr
-         gd8iH6tStNBkd23/w31KCfLL9pbPEeNVyPTR03aUqTDZY6wZTMoqJSnBUDPOFUCLZI8l
-         DGkcMHGLOMeyEEgRm2q9vaf0Y5Q5Azvv1tkZ/xFOCXwAaoOvebuUDqbcoCdnlpWZyTyX
-         q38zkUOHeP0Tt+nEWAcZ8JszB60VlCahpErQX1nO7BawFSz3QtUcVh1o5Am/iWB313H6
-         H0uJV9FuYrV0GCIZde+45ERDs3S4qD78OMMR7S/b1svm4zQQyj/BCkUn3DI2PJoOlxx+
-         Zjrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690454415; x=1691059215;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sndfUp5VQwyYdDkfd9c4UQTPXsXPqaVmv/x1Ijy8DrI=;
-        b=jR5UcamHkjpSyvIcbvykrFci7CsIKVbqYS+eoaDvWSzvFB53a6iOV3tmt+1n2YMFvp
-         qzr7CAN+BxYV2ny/dyJThDgv0S/YRLl+UwLgqLCwhv4pmZvfLmMI+OKIyq5kfxgFLY1p
-         /GMy5u6g0JuFBTRntmfHo5IOsKoWZA7S5kvw28yo1155Xwcl/xmvPQGEI53OTW0LUOSx
-         iP1N1ZLzyIkUdGPnnJyzyfrqy4Qn8yzcKiQoxSNO+CWzXnqOCZ5SwV86tkhb2IKmXrBW
-         A0UlPcAHcQKpxVa4sNXqyVyO+sRm4Qj91ZXTBoQ7k8FSCwzpPXzunLTojYFG34w5PoZv
-         ww9g==
-X-Gm-Message-State: ABy/qLbl6Y6WFVzciG8rWaLuGYLTYt2KphOeCISgN4dlP1DIBNcrlyIF
-	PAgeyNZMx16pYv0reSEPMoie9KK8dvW77Yq/S4vsSw==
-X-Google-Smtp-Source: APBJJlE+0dXFxcWiQX8kiDXJfKau+LxjypHc8uOGBYfuDsHhoPcJDBpq4NHTu2yqyvhkPVt07nS69cNqQCueoayyUeg=
-X-Received: by 2002:a05:6214:12b:b0:63d:218:c83f with SMTP id
- w11-20020a056214012b00b0063d0218c83fmr4306083qvs.36.1690454414736; Thu, 27
- Jul 2023 03:40:14 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RBSN70vbsz3cJS
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jul 2023 20:55:17 +1000 (AEST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 6B9371F37C;
+	Thu, 27 Jul 2023 10:55:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1690455308; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=03ocS2CkLhvohMqLX/92YU/WWyH6YW59W+34dQnBH7s=;
+	b=HoIxeaM2rz7MaAKAhiqORT7me6xBbcPKIr31jxIYx8uWwbVWYrSTo8dPykyD9QOXdZQQWX
+	HQYMsbxEbe78wrPz2+FV4yMp8GXACgiMk1lYEHkcD3+ymg4i1eUJW2dR3f75WAGUOO4j8L
+	rR+3y1YahibbdCfuIK14UoE+Qric6F0=
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 48D8013902;
+	Thu, 27 Jul 2023 10:55:08 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id NyvYDgxNwmRNGQAAMHmgww
+	(envelope-from <mhocko@suse.com>); Thu, 27 Jul 2023 10:55:08 +0000
+Date: Thu, 27 Jul 2023 12:55:07 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH v6 4/7] mm/memory_hotplug: Support memmap_on_memory when
+ memmap is not aligned to pageblocks
+Message-ID: <ZMJNC7F+BsOj6YDV@dhcp22.suse.cz>
+References: <20230727080232.667439-1-aneesh.kumar@linux.ibm.com>
+ <20230727080232.667439-5-aneesh.kumar@linux.ibm.com>
+ <ZMI3o8k/+QKbhRol@dhcp22.suse.cz>
+ <f977e09b-6a09-901f-96c3-e59cd0b3470c@linux.ibm.com>
 MIME-Version: 1.0
-References: <20230718234512.1690985-1-seanjc@google.com> <20230718234512.1690985-13-seanjc@google.com>
-In-Reply-To: <20230718234512.1690985-13-seanjc@google.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Thu, 27 Jul 2023 11:39:38 +0100
-Message-ID: <CA+EHjTzP2fypgkJbRpSPrKaWytW7v8ANEifofMnQCkdvYaX6Eg@mail.gmail.com>
-Subject: Re: [RFC PATCH v11 12/29] KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for
- guest-specific backing memory
-To: Sean Christopherson <seanjc@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Thu, 27 Jul 2023 21:35:36 +1000
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f977e09b-6a09-901f-96c3-e59cd0b3470c@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,34 +71,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Paul Moore <paul@paul-moore.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, James Morris <jmorris@namei.org>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Wang <wei.w.wang@intel.com>, Vlastimil Babka <vbabka@suse.cz>, Jarkko Sakkinen <jarkko@kernel.org>, "Serge E. Hallyn" <serge@hallyn.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Quentin Perret <qperret@google.com>, Liam Merwick <liam.merwick@oracle.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>
- , linux-security-module@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: David Hildenbrand <david@redhat.com>, linux-mm@kvack.org, npiggin@gmail.com, Vishal Verma <vishal.l.verma@intel.com>, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Sean,
+On Thu 27-07-23 14:57:17, Aneesh Kumar K V wrote:
+> On 7/27/23 2:53 PM, Michal Hocko wrote:
+> > On Thu 27-07-23 13:32:29, Aneesh Kumar K.V wrote:
+> > [...]
+> >> +	if (mode == MEMMAP_ON_MEMORY_FORCE) {
+> >> +		unsigned long memmap_pages = memory_block_memmap_on_memory_pages();
+> >> +
+> >> +		pr_info_once("Memory hotplug will reserve %ld pages in each memory block\n",
+> >> +			     memmap_pages - PFN_UP(memory_block_memmap_size()));
+> >> +	}
+> >> +	return 0;
+> >> +}
+> > 
+> > Why should we print this only for the forced case? Isn't that
+> > interesting for any on memory memmap? Also is this the above sufficient
+> > on its own? the size depends on the block size and that can vary.
+> > I think it would make more sense to print the block size and the vmemmap
+> > reservation and for the force case also any wasted amount on top (if
+> > any).
+> > 
+> 
+> For the other cases the space is completely used by for struct page allocation. What
+> the information is indicating here is that for each memblock we add we are loosing/wasting so many pages. 
+> May be I should have used the term "waste" instead of "reserve" ?
 
-<snip>
-...
-
-> @@ -5134,6 +5167,16 @@ static long kvm_vm_ioctl(struct file *filp,
->         case KVM_GET_STATS_FD:
->                 r = kvm_vm_ioctl_get_stats_fd(kvm);
->                 break;
-> +       case KVM_CREATE_GUEST_MEMFD: {
-> +               struct kvm_create_guest_memfd guest_memfd;
-> +
-> +               r = -EFAULT;
-> +               if (copy_from_user(&guest_memfd, argp, sizeof(guest_memfd)))
-> +                       goto out;
-> +
-> +               r = kvm_gmem_create(kvm, &guest_memfd);
-> +               break;
-> +       }
-
-I'm thinking line of sight here, by having this as a vm ioctl (rather
-than a system iocl), would it complicate making it possible in the
-future to share/donate memory between VMs?
-
-Cheers,
-/fuad
+OK, so I have clearly misread and it just confirms this would benefit
+from a clarification. In any case I still think that it would be
+benefitial to also report how much of the memory is used for vmemmap on
+the hotplugged memory. Maybe as a separate patch.
+-- 
+Michal Hocko
+SUSE Labs
