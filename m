@@ -1,58 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 426F176511F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 12:28:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B59D8765153
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 12:35:52 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=I7SQDE13;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=D7sErss6;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RBRnQ1F7sz3cR1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 20:28:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RBRxf4cB4z3cT5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 20:35:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=I7SQDE13;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=D7sErss6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.201; helo=relay8-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RBRmZ1tljz3cBH
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jul 2023 20:27:58 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 9679861E1E;
-	Thu, 27 Jul 2023 10:27:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42FC3C433C8;
-	Thu, 27 Jul 2023 10:27:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1690453676;
-	bh=deaD8pujkpTtajMkrzG6FDy9HzkESG69/qNzMXZtjw0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=I7SQDE13fzKBcFUp5ePMk9YUxZ5LwkMwJzEhJh5gygi5y3Ao4HYQUhpzqZ+RcAGng
-	 bn4vp/EfbLNeCzrahJPNrwO1OBRujz9xBo7+Gwbo3boim4OhzbOb3qoiVHBiAMEaWJ
-	 PUG9ntl7QrNnL9tqEWTP/FDqYRjBLv6Pe+hC4010c/XsSyQFDc2T5KRE4F0CEfvhIP
-	 4kdpLRFtj8U5bMLrtJSUPNEcwdIVIx3V75HfNd2zboybu6ykt1PDPjB308ZqP7GtZB
-	 ns0n3LOD64u1iaWvsMh+b+uKRfMRf5JlVFDa1qQYJ082NdSiyLNQ81rIjYiYhPr8X+
-	 TOPX0LSqgemIg==
-Date: Thu, 27 Jul 2023 12:27:42 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Eric Biggers <ebiggers@kernel.org>
-Subject: Re: Add fchmodat2() - or add a more general syscall?
-Message-ID: <20230727-kassieren-aneinander-052b18a84546@brauner>
-References: <cover.1689092120.git.legion@kernel.org>
- <cover.1689074739.git.legion@kernel.org>
- <104971.1690300714@warthog.procyon.org.uk>
- <20230727035710.GA15127@sol.localdomain>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RBRwj3yG9z3cCr
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jul 2023 20:35:00 +1000 (AEST)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id CBAA01BF207;
+	Thu, 27 Jul 2023 10:34:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1690454095;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=49SapdFsUUzXkb0zmYsMHZkg7CHiz7VOLc7j0san1b4=;
+	b=D7sErss6g6hwoemn0ONI4uqJb+K/IsweOTLB1naVOQSB0jnxItj4HIIYOc01Bt1PCbQWls
+	x2lcEAR9Bd9VjcK6MIkZw2GgBXiwTdL0BWCBkLp6FGIk8zL9HeoByCjQcU71EgLZvHIX9c
+	ENATbxHfRlfF0SU97Zp8/habefY7ZArdGsISAkXbKwdQKnHTa46Poh7Izti1MQgJHfgtY+
+	+trXOG76m0g/9BUX139rvy1EaJBvWlTKa0L2vTIHxz+5+JsANW+49ziW/vf766xYPBj86D
+	/xe6CDk60hgIFLNs0LFEukyLTaCTJBZRtsZB+11cVUQUOpWASao2sGMwjhfrJQ==
+Date: Thu, 27 Jul 2023 12:34:49 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Conor Dooley <conor@kernel.org>
+Subject: Re: [PATCH v2 05/28] dt-bindings: net: Add support for QMC HDLC
+Message-ID: <20230727123449.0ab1c58e@bootlin.com>
+In-Reply-To: <20230727-decidable-sterile-06ef617c144b@spud>
+References: <20230726150225.483464-1-herve.codina@bootlin.com>
+	<20230726150225.483464-6-herve.codina@bootlin.com>
+	<20230727-talcum-backside-5bdbe2171fb6@spud>
+	<20230727110948.7926a532@bootlin.com>
+	<20230727-decidable-sterile-06ef617c144b@spud>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230727035710.GA15127@sol.localdomain>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,26 +63,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dalias@libc.org, linux-ia64@vger.kernel.org, fenghua.yu@intel.com, alexander.shishkin@linux.intel.com, x86@kernel.org, stefan@agner.ch, ldv@altlinux.org, James.Bottomley@hansenpartnership.com, kim.phillips@arm.com, paulus@samba.org, deepa.kernel@gmail.com, hpa@zytor.com, sparclinux@vger.kernel.org, linux-api@vger.kernel.org, will@kernel.org, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, hare@suse.com, Arnd Bergmann <arnd@arndb.de>, ysato@users.sourceforge.jp, deller@gmx.de, linux-sh@vger.kernel.org, linux@armlinux.org.uk, borntraeger@de.ibm.com, mingo@redhat.com, geert@linux-m68k.org, catalin.marinas@arm.com, jhogan@kernel.org, mattst88@gmail.com, fweimer@redhat.com, gor@linux.ibm.com, glebfm@altlinux.org, tycho@tycho.ws, acme@kernel.org, linux-m68k@lists.linux-m68k.org, bp@alien8.de, viro@zeniv.linux.org.uk, luto@kernel.org, namhyung@kernel.org, tglx@linutronix.de, christian@brauner.io, axboe@kernel.dk, David Howells <dhowells@redhat.com>, monstr@monstr.eu, tony.luck@i
- ntel.com, linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org, ralf@linux-mips.org, LKML <linux-kernel@vger.kernel.org>, peterz@infradead.org, linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org, ink@jurassic.park.msu.ru, Alexey Gladkov <legion@kernel.org>, davem@davemloft.net
+Cc: Andrew Lunn <andrew@lunn.ch>, alsa-devel@alsa-project.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Linus Walleij <linus.walleij@linaro.org>, Jaroslav Kysela <perex@perex.cz>, Eric Dumazet <edumazet@google.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Fabio Estevam <festevam@gmail.com>, Qiang Zhao <qiang.zhao@nxp.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Lee Jones <lee@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, Nicolin Chen <nicoleotsuka@gmail.com>, linux-gpio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Takashi Iwai <tiwai@suse.com>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>, Liam Girdwood <lgirdwood@gmail.com>, Li Yang <leoyang.li@nxp.com>, Mark Brown <broonie@kernel.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <dave
+ m@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jul 26, 2023 at 08:57:10PM -0700, Eric Biggers wrote:
-> On Tue, Jul 25, 2023 at 04:58:34PM +0100, David Howells wrote:
-> > Rather than adding a fchmodat2() syscall, should we add a "set_file_attrs()"
-> > syscall that takes a mask and allows you to set a bunch of stuff all in one
-> > go?  Basically, an interface to notify_change() in the kernel that would allow
-> > several stats to be set atomically.  This might be of particular interest to
-> > network filesystems.
-> > 
-> > David
-> > 
-> 
-> fchmodat2() is a simple addition that fits well with the existing syscalls.
-> It fixes an oversight in fchmodat().
-> 
-> IMO we should just add fchmodat2(), and not get sidetracked by trying to add
-> some super-generalized syscall instead.  That can always be done later.
+Hi Conor,
 
-Agreed.
+On Thu, 27 Jul 2023 10:53:15 +0100
+Conor Dooley <conor@kernel.org> wrote:
+
+> On Thu, Jul 27, 2023 at 11:09:48AM +0200, Herve Codina wrote:
+> > On Thu, 27 Jul 2023 09:19:59 +0100
+> > Conor Dooley <conor@kernel.org> wrote:  
+> > > On Wed, Jul 26, 2023 at 05:02:01PM +0200, Herve Codina wrote:  
+> 
+> > If needed, I can change to:
+> >   title: QMC (QUICC Multichannel Controller) HDLC
+> > Let me known if it is better to you.  
+> 
+> If it were me writing the binding, I'd probably use something like
+> "Freescale/NXP QUICC Multichannel Controller (QMC) HDLC", but it is not
+> a big deal, I just had a "wtf is this" moment :)
+
+I will change to "Freescale/NXP QUICC Multichannel Controller (QMC) HDLC" in
+the next iteration.
+
+> 
+> 
+> 
+> > > > +  fsl,qmc-chan:  
+> > > 
+> > > Perhaps I am just showing my lack of knowledge in this area, but what is
+> > > fsl specific about wanting a reference to the channel of a "QMC"?
+> > > Is this something that hardware from other manufacturers would not also
+> > > want to do?  
+> > 
+> > The QMC and the QMC channel are something specific to the SoC. This IP is only
+> > available on some Freescale/NXP SoCs.
+> > 
+> > When I upstreamed the 'fsl,qmc-audio.yaml', I first used a generic name for this
+> > property and Kristoff asked to change to a vendor prefixed name.
+> >   https://lore.kernel.org/linux-kernel/1dfade07-f8c4-2e16-00dc-c7d183708259@linaro.org/
+> > 
+> > Based on this, as the property 'fsl,qmc-chan' has the exact same meaning in
+> > fsl,qmc-audio.yaml and fsl,qmc-hdlc.yaml, I use the same name.  
+> 
+> Okay, thanks for explaining!
+
+You're welcome.
+
+Regards,
+Hervé
+
