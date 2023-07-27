@@ -1,53 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03C577653D0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 14:28:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD1567659B4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 19:14:00 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KSvoBeVD;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=cyphar.com header.i=@cyphar.com header.a=rsa-sha256 header.s=MBO0001 header.b=wphgglIy;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RBVRN6n5rz3cSN
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 22:28:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RBcn25mN8z3cSB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 03:13:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KSvoBeVD;
+	dkim=pass (2048-bit key; secure) header.d=cyphar.com header.i=@cyphar.com header.a=rsa-sha256 header.s=MBO0001 header.b=wphgglIy;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cyphar.com (client-ip=80.241.56.172; helo=mout-p-202.mailbox.org; envelope-from=cyphar@cyphar.com; receiver=lists.ozlabs.org)
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RBVQV0KmWz2yDm
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jul 2023 22:27:30 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RBcm74WBsz3c3s
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jul 2023 03:13:09 +1000 (AEST)
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 43E4161E2F;
-	Thu, 27 Jul 2023 12:27:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AE70C433C7;
-	Thu, 27 Jul 2023 12:27:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1690460845;
-	bh=ZT1ZAhDl9Us1qyYzoAo30SmrH7DzyLRh79VUEapqkR8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=KSvoBeVDFB2WLb/ZthrcY2/5un3LhBPT2h010VvMXIIbxrI9k59hU1haL9I4YmAS6
-	 bweh4UMZ2tZTtgDk02XSJzxUx4Wz9qX/Z7OS7DqzKWLefzH9tutQ4EP5x4IulZPjlz
-	 b7xs3B5CISDY6Ca7r+x3H+buQQjyB5STEpjdKEla1KsJU0Kymp8QufwNXQYuYctSTZ
-	 wnzD2l3VYqQOl443xDPNcz8wUWipGoQY25c3fSboxLLviwH5DATj3vti7Exfl4ukLq
-	 7/iXcE9hUcBeAYKXNUlgGZg49p4ypTI1VwvDCsYBt3sBw7swYO5Vd/9hHBquNi2Jjz
-	 P+7UhDPFeRwjA==
-From: Arnd Bergmann <arnd@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc: address missing-prototypes warnings
-Date: Thu, 27 Jul 2023 14:26:50 +0200
-Message-Id: <20230727122720.2558065-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.2
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4RBclx61jyz9sSq;
+	Thu, 27 Jul 2023 19:13:01 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cyphar.com; s=MBO0001;
+	t=1690477981;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=r4xS4z3m09mcDhbG2vSNuCuAOWPT6oLsRQePsTlsExg=;
+	b=wphgglIyp+usBR0fNyl85KtqD+TvcRheXCarcC9+q/rC2O/c19YVrPmD3yxd6P5zNkRAgn
+	ap1J1ewuz2/88KROo01hnaKnZ4/JhylWNhiBSxQ81mAbQ2FpPaPd18Eeg5JBsnXEACuOVL
+	kxHc79dCNTAe95YgGNhXV08fsF9k1vsOGv6GUB2QE5SFFlSOWEvhyRbKLtNFmt5GQKNj3u
+	IN6dDugiyIaBjBJ+ymRyuAdQFshGsVMUm52bzNxGOPYfWT6GeKADooVM0YYFrrgU4Aio3h
+	BRZYiw4NU+t71y0ghqPQ5R5qkpDibTPetLXyyMi4+J3mphGiAC1Gb+WOSRyIbQ==
+Date: Fri, 28 Jul 2023 03:12:24 +1000
+From: Aleksa Sarai <cyphar@cyphar.com>
+To: Alexey Gladkov <legion@kernel.org>
+Subject: Re: [PATCH v4 2/5] fs: Add fchmodat2()
+Message-ID: <20230727.041348-imposing.uptake.velvet.nylon-712tDwzCAbCCoSGx@cyphar.com>
+References: <cover.1689074739.git.legion@kernel.org>
+ <cover.1689092120.git.legion@kernel.org>
+ <f2a846ef495943c5d101011eebcf01179d0c7b61.1689092120.git.legion@kernel.org>
+ <njnhwhgmsk64e6vf3ur7fifmxlipmzez3r5g7ejozsrkbwvq7w@tu7w3ieystcq>
+ <ZMEjlDNJkFpYERr1@example.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="mzzk664uqt7bucoa"
+Content-Disposition: inline
+In-Reply-To: <ZMEjlDNJkFpYERr1@example.org>
+X-Rspamd-Queue-Id: 4RBclx61jyz9sSq
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,208 +66,133 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: dalias@libc.org, linux-ia64@vger.kernel.org, fenghua.yu@intel.com, alexander.shishkin@linux.intel.com, catalin.marinas@arm.com, Palmer Dabbelt <palmer@sifive.com>, x86@kernel.org, stefan@agner.ch, ldv@altlinux.org, dhowells@redhat.com, kim.phillips@arm.com, paulus@samba.org, deepa.kernel@gmail.com, hpa@zytor.com, sparclinux@vger.kernel.org, will@kernel.org, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, hare@suse.com, gor@linux.ibm.com, ysato@users.sourceforge.jp, deller@gmx.de, linux-sh@vger.kernel.org, linux@armlinux.org.uk, borntraeger@de.ibm.com, mingo@redhat.com, geert@linux-m68k.org, jhogan@kernel.org, mattst88@gmail.com, linux-mips@vger.kernel.org, fweimer@redhat.com, Arnd Bergmann <arnd@arndb.de>, glebfm@altlinux.org, tycho@tycho.ws, acme@kernel.org, linux-m68k@lists.linux-m68k.org, bp@alien8.de, viro@zeniv.linux.org.uk, luto@kernel.org, namhyung@kernel.org, tglx@linutronix.de, christian@brauner.io, axboe@kernel.dk, James.Bottomley@hansenpartnership.com, monstr@m
+ onstr.eu, tony.luck@intel.com, linux-parisc@vger.kernel.org, linux-api@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, ralf@linux-mips.org, peterz@infradead.org, linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org, ink@jurassic.park.msu.ru, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Arnd Bergmann <arnd@arndb.de>
 
-There are a few warnings in powerpc64 defconfig builds after -Wmissing-prototypes
-gets promoted from W=1 to the default warning set:
+--mzzk664uqt7bucoa
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-arch/powerpc/mm/book3s64/pgtable.c:422:6: error: no previous prototype for 'arch_report_meminfo' [-Werror=missing-prototypes]
-arch/powerpc/mm/init_64.c:311:12: error: no previous prototype for '__vmemmap_free' [-Werror=missing-prototypes]
-arch/powerpc/platforms/cell/ras.c:275:5: error: no previous prototype for 'cbe_sysreset_hack' [-Werror=missing-prototypes]
-arch/powerpc/platforms/cell/spu_manage.c:29:21: error: no previous prototype for 'spu_devnode' [-Werror=missing-prototypes]
-arch/powerpc/platforms/pasemi/time.c:12:17: error: no previous prototype for 'pas_get_boot_time' [-Werror=missing-prototypes]
-arch/powerpc/platforms/powermac/feature.c:1532:13: error: no previous prototype for 'g5_phy_disable_cpu1' [-Werror=missing-prototypes]
-arch/powerpc/platforms/86xx/pic.c:28:13: error: no previous prototype for 'mpc86xx_init_irq' [-Werror=missing-prototypes]
-drivers/pci/pci-sysfs.c:936:13: error: no previous prototype for 'pci_adjust_legacy_attr' [-Werror=missing-prototypes]
+On 2023-07-26, Alexey Gladkov <legion@kernel.org> wrote:
+> On Wed, Jul 26, 2023 at 02:36:25AM +1000, Aleksa Sarai wrote:
+> > On 2023-07-11, Alexey Gladkov <legion@kernel.org> wrote:
+> > > On the userspace side fchmodat(3) is implemented as a wrapper
+> > > function which implements the POSIX-specified interface. This
+> > > interface differs from the underlying kernel system call, which does =
+not
+> > > have a flags argument. Most implementations require procfs [1][2].
+> > >=20
+> > > There doesn't appear to be a good userspace workaround for this issue
+> > > but the implementation in the kernel is pretty straight-forward.
+> > >=20
+> > > The new fchmodat2() syscall allows to pass the AT_SYMLINK_NOFOLLOW fl=
+ag,
+> > > unlike existing fchmodat.
+> > >=20
+> > > [1] https://sourceware.org/git/?p=3Dglibc.git;a=3Dblob;f=3Dsysdeps/un=
+ix/sysv/linux/fchmodat.c;h=3D17eca54051ee28ba1ec3f9aed170a62630959143;hb=3D=
+a492b1e5ef7ab50c6fdd4e4e9879ea5569ab0a6c#l35
+> > > [2] https://git.musl-libc.org/cgit/musl/tree/src/stat/fchmodat.c?id=
+=3D718f363bc2067b6487900eddc9180c84e7739f80#n28
+> > >=20
+> > > Co-developed-by: Palmer Dabbelt <palmer@sifive.com>
+> > > Signed-off-by: Palmer Dabbelt <palmer@sifive.com>
+> > > Signed-off-by: Alexey Gladkov <legion@kernel.org>
+> > > Acked-by: Arnd Bergmann <arnd@arndb.de>
+> > > ---
+> > >  fs/open.c                | 18 ++++++++++++++----
+> > >  include/linux/syscalls.h |  2 ++
+> > >  2 files changed, 16 insertions(+), 4 deletions(-)
+> > >=20
+> > > diff --git a/fs/open.c b/fs/open.c
+> > > index 0c55c8e7f837..39a7939f0d00 100644
+> > > --- a/fs/open.c
+> > > +++ b/fs/open.c
+> > > @@ -671,11 +671,11 @@ SYSCALL_DEFINE2(fchmod, unsigned int, fd, umode=
+_t, mode)
+> > >  	return err;
+> > >  }
+> > > =20
+> > > -static int do_fchmodat(int dfd, const char __user *filename, umode_t=
+ mode)
+> > > +static int do_fchmodat(int dfd, const char __user *filename, umode_t=
+ mode, int lookup_flags)
+> >=20
+> > I think it'd be much neater to do the conversion of AT_ flags here and
+> > pass 0 as a flags argument for all of the wrappers (this is how most of
+> > the other xyz(), fxyz(), fxyzat() syscall wrappers are done IIRC).
+>=20
+> I just addressed the Al Viro's suggestion.
+>=20
+> https://lore.kernel.org/lkml/20190717014802.GS17978@ZenIV.linux.org.uk/
 
-Address these by including the right header files or marking the
-functions static. The audit.c one is a bit tricky since compat_audit.h
-cannot include regular kernel headers tht have conflicting types on
-32-bit powerpc.
+I think Al misspoke, because he also said "pass it 0 as an extra
+argument", but you actually have to pass LOOKUP_FOLLOW from the
+wrappers. If you look at how faccessat2 and faccessat are implemented,
+it follows the behaviour I described.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- arch/powerpc/include/asm/pci.h            | 3 ++-
- arch/powerpc/kernel/audit.c               | 3 ++-
- arch/powerpc/kernel/audit_32.h            | 7 +++++++
- arch/powerpc/kernel/compat_audit.c        | 2 ++
- arch/powerpc/mm/book3s64/pgtable.c        | 1 +
- arch/powerpc/mm/init_64.c                 | 2 +-
- arch/powerpc/platforms/86xx/pic.c         | 2 ++
- arch/powerpc/platforms/cell/ras.c         | 2 +-
- arch/powerpc/platforms/cell/spu_manage.c  | 1 +
- arch/powerpc/platforms/pasemi/pasemi.h    | 1 +
- arch/powerpc/platforms/pasemi/time.c      | 2 ++
- arch/powerpc/platforms/powermac/feature.c | 2 ++
- 12 files changed, 24 insertions(+), 4 deletions(-)
- create mode 100644 arch/powerpc/kernel/audit_32.h
+> > >  {
+> > >  	struct path path;
+> > >  	int error;
+> > > -	unsigned int lookup_flags =3D LOOKUP_FOLLOW;
+> > > +
+> > >  retry:
+> > >  	error =3D user_path_at(dfd, filename, lookup_flags, &path);
+> > >  	if (!error) {
+> > > @@ -689,15 +689,25 @@ static int do_fchmodat(int dfd, const char __us=
+er *filename, umode_t mode)
+> > >  	return error;
+> > >  }
+> > > =20
+> > > +SYSCALL_DEFINE4(fchmodat2, int, dfd, const char __user *, filename,
+> > > +		umode_t, mode, int, flags)
+> > > +{
+> > > +	if (unlikely(flags & ~AT_SYMLINK_NOFOLLOW))
+> > > +		return -EINVAL;
+> >=20
+> > We almost certainly want to support AT_EMPTY_PATH at the same time.
+> > Otherwise userspace will still need to go through /proc when trying to
+> > chmod a file handle they have.
+>=20
+> I'm not sure I understand. Can you explain what you mean?
 
-diff --git a/arch/powerpc/include/asm/pci.h b/arch/powerpc/include/asm/pci.h
-index 289f1ec85bc54..f5078a7dd85a5 100644
---- a/arch/powerpc/include/asm/pci.h
-+++ b/arch/powerpc/include/asm/pci.h
-@@ -82,7 +82,8 @@ extern int pci_legacy_write(struct pci_bus *bus, loff_t port, u32 val,
- extern int pci_mmap_legacy_page_range(struct pci_bus *bus,
- 				      struct vm_area_struct *vma,
- 				      enum pci_mmap_state mmap_state);
--
-+extern void pci_adjust_legacy_attr(struct pci_bus *bus,
-+				   enum pci_mmap_state mmap_type);
- #define HAVE_PCI_LEGACY	1
- 
- extern void pcibios_claim_one_bus(struct pci_bus *b);
-diff --git a/arch/powerpc/kernel/audit.c b/arch/powerpc/kernel/audit.c
-index 1bcfca5fdf676..92298d6a3a37a 100644
---- a/arch/powerpc/kernel/audit.c
-+++ b/arch/powerpc/kernel/audit.c
-@@ -4,6 +4,8 @@
- #include <linux/audit.h>
- #include <asm/unistd.h>
- 
-+#include "audit_32.h"
-+
- static unsigned dir_class[] = {
- #include <asm-generic/audit_dir_write.h>
- ~0U
-@@ -41,7 +43,6 @@ int audit_classify_arch(int arch)
- int audit_classify_syscall(int abi, unsigned syscall)
- {
- #ifdef CONFIG_PPC64
--	extern int ppc32_classify_syscall(unsigned);
- 	if (abi == AUDIT_ARCH_PPC)
- 		return ppc32_classify_syscall(syscall);
- #endif
-diff --git a/arch/powerpc/kernel/audit_32.h b/arch/powerpc/kernel/audit_32.h
-new file mode 100644
-index 0000000000000..c6c79c3041ab2
---- /dev/null
-+++ b/arch/powerpc/kernel/audit_32.h
-@@ -0,0 +1,7 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#ifndef __AUDIT_32_H__
-+#define __AUDIT_32_H__
-+
-+extern int ppc32_classify_syscall(unsigned);
-+
-+#endif
-diff --git a/arch/powerpc/kernel/compat_audit.c b/arch/powerpc/kernel/compat_audit.c
-index d92ffe4e5dc1c..57b38c592b9f3 100644
---- a/arch/powerpc/kernel/compat_audit.c
-+++ b/arch/powerpc/kernel/compat_audit.c
-@@ -3,6 +3,8 @@
- #include <linux/audit_arch.h>
- #include <asm/unistd.h>
- 
-+#include "audit_32.h"
-+
- unsigned ppc32_dir_class[] = {
- #include <asm-generic/audit_dir_write.h>
- ~0U
-diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-index 75b938268b040..0558202103171 100644
---- a/arch/powerpc/mm/book3s64/pgtable.c
-+++ b/arch/powerpc/mm/book3s64/pgtable.c
-@@ -9,6 +9,7 @@
- #include <linux/memremap.h>
- #include <linux/pkeys.h>
- #include <linux/debugfs.h>
-+#include <linux/proc_fs.h>
- #include <misc/cxl-base.h>
- 
- #include <asm/pgalloc.h>
-diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
-index 6db7a063ba63f..7241b8515f89b 100644
---- a/arch/powerpc/mm/init_64.c
-+++ b/arch/powerpc/mm/init_64.c
-@@ -315,7 +315,7 @@ static unsigned long vmemmap_list_free(unsigned long start)
- 	return vmem_back->phys;
- }
- 
--void __ref __vmemmap_free(unsigned long start, unsigned long end,
-+static void __ref __vmemmap_free(unsigned long start, unsigned long end,
- 			  struct vmem_altmap *altmap)
- {
- 	unsigned long page_size = 1 << mmu_psize_defs[mmu_vmemmap_psize].shift;
-diff --git a/arch/powerpc/platforms/86xx/pic.c b/arch/powerpc/platforms/86xx/pic.c
-index 2c32c3488afbb..7cdb16dc8b936 100644
---- a/arch/powerpc/platforms/86xx/pic.c
-+++ b/arch/powerpc/platforms/86xx/pic.c
-@@ -12,6 +12,8 @@
- #include <asm/mpic.h>
- #include <asm/i8259.h>
- 
-+#include "mpc86xx.h"
-+
- #ifdef CONFIG_PPC_I8259
- static void mpc86xx_8259_cascade(struct irq_desc *desc)
- {
-diff --git a/arch/powerpc/platforms/cell/ras.c b/arch/powerpc/platforms/cell/ras.c
-index 98db63b72d56b..f6b87926530cc 100644
---- a/arch/powerpc/platforms/cell/ras.c
-+++ b/arch/powerpc/platforms/cell/ras.c
-@@ -22,7 +22,7 @@
- #include <asm/cell-regs.h>
- 
- #include "ras.h"
--
-+#include "pervasive.h"
- 
- static void dump_fir(int cpu)
- {
-diff --git a/arch/powerpc/platforms/cell/spu_manage.c b/arch/powerpc/platforms/cell/spu_manage.c
-index 74567b32c48c2..f464a1f2e5681 100644
---- a/arch/powerpc/platforms/cell/spu_manage.c
-+++ b/arch/powerpc/platforms/cell/spu_manage.c
-@@ -25,6 +25,7 @@
- 
- #include "spufs/spufs.h"
- #include "interrupt.h"
-+#include "spu_priv1_mmio.h"
- 
- struct device_node *spu_devnode(struct spu *spu)
- {
-diff --git a/arch/powerpc/platforms/pasemi/pasemi.h b/arch/powerpc/platforms/pasemi/pasemi.h
-index 3f277a200fd87..018c30665e1b3 100644
---- a/arch/powerpc/platforms/pasemi/pasemi.h
-+++ b/arch/powerpc/platforms/pasemi/pasemi.h
-@@ -4,6 +4,7 @@
- 
- extern time64_t pas_get_boot_time(void);
- extern void pas_pci_init(void);
-+struct pci_dev;
- extern void pas_pci_irq_fixup(struct pci_dev *dev);
- extern void pas_pci_dma_dev_setup(struct pci_dev *dev);
- 
-diff --git a/arch/powerpc/platforms/pasemi/time.c b/arch/powerpc/platforms/pasemi/time.c
-index ad721882c8b6f..70ac6db027d0e 100644
---- a/arch/powerpc/platforms/pasemi/time.c
-+++ b/arch/powerpc/platforms/pasemi/time.c
-@@ -9,6 +9,8 @@
- 
- #include <asm/time.h>
- 
-+#include "pasemi.h"
-+
- time64_t __init pas_get_boot_time(void)
- {
- 	/* Let's just return a fake date right now */
-diff --git a/arch/powerpc/platforms/powermac/feature.c b/arch/powerpc/platforms/powermac/feature.c
-index ed58928469b5b..ed472b797e28a 100644
---- a/arch/powerpc/platforms/powermac/feature.c
-+++ b/arch/powerpc/platforms/powermac/feature.c
-@@ -37,6 +37,8 @@
- #include <asm/pci-bridge.h>
- #include <asm/pmac_low_i2c.h>
- 
-+#include "pmac.h"
-+
- #undef DEBUG_FEATURE
- 
- #ifdef DEBUG_FEATURE
--- 
-2.39.2
+You should add support for AT_EMPTY_PATH (LOOKUP_EMPTY) as well as
+AT_SYMLINK_NOFOLLOW. It would only require something like:
 
+	unsigned int lookup_flags =3D LOOKUP_FOLLOW;
+
+	if (flags & ~(AT_EMPTY_PATH | AT_SYMLINK_NOFOLLOW))
+		return -EINVAL;
+
+	if (flags & AT_EMPTY_PATH)
+		lookup_flags |=3D LOOKUP_EMPTY;
+	if (flags & AT_SYMLINK_NOFOLLOW)
+		lookup_flags &=3D ~LOOKUP_FOLLOW;
+
+	/* ... */
+
+This would be effectively equivalent to fchmod(fd, mode). (I was wrong
+when I said this wasn't already possible -- I forgot about fchmod(2).)
+
+--=20
+Aleksa Sarai
+Senior Software Engineer (Containers)
+SUSE Linux GmbH
+<https://www.cyphar.com/>
+
+--mzzk664uqt7bucoa
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQS2TklVsp+j1GPyqQYol/rSt+lEbwUCZMKleAAKCRAol/rSt+lE
+bym9AQDqgQyuOeexUTCKq/tyT2Gt8n1mt1PGm55hdeFxmQCD1AD+NkISNEOp7Oej
+qTsMPEIGWvfGX/MWtUS2thZbT2WvjA4=
+=+qOC
+-----END PGP SIGNATURE-----
+
+--mzzk664uqt7bucoa--
