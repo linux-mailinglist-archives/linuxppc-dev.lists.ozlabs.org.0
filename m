@@ -1,92 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05069764DC2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 10:39:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2736764AF6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 10:13:02 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bAHaVFhm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=g3X0c1vs;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RBPMg6W0nz3cNQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 18:39:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RBNmr4S68z3cLQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 18:13:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bAHaVFhm;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=g3X0c1vs;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=conor@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RBPLq5CCFz3c18
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jul 2023 18:38:59 +1000 (AEST)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36R8cCw1005419;
-	Thu, 27 Jul 2023 08:38:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=gY00gaF9F3v55zO8suQ4Uq0pj+76FmgM+3B5bjw5DX0=;
- b=bAHaVFhmZftT0Z4LBXirJ86aPVGZ95l/8xamtuovbI3VkKQZbC7xSZ7KpV4YY2ceVJmS
- fLe/+KZY6vfxiJ+/IqqCmexTOqGNkODQwFxSFdRy96Pj2vyfqe1za8nIK5Wkl5hD4rkM
- QtUkFuTPHIaoFjP/pN/PNwGmpRWSErciBkETunKb4eVrQdS6hCYyIfh0eob+RgJqyHY8
- uEP8Q23t+nmgF4e6xQqMKbWYp7F34rLAe6xrpWVxDoij6AgMk8khASZ2S8LEYTFVT/T4
- oJPuILGneVkDaXbhKmhY6nyw3dLXVH1mhgzT0L+Bt0ysyI0udE6GvuZs/4tWKYiH9CIi 3g== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s3mw1ghsg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 27 Jul 2023 08:38:41 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36R8cNCC007206;
-	Thu, 27 Jul 2023 08:38:33 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s3mw1ghe1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 27 Jul 2023 08:38:33 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36R7H6LC001858;
-	Thu, 27 Jul 2023 08:03:16 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3s0unjue52-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 27 Jul 2023 08:03:16 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36R83FYM20251132
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 27 Jul 2023 08:03:15 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5807358065;
-	Thu, 27 Jul 2023 08:03:15 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 673D158063;
-	Thu, 27 Jul 2023 08:03:11 +0000 (GMT)
-Received: from skywalker.in.ibm.com (unknown [9.109.212.144])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 27 Jul 2023 08:03:11 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linux-mm@kvack.org, akpm@linux-foundation.org, mpe@ellerman.id.au,
-        linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu
-Subject: [PATCH v6 7/7] mm/memory_hotplug: Enable runtime update of memmap_on_memory parameter
-Date: Thu, 27 Jul 2023 13:32:32 +0530
-Message-ID: <20230727080232.667439-8-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230727080232.667439-1-aneesh.kumar@linux.ibm.com>
-References: <20230727080232.667439-1-aneesh.kumar@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RBNlx3wKbz3cL0
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jul 2023 18:12:13 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id A690461DA0;
+	Thu, 27 Jul 2023 08:12:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 516EEC433C8;
+	Thu, 27 Jul 2023 08:12:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1690445529;
+	bh=tnGIkZ0IfVSxC+Yq+6QYwbRcNs+y3LaIpY7itDA1DY0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=g3X0c1vs3a2ExMXkrF+1tcbDsnN2aqJCcQvv2E42gHFtthXoxHT+jaSco+ZogIg0G
+	 w7tGNnMsZDib2IGYF984hf9xZSY5adT9vxpurLoOMGGSONNQFd8WdhzgsuAmXgk49K
+	 dMaePLC2CGqQT2i6n9Et/bGw1iCT+XmtAMUlBT4nI1PHdiAY5WWzAFBFfDovs3hpXv
+	 VjrgM0AtFh5s4anoNx0c7HbquZbJdD7PnTZfXSJhncYy2kd13o4lyvqr8/JOKnY3vL
+	 zIUldsQfgz0SOIYaMa8Oar3jUOZj5tjJxq7oN5ca+/JEtWuvauejQ5M5bDpTAv+tlm
+	 KMdwa+ZVqnw1A==
+Date: Thu, 27 Jul 2023 09:12:01 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Herve Codina <herve.codina@bootlin.com>
+Subject: Re: [PATCH v2 27/28] dt-bindings: net: fsl,qmc-hdlc: Add framer
+ support
+Message-ID: <20230727-jailer-recede-a62ab2238581@spud>
+References: <20230726150225.483464-1-herve.codina@bootlin.com>
+ <20230726150225.483464-28-herve.codina@bootlin.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: tyUklHxVR2BzqjOm5IcYH-ZWaFrEDcJ9
-X-Proofpoint-GUID: tQzp6q3lAURwcBBMcChfngT81804v6cb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-26_08,2023-07-26_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- impostorscore=0 spamscore=0 phishscore=0 mlxscore=0 clxscore=1015
- mlxlogscore=656 adultscore=0 malwarescore=0 suspectscore=0
- priorityscore=1501 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2306200000 definitions=main-2307270075
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="eYAsfQrSrlZJPeWa"
+Content-Disposition: inline
+In-Reply-To: <20230726150225.483464-28-herve.codina@bootlin.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,78 +64,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vishal Verma <vishal.l.verma@intel.com>, David Hildenbrand <david@redhat.com>, Michal Hocko <mhocko@suse.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Oscar Salvador <osalvador@suse.de>
+Cc: Andrew Lunn <andrew@lunn.ch>, alsa-devel@alsa-project.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Linus Walleij <linus.walleij@linaro.org>, Jaroslav Kysela <perex@perex.cz>, Eric Dumazet <edumazet@google.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Fabio Estevam <festevam@gmail.com>, Qiang Zhao <qiang.zhao@nxp.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Lee Jones <lee@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, Nicolin Chen <nicoleotsuka@gmail.com>, linux-gpio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Takashi Iwai <tiwai@suse.com>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>, Liam Girdwood <lgirdwood@gmail.com>, Li Yang <leoyang.li@nxp.com>, Mark Brown <broonie@kernel.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <dave
+ m@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Acked-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- mm/memory_hotplug.c | 35 +++++++++++++++++++----------------
- 1 file changed, 19 insertions(+), 16 deletions(-)
 
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index aa8724bd1d53..7c877756b363 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -89,7 +89,12 @@ static int set_memmap_mode(const char *val, const struct kernel_param *kp)
- 		else
- 			mode = MEMMAP_ON_MEMORY_DISABLE;
- 	}
-+	/*
-+	 * Avoid changing memmap mode during hotplug.
-+	 */
-+	get_online_mems();
- 	*((int *)kp->arg) = mode;
-+	put_online_mems();
- 	if (mode == MEMMAP_ON_MEMORY_FORCE) {
- 		unsigned long memmap_pages = memory_block_memmap_on_memory_pages();
- 
-@@ -110,7 +115,7 @@ static const struct kernel_param_ops memmap_mode_ops = {
- 	.set = set_memmap_mode,
- 	.get = get_memmap_mode,
- };
--module_param_cb(memmap_on_memory, &memmap_mode_ops, &memmap_mode, 0444);
-+module_param_cb(memmap_on_memory, &memmap_mode_ops, &memmap_mode, 0644);
- MODULE_PARM_DESC(memmap_on_memory, "Enable memmap on memory for memory hotplug\n"
- 		 "With value \"force\" it could result in memory wastage due "
- 		 "to memmap size limitations (Y/N/force)");
-@@ -2172,22 +2177,20 @@ static int __ref try_remove_memory(u64 start, u64 size)
- 	 * We only support removing memory added with MHP_MEMMAP_ON_MEMORY in
- 	 * the same granularity it was added - a single memory block.
- 	 */
--	if (mhp_memmap_on_memory()) {
--		ret = walk_memory_blocks(start, size, &mem, test_has_altmap_cb);
--		if (ret) {
--			if (size != memory_block_size_bytes()) {
--				pr_warn("Refuse to remove %#llx - %#llx,"
--					"wrong granularity\n",
--					start, start + size);
--				return -EINVAL;
--			}
--			altmap = mem->altmap;
--			/*
--			 * Mark altmap NULL so that we can add a debug
--			 * check on memblock free.
--			 */
--			mem->altmap = NULL;
-+	ret = walk_memory_blocks(start, size, &mem, test_has_altmap_cb);
-+	if (ret) {
-+		if (size != memory_block_size_bytes()) {
-+			pr_warn("Refuse to remove %#llx - %#llx,"
-+				"wrong granularity\n",
-+				start, start + size);
-+			return -EINVAL;
- 		}
-+		altmap = mem->altmap;
-+		/*
-+		 * Mark altmap NULL so that we can add a debug
-+		 * check on memblock free.
-+		 */
-+		mem->altmap = NULL;
- 	}
- 
- 	/* remove memmap entry */
--- 
-2.41.0
+--eYAsfQrSrlZJPeWa
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Jul 26, 2023 at 05:02:23PM +0200, Herve Codina wrote:
+> A framer can be connected to the QMC HDLC.
+> If present, this framer is the interface between the TDM used by the QMC
+> HDLC and the E1/T1 line.
+> The QMC HDLC can use this framer to get information about the line and
+> configure the line.
+>=20
+> Add an optional framer property to reference the framer itself.
+>=20
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+
+Why not fully describe the hardware in one patch in this series, rather
+than split this over two different ones?
+
+> ---
+>  Documentation/devicetree/bindings/net/fsl,qmc-hdlc.yaml | 5 +++++
+>  1 file changed, 5 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/net/fsl,qmc-hdlc.yaml b/Do=
+cumentation/devicetree/bindings/net/fsl,qmc-hdlc.yaml
+> index 8bb6f34602d9..bf29863ab419 100644
+> --- a/Documentation/devicetree/bindings/net/fsl,qmc-hdlc.yaml
+> +++ b/Documentation/devicetree/bindings/net/fsl,qmc-hdlc.yaml
+> @@ -27,6 +27,11 @@ properties:
+>        Should be a phandle/number pair. The phandle to QMC node and the Q=
+MC
+>        channel to use.
+> =20
+> +  framer:
+> +    $ref: /schemas/types.yaml#/definitions/phandle
+> +    description:
+> +      phandle to the framer node
+> +
+>  required:
+>    - compatible
+>    - fsl,qmc-chan
+> --=20
+> 2.41.0
+>=20
+
+--eYAsfQrSrlZJPeWa
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZMIm0AAKCRB4tDGHoIJi
+0kUJAPwNtjLVJN1zsHlbb6aaExnJrN4N1c/y81aSzDXGP/5mtwD/ZlFY9Kf3kK6f
+ZSCmoVzzU0F7LpDiZu5VLWEDSKophAY=
+=Scw7
+-----END PGP SIGNATURE-----
+
+--eYAsfQrSrlZJPeWa--
