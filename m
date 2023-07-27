@@ -1,68 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDF49765FFC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 00:54:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF1B0766000
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 00:55:20 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=nN3rX9Pe;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=D8uvkEu4;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RBmKx5jgQz3dK1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 08:54:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RBmLt5jc3z3cVZ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 08:55:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=nN3rX9Pe;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=D8uvkEu4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::82c; helo=mail-qt1-x82c.google.com; envelope-from=carlojpisani@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--justinstitt.bounces.google.com (client-ip=2001:4860:4864:20::49; helo=mail-oa1-x49.google.com; envelope-from=3lo_czaskdemozxynsxynyylttlqj.htrqnsz2uuh-ij0qnxyx.t4qfgx.twl@flex--justinstitt.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-oa1-x49.google.com (mail-oa1-x49.google.com [IPv6:2001:4860:4864:20::49])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RBfFf5HYDz3c3C
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jul 2023 04:20:21 +1000 (AEST)
-Received: by mail-qt1-x82c.google.com with SMTP id d75a77b69052e-403a85eb723so8530901cf.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jul 2023 11:20:21 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RBlkJ09qSz30F5
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jul 2023 08:27:01 +1000 (AEST)
+Received: by mail-oa1-x49.google.com with SMTP id 586e51a60fabf-1bbbd92497fso2712440fac.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jul 2023 15:27:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690482018; x=1691086818;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=PcBP1XxjNmbI4nocR7IgV+AOIx8tJfQjnUff81XdeXk=;
-        b=nN3rX9PeM3z5Li8BQr/G01V4nj85hbrj2n73xSjKhK5s5480GNJT7vaCzJ/++MgOYW
-         a6gnqSMvtpnsOM/gZXsPQ6WpJ50rKhsKhVKqmsNi4h2arPgBTU4IrmB0tLx+vF0ZI/6+
-         boPnAHh10uUZSFNy+QlGdndtIZyqu/rZNwzle7J/T5QYtw663pxZmEG3usep9uVYhEwa
-         UweNkVIkzsBSp12dHlcG/8qUYuBh3oSjoKhJ/HzeRGcnfc3eoG6BnJ4WTfLHV+V690Ds
-         021sTngeo673+xOmG78xmQ164OJFTKVR1vwVuatGhWz8L+/qAFAkqtQDdlcCl39aqhbn
-         xfzg==
+        d=google.com; s=20221208; t=1690496812; x=1691101612;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Y8k3rjyBf0fojb2EPgR8sOqghPhE9G594McR+LDMAVU=;
+        b=D8uvkEu4/smEbpJTeMq90Bq5KeP1e5xIGLkQWzLEkXeN8AQU0NkbUy0zuQd+TUDBSx
+         k3+CzER9oXoVsUCZvuh9ZIN4VObo+hEN4Z+y+rd2eVuE4GcNw/Ge5AGR5mdVOQA76bwG
+         RNF1S8VERGMdefiESkMUi5anwpf8ky6b04huvSD7HuzDBWA7L1zc9uqa9vXivFgWWNuz
+         Iho8dePREXhDWuWuG/4dhsZjV+1VOiSIAAkrXITi6ge7gaLlbxA3VbqTOo3LaknExZlo
+         ubzzY+BjDM4VT64nFYkLUAMdC3XqpY8qwN3NTMwuL/P/ctD0iXxag6tLvhN2RzQTBur3
+         Dk+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690482018; x=1691086818;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PcBP1XxjNmbI4nocR7IgV+AOIx8tJfQjnUff81XdeXk=;
-        b=Y5OVvd5p9VIJvWFv1n+9bIbiV21umyd7lMPcLfE/7O5ZzGQSEodSCHToPQXGCcKxsQ
-         Kxdtpq6dvchobw9BSmZ9QW9ojSXOxwuva7DKnFGK1Zt7/cWFCtVqp1Z4BboAFNJxEx8M
-         kNwxOnH+/DjWv6D8DA+P9snG7PIgbIaH3jbOxOO2u5LDMGlshqWwjCD1jhkUZESp78+G
-         cQqrMVVhd4razsL0E3DniEtu5x3sc+zt0OBw6I0TR8A6f/x+syd59yfcOg/JJ8q5GbEM
-         IoFUZe7ljH8DEg1sFl9O5Zp2cAVLq9SHRKwIYJyuvWAEzovIey6NZMTmnvMncbP2OCa/
-         2VDg==
-X-Gm-Message-State: ABy/qLZeIG0JrQOmHw4NQ9Mqu5g5gF13XAZ+G/Sp+bFNPWzAOUMOSz2I
-	e/ZjnYdQytqJsbd5Hay4y+Czs1QMl2YZubDJpiE=
-X-Google-Smtp-Source: APBJJlFPl2lF0jRo19iFxLEDUyQa77ORbE9AUEy7bgjgr6d9GCXOOYgckvuCBn6snl2msBeG/jmI+TISKxYvF1QLF2I=
-X-Received: by 2002:ac8:5996:0:b0:403:cffa:e79d with SMTP id
- e22-20020ac85996000000b00403cffae79dmr407017qte.12.1690482018256; Thu, 27 Jul
- 2023 11:20:18 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230707095415.1449376-1-arnd@kernel.org> <20230707095415.1449376-2-arnd@kernel.org>
- <ZKluqG2ZqKtAmnEG@alpha.franken.de>
-In-Reply-To: <ZKluqG2ZqKtAmnEG@alpha.franken.de>
-From: cp <carlojpisani@gmail.com>
-Date: Thu, 27 Jul 2023 20:20:06 +0200
-Message-ID: <CA+QBN9C8ZfQa1dtGSh-pmywnKaGETZA+N-3T78R2b8mpYN0fgQ@mail.gmail.com>
-Subject: Algorithmic P-4000i, looking for the board manual
-To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Content-Type: multipart/alternative; boundary="000000000000328b0f06017c047a"
+        d=1e100.net; s=20221208; t=1690496812; x=1691101612;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Y8k3rjyBf0fojb2EPgR8sOqghPhE9G594McR+LDMAVU=;
+        b=XNOB0/JU87fcN57vuEcxrh2fsT+RUb9MIGPUoGYGTITijbUPbkxS0az9m+Q9yTvAZW
+         41FrAdnIr8Akl6JRAQ8SEI1WwaakhwlA3UdvinYkqTxoe2JSXT8d60AMt9P3eNU6e74y
+         Tgh9WAz3rWf7TOKChzrJL+Bs2UVOLjdf8vwEimzUlDg9lx9FgHIcuAqttxkFALQl9HtN
+         0VpuJtMdBzSxVj9fVVgNw0q0QS34yNnwH6wsN6Vz8l1fbYaWf+jc3eWyL+kOzbqgdo/5
+         rN5OIBq4zeD86aSUViJkhrlVjloqTrvZSGh4FS1GSuWTXMqP7stJ9cd/QPK/6uj02Aky
+         QZkQ==
+X-Gm-Message-State: ABy/qLZwuOh/a/Fm5zL1NTC2EAOujLAU3a220maWt/MfnCoTJAq5X3tB
+	ac4+lAMUUxf9fSRcde6lhdMtF4aDmvOjuDtP0g==
+X-Google-Smtp-Source: APBJJlEBTUBehPEZg2R3Xd62gIsjVc6xsHEJaqFFsRtVLEpia0yBfJf6qBbvR8t5/rEX6B3ZnlKWSdJI2cgI6ejYLQ==
+X-Received: from jstitt-linux1.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:23b5])
+ (user=justinstitt job=sendgmr) by 2002:a05:6870:5b0d:b0:1bb:785d:7436 with
+ SMTP id ds13-20020a0568705b0d00b001bb785d7436mr961489oab.10.1690496812558;
+ Thu, 27 Jul 2023 15:26:52 -0700 (PDT)
+Date: Thu, 27 Jul 2023 22:26:41 +0000
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIACDvwmQC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI2MDcyNz3eL80rwUIJmsm1aco2uSlmxqamaZYm5umKoE1FNQlJqWWQE2Lzq 2thYAMKv4Nl8AAAA=
+X-Developer-Key: i=justinstitt@google.com; a=ed25519; pk=tC3hNkJQTpNX/gLKxTNQKDmiQl6QjBNCGKJINqAdJsE=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1690496811; l=2165;
+ i=justinstitt@google.com; s=20230717; h=from:subject:message-id;
+ bh=xEnu5xQr3cyZZvwQfMubiCiEuFBVC3Uk0Y9589JdUxw=; b=hmOqBlRYlYKaC3Yr5Zy8g3r9+9++L/pbK5ub/HORCIbyUCI0NGjnrADamWXFeaNB3CVKyg4I+
+ L5n1tag1LikDFx+k0EHDanF323xxdNABjjW0T5SEFnG7vM0e2joX6sH
+X-Mailer: b4 0.12.3
+Message-ID: <20230727-sound-soc-fsl-v1-1-4fc0ed7e0366@google.com>
+Subject: [PATCH] ASoC: fsl_micfil: refactor deprecated strncpy
+From: Justin Stitt <justinstitt@google.com>
+To: Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
+	Fabio Estevam <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Content-Type: text/plain; charset="utf-8"
 X-Mailman-Approved-At: Fri, 28 Jul 2023 08:48:48 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -75,35 +83,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, linux-ia64@vger.kernel.org, dri-devel@lists.freedesktop.org, Russell King <linux@armlinux.org.uk>, linux-riscv@lists.infradead.org, WANG Xuerui <kernel@xen0n.name>, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, javierm@redhat.com, Ard Biesheuvel <ardb@kernel.org>, Matt Turner <mattst88@gmail.com>, Albert Ou <aou@eecs.berkeley.edu>, Arnd Bergmann <arnd@arndb.de>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, Arnd Bergmann <arnd@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, Thomas Zimmermann <tzimmermann@suse.de>, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: alsa-devel@alsa-project.org, Justin Stitt <justinstitt@google.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---000000000000328b0f06017c047a
-Content-Type: text/plain; charset="UTF-8"
+`strncpy` is deprecated for use on NUL-terminated destination strings [1].
 
-hi guys
-I am looking for board manual of the old Algorithmic P-4000i.
-the purpose is to restore an old board for educational.
+A suitable replacement is `strscpy` [2] due to the fact that it
+guarantees NUL-termination on its destination buffer argument which is
+_not_ always the case for `strncpy`!
 
-Does anyone happen to have the manual or info on the board?
-let me know
+In this case, though, there was great care taken to ensure that the
+destination buffer would be NUL-terminated through the use of `len - 1`
+ensuring that the previously zero-initialized buffer would not overwrite
+the last NUL byte. This means that there's no bug here.
 
-C.
+However, `strscpy` will add a mandatory NUL byte to the destination
+buffer as promised by the following `strscpy` implementation [3]:
+|       /* Hit buffer length without finding a NUL; force NUL-termination. */
+|       if (res)
+|               dest[res-1] = '\0';
 
---000000000000328b0f06017c047a
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+This means we can lose the `- 1` which clears up whats happening here.
+All the while, we get one step closer to eliminating the ambiguous
+`strncpy` api in favor of its less ambiguous replacement like `strscpy`,
+`strscpy_pad`, `strtomem` and `strtomem_pad` amongst others.
 
-<div dir=3D"ltr">hi guys<div>I am looking for board manual of the old=C2=A0=
-<span style=3D"color:rgb(52,73,94);font-family:sans-serif;font-size:16px">A=
-lgorithmic P-4000i.</span></div><div><span style=3D"color:rgb(52,73,94);fon=
-t-family:sans-serif;font-size:16px">the purpose is to restore an old board =
-for=C2=A0</span><span style=3D"color:rgb(52,73,94);font-family:sans-serif;f=
-ont-size:16px">educational.</span></div><div><span style=3D"color:rgb(52,73=
-,94);font-family:sans-serif;font-size:16px"><br></span></div><div>Does anyo=
-ne happen to have the manual or info on the board?<span style=3D"color:rgb(=
-52,73,94);font-family:sans-serif;font-size:16px"><br></span></div><div>let =
-me know</div><div><br></div><div>C.</div></div>
+[1]: www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings
+[2]: manpages.debian.org/testing/linux-manual-4.8/strscpy.9.en.html
+[3]: https://elixir.bootlin.com/linux/v6.3/source/lib/string.c#L183
 
---000000000000328b0f06017c047a--
+Link: https://github.com/KSPP/linux/issues/90
+Signed-off-by: Justin Stitt <justinstitt@google.com>
+---
+ sound/soc/fsl/fsl_micfil.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
+index 3f08082a55be..fe28b27e50d0 100644
+--- a/sound/soc/fsl/fsl_micfil.c
++++ b/sound/soc/fsl/fsl_micfil.c
+@@ -1044,7 +1044,7 @@ static int fsl_micfil_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	micfil->pdev = pdev;
+-	strncpy(micfil->name, np->name, sizeof(micfil->name) - 1);
++	strscpy(micfil->name, np->name, sizeof(micfil->name));
+ 
+ 	micfil->soc = of_device_get_match_data(&pdev->dev);
+ 
+
+---
+base-commit: 57012c57536f8814dec92e74197ee96c3498d24e
+change-id: 20230727-sound-soc-fsl-4fc5569d771e
+
+Best regards,
+--
+Justin Stitt <justinstitt@google.com>
+
