@@ -2,48 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5467764ECF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 11:10:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A426F764F64
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 11:20:58 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=Zwk9FRWm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=PWL77lXo;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RBQ3V43rvz3cNF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 19:10:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RBQHD3v0pz3cGC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 19:20:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=Zwk9FRWm;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=PWL77lXo;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.200; helo=relay7-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::227; helo=relay7-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RBQ2c63Phz30F5
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jul 2023 19:09:58 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 5973D20002;
-	Thu, 27 Jul 2023 09:09:49 +0000 (UTC)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RBQGM3GGpz3cJS
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jul 2023 19:20:09 +1000 (AEST)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 0FF5120009;
+	Thu, 27 Jul 2023 09:19:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1690448995;
+	t=1690449599;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rK0kgw5LzcKtfaISYOOP5YAwk737ZNSt9k6WE/IR5iU=;
-	b=Zwk9FRWmX7HtxhycqPP+GSgdJ/lE0Jsf02fG5eRjCnrnNZdzdBeO3YgnQihx1VtKrAmoHu
-	R+0fUpDKNNSvxBL0sOdsfTkUTdxLJcK2e+JZfYc0cSUDB5fpsHtZqGaxUsNmy6IFaMmuiz
-	dzpVaJAU0Qm7BptVX7fr77ZTMdjJ+WBVFl1VyLwsAx0VzlYMw72vhsGb6BbtbtId7re+rG
-	wdUrJrAqrkpatIxufuuSXEgZH0QIUrPoKcVDJ/w/T9BgSHStT8mQmL1ENohCMeFat8FBGp
-	lN6gQStuXkUsJpILuQdCU3oeVTw6XMMCMt/6OO6NPj+uuYPoHKtcIf2ONnIQIg==
-Date: Thu, 27 Jul 2023 11:09:48 +0200
+	bh=c5uC+Ma0+GEtuYByV1fh5wNUb6P+Qvr99RmBUDDugXA=;
+	b=PWL77lXoaqzqWHDfFIl9jdKdv1M4MuRzjjxUGyq7w0BvAYoX3gBbaTeU5NM2l5MhMLkRlB
+	8Qc/C0E21db1XjGM/LWuV5Bj7nKFIgG6tObRGld5USHJ0Pu9/09eNFltserlLCc+0QRfod
+	4UB45gpmXCPKsJsQV3ekLDhlsSgr5UHkjj3htsrfjNdmwYc+SnTrWkoHiO5mF7G0E5vz+4
+	mmPH7kW2lmk4+Aa6SZuxQXNnb6Zu7inndp5s2/t1YafIK5XA0Pcx5pjnqwsmpk/zP61pn8
+	RIvivFsxuBkNmUPozqTqQeCifCJZ/iII6VSnwNSdw00aHZzQ5xSykuJAwf4yqQ==
+Date: Thu, 27 Jul 2023 11:19:55 +0200
 From: Herve Codina <herve.codina@bootlin.com>
 To: Conor Dooley <conor@kernel.org>
-Subject: Re: [PATCH v2 05/28] dt-bindings: net: Add support for QMC HDLC
-Message-ID: <20230727110948.7926a532@bootlin.com>
-In-Reply-To: <20230727-talcum-backside-5bdbe2171fb6@spud>
+Subject: Re: [PATCH v2 27/28] dt-bindings: net: fsl,qmc-hdlc: Add framer
+ support
+Message-ID: <20230727111955.43571766@bootlin.com>
+In-Reply-To: <20230727-jailer-recede-a62ab2238581@spud>
 References: <20230726150225.483464-1-herve.codina@bootlin.com>
-	<20230726150225.483464-6-herve.codina@bootlin.com>
-	<20230727-talcum-backside-5bdbe2171fb6@spud>
+	<20230726150225.483464-28-herve.codina@bootlin.com>
+	<20230727-jailer-recede-a62ab2238581@spud>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
@@ -68,98 +69,59 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 Hi Conor,
 
-On Thu, 27 Jul 2023 09:19:59 +0100
+On Thu, 27 Jul 2023 09:12:01 +0100
 Conor Dooley <conor@kernel.org> wrote:
 
-> On Wed, Jul 26, 2023 at 05:02:01PM +0200, Herve Codina wrote:
-> > The QMC (QUICC mutichannel controller) is a controller present in some
-> > PowerQUICC SoC such as MPC885.
-> > The QMC HDLC uses the QMC controller to transfer HDLC data.
+> On Wed, Jul 26, 2023 at 05:02:23PM +0200, Herve Codina wrote:
+> > A framer can be connected to the QMC HDLC.
+> > If present, this framer is the interface between the TDM used by the QMC
+> > HDLC and the E1/T1 line.
+> > The QMC HDLC can use this framer to get information about the line and
+> > configure the line.
 > > 
-> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> > ---
-> >  .../devicetree/bindings/net/fsl,qmc-hdlc.yaml | 41 +++++++++++++++++++
-> >  1 file changed, 41 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/net/fsl,qmc-hdlc.yaml
+> > Add an optional framer property to reference the framer itself.
 > > 
-> > diff --git a/Documentation/devicetree/bindings/net/fsl,qmc-hdlc.yaml b/Documentation/devicetree/bindings/net/fsl,qmc-hdlc.yaml
-> > new file mode 100644
-> > index 000000000000..8bb6f34602d9
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/net/fsl,qmc-hdlc.yaml
-> > @@ -0,0 +1,41 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/net/fsl,qmc-hdlc.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: QMC HDLC  
+> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>  
 > 
-> "QMC HDLC" seems excessively terse.
+> Why not fully describe the hardware in one patch in this series, rather
+> than split this over two different ones?
 
-The name was based on the fsl,qmc-audio.yaml already present upstream.
-  https://elixir.bootlin.com/linux/v6.4/source/Documentation/devicetree/bindings/sound/fsl,qmc-audio.yaml
+I agree, this can be squashed with a previous commit.
+My intention was to keep things separated in this first series.
 
-If needed, I can change to:
-  title: QMC (QUICC Multichannel Controller) HDLC
-Let me known if it is better to you.
+The framer property makes sense only if the stuff related the generic framer
+(previous patches) are accepted whereas the QMC HDLC previous binding can be
+accepted without this framer property.
+I though it would be easier to review the full series with separated
+modifications.
 
-> 
-> > +
-> > +maintainers:
-> > +  - Herve Codina <herve.codina@bootlin.com>
-> > +
-> > +description: |
-> > +  The QMC HDLC uses a QMC (QUICC Multichannel Controller) channel to transfer
-> > +  HDLC data.
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: fsl,qmc-hdlc
-> > +
-> > +  fsl,qmc-chan:  
-> 
-> Perhaps I am just showing my lack of knowledge in this area, but what is
-> fsl specific about wanting a reference to the channel of a "QMC"?
-> Is this something that hardware from other manufacturers would not also
-> want to do?
-
-The QMC and the QMC channel are something specific to the SoC. This IP is only
-available on some Freescale/NXP SoCs.
-
-When I upstreamed the 'fsl,qmc-audio.yaml', I first used a generic name for this
-property and Kristoff asked to change to a vendor prefixed name.
-  https://lore.kernel.org/linux-kernel/1dfade07-f8c4-2e16-00dc-c7d183708259@linaro.org/
-
-Based on this, as the property 'fsl,qmc-chan' has the exact same meaning in
-fsl,qmc-audio.yaml and fsl,qmc-hdlc.yaml, I use the same name.
+That's said, I will squash this patch with the patch 5 ("dt-bindings: net:
+Add support for QMC HDLC") in the next iteration.
 
 Best regards,
 Hervé
 
 > 
-> > +    $ref: /schemas/types.yaml#/definitions/phandle-array
-> > +    items:
-> > +      - items:
-> > +          - description: phandle to QMC node
-> > +          - description: Channel number
+> > ---
+> >  Documentation/devicetree/bindings/net/fsl,qmc-hdlc.yaml | 5 +++++
+> >  1 file changed, 5 insertions(+)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/net/fsl,qmc-hdlc.yaml b/Documentation/devicetree/bindings/net/fsl,qmc-hdlc.yaml
+> > index 8bb6f34602d9..bf29863ab419 100644
+> > --- a/Documentation/devicetree/bindings/net/fsl,qmc-hdlc.yaml
+> > +++ b/Documentation/devicetree/bindings/net/fsl,qmc-hdlc.yaml
+> > @@ -27,6 +27,11 @@ properties:
+> >        Should be a phandle/number pair. The phandle to QMC node and the QMC
+> >        channel to use.
+> >  
+> > +  framer:
+> > +    $ref: /schemas/types.yaml#/definitions/phandle
 > > +    description:
-> > +      Should be a phandle/number pair. The phandle to QMC node and the QMC
-> > +      channel to use.
+> > +      phandle to the framer node
 > > +
-> > +required:
-> > +  - compatible
-> > +  - fsl,qmc-chan
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    hdlc {
-> > +        compatible = "fsl,qmc-hdlc";
-> > +        fsl,qmc-chan = <&qmc 16>;
-> > +    };
+> >  required:
+> >    - compatible
+> >    - fsl,qmc-chan
 > > -- 
 > > 2.41.0
 > >   
