@@ -2,58 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A480776505A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 11:54:16 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CkkEAksC;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C21676528D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 13:36:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RBR1f40Ylz3cR8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 19:54:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RBTH50kRdz3cVC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jul 2023 21:36:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CkkEAksC;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=conor@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=aculab.com (client-ip=185.58.85.151; helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 308 seconds by postgrey-1.37 at boromir; Thu, 27 Jul 2023 19:07:33 AEST
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RBR0l3M7yz3c7f
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jul 2023 19:53:27 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 6D6DD61DE0;
-	Thu, 27 Jul 2023 09:53:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3684EC433C7;
-	Thu, 27 Jul 2023 09:53:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1690451603;
-	bh=EdAZ9yCp4NjWVpXzH6AhTQQee2XgoMhciT9wDsXDj3c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CkkEAksCAqLlikCk9JjEcjPhux5P1puAANDl8+6/+YFdpP9MyxEJZmjYWgS9TNlVR
-	 D/PuEZi9uV2jU/E9C4t4GZeWLZTMBKdLz3XRpkg24gGeTKUymJLOlyRVjPhhAUhd1J
-	 R7XfjrbP+K1pz3BowFAxrPEyZSH7yb3kNfhihY0wUPK43CKgVjQtKxfdhC+BKb4kSZ
-	 vauM0v1qddB3XFsxJ84JTIG98VtZ4Sezo0oPi8G0dyOHMT7P7uRtPK7SJwMFGT0iRT
-	 wsSpKH6SkCMDV4cWplBERK47w7DXi27cZLxp9y98ByFJ5lFKGEO9cER2P8IuDSrw2p
-	 /+AUJuabvTyIw==
-Date: Thu, 27 Jul 2023 10:53:15 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Herve Codina <herve.codina@bootlin.com>
-Subject: Re: [PATCH v2 05/28] dt-bindings: net: Add support for QMC HDLC
-Message-ID: <20230727-decidable-sterile-06ef617c144b@spud>
-References: <20230726150225.483464-1-herve.codina@bootlin.com>
- <20230726150225.483464-6-herve.codina@bootlin.com>
- <20230727-talcum-backside-5bdbe2171fb6@spud>
- <20230727110948.7926a532@bootlin.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RBPzn12t1z3c37
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jul 2023 19:07:30 +1000 (AEST)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-59-jWjmQDvBMMi6NLEiZstNIw-1; Thu, 27 Jul 2023 10:01:12 +0100
+X-MC-Unique: jWjmQDvBMMi6NLEiZstNIw-1
+Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
+ (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Thu, 27 Jul
+ 2023 10:01:06 +0100
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Thu, 27 Jul 2023 10:01:06 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Aleksa Sarai' <cyphar@cyphar.com>, Alexey Gladkov <legion@kernel.org>
+Subject: RE: [PATCH v4 2/5] fs: Add fchmodat2()
+Thread-Topic: [PATCH v4 2/5] fs: Add fchmodat2()
+Thread-Index: AQHZvxZDeKGBJJpK+0qJRy2agWp2qK/NUtoA
+Date: Thu, 27 Jul 2023 09:01:06 +0000
+Message-ID: <d052e1266bf042f9b4961bbf42261a55@AcuMS.aculab.com>
+References: <cover.1689074739.git.legion@kernel.org>
+ <cover.1689092120.git.legion@kernel.org>
+ <f2a846ef495943c5d101011eebcf01179d0c7b61.1689092120.git.legion@kernel.org>
+ <njnhwhgmsk64e6vf3ur7fifmxlipmzez3r5g7ejozsrkbwvq7w@tu7w3ieystcq>
+In-Reply-To: <njnhwhgmsk64e6vf3ur7fifmxlipmzez3r5g7ejozsrkbwvq7w@tu7w3ieystcq>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="O7XSXK7XxHjViR5H"
-Content-Disposition: inline
-In-Reply-To: <20230727110948.7926a532@bootlin.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Mailman-Approved-At: Thu, 27 Jul 2023 21:35:36 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,64 +62,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, alsa-devel@alsa-project.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Linus Walleij <linus.walleij@linaro.org>, Jaroslav Kysela <perex@perex.cz>, Eric Dumazet <edumazet@google.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Fabio Estevam <festevam@gmail.com>, Qiang Zhao <qiang.zhao@nxp.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Lee Jones <lee@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, Nicolin Chen <nicoleotsuka@gmail.com>, linux-gpio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Takashi Iwai <tiwai@suse.com>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>, Liam Girdwood <lgirdwood@gmail.com>, Li Yang <leoyang.li@nxp.com>, Mark Brown <broonie@kernel.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <dave
- m@davemloft.net>
+Cc: "dalias@libc.org" <dalias@libc.org>, "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>, "fenghua.yu@intel.com" <fenghua.yu@intel.com>, "alexander.shishkin@linux.intel.com" <alexander.shishkin@linux.intel.com>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>, Palmer Dabbelt <palmer@sifive.com>, "x86@kernel.org" <x86@kernel.org>, "stefan@agner.ch" <stefan@agner.ch>, "ldv@altlinux.org" <ldv@altlinux.org>, "dhowells@redhat.com" <dhowells@redhat.com>, "kim.phillips@arm.com" <kim.phillips@arm.com>, "paulus@samba.org" <paulus@samba.org>, "deepa.kernel@gmail.com" <deepa.kernel@gmail.com>, "hpa@zytor.com" <hpa@zytor.com>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, "will@kernel.org" <will@kernel.org>, "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, "hare@suse.com" <hare@suse.com>, "gor@linux.ibm.com" <gor@linux.ibm.com>, "ysato@users.sourceforge.jp" <ysato@users.sourceforge.jp>, "deller@gmx.de
+ " <deller@gmx.de>, "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>, "borntraeger@de.ibm.com" <borntraeger@de.ibm.com>, "mingo@redhat.com" <mingo@redhat.com>, "geert@linux-m68k.org" <geert@linux-m68k.org>, "jhogan@kernel.org" <jhogan@kernel.org>, "mattst88@gmail.com" <mattst88@gmail.com>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "fweimer@redhat.com" <fweimer@redhat.com>, Arnd Bergmann <arnd@arndb.de>, "glebfm@altlinux.org" <glebfm@altlinux.org>, "tycho@tycho.ws" <tycho@tycho.ws>, "acme@kernel.org" <acme@kernel.org>, "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>, "bp@alien8.de" <bp@alien8.de>, "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, "luto@kernel.org" <luto@kernel.org>, "namhyung@kernel.org" <namhyung@kernel.org>, "tglx@linutronix.de" <tglx@linutronix.de>, "christian@brauner.io" <christian@brauner.io>, "axboe@kernel.dk" <axboe@kernel.dk>, "James.Bottomley@hansenpartnership.com" <
+ James.Bottomley@hansenpartnership.com>, "monstr@monstr.eu" <monstr@monstr.eu>, "tony.luck@intel.com" <tony.luck@intel.com>, "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, "linux-api@vger.kernel.org" <linux-api@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, "ralf@linux-mips.org" <ralf@linux-mips.org>, "peterz@infradead.org" <peterz@infradead.org>, "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "ink@jurassic.park.msu.ru" <ink@jurassic.park.msu.ru>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "davem@davemloft.net" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+From: Aleksa Sarai
+> Sent: 25 July 2023 17:36
+...
+> We almost certainly want to support AT_EMPTY_PATH at the same time.
+> Otherwise userspace will still need to go through /proc when trying to
+> chmod a file handle they have.
 
---O7XSXK7XxHjViR5H
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+That can't be allowed.
 
-On Thu, Jul 27, 2023 at 11:09:48AM +0200, Herve Codina wrote:
-> On Thu, 27 Jul 2023 09:19:59 +0100
-> Conor Dooley <conor@kernel.org> wrote:
-> > On Wed, Jul 26, 2023 at 05:02:01PM +0200, Herve Codina wrote:
+Just because a process has a file open and write access to
+the directory that contains it doesn't mean they are allowed
+to change the file permissions.
 
-> If needed, I can change to:
->   title: QMC (QUICC Multichannel Controller) HDLC
-> Let me known if it is better to you.
+They also need directory search access from a directory
+they have open through to the containing directory.
 
-If it were me writing the binding, I'd probably use something like
-"Freescale/NXP QUICC Multichannel Controller (QMC) HDLC", but it is not
-a big deal, I just had a "wtf is this" moment :)
+=09David
 
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK
+Registration No: 1397386 (Wales)
 
-
-> > > +  fsl,qmc-chan:
-> >=20
-> > Perhaps I am just showing my lack of knowledge in this area, but what is
-> > fsl specific about wanting a reference to the channel of a "QMC"?
-> > Is this something that hardware from other manufacturers would not also
-> > want to do?
->=20
-> The QMC and the QMC channel are something specific to the SoC. This IP is=
- only
-> available on some Freescale/NXP SoCs.
->=20
-> When I upstreamed the 'fsl,qmc-audio.yaml', I first used a generic name f=
-or this
-> property and Kristoff asked to change to a vendor prefixed name.
->   https://lore.kernel.org/linux-kernel/1dfade07-f8c4-2e16-00dc-c7d1837082=
-59@linaro.org/
->=20
-> Based on this, as the property 'fsl,qmc-chan' has the exact same meaning =
-in
-> fsl,qmc-audio.yaml and fsl,qmc-hdlc.yaml, I use the same name.
-
-Okay, thanks for explaining!
-
---O7XSXK7XxHjViR5H
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZMI+iwAKCRB4tDGHoIJi
-0qi3APwL74Mb2llAu7YBw/3bmeFa7gR7fA/ofP+aXSE3vKilNwEAr7q9DVx5VZdT
-1kkQaOjZ61gQb0aNwEfyWDLEqkpWAgw=
-=qYki
------END PGP SIGNATURE-----
-
---O7XSXK7XxHjViR5H--
