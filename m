@@ -1,72 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 402A5766E16
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 15:24:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33674766EC8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 15:50:29 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=googlemail.com header.i=@googlemail.com header.a=rsa-sha256 header.s=20221208 header.b=DNbuPt/1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aNF07MRB;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RC7fK17t8z3cSY
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 23:24:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RC8Cl0pllz3cGx
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 23:50:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=googlemail.com header.i=@googlemail.com header.a=rsa-sha256 header.s=20221208 header.b=DNbuPt/1;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aNF07MRB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=googlemail.com (client-ip=2607:f8b0:4864:20::e31; helo=mail-vs1-xe31.google.com; envelope-from=cgzones@googlemail.com; receiver=lists.ozlabs.org)
-Received: from mail-vs1-xe31.google.com (mail-vs1-xe31.google.com [IPv6:2607:f8b0:4864:20::e31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=srs0=4jn+=do=robh_at_kernel.org=rob@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RC7dR56lMz2yTx
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jul 2023 23:24:10 +1000 (AEST)
-Received: by mail-vs1-xe31.google.com with SMTP id ada2fe7eead31-440b53841a4so558714137.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jul 2023 06:24:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20221208; t=1690550647; x=1691155447;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0kcj3VWwZAJ2nXS/MjDJ5t2M3CtqdxPFftJUiEtnT0s=;
-        b=DNbuPt/1Vpm37NLg+nmMEoQyilVWEIBDoKX5uLqc+2gWqmJldV5uVhOiluB8QrhUjK
-         cAcE50nKty1ltbwwsURGorw7XQ6FS6oIf+rhx9WOk8aMFyyPidvJyHNTTaFkOee7JiTR
-         iNdvFmg3uPAdkWhtCGSrVVDwg/WcNZmdCCnfz5dAN4Lk3nzfamxmziV4OKvhi5xu+eW2
-         +mM3D7V9elPTd/cY4mvjjWa1Ztl904f+s7uslYEHVYR9ml/Q/d3TEwL/h+zakMnx4+zS
-         oAf3ICtIuZMXqq8DuNAHAHABI/+CRAZ1FjvrWsPA9ICTMKAzHaDz5XXhmQa8aAnEi4Km
-         9aZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690550647; x=1691155447;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0kcj3VWwZAJ2nXS/MjDJ5t2M3CtqdxPFftJUiEtnT0s=;
-        b=JHqYuoqqYApRwVZiYNNeqQIg4KdgxfKx+Fk9qxoQjqZyoGAeHjsexz2p3DNpKr1bLT
-         dCXRC/duKJTeaJunYUzT4qYFMBwlj/fIimVDvBwfpzXe5UBaKZAdQlEJupMQdCDCt8hK
-         7f1GtNSQ/U0id4bS+xLNYkfhHDzCWgwCsPTcGFgn99w4r/zuqRrrI8ILdAwZWnKveS6K
-         KAInEHZRM676V7LX5SZKy8EYSviCqW67GYg33ic2t4OhfuFTYzv4A0W+VRl93PzYMb4w
-         XPzjkCRzSM5bwr3MGtL6wMRU1RzYemuHKbjweMYnvb2+eli5g1vZsiZMMjsRyY0WIItt
-         gJdw==
-X-Gm-Message-State: ABy/qLYYaEgPzKYAOwPGkuJakNWI1mb/rTBQewmVRrBuhMXjawLsueAB
-	yjxCOpUGLG15Z2BkVbCybmRm6q200G7JZDTz6f0=
-X-Google-Smtp-Source: APBJJlEdFSq/qkSG4x58s4Td5/s8KFZeqscpYKJANVhmEctzf+sC16le2cznwm3fviN6ULiTqJNGrZsVsH5/9MspG20=
-X-Received: by 2002:a05:6102:3569:b0:445:208:3516 with SMTP id
- bh9-20020a056102356900b0044502083516mr1320238vsb.0.1690550647036; Fri, 28 Jul
- 2023 06:24:07 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RC89s0rjDz2yVy;
+	Fri, 28 Jul 2023 23:48:49 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 97EA662139;
+	Fri, 28 Jul 2023 13:48:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C30CDC433C8;
+	Fri, 28 Jul 2023 13:48:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1690552125;
+	bh=7lriKnjSzsL6NUBoZ2qDUpXUnUvaQF/GYKBnxTvTZ5w=;
+	h=From:To:Cc:Subject:Date:From;
+	b=aNF07MRBOHTU8baIAQfyAHkKYGZGnf+FSa/gKNQYfAZzBsyJmp+PZNRbrIJ436+ZD
+	 FC6YWvl06ztVQ1PjoCqQsp8yFTGvciP/noD1f6rHrOTjfx25nfbkbVpmVNJzkHtNH7
+	 LLOhJa7gBxAWsS8KFBJgQyRq/czHc3oU5swwWt5YXLVksykwYZ2T7miNjJvC565of+
+	 WFPr2ulhkWVyRrPpoxP0ou4q3O9KOPoLiDYJnSOhlSPdbwBaE/UILM0bODo2VhBvNS
+	 chz22/Sm2QMGPCUknt9Y/UesPLdtj5pDHrG6TdBGLxXsHyPm8FuBcZLrIBSZTdV3p3
+	 PmT89LTND8sng==
+Received: (nullmailer pid 3224486 invoked by uid 1000);
+	Fri, 28 Jul 2023 13:48:41 -0000
+From: Rob Herring <robh@kernel.org>
+To: Olivia Mackall <olivia@selenic.com>, Herbert Xu <herbert@gondor.apana.org.au>, Nicolas Ferre <nicolas.ferre@microchip.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@microchip.com>, Florian Fainelli <florian.fainelli@broadcom.com>, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, Avi Fishman <avifishman70@gmail.com>, Tomer Maimon <tmaimon77@gmail.com>, Tali Perry <tali.perry1@gmail.com>, Patrick Venture <venture@google.com>, Nancy Yuen <yuenn@google.com>, Benjamin Fair <benjaminfair@google.com>, Deepak Saxena <dsaxena@plexity.net>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>
+Subject: [PATCH v3] hwrng: Explicitly include correct DT includes
+Date: Fri, 28 Jul 2023 07:48:27 -0600
+Message-Id: <20230728134828.3224218-1-robh@kernel.org>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-References: <20230620131223.431281-1-omosnace@redhat.com> <87edkseqf8.fsf@mail.lhotse>
- <CAFqZXNtsCKsr0YHPCSJJQ5An=RoMhf0dufgr7P_SnAAv7CrLjw@mail.gmail.com>
- <CAEjxPJ643nmW6HZOmQGNFDj-cQGf-x3jzZcrO8BHVN9thM23Dw@mail.gmail.com> <CAFqZXNuM-807tmT84rZ25xwh078BxvSfav88AozH=tt=J+dCrA@mail.gmail.com>
-In-Reply-To: <CAFqZXNuM-807tmT84rZ25xwh078BxvSfav88AozH=tt=J+dCrA@mail.gmail.com>
-From: =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
-Date: Fri, 28 Jul 2023 15:23:56 +0200
-Message-ID: <CAJ2a_DdZHFTHiRu5+ZENAwUq1Cor-jVoE9qdhb2x5uSej-MaRA@mail.gmail.com>
-Subject: Re: Login broken with old userspace (was Re: [PATCH v2] selinux:
- introduce an initial SID for early boot processes)
-To: Ondrej Mosnacek <omosnace@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,154 +61,222 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Moore <paul@paul-moore.com>, selinux@vger.kernel.org, Stephen Smalley <stephen.smalley.work@gmail.com>, LKML <linux-kernel@vger.kernel.org>, linux-next@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: devicetree@vger.kernel.org, openbmc@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-rpi-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 28 Jul 2023 at 15:14, Ondrej Mosnacek <omosnace@redhat.com> wrote:
->
-> On Fri, Jul 28, 2023 at 1:52=E2=80=AFPM Stephen Smalley
-> <stephen.smalley.work@gmail.com> wrote:
-> >
-> > On Fri, Jul 28, 2023 at 7:36=E2=80=AFAM Ondrej Mosnacek <omosnace@redha=
-t.com> wrote:
-> > >
-> > > On Fri, Jul 28, 2023 at 4:12=E2=80=AFAM Michael Ellerman <mpe@ellerma=
-n.id.au> wrote:
-> > > >
-> > > > Ondrej Mosnacek <omosnace@redhat.com> writes:
-> > > > > Currently, SELinux doesn't allow distinguishing between kernel th=
-reads
-> > > > > and userspace processes that are started before the policy is fir=
-st
-> > > > > loaded - both get the label corresponding to the kernel SID. The =
-only
-> > > > > way a process that persists from early boot can get a meaningful =
-label
-> > > > > is by doing a voluntary dyntransition or re-executing itself.
-> > > >
-> > > > Hi,
-> > > >
-> > > > This commit breaks login for me when booting linux-next kernels wit=
-h old
-> > > > userspace, specifically Ubuntu 16.04 on ppc64le. 18.04 is OK.
-> > > >
-> > > > The symptom is that login never accepts the root password, it just
-> > > > always says "Login incorrect".
-> > > >
-> > > > Bisect points to this commit.
-> > > >
-> > > > Reverting this commit on top of next-20230726, fixes the problem
-> > > > (ie. login works again).
-> > > >
-> > > > Booting with selinux=3D0 also fixes the problem.
-> > > >
-> > > > Is this expected? The change log below suggests backward compatibil=
-ity
-> > > > was considered, is 16.04 just too old?
-> > >
-> > > Hi Michael,
-> > >
-> > > I can reproduce it on Fedora 38 when I boot with SELINUX=3Ddisabled i=
-n
-> > > /etc/selinux/config (+ a kernel including that commit), so it likely
-> > > isn't caused by the userspace being old. Can you check what you have
-> > > in /etc/selinux/config (or if it exists at all)?
-> > >
-> > > We have deprecated and removed the "runtime disable" functionality in
-> > > SELinux recently [1], which was used to implement "disabling" SELinux
-> > > via the /etc/selinux/config file, so now the situation (selinux=3D0 +
-> > > SELINUX=3Ddisabled in /etc/selinux/config) leads to a state where
-> > > SELinux is enabled, but no policy is loaded (and no enforcement is
-> > > done). Such a state mostly behaves as if SElinux was truly disabled
-> > > (via kernel command line), but there are some subtle differences and =
-I
-> > > believe we don't officially support it (Paul might clarify). With
-> > > latest kernels it is recommended to either disable SELinux via the
-> > > kernel command line (or Kconfig[2]) or to boot it in Enforcing or
-> > > Permissive mode with a valid/usable policy installed.
-> > >
-> > > So I wonder if Ubuntu ships by default with the bad configuration or
-> > > if it's just a result of using the custom-built linux-next kernel (or
-> > > some changes on your part). If Ubuntu's stock kernel is configured to
-> > > boot with SELinux enabled by default, they should also by default shi=
-p
-> > > a usable policy and SELINUX=3Dpermissive/enforcing in
-> > > /etc/selinux/config (or configure the kernel[2] or bootloader to boot
-> > > with SELinux disabled by default). (Although if they ship a pre-[1]
-> > > kernel, they may continue to rely on the runtime disable
-> > > functionality, but it means people will have to be careful when
-> > > booting newer or custom kernels.)
-> > >
-> > > That said, I'd like to get to the bottom of why the commit causes the
-> > > login to fail and fix it somehow. I presume something in PAM chokes o=
-n
-> > > the fact that userspace tasks now have "init" instead of "kernel" as
-> > > the pre-policy-load security context, but so far I haven't been able
-> > > to pinpoint the problem. I'll keep digging...
-> > >
-> > > [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.gi=
-t/commit/?id=3Df22f9aaf6c3d92ebd5ad9e67acc03afebaaeb289
-> > > [2] via CONFIG_LSM (or CONFIG_SECURITY_SELINUX_BOOTPARAM_VALUE on old=
-er kernels)
-> >
-> > Prior to selinux userspace commit
-> > 685f4aeeadc0b60f3770404d4f149610d656e3c8 ("libselinux:
-> > is_selinux_enabled(): drop no-policy-loaded test.") libselinux was
-> > checking the result of reading /proc/self/attr/current to see if it
-> > returned the "kernel" string as a means of detecting a system with
-> > SELinux enabled but no policy loaded, and treated that as if SELinux
-> > were disabled. Hence, this does break old userspace. Not sure though
-> > why you'd see the same behavior with modern libselinux.
->
-> Hm... now I tried booting the stock Fedora kernel (without the early
-> boot initial SID commit) and I got the same failure to login as with
-> the new kernel. So if Ubuntu 16.04 ships with pre-685f4aeeadc0
-> libselinux (quite possible), then it seems that the scenario with
-> terminal login + SELinux enabled + policy not loaded only works with
-> pre-685f4aeeadc0 libselinux and pre-5b0eea835d4e kernel, the other
-> combinations are broken. With pre-685f4aeeadc0 libselinux +
-> post-5b0eea835d4e kernel it is expected as you say (and probably
-> inevitable barring some hack on the kernel side), but it's not clear
-> why also only updating libselinux seems to break it... /sys/fs/selinux
-> is not mounted in my scenario, so there must be something else coming
-> into play.
->
->
-> --
-> Ondrej Mosnacek
-> Senior Software Engineer, Linux Security - SELinux kernel
-> Red Hat, Inc.
->
+The DT of_device.h and of_platform.h date back to the separate
+of_platform_bus_type before it was merged into the regular platform bus.
+As part of that merge prepping Arm DT support 13 years ago, they
+"temporarily" include each other. They also include platform_device.h
+and of.h. As a result, there's a pretty much random mix of those include
+files used throughout the tree. In order to detangle these headers and
+replace the implicit includes with struct declarations, users need to
+explicitly include the correct includes.
 
-Completely untested:
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+v3:
+ - Split out hw_random, ipmi and tpm
+v2:
+ - Fix build for pic32-rng.c dropping of_match_ptr()
+---
+ drivers/char/hw_random/atmel-rng.c     | 2 +-
+ drivers/char/hw_random/bcm2835-rng.c   | 3 +--
+ drivers/char/hw_random/ingenic-trng.c  | 2 +-
+ drivers/char/hw_random/iproc-rng200.c  | 3 +--
+ drivers/char/hw_random/npcm-rng.c      | 3 +--
+ drivers/char/hw_random/omap-rng.c      | 2 --
+ drivers/char/hw_random/omap3-rom-rng.c | 1 -
+ drivers/char/hw_random/pasemi-rng.c    | 3 +--
+ drivers/char/hw_random/pic32-rng.c     | 5 ++---
+ drivers/char/hw_random/stm32-rng.c     | 3 ++-
+ drivers/char/hw_random/xgene-rng.c     | 5 ++---
+ drivers/char/hw_random/xiphera-trng.c  | 1 -
+ 12 files changed, 12 insertions(+), 21 deletions(-)
 
-diff --git a/security/selinux/ss/services.c b/security/selinux/ss/services.=
-c
-index 2c5be06fbada..1ed275bd4551 100644
---- a/security/selinux/ss/services.c
-+++ b/security/selinux/ss/services.c
-@@ -1322,8 +1322,19 @@ static int security_sid_to_context_core(u32
-sid, char **scontext,
-        if (!selinux_initialized()) {
-                if (sid <=3D SECINITSID_NUM) {
-                        char *scontextp;
--                       const char *s =3D initial_sid_to_string[sid];
-+                       const char *s;
+diff --git a/drivers/char/hw_random/atmel-rng.c b/drivers/char/hw_random/atmel-rng.c
+index b8effe77d80f..a37367ebcbac 100644
+--- a/drivers/char/hw_random/atmel-rng.c
++++ b/drivers/char/hw_random/atmel-rng.c
+@@ -15,7 +15,7 @@
+ #include <linux/io.h>
+ #include <linux/iopoll.h>
+ #include <linux/hw_random.h>
+-#include <linux/of_device.h>
++#include <linux/of.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
+ 
+diff --git a/drivers/char/hw_random/bcm2835-rng.c b/drivers/char/hw_random/bcm2835-rng.c
+index e98fcac578d6..e19b0f9f48b9 100644
+--- a/drivers/char/hw_random/bcm2835-rng.c
++++ b/drivers/char/hw_random/bcm2835-rng.c
+@@ -8,8 +8,7 @@
+ #include <linux/io.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+-#include <linux/of_address.h>
+-#include <linux/of_platform.h>
++#include <linux/of.h>
+ #include <linux/platform_device.h>
+ #include <linux/printk.h>
+ #include <linux/clk.h>
+diff --git a/drivers/char/hw_random/ingenic-trng.c b/drivers/char/hw_random/ingenic-trng.c
+index 0eb80f786f4d..759445d4f65a 100644
+--- a/drivers/char/hw_random/ingenic-trng.c
++++ b/drivers/char/hw_random/ingenic-trng.c
+@@ -11,8 +11,8 @@
+ #include <linux/hw_random.h>
+ #include <linux/io.h>
+ #include <linux/iopoll.h>
++#include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+-#include <linux/of_device.h>
+ #include <linux/platform_device.h>
+ #include <linux/slab.h>
+ 
+diff --git a/drivers/char/hw_random/iproc-rng200.c b/drivers/char/hw_random/iproc-rng200.c
+index 06bc060534d8..34df3f0d3e45 100644
+--- a/drivers/char/hw_random/iproc-rng200.c
++++ b/drivers/char/hw_random/iproc-rng200.c
+@@ -12,8 +12,7 @@
+ #include <linux/io.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+-#include <linux/of_address.h>
+-#include <linux/of_platform.h>
++#include <linux/mod_devicetable.h>
+ #include <linux/platform_device.h>
+ #include <linux/delay.h>
+ 
+diff --git a/drivers/char/hw_random/npcm-rng.c b/drivers/char/hw_random/npcm-rng.c
+index 9903d0357e06..8a304b754217 100644
+--- a/drivers/char/hw_random/npcm-rng.c
++++ b/drivers/char/hw_random/npcm-rng.c
+@@ -8,12 +8,11 @@
+ #include <linux/init.h>
+ #include <linux/random.h>
+ #include <linux/err.h>
++#include <linux/of.h>
+ #include <linux/platform_device.h>
+ #include <linux/hw_random.h>
+ #include <linux/delay.h>
+-#include <linux/of_irq.h>
+ #include <linux/pm_runtime.h>
+-#include <linux/of_device.h>
+ 
+ #define NPCM_RNGCS_REG		0x00	/* Control and status register */
+ #define NPCM_RNGD_REG		0x04	/* Data register */
+diff --git a/drivers/char/hw_random/omap-rng.c b/drivers/char/hw_random/omap-rng.c
+index 00ff96703dd2..be03f76a2a80 100644
+--- a/drivers/char/hw_random/omap-rng.c
++++ b/drivers/char/hw_random/omap-rng.c
+@@ -26,8 +26,6 @@
+ #include <linux/slab.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/of.h>
+-#include <linux/of_device.h>
+-#include <linux/of_address.h>
+ #include <linux/interrupt.h>
+ #include <linux/clk.h>
+ #include <linux/io.h>
+diff --git a/drivers/char/hw_random/omap3-rom-rng.c b/drivers/char/hw_random/omap3-rom-rng.c
+index f06e4f95114f..18dc46b1b58e 100644
+--- a/drivers/char/hw_random/omap3-rom-rng.c
++++ b/drivers/char/hw_random/omap3-rom-rng.c
+@@ -20,7 +20,6 @@
+ #include <linux/err.h>
+ #include <linux/io.h>
+ #include <linux/of.h>
+-#include <linux/of_device.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
+ 
+diff --git a/drivers/char/hw_random/pasemi-rng.c b/drivers/char/hw_random/pasemi-rng.c
+index 2498d4ef9fe2..6959d6edd44c 100644
+--- a/drivers/char/hw_random/pasemi-rng.c
++++ b/drivers/char/hw_random/pasemi-rng.c
+@@ -9,11 +9,10 @@
+ 
+ #include <linux/module.h>
+ #include <linux/kernel.h>
++#include <linux/mod_devicetable.h>
+ #include <linux/platform_device.h>
+ #include <linux/hw_random.h>
+ #include <linux/delay.h>
+-#include <linux/of_address.h>
+-#include <linux/of_platform.h>
+ #include <linux/io.h>
+ 
+ #define SDCRNG_CTL_REG			0x00
+diff --git a/drivers/char/hw_random/pic32-rng.c b/drivers/char/hw_random/pic32-rng.c
+index 99c8bd0859a1..b314d994afcf 100644
+--- a/drivers/char/hw_random/pic32-rng.c
++++ b/drivers/char/hw_random/pic32-rng.c
+@@ -12,9 +12,8 @@
+ #include <linux/hw_random.h>
+ #include <linux/io.h>
+ #include <linux/kernel.h>
++#include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+-#include <linux/of.h>
+-#include <linux/of_device.h>
+ #include <linux/platform_device.h>
+ #include <linux/slab.h>
+ 
+@@ -129,7 +128,7 @@ static struct platform_driver pic32_rng_driver = {
+ 	.remove		= pic32_rng_remove,
+ 	.driver		= {
+ 		.name	= "pic32-rng",
+-		.of_match_table = of_match_ptr(pic32_rng_of_match),
++		.of_match_table = pic32_rng_of_match,
+ 	},
+ };
+ 
+diff --git a/drivers/char/hw_random/stm32-rng.c b/drivers/char/hw_random/stm32-rng.c
+index a6731cf0627a..efb6a9f9a11b 100644
+--- a/drivers/char/hw_random/stm32-rng.c
++++ b/drivers/char/hw_random/stm32-rng.c
+@@ -10,8 +10,9 @@
+ #include <linux/iopoll.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
++#include <linux/of.h>
+ #include <linux/of_address.h>
+-#include <linux/of_platform.h>
++#include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/reset.h>
+ #include <linux/slab.h>
+diff --git a/drivers/char/hw_random/xgene-rng.c b/drivers/char/hw_random/xgene-rng.c
+index 7c8f3cb7c6af..c25bb169563d 100644
+--- a/drivers/char/hw_random/xgene-rng.c
++++ b/drivers/char/hw_random/xgene-rng.c
+@@ -15,9 +15,8 @@
+ #include <linux/init.h>
+ #include <linux/interrupt.h>
+ #include <linux/module.h>
+-#include <linux/of_platform.h>
+-#include <linux/of_irq.h>
+-#include <linux/of_address.h>
++#include <linux/mod_devicetable.h>
++#include <linux/platform_device.h>
+ #include <linux/timer.h>
+ 
+ #define RNG_MAX_DATUM			4
+diff --git a/drivers/char/hw_random/xiphera-trng.c b/drivers/char/hw_random/xiphera-trng.c
+index 2a9fea72b2e0..2c586d1fe8a9 100644
+--- a/drivers/char/hw_random/xiphera-trng.c
++++ b/drivers/char/hw_random/xiphera-trng.c
+@@ -7,7 +7,6 @@
+ #include <linux/err.h>
+ #include <linux/io.h>
+ #include <linux/hw_random.h>
+-#include <linux/of_device.h>
+ #include <linux/platform_device.h>
+ #include <linux/delay.h>
+ 
+-- 
+2.40.1
 
-+                       /*
-+                        * Hide the context split of kernel threads and
-+                        * userspace threads from userspace before the firs=
-t
-+                        * policy is loaded.  Userspace, e.g. libselinux pr=
-ior
-+                        * to v2.6 or systemd, depends on the context being
-+                        * "kernel".
-+                        */
-+                       if (sid =3D=3D SECINITSID_INIT)
-+                               sid =3D SECINITSID_KERNEL;
-+
-+                       s =3D initial_sid_to_string[sid];
-                        if (!s)
-                                return -EINVAL;
-                        *scontext_len =3D strlen(s) + 1;
