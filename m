@@ -2,49 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 202F87661B1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 04:12:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23F26766297
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 05:42:09 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=o22dWJ2D;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=OSvcl/y9;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RBrjs0M2yz3cRg
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 12:12:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RBtjq08cRz3cPn
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 13:42:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=o22dWJ2D;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=OSvcl/y9;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RBrhy091lz2yW5
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jul 2023 12:11:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RBthx3n8Qz2ygG
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jul 2023 13:41:21 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1690510268;
-	bh=9p0179wlkzJ3Z8MDRAzQjbNImoc/8M+M08HWVsiX+dI=;
+	s=201909; t=1690515679;
+	bh=McozdqADWyKHK7/0tmkdlYUPdVHmchZVLsq5iNjzFMk=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=o22dWJ2D+dUGOeZbvuYtw0blCLH3FsUgRK7V+7RsxS34b3h/MMUH7n6KolqSFlwDW
-	 AzJMg1LeppmkhzqiNBGoiA+YuSmraAbB/X2Xnsb8Auliw3fZA+4HI9uNYaFSwqwHV0
-	 J8haxmDaGSDKu4YruSoWdkjBNoDo89H8ON7tE6mfE0qbVvlLiLFG7OosFfMvu/RB5H
-	 CGueWFMB4UJdKx09+Tdk6TIWCwO83yXLVnEPERoV3yFADFW+e0Fj0TcGOQBB6mAsQg
-	 nYptlPX3uA38dfC22sPot0NSKGE6kUkVbCsK0rO+r8RCM4IPLY87zBA12UDBQx2Uy0
-	 1bp4ksVg31DrQ==
+	b=OSvcl/y9gskTY9tI5OTW65Cu2A00QAUqNTc5MNOhmRpK9j7TWZZU7rGrGhRbNThc3
+	 UL65We9ohGC2gqLit3qQQ/JHxDrnizJZHYwqZDlTRJFPX20jkpi6qsLnt3WoeJ+3aL
+	 GsmJctPYSk44JdtNLww8XHduFsR2lf85MNd05TlsASKUa+oX/cnNgP8BtSuQeWzbox
+	 MOTi4YFeE+MgdF8JEkNJ9enPI8AbWCM7Zh8ANufHqDV43Yk55LCfD7BpPhW4SZ+fWK
+	 FK5PaVnjTV6DrhXt4HLmjbIVK7rsDvB0bm5W5cAhvprKUGeDgoKHRxjnRW7naAOSbY
+	 yt5VKtyyXVXhw==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RBrhr3RqMz4wqW;
-	Fri, 28 Jul 2023 12:11:08 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RBthr6jxcz4wb5;
+	Fri, 28 Jul 2023 13:41:16 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Ondrej Mosnacek <omosnace@redhat.com>, Paul Moore <paul@paul-moore.com>
-Subject: Login broken with old userspace (was Re: [PATCH v2] selinux:
- introduce an initial SID for early boot processes)
-In-Reply-To: <20230620131223.431281-1-omosnace@redhat.com>
-References: <20230620131223.431281-1-omosnace@redhat.com>
-Date: Fri, 28 Jul 2023 12:11:07 +1000
-Message-ID: <87edkseqf8.fsf@mail.lhotse>
+To: Costa Shulyupin <costa.shul@redhat.com>
+Subject: Re: [PATCH] docs: move powerpc under arch
+In-Reply-To: <20230725061504.2263678-1-costa.shul@redhat.com>
+References: <20230725061504.2263678-1-costa.shul@redhat.com>
+Date: Fri, 28 Jul 2023 13:41:12 +1000
+Message-ID: <87bkfwem93.fsf@mail.lhotse>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -58,240 +57,447 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: selinux@vger.kernel.org, linux-next@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, LKML <linux-kernel@vger.kernel.org>
+Cc: "open list:KERNEL VIRTUAL MACHINE FOR
+ POWERPC" <kvm@vger.kernel.org>, "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, "open list:PCI ERROR RECOVERY" <linux-pci@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, Max Filippov <jcmvbkbc@gmail.com>, Oliver O'Halloran <oohall@gmail.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Benjamin Gray <bgray@linux.ibm.com>, Brian King <brking@linux.vnet.ibm.com>, Jiri Slaby <jirislaby@kernel.org>, Qiang Zhao <qiang.zhao@nxp.com>, Costa Shulyupin <costa.shul@redhat.com>, Yantengsi <siyanteng@loongson.cn>, "open list:CXLFLASH SCSI DRIVER" <linux-scsi@vger.kernel.org>, Jonathan Corbet <corbet@lwn.net>, Nicholas Miehlbradt <nicholas@linux.ibm.com>, Laurent Dufour <laurent.dufour@fr.ibm.com>, Linas Vepstas <linasvepstas@gmail.com>, Nathan Lynch <nathanl@linux.ibm.com>, Andrew Donnellan <ajd@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Rohan McLure <rmclure@linux.ibm.com>, "Manoj N. Kumar" <manoj@linux.ibm.com>, Sathvika Vasireddy <sv
+ @linux.ibm.com>, Al Viro <viro@zeniv.linux.org.uk>, Bjorn Helgaas <bhelgaas@google.com>, Josh Poimboeuf <jpoimboe@kernel.org>, "Matthew R. Ochs" <mrochs@linux.ibm.com>, Uma Krishnan <ukrishn@linux.ibm.com>, Wolfram Sang <wsa+renesas@sang-engineering.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Li Yang <leoyang.li@nxp.com>, Frederic Barrat <fbarrat@linux.ibm.com>, "open list:PCI ENHANCED ERROR HANDLING FOR
+ POWERPC" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Ondrej Mosnacek <omosnace@redhat.com> writes:
-> Currently, SELinux doesn't allow distinguishing between kernel threads
-> and userspace processes that are started before the policy is first
-> loaded - both get the label corresponding to the kernel SID. The only
-> way a process that persists from early boot can get a meaningful label
-> is by doing a voluntary dyntransition or re-executing itself.
+Costa Shulyupin <costa.shul@redhat.com> writes:
+> and fix all in-tree references.
+>
+> Architecture-specific documentation is being moved into Documentation/arch/
+> as a way of cleaning up the top-level documentation directory and making
+> the docs hierarchy more closely match the source hierarchy.
+>
+> Signed-off-by: Costa Shulyupin <costa.shul@redhat.com>
 
-Hi,
+Fine by me, I assume Jon will take this.
 
-This commit breaks login for me when booting linux-next kernels with old
-userspace, specifically Ubuntu 16.04 on ppc64le. 18.04 is OK.
-
-The symptom is that login never accepts the root password, it just
-always says "Login incorrect".
-
-Bisect points to this commit.
-
-Reverting this commit on top of next-20230726, fixes the problem
-(ie. login works again).
-
-Booting with selinux=0 also fixes the problem.
-
-Is this expected? The change log below suggests backward compatibility
-was considered, is 16.04 just too old?
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
 cheers
 
-
-> Reusing the kernel label for userspace processes is problematic for
-> several reasons:
-> 1. The kernel is considered to be a privileged domain and generally
->    needs to have a wide range of permissions allowed to work correctly,
->    which prevents the policy writer from effectively hardening against
->    early boot processes that might remain running unintentionally after
->    the policy is loaded (they represent a potential extra attack surface
->    that should be mitigated).
-> 2. Despite the kernel being treated as a privileged domain, the policy
->    writer may want to impose certain special limitations on kernel
->    threads that may conflict with the requirements of intentional early
->    boot processes. For example, it is a good hardening practice to limit
->    what executables the kernel can execute as usermode helpers and to
->    confine the resulting usermode helper processes. However, a
->    (legitimate) process surviving from early boot may need to execute a
->    different set of executables.
-> 3. As currently implemented, overlayfs remembers the security context of
->    the process that created an overlayfs mount and uses it to bound
->    subsequent operations on files using this context. If an overlayfs
->    mount is created before the SELinux policy is loaded, these "mounter"
->    checks are made against the kernel context, which may clash with
->    restrictions on the kernel domain (see 2.).
->
-> To resolve this, introduce a new initial SID (reusing the slot of the
-> former "init" initial SID) that will be assigned to any userspace
-> process started before the policy is first loaded. This is easy to do,
-> as we can simply label any process that goes through the
-> bprm_creds_for_exec LSM hook with the new init-SID instead of
-> propagating the kernel SID from the parent.
->
-> To provide backwards compatibility for existing policies that are
-> unaware of this new semantic of the "init" initial SID, introduce a new
-> policy capability "userspace_initial_context" and set the "init" SID to
-> the same context as the "kernel" SID unless this capability is set by
-> the policy.
->
-> Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
 > ---
+>  Documentation/ABI/testing/sysfs-bus-papr-pmem             | 2 +-
+>  Documentation/PCI/pci-error-recovery.rst                  | 4 ++--
+>  Documentation/arch/index.rst                              | 2 +-
+>  Documentation/{ => arch}/powerpc/associativity.rst        | 0
+>  Documentation/{ => arch}/powerpc/booting.rst              | 0
+>  Documentation/{ => arch}/powerpc/bootwrapper.rst          | 0
+>  Documentation/{ => arch}/powerpc/cpu_families.rst         | 0
+>  Documentation/{ => arch}/powerpc/cpu_features.rst         | 0
+>  Documentation/{ => arch}/powerpc/cxl.rst                  | 0
+>  Documentation/{ => arch}/powerpc/cxlflash.rst             | 2 +-
+>  Documentation/{ => arch}/powerpc/dawr-power9.rst          | 0
+>  Documentation/{ => arch}/powerpc/dexcr.rst                | 0
+>  Documentation/{ => arch}/powerpc/dscr.rst                 | 0
+>  .../{ => arch}/powerpc/eeh-pci-error-recovery.rst         | 0
+>  Documentation/{ => arch}/powerpc/elf_hwcaps.rst           | 6 +++---
+>  Documentation/{ => arch}/powerpc/elfnote.rst              | 0
+>  Documentation/{ => arch}/powerpc/features.rst             | 0
+>  .../{ => arch}/powerpc/firmware-assisted-dump.rst         | 0
+>  Documentation/{ => arch}/powerpc/hvcs.rst                 | 0
+>  Documentation/{ => arch}/powerpc/imc.rst                  | 0
+>  Documentation/{ => arch}/powerpc/index.rst                | 0
+>  Documentation/{ => arch}/powerpc/isa-versions.rst         | 0
+>  Documentation/{ => arch}/powerpc/kasan.txt                | 0
+>  Documentation/{ => arch}/powerpc/kaslr-booke32.rst        | 0
+>  Documentation/{ => arch}/powerpc/mpc52xx.rst              | 0
+>  Documentation/{ => arch}/powerpc/papr_hcalls.rst          | 0
+>  .../{ => arch}/powerpc/pci_iov_resource_on_powernv.rst    | 0
+>  Documentation/{ => arch}/powerpc/pmu-ebb.rst              | 0
+>  Documentation/{ => arch}/powerpc/ptrace.rst               | 0
+>  Documentation/{ => arch}/powerpc/qe_firmware.rst          | 0
+>  Documentation/{ => arch}/powerpc/syscall64-abi.rst        | 0
+>  Documentation/{ => arch}/powerpc/transactional_memory.rst | 0
+>  Documentation/{ => arch}/powerpc/ultravisor.rst           | 0
+>  Documentation/{ => arch}/powerpc/vas-api.rst              | 0
+>  Documentation/{ => arch}/powerpc/vcpudispatch_stats.rst   | 0
+>  MAINTAINERS                                               | 8 ++++----
+>  arch/powerpc/kernel/exceptions-64s.S                      | 6 +++---
+>  arch/powerpc/kernel/paca.c                                | 2 +-
+>  arch/powerpc/kvm/book3s_64_entry.S                        | 2 +-
+>  drivers/soc/fsl/qe/qe.c                                   | 2 +-
+>  drivers/tty/hvc/hvcs.c                                    | 2 +-
+>  include/soc/fsl/qe/qe.h                                   | 2 +-
+>  42 files changed, 20 insertions(+), 20 deletions(-)
+>  rename Documentation/{ => arch}/powerpc/associativity.rst (100%)
+>  rename Documentation/{ => arch}/powerpc/booting.rst (100%)
+>  rename Documentation/{ => arch}/powerpc/bootwrapper.rst (100%)
+>  rename Documentation/{ => arch}/powerpc/cpu_families.rst (100%)
+>  rename Documentation/{ => arch}/powerpc/cpu_features.rst (100%)
+>  rename Documentation/{ => arch}/powerpc/cxl.rst (100%)
+>  rename Documentation/{ => arch}/powerpc/cxlflash.rst (99%)
+>  rename Documentation/{ => arch}/powerpc/dawr-power9.rst (100%)
+>  rename Documentation/{ => arch}/powerpc/dexcr.rst (100%)
+>  rename Documentation/{ => arch}/powerpc/dscr.rst (100%)
+>  rename Documentation/{ => arch}/powerpc/eeh-pci-error-recovery.rst (100%)
+>  rename Documentation/{ => arch}/powerpc/elf_hwcaps.rst (97%)
+>  rename Documentation/{ => arch}/powerpc/elfnote.rst (100%)
+>  rename Documentation/{ => arch}/powerpc/features.rst (100%)
+>  rename Documentation/{ => arch}/powerpc/firmware-assisted-dump.rst (100%)
+>  rename Documentation/{ => arch}/powerpc/hvcs.rst (100%)
+>  rename Documentation/{ => arch}/powerpc/imc.rst (100%)
+>  rename Documentation/{ => arch}/powerpc/index.rst (100%)
+>  rename Documentation/{ => arch}/powerpc/isa-versions.rst (100%)
+>  rename Documentation/{ => arch}/powerpc/kasan.txt (100%)
+>  rename Documentation/{ => arch}/powerpc/kaslr-booke32.rst (100%)
+>  rename Documentation/{ => arch}/powerpc/mpc52xx.rst (100%)
+>  rename Documentation/{ => arch}/powerpc/papr_hcalls.rst (100%)
+>  rename Documentation/{ => arch}/powerpc/pci_iov_resource_on_powernv.rst (100%)
+>  rename Documentation/{ => arch}/powerpc/pmu-ebb.rst (100%)
+>  rename Documentation/{ => arch}/powerpc/ptrace.rst (100%)
+>  rename Documentation/{ => arch}/powerpc/qe_firmware.rst (100%)
+>  rename Documentation/{ => arch}/powerpc/syscall64-abi.rst (100%)
+>  rename Documentation/{ => arch}/powerpc/transactional_memory.rst (100%)
+>  rename Documentation/{ => arch}/powerpc/ultravisor.rst (100%)
+>  rename Documentation/{ => arch}/powerpc/vas-api.rst (100%)
+>  rename Documentation/{ => arch}/powerpc/vcpudispatch_stats.rst (100%)
 >
-> v2: apply Paul's style suggestions
->
->  security/selinux/hooks.c                      | 28 +++++++++++++++++++
->  .../selinux/include/initial_sid_to_string.h   |  2 +-
->  security/selinux/include/policycap.h          |  1 +
->  security/selinux/include/policycap_names.h    |  3 +-
->  security/selinux/include/security.h           |  6 ++++
->  security/selinux/ss/policydb.c                | 27 ++++++++++++++++++
->  6 files changed, 65 insertions(+), 2 deletions(-)
->
-> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-> index 99ded60a6b911..83d71433e23e9 100644
-> --- a/security/selinux/hooks.c
-> +++ b/security/selinux/hooks.c
-> @@ -2264,6 +2264,19 @@ static int selinux_bprm_creds_for_exec(struct linux_binprm *bprm)
->  	new_tsec->keycreate_sid = 0;
->  	new_tsec->sockcreate_sid = 0;
->
-> +	/*
-> +	 * Before policy is loaded, label any task outside kernel space
-> +	 * as SECINITSID_INIT, so that any userspace tasks surviving from
-> +	 * early boot end up with a label different from SECINITSID_KERNEL
-> +	 * (if the policy chooses to set SECINITSID_INIT != SECINITSID_KERNEL).
-> +	 */
-> +	if (!selinux_initialized()) {
-> +		new_tsec->sid = SECINITSID_INIT;
-> +		/* also clear the exec_sid just in case */
-> +		new_tsec->exec_sid = 0;
-> +		return 0;
-> +	}
-> +
->  	if (old_tsec->exec_sid) {
->  		new_tsec->sid = old_tsec->exec_sid;
->  		/* Reset exec SID on execve. */
-> @@ -4480,6 +4493,21 @@ static int sock_has_perm(struct sock *sk, u32 perms)
->  	if (sksec->sid == SECINITSID_KERNEL)
->  		return 0;
->
-> +	/*
-> +	 * Before POLICYDB_CAP_USERSPACE_INITIAL_CONTEXT, sockets that
-> +	 * inherited the kernel context from early boot used to be skipped
-> +	 * here, so preserve that behavior unless the capability is set.
-> +	 *
-> +	 * By setting the capability the policy signals that it is ready
-> +	 * for this quirk to be fixed. Note that sockets created by a kernel
-> +	 * thread or a usermode helper executed without a transition will
-> +	 * still be skipped in this check regardless of the policycap
-> +	 * setting.
-> +	 */
-> +	if (!selinux_policycap_userspace_initial_context() &&
-> +	    sksec->sid == SECINITSID_INIT)
-> +		return 0;
-> +
->  	ad.type = LSM_AUDIT_DATA_NET;
->  	ad.u.net = &net;
->  	ad.u.net->sk = sk;
-> diff --git a/security/selinux/include/initial_sid_to_string.h b/security/selinux/include/initial_sid_to_string.h
-> index 60820517aa438..6d450669e9c68 100644
-> --- a/security/selinux/include/initial_sid_to_string.h
-> +++ b/security/selinux/include/initial_sid_to_string.h
-> @@ -7,7 +7,7 @@ static const char *const initial_sid_to_string[] = {
->  	NULL,
->  	"file",
->  	NULL,
-> -	NULL,
-> +	"init",
->  	"any_socket",
->  	"port",
->  	"netif",
-> diff --git a/security/selinux/include/policycap.h b/security/selinux/include/policycap.h
-> index f35d3458e71de..c7373e6effe5d 100644
-> --- a/security/selinux/include/policycap.h
-> +++ b/security/selinux/include/policycap.h
-> @@ -12,6 +12,7 @@ enum {
->  	POLICYDB_CAP_NNP_NOSUID_TRANSITION,
->  	POLICYDB_CAP_GENFS_SECLABEL_SYMLINKS,
->  	POLICYDB_CAP_IOCTL_SKIP_CLOEXEC,
-> +	POLICYDB_CAP_USERSPACE_INITIAL_CONTEXT,
->  	__POLICYDB_CAP_MAX
->  };
->  #define POLICYDB_CAP_MAX (__POLICYDB_CAP_MAX - 1)
-> diff --git a/security/selinux/include/policycap_names.h b/security/selinux/include/policycap_names.h
-> index 2a87fc3702b81..28e4c9ee23997 100644
-> --- a/security/selinux/include/policycap_names.h
-> +++ b/security/selinux/include/policycap_names.h
-> @@ -13,7 +13,8 @@ const char *const selinux_policycap_names[__POLICYDB_CAP_MAX] = {
->  	"cgroup_seclabel",
->  	"nnp_nosuid_transition",
->  	"genfs_seclabel_symlinks",
-> -	"ioctl_skip_cloexec"
-> +	"ioctl_skip_cloexec",
-> +	"userspace_initial_context",
->  };
->
->  #endif /* _SELINUX_POLICYCAP_NAMES_H_ */
-> diff --git a/security/selinux/include/security.h b/security/selinux/include/security.h
-> index 8746fafeb7789..c08b8b58439c9 100644
-> --- a/security/selinux/include/security.h
-> +++ b/security/selinux/include/security.h
-> @@ -201,6 +201,12 @@ static inline bool selinux_policycap_ioctl_skip_cloexec(void)
->  	return READ_ONCE(state->policycap[POLICYDB_CAP_IOCTL_SKIP_CLOEXEC]);
->  }
->
-> +static inline bool selinux_policycap_userspace_initial_context(void)
-> +{
-> +	return READ_ONCE(
-> +		selinux_state.policycap[POLICYDB_CAP_USERSPACE_INITIAL_CONTEXT]);
-> +}
-> +
->  struct selinux_policy_convert_data;
->
->  struct selinux_load_state {
-> diff --git a/security/selinux/ss/policydb.c b/security/selinux/ss/policydb.c
-> index 97c0074f9312a..c5465a0b8055a 100644
-> --- a/security/selinux/ss/policydb.c
-> +++ b/security/selinux/ss/policydb.c
-> @@ -863,6 +863,8 @@ void policydb_destroy(struct policydb *p)
->  int policydb_load_isids(struct policydb *p, struct sidtab *s)
->  {
->  	struct ocontext *head, *c;
-> +	bool isid_init_supported = ebitmap_get_bit(&p->policycaps,
-> +						   POLICYDB_CAP_USERSPACE_INITIAL_CONTEXT);
->  	int rc;
->
->  	rc = sidtab_init(s);
-> @@ -886,6 +888,13 @@ int policydb_load_isids(struct policydb *p, struct sidtab *s)
->  		if (!name)
->  			continue;
->
-> +		/*
-> +		 * Also ignore SECINITSID_INIT if the policy doesn't declare
-> +		 * support for it
-> +		 */
-> +		if (sid == SECINITSID_INIT && !isid_init_supported)
-> +			continue;
-> +
->  		rc = sidtab_set_initial(s, sid, &c->context[0]);
->  		if (rc) {
->  			pr_err("SELinux:  unable to load initial SID %s.\n",
-> @@ -893,6 +902,24 @@ int policydb_load_isids(struct policydb *p, struct sidtab *s)
->  			sidtab_destroy(s);
->  			return rc;
->  		}
-> +
-> +		/*
-> +		 * If the policy doesn't support the "userspace_initial_context"
-> +		 * capability, set SECINITSID_INIT to the same context as
-> +		 * SECINITSID_KERNEL. This ensures the same behavior as before
-> +		 * the reintroduction of SECINITSID_INIT, where all tasks
-> +		 * started before policy load would initially get the context
-> +		 * corresponding to SECINITSID_KERNEL.
-> +		 */
-> +		if (sid == SECINITSID_KERNEL && !isid_init_supported) {
-> +			rc = sidtab_set_initial(s, SECINITSID_INIT, &c->context[0]);
-> +			if (rc) {
-> +				pr_err("SELinux:  unable to load initial SID %s.\n",
-> +				       name);
-> +				sidtab_destroy(s);
-> +				return rc;
-> +			}
-> +		}
->  	}
->  	return 0;
->  }
-> --
+> diff --git a/Documentation/ABI/testing/sysfs-bus-papr-pmem b/Documentation/ABI/testing/sysfs-bus-papr-pmem
+> index 4ac0673901e7..20347eb81530 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-papr-pmem
+> +++ b/Documentation/ABI/testing/sysfs-bus-papr-pmem
+> @@ -8,7 +8,7 @@ Description:
+>  		more bits set in the dimm-health-bitmap retrieved in
+>  		response to H_SCM_HEALTH hcall. The details of the bit
+>  		flags returned in response to this hcall is available
+> -		at 'Documentation/powerpc/papr_hcalls.rst' . Below are
+> +		at 'Documentation/arch/powerpc/papr_hcalls.rst' . Below are
+>  		the flags reported in this sysfs file:
+>  
+>  		* "not_armed"
+> diff --git a/Documentation/PCI/pci-error-recovery.rst b/Documentation/PCI/pci-error-recovery.rst
+> index c237596f67e3..a394726510bd 100644
+> --- a/Documentation/PCI/pci-error-recovery.rst
+> +++ b/Documentation/PCI/pci-error-recovery.rst
+> @@ -364,7 +364,7 @@ Note, however, not all failures are truly "permanent". Some are
+>  caused by over-heating, some by a poorly seated card. Many
+>  PCI error events are caused by software bugs, e.g. DMA's to
+>  wild addresses or bogus split transactions due to programming
+> -errors. See the discussion in Documentation/powerpc/eeh-pci-error-recovery.rst
+> +errors. See the discussion in Documentation/arch/powerpc/eeh-pci-error-recovery.rst
+>  for additional detail on real-life experience of the causes of
+>  software errors.
+>  
+> @@ -404,7 +404,7 @@ That is, the recovery API only requires that:
+>  .. note::
+>  
+>     Implementation details for the powerpc platform are discussed in
+> -   the file Documentation/powerpc/eeh-pci-error-recovery.rst
+> +   the file Documentation/arch/powerpc/eeh-pci-error-recovery.rst
+>  
+>     As of this writing, there is a growing list of device drivers with
+>     patches implementing error recovery. Not all of these patches are in
+> diff --git a/Documentation/arch/index.rst b/Documentation/arch/index.rst
+> index 84b80255b851..1bf7a3f1c77b 100644
+> --- a/Documentation/arch/index.rst
+> +++ b/Documentation/arch/index.rst
+> @@ -19,7 +19,7 @@ implementation.
+>     nios2/index
+>     openrisc/index
+>     parisc/index
+> -   ../powerpc/index
+> +   powerpc/index
+>     ../riscv/index
+>     s390/index
+>     sh/index
+> diff --git a/Documentation/powerpc/associativity.rst b/Documentation/arch/powerpc/associativity.rst
+> similarity index 100%
+> rename from Documentation/powerpc/associativity.rst
+> rename to Documentation/arch/powerpc/associativity.rst
+> diff --git a/Documentation/powerpc/booting.rst b/Documentation/arch/powerpc/booting.rst
+> similarity index 100%
+> rename from Documentation/powerpc/booting.rst
+> rename to Documentation/arch/powerpc/booting.rst
+> diff --git a/Documentation/powerpc/bootwrapper.rst b/Documentation/arch/powerpc/bootwrapper.rst
+> similarity index 100%
+> rename from Documentation/powerpc/bootwrapper.rst
+> rename to Documentation/arch/powerpc/bootwrapper.rst
+> diff --git a/Documentation/powerpc/cpu_families.rst b/Documentation/arch/powerpc/cpu_families.rst
+> similarity index 100%
+> rename from Documentation/powerpc/cpu_families.rst
+> rename to Documentation/arch/powerpc/cpu_families.rst
+> diff --git a/Documentation/powerpc/cpu_features.rst b/Documentation/arch/powerpc/cpu_features.rst
+> similarity index 100%
+> rename from Documentation/powerpc/cpu_features.rst
+> rename to Documentation/arch/powerpc/cpu_features.rst
+> diff --git a/Documentation/powerpc/cxl.rst b/Documentation/arch/powerpc/cxl.rst
+> similarity index 100%
+> rename from Documentation/powerpc/cxl.rst
+> rename to Documentation/arch/powerpc/cxl.rst
+> diff --git a/Documentation/powerpc/cxlflash.rst b/Documentation/arch/powerpc/cxlflash.rst
+> similarity index 99%
+> rename from Documentation/powerpc/cxlflash.rst
+> rename to Documentation/arch/powerpc/cxlflash.rst
+> index cea67931b3b9..e8f488acfa41 100644
+> --- a/Documentation/powerpc/cxlflash.rst
+> +++ b/Documentation/arch/powerpc/cxlflash.rst
+> @@ -32,7 +32,7 @@ Introduction
+>      responsible for the initialization of the adapter, setting up the
+>      special path for user space access, and performing error recovery. It
+>      communicates directly the Flash Accelerator Functional Unit (AFU)
+> -    as described in Documentation/powerpc/cxl.rst.
+> +    as described in Documentation/arch/powerpc/cxl.rst.
+>  
+>      The cxlflash driver supports two, mutually exclusive, modes of
+>      operation at the device (LUN) level:
+> diff --git a/Documentation/powerpc/dawr-power9.rst b/Documentation/arch/powerpc/dawr-power9.rst
+> similarity index 100%
+> rename from Documentation/powerpc/dawr-power9.rst
+> rename to Documentation/arch/powerpc/dawr-power9.rst
+> diff --git a/Documentation/powerpc/dexcr.rst b/Documentation/arch/powerpc/dexcr.rst
+> similarity index 100%
+> rename from Documentation/powerpc/dexcr.rst
+> rename to Documentation/arch/powerpc/dexcr.rst
+> diff --git a/Documentation/powerpc/dscr.rst b/Documentation/arch/powerpc/dscr.rst
+> similarity index 100%
+> rename from Documentation/powerpc/dscr.rst
+> rename to Documentation/arch/powerpc/dscr.rst
+> diff --git a/Documentation/powerpc/eeh-pci-error-recovery.rst b/Documentation/arch/powerpc/eeh-pci-error-recovery.rst
+> similarity index 100%
+> rename from Documentation/powerpc/eeh-pci-error-recovery.rst
+> rename to Documentation/arch/powerpc/eeh-pci-error-recovery.rst
+> diff --git a/Documentation/powerpc/elf_hwcaps.rst b/Documentation/arch/powerpc/elf_hwcaps.rst
+> similarity index 97%
+> rename from Documentation/powerpc/elf_hwcaps.rst
+> rename to Documentation/arch/powerpc/elf_hwcaps.rst
+> index 3366e5b18e67..4c896cf077c2 100644
+> --- a/Documentation/powerpc/elf_hwcaps.rst
+> +++ b/Documentation/arch/powerpc/elf_hwcaps.rst
+> @@ -202,7 +202,7 @@ PPC_FEATURE2_VEC_CRYPTO
+>  
+>  PPC_FEATURE2_HTM_NOSC
+>      System calls fail if called in a transactional state, see
+> -    Documentation/powerpc/syscall64-abi.rst
+> +    Documentation/arch/powerpc/syscall64-abi.rst
+>  
+>  PPC_FEATURE2_ARCH_3_00
+>      The processor supports the v3.0B / v3.0C userlevel architecture. Processors
+> @@ -217,11 +217,11 @@ PPC_FEATURE2_DARN
+>  
+>  PPC_FEATURE2_SCV
+>      The scv 0 instruction may be used for system calls, see
+> -    Documentation/powerpc/syscall64-abi.rst.
+> +    Documentation/arch/powerpc/syscall64-abi.rst.
+>  
+>  PPC_FEATURE2_HTM_NO_SUSPEND
+>      A limited Transactional Memory facility that does not support suspend is
+> -    available, see Documentation/powerpc/transactional_memory.rst.
+> +    available, see Documentation/arch/powerpc/transactional_memory.rst.
+>  
+>  PPC_FEATURE2_ARCH_3_1
+>      The processor supports the v3.1 userlevel architecture. Processors
+> diff --git a/Documentation/powerpc/elfnote.rst b/Documentation/arch/powerpc/elfnote.rst
+> similarity index 100%
+> rename from Documentation/powerpc/elfnote.rst
+> rename to Documentation/arch/powerpc/elfnote.rst
+> diff --git a/Documentation/powerpc/features.rst b/Documentation/arch/powerpc/features.rst
+> similarity index 100%
+> rename from Documentation/powerpc/features.rst
+> rename to Documentation/arch/powerpc/features.rst
+> diff --git a/Documentation/powerpc/firmware-assisted-dump.rst b/Documentation/arch/powerpc/firmware-assisted-dump.rst
+> similarity index 100%
+> rename from Documentation/powerpc/firmware-assisted-dump.rst
+> rename to Documentation/arch/powerpc/firmware-assisted-dump.rst
+> diff --git a/Documentation/powerpc/hvcs.rst b/Documentation/arch/powerpc/hvcs.rst
+> similarity index 100%
+> rename from Documentation/powerpc/hvcs.rst
+> rename to Documentation/arch/powerpc/hvcs.rst
+> diff --git a/Documentation/powerpc/imc.rst b/Documentation/arch/powerpc/imc.rst
+> similarity index 100%
+> rename from Documentation/powerpc/imc.rst
+> rename to Documentation/arch/powerpc/imc.rst
+> diff --git a/Documentation/powerpc/index.rst b/Documentation/arch/powerpc/index.rst
+> similarity index 100%
+> rename from Documentation/powerpc/index.rst
+> rename to Documentation/arch/powerpc/index.rst
+> diff --git a/Documentation/powerpc/isa-versions.rst b/Documentation/arch/powerpc/isa-versions.rst
+> similarity index 100%
+> rename from Documentation/powerpc/isa-versions.rst
+> rename to Documentation/arch/powerpc/isa-versions.rst
+> diff --git a/Documentation/powerpc/kasan.txt b/Documentation/arch/powerpc/kasan.txt
+> similarity index 100%
+> rename from Documentation/powerpc/kasan.txt
+> rename to Documentation/arch/powerpc/kasan.txt
+> diff --git a/Documentation/powerpc/kaslr-booke32.rst b/Documentation/arch/powerpc/kaslr-booke32.rst
+> similarity index 100%
+> rename from Documentation/powerpc/kaslr-booke32.rst
+> rename to Documentation/arch/powerpc/kaslr-booke32.rst
+> diff --git a/Documentation/powerpc/mpc52xx.rst b/Documentation/arch/powerpc/mpc52xx.rst
+> similarity index 100%
+> rename from Documentation/powerpc/mpc52xx.rst
+> rename to Documentation/arch/powerpc/mpc52xx.rst
+> diff --git a/Documentation/powerpc/papr_hcalls.rst b/Documentation/arch/powerpc/papr_hcalls.rst
+> similarity index 100%
+> rename from Documentation/powerpc/papr_hcalls.rst
+> rename to Documentation/arch/powerpc/papr_hcalls.rst
+> diff --git a/Documentation/powerpc/pci_iov_resource_on_powernv.rst b/Documentation/arch/powerpc/pci_iov_resource_on_powernv.rst
+> similarity index 100%
+> rename from Documentation/powerpc/pci_iov_resource_on_powernv.rst
+> rename to Documentation/arch/powerpc/pci_iov_resource_on_powernv.rst
+> diff --git a/Documentation/powerpc/pmu-ebb.rst b/Documentation/arch/powerpc/pmu-ebb.rst
+> similarity index 100%
+> rename from Documentation/powerpc/pmu-ebb.rst
+> rename to Documentation/arch/powerpc/pmu-ebb.rst
+> diff --git a/Documentation/powerpc/ptrace.rst b/Documentation/arch/powerpc/ptrace.rst
+> similarity index 100%
+> rename from Documentation/powerpc/ptrace.rst
+> rename to Documentation/arch/powerpc/ptrace.rst
+> diff --git a/Documentation/powerpc/qe_firmware.rst b/Documentation/arch/powerpc/qe_firmware.rst
+> similarity index 100%
+> rename from Documentation/powerpc/qe_firmware.rst
+> rename to Documentation/arch/powerpc/qe_firmware.rst
+> diff --git a/Documentation/powerpc/syscall64-abi.rst b/Documentation/arch/powerpc/syscall64-abi.rst
+> similarity index 100%
+> rename from Documentation/powerpc/syscall64-abi.rst
+> rename to Documentation/arch/powerpc/syscall64-abi.rst
+> diff --git a/Documentation/powerpc/transactional_memory.rst b/Documentation/arch/powerpc/transactional_memory.rst
+> similarity index 100%
+> rename from Documentation/powerpc/transactional_memory.rst
+> rename to Documentation/arch/powerpc/transactional_memory.rst
+> diff --git a/Documentation/powerpc/ultravisor.rst b/Documentation/arch/powerpc/ultravisor.rst
+> similarity index 100%
+> rename from Documentation/powerpc/ultravisor.rst
+> rename to Documentation/arch/powerpc/ultravisor.rst
+> diff --git a/Documentation/powerpc/vas-api.rst b/Documentation/arch/powerpc/vas-api.rst
+> similarity index 100%
+> rename from Documentation/powerpc/vas-api.rst
+> rename to Documentation/arch/powerpc/vas-api.rst
+> diff --git a/Documentation/powerpc/vcpudispatch_stats.rst b/Documentation/arch/powerpc/vcpudispatch_stats.rst
+> similarity index 100%
+> rename from Documentation/powerpc/vcpudispatch_stats.rst
+> rename to Documentation/arch/powerpc/vcpudispatch_stats.rst
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index d1d8a9745761..b444619c26c2 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -5601,7 +5601,7 @@ M:	Andrew Donnellan <ajd@linux.ibm.com>
+>  L:	linuxppc-dev@lists.ozlabs.org
+>  S:	Supported
+>  F:	Documentation/ABI/testing/sysfs-class-cxl
+> -F:	Documentation/powerpc/cxl.rst
+> +F:	Documentation/arch/powerpc/cxl.rst
+>  F:	arch/powerpc/platforms/powernv/pci-cxl.c
+>  F:	drivers/misc/cxl/
+>  F:	include/misc/cxl*
+> @@ -5613,7 +5613,7 @@ M:	Matthew R. Ochs <mrochs@linux.ibm.com>
+>  M:	Uma Krishnan <ukrishn@linux.ibm.com>
+>  L:	linux-scsi@vger.kernel.org
+>  S:	Supported
+> -F:	Documentation/powerpc/cxlflash.rst
+> +F:	Documentation/arch/powerpc/cxlflash.rst
+>  F:	drivers/scsi/cxlflash/
+>  F:	include/uapi/scsi/cxlflash_ioctl.h
+>  
+> @@ -12044,7 +12044,7 @@ F:	Documentation/ABI/stable/sysfs-firmware-opal-*
+>  F:	Documentation/devicetree/bindings/i2c/i2c-opal.txt
+>  F:	Documentation/devicetree/bindings/powerpc/
+>  F:	Documentation/devicetree/bindings/rtc/rtc-opal.txt
+> -F:	Documentation/powerpc/
+> +F:	Documentation/arch/powerpc/
+>  F:	arch/powerpc/
+>  F:	drivers/*/*/*pasemi*
+>  F:	drivers/*/*pasemi*
+> @@ -16392,7 +16392,7 @@ R:	Oliver O'Halloran <oohall@gmail.com>
+>  L:	linuxppc-dev@lists.ozlabs.org
+>  S:	Supported
+>  F:	Documentation/PCI/pci-error-recovery.rst
+> -F:	Documentation/powerpc/eeh-pci-error-recovery.rst
+> +F:	Documentation/arch/powerpc/eeh-pci-error-recovery.rst
+>  F:	arch/powerpc/include/*/eeh*.h
+>  F:	arch/powerpc/kernel/eeh*.c
+>  F:	arch/powerpc/platforms/*/eeh*.c
+> diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
+> index c33c8ebf8641..eaf2f167c342 100644
+> --- a/arch/powerpc/kernel/exceptions-64s.S
+> +++ b/arch/powerpc/kernel/exceptions-64s.S
+> @@ -893,7 +893,7 @@ __start_interrupts:
+>   *
+>   * Call convention:
+>   *
+> - * syscall register convention is in Documentation/powerpc/syscall64-abi.rst
+> + * syscall register convention is in Documentation/arch/powerpc/syscall64-abi.rst
+>   */
+>  EXC_VIRT_BEGIN(system_call_vectored, 0x3000, 0x1000)
+>  	/* SCV 0 */
+> @@ -1952,8 +1952,8 @@ EXC_VIRT_NONE(0x4b00, 0x100)
+>   * Call convention:
+>   *
+>   * syscall and hypercalls register conventions are documented in
+> - * Documentation/powerpc/syscall64-abi.rst and
+> - * Documentation/powerpc/papr_hcalls.rst respectively.
+> + * Documentation/arch/powerpc/syscall64-abi.rst and
+> + * Documentation/arch/powerpc/papr_hcalls.rst respectively.
+>   *
+>   * The intersection of volatile registers that don't contain possible
+>   * inputs is: cr0, xer, ctr. We may use these as scratch regs upon entry
+> diff --git a/arch/powerpc/kernel/paca.c b/arch/powerpc/kernel/paca.c
+> index cda4e00b67c1..7502066c3c53 100644
+> --- a/arch/powerpc/kernel/paca.c
+> +++ b/arch/powerpc/kernel/paca.c
+> @@ -68,7 +68,7 @@ static void *__init alloc_shared_lppaca(unsigned long size, unsigned long limit,
+>  		memblock_set_bottom_up(true);
+>  
+>  		/*
+> -		 * See Documentation/powerpc/ultravisor.rst for more details.
+> +		 * See Documentation/arch/powerpc/ultravisor.rst for more details.
+>  		 *
+>  		 * UV/HV data sharing is in PAGE_SIZE granularity. In order to
+>  		 * minimize the number of pages shared, align the allocation to
+> diff --git a/arch/powerpc/kvm/book3s_64_entry.S b/arch/powerpc/kvm/book3s_64_entry.S
+> index 6c2b1d17cb63..0902636f87e5 100644
+> --- a/arch/powerpc/kvm/book3s_64_entry.S
+> +++ b/arch/powerpc/kvm/book3s_64_entry.S
+> @@ -19,7 +19,7 @@
+>  
+>  /*
+>   * This is a hcall, so register convention is as
+> - * Documentation/powerpc/papr_hcalls.rst.
+> + * Documentation/arch/powerpc/papr_hcalls.rst.
+>   *
+>   * This may also be a syscall from PR-KVM userspace that is to be
+>   * reflected to the PR guest kernel, so registers may be set up for
+> diff --git a/drivers/soc/fsl/qe/qe.c b/drivers/soc/fsl/qe/qe.c
+> index 58746e570d14..e3580d152cf1 100644
+> --- a/drivers/soc/fsl/qe/qe.c
+> +++ b/drivers/soc/fsl/qe/qe.c
+> @@ -429,7 +429,7 @@ static void qe_upload_microcode(const void *base,
+>  /*
+>   * Upload a microcode to the I-RAM at a specific address.
+>   *
+> - * See Documentation/powerpc/qe_firmware.rst for information on QE microcode
+> + * See Documentation/arch/powerpc/qe_firmware.rst for information on QE microcode
+>   * uploading.
+>   *
+>   * Currently, only version 1 is supported, so the 'version' field must be
+> diff --git a/drivers/tty/hvc/hvcs.c b/drivers/tty/hvc/hvcs.c
+> index 1de1a09bf82d..2459387d80b4 100644
+> --- a/drivers/tty/hvc/hvcs.c
+> +++ b/drivers/tty/hvc/hvcs.c
+> @@ -47,7 +47,7 @@
+>   * using the 2.6 Linux kernel kref construct.
+>   *
+>   * For direction on installation and usage of this driver please reference
+> - * Documentation/powerpc/hvcs.rst.
+> + * Documentation/arch/powerpc/hvcs.rst.
+>   */
+>  
+>  #include <linux/device.h>
+> diff --git a/include/soc/fsl/qe/qe.h b/include/soc/fsl/qe/qe.h
+> index eb5079904cc8..af793f2a0ec4 100644
+> --- a/include/soc/fsl/qe/qe.h
+> +++ b/include/soc/fsl/qe/qe.h
+> @@ -258,7 +258,7 @@ static inline int qe_alive_during_sleep(void)
+>  
+>  /* Structure that defines QE firmware binary files.
+>   *
+> - * See Documentation/powerpc/qe_firmware.rst for a description of these
+> + * See Documentation/arch/powerpc/qe_firmware.rst for a description of these
+>   * fields.
+>   */
+>  struct qe_firmware {
+> -- 
 > 2.41.0
