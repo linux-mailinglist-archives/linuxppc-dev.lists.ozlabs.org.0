@@ -2,64 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC5047675FF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 21:05:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 354757677F2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 23:56:40 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KkMRmy+Q;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fzluV/sP;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RCHCD4821z3cQj
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jul 2023 05:05:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RCM0c30SVz3cTd
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jul 2023 07:56:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KkMRmy+Q;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fzluV/sP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=acme@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=arbab@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RCHBJ461sz2ysp
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jul 2023 05:04:40 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 767B5621CC;
-	Fri, 28 Jul 2023 19:04:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86A8DC433C8;
-	Fri, 28 Jul 2023 19:04:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1690571077;
-	bh=oCcj4l/vxi3/5RrYa/uVUooUB2AdUtBM+entoWzf4Zk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KkMRmy+QWHMDjCVm7r9wyeSdGZ6tqC//Nui97d5EU1UZI22qzfjN/kVC6ariGtpYY
-	 kKGF06NSQ7S/pJjsEHiqEMZIm6Yn39mtWQ/HWAgduLaWGjBPVmqQ2N228YWMiLS9nb
-	 fVigmhD1fE9EMmIdhkZiW2ZgePbhluErtE8IYB3rQ+mB3lJ1QMFCvpSNNkJdP1H7BZ
-	 wjArhSXiRtoRUeWPdqDwvK9SMeWGyX/FSydqr6Sp7pKgoDJJVMiqRrTuMjHrm1Eoci
-	 icQ0EQ/7G/48aseE6SvQvnJkCkpvel+nlGzOmT/NqAJGyGwH2yKaEqiGZCGT3C4HVb
-	 ktOxhZAjk97IA==
-Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
-	id 57DAA40096; Fri, 28 Jul 2023 16:04:35 -0300 (-03)
-Date: Fri, 28 Jul 2023 16:04:35 -0300
-From: Arnaldo Carvalho de Melo <acme@kernel.org>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH V2 00/26] tools/perf: Fix shellcheck coding/formatting
- issues of perf tool shell scripts
-Message-ID: <ZMQRQ7K0DfgzH7yJ@kernel.org>
-References: <20230709182800.53002-1-atrajeev@linux.vnet.ibm.com>
- <1fbdbb26-4fce-ea25-a96a-99982b3f1603@linux.ibm.com>
- <CAP-5=fWZy-y9kiuAFQsaNeRYn8PJofFR5DHj5qA53FhB3+UrfQ@mail.gmail.com>
- <D52339A7-30C6-4066-AE05-4BF8E9DCCFF4@linux.vnet.ibm.com>
- <1f1e9978-a176-0ae9-6dac-8cc275c5f905@linux.ibm.com>
- <89C3584E-97E6-4FCF-ABFA-C94AD3F65BC4@linux.vnet.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RCLzh5h90z3cKC
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jul 2023 07:55:44 +1000 (AEST)
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36SLg8Na004101;
+	Fri, 28 Jul 2023 21:55:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=Z0KQipUX684zPBgdOZJNOmOFRos7OFxqhDBCsvU3lv4=;
+ b=fzluV/sPSQX/YNSgYgavF2pIDlVfqmEI+E+a+0KqhVf0dR/zNAl4uY0ZXaz3I2t4vINK
+ wUln2V112qoYjCp+KgULbtIk1FEPX3TMc8eFij5LaToiMuYtdPfEKUA+RkjVOVDV6nns
+ KR8p01d54/j0drnlyk2QSduRCHlkCQFTxcRLatyc8PGoZJDzL34pno3BUkOo8IivHw5C
+ Gviil1JVYERyR3RSkZOrlCCNnlpLepSUm8NMhg6aCYA7pUcQkClOSMGk+Su7UNztYTq+
+ SJC1fmPCfYedQmCEx/NcPcMrMApUY5zg1TTizXzFuqtbLXcjLZXxSHqD++JmZIMAlvcT ag== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s4ntmr8ej-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 28 Jul 2023 21:55:35 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36SLrL9R001885;
+	Fri, 28 Jul 2023 21:55:34 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s4ntmr8e6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 28 Jul 2023 21:55:34 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36SK18JH002059;
+	Fri, 28 Jul 2023 21:55:33 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3s0tenspjb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 28 Jul 2023 21:55:33 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36SLtWXr5440248
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 28 Jul 2023 21:55:32 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8222758056;
+	Fri, 28 Jul 2023 21:55:32 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4572158052;
+	Fri, 28 Jul 2023 21:55:32 +0000 (GMT)
+Received: from arbab-laptop.localdomain (unknown [9.61.53.90])
+	by smtpav04.dal12v.mail.ibm.com (Postfix) with SMTP;
+	Fri, 28 Jul 2023 21:55:32 +0000 (GMT)
+Received: from arbab-laptop.ghola.net (localhost [IPv6:::1])
+	by arbab-laptop.localdomain (Postfix) with ESMTPS id 2BB2F14FDA9;
+	Fri, 28 Jul 2023 16:55:31 -0500 (CDT)
+Date: Fri, 28 Jul 2023 16:55:23 -0500
+From: Reza Arbab <arbab@linux.ibm.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH v3 1/2] powerpc/mm: Cleanup memory block size probing
+Message-ID: <f38660ab-89ed-44f5-ac7e-34c89a3e66d1@arbab-laptop>
+References: <20230728103556.745681-1-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <89C3584E-97E6-4FCF-ABFA-C94AD3F65BC4@linux.vnet.ibm.com>
-X-Url: http://acmel.wordpress.com
+In-Reply-To: <20230728103556.745681-1-aneesh.kumar@linux.ibm.com>
+Organization: IBM Linux Technology Center
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 6a1m7UrZw0WXJO3HBHiNhZVzanoXJczw
+X-Proofpoint-ORIG-GUID: FaflA7oD7CRGD84NQacOFEVG0E3-qT1G
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-27_10,2023-07-26_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
+ malwarescore=0 mlxlogscore=999 clxscore=1011 lowpriorityscore=0
+ phishscore=0 impostorscore=0 priorityscore=1501 mlxscore=0 spamscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2307280197
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,200 +99,143 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ian Rogers <irogers@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, kajoljain <kjain@linux.ibm.com>, linux-perf-users@vger.kernel.org, Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Disha Goel <disgoel@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: foraker1@llnl.gov, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Em Tue, Jul 25, 2023 at 11:20:37AM +0530, Athira Rajeev escreveu:
-> 
-> 
-> > On 20-Jul-2023, at 10:48 AM, kajoljain <kjain@linux.ibm.com> wrote:
-> > 
-> > 
-> > 
-> > On 7/20/23 10:42, Athira Rajeev wrote:
-> >> 
-> >> 
-> >>> On 19-Jul-2023, at 11:16 PM, Ian Rogers <irogers@google.com> wrote:
-> >>> 
-> >>> On Tue, Jul 18, 2023 at 11:17 PM kajoljain <kjain@linux.ibm.com> wrote:
-> >>>> 
-> >>>> Hi,
-> >>>> 
-> >>>> Looking for review comments on this patchset.
-> >>>> 
-> >>>> Thanks,
-> >>>> Kajol Jain
-> >>>> 
-> >>>> 
-> >>>> On 7/9/23 23:57, Athira Rajeev wrote:
-> >>>>> Patchset covers a set of fixes for coding/formatting issues observed while
-> >>>>> running shellcheck tool on the perf shell scripts.
-> >>>>> 
-> >>>>> This cleanup is a pre-requisite to include a build option for shellcheck
-> >>>>> discussed here: https://www.spinics.net/lists/linux-perf-users/msg25553.html
-> >>>>> First set of patches were posted here:
-> >>>>> https://lore.kernel.org/linux-perf-users/53B7D823-1570-4289-A632-2205EE2B522C@linux.vnet.ibm.com/T/#t
-> >>>>> 
-> >>>>> This patchset covers remaining set of shell scripts which needs
-> >>>>> fix. Patch 1 is resubmission of patch 6 from the initial series.
-> >>>>> Patch 15, 16 and 22 touches code from tools/perf/trace/beauty.
-> >>>>> Other patches are fixes for scripts from tools/perf/tests.
-> >>>>> 
-> >>>>> The shellcheck is run for severity level for errors and warnings.
-> >>>>> Command used:
-> >>>>> 
-> >>>>> # for F in $(find tests/shell/ -perm -o=x -name '*.sh'); do shellcheck -S warning $F; done
-> >>>>> # echo $?
-> >>>>> 0
-> >>>>> 
-> >>> 
-> >>> I don't see anything objectionable in the changes so for the series:
-> >>> Acked-by: Ian Rogers <irogers@google.com>
-> >>> 
-> >>> Some thoughts:
-> >>> - Adding "#!/bin/bash" to scripts in tools/perf/tests/lib - I think
-> >>> we didn't do this to avoid these being included as tests. There are
-> >>> now extra checks when finding shell tests, so I can imagine doing this
-> >>> isn't a regression but just a heads up.
-> >>> - I think James' comment was addressed:
-> >>> https://lore.kernel.org/linux-perf-users/334989bf-5501-494c-f246-81878fd2fed8@arm.com/
-> >>> - Why aren't these changes being mailed to LKML? The wider community
-> >>> on LKML have thoughts on shell scripts, plus it makes the changes miss
-> >>> my mail filters.
-> >>> - Can we automate this testing into the build? For example, following
-> >>> a similar kernel build pattern we run a python test and make the log
-> >>> output a requirement here:
-> >>> https://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.git/tree/tools/perf/pmu-events/Build?h=perf-tools-next#n30
-> >>>  I think we can translate:
-> >>> for F in $(find tests/shell/ -perm -o=x -name '*.sh'); do shellcheck
-> >>> -S warning $F; done
-> >>>  into a rule in make for log files that are then a dependency on the
-> >>> perf binary. We can then parallel shellcheck during the build and
-> >>> avoid regressions. We probably need a CONFIG_SHELLCHECK feature check
-> >>> in the build to avoid not having shellcheck breaking the build.
-> >> 
-> >> Hi Ian
-> >> 
-> >> Thanks for the comments.
-> >> Yes, next step after this is to include build option for shellcheck by updating Makefile.
-> >> We will surely get into that build option enablement patch once we have all these corrections in place.
-> >> 
-> >> Thanks
-> >> Athira
-> >>> 
-> > 
-> > Hi Ian,
-> >   Thanks for reviewing the patches. As athira mentioned our next is to
-> > include build option. So, we will work on it next once all the
-> > correction done.
-> > 
-> > Thanks,
-> > Kajol Jain
-> 
-> Hi Arnaldo,  Namhyung
-> 
-> Can you have this patchset applied along with Acked-by from Ian ?
-> Our next step is to add a build option for shellcheck by updating Makefile and will be working on that.
+On Fri, Jul 28, 2023 at 04:05:55PM +0530, Aneesh Kumar K.V wrote:
+>--- a/arch/powerpc/mm/init_64.c
+>+++ b/arch/powerpc/mm/init_64.c
+[snip]
+>+	/*
+>+	 * "ibm,coherent-device-memory with linux,usable-memory = 0
+>+	 * Force 256MiB block size. Work around for GPUs on P9 PowerNV
+>+	 * linux,usable-memory == 0 implies driver managed memory and
+>+	 * we can't use large memory block size due to hotplug/unplug
+>+	 * limitations.
+>+	 */
+>+	compatible = of_get_flat_dt_prop(node, "compatible", NULL);
+>+	if (compatible && !strcmp(compatible, "ibm,coherent-device-memory")) {
+>+		int len = 0;
+>+		const __be32 *usm;
+>+
+>+		usm = of_get_flat_dt_prop(node, "linux,drconf-usable-memory", &len);
 
-I'll check it now
- 
-> Thanks
-> Athira 
-> > 
-> >>> Thanks,
-> >>> Ian
-> >>> 
-> >>>>> Changelog:
-> >>>>> v1 -> v2:
-> >>>>> - Rebased on top of perf-tools-next from:
-> >>>>> https://git.kernel.org/pub/scm/linux/kernel/git/acme/linux.git/log/?h=perf-tools-next
-> >>>>> 
-> >>>>> - Fixed shellcheck errors and warnings reported for newly
-> >>>>>   added changes from perf-tools-next branch
-> >>>>> 
-> >>>>> - Addressed review comment from James clark for patch
-> >>>>>   number 13 from V1. The changes in patch 13 were not necessary
-> >>>>>   since the file "tests/shell/lib/coresight.sh" is sourced from
-> >>>>>   other test files.
-> >>>>> 
-> >>>>> Akanksha J N (1):
-> >>>>> tools/perf/tests: Fix shellcheck warnings for
-> >>>>>   trace+probe_vfs_getname.sh
-> >>>>> 
-> >>>>> Athira Rajeev (14):
-> >>>>> tools/perf/tests: fix test_arm_spe_fork.sh signal case issues
-> >>>>> tools/perf/tests: Fix unused variable references in
-> >>>>>   stat+csv_summary.sh testcase
-> >>>>> tools/perf/tests: fix shellcheck warning for
-> >>>>>   test_perf_data_converter_json.sh testcase
-> >>>>> tools/perf/tests: Fix shellcheck issue for stat_bpf_counters.sh
-> >>>>>   testcase
-> >>>>> tools/perf/tests: Fix shellcheck issues in
-> >>>>>   tests/shell/stat+shadow_stat.sh tetscase
-> >>>>> tools/perf/tests: Fix shellcheck warnings for
-> >>>>>   thread_loop_check_tid_10.sh
-> >>>>> tools/perf/tests: Fix shellcheck warnings for unroll_loop_thread_10.sh
-> >>>>> tools/perf/tests: Fix shellcheck warnings for lib/probe_vfs_getname.sh
-> >>>>> tools/perf/tests: Fix the shellcheck warnings in lib/waiting.sh
-> >>>>> tools/perf/trace: Fix x86_arch_prctl.sh to address shellcheck warnings
-> >>>>> tools/perf/arch/x86: Fix syscalltbl.sh to address shellcheck warnings
-> >>>>> tools/perf/tests/shell: Fix the shellcheck warnings in
-> >>>>>   record+zstd_comp_decomp.sh
-> >>>>> tools/perf/tests/shell: Fix shellcheck warning for stat+std_output.sh
-> >>>>>   testcase
-> >>>>> tools/perf/tests: Fix shellcheck warning for stat+std_output.sh
-> >>>>>   testcase
-> >>>>> 
-> >>>>> Kajol Jain (11):
-> >>>>> tools/perf/tests: Fix shellcheck warning for probe_vfs_getname.sh
-> >>>>>   testcase
-> >>>>> tools/perf/tests: Fix shellcheck warning for record_offcpu.sh testcase
-> >>>>> tools/perf/tests: Fix shellcheck issue for lock_contention.sh testcase
-> >>>>> tools/perf/tests: Fix shellcheck issue for stat_bpf_counters_cgrp.sh
-> >>>>>   testcase
-> >>>>> tools/perf/tests: Fix shellcheck warning for asm_pure_loop.sh shell
-> >>>>>   script
-> >>>>> tools/perf/tests: Fix shellcheck warning for memcpy_thread_16k_10.sh
-> >>>>>   shell script
-> >>>>> tools/perf/tests: Fix shellcheck warning for probe.sh shell script
-> >>>>> tools/perf/trace: Fix shellcheck issue for arch_errno_names.sh script
-> >>>>> tools/perf: Fix shellcheck issue for check-headers.sh script
-> >>>>> tools/shell/coresight: Fix shellcheck warning for
-> >>>>>   thread_loop_check_tid_2.sh shell script
-> >>>>> tools/perf/tests/shell/lib: Fix shellcheck warning for stat_output.sh
-> >>>>>   shell script
-> >>>>> 
-> >>>>> .../arch/x86/entry/syscalls/syscalltbl.sh     |  2 +-
-> >>>>> tools/perf/check-headers.sh                   |  6 ++--
-> >>>>> .../tests/shell/coresight/asm_pure_loop.sh    |  2 +-
-> >>>>> .../shell/coresight/memcpy_thread_16k_10.sh   |  2 +-
-> >>>>> .../coresight/thread_loop_check_tid_10.sh     |  2 +-
-> >>>>> .../coresight/thread_loop_check_tid_2.sh      |  2 +-
-> >>>>> .../shell/coresight/unroll_loop_thread_10.sh  |  2 +-
-> >>>>> tools/perf/tests/shell/lib/probe.sh           |  1 +
-> >>>>> .../perf/tests/shell/lib/probe_vfs_getname.sh |  5 ++--
-> >>>>> tools/perf/tests/shell/lib/stat_output.sh     |  1 +
-> >>>>> tools/perf/tests/shell/lib/waiting.sh         |  1 +
-> >>>>> tools/perf/tests/shell/lock_contention.sh     | 12 ++++----
-> >>>>> tools/perf/tests/shell/probe_vfs_getname.sh   |  4 +--
-> >>>>> .../tests/shell/record+zstd_comp_decomp.sh    | 14 +++++-----
-> >>>>> tools/perf/tests/shell/record_offcpu.sh       |  6 ++--
-> >>>>> tools/perf/tests/shell/stat+csv_output.sh     |  2 +-
-> >>>>> tools/perf/tests/shell/stat+csv_summary.sh    |  4 +--
-> >>>>> tools/perf/tests/shell/stat+shadow_stat.sh    |  4 +--
-> >>>>> tools/perf/tests/shell/stat+std_output.sh     |  3 +-
-> >>>>> tools/perf/tests/shell/stat_bpf_counters.sh   |  4 +--
-> >>>>> .../tests/shell/stat_bpf_counters_cgrp.sh     | 28 ++++++++-----------
-> >>>>> tools/perf/tests/shell/test_arm_spe_fork.sh   |  2 +-
-> >>>>> .../shell/test_perf_data_converter_json.sh    |  2 +-
-> >>>>> .../tests/shell/trace+probe_vfs_getname.sh    |  6 ++--
-> >>>>> tools/perf/trace/beauty/arch_errno_names.sh   | 15 ++++------
-> >>>>> tools/perf/trace/beauty/x86_arch_prctl.sh     |  6 ++--
-> >>>>> 26 files changed, 67 insertions(+), 71 deletions(-)
-> 
-> 
+I think this should be "linux,usable-memory".
 
+>+		if (usm && !len) {
+>+			*block_size = SZ_256M;
+>+			return 1;
+>+		}
+
+This isn't quite right. The criteria is not that the property itself has 
+no registers, it's that the base/size combo has size zero.
+
+If you fold in the patch appended to the end of this mail, things worked 
+for me.
+
+>+	}
+>+
+>+	reg = of_get_flat_dt_prop(node, "reg", &l);
+>+	endp = reg + (l / sizeof(__be32));
+>+
+>+	while ((endp - reg) >= (dt_root_addr_cells + dt_root_size_cells)) {
+>+		u64 base, size;
+>+
+>+		base = dt_mem_next_cell(dt_root_addr_cells, &reg);
+>+		size = dt_mem_next_cell(dt_root_size_cells, &reg);
+>+
+>+		if (size == 0)
+>+			continue;
+>+
+>+		update_memory_block_size(block_size, size);
+>+	}
+>+	/* continue looking for other memory device types */
+>+	return 0;
+>+}
+>+
+>+/*
+>+ * start with 1G memory block size. Early init will
+>+ * fix this with correct value.
+>+ */
+>+unsigned long memory_block_size __ro_after_init = 1UL << 30;
+
+Could use SZ_1G here.
+
+With the following fixup, I got 256MiB blocks on a system with
+"ibm,coherent-device-memory" nodes.
+
+diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
+index dbed37d6cffb..1ac58e72a885 100644
+--- a/arch/powerpc/mm/init_64.c
++++ b/arch/powerpc/mm/init_64.c
+@@ -487,7 +487,6 @@ static int __init probe_memory_block_size(unsigned long node, const char *uname,
+  					  depth, void *data)
+  {
+  	const char *type;
+-	const char *compatible;
+  	unsigned long *block_size = (unsigned long *)data;
+  	const __be32 *reg, *endp;
+  	int l;
+@@ -532,38 +531,38 @@ static int __init probe_memory_block_size(unsigned long node, const char *uname,
+  	if (type == NULL || strcmp(type, "memory") != 0)
+  		return 0;
+  
+-	/*
+-	 * "ibm,coherent-device-memory with linux,usable-memory = 0
+-	 * Force 256MiB block size. Work around for GPUs on P9 PowerNV
+-	 * linux,usable-memory == 0 implies driver managed memory and
+-	 * we can't use large memory block size due to hotplug/unplug
+-	 * limitations.
+-	 */
+-	compatible = of_get_flat_dt_prop(node, "compatible", NULL);
+-	if (compatible && !strcmp(compatible, "ibm,coherent-device-memory")) {
+-		int len = 0;
+-		const __be32 *usm;
+-
+-		usm = of_get_flat_dt_prop(node, "linux,drconf-usable-memory", &len);
+-		if (usm && !len) {
+-			*block_size = SZ_256M;
+-			return 1;
+-		}
+-	}
++	reg = of_get_flat_dt_prop(node, "linux,usable-memory", &l);
++	if (!reg)
++		reg = of_get_flat_dt_prop(node, "reg", &l);
++	if (!reg)
++		return 0;
+  
+-	reg = of_get_flat_dt_prop(node, "reg", &l);
+  	endp = reg + (l / sizeof(__be32));
+  
+  	while ((endp - reg) >= (dt_root_addr_cells + dt_root_size_cells)) {
++		const char *compatible;
+  		u64 base, size;
+  
+  		base = dt_mem_next_cell(dt_root_addr_cells, &reg);
+  		size = dt_mem_next_cell(dt_root_size_cells, &reg);
+  
+-		if (size == 0)
++		if (size) {
++			update_memory_block_size(block_size, size);
+  			continue;
++		}
+  
+-		update_memory_block_size(block_size, size);
++		/*
++		 * ibm,coherent-device-memory with linux,usable-memory = 0
++		 * Force 256MiB block size. Work around for GPUs on P9 PowerNV
++		 * linux,usable-memory == 0 implies driver managed memory and
++		 * we can't use large memory block size due to hotplug/unplug
++		 * limitations.
++		 */
++		compatible = of_get_flat_dt_prop(node, "compatible", NULL);
++		if (compatible && !strcmp(compatible, "ibm,coherent-device-memory")) {
++			*block_size = SZ_256M;
++			return 1;
++		}
+  	}
+  	/* continue looking for other memory device types */
+  	return 0;
 -- 
-
-- Arnaldo
+Reza Arbab
