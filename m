@@ -2,69 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B734C76715B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 18:02:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 929B5767169
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 18:03:42 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=efVlqDVS;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=LuP/9ao2;
+	dkim=fail reason="signature verification failed" header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=PJkmStLE;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RCC7s4clcz3cPN
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jul 2023 02:02:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RCC9S3PlDz3cSp
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jul 2023 02:03:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=efVlqDVS;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=LuP/9ao2;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=PJkmStLE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::82d; helo=mail-qt1-x82d.google.com; envelope-from=irogers@google.com; receiver=lists.ozlabs.org)
-Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=vbabka@suse.cz; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RCC6w47cvz2yq3
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jul 2023 02:01:27 +1000 (AEST)
-Received: by mail-qt1-x82d.google.com with SMTP id d75a77b69052e-40631c5b9e9so298641cf.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jul 2023 09:01:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1690560083; x=1691164883;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mZH6nQn01C8Sr35XvItongnJrzthU2bVlvOmhLP0Vz4=;
-        b=efVlqDVSjL6hA7pH00Obl7K/hepyTwEAmwJ9S77NzwRdLZhvsACfpPSV/UEEDWueDO
-         WqpN1pZSCukYdKhuENE81FkCJ41Or7iSNohh3brPPiPR/EJcdFWXy3CxD1/Ezu2LfaMJ
-         dDIqc7PSfthEwCbT4aH/hWJxzMmziJXj074F6WkoQ0jMqgjGNCTFB8lMxYCoB6mxTa6v
-         TFXANH5T2OzmoPWaxtENtjUldT8CS6rV6cyAGsqj4i7z0uhCJVJK++r+84cErubxBpJS
-         THtb+DI/cGVHK6IKxTtJHZVYVM+A/wShTe8cBebMKoPDyvb8rij1DmDWRBAMYmW4tR3S
-         hVkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690560083; x=1691164883;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mZH6nQn01C8Sr35XvItongnJrzthU2bVlvOmhLP0Vz4=;
-        b=J7n2LCdkIo6Yb1mN3lKp9k2l8ct9uXHuKFMA80+xZ6cF10nP37tmcCaOzKP0pMmy8r
-         8B+Ur2M0M41qPl2iSRCMUpCiw/QpfYrv/oQMa34xkrqReYHkOd2fsLTv2rt0wg3WbOO9
-         FvGpRPTcptby38bHTGKf2Z/ar0G9r3/4I9kj0K2fEpzrw39c7l1BW0jGWIiTGEiLu8iG
-         oDfeMPJyCoo/RkUnolIeV2cQpzcqj+c7mVuwl7Z+fkdmWg+FM0COkRgE7sgT+H8k4KpI
-         1Y5KHjHLZQOJkQPh7CPS8rr2lohYtYuzRPcrCbf6tlV4UVsiakokEj2sg2Tx1F0U9HZC
-         EcpQ==
-X-Gm-Message-State: ABy/qLbTtsR8zgyeL/dOaVQ3K7g7AiUsLD+8/Y3BNbTOqwJX0XUr9Jy3
-	O4QoaRRlMK4SziPCWYEZSCc2NlffgdJ2S22SJ7ogfg==
-X-Google-Smtp-Source: APBJJlGz8xBM5B0JACXOlDeDiPzvNUvs8ZfSUITEkeaXWUnL/b+pJDlsmnUkdUfhBNfddso1uEi2UhmOVMqQozMD6zs=
-X-Received: by 2002:a05:622a:15d2:b0:3f5:2006:50f1 with SMTP id
- d18-20020a05622a15d200b003f5200650f1mr318937qty.12.1690560083088; Fri, 28 Jul
- 2023 09:01:23 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RCC8W6MzSz3bYx
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jul 2023 02:02:51 +1000 (AEST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 9DB191F854;
+	Fri, 28 Jul 2023 16:02:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1690560167; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CvY0+v4nvg0O0BVEhEc8BmZfYzpPNCFFCMaJmCODeHg=;
+	b=LuP/9ao2mrKjhPvKezWW1/W17SEYJs2q92vl0M2JCYXcddXuljTTEbIYow9womJUw6LJrg
+	qzowp5BeJWVnf+lzn5JU5UBXET439G9aZl2Cej4L8DEUkkS2Xabj9scGTntFuX4nFsk5BK
+	jGFVo1NW+KmbJNwVJQIyJlgnQrU5Tm8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1690560167;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CvY0+v4nvg0O0BVEhEc8BmZfYzpPNCFFCMaJmCODeHg=;
+	b=PJkmStLEQ4tX3u5n/JqYexTLZ62i3tFelBIXmZgBwUht8ehxcz9TNcF+IDGXx4zqKelWMj
+	1J0IPH/P9l/ZmiCA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 0504113276;
+	Fri, 28 Jul 2023 16:02:47 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id vp1JAKfmw2ReUwAAMHmgww
+	(envelope-from <vbabka@suse.cz>); Fri, 28 Jul 2023 16:02:47 +0000
+Message-ID: <692b09f7-70d9-1119-7fe2-3e7396ec259d@suse.cz>
+Date: Fri, 28 Jul 2023 18:02:46 +0200
 MIME-Version: 1.0
-References: <20230725061649.34937-1-adityag@linux.ibm.com> <ZMPWk5K63tadmDlU@kernel.org>
-In-Reply-To: <ZMPWk5K63tadmDlU@kernel.org>
-From: Ian Rogers <irogers@google.com>
-Date: Fri, 28 Jul 2023 09:01:11 -0700
-Message-ID: <CAP-5=fW1zkpJ4zr4ngz=6bZQuE6hOHo4AtXwUsVJK9oiDSc_mg@mail.gmail.com>
-Subject: Re: [PATCH 1/1] perf tests task_analyzer: Check perf build options
- for libtraceevent support
-To: Arnaldo Carvalho de Melo <acme@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [RFC PATCH v11 10/29] mm: Add AS_UNMOVABLE to mark mapping as
+ completely unmovable
+Content-Language: en-US
+To: Matthew Wilcox <willy@infradead.org>,
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+References: <20230718234512.1690985-1-seanjc@google.com>
+ <20230718234512.1690985-11-seanjc@google.com>
+ <20230725102403.xywjqlhyqkrzjok6@box.shutemov.name>
+ <ZL/Fa4W2Ne9EVxoh@casper.infradead.org>
+From: Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <ZL/Fa4W2Ne9EVxoh@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,93 +87,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maddy@linux.ibm.com, kjain@linux.ibm.com, linux-kernel@vger.kernel.org, disgoel@linux.vnet.ibm.com, linux-perf-users@vger.kernel.org, atrajeev@linux.vnet.ibm.com, jolsa@kernel.org, namhyung@kernel.org, Aditya Gupta <adityag@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Marc Zyngier <maz@kernel.org>, Paul Moore <paul@paul-moore.com>, Anup Patel <anup@brainfault.org>, Huacai Chen <chenhuacai@kernel.org>, James Morris <jmorris@namei.org>, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, "Serge E. Hallyn" <serge@hallyn.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Quentin Perret <qperret@google.com>, Sean Christopherson <seanjc@google.com>, Liam Merwick <liam.merwick@oracle.com>, linux-mips@vger.kernel.org, Oliver Upton <ol
+ iver.upton@linux.dev>, linux-security-module@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, kvm-riscv@lists.infradead.org, linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jul 28, 2023 at 7:54=E2=80=AFAM Arnaldo Carvalho de Melo
-<acme@kernel.org> wrote:
->
-> Em Tue, Jul 25, 2023 at 11:46:49AM +0530, Aditya Gupta escreveu:
-> > Currently we depend on output of 'perf record -e "sched:sched_switch"',=
- to
-> > check whether perf was built with libtraceevent support.
-> >
-> > Instead, a more straightforward approach can be to check the build opti=
-ons,
-> > using 'perf version --build-options', to check for libtraceevent suppor=
-t.
-> >
-> > When perf is compiled WITHOUT libtraceevent ('make NO_LIBTRACEEVENT=3D1=
-'),
-> > 'perf version --build-options' outputs (output trimmed):
-> >
-> >        ...
-> >          libtraceevent: [ OFF ]  # HAVE_LIBTRACEEVENT
-> >        ...
-> >
-> > While, when perf is compiled WITH libtraceevent,
-> >
-> > 'perf version --build-options' outputs:
-> >
-> > ...
-> >          libtraceevent: [ on ]  # HAVE_LIBTRACEEVENT
-> >        ...
-> >
-> > Suggested-by: Ian Rogers <irogers@google.com>
-> > Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
-> > ---
-> >
-> >  tools/perf/tests/shell/test_task_analyzer.sh | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/tools/perf/tests/shell/test_task_analyzer.sh b/tools/perf/=
-tests/shell/test_task_analyzer.sh
-> > index 0095abbe20ca..a28d784987b4 100755
-> > --- a/tools/perf/tests/shell/test_task_analyzer.sh
-> > +++ b/tools/perf/tests/shell/test_task_analyzer.sh
-> > @@ -52,7 +52,7 @@ find_str_or_fail() {
-> >
-> >  # check if perf is compiled with libtraceevent support
-> >  skip_no_probe_record_support() {
-> > -     perf record -e "sched:sched_switch" -a -- sleep 1 2>&1 | grep "li=
-btraceevent is necessary for tracepoint support" && return 2
-> > +     perf version --build-options | grep HAVE_LIBTRACEEVENT | grep -q =
-OFF && return 2
-> >       return 0
->
-> I'll apply this, but please consider adding a:
->
->         perf build --has libtraceevent
+On 7/25/23 14:51, Matthew Wilcox wrote:
+> On Tue, Jul 25, 2023 at 01:24:03PM +0300, Kirill A . Shutemov wrote:
+>> On Tue, Jul 18, 2023 at 04:44:53PM -0700, Sean Christopherson wrote:
+>> > diff --git a/mm/compaction.c b/mm/compaction.c
+>> > index dbc9f86b1934..a3d2b132df52 100644
+>> > --- a/mm/compaction.c
+>> > +++ b/mm/compaction.c
+>> > @@ -1047,6 +1047,10 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
+>> >  		if (!mapping && (folio_ref_count(folio) - 1) > folio_mapcount(folio))
+>> >  			goto isolate_fail_put;
+>> >  
+>> > +		/* The mapping truly isn't movable. */
+>> > +		if (mapping && mapping_unmovable(mapping))
+>> > +			goto isolate_fail_put;
+>> > +
+>> 
+>> I doubt that it is safe to dereference mapping here. I believe the folio
+>> can be truncated from under us and the mapping freed with the inode.
+>> 
+>> The folio has to be locked to dereference mapping safely (given that the
+>> mapping is still tied to the folio).
+> 
+> There's even a comment to that effect later on in the function:
 
-That's a nice idea. You mean add a script like perf-archive.sh?
-Perhaps this flag should be supported by perf version instead.
+Hmm, well spotted. But it wouldn't be so great if we now had to lock every
+inspected page (and not just dirty pages), just to check the AS_ bit.
 
-Thanks,
-Ian
+But I wonder if this is leftover from previous versions. Are the guest pages
+even PageLRU currently? (and should they be, given how they can't be swapped
+out or anything?) If not, isolate_migratepages_block will skip them anyway.
 
-> subcommand to have that query made more compact and to avoid the two
-> extra grep.
->
-> BTW, I'll change that to:
->
-> [acme@quaco perf-tools-next]$ perf version --build-options | grep " on .*=
- HAVE_LIBTRACEEVENT"
->          libtraceevent: [ on  ]  # HAVE_LIBTRACEEVENT
-> [acme@quaco perf-tools-next]$
->
-> replacing "on" with OFF, so that we have just one grep.
->
-> Thanks,
->
-> - Arnaldo
->
-> >  }
-> >
-> > --
-> > 2.41.0
-> >
->
-> --
->
-> - Arnaldo
+> 
+>                         /*
+>                          * Only pages without mappings or that have a
+>                          * ->migrate_folio callback are possible to migrate
+>                          * without blocking. However, we can be racing with
+>                          * truncation so it's necessary to lock the page
+>                          * to stabilise the mapping as truncation holds
+>                          * the page lock until after the page is removed
+>                          * from the page cache.
+>                          */
+> 
+> (that could be reworded to make it clear how dangerous dereferencing
+> ->mapping is without the lock ... and it does need to be changed to say
+> "folio lock" instead of "page lock", so ...)
+
+> How does this look?
+> 
+>                         /*
+>                          * Only folios without mappings or that have
+>                          * a ->migrate_folio callback are possible to
+>                          * migrate without blocking. However, we can
+>                          * be racing with truncation, which can free
+>                          * the mapping.  Truncation holds the folio lock
+>                          * until after the folio is removed from the page
+>                          * cache so holding it ourselves is sufficient.
+>                          */
+> 
+
