@@ -2,76 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF1B0766000
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 00:55:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 202F87661B1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 04:12:03 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=D8uvkEu4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=o22dWJ2D;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RBmLt5jc3z3cVZ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 08:55:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RBrjs0M2yz3cRg
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 12:12:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=D8uvkEu4;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=o22dWJ2D;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--justinstitt.bounces.google.com (client-ip=2001:4860:4864:20::49; helo=mail-oa1-x49.google.com; envelope-from=3lo_czaskdemozxynsxynyylttlqj.htrqnsz2uuh-ij0qnxyx.t4qfgx.twl@flex--justinstitt.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-oa1-x49.google.com (mail-oa1-x49.google.com [IPv6:2001:4860:4864:20::49])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RBlkJ09qSz30F5
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jul 2023 08:27:01 +1000 (AEST)
-Received: by mail-oa1-x49.google.com with SMTP id 586e51a60fabf-1bbbd92497fso2712440fac.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jul 2023 15:27:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1690496812; x=1691101612;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Y8k3rjyBf0fojb2EPgR8sOqghPhE9G594McR+LDMAVU=;
-        b=D8uvkEu4/smEbpJTeMq90Bq5KeP1e5xIGLkQWzLEkXeN8AQU0NkbUy0zuQd+TUDBSx
-         k3+CzER9oXoVsUCZvuh9ZIN4VObo+hEN4Z+y+rd2eVuE4GcNw/Ge5AGR5mdVOQA76bwG
-         RNF1S8VERGMdefiESkMUi5anwpf8ky6b04huvSD7HuzDBWA7L1zc9uqa9vXivFgWWNuz
-         Iho8dePREXhDWuWuG/4dhsZjV+1VOiSIAAkrXITi6ge7gaLlbxA3VbqTOo3LaknExZlo
-         ubzzY+BjDM4VT64nFYkLUAMdC3XqpY8qwN3NTMwuL/P/ctD0iXxag6tLvhN2RzQTBur3
-         Dk+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690496812; x=1691101612;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Y8k3rjyBf0fojb2EPgR8sOqghPhE9G594McR+LDMAVU=;
-        b=XNOB0/JU87fcN57vuEcxrh2fsT+RUb9MIGPUoGYGTITijbUPbkxS0az9m+Q9yTvAZW
-         41FrAdnIr8Akl6JRAQ8SEI1WwaakhwlA3UdvinYkqTxoe2JSXT8d60AMt9P3eNU6e74y
-         Tgh9WAz3rWf7TOKChzrJL+Bs2UVOLjdf8vwEimzUlDg9lx9FgHIcuAqttxkFALQl9HtN
-         0VpuJtMdBzSxVj9fVVgNw0q0QS34yNnwH6wsN6Vz8l1fbYaWf+jc3eWyL+kOzbqgdo/5
-         rN5OIBq4zeD86aSUViJkhrlVjloqTrvZSGh4FS1GSuWTXMqP7stJ9cd/QPK/6uj02Aky
-         QZkQ==
-X-Gm-Message-State: ABy/qLZwuOh/a/Fm5zL1NTC2EAOujLAU3a220maWt/MfnCoTJAq5X3tB
-	ac4+lAMUUxf9fSRcde6lhdMtF4aDmvOjuDtP0g==
-X-Google-Smtp-Source: APBJJlEBTUBehPEZg2R3Xd62gIsjVc6xsHEJaqFFsRtVLEpia0yBfJf6qBbvR8t5/rEX6B3ZnlKWSdJI2cgI6ejYLQ==
-X-Received: from jstitt-linux1.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:23b5])
- (user=justinstitt job=sendgmr) by 2002:a05:6870:5b0d:b0:1bb:785d:7436 with
- SMTP id ds13-20020a0568705b0d00b001bb785d7436mr961489oab.10.1690496812558;
- Thu, 27 Jul 2023 15:26:52 -0700 (PDT)
-Date: Thu, 27 Jul 2023 22:26:41 +0000
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIACDvwmQC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI2MDcyNz3eL80rwUIJmsm1aco2uSlmxqamaZYm5umKoE1FNQlJqWWQE2Lzq 2thYAMKv4Nl8AAAA=
-X-Developer-Key: i=justinstitt@google.com; a=ed25519; pk=tC3hNkJQTpNX/gLKxTNQKDmiQl6QjBNCGKJINqAdJsE=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1690496811; l=2165;
- i=justinstitt@google.com; s=20230717; h=from:subject:message-id;
- bh=xEnu5xQr3cyZZvwQfMubiCiEuFBVC3Uk0Y9589JdUxw=; b=hmOqBlRYlYKaC3Yr5Zy8g3r9+9++L/pbK5ub/HORCIbyUCI0NGjnrADamWXFeaNB3CVKyg4I+
- L5n1tag1LikDFx+k0EHDanF323xxdNABjjW0T5SEFnG7vM0e2joX6sH
-X-Mailer: b4 0.12.3
-Message-ID: <20230727-sound-soc-fsl-v1-1-4fc0ed7e0366@google.com>
-Subject: [PATCH] ASoC: fsl_micfil: refactor deprecated strncpy
-From: Justin Stitt <justinstitt@google.com>
-To: Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
-	Fabio Estevam <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Content-Type: text/plain; charset="utf-8"
-X-Mailman-Approved-At: Fri, 28 Jul 2023 08:48:48 +1000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RBrhy091lz2yW5
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jul 2023 12:11:14 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1690510268;
+	bh=9p0179wlkzJ3Z8MDRAzQjbNImoc/8M+M08HWVsiX+dI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=o22dWJ2D+dUGOeZbvuYtw0blCLH3FsUgRK7V+7RsxS34b3h/MMUH7n6KolqSFlwDW
+	 AzJMg1LeppmkhzqiNBGoiA+YuSmraAbB/X2Xnsb8Auliw3fZA+4HI9uNYaFSwqwHV0
+	 J8haxmDaGSDKu4YruSoWdkjBNoDo89H8ON7tE6mfE0qbVvlLiLFG7OosFfMvu/RB5H
+	 CGueWFMB4UJdKx09+Tdk6TIWCwO83yXLVnEPERoV3yFADFW+e0Fj0TcGOQBB6mAsQg
+	 nYptlPX3uA38dfC22sPot0NSKGE6kUkVbCsK0rO+r8RCM4IPLY87zBA12UDBQx2Uy0
+	 1bp4ksVg31DrQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RBrhr3RqMz4wqW;
+	Fri, 28 Jul 2023 12:11:08 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Ondrej Mosnacek <omosnace@redhat.com>, Paul Moore <paul@paul-moore.com>
+Subject: Login broken with old userspace (was Re: [PATCH v2] selinux:
+ introduce an initial SID for early boot processes)
+In-Reply-To: <20230620131223.431281-1-omosnace@redhat.com>
+References: <20230620131223.431281-1-omosnace@redhat.com>
+Date: Fri, 28 Jul 2023 12:11:07 +1000
+Message-ID: <87edkseqf8.fsf@mail.lhotse>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,61 +58,240 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, Justin Stitt <justinstitt@google.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>
+Cc: selinux@vger.kernel.org, linux-next@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, LKML <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-`strncpy` is deprecated for use on NUL-terminated destination strings [1].
+Ondrej Mosnacek <omosnace@redhat.com> writes:
+> Currently, SELinux doesn't allow distinguishing between kernel threads
+> and userspace processes that are started before the policy is first
+> loaded - both get the label corresponding to the kernel SID. The only
+> way a process that persists from early boot can get a meaningful label
+> is by doing a voluntary dyntransition or re-executing itself.
 
-A suitable replacement is `strscpy` [2] due to the fact that it
-guarantees NUL-termination on its destination buffer argument which is
-_not_ always the case for `strncpy`!
+Hi,
 
-In this case, though, there was great care taken to ensure that the
-destination buffer would be NUL-terminated through the use of `len - 1`
-ensuring that the previously zero-initialized buffer would not overwrite
-the last NUL byte. This means that there's no bug here.
+This commit breaks login for me when booting linux-next kernels with old
+userspace, specifically Ubuntu 16.04 on ppc64le. 18.04 is OK.
 
-However, `strscpy` will add a mandatory NUL byte to the destination
-buffer as promised by the following `strscpy` implementation [3]:
-|       /* Hit buffer length without finding a NUL; force NUL-termination. */
-|       if (res)
-|               dest[res-1] = '\0';
+The symptom is that login never accepts the root password, it just
+always says "Login incorrect".
 
-This means we can lose the `- 1` which clears up whats happening here.
-All the while, we get one step closer to eliminating the ambiguous
-`strncpy` api in favor of its less ambiguous replacement like `strscpy`,
-`strscpy_pad`, `strtomem` and `strtomem_pad` amongst others.
+Bisect points to this commit.
 
-[1]: www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings
-[2]: manpages.debian.org/testing/linux-manual-4.8/strscpy.9.en.html
-[3]: https://elixir.bootlin.com/linux/v6.3/source/lib/string.c#L183
+Reverting this commit on top of next-20230726, fixes the problem
+(ie. login works again).
 
-Link: https://github.com/KSPP/linux/issues/90
-Signed-off-by: Justin Stitt <justinstitt@google.com>
----
- sound/soc/fsl/fsl_micfil.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Booting with selinux=0 also fixes the problem.
 
-diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
-index 3f08082a55be..fe28b27e50d0 100644
---- a/sound/soc/fsl/fsl_micfil.c
-+++ b/sound/soc/fsl/fsl_micfil.c
-@@ -1044,7 +1044,7 @@ static int fsl_micfil_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	micfil->pdev = pdev;
--	strncpy(micfil->name, np->name, sizeof(micfil->name) - 1);
-+	strscpy(micfil->name, np->name, sizeof(micfil->name));
- 
- 	micfil->soc = of_device_get_match_data(&pdev->dev);
- 
+Is this expected? The change log below suggests backward compatibility
+was considered, is 16.04 just too old?
 
----
-base-commit: 57012c57536f8814dec92e74197ee96c3498d24e
-change-id: 20230727-sound-soc-fsl-4fc5569d771e
+cheers
 
-Best regards,
---
-Justin Stitt <justinstitt@google.com>
 
+> Reusing the kernel label for userspace processes is problematic for
+> several reasons:
+> 1. The kernel is considered to be a privileged domain and generally
+>    needs to have a wide range of permissions allowed to work correctly,
+>    which prevents the policy writer from effectively hardening against
+>    early boot processes that might remain running unintentionally after
+>    the policy is loaded (they represent a potential extra attack surface
+>    that should be mitigated).
+> 2. Despite the kernel being treated as a privileged domain, the policy
+>    writer may want to impose certain special limitations on kernel
+>    threads that may conflict with the requirements of intentional early
+>    boot processes. For example, it is a good hardening practice to limit
+>    what executables the kernel can execute as usermode helpers and to
+>    confine the resulting usermode helper processes. However, a
+>    (legitimate) process surviving from early boot may need to execute a
+>    different set of executables.
+> 3. As currently implemented, overlayfs remembers the security context of
+>    the process that created an overlayfs mount and uses it to bound
+>    subsequent operations on files using this context. If an overlayfs
+>    mount is created before the SELinux policy is loaded, these "mounter"
+>    checks are made against the kernel context, which may clash with
+>    restrictions on the kernel domain (see 2.).
+>
+> To resolve this, introduce a new initial SID (reusing the slot of the
+> former "init" initial SID) that will be assigned to any userspace
+> process started before the policy is first loaded. This is easy to do,
+> as we can simply label any process that goes through the
+> bprm_creds_for_exec LSM hook with the new init-SID instead of
+> propagating the kernel SID from the parent.
+>
+> To provide backwards compatibility for existing policies that are
+> unaware of this new semantic of the "init" initial SID, introduce a new
+> policy capability "userspace_initial_context" and set the "init" SID to
+> the same context as the "kernel" SID unless this capability is set by
+> the policy.
+>
+> Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+> ---
+>
+> v2: apply Paul's style suggestions
+>
+>  security/selinux/hooks.c                      | 28 +++++++++++++++++++
+>  .../selinux/include/initial_sid_to_string.h   |  2 +-
+>  security/selinux/include/policycap.h          |  1 +
+>  security/selinux/include/policycap_names.h    |  3 +-
+>  security/selinux/include/security.h           |  6 ++++
+>  security/selinux/ss/policydb.c                | 27 ++++++++++++++++++
+>  6 files changed, 65 insertions(+), 2 deletions(-)
+>
+> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+> index 99ded60a6b911..83d71433e23e9 100644
+> --- a/security/selinux/hooks.c
+> +++ b/security/selinux/hooks.c
+> @@ -2264,6 +2264,19 @@ static int selinux_bprm_creds_for_exec(struct linux_binprm *bprm)
+>  	new_tsec->keycreate_sid = 0;
+>  	new_tsec->sockcreate_sid = 0;
+>
+> +	/*
+> +	 * Before policy is loaded, label any task outside kernel space
+> +	 * as SECINITSID_INIT, so that any userspace tasks surviving from
+> +	 * early boot end up with a label different from SECINITSID_KERNEL
+> +	 * (if the policy chooses to set SECINITSID_INIT != SECINITSID_KERNEL).
+> +	 */
+> +	if (!selinux_initialized()) {
+> +		new_tsec->sid = SECINITSID_INIT;
+> +		/* also clear the exec_sid just in case */
+> +		new_tsec->exec_sid = 0;
+> +		return 0;
+> +	}
+> +
+>  	if (old_tsec->exec_sid) {
+>  		new_tsec->sid = old_tsec->exec_sid;
+>  		/* Reset exec SID on execve. */
+> @@ -4480,6 +4493,21 @@ static int sock_has_perm(struct sock *sk, u32 perms)
+>  	if (sksec->sid == SECINITSID_KERNEL)
+>  		return 0;
+>
+> +	/*
+> +	 * Before POLICYDB_CAP_USERSPACE_INITIAL_CONTEXT, sockets that
+> +	 * inherited the kernel context from early boot used to be skipped
+> +	 * here, so preserve that behavior unless the capability is set.
+> +	 *
+> +	 * By setting the capability the policy signals that it is ready
+> +	 * for this quirk to be fixed. Note that sockets created by a kernel
+> +	 * thread or a usermode helper executed without a transition will
+> +	 * still be skipped in this check regardless of the policycap
+> +	 * setting.
+> +	 */
+> +	if (!selinux_policycap_userspace_initial_context() &&
+> +	    sksec->sid == SECINITSID_INIT)
+> +		return 0;
+> +
+>  	ad.type = LSM_AUDIT_DATA_NET;
+>  	ad.u.net = &net;
+>  	ad.u.net->sk = sk;
+> diff --git a/security/selinux/include/initial_sid_to_string.h b/security/selinux/include/initial_sid_to_string.h
+> index 60820517aa438..6d450669e9c68 100644
+> --- a/security/selinux/include/initial_sid_to_string.h
+> +++ b/security/selinux/include/initial_sid_to_string.h
+> @@ -7,7 +7,7 @@ static const char *const initial_sid_to_string[] = {
+>  	NULL,
+>  	"file",
+>  	NULL,
+> -	NULL,
+> +	"init",
+>  	"any_socket",
+>  	"port",
+>  	"netif",
+> diff --git a/security/selinux/include/policycap.h b/security/selinux/include/policycap.h
+> index f35d3458e71de..c7373e6effe5d 100644
+> --- a/security/selinux/include/policycap.h
+> +++ b/security/selinux/include/policycap.h
+> @@ -12,6 +12,7 @@ enum {
+>  	POLICYDB_CAP_NNP_NOSUID_TRANSITION,
+>  	POLICYDB_CAP_GENFS_SECLABEL_SYMLINKS,
+>  	POLICYDB_CAP_IOCTL_SKIP_CLOEXEC,
+> +	POLICYDB_CAP_USERSPACE_INITIAL_CONTEXT,
+>  	__POLICYDB_CAP_MAX
+>  };
+>  #define POLICYDB_CAP_MAX (__POLICYDB_CAP_MAX - 1)
+> diff --git a/security/selinux/include/policycap_names.h b/security/selinux/include/policycap_names.h
+> index 2a87fc3702b81..28e4c9ee23997 100644
+> --- a/security/selinux/include/policycap_names.h
+> +++ b/security/selinux/include/policycap_names.h
+> @@ -13,7 +13,8 @@ const char *const selinux_policycap_names[__POLICYDB_CAP_MAX] = {
+>  	"cgroup_seclabel",
+>  	"nnp_nosuid_transition",
+>  	"genfs_seclabel_symlinks",
+> -	"ioctl_skip_cloexec"
+> +	"ioctl_skip_cloexec",
+> +	"userspace_initial_context",
+>  };
+>
+>  #endif /* _SELINUX_POLICYCAP_NAMES_H_ */
+> diff --git a/security/selinux/include/security.h b/security/selinux/include/security.h
+> index 8746fafeb7789..c08b8b58439c9 100644
+> --- a/security/selinux/include/security.h
+> +++ b/security/selinux/include/security.h
+> @@ -201,6 +201,12 @@ static inline bool selinux_policycap_ioctl_skip_cloexec(void)
+>  	return READ_ONCE(state->policycap[POLICYDB_CAP_IOCTL_SKIP_CLOEXEC]);
+>  }
+>
+> +static inline bool selinux_policycap_userspace_initial_context(void)
+> +{
+> +	return READ_ONCE(
+> +		selinux_state.policycap[POLICYDB_CAP_USERSPACE_INITIAL_CONTEXT]);
+> +}
+> +
+>  struct selinux_policy_convert_data;
+>
+>  struct selinux_load_state {
+> diff --git a/security/selinux/ss/policydb.c b/security/selinux/ss/policydb.c
+> index 97c0074f9312a..c5465a0b8055a 100644
+> --- a/security/selinux/ss/policydb.c
+> +++ b/security/selinux/ss/policydb.c
+> @@ -863,6 +863,8 @@ void policydb_destroy(struct policydb *p)
+>  int policydb_load_isids(struct policydb *p, struct sidtab *s)
+>  {
+>  	struct ocontext *head, *c;
+> +	bool isid_init_supported = ebitmap_get_bit(&p->policycaps,
+> +						   POLICYDB_CAP_USERSPACE_INITIAL_CONTEXT);
+>  	int rc;
+>
+>  	rc = sidtab_init(s);
+> @@ -886,6 +888,13 @@ int policydb_load_isids(struct policydb *p, struct sidtab *s)
+>  		if (!name)
+>  			continue;
+>
+> +		/*
+> +		 * Also ignore SECINITSID_INIT if the policy doesn't declare
+> +		 * support for it
+> +		 */
+> +		if (sid == SECINITSID_INIT && !isid_init_supported)
+> +			continue;
+> +
+>  		rc = sidtab_set_initial(s, sid, &c->context[0]);
+>  		if (rc) {
+>  			pr_err("SELinux:  unable to load initial SID %s.\n",
+> @@ -893,6 +902,24 @@ int policydb_load_isids(struct policydb *p, struct sidtab *s)
+>  			sidtab_destroy(s);
+>  			return rc;
+>  		}
+> +
+> +		/*
+> +		 * If the policy doesn't support the "userspace_initial_context"
+> +		 * capability, set SECINITSID_INIT to the same context as
+> +		 * SECINITSID_KERNEL. This ensures the same behavior as before
+> +		 * the reintroduction of SECINITSID_INIT, where all tasks
+> +		 * started before policy load would initially get the context
+> +		 * corresponding to SECINITSID_KERNEL.
+> +		 */
+> +		if (sid == SECINITSID_KERNEL && !isid_init_supported) {
+> +			rc = sidtab_set_initial(s, SECINITSID_INIT, &c->context[0]);
+> +			if (rc) {
+> +				pr_err("SELinux:  unable to load initial SID %s.\n",
+> +				       name);
+> +				sidtab_destroy(s);
+> +				return rc;
+> +			}
+> +		}
+>  	}
+>  	return 0;
+>  }
+> --
+> 2.41.0
