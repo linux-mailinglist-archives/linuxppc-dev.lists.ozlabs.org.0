@@ -2,61 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53C72766FDF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 16:52:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5F1F766FE5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 16:55:05 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=SBoI1IVx;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=u14Jh2+q;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qAbPllgi;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RC9bG1kpcz3cSQ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jul 2023 00:52:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RC9fH0HQqz3cRX
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jul 2023 00:55:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=SBoI1IVx;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=u14Jh2+q;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qAbPllgi;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=acme@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RC9ZP0GvXz2y1j
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jul 2023 00:51:41 +1000 (AEST)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1690555896;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WgtQnEvcjnIA6OssBWgWKQGQOlpPGr/TktCgM5MH5Qk=;
-	b=SBoI1IVxgnSSvXQ53cwYA0wdV8l1C4rCtG7kkuwOvN6012sDhiLL9KCMJBi5HjGQOSF+4H
-	4pejiklppMcfhRh9HnciknpMEPPfqnFG05C0APcyVpXHpb2QRymBZwt01P2uUR+UeHLe9u
-	ugyKnml+vlZYRWbrOW2CZUdApiF+swXL9wq5BKGF5sE6B9AImZ8PyBcwnImSCFh55F8Vmi
-	+xZAPlVpjcsxHiAmmDwQvRWPK8+L5JcFftr+4QojEv7PR8rffM6LJlcM/5s2yEezxgePff
-	C7yLcajuIjVqmvBxnWDanSkGbz9jPsGVYO3wdjiLW0/3riMseGclzQJ6+rf6oA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1690555896;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WgtQnEvcjnIA6OssBWgWKQGQOlpPGr/TktCgM5MH5Qk=;
-	b=u14Jh2+qN17+TLZ3MIa91VdBRZUZrJLtBzQEvavFoM4fEhUDc/1OAgVhNqxa11WRLuDlSR
-	+RGQ3niR5V8SrBCA==
-To: "Zhang, Rui" <rui.zhang@intel.com>, "linuxppc-dev@lists.ozlabs.org"
- <linuxppc-dev@lists.ozlabs.org>, "ldufour@linux.ibm.com"
- <ldufour@linux.ibm.com>
-Subject: Re: [PATCH v4 00/10] Introduce SMT level and add PowerPC support
-In-Reply-To: <beaab9ae25de92bace2f2e30dff5e0d2e7774e56.camel@intel.com>
-References: <20230705145143.40545-1-ldufour@linux.ibm.com>
- <c66e3e800a7d257ef7a90749fe567f056f4c3ace.camel@intel.com>
- <87wmykqyam.ffs@tglx>
- <beaab9ae25de92bace2f2e30dff5e0d2e7774e56.camel@intel.com>
-Date: Fri, 28 Jul 2023 16:51:36 +0200
-Message-ID: <87edksqebr.ffs@tglx>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RC9dQ1Kfnz2yDc
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jul 2023 00:54:18 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 26B0B62175;
+	Fri, 28 Jul 2023 14:54:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C5C3C433C7;
+	Fri, 28 Jul 2023 14:54:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1690556054;
+	bh=R9op8pPpmsKkCoqmTa7kyILBaKx3qjkB+WKspxSkx40=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qAbPllgiag0JHhACI1BZnqart2OdDDXqYcHTpHOQj3SCt1iDM8OLCW0nwB1ETdBkY
+	 mW4lutGWRjORuLx3M+L1to6wA7cZb3hFtA8P3imJIxuxoiYWD1EKhT9aKv43fuSIPK
+	 o9EHbV6ZlTb5PfxS9hKxjTB5Tzqy9t7zMjtSix6d0bypSRygrmgCb1pGt3eCvpIrDV
+	 4mSJqVgH8fsBaSrjPG6aqCpFdZOLzyoEOjF2zu7I0Wa76+MEzXXRwfesGoRfvDcbUt
+	 DprSrK41ByXxrMZIP8f4v9PEshuQMvVePtiXGcjhsOxTZNPwiBfUjh9N8pS5ibdM78
+	 B8Dx0laG5GL4Q==
+Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
+	id BBCF640096; Fri, 28 Jul 2023 11:54:11 -0300 (-03)
+Date: Fri, 28 Jul 2023 11:54:11 -0300
+From: Arnaldo Carvalho de Melo <acme@kernel.org>
+To: Aditya Gupta <adityag@linux.ibm.com>
+Subject: Re: [PATCH 1/1] perf tests task_analyzer: Check perf build options
+ for libtraceevent support
+Message-ID: <ZMPWk5K63tadmDlU@kernel.org>
+References: <20230725061649.34937-1-adityag@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230725061649.34937-1-adityag@linux.ibm.com>
+X-Url: http://acmel.wordpress.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,24 +65,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>, "npiggin@gmail.com" <npiggin@gmail.com>
+Cc: irogers@google.com, maddy@linux.ibm.com, kjain@linux.ibm.com, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, atrajeev@linux.vnet.ibm.com, jolsa@kernel.org, namhyung@kernel.org, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jul 28 2023 at 14:23, Rui Zhang wrote:
-> On Fri, 2023-07-28 at 09:40 +0200, Thomas Gleixner wrote:
->> On Sun, Jul 09 2023 at 15:25, Rui Zhang wrote:
->> > I ran into a boot hang regression with latest upstream code, and it
->> > took me a while to bisect the offending commit and workaround it.
->> 
->> Where is the bug report and the analysis? And what's the workaround?
->
-> As it is an iwlwifi regression, I didn't paste the link here.
->
-> The regression was reported at
-> https://lore.kernel.org/all/b533071f38804247f06da9e52a04f15cce7a3836.camel@intel.com/
->
-> And it was fixed later by below commit in 6.5-rc2.
+Em Tue, Jul 25, 2023 at 11:46:49AM +0530, Aditya Gupta escreveu:
+> Currently we depend on output of 'perf record -e "sched:sched_switch"', to
+> check whether perf was built with libtraceevent support.
+> 
+> Instead, a more straightforward approach can be to check the build options,
+> using 'perf version --build-options', to check for libtraceevent support.
+> 
+> When perf is compiled WITHOUT libtraceevent ('make NO_LIBTRACEEVENT=1'),
+> 'perf version --build-options' outputs (output trimmed):
+> 
+> 	 ...
+>          libtraceevent: [ OFF ]  # HAVE_LIBTRACEEVENT
+> 	 ...
+> 
+> While, when perf is compiled WITH libtraceevent,
+> 
+> 'perf version --build-options' outputs:
+> 
+> ...
+>          libtraceevent: [ on ]  # HAVE_LIBTRACEEVENT
+> 	 ...
+> 
+> Suggested-by: Ian Rogers <irogers@google.com>
+> Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
+> ---
+> 
+>  tools/perf/tests/shell/test_task_analyzer.sh | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tools/perf/tests/shell/test_task_analyzer.sh b/tools/perf/tests/shell/test_task_analyzer.sh
+> index 0095abbe20ca..a28d784987b4 100755
+> --- a/tools/perf/tests/shell/test_task_analyzer.sh
+> +++ b/tools/perf/tests/shell/test_task_analyzer.sh
+> @@ -52,7 +52,7 @@ find_str_or_fail() {
+>  
+>  # check if perf is compiled with libtraceevent support
+>  skip_no_probe_record_support() {
+> -	perf record -e "sched:sched_switch" -a -- sleep 1 2>&1 | grep "libtraceevent is necessary for tracepoint support" && return 2
+> +	perf version --build-options | grep HAVE_LIBTRACEEVENT | grep -q OFF && return 2
+>  	return 0
 
-Ah, ok. I was worried that you ran into issues with the parallel bootup
-muck.
+I'll apply this, but please consider adding a:
+
+	perf build --has libtraceevent
+
+subcommand to have that query made more compact and to avoid the two
+extra grep.
+
+BTW, I'll change that to:
+
+[acme@quaco perf-tools-next]$ perf version --build-options | grep " on .* HAVE_LIBTRACEEVENT"
+         libtraceevent: [ on  ]  # HAVE_LIBTRACEEVENT
+[acme@quaco perf-tools-next]$
+
+replacing "on" with OFF, so that we have just one grep.
+
+Thanks,
+
+- Arnaldo
+
+>  }
+>  
+> -- 
+> 2.41.0
+> 
+
+-- 
+
+- Arnaldo
