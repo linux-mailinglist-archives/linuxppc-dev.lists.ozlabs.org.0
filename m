@@ -2,54 +2,161 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33674766EC8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 15:50:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F532766F69
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 16:25:00 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aNF07MRB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=UooRJrwn;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RC8Cl0pllz3cGx
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 23:50:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RC8zZ47ftz3cTh
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jul 2023 00:24:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aNF07MRB;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=UooRJrwn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=srs0=4jn+=do=robh_at_kernel.org=rob@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mgamail.intel.com; envelope-from=rui.zhang@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (unknown [134.134.136.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RC89s0rjDz2yVy;
-	Fri, 28 Jul 2023 23:48:49 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 97EA662139;
-	Fri, 28 Jul 2023 13:48:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C30CDC433C8;
-	Fri, 28 Jul 2023 13:48:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1690552125;
-	bh=7lriKnjSzsL6NUBoZ2qDUpXUnUvaQF/GYKBnxTvTZ5w=;
-	h=From:To:Cc:Subject:Date:From;
-	b=aNF07MRBOHTU8baIAQfyAHkKYGZGnf+FSa/gKNQYfAZzBsyJmp+PZNRbrIJ436+ZD
-	 FC6YWvl06ztVQ1PjoCqQsp8yFTGvciP/noD1f6rHrOTjfx25nfbkbVpmVNJzkHtNH7
-	 LLOhJa7gBxAWsS8KFBJgQyRq/czHc3oU5swwWt5YXLVksykwYZ2T7miNjJvC565of+
-	 WFPr2ulhkWVyRrPpoxP0ou4q3O9KOPoLiDYJnSOhlSPdbwBaE/UILM0bODo2VhBvNS
-	 chz22/Sm2QMGPCUknt9Y/UesPLdtj5pDHrG6TdBGLxXsHyPm8FuBcZLrIBSZTdV3p3
-	 PmT89LTND8sng==
-Received: (nullmailer pid 3224486 invoked by uid 1000);
-	Fri, 28 Jul 2023 13:48:41 -0000
-From: Rob Herring <robh@kernel.org>
-To: Olivia Mackall <olivia@selenic.com>, Herbert Xu <herbert@gondor.apana.org.au>, Nicolas Ferre <nicolas.ferre@microchip.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@microchip.com>, Florian Fainelli <florian.fainelli@broadcom.com>, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, Avi Fishman <avifishman70@gmail.com>, Tomer Maimon <tmaimon77@gmail.com>, Tali Perry <tali.perry1@gmail.com>, Patrick Venture <venture@google.com>, Nancy Yuen <yuenn@google.com>, Benjamin Fair <benjaminfair@google.com>, Deepak Saxena <dsaxena@plexity.net>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>
-Subject: [PATCH v3] hwrng: Explicitly include correct DT includes
-Date: Fri, 28 Jul 2023 07:48:27 -0600
-Message-Id: <20230728134828.3224218-1-robh@kernel.org>
-X-Mailer: git-send-email 2.40.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RC8yb21Wsz3cLV
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jul 2023 00:24:04 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1690554247; x=1722090247;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=QMYFgQafyYRWZzRHR7Qk3UfKsSOcKGDRsY94y39LZvs=;
+  b=UooRJrwnf3YzaHVoZx+xxJjejym8It5lpTgLMECylqAZdk7euXqUMUD4
+   Swh7n7djBFCuTDQrhWJ6/aGHxZK1o0KT2sEaOoImWKYsSUOCLkKqZGcDA
+   VIMsFAsD/nfn3xLK2nWj2jq3WZcbmf/xG4Rj1ckFuV0QoBBgd+MAZmzmS
+   Jd8GS54fLDX273AyTiHzovTPTEbwvhA6z8QNIXm+99alj/IOuYL/Vs7wc
+   zjBeZFt6jp3yefzM2IKHIMsaqNyxVdsYP2c3qVTzTwXg4H9J/AcL2mpdx
+   vB4y7OoA8CRd9M2O46c2PeVkb5UXVOFmHE9VTGnsWW2N22VF/D/b6jhft
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10784"; a="434888111"
+X-IronPort-AV: E=Sophos;i="6.01,237,1684825200"; 
+   d="scan'208";a="434888111"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2023 07:23:58 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10784"; a="817533790"
+X-IronPort-AV: E=Sophos;i="6.01,237,1684825200"; 
+   d="scan'208";a="817533790"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+  by FMSMGA003.fm.intel.com with ESMTP; 28 Jul 2023 07:23:58 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Fri, 28 Jul 2023 07:23:58 -0700
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27 via Frontend Transport; Fri, 28 Jul 2023 07:23:58 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.173)
+ by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.27; Fri, 28 Jul 2023 07:23:58 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=JRHWhiqRJLnxpv0Xxv20O7S2NX/wlnW3B4QcrQtI2HFm3RNX1jHZfwBENKKy2hXuhPPBeWUbb9OluLDPcjhnPfiEiEVKZ/MKqNfinuMof0FKguVc+WlHcnsTLLfkU7IiYGSF4qm+APPMw3TC2hSA3k556gkx6Vlgua8+G2lRnDAetEYNSfFgtkvVlmy/zVkcbzKH6ymqqeymYcvabORvKTcQJiYb6/eFPhmKQdmGn0vQYWSJQrExxINdG1ihTU7Bf9x5XOrNdk+C1HlZVfBF184dZUGCygksYTLDA1fUyIrV5uSspVYRxoe+JWMHK+rQjlrsDEkYbaUHqo6NyJi2Ww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QMYFgQafyYRWZzRHR7Qk3UfKsSOcKGDRsY94y39LZvs=;
+ b=lgtWn6o4ajWESBh7+ZOalZAJ2bX+Wk7TA4fErFAKmzGaydLVlVSFGJjz+wcuKmM55en66vO/+EZ8K/zQftSaz81Tu90LYgyYMRBK8Teiie4pKVDU/uYaw3EaeZWBkiSFb5ZpIqTAbtLYZt9xKtb2svQzgBcyOyWZFGWoUJMqCbxd5sfSStBN9rKy4ogi3fF/9ubf2ynkx3YxqztQfI6j1Ie8pk7pXAa0ckfUYbsDoPRuGh1/Z2hzDDH1mtojYhqvf9klIAFe31kBfYHiuUm7vuozU0/TT1lzYaHOps64fSHGg925DK27VCWjT9zs74ZRjArmKtwWfGNc08I8XkAOFQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ0PR11MB6622.namprd11.prod.outlook.com (2603:10b6:a03:478::6)
+ by SN7PR11MB7019.namprd11.prod.outlook.com (2603:10b6:806:2ae::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.29; Fri, 28 Jul
+ 2023 14:23:56 +0000
+Received: from SJ0PR11MB6622.namprd11.prod.outlook.com
+ ([fe80::75c5:4a90:a6c3:9d8d]) by SJ0PR11MB6622.namprd11.prod.outlook.com
+ ([fe80::75c5:4a90:a6c3:9d8d%7]) with mapi id 15.20.6631.026; Fri, 28 Jul 2023
+ 14:23:55 +0000
+From: "Zhang, Rui" <rui.zhang@intel.com>
+To: "tglx@linutronix.de" <tglx@linutronix.de>, "linuxppc-dev@lists.ozlabs.org"
+	<linuxppc-dev@lists.ozlabs.org>, "ldufour@linux.ibm.com"
+	<ldufour@linux.ibm.com>
+Subject: Re: [PATCH v4 00/10] Introduce SMT level and add PowerPC support
+Thread-Topic: [PATCH v4 00/10] Introduce SMT level and add PowerPC support
+Thread-Index: AQHZr1BM9gzmeFoLCkCaGIrrlOZu8K+xlKUAgB1aO4CAAHDEgA==
+Date: Fri, 28 Jul 2023 14:23:55 +0000
+Message-ID: <beaab9ae25de92bace2f2e30dff5e0d2e7774e56.camel@intel.com>
+References: <20230705145143.40545-1-ldufour@linux.ibm.com>
+	 <c66e3e800a7d257ef7a90749fe567f056f4c3ace.camel@intel.com>
+	 <87wmykqyam.ffs@tglx>
+In-Reply-To: <87wmykqyam.ffs@tglx>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.44.4-0ubuntu1 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ0PR11MB6622:EE_|SN7PR11MB7019:EE_
+x-ms-office365-filtering-correlation-id: 2f231e59-c5f6-4afa-2b56-08db8f764698
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: nMy3j/MiuURR8UjOga8nn9Fwlxw5UKNhB1dRAWe9dFQi6VEo50d7nAOElYriODKlwHdU3H6TjkEwbDkgDtQOq+aBltvdDSJ4kqlAEJU6XIIRLGpAkbB4a88zW3EvPkFclgovpqgnECcgPkrAjYcpdiZkvjF163RFak5eNUcwarpeG7hGsnVN5l9pkJnf5jNIqA7uK0ws7qOgilset0j/DUjShxfhBvUxCzzzfq5fxOaI9hVSMO9JKm1mtlhxagSMzwxHp1akiyVbe6zH4PIYNNVA4Uxor6sxRgeYPUf0YQX2szxY/3Gcv2kIlPGYxP5t2Pc1EWklxhPtVZa038bvqJEdKZitaPjafFrFQnq5K2FJXWoLyfSdoadGC9KjHdqsDx8oUzJ9uTeDXoYufnZJphc0E44KQvm1PVM/r3/My2pZboSTUj6u03RZ+0AuPM0jxdNMRtb4HwIUW9zWbliBTnIK+/Oo0IpIFKiqYZgmDz07AWEyn757dquW/xWCIh384ew0+upYyRzDyfnVEXTCDuDjlyniLA/XkGcOwE2rZPtw8YSYp6A+9HjEZK+GTPIA915LGZUNq/EZKczZDGkUF38Hd6EoLCrY44WvN7HnGtqIMKgDMR2Z4r48s2poN64TCrvc3LiRcw00L127uFNtjg==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB6622.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(39860400002)(346002)(366004)(396003)(136003)(376002)(451199021)(2906002)(38070700005)(82960400001)(71200400001)(6506007)(26005)(186003)(86362001)(83380400001)(38100700002)(2616005)(66574015)(6486002)(966005)(122000001)(478600001)(36756003)(6512007)(66946007)(54906003)(66476007)(66556008)(8936002)(66446008)(64756008)(76116006)(41300700001)(8676002)(7416002)(316002)(4326008)(110136005)(66899021)(91956017)(5660300002);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?YzY0OHpoMHMvYTYrWXprejNMa0VWV3V0WGNwODBvZUk1emdCV3hBYUlmV1pp?=
+ =?utf-8?B?eWFuZTBDVXVXeW1Odm55bGR0dkZCbVFJcWx3bVVzckNaRlRJUlNVSFdqYzRN?=
+ =?utf-8?B?cEdtem9lemhTQjE3Tmcrb1UzWHhGb0VreUJVZG0rblBYZmZrWS92a1NqWUFq?=
+ =?utf-8?B?Ull1eU9aS2hRejlUbE05Y1k1c2RzWVlZY1VzaU5DV3BnL3ZBUzBXdWRZWXh4?=
+ =?utf-8?B?TmJUakJNQkRrYzBNYW1Ia1puVExLTW5BbzlVWWdiSEgwZWN2Z1lJMDNRdkxm?=
+ =?utf-8?B?dTZKUEtFM0FIWC9zdHBYMGw2RktuR0xjTTlVVjIwdXpuMVBFVjZGWTlkQVF6?=
+ =?utf-8?B?cDF4UVhaTVNZd0xQWFFtNUQ0Nnh2MGxuTEtXTktGQW05U090c2k1YkhhUjNN?=
+ =?utf-8?B?enNWcUl3OE1yWng2dC9sdnRUVmVicDVMYnhEMVREQ3FHc0NsbUtFb3NpSE8v?=
+ =?utf-8?B?dmhELyszb2hWcUszbEphYWdoYy8vWjhia29kdllkZFV6bjNDQUpmWCtlSDZ2?=
+ =?utf-8?B?Q3gzbzFnbnU3VzFlQnJIcFJuRGQ2eUdSWEIrVkxXYmR1ZjlLU2wzTm85aVIw?=
+ =?utf-8?B?aU1TbEZyNDNSMzZHT1F3NUFlUGtXd3JhSGJvK1dhL0t0Zk9uVkFtN2NIcXdF?=
+ =?utf-8?B?Zk0zdmxvam9BTmxUZGoxbDRBbm5IK040aUZSOW42a2gvbG81KzJuZi9PK0hn?=
+ =?utf-8?B?dlFpWjRveWxOR3VnTVVPb2RNbWFxK3JOd0V3ZThMUnpnTWI4WndEUTJ1Ykw5?=
+ =?utf-8?B?aFFZSm83cU1UblpqaHFuRUIxWUtEanhUd3ZVNmRPQ2lHOS9RY0srT1Jmd1pz?=
+ =?utf-8?B?ZVBHYzZ2b0FNY1E5S1l1dlI3SDJSempOQ2ZnOElzd2FQSmVVK2NTWjQwSlpZ?=
+ =?utf-8?B?SlJkVG9DSzlkUkdjR0ZZOGh2VS9DcUREYTIrd3FiNXpLSlZZTmQ2bm9tcGpY?=
+ =?utf-8?B?alBTU0JrWDBydENGRGR5WjFPUlFnbUxYcCtPcWhXRHBXOGhBam16ZFVORldI?=
+ =?utf-8?B?dUFvYmVLdXE5bFBlSXZUUzZVenI0NHlBM25sUUVEcStIVVRzcjVqQWZRb2Rz?=
+ =?utf-8?B?N2JZcVg3NjlOL1k2WVV3VmxscjgyZHRtTnhDSVMvYlFiYjl3UkVBaFlpbS9K?=
+ =?utf-8?B?YkpwZzFaQ3o3bE9sb3FjRGVrNnpzM0dvakduempFSUczcUZLNVcwdlNDZDZU?=
+ =?utf-8?B?TlpjY3JnRFhyNlFQVVZuN010a0lMNHNMcXVZdkEvdXdpWFFTbjBaV20yQWhp?=
+ =?utf-8?B?anVURWFQWWI1Y3BIQVo4bzF1NTFVejZiV1R6aG1jYnQ4blFUOFNZRytBY2JO?=
+ =?utf-8?B?KzAwdVhLZHgyR0c5L0ZvR0xoclkzSWJpeWJCK2ZVc010UkdaNG9nbVZaY2Y1?=
+ =?utf-8?B?ZGIwcVBSNW82eG9TR0hrc1hMTVhjK0owcUlydkJYelJxUVc1TGt4M3F3SlFF?=
+ =?utf-8?B?bkZpdjNSRXFsWkc0ZmpkZDkxRHVPOVpJWEJDS3JmaHRmREVoN0dMeFNkTlE0?=
+ =?utf-8?B?cm9lRnlDSy9mcEdqenRYKytIT2hDd0MybTVUWUhZTHFaaE4wUTNHYUpvekZY?=
+ =?utf-8?B?UFJBa255UkF5Y1NKdlFsR1ZxNTBmUUFxejRCejdIaVFNRXdneWRuV2NjNkRS?=
+ =?utf-8?B?NEJBaVBhQnczQ1laRWJPVlozWFFJaTk3SC9nWXZLSjNNRzJWOWF1Q2R3TjNk?=
+ =?utf-8?B?b29jUjV0d3Z4QmRKaG9Wd2ljbWIrQUdkKzViWnVoa3VSeXlxMEhxWVpzZ1k1?=
+ =?utf-8?B?aDBycXc2ZmJ4czJDUmhqaDUwbUFsNURIT1puNmFaRHhRaW9ZVjNyYytjZDVL?=
+ =?utf-8?B?aWwrNHI2Vlo4aTUwY3F4SkdWakNUcjZ3RGlUMmlyUlE3R1ZNVG0vUjJjdmh1?=
+ =?utf-8?B?MXo1M2hucE9HK29hSnFLYWI3K0V5cHE3RktPdUp1R3UvYzNXWGc4RWRwV3pj?=
+ =?utf-8?B?TTdxMWZXa2h4VkxhNzVlK3BPbGttKzNnclYxemZkMXhkMG4zaDdNUUk1N29X?=
+ =?utf-8?B?TXhpbXlFRWM3QUl0ZTR6WTZMbk00SG5Bam5sSHNFZHRmblNVSURHeWJyMVJJ?=
+ =?utf-8?B?dUFwN0hxWkFyempmTXJrV0lBTUFMMWxEc0F1OG4rMy90NG5BYjkyVktqNHE2?=
+ =?utf-8?Q?VWg19m8bsHLJw/CXYbLO/bbLn?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <3BA8E55B94CC6D4ABF9F81A83BAD78E7@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6622.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2f231e59-c5f6-4afa-2b56-08db8f764698
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Jul 2023 14:23:55.6169
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: cAbPvyWt+QmNHvW3g43wRTyw0y4gAv9iGEIeMuW10alxbVUZGT3YvpnfREkTRBgiMaZmjireiFhewpbS0IxUmg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7019
+X-OriginatorOrg: intel.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,222 +168,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, openbmc@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-rpi-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org
+Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>, "npiggin@gmail.com" <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The DT of_device.h and of_platform.h date back to the separate
-of_platform_bus_type before it was merged into the regular platform bus.
-As part of that merge prepping Arm DT support 13 years ago, they
-"temporarily" include each other. They also include platform_device.h
-and of.h. As a result, there's a pretty much random mix of those include
-files used throughout the tree. In order to detangle these headers and
-replace the implicit includes with struct declarations, users need to
-explicitly include the correct includes.
-
-Signed-off-by: Rob Herring <robh@kernel.org>
----
-v3:
- - Split out hw_random, ipmi and tpm
-v2:
- - Fix build for pic32-rng.c dropping of_match_ptr()
----
- drivers/char/hw_random/atmel-rng.c     | 2 +-
- drivers/char/hw_random/bcm2835-rng.c   | 3 +--
- drivers/char/hw_random/ingenic-trng.c  | 2 +-
- drivers/char/hw_random/iproc-rng200.c  | 3 +--
- drivers/char/hw_random/npcm-rng.c      | 3 +--
- drivers/char/hw_random/omap-rng.c      | 2 --
- drivers/char/hw_random/omap3-rom-rng.c | 1 -
- drivers/char/hw_random/pasemi-rng.c    | 3 +--
- drivers/char/hw_random/pic32-rng.c     | 5 ++---
- drivers/char/hw_random/stm32-rng.c     | 3 ++-
- drivers/char/hw_random/xgene-rng.c     | 5 ++---
- drivers/char/hw_random/xiphera-trng.c  | 1 -
- 12 files changed, 12 insertions(+), 21 deletions(-)
-
-diff --git a/drivers/char/hw_random/atmel-rng.c b/drivers/char/hw_random/atmel-rng.c
-index b8effe77d80f..a37367ebcbac 100644
---- a/drivers/char/hw_random/atmel-rng.c
-+++ b/drivers/char/hw_random/atmel-rng.c
-@@ -15,7 +15,7 @@
- #include <linux/io.h>
- #include <linux/iopoll.h>
- #include <linux/hw_random.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
- 
-diff --git a/drivers/char/hw_random/bcm2835-rng.c b/drivers/char/hw_random/bcm2835-rng.c
-index e98fcac578d6..e19b0f9f48b9 100644
---- a/drivers/char/hw_random/bcm2835-rng.c
-+++ b/drivers/char/hw_random/bcm2835-rng.c
-@@ -8,8 +8,7 @@
- #include <linux/io.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
--#include <linux/of_address.h>
--#include <linux/of_platform.h>
-+#include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/printk.h>
- #include <linux/clk.h>
-diff --git a/drivers/char/hw_random/ingenic-trng.c b/drivers/char/hw_random/ingenic-trng.c
-index 0eb80f786f4d..759445d4f65a 100644
---- a/drivers/char/hw_random/ingenic-trng.c
-+++ b/drivers/char/hw_random/ingenic-trng.c
-@@ -11,8 +11,8 @@
- #include <linux/hw_random.h>
- #include <linux/io.h>
- #include <linux/iopoll.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
--#include <linux/of_device.h>
- #include <linux/platform_device.h>
- #include <linux/slab.h>
- 
-diff --git a/drivers/char/hw_random/iproc-rng200.c b/drivers/char/hw_random/iproc-rng200.c
-index 06bc060534d8..34df3f0d3e45 100644
---- a/drivers/char/hw_random/iproc-rng200.c
-+++ b/drivers/char/hw_random/iproc-rng200.c
-@@ -12,8 +12,7 @@
- #include <linux/io.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
--#include <linux/of_address.h>
--#include <linux/of_platform.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/platform_device.h>
- #include <linux/delay.h>
- 
-diff --git a/drivers/char/hw_random/npcm-rng.c b/drivers/char/hw_random/npcm-rng.c
-index 9903d0357e06..8a304b754217 100644
---- a/drivers/char/hw_random/npcm-rng.c
-+++ b/drivers/char/hw_random/npcm-rng.c
-@@ -8,12 +8,11 @@
- #include <linux/init.h>
- #include <linux/random.h>
- #include <linux/err.h>
-+#include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/hw_random.h>
- #include <linux/delay.h>
--#include <linux/of_irq.h>
- #include <linux/pm_runtime.h>
--#include <linux/of_device.h>
- 
- #define NPCM_RNGCS_REG		0x00	/* Control and status register */
- #define NPCM_RNGD_REG		0x04	/* Data register */
-diff --git a/drivers/char/hw_random/omap-rng.c b/drivers/char/hw_random/omap-rng.c
-index 00ff96703dd2..be03f76a2a80 100644
---- a/drivers/char/hw_random/omap-rng.c
-+++ b/drivers/char/hw_random/omap-rng.c
-@@ -26,8 +26,6 @@
- #include <linux/slab.h>
- #include <linux/pm_runtime.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
--#include <linux/of_address.h>
- #include <linux/interrupt.h>
- #include <linux/clk.h>
- #include <linux/io.h>
-diff --git a/drivers/char/hw_random/omap3-rom-rng.c b/drivers/char/hw_random/omap3-rom-rng.c
-index f06e4f95114f..18dc46b1b58e 100644
---- a/drivers/char/hw_random/omap3-rom-rng.c
-+++ b/drivers/char/hw_random/omap3-rom-rng.c
-@@ -20,7 +20,6 @@
- #include <linux/err.h>
- #include <linux/io.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
- 
-diff --git a/drivers/char/hw_random/pasemi-rng.c b/drivers/char/hw_random/pasemi-rng.c
-index 2498d4ef9fe2..6959d6edd44c 100644
---- a/drivers/char/hw_random/pasemi-rng.c
-+++ b/drivers/char/hw_random/pasemi-rng.c
-@@ -9,11 +9,10 @@
- 
- #include <linux/module.h>
- #include <linux/kernel.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/platform_device.h>
- #include <linux/hw_random.h>
- #include <linux/delay.h>
--#include <linux/of_address.h>
--#include <linux/of_platform.h>
- #include <linux/io.h>
- 
- #define SDCRNG_CTL_REG			0x00
-diff --git a/drivers/char/hw_random/pic32-rng.c b/drivers/char/hw_random/pic32-rng.c
-index 99c8bd0859a1..b314d994afcf 100644
---- a/drivers/char/hw_random/pic32-rng.c
-+++ b/drivers/char/hw_random/pic32-rng.c
-@@ -12,9 +12,8 @@
- #include <linux/hw_random.h>
- #include <linux/io.h>
- #include <linux/kernel.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
--#include <linux/of.h>
--#include <linux/of_device.h>
- #include <linux/platform_device.h>
- #include <linux/slab.h>
- 
-@@ -129,7 +128,7 @@ static struct platform_driver pic32_rng_driver = {
- 	.remove		= pic32_rng_remove,
- 	.driver		= {
- 		.name	= "pic32-rng",
--		.of_match_table = of_match_ptr(pic32_rng_of_match),
-+		.of_match_table = pic32_rng_of_match,
- 	},
- };
- 
-diff --git a/drivers/char/hw_random/stm32-rng.c b/drivers/char/hw_random/stm32-rng.c
-index a6731cf0627a..efb6a9f9a11b 100644
---- a/drivers/char/hw_random/stm32-rng.c
-+++ b/drivers/char/hw_random/stm32-rng.c
-@@ -10,8 +10,9 @@
- #include <linux/iopoll.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/of.h>
- #include <linux/of_address.h>
--#include <linux/of_platform.h>
-+#include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
- #include <linux/reset.h>
- #include <linux/slab.h>
-diff --git a/drivers/char/hw_random/xgene-rng.c b/drivers/char/hw_random/xgene-rng.c
-index 7c8f3cb7c6af..c25bb169563d 100644
---- a/drivers/char/hw_random/xgene-rng.c
-+++ b/drivers/char/hw_random/xgene-rng.c
-@@ -15,9 +15,8 @@
- #include <linux/init.h>
- #include <linux/interrupt.h>
- #include <linux/module.h>
--#include <linux/of_platform.h>
--#include <linux/of_irq.h>
--#include <linux/of_address.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/platform_device.h>
- #include <linux/timer.h>
- 
- #define RNG_MAX_DATUM			4
-diff --git a/drivers/char/hw_random/xiphera-trng.c b/drivers/char/hw_random/xiphera-trng.c
-index 2a9fea72b2e0..2c586d1fe8a9 100644
---- a/drivers/char/hw_random/xiphera-trng.c
-+++ b/drivers/char/hw_random/xiphera-trng.c
-@@ -7,7 +7,6 @@
- #include <linux/err.h>
- #include <linux/io.h>
- #include <linux/hw_random.h>
--#include <linux/of_device.h>
- #include <linux/platform_device.h>
- #include <linux/delay.h>
- 
--- 
-2.40.1
-
+SGksIFRob21hcywNCg0KT24gRnJpLCAyMDIzLTA3LTI4IGF0IDA5OjQwICswMjAwLCBUaG9tYXMg
+R2xlaXhuZXIgd3JvdGU6DQo+IFJ1aSENCj4gDQo+IE9uIFN1biwgSnVsIDA5IDIwMjMgYXQgMTU6
+MjUsIFJ1aSBaaGFuZyB3cm90ZToNCj4gPiBJIHJhbiBpbnRvIGEgYm9vdCBoYW5nIHJlZ3Jlc3Np
+b24gd2l0aCBsYXRlc3QgdXBzdHJlYW0gY29kZSwgYW5kIGl0DQo+ID4gdG9vayBtZSBhIHdoaWxl
+IHRvIGJpc2VjdCB0aGUgb2ZmZW5kaW5nIGNvbW1pdCBhbmQgd29ya2Fyb3VuZCBpdC4NCj4gDQo+
+IFdoZXJlIGlzIHRoZSBidWcgcmVwb3J0IGFuZCB0aGUgYW5hbHlzaXM/IEFuZCB3aGF0J3MgdGhl
+IHdvcmthcm91bmQ/DQoNCkFzIGl0IGlzIGFuIGl3bHdpZmkgcmVncmVzc2lvbiwgSSBkaWRuJ3Qg
+cGFzdGUgdGhlIGxpbmsgaGVyZS4NCg0KVGhlIHJlZ3Jlc3Npb24gd2FzIHJlcG9ydGVkIGF0DQpo
+dHRwczovL2xvcmUua2VybmVsLm9yZy9hbGwvYjUzMzA3MWYzODgwNDI0N2YwNmRhOWU1MmEwNGYx
+NWNjZTdhMzgzNi5jYW1lbEBpbnRlbC5jb20vDQoNCkFuZCBpdCB3YXMgZml4ZWQgbGF0ZXIgYnkg
+YmVsb3cgY29tbWl0IGluIDYuNS1yYzIuDQoNCnRoYW5rcywNCnJ1aQ0KDQpjb21taXQgMTJhODlm
+MDE3NzA5MmRiYzJhMWNiMWQwNWE5NzkwYWRiY2VhMjMwOQ0KQXV0aG9yOiAgICAgSm9oYW5uZXMg
+QmVyZyA8am9oYW5uZXMuYmVyZ0BpbnRlbC5jb20+DQpBdXRob3JEYXRlOiBNb24gSnVsIDEwIDE2
+OjUwOjM5IDIwMjMgKzAyMDANCkNvbW1pdDogICAgIEpha3ViIEtpY2luc2tpIDxrdWJhQGtlcm5l
+bC5vcmc+DQpDb21taXREYXRlOiBUdWUgSnVsIDExIDIwOjI2OjA2IDIwMjMgLTA3MDANCg0KICAg
+IHdpZmk6IGl3bHdpZmk6IHJlbW92ZSAndXNlX3RmaCcgY29uZmlnIHRvIGZpeCBjcmFzaA0KICAg
+IA0KICAgIFRoaXMgaXMgZXF1aXZhbGVudCB0byAnZ2VuMicsIGFuZCBpdCB3YXMgYWx3YXlzIGNv
+bmZ1c2luZyB0byBoYXZlDQogICAgdHdvIGlkZW50aWNhbCBjb25maWcgZW50cmllcy4gVGhlIHNw
+bGl0IGNvbmZpZyBwYXRjaCBhY3R1YWxseSBoYWQNCiAgICBiZWVuIG9yaWdpbmFsbHkgZGV2ZWxv
+cGVkIGFmdGVyIHJlbW92aW5nICd1c2VfdGZoIiBhbmQgZGlkbid0IGFkZA0KICAgIHRoZSB1c2Vf
+dGZoIGluIHRoZSBuZXcgY29uZmlncyBhcyB0aGV5J2QgbGF0ZXIgYmVlbiBjb3BpZWQgdG8gdGhl
+DQogICAgbmV3IGZpbGVzLiBUaHVzIHRoZSBlYXNpZXN0IHdheSB0byBmaXggdGhlIGluaXQgY3Jh
+c2ggaGVyZSBub3cgaXMNCiAgICB0byBqdXN0IHJlbW92ZSB1c2VfdGZoICh3aGljaCBpcyBlcnJv
+bmVvdXNseSB1bnNldCBpbiBtb3N0IG9mIHRoZQ0KICAgIGNvbmZpZ3Mgbm93KSBhbmQgdXNlICdn
+ZW4yJyBpbiB0aGUgY29kZSBpbnN0ZWFkLg0KICAgIA0KICAgIFRoZXJlJ3MgcG9zc2libHkgc3Rp
+bGwgYW4gdW53aW5kIGVycm9yIGluIGl3bF90eHFfZ2VuMl9pbml0KCkgYXMNCiAgICBpdCBjcmFz
+aGVzIGlmIFRYUSAwIGZhaWxzIHRvIGluaXRpYWxpemUsIGJ1dCB3ZSBjYW4gZGVhbCB3aXRoIGl0
+DQogICAgbGF0ZXIgc2luY2UgdGhlIG9yaWdpbmFsIGZhaWx1cmUgaXMgZHVlIHRvIHRoZSB1c2Vf
+dGZoIGNvbmZ1c2lvbi4NCiAgICANCiAgICBUZXN0ZWQtYnk6IFhpIFJ1b3lhbyA8eHJ5MTExQHhy
+eTExMS5zaXRlPg0KICAgIFJlcG9ydGVkLWFuZC10ZXN0ZWQtYnk6IE5pa2zEgXZzIEtvxLxlc8WG
+aWtvdnMNCjxwaW5rZmxhbWVzLmxpbnV4QGdtYWlsLmNvbT4NCiAgICBSZXBvcnRlZC1hbmQtdGVz
+dGVkLWJ5OiBKZWZmIENodWEgPGplZmYuY2h1YS5saW51eEBnbWFpbC5jb20+DQogICAgUmVwb3J0
+ZWQtYW5kLXRlc3RlZC1ieTogWmhhbmcgUnVpIDxydWkuemhhbmdAaW50ZWwuY29tPg0KICAgIExp
+bms6IGh0dHBzOi8vYnVnemlsbGEua2VybmVsLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MjE3NjIyDQog
+ICAgTGluazoNCmh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2FsbC85Mjc0ZDliZDNkMDgwYTQ1NzY0
+OWZmNWFkZGNjMTcyNmYwOGVmNWIyLmNhbWVsQHhyeTExMS5zaXRlLw0KICAgIExpbms6DQpodHRw
+czovL2xvcmUua2VybmVsLm9yZy9hbGwvQ0FBSndfWnVnNlZDUzVacVRXYUZTcjlzZDg1ayUzRHR5
+UG05REVFJTJCbVYlM0RBS29FQ1pNJTJCc1FAbWFpbC5nbWFpbC5jb20vDQogICAgRml4ZXM6IDE5
+ODk4Y2U5Y2Y4YSAoIndpZmk6IGl3bHdpZmk6IHNwbGl0IDIyMDAwLmMgaW50byBtdWx0aXBsZQ0K
+ZmlsZXMiKQ0KICAgIFNpZ25lZC1vZmYtYnk6IEpvaGFubmVzIEJlcmcgPGpvaGFubmVzLmJlcmdA
+aW50ZWwuY29tPg0KICAgIExpbms6DQpodHRwczovL2xvcmUua2VybmVsLm9yZy9yLzIwMjMwNzEw
+MTQ1MDM4Ljg0MTg2LTItam9oYW5uZXNAc2lwc29sdXRpb25zLm5ldA0KICAgIFNpZ25lZC1vZmYt
+Ynk6IEpha3ViIEtpY2luc2tpIDxrdWJhQGtlcm5lbC5vcmc+DQoNCj4gDQo+IFRoYW5rcywNCj4g
+DQo+IMKgwqDCoMKgwqDCoMKgIHRnbHgNCg0K
