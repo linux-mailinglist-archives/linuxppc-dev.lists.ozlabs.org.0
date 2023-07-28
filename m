@@ -1,90 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D637C766B55
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 13:04:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A31AE766DCF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 15:02:23 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QKRPLJ4s;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QKRPLJ4s;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=Qw3efA8U;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RC4Wk5m5hz3cW8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 21:04:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RC78F2J8cz3cVf
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jul 2023 23:02:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QKRPLJ4s;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QKRPLJ4s;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=Qw3efA8U;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=omosnace@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::531; helo=mail-pg1-x531.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RC4Vq3m7Hz3bNj
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jul 2023 21:03:14 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1690542191;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YRDAIP7TWOWzkcjHET3GgHuSuYBQhkcL+zbEgtv9LlA=;
-	b=QKRPLJ4sFeEu+QaHdyAbV0Fw/hpI+vQBNyogVttq4PXc+TCe0ZEEKFRDlwOPJWubs0ZUDC
-	wzteGfaQT09cgP+nij66rPPWito0w3PagLIRoVZtjTIx4HTSGlijnNAKEnRTDsltF2KlJ0
-	3a07HrBtH0zLzXMJKjDg6uHK3ck0JWE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1690542191;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YRDAIP7TWOWzkcjHET3GgHuSuYBQhkcL+zbEgtv9LlA=;
-	b=QKRPLJ4sFeEu+QaHdyAbV0Fw/hpI+vQBNyogVttq4PXc+TCe0ZEEKFRDlwOPJWubs0ZUDC
-	wzteGfaQT09cgP+nij66rPPWito0w3PagLIRoVZtjTIx4HTSGlijnNAKEnRTDsltF2KlJ0
-	3a07HrBtH0zLzXMJKjDg6uHK3ck0JWE=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-249-c6XOGJXNOnKYlh9IftGUqA-1; Fri, 28 Jul 2023 07:03:10 -0400
-X-MC-Unique: c6XOGJXNOnKYlh9IftGUqA-1
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-267f666104aso1474757a91.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jul 2023 04:03:10 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RBvmc72YDz2yTt
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jul 2023 14:29:34 +1000 (AEST)
+Received: by mail-pg1-x531.google.com with SMTP id 41be03b00d2f7-55b0e7efb1cso1009060a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jul 2023 21:29:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1690518573; x=1691123373;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=aXTLyMaqru71WShxogJjoqJv9Kj4TUwbHx2BfpbIe18=;
+        b=Qw3efA8U0++dG87w9gB6FHB3Yz2pJgTODylcGMIsiboZntGt19DPNwN0Dzc8wxUX+d
+         X8oT7WyDA7xUliuLYzHHyepNpSSF5RD4cAO+/RYrfW/lGMzCHnMoZlPSYOUVinTvSKLJ
+         hZ9APKHcgYvWfWokmC8iBn2aVXgeCYXivRRCOneqeGM0cwjvQ1z4P74sAfFvxeV6/mwh
+         xoMNz+7lkYw9tMJhuVEgg+4nyRhOpqn7uzMp8+GT6tPZLx64TDXXZwuZRy4R+koFoAXV
+         mqvEi0wNg6LwtqF2FdM2f1lpIUjRstg6YItsWnTvpUjTCR5Vz28tpJ3httCYwaQmN/z7
+         NVGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690542189; x=1691146989;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YRDAIP7TWOWzkcjHET3GgHuSuYBQhkcL+zbEgtv9LlA=;
-        b=VwMf/tGGq/slAVzZmizfAOWwkJlPOBUlqsvH4hcZKdp5BqyeOYl+OB8jkeRBKasP4+
-         55DyFLs7vTQmObWYO0QS3UK3Any60xarJdbHw2aH9LHVMcDPX1s3uJHv1dlZ3FEO6jl/
-         R9HdtjAXhPC8IPL+xU3KEz/wmrn+X3B4frdthhGosK9T8ztxws/fu8DiA8znejD+yXyI
-         f+3vYWAxPdgU5qVABAw7yUbvxjW/P2JuskaiOMRICBRkf2I4noEWFuxMfD1WnEErcu35
-         5e/Jzva0YAHIK2fnB+xQavF0xkY0QbcmHc4nYWQ7myTtZ9qQgN9ucO28eZBrO/GHR12N
-         qdVQ==
-X-Gm-Message-State: ABy/qLYh2MMHPFFCmj6T6MqLhQEnVTW7KCqdfzH5L1p0ycHxGNDEht7R
-	JCucgcj7prNC284VrRbRF0aB8w6StD7Z63XLKYn7tffVk71D+zqFHVwhjicz+4rYID4iY1/X97T
-	r7SzM5ZUXVLW6JUUv0Z0I9Wr8EFExk1YkkqbPEROkyg==
-X-Received: by 2002:a17:90a:c210:b0:267:f8f4:73ab with SMTP id e16-20020a17090ac21000b00267f8f473abmr1972292pjt.16.1690542189379;
-        Fri, 28 Jul 2023 04:03:09 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFpM31f8xiI5XV4XQ4pPKorUiehU8YoIyXepdh/t5x0b+PJODmj9I2IfnV6k11CAK+Fxd67QVKBY4VbC4WYnMo=
-X-Received: by 2002:a17:90a:c210:b0:267:f8f4:73ab with SMTP id
- e16-20020a17090ac21000b00267f8f473abmr1972270pjt.16.1690542189073; Fri, 28
- Jul 2023 04:03:09 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1690518573; x=1691123373;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aXTLyMaqru71WShxogJjoqJv9Kj4TUwbHx2BfpbIe18=;
+        b=mENZegIZgmRSOsC1wxjs8nzr9iLHZiiaBVTnX1NsCTeUDcn2w22cPaEa6Qbw2b7ZC4
+         wV8Ln6xBiK5O/4VlmG5BRdVhxMkiMlNkruvf4y1wSsNJRdecPgOa+iLEbQtoiK8ZJci8
+         TMl2Yprm+CqNDf+GWaiwuUn6cyujdLtyO2Ioog7iudSOW3Osn6qycrb1qyizXmPiZvih
+         12ggoigk1lC03g2S/M+CT1kusjEHCQH9GPoJrGrTxeP2Xh5VfwOPsNEQbTNPXRikhAzd
+         4/CL+XfpqTiZqLSjtvLvANVsOg8rocGuTj8lmZYSoSAkm1H75+O7vY0qb4Oz4CeHyHvD
+         Ad1g==
+X-Gm-Message-State: ABy/qLaj0FqA/UZN3bGvbQJuBioTPk7wRm8IvvczpErF5wlHkU0XiIN4
+	W4Xf0H8BqtEj8I4APPrlFSlPGsH196JKh5O11iU=
+X-Google-Smtp-Source: APBJJlGh3BHQ/F8S8CMwIiwJMvlKlQA6m4+/NlHkcOqjiYlFu0dExjIsdJ/HOwVY4csy3TuNrfoUugSrPLWK54FyWMg=
+X-Received: by 2002:a17:90b:3b8e:b0:268:78ab:e8c1 with SMTP id
+ pc14-20020a17090b3b8e00b0026878abe8c1mr571988pjb.19.1690518572854; Thu, 27
+ Jul 2023 21:29:32 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230620131223.431281-1-omosnace@redhat.com> <87edkseqf8.fsf@mail.lhotse>
-In-Reply-To: <87edkseqf8.fsf@mail.lhotse>
-From: Ondrej Mosnacek <omosnace@redhat.com>
-Date: Fri, 28 Jul 2023 13:02:58 +0200
-Message-ID: <CAFqZXNtsCKsr0YHPCSJJQ5An=RoMhf0dufgr7P_SnAAv7CrLjw@mail.gmail.com>
-Subject: Re: Login broken with old userspace (was Re: [PATCH v2] selinux:
- introduce an initial SID for early boot processes)
-To: Michael Ellerman <mpe@ellerman.id.au>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+References: <CAA+D8AP-3SWJe21qfMVz0j3umvS9bzDkeuQtab4OFrc2Ur+eVw@mail.gmail.com>
+ <20230722123635.26623-1-ruc_gongyuanjun@163.com>
+In-Reply-To: <20230722123635.26623-1-ruc_gongyuanjun@163.com>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Fri, 28 Jul 2023 12:29:21 +0800
+Message-ID: <CAA+D8AM=Y-ARVRyCqja-Ehz44SCLh6rMKQKYhv68VSd4qNq0GA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] ASoC: imx-audmux: fix return value checks of clk_prepare_enable()
+To: Yuanjun Gong <ruc_gongyuanjun@163.com>
+Content-Type: multipart/alternative; boundary="0000000000000573e0060184877b"
+X-Mailman-Approved-At: Fri, 28 Jul 2023 23:01:37 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,81 +75,133 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: selinux@vger.kernel.org, linux-next@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Paul Moore <paul@paul-moore.com>, LKML <linux-kernel@vger.kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, festevam@gmail.com, Xiubo.Lee@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jul 28, 2023 at 4:12=E2=80=AFAM Michael Ellerman <mpe@ellerman.id.a=
-u> wrote:
->
-> Ondrej Mosnacek <omosnace@redhat.com> writes:
-> > Currently, SELinux doesn't allow distinguishing between kernel threads
-> > and userspace processes that are started before the policy is first
-> > loaded - both get the label corresponding to the kernel SID. The only
-> > way a process that persists from early boot can get a meaningful label
-> > is by doing a voluntary dyntransition or re-executing itself.
->
-> Hi,
->
-> This commit breaks login for me when booting linux-next kernels with old
-> userspace, specifically Ubuntu 16.04 on ppc64le. 18.04 is OK.
->
-> The symptom is that login never accepts the root password, it just
-> always says "Login incorrect".
->
-> Bisect points to this commit.
->
-> Reverting this commit on top of next-20230726, fixes the problem
-> (ie. login works again).
->
-> Booting with selinux=3D0 also fixes the problem.
->
-> Is this expected? The change log below suggests backward compatibility
-> was considered, is 16.04 just too old?
+--0000000000000573e0060184877b
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Michael,
+On Sat, Jul 22, 2023 at 8:38=E2=80=AFPM Yuanjun Gong <ruc_gongyuanjun@163.c=
+om>
+wrote:
 
-I can reproduce it on Fedora 38 when I boot with SELINUX=3Ddisabled in
-/etc/selinux/config (+ a kernel including that commit), so it likely
-isn't caused by the userspace being old. Can you check what you have
-in /etc/selinux/config (or if it exists at all)?
+> check the return value of clk_prepare_enable(), and if
+> clk_prepare_enable() gets an unexpected return value,
+> imx_audmux_suspend() and imx_audmux_resume() should return
+> the error value.
+>
+>
+please use the ./scripts/get_maintainer.pl to get the maillist
+and resend the patch.
 
-We have deprecated and removed the "runtime disable" functionality in
-SELinux recently [1], which was used to implement "disabling" SELinux
-via the /etc/selinux/config file, so now the situation (selinux=3D0 +
-SELINUX=3Ddisabled in /etc/selinux/config) leads to a state where
-SELinux is enabled, but no policy is loaded (and no enforcement is
-done). Such a state mostly behaves as if SElinux was truly disabled
-(via kernel command line), but there are some subtle differences and I
-believe we don't officially support it (Paul might clarify). With
-latest kernels it is recommended to either disable SELinux via the
-kernel command line (or Kconfig[2]) or to boot it in Enforcing or
-Permissive mode with a valid/usable policy installed.
+best regards
+wang shengjiu
 
-So I wonder if Ubuntu ships by default with the bad configuration or
-if it's just a result of using the custom-built linux-next kernel (or
-some changes on your part). If Ubuntu's stock kernel is configured to
-boot with SELinux enabled by default, they should also by default ship
-a usable policy and SELINUX=3Dpermissive/enforcing in
-/etc/selinux/config (or configure the kernel[2] or bootloader to boot
-with SELinux disabled by default). (Although if they ship a pre-[1]
-kernel, they may continue to rely on the runtime disable
-functionality, but it means people will have to be careful when
-booting newer or custom kernels.)
 
-That said, I'd like to get to the bottom of why the commit causes the
-login to fail and fix it somehow. I presume something in PAM chokes on
-the fact that userspace tasks now have "init" instead of "kernel" as
-the pre-policy-load security context, but so far I haven't been able
-to pinpoint the problem. I'll keep digging...
+> Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
+> ---
+>  sound/soc/fsl/imx-audmux.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+>
+> diff --git a/sound/soc/fsl/imx-audmux.c b/sound/soc/fsl/imx-audmux.c
+> index be003a117b39..9791e56158ef 100644
+> --- a/sound/soc/fsl/imx-audmux.c
+> +++ b/sound/soc/fsl/imx-audmux.c
+> @@ -325,8 +325,11 @@ static void imx_audmux_remove(struct platform_device
+> *pdev)
+>  static int imx_audmux_suspend(struct device *dev)
+>  {
+>         int i;
+> +       ssize_t ret;
+>
+> -       clk_prepare_enable(audmux_clk);
+> +       ret =3D clk_prepare_enable(audmux_clk);
+> +       if (ret)
+> +               return ret;
+>
+>         for (i =3D 0; i < reg_max; i++)
+>                 regcache[i] =3D readl(audmux_base + i * 4);
+> @@ -339,8 +342,11 @@ static int imx_audmux_suspend(struct device *dev)
+>  static int imx_audmux_resume(struct device *dev)
+>  {
+>         int i;
+> +       ssize_t ret;
+>
+> -       clk_prepare_enable(audmux_clk);
+> +       ret =3D clk_prepare_enable(audmux_clk);
+> +       if (ret)
+> +               return ret;
+>
+>         for (i =3D 0; i < reg_max; i++)
+>                 writel(regcache[i], audmux_base + i * 4);
+> --
+> 2.17.1
+>
+>
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/comm=
-it/?id=3Df22f9aaf6c3d92ebd5ad9e67acc03afebaaeb289
-[2] via CONFIG_LSM (or CONFIG_SECURITY_SELINUX_BOOTPARAM_VALUE on older ker=
-nels)
+--0000000000000573e0060184877b
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
---=20
-Ondrej Mosnacek
-Senior Software Engineer, Linux Security - SELinux kernel
-Red Hat, Inc.
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Sat, Jul 22, 2023 at 8:38=E2=80=AF=
+PM Yuanjun Gong &lt;<a href=3D"mailto:ruc_gongyuanjun@163.com">ruc_gongyuan=
+jun@163.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
+-left:1ex">check the return value of clk_prepare_enable(), and if<br>
+clk_prepare_enable() gets an unexpected return value,<br>
+imx_audmux_suspend() and imx_audmux_resume() should return<br>
+the error value.<br>
+<br></blockquote><div><br></div><div>please use the=C2=A0./scripts/<a href=
+=3D"http://get_maintainer.pl">get_maintainer.pl</a> to get the maillist</di=
+v><div>and resend the patch.</div><div><br></div><div>best regards</div><di=
+v>wang shengjiu</div><div>=C2=A0</div><blockquote class=3D"gmail_quote" sty=
+le=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddi=
+ng-left:1ex">
+Signed-off-by: Yuanjun Gong &lt;<a href=3D"mailto:ruc_gongyuanjun@163.com" =
+target=3D"_blank">ruc_gongyuanjun@163.com</a>&gt;<br>
+---<br>
+=C2=A0sound/soc/fsl/imx-audmux.c | 10 ++++++++--<br>
+=C2=A01 file changed, 8 insertions(+), 2 deletions(-)<br>
+<br>
+diff --git a/sound/soc/fsl/imx-audmux.c b/sound/soc/fsl/imx-audmux.c<br>
+index be003a117b39..9791e56158ef 100644<br>
+--- a/sound/soc/fsl/imx-audmux.c<br>
++++ b/sound/soc/fsl/imx-audmux.c<br>
+@@ -325,8 +325,11 @@ static void imx_audmux_remove(struct platform_device *=
+pdev)<br>
+=C2=A0static int imx_audmux_suspend(struct device *dev)<br>
+=C2=A0{<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 int i;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0ssize_t ret;<br>
+<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0clk_prepare_enable(audmux_clk);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D clk_prepare_enable(audmux_clk);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0if (ret)<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return ret;<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 for (i =3D 0; i &lt; reg_max; i++)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 regcache[i] =3D rea=
+dl(audmux_base + i * 4);<br>
+@@ -339,8 +342,11 @@ static int imx_audmux_suspend(struct device *dev)<br>
+=C2=A0static int imx_audmux_resume(struct device *dev)<br>
+=C2=A0{<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 int i;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0ssize_t ret;<br>
+<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0clk_prepare_enable(audmux_clk);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D clk_prepare_enable(audmux_clk);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0if (ret)<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return ret;<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 for (i =3D 0; i &lt; reg_max; i++)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 writel(regcache[i],=
+ audmux_base + i * 4);<br>
+-- <br>
+2.17.1<br>
+<br>
+</blockquote></div></div>
 
+--0000000000000573e0060184877b--
