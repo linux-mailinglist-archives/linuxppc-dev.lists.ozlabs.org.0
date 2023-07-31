@@ -1,73 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2484A76A550
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Aug 2023 02:03:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2536B76A4CD
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Aug 2023 01:23:33 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=alub0lGp;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=W1MEZXbM;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RFFgw0KpDz3bbW
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Aug 2023 10:03:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RFDnb0dZsz3bW4
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Aug 2023 09:23:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=alub0lGp;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=W1MEZXbM;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::a2a; helo=mail-vk1-xa2a.google.com; envelope-from=gsomlo@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-vk1-xa2a.google.com (mail-vk1-xa2a.google.com [IPv6:2607:f8b0:4864:20::a2a])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=lists.ozlabs.org)
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RF8Fp4hYYz2ywL
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Aug 2023 05:59:08 +1000 (AEST)
-Received: by mail-vk1-xa2a.google.com with SMTP id 71dfb90a1353d-48645045826so1804408e0c.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jul 2023 12:59:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690833545; x=1691438345;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3ZUTLiq4ztiz7isOwicgVn1yrySYaXh6uY6SY2kyAgc=;
-        b=alub0lGpoNrEu8OhfNnTDBvCPSj1fLLYheu1NSkrdZBpAQF2064AvbHKWmUzslufOt
-         YLbmv/TcCGYjgrvq4FRS6M9Devdql3Q2P/9rAVoRybjgi+kffYQQcVZMV2WEYizsOr2j
-         BpXNHtgVetIAcGNhWkkx03vGGYpzA9ZHMcvgmI3ZOe9kQRjymhlNgRuOilfBt3UBsdLl
-         7kW4WBonGTFZhUn6/mlIWDl6LSRqENUo0fbkIW9lN3zqVFnZ6fDFQSK0eFG8BS8nJDme
-         CuPuGTgehfNxRLyhKRbEAW+Bg56YyqY+gh0K04pfKLwmKFpNb4K28NQR1KJZ8WogUkSd
-         NjQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690833545; x=1691438345;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3ZUTLiq4ztiz7isOwicgVn1yrySYaXh6uY6SY2kyAgc=;
-        b=jqnlfWOSbieEauDOMG3enAZN3WeGD0OCAUYXisfam4KQHErQIMw8h7IRgff+KM7n41
-         vZct7RDDqOoZgbVcGadGvExVVkQRc5fJW6wSEc6lV6qGTXugCLXJAh4loL9ifPDlSgaD
-         rZldN650iUvZqKaww/KhtN82q7ni3zwWXunpuoMCMj5yPJ3j4FtMu2tDd+ZtrFh/XwK/
-         kYCrfKRESrl9QLczSH/ujxxe5RbvDMfEzByI38RU5ajzD2i25KbyLdoT9VXauiOpk7gx
-         tTNkEVcj3z2lkC4QCXlW63Noa9DeX1S/AwlEwGkOoMkCa3fEmoXE8fuazM7F9byjbtK9
-         dT4w==
-X-Gm-Message-State: ABy/qLaXXE5bks6Uw16tT4ooCS8imoJ3RH4ugXRwBM6U7GlAKE+4tSvL
-	GGUKxumqJ1n3WmRfg/s3D7w=
-X-Google-Smtp-Source: APBJJlHSqrneeA6ywQrgc7CJdlArRC0LDzjpwpRAo2sgvPLInS00+l5lLpxZfcAOQnXT689xDRSr7w==
-X-Received: by 2002:a1f:5fd7:0:b0:47e:1105:1f5e with SMTP id t206-20020a1f5fd7000000b0047e11051f5emr984710vkb.1.1690833544731;
-        Mon, 31 Jul 2023 12:59:04 -0700 (PDT)
-Received: from errol.ini.cmu.edu ([72.95.245.133])
-        by smtp.gmail.com with ESMTPSA id g22-20020a0caad6000000b006365b23b5dfsm4046264qvb.23.2023.07.31.12.59.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Jul 2023 12:59:04 -0700 (PDT)
-Date: Mon, 31 Jul 2023 15:59:01 -0400
-From: "Gabriel L. Somlo" <gsomlo@gmail.com>
-To: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v2] tty: Explicitly include correct DT includes
-Message-ID: <ZMgShZVvEyIN58/o@errol.ini.cmu.edu>
-References: <20230724205440.767071-1-robh@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RFDmX5lLCz2ytK
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Aug 2023 09:22:36 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=0VwbE9w1enjcPt7/IUT5th5f1ZIeAHMgI/cQbU9ZQ2A=; b=W1MEZXbMSYUAoRpiX2J1gLUs6J
+	QNI3LZBl83MsiVfSkFwwVlVnz2w0CjvDmoqTdQ8gv+SYMSY2r0HtouhhUB5uUd+LbZmAPgaiaUlmS
+	qdipmFFr0Fl+4bPXWd4UhqXWIVGZCOf3ciB+VlGAJfo5GzvNp3rD3yDx66pCe1iWS42hN31arU9sa
+	IiveAdR1+sND6wubHmrrJpaPk4dF3Dr3DfIv01LVVDOX/64l05bpRsU+oOai73TB5NyG9wjVzoLyD
+	Z2lRPFbkS7szaMiGpw9aktwsF7+uOWMEn0cLp1cv6Jb49B1tHCwiPsSAfrVHqSNiea89JcJ+8JHFI
+	ZoPiTwJw==;
+Received: from [2601:1c2:980:9ec0::2764]
+	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+	id 1qQcDK-00HZ0e-1R;
+	Mon, 31 Jul 2023 23:22:10 +0000
+Message-ID: <fb977502-ec9b-c847-6b9c-049bd226f4b1@infradead.org>
+Date: Mon, 31 Jul 2023 16:22:09 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230724205440.767071-1-robh@kernel.org>
-X-Clacks-Overhead: GNU Terry Pratchett
-X-Mailman-Approved-At: Tue, 01 Aug 2023 10:02:05 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] fbdev/ps3fb: Build without kernel device
+Content-Language: en-US
+To: Thomas Zimmermann <tzimmermann@suse.de>, deller@gmx.de,
+ mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+ sam@ravnborg.org, javierm@redhat.com, bagasdotme@gmail.com,
+ rd.dunlab@gmail.com, regressions@leemhuis.info, sfr@canb.auug.org.au
+References: <20230731175535.11345-1-tzimmermann@suse.de>
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20230731175535.11345-1-tzimmermann@suse.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,460 +63,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, Mateusz Holenko <mholenko@antmicro.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Liviu Dudau <liviu.dudau@arm.com>, linux-kernel@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>, linux-tegra@vger.kernel.org, Laxman Dewangan <ldewangan@nvidia.com>, Shan-Chun Hung <schung@nuvoton.com>, Peter Korsgaard <jacmet@sunsite.dk>, Fabio Estevam <festevam@gmail.com>, Karol Gugala <kgugala@antmicro.com>, sparclinux@vger.kernel.org, Russell King <linux@armlinux.org.uk>, Jonathan Hunter <jonathanh@nvidia.com>, Andy Gross <agross@kernel.org>, Joel Stanley <joel@jms.id.au>, linux-serial@vger.kernel.org, linux-mips@vger.kernel.org, NXP Linux Team <linux-imx@nxp.com>, Jacky Huang <ychuang3@nuvoton.com>, linux-arm-msm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, Jiri Slaby <jirislaby@kernel.org>, linux-arm-kernel@lists.infradead.org, Timur Tabi <timur@kernel.org>,
-  Richard Genoud <richard.genoud@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Bjorn Andersson <andersson@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, "David S. Miller" <davem@davemloft.net>, Konrad Dybcio <konrad.dybcio@linaro.org>, Thierry Reding <thierry.reding@gmail.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, Sudeep Holla <sudeep.holla@arm.com>, Shawn Guo <shawnguo@kernel.org>, Claudiu Beznea <claudiu.beznea@microchip.com>
+Cc: linux-fbdev@vger.kernel.org, regressions@lists.linux.dev, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-next@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 24, 2023 at 02:54:38PM -0600, Rob Herring wrote:
-> The DT of_device.h and of_platform.h date back to the separate
-> of_platform_bus_type before it as merged into the regular platform bus.
-> As part of that merge prepping Arm DT support 13 years ago, they
-> "temporarily" include each other. They also include platform_device.h
-> and of.h. As a result, there's a pretty much random mix of those include
-> files used throughout the tree. In order to detangle these headers and
-> replace the implicit includes with struct declarations, users need to
-> explicitly include the correct includes.
+
+
+On 7/31/23 10:55, Thomas Zimmermann wrote:
+> Use fb_info() to print status message at the end of the probe function,
+> which avoids decoding the devices. fb_info() works with or without an
+> fbdev kernel device. Fixes the following error:
 > 
-> Signed-off-by: Rob Herring <robh@kernel.org>
+> ../drivers/video/fbdev/ps3fb.c: In function 'ps3fb_probe':
+> ../drivers/video/fbdev/ps3fb.c:1172:40: error: 'struct fb_info' has no member named 'dev'
+>  1172 |                  dev_driver_string(info->dev), dev_name(info->dev),
+>       |                                        ^~
+> ../include/linux/dev_printk.h:110:37: note: in definition of macro 'dev_printk_index_wrap'
+>   110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
+>       |                                     ^~~~~~~~~~~
+> ../drivers/video/fbdev/ps3fb.c:1171:9: note: in expansion of macro 'dev_info'
+>  1171 |         dev_info(info->device, "%s %s, using %u KiB of video memory\n",
+>       |         ^~~~~~~~
+> ../drivers/video/fbdev/ps3fb.c:1172:61: error: 'struct fb_info' has no member named 'dev'
+>  1172 |                  dev_driver_string(info->dev), dev_name(info->dev),
+>       |                                                             ^~
+> ../include/linux/dev_printk.h:110:37: note: in definition of macro 'dev_printk_index_wrap'
+>   110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
+>       |                                     ^~~~~~~~~~~
+> ../drivers/video/fbdev/ps3fb.c:1171:9: note: in expansion of macro 'dev_info'
+>  1171 |         dev_info(info->device, "%s %s, using %u KiB of video memory\n",
+>       |         ^~~~~~~~
+> 
+> Reported-by: Randy Dunlap <rdunlap@infradead.org>
+> Closes: https://lore.kernel.org/lkml/ccc63065-2976-88ef-1211-731330bf2866@infradead.org/
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Fixes: 701d2054fa31 ("fbdev: Make support for userspace interfaces configurable")
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Sam Ravnborg <sam@ravnborg.org>
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: Javier Martinez Canillas <javierm@redhat.com>
+> Cc: Randy Dunlap <rdunlap@infradead.org>
+> Cc: Bagas Sanjaya <bagasdotme@gmail.com>
+> Cc: Thorsten Leemhuis <regressions@leemhuis.info>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: linux-fbdev@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
+
+Thanks.
+
 > ---
-
-Acked-by: Gabriel Somlo <gsomlo@gmail.com> # for liteuart
-
-Thanks much,
---Gabriel
-
-> v2:
->  - Add mpc52xx_uart
-> ---
->  drivers/tty/hvc/hvc_opal.c             | 2 +-
->  drivers/tty/serial/8250/8250_early.c   | 1 -
->  drivers/tty/serial/8250/8250_ingenic.c | 1 -
->  drivers/tty/serial/8250/8250_omap.c    | 1 -
->  drivers/tty/serial/amba-pl011.c        | 2 +-
->  drivers/tty/serial/apbuart.c           | 3 ---
->  drivers/tty/serial/atmel_serial.c      | 1 -
->  drivers/tty/serial/fsl_linflexuart.c   | 2 +-
->  drivers/tty/serial/fsl_lpuart.c        | 2 +-
->  drivers/tty/serial/imx.c               | 1 -
->  drivers/tty/serial/lantiq.c            | 3 ++-
->  drivers/tty/serial/liteuart.c          | 3 +--
->  drivers/tty/serial/ma35d1_serial.c     | 2 +-
->  drivers/tty/serial/mpc52xx_uart.c      | 2 +-
->  drivers/tty/serial/mps2-uart.c         | 1 -
->  drivers/tty/serial/mxs-auart.c         | 2 +-
->  drivers/tty/serial/pic32_uart.c        | 1 -
->  drivers/tty/serial/qcom_geni_serial.c  | 1 -
->  drivers/tty/serial/serial-tegra.c      | 1 -
->  drivers/tty/serial/sh-sci.c            | 1 -
->  drivers/tty/serial/sunhv.c             | 4 ++--
->  drivers/tty/serial/sunsab.c            | 3 ++-
->  drivers/tty/serial/sunsu.c             | 4 ++--
->  drivers/tty/serial/sunzilog.c          | 4 ++--
->  drivers/tty/serial/tegra-tcu.c         | 1 -
->  drivers/tty/serial/uartlite.c          | 3 ---
->  drivers/tty/serial/ucc_uart.c          | 3 ++-
->  drivers/tty/serial/vt8500_serial.c     | 2 +-
->  28 files changed, 21 insertions(+), 36 deletions(-)
+>  drivers/video/fbdev/ps3fb.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
 > 
-> diff --git a/drivers/tty/hvc/hvc_opal.c b/drivers/tty/hvc/hvc_opal.c
-> index 794c7b18aa06..992e199e0ea8 100644
-> --- a/drivers/tty/hvc/hvc_opal.c
-> +++ b/drivers/tty/hvc/hvc_opal.c
-> @@ -14,7 +14,7 @@
->  #include <linux/console.h>
->  #include <linux/of.h>
->  #include <linux/of_irq.h>
-> -#include <linux/of_platform.h>
-> +#include <linux/platform_device.h>
->  #include <linux/export.h>
->  #include <linux/interrupt.h>
+> diff --git a/drivers/video/fbdev/ps3fb.c b/drivers/video/fbdev/ps3fb.c
+> index 5aedc30c5f7e..64d291d6b153 100644
+> --- a/drivers/video/fbdev/ps3fb.c
+> +++ b/drivers/video/fbdev/ps3fb.c
+> @@ -1168,9 +1168,7 @@ static int ps3fb_probe(struct ps3_system_bus_device *dev)
 >  
-> diff --git a/drivers/tty/serial/8250/8250_early.c b/drivers/tty/serial/8250/8250_early.c
-> index 4299a8bd83d9..9837a27739fd 100644
-> --- a/drivers/tty/serial/8250/8250_early.c
-> +++ b/drivers/tty/serial/8250/8250_early.c
-> @@ -27,7 +27,6 @@
->  #include <linux/init.h>
->  #include <linux/console.h>
->  #include <linux/of.h>
-> -#include <linux/of_device.h>
->  #include <linux/serial_reg.h>
->  #include <linux/serial.h>
->  #include <linux/serial_8250.h>
-> diff --git a/drivers/tty/serial/8250/8250_ingenic.c b/drivers/tty/serial/8250/8250_ingenic.c
-> index 617b8ce60d6b..4c4c4da73ad0 100644
-> --- a/drivers/tty/serial/8250/8250_ingenic.c
-> +++ b/drivers/tty/serial/8250/8250_ingenic.c
-> @@ -13,7 +13,6 @@
->  #include <linux/module.h>
->  #include <linux/of.h>
->  #include <linux/of_fdt.h>
-> -#include <linux/of_device.h>
->  #include <linux/platform_device.h>
->  #include <linux/serial_8250.h>
->  #include <linux/serial_core.h>
-> diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
-> index d48a82f1634e..26dd089d8e82 100644
-> --- a/drivers/tty/serial/8250/8250_omap.c
-> +++ b/drivers/tty/serial/8250/8250_omap.c
-> @@ -18,7 +18,6 @@
->  #include <linux/platform_device.h>
->  #include <linux/slab.h>
->  #include <linux/of.h>
-> -#include <linux/of_device.h>
->  #include <linux/of_gpio.h>
->  #include <linux/of_irq.h>
->  #include <linux/delay.h>
-> diff --git a/drivers/tty/serial/amba-pl011.c b/drivers/tty/serial/amba-pl011.c
-> index c5c3f4674459..a1e594b79890 100644
-> --- a/drivers/tty/serial/amba-pl011.c
-> +++ b/drivers/tty/serial/amba-pl011.c
-> @@ -20,6 +20,7 @@
->  #include <linux/ioport.h>
->  #include <linux/init.h>
->  #include <linux/console.h>
-> +#include <linux/platform_device.h>
->  #include <linux/sysrq.h>
->  #include <linux/device.h>
->  #include <linux/tty.h>
-> @@ -36,7 +37,6 @@
->  #include <linux/delay.h>
->  #include <linux/types.h>
->  #include <linux/of.h>
-> -#include <linux/of_device.h>
->  #include <linux/pinctrl/consumer.h>
->  #include <linux/sizes.h>
->  #include <linux/io.h>
-> diff --git a/drivers/tty/serial/apbuart.c b/drivers/tty/serial/apbuart.c
-> index 915ee4b0d594..f3defc6da3df 100644
-> --- a/drivers/tty/serial/apbuart.c
-> +++ b/drivers/tty/serial/apbuart.c
-> @@ -22,9 +22,6 @@
->  #include <linux/kthread.h>
->  #include <linux/device.h>
->  #include <linux/of.h>
-> -#include <linux/of_device.h>
-> -#include <linux/of_platform.h>
-> -#include <linux/of_irq.h>
->  #include <linux/platform_device.h>
->  #include <linux/io.h>
->  #include <linux/serial_core.h>
-> diff --git a/drivers/tty/serial/atmel_serial.c b/drivers/tty/serial/atmel_serial.c
-> index 3467a875641a..7ac477344aa3 100644
-> --- a/drivers/tty/serial/atmel_serial.c
-> +++ b/drivers/tty/serial/atmel_serial.c
-> @@ -21,7 +21,6 @@
->  #include <linux/tty_flip.h>
->  #include <linux/platform_device.h>
->  #include <linux/of.h>
-> -#include <linux/of_device.h>
->  #include <linux/dma-mapping.h>
->  #include <linux/dmaengine.h>
->  #include <linux/atmel_pdc.h>
-> diff --git a/drivers/tty/serial/fsl_linflexuart.c b/drivers/tty/serial/fsl_linflexuart.c
-> index 6fc21b6684e6..f697751c2ad5 100644
-> --- a/drivers/tty/serial/fsl_linflexuart.c
-> +++ b/drivers/tty/serial/fsl_linflexuart.c
-> @@ -11,7 +11,7 @@
->  #include <linux/irq.h>
->  #include <linux/module.h>
->  #include <linux/of.h>
-> -#include <linux/of_device.h>
-> +#include <linux/platform_device.h>
->  #include <linux/serial_core.h>
->  #include <linux/slab.h>
->  #include <linux/tty_flip.h>
-> diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
-> index 4d80fae20177..e1a8d5415718 100644
-> --- a/drivers/tty/serial/fsl_lpuart.c
-> +++ b/drivers/tty/serial/fsl_lpuart.c
-> @@ -18,9 +18,9 @@
->  #include <linux/irq.h>
->  #include <linux/module.h>
->  #include <linux/of.h>
-> -#include <linux/of_device.h>
->  #include <linux/of_dma.h>
->  #include <linux/pinctrl/consumer.h>
-> +#include <linux/platform_device.h>
->  #include <linux/pm_runtime.h>
->  #include <linux/serial_core.h>
->  #include <linux/slab.h>
-> diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-> index 7341d060f85c..3ed5083a7108 100644
-> --- a/drivers/tty/serial/imx.c
-> +++ b/drivers/tty/serial/imx.c
-> @@ -25,7 +25,6 @@
->  #include <linux/rational.h>
->  #include <linux/slab.h>
->  #include <linux/of.h>
-> -#include <linux/of_device.h>
->  #include <linux/io.h>
->  #include <linux/dma-mapping.h>
+>  	ps3_system_bus_set_drvdata(dev, info);
 >  
-> diff --git a/drivers/tty/serial/lantiq.c b/drivers/tty/serial/lantiq.c
-> index bcaa479608d8..3adb60c683f7 100644
-> --- a/drivers/tty/serial/lantiq.c
-> +++ b/drivers/tty/serial/lantiq.c
-> @@ -17,7 +17,8 @@
->  #include <linux/ioport.h>
->  #include <linux/lantiq.h>
->  #include <linux/module.h>
-> -#include <linux/of_platform.h>
-> +#include <linux/of.h>
-> +#include <linux/platform_device.h>
->  #include <linux/serial.h>
->  #include <linux/serial_core.h>
->  #include <linux/slab.h>
-> diff --git a/drivers/tty/serial/liteuart.c b/drivers/tty/serial/liteuart.c
-> index 80de3a42b67b..d881cdd2a58f 100644
-> --- a/drivers/tty/serial/liteuart.c
-> +++ b/drivers/tty/serial/liteuart.c
-> @@ -11,8 +11,7 @@
->  #include <linux/litex.h>
->  #include <linux/module.h>
->  #include <linux/of.h>
-> -#include <linux/of_address.h>
-> -#include <linux/of_platform.h>
-> +#include <linux/platform_device.h>
->  #include <linux/serial.h>
->  #include <linux/serial_core.h>
->  #include <linux/slab.h>
-> diff --git a/drivers/tty/serial/ma35d1_serial.c b/drivers/tty/serial/ma35d1_serial.c
-> index 2604b4d9fb78..789593495a80 100644
-> --- a/drivers/tty/serial/ma35d1_serial.c
-> +++ b/drivers/tty/serial/ma35d1_serial.c
-> @@ -8,7 +8,7 @@
->  #include <linux/clk.h>
->  #include <linux/delay.h>
->  #include <linux/of.h>
-> -#include <linux/of_platform.h>
-> +#include <linux/platform_device.h>
->  #include <linux/iopoll.h>
->  #include <linux/serial_core.h>
->  #include <linux/slab.h>
-> diff --git a/drivers/tty/serial/mpc52xx_uart.c b/drivers/tty/serial/mpc52xx_uart.c
-> index 384ca195e3d5..916507b8f31d 100644
-> --- a/drivers/tty/serial/mpc52xx_uart.c
-> +++ b/drivers/tty/serial/mpc52xx_uart.c
-> @@ -40,7 +40,7 @@
->  #include <linux/of.h>
->  #include <linux/of_address.h>
->  #include <linux/of_irq.h>
-> -#include <linux/of_platform.h>
-> +#include <linux/platform_device.h>
->  #include <linux/clk.h>
+> -	dev_info(info->device, "%s %s, using %u KiB of video memory\n",
+> -		 dev_driver_string(info->dev), dev_name(info->dev),
+> -		 info->fix.smem_len >> 10);
+> +	fb_info(info, "using %u KiB of video memory\n", info->fix.smem_len >> 10);
 >  
->  #include <asm/mpc52xx.h>
-> diff --git a/drivers/tty/serial/mps2-uart.c b/drivers/tty/serial/mps2-uart.c
-> index 860d161fa594..5da88cbeec73 100644
-> --- a/drivers/tty/serial/mps2-uart.c
-> +++ b/drivers/tty/serial/mps2-uart.c
-> @@ -16,7 +16,6 @@
->  #include <linux/console.h>
->  #include <linux/io.h>
->  #include <linux/kernel.h>
-> -#include <linux/of_device.h>
->  #include <linux/of.h>
->  #include <linux/platform_device.h>
->  #include <linux/serial_core.h>
-> diff --git a/drivers/tty/serial/mxs-auart.c b/drivers/tty/serial/mxs-auart.c
-> index a368f4293967..3974ca6ad86c 100644
-> --- a/drivers/tty/serial/mxs-auart.c
-> +++ b/drivers/tty/serial/mxs-auart.c
-> @@ -30,7 +30,7 @@
->  #include <linux/clk.h>
->  #include <linux/delay.h>
->  #include <linux/io.h>
-> -#include <linux/of_device.h>
-> +#include <linux/of.h>
->  #include <linux/dma-mapping.h>
->  #include <linux/dmaengine.h>
->  
-> diff --git a/drivers/tty/serial/pic32_uart.c b/drivers/tty/serial/pic32_uart.c
-> index 196a4e678451..e308d5022b3f 100644
-> --- a/drivers/tty/serial/pic32_uart.c
-> +++ b/drivers/tty/serial/pic32_uart.c
-> @@ -11,7 +11,6 @@
->  #include <linux/kernel.h>
->  #include <linux/platform_device.h>
->  #include <linux/of.h>
-> -#include <linux/of_device.h>
->  #include <linux/of_irq.h>
->  #include <linux/of_gpio.h>
->  #include <linux/init.h>
-> diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/qcom_geni_serial.c
-> index 444c74eeab7d..5607b668588b 100644
-> --- a/drivers/tty/serial/qcom_geni_serial.c
-> +++ b/drivers/tty/serial/qcom_geni_serial.c
-> @@ -11,7 +11,6 @@
->  #include <linux/irq.h>
->  #include <linux/module.h>
->  #include <linux/of.h>
-> -#include <linux/of_device.h>
->  #include <linux/pm_opp.h>
->  #include <linux/platform_device.h>
->  #include <linux/pm_runtime.h>
-> diff --git a/drivers/tty/serial/serial-tegra.c b/drivers/tty/serial/serial-tegra.c
-> index 1cf08b33456c..cbe641727f2a 100644
-> --- a/drivers/tty/serial/serial-tegra.c
-> +++ b/drivers/tty/serial/serial-tegra.c
-> @@ -20,7 +20,6 @@
->  #include <linux/irq.h>
->  #include <linux/module.h>
->  #include <linux/of.h>
-> -#include <linux/of_device.h>
->  #include <linux/pagemap.h>
->  #include <linux/platform_device.h>
->  #include <linux/reset.h>
-> diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
-> index 7c9457962a3d..115271d2f82d 100644
-> --- a/drivers/tty/serial/sh-sci.c
-> +++ b/drivers/tty/serial/sh-sci.c
-> @@ -35,7 +35,6 @@
->  #include <linux/module.h>
->  #include <linux/mm.h>
->  #include <linux/of.h>
-> -#include <linux/of_device.h>
->  #include <linux/platform_device.h>
->  #include <linux/pm_runtime.h>
->  #include <linux/reset.h>
-> diff --git a/drivers/tty/serial/sunhv.c b/drivers/tty/serial/sunhv.c
-> index 7d38c33ef506..c671d674bce4 100644
-> --- a/drivers/tty/serial/sunhv.c
-> +++ b/drivers/tty/serial/sunhv.c
-> @@ -17,11 +17,11 @@
->  #include <linux/slab.h>
->  #include <linux/delay.h>
->  #include <linux/init.h>
-> -#include <linux/of_device.h>
-> +#include <linux/of.h>
-> +#include <linux/platform_device.h>
->  
->  #include <asm/hypervisor.h>
->  #include <asm/spitfire.h>
-> -#include <asm/prom.h>
->  #include <asm/irq.h>
->  #include <asm/setup.h>
->  
-> diff --git a/drivers/tty/serial/sunsab.c b/drivers/tty/serial/sunsab.c
-> index 48b39fdb0397..40eeaf835bba 100644
-> --- a/drivers/tty/serial/sunsab.c
-> +++ b/drivers/tty/serial/sunsab.c
-> @@ -33,7 +33,8 @@
->  #include <linux/slab.h>
->  #include <linux/delay.h>
->  #include <linux/init.h>
-> -#include <linux/of_device.h>
-> +#include <linux/of.h>
-> +#include <linux/platform_device.h>
->  
->  #include <linux/io.h>
->  #include <asm/irq.h>
-> diff --git a/drivers/tty/serial/sunsu.c b/drivers/tty/serial/sunsu.c
-> index fed052a0b931..58a4342ad0f9 100644
-> --- a/drivers/tty/serial/sunsu.c
-> +++ b/drivers/tty/serial/sunsu.c
-> @@ -37,11 +37,11 @@
->  #include <linux/serial_reg.h>
->  #include <linux/init.h>
->  #include <linux/delay.h>
-> -#include <linux/of_device.h>
-> +#include <linux/of.h>
-> +#include <linux/platform_device.h>
->  
->  #include <linux/io.h>
->  #include <asm/irq.h>
-> -#include <asm/prom.h>
->  #include <asm/setup.h>
->  
->  #include <linux/serial_core.h>
-> diff --git a/drivers/tty/serial/sunzilog.c b/drivers/tty/serial/sunzilog.c
-> index 0fbeb3dbd843..c8c71c56264c 100644
-> --- a/drivers/tty/serial/sunzilog.c
-> +++ b/drivers/tty/serial/sunzilog.c
-> @@ -33,11 +33,11 @@
->  #include <linux/serio.h>
->  #endif
->  #include <linux/init.h>
-> -#include <linux/of_device.h>
-> +#include <linux/of.h>
-> +#include <linux/platform_device.h>
->  
->  #include <linux/io.h>
->  #include <asm/irq.h>
-> -#include <asm/prom.h>
->  #include <asm/setup.h>
->  
->  #include <linux/serial_core.h>
-> diff --git a/drivers/tty/serial/tegra-tcu.c b/drivers/tty/serial/tegra-tcu.c
-> index 23500b342da7..65069daf36ec 100644
-> --- a/drivers/tty/serial/tegra-tcu.c
-> +++ b/drivers/tty/serial/tegra-tcu.c
-> @@ -7,7 +7,6 @@
->  #include <linux/mailbox_client.h>
->  #include <linux/module.h>
->  #include <linux/of.h>
-> -#include <linux/of_device.h>
->  #include <linux/platform_device.h>
->  #include <linux/serial.h>
->  #include <linux/serial_core.h>
-> diff --git a/drivers/tty/serial/uartlite.c b/drivers/tty/serial/uartlite.c
-> index 679574893ebe..b225a78f6175 100644
-> --- a/drivers/tty/serial/uartlite.c
-> +++ b/drivers/tty/serial/uartlite.c
-> @@ -20,9 +20,6 @@
->  #include <linux/io.h>
->  #include <linux/iopoll.h>
->  #include <linux/of.h>
-> -#include <linux/of_address.h>
-> -#include <linux/of_device.h>
-> -#include <linux/of_platform.h>
->  #include <linux/clk.h>
->  #include <linux/pm_runtime.h>
->  
-> diff --git a/drivers/tty/serial/ucc_uart.c b/drivers/tty/serial/ucc_uart.c
-> index 404230c1ebb2..284b293fade6 100644
-> --- a/drivers/tty/serial/ucc_uart.c
-> +++ b/drivers/tty/serial/ucc_uart.c
-> @@ -17,15 +17,16 @@
->   */
->  
->  #include <linux/module.h>
-> +#include <linux/platform_device.h>
->  #include <linux/serial.h>
->  #include <linux/serial_core.h>
->  #include <linux/slab.h>
->  #include <linux/tty.h>
->  #include <linux/tty_flip.h>
->  #include <linux/io.h>
-> +#include <linux/of.h>
->  #include <linux/of_address.h>
->  #include <linux/of_irq.h>
-> -#include <linux/of_platform.h>
->  #include <linux/dma-mapping.h>
->  
->  #include <linux/fs_uart_pd.h>
-> diff --git a/drivers/tty/serial/vt8500_serial.c b/drivers/tty/serial/vt8500_serial.c
-> index cc9157df732f..32433e9b3e5f 100644
-> --- a/drivers/tty/serial/vt8500_serial.c
-> +++ b/drivers/tty/serial/vt8500_serial.c
-> @@ -14,6 +14,7 @@
->  #include <linux/irq.h>
->  #include <linux/init.h>
->  #include <linux/console.h>
-> +#include <linux/platform_device.h>
->  #include <linux/tty.h>
->  #include <linux/tty_flip.h>
->  #include <linux/serial_core.h>
-> @@ -21,7 +22,6 @@
->  #include <linux/slab.h>
->  #include <linux/clk.h>
->  #include <linux/of.h>
-> -#include <linux/of_device.h>
->  #include <linux/err.h>
->  
->  /*
-> -- 
-> 2.40.1
-> 
+>  	task = kthread_run(ps3fbd, info, DEVICE_NAME);
+>  	if (IS_ERR(task)) {
+
+-- 
+~Randy
