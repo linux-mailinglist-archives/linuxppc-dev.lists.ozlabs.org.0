@@ -1,40 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6651776865A
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jul 2023 18:14:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AFD5768F77
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jul 2023 10:03:47 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Zxkxs5Hl;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RDRK72kbZz3cF2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jul 2023 02:14:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RDrNK2Fwfz30PQ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jul 2023 18:03:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=leemhuis.info (client-ip=80.237.130.52; helo=wp530.webpack.hosteurope.de; envelope-from=regressions@leemhuis.info; receiver=lists.ozlabs.org)
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Zxkxs5Hl;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=jirislaby@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RDRJb15PFz2yDT
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jul 2023 02:14:05 +1000 (AEST)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1qQ93P-0001KP-KR; Sun, 30 Jul 2023 18:13:59 +0200
-Message-ID: <88318723-afa1-965f-3dad-a66ab179e1fa@leemhuis.info>
-Date: Sun, 30 Jul 2023 18:13:59 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RDrMP2W66z2ykX
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jul 2023 18:02:57 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 3885960F5E;
+	Mon, 31 Jul 2023 08:02:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63489C433C7;
+	Mon, 31 Jul 2023 08:02:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1690790572;
+	bh=CFCUO1q2jsK74UC2bwVz7miuEtn6Vz1wrsnbjpoYBoE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Zxkxs5HlsQ22+uk6HxRfSnXVnkXQrgnRL0xYAU9zOhLxxVwnTltHXn3xkW5TIMaVA
+	 s2/ZkpjZZrsy8Yg47g2Yf6J1CiFdQWjIc8LClZCxbWSWsIx4BJBwYCTFv++rMjad0T
+	 bHa+WlPcEaoyuTPupPQn+KQzuiUUJlUe85LatZEg8/M7dVgtlx5YSXL2fBjUXkCtGR
+	 EeZxkxnt3IiL1s2w3nP4JNwjGIP/y34/uWg1PvxyRzGHy6wyoIRPcvYu2IFVYnJvdK
+	 Mm7KNXDq6EX4oP1juDpt5FVQYe8qiOOzMV4TeS1zxXzR4gLmFiHzfb0/A9xEBtChFX
+	 qmetPBluQldWA==
+From: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+To: gregkh@linuxfoundation.org
+Subject: [PATCH 03/10] tty: hvsi: remove an extra variable from hvsi_write()
+Date: Mon, 31 Jul 2023 10:02:37 +0200
+Message-ID: <20230731080244.2698-4-jirislaby@kernel.org>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230731080244.2698-1-jirislaby@kernel.org>
+References: <20230731080244.2698-1-jirislaby@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Kernel Crash Dump (kdump) broken with 6.5
-Content-Language: en-US, de-DE
-From: "Linux regression tracking #update (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-References: <AB3C7C5C-86FD-4D86-9330-000CB9728F48@linux.ibm.com>
- <03985866-102a-2a58-cd54-f8db3bedfebc@leemhuis.info>
-In-Reply-To: <03985866-102a-2a58-cd54-f8db3bedfebc@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1690733647;4e020b18;
-X-HE-SMSGID: 1qQ93P-0001KP-KR
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,31 +61,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Cc: Linux kernel regressions list <regressions@lists.linux.dev>
+Cc: linuxppc-dev@lists.ozlabs.org, "Jiri Slaby \(SUSE\)" <jirislaby@kernel.org>, linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 19.07.23 18:19, Linux regression tracking #adding (Thorsten Leemhuis)
-wrote:
-> On 17.07.23 16:45, Sachin Sant wrote:
->> Kdump seems to be broken with 6.5 for ppc64le.
->> [...]
->>
->> 6.4 was good. Git bisect points to following patch
->>
->> commit 606787fed7268feb256957872586370b56af697a
->>     powerpc/64s: Remove support for ELFv1 little endian userspace
->>
->> Reverting this patch allows a successful capture of vmcore.
+'source' is the same as 'buf'. Rename the parameter ('buf') to
+'source' and drop the local variable.
 
-Was fixed by revert:
+Likely, the two were introduced to have a different type. But 'char' and
+'unsigned char' are the same in the kernel for a long time.
 
-#regzbot fix: 106ea7ffd56
-#regzbot ignore-activity
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org
+---
+ drivers/tty/hvc/hvsi.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-That page also explains what to do if mails like this annoy you.
+diff --git a/drivers/tty/hvc/hvsi.c b/drivers/tty/hvc/hvsi.c
+index a200d01eceed..c1b8a4fd8b1e 100644
+--- a/drivers/tty/hvc/hvsi.c
++++ b/drivers/tty/hvc/hvsi.c
+@@ -905,10 +905,9 @@ static unsigned int hvsi_chars_in_buffer(struct tty_struct *tty)
+ }
+ 
+ static int hvsi_write(struct tty_struct *tty,
+-		     const unsigned char *buf, int count)
++		     const unsigned char *source, int count)
+ {
+ 	struct hvsi_struct *hp = tty->driver_data;
+-	const char *source = buf;
+ 	unsigned long flags;
+ 	int total = 0;
+ 	int origcount = count;
+-- 
+2.41.0
+
