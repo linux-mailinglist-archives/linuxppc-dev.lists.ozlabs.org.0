@@ -2,92 +2,111 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45E1F76956B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jul 2023 14:01:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A79F769657
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jul 2023 14:30:33 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YAbPbDQU;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=FnC7QWEk;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RDxf51GCwz3bVG
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jul 2023 22:01:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RDyJ73bWcz3c2K
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jul 2023 22:30:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YAbPbDQU;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=FnC7QWEk;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gautam.menghani@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f400:7e8a::615; helo=nam10-bn7-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org)
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on20615.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e8a::615])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RDxdF2JLRz2yDH
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jul 2023 22:00:17 +1000 (AEST)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36VBkA0W009861;
-	Mon, 31 Jul 2023 12:00:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=eqXpFbGQ/Joi6voFK4zcbUx1LHY2Eg7vku6+eTKOgGg=;
- b=YAbPbDQUW62bs9tbjNSf7uetkWGvpLPh6rgpN028QuNcwPCmJ/mcG+CchzFpSwCTFsef
- tKv+c3udWNyS9/NqzfYHIX/+DFOdSAnO5jKolMI6B8t2a/+7C9iOmtJ8ip8TMGR6oWFX
- 81X/0J2pIMGLw0GKBvApkkW9y0JXJckG3rNC3z3jcyvGhpZRTbF8On2CTi1iMCqnfHvY
- 6ZaMN0jtPbiW0/1cew+Yy3cZp9egvBGrDU1Pbxbk08qWWpmNZUvjEWrpY4ySPsj1pIcf
- 96h5wDm7T6GpyTeQwlnb4IyVMddxNUNGM76qF5b/CzycNc2YxpWwPU3ZururkOhRodVk Xw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s6ccf8deq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 31 Jul 2023 12:00:10 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36VBlium014662;
-	Mon, 31 Jul 2023 12:00:08 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s6ccf8dc9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 31 Jul 2023 12:00:07 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36VAINSe017033;
-	Mon, 31 Jul 2023 12:00:05 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3s5dfxu245-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 31 Jul 2023 12:00:05 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36VC034g24838886
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 31 Jul 2023 12:00:03 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CE0CA2004E;
-	Mon, 31 Jul 2023 12:00:03 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9002320043;
-	Mon, 31 Jul 2023 12:00:02 +0000 (GMT)
-Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com (unknown [9.204.206.66])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 31 Jul 2023 12:00:02 +0000 (GMT)
-Date: Mon, 31 Jul 2023 17:30:00 +0530
-From: Gautam Menghani <Gautam.Menghani@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] arch/powerpc: Remove unnecessary endian conversion code
- in XICS
-Message-ID: <2w3cvyef33vgcg3aurb4n6q7go2p63cofz3a4pbdat53fqldee@jwzcj5dssgvh>
-References: <20230630055628.17790-1-gautam@linux.ibm.com>
- <39920b0f-f261-8417-af7a-eef791ad5726@gmail.com>
- <jcxd7uvooawd3vadvvzmegv27owaqvrxsi66c2ds6hwraqs3zy@3ymyrpyp3q55>
- <873517dm3h.fsf@mail.lhotse>
-MIME-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RDyHF15fmz2y9d
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jul 2023 22:29:42 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=kvH9UWJYfts8U1L/wayxWlUgCLQ+Y0+Ku/apIC6QlpW8/atUfANmdZcESEhY9YmGBIP1I0Bjj7rb2OZG4OMCF4Mvsbb4Di3ep79TvzY6YECrJvgSfcgd4xgeZ+Hbw+Yx5CX7bq8vm8cAXwBJtsaMSOK1aPNtJBYbFXmR8TbdR+ns46lKXBnsF/oMJZdlc7ir8SZyF0OpdwWt8iVWJpDDZ6V7oZLnf4a4IOvB3DHu0GT4XEnnrMKKZo9xrTgXJbf5H51Fx/CVvTPzuhKtjW+axzlQhRKVdSMaawahHJn+/YMHBxF0BFRQJd6OqIBxq01GhOdp3opd3b+dqvbPqEbzyw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CtEQgwHL7QaCkNYds3zauhwHQxjzmUu3ELTCUFR8EE0=;
+ b=MQ92IDnC8FwGlTuf3qXLMki5PkgS+a7GPS48gc8Jve8OS3Men00+vE0KBX9BkNoO12Ez9pLL71dZRlShcUCOznBjkSd3m4BLshEXJzznfVQSm/Rg11LYvmfs7e5JB0rgOcObOxE/UKbZt7ZZzDeE6CEONXifWtPm9wd+c6qmuHJaEGbv5mqBWfWTqrid+WeJAL1TV9mFCXTr+f7HuAzLFC4KQ+i1qlD9wJVVE+3Aw46ztzw0kqssbMCyxBcF7u0JCQxx6qs3tJYNd1N2NC6crz30FvCgL9/fiUfZJr62MOpVv6LqZAkpfSU+gc3d9xRS6+Zj2WwVnCf9G95fD8A11w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CtEQgwHL7QaCkNYds3zauhwHQxjzmUu3ELTCUFR8EE0=;
+ b=FnC7QWEkdR+1LH6gc2fg5dNKS9rhYRIT8tx1t20T6IIdVwu//P8fiAD4ecD/P3Zykd+rTc8Frno11B+NRlnxbF9nevLENwtyDHw/pXV53CS8o9jxq4L2mKrJQXCVbIrqMMdMa3d8VGiTUDCWZT7ezPRBFjmr8SxkrM5Zl++3+p8Had7FW/GmtcOCPqH+DJezVsOm7NMmvwDR6Rl7BGtW1qeIsD6s6XI2KhYdBmk8mAAgNGztC1WiE1Qa5Zf0/jE8T7h0CkQLKHVngJ+P1ot8QKiaHblwDwO2mE9QBXDO5qnJ3Fu3Zs5npQpL2C9OAMK/tvGxcnuAUYXDY212rMN76Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
+ by CH2PR12MB4216.namprd12.prod.outlook.com (2603:10b6:610:a8::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.42; Mon, 31 Jul
+ 2023 12:29:20 +0000
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::5111:16e8:5afe:1da1]) by LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::5111:16e8:5afe:1da1%6]) with mapi id 15.20.6631.043; Mon, 31 Jul 2023
+ 12:29:20 +0000
+Date: Mon, 31 Jul 2023 09:29:17 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Joerg Roedel <joro@8bytes.org>
+Subject: Re: [PATCH v5 00/25] iommu: Make default_domain's mandatory
+Message-ID: <ZMepHZrLFURXaIoZ@nvidia.com>
+References: <0-v5-d0a204c678c7+3d16a-iommu_all_defdom_jgg@nvidia.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <873517dm3h.fsf@mail.lhotse>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: PlXwlIdsx7aA4SKHvKd1VPJDWb8A0bnz
-X-Proofpoint-ORIG-GUID: EQTwy_zE-0A_2BtBPuhQIVqFNfoVHfvh
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-31_05,2023-07-31_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
- priorityscore=1501 impostorscore=0 phishscore=0 spamscore=0 malwarescore=0
- bulkscore=0 suspectscore=0 lowpriorityscore=0 mlxscore=0 mlxlogscore=999
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2307310104
+In-Reply-To: <0-v5-d0a204c678c7+3d16a-iommu_all_defdom_jgg@nvidia.com>
+X-ClientProxiedBy: SJ0PR03CA0375.namprd03.prod.outlook.com
+ (2603:10b6:a03:3a1::20) To LV2PR12MB5869.namprd12.prod.outlook.com
+ (2603:10b6:408:176::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|CH2PR12MB4216:EE_
+X-MS-Office365-Filtering-Correlation-Id: 92bc7af5-e181-4166-70c8-08db91c1c36c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	kSZqP2P0Fg/KhGLhsvonoUuG9S6jGNf1722Goaiic9/wF7BOn+23Jdh64yG87dY17wLCHHLnliclrPMgCiaFgFPUMYtAxzP1OuemzwaqR7fzdyMnjQMtOf5E2Y2gXYVPkN0vBJf3bhJMkCwYdufwTvp5T/dHuYPyFZLbFuzlbrJM/n6ZIOeezKRgkVNwFEt7ON5SBVwR9fq4sLvHqdj+TMHSsGhoFDgiHJg8pNFSJ9hCXB4KkQpNKFBWLslNCmcwTW0Z9yyvwYwVuIKHCjmBO+V1iS7c+b/RRgDWPv1K+Cyqj87n99yYPHqIJcBxpN6h6CwslPQsLeL8G+FBa+0oe42Xo+jPm9h0XwDWZAFXMdFkMjmcgUtQj+b6Br048T5fARODvXxpCe9akNJ1yenVh9REL8BK1WCnmiDqvUmZFyTAWf3BS9yA3Km1vwnohsYf19gtJyX8Yg3lqLvWYdLTD79DR6p+kEIC0yJDdEH/TWVMZ1DywqVxZzqd2OStf0rWslZcEj9kCubOMD0X9NGA/aXMhvOCorlyzWvuAH7RCORFNgK73OluVtP29UEppPwv
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5869.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(376002)(346002)(39860400002)(366004)(136003)(451199021)(66476007)(86362001)(8676002)(8936002)(316002)(6916009)(4326008)(5660300002)(7406005)(7416002)(41300700001)(66946007)(66556008)(54906003)(38100700002)(478600001)(4744005)(2906002)(6666004)(36756003)(6512007)(6486002)(107886003)(6506007)(26005)(83380400001)(186003)(2616005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?N0wzJB4BCCyjz2G7e2GQfDtBH+pIrIFkcniUahLMQLSQMbCKgOr1KpkWuF12?=
+ =?us-ascii?Q?CZOQvoo6SmYmOJkt56Y78ZUgLx+WuSRCxX8jMOC2Y3dAHUlX4SlmARoYObDZ?=
+ =?us-ascii?Q?+WVHwkqfPDaggpWUh67DH8phZdVtczYeg4Fj/QTeiUHcGmM8g5WiOEi2dZ70?=
+ =?us-ascii?Q?TBAot+Mh1QuUbswLXmECDXchC+ptg/zoIe4C3DwBmuZG9rVSZQFmBPyFi6fV?=
+ =?us-ascii?Q?rdsqmkcPgwAmeyl23C8qi3nqMk50QEcoVXMpdnzcn1qLNjejjw2hmpbRvlMb?=
+ =?us-ascii?Q?l33FIWOyQOLj7XcGRBpXMnLXUpNIeumxlLopC2G/i5SIEWHo/vRtyh30oPQW?=
+ =?us-ascii?Q?9n1b/fZ+A9XWASyDwBDS5wNkEAKDYvOvV2mvcNSPvQomTXs2Xi3trMfkpL+B?=
+ =?us-ascii?Q?QasqJS8GsjZGhf5gOm6AIPuQbyjdBj2gqyv7hEKF2pP4Fus0zerqy1+o2b5A?=
+ =?us-ascii?Q?3gJ5Q38alKBessLVtC5WLuuRlJOSYtGUASmXvRWDFxjbdCmmZAgr1ASDOYvs?=
+ =?us-ascii?Q?E1wXbXgyjX2gsPwgTq7OSvxsKA8zOPLKvVMvLXiWHrVLlfWA/8wvHYAcM+aK?=
+ =?us-ascii?Q?DwvNzXPrbbLHW6S4oeQefqE5ReRqgwEFdRjGbrVT8Ub3MjaNnSpSaS063d3c?=
+ =?us-ascii?Q?hNwI1UIvXCOpjDBf4sqLqTHxnT9vub8SKAQj15+4IzQUBW+Njw5eDs7zLdS9?=
+ =?us-ascii?Q?jBrRQsbT33aWKl+b3xqR8O+KtUKVlFEw6Ne9MKn+8n+RzoCDwmu3zdh/sVyh?=
+ =?us-ascii?Q?MCXAbe36S6xSRX8enNUr2oRYv48rYMBG521CtjTp3TD7Zuq9irSHPoZMMq0a?=
+ =?us-ascii?Q?qs/xccM2B7w5nBnODmDYW/Gp98X8gI9KUe62Zeqitxh+qzNGfe5RvwxbY8lU?=
+ =?us-ascii?Q?bUdcV+cie9wjoBqC0aprnywT+yP1MJuwwo2lwOtjXY7xeUjGMj502ibfCTt4?=
+ =?us-ascii?Q?Ff4wcQo+hRD8H6xXReUIpWCvMvhvvgAP/uzvbblYfotzXzKHpZ1+uvfaCPu2?=
+ =?us-ascii?Q?kNZp/xXoM002Zw6KuGf3LICdm85zODHNBQM46ew+PU33/fRnwt837y3u4NK/?=
+ =?us-ascii?Q?7AUsI8JJEJbQjFo4E4DfAuVtfzfCXvB1S95RuM06kPYiwB+54HBuydtlTbzr?=
+ =?us-ascii?Q?0eS4L0XLwPMo/Q6vnEjZdI1AEf0w6UiCeq4N8jzVqtFWVYtCd14OM72hPbqG?=
+ =?us-ascii?Q?2gZhdEBrqra6MkMWEEiUMDLacbHEdOodl2dMvuAYb/JPOWVRKXQLNMpK9fbM?=
+ =?us-ascii?Q?3cjrPZ17bbltTCz3YC01gVl4YuN8NUxujm1/Z2jy21RzdqJ4J8iLuTsDqUOh?=
+ =?us-ascii?Q?sClBj8slKQkmaLr7qF7QMgJwbFXEoBbwJWOk1CtcvCCXcYj1VP+etdq1ClHw?=
+ =?us-ascii?Q?BDOLtS3wGMKukwu0+V1aHHIz0l60mXFP84BnOPdpO7cZaFmutuppyA0dXOzg?=
+ =?us-ascii?Q?rT/Rfqs94NQKJQ2n9pb2IsDQaHr26fhU1iAxcJq91bJNMehjEAT9NWpPvLsY?=
+ =?us-ascii?Q?nP2jH+A0UNM2ylEPUcidtdPwmErNpV529dsW1sv4T8wz4CrnIGRJ8jbJ6mk+?=
+ =?us-ascii?Q?oyImrhUtLrzQkTQjxLo=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 92bc7af5-e181-4166-70c8-08db91c1c36c
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2023 12:29:19.8773
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0je1o1rY/zdIQywA98c2fjrR8Z/kPk/uNcuvsq8q/ZbODf1Ez7gG1p6UT3jXo3ZN
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4216
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,57 +118,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, linux-kernel@vger.kernel.org
+Cc: Heiko Stuebner <heiko@sntech.de>, Matthew Rosato <mjrosato@linux.ibm.com>, Matthias Brugger <matthias.bgg@gmail.com>, Thierry Reding <thierry.reding@gmail.com>, Jernej Skrabec <jernej.skrabec@gmail.com>, Alim Akhtar <alim.akhtar@samsung.com>, Dmitry Osipenko <digetx@gmail.com>, Steven Price <steven.price@arm.com>, Will Deacon <will@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, linux-s390@vger.kernel.org, linux-samsung-soc@vger.kernel.org, Samuel Holland <samuel@sholland.org>, Russell King <linux@armlinux.org.uk>, Jonathan Hunter <jonathanh@nvidia.com>, linux-rockchip@lists.infradead.org, iommu@lists.linux.dev, Andy Gross <agross@kernel.org>, Nicolin Chen <nicolinc@nvidia.com>, Yong Wu <yong.wu@mediatek.com>, Orson Zhai <orsonzhai@gmail.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Thierry Reding <treding@nvidia.com>, linux-sunxi@lists.linux.dev, Rob Clark <robdclark@gmail.com>, Kevin Tian <kevin.tian@intel.com>, Niklas Schnelle <schnelle@linux.ibm.com>, linux
+ -arm-msm@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Krishna Reddy <vdumpa@nvidia.com>, linux-mediatek@lists.infradead.org, Baolin Wang <baolin.wang@linux.alibaba.com>, linux-tegra@vger.kernel.org, Chen-Yu Tsai <wens@csie.org>, linux-arm-kernel@lists.infradead.org, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Robin Murphy <robin.murphy@arm.com>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Chunyan Zhang <zhang.lyra@gmail.com>, linuxppc-dev@lists.ozlabs.org, Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Jul 29, 2023 at 08:54:26PM +1000, Michael Ellerman wrote:
-> Gautam Menghani <Gautam.Menghani@linux.ibm.com> writes:
-> > On Thu, Jul 06, 2023 at 05:50:57PM +1000, Jordan Niethe wrote:
-> >> On 30/6/23 3:56 pm, Gautam Menghani wrote:
-> >> > Remove an unnecessary piece of code that does an endianness conversion but
-> >> > does not use the result. The following warning was reported by Clang's
-> >> > static analyzer:
-> >> > 
-> >> > arch/powerpc/sysdev/xics/ics-opal.c:114:2: warning: Value stored to
-> >> > 'server' is never read [deadcode.DeadStores]
-> >> >          server = be16_to_cpu(oserver);
-> >> > 
-> >> > As the result of endianness conversion is never used, delete the line
-> >> > and fix the warning.
-> >> > 
-> >> > Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
-> >> 
-> >> 'server' was used as a parameter to opal_get_xive() in commit 5c7c1e9444d8
-> >> ("powerpc/powernv: Add OPAL ICS backend") when it was introduced. 'server'
-> >> was also used in an error message for the call to opal_get_xive().
-> >> 
-> >> 'server' was always later set by a call to ics_opal_mangle_server() before
-> >> being used.
-> >> 
-> >> Commit bf8e0f891a32 ("powerpc/powernv: Fix endian issues in OPAL ICS
-> >> backend") used a new variable 'oserver' as the parameter to opal_get_xive()
-> >> instead of 'server' for endian correctness. It also removed 'server' from
-> >> the error message for the call to opal_get_xive().
-> >> 
-> >> It was commit bf8e0f891a32 that added the unnecessary conversion and never
-> >> used the result.
-> >> 
-> >> Reviewed-by: Jordan Niethe <jniethe5@gmail.com>
-> >> 
-> >
-> > Hello Michael, 
-> >
-> > Do you have any more questions on this patch or is it good to go?
+On Mon, Jul 24, 2023 at 02:21:50PM -0300, Jason Gunthorpe wrote:
+> [ It would be good to get this in linux-next, we have some good test
+> coverage on the ARM side already, thanks! ]
 > 
-> I was expecting you'd send a v2 with the changelog updated to include
-> all the extra detail Jordan added. I think it should also be tagged as
-> Fixes: bf8e0f891a32.
-> 
-> cheers
+> It has been a long time coming, this series completes the default_domain
+> transition and makes it so that the core IOMMU code will always have a
+> non-NULL default_domain for every driver on every
+> platform. set_platform_dma_ops() turned out to be a bad idea, and so
+> completely remove it.
 
-Thanks for the response. I've sent a v2 here - 
-lore.kernel.org/linuxppc-dev/20230731115543.36991-1-gautam@linux.ibm.com/T/#u
+Joerg, I think we are done with this now, it has been two months
+since a substantive comment.
+
+Can you take it so we have enough time in linux-next?
+
+There is a small typo in a commit message, patch 15 should have
+ s/omap_iommu_set_platform_dma/msm_iommu_set_platform_dma/
+
+Let me know if you want me to resend
 
 Thanks,
-Gautam
+Jason
