@@ -2,44 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE53476954C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jul 2023 13:54:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 819CE769557
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jul 2023 13:56:48 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PRL2Py6a;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RDxVj6Dydz3c1l
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jul 2023 21:54:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RDxYB32Jlz307y
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jul 2023 21:56:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=leemhuis.info (client-ip=80.237.130.52; helo=wp530.webpack.hosteurope.de; envelope-from=regressions@leemhuis.info; receiver=lists.ozlabs.org)
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PRL2Py6a;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RDxV72qLPz2xpx
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jul 2023 21:54:06 +1000 (AEST)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1qQRTH-0004qB-Gx; Mon, 31 Jul 2023 13:53:55 +0200
-Message-ID: <edb7c56e-92d2-317e-b11b-caaabd33161b@leemhuis.info>
-Date: Mon, 31 Jul 2023 13:53:54 +0200
-MIME-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RDxXG5l29z2yDH
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jul 2023 21:55:58 +1000 (AEST)
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36VBdaI6022016;
+	Mon, 31 Jul 2023 11:55:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=qHBp4S0vXvjXdtL9T2yqLOyzOu6JR+RCmAuqtz3oATI=;
+ b=PRL2Py6acpx6CEWblmiyaSymSgQTSspw5jTVmUoT/zaNCgUT34P/T+pVy9UT+M4jFq1d
+ LcIJqj84lO1cS2kmZCwGkj3ZO0GH6VRpISKyR0vgJ2i1A3R3cN0ni5JM0MfkyhGFUAIj
+ 3K1Bj9wrOzVnlC15vzu9+YiOuOUWWPejvduUN+o0EMeIxgYubz2WIXC2W6z+dznXbJaB
+ IEf7NDwVOsnA9RuTVnksVqbItvLZ2XvSOjo+Oyn5JhFeQsAsRZ7I5DWIWQeymii+paUo
+ CmZp6aiHlk5LHyoKCwEH6nooWwwWCDfKVHmz3q7WUJlyAqJRb6snSOtSEpKENsi480+3 +w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s6bj11mty-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 31 Jul 2023 11:55:33 +0000
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36VBeaa3026148;
+	Mon, 31 Jul 2023 11:55:32 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s6bj11msy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 31 Jul 2023 11:55:32 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36VB8GSU015538;
+	Mon, 31 Jul 2023 11:55:31 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3s5e3mjt2u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 31 Jul 2023 11:55:30 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36VBtSqK23528166
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 31 Jul 2023 11:55:29 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D2BEB20043;
+	Mon, 31 Jul 2023 11:55:28 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 676AB20040;
+	Mon, 31 Jul 2023 11:55:28 +0000 (GMT)
+Received: from [9.144.146.219] (unknown [9.144.146.219])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 31 Jul 2023 11:55:28 +0000 (GMT)
+Message-ID: <c2ac9fce-8967-6b5a-8cc3-ff5de5150a09@linux.ibm.com>
+Date: Mon, 31 Jul 2023 13:55:28 +0200
 User-Agent: Mozilla Thunderbird
-Subject: Re: linux-next: Tree for Jul 13 (drivers/video/fbdev/ps3fb.c)
-Content-Language: en-US, de-DE
-To: Randy Dunlap <rd.dunlab@gmail.com>, Michael Ellerman
- <mpe@ellerman.id.au>, Bagas Sanjaya <bagasdotme@gmail.com>,
- Randy Dunlap <rdunlap@infradead.org>, Stephen Rothwell
- <sfr@canb.auug.org.au>, Linux Next Mailing List <linux-next@vger.kernel.org>
-References: <20230713123710.5d7d81e4@canb.auug.org.au>
- <ccc63065-2976-88ef-1211-731330bf2866@infradead.org>
- <ZLYHtVuS7AElXcCb@debian.me> <874jm1jv9m.fsf@mail.lhotse>
- <d9616a67-23e8-118f-dc0a-7ed4afd4bffd@gmail.com>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-In-Reply-To: <d9616a67-23e8-118f-dc0a-7ed4afd4bffd@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1690804447;71b830c6;
-X-HE-SMSGID: 1qQRTH-0004qB-Gx
+Subject: Re: [PATCH v4 00/10] Introduce SMT level and add PowerPC support
+To: Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org
+References: <20230705145143.40545-1-ldufour@linux.ibm.com>
+ <87tttoqxft.ffs@tglx>
+Content-Language: en-US
+From: Laurent Dufour <ldufour@linux.ibm.com>
+In-Reply-To: <87tttoqxft.ffs@tglx>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: -WSL2ggfwRiYmP9_bsW-zeZdPnGYqxSI
+X-Proofpoint-GUID: 3GAGWt4nw0RLj7-HH_Q5bFHD7idPBBwp
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-31_05,2023-07-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 spamscore=0
+ priorityscore=1501 impostorscore=0 mlxlogscore=999 clxscore=1011
+ adultscore=0 bulkscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2307310104
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,62 +100,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Cc: linux-fbdev@vger.kernel.org, Linux Regressions <regressions@lists.linux.dev>, Geoff Levand <geoff@infradead.org>, Helge Deller <deller@gmx.de>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Javier Martinez Canillas <javierm@redhat.com>, Thomas Zimmermann <tzimmermann@suse.de>, Linux PowerPC <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-arch@vger.kernel.org, dave.hansen@linux.intel.com, linux-kernel@vger.kernel.org, mingo@redhat.com, bp@alien8.de, npiggin@gmail.com, rui.zhang@intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 18.07.23 18:15, Randy Dunlap wrote:
-> On 7/18/23 04:48, Michael Ellerman wrote:
->> Bagas Sanjaya <bagasdotme@gmail.com> writes:
->>> On Thu, Jul 13, 2023 at 09:11:10AM -0700, Randy Dunlap wrote:
->>>> on ppc64:
->>>>
->>>> In file included from ../include/linux/device.h:15,
->>>>                  from ../arch/powerpc/include/asm/io.h:22,
->>>>                  from ../include/linux/io.h:13,
->>>>                  from ../include/linux/irq.h:20,
->>>>                  from ../arch/powerpc/include/asm/hardirq.h:6,
->>>>                  from ../include/linux/hardirq.h:11,
->>>>                  from ../include/linux/interrupt.h:11,
->>>>                  from ../drivers/video/fbdev/ps3fb.c:25:
->>>> ../drivers/video/fbdev/ps3fb.c: In function 'ps3fb_probe':
->>>> ../drivers/video/fbdev/ps3fb.c:1172:40: error: 'struct fb_info' has no member named 'dev'
-> [...]
->>
->> Does regzbot track issues in linux-next?
 
-Seems your patch didn't make any progress, at least I can't see it in
--next. Is there a reason why, or did I miss anything?
 
-And yes, sure, I'm aware that it's -next and a driver that people might
-not enable regularly. But I noticed it and thought "quickly bring it up,
-might be good to fix this rather sooner than later before other people
-run into it (and who knows, maybe it'll switch a light in some CI system
-from red to green as well)"
+Le 28/07/2023 à 09:58, Thomas Gleixner a écrit :
+> Laurent, Michael!
+> 
+> On Wed, Jul 05 2023 at 16:51, Laurent Dufour wrote:
+>> I'm taking over the series Michael sent previously [1] which is smartly
+>> reviewing the initial series I sent [2].  This series is addressing the
+>> comments sent by Thomas and me on the Michael's one.
+> 
+> Thanks for getting this into shape.
+> 
+> I've merged it into:
+> 
+>     git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git smp/core
+> 
+> and tagged it at patch 7 for consumption into the powerpc tree, so the
+> powerpc specific changes can be applied there on top:
+> 
+>     git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git smp-core-for-ppc-23-07-28
 
-Ciao, Thorsten
-
->> The driver seems to only use info->dev in that one dev_info() line,
->> which seems purely cosmetic, so I think it could just be removed, eg:
->>
->> diff --git a/drivers/video/fbdev/ps3fb.c b/drivers/video/fbdev/ps3fb.c
->> index d4abcf8aff75..a304a39d712b 100644
->> --- a/drivers/video/fbdev/ps3fb.c
->> +++ b/drivers/video/fbdev/ps3fb.c
->> @@ -1168,8 +1168,7 @@ static int ps3fb_probe(struct ps3_system_bus_device *dev)
->>  
->>  	ps3_system_bus_set_drvdata(dev, info);
->>  
->> -	dev_info(info->device, "%s %s, using %u KiB of video memory\n",
->> -		 dev_driver_string(info->dev), dev_name(info->dev),
->> +	dev_info(info->device, "using %u KiB of video memory\n",
->>  		 info->fix.smem_len >> 10);
->>  
->>  	task = kthread_run(ps3fbd, info, DEVICE_NAME);
-> 
-> 
-> Tested-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
-> 
-> Thanks.
-> 
+Thanks Thomas!
