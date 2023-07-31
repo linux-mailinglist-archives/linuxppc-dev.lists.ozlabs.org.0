@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD837769F38
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jul 2023 19:17:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B24A1769F39
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jul 2023 19:18:22 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=OAbNNQBE;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=LaN2Z5cA;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RF4gH58zDz3dkQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Aug 2023 03:17:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RF4hD4RQqz3dCq
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Aug 2023 03:18:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=OAbNNQBE;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=LaN2Z5cA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b35; helo=mail-yb1-xb35.google.com; envelope-from=vishal.moola@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::c2f; helo=mail-oo1-xc2f.google.com; envelope-from=vishal.moola@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-oo1-xc2f.google.com (mail-oo1-xc2f.google.com [IPv6:2607:f8b0:4864:20::c2f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RF4Mv4dVGz30fV
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Aug 2023 03:04:11 +1000 (AEST)
-Received: by mail-yb1-xb35.google.com with SMTP id 3f1490d57ef6-d09ba80fbcaso4920649276.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jul 2023 10:04:11 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RF4Mx3RLfz30gH
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Aug 2023 03:04:13 +1000 (AEST)
+Received: by mail-oo1-xc2f.google.com with SMTP id 006d021491bc7-56c7f47ec42so2093045eaf.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jul 2023 10:04:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690823048; x=1691427848;
+        d=gmail.com; s=20221208; t=1690823050; x=1691427850;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hoPDwBR7UkDBRqaPTC6ObTEe9OrRslO4Jma44jkeaBI=;
-        b=OAbNNQBEQXMPsZxDdWqbwpvcbcC9brAkDdGEYZZSxmgS9fU/KaG8Vdw1eojjPxifHR
-         dAgpTgfKnNikXik7mZu8QxravKkUxiIYGVER2PrkOqRriotSLF3T4LElpBmapph98PeJ
-         CgANJas/sYwEcas//U7Qxkrb0B57mEkHjJFVkSuOLhuhDwIKccn09v9YrEs6kDdqLy4T
-         Ieqhh+PAHMUzo7yeR/3qM+URoXymEQxqZDFSNR+LNsEWiMnR0aGkUyMFjyNfNubh1n44
-         qou+GBpn9D5SWlHqMqT15mOyIOurWshKH34ovdJcmzrKIbB8XOImOByAI5BjQB0TmzE9
-         Sl9g==
+        bh=bBkB4loM/Mt006iaxsYk7j8UnaAx8a9/NTd5FkPootg=;
+        b=LaN2Z5cA1g3QHkmu1yTAPuZ+gTgDQXRJQVZ3q2bju3+OXPPdz1JjIqLJAjDfCBEgH9
+         7Ttgf9+xGINvOvqPbjkBBA+kiz1r/307hJB3HQPBTO+grLv6cLtOMVUiOQ3YqTtB3VhG
+         DR1MJfbiJ1WEF5YzFYY4ZtTmPxDuFx+JwcfSUJ/HGuVXlEGvoPiVmTgBFyMwXloIHduF
+         XN+NqGvI2ErntPxzKW8shpaaIArfirugcPlVxrvDp/YXtjJboT3jqZnutkk3sNOVqTbe
+         4MBegStktcVwlYOqkBrub1drFP/tUKuFSEW2ULzr9NM6cvzKis6pkazSEIpoiDyQTv+z
+         2r9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690823048; x=1691427848;
+        d=1e100.net; s=20221208; t=1690823050; x=1691427850;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hoPDwBR7UkDBRqaPTC6ObTEe9OrRslO4Jma44jkeaBI=;
-        b=JhcLtBQCX98yBKS6twkZXyHYrJMdWckK46kh5NQnxyu19AfYugBOMdQ/gEMY36c80i
-         RU+XtvE8M4rWIF939dOHLPHqRGqUZDZg0riEKAWefLzXOGMRr1NF01uR4bT7zC6SQZkm
-         Y4il92VdCvn2xeTLYocy2IuYnSJke1fKVG5fvPBuAIo7SELLWnbgN8x9IX3lyOt1qyoD
-         gqh2AZ7/lEg4sPH5dAZZ12HH5HeU6agMmvaL8Imz5vqv8dnZDY9F/eXS1ESkRk76wR20
-         RCQ2sQWxWXsZbZGn5qb0lKlfGtnB2q6BX+xad7zyfQh0Y5ev8TY/NIDQqN4P+GMTvVDY
-         jwTA==
-X-Gm-Message-State: ABy/qLZJmx/SL24B1arsex0ikvlOP1me+1VFVRD6bfMcnFXlbSUeQzQK
-	utSk3R8sUmTp0gS3j+v2sF4=
-X-Google-Smtp-Source: APBJJlFKcIKM/utvbiiE7uhCLg+4EyOcJ7OdfVdmr1i+MWfEQcViSbVO+c8ELmOI+htD8mvz1eRjLA==
-X-Received: by 2002:a25:f626:0:b0:d10:d237:b03d with SMTP id t38-20020a25f626000000b00d10d237b03dmr9909607ybd.53.1690823048043;
-        Mon, 31 Jul 2023 10:04:08 -0700 (PDT)
+        bh=bBkB4loM/Mt006iaxsYk7j8UnaAx8a9/NTd5FkPootg=;
+        b=GUeSvEYEZcrJL7GNQKjT/kMVQxGQCWdeLzBzfYzzBT7y0d3shqlZXJRMV9EWC3fKAj
+         zyG8eN2HsUPQ6lRIRbupvkF1c2KiNvY3rNSTKjcLpO/9lyaBpc2NkljzSqcPR/STx1Lu
+         CTwB07U8plKKMEWoyUiJVNFsc12drIhr8SJPqo0e+c/3K1IjHEy/DlYJSnx2AtDKWPO2
+         QqZ/ZIMimVuHmQmK4aSvsSnsXxF5fCXba6L4d3q84ojJgpWXEcXX5kQk+/4Xe+ggaQ4H
+         CZ1z6fqQ7l6NqGCOOKd6p9wBP/hxRGR+6vfqD46YEjSO8ZVtAQQQ2FrC0MoD4/DcDCtP
+         uIBw==
+X-Gm-Message-State: ABy/qLan+KhfsBK0gc5ls+UQbA83XfLJdZ6yY31CozcxPgvbCMGHnXXX
+	okVd7Ehh8ZPwngBp/W2bU38=
+X-Google-Smtp-Source: APBJJlGId6OsNROK0Rrfftpz1UcSUo2PPmBi9KGG5ymdHpGiVY5jldwYwkHVkIkpJVs885EQKvaPug==
+X-Received: by 2002:a05:6808:2a7a:b0:3a3:ffb7:a28 with SMTP id fu26-20020a0568082a7a00b003a3ffb70a28mr10979580oib.45.1690823050042;
+        Mon, 31 Jul 2023 10:04:10 -0700 (PDT)
 Received: from unknowna0e70b2ca394.attlocal.net ([2600:1700:2f7d:1800::16])
-        by smtp.googlemail.com with ESMTPSA id x31-20020a25ac9f000000b00c832ad2e2eesm2511833ybi.60.2023.07.31.10.04.06
+        by smtp.googlemail.com with ESMTPSA id x31-20020a25ac9f000000b00c832ad2e2eesm2511833ybi.60.2023.07.31.10.04.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Jul 2023 10:04:07 -0700 (PDT)
+        Mon, 31 Jul 2023 10:04:09 -0700 (PDT)
 From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Matthew Wilcox <willy@infradead.org>
-Subject: [PATCH mm-unstable v8 15/31] mm: Remove page table members from struct page
-Date: Mon, 31 Jul 2023 10:03:16 -0700
-Message-Id: <20230731170332.69404-16-vishal.moola@gmail.com>
+Subject: [PATCH mm-unstable v8 16/31] pgalloc: Convert various functions to use ptdescs
+Date: Mon, 31 Jul 2023 10:03:17 -0700
+Message-Id: <20230731170332.69404-17-vishal.moola@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230731170332.69404-1-vishal.moola@gmail.com>
 References: <20230731170332.69404-1-vishal.moola@gmail.com>
@@ -79,64 +79,241 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, kvm@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-sh@vger.kernel.org, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-csky@vger.kernel.org, "Vishal Moola \(Oracle\)" <vishal.moola@gmail.com>, linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org, Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, loongarch@lists.linux.dev, sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, kvm@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-sh@vger.kernel.org, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-csky@vger.kernel.org, "Vishal Moola \(Oracle\)" <vishal.moola@gmail.com>, linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org, Hugh Dickins <hughd@google.com>, loongarch@lists.linux.dev, sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The page table members are now split out into their own ptdesc struct.
-Remove them from struct page.
+As part of the conversions to replace pgtable constructor/destructors with
+ptdesc equivalents, convert various page table functions to use ptdescs.
+
+Some of the functions use the *get*page*() helper functions. Convert
+these to use pagetable_alloc() and ptdesc_address() instead to help
+standardize page tables further.
 
 Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
 ---
- include/linux/mm_types.h | 18 ------------------
- include/linux/pgtable.h  |  3 ---
- 2 files changed, 21 deletions(-)
+ include/asm-generic/pgalloc.h | 88 +++++++++++++++++++++--------------
+ 1 file changed, 52 insertions(+), 36 deletions(-)
 
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index da538ff68953..aae6af098031 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -141,24 +141,6 @@ struct page {
- 		struct {	/* Tail pages of compound page */
- 			unsigned long compound_head;	/* Bit zero is set */
- 		};
--		struct {	/* Page table pages */
--			unsigned long _pt_pad_1;	/* compound_head */
--			pgtable_t pmd_huge_pte; /* protected by page->ptl */
--			/*
--			 * A PTE page table page might be freed by use of
--			 * rcu_head: which overlays those two fields above.
--			 */
--			unsigned long _pt_pad_2;	/* mapping */
--			union {
--				struct mm_struct *pt_mm; /* x86 pgds only */
--				atomic_t pt_frag_refcount; /* powerpc */
--			};
--#if ALLOC_SPLIT_PTLOCKS
--			spinlock_t *ptl;
--#else
--			spinlock_t ptl;
--#endif
--		};
- 		struct {	/* ZONE_DEVICE pages */
- 			/** @pgmap: Points to the hosting device page map. */
- 			struct dev_pagemap *pgmap;
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 250fdeba68f3..1a984c300d45 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -1051,10 +1051,7 @@ struct ptdesc {
- TABLE_MATCH(flags, __page_flags);
- TABLE_MATCH(compound_head, pt_list);
- TABLE_MATCH(compound_head, _pt_pad_1);
--TABLE_MATCH(pmd_huge_pte, pmd_huge_pte);
- TABLE_MATCH(mapping, __page_mapping);
--TABLE_MATCH(pt_mm, pt_mm);
--TABLE_MATCH(ptl, ptl);
- TABLE_MATCH(rcu_head, pt_rcu_head);
- TABLE_MATCH(page_type, __page_type);
- TABLE_MATCH(_refcount, _refcount);
+diff --git a/include/asm-generic/pgalloc.h b/include/asm-generic/pgalloc.h
+index a7cf825befae..c75d4a753849 100644
+--- a/include/asm-generic/pgalloc.h
++++ b/include/asm-generic/pgalloc.h
+@@ -8,7 +8,7 @@
+ #define GFP_PGTABLE_USER	(GFP_PGTABLE_KERNEL | __GFP_ACCOUNT)
+ 
+ /**
+- * __pte_alloc_one_kernel - allocate a page for PTE-level kernel page table
++ * __pte_alloc_one_kernel - allocate memory for a PTE-level kernel page table
+  * @mm: the mm_struct of the current context
+  *
+  * This function is intended for architectures that need
+@@ -18,12 +18,17 @@
+  */
+ static inline pte_t *__pte_alloc_one_kernel(struct mm_struct *mm)
+ {
+-	return (pte_t *)__get_free_page(GFP_PGTABLE_KERNEL);
++	struct ptdesc *ptdesc = pagetable_alloc(GFP_PGTABLE_KERNEL &
++			~__GFP_HIGHMEM, 0);
++
++	if (!ptdesc)
++		return NULL;
++	return ptdesc_address(ptdesc);
+ }
+ 
+ #ifndef __HAVE_ARCH_PTE_ALLOC_ONE_KERNEL
+ /**
+- * pte_alloc_one_kernel - allocate a page for PTE-level kernel page table
++ * pte_alloc_one_kernel - allocate memory for a PTE-level kernel page table
+  * @mm: the mm_struct of the current context
+  *
+  * Return: pointer to the allocated memory or %NULL on error
+@@ -35,40 +40,40 @@ static inline pte_t *pte_alloc_one_kernel(struct mm_struct *mm)
+ #endif
+ 
+ /**
+- * pte_free_kernel - free PTE-level kernel page table page
++ * pte_free_kernel - free PTE-level kernel page table memory
+  * @mm: the mm_struct of the current context
+  * @pte: pointer to the memory containing the page table
+  */
+ static inline void pte_free_kernel(struct mm_struct *mm, pte_t *pte)
+ {
+-	free_page((unsigned long)pte);
++	pagetable_free(virt_to_ptdesc(pte));
+ }
+ 
+ /**
+- * __pte_alloc_one - allocate a page for PTE-level user page table
++ * __pte_alloc_one - allocate memory for a PTE-level user page table
+  * @mm: the mm_struct of the current context
+  * @gfp: GFP flags to use for the allocation
+  *
+- * Allocates a page and runs the pgtable_pte_page_ctor().
++ * Allocate memory for a page table and ptdesc and runs pagetable_pte_ctor().
+  *
+  * This function is intended for architectures that need
+  * anything beyond simple page allocation or must have custom GFP flags.
+  *
+- * Return: `struct page` initialized as page table or %NULL on error
++ * Return: `struct page` referencing the ptdesc or %NULL on error
+  */
+ static inline pgtable_t __pte_alloc_one(struct mm_struct *mm, gfp_t gfp)
+ {
+-	struct page *pte;
++	struct ptdesc *ptdesc;
+ 
+-	pte = alloc_page(gfp);
+-	if (!pte)
++	ptdesc = pagetable_alloc(gfp, 0);
++	if (!ptdesc)
+ 		return NULL;
+-	if (!pgtable_pte_page_ctor(pte)) {
+-		__free_page(pte);
++	if (!pagetable_pte_ctor(ptdesc)) {
++		pagetable_free(ptdesc);
+ 		return NULL;
+ 	}
+ 
+-	return pte;
++	return ptdesc_page(ptdesc);
+ }
+ 
+ #ifndef __HAVE_ARCH_PTE_ALLOC_ONE
+@@ -76,9 +81,9 @@ static inline pgtable_t __pte_alloc_one(struct mm_struct *mm, gfp_t gfp)
+  * pte_alloc_one - allocate a page for PTE-level user page table
+  * @mm: the mm_struct of the current context
+  *
+- * Allocates a page and runs the pgtable_pte_page_ctor().
++ * Allocate memory for a page table and ptdesc and runs pagetable_pte_ctor().
+  *
+- * Return: `struct page` initialized as page table or %NULL on error
++ * Return: `struct page` referencing the ptdesc or %NULL on error
+  */
+ static inline pgtable_t pte_alloc_one(struct mm_struct *mm)
+ {
+@@ -92,14 +97,16 @@ static inline pgtable_t pte_alloc_one(struct mm_struct *mm)
+  */
+ 
+ /**
+- * pte_free - free PTE-level user page table page
++ * pte_free - free PTE-level user page table memory
+  * @mm: the mm_struct of the current context
+- * @pte_page: the `struct page` representing the page table
++ * @pte_page: the `struct page` referencing the ptdesc
+  */
+ static inline void pte_free(struct mm_struct *mm, struct page *pte_page)
+ {
+-	pgtable_pte_page_dtor(pte_page);
+-	__free_page(pte_page);
++	struct ptdesc *ptdesc = page_ptdesc(pte_page);
++
++	pagetable_pte_dtor(ptdesc);
++	pagetable_free(ptdesc);
+ }
+ 
+ 
+@@ -107,10 +114,11 @@ static inline void pte_free(struct mm_struct *mm, struct page *pte_page)
+ 
+ #ifndef __HAVE_ARCH_PMD_ALLOC_ONE
+ /**
+- * pmd_alloc_one - allocate a page for PMD-level page table
++ * pmd_alloc_one - allocate memory for a PMD-level page table
+  * @mm: the mm_struct of the current context
+  *
+- * Allocates a page and runs the pgtable_pmd_page_ctor().
++ * Allocate memory for a page table and ptdesc and runs pagetable_pmd_ctor().
++ *
+  * Allocations use %GFP_PGTABLE_USER in user context and
+  * %GFP_PGTABLE_KERNEL in kernel context.
+  *
+@@ -118,28 +126,30 @@ static inline void pte_free(struct mm_struct *mm, struct page *pte_page)
+  */
+ static inline pmd_t *pmd_alloc_one(struct mm_struct *mm, unsigned long addr)
+ {
+-	struct page *page;
++	struct ptdesc *ptdesc;
+ 	gfp_t gfp = GFP_PGTABLE_USER;
+ 
+ 	if (mm == &init_mm)
+ 		gfp = GFP_PGTABLE_KERNEL;
+-	page = alloc_page(gfp);
+-	if (!page)
++	ptdesc = pagetable_alloc(gfp, 0);
++	if (!ptdesc)
+ 		return NULL;
+-	if (!pgtable_pmd_page_ctor(page)) {
+-		__free_page(page);
++	if (!pagetable_pmd_ctor(ptdesc)) {
++		pagetable_free(ptdesc);
+ 		return NULL;
+ 	}
+-	return (pmd_t *)page_address(page);
++	return ptdesc_address(ptdesc);
+ }
+ #endif
+ 
+ #ifndef __HAVE_ARCH_PMD_FREE
+ static inline void pmd_free(struct mm_struct *mm, pmd_t *pmd)
+ {
++	struct ptdesc *ptdesc = virt_to_ptdesc(pmd);
++
+ 	BUG_ON((unsigned long)pmd & (PAGE_SIZE-1));
+-	pgtable_pmd_page_dtor(virt_to_page(pmd));
+-	free_page((unsigned long)pmd);
++	pagetable_pmd_dtor(ptdesc);
++	pagetable_free(ptdesc);
+ }
+ #endif
+ 
+@@ -150,19 +160,25 @@ static inline void pmd_free(struct mm_struct *mm, pmd_t *pmd)
+ static inline pud_t *__pud_alloc_one(struct mm_struct *mm, unsigned long addr)
+ {
+ 	gfp_t gfp = GFP_PGTABLE_USER;
++	struct ptdesc *ptdesc;
+ 
+ 	if (mm == &init_mm)
+ 		gfp = GFP_PGTABLE_KERNEL;
+-	return (pud_t *)get_zeroed_page(gfp);
++	gfp &= ~__GFP_HIGHMEM;
++
++	ptdesc = pagetable_alloc(gfp, 0);
++	if (!ptdesc)
++		return NULL;
++	return ptdesc_address(ptdesc);
+ }
+ 
+ #ifndef __HAVE_ARCH_PUD_ALLOC_ONE
+ /**
+- * pud_alloc_one - allocate a page for PUD-level page table
++ * pud_alloc_one - allocate memory for a PUD-level page table
+  * @mm: the mm_struct of the current context
+  *
+- * Allocates a page using %GFP_PGTABLE_USER for user context and
+- * %GFP_PGTABLE_KERNEL for kernel context.
++ * Allocate memory for a page table using %GFP_PGTABLE_USER for user context
++ * and %GFP_PGTABLE_KERNEL for kernel context.
+  *
+  * Return: pointer to the allocated memory or %NULL on error
+  */
+@@ -175,7 +191,7 @@ static inline pud_t *pud_alloc_one(struct mm_struct *mm, unsigned long addr)
+ static inline void __pud_free(struct mm_struct *mm, pud_t *pud)
+ {
+ 	BUG_ON((unsigned long)pud & (PAGE_SIZE-1));
+-	free_page((unsigned long)pud);
++	pagetable_free(virt_to_ptdesc(pud));
+ }
+ 
+ #ifndef __HAVE_ARCH_PUD_FREE
+@@ -190,7 +206,7 @@ static inline void pud_free(struct mm_struct *mm, pud_t *pud)
+ #ifndef __HAVE_ARCH_PGD_FREE
+ static inline void pgd_free(struct mm_struct *mm, pgd_t *pgd)
+ {
+-	free_page((unsigned long)pgd);
++	pagetable_free(virt_to_ptdesc(pgd));
+ }
+ #endif
+ 
 -- 
 2.40.1
 
