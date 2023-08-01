@@ -2,60 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DB4176AC4C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Aug 2023 11:08:01 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=FP91dO9c;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 49FC876AD4A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Aug 2023 11:27:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RFTlz3qjVz3cQ4
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Aug 2023 19:07:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RFVBz1nWbz301R
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Aug 2023 19:27:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=FP91dO9c;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=mhocko@suse.com; receiver=lists.ozlabs.org)
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=m3kw2wvrgufz5godrsrytgd7.apphosting.bounces.google.com (client-ip=209.85.210.69; helo=mail-ot1-f69.google.com; envelope-from=3-s_izakbaokdjkvlwwpclaato.rzzrwpfdpcnzyepye.nzx@m3kw2wvrgufz5godrsrytgd7.apphosting.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com [209.85.210.69])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RFTl666Vhz2yWB
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Aug 2023 19:07:14 +1000 (AEST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 5E3C01F8A4;
-	Tue,  1 Aug 2023 09:07:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1690880830; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NOIQpsYorsEErSCKvrBUT+6FC1vs4HhE6rpSdG0vcy4=;
-	b=FP91dO9cgibLCZDlgsJ4DyBjauNOAQBKM3RwdkBYwUh4hUy7eRUZB4CvgSvULorwq5IBMU
-	kWyhma9WsPrqDfJ13ACJmvRzRYXI9UDmQdAalWD5tVZ7I47VF8L7rCOuBddztpmZQ5S7yW
-	PC5sthVDcDoQiC+9OFXwfcrcWDmZlaI=
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 4F1EC13919;
-	Tue,  1 Aug 2023 09:07:10 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id qWl8Ej7LyGS7OAAAMHmgww
-	(envelope-from <mhocko@suse.com>); Tue, 01 Aug 2023 09:07:10 +0000
-Date: Tue, 1 Aug 2023 11:07:09 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH v7 0/7] Add support for memmap on memory feature on ppc64
-Message-ID: <ZMjLPQd+jdLkNVe2@dhcp22.suse.cz>
-References: <20230801044116.10674-1-aneesh.kumar@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RFVBR6D4rz2yDd
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Aug 2023 19:27:25 +1000 (AEST)
+Received: by mail-ot1-f69.google.com with SMTP id 46e09a7af769-6b9c744df27so8035271a34.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Aug 2023 02:27:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690882042; x=1691486842;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=C27ET6loiS4a597fDoDvp82lhEfceWexZEaZmg7rns4=;
+        b=XZBZIX3MTahXXsTVHYNQNZJZhzSniA8zgKKyRU/x1vjYu0qaV4rj/loU7S2L9A6TtS
+         xLN0n7bxTUKK0YfFJzyf8xuZCtoi4MtNh4L1hOplr6zBJqKevPdf8qszQIYyB0AbwYpS
+         xEMFsETRxIlLXOjMEmvoIA+tShjLuI80uphQtGNpD3R6Cc0d9ysBOdyDx2KvT5e6nTjC
+         7zL+TfXtkc9sPx+Z0WptoE4jyBHZq8DhUVxJWrtiHI/lRx8XD4qAFSXIxnFdI5+lG9UQ
+         Ix+KdjcTdiiJJr9KTBPPAigTyNT4Kj/Jnndsq4cmgLsDF5gcIrS7eyqY4Rem7Ab0Sml4
+         O2jA==
+X-Gm-Message-State: ABy/qLb6bo8pj+BgVxLiMDRP8Hh5Q6cIoyHh0V/cSncj3v9foP8YtBSZ
+	x6TE/Vy/gSIHp5pTEdFCYEqAtR+DwFKxnVQt4kqz7gU2CDcR
+X-Google-Smtp-Source: APBJJlF+q8vTSApLRQ0DsriyRIAi3yXyfIxfMoDXTZLqGmWRh5yGZx5GzEG93qqQR4NAAm6evBr0m5ieLt5iW0rGmHW5H8t1P6Mn
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230801044116.10674-1-aneesh.kumar@linux.ibm.com>
+X-Received: by 2002:a9d:6c8d:0:b0:6b7:1e75:18e with SMTP id
+ c13-20020a9d6c8d000000b006b71e75018emr14153717otr.2.1690882042749; Tue, 01
+ Aug 2023 02:27:22 -0700 (PDT)
+Date: Tue, 01 Aug 2023 02:27:22 -0700
+In-Reply-To: <000000000000fac82605ee97fb72@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <00000000000083e9d60601d927a0@google.com>
+Subject: Re: [syzbot] [btrfs?] WARNING in btrfs_free_reserved_data_space_noquota
+From: syzbot <syzbot+adec8406ad17413d4c06@syzkaller.appspotmail.com>
+To: axboe@kernel.dk, christophe.leroy@csgroup.eu, clm@fb.com, dsterba@suse.com, 
+	josef@toxicpanda.com, linux-btrfs@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	mpe@ellerman.id.au, npiggin@gmail.com, shuah@kernel.org, 
+	syzkaller-bugs@googlegroups.com, torvalds@linux-foundation.org, 
+	ye.xingchen@zte.com.cn
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,86 +62,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Hildenbrand <david@redhat.com>, linux-mm@kvack.org, npiggin@gmail.com, Vishal Verma <vishal.l.verma@intel.com>, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-I cannot really judge the ppc specific part but other patches seem
-reasonable. Patch 4 could print a more useful information about the
-wastage but this is nothing really earth shattering. I am not sure about
-the last patch which makes the on-memory property dynamic. This needs
-much more justification and use case description IMHO.
+syzbot suspects this issue was fixed by commit:
 
-That being said for patches 1 - 4 and 6 feel free to add
-Acked-by: Michal Hocko <mhocko@suse.com>
+commit 487c20b016dc48230367a7be017f40313e53e3bd
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Thu Mar 30 21:53:51 2023 +0000
 
-On Tue 01-08-23 10:11:09, Aneesh Kumar K.V wrote:
-> This patch series update memmap on memory feature to fall back to
-> memmap allocation outside the memory block if the alignment rules are
-> not met. This makes the feature more useful on architectures like
-> ppc64 where alignment rules are different with 64K page size.
-> 
-> This patch series is dependent on dax vmemmap optimization series
-> posted here
-> https://lore.kernel.org/linux-mm/20230718022934.90447-1-aneesh.kumar@linux.ibm.com/
-> 
-> Changes from v6:
-> * Update comments in the code
-> * Update commit message for patch 7
-> 
-> Changes from v5:
-> * Update commit message
-> * Move memory alloc/free to the callers in patch 6
-> * Address review feedback w.r.t patch 4
-> 
-> Changes from v4:
-> * Use altmap.free instead of altmap.reserve
-> * Address review feedback
-> 
-> Changes from v3:
-> * Extend the module parameter memmap_on_memory to force allocation even
->   though we can waste hotplug memory.
-> 
-> Changes from v2:
-> * Rebase to latest linus tree
-> * Redo the series based on review feedback. Multiple changes to the patchset.
-> 
-> Changes from v1:
-> * update the memblock to store vmemmap_altmap details. This is required
-> so that when we remove the memory we can find the altmap details which
-> is needed on some architectures.
-> * rebase to latest linus tree
-> 
-> 
-> 
-> Aneesh Kumar K.V (7):
->   mm/memory_hotplug: Simplify ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE kconfig
->   mm/memory_hotplug: Allow memmap on memory hotplug request to fallback
->   mm/memory_hotplug: Allow architecture to override memmap on memory
->     support check
->   mm/memory_hotplug: Support memmap_on_memory when memmap is not aligned
->     to pageblocks
->   powerpc/book3s64/memhotplug: Enable memmap on memory for radix
->   mm/memory_hotplug: Embed vmem_altmap details in memory block
->   mm/memory_hotplug: Enable runtime update of memmap_on_memory parameter
-> 
->  .../admin-guide/mm/memory-hotplug.rst         |  12 +
->  arch/arm64/Kconfig                            |   4 +-
->  arch/powerpc/Kconfig                          |   1 +
->  arch/powerpc/include/asm/pgtable.h            |  21 ++
->  .../platforms/pseries/hotplug-memory.c        |   2 +-
->  arch/x86/Kconfig                              |   4 +-
->  drivers/acpi/acpi_memhotplug.c                |   3 +-
->  drivers/base/memory.c                         |  27 ++-
->  include/linux/memory.h                        |   8 +-
->  include/linux/memory_hotplug.h                |   3 +-
->  mm/Kconfig                                    |   3 +
->  mm/memory_hotplug.c                           | 205 ++++++++++++++----
->  12 files changed, 220 insertions(+), 73 deletions(-)
-> 
-> -- 
-> 2.41.0
+    iov: improve copy_iovec_from_user() code generation
 
--- 
-Michal Hocko
-SUSE Labs
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=17cfdf19a80000
+start commit:   4bdec23f971b Merge tag 'hwmon-for-v6.3-rc4' of git://git.k..
+git tree:       upstream
+kernel config:  https://syzkaller.appspot.com/x/.config?x=acdb62bf488a8fe5
+dashboard link: https://syzkaller.appspot.com/bug?extid=adec8406ad17413d4c06
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11bf8bcec80000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=153d4f75c80000
+
+If the result looks correct, please mark the issue as fixed by replying with:
+
+#syz fix: iov: improve copy_iovec_from_user() code generation
+
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
