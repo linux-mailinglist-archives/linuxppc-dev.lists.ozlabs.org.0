@@ -1,49 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E16A76B1F5
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Aug 2023 12:35:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20CC476B1FE
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Aug 2023 12:36:32 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=Us+lwVnb;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=HuQzMwky;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RFWhs3qMPz3cPk
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Aug 2023 20:35:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RFWk60GDFz2ykT
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Aug 2023 20:36:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=Us+lwVnb;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=HuQzMwky;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=lunn.ch (client-ip=156.67.10.101; helo=vps0.lunn.ch; envelope-from=andrew@lunn.ch; receiver=lists.ozlabs.org)
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::224; helo=relay4-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::224])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RFWh034l8z2yVL
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Aug 2023 20:34:37 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=F1Sz0ae4nr5z1N2NijC/jAEv5RJWJxIOfwa338xwclg=; b=Us+lwVnb/LgpA8dbty/0XeNHRu
-	/ZsdCPMPAMMyQgY18YVJaUmBz7DBcJxUJTvhONLvkm4MAPTiIViAvrWQtQqe2/PYnchcoYAwcun13
-	e0pxg36/GxLW7aMHGLvodGw2bLi+2F8kz/OozrgCcY7CG2e1Uag0KBAexqau2le6y10s=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1qQmhr-002nBv-2P; Tue, 01 Aug 2023 12:34:23 +0200
-Date: Tue, 1 Aug 2023 12:34:23 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Herve Codina <herve.codina@bootlin.com>
-Subject: Re: [PATCH v2 00/28] Add support for QMC HDLC, framer infrastruture
- and PEF2256 framer
-Message-ID: <4eef1cf6-ace4-417f-a0ba-ec13331c8eaf@lunn.ch>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RFWjB5FP6z2yVL
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Aug 2023 20:35:41 +1000 (AEST)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 3B8CDE0003;
+	Tue,  1 Aug 2023 10:35:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1690886135;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+SvrVZjf5OnwSU9GuipBXCgEg/NuLuQSUax9kncJoss=;
+	b=HuQzMwkymqd89YQoEOX2hMmEco1BS/rW1obWm9cNvo095SSLNpGDkjCz4UJ3BLDfoE9k4R
+	zp6KVAzYGP/2qHBCb4o10LhoepouFfTms8w662mMV28RDhnCwvJmkHWYJ9BenFcSakmPvx
+	FIb1TDkkeh6zFUNFCbsBC0CtVvmjR4CV9TWZG0vX63qv7Ohi+d/V747j0aBktlrPD1SEOh
+	UNofMfWXUwklIq9B+lA9UP0VitUrBr6kYB1ARn1gptVhxnGSAoqPaz+5E2ELot8RfdcQ5/
+	wnDuKt6RwwmpUwi1m19cZlmAcWrcpgYWun/8LKtFIdE4GE6cXVlVpF3MRMr2wg==
+Date: Tue, 1 Aug 2023 12:35:30 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Subject: Re: [PATCH v2 21/28] dt-bindings: net: Add the Lantiq PEF2256
+ E1/T1/J1 framer
+Message-ID: <20230801123530.3f92f5da@bootlin.com>
+In-Reply-To: <1f5fbf0a-90fe-491a-91c6-31fefd4b786f@lunn.ch>
 References: <20230726150225.483464-1-herve.codina@bootlin.com>
+	<20230726150225.483464-22-herve.codina@bootlin.com>
+	<1f5fbf0a-90fe-491a-91c6-31fefd4b786f@lunn.ch>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230726150225.483464-1-herve.codina@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,30 +66,33 @@ Cc: alsa-devel@alsa-project.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> The generic framer has:
->  - 2 consumers (QMC HDLC drv and codec)
->  - 1 provider (PEF2256)
+On Tue, 1 Aug 2023 12:05:07 +0200
+Andrew Lunn <andrew@lunn.ch> wrote:
+
+> > +  clocks:
+> > +    items:
+> > +      - description: Master clock
+> > +      - description: Receive System Clock
+> > +      - description: Transmit System Clock
+> > +
+> > +  clock-names:
+> > +    items:
+> > +      - const: mclk
+> > +      - const: sclkr
+> > +      - const: sclkx  
 > 
-> So, the design is the following:
->                         +------------------+           +---------+
->                         | QMC              | <- TDM -> | PEF2256 | <-> E1
->      +---------+        |  +-------------+ |           |         |
->      | CPU DAI | <-data--> | QMC channel | |           |         |
->      +---------+        |  +-------------+ |           |         |
-> +--------------+        |  +-------------+ |           |         |
-> | QMC HDLC drv | <-data--> | QMC channel | |           |         |
-> +--------------+        |  +-------------+ |           |         |
->      ^                  +------------------+           |         |
->      |   +--------+     +-------------+                |         |
->      +-> | framer | <-> | PEF2256 drv | <- local bus ->|         |
->          |        |     |             |                +---------+
->      +-> |        |     |             |
->      |   +--------+     |  +-------+  |
->      +-------------------> | codec |  |
->                         |  +-------+  |
->                         +-------------+
+> Nit pick, but "Receive System Clock", but "sclkr'. Maybe "System Clock
+> Receive" so you have the same word order?
+> 
 
-Thanks for adding the framer framework. I did not look into all the
-details, but the basic design looks good.
+Will also change the 'Transmit System Clock' to 'System Clock Transmit'
 
-	 Andrew
+Regards,
+Hervé
+
+
+
+-- 
+Hervé Codina, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
