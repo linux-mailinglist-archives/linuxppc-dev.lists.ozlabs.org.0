@@ -2,56 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2536B76A4CD
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Aug 2023 01:23:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AE5E76A62D
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Aug 2023 03:19:08 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=W1MEZXbM;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=H1zTaKsR;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RFDnb0dZsz3bW4
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Aug 2023 09:23:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RFHLx6qTFz3bhc
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Aug 2023 11:19:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=W1MEZXbM;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=H1zTaKsR;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=lists.ozlabs.org)
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=bgray@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RFDmX5lLCz2ytK
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Aug 2023 09:22:36 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=0VwbE9w1enjcPt7/IUT5th5f1ZIeAHMgI/cQbU9ZQ2A=; b=W1MEZXbMSYUAoRpiX2J1gLUs6J
-	QNI3LZBl83MsiVfSkFwwVlVnz2w0CjvDmoqTdQ8gv+SYMSY2r0HtouhhUB5uUd+LbZmAPgaiaUlmS
-	qdipmFFr0Fl+4bPXWd4UhqXWIVGZCOf3ciB+VlGAJfo5GzvNp3rD3yDx66pCe1iWS42hN31arU9sa
-	IiveAdR1+sND6wubHmrrJpaPk4dF3Dr3DfIv01LVVDOX/64l05bpRsU+oOai73TB5NyG9wjVzoLyD
-	Z2lRPFbkS7szaMiGpw9aktwsF7+uOWMEn0cLp1cv6Jb49B1tHCwiPsSAfrVHqSNiea89JcJ+8JHFI
-	ZoPiTwJw==;
-Received: from [2601:1c2:980:9ec0::2764]
-	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1qQcDK-00HZ0e-1R;
-	Mon, 31 Jul 2023 23:22:10 +0000
-Message-ID: <fb977502-ec9b-c847-6b9c-049bd226f4b1@infradead.org>
-Date: Mon, 31 Jul 2023 16:22:09 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RFHL32xQbz2ypx
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Aug 2023 11:18:19 +1000 (AEST)
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3711GLjF024338
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 1 Aug 2023 01:18:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=lGQavIBkbsScTWDmJq0gmISAykaCFNN7x8Ub3hkylAs=;
+ b=H1zTaKsRiHTaIYee3Ly+hdgp9HlUqsiVR8FJ0WJvQe55CXUd0JE/mya+IDKB1Zqk/K/B
+ wEH1JkxXJG9B6/f/fwGOH/6VHKmMnmti1zKdFyw+YRtclNKFJXFaihAjOqqelsQLOlQV
+ r/GdKJreFAhXy20MhtyGj3Ha3kUjg01K5gRxkEKhw/50R8HStR7BtxsJy8JbbrNWMcdu
+ HvVgtPZUI5dQUTx01EjTWbyl69k9hzLsDOxUIbFN64sOlgiAZ/9dqJKo4hQAZ/XMcQPX
+ Joc5qrICqqWYzd19HkyEbnm78yao42IxEjwx+S1oPNnLxFyOlHuy3hSAYzOmAKxSaS/c 6w== 
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s6qw30p0w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Aug 2023 01:18:15 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36VNtVLR017157
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 1 Aug 2023 01:18:14 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3s5fajfag0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Aug 2023 01:18:14 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3711IC4h44565162
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 1 Aug 2023 01:18:12 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 533A92004B
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Aug 2023 01:18:12 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C7D9020040
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Aug 2023 01:18:11 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Aug 2023 01:18:11 +0000 (GMT)
+Received: from bgray-lenovo-p15.ibmuc.com (unknown [9.43.205.212])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id C0E7760460;
+	Tue,  1 Aug 2023 11:18:04 +1000 (AEST)
+From: Benjamin Gray <bgray@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 0/7] Rework perf and ptrace watchpoint tracking
+Date: Tue,  1 Aug 2023 11:17:37 +1000
+Message-ID: <20230801011744.153973-1-bgray@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] fbdev/ps3fb: Build without kernel device
-Content-Language: en-US
-To: Thomas Zimmermann <tzimmermann@suse.de>, deller@gmx.de,
- mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
- sam@ravnborg.org, javierm@redhat.com, bagasdotme@gmail.com,
- rd.dunlab@gmail.com, regressions@leemhuis.info, sfr@canb.auug.org.au
-References: <20230731175535.11345-1-tzimmermann@suse.de>
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20230731175535.11345-1-tzimmermann@suse.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: bKkTb13J2WLdvX8S7jLfaeTSw0jJoRjm
+X-Proofpoint-ORIG-GUID: bKkTb13J2WLdvX8S7jLfaeTSw0jJoRjm
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-31_18,2023-07-31_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ malwarescore=0 spamscore=0 mlxscore=0 impostorscore=0 bulkscore=0
+ mlxlogscore=911 phishscore=0 priorityscore=1501 clxscore=1015 adultscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308010008
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,76 +91,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, regressions@lists.linux.dev, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-next@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Benjamin Gray <bgray@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Syzkaller triggered a null pointer dereference in the
+arch_unregister_hw_breakpoint() hook. This is due to accessing
+the bp->ctx->task field changing to -1 while we iterate the breakpoints.
 
+This series refactors the breakpoint tracking logic to remove the
+dependency on bp->ctx entirely. It also simplifies handling of ptrace and
+perf breakpoints, making insertion less restrictive. 
 
-On 7/31/23 10:55, Thomas Zimmermann wrote:
-> Use fb_info() to print status message at the end of the probe function,
-> which avoids decoding the devices. fb_info() works with or without an
-> fbdev kernel device. Fixes the following error:
-> 
-> ../drivers/video/fbdev/ps3fb.c: In function 'ps3fb_probe':
-> ../drivers/video/fbdev/ps3fb.c:1172:40: error: 'struct fb_info' has no member named 'dev'
->  1172 |                  dev_driver_string(info->dev), dev_name(info->dev),
->       |                                        ^~
-> ../include/linux/dev_printk.h:110:37: note: in definition of macro 'dev_printk_index_wrap'
->   110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
->       |                                     ^~~~~~~~~~~
-> ../drivers/video/fbdev/ps3fb.c:1171:9: note: in expansion of macro 'dev_info'
->  1171 |         dev_info(info->device, "%s %s, using %u KiB of video memory\n",
->       |         ^~~~~~~~
-> ../drivers/video/fbdev/ps3fb.c:1172:61: error: 'struct fb_info' has no member named 'dev'
->  1172 |                  dev_driver_string(info->dev), dev_name(info->dev),
->       |                                                             ^~
-> ../include/linux/dev_printk.h:110:37: note: in definition of macro 'dev_printk_index_wrap'
->   110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
->       |                                     ^~~~~~~~~~~
-> ../drivers/video/fbdev/ps3fb.c:1171:9: note: in expansion of macro 'dev_info'
->  1171 |         dev_info(info->device, "%s %s, using %u KiB of video memory\n",
->       |         ^~~~~~~~
-> 
-> Reported-by: Randy Dunlap <rdunlap@infradead.org>
-> Closes: https://lore.kernel.org/lkml/ccc63065-2976-88ef-1211-731330bf2866@infradead.org/
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Fixes: 701d2054fa31 ("fbdev: Make support for userspace interfaces configurable")
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Sam Ravnborg <sam@ravnborg.org>
-> Cc: Helge Deller <deller@gmx.de>
-> Cc: Javier Martinez Canillas <javierm@redhat.com>
-> Cc: Randy Dunlap <rdunlap@infradead.org>
-> Cc: Bagas Sanjaya <bagasdotme@gmail.com>
-> Cc: Thorsten Leemhuis <regressions@leemhuis.info>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: linux-fbdev@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
+If merged, it allows several arch hooks that PowerPC was the sole user of
+to be removed.
 
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
+Benjamin Gray (7):
+  powerpc/watchpoints: Explain thread_change_pc() more
+  powerpc/watchpoints: Don't track info persistently
+  powerpc/watchpoints: Track perf single step directly on the breakpoint
+  powerpc/watchpoints: Simplify watchpoint reinsertion
+  powerpc/watchpoints: Remove ptrace/perf exclusion tracking
+  selftests/powerpc/ptrace: Update ptrace-perf watchpoint selftest
+  perf/hw_breakpoint: Remove arch breakpoint hooks
 
-Thanks.
-
-> ---
->  drivers/video/fbdev/ps3fb.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/drivers/video/fbdev/ps3fb.c b/drivers/video/fbdev/ps3fb.c
-> index 5aedc30c5f7e..64d291d6b153 100644
-> --- a/drivers/video/fbdev/ps3fb.c
-> +++ b/drivers/video/fbdev/ps3fb.c
-> @@ -1168,9 +1168,7 @@ static int ps3fb_probe(struct ps3_system_bus_device *dev)
->  
->  	ps3_system_bus_set_drvdata(dev, info);
->  
-> -	dev_info(info->device, "%s %s, using %u KiB of video memory\n",
-> -		 dev_driver_string(info->dev), dev_name(info->dev),
-> -		 info->fix.smem_len >> 10);
-> +	fb_info(info, "using %u KiB of video memory\n", info->fix.smem_len >> 10);
->  
->  	task = kthread_run(ps3fbd, info, DEVICE_NAME);
->  	if (IS_ERR(task)) {
+ arch/powerpc/include/asm/hw_breakpoint.h      |    1 +
+ arch/powerpc/include/asm/processor.h          |    5 -
+ arch/powerpc/kernel/hw_breakpoint.c           |  388 +-----
+ include/linux/hw_breakpoint.h                 |    3 -
+ kernel/events/hw_breakpoint.c                 |   28 -
+ .../testing/selftests/powerpc/ptrace/Makefile |    1 +
+ .../powerpc/ptrace/ptrace-perf-asm.S          |   33 +
+ .../powerpc/ptrace/ptrace-perf-hwbreak.c      | 1104 +++++++----------
+ 8 files changed, 537 insertions(+), 1026 deletions(-)
+ create mode 100644 tools/testing/selftests/powerpc/ptrace/ptrace-perf-asm.S
+ rewrite tools/testing/selftests/powerpc/ptrace/ptrace-perf-hwbreak.c (93%)
 
 -- 
-~Randy
+2.41.0
