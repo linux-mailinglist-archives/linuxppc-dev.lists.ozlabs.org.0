@@ -1,50 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20CC476B1FE
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Aug 2023 12:36:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D693C76B21A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Aug 2023 12:45:00 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=HuQzMwky;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=ZDFUSJCb;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RFWk60GDFz2ykT
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Aug 2023 20:36:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RFWvt5Xjqz3bT8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Aug 2023 20:44:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=HuQzMwky;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=ZDFUSJCb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::224; helo=relay4-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::224])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::226; helo=relay6-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RFWjB5FP6z2yVL
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Aug 2023 20:35:41 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 3B8CDE0003;
-	Tue,  1 Aug 2023 10:35:31 +0000 (UTC)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RFWtz5Z2mz2yDH
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Aug 2023 20:44:10 +1000 (AEST)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id EC711C000B;
+	Tue,  1 Aug 2023 10:44:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1690886135;
+	t=1690886645;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+SvrVZjf5OnwSU9GuipBXCgEg/NuLuQSUax9kncJoss=;
-	b=HuQzMwkymqd89YQoEOX2hMmEco1BS/rW1obWm9cNvo095SSLNpGDkjCz4UJ3BLDfoE9k4R
-	zp6KVAzYGP/2qHBCb4o10LhoepouFfTms8w662mMV28RDhnCwvJmkHWYJ9BenFcSakmPvx
-	FIb1TDkkeh6zFUNFCbsBC0CtVvmjR4CV9TWZG0vX63qv7Ohi+d/V747j0aBktlrPD1SEOh
-	UNofMfWXUwklIq9B+lA9UP0VitUrBr6kYB1ARn1gptVhxnGSAoqPaz+5E2ELot8RfdcQ5/
-	wnDuKt6RwwmpUwi1m19cZlmAcWrcpgYWun/8LKtFIdE4GE6cXVlVpF3MRMr2wg==
-Date: Tue, 1 Aug 2023 12:35:30 +0200
+	bh=oEKysH7Y2t6RfT3AfGBp54HWpVEF5LkKbUS/QMB1QqY=;
+	b=ZDFUSJCbj6fA75RKgaU5KyPEubtFY3VzZOU8PdM1aCEbn6YSr+BqKTYpbhrc46wMcH0s0L
+	xbOm3AV2jxN5pU9+f/y8A9D3ioPgJhEd+sVK5My40QUl79HhUIbpj8Z6FNyH6QoT4nLscV
+	NdL3KC+I6mGLCCwmwgWymKieJnjUTwOHTLIXhRkwbL6P451XEVX4DF5rLwP5jH755aRr5A
+	FyunbjnU1zJ4gkeAKrjHmbUWqnP/x6TUa+mZakYm+Nj1ODX7z5jLVFZXmNjXbfvfW8mk1Z
+	CpC9vyGyEVAFqeoF0/BJLsYkRWxGBKUslX0/qHv6q48CI5T1qUFNPHFyVl0vlQ==
+Date: Tue, 1 Aug 2023 12:44:01 +0200
 From: Herve Codina <herve.codina@bootlin.com>
 To: Andrew Lunn <andrew@lunn.ch>
-Subject: Re: [PATCH v2 21/28] dt-bindings: net: Add the Lantiq PEF2256
- E1/T1/J1 framer
-Message-ID: <20230801123530.3f92f5da@bootlin.com>
-In-Reply-To: <1f5fbf0a-90fe-491a-91c6-31fefd4b786f@lunn.ch>
+Subject: Re: [PATCH v2 23/28] net: wan: framer: Add support for the Lantiq
+ PEF2256 framer
+Message-ID: <20230801124401.3883d16c@bootlin.com>
+In-Reply-To: <4adae593-c428-4910-882e-7247727cf501@lunn.ch>
 References: <20230726150225.483464-1-herve.codina@bootlin.com>
-	<20230726150225.483464-22-herve.codina@bootlin.com>
-	<1f5fbf0a-90fe-491a-91c6-31fefd4b786f@lunn.ch>
+	<20230726150225.483464-24-herve.codina@bootlin.com>
+	<4adae593-c428-4910-882e-7247727cf501@lunn.ch>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
@@ -66,30 +66,45 @@ Cc: alsa-devel@alsa-project.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 1 Aug 2023 12:05:07 +0200
+On Tue, 1 Aug 2023 12:22:39 +0200
 Andrew Lunn <andrew@lunn.ch> wrote:
 
-> > +  clocks:
-> > +    items:
-> > +      - description: Master clock
-> > +      - description: Receive System Clock
-> > +      - description: Transmit System Clock
+> > +static inline u8 pef2256_read8(struct pef2256 *pef2256, int offset)
+> > +{
+> > +	int val;
 > > +
-> > +  clock-names:
-> > +    items:
-> > +      - const: mclk
-> > +      - const: sclkr
-> > +      - const: sclkx  
+> > +	regmap_read(pef2256->regmap, offset, &val);
+> > +	return val;
+> > +}
+> > +
+> > +static inline void pef2256_write8(struct pef2256 *pef2256, int offset, u8 val)
+> > +{
+> > +	regmap_write(pef2256->regmap, offset, val);
+> > +}  
 > 
-> Nit pick, but "Receive System Clock", but "sclkr'. Maybe "System Clock
-> Receive" so you have the same word order?
-> 
+> More cases of inline functions in .C files. Please let the compiler
+> decide.
 
-Will also change the 'Transmit System Clock' to 'System Clock Transmit'
+Will be changed.
+
+> 
+> > +static void pef2256_isr_default_handler(struct pef2256 *pef2256, u8 nbr, u8 isr)
+> > +{
+> > +	dev_warn(pef2256->dev, "ISR%u: 0x%02x not handled\n", nbr, isr);
+> > +}  
+> 
+> Should this be rate limited? It is going to be very noise if it gets
+> called once per frame time.
+
+This function should not be called.
+It is wired on some interrupts and these interrupts should not be triggered.
+It they fired, something was wrong.
+
+I would prefer to keep this dev_warn() to keep the user informed about the
+problem.
 
 Regards,
 Hervé
-
 
 
 -- 
