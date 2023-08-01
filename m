@@ -1,69 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1303676B704
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Aug 2023 16:16:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1526176BCDD
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Aug 2023 20:46:20 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=q9RCquid;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MCgeSAtx;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RFcbk6ykTz30PJ
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Aug 2023 00:16:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RFkbG03y6z3c1l
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Aug 2023 04:46:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=q9RCquid;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MCgeSAtx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::52e; helo=mail-ed1-x52e.google.com; envelope-from=daniel.baluta@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=vkoul@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RFcZp4Hxvz2ygX
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Aug 2023 00:15:28 +1000 (AEST)
-Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-51e28cac164so14365863a12.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Aug 2023 07:15:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690899324; x=1691504124;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=o5wcObMxzRxgJ/VGkUZYGz4Wsi7oqPu6vEBYDrbZUZY=;
-        b=q9RCquidQw67B2U7NV0lUR3RLSgvUdXx4mxan8WfH2/O9eZwsXL0bb1PGVAvYsxwnp
-         06M0pK1KK8u8zta9fnO88ZYgHMAO7KGAxVIrcdaHAEVSyWv0qiywWjMKoBH6w3jOCIEr
-         WK2NVGFvFF5rQGSPakaNAHtu60j0MPF4TbUvVPOwTPZ4cQMeYni54zHK6GKbWETrEuAm
-         i+FGO/azI+j2M6O6eyNx2KH8lZblsHQWg7zAyqy8Q/Df7OR9+9+IDohM3w2ml6RMZsyD
-         liKDKUJgQQoTkbo/+tDmoAhDISUOswqX96AemW3CV8vny1Le1XQT2CdNRhzzYtaawU06
-         AmNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690899324; x=1691504124;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=o5wcObMxzRxgJ/VGkUZYGz4Wsi7oqPu6vEBYDrbZUZY=;
-        b=XNYB0iTUvoiJyoFJ4+qh90L+6FGhLZyj4qNyQnPY/5EPHajsHNIm1VT7kxAwXNDdkt
-         wJoV7ddpbuyl14NJr2OURWyvUCKk6XsEpUpICgu4X46ZNFY+ekUZKFhbCSMg/rOf9RjO
-         mTbP1wD5c6JGqEoILZ3Vbyv55xNjPhqh0PdG9BT1RGrXSuXv3/bdW/K2+zVZU0zxFMrA
-         t5Jy7t7jVFbIZKrCtxb4eIC9S2cuU6oVb0PQrqJGBjU6MohOUn+YPNEp/inE3S/A4Ggp
-         GG1MuqlGe2YiCRxAF/wTs4kFAbLwhQgxU427QdGnpusU682Dh5G8d8VFB6wRC3v4wYGu
-         HL1A==
-X-Gm-Message-State: ABy/qLboBxiRDqdmLknNuvLBF31Q5ik3GOnIV00bC8YyAxPmA5RreJnP
-	Hl4wRIT6lERCWtSV2/NdFLGhrk6RpubQ1e8i8CA=
-X-Google-Smtp-Source: APBJJlEiW7hEWKS0AOx5RN387hGF4qaTWWByX/+/lv6OzQgkUgUaVOdvPTiZdaS48r4jh/JdMc5HjLdpR7IqvxcQCu8=
-X-Received: by 2002:a05:6402:517a:b0:522:582c:f427 with SMTP id
- d26-20020a056402517a00b00522582cf427mr3659632ede.14.1690899324010; Tue, 01
- Aug 2023 07:15:24 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RFkZJ4BQbz2ytT
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Aug 2023 04:45:28 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 1453D61691;
+	Tue,  1 Aug 2023 18:45:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E760C433C7;
+	Tue,  1 Aug 2023 18:45:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1690915524;
+	bh=6ecqCthtX5y6DW+x8fFvSPeJvMEWUDYrHhQnKo4fw2g=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=MCgeSAtxkn/Cm+2KX+Cy2ya7BIdT7/jl+ViyqC9GLpRguZ1quqlduJY201e9YY+Gl
+	 tPuWVXKidBwoQEQOGw9dB+OvKt+xnFrB0j54IxicMem/IXJTfyVWG62tXO8z1Oidqn
+	 2NOA3Pu3s2NQonYg8bgH4gYg1I3ajHJTZ18017Ae5m9Oa4tGlZ1fXI3lCOlefo7d8y
+	 ThVJ77i4Sa8SZrf7DUrw4H3M9A25o0ZXrQMqesV5j/lH8f2SyyTLSeFXCYClgzdAqC
+	 onCUY8LhZGFKLCVVvkTKYf+Ki+4WGuZFHhFEKqNomiwiYDAlugFGuYkdZfhNjJFDS6
+	 h8ARfo4bV8Srw==
+From: Vinod Koul <vkoul@kernel.org>
+To: Hector Martin <marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>, 
+ Alyssa Rosenzweig <alyssa@rosenzweig.io>, 
+ Ludovic Desroches <ludovic.desroches@microchip.com>, 
+ Tudor Ambarus <tudor.ambarus@linaro.org>, 
+ Paul Cercueil <paul@crapouillou.net>, 
+ Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>, 
+ Viresh Kumar <vireshk@kernel.org>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Li Yang <leoyang.li@nxp.com>, Zhang Wei <zw@zh-kernel.org>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>, 
+ Vladimir Zapolskiy <vz@mleia.com>, Sean Wang <sean.wang@mediatek.com>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ =?utf-8?q?Andreas_F=C3=A4rber?= <afaerber@suse.de>, 
+ Manivannan Sadhasivam <mani@kernel.org>, Sinan Kaya <okaya@kernel.org>, 
+ Andy Gross <agross@ker>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Orson Zhai <orsonzhai@gmail.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Chunyan Zhang <zhang.lyra@gmail.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Samuel Holland <samuel@sholland.org>, 
+ Laxman Dewangan <ldewangan@nvidia.com>, Jon Hunter <jonathanh@nvidia.com>, 
+ Thierry Reding <thierry.reding@gmail.com>, 
+ Peter Ujfalusi <peter.ujfalusi@gmail.com>, 
+ Michal Simek <michal.simek@amd.com>, Rob Herring <robh@kernel.org>
+In-Reply-To: <20230718143138.1066177-1-robh@kernel.org>
+References: <20230718143138.1066177-1-robh@kernel.org>
+Subject: Re: [PATCH v2] dmaengine: Explicitly include correct DT includes
+Message-Id: <169091550886.69468.9371544048617721749.b4-ty@kernel.org>
+Date: Wed, 02 Aug 2023 00:15:08 +0530
 MIME-Version: 1.0
-References: <1690265540-25999-1-git-send-email-shengjiu.wang@nxp.com> <1690265540-25999-6-git-send-email-shengjiu.wang@nxp.com>
-In-Reply-To: <1690265540-25999-6-git-send-email-shengjiu.wang@nxp.com>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Tue, 1 Aug 2023 17:15:12 +0300
-Message-ID: <CAEnQRZBAde4t5V2HCvCQfVwVYaQPhzJ-t3hzePjueyTONEim=w@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 5/7] media: imx: fsl_asrc: Add memory to memory driver
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,53 +90,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nicoleotsuka@gmail.com, alsa-devel@alsa-project.org, lgirdwood@gmail.com, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, tiwai@suse.com, linux-media@vger.kernel.org, tfiga@chromium.org, hverkuil@xs4all.nl, linuxppc-dev@lists.ozlabs.org, broonie@kernel.org, sakari.ailus@iki.fi, festevam@gmail.com, perex@perex.cz, mchehab@kernel.org, shengjiu.wang@gmail.com, m.szyprowski@samsung.com
+Cc: devicetree@vger.kernel.org, linux-tegra@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-actions@lists.infradead.org, linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, linux-sunxi@lists.linux.dev, linux-mediatek@lists.infradead.org, asahi@lists.linux.dev, dmaengine@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 25, 2023 at 10:31=E2=80=AFAM Shengjiu Wang <shengjiu.wang@nxp.c=
-om> wrote:
->
-> Implement the ASRC memory to memory function using
-> the v4l2 framework, user can use this function with
-> v4l2 ioctl interface.
->
-> User send the output and capture buffer to driver and
-> driver store the converted data to the capture buffer.
->
-> This feature can be shared by ASRC and EASRC drivers
->
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> ---
->  drivers/media/platform/nxp/Kconfig        |  12 +
->  drivers/media/platform/nxp/Makefile       |   1 +
->  drivers/media/platform/nxp/fsl_asrc_m2m.c | 962 ++++++++++++++++++++++
->  include/sound/fsl_asrc_common.h           |   9 +
->  4 files changed, 984 insertions(+)
->  create mode 100644 drivers/media/platform/nxp/fsl_asrc_m2m.c
->
-> diff --git a/drivers/media/platform/nxp/Kconfig b/drivers/media/platform/=
-nxp/Kconfig
-> index a0ca6b297fb8..359f11fe2a80 100644
-> --- a/drivers/media/platform/nxp/Kconfig
-> +++ b/drivers/media/platform/nxp/Kconfig
-> @@ -56,3 +56,15 @@ config VIDEO_MX2_EMMAPRP
->
->  source "drivers/media/platform/nxp/dw100/Kconfig"
->  source "drivers/media/platform/nxp/imx-jpeg/Kconfig"
-> +
-> +config VIDEO_FSL_ASRC_M2M
-> +       tristate "MXP i.MX ASRC M2M support"
 
-s/MXP/NXP
+On Tue, 18 Jul 2023 08:31:35 -0600, Rob Herring wrote:
+> The DT of_device.h and of_platform.h date back to the separate
+> of_platform_bus_type before it as merged into the regular platform bus.
+> As part of that merge prepping Arm DT support 13 years ago, they
+> "temporarily" include each other. They also include platform_device.h
+> and of.h. As a result, there's a pretty much random mix of those include
+> files used throughout the tree. In order to detangle these headers and
+> replace the implicit includes with struct declarations, users need to
+> explicitly include the correct includes.
+> 
+> [...]
+
+Applied, thanks!
+
+[1/1] dmaengine: Explicitly include correct DT includes
+      commit: 897500c7ea91702966adb9b412fa39400b4edee6
+
+Best regards,
+-- 
+~Vinod
 
 
-> +       depends on V4L_MEM2MEM_DRIVERS
-> +       depends on MEDIA_SUPPORT
-> +       select VIDEOBUF2_DMA_CONTIG
-> +       select V4L2_MEM2MEM_DEV
-> +       help
-> +           Say Y if you want to add ASRC M2M support for NXP CPUs.
-> +           It is a completement for ASRC M2P and ASRC P2M features.
-
-Complement for?
