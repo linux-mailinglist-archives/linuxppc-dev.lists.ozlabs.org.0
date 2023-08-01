@@ -1,49 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E56176ADBE
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Aug 2023 11:32:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5AD576ADED
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Aug 2023 11:34:38 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=Ldkgc0vk;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=cpjULsYI;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RFVJW08qdz3bcL
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Aug 2023 19:32:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RFVLh5Whdz3c8n
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Aug 2023 19:34:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=Ldkgc0vk;
+	dkim=pass (1024-bit key; unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=cpjULsYI;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=lunn.ch (client-ip=156.67.10.101; helo=vps0.lunn.ch; envelope-from=andrew@lunn.ch; receiver=lists.ozlabs.org)
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RFVHc547bz2xq6
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Aug 2023 19:31:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RFVKs3w6Xz2xdq
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Aug 2023 19:33:53 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=rtEWlJyO83/pdRflVwgnsb07PGLvZQOy27saQA+Hr3Y=; b=Ldkgc0vkfzNJfbj4Ae6A1Lxn45
-	hIKCC9qlfiJcd7HdXnHDWNyEUYK7FXjn9AFTjBXOhA01G0WBSTnrJ2ejRDaS5mvYZswMeYBBOgG9k
-	aivgKHvD11VsSiSZXVcq2doyLqiOELy6bQ4QobsPf4vSjX3WlJtDZKVpYNO/m6pwos0E=;
+	bh=SNYkC/g1c+YfS8ZTo9JQVhuDkdGL5+kyeQ/yUz57+AY=; b=cpjULsYII+lR9kpuqlTcGQ64zN
+	YSf+oKkf8S3cxbtVU6PG3VprE3zGNQKRdFk4YRWAlLpSUWcI89OGnauzXWhFks7zwwPc6AgNlmSAM
+	XSkvQCdoANl7AS3AScQk7zhRMqAUCtHM+WmJjXGc08EE+CSOX31TtFFEZBL4KJbm/B6E=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1qQlj2-002mea-Vy; Tue, 01 Aug 2023 11:31:32 +0200
-Date: Tue, 1 Aug 2023 11:31:32 +0200
+	id 1qQll5-002mfV-Ob; Tue, 01 Aug 2023 11:33:39 +0200
+Date: Tue, 1 Aug 2023 11:33:39 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: Herve Codina <herve.codina@bootlin.com>
-Subject: Re: [PATCH v2 06/28] net: wan: Add support for QMC HDLC
-Message-ID: <80341a96-c40f-4a45-9bad-359a890edfc4@lunn.ch>
+Subject: Re: [PATCH v2 08/28] soc: fsl: cpm1: qmc: Introduce available
+ timeslots masks
+Message-ID: <dd34fa03-0b34-44a4-9e70-9d9a69f95403@lunn.ch>
 References: <20230726150225.483464-1-herve.codina@bootlin.com>
- <20230726150225.483464-7-herve.codina@bootlin.com>
+ <20230726150225.483464-9-herve.codina@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230726150225.483464-7-herve.codina@bootlin.com>
+In-Reply-To: <20230726150225.483464-9-herve.codina@bootlin.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,10 +60,34 @@ Cc: alsa-devel@alsa-project.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> +static inline struct qmc_hdlc *netdev_to_qmc_hdlc(struct net_device *netdev)
-> +{
-> +	return (struct qmc_hdlc *)dev_to_hdlc(netdev)->priv;
+On Wed, Jul 26, 2023 at 05:02:04PM +0200, Herve Codina wrote:
+> Available timeslots masks define timeslots available for the related
+> channel. These timeslots are defined by the QMC binding.
+> 
+> Timeslots used are initialized to available timeslots but can be a
+> subset of available timeslots.
+> This prepares the dynamic timeslots management (ie. changing timeslots
+> at runtime).
+> 
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> ---
+>  drivers/soc/fsl/qe/qmc.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/soc/fsl/qe/qmc.c b/drivers/soc/fsl/qe/qmc.c
+> index 2d2a9d88ba6c..21ad7e79e7bd 100644
+> --- a/drivers/soc/fsl/qe/qmc.c
+> +++ b/drivers/soc/fsl/qe/qmc.c
+> @@ -177,7 +177,9 @@ struct qmc_chan {
+>  	struct qmc *qmc;
+>  	void __iomem *s_param;
+>  	enum qmc_mode mode;
+> +	u64	tx_ts_mask_avail;
+>  	u64	tx_ts_mask;
+> +	u64	rx_ts_mask_avail;
+>  	u64	rx_ts_mask;
 
-priv is a void *, so you don't need the cast.
+Is this for E1? So there is a maximum of 32 slots? A u32 would be
+sufficient i think?
 
-     Andrew
+	   Andrew
