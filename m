@@ -1,59 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9C1076D555
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Aug 2023 19:30:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD11376D59C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Aug 2023 19:38:59 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=W/pqFquu;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=FdGjw6HX;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RGJsm59B3z3cGw
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Aug 2023 03:30:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RGK355D68z3cMZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Aug 2023 03:38:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=W/pqFquu;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=FdGjw6HX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::62a; helo=mail-ej1-x62a.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RGJrw4BFtz2yDL
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Aug 2023 03:30:08 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id A24CA61A5C;
-	Wed,  2 Aug 2023 17:30:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E65E9C433C7;
-	Wed,  2 Aug 2023 17:30:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1690997403;
-	bh=lMe/DIyQCl/IwT6SoQDaroFkWtR5k0frE1KQOMf5qgY=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=W/pqFquuR8uAEpllrJL/SRzWb/wDWLvGIg07eB/VoDNZwQLyHMBOkFecjwRXnxPEh
-	 Ew1bIcw82QYg23XE5WxeXZR0+usfhTH53L7MKRAYSE1fn3UolMGp0ZGDquK+P9ltil
-	 tQkXYOPzgU/Da+NjK8QrhKDINpoStsWi4sa1fpKhatNf5hAUIbLXnLk/3l3OqeVbl+
-	 01SNKtdhTalz61URTZzwtBa1e4L+y+0kciSAsZot94jksU/vts4NBRN+InsEYANXlP
-	 +YUBx/hUQfYM5qZEg2IHDlFqP1Ia9GfQkS1BVQPSpbYAHi//Z8llG1kZ5VLKhBk3ee
-	 L5hlspnV2Im/g==
-From: Mark Brown <broonie@kernel.org>
-To: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
- nicoleotsuka@gmail.com, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
- alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, 
- linux-kernel@vger.kernel.org, Chancel Liu <chancel.liu@nxp.com>
-In-Reply-To: <20230802052117.1293029-1-chancel.liu@nxp.com>
-References: <20230802052117.1293029-1-chancel.liu@nxp.com>
-Subject: Re: [PATCH v2 0/3] Update the register list of MICFIL
-Message-Id: <169099740066.237245.1120990059871983197.b4-ty@kernel.org>
-Date: Wed, 02 Aug 2023 18:30:00 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RGK296btkz2yh3
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Aug 2023 03:38:08 +1000 (AEST)
+Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-99bcd6c0282so13205566b.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Aug 2023 10:38:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1690997882; x=1691602682;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=WyQdxgtNMG4RTFo6glKNGilpjeAOgHu/v44MBJ5lr6g=;
+        b=FdGjw6HXHhZ6+Vw2hxfQAMrStQiiadvB/SsztWB+Hfj84Tz9a8e6TDptPNV8ihiSnl
+         yZIQWFAs0/daQGqP59TJy+VoE7dMwfj3h/DxzVCR8pbqJY9pllhuUbq/kjebn38H5GAv
+         zuFWmAEuAcogVpDQ4n1F3tMwwoQYRfOQzigX0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690997882; x=1691602682;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WyQdxgtNMG4RTFo6glKNGilpjeAOgHu/v44MBJ5lr6g=;
+        b=HEwpHEYmtriFw8wPNoTpNZkEvC8cRMJB7WBPdkSlj3qZrSVLeXidEw7LiwAKC2oN1R
+         iMZCSU8zvLolKsYzLKsAZm9d00BZMNrSK6MOfd8rZbWzQoiZsXL7lo8a7wCcMtnpC2gv
+         WkUcr4cMUKjsVGSdBvsqDCeg2zjRYObMJ10tMQtHS/MujiFxtQRCMfQDEzrMDXp3isU+
+         FvdkzhyxutMKu/kBIiRd9qyLldDGZ6HLwJD1aiV1t3eziJKTn8o8gUnzFC9DOM/wiz/R
+         zk3PK1odsl5A+vAWJFFdL/Osw54TLYv3+qJ3TJdJFCHElezjHCK23OdPw0iO0VkMmj74
+         Haog==
+X-Gm-Message-State: ABy/qLZiIw/KzOkZUoXOS66uOhCrlJ7ecW2B1CsNtHOFnbHTTrIuBHYK
+	zTrZLyNIE9qCbINF/RxG2mFukUsnRsobNg9qBhF3/djE
+X-Google-Smtp-Source: APBJJlEbJfX48jBvstVzCHZMGbBBZfqtdiYoeKp5JMgHLN57w55oIFOw2qhUB2pVasGaqTJfmkK6Lw==
+X-Received: by 2002:a17:907:2cd4:b0:994:54ff:10f6 with SMTP id hg20-20020a1709072cd400b0099454ff10f6mr5369037ejc.30.1690997882177;
+        Wed, 02 Aug 2023 10:38:02 -0700 (PDT)
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com. [209.85.221.54])
+        by smtp.gmail.com with ESMTPSA id q24-20020a17090622d800b0098d2f703408sm9318931eja.118.2023.08.02.10.38.01
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Aug 2023 10:38:01 -0700 (PDT)
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-317744867a6so57928f8f.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Aug 2023 10:38:01 -0700 (PDT)
+X-Received: by 2002:a5d:608c:0:b0:315:9021:6dc3 with SMTP id
+ w12-20020a5d608c000000b0031590216dc3mr4961506wrt.27.1690997880674; Wed, 02
+ Aug 2023 10:38:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-034f2
+References: <20230801-bitwise-v1-1-799bec468dc4@google.com>
+ <CAHk-=wgkC80Ey0Wyi3zHYexUmteeDL3hvZrp=EpMrDccRGmMwA@mail.gmail.com> <20230802161553.GA2108867@dev-arch.thelio-3990X>
+In-Reply-To: <20230802161553.GA2108867@dev-arch.thelio-3990X>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Wed, 2 Aug 2023 10:37:43 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjmWjd+xe88cf14hFGkSK7fYJBSixK8Ym0DLYCa+dTxtg@mail.gmail.com>
+Message-ID: <CAHk-=wjmWjd+xe88cf14hFGkSK7fYJBSixK8Ym0DLYCa+dTxtg@mail.gmail.com>
+Subject: Re: [PATCH] word-at-a-time: use the same return type for has_zero
+ regardless of endianness
+To: Nathan Chancellor <nathan@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Will Deacon <will.deacon@arm.com>, Catalin Marinas <catalin.marinas@arm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,48 +83,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-arch@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, Tom Rix <trix@redhat.com>, llvm@lists.linux.dev, ndesaulniers@google.com, linux-kernel@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 02 Aug 2023 13:21:14 +0800, Chancel Liu wrote:
-> MICFIL IP is upgraded on i.MX93 platform. Add new registers and new bit
-> definition.
-> 
-> changes in v2:
-> - rename check_version to use_verid to make it more explicit
-> - rename fsl_micfil_check_version to fsl_micfil_use_verid
-> 
-> [...]
+On Wed, 2 Aug 2023 at 09:16, Nathan Chancellor <nathan@kernel.org> wrote:
+>
+> We see this warning with ARCH=arm64 defconfig + CONFIG_CPU_BIG_ENDIAN=y.
 
-Applied to
+Oh Christ. I didn't even realize that arm64 allowed a BE config.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+The config option goes back to 2013 - are there actually BE user space
+implementations around?
 
-Thanks!
+People, why do we do that? That's positively crazy. BE is dead and
+should be relegated to legacy platforms. There are no advantages to
+being different just for the sake of being different - any "security
+by obscurity" argument would be far outweighed by the inconvenience to
+actual users.
 
-[1/3] ASoC: fsl_micfil: Add new registers and new bit definition
-      commit: 51d765f79c8d8016df906afd05410f8bc14167ac
-[2/3] ASoC: fsl_micfil: Add fsl_micfil_use_verid function
-      commit: 367365051b06e172c91172e3273eea72988ce8f6
-[3/3] ASoC: fsl_micfil: Use SET_SYSTEM_SLEEP_PM_OPS to simplify PM
-      commit: a38a4090e2c400c6c49c584cda6f28c73c08f5f1
+Yes, yes, I know the aarch64 architecture technically allows BE
+implementations - and apparently you can even do it by exception
+level, which I had to look up. But do any actually exist?
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Does the kernel even work right in BE mode? It's really easy to miss
+some endianness check when all the actual hardware and use is LE, and
+when (for example) instruction encoding and IO is then always LE
+anyway.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+> With both clang 18.0.0 (tip of tree) and GCC 13.1.0, I don't see any
+> actual code generation changes in fs/namei.o with this configuration.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+Ok, since the main legacy platform confirmed that, I'll just apply
+that patch directly.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+I'll also do the powerpc version that Arnd pointed to at the same
+time, since it seems silly to pick these off one at a time. It too
+should just be 'unsigned long', so that the two values can be bitwise
+or'ed together without any questions.
 
-Thanks,
-Mark
-
+              Linus
