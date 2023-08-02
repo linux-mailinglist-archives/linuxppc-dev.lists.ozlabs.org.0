@@ -2,50 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10D0076C4D0
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Aug 2023 07:24:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0152876C4D3
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Aug 2023 07:25:40 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=nJZvsFGA;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=Y57MDaCg;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RG0lz6pstz3cQd
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Aug 2023 15:24:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RG0mx6Nypz30fW
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Aug 2023 15:25:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=nJZvsFGA;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=Y57MDaCg;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f400:fe0c::620; helo=eur04-db3-obe.outbound.protection.outlook.com; envelope-from=chancel.liu@nxp.com; receiver=lists.ozlabs.org)
 Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on0620.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe0c::620])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RG0j62Ny1z2ysB
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RG0j7051Hz2ypx
 	for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Aug 2023 15:22:18 +1000 (AEST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lr3iTa/okHCkIE2vMA+pYXTlOIZqB8pQmwmajiec01O0AJhbWIZ9ns4ac5EqqYR+gECoezxXHlGKD6q+1zy7/1+9FKWf9h68Z1YjzwyRgifNfS2ayY4fwIypzgjzGjFuUx619GgUwHs4sTqGZOH8jxO5PWQWLevshHXl67CnHf7iw6/Z8XhHqcb6MzBEJlKa9bS8Av7bco0G6+RZ02Z8kHN5SclT7OkjeQQNkYWd2YGPcg3ggDatLJoz7IbJJ48HoEpDOXihuHeXl4xwwppB1W16I7YOJlCHmzDJXjESYGeWzMPms4eV83V9FiFSbKu5o5LvHMi7WA77AiSM5cgE/w==
+ b=ZEvkEfeIrqRRMf+lgmufyU7MSKy/tZCVhZ9gKHLA8whycFZPQEItHJ4QXDUwxNHTf6n4eyf79K2bx14OyY1CkY4wWoLYhEcQp68qfPZwOAJVGQqv/04SXkcHnjMIqSqc6SuJfmWYDYaK6eZ56MJS7ovd5UbNhZVv2zq2hgTdPxYDfY0YngPD+KK6a86nYlGSb5hzx1HYP3fzpkM77+/RA144b9hVVK2rKSJugWVK+mcjnguZeVZvQG8yHdbK6g/DshAsFdVHWrYFwyidtD9FW7fd7STBhxypEWFJKAplbRZaE/T3vl3R6UuUWIJdkYb9za5YB5HnSvCk7MOOOCmCAQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ob6zfkfSxdhoM5cBdnx5fCLkmaSmm24sPinlzAYwBQ0=;
- b=fPoK8H654WyNvxu9x0HJDpeG6iNZxJXzOkrMgmAoO3LkbGhgp5Z7ybrP+HjNp7E1JD2nxYuV5La+rH0U8NuCH4WE0giIjPQcc0hEVmeaJ0tRys54E4uzUfEQF0EiabXURYZHovxQAM8g0W2uC7V4+/qm+SAyIz2nXFeIdRlsZuYMfG/xQWg5NgWB6HEcEIgjRpe6zRt9wcNWENFgrEYmlKpaFxp7IsB/nqd3Q+mjdEIcvvlq4SxQWiJFHv2UdyC1ayln9TQ1fNjBLL9ytLwFShhgFHD24oOpEUo0BWy68n/6vLqscC3mZHLCOxPsJLMq3gjUIIH6sKzghslnub3N7w==
+ bh=r4U6lL6p6mHOsHiIMI+EcJ7LZ8ZvA3idq1lCknkhapU=;
+ b=PZEMEB8cMCsA3rAxN3M/GVnUQ+QOH9NOUIVs07zH7OTwRW0fQ4vhLdrxLOc6h3j71meWsTNcqL057OO+1aQMsZAYPK78O8uqM/IHHB7G0dYPPl46hf12iSGo65sIX4JUR7C2bUz+wUOJgJ/c2Uuvci1j8lBuS4zKUvy5MfQcW5oErwMoxTgB0Xq10JnGuQY+VheqNOoNby7zmYqbAtet4fUsNGuWH5Zuz19K1kOFLfGPVD8FUaNGOLf5dKMjTuDqo2izYYFXqLMWCnkV4vwcI1RqPcZRJrlHUBglhcItbyWeIb37GzQ0wrZo4e6aoZyOlWa9TC5HOsWA8aUqNhpo4A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ob6zfkfSxdhoM5cBdnx5fCLkmaSmm24sPinlzAYwBQ0=;
- b=nJZvsFGABbpHMyoyTsRGmivQZsOhg4twQ9+EypITrba8G8nQ4CG1igob+cBXPySKXjiait1ogCNquEEBLmyMMh5YkMUhFGBoAHq02vpPI/sMViqtm6FNmScKVLs+/HSXlZsESefS8hHS8AWMAveYKtvIaBfh20FcgClDlpImqeQ=
+ bh=r4U6lL6p6mHOsHiIMI+EcJ7LZ8ZvA3idq1lCknkhapU=;
+ b=Y57MDaCg1vBHM/h8p04xsIUASlFp6aPZ5UJe0JQe+VqG2TmHdFYLS7hKyn7Eh6PQGE6OSXv7jco7frbhgUKSnUHtaWQWA4A8847hMcbURNQkeM98B9YPXrIiW2dtO2hq2ZuZQrXz32i/Oo1/EFknd6Z2/A5AIl5AGOe2ukNo3f0=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from DB9PR04MB9498.eurprd04.prod.outlook.com (2603:10a6:10:360::21)
  by VI1PR04MB7088.eurprd04.prod.outlook.com (2603:10a6:800:11d::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.45; Wed, 2 Aug
- 2023 05:21:57 +0000
+ 2023 05:22:01 +0000
 Received: from DB9PR04MB9498.eurprd04.prod.outlook.com
  ([fe80::cda8:5cad:29b6:3c96]) by DB9PR04MB9498.eurprd04.prod.outlook.com
  ([fe80::cda8:5cad:29b6:3c96%7]) with mapi id 15.20.6631.045; Wed, 2 Aug 2023
- 05:21:57 +0000
+ 05:22:01 +0000
 From: Chancel Liu <chancel.liu@nxp.com>
 To: shengjiu.wang@gmail.com,
 	Xiubo.Lee@gmail.com,
@@ -58,9 +58,9 @@ To: shengjiu.wang@gmail.com,
 	alsa-devel@alsa-project.org,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/3] ASoC: fsl_micfil: Add fsl_micfil_use_verid function
-Date: Wed,  2 Aug 2023 13:21:16 +0800
-Message-Id: <20230802052117.1293029-3-chancel.liu@nxp.com>
+Subject: [PATCH v2 3/3] ASoC: fsl_micfil: Use SET_SYSTEM_SLEEP_PM_OPS to simplify PM
+Date: Wed,  2 Aug 2023 13:21:17 +0800
+Message-Id: <20230802052117.1293029-4-chancel.liu@nxp.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230802052117.1293029-1-chancel.liu@nxp.com>
 References: <20230802052117.1293029-1-chancel.liu@nxp.com>
@@ -72,50 +72,50 @@ X-ClientProxiedBy: SI1PR02CA0025.apcprd02.prod.outlook.com
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DB9PR04MB9498:EE_|VI1PR04MB7088:EE_
-X-MS-Office365-Filtering-Correlation-Id: 581c9bf6-2c37-4552-0c6b-08db931863fc
+X-MS-Office365-Filtering-Correlation-Id: 20627bc7-f872-4072-12d2-08db93186644
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	yWi0BzRDVUwdM7533oQ0VvijOf4qFq7F6cD4tIClBNw96QmIQRn88fUnPJm42lcoga2HAQrGE17a+oEEzQhxSFmwi4kA5LPYFGUQFhOML2+KRHIea2Czl1XQL8OJWEzhDBcRReoDrOfeXVLXeq16bkXDZBNUKcMLRXmCxoMaf4nbiAuk5AemwVhYemx/50SyszZSpS+JwIVam0FCMeAcMYa/nJlbKvucxVm+HIlIy31bmDieslBu3NHhQxxGFyt7YvpAE1glbREkRDnMf3GNuF7uE/Umpl5BxfzLpB3EVB7FmgBmndudv53CoakJlvgjeiIdJvcEo/TrGp7bYZPt8S8ah4//WuD1oRre+GZTIk/5Xl0NPCqqNtRCsf2F9iJ5akCinKUI83QOs/nFW19gUkyb+1BF5R0w7mFPI5mGmxX9IjjZxkbSGQ8WF3R3CcJw2IpiEsvbygiFdYxPkJrQMurulgZMghcQdUGbPo+YHs3c12qkuI1gPPcXGGyw7/cQjAKwjtLsQ06ru/d99sUKr1sv3PjDqlE8ZMBycqkUQomHzrWnQRCd0288jmOsnixlHxe97bAyNjlbR7R9UBASEHrNorUhwAOvPcp6S5mqwkF7+DX5UNB/t3fA1P7Wetr8BYMpq7+MYbaJ18V+/6qBLQ==
+X-Microsoft-Antispam-Message-Info: 	YL1iJsc2BgP0oMWU7Z3qITSPaMo7tofEbRSHjqF8doJiDXemK/bEQip0ZnMVGkto/6l19A8j55KzGdE5uRyW02h9ug/xMmYbcsWjjdE3RxgAOJ6k7I8z1Cj4egbkOoIQhe49g4IfRhF+x+GMI63kyYP8Z0ju32YWYFZXHsPwC4yLbHk+usiwC9nsltYfG1flsziX6knaj2ZpKsInott88BoCEk1/mpQDI7z4pOrjxDjfCIbDLV7C/iOhvEki7Ci015N8DIhJxnIe7NenB0AH50Hdr1z6mUT1EwarDrrMoaSqKpzmuiUQqEShDla5hxCP1sqZI2IvEqultlsirSZevUt325Z+mVFZNBk8bcimLvzTFIb/i06ofZynCGHxOzocr+21hH4QKFp1fPl24q69B02ijcfgxhjLBO4uP1bfla6aXKm29zxG1+xm/ZacfnyeE0q1+AokrOhpINhSCBxR4+YCd7lwLNssy8fNV502/V6/BL7IqhAJcRWx3+PgdaKWzvZqcWhZBKN5SuWb4ZHAivbNuBUwrSpmhW9kXsgbZKPQQL0biQqD93sUq3xtzQY6Db6ro+dIS0S4gSHhJs95DK77o+EpuWckGd1Sbi6FFCThiy7k0fmr1tcV+PRBoE1YDjRWTuSOB806Qro0rXVsZQ==
 X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9498.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(136003)(346002)(39860400002)(376002)(366004)(451199021)(44832011)(66556008)(66476007)(4326008)(66946007)(2906002)(38100700002)(38350700002)(2616005)(921005)(186003)(6506007)(1076003)(26005)(7416002)(83380400001)(86362001)(36756003)(478600001)(6512007)(52116002)(6666004)(6486002)(41300700001)(8936002)(8676002)(5660300002)(316002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?pfemD8cVcvTz2KSz7VjgKuWWUgaassWnoP9dJakP5Bm2Cw+hAowelGC/kvg0?=
- =?us-ascii?Q?afoMBqe0kGl9nC7zgjKNY15UfcjsAq9Ll4BvlDH0IuT5OSfNPUexf9R07qfT?=
- =?us-ascii?Q?IieTUsZSLaio2UBCKIuhrSdKT7RYG+d//E4QcbofZ3bHv0RCHC5Rxczw0NHi?=
- =?us-ascii?Q?7R3kOVoSJompaa/UQi7jkqIHmoxnN+TG+MHnMFMS7Hr/SgzQ4DCYOSu6W+s5?=
- =?us-ascii?Q?4R0bOyd5+q20TU9oUPa1bWct79A2SevMjujq8e/3WwK2jUMQBiLL5iJqL0Mn?=
- =?us-ascii?Q?cMrWV2t/Z4aT/s9jAhyeerNo5v4LRcuLHiKIacTKthJ6tPVtnDK47Nbuph7j?=
- =?us-ascii?Q?+AVh4/jbP7FnBEyrqBpiZ5JQNAT6H1YpP/1tHiE2/tk3RKs7B1nf5bgriQaV?=
- =?us-ascii?Q?KPh1722CLYbwfXtqK0IHKxbPZiJ40PhpQc77ZevvRqgKbOrgg57ZJTayzUkO?=
- =?us-ascii?Q?wolDd1sat3jXHM6eQxjO9WxeJlIzuRPcdFTT68gZXyK8GVsAxWVmwigQuG/e?=
- =?us-ascii?Q?eIJ2LOcLrrJ41ZSCRtgp3YvZU3qTKXkMYhHXnbFJNJKwAtxbcVIACOaZyL1I?=
- =?us-ascii?Q?f8wqIJK8jSmNtRsrLDxihSBWqEjVHhsEmvc5TSmLVjPGAIZCzI48nDu+Q1Z+?=
- =?us-ascii?Q?mTrdLdDurfdlH+FGFvxnM+marAlS5oJEIG4NIiebXJCrFJWCAq+PQCMqXKZL?=
- =?us-ascii?Q?46OHvazOv63hMF9LKu+/+QSCXASwJ3Z/hx+MuqKJJE7UCYoOI9vy/FY7NtRs?=
- =?us-ascii?Q?QfDCptqaLYYR8KZIRFQqYfZLB+d/VWR/WgJsPWPLJNkLjWry7FBho0Km6Q75?=
- =?us-ascii?Q?VgyEs0fyqLtj9S/XNpO+Inc2eB7Lm/4t+Avaeqbd923U5GmaOY9vw6UQONyt?=
- =?us-ascii?Q?f+i6zW5dqaK2byslNcJVVut05X1yfA2CWncbANRf5sPkwZt7agTHAGgpgsqT?=
- =?us-ascii?Q?Ikwd8P3pqYISvK9U+BKNBEfIfryxPscYPCo9uFE9zYYi1Lu5hXNFHWoRHpDv?=
- =?us-ascii?Q?f3giyYuV2wkT4+tTiMxwkiz5g+12jceXGw3lOrpE71oQTGFxSHzjRknXYnKC?=
- =?us-ascii?Q?8sPuNRCJ0ZDE3B4Jf95SP/zrofUy7ABHbceeALFPD8XyZQ6+Kujk6ownWGOJ?=
- =?us-ascii?Q?yrIG/8CfZxvI0X3C6oaiaC8tXKmAFXp8HYVFJIZWCbn0viJ19yR/ZoKhaFRS?=
- =?us-ascii?Q?Cb9LLC13c26wQDupyqZLAOMxQv4sWoMAbWGjunMV5613hl6Hgj8U0dAjpMWy?=
- =?us-ascii?Q?dmEeoL1w4RmeXvbuwmcV8yzJyi0wK7aJXZglw7ROi73Uro+DAruzBZqdKi9F?=
- =?us-ascii?Q?+kMf9eFyaiNSiB8SsJQRr1nGh72rLX43cQRDmgrHrwNma+xxmghXjjBEzype?=
- =?us-ascii?Q?3z2pzCShITjNxqj1rL9LolI+mfNeHtVfRDpatOOybKIUI8HIwMSaGaQrHtXm?=
- =?us-ascii?Q?D79Qg4+Ng9yZqQMxw8vPOxZM0Q5gOUs1Y1knk5R5G2BG+Z/jT4oyZr+YVweq?=
- =?us-ascii?Q?3ol8cc0PF0xE8/2x1C9Bx4pBefEXiNIMChQRTZfiBKFxsMizLZNGtyOKJIL4?=
- =?us-ascii?Q?t9RlVhKHZoLZCls4v5kbmTpjBBMw3dC0XSqn0ib5?=
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?sOqNbeX/swah2+xJGtdBhdsLJgO6JEaj3qLGSWG0EKsYaU2U6ZxYvoFI1K7S?=
+ =?us-ascii?Q?4DB2zhQhzvr32tjBRV9j38D7910dkMmEsxiFBSdoXtWi8y1Y/oi/SlYwlNKn?=
+ =?us-ascii?Q?33cHEVeXeo4lU93EJNEFqTRk11P+5fs70c/ijgwrVcLBHlLGmlDqgayLpbsl?=
+ =?us-ascii?Q?w+3wTUF1EG8oIApOlpXeVSlp1dwBd2o1pHQs5ntJ1yCW8r7YbxEyT45VB1eg?=
+ =?us-ascii?Q?/JTe9fZiy5g+lCyPNG12LqnKL2xgplJkUR7RZ5wnS3o20lG0760xuwqZEPOA?=
+ =?us-ascii?Q?OheoJya2Rn99tldNtCupiSoiisBYPv/60wg3CRQjWDOLsXfE8E/xqIlUOMVx?=
+ =?us-ascii?Q?JWec5M8l6KBg1BlEUkXuAOXUwdC1afsjEor5GdotE/00W5BP6lktcnZZYe21?=
+ =?us-ascii?Q?IQAP2bYU3utY1lBOsEevejHlbi//WADv7/PpJbn5kGxHhI+PfPrFGkHwYPbp?=
+ =?us-ascii?Q?/itGn5AfX3rHJeC051CQ1rAZYH+Yfsyrq7VOsMshDEOVlYfYEpNnDQkZsfO4?=
+ =?us-ascii?Q?XgX8pAdIJ+rZZtoNmC/cKPsOZ2TkKpR9zVsf9ZDiBZlh5hEsp6oQZrOsIU65?=
+ =?us-ascii?Q?VJ+CHVu4FEYcJRHAmYdxI6EDOmzDFJLWWCJx7CuLI83iLOwFLnbp7bEuIPOA?=
+ =?us-ascii?Q?x2g3iY5Z7Px+8e/jDc38p96YB28AQjZtzzHRqMb+fRkKvJgGnby348M/7vZu?=
+ =?us-ascii?Q?+G3xGY2KBRJ1eUpUp+ILeSDQKhjwdjQXzoDhGttVR1pe5xF85N1cWaj+pn9E?=
+ =?us-ascii?Q?ZqgDXCIZHe98Uds3/kvjH6KeigZqa//qlWrg9fW1eItZz8CjaYTSI8wbDBpz?=
+ =?us-ascii?Q?+XHQDVexl2gzeexvdeh8T8OkRd6sCx+rH++mQn5/rpiNx/AHRTynp59xNRif?=
+ =?us-ascii?Q?lqtYwAtFYUWHMLhk8xVIesk6yy645vu+y5CstAZSSKu0J4IQPJFaufsVaFfA?=
+ =?us-ascii?Q?0Z3HLckpA+wDAMBP2ffACl0CZoZaoIS7gKM2q4YQRtr9NoQw7QQqq4yzTEaI?=
+ =?us-ascii?Q?kXd+/kMuegWhpICqtN0gYkZkZ7+dDt/lrBktC9xTEfl6n7RM5MaL3HLO9LaP?=
+ =?us-ascii?Q?7wrdRFZxadMtkldzWsJWqmuLNJVADdUyAAHbDQSNUugjBpXIIjD0QYk0zZhM?=
+ =?us-ascii?Q?Zvj2xHMDLVwbGqo96vbJJfDEl1dRu2cg/yodW81puSl1Af319Gb247oHzGwt?=
+ =?us-ascii?Q?E+MvI6PnGxoRyqKn6CYaWEJmwrwiQ9o/eRd7RrMl+GrfNWvdXxcI3tzFnlxu?=
+ =?us-ascii?Q?4wOetBZUnA6ZmymQT3Ig+CjZ5kueKyaRBgA+YWC8E+vf7uWA+FcrnDfoaLHx?=
+ =?us-ascii?Q?Lpul9CcdyrhHYy5b1hfbGVQiKcu2H6cZrOyMI4l9eLACK7VGCswpGa1wgRul?=
+ =?us-ascii?Q?6D0cLBHIjrIsZrBI3q0LDVlT0zUsFvFMlpkt2V6Ps2tVBx1LlozW2tqsG+sQ?=
+ =?us-ascii?Q?ww825HLEzkBt/YoNuXdvcE0VmCR/TtnETk1zbxvEvWQJdl3g1leJjuRBt53L?=
+ =?us-ascii?Q?TefWFhirszlNUJNZFiBbHCyqDhzd8g24IMfohYKigy7ZnNK2q5DLodlcN3We?=
+ =?us-ascii?Q?8UkgqCshrJEFzYhpVbugFjYO0AHYg2gsAQmU4z5c?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 581c9bf6-2c37-4552-0c6b-08db931863fc
+X-MS-Exchange-CrossTenant-Network-Message-Id: 20627bc7-f872-4072-12d2-08db93186644
 X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9498.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Aug 2023 05:21:57.0860
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Aug 2023 05:22:01.0539
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PiJXKMqXD6hY1cDhpfA5Hrq9DYAQNIp5r3E8MxIADTwa4lAy/O66V8mtLaIiMTCltbaEypksiOLRrb3RajXvrQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: aUSg2lPFPQglB9EeB48XhoPfhIUhgb+cPz891NGEZesR7hhezNiYuo6AhpQrewUAZ0YUNtCJIAYOYrusEESgTg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7088
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -132,205 +132,47 @@ Cc: Chancel Liu <chancel.liu@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-fsl_micfil_use_verid() can help to parse the version info in VERID and
-PARAM registers. Since the two registers are added only on i.MX93
-platform, a member flag called use_verid is introduced to soc data
-structure which indicates acquiring MICFIL version.
+Use SET_SYSTEM_SLEEP_PM_OPS to simplify suspend and resume function.
+fsl_micfil_suspend() and fsl_micfil_resume() can be deleted.
 
 Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
 ---
- sound/soc/fsl/fsl_micfil.c | 76 +++++++++++++++++++++++++++++++++++++-
- sound/soc/fsl/fsl_micfil.h | 36 ++++++++++++++++++
- 2 files changed, 110 insertions(+), 2 deletions(-)
+ sound/soc/fsl/fsl_micfil.c | 18 ++----------------
+ 1 file changed, 2 insertions(+), 16 deletions(-)
 
 diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
-index b15febf19c02..c4ff8ea49390 100644
+index c4ff8ea49390..d6a5527ee7f6 100644
 --- a/sound/soc/fsl/fsl_micfil.c
 +++ b/sound/soc/fsl/fsl_micfil.c
-@@ -56,6 +56,8 @@ struct fsl_micfil {
- 	int vad_init_mode;
- 	int vad_enabled;
- 	int vad_detected;
-+	struct fsl_micfil_verid verid;
-+	struct fsl_micfil_param param;
- };
- 
- struct fsl_micfil_soc_data {
-@@ -64,6 +66,7 @@ struct fsl_micfil_soc_data {
- 	unsigned int dataline;
- 	bool imx;
- 	bool use_edma;
-+	bool use_verid;
- 	u64  formats;
- };
- 
-@@ -90,6 +93,7 @@ static struct fsl_micfil_soc_data fsl_micfil_imx93 = {
- 	.dataline =  0xf,
- 	.formats = SNDRV_PCM_FMTBIT_S32_LE,
- 	.use_edma = true,
-+	.use_verid = true,
- };
- 
- static const struct of_device_id fsl_micfil_dt_ids[] = {
-@@ -356,6 +360,49 @@ static const struct snd_kcontrol_new fsl_micfil_snd_controls[] = {
- 	SOC_SINGLE_BOOL_EXT("VAD Detected", 0, hwvad_detected, NULL),
- };
- 
-+static int fsl_micfil_use_verid(struct device *dev)
-+{
-+	struct fsl_micfil *micfil = dev_get_drvdata(dev);
-+	unsigned int val;
-+	int ret;
-+
-+	if (!micfil->soc->use_verid)
-+		return 0;
-+
-+	ret = regmap_read(micfil->regmap, REG_MICFIL_VERID, &val);
-+	if (ret < 0)
-+		return ret;
-+
-+	dev_dbg(dev, "VERID: 0x%016X\n", val);
-+
-+	micfil->verid.version = val &
-+		(MICFIL_VERID_MAJOR_MASK | MICFIL_VERID_MINOR_MASK);
-+	micfil->verid.version >>= MICFIL_VERID_MINOR_SHIFT;
-+	micfil->verid.feature = val & MICFIL_VERID_FEATURE_MASK;
-+
-+	ret = regmap_read(micfil->regmap, REG_MICFIL_PARAM, &val);
-+	if (ret < 0)
-+		return ret;
-+
-+	dev_dbg(dev, "PARAM: 0x%016X\n", val);
-+
-+	micfil->param.hwvad_num = (val & MICFIL_PARAM_NUM_HWVAD_MASK) >>
-+		MICFIL_PARAM_NUM_HWVAD_SHIFT;
-+	micfil->param.hwvad_zcd = val & MICFIL_PARAM_HWVAD_ZCD;
-+	micfil->param.hwvad_energy_mode = val & MICFIL_PARAM_HWVAD_ENERGY_MODE;
-+	micfil->param.hwvad = val & MICFIL_PARAM_HWVAD;
-+	micfil->param.dc_out_bypass = val & MICFIL_PARAM_DC_OUT_BYPASS;
-+	micfil->param.dc_in_bypass = val & MICFIL_PARAM_DC_IN_BYPASS;
-+	micfil->param.low_power = val & MICFIL_PARAM_LOW_POWER;
-+	micfil->param.fil_out_width = val & MICFIL_PARAM_FIL_OUT_WIDTH;
-+	micfil->param.fifo_ptrwid = (val & MICFIL_PARAM_FIFO_PTRWID_MASK) >>
-+		MICFIL_PARAM_FIFO_PTRWID_SHIFT;
-+	micfil->param.npair = (val & MICFIL_PARAM_NPAIR_MASK) >>
-+		MICFIL_PARAM_NPAIR_SHIFT;
-+
-+	return 0;
-+}
-+
- /* The SRES is a self-negated bit which provides the CPU with the
-  * capability to initialize the PDM Interface module through the
-  * slave-bus interface. This bit always reads as zero, and this
-@@ -1037,6 +1084,9 @@ static irqreturn_t hwvad_err_isr(int irq, void *devid)
- 	return IRQ_HANDLED;
- }
- 
-+static int fsl_micfil_runtime_suspend(struct device *dev);
-+static int fsl_micfil_runtime_resume(struct device *dev);
-+
- static int fsl_micfil_probe(struct platform_device *pdev)
- {
- 	struct device_node *np = pdev->dev.of_node;
-@@ -1156,6 +1206,25 @@ static int fsl_micfil_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, micfil);
- 
- 	pm_runtime_enable(&pdev->dev);
-+	if (!pm_runtime_enabled(&pdev->dev)) {
-+		ret = fsl_micfil_runtime_resume(&pdev->dev);
-+		if (ret)
-+			goto err_pm_disable;
-+	}
-+
-+	ret = pm_runtime_resume_and_get(&pdev->dev);
-+	if (ret < 0)
-+		goto err_pm_get_sync;
-+
-+	/* Get micfil version */
-+	ret = fsl_micfil_use_verid(&pdev->dev);
-+	if (ret < 0)
-+		dev_warn(&pdev->dev, "Error reading MICFIL version: %d\n", ret);
-+
-+	ret = pm_runtime_put_sync(&pdev->dev);
-+	if (ret < 0 && ret != -ENOSYS)
-+		goto err_pm_get_sync;
-+
- 	regcache_cache_only(micfil->regmap, true);
- 
- 	/*
-@@ -1180,6 +1249,9 @@ static int fsl_micfil_probe(struct platform_device *pdev)
- 
- 	return ret;
- 
-+err_pm_get_sync:
-+	if (!pm_runtime_status_suspended(&pdev->dev))
-+		fsl_micfil_runtime_suspend(&pdev->dev);
- err_pm_disable:
- 	pm_runtime_disable(&pdev->dev);
- 
-@@ -1191,7 +1263,7 @@ static void fsl_micfil_remove(struct platform_device *pdev)
- 	pm_runtime_disable(&pdev->dev);
- }
- 
--static int __maybe_unused fsl_micfil_runtime_suspend(struct device *dev)
-+static int fsl_micfil_runtime_suspend(struct device *dev)
- {
- 	struct fsl_micfil *micfil = dev_get_drvdata(dev);
- 
-@@ -1203,7 +1275,7 @@ static int __maybe_unused fsl_micfil_runtime_suspend(struct device *dev)
+@@ -1297,26 +1297,12 @@ static int fsl_micfil_runtime_resume(struct device *dev)
  	return 0;
  }
  
--static int __maybe_unused fsl_micfil_runtime_resume(struct device *dev)
-+static int fsl_micfil_runtime_resume(struct device *dev)
- {
- 	struct fsl_micfil *micfil = dev_get_drvdata(dev);
- 	int ret;
-diff --git a/sound/soc/fsl/fsl_micfil.h b/sound/soc/fsl/fsl_micfil.h
-index b3c392ef5daf..231a52aff024 100644
---- a/sound/soc/fsl/fsl_micfil.h
-+++ b/sound/soc/fsl/fsl_micfil.h
-@@ -174,4 +174,40 @@
- #define MICFIL_HWVAD_ENVELOPE_MODE	0
- #define MICFIL_HWVAD_ENERGY_MODE	1
+-static int __maybe_unused fsl_micfil_suspend(struct device *dev)
+-{
+-	pm_runtime_force_suspend(dev);
+-
+-	return 0;
+-}
+-
+-static int __maybe_unused fsl_micfil_resume(struct device *dev)
+-{
+-	pm_runtime_force_resume(dev);
+-
+-	return 0;
+-}
+-
+ static const struct dev_pm_ops fsl_micfil_pm_ops = {
+ 	SET_RUNTIME_PM_OPS(fsl_micfil_runtime_suspend,
+ 			   fsl_micfil_runtime_resume,
+ 			   NULL)
+-	SET_SYSTEM_SLEEP_PM_OPS(fsl_micfil_suspend,
+-				fsl_micfil_resume)
++	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
++				pm_runtime_force_resume)
+ };
  
-+/**
-+ * struct fsl_micfil_verid - version id data
-+ * @version: version number
-+ * @feature: feature specification number
-+ */
-+struct fsl_micfil_verid {
-+	u32 version;
-+	u32 feature;
-+};
-+
-+/**
-+ * struct fsl_micfil_param - parameter data
-+ * @hwvad_num: the number of HWVADs
-+ * @hwvad_zcd: HWVAD zero-cross detector is active
-+ * @hwvad_energy_mode: HWVAD energy mode is active
-+ * @hwvad: HWVAD is active
-+ * @dc_out_bypass: points out if the output DC remover is disabled
-+ * @dc_in_bypass: points out if the input DC remover is disabled
-+ * @low_power: low power decimation filter
-+ * @fil_out_width: filter output width
-+ * @fifo_ptrwid: FIFO pointer width
-+ * @npair: number of microphone pairs
-+ */
-+struct fsl_micfil_param {
-+	u32 hwvad_num;
-+	bool hwvad_zcd;
-+	bool hwvad_energy_mode;
-+	bool hwvad;
-+	bool dc_out_bypass;
-+	bool dc_in_bypass;
-+	bool low_power;
-+	bool fil_out_width;
-+	u32 fifo_ptrwid;
-+	u32 npair;
-+};
-+
- #endif /* _FSL_MICFIL_H */
+ static struct platform_driver fsl_micfil_driver = {
 -- 
 2.25.1
 
