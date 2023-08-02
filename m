@@ -1,77 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F01976CC4E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Aug 2023 14:09:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBB7476CC56
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Aug 2023 14:10:28 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=AXjMJDzt;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=a5+VLwV3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=n0nVo96Y;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RG9l11gcQz3cGw
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Aug 2023 22:09:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RG9m16k3Qz3cmV
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Aug 2023 22:10:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=AXjMJDzt;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=a5+VLwV3;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=n0nVo96Y;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=tiwai@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RG9k54TMLz30Kg
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Aug 2023 22:08:45 +1000 (AEST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RG9kt69Cmz3cRJ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Aug 2023 22:09:26 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 122E81F38D;
-	Wed,  2 Aug 2023 12:08:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1690978116; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wxPHjo3+ia+QJjBrjbeie8E5g2hZQ55e92AAzrGOhEI=;
-	b=AXjMJDzt8LQ5Aws+NBUjfUEoMB9Yz7f6O0HMW0it0ifUd7WEIaIHEP4qncTGjhhD6EDoxb
-	F7gnLl+5o8NiHW19hpC3ep6emXodiyGqOw2WhbgfiVBTf4qGBKd7jTJ1qGRp85rauiY6Oa
-	d1aiZV+hUmtFcwdfyiPu5SoMzIcBsZw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1690978116;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wxPHjo3+ia+QJjBrjbeie8E5g2hZQ55e92AAzrGOhEI=;
-	b=a5+VLwV3cvmphzmj2zlwrNKt4nmwdNbp2bySub5cb7YvNuOmBZ5b0GmUbqi8u7jfqmS9X0
-	to8kobwjwCyaFLAg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id DB90A13909;
-	Wed,  2 Aug 2023 12:08:35 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id WG4jNUNHymR8PwAAMHmgww
-	(envelope-from <tiwai@suse.de>); Wed, 02 Aug 2023 12:08:35 +0000
-Date: Wed, 02 Aug 2023 14:08:35 +0200
-Message-ID: <87il9xoddo.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
+	by dfw.source.kernel.org (Postfix) with ESMTPS id D402D61926;
+	Wed,  2 Aug 2023 12:09:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7BCDC433C8;
+	Wed,  2 Aug 2023 12:09:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1690978163;
+	bh=M5e9aIt4zB+xazIlQzHD++KNXR0lBSq5lPpPZBlFnnU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=n0nVo96YwWrmpCF4FJWiUwGfROiwCepHz2+sCu2OSN3CVI7R58tLGqYicwk4YYKOg
+	 +NyLJzHU9dFDb2Ho6UPuP2IEP/c/D0cJo7dHvPkGv/B50Ta5mZBFLUrrx0aC9/XNWi
+	 +t/sdjYvpddoKhGi/JXjdc+frbE7nFrY66eu014qVGygZQPEEgKavljf8ltRC6P5Nq
+	 Xl3zKTbG64yhtVO+lK7S6RXM3ey01oWUYp+6GBs47b5d74fGfCwBb2ahJbqV9qozKI
+	 DnSeTdBh7Y9dCBVGiTCZq9YuojTjQKdr2+orJcAcMbvj7a7mpqrt05719eGZTT2qOk
+	 sgy/jEHSfCbYA==
+Date: Wed, 2 Aug 2023 13:09:16 +0100
+From: Mark Brown <broonie@kernel.org>
 To: Shengjiu Wang <shengjiu.wang@gmail.com>
 Subject: Re: [RFC PATCH v2 0/7] Add audio support in v4l2 framework
-In-Reply-To: <CAA+D8ANmBKMp_L2GS=Lp-saMQKja6L4E6No3yP-e=a5YQBD_jQ@mail.gmail.com>
+Message-ID: <b7120871-325c-4db0-a785-854b51ab680f@sirena.org.uk>
 References: <1690265540-25999-1-git-send-email-shengjiu.wang@nxp.com>
-	<47d66c28-1eb2-07f5-d6f9-779d675aefe8@xs4all.nl>
-	<87il9xu1ro.wl-tiwai@suse.de>
-	<CAA+D8ANmBKMp_L2GS=Lp-saMQKja6L4E6No3yP-e=a5YQBD_jQ@mail.gmail.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+ <47d66c28-1eb2-07f5-d6f9-779d675aefe8@xs4all.nl>
+ <87il9xu1ro.wl-tiwai@suse.de>
+ <CAA+D8ANmBKMp_L2GS=Lp-saMQKja6L4E6No3yP-e=a5YQBD_jQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="s7JwRvdQJYqkq6dD"
+Content-Disposition: inline
+In-Reply-To: <CAA+D8ANmBKMp_L2GS=Lp-saMQKja6L4E6No3yP-e=a5YQBD_jQ@mail.gmail.com>
+X-Cookie: Humpty Dumpty was pushed.
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,73 +66,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nicoleotsuka@gmail.com, alsa-devel@alsa-project.org, lgirdwood@gmail.com, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-media@vger.kernel.org, tfiga@chromium.org, Hans Verkuil <hverkuil@xs4all.nl>, linuxppc-dev@lists.ozlabs.org, broonie@kernel.org, sakari.ailus@iki.fi, perex@perex.cz, mchehab@kernel.org, festevam@gmail.com, m.szyprowski@samsung.com
+Cc: nicoleotsuka@gmail.com, alsa-devel@alsa-project.org, lgirdwood@gmail.com, Xiubo.Lee@gmail.com, Takashi Iwai <tiwai@suse.de>, linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-media@vger.kernel.org, tfiga@chromium.org, Hans Verkuil <hverkuil@xs4all.nl>, linuxppc-dev@lists.ozlabs.org, sakari.ailus@iki.fi, perex@perex.cz, mchehab@kernel.org, festevam@gmail.com, m.szyprowski@samsung.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 02 Aug 2023 14:02:29 +0200,
-Shengjiu Wang wrote:
-> 
-> On Wed, Aug 2, 2023 at 7:22 PM Takashi Iwai <tiwai@suse.de> wrote:
-> >
-> > On Wed, 02 Aug 2023 09:32:37 +0200,
-> > Hans Verkuil wrote:
-> > >
-> > > Hi all,
-> > >
-> > > On 25/07/2023 08:12, Shengjiu Wang wrote:
-> > > > Audio signal processing has the requirement for memory to
-> > > > memory similar as Video.
-> > > >
-> > > > This patch is to add this support in v4l2 framework, defined
-> > > > new buffer type V4L2_BUF_TYPE_AUDIO_CAPTURE and
-> > > > V4L2_BUF_TYPE_AUDIO_OUTPUT, defined new format v4l2_audio_format
-> > > > for audio case usage.
-> > > >
-> > > > The created audio device is named "/dev/audioX".
-> > > >
-> > > > And add memory to memory support for two kinds of i.MX ASRC
-> > > > module
-> > >
-> > > Before I spend time on this: are the audio maintainers OK with doing
-> > > this in V4L2?
-> > >
-> > > I do want to have a clear statement on this as it is not something I
-> > > can decide.
-> >
+
+--s7JwRvdQJYqkq6dD
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Aug 02, 2023 at 08:02:29PM +0800, Shengjiu Wang wrote:
+> On Wed, Aug 2, 2023 at 7:22=E2=80=AFPM Takashi Iwai <tiwai@suse.de> wrote:
+
 > > Well, I personally don't mind to have some audio capability in v4l2
 > > layer.  But, the only uncertain thing for now is whether this is a
 > > must-have or not.
-> >
-> 
+
 > Thanks,  I am also not sure about this.  I am also confused that why
 > there is no m2m implementation for audio in the kernel.  Audio also
 > has similar decoder encoder post-processing as video.
-> 
-> >
-> > IIRC, the implementation in the sound driver side was never done just
-> > because there was no similar implementation?  If so, and if the
-> > extension to the v4l2 core layer is needed, shouldn't it be more
-> > considered for the possible other route?
-> >
-> 
-> Actually I'd like someone could point me to the other route. I'd like to
-> try.
-> 
+
+This is the thing where we've been trying to persuade people to work on
+replacing DPCM with full componentisation for about a decade now but
+nobody's had time other than Morimoto-san who's been chipping away at
+making everything component based for a good chunk of that time.  One
+trick is that we don't just want this to work for things that are memory
+to memory, we also want things where there's a direct interconnect that
+bypasses memory for off-SoC case.
+
 > The reason why I select to extend v4l2 for such audio usage is that v4l2
 > looks best for this audio m2m implementation.  v4l2 is designed for m2m
-> usage.  if we need implement another 'route',  I don't think it can do better
+> usage.  if we need implement another 'route',  I don't think it can do be=
+tter
 > that v4l2.
-> 
+
 > I appreciate that someone can share his ideas or doable solutions.
 > And please don't ignore my request, ignore my patch.
 
-Can you explain a bit more details of your demand?
-At least, a "big picture" showing how your hardware is implemented and
-what is exactly necessary would be helpful for understanding the
-problem.
+There's a bunch of presentations Lars-Peter did at ELC some considerable
+time ago about this.
 
+--s7JwRvdQJYqkq6dD
+Content-Type: application/pgp-signature; name="signature.asc"
 
-thanks,
+-----BEGIN PGP SIGNATURE-----
 
-Takashi
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmTKR2sACgkQJNaLcl1U
+h9DDTwf/Xps9jJnts1SAD46EJPtve2N9sezS1xZvZgz0pluqjz+vDEyh+ediLcCy
+uoiOc/xZz8Odde64unpb8nKuJzfH8hwdn4JFEMc9capaRijhM9iYxSNlDK6p0wil
+AX82WXjRdrxyPbNJQgqYehJTbcydxIbewfCqG0ryrG+NeiAPZwR/p1IrCVzBrCZ5
+E5+J4oQCAB7li51EuyZuihiImeoDS8LMbPJ5ciHXbhnXyIZaw8AvxTEz9d9llUl8
+36hbfxrM24rlJDE16kRco/zHvMkK38W6fubovlGudON8xDoUBFZIPP3SWa5TRy7n
+j3xcxiC0N3R2xWsDWKC3p7rK6OoiYQ==
+=0Tfg
+-----END PGP SIGNATURE-----
+
+--s7JwRvdQJYqkq6dD--
