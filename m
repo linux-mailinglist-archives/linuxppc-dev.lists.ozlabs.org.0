@@ -2,44 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4FA576CCA4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Aug 2023 14:28:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D48C276CE05
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Aug 2023 15:11:06 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Xsrb5ntA;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RGB9H5mNKz3bc0
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Aug 2023 22:28:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RGC605ghwz3cJR
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Aug 2023 23:11:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=srs0=vcmq=dt=xs4all.nl=hverkuil@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Xsrb5ntA;
+	dkim-atps=neutral
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RGB8l69pfz2y1b
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Aug 2023 22:28:23 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RGC542PXwz2yDL
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Aug 2023 23:10:16 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1690981813;
+	bh=cpwtW/MaqspPAnGP6aR9fUGr987e5Q5U7unL+CgXiLk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Xsrb5ntAsjLVpz6x9Xi2qb8Tv97P5Lw1Jga05K0cWoYI3K0I+v9gnr/xFyGFeyEPQ
+	 0EOEloUeHduekHuWKF9cS0xLYt6OBRVzlqwhC9s5BHdo9F2qLF0y0MP2rrJHkzmst1
+	 g7lnn69RFEmYfeoAnFhBCGLisFsd8vopeeyi04szIAaqN24KIkK/atXu8WK6eUkPHj
+	 lJdV3ALQsezx9IN9X7ZEDtlTG9Imv+CsgvmdbZeNRVDMuOXPHHiP5/JYhxkpDloLwb
+	 lkyprxlGN8+1Y/Gov1rZoXFRjgs8l0tn0C7zJUzOjq7nTF2S283acWjCoqhfzXhMP7
+	 WeU0RTDVwqy1A==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id CA9FA61957;
-	Wed,  2 Aug 2023 12:28:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6596C433C7;
-	Wed,  2 Aug 2023 12:28:15 +0000 (UTC)
-Message-ID: <d038360b-22a2-3869-cd64-2da827736faa@xs4all.nl>
-Date: Wed, 2 Aug 2023 14:28:13 +0200
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RGC513Klbz4wb8;
+	Wed,  2 Aug 2023 23:10:13 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Benjamin Gray <bgray@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc/powermac: Use early_* IO variants in
+ via_calibrate_decr
+In-Reply-To: <643ebc8519d22e0ed869989490f39780c1bde09d.camel@linux.ibm.com>
+References: <20230706010816.72682-1-bgray@linux.ibm.com>
+ <643ebc8519d22e0ed869989490f39780c1bde09d.camel@linux.ibm.com>
+Date: Wed, 02 Aug 2023 23:10:10 +1000
+Message-ID: <87y1itzj2l.fsf@mail.lhotse>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [RFC PATCH v2 0/7] Add audio support in v4l2 framework
-Content-Language: en-US
-To: Shengjiu Wang <shengjiu.wang@gmail.com>, Takashi Iwai <tiwai@suse.de>
-References: <1690265540-25999-1-git-send-email-shengjiu.wang@nxp.com>
- <47d66c28-1eb2-07f5-d6f9-779d675aefe8@xs4all.nl>
- <87il9xu1ro.wl-tiwai@suse.de>
- <CAA+D8ANmBKMp_L2GS=Lp-saMQKja6L4E6No3yP-e=a5YQBD_jQ@mail.gmail.com>
-From: Hans Verkuil <hverkuil@xs4all.nl>
-In-Reply-To: <CAA+D8ANmBKMp_L2GS=Lp-saMQKja6L4E6No3yP-e=a5YQBD_jQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,97 +59,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, lgirdwood@gmail.com, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-media@vger.kernel.org, tfiga@chromium.org, nicoleotsuka@gmail.com, linuxppc-dev@lists.ozlabs.org, broonie@kernel.org, sakari.ailus@iki.fi, perex@perex.cz, mchehab@kernel.org, festevam@gmail.com, m.szyprowski@samsung.com
+Cc: Jordan Niethe <jniethe5@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 02/08/2023 14:02, Shengjiu Wang wrote:
-> On Wed, Aug 2, 2023 at 7:22 PM Takashi Iwai <tiwai@suse.de> wrote:
->>
->> On Wed, 02 Aug 2023 09:32:37 +0200,
->> Hans Verkuil wrote:
->>>
->>> Hi all,
->>>
->>> On 25/07/2023 08:12, Shengjiu Wang wrote:
->>>> Audio signal processing has the requirement for memory to
->>>> memory similar as Video.
->>>>
->>>> This patch is to add this support in v4l2 framework, defined
->>>> new buffer type V4L2_BUF_TYPE_AUDIO_CAPTURE and
->>>> V4L2_BUF_TYPE_AUDIO_OUTPUT, defined new format v4l2_audio_format
->>>> for audio case usage.
->>>>
->>>> The created audio device is named "/dev/audioX".
->>>>
->>>> And add memory to memory support for two kinds of i.MX ASRC
->>>> module
->>>
->>> Before I spend time on this: are the audio maintainers OK with doing
->>> this in V4L2?
->>>
->>> I do want to have a clear statement on this as it is not something I
->>> can decide.
->>
->> Well, I personally don't mind to have some audio capability in v4l2
->> layer.  But, the only uncertain thing for now is whether this is a
->> must-have or not.
->>
-> 
-> Thanks,  I am also not sure about this.  I am also confused that why
-> there is no m2m implementation for audio in the kernel.  Audio also
-> has similar decoder encoder post-processing as video.
-> 
->>
->> IIRC, the implementation in the sound driver side was never done just
->> because there was no similar implementation?  If so, and if the
->> extension to the v4l2 core layer is needed, shouldn't it be more
->> considered for the possible other route?
->>
-> 
-> Actually I'd like someone could point me to the other route. I'd like to
-> try.
-> 
-> The reason why I select to extend v4l2 for such audio usage is that v4l2
-> looks best for this audio m2m implementation.  v4l2 is designed for m2m
-> usage.  if we need implement another 'route',  I don't think it can do better
-> that v4l2.
-> 
-> I appreciate that someone can share his ideas or doable solutions.
-> And please don't ignore my request, ignore my patch.
+Benjamin Gray <bgray@linux.ibm.com> writes:
+> On Thu, 2023-07-06 at 11:08 +1000, Benjamin Gray wrote:
+>> The issue is pre-existing, but is surfaced by commit 721255b9826b
+>> ("genirq: Use a maple tree for interrupt descriptor management").
+>> It's not clear to me why this causes it to surface.
+>
+> From the thread chain in [1], it looks like the maple tree
+> implementation just has different allocation behaviour, which follows a
+> pre-existing code path to kmem_cache_alloc_bulk(), which
+> unconditionally enables interrupts.
 
-To give a bit more background: if it is decided to use the v4l API for this
-(and I have no objection to this from my side since API/framework-wise it is a
-good fit for this), then there are a number of things that need to be done to
-get this into the media subsystem:
+That was a bug that was fixed before the series was merged.
 
-- documentation for the new uAPI
-- add support for this to v4l2-ctl
-- add v4l2-compliance tests for the new device
-- highly desirable: have a virtual driver (similar to vim2m) that supports this:
-  it could be as simple as just copy input to output. This helps regression
-  testing.
-- it might need media controller support as well. TBD.
+See:
+  f5451547b831 ("mm, slab/slub: Ensure kmem_cache_alloc_bulk() is available early")
 
-None of this is particularly complex, but taken all together it is a fair
-amount of work that also needs a lot of review time from our side.
 
-I want to add one more option to the mix: drivers/media/core/v4l2-mem2mem.c is
-the main m2m framework, but it relies heavily on the videobuf2 framework for
-the capture and output queues.
+It looks like the trigger here is that the maple tree code uses
+call_rcu() in ma_free_rcu(), and call_rcu() can cause TIF_NEED_RESCHED
+to be set, which causes cond_resched() to actually reschedule, enabling
+interrupts.
 
-The core vb2 implementation in drivers/media/common/videobuf2/videobuf2-core.c
-is independent of V4L2 and can be used by other subsystems (in our case, it is
-also used by the DVB API). It is a possibility to create an alsa version of
-v4l2-mem2mem.c that uses the core vb2 code with an ALSA uAPI on top.
+cheers
 
-So in drivers/media/common/videobuf2/ you would have a videobuf2-alsa.c besides
-the already existing videobuf2-v4l2.c and -dvb.c.
 
-Perhaps parts of v4l2-mem2mem.c can be reused as well in that case, but I am
-not sure if it is worth the effort. I suspect copying it to an alsa-mem2mem.c
-and adapting it for alsa is easiest if you want to go that way.
-
-Regards,
-
-	Hans
+> (thanks Jordan Niethe for finding this thread)
+>
+> [1]: https://lore.kernel.org/all/87o7qdzfay.ffs@tglx/
