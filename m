@@ -1,67 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBCA776DAE4
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Aug 2023 00:45:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D57A76DB18
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Aug 2023 00:59:26 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=c6UTu50E;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HaGWfHIq;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RGRrj5Knvz3c7s
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Aug 2023 08:45:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RGS8r0F53z3cC7
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Aug 2023 08:59:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=c6UTu50E;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HaGWfHIq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::54a; helo=mail-pg1-x54a.google.com; envelope-from=3utzkzaykdgmtfbokdhpphmf.dpnmjovyqqd-efwmjtut.pambct.psh@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x54a.google.com (mail-pg1-x54a.google.com [IPv6:2607:f8b0:4864:20::54a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=zohar@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RGRqp3Bjkz2yDD
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Aug 2023 08:44:37 +1000 (AEST)
-Received: by mail-pg1-x54a.google.com with SMTP id 41be03b00d2f7-563ab574cb5so201405a12.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Aug 2023 15:44:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1691016274; x=1691621074;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xMuR5EiinHFoNrMaaPJwbYiKuZcp1klr2wXsm/Nte/E=;
-        b=c6UTu50EZKn5y0gAF3wjm25qcQfqapqE1Vo3sJC2wM4S4HmvbaZAynRqldlmf8pDWU
-         BgAyh0sDqGRLSW8FC67Z1WxaahxEuuE1BmtmxJ7QhFeRGRxen1NPU1Rc97gO/7CXtcIj
-         IUuFQPaqiaGsc2B8s1htZ1dOTqCUzwxpQtrbE4wlzd1/CUGSDgHBbc/Rbwyq8GRsynGK
-         huoKIVHd3th86h9P6u6gyMUPegT67HL0kGH5afaykWjZn5w3Rxz1hHQouXPwBu5f5GHH
-         J7bRAhjFMlcl9yd/Lt9jiaWe7GDaG3WIjw/N2WeFU+oOLAomLvoIwTjL1zpw8qb2ecj0
-         YfhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691016274; x=1691621074;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xMuR5EiinHFoNrMaaPJwbYiKuZcp1klr2wXsm/Nte/E=;
-        b=Zl6y7KKG2bMjr4Hsy548bYcdqUIWt8xueCdGj+Kq5eKRy1GJw8Fj+LWz/qOyV75oyi
-         pMKuIkwLao5YbYcV00EUY2ZUTI6HIorBqOgw5/xioRyutju3eBXZMsv4g8PcyuI+qoMa
-         KO7fwwIWMbhWdcg9kI5M3b0nk2r/JvvGCmhWkMZmHLrJkhQ5qNUmvj/j/Oy5DsTfY2Ou
-         PPMuXIt4lfCzj8X8Gsr4r5dJ4E1Ci6Z2TPCu1tUbHu/VXgExzt3tYbgDXogBFqxBfkg5
-         U6+XqSdsQLKhqZ+oH+3YQWUfdcDbvjYWAVDCpjjrmk8WthicBuVfPOmNAoWyKJXpWYP+
-         CXiA==
-X-Gm-Message-State: ABy/qLbuxATwX3O7Hf0hqvakndrautV2p4P/9EACrw5cl4g70IvYWH5N
-	0PYiqFjSOpuEWNI61bD3ZMSr+vpmq2Y=
-X-Google-Smtp-Source: APBJJlGjna/BNEZIOqnpmIKb0vhY4kEqii1Zq8G5DClZNdG/CKfPd9E2Bwh3hwwA2v3lEo6gD2nUj0zAlWw=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:903:1d1:b0:1ac:3f51:fa64 with SMTP id
- e17-20020a17090301d100b001ac3f51fa64mr99044plh.13.1691016274443; Wed, 02 Aug
- 2023 15:44:34 -0700 (PDT)
-Date: Wed, 2 Aug 2023 15:44:32 -0700
-In-Reply-To: <20230608032425.59796-4-npiggin@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RGS7w1WLjz2yFC
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Aug 2023 08:58:35 +1000 (AEST)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 372MuNmU024419;
+	Wed, 2 Aug 2023 22:58:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=QK66vtPkzYFSebZgaYZ9q+LMUPFJ6hFoVvtGd6vohRI=;
+ b=HaGWfHIqpTCmin3p/QGMBXGgdtpLFkgmtJfmAmTBqoy25i+u21qZw53NVEuxYXwaXjE5
+ ozabJF5NqaKvFaZMJPUfb94qoj7w/Op1SVLwwN0HMIb6oODVFW6Uhn3aSZLHS+fU3U6h
+ T6gM7tF3d239ADdL2mLGD5z+yGZ4+TsOGTwCLgLGXjYA9ND6jF6ndOa1+cBYjNHD+yAR
+ EHVJ07NxVlz8oGdTd8cqRJOvh290pSj/Bad5wyxrtLUJ/3qIHN69iT5I2/wo0fCXkIeY
+ 91NdGrRXh+MC4HUZw1xMuvDroYjiaJlB7e4iGJ8HeqAZxXHOWVuR9fZnrAJpv6HuktVq PA== 
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s80ck00qy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 02 Aug 2023 22:58:30 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 372MBB94014550;
+	Wed, 2 Aug 2023 22:58:29 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3s5ft1qvnu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 02 Aug 2023 22:58:29 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 372MwSSf65208740
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 2 Aug 2023 22:58:28 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6A8625805B;
+	Wed,  2 Aug 2023 22:58:28 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9E0B258058;
+	Wed,  2 Aug 2023 22:58:27 +0000 (GMT)
+Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.61.115.23])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  2 Aug 2023 22:58:27 +0000 (GMT)
+Message-ID: <a312804f17f273ee0b31d28fc2bb95ef99cbb150.camel@linux.ibm.com>
+Subject: Re: [PATCH 0/6] Enable loading local and third party keys on
+ PowerVM guest
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: Nayna Jain <nayna@linux.ibm.com>, linux-integrity@vger.kernel.org
+Date: Wed, 02 Aug 2023 18:58:27 -0400
+In-Reply-To: <20230714153435.28155-1-nayna@linux.ibm.com>
+References: <20230714153435.28155-1-nayna@linux.ibm.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-22.el8) 
 Mime-Version: 1.0
-References: <20230608032425.59796-1-npiggin@gmail.com> <20230608032425.59796-4-npiggin@gmail.com>
-Message-ID: <ZMrcUKBldWBCQ9R2@google.com>
-Subject: Re: [PATCH v3 3/6] KVM: PPC: selftests: add support for powerpc
-From: Sean Christopherson <seanjc@google.com>
-To: Nicholas Piggin <npiggin@gmail.com>
-Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Ony8YeYLq8qDwIe589R8_zLRl0FmxnVd
+X-Proofpoint-ORIG-GUID: Ony8YeYLq8qDwIe589R8_zLRl0FmxnVd
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-02_18,2023-08-01_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
+ suspectscore=0 phishscore=0 lowpriorityscore=0 bulkscore=0 adultscore=0
+ mlxlogscore=901 clxscore=1011 impostorscore=0 priorityscore=1501
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308020199
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,42 +91,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org
+Cc: Eric Snowberg <eric.snowberg@oracle.com>, Paul Moore <paul@paul-moore.com>, linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org, Jarkko Sakkinen <jarkko@kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 08, 2023, Nicholas Piggin wrote:
-> diff --git a/tools/testing/selftests/kvm/lib/powerpc/ucall.c b/tools/testing/selftests/kvm/lib/powerpc/ucall.c
-> new file mode 100644
-> index 000000000000..ce0ddde45fef
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/lib/powerpc/ucall.c
-> @@ -0,0 +1,30 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * ucall support. A ucall is a "hypercall to host userspace".
-> + */
-> +#include "kvm_util.h"
-> +#include "hcall.h"
-> +
-> +void ucall_arch_init(struct kvm_vm *vm, vm_paddr_t mmio_gpa)
-> +{
-> +}
-> +
-> +void ucall_arch_do_ucall(vm_vaddr_t uc)
-> +{
-> +	hcall2(H_UCALL, UCALL_R4_UCALL, (uintptr_t)(uc));
-> +}
+On Fri, 2023-07-14 at 11:34 -0400, Nayna Jain wrote:
+> On a secure boot enabled PowerVM guest, local and third party code signing
+> keys are needed to verify signed applications, configuration files, and
+> kernel modules.
+> 
+> Loading these keys onto either the .secondary_trusted_keys or .ima
+> keyrings requires the certificates be signed by keys on the
+> .builtin_trusted_keys, .machine or .secondary_trusted_keys keyrings.
+> 
+> Keys on the .builtin_trusted_keys keyring are trusted because of the chain
+> of trust from secure boot up to and including the linux kernel.  Keys on
+> the .machine keyring that derive their trust from an entity such as a
+> security officer, administrator, system owner, or machine owner are said
+> to have "imputed trust." The type of certificates and the mechanism for
+> loading them onto the .machine keyring is platform dependent.
+> 
+> Userspace may load certificates onto the .secondary_trusted_keys or .ima
+> keyrings. However, keys may also need to be loaded by the kernel if they
+> are needed for verification in early boot time. On PowerVM guest, third
+> party code signing keys are loaded from the moduledb variable in the
+> Platform KeyStore(PKS) onto the .secondary_trusted_keys.
 
-FYI, the ucall stuff will silently conflict with treewide (where KVM selftests is
-the treechanges that I've queued[*].  It probably makes sense for the initial PPC
-support to go through the KVM tree anyways, so I'd be more than happy to grab this
-series via kvm-x86/selftests if you're willing to do the code changes (should be
-minor, knock wood).  Alternatively, the immutable tag I'm planning on creating
-could be merged into the PPC tree, but that seems like overkill.
+Thanks, Nayna.   I've reviewed and done some initially testing up to
+5/6.
 
-Either way, please Cc me on the next version (assuming there is a next version),
-if only so that I can give you an early heads up if/when the next treewide change
-alongs ;-)
+Mimi
 
-[*] https://lore.kernel.org/all/169101267140.1755771.17089576255751273053.b4-ty@google.com
