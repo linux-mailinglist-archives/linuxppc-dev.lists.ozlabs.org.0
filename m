@@ -2,71 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F011076CBB3
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Aug 2023 13:23:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5674776CC36
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Aug 2023 14:01:44 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=CBvW/Ahk;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=hpeZK5XR;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=iLT8cxgO;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RG8k75hQbz3c3s
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Aug 2023 21:23:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RG9Yy17STz3c7s
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Aug 2023 22:01:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=CBvW/Ahk;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=hpeZK5XR;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=iLT8cxgO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=tiwai@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RG8jF2XR6z2yDH
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Aug 2023 21:22:56 +1000 (AEST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RG9Y20vfDz2yVp
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Aug 2023 22:00:54 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1690977653;
+	bh=srbZojdru0tsVgAsnUb95vBNV7rieqJ2AhYM1AFAUrM=;
+	h=From:To:Subject:In-Reply-To:References:Date:From;
+	b=iLT8cxgOXWCuEWhGbMgv3A/ss6AewaDUdMGvdgf4waMQk/3e+8qxlXxi9V8Q9iS7Q
+	 +LYNkopSdouJbo3pepb7yYtv1z0baIGVkkol8gtRMll50x7dHucGe4G6UdSwVummIt
+	 tvlpZLuZWWYELKQQloZmRwSPOzPpkdry4NY5ATbFBeewzUKCqd8EaAPXd2Kp5MkG+d
+	 3L5J1pRsehy/X7H+I5/N3+MLO6+yX5cmG9I3xue5yG41E1Wx1G1PYtWimcxCVxQ4oU
+	 GyqMyB0Ixr4Ax/qPlxxJUqUSM+8sAjOHWipSNMOfVMnb5uJ1ypxCOfBMkTiY7alAmg
+	 KWL1tLAPBkVoA==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 7B37D21ABA;
-	Wed,  2 Aug 2023 11:22:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1690975372; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5r1CpNIAJIEW3BpMhgShJ14F48fAU7qslpZkFUD+rwk=;
-	b=CBvW/AhkgcCD5eWfqToZIUCdl0qQ9bihx77+ptxjqXd3s8JAEJ3P3EuwPcIDBTeV8zaMa8
-	+8NG+elmSNZo8llvlBvULzXRfhcW6+jBK+7ljSl2IB11xf9OeH4jNleJiRbJwySEA2G1y7
-	hzMitlzqKdGewuKCHsm3hzmmZsdaKmQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1690975372;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5r1CpNIAJIEW3BpMhgShJ14F48fAU7qslpZkFUD+rwk=;
-	b=hpeZK5XRODX9CLvc13p+tye6dirc1m+7cnLpsMl3lmifUvBm1kbRmBamK3d6M0mwM5L5+b
-	2591pHTdBsSr4NAQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 4E82013909;
-	Wed,  2 Aug 2023 11:22:52 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id SCeaEow8ymSAJQAAMHmgww
-	(envelope-from <tiwai@suse.de>); Wed, 02 Aug 2023 11:22:52 +0000
-Date: Wed, 02 Aug 2023 13:22:51 +0200
-Message-ID: <87il9xu1ro.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Hans Verkuil <hverkuil@xs4all.nl>
-Subject: Re: [RFC PATCH v2 0/7] Add audio support in v4l2 framework
-In-Reply-To: <47d66c28-1eb2-07f5-d6f9-779d675aefe8@xs4all.nl>
-References: <1690265540-25999-1-git-send-email-shengjiu.wang@nxp.com>
-	<47d66c28-1eb2-07f5-d6f9-779d675aefe8@xs4all.nl>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RG9Y15Kv6z4xJW;
+	Wed,  2 Aug 2023 22:00:53 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Benjamin Gray
+ <bgray@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org"
+ <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCH 0/7] Rework perf and ptrace watchpoint tracking
+In-Reply-To: <4a0d1740-bf19-0a96-1668-23d6188657cb@csgroup.eu>
+References: <20230801011744.153973-1-bgray@linux.ibm.com>
+ <4a0d1740-bf19-0a96-1668-23d6188657cb@csgroup.eu>
+Date: Wed, 02 Aug 2023 22:00:47 +1000
+Message-ID: <874jlh1wnk.fsf@mail.lhotse>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,45 +61,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, lgirdwood@gmail.com, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-media@vger.kernel.org, tfiga@chromium.org, nicoleotsuka@gmail.com, linuxppc-dev@lists.ozlabs.org, broonie@kernel.org, sakari.ailus@iki.fi, festevam@gmail.com, perex@perex.cz, mchehab@kernel.org, shengjiu.wang@gmail.com, m.szyprowski@samsung.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 02 Aug 2023 09:32:37 +0200,
-Hans Verkuil wrote:
-> 
-> Hi all,
-> 
-> On 25/07/2023 08:12, Shengjiu Wang wrote:
-> > Audio signal processing has the requirement for memory to
-> > memory similar as Video.
-> > 
-> > This patch is to add this support in v4l2 framework, defined
-> > new buffer type V4L2_BUF_TYPE_AUDIO_CAPTURE and
-> > V4L2_BUF_TYPE_AUDIO_OUTPUT, defined new format v4l2_audio_format
-> > for audio case usage.
-> > 
-> > The created audio device is named "/dev/audioX".
-> > 
-> > And add memory to memory support for two kinds of i.MX ASRC
-> > module
-> 
-> Before I spend time on this: are the audio maintainers OK with doing
-> this in V4L2?
-> 
-> I do want to have a clear statement on this as it is not something I
-> can decide.
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 01/08/2023 =C3=A0 03:17, Benjamin Gray a =C3=A9crit=C2=A0:
+>> Syzkaller triggered a null pointer dereference in the
+>> arch_unregister_hw_breakpoint() hook. This is due to accessing
+>> the bp->ctx->task field changing to -1 while we iterate the breakpoints.
+>>=20
+>> This series refactors the breakpoint tracking logic to remove the
+>> dependency on bp->ctx entirely. It also simplifies handling of ptrace and
+>> perf breakpoints, making insertion less restrictive.
+>
+> Is there any link between this series and the following issue:=20
+> https://github.com/linuxppc/issues/issues/38
 
-Well, I personally don't mind to have some audio capability in v4l2
-layer.  But, the only uncertain thing for now is whether this is a
-must-have or not.
+AFAIK no, Ben started looking at the breakpoint code due to a syzkaller
+report of an oops.
 
-IIRC, the implementation in the sound driver side was never done just
-because there was no similar implementation?  If so, and if the
-extension to the v4l2 core layer is needed, shouldn't it be more
-considered for the possible other route?
+But this series would resolve that issue AFAICS, so I guess they are
+linked in that sense.
 
-
-thanks,
-
-Takashi
+cheers
