@@ -2,68 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E07676F301
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Aug 2023 20:50:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 260D776F601
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Aug 2023 01:09:53 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=6VFzvdxm;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Yrtl0fTO;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RGybY0vxlz3c3j
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Aug 2023 04:50:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RH4LR075Jz3cTM
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Aug 2023 09:09:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=6VFzvdxm;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Yrtl0fTO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::f2a; helo=mail-qv1-xf2a.google.com; envelope-from=ndesaulniers@google.com; receiver=lists.ozlabs.org)
-Received: from mail-qv1-xf2a.google.com (mail-qv1-xf2a.google.com [IPv6:2607:f8b0:4864:20::f2a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=dianders@chromium.org; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RGyYJ1klTz3brg
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Aug 2023 04:48:51 +1000 (AEST)
-Received: by mail-qv1-xf2a.google.com with SMTP id 6a1803df08f44-63d4b5890a0so8107616d6.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 03 Aug 2023 11:48:51 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RH4KT6gWXz3cJ7
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Aug 2023 09:09:00 +1000 (AEST)
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1b8ad356f03so10751345ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 03 Aug 2023 16:09:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1691088528; x=1691693328;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9tbNHE93nYjXEA/O+xALVAEDc6FnXESddWS3lWiWLV0=;
-        b=6VFzvdxm3YrleojZUDMcow5FlyLkuGEPWo7uL1Sub4U4LzVMQhi5UpSPEaYtXxQig6
-         R78lgZrOqqK6yg0QQv/JfRTYg+AsYws7jCkd8Bg1iujIIi9/A8JGaIKa3nySYUYxYXMD
-         fDeqWcFIbb7KgTxygJUFLUFd9FltJ7Sx1WpUt7PJDnRkqFqEAYX3UY0X49kRyzwn5sdP
-         I37qBWtWNXQq7xllL7dbKsCaawao2B5L/YEZK2kvud+xkjOMxt2YCSPKhd52vD+CcmjX
-         qsvwDpR8y8XyjjIEENEG/wD83xbRHVmg+fosa7E0VP5fHwabw7hE0ggbCtQWbEI9pBLv
-         f8mg==
+        d=chromium.org; s=google; t=1691104138; x=1691708938;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jZFR6hR4MgixZPi5Vx/h6mh3aFizC5jpLVjbFDuTXzk=;
+        b=Yrtl0fTOBqR41ImU0+amCbPztuZDGzUVxCdl3x0hw6hwOIv/8k3m9WQO/mttMu369L
+         zZlwEoO4tNu+89BRw7b4JSzisHqdfF51BYFauemtPvhBnCBJ3j9RdTR0bcfq39FJx3ux
+         vQ0ingPHXd5bSZBRYqP4s4/XhMbsdipJBQ+m0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691088528; x=1691693328;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9tbNHE93nYjXEA/O+xALVAEDc6FnXESddWS3lWiWLV0=;
-        b=HWpZx9rZanc60FLunfv1urmm2f1qjQsptz3pEj42h4FsMPtNGm7IJ8+y38xoNhZD3U
-         7rEHrdvm3+gVFuBRvVCOSMCYu1qqbte5dW4xeQ5mucxqsScs3Bc1fL42LyvKVBonQUOr
-         ZD9F2kLTvpW1hdGmTps6zIMgF6lANhjKjHOUVFznLirGcUzwPsqiiqGwLz8UhEAhWqf7
-         clJdcEQBYfv25RUTw1IBaPmX30qYuRXSjd7+yXhQu7mFo1E3uVcKWDVTGknbypS6VFqn
-         RvxwpX12wBbasjT67+Q8H8T/hAc63UQh1oNDWLrbMcILVbILzswJL8XKObbhlDVknM1D
-         DRHA==
-X-Gm-Message-State: ABy/qLZkVp4IAXJWFfHrhZ6eN0EuqErGp6nDvGNIS/uqDqINFpd/svSU
-	Jq/r4JDvDBrj5H98hw3pxv6hHSdv2ZvS526A8DfRJw==
-X-Google-Smtp-Source: APBJJlHVHOlFaAc7QLzwJ5MQyhcxQ7uez6gZPgXw7RdtP68eZ2qt3tpg4x+z+Z2XW9dTV2WAxlrUtvM5KRnWu0hSBto=
-X-Received: by 2002:a05:6214:3011:b0:63d:a05:256a with SMTP id
- ke17-20020a056214301100b0063d0a05256amr21855102qvb.8.1691088527629; Thu, 03
- Aug 2023 11:48:47 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1691104138; x=1691708938;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jZFR6hR4MgixZPi5Vx/h6mh3aFizC5jpLVjbFDuTXzk=;
+        b=QLjNsMdaFZpqVF1qBMhWUPwIp5Yi3a+ZVy7Ozzc6EQEcW/I6x3P+d8nynJk/SjwecP
+         uWZOP54Y1lH78+oJZ+YetAjlFvhqsNJCru1csG8IVTY2Vf9U3OoFoA+3rsWw9Lr9lMtB
+         i2PmS3Ju9c/ZtDEje7pYlLUUnM7o08JvQ8D3kiyX2KA878hfD69QizIpkD3HECcbJb/u
+         2+OjPD45xM8ftqpO5Suxb5tXJAX/isH4J9o8dJOwLcjv7KW/sgYh3ALMWHt7XYpyyaSx
+         oOTwF9yloTBIArwg3sojP/VU7k0PHgvVRoXxPVh7iazHN1ZTtdrmzZ28ugRnuHoONxS0
+         kt/A==
+X-Gm-Message-State: AOJu0YyGRVNPd2Wa2c1+X3VS+/4tIGydo6D16StLsVWBmprb5HLGDW8w
+	UU1ZsVKJaizxllvJEPbvPuqZEA==
+X-Google-Smtp-Source: AGHT+IHpt3GmqxmUYWeyDxrjsC/U+hfzZspynC8VLCIFtP8cNsZp90XHIeRqwjI5dpuN/mozNLSnNg==
+X-Received: by 2002:a17:902:6909:b0:1b8:9002:c9ee with SMTP id j9-20020a170902690900b001b89002c9eemr114243plk.1.1691104137546;
+        Thu, 03 Aug 2023 16:08:57 -0700 (PDT)
+Received: from tictac2.mtv.corp.google.com ([2620:15c:9d:2:7e35:e6d0:7bbf:64])
+        by smtp.gmail.com with ESMTPSA id q16-20020a170902dad000b001adf6b21c77sm369405plx.107.2023.08.03.16.08.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Aug 2023 16:08:57 -0700 (PDT)
+From: Douglas Anderson <dianders@chromium.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH v3 1/2] nmi_backtrace: Allow excluding an arbitrary CPU
+Date: Thu,  3 Aug 2023 16:07:57 -0700
+Message-ID: <20230803160649.v3.1.Ia35521b91fc781368945161d7b28538f9996c182@changeid>
+X-Mailer: git-send-email 2.41.0.585.gd2178a4bd4-goog
 MIME-Version: 1.0
-References: <20230803-ppc_tlbilxlpid-v3-1-ca84739bfd73@google.com> <31b387c5-c6a4-2911-b337-b7af6a15c29e@csgroup.eu>
-In-Reply-To: <31b387c5-c6a4-2911-b337-b7af6a15c29e@csgroup.eu>
-From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Thu, 3 Aug 2023 11:48:36 -0700
-Message-ID: <CAKwvOdm7ftWse5LVwM_0b_Zk_H-qavXsjsSyUmd0onZzvYcasw@mail.gmail.com>
-Subject: Re: [PATCH v3] powerpc/inst: add PPC_TLBILX_LPID
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,128 +72,337 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel test robot <lkp@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "llvm@lists.linux.dev" <llvm@lists.linux.dev>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Nathan Chancellor <nathan@kernel.org>, Tom Rix <trix@redhat.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, "Jason A. Donenfeld" <Jason@zx2c4.com>, Michal Hocko <mhocko@suse.com>, Jinyang He <hejinyang@loongson.cn>, Lecopzer Chen <lecopzer.chen@mediatek.com>, Peter Zijlstra <peterz@infradead.org>, "Darrick J. Wong" <djwong@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, Qing Zhang <zhangqing@loongson.cn>, Pingfan Liu <kernelfans@gmail.com>, linux-kernel@vger.kernel.org, Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>, Gaosheng Cui <cuigaosheng1@huawei.com>, Stephen Rothwell <sfr@canb.auug.org.au>, Valentin Schneider <vschneid@redhat.com>, "Paul E. McKenney" <paulmck@kernel.org>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>, Tom Rix <trix@redhat.com>, Ulf Hansson <ulf.hansson@linaro.org>, linux-mips@vger.kernel.org, Petr Mladek <pmladek@suse.com>, Kees Cook <keescook@chromium.or
+ g>, Arnd Bergmann <arnd@arndb.de>, Nicholas Piggin <npiggin@gmail.com>, Jianmin Lv <lvjianmin@loongson.cn>, Borislav Petkov <bp@alien8.de>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, Josh Poimboeuf <jpoimboe@kernel.org>, linux-arm-kernel@lists.infradead.org, x86@kernel.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Douglas Anderson <dianders@chromium.org>, "Guilherme G. Piccoli" <gpiccoli@igalia.com>, "Gautham R. Shenoy" <gautham.shenoy@amd.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 3, 2023 at 11:47=E2=80=AFAM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
->
->
->
-> Le 03/08/2023 =C3=A0 20:33, Nick Desaulniers a =C3=A9crit :
-> > Clang didn't recognize the instruction tlbilxlpid. This was fixed in
-> > clang-18 [0] then backported to clang-17 [1].  To support clang-16 and
-> > older, rather than using that instruction bare in inline asm, add it to
-> > ppc-opcode.h and use that macro as is done elsewhere for other
-> > instructions.
-> >
-> > Link: https://github.com/ClangBuiltLinux/linux/issues/1891
-> > Link: https://github.com/llvm/llvm-project/issues/64080
-> > Link: https://github.com/llvm/llvm-project/commit/53648ac1d0c953ae6d008=
-864dd2eddb437a92468 [0]
-> > Link: https://github.com/llvm/llvm-project-release-prs/commit/0af7e5e54=
-a8c7ac665773ac1ada328713e8338f5 [1]
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > Closes: https://lore.kernel.org/llvm/202307211945.TSPcyOhh-lkp@intel.co=
-m/
-> > Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-> > Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
->
-> Not sure why you changed the order of #includes , nevertheless
+The APIs that allow backtracing across CPUs have always had a way to
+exclude the current CPU. This convenience means callers didn't need to
+find a place to allocate a CPU mask just to handle the common case.
 
-Habit to sort; can drop if maintaining git blame is more important
-than cleaning that up.
+Let's extend the API to take a CPU ID to exclude instead of just a
+boolean. This isn't any more complex for the API to handle and allows
+the hardlockup detector to exclude a different CPU (the one it already
+did a trace for) without needing to find space for a CPU mask.
 
->
-> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->
-> > ---
-> > Changes in v3:
-> > - left comment @ https://github.com/linuxppc/issues/issues/350#issuecom=
-ment-1664417212
-> > - restore PPC_RAW_TLBILX previous definition
-> > - fix comment style
-> > - Link to v2: https://lore.kernel.org/r/20230803-ppc_tlbilxlpid-v2-1-21=
-1ffa1df194@google.com
-> >
-> > Changes in v2:
-> > - add 2 missing tabs to PPC_RAW_TLBILX_LPID
-> > - Link to v1: https://lore.kernel.org/r/20230803-ppc_tlbilxlpid-v1-1-84=
-a1bc5cf963@google.com
-> > ---
-> >   arch/powerpc/include/asm/ppc-opcode.h |  2 ++
-> >   arch/powerpc/kvm/e500mc.c             | 11 ++++++++---
-> >   2 files changed, 10 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/inclu=
-de/asm/ppc-opcode.h
-> > index ef6972aa33b9..005601243dda 100644
-> > --- a/arch/powerpc/include/asm/ppc-opcode.h
-> > +++ b/arch/powerpc/include/asm/ppc-opcode.h
-> > @@ -397,6 +397,7 @@
-> >   #define PPC_RAW_RFCI                        (0x4c000066)
-> >   #define PPC_RAW_RFDI                        (0x4c00004e)
-> >   #define PPC_RAW_RFMCI                       (0x4c00004c)
-> > +#define PPC_RAW_TLBILX_LPID          (0x7c000024)
-> >   #define PPC_RAW_TLBILX(t, a, b)             (0x7c000024 | __PPC_T_TLB=
-(t) |  __PPC_RA0(a) | __PPC_RB(b))
-> >   #define PPC_RAW_WAIT_v203           (0x7c00007c)
-> >   #define PPC_RAW_WAIT(w, p)          (0x7c00003c | __PPC_WC(w) | __PPC=
-_PL(p))
-> > @@ -616,6 +617,7 @@
-> >   #define PPC_TLBILX(t, a, b) stringify_in_c(.long PPC_RAW_TLBILX(t, a,=
- b))
-> >   #define PPC_TLBILX_ALL(a, b)        PPC_TLBILX(0, a, b)
-> >   #define PPC_TLBILX_PID(a, b)        PPC_TLBILX(1, a, b)
-> > +#define PPC_TLBILX_LPID              stringify_in_c(.long PPC_RAW_TLBI=
-LX_LPID)
-> >   #define PPC_TLBILX_VA(a, b) PPC_TLBILX(3, a, b)
-> >   #define PPC_WAIT_v203               stringify_in_c(.long PPC_RAW_WAIT=
-_v203)
-> >   #define PPC_WAIT(w, p)              stringify_in_c(.long PPC_RAW_WAIT=
-(w, p))
-> > diff --git a/arch/powerpc/kvm/e500mc.c b/arch/powerpc/kvm/e500mc.c
-> > index d58df71ace58..7c09c000c330 100644
-> > --- a/arch/powerpc/kvm/e500mc.c
-> > +++ b/arch/powerpc/kvm/e500mc.c
-> > @@ -16,10 +16,11 @@
-> >   #include <linux/miscdevice.h>
-> >   #include <linux/module.h>
-> >
-> > -#include <asm/reg.h>
-> >   #include <asm/cputable.h>
-> > -#include <asm/kvm_ppc.h>
-> >   #include <asm/dbell.h>
-> > +#include <asm/kvm_ppc.h>
-> > +#include <asm/ppc-opcode.h>
-> > +#include <asm/reg.h>
-> >
-> >   #include "booke.h"
-> >   #include "e500.h"
-> > @@ -92,7 +93,11 @@ void kvmppc_e500_tlbil_all(struct kvmppc_vcpu_e500 *=
-vcpu_e500)
-> >
-> >       local_irq_save(flags);
-> >       mtspr(SPRN_MAS5, MAS5_SGS | get_lpid(&vcpu_e500->vcpu));
-> > -     asm volatile("tlbilxlpid");
-> > +     /*
-> > +      * clang-17 and older could not assemble tlbilxlpid.
-> > +      * https://github.com/ClangBuiltLinux/linux/issues/1891
-> > +      */
-> > +     asm volatile (PPC_TLBILX_LPID);
-> >       mtspr(SPRN_MAS5, 0);
-> >       local_irq_restore(flags);
-> >   }
-> >
-> > ---
-> > base-commit: 7bafbd4027ae86572f308c4ddf93120c90126332
-> > change-id: 20230803-ppc_tlbilxlpid-cfdbf4fd4f7f
-> >
-> > Best regards,
+Arguably, this new API also encourages safer behavior. Specifically if
+the caller wants to avoid tracing the current CPU (maybe because they
+already traced the current CPU) this makes it more obvious to the
+caller that they need to make sure that the current CPU ID can't
+change.
 
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+---
 
+Changes in v3:
+- ("nmi_backtrace: Allow excluding an arbitrary CPU") new for v3.
 
---=20
-Thanks,
-~Nick Desaulniers
+ arch/arm/include/asm/irq.h       |  2 +-
+ arch/arm/kernel/smp.c            |  4 ++--
+ arch/loongarch/include/asm/irq.h |  2 +-
+ arch/loongarch/kernel/process.c  |  4 ++--
+ arch/mips/include/asm/irq.h      |  2 +-
+ arch/mips/kernel/process.c       |  4 ++--
+ arch/powerpc/include/asm/irq.h   |  2 +-
+ arch/powerpc/kernel/stacktrace.c |  4 ++--
+ arch/powerpc/kernel/watchdog.c   |  4 ++--
+ arch/sparc/include/asm/irq_64.h  |  2 +-
+ arch/sparc/kernel/process_64.c   |  6 +++---
+ arch/x86/include/asm/irq.h       |  2 +-
+ arch/x86/kernel/apic/hw_nmi.c    |  4 ++--
+ include/linux/nmi.h              | 12 ++++++------
+ kernel/watchdog.c                |  2 +-
+ lib/nmi_backtrace.c              |  6 +++---
+ 16 files changed, 31 insertions(+), 31 deletions(-)
+
+diff --git a/arch/arm/include/asm/irq.h b/arch/arm/include/asm/irq.h
+index 18605f1b3580..26c1d2ced4ce 100644
+--- a/arch/arm/include/asm/irq.h
++++ b/arch/arm/include/asm/irq.h
+@@ -32,7 +32,7 @@ void handle_IRQ(unsigned int, struct pt_regs *);
+ #include <linux/cpumask.h>
+ 
+ extern void arch_trigger_cpumask_backtrace(const cpumask_t *mask,
+-					   bool exclude_self);
++					   int exclude_cpu);
+ #define arch_trigger_cpumask_backtrace arch_trigger_cpumask_backtrace
+ #endif
+ 
+diff --git a/arch/arm/kernel/smp.c b/arch/arm/kernel/smp.c
+index 6756203e45f3..3431c0553f45 100644
+--- a/arch/arm/kernel/smp.c
++++ b/arch/arm/kernel/smp.c
+@@ -846,7 +846,7 @@ static void raise_nmi(cpumask_t *mask)
+ 	__ipi_send_mask(ipi_desc[IPI_CPU_BACKTRACE], mask);
+ }
+ 
+-void arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
++void arch_trigger_cpumask_backtrace(const cpumask_t *mask, int exclude_cpu)
+ {
+-	nmi_trigger_cpumask_backtrace(mask, exclude_self, raise_nmi);
++	nmi_trigger_cpumask_backtrace(mask, exclude_cpu, raise_nmi);
+ }
+diff --git a/arch/loongarch/include/asm/irq.h b/arch/loongarch/include/asm/irq.h
+index a115e8999c69..218b4da0ea90 100644
+--- a/arch/loongarch/include/asm/irq.h
++++ b/arch/loongarch/include/asm/irq.h
+@@ -40,7 +40,7 @@ void spurious_interrupt(void);
+ #define NR_IRQS_LEGACY 16
+ 
+ #define arch_trigger_cpumask_backtrace arch_trigger_cpumask_backtrace
+-void arch_trigger_cpumask_backtrace(const struct cpumask *mask, bool exclude_self);
++void arch_trigger_cpumask_backtrace(const struct cpumask *mask, int exclude_cpu);
+ 
+ #define MAX_IO_PICS 2
+ #define NR_IRQS	(64 + (256 * MAX_IO_PICS))
+diff --git a/arch/loongarch/kernel/process.c b/arch/loongarch/kernel/process.c
+index 2e04eb07abb6..778e8d09953e 100644
+--- a/arch/loongarch/kernel/process.c
++++ b/arch/loongarch/kernel/process.c
+@@ -345,9 +345,9 @@ static void raise_backtrace(cpumask_t *mask)
+ 	}
+ }
+ 
+-void arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
++void arch_trigger_cpumask_backtrace(const cpumask_t *mask, int exclude_cpu)
+ {
+-	nmi_trigger_cpumask_backtrace(mask, exclude_self, raise_backtrace);
++	nmi_trigger_cpumask_backtrace(mask, exclude_cpu, raise_backtrace);
+ }
+ 
+ #ifdef CONFIG_64BIT
+diff --git a/arch/mips/include/asm/irq.h b/arch/mips/include/asm/irq.h
+index 75abfa834ab7..3a848e7e69f7 100644
+--- a/arch/mips/include/asm/irq.h
++++ b/arch/mips/include/asm/irq.h
+@@ -77,7 +77,7 @@ extern int cp0_fdc_irq;
+ extern int get_c0_fdc_int(void);
+ 
+ void arch_trigger_cpumask_backtrace(const struct cpumask *mask,
+-				    bool exclude_self);
++				    int exclude_cpu);
+ #define arch_trigger_cpumask_backtrace arch_trigger_cpumask_backtrace
+ 
+ #endif /* _ASM_IRQ_H */
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index a3225912c862..5387ed0a5186 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -750,9 +750,9 @@ static void raise_backtrace(cpumask_t *mask)
+ 	}
+ }
+ 
+-void arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
++void arch_trigger_cpumask_backtrace(const cpumask_t *mask, int exclude_cpu)
+ {
+-	nmi_trigger_cpumask_backtrace(mask, exclude_self, raise_backtrace);
++	nmi_trigger_cpumask_backtrace(mask, exclude_cpu, raise_backtrace);
+ }
+ 
+ int mips_get_process_fp_mode(struct task_struct *task)
+diff --git a/arch/powerpc/include/asm/irq.h b/arch/powerpc/include/asm/irq.h
+index f257cacb49a9..ba1a5974e714 100644
+--- a/arch/powerpc/include/asm/irq.h
++++ b/arch/powerpc/include/asm/irq.h
+@@ -55,7 +55,7 @@ int irq_choose_cpu(const struct cpumask *mask);
+ 
+ #if defined(CONFIG_PPC_BOOK3S_64) && defined(CONFIG_NMI_IPI)
+ extern void arch_trigger_cpumask_backtrace(const cpumask_t *mask,
+-					   bool exclude_self);
++					   int exclude_cpu);
+ #define arch_trigger_cpumask_backtrace arch_trigger_cpumask_backtrace
+ #endif
+ 
+diff --git a/arch/powerpc/kernel/stacktrace.c b/arch/powerpc/kernel/stacktrace.c
+index 5de8597eaab8..b15f15dcacb5 100644
+--- a/arch/powerpc/kernel/stacktrace.c
++++ b/arch/powerpc/kernel/stacktrace.c
+@@ -221,8 +221,8 @@ static void raise_backtrace_ipi(cpumask_t *mask)
+ 	}
+ }
+ 
+-void arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
++void arch_trigger_cpumask_backtrace(const cpumask_t *mask, int exclude_cpu)
+ {
+-	nmi_trigger_cpumask_backtrace(mask, exclude_self, raise_backtrace_ipi);
++	nmi_trigger_cpumask_backtrace(mask, exclude_cpu, raise_backtrace_ipi);
+ }
+ #endif /* defined(CONFIG_PPC_BOOK3S_64) && defined(CONFIG_NMI_IPI) */
+diff --git a/arch/powerpc/kernel/watchdog.c b/arch/powerpc/kernel/watchdog.c
+index edb2dd1f53eb..8c464a5d8246 100644
+--- a/arch/powerpc/kernel/watchdog.c
++++ b/arch/powerpc/kernel/watchdog.c
+@@ -245,7 +245,7 @@ static void watchdog_smp_panic(int cpu)
+ 			__cpumask_clear_cpu(c, &wd_smp_cpus_ipi);
+ 		}
+ 	} else {
+-		trigger_allbutself_cpu_backtrace();
++		trigger_allbutcpu_cpu_backtrace(cpu);
+ 		cpumask_clear(&wd_smp_cpus_ipi);
+ 	}
+ 
+@@ -416,7 +416,7 @@ DEFINE_INTERRUPT_HANDLER_NMI(soft_nmi_interrupt)
+ 		xchg(&__wd_nmi_output, 1); // see wd_lockup_ipi
+ 
+ 		if (sysctl_hardlockup_all_cpu_backtrace)
+-			trigger_allbutself_cpu_backtrace();
++			trigger_allbutcpu_cpu_backtrace(cpu);
+ 
+ 		if (hardlockup_panic)
+ 			nmi_panic(regs, "Hard LOCKUP");
+diff --git a/arch/sparc/include/asm/irq_64.h b/arch/sparc/include/asm/irq_64.h
+index b436029f1ced..8c4c0c87f998 100644
+--- a/arch/sparc/include/asm/irq_64.h
++++ b/arch/sparc/include/asm/irq_64.h
+@@ -87,7 +87,7 @@ static inline unsigned long get_softint(void)
+ }
+ 
+ void arch_trigger_cpumask_backtrace(const struct cpumask *mask,
+-				    bool exclude_self);
++				    int exclude_cpu);
+ #define arch_trigger_cpumask_backtrace arch_trigger_cpumask_backtrace
+ 
+ extern void *hardirq_stack[NR_CPUS];
+diff --git a/arch/sparc/kernel/process_64.c b/arch/sparc/kernel/process_64.c
+index b51d8fb0ecdc..1ea3f37fa985 100644
+--- a/arch/sparc/kernel/process_64.c
++++ b/arch/sparc/kernel/process_64.c
+@@ -236,7 +236,7 @@ static void __global_reg_poll(struct global_reg_snapshot *gp)
+ 	}
+ }
+ 
+-void arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
++void arch_trigger_cpumask_backtrace(const cpumask_t *mask, int exclude_cpu)
+ {
+ 	struct thread_info *tp = current_thread_info();
+ 	struct pt_regs *regs = get_irq_regs();
+@@ -252,7 +252,7 @@ void arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
+ 
+ 	memset(global_cpu_snapshot, 0, sizeof(global_cpu_snapshot));
+ 
+-	if (cpumask_test_cpu(this_cpu, mask) && !exclude_self)
++	if (cpumask_test_cpu(this_cpu, mask) && this_cpu != exclude_cpu)
+ 		__global_reg_self(tp, regs, this_cpu);
+ 
+ 	smp_fetch_global_regs();
+@@ -260,7 +260,7 @@ void arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
+ 	for_each_cpu(cpu, mask) {
+ 		struct global_reg_snapshot *gp;
+ 
+-		if (exclude_self && cpu == this_cpu)
++		if (cpu == exclude_cpu)
+ 			continue;
+ 
+ 		gp = &global_cpu_snapshot[cpu].reg;
+diff --git a/arch/x86/include/asm/irq.h b/arch/x86/include/asm/irq.h
+index 29e083b92813..836c170d3087 100644
+--- a/arch/x86/include/asm/irq.h
++++ b/arch/x86/include/asm/irq.h
+@@ -42,7 +42,7 @@ extern void init_ISA_irqs(void);
+ 
+ #ifdef CONFIG_X86_LOCAL_APIC
+ void arch_trigger_cpumask_backtrace(const struct cpumask *mask,
+-				    bool exclude_self);
++				    int exclude_cpu);
+ 
+ #define arch_trigger_cpumask_backtrace arch_trigger_cpumask_backtrace
+ #endif
+diff --git a/arch/x86/kernel/apic/hw_nmi.c b/arch/x86/kernel/apic/hw_nmi.c
+index 34a992e275ef..d6e01f924299 100644
+--- a/arch/x86/kernel/apic/hw_nmi.c
++++ b/arch/x86/kernel/apic/hw_nmi.c
+@@ -34,9 +34,9 @@ static void nmi_raise_cpu_backtrace(cpumask_t *mask)
+ 	apic->send_IPI_mask(mask, NMI_VECTOR);
+ }
+ 
+-void arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
++void arch_trigger_cpumask_backtrace(const cpumask_t *mask, int exclude_cpu)
+ {
+-	nmi_trigger_cpumask_backtrace(mask, exclude_self,
++	nmi_trigger_cpumask_backtrace(mask, exclude_cpu,
+ 				      nmi_raise_cpu_backtrace);
+ }
+ 
+diff --git a/include/linux/nmi.h b/include/linux/nmi.h
+index e3e6a64b98e0..00982b133dc1 100644
+--- a/include/linux/nmi.h
++++ b/include/linux/nmi.h
+@@ -157,31 +157,31 @@ static inline void touch_nmi_watchdog(void)
+ #ifdef arch_trigger_cpumask_backtrace
+ static inline bool trigger_all_cpu_backtrace(void)
+ {
+-	arch_trigger_cpumask_backtrace(cpu_online_mask, false);
++	arch_trigger_cpumask_backtrace(cpu_online_mask, -1);
+ 	return true;
+ }
+ 
+-static inline bool trigger_allbutself_cpu_backtrace(void)
++static inline bool trigger_allbutcpu_cpu_backtrace(int exclude_cpu)
+ {
+-	arch_trigger_cpumask_backtrace(cpu_online_mask, true);
++	arch_trigger_cpumask_backtrace(cpu_online_mask, exclude_cpu);
+ 	return true;
+ }
+ 
+ static inline bool trigger_cpumask_backtrace(struct cpumask *mask)
+ {
+-	arch_trigger_cpumask_backtrace(mask, false);
++	arch_trigger_cpumask_backtrace(mask, -1);
+ 	return true;
+ }
+ 
+ static inline bool trigger_single_cpu_backtrace(int cpu)
+ {
+-	arch_trigger_cpumask_backtrace(cpumask_of(cpu), false);
++	arch_trigger_cpumask_backtrace(cpumask_of(cpu), -1);
+ 	return true;
+ }
+ 
+ /* generic implementation */
+ void nmi_trigger_cpumask_backtrace(const cpumask_t *mask,
+-				   bool exclude_self,
++				   int exclude_cpu,
+ 				   void (*raise)(cpumask_t *mask));
+ bool nmi_cpu_backtrace(struct pt_regs *regs);
+ 
+diff --git a/kernel/watchdog.c b/kernel/watchdog.c
+index be38276a365f..085d7a78f62f 100644
+--- a/kernel/watchdog.c
++++ b/kernel/watchdog.c
+@@ -523,7 +523,7 @@ static enum hrtimer_restart watchdog_timer_fn(struct hrtimer *hrtimer)
+ 			dump_stack();
+ 
+ 		if (softlockup_all_cpu_backtrace) {
+-			trigger_allbutself_cpu_backtrace();
++			trigger_allbutcpu_cpu_backtrace(smp_processor_id());
+ 			clear_bit_unlock(0, &soft_lockup_nmi_warn);
+ 		}
+ 
+diff --git a/lib/nmi_backtrace.c b/lib/nmi_backtrace.c
+index 5274bbb026d7..33c154264bfe 100644
+--- a/lib/nmi_backtrace.c
++++ b/lib/nmi_backtrace.c
+@@ -34,7 +34,7 @@ static unsigned long backtrace_flag;
+  * they are passed being updated as a side effect of this call.
+  */
+ void nmi_trigger_cpumask_backtrace(const cpumask_t *mask,
+-				   bool exclude_self,
++				   int exclude_cpu,
+ 				   void (*raise)(cpumask_t *mask))
+ {
+ 	int i, this_cpu = get_cpu();
+@@ -49,8 +49,8 @@ void nmi_trigger_cpumask_backtrace(const cpumask_t *mask,
+ 	}
+ 
+ 	cpumask_copy(to_cpumask(backtrace_mask), mask);
+-	if (exclude_self)
+-		cpumask_clear_cpu(this_cpu, to_cpumask(backtrace_mask));
++	if (exclude_cpu != -1)
++		cpumask_clear_cpu(exclude_cpu, to_cpumask(backtrace_mask));
+ 
+ 	/*
+ 	 * Don't try to send an NMI to this cpu; it may work on some
+-- 
+2.41.0.585.gd2178a4bd4-goog
+
