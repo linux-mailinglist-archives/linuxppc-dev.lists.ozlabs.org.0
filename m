@@ -2,151 +2,152 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2329576F66F
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Aug 2023 02:15:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B12C76F671
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Aug 2023 02:16:53 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=O85PqLIU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZGspNGsR;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RH5pf6PvDz3bTk
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Aug 2023 10:15:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RH5ql0T6wz3cNk
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Aug 2023 10:16:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=O85PqLIU;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZGspNGsR;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mgamail.intel.com; envelope-from=giovanni.cabiddu@intel.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 66 seconds by postgrey-1.37 at boromir; Thu, 03 Aug 2023 19:52:58 AEST
-Received: from mgamail.intel.com (unknown [134.134.136.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mgamail.intel.com; envelope-from=giovanni.cabiddu@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RGkfy3S6tz30gP
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Aug 2023 19:52:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RGlVG0mTTz30Nr
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Aug 2023 20:30:27 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1691056378; x=1722592378;
+  t=1691058630; x=1722594630;
   h=date:from:to:cc:subject:message-id:references:
    in-reply-to:mime-version;
-  bh=TuKFzz3MlRqvgsdCaykX2SELXmxJFCo0/Of+pz20f6w=;
-  b=O85PqLIUbM/o5F8Kc++ZRndm7GzzOANPrsPbPCc+bDc+9OOsFBhi/OdB
-   SNNkIcreu1cO+i+sOykxvycouEPzk5N6uoiCyk2riPrncPHId5LXkUJQS
-   iabSXtoQbgKVfnX4piDbbW/DL7apOE6HqV1ZBaOjOKL58Jqn0ucB4Qh+V
-   v2mKpylenDZ+LL0LGQPKfRUHIr9demqNy+0to13a48WgiKmL8o2KuHsg2
-   Gcw1Liy0fVbii/t4l/iJdw4UHchwo+Bh+bVgAQnXdtXbX6XTcGbtzNvC9
-   LMV8t97SfjGaMoh9Hws8Q5uSSFGmSr4skDb3V9WoKgLp8U4v+/XOHAAs2
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10790"; a="433667474"
-X-IronPort-AV: E=Sophos;i="6.01,251,1684825200"; 
-   d="scan'208";a="433667474"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2023 02:51:44 -0700
+  bh=wUOrzPuQNyPoyunb8QgHpza+TDckszmU8J98EMridjM=;
+  b=ZGspNGsRJualBzhj/oTHQv3Ye8zN/QBDLTDmB2wtEg7DwgINTlbAAUwI
+   7t6SCF3q8MfYOJnpLzulHgYBi54o7Tt4cnlJokbJO07OxIDnUXSeWT3uZ
+   gxqWpZDU+6VLwVSngcKwog4nm5hZPiqVKmYWfdC4eqK4YK74eFveoKWzR
+   L14QNvPOn0wUP/kKmx3B08zMPj9LujMfRorvC1uGJOpZviBu9DXTSCZPD
+   U82bh1jHZAto3+qIuiK5SvPmQPLmY1EWmW4gbPF4z7nci/Pi+BHA4gPpW
+   Mxk/3b364EBdc9Aii1CEOj3y0X3LUmLdfoc2vX5tGRGdx2G0TEz2b6oPa
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10790"; a="350129226"
+X-IronPort-AV: E=Sophos;i="6.01,252,1684825200"; 
+   d="scan'208";a="350129226"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2023 03:30:21 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10790"; a="799484559"
-X-IronPort-AV: E=Sophos;i="6.01,251,1684825200"; 
-   d="scan'208";a="799484559"
+X-IronPort-AV: E=McAfee;i="6600,9927,10790"; a="729514972"
+X-IronPort-AV: E=Sophos;i="6.01,252,1684825200"; 
+   d="scan'208";a="729514972"
 Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
-  by fmsmga004.fm.intel.com with ESMTP; 03 Aug 2023 02:51:42 -0700
+  by orsmga002.jf.intel.com with ESMTP; 03 Aug 2023 03:30:18 -0700
 Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
  ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Thu, 3 Aug 2023 02:51:42 -0700
+ 15.1.2507.27; Thu, 3 Aug 2023 03:30:18 -0700
 Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
  ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Thu, 3 Aug 2023 02:51:42 -0700
+ 15.1.2507.27; Thu, 3 Aug 2023 03:30:18 -0700
 Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
  orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27 via Frontend Transport; Thu, 3 Aug 2023 02:51:42 -0700
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.169)
+ 15.1.2507.27 via Frontend Transport; Thu, 3 Aug 2023 03:30:18 -0700
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.171)
  by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.27; Thu, 3 Aug 2023 02:51:41 -0700
+ 15.1.2507.27; Thu, 3 Aug 2023 03:30:17 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XiwkCQLrnX3vCPUBvH9SF14ucGP0LiLHfyMmCo/jsjcc9fX2/NHNUm9WR5fSrBphLBhxbQ1LaMT9j4M92JImJ5cmsF7d4yV4K0+ZPjzRKvsB93Zjpj9cms59Qm/rB6OqRUemk3RTodpzJCCuJjqFKFAB6wPG84tGsHScuB1T/ytEVwccIit6/GNuq85Qz2VOZWJO2aoeK9cSaociTzYB59MI5+KA22WMilk+MB8SSr1rVnGE4H7xGU4Oe3BBDrz+woi03DNOt8VsGK53HPtbMaKZb5S4qyQfT5lA/sNzilEBBTyCRKC7rXy+ISHZs/EI8LoEmlG6nNhXOpHe3dsdyg==
+ b=GtJE/hKNZWjLWQmkwgy4q0DnT74gSMvT09NsY0t0q/ffSl1QhsUxm/ED7Mo66y9x6JiIJ+TghTKEvmyP9WVGT06H78GWZbxCZm6Rw5SMO/7B787yepPyTqE3Hx0kUiVi0Jbb4efJL4coQT2B1oywSzGGoVd1uhQ9FUiiIF3NGPk5iyVBQ/ACUFrusm4j3zXDRxOMLtdtk7rYToH6g3u4Li6kuf8L9NuXr94I8lzIJvj/ND/9wSdDGSQDRNJ7G4Ql94YMpWlwDA+ffPaF9Ca8+SrBiAoe2BZIVu/v3BKPju2NBPexqwWKO24NE232O8ppEt2rNGNmUKPFmtOMmR8tKA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1dblz5LMCJ3tcTxBm4uadKsWwuVksbu+ZPdIg0ZkLtk=;
- b=Xvjd5HHlOR9Xu34gxxPTysNH5EfIcDhYAXMzVFVLjHNnWJJ7wSmkAyw4Ib3gh1CckEvSfKLDC03qUkUBjmZzh5MVyEt5K/jL+N5giCyYD7NxE+UtJwHNfMEN6ZiEg81YpMr5MunXIVOyfO3WFqfoKrpKioYlgLD/le/7SZECb15qmxfGrR0ylFWMBQfyeRLrlafuu57r4UbuuW+GwzyVQMUFMzvz+vVdwHBEelcNzRhq+XYuHjJ0YO22GG3IXe8A069iTgynD3g11irbXB1lAJiuA3ydvE3Fk2VWZgLApwfp570B2xFB7eJQD18zlDeduAryFry/Ohk90XdLLNEXWw==
+ bh=wVk2R4zQDwrxXvWRgnNwwZsbLsnf3ESIQPTqBvfcr3U=;
+ b=i85/P0vEMPavpFkEn0NzYWbacqcSgtQBpXJ04m5EM0lV4TUsJW7X3HP+797FUq9bSlffSQMEU74nP1qGh3A9+k1wmA86LjvQjlkZxe13Etp4O+fS+Go8S/UMJzScsCiUAI1fymw/h4QnNLOi6KvbKuBqX3FrK6UXdk2Ov9h0qzP107kckgxf0JfuZW/y9abvBrUSxSh537McJ7vZHKr2GpqHVBe9HuV/1LDCqFHGcnC9jorzfyy1JrRPu1a7LsbwnwTgj8JnBNPEw67PFbUfgsNWEALw9QvfKsoFAFxxJCm4FVjOOai6vRRRsEM/hb+8S95O6Pa2tm8GwFpXklP62Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from CY5PR11MB6366.namprd11.prod.outlook.com (2603:10b6:930:3a::8)
- by PH7PR11MB5820.namprd11.prod.outlook.com (2603:10b6:510:133::17) with
+ by DM4PR11MB5470.namprd11.prod.outlook.com (2603:10b6:5:39c::24) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.20; Thu, 3 Aug
- 2023 09:51:40 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.47; Thu, 3 Aug
+ 2023 10:30:15 +0000
 Received: from CY5PR11MB6366.namprd11.prod.outlook.com
  ([fe80::f8a8:855c:2d19:9ac1]) by CY5PR11MB6366.namprd11.prod.outlook.com
  ([fe80::f8a8:855c:2d19:9ac1%7]) with mapi id 15.20.6631.046; Thu, 3 Aug 2023
- 09:51:39 +0000
-Date: Thu, 3 Aug 2023 10:51:26 +0100
+ 10:30:15 +0000
+Date: Thu, 3 Aug 2023 11:29:58 +0100
 From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 To: Ard Biesheuvel <ardb@kernel.org>
 Subject: Re: [RFC PATCH 01/21] crypto: scomp - Revert "add support for
  deflate rfc1950 (zlib)"
-Message-ID: <ZMt4nkfpdCXxAkr5@gcabiddu-mobl1.ger.corp.intel.com>
+Message-ID: <ZMuBpm2No70LqgZI@gcabiddu-mobl1.ger.corp.intel.com>
 References: <20230718125847.3869700-1-ardb@kernel.org>
  <20230718125847.3869700-2-ardb@kernel.org>
+ <ZMt4nkfpdCXxAkr5@gcabiddu-mobl1.ger.corp.intel.com>
+ <CAMj1kXGn70sGAHgOttKkC6n6jfVZ9Y61NZ9ffLmJV8MK2Kh8nQ@mail.gmail.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20230718125847.3869700-2-ardb@kernel.org>
+In-Reply-To: <CAMj1kXGn70sGAHgOttKkC6n6jfVZ9Y61NZ9ffLmJV8MK2Kh8nQ@mail.gmail.com>
 Organization: Intel Research and Development Ireland Ltd - Co. Reg. #308263 -
  Collinstown Industrial Park, Leixlip, County Kildare - Ireland
-X-ClientProxiedBy: FR2P281CA0123.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:9d::16) To CY5PR11MB6366.namprd11.prod.outlook.com
+X-ClientProxiedBy: FR2P281CA0006.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:a::16) To CY5PR11MB6366.namprd11.prod.outlook.com
  (2603:10b6:930:3a::8)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY5PR11MB6366:EE_|PH7PR11MB5820:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1028c133-db60-4560-f441-08db94073bd1
+X-MS-TrafficTypeDiagnostic: CY5PR11MB6366:EE_|DM4PR11MB5470:EE_
+X-MS-Office365-Filtering-Correlation-Id: f5644f60-862d-4ab8-cf5d-08db940ca069
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: qQjqdLRRpwe9YEhvUoY8SsLHb9WcO6s4LirCZMFB/Owtc8iynTHqnZ//Quk3KCcjGlVaQuIQ8psKSsz6j3LXyBiTxEVjJWVnNU9tPjPt/M+lgqqNnDU0j1JZN2OC8YucoOvE3ADl6QtEg6Mwzz+a9rCe75zJ6oL3FPsW/AbF7M8hvilzfnHbZeiZRnpWgpBVLk+tueEwsAImWOWnhRJaX7FlplQvCf8FB6Z64EzCOKL79rII20MhwQcLKe+nTaxT2lumY+rIV60KOC5oYWFSWDhyM3GCxbvyyqbpodyGMZgSnY457krdiuNvPn/K8f31kx55HsWbY/6X47ltLT/nD3pcyPHIdToKDsdY7zerZ/FNcVz5cq5c5mE2l/myyHUnEdnkwTIdPNI9mW9eLySKllagBONjIJIXUryUo9XDOuZwx2tO7KH0sBjBH6+qYih1jls5K8Qzj06XFQv3gVMsyv8vtfus7OGcgf9p6kICJSf9+nT68jrMaB6TuJB377YrjI9Flmw4y3aOQI+nLDBit0D5b6MRDxDu9DSYU3ZH+2Hfj5BP94Ol8cT70qqK/xUanwiCjfwsTnYJH+4LxeF8HQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR11MB6366.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(136003)(396003)(346002)(39860400002)(366004)(376002)(451199021)(6506007)(83380400001)(26005)(186003)(316002)(2906002)(66946007)(4326008)(66476007)(66556008)(5660300002)(6916009)(44832011)(7416002)(41300700001)(8676002)(8936002)(6486002)(6666004)(966005)(6512007)(54906003)(478600001)(36916002)(38100700002)(82960400001)(86362001);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: LVAapvwTty3Y5x9A5HPOXg+hBOQjNW5QbdPCLuq7MhWzmq/GuZCsFWL2iUwxSzBHiltHoml5W1fH22Q7dxDqZup6fuYYv2ImOG2Y9e/n8pCNTbVUJwiKYDW/j1A3/suR1TY6vgJU4gKX4ET/N+bRehTPIlt9LZEUV5EO90z78dLIUfdxWJq1Sn6DRRVME3mE8JkCLaP1wTGlnfb1ylS3vO5YzXXed8zN9SQvxkbZ8gAXZE04At1LCIj+kXNI76IGdcyMOLCrEBBTtJiwHyyBgze0UaqaV5J3RlcKqceVoImtIRUX8DndkxdmED3s587bK1iKJ768UwRXPuyWwaofmOPSvEeJO0v7pAPhMi1BnhKj07Np1/N9JqQGiZ1AFrzMK8Ezp0MlgWUzXQ0kkbGFX0sjOQx5H2KbpXJLj9aMif+rTyR2YCqvMgW/dT8nf2plgrSXIna1pMQjTwP2VrJZDMEeBEBg99BoYTmi3WtKYTh1tOpZ82LtLIVJYZ0HrisUQYVW7fUyaEwmTrNbp9ssQmAhNx+hcIFSsXZ/mvRkKzT9vq+p0Q1t/P1s0HI/Fg7o
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR11MB6366.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(346002)(396003)(376002)(366004)(136003)(39860400002)(451199021)(36916002)(6666004)(6486002)(6512007)(41300700001)(38100700002)(82960400001)(6916009)(66476007)(66556008)(4326008)(66946007)(316002)(54906003)(478600001)(5660300002)(26005)(186003)(6506007)(8936002)(8676002)(7416002)(86362001)(4744005)(2906002)(44832011);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Lga4pFFs7leZF9HX5L4F6WkIevbbgsCCXMKaTRj49zNbwQCcbEFGVXpikffX?=
- =?us-ascii?Q?GIdzTR5MJXCzZNhPKwKoG/zFCr/EyNRvxU86iJpfV6u9ow/Q6dCwjcDfAAr/?=
- =?us-ascii?Q?etXX29Zr8WU+s0Mkm2ikuGyDZC0RE2+mV+98EFHNE2piyI85xv1xm3bLoFWs?=
- =?us-ascii?Q?NkUPIR/d3qC3gGDy/tScKQd9Gc5dROhuOs3g8mtapD1HkHlpy7ibgZEh2VsC?=
- =?us-ascii?Q?Pc5K5SyoLqfEjXEtklQjwZCshsBd2VIpMm9EH8OGgh8dSUytuvV2/6U/NUCi?=
- =?us-ascii?Q?kR6IqyThgNayxLBmxzdJTkVhMpLn0tBRhXWajiPAkqEXFOG3Cr+upSBiZCiP?=
- =?us-ascii?Q?N3bpEu6XhAQhEvdwMon9h4lEbU5MWAllj8JeZu4dDp4/trKGsEuWNyorI2qS?=
- =?us-ascii?Q?6tVEdYpn0VAmycHAaG2YylmzDumlVcLx7oQCzOhfiF8cPqxKqTttJb/7YRNg?=
- =?us-ascii?Q?6SMBm+aEqcl7c37Mi9D0e3CsV2E7qAys23bJvcdJ6/BjCSLdZY0ja9VoGKPF?=
- =?us-ascii?Q?qIlucEzkH4R9j0sS5ZC0gpSpNyyhJoCPo4sg8jLt8TJYX5IGAwrErrZK1E1r?=
- =?us-ascii?Q?Tkq5awRSvuUz3Kt4gmArjQja6aci8Xr5gv7+9CZ+PzDOrj1FJYMhikweCr9e?=
- =?us-ascii?Q?eRBT/QPdsO/SCHxqHZKfRYbjIOA5/SvOnJs310n8921i2oM+/XSgOOpmtdHm?=
- =?us-ascii?Q?R/kN/YguC4c1NdqFflBtWLFpyTojf08kW+GL1x+aNq+qHqmW+aUNJF8e+ov2?=
- =?us-ascii?Q?BJYWvukW+03HM7L7dvhaHXvPWioqcRtebSilJN3fQuaDMQxXuqltti/gRiD/?=
- =?us-ascii?Q?yKfLn3/gU0f+7MArIXU1tcLHuY9W9gj3o6PkwNHo94BgM1Wes+vvnWTP8l9m?=
- =?us-ascii?Q?WxrkW4+Cj0In8c+vwW+DM/ld1XzOHgpYh0mWETtaILUL45K5zxwY6pODaV8R?=
- =?us-ascii?Q?HEY8dMQnURimtR5jji8diY0A6LoDqA3GEoiMNTr2/rZVWSrxwtG+qys+50Fr?=
- =?us-ascii?Q?B8OyIlOOa4OYf+OlEvhZe4DH1iGrEV0TAcw18ep8akGj9+yOTUlOwguyV7Co?=
- =?us-ascii?Q?pQYIGmufoWVs0IOkYyDj+9F0sVLQu5nzknnKRA08DzVRefFnornQBKEh7rIP?=
- =?us-ascii?Q?rJ/W1TgUyIxNxy0RSKOhWv9a0QbBAmUyQX54FRTXMZIqU95H8vOBU6ZEF2sz?=
- =?us-ascii?Q?duWQXDhYyO9YCz3QX1VkJyoKegrkIvTWMmvLoF044UW/h10dPSzDs6qLZzjy?=
- =?us-ascii?Q?xL5W5PDk7A4KAxGrPGVCyVviKUV0f0anTKYLH5FhBiCnIk3+/lg2HIihJlCS?=
- =?us-ascii?Q?iJjuy6r+IRXP9cpYEtV5jTQ1G7i8FlMCzjXspzb0xrwHxSywPv3eEzzKIvCg?=
- =?us-ascii?Q?AFGY71HgC37Zm3HLm4t5bLUtIB5uBBsZte6MQxGqhM4mIpC/W6WmYFWO67TG?=
- =?us-ascii?Q?9/fC8pV3A/YwkxQemNRRAM/Z+2+0Th+pCJZ1lJKDJq9L9IH+/NtteERcH3Rn?=
- =?us-ascii?Q?92liXbfXKqbJWFG9XDuGcWIbPmWJodjcE1TP88l3tRyFa03kE7v/LkmeN0gP?=
- =?us-ascii?Q?BLAxPLzJAmA+Rs9lK9it02pKWOTIklSmH/JAjwNs8KjQdt5OgcC9CG7eQjbt?=
- =?us-ascii?Q?oQ=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1028c133-db60-4560-f441-08db94073bd1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?/SaLdTM+a8wA9jvBsM/zFvBk9UPJzIDXLR5Woi8hMriMpXSnjAy+6qe5ooq2?=
+ =?us-ascii?Q?i01lptc3BnbCSruWaqAYBo2tThD+WrX5xtb7EIbPgs3YUDfBAZ3ZHO+Se1KX?=
+ =?us-ascii?Q?5ugnSzvAsKlZZK8paP3bu1MzAF+f2lXupiZVss8nbh3HNTEl4ISuCFV2pDhC?=
+ =?us-ascii?Q?c9D5qGFfhJ8vVFT1dBT9uXuP0sLAUDWfBEUy+CFxfdw9XYRKVgsi08EigBwt?=
+ =?us-ascii?Q?+oi2tKtUmzTtXtN6ara9JyqT6mSV5wQ07lFneJ6Y2Xjq3DQvZNRjHOVKH6al?=
+ =?us-ascii?Q?Yv0dgA8UeJJ/Ii5iHLBXhgfnvPHZNlDwBWv19Ep6h8ZRGkh3wsCfBynk9bCd?=
+ =?us-ascii?Q?QAahWpb2j99ljZcAvgyK1Q8WMK9JhIblx2LHXKU2YF/luQjJz9KIySFXrXGI?=
+ =?us-ascii?Q?9hBLFGwLX3mCbm8hTw9q/d4/Ak1wDU8KPiV/qKhhiVLKYO9TUceT4i5plcJS?=
+ =?us-ascii?Q?Y2lbpvg8UVRuq286gwIcKAX7fTPK0xx82spLtu7umqWh70ljzHJK5ukowt2n?=
+ =?us-ascii?Q?RoamfIG/rZY+b9PNItgxcdScAwhcT3uK/VbRG8OkIXmLepyCcUWA8En5wO8e?=
+ =?us-ascii?Q?ov2vNnE3gkWm/RbMeUrmMCfpaY70AWwPJjc9S5hjlIyVKpaYyk7MyjMeHj8N?=
+ =?us-ascii?Q?zBcs7zxmuwYgwn2Ny/ZePB6+2oyDYcWVaYZNBQvOXvMSe1KPUL+VsrZFtKrT?=
+ =?us-ascii?Q?o2ECzDKVyr/0SYF/vCSqzfR1eq/eZEYkPllVSp5JF46dJT+ncJW7GrZ9hyFS?=
+ =?us-ascii?Q?7mxJsQPdiCRKGl1lFhzCsHW4K69W6JIr1Zyy/7kZc0ZSZ5cpz04j2y3o+ROA?=
+ =?us-ascii?Q?Hh7yKLH33MIbSCtxNF8n80x2tG1KOiHmNyrqux97YYfLJD141pICajOCJohD?=
+ =?us-ascii?Q?wbkWLTn2NiLL4qRom0oKvlNI9cuBTapqlyxD4NdtuCobw0YXuQlp61KAsPsI?=
+ =?us-ascii?Q?9MK6nSgHD96EzkCN1JcftpfwPCTvMx6sq+tZ6Qbqb1Exq5AD0Z4X07H6+SgX?=
+ =?us-ascii?Q?juE2p1m2AuwuXH7xA/4asZuJXnXRpc2K5o41wK/iJT27ZLqi59g60Uhw+h2W?=
+ =?us-ascii?Q?IcB7KwZjhAHbKYmZbzRYRbuVEXiO1m5VWPa5X8sZgrzPBKcANfrbhJ1mz4BN?=
+ =?us-ascii?Q?0nm2mZBPz9TzgQ+rZcvfHuSfUAOqLh908rI1wF8EsWVGRx3nvMGrfndMTEbQ?=
+ =?us-ascii?Q?qNvVcuDECcsYwtzD/t6+GSvzIj9ZzU5UuVsX+Ypuj8WwDMPxDOjsi3zA+IMv?=
+ =?us-ascii?Q?BPxUjnq6JdwovOSQiMdlpk+Qy9yjw5pJ/0zDdH+TWgRUKUieiYhsmsaLGhZs?=
+ =?us-ascii?Q?7DU/QmC60AQoDFbTBgzFsKNwYjWvTASoAqoxiERczKe7OnMwQCXfmJBqZj7L?=
+ =?us-ascii?Q?Y0bOzc7HWBHg92qnjzqX2DFLwWhN/zm1z4yZvmMhYJAWcOACdQmDvLk7TYIk?=
+ =?us-ascii?Q?5RkAH6D0UazcOhxlUbwdM2somSy7HTLb8Q0tTKklllSVM0m/ADiUAOfxoDJi?=
+ =?us-ascii?Q?fMG3oZ5ZZeUZmciz4wxGWQzpC0Lvpws2bom/5d31vC8QM1PPjHqaK9zZebT6?=
+ =?us-ascii?Q?Cw88qeEtePr/idGjSji7c2qhsDbv86EPB1ZwQaxY2EWYRCc6uHrEm6CNkDde?=
+ =?us-ascii?Q?IQ=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: f5644f60-862d-4ab8-cf5d-08db940ca069
 X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6366.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2023 09:51:39.8469
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2023 10:30:15.6576
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nBfUJuNll9ZGLMZYQHRtdAS+rk2qNTLE9GJvBuE+weca+edJG4bbe1U6e2PCh9+MtLzJXEKJne6S2obnsGQLoiOQBryVbidnak+p+eGynaA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB5820
+X-MS-Exchange-CrossTenant-UserPrincipalName: wC7Wmp/4s4q/YDb+xMBiQnhtPz4UklCuliYVrVuaTIpwGSuJHj1AvSl6OTVgWKAS9+FUytYOijSL0x0Uli5A++G1qevIrT+vgMqA43IDnNs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB5470
 X-OriginatorOrg: intel.com
 X-Mailman-Approved-At: Fri, 04 Aug 2023 10:13:42 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -164,35 +165,13 @@ Cc: Jens Axboe <axboe@kernel.dk>, Steffen Klassert <steffen.klassert@secunet.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Ard,
-
-On Tue, Jul 18, 2023 at 01:58:27PM +0100, Ard Biesheuvel wrote:
-> This reverts commit a368f43d6e3a001e684e9191a27df384fbff12f5.
-> 
-> "zlib-deflate" was introduced 6 years ago, but it does not have any
-> users. So let's remove the generic implementation and the test vectors,
-> but retain the "zlib-deflate" entry in the testmgr code to avoid
-> introducing warning messages on systems that implement zlib-deflate in
-> hardware.
-> 
-> Note that RFC 1950 which forms the basis of this algorithm dates back to
-> 1996, and predates RFC 1951, on which the existing IPcomp is based and
-> which we have supported in the kernel since 2003. So it seems rather
-> unlikely that we will ever grow the need to support zlib-deflate.
-> 
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Support for zlib-deflate was added for [1] but that work was not
-completed.
-
-Based on [2], either we leave this SW implementation or we remove the HW
-implementations in the QAT [3] and in the Hisilicon Zip [4] drivers.
-
-[1] https://patchwork.kernel.org/project/linux-btrfs/patch/1467083180-111750-1-git-send-email-weigang.li@intel.com/
-[2] https://lore.kernel.org/lkml/ZIw%2Fjtxdg6O1O0j3@gondor.apana.org.au/
-[3] https://elixir.bootlin.com/linux/latest/source/drivers/crypto/intel/qat/qat_common/qat_comp_algs.c#L457
-[4] https://elixir.bootlin.com/linux/latest/source/drivers/crypto/hisilicon/zip/zip_crypto.c#L754
-
-Regards,
+On Thu, Aug 03, 2023 at 11:59:00AM +0200, Ard Biesheuvel wrote:
+> Any clue why zlib_deflate was chosen in this case?
+I believe it was done for integrity.
+The output of zlib_deflate is raw deflate with an header and a footer
+defined in rfc1950. The footer contains a checksum which gets
+calculated over the uncompressed data during compression and checked
+after decompression.
 
 -- 
 Giovanni
