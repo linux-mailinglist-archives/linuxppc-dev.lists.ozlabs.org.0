@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A291576EBA3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Aug 2023 16:02:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EA4B76EB9E
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Aug 2023 16:01:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RGrBj1Y3Pz3fQS
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Aug 2023 00:02:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RGrB94m7xz3fL4
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Aug 2023 00:01:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
@@ -14,34 +14,34 @@ Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RGr5P60c5z3cMW
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Aug 2023 23:57:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RGr5L3P90z3cTl
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Aug 2023 23:57:42 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4RGr4s4mwJz9t57;
-	Thu,  3 Aug 2023 15:57:17 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4RGr4r0bY7z9t4M;
+	Thu,  3 Aug 2023 15:57:16 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
 	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id CZiBhBspuz9s; Thu,  3 Aug 2023 15:57:17 +0200 (CEST)
+	with ESMTP id hKPqEZ46o4_5; Thu,  3 Aug 2023 15:57:16 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4RGr4m0Tfxz9t4f;
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4RGr4m01Qtz9t3r;
 	Thu,  3 Aug 2023 15:57:12 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 0C66F8B763;
-	Thu,  3 Aug 2023 15:57:12 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id F068B8B773;
+	Thu,  3 Aug 2023 15:57:11 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id ZEwKmc-3qekQ; Thu,  3 Aug 2023 15:57:11 +0200 (CEST)
+	with ESMTP id rtP7P-yA6_dj; Thu,  3 Aug 2023 15:57:11 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.232.144])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 59B6D8B776;
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4C04B8B763;
 	Thu,  3 Aug 2023 15:57:11 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 373Dv3b6494193
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 373Dv3A2494197
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
 	Thu, 3 Aug 2023 15:57:03 +0200
 Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 373Dv3OP494192;
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 373Dv3Vx494196;
 	Thu, 3 Aug 2023 15:57:03 +0200
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
@@ -49,14 +49,14 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Jiri Slaby <jirislaby@kernel.org>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Nicholas Piggin <npiggin@gmail.com>, Timur Tabi <timur@kernel.org>
-Subject: [PATCH v1 07/12] serial: cpm_uart: Refactor cpm_uart_allocbuf()/cpm_uart_freebuf()
-Date: Thu,  3 Aug 2023 15:56:48 +0200
-Message-ID: <606dfdd258a4f2f2882e2e189bef37526bb3b499.1691068700.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v1 08/12] serial: cpm_uart: Refactor cpm_uart_[un]map_pram()
+Date: Thu,  3 Aug 2023 15:56:49 +0200
+Message-ID: <44a266106c421319aa8e700c2db52d5dcd652c0f.1691068700.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <cover.1691068700.git.christophe.leroy@csgroup.eu>
 References: <cover.1691068700.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1691071001; l=10344; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=fmng3Yf13DSccy9K/kGH8+3XHyPP4k1wDxdkiZ3ooIc=; b=evVODVaZYCr7v2sQu1GSMFW4wvKfaKvuYWagIcYq3jPk100Nlz8BTMH9CH15gjJqGHwzdchiP FKwkHAh7WiLDGVcCINH4WS+tg7HufZCFs22qhaxGjsojSIKbZXcrGzg
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1691071001; l=8278; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=28TMaYNg/wuam2YMhRwXHhITAluBiIelYQ4EfteMINs=; b=c4GE1AZBOq4J+DsReWNHsw7bxtwt8JqAV81wvuEQ1UWvm5bNkVtmTdTMB7Z4yLpggCLSTVn8c 86kNZeCSNRmDmF4NK7QzzeXD/rb+9lH/XoBEcWNbwBPoZftNJECN+p/
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -74,304 +74,274 @@ Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-serial@vg
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-cpm_uart_freebuf() is identical for CPM1 and CPM2.
+cpm_uart_map_pram() and cpm_uart_unmap_pram() are very
+similar for CPM1 and CPM2.
 
-cpm_uart_allocbuf() only has a small difference between CPM1 and CPM2
-as shown below:
+On CPM1 cpm_uart_map_pram() uses of_iomap() while CPM2 uses
+of_address_to_resource()/ioremap(). CPM2 version will also
+work on CPM1.
 
-CPM1:
-	if (is_con) {
-		/* was hostalloc but changed cause it blows away the */
-		/* large tlb mapping when pinning the kernel area    */
-		mem_addr = (u8 *) cpm_dpram_addr(cpm_dpalloc(memsz, 8));
-		dma_addr = (u32)cpm_dpram_phys(mem_addr);
-	} else
-		mem_addr = dma_alloc_coherent(pinfo->port.dev, memsz, &dma_addr,
-					      GFP_KERNEL);
+On CPM2 cpm_uart_map_pram() and cpm_uart_unmap_pram() has a special
+handling for SMC. Just gate it by an IS_ENABLED(CONFIG_CPM2).
 
-CPM2:
+So move the CPM2 version into cpm_uart_core.c which is the only
+user of those two fonctions and refactor to also handle CPM1 as
+mentionned above.
 
-	if (is_con) {
-		mem_addr = kzalloc(memsz, GFP_NOWAIT);
-		dma_addr = virt_to_bus(mem_addr);
-	}
-	else
-		mem_addr = dma_alloc_coherent(pinfo->port.dev, memsz, &dma_addr,
-					      GFP_KERNEL);
+PROFF_SMC_SIZE is only defined for SMC2 and used only there. To make
+it simple, just use the numerical value 64, this is the only place
+it is used and anyway there's already the same numerical value for
+the alignment.
 
-Refactor this by using IS_ENABLED(CONFIG_CPM1)
-and move both functions in cpm_uart_core.c as they are used only there.
+Use cpm_muram_alloc() instead of cpm_dpalloc() macro.
 
-While doing this, add the necessary casts to silence sparse for the CPM1
-part. This is because a dma alloc is not expected to be an iomem but
-for CPM1 as we use DPRAM this is seen as iomem.
+Then cpm_uart_cpm1.c and cpm_uart_cpm2.c are now empty and go away.
 
-Also replace calls to cpm_dpxxxx() by relevant cpm_muram_xxxx() calls.
-This is needed at least for cpm_dpram_phys() which is only defined
-for CPM1. Just do the same for all so that cpm_dpxxxx() macros can get
-droped in the future.
-
-To silence checkpatch, replace printk(KERN_ERR by pr_err( and display
-function name instead of hard coded filename. Also replace
-mem_addr == NULL by !mem_addr.
+Replace printk(KERN_WARN by pr_warn( to make checkpatch happier.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- drivers/tty/serial/cpm_uart/cpm_uart.h      |  2 -
- drivers/tty/serial/cpm_uart/cpm_uart_core.c | 72 +++++++++++++++++++++
- drivers/tty/serial/cpm_uart/cpm_uart_cpm1.c | 69 --------------------
- drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c | 69 --------------------
- 4 files changed, 72 insertions(+), 140 deletions(-)
+ drivers/tty/serial/cpm_uart/Makefile        |  8 +-
+ drivers/tty/serial/cpm_uart/cpm_uart.h      |  5 --
+ drivers/tty/serial/cpm_uart/cpm_uart_core.c | 48 ++++++++++++
+ drivers/tty/serial/cpm_uart/cpm_uart_cpm1.c | 48 ------------
+ drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c | 82 ---------------------
+ 5 files changed, 49 insertions(+), 142 deletions(-)
+ delete mode 100644 drivers/tty/serial/cpm_uart/cpm_uart_cpm1.c
+ delete mode 100644 drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c
 
+diff --git a/drivers/tty/serial/cpm_uart/Makefile b/drivers/tty/serial/cpm_uart/Makefile
+index 3f3a6ed02ed4..91f202fa5251 100644
+--- a/drivers/tty/serial/cpm_uart/Makefile
++++ b/drivers/tty/serial/cpm_uart/Makefile
+@@ -3,10 +3,4 @@
+ # Makefile for the Motorola 8xx FEC ethernet controller
+ #
+ 
+-obj-$(CONFIG_SERIAL_CPM) += cpm_uart.o
+-
+-# Select the correct platform objects.
+-cpm_uart-objs-$(CONFIG_CPM2)	+= cpm_uart_cpm2.o
+-cpm_uart-objs-$(CONFIG_CPM1)	+= cpm_uart_cpm1.o
+-
+-cpm_uart-objs	:= cpm_uart_core.o $(cpm_uart-objs-y)
++obj-$(CONFIG_SERIAL_CPM) += cpm_uart_core.o
 diff --git a/drivers/tty/serial/cpm_uart/cpm_uart.h b/drivers/tty/serial/cpm_uart/cpm_uart.h
-index 1b5523474ab4..6d6046d45bec 100644
+index 6d6046d45bec..37bb6e976e03 100644
 --- a/drivers/tty/serial/cpm_uart/cpm_uart.h
 +++ b/drivers/tty/serial/cpm_uart/cpm_uart.h
-@@ -79,8 +79,6 @@ struct uart_cpm_port {
- void __iomem *cpm_uart_map_pram(struct uart_cpm_port *port,
- 				struct device_node *np);
- void cpm_uart_unmap_pram(struct uart_cpm_port *port, void __iomem *pram);
--int cpm_uart_allocbuf(struct uart_cpm_port *pinfo, unsigned int is_con);
--void cpm_uart_freebuf(struct uart_cpm_port *pinfo);
+@@ -75,11 +75,6 @@ struct uart_cpm_port {
+ 	struct gpio_desc	*gpios[NUM_GPIOS];
+ };
  
+-/* these are located in their respective files */
+-void __iomem *cpm_uart_map_pram(struct uart_cpm_port *port,
+-				struct device_node *np);
+-void cpm_uart_unmap_pram(struct uart_cpm_port *port, void __iomem *pram);
+-
  /*
     virtual to phys transtalion
+ */
 diff --git a/drivers/tty/serial/cpm_uart/cpm_uart_core.c b/drivers/tty/serial/cpm_uart/cpm_uart_core.c
-index e6f3e4da3144..fa5466518536 100644
+index fa5466518536..626423022d62 100644
 --- a/drivers/tty/serial/cpm_uart/cpm_uart_core.c
 +++ b/drivers/tty/serial/cpm_uart/cpm_uart_core.c
-@@ -868,6 +868,78 @@ static void cpm_uart_init_smc(struct uart_cpm_port *pinfo)
- 	setbits16(&sp->smc_smcmr, SMCMR_REN | SMCMR_TEN);
- }
+@@ -1207,6 +1207,54 @@ static const struct uart_ops cpm_uart_pops = {
  
-+/*
-+ * Allocate DP-Ram and memory buffers. We need to allocate a transmit and
-+ * receive buffer descriptors from dual port ram, and a character
-+ * buffer area from host mem. If we are allocating for the console we need
-+ * to do it from bootmem
-+ */
-+static int cpm_uart_allocbuf(struct uart_cpm_port *pinfo, unsigned int is_con)
+ static struct uart_cpm_port cpm_uart_ports[UART_NR];
+ 
++static void __iomem *cpm_uart_map_pram(struct uart_cpm_port *port,
++				       struct device_node *np)
 +{
-+	int dpmemsz, memsz;
-+	u8 __iomem *dp_mem;
-+	unsigned long dp_offset;
-+	u8 *mem_addr;
-+	dma_addr_t dma_addr = 0;
++	void __iomem *pram;
++	unsigned long offset;
++	struct resource res;
++	resource_size_t len;
 +
-+	pr_debug("CPM uart[%d]:allocbuf\n", pinfo->port.line);
++	/* Don't remap parameter RAM if it has already been initialized
++	 * during console setup.
++	 */
++	if (IS_SMC(port) && port->smcup)
++		return port->smcup;
++	else if (!IS_SMC(port) && port->sccup)
++		return port->sccup;
 +
-+	dpmemsz = sizeof(cbd_t) * (pinfo->rx_nrfifos + pinfo->tx_nrfifos);
-+	dp_offset = cpm_muram_alloc(dpmemsz, 8);
-+	if (IS_ERR_VALUE(dp_offset)) {
-+		pr_err("%s: could not allocate buffer descriptors\n", __func__);
-+		return -ENOMEM;
++	if (of_address_to_resource(np, 1, &res))
++		return NULL;
++
++	len = resource_size(&res);
++	pram = ioremap(res.start, len);
++	if (!pram)
++		return NULL;
++
++	if (!IS_ENABLED(CONFIG_CPM2) || !IS_SMC(port))
++		return pram;
++
++	if (len != 2) {
++		pr_warn("cpm_uart[%d]: device tree references "
++			"SMC pram, using boot loader/wrapper pram mapping. "
++			"Please fix your device tree to reference the pram "
++			"base register instead.\n",
++			port->port.line);
++		return pram;
 +	}
 +
-+	dp_mem = cpm_muram_addr(dp_offset);
-+
-+	memsz = L1_CACHE_ALIGN(pinfo->rx_nrfifos * pinfo->rx_fifosize) +
-+	    L1_CACHE_ALIGN(pinfo->tx_nrfifos * pinfo->tx_fifosize);
-+	if (IS_ENABLED(CONFIG_CPM1) && is_con) {
-+		/* was hostalloc but changed cause it blows away the */
-+		/* large tlb mapping when pinning the kernel area    */
-+		mem_addr = (u8 __force *)cpm_muram_addr(cpm_muram_alloc(memsz, 8));
-+		dma_addr = cpm_muram_dma((void __iomem *)mem_addr);
-+	} else if (is_con) {
-+		mem_addr = kzalloc(memsz, GFP_NOWAIT);
-+		dma_addr = virt_to_bus(mem_addr);
-+	} else {
-+		mem_addr = dma_alloc_coherent(pinfo->port.dev, memsz, &dma_addr,
-+					      GFP_KERNEL);
-+	}
-+
-+	if (!mem_addr) {
-+		cpm_muram_free(dp_offset);
-+		pr_err("%s: could not allocate coherent memory\n", __func__);
-+		return -ENOMEM;
-+	}
-+
-+	pinfo->dp_addr = dp_offset;
-+	pinfo->mem_addr = mem_addr;
-+	pinfo->dma_addr = dma_addr;
-+	pinfo->mem_size = memsz;
-+
-+	pinfo->rx_buf = mem_addr;
-+	pinfo->tx_buf = pinfo->rx_buf + L1_CACHE_ALIGN(pinfo->rx_nrfifos
-+						       * pinfo->rx_fifosize);
-+
-+	pinfo->rx_bd_base = (cbd_t __iomem *)dp_mem;
-+	pinfo->tx_bd_base = pinfo->rx_bd_base + pinfo->rx_nrfifos;
-+
-+	return 0;
++	offset = cpm_muram_alloc(64, 64);
++	out_be16(pram, offset);
++	iounmap(pram);
++	return cpm_muram_addr(offset);
 +}
 +
-+static void cpm_uart_freebuf(struct uart_cpm_port *pinfo)
++static void cpm_uart_unmap_pram(struct uart_cpm_port *port, void __iomem *pram)
 +{
-+	dma_free_coherent(pinfo->port.dev, L1_CACHE_ALIGN(pinfo->rx_nrfifos *
-+							  pinfo->rx_fifosize) +
-+			  L1_CACHE_ALIGN(pinfo->tx_nrfifos *
-+					 pinfo->tx_fifosize), (void __force *)pinfo->mem_addr,
-+			  pinfo->dma_addr);
-+
-+	cpm_muram_free(pinfo->dp_addr);
++	if (!IS_ENABLED(CONFIG_CPM2) || !IS_SMC(port))
++		iounmap(pram);
 +}
 +
- /*
-  * Initialize port. This is called from early_console stuff
-  * so we have to be careful here !
-diff --git a/drivers/tty/serial/cpm_uart/cpm_uart_cpm1.c b/drivers/tty/serial/cpm_uart/cpm_uart_cpm1.c
-index b5680376ff3c..3fe436dc2f95 100644
---- a/drivers/tty/serial/cpm_uart/cpm_uart_cpm1.c
-+++ b/drivers/tty/serial/cpm_uart/cpm_uart_cpm1.c
-@@ -46,72 +46,3 @@ void cpm_uart_unmap_pram(struct uart_cpm_port *port, void __iomem *pram)
+ static int cpm_uart_init_port(struct device_node *np,
+                               struct uart_cpm_port *pinfo)
  {
- 	iounmap(pram);
- }
--
+diff --git a/drivers/tty/serial/cpm_uart/cpm_uart_cpm1.c b/drivers/tty/serial/cpm_uart/cpm_uart_cpm1.c
+deleted file mode 100644
+index 3fe436dc2f95..000000000000
+--- a/drivers/tty/serial/cpm_uart/cpm_uart_cpm1.c
++++ /dev/null
+@@ -1,48 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0+
 -/*
-- * Allocate DP-Ram and memory buffers. We need to allocate a transmit and
-- * receive buffer descriptors from dual port ram, and a character
-- * buffer area from host mem. If we are allocating for the console we need
-- * to do it from bootmem
+- *  Driver for CPM (SCC/SMC) serial ports; CPM1 definitions
+- *
+- *  Maintainer: Kumar Gala (galak@kernel.crashing.org) (CPM2)
+- *              Pantelis Antoniou (panto@intracom.gr) (CPM1)
+- *
+- *  Copyright (C) 2004 Freescale Semiconductor, Inc.
+- *            (C) 2004 Intracom, S.A.
+- *            (C) 2006 MontaVista Software, Inc.
+- *		Vitaly Bordug <vbordug@ru.mvista.com>
 - */
--int cpm_uart_allocbuf(struct uart_cpm_port *pinfo, unsigned int is_con)
+-
+-#include <linux/module.h>
+-#include <linux/tty.h>
+-#include <linux/gfp.h>
+-#include <linux/ioport.h>
+-#include <linux/serial.h>
+-#include <linux/console.h>
+-#include <linux/sysrq.h>
+-#include <linux/device.h>
+-#include <linux/memblock.h>
+-#include <linux/dma-mapping.h>
+-
+-#include <asm/io.h>
+-#include <asm/irq.h>
+-#include <asm/fs_pd.h>
+-
+-#include <linux/serial_core.h>
+-#include <linux/kernel.h>
+-
+-#include <linux/of.h>
+-#include <linux/of_address.h>
+-
+-#include "cpm_uart.h"
+-
+-/**************************************************************/
+-
+-void __iomem *cpm_uart_map_pram(struct uart_cpm_port *port,
+-				struct device_node *np)
 -{
--	int dpmemsz, memsz;
--	u8 *dp_mem;
--	unsigned long dp_offset;
--	u8 *mem_addr;
--	dma_addr_t dma_addr = 0;
--
--	pr_debug("CPM uart[%d]:allocbuf\n", pinfo->port.line);
--
--	dpmemsz = sizeof(cbd_t) * (pinfo->rx_nrfifos + pinfo->tx_nrfifos);
--	dp_offset = cpm_dpalloc(dpmemsz, 8);
--	if (IS_ERR_VALUE(dp_offset)) {
--		printk(KERN_ERR
--		       "cpm_uart_cpm1.c: could not allocate buffer descriptors\n");
--		return -ENOMEM;
--	}
--	dp_mem = cpm_dpram_addr(dp_offset);
--
--	memsz = L1_CACHE_ALIGN(pinfo->rx_nrfifos * pinfo->rx_fifosize) +
--	    L1_CACHE_ALIGN(pinfo->tx_nrfifos * pinfo->tx_fifosize);
--	if (is_con) {
--		/* was hostalloc but changed cause it blows away the */
--		/* large tlb mapping when pinning the kernel area    */
--		mem_addr = (u8 *) cpm_dpram_addr(cpm_dpalloc(memsz, 8));
--		dma_addr = (u32)cpm_dpram_phys(mem_addr);
--	} else
--		mem_addr = dma_alloc_coherent(pinfo->port.dev, memsz, &dma_addr,
--					      GFP_KERNEL);
--
--	if (mem_addr == NULL) {
--		cpm_dpfree(dp_offset);
--		printk(KERN_ERR
--		       "cpm_uart_cpm1.c: could not allocate coherent memory\n");
--		return -ENOMEM;
--	}
--
--	pinfo->dp_addr = dp_offset;
--	pinfo->mem_addr = mem_addr;             /*  virtual address*/
--	pinfo->dma_addr = dma_addr;             /*  physical address*/
--	pinfo->mem_size = memsz;
--
--	pinfo->rx_buf = mem_addr;
--	pinfo->tx_buf = pinfo->rx_buf + L1_CACHE_ALIGN(pinfo->rx_nrfifos
--						       * pinfo->rx_fifosize);
--
--	pinfo->rx_bd_base = (cbd_t __iomem __force *)dp_mem;
--	pinfo->tx_bd_base = pinfo->rx_bd_base + pinfo->rx_nrfifos;
--
--	return 0;
+-	return of_iomap(np, 1);
 -}
 -
--void cpm_uart_freebuf(struct uart_cpm_port *pinfo)
+-void cpm_uart_unmap_pram(struct uart_cpm_port *port, void __iomem *pram)
 -{
--	dma_free_coherent(pinfo->port.dev, L1_CACHE_ALIGN(pinfo->rx_nrfifos *
--							  pinfo->rx_fifosize) +
--			  L1_CACHE_ALIGN(pinfo->tx_nrfifos *
--					 pinfo->tx_fifosize), pinfo->mem_addr,
--			  pinfo->dma_addr);
--
--	cpm_dpfree(pinfo->dp_addr);
+-	iounmap(pram);
 -}
 diff --git a/drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c b/drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c
-index 35f539fcfde8..09d46255aa9d 100644
+deleted file mode 100644
+index 09d46255aa9d..000000000000
 --- a/drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c
-+++ b/drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c
-@@ -80,72 +80,3 @@ void cpm_uart_unmap_pram(struct uart_cpm_port *port, void __iomem *pram)
- 	if (!IS_SMC(port))
- 		iounmap(pram);
- }
--
++++ /dev/null
+@@ -1,82 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0+
 -/*
-- * Allocate DP-Ram and memory buffers. We need to allocate a transmit and
-- * receive buffer descriptors from dual port ram, and a character
-- * buffer area from host mem. If we are allocating for the console we need
-- * to do it from bootmem
+- *  Driver for CPM (SCC/SMC) serial ports; CPM2 definitions
+- *
+- *  Maintainer: Kumar Gala (galak@kernel.crashing.org) (CPM2)
+- *              Pantelis Antoniou (panto@intracom.gr) (CPM1)
+- *
+- *  Copyright (C) 2004 Freescale Semiconductor, Inc.
+- *            (C) 2004 Intracom, S.A.
+- *            (C) 2006 MontaVista Software, Inc.
+- *		Vitaly Bordug <vbordug@ru.mvista.com>
 - */
--int cpm_uart_allocbuf(struct uart_cpm_port *pinfo, unsigned int is_con)
+-
+-#include <linux/module.h>
+-#include <linux/tty.h>
+-#include <linux/ioport.h>
+-#include <linux/slab.h>
+-#include <linux/serial.h>
+-#include <linux/console.h>
+-#include <linux/sysrq.h>
+-#include <linux/device.h>
+-#include <linux/memblock.h>
+-#include <linux/dma-mapping.h>
+-
+-#include <asm/io.h>
+-#include <asm/irq.h>
+-#include <asm/fs_pd.h>
+-
+-#include <linux/serial_core.h>
+-#include <linux/kernel.h>
+-
+-#include "cpm_uart.h"
+-
+-/**************************************************************/
+-
+-void __iomem *cpm_uart_map_pram(struct uart_cpm_port *port,
+-				struct device_node *np)
 -{
--	int dpmemsz, memsz;
--	u8 __iomem *dp_mem;
--	unsigned long dp_offset;
--	u8 *mem_addr;
--	dma_addr_t dma_addr = 0;
+-	void __iomem *pram;
+-	unsigned long offset;
+-	struct resource res;
+-	resource_size_t len;
 -
--	pr_debug("CPM uart[%d]:allocbuf\n", pinfo->port.line);
+-	/* Don't remap parameter RAM if it has already been initialized
+-	 * during console setup.
+-	 */
+-	if (IS_SMC(port) && port->smcup)
+-		return port->smcup;
+-	else if (!IS_SMC(port) && port->sccup)
+-		return port->sccup;
 -
--	dpmemsz = sizeof(cbd_t) * (pinfo->rx_nrfifos + pinfo->tx_nrfifos);
--	dp_offset = cpm_dpalloc(dpmemsz, 8);
--	if (IS_ERR_VALUE(dp_offset)) {
--		printk(KERN_ERR
--		       "cpm_uart_cpm.c: could not allocate buffer descriptors\n");
--		return -ENOMEM;
+-	if (of_address_to_resource(np, 1, &res))
+-		return NULL;
+-
+-	len = resource_size(&res);
+-	pram = ioremap(res.start, len);
+-	if (!pram)
+-		return NULL;
+-
+-	if (!IS_SMC(port))
+-		return pram;
+-
+-	if (len != 2) {
+-		printk(KERN_WARNING "cpm_uart[%d]: device tree references "
+-			"SMC pram, using boot loader/wrapper pram mapping. "
+-			"Please fix your device tree to reference the pram "
+-			"base register instead.\n",
+-			port->port.line);
+-		return pram;
 -	}
 -
--	dp_mem = cpm_dpram_addr(dp_offset);
--
--	memsz = L1_CACHE_ALIGN(pinfo->rx_nrfifos * pinfo->rx_fifosize) +
--	    L1_CACHE_ALIGN(pinfo->tx_nrfifos * pinfo->tx_fifosize);
--	if (is_con) {
--		mem_addr = kzalloc(memsz, GFP_NOWAIT);
--		dma_addr = virt_to_bus(mem_addr);
--	}
--	else
--		mem_addr = dma_alloc_coherent(pinfo->port.dev, memsz, &dma_addr,
--					      GFP_KERNEL);
--
--	if (mem_addr == NULL) {
--		cpm_dpfree(dp_offset);
--		printk(KERN_ERR
--		       "cpm_uart_cpm.c: could not allocate coherent memory\n");
--		return -ENOMEM;
--	}
--
--	pinfo->dp_addr = dp_offset;
--	pinfo->mem_addr = mem_addr;
--	pinfo->dma_addr = dma_addr;
--	pinfo->mem_size = memsz;
--
--	pinfo->rx_buf = mem_addr;
--	pinfo->tx_buf = pinfo->rx_buf + L1_CACHE_ALIGN(pinfo->rx_nrfifos
--						       * pinfo->rx_fifosize);
--
--	pinfo->rx_bd_base = (cbd_t __iomem *)dp_mem;
--	pinfo->tx_bd_base = pinfo->rx_bd_base + pinfo->rx_nrfifos;
--
--	return 0;
+-	offset = cpm_dpalloc(PROFF_SMC_SIZE, 64);
+-	out_be16(pram, offset);
+-	iounmap(pram);
+-	return cpm_muram_addr(offset);
 -}
 -
--void cpm_uart_freebuf(struct uart_cpm_port *pinfo)
+-void cpm_uart_unmap_pram(struct uart_cpm_port *port, void __iomem *pram)
 -{
--	dma_free_coherent(pinfo->port.dev, L1_CACHE_ALIGN(pinfo->rx_nrfifos *
--							  pinfo->rx_fifosize) +
--			  L1_CACHE_ALIGN(pinfo->tx_nrfifos *
--					 pinfo->tx_fifosize), (void __force *)pinfo->mem_addr,
--			  pinfo->dma_addr);
--
--	cpm_dpfree(pinfo->dp_addr);
+-	if (!IS_SMC(port))
+-		iounmap(pram);
 -}
 -- 
 2.41.0
