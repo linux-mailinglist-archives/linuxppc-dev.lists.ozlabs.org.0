@@ -1,78 +1,153 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13FE576F66D
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Aug 2023 02:14:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2329576F66F
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Aug 2023 02:15:57 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=Wy81fxHc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=O85PqLIU;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RH5nK4zYtz30Db
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Aug 2023 10:14:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RH5pf6PvDz3bTk
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Aug 2023 10:15:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=Wy81fxHc;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=O85PqLIU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::431; helo=mail-pf1-x431.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mgamail.intel.com; envelope-from=giovanni.cabiddu@intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 66 seconds by postgrey-1.37 at boromir; Thu, 03 Aug 2023 19:52:58 AEST
+Received: from mgamail.intel.com (unknown [134.134.136.31])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RGjth2B4dz2yVr
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Aug 2023 19:18:03 +1000 (AEST)
-Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-68781a69befso133118b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 03 Aug 2023 02:18:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1691054276; x=1691659076;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=GRlGFt/b+eLL81fhIoc4g8Xnl9ZXM32WoVDoUNCTBPI=;
-        b=Wy81fxHcIQAkCOjVlz/bXR2PEFHMyBpLCB/0rUSMHU/+AN9M9o+SWg7IeMqOl7dtXJ
-         u4X5Xmtgbr1j2HlIsVyt5UNXMMDLJxoTaRAclA9TqXI7WKrW9+IBnJfH+DTnoe8C1pR/
-         Ua8vJ7SkvZ3BfGOtQX4f/oVAVl0L5wivyhyymiEivlwLY8IuN30VfinZQXBHe84NQwjn
-         vxvkWuD4OufFqIDnDBL6RQ49ypYOjDcMNYf9unSkCaHxT+Wgbf46GjdKuPaFlP2cpDBq
-         02ZumQIM1oI0uqByQs5V8bGS3+Zz9zHG2v99uaBr1W/QHfi9khuYRMuO4GhTbMXqmhfg
-         fEBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691054276; x=1691659076;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GRlGFt/b+eLL81fhIoc4g8Xnl9ZXM32WoVDoUNCTBPI=;
-        b=TUKOXKhhbJdMGiLBWlPb9BTdCbiAv5NfNNf/nNg2fKDv+Rk1kcamdmBjIWLou7jTtJ
-         ZKh9r3pVdkt82TqlA6remTbyz4Nhav09wWi4QjxCfjSPrwMTWVQLX6cOpW+c+uC140s+
-         jYu0WJV2ynLzjrECH2gKBHNB306RTZLV7FlaYXPy00LaPH8JD+yp8lmrl040gCTFFe85
-         zpc93jMJC3hPf2CiwEdhZm84tdJYKWGB+EL5RNkUb1Kt1zmhlwepisD2+YunKgAkGkIi
-         v4eoAdp30bzVX3K57D/a/EaJnwArd0hgLOKo/ZSKzsClbWReNNjVH8toI2snxndUn/wW
-         iWzQ==
-X-Gm-Message-State: ABy/qLYNkZPW2dzHSVV5hpc1tuHn6H4GgcBa+hcS7/vY2F9/4sE2AiYc
-	t1YdV+K9HIM4LK59TwBW7Z1Huw==
-X-Google-Smtp-Source: APBJJlF1R67qBIL1XVp7Pt2rmoZtkUWRGJa2ZDwYOFvPcmMmGiKpQTlnEEw5SIHIdIIPkp3jz66NKQ==
-X-Received: by 2002:a05:6a21:9989:b0:111:a0e5:d2b7 with SMTP id ve9-20020a056a21998900b00111a0e5d2b7mr20024356pzb.4.1691054276027;
-        Thu, 03 Aug 2023 02:17:56 -0700 (PDT)
-Received: from [10.70.252.135] ([203.208.167.146])
-        by smtp.gmail.com with ESMTPSA id g10-20020a63b14a000000b0056471d2ae8fsm3892765pgp.90.2023.08.03.02.17.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Aug 2023 02:17:55 -0700 (PDT)
-Message-ID: <0df84f9f-e9b0-80b1-4c9e-95abc1a73a96@bytedance.com>
-Date: Thu, 3 Aug 2023 17:17:34 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RGkfy3S6tz30gP
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Aug 2023 19:52:57 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1691056378; x=1722592378;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=TuKFzz3MlRqvgsdCaykX2SELXmxJFCo0/Of+pz20f6w=;
+  b=O85PqLIUbM/o5F8Kc++ZRndm7GzzOANPrsPbPCc+bDc+9OOsFBhi/OdB
+   SNNkIcreu1cO+i+sOykxvycouEPzk5N6uoiCyk2riPrncPHId5LXkUJQS
+   iabSXtoQbgKVfnX4piDbbW/DL7apOE6HqV1ZBaOjOKL58Jqn0ucB4Qh+V
+   v2mKpylenDZ+LL0LGQPKfRUHIr9demqNy+0to13a48WgiKmL8o2KuHsg2
+   Gcw1Liy0fVbii/t4l/iJdw4UHchwo+Bh+bVgAQnXdtXbX6XTcGbtzNvC9
+   LMV8t97SfjGaMoh9Hws8Q5uSSFGmSr4skDb3V9WoKgLp8U4v+/XOHAAs2
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10790"; a="433667474"
+X-IronPort-AV: E=Sophos;i="6.01,251,1684825200"; 
+   d="scan'208";a="433667474"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2023 02:51:44 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10790"; a="799484559"
+X-IronPort-AV: E=Sophos;i="6.01,251,1684825200"; 
+   d="scan'208";a="799484559"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by fmsmga004.fm.intel.com with ESMTP; 03 Aug 2023 02:51:42 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Thu, 3 Aug 2023 02:51:42 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Thu, 3 Aug 2023 02:51:42 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27 via Frontend Transport; Thu, 3 Aug 2023 02:51:42 -0700
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.169)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.27; Thu, 3 Aug 2023 02:51:41 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=XiwkCQLrnX3vCPUBvH9SF14ucGP0LiLHfyMmCo/jsjcc9fX2/NHNUm9WR5fSrBphLBhxbQ1LaMT9j4M92JImJ5cmsF7d4yV4K0+ZPjzRKvsB93Zjpj9cms59Qm/rB6OqRUemk3RTodpzJCCuJjqFKFAB6wPG84tGsHScuB1T/ytEVwccIit6/GNuq85Qz2VOZWJO2aoeK9cSaociTzYB59MI5+KA22WMilk+MB8SSr1rVnGE4H7xGU4Oe3BBDrz+woi03DNOt8VsGK53HPtbMaKZb5S4qyQfT5lA/sNzilEBBTyCRKC7rXy+ISHZs/EI8LoEmlG6nNhXOpHe3dsdyg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1dblz5LMCJ3tcTxBm4uadKsWwuVksbu+ZPdIg0ZkLtk=;
+ b=Xvjd5HHlOR9Xu34gxxPTysNH5EfIcDhYAXMzVFVLjHNnWJJ7wSmkAyw4Ib3gh1CckEvSfKLDC03qUkUBjmZzh5MVyEt5K/jL+N5giCyYD7NxE+UtJwHNfMEN6ZiEg81YpMr5MunXIVOyfO3WFqfoKrpKioYlgLD/le/7SZECb15qmxfGrR0ylFWMBQfyeRLrlafuu57r4UbuuW+GwzyVQMUFMzvz+vVdwHBEelcNzRhq+XYuHjJ0YO22GG3IXe8A069iTgynD3g11irbXB1lAJiuA3ydvE3Fk2VWZgLApwfp570B2xFB7eJQD18zlDeduAryFry/Ohk90XdLLNEXWw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CY5PR11MB6366.namprd11.prod.outlook.com (2603:10b6:930:3a::8)
+ by PH7PR11MB5820.namprd11.prod.outlook.com (2603:10b6:510:133::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.20; Thu, 3 Aug
+ 2023 09:51:40 +0000
+Received: from CY5PR11MB6366.namprd11.prod.outlook.com
+ ([fe80::f8a8:855c:2d19:9ac1]) by CY5PR11MB6366.namprd11.prod.outlook.com
+ ([fe80::f8a8:855c:2d19:9ac1%7]) with mapi id 15.20.6631.046; Thu, 3 Aug 2023
+ 09:51:39 +0000
+Date: Thu, 3 Aug 2023 10:51:26 +0100
+From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+To: Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [RFC PATCH 01/21] crypto: scomp - Revert "add support for
+ deflate rfc1950 (zlib)"
+Message-ID: <ZMt4nkfpdCXxAkr5@gcabiddu-mobl1.ger.corp.intel.com>
+References: <20230718125847.3869700-1-ardb@kernel.org>
+ <20230718125847.3869700-2-ardb@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20230718125847.3869700-2-ardb@kernel.org>
+Organization: Intel Research and Development Ireland Ltd - Co. Reg. #308263 -
+ Collinstown Industrial Park, Leixlip, County Kildare - Ireland
+X-ClientProxiedBy: FR2P281CA0123.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:9d::16) To CY5PR11MB6366.namprd11.prod.outlook.com
+ (2603:10b6:930:3a::8)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v3 10/13] mm/khugepaged: collapse_pte_mapped_thp() with
- mmap_read_lock()
-Content-Language: en-US
-To: Hugh Dickins <hughd@google.com>, Andrew Morton
- <akpm@linux-foundation.org>, Pasha Tatashin <pasha.tatashin@soleen.com>
-References: <7cd843a9-aa80-14f-5eb2-33427363c20@google.com>
- <b53be6a4-7715-51f9-aad-f1347dcb7c4@google.com>
-From: Qi Zheng <zhengqi.arch@bytedance.com>
-In-Reply-To: <b53be6a4-7715-51f9-aad-f1347dcb7c4@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY5PR11MB6366:EE_|PH7PR11MB5820:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1028c133-db60-4560-f441-08db94073bd1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: qQjqdLRRpwe9YEhvUoY8SsLHb9WcO6s4LirCZMFB/Owtc8iynTHqnZ//Quk3KCcjGlVaQuIQ8psKSsz6j3LXyBiTxEVjJWVnNU9tPjPt/M+lgqqNnDU0j1JZN2OC8YucoOvE3ADl6QtEg6Mwzz+a9rCe75zJ6oL3FPsW/AbF7M8hvilzfnHbZeiZRnpWgpBVLk+tueEwsAImWOWnhRJaX7FlplQvCf8FB6Z64EzCOKL79rII20MhwQcLKe+nTaxT2lumY+rIV60KOC5oYWFSWDhyM3GCxbvyyqbpodyGMZgSnY457krdiuNvPn/K8f31kx55HsWbY/6X47ltLT/nD3pcyPHIdToKDsdY7zerZ/FNcVz5cq5c5mE2l/myyHUnEdnkwTIdPNI9mW9eLySKllagBONjIJIXUryUo9XDOuZwx2tO7KH0sBjBH6+qYih1jls5K8Qzj06XFQv3gVMsyv8vtfus7OGcgf9p6kICJSf9+nT68jrMaB6TuJB377YrjI9Flmw4y3aOQI+nLDBit0D5b6MRDxDu9DSYU3ZH+2Hfj5BP94Ol8cT70qqK/xUanwiCjfwsTnYJH+4LxeF8HQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR11MB6366.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(136003)(396003)(346002)(39860400002)(366004)(376002)(451199021)(6506007)(83380400001)(26005)(186003)(316002)(2906002)(66946007)(4326008)(66476007)(66556008)(5660300002)(6916009)(44832011)(7416002)(41300700001)(8676002)(8936002)(6486002)(6666004)(966005)(6512007)(54906003)(478600001)(36916002)(38100700002)(82960400001)(86362001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Lga4pFFs7leZF9HX5L4F6WkIevbbgsCCXMKaTRj49zNbwQCcbEFGVXpikffX?=
+ =?us-ascii?Q?GIdzTR5MJXCzZNhPKwKoG/zFCr/EyNRvxU86iJpfV6u9ow/Q6dCwjcDfAAr/?=
+ =?us-ascii?Q?etXX29Zr8WU+s0Mkm2ikuGyDZC0RE2+mV+98EFHNE2piyI85xv1xm3bLoFWs?=
+ =?us-ascii?Q?NkUPIR/d3qC3gGDy/tScKQd9Gc5dROhuOs3g8mtapD1HkHlpy7ibgZEh2VsC?=
+ =?us-ascii?Q?Pc5K5SyoLqfEjXEtklQjwZCshsBd2VIpMm9EH8OGgh8dSUytuvV2/6U/NUCi?=
+ =?us-ascii?Q?kR6IqyThgNayxLBmxzdJTkVhMpLn0tBRhXWajiPAkqEXFOG3Cr+upSBiZCiP?=
+ =?us-ascii?Q?N3bpEu6XhAQhEvdwMon9h4lEbU5MWAllj8JeZu4dDp4/trKGsEuWNyorI2qS?=
+ =?us-ascii?Q?6tVEdYpn0VAmycHAaG2YylmzDumlVcLx7oQCzOhfiF8cPqxKqTttJb/7YRNg?=
+ =?us-ascii?Q?6SMBm+aEqcl7c37Mi9D0e3CsV2E7qAys23bJvcdJ6/BjCSLdZY0ja9VoGKPF?=
+ =?us-ascii?Q?qIlucEzkH4R9j0sS5ZC0gpSpNyyhJoCPo4sg8jLt8TJYX5IGAwrErrZK1E1r?=
+ =?us-ascii?Q?Tkq5awRSvuUz3Kt4gmArjQja6aci8Xr5gv7+9CZ+PzDOrj1FJYMhikweCr9e?=
+ =?us-ascii?Q?eRBT/QPdsO/SCHxqHZKfRYbjIOA5/SvOnJs310n8921i2oM+/XSgOOpmtdHm?=
+ =?us-ascii?Q?R/kN/YguC4c1NdqFflBtWLFpyTojf08kW+GL1x+aNq+qHqmW+aUNJF8e+ov2?=
+ =?us-ascii?Q?BJYWvukW+03HM7L7dvhaHXvPWioqcRtebSilJN3fQuaDMQxXuqltti/gRiD/?=
+ =?us-ascii?Q?yKfLn3/gU0f+7MArIXU1tcLHuY9W9gj3o6PkwNHo94BgM1Wes+vvnWTP8l9m?=
+ =?us-ascii?Q?WxrkW4+Cj0In8c+vwW+DM/ld1XzOHgpYh0mWETtaILUL45K5zxwY6pODaV8R?=
+ =?us-ascii?Q?HEY8dMQnURimtR5jji8diY0A6LoDqA3GEoiMNTr2/rZVWSrxwtG+qys+50Fr?=
+ =?us-ascii?Q?B8OyIlOOa4OYf+OlEvhZe4DH1iGrEV0TAcw18ep8akGj9+yOTUlOwguyV7Co?=
+ =?us-ascii?Q?pQYIGmufoWVs0IOkYyDj+9F0sVLQu5nzknnKRA08DzVRefFnornQBKEh7rIP?=
+ =?us-ascii?Q?rJ/W1TgUyIxNxy0RSKOhWv9a0QbBAmUyQX54FRTXMZIqU95H8vOBU6ZEF2sz?=
+ =?us-ascii?Q?duWQXDhYyO9YCz3QX1VkJyoKegrkIvTWMmvLoF044UW/h10dPSzDs6qLZzjy?=
+ =?us-ascii?Q?xL5W5PDk7A4KAxGrPGVCyVviKUV0f0anTKYLH5FhBiCnIk3+/lg2HIihJlCS?=
+ =?us-ascii?Q?iJjuy6r+IRXP9cpYEtV5jTQ1G7i8FlMCzjXspzb0xrwHxSywPv3eEzzKIvCg?=
+ =?us-ascii?Q?AFGY71HgC37Zm3HLm4t5bLUtIB5uBBsZte6MQxGqhM4mIpC/W6WmYFWO67TG?=
+ =?us-ascii?Q?9/fC8pV3A/YwkxQemNRRAM/Z+2+0Th+pCJZ1lJKDJq9L9IH+/NtteERcH3Rn?=
+ =?us-ascii?Q?92liXbfXKqbJWFG9XDuGcWIbPmWJodjcE1TP88l3tRyFa03kE7v/LkmeN0gP?=
+ =?us-ascii?Q?BLAxPLzJAmA+Rs9lK9it02pKWOTIklSmH/JAjwNs8KjQdt5OgcC9CG7eQjbt?=
+ =?us-ascii?Q?oQ=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1028c133-db60-4560-f441-08db94073bd1
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6366.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2023 09:51:39.8469
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nBfUJuNll9ZGLMZYQHRtdAS+rk2qNTLE9GJvBuE+weca+edJG4bbe1U6e2PCh9+MtLzJXEKJne6S2obnsGQLoiOQBryVbidnak+p+eGynaA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB5820
+X-OriginatorOrg: intel.com
 X-Mailman-Approved-At: Fri, 04 Aug 2023 10:13:42 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -85,329 +160,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Miaohe Lin <linmiaohe@huawei.com>, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Yang Shi <shy828301@gmail.com>, Peter Xu <peterx@redhat.com>, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, Yu Zhao <yuzhao@google.com>, Ira Weiny <ira.weiny@intel.com>, Alistair Popple <apopple@nvidia.com>, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, Steven Price <steven.price@arm.com>, Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Zi Yan <ziy@nvidia.com>, Huang Ying <ying.huang@intel.com>, Axel Rasmussen <axelrasmussen@google.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Thomas Hellstrom <thomas.hellstrom@linux.intel.com>, Ralph Campbell <rcampbell@nvi
- dia.com>, Vasily Gorbik <gor@linux.ibm.com>, Anshuman Khandual <anshuman.khandual@arm.com>, Heiko Carstens <hca@linux.ibm.com>, Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, linux-arm-kernel@lists.infradead.org, SeongJae Park <sj@kernel.org>, Lorenzo Stoakes <lstoakes@gmail.com>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Naoya Horiguchi <naoya.horiguchi@nec.com>, linux-kernel@vger.kernel.org, Vishal Moola <vishal.moola@gmail.com>, Minchan Kim <minchan@kernel.org>, Mike Rapoport <rppt@kernel.org>, Mel Gorman <mgorman@techsingularity.net>, "David S. Miller" <davem@davemloft.net>, Zack Rusin <zackr@vmware.com>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Jens Axboe <axboe@kernel.dk>, Steffen Klassert <steffen.klassert@secunet.com>, Kees Cook <keescook@chromium.org>, qat-linux <qat-linux@intel.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, Richard Weinberger <richard@nod.at>, David Ahern <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Eric Biggers <ebiggers@kernel.org>, Minchan Kim <minchan@kernel.org>, Nick Terrell <terrelln@fb.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>, Jakub Kicinski <kuba@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, Paolo Abeni <pabeni@redhat.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+Hi Ard,
 
-On 2023/7/12 12:42, Hugh Dickins wrote:
-> Bring collapse_and_free_pmd() back into collapse_pte_mapped_thp().
-> It does need mmap_read_lock(), but it does not need mmap_write_lock(),
-> nor vma_start_write() nor i_mmap lock nor anon_vma lock.  All racing
-> paths are relying on pte_offset_map_lock() and pmd_lock(), so use those.
+On Tue, Jul 18, 2023 at 01:58:27PM +0100, Ard Biesheuvel wrote:
+> This reverts commit a368f43d6e3a001e684e9191a27df384fbff12f5.
 > 
-> Follow the pattern in retract_page_tables(); and using pte_free_defer()
-> removes most of the need for tlb_remove_table_sync_one() here; but call
-> pmdp_get_lockless_sync() to use it in the PAE case.
+> "zlib-deflate" was introduced 6 years ago, but it does not have any
+> users. So let's remove the generic implementation and the test vectors,
+> but retain the "zlib-deflate" entry in the testmgr code to avoid
+> introducing warning messages on systems that implement zlib-deflate in
+> hardware.
 > 
-> First check the VMA, in case page tables are being torn down: from JannH.
-> Confirm the preliminary find_pmd_or_thp_or_none() once page lock has been
-> acquired and the page looks suitable: from then on its state is stable.
+> Note that RFC 1950 which forms the basis of this algorithm dates back to
+> 1996, and predates RFC 1951, on which the existing IPcomp is based and
+> which we have supported in the kernel since 2003. So it seems rather
+> unlikely that we will ever grow the need to support zlib-deflate.
 > 
-> However, collapse_pte_mapped_thp() was doing something others don't:
-> freeing a page table still containing "valid" entries.  i_mmap lock did
-> stop a racing truncate from double-freeing those pages, but we prefer
-> collapse_pte_mapped_thp() to clear the entries as usual.  Their TLB
-> flush can wait until the pmdp_collapse_flush() which follows, but the
-> mmu_notifier_invalidate_range_start() has to be done earlier.
-> 
-> Do the "step 1" checking loop without mmu_notifier: it wouldn't be good
-> for khugepaged to keep on repeatedly invalidating a range which is then
-> found unsuitable e.g. contains COWs.  "step 2", which does the clearing,
-> must then be more careful (after dropping ptl to do mmu_notifier), with
-> abort prepared to correct the accounting like "step 3".  But with those
-> entries now cleared, "step 4" (after dropping ptl to do pmd_lock) is kept
-> safe by the huge page lock, which stops new PTEs from being faulted in.
-> 
-> Signed-off-by: Hugh Dickins <hughd@google.com>
-> ---
->   mm/khugepaged.c | 172 ++++++++++++++++++++++----------------------------
->   1 file changed, 77 insertions(+), 95 deletions(-)
-> 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 3bb05147961b..46986eb4eebb 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -1483,7 +1483,7 @@ static bool khugepaged_add_pte_mapped_thp(struct mm_struct *mm,
->   	return ret;
->   }
->   
-> -/* hpage must be locked, and mmap_lock must be held in write */
-> +/* hpage must be locked, and mmap_lock must be held */
->   static int set_huge_pmd(struct vm_area_struct *vma, unsigned long addr,
->   			pmd_t *pmdp, struct page *hpage)
->   {
-> @@ -1495,7 +1495,7 @@ static int set_huge_pmd(struct vm_area_struct *vma, unsigned long addr,
->   	};
->   
->   	VM_BUG_ON(!PageTransHuge(hpage));
-> -	mmap_assert_write_locked(vma->vm_mm);
-> +	mmap_assert_locked(vma->vm_mm);
->   
->   	if (do_set_pmd(&vmf, hpage))
->   		return SCAN_FAIL;
-> @@ -1504,48 +1504,6 @@ static int set_huge_pmd(struct vm_area_struct *vma, unsigned long addr,
->   	return SCAN_SUCCEED;
->   }
->   
-> -/*
-> - * A note about locking:
-> - * Trying to take the page table spinlocks would be useless here because those
-> - * are only used to synchronize:
-> - *
-> - *  - modifying terminal entries (ones that point to a data page, not to another
-> - *    page table)
-> - *  - installing *new* non-terminal entries
-> - *
-> - * Instead, we need roughly the same kind of protection as free_pgtables() or
-> - * mm_take_all_locks() (but only for a single VMA):
-> - * The mmap lock together with this VMA's rmap locks covers all paths towards
-> - * the page table entries we're messing with here, except for hardware page
-> - * table walks and lockless_pages_from_mm().
-> - */
-> -static void collapse_and_free_pmd(struct mm_struct *mm, struct vm_area_struct *vma,
-> -				  unsigned long addr, pmd_t *pmdp)
-> -{
-> -	pmd_t pmd;
-> -	struct mmu_notifier_range range;
-> -
-> -	mmap_assert_write_locked(mm);
-> -	if (vma->vm_file)
-> -		lockdep_assert_held_write(&vma->vm_file->f_mapping->i_mmap_rwsem);
-> -	/*
-> -	 * All anon_vmas attached to the VMA have the same root and are
-> -	 * therefore locked by the same lock.
-> -	 */
-> -	if (vma->anon_vma)
-> -		lockdep_assert_held_write(&vma->anon_vma->root->rwsem);
-> -
-> -	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm, addr,
-> -				addr + HPAGE_PMD_SIZE);
-> -	mmu_notifier_invalidate_range_start(&range);
-> -	pmd = pmdp_collapse_flush(vma, addr, pmdp);
-> -	tlb_remove_table_sync_one();
-> -	mmu_notifier_invalidate_range_end(&range);
-> -	mm_dec_nr_ptes(mm);
-> -	page_table_check_pte_clear_range(mm, addr, pmd);
-> -	pte_free(mm, pmd_pgtable(pmd));
-> -}
-> -
->   /**
->    * collapse_pte_mapped_thp - Try to collapse a pte-mapped THP for mm at
->    * address haddr.
-> @@ -1561,26 +1519,29 @@ static void collapse_and_free_pmd(struct mm_struct *mm, struct vm_area_struct *v
->   int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
->   			    bool install_pmd)
->   {
-> +	struct mmu_notifier_range range;
-> +	bool notified = false;
->   	unsigned long haddr = addr & HPAGE_PMD_MASK;
->   	struct vm_area_struct *vma = vma_lookup(mm, haddr);
->   	struct page *hpage;
->   	pte_t *start_pte, *pte;
-> -	pmd_t *pmd;
-> -	spinlock_t *ptl;
-> -	int count = 0, result = SCAN_FAIL;
-> +	pmd_t *pmd, pgt_pmd;
-> +	spinlock_t *pml, *ptl;
-> +	int nr_ptes = 0, result = SCAN_FAIL;
->   	int i;
->   
-> -	mmap_assert_write_locked(mm);
-> +	mmap_assert_locked(mm);
-> +
-> +	/* First check VMA found, in case page tables are being torn down */
-> +	if (!vma || !vma->vm_file ||
-> +	    !range_in_vma(vma, haddr, haddr + HPAGE_PMD_SIZE))
-> +		return SCAN_VMA_CHECK;
->   
->   	/* Fast check before locking page if already PMD-mapped */
->   	result = find_pmd_or_thp_or_none(mm, haddr, &pmd);
->   	if (result == SCAN_PMD_MAPPED)
->   		return result;
->   
-> -	if (!vma || !vma->vm_file ||
-> -	    !range_in_vma(vma, haddr, haddr + HPAGE_PMD_SIZE))
-> -		return SCAN_VMA_CHECK;
-> -
->   	/*
->   	 * If we are here, we've succeeded in replacing all the native pages
->   	 * in the page cache with a single hugepage. If a mm were to fault-in
-> @@ -1610,6 +1571,7 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
->   		goto drop_hpage;
->   	}
->   
-> +	result = find_pmd_or_thp_or_none(mm, haddr, &pmd);
->   	switch (result) {
->   	case SCAN_SUCCEED:
->   		break;
-> @@ -1623,27 +1585,10 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
->   		goto drop_hpage;
->   	}
->   
-> -	/* Lock the vma before taking i_mmap and page table locks */
-> -	vma_start_write(vma);
-> -
-> -	/*
-> -	 * We need to lock the mapping so that from here on, only GUP-fast and
-> -	 * hardware page walks can access the parts of the page tables that
-> -	 * we're operating on.
-> -	 * See collapse_and_free_pmd().
-> -	 */
-> -	i_mmap_lock_write(vma->vm_file->f_mapping);
-> -
-> -	/*
-> -	 * This spinlock should be unnecessary: Nobody else should be accessing
-> -	 * the page tables under spinlock protection here, only
-> -	 * lockless_pages_from_mm() and the hardware page walker can access page
-> -	 * tables while all the high-level locks are held in write mode.
-> -	 */
->   	result = SCAN_FAIL;
->   	start_pte = pte_offset_map_lock(mm, pmd, haddr, &ptl);
-> -	if (!start_pte)
-> -		goto drop_immap;
-> +	if (!start_pte)		/* mmap_lock + page lock should prevent this */
-> +		goto drop_hpage;
->   
->   	/* step 1: check all mapped PTEs are to the right huge page */
->   	for (i = 0, addr = haddr, pte = start_pte;
-> @@ -1670,10 +1615,18 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
->   		 */
->   		if (hpage + i != page)
->   			goto abort;
-> -		count++;
->   	}
->   
-> -	/* step 2: adjust rmap */
-> +	pte_unmap_unlock(start_pte, ptl);
-> +	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm,
-> +				haddr, haddr + HPAGE_PMD_SIZE);
-> +	mmu_notifier_invalidate_range_start(&range);
-> +	notified = true;
-> +	start_pte = pte_offset_map_lock(mm, pmd, haddr, &ptl);
-> +	if (!start_pte)		/* mmap_lock + page lock should prevent this */
-> +		goto abort;
-> +
-> +	/* step 2: clear page table and adjust rmap */
->   	for (i = 0, addr = haddr, pte = start_pte;
->   	     i < HPAGE_PMD_NR; i++, addr += PAGE_SIZE, pte++) {
->   		struct page *page;
-> @@ -1681,47 +1634,76 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
->   
->   		if (pte_none(ptent))
->   			continue;
-> -		page = vm_normal_page(vma, addr, ptent);
-> -		if (WARN_ON_ONCE(page && is_zone_device_page(page)))
-> +		/*
-> +		 * We dropped ptl after the first scan, to do the mmu_notifier:
-> +		 * page lock stops more PTEs of the hpage being faulted in, but
-> +		 * does not stop write faults COWing anon copies from existing
-> +		 * PTEs; and does not stop those being swapped out or migrated.
-> +		 */
-> +		if (!pte_present(ptent)) {
-> +			result = SCAN_PTE_NON_PRESENT;
->   			goto abort;
-> +		}
-> +		page = vm_normal_page(vma, addr, ptent);
-> +		if (hpage + i != page)
-> +			goto abort;
-> +
-> +		/*
-> +		 * Must clear entry, or a racing truncate may re-remove it.
-> +		 * TLB flush can be left until pmdp_collapse_flush() does it.
-> +		 * PTE dirty? Shmem page is already dirty; file is read-only.
-> +		 */
-> +		pte_clear(mm, addr, pte);
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Support for zlib-deflate was added for [1] but that work was not
+completed.
 
-This is not non-present PTE entry, so we should call ptep_clear() to let
-page_table_check track the PTE clearing operation, right? Otherwise it
-may lead to false positives?
+Based on [2], either we leave this SW implementation or we remove the HW
+implementations in the QAT [3] and in the Hisilicon Zip [4] drivers.
 
-Thanks,
-Qi
+[1] https://patchwork.kernel.org/project/linux-btrfs/patch/1467083180-111750-1-git-send-email-weigang.li@intel.com/
+[2] https://lore.kernel.org/lkml/ZIw%2Fjtxdg6O1O0j3@gondor.apana.org.au/
+[3] https://elixir.bootlin.com/linux/latest/source/drivers/crypto/intel/qat/qat_common/qat_comp_algs.c#L457
+[4] https://elixir.bootlin.com/linux/latest/source/drivers/crypto/hisilicon/zip/zip_crypto.c#L754
 
->   		page_remove_rmap(page, vma, false);
-> +		nr_ptes++;
->   	}
->   
->   	pte_unmap_unlock(start_pte, ptl);
->   
->   	/* step 3: set proper refcount and mm_counters. */
-> -	if (count) {
-> -		page_ref_sub(hpage, count);
-> -		add_mm_counter(vma->vm_mm, mm_counter_file(hpage), -count);
-> +	if (nr_ptes) {
-> +		page_ref_sub(hpage, nr_ptes);
-> +		add_mm_counter(mm, mm_counter_file(hpage), -nr_ptes);
->   	}
->   
-> -	/* step 4: remove pte entries */
-> -	/* we make no change to anon, but protect concurrent anon page lookup */
-> -	if (vma->anon_vma)
-> -		anon_vma_lock_write(vma->anon_vma);
-> +	/* step 4: remove page table */
->   
-> -	collapse_and_free_pmd(mm, vma, haddr, pmd);
-> +	/* Huge page lock is still held, so page table must remain empty */
-> +	pml = pmd_lock(mm, pmd);
-> +	if (ptl != pml)
-> +		spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
-> +	pgt_pmd = pmdp_collapse_flush(vma, haddr, pmd);
-> +	pmdp_get_lockless_sync();
-> +	if (ptl != pml)
-> +		spin_unlock(ptl);
-> +	spin_unlock(pml);
->   
-> -	if (vma->anon_vma)
-> -		anon_vma_unlock_write(vma->anon_vma);
-> -	i_mmap_unlock_write(vma->vm_file->f_mapping);
-> +	mmu_notifier_invalidate_range_end(&range);
-> +
-> +	mm_dec_nr_ptes(mm);
-> +	page_table_check_pte_clear_range(mm, haddr, pgt_pmd);
-> +	pte_free_defer(mm, pmd_pgtable(pgt_pmd));
->   
->   maybe_install_pmd:
->   	/* step 5: install pmd entry */
->   	result = install_pmd
->   			? set_huge_pmd(vma, haddr, pmd, hpage)
->   			: SCAN_SUCCEED;
-> -
-> +	goto drop_hpage;
-> +abort:
-> +	if (nr_ptes) {
-> +		flush_tlb_mm(mm);
-> +		page_ref_sub(hpage, nr_ptes);
-> +		add_mm_counter(mm, mm_counter_file(hpage), -nr_ptes);
-> +	}
-> +	if (start_pte)
-> +		pte_unmap_unlock(start_pte, ptl);
-> +	if (notified)
-> +		mmu_notifier_invalidate_range_end(&range);
->   drop_hpage:
->   	unlock_page(hpage);
->   	put_page(hpage);
->   	return result;
-> -
-> -abort:
-> -	pte_unmap_unlock(start_pte, ptl);
-> -drop_immap:
-> -	i_mmap_unlock_write(vma->vm_file->f_mapping);
-> -	goto drop_hpage;
->   }
->   
->   static void khugepaged_collapse_pte_mapped_thps(struct khugepaged_mm_slot *mm_slot)
-> @@ -2855,9 +2837,9 @@ int madvise_collapse(struct vm_area_struct *vma, struct vm_area_struct **prev,
->   		case SCAN_PTE_MAPPED_HUGEPAGE:
->   			BUG_ON(mmap_locked);
->   			BUG_ON(*prev);
-> -			mmap_write_lock(mm);
-> +			mmap_read_lock(mm);
->   			result = collapse_pte_mapped_thp(mm, addr, true);
-> -			mmap_write_unlock(mm);
-> +			mmap_locked = true;
->   			goto handle_result;
->   		/* Whitelisted set of results where continuing OK */
->   		case SCAN_PMD_NULL:
+Regards,
+
+-- 
+Giovanni
