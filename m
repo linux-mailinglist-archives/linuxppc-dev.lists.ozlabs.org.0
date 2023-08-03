@@ -2,59 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10ECD76DE3D
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Aug 2023 04:30:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75B1E76DEA6
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Aug 2023 05:00:46 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZMK7fXiD;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=dv1aBM6w;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RGXrx01pXz3cF3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Aug 2023 12:30:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RGYWJ2jbyz3byX
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Aug 2023 13:00:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZMK7fXiD;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=dv1aBM6w;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (unknown [192.55.52.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=lists.ozlabs.org)
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RGXr146Yfz2yhL
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Aug 2023 12:30:08 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1691029810; x=1722565810;
-  h=date:from:to:cc:subject:message-id;
-  bh=SFOdCRb17LQ4+/c3AovdK9RAGHMc+0NMtK4NZy/szv8=;
-  b=ZMK7fXiDjeAopRqcMcXeeGRd8Zvkq5u/QPV/AeTQoxAVMLrx/MFjwCzd
-   GsJTRGO0JjHd1n6Ihy9PbvwbtlbfnPEaoDyNGY0bXaBKesZZH7igVvEgd
-   AJ7g8KJIaUJEH/Bb4kOXEcokFQmcV/2Py0eSFqy/oKMAUqVNY5DN/bzj4
-   m34R3p54VokGwMh3yUnX86nfu7kCSNl1lKUh9btEn2jAQbFt16oeggwCb
-   2lRslHbwAzTOnkhLkvunP771PK26S1tCq72FFo1rmev/QdeuQZRCn/wXk
-   3VtWNV/D2tLlerZEE1Pq0SSRVs2KHxv0K0khjJeXmvscPa0Ubn24hb4H+
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10790"; a="368650910"
-X-IronPort-AV: E=Sophos;i="6.01,250,1684825200"; 
-   d="scan'208";a="368650910"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2023 19:29:37 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10790"; a="975906065"
-X-IronPort-AV: E=Sophos;i="6.01,250,1684825200"; 
-   d="scan'208";a="975906065"
-Received: from lkp-server01.sh.intel.com (HELO d1ccc7e87e8f) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 02 Aug 2023 19:29:36 -0700
-Received: from kbuild by d1ccc7e87e8f with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1qRO5o-0001fh-0K;
-	Thu, 03 Aug 2023 02:29:36 +0000
-Date: Thu, 03 Aug 2023 10:28:40 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next] BUILD SUCCESS
- 7f96539437eafec8fd062fb13f31cf53251ea18d
-Message-ID: <202308031038.sVJ8FptD-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RGYVN1b3xz2yhS
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Aug 2023 12:59:56 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=V34U8x+xt3cNOs6Hq3uSEoa9SGtAD0arB4vReWdva5o=; b=dv1aBM6wBmGZQ7hPRqWmxgrOQB
+	dy+FQT81UfT7eaeA7UyeRmzxBzRfo8x27SdpCBn3zFfXgYZvuohELngmC3zTk57Nfhdm93vDWMty7
+	lNn2rxu1wYKvLhjEPsgPwtiTfz7HeZZM15eNYIEOXLe5f58jfb99cJmduUdq0htWWnA/ZXBo+6ZTZ
+	4zdBA6M1upafxG+rKFlDETJgCv4LWBW369cleIp8sGx1ed/0uo3teEOdc7x1Lh0+iAPpsSKmqsrDO
+	5tJYaIFpNuzPJGT7D3VhITvnqCm26O9R969JuFNS3vGBkUkfTVjE/XRwzLq5GLBPKD8mcn7uwuWNL
+	Yuj0BP9Q==;
+Received: from [2601:1c2:980:9ec0::2764] (helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+	id 1qROZ0-006Ve1-0D;
+	Thu, 03 Aug 2023 02:59:46 +0000
+From: Randy Dunlap <rdunlap@infradead.org>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH v2 RESEND*3] ASoC: fsl MPC52xx drivers require PPC_BESTCOMM
+Date: Wed,  2 Aug 2023 19:59:41 -0700
+Message-ID: <20230803025941.24157-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.41.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,170 +55,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: alsa-devel@alsa-project.org, Xiubo Li <Xiubo.Lee@gmail.com>, linuxppc-dev@lists.ozlabs.org, Randy Dunlap <rdunlap@infradead.org>, Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, Grant Likely <grant.likely@secretlab.ca>, Mark Brown <broonie@kernel.org>, Takashi Iwai <tiwai@suse.com>, Shengjiu Wang <shengjiu.wang@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-branch HEAD: 7f96539437eafec8fd062fb13f31cf53251ea18d  powerpc/kexec: fix minor typo
+Both SND_MPC52xx_SOC_PCM030 and SND_MPC52xx_SOC_EFIKA select
+SND_SOC_MPC5200_AC97. The latter symbol depends on PPC_BESTCOMM,
+so the 2 former symbols should also depend on PPC_BESTCOMM since
+"select" does not follow any dependency chains.
 
-elapsed time: 723m
+This prevents a kconfig warning and build errors:
 
-configs tested: 147
-configs skipped: 11
+WARNING: unmet direct dependencies detected for SND_SOC_MPC5200_AC97
+  Depends on [n]: SOUND [=y] && !UML && SND [=m] && SND_SOC [=m] && SND_POWERPC_SOC [=m] && PPC_MPC52xx [=y] && PPC_BESTCOMM [=n]
+  Selected by [m]:
+  - SND_MPC52xx_SOC_PCM030 [=m] && SOUND [=y] && !UML && SND [=m] && SND_SOC [=m] && SND_POWERPC_SOC [=m] && PPC_MPC5200_SIMPLE [=y]
+  - SND_MPC52xx_SOC_EFIKA [=m] && SOUND [=y] && !UML && SND [=m] && SND_SOC [=m] && SND_POWERPC_SOC [=m] && PPC_EFIKA [=y]
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+ERROR: modpost: "mpc5200_audio_dma_destroy" [sound/soc/fsl/mpc5200_psc_ac97.ko] undefined!
+ERROR: modpost: "mpc5200_audio_dma_create" [sound/soc/fsl/mpc5200_psc_ac97.ko] undefined!
 
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r005-20230731   gcc  
-alpha                randconfig-r036-20230801   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                  randconfig-r004-20230801   gcc  
-arc                  randconfig-r031-20230731   gcc  
-arc                  randconfig-r033-20230731   gcc  
-arc                  randconfig-r043-20230802   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                                 defconfig   gcc  
-arm                  randconfig-r005-20230801   clang
-arm                  randconfig-r012-20230731   gcc  
-arm                  randconfig-r046-20230802   clang
-arm                        realview_defconfig   gcc  
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r013-20230731   clang
-arm64                randconfig-r014-20230731   clang
-arm64                randconfig-r036-20230731   gcc  
-csky                                defconfig   gcc  
-csky                 randconfig-r006-20230801   gcc  
-hexagon              randconfig-r014-20230731   clang
-hexagon              randconfig-r041-20230802   clang
-hexagon              randconfig-r045-20230802   clang
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-r004-20230731   gcc  
-i386         buildonly-randconfig-r004-20230801   gcc  
-i386         buildonly-randconfig-r005-20230731   gcc  
-i386         buildonly-randconfig-r005-20230801   gcc  
-i386         buildonly-randconfig-r006-20230731   gcc  
-i386         buildonly-randconfig-r006-20230801   gcc  
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-i001-20230731   gcc  
-i386                 randconfig-i002-20230731   gcc  
-i386                 randconfig-i003-20230731   gcc  
-i386                 randconfig-i004-20230731   gcc  
-i386                 randconfig-i005-20230731   gcc  
-i386                 randconfig-i006-20230731   gcc  
-i386                 randconfig-i011-20230731   clang
-i386                 randconfig-i012-20230731   clang
-i386                 randconfig-i013-20230731   clang
-i386                 randconfig-i014-20230731   clang
-i386                 randconfig-i015-20230731   clang
-i386                 randconfig-i016-20230731   clang
-i386                 randconfig-r025-20230731   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch            randconfig-r013-20230802   gcc  
-loongarch            randconfig-r023-20230731   gcc  
-m68k                             allmodconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                 randconfig-r026-20230731   gcc  
-microblaze           randconfig-r001-20230801   gcc  
-microblaze           randconfig-r003-20230801   gcc  
-microblaze           randconfig-r005-20230801   gcc  
-microblaze           randconfig-r006-20230731   gcc  
-microblaze           randconfig-r015-20230731   gcc  
-microblaze           randconfig-r025-20230731   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                 randconfig-r002-20230801   clang
-mips                 randconfig-r011-20230802   clang
-mips                 randconfig-r015-20230802   clang
-mips                 randconfig-r022-20230731   gcc  
-mips                 randconfig-r026-20230801   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r012-20230802   gcc  
-nios2                randconfig-r022-20230801   gcc  
-openrisc             randconfig-r001-20230731   gcc  
-openrisc             randconfig-r034-20230801   gcc  
-openrisc             randconfig-r036-20230731   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc               randconfig-r006-20230801   gcc  
-parisc               randconfig-r021-20230801   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc              randconfig-r003-20230801   gcc  
-powerpc              randconfig-r014-20230802   gcc  
-powerpc              randconfig-r021-20230731   clang
-powerpc              randconfig-r022-20230731   clang
-powerpc              randconfig-r026-20230731   clang
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r003-20230731   gcc  
-riscv                randconfig-r004-20230731   gcc  
-riscv                randconfig-r034-20230731   gcc  
-riscv                randconfig-r042-20230802   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r011-20230731   clang
-s390                 randconfig-r044-20230802   gcc  
-sh                               allmodconfig   gcc  
-sh                        apsh4ad0a_defconfig   gcc  
-sh                   randconfig-r023-20230801   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                randconfig-r033-20230801   gcc  
-sparc64              randconfig-r002-20230801   gcc  
-sparc64              randconfig-r025-20230801   gcc  
-sparc64              randconfig-r031-20230801   gcc  
-sparc64              randconfig-r035-20230731   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                   randconfig-r024-20230731   gcc  
-um                   randconfig-r032-20230731   clang
-um                           x86_64_defconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-r001-20230731   gcc  
-x86_64       buildonly-randconfig-r001-20230801   gcc  
-x86_64       buildonly-randconfig-r002-20230731   gcc  
-x86_64       buildonly-randconfig-r002-20230801   gcc  
-x86_64       buildonly-randconfig-r003-20230731   gcc  
-x86_64       buildonly-randconfig-r003-20230801   gcc  
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-r012-20230731   clang
-x86_64               randconfig-r016-20230802   gcc  
-x86_64               randconfig-x001-20230731   clang
-x86_64               randconfig-x002-20230731   clang
-x86_64               randconfig-x003-20230731   clang
-x86_64               randconfig-x004-20230731   clang
-x86_64               randconfig-x005-20230731   clang
-x86_64               randconfig-x006-20230731   clang
-x86_64               randconfig-x011-20230731   gcc  
-x86_64               randconfig-x012-20230731   gcc  
-x86_64               randconfig-x013-20230731   gcc  
-x86_64               randconfig-x014-20230731   gcc  
-x86_64               randconfig-x015-20230731   gcc  
-x86_64               randconfig-x016-20230731   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa               randconfig-r033-20230731   gcc  
+Fixes: 40d9ec14e7e1 ("ASoC: remove BROKEN from Efika and pcm030 fabric drivers")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Grant Likely <grant.likely@secretlab.ca>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Liam Girdwood <lgirdwood@gmail.com>
+Cc: Shengjiu Wang <shengjiu.wang@gmail.com>
+Cc: Xiubo Li <Xiubo.Lee@gmail.com>
+Cc: alsa-devel@alsa-project.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Takashi Iwai <tiwai@suse.com>
+Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
+---
+v2: use correct email address for Mark Brown.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+ sound/soc/fsl/Kconfig |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff -- a/sound/soc/fsl/Kconfig b/sound/soc/fsl/Kconfig
+--- a/sound/soc/fsl/Kconfig
++++ b/sound/soc/fsl/Kconfig
+@@ -243,7 +243,7 @@ config SND_SOC_MPC5200_AC97
+ 
+ config SND_MPC52xx_SOC_PCM030
+ 	tristate "SoC AC97 Audio support for Phytec pcm030 and WM9712"
+-	depends on PPC_MPC5200_SIMPLE
++	depends on PPC_MPC5200_SIMPLE && PPC_BESTCOMM
+ 	select SND_SOC_MPC5200_AC97
+ 	select SND_SOC_WM9712
+ 	help
+@@ -252,7 +252,7 @@ config SND_MPC52xx_SOC_PCM030
+ 
+ config SND_MPC52xx_SOC_EFIKA
+ 	tristate "SoC AC97 Audio support for bbplan Efika and STAC9766"
+-	depends on PPC_EFIKA
++	depends on PPC_EFIKA && PPC_BESTCOMM
+ 	select SND_SOC_MPC5200_AC97
+ 	select SND_SOC_STAC9766
+ 	help
