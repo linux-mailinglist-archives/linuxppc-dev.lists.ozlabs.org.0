@@ -1,93 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0382176DF5A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Aug 2023 06:19:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B50E76DF63
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Aug 2023 06:23:51 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pZZ/mJJG;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=m9xdke+x;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RGbFc6j2zz3cBK
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Aug 2023 14:19:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RGbM762hFz3cM3
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Aug 2023 14:23:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pZZ/mJJG;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=m9xdke+x;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=adityag@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (unknown [192.55.52.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RGbDj5TcYz2yjD
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Aug 2023 14:18:13 +1000 (AEST)
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3734A8JE027993;
-	Thu, 3 Aug 2023 04:18:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=wqYpOQLG6xcAyGqs0Z8DX2tGZ4y4oXKrYlNsz244xMQ=;
- b=pZZ/mJJG6926+wW8ShRWeOMRZ7sfxl90XTroEBnjleiR4Zux5HPeeazZ/Ih0Dl20VJlf
- DaIoZc6B59/1Wd8iwX/dmupsD5HPwxIxlk+d59RvLVrItMTQI3IXLfKP/yQmUtrICXIV
- 1MRLSh1Rxx3Hh0sm7BvnFfhWrvuEiZ0iHCpnKq5AOCYQt8BPR7+BaktktKjN2T3mmQ3O
- fw4kTzXZWobFdp7psLjr6d7/qhnBPIU31MsKWJvKgtvWXqqbJxgX39Dq6fUIx+mxPHEk
- QgCdiqRRyJgcSL8zg/6kLEdtHPV2jZFn2z9qiVcmyAG82MvpzFfoeGjeBB5q7sLZUvY8 Vg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s84k9gp2k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 03 Aug 2023 04:18:06 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3734Gdou022880;
-	Thu, 3 Aug 2023 04:18:06 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s84k9gp1h-5
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 03 Aug 2023 04:18:06 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3730VeMk014613;
-	Thu, 3 Aug 2023 03:03:47 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3s5ft1sb3f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 03 Aug 2023 03:03:47 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 37333iHM41550556
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 3 Aug 2023 03:03:44 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A4F6A20043;
-	Thu,  3 Aug 2023 03:03:44 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DD65F20040;
-	Thu,  3 Aug 2023 03:03:41 +0000 (GMT)
-Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com (unknown [9.179.18.217])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu,  3 Aug 2023 03:03:41 +0000 (GMT)
-Date: Thu, 3 Aug 2023 08:33:39 +0530
-From: Aditya Gupta <adityag@linux.ibm.com>
-To: Arnaldo Carvalho de Melo <acme@kernel.org>
-Subject: Re: [PATCH 1/1] perf tests task_analyzer: Check perf build options
- for libtraceevent support
-Message-ID: <4qqzt2g2iuo2kri54jyr7tspfxfod4nzsuzajxk3butoxs2rww@rj4quuzpoeg3>
-References: <20230725061649.34937-1-adityag@linux.ibm.com>
- <ZMPWk5K63tadmDlU@kernel.org>
- <CAP-5=fW1zkpJ4zr4ngz=6bZQuE6hOHo4AtXwUsVJK9oiDSc_mg@mail.gmail.com>
- <ZMQJKmV3XtwtZJtO@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZMQJKmV3XtwtZJtO@kernel.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Y58gOcevs2qCTRcw7SlXh_L9U7PEVPF5
-X-Proofpoint-ORIG-GUID: zY2B3zvG-wzQe4y0jXSC-etIhTUqjt53
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-08-03_01,2023-08-01_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
- phishscore=0 lowpriorityscore=0 clxscore=1015 priorityscore=1501
- impostorscore=0 suspectscore=0 adultscore=0 spamscore=0 mlxlogscore=668
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308030036
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RGbLF2CpSz2ykV
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Aug 2023 14:22:58 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1691036581; x=1722572581;
+  h=date:from:to:cc:subject:message-id;
+  bh=FpmWdbWfqSIP1I4W4Wb3EQ45LdpEt0fgMoiGVNGCKSw=;
+  b=m9xdke+xPvJmfADV5teS1/Za4tGwVeYi6FtbCqBQsUXMv7/hO2vaDHe0
+   R1n4VsF6tBQlIsNxPK+BH8k7xVYuimFeiqyxwawxZDKyrOSPZvks6V9oi
+   rPQeo05+ce2FxSkCiIXMppdss+2swhl72zfdOvjexJ3DNBR12fXNEMx9V
+   LJGCVQGqPeqSm7vtI3gIyxpFTcl12PWOn5tDbwSlwgyrmO3l16fqM63yc
+   bMggRXD30CO6UxXqkh78VSi+QfQjsEs2lZTnNfBO9b1+pZpzZACOVKLxk
+   CCxt6SLpbRoCWT6Tea7brRCyMTpOYiQtC1B/01sT1SA9y70K4sVha5aM/
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10790"; a="350057515"
+X-IronPort-AV: E=Sophos;i="6.01,251,1684825200"; 
+   d="scan'208";a="350057515"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2023 21:22:54 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10790"; a="794846454"
+X-IronPort-AV: E=Sophos;i="6.01,251,1684825200"; 
+   d="scan'208";a="794846454"
+Received: from lkp-server01.sh.intel.com (HELO d1ccc7e87e8f) ([10.239.97.150])
+  by fmsmga008.fm.intel.com with ESMTP; 02 Aug 2023 21:22:53 -0700
+Received: from kbuild by d1ccc7e87e8f with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1qRPrR-0001kL-00;
+	Thu, 03 Aug 2023 04:22:53 +0000
+Date: Thu, 03 Aug 2023 12:21:59 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:topic/cpu-smt] BUILD SUCCESS
+ d1099e2276df1d8dd4037552c2f34eb4c4df4a75
+Message-ID: <202308031258.MVu6eB37-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,15 +66,189 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ian Rogers <irogers@google.com>, maddy@linux.ibm.com, kjain@linux.ibm.com, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, atrajeev@linux.vnet.ibm.com, jolsa@kernel.org, namhyung@kernel.org, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Arnaldo,
-I am working on a patch for 'perf version --has', and will send a patch next
-week using that instead of 'perf version --build-options'.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git topic/cpu-smt
+branch HEAD: d1099e2276df1d8dd4037552c2f34eb4c4df4a75  powerpc/pseries: Honour current SMT state when DLPAR onlining CPUs
 
-You can skip this patch if not needed.
+elapsed time: 836m
 
-Thanks,
-- Aditya G
+configs tested: 166
+configs skipped: 4
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r025-20230731   gcc  
+alpha                randconfig-r026-20230731   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r033-20230731   gcc  
+arc                  randconfig-r043-20230731   gcc  
+arc                  randconfig-r043-20230802   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                          gemini_defconfig   gcc  
+arm                        mvebu_v5_defconfig   clang
+arm                          pxa3xx_defconfig   gcc  
+arm                  randconfig-r024-20230731   gcc  
+arm                  randconfig-r032-20230801   clang
+arm                  randconfig-r046-20230731   gcc  
+arm                        realview_defconfig   gcc  
+arm                       versatile_defconfig   clang
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r014-20230731   clang
+arm64                randconfig-r036-20230731   gcc  
+csky                                defconfig   gcc  
+csky                 randconfig-r006-20230801   gcc  
+csky                 randconfig-r034-20230801   gcc  
+hexagon              randconfig-r004-20230801   clang
+hexagon              randconfig-r012-20230731   clang
+hexagon              randconfig-r015-20230731   clang
+hexagon              randconfig-r041-20230731   clang
+hexagon              randconfig-r045-20230731   clang
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-r004-20230731   gcc  
+i386         buildonly-randconfig-r004-20230801   gcc  
+i386         buildonly-randconfig-r005-20230731   gcc  
+i386         buildonly-randconfig-r005-20230801   gcc  
+i386         buildonly-randconfig-r006-20230731   gcc  
+i386         buildonly-randconfig-r006-20230801   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-i001-20230731   gcc  
+i386                 randconfig-i001-20230802   clang
+i386                 randconfig-i002-20230731   gcc  
+i386                 randconfig-i002-20230802   clang
+i386                 randconfig-i003-20230731   gcc  
+i386                 randconfig-i003-20230802   clang
+i386                 randconfig-i004-20230731   gcc  
+i386                 randconfig-i004-20230802   clang
+i386                 randconfig-i005-20230731   gcc  
+i386                 randconfig-i005-20230802   clang
+i386                 randconfig-i006-20230731   gcc  
+i386                 randconfig-i006-20230802   clang
+i386                 randconfig-i011-20230801   clang
+i386                 randconfig-i011-20230802   gcc  
+i386                 randconfig-i012-20230801   clang
+i386                 randconfig-i012-20230802   gcc  
+i386                 randconfig-i013-20230801   clang
+i386                 randconfig-i013-20230802   gcc  
+i386                 randconfig-i014-20230801   clang
+i386                 randconfig-i014-20230802   gcc  
+i386                 randconfig-i015-20230801   clang
+i386                 randconfig-i015-20230802   gcc  
+i386                 randconfig-i016-20230801   clang
+i386                 randconfig-i016-20230802   gcc  
+i386                 randconfig-r014-20230731   clang
+i386                 randconfig-r025-20230731   clang
+i386                 randconfig-r033-20230801   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+m68k                             allmodconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                        stmark2_defconfig   gcc  
+microblaze                          defconfig   gcc  
+microblaze           randconfig-r002-20230801   gcc  
+microblaze           randconfig-r005-20230801   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                        bcm47xx_defconfig   gcc  
+mips                 randconfig-r005-20230801   clang
+mips                          rb532_defconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                randconfig-r011-20230731   gcc  
+nios2                randconfig-r021-20230731   gcc  
+openrisc                 simple_smp_defconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc              randconfig-r003-20230801   gcc  
+powerpc              randconfig-r022-20230731   clang
+powerpc              randconfig-r026-20230731   clang
+powerpc              randconfig-r036-20230801   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r042-20230731   clang
+riscv                randconfig-r042-20230802   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r001-20230801   gcc  
+s390                 randconfig-r011-20230731   clang
+s390                 randconfig-r035-20230801   gcc  
+s390                 randconfig-r044-20230731   clang
+s390                 randconfig-r044-20230802   gcc  
+sh                               allmodconfig   gcc  
+sh                        apsh4ad0a_defconfig   gcc  
+sh                          lboxre2_defconfig   gcc  
+sh                   randconfig-r003-20230801   gcc  
+sh                   randconfig-r023-20230731   gcc  
+sh                   randconfig-r031-20230801   gcc  
+sh                   rts7751r2dplus_defconfig   gcc  
+sh                           se7724_defconfig   gcc  
+sh                             shx3_defconfig   gcc  
+sh                            titan_defconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                randconfig-r022-20230731   gcc  
+sparc64              randconfig-r002-20230801   gcc  
+sparc64              randconfig-r013-20230731   gcc  
+sparc64              randconfig-r016-20230731   gcc  
+sparc64              randconfig-r035-20230731   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-r001-20230731   gcc  
+x86_64       buildonly-randconfig-r001-20230801   gcc  
+x86_64       buildonly-randconfig-r002-20230731   gcc  
+x86_64       buildonly-randconfig-r002-20230801   gcc  
+x86_64       buildonly-randconfig-r003-20230731   gcc  
+x86_64       buildonly-randconfig-r003-20230801   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-r012-20230731   clang
+x86_64               randconfig-x001-20230731   clang
+x86_64               randconfig-x001-20230801   clang
+x86_64               randconfig-x002-20230731   clang
+x86_64               randconfig-x002-20230801   clang
+x86_64               randconfig-x003-20230731   clang
+x86_64               randconfig-x003-20230801   clang
+x86_64               randconfig-x004-20230731   clang
+x86_64               randconfig-x004-20230801   clang
+x86_64               randconfig-x005-20230731   clang
+x86_64               randconfig-x005-20230801   clang
+x86_64               randconfig-x006-20230731   clang
+x86_64               randconfig-x006-20230801   clang
+x86_64               randconfig-x011-20230731   gcc  
+x86_64               randconfig-x012-20230731   gcc  
+x86_64               randconfig-x013-20230731   gcc  
+x86_64               randconfig-x014-20230731   gcc  
+x86_64               randconfig-x015-20230731   gcc  
+x86_64               randconfig-x016-20230731   gcc  
+x86_64                           rhel-8.3-bpf   gcc  
+x86_64                         rhel-8.3-kunit   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
