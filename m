@@ -2,52 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C71876F17E
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Aug 2023 20:10:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71CC476F1C4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Aug 2023 20:23:21 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=Q3HG/Iqr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=m6aJL/mR;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RGxjQ6wbPz3cC5
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Aug 2023 04:10:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RGxzq2Wzzz3cN4
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Aug 2023 04:23:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=lists.ozlabs.org)
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=m6aJL/mR;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RGxhM1S0zz2ylk
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Aug 2023 04:09:54 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=0dEImclfLlmfTU0yTnFzJTof7y09txrCVp+rAtpvb1A=; b=Q3HG/IqrxhjbWVUPp+QxIv0M1M
-	CQDRO12DZSkGS5jgxTy1lTzGCbAt0VPfKVjWzx5PwJFoM/CNjPu1pDLEfCKrZzwziQHSLvWxbeM2f
-	BZ8VxSXklUYAQlj3+f5Kz6bnN3jqkTjocUVE0SjFPJlb2l9IWU4vM5eSnb3jwpN6adAOIOFzz4A3t
-	9qzqv/mIFVddvR1Tfe8iJx+/ypoasiZODYZhfoMRX0KxmslYD3qhhSKSiKolEpT/6fWl+1OgkK7B0
-	mtQvVTVyt9n9GKsLnj4XvXQ5Iztv4LIMmjLDNSO3r7x5tw6sR0i65zXcsWUMUZ9Hjv55m8RG7LbEo
-	Q7F/U0lg==;
-Received: from [2601:1c2:980:9ec0::2764]
-	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1qRclc-00AXuC-0M;
-	Thu, 03 Aug 2023 18:09:44 +0000
-Message-ID: <63bc327d-999a-1654-e7b5-6bcfd7477a32@infradead.org>
-Date: Thu, 3 Aug 2023 11:09:43 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RGxyq28Szz30FW
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Aug 2023 04:22:27 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 5ABD261D61;
+	Thu,  3 Aug 2023 18:22:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94685C433C7;
+	Thu,  3 Aug 2023 18:22:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1691086943;
+	bh=rYzPPj1pajmgQ2TmW2GpIgJRYwl2kR2mxM9iWu7OYjo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=m6aJL/mRpVeQmNONdk7XxK2AOhD3aqkWHWLT9qV9Ktw2/Dt/gpNObxCUZ9JYjZYpw
+	 gP9Kt3vD0bkHcpyKO+CEM1X83XC5marYngM7sWTtf23hVjmsKZQIQ3tHvXv00g7f0Y
+	 RQqt5TvhRGAyGY51SzwYWWEKUYWpnAEyZ/96SIb1BYipcXpWbV86/dQJw4+hQnTDsP
+	 NMGDEZwSdI12lx6uDzVl8h5Ai4O3iqdN3NqTIgp8RAS+LyTggF9ihk/SBBgTNOePls
+	 Bd+/EEbK2FMcxSMzxYPL3TNaIxVyLhvq2G96s0w6ZF+or2qQRIn+FjJXyVz83Je+VX
+	 OdxN8LqfnCGAw==
+Date: Thu, 3 Aug 2023 19:22:18 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Randy Dunlap <rdunlap@infradead.org>
 Subject: Re: [PATCH v2 RESEND*3] ASoC: fsl MPC52xx drivers require
  PPC_BESTCOMM
-Content-Language: en-US
-To: Mark Brown <broonie@kernel.org>
+Message-ID: <4be1bfef-9f66-4fa8-bb8b-57e25fbba729@sirena.org.uk>
 References: <20230803025941.24157-1-rdunlap@infradead.org>
  <9581313f-5340-455d-a75d-dc27d2eb3ec0@sirena.org.uk>
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <9581313f-5340-455d-a75d-dc27d2eb3ec0@sirena.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <63bc327d-999a-1654-e7b5-6bcfd7477a32@infradead.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="g3EJGwd85dmsC6Ch"
+Content-Disposition: inline
+In-Reply-To: <63bc327d-999a-1654-e7b5-6bcfd7477a32@infradead.org>
+X-Cookie: One Bell System - it works.
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,17 +71,43 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
+--g3EJGwd85dmsC6Ch
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 8/3/23 04:27, Mark Brown wrote:
-> On Wed, Aug 02, 2023 at 07:59:41PM -0700, Randy Dunlap wrote:
->> Both SND_MPC52xx_SOC_PCM030 and SND_MPC52xx_SOC_EFIKA select
->> SND_SOC_MPC5200_AC97. The latter symbol depends on PPC_BESTCOMM,
->> so the 2 former symbols should also depend on PPC_BESTCOMM since
->> "select" does not follow any dependency chains.
-> 
-> Take a hint, it's not clear that the patch is tasteful.
+On Thu, Aug 03, 2023 at 11:09:43AM -0700, Randy Dunlap wrote:
+> On 8/3/23 04:27, Mark Brown wrote:
+> > On Wed, Aug 02, 2023 at 07:59:41PM -0700, Randy Dunlap wrote:
 
-Thank you for replying.  I'll drop it and just report the build errors.
+> >> Both SND_MPC52xx_SOC_PCM030 and SND_MPC52xx_SOC_EFIKA select
+> >> SND_SOC_MPC5200_AC97. The latter symbol depends on PPC_BESTCOMM,
+> >> so the 2 former symbols should also depend on PPC_BESTCOMM since
+> >> "select" does not follow any dependency chains.
 
--- 
-~Randy
+> > Take a hint, it's not clear that the patch is tasteful.
+
+> Thank you for replying.  I'll drop it and just report the build errors.
+
+To be clear I generally don't give you review comments because in the
+past I grew so frustrated with having them and their escalations
+ignored that it seemed better to just not start.  If the patch seems
+fine I generally apply it, usually you just don't resend patches so that
+works.=20
+
+--g3EJGwd85dmsC6Ch
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmTL8FkACgkQJNaLcl1U
+h9A2ZAf/cC6V/6CosGIVhHjsgdpesC1xuhx10tq2L5C4HOOufOJXJ7KEEw9YRJl7
+NbAWAp2aavscsub/zcP3OzBDFZ9vDRcYDniGIOdt9rv+JGtURTv8aFrbQdBFAAWR
+KXfprV0EWwi45+heZNxo6a53tlFYu7Q0h5mVaI7O0R6wbMRr3z92A3BaCH1Eq3/8
+6QZkJal7oeNWoHVHwUGSMb3PoqbRVadxYEWudjYGsAVhJ0IdHWyh1G6cx69iIOMz
+DCVffJQOXcvvtkmc+oYvd2zfYT2sDSMcpRVBptb/2Dsy9gaaN3CwG9E/Agu4Li5L
+WgG5XZBI+Jy/KxTlgICIsEVFG2bjvA==
+=Nre9
+-----END PGP SIGNATURE-----
+
+--g3EJGwd85dmsC6Ch--
