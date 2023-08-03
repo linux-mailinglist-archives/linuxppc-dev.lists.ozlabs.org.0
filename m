@@ -1,71 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C42876E6E6
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Aug 2023 13:31:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88AFE76E94C
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Aug 2023 15:05:16 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=PyYKaBLz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bRPHo3Vg;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RGmrt0DjGz3cD5
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Aug 2023 21:31:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RGpwp3TB6z3cHB
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Aug 2023 23:05:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=PyYKaBLz;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bRPHo3Vg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2001:67c:2178:6::1c; helo=smtp-out1.suse.de; envelope-from=mhocko@suse.com; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RGmr31Fnqz2yhL
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Aug 2023 21:30:58 +1000 (AEST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RGpvw3zKGz3bYg
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Aug 2023 23:04:28 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 0C279219AC;
-	Thu,  3 Aug 2023 11:30:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1691062255; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2YTQRuqkv53Z8DJYB9c+3+vV74A3jJ25NIxoPGrGH1I=;
-	b=PyYKaBLz1SEUTXpNmjBEtacozKZcMUFJawXf2mHZYHYa7ME722AbfYKNGKTqYzCoYAcB6w
-	d8Xof9ygD0PzlGFppHEUvkhFRgj4arDISlGa9dsMScLMcFmisFt+seK5tAAo9ZN4XqdEOd
-	3ezC2W3CtuYw3VPpuK4k5gULoOSSeqk=
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id E1D361333C;
-	Thu,  3 Aug 2023 11:30:54 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id V9kENO6Py2QkNAAAMHmgww
-	(envelope-from <mhocko@suse.com>); Thu, 03 Aug 2023 11:30:54 +0000
-Date: Thu, 3 Aug 2023 13:30:54 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v7 7/7] mm/memory_hotplug: Enable runtime update of
- memmap_on_memory parameter
-Message-ID: <ZMuP7gsxQzAmRpNX@dhcp22.suse.cz>
-References: <20230801044116.10674-8-aneesh.kumar@linux.ibm.com>
- <ZMjJPFcXlt+aeCUB@dhcp22.suse.cz>
- <a32fe748-fa18-bd92-3a10-5da8dbad96e6@linux.ibm.com>
- <ZMjjbKnxZXSNcJL5@dhcp22.suse.cz>
- <c1e6e3f6-2e3a-c098-ae78-0d86de8a3a95@linux.ibm.com>
- <ZMp7Vr8PbfoADQw0@dhcp22.suse.cz>
- <31305ab7-1e65-80aa-ee91-9190c8f67430@redhat.com>
- <ZMqLV2S6vY0cZxbp@dhcp22.suse.cz>
- <ZMtqu76Tgh9jj+AI@dhcp22.suse.cz>
- <1c6a74f0-85e9-5299-1520-9068e842b1a5@redhat.com>
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 25B7D61D98;
+	Thu,  3 Aug 2023 13:04:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6A3BC433C8;
+	Thu,  3 Aug 2023 13:04:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1691067865;
+	bh=vkgMhk5pL7GGu6vV+78air3bWNRQYu/zusD/HonXuBc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=bRPHo3VgDSS/bT/p2AQhBMN6bcmPe1VYeVSXSSRVpYdXCESWo53G22Q8CY3+vDidS
+	 yu6Zgw+7z84fxEImhVxfDn2m6G29QK91bYKoB2/rvBFRgR0D2DJg8uR0bFFY3FWBFo
+	 qLAxr3uxCtTmYrGet9Z3MH8cmq3fdcH0XiGzMGVJRC5hd7mKpC915WLluDitVJFMSc
+	 8K3gVQ5mZy5xW7Mp3FxLX2uDquv27xE7s0Jonxv+eSeYgDaLqiKmqxnDMtxj/XVe8r
+	 MUt1iJex/AJ1h1VCwwWHNctp3lZSUsSLp9CJjde/3giumXNOz8zEdTHEQDy0XztgX7
+	 JhqjkqRw5lN9g==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.4 2/4] powerpc/kasan: Disable KCOV in KASAN code
+Date: Thu,  3 Aug 2023 09:04:16 -0400
+Message-Id: <20230803130419.641865-2-sashal@kernel.org>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230803130419.641865-1-sashal@kernel.org>
+References: <20230803130419.641865-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1c6a74f0-85e9-5299-1520-9068e842b1a5@redhat.com>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.4.7
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,38 +65,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vishal Verma <vishal.l.verma@intel.com>, Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>, npiggin@gmail.com, linux-mm@kvack.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, Oscar Salvador <osalvador@suse.de>
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org, Benjamin Gray <bgray@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu 03-08-23 11:24:08, David Hildenbrand wrote:
-[...]
-> > would be readable only when the block is offline and it would reallocate
-> > vmemmap on the change. Makes sense? Are there any risks? Maybe pfn
-> > walkers?
-> 
-> The question is: is it of any real value such that it would be worth the
-> cost and risk?
-> 
-> 
-> One of the primary reasons for memmap_on_memory is that *memory hotplug*
-> succeeds even in low-memory situations (including, low on ZONE_NORMAL
-> situations).
+From: Benjamin Gray <bgray@linux.ibm.com>
 
-One usecase I would have in mind is a mix of smaller and larger memory
-blocks. For larger ones you want to have memmap_on_memory in general
-because they do not eat memory from outside but small(er) ones might be
-more tricky because now you can add a lot of blocks that would be
-internally fragmented to prevent larger allocations to form.
+[ Upstream commit ccb381e1af1ace292153c88eb1fffa5683d16a20 ]
 
-> So you want that behavior already when hotplugging such
-> devices. While there might be value to relocate it later, I'm not sure if
-> that is really worth it, and it does not solve the main use case.
+As per the generic KASAN code in mm/kasan, disable KCOV with
+KCOV_INSTRUMENT := n in the makefile.
 
-Is it worth it? TBH I am not sure same as I am not sure the global
-default should be writable after boot. If we want to make it more
-dynamic we should however talk about the proper layer this is
-implemented on.
+This fixes a ppc64 boot hang when KCOV and KASAN are enabled.
+kasan_early_init() gets called before a PACA is initialised, but the
+KCOV hook expects a valid PACA.
+
+Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230710044143.146840-1-bgray@linux.ibm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/powerpc/mm/kasan/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/powerpc/mm/kasan/Makefile b/arch/powerpc/mm/kasan/Makefile
+index 699eeffd9f551..f9522fd70b2f3 100644
+--- a/arch/powerpc/mm/kasan/Makefile
++++ b/arch/powerpc/mm/kasan/Makefile
+@@ -1,6 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
+ 
+ KASAN_SANITIZE := n
++KCOV_INSTRUMENT := n
+ 
+ obj-$(CONFIG_PPC32)		+= init_32.o
+ obj-$(CONFIG_PPC_8xx)		+= 8xx.o
 -- 
-Michal Hocko
-SUSE Labs
+2.40.1
+
