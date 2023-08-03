@@ -2,55 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE56776E2E8
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Aug 2023 10:24:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAD3A76E3A6
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Aug 2023 10:53:05 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=RVTarNgc;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=sF3+SbxN;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RGhjG4CGSz30g8
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Aug 2023 18:24:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RGjKq5XFZz3bst
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Aug 2023 18:53:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=RVTarNgc;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=sF3+SbxN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.193; helo=relay1-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=mhocko@suse.com; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RGhhM6qp1z2yDR
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Aug 2023 18:24:02 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id C2FEE240009;
-	Thu,  3 Aug 2023 08:23:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1691051037;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RGjJz0cHRz2yh2
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Aug 2023 18:52:16 +1000 (AEST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id F31B41F381;
+	Thu,  3 Aug 2023 08:52:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1691052732; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SELzQVaBhYhBIwDx2p1Pj2orowZttNN9xEZBvwg3M2A=;
-	b=RVTarNgcL5Lqc7frx4gWP/ChoTOIAY8Fu3KgXKvID229jSKmin5+L8FZS/XNa16aJHi1KY
-	wz9mh3d+mtrD5kLKgg+Zutnd8XZuvlkIUEwQ0cq8fgICHjtlWk90qU3ll40vm9fQ6sgBYt
-	jWUNMx5+8UL1/5UQkRIHvpUOLwbvW975dS7ytocUjT10MoEBEQuXo1vdX9F/n3IbVI7f5J
-	fJGShMAO+3iod4LDPehoOxic7SeHcJ0ugCGHqhtjY6hpHJRwEvpXfWlNWLPRj5EpTue6Sy
-	CurrNWc3DoqhLfQa+toQI/c+59kPiyF9gaOcm6Gmn3Ns706aP03UhG8j19SsWw==
-Date: Thu, 3 Aug 2023 10:23:47 +0200
-From: Herve Codina <herve.codina@bootlin.com>
-To: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v2 27/28] dt-bindings: net: fsl,qmc-hdlc: Add framer
- support
-Message-ID: <20230803102347.74706421@bootlin.com>
-In-Reply-To: <20230803004259.GA1598510-robh@kernel.org>
-References: <20230726150225.483464-1-herve.codina@bootlin.com>
-	<20230726150225.483464-28-herve.codina@bootlin.com>
-	<20230803004259.GA1598510-robh@kernel.org>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+	bh=t9D3HOm7zMWuXjtU8sIhIIEaYx21Igl7pf2ICGEcc9E=;
+	b=sF3+SbxNeHQ1K1dRKmTniekm7Mo3Up1JFOTPUv8l0nWxxP8sfEw4wh0mHufE2QPA8f1E7G
+	Kq2eQbQAoXymq4B2oGuAzNKGhB4EbHRa/fDfXwVNBRz1Xvqu7F/pNU6OttugNUoRIX5z+P
+	MN5k0UV+NSXronooFVVvM5WAlEZMuTE=
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id CEEC1134B0;
+	Thu,  3 Aug 2023 08:52:11 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id sDuRL7tqy2TFYAAAMHmgww
+	(envelope-from <mhocko@suse.com>); Thu, 03 Aug 2023 08:52:11 +0000
+Date: Thu, 3 Aug 2023 10:52:11 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH v7 7/7] mm/memory_hotplug: Enable runtime update of
+ memmap_on_memory parameter
+Message-ID: <ZMtqu76Tgh9jj+AI@dhcp22.suse.cz>
+References: <20230801044116.10674-1-aneesh.kumar@linux.ibm.com>
+ <20230801044116.10674-8-aneesh.kumar@linux.ibm.com>
+ <ZMjJPFcXlt+aeCUB@dhcp22.suse.cz>
+ <a32fe748-fa18-bd92-3a10-5da8dbad96e6@linux.ibm.com>
+ <ZMjjbKnxZXSNcJL5@dhcp22.suse.cz>
+ <c1e6e3f6-2e3a-c098-ae78-0d86de8a3a95@linux.ibm.com>
+ <ZMp7Vr8PbfoADQw0@dhcp22.suse.cz>
+ <31305ab7-1e65-80aa-ee91-9190c8f67430@redhat.com>
+ <ZMqLV2S6vY0cZxbp@dhcp22.suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZMqLV2S6vY0cZxbp@dhcp22.suse.cz>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,63 +76,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, alsa-devel@alsa-project.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Linus Walleij <linus.walleij@linaro.org>, Jaroslav Kysela <perex@perex.cz>, Eric Dumazet <edumazet@google.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Fabio Estevam <festevam@gmail.com>, Qiang Zhao <qiang.zhao@nxp.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Lee Jones <lee@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, Nicolin Chen <nicoleotsuka@gmail.com>, linux-gpio@vger.kernel.org, Mark Brown <broonie@kernel.org>, Takashi Iwai <tiwai@suse.com>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>, Liam Girdwood <lgirdwood@gmail.com>, Li Yang <leoyang.li@nxp.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: Vishal Verma <vishal.l.verma@intel.com>, Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>, npiggin@gmail.com, linux-mm@kvack.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Rob,
-
-On Wed, 2 Aug 2023 18:42:59 -0600
-Rob Herring <robh@kernel.org> wrote:
-
-> On Wed, Jul 26, 2023 at 05:02:23PM +0200, Herve Codina wrote:
-> > A framer can be connected to the QMC HDLC.
-> > If present, this framer is the interface between the TDM used by the QMC
-> > HDLC and the E1/T1 line.
-> > The QMC HDLC can use this framer to get information about the line and
-> > configure the line.
+On Wed 02-08-23 18:59:04, Michal Hocko wrote:
+> On Wed 02-08-23 17:54:04, David Hildenbrand wrote:
+> > On 02.08.23 17:50, Michal Hocko wrote:
+> > > On Wed 02-08-23 10:15:04, Aneesh Kumar K V wrote:
+> > > > On 8/1/23 4:20 PM, Michal Hocko wrote:
+> > > > > On Tue 01-08-23 14:58:29, Aneesh Kumar K V wrote:
+> > > > > > On 8/1/23 2:28 PM, Michal Hocko wrote:
+> > > > > > > On Tue 01-08-23 10:11:16, Aneesh Kumar K.V wrote:
+> > > > > > > > Allow updating memmap_on_memory mode after the kernel boot. Memory
+> > > > > > > > hotplug done after the mode update will use the new mmemap_on_memory
+> > > > > > > > value.
+> > > > > > > 
+> > > > > > > Well, this is a user space kABI extension and as such you should spend
+> > > > > > > more words about the usecase. Why we could live with this static and now
+> > > > > > > need dynamic?
+> > > > > > > 
+> > > > > > 
+> > > > > > This enables easy testing of memmap_on_memory feature without a kernel reboot.
+> > > > > 
+> > > > > Testing alone is rather weak argument to be honest.
+> > > > > 
+> > > > > > I also expect people wanting to use that when they find dax kmem memory online
+> > > > > > failing because of struct page allocation failures[1]. User could reboot back with
+> > > > > > memmap_on_memory=y kernel parameter. But being able to enable it via sysfs makes
+> > > > > > the feature much more useful.
+> > > > > 
+> > > > > Sure it can be useful but that holds for any feature, right. The main
+> > > > > question is whether this is worth maintaing. The current implementation
+> > > > > seems rather trivial which is an argument to have it but are there any
+> > > > > risks long term? Have you evaluated a potential long term maintenance
+> > > > > cost? There is no easy way to go back and disable it later on without
+> > > > > breaking some userspace.
+> > > > > 
+> > > > > All that should be in the changelog!
+> > > > 
+> > > > I updated it as below.
+> > > > 
+> > > > mm/memory_hotplug: Enable runtime update of memmap_on_memory parameter
+> > > > 
+> > > > Allow updating memmap_on_memory mode after the kernel boot. Memory
+> > > > hotplug done after the mode update will use the new mmemap_on_memory
+> > > > value.
+> > > > 
+> > > > It is now possible to test the memmap_on_memory feature easily without
+> > > > the need for a kernel reboot. Additionally, for those encountering
+> > > > struct page allocation failures while using dax kmem memory online, this
+> > > > feature may prove useful. Instead of rebooting with the
+> > > > memmap_on_memory=y kernel parameter, users can now enable it via sysfs,
+> > > > which greatly enhances its usefulness.
+> > > 
+> > > 
+> > > I do not really see a solid argument why rebooting is really a problem
+> > > TBH. Also is the global policy knob really the right fit for existing
+> > > hotplug usecases? In other words, if we really want to make
+> > > memmap_on_memory more flexible would it make more sense to have it per
+> > > memory block property instead (the global knob being the default if
+> > > admin doesn't specify it differently).
 > > 
-> > Add an optional framer property to reference the framer itself.
-> > 
-> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> > ---
-> >  Documentation/devicetree/bindings/net/fsl,qmc-hdlc.yaml | 5 +++++
-> >  1 file changed, 5 insertions(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/net/fsl,qmc-hdlc.yaml b/Documentation/devicetree/bindings/net/fsl,qmc-hdlc.yaml
-> > index 8bb6f34602d9..bf29863ab419 100644
-> > --- a/Documentation/devicetree/bindings/net/fsl,qmc-hdlc.yaml
-> > +++ b/Documentation/devicetree/bindings/net/fsl,qmc-hdlc.yaml
-> > @@ -27,6 +27,11 @@ properties:
-> >        Should be a phandle/number pair. The phandle to QMC node and the QMC
-> >        channel to use.
-> >  
-> > +  framer:
-> > +    $ref: /schemas/types.yaml#/definitions/phandle  
+> > Per memory block isn't possible, due to the creation order.
 > 
-> Now you've defined this property twice. Please avoid doing that.
+> I am not sure I follow. Could you elaborate more?
 
-I don't see what you mean.
+Must have been a tired brain. Now I see what you mean of course. vmemmap
+is allocated at the time the range is registered and therefore memory
+block sysfs created. So you are right that it is too late in some sense
+but I still believe that this would be doable. The memmap_on_memory file
+would be readable only when the block is offline and it would reallocate
+vmemmap on the change. Makes sense? Are there any risks? Maybe pfn
+walkers?
 
-I previously defined the framer property at the framer-codec node as it is
-a framer consumer (it was a mistake because this framer-codec node is a child of
-the framer node but that's an other story).
-
-Here, at the qmc-hdlc node, I define this property in order to use the framer as a
-consumer too.
-
-What is wrong ?
-
-Best regards,
-Hervé
-
-> 
-> > +    description:
-> > +      phandle to the framer node
-> > +
-> >  required:
-> >    - compatible
-> >    - fsl,qmc-chan
-> > -- 
-> > 2.41.0
-> >   
+-- 
+Michal Hocko
+SUSE Labs
