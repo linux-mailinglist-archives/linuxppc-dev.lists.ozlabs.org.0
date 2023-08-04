@@ -2,60 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CB917700C5
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Aug 2023 15:05:47 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gUYMlOrf;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 48E2B770193
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Aug 2023 15:31:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RHQtx1VWjz3cTr
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Aug 2023 23:05:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RHRSP11BZz3cVN
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Aug 2023 23:31:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gUYMlOrf;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RHQsw1qx3z2yh2
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Aug 2023 23:04:52 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 2752861FD1;
-	Fri,  4 Aug 2023 13:04:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75C97C433C8;
-	Fri,  4 Aug 2023 13:04:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1691154288;
-	bh=89r/cdPXUA3crJLOF3jvKSSR2U3OJaNBikJcnHTJn8Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gUYMlOrfhs6V2ihRFqHUGhHMMYmMbicrmDYusJpbidqVz7/W3N9yODCXo+KSy/7IE
-	 Q7WKyfeiHvaKdEwjZ0XfcHRzwBp8IEKN8SMFMsyKgq2TBTZ/tkpJhxSOsjaAV8tO7+
-	 cdoSzqVVANT7dDsGKYnheeTz2lnX4eTOoHAkYAX39McHpg8KzdqvxvSiUrHMkNB8F7
-	 z1yWxTheru1Xu87cnT4nOT33rnMmmgqhfhFz7tE8KgvwkzyBvrvMIWjwF6z+8M6hIV
-	 eEflx7YZSm5zsv4tLE77TXac5S1gfpNvHdxi9ZKWEOw74M2ZGGTKFl8NuBTSqopvAk
-	 kMU68qIP13ohg==
-Date: Fri, 4 Aug 2023 14:04:43 +0100
-From: Will Deacon <will@kernel.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH] word-at-a-time: use the same return type for has_zero
- regardless of endianness
-Message-ID: <20230804130431.GA29929@willie-the-truck>
-References: <20230801-bitwise-v1-1-799bec468dc4@google.com>
- <CAHk-=wgkC80Ey0Wyi3zHYexUmteeDL3hvZrp=EpMrDccRGmMwA@mail.gmail.com>
- <20230802161553.GA2108867@dev-arch.thelio-3990X>
- <CAHk-=wjmWjd+xe88cf14hFGkSK7fYJBSixK8Ym0DLYCa+dTxtg@mail.gmail.com>
- <dd48b4ff-1009-41fe-baf5-be89432c5d28@app.fastmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RHRRp2hbtz30Jy
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Aug 2023 23:30:43 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+	by localhost (Postfix) with ESMTP id 4RHRRh3ljyz9tG3;
+	Fri,  4 Aug 2023 15:30:40 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id zK77aMXGU9lj; Fri,  4 Aug 2023 15:30:40 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4RHRRh2ywKz9tG1;
+	Fri,  4 Aug 2023 15:30:40 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 5F86E8B778;
+	Fri,  4 Aug 2023 15:30:40 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id CmQq5yIrOg0V; Fri,  4 Aug 2023 15:30:40 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.232.144])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 1623F8B763;
+	Fri,  4 Aug 2023 15:30:40 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 374DUWjS693287
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 4 Aug 2023 15:30:32 +0200
+Received: (from chleroy@localhost)
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 374DURcu693276;
+	Fri, 4 Aug 2023 15:30:27 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+        Pantelis Antoniou <pantelis.antoniou@gmail.com>,
+        Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>, robh@kernel.org
+Subject: [PATCH net-next v2 00/10] net: fs_enet: Driver cleanup
+Date: Fri,  4 Aug 2023 15:30:10 +0200
+Message-ID: <cover.1691155346.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <dd48b4ff-1009-41fe-baf5-be89432c5d28@app.fastmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1691155809; l=1935; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=ERiVOYi/hcC3N9RhqhqL5vBOu5ySuRFBAgWoxBGT7XA=; b=qwBZpnRniiyPqhAr7qozkF6azp5RYmtMfCw1aItBfkeTlPH+znV55YtB54Qqd7/NG7FJHNG19 rdMFKByDTH9AZR+2mzRaCIZx/OQ8XdH/S7+cfk5TrfjVWScTwADopiC
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,65 +69,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-Arch <linux-arch@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Will Deacon <will.deacon@arm.com>, Nathan Chancellor <nathan@kernel.org>, Tom Rix <trix@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>, Linus Torvalds <torvalds@linux-foundation.org>
+Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Aug 02, 2023 at 08:17:32PM +0200, Arnd Bergmann wrote:
-> On Wed, Aug 2, 2023, at 19:37, Linus Torvalds wrote:
-> > On Wed, 2 Aug 2023 at 09:16, Nathan Chancellor <nathan@kernel.org> wrote:
-> >>
-> >> We see this warning with ARCH=arm64 defconfig + CONFIG_CPU_BIG_ENDIAN=y.
-> >
-> > Oh Christ. I didn't even realize that arm64 allowed a BE config.
-> >
-> > The config option goes back to 2013 - are there actually BE user space
-> > implementations around?
-> 
-> At least NXP's Layerscape and Huawei's SoCs ended up in big-endian
-> appliances, running legacy software ported from mips or powerpc.
-> I agree this was a mistake, but that wasn't nearly as obvious ten
-> years ago when there were still new BE-only sparc, mips and powerpc
-> put on the market -- that really only ended in 2017.
-> 
-> > People, why do we do that? That's positively crazy. BE is dead and
-> > should be relegated to legacy platforms. There are no advantages to
-> > being different just for the sake of being different - any "security
-> > by obscurity" argument would be far outweighed by the inconvenience to
-> > actual users.
-> >
-> > Yes, yes, I know the aarch64 architecture technically allows BE
-> > implementations - and apparently you can even do it by exception
-> > level, which I had to look up. But do any actually exist?
-> >
-> > Does the kernel even work right in BE mode? It's really easy to miss
-> > some endianness check when all the actual hardware and use is LE, and
-> > when (for example) instruction encoding and IO is then always LE
-> > anyway.
-> 
-> This was always only done for compatibility with non-portable
-> software when companies with large custom network stacks argued
-> that it was cheaper to build the entire open source software to
-> big-endian than port their own product to little-endian. ;-)
-> 
-> We (Linaro) used to test all toolchain and kernel releases in
-> big-endian mode as member companies had customers that asked
-> for it, but that stopped a while ago as those legacy software
-> stacks either got more portable or got replaced over time.
-> 
-> Many Arm systems won't boot BE kernels any more because UEFI
-> firmware only supports LE, or because of driver bugs.
-> Virtual machines are still likely to work fine though.
-> I'm fairly sure that all Arm Cortex and Neoverse cores still\
-> support BE mode in all exception levels, OTOH at least Apple's
-> custom CPUs do not implement it at all.
+Over the years, platform and driver initialisation have evolved into
+more generic ways, and driver or platform specific stuff has gone
+away, leaving stale objects behind.
 
-Yes, that's right. The CPUs we have *do* tend to support BE, but
-practically there isn't any software to run on them. I asked about
-removing it a few years ago:
+This series aims at cleaning all that up for fs_enet ethernet driver.
 
-https://lore.kernel.org/linux-arm-kernel/20191011102747.lpbaur2e4nqyf7sw@willie-the-truck/
+Changes in v2:
+- Remove a trailing whitespace in the old struct moved in patch 7.
+- Include powerpc people and list that I forgot when sending v1
+(and Rob as expected by Patchwork for patch 6, not sure why)
 
-but Hanjun said that Huawei are using it, so it stayed.
+Christophe Leroy (10):
+  net: fs_enet: Remove set but not used variable
+  net: fs_enet: Fix address space and base types mismatches
+  net: fs_enet: Remove fs_get_id()
+  net: fs_enet: Remove unused fields in fs_platform_info struct
+  net: fs_enet: Remove has_phy field in fs_platform_info struct
+  net: fs_enet: Remove stale prototypes from fsl_soc.c
+  net: fs_enet: Move struct fs_platform_info into fs_enet.h
+  net: fs_enet: Don't include fs_enet_pd.h when not needed
+  net: fs_enet: Remove linux/fs_enet_pd.h
+  net: fs_enet: Use cpm_muram_xxx() functions instead of cpm_dpxxx()
+    macros
 
-Will
+ MAINTAINERS                                   |   1 -
+ arch/powerpc/platforms/8xx/adder875.c         |   1 -
+ arch/powerpc/platforms/8xx/mpc885ads_setup.c  |   1 -
+ arch/powerpc/platforms/8xx/tqm8xx_setup.c     |   1 -
+ arch/powerpc/sysdev/fsl_soc.c                 |   3 -
+ .../ethernet/freescale/fs_enet/fs_enet-main.c |   2 -
+ .../net/ethernet/freescale/fs_enet/fs_enet.h  |  19 +-
+ .../net/ethernet/freescale/fs_enet/mac-fcc.c  |   4 +-
+ .../net/ethernet/freescale/fs_enet/mac-fec.c  |  14 --
+ .../net/ethernet/freescale/fs_enet/mac-scc.c  |   8 +-
+ .../ethernet/freescale/fs_enet/mii-bitbang.c  |   4 +-
+ .../net/ethernet/freescale/fs_enet/mii-fec.c  |   1 +
+ include/linux/fs_enet_pd.h                    | 165 ------------------
+ 13 files changed, 27 insertions(+), 197 deletions(-)
+ delete mode 100644 include/linux/fs_enet_pd.h
+
+-- 
+2.41.0
+
