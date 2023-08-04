@@ -1,35 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9237D76FD7A
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Aug 2023 11:37:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3692176FFEF
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Aug 2023 14:05:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RHLGS3kk2z3dwQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Aug 2023 19:37:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RHPYn1K8qz3cT8
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Aug 2023 22:05:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gondor.apana.org.au (client-ip=167.179.156.38; helo=167-179-156-38.a7b39c.syd.nbn.aussiebb.net; envelope-from=herbert@gondor.apana.org.au; receiver=lists.ozlabs.org)
-Received: from 167-179-156-38.a7b39c.syd.nbn.aussiebb.net (167-179-156-38.a7b39c.syd.nbn.aussiebb.net [167.179.156.38])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.255; helo=szxga08-in.huawei.com; envelope-from=lizetao1@huawei.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 1147 seconds by postgrey-1.37 at boromir; Fri, 04 Aug 2023 19:41:11 AEST
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RHLFf5r7Xz3dhB
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Aug 2023 19:36:37 +1000 (AEST)
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
-	id 1qRrDk-003baN-9J; Fri, 04 Aug 2023 17:35:45 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 04 Aug 2023 17:35:44 +0800
-Date: Fri, 4 Aug 2023 17:35:44 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v3] hwrng: Explicitly include correct DT includes
-Message-ID: <ZMzGcMJh6TA+V+p5@gondor.apana.org.au>
-References: <20230728134828.3224218-1-robh@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RHLLv0H9gz2yTv
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Aug 2023 19:41:10 +1000 (AEST)
+Received: from kwepemi500012.china.huawei.com (unknown [172.30.72.53])
+	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4RHKvP3Cxcz1KCGF;
+	Fri,  4 Aug 2023 17:20:49 +0800 (CST)
+Received: from huawei.com (10.90.53.73) by kwepemi500012.china.huawei.com
+ (7.221.188.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 4 Aug
+ 2023 17:21:53 +0800
+From: Li Zetao <lizetao1@huawei.com>
+To: <Roy.Pledge@nxp.com>, <leoyang.li@nxp.com>
+Subject: [PATCH -next] soc: fsl: dpio: Remove redundant initialization owner in dpaa2_dpio_driver
+Date: Fri, 4 Aug 2023 17:21:25 +0800
+Message-ID: <20230804092125.81901-1-lizetao1@huawei.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230728134828.3224218-1-robh@kernel.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.90.53.73]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemi500012.china.huawei.com (7.221.188.12)
+X-CFilter-Loop: Reflected
+X-Mailman-Approved-At: Fri, 04 Aug 2023 22:05:22 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,44 +48,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, Tomer Maimon <tmaimon77@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, Tali Perry <tali.perry1@gmail.com>, linux-stm32@st-md-mailman.stormreply.com, Benjamin Fair <benjaminfair@google.com>, Florian Fainelli <florian.fainelli@broadcom.com>, openbmc@lists.ozlabs.org, Nancy Yuen <yuenn@google.com>, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, devicetree@vger.kernel.org, Deepak Saxena <dsaxena@plexity.net>, Ray Jui <rjui@broadcom.com>, Nicholas Piggin <npiggin@gmail.com>, linux-rpi-kernel@lists.infradead.org, Olivia Mackall <olivia@selenic.com>, linux-arm-kernel@lists.infradead.org, Scott Branden <sbranden@broadcom.com>, Avi Fishman <avifishman70@gmail.com>, Patrick Venture <venture@google.com>, Nicolas Ferre <nicolas.ferre@microchip.com>, linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org, Maxime Coquelin <mcoquelin.stm32@gmail.com>, linuxppc-dev@lists.ozlabs.org, Claudiu Beznea
-  <claudiu.beznea@microchip.com>
+Cc: linuxppc-dev@lists.ozlabs.org, lizetao1@huawei.com, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jul 28, 2023 at 07:48:27AM -0600, Rob Herring wrote:
-> The DT of_device.h and of_platform.h date back to the separate
-> of_platform_bus_type before it was merged into the regular platform bus.
-> As part of that merge prepping Arm DT support 13 years ago, they
-> "temporarily" include each other. They also include platform_device.h
-> and of.h. As a result, there's a pretty much random mix of those include
-> files used throughout the tree. In order to detangle these headers and
-> replace the implicit includes with struct declarations, users need to
-> explicitly include the correct includes.
-> 
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
-> v3:
->  - Split out hw_random, ipmi and tpm
-> v2:
->  - Fix build for pic32-rng.c dropping of_match_ptr()
-> ---
->  drivers/char/hw_random/atmel-rng.c     | 2 +-
->  drivers/char/hw_random/bcm2835-rng.c   | 3 +--
->  drivers/char/hw_random/ingenic-trng.c  | 2 +-
->  drivers/char/hw_random/iproc-rng200.c  | 3 +--
->  drivers/char/hw_random/npcm-rng.c      | 3 +--
->  drivers/char/hw_random/omap-rng.c      | 2 --
->  drivers/char/hw_random/omap3-rom-rng.c | 1 -
->  drivers/char/hw_random/pasemi-rng.c    | 3 +--
->  drivers/char/hw_random/pic32-rng.c     | 5 ++---
->  drivers/char/hw_random/stm32-rng.c     | 3 ++-
->  drivers/char/hw_random/xgene-rng.c     | 5 ++---
->  drivers/char/hw_random/xiphera-trng.c  | 1 -
->  12 files changed, 12 insertions(+), 21 deletions(-)
+The fsl_mc_driver_register() will set "THIS_MODULE" to driver.owner when
+register a fsl_mc_driver driver, so it is redundant initialization to set
+driver.owner in dpaa2_dpio_driver statement. Remove it for clean code.
 
-Patch applied.  Thanks.
+Signed-off-by: Li Zetao <lizetao1@huawei.com>
+---
+ drivers/soc/fsl/dpio/dpio-driver.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/soc/fsl/dpio/dpio-driver.c b/drivers/soc/fsl/dpio/dpio-driver.c
+index 9e3fddd8f5a9..6be4f1caafcb 100644
+--- a/drivers/soc/fsl/dpio/dpio-driver.c
++++ b/drivers/soc/fsl/dpio/dpio-driver.c
+@@ -312,7 +312,6 @@ static const struct fsl_mc_device_id dpaa2_dpio_match_id_table[] = {
+ static struct fsl_mc_driver dpaa2_dpio_driver = {
+ 	.driver = {
+ 		.name		= KBUILD_MODNAME,
+-		.owner		= THIS_MODULE,
+ 	},
+ 	.probe		= dpaa2_dpio_probe,
+ 	.remove		= dpaa2_dpio_remove,
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+2.34.1
+
