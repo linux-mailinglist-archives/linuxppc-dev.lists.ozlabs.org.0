@@ -1,69 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C13B770C61
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Aug 2023 01:26:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6C3B770C9A
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Aug 2023 02:15:54 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=KN5ZYHb0;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=O7h8BHhb;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RHhgS27Xqz3cVW
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Aug 2023 09:26:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RHjm85mKJz3cVJ
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Aug 2023 10:15:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=KN5ZYHb0;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=O7h8BHhb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::233; helo=mail-oi1-x233.google.com; envelope-from=mjguzik@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com [IPv6:2607:f8b0:4864:20::233])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::131; helo=mail-lf1-x131.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RHhfS4pwKz2yW6
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Aug 2023 09:25:52 +1000 (AEST)
-Received: by mail-oi1-x233.google.com with SMTP id 5614622812f47-3a5a7e7cd61so1779196b6e.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Aug 2023 16:25:51 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RHjlF5cZ3z2yVk
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Aug 2023 10:15:04 +1000 (AEST)
+Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-4fe27849e6aso4519524e87.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Aug 2023 17:15:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691191549; x=1691796349;
-        h=cc:to:subject:message-id:date:from:references:in-reply-to
+        d=linux-foundation.org; s=google; t=1691194496; x=1691799296;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=2ECpGsVgScrXWZOLp4MGlhJInQlqSJK5uh2ufnsxsdQ=;
-        b=KN5ZYHb0WcW1urRTacMTcHcK1iJfsyKLuTL34dGK3epmEymYUfmkINYqz6aEbdMp+W
-         zP3dEKtnz6JUtoqVZ1SnahfZCc5VVKFxGx/8h93CY/AxPITLLZOB6+xETO/sMYVRHySA
-         TaMiFlxxDsv7HIJe00SxpQVu9Hn7GKNHwBxbOGtO1AXBFT+BEswiulBLKt6bP6OMt4wd
-         12MBsdSJMyXvBwCe6D2ym2yxWn3SVy+r1EJz04/d6QPozmfj9tn6XaE+A3eVha3VW8Bw
-         HsxwAfYJFsWa+JNVAHCA2y3A6DqjGG47Z5jkfZegfqiTqVqo78ji96xRiH5TdjogMFji
-         HGqg==
+        bh=BOt/owxzUYbRmdYSMwC2b72ailgyx1LyngYZzbpA3ng=;
+        b=O7h8BHhbymu1I4d9ZaPLh23xuuUDRqcwMsszrhc+cDntNODV23CcvQ9/lPL6ayYxbV
+         jyui6NxhOjTNrewE2jlD9bplqx5j8albhlxXcvxYqRHg4f4+NsmTwofjBMmJwPkZSliC
+         0J8AFv8huk2XGYV/Lg1bQ5SEGFapAZa4lVZdk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691191549; x=1691796349;
-        h=cc:to:subject:message-id:date:from:references:in-reply-to
+        d=1e100.net; s=20221208; t=1691194496; x=1691799296;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=2ECpGsVgScrXWZOLp4MGlhJInQlqSJK5uh2ufnsxsdQ=;
-        b=lsNtQM35T+CLklBpdjqA7Il4Nc24paK785aFo0GfsrbIommuk+ctzs48LhEz5qUXSe
-         5vPRXhJOG4zhZUMSTu8TByTnDB7USsZxr1oiNspk71ISeHwbUxU+IuINz9sOUmMYFp0V
-         HOhL736/BOnJISPNK/0GWJRGp3O2plUd0cefIrWOGmVBZ2c/eZo16l/QlvRmPVE7pKfP
-         VZNKL2+930nZGc+Ev1XwF5EPU+JmgIYzX0Oa3fBIExY08zh8EbhLv36z6BMBAc+7ahA1
-         PS6jtjXUpSRPJZJ5Rx+aJWG22e83Gdi6FgI7p025vkdlsIFrRma+4j2oEPovtOUZT0zs
-         rKqg==
-X-Gm-Message-State: AOJu0YzmdK2Vq3n4HMIxhJjVpM4MzZnNhAHht0yNBho5Zj3Pwt2GNiW9
-	nv/rn/vPHRUAapoKmfiJfkAMt+6kR2nW/l9cZDkDgrWwYaI=
-X-Google-Smtp-Source: AGHT+IGtBQglFMOFnETZZ/fmovN1PMvk23bCpNKojUYy5iXfJ0+vg0zUB8AJgZ4V2vFlc91Ap5FBtffJGXGc3wkjEE8=
-X-Received: by 2002:a05:6808:3a7:b0:39c:7d50:ab86 with SMTP id
- n7-20020a05680803a700b0039c7d50ab86mr778649oie.29.1691191548939; Fri, 04 Aug
- 2023 16:25:48 -0700 (PDT)
+        bh=BOt/owxzUYbRmdYSMwC2b72ailgyx1LyngYZzbpA3ng=;
+        b=c0QGWjh0XikIrnaxH61rRZbuJHORybnqc1bz9ZoOCZOVCcDC0YFk9z4z6501iKpheN
+         en7D6Tkpp/EpcAoJGkvmzsTWyS5eXO/Tot9ZvhskRzN9RjIhMz4Epc3OxU4hzJ9fQRWr
+         H8xtpSpsp15+LbzgelqJPq2JEDeygRsI5V7c8lYpTOVaB658zOjdfkV9oTMbSf4zXw8S
+         dLRxaTqst4oCFXRTIJIP4EXWUGlnMfj/aXPpYgHo0Xf63XA6S8ph63Yjo5pccBSHc6eV
+         9eMiWEZvF6MjrM51cny0TtA52ub7ouQ/KloE5BR+WB6BKRRDJlESsFcDxqpQ1fVuuI40
+         eh2g==
+X-Gm-Message-State: AOJu0Yy8ZB6nE8kT/v3zSPLUUw4iyDRfI0tXvZED2BfuBQu/OEvuD0uv
+	y+0Go87I54SqBciYu6dIVtl9TF8AbuLXG6tJL9L07z+0
+X-Google-Smtp-Source: AGHT+IEt8GfyGTy3qSuGmQ5ZtH5SDmN7k5DD3dopswTa1fea3vBzFPSNaprzWsEHyZMGHBaIMCdHDg==
+X-Received: by 2002:a05:6512:6d2:b0:4fd:f7a8:a9f3 with SMTP id u18-20020a05651206d200b004fdf7a8a9f3mr2816745lff.38.1691194496538;
+        Fri, 04 Aug 2023 17:14:56 -0700 (PDT)
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com. [209.85.167.50])
+        by smtp.gmail.com with ESMTPSA id q19-20020ac246f3000000b004f3ab100161sm566191lfo.15.2023.08.04.17.14.55
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 04 Aug 2023 17:14:56 -0700 (PDT)
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-4f4b2bc1565so4511767e87.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Aug 2023 17:14:55 -0700 (PDT)
+X-Received: by 2002:a05:6512:74e:b0:4fb:ca59:42d7 with SMTP id
+ c14-20020a056512074e00b004fbca5942d7mr2051745lfs.33.1691194495615; Fri, 04
+ Aug 2023 17:14:55 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:ac9:7b87:0:b0:4f0:1250:dd51 with HTTP; Fri, 4 Aug 2023
- 16:25:48 -0700 (PDT)
-In-Reply-To: <CAHk-=wiy125k1dBmQFTGpHwiOqEyrD6xnd4xKWfe97H_HodgDA@mail.gmail.com>
 References: <20230708191212.4147700-1-surenb@google.com> <20230708191212.4147700-3-surenb@google.com>
  <20230804214620.btgwhsszsd7rh6nf@f> <CAHk-=wiy125k1dBmQFTGpHwiOqEyrD6xnd4xKWfe97H_HodgDA@mail.gmail.com>
-From: Mateusz Guzik <mjguzik@gmail.com>
-Date: Sat, 5 Aug 2023 01:25:48 +0200
-Message-ID: <CAGudoHFsAU_BDCOuz8UgDBLGEM8xg=aUGjaVoqkM_Zvxo2Re_g@mail.gmail.com>
+ <CAGudoHFsAU_BDCOuz8UgDBLGEM8xg=aUGjaVoqkM_Zvxo2Re_g@mail.gmail.com>
+In-Reply-To: <CAGudoHFsAU_BDCOuz8UgDBLGEM8xg=aUGjaVoqkM_Zvxo2Re_g@mail.gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Fri, 4 Aug 2023 17:14:38 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiG9xaVvBJXHqTxtop0=mW9KxPS9C54ED23p59VNEKdWg@mail.gmail.com>
+Message-ID: <CAHk-=wiG9xaVvBJXHqTxtop0=mW9KxPS9C54ED23p59VNEKdWg@mail.gmail.com>
 Subject: Re: [PATCH v2 3/3] fork: lock VMAs of the parent process when forking
-To: Linus Torvalds <torvalds@linux-foundation.org>
+To: Mateusz Guzik <mjguzik@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -80,31 +86,32 @@ Cc: jacobly.alt@gmail.com, regressions@lists.linux.dev, Jiri Slaby <jirislaby@ke
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 8/5/23, Linus Torvalds <torvalds@linux-foundation.org> wrote:
-> On Fri, 4 Aug 2023 at 14:46, Mateusz Guzik <mjguzik@gmail.com> wrote:
->>
->> I don't see it mentioned in the discussion, so at a risk of ruffling
->> feathers or looking really bad I'm going to ask: is the locking of any
->> use if the forking process is single-threaded? T
+On Fri, 4 Aug 2023 at 16:25, Mateusz Guzik <mjguzik@gmail.com> wrote:
 >
-> Sadly, we've always been able to access the mm from other processes,
-> so the locking is - I think - unavoidable.
+> I know of these guys, I think they are excluded as is -- they go
+> through access_remote_vm, starting with:
+>         if (mmap_read_lock_killable(mm))
+>                 return 0;
 >
-> And some of those "access from other processes" aren't even uncommon
-> or special. It's things like "ps" etc, that do it just to see the
-> process name and arguments.
->
+> while dup_mmap already write locks the parent's mm.
 
-I know of these guys, I think they are excluded as is -- they go
-through access_remote_vm, starting with:
-        if (mmap_read_lock_killable(mm))
-                return 0;
+Oh, you're only worried about vma_start_write()?
 
-while dup_mmap already write locks the parent's mm.
+That's a non-issue. It doesn't take the lock normally, since it starts off with
 
-I don't see any surprise relocks of the semaphore.
+        if (__is_vma_write_locked(vma, &mm_lock_seq))
+                return;
 
-Granted, should someone *bypass* this mechanism the above would be moot.
+which catches on the lock sequence number already being set.
 
--- 
-Mateusz Guzik <mjguzik gmail.com>
+So no extra locking there.
+
+Well, technically there's extra locking because the code stupidly
+doesn't initialize new vma allocations to the right sequence number,
+but that was talked about here:
+
+    https://lore.kernel.org/all/CAHk-=wiCrWAoEesBuoGoqqufvesicbGp3cX0LyKgEvsFaZNpDA@mail.gmail.com/
+
+and it's a separate issue.
+
+          Linus
