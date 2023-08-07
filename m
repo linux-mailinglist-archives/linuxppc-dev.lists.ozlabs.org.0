@@ -2,73 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8265E773519
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Aug 2023 01:39:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D33807735A9
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Aug 2023 03:06:20 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=ny/PO9Rz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=BwuvQdbC;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RKXpz31ZKz3fJY
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Aug 2023 09:39:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RKZky5K4wz3bdm
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Aug 2023 11:06:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=ny/PO9Rz;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=BwuvQdbC;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b2a; helo=mail-yb1-xb2a.google.com; envelope-from=vishal.moola@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--ackerleytng.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=3b3nrzaskdgwkmuobvoidxqqyyqvo.mywvsxehzzm-nofvscdc.yjvklc.ybq@flex--ackerleytng.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RKX4c6T4cz3cH2
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Aug 2023 09:06:24 +1000 (AEST)
-Received: by mail-yb1-xb2a.google.com with SMTP id 3f1490d57ef6-bc379e4c1cbso5465604276.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Aug 2023 16:06:24 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RKX572McNz3cQ7
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Aug 2023 09:06:49 +1000 (AEST)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-569e7aec37bso43922757b3.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Aug 2023 16:06:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691449583; x=1692054383;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gIX4EtUZRQHbbGVDBj/rJyP4ZKSCaTL9vvlgteJwLjg=;
-        b=ny/PO9Rzwz4wKD05c8Oj8x01t9rfWUwF+DPBSi6xhAQ1t3uiUBYZ7YUUbf8WtD6fas
-         a2dGGpvFO2SYjUkztwf/JpnNv7QhJL+Goto2OWRpxKnsAjXenC9v6P3rISzqLv6y4LVV
-         4Qzw+SXgVTszZ9R94kkJTKmg5SvkJhFFe8ZHJiGz98l2xVrWZH/L4O6QNYM4Ix9oN6dK
-         IfbxHi4LcKxjr+5M4cvO0MwysEIi/pmb6eegOI2VGQmX9xJr0pTMWjXflu5Ws+wnG+9V
-         BkJIEDxKgjBTQlry6d49f1/eWCkgGXBEpt1ui7ZKc/08IVlfaQd/C3Y9s9851HPExZOi
-         t/gw==
+        d=google.com; s=20221208; t=1691449607; x=1692054407;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=h7A5aUX2ecj7Bbl/7ce/OdAJyafyQZh2jovAmUQfIOU=;
+        b=BwuvQdbCy2eUR+bp2NSDknEVbKVENYiDa6uZlyXUwJVmlF4iKp7HjX09JvbwikelLF
+         rKNAwCIOjLOCd9hfp54t7rYGOQkDWMmLVeB7tC4wNPL/xp+tqM5HxKngfQKLrmiljVMH
+         iSIS4pBQ45QD1qQyRXNJtH27IiaYgguvgYTqI/+bBLhU+TqFpp7Sutp2QK2jo2kiAyxG
+         IG//K3Uxz4ck43yxOcKsJnHFISIoIpmEz14csW59Ae6FEeel85qKxKoUZusz6vFuY6is
+         pXI++E1KnyDArrSs+pWezCptJywjGpfbd67K7HxwhlAzqazZgZUp2EXPv3WY6f0/mDR8
+         iGnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691449583; x=1692054383;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gIX4EtUZRQHbbGVDBj/rJyP4ZKSCaTL9vvlgteJwLjg=;
-        b=FqkK8dKIs5E2EWuZ/dom89srdkTxrvNsVEzoYcSUS1XphlTzT3bmwuePqpHDDb3lYy
-         mhMhFAaubt867v24OUgN02WoKTDgJsnURIw8pQtyf21WEWOZf5btzzeZFSqtgEvCQD4+
-         GHM5Iw/qFdDxEikYnpwoG306qU5JDWueCZ/2vePpweHeHmGfYlbiSGWycnj1vG3i1HwH
-         AMyxOG27Iw17v0cyL+f9iAw/hEt2zktbGY8zDKGoIrBAJ9fB0bueW/Bz9wnd2Rvt2sXT
-         k8KrB6aPDk325zRjd+A8pwJtbIomDvrxT3bNLBtKmAYnCYc59v0UlSztBtnLLp5Lw4qo
-         BH+w==
-X-Gm-Message-State: AOJu0Yzj4Q8w7SyZhi0hW79J7gq7xD793SnNJFHdwp+m8tkQbFIYQ/Ou
-	eaTOu+ThNSRy/W42LxtY29Y=
-X-Google-Smtp-Source: AGHT+IHSz7sLxFa/9tcB1BFEAx77xsw7IyoQHCgeHupxbvTa93/qmodby26m2eSPWXo4FijMYi73DQ==
-X-Received: by 2002:a25:e708:0:b0:d53:f88a:dc09 with SMTP id e8-20020a25e708000000b00d53f88adc09mr3953501ybh.2.1691449582662;
-        Mon, 07 Aug 2023 16:06:22 -0700 (PDT)
-Received: from unknowna0e70b2ca394.attlocal.net ([2600:1700:2f7d:1800::16])
-        by smtp.googlemail.com with ESMTPSA id d190-20020a25cdc7000000b00d3596aca5bcsm2545203ybf.34.2023.08.07.16.06.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Aug 2023 16:06:22 -0700 (PDT)
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Matthew Wilcox <willy@infradead.org>
-Subject: [PATCH mm-unstable v9 31/31] mm: Remove pgtable_{pmd, pte}_page_{ctor, dtor}() wrappers
-Date: Mon,  7 Aug 2023 16:05:13 -0700
-Message-Id: <20230807230513.102486-32-vishal.moola@gmail.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230807230513.102486-1-vishal.moola@gmail.com>
-References: <20230807230513.102486-1-vishal.moola@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+        d=1e100.net; s=20221208; t=1691449607; x=1692054407;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=h7A5aUX2ecj7Bbl/7ce/OdAJyafyQZh2jovAmUQfIOU=;
+        b=STIMZLDRNnDebvJBTcg6iFhXPu2idE9JaFhTgOW1kY/hKHlWeYFqNw1m7YlA2sNzrE
+         rZyqg614ymgKqqEe0dUAv9ksk+u4qmCq5FUtQYIN5Oej3nNVelptNz1YS86wXSoEIDsT
+         Z7xpDkiw4tk3oNhPZ9yZdpVR1Zk3P6w2yfR8uluKABNqSvrzKzTNtu2YIYm43V1EnJhM
+         0U+6ypfINBdTHNwjSBUMkGG+Co7AVAcUFrBf/4myWkMcfzbazTS0CtOOo5DOUo9Dyi3z
+         D2+xxAckZY+JK5mYgxMUYWDw1jsPVEH1x3Ygu8Jhqv+W4OUtedtnWJs+ADeQKFvEEx3O
+         K0Sg==
+X-Gm-Message-State: AOJu0YzYgOOmYQ3KFk+70tmfo6FySRaRty6MXx3+ERav9Hx/w0im0WRE
+	UAVfvY5XaMIvvE+jIu3Jg3aLwwMcicgnC25J2A==
+X-Google-Smtp-Source: AGHT+IGQixIKGybe4T+GVPibQ4+cbo9epXOA0dv0EjBAf7syaC6i5AoszZ6gyEUK9SdsuOsgoX+oe0ThmUR8eGJG6g==
+X-Received: from ackerleytng-ctop.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:13f8])
+ (user=ackerleytng job=sendgmr) by 2002:a25:dbcf:0:b0:d01:60ec:d0e with SMTP
+ id g198-20020a25dbcf000000b00d0160ec0d0emr68969ybf.9.1691449607047; Mon, 07
+ Aug 2023 16:06:47 -0700 (PDT)
+Date: Mon, 07 Aug 2023 23:06:45 +0000
+In-Reply-To: <20230718234512.1690985-13-seanjc@google.com> (message from Sean
+ Christopherson on Tue, 18 Jul 2023 16:44:55 -0700)
+Mime-Version: 1.0
+Message-ID: <diqzv8dq3116.fsf@ackerleytng-ctop.c.googlers.com>
+Subject: Re: [RFC PATCH v11 12/29] KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for
+ guest-specific backing memory
+From: Ackerley Tng <ackerleytng@google.com>
+To: Sean Christopherson <seanjc@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Mailman-Approved-At: Tue, 08 Aug 2023 11:05:33 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,160 +78,211 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, kvm@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-sh@vger.kernel.org, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-csky@vger.kernel.org, "Vishal Moola \(Oracle\)" <vishal.moola@gmail.com>, linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org, Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, loongarch@lists.linux.dev, sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: kvm@vger.kernel.org, david@redhat.com, yu.c.zhang@linux.intel.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, chao.p.peng@linux.intel.com, linux-riscv@lists.infradead.org, isaku.yamahata@gmail.com, paul@paul-moore.com, maz@kernel.org, chenhuacai@kernel.org, jmorris@namei.org, willy@infradead.org, wei.w.wang@intel.com, tabba@google.com, jarkko@kernel.org, serge@hallyn.com, mail@maciej.szmigiero.name, aou@eecs.berkeley.edu, vbabka@suse.cz, michael.roth@amd.com, paul.walmsley@sifive.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, qperret@google.com, seanjc@google.com, liam.merwick@oracle.com, linux-mips@vger.kernel.org, oliver.upton@linux.dev, linux-security-module@vger.kernel.org, palmer@dabbelt.com, kvm-riscv@lists.infradead.org, anup@brainfault.org, linux-fsdevel@vger.kernel.org, pbonzini@redhat.com, akpm@linux-foundation.org, vannapurve@google.com, linuxppc-dev@lists.ozlabs.org, kirill.shutemov@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-These functions are no longer necessary. Remove them and cleanup
-Documentation referencing them.
+Sean Christopherson <seanjc@google.com> writes:
 
-Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
----
- Documentation/mm/split_page_table_lock.rst    | 12 +++++------
- .../zh_CN/mm/split_page_table_lock.rst        | 14 ++++++-------
- include/linux/mm.h                            | 20 -------------------
- 3 files changed, 13 insertions(+), 33 deletions(-)
+>   <snip>
 
-diff --git a/Documentation/mm/split_page_table_lock.rst b/Documentation/mm/split_page_table_lock.rst
-index a834fad9de12..e4f6972eb6c0 100644
---- a/Documentation/mm/split_page_table_lock.rst
-+++ b/Documentation/mm/split_page_table_lock.rst
-@@ -58,7 +58,7 @@ Support of split page table lock by an architecture
- ===================================================
- 
- There's no need in special enabling of PTE split page table lock: everything
--required is done by pgtable_pte_page_ctor() and pgtable_pte_page_dtor(), which
-+required is done by pagetable_pte_ctor() and pagetable_pte_dtor(), which
- must be called on PTE table allocation / freeing.
- 
- Make sure the architecture doesn't use slab allocator for page table
-@@ -68,8 +68,8 @@ This field shares storage with page->ptl.
- PMD split lock only makes sense if you have more than two page table
- levels.
- 
--PMD split lock enabling requires pgtable_pmd_page_ctor() call on PMD table
--allocation and pgtable_pmd_page_dtor() on freeing.
-+PMD split lock enabling requires pagetable_pmd_ctor() call on PMD table
-+allocation and pagetable_pmd_dtor() on freeing.
- 
- Allocation usually happens in pmd_alloc_one(), freeing in pmd_free() and
- pmd_free_tlb(), but make sure you cover all PMD table allocation / freeing
-@@ -77,7 +77,7 @@ paths: i.e X86_PAE preallocate few PMDs on pgd_alloc().
- 
- With everything in place you can set CONFIG_ARCH_ENABLE_SPLIT_PMD_PTLOCK.
- 
--NOTE: pgtable_pte_page_ctor() and pgtable_pmd_page_ctor() can fail -- it must
-+NOTE: pagetable_pte_ctor() and pagetable_pmd_ctor() can fail -- it must
- be handled properly.
- 
- page->ptl
-@@ -97,7 +97,7 @@ trick:
-    split lock with enabled DEBUG_SPINLOCK or DEBUG_LOCK_ALLOC, but costs
-    one more cache line for indirect access;
- 
--The spinlock_t allocated in pgtable_pte_page_ctor() for PTE table and in
--pgtable_pmd_page_ctor() for PMD table.
-+The spinlock_t allocated in pagetable_pte_ctor() for PTE table and in
-+pagetable_pmd_ctor() for PMD table.
- 
- Please, never access page->ptl directly -- use appropriate helper.
-diff --git a/Documentation/translations/zh_CN/mm/split_page_table_lock.rst b/Documentation/translations/zh_CN/mm/split_page_table_lock.rst
-index 4fb7aa666037..a2c288670a24 100644
---- a/Documentation/translations/zh_CN/mm/split_page_table_lock.rst
-+++ b/Documentation/translations/zh_CN/mm/split_page_table_lock.rst
-@@ -56,16 +56,16 @@ Hugetlb特定的辅助函数:
- 架构对分页表锁的支持
- ====================
- 
--没有必要特别启用PTE分页表锁：所有需要的东西都由pgtable_pte_page_ctor()
--和pgtable_pte_page_dtor()完成，它们必须在PTE表分配/释放时被调用。
-+没有必要特别启用PTE分页表锁：所有需要的东西都由pagetable_pte_ctor()
-+和pagetable_pte_dtor()完成，它们必须在PTE表分配/释放时被调用。
- 
- 确保架构不使用slab分配器来分配页表：slab使用page->slab_cache来分配其页
- 面。这个区域与page->ptl共享存储。
- 
- PMD分页锁只有在你有两个以上的页表级别时才有意义。
- 
--启用PMD分页锁需要在PMD表分配时调用pgtable_pmd_page_ctor()，在释放时调
--用pgtable_pmd_page_dtor()。
-+启用PMD分页锁需要在PMD表分配时调用pagetable_pmd_ctor()，在释放时调
-+用pagetable_pmd_dtor()。
- 
- 分配通常发生在pmd_alloc_one()中，释放发生在pmd_free()和pmd_free_tlb()
- 中，但要确保覆盖所有的PMD表分配/释放路径：即X86_PAE在pgd_alloc()中预先
-@@ -73,7 +73,7 @@ PMD分页锁只有在你有两个以上的页表级别时才有意义。
- 
- 一切就绪后，你可以设置CONFIG_ARCH_ENABLE_SPLIT_PMD_PTLOCK。
- 
--注意：pgtable_pte_page_ctor()和pgtable_pmd_page_ctor()可能失败--必
-+注意：pagetable_pte_ctor()和pagetable_pmd_ctor()可能失败--必
- 须正确处理。
- 
- page->ptl
-@@ -90,7 +90,7 @@ page->ptl用于访问分割页表锁，其中'page'是包含该表的页面struc
-    的指针并动态分配它。这允许在启用DEBUG_SPINLOCK或DEBUG_LOCK_ALLOC的
-    情况下使用分页锁，但由于间接访问而多花了一个缓存行。
- 
--PTE表的spinlock_t分配在pgtable_pte_page_ctor()中，PMD表的spinlock_t
--分配在pgtable_pmd_page_ctor()中。
-+PTE表的spinlock_t分配在pagetable_pte_ctor()中，PMD表的spinlock_t
-+分配在pagetable_pmd_ctor()中。
- 
- 请不要直接访问page->ptl - -使用适当的辅助函数。
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 6310e0c59efe..6a95dfed4957 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2932,11 +2932,6 @@ static inline bool pagetable_pte_ctor(struct ptdesc *ptdesc)
- 	return true;
- }
- 
--static inline bool pgtable_pte_page_ctor(struct page *page)
--{
--	return pagetable_pte_ctor(page_ptdesc(page));
--}
--
- static inline void pagetable_pte_dtor(struct ptdesc *ptdesc)
- {
- 	struct folio *folio = ptdesc_folio(ptdesc);
-@@ -2946,11 +2941,6 @@ static inline void pagetable_pte_dtor(struct ptdesc *ptdesc)
- 	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
- }
- 
--static inline void pgtable_pte_page_dtor(struct page *page)
--{
--	pagetable_pte_dtor(page_ptdesc(page));
--}
--
- pte_t *__pte_offset_map(pmd_t *pmd, unsigned long addr, pmd_t *pmdvalp);
- static inline pte_t *pte_offset_map(pmd_t *pmd, unsigned long addr)
- {
-@@ -3057,11 +3047,6 @@ static inline bool pagetable_pmd_ctor(struct ptdesc *ptdesc)
- 	return true;
- }
- 
--static inline bool pgtable_pmd_page_ctor(struct page *page)
--{
--	return pagetable_pmd_ctor(page_ptdesc(page));
--}
--
- static inline void pagetable_pmd_dtor(struct ptdesc *ptdesc)
- {
- 	struct folio *folio = ptdesc_folio(ptdesc);
-@@ -3071,11 +3056,6 @@ static inline void pagetable_pmd_dtor(struct ptdesc *ptdesc)
- 	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
- }
- 
--static inline void pgtable_pmd_page_dtor(struct page *page)
--{
--	pagetable_pmd_dtor(page_ptdesc(page));
--}
--
- /*
-  * No scalability reason to split PUD locks yet, but follow the same pattern
-  * as the PMD locks to make it easier if we decide to.  The VM should not be
--- 
-2.40.1
+> +static int kvm_gmem_release(struct inode *inode, struct file *file)
+> +{
+> +	struct kvm_gmem *gmem =3D file->private_data;
+> +	struct kvm_memory_slot *slot;
+> +	struct kvm *kvm =3D gmem->kvm;
+> +	unsigned long index;
+> +
+> +	filemap_invalidate_lock(inode->i_mapping);
+> +
+> +	/*
+> +	 * Prevent concurrent attempts to *unbind* a memslot.  This is the last
+> +	 * reference to the file and thus no new bindings can be created, but
+> +	 * dereferencing the slot for existing bindings needs to be protected
+> +	 * against memslot updates, specifically so that unbind doesn't race
+> +	 * and free the memslot (kvm_gmem_get_file() will return NULL).
+> +	 */
+> +	mutex_lock(&kvm->slots_lock);
+> +
+> +	xa_for_each(&gmem->bindings, index, slot)
+> +		rcu_assign_pointer(slot->gmem.file, NULL);
+> +
+> +	synchronize_rcu();
+> +
+> +	/*
+> +	 * All in-flight operations are gone and new bindings can be created.
+> +	 * Zap all SPTEs pointed at by this file.  Do not free the backing
+> +	 * memory, as its lifetime is associated with the inode, not the file.
+> +	 */
+> +	kvm_gmem_invalidate_begin(gmem, 0, -1ul);
+> +	kvm_gmem_invalidate_end(gmem, 0, -1ul);
+> +
+> +	mutex_unlock(&kvm->slots_lock);
+> +
+> +	list_del(&gmem->entry);
+> +
+> +	filemap_invalidate_unlock(inode->i_mapping);
+> +
+> +	xa_destroy(&gmem->bindings);
+> +	kfree(gmem);
+> +
+> +	kvm_put_kvm(kvm);
+> +
+> +	return 0;
+> +}
+> +
 
+> <snip>
+
+> +
+> +int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
+> +		  unsigned int fd, loff_t offset)
+> +{
+> +	loff_t size =3D slot->npages << PAGE_SHIFT;
+> +	unsigned long start, end, flags;
+> +	struct kvm_gmem *gmem;
+> +	struct inode *inode;
+> +	struct file *file;
+> +
+> +	BUILD_BUG_ON(sizeof(gfn_t) !=3D sizeof(slot->gmem.pgoff));
+> +
+> +	file =3D fget(fd);
+> +	if (!file)
+> +		return -EINVAL;
+> +
+> +	if (file->f_op !=3D &kvm_gmem_fops)
+> +		goto err;
+> +
+> +	gmem =3D file->private_data;
+> +	if (gmem->kvm !=3D kvm)
+> +		goto err;
+> +
+> +	inode =3D file_inode(file);
+> +	flags =3D (unsigned long)inode->i_private;
+> +
+> +	/*
+> +	 * For simplicity, require the offset into the file and the size of the
+> +	 * memslot to be aligned to the largest possible page size used to back
+> +	 * the file (same as the size of the file itself).
+> +	 */
+> +	if (!kvm_gmem_is_valid_size(offset, flags) ||
+> +	    !kvm_gmem_is_valid_size(size, flags))
+> +		goto err;
+> +
+> +	if (offset + size > i_size_read(inode))
+> +		goto err;
+> +
+> +	filemap_invalidate_lock(inode->i_mapping);
+> +
+> +	start =3D offset >> PAGE_SHIFT;
+> +	end =3D start + slot->npages;
+> +
+> +	if (!xa_empty(&gmem->bindings) &&
+> +	    xa_find(&gmem->bindings, &start, end - 1, XA_PRESENT)) {
+> +		filemap_invalidate_unlock(inode->i_mapping);
+> +		goto err;
+> +	}
+> +
+> +	/*
+> +	 * No synchronize_rcu() needed, any in-flight readers are guaranteed to
+> +	 * be see either a NULL file or this new file, no need for them to go
+> +	 * away.
+> +	 */
+> +	rcu_assign_pointer(slot->gmem.file, file);
+> +	slot->gmem.pgoff =3D start;
+> +
+> +	xa_store_range(&gmem->bindings, start, end - 1, slot, GFP_KERNEL);
+> +	filemap_invalidate_unlock(inode->i_mapping);
+> +
+> +	/*
+> +	 * Drop the reference to the file, even on success.  The file pins KVM,
+> +	 * not the other way 'round.  Active bindings are invalidated if the
+> +	 * file is closed before memslots are destroyed.
+> +	 */
+> +	fput(file);
+> +	return 0;
+> +
+> +err:
+> +	fput(file);
+> +	return -EINVAL;
+> +}
+> +
+
+I=E2=80=99d like to propose an alternative to the refcounting approach betw=
+een
+the gmem file and associated kvm, where we think of KVM=E2=80=99s memslots =
+as
+users of the gmem file.
+
+Instead of having the gmem file pin the VM (i.e. take a refcount on
+kvm), we could let memslot take a refcount on the gmem file when the
+memslots are configured.
+
+Here=E2=80=99s a POC patch that flips the refcounting (and modified selftes=
+ts in
+the next commit):
+https://github.com/googleprodkernel/linux-cc/commit/7f487b029b89b9f3e9b094a=
+721bc0772f3c8c797
+
+One side effect of having the gmem file pin the VM is that now the gmem
+file becomes sort of a false handle on the VM:
+
++ Closing the file destroys the file pointers in the VM and invalidates
+  the pointers
++ Keeping the file open keeps the VM around in the kernel even though
+  the VM fd may already be closed.
+
+I feel that memslots form a natural way of managing usage of the gmem
+file. When a memslot is created, it is using the file; hence we take a
+refcount on the gmem file, and as memslots are removed, we drop
+refcounts on the gmem file.
+
+The KVM pointer is shared among all the bindings in gmem=E2=80=99s xarray, =
+and we can enforce that a gmem file is used only with one VM:
+
++ When binding a memslot to the file, if a kvm pointer exists, it must
+  be the same kvm as the one in this binding
++ When the binding to the last memslot is removed from a file, NULL the
+  kvm pointer.
+
+When the VM is freed, KVM will iterate over all the memslots, removing
+them one at a time and eventually NULLing the kvm pointer.
+
+I believe the =E2=80=9CKVM=E2=80=99s memslots using the file=E2=80=9D appro=
+ach is also simpler
+because all accesses to the bindings xarray and kvm pointer can be
+serialized using filemap_invalidate_lock(), and we are already using
+this lock regardless of refcounting approach. This serialization means
+we don=E2=80=99t need to use RCU on file/kvm pointers since accesses are al=
+ready
+serialized.
+
+There=E2=80=99s also no need to specially clean up the associated KVM when =
+the
+file reference close, because by the time the .release() handler is
+called, any file references held by memslots would have been dropped,
+and so the bindings would have been removed, and the kvm pointer would
+have been NULLed out.
+
+The corollary to this approach is that at creation time, the file won=E2=80=
+=99t
+be associated with any kvm, and we can use a system ioctl instead of a
+VM-specific ioctl as Fuad brought up [1] (Association with kvm before
+the file is used with memslots is possible would mean more tracking so
+that kvm can close associated files when it is closed.)
+
+One reason for binding gmem files to a specific VM on creation is to
+allow (in future) a primary VM to control permissions on the memory for
+other files [2]. This permission control can still be enforced with the
+=E2=80=9CKVM=E2=80=99s memslots using the file=E2=80=9D approach. The enfor=
+cement rules will
+just be delayed till the first binding between a VM and a gmem file.
+
+Could binding gmem files not on creation, but at memslot configuration
+time be sufficient and simpler?
+
+[1] https://lore.kernel.org/lkml/CA+EHjTzP2fypgkJbRpSPrKaWytW7v8ANEifofMnQC=
+kdvYaX6Eg@mail.gmail.com/
+[2] https://lore.kernel.org/lkml/ZMKlo+Fe8n%2FeLQ82@google.com/
+
+> <snip>
