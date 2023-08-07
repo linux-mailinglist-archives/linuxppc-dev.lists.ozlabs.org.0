@@ -1,107 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD7E37724C0
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Aug 2023 14:55:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 032317724E7
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Aug 2023 15:06:19 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dQ/OFaeG;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dQ/OFaeG;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Ut8sOt7l;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RKGWj4826z30gF
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Aug 2023 22:55:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RKGm86g0Sz30MQ
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Aug 2023 23:06:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dQ/OFaeG;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dQ/OFaeG;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Ut8sOt7l;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::b2c; helo=mail-yb1-xb2c.google.com; envelope-from=linus.walleij@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RKGVk47Qgz2xsY
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Aug 2023 22:54:37 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1691412874;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MCK2Kc5K8//48HPb6j2Zuk7krQFGIq9bbLCCbtRqtQI=;
-	b=dQ/OFaeGmwefevTARI685jtcI9vOvTTuab5yByvp9sQ1akYZ2TASxGZK9HAq52l6TD6LkN
-	e/ckuIGhu3FC1n+1pRVpNONejQc6qk3HOFogen8KVr56Rwva8puEn2QJTp4dEXJTkaDjOt
-	hPlY3q/pqt87D7sTKVBmi3cf91YUP2U=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1691412874;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MCK2Kc5K8//48HPb6j2Zuk7krQFGIq9bbLCCbtRqtQI=;
-	b=dQ/OFaeGmwefevTARI685jtcI9vOvTTuab5yByvp9sQ1akYZ2TASxGZK9HAq52l6TD6LkN
-	e/ckuIGhu3FC1n+1pRVpNONejQc6qk3HOFogen8KVr56Rwva8puEn2QJTp4dEXJTkaDjOt
-	hPlY3q/pqt87D7sTKVBmi3cf91YUP2U=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-602-O41Uug1lMyK7yqe8nsq-UA-1; Mon, 07 Aug 2023 08:54:32 -0400
-X-MC-Unique: O41Uug1lMyK7yqe8nsq-UA-1
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-3fe2477947eso25298965e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Aug 2023 05:54:32 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RKGlH2B5dz2yVf
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Aug 2023 23:05:29 +1000 (AEST)
+Received: by mail-yb1-xb2c.google.com with SMTP id 3f1490d57ef6-cfcebc33d04so4588917276.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Aug 2023 06:05:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1691413526; x=1692018326;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LCHsXc+lT27JE6Z6+8ylge5LujDr0uIa0UFtHeUGk2Y=;
+        b=Ut8sOt7lpFeoV7uC5nic5YMi0GUeC8HpWsn9X2ZvHUqogbJC59sug1OCXgBIO45szT
+         zu/yDK65dLYqv6f+km1qpewpLLAyHgB83sO8QJplPf6Hb+zQxEgpYnezxw31ErxCfwYd
+         DG1K/BD7UexEi2CLbm33TPIAEV+JP9uckCAnXOKFdFxQCTLDT9vDW0yo5WN6ssAjMwB6
+         jQausBUtY12YsJG/lvlFmGhmKUqnRUZYXZJAg6WdrWcdht+kmstTdnIijp5oZIEpsXDt
+         nq9gS+ZIoUWmVgbHZ6Clm4PxrSxeiApl2AxIg5A46SblXoW3BcU9kQkBbE2yZj77FvnD
+         FVPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691412871; x=1692017671;
-        h=content-transfer-encoding:in-reply-to:subject:organization:from
-         :references:cc:to:content-language:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MCK2Kc5K8//48HPb6j2Zuk7krQFGIq9bbLCCbtRqtQI=;
-        b=SrseRnuhw4tjz7qYKPisXdH99gRgARWIsR6BLhddVoXyKxYR0s80h98h/Es2S5a42n
-         arfoovdGeHIiHKUFLtod1XQ3IcHc8euGPssLdCuPEtrH+Jmd/H46l4myNdJ29Ng/zY07
-         qQXSK3JN0oSao3OKgecAppxNBTEgyTRwUSVckqro8mb/vNaDMibGpzpEf4DY2CUeHWae
-         jodk2Eaq1wuXiat/yVEq4n5thAMfgJ0x2FiqWauncH483j0vx6clX0cWXERxOxGXx+5R
-         tOsRVu6Pjm/V+/0ArU07cKdjljNXT8q3TARwbFdn+eSQFqcbWIL9oI/BwRawo21tlIRv
-         Ca5Q==
-X-Gm-Message-State: AOJu0YxJa0ivWump6SY6UVqim0xNM+0awIn1IXm0IKZl9F82J/nc1OfP
-	8kf2L/OTbAfZ0O3Xi3Ot48tHTTseW6lwRFjTPNo+DV/JyJiVPlLtLWYvVuT5nkm6vna971SrcXj
-	EiIbHOevq5r5K5lYPSknYOzc+kg==
-X-Received: by 2002:a7b:ca57:0:b0:3fe:22a9:907 with SMTP id m23-20020a7bca57000000b003fe22a90907mr6296715wml.20.1691412871241;
-        Mon, 07 Aug 2023 05:54:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG2p6bElB81fLtBGLMpPL8D33y3Kt1HNiDiXSk4gNnZS0+LuTjrajzd1catXTo0HKmV7rH7Iw==
-X-Received: by 2002:a7b:ca57:0:b0:3fe:22a9:907 with SMTP id m23-20020a7bca57000000b003fe22a90907mr6296699wml.20.1691412870851;
-        Mon, 07 Aug 2023 05:54:30 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c740:5d00:5143:1cd2:a300:ceff? (p200300cbc7405d0051431cd2a300ceff.dip0.t-ipconnect.de. [2003:cb:c740:5d00:5143:1cd2:a300:ceff])
-        by smtp.gmail.com with ESMTPSA id x23-20020a1c7c17000000b003fe539b83f2sm6729393wmc.42.2023.08.07.05.54.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 07 Aug 2023 05:54:30 -0700 (PDT)
-Message-ID: <a3919cb3-0725-eb41-073a-000301fc473a@redhat.com>
-Date: Mon, 7 Aug 2023 14:54:29 +0200
+        d=1e100.net; s=20221208; t=1691413526; x=1692018326;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LCHsXc+lT27JE6Z6+8ylge5LujDr0uIa0UFtHeUGk2Y=;
+        b=XrEbPbULTQH92f8WvEWteQ4BEgthSi7nRzjP10Z+PjoXagZiDihU+W5N4kx20GzOel
+         INaRtjdJ/JxPTapGGrEmS/dAlRlTfsiH0HLAfceECEisYJuqiK17i+kcnVpfMjsK+OGJ
+         rdPnBHWcuEHNeEz4F5GqMLIaTIJ5cFCLSuzAnJxNupVB/uIpKXvl/I7xr7FNtPcVzat9
+         Ax7uRIugDP2tcM5BQ1v2NPqcRgmAV+BUtHOW+o4SFH4aMfr8x13149ZaEs7MW/2xjqrb
+         ybHaZyCguUNtlhsgk8ylcdj2hNlpVo3gk3qVeriDftaZDPB78cZE7W9eskGbDibDePEV
+         MacQ==
+X-Gm-Message-State: AOJu0YwHqQwkJpw6BwEMzvPTDi2pVOB5iwRRCNY0ZVSLR+dkJaKDaVH+
+	DsQKvkTq7rxbjUBkcXWg7A6nNinGd5YxTgXAanZyGA==
+X-Google-Smtp-Source: AGHT+IGLxVHYBN4YJi+z5+HalzYdVADQ/IRYzWidcu2Ji/atGqIFAXQgU8cOxoHK1pmjGmBx4BMj8ebAiBn6KY0iG4o=
+X-Received: by 2002:a5b:5cf:0:b0:c39:9e09:2c71 with SMTP id
+ w15-20020a5b05cf000000b00c399e092c71mr8293260ybp.41.1691413526341; Mon, 07
+ Aug 2023 06:05:26 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-To: Michal Hocko <mhocko@suse.com>
-References: <20230801044116.10674-8-aneesh.kumar@linux.ibm.com>
- <ZMjJPFcXlt+aeCUB@dhcp22.suse.cz>
- <a32fe748-fa18-bd92-3a10-5da8dbad96e6@linux.ibm.com>
- <ZMjjbKnxZXSNcJL5@dhcp22.suse.cz>
- <c1e6e3f6-2e3a-c098-ae78-0d86de8a3a95@linux.ibm.com>
- <ZMp7Vr8PbfoADQw0@dhcp22.suse.cz>
- <31305ab7-1e65-80aa-ee91-9190c8f67430@redhat.com>
- <ZMqLV2S6vY0cZxbp@dhcp22.suse.cz> <ZMtqu76Tgh9jj+AI@dhcp22.suse.cz>
- <1c6a74f0-85e9-5299-1520-9068e842b1a5@redhat.com>
- <ZMuP7gsxQzAmRpNX@dhcp22.suse.cz>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [PATCH v7 7/7] mm/memory_hotplug: Enable runtime update of
- memmap_on_memory parameter
-In-Reply-To: <ZMuP7gsxQzAmRpNX@dhcp22.suse.cz>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20230726150225.483464-1-herve.codina@bootlin.com> <20230726150225.483464-25-herve.codina@bootlin.com>
+In-Reply-To: <20230726150225.483464-25-herve.codina@bootlin.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Mon, 7 Aug 2023 15:05:15 +0200
+Message-ID: <CACRpkdYXCQRd3ZXNGHwMaQYiJc7tGtAJnBaSh5O-8ruDAJVdiA@mail.gmail.com>
+Subject: Re: [PATCH v2 24/28] pinctrl: Add support for the Lantic PEF2256 pinmux
+To: Herve Codina <herve.codina@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,64 +75,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vishal Verma <vishal.l.verma@intel.com>, Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>, npiggin@gmail.com, linux-mm@kvack.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, Oscar Salvador <osalvador@suse.de>
+Cc: Andrew Lunn <andrew@lunn.ch>, alsa-devel@alsa-project.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Jaroslav Kysela <perex@perex.cz>, Eric Dumazet <edumazet@google.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Fabio Estevam <festevam@gmail.com>, Qiang Zhao <qiang.zhao@nxp.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Lee Jones <lee@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, Nicolin Chen <nicoleotsuka@gmail.com>, linux-gpio@vger.kernel.org, Mark Brown <broonie@kernel.org>, Takashi Iwai <tiwai@suse.com>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>, Liam Girdwood <lgirdwood@gmail.com>, Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 03.08.23 13:30, Michal Hocko wrote:
-> On Thu 03-08-23 11:24:08, David Hildenbrand wrote:
-> [...]
->>> would be readable only when the block is offline and it would reallocate
->>> vmemmap on the change. Makes sense? Are there any risks? Maybe pfn
->>> walkers?
->>
->> The question is: is it of any real value such that it would be worth the
->> cost and risk?
->>
->>
->> One of the primary reasons for memmap_on_memory is that *memory hotplug*
->> succeeds even in low-memory situations (including, low on ZONE_NORMAL
->> situations).
+Hi Herve,
 
-Sorry for the late reply, I'm busy with 100 other things.
+thanks for your patch!
 
-> 
-> One usecase I would have in mind is a mix of smaller and larger memory
-> blocks. For larger ones you want to have memmap_on_memory in general
-> because they do not eat memory from outside but small(er) ones might be
-> more tricky because now you can add a lot of blocks that would be
-> internally fragmented to prevent larger allocations to form.
+First: is this patch something we could merge separately? I don't see
+any dependency on the other patches.
 
-Okay, I see what you mean.
+On Wed, Jul 26, 2023 at 5:04=E2=80=AFPM Herve Codina <herve.codina@bootlin.=
+com> wrote:
 
-The internal fragmentation might become an issue at some point: for 
-x86-64 with 128 MiB blocks / 2 MiB THP it's not a real issue right now. 
-For a arm64 64k with 512 MiB blocks and 512 MiB THP / hugelb it could be 
-one.
+> The Lantiq PEF2256 is a framer and line interface component designed to
+> fulfill all required interfacing between an analog E1/T1/J1 line and the
+> digital PCM system highway/H.100 bus.
+>
+> This pinmux support handles the pin muxing part (pins RP(A..D) and pins
+> XP(A..D)) of the PEF2256.
+>
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 
-I recall discussing that with Oscar back when he added memmap_on_memory, 
-where we also discussed the variable-sized memory blocks to avoid such 
-internal fragmentation.
+So it is a bridge chip? Please use that terminology since Linux
+DRM often talks about bridges.
 
-For small ones you probably want to only use memmap_on_memory when 
-unavoidable: for example, when adding without memmap_on_memory would 
-fail / already failed. Possibly some later memmap relocation might make 
-sense in some scenarios.
+> +++ b/drivers/pinctrl/pinctrl-pef2256-regs.h
+(...)
+> +#include "linux/bitfield.h"
 
-> 
->> So you want that behavior already when hotplugging such
->> devices. While there might be value to relocate it later, I'm not sure if
->> that is really worth it, and it does not solve the main use case.
-> 
-> Is it worth it? TBH I am not sure same as I am not sure the global
-> default should be writable after boot. If we want to make it more
-> dynamic we should however talk about the proper layer this is
-> implemented on.
+Really? I don't think there is such a file there.
 
-Agreed.
+Do you mean <linux/bitfield.h> and does this even compile?
 
--- 
-Cheers,
+> diff --git a/drivers/pinctrl/pinctrl-pef2256.c b/drivers/pinctrl/pinctrl-=
+pef2256.c
+(...)
+> +struct pef2256_pinctrl {
+> +       struct device *dev;
+> +       struct regmap *regmap;
+> +       enum pef2256_version version;
+> +       struct {
+> +               struct pinctrl_desc pctrl_desc;
+> +               const struct pef2256_function_desc *functions;
+> +               unsigned int nfunctions;
+> +       } pinctrl;
 
-David / dhildenb
+Uh anonymous struct... can't you just define the struct separately
+with a name? Or fold it into struct pef2256_pinctrl without the
+additional struct? Thanks.
 
+Otherwise it looks neat!
+
+Yours,
+Linus Walleij
