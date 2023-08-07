@@ -2,57 +2,108 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D88B7727F5
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Aug 2023 16:37:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40664772DF5
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Aug 2023 20:36:54 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=HmQ6EWLU;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RqXG6oh1;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RqXG6oh1;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RKJnQ4LpSz30fm
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Aug 2023 00:37:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RKQ5b2qMsz302F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Aug 2023 04:36:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=HmQ6EWLU;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RqXG6oh1;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RqXG6oh1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.196; helo=relay4-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RKJmM6qDlz2xpm
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Aug 2023 00:36:34 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B7938E0008;
-	Mon,  7 Aug 2023 14:36:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1691418990;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RKQ4Z5jbsz2xr6
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Aug 2023 04:35:57 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1691433354;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=CoovJrYPxkDFGogd5wvVhZC1R5Dq4lKn3YHaDGn4/LM=;
-	b=HmQ6EWLUrDj97BUk7IGsXLcmAJ2miJvyMgaSQlOietWT5pvqGoMYmO6yr+Bhc0Lx67tKD6
-	df7Z6+KBom37uNEQWfw8FJht1ZSI3QWLiHNjcNXBmvIwSynDxYMQivLHbJtb7uzGw5pJZ2
-	EAinCJbElQ6rO13JeWO3s9sPGU4+27Q8M5T52pS7PcbF+R8WyuQKAjhFeLCmKcp+6TWkuR
-	IdO0UMWLzMibIMpfP4ahj/zKwHCDxTgVc0R059ZGQaSUIC06o5hsPMQ2XYgtkWYBNaUzS4
-	qP1VmAe+U2gpEDS1hmzhbhx0eTbGq6h1G2uNh4GG0oC80TOYZeIgosi77P7S8A==
-Date: Mon, 7 Aug 2023 16:36:26 +0200
-From: Herve Codina <herve.codina@bootlin.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Subject: Re: [PATCH v2 24/28] pinctrl: Add support for the Lantic PEF2256
- pinmux
-Message-ID: <20230807163626.79a5ca7b@bootlin.com>
-In-Reply-To: <eb99e739-6578-4aee-a0f4-7a0c5e5e81ef@lunn.ch>
-References: <20230726150225.483464-1-herve.codina@bootlin.com>
-	<20230726150225.483464-25-herve.codina@bootlin.com>
-	<CACRpkdYXCQRd3ZXNGHwMaQYiJc7tGtAJnBaSh5O-8ruDAJVdiA@mail.gmail.com>
-	<CACRpkdZebvrdGXooLXmgXhUcgdgxBczJBpdEoEyJDR39abaAqQ@mail.gmail.com>
-	<eb99e739-6578-4aee-a0f4-7a0c5e5e81ef@lunn.ch>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+	bh=nSzDv346kgN2CfjlYQS29gdaOShLy0rGapky8ZA9EFo=;
+	b=RqXG6oh1iw1wl8ZuGlORkwAW55giXCdjV59biVxhKZolMDsWtJo/qC5myRlljKfW6ou601
+	JMH6VZa5iqPXm5Hv8oEGQibO66xnqbyfN9dSPG+8OQDTIZ1I6SLbmFGTJy0vrR0V22TnQ4
+	IMpD6wJVqDMpgDCKr/NZeoZ2Laq2pJM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1691433354;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nSzDv346kgN2CfjlYQS29gdaOShLy0rGapky8ZA9EFo=;
+	b=RqXG6oh1iw1wl8ZuGlORkwAW55giXCdjV59biVxhKZolMDsWtJo/qC5myRlljKfW6ou601
+	JMH6VZa5iqPXm5Hv8oEGQibO66xnqbyfN9dSPG+8OQDTIZ1I6SLbmFGTJy0vrR0V22TnQ4
+	IMpD6wJVqDMpgDCKr/NZeoZ2Laq2pJM=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-523-oL9WYn6LNn2Zl3GN4pnCmw-1; Mon, 07 Aug 2023 14:35:52 -0400
+X-MC-Unique: oL9WYn6LNn2Zl3GN4pnCmw-1
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3176c4de5bbso2154759f8f.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Aug 2023 11:35:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691433351; x=1692038151;
+        h=content-transfer-encoding:in-reply-to:subject:organization
+         :references:cc:to:from:content-language:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nSzDv346kgN2CfjlYQS29gdaOShLy0rGapky8ZA9EFo=;
+        b=ir/yGaWtROhpEAlE3DOvO5AzNO5k/utAhTNK6FtxnQe4I/+NGaVrG8r8Cv//hhtAtI
+         nR+RhKBsDXWq/bbS6I16oKsPq2W/+bDxkDGqrEqymJfICzxG28yKUFbVP1rMWPRUH4Hu
+         RinqNupdYHJKuSR4fxlPKY2gwG5rOtYZmCXUOZtSx2MYEAfXBEbkAKfAHkNgHI8qqu1Q
+         i+3yAvE4n4s/XpwqE4FWp92I09ERPydmFDunp55UF85QyZzpN0k3bMSyAVXAacyvTeV+
+         v8Dgd25KbHMebb3atTTAu43ZM9j2409YQX1qu5X7s1kzpTKmcJZKKWqwzQ/xle5QHcsj
+         BWTw==
+X-Gm-Message-State: AOJu0YyAekqQccaU+erpKNDKpexAtQJ8jqmvFcrN4C3yGmwaxSz/7wY/
+	39jtAoSSVUqLJyFC6uHtS87Rdg4hRP10iMzr3X3PRZYQLxj2LR3oUzM2y0MQo37vgs48v/FoR34
+	dCM9242uVR7wgRjp8bfhm1UFb5w==
+X-Received: by 2002:adf:ef8e:0:b0:317:54de:7315 with SMTP id d14-20020adfef8e000000b0031754de7315mr6464147wro.61.1691433351433;
+        Mon, 07 Aug 2023 11:35:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG4AgrI9SjrzPcGzpTnCQBzDx5r18Q61Uok0+tcU8/asAI8Gn40tuost0P4KHvDEDEzvNL1QA==
+X-Received: by 2002:adf:ef8e:0:b0:317:54de:7315 with SMTP id d14-20020adfef8e000000b0031754de7315mr6464137wro.61.1691433351055;
+        Mon, 07 Aug 2023 11:35:51 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c740:5d00:5143:1cd2:a300:ceff? (p200300cbc7405d0051431cd2a300ceff.dip0.t-ipconnect.de. [2003:cb:c740:5d00:5143:1cd2:a300:ceff])
+        by smtp.gmail.com with ESMTPSA id m9-20020adfe0c9000000b003145559a691sm11454099wri.41.2023.08.07.11.35.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 07 Aug 2023 11:35:50 -0700 (PDT)
+Message-ID: <b6753402-2de9-25b2-36e9-eacd49752b19@redhat.com>
+Date: Mon, 7 Aug 2023 20:35:49 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+From: David Hildenbrand <david@redhat.com>
+To: Michal Hocko <mhocko@suse.com>,
+ Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>
+References: <a32fe748-fa18-bd92-3a10-5da8dbad96e6@linux.ibm.com>
+ <ZMjjbKnxZXSNcJL5@dhcp22.suse.cz>
+ <c1e6e3f6-2e3a-c098-ae78-0d86de8a3a95@linux.ibm.com>
+ <ZMp7Vr8PbfoADQw0@dhcp22.suse.cz>
+ <31305ab7-1e65-80aa-ee91-9190c8f67430@redhat.com>
+ <ZMqLV2S6vY0cZxbp@dhcp22.suse.cz> <ZMtqu76Tgh9jj+AI@dhcp22.suse.cz>
+ <1c6a74f0-85e9-5299-1520-9068e842b1a5@redhat.com>
+ <ZMuP7gsxQzAmRpNX@dhcp22.suse.cz>
+ <d71a85b1-c0ea-6451-d65c-d7c5040caf77@linux.ibm.com>
+ <ZNDjHbtm3jaWS8h8@dhcp22.suse.cz>
+ <a32a9e7f-1e24-bab1-cb73-8058fed3b59c@redhat.com>
+Organization: Red Hat
+Subject: Re: [PATCH v7 7/7] mm/memory_hotplug: Enable runtime update of
+ memmap_on_memory parameter
+In-Reply-To: <a32a9e7f-1e24-bab1-cb73-8058fed3b59c@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,49 +115,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Linus Walleij <linus.walleij@linaro.org>, Jaroslav Kysela <perex@perex.cz>, Eric Dumazet <edumazet@google.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Fabio Estevam <festevam@gmail.com>, Qiang Zhao <qiang.zhao@nxp.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Lee Jones <lee@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, Nicolin Chen <nicoleotsuka@gmail.com>, linux-gpio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Takashi Iwai <tiwai@suse.com>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>, Liam Girdwood <lgirdwood@gmail.com>, Li Yang <leoyang.li@nxp.com>, Mark Brown <broonie@kernel.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: linux-mm@kvack.org, npiggin@gmail.com, Vishal Verma <vishal.l.verma@intel.com>, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Linus, Andrew,
-
-On Mon, 7 Aug 2023 15:17:11 +0200
-Andrew Lunn <andrew@lunn.ch> wrote:
-
-> On Mon, Aug 07, 2023 at 03:06:42PM +0200, Linus Walleij wrote:
-> > On Mon, Aug 7, 2023 at 3:05 PM Linus Walleij <linus.walleij@linaro.org> wrote:
-> >   
-> > > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>  
-> > >
-> > > So it is a bridge chip? Please use that terminology since Linux
-> > > DRM often talks about bridges.  
-> > 
-> > Replying to self: no it's not a bridge, it's a WAN thingy.
-> > 
-> > So perhaps write that this is a WAN interface adapter chip.  
+On 07.08.23 14:41, David Hildenbrand wrote:
+> On 07.08.23 14:27, Michal Hocko wrote:
+>> On Sat 05-08-23 19:54:23, Aneesh Kumar K V wrote:
+>> [...]
+>>> Do you see a need for firmware-managed memory to be hotplugged in with
+>>> different memory block sizes?
+>>
+>> In short. Yes. Slightly longer, a fixed size memory block semantic is
+>> just standing in the way and I would even argue it is actively harmful.
+>> Just have a look at ridicously small memory blocks on ppc. I do
+>> understand that it makes some sense to be aligned to the memory model
+>> (so sparsmem section aligned). In an ideal world, memory hotplug v2
+>> interface (if we ever go that path) should be physical memory range based.
 > 
-> Hi Linus
+> Yes, we discussed that a couple of times already (and so far nobody
+> cared to implement any of that).
 > 
-> In the E1/T1/J1 world, framer is a well understood concept. Maybe the
-> text needs a bit more background information to explain what this is
-> to somebody who does not have an old school telecoms background.
+> Small memory block sizes are very beneficial for use cases like PPC
+> dlar, virtio-mem, hyperv-balloon, ... essentially in most virtual
+> environments where you might want to add/remove memory in very small
+> granularity. I don't see that changing any time soon. Rather the opposite.
 > 
->    Andrew
+> Small memory block sizes are suboptimal for large machines where you
+> might never end up removing such memory (boot memory), or when dealing
+> with devices that can only be removed in one piece (DIMM/kmem). We
+> already have memory groups in place to model that.
+> 
+> For the latter it might be beneficial to have memory blocks of larger
+> size that correspond to the physical memory ranges. That might also make
+> a memmap (re-)configuration easier.
+> 
+> Not sure if that is standing in any way or is harmful, though.
+> 
 
-Maybe I can add in my commit log:
---- 8< ---
-This kind of component can be found in old telecommunication system.
-It was used to digital transmission of many simultaneous telephone calls
-by time-division multiplexing. Also using HDLC protocol, WAN networks
-can be reached through the framer.
---- 8< ---
+Just because I thought of something right now, I'll share it, maybe it 
+makes sense.
 
-Do you think it will be better ?
+Assume when we get add_memory*(MHP_MEMMAP_ON_MEMORY) and it is enabled 
+by the admin:
 
-Regards,
-Hervé Codina
+1) We create a single altmap at the beginning of the memory
+
+2) We create the existing fixed-size memory block devices, but flag them
+    to be part of a single "altmap" unit.
+
+3) Whenever we trigger offlining of a single such memory block, we
+    offline *all* memory blocks belonging to that altmap, essentially
+    using a single offline_pages() call and updating all memory block
+    states accordingly.
+
+4) Whenever we trigger onlining of a single such memory block, we
+    online *all* memory blocks belonging to that altmap, using a single
+    online_pages() call.
+
+5) We fail remove_memory() if it doesn't cover the same (altmap) range.
+
+So we can avoid having a memory block v2 (and all that comes with that 
+...) for now and still get that altmap stuff sorted out. As that altmap 
+behavior can be controlled by the admin, we should be fine for now.
+
+I think all memory notifiers should already be able to handle bigger 
+granularity, but it would be easy to check. Some internal things might 
+require a bit of tweaking.
+
+Just a thought.
 
 -- 
-Hervé Codina, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Cheers,
+
+David / dhildenb
+
