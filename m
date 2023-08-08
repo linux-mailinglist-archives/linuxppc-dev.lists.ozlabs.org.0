@@ -2,54 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A7CA77393B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Aug 2023 11:07:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0F42773944
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Aug 2023 11:16:17 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=flZfpRXq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QsOEoBMH;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RKnPr3fgRz3c2r
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Aug 2023 19:07:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RKncH5bB1z3cPC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Aug 2023 19:16:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=flZfpRXq;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QsOEoBMH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.197; helo=relay5-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RKnNv58QSz2yst
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Aug 2023 19:06:22 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 167A31C000E;
-	Tue,  8 Aug 2023 09:06:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1691485578;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yV4jZ6QrskrDU/HVotl7NEUNo5CW4ftnk7BIqgEB1+w=;
-	b=flZfpRXqaC4cOa0lUVXQGmj6OEssvWZubCe2w5MHqI8U2vWQwtOj0FQFAqgAJBxJ8I75XZ
-	I0TZlmNSRmqSWR5xLTIKJ/1FDCZ4stZY0pIriPzLH17o1+eZR+fqsAFgkHhfKw1IeHA6F/
-	BRImFTSpS5Rv0R1y0afDagZYKTek8UGg0TZs9w8hjDyqKGA3Umv42FjNTa+dNkNUSu3Gue
-	Tx2D6FfesdOvac81rHxEHFQ6xKJfocvJHBN0OnBZAPqs83Owy9ptNTQG7K7UjxPB67/rcA
-	8c/v/aUZh+TVfJDMed/1Ph30nJadiv+LXoAjitpDUEWw4zjs+hG26YAH/4HjPQ==
-Date: Tue, 8 Aug 2023 11:06:13 +0200
-From: Herve Codina <herve.codina@bootlin.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v2 26/28] ASoC: codecs: Add support for the framer codec
-Message-ID: <20230808110613.07e222a3@bootlin.com>
-In-Reply-To: <a1b5120b-feb0-5c87-0605-e1e170d9268d@csgroup.eu>
-References: <20230726150225.483464-1-herve.codina@bootlin.com>
-	<20230726150225.483464-27-herve.codina@bootlin.com>
-	<a1b5120b-feb0-5c87-0605-e1e170d9268d@csgroup.eu>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RKnbL4jqHz2xqp
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Aug 2023 19:15:26 +1000 (AEST)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37898jUG010752;
+	Tue, 8 Aug 2023 09:15:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=WI/iOsZMkdaB+MqnzGJRwLm9hPaOeKiGAruY28wN0iA=;
+ b=QsOEoBMHbwDtCit/oO6tdqQ9Z1+73+fq6VKrNKgDLJF86nA/QtT+jaaPmL70zS5qH9nr
+ yIJgcN/kZuS99NN5zUAQHpl+TyNxm/AN9vWGySUy2a1vzNHVQrQmciPbvHFmNqWENfAk
+ sxu8Ww9XhSsTUdb3j2ly+J+BuosLr1achMUTTfIWc35AGjmFoJs1wPnyUbeh0DApL9b4
+ UzQsHGW+wJyFbpeBS/BgJsGM3CX7f034Z4VDwYKtvQkTnzj1w5Nfxgw8IOJcnnOwaTTD
+ gJB3FyxA+ywVjDkLcmRQylgQ1imoFrPM2IlfV0SAdo8btFjt1rdll6dgnfPmGKUQxM+H nQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sbjpt8fqy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 08 Aug 2023 09:15:10 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37898uUw011933;
+	Tue, 8 Aug 2023 09:15:10 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sbjpt8fqj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 08 Aug 2023 09:15:10 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 37887EdP001802;
+	Tue, 8 Aug 2023 09:15:09 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3sa3f1mmbx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 08 Aug 2023 09:15:09 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3789F9Q53015320
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 8 Aug 2023 09:15:09 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E72B058063;
+	Tue,  8 Aug 2023 09:15:08 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B11145803F;
+	Tue,  8 Aug 2023 09:15:05 +0000 (GMT)
+Received: from skywalker.in.ibm.com (unknown [9.109.212.144])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  8 Aug 2023 09:15:05 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linux-mm@kvack.org, akpm@linux-foundation.org, mpe@ellerman.id.au,
+        linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu
+Subject: [PATCH v8 0/6] Add support for memmap on memory feature on ppc64
+Date: Tue,  8 Aug 2023 14:44:55 +0530
+Message-ID: <20230808091501.287660-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Kjwa2iD_JmXWZHQQuwArdCFUHgzr2qL0
+X-Proofpoint-ORIG-GUID: omO4p3pgJMWh4rvzy95AIuyg9P1i4nm8
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-08_07,2023-08-03_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ mlxlogscore=923 adultscore=0 impostorscore=0 mlxscore=0 spamscore=0
+ phishscore=0 malwarescore=0 clxscore=1015 lowpriorityscore=0 bulkscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308080081
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,68 +96,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Linus Walleij <linus.walleij@linaro.org>, Jaroslav Kysela <perex@perex.cz>, Eric Dumazet <edumazet@google.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Fabio Estevam <festevam@gmail.com>, Qiang Zhao <qiang.zhao@nxp.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Lee Jones <lee@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, Conor Dooley <conor+dt@kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicolin Chen <nicoleotsuka@gmail.com>, "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>, Takashi Iwai <tiwai@suse.com>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org
- >, Randy Dunlap <rdunlap@infradead.org>, Liam Girdwood <lgirdwood@gmail.com>, Li Yang <leoyang.li@nxp.com>, Mark Brown <broonie@kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "David S. Miller" <davem@davemloft.net>
+Cc: Vishal Verma <vishal.l.verma@intel.com>, David Hildenbrand <david@redhat.com>, Michal Hocko <mhocko@suse.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 8 Aug 2023 08:26:16 +0000
-Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
+This patch series update memmap on memory feature to fall back to
+memmap allocation outside the memory block if the alignment rules are
+not met. This makes the feature more useful on architectures like
+ppc64 where alignment rules are different with 64K page size.
 
-> Le 26/07/2023 à 17:02, Herve Codina a écrit :
-> > The framer codec interracts with a framer.
-> > It allows to use some of the framer timeslots as audio channels to
-> > transport audio data over the framer E1/T1/J1 lines.
-> > It also reports line carrier detection events through the ALSA jack
-> > detection feature.
-> > 
-> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>  
-> 
-> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> 
-> See below
-> 
-> > +static int framer_dai_hw_rule_channels_by_format(struct snd_soc_dai *dai,
-> > +						 struct snd_pcm_hw_params *params,
-> > +						 unsigned int nb_ts)
-> > +{
-> > +	struct snd_interval *c = hw_param_interval(params, SNDRV_PCM_HW_PARAM_CHANNELS);
-> > +	snd_pcm_format_t format = params_format(params);
-> > +	struct snd_interval ch = {0};
-> > +
-> > +	switch (snd_pcm_format_physical_width(format)) {
-> > +	case 8:
-> > +		ch.max = nb_ts;
-> > +		break;
-> > +	case 16:
-> > +		ch.max = nb_ts / 2;
-> > +		break;
-> > +	case 32:
-> > +		ch.max = nb_ts / 4;
-> > +		break;
-> > +	case 64:
-> > +		ch.max = nb_ts / 8;
-> > +		break;
-> > +	default:
-> > +		dev_err(dai->dev, "format physical width %u not supported\n",
-> > +			snd_pcm_format_physical_width(format));
-> > +		return -EINVAL;
-> > +	}  
-> 
-> What about
-> 
-> 	width = snd_pcm_format_physical_width(format);
-> 
-> 	if (width == 8 || width == 16 || width == 32 || width == 64) {
-> 		ch.max = nb_ts * 8 / width;
-> 	} else {
-> 		dev_err(dai->dev, "format physical width %u not supported\n", width);
-> 		return -EINVAL;
-> 	}
-> 
+This patch series is dependent on dax vmemmap optimization series
+posted here
+https://lore.kernel.org/linux-mm/20230718022934.90447-1-aneesh.kumar@linux.ibm.com/
 
-Yes, indeed.
-Will be changed in the next iteration.
+Changes from v7:
+* Drop patch 7 because we are still discussing a runtime update of this
+feature is useful.
 
-Regards,
-Hervé
+Changes from v6:
+* Update comments in the code
+* Update commit message for patch 7
+
+Changes from v5:
+* Update commit message
+* Move memory alloc/free to the callers in patch 6
+* Address review feedback w.r.t patch 4
+
+Changes from v4:
+* Use altmap.free instead of altmap.reserve
+* Address review feedback
+
+Changes from v3:
+* Extend the module parameter memmap_on_memory to force allocation even
+  though we can waste hotplug memory.
+
+Changes from v2:
+* Rebase to latest linus tree
+* Redo the series based on review feedback. Multiple changes to the patchset.
+
+Changes from v1:
+* update the memblock to store vmemmap_altmap details. This is required
+so that when we remove the memory we can find the altmap details which
+is needed on some architectures.
+* rebase to latest linus tree
+
+
+Aneesh Kumar K.V (6):
+  mm/memory_hotplug: Simplify ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE kconfig
+  mm/memory_hotplug: Allow memmap on memory hotplug request to fallback
+  mm/memory_hotplug: Allow architecture to override memmap on memory
+    support check
+  mm/memory_hotplug: Support memmap_on_memory when memmap is not aligned
+    to pageblocks
+  powerpc/book3s64/memhotplug: Enable memmap on memory for radix
+  mm/memory_hotplug: Embed vmem_altmap details in memory block
+
+ .../admin-guide/mm/memory-hotplug.rst         |  12 ++
+ arch/arm64/Kconfig                            |   4 +-
+ arch/powerpc/Kconfig                          |   1 +
+ arch/powerpc/include/asm/pgtable.h            |  21 ++
+ .../platforms/pseries/hotplug-memory.c        |   2 +-
+ arch/x86/Kconfig                              |   4 +-
+ drivers/acpi/acpi_memhotplug.c                |   3 +-
+ drivers/base/memory.c                         |  27 ++-
+ include/linux/memory.h                        |   8 +-
+ include/linux/memory_hotplug.h                |   3 +-
+ mm/Kconfig                                    |   3 +
+ mm/memory_hotplug.c                           | 185 ++++++++++++++----
+ 12 files changed, 209 insertions(+), 64 deletions(-)
+
+-- 
+2.41.0
+
