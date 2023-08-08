@@ -2,57 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26886774E0F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Aug 2023 00:11:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A99D774EEA
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Aug 2023 01:03:32 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HaEtjISl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=treblig.org header.i=@treblig.org header.a=rsa-sha256 header.s=bytemarkmx header.b=lQmkV5ot;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RL6pp0V9Jz3byL
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Aug 2023 08:11:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RL7yn6QpMz3cHr
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Aug 2023 09:03:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HaEtjISl;
+	dkim=pass (2048-bit key; unprotected) header.d=treblig.org header.i=@treblig.org header.a=rsa-sha256 header.s=bytemarkmx header.b=lQmkV5ot;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=treblig.org (client-ip=2a00:1098:5b::1; helo=mx.treblig.org; envelope-from=dg@treblig.org; receiver=lists.ozlabs.org)
+Received: from mx.treblig.org (unknown [IPv6:2a00:1098:5b::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RL6ng0mM2z2y1d
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Aug 2023 08:10:31 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 9C0CD62DB1;
-	Tue,  8 Aug 2023 22:10:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 830B9C433CA;
-	Tue,  8 Aug 2023 22:10:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1691532626;
-	bh=ElzwQNB5k4o9+Lw4DzC4a7QoKVmgp4dLbavyMvqdX4o=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=HaEtjISl7bsUid68IEO4GasfSC01wI2nfCS5A1XTvlxVsyFHrOezgLr5URdJhgUvv
-	 u+Rntsk+AJIQgNnZR/cll7sPy4C0gFohNytM5SGE3MkDMtm+Czipr+PEyww9ALVkxK
-	 077GFkbV0lq/yrYPouoEUYwp7Yk1EcoPnyv1F4CCk93T9x+EQEQh2zIff00b+4wk3r
-	 hwA5hYyHFVfZN4KFvH2H4vDdTmXog7P/B7vfCbgE1hjyxyy3EHKIbn/PvGx1ZNNtHp
-	 EXX0pFAN0un/m3EXCVPTnxnLROfJ/P2CSQ9dFse9hYN3fh8ui12PNrQMXY74QBBduZ
-	 P5bjSyqXDp0jg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 677DBC64459;
-	Tue,  8 Aug 2023 22:10:26 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RL7xs0XvHz2ygr
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Aug 2023 09:02:39 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+	; s=bytemarkmx; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID
+	:Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID
+	:Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
+	Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe
+	:List-Post:List-Owner:List-Archive;
+	bh=ZDALvFIak3dkZOLuYlAfhCehu+RJYBfHhd0fnnY5iiM=; b=lQmkV5otXwlM+J8rAPsEoNdtCF
+	xoZwrZIr017/bMTJyGOmuYGk8HEv+3Wvj5QSDylQVNIa9czH2B8sVY9zAk9hn/ExIi7rZHK4pJCfh
+	8t+BzfDUpkjH60ulN6vn9LJLnxlNr82hUwc4ON+R4qSOZEvUIBPcf+jOZgkrhbWhDU60WZjztd1Kh
+	z5rGNuwFfK4hgnFUy6JZR02eghvMqR8eKk/p3cwmWbrv0BlFX3iHSRwAsv9WeECDl04JwVqlqfsHT
+	Z67ih3nULPu7qYiohBTtz8cCzV9FdOGR5c4HgBcI3JhcGSBDZyBIZBFSMvE7dFEMkOkjrfyKMft+0
+	H+TwAbqg==;
+Received: from dg by mx.treblig.org with local (Exim 4.94.2)
+	(envelope-from <dg@treblig.org>)
+	id 1qTViY-005rPc-MU; Tue, 08 Aug 2023 23:02:22 +0000
+Date: Tue, 8 Aug 2023 23:02:22 +0000
+From: "Dr. David Alan Gilbert" <linux@treblig.org>
+To: Randy Dunlap <rdunlap@infradead.org>
+Subject: Re: [PATCH v2] powerpc: Use shared font data
+Message-ID: <ZNLJfgD5HDz3yief@gallifrey>
+References: <20230807010721.799613-1-linux@treblig.org>
+ <828497a6-80c2-329f-8b47-2311bf08943d@infradead.org>
+ <ZNJ7QzfA/GSgahmf@gallifrey>
+ <8599e99b-ad80-abf8-ad40-4cb8262f047a@infradead.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2 00/10] net: fs_enet: Driver cleanup
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id:  <169153262641.13746.13289621238747032969.git-patchwork-notify@kernel.org>
-Date: Tue, 08 Aug 2023 22:10:26 +0000
-References: <cover.1691155346.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <cover.1691155346.git.christophe.leroy@csgroup.eu>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <8599e99b-ad80-abf8-ad40-4cb8262f047a@infradead.org>
+X-Chocolate: 70 percent or better cocoa solids preferably
+X-Operating-System: Linux/5.10.0-23-amd64 (x86_64)
+X-Uptime: 23:01:22 up 33 days,  8:32,  1 user,  load average: 0.04, 0.04, 0.00
+User-Agent: Mutt/2.0.5 (2021-01-21)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,54 +65,109 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: robh@kernel.org, linux-kernel@vger.kernel.org, npiggin@gmail.com, edumazet@google.com, netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: sam@ravnborg.org, linux-kernel@vger.kernel.org, npiggin@gmail.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello:
-
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Fri,  4 Aug 2023 15:30:10 +0200 you wrote:
-> Over the years, platform and driver initialisation have evolved into
-> more generic ways, and driver or platform specific stuff has gone
-> away, leaving stale objects behind.
+* Randy Dunlap (rdunlap@infradead.org) wrote:
 > 
-> This series aims at cleaning all that up for fs_enet ethernet driver.
 > 
-> Changes in v2:
-> - Remove a trailing whitespace in the old struct moved in patch 7.
-> - Include powerpc people and list that I forgot when sending v1
-> (and Rob as expected by Patchwork for patch 6, not sure why)
+> On 8/8/23 10:28, Dr. David Alan Gilbert wrote:
+> > * Randy Dunlap (rdunlap@infradead.org) wrote:
+> >> Hi--
+> >>
+> >> On 8/6/23 18:07, linux@treblig.org wrote:
+> >>> From: "Dr. David Alan Gilbert" <linux@treblig.org>
+> >>>
+> >>> PowerPC has a 'btext' font used for the console which is almost identical
+> >>> to the shared font_sun8x16, so use it rather than duplicating the data.
+> >>>
+> >>> They were actually identical until about a decade ago when
+> >>>    commit bcfbeecea11c ("drivers: console: font_: Change a glyph from
+> >>>                         "broken bar" to "vertical line"")
+> >>>
+> >>> which changed the | in the shared font to be a solid
+> >>> bar rather than a broken bar.  That's the only difference.
+> >>>
+> >>> This was originally spotted by PMD which noticed that sparc does
+> >>> the same thing with the same data, and they also share a bunch
+> >>> of functions to manipulate the data.  I've previously posted a near
+> >>> identical patch for sparc.
+> >>>
+> >>> One difference I notice in PowerPC is that there are a bunch of compile
+> >>> options for the .c files for the early code to avoid a bunch of security
+> >>> compilation features;  it's not clear to me if this is a problem for
+> >>> this font data.
+> >>>
+> >>> Tested very lightly with a boot without FS in qemu.
+> >>>
+> >>> v2
+> >>>   Added 'select FONT_SUPPORT' (to stop modconfig causing the font to be
+> >>>    linked into a module rather than the main kernel)
+> >>>   Added 'select FONTS' to satisfy requirements in lib/fonts
+> >>>
+> >>> Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
+> >>> ---
+> >>>  arch/powerpc/Kconfig.debug  |   3 +
+> >>>  arch/powerpc/kernel/btext.c | 360 +-----------------------------------
+> >>>  2 files changed, 9 insertions(+), 354 deletions(-)
+> >>>
+> >>> diff --git a/arch/powerpc/Kconfig.debug b/arch/powerpc/Kconfig.debug
+> >>> index 2a54fadbeaf51..521c4baf30e88 100644
+> >>> --- a/arch/powerpc/Kconfig.debug
+> >>> +++ b/arch/powerpc/Kconfig.debug
+> >>> @@ -147,6 +147,9 @@ config BDI_SWITCH
+> >>>  config BOOTX_TEXT
+> >>>  	bool "Support for early boot text console (BootX or OpenFirmware only)"
+> >>>  	depends on PPC_BOOK3S
+> >>> +	select FONT_SUN8x16
+> >>> +	select FONT_SUPPORT
+> >>> +	select FONTS
+> >>>  	help
+> >>>  	  Say Y here to see progress messages from the boot firmware in text
+> >>>  	  mode. Requires either BootX or Open Firmware.
+> >>
+> >> kconfig tells me:
+> >>
+> >> WARNING: unmet direct dependencies detected for FONTS
+> >>   Depends on [n]: FONT_SUPPORT [=y] && (FRAMEBUFFER_CONSOLE [=n] || STI_CONSOLE [=n])
+> >>   Selected by [y]:
+> >>   - BOOTX_TEXT [=y] && PPC_BOOK3S [=y]
+> >>
+> >> WARNING: unmet direct dependencies detected for FONT_SUN8x16
+> >>   Depends on [n]: FONT_SUPPORT [=y] && FRAMEBUFFER_CONSOLE [=n] && (!SPARC && FONTS [=y] || SPARC)
+> >>   Selected by [y]:
+> >>   - BOOTX_TEXT [=y] && PPC_BOOK3S [=y]
+> >>
+> >> because FONTS depends on FRAMEBUFFER_CONSOLE || STI_CONSOLE and neither of those is set.
+> > 
+> > I'm not getting the warnings in the v2, with a few configs; what command
+> > are using?
+> > 
 > 
-> [...]
+> My 'make' build target is either pp32_randconfig or ppc64_randconfig.
+> I see kconfig warnings in > 50% of the randconfigs. (small sample size,
+> around 20)
 
-Here is the summary with links:
-  - [net-next,v2,01/10] net: fs_enet: Remove set but not used variable
-    https://git.kernel.org/netdev/net-next/c/78d3902795f0
-  - [net-next,v2,02/10] net: fs_enet: Fix address space and base types mismatches
-    https://git.kernel.org/netdev/net-next/c/ae9e78a9dc88
-  - [net-next,v2,03/10] net: fs_enet: Remove fs_get_id()
-    https://git.kernel.org/netdev/net-next/c/26bbbef8ff40
-  - [net-next,v2,04/10] net: fs_enet: Remove unused fields in fs_platform_info struct
-    https://git.kernel.org/netdev/net-next/c/caaf482e2654
-  - [net-next,v2,05/10] net: fs_enet: Remove has_phy field in fs_platform_info struct
-    https://git.kernel.org/netdev/net-next/c/9359a48c65a3
-  - [net-next,v2,06/10] net: fs_enet: Remove stale prototypes from fsl_soc.c
-    https://git.kernel.org/netdev/net-next/c/62e106c802c5
-  - [net-next,v2,07/10] net: fs_enet: Move struct fs_platform_info into fs_enet.h
-    https://git.kernel.org/netdev/net-next/c/7a76918371fe
-  - [net-next,v2,08/10] net: fs_enet: Don't include fs_enet_pd.h when not needed
-    https://git.kernel.org/netdev/net-next/c/33deffc9f19f
-  - [net-next,v2,09/10] net: fs_enet: Remove linux/fs_enet_pd.h
-    https://git.kernel.org/netdev/net-next/c/7149b38dc7cb
-  - [net-next,v2,10/10] net: fs_enet: Use cpm_muram_xxx() functions instead of cpm_dpxxx() macros
-    https://git.kernel.org/netdev/net-next/c/5e6cb39a256d
+Thanks, that triggers it for me; I'll have a discussion with it....
 
-You are awesome, thank you!
+Dave
+
+> 
+> > I'm tempted to change the FONT_SUN8x16 dependency line to have
+> > SPARC||BOOTX_TEXT or SPARC||POWERPC  and drop the 'select FONTS' I
+> > added.
+> > 
+> > Dave
+> > 
+> >>
+> >> -- 
+> >> ~Randy
+> 
+> -- 
+> ~Randy
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+ -----Open up your eyes, open up your mind, open up your code -------   
+/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
+\        dave @ treblig.org |                               | In Hex /
+ \ _________________________|_____ http://www.treblig.org   |_______/
