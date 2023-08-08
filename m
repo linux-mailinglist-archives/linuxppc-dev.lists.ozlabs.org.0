@@ -1,44 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78DE47737C8
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Aug 2023 05:58:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2119777380F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Aug 2023 08:06:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RKfYj2RVnz3cmg
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Aug 2023 13:58:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RKjNm5HGdz3cGw
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Aug 2023 16:06:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=wangxiongfeng2@huawei.com; receiver=lists.ozlabs.org)
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RKfXN13d4z3bYg
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Aug 2023 13:57:23 +1000 (AEST)
-Received: from dggpemm500002.china.huawei.com (unknown [172.30.72.55])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RKfRk0NhDztRwp;
-	Tue,  8 Aug 2023 11:53:22 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Tue, 8 Aug 2023 11:56:49 +0800
-From: Xiongfeng Wang <wangxiongfeng2@huawei.com>
-To: <bhelgaas@google.com>, <fbarrat@linux.ibm.com>, <ajd@linux.ibm.com>,
-	<mpe@ellerman.id.au>, <npiggin@gmail.com>, <christophe.leroy@csgroup.eu>,
-	<arnd@arndb.de>, <gregkh@linuxfoundation.org>, <ben.widawsky@intel.com>
-Subject: [PATCH v2 2/2] ocxl: use pci_find_next_dvsec_capability() to simplify the code
-Date: Tue, 8 Aug 2023 12:08:58 +0800
-Message-ID: <20230808040858.183568-3-wangxiongfeng2@huawei.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20230808040858.183568-1-wangxiongfeng2@huawei.com>
-References: <20230808040858.183568-1-wangxiongfeng2@huawei.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RKjN75q5kz2xHK
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Aug 2023 16:05:25 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+	by localhost (Postfix) with ESMTP id 4RKjN05xwXz9t2b;
+	Tue,  8 Aug 2023 08:05:20 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id D3jkJswzO1Ba; Tue,  8 Aug 2023 08:05:20 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4RKjN05Ft1z9t1q;
+	Tue,  8 Aug 2023 08:05:20 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id B09248B76E;
+	Tue,  8 Aug 2023 08:05:20 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id CHQslQO16iuk; Tue,  8 Aug 2023 08:05:20 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.232.230])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 719F08B763;
+	Tue,  8 Aug 2023 08:05:20 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 37865G0v1246288
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 8 Aug 2023 08:05:16 +0200
+Received: (from chleroy@localhost)
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 37865FCi1246253;
+	Tue, 8 Aug 2023 08:05:15 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
+Subject: [PATCH v1 1/6] powerpc/include: Remove unneeded #include <asm/fs_pd.h>
+Date: Tue,  8 Aug 2023 08:04:38 +0200
+Message-ID: <b056c4e986a4a7707fc1994304c34f7bd15d6871.1691474658.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1691474677; l=1181; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=8wdCUsSlZXzuwg/I86D6mJJCOiQgvc6jMMSxdMXB5qo=; b=iE46uKhUYpDbqAGpF9fHiPVTC0SWgbLNE2q7MU0GzpVW7h26m2PveV/OhGxo4TtatH4TKeixM 62QwexxFwK/CCiRLj3Lsc/eHBId9CnNw2zPtlpNmjcc/azr93GozzVX
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.175.113.25]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemm500002.china.huawei.com (7.185.36.229)
-X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,107 +65,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org, yangyingliang@huawei.com, helgaas@kernel.org, david.e.box@linux.intel.com, jonathan.cameron@huawei.com, linuxppc-dev@lists.ozlabs.org, wangxiongfeng2@huawei.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PCI core add pci_find_next_dvsec_capability() to query the next DVSEC.
-We can use that core API to simplify the code. Also remove the unused
-macros.
+tqm8xx_setup.c and fs_enet.h don't use any items provided by fs_pd.h
 
-Signed-off-by: Xiongfeng Wang <wangxiongfeng2@huawei.com>
-Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
+Remove unneeded #include <asm/fs_pd.h>
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/platforms/powernv/ocxl.c | 20 ++------------------
- drivers/misc/ocxl/config.c            | 21 ++++++---------------
- include/misc/ocxl-config.h            |  4 ----
- 3 files changed, 8 insertions(+), 37 deletions(-)
+ arch/powerpc/platforms/8xx/tqm8xx_setup.c        | 1 -
+ drivers/net/ethernet/freescale/fs_enet/fs_enet.h | 1 -
+ 2 files changed, 2 deletions(-)
 
-diff --git a/arch/powerpc/platforms/powernv/ocxl.c b/arch/powerpc/platforms/powernv/ocxl.c
-index 629067781cec..8dbc1a9535fc 100644
---- a/arch/powerpc/platforms/powernv/ocxl.c
-+++ b/arch/powerpc/platforms/powernv/ocxl.c
-@@ -71,29 +71,13 @@ static DEFINE_MUTEX(links_list_lock);
-  * the AFUs, by pro-rating if needed.
-  */
+diff --git a/arch/powerpc/platforms/8xx/tqm8xx_setup.c b/arch/powerpc/platforms/8xx/tqm8xx_setup.c
+index 7d8eb50bb9cd..c422262ba27b 100644
+--- a/arch/powerpc/platforms/8xx/tqm8xx_setup.c
++++ b/arch/powerpc/platforms/8xx/tqm8xx_setup.c
+@@ -39,7 +39,6 @@
+ #include <asm/time.h>
+ #include <asm/8xx_immap.h>
+ #include <asm/cpm1.h>
+-#include <asm/fs_pd.h>
+ #include <asm/udbg.h>
  
--static int find_dvsec_from_pos(struct pci_dev *dev, int dvsec_id, int pos)
--{
--	int vsec = pos;
--	u16 vendor, id;
--
--	while ((vsec = pci_find_next_ext_capability(dev, vsec,
--						    OCXL_EXT_CAP_ID_DVSEC))) {
--		pci_read_config_word(dev, vsec + OCXL_DVSEC_VENDOR_OFFSET,
--				&vendor);
--		pci_read_config_word(dev, vsec + OCXL_DVSEC_ID_OFFSET, &id);
--		if (vendor == PCI_VENDOR_ID_IBM && id == dvsec_id)
--			return vsec;
--	}
--	return 0;
--}
--
- static int find_dvsec_afu_ctrl(struct pci_dev *dev, u8 afu_idx)
- {
- 	int vsec = 0;
- 	u8 idx;
+ #include "mpc8xx.h"
+diff --git a/drivers/net/ethernet/freescale/fs_enet/fs_enet.h b/drivers/net/ethernet/freescale/fs_enet/fs_enet.h
+index cb419aef8d1b..aad96cb2ab4e 100644
+--- a/drivers/net/ethernet/freescale/fs_enet/fs_enet.h
++++ b/drivers/net/ethernet/freescale/fs_enet/fs_enet.h
+@@ -10,7 +10,6 @@
+ #include <linux/dma-mapping.h>
  
--	while ((vsec = find_dvsec_from_pos(dev, OCXL_DVSEC_AFU_CTRL_ID,
--					   vsec))) {
-+	while ((vsec = pci_find_next_dvsec_capability(dev, vsec,
-+				PCI_VENDOR_ID_IBM, OCXL_DVSEC_AFU_CTRL_ID))) {
- 		pci_read_config_byte(dev, vsec + OCXL_DVSEC_AFU_CTRL_AFU_IDX,
- 				&idx);
- 		if (idx == afu_idx)
-diff --git a/drivers/misc/ocxl/config.c b/drivers/misc/ocxl/config.c
-index 92ab49705f64..6c0fca32e6db 100644
---- a/drivers/misc/ocxl/config.c
-+++ b/drivers/misc/ocxl/config.c
-@@ -39,23 +39,14 @@ static int find_dvsec(struct pci_dev *dev, int dvsec_id)
- static int find_dvsec_afu_ctrl(struct pci_dev *dev, u8 afu_idx)
- {
- 	int vsec = 0;
--	u16 vendor, id;
- 	u8 idx;
+ #include <linux/fs_enet_pd.h>
+-#include <asm/fs_pd.h>
  
--	while ((vsec = pci_find_next_ext_capability(dev, vsec,
--						    OCXL_EXT_CAP_ID_DVSEC))) {
--		pci_read_config_word(dev, vsec + OCXL_DVSEC_VENDOR_OFFSET,
--				&vendor);
--		pci_read_config_word(dev, vsec + OCXL_DVSEC_ID_OFFSET, &id);
--
--		if (vendor == PCI_VENDOR_ID_IBM &&
--			id == OCXL_DVSEC_AFU_CTRL_ID) {
--			pci_read_config_byte(dev,
--					vsec + OCXL_DVSEC_AFU_CTRL_AFU_IDX,
--					&idx);
--			if (idx == afu_idx)
--				return vsec;
--		}
-+	while ((vsec = pci_find_next_dvsec_capability(dev, vsec,
-+				PCI_VENDOR_ID_IBM, OCXL_DVSEC_AFU_CTRL_ID))) {
-+		pci_read_config_byte(dev, vsec + OCXL_DVSEC_AFU_CTRL_AFU_IDX,
-+				     &idx);
-+		if (idx == afu_idx)
-+			return vsec;
- 	}
- 	return 0;
- }
-diff --git a/include/misc/ocxl-config.h b/include/misc/ocxl-config.h
-index ccfd3b463517..40cf1b143170 100644
---- a/include/misc/ocxl-config.h
-+++ b/include/misc/ocxl-config.h
-@@ -10,10 +10,6 @@
-  * It follows the specification for opencapi 3.0
-  */
- 
--#define OCXL_EXT_CAP_ID_DVSEC                 0x23
--
--#define OCXL_DVSEC_VENDOR_OFFSET              0x4
--#define OCXL_DVSEC_ID_OFFSET                  0x8
- #define OCXL_DVSEC_TL_ID                      0xF000
- #define   OCXL_DVSEC_TL_BACKOFF_TIMERS          0x10
- #define   OCXL_DVSEC_TL_RECV_CAP                0x18
+ #ifdef CONFIG_CPM1
+ #include <asm/cpm1.h>
 -- 
-2.20.1
+2.41.0
 
