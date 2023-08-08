@@ -1,42 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE0907739EF
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Aug 2023 13:42:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30728773C00
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Aug 2023 17:59:10 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d17bUPYC;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RKrrR3DxVz30PJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Aug 2023 21:41:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RKyY80g7xz3bsx
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Aug 2023 01:59:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=lizetao1@huawei.com; receiver=lists.ozlabs.org)
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d17bUPYC;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RKrqq5KJ7z2ytb
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Aug 2023 21:41:23 +1000 (AEST)
-Received: from kwepemi500012.china.huawei.com (unknown [172.30.72.57])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RKrlZ5MsvzNmyj;
-	Tue,  8 Aug 2023 19:37:46 +0800 (CST)
-Received: from huawei.com (10.90.53.73) by kwepemi500012.china.huawei.com
- (7.221.188.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 8 Aug
- 2023 19:41:14 +0800
-From: Li Zetao <lizetao1@huawei.com>
-To: <geoff@infradead.org>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <mpe@ellerman.id.au>,
-	<npiggin@gmail.com>, <christophe.leroy@csgroup.eu>
-Subject: [PATCH -next] net/ps3_gelic_net: Use ether_addr_to_u64() to convert ethernet address
-Date: Tue, 8 Aug 2023 19:40:50 +0800
-Message-ID: <20230808114050.4034547-1-lizetao1@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RKyXF5n2xz2xqH
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Aug 2023 01:58:21 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id F1C11625E1;
+	Tue,  8 Aug 2023 15:58:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04381C433C7;
+	Tue,  8 Aug 2023 15:58:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1691510296;
+	bh=dsivP5QK/puytThT6Z/o/BL2ZSnYkylTLjGfbpcLdi8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=d17bUPYC0qX1htLiPTAVikoi1UP+fA2yaPvY21PsAQSw0ijWbq0pjyxE/ftgcOnO8
+	 +5+AATNiD0HGS1G3eTlJ+pir22Qsd7VJfQmN2yuaKQ5umSTU9A5QY6nOH2TqpZEclT
+	 /awiJwvHAeB1JL3Y2IDDaZmbeT9DGUVBCbTOxvgLhqx0Z9CKCQobd4NSid9TCvoV2R
+	 1cWGhjSsK04Pn3ROuChrr9YujNXmderX6Ph2zwBAMiExbnMLaZdUKjYmZJHrEi4ciD
+	 Pw1El4upEKm94OHpcZNQXkPlGA+Db9npE3jqi9vE1OB7kRjSC9YGFyNpRgo2v3zFgh
+	 n4siK90AThEcQ==
+Date: Tue, 8 Aug 2023 10:58:14 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Xiongfeng Wang <wangxiongfeng2@huawei.com>
+Subject: Re: [PATCH v2 1/2] PCI: Add pci_find_next_dvsec_capability to find
+ next Designated VSEC
+Message-ID: <20230808155814.GA313884@bhelgaas>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.90.53.73]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- kwepemi500012.china.huawei.com (7.221.188.12)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230808040858.183568-2-wangxiongfeng2@huawei.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,45 +61,14 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, lizetao1@huawei.com, linuxppc-dev@lists.ozlabs.org
+Cc: ben.widawsky@intel.com, ajd@linux.ibm.com, arnd@arndb.de, jonathan.cameron@huawei.com, yangyingliang@huawei.com, linux-pci@vger.kernel.org, fbarrat@linux.ibm.com, npiggin@gmail.com, david.e.box@linux.intel.com, gregkh@linuxfoundation.org, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use ether_addr_to_u64() to convert an Ethernet address into a u64 value,
-instead of directly calculating, as this is exactly what
-this function does.
+Don't re-post just for this, but if you do repost, add "()" after the
+function name in the subject line, as you did for the 2/2 patch.
 
-Signed-off-by: Li Zetao <lizetao1@huawei.com>
----
- drivers/net/ethernet/toshiba/ps3_gelic_net.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
-
-diff --git a/drivers/net/ethernet/toshiba/ps3_gelic_net.c b/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-index 9d535ae59626..77a02819e412 100644
---- a/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-+++ b/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-@@ -596,7 +596,6 @@ void gelic_net_set_multi(struct net_device *netdev)
- 	struct gelic_card *card = netdev_card(netdev);
- 	struct netdev_hw_addr *ha;
- 	unsigned int i;
--	uint8_t *p;
- 	u64 addr;
- 	int status;
- 
-@@ -629,12 +628,7 @@ void gelic_net_set_multi(struct net_device *netdev)
- 
- 	/* set multicast addresses */
- 	netdev_for_each_mc_addr(ha, netdev) {
--		addr = 0;
--		p = ha->addr;
--		for (i = 0; i < ETH_ALEN; i++) {
--			addr <<= 8;
--			addr |= *p++;
--		}
-+		addr = ether_addr_to_u64(ha->addr);
- 		status = lv1_net_add_multicast_address(bus_id(card),
- 						       dev_id(card),
- 						       addr, 0);
--- 
-2.34.1
-
+On Tue, Aug 08, 2023 at 12:08:57PM +0800, Xiongfeng Wang wrote:
+> Some devices may have several DVSEC (Designated Vendor-Specific Extended
+> Capability) entries with the same DVSEC ID. Add
+> pci_find_next_dvsec_capability() to find them all.
