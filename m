@@ -1,90 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01D7C7761CC
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Aug 2023 15:55:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FE02776267
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Aug 2023 16:26:04 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=tXn5xruI;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=B8Y1wPkI;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=Qx9jDdZ8;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RLWlg6L5Hz3fYH
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Aug 2023 23:55:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RLXRF6wmfz3cF1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Aug 2023 00:26:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=tXn5xruI;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=B8Y1wPkI;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=Qx9jDdZ8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.29; helo=out5-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=lists.ozlabs.org)
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RLWL931SDz3dC6
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Aug 2023 23:36:32 +1000 (AEST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailout.nyi.internal (Postfix) with ESMTP id 9124B5C0135;
-	Wed,  9 Aug 2023 09:36:27 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Wed, 09 Aug 2023 09:36:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:sender:subject:subject:to:to; s=fm3; t=
-	1691588187; x=1691674587; bh=3msJaR5UXBLEoKC1HXIH2RtyP/pUMBgvaBb
-	jwAf59DQ=; b=tXn5xruIL2ZWBIL+b/oduuBk+e8qnkdtDb4USof3cljLWqAcPfQ
-	ML0TZbP9FLtBiOlaBdEruMwN7SRE/ot5fj7w9Eer0HyDE4QFAFyaruLNRsr1B2RQ
-	cUqAYz7MNIVy1VTacX82SyQ97DVW4ELs/yT3+ttAyF0499IIBEPO+LGxWSGMz9my
-	BV8Ec/wqBuED3TkSLK/5Fp2K8SnI5VktbbDtI74Ey654us5o4wh5OkeLEdMy/YjN
-	7fTniGBLzqSpHhUKhuuHv5iGRfLlgH0f8dCPMsVH1D9rz1HNUbpf7wnGM/O/Xd3Y
-	IsRDYRUa817ub1msfWZOxnyJZgIBfoJoAIg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:sender:subject:subject:to:to:x-me-proxy
-	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1691588187; x=1691674587; bh=3msJaR5UXBLEoKC1HXIH2RtyP/pUMBgvaBb
-	jwAf59DQ=; b=B8Y1wPkIrwz9wCwtgZC8ks1X8dcR//B5L4dPMtbSxacmki1+5lt
-	FkMUZzIu6i3zuXuwdIWMtpVgx/P70TvCY14lr0Zw8DU28p95F+a/YaJ8j3NY4yQR
-	dYZQYre++R7JTvXb3k8oRM48cAm7GbsDLMjXnlK8Uz7Reo0skA5hwgfFqMYXQqXv
-	SjX1qmwGyxNzNMUgqQxTyVXyp17jZomWD1iQYgxSwN+EyheEZuDqEP317MagtXi2
-	N/dm+HTu23ZDECKdTomeRHLfIUczfdd1/Yix+3eI1wk2KkUtvVpvkLVqngcfX6J4
-	2C06ot7BCz+wv+XuHVWW6dXJFJ+/QCmlyLw==
-X-ME-Sender: <xms:WpbTZI0awJeeoOruYStqDGtlN_LmZS2tF2CNPt7ilqTqSbKD69YmEQ>
-    <xme:WpbTZDEYmDwKIZazTpgljzGu13IDpMnigC10j2lyIGAzBbMj_JDNftqJC6vznNKuM
-    k3LSb2vHUXL7KBiVjo>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrleeggdeigecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefofgggkfgjfhffhffvvefutgfgsehtqhertderreejnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepgfekueelgeeigefhudduledtkeefffejueelheelfedutedttdfgveeufeef
-    ieegnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpe
-    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:WpbTZA6rCjUKLUrF3LKbyYBXe5n7r9r_5MjP1bJlF_TjKgPB7NoAvw>
-    <xmx:WpbTZB3VBEXRyvYO_e6G5ahCiezY03ALoFGGZhNFGjwOBHSDTUgSrA>
-    <xmx:WpbTZLGPhpOm2VF8YWbftR8orvd7vnFngaCnEHpk1LVUbnoDCjnBXQ>
-    <xmx:W5bTZCB3HR6xM4_HZ_UKOpJgqKz-xs4lDwe7QhNCsYmmS-FaChmKnQ>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id CD8E1B60089; Wed,  9 Aug 2023 09:36:26 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-624-g7714e4406d-fm-20230801.001-g7714e440
-Mime-Version: 1.0
-Message-Id: <eeeef65a-fbf9-403f-8541-5169b06976d7@app.fastmail.com>
-In-Reply-To: <66ca8677-6a8d-c2f6-f215-a49ae7248458@csgroup.eu>
-References: <20230809131024.2039647-1-arnd@kernel.org>
- <66ca8677-6a8d-c2f6-f215-a49ae7248458@csgroup.eu>
-Date: Wed, 09 Aug 2023 15:35:46 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "Arnd Bergmann" <arnd@kernel.org>, "Michael Ellerman" <mpe@ellerman.id.au>
-Subject: Re: [PATCH 1/2] powerpc: mark more local variables as volatile
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RLXQG43xvz2xgt
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Aug 2023 00:25:07 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=cOZqaDWc3HsuU0Akcti+SHi//L0WYRljfoUAHEI5Mb4=; b=Qx9jDdZ8kaM/1t4qA31vsj3BF8
+	dJrmsjumeBsxCmbnQgrD4l+9TqTVj2NoRpg930BVIM4FPiFnDXrK3r0dE3c7aPB8z8i2YwInO7to9
+	ZmY4RWGF/oukSyMfAB3BtIUJ5a59AUfejt8ckDyqzRpvMTkoqIEH7NE4zEEW7++7Cy/EMtLYo9Pc3
+	4TUM8vxLJ1uHstQSOGAsS+ENaeA40kGzBDMDUeYTV9XnYR0ocbLYfozGNsP9hztOYLMxnVn/4L8Wh
+	sQORp47ZvgqIrwz5RNsjIYIqnbmiaXa5J9wWUmy6+XkP4b/3HWQ5XJyCA1lPZE1KEy5BCuRV63jGu
+	y4IOZS2w==;
+Received: from [2601:1c2:980:9ec0::2764]
+	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+	id 1qTk72-0059dS-2X;
+	Wed, 09 Aug 2023 14:24:36 +0000
+Message-ID: <cc9417a3-ef86-bb46-9519-cf65b03b5f08@infradead.org>
+Date: Wed, 9 Aug 2023 07:24:32 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH v3 21/28] net: wan: Add framer framework support
+Content-Language: en-US
+To: Herve Codina <herve.codina@bootlin.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>,
+ Linus Walleij <linus.walleij@linaro.org>, Qiang Zhao <qiang.zhao@nxp.com>,
+ Li Yang <leoyang.li@nxp.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
+ Takashi Iwai <tiwai@suse.com>, Shengjiu Wang <shengjiu.wang@gmail.com>,
+ Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
+ Nicolin Chen <nicoleotsuka@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>
+References: <20230809132757.2470544-1-herve.codina@bootlin.com>
+ <20230809132757.2470544-22-herve.codina@bootlin.com>
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20230809132757.2470544-22-herve.codina@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,25 +73,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Hugh Dickins <hughd@google.com>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Maninder Singh <maninder1.s@samsung.com>, Andrew Morton <akpm@linux-foundation.org>, Jiri Slaby <jirislaby@kernel.org>
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Aug 9, 2023, at 15:17, Christophe Leroy wrote:
-> Le 09/08/2023 =C3=A0 15:10, Arnd Bergmann a =C3=A9crit=C2=A0:
->> From: Arnd Bergmann <arnd@arndb.de>
->>=20
->> A while ago I created a2305e3de8193 ("powerpc: mark local variables
->> around longjmp as volatile") in order to allow building powerpc with
->> -Wextra enabled on gcc-11.
->
-> Should this be explained in=20
-> https://docs.kernel.org/process/volatile-considered-harmful.html ?
->
+Hi,
 
-My feeling is that these two files are special enough that we
-don't have to worry about it in general, there is only one other
-caller of setjmp in the kernel, and the setjmp() man page
-explicitly mentions this problem and the workaround.
+On 8/9/23 06:27, Herve Codina wrote:
+> diff --git a/drivers/net/wan/framer/Kconfig b/drivers/net/wan/framer/Kconfig
+> new file mode 100644
+> index 000000000000..96ef1e7ba8eb
+> --- /dev/null
+> +++ b/drivers/net/wan/framer/Kconfig
+> @@ -0,0 +1,19 @@
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +#
+> +# FRAMER
+> +#
+> +
+> +menu "Framer Subsystem"
+> +
+> +config GENERIC_FRAMER
+> +	bool "Framer Core"
 
-     Arnd
+Just curious: any reason that this cannot be tristate (i.e., a loadable module)?
+Thanks.
+
+> +	help
+> +	  Generic Framer support.
+> +
+> +	  This framework is designed to provide a generic interface for framer
+> +	  devices present in the kernel. This layer will have the generic
+> +	  API by which framer drivers can create framer using the framer
+> +	  framework and framer users can obtain reference to the framer.
+> +	  All the users of this framework should select this config.
+> +
+> +endmenu
+
+-- 
+~Randy
