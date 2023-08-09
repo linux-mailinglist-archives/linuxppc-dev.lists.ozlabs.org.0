@@ -2,127 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3A14776071
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Aug 2023 15:18:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 744787760F2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Aug 2023 15:30:47 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=ID0vCL4M;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=LyZSb2/u;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RLVx45BnSz3bT8
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Aug 2023 23:18:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RLWCS3gpMz3cP3
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Aug 2023 23:30:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=ID0vCL4M;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=LyZSb2/u;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::602; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-mr2fra01on20602.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e19::602])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::222; helo=relay2-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::222])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RLVw65z1wz2yGB
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Aug 2023 23:17:25 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=iAp2EW9xew88VQxwDLSvz8tlLWb8uO/3LlsQKjaagnNmFFncsmcgNLVUtF2YzR7tHlCCrcU7hkRon0zgA2axOSGF/tiZt4pTM6ZC4BY6z5+yA38IrmeDjTo0Jhn9eiJeWI51CqyVKzj4dGTrm8QFMdRLCHb73tjeca5hncb7D6DxQb6NBr9YIj7geiHXFftkjJu7alr/DweqklrbY/ywSxKO0OS+kYR1hom6SDnB+LYvz6Awg4pXdgHaTJF8xb+aeWXF9mQZ+fiWKrGLAp1uOclhCG0d3f65BJczBq9ovgFmxh/Y1MA9q93pYjQF7cYTTtpg8fnrA0aaoN24fUYwog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SCi4jmu62xrfgUo9jmzwDJQNyse4nR2WOya2N5YhEpg=;
- b=ACfhKGZ0N7fETiAkm4t1BpUuU65hAsy7rBkK7glvlqqYRjv3u/Yt+XbaMvLPDz3ceXRpXrr/nSguLwUvKwYGgsEvqUPn2ZZndC0DwR/tRePe6QQ+Yt4vXlqst/6+/si4JlmpWdj3c1qWwfI+S3SnWRQLE+vHq3tYmeHjDQ437ibf7I0OO+IM1HUc+l1cWWX6hzJNmOWSgTJdBY4PnEpyHVqstYRzMRZDf2SYrChNRD9qwAHeBbE7yfk+ln2t2vHNkeVUNQYoeQffzWHTmxINQRUq7RXCFqvH+XcKqJMVNUsR6B9Dsa2+Mn3pf8+AAA63Dg6Y6/tvGJTcyaFzSNhoqQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SCi4jmu62xrfgUo9jmzwDJQNyse4nR2WOya2N5YhEpg=;
- b=ID0vCL4MkmBDprTP4ojTRXJjxgX+0JxOlxAqMPJ62AFF0gg+TTY4AUB3cW0qyrI50s0KpudrUDMtB3s3J4sjMM3Hfe6ubAAfl8DuvkuXHA2mPEU7Wj4/ZWhA2LyZgpbWlo9wm+JgEjX7BUJsXDYVfu8A5XlA/7z/g0ycxsnqyNehgTscZxcoy61dYdqMGM1kTl8LnH0vDXa2G+uE/6Gy77uUg4NS1TVwDF83DQpWj9ZWNMGOckTj1izskZ9ZZs8pjeBBHjWYrxVspUqgf9ZbrzeAts4HtUZNc+gvuBLc0W/HyNaHJ+JXWRAX517qZTALOephTWV8m79PARHYsEEvGQ==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PR1P264MB3389.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1a::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.28; Wed, 9 Aug
- 2023 13:17:02 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::2820:d3a6:1cdf:c60e]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::2820:d3a6:1cdf:c60e%6]) with mapi id 15.20.6652.028; Wed, 9 Aug 2023
- 13:17:02 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Arnd Bergmann <arnd@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH 1/2] powerpc: mark more local variables as volatile
-Thread-Topic: [PATCH 1/2] powerpc: mark more local variables as volatile
-Thread-Index: AQHZysLik2jSorxJoEa1cRJ1fMiL+6/h8gsA
-Date: Wed, 9 Aug 2023 13:17:02 +0000
-Message-ID: <66ca8677-6a8d-c2f6-f215-a49ae7248458@csgroup.eu>
-References: <20230809131024.2039647-1-arnd@kernel.org>
-In-Reply-To: <20230809131024.2039647-1-arnd@kernel.org>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PR1P264MB3389:EE_
-x-ms-office365-filtering-correlation-id: e157a5e3-b9b4-49a7-2b11-08db98daeb91
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  wEaS+CrIF5z1qCsBdt3vAyeuUC1FurM+KV7EldCPrXfwdA36cChX42bvQl5jK9OwToMZzXZ3AQzWQ5ucnYbKodQFgoXNZl6PjKFhikHScwjetZvYe1WXKjNGoEi4sdsbpcEbt0bp2P8XzWdPxmj4ha3sCEGN1GiD91BKCSotFWrh6A4FkZ+6BlroYTvFcWCOurZzgGH/4YNtU//Jti8TSvkaMM2LkJpN5JBlFntC4tRUBJP8Hux3CsYHzq6rWbm5x7y7eXDnWCDdXpu8M1MA3J2WWiN5Y9cuefOcvBYyEvIXeLha8BFLpf7EjxTq0XIsZJQyAh7I0Siuzf4dxVD/f95FeSfgpffBA92mDttuDCOyEvufYLputXkvvdoO/ppXlTxpEwfPbvcSFoU0sz0c/bcu5Uz+E+slTwnSKhJ5UNb8V/zB+1HucWwCaYjOBAKO6JJUt5auy1+1NxdjPPHBZZMZuZHTRJ/oTGLQL0jQfyJEBNB9dQ00EScZHq2+wIp+irS9a6+RqOjqEvsxN8hna7YENMc0z9UrMJMIXqDoDGTS7J98FTYNX/7/XNwPtMKeG4xndnIbdRfiYj1ePT2Ft7uLUDbog5C63cuTlNNDS0f27jnZRILOEf9Ky/Q6h6T7dm5vKD47Mpu75MKmRIj7WSLr8+oFSY0gfhtK7ygHK84=
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(376002)(136003)(366004)(346002)(396003)(39850400004)(451199021)(1800799006)(186006)(316002)(31696002)(2616005)(31686004)(66574015)(71200400001)(41300700001)(2906002)(83380400001)(86362001)(38070700005)(5660300002)(8936002)(8676002)(6506007)(44832011)(26005)(7416002)(66476007)(91956017)(110136005)(966005)(6512007)(54906003)(6486002)(66946007)(122000001)(66556008)(64756008)(66446008)(76116006)(36756003)(38100700002)(478600001)(4326008)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?MXFUeFpxRVNINGVFMVE3VnFTbkxGS01XaDV2dXBhU2dUbkFTNThneWd3Wi9K?=
- =?utf-8?B?L1FTSnBsWUl0MDVGa3VXWEJHU1lLR1ZpY1RMMWVXaEFFKzU5UTgybUY2bDQw?=
- =?utf-8?B?OGx3Ny9GTVFacER4c0pYNUlKSTl0ZUlaZWE3N1dRUjgvT0NZYVE1YVpVRlVL?=
- =?utf-8?B?L0Z2eityRlA4clA4QkRUeks0ZStNZlpXencvOFFCMThSNXE5ajd3S0lmQWFN?=
- =?utf-8?B?Q3RlK1lqNDFPMUd2b3BYWVFBcEh1TkNSN041ejIxbkVnVTBQODByZytPZWZZ?=
- =?utf-8?B?elVSUTZPWmVRaHN4WGl1YmU5b2l2WksxSGN1VHdpSmtXdHNtbGFvdzJXcGlz?=
- =?utf-8?B?cFdYV1V5c1hpcVpQbFhIYzE3VWpGKzlxaTN6bWNmdWRCV3ZkWHhXam9VbEtW?=
- =?utf-8?B?L3hLZFBqVjBJc1dYREVRWk1Fa0xxVDdRR0hHc1RTYkdwTUxCWDdZQmZPYjBr?=
- =?utf-8?B?cDA2andQTUJTNjdLRjFCZERrNGJyNkwyZWpsQnF4d3Z1SXhpeXk2KzdhZjkz?=
- =?utf-8?B?cndIRHV0WlcrU1hUQ2piTVNzeDc4Q2pYZVBWa21TdGhCV0hycEtRSWtLb01v?=
- =?utf-8?B?V0FSV2wyV0ZJNHJNcVgvWGt1SEt5SHFKLzR1eXF0dHNTODJRRUQ1Kzg5WnBP?=
- =?utf-8?B?VXRBVmNrZ0hNaGwxTzBqWk9HZExHL3h4dkJQalZnZlFHWE9wUXNpaHRWNGlN?=
- =?utf-8?B?RFdhSGtNZnZSckZ0SnYrbHA1NStSOW14WDNxamM1cGtJNGthZ1JPZHpVSSto?=
- =?utf-8?B?ZXNvZ0ZZVXNjMEgvUCtqeVJCUG5DeURJeUc5czFOUDB0WWZFL2pBM21HaWF0?=
- =?utf-8?B?Sy9lOEhJM09ZSnMzVkJ1SkJYYS9aRThjVVYyLzlEdmVJS1BhRW1ROTJyemlF?=
- =?utf-8?B?Mk9YWWl5ZkdmRVZod0VLWEtsVitGcTM3Z21PNy9KNUZiMzVKWEZWM0NHUjNj?=
- =?utf-8?B?NlJXODNjbEZ6VjEweFBubnRGaStTeW5DVWZqQXY1SFN6MVA4M1p1ZHV3MllB?=
- =?utf-8?B?QXJTOXpoekVjeFRtd0V1YTJRcXJZQ0Y0ckZQZE1LSkdQUzc1S2RVUWREakU4?=
- =?utf-8?B?MVhoeng5Vk5abkJGNm42VGcwV1Njd2JmcXdabGwxUktMVllkQXMwNnRYdXl5?=
- =?utf-8?B?TDdxb1BQcTZuZUZiOUJKQjRNZXNPM2NUUXhlcitoMElmUjZHSjlsU3M2L3Bz?=
- =?utf-8?B?K2I3NmZEejVVSWRPZC8zWFZFTXYrVEQ4L0RqUnNzOFN4cG1oeGovTFlXRWRH?=
- =?utf-8?B?UnlNOUN2NEZhcm50ei9mdVlsbXlYc3diaDY3ZXdvdGk1b1hLS0kyOEpiVm15?=
- =?utf-8?B?V0dmd0p3MW4vWUdGTW5hS3A1MHhXSEdHUU5KQmNNZkdEcjQ1TjdlMVF0MHU1?=
- =?utf-8?B?TTVIM29TVEs4NEQ1WUZYQk5xcis2K2l6Q2FEbGxHSnFKN3Q4K2Q1UGJjdzFJ?=
- =?utf-8?B?V1Vzdi9hSEVsOWZGdWhUam93dXNEV3BzVklQcXRKa1VxeklEV0V2b0ljREx4?=
- =?utf-8?B?UGdlUzh3NUV1bUZWV0ZtMURWdnQwZDNLSEdwWnpvL3Nhc1pTajVQUzh3Vjdx?=
- =?utf-8?B?Zmtma1pwWTNpMzBUUVZHUHp0WWlCUVdienZ5azBVQUdNVytkUGpMU3lTODVJ?=
- =?utf-8?B?YnpVK3ZyK2FUNVRxblBLTWRTaVZKdCtrdTBTZTlHVG1JYXZpUXllSmVUem9w?=
- =?utf-8?B?YnNud013K2hRUDNucXhFUTBWcDY5KzJkUmI1U0x6b2ZiSHNIM0x4OEFLd2R2?=
- =?utf-8?B?NmRoZDRRZ2EvTDd2bUFyZFdKSHM0M2VzSWhXbWZmTkVFZklIOTExQThIOU5H?=
- =?utf-8?B?VDE4MldUaW1Zck5KamlpS3VFQUhPbUhQbzI0S1NrV0gwYUdJZ005ZTNXcmdu?=
- =?utf-8?B?RHN1RDNVdlNkbjE4TGF4N1RpYVpuTjF5QjduWmhEVWNjT3oxMXFXaktsVitT?=
- =?utf-8?B?b3ZEb2c3ci95SXFBcWp1MG41MzRnenBUWloyOEZxcTFiTFlRb1RIVEluY0N1?=
- =?utf-8?B?ekM4bkl5NFVZZUhJL3kvK2lvNTZqMXczWFFjMHd2emNoUmhCeHRHdS9wZHAr?=
- =?utf-8?B?dnpnZUxHb1hldVBRRjlOUVFXM0dIaTdQR0pxRmJqSUYxMXlOWURGd01qQ2xp?=
- =?utf-8?B?TEtTa3RUNVo5NkhzNy9Tc1JvZVFWWHZvVnQzT0hVWGhNQ2FHVVNqZDNlZ0xo?=
- =?utf-8?B?U0E9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <6B559D4EC90E404D965718AFC1B772E6@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RLW8b3n5Gz2yxX
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Aug 2023 23:28:12 +1000 (AEST)
+Received: by mail.gandi.net (Postfix) with ESMTPA id 11C0C40011;
+	Wed,  9 Aug 2023 13:27:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1691587684;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=9cjlq/zwQrmKUAS3zYVvxoX1uV9/pFKvxKnNDYT4XWc=;
+	b=LyZSb2/u7t9J62n1di31TlSDbh35HQPxpitgOxiAIaFgIfbk0Z1bS0gX2mgi7B49aOiP14
+	UZCP7CxBbxVgfDeANnRvnhLPC5Vxw5nCVmvIZTcbgFfEXcDmGS+brMVkEPBggy6CA0J2Dw
+	u3ftP+ZY7H1RLFP/5ZLljIG9s62+eXp2NRleU+I5oVcYvE0nDOl/V8QErgH4IbJsbmAgd8
+	8yyEsgJj1msjnKTJkzhk0boBxgkcWS7XXVInK1Ywc5xthL+2bgHO2qsDT70vh0mwRsvKG5
+	Am/1V5h+mU9SwC6gmcbCVUdnaJn8uRQ4UbdlikGsIyrrwyi+N3RiqIyvLhg/0Q==
+From: Herve Codina <herve.codina@bootlin.com>
+To: Herve Codina <herve.codina@bootlin.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Qiang Zhao <qiang.zhao@nxp.com>,
+	Li Yang <leoyang.li@nxp.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Randy Dunlap <rdunlap@infradead.org>
+Subject: [PATCH v3 00/28] Add support for QMC HDLC, framer infrastruture and PEF2256 framer
+Date: Wed,  9 Aug 2023 15:27:27 +0200
+Message-ID: <20230809132757.2470544-1-herve.codina@bootlin.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: e157a5e3-b9b4-49a7-2b11-08db98daeb91
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Aug 2023 13:17:02.5167
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 23XWn+R1eF9AglvZTyzNPxJbCP6rALS3H7KF5l/UdgO2ONbCjCgrxZiTozGK1H8mGhJ+wbhlkvnnOAfEVIQ/4TNjHJnx0xP83S7EyTmgSxs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR1P264MB3389
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -134,43 +77,250 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Hugh Dickins <hughd@google.com>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Maninder Singh <maninder1.s@samsung.com>, Andrew Morton <akpm@linux-foundation.org>, Jiri Slaby <jirislaby@kernel.org>
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDA5LzA4LzIwMjMgw6AgMTU6MTAsIEFybmQgQmVyZ21hbm4gYSDDqWNyaXTCoDoNCj4g
-RnJvbTogQXJuZCBCZXJnbWFubiA8YXJuZEBhcm5kYi5kZT4NCj4gDQo+IEEgd2hpbGUgYWdvIEkg
-Y3JlYXRlZCBhMjMwNWUzZGU4MTkzICgicG93ZXJwYzogbWFyayBsb2NhbCB2YXJpYWJsZXMNCj4g
-YXJvdW5kIGxvbmdqbXAgYXMgdm9sYXRpbGUiKSBpbiBvcmRlciB0byBhbGxvdyBidWlsZGluZyBw
-b3dlcnBjIHdpdGgNCj4gLVdleHRyYSBlbmFibGVkIG9uIGdjYy0xMS4NCg0KU2hvdWxkIHRoaXMg
-YmUgZXhwbGFpbmVkIGluIA0KaHR0cHM6Ly9kb2NzLmtlcm5lbC5vcmcvcHJvY2Vzcy92b2xhdGls
-ZS1jb25zaWRlcmVkLWhhcm1mdWwuaHRtbCA/DQoNCkNocmlzdG9waGUNCg0KDQo+IA0KPiBJIHRy
-aWVkIHRoaXMgYWdhaW4gd2l0aCBnY2MtMTMgYW5kIGZvdW5kIHR3byBtb3JlIG9mIHRoZSBzYW1l
-IGlzc3VlcywNCj4gcHJlc3VtYWJseSBiYXNlZCBvbiBzbGlnaHRseSBkaWZmZXJlbnQgb3B0aW1p
-emF0aW9uIHBhdGhzIGJlaW5nIHRha2VuDQo+IGhlcmU6DQo+IA0KPiBhcmNoL3Bvd2VycGMveG1v
-bi94bW9uLmM6MzMwNjoyNzogZXJyb3I6IHZhcmlhYmxlICdtbScgbWlnaHQgYmUgY2xvYmJlcmVk
-IGJ5ICdsb25nam1wJyBvciAndmZvcmsnIFstV2Vycm9yPWNsb2JiZXJlZF0NCj4gYXJjaC9wb3dl
-cnBjL2tleGVjL2NyYXNoLmM6MzUzOjIyOiBlcnJvcjogdmFyaWFibGUgJ2knIG1pZ2h0IGJlIGNs
-b2JiZXJlZCBieSAnbG9uZ2ptcCcgb3IgJ3Zmb3JrJyBbLVdlcnJvcj1jbG9iYmVyZWRdDQo+IA0K
-PiBJIGNoZWNrZWQgYSBidW5jaCBvZiByYW5kY29uZmlncyBhbmQgZm91bmQgb25seSB0aGVzZSB0
-d28sIHNvIGp1c3QNCj4gYWRkcmVzcyB0aGVtIHRoZSBzYW1lIHdheSBhcyB0aGUgb3RoZXJzLg0K
-PiANCj4gU2lnbmVkLW9mZi1ieTogQXJuZCBCZXJnbWFubiA8YXJuZEBhcm5kYi5kZT4NCj4gLS0t
-DQo+ICAgYXJjaC9wb3dlcnBjL2tleGVjL2NyYXNoLmMgfCAyICstDQo+ICAgYXJjaC9wb3dlcnBj
-L3htb24veG1vbi5jICAgfCAyICstDQo+ICAgMiBmaWxlcyBjaGFuZ2VkLCAyIGluc2VydGlvbnMo
-KyksIDIgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBjL2tleGVj
-L2NyYXNoLmMgYi9hcmNoL3Bvd2VycGMva2V4ZWMvY3Jhc2guYw0KPiBpbmRleCAyNTI3MjRlZDY2
-NmEzLi5lZjVjMmQyNWVjMzk3IDEwMDY0NA0KPiAtLS0gYS9hcmNoL3Bvd2VycGMva2V4ZWMvY3Jh
-c2guYw0KPiArKysgYi9hcmNoL3Bvd2VycGMva2V4ZWMvY3Jhc2guYw0KPiBAQCAtMzUwLDcgKzM1
-MCw3IEBAIEVYUE9SVF9TWU1CT0woY3Jhc2hfc2h1dGRvd25fdW5yZWdpc3Rlcik7DQo+ICAgDQo+
-ICAgdm9pZCBkZWZhdWx0X21hY2hpbmVfY3Jhc2hfc2h1dGRvd24oc3RydWN0IHB0X3JlZ3MgKnJl
-Z3MpDQo+ICAgew0KPiAtCXVuc2lnbmVkIGludCBpOw0KPiArCXZvbGF0aWxlIHVuc2lnbmVkIGlu
-dCBpOw0KPiAgIAlpbnQgKCpvbGRfaGFuZGxlcikoc3RydWN0IHB0X3JlZ3MgKnJlZ3MpOw0KPiAg
-IA0KPiAgIAlpZiAoVFJBUChyZWdzKSA9PSBJTlRFUlJVUFRfU1lTVEVNX1JFU0VUKQ0KPiBkaWZm
-IC0tZ2l0IGEvYXJjaC9wb3dlcnBjL3htb24veG1vbi5jIGIvYXJjaC9wb3dlcnBjL3htb24veG1v
-bi5jDQo+IGluZGV4IDNiNmY1MjRjNzkwZTMuLjllMTJiNzU4NTBkNzUgMTAwNjQ0DQo+IC0tLSBh
-L2FyY2gvcG93ZXJwYy94bW9uL3htb24uYw0KPiArKysgYi9hcmNoL3Bvd2VycGMveG1vbi94bW9u
-LmMNCj4gQEAgLTMzMDMsNyArMzMwMyw3IEBAIHN0YXRpYyB2b2lkIHNob3dfcHRlKHVuc2lnbmVk
-IGxvbmcgYWRkcikNCj4gICB7DQo+ICAgCXVuc2lnbmVkIGxvbmcgdHNrdiA9IDA7DQo+ICAgCXN0
-cnVjdCB0YXNrX3N0cnVjdCAqdm9sYXRpbGUgdHNrID0gTlVMTDsNCj4gLQlzdHJ1Y3QgbW1fc3Ry
-dWN0ICptbTsNCj4gKwlzdHJ1Y3QgbW1fc3RydWN0ICp2b2xhdGlsZSBtbTsNCj4gICAJcGdkX3Qg
-KnBnZHA7DQo+ICAgCXA0ZF90ICpwNGRwOw0KPiAgIAlwdWRfdCAqcHVkcDsNCg==
+Hi,
+
+I have a system where I need to handle an HDLC interface and some audio
+data.
+
+The HDLC data are transferred using a TDM bus on which a PEF2256
+(E1/T1 framer) is present. The PEF2256 transfers data from/to the TDM
+bus to/from the E1 line. This PEF2256 is connected to a PowerQUICC SoC
+for the control path and the TDM is connected to the SoC (QMC component)
+for the data path.
+
+From the QMC HDLC driver, I need to handle HDLC data using the QMC,
+carrier detection using the PEF2256 (E1 line carrier) and set/get some
+PEF2256 configuration.
+
+The QMC HDLC driver considers the PEF2256 as a generic framer.
+It performs operations that involve the PEF2256 through the generic
+framer API.
+
+The audio data are exchanged with the PEF2256 using a CPU DAI connected
+to the TDM bus through the QMC and the PEF2256 needs to be seen as a
+codec in order to be linked to the CPU DAI.
+The codec handles the carrier detection using the PEF2256 and reports
+the carrier state to the ALSA subsystem using the ASoC jack detection.
+
+The codec, even if instantiated by the PEF2256 driver, considers the
+PEF2256 as a generic framer.
+
+The generic framer has:
+ - 2 consumers (QMC HDLC drv and codec)
+ - 1 provider (PEF2256)
+
+So, the design is the following:
+                        +------------------+           +---------+
+                        | QMC              | <- TDM -> | PEF2256 | <-> E1
+     +---------+        |  +-------------+ |           |         |
+     | CPU DAI | <-data--> | QMC channel | |           |         |
+     +---------+        |  +-------------+ |           |         |
++--------------+        |  +-------------+ |           |         |
+| QMC HDLC drv | <-data--> | QMC channel | |           |         |
++--------------+        |  +-------------+ |           |         |
+     ^                  +------------------+           |         |
+     |   +--------+     +-------------+                |         |
+     +-> | framer | <-> | PEF2256 drv | <- local bus ->|         |
+         |        |     |             |                +---------+
+     +-> |        |     |             |
+     |   +--------+     |  +-------+  |
+     +-------------------> | codec |  |
+                        |  +-------+  |
+                        +-------------+
+
+Further more, the TDM timeslots used by the QMC HDLC driver need to be
+configured at runtime (QMC dynamic timeslots).
+
+Several weeks ago, I sent two series related to this topic:
+ - Add the Lantiq PEF2256 audio support [1]
+ - RFC Add support for QMC HDLC and PHY [2]
+This current series is a rework of these two series taking into account
+feedbacks previously received.
+
+In order to implement all of this, I do the following:
+ 1) Perform some fixes (patches 1, 2, 3, 4)
+ 2) Introduce the QMC HDLC driver (patches 5, 6, 7)
+ 3) Add QMC dynamic timeslot support (patches 8 - 18)
+ 4) Add timeslots change support in QMC HDLC (patch 19)
+ 5) Introduce framer infrastructure (patch 20)
+ 6) Add PEF2256 framer provider (patches 11, 22, 23, 24, 25)
+ 7) Add framer codec as a framer consumer (patch 26)
+ 8) Add framer support as a framer consumer in QMC HDLC (patch 27, 28)
+
+The series contains the full story and detailed modifications.
+If needed, the series can be split and/or commmits can be squashed.
+Let me know.
+
+Compare to the previous iteration
+  https://lore.kernel.org/linux-kernel/20230726150225.483464-1-herve.codina@bootlin.com/
+This v3 series mainly:
+ - Fixes some implementation details.
+ - Adds a new patch (patch 5) to remove existing inline keyword in the
+   QMC driver.
+ - Squashes patches related to the QMC HDLC binding together.
+
+Best regards,
+Hervé
+
+[1]: https://lore.kernel.org/all/20230417171601.74656-1-herve.codina@bootlin.com/
+[2]: https://lore.kernel.org/all/20230323103154.264546-1-herve.codina@bootlin.com/
+
+Changes v2 -> v3
+
+  - Patches 1, 2, 3, 4
+    Add 'Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>'
+
+  - New patch
+    Remove inline keyword from the existing registers accessors helpers
+
+  - Patch 6 (patches 5, 27 in v2)
+    Update the binding title
+    Squash patch 27
+
+  - Patch 7 (patch 6 in v2)
+    Remove the cast in netdev_to_qmc_hdlc()
+    Add 'Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>'
+
+  - Patch 8 (patch 7 in v2): No change
+
+  - Patches 9, 10 (patches 8, 9 in v2)
+    Add 'Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>'
+
+  - Patch 11 (patch 10 in v2)
+    Remove inline keyword from the introduced qmc_clrsetbits16() helper
+    Add 'Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>'
+
+  - Patches 12, 13, 14, 15, 16, 17, 18, 19, 20
+    Add 'Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>'
+
+  - Patch 21 (patch 20 in v2)
+    Remove unneeded framer NULL pointer check
+    Add 'Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>'
+
+  - Patch 22 (patch 21 in v2)
+    Change sclkr and sclkx clocks description
+    Remove the framer phandle property from the framer subnodes
+    (ie. from framer-codec nodes)
+
+  - Patch 23 (patch 22 in v2)
+    Initialize 'disabled' variable at declaration
+    Fix commit log
+    Add 'Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>'
+
+  - Patch 24 (patch 23 in v2)
+    Remove inline keyword from the existing registers accessors helpers
+    Use dev_warn_ratelimited() in default interrupt handler
+    Add 'Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>'
+
+  - Patch 25 (patch 24 in v2)
+    Replace #include "linux/bitfield.h" by #include <linux/bitfield.h>
+    Fold the pinctrl anonymous struct into the struct pef2256_pinctrl
+    Update commit log
+    Add 'Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>'
+
+  - Patch 26 (patch 25 in v2)
+    Add 'Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>'
+
+  - Patch 27 (patch 26 in v2)
+    Fix error message
+    Changed the ch.max computation in framer_dai_hw_rule_channels_by_format()
+    Add 'Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>'
+
+  - Patch 28
+    Add 'Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>'
+
+Changes v1 -> v2
+  - Patches 1, 2 (New in v2)
+    Fix __iomem addresses declaration
+
+  - Patch 19 (17 in v1)
+    Fix a compilation warning
+
+  - Patch 26 (24 in v1)
+    Fix a typo in Kconfig file
+    Fix issues raised by sparse (make C=1)
+
+Herve Codina (28):
+  soc: fsl: cpm1: tsa: Fix __iomem addresses declaration
+  soc: fsl: cpm1: qmc: Fix __iomem addresses declaration
+  soc: fsl: cpm1: qmc: Fix rx channel reset
+  soc: fsl: cpm1: qmc: Extend the API to provide Rx status
+  soc: fsl: cpm1: qmc: Remove inline function specifiers
+  dt-bindings: net: Add support for QMC HDLC
+  net: wan: Add support for QMC HDLC
+  MAINTAINERS: Add the Freescale QMC HDLC driver entry
+  soc: fsl: cpm1: qmc: Introduce available timeslots masks
+  soc: fsl: cpm1: qmc: Rename qmc_setup_tsa* to qmc_init_tsa*
+  soc: fsl: cpm1: qmc: Introduce qmc_chan_setup_tsa*
+  soc: fsl: cpm1: qmc: Remove no more needed checks from
+    qmc_check_chans()
+  soc: fsl: cpm1: qmc: Check available timeslots in qmc_check_chans()
+  soc: fsl: cpm1: qmc: Add support for disabling channel TSA entries
+  soc: fsl: cpm1: qmc: Split Tx and Rx TSA entries setup
+  soc: fsl: cpm1: qmc: Introduce is_tsa_64rxtx flag
+  soc: fsl: cpm1: qmc: Handle timeslot entries at channel start() and
+    stop()
+  soc: fsl: cpm1: qmc: Remove timeslots handling from setup_chan()
+  soc: fsl: cpm1: qmc: Introduce functions to change timeslots at
+    runtime
+  wan: qmc_hdlc: Add runtime timeslots changes support
+  net: wan: Add framer framework support
+  dt-bindings: net: Add the Lantiq PEF2256 E1/T1/J1 framer
+  mfd: core: Ensure disabled devices are skiped without aborting
+  net: wan: framer: Add support for the Lantiq PEF2256 framer
+  pinctrl: Add support for the Lantic PEF2256 pinmux
+  MAINTAINERS: Add the Lantiq PEF2256 driver entry
+  ASoC: codecs: Add support for the framer codec
+  net: wan: fsl_qmc_hdlc: Add framer support
+
+ .../devicetree/bindings/net/fsl,qmc-hdlc.yaml |  46 +
+ .../bindings/net/lantiq,pef2256.yaml          | 219 +++++
+ MAINTAINERS                                   |  17 +
+ drivers/mfd/mfd-core.c                        |  17 +-
+ drivers/net/wan/Kconfig                       |  14 +
+ drivers/net/wan/Makefile                      |   3 +
+ drivers/net/wan/framer/Kconfig                |  35 +
+ drivers/net/wan/framer/Makefile               |   7 +
+ drivers/net/wan/framer/framer-core.c          | 886 ++++++++++++++++++
+ drivers/net/wan/framer/pef2256/Makefile       |   8 +
+ drivers/net/wan/framer/pef2256/pef2256-regs.h | 250 +++++
+ drivers/net/wan/framer/pef2256/pef2256.c      | 880 +++++++++++++++++
+ drivers/net/wan/fsl_qmc_hdlc.c                | 820 ++++++++++++++++
+ drivers/pinctrl/Kconfig                       |  14 +
+ drivers/pinctrl/Makefile                      |   1 +
+ drivers/pinctrl/pinctrl-pef2256-regs.h        |  65 ++
+ drivers/pinctrl/pinctrl-pef2256.c             | 308 ++++++
+ drivers/soc/fsl/qe/qmc.c                      | 501 ++++++++--
+ drivers/soc/fsl/qe/tsa.c                      |  22 +-
+ include/linux/framer/framer-provider.h        | 194 ++++
+ include/linux/framer/framer.h                 | 199 ++++
+ include/linux/framer/pef2256.h                |  31 +
+ include/soc/fsl/qe/qmc.h                      |  25 +-
+ sound/soc/codecs/Kconfig                      |  15 +
+ sound/soc/codecs/Makefile                     |   2 +
+ sound/soc/codecs/framer-codec.c               | 413 ++++++++
+ sound/soc/fsl/fsl_qmc_audio.c                 |   2 +-
+ 27 files changed, 4872 insertions(+), 122 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/fsl,qmc-hdlc.yaml
+ create mode 100644 Documentation/devicetree/bindings/net/lantiq,pef2256.yaml
+ create mode 100644 drivers/net/wan/framer/Kconfig
+ create mode 100644 drivers/net/wan/framer/Makefile
+ create mode 100644 drivers/net/wan/framer/framer-core.c
+ create mode 100644 drivers/net/wan/framer/pef2256/Makefile
+ create mode 100644 drivers/net/wan/framer/pef2256/pef2256-regs.h
+ create mode 100644 drivers/net/wan/framer/pef2256/pef2256.c
+ create mode 100644 drivers/net/wan/fsl_qmc_hdlc.c
+ create mode 100644 drivers/pinctrl/pinctrl-pef2256-regs.h
+ create mode 100644 drivers/pinctrl/pinctrl-pef2256.c
+ create mode 100644 include/linux/framer/framer-provider.h
+ create mode 100644 include/linux/framer/framer.h
+ create mode 100644 include/linux/framer/pef2256.h
+ create mode 100644 sound/soc/codecs/framer-codec.c
+
+-- 
+2.41.0
+
