@@ -1,40 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAD637760D8
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Aug 2023 15:29:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66D9977610B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Aug 2023 15:32:28 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=LUcR/P5t;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=GKkE0QnJ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RLWBT4STxz3c2r
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Aug 2023 23:29:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RLWFQ12hPz3dD9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Aug 2023 23:32:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=LUcR/P5t;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=GKkE0QnJ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::222; helo=relay2-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::222])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.194; helo=relay2-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RLW8b3pvcz300g
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Aug 2023 23:28:13 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPA id E372040012;
-	Wed,  9 Aug 2023 13:28:08 +0000 (UTC)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RLW8f75N6z2yxX
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Aug 2023 23:28:18 +1000 (AEST)
+Received: by mail.gandi.net (Postfix) with ESMTPA id 3F11C40017;
+	Wed,  9 Aug 2023 13:28:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1691587691;
+	t=1691587693;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Vsq3fcsRQ92trwLtB4WXIyAHgTZzHeLSP3hrA+1+hQo=;
-	b=LUcR/P5tmh6y39hspt7Znr7WB0yyrcR+nFxys63LPWLzhHyg6mkkg3t3JDP2L/1H2XpwPa
-	cFBZT+5e8wEC7MIrkA7pUqaKynj+zBtKvFT11qEVwTSSzsoEav/2Ra0uwWyGbVUOTDe67J
-	yuTT+EG8oxKFBH8JQIuFs4Ri/vHVA4GDDFf5mozIaG/Pd5evSYyuvQmMBvMtPXLNJVLbOW
-	1ilLwzSsQNOuL7m5AmTsk1KQEZ/r+tUV8qwwobgkz/J+ERC8D/A1ZUVO/6R9U3ljHxCtXz
-	16K5O5PLbp6y3HL6lIQDCnCdEafssB43EhKCY8zULZek5E9Jtr5FRezTSKKbWA==
+	bh=i0fWOl/U0Ykj1jjA3AazLsy+i4Gi/qAut5N7j+GBqn8=;
+	b=GKkE0QnJZUZ5jECQZCLSagZrk09mM/np/fQ+qAONM82PzA/67syCTAg3rHidgXvuPgocj7
+	fOs+J3KFBHwsopkpYQfUg/WiMFs5Sgie3gSzzfmyXv1a1zQBnPGrzAURCOiil8ksjo7rLp
+	PjdoZ+YOpruu84yJSmBc3ukHMMm57PL44P0yMkN7F1KKptscdeBtjjESyYsfPSG8ed2RCU
+	8TUVFO6yuLh9hTjM3g9zpcBSFBFREphm4S9KIpKKXXQSbBuo75LSiv2vZnI5N7WTuhvfM7
+	YJujheLdQbIfAETM3rA8DQVYXQViHqKkAML2WpPhTRWS3XYSNoPagDMNkeeDuQ==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Herve Codina <herve.codina@bootlin.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -59,9 +59,9 @@ To: Herve Codina <herve.codina@bootlin.com>,
 	Nicolin Chen <nicoleotsuka@gmail.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH v3 03/28] soc: fsl: cpm1: qmc: Fix rx channel reset
-Date: Wed,  9 Aug 2023 15:27:30 +0200
-Message-ID: <20230809132757.2470544-4-herve.codina@bootlin.com>
+Subject: [PATCH v3 04/28] soc: fsl: cpm1: qmc: Extend the API to provide Rx status
+Date: Wed,  9 Aug 2023 15:27:31 +0200
+Message-ID: <20230809132757.2470544-5-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230809132757.2470544-1-herve.codina@bootlin.com>
 References: <20230809132757.2470544-1-herve.codina@bootlin.com>
@@ -83,36 +83,140 @@ Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, netdev@vger.kernel.
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The qmc_chan_reset_rx() set the is_rx_stopped flag. This leads to an
-inconsistent state in the following sequence.
-    qmc_chan_stop()
-    qmc_chan_reset()
-Indeed, after the qmc_chan_reset() call, the channel must still be
-stopped. Only a qmc_chan_start() call can move the channel from stopped
-state to started state.
+In HDLC mode, some status flags related to the data read transfer can be
+set by the hardware and need to be known by a QMC consumer for further
+analysis.
 
-Fix the issue removing the is_rx_stopped flag setting from
-qmc_chan_reset()
+Extend the API in order to provide these transfer status flags at the
+read complete() call.
 
-Fixes: 3178d58e0b97 ("soc: fsl: cpm1: Add support for QMC")
+In TRANSPARENT mode, these flags have no meaning. Keep only one read
+complete() API and update the consumers working in transparent mode.
+In this case, the newly introduced flags parameter is simply unused.
+
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- drivers/soc/fsl/qe/qmc.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/soc/fsl/qe/qmc.c      | 29 +++++++++++++++++++++++++----
+ include/soc/fsl/qe/qmc.h      | 15 ++++++++++++++-
+ sound/soc/fsl/fsl_qmc_audio.c |  2 +-
+ 3 files changed, 40 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/soc/fsl/qe/qmc.c b/drivers/soc/fsl/qe/qmc.c
-index 7ad0d77f1740..8dc73cc1a83b 100644
+index 8dc73cc1a83b..2d2a9d88ba6c 100644
 --- a/drivers/soc/fsl/qe/qmc.c
 +++ b/drivers/soc/fsl/qe/qmc.c
-@@ -685,7 +685,6 @@ static void qmc_chan_reset_rx(struct qmc_chan *chan)
- 		    qmc_read16(chan->s_param + QMC_SPE_RBASE));
- 
- 	chan->rx_pending = 0;
--	chan->is_rx_stopped = false;
- 
- 	spin_unlock_irqrestore(&chan->rx_lock, flags);
+@@ -166,7 +166,7 @@
+ struct qmc_xfer_desc {
+ 	union {
+ 		void (*tx_complete)(void *context);
+-		void (*rx_complete)(void *context, size_t length);
++		void (*rx_complete)(void *context, size_t length, unsigned int flags);
+ 	};
+ 	void *context;
+ };
+@@ -421,7 +421,8 @@ static void qmc_chan_write_done(struct qmc_chan *chan)
  }
+ 
+ int qmc_chan_read_submit(struct qmc_chan *chan, dma_addr_t addr, size_t length,
+-			 void (*complete)(void *context, size_t length), void *context)
++			 void (*complete)(void *context, size_t length, unsigned int flags),
++			 void *context)
+ {
+ 	struct qmc_xfer_desc *xfer_desc;
+ 	unsigned long flags;
+@@ -454,6 +455,10 @@ int qmc_chan_read_submit(struct qmc_chan *chan, dma_addr_t addr, size_t length,
+ 	xfer_desc->rx_complete = complete;
+ 	xfer_desc->context = context;
+ 
++	/* Clear previous status flags */
++	ctrl &= ~(QMC_BD_RX_L | QMC_BD_RX_F | QMC_BD_RX_LG | QMC_BD_RX_NO |
++		  QMC_BD_RX_AB | QMC_BD_RX_CR);
++
+ 	/* Activate the descriptor */
+ 	ctrl |= (QMC_BD_RX_E | QMC_BD_RX_UB);
+ 	wmb(); /* Be sure to flush data before descriptor activation */
+@@ -485,7 +490,7 @@ EXPORT_SYMBOL(qmc_chan_read_submit);
+ 
+ static void qmc_chan_read_done(struct qmc_chan *chan)
+ {
+-	void (*complete)(void *context, size_t size);
++	void (*complete)(void *context, size_t size, unsigned int flags);
+ 	struct qmc_xfer_desc *xfer_desc;
+ 	unsigned long flags;
+ 	cbd_t __iomem *bd;
+@@ -527,7 +532,23 @@ static void qmc_chan_read_done(struct qmc_chan *chan)
+ 
+ 		if (complete) {
+ 			spin_unlock_irqrestore(&chan->rx_lock, flags);
+-			complete(context, datalen);
++
++			/*
++			 * Avoid conversion between internal hardware flags and
++			 * the software API flags.
++			 * -> Be sure that the software API flags are consistent
++			 *    with the hardware flags
++			 */
++			BUILD_BUG_ON(QMC_RX_FLAG_HDLC_LAST  != QMC_BD_RX_L);
++			BUILD_BUG_ON(QMC_RX_FLAG_HDLC_FIRST != QMC_BD_RX_F);
++			BUILD_BUG_ON(QMC_RX_FLAG_HDLC_OVF   != QMC_BD_RX_LG);
++			BUILD_BUG_ON(QMC_RX_FLAG_HDLC_UNA   != QMC_BD_RX_NO);
++			BUILD_BUG_ON(QMC_RX_FLAG_HDLC_ABORT != QMC_BD_RX_AB);
++			BUILD_BUG_ON(QMC_RX_FLAG_HDLC_CRC   != QMC_BD_RX_CR);
++
++			complete(context, datalen,
++				 ctrl & (QMC_BD_RX_L | QMC_BD_RX_F | QMC_BD_RX_LG |
++					 QMC_BD_RX_NO | QMC_BD_RX_AB | QMC_BD_RX_CR));
+ 			spin_lock_irqsave(&chan->rx_lock, flags);
+ 		}
+ 
+diff --git a/include/soc/fsl/qe/qmc.h b/include/soc/fsl/qe/qmc.h
+index 3c61a50d2ae2..6f1d6cebc9fe 100644
+--- a/include/soc/fsl/qe/qmc.h
++++ b/include/soc/fsl/qe/qmc.h
+@@ -9,6 +9,7 @@
+ #ifndef __SOC_FSL_QMC_H__
+ #define __SOC_FSL_QMC_H__
+ 
++#include <linux/bits.h>
+ #include <linux/types.h>
+ 
+ struct device_node;
+@@ -56,8 +57,20 @@ int qmc_chan_set_param(struct qmc_chan *chan, const struct qmc_chan_param *param
+ int qmc_chan_write_submit(struct qmc_chan *chan, dma_addr_t addr, size_t length,
+ 			  void (*complete)(void *context), void *context);
+ 
++/* Flags available (ORed) for read complete() flags parameter in HDLC mode.
++ * No flags are available in transparent mode and the read complete() flags
++ * parameter has no meaning in transparent mode.
++ */
++#define QMC_RX_FLAG_HDLC_LAST	BIT(11) /* Last in frame */
++#define QMC_RX_FLAG_HDLC_FIRST	BIT(10) /* First in frame */
++#define QMC_RX_FLAG_HDLC_OVF	BIT(5)  /* Data overflow */
++#define QMC_RX_FLAG_HDLC_UNA	BIT(4)  /* Unaligned (ie. bits received not multiple of 8) */
++#define QMC_RX_FLAG_HDLC_ABORT	BIT(3)  /* Received an abort sequence (seven consecutive ones) */
++#define QMC_RX_FLAG_HDLC_CRC	BIT(2)  /* CRC error */
++
+ int qmc_chan_read_submit(struct qmc_chan *chan, dma_addr_t addr, size_t length,
+-			 void (*complete)(void *context, size_t length),
++			 void (*complete)(void *context, size_t length,
++					  unsigned int flags),
+ 			 void *context);
+ 
+ #define QMC_CHAN_READ  (1<<0)
+diff --git a/sound/soc/fsl/fsl_qmc_audio.c b/sound/soc/fsl/fsl_qmc_audio.c
+index 56d6b0b039a2..bfaaa451735b 100644
+--- a/sound/soc/fsl/fsl_qmc_audio.c
++++ b/sound/soc/fsl/fsl_qmc_audio.c
+@@ -99,7 +99,7 @@ static void qmc_audio_pcm_write_complete(void *context)
+ 	snd_pcm_period_elapsed(prtd->substream);
+ }
+ 
+-static void qmc_audio_pcm_read_complete(void *context, size_t length)
++static void qmc_audio_pcm_read_complete(void *context, size_t length, unsigned int flags)
+ {
+ 	struct qmc_dai_prtd *prtd = context;
+ 	int ret;
 -- 
 2.41.0
 
