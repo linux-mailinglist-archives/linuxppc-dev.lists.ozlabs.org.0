@@ -2,54 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 020BE7767AE
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Aug 2023 20:53:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE9AA776948
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Aug 2023 21:54:31 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CA7EQptX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AkXlwPAI;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RLfMm5ygXz3cG0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Aug 2023 04:53:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RLgkF4Nrqz3c3h
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Aug 2023 05:54:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CA7EQptX;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AkXlwPAI;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=nayna@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RLfLv5Cx5z2xwD
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Aug 2023 04:52:39 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 6A8C9636B3;
-	Wed,  9 Aug 2023 18:52:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9701FC433C8;
-	Wed,  9 Aug 2023 18:52:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1691607154;
-	bh=nMtgXGgKWm52aiYW9EcmDMcW17XRObHSw5+9dPg/R0k=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=CA7EQptXpU4dE/otMHfEfXIX7A2ByyKg4Gafe4Z+eG2JkmqQ126ZetUggTmXzVgcP
-	 ba25k8atSaxzd3jKOhs+jLcrAn2+f9itE5jjtaJbG1CPDM3oICVA21g7nApaM6JsBN
-	 s6CVRDyfrD7gEOtf6qjfG4FkUfXbIvLxuZJ4ptAh1Q1wHYzwHKwZ2uvoMgdmhSTQIL
-	 2OzcozRIJES1o/h3//HnLjdu7Sjgpt0geF91Lb3wybNRKZLSh8Mi7/8hJiaL+ZKZk1
-	 n0wM2r4n4mYTq31f2u5/KS34FyqYAVjllgTki6ATwL4cImuVIb5HhLbekTaXRph7TM
-	 jMahdLuZA/ukA==
-Date: Wed, 9 Aug 2023 13:52:32 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Subject: Re: [PATCH v6 2/3] PCI/AER: Disable AER interrupt on suspend
-Message-ID: <20230809185232.GA402997@bhelgaas>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RLgjJ3Ljjz300g
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Aug 2023 05:53:39 +1000 (AEST)
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 379Jgrgw015792;
+	Wed, 9 Aug 2023 19:53:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=F4kb9BtXh6O5K6bYFOt1XF3yfN9A5TwKydKl5x981y0=;
+ b=AkXlwPAILjPB5bCJKnBKSsEVvYkZJPwhlehNs2bRgF6+yQ7NjqNPNkm/ovSlFwz68zqR
+ 5SZPnRlpiuqj9RXV34lYAtCqeVeBF4aVwKOXkgsBGLWCPOBjxv1Sgbe1GCbl+a6ir2/5
+ Fd7J2eZOOSu8T3i6xFMpOks/FUydG209BzWRoxGRBKIl0YGc6NIQQUS4NQEA0F9ct7vL
+ 7IUd4zrPN2zuw8U9cug/Sq4xUF8kPHT78hjOwIK2Z8xqV8uaVLynWRwj68M6Y7+U7tlX
+ 4qvFnIeNjdzqANkFrExNK7jcOQvRgUz1Av0fK77M7J97KcCO4+JY8F9UfX7EWYvX3iAK SQ== 
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3scgyx8qrh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 09 Aug 2023 19:53:33 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 379IrAU8007543;
+	Wed, 9 Aug 2023 19:53:33 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sa14ykjw6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 09 Aug 2023 19:53:33 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 379JrUdw16777872
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 9 Aug 2023 19:53:30 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E081020043;
+	Wed,  9 Aug 2023 19:53:29 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C20EE20040;
+	Wed,  9 Aug 2023 19:53:27 +0000 (GMT)
+Received: from li-4b5937cc-25c4-11b2-a85c-cea3a66903e4.ibm.com (unknown [9.61.3.84])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  9 Aug 2023 19:53:27 +0000 (GMT)
+From: Nayna Jain <nayna@linux.ibm.com>
+To: linux-integrity@vger.kernel.org
+Subject: [PATCH v2 0/6] Enable loading local and third party keys on PowerVM guest
+Date: Wed,  9 Aug 2023 15:53:09 -0400
+Message-Id: <20230809195315.1085656-1-nayna@linux.ibm.com>
+X-Mailer: git-send-email 2.39.3
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Y8WDeppSpuZcMtLll-IX03fxB202HQy2
+X-Proofpoint-GUID: Y8WDeppSpuZcMtLll-IX03fxB202HQy2
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAd53p7RfVcZjw+ShtkTmhCAA4zpegRZOzwiXgmanthx_KMjxA@mail.gmail.com>
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-09_17,2023-08-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=879
+ impostorscore=0 mlxscore=0 spamscore=0 bulkscore=0 clxscore=1011
+ priorityscore=1501 suspectscore=0 malwarescore=0 adultscore=0 phishscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308090171
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,138 +87,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sathyanarayanan.kuppuswamy@linux.intel.com, linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, linux-kernel@vger.kernel.org, koba.ko@canonical.com, Oliver O'Halloran <oohall@gmail.com>, bhelgaas@google.com, mika.westerberg@linux.intel.com
+Cc: Eric Snowberg <eric.snowberg@oracle.com>, Paul Moore <paul@paul-moore.com>, Nayna Jain <nayna@linux.ibm.com>, linux-security-module@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>, linux-kernel@vger.kernel.org, Jarkko Sakkinen <jarkko@kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jul 21, 2023 at 11:58:24AM +0800, Kai-Heng Feng wrote:
-> On Tue, Jul 18, 2023 at 7:17 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > On Fri, May 12, 2023 at 08:00:13AM +0800, Kai-Heng Feng wrote:
-> > > PCIe services that share an IRQ with PME, such as AER or DPC,
-> > > may cause a spurious wakeup on system suspend. To prevent this,
-> > > disable the AER interrupt notification during the system suspend
-> > > process.
-> >
-> > I see that in this particular BZ dmesg log, PME, AER, and DPC do share
-> > the same IRQ, but I don't think this is true in general.
-> >
-> > Root Ports usually use MSI or MSI-X.  PME and hotplug events use the
-> > Interrupt Message Number in the PCIe Capability, but AER uses the one
-> > in the AER Root Error Status register, and DPC uses the one in the DPC
-> > Capability register.  Those potentially correspond to three distinct
-> > MSI/MSI-X vectors.
-> >
-> > I think this probably has nothing to do with the IRQ being *shared*,
-> > but just that putting the downstream component into D3cold, where the
-> > link state is L3, may cause the upstream component to log and signal a
-> > link-related error as the link goes completely down.
-> 
-> That's quite likely a better explanation than my wording.
-> Assuming AER IRQ and PME IRQ are not shared, does system get woken up
-> by AER IRQ?
+On a secure boot enabled PowerVM guest, local and third party code signing
+keys are needed to verify signed applications, configuration files, and
+kernel modules.
 
-Rafael could answer this better than I can, but
-Documentation/power/suspend-and-interrupts.rst says device interrupts
-are generally disabled during suspend after the "late" phase of
-suspending devices, i.e.,
+Loading these keys onto either the .secondary_trusted_keys or .ima
+keyrings requires the certificates be signed by keys on the
+.builtin_trusted_keys, .machine or .secondary_trusted_keys keyrings.
 
-  dpm_suspend_noirq
-    suspend_device_irqs           <-- disable non-wakeup IRQs
-    dpm_noirq_suspend_devices
-      ...
-        pci_pm_suspend_noirq      # (I assume)
-	  pci_prepare_to_sleep
+Keys on the .builtin_trusted_keys keyring are trusted because of the chain
+of trust from secure boot up to and including the linux kernel.  Keys on
+the .machine keyring that derive their trust from an entity such as a
+security officer, administrator, system owner, or machine owner are said
+to have "imputed trust." The type of certificates and the mechanism for
+loading them onto the .machine keyring is platform dependent.
 
-I think the downstream component would be put in D3cold by
-pci_prepare_to_sleep(), so non-wakeup interrupts should be disabled by
-then.
+Userspace may load certificates onto the .secondary_trusted_keys or .ima
+keyrings. However, keys may also need to be loaded by the kernel if they
+are needed for verification in early boot time. On PowerVM guest, third
+party code signing keys are loaded from the moduledb variable in the
+Platform KeyStore(PKS) onto the .secondary_trusted_keys.
 
-I assume PME would generally *not* be disabled since it's needed for
-wakeup, so I think any interrupt that shares the PME IRQ and occurs
-during suspend may cause a spurious wakeup.
+The purpose of this patch set is to allow loading of local and third party
+code signing keys on PowerVM.
 
-If so, it's exactly as you said at the beginning: AER/DPC/etc sharing
-the PME IRQ may cause spurious wakeups, and we would have to disable
-those other interrupts at the source, e.g., by clearing
-PCI_ERR_ROOT_CMD_FATAL_EN etc (exactly as your series does).
+Changelog:
 
-> > I don't think D0-D3hot should be relevant here because in all those
-> > states, the link should be active because the downstream config space
-> > remains accessible.  So I'm not sure if it's possible, but I wonder if
-> > there's a more targeted place we could do this, e.g., in the path that
-> > puts downstream devices in D3cold.
-> 
-> Let me try to work on this.
-> 
-> Kai-Heng
-> 
-> >
-> > > As Per PCIe Base Spec 5.0, section 5.2, titled "Link State Power Management",
-> > > TLP and DLLP transmission are disabled for a Link in L2/L3 Ready (D3hot), L2
-> > > (D3cold with aux power) and L3 (D3cold) states. So disabling the AER
-> > > notification during suspend and re-enabling them during the resume process
-> > > should not affect the basic functionality.
-> > >
-> > > Link: https://bugzilla.kernel.org/show_bug.cgi?id=216295
-> > > Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> > > Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> > > ---
-> > > v6:
-> > > v5:
-> > >  - Wording.
-> > >
-> > > v4:
-> > > v3:
-> > >  - No change.
-> > >
-> > > v2:
-> > >  - Only disable AER IRQ.
-> > >  - No more check on PME IRQ#.
-> > >  - Use helper.
-> > >
-> > >  drivers/pci/pcie/aer.c | 22 ++++++++++++++++++++++
-> > >  1 file changed, 22 insertions(+)
-> > >
-> > > diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> > > index 1420e1f27105..9c07fdbeb52d 100644
-> > > --- a/drivers/pci/pcie/aer.c
-> > > +++ b/drivers/pci/pcie/aer.c
-> > > @@ -1356,6 +1356,26 @@ static int aer_probe(struct pcie_device *dev)
-> > >       return 0;
-> > >  }
-> > >
-> > > +static int aer_suspend(struct pcie_device *dev)
-> > > +{
-> > > +     struct aer_rpc *rpc = get_service_data(dev);
-> > > +     struct pci_dev *pdev = rpc->rpd;
-> > > +
-> > > +     aer_disable_irq(pdev);
-> > > +
-> > > +     return 0;
-> > > +}
-> > > +
-> > > +static int aer_resume(struct pcie_device *dev)
-> > > +{
-> > > +     struct aer_rpc *rpc = get_service_data(dev);
-> > > +     struct pci_dev *pdev = rpc->rpd;
-> > > +
-> > > +     aer_enable_irq(pdev);
-> > > +
-> > > +     return 0;
-> > > +}
-> > > +
-> > >  /**
-> > >   * aer_root_reset - reset Root Port hierarchy, RCEC, or RCiEP
-> > >   * @dev: pointer to Root Port, RCEC, or RCiEP
-> > > @@ -1420,6 +1440,8 @@ static struct pcie_port_service_driver aerdriver = {
-> > >       .service        = PCIE_PORT_SERVICE_AER,
-> > >
-> > >       .probe          = aer_probe,
-> > > +     .suspend        = aer_suspend,
-> > > +     .resume         = aer_resume,
-> > >       .remove         = aer_remove,
-> > >  };
-> > >
-> > > --
-> > > 2.34.1
-> > >
+v2:
+
+* Patch 5/6: Update CA restriction to allow only key signing CA's.
+* Rebase on Jarkko's master tree - https://kernel.googlesource.com/pub/scm/linux/kernel/git/jarkko/linux-tpmdd
+* Tested after reverting cfa7522f280aa95 because of build failure due to
+this commit.
+
+Nayna Jain (6):
+  integrity: PowerVM support for loading CA keys on machine keyring
+  integrity: ignore keys failing CA restrictions on non-UEFI platform
+  integrity: remove global variable from machine_keyring.c
+  integrity: check whether imputed trust is enabled
+  integrity: PowerVM machine keyring enablement
+  integrity: PowerVM support for loading third party code signing keys
+
+ certs/system_keyring.c                        | 23 +++++++++++++
+ include/keys/system_keyring.h                 |  7 ++++
+ security/integrity/Kconfig                    |  4 ++-
+ security/integrity/digsig.c                   |  2 +-
+ security/integrity/integrity.h                |  6 ++--
+ .../platform_certs/keyring_handler.c          | 19 ++++++++++-
+ .../platform_certs/keyring_handler.h          | 10 ++++++
+ .../integrity/platform_certs/load_powerpc.c   | 33 +++++++++++++++++++
+ .../platform_certs/machine_keyring.c          | 22 ++++++++++---
+ 9 files changed, 117 insertions(+), 9 deletions(-)
+
+-- 
+2.31.1
