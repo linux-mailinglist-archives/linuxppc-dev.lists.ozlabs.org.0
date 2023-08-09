@@ -2,39 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A232677612F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Aug 2023 15:36:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E12277614A
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Aug 2023 15:37:04 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=UcrQcxA5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=XqYquN0B;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RLWKW3f0lz3cbW
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Aug 2023 23:35:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RLWLd2NVjz3djw
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Aug 2023 23:36:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=UcrQcxA5;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=XqYquN0B;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::222; helo=relay2-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::222])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.194; helo=relay2-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RLW8p27z3z3brg
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Aug 2023 23:28:26 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPA id A493040009;
-	Wed,  9 Aug 2023 13:28:21 +0000 (UTC)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RLW8r2lkxz3bq1
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Aug 2023 23:28:28 +1000 (AEST)
+Received: by mail.gandi.net (Postfix) with ESMTPA id BC34940011;
+	Wed,  9 Aug 2023 13:28:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1691587703;
+	t=1691587705;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DTGknezdyiZk9bMBK1nMMSA2F/Bkc0Kki250K3B4O9I=;
-	b=UcrQcxA5z6Om3X0KL8cndimdBdYb9MM2H8GFYfp9FecjFn3GBOvVau58f4I2HTGSrxhKyP
-	P6k/uByE6jBHt0at03n8KRvpa7xGlOGDUgqErKEN2L8qVMlj06a3AapcGNig7hDxVFkYvv
-	QHXNgMx//gOJcJiooCqFJ1Llt6wAjpncVXI2J1SusUma4wEqNNef4bV+StQjP/aUsrT4c5
-	OUBj8conZx8gSlV2gMsMKC8UqouV2f+OLinKxCaCF9zdjfVD8yVvPUF61vIh/8WI/Y37hX
-	4ZDDFK/1+x1uIxLZFVvJT/fKrTM7lwUDHGlL2+EPCk1lK2VFb0bVu7JCp1or1w==
+	bh=b76iZMmvIvCMEyBgEerfkaYKot2Yt0wNBegRQvGpUdk=;
+	b=XqYquN0BCr88Qn8XrGMbfKGESOT/2/r19xycnvvW1yS2bVGito7H2iBOtdg8LZ/pS+xpMn
+	LQPlqnlDhvmw4Va5ZbpaP3xlKSqhJn9inpPlWoiwx+uLIG4E4JQ5t8HGnnmlo5px7wukO/
+	wJZSLFh+PNwzNBcEtZ9FuU2K1e5o3aI/vWA4mChdAbJAcOqFs0bfJ/Z6V4pLMSKxmYBO/K
+	U6fUN51w89vVulJwEWqpCwTnMM0qPj5qlPQE5gpuBj4pIjbdD+YH0B/FHCGt7m0Wrq8Kld
+	1OyCealv/vkDquZGzOTbk6lqBBt9JKaZN8Mes7zR1EBFc+4Bu7cyGMZPwQeLKA==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Herve Codina <herve.codina@bootlin.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -59,9 +59,9 @@ To: Herve Codina <herve.codina@bootlin.com>,
 	Nicolin Chen <nicoleotsuka@gmail.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH v3 08/28] MAINTAINERS: Add the Freescale QMC HDLC driver entry
-Date: Wed,  9 Aug 2023 15:27:35 +0200
-Message-ID: <20230809132757.2470544-9-herve.codina@bootlin.com>
+Subject: [PATCH v3 09/28] soc: fsl: cpm1: qmc: Introduce available timeslots masks
+Date: Wed,  9 Aug 2023 15:27:36 +0200
+Message-ID: <20230809132757.2470544-10-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230809132757.2470544-1-herve.codina@bootlin.com>
 References: <20230809132757.2470544-1-herve.codina@bootlin.com>
@@ -83,33 +83,54 @@ Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, netdev@vger.kernel.
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-After contributing the driver, add myself as the maintainer for the
-Freescale QMC HDLC driver.
+Available timeslots masks define timeslots available for the related
+channel. These timeslots are defined by the QMC binding.
+
+Timeslots used are initialized to available timeslots but can be a
+subset of available timeslots.
+This prepares the dynamic timeslots management (ie. changing timeslots
+at runtime).
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- MAINTAINERS | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/soc/fsl/qe/qmc.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index aee340630eca..14041d90f9c8 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -8304,6 +8304,14 @@ F:	Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml
- F:	drivers/soc/fsl/qe/qmc.c
- F:	include/soc/fsl/qe/qmc.h
+diff --git a/drivers/soc/fsl/qe/qmc.c b/drivers/soc/fsl/qe/qmc.c
+index 459e0bbd723d..1bc2af58e829 100644
+--- a/drivers/soc/fsl/qe/qmc.c
++++ b/drivers/soc/fsl/qe/qmc.c
+@@ -177,7 +177,9 @@ struct qmc_chan {
+ 	struct qmc *qmc;
+ 	void __iomem *s_param;
+ 	enum qmc_mode mode;
++	u64	tx_ts_mask_avail;
+ 	u64	tx_ts_mask;
++	u64	rx_ts_mask_avail;
+ 	u64	rx_ts_mask;
+ 	bool is_reverse_data;
  
-+FREESCALE QUICC ENGINE QMC HDLC DRIVER
-+M:	Herve Codina <herve.codina@bootlin.com>
-+L:	netdev@vger.kernel.org
-+L:	linuxppc-dev@lists.ozlabs.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/net/fsl,qmc-hdlc.yaml
-+F:	drivers/net/wan/fsl_qmc_hdlc.c
-+
- FREESCALE QUICC ENGINE TSA DRIVER
- M:	Herve Codina <herve.codina@bootlin.com>
- L:	linuxppc-dev@lists.ozlabs.org
+@@ -875,7 +877,8 @@ static int qmc_of_parse_chans(struct qmc *qmc, struct device_node *np)
+ 			of_node_put(chan_np);
+ 			return ret;
+ 		}
+-		chan->tx_ts_mask = ts_mask;
++		chan->tx_ts_mask_avail = ts_mask;
++		chan->tx_ts_mask = chan->tx_ts_mask_avail;
+ 
+ 		ret = of_property_read_u64(chan_np, "fsl,rx-ts-mask", &ts_mask);
+ 		if (ret) {
+@@ -884,7 +887,8 @@ static int qmc_of_parse_chans(struct qmc *qmc, struct device_node *np)
+ 			of_node_put(chan_np);
+ 			return ret;
+ 		}
+-		chan->rx_ts_mask = ts_mask;
++		chan->rx_ts_mask_avail = ts_mask;
++		chan->rx_ts_mask = chan->rx_ts_mask_avail;
+ 
+ 		mode = "transparent";
+ 		ret = of_property_read_string(chan_np, "fsl,operational-mode", &mode);
 -- 
 2.41.0
 
