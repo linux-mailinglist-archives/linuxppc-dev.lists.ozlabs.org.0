@@ -2,54 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0E6B776340
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Aug 2023 17:02:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C94EC77650E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Aug 2023 18:30:29 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=iXnta/0e;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=A2XFBAmb;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RLYFg3lsTz3bh5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Aug 2023 01:02:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RLbBq4SGSz3c5H
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Aug 2023 02:30:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=iXnta/0e;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=A2XFBAmb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::224; helo=relay4-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::224])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RLYDh3p8nz3072
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Aug 2023 01:01:53 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 08F12E0008;
-	Wed,  9 Aug 2023 15:01:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1691593306;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=g0zvfLvyRJt7hOgvNIifYjQHxyaOMWD1ltEX2pdHMbc=;
-	b=iXnta/0eS8D5cHJ76Q4dwhU+XK3qsGA5Twh8/3mjUO44s+pEvR/n0UP3phDRDaRzknJJqg
-	U0Po6QG77G0tYGseNfrgZzZ+oWZIReHQUy/j7wwlAqPpgNMdWXCyXkv/pWCbZTB17U0vBq
-	09x+R9HSs6PA9O+bm3Z01VLxBArlIT/tenAyyV94zuJu4ABgfwHf1jlpBmT9JL/aTrx54e
-	xulDWbuzkyyvyvjDTlEeKHtRrqbNHF9NWfFODttuROxRsjNMQwXq4dUnuY5B9C5WUAcO8L
-	rl4cb1owoaMRbW2+7s4uQte7dbC1HrDGo95q3ov+1CrqQAidzdIy5MawOqVkLw==
-Date: Wed, 9 Aug 2023 17:01:39 +0200
-From: Herve Codina <herve.codina@bootlin.com>
-To: Randy Dunlap <rdunlap@infradead.org>
-Subject: Re: [PATCH v3 21/28] net: wan: Add framer framework support
-Message-ID: <20230809170139.2402e4a2@bootlin.com>
-In-Reply-To: <cc9417a3-ef86-bb46-9519-cf65b03b5f08@infradead.org>
-References: <20230809132757.2470544-1-herve.codina@bootlin.com>
-	<20230809132757.2470544-22-herve.codina@bootlin.com>
-	<cc9417a3-ef86-bb46-9519-cf65b03b5f08@infradead.org>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RLb9t5TCLz2ytb
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Aug 2023 02:29:38 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 815FC64060;
+	Wed,  9 Aug 2023 16:29:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE360C433C8;
+	Wed,  9 Aug 2023 16:29:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1691598575;
+	bh=NzgcHUUZOX+VYfBoHP7NLY8e72NmRPh4DdS2d1SjmTk=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=A2XFBAmbYrxo9zNanDn3hG9CGcjL29E1QXD3xGGN2vopARSS7PrkzZfTkkwM/RRyr
+	 t09Htk41r35uOEw1QrlKMivToPMjVekL6hH9SBTSNMfjtBtBr2vO3hjllVQWFnq/hF
+	 95x2xBqd/BGXW0TZ3DEplHDrI/a79cOO9NPSBtRM6nd5RykuXSSv2M14JzO7R4M9wb
+	 ArSqXa59L/vWymke4tebmqyFI9YzJwkrIJ1Awun9/KobZZPJp+BWpGkVcUB33pEbAx
+	 UgY65a+pw7CiGSP6OmolyoFcpRgb8p35sgcX1pYD/79QIW3TPGdNZYnmvrql9t/TV6
+	 N0SdU5zKTNHsg==
+From: Mark Brown <broonie@kernel.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <18a65dca9134f6fc35932408066d4a8284cbfa65.1691571190.git.christophe.leroy@csgroup.eu>
+References: <18a65dca9134f6fc35932408066d4a8284cbfa65.1691571190.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] spi: fsl-cpm: Properly define and use IO pointers
+Message-Id: <169159857463.143658.5802489571235545071.b4-ty@kernel.org>
+Date: Wed, 09 Aug 2023 17:29:34 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13-dev-034f2
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,63 +62,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, alsa-devel@alsa-project.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Linus Walleij <linus.walleij@linaro.org>, Jaroslav Kysela <perex@perex.cz>, Eric Dumazet <edumazet@google.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Fabio Estevam <festevam@gmail.com>, Qiang Zhao <qiang.zhao@nxp.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Lee Jones <lee@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, Nicolin Chen <nicoleotsuka@gmail.com>, linux-gpio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Takashi Iwai <tiwai@suse.com>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, Liam Girdwood <lgirdwood@gmail.com>, Li Yang <leoyang.li@nxp.com>, Mark Brown <broonie@kernel.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: kernel test robot <lkp@intel.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Randy,
-
-On Wed, 9 Aug 2023 07:24:32 -0700
-Randy Dunlap <rdunlap@infradead.org> wrote:
-
-> Hi,
+On Wed, 09 Aug 2023 10:54:27 +0200, Christophe Leroy wrote:
+> Sparse reports several issues with IO pointers.
 > 
-> On 8/9/23 06:27, Herve Codina wrote:
-> > diff --git a/drivers/net/wan/framer/Kconfig b/drivers/net/wan/framer/Kconfig
-> > new file mode 100644
-> > index 000000000000..96ef1e7ba8eb
-> > --- /dev/null
-> > +++ b/drivers/net/wan/framer/Kconfig
-> > @@ -0,0 +1,19 @@
-> > +# SPDX-License-Identifier: GPL-2.0-only
-> > +#
-> > +# FRAMER
-> > +#
-> > +
-> > +menu "Framer Subsystem"
-> > +
-> > +config GENERIC_FRAMER
-> > +	bool "Framer Core"  
+> Fix it by adding missing __iomem flags and using iowriteXXbe()
+> generic helpers instead of the powerpc specific out_beXX() ones.
 > 
-> Just curious: any reason that this cannot be tristate (i.e., a loadable module)?
-> Thanks.
-
-For the same reasons as generic phy cannot be built as module
-  b51fbf9fb0c3 phy-core: Don't allow building phy-core as a module
-
-In the framer case, this allows to have the QMC HDLC driver built on systems
-without any framers (no providers and no framer core framework).
-Also the framer phandle is optional in the device tree QMC HDLC node.
-
-Regards,
-Hervé
-
-> 
-> > +	help
-> > +	  Generic Framer support.
-> > +
-> > +	  This framework is designed to provide a generic interface for framer
-> > +	  devices present in the kernel. This layer will have the generic
-> > +	  API by which framer drivers can create framer using the framer
-> > +	  framework and framer users can obtain reference to the framer.
-> > +	  All the users of this framework should select this config.
-> > +
-> > +endmenu  
 > 
 
+Applied to
 
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
--- 
-Hervé Codina, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Thanks!
+
+[1/1] spi: fsl-cpm: Properly define and use IO pointers
+      commit: ddaec4e44d4e2a556b51159d48788a85ff67179d
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
