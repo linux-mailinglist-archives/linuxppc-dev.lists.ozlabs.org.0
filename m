@@ -1,55 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA428777649
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Aug 2023 12:52:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 160287776B2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Aug 2023 13:18:13 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bk/Vs3Be;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=QFhKu9tk;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RM3f2597Qz3cPd
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Aug 2023 20:52:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RM4D26Y0sz3cC7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Aug 2023 21:18:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bk/Vs3Be;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=QFhKu9tk;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::b2a; helo=mail-yb1-xb2a.google.com; envelope-from=linus.walleij@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RM3d60hTRz2ygq
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Aug 2023 20:51:22 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id E827660B8A;
-	Thu, 10 Aug 2023 10:51:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA0CC433C7;
-	Thu, 10 Aug 2023 10:51:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1691664678;
-	bh=L99B55PNTBqp8V4rry9xXV7Cfll06W4h1rJqzyof8fY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=bk/Vs3BeIzSWktA2LqEtqRPaO7y9ya68Fz/rE9R6Fq8rsQWTa18OawPIvL0WdS+Yj
-	 OdfJCI/tcLztV8DvKgzKE74xMoKXcSl8dFFS2xjF26YaQLuTDEis6CFLZv6KpxnV9G
-	 4cJ+9c6a2pzXHVvh50quvadTH3e8xHefefm9kRHlMm/iPdhWSzgH6xncGx0sA1Zk+h
-	 9t4Nh5JwbL7NRqUn0Tgq3xidk6H9HE2IintUesb15PMt/Awo7ilE1iuFBVInHys6ZP
-	 HzSYF4zRiBfDrHvCR9uPBGcxBwWHOgWsACvkKaIs2U6JjUxRdA3fq1Q670SyJn1Nyq
-	 OE/OjclI8K1pg==
-Date: Thu, 10 Aug 2023 05:51:16 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Subject: Re: [PATCH v6 2/3] PCI/AER: Disable AER interrupt on suspend
-Message-ID: <20230810105116.GA22621@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RM4CB6Qwnz2yZX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Aug 2023 21:17:24 +1000 (AEST)
+Received: by mail-yb1-xb2a.google.com with SMTP id 3f1490d57ef6-d3522283441so712888276.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Aug 2023 04:17:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1691666241; x=1692271041;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ADRnTf+HtriZ7mqwDU3wWvmXrT7FB+Ztxvgw7H2KXeU=;
+        b=QFhKu9tkFZ+fkU1lcY4zVfF0dk/FWoUgZD0eH36Sz7H5E6vylleVAxrx4pnTaXqwhk
+         0+gy/gZj3JZk12Km6iz/EZoWzKbi128l5ProuMk6rD8PXzxfQdAWHaHfYFH+hT3tRM5T
+         JhuEe8IlHx2uTiKvZWsgQrv6fkFqrBx0+2vETEZCqjNX/pWDMRwL/0BRd5MvDHtFVvKa
+         BM/Lp+D9Uqm7WCUrVCer3WiE1OLLbVSPYEz4lyAydeXxxun5B/2ka3EMFk7a+ErH42db
+         gw2/aA6IBStBu2S2LDjrdyts3q5jk/zxoySCSTATECPSlKOeat6hCKBGV6ZorzoWY9HV
+         DN/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691666241; x=1692271041;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ADRnTf+HtriZ7mqwDU3wWvmXrT7FB+Ztxvgw7H2KXeU=;
+        b=QmQIzBMNuG6d4lquLkKmcYiXZj5xKTL+SgadfXViD7V6LW+HZpsxhVxqvkJaPg2PAQ
+         isSuEyDqbMF3YtDwafH++Xx2DI/U4nBHOMRvCSieJZjRZPdN9NELGjIG0G8DJMG2RZ9A
+         TsqXs8LOqaQ+lJt4w3EWS4SNwnp24E9oANBj2O1ySB12+YhUP3OT5JiC1WcmYZW6VBGc
+         EnLGmH2/aGOmcjQAdoTzUAof/iTL0KYv33iRP4xbqlVhhi6MOp1C818Zot7RcJPfFeCD
+         YBSv3kdGm54zlXqQ1D5dRDrxFP2BalE/Eldu3U8BrbYx0SJw4XT9/K/Dui27AfonFecp
+         jK2w==
+X-Gm-Message-State: AOJu0YxaVMlkkgzL/yu2/w1/I3aqIDSWkP+xAb08P2LxzkHNsNvVXY2v
+	nwwg6M0yspKUBafGxQ8YwNQpJ8d2mUXLoaOuFLOPRw==
+X-Google-Smtp-Source: AGHT+IG0cc60EKwg6aO/Vl/FWx+h3xKBM7qpk0WTUOrKZYJlTlQ3xEW/05G+n7KdFt0H+qP3lFIXHa3H2q7KcJby2j8=
+X-Received: by 2002:a25:250f:0:b0:cea:6760:d2c6 with SMTP id
+ l15-20020a25250f000000b00cea6760d2c6mr2046852ybl.41.1691666241474; Thu, 10
+ Aug 2023 04:17:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAd53p5QhaCA09G0BrhyDBXTKBbcgpXq0yAsj7PkG6wF8Qr=_w@mail.gmail.com>
+References: <20230809132757.2470544-1-herve.codina@bootlin.com> <20230809132757.2470544-22-herve.codina@bootlin.com>
+In-Reply-To: <20230809132757.2470544-22-herve.codina@bootlin.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Thu, 10 Aug 2023 13:17:09 +0200
+Message-ID: <CACRpkdZQ9_f6+9CseV1L_wGphHujFPAYXMjJfjUrzSZRakOBzg@mail.gmail.com>
+Subject: Re: [PATCH v3 21/28] net: wan: Add framer framework support
+To: Herve Codina <herve.codina@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,150 +75,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sathyanarayanan.kuppuswamy@linux.intel.com, mika.westerberg@linux.intel.com, linux-pci@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, linux-kernel@vger.kernel.org, koba.ko@canonical.com, Oliver O'Halloran <oohall@gmail.com>, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org
+Cc: Andrew Lunn <andrew@lunn.ch>, alsa-devel@alsa-project.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Jaroslav Kysela <perex@perex.cz>, Eric Dumazet <edumazet@google.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Fabio Estevam <festevam@gmail.com>, Qiang Zhao <qiang.zhao@nxp.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Lee Jones <lee@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, Nicolin Chen <nicoleotsuka@gmail.com>, linux-gpio@vger.kernel.org, Mark Brown <broonie@kernel.org>, Takashi Iwai <tiwai@suse.com>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>, Liam Girdwood <lgirdwood@gmail.com>, Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 10, 2023 at 04:17:21PM +0800, Kai-Heng Feng wrote:
-> On Thu, Aug 10, 2023 at 2:52 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > On Fri, Jul 21, 2023 at 11:58:24AM +0800, Kai-Heng Feng wrote:
-> > > On Tue, Jul 18, 2023 at 7:17 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > > > On Fri, May 12, 2023 at 08:00:13AM +0800, Kai-Heng Feng wrote:
-> > > > > PCIe services that share an IRQ with PME, such as AER or DPC,
-> > > > > may cause a spurious wakeup on system suspend. To prevent this,
-> > > > > disable the AER interrupt notification during the system suspend
-> > > > > process.
-> > > >
-> > > > I see that in this particular BZ dmesg log, PME, AER, and DPC do share
-> > > > the same IRQ, but I don't think this is true in general.
-> > > >
-> > > > Root Ports usually use MSI or MSI-X.  PME and hotplug events use the
-> > > > Interrupt Message Number in the PCIe Capability, but AER uses the one
-> > > > in the AER Root Error Status register, and DPC uses the one in the DPC
-> > > > Capability register.  Those potentially correspond to three distinct
-> > > > MSI/MSI-X vectors.
-> > > >
-> > > > I think this probably has nothing to do with the IRQ being *shared*,
-> > > > but just that putting the downstream component into D3cold, where the
-> > > > link state is L3, may cause the upstream component to log and signal a
-> > > > link-related error as the link goes completely down.
-> > >
-> > > That's quite likely a better explanation than my wording.
-> > > Assuming AER IRQ and PME IRQ are not shared, does system get woken up
-> > > by AER IRQ?
-> >
-> > Rafael could answer this better than I can, but
-> > Documentation/power/suspend-and-interrupts.rst says device interrupts
-> > are generally disabled during suspend after the "late" phase of
-> > suspending devices, i.e.,
-> >
-> >   dpm_suspend_noirq
-> >     suspend_device_irqs           <-- disable non-wakeup IRQs
-> >     dpm_noirq_suspend_devices
-> >       ...
-> >         pci_pm_suspend_noirq      # (I assume)
-> >           pci_prepare_to_sleep
-> >
-> > I think the downstream component would be put in D3cold by
-> > pci_prepare_to_sleep(), so non-wakeup interrupts should be disabled by
-> > then.
-> >
-> > I assume PME would generally *not* be disabled since it's needed for
-> > wakeup, so I think any interrupt that shares the PME IRQ and occurs
-> > during suspend may cause a spurious wakeup.
-> 
-> Yes, that's the case here.
-> 
-> > If so, it's exactly as you said at the beginning: AER/DPC/etc sharing
-> > the PME IRQ may cause spurious wakeups, and we would have to disable
-> > those other interrupts at the source, e.g., by clearing
-> > PCI_ERR_ROOT_CMD_FATAL_EN etc (exactly as your series does).
-> 
-> So is the series good to be merged now?
+Hi Herve,
 
-If we merge as-is, won't we disable AER & DPC interrupts unnecessarily
-in the case where the link goes to D3hot?  In that case, there's no
-reason to expect interrupts related to the link going down, but things
-like PTM messages still work, and they may cause errors that we should
-know about.
+On Wed, Aug 9, 2023 at 3:28=E2=80=AFPM Herve Codina <herve.codina@bootlin.c=
+om> wrote:
 
-> > > > I don't think D0-D3hot should be relevant here because in all those
-> > > > states, the link should be active because the downstream config space
-> > > > remains accessible.  So I'm not sure if it's possible, but I wonder if
-> > > > there's a more targeted place we could do this, e.g., in the path that
-> > > > puts downstream devices in D3cold.
-> > >
-> > > Let me try to work on this.
-> > >
-> > > Kai-Heng
-> > >
-> > > >
-> > > > > As Per PCIe Base Spec 5.0, section 5.2, titled "Link State Power Management",
-> > > > > TLP and DLLP transmission are disabled for a Link in L2/L3 Ready (D3hot), L2
-> > > > > (D3cold with aux power) and L3 (D3cold) states. So disabling the AER
-> > > > > notification during suspend and re-enabling them during the resume process
-> > > > > should not affect the basic functionality.
-> > > > >
-> > > > > Link: https://bugzilla.kernel.org/show_bug.cgi?id=216295
-> > > > > Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> > > > > Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> > > > > ---
-> > > > > v6:
-> > > > > v5:
-> > > > >  - Wording.
-> > > > >
-> > > > > v4:
-> > > > > v3:
-> > > > >  - No change.
-> > > > >
-> > > > > v2:
-> > > > >  - Only disable AER IRQ.
-> > > > >  - No more check on PME IRQ#.
-> > > > >  - Use helper.
-> > > > >
-> > > > >  drivers/pci/pcie/aer.c | 22 ++++++++++++++++++++++
-> > > > >  1 file changed, 22 insertions(+)
-> > > > >
-> > > > > diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> > > > > index 1420e1f27105..9c07fdbeb52d 100644
-> > > > > --- a/drivers/pci/pcie/aer.c
-> > > > > +++ b/drivers/pci/pcie/aer.c
-> > > > > @@ -1356,6 +1356,26 @@ static int aer_probe(struct pcie_device *dev)
-> > > > >       return 0;
-> > > > >  }
-> > > > >
-> > > > > +static int aer_suspend(struct pcie_device *dev)
-> > > > > +{
-> > > > > +     struct aer_rpc *rpc = get_service_data(dev);
-> > > > > +     struct pci_dev *pdev = rpc->rpd;
-> > > > > +
-> > > > > +     aer_disable_irq(pdev);
-> > > > > +
-> > > > > +     return 0;
-> > > > > +}
-> > > > > +
-> > > > > +static int aer_resume(struct pcie_device *dev)
-> > > > > +{
-> > > > > +     struct aer_rpc *rpc = get_service_data(dev);
-> > > > > +     struct pci_dev *pdev = rpc->rpd;
-> > > > > +
-> > > > > +     aer_enable_irq(pdev);
-> > > > > +
-> > > > > +     return 0;
-> > > > > +}
-> > > > > +
-> > > > >  /**
-> > > > >   * aer_root_reset - reset Root Port hierarchy, RCEC, or RCiEP
-> > > > >   * @dev: pointer to Root Port, RCEC, or RCiEP
-> > > > > @@ -1420,6 +1440,8 @@ static struct pcie_port_service_driver aerdriver = {
-> > > > >       .service        = PCIE_PORT_SERVICE_AER,
-> > > > >
-> > > > >       .probe          = aer_probe,
-> > > > > +     .suspend        = aer_suspend,
-> > > > > +     .resume         = aer_resume,
-> > > > >       .remove         = aer_remove,
-> > > > >  };
-> > > > >
-> > > > > --
-> > > > > 2.34.1
-> > > > >
+> A framer is a component in charge of an E1/T1 line interface.
+> Connected usually to a TDM bus, it converts TDM frames to/from E1/T1
+> frames. It also provides information related to the E1/T1 line.
+>
+> The framer framework provides a set of APIs for the framer drivers
+> (framer provider) to create/destroy a framer and APIs for the framer
+> users (framer consumer) to obtain a reference to the framer, and
+> use the framer.
+>
+> This basic implementation provides a framer abstraction for:
+>  - power on/off the framer
+>  - get the framer status (line state)
+>  - be notified on framer status changes
+>  - get/set the framer configuration
+>
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+
+I love it, very clear commit message telling us what it is all
+about.
+
+The placement in the WAN subsystem also hints that this has
+something to do with long distance links (relative to something)
+so maybe mention that?
+
+> +menu "Framer Subsystem"
+> +
+> +config GENERIC_FRAMER
+> +       bool "Framer Core"
+> +       help
+> +         Generic Framer support.
+> +
+> +         This framework is designed to provide a generic interface for f=
+ramer
+> +         devices present in the kernel. This layer will have the generic
+> +         API by which framer drivers can create framer using the framer
+> +         framework and framer users can obtain reference to the framer.
+> +         All the users of this framework should select this config.
+
+But this description just says this is a framing framer that frames frames =
+;)
+
+So please copy some of the nice description from the commit message
+into this Kconfig helptext.
+
+Is "long distance link time division multiplexing (TDM) framer" more
+to the point for example? Or is the ambition to frame other multiplexing
+techniques as well with this subsystem? Such as FDM? Then mention
+that.
+
+Yours,
+Linus Walleij
