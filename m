@@ -2,69 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73879777364
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Aug 2023 10:54:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71D09777429
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Aug 2023 11:17:27 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=cSx8JAyG;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=b1pVqjVZ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RM11m2qLrz3cN7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Aug 2023 18:54:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RM1Xj2VGCz3cGC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Aug 2023 19:17:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=cSx8JAyG;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=b1pVqjVZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::1130; helo=mail-yw1-x1130.google.com; envelope-from=linus.walleij@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=jirislaby@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RM10v5TXNz2ygx
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Aug 2023 18:53:17 +1000 (AEST)
-Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-583c48a9aa1so8757977b3.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Aug 2023 01:53:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1691657595; x=1692262395;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ISTwavJo5QNRA0ml/ZYkxWD9JkMB48oJk0Oc/hedKZY=;
-        b=cSx8JAyGkOmdsAHLDtARFe5E+bmkrOnNzYHajkz/Im644aeTTP5xiTIfbcqyJUfyjM
-         BWgv30uk2EgU3NPHpdPaFDcXp2dzkL5bmF7NQmKV/xk5hAbfSYA57I9FdoiPX6WTL5If
-         h8yELZgSUyiI3o+78nsOuxVjK4znn77Cp/xnizFqIcinv/C96+9SADDtYu+wfKZEfO+c
-         SqPxyPVMe1oUATXZyDVrBSxCsWaPgJv7fXDcSfajqF2J1NY6VnqOYeDWrWZNxrkG5oMc
-         N+HtOZtTumcoJfYCMGjZR0FJqXZUsdejxxhXhj932VOqQMh7f/xkPB2IVDQbVJYtd2yb
-         kJEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691657595; x=1692262395;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ISTwavJo5QNRA0ml/ZYkxWD9JkMB48oJk0Oc/hedKZY=;
-        b=WwceIIEMoz3tLhoJlMUS+HWstTdfc/ud2YvQQS2ASnEzMOKe9yh6amm10PJGsJDPak
-         mrwJ/27DhA8oS8F7ZTzuRooXBDwOcmd812fZdyeTd1MVKQyw4Z8JZF/SKRR6NrTDHmSa
-         1TRMHJeJXdpUfgdEND+m/DErGem7x13uh3ZgTMKaiCl79Lpl4hYUxnornn7ULD0svm7z
-         aKy+JVq4SB6gmkY2PfqJzeHDfu1XayUpX+f780tXAwEELdbdT7a4Kr17YFrKBGHt3zzv
-         gYbfnG1jhMrOHglVBZUuN1+RI8ravkwF/AKV2Y2L0x1NsVDeyTCiwQOT3QMN9nuSpNNQ
-         yLtw==
-X-Gm-Message-State: AOJu0YwV80iC2DsDNY6CTUjskAzkXjPcER9FLwdJoDnO7Q45urViVgcm
-	tDuceWTu6KW/aKwASfus471+kkNypfia0UoL2TVKZA==
-X-Google-Smtp-Source: AGHT+IHR3OcxJgk9HIqvUQ98dw3GrFDpfjo2OZ3Zn5ukK1Ej8qavilwui19M8MLrNbXgTNYPBDiu1AU0FMOIqqB8uTs=
-X-Received: by 2002:a25:6993:0:b0:d63:5e7:4e1b with SMTP id
- e141-20020a256993000000b00d6305e74e1bmr2168294ybc.26.1691657595551; Thu, 10
- Aug 2023 01:53:15 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RM1Wm6dNwz30XV
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Aug 2023 19:16:36 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 632A6654D7;
+	Thu, 10 Aug 2023 09:16:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DB56C433CA;
+	Thu, 10 Aug 2023 09:16:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1691658993;
+	bh=xfPu/5q4FMx3T2+9l5i48yWip85zm4W4RMAqgP0eBJ8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=b1pVqjVZ22u/45Ud58HE/Kjhd4wjIWPClNGk/jaVo/jnjNTBFAMjANjcuOdqvrvEg
+	 SlNCzjhTgcVrkss3g26Bv52/3S92Pj7L7UNmzv3XksGBIf7wNZSu+x9ob0nQokI69S
+	 y76GOTACwKOVJsazUaCBjN2Ln/Eg9iWDk9Jk2MYcyTAbPCW2E9B25pE0IrO72E5KeF
+	 B1qGHPcF0XO7yh+MrnsIb8NfkILERqvgLnyVxMzgMyUC1Lv5K//PHbZ9Uu46ViuQOX
+	 NX8V+10hmFER5vcFjPguOZAgXO/QOZp4fH2Ar+gRndAFpYLf5BNXPJZeYeLfapKEcB
+	 1ycEN3Z1WCPDQ==
+From: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+To: gregkh@linuxfoundation.org
+Subject: [PATCH 32/36] tty: hvc: convert counts to size_t
+Date: Thu, 10 Aug 2023 11:15:06 +0200
+Message-ID: <20230810091510.13006-33-jirislaby@kernel.org>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230810091510.13006-1-jirislaby@kernel.org>
+References: <20230810091510.13006-1-jirislaby@kernel.org>
 MIME-Version: 1.0
-References: <20230809132757.2470544-1-herve.codina@bootlin.com> <20230809132757.2470544-23-herve.codina@bootlin.com>
-In-Reply-To: <20230809132757.2470544-23-herve.codina@bootlin.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Thu, 10 Aug 2023 10:53:04 +0200
-Message-ID: <CACRpkdZWHw7sL6EKe0EP0hX5TEsdhzgkPSdVtPPYhS3LqJRHFg@mail.gmail.com>
-Subject: Re: [PATCH v3 22/28] dt-bindings: net: Add the Lantiq PEF2256
- E1/T1/J1 framer
-To: Herve Codina <herve.codina@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,47 +61,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, alsa-devel@alsa-project.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Jaroslav Kysela <perex@perex.cz>, Eric Dumazet <edumazet@google.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Fabio Estevam <festevam@gmail.com>, Qiang Zhao <qiang.zhao@nxp.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Lee Jones <lee@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, Nicolin Chen <nicoleotsuka@gmail.com>, linux-gpio@vger.kernel.org, Mark Brown <broonie@kernel.org>, Takashi Iwai <tiwai@suse.com>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>, Liam Girdwood <lgirdwood@gmail.com>, Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: linuxppc-dev@lists.ozlabs.org, "Jiri Slaby \(SUSE\)" <jirislaby@kernel.org>, linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Herve,
+Unify the type of tty_operations::write() counters with the 'count'
+parameter. I.e. use size_t for them.
 
-thanks for your patch!
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org
+---
+ drivers/tty/hvc/hvc_console.c |  2 +-
+ drivers/tty/hvc/hvcs.c        |  6 +++---
+ drivers/tty/hvc/hvsi.c        | 10 +++++-----
+ 3 files changed, 9 insertions(+), 9 deletions(-)
 
-On Wed, Aug 9, 2023 at 3:28=E2=80=AFPM Herve Codina <herve.codina@bootlin.c=
-om> wrote:
+diff --git a/drivers/tty/hvc/hvc_console.c b/drivers/tty/hvc/hvc_console.c
+index e93e8072ec86..959fae54ca39 100644
+--- a/drivers/tty/hvc/hvc_console.c
++++ b/drivers/tty/hvc/hvc_console.c
+@@ -500,7 +500,7 @@ static ssize_t hvc_write(struct tty_struct *tty, const u8 *buf, size_t count)
+ {
+ 	struct hvc_struct *hp = tty->driver_data;
+ 	unsigned long flags;
+-	int rsize, written = 0;
++	size_t rsize, written = 0;
+ 
+ 	/* This write was probably executed during a tty close. */
+ 	if (!hp)
+diff --git a/drivers/tty/hvc/hvcs.c b/drivers/tty/hvc/hvcs.c
+index 1de91fa23b04..d29fdfe9d93d 100644
+--- a/drivers/tty/hvc/hvcs.c
++++ b/drivers/tty/hvc/hvcs.c
+@@ -1263,8 +1263,8 @@ static ssize_t hvcs_write(struct tty_struct *tty, const u8 *buf, size_t count)
+ 	unsigned int unit_address;
+ 	const unsigned char *charbuf;
+ 	unsigned long flags;
+-	int total_sent = 0;
+-	int tosend = 0;
++	size_t total_sent = 0;
++	size_t tosend = 0;
+ 	int result = 0;
+ 
+ 	/*
+@@ -1299,7 +1299,7 @@ static ssize_t hvcs_write(struct tty_struct *tty, const u8 *buf, size_t count)
+ 	unit_address = hvcsd->vdev->unit_address;
+ 
+ 	while (count > 0) {
+-		tosend = min_t(unsigned, count,
++		tosend = min_t(size_t, count,
+ 			       (HVCS_BUFF_LEN - hvcsd->chars_in_buffer));
+ 		/*
+ 		 * No more space, this probably means that the last call to
+diff --git a/drivers/tty/hvc/hvsi.c b/drivers/tty/hvc/hvsi.c
+index c57bd85aa488..a94068bce76f 100644
+--- a/drivers/tty/hvc/hvsi.c
++++ b/drivers/tty/hvc/hvsi.c
+@@ -909,8 +909,8 @@ static ssize_t hvsi_write(struct tty_struct *tty, const u8 *source,
+ {
+ 	struct hvsi_struct *hp = tty->driver_data;
+ 	unsigned long flags;
+-	int total = 0;
+-	int origcount = count;
++	size_t total = 0;
++	size_t origcount = count;
+ 
+ 	spin_lock_irqsave(&hp->lock, flags);
+ 
+@@ -928,7 +928,7 @@ static ssize_t hvsi_write(struct tty_struct *tty, const u8 *source,
+ 	 * will see there is no room in outbuf and return.
+ 	 */
+ 	while ((count > 0) && (hvsi_write_room(tty) > 0)) {
+-		int chunksize = min_t(int, count, hvsi_write_room(tty));
++		size_t chunksize = min_t(size_t, count, hvsi_write_room(tty));
+ 
+ 		BUG_ON(hp->n_outbuf < 0);
+ 		memcpy(hp->outbuf + hp->n_outbuf, source, chunksize);
+@@ -952,8 +952,8 @@ static ssize_t hvsi_write(struct tty_struct *tty, const u8 *source,
+ 	spin_unlock_irqrestore(&hp->lock, flags);
+ 
+ 	if (total != origcount)
+-		pr_debug("%s: wanted %i, only wrote %i\n", __func__, origcount,
+-			total);
++		pr_debug("%s: wanted %zu, only wrote %zu\n", __func__,
++			 origcount, total);
+ 
+ 	return total;
+ }
+-- 
+2.41.0
 
-> The Lantiq PEF2256 is a framer and line interface component designed to
-> fulfill all required interfacing between an analog E1/T1/J1 line and the
-> digital PCM system highway/H.100 bus.
->
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-(...)
-> +    patternProperties:
-> +      '-pins$':
-> +        type: object
-> +        $ref: /schemas/pinctrl/pincfg-node.yaml#
-
-Shouldn't that be pinmux-node.yaml?
-
-> +        additionalProperties: false
-> +
-> +        properties:
-> +          pins:
-> +            enum: [ RPA, RPB, RPC, RPD, XPA, XPB, XPC, XPD ]
-> +
-> +          function:
-> +            enum: [ SYPR, RFM, RFMB, RSIGM, RSIG, DLR, FREEZE, RFSP, LOS=
-,
-> +                    SYPX, XFMS, XSIG, TCLK, XMFB, XSIGM, DLX, XCLK, XLT,
-> +                    GPI, GPOH, GPOL ]
-> +
-> +        required:
-> +          - pins
-> +          - function
-
-Because those are certainly defined in that file.
-
-Yours,
-Linus Walleij
