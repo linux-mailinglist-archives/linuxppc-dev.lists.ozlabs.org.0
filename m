@@ -1,70 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E8EC779956
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Aug 2023 23:22:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51FE3779954
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Aug 2023 23:21:58 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=128hCHya;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=69/W2KdB;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RMxb96Ss1z3c2f
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Aug 2023 07:22:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RMxZD1WqCz3cSK
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Aug 2023 07:21:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=128hCHya;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=69/W2KdB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--justinstitt.bounces.google.com (client-ip=2001:4860:4864:20::4a; helo=mail-oa1-x4a.google.com; envelope-from=336xwzaskdlibmklafklallyggydw.ugedafmphhu-vwndaklk.grdstk.gjy@flex--justinstitt.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-oa1-x4a.google.com (mail-oa1-x4a.google.com [IPv6:2001:4860:4864:20::4a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--justinstitt.bounces.google.com (client-ip=2607:f8b0:4864:20::114a; helo=mail-yw1-x114a.google.com; envelope-from=34axwzaskdlqdomnchmncnnaiiafy.wigfchorjjw-xypfcmnm.itfuvm.ila@flex--justinstitt.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RMxWW22G7z2yW5
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RMxWV4tNXz2yVN
 	for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Aug 2023 07:19:34 +1000 (AEST)
-Received: by mail-oa1-x4a.google.com with SMTP id 586e51a60fabf-1c1112030a7so1805727fac.1
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-5866e5f6e40so66726397b3.0
         for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Aug 2023 14:19:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1691788768; x=1692393568;
+        d=google.com; s=20221208; t=1691788769; x=1692393569;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=TQpId7/xrpQlCKdhMKKnoX3RMnX16k+BrWUnYQTLzJw=;
-        b=128hCHya//JHzdXhTW2CGyRdp38F0s52ydFM+ztzOLjWpqji4lq7pRKtUvxGv84IkH
-         wTsTmt7XD+pLGDWgO+vr/qo4k/H/EqByvTcULpct3zOI2yFHEP+DuGVJ3DY08XXZNvba
-         XjqfRrHnR9CNNHo3IiiSWnahVHqbPnt1J7Vv7ouY70wrKUfBlDC3DXK5DyQBNc4oTxuA
-         I+28vm9RAKZYpeLXLVoVDQscn2FTLOS+BhBJw4/ipAlkBwpxC2QOzF/Tc+xi+v5KI+Rb
-         ItXmg3VLoMd2HBgt3X5I8nnv8VqWD4LOe70c8pfhXN6nlrUbLXHvKWZ5fpT1zDF+A57S
-         3dHA==
+        bh=JiHGiTVfdz5CucudaZHkceNNqnAp127R9oXTgpxLmS0=;
+        b=69/W2KdBUbTfVSLt7H2R1qqS3DXKFqFlWpbGW7Cg3ECEi8vGGHJaho4vRdFup3fEeV
+         zVcU2qUDoBdNFmSOCqTHHDQHKg2IrdYm39Vt5gS5rz94OnIR7DEtN2lsAVmSb0Tqz0Ht
+         Z5l8peAOiEHZtJ2Gklp82OPAuiBTHojD7Pg5Q7iZZcREV+yEUuxSLNG0n8waPGLDRreo
+         a+NcGUKV8kMK8j8cMqGepg+/OizzIBECrGyezlwSfbYn9niSi09jOGbJhiGnOPkuEtJ8
+         YU/x8cXvc9erPDbri9oiyV6O0REpsuYGmemCP2W4ouJtR3u/tP7DEk/xn+Z9gKF0xqOQ
+         LNpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691788768; x=1692393568;
+        d=1e100.net; s=20221208; t=1691788769; x=1692393569;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TQpId7/xrpQlCKdhMKKnoX3RMnX16k+BrWUnYQTLzJw=;
-        b=IF8RLfDPOhtw6scB0VHqYKNjjTGJjoTirBztO3RQfBV62FAvlu9lFpi1uTPKN5G/hf
-         lF6PTP2p9YkA0wVcGUGmAcpcSlNeiYNhTNZjyJSetHSKa9uguLNMVp3U1KfpgaL/UuOG
-         v59hY2kh0qBpLSJUVYDzxbF6sBKW4+4XV82E0DmzBA2xPpZaAQgYtLsRbnoFthHPDVg+
-         12lND+iHgg5l5gsx4451pwNd8JhJ1Z5xGDkrSBaLqPdh6mgpTtX8DTfgYHlu/SPoPdQ0
-         3jGARxqesQauu/8T/p9eYHOj2NquqGnouExsDbBynlGU2DaSITUOzEXkAHqGAyhANPcd
-         A5FA==
-X-Gm-Message-State: AOJu0YwAmeoneH7eNp1Vi1PDVdiAxqQLLOr9YpgYgDAV7/+6QbV3F0KK
-	bYXT3QTN0BxqilE1JGKpRhaGpKXfIcytVLCLbA==
-X-Google-Smtp-Source: AGHT+IGk1uf0kGWR1cjzqQP7AfmkJkzJDJmfyuKmDjGLWg1w0/gQx1YVAdwd/TAqEYcQ0G5w7a5EsM3oLCtnyG9dyA==
+        bh=JiHGiTVfdz5CucudaZHkceNNqnAp127R9oXTgpxLmS0=;
+        b=Y/FyEiYELaC4kSAqqWRHM9c8tOssU9kKg3P/CQ1kevRF1VGQ1+3byRss4lE2SgPUL4
+         eksusLf4j5lEZ6hv3fbuF1Zu1JYw7jomO0UIHYSohYW1G8BgEUd8oPv32cccCpXbfu5r
+         j1zEaVoAiQSm7hgnL/l9/UITAUr3GaLKoyKcyXrCvDchHmvtLckGJjEf8NPsjE3tkmpr
+         cbLLh7AdHcesv9L/VGo5TuMZ6eYB0uZTxRvl+hh7wIkbZ3nbglvC4KAxHLIzJiF9t3Bn
+         mBWOqs8RcK+LXLfOZsjJdj68xmrij2Qih9XCXd2QohLOqw9IubIy1QClAwk+7edYkEa5
+         iYrw==
+X-Gm-Message-State: AOJu0YwkFYqecKbzC9wrWvE5ue2bWsDXZ4g8TigOw2hO03cK6dAfPYTw
+	mbkwT0TM1bHfgpckedsVRaRHaoEA3kh0C5IpHg==
+X-Google-Smtp-Source: AGHT+IHbwU50kF0vOvJsfl6xiGMeCABLjZMuvF4jlcuA/i0PNQczwluQDWHlLkKRUAyDj0PAcSup4QVhVi2nvA+/Lg==
 X-Received: from jstitt-linux1.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:23b5])
- (user=justinstitt job=sendgmr) by 2002:a05:6870:9567:b0:1c0:eac2:979c with
- SMTP id v39-20020a056870956700b001c0eac2979cmr65726oal.3.1691788767834; Fri,
- 11 Aug 2023 14:19:27 -0700 (PDT)
-Date: Fri, 11 Aug 2023 21:19:20 +0000
+ (user=justinstitt job=sendgmr) by 2002:a81:af49:0:b0:589:a610:aef with SMTP
+ id x9-20020a81af49000000b00589a6100aefmr76862ywj.2.1691788769080; Fri, 11 Aug
+ 2023 14:19:29 -0700 (PDT)
+Date: Fri, 11 Aug 2023 21:19:21 +0000
 In-Reply-To: <20230811-strncpy-arch-powerpc-platforms-ps3-v1-0-301052a5663e@google.com>
 Mime-Version: 1.0
 References: <20230811-strncpy-arch-powerpc-platforms-ps3-v1-0-301052a5663e@google.com>
 X-Developer-Key: i=justinstitt@google.com; a=ed25519; pk=tC3hNkJQTpNX/gLKxTNQKDmiQl6QjBNCGKJINqAdJsE=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1691788764; l=2495;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1691788764; l=2360;
  i=justinstitt@google.com; s=20230717; h=from:subject:message-id;
- bh=OU2B7x8FNL1q157scUIMm8YAPWH0YRRYFkNwfqAAlYc=; b=t8i/MBrRZYTBCyZG+n62sm6BtF8rrxy6c3AXOklnMgD6g/y9j3NSShRjs0U3zb6DojFQXi7R6
- t71tXOebyWwC4lP3GudY7BB2KoS2VPhOxRDI6pEsirAJWNJJ7/C+0lD
+ bh=un5KrhEbUeSG5MIia1JYWEm7kQ5KlO4dof2rfH0SxB0=; b=3nGjJYu+m7uWyObArsWKunAcpSZnHjKe9mn5gkmY/yM21roqfaVuczXVmSVp0u0rKkq9+vbWf
+ LjstrWwCo1OAJQJrgXlXQxNm1g4I4F9O5JB8O/Ope1+HZNTSmJBVJ/g
 X-Mailer: b4 0.12.3
-Message-ID: <20230811-strncpy-arch-powerpc-platforms-ps3-v1-2-301052a5663e@google.com>
-Subject: [PATCH RFC 2/3] powerpc/ps3: refactor strncpy usage attempt 2
+Message-ID: <20230811-strncpy-arch-powerpc-platforms-ps3-v1-3-301052a5663e@google.com>
+Subject: [PATCH RFC 3/3] powerpc/ps3: refactor strncpy usage attempt 2.5
 From: Justin Stitt <justinstitt@google.com>
 To: Geoff Levand <geoff@infradead.org>, Michael Ellerman <mpe@ellerman.id.au>, 
 	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>
@@ -84,48 +84,27 @@ Cc: Kees Cook <keescook@chromium.org>, Nick Desaulniers <ndesaulniers@google.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This approach tries to use `make_field` inside of `make_first_field`.
-This comes with some weird implementation as to get the same result we
-need to first subtract `index` from the `make_field` result whilst being
-careful with order of operations. We then have to add index back.
-
-The behavior should be the same but would love some comments on this.
+Forward declare `make_field` for a cleaner diff
 
 Signed-off-by: Justin Stitt <justinstitt@google.com>
-
 ---
-Note: I swapped the position of the two methods so as to not have to
-forward declare `make_field`. This results in a weird diff here.
----
- arch/powerpc/platforms/ps3/repository.c | 21 +++++++++------------
- 1 file changed, 9 insertions(+), 12 deletions(-)
+ arch/powerpc/platforms/ps3/repository.c | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
 diff --git a/arch/powerpc/platforms/ps3/repository.c b/arch/powerpc/platforms/ps3/repository.c
-index 1abe33fbe529..6b731a5d4adc 100644
+index 6b731a5d4adc..6a08bb7704da 100644
 --- a/arch/powerpc/platforms/ps3/repository.c
 +++ b/arch/powerpc/platforms/ps3/repository.c
-@@ -63,36 +63,33 @@ static void _dump_node(unsigned int lpar_id, u64 n1, u64 n2, u64 n3, u64 n4,
- }
+@@ -20,6 +20,8 @@ enum ps3_lpar_id {
+ 	PS3_LPAR_ID_PME = 1,
+ };
  
- /**
-- * make_first_field - Make the first field of a repository node name.
-- * @text: Text portion of the field.
-+ * make_field - Make subsequent fields of a repository node name.
-+ * @text: Text portion of the field.  Use "" for 'don't care'.
-  * @index: Numeric index portion of the field.  Use zero for 'don't care'.
-  *
-- * This routine sets the vendor id to zero (non-vendor specific).
-  * Returns field value.
-  */
- 
--static u64 make_first_field(const char *text, u64 index)
-+static u64 make_field(const char *text, u64 index)
++static u64 make_field(const char *text, u64 index);
++
+ #define dump_field(_a, _b) _dump_field(_a, _b, __func__, __LINE__)
+ static void _dump_field(const char *hdr, u64 n, const char *func, int line)
  {
- 	u64 n = 0;
- 
- 	memcpy((char *)&n, text, strnlen(text, sizeof(n)));
--	return PS3_VENDOR_ID_NONE + (n >> 32) + index;
-+	return n + index;
+@@ -63,33 +65,33 @@ static void _dump_node(unsigned int lpar_id, u64 n1, u64 n2, u64 n3, u64 n4,
  }
  
  /**
@@ -147,6 +126,27 @@ index 1abe33fbe529..6b731a5d4adc 100644
 -	memcpy((char *)&n, text, strnlen(text, sizeof(n)));
 -	return n + index;
 +	return PS3_VENDOR_ID_NONE + ((make_field(text, index) - index) >> 32) + index;
+ }
+ 
+ /**
+- * make_first_field - Make the first field of a repository node name.
+- * @text: Text portion of the field.
++ * make_field - Make subsequent fields of a repository node name.
++ * @text: Text portion of the field.  Use "" for 'don't care'.
+  * @index: Numeric index portion of the field.  Use zero for 'don't care'.
+  *
+- * This routine sets the vendor id to zero (non-vendor specific).
+  * Returns field value.
+  */
+ 
+-static u64 make_first_field(const char *text, u64 index)
++static u64 make_field(const char *text, u64 index)
+ {
+-	return PS3_VENDOR_ID_NONE + ((make_field(text, index) - index) >> 32) + index;
++	u64 n = 0;
++
++	memcpy((char *)&n, text, strnlen(text, sizeof(n)));
++	return n + index;
  }
  
  /**
