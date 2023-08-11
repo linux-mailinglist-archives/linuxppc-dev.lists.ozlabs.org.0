@@ -2,90 +2,129 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8D387786F6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Aug 2023 07:23:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82FDC7787A0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Aug 2023 08:46:31 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XYrqTT51;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=Dnv/fMef;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RMXJ446dCz3cRq
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Aug 2023 15:23:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RMZ853CN2z3cM3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Aug 2023 16:46:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XYrqTT51;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=Dnv/fMef;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::610; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-mr2fra01on20610.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e19::610])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RMXGK72tsz3bcJ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Aug 2023 15:21:45 +1000 (AEST)
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37B5GpoN009360;
-	Fri, 11 Aug 2023 05:21:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=yY9Ic4vkRhI2XN8jbulU0fMzvwSbRo0HR28rcW9lyMs=;
- b=XYrqTT51S6zHXIO80JKVuF69XBC3kBl5/oFna2jttSJRZnQckmKzd58V5cu8q+JRJj8R
- x2t9A4QGGDN5dLcp1ljztBKnLYJ3I/PWva4GL0tEwLf2/kEl/jrpwZWCstBOqmAVo+vL
- Uzvj2+o+NIasaS96FtK6D6RmYkt1aVtNtGdcerJTsdCAfdcHsCDeY3G0NyZAqA/mWtBI
- +5HGodP4VPGeIKO4ZVcyjmJ3kMCAdE3xS83CCJeX59tCQm75ylFKa+ahfuDTPoz/TXGm
- id1E3+DBKCGUis6/5Yd3fPOkoUUbspb7wNcExCfgW3RbS1Ae2QQBOBdeI+8DJsHIj3qj UA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sdebtre1w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 11 Aug 2023 05:21:41 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37B5F6ea003944;
-	Fri, 11 Aug 2023 05:21:41 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sdebtre1a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 11 Aug 2023 05:21:41 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 37B5H799006437;
-	Fri, 11 Aug 2023 05:21:39 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sd2evd8et-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 11 Aug 2023 05:21:39 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 37B5LarC62521676
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 11 Aug 2023 05:21:36 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 83FC92004D;
-	Fri, 11 Aug 2023 05:21:36 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5D4212004B;
-	Fri, 11 Aug 2023 05:21:34 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.43.95.190])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 11 Aug 2023 05:21:34 +0000 (GMT)
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: acme@kernel.org, jolsa@kernel.org, irogers@google.com, namhyung@kernel.org
-Subject: [PATCH 2/2] tools/perf/tests: Fix object code reading to skip address that falls out of text section
-Date: Fri, 11 Aug 2023 10:51:28 +0530
-Message-Id: <20230811052128.70282-2-atrajeev@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20230811052128.70282-1-atrajeev@linux.vnet.ibm.com>
-References: <20230811052128.70282-1-atrajeev@linux.vnet.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RMZ782rXYz2yZV
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Aug 2023 16:45:38 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=YlsKiqbhaA2KL6FodtE7bwp4COpcC+EicT3zzMf9d6a3PtiNfhSi/UTrWBnSLTIFP+tJDMD8WLXRamhkldI524XU6qflorpK6C8xCLvRIDojKGYM/PhYGD7C/zDwoPI7viCS4rt3DdbHSr+c1rkmyALLne58EHyuj/e4dYwzhACWSx9d4Y/H4bmQ5z8XCgcC4W8WgfV8kqGTKOJKH3kGLTgWNdB6gTP3V7GiOmL3fdGCP0vUIvZPF6A/E7Y+eLPwz9wPMHejf/UkpmfuG9+H79ob/dSP2LptHnHW9ZYqkIFUhtjEvlacbJukxl/zcWZxYKC+mDBdweQEgTkMgC4z8A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RMEzAaz3kAgH1MVLViHG1edmIvcKpoWIgCZF9SUV4V0=;
+ b=EB31vcxda8iIuWiKGPrQS8dRL8BQtyEOnyDsebs5PnfZx0zWse0LMrIu3rCv+vH9LhDk3ZkkNFNjaHHNQQw1cAuvO+EO95pRmhcjKaZinRPVDy8FFFkyIOKOrCgndk7P9iKa8lwOYB0Z1/pehAAFgLQJGTVa7b4+6tHg/ajcchuvMnuKtHH4SJrNQeYPSq147aW+PRGQFbxo98zQ7zDAiokh5ex2IZOfwIuU959EkTiCmZU/+FVFsN4yaIwxkrOwxIGZE4DyF8HOrw2MxKZ3xC3wJmDFtpG2ktMOFS09GkiCB76aMxnLpDDfSuX6hpUOb6EJBr+v2UaYvaJ+4z2xyQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RMEzAaz3kAgH1MVLViHG1edmIvcKpoWIgCZF9SUV4V0=;
+ b=Dnv/fMefi6e4EKQOMFQHRFfIh+FxEQROoUSF1LWQNW7Cgzhy1c++B6F5jBizdJ00+ZYiVvgww/WKVp74eMPEpG+nRuR0D/z4nvnIB69KVm/SX9Rg9z9cw0gW5DOVfNEdBKs5jJkhks8j1EmuxGGobOtByAIMZxeozigluQltnc80+C7aUNitp0pPvNVrmAN/dgb8yFi0lr5Q/GmfxVCjJjXv3kyQK5B7cZuFWY3Lr01qY3A6Vo903572B50tSp3V+cAFNxEhmmCrlpOGdE9af7yYTSwsufo2QcnKS2uvfEeqjiHPOa1RxmMXarRp45uSKycbkmbuni0/y9NFrl71dQ==
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by PR1P264MB1951.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:192::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.30; Fri, 11 Aug
+ 2023 06:45:14 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::2820:d3a6:1cdf:c60e]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::2820:d3a6:1cdf:c60e%7]) with mapi id 15.20.6678.019; Fri, 11 Aug 2023
+ 06:45:14 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Erhard Furtner <erhard_f@mailbox.org>
+Subject: Re: KASAN debug kernel fails to boot at early stage when CONFIG_SMP=y
+ is set (kernel 6.5-rc5, PowerMac G4 3,6)
+Thread-Topic: KASAN debug kernel fails to boot at early stage when
+ CONFIG_SMP=y is set (kernel 6.5-rc5, PowerMac G4 3,6)
+Thread-Index: AQHZy+ViBGkHrlry0EW7JbY0oo0AC6/kpveA
+Date: Fri, 11 Aug 2023 06:45:14 +0000
+Message-ID: <f8f09049-3568-621d-88ce-1b61fe8b63fe@csgroup.eu>
+References: <20230811014845.1bf6771d@yea>
+In-Reply-To: <20230811014845.1bf6771d@yea>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PR1P264MB1951:EE_
+x-ms-office365-filtering-correlation-id: c77b8840-d852-4dbd-0bd7-08db9a368477
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  mAWgMOgiPRCRGLSMOIoCZ0il5t9lDPT+tDUqCfcfBH5ca1mDep+vuIj0uQmVfPhxnUg9P5QTfFdlcbjh7tZcrIkJWCeLXV2rSV5DZrvcExLhbo0fehTfZBLk19BberVM96iDIsEFwHlzp+CX2K9qzdPFRvet5yDtgx0++nsTWdb7XRlF3WMBWT3TeCDz2fpteo957JaEqe6NkyXOumVHgJ/+5JHDdVJ89YlYCnPRDoRCrvZIDmQ+qWQyODJt/eO5cjZSr0Y0Hz4UDPVJrU6caA9X4vnodSVsEqKupJqaydCY7TBm0HuBy/6GEXenDxwLXP3TD98jgJSZ8s3SekOo3NoVhoWxah5PybhU3DqiYpdKKAqqOiZcDynpCwkr9IN3RIbHsySFetMDanDGO+XGOahXAk6oErQqo1l6euOpodBdQLxfln2+i6K68UuE3wlVzLxngvXrnxcqdymWu/Xvc7TNDbRV5VK4BfZ3D9396cA1GixF3yBjFguA0jFp8+Obm6AgSLXfia+988cKQn0lKTXQMzqLoIxNNWj2TlDqFv9vUxqOpQej5N/2y2F1BjOQ2YUJGS2nL45ADs+bc9pjbpOAf1HyIHGoArI0cWLJjE+NHvpaz860Ax5HFoY1t0gkaG6yd3xgqThp4MexrYlbzJzZSn3/St03K6DMChRK8/g=
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(366004)(376002)(396003)(136003)(346002)(39850400004)(1800799006)(186006)(451199021)(6512007)(966005)(4326008)(91956017)(76116006)(6916009)(66946007)(66446008)(66476007)(66556008)(64756008)(316002)(31686004)(6486002)(478600001)(71200400001)(8936002)(8676002)(5660300002)(26005)(6506007)(41300700001)(86362001)(31696002)(38070700005)(44832011)(36756003)(4744005)(2616005)(122000001)(38100700002)(2906002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?ekUzcnNWNExUQTU0TzFGS1RCWkJsa1hmRmVYMFUwN3YwblB1WGRSdmZNMjZS?=
+ =?utf-8?B?eUtSYk40OFd2RmhLd042T3AwKzlPQ3poM3h1WU9RY0FoMFRDaXVZS0ljQUNS?=
+ =?utf-8?B?UUQzd2svcjRoWkxqTDI4OW1qbXI4WFo1ZHEzR1hwUUdCVkxtU2RJMXprcEpN?=
+ =?utf-8?B?VWhLbit3Wk1iaVdFVzUyVi95RzBSc3hTSThsbUphTU5aQzA1WmRPTlhTcUNX?=
+ =?utf-8?B?aWk3QXJiSDlzbmZGVytOQXVQakc1VTJQOEN4WkpFOFNXOGpJdldCTGNMWm1E?=
+ =?utf-8?B?ZTZ1ZGhxNXJXSmh0L1RPbUx0OEVidXM0WGtQWjJXT2c1Q2FJc3BRVDNVRk1X?=
+ =?utf-8?B?RG9ZSFFtNFhRVkpLT0RsdVVFRXFFb0krSjFGeDhiYjdaenlQVkVKN25yaEx6?=
+ =?utf-8?B?dkRLcmNqZDFLV0pGaEwxdElkMHMyUjdaQ1ZPZkRoWWkyR2k0eDAxN1dFVzhM?=
+ =?utf-8?B?T2FZeStpSU9IYWRiYm5EUVpMMjVMbUdjUTl4SUovaFRLZkNKY29lK2t6dCto?=
+ =?utf-8?B?dGd5emhyeGRkR2hBR0RVYkNvNHpSQmlrWFhaOFVNMlBMZG10T2xmM0lwWFpN?=
+ =?utf-8?B?RWdYdXBKS0M2Q1dacnk2QUYwTjhWY1ZRMkMzcGZaN0ljKzFFMWhjSitBZTBQ?=
+ =?utf-8?B?L2RJVWYybW5ha1FXakZIYUR4eXB4Z1FpZzBVMzRWZEVJMHEvVWN6ZFdaVWFY?=
+ =?utf-8?B?UGFPNG0vckVzcG00U1pzQkVVYm1aWGZORnFZN3BZQVBad3V6dXJHeVF1OFo3?=
+ =?utf-8?B?N1JOVE9RaTVsak5lcElSNjFCODBjYUI1QVN4bHV3ay9Td2ZPbGpWeHc5YW1L?=
+ =?utf-8?B?UyswMUFTMjh2Qk9ZQy9CM04xaUpMVnM5c3VqOWxQNWVMc3BkMjRYM2dnRklH?=
+ =?utf-8?B?dW9YVHRQVXpsaU1YZEwzZVhyUWowRGZxMzVwWWtVWVJNVkwvdEtiSG83bUc5?=
+ =?utf-8?B?a1VFWHYwMmZqMDdhSCtMV2FTTHhFQ1d3ZCtuWmFiTjFTVHVpU2V1R0ZQMXE5?=
+ =?utf-8?B?cnM3MmRtM0pxbkxBWDkySW5RNGtoa21HZmdBQU5pUGNiSERabFByc1ZlSkRx?=
+ =?utf-8?B?S3Q2eHhwWXcxWmpTSG90UlFUdXNidGVHZmdTZngraFVPcm5yUVNFTzJxU0xM?=
+ =?utf-8?B?Yzl6TE5VUG9qVGxiaUFDUFlKbnBMK1Z3K2V6Rm1sT0hJL0RndDhISHdlckxL?=
+ =?utf-8?B?YzRxSi9RYzJWTjZwWWthaVRGdzZjZmszMklldDBBbjRkcS9RM2hDMmhkUG5G?=
+ =?utf-8?B?VHI1c3lSb1VPbHpuYmpjTitqV3NGbkQ0RUc1MzZLRlpzd2xxL3cxWHNneERO?=
+ =?utf-8?B?OVdCVzQwUUpLK2lGMC8vV2tMSEV0R2dTUldjc0t2cy9sektzVndSbnMrcmZ0?=
+ =?utf-8?B?bFUxZWhxQWRIVXIzWUxpbWRGYVNnV09RVG80aEZPQy9BOWlqeG01Yk5sTzQ5?=
+ =?utf-8?B?dW9sZmdRV2UwZDdvMzhOeVV3UUxzTmgwK0NMNGROK3VwL1NFV0RZNEdyejJo?=
+ =?utf-8?B?RmQ5ZzJudG5DMHdWUlJrY0xaQ01OWFdDcVVmY1ZQUU1VeTlrZk56NHl6VTNx?=
+ =?utf-8?B?dUtiOXNXeE4ra0ZHTWEvbzhKbm1QMHFuL1YwZlNnbUlidldCMWg2aEUwTUpH?=
+ =?utf-8?B?NHFIVVl2dW8rc3c4VTUyVFdYbkFwRzk2UU5USjVNbEh5OHQza2VhWVI0YXFZ?=
+ =?utf-8?B?YVFaL2Q4VkZTY2hxL0xXOEw4S2VkTlFTYWtCQk1PYm1FWUM4SEo3b0pzRlpK?=
+ =?utf-8?B?MkUrb29ZdWwyazhtbmZ3dk04S0EyT2VMSTh1OGJTOXFVVmREdG1KZER3elMz?=
+ =?utf-8?B?RjdYc3RmQ2VJZnpwQ3MrdlcvL2owN2dOcGlzQ1VwMDdCejlZQWc3VGJFdGlk?=
+ =?utf-8?B?cjdlL2s5Z1JEbVRqQ0VtL3FEUjdnMVlNc25QR1pBaFEvUDRIYzdMd3VqbjdJ?=
+ =?utf-8?B?dEgxZ0FNYlVBZFNiUVVnRlpBZUlLY3EwYXNUSnYyQlN3V0s2dHZTVmdYREx4?=
+ =?utf-8?B?eTRZaXpJZWlydzNaMDR0QU1ha2VYdy9TRWFCOXo3UnB0NE9ZdHlXUVAyRU9y?=
+ =?utf-8?B?S1REV0FNMFo5YVBENldzM0lBMEVFREUySjRBUUgyT2hOYWlyZ0M1eUh1TE5i?=
+ =?utf-8?B?TklEZUdURUsxSlowdDVES1V2RjYwZm96YVNFUHpGeE16cmpDMmJIeG9EUFdi?=
+ =?utf-8?B?cGc9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <626AA06D905B67488F107653D23617BD@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: NGrNqF1E5SHBtw-S9sjS4KTPUe2nH96Y
-X-Proofpoint-ORIG-GUID: n8ybU4m-j76Bu_RGe5xpHL5myXge38UA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-08-10_20,2023-08-10_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 malwarescore=0
- bulkscore=0 adultscore=0 priorityscore=1501 impostorscore=0
- mlxlogscore=999 suspectscore=0 mlxscore=0 clxscore=1015 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308110046
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: c77b8840-d852-4dbd-0bd7-08db9a368477
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Aug 2023 06:45:14.3999
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 4k7QNTYw1xrZppQ5PeZFFWErbDH1GSP5LkwYyr0M3HagpXnsIGCbrZNcKJi+US7S3AYvIMHAEfKnn4DeAKGYjlWaHd3qn3trTa75m5PiYxc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR1P264MB1951
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,84 +136,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The testcase "Object code reading" fails in somecases
-for "fs_something" sub test as below:
-
-    Reading object code for memory address: 0xc008000007f0142c
-    File is: /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko
-    On file address is: 0x1114cc
-    Objdump command is: objdump -z -d --start-address=0x11142c --stop-address=0x1114ac /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko
-    objdump read too few bytes: 128
-    test child finished with -1
-
-This can alo be reproduced when running perf record with
-workload that exercises fs_something() code. In the test
-setup, this is exercising xfs code since root is xfs.
-
-    # perf record ./a.out
-    # perf report -v |grep "xfs.ko"
-      0.76% a.out /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko  0xc008000007de5efc B [k] xlog_cil_commit
-      0.74% a.out  /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko  0xc008000007d5ae18 B [k] xfs_btree_key_offset
-      0.74% a.out  /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko  0xc008000007e11fd4 B [k] 0x0000000000112074
-
-Here addr "0xc008000007e11fd4" is not resolved. since this is a
-kernel module, its offset is from the DSO. Xfs module is loaded
-at 0xc008000007d00000
-
-   # cat /proc/modules | grep xfs
-    xfs 2228224 3 - Live 0xc008000007d00000
-
-And size is 0x220000. So its loaded between  0xc008000007d00000
-and 0xc008000007f20000. From objdump, text section is:
-    text 0010f7bc  0000000000000000 0000000000000000 000000a0 2**4
-
-Hence perf captured ip maps to 0x112074 which is:
-( ip - start of module ) + a0
-
-This offset 0x112074 falls out .text section which is up to 0x10f7bc
-In this case for module, the address 0xc008000007e11fd4 is pointing
-to stub instructions. This address range represents the module stubs
-which is allocated on module load and hence is not part of DSO offset.
-
-To address this issue in "object code reading", skip the sample if
-address falls out of text section and is within the module end.
-Use the "text_end" member of "struct dso" to do this check.
-
-To address this issue in "perf report", exploring an option of
-having stubs range as part of the /proc/kallsyms, so that perf
-report can resolve addresses in stubs range
-
-However this patch uses text_end to skip the stub range for
-Object code reading testcase.
-
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
----
- tools/perf/tests/code-reading.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/tools/perf/tests/code-reading.c b/tools/perf/tests/code-reading.c
-index ed3815163d1b..911f8fa13677 100644
---- a/tools/perf/tests/code-reading.c
-+++ b/tools/perf/tests/code-reading.c
-@@ -269,6 +269,14 @@ static int read_object_code(u64 addr, size_t len, u8 cpumode,
- 	if (addr + len > map__end(al.map))
- 		len = map__end(al.map) - addr;
- 
-+	/* Check if the ip offset falls in stubs sections for kernel modules */
-+	if (strstr(dso->long_name, ".ko")) {
-+		if ((al.addr < map__end(al.map)) && (al.addr > dso->text_end)) {
-+			pr_debug(" - skipping\n");
-+			goto out;
-+		}
-+	}
-+
- 	/* Read the object code using perf */
- 	ret_len = dso__data_read_offset(dso, maps__machine(thread__maps(thread)),
- 					al.addr, buf1, len);
--- 
-2.31.1
-
+DQoNCkxlIDExLzA4LzIwMjMgw6AgMDE6NDgsIEVyaGFyZCBGdXJ0bmVyIGEgw6ljcml0wqA6DQo+
+IEkgd2FudGVkIHRvIGZpcmUgdXAgbXkgUG93ZXJNYWMgRzQgTUREIChEdWFsIENQVSkgd2l0aCBh
+IEtBU0FOIGRlYnVnIGJ1aWxkIG9mIGtlcm5lbCA2LjUtcmM1IGZvciB0ZXN0aW5nIHB1cnBvc2Vz
+LiBCdXQgdGhlIGtlcm5lbCBmYWlscyB0byBib290IGF0IGEgdmVyeSBlYXJseSBzdGFnZS4gSSBv
+bmx5IGdldCBhIHdoaXRlIHNjcmVlbiByZWFkaW5nDQo+ICJkb25lDQo+IGZvdW5kIGRpc3BsYXk6
+IC9wY2lAZjAwMDAwMDAvQVRZLEFsdGVyYWNQYXJlbnRAMTAvQVRZLEFsdGVyYWNfQkAxLCBvcGVu
+aW5nLi4uIg0KDQpDYW4geW91IHRyeSB3aXRoIENPTkZJR19QUENfRUFSTFlfREVCVUcgYW5kIHNl
+ZSBpZiB5b3UgZ2V0IG1vcmUgDQppbmZvcm1hdGlvbiBvbiB0aGUgc2NyZWVuID8NCg0KQ2hyaXN0
+b3BoZQ0KDQoNCj4gDQo+IFdoZW4gSSB1c2UgdGhlIHNhbWUga2VybmVsIC5jb25maWcgYnV0IGRp
+c2FibGUgU01QIHRoZSBtYWNoaW5lIGp1c3QgYm9vdHMgdXAgZmluZSB3aXRoIHRoZSBLQVNBTiBl
+bmFibGVkIGtlcm5lbC4NCj4gDQo+IFBlcmhhcHMgYSBzaW1pbGFyIGlzc3VlIHRvIGh0dHBzOi8v
+YnVnemlsbGEua2VybmVsLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MjE2MTkwID8NCj4gDQo+IEtlcm5l
+bCAuY29uZmlnIGFuZCBmdWxsIGRtZXNnIGF0dGFjaGVkLg0KPiANCj4gUmVnYXJkcywNCj4gRXJo
+YXJkIEYuDQo=
