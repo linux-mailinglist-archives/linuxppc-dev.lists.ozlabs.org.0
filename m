@@ -1,68 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBC3B779961
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Aug 2023 23:26:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41879779A79
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Aug 2023 00:12:07 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=yp3x6i43;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=s5z4KUrN;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RMxgW448yz3c8L
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Aug 2023 07:26:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RMyh51LVsz3cGv
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Aug 2023 08:12:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=yp3x6i43;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=s5z4KUrN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::534; helo=mail-ed1-x534.google.com; envelope-from=justinstitt@google.com; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RMxff3Pmbz2xdt
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Aug 2023 07:25:45 +1000 (AEST)
-Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-51e28cac164so7223269a12.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Aug 2023 14:25:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1691789138; x=1692393938;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=86JGYZ3ry5mveviksjcn/qEvMtmvc4Ix/xUvNeLXEDs=;
-        b=yp3x6i43BD8RlV322qJmJKCChEAV4UH5GzYm+QKTIbEfh7XUtrsq+1zAx0sNg+t1d+
-         5Wdx8+yD9PcpjFm6EwHkertYyul98NZdT7eMM1xpNAGQvsovbk+87Q0wdMIbXOqYfONq
-         6YuGbb337lL0MnSOZ+zkCGkXtOM0YWf5KDk6wCBq61CXXtdyV10ODW7oScEWFrfKV1Fb
-         gHshtevWMATpYNZmgU73KijInvpPplIazRtamhNz+s/hZNupYZjFG3dKpshD04LAQR3b
-         +hhD59qaxfiKGmC3EzhWXafo2eDdjNVkhYcLndoGmpPabWfR4zaRjXU/jERrCpyxvtNP
-         At1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691789138; x=1692393938;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=86JGYZ3ry5mveviksjcn/qEvMtmvc4Ix/xUvNeLXEDs=;
-        b=HmQpfq8iBy6zkmlseRry/SPDf2B1CG49G5HbmPGaFSqM4UhtPzuiE4UsciVrNAs6Uj
-         DXRNs04T2MWjE9b0mz6RGoIjjUcEhxzenWKYH8cHEolSC4BB2+JvKwRJ/mS293dx+89e
-         EonoCuN/ueioysPErDaC4axz4JZXwWoXwO3Dmdo+DKakJ4omlazABQ5RD8JQG8BkUYhc
-         olzcdDOiLlCqpgznODSddMPOE7+JvFboquq0Pktlv3qQY/yXdjNf8peVdbjulZI8uiLl
-         ofjCt9MRrAQZm5tajFQxABZOzyufX00MbQBoBrCidxL9ZQPBRdZfhXSooWXKZfvCGXHJ
-         sxKA==
-X-Gm-Message-State: AOJu0Yy1vHSN0Vx3a/B+7MiTBWqj76x2H7nFdnijMNy/uSPuDIoIEOkP
-	xhBGJX+0VyOmMUS87Dp7Z8WYH/QiI46kBCTyfdT0ng==
-X-Google-Smtp-Source: AGHT+IHsxCBP/w9r5NRNaDnfZRytZV75kWryG4q6b+1hs+BKKLWWPj716c7QrOT8uP1DUmE3xa+OcLdt4WGWk5ajISA=
-X-Received: by 2002:a05:6402:268e:b0:523:72fe:a3c4 with SMTP id
- w14-20020a056402268e00b0052372fea3c4mr7852202edd.0.1691789138513; Fri, 11 Aug
- 2023 14:25:38 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RMyg86YR9z2yDH
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Aug 2023 08:11:16 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 0E5B6632A5
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Aug 2023 22:11:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7686AC433C7
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Aug 2023 22:11:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1691791873;
+	bh=N8lpigPkvlxlig325fbyaTImOPZkDbDukkfY6bibi4k=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=s5z4KUrNfO2JqcRq+ljnufym4sk9sqdsFx3DYN2Cow/K0fLXZcKLVksxl3tJwtmP5
+	 v4+7qEVZj7pMqlK/4mTz9zW0VNE4lQcWpm7tJnLnBczOGPAC3p+arpwkj+Rmg4Juuy
+	 YIZHs+MDP0GwOpNZPxlLVdGlCxL56jf6eYB119/8Rm5j9W4lbFj6lNszwdH6HhlmgW
+	 2H4SR6/f6KcSt5+X8p/j6FAX3R+PYUPiZRMx0Ty9wh/JLS3wOZPDyupXuhPTfsL1cQ
+	 CfFpj2SsMymdkmH+B64hK/iIiEZY7TU/1Fp7ULBEvSAidG5R5gz1VTPOmO015pukdL
+	 0b5Pb+d+UR+JA==
+Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-79d93e7ba34so1413805241.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Aug 2023 15:11:13 -0700 (PDT)
+X-Gm-Message-State: AOJu0YzSFV/plkR2BJYt6SEO+TXJypYSu+UrZ1tV4zVXrWhUWBItTQUg
+	i+rwDdoFi6DW739iZupGGTJwk0uTY0KQU1j0fqM=
+X-Google-Smtp-Source: AGHT+IGn1gQn4CG7x4Y66qfsYEz2RYlI/GdSoTxRIWymQmm7uMPiGClKZum+y67wV7ik5jOQYxKVmHuCQntmPwL9x1A=
+X-Received: by 2002:a4a:240c:0:b0:564:e465:5d5c with SMTP id
+ m12-20020a4a240c000000b00564e4655d5cmr2107496oof.2.1691791852125; Fri, 11 Aug
+ 2023 15:10:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230811-strncpy-arch-powerpc-platforms-ps3-v1-0-301052a5663e@google.com>
-In-Reply-To: <20230811-strncpy-arch-powerpc-platforms-ps3-v1-0-301052a5663e@google.com>
-From: Justin Stitt <justinstitt@google.com>
-Date: Fri, 11 Aug 2023 14:25:26 -0700
-Message-ID: <CAFhGd8oZLTaFNg3pQSi=zX121HPfY9_v-H5e3_+27W3=1fXxmw@mail.gmail.com>
-Subject: Re: [PATCH RFC 0/3] powerpc/ps3: refactor strncpy usage
-To: Geoff Levand <geoff@infradead.org>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>
+References: <20230810141947.1236730-1-arnd@kernel.org> <20230810141947.1236730-3-arnd@kernel.org>
+In-Reply-To: <20230810141947.1236730-3-arnd@kernel.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Sat, 12 Aug 2023 07:10:15 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQo5hri-9JmS_kot1mQ6WHCWAeu+SnW19daWMC1YK5BWA@mail.gmail.com>
+Message-ID: <CAK7LNAQo5hri-9JmS_kot1mQ6WHCWAeu+SnW19daWMC1YK5BWA@mail.gmail.com>
+Subject: Re: [PATCH 02/17] [RESEND] irq_work: consolidate arch_irq_work_raise prototypes
+To: Arnd Bergmann <arnd@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -76,46 +70,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kees Cook <keescook@chromium.org>, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, linux-hardening@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Palmer Dabbelt <palmer@rivosinc.com>, Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, x86@kernel.org, Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Aug 11, 2023 at 2:19=E2=80=AFPM Justin Stitt <justinstitt@google.co=
-m> wrote:
+On Fri, Aug 11, 2023 at 10:00=E2=80=AFAM Arnd Bergmann <arnd@kernel.org> wr=
+ote:
 >
-> Within this RFC-series I want to get some comments on two ideas that I
-> have for refactoring the current `strncpy` usage in repository.c.
+> From: Arnd Bergmann <arnd@arndb.de>
 >
-> When looking at `make_first_field` we see a u64 is being used to store
-> up to 8 bytes from a literal string. This is slightly suspect to me but
-> it works? In regards to `strncpy` here, it makes the code needlessly
-> complex imo.
->
-> Please see my two ideas to change this and let me know if any other
-> approaches are more reasonable.
->
-> Link: https://github.com/KSPP/linux/issues/90
-> Signed-off-by: Justin Stitt <justinstitt@google.com>
-> ---
-> Justin Stitt (3):
->       [RFC] powerpc/ps3: refactor strncpy usage attempt 1
->       [RFC] powerpc/ps3: refactor strncpy usage attempt 2
->       [RFC] powerpc/ps3: refactor strncpy usage attempt 2.5
-Errhm, It looks like the diffs after attempt 1 came out poorly and
-probably won't apply cleanly because they were inter-diffed with the
-first patch. Is there a way to let b4 know I wanted each patch diff'd
-against the same SHA and not each other sequentially?
+> The prototype was hidden on x86, which causes a warning:
 
-As it stands only attempt 1 is readable.
+
+What do you mean by "hidden on x86"?
+
+arch_irq_work_raise() was declared on 7 architectures,
+including x86.
+
+
+
 
 >
->  arch/powerpc/platforms/ps3/repository.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
+> kernel/irq_work.c:72:13: error: no previous prototype for 'arch_irq_work_=
+raise' [-Werror=3Dmissing-prototypes]
+>
+> Fix this by providing it in only one place that is always visible.
+>
+> Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+> Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
+> Acked-by: Guo Ren <guoren@kernel.org>
+> Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 > ---
-> base-commit: 52a93d39b17dc7eb98b6aa3edb93943248e03b2f
-> change-id: 20230811-strncpy-arch-powerpc-platforms-ps3-57a1cdb2ad9b
+>  arch/arm/include/asm/irq_work.h     | 2 --
+>  arch/arm64/include/asm/irq_work.h   | 2 --
+>  arch/csky/include/asm/irq_work.h    | 2 +-
+>  arch/powerpc/include/asm/irq_work.h | 1 -
+>  arch/riscv/include/asm/irq_work.h   | 2 +-
+>  arch/s390/include/asm/irq_work.h    | 2 --
+>  arch/x86/include/asm/irq_work.h     | 1 -
+>  include/linux/irq_work.h            | 3 +++
+>  8 files changed, 5 insertions(+), 10 deletions(-)
 >
-> Best regards,
-> --
-> Justin Stitt <justinstitt@google.com>
->
+
+
+--
+Best Regards
+Masahiro Yamada
