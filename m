@@ -2,73 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5539778626
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Aug 2023 05:42:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E80F7786E5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Aug 2023 07:17:51 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DfDe0sLP;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=riDDfeAa;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RMV445rHCz3cFX
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Aug 2023 13:42:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RMX9m4DmTz3cM3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Aug 2023 15:17:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DfDe0sLP;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=riDDfeAa;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=devnull+nathanl.linux.ibm.com@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RMTyv29cPz3bYt
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Aug 2023 13:38:15 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 23B1664325;
-	Fri, 11 Aug 2023 03:38:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7CEFBC433C8;
-	Fri, 11 Aug 2023 03:38:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1691725090;
-	bh=whhV6SkWkfSGuUqgawwieXdrPYWPSac+Odl5OgaklPE=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=DfDe0sLPiPncLsY2sbT70pZ0lDY1i41wPQVm/fwKmZ0U2fNXlG1fYIH+4AZj0qyln
-	 1dEdQED/NP4pGRVef+jrI0UlYHKsadZJp4B+x4CfsOij5dIxYwUyJ7hsVc4jaZiY25
-	 PbqaAHcl3uT5ijrOe23XaoQWLNAZ96dKrLtGov+j/5fGVGzTDZnbl2sXmNlUOydmB7
-	 y+dwA1ogfv2uWJeP1o1C3UVnKxkaPur7KLMIr/hsssimMSvO5RbVoZsnA4qORKybg5
-	 Wi7ItzfogLeAeqR3b+rMvtAusPlURfYicquZZUMfqmpzfbO8S7GgkrzclopjGPtExT
-	 6CvvPCun/7zzg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 603D9C001DE;
-	Fri, 11 Aug 2023 03:38:10 +0000 (UTC)
-From: Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
-Date: Thu, 10 Aug 2023 22:37:55 -0500
-Subject: [PATCH v2] powerpc/rtas_flash: allow user copy to flash block
- cache objects
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RMX8r138Xz2ydR
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Aug 2023 15:16:59 +1000 (AEST)
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37B58S4i015649;
+	Fri, 11 Aug 2023 05:15:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=Uozn107CQ0SK1JghVFmAEOg+1EQ/BBo1/ih3ynJcCAg=;
+ b=riDDfeAaukTY3ibkXpycVP8pm//OrAPm+34Rr+iT4cWYDg1GcYGlPmcy8gMoZSxSXqZX
+ b9imZBBPzwT9cMNMlxhZ/DVl2wML/Va1enAksHyCePlIRA0u2DXtoZyH+DMepzLLFMul
+ uRYpHnx++zPmrjrTPhpm0dQMqnZbEvEmM0Hd/wKXauZ0Ki8k/Eud6XZy103mTlzjVSKY
+ CACYQzkWfGeN8HwyFlDEI6mXfPDHOrveon0+t0PTEiLqJguUb1L/aGGr8toEPJ6nXi+j
+ J2v3giKo9kcwBBlBwPkNxG9Gi71pRREcja8V8gTTrWJWufRhYbMMqMl0LzxXrE1mReWd Yw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sdebtra9s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 11 Aug 2023 05:15:59 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37B58qjd017082;
+	Fri, 11 Aug 2023 05:15:58 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sdebtra9c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 11 Aug 2023 05:15:58 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 37B3GAiC007592;
+	Fri, 11 Aug 2023 05:15:57 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sa150091b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 11 Aug 2023 05:15:57 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 37B5FrN261407532
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 11 Aug 2023 05:15:54 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D51882005A;
+	Fri, 11 Aug 2023 05:15:53 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9B8862004B;
+	Fri, 11 Aug 2023 05:15:51 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.43.95.190])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 11 Aug 2023 05:15:51 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: acme@kernel.org, jolsa@kernel.org, irogers@google.com, namhyung@kernel.org
+Subject: [PATCH] tools/perf: Fix dso kernel load and symbol process to correctly map dso to its long_name, type and adjust_symbols
+Date: Fri, 11 Aug 2023 10:45:46 +0530
+Message-Id: <20230811051546.70039-1-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.35.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 7UfOZkxg8wBYupvycD5b0M287Jtr4Nd1
+X-Proofpoint-ORIG-GUID: QQKkBCrB7lJCC0jWr2YkYYiMx9eY8q44
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id:  <20230810-rtas-flash-vs-hardened-usercopy-v2-1-dcf63793a938@linux.ibm.com>
-X-B4-Tracking: v=1; b=H4sIABKt1WQC/4XNQQ6DIBCF4asY1h0DmNjSVe/RuEAYyyQKDSjRG
- O9eag/Q5f8W39tZwkiY2L3aWcRMiYIvIS8VM077FwLZ0kxy2fBrIyDOOsEw6uQgJ3A6WvRoYSm
- OCe8NuNKtlU3bcyFYUd4RB1rPh2dX2lGaQ9zOwyy+68++8f92FiBAolJmUCh7tI+R/LLW1E+1C
- RPrjuP4AOBsLJnSAAAA
-To: Michael Ellerman <mpe@ellerman.id.au>, 
- Nicholas Piggin <npiggin@gmail.com>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>, 
- Kees Cook <keescook@chromium.org>
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1691725089; l=3245;
- i=nathanl@linux.ibm.com; s=20230206; h=from:subject:message-id;
- bh=mnxTyBgPfZp2EwTmjYzNjMI5jJcJ4qTWUk5dzWOmYlA=;
- b=x0ZNdmr3h+oB6GmQqV4qkH5z0Kn3pjHXJhNWw+wl5tKyWa6HZJ6Ppd1jwAMLXktRgXVkRrfzu
- MIoMmqKBswLBh9MUxfzfOgjHQJZkouOSveeH8oS+DXgkIHSpwdAynpi
-X-Developer-Key: i=nathanl@linux.ibm.com; a=ed25519;
- pk=6daubz/ymoaMF+8voz7UHwnhluEsmDZuqygIIMWpQQY=
-X-Endpoint-Received:  by B4 Relay for nathanl@linux.ibm.com/20230206 with auth_id=27
-X-Original-From: Nathan Lynch <nathanl@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-10_20,2023-08-10_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 malwarescore=0
+ bulkscore=0 adultscore=0 priorityscore=1501 impostorscore=0
+ mlxlogscore=999 suspectscore=0 mlxscore=0 clxscore=1015 spamscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308110046
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,84 +94,113 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: nathanl@linux.ibm.com
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Cc: atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com, Adrian Hunter <adrian.hunter@intel.com>, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+Test "object cocde reading" fails sometimes for kernel address
+as below:
 
-With hardened usercopy enabled (CONFIG_HARDENED_USERCOPY=y), using the
-/proc/powerpc/rtas/firmware_update interface to prepare a system
-firmware update yields a BUG():
+    Reading object code for memory address: 0xc000000000004c3c
+    File is: [kernel.kallsyms]
+    On file address is: 0x14c3c
+    dso__data_read_offset failed
+    test child finished with -1
+    ---- end ----
+    Object code reading: FAILED!
 
-kernel BUG at mm/usercopy.c:102!
-Oops: Exception in kernel mode, sig: 5 [#1]
-LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
-Modules linked in:
-CPU: 0 PID: 2232 Comm: dd Not tainted 6.5.0-rc3+ #2
-Hardware name: IBM,8408-E8E POWER8E (raw) 0x4b0201 0xf000004 of:IBM,FW860.50 (SV860_146) hv:phyp pSeries
-NIP:  c0000000005991d0 LR: c0000000005991cc CTR: 0000000000000000
-REGS: c0000000148c76a0 TRAP: 0700   Not tainted  (6.5.0-rc3+)
-MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 24002242  XER: 0000000c
-CFAR: c0000000001fbd34 IRQMASK: 0
-[ ... GPRs omitted ... ]
-NIP [c0000000005991d0] usercopy_abort+0xa0/0xb0
-LR [c0000000005991cc] usercopy_abort+0x9c/0xb0
-Call Trace:
-[c0000000148c7940] [c0000000005991cc] usercopy_abort+0x9c/0xb0 (unreliable)
-[c0000000148c79b0] [c000000000536814] __check_heap_object+0x1b4/0x1d0
-[c0000000148c79f0] [c000000000599080] __check_object_size+0x2d0/0x380
-[c0000000148c7a30] [c000000000045ed4] rtas_flash_write+0xe4/0x250
-[c0000000148c7a80] [c00000000068a0fc] proc_reg_write+0xfc/0x160
-[c0000000148c7ab0] [c0000000005a381c] vfs_write+0xfc/0x4e0
-[c0000000148c7b70] [c0000000005a3e10] ksys_write+0x90/0x160
-[c0000000148c7bc0] [c00000000002f2c8] system_call_exception+0x178/0x320
-[c0000000148c7e50] [c00000000000d520] system_call_common+0x160/0x2c4
---- interrupt: c00 at 0x7fff9f17e5e4
+Here the dso__data_read_offset fails for symbol address
+0xc000000000004c3c. This is because, the dso long_name here
+is [kernel.kallsyms] and hence open_dso fails to open this
+file. There is an incorrect dso to map handling here. The
+key points here is:
+- dso long_name is set to [kernel.kallsyms]. This file is
+  not present and hence returns error
+- DSO binary type is set to DSO_BINARY_TYPE__NOT_FOUND
+- dso adjust_symbols is set to zero
 
-The blocks of the firmware image are copied directly from user memory
-to objects allocated from flash_block_cache, so flash_block_cache must
-be created using kmem_cache_create_usercopy() to mark it safe for user
-access.
+In the end dso__data_read_offset() returns -1 and the address
+0x14c3c can not be resolved. Hence the test fails. But the
+address actually maps to kernel dso
 
-Fixes: 6d07d1cd300f ("usercopy: Restrict non-usercopy caches to size 0")
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+    # objdump -z -d --start-address=0xc000000000004c3c --stop-address=0xc000000000004cbc /home/athira/linux/vmlinux
+
+    /home/athira/linux/vmlinux:     file format elf64-powerpcle
+
+    Disassembly of section .head.text:
+
+    c000000000004c3c <exc_virt_0x4c00_system_call+0x3c>:
+    c000000000004c3c:	a6 02 9b 7d 	mfsrr1  r12
+    c000000000004c40:	78 13 42 7c 	mr      r2,r2
+    c000000000004c44:	18 00 4d e9 	ld      r10,24(r13)
+    c000000000004c48:	60 c6 4a 61 	ori     r10,r10,50784
+    c000000000004c4c:	a6 03 49 7d 	mtctr   r10
+
+Fix the dso__process_kernel_symbol function to set the
+binary_type and adjust_symbols. adjust_symbols is used by
+function "map__rip_2objdump" which converts symbol start
+address to objdump address. Also set the dso long_name during
+dso__load_vmlinux function.
+
+Suggested-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 ---
-I believe it's much more common to update Power system firmware
-without involving a Linux partition, which may explain why this has
-gone unreported for so long.
----
-Changes in v2:
-- Drop excessive local const variables. No functional change.
-- Link to v1: https://lore.kernel.org/r/20230801-rtas-flash-vs-hardened-usercopy-v1-1-2e99cf9e2bed@linux.ibm.com
----
- arch/powerpc/kernel/rtas_flash.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Note: Found similar discussion here in thread:
+      https://www.spinics.net/lists/linux-perf-users/msg06337.html
+      where Adrian proposed the fix, but looks like this was
+      not added to the perf. Hence addeed Suggested-by from Adrian.
 
-diff --git a/arch/powerpc/kernel/rtas_flash.c b/arch/powerpc/kernel/rtas_flash.c
-index 4caf5e3079eb..359577ec1680 100644
---- a/arch/powerpc/kernel/rtas_flash.c
-+++ b/arch/powerpc/kernel/rtas_flash.c
-@@ -709,9 +709,9 @@ static int __init rtas_flash_init(void)
- 	if (!rtas_validate_flash_data.buf)
- 		return -ENOMEM;
+      Additional to the fix proposed by Adrian, the patch also
+      adds setting of adjust_symbols which is needed for
+      map__rip_2objdump to convert symbol start to objdump address.
+
+ tools/perf/util/symbol-elf.c |  2 ++
+ tools/perf/util/symbol.c     | 15 ++++++++++-----
+ 2 files changed, 12 insertions(+), 5 deletions(-)
+
+diff --git a/tools/perf/util/symbol-elf.c b/tools/perf/util/symbol-elf.c
+index 252d26a59e64..9e7eeaf616b8 100644
+--- a/tools/perf/util/symbol-elf.c
++++ b/tools/perf/util/symbol-elf.c
+@@ -1440,6 +1440,8 @@ static int dso__process_kernel_symbol(struct dso *dso, struct map *map,
+ 		curr_dso->kernel = dso->kernel;
+ 		curr_dso->long_name = dso->long_name;
+ 		curr_dso->long_name_len = dso->long_name_len;
++		curr_dso->binary_type = dso->binary_type;
++		curr_dso->adjust_symbols = dso->adjust_symbols;
+ 		curr_map = map__new2(start, curr_dso);
+ 		dso__put(curr_dso);
+ 		if (curr_map == NULL)
+diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
+index f849f9ef68e6..3f36675b7c8f 100644
+--- a/tools/perf/util/symbol.c
++++ b/tools/perf/util/symbol.c
+@@ -2204,15 +2204,20 @@ int dso__load_vmlinux(struct dso *dso, struct map *map,
+ 	if (symsrc__init(&ss, dso, symfs_vmlinux, symtab_type))
+ 		return -1;
  
--	flash_block_cache = kmem_cache_create("rtas_flash_cache",
--					      RTAS_BLK_SIZE, RTAS_BLK_SIZE, 0,
--					      NULL);
-+	flash_block_cache = kmem_cache_create_usercopy("rtas_flash_cache",
-+						       RTAS_BLK_SIZE, RTAS_BLK_SIZE,
-+						       0, 0, RTAS_BLK_SIZE, NULL);
- 	if (!flash_block_cache) {
- 		printk(KERN_ERR "%s: failed to create block cache\n",
- 				__func__);
-
----
-base-commit: c3cad890877f59aeeaf5a638aa7a7c0612c16fa1
-change-id: 20230731-rtas-flash-vs-hardened-usercopy-09a6d236b011
-
-Best regards,
++	/*
++	 * dso__load_sym() may copy 'dso' which will result in the copies having
++	 * an incorrect long name unless we set it here first.
++	 */
++	dso__set_long_name(dso, vmlinux, vmlinux_allocated);
++	if (dso->kernel == DSO_SPACE__KERNEL_GUEST)
++		dso->binary_type = DSO_BINARY_TYPE__GUEST_VMLINUX;
++	else
++		dso->binary_type = DSO_BINARY_TYPE__VMLINUX;
++
+ 	err = dso__load_sym(dso, map, &ss, &ss, 0);
+ 	symsrc__destroy(&ss);
+ 
+ 	if (err > 0) {
+-		if (dso->kernel == DSO_SPACE__KERNEL_GUEST)
+-			dso->binary_type = DSO_BINARY_TYPE__GUEST_VMLINUX;
+-		else
+-			dso->binary_type = DSO_BINARY_TYPE__VMLINUX;
+-		dso__set_long_name(dso, vmlinux, vmlinux_allocated);
+ 		dso__set_loaded(dso);
+ 		pr_debug("Using %s for symbols\n", symfs_vmlinux);
+ 	}
 -- 
-Nathan Lynch <nathanl@linux.ibm.com>
+2.31.1
 
