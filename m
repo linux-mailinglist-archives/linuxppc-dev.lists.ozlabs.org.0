@@ -1,71 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AF1177846B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Aug 2023 01:58:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5539778626
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Aug 2023 05:42:46 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=fSbsTlZ9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DfDe0sLP;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RMP5W2cHgz3cHr
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Aug 2023 09:58:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RMV445rHCz3cFX
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Aug 2023 13:42:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=fSbsTlZ9;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DfDe0sLP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::636; helo=mail-ej1-x636.google.com; envelope-from=vannapurve@google.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=devnull+nathanl.linux.ibm.com@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RMP4g04Xvz2yVN
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Aug 2023 09:57:53 +1000 (AEST)
-Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-99bdf08860dso544576166b.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Aug 2023 16:57:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1691711868; x=1692316668;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hhMgA7qBPuApMhQ4h1vJKFRA4DNp+2B2aFxUktI7jpQ=;
-        b=fSbsTlZ9eRUEq1oc0qlT9VA71infat9B81M3qAFGPQLw+6DiL/k6IQBVuLqYpfm6zc
-         JPbbQuf/OXWE0DDR3Vty3P+Ga7xRDAZJPbwv8Rh6DllYU5zj15degN0az+fa1E+ZZKui
-         Zid/yQ06BXhwoDugW7aU7NJA5d/c3xUSIByYDVFEbgx0r3ZtD20CbtxCBNcFSIJefMq1
-         tRA4cZrI4/sEiaraxlYyAq+sL65bMfdUmaPLsXuLObrwqiszX5v1AaY8IXbz4ltMaoUI
-         FDZXJTolroDTYu55EKXzdNQ57eJWghsSQRQDYygik7m8uY2F9+yL1a51YFkAYkFi+S2u
-         5sVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691711868; x=1692316668;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hhMgA7qBPuApMhQ4h1vJKFRA4DNp+2B2aFxUktI7jpQ=;
-        b=W7VnpcXc9pidVtjyKDBbNJSU0Boe5MbrXXwOGM2JKHAD8mz5Hy8xABMWFzMkCmEzVT
-         Fs5Nb8Mn+s+aYviMVlvQksioCwx1FtG2CmUuLJNe3ox2YDr99CVbqZJRJ6tvupNk3KpW
-         ujf7CUnzZIMxk7QKnpx6HxSuljYxDLg2Hwjnoe0lPOafn2TlNdf4h38N2SlElQerQC7h
-         JsITi2PRbXRYnDoLNT1aW6QZuuHQAgWpZKUs/iODMGkD2fl4UgUt4XOEK7F1IQEieyAr
-         UbAI5DUllyg+qItBooKvSRBVFKGXvbfaEKSzHTBQ38Mp2wyunwbYWimmXE7TAPpTicyN
-         iLxw==
-X-Gm-Message-State: AOJu0YwcueVbSK9WAOrrPEq+dxkl7AENAjx33zSpO15k99xRD+BK/Ot2
-	USuLfu1Vlir6Tn4HCKomPn8/7l38pusk+NM8ERRk/g==
-X-Google-Smtp-Source: AGHT+IExGyX6IQpw7nkPj/Oj8ZdeERAHUNFikZIEbAqLbQU3zHzZ+Xb2mqkLRl/UdYIm3ylJUJ+cypBkqHv5r6CLu/8=
-X-Received: by 2002:a17:906:1d1:b0:99c:55c5:1c6e with SMTP id
- 17-20020a17090601d100b0099c55c51c6emr519636ejj.8.1691711867870; Thu, 10 Aug
- 2023 16:57:47 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RMTyv29cPz3bYt
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Aug 2023 13:38:15 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 23B1664325;
+	Fri, 11 Aug 2023 03:38:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7CEFBC433C8;
+	Fri, 11 Aug 2023 03:38:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1691725090;
+	bh=whhV6SkWkfSGuUqgawwieXdrPYWPSac+Odl5OgaklPE=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=DfDe0sLPiPncLsY2sbT70pZ0lDY1i41wPQVm/fwKmZ0U2fNXlG1fYIH+4AZj0qyln
+	 1dEdQED/NP4pGRVef+jrI0UlYHKsadZJp4B+x4CfsOij5dIxYwUyJ7hsVc4jaZiY25
+	 PbqaAHcl3uT5ijrOe23XaoQWLNAZ96dKrLtGov+j/5fGVGzTDZnbl2sXmNlUOydmB7
+	 y+dwA1ogfv2uWJeP1o1C3UVnKxkaPur7KLMIr/hsssimMSvO5RbVoZsnA4qORKybg5
+	 Wi7ItzfogLeAeqR3b+rMvtAusPlURfYicquZZUMfqmpzfbO8S7GgkrzclopjGPtExT
+	 6CvvPCun/7zzg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 603D9C001DE;
+	Fri, 11 Aug 2023 03:38:10 +0000 (UTC)
+From: Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
+Date: Thu, 10 Aug 2023 22:37:55 -0500
+Subject: [PATCH v2] powerpc/rtas_flash: allow user copy to flash block
+ cache objects
 MIME-Version: 1.0
-References: <20230718234512.1690985-13-seanjc@google.com> <diqzv8dq3116.fsf@ackerleytng-ctop.c.googlers.com>
- <ZNKv9ul2I7A4V7IF@google.com>
-In-Reply-To: <ZNKv9ul2I7A4V7IF@google.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Thu, 10 Aug 2023 16:57:36 -0700
-Message-ID: <CAGtprH9YE50RtqhW-U+wK0Vv6aKfqqtOPn8q4s8or=UZwPXZoA@mail.gmail.com>
-Subject: Re: [RFC PATCH v11 12/29] KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for
- guest-specific backing memory
-To: Sean Christopherson <seanjc@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id:  <20230810-rtas-flash-vs-hardened-usercopy-v2-1-dcf63793a938@linux.ibm.com>
+X-B4-Tracking: v=1; b=H4sIABKt1WQC/4XNQQ6DIBCF4asY1h0DmNjSVe/RuEAYyyQKDSjRG
+ O9eag/Q5f8W39tZwkiY2L3aWcRMiYIvIS8VM077FwLZ0kxy2fBrIyDOOsEw6uQgJ3A6WvRoYSm
+ OCe8NuNKtlU3bcyFYUd4RB1rPh2dX2lGaQ9zOwyy+68++8f92FiBAolJmUCh7tI+R/LLW1E+1C
+ RPrjuP4AOBsLJnSAAAA
+To: Michael Ellerman <mpe@ellerman.id.au>, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Kees Cook <keescook@chromium.org>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1691725089; l=3245;
+ i=nathanl@linux.ibm.com; s=20230206; h=from:subject:message-id;
+ bh=mnxTyBgPfZp2EwTmjYzNjMI5jJcJ4qTWUk5dzWOmYlA=;
+ b=x0ZNdmr3h+oB6GmQqV4qkH5z0Kn3pjHXJhNWw+wl5tKyWa6HZJ6Ppd1jwAMLXktRgXVkRrfzu
+ MIoMmqKBswLBh9MUxfzfOgjHQJZkouOSveeH8oS+DXgkIHSpwdAynpi
+X-Developer-Key: i=nathanl@linux.ibm.com; a=ed25519;
+ pk=6daubz/ymoaMF+8voz7UHwnhluEsmDZuqygIIMWpQQY=
+X-Endpoint-Received:  by B4 Relay for nathanl@linux.ibm.com/20230206 with auth_id=27
+X-Original-From: Nathan Lynch <nathanl@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,34 +80,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, david@redhat.com, yu.c.zhang@linux.intel.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, chao.p.peng@linux.intel.com, linux-riscv@lists.infradead.org, isaku.yamahata@gmail.com, paul@paul-moore.com, maz@kernel.org, chenhuacai@kernel.org, jmorris@namei.org, willy@infradead.org, wei.w.wang@intel.com, tabba@google.com, jarkko@kernel.org, serge@hallyn.com, mail@maciej.szmigiero.name, aou@eecs.berkeley.edu, vbabka@suse.cz, michael.roth@amd.com, Ackerley Tng <ackerleytng@google.com>, paul.walmsley@sifive.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, qperret@google.com, liam.merwick@oracle.com, linux-mips@vger.kernel.org, oliver.upton@linux.dev, linux-security-module@vger.kernel.org, palmer@dabbelt.com, kvm-riscv@lists.infradead.org, anup@brainfault.org, linux-fsdevel@vger.kernel.org, pbonzini@redhat.com, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, kirill.shutemov@linux.intel.com
+Reply-To: nathanl@linux.ibm.com
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Aug 8, 2023 at 2:13=E2=80=AFPM Sean Christopherson <seanjc@google.c=
-om> wrote:
-> ...
+From: Nathan Lynch <nathanl@linux.ibm.com>
 
-> > + When binding a memslot to the file, if a kvm pointer exists, it must
-> >   be the same kvm as the one in this binding
-> > + When the binding to the last memslot is removed from a file, NULL the
-> >   kvm pointer.
->
-> Nullifying the KVM pointer isn't sufficient, because without additional a=
-ctions
-> userspace could extract data from a VM by deleting its memslots and then =
-binding
-> the guest_memfd to an attacker controlled VM.  Or more likely with TDX an=
-d SNP,
-> induce badness by coercing KVM into mapping memory into a guest with the =
-wrong
-> ASID/HKID.
->
+With hardened usercopy enabled (CONFIG_HARDENED_USERCOPY=y), using the
+/proc/powerpc/rtas/firmware_update interface to prepare a system
+firmware update yields a BUG():
 
-TDX/SNP have mechanisms i.e. PAMT/RMP tables to ensure that the same
-memory is not assigned to two different VMs. Deleting memslots should
-also clear out the contents of the memory as the EPT tables will be
-zapped in the process and the host will reclaim the memory.
+kernel BUG at mm/usercopy.c:102!
+Oops: Exception in kernel mode, sig: 5 [#1]
+LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+Modules linked in:
+CPU: 0 PID: 2232 Comm: dd Not tainted 6.5.0-rc3+ #2
+Hardware name: IBM,8408-E8E POWER8E (raw) 0x4b0201 0xf000004 of:IBM,FW860.50 (SV860_146) hv:phyp pSeries
+NIP:  c0000000005991d0 LR: c0000000005991cc CTR: 0000000000000000
+REGS: c0000000148c76a0 TRAP: 0700   Not tainted  (6.5.0-rc3+)
+MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 24002242  XER: 0000000c
+CFAR: c0000000001fbd34 IRQMASK: 0
+[ ... GPRs omitted ... ]
+NIP [c0000000005991d0] usercopy_abort+0xa0/0xb0
+LR [c0000000005991cc] usercopy_abort+0x9c/0xb0
+Call Trace:
+[c0000000148c7940] [c0000000005991cc] usercopy_abort+0x9c/0xb0 (unreliable)
+[c0000000148c79b0] [c000000000536814] __check_heap_object+0x1b4/0x1d0
+[c0000000148c79f0] [c000000000599080] __check_object_size+0x2d0/0x380
+[c0000000148c7a30] [c000000000045ed4] rtas_flash_write+0xe4/0x250
+[c0000000148c7a80] [c00000000068a0fc] proc_reg_write+0xfc/0x160
+[c0000000148c7ab0] [c0000000005a381c] vfs_write+0xfc/0x4e0
+[c0000000148c7b70] [c0000000005a3e10] ksys_write+0x90/0x160
+[c0000000148c7bc0] [c00000000002f2c8] system_call_exception+0x178/0x320
+[c0000000148c7e50] [c00000000000d520] system_call_common+0x160/0x2c4
+--- interrupt: c00 at 0x7fff9f17e5e4
 
-Regards,
-Vishal
+The blocks of the firmware image are copied directly from user memory
+to objects allocated from flash_block_cache, so flash_block_cache must
+be created using kmem_cache_create_usercopy() to mark it safe for user
+access.
+
+Fixes: 6d07d1cd300f ("usercopy: Restrict non-usercopy caches to size 0")
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+---
+I believe it's much more common to update Power system firmware
+without involving a Linux partition, which may explain why this has
+gone unreported for so long.
+---
+Changes in v2:
+- Drop excessive local const variables. No functional change.
+- Link to v1: https://lore.kernel.org/r/20230801-rtas-flash-vs-hardened-usercopy-v1-1-2e99cf9e2bed@linux.ibm.com
+---
+ arch/powerpc/kernel/rtas_flash.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/powerpc/kernel/rtas_flash.c b/arch/powerpc/kernel/rtas_flash.c
+index 4caf5e3079eb..359577ec1680 100644
+--- a/arch/powerpc/kernel/rtas_flash.c
++++ b/arch/powerpc/kernel/rtas_flash.c
+@@ -709,9 +709,9 @@ static int __init rtas_flash_init(void)
+ 	if (!rtas_validate_flash_data.buf)
+ 		return -ENOMEM;
+ 
+-	flash_block_cache = kmem_cache_create("rtas_flash_cache",
+-					      RTAS_BLK_SIZE, RTAS_BLK_SIZE, 0,
+-					      NULL);
++	flash_block_cache = kmem_cache_create_usercopy("rtas_flash_cache",
++						       RTAS_BLK_SIZE, RTAS_BLK_SIZE,
++						       0, 0, RTAS_BLK_SIZE, NULL);
+ 	if (!flash_block_cache) {
+ 		printk(KERN_ERR "%s: failed to create block cache\n",
+ 				__func__);
+
+---
+base-commit: c3cad890877f59aeeaf5a638aa7a7c0612c16fa1
+change-id: 20230731-rtas-flash-vs-hardened-usercopy-09a6d236b011
+
+Best regards,
+-- 
+Nathan Lynch <nathanl@linux.ibm.com>
+
