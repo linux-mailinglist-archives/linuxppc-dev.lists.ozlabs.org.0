@@ -1,100 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E653177A45E
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Aug 2023 02:53:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9AA077A4B1
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Aug 2023 04:16:44 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=ixit.cz header.i=@ixit.cz header.a=rsa-sha256 header.s=dkim header.b=KgLnX1QN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ESS4vxLJ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RNfD303Fcz3c4s
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Aug 2023 10:53:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RNh3t3pvHz3bpd
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Aug 2023 12:16:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=ixit.cz header.i=@ixit.cz header.a=rsa-sha256 header.s=dkim header.b=KgLnX1QN;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ESS4vxLJ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ixit.cz (client-ip=89.177.23.149; helo=ixit.cz; envelope-from=david@ixit.cz; receiver=lists.ozlabs.org)
-X-Greylist: delayed 467 seconds by postgrey-1.37 at boromir; Sun, 13 Aug 2023 10:52:51 AEST
-Received: from ixit.cz (ip-89-177-23-149.bb.vodafone.cz [89.177.23.149])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nayna@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RNfC72HHDz2yGn
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Aug 2023 10:52:50 +1000 (AEST)
-Received: from [10.0.0.200] (unknown [10.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 622A91603AD;
-	Sun, 13 Aug 2023 02:44:57 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1691887497; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=JkFYVHjXNXjnsFctRK5sD71AhL+gPbD1MLBbtLqMg/Y=;
-	b=KgLnX1QNAyvAK3bomX4RfzLfgJxSdvZxuvegaewVIlU5WMdqPo1ITjp/CG8FfeQq4mxzBW
-	m+rn36xbaBA3EtOZIC1+IAJDmxVR0Ih8hQISDSBb38QLInD5YUh8ex0pJ4gCYjwOVLgyYj
-	vXh/YOID+WHuGT/Rm/9q6y4XI0oj5JU=
-Message-ID: <4fa1e0fe-eec4-4e5c-8acd-274a039c048a@ixit.cz>
-Date: Sun, 13 Aug 2023 02:44:57 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RNh3138Vjz2yGn
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Aug 2023 12:15:56 +1000 (AEST)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37D1vZfq031029;
+	Sun, 13 Aug 2023 02:15:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=vGVIqJM22fgvkmIvySR2/oFIP39UZOusBgcxTw+M/Z4=;
+ b=ESS4vxLJryZCCp2AG1R5AEQAq8JeEBGozIuDnDMPtfYsZOV98e++/jihy/uJk0K3YFZp
+ yIGMPpc3HLjikFXvVe1DbDynGkoIx+YMqD/260YeG0pRHtFZSeJRyN1LN6FDZ3+29Ozw
+ FR+a6KcxKPdwFmT/p0QKo3qxtYKML/4VGjnKNECxHYuJt7WaZjeLOOHl1DFY2g/O36ft
+ BEd7uMIlYN5uw34VgpErMZWXHhiQGIuErlyS3VmydmdBJWdZrPeMsDzSq9ph9NbHz26q
+ oqTi48JZ+JcJm9j8jBFIxeBSimxkAlRNbhMWMY5sIrJUA0cGb77Jl/PGTdFswD0yeB4I Fw== 
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3senyjgamp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 13 Aug 2023 02:15:44 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 37D0bHCp001082;
+	Sun, 13 Aug 2023 02:15:43 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3semsxgky9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 13 Aug 2023 02:15:43 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 37D2FdGW26870110
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 13 Aug 2023 02:15:39 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B9ECC20043;
+	Sun, 13 Aug 2023 02:15:39 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7B5F820040;
+	Sun, 13 Aug 2023 02:15:37 +0000 (GMT)
+Received: from li-4b5937cc-25c4-11b2-a85c-cea3a66903e4.ibm.com (unknown [9.61.3.84])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Sun, 13 Aug 2023 02:15:37 +0000 (GMT)
+From: Nayna Jain <nayna@linux.ibm.com>
+To: linux-integrity@vger.kernel.org
+Subject: [PATCH v3 0/6] Enable loading local and third party keys on PowerVM guest
+Date: Sat, 12 Aug 2023 22:15:25 -0400
+Message-Id: <20230813021531.1382815-1-nayna@linux.ibm.com>
+X-Mailer: git-send-email 2.39.3
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 9sXxDEi_VotCrd52556Z25iwvixh-G1f
+X-Proofpoint-GUID: 9sXxDEi_VotCrd52556Z25iwvixh-G1f
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: grundler@chromium.org
-References: <20230606035442.2886343-1-grundler@chromium.org>
-Subject: Re: [PATCHv3 pci-next 1/2] PCI/AER: correctable error message as
- KERN_INFO
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <20230606035442.2886343-1-grundler@chromium.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-12_27,2023-08-10_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ phishscore=0 malwarescore=0 mlxlogscore=886 spamscore=0 lowpriorityscore=0
+ mlxscore=0 bulkscore=0 adultscore=0 impostorscore=0 clxscore=1015
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308130016
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,26 +87,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: 20230606035442.2886343-1-grundler@chromium.org
-Cc: rajatja@chromium.org, rajat.khandelwal@linux.intel.com, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, mahesh@linux.ibm.com, oohall@gmail.com, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org
+Cc: Eric Snowberg <eric.snowberg@oracle.com>, Paul Moore <paul@paul-moore.com>, Nayna Jain <nayna@linux.ibm.com>, linux-security-module@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>, linux-kernel@vger.kernel.org, Jarkko Sakkinen <jarkko@kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Tested-by: David Heidelberg <david@ixit.cz>
+On a secure boot enabled PowerVM guest, local and third party code signing
+keys are needed to verify signed applications, configuration files, and
+kernel modules.
 
-For PATCH v4 please fix the typo reported by the bot :)
+Loading these keys onto either the .secondary_trusted_keys or .ima
+keyrings requires the certificates be signed by keys on the
+.builtin_trusted_keys, .machine or .secondary_trusted_keys keyrings.
 
-Seeing messages as
+Keys on the .builtin_trusted_keys keyring are trusted because of the chain
+of trust from secure boot up to and including the linux kernel.  Keys on
+the .machine keyring that derive their trust from an entity such as a
+security officer, administrator, system owner, or machine owner are said
+to have "imputed trust." The type of certificates and the mechanism for
+loading them onto the .machine keyring is platform dependent.
 
-__aer_print_error: 72 callbacks suppressed
+Userspace may load certificates onto the .secondary_trusted_keys or .ima
+keyrings. However, keys may also need to be loaded by the kernel if they
+are needed for verification in early boot time. On PowerVM guest, third
+party code signing keys are loaded from the moduledb variable in the
+Platform KeyStore(PKS) onto the .secondary_trusted_keys.
 
-but it still prints many errors on my laptop. Anyway, the log is less 
-filled with this patch, so great!
+The purpose of this patch set is to allow loading of local and third party
+code signing keys on PowerVM.
 
-Thank you
-David
+Changelog:
+
+v3:
+
+* Included Jarkko's feedback for Patch 6/6.
+
+v2:
+
+* Patch 5/6: Update CA restriction to allow only key signing CA's.
+* Rebase on Jarkko's master tree - https://kernel.googlesource.com/pub/scm/linux/kernel/git/jarkko/linux-tpmdd
+* Tested after reverting cfa7522f280aa95 because of build failure due to
+this commit.
+
+Nayna Jain (6):
+  integrity: PowerVM support for loading CA keys on machine keyring
+  integrity: ignore keys failing CA restrictions on non-UEFI platform
+  integrity: remove global variable from machine_keyring.c
+  integrity: check whether imputed trust is enabled
+  integrity: PowerVM machine keyring enablement
+  integrity: PowerVM support for loading third party code signing keys
+
+ certs/system_keyring.c                        | 30 +++++++++++++++++
+ include/keys/system_keyring.h                 |  7 ++++
+ security/integrity/Kconfig                    |  4 ++-
+ security/integrity/digsig.c                   |  2 +-
+ security/integrity/integrity.h                |  6 ++--
+ .../platform_certs/keyring_handler.c          | 19 ++++++++++-
+ .../platform_certs/keyring_handler.h          | 10 ++++++
+ .../integrity/platform_certs/load_powerpc.c   | 33 +++++++++++++++++++
+ .../platform_certs/machine_keyring.c          | 22 ++++++++++---
+ 9 files changed, 124 insertions(+), 9 deletions(-)
 
 -- 
-David Heidelberg
-Certified Linux Magician
-
+2.31.1
