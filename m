@@ -2,55 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B742477B1A4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Aug 2023 08:35:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79E0077B1AD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Aug 2023 08:36:38 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=h9hVPon9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GKQoYZQH;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RPPm24VN5z3cPT
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Aug 2023 16:35:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RPPnJ2bFZz3cTT
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Aug 2023 16:36:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=h9hVPon9;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GKQoYZQH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=134.134.136.24; helo=mgamail.intel.com; envelope-from=baolu.lu@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.115; helo=mgamail.intel.com; envelope-from=baolu.lu@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RPPl95HJQz2y1b
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Aug 2023 16:34:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RPPmR36mzz2y1b
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Aug 2023 16:35:50 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1691994886; x=1723530886;
+  t=1691994951; x=1723530951;
   h=message-id:date:mime-version:cc:subject:to:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=SV1XM/mW2ABuCqYRs/3iFjEijdHsFUSy0zTH9to0WAQ=;
-  b=h9hVPon9cmZc+04DwzgMtV1thcg3Z5SKlvbZy4T8lL2IGXjuUg1tBDJc
-   Y2aBcfFMuW0iW5SlMM/7eJYbkmVYs0sFxTUAysrGl/vv1KLlSxn+PVcNS
-   n+xVigbsP7l/BGTm2XFCk1QVPGF1xskjhyX8Pv3tFJQeEcX/xtXqViJf/
-   tYik83T1daCPkEKAI0JIMvAkpv3rwASbnrDvDTqxTTp/FmvT7OOsVengG
-   3a7aXBLVJjGweY/uKicPqYjNBDmhMnvtbD7CFpo+LPiuHF2hybnhg68l3
-   zVNHIYDTmPuuGou2OfKu2/U+GfhfduPWrdu/Ifn2lovg7mLqWzYmUWXro
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10801"; a="374740586"
+  bh=dCNOqlWk74+ACIseLN11BwaIrH72VHkdICqUZOAYZvM=;
+  b=GKQoYZQHEHQsWGA5aUbI541HePPuHQeQvvA6DYYs5fGruiXrCbQj6tM4
+   RgPQaapmYGg3npvZ/RWZGHF/fNe4Pt8cAq2zS4yTDCx2JzBvTVWSaKMgQ
+   EgysGBhL37SIj64VOolIkEKDT9w23qTTF0YXPSu01RkLvkE12QPll9RZ7
+   vvdswHNONJNB7nj4gSMKxLCnO/8F/t5z18BAUTrgCYmN6d19QIP8+KvBT
+   5eaW03pUkWieo6n077DUJ3UNvAxig+OTvzc8dc6t4HOHVJr1w8U4k1air
+   5TMz0iUEb1nZ4A3VtjIUMdY90nWbYeDJz2/tw1mm1GHyUyrg8TZrdmNjD
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10801"; a="371976986"
 X-IronPort-AV: E=Sophos;i="6.01,171,1684825200"; 
-   d="scan'208";a="374740586"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2023 23:34:41 -0700
+   d="scan'208";a="371976986"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2023 23:35:47 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10801"; a="736431396"
+X-IronPort-AV: E=McAfee;i="6600,9927,10801"; a="823340280"
 X-IronPort-AV: E=Sophos;i="6.01,171,1684825200"; 
-   d="scan'208";a="736431396"
+   d="scan'208";a="823340280"
 Received: from wentaox1-mobl.ccr.corp.intel.com (HELO [10.254.215.205]) ([10.254.215.205])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2023 23:34:29 -0700
-Message-ID: <4af2fcdb-6c38-8b54-3043-c6da15198dcc@linux.intel.com>
-Date: Mon, 14 Aug 2023 14:34:27 +0800
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2023 23:35:36 -0700
+Message-ID: <2a98fdf6-f41a-bd9b-d939-2a6afa5bd150@linux.intel.com>
+Date: Mon, 14 Aug 2023 14:35:34 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.14.0
-Subject: Re: [PATCH v6 18/25] iommu/ipmmu: Add an IOMMU_IDENTITIY_DOMAIN
+Subject: Re: [PATCH v6 19/25] iommu/mtk_iommu: Add an IOMMU_IDENTITIY_DOMAIN
 Content-Language: en-US
 To: Jason Gunthorpe <jgg@nvidia.com>, Andy Gross <agross@kernel.org>,
  Alim Akhtar <alim.akhtar@samsung.com>, Bjorn Andersson
@@ -78,9 +78,9 @@ To: Jason Gunthorpe <jgg@nvidia.com>, Andy Gross <agross@kernel.org>,
  <vdumpa@nvidia.com>, Chen-Yu Tsai <wens@csie.org>,
  Will Deacon <will@kernel.org>, Yong Wu <yong.wu@mediatek.com>,
  Chunyan Zhang <zhang.lyra@gmail.com>
-References: <18-v6-e8114faedade+425-iommu_all_defdom_jgg@nvidia.com>
+References: <19-v6-e8114faedade+425-iommu_all_defdom_jgg@nvidia.com>
 From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <18-v6-e8114faedade+425-iommu_all_defdom_jgg@nvidia.com>
+In-Reply-To: <19-v6-e8114faedade+425-iommu_all_defdom_jgg@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -103,13 +103,10 @@ On 2023/8/3 8:08, Jason Gunthorpe wrote:
 > 1b932ceddd19 ("iommu: Remove detach_dev callbacks") deleted and turns it
 > into an IDENTITY domain.
 > 
-> Also reverts commit 584d334b1393 ("iommu/ipmmu-vmsa: Remove
-> ipmmu_utlb_disable()")
-> 
 > Signed-off-by: Jason Gunthorpe<jgg@nvidia.com>
 > ---
->   drivers/iommu/ipmmu-vmsa.c | 43 ++++++++++++++++++++++++++++++++++++++
->   1 file changed, 43 insertions(+)
+>   drivers/iommu/mtk_iommu.c | 23 +++++++++++++++++++++++
+>   1 file changed, 23 insertions(+)
 
 Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
 
