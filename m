@@ -2,96 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9499A77B20F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Aug 2023 09:08:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B431C77B366
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Aug 2023 10:09:48 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JdjGL4XU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=XrN429Nk;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RPQVJ2wcdz3c1l
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Aug 2023 17:08:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RPRrp3DfWz3cGW
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Aug 2023 18:09:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JdjGL4XU;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=XrN429Nk;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42f; helo=mail-pf1-x42f.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RPQTR617jz303l
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Aug 2023 17:07:55 +1000 (AEST)
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37E6vUjA028200;
-	Mon, 14 Aug 2023 07:07:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=ybKLgmTSw4RAWRggqk2ri9BmgAhagQKV8mYPw3qAPOk=;
- b=JdjGL4XUEM9/Ao0kh4sHsP8voxaCPByNXqxaz687N3vqo44hbW5469FsOGXGIfupuM8h
- XCm1P3vCQorwg845QQ1pXSr/yV6kw/lMvhTJ4CGpxF8Ugpk6UL+E5y7K9FystQn54pkH
- kV3+SHRfgi+NLrtS3aHgIDVjq1r0ciV+UeCGmyVDqPj1u0kRNwNbRb/lmIcXj8k+Qrtu
- eAE778Xf6c76Pr129/CId/K7FWlo6Fa7AyjM69++ojt8/N9xN0HLf4pXRWYxralzmmxn
- 9sdl65gY4SjPxC3Tp1Ikui/w0L3VUXC6iKKHaQI/W9DuBGa4YA4oiomWkvjjHjVt5zC1 /w== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sfff5gaym-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 14 Aug 2023 07:07:41 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37E6xKZp001603;
-	Mon, 14 Aug 2023 07:07:40 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sfff5gayb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 14 Aug 2023 07:07:40 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 37E75KsT003495;
-	Mon, 14 Aug 2023 07:07:39 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3semds2hm3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 14 Aug 2023 07:07:39 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 37E77bkN20447490
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 14 Aug 2023 07:07:38 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C93692004D;
-	Mon, 14 Aug 2023 07:07:37 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4ADB220043;
-	Mon, 14 Aug 2023 07:07:37 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 14 Aug 2023 07:07:37 +0000 (GMT)
-Received: from jarvis.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id D895860125;
-	Mon, 14 Aug 2023 17:07:33 +1000 (AEST)
-Message-ID: <a19302ea8a66b9a4e8119241823b1560b1e6fb15.camel@linux.ibm.com>
-Subject: Re: [PATCH] ocxl: Use pci_dev_id() to simplify the code
-From: Andrew Donnellan <ajd@linux.ibm.com>
-To: Zheng Zengkai <zhengzengkai@huawei.com>, fbarrat@linux.ibm.com,
-        mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu
-Date: Mon, 14 Aug 2023 17:07:20 +1000
-In-Reply-To: <20230811102039.17257-1-zhengzengkai@huawei.com>
-References: <20230811102039.17257-1-zhengzengkai@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RPRqy0tySz2ydW
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Aug 2023 18:09:01 +1000 (AEST)
+Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-686ed1d2594so4076545b3a.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Aug 2023 01:09:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1692000538; x=1692605338;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HHc6qGu7Ail6gjahuSN4onxMeC32IE8coMewoeVpo+4=;
+        b=XrN429NkkjvtYKQqtj/TEdZqVZrUQ8b8FHbFO4j5Y+ZO5uZ5r1Dfi3Xs4qIqnZtmR8
+         F5VO+c0FbRHfFpuj7l5LrzFaNDanNnZjOShVZ0fzMH6WPQcweob6q4tU7SYsXp+yAZLh
+         E6USBDxvKoxbAvmJAoZAC5JDZ5NQvfz8JaX5NIUmAFWCslykElgu2lYNnd/hu9Kb9VCm
+         rdgyy4TIhst6yWvWegUv4GxmpkkREiUbF0z8jCeNuJp4XYLtZnR0GZX2Q3862rFGn3Nt
+         VCdonYgUs9k7PStlrktcNrAqS033qjRIl8FV6Y+8/UzmsK6NV/ZO1SkriS/QDxTLax0L
+         vv+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692000538; x=1692605338;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=HHc6qGu7Ail6gjahuSN4onxMeC32IE8coMewoeVpo+4=;
+        b=lJyDfF1+RxxZynqPcj+vNxmhb3KN/yt0I7fAql0M0rdApGU7kHmqefCtTPBTK4csz3
+         Z4bgHNA4V7zXWvoyb+OvCjikqcygNzlFrn4cB6YRTxSIheTlShhZ6zOyb/DyIi1MgjSE
+         RX8d3uH083g62F5dr6Y8fH7Z9BDkbdLcUsvDJws3Q2U+4zfZm1HMm9ayU10kUpZ34JK1
+         YJH9UUEl7q0mSMCQSi0VeonOT7SmuGnNISIXZ0rn4wOcdzH5EabaLPXLshYNNr3dhlpl
+         V4icezDhyyMsNsdDSViTmjbSLyOgQDgE+BO3r5WHY8hd8v5hhIFPGSpT9ZvaHcXT6ZRx
+         2Piw==
+X-Gm-Message-State: AOJu0YyBCZIU3/F2HsDbjMDzfiBUc00CMCgmOTPy9toOlf4PdjFdjYRG
+	AfeOznkHOooBxAMqlfS7lmg=
+X-Google-Smtp-Source: AGHT+IEOmHQAaO2710jyujKN7BPqeOdoqB8zTN52ofQqctE6cqKFRrusISuSxbuG3YPodBsb9qeYBw==
+X-Received: by 2002:a05:6a00:b85:b0:686:24b0:554b with SMTP id g5-20020a056a000b8500b0068624b0554bmr12388389pfj.22.1692000538498;
+        Mon, 14 Aug 2023 01:08:58 -0700 (PDT)
+Received: from localhost ([61.68.161.249])
+        by smtp.gmail.com with ESMTPSA id p16-20020a639510000000b005658d3a46d7sm4085195pgd.84.2023.08.14.01.08.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Aug 2023 01:08:58 -0700 (PDT)
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
-MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: _HQD-wDn94Pvfrou_WeZwkLgMazSp7tn
-X-Proofpoint-ORIG-GUID: b_7YgQEk9Osch21rOdfuL5PndkOOhGu4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-08-14_01,2023-08-10_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 malwarescore=0
- clxscore=1011 lowpriorityscore=0 impostorscore=0 bulkscore=0 mlxscore=0
- mlxlogscore=623 priorityscore=1501 phishscore=0 suspectscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308140064
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 14 Aug 2023 18:08:52 +1000
+Message-Id: <CUS44PQRFL72.28PFLWO36FYAO@wheely>
+Subject: Re: [PATCH v3 1/6] KVM: PPC: Use getters and setters for vcpu
+ register state
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Jordan Niethe" <jniethe5@gmail.com>, <linuxppc-dev@lists.ozlabs.org>
+X-Mailer: aerc 0.15.2
+References: <20230807014553.1168699-1-jniethe5@gmail.com>
+ <20230807014553.1168699-2-jniethe5@gmail.com>
+In-Reply-To: <20230807014553.1168699-2-jniethe5@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,19 +81,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, wangxiongfeng2@huawei.com
+Cc: mikey@neuling.org, kvm@vger.kernel.org, sbhat@linux.ibm.com, amachhiw@linux.vnet.ibm.com, gautam@linux.ibm.com, kvm-ppc@vger.kernel.org, kconsul@linux.vnet.ibm.com, vaibhav@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2023-08-11 at 18:20 +0800, Zheng Zengkai wrote:
-> PCI core API pci_dev_id() can be used to get the BDF number for a pci
-> device. We don't need to compose it mannually. Use pci_dev_id() to
-> simplify the code a little bit.
->=20
-> Signed-off-by: Zheng Zengkai <zhengzengkai@huawei.com>
+On Mon Aug 7, 2023 at 11:45 AM AEST, Jordan Niethe wrote:
+> There are already some getter and setter functions used for accessing
+> vcpu register state, e.g. kvmppc_get_pc(). There are also more
+> complicated examples that are generated by macros like
+> kvmppc_get_sprg0() which are generated by the SHARED_SPRNG_WRAPPER()
+> macro.
+>
+> In the new PAPR "Nestedv2" API for nested guest partitions the L1 is
+> required to communicate with the L0 to modify and read nested guest
+> state.
+>
+> Prepare to support this by replacing direct accesses to vcpu register
+> state with wrapper functions. Follow the existing pattern of using
+> macros to generate individual wrappers. These wrappers will
+> be augmented for supporting Nestedv2 guests later.
+>
+> Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
+> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+> ---
+> v3:
+>   - Do not add a helper for pvr
+>   - Use an expression when declaring variable in case
+>   - Squash in all getters and setters
+>   - Guatam: Pass vector registers by reference
+> ---
+>  arch/powerpc/include/asm/kvm_book3s.h  | 123 +++++++++++++-
+>  arch/powerpc/include/asm/kvm_booke.h   |  10 ++
+>  arch/powerpc/kvm/book3s.c              |  38 ++---
+>  arch/powerpc/kvm/book3s_64_mmu_hv.c    |   4 +-
+>  arch/powerpc/kvm/book3s_64_mmu_radix.c |   9 +-
+>  arch/powerpc/kvm/book3s_64_vio.c       |   4 +-
+>  arch/powerpc/kvm/book3s_hv.c           | 220 +++++++++++++------------
+>  arch/powerpc/kvm/book3s_hv.h           |  58 +++++++
+>  arch/powerpc/kvm/book3s_hv_builtin.c   |  10 +-
+>  arch/powerpc/kvm/book3s_hv_p9_entry.c  |   4 +-
+>  arch/powerpc/kvm/book3s_hv_ras.c       |   5 +-
+>  arch/powerpc/kvm/book3s_hv_rm_mmu.c    |   8 +-
+>  arch/powerpc/kvm/book3s_hv_rm_xics.c   |   4 +-
+>  arch/powerpc/kvm/book3s_xive.c         |   9 +-
+>  arch/powerpc/kvm/emulate_loadstore.c   |   2 +-
+>  arch/powerpc/kvm/powerpc.c             |  76 ++++-----
+>  16 files changed, 395 insertions(+), 189 deletions(-)
+>
 
-Acked-by: Andrew Donnellan <ajd@linux.ibm.com>
+[snip]
 
---=20
-Andrew Donnellan    OzLabs, ADL Canberra
-ajd@linux.ibm.com   IBM Australia Limited
+> +
+>  /* Expiry time of vcpu DEC relative to host TB */
+>  static inline u64 kvmppc_dec_expires_host_tb(struct kvm_vcpu *vcpu)
+>  {
+> -	return vcpu->arch.dec_expires - vcpu->arch.vcore->tb_offset;
+> +	return kvmppc_get_dec_expires(vcpu) - kvmppc_get_tb_offset_hv(vcpu);
+>  }
+
+I don't see kvmppc_get_tb_offset_hv in this patch.
+
+> diff --git a/arch/powerpc/kvm/book3s_64_mmu_hv.c b/arch/powerpc/kvm/book3=
+s_64_mmu_hv.c
+> index 7f765d5ad436..738f2ecbe9b9 100644
+> --- a/arch/powerpc/kvm/book3s_64_mmu_hv.c
+> +++ b/arch/powerpc/kvm/book3s_64_mmu_hv.c
+> @@ -347,7 +347,7 @@ static int kvmppc_mmu_book3s_64_hv_xlate(struct kvm_v=
+cpu *vcpu, gva_t eaddr,
+>  	unsigned long v, orig_v, gr;
+>  	__be64 *hptep;
+>  	long int index;
+> -	int virtmode =3D vcpu->arch.shregs.msr & (data ? MSR_DR : MSR_IR);
+> +	int virtmode =3D kvmppc_get_msr(vcpu) & (data ? MSR_DR : MSR_IR);
+> =20
+>  	if (kvm_is_radix(vcpu->kvm))
+>  		return kvmppc_mmu_radix_xlate(vcpu, eaddr, gpte, data, iswrite);
+
+So this isn't _only_ adding new accessors. This should be functionally a
+noop, but I think it introduces a branch if PR is defined.
+
+Shared page is a slight annoyance for HV, I'd like to get rid of it...
+but that's another story. I think the pattern here would be to add a
+kvmppc_get_msr_hv() accessor.
+
+And as a nitpick, for anywhere employing existing access functions, gprs
+and such, could that be split into its own patch?
+
+Looks pretty good aside from those little things.
+
+Thanks,
+Nick
