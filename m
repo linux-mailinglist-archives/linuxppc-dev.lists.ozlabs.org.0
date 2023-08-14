@@ -1,56 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AA9A77B1E9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Aug 2023 08:59:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFB4D77B1F8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Aug 2023 09:01:32 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=c9qZqxe2;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=evdXtGB0;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RPQHb0hSdz3cCr
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Aug 2023 16:59:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RPQL255tXz3cTc
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Aug 2023 17:01:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=c9qZqxe2;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=evdXtGB0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=134.134.136.65; helo=mgamail.intel.com; envelope-from=baolu.lu@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.88; helo=mgamail.intel.com; envelope-from=baolu.lu@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RPQGf3CPcz2yW5
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Aug 2023 16:58:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RPQKB3jPTz302F
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Aug 2023 17:00:45 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1691996314; x=1723532314;
+  t=1691996446; x=1723532446;
   h=message-id:date:mime-version:cc:subject:to:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=pa/NYcFW5ouBdif+FG84sip7NAyNlNfKz3i1h077D5I=;
-  b=c9qZqxe2W52gZdNEbUbVtlzn1rC+uzrL2SE8fwECCTmcBjW0bVGB8FRe
-   X1Jwyczlz/JqwvUZVR3sqJVSPiVsjFlovcSmlEImJhm94dfd5AFa4ulC8
-   gzMp7Vht4zJh0uSbCEqjrI0SZ1yI8W1q+gyjOP/KOZd0uToItnTIe0l7p
-   nIMNwlYwa/Qi5KI0vaWpiNnufYnmyZSlQPmoz3SVEuhnduk6wUAy5HEpS
-   r6wz63+RO1XhapR2xyY9VsEfVr0GbO9vkOG4Fi1Q9ViGblRouzns35bue
-   j18Roxl4sfDGVgJJbXEre/3Bvz7C+VJveVpUZgdKkNEYio9BVBj4ecKUv
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10801"; a="375682855"
+  bh=EaawVzEhamol9o/NUQ5Jv/MrePZQM2J7gDQCUGCqzz4=;
+  b=evdXtGB03H30t9npUoRvqTrCYPilm7JrM/TPFTzxZn5OP/vXrKhFOugW
+   Xd5zd6VcQteomnvY3PitV44Xi7UEd5d5SsEx9kyWzr8lVWjE0AJ8Nyyp/
+   rgAAU7CmuuLUl72TgCvYQqGMrpvK2uTdG34fSJZv15bIvbvJ7Lxez+AnL
+   YsiHcBH/6C1mUQ3NkTIFPioh77PIoacK1CI6J/8Y7ME+mAXQJioYFipuu
+   nIe8Vy8OzL070aym6WZ912d8rrMTToywUa945vmkq7hstaCD+e67tnveq
+   hKb6c8+b0P4APeOjEddWKmHuAXsbrmz/GaKnSNOjuNbrlHywTQJh8uQ+l
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10801"; a="402961400"
 X-IronPort-AV: E=Sophos;i="6.01,171,1684825200"; 
-   d="scan'208";a="375682855"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2023 23:58:27 -0700
+   d="scan'208";a="402961400"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2023 00:00:41 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10801"; a="798721368"
+X-IronPort-AV: E=McAfee;i="6600,9927,10801"; a="1063959613"
 X-IronPort-AV: E=Sophos;i="6.01,171,1684825200"; 
-   d="scan'208";a="798721368"
+   d="scan'208";a="1063959613"
 Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.254.215.205]) ([10.254.215.205])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2023 23:58:17 -0700
-Message-ID: <90d3070b-a3ff-7007-9b55-aef1e9b472aa@linux.intel.com>
-Date: Mon, 14 Aug 2023 14:58:14 +0800
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2023 00:00:31 -0700
+Message-ID: <f6999029-9f94-9198-ce1d-2d04f02ad000@linux.intel.com>
+Date: Mon, 14 Aug 2023 15:00:29 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.14.0
-Subject: Re: [PATCH v6 24/25] iommu: Convert simple drivers with DOMAIN_DMA to
+Subject: Re: [PATCH v6 25/25] iommu: Convert remaining simple drivers to
  domain_alloc_paging()
 Content-Language: en-US
 To: Jason Gunthorpe <jgg@nvidia.com>, Andy Gross <agross@kernel.org>,
@@ -79,9 +79,9 @@ To: Jason Gunthorpe <jgg@nvidia.com>, Andy Gross <agross@kernel.org>,
  <vdumpa@nvidia.com>, Chen-Yu Tsai <wens@csie.org>,
  Will Deacon <will@kernel.org>, Yong Wu <yong.wu@mediatek.com>,
  Chunyan Zhang <zhang.lyra@gmail.com>
-References: <24-v6-e8114faedade+425-iommu_all_defdom_jgg@nvidia.com>
+References: <25-v6-e8114faedade+425-iommu_all_defdom_jgg@nvidia.com>
 From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <24-v6-e8114faedade+425-iommu_all_defdom_jgg@nvidia.com>
+In-Reply-To: <25-v6-e8114faedade+425-iommu_all_defdom_jgg@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -100,93 +100,30 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 2023/8/3 8:08, Jason Gunthorpe wrote:
-> These drivers are all trivially converted since the function is only
-> called if the domain type is going to be
-> IOMMU_DOMAIN_UNMANAGED/DMA.
+> These drivers don't support IOMMU_DOMAIN_DMA, so this commit effectively
+> allows them to support that mode.
 > 
-> Tested-by: Heiko Stuebner <heiko@sntech.de>
-> Tested-by: Steven Price <steven.price@arm.com>
-> Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-> Tested-by: Nicolin Chen <nicolinc@nvidia.com>
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+> The prior work to require default_domains makes this safe because every
+> one of these drivers is either compilation incompatible with dma-iommu.c,
+> or already establishing a default_domain. In both cases alloc_domain()
+> will never be called with IOMMU_DOMAIN_DMA for these drivers so it is safe
+> to drop the test.
+> 
+> Removing these tests clarifies that the domain allocation path is only
+> about the functionality of a paging domain and has nothing to do with
+> policy of how the paging domain is used for UNMANAGED/DMA/DMA_FQ.
+> 
+> Tested-by: Niklas Schnelle<schnelle@linux.ibm.com>
+> Tested-by: Steven Price<steven.price@arm.com>
+> Tested-by: Marek Szyprowski<m.szyprowski@samsung.com>
+> Tested-by: Nicolin Chen<nicolinc@nvidia.com>
+> Signed-off-by: Jason Gunthorpe<jgg@nvidia.com>
 > ---
->   drivers/iommu/arm/arm-smmu/qcom_iommu.c | 6 ++----
->   drivers/iommu/exynos-iommu.c            | 7 ++-----
->   drivers/iommu/ipmmu-vmsa.c              | 7 ++-----
->   drivers/iommu/mtk_iommu.c               | 7 ++-----
->   drivers/iommu/rockchip-iommu.c          | 7 ++-----
->   drivers/iommu/sprd-iommu.c              | 7 ++-----
->   drivers/iommu/sun50i-iommu.c            | 9 +++------
->   drivers/iommu/tegra-smmu.c              | 7 ++-----
->   8 files changed, 17 insertions(+), 40 deletions(-)
-
-[...]
-
-> diff --git a/drivers/iommu/sun50i-iommu.c b/drivers/iommu/sun50i-iommu.c
-> index 0bf08b120cf105..056832a367c2af 100644
-> --- a/drivers/iommu/sun50i-iommu.c
-> +++ b/drivers/iommu/sun50i-iommu.c
-> @@ -667,14 +667,11 @@ static phys_addr_t sun50i_iommu_iova_to_phys(struct iommu_domain *domain,
->   		sun50i_iova_get_page_offset(iova);
->   }
->   
-> -static struct iommu_domain *sun50i_iommu_domain_alloc(unsigned type)
-> +static struct iommu_domain *
-> +sun50i_iommu_domain_alloc_paging(struct device *paging)
-
-Why not "struct device *dev"?
-
-Typo? Or anything I missed?
-
->   {
->   	struct sun50i_iommu_domain *sun50i_domain;
->   
-> -	if (type != IOMMU_DOMAIN_DMA &&
-> -	    type != IOMMU_DOMAIN_UNMANAGED)
-> -		return NULL;
-> -
->   	sun50i_domain = kzalloc(sizeof(*sun50i_domain), GFP_KERNEL);
->   	if (!sun50i_domain)
->   		return NULL;
-> @@ -840,7 +837,7 @@ static const struct iommu_ops sun50i_iommu_ops = {
->   	.identity_domain = &sun50i_iommu_identity_domain,
->   	.pgsize_bitmap	= SZ_4K,
->   	.device_group	= sun50i_iommu_device_group,
-> -	.domain_alloc	= sun50i_iommu_domain_alloc,
-> +	.domain_alloc_paging = sun50i_iommu_domain_alloc_paging,
->   	.of_xlate	= sun50i_iommu_of_xlate,
->   	.probe_device	= sun50i_iommu_probe_device,
->   	.default_domain_ops = &(const struct iommu_domain_ops) {
-> diff --git a/drivers/iommu/tegra-smmu.c b/drivers/iommu/tegra-smmu.c
-> index 6cba034905edbf..69c40c191ce4f0 100644
-> --- a/drivers/iommu/tegra-smmu.c
-> +++ b/drivers/iommu/tegra-smmu.c
-> @@ -272,13 +272,10 @@ static void tegra_smmu_free_asid(struct tegra_smmu *smmu, unsigned int id)
->   	clear_bit(id, smmu->asids);
->   }
->   
-> -static struct iommu_domain *tegra_smmu_domain_alloc(unsigned type)
-> +static struct iommu_domain *tegra_smmu_domain_alloc_paging(struct device *dev)
->   {
->   	struct tegra_smmu_as *as;
->   
-> -	if (type != IOMMU_DOMAIN_UNMANAGED && type != IOMMU_DOMAIN_DMA)
-> -		return NULL;
-> -
->   	as = kzalloc(sizeof(*as), GFP_KERNEL);
->   	if (!as)
->   		return NULL;
-> @@ -997,7 +994,7 @@ static const struct iommu_ops tegra_smmu_ops = {
->   	.default_domain = &tegra_smmu_identity_domain,
->   	.identity_domain = &tegra_smmu_identity_domain,
->   	.def_domain_type = &tegra_smmu_def_domain_type,
-> -	.domain_alloc = tegra_smmu_domain_alloc,
-> +	.domain_alloc_paging = tegra_smmu_domain_alloc_paging,
->   	.probe_device = tegra_smmu_probe_device,
->   	.device_group = tegra_smmu_device_group,
->   	.of_xlate = tegra_smmu_of_xlate,
-
-Anyway,
+>   drivers/iommu/msm_iommu.c    | 7 ++-----
+>   drivers/iommu/mtk_iommu_v1.c | 7 ++-----
+>   drivers/iommu/omap-iommu.c   | 7 ++-----
+>   drivers/iommu/s390-iommu.c   | 7 ++-----
+>   4 files changed, 8 insertions(+), 20 deletions(-)
 
 Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
 
