@@ -2,88 +2,96 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFB4D77B1F8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Aug 2023 09:01:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9499A77B20F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Aug 2023 09:08:42 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=evdXtGB0;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JdjGL4XU;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RPQL255tXz3cTc
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Aug 2023 17:01:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RPQVJ2wcdz3c1l
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Aug 2023 17:08:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=evdXtGB0;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JdjGL4XU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.88; helo=mgamail.intel.com; envelope-from=baolu.lu@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RPQKB3jPTz302F
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Aug 2023 17:00:45 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1691996446; x=1723532446;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=EaawVzEhamol9o/NUQ5Jv/MrePZQM2J7gDQCUGCqzz4=;
-  b=evdXtGB03H30t9npUoRvqTrCYPilm7JrM/TPFTzxZn5OP/vXrKhFOugW
-   Xd5zd6VcQteomnvY3PitV44Xi7UEd5d5SsEx9kyWzr8lVWjE0AJ8Nyyp/
-   rgAAU7CmuuLUl72TgCvYQqGMrpvK2uTdG34fSJZv15bIvbvJ7Lxez+AnL
-   YsiHcBH/6C1mUQ3NkTIFPioh77PIoacK1CI6J/8Y7ME+mAXQJioYFipuu
-   nIe8Vy8OzL070aym6WZ912d8rrMTToywUa945vmkq7hstaCD+e67tnveq
-   hKb6c8+b0P4APeOjEddWKmHuAXsbrmz/GaKnSNOjuNbrlHywTQJh8uQ+l
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10801"; a="402961400"
-X-IronPort-AV: E=Sophos;i="6.01,171,1684825200"; 
-   d="scan'208";a="402961400"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2023 00:00:41 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10801"; a="1063959613"
-X-IronPort-AV: E=Sophos;i="6.01,171,1684825200"; 
-   d="scan'208";a="1063959613"
-Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.254.215.205]) ([10.254.215.205])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2023 00:00:31 -0700
-Message-ID: <f6999029-9f94-9198-ce1d-2d04f02ad000@linux.intel.com>
-Date: Mon, 14 Aug 2023 15:00:29 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RPQTR617jz303l
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Aug 2023 17:07:55 +1000 (AEST)
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37E6vUjA028200;
+	Mon, 14 Aug 2023 07:07:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=ybKLgmTSw4RAWRggqk2ri9BmgAhagQKV8mYPw3qAPOk=;
+ b=JdjGL4XUEM9/Ao0kh4sHsP8voxaCPByNXqxaz687N3vqo44hbW5469FsOGXGIfupuM8h
+ XCm1P3vCQorwg845QQ1pXSr/yV6kw/lMvhTJ4CGpxF8Ugpk6UL+E5y7K9FystQn54pkH
+ kV3+SHRfgi+NLrtS3aHgIDVjq1r0ciV+UeCGmyVDqPj1u0kRNwNbRb/lmIcXj8k+Qrtu
+ eAE778Xf6c76Pr129/CId/K7FWlo6Fa7AyjM69++ojt8/N9xN0HLf4pXRWYxralzmmxn
+ 9sdl65gY4SjPxC3Tp1Ikui/w0L3VUXC6iKKHaQI/W9DuBGa4YA4oiomWkvjjHjVt5zC1 /w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sfff5gaym-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 14 Aug 2023 07:07:41 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37E6xKZp001603;
+	Mon, 14 Aug 2023 07:07:40 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sfff5gayb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 14 Aug 2023 07:07:40 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 37E75KsT003495;
+	Mon, 14 Aug 2023 07:07:39 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3semds2hm3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 14 Aug 2023 07:07:39 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 37E77bkN20447490
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 14 Aug 2023 07:07:38 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C93692004D;
+	Mon, 14 Aug 2023 07:07:37 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4ADB220043;
+	Mon, 14 Aug 2023 07:07:37 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 14 Aug 2023 07:07:37 +0000 (GMT)
+Received: from jarvis.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id D895860125;
+	Mon, 14 Aug 2023 17:07:33 +1000 (AEST)
+Message-ID: <a19302ea8a66b9a4e8119241823b1560b1e6fb15.camel@linux.ibm.com>
+Subject: Re: [PATCH] ocxl: Use pci_dev_id() to simplify the code
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: Zheng Zengkai <zhengzengkai@huawei.com>, fbarrat@linux.ibm.com,
+        mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu
+Date: Mon, 14 Aug 2023 17:07:20 +1000
+In-Reply-To: <20230811102039.17257-1-zhengzengkai@huawei.com>
+References: <20230811102039.17257-1-zhengzengkai@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH v6 25/25] iommu: Convert remaining simple drivers to
- domain_alloc_paging()
-Content-Language: en-US
-To: Jason Gunthorpe <jgg@nvidia.com>, Andy Gross <agross@kernel.org>,
- Alim Akhtar <alim.akhtar@samsung.com>, Bjorn Andersson
- <andersson@kernel.org>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Stuebner <heiko@sntech.de>, iommu@lists.linux.dev,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Jonathan Hunter <jonathanh@nvidia.com>, Joerg Roedel <joro@8bytes.org>,
- Kevin Tian <kevin.tian@intel.com>, Konrad Dybcio <konrad.dybcio@linaro.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
- linux-mediatek@lists.infradead.org, linux-rockchip@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
- linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
- Russell King <linux@armlinux.org.uk>, linuxppc-dev@lists.ozlabs.org,
- Matthias Brugger <matthias.bgg@gmail.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Orson Zhai <orsonzhai@gmail.com>, Rob Clark <robdclark@gmail.com>,
- Robin Murphy <robin.murphy@arm.com>, Samuel Holland <samuel@sholland.org>,
- Thierry Reding <thierry.reding@gmail.com>, Krishna Reddy
- <vdumpa@nvidia.com>, Chen-Yu Tsai <wens@csie.org>,
- Will Deacon <will@kernel.org>, Yong Wu <yong.wu@mediatek.com>,
- Chunyan Zhang <zhang.lyra@gmail.com>
-References: <25-v6-e8114faedade+425-iommu_all_defdom_jgg@nvidia.com>
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <25-v6-e8114faedade+425-iommu_all_defdom_jgg@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: _HQD-wDn94Pvfrou_WeZwkLgMazSp7tn
+X-Proofpoint-ORIG-GUID: b_7YgQEk9Osch21rOdfuL5PndkOOhGu4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-14_01,2023-08-10_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 malwarescore=0
+ clxscore=1011 lowpriorityscore=0 impostorscore=0 bulkscore=0 mlxscore=0
+ mlxlogscore=623 priorityscore=1501 phishscore=0 suspectscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308140064
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,37 +103,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thierry Reding <treding@nvidia.com>, Niklas Schnelle <schnelle@linux.ibm.com>, Steven Price <steven.price@arm.com>, Nicolin Chen <nicolinc@nvidia.com>, Dmitry Osipenko <digetx@gmail.com>, baolu.lu@linux.intel.com, Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: linuxppc-dev@lists.ozlabs.org, wangxiongfeng2@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2023/8/3 8:08, Jason Gunthorpe wrote:
-> These drivers don't support IOMMU_DOMAIN_DMA, so this commit effectively
-> allows them to support that mode.
-> 
-> The prior work to require default_domains makes this safe because every
-> one of these drivers is either compilation incompatible with dma-iommu.c,
-> or already establishing a default_domain. In both cases alloc_domain()
-> will never be called with IOMMU_DOMAIN_DMA for these drivers so it is safe
-> to drop the test.
-> 
-> Removing these tests clarifies that the domain allocation path is only
-> about the functionality of a paging domain and has nothing to do with
-> policy of how the paging domain is used for UNMANAGED/DMA/DMA_FQ.
-> 
-> Tested-by: Niklas Schnelle<schnelle@linux.ibm.com>
-> Tested-by: Steven Price<steven.price@arm.com>
-> Tested-by: Marek Szyprowski<m.szyprowski@samsung.com>
-> Tested-by: Nicolin Chen<nicolinc@nvidia.com>
-> Signed-off-by: Jason Gunthorpe<jgg@nvidia.com>
-> ---
->   drivers/iommu/msm_iommu.c    | 7 ++-----
->   drivers/iommu/mtk_iommu_v1.c | 7 ++-----
->   drivers/iommu/omap-iommu.c   | 7 ++-----
->   drivers/iommu/s390-iommu.c   | 7 ++-----
->   4 files changed, 8 insertions(+), 20 deletions(-)
+On Fri, 2023-08-11 at 18:20 +0800, Zheng Zengkai wrote:
+> PCI core API pci_dev_id() can be used to get the BDF number for a pci
+> device. We don't need to compose it mannually. Use pci_dev_id() to
+> simplify the code a little bit.
+>=20
+> Signed-off-by: Zheng Zengkai <zhengzengkai@huawei.com>
 
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+Acked-by: Andrew Donnellan <ajd@linux.ibm.com>
 
-Best regards,
-baolu
+--=20
+Andrew Donnellan    OzLabs, ADL Canberra
+ajd@linux.ibm.com   IBM Australia Limited
