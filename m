@@ -1,88 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AFF577B0EC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Aug 2023 07:54:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 973DE77B185
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Aug 2023 08:25:17 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NWK0xdgQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=gCJQuA3d;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RPNs00nlvz3cBb
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Aug 2023 15:54:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RPPXC32BWz30GC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Aug 2023 16:25:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NWK0xdgQ;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=gCJQuA3d;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.43; helo=mgamail.intel.com; envelope-from=baolu.lu@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::430; helo=mail-pf1-x430.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RPNr62VRwz2xjw
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Aug 2023 15:53:56 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1691992438; x=1723528438;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=a2QSRt0CT0L60eG86wMpFcJf0hM4N1YS5dCIVT5BbyY=;
-  b=NWK0xdgQJSR79Uta9JUyuVQUog5WXJTZJIE8/mxoXN+jhPyYSVgz/iVZ
-   007IyH+dSXpQ/OYpIoFnJCPKLOwiXwI4GJfppM69dRRyVSCwNyTkPrJbw
-   pUmQgvHqOUcXFEb7o27pdC4qfxn/TdOWg5UDnkAt3rQp8rOvN+ImYxnCS
-   93C0YXR806eMi5LMYg1Xv34Y8BV/aIKhWrHm97VSu0/y0FMhim+pFUoBt
-   QvjFEEwlMMQcKeZ16Y9jKojc2FFU3G5q3P84fdzeEZfWqHyNdNQqQXVMP
-   mnw4ED7C6tdxJngazCFotAiMmbEyDSXjNrTxf+u+G9Htv+8x88SDAAGVZ
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10801"; a="458331959"
-X-IronPort-AV: E=Sophos;i="6.01,171,1684825200"; 
-   d="scan'208";a="458331959"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2023 22:53:50 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10801"; a="710209925"
-X-IronPort-AV: E=Sophos;i="6.01,171,1684825200"; 
-   d="scan'208";a="710209925"
-Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.255.29.49]) ([10.255.29.49])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2023 22:53:38 -0700
-Message-ID: <0fcc42b0-9e11-6787-b678-2714ca92efab@linux.intel.com>
-Date: Mon, 14 Aug 2023 13:53:36 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH v6 14/25] iommu/msm: Implement an IDENTITY domain
-Content-Language: en-US
-To: Jason Gunthorpe <jgg@nvidia.com>, Andy Gross <agross@kernel.org>,
- Alim Akhtar <alim.akhtar@samsung.com>, Bjorn Andersson
- <andersson@kernel.org>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Stuebner <heiko@sntech.de>, iommu@lists.linux.dev,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Jonathan Hunter <jonathanh@nvidia.com>, Joerg Roedel <joro@8bytes.org>,
- Kevin Tian <kevin.tian@intel.com>, Konrad Dybcio <konrad.dybcio@linaro.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
- linux-mediatek@lists.infradead.org, linux-rockchip@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
- linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
- Russell King <linux@armlinux.org.uk>, linuxppc-dev@lists.ozlabs.org,
- Matthias Brugger <matthias.bgg@gmail.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Orson Zhai <orsonzhai@gmail.com>, Rob Clark <robdclark@gmail.com>,
- Robin Murphy <robin.murphy@arm.com>, Samuel Holland <samuel@sholland.org>,
- Thierry Reding <thierry.reding@gmail.com>, Krishna Reddy
- <vdumpa@nvidia.com>, Chen-Yu Tsai <wens@csie.org>,
- Will Deacon <will@kernel.org>, Yong Wu <yong.wu@mediatek.com>,
- Chunyan Zhang <zhang.lyra@gmail.com>
-References: <14-v6-e8114faedade+425-iommu_all_defdom_jgg@nvidia.com>
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <14-v6-e8114faedade+425-iommu_all_defdom_jgg@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RPPWG5DpRz2xpm
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Aug 2023 16:24:25 +1000 (AEST)
+Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-686ba29ccb1so2623230b3a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Aug 2023 23:24:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1691994260; x=1692599060;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JVal+SmPwyPXEWd8E/hW8Myn0EzYgFGiM97Uxtw14hQ=;
+        b=gCJQuA3dsTfDJieIBSLrO57qTyyDyVyxEU+8UhRnxnPwlSoGZXlUqghn2upnUe+Mxp
+         VbeISFKHoYYJy9eDGjF7uge9P3/hsVvZhbx4oHsnGttRZ+1Q2fBoOL3vjsXDUl0qHg4f
+         i4fFIIlLGkuAU6O3tu9et3SlBYczV6tpUl5NxbdUHKGKAiMq5dAg15PX1v97Jv7TOvXt
+         ROijNORYbXf47zQrEVWvS4AgAuw308X6aw2/uthYKEcDcw7uOxw4m5G+agmTpwFrPw5I
+         nYLHGAIG8VFmzEFqTrgLMsUo1tH9I42+KbIUEV0/TaZkxSDVEausufKUbOrIh/VhjCzf
+         S+vw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691994260; x=1692599060;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=JVal+SmPwyPXEWd8E/hW8Myn0EzYgFGiM97Uxtw14hQ=;
+        b=YJsNAtpoUKAzzJitQikBsveSObajDt0VPoirH6ghsZq7q9aDw1P7FDLXkfHY21j4d9
+         WYfwYYfe/2D+g0oAu0HEA53jeIvYMJVvycOnlCtX0Xw/eaxl2w+dSXH2WO/2INeNIbm3
+         oDKchqErXO4pum3zYj/xb4SsqbmDkZrdsXyGVX0mIeoODqsV2t6OD+mz6OvytELXaG0D
+         9n9/89jImDUAiGQUvSPS8zw1/8cWLINMPkfW8kkibG5OsU00472Aitwb+CGAlRtdpK4u
+         n+6bJknCHXnlu6POkvWgZBoGOfOock0WWSRSYaTw1yyFhnYENfSy8zugOzvthpBehUik
+         l8iQ==
+X-Gm-Message-State: AOJu0Yw08WrV7E5eUFNH3isR7Vtu7pm6nfD/GK1GU94zF/LVnp0Se2bu
+	87QATOlGhRh5RtWXIA2hI2Q=
+X-Google-Smtp-Source: AGHT+IG3UeHMP3uaM2nERoAOz2IwLxw1P/hOZpeV5uvZekc4E/A4TSFDrOfU7cwHb3eu20J/EFyE0Q==
+X-Received: by 2002:a05:6a00:1915:b0:666:eaaf:a2af with SMTP id y21-20020a056a00191500b00666eaafa2afmr10781211pfi.14.1691994260525;
+        Sun, 13 Aug 2023 23:24:20 -0700 (PDT)
+Received: from localhost ([1.146.8.58])
+        by smtp.gmail.com with ESMTPSA id 8-20020aa79108000000b00686da0e163bsm7372165pfh.11.2023.08.13.23.24.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 13 Aug 2023 23:24:20 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 14 Aug 2023 16:24:15 +1000
+Message-Id: <CUS1WM4XRDIT.2GTHPR1FHQKS2@wheely>
+To: "Christophe Leroy" <christophe.leroy@csgroup.eu>, "Michael Ellerman"
+ <mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/radix: Move some functions into #ifdef
+ CONFIG_KVM_BOOK3S_HV_POSSIBLE
+From: "Nicholas Piggin" <npiggin@gmail.com>
+X-Mailer: aerc 0.15.2
+References: <3d72efd39f986ee939d068af69fdce28bd600766.1691568093.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <3d72efd39f986ee939d068af69fdce28bd600766.1691568093.git.christophe.leroy@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,26 +81,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thierry Reding <treding@nvidia.com>, Niklas Schnelle <schnelle@linux.ibm.com>, Steven Price <steven.price@arm.com>, Nicolin Chen <nicolinc@nvidia.com>, Dmitry Osipenko <digetx@gmail.com>, baolu.lu@linux.intel.com, Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, kernel
+ test robot <lkp@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2023/8/3 8:08, Jason Gunthorpe wrote:
-> What msm does during msm_iommu_set_platform_dma() is actually putting the
-> iommu into identity mode.
-> 
-> Move to the new core support for ARM_DMA_USE_IOMMU by defining
-> ops->identity_domain.
-> 
-> This driver does not support IOMMU_DOMAIN_DMA, however it cannot be
-> compiled on ARM64 either. Most likely it is fine to support dma-iommu.c
-> 
-> Signed-off-by: Jason Gunthorpe<jgg@nvidia.com>
-> ---
->   drivers/iommu/msm_iommu.c | 23 +++++++++++++++++++----
->   1 file changed, 19 insertions(+), 4 deletions(-)
+On Wed Aug 9, 2023 at 6:01 PM AEST, Christophe Leroy wrote:
+> With skiboot_defconfig, Clang reports:
+>
+>   CC      arch/powerpc/mm/book3s64/radix_tlb.o
+> arch/powerpc/mm/book3s64/radix_tlb.c:419:20: error: unused function '_tlb=
+ie_pid_lpid' [-Werror,-Wunused-function]
+> static inline void _tlbie_pid_lpid(unsigned long pid, unsigned long lpid,
+>                    ^
+> arch/powerpc/mm/book3s64/radix_tlb.c:663:20: error: unused function '_tlb=
+ie_va_range_lpid' [-Werror,-Wunused-function]
+> static inline void _tlbie_va_range_lpid(unsigned long start, unsigned lon=
+g end,
+>                    ^
+>
+> This is because those functions are only called from functions
+> enclosed in a #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
+>
+> Move below functions inside that #ifdef
+> * __tlbie_pid_lpid(unsigned long pid,
+> * __tlbie_va_lpid(unsigned long va, unsigned long pid,
+> * fixup_tlbie_pid_lpid(unsigned long pid, unsigned long lpid)
+> * _tlbie_pid_lpid(unsigned long pid, unsigned long lpid,
+> * fixup_tlbie_va_range_lpid(unsigned long va,
+> * __tlbie_va_range_lpid(unsigned long start, unsigned long end,
+> * _tlbie_va_range_lpid(unsigned long start, unsigned long end,
 
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+Thanks for doing this. Functions vaguely belong where they are, which
+makes it slightly annoying to move them. Is it also annoying to add
+ifdefs for each one where they are?
 
-Best regards,
-baolu
+Thanks,
+Nick
