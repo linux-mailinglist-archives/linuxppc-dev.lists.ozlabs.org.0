@@ -2,55 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35FF377B0A8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Aug 2023 07:11:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AFF577B0EC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Aug 2023 07:54:46 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DV37Ly/j;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NWK0xdgQ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RPMvG0pl1z3bx0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Aug 2023 15:11:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RPNs00nlvz3cBb
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Aug 2023 15:54:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DV37Ly/j;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NWK0xdgQ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.93; helo=mgamail.intel.com; envelope-from=baolu.lu@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.43; helo=mgamail.intel.com; envelope-from=baolu.lu@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RPMtL6FjLz2xgp
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Aug 2023 15:10:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RPNr62VRwz2xjw
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Aug 2023 15:53:56 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1691989851; x=1723525851;
+  t=1691992438; x=1723528438;
   h=message-id:date:mime-version:cc:subject:to:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=TUpy0yCpdy1QocZ9SL6jg1gXIK1RHtcIWUumpNs6efA=;
-  b=DV37Ly/jE4s5kobuNSHnGJ8MP89CoTPYLVBDa+IHcX1UXNnd9GAAz3MO
-   70pBh8v1M3UL127LtjiGLKzM302COAoaGvWAm6M+UA/+yihm63Lbzq4U0
-   pzgDLJk7VUgQ1dTKsfz9gxpdlrysy9SwUsY7m1Cu7K8C8ykvYn+W4q2Z8
-   m4SU8FfCeLe3UPyWXDe1/BF6HkVdQRAgHDiX3nv66ao2N2q9ROXP/Vh+A
-   9MyBDnw8Gw4yxCJjzasE3aBK2lhP7gdrLZFuY+C0hsOpnHspM/Y1Iklnj
-   ZE+gW2Ua/xOejkYTHQ/F6se80faGJxtP+8WeiML55FD6BlJ+hbR1EO9t8
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10801"; a="369434668"
+  bh=a2QSRt0CT0L60eG86wMpFcJf0hM4N1YS5dCIVT5BbyY=;
+  b=NWK0xdgQJSR79Uta9JUyuVQUog5WXJTZJIE8/mxoXN+jhPyYSVgz/iVZ
+   007IyH+dSXpQ/OYpIoFnJCPKLOwiXwI4GJfppM69dRRyVSCwNyTkPrJbw
+   pUmQgvHqOUcXFEb7o27pdC4qfxn/TdOWg5UDnkAt3rQp8rOvN+ImYxnCS
+   93C0YXR806eMi5LMYg1Xv34Y8BV/aIKhWrHm97VSu0/y0FMhim+pFUoBt
+   QvjFEEwlMMQcKeZ16Y9jKojc2FFU3G5q3P84fdzeEZfWqHyNdNQqQXVMP
+   mnw4ED7C6tdxJngazCFotAiMmbEyDSXjNrTxf+u+G9Htv+8x88SDAAGVZ
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10801"; a="458331959"
 X-IronPort-AV: E=Sophos;i="6.01,171,1684825200"; 
-   d="scan'208";a="369434668"
+   d="scan'208";a="458331959"
 Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2023 22:10:46 -0700
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2023 22:53:50 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10801"; a="710202088"
+X-IronPort-AV: E=McAfee;i="6600,9927,10801"; a="710209925"
 X-IronPort-AV: E=Sophos;i="6.01,171,1684825200"; 
-   d="scan'208";a="710202088"
+   d="scan'208";a="710209925"
 Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.255.29.49]) ([10.255.29.49])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2023 22:10:34 -0700
-Message-ID: <2997ef72-37bd-109b-d659-71f259c64eb5@linux.intel.com>
-Date: Mon, 14 Aug 2023 13:10:32 +0800
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2023 22:53:38 -0700
+Message-ID: <0fcc42b0-9e11-6787-b678-2714ca92efab@linux.intel.com>
+Date: Mon, 14 Aug 2023 13:53:36 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.14.0
-Subject: Re: [PATCH v6 13/25] iommu/omap: Implement an IDENTITY domain
+Subject: Re: [PATCH v6 14/25] iommu/msm: Implement an IDENTITY domain
 Content-Language: en-US
 To: Jason Gunthorpe <jgg@nvidia.com>, Andy Gross <agross@kernel.org>,
  Alim Akhtar <alim.akhtar@samsung.com>, Bjorn Andersson
@@ -78,9 +78,9 @@ To: Jason Gunthorpe <jgg@nvidia.com>, Andy Gross <agross@kernel.org>,
  <vdumpa@nvidia.com>, Chen-Yu Tsai <wens@csie.org>,
  Will Deacon <will@kernel.org>, Yong Wu <yong.wu@mediatek.com>,
  Chunyan Zhang <zhang.lyra@gmail.com>
-References: <13-v6-e8114faedade+425-iommu_all_defdom_jgg@nvidia.com>
+References: <14-v6-e8114faedade+425-iommu_all_defdom_jgg@nvidia.com>
 From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <13-v6-e8114faedade+425-iommu_all_defdom_jgg@nvidia.com>
+In-Reply-To: <14-v6-e8114faedade+425-iommu_all_defdom_jgg@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -99,8 +99,8 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 2023/8/3 8:08, Jason Gunthorpe wrote:
-> What omap does during omap_iommu_set_platform_dma() is actually putting
-> the iommu into identity mode.
+> What msm does during msm_iommu_set_platform_dma() is actually putting the
+> iommu into identity mode.
 > 
 > Move to the new core support for ARM_DMA_USE_IOMMU by defining
 > ops->identity_domain.
@@ -110,8 +110,8 @@ On 2023/8/3 8:08, Jason Gunthorpe wrote:
 > 
 > Signed-off-by: Jason Gunthorpe<jgg@nvidia.com>
 > ---
->   drivers/iommu/omap-iommu.c | 21 ++++++++++++++++++---
->   1 file changed, 18 insertions(+), 3 deletions(-)
+>   drivers/iommu/msm_iommu.c | 23 +++++++++++++++++++----
+>   1 file changed, 19 insertions(+), 4 deletions(-)
 
 Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
 
