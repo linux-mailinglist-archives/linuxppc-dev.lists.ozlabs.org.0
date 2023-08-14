@@ -1,56 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F78A77B0A6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Aug 2023 07:09:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35FF377B0A8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Aug 2023 07:11:40 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=P+wnyv66;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DV37Ly/j;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RPMs51wNBz30gB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Aug 2023 15:09:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RPMvG0pl1z3bx0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Aug 2023 15:11:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=P+wnyv66;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DV37Ly/j;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.88; helo=mgamail.intel.com; envelope-from=baolu.lu@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.93; helo=mgamail.intel.com; envelope-from=baolu.lu@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RPMrB3vKVz2xgp
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Aug 2023 15:08:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RPMtL6FjLz2xgp
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Aug 2023 15:10:50 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1691989738; x=1723525738;
+  t=1691989851; x=1723525851;
   h=message-id:date:mime-version:cc:subject:to:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=fbQxPjZnY0DuGHhK25w0Zhh0FieYTmdMp1vAFT8U97s=;
-  b=P+wnyv665eFJ0Go1szKzkBDqMFZo4DqcWFAoWMD+e7mV2Kv8VhBO6T/e
-   9Xo71otIry1+HfWmwpogH+XLkJin8SVid9hkCEBpXvSGyh6S/2XWLTxbY
-   /WvcW8RtGXGro0Hlc0R0eEmCTXeEVOQOYHiWLx9qJXPhwgiW01n2iBJWn
-   MumM9qNOZsuLDUfmgtLhvIosI6rHdS7y+rrp7y1xGKSH70nRoT7pUWLsr
-   SOY8B6AIlfYnOUJnfmMfBrUhzgXRClKTbF0rIy5wkwB1sProX3eO1von2
-   x2QCpkxA6SGfgnUUbUfQMOSIyYvhtvY6WN46sljsTY4CPO5KZWoIHGBtA
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10801"; a="402946764"
+  bh=TUpy0yCpdy1QocZ9SL6jg1gXIK1RHtcIWUumpNs6efA=;
+  b=DV37Ly/jE4s5kobuNSHnGJ8MP89CoTPYLVBDa+IHcX1UXNnd9GAAz3MO
+   70pBh8v1M3UL127LtjiGLKzM302COAoaGvWAm6M+UA/+yihm63Lbzq4U0
+   pzgDLJk7VUgQ1dTKsfz9gxpdlrysy9SwUsY7m1Cu7K8C8ykvYn+W4q2Z8
+   m4SU8FfCeLe3UPyWXDe1/BF6HkVdQRAgHDiX3nv66ao2N2q9ROXP/Vh+A
+   9MyBDnw8Gw4yxCJjzasE3aBK2lhP7gdrLZFuY+C0hsOpnHspM/Y1Iklnj
+   ZE+gW2Ua/xOejkYTHQ/F6se80faGJxtP+8WeiML55FD6BlJ+hbR1EO9t8
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10801"; a="369434668"
 X-IronPort-AV: E=Sophos;i="6.01,171,1684825200"; 
-   d="scan'208";a="402946764"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2023 22:08:52 -0700
+   d="scan'208";a="369434668"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2023 22:10:46 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10801"; a="856945336"
+X-IronPort-AV: E=McAfee;i="6600,9927,10801"; a="710202088"
 X-IronPort-AV: E=Sophos;i="6.01,171,1684825200"; 
-   d="scan'208";a="856945336"
+   d="scan'208";a="710202088"
 Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.255.29.49]) ([10.255.29.49])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2023 22:08:41 -0700
-Message-ID: <6675bf11-ed80-15b9-b8bc-dee65b595ba5@linux.intel.com>
-Date: Mon, 14 Aug 2023 13:08:39 +0800
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2023 22:10:34 -0700
+Message-ID: <2997ef72-37bd-109b-d659-71f259c64eb5@linux.intel.com>
+Date: Mon, 14 Aug 2023 13:10:32 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.14.0
-Subject: Re: [PATCH v6 12/25] iommu/tegra-smmu: Support DMA domains in tegra
+Subject: Re: [PATCH v6 13/25] iommu/omap: Implement an IDENTITY domain
 Content-Language: en-US
 To: Jason Gunthorpe <jgg@nvidia.com>, Andy Gross <agross@kernel.org>,
  Alim Akhtar <alim.akhtar@samsung.com>, Bjorn Andersson
@@ -78,9 +78,9 @@ To: Jason Gunthorpe <jgg@nvidia.com>, Andy Gross <agross@kernel.org>,
  <vdumpa@nvidia.com>, Chen-Yu Tsai <wens@csie.org>,
  Will Deacon <will@kernel.org>, Yong Wu <yong.wu@mediatek.com>,
  Chunyan Zhang <zhang.lyra@gmail.com>
-References: <12-v6-e8114faedade+425-iommu_all_defdom_jgg@nvidia.com>
+References: <13-v6-e8114faedade+425-iommu_all_defdom_jgg@nvidia.com>
 From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <12-v6-e8114faedade+425-iommu_all_defdom_jgg@nvidia.com>
+In-Reply-To: <13-v6-e8114faedade+425-iommu_all_defdom_jgg@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -98,54 +98,22 @@ Cc: Thierry Reding <treding@nvidia.com>, Niklas Schnelle <schnelle@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2023/8/3 8:07, Jason Gunthorpe wrote:
-> All ARM64 iommu drivers should support IOMMU_DOMAIN_DMA to enable
-> dma-iommu.c.
+On 2023/8/3 8:08, Jason Gunthorpe wrote:
+> What omap does during omap_iommu_set_platform_dma() is actually putting
+> the iommu into identity mode.
 > 
-> tegra is blocking dma-iommu usage, and also default_domain's, because it
-> wants an identity translation. This is needed for some device quirk. The
-> correct way to do this is to support IDENTITY domains and use
-> ops->def_domain_type() to return IOMMU_DOMAIN_IDENTITY for only the quirky
-> devices.
+> Move to the new core support for ARM_DMA_USE_IOMMU by defining
+> ops->identity_domain.
 > 
-> Add support for IOMMU_DOMAIN_DMA and force IOMMU_DOMAIN_IDENTITY mode for
-> everything so no behavior changes.
+> This driver does not support IOMMU_DOMAIN_DMA, however it cannot be
+> compiled on ARM64 either. Most likely it is fine to support dma-iommu.c
 > 
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+> Signed-off-by: Jason Gunthorpe<jgg@nvidia.com>
 > ---
->   drivers/iommu/tegra-smmu.c | 8 +++++++-
->   1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iommu/tegra-smmu.c b/drivers/iommu/tegra-smmu.c
-> index f63f1d4f0bd10f..6cba034905edbf 100644
-> --- a/drivers/iommu/tegra-smmu.c
-> +++ b/drivers/iommu/tegra-smmu.c
-> @@ -276,7 +276,7 @@ static struct iommu_domain *tegra_smmu_domain_alloc(unsigned type)
->   {
->   	struct tegra_smmu_as *as;
->   
-> -	if (type != IOMMU_DOMAIN_UNMANAGED)
-> +	if (type != IOMMU_DOMAIN_UNMANAGED && type != IOMMU_DOMAIN_DMA)
->   		return NULL;
->   
->   	as = kzalloc(sizeof(*as), GFP_KERNEL);
-> @@ -989,6 +989,12 @@ static int tegra_smmu_def_domain_type(struct device *dev)
->   }
->   
->   static const struct iommu_ops tegra_smmu_ops = {
-> +	/*
-> +	 * FIXME: For now we want to run all translation in IDENTITY mode,
-> +	 * better would be to have a def_domain_type op do this for just the
-> +	 * quirky device.
-> +	 */
-> +	.default_domain = &tegra_smmu_identity_domain,
+>   drivers/iommu/omap-iommu.c | 21 ++++++++++++++++++---
+>   1 file changed, 18 insertions(+), 3 deletions(-)
 
-tegra_smmu_def_domain_type() has already forced the core to use
-ops->identity_domain, why do we still need ops->default_domain?
-
->   	.identity_domain = &tegra_smmu_identity_domain,
->   	.def_domain_type = &tegra_smmu_def_domain_type,
->   	.domain_alloc = tegra_smmu_domain_alloc,
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
 
 Best regards,
 baolu
