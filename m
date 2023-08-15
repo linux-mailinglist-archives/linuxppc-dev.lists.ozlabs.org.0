@@ -2,58 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCBDE77CB61
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Aug 2023 12:58:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1C0377CBFB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Aug 2023 13:47:58 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dBFYrqtQ;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RQ7YX50gTz3cVZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Aug 2023 20:58:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RQ8f45l96z3cgQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Aug 2023 21:47:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dBFYrqtQ;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nayna@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RQ7Xz0Yv0z3brg
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Aug 2023 20:58:24 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4RQ7Xq5Q3zz9sgl;
-	Tue, 15 Aug 2023 12:58:19 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 35I_1FWIg5xz; Tue, 15 Aug 2023 12:58:19 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4RQ7Xq4YBhz9sgk;
-	Tue, 15 Aug 2023 12:58:19 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 984238B76C;
-	Tue, 15 Aug 2023 12:58:19 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id 8HnwJpFcbP5f; Tue, 15 Aug 2023 12:58:19 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.233.223])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 5400C8B763;
-	Tue, 15 Aug 2023 12:58:19 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 37FAwBrP077191
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 15 Aug 2023 12:58:11 +0200
-Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 37FAw9lQ077190;
-	Tue, 15 Aug 2023 12:58:09 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH] powerpc: Move zalloc_maybe_bootmem() into pci-common.c
-Date: Tue, 15 Aug 2023 12:57:55 +0200
-Message-ID: <4235adc9515a4b084f815cc12f24ef1ac2b43eba.1692097067.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.41.0
-MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1692097074; l=3588; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=7P8PUpj4knPK7IjXYrS0Hvc31FR/JHVAdIARH2NQJQU=; b=xSL8aUcrGcbJXZE8h0NNjhr5UldtJ5uzYxIKloDP3CucTjaKVIG6VjsAZyvW533ssrmwuivai 3JIHfxS7617BmFnBWAf1xD88dfjiTsMIuM6Vb4QskmuBMoGNVTyD8IS
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RQ8bk4jD7z3cQ4
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Aug 2023 21:45:54 +1000 (AEST)
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37FBh0is028669;
+	Tue, 15 Aug 2023 11:45:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=7DP/Q/hdQzJhswhaeMjJO8a+YDVLokFn098hnf6tMK8=;
+ b=dBFYrqtQrK0B3axK48PpS7bTUEgg+STtGdJZPdQPMh48PciRfPh6TwWFan8GTOxIlQ8R
+ XarDxdt7Zx7b9zfgo3zeHKzmfnxfqycaoDx+op3CxYo8qM2OaQ6UhWNeLZRrti31eSQ4
+ MOSmG7am2+3424cFlQx/FRTHUS4JlHCfJOUr40ggSE4yXY4JaIbzAVu/W3NN3NZ4Yx6a
+ bVQHEKw+11DHge8efPiKWjyAztT9Pi1RMma9w2lsIao/Ez88zXsc7HJnbWSPwb/mFnDU
+ 8umgCZozKaFG9u1wxafoJuQi19JDXrfPH0wW7oMT8eRV0pFisaIEG5Bltiq2rizd01PE gw== 
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sg8qy81fa-6
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 15 Aug 2023 11:45:50 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 37F8o951018920;
+	Tue, 15 Aug 2023 11:27:37 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3seq41bsg7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 15 Aug 2023 11:27:37 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 37FBRYlc5636652
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 15 Aug 2023 11:27:35 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CB67920040;
+	Tue, 15 Aug 2023 11:27:34 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8E30620043;
+	Tue, 15 Aug 2023 11:27:32 +0000 (GMT)
+Received: from li-4b5937cc-25c4-11b2-a85c-cea3a66903e4.ibm.com (unknown [9.61.3.84])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 15 Aug 2023 11:27:32 +0000 (GMT)
+From: Nayna Jain <nayna@linux.ibm.com>
+To: linux-integrity@vger.kernel.org
+Subject: [PATCH v4 0/6] Enable loading local and third party keys on PowerVM guest
+Date: Tue, 15 Aug 2023 07:27:16 -0400
+Message-Id: <20230815112722.1591829-1-nayna@linux.ibm.com>
+X-Mailer: git-send-email 2.39.3
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: yc7FbDNlJv9AoCdA7QD2NPr9cBhAPEhp
+X-Proofpoint-ORIG-GUID: yc7FbDNlJv9AoCdA7QD2NPr9cBhAPEhp
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-15_10,2023-08-15_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ phishscore=0 spamscore=0 priorityscore=1501 bulkscore=0 adultscore=0
+ mlxlogscore=999 suspectscore=0 malwarescore=0 impostorscore=0
+ clxscore=1015 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308150103
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,125 +87,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Eric Snowberg <eric.snowberg@oracle.com>, Paul Moore <paul@paul-moore.com>, inux-kernel@vger.kernel.org, Nayna Jain <nayna@linux.ibm.com>, linux-security-module@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>, Jarkko Sakkinen <jarkko@kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-zalloc_maybe_bootmem() is only used by PCI related functions.
+On a secure boot enabled PowerVM guest, local and third party code signing
+keys are needed to verify signed applications, configuration files, and
+kernel modules.
 
-Move it into pci-common.c and remove the always built alloc.c
+Loading these keys onto either the .secondary_trusted_keys or .ima
+keyrings requires the certificates be signed by keys on the
+.builtin_trusted_keys, .machine or .secondary_trusted_keys keyrings.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/include/asm/pci.h   |  2 ++
- arch/powerpc/include/asm/setup.h |  1 -
- arch/powerpc/kernel/pci-common.c | 16 ++++++++++++++++
- arch/powerpc/lib/Makefile        |  2 +-
- arch/powerpc/lib/alloc.c         | 23 -----------------------
- 5 files changed, 19 insertions(+), 25 deletions(-)
- delete mode 100644 arch/powerpc/lib/alloc.c
+Keys on the .builtin_trusted_keys keyring are trusted because of the chain
+of trust from secure boot up to and including the linux kernel.  Keys on
+the .machine keyring that derive their trust from an entity such as a
+security officer, administrator, system owner, or machine owner are said
+to have "imputed trust." The type of certificates and the mechanism for
+loading them onto the .machine keyring is platform dependent.
 
-diff --git a/arch/powerpc/include/asm/pci.h b/arch/powerpc/include/asm/pci.h
-index f5078a7dd85a..13d36ec3a5ea 100644
---- a/arch/powerpc/include/asm/pci.h
-+++ b/arch/powerpc/include/asm/pci.h
-@@ -45,6 +45,8 @@ static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
- 	return channel ? 15 : 14;
- }
- 
-+void *zalloc_maybe_bootmem(size_t size, gfp_t mask);
-+
- #ifdef CONFIG_PCI
- void __init set_pci_dma_ops(const struct dma_map_ops *dma_ops);
- #else	/* CONFIG_PCI */
-diff --git a/arch/powerpc/include/asm/setup.h b/arch/powerpc/include/asm/setup.h
-index e29e83f8a89c..eed74c1fb832 100644
---- a/arch/powerpc/include/asm/setup.h
-+++ b/arch/powerpc/include/asm/setup.h
-@@ -8,7 +8,6 @@
- extern void ppc_printk_progress(char *s, unsigned short hex);
- 
- extern unsigned long long memory_limit;
--extern void *zalloc_maybe_bootmem(size_t size, gfp_t mask);
- 
- struct device_node;
- 
-diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
-index e88d7c9feeec..34e66b06a030 100644
---- a/arch/powerpc/kernel/pci-common.c
-+++ b/arch/powerpc/kernel/pci-common.c
-@@ -31,6 +31,7 @@
- #include <linux/numa.h>
- #include <linux/msi.h>
- #include <linux/irqdomain.h>
-+#include <linux/memblock.h>
- 
- #include <asm/processor.h>
- #include <asm/io.h>
-@@ -121,6 +122,21 @@ static int get_phb_number(struct device_node *dn)
- 	return phb_id;
- }
- 
-+void * __ref zalloc_maybe_bootmem(size_t size, gfp_t mask)
-+{
-+	void *p;
-+
-+	if (slab_is_available()) {
-+		p = kzalloc(size, mask);
-+	} else {
-+		p = memblock_alloc(size, SMP_CACHE_BYTES);
-+		if (!p)
-+			panic("%s: Failed to allocate %zu bytes\n", __func__,
-+			      size);
-+	}
-+	return p;
-+}
-+
- struct pci_controller *pcibios_alloc_controller(struct device_node *dev)
- {
- 	struct pci_controller *phb;
-diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
-index 9aa8286c9687..51ad0397c17a 100644
---- a/arch/powerpc/lib/Makefile
-+++ b/arch/powerpc/lib/Makefile
-@@ -27,7 +27,7 @@ endif
- CFLAGS_code-patching.o += $(DISABLE_LATENT_ENTROPY_PLUGIN)
- CFLAGS_feature-fixups.o += $(DISABLE_LATENT_ENTROPY_PLUGIN)
- 
--obj-y += alloc.o code-patching.o feature-fixups.o pmem.o
-+obj-y += code-patching.o feature-fixups.o pmem.o
- 
- obj-$(CONFIG_CODE_PATCHING_SELFTEST) += test-code-patching.o
- 
-diff --git a/arch/powerpc/lib/alloc.c b/arch/powerpc/lib/alloc.c
-deleted file mode 100644
-index ce180870bd52..000000000000
---- a/arch/powerpc/lib/alloc.c
-+++ /dev/null
-@@ -1,23 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--#include <linux/types.h>
--#include <linux/init.h>
--#include <linux/slab.h>
--#include <linux/memblock.h>
--#include <linux/string.h>
--#include <asm/setup.h>
--
--
--void * __ref zalloc_maybe_bootmem(size_t size, gfp_t mask)
--{
--	void *p;
--
--	if (slab_is_available())
--		p = kzalloc(size, mask);
--	else {
--		p = memblock_alloc(size, SMP_CACHE_BYTES);
--		if (!p)
--			panic("%s: Failed to allocate %zu bytes\n", __func__,
--			      size);
--	}
--	return p;
--}
+Userspace may load certificates onto the .secondary_trusted_keys or .ima
+keyrings. However, keys may also need to be loaded by the kernel if they
+are needed for verification in early boot time. On PowerVM guest, third
+party code signing keys are loaded from the moduledb variable in the
+Platform KeyStore(PKS) onto the .secondary_trusted_keys.
+
+The purpose of this patch set is to allow loading of local and third party
+code signing keys on PowerVM.
+
+Changelog:
+
+v4:
+
+* Fixed build error reported by Nageswara R Sastry
+<rnsastry@linux.ibm.com>, as part of his testing of patches.
+* Included Jarkko's and Mimi's feedback
+
+v3:
+
+* Included Jarkko's feedback for Patch 6/6.
+
+v2:
+
+* Patch 5/6: Update CA restriction to allow only key signing CA's.
+* Rebase on Jarkko's master tree - https://kernel.googlesource.com/pub/scm/linux/kernel/git/jarkko/linux-tpmdd
+* Tested after reverting cfa7522f280aa95 because of build failure due to
+this commit.
+
+Nayna Jain (6):
+  integrity: PowerVM support for loading CA keys on machine keyring
+  integrity: ignore keys failing CA restrictions on non-UEFI platform
+  integrity: remove global variable from machine_keyring.c
+  integrity: check whether imputed trust is enabled
+  integrity: PowerVM machine keyring enablement
+  integrity: PowerVM support for loading third party code signing keys
+
+ certs/system_keyring.c                        | 30 ++++++++++++++++
+ include/keys/system_keyring.h                 |  4 +++
+ security/integrity/Kconfig                    |  4 ++-
+ security/integrity/digsig.c                   |  2 +-
+ security/integrity/integrity.h                |  5 +--
+ .../platform_certs/keyring_handler.c          | 19 ++++++++++-
+ .../platform_certs/keyring_handler.h          | 10 ++++++
+ .../integrity/platform_certs/load_powerpc.c   | 34 +++++++++++++++++++
+ .../platform_certs/machine_keyring.c          | 22 +++++++++---
+ 9 files changed, 121 insertions(+), 9 deletions(-)
+
 -- 
-2.41.0
-
+2.31.1
