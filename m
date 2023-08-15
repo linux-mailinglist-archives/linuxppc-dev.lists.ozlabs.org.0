@@ -1,83 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D95177CBF9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Aug 2023 13:47:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8AAB77CBB7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Aug 2023 13:30:25 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XPbbaNhO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sRCxdfpk;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RQ8d72j7fz3cSK
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Aug 2023 21:47:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RQ8Fq62lNz3cNY
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Aug 2023 21:30:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XPbbaNhO;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sRCxdfpk;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nayna@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=nayna@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RQ8bk118xz3cNj
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Aug 2023 21:45:53 +1000 (AEST)
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37FBabte022879;
-	Tue, 15 Aug 2023 11:45:50 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RQ8C34TqZz3c1M
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Aug 2023 21:27:59 +1000 (AEST)
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37FAv9u3007647;
+	Tue, 15 Aug 2023 11:27:54 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=2K+xOl9iCiEdHbs8U9vWbwZhgSfvBN7iaw7oWsKkQPc=;
- b=XPbbaNhOnU8UFf4Lnvjkk37nYdZ3TxihizCdZoTUQ5M3gxyQX4gFenyJcuIfodhbANJQ
- Wc9OAb3Vkmi7hLO+KuNK4vtlTZ9yDmAwafsPLSI6c1qc+qZuHE7Lom5tZsrghD28G8w7
- 3r7Alpfu1SXcjbdBclHqL1a6tJKMsGY1IKNdaffr8DTWsHjAN2N4kelk+HN29ApxCzUh
- lM2t+OzGqTKAvFBKsjACGvCgh8aFOf+dMs+sFPL/ZR91DeG/y5MucAMgLjrLo+R2u0Lj
- huVYAMltseboaQVfE2glNRpQjqssJ48Rmy6TiZEQj6vB4mSfneIydxBrx0foUqa2EIe6 fQ== 
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sg8gvg6dd-6
+ bh=7umKQ18TfJ2rU0BAvlJw1ntvklLhAfPeNWw/sDM+fX4=;
+ b=sRCxdfpkO3tjlBBeb1Fbe7qGKysmkrQCsqnoslt28v/yp3Vbfzr2hUDXGi8b04uW3iOx
+ 6MJ6dEw60eGj01xvGjiguqfP0/yfq+y3WX4zGAstTwmJBwdDgNlNjHSKVqFEbClG7bb3
+ Xa6nTRziO1sXWJXFJ1ZssjLBw9lrQDwVSalMzbMqjDKkmCjL0cyaH7HnlLNCtz1d49w3
+ jeb2tLKUOAljQTMsA1Q6lZOmDZhODcaERQsrCmuCu6oVI99LqT8TKmfnTWKxk5B4/tpK
+ R6W/1utIgZ0xOVbq97EjUpK8fNEUG8+BfK2jvLMwMng5cGXuBBRvAFi9hzMArRyO8BCw RQ== 
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sg82ggjfp-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 15 Aug 2023 11:45:49 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 37F8cXlO018831;
-	Tue, 15 Aug 2023 11:27:48 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3seq41bsgu-1
+	Tue, 15 Aug 2023 11:27:53 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 37FABS99002409;
+	Tue, 15 Aug 2023 11:27:53 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sendn4erh-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 15 Aug 2023 11:27:48 +0000
+	Tue, 15 Aug 2023 11:27:53 +0000
 Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 37FBRj9H22151742
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 37FBRo3562259556
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 15 Aug 2023 11:27:45 GMT
+	Tue, 15 Aug 2023 11:27:50 GMT
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 541162004B;
-	Tue, 15 Aug 2023 11:27:45 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 237802004B;
+	Tue, 15 Aug 2023 11:27:50 +0000 (GMT)
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DCDD020040;
-	Tue, 15 Aug 2023 11:27:42 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 0F43320040;
+	Tue, 15 Aug 2023 11:27:48 +0000 (GMT)
 Received: from li-4b5937cc-25c4-11b2-a85c-cea3a66903e4.ibm.com (unknown [9.61.3.84])
 	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 15 Aug 2023 11:27:42 +0000 (GMT)
+	Tue, 15 Aug 2023 11:27:47 +0000 (GMT)
 From: Nayna Jain <nayna@linux.ibm.com>
 To: linux-integrity@vger.kernel.org
-Subject: [PATCH v4 4/6] integrity: check whether imputed trust is enabled
-Date: Tue, 15 Aug 2023 07:27:20 -0400
-Message-Id: <20230815112722.1591829-5-nayna@linux.ibm.com>
+Subject: [PATCH v4 6/6] integrity: PowerVM support for loading third party code signing keys
+Date: Tue, 15 Aug 2023 07:27:22 -0400
+Message-Id: <20230815112722.1591829-7-nayna@linux.ibm.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20230815112722.1591829-1-nayna@linux.ibm.com>
 References: <20230815112722.1591829-1-nayna@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: xFpLP3FvDYwU2X2lsCA1AdThV3mQ-91U
-X-Proofpoint-ORIG-GUID: xFpLP3FvDYwU2X2lsCA1AdThV3mQ-91U
+X-Proofpoint-GUID: GC_cy-MCukNJoq6yujrRojl7WMEte774
+X-Proofpoint-ORIG-GUID: GC_cy-MCukNJoq6yujrRojl7WMEte774
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-08-15_10,2023-08-15_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
- suspectscore=0 impostorscore=0 adultscore=0 bulkscore=0 spamscore=0
- phishscore=0 lowpriorityscore=0 malwarescore=0 priorityscore=1501
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 adultscore=0
+ mlxscore=0 impostorscore=0 malwarescore=0 lowpriorityscore=0 phishscore=0
+ priorityscore=1501 bulkscore=0 suspectscore=0 clxscore=1015
  mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308150103
+ engine=8.12.0-2306200000 definitions=main-2308150099
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,108 +93,151 @@ Cc: Eric Snowberg <eric.snowberg@oracle.com>, Paul Moore <paul@paul-moore.com>, 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-trust_moklist() is specific to UEFI enabled systems. Other platforms
-rely only on the Kconfig.
+On secure boot enabled PowerVM LPAR, third party code signing keys are
+needed during early boot to verify signed third party modules. These
+third party keys are stored in moduledb object in the Platform
+KeyStore (PKS).
 
-Define a generic wrapper named imputed_trust_enabled().
+Load third party code signing keys onto .secondary_trusted_keys keyring.
 
 Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-Reviewed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 ---
- security/integrity/digsig.c                    |  2 +-
- security/integrity/integrity.h                 |  5 +++--
- .../integrity/platform_certs/keyring_handler.c |  3 ++-
- .../integrity/platform_certs/machine_keyring.c | 18 ++++++++++++++++--
- 4 files changed, 22 insertions(+), 6 deletions(-)
+ certs/system_keyring.c                        | 30 +++++++++++++++++++
+ include/keys/system_keyring.h                 |  4 +++
+ .../platform_certs/keyring_handler.c          |  8 +++++
+ .../platform_certs/keyring_handler.h          |  5 ++++
+ .../integrity/platform_certs/load_powerpc.c   | 17 +++++++++++
+ 5 files changed, 64 insertions(+)
 
-diff --git a/security/integrity/digsig.c b/security/integrity/digsig.c
-index d0704b1597d4..df387de29bfa 100644
---- a/security/integrity/digsig.c
-+++ b/security/integrity/digsig.c
-@@ -113,7 +113,7 @@ static int __init __integrity_init_keyring(const unsigned int id,
- 	} else {
- 		if (id == INTEGRITY_KEYRING_PLATFORM)
- 			set_platform_trusted_keys(keyring[id]);
--		if (id == INTEGRITY_KEYRING_MACHINE && trust_moklist())
-+		if (id == INTEGRITY_KEYRING_MACHINE && imputed_trust_enabled())
- 			set_machine_trusted_keys(keyring[id]);
- 		if (id == INTEGRITY_KEYRING_IMA)
- 			load_module_cert(keyring[id]);
-diff --git a/security/integrity/integrity.h b/security/integrity/integrity.h
-index 7167a6e99bdc..d7553c93f5c0 100644
---- a/security/integrity/integrity.h
-+++ b/security/integrity/integrity.h
-@@ -320,13 +320,14 @@ static inline void __init add_to_platform_keyring(const char *source,
+diff --git a/certs/system_keyring.c b/certs/system_keyring.c
+index b348e0898d34..33841c91f12c 100644
+--- a/certs/system_keyring.c
++++ b/certs/system_keyring.c
+@@ -152,6 +152,36 @@ static __init struct key_restriction *get_builtin_and_secondary_restriction(void
+ 
+ 	return restriction;
+ }
++
++/**
++ * add_to_secondary_keyring - Add to secondary keyring.
++ * @source: Source of key
++ * @data: The blob holding the key
++ * @len: The length of the data blob
++ *
++ * Add a key to the secondary keyring. The key must be vouched for by a key in the builtin,
++ * machine or secondary keyring itself.
++ */
++void __init add_to_secondary_keyring(const char *source, const void *data, size_t len)
++{
++	key_ref_t key;
++	key_perm_t perm;
++
++	perm = (KEY_POS_ALL & ~KEY_POS_SETATTR) | KEY_USR_VIEW;
++
++	key = key_create_or_update(make_key_ref(secondary_trusted_keys, 1),
++				   "asymmetric",
++				   NULL, data, len, perm,
++				   KEY_ALLOC_NOT_IN_QUOTA);
++	if (IS_ERR(key)) {
++		pr_err("Problem loading X.509 certificate from %s to secondary keyring %ld\n",
++		       source, PTR_ERR(key));
++		return;
++	}
++
++	pr_notice("Loaded X.509 cert '%s'\n", key_ref_to_ptr(key)->description);
++	key_ref_put(key);
++}
+ #endif
+ #ifdef CONFIG_INTEGRITY_MACHINE_KEYRING
+ void __init set_machine_trusted_keys(struct key *keyring)
+diff --git a/include/keys/system_keyring.h b/include/keys/system_keyring.h
+index 7e2583208820..8365adf842ef 100644
+--- a/include/keys/system_keyring.h
++++ b/include/keys/system_keyring.h
+@@ -50,9 +50,13 @@ int restrict_link_by_digsig_builtin_and_secondary(struct key *keyring,
+ 						  const struct key_type *type,
+ 						  const union key_payload *payload,
+ 						  struct key *restriction_key);
++void __init add_to_secondary_keyring(const char *source, const void *data, size_t len);
+ #else
+ #define restrict_link_by_builtin_and_secondary_trusted restrict_link_by_builtin_trusted
+ #define restrict_link_by_digsig_builtin_and_secondary restrict_link_by_digsig_builtin
++static inline void __init add_to_secondary_keyring(const char *source, const void *data, size_t len)
++{
++}
+ #endif
  
  #ifdef CONFIG_INTEGRITY_MACHINE_KEYRING
- void __init add_to_machine_keyring(const char *source, const void *data, size_t len);
--bool __init trust_moklist(void);
-+bool __init imputed_trust_enabled(void);
- #else
- static inline void __init add_to_machine_keyring(const char *source,
- 						  const void *data, size_t len)
- {
- }
--static inline bool __init trust_moklist(void)
-+
-+static inline bool __init imputed_trust_enabled(void)
- {
- 	return false;
- }
 diff --git a/security/integrity/platform_certs/keyring_handler.c b/security/integrity/platform_certs/keyring_handler.c
-index 1649d047e3b8..586027b9a3f5 100644
+index 586027b9a3f5..13ea17207902 100644
 --- a/security/integrity/platform_certs/keyring_handler.c
 +++ b/security/integrity/platform_certs/keyring_handler.c
-@@ -61,7 +61,8 @@ __init efi_element_handler_t get_handler_for_db(const efi_guid_t *sig_type)
- __init efi_element_handler_t get_handler_for_mok(const efi_guid_t *sig_type)
- {
- 	if (efi_guidcmp(*sig_type, efi_cert_x509_guid) == 0) {
--		if (IS_ENABLED(CONFIG_INTEGRITY_MACHINE_KEYRING) && trust_moklist())
-+		if (IS_ENABLED(CONFIG_INTEGRITY_MACHINE_KEYRING) &&
-+		    imputed_trust_enabled())
- 			return add_to_machine_keyring;
- 		else
- 			return add_to_platform_keyring;
-diff --git a/security/integrity/platform_certs/machine_keyring.c b/security/integrity/platform_certs/machine_keyring.c
-index 9482e16cb2ca..a401640a63cd 100644
---- a/security/integrity/platform_certs/machine_keyring.c
-+++ b/security/integrity/platform_certs/machine_keyring.c
-@@ -34,7 +34,8 @@ void __init add_to_machine_keyring(const char *source, const void *data, size_t
- 	 * If the restriction check does not pass and the platform keyring
- 	 * is configured, try to add it into that keyring instead.
- 	 */
--	if (rc && efi_enabled(EFI_BOOT) && IS_ENABLED(CONFIG_INTEGRITY_PLATFORM_KEYRING))
-+	if (rc && efi_enabled(EFI_BOOT) &&
-+	    IS_ENABLED(CONFIG_INTEGRITY_PLATFORM_KEYRING))
- 		rc = integrity_load_cert(INTEGRITY_KEYRING_PLATFORM, source,
- 					 data, len, perm);
- 
-@@ -60,7 +61,7 @@ static __init bool uefi_check_trust_mok_keys(void)
- 	return false;
+@@ -78,6 +78,14 @@ __init efi_element_handler_t get_handler_for_ca_keys(const efi_guid_t *sig_type)
+ 	return NULL;
  }
  
--bool __init trust_moklist(void)
-+static bool __init trust_moklist(void)
- {
- 	static bool initialized;
- 	static bool trust_mok;
-@@ -75,3 +76,16 @@ bool __init trust_moklist(void)
- 
- 	return trust_mok;
- }
-+
-+/*
-+ * Provides platform specific check for trusting imputed keys before loading
-+ * on .machine keyring. UEFI systems enable this trust based on a variable,
-+ * and for other platforms, it is always enabled.
-+ */
-+bool __init imputed_trust_enabled(void)
++__init efi_element_handler_t get_handler_for_code_signing_keys(const efi_guid_t *sig_type)
 +{
-+	if (efi_enabled(EFI_BOOT))
-+		return trust_moklist();
++	if (efi_guidcmp(*sig_type, efi_cert_x509_guid) == 0)
++		return add_to_secondary_keyring;
 +
-+	return true;
++	return NULL;
 +}
++
+ /*
+  * Return the appropriate handler for particular signature list types found in
+  * the UEFI dbx and MokListXRT tables.
+diff --git a/security/integrity/platform_certs/keyring_handler.h b/security/integrity/platform_certs/keyring_handler.h
+index 6f15bb4cc8dc..f92895cc50f6 100644
+--- a/security/integrity/platform_certs/keyring_handler.h
++++ b/security/integrity/platform_certs/keyring_handler.h
+@@ -34,6 +34,11 @@ efi_element_handler_t get_handler_for_mok(const efi_guid_t *sig_type);
+  */
+ efi_element_handler_t get_handler_for_ca_keys(const efi_guid_t *sig_type);
+ 
++/*
++ * Return the handler for particular signature list types for code signing keys.
++ */
++efi_element_handler_t get_handler_for_code_signing_keys(const efi_guid_t *sig_type);
++
+ /*
+  * Return the handler for particular signature list types found in the dbx.
+  */
+diff --git a/security/integrity/platform_certs/load_powerpc.c b/security/integrity/platform_certs/load_powerpc.c
+index 339053d9726d..c85febca3343 100644
+--- a/security/integrity/platform_certs/load_powerpc.c
++++ b/security/integrity/platform_certs/load_powerpc.c
+@@ -60,6 +60,7 @@ static int __init load_powerpc_certs(void)
+ {
+ 	void *db = NULL, *dbx = NULL, *data = NULL;
+ 	void *trustedca;
++	void *moduledb;
+ 	u64 dsize = 0;
+ 	u64 offset = 0;
+ 	int rc = 0;
+@@ -137,6 +138,22 @@ static int __init load_powerpc_certs(void)
+ 		kfree(data);
+ 	}
+ 
++	data = get_cert_list("moduledb", 9,  &dsize);
++	if (!data) {
++		pr_info("Couldn't get moduledb list from firmware\n");
++	} else if (IS_ERR(data)) {
++		rc = PTR_ERR(data);
++		pr_err("Error reading moduledb from firmware: %d\n", rc);
++	} else {
++		extract_esl(moduledb, data, dsize, offset);
++
++		rc = parse_efi_signature_list("powerpc:moduledb", moduledb, dsize,
++					      get_handler_for_code_signing_keys);
++		if (rc)
++			pr_err("Couldn't parse moduledb signatures: %d\n", rc);
++		kfree(data);
++	}
++
+ 	return rc;
+ }
+ late_initcall(load_powerpc_certs);
 -- 
 2.31.1
 
