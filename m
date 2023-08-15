@@ -1,63 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DD6677C479
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Aug 2023 02:35:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6083677C4CD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Aug 2023 02:58:02 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Pl5aQI0m;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VlU2P5f9;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RPsjp1xv0z3cRJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Aug 2023 10:35:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RPtD76j3Cz3cLl
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Aug 2023 10:57:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Pl5aQI0m;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VlU2P5f9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=134.134.136.24; helo=mgamail.intel.com; envelope-from=baolu.lu@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=134.134.136.20; helo=mgamail.intel.com; envelope-from=baolu.lu@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RPshv4J6cz2yRV
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Aug 2023 10:34:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RPtCC1hYxz2xpv
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Aug 2023 10:57:08 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692059664; x=1723595664;
+  t=1692061031; x=1723597031;
   h=message-id:date:mime-version:cc:subject:to:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=VSM1w+2GQF5FWr9+uAkx0UUWSnoPqxj5esYUGnBEoIA=;
-  b=Pl5aQI0mCrO2l74usuOI2jaYhpujqn1sPF2hHxXt2uiFV0kw2R9lKySC
-   lTlDGlcZCRP7ZDo2CE88s+mBG95TToRjwyXjdILm4cKswQAG3d0QVWCZY
-   9nPR0Xj58isnZqc0QqLbmSn0L6kJ8FVVBG45mrX1p+Etk375URaPpdpv8
-   5rSMBA7Tz9PzqSQor9J4X2dgB8ZZhWa5zI4AhBJfDL5EwoYIjAYZUrVFl
-   Yj5X2Tr1gF0iQTIkPoECX08lEr6PzeajdcbJqqQ9e4bTlXAjAtxTMzRpP
-   HcoUoLgVJKWCPpEhP59iRBs+JcyUeXDP+Y0h5/FHMHdkKZyvf+Yre7jKW
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10802"; a="374938115"
+  bh=EMtekiFoo0Tblby6wZQ8ziVNSJFBHzBXovBoPNar8KU=;
+  b=VlU2P5f9L85KyrhzQ3En9OVMKyjleXTBWUwLBjvH+S8+MGhHHH+TVXCJ
+   s5u1429hqYUWZ9Msm28Co0SZOHnhUHk3Jw5vzcQyRDNvodnBZjZKwdpGV
+   SWs2O3sFJWUP9ccxkdXHdW9J0Po13gJ6rVAx24Dmd1cw1o6tgEd3upb/j
+   qIbx7cicmCmNW6w7wq0pDOK1E/dGWaWimr2ve0g8feJZwZqKJSBmkKlwl
+   4m3w/IXSfoPYiTCTw/IaNDES0whL/SFvPRH5Bh6om4quBzUmk3pnWQr2m
+   HR7dU3QBaJlL10b3yv1Ev7L57gmA115AlUlVn1VZSHYNtxD6VfKvJ6cym
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10802"; a="362322796"
 X-IronPort-AV: E=Sophos;i="6.01,173,1684825200"; 
-   d="scan'208";a="374938115"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2023 17:34:16 -0700
+   d="scan'208";a="362322796"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2023 17:56:54 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10802"; a="823660205"
+X-IronPort-AV: E=McAfee;i="6600,9927,10802"; a="857243905"
 X-IronPort-AV: E=Sophos;i="6.01,173,1684825200"; 
-   d="scan'208";a="823660205"
-Received: from wanglu5-mobl.ccr.corp.intel.com (HELO [10.254.215.149]) ([10.254.215.149])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2023 17:34:05 -0700
-Message-ID: <8f3ce115-7489-640a-b1fb-a6fb6cfb1682@linux.intel.com>
-Date: Tue, 15 Aug 2023 08:34:03 +0800
+   d="scan'208";a="857243905"
+Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.254.215.149]) ([10.254.215.149])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2023 17:56:42 -0700
+Message-ID: <d645ddff-f274-7a01-6b06-3f5a7afef8fe@linux.intel.com>
+Date: Tue, 15 Aug 2023 08:56:40 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.14.0
-Subject: Re: [PATCH v6 07/25] iommu/mtk_iommu_v1: Implement an IDENTITY domain
-To: Jason Gunthorpe <jgg@nvidia.com>
-References: <7-v6-e8114faedade+425-iommu_all_defdom_jgg@nvidia.com>
- <7b6b8118-813a-f4cd-1067-d209d2b40025@linux.intel.com>
- <ZNo7eqMZEDBf7VKn@nvidia.com>
+Subject: Re: [PATCH v6 17/25] iommu/qcom_iommu: Add an IOMMU_IDENTITIY_DOMAIN
 Content-Language: en-US
+To: Jason Gunthorpe <jgg@nvidia.com>
+References: <17-v6-e8114faedade+425-iommu_all_defdom_jgg@nvidia.com>
+ <8cef9a0d-15ba-f8af-7e22-d4d3063c97bf@linux.intel.com>
+ <ZNpJ5irR4XeLw6qG@nvidia.com>
 From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <ZNo7eqMZEDBf7VKn@nvidia.com>
+In-Reply-To: <ZNpJ5irR4XeLw6qG@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -76,21 +76,22 @@ Cc: Heiko Stuebner <heiko@sntech.de>, Matthew Rosato <mjrosato@linux.ibm.com>, M
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2023/8/14 22:34, Jason Gunthorpe wrote:
->>> @@ -443,7 +459,7 @@ static int mtk_iommu_v1_create_mapping(struct device *dev, struct of_phandle_arg
->>>    static int mtk_iommu_v1_def_domain_type(struct device *dev)
->>>    {
->>> -	return IOMMU_DOMAIN_UNMANAGED;
->>> +	return IOMMU_DOMAIN_IDENTITY;
->> def_domain_type can't be used for this purpose. But this seems to be a
->> temporary code, as it will be removed in patch 09/25.
-> It looked OK when I checked it, mkt_v1 is really confusing what it
-> tries to do, but it should call probe_finalize and basically do the
-> same hacky thing as what UNMANAGED was trying to accomplish.
+On 2023/8/14 23:36, Jason Gunthorpe wrote:
+> On Mon, Aug 14, 2023 at 02:32:33PM +0800, Baolu Lu wrote:
 > 
-> Did you see something else?
+>>> +	pm_runtime_get_sync(qcom_iommu->dev);
+>>> +	for (i = 0; i < fwspec->num_ids; i++) {
+>>> +		struct qcom_iommu_ctx *ctx = to_ctx(qcom_domain, fwspec->ids[i]);
+>>> +
+>>> +		/* Disable the context bank: */
+>>> +		iommu_writel(ctx, ARM_SMMU_CB_SCTLR, 0);
+>>> +
+>>> +		ctx->domain = NULL;
+>> Does setting ctx->domain to NULL still match this semantics?
+> Yes, I did not try to fix this driver. NULL means identity in the
+> ctx->domain.
 
-No.
+Okay.
 
 Best regards,
 baolu
