@@ -1,56 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0F3B77CB52
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Aug 2023 12:48:21 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=CCuxRFwI;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCBDE77CB61
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Aug 2023 12:58:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RQ7KH3Mgyz3cN8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Aug 2023 20:48:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RQ7YX50gTz3cVZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Aug 2023 20:58:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=CCuxRFwI;
-	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RQ7JQ4WXwz2xpm
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Aug 2023 20:47:34 +1000 (AEST)
-Received: by gandalf.ozlabs.org (Postfix)
-	id 4RQ7JQ41XTz4wxW; Tue, 15 Aug 2023 20:47:34 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1692096454;
-	bh=hLLmaIjm1zxvSzRjXXMlW/6v8jDnhM2ktZF4GfK2WGo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=CCuxRFwIt0VPM66KpgExYZZRbomwCj//lHkpwUshLSbrgGmbrSGiSEd08Y1AdJELO
-	 bji9dfrtvXmFgGgE3rDMP+kCgx6Ab8xZ+T9Gft6YaTKFaEoR0mapeW7q+PwWmiZfpw
-	 GY7Sdh9zgpVdvAbWlBnb1cCmpf7opKNJUzstAvwP8ZLPnhzwCkG233zhyZGbMVRWFR
-	 1vth8D6dNEckeKByBXTqgZ7F0cMH9+4mDZarHOQjAQxEu/lhlU0J7VLlxRkwOm++Py
-	 wcvcLSH2GM/ePflPoKkK+IJXe9HY8PCDy3ow9lBZZbLe7YRnELn/OkJiYYCnFlpbNe
-	 zmsiTGwVQ2tNA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RQ7JQ3Dq5z4wZs;
-	Tue, 15 Aug 2023 20:47:34 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Joel Stanley <joel@jms.id.au>, Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Subject: Re: [PATCH v2] powernv/opal-prd: Silence memcpy() run-time false
- positive warnings
-In-Reply-To: <CACPK8XdP5keaUsP3cNY601P=uhDU_jj47rhies5QOojbU5ZSAw@mail.gmail.com>
-References: <168870663097.1448934.17365533203887616941.stgit@jupiter>
- <CACPK8XdP5keaUsP3cNY601P=uhDU_jj47rhies5QOojbU5ZSAw@mail.gmail.com>
-Date: Tue, 15 Aug 2023 20:47:34 +1000
-Message-ID: <87r0o4d1kp.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RQ7Xz0Yv0z3brg
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Aug 2023 20:58:24 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+	by localhost (Postfix) with ESMTP id 4RQ7Xq5Q3zz9sgl;
+	Tue, 15 Aug 2023 12:58:19 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 35I_1FWIg5xz; Tue, 15 Aug 2023 12:58:19 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4RQ7Xq4YBhz9sgk;
+	Tue, 15 Aug 2023 12:58:19 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 984238B76C;
+	Tue, 15 Aug 2023 12:58:19 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id 8HnwJpFcbP5f; Tue, 15 Aug 2023 12:58:19 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.233.223])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 5400C8B763;
+	Tue, 15 Aug 2023 12:58:19 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 37FAwBrP077191
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 15 Aug 2023 12:58:11 +0200
+Received: (from chleroy@localhost)
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 37FAw9lQ077190;
+	Tue, 15 Aug 2023 12:58:09 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
+Subject: [PATCH] powerpc: Move zalloc_maybe_bootmem() into pci-common.c
+Date: Tue, 15 Aug 2023 12:57:55 +0200
+Message-ID: <4235adc9515a4b084f815cc12f24ef1ac2b43eba.1692097067.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1692097074; l=3588; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=7P8PUpj4knPK7IjXYrS0Hvc31FR/JHVAdIARH2NQJQU=; b=xSL8aUcrGcbJXZE8h0NNjhr5UldtJ5uzYxIKloDP3CucTjaKVIG6VjsAZyvW533ssrmwuivai 3JIHfxS7617BmFnBWAf1xD88dfjiTsMIuM6Vb4QskmuBMoGNVTyD8IS
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,43 +65,125 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@ozlabs.org>, Jordan Niethe <jniethe5@gmail.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Joel Stanley <joel@jms.id.au> writes:
-> On Fri, 7 Jul 2023 at 05:11, Mahesh Salgaonkar <mahesh@linux.ibm.com> wrote:
->>
->> opal_prd_msg_notifier extracts the opal prd message size from the message
->> header and uses it for allocating opal_prd_msg_queue_item that includes
->> the correct message size to be copied. However, while running under
->> CONFIG_FORTIFY_SOURCE=y, it triggers following run-time warning:
->>
->> [ 6458.234352] memcpy: detected field-spanning write (size 32) of single field "&item->msg" at arch/powerpc/platforms/powernv/opal-prd.c:355 (size 4)
->> [ 6458.234390] WARNING: CPU: 9 PID: 660 at arch/powerpc/platforms/powernv/opal-prd.c:355 opal_prd_msg_notifier+0x174/0x188 [opal_prd]
->> [...]
->> [ 6458.234709] NIP [c00800000e0c0e6c] opal_prd_msg_notifier+0x174/0x188 [opal_prd]
->> [ 6458.234723] LR [c00800000e0c0e68] opal_prd_msg_notifier+0x170/0x188 [opal_prd]
->> [ 6458.234736] Call Trace:
->> [ 6458.234742] [c0000002acb23c10] [c00800000e0c0e68] opal_prd_msg_notifier+0x170/0x188 [opal_prd] (unreliable)
->> [ 6458.234759] [c0000002acb23ca0] [c00000000019ccc0] notifier_call_chain+0xc0/0x1b0
->> [ 6458.234774] [c0000002acb23d00] [c00000000019ceac] atomic_notifier_call_chain+0x2c/0x40
->> [ 6458.234788] [c0000002acb23d20] [c0000000000d69b4] opal_message_notify+0xf4/0x2c0
->> [...]
->>
->> Split the copy to avoid false positive run-time warning.
->>
->> Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->> Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
->
-> I hit this on a box running the Ubuntu 6.2.0-27-generic kernel.
->
-> Do we plan on merging this fix?
+zalloc_maybe_bootmem() is only used by PCI related functions.
 
-I thought it was papering over the issue rather than fixing the root
-cause.
+Move it into pci-common.c and remove the always built alloc.c
 
-I'll send a new version, as soon as I can work out how to trigger that
-code path.
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/include/asm/pci.h   |  2 ++
+ arch/powerpc/include/asm/setup.h |  1 -
+ arch/powerpc/kernel/pci-common.c | 16 ++++++++++++++++
+ arch/powerpc/lib/Makefile        |  2 +-
+ arch/powerpc/lib/alloc.c         | 23 -----------------------
+ 5 files changed, 19 insertions(+), 25 deletions(-)
+ delete mode 100644 arch/powerpc/lib/alloc.c
 
-cheers
+diff --git a/arch/powerpc/include/asm/pci.h b/arch/powerpc/include/asm/pci.h
+index f5078a7dd85a..13d36ec3a5ea 100644
+--- a/arch/powerpc/include/asm/pci.h
++++ b/arch/powerpc/include/asm/pci.h
+@@ -45,6 +45,8 @@ static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+ 	return channel ? 15 : 14;
+ }
+ 
++void *zalloc_maybe_bootmem(size_t size, gfp_t mask);
++
+ #ifdef CONFIG_PCI
+ void __init set_pci_dma_ops(const struct dma_map_ops *dma_ops);
+ #else	/* CONFIG_PCI */
+diff --git a/arch/powerpc/include/asm/setup.h b/arch/powerpc/include/asm/setup.h
+index e29e83f8a89c..eed74c1fb832 100644
+--- a/arch/powerpc/include/asm/setup.h
++++ b/arch/powerpc/include/asm/setup.h
+@@ -8,7 +8,6 @@
+ extern void ppc_printk_progress(char *s, unsigned short hex);
+ 
+ extern unsigned long long memory_limit;
+-extern void *zalloc_maybe_bootmem(size_t size, gfp_t mask);
+ 
+ struct device_node;
+ 
+diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
+index e88d7c9feeec..34e66b06a030 100644
+--- a/arch/powerpc/kernel/pci-common.c
++++ b/arch/powerpc/kernel/pci-common.c
+@@ -31,6 +31,7 @@
+ #include <linux/numa.h>
+ #include <linux/msi.h>
+ #include <linux/irqdomain.h>
++#include <linux/memblock.h>
+ 
+ #include <asm/processor.h>
+ #include <asm/io.h>
+@@ -121,6 +122,21 @@ static int get_phb_number(struct device_node *dn)
+ 	return phb_id;
+ }
+ 
++void * __ref zalloc_maybe_bootmem(size_t size, gfp_t mask)
++{
++	void *p;
++
++	if (slab_is_available()) {
++		p = kzalloc(size, mask);
++	} else {
++		p = memblock_alloc(size, SMP_CACHE_BYTES);
++		if (!p)
++			panic("%s: Failed to allocate %zu bytes\n", __func__,
++			      size);
++	}
++	return p;
++}
++
+ struct pci_controller *pcibios_alloc_controller(struct device_node *dev)
+ {
+ 	struct pci_controller *phb;
+diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
+index 9aa8286c9687..51ad0397c17a 100644
+--- a/arch/powerpc/lib/Makefile
++++ b/arch/powerpc/lib/Makefile
+@@ -27,7 +27,7 @@ endif
+ CFLAGS_code-patching.o += $(DISABLE_LATENT_ENTROPY_PLUGIN)
+ CFLAGS_feature-fixups.o += $(DISABLE_LATENT_ENTROPY_PLUGIN)
+ 
+-obj-y += alloc.o code-patching.o feature-fixups.o pmem.o
++obj-y += code-patching.o feature-fixups.o pmem.o
+ 
+ obj-$(CONFIG_CODE_PATCHING_SELFTEST) += test-code-patching.o
+ 
+diff --git a/arch/powerpc/lib/alloc.c b/arch/powerpc/lib/alloc.c
+deleted file mode 100644
+index ce180870bd52..000000000000
+--- a/arch/powerpc/lib/alloc.c
++++ /dev/null
+@@ -1,23 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-#include <linux/types.h>
+-#include <linux/init.h>
+-#include <linux/slab.h>
+-#include <linux/memblock.h>
+-#include <linux/string.h>
+-#include <asm/setup.h>
+-
+-
+-void * __ref zalloc_maybe_bootmem(size_t size, gfp_t mask)
+-{
+-	void *p;
+-
+-	if (slab_is_available())
+-		p = kzalloc(size, mask);
+-	else {
+-		p = memblock_alloc(size, SMP_CACHE_BYTES);
+-		if (!p)
+-			panic("%s: Failed to allocate %zu bytes\n", __func__,
+-			      size);
+-	}
+-	return p;
+-}
+-- 
+2.41.0
+
