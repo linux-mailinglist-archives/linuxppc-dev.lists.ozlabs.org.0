@@ -1,54 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE7C577CBEB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Aug 2023 13:46:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87DF877CC4E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Aug 2023 14:07:08 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=LUPBAVlS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YJpDR1ZY;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RQ8c95G21z3cRC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Aug 2023 21:46:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RQ94B2WkCz3cV3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Aug 2023 22:07:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=LUPBAVlS;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YJpDR1ZY;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nayna@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RQ8bK3F6Qz3c4b
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Aug 2023 21:45:33 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1692099933;
-	bh=B7H1wPFCpZ/hwcxJ8xFa02xLG2LsuWtZGZq9nBFeRnc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=LUPBAVlSpuRgIRR98QO4bxof9MsLaohXOUN9wiGby8bl8wipoJbYkvf1YY2cn89Gv
-	 t45/vrPScckhf5z+hnEE/5ZU5T5Jb4YvvKRHOrgDgyj+RdqTnXbHt2XPfb+G60EKCy
-	 k/l8A9wXO5UlsY2/Rb2nb3tShkZyeYnddkCZ7v1l8rg8iCvPwTSIa1uCbU956KtWoH
-	 +rtEvUs4pTxUM/6h51Azav1JywoSc5ncSo9Qf+tq/0Wl1woiTqTuEfQcsp4sDATmo/
-	 OWA4st3T3eJe60cxapz/6wpFSdJMlMofxxrBGHPXbsf1JduhLa/Oj8pbQjkd5PJJEV
-	 2b9U2x+yNCfWg==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RQ8bK0G9fz4wZs;
-	Tue, 15 Aug 2023 21:45:33 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH] powerpc: Make virt_to_pfn() a static inline
-In-Reply-To: <CACRpkdZuLeMKg1vG9+8tcUtWUNN-EowhpPmt6VnGuS+f9ok81g@mail.gmail.com>
-References: <20230809-virt-to-phys-powerpc-v1-1-12e912a7d439@linaro.org>
- <87y1icdaoq.fsf@mail.lhotse>
- <CACRpkdZuLeMKg1vG9+8tcUtWUNN-EowhpPmt6VnGuS+f9ok81g@mail.gmail.com>
-Date: Tue, 15 Aug 2023 21:45:30 +1000
-Message-ID: <87il9gcyw5.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RQ93K05HTz3c60
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Aug 2023 22:06:20 +1000 (AEST)
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37FBwxk7008979;
+	Tue, 15 Aug 2023 12:06:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=sVOFvv/GjMTXAoEgnozP0KUynypHEZH44thYGVoiQ1o=;
+ b=YJpDR1ZYSxTdmg5OlQmKOn3dQRcgfEo5IwYcctMSKWhfdFBZCbBrlcxK5YjNLAqo41ot
+ pW8BCW6vJ+S3sUVTlO3oAfnQ8Q5QD9ufxj7i0OQXfcZ4QEE7ziy72ZjlCXWsqZVaWeQP
+ 9vO8dhXv5B+7iUWa90WDJtobuJJddZoVmiKlEOY0k3qhXXTGF90TewCIiuwNVCNfec7a
+ 8GeGmlGCPZ1g4MtMFtv3pxSfsRhoAoTGZj/n1MLDqKbjKs0DTxVVLqjgtR0YOLhuNjw3
+ HR/R/uT5NV3EhXCYUyLwn39AQtOkHIdSskFGCzoXsywtPV/Kb4y9MGUJBKR8LYQdfzMO NA== 
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sg8yg07nf-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 15 Aug 2023 12:06:16 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 37FAYSJH007871;
+	Tue, 15 Aug 2023 11:27:50 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3senwk4913-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 15 Aug 2023 11:27:50 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 37FBRlZk11928186
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 15 Aug 2023 11:27:47 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AF1FB20040;
+	Tue, 15 Aug 2023 11:27:47 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A43382004B;
+	Tue, 15 Aug 2023 11:27:45 +0000 (GMT)
+Received: from li-4b5937cc-25c4-11b2-a85c-cea3a66903e4.ibm.com (unknown [9.61.3.84])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 15 Aug 2023 11:27:45 +0000 (GMT)
+From: Nayna Jain <nayna@linux.ibm.com>
+To: linux-integrity@vger.kernel.org
+Subject: [PATCH v4 5/6] integrity: PowerVM machine keyring enablement
+Date: Tue, 15 Aug 2023 07:27:21 -0400
+Message-Id: <20230815112722.1591829-6-nayna@linux.ibm.com>
+X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20230815112722.1591829-1-nayna@linux.ibm.com>
+References: <20230815112722.1591829-1-nayna@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: BlLwicVEBGuM3k_owN68MqItbj3G9G_q
+X-Proofpoint-ORIG-GUID: BlLwicVEBGuM3k_owN68MqItbj3G9G_q
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-15_10,2023-08-15_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ lowpriorityscore=0 bulkscore=0 clxscore=1015 mlxscore=0 mlxlogscore=797
+ spamscore=0 phishscore=0 impostorscore=0 adultscore=0 priorityscore=1501
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308150108
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,30 +89,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org
+Cc: Eric Snowberg <eric.snowberg@oracle.com>, Paul Moore <paul@paul-moore.com>, inux-kernel@vger.kernel.org, Nayna Jain <nayna@linux.ibm.com>, linux-security-module@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>, Jarkko Sakkinen <jarkko@kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Linus Walleij <linus.walleij@linaro.org> writes:
-> On Tue, Aug 15, 2023 at 9:30=E2=80=AFAM Michael Ellerman <mpe@ellerman.id=
-.au> wrote:
->> Linus Walleij <linus.walleij@linaro.org> writes:
->
->> > -     return ((unsigned long)__va(pmd_val(pmd) & ~PMD_MASKED_BITS));
->> > +     return (const void *)((unsigned long)__va(pmd_val(pmd) & ~PMD_MA=
-SKED_BITS));
->>
->> This can also just be:
->>
->>         return __va(pmd_val(pmd) & ~PMD_MASKED_BITS);
->>
->> I've squashed that in.
->
-> Oh you applied it, then I don't need to send revised versions, thanks Mic=
-hael!
+Update Kconfig to enable machine keyring and limit to CA certificates
+on PowerVM. Only key signing CA keys are allowed.
 
-Yeah, it's in my next-test, so I can still change it if needed for a day
-or two. But if you're happy with me squashing those changes in then
-that's easy, no need to send a v2.
+Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+Reviewed-and-tested-by: Mimi Zohar <zohar@linux.ibm.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+---
+ security/integrity/Kconfig | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-cheers
+diff --git a/security/integrity/Kconfig b/security/integrity/Kconfig
+index ec6e0d789da1..232191ee09e3 100644
+--- a/security/integrity/Kconfig
++++ b/security/integrity/Kconfig
+@@ -67,7 +67,9 @@ config INTEGRITY_MACHINE_KEYRING
+ 	depends on SECONDARY_TRUSTED_KEYRING
+ 	depends on INTEGRITY_ASYMMETRIC_KEYS
+ 	depends on SYSTEM_BLACKLIST_KEYRING
+-	depends on LOAD_UEFI_KEYS
++	depends on LOAD_UEFI_KEYS || LOAD_PPC_KEYS
++	select INTEGRITY_CA_MACHINE_KEYRING if LOAD_PPC_KEYS
++	select INTEGRITY_CA_MACHINE_KEYRING_MAX if LOAD_PPC_KEYS
+ 	help
+ 	 If set, provide a keyring to which Machine Owner Keys (MOK) may
+ 	 be added. This keyring shall contain just MOK keys.  Unlike keys
+-- 
+2.31.1
+
