@@ -2,51 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E013177C891
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Aug 2023 09:31:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24E2E77C8A0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Aug 2023 09:34:53 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=cpr2h286;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=KFI+UK7E;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RQ2y85nhkz3cRr
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Aug 2023 17:31:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RQ3230HTzz3cLx
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Aug 2023 17:34:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=cpr2h286;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=KFI+UK7E;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::635; helo=mail-ej1-x635.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RQ2xK59lCz2yVH
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Aug 2023 17:30:45 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1692084645;
-	bh=XiXX9eU/s/AkSjfJm9DwVrwntmLvwo4y7VDo0VRqfqw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=cpr2h286rbQ9ZWA7sIJpieEEunosIMnHIlpuAHRa9sZE8MabuVXAmlJlUtBRr1yar
-	 IOyhe1OBFhP8Pi60NS60najNtcw9Sgyfrt6gBpX/YisA9UK7cfOXuy0/pQX9w6s8As
-	 r5sR07G+emd4A9HK+8h1Nh6FsveFmjVmpqxUP0orFHTqdRoLatEzucsXjPmv2Jw628
-	 aM8/xb6e5beQ4RTtnkfEszZCHauoBHz5drU74sVo0G/im0RywT3ncWqdiN//qhTISa
-	 jLIH5smjeKm2+e0N0MLLa7zAAnDnDEWhMGL74bOiDj1IT9D35NOz73L89+1wZ3gkZl
-	 qfW7n4aWihFyw==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RQ2xK3MyFz4wqX;
-	Tue, 15 Aug 2023 17:30:45 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Walleij <linus.walleij@linaro.org>, Nicholas Piggin
- <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc: Make virt_to_pfn() a static inline
-In-Reply-To: <20230809-virt-to-phys-powerpc-v1-1-12e912a7d439@linaro.org>
-References: <20230809-virt-to-phys-powerpc-v1-1-12e912a7d439@linaro.org>
-Date: Tue, 15 Aug 2023 17:30:45 +1000
-Message-ID: <87y1icdaoq.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RQ3176Dc4z2ygY
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Aug 2023 17:34:03 +1000 (AEST)
+Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-99c353a395cso690170566b.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Aug 2023 00:34:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1692084836; x=1692689636;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ptPuBEpK+bTuLrHXWomcWZqL5q0T5IOC69Hvw3A95bI=;
+        b=KFI+UK7Ev9NoB+QrDddZx9LmrmscknI+E/D4xZ0r2SJDn+V/VJeg6WzDm8K+PE5VNN
+         M2LvF3rGyjKn17nbxKUmHNYzOzfjr95LpdXsPqRBGgf2GbmDPiXhPfd8YTIEkrriESHf
+         nVwDddGFJiJnMuNDWe+lbiX5vs9w9SOivomOQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692084836; x=1692689636;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ptPuBEpK+bTuLrHXWomcWZqL5q0T5IOC69Hvw3A95bI=;
+        b=hIGMLHOzYPe5GSYrfJNeflxoluGBjKgh9JgVeL2AuaDOvEosrJyWjd+Ah/y4knTKur
+         N7eu9WSgRq5nStjstMwHgnd3JtC45lN1y6oP8xz1FH4NkM0JKs3bLLIjrdi5yXy+yBVJ
+         HRoaj84kDSDmp7RW86ytMstp7M2OSBLtWB+/HNfjtUSB9ot6QGlLVYun6csNAtTwStZV
+         0i120N+GuEhsJxIj27vwXWgmrJyiYpDzWx+v6ZTJ2EpczW0G2g5mnkXWwI4Vot1MeXcR
+         OH0MGQ3bwu2REzWhmNIgF98taa8tJudQrBlykPNXci7czWzlUwmeo4wR/tRThvc44YDv
+         4+pw==
+X-Gm-Message-State: AOJu0YzXl2CSWDlX/TpQPFFV+JD0vHYUEkISezPTPNJA1KdHI5XgoiQt
+	nBddfTnh2Bk24dpAnkR6T8R4qCxi1A1w0HnF23OKVhaa
+X-Google-Smtp-Source: AGHT+IE5W3JrX8hkBHLEzzDwl09m82MqER3BKcUxiGXTVmENQ53q792ZODRtOH079N5FdZXDqI6a6g==
+X-Received: by 2002:a17:906:3013:b0:99b:ed18:7a10 with SMTP id 19-20020a170906301300b0099bed187a10mr9004109ejz.36.1692084835922;
+        Tue, 15 Aug 2023 00:33:55 -0700 (PDT)
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com. [209.85.208.49])
+        by smtp.gmail.com with ESMTPSA id qt27-20020a170906ecfb00b0099bd046170fsm6596855ejb.104.2023.08.15.00.33.53
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 15 Aug 2023 00:33:54 -0700 (PDT)
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-522dd6b6438so6396713a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Aug 2023 00:33:53 -0700 (PDT)
+X-Received: by 2002:a05:6402:290:b0:523:1004:1c9a with SMTP id
+ l16-20020a056402029000b0052310041c9amr8202386edv.35.1692084833506; Tue, 15
+ Aug 2023 00:33:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <202308151426.97be5bd8-oliver.sang@intel.com>
+In-Reply-To: <202308151426.97be5bd8-oliver.sang@intel.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Tue, 15 Aug 2023 07:33:36 +0000
+X-Gmail-Original-Message-ID: <CAHk-=whbOEhPUL1m8Ua-+-E7kJXED4xa+duzRF-wJKR84NAPWg@mail.gmail.com>
+Message-ID: <CAHk-=whbOEhPUL1m8Ua-+-E7kJXED4xa+duzRF-wJKR84NAPWg@mail.gmail.com>
+Subject: Re: [linus:master] [locking] c8afaa1b0f: stress-ng.zero.ops_per_sec
+ 6.3% improvement
+To: kernel test robot <oliver.sang@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,51 +81,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linus Walleij <linus.walleij@linaro.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Cc: feng.tang@intel.com, Mateusz Guzik <mjguzik@gmail.com>, linux-ia64@vger.kernel.org, lkp@intel.com, fengwei.yin@intel.com, ying.huang@intel.com, linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, sparclinux@vger.kernel.org, linux-alpha@vger.kernel.org, oe-lkp@lists.linux.dev, linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Linus Walleij <linus.walleij@linaro.org> writes:
-
-> Making virt_to_pfn() a static inline taking a strongly typed
-> (const void *) makes the contract of a passing a pointer of that
-> type to the function explicit and exposes any misuse of the
-> macro virt_to_pfn() acting polymorphic and accepting many types
-> such as (void *), (unitptr_t) or (unsigned long) as arguments
-> without warnings.
+On Tue, 15 Aug 2023 at 07:12, kernel test robot <oliver.sang@intel.com> wrote:
 >
-> Move the virt_to_pfn() and related functions below the
-> declaration of __pa() so it compiles.
->
-> For symmetry do the same with pfn_to_kaddr().
->
-> As the file is included right into the linker file, we need
-> to surround the functions with ifndef __ASSEMBLY__ so we
-> don't cause compilation errors.
->
-> The conversion moreover exposes the fact that pmd_page_vaddr()
-> was returning an unsigned long rather than a const void * as
-> could be expected, so all the sites defining pmd_page_vaddr()
-> had to be augmented as well.
-...
-> diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
-> index 6a88bfdaa69b..a9515d3d7831 100644
-> --- a/arch/powerpc/include/asm/pgtable.h
-> +++ b/arch/powerpc/include/asm/pgtable.h
-> @@ -60,9 +60,9 @@ static inline pgprot_t pte_pgprot(pte_t pte)
->  }
->  
->  #ifndef pmd_page_vaddr
-> -static inline unsigned long pmd_page_vaddr(pmd_t pmd)
-> +static inline const void *pmd_page_vaddr(pmd_t pmd)
->  {
-> -	return ((unsigned long)__va(pmd_val(pmd) & ~PMD_MASKED_BITS));
-> +	return (const void *)((unsigned long)__va(pmd_val(pmd) & ~PMD_MASKED_BITS));
+> kernel test robot noticed a 6.3% improvement of stress-ng.zero.ops_per_sec on:
 
-This can also just be:
+WTF? That's ridiculous. Why would that even test new_inode() at all?
+And why would it make any difference anyway to prefetch a new inode?
+The 'zero' test claims to just read /dev/zero in a loop...
 
-	return __va(pmd_val(pmd) & ~PMD_MASKED_BITS);
+[ Goes looking ]
 
-I've squashed that in.
+>      39.35            -0.3       39.09        perf-profile.calltrace.cycles-pp.inode_sb_list_add.new_inode.shmem_get_inode.__shmem_file_setup.shmem_zero_setup
 
-cheers
+Ahh. It also does the mmap side, and the shared case ends up always
+creating a new inode.
+
+And while the test only tests *reading* and the mmap is read-only, the
+/dev/zero file descriptor was opened for writing too, for a different
+part of a test.
+
+So even though the mapping is never written to, MAYWRITE is set, and
+so the /dev/zero mapping is done as a shared memory mapping and we
+can't do it as just a private one.
+
+That's kind of stupid and looks unintentional, but whatever.
+
+End result: that benchmark ends up being at least partly (and a fairly
+noticeable part) a shmem setup benchmark, for no actual good reason.
+
+Oh well. I certainly don't mind the removal apparently then also
+helping some odd benchmark case, but I don't think this translates to
+anything real. Very random.
+
+                    Linus
