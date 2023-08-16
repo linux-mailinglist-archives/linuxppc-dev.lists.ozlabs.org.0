@@ -1,69 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECA2477EB69
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Aug 2023 23:08:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBE4377EB79
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Aug 2023 23:11:55 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ZzbqonGa;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ovzvuj+D;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RR11v5VtTz3cBb
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 07:08:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RR16K55F1z3cGL
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 07:11:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ZzbqonGa;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ovzvuj+D;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::532; helo=mail-pg1-x532.google.com; envelope-from=keescook@chromium.org; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RR10y5ZYKz3cJm
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Aug 2023 07:07:13 +1000 (AEST)
-Received: by mail-pg1-x532.google.com with SMTP id 41be03b00d2f7-5656a5c6721so3709485a12.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Aug 2023 14:07:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1692220029; x=1692824829;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=r3Yx/ofvM8SKQSiO3tHzoOQnNC0JboOEN9yZBTokARA=;
-        b=ZzbqonGaOBv1EZxtYkwzcNc/Pza7vRjEHIfgAoe2wtMO4uUVRTZDOnNVhtsQKZGD+e
-         Mfakd4mq9tKyJNO9S0XpGOUmbgB09a8EPzJNB5LhIeqQAA67c6KLpe5RE55XZyvNFdlA
-         rjRwK8P6umzK3/QTZma3kszvAnRVjPePnXxkk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692220029; x=1692824829;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r3Yx/ofvM8SKQSiO3tHzoOQnNC0JboOEN9yZBTokARA=;
-        b=Na0LXAtXGRBQMzO3JDOnnfhr3JZTOC7TWRQZtwMpH1+XtANfCeib6A5GTWbJS/X0Qf
-         97tLj4061qZm51m4MyXKK4eE9DuurvamhA9BeAsAVX5TLCD2A9ZMDBftE8doZvuRiZAH
-         89TWgIgHV0/i+xvZueYgIr7bp014UEyeh8lOelz+CtWYbWRju/YagRatmZuWklsveq5G
-         Tt5/KEvSSVxK6PQ0y84si30wCCaFW8CtX1rF5qbw5s9r++5zVUrySs30pyzS4aPFtQr7
-         XTl3EbZAEte7yamDmT8GBXYX09miNVs63F2rvYFwEpV79KZ1QA9rnDEbFthJDEmWkfBm
-         xvTw==
-X-Gm-Message-State: AOJu0Yxut4afz6RWYEmqiRSfjgd7ASyRHP4Vgz5WVvVCWD+2qlGV2WJf
-	2UUNc/J0uVE9NFAFyC7ZH6HcJQ==
-X-Google-Smtp-Source: AGHT+IGtyVYYg0njIa2w4f4XfQY20e85rwgXh3WhXGv6SkwlDP1zqM0PSyoWql9zf4cbOAdyz6C0fw==
-X-Received: by 2002:a05:6a20:1444:b0:132:cd2d:16fd with SMTP id a4-20020a056a20144400b00132cd2d16fdmr4020731pzi.38.1692220029384;
-        Wed, 16 Aug 2023 14:07:09 -0700 (PDT)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id j20-20020aa783d4000000b00682c864f35bsm11916050pfn.140.2023.08.16.14.07.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Aug 2023 14:07:08 -0700 (PDT)
-Date: Wed, 16 Aug 2023 14:07:08 -0700
-From: Kees Cook <keescook@chromium.org>
-To: nathanl@linux.ibm.com
-Subject: Re: [PATCH v2] powerpc/rtas_flash: allow user copy to flash block
- cache objects
-Message-ID: <202308161407.48AAE65CB@keescook>
-References: <20230810-rtas-flash-vs-hardened-usercopy-v2-1-dcf63793a938@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230810-rtas-flash-vs-hardened-usercopy-v2-1-dcf63793a938@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RR15Q0BJRz2yDS
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Aug 2023 07:11:05 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 2F0EC61F79;
+	Wed, 16 Aug 2023 21:11:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11A09C433C8;
+	Wed, 16 Aug 2023 21:11:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1692220263;
+	bh=mBsAzyfxfhI/6EYaCFRgUdv5YuaozjadXjfhd+MaaSI=;
+	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
+	b=Ovzvuj+D9ctGsAP6bh1Ya8cTeakvufD8PfcHUdiQM9DjwZ1dbouG7/GXgkH1z7aUi
+	 GBZhF16GS1/vuSA3oY5oud2t8U0XeD1VxEDKjYa/Rdd6hJS+OG4x5F9G9g41IiqheO
+	 hJmipQ7acAY74tbN0GcrAkdfQCVmEulOFFHxSSABEkkP9IF2fFHlkEX6tWwQvBrWea
+	 zyFjUbJX68JCB0Pv1pQhWCRVVPO+UDUfCfq3Xm5bq/+bsg4AwDlW+oFBzrDql1cvH2
+	 Y4e2WhqloA7EVZqdYBMNeIEx3KfhmsyG86Sodh15QHeTqAGt3tau0rXtq6vYo5tg5P
+	 JAqxOUVnRSnzw==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 17 Aug 2023 00:11:00 +0300
+Message-Id: <CUUA0NGX7OT4.2TRQP2BRSVXRZ@suppilovahvero>
+To: "Mimi Zohar" <zohar@linux.ibm.com>, "Nayna Jain" <nayna@linux.ibm.com>,
+ <linux-integrity@vger.kernel.org>
+Subject: Re: [PATCH v4 6/6] integrity: PowerVM support for loading third
+ party code signing keys
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+X-Mailer: aerc 0.14.0
+References: <20230815112722.1591829-1-nayna@linux.ibm.com>
+ <20230815112722.1591829-7-nayna@linux.ibm.com>
+ <CUU9A4V7EREZ.2CPPYURBAGN95@suppilovahvero>
+ <cedb2c8f7c9d3f22f5e3d570c039bfcf59cc5a6e.camel@linux.ibm.com>
+In-Reply-To: <cedb2c8f7c9d3f22f5e3d570c039bfcf59cc5a6e.camel@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,51 +67,202 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Eric Snowberg <eric.snowberg@oracle.com>, linux-security-module@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Paul Moore <paul@paul-moore.com>, inux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 10, 2023 at 10:37:55PM -0500, Nathan Lynch via B4 Relay wrote:
-> From: Nathan Lynch <nathanl@linux.ibm.com>
-> 
-> With hardened usercopy enabled (CONFIG_HARDENED_USERCOPY=y), using the
-> /proc/powerpc/rtas/firmware_update interface to prepare a system
-> firmware update yields a BUG():
-> 
-> kernel BUG at mm/usercopy.c:102!
-> Oops: Exception in kernel mode, sig: 5 [#1]
-> LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
-> Modules linked in:
-> CPU: 0 PID: 2232 Comm: dd Not tainted 6.5.0-rc3+ #2
-> Hardware name: IBM,8408-E8E POWER8E (raw) 0x4b0201 0xf000004 of:IBM,FW860.50 (SV860_146) hv:phyp pSeries
-> NIP:  c0000000005991d0 LR: c0000000005991cc CTR: 0000000000000000
-> REGS: c0000000148c76a0 TRAP: 0700   Not tainted  (6.5.0-rc3+)
-> MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 24002242  XER: 0000000c
-> CFAR: c0000000001fbd34 IRQMASK: 0
-> [ ... GPRs omitted ... ]
-> NIP [c0000000005991d0] usercopy_abort+0xa0/0xb0
-> LR [c0000000005991cc] usercopy_abort+0x9c/0xb0
-> Call Trace:
-> [c0000000148c7940] [c0000000005991cc] usercopy_abort+0x9c/0xb0 (unreliable)
-> [c0000000148c79b0] [c000000000536814] __check_heap_object+0x1b4/0x1d0
-> [c0000000148c79f0] [c000000000599080] __check_object_size+0x2d0/0x380
-> [c0000000148c7a30] [c000000000045ed4] rtas_flash_write+0xe4/0x250
-> [c0000000148c7a80] [c00000000068a0fc] proc_reg_write+0xfc/0x160
-> [c0000000148c7ab0] [c0000000005a381c] vfs_write+0xfc/0x4e0
-> [c0000000148c7b70] [c0000000005a3e10] ksys_write+0x90/0x160
-> [c0000000148c7bc0] [c00000000002f2c8] system_call_exception+0x178/0x320
-> [c0000000148c7e50] [c00000000000d520] system_call_common+0x160/0x2c4
-> --- interrupt: c00 at 0x7fff9f17e5e4
-> 
-> The blocks of the firmware image are copied directly from user memory
-> to objects allocated from flash_block_cache, so flash_block_cache must
-> be created using kmem_cache_create_usercopy() to mark it safe for user
-> access.
-> 
-> Fixes: 6d07d1cd300f ("usercopy: Restrict non-usercopy caches to size 0")
-> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+On Thu Aug 17, 2023 at 12:06 AM EEST, Mimi Zohar wrote:
+> On Wed, 2023-08-16 at 23:36 +0300, Jarkko Sakkinen wrote:
+> > On Tue Aug 15, 2023 at 2:27 PM EEST, Nayna Jain wrote:
+> > > On secure boot enabled PowerVM LPAR, third party code signing keys ar=
+e
+> > > needed during early boot to verify signed third party modules. These
+> > > third party keys are stored in moduledb object in the Platform
+> > > KeyStore (PKS).
+> > >
+> > > Load third party code signing keys onto .secondary_trusted_keys keyri=
+ng.
+> > >
+> > > Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+> > > ---
+> > >  certs/system_keyring.c                        | 30 +++++++++++++++++=
+++
+> > >  include/keys/system_keyring.h                 |  4 +++
+> > >  .../platform_certs/keyring_handler.c          |  8 +++++
+> > >  .../platform_certs/keyring_handler.h          |  5 ++++
+> > >  .../integrity/platform_certs/load_powerpc.c   | 17 +++++++++++
+> > >  5 files changed, 64 insertions(+)
+> > >
+> > > diff --git a/certs/system_keyring.c b/certs/system_keyring.c
+> > > index b348e0898d34..33841c91f12c 100644
+> > > --- a/certs/system_keyring.c
+> > > +++ b/certs/system_keyring.c
+> > > @@ -152,6 +152,36 @@ static __init struct key_restriction *get_builti=
+n_and_secondary_restriction(void
+> > > =20
+> > >  	return restriction;
+> > >  }
+> > > +
+> > > +/**
+> > > + * add_to_secondary_keyring - Add to secondary keyring.
+> > > + * @source: Source of key
+> > > + * @data: The blob holding the key
+> > > + * @len: The length of the data blob
+> > > + *
+> > > + * Add a key to the secondary keyring. The key must be vouched for b=
+y a key in the builtin,
+> > > + * machine or secondary keyring itself.
+> > > + */
+> > > +void __init add_to_secondary_keyring(const char *source, const void =
+*data, size_t len)
+> > > +{
+> > > +	key_ref_t key;
+> > > +	key_perm_t perm;
+> > > +
+> > > +	perm =3D (KEY_POS_ALL & ~KEY_POS_SETATTR) | KEY_USR_VIEW;
+> > > +
+> > > +	key =3D key_create_or_update(make_key_ref(secondary_trusted_keys, 1=
+),
+> > > +				   "asymmetric",
+> > > +				   NULL, data, len, perm,
+> > > +				   KEY_ALLOC_NOT_IN_QUOTA);
+> > > +	if (IS_ERR(key)) {
+> > > +		pr_err("Problem loading X.509 certificate from %s to secondary key=
+ring %ld\n",
+> > > +		       source, PTR_ERR(key));
+> > > +		return;
+> > > +	}
+> > > +
+> > > +	pr_notice("Loaded X.509 cert '%s'\n", key_ref_to_ptr(key)->descript=
+ion);
+> > > +	key_ref_put(key);
+> > > +}
+> > >  #endif
+> > >  #ifdef CONFIG_INTEGRITY_MACHINE_KEYRING
+> > >  void __init set_machine_trusted_keys(struct key *keyring)
+> > > diff --git a/include/keys/system_keyring.h b/include/keys/system_keyr=
+ing.h
+> > > index 7e2583208820..8365adf842ef 100644
+> > > --- a/include/keys/system_keyring.h
+> > > +++ b/include/keys/system_keyring.h
+> > > @@ -50,9 +50,13 @@ int restrict_link_by_digsig_builtin_and_secondary(=
+struct key *keyring,
+> > >  						  const struct key_type *type,
+> > >  						  const union key_payload *payload,
+> > >  						  struct key *restriction_key);
+> > > +void __init add_to_secondary_keyring(const char *source, const void =
+*data, size_t len);
+> > >  #else
+> > >  #define restrict_link_by_builtin_and_secondary_trusted restrict_link=
+_by_builtin_trusted
+> > >  #define restrict_link_by_digsig_builtin_and_secondary restrict_link_=
+by_digsig_builtin
+> > > +static inline void __init add_to_secondary_keyring(const char *sourc=
+e, const void *data, size_t len)
+> > > +{
+> > > +}
+> > >  #endif
+> > > =20
+> > >  #ifdef CONFIG_INTEGRITY_MACHINE_KEYRING
+> > > diff --git a/security/integrity/platform_certs/keyring_handler.c b/se=
+curity/integrity/platform_certs/keyring_handler.c
+> > > index 586027b9a3f5..13ea17207902 100644
+> > > --- a/security/integrity/platform_certs/keyring_handler.c
+> > > +++ b/security/integrity/platform_certs/keyring_handler.c
+> > > @@ -78,6 +78,14 @@ __init efi_element_handler_t get_handler_for_ca_ke=
+ys(const efi_guid_t *sig_type)
+> > >  	return NULL;
+> > >  }
+> > > =20
+> > > +__init efi_element_handler_t get_handler_for_code_signing_keys(const=
+ efi_guid_t *sig_type)
+> > > +{
+> > > +	if (efi_guidcmp(*sig_type, efi_cert_x509_guid) =3D=3D 0)
+> > > +		return add_to_secondary_keyring;
+> > > +
+> > > +	return NULL;
+> > > +}
+> > > +
+> > >  /*
+> > >   * Return the appropriate handler for particular signature list type=
+s found in
+> > >   * the UEFI dbx and MokListXRT tables.
+> > > diff --git a/security/integrity/platform_certs/keyring_handler.h b/se=
+curity/integrity/platform_certs/keyring_handler.h
+> > > index 6f15bb4cc8dc..f92895cc50f6 100644
+> > > --- a/security/integrity/platform_certs/keyring_handler.h
+> > > +++ b/security/integrity/platform_certs/keyring_handler.h
+> > > @@ -34,6 +34,11 @@ efi_element_handler_t get_handler_for_mok(const ef=
+i_guid_t *sig_type);
+> > >   */
+> > >  efi_element_handler_t get_handler_for_ca_keys(const efi_guid_t *sig_=
+type);
+> > > =20
+> > > +/*
+> > > + * Return the handler for particular signature list types for code s=
+igning keys.
+> > > + */
+> > > +efi_element_handler_t get_handler_for_code_signing_keys(const efi_gu=
+id_t *sig_type);
+> > > +
+> > >  /*
+> > >   * Return the handler for particular signature list types found in t=
+he dbx.
+> > >   */
+> > > diff --git a/security/integrity/platform_certs/load_powerpc.c b/secur=
+ity/integrity/platform_certs/load_powerpc.c
+> > > index 339053d9726d..c85febca3343 100644
+> > > --- a/security/integrity/platform_certs/load_powerpc.c
+> > > +++ b/security/integrity/platform_certs/load_powerpc.c
+> > > @@ -60,6 +60,7 @@ static int __init load_powerpc_certs(void)
+> > >  {
+> > >  	void *db =3D NULL, *dbx =3D NULL, *data =3D NULL;
+> > >  	void *trustedca;
+> > > +	void *moduledb;
+> > >  	u64 dsize =3D 0;
+> > >  	u64 offset =3D 0;
+> > >  	int rc =3D 0;
+> > > @@ -137,6 +138,22 @@ static int __init load_powerpc_certs(void)
+> > >  		kfree(data);
+> > >  	}
+> > > =20
+> > > +	data =3D get_cert_list("moduledb", 9,  &dsize);
+> > > +	if (!data) {
+> > > +		pr_info("Couldn't get moduledb list from firmware\n");
+> > > +	} else if (IS_ERR(data)) {
+> > > +		rc =3D PTR_ERR(data);
+> > > +		pr_err("Error reading moduledb from firmware: %d\n", rc);
+> > > +	} else {
+> > > +		extract_esl(moduledb, data, dsize, offset);
+> > > +
+> > > +		rc =3D parse_efi_signature_list("powerpc:moduledb", moduledb, dsiz=
+e,
+> > > +					      get_handler_for_code_signing_keys);
+> > > +		if (rc)
+> > > +			pr_err("Couldn't parse moduledb signatures: %d\n", rc);
+> > > +		kfree(data);
+> > > +	}
+> > > +
+> > >  	return rc;
+> > >  }
+> > >  late_initcall(load_powerpc_certs);
+> > > --=20
+> > > 2.31.1
+> >=20
+> > Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+> >=20
+> > I can pick this. My last PR did not went too great partly because of
+> > mess with tpm_tis but now things are calmer.
+>
+> Glad things have settled down.  Whatever you prefer is fine.   This
+> patch set needs to make it into linux-next as soon as possible.  Please
+> don't forget to add Nageswara's "Tested-by" and fix mine on 4/6.
+>
+> --=20
+> thanks,
+>
+> Mimi
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
+I'll apply the full (v4) patch set tomorrow after I wake up.
 
--- 
-Kees Cook
+BR, Jarkko
