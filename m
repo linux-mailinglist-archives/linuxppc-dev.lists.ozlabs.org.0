@@ -1,61 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBE4377EB79
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Aug 2023 23:11:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2FF677EBFD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Aug 2023 23:40:21 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ovzvuj+D;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=B3mPwfTr;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RR16K55F1z3cGL
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 07:11:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RR1l75Qlwz3cPF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 07:40:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ovzvuj+D;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=B3mPwfTr;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--justinstitt.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=3d0ldzaskddybmklafklallyggydw.ugedafmphhu-vwndaklk.grdstk.gjy@flex--justinstitt.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RR15Q0BJRz2yDS
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Aug 2023 07:11:05 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 2F0EC61F79;
-	Wed, 16 Aug 2023 21:11:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11A09C433C8;
-	Wed, 16 Aug 2023 21:11:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1692220263;
-	bh=mBsAzyfxfhI/6EYaCFRgUdv5YuaozjadXjfhd+MaaSI=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=Ovzvuj+D9ctGsAP6bh1Ya8cTeakvufD8PfcHUdiQM9DjwZ1dbouG7/GXgkH1z7aUi
-	 GBZhF16GS1/vuSA3oY5oud2t8U0XeD1VxEDKjYa/Rdd6hJS+OG4x5F9G9g41IiqheO
-	 hJmipQ7acAY74tbN0GcrAkdfQCVmEulOFFHxSSABEkkP9IF2fFHlkEX6tWwQvBrWea
-	 zyFjUbJX68JCB0Pv1pQhWCRVVPO+UDUfCfq3Xm5bq/+bsg4AwDlW+oFBzrDql1cvH2
-	 Y4e2WhqloA7EVZqdYBMNeIEx3KfhmsyG86Sodh15QHeTqAGt3tau0rXtq6vYo5tg5P
-	 JAqxOUVnRSnzw==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RR1kD1wpMz30dt
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Aug 2023 07:39:30 +1000 (AEST)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-57320c10635so92201067b3.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Aug 2023 14:39:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1692221967; x=1692826767;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=dgfv9XpiXMzsq2kLywbyVX/AZp8i35sYGiNA5Uju+Tg=;
+        b=B3mPwfTrF1Ige4phc1lVSf7W1iqdnDLezfu/Ms6Scp4jsTZmzB8Vfhv4DjxvTlOZcs
+         tk9VlKRIXH/RwiRpno3xlRg+kYX83WMe3fSZqxLsQk8WKCjS3QrUPun6+6rZd3biMiEj
+         ZG5kCeCarobtr+BZHlkQj9h7xwP4ChxqgVGCxRNAks9MBaH2PoN9TO+DMTtcDE8Js0xd
+         33v65vYmTZ13eJmIkbsGN9AMOKxl5rl/FHmo+ofyFjDDjj5uScL02oYID9O494OUmQQa
+         ZMvGjuUfwo8WSY4vIfUiJkdlTULm7UYdPh65MmP5xyig/2Fz+behqtWgnayNAE3uRygV
+         KUJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692221967; x=1692826767;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dgfv9XpiXMzsq2kLywbyVX/AZp8i35sYGiNA5Uju+Tg=;
+        b=hfx8UVkmpbHw2T+bpIZmoTJY2mXh1BZRi18cb3ZTkFseZINwg/Omm6rBl5YQWioonD
+         wK2yoryKXimTVQ3ds+MqY1gnm9S6eYXdXbjxbNiVbRpiRAZ4GUTp8xV7gJXGQdZqsyp7
+         o1O25N6fPU0/JNq0/M6OxXw68j2rgoRMx+N9R37M3KxySo8zjsLqov1oloRYRea20IcM
+         cmbpP4q2EhOnGHHECW9TokthcyaUu3vC7vuyS1ihzSQCgVcd4JAR4r+lrGzU1dhOb+t8
+         vfnW0V0Lhc5s2iMRJE0B81pNnUCTYS6zU0zooHyGI+rEunE45OIp8F6CU0sUsSo1e9u9
+         FZZg==
+X-Gm-Message-State: AOJu0YybFU3QA0tpOmwFuUvDy82t+w5HIimdnOWfctSVGh8u2k+vz7F8
+	HX1RIVcuBEXd415kJRY75OYD4q/zUrdO8elaxQ==
+X-Google-Smtp-Source: AGHT+IEVHWg7faDJGpLl8t8qRgynXOF8x/oPuFyxnuV6asqFbVWol9ZvrF92XF57cIBZH1l24F8+JcpNC2abmYHuJg==
+X-Received: from jstitt-linux1.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:23b5])
+ (user=justinstitt job=sendgmr) by 2002:a81:ae66:0:b0:589:9ebc:4bfc with SMTP
+ id g38-20020a81ae66000000b005899ebc4bfcmr41356ywk.9.1692221967232; Wed, 16
+ Aug 2023 14:39:27 -0700 (PDT)
+Date: Wed, 16 Aug 2023 21:39:24 +0000
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 17 Aug 2023 00:11:00 +0300
-Message-Id: <CUUA0NGX7OT4.2TRQP2BRSVXRZ@suppilovahvero>
-To: "Mimi Zohar" <zohar@linux.ibm.com>, "Nayna Jain" <nayna@linux.ibm.com>,
- <linux-integrity@vger.kernel.org>
-Subject: Re: [PATCH v4 6/6] integrity: PowerVM support for loading third
- party code signing keys
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-X-Mailer: aerc 0.14.0
-References: <20230815112722.1591829-1-nayna@linux.ibm.com>
- <20230815112722.1591829-7-nayna@linux.ibm.com>
- <CUU9A4V7EREZ.2CPPYURBAGN95@suppilovahvero>
- <cedb2c8f7c9d3f22f5e3d570c039bfcf59cc5a6e.camel@linux.ibm.com>
-In-Reply-To: <cedb2c8f7c9d3f22f5e3d570c039bfcf59cc5a6e.camel@linux.ibm.com>
+X-B4-Tracking: v=1; b=H4sIAAtC3WQC/x3NwQrCMAyA4VcZORtYW5zFVxEPpctcQNuQFHWMv
+ bvF43f5/x2MlMngOuyg9GbjWjrcaYC8pvIg5Lkb/OjDGN2E1rRk2TBpXlHqh1QyyjO1perLUCy gklTjVnXDeE4ux+lCsw/Qm6K08Pf/u92P4wcoxlPwfwAAAA==
+X-Developer-Key: i=justinstitt@google.com; a=ed25519; pk=tC3hNkJQTpNX/gLKxTNQKDmiQl6QjBNCGKJINqAdJsE=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1692221966; l=1607;
+ i=justinstitt@google.com; s=20230717; h=from:subject:message-id;
+ bh=30eCBoYcInKFNOcnuhFfYjRixFwqc2selXbnOKgw6dI=; b=xDzKLH1yz1jxJwierFXeVLUgiJfBIeQIt+nXl5gaKMxMfmxMDGzOJZDP9cseijM4Ywj0ktUp1
+ Q2cOTSB+/0pDQWF0iqwsPv7ZIS9SsHY6BJ5okfK8iTSE6218SV8h728
+X-Mailer: b4 0.12.3
+Message-ID: <20230816-strncpy-arch-powerpc-platforms-ps3-repository-v1-1-88283b02fb09@google.com>
+Subject: [PATCH] powerpc/ps3: refactor strncpy usage
+From: Justin Stitt <justinstitt@google.com>
+To: Geoff Levand <geoff@infradead.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset="utf-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,202 +80,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Eric Snowberg <eric.snowberg@oracle.com>, linux-security-module@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Paul Moore <paul@paul-moore.com>, inux-kernel@vger.kernel.org
+Cc: linux-hardening@vger.kernel.org, Justin Stitt <justinstitt@google.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu Aug 17, 2023 at 12:06 AM EEST, Mimi Zohar wrote:
-> On Wed, 2023-08-16 at 23:36 +0300, Jarkko Sakkinen wrote:
-> > On Tue Aug 15, 2023 at 2:27 PM EEST, Nayna Jain wrote:
-> > > On secure boot enabled PowerVM LPAR, third party code signing keys ar=
-e
-> > > needed during early boot to verify signed third party modules. These
-> > > third party keys are stored in moduledb object in the Platform
-> > > KeyStore (PKS).
-> > >
-> > > Load third party code signing keys onto .secondary_trusted_keys keyri=
-ng.
-> > >
-> > > Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-> > > ---
-> > >  certs/system_keyring.c                        | 30 +++++++++++++++++=
-++
-> > >  include/keys/system_keyring.h                 |  4 +++
-> > >  .../platform_certs/keyring_handler.c          |  8 +++++
-> > >  .../platform_certs/keyring_handler.h          |  5 ++++
-> > >  .../integrity/platform_certs/load_powerpc.c   | 17 +++++++++++
-> > >  5 files changed, 64 insertions(+)
-> > >
-> > > diff --git a/certs/system_keyring.c b/certs/system_keyring.c
-> > > index b348e0898d34..33841c91f12c 100644
-> > > --- a/certs/system_keyring.c
-> > > +++ b/certs/system_keyring.c
-> > > @@ -152,6 +152,36 @@ static __init struct key_restriction *get_builti=
-n_and_secondary_restriction(void
-> > > =20
-> > >  	return restriction;
-> > >  }
-> > > +
-> > > +/**
-> > > + * add_to_secondary_keyring - Add to secondary keyring.
-> > > + * @source: Source of key
-> > > + * @data: The blob holding the key
-> > > + * @len: The length of the data blob
-> > > + *
-> > > + * Add a key to the secondary keyring. The key must be vouched for b=
-y a key in the builtin,
-> > > + * machine or secondary keyring itself.
-> > > + */
-> > > +void __init add_to_secondary_keyring(const char *source, const void =
-*data, size_t len)
-> > > +{
-> > > +	key_ref_t key;
-> > > +	key_perm_t perm;
-> > > +
-> > > +	perm =3D (KEY_POS_ALL & ~KEY_POS_SETATTR) | KEY_USR_VIEW;
-> > > +
-> > > +	key =3D key_create_or_update(make_key_ref(secondary_trusted_keys, 1=
-),
-> > > +				   "asymmetric",
-> > > +				   NULL, data, len, perm,
-> > > +				   KEY_ALLOC_NOT_IN_QUOTA);
-> > > +	if (IS_ERR(key)) {
-> > > +		pr_err("Problem loading X.509 certificate from %s to secondary key=
-ring %ld\n",
-> > > +		       source, PTR_ERR(key));
-> > > +		return;
-> > > +	}
-> > > +
-> > > +	pr_notice("Loaded X.509 cert '%s'\n", key_ref_to_ptr(key)->descript=
-ion);
-> > > +	key_ref_put(key);
-> > > +}
-> > >  #endif
-> > >  #ifdef CONFIG_INTEGRITY_MACHINE_KEYRING
-> > >  void __init set_machine_trusted_keys(struct key *keyring)
-> > > diff --git a/include/keys/system_keyring.h b/include/keys/system_keyr=
-ing.h
-> > > index 7e2583208820..8365adf842ef 100644
-> > > --- a/include/keys/system_keyring.h
-> > > +++ b/include/keys/system_keyring.h
-> > > @@ -50,9 +50,13 @@ int restrict_link_by_digsig_builtin_and_secondary(=
-struct key *keyring,
-> > >  						  const struct key_type *type,
-> > >  						  const union key_payload *payload,
-> > >  						  struct key *restriction_key);
-> > > +void __init add_to_secondary_keyring(const char *source, const void =
-*data, size_t len);
-> > >  #else
-> > >  #define restrict_link_by_builtin_and_secondary_trusted restrict_link=
-_by_builtin_trusted
-> > >  #define restrict_link_by_digsig_builtin_and_secondary restrict_link_=
-by_digsig_builtin
-> > > +static inline void __init add_to_secondary_keyring(const char *sourc=
-e, const void *data, size_t len)
-> > > +{
-> > > +}
-> > >  #endif
-> > > =20
-> > >  #ifdef CONFIG_INTEGRITY_MACHINE_KEYRING
-> > > diff --git a/security/integrity/platform_certs/keyring_handler.c b/se=
-curity/integrity/platform_certs/keyring_handler.c
-> > > index 586027b9a3f5..13ea17207902 100644
-> > > --- a/security/integrity/platform_certs/keyring_handler.c
-> > > +++ b/security/integrity/platform_certs/keyring_handler.c
-> > > @@ -78,6 +78,14 @@ __init efi_element_handler_t get_handler_for_ca_ke=
-ys(const efi_guid_t *sig_type)
-> > >  	return NULL;
-> > >  }
-> > > =20
-> > > +__init efi_element_handler_t get_handler_for_code_signing_keys(const=
- efi_guid_t *sig_type)
-> > > +{
-> > > +	if (efi_guidcmp(*sig_type, efi_cert_x509_guid) =3D=3D 0)
-> > > +		return add_to_secondary_keyring;
-> > > +
-> > > +	return NULL;
-> > > +}
-> > > +
-> > >  /*
-> > >   * Return the appropriate handler for particular signature list type=
-s found in
-> > >   * the UEFI dbx and MokListXRT tables.
-> > > diff --git a/security/integrity/platform_certs/keyring_handler.h b/se=
-curity/integrity/platform_certs/keyring_handler.h
-> > > index 6f15bb4cc8dc..f92895cc50f6 100644
-> > > --- a/security/integrity/platform_certs/keyring_handler.h
-> > > +++ b/security/integrity/platform_certs/keyring_handler.h
-> > > @@ -34,6 +34,11 @@ efi_element_handler_t get_handler_for_mok(const ef=
-i_guid_t *sig_type);
-> > >   */
-> > >  efi_element_handler_t get_handler_for_ca_keys(const efi_guid_t *sig_=
-type);
-> > > =20
-> > > +/*
-> > > + * Return the handler for particular signature list types for code s=
-igning keys.
-> > > + */
-> > > +efi_element_handler_t get_handler_for_code_signing_keys(const efi_gu=
-id_t *sig_type);
-> > > +
-> > >  /*
-> > >   * Return the handler for particular signature list types found in t=
-he dbx.
-> > >   */
-> > > diff --git a/security/integrity/platform_certs/load_powerpc.c b/secur=
-ity/integrity/platform_certs/load_powerpc.c
-> > > index 339053d9726d..c85febca3343 100644
-> > > --- a/security/integrity/platform_certs/load_powerpc.c
-> > > +++ b/security/integrity/platform_certs/load_powerpc.c
-> > > @@ -60,6 +60,7 @@ static int __init load_powerpc_certs(void)
-> > >  {
-> > >  	void *db =3D NULL, *dbx =3D NULL, *data =3D NULL;
-> > >  	void *trustedca;
-> > > +	void *moduledb;
-> > >  	u64 dsize =3D 0;
-> > >  	u64 offset =3D 0;
-> > >  	int rc =3D 0;
-> > > @@ -137,6 +138,22 @@ static int __init load_powerpc_certs(void)
-> > >  		kfree(data);
-> > >  	}
-> > > =20
-> > > +	data =3D get_cert_list("moduledb", 9,  &dsize);
-> > > +	if (!data) {
-> > > +		pr_info("Couldn't get moduledb list from firmware\n");
-> > > +	} else if (IS_ERR(data)) {
-> > > +		rc =3D PTR_ERR(data);
-> > > +		pr_err("Error reading moduledb from firmware: %d\n", rc);
-> > > +	} else {
-> > > +		extract_esl(moduledb, data, dsize, offset);
-> > > +
-> > > +		rc =3D parse_efi_signature_list("powerpc:moduledb", moduledb, dsiz=
-e,
-> > > +					      get_handler_for_code_signing_keys);
-> > > +		if (rc)
-> > > +			pr_err("Couldn't parse moduledb signatures: %d\n", rc);
-> > > +		kfree(data);
-> > > +	}
-> > > +
-> > >  	return rc;
-> > >  }
-> > >  late_initcall(load_powerpc_certs);
-> > > --=20
-> > > 2.31.1
-> >=20
-> > Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-> >=20
-> > I can pick this. My last PR did not went too great partly because of
-> > mess with tpm_tis but now things are calmer.
->
-> Glad things have settled down.  Whatever you prefer is fine.   This
-> patch set needs to make it into linux-next as soon as possible.  Please
-> don't forget to add Nageswara's "Tested-by" and fix mine on 4/6.
->
-> --=20
-> thanks,
->
-> Mimi
+`strncpy` is deprecated for use on NUL-terminated destination strings [1].
 
-I'll apply the full (v4) patch set tomorrow after I wake up.
+`make_first_field()` should use similar implementation to `make_field()`
+due to memcpy having more obvious behavior here. The end result yields
+the same behavior as the previous `strncpy`-based implementation
+including the NUL-padding.
 
-BR, Jarkko
+Link: www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings[1]
+Link: https://github.com/KSPP/linux/issues/90
+Cc: linux-hardening@vger.kernel.org
+Signed-off-by: Justin Stitt <justinstitt@google.com>
+---
+Note:
+This follows up on a previous RFC which can be found here:
+https://lore.kernel.org/all/20230811-strncpy-arch-powerpc-platforms-ps3-v1-0-301052a5663e@google.com/
+---
+ arch/powerpc/platforms/ps3/repository.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/platforms/ps3/repository.c b/arch/powerpc/platforms/ps3/repository.c
+index 205763061a2d..1abe33fbe529 100644
+--- a/arch/powerpc/platforms/ps3/repository.c
++++ b/arch/powerpc/platforms/ps3/repository.c
+@@ -73,9 +73,9 @@ static void _dump_node(unsigned int lpar_id, u64 n1, u64 n2, u64 n3, u64 n4,
+ 
+ static u64 make_first_field(const char *text, u64 index)
+ {
+-	u64 n;
++	u64 n = 0;
+ 
+-	strncpy((char *)&n, text, 8);
++	memcpy((char *)&n, text, strnlen(text, sizeof(n)));
+ 	return PS3_VENDOR_ID_NONE + (n >> 32) + index;
+ }
+ 
+
+---
+base-commit: 2ccdd1b13c591d306f0401d98dedc4bdcd02b421
+change-id: 20230816-strncpy-arch-powerpc-platforms-ps3-repository-85a1c867ed23
+
+Best regards,
+--
+Justin Stitt <justinstitt@google.com>
+
