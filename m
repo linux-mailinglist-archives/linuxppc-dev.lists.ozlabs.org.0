@@ -1,88 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54E4F77E20F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Aug 2023 14:59:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C40C177E24B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Aug 2023 15:13:16 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tlN282+e;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=vnOGsLEB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=J253saPL;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RQp9r1fhDz3cJR
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Aug 2023 22:59:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RQpV24ZJ7z3cM5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Aug 2023 23:13:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tlN282+e;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=vnOGsLEB;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=J253saPL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=zohar@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=64.147.123.21; helo=wout5-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RQp8y3PWYz2xZp
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Aug 2023 22:58:25 +1000 (AEST)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37GCvh1L032106;
-	Wed, 16 Aug 2023 12:58:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=WmKNqt5RyLphEHTQ3PhyNwbR24W9Co9HoNVQhPeG+SU=;
- b=tlN282+ea6K8K19iQkBOd7thTBnMF9M7LVWNWzV5jMmItBzxqvaW41FXXJCdwKMxZIBI
- bSMXdsXgz1hJttPtQHs+/pzztqgUcf2N4IjiUTFQMN9fnVhRlmhGUPM/NbRcMxhAsKKm
- PpumHzYwDQEHKHcL3SRChhyoKtJ0to3nMVzdkJEVSCfymyPJf+fcDgbyy2TARYiL5Tcv
- j77mft8egkhtRD6CMGPsqvf+Y2rJW9Q8Ns5MfcBAOQnlGODFyurqq3KIGX4HEbJBEqt9
- NYWJ/kYK60PJOGcqSM3TCtw62MHm7zCSA7DmfPSMAhoB326PBg8HZ03GPWdxU+EB7QvG cA== 
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sgxx080p1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 16 Aug 2023 12:58:20 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 37GAvrJx001090;
-	Wed, 16 Aug 2023 12:58:19 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3semsycm8b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 16 Aug 2023 12:58:19 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 37GCwIHa20185390
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 16 Aug 2023 12:58:18 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0886C5805B;
-	Wed, 16 Aug 2023 12:58:18 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3F1D05805E;
-	Wed, 16 Aug 2023 12:58:17 +0000 (GMT)
-Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.61.190.160])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 16 Aug 2023 12:58:17 +0000 (GMT)
-Message-ID: <3b4024eb6602fc2b7be821e6e33c656eee3c7cae.camel@linux.ibm.com>
-Subject: Re: [PATCH v3 2/6] integrity: ignore keys failing CA restrictions
- on non-UEFI platform
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Jarkko Sakkinen <jarkko@kernel.org>, Nayna Jain <nayna@linux.ibm.com>,
-        linux-integrity@vger.kernel.org
-Date: Wed, 16 Aug 2023 08:58:16 -0400
-In-Reply-To: <CUSG8HX9J4L0.37OHE7QHLL9N7@suppilovahvero>
-References: <20230813021531.1382815-1-nayna@linux.ibm.com>
-	 <20230813021531.1382815-3-nayna@linux.ibm.com>
-	 <CUSG8HX9J4L0.37OHE7QHLL9N7@suppilovahvero>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-22.el8) 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RQpT32qYSz2yTc
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Aug 2023 23:12:22 +1000 (AEST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailout.west.internal (Postfix) with ESMTP id 1C83A3200941;
+	Wed, 16 Aug 2023 09:12:15 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Wed, 16 Aug 2023 09:12:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:sender
+	:subject:subject:to:to; s=fm3; t=1692191534; x=1692277934; bh=ZR
+	T106v0hiqgMDmrCmS6eySFqP6+naQFmpKPfl1LC4A=; b=vnOGsLEBWf6iRqdcGe
+	aKN5BWG0fJGAVU6JVIXw2r5trEbi4U8HGAkyD0+6xPYUebCuLdj/BgvHcLXQ3VWz
+	DM86GEBHF5q/32OBTSQ1jAmNdTLIKRxKeTpDjT17bQgiqwms96qRRheqtFVNxibZ
+	hwb68kNFhtdjc0mMi067Ltuik7Sz8Ub0DzdHrBDczZvPLkmNw72p43WeSwcA6Uhd
+	jlAAKWZ6Al07ksUMdho4dSrDxHjxQNY7apoz3xCtR88uxRhkG9xkFDGscnnRTo5l
+	WiGl5SfVo9TNOcr+c7G2H0chHBT3ePUGo7ZEdPXRmkEqRq9XFAWEkvI8BxCAowqC
+	qylw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:sender:subject
+	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+	:x-sasl-enc; s=fm1; t=1692191534; x=1692277934; bh=ZRT106v0hiqgM
+	DmrCmS6eySFqP6+naQFmpKPfl1LC4A=; b=J253saPLCyaYpeIDlShp7YvjJgenV
+	Ht1wUlTeHrAp+sMBGixfNZyUOs+v29RrlwC/Ff32lR6rR8Ptf/e2eCzpS7zg4WOK
+	JYImEvkjD5EcWi13FT1qPlKSW+lxLDrtzkAe+SPR9zQ5OXHVI5o5ZavoAdaJjrvF
+	mYs/WGtCNnfkuosVJ63bXDJlTIEuUUTya6gHAHWER0NlUHQA4H1Y/6SUWW5k7VGX
+	CgelTXP6IMV844RF/eUDrOP+e8y9sL3KhWck/HUsbwg8VPAFec37UpcjQLZf4mWh
+	uldSfe9YCl3AXDW8zsfBvdpTuUvrJa25ROBLezhFUT/OIhB48LEBQcZnA==
+X-ME-Sender: <xms:K8vcZHO8GGtKsWaqQcWz1qpw7lABKKHBkhe_YqZz2EzFfnfT05ISiA>
+    <xme:K8vcZB-r0Y6dBNf9v4cUL_7yF6uQAKk9sv7-_V3dOoxP_cvdsp3JLUt2S3lonyhXT
+    Ls1v4Sr_SabhXlhEhc>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedruddtledgieduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
+    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:K8vcZGQO-MgdXr5jJldoDAQTHH6Ovgm0uSHlTvzKqKADkMryTvW66g>
+    <xmx:K8vcZLtkn6_JnzcwFpD1vZfMnl9JtfeWnWAVnzNARqjEiksaIcRtOg>
+    <xmx:K8vcZPepBT5Oy2rf3fQLmMFTs8XTCaO1eXozKuHr43Q9B1oPLmqWGA>
+    <xmx:LsvcZBc7lnjA2S24fyGf-1Kbi-eqlGDcVFzJeOS9w2dwF53-Geo3HA>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id C1305B60089; Wed, 16 Aug 2023 09:12:11 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-624-g7714e4406d-fm-20230801.001-g7714e440
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: aJNxpgGI1i7q6w3pkC8aTvsLKU1rNLm9
-X-Proofpoint-ORIG-GUID: aJNxpgGI1i7q6w3pkC8aTvsLKU1rNLm9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-16_11,2023-08-15_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 spamscore=0
- lowpriorityscore=0 bulkscore=0 malwarescore=0 mlxlogscore=999 mlxscore=0
- impostorscore=0 phishscore=0 clxscore=1015 adultscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
- definitions=main-2308160110
+Message-Id: <0681968f-743d-4b55-bb1e-dbd665ea8783@app.fastmail.com>
+In-Reply-To: <20230816055010.31534-1-rdunlap@infradead.org>
+References: <20230816055010.31534-1-rdunlap@infradead.org>
+Date: Wed, 16 Aug 2023 15:11:35 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Randy Dunlap" <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] treewide: drop CONFIG_EMBEDDED
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,56 +92,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Eric Snowberg <eric.snowberg@oracle.com>, linux-security-module@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Paul Moore <paul@paul-moore.com>, linux-kernel@vger.kernel.org
+Cc: "Jason A . Donenfeld" <Jason@zx2c4.com>, Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, "linux-openrisc@vger.kernel.org" <linux-openrisc@vger.kernel.org>, linux-riscv@lists.infradead.org, Greg Ungerer <gerg@linux-m68k.org>, Linux-Arch <linux-arch@vger.kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, Masahiro Yamada <masahiroy@kernel.org>, Russell King <linux@armlinux.org.uk>, Geert Uytterhoeven <geert@linux-m68k.org>, Vineet Gupta <vgupta@kernel.org>, linux-snps-arc@lists.infradead.org, Jonas Bonn <jonas@southpole.se>, Albert Ou <aou@eecs.berkeley.edu>, linux-kbuild@vger.kernel.org, Josh Triplett <josh@joshtriplett.org>, Nicholas Piggin <npiggin@gmail.com>, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, linux-m68k@lists.linux-m68k.org, Paul Walmsley <paul.walmsley@sifive.com>, Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org, Brian Cain <bcain@quicinc.com>, Michal Simek <
+ monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Max Filippov <jcmvbkbc@gmail.com>, linux-mips@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-hexagon@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, wireguard@lists.zx2c4.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2023-08-14 at 20:38 +0300, Jarkko Sakkinen wrote:
-> On Sun Aug 13, 2023 at 5:15 AM EEST, Nayna Jain wrote:
-> > On non-UEFI platforms, handle restrict_link_by_ca failures differently.
-> >
-> > Certificates which do not satisfy CA restrictions on non-UEFI platforms
-> > are ignored.
-> >
-> > Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-> > Reviewed-and-tested-by: Mimi Zohar <zohar@linux.ibm.com>
-> > ---
-> >  security/integrity/platform_certs/machine_keyring.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/security/integrity/platform_certs/machine_keyring.c b/security/integrity/platform_certs/machine_keyring.c
-> > index 7aaed7950b6e..389a6e7c9245 100644
-> > --- a/security/integrity/platform_certs/machine_keyring.c
-> > +++ b/security/integrity/platform_certs/machine_keyring.c
-> > @@ -36,7 +36,7 @@ void __init add_to_machine_keyring(const char *source, const void *data, size_t
-> >  	 * If the restriction check does not pass and the platform keyring
-> >  	 * is configured, try to add it into that keyring instead.
-> >  	 */
-> > -	if (rc && IS_ENABLED(CONFIG_INTEGRITY_PLATFORM_KEYRING))
-> > +	if (rc && efi_enabled(EFI_BOOT) && IS_ENABLED(CONFIG_INTEGRITY_PLATFORM_KEYRING))
-> >  		rc = integrity_load_cert(INTEGRITY_KEYRING_PLATFORM, source,
-> >  					 data, len, perm);
-> >  
-> > -- 
-> > 2.31.1
-> 
-> Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
+On Wed, Aug 16, 2023, at 07:50, Randy Dunlap wrote:
+> There is only one Kconfig user of CONFIG_EMBEDDED and it can be
+> switched to EXPERT or "if !ARCH_MULTIPLATFORM" (suggested by Arnd).
+>
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Cc: Russell King <linux@armlinux.org.uk>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Jason A. Donenfeld <Jason@zx2c4.com>
 
-Hi Jarkko,
-
-Without the following two commits in your master branch, the last patch
-in this series "[PATCH v4 6/6] integrity: PowerVM support for loading
-third party code signing keys"   doesn't apply cleanly.
-
-- commit 409b465f8a83 ("integrity: Enforce digitalSignature usage in
-the ima and evm keyrings")
-- commit e34a6c7dd192 ("KEYS: DigitalSignature link restriction")
-
-If you're not planning on upstreaming this patch set, I'd appreciate
-your creating a topic branch with these two commits.
-
--- 
-thanks,
-
-Mimi
-
+Acked-by: Arnd Bergmann <arnd@arndb.de>
