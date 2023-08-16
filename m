@@ -1,49 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D6B677DA01
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Aug 2023 07:51:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2132F77DA5F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Aug 2023 08:18:53 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=cNXkJ3ch;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MrxqBZ9w;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RQchk1yBtz3cWC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Aug 2023 15:51:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RQdHt6g4Jz307V
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Aug 2023 16:18:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=cNXkJ3ch;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MrxqBZ9w;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=lists.ozlabs.org)
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RQcgh1RxGz300g
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Aug 2023 15:50:55 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=oYfzzUf+Rw9T/PB2TJaB3rTNtFx99BJBETLoW5SV8dM=; b=cNXkJ3chwqm5+oywzb6qk2+vmA
-	iMbAkqCPIkixcH3OP3MRaRjlPcYUSbQUYQTNi0/ML26h2cje1hhFoU7mdBeZkJFnf6rmhC+D5vwjf
-	5487+BXQSnpt78gAcQyPr/7UEx8zqYyF+S809oYYGQhtZZR5g8bYxutUrZCvsHZwBU5PcJsodR0qX
-	ZPVSwB7R8a0mXp3FVoqafLLqY2FYQUG+ygd1WObr37BYcWzNDMRSgbnGtPZbAvCBO3b31IqiJmpiF
-	wGg21/bDiu4KRFb35l9W30UWtas0Chk3K6PRuNi0soJ2dCgfD9OF/HCAC/KN3iWSu1FMdMdwvPq3M
-	GbZIw5dg==;
-Received: from [2601:1c2:980:9ec0::2764] (helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1qW9Q5-003FjP-1l;
-	Wed, 16 Aug 2023 05:50:13 +0000
-From: Randy Dunlap <rdunlap@infradead.org>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH] treewide: drop CONFIG_EMBEDDED
-Date: Tue, 15 Aug 2023 22:50:10 -0700
-Message-ID: <20230816055010.31534-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.41.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RQdH25fQ5z2yTc
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Aug 2023 16:18:01 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1692166687; x=1723702687;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=ftrEa3GQYaOls0qYA4JlEDnZEFBIWQlkKuDFwVR24MI=;
+  b=MrxqBZ9wh9LnR7/TFkNQtlgdmJpxsj8rpxpIep4WbDRUfgdg5Mu0uSUO
+   DjOvW5b+HvWMSVVC+XOWBJmEkKYn6ErW6oP5Tq8FiwvMEeQKsYqqqI28A
+   IdLQ5jrda1TCOy29YPfRnzM+9lTt8YbMUxcob/8iwqasoSVwjlsTXyFPO
+   RL6cWNBBRZQ3101YvSVtGjYfrCAmvhM+K3x7TUQIq7wyuKpA113/oEFbK
+   cK3f+WKcsPVIciYLa+Di8gqrAYSTFcAXBwslsPffF+S0nsABunI6zoqps
+   UUKxBHqr16cktt9es/XcggjhTdaX+Gk0oPrQSOoundBpBGM2ff4QsYh+Z
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="369923968"
+X-IronPort-AV: E=Sophos;i="6.01,176,1684825200"; 
+   d="scan'208";a="369923968"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 23:17:58 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="824121582"
+X-IronPort-AV: E=Sophos;i="6.01,176,1684825200"; 
+   d="scan'208";a="824121582"
+Received: from lkp-server02.sh.intel.com (HELO a9caf1a0cf30) ([10.239.97.151])
+  by FMSMGA003.fm.intel.com with ESMTP; 15 Aug 2023 23:17:55 -0700
+Received: from kbuild by a9caf1a0cf30 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1qW9qr-00003R-2o;
+	Wed, 16 Aug 2023 06:17:54 +0000
+Date: Wed, 16 Aug 2023 14:17:23 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jordan Niethe <jniethe5@gmail.com>
+Subject: [powerpc:topic/ppc-kvm 5/6]
+ arch/powerpc/kvm/book3s_hv_nestedv2.c:465:29: warning: variable 'amor' set
+ but not used
+Message-ID: <202308161433.p1L5wedY-lkp@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,1065 +69,262 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Jason A . Donenfeld" <Jason@zx2c4.com>, Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-openrisc@vger.kernel.org, linux-riscv@lists.infradead.org, Greg Ungerer <gerg@linux-m68k.org>, linux-arch@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, linux-hexagon@vger.kernel.org, Masahiro Yamada <masahiroy@kernel.org>, Russell King <linux@armlinux.org.uk>, Geert Uytterhoeven <geert@linux-m68k.org>, Vineet Gupta <vgupta@kernel.org>, linux-snps-arc@lists.infradead.org, Jonas Bonn <jonas@southpole.se>, Albert Ou <aou@eecs.berkeley.edu>, Arnd Bergmann <arnd@arndb.de>, linux-kbuild@vger.kernel.org, Josh Triplett <josh@joshtriplett.org>, Nicholas Piggin <npiggin@gmail.com>, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, linux-m68k@lists.linux-m68k.org, Paul Walmsley <paul.walmsley@sifive.com>, Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org, Brian Cain <bcain@quicinc.com>, 
- Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Max Filippov <jcmvbkbc@gmail.com>, Randy Dunlap <rdunlap@infradead.org>, linux-mips@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, wireguard@lists.zx2c4.com
+Cc: Amit Machhiwal <amachhiw@linux.vnet.ibm.com>, Gautam Menghani <gautam@linux.ibm.com>, Kautuk Consul <kconsul@linux.vnet.ibm.com>, oe-kbuild-all@lists.linux.dev, Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There is only one Kconfig user of CONFIG_EMBEDDED and it can be
-switched to EXPERT or "if !ARCH_MULTIPLATFORM" (suggested by Arnd).
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git topic/ppc-kvm
+head:   c95bf4c16099f2ed29a7f6949559bc4187d30710
+commit: 6be7fd9b644945c2e4f9f071b9f8caa57f4e5590 [5/6] KVM: PPC: Add support for nestedv2 guests
+config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20230816/202308161433.p1L5wedY-lkp@intel.com/config)
+compiler: powerpc64-linux-gcc (GCC) 12.3.0
+reproduce: (https://download.01.org/0day-ci/archive/20230816/202308161433.p1L5wedY-lkp@intel.com/reproduce)
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Jason A. Donenfeld <Jason@zx2c4.com>
-Cc: wireguard@lists.zx2c4.com
-Cc: linux-arch@vger.kernel.org
-Cc: linux-snps-arc@lists.infradead.org
-Cc: Vineet Gupta <vgupta@kernel.org>
-Cc: Brian Cain <bcain@quicinc.com>
-Cc: linux-hexagon@vger.kernel.org
-Cc: Greg Ungerer <gerg@linux-m68k.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: linux-m68k@lists.linux-m68k.org
-Cc: Michal Simek <monstr@monstr.eu>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: Dinh Nguyen <dinguyen@kernel.org>
-Cc: Jonas Bonn <jonas@southpole.se>
-Cc: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
-Cc: Stafford Horne <shorne@gmail.com>
-Cc: linux-openrisc@vger.kernel.org
-Cc: linux-mips@vger.kernel.org
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-riscv@lists.infradead.org
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: linux-sh@vger.kernel.org
-Cc: Max Filippov <jcmvbkbc@gmail.com>
-Cc: Josh Triplett <josh@joshtriplett.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: linux-kbuild@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>
----
- arch/arc/configs/axs101_defconfig                    |    2 +-
- arch/arc/configs/axs103_defconfig                    |    2 +-
- arch/arc/configs/axs103_smp_defconfig                |    2 +-
- arch/arc/configs/haps_hs_smp_defconfig               |    2 +-
- arch/arc/configs/hsdk_defconfig                      |    2 +-
- arch/arc/configs/nsim_700_defconfig                  |    2 +-
- arch/arc/configs/nsimosci_defconfig                  |    2 +-
- arch/arc/configs/nsimosci_hs_defconfig               |    2 +-
- arch/arc/configs/tb10x_defconfig                     |    2 +-
- arch/arc/configs/vdk_hs38_defconfig                  |    2 +-
- arch/arc/configs/vdk_hs38_smp_defconfig              |    2 +-
- arch/arm/Kconfig                                     |    2 +-
- arch/arm/configs/aspeed_g4_defconfig                 |    2 +-
- arch/arm/configs/aspeed_g5_defconfig                 |    2 +-
- arch/arm/configs/at91_dt_defconfig                   |    2 +-
- arch/arm/configs/axm55xx_defconfig                   |    2 +-
- arch/arm/configs/bcm2835_defconfig                   |    2 +-
- arch/arm/configs/clps711x_defconfig                  |    2 +-
- arch/arm/configs/keystone_defconfig                  |    2 +-
- arch/arm/configs/lpc18xx_defconfig                   |    2 +-
- arch/arm/configs/lpc32xx_defconfig                   |    2 +-
- arch/arm/configs/milbeaut_m10v_defconfig             |    2 +-
- arch/arm/configs/moxart_defconfig                    |    2 +-
- arch/arm/configs/multi_v4t_defconfig                 |    2 +-
- arch/arm/configs/multi_v7_defconfig                  |    2 +-
- arch/arm/configs/pxa_defconfig                       |    2 +-
- arch/arm/configs/qcom_defconfig                      |    2 +-
- arch/arm/configs/sama5_defconfig                     |    2 +-
- arch/arm/configs/sama7_defconfig                     |    2 +-
- arch/arm/configs/socfpga_defconfig                   |    2 +-
- arch/arm/configs/stm32_defconfig                     |    2 +-
- arch/arm/configs/tegra_defconfig                     |    2 +-
- arch/arm/configs/vf610m4_defconfig                   |    2 +-
- arch/hexagon/configs/comet_defconfig                 |    2 +-
- arch/m68k/configs/amcore_defconfig                   |    2 +-
- arch/m68k/configs/m5475evb_defconfig                 |    2 +-
- arch/m68k/configs/stmark2_defconfig                  |    2 +-
- arch/microblaze/configs/mmu_defconfig                |    2 +-
- arch/mips/configs/ath25_defconfig                    |    2 +-
- arch/mips/configs/ath79_defconfig                    |    2 +-
- arch/mips/configs/bcm47xx_defconfig                  |    2 +-
- arch/mips/configs/ci20_defconfig                     |    2 +-
- arch/mips/configs/cu1000-neo_defconfig               |    2 +-
- arch/mips/configs/cu1830-neo_defconfig               |    2 +-
- arch/mips/configs/db1xxx_defconfig                   |    2 +-
- arch/mips/configs/gcw0_defconfig                     |    2 +-
- arch/mips/configs/generic_defconfig                  |    2 +-
- arch/mips/configs/loongson2k_defconfig               |    2 +-
- arch/mips/configs/loongson3_defconfig                |    2 +-
- arch/mips/configs/malta_qemu_32r6_defconfig          |    2 +-
- arch/mips/configs/maltaaprp_defconfig                |    2 +-
- arch/mips/configs/maltasmvp_defconfig                |    2 +-
- arch/mips/configs/maltasmvp_eva_defconfig            |    2 +-
- arch/mips/configs/maltaup_defconfig                  |    2 +-
- arch/mips/configs/omega2p_defconfig                  |    2 +-
- arch/mips/configs/pic32mzda_defconfig                |    2 +-
- arch/mips/configs/qi_lb60_defconfig                  |    2 +-
- arch/mips/configs/rs90_defconfig                     |    2 +-
- arch/mips/configs/rt305x_defconfig                   |    2 +-
- arch/mips/configs/vocore2_defconfig                  |    2 +-
- arch/mips/configs/xway_defconfig                     |    2 +-
- arch/nios2/configs/10m50_defconfig                   |    2 +-
- arch/nios2/configs/3c120_defconfig                   |    2 +-
- arch/openrisc/configs/or1klitex_defconfig            |    2 +-
- arch/powerpc/configs/40x/klondike_defconfig          |    2 +-
- arch/powerpc/configs/44x/fsp2_defconfig              |    2 +-
- arch/powerpc/configs/52xx/tqm5200_defconfig          |    2 +-
- arch/powerpc/configs/mgcoge_defconfig                |    2 +-
- arch/powerpc/configs/microwatt_defconfig             |    2 +-
- arch/powerpc/configs/ps3_defconfig                   |    2 +-
- arch/riscv/configs/nommu_k210_defconfig              |    2 +-
- arch/riscv/configs/nommu_k210_sdcard_defconfig       |    2 +-
- arch/sh/configs/rsk7264_defconfig                    |    2 +-
- arch/sh/configs/rsk7269_defconfig                    |    2 +-
- arch/xtensa/configs/cadence_csp_defconfig            |    2 +-
- init/Kconfig                                         |    8 --------
- kernel/configs/tiny-base.config                      |    2 +-
- tools/testing/selftests/wireguard/qemu/kernel.config |    1 -
- 78 files changed, 76 insertions(+), 85 deletions(-)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202308161433.p1L5wedY-lkp@intel.com/
 
-diff -- a/arch/arm/Kconfig b/arch/arm/Kconfig
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -250,7 +250,7 @@ config ARCH_MTD_XIP
- 	bool
- 
- config ARM_PATCH_PHYS_VIRT
--	bool "Patch physical to virtual translations at runtime" if EMBEDDED
-+	bool "Patch physical to virtual translations at runtime" if !ARCH_MULTIPLATFORM
- 	default y
- 	depends on MMU
- 	help
-diff -- a/init/Kconfig b/init/Kconfig
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -1790,14 +1790,6 @@ config DEBUG_RSEQ
- 
- 	  If unsure, say N.
- 
--config EMBEDDED
--	bool "Embedded system"
--	select EXPERT
--	help
--	  This option should be enabled if compiling the kernel for
--	  an embedded system so certain expert options are available
--	  for configuration.
--
- config HAVE_PERF_EVENTS
- 	bool
- 	help
-diff -- a/arch/powerpc/configs/40x/klondike_defconfig b/arch/powerpc/configs/40x/klondike_defconfig
---- a/arch/powerpc/configs/40x/klondike_defconfig
-+++ b/arch/powerpc/configs/40x/klondike_defconfig
-@@ -4,7 +4,7 @@ CONFIG_LOG_BUF_SHIFT=14
- CONFIG_SYSFS_DEPRECATED=y
- CONFIG_SYSFS_DEPRECATED_V2=y
- CONFIG_BLK_DEV_INITRD=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_APM8018X=y
-diff -- a/arch/powerpc/configs/44x/fsp2_defconfig b/arch/powerpc/configs/44x/fsp2_defconfig
---- a/arch/powerpc/configs/44x/fsp2_defconfig
-+++ b/arch/powerpc/configs/44x/fsp2_defconfig
-@@ -15,7 +15,7 @@ CONFIG_BLK_DEV_INITRD=y
- # CONFIG_RD_LZ4 is not set
- CONFIG_KALLSYMS_ALL=y
- CONFIG_BPF_SYSCALL=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_PROFILING=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
-diff -- a/arch/powerpc/configs/52xx/tqm5200_defconfig b/arch/powerpc/configs/52xx/tqm5200_defconfig
---- a/arch/powerpc/configs/52xx/tqm5200_defconfig
-+++ b/arch/powerpc/configs/52xx/tqm5200_defconfig
-@@ -3,7 +3,7 @@ CONFIG_LOG_BUF_SHIFT=14
- CONFIG_BLK_DEV_INITRD=y
- # CONFIG_KALLSYMS is not set
- # CONFIG_EPOLL is not set
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_MODVERSIONS=y
-diff -- a/arch/arc/configs/axs101_defconfig b/arch/arc/configs/axs101_defconfig
---- a/arch/arc/configs/axs101_defconfig
-+++ b/arch/arc/configs/axs101_defconfig
-@@ -9,7 +9,7 @@ CONFIG_NAMESPACES=y
- # CONFIG_UTS_NS is not set
- # CONFIG_PID_NS is not set
- CONFIG_BLK_DEV_INITRD=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_PERF_EVENTS=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_SLUB_DEBUG is not set
-diff -- a/arch/arc/configs/axs103_defconfig b/arch/arc/configs/axs103_defconfig
---- a/arch/arc/configs/axs103_defconfig
-+++ b/arch/arc/configs/axs103_defconfig
-@@ -9,7 +9,7 @@ CONFIG_NAMESPACES=y
- # CONFIG_UTS_NS is not set
- # CONFIG_PID_NS is not set
- CONFIG_BLK_DEV_INITRD=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_PERF_EVENTS=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_SLUB_DEBUG is not set
-diff -- a/arch/arc/configs/axs103_smp_defconfig b/arch/arc/configs/axs103_smp_defconfig
---- a/arch/arc/configs/axs103_smp_defconfig
-+++ b/arch/arc/configs/axs103_smp_defconfig
-@@ -9,7 +9,7 @@ CONFIG_NAMESPACES=y
- # CONFIG_UTS_NS is not set
- # CONFIG_PID_NS is not set
- CONFIG_BLK_DEV_INITRD=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_PERF_EVENTS=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_COMPAT_BRK is not set
-diff -- a/arch/arc/configs/haps_hs_smp_defconfig b/arch/arc/configs/haps_hs_smp_defconfig
---- a/arch/arc/configs/haps_hs_smp_defconfig
-+++ b/arch/arc/configs/haps_hs_smp_defconfig
-@@ -11,7 +11,7 @@ CONFIG_NAMESPACES=y
- # CONFIG_UTS_NS is not set
- # CONFIG_PID_NS is not set
- CONFIG_BLK_DEV_INITRD=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_PERF_EVENTS=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_COMPAT_BRK is not set
-diff -- a/arch/arc/configs/hsdk_defconfig b/arch/arc/configs/hsdk_defconfig
---- a/arch/arc/configs/hsdk_defconfig
-+++ b/arch/arc/configs/hsdk_defconfig
-@@ -9,7 +9,7 @@ CONFIG_NAMESPACES=y
- # CONFIG_PID_NS is not set
- CONFIG_BLK_DEV_INITRD=y
- CONFIG_BLK_DEV_RAM=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_PERF_EVENTS=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_COMPAT_BRK is not set
-diff -- a/arch/arc/configs/nsim_700_defconfig b/arch/arc/configs/nsim_700_defconfig
---- a/arch/arc/configs/nsim_700_defconfig
-+++ b/arch/arc/configs/nsim_700_defconfig
-@@ -12,7 +12,7 @@ CONFIG_NAMESPACES=y
- # CONFIG_PID_NS is not set
- CONFIG_BLK_DEV_INITRD=y
- CONFIG_KALLSYMS_ALL=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_PERF_EVENTS=y
- # CONFIG_SLUB_DEBUG is not set
- # CONFIG_COMPAT_BRK is not set
-diff -- a/arch/arc/configs/nsimosci_defconfig b/arch/arc/configs/nsimosci_defconfig
---- a/arch/arc/configs/nsimosci_defconfig
-+++ b/arch/arc/configs/nsimosci_defconfig
-@@ -11,7 +11,7 @@ CONFIG_NAMESPACES=y
- # CONFIG_PID_NS is not set
- CONFIG_BLK_DEV_INITRD=y
- CONFIG_KALLSYMS_ALL=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_PERF_EVENTS=y
- # CONFIG_SLUB_DEBUG is not set
- # CONFIG_COMPAT_BRK is not set
-diff -- a/arch/arc/configs/nsimosci_hs_defconfig b/arch/arc/configs/nsimosci_hs_defconfig
---- a/arch/arc/configs/nsimosci_hs_defconfig
-+++ b/arch/arc/configs/nsimosci_hs_defconfig
-@@ -11,7 +11,7 @@ CONFIG_NAMESPACES=y
- # CONFIG_PID_NS is not set
- CONFIG_BLK_DEV_INITRD=y
- CONFIG_KALLSYMS_ALL=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_PERF_EVENTS=y
- # CONFIG_SLUB_DEBUG is not set
- # CONFIG_COMPAT_BRK is not set
-diff -- a/arch/arc/configs/tb10x_defconfig b/arch/arc/configs/tb10x_defconfig
---- a/arch/arc/configs/tb10x_defconfig
-+++ b/arch/arc/configs/tb10x_defconfig
-@@ -16,7 +16,7 @@ CONFIG_INITRAMFS_ROOT_GID=501
- # CONFIG_RD_GZIP is not set
- CONFIG_KALLSYMS_ALL=y
- # CONFIG_AIO is not set
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- # CONFIG_COMPAT_BRK is not set
- CONFIG_ISA_ARCOMPACT=y
- CONFIG_MODULES=y
-diff -- a/arch/arc/configs/vdk_hs38_defconfig b/arch/arc/configs/vdk_hs38_defconfig
---- a/arch/arc/configs/vdk_hs38_defconfig
-+++ b/arch/arc/configs/vdk_hs38_defconfig
-@@ -4,7 +4,7 @@ CONFIG_HIGH_RES_TIMERS=y
- CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
- CONFIG_BLK_DEV_INITRD=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_PERF_EVENTS=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_SLUB_DEBUG is not set
-diff -- a/arch/arc/configs/vdk_hs38_smp_defconfig b/arch/arc/configs/vdk_hs38_smp_defconfig
---- a/arch/arc/configs/vdk_hs38_smp_defconfig
-+++ b/arch/arc/configs/vdk_hs38_smp_defconfig
-@@ -4,7 +4,7 @@ CONFIG_HIGH_RES_TIMERS=y
- CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
- CONFIG_BLK_DEV_INITRD=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_PERF_EVENTS=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_SLUB_DEBUG is not set
-diff -- a/arch/hexagon/configs/comet_defconfig b/arch/hexagon/configs/comet_defconfig
---- a/arch/hexagon/configs/comet_defconfig
-+++ b/arch/hexagon/configs/comet_defconfig
-@@ -14,7 +14,7 @@ CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
- CONFIG_LOG_BUF_SHIFT=18
- CONFIG_BLK_DEV_INITRD=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_BLK_DEV_BSG is not set
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
-diff -- a/arch/m68k/configs/amcore_defconfig b/arch/m68k/configs/amcore_defconfig
---- a/arch/m68k/configs/amcore_defconfig
-+++ b/arch/m68k/configs/amcore_defconfig
-@@ -8,7 +8,7 @@ CONFIG_CC_OPTIMIZE_FOR_SIZE=y
- # CONFIG_AIO is not set
- # CONFIG_ADVISE_SYSCALLS is not set
- # CONFIG_MEMBARRIER is not set
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_SLUB_DEBUG is not set
- # CONFIG_COMPAT_BRK is not set
-diff -- a/arch/m68k/configs/m5475evb_defconfig b/arch/m68k/configs/m5475evb_defconfig
---- a/arch/m68k/configs/m5475evb_defconfig
-+++ b/arch/m68k/configs/m5475evb_defconfig
-@@ -8,7 +8,7 @@ CONFIG_LOG_BUF_SHIFT=14
- # CONFIG_EVENTFD is not set
- # CONFIG_SHMEM is not set
- # CONFIG_AIO is not set
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_MODULES=y
- # CONFIG_BLK_DEV_BSG is not set
- CONFIG_COLDFIRE=y
-diff -- a/arch/m68k/configs/stmark2_defconfig b/arch/m68k/configs/stmark2_defconfig
---- a/arch/m68k/configs/stmark2_defconfig
-+++ b/arch/m68k/configs/stmark2_defconfig
-@@ -9,7 +9,7 @@ CONFIG_CC_OPTIMIZE_FOR_SIZE=y
- # CONFIG_AIO is not set
- # CONFIG_ADVISE_SYSCALLS is not set
- # CONFIG_MEMBARRIER is not set
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_COMPAT_BRK is not set
- CONFIG_COLDFIRE=y
-diff -- a/arch/microblaze/configs/mmu_defconfig b/arch/microblaze/configs/mmu_defconfig
---- a/arch/microblaze/configs/mmu_defconfig
-+++ b/arch/microblaze/configs/mmu_defconfig
-@@ -7,7 +7,7 @@ CONFIG_SYSFS_DEPRECATED=y
- CONFIG_SYSFS_DEPRECATED_V2=y
- # CONFIG_BASE_FULL is not set
- CONFIG_KALLSYMS_ALL=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_XILINX_MICROBLAZE0_USE_MSR_INSTR=1
- CONFIG_XILINX_MICROBLAZE0_USE_PCMP_INSTR=1
- CONFIG_XILINX_MICROBLAZE0_USE_BARREL=1
-diff -- a/arch/nios2/configs/10m50_defconfig b/arch/nios2/configs/10m50_defconfig
---- a/arch/nios2/configs/10m50_defconfig
-+++ b/arch/nios2/configs/10m50_defconfig
-@@ -9,7 +9,7 @@ CONFIG_LOG_BUF_SHIFT=14
- # CONFIG_EVENTFD is not set
- # CONFIG_SHMEM is not set
- # CONFIG_AIO is not set
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_NIOS2_MEM_BASE=0x8000000
-diff -- a/arch/nios2/configs/3c120_defconfig b/arch/nios2/configs/3c120_defconfig
---- a/arch/nios2/configs/3c120_defconfig
-+++ b/arch/nios2/configs/3c120_defconfig
-@@ -9,7 +9,7 @@ CONFIG_LOG_BUF_SHIFT=14
- # CONFIG_EVENTFD is not set
- # CONFIG_SHMEM is not set
- # CONFIG_AIO is not set
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- CONFIG_NIOS2_MEM_BASE=0x10000000
-diff -- a/arch/openrisc/configs/or1klitex_defconfig b/arch/openrisc/configs/or1klitex_defconfig
---- a/arch/openrisc/configs/or1klitex_defconfig
-+++ b/arch/openrisc/configs/or1klitex_defconfig
-@@ -6,7 +6,7 @@ CONFIG_USER_NS=y
- CONFIG_BLK_DEV_INITRD=y
- CONFIG_CC_OPTIMIZE_FOR_SIZE=y
- CONFIG_SGETMASK_SYSCALL=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_OPENRISC_BUILTIN_DTB="or1klitex"
- CONFIG_HZ_100=y
- CONFIG_OPENRISC_HAVE_SHADOW_GPRS=y
-diff -- a/arch/powerpc/configs/mgcoge_defconfig b/arch/powerpc/configs/mgcoge_defconfig
---- a/arch/powerpc/configs/mgcoge_defconfig
-+++ b/arch/powerpc/configs/mgcoge_defconfig
-@@ -9,7 +9,7 @@ CONFIG_BLK_DEV_INITRD=y
- # CONFIG_RD_GZIP is not set
- CONFIG_KALLSYMS_ALL=y
- # CONFIG_PCSPKR_PLATFORM is not set
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_PARTITION_ADVANCED=y
- # CONFIG_PPC_PMAC is not set
- CONFIG_PPC_82xx=y
-diff -- a/arch/powerpc/configs/microwatt_defconfig b/arch/powerpc/configs/microwatt_defconfig
---- a/arch/powerpc/configs/microwatt_defconfig
-+++ b/arch/powerpc/configs/microwatt_defconfig
-@@ -8,7 +8,7 @@ CONFIG_CGROUPS=y
- CONFIG_BLK_DEV_INITRD=y
- CONFIG_CC_OPTIMIZE_FOR_SIZE=y
- CONFIG_KALLSYMS_ALL=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_SLUB_DEBUG is not set
- # CONFIG_COMPAT_BRK is not set
-diff -- a/arch/powerpc/configs/ps3_defconfig b/arch/powerpc/configs/ps3_defconfig
---- a/arch/powerpc/configs/ps3_defconfig
-+++ b/arch/powerpc/configs/ps3_defconfig
-@@ -3,7 +3,7 @@ CONFIG_POSIX_MQUEUE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_BLK_DEV_INITRD=y
- CONFIG_CC_OPTIMIZE_FOR_SIZE=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- # CONFIG_PERF_EVENTS is not set
- CONFIG_PROFILING=y
- CONFIG_PPC64=y
-diff -- a/arch/riscv/configs/nommu_k210_defconfig b/arch/riscv/configs/nommu_k210_defconfig
---- a/arch/riscv/configs/nommu_k210_defconfig
-+++ b/arch/riscv/configs/nommu_k210_defconfig
-@@ -21,7 +21,7 @@ CONFIG_CC_OPTIMIZE_FOR_SIZE=y
- # CONFIG_IO_URING is not set
- # CONFIG_ADVISE_SYSCALLS is not set
- # CONFIG_KALLSYMS is not set
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_COMPAT_BRK is not set
- CONFIG_SLUB=y
-diff -- a/arch/riscv/configs/nommu_k210_sdcard_defconfig b/arch/riscv/configs/nommu_k210_sdcard_defconfig
---- a/arch/riscv/configs/nommu_k210_sdcard_defconfig
-+++ b/arch/riscv/configs/nommu_k210_sdcard_defconfig
-@@ -13,7 +13,7 @@ CONFIG_CC_OPTIMIZE_FOR_SIZE=y
- # CONFIG_IO_URING is not set
- # CONFIG_ADVISE_SYSCALLS is not set
- # CONFIG_KALLSYMS is not set
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_COMPAT_BRK is not set
- CONFIG_SLUB=y
-diff -- a/arch/sh/configs/rsk7264_defconfig b/arch/sh/configs/rsk7264_defconfig
---- a/arch/sh/configs/rsk7264_defconfig
-+++ b/arch/sh/configs/rsk7264_defconfig
-@@ -9,7 +9,7 @@ CONFIG_SYSFS_DEPRECATED=y
- CONFIG_SYSFS_DEPRECATED_V2=y
- CONFIG_CC_OPTIMIZE_FOR_SIZE=y
- CONFIG_KALLSYMS_ALL=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_PERF_COUNTERS=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- CONFIG_MMAP_ALLOW_UNINITIALIZED=y
-diff -- a/arch/sh/configs/rsk7269_defconfig b/arch/sh/configs/rsk7269_defconfig
---- a/arch/sh/configs/rsk7269_defconfig
-+++ b/arch/sh/configs/rsk7269_defconfig
-@@ -1,6 +1,6 @@
- CONFIG_LOG_BUF_SHIFT=14
- CONFIG_CC_OPTIMIZE_FOR_SIZE=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_BLK_DEV_BSG is not set
- CONFIG_SWAP_IO_SPACE=y
-diff -- a/arch/xtensa/configs/cadence_csp_defconfig b/arch/xtensa/configs/cadence_csp_defconfig
---- a/arch/xtensa/configs/cadence_csp_defconfig
-+++ b/arch/xtensa/configs/cadence_csp_defconfig
-@@ -21,7 +21,7 @@ CONFIG_INITRAMFS_SOURCE="$$KERNEL_INITRA
- # CONFIG_RD_LZO is not set
- # CONFIG_RD_LZ4 is not set
- CONFIG_CC_OPTIMIZE_FOR_SIZE=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_PROFILING=y
- CONFIG_MODULES=y
- CONFIG_MODULE_FORCE_LOAD=y
-diff -- a/arch/arm/configs/aspeed_g4_defconfig b/arch/arm/configs/aspeed_g4_defconfig
---- a/arch/arm/configs/aspeed_g4_defconfig
-+++ b/arch/arm/configs/aspeed_g4_defconfig
-@@ -15,7 +15,7 @@ CONFIG_BLK_DEV_INITRD=y
- # CONFIG_UID16 is not set
- # CONFIG_SYSFS_SYSCALL is not set
- # CONFIG_AIO is not set
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_PERF_EVENTS=y
- # CONFIG_ARCH_MULTI_V7 is not set
- CONFIG_ARCH_ASPEED=y
-diff -- a/arch/arm/configs/aspeed_g5_defconfig b/arch/arm/configs/aspeed_g5_defconfig
---- a/arch/arm/configs/aspeed_g5_defconfig
-+++ b/arch/arm/configs/aspeed_g5_defconfig
-@@ -15,7 +15,7 @@ CONFIG_BLK_DEV_INITRD=y
- # CONFIG_UID16 is not set
- # CONFIG_SYSFS_SYSCALL is not set
- # CONFIG_AIO is not set
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_PERF_EVENTS=y
- CONFIG_ARCH_MULTI_V6=y
- CONFIG_ARCH_ASPEED=y
-diff -- a/arch/arm/configs/at91_dt_defconfig b/arch/arm/configs/at91_dt_defconfig
---- a/arch/arm/configs/at91_dt_defconfig
-+++ b/arch/arm/configs/at91_dt_defconfig
-@@ -7,7 +7,7 @@ CONFIG_CGROUPS=y
- CONFIG_BLK_DEV_INITRD=y
- CONFIG_CC_OPTIMIZE_FOR_SIZE=y
- CONFIG_KALLSYMS_ALL=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_ARCH_MULTI_V4T=y
- CONFIG_ARCH_MULTI_V5=y
- # CONFIG_ARCH_MULTI_V7 is not set
-diff -- a/arch/arm/configs/axm55xx_defconfig b/arch/arm/configs/axm55xx_defconfig
---- a/arch/arm/configs/axm55xx_defconfig
-+++ b/arch/arm/configs/axm55xx_defconfig
-@@ -21,7 +21,7 @@ CONFIG_NAMESPACES=y
- CONFIG_SCHED_AUTOGROUP=y
- CONFIG_RELAY=y
- CONFIG_BLK_DEV_INITRD=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_PROFILING=y
- CONFIG_ARCH_AXXIA=y
- CONFIG_ARM_LPAE=y
-diff -- a/arch/arm/configs/bcm2835_defconfig b/arch/arm/configs/bcm2835_defconfig
---- a/arch/arm/configs/bcm2835_defconfig
-+++ b/arch/arm/configs/bcm2835_defconfig
-@@ -19,7 +19,7 @@ CONFIG_RELAY=y
- CONFIG_BLK_DEV_INITRD=y
- CONFIG_CC_OPTIMIZE_FOR_SIZE=y
- CONFIG_KALLSYMS_ALL=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_PROFILING=y
- CONFIG_CC_STACKPROTECTOR_REGULAR=y
- CONFIG_ARCH_MULTI_V6=y
-diff -- a/arch/arm/configs/clps711x_defconfig b/arch/arm/configs/clps711x_defconfig
---- a/arch/arm/configs/clps711x_defconfig
-+++ b/arch/arm/configs/clps711x_defconfig
-@@ -3,7 +3,7 @@ CONFIG_SYSVIPC=y
- CONFIG_LOG_BUF_SHIFT=14
- CONFIG_BLK_DEV_INITRD=y
- CONFIG_RD_LZMA=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_JUMP_LABEL=y
- CONFIG_PARTITION_ADVANCED=y
- CONFIG_ARCH_CLPS711X=y
-diff -- a/arch/arm/configs/keystone_defconfig b/arch/arm/configs/keystone_defconfig
---- a/arch/arm/configs/keystone_defconfig
-+++ b/arch/arm/configs/keystone_defconfig
-@@ -14,7 +14,7 @@ CONFIG_BLK_DEV_INITRD=y
- # CONFIG_ELF_CORE is not set
- # CONFIG_BASE_FULL is not set
- CONFIG_KALLSYMS_ALL=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_PROFILING=y
- CONFIG_ARCH_KEYSTONE=y
- CONFIG_ARM_LPAE=y
-diff -- a/arch/arm/configs/lpc18xx_defconfig b/arch/arm/configs/lpc18xx_defconfig
---- a/arch/arm/configs/lpc18xx_defconfig
-+++ b/arch/arm/configs/lpc18xx_defconfig
-@@ -14,7 +14,7 @@ CONFIG_CC_OPTIMIZE_FOR_SIZE=y
- # CONFIG_SIGNALFD is not set
- # CONFIG_EVENTFD is not set
- # CONFIG_AIO is not set
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- # CONFIG_MMU is not set
- CONFIG_ARCH_LPC18XX=y
- CONFIG_SET_MEM_PARAM=y
-diff -- a/arch/arm/configs/lpc32xx_defconfig b/arch/arm/configs/lpc32xx_defconfig
---- a/arch/arm/configs/lpc32xx_defconfig
-+++ b/arch/arm/configs/lpc32xx_defconfig
-@@ -9,7 +9,7 @@ CONFIG_SYSFS_DEPRECATED=y
- CONFIG_SYSFS_DEPRECATED_V2=y
- CONFIG_BLK_DEV_INITRD=y
- CONFIG_CC_OPTIMIZE_FOR_SIZE=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- # CONFIG_ARCH_MULTI_V7 is not set
- CONFIG_ARCH_LPC32XX=y
- CONFIG_AEABI=y
-diff -- a/arch/arm/configs/milbeaut_m10v_defconfig b/arch/arm/configs/milbeaut_m10v_defconfig
---- a/arch/arm/configs/milbeaut_m10v_defconfig
-+++ b/arch/arm/configs/milbeaut_m10v_defconfig
-@@ -3,7 +3,7 @@ CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_CGROUPS=y
- CONFIG_BLK_DEV_INITRD=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_PERF_EVENTS=y
- CONFIG_ARCH_MILBEAUT=y
- CONFIG_ARCH_MILBEAUT_M10V=y
-diff -- a/arch/arm/configs/moxart_defconfig b/arch/arm/configs/moxart_defconfig
---- a/arch/arm/configs/moxart_defconfig
-+++ b/arch/arm/configs/moxart_defconfig
-@@ -10,7 +10,7 @@ CONFIG_IKCONFIG_PROC=y
- # CONFIG_TIMERFD is not set
- # CONFIG_EVENTFD is not set
- # CONFIG_AIO is not set
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- # CONFIG_BLK_DEV_BSG is not set
- CONFIG_ARCH_MULTI_V4=y
- # CONFIG_ARCH_MULTI_V7 is not set
-diff -- a/arch/arm/configs/multi_v4t_defconfig b/arch/arm/configs/multi_v4t_defconfig
---- a/arch/arm/configs/multi_v4t_defconfig
-+++ b/arch/arm/configs/multi_v4t_defconfig
-@@ -2,7 +2,7 @@ CONFIG_KERNEL_LZMA=y
- CONFIG_SYSVIPC=y
- CONFIG_LOG_BUF_SHIFT=14
- CONFIG_BLK_DEV_INITRD=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_ARCH_MULTI_V4T=y
- # CONFIG_ARCH_MULTI_V7 is not set
- CONFIG_ARCH_AT91=y
-diff -- a/arch/arm/configs/multi_v7_defconfig b/arch/arm/configs/multi_v7_defconfig
---- a/arch/arm/configs/multi_v7_defconfig
-+++ b/arch/arm/configs/multi_v7_defconfig
-@@ -3,7 +3,7 @@ CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_CGROUPS=y
- CONFIG_BLK_DEV_INITRD=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_PERF_EVENTS=y
- CONFIG_ARCH_VIRT=y
- CONFIG_ARCH_AIROHA=y
-diff -- a/arch/arm/configs/pxa_defconfig b/arch/arm/configs/pxa_defconfig
---- a/arch/arm/configs/pxa_defconfig
-+++ b/arch/arm/configs/pxa_defconfig
-@@ -11,7 +11,7 @@ CONFIG_IKCONFIG_PROC=y
- CONFIG_LOG_BUF_SHIFT=13
- CONFIG_BLK_DEV_INITRD=y
- CONFIG_KALLSYMS_ALL=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_PROFILING=y
- # CONFIG_ARCH_MULTI_V7 is not set
- CONFIG_ARCH_PXA=y
-diff -- a/arch/arm/configs/qcom_defconfig b/arch/arm/configs/qcom_defconfig
---- a/arch/arm/configs/qcom_defconfig
-+++ b/arch/arm/configs/qcom_defconfig
-@@ -7,7 +7,7 @@ CONFIG_IKCONFIG_PROC=y
- CONFIG_CGROUPS=y
- CONFIG_BLK_DEV_INITRD=y
- CONFIG_KALLSYMS_ALL=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_PROFILING=y
- CONFIG_ARCH_QCOM=y
- CONFIG_ARCH_MSM8X60=y
-diff -- a/arch/arm/configs/sama5_defconfig b/arch/arm/configs/sama5_defconfig
---- a/arch/arm/configs/sama5_defconfig
-+++ b/arch/arm/configs/sama5_defconfig
-@@ -5,7 +5,7 @@ CONFIG_HIGH_RES_TIMERS=y
- CONFIG_LOG_BUF_SHIFT=14
- CONFIG_CGROUPS=y
- CONFIG_BLK_DEV_INITRD=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_ARCH_AT91=y
- CONFIG_SOC_SAMA5D2=y
- CONFIG_SOC_SAMA5D3=y
-diff -- a/arch/arm/configs/sama7_defconfig b/arch/arm/configs/sama7_defconfig
---- a/arch/arm/configs/sama7_defconfig
-+++ b/arch/arm/configs/sama7_defconfig
-@@ -12,7 +12,7 @@ CONFIG_BLK_DEV_INITRD=y
- # CONFIG_FHANDLE is not set
- # CONFIG_IO_URING is not set
- CONFIG_KALLSYMS_ALL=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_ARCH_AT91=y
- CONFIG_SOC_SAMA7G5=y
- CONFIG_ATMEL_CLOCKSOURCE_TCB=y
-diff -- a/arch/arm/configs/socfpga_defconfig b/arch/arm/configs/socfpga_defconfig
---- a/arch/arm/configs/socfpga_defconfig
-+++ b/arch/arm/configs/socfpga_defconfig
-@@ -7,7 +7,7 @@ CONFIG_CGROUPS=y
- CONFIG_CPUSETS=y
- CONFIG_NAMESPACES=y
- CONFIG_BLK_DEV_INITRD=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_PROFILING=y
- CONFIG_ARCH_INTEL_SOCFPGA=y
- CONFIG_ARM_THUMBEE=y
-diff -- a/arch/arm/configs/stm32_defconfig b/arch/arm/configs/stm32_defconfig
---- a/arch/arm/configs/stm32_defconfig
-+++ b/arch/arm/configs/stm32_defconfig
-@@ -11,7 +11,7 @@ CONFIG_CC_OPTIMIZE_FOR_SIZE=y
- # CONFIG_SIGNALFD is not set
- # CONFIG_EVENTFD is not set
- # CONFIG_AIO is not set
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- # CONFIG_BLK_DEV_BSG is not set
- # CONFIG_MMU is not set
- CONFIG_ARCH_STM32=y
-diff -- a/arch/arm/configs/tegra_defconfig b/arch/arm/configs/tegra_defconfig
---- a/arch/arm/configs/tegra_defconfig
-+++ b/arch/arm/configs/tegra_defconfig
-@@ -14,7 +14,7 @@ CONFIG_NAMESPACES=y
- CONFIG_USER_NS=y
- CONFIG_BLK_DEV_INITRD=y
- # CONFIG_ELF_CORE is not set
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_PERF_EVENTS=y
- CONFIG_ARCH_TEGRA=y
- CONFIG_SMP=y
-diff -- a/arch/arm/configs/vf610m4_defconfig b/arch/arm/configs/vf610m4_defconfig
---- a/arch/arm/configs/vf610m4_defconfig
-+++ b/arch/arm/configs/vf610m4_defconfig
-@@ -5,7 +5,7 @@ CONFIG_BLK_DEV_INITRD=y
- # CONFIG_RD_XZ is not set
- # CONFIG_RD_LZ4 is not set
- CONFIG_KALLSYMS_ALL=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- # CONFIG_MMU is not set
- CONFIG_ARCH_MXC=y
- CONFIG_SOC_VF610=y
-diff -- a/arch/mips/configs/ath25_defconfig b/arch/mips/configs/ath25_defconfig
---- a/arch/mips/configs/ath25_defconfig
-+++ b/arch/mips/configs/ath25_defconfig
-@@ -11,7 +11,7 @@ CONFIG_BLK_DEV_INITRD=y
- CONFIG_CC_OPTIMIZE_FOR_SIZE=y
- # CONFIG_FHANDLE is not set
- # CONFIG_AIO is not set
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_SLUB_DEBUG is not set
- # CONFIG_COMPAT_BRK is not set
-diff -- a/arch/mips/configs/ath79_defconfig b/arch/mips/configs/ath79_defconfig
---- a/arch/mips/configs/ath79_defconfig
-+++ b/arch/mips/configs/ath79_defconfig
-@@ -5,7 +5,7 @@ CONFIG_BLK_DEV_INITRD=y
- # CONFIG_RD_GZIP is not set
- # CONFIG_AIO is not set
- # CONFIG_KALLSYMS is not set
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_SLUB_DEBUG is not set
- # CONFIG_COMPAT_BRK is not set
-diff -- a/arch/mips/configs/bcm47xx_defconfig b/arch/mips/configs/bcm47xx_defconfig
---- a/arch/mips/configs/bcm47xx_defconfig
-+++ b/arch/mips/configs/bcm47xx_defconfig
-@@ -2,7 +2,7 @@ CONFIG_SYSVIPC=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_BLK_DEV_INITRD=y
- CONFIG_CC_OPTIMIZE_FOR_SIZE=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_BCM47XX=y
- CONFIG_PCI=y
- # CONFIG_SUSPEND is not set
-diff -- a/arch/mips/configs/ci20_defconfig b/arch/mips/configs/ci20_defconfig
---- a/arch/mips/configs/ci20_defconfig
-+++ b/arch/mips/configs/ci20_defconfig
-@@ -18,7 +18,7 @@ CONFIG_NAMESPACES=y
- CONFIG_USER_NS=y
- CONFIG_CC_OPTIMIZE_FOR_SIZE=y
- CONFIG_KALLSYMS_ALL=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_MACH_INGENIC_SOC=y
- CONFIG_JZ4780_CI20=y
- CONFIG_HIGHMEM=y
-diff -- a/arch/mips/configs/cu1000-neo_defconfig b/arch/mips/configs/cu1000-neo_defconfig
---- a/arch/mips/configs/cu1000-neo_defconfig
-+++ b/arch/mips/configs/cu1000-neo_defconfig
-@@ -15,7 +15,7 @@ CONFIG_NAMESPACES=y
- CONFIG_USER_NS=y
- CONFIG_CC_OPTIMIZE_FOR_SIZE=y
- CONFIG_KALLSYMS_ALL=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_COMPAT_BRK is not set
- CONFIG_MACH_INGENIC_SOC=y
-diff -- a/arch/mips/configs/cu1830-neo_defconfig b/arch/mips/configs/cu1830-neo_defconfig
---- a/arch/mips/configs/cu1830-neo_defconfig
-+++ b/arch/mips/configs/cu1830-neo_defconfig
-@@ -15,7 +15,7 @@ CONFIG_NAMESPACES=y
- CONFIG_USER_NS=y
- CONFIG_CC_OPTIMIZE_FOR_SIZE=y
- CONFIG_KALLSYMS_ALL=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_COMPAT_BRK is not set
- CONFIG_MACH_INGENIC_SOC=y
-diff -- a/arch/mips/configs/db1xxx_defconfig b/arch/mips/configs/db1xxx_defconfig
---- a/arch/mips/configs/db1xxx_defconfig
-+++ b/arch/mips/configs/db1xxx_defconfig
-@@ -17,7 +17,7 @@ CONFIG_CGROUP_FREEZER=y
- CONFIG_CGROUP_DEVICE=y
- CONFIG_CGROUP_CPUACCT=y
- CONFIG_KALLSYMS_ALL=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_MIPS_ALCHEMY=y
- CONFIG_HZ_100=y
- CONFIG_PCI=y
-diff -- a/arch/mips/configs/gcw0_defconfig b/arch/mips/configs/gcw0_defconfig
---- a/arch/mips/configs/gcw0_defconfig
-+++ b/arch/mips/configs/gcw0_defconfig
-@@ -2,7 +2,7 @@ CONFIG_DEFAULT_HOSTNAME="gcw0"
- CONFIG_NO_HZ_IDLE=y
- CONFIG_HIGH_RES_TIMERS=y
- CONFIG_PREEMPT_VOLUNTARY=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_PROFILING=y
- CONFIG_MACH_INGENIC_SOC=y
- CONFIG_JZ4770_GCW0=y
-diff -- a/arch/mips/configs/generic_defconfig b/arch/mips/configs/generic_defconfig
---- a/arch/mips/configs/generic_defconfig
-+++ b/arch/mips/configs/generic_defconfig
-@@ -17,7 +17,7 @@ CONFIG_SCHED_AUTOGROUP=y
- CONFIG_BLK_DEV_INITRD=y
- CONFIG_BPF_SYSCALL=y
- CONFIG_USERFAULTFD=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- # CONFIG_SLUB_DEBUG is not set
- # CONFIG_COMPAT_BRK is not set
- CONFIG_CPU_LITTLE_ENDIAN=y
-diff -- a/arch/mips/configs/loongson2k_defconfig b/arch/mips/configs/loongson2k_defconfig
---- a/arch/mips/configs/loongson2k_defconfig
-+++ b/arch/mips/configs/loongson2k_defconfig
-@@ -18,7 +18,7 @@ CONFIG_SCHED_AUTOGROUP=y
- CONFIG_SYSFS_DEPRECATED=y
- CONFIG_RELAY=y
- CONFIG_BLK_DEV_INITRD=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_MACH_LOONGSON64=y
- # CONFIG_CPU_LOONGSON3_CPUCFG_EMULATION is not set
- CONFIG_HZ_256=y
-diff -- a/arch/mips/configs/loongson3_defconfig b/arch/mips/configs/loongson3_defconfig
---- a/arch/mips/configs/loongson3_defconfig
-+++ b/arch/mips/configs/loongson3_defconfig
-@@ -26,7 +26,7 @@ CONFIG_SYSFS_DEPRECATED=y
- CONFIG_RELAY=y
- CONFIG_BLK_DEV_INITRD=y
- CONFIG_BPF_SYSCALL=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_PERF_EVENTS=y
- CONFIG_MACH_LOONGSON64=y
- CONFIG_CPU_HAS_MSA=y
-diff -- a/arch/mips/configs/maltaaprp_defconfig b/arch/mips/configs/maltaaprp_defconfig
---- a/arch/mips/configs/maltaaprp_defconfig
-+++ b/arch/mips/configs/maltaaprp_defconfig
-@@ -5,7 +5,7 @@ CONFIG_AUDIT=y
- CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
- CONFIG_LOG_BUF_SHIFT=15
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_MIPS_MALTA=y
- CONFIG_CPU_LITTLE_ENDIAN=y
- CONFIG_CPU_MIPS32_R2=y
-diff -- a/arch/mips/configs/malta_qemu_32r6_defconfig b/arch/mips/configs/malta_qemu_32r6_defconfig
---- a/arch/mips/configs/malta_qemu_32r6_defconfig
-+++ b/arch/mips/configs/malta_qemu_32r6_defconfig
-@@ -5,7 +5,7 @@ CONFIG_NO_HZ=y
- CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
- CONFIG_LOG_BUF_SHIFT=15
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_MIPS_MALTA=y
- CONFIG_CPU_LITTLE_ENDIAN=y
- CONFIG_CPU_MIPS32_R6=y
-diff -- a/arch/mips/configs/maltasmvp_defconfig b/arch/mips/configs/maltasmvp_defconfig
---- a/arch/mips/configs/maltasmvp_defconfig
-+++ b/arch/mips/configs/maltasmvp_defconfig
-@@ -5,7 +5,7 @@ CONFIG_NO_HZ=y
- CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
- CONFIG_LOG_BUF_SHIFT=15
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_MIPS_MALTA=y
- CONFIG_CPU_LITTLE_ENDIAN=y
- CONFIG_CPU_MIPS32_R2=y
-diff -- a/arch/mips/configs/maltasmvp_eva_defconfig b/arch/mips/configs/maltasmvp_eva_defconfig
---- a/arch/mips/configs/maltasmvp_eva_defconfig
-+++ b/arch/mips/configs/maltasmvp_eva_defconfig
-@@ -5,7 +5,7 @@ CONFIG_NO_HZ=y
- CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
- CONFIG_LOG_BUF_SHIFT=15
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_MIPS_MALTA=y
- CONFIG_CPU_LITTLE_ENDIAN=y
- CONFIG_CPU_MIPS32_R2=y
-diff -- a/arch/mips/configs/maltaup_defconfig b/arch/mips/configs/maltaup_defconfig
---- a/arch/mips/configs/maltaup_defconfig
-+++ b/arch/mips/configs/maltaup_defconfig
-@@ -6,7 +6,7 @@ CONFIG_NO_HZ=y
- CONFIG_IKCONFIG=y
- CONFIG_IKCONFIG_PROC=y
- CONFIG_LOG_BUF_SHIFT=15
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- CONFIG_MIPS_MALTA=y
- CONFIG_CPU_LITTLE_ENDIAN=y
- CONFIG_CPU_MIPS32_R2=y
-diff -- a/arch/mips/configs/omega2p_defconfig b/arch/mips/configs/omega2p_defconfig
---- a/arch/mips/configs/omega2p_defconfig
-+++ b/arch/mips/configs/omega2p_defconfig
-@@ -17,7 +17,7 @@ CONFIG_NAMESPACES=y
- CONFIG_USER_NS=y
- CONFIG_CC_OPTIMIZE_FOR_SIZE=y
- CONFIG_KALLSYMS_ALL=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_SLUB_DEBUG is not set
- # CONFIG_COMPAT_BRK is not set
-diff -- a/arch/mips/configs/pic32mzda_defconfig b/arch/mips/configs/pic32mzda_defconfig
---- a/arch/mips/configs/pic32mzda_defconfig
-+++ b/arch/mips/configs/pic32mzda_defconfig
-@@ -7,7 +7,7 @@ CONFIG_IKCONFIG_PROC=y
- CONFIG_LOG_BUF_SHIFT=14
- CONFIG_RELAY=y
- CONFIG_CC_OPTIMIZE_FOR_SIZE=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- # CONFIG_COMPAT_BRK is not set
- CONFIG_MACH_PIC32=y
- CONFIG_DTB_PIC32_MZDA_SK=y
-diff -- a/arch/mips/configs/qi_lb60_defconfig b/arch/mips/configs/qi_lb60_defconfig
---- a/arch/mips/configs/qi_lb60_defconfig
-+++ b/arch/mips/configs/qi_lb60_defconfig
-@@ -3,7 +3,7 @@ CONFIG_SYSVIPC=y
- # CONFIG_CROSS_MEMORY_ATTACH is not set
- CONFIG_LOG_BUF_SHIFT=14
- CONFIG_KALLSYMS_ALL=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_COMPAT_BRK is not set
- CONFIG_MACH_INGENIC_SOC=y
-diff -- a/arch/mips/configs/rs90_defconfig b/arch/mips/configs/rs90_defconfig
---- a/arch/mips/configs/rs90_defconfig
-+++ b/arch/mips/configs/rs90_defconfig
-@@ -15,7 +15,7 @@ CONFIG_LD_DEAD_CODE_DATA_ELIMINATION=y
- # CONFIG_IO_URING is not set
- # CONFIG_ADVISE_SYSCALLS is not set
- # CONFIG_KALLSYMS is not set
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- # CONFIG_PERF_EVENTS is not set
- CONFIG_PROFILING=y
- CONFIG_MACH_INGENIC_SOC=y
-diff -- a/arch/mips/configs/rt305x_defconfig b/arch/mips/configs/rt305x_defconfig
---- a/arch/mips/configs/rt305x_defconfig
-+++ b/arch/mips/configs/rt305x_defconfig
-@@ -7,7 +7,7 @@ CONFIG_BLK_DEV_INITRD=y
- CONFIG_CC_OPTIMIZE_FOR_SIZE=y
- # CONFIG_AIO is not set
- CONFIG_KALLSYMS_ALL=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_SLUB_DEBUG is not set
- # CONFIG_COMPAT_BRK is not set
-diff -- a/arch/mips/configs/vocore2_defconfig b/arch/mips/configs/vocore2_defconfig
---- a/arch/mips/configs/vocore2_defconfig
-+++ b/arch/mips/configs/vocore2_defconfig
-@@ -17,7 +17,7 @@ CONFIG_NAMESPACES=y
- CONFIG_USER_NS=y
- CONFIG_CC_OPTIMIZE_FOR_SIZE=y
- CONFIG_KALLSYMS_ALL=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_SLUB_DEBUG is not set
- # CONFIG_COMPAT_BRK is not set
-diff -- a/arch/mips/configs/xway_defconfig b/arch/mips/configs/xway_defconfig
---- a/arch/mips/configs/xway_defconfig
-+++ b/arch/mips/configs/xway_defconfig
-@@ -7,7 +7,7 @@ CONFIG_BLK_DEV_INITRD=y
- CONFIG_CC_OPTIMIZE_FOR_SIZE=y
- # CONFIG_AIO is not set
- CONFIG_KALLSYMS_ALL=y
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_SLUB_DEBUG is not set
- # CONFIG_COMPAT_BRK is not set
-diff -- a/kernel/configs/tiny-base.config b/kernel/configs/tiny-base.config
---- a/kernel/configs/tiny-base.config
-+++ b/kernel/configs/tiny-base.config
-@@ -1 +1 @@
--CONFIG_EMBEDDED=y
-+CONFIG_EXPERT=y
-diff -- a/tools/testing/selftests/wireguard/qemu/kernel.config b/tools/testing/selftests/wireguard/qemu/kernel.config
---- a/tools/testing/selftests/wireguard/qemu/kernel.config
-+++ b/tools/testing/selftests/wireguard/qemu/kernel.config
-@@ -41,7 +41,6 @@ CONFIG_KALLSYMS=y
- CONFIG_BUG=y
- CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE=y
- CONFIG_JUMP_LABEL=y
--CONFIG_EMBEDDED=n
- CONFIG_BASE_FULL=y
- CONFIG_FUTEX=y
- CONFIG_SHMEM=y
+All warnings (new ones prefixed by >>):
+
+   arch/powerpc/kvm/book3s_hv_nestedv2.c: In function 'gs_msg_ops_vcpu_refresh_info':
+>> arch/powerpc/kvm/book3s_hv_nestedv2.c:465:29: warning: variable 'amor' set but not used [-Wunused-but-set-variable]
+     465 |                         u64 amor;
+         |                             ^~~~
+
+
+vim +/amor +465 arch/powerpc/kvm/book3s_hv_nestedv2.c
+
+   361	
+   362	static int gs_msg_ops_vcpu_refresh_info(struct kvmppc_gs_msg *gsm,
+   363						struct kvmppc_gs_buff *gsb)
+   364	{
+   365		struct kvmppc_gs_parser gsp = { 0 };
+   366		struct kvmhv_nestedv2_io *io;
+   367		struct kvmppc_gs_bitmap *valids;
+   368		struct kvm_vcpu *vcpu;
+   369		struct kvmppc_gs_elem *gse;
+   370		vector128 v;
+   371		int rc, i;
+   372		u16 iden;
+   373	
+   374		vcpu = gsm->data;
+   375	
+   376		rc = kvmppc_gse_parse(&gsp, gsb);
+   377		if (rc < 0)
+   378			return rc;
+   379	
+   380		io = &vcpu->arch.nestedv2_io;
+   381		valids = &io->valids;
+   382	
+   383		kvmppc_gsp_for_each(&gsp, iden, gse)
+   384		{
+   385			switch (iden) {
+   386			case KVMPPC_GSID_DSCR:
+   387				vcpu->arch.dscr = kvmppc_gse_get_u64(gse);
+   388				break;
+   389			case KVMPPC_GSID_MMCRA:
+   390				vcpu->arch.mmcra = kvmppc_gse_get_u64(gse);
+   391				break;
+   392			case KVMPPC_GSID_HFSCR:
+   393				vcpu->arch.hfscr = kvmppc_gse_get_u64(gse);
+   394				break;
+   395			case KVMPPC_GSID_PURR:
+   396				vcpu->arch.purr = kvmppc_gse_get_u64(gse);
+   397				break;
+   398			case KVMPPC_GSID_SPURR:
+   399				vcpu->arch.spurr = kvmppc_gse_get_u64(gse);
+   400				break;
+   401			case KVMPPC_GSID_AMR:
+   402				vcpu->arch.amr = kvmppc_gse_get_u64(gse);
+   403				break;
+   404			case KVMPPC_GSID_UAMOR:
+   405				vcpu->arch.uamor = kvmppc_gse_get_u64(gse);
+   406				break;
+   407			case KVMPPC_GSID_SIAR:
+   408				vcpu->arch.siar = kvmppc_gse_get_u64(gse);
+   409				break;
+   410			case KVMPPC_GSID_SDAR:
+   411				vcpu->arch.sdar = kvmppc_gse_get_u64(gse);
+   412				break;
+   413			case KVMPPC_GSID_IAMR:
+   414				vcpu->arch.iamr = kvmppc_gse_get_u64(gse);
+   415				break;
+   416			case KVMPPC_GSID_DAWR0:
+   417				vcpu->arch.dawr0 = kvmppc_gse_get_u64(gse);
+   418				break;
+   419			case KVMPPC_GSID_DAWR1:
+   420				vcpu->arch.dawr1 = kvmppc_gse_get_u64(gse);
+   421				break;
+   422			case KVMPPC_GSID_DAWRX0:
+   423				vcpu->arch.dawrx0 = kvmppc_gse_get_u32(gse);
+   424				break;
+   425			case KVMPPC_GSID_DAWRX1:
+   426				vcpu->arch.dawrx1 = kvmppc_gse_get_u32(gse);
+   427				break;
+   428			case KVMPPC_GSID_CIABR:
+   429				vcpu->arch.ciabr = kvmppc_gse_get_u64(gse);
+   430				break;
+   431			case KVMPPC_GSID_WORT:
+   432				vcpu->arch.wort = kvmppc_gse_get_u32(gse);
+   433				break;
+   434			case KVMPPC_GSID_PPR:
+   435				vcpu->arch.ppr = kvmppc_gse_get_u64(gse);
+   436				break;
+   437			case KVMPPC_GSID_PSPB:
+   438				vcpu->arch.pspb = kvmppc_gse_get_u32(gse);
+   439				break;
+   440			case KVMPPC_GSID_TAR:
+   441				vcpu->arch.tar = kvmppc_gse_get_u64(gse);
+   442				break;
+   443			case KVMPPC_GSID_FSCR:
+   444				vcpu->arch.fscr = kvmppc_gse_get_u64(gse);
+   445				break;
+   446			case KVMPPC_GSID_EBBHR:
+   447				vcpu->arch.ebbhr = kvmppc_gse_get_u64(gse);
+   448				break;
+   449			case KVMPPC_GSID_EBBRR:
+   450				vcpu->arch.ebbrr = kvmppc_gse_get_u64(gse);
+   451				break;
+   452			case KVMPPC_GSID_BESCR:
+   453				vcpu->arch.bescr = kvmppc_gse_get_u64(gse);
+   454				break;
+   455			case KVMPPC_GSID_IC:
+   456				vcpu->arch.ic = kvmppc_gse_get_u64(gse);
+   457				break;
+   458			case KVMPPC_GSID_CTRL:
+   459				vcpu->arch.ctrl = kvmppc_gse_get_u64(gse);
+   460				break;
+   461			case KVMPPC_GSID_PIDR:
+   462				vcpu->arch.pid = kvmppc_gse_get_u32(gse);
+   463				break;
+   464			case KVMPPC_GSID_AMOR: {
+ > 465				u64 amor;
+   466	
+   467				amor = kvmppc_gse_get_u64(gse);
+   468				break;
+   469			}
+   470			case KVMPPC_GSID_VRSAVE:
+   471				vcpu->arch.vrsave = kvmppc_gse_get_u32(gse);
+   472				break;
+   473			case KVMPPC_GSID_MMCR(0)... KVMPPC_GSID_MMCR(3):
+   474				i = iden - KVMPPC_GSID_MMCR(0);
+   475				vcpu->arch.mmcr[i] = kvmppc_gse_get_u64(gse);
+   476				break;
+   477			case KVMPPC_GSID_SIER(0)... KVMPPC_GSID_SIER(2):
+   478				i = iden - KVMPPC_GSID_SIER(0);
+   479				vcpu->arch.sier[i] = kvmppc_gse_get_u64(gse);
+   480				break;
+   481			case KVMPPC_GSID_PMC(0)... KVMPPC_GSID_PMC(5):
+   482				i = iden - KVMPPC_GSID_PMC(0);
+   483				vcpu->arch.pmc[i] = kvmppc_gse_get_u32(gse);
+   484				break;
+   485			case KVMPPC_GSID_GPR(0)... KVMPPC_GSID_GPR(31):
+   486				i = iden - KVMPPC_GSID_GPR(0);
+   487				vcpu->arch.regs.gpr[i] = kvmppc_gse_get_u64(gse);
+   488				break;
+   489			case KVMPPC_GSID_CR:
+   490				vcpu->arch.regs.ccr = kvmppc_gse_get_u32(gse);
+   491				break;
+   492			case KVMPPC_GSID_XER:
+   493				vcpu->arch.regs.xer = kvmppc_gse_get_u64(gse);
+   494				break;
+   495			case KVMPPC_GSID_CTR:
+   496				vcpu->arch.regs.ctr = kvmppc_gse_get_u64(gse);
+   497				break;
+   498			case KVMPPC_GSID_LR:
+   499				vcpu->arch.regs.link = kvmppc_gse_get_u64(gse);
+   500				break;
+   501			case KVMPPC_GSID_NIA:
+   502				vcpu->arch.regs.nip = kvmppc_gse_get_u64(gse);
+   503				break;
+   504			case KVMPPC_GSID_SRR0:
+   505				vcpu->arch.shregs.srr0 = kvmppc_gse_get_u64(gse);
+   506				break;
+   507			case KVMPPC_GSID_SRR1:
+   508				vcpu->arch.shregs.srr1 = kvmppc_gse_get_u64(gse);
+   509				break;
+   510			case KVMPPC_GSID_SPRG0:
+   511				vcpu->arch.shregs.sprg0 = kvmppc_gse_get_u64(gse);
+   512				break;
+   513			case KVMPPC_GSID_SPRG1:
+   514				vcpu->arch.shregs.sprg1 = kvmppc_gse_get_u64(gse);
+   515				break;
+   516			case KVMPPC_GSID_SPRG2:
+   517				vcpu->arch.shregs.sprg2 = kvmppc_gse_get_u64(gse);
+   518				break;
+   519			case KVMPPC_GSID_SPRG3:
+   520				vcpu->arch.shregs.sprg3 = kvmppc_gse_get_u64(gse);
+   521				break;
+   522			case KVMPPC_GSID_DAR:
+   523				vcpu->arch.shregs.dar = kvmppc_gse_get_u64(gse);
+   524				break;
+   525			case KVMPPC_GSID_DSISR:
+   526				vcpu->arch.shregs.dsisr = kvmppc_gse_get_u32(gse);
+   527				break;
+   528			case KVMPPC_GSID_MSR:
+   529				vcpu->arch.shregs.msr = kvmppc_gse_get_u64(gse);
+   530				break;
+   531			case KVMPPC_GSID_VTB:
+   532				vcpu->arch.vcore->vtb = kvmppc_gse_get_u64(gse);
+   533				break;
+   534			case KVMPPC_GSID_LPCR:
+   535				vcpu->arch.vcore->lpcr = kvmppc_gse_get_u64(gse);
+   536				break;
+   537			case KVMPPC_GSID_TB_OFFSET:
+   538				vcpu->arch.vcore->tb_offset = kvmppc_gse_get_u64(gse);
+   539				break;
+   540			case KVMPPC_GSID_FPSCR:
+   541				vcpu->arch.fp.fpscr = kvmppc_gse_get_u64(gse);
+   542				break;
+   543			case KVMPPC_GSID_VSRS(0)... KVMPPC_GSID_VSRS(31):
+   544				kvmppc_gse_get_vector128(gse, &v);
+   545				i = iden - KVMPPC_GSID_VSRS(0);
+   546				memcpy(&vcpu->arch.fp.fpr[i], &v,
+   547				       sizeof(vcpu->arch.fp.fpr[i]));
+   548				break;
+   549	#ifdef CONFIG_VSX
+   550			case KVMPPC_GSID_VSCR:
+   551				vcpu->arch.vr.vscr.u[3] = kvmppc_gse_get_u32(gse);
+   552				break;
+   553			case KVMPPC_GSID_VSRS(32)... KVMPPC_GSID_VSRS(63):
+   554				i = iden - KVMPPC_GSID_VSRS(32);
+   555				kvmppc_gse_get_vector128(gse, &vcpu->arch.vr.vr[i]);
+   556				break;
+   557	#endif
+   558			case KVMPPC_GSID_HDAR:
+   559				vcpu->arch.fault_dar = kvmppc_gse_get_u64(gse);
+   560				break;
+   561			case KVMPPC_GSID_HDSISR:
+   562				vcpu->arch.fault_dsisr = kvmppc_gse_get_u32(gse);
+   563				break;
+   564			case KVMPPC_GSID_ASDR:
+   565				vcpu->arch.fault_gpa = kvmppc_gse_get_u64(gse);
+   566				break;
+   567			case KVMPPC_GSID_HEIR:
+   568				vcpu->arch.emul_inst = kvmppc_gse_get_u64(gse);
+   569				break;
+   570			case KVMPPC_GSID_DEC_EXPIRY_TB: {
+   571				u64 dw;
+   572	
+   573				dw = kvmppc_gse_get_u64(gse);
+   574				vcpu->arch.dec_expires =
+   575					dw + vcpu->arch.vcore->tb_offset;
+   576				break;
+   577			}
+   578			case KVMPPC_GSID_LOGICAL_PVR:
+   579				vcpu->arch.vcore->arch_compat = kvmppc_gse_get_u32(gse);
+   580				break;
+   581			default:
+   582				continue;
+   583			}
+   584			kvmppc_gsbm_set(valids, iden);
+   585		}
+   586	
+   587		return 0;
+   588	}
+   589	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
