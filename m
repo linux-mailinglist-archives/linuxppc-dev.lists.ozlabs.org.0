@@ -1,73 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14BDE77EDCD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 01:25:55 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=dabbelt-com.20221208.gappssmtp.com header.i=@dabbelt-com.20221208.gappssmtp.com header.a=rsa-sha256 header.s=20221208 header.b=dZxL0Ptm;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0540377ECE3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 00:12:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RR44w41y7z3c1t
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 09:25:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RR2SD72VLz3cLQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 08:12:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=dabbelt-com.20221208.gappssmtp.com header.i=@dabbelt-com.20221208.gappssmtp.com header.a=rsa-sha256 header.s=20221208 header.b=dZxL0Ptm;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=dabbelt.com (client-ip=2607:f8b0:4864:20::1034; helo=mail-pj1-x1034.google.com; envelope-from=palmer@dabbelt.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=srs0=6ryu=eb=linux-m68k.org=gerg@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RQrNt2H5lz2xpm
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Aug 2023 00:38:52 +1000 (AEST)
-Received: by mail-pj1-x1034.google.com with SMTP id 98e67ed59e1d1-269304c135aso4718790a91.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Aug 2023 07:38:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20221208.gappssmtp.com; s=20221208; t=1692196728; x=1692801528;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=z7kyCuHl1t/gCCGpNTbA3hwFj/lf6SuaKvtbsxGuDBs=;
-        b=dZxL0Ptmo/RfqSZAnaNdMqEON3wvqTtz9rCCZbGwRlxrXd7njXeZ9MC0HoDMQnzbMm
-         Mbp7gkbEr8As7DndYa19Nv36eYd2hToSSCFzF826MiTxJFQPanB3TDkisU5ug1n2xO0x
-         lqvfBU8gjYGcjvzm7z1KhnYi76zAKQMvLjSkKN8VKcgO7yrfcLxnnczFGmL7s8fYvGKe
-         iupXY/7su7eB4Qp8Ot15WegMitq0aXkC7C2B4amBqtpQq9iCTqbSvz7oVYvokSqAF4SL
-         qE7Cmnt2iThlim9z5xca3mEZ27llu2nfrUpa7hwX8WY7UkN0OSfjH/LjoRTW/fMpY9+M
-         GNdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692196728; x=1692801528;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=z7kyCuHl1t/gCCGpNTbA3hwFj/lf6SuaKvtbsxGuDBs=;
-        b=EGKUyZkpEC56pbvUKfvd8tYOqe+9vVBp2w8rDEgBJtTtlpvym4A7QWnF7hRulcPhbA
-         rRPEOJ49oxsN8TFErtlRUViQ+yhkHyuAfZnW/HNP9RsKT9WHTOFiNpoMK1Kyo94CXEX+
-         sAlHb+5z5RfGP0LThRdBNtwEEWK68Ji76DbSbI7NZTHCMgb6J6B1srQ/M5ZvNcMkSnlY
-         wHtf9h7W+wLiPnJuZqRpZpnGB8M/fdzDRo31Uf2w8gCzasjC949NVQPXXqpi6wrgnz70
-         H9DNJcm+e73mNNf2vcYPGjpHT77HQ0htIBULZIcv+7P2yR3Zsy+MdVOi/+Ib03BW/t6L
-         /8cA==
-X-Gm-Message-State: AOJu0YymMWy5xqkgWEz2dPVPGs0t8aoPcxzJp1kAUtrkNwsuVTId5bm5
-	XVTr3Fd5yXv81ytnx+MoAdVOWw==
-X-Google-Smtp-Source: AGHT+IG9lm23RRLom/xb7C80klG2aDXB0ZwUgcZV4fsV/hyXYHdBd19S4I3YH9SwHqrCXPj4TdemSQ==
-X-Received: by 2002:a17:90a:f982:b0:26b:4e59:57e7 with SMTP id cq2-20020a17090af98200b0026b4e5957e7mr1730234pjb.43.1692196727793;
-        Wed, 16 Aug 2023 07:38:47 -0700 (PDT)
-Received: from localhost ([135.180.227.0])
-        by smtp.gmail.com with ESMTPSA id gi23-20020a17090b111700b0025645ce761dsm13120399pjb.35.2023.08.16.07.38.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Aug 2023 07:38:47 -0700 (PDT)
-Date: Wed, 16 Aug 2023 07:38:47 -0700 (PDT)
-X-Google-Original-Date: Wed, 16 Aug 2023 07:38:45 PDT (-0700)
-Subject: Re: [PATCH 00/17] -Wmissing-prototype warning fixes
-In-Reply-To: <20230810141947.1236730-1-arnd@kernel.org>
-From: Palmer Dabbelt <palmer@dabbelt.com>
-To: arnd@kernel.org
-Message-ID: <mhng-ce493a2d-71e9-440f-84d0-522a4f694bbe@palmer-ri-x1c9>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Thu, 17 Aug 2023 09:24:54 +1000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RR2Rg0bLDz2xnK
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Aug 2023 08:11:58 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 8EF6966F84;
+	Wed, 16 Aug 2023 22:11:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9927AC433C7;
+	Wed, 16 Aug 2023 22:11:47 +0000 (UTC)
+Message-ID: <a2bd0d42-f515-c902-701e-e8a47a5d5f94@linux-m68k.org>
+Date: Thu, 17 Aug 2023 08:11:44 +1000
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] treewide: drop CONFIG_EMBEDDED
+To: Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
+References: <20230816055010.31534-1-rdunlap@infradead.org>
+Content-Language: en-US
+From: Greg Ungerer <gerg@linux-m68k.org>
+In-Reply-To: <20230816055010.31534-1-rdunlap@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,115 +48,1071 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, linux-block@vger.kernel.org, linux-mips@vger.kernel.org, James.Bottomley@HansenPartnership.com, jcmvbkbc@gmail.com, guoren@kernel.org, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, kernel@xen0n.name, Will Deacon <will@kernel.org>, linux-riscv@lists.infradead.org, jonas@southpole.se, Stephen Rothwell <sfr@canb.auug.org.au>, linux-snps-arc@lists.infradead.org, linux-scsi@vger.kernel.org, deller@gmx.de, chenhuacai@kernel.org, linux@armlinux.org.uk, linux-next@vger.kernel.org, geert@linux-m68k.org, vgupta@kernel.org, mattst88@gmail.com, masahiroy@kernel.org, linux@roeck-us.net, linux-trace-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-s390@vger.kernel.org, hca@linux.ibm.com, linux-alpha@vger.kernel.org, stefan.kristiansson@saunalahti.fi, nathan@kernel.org, linux-m68k@lists.linux-m68k.org, bp@alien8.de, loongarch@lists
- .linux.dev, glaubitz@physik.fu-berlin.de, bhelgaas@google.com, shorne@gmail.com, linux-arm-kernel@lists.infradead.org, axboe@kernel.dk, bcain@quicinc.com, monstr@monstr.eu, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, martin.petersen@oracle.com, linux-openrisc@vger.kernel.org, linux-pci@vger.kernel.org, ndesaulniers@google.com, linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, dinguyen@kernel.org, richard@nod.at, linux-mtd@lists.infradead.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, sudipm.mukherjee@gmail.com
+Cc: "Jason A . Donenfeld" <Jason@zx2c4.com>, Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-openrisc@vger.kernel.org, linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, Masahiro Yamada <masahiroy@kernel.org>, Russell King <linux@armlinux.org.uk>, Geert Uytterhoeven <geert@linux-m68k.org>, Vineet Gupta <vgupta@kernel.org>, linux-snps-arc@lists.infradead.org, Jonas Bonn <jonas@southpole.se>, Albert Ou <aou@eecs.berkeley.edu>, Arnd Bergmann <arnd@arndb.de>, linux-kbuild@vger.kernel.org, Josh Triplett <josh@joshtriplett.org>, Nicholas Piggin <npiggin@gmail.com>, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, linux-m68k@lists.linux-m68k.org, Paul Walmsley <paul.walmsley@sifive.com>, Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org, Brian Cain <bcain@quicinc.com>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alph
+ a.franken.de>, Max Filippov <jcmvbkbc@gmail.com>, linux-mips@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-hexagon@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, wireguard@lists.zx2c4.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 10 Aug 2023 07:19:18 PDT (-0700), arnd@kernel.org wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> Most of the patches I sent so far for the -Wmissing-prototype warnings
-> have made it into linux-next now. There are a few that I'm resending
-> now as nobody has picked them up, and then a number of fixes that I
-> found while test-building across all architectures rather than just the
-> ones I usually test.
->
-> The first 15 patches in this series should be uncontroversial, so
-> I expect that either a subsystem maintainer or Andrew Morton can
-> apply these directly.
->
-> For the last two patches, these might still need some debate about how
-> to handle them. I added a Kconfig option to turn off most of the missing
-> prototype warnings in the architectures that nobody has fixed yet,
-> see patch 16 for those. The last patch does cause some known warnings
-> and likely unknown ones for architectures other than x86 and arm,
-> so applying it now will bring new problems, but not applying it also
-> means that new warnings creep in, so I think this is mainly a question
-> of what the best timing is for having this in linux-next.
->
-> Arnd Bergmann (17):
->   [RESEND] jffs2: mark __jffs2_dbg_superblock_counts() static
->   [RESEND] irq_work: consolidate arch_irq_work_raise prototypes
->   [RESEND] ida: make 'ida_dump' static
->   pci: sysfs: move declarations to linux/pci.h
->   swim3: mark swim3_init() static
->   macintosh/ams: mark ams_init() static
->   scsi: qlogicpti: mark qlogicpti_info() static
->   microblaze: mark flush_dcache_folio() inline
->   parport: gsc: mark init function static
->   zorro: include zorro.h in names.c
->   scsi: gvp11: remove unused gvp11_setup() function
->   time: make sysfs_get_uname() function visible in header
->   stackleak: add declarations for global functions
->   kprobes: unify kprobes_exceptions_nofify() prototypes
->   arch: fix asm-offsets.c building with -Wmissing-prototypes
->   [RFC] arch: turn -Wmissing-prototypes off conditionally
->   [RFC] Makefile.extrawarn: turn on missing-prototypes again
->
->  arch/alpha/Kbuild                        |  2 ++
->  arch/alpha/include/asm/pci.h             |  3 ---
->  arch/alpha/kernel/asm-offsets.c          |  2 +-
->  arch/alpha/lib/Makefile                  |  1 +
->  arch/arc/Kbuild                          |  2 ++
->  arch/arc/include/asm/kprobes.h           |  3 ---
->  arch/arm/include/asm/irq_work.h          |  2 --
->  arch/arm/include/asm/kprobes.h           |  2 --
->  arch/arm64/include/asm/irq_work.h        |  2 --
->  arch/arm64/include/asm/kprobes.h         |  2 --
->  arch/csky/Kbuild                         |  2 ++
->  arch/csky/include/asm/irq_work.h         |  2 +-
->  arch/hexagon/Kbuild                      |  2 ++
->  arch/ia64/Kbuild                         |  2 ++
->  arch/ia64/include/asm/kprobes.h          |  2 --
->  arch/ia64/kernel/asm-offsets.c           |  2 +-
->  arch/ia64/lib/Makefile                   |  1 +
->  arch/loongarch/Kbuild                    |  2 ++
->  arch/loongarch/kernel/asm-offsets.c      | 12 ++++++++++++
->  arch/m68k/Kbuild                         |  2 ++
->  arch/m68k/lib/Makefile                   |  1 +
->  arch/microblaze/Kbuild                   |  2 ++
->  arch/microblaze/include/asm/cacheflush.h |  2 +-
->  arch/mips/Kbuild                         |  2 ++
->  arch/mips/boot/compressed/Makefile       |  3 ++-
->  arch/mips/include/asm/kprobes.h          |  2 --
->  arch/nios2/Kbuild                        |  2 ++
->  arch/nios2/lib/Makefile                  |  1 +
->  arch/openrisc/Kbuild                     |  2 ++
->  arch/parisc/Kbuild                       |  2 ++
->  arch/parisc/lib/Makefile                 |  1 +
->  arch/powerpc/include/asm/irq_work.h      |  1 -
->  arch/powerpc/include/asm/kprobes.h       |  2 --
->  arch/riscv/include/asm/irq_work.h        |  2 +-
->  arch/s390/include/asm/irq_work.h         |  2 --
->  arch/s390/include/asm/kprobes.h          |  2 --
->  arch/sh/Kbuild                           |  2 ++
->  arch/sh/boot/compressed/Makefile         |  1 +
->  arch/sh/include/asm/kprobes.h            |  2 --
->  arch/sparc/Kbuild                        |  2 ++
->  arch/sparc/include/asm/kprobes.h         |  2 --
->  arch/sparc/kernel/asm-offsets.c          | 13 ++-----------
->  arch/sparc/lib/Makefile                  |  1 +
->  arch/sparc/prom/Makefile                 |  1 +
->  arch/x86/include/asm/irq_work.h          |  1 -
->  arch/x86/include/asm/kprobes.h           |  2 --
->  arch/xtensa/Kbuild                       |  2 ++
->  arch/xtensa/boot/lib/Makefile            |  2 ++
->  drivers/block/swim3.c                    |  2 +-
->  drivers/macintosh/ams/ams-core.c         |  2 +-
->  drivers/parport/parport_gsc.c            |  2 +-
->  drivers/scsi/gvp11.c                     |  5 -----
->  drivers/scsi/qlogicpti.c                 |  2 +-
->  drivers/zorro/names.c                    |  1 +
->  fs/jffs2/debug.c                         |  2 +-
->  include/linux/irq_work.h                 |  3 +++
->  include/linux/kprobes.h                  |  4 ++++
->  include/linux/pci.h                      |  5 +++++
->  include/linux/stackleak.h                |  6 ++++++
->  init/Kconfig                             | 10 ++++++++++
->  kernel/time/tick-internal.h              |  3 ++-
->  lib/test_ida.c                           |  2 +-
->  scripts/Makefile.extrawarn               |  5 +++--
->  63 files changed, 101 insertions(+), 63 deletions(-)
 
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com> # RISC-V
+On 16/8/23 15:50, Randy Dunlap wrote:
+> There is only one Kconfig user of CONFIG_EMBEDDED and it can be
+> switched to EXPERT or "if !ARCH_MULTIPLATFORM" (suggested by Arnd).
+> 
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Cc: Russell King <linux@armlinux.org.uk>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Jason A. Donenfeld <Jason@zx2c4.com>
+> Cc: wireguard@lists.zx2c4.com
+> Cc: linux-arch@vger.kernel.org
+> Cc: linux-snps-arc@lists.infradead.org
+> Cc: Vineet Gupta <vgupta@kernel.org>
+> Cc: Brian Cain <bcain@quicinc.com>
+> Cc: linux-hexagon@vger.kernel.org
+> Cc: Greg Ungerer <gerg@linux-m68k.org>
+
+Acked-by: Greg Ungerer <gerg@linux-m68k.org>
+
+
+> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+> Cc: linux-m68k@lists.linux-m68k.org
+> Cc: Michal Simek <monstr@monstr.eu>
+> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+> Cc: Dinh Nguyen <dinguyen@kernel.org>
+> Cc: Jonas Bonn <jonas@southpole.se>
+> Cc: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
+> Cc: Stafford Horne <shorne@gmail.com>
+> Cc: linux-openrisc@vger.kernel.org
+> Cc: linux-mips@vger.kernel.org
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-riscv@lists.infradead.org
+> Cc: Paul Walmsley <paul.walmsley@sifive.com>
+> Cc: Palmer Dabbelt <palmer@dabbelt.com>
+> Cc: Albert Ou <aou@eecs.berkeley.edu>
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Rich Felker <dalias@libc.org>
+> Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+> Cc: linux-sh@vger.kernel.org
+> Cc: Max Filippov <jcmvbkbc@gmail.com>
+> Cc: Josh Triplett <josh@joshtriplett.org>
+> Cc: Masahiro Yamada <masahiroy@kernel.org>
+> Cc: linux-kbuild@vger.kernel.org
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> ---
+>   arch/arc/configs/axs101_defconfig                    |    2 +-
+>   arch/arc/configs/axs103_defconfig                    |    2 +-
+>   arch/arc/configs/axs103_smp_defconfig                |    2 +-
+>   arch/arc/configs/haps_hs_smp_defconfig               |    2 +-
+>   arch/arc/configs/hsdk_defconfig                      |    2 +-
+>   arch/arc/configs/nsim_700_defconfig                  |    2 +-
+>   arch/arc/configs/nsimosci_defconfig                  |    2 +-
+>   arch/arc/configs/nsimosci_hs_defconfig               |    2 +-
+>   arch/arc/configs/tb10x_defconfig                     |    2 +-
+>   arch/arc/configs/vdk_hs38_defconfig                  |    2 +-
+>   arch/arc/configs/vdk_hs38_smp_defconfig              |    2 +-
+>   arch/arm/Kconfig                                     |    2 +-
+>   arch/arm/configs/aspeed_g4_defconfig                 |    2 +-
+>   arch/arm/configs/aspeed_g5_defconfig                 |    2 +-
+>   arch/arm/configs/at91_dt_defconfig                   |    2 +-
+>   arch/arm/configs/axm55xx_defconfig                   |    2 +-
+>   arch/arm/configs/bcm2835_defconfig                   |    2 +-
+>   arch/arm/configs/clps711x_defconfig                  |    2 +-
+>   arch/arm/configs/keystone_defconfig                  |    2 +-
+>   arch/arm/configs/lpc18xx_defconfig                   |    2 +-
+>   arch/arm/configs/lpc32xx_defconfig                   |    2 +-
+>   arch/arm/configs/milbeaut_m10v_defconfig             |    2 +-
+>   arch/arm/configs/moxart_defconfig                    |    2 +-
+>   arch/arm/configs/multi_v4t_defconfig                 |    2 +-
+>   arch/arm/configs/multi_v7_defconfig                  |    2 +-
+>   arch/arm/configs/pxa_defconfig                       |    2 +-
+>   arch/arm/configs/qcom_defconfig                      |    2 +-
+>   arch/arm/configs/sama5_defconfig                     |    2 +-
+>   arch/arm/configs/sama7_defconfig                     |    2 +-
+>   arch/arm/configs/socfpga_defconfig                   |    2 +-
+>   arch/arm/configs/stm32_defconfig                     |    2 +-
+>   arch/arm/configs/tegra_defconfig                     |    2 +-
+>   arch/arm/configs/vf610m4_defconfig                   |    2 +-
+>   arch/hexagon/configs/comet_defconfig                 |    2 +-
+>   arch/m68k/configs/amcore_defconfig                   |    2 +-
+>   arch/m68k/configs/m5475evb_defconfig                 |    2 +-
+>   arch/m68k/configs/stmark2_defconfig                  |    2 +-
+>   arch/microblaze/configs/mmu_defconfig                |    2 +-
+>   arch/mips/configs/ath25_defconfig                    |    2 +-
+>   arch/mips/configs/ath79_defconfig                    |    2 +-
+>   arch/mips/configs/bcm47xx_defconfig                  |    2 +-
+>   arch/mips/configs/ci20_defconfig                     |    2 +-
+>   arch/mips/configs/cu1000-neo_defconfig               |    2 +-
+>   arch/mips/configs/cu1830-neo_defconfig               |    2 +-
+>   arch/mips/configs/db1xxx_defconfig                   |    2 +-
+>   arch/mips/configs/gcw0_defconfig                     |    2 +-
+>   arch/mips/configs/generic_defconfig                  |    2 +-
+>   arch/mips/configs/loongson2k_defconfig               |    2 +-
+>   arch/mips/configs/loongson3_defconfig                |    2 +-
+>   arch/mips/configs/malta_qemu_32r6_defconfig          |    2 +-
+>   arch/mips/configs/maltaaprp_defconfig                |    2 +-
+>   arch/mips/configs/maltasmvp_defconfig                |    2 +-
+>   arch/mips/configs/maltasmvp_eva_defconfig            |    2 +-
+>   arch/mips/configs/maltaup_defconfig                  |    2 +-
+>   arch/mips/configs/omega2p_defconfig                  |    2 +-
+>   arch/mips/configs/pic32mzda_defconfig                |    2 +-
+>   arch/mips/configs/qi_lb60_defconfig                  |    2 +-
+>   arch/mips/configs/rs90_defconfig                     |    2 +-
+>   arch/mips/configs/rt305x_defconfig                   |    2 +-
+>   arch/mips/configs/vocore2_defconfig                  |    2 +-
+>   arch/mips/configs/xway_defconfig                     |    2 +-
+>   arch/nios2/configs/10m50_defconfig                   |    2 +-
+>   arch/nios2/configs/3c120_defconfig                   |    2 +-
+>   arch/openrisc/configs/or1klitex_defconfig            |    2 +-
+>   arch/powerpc/configs/40x/klondike_defconfig          |    2 +-
+>   arch/powerpc/configs/44x/fsp2_defconfig              |    2 +-
+>   arch/powerpc/configs/52xx/tqm5200_defconfig          |    2 +-
+>   arch/powerpc/configs/mgcoge_defconfig                |    2 +-
+>   arch/powerpc/configs/microwatt_defconfig             |    2 +-
+>   arch/powerpc/configs/ps3_defconfig                   |    2 +-
+>   arch/riscv/configs/nommu_k210_defconfig              |    2 +-
+>   arch/riscv/configs/nommu_k210_sdcard_defconfig       |    2 +-
+>   arch/sh/configs/rsk7264_defconfig                    |    2 +-
+>   arch/sh/configs/rsk7269_defconfig                    |    2 +-
+>   arch/xtensa/configs/cadence_csp_defconfig            |    2 +-
+>   init/Kconfig                                         |    8 --------
+>   kernel/configs/tiny-base.config                      |    2 +-
+>   tools/testing/selftests/wireguard/qemu/kernel.config |    1 -
+>   78 files changed, 76 insertions(+), 85 deletions(-)
+> 
+> diff -- a/arch/arm/Kconfig b/arch/arm/Kconfig
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -250,7 +250,7 @@ config ARCH_MTD_XIP
+>   	bool
+>   
+>   config ARM_PATCH_PHYS_VIRT
+> -	bool "Patch physical to virtual translations at runtime" if EMBEDDED
+> +	bool "Patch physical to virtual translations at runtime" if !ARCH_MULTIPLATFORM
+>   	default y
+>   	depends on MMU
+>   	help
+> diff -- a/init/Kconfig b/init/Kconfig
+> --- a/init/Kconfig
+> +++ b/init/Kconfig
+> @@ -1790,14 +1790,6 @@ config DEBUG_RSEQ
+>   
+>   	  If unsure, say N.
+>   
+> -config EMBEDDED
+> -	bool "Embedded system"
+> -	select EXPERT
+> -	help
+> -	  This option should be enabled if compiling the kernel for
+> -	  an embedded system so certain expert options are available
+> -	  for configuration.
+> -
+>   config HAVE_PERF_EVENTS
+>   	bool
+>   	help
+> diff -- a/arch/powerpc/configs/40x/klondike_defconfig b/arch/powerpc/configs/40x/klondike_defconfig
+> --- a/arch/powerpc/configs/40x/klondike_defconfig
+> +++ b/arch/powerpc/configs/40x/klondike_defconfig
+> @@ -4,7 +4,7 @@ CONFIG_LOG_BUF_SHIFT=14
+>   CONFIG_SYSFS_DEPRECATED=y
+>   CONFIG_SYSFS_DEPRECATED_V2=y
+>   CONFIG_BLK_DEV_INITRD=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_MODULES=y
+>   CONFIG_MODULE_UNLOAD=y
+>   CONFIG_APM8018X=y
+> diff -- a/arch/powerpc/configs/44x/fsp2_defconfig b/arch/powerpc/configs/44x/fsp2_defconfig
+> --- a/arch/powerpc/configs/44x/fsp2_defconfig
+> +++ b/arch/powerpc/configs/44x/fsp2_defconfig
+> @@ -15,7 +15,7 @@ CONFIG_BLK_DEV_INITRD=y
+>   # CONFIG_RD_LZ4 is not set
+>   CONFIG_KALLSYMS_ALL=y
+>   CONFIG_BPF_SYSCALL=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_PROFILING=y
+>   CONFIG_MODULES=y
+>   CONFIG_MODULE_UNLOAD=y
+> diff -- a/arch/powerpc/configs/52xx/tqm5200_defconfig b/arch/powerpc/configs/52xx/tqm5200_defconfig
+> --- a/arch/powerpc/configs/52xx/tqm5200_defconfig
+> +++ b/arch/powerpc/configs/52xx/tqm5200_defconfig
+> @@ -3,7 +3,7 @@ CONFIG_LOG_BUF_SHIFT=14
+>   CONFIG_BLK_DEV_INITRD=y
+>   # CONFIG_KALLSYMS is not set
+>   # CONFIG_EPOLL is not set
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_MODULES=y
+>   CONFIG_MODULE_UNLOAD=y
+>   CONFIG_MODVERSIONS=y
+> diff -- a/arch/arc/configs/axs101_defconfig b/arch/arc/configs/axs101_defconfig
+> --- a/arch/arc/configs/axs101_defconfig
+> +++ b/arch/arc/configs/axs101_defconfig
+> @@ -9,7 +9,7 @@ CONFIG_NAMESPACES=y
+>   # CONFIG_UTS_NS is not set
+>   # CONFIG_PID_NS is not set
+>   CONFIG_BLK_DEV_INITRD=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_PERF_EVENTS=y
+>   # CONFIG_VM_EVENT_COUNTERS is not set
+>   # CONFIG_SLUB_DEBUG is not set
+> diff -- a/arch/arc/configs/axs103_defconfig b/arch/arc/configs/axs103_defconfig
+> --- a/arch/arc/configs/axs103_defconfig
+> +++ b/arch/arc/configs/axs103_defconfig
+> @@ -9,7 +9,7 @@ CONFIG_NAMESPACES=y
+>   # CONFIG_UTS_NS is not set
+>   # CONFIG_PID_NS is not set
+>   CONFIG_BLK_DEV_INITRD=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_PERF_EVENTS=y
+>   # CONFIG_VM_EVENT_COUNTERS is not set
+>   # CONFIG_SLUB_DEBUG is not set
+> diff -- a/arch/arc/configs/axs103_smp_defconfig b/arch/arc/configs/axs103_smp_defconfig
+> --- a/arch/arc/configs/axs103_smp_defconfig
+> +++ b/arch/arc/configs/axs103_smp_defconfig
+> @@ -9,7 +9,7 @@ CONFIG_NAMESPACES=y
+>   # CONFIG_UTS_NS is not set
+>   # CONFIG_PID_NS is not set
+>   CONFIG_BLK_DEV_INITRD=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_PERF_EVENTS=y
+>   # CONFIG_VM_EVENT_COUNTERS is not set
+>   # CONFIG_COMPAT_BRK is not set
+> diff -- a/arch/arc/configs/haps_hs_smp_defconfig b/arch/arc/configs/haps_hs_smp_defconfig
+> --- a/arch/arc/configs/haps_hs_smp_defconfig
+> +++ b/arch/arc/configs/haps_hs_smp_defconfig
+> @@ -11,7 +11,7 @@ CONFIG_NAMESPACES=y
+>   # CONFIG_UTS_NS is not set
+>   # CONFIG_PID_NS is not set
+>   CONFIG_BLK_DEV_INITRD=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_PERF_EVENTS=y
+>   # CONFIG_VM_EVENT_COUNTERS is not set
+>   # CONFIG_COMPAT_BRK is not set
+> diff -- a/arch/arc/configs/hsdk_defconfig b/arch/arc/configs/hsdk_defconfig
+> --- a/arch/arc/configs/hsdk_defconfig
+> +++ b/arch/arc/configs/hsdk_defconfig
+> @@ -9,7 +9,7 @@ CONFIG_NAMESPACES=y
+>   # CONFIG_PID_NS is not set
+>   CONFIG_BLK_DEV_INITRD=y
+>   CONFIG_BLK_DEV_RAM=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_PERF_EVENTS=y
+>   # CONFIG_VM_EVENT_COUNTERS is not set
+>   # CONFIG_COMPAT_BRK is not set
+> diff -- a/arch/arc/configs/nsim_700_defconfig b/arch/arc/configs/nsim_700_defconfig
+> --- a/arch/arc/configs/nsim_700_defconfig
+> +++ b/arch/arc/configs/nsim_700_defconfig
+> @@ -12,7 +12,7 @@ CONFIG_NAMESPACES=y
+>   # CONFIG_PID_NS is not set
+>   CONFIG_BLK_DEV_INITRD=y
+>   CONFIG_KALLSYMS_ALL=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_PERF_EVENTS=y
+>   # CONFIG_SLUB_DEBUG is not set
+>   # CONFIG_COMPAT_BRK is not set
+> diff -- a/arch/arc/configs/nsimosci_defconfig b/arch/arc/configs/nsimosci_defconfig
+> --- a/arch/arc/configs/nsimosci_defconfig
+> +++ b/arch/arc/configs/nsimosci_defconfig
+> @@ -11,7 +11,7 @@ CONFIG_NAMESPACES=y
+>   # CONFIG_PID_NS is not set
+>   CONFIG_BLK_DEV_INITRD=y
+>   CONFIG_KALLSYMS_ALL=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_PERF_EVENTS=y
+>   # CONFIG_SLUB_DEBUG is not set
+>   # CONFIG_COMPAT_BRK is not set
+> diff -- a/arch/arc/configs/nsimosci_hs_defconfig b/arch/arc/configs/nsimosci_hs_defconfig
+> --- a/arch/arc/configs/nsimosci_hs_defconfig
+> +++ b/arch/arc/configs/nsimosci_hs_defconfig
+> @@ -11,7 +11,7 @@ CONFIG_NAMESPACES=y
+>   # CONFIG_PID_NS is not set
+>   CONFIG_BLK_DEV_INITRD=y
+>   CONFIG_KALLSYMS_ALL=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_PERF_EVENTS=y
+>   # CONFIG_SLUB_DEBUG is not set
+>   # CONFIG_COMPAT_BRK is not set
+> diff -- a/arch/arc/configs/tb10x_defconfig b/arch/arc/configs/tb10x_defconfig
+> --- a/arch/arc/configs/tb10x_defconfig
+> +++ b/arch/arc/configs/tb10x_defconfig
+> @@ -16,7 +16,7 @@ CONFIG_INITRAMFS_ROOT_GID=501
+>   # CONFIG_RD_GZIP is not set
+>   CONFIG_KALLSYMS_ALL=y
+>   # CONFIG_AIO is not set
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   # CONFIG_COMPAT_BRK is not set
+>   CONFIG_ISA_ARCOMPACT=y
+>   CONFIG_MODULES=y
+> diff -- a/arch/arc/configs/vdk_hs38_defconfig b/arch/arc/configs/vdk_hs38_defconfig
+> --- a/arch/arc/configs/vdk_hs38_defconfig
+> +++ b/arch/arc/configs/vdk_hs38_defconfig
+> @@ -4,7 +4,7 @@ CONFIG_HIGH_RES_TIMERS=y
+>   CONFIG_IKCONFIG=y
+>   CONFIG_IKCONFIG_PROC=y
+>   CONFIG_BLK_DEV_INITRD=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_PERF_EVENTS=y
+>   # CONFIG_VM_EVENT_COUNTERS is not set
+>   # CONFIG_SLUB_DEBUG is not set
+> diff -- a/arch/arc/configs/vdk_hs38_smp_defconfig b/arch/arc/configs/vdk_hs38_smp_defconfig
+> --- a/arch/arc/configs/vdk_hs38_smp_defconfig
+> +++ b/arch/arc/configs/vdk_hs38_smp_defconfig
+> @@ -4,7 +4,7 @@ CONFIG_HIGH_RES_TIMERS=y
+>   CONFIG_IKCONFIG=y
+>   CONFIG_IKCONFIG_PROC=y
+>   CONFIG_BLK_DEV_INITRD=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_PERF_EVENTS=y
+>   # CONFIG_VM_EVENT_COUNTERS is not set
+>   # CONFIG_SLUB_DEBUG is not set
+> diff -- a/arch/hexagon/configs/comet_defconfig b/arch/hexagon/configs/comet_defconfig
+> --- a/arch/hexagon/configs/comet_defconfig
+> +++ b/arch/hexagon/configs/comet_defconfig
+> @@ -14,7 +14,7 @@ CONFIG_IKCONFIG=y
+>   CONFIG_IKCONFIG_PROC=y
+>   CONFIG_LOG_BUF_SHIFT=18
+>   CONFIG_BLK_DEV_INITRD=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   # CONFIG_VM_EVENT_COUNTERS is not set
+>   # CONFIG_BLK_DEV_BSG is not set
+>   CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
+> diff -- a/arch/m68k/configs/amcore_defconfig b/arch/m68k/configs/amcore_defconfig
+> --- a/arch/m68k/configs/amcore_defconfig
+> +++ b/arch/m68k/configs/amcore_defconfig
+> @@ -8,7 +8,7 @@ CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+>   # CONFIG_AIO is not set
+>   # CONFIG_ADVISE_SYSCALLS is not set
+>   # CONFIG_MEMBARRIER is not set
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   # CONFIG_VM_EVENT_COUNTERS is not set
+>   # CONFIG_SLUB_DEBUG is not set
+>   # CONFIG_COMPAT_BRK is not set
+> diff -- a/arch/m68k/configs/m5475evb_defconfig b/arch/m68k/configs/m5475evb_defconfig
+> --- a/arch/m68k/configs/m5475evb_defconfig
+> +++ b/arch/m68k/configs/m5475evb_defconfig
+> @@ -8,7 +8,7 @@ CONFIG_LOG_BUF_SHIFT=14
+>   # CONFIG_EVENTFD is not set
+>   # CONFIG_SHMEM is not set
+>   # CONFIG_AIO is not set
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_MODULES=y
+>   # CONFIG_BLK_DEV_BSG is not set
+>   CONFIG_COLDFIRE=y
+> diff -- a/arch/m68k/configs/stmark2_defconfig b/arch/m68k/configs/stmark2_defconfig
+> --- a/arch/m68k/configs/stmark2_defconfig
+> +++ b/arch/m68k/configs/stmark2_defconfig
+> @@ -9,7 +9,7 @@ CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+>   # CONFIG_AIO is not set
+>   # CONFIG_ADVISE_SYSCALLS is not set
+>   # CONFIG_MEMBARRIER is not set
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   # CONFIG_VM_EVENT_COUNTERS is not set
+>   # CONFIG_COMPAT_BRK is not set
+>   CONFIG_COLDFIRE=y
+> diff -- a/arch/microblaze/configs/mmu_defconfig b/arch/microblaze/configs/mmu_defconfig
+> --- a/arch/microblaze/configs/mmu_defconfig
+> +++ b/arch/microblaze/configs/mmu_defconfig
+> @@ -7,7 +7,7 @@ CONFIG_SYSFS_DEPRECATED=y
+>   CONFIG_SYSFS_DEPRECATED_V2=y
+>   # CONFIG_BASE_FULL is not set
+>   CONFIG_KALLSYMS_ALL=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_XILINX_MICROBLAZE0_USE_MSR_INSTR=1
+>   CONFIG_XILINX_MICROBLAZE0_USE_PCMP_INSTR=1
+>   CONFIG_XILINX_MICROBLAZE0_USE_BARREL=1
+> diff -- a/arch/nios2/configs/10m50_defconfig b/arch/nios2/configs/10m50_defconfig
+> --- a/arch/nios2/configs/10m50_defconfig
+> +++ b/arch/nios2/configs/10m50_defconfig
+> @@ -9,7 +9,7 @@ CONFIG_LOG_BUF_SHIFT=14
+>   # CONFIG_EVENTFD is not set
+>   # CONFIG_SHMEM is not set
+>   # CONFIG_AIO is not set
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_MODULES=y
+>   CONFIG_MODULE_UNLOAD=y
+>   CONFIG_NIOS2_MEM_BASE=0x8000000
+> diff -- a/arch/nios2/configs/3c120_defconfig b/arch/nios2/configs/3c120_defconfig
+> --- a/arch/nios2/configs/3c120_defconfig
+> +++ b/arch/nios2/configs/3c120_defconfig
+> @@ -9,7 +9,7 @@ CONFIG_LOG_BUF_SHIFT=14
+>   # CONFIG_EVENTFD is not set
+>   # CONFIG_SHMEM is not set
+>   # CONFIG_AIO is not set
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_MODULES=y
+>   CONFIG_MODULE_UNLOAD=y
+>   CONFIG_NIOS2_MEM_BASE=0x10000000
+> diff -- a/arch/openrisc/configs/or1klitex_defconfig b/arch/openrisc/configs/or1klitex_defconfig
+> --- a/arch/openrisc/configs/or1klitex_defconfig
+> +++ b/arch/openrisc/configs/or1klitex_defconfig
+> @@ -6,7 +6,7 @@ CONFIG_USER_NS=y
+>   CONFIG_BLK_DEV_INITRD=y
+>   CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+>   CONFIG_SGETMASK_SYSCALL=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_OPENRISC_BUILTIN_DTB="or1klitex"
+>   CONFIG_HZ_100=y
+>   CONFIG_OPENRISC_HAVE_SHADOW_GPRS=y
+> diff -- a/arch/powerpc/configs/mgcoge_defconfig b/arch/powerpc/configs/mgcoge_defconfig
+> --- a/arch/powerpc/configs/mgcoge_defconfig
+> +++ b/arch/powerpc/configs/mgcoge_defconfig
+> @@ -9,7 +9,7 @@ CONFIG_BLK_DEV_INITRD=y
+>   # CONFIG_RD_GZIP is not set
+>   CONFIG_KALLSYMS_ALL=y
+>   # CONFIG_PCSPKR_PLATFORM is not set
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_PARTITION_ADVANCED=y
+>   # CONFIG_PPC_PMAC is not set
+>   CONFIG_PPC_82xx=y
+> diff -- a/arch/powerpc/configs/microwatt_defconfig b/arch/powerpc/configs/microwatt_defconfig
+> --- a/arch/powerpc/configs/microwatt_defconfig
+> +++ b/arch/powerpc/configs/microwatt_defconfig
+> @@ -8,7 +8,7 @@ CONFIG_CGROUPS=y
+>   CONFIG_BLK_DEV_INITRD=y
+>   CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+>   CONFIG_KALLSYMS_ALL=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   # CONFIG_VM_EVENT_COUNTERS is not set
+>   # CONFIG_SLUB_DEBUG is not set
+>   # CONFIG_COMPAT_BRK is not set
+> diff -- a/arch/powerpc/configs/ps3_defconfig b/arch/powerpc/configs/ps3_defconfig
+> --- a/arch/powerpc/configs/ps3_defconfig
+> +++ b/arch/powerpc/configs/ps3_defconfig
+> @@ -3,7 +3,7 @@ CONFIG_POSIX_MQUEUE=y
+>   CONFIG_HIGH_RES_TIMERS=y
+>   CONFIG_BLK_DEV_INITRD=y
+>   CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   # CONFIG_PERF_EVENTS is not set
+>   CONFIG_PROFILING=y
+>   CONFIG_PPC64=y
+> diff -- a/arch/riscv/configs/nommu_k210_defconfig b/arch/riscv/configs/nommu_k210_defconfig
+> --- a/arch/riscv/configs/nommu_k210_defconfig
+> +++ b/arch/riscv/configs/nommu_k210_defconfig
+> @@ -21,7 +21,7 @@ CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+>   # CONFIG_IO_URING is not set
+>   # CONFIG_ADVISE_SYSCALLS is not set
+>   # CONFIG_KALLSYMS is not set
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   # CONFIG_VM_EVENT_COUNTERS is not set
+>   # CONFIG_COMPAT_BRK is not set
+>   CONFIG_SLUB=y
+> diff -- a/arch/riscv/configs/nommu_k210_sdcard_defconfig b/arch/riscv/configs/nommu_k210_sdcard_defconfig
+> --- a/arch/riscv/configs/nommu_k210_sdcard_defconfig
+> +++ b/arch/riscv/configs/nommu_k210_sdcard_defconfig
+> @@ -13,7 +13,7 @@ CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+>   # CONFIG_IO_URING is not set
+>   # CONFIG_ADVISE_SYSCALLS is not set
+>   # CONFIG_KALLSYMS is not set
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   # CONFIG_VM_EVENT_COUNTERS is not set
+>   # CONFIG_COMPAT_BRK is not set
+>   CONFIG_SLUB=y
+> diff -- a/arch/sh/configs/rsk7264_defconfig b/arch/sh/configs/rsk7264_defconfig
+> --- a/arch/sh/configs/rsk7264_defconfig
+> +++ b/arch/sh/configs/rsk7264_defconfig
+> @@ -9,7 +9,7 @@ CONFIG_SYSFS_DEPRECATED=y
+>   CONFIG_SYSFS_DEPRECATED_V2=y
+>   CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+>   CONFIG_KALLSYMS_ALL=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_PERF_COUNTERS=y
+>   # CONFIG_VM_EVENT_COUNTERS is not set
+>   CONFIG_MMAP_ALLOW_UNINITIALIZED=y
+> diff -- a/arch/sh/configs/rsk7269_defconfig b/arch/sh/configs/rsk7269_defconfig
+> --- a/arch/sh/configs/rsk7269_defconfig
+> +++ b/arch/sh/configs/rsk7269_defconfig
+> @@ -1,6 +1,6 @@
+>   CONFIG_LOG_BUF_SHIFT=14
+>   CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   # CONFIG_VM_EVENT_COUNTERS is not set
+>   # CONFIG_BLK_DEV_BSG is not set
+>   CONFIG_SWAP_IO_SPACE=y
+> diff -- a/arch/xtensa/configs/cadence_csp_defconfig b/arch/xtensa/configs/cadence_csp_defconfig
+> --- a/arch/xtensa/configs/cadence_csp_defconfig
+> +++ b/arch/xtensa/configs/cadence_csp_defconfig
+> @@ -21,7 +21,7 @@ CONFIG_INITRAMFS_SOURCE="$$KERNEL_INITRA
+>   # CONFIG_RD_LZO is not set
+>   # CONFIG_RD_LZ4 is not set
+>   CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_PROFILING=y
+>   CONFIG_MODULES=y
+>   CONFIG_MODULE_FORCE_LOAD=y
+> diff -- a/arch/arm/configs/aspeed_g4_defconfig b/arch/arm/configs/aspeed_g4_defconfig
+> --- a/arch/arm/configs/aspeed_g4_defconfig
+> +++ b/arch/arm/configs/aspeed_g4_defconfig
+> @@ -15,7 +15,7 @@ CONFIG_BLK_DEV_INITRD=y
+>   # CONFIG_UID16 is not set
+>   # CONFIG_SYSFS_SYSCALL is not set
+>   # CONFIG_AIO is not set
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_PERF_EVENTS=y
+>   # CONFIG_ARCH_MULTI_V7 is not set
+>   CONFIG_ARCH_ASPEED=y
+> diff -- a/arch/arm/configs/aspeed_g5_defconfig b/arch/arm/configs/aspeed_g5_defconfig
+> --- a/arch/arm/configs/aspeed_g5_defconfig
+> +++ b/arch/arm/configs/aspeed_g5_defconfig
+> @@ -15,7 +15,7 @@ CONFIG_BLK_DEV_INITRD=y
+>   # CONFIG_UID16 is not set
+>   # CONFIG_SYSFS_SYSCALL is not set
+>   # CONFIG_AIO is not set
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_PERF_EVENTS=y
+>   CONFIG_ARCH_MULTI_V6=y
+>   CONFIG_ARCH_ASPEED=y
+> diff -- a/arch/arm/configs/at91_dt_defconfig b/arch/arm/configs/at91_dt_defconfig
+> --- a/arch/arm/configs/at91_dt_defconfig
+> +++ b/arch/arm/configs/at91_dt_defconfig
+> @@ -7,7 +7,7 @@ CONFIG_CGROUPS=y
+>   CONFIG_BLK_DEV_INITRD=y
+>   CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+>   CONFIG_KALLSYMS_ALL=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_ARCH_MULTI_V4T=y
+>   CONFIG_ARCH_MULTI_V5=y
+>   # CONFIG_ARCH_MULTI_V7 is not set
+> diff -- a/arch/arm/configs/axm55xx_defconfig b/arch/arm/configs/axm55xx_defconfig
+> --- a/arch/arm/configs/axm55xx_defconfig
+> +++ b/arch/arm/configs/axm55xx_defconfig
+> @@ -21,7 +21,7 @@ CONFIG_NAMESPACES=y
+>   CONFIG_SCHED_AUTOGROUP=y
+>   CONFIG_RELAY=y
+>   CONFIG_BLK_DEV_INITRD=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_PROFILING=y
+>   CONFIG_ARCH_AXXIA=y
+>   CONFIG_ARM_LPAE=y
+> diff -- a/arch/arm/configs/bcm2835_defconfig b/arch/arm/configs/bcm2835_defconfig
+> --- a/arch/arm/configs/bcm2835_defconfig
+> +++ b/arch/arm/configs/bcm2835_defconfig
+> @@ -19,7 +19,7 @@ CONFIG_RELAY=y
+>   CONFIG_BLK_DEV_INITRD=y
+>   CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+>   CONFIG_KALLSYMS_ALL=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_PROFILING=y
+>   CONFIG_CC_STACKPROTECTOR_REGULAR=y
+>   CONFIG_ARCH_MULTI_V6=y
+> diff -- a/arch/arm/configs/clps711x_defconfig b/arch/arm/configs/clps711x_defconfig
+> --- a/arch/arm/configs/clps711x_defconfig
+> +++ b/arch/arm/configs/clps711x_defconfig
+> @@ -3,7 +3,7 @@ CONFIG_SYSVIPC=y
+>   CONFIG_LOG_BUF_SHIFT=14
+>   CONFIG_BLK_DEV_INITRD=y
+>   CONFIG_RD_LZMA=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_JUMP_LABEL=y
+>   CONFIG_PARTITION_ADVANCED=y
+>   CONFIG_ARCH_CLPS711X=y
+> diff -- a/arch/arm/configs/keystone_defconfig b/arch/arm/configs/keystone_defconfig
+> --- a/arch/arm/configs/keystone_defconfig
+> +++ b/arch/arm/configs/keystone_defconfig
+> @@ -14,7 +14,7 @@ CONFIG_BLK_DEV_INITRD=y
+>   # CONFIG_ELF_CORE is not set
+>   # CONFIG_BASE_FULL is not set
+>   CONFIG_KALLSYMS_ALL=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_PROFILING=y
+>   CONFIG_ARCH_KEYSTONE=y
+>   CONFIG_ARM_LPAE=y
+> diff -- a/arch/arm/configs/lpc18xx_defconfig b/arch/arm/configs/lpc18xx_defconfig
+> --- a/arch/arm/configs/lpc18xx_defconfig
+> +++ b/arch/arm/configs/lpc18xx_defconfig
+> @@ -14,7 +14,7 @@ CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+>   # CONFIG_SIGNALFD is not set
+>   # CONFIG_EVENTFD is not set
+>   # CONFIG_AIO is not set
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   # CONFIG_MMU is not set
+>   CONFIG_ARCH_LPC18XX=y
+>   CONFIG_SET_MEM_PARAM=y
+> diff -- a/arch/arm/configs/lpc32xx_defconfig b/arch/arm/configs/lpc32xx_defconfig
+> --- a/arch/arm/configs/lpc32xx_defconfig
+> +++ b/arch/arm/configs/lpc32xx_defconfig
+> @@ -9,7 +9,7 @@ CONFIG_SYSFS_DEPRECATED=y
+>   CONFIG_SYSFS_DEPRECATED_V2=y
+>   CONFIG_BLK_DEV_INITRD=y
+>   CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   # CONFIG_ARCH_MULTI_V7 is not set
+>   CONFIG_ARCH_LPC32XX=y
+>   CONFIG_AEABI=y
+> diff -- a/arch/arm/configs/milbeaut_m10v_defconfig b/arch/arm/configs/milbeaut_m10v_defconfig
+> --- a/arch/arm/configs/milbeaut_m10v_defconfig
+> +++ b/arch/arm/configs/milbeaut_m10v_defconfig
+> @@ -3,7 +3,7 @@ CONFIG_NO_HZ_IDLE=y
+>   CONFIG_HIGH_RES_TIMERS=y
+>   CONFIG_CGROUPS=y
+>   CONFIG_BLK_DEV_INITRD=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_PERF_EVENTS=y
+>   CONFIG_ARCH_MILBEAUT=y
+>   CONFIG_ARCH_MILBEAUT_M10V=y
+> diff -- a/arch/arm/configs/moxart_defconfig b/arch/arm/configs/moxart_defconfig
+> --- a/arch/arm/configs/moxart_defconfig
+> +++ b/arch/arm/configs/moxart_defconfig
+> @@ -10,7 +10,7 @@ CONFIG_IKCONFIG_PROC=y
+>   # CONFIG_TIMERFD is not set
+>   # CONFIG_EVENTFD is not set
+>   # CONFIG_AIO is not set
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   # CONFIG_BLK_DEV_BSG is not set
+>   CONFIG_ARCH_MULTI_V4=y
+>   # CONFIG_ARCH_MULTI_V7 is not set
+> diff -- a/arch/arm/configs/multi_v4t_defconfig b/arch/arm/configs/multi_v4t_defconfig
+> --- a/arch/arm/configs/multi_v4t_defconfig
+> +++ b/arch/arm/configs/multi_v4t_defconfig
+> @@ -2,7 +2,7 @@ CONFIG_KERNEL_LZMA=y
+>   CONFIG_SYSVIPC=y
+>   CONFIG_LOG_BUF_SHIFT=14
+>   CONFIG_BLK_DEV_INITRD=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_ARCH_MULTI_V4T=y
+>   # CONFIG_ARCH_MULTI_V7 is not set
+>   CONFIG_ARCH_AT91=y
+> diff -- a/arch/arm/configs/multi_v7_defconfig b/arch/arm/configs/multi_v7_defconfig
+> --- a/arch/arm/configs/multi_v7_defconfig
+> +++ b/arch/arm/configs/multi_v7_defconfig
+> @@ -3,7 +3,7 @@ CONFIG_NO_HZ_IDLE=y
+>   CONFIG_HIGH_RES_TIMERS=y
+>   CONFIG_CGROUPS=y
+>   CONFIG_BLK_DEV_INITRD=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_PERF_EVENTS=y
+>   CONFIG_ARCH_VIRT=y
+>   CONFIG_ARCH_AIROHA=y
+> diff -- a/arch/arm/configs/pxa_defconfig b/arch/arm/configs/pxa_defconfig
+> --- a/arch/arm/configs/pxa_defconfig
+> +++ b/arch/arm/configs/pxa_defconfig
+> @@ -11,7 +11,7 @@ CONFIG_IKCONFIG_PROC=y
+>   CONFIG_LOG_BUF_SHIFT=13
+>   CONFIG_BLK_DEV_INITRD=y
+>   CONFIG_KALLSYMS_ALL=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_PROFILING=y
+>   # CONFIG_ARCH_MULTI_V7 is not set
+>   CONFIG_ARCH_PXA=y
+> diff -- a/arch/arm/configs/qcom_defconfig b/arch/arm/configs/qcom_defconfig
+> --- a/arch/arm/configs/qcom_defconfig
+> +++ b/arch/arm/configs/qcom_defconfig
+> @@ -7,7 +7,7 @@ CONFIG_IKCONFIG_PROC=y
+>   CONFIG_CGROUPS=y
+>   CONFIG_BLK_DEV_INITRD=y
+>   CONFIG_KALLSYMS_ALL=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_PROFILING=y
+>   CONFIG_ARCH_QCOM=y
+>   CONFIG_ARCH_MSM8X60=y
+> diff -- a/arch/arm/configs/sama5_defconfig b/arch/arm/configs/sama5_defconfig
+> --- a/arch/arm/configs/sama5_defconfig
+> +++ b/arch/arm/configs/sama5_defconfig
+> @@ -5,7 +5,7 @@ CONFIG_HIGH_RES_TIMERS=y
+>   CONFIG_LOG_BUF_SHIFT=14
+>   CONFIG_CGROUPS=y
+>   CONFIG_BLK_DEV_INITRD=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_ARCH_AT91=y
+>   CONFIG_SOC_SAMA5D2=y
+>   CONFIG_SOC_SAMA5D3=y
+> diff -- a/arch/arm/configs/sama7_defconfig b/arch/arm/configs/sama7_defconfig
+> --- a/arch/arm/configs/sama7_defconfig
+> +++ b/arch/arm/configs/sama7_defconfig
+> @@ -12,7 +12,7 @@ CONFIG_BLK_DEV_INITRD=y
+>   # CONFIG_FHANDLE is not set
+>   # CONFIG_IO_URING is not set
+>   CONFIG_KALLSYMS_ALL=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_ARCH_AT91=y
+>   CONFIG_SOC_SAMA7G5=y
+>   CONFIG_ATMEL_CLOCKSOURCE_TCB=y
+> diff -- a/arch/arm/configs/socfpga_defconfig b/arch/arm/configs/socfpga_defconfig
+> --- a/arch/arm/configs/socfpga_defconfig
+> +++ b/arch/arm/configs/socfpga_defconfig
+> @@ -7,7 +7,7 @@ CONFIG_CGROUPS=y
+>   CONFIG_CPUSETS=y
+>   CONFIG_NAMESPACES=y
+>   CONFIG_BLK_DEV_INITRD=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_PROFILING=y
+>   CONFIG_ARCH_INTEL_SOCFPGA=y
+>   CONFIG_ARM_THUMBEE=y
+> diff -- a/arch/arm/configs/stm32_defconfig b/arch/arm/configs/stm32_defconfig
+> --- a/arch/arm/configs/stm32_defconfig
+> +++ b/arch/arm/configs/stm32_defconfig
+> @@ -11,7 +11,7 @@ CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+>   # CONFIG_SIGNALFD is not set
+>   # CONFIG_EVENTFD is not set
+>   # CONFIG_AIO is not set
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   # CONFIG_BLK_DEV_BSG is not set
+>   # CONFIG_MMU is not set
+>   CONFIG_ARCH_STM32=y
+> diff -- a/arch/arm/configs/tegra_defconfig b/arch/arm/configs/tegra_defconfig
+> --- a/arch/arm/configs/tegra_defconfig
+> +++ b/arch/arm/configs/tegra_defconfig
+> @@ -14,7 +14,7 @@ CONFIG_NAMESPACES=y
+>   CONFIG_USER_NS=y
+>   CONFIG_BLK_DEV_INITRD=y
+>   # CONFIG_ELF_CORE is not set
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_PERF_EVENTS=y
+>   CONFIG_ARCH_TEGRA=y
+>   CONFIG_SMP=y
+> diff -- a/arch/arm/configs/vf610m4_defconfig b/arch/arm/configs/vf610m4_defconfig
+> --- a/arch/arm/configs/vf610m4_defconfig
+> +++ b/arch/arm/configs/vf610m4_defconfig
+> @@ -5,7 +5,7 @@ CONFIG_BLK_DEV_INITRD=y
+>   # CONFIG_RD_XZ is not set
+>   # CONFIG_RD_LZ4 is not set
+>   CONFIG_KALLSYMS_ALL=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   # CONFIG_MMU is not set
+>   CONFIG_ARCH_MXC=y
+>   CONFIG_SOC_VF610=y
+> diff -- a/arch/mips/configs/ath25_defconfig b/arch/mips/configs/ath25_defconfig
+> --- a/arch/mips/configs/ath25_defconfig
+> +++ b/arch/mips/configs/ath25_defconfig
+> @@ -11,7 +11,7 @@ CONFIG_BLK_DEV_INITRD=y
+>   CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+>   # CONFIG_FHANDLE is not set
+>   # CONFIG_AIO is not set
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   # CONFIG_VM_EVENT_COUNTERS is not set
+>   # CONFIG_SLUB_DEBUG is not set
+>   # CONFIG_COMPAT_BRK is not set
+> diff -- a/arch/mips/configs/ath79_defconfig b/arch/mips/configs/ath79_defconfig
+> --- a/arch/mips/configs/ath79_defconfig
+> +++ b/arch/mips/configs/ath79_defconfig
+> @@ -5,7 +5,7 @@ CONFIG_BLK_DEV_INITRD=y
+>   # CONFIG_RD_GZIP is not set
+>   # CONFIG_AIO is not set
+>   # CONFIG_KALLSYMS is not set
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   # CONFIG_VM_EVENT_COUNTERS is not set
+>   # CONFIG_SLUB_DEBUG is not set
+>   # CONFIG_COMPAT_BRK is not set
+> diff -- a/arch/mips/configs/bcm47xx_defconfig b/arch/mips/configs/bcm47xx_defconfig
+> --- a/arch/mips/configs/bcm47xx_defconfig
+> +++ b/arch/mips/configs/bcm47xx_defconfig
+> @@ -2,7 +2,7 @@ CONFIG_SYSVIPC=y
+>   CONFIG_HIGH_RES_TIMERS=y
+>   CONFIG_BLK_DEV_INITRD=y
+>   CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_BCM47XX=y
+>   CONFIG_PCI=y
+>   # CONFIG_SUSPEND is not set
+> diff -- a/arch/mips/configs/ci20_defconfig b/arch/mips/configs/ci20_defconfig
+> --- a/arch/mips/configs/ci20_defconfig
+> +++ b/arch/mips/configs/ci20_defconfig
+> @@ -18,7 +18,7 @@ CONFIG_NAMESPACES=y
+>   CONFIG_USER_NS=y
+>   CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+>   CONFIG_KALLSYMS_ALL=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_MACH_INGENIC_SOC=y
+>   CONFIG_JZ4780_CI20=y
+>   CONFIG_HIGHMEM=y
+> diff -- a/arch/mips/configs/cu1000-neo_defconfig b/arch/mips/configs/cu1000-neo_defconfig
+> --- a/arch/mips/configs/cu1000-neo_defconfig
+> +++ b/arch/mips/configs/cu1000-neo_defconfig
+> @@ -15,7 +15,7 @@ CONFIG_NAMESPACES=y
+>   CONFIG_USER_NS=y
+>   CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+>   CONFIG_KALLSYMS_ALL=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   # CONFIG_VM_EVENT_COUNTERS is not set
+>   # CONFIG_COMPAT_BRK is not set
+>   CONFIG_MACH_INGENIC_SOC=y
+> diff -- a/arch/mips/configs/cu1830-neo_defconfig b/arch/mips/configs/cu1830-neo_defconfig
+> --- a/arch/mips/configs/cu1830-neo_defconfig
+> +++ b/arch/mips/configs/cu1830-neo_defconfig
+> @@ -15,7 +15,7 @@ CONFIG_NAMESPACES=y
+>   CONFIG_USER_NS=y
+>   CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+>   CONFIG_KALLSYMS_ALL=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   # CONFIG_VM_EVENT_COUNTERS is not set
+>   # CONFIG_COMPAT_BRK is not set
+>   CONFIG_MACH_INGENIC_SOC=y
+> diff -- a/arch/mips/configs/db1xxx_defconfig b/arch/mips/configs/db1xxx_defconfig
+> --- a/arch/mips/configs/db1xxx_defconfig
+> +++ b/arch/mips/configs/db1xxx_defconfig
+> @@ -17,7 +17,7 @@ CONFIG_CGROUP_FREEZER=y
+>   CONFIG_CGROUP_DEVICE=y
+>   CONFIG_CGROUP_CPUACCT=y
+>   CONFIG_KALLSYMS_ALL=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_MIPS_ALCHEMY=y
+>   CONFIG_HZ_100=y
+>   CONFIG_PCI=y
+> diff -- a/arch/mips/configs/gcw0_defconfig b/arch/mips/configs/gcw0_defconfig
+> --- a/arch/mips/configs/gcw0_defconfig
+> +++ b/arch/mips/configs/gcw0_defconfig
+> @@ -2,7 +2,7 @@ CONFIG_DEFAULT_HOSTNAME="gcw0"
+>   CONFIG_NO_HZ_IDLE=y
+>   CONFIG_HIGH_RES_TIMERS=y
+>   CONFIG_PREEMPT_VOLUNTARY=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_PROFILING=y
+>   CONFIG_MACH_INGENIC_SOC=y
+>   CONFIG_JZ4770_GCW0=y
+> diff -- a/arch/mips/configs/generic_defconfig b/arch/mips/configs/generic_defconfig
+> --- a/arch/mips/configs/generic_defconfig
+> +++ b/arch/mips/configs/generic_defconfig
+> @@ -17,7 +17,7 @@ CONFIG_SCHED_AUTOGROUP=y
+>   CONFIG_BLK_DEV_INITRD=y
+>   CONFIG_BPF_SYSCALL=y
+>   CONFIG_USERFAULTFD=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   # CONFIG_SLUB_DEBUG is not set
+>   # CONFIG_COMPAT_BRK is not set
+>   CONFIG_CPU_LITTLE_ENDIAN=y
+> diff -- a/arch/mips/configs/loongson2k_defconfig b/arch/mips/configs/loongson2k_defconfig
+> --- a/arch/mips/configs/loongson2k_defconfig
+> +++ b/arch/mips/configs/loongson2k_defconfig
+> @@ -18,7 +18,7 @@ CONFIG_SCHED_AUTOGROUP=y
+>   CONFIG_SYSFS_DEPRECATED=y
+>   CONFIG_RELAY=y
+>   CONFIG_BLK_DEV_INITRD=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_MACH_LOONGSON64=y
+>   # CONFIG_CPU_LOONGSON3_CPUCFG_EMULATION is not set
+>   CONFIG_HZ_256=y
+> diff -- a/arch/mips/configs/loongson3_defconfig b/arch/mips/configs/loongson3_defconfig
+> --- a/arch/mips/configs/loongson3_defconfig
+> +++ b/arch/mips/configs/loongson3_defconfig
+> @@ -26,7 +26,7 @@ CONFIG_SYSFS_DEPRECATED=y
+>   CONFIG_RELAY=y
+>   CONFIG_BLK_DEV_INITRD=y
+>   CONFIG_BPF_SYSCALL=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_PERF_EVENTS=y
+>   CONFIG_MACH_LOONGSON64=y
+>   CONFIG_CPU_HAS_MSA=y
+> diff -- a/arch/mips/configs/maltaaprp_defconfig b/arch/mips/configs/maltaaprp_defconfig
+> --- a/arch/mips/configs/maltaaprp_defconfig
+> +++ b/arch/mips/configs/maltaaprp_defconfig
+> @@ -5,7 +5,7 @@ CONFIG_AUDIT=y
+>   CONFIG_IKCONFIG=y
+>   CONFIG_IKCONFIG_PROC=y
+>   CONFIG_LOG_BUF_SHIFT=15
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_MIPS_MALTA=y
+>   CONFIG_CPU_LITTLE_ENDIAN=y
+>   CONFIG_CPU_MIPS32_R2=y
+> diff -- a/arch/mips/configs/malta_qemu_32r6_defconfig b/arch/mips/configs/malta_qemu_32r6_defconfig
+> --- a/arch/mips/configs/malta_qemu_32r6_defconfig
+> +++ b/arch/mips/configs/malta_qemu_32r6_defconfig
+> @@ -5,7 +5,7 @@ CONFIG_NO_HZ=y
+>   CONFIG_IKCONFIG=y
+>   CONFIG_IKCONFIG_PROC=y
+>   CONFIG_LOG_BUF_SHIFT=15
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_MIPS_MALTA=y
+>   CONFIG_CPU_LITTLE_ENDIAN=y
+>   CONFIG_CPU_MIPS32_R6=y
+> diff -- a/arch/mips/configs/maltasmvp_defconfig b/arch/mips/configs/maltasmvp_defconfig
+> --- a/arch/mips/configs/maltasmvp_defconfig
+> +++ b/arch/mips/configs/maltasmvp_defconfig
+> @@ -5,7 +5,7 @@ CONFIG_NO_HZ=y
+>   CONFIG_IKCONFIG=y
+>   CONFIG_IKCONFIG_PROC=y
+>   CONFIG_LOG_BUF_SHIFT=15
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_MIPS_MALTA=y
+>   CONFIG_CPU_LITTLE_ENDIAN=y
+>   CONFIG_CPU_MIPS32_R2=y
+> diff -- a/arch/mips/configs/maltasmvp_eva_defconfig b/arch/mips/configs/maltasmvp_eva_defconfig
+> --- a/arch/mips/configs/maltasmvp_eva_defconfig
+> +++ b/arch/mips/configs/maltasmvp_eva_defconfig
+> @@ -5,7 +5,7 @@ CONFIG_NO_HZ=y
+>   CONFIG_IKCONFIG=y
+>   CONFIG_IKCONFIG_PROC=y
+>   CONFIG_LOG_BUF_SHIFT=15
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_MIPS_MALTA=y
+>   CONFIG_CPU_LITTLE_ENDIAN=y
+>   CONFIG_CPU_MIPS32_R2=y
+> diff -- a/arch/mips/configs/maltaup_defconfig b/arch/mips/configs/maltaup_defconfig
+> --- a/arch/mips/configs/maltaup_defconfig
+> +++ b/arch/mips/configs/maltaup_defconfig
+> @@ -6,7 +6,7 @@ CONFIG_NO_HZ=y
+>   CONFIG_IKCONFIG=y
+>   CONFIG_IKCONFIG_PROC=y
+>   CONFIG_LOG_BUF_SHIFT=15
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   CONFIG_MIPS_MALTA=y
+>   CONFIG_CPU_LITTLE_ENDIAN=y
+>   CONFIG_CPU_MIPS32_R2=y
+> diff -- a/arch/mips/configs/omega2p_defconfig b/arch/mips/configs/omega2p_defconfig
+> --- a/arch/mips/configs/omega2p_defconfig
+> +++ b/arch/mips/configs/omega2p_defconfig
+> @@ -17,7 +17,7 @@ CONFIG_NAMESPACES=y
+>   CONFIG_USER_NS=y
+>   CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+>   CONFIG_KALLSYMS_ALL=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   # CONFIG_VM_EVENT_COUNTERS is not set
+>   # CONFIG_SLUB_DEBUG is not set
+>   # CONFIG_COMPAT_BRK is not set
+> diff -- a/arch/mips/configs/pic32mzda_defconfig b/arch/mips/configs/pic32mzda_defconfig
+> --- a/arch/mips/configs/pic32mzda_defconfig
+> +++ b/arch/mips/configs/pic32mzda_defconfig
+> @@ -7,7 +7,7 @@ CONFIG_IKCONFIG_PROC=y
+>   CONFIG_LOG_BUF_SHIFT=14
+>   CONFIG_RELAY=y
+>   CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   # CONFIG_COMPAT_BRK is not set
+>   CONFIG_MACH_PIC32=y
+>   CONFIG_DTB_PIC32_MZDA_SK=y
+> diff -- a/arch/mips/configs/qi_lb60_defconfig b/arch/mips/configs/qi_lb60_defconfig
+> --- a/arch/mips/configs/qi_lb60_defconfig
+> +++ b/arch/mips/configs/qi_lb60_defconfig
+> @@ -3,7 +3,7 @@ CONFIG_SYSVIPC=y
+>   # CONFIG_CROSS_MEMORY_ATTACH is not set
+>   CONFIG_LOG_BUF_SHIFT=14
+>   CONFIG_KALLSYMS_ALL=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   # CONFIG_VM_EVENT_COUNTERS is not set
+>   # CONFIG_COMPAT_BRK is not set
+>   CONFIG_MACH_INGENIC_SOC=y
+> diff -- a/arch/mips/configs/rs90_defconfig b/arch/mips/configs/rs90_defconfig
+> --- a/arch/mips/configs/rs90_defconfig
+> +++ b/arch/mips/configs/rs90_defconfig
+> @@ -15,7 +15,7 @@ CONFIG_LD_DEAD_CODE_DATA_ELIMINATION=y
+>   # CONFIG_IO_URING is not set
+>   # CONFIG_ADVISE_SYSCALLS is not set
+>   # CONFIG_KALLSYMS is not set
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   # CONFIG_PERF_EVENTS is not set
+>   CONFIG_PROFILING=y
+>   CONFIG_MACH_INGENIC_SOC=y
+> diff -- a/arch/mips/configs/rt305x_defconfig b/arch/mips/configs/rt305x_defconfig
+> --- a/arch/mips/configs/rt305x_defconfig
+> +++ b/arch/mips/configs/rt305x_defconfig
+> @@ -7,7 +7,7 @@ CONFIG_BLK_DEV_INITRD=y
+>   CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+>   # CONFIG_AIO is not set
+>   CONFIG_KALLSYMS_ALL=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   # CONFIG_VM_EVENT_COUNTERS is not set
+>   # CONFIG_SLUB_DEBUG is not set
+>   # CONFIG_COMPAT_BRK is not set
+> diff -- a/arch/mips/configs/vocore2_defconfig b/arch/mips/configs/vocore2_defconfig
+> --- a/arch/mips/configs/vocore2_defconfig
+> +++ b/arch/mips/configs/vocore2_defconfig
+> @@ -17,7 +17,7 @@ CONFIG_NAMESPACES=y
+>   CONFIG_USER_NS=y
+>   CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+>   CONFIG_KALLSYMS_ALL=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   # CONFIG_VM_EVENT_COUNTERS is not set
+>   # CONFIG_SLUB_DEBUG is not set
+>   # CONFIG_COMPAT_BRK is not set
+> diff -- a/arch/mips/configs/xway_defconfig b/arch/mips/configs/xway_defconfig
+> --- a/arch/mips/configs/xway_defconfig
+> +++ b/arch/mips/configs/xway_defconfig
+> @@ -7,7 +7,7 @@ CONFIG_BLK_DEV_INITRD=y
+>   CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+>   # CONFIG_AIO is not set
+>   CONFIG_KALLSYMS_ALL=y
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+>   # CONFIG_VM_EVENT_COUNTERS is not set
+>   # CONFIG_SLUB_DEBUG is not set
+>   # CONFIG_COMPAT_BRK is not set
+> diff -- a/kernel/configs/tiny-base.config b/kernel/configs/tiny-base.config
+> --- a/kernel/configs/tiny-base.config
+> +++ b/kernel/configs/tiny-base.config
+> @@ -1 +1 @@
+> -CONFIG_EMBEDDED=y
+> +CONFIG_EXPERT=y
+> diff -- a/tools/testing/selftests/wireguard/qemu/kernel.config b/tools/testing/selftests/wireguard/qemu/kernel.config
+> --- a/tools/testing/selftests/wireguard/qemu/kernel.config
+> +++ b/tools/testing/selftests/wireguard/qemu/kernel.config
+> @@ -41,7 +41,6 @@ CONFIG_KALLSYMS=y
+>   CONFIG_BUG=y
+>   CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE=y
+>   CONFIG_JUMP_LABEL=y
+> -CONFIG_EMBEDDED=n
+>   CONFIG_BASE_FULL=y
+>   CONFIG_FUTEX=y
+>   CONFIG_SHMEM=y
