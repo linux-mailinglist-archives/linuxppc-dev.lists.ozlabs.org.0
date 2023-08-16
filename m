@@ -2,57 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4180A77EACD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Aug 2023 22:37:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7021C77EAEB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Aug 2023 22:42:22 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kV+v+yOY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WCqVy4ZY;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RR0LK1K7mz3cKK
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 06:37:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RR0SD2Mxrz2xrD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 06:42:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kV+v+yOY;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WCqVy4ZY;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RR0KR4p16z2yhT
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Aug 2023 06:36:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RR0RH4Gccz2yhT
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Aug 2023 06:41:31 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 05AF46451B;
-	Wed, 16 Aug 2023 20:36:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB137C433C8;
-	Wed, 16 Aug 2023 20:36:23 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id C7EF561E27;
+	Wed, 16 Aug 2023 20:41:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE9C9C433C8;
+	Wed, 16 Aug 2023 20:41:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1692218185;
-	bh=3znihyA+oNNC5toukf3Se/qa9M83w2qHg2WPNYDnsfA=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=kV+v+yOYJZeyBmuLXMZ4+RVu+Q24pkibRr9FH84OWhE0s70azYDnh1PYnm9swJ/Yc
-	 Y0CqaTIjHL6zDsSZZzs5LbqUkQaoNwLH65wGXGE5dBaUjlKiTjFgcXJWfnI8/yM3c8
-	 ct22xLe44OMHIwkwNUu33fZZnR7hiEL0GksRUvPKnkb5c5DFiesYkMLcD817R67KLH
-	 IC6Dm8GmiQvISEC+4cAgD8VPCXIa0NYWam00jcgqMKF3lzqDOt3yH0dH1E4O4GDGmi
-	 9CavmiUNmMk4Ywrb/J2G893+f/+r2QyxnIY3vGekvTR/QXSmp2H2PkmgchhZRbRp1W
-	 Ik+M3mMLZY2hA==
+	s=k20201202; t=1692218487;
+	bh=jeGSICGpy8wc3tdoolHaut30YQ4VjtnD733tnSF+jHQ=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=WCqVy4ZY7ELoZVdyFuauuRUD7giy3fsUvHylzb+oG2R0+bAHuYuSJL2qhI5k5ya2T
+	 T812++FuHn7DFa04tR+ixnOyiADQSEKu6M6mEFRPis1AyMp0qnYx0iW3UqiTerhCYM
+	 UsS1RZaVly6S0vmTqxkTFSTXoDOOpri3Y7H3riaUi9mISEC936zCdnWEppwxvMMg5T
+	 A3dG8rAjfQGuBULx0pvd24O7GYX4ULyrHvPNbZUKqhr93h+znAHqGfZ0BwgHoRKdCw
+	 4R/GKngz4wwhBJw2Clri3MwEsmpW2ziX7G68t4qwXidSRyk0qn46FdLZ3eHaqPC9GM
+	 MpaftIyYb8RUQ==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 16 Aug 2023 23:36:22 +0300
-Message-Id: <CUU9A4V7EREZ.2CPPYURBAGN95@suppilovahvero>
-To: "Nayna Jain" <nayna@linux.ibm.com>, <linux-integrity@vger.kernel.org>
-Subject: Re: [PATCH v4 6/6] integrity: PowerVM support for loading third
- party code signing keys
+Date: Wed, 16 Aug 2023 23:41:23 +0300
+Message-Id: <CUU9DZ1YEZVF.16X1CD7ES1RXD@suppilovahvero>
+Subject: Re: [PATCH v5 0/3 RESEND] sed-opal: keyrings, discovery, revert,
+ key store
 From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: <gjoyce@linux.vnet.ibm.com>, <linux-block@vger.kernel.org>
 X-Mailer: aerc 0.14.0
-References: <20230815112722.1591829-1-nayna@linux.ibm.com>
- <20230815112722.1591829-7-nayna@linux.ibm.com>
-In-Reply-To: <20230815112722.1591829-7-nayna@linux.ibm.com>
+References: <20230721211534.3437070-1-gjoyce@linux.vnet.ibm.com>
+ <46cda90a12da4639d1e65ce82ae342df05b7afc2.camel@linux.vnet.ibm.com>
+In-Reply-To: <46cda90a12da4639d1e65ce82ae342df05b7afc2.camel@linux.vnet.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,184 +64,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Eric Snowberg <eric.snowberg@oracle.com>, Paul Moore <paul@paul-moore.com>, inux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>, linux-security-module@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: axboe@kernel.dk, nayna@linux.ibm.com, okozina@redhat.com, dkeefe@redhat.com, keyrings@vger.kernel.org, jonathan.derrick@linux.dev, brking@linux.vnet.ibm.com, akpm@linux-foundation.org, msuchanek@suse.de, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue Aug 15, 2023 at 2:27 PM EEST, Nayna Jain wrote:
-> On secure boot enabled PowerVM LPAR, third party code signing keys are
-> needed during early boot to verify signed third party modules. These
-> third party keys are stored in moduledb object in the Platform
-> KeyStore (PKS).
+On Wed Aug 16, 2023 at 10:45 PM EEST, Greg Joyce wrote:
+> It's been almost 4 weeks since the last resend and there haven't been
+> any comments. Is there anything that needs to be changed for
+> acceptance?
 >
-> Load third party code signing keys onto .secondary_trusted_keys keyring.
+> Thanks for your input.
 >
-> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-> ---
->  certs/system_keyring.c                        | 30 +++++++++++++++++++
->  include/keys/system_keyring.h                 |  4 +++
->  .../platform_certs/keyring_handler.c          |  8 +++++
->  .../platform_certs/keyring_handler.h          |  5 ++++
->  .../integrity/platform_certs/load_powerpc.c   | 17 +++++++++++
->  5 files changed, 64 insertions(+)
+> Greg
 >
-> diff --git a/certs/system_keyring.c b/certs/system_keyring.c
-> index b348e0898d34..33841c91f12c 100644
-> --- a/certs/system_keyring.c
-> +++ b/certs/system_keyring.c
-> @@ -152,6 +152,36 @@ static __init struct key_restriction *get_builtin_an=
-d_secondary_restriction(void
-> =20
->  	return restriction;
->  }
-> +
-> +/**
-> + * add_to_secondary_keyring - Add to secondary keyring.
-> + * @source: Source of key
-> + * @data: The blob holding the key
-> + * @len: The length of the data blob
-> + *
-> + * Add a key to the secondary keyring. The key must be vouched for by a =
-key in the builtin,
-> + * machine or secondary keyring itself.
-> + */
-> +void __init add_to_secondary_keyring(const char *source, const void *dat=
-a, size_t len)
-> +{
-> +	key_ref_t key;
-> +	key_perm_t perm;
-> +
-> +	perm =3D (KEY_POS_ALL & ~KEY_POS_SETATTR) | KEY_USR_VIEW;
-> +
-> +	key =3D key_create_or_update(make_key_ref(secondary_trusted_keys, 1),
-> +				   "asymmetric",
-> +				   NULL, data, len, perm,
-> +				   KEY_ALLOC_NOT_IN_QUOTA);
-> +	if (IS_ERR(key)) {
-> +		pr_err("Problem loading X.509 certificate from %s to secondary keyring=
- %ld\n",
-> +		       source, PTR_ERR(key));
-> +		return;
-> +	}
-> +
-> +	pr_notice("Loaded X.509 cert '%s'\n", key_ref_to_ptr(key)->description)=
-;
-> +	key_ref_put(key);
-> +}
->  #endif
->  #ifdef CONFIG_INTEGRITY_MACHINE_KEYRING
->  void __init set_machine_trusted_keys(struct key *keyring)
-> diff --git a/include/keys/system_keyring.h b/include/keys/system_keyring.=
-h
-> index 7e2583208820..8365adf842ef 100644
-> --- a/include/keys/system_keyring.h
-> +++ b/include/keys/system_keyring.h
-> @@ -50,9 +50,13 @@ int restrict_link_by_digsig_builtin_and_secondary(stru=
-ct key *keyring,
->  						  const struct key_type *type,
->  						  const union key_payload *payload,
->  						  struct key *restriction_key);
-> +void __init add_to_secondary_keyring(const char *source, const void *dat=
-a, size_t len);
->  #else
->  #define restrict_link_by_builtin_and_secondary_trusted restrict_link_by_=
-builtin_trusted
->  #define restrict_link_by_digsig_builtin_and_secondary restrict_link_by_d=
-igsig_builtin
-> +static inline void __init add_to_secondary_keyring(const char *source, c=
-onst void *data, size_t len)
-> +{
-> +}
->  #endif
-> =20
->  #ifdef CONFIG_INTEGRITY_MACHINE_KEYRING
-> diff --git a/security/integrity/platform_certs/keyring_handler.c b/securi=
-ty/integrity/platform_certs/keyring_handler.c
-> index 586027b9a3f5..13ea17207902 100644
-> --- a/security/integrity/platform_certs/keyring_handler.c
-> +++ b/security/integrity/platform_certs/keyring_handler.c
-> @@ -78,6 +78,14 @@ __init efi_element_handler_t get_handler_for_ca_keys(c=
-onst efi_guid_t *sig_type)
->  	return NULL;
->  }
-> =20
-> +__init efi_element_handler_t get_handler_for_code_signing_keys(const efi=
-_guid_t *sig_type)
-> +{
-> +	if (efi_guidcmp(*sig_type, efi_cert_x509_guid) =3D=3D 0)
-> +		return add_to_secondary_keyring;
-> +
-> +	return NULL;
-> +}
-> +
->  /*
->   * Return the appropriate handler for particular signature list types fo=
-und in
->   * the UEFI dbx and MokListXRT tables.
-> diff --git a/security/integrity/platform_certs/keyring_handler.h b/securi=
-ty/integrity/platform_certs/keyring_handler.h
-> index 6f15bb4cc8dc..f92895cc50f6 100644
-> --- a/security/integrity/platform_certs/keyring_handler.h
-> +++ b/security/integrity/platform_certs/keyring_handler.h
-> @@ -34,6 +34,11 @@ efi_element_handler_t get_handler_for_mok(const efi_gu=
-id_t *sig_type);
->   */
->  efi_element_handler_t get_handler_for_ca_keys(const efi_guid_t *sig_type=
-);
-> =20
-> +/*
-> + * Return the handler for particular signature list types for code signi=
-ng keys.
-> + */
-> +efi_element_handler_t get_handler_for_code_signing_keys(const efi_guid_t=
- *sig_type);
-> +
->  /*
->   * Return the handler for particular signature list types found in the d=
-bx.
->   */
-> diff --git a/security/integrity/platform_certs/load_powerpc.c b/security/=
-integrity/platform_certs/load_powerpc.c
-> index 339053d9726d..c85febca3343 100644
-> --- a/security/integrity/platform_certs/load_powerpc.c
-> +++ b/security/integrity/platform_certs/load_powerpc.c
-> @@ -60,6 +60,7 @@ static int __init load_powerpc_certs(void)
->  {
->  	void *db =3D NULL, *dbx =3D NULL, *data =3D NULL;
->  	void *trustedca;
-> +	void *moduledb;
->  	u64 dsize =3D 0;
->  	u64 offset =3D 0;
->  	int rc =3D 0;
-> @@ -137,6 +138,22 @@ static int __init load_powerpc_certs(void)
->  		kfree(data);
->  	}
-> =20
-> +	data =3D get_cert_list("moduledb", 9,  &dsize);
-> +	if (!data) {
-> +		pr_info("Couldn't get moduledb list from firmware\n");
-> +	} else if (IS_ERR(data)) {
-> +		rc =3D PTR_ERR(data);
-> +		pr_err("Error reading moduledb from firmware: %d\n", rc);
-> +	} else {
-> +		extract_esl(moduledb, data, dsize, offset);
-> +
-> +		rc =3D parse_efi_signature_list("powerpc:moduledb", moduledb, dsize,
-> +					      get_handler_for_code_signing_keys);
-> +		if (rc)
-> +			pr_err("Couldn't parse moduledb signatures: %d\n", rc);
-> +		kfree(data);
-> +	}
-> +
->  	return rc;
->  }
->  late_initcall(load_powerpc_certs);
-> --=20
-> 2.31.1
+> On Fri, 2023-07-21 at 16:15 -0500, gjoyce@linux.vnet.ibm.com wrote:
+> > From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+> >=20
+> > This patchset has gone through numerous rounds of review and
+> > all comments/suggetions have been addressed. The reviews have
+> > covered all relevant areas including reviews by block and keyring
+> > developers as well as the SED Opal maintainer. The last
+> > patchset submission has not solicited any responses in the
+> > six weeks since it was last distributed. The changes are
+> > generally useful and ready for inclusion.
+> >=20
+> > TCG SED Opal is a specification from The Trusted Computing Group
+> > that allows self encrypting storage devices (SED) to be locked at
+> > power on and require an authentication key to unlock the drive.
+> >=20
+> > The current SED Opal implementation in the block driver
+> > requires that authentication keys be provided in an ioctl
+> > so that they can be presented to the underlying SED
+> > capable drive. Currently, the key is typically entered by
+> > a user with an application like sedutil or sedcli. While
+> > this process works, it does not lend itself to automation
+> > like unlock by a udev rule.
+> >=20
+> > The SED block driver has been extended so it can alternatively
+> > obtain a key from a sed-opal kernel keyring. The SED ioctls
+> > will indicate the source of the key, either directly in the
+> > ioctl data or from the keyring.
+> >=20
+> > Two new SED ioctls have also been added. These are:
+> >   1) IOC_OPAL_REVERT_LSP to revert LSP state
+> >   2) IOC_OPAL_DISCOVERY to discover drive capabilities/state
+> >=20
+> > change log v5:
+> >         - rebase to for-6.5/block
+> >=20
+> > change log v4:
+> >         - rebase to 6.3-rc7
+> >         - replaced "255" magic number with U8_MAX
+> >=20
+> > change log:
+> >         - rebase to 6.x
+> >         - added latest reviews
+> >         - removed platform functions for persistent key storage
+> >         - replaced key update logic with key_create_or_update()
+> >         - minor bracing and padding changes
+> >         - add error returns
+> >         - opal_key structure is application provided but kernel
+> >           verified
+> >         - added brief description of TCG SED Opal
+> >=20
+> >=20
+> > Greg Joyce (3):
+> >   block: sed-opal: Implement IOC_OPAL_DISCOVERY
+> >   block: sed-opal: Implement IOC_OPAL_REVERT_LSP
+> >   block: sed-opal: keyring support for SED keys
+> >=20
+> >  block/Kconfig                 |   2 +
+> >  block/opal_proto.h            |   4 +
+> >  block/sed-opal.c              | 252
+> > +++++++++++++++++++++++++++++++++-
+> >  include/linux/sed-opal.h      |   5 +
+> >  include/uapi/linux/sed-opal.h |  25 +++-
+> >  5 files changed, 282 insertions(+), 6 deletions(-)
+> >=20
+> >=20
+> > base-commit: 1341c7d2ccf42ed91aea80b8579d35bc1ea381e2
 
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+I can give because it looks good to me to all patches:
 
-I can pick this. My last PR did not went too great partly because of
-mess with tpm_tis but now things are calmer.
+Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
+
+... but should not probably go to my tree.
 
 BR, Jarkko
