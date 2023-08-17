@@ -2,52 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AC0E77EF6E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 05:16:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4032B77EF83
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 05:26:54 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=A9+ZOyBL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ryZg14br;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RR9CQ0yVMz3bP2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 13:16:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RR9R00NWBz3cGJ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 13:26:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=A9+ZOyBL;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ryZg14br;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=rdunlap@infradead.org; receiver=lists.ozlabs.org)
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RR9BS5Jq8z2xVW
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Aug 2023 13:16:00 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description;
-	bh=P/kFyzCr/eSDaJkbY0OlCILEe1j9xWTLXn/yJLAYIu4=; b=A9+ZOyBLxgvkefgcCG3G+GbFOc
-	t3Q4LPTtkkpyh0LBpbAFdc+3lhG3pcvB3Tuy2cTe9/M//iW+Sx1QS7+tpwHS9HCucIDpD/RDGCGIr
-	FphyIapebkE7eEjeEnFtOi+9dwumQAvsQRYGjE0GEiZ5WBo53AxtXkFjlluHJQQSFYe1ZQ0mwCfpK
-	6X/okD9sKE4Z8iWegd56l1SCJXl6wUSJ5Uk04klLzVcTy3SNTh8mgr2aL00kPfkoj1Td2N2/Azxck
-	21ORjXTS2+GmCUfbeyQtLCC4mizooGziW6L1eBdD4Ta+hfKURTJGkPtTMCT5Ht16ny8Gi1C8JbRXm
-	mdreectQ==;
-Received: from [2601:1c2:980:9ec0::1a0b]
-	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1qWTTi-000tOI-Mm; Thu, 17 Aug 2023 03:15:18 +0000
-Message-ID: <86e329b1-c8d7-47bf-8be8-3326daf74eb5@infradead.org>
-Date: Wed, 16 Aug 2023 20:15:09 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RR9Q31rhfz2xpx
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Aug 2023 13:26:03 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1692242763;
+	bh=ZlmenDsbW60G7uJu2veM5G1rkGG/EEMpV5h+3Oe3uEg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=ryZg14br4OQt+fo/T+XGTbDRZaG5g03gpLyVNOZrOIHHv8Np/CnItphXx1cwBuhwk
+	 +3YrrFxzkcHaAC5mdnGAtp0kIoh/44J1Iqe0yuzTbl4nvzNvvHPUmztIfRzRPUO46J
+	 rTHOE7YKTOwBk6BEhQM8RQfcCakGK1JrUsHlWS2iMHx6GXf178hGz7lNyH8ZbVHo0W
+	 w3YBAvMyotpKM5+Fya4Dkm31h2f+2rU68XjkixrFAKJeYltmHO17tr0ZpENprendQa
+	 IZTAzmZjOvyEQI0QVR3jf2bjbvao2IU16QRKTvDAFkWfsNl5lE5MIadIdP2yqBsVCx
+	 gfk2KWTfNkK6g==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RR9Q250Ymz4wb0;
+	Thu, 17 Aug 2023 13:26:02 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v3 1/6] KVM: PPC: Use getters and setters for vcpu
+ register state
+In-Reply-To: <20230807014553.1168699-2-jniethe5@gmail.com>
+References: <20230807014553.1168699-1-jniethe5@gmail.com>
+ <20230807014553.1168699-2-jniethe5@gmail.com>
+Date: Thu, 17 Aug 2023 13:25:58 +1000
+Message-ID: <87cyzm73jt.fsf@mail.lhotse>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH] treewide: drop CONFIG_EMBEDDED
-To: 20230816055010.31534-1-rdunlap@infradead.org
-References: <38e1a01b-1e8b-7c66-bafc-fc5861f08da9@gmail.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <38e1a01b-1e8b-7c66-bafc-fc5861f08da9@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,58 +60,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Jason A . Donenfeld" <Jason@zx2c4.com>, Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-kernel@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-riscv@lists.infradead.org, Greg Ungerer <gerg@linux-m68k.org>, linux-arch@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, Masahiro Yamada <masahiroy@kernel.org>, Russell King <linux@armlinux.org.uk>, Vineet Gupta <vgupta@kernel.org>, linux-snps-arc@lists.infradead.org, Jonas Bonn <jonas@southpole.se>, Albert Ou <aou@eecs.berkeley.edu>, Arnd Bergmann <arnd@arndb.de>, linux-kbuild@vger.kernel.org, Josh Triplett <josh@joshtriplett.org>, Nicholas Piggin <npiggin@gmail.com>, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, linux-m68k@lists.linux-m68k.org, Paul Walmsley <paul.walmsley@sifive.com>, Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org, Brian Cain <bcain@quicinc.com>, Michal Simek <monstr@monstr.eu>, Thomas Boge
- ndoerfer <tsbogend@alpha.franken.de>, Max Filippov <jcmvbkbc@gmail.com>, linux-mips@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-hexagon@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, wireguard@lists.zx2c4.com
+Cc: mikey@neuling.org, sbhat@linux.ibm.com, kvm@vger.kernel.org, amachhiw@linux.vnet.ibm.com, Jordan Niethe <jniethe5@gmail.com>, gautam@linux.ibm.com, npiggin@gmail.com, kvm-ppc@vger.kernel.org, vaibhav@linux.ibm.com, kconsul@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Jesse,
+Jordan Niethe <jniethe5@gmail.com> writes:
+> There are already some getter and setter functions used for accessing
+> vcpu register state, e.g. kvmppc_get_pc(). There are also more
+> complicated examples that are generated by macros like
+> kvmppc_get_sprg0() which are generated by the SHARED_SPRNG_WRAPPER()
+> macro.
+>
 
-On 8/16/23 15:45, Jesse Taube wrote:
-> Hi, Randy
-> 
->> diff -- a/init/Kconfig b/init/Kconfig
->> --- a/init/Kconfig
->> +++ b/init/Kconfig
->> @@ -1790,14 +1790,6 @@ config DEBUG_RSEQ
->>
->>        If unsure, say N.
->>
->> -config EMBEDDED
->> -    bool "Embedded system"
->> -    select EXPERT
->> -    help
->> -      This option should be enabled if compiling the kernel for
->> -      an embedded system so certain expert options are available
->> -      for configuration.
-> 
-> Wouldn't removing this break many out of tree configs?
+...
+> diff --git a/arch/powerpc/include/asm/kvm_book3s.h b/arch/powerpc/include=
+/asm/kvm_book3s.h
+> index bbf5e2c5fe09..1a7e837ea2d5 100644
+> --- a/arch/powerpc/include/asm/kvm_book3s.h
+> +++ b/arch/powerpc/include/asm/kvm_book3s.h
+> @@ -403,10 +413,121 @@ static inline ulong kvmppc_get_fault_dar(struct kv=
+m_vcpu *vcpu)
+...
+> +
+> +#ifdef CONFIG_VSX
+> +static inline void kvmppc_get_vsx_vr(struct kvm_vcpu *vcpu, int i, vecto=
+r128 *v)
+> +{
+> +	*v =3D  vcpu->arch.vr.vr[i];
+> +}
 
-I'm not familiar with out-of-tree configs.
-Do you have some examples of some that use CONFIG_EMBEDDED?
-(not distros)
+This is causing build errors if VSX is disabled.
 
-> Should there be a warning here to update change it instead of removal?
+I'm using g5_defconfig plus:
 
-kconfig doesn't have a warning mechanism AFAIK.
-Do you have an idea of how this would work?
+  CONFIG_VIRTUALIZATION=3Dy
+  CONFIG_KVM_BOOK3S_64=3Dy
+  CONFIG_KVM_BOOK3S_64_PR=3Dy
 
-We could make a smaller change to init/Kconfig, like so:
+Which gives me:
 
- config EMBEDDED
--	bool "Embedded system"
-+	bool "Embedded system (DEPRECATED)"
- 	select EXPERT
- 	help
--	  This option should be enabled if compiling the kernel for
--	  an embedded system so certain expert options are available
--	  for configuration.
-+	  This option is being removed after Linux 6.6.
-+	  Use EXPERT instead of EMBEDDED.
+  ../arch/powerpc/kvm/powerpc.c: In function =E2=80=98kvmppc_set_vmx_dword=
+=E2=80=99:
+  ../arch/powerpc/kvm/powerpc.c:1061:9: error: implicit declaration of func=
+tion =E2=80=98kvmppc_get_vsx_vr=E2=80=99; did you mean =E2=80=98kvmppc_get_=
+vsx_fpr=E2=80=99? [-Werror=3Dimplicit-function-declaration]
+   1061 |         kvmppc_get_vsx_vr(vcpu, index, &val.vval);
+        |         ^~~~~~~~~~~~~~~~~
+        |         kvmppc_get_vsx_fpr
+  ../arch/powerpc/kvm/powerpc.c:1063:9: error: implicit declaration of func=
+tion =E2=80=98kvmppc_set_vsx_vr=E2=80=99; did you mean =E2=80=98kvmppc_set_=
+vsx_fpr=E2=80=99? [-Werror=3Dimplicit-function-declaration]
+   1063 |         kvmppc_set_vsx_vr(vcpu, index, &val.vval);
+        |         ^~~~~~~~~~~~~~~~~
+        |         kvmppc_set_vsx_fpr
+  In file included from ../arch/powerpc/kvm/powerpc.c:25:
+  ../arch/powerpc/kvm/powerpc.c: In function =E2=80=98kvm_vcpu_ioctl_get_on=
+e_reg=E2=80=99:
+  ../arch/powerpc/kvm/powerpc.c:1729:52: error: implicit declaration of fun=
+ction =E2=80=98kvmppc_get_vscr=E2=80=99; did you mean =E2=80=98kvmppc_get_s=
+r=E2=80=99? [-Werror=3Dimplicit-function-declaration]
+   1729 |                         val =3D get_reg_val(reg->id, kvmppc_get_v=
+scr(vcpu));
+        |                                                    ^~~~~~~~~~~~~~~
+  ../arch/powerpc/include/asm/kvm_ppc.h:412:29: note: in definition of macr=
+o =E2=80=98get_reg_val=E2=80=99
+    412 |         case 4: __u.wval =3D (reg); break;        \
+        |                             ^~~
+  ../arch/powerpc/kvm/powerpc.c: In function =E2=80=98kvm_vcpu_ioctl_set_on=
+e_reg=E2=80=99:
+  ../arch/powerpc/kvm/powerpc.c:1780:25: error: implicit declaration of fun=
+ction =E2=80=98kvmppc_set_vscr=E2=80=99; did you mean =E2=80=98kvmppc_set_f=
+scr=E2=80=99? [-Werror=3Dimplicit-function-declaration]
+   1780 |                         kvmppc_set_vscr(vcpu, set_reg_val(reg->id=
+, val));
+        |                         ^~~~~~~~~~~~~~~
+        |                         kvmppc_set_fscr
 
-but there is no way to produce a warning message. I.e., even with this
-change, the message will probably be overlooked.
 
----
-~Randy
+Looking at kvm_vcpu_arch, the thread_vr_state and members are guarded by
+CONFIG_ALTIVEC, not CONFIG_VSX.
 
+Switching to that fixes the build.
+
+Whether it makes sense to be getting/setting those registers when VSX=3Dn
+is not immediately clear, but is a separate problem.
+
+cheers
