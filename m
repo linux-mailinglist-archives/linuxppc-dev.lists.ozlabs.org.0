@@ -1,53 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 547CE77F660
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 14:24:48 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=iU0oIbJC;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7F9C77F667
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 14:27:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RRPMf18R9z3cK4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 22:24:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RRPQy4VHdz3cBh
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 22:27:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=iU0oIbJC;
-	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=fail (SPF fail - not authorized) smtp.mailfrom=csgroup.eu (client-ip=90.115.179.12; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase1.c-s.fr (unknown [90.115.179.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RRPLn1JQPz2xVV
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Aug 2023 22:24:01 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1692275038;
-	bh=SmZfuOazkBB/9dXy3IBokg28/S6ezc+fJp9fFOBO+DA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=iU0oIbJClbAQK+vJDjruv2frDEjEvd7BY/NGDYLww2yn/V4WTIMv9AIALw69MrehL
-	 TrFPUzQWfvV4LylDDcZpmTdU4Y1oazvcP4r/0QTxMQkqvuRo8VbeYWMN3ZP50fTeaX
-	 EzRG1v3xFmzOAa1aW60X5gb0MKyRA51RL/dF/h3X4v+RitVn/KIqCSCFgSlGJQtuGF
-	 MNZ7wwtNNyY8DT0SQ34FeLuPvfhgY4RPqgZVPGklg0VIG+Zuk2t4DnFa3TsFYW4aU6
-	 YZ9E9VACmbAdlLVE33xLV16gxfD4fm7GnEolu5VLiaS/IUsZVmOmygyLoS8fTq9Kys
-	 eBfaPVESahD9Q==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RRPLk3vzWz4wZx;
-	Thu, 17 Aug 2023 22:23:58 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v3 5/6] KVM: PPC: Add support for nestedv2 guests
-In-Reply-To: <20230807014553.1168699-6-jniethe5@gmail.com>
-References: <20230807014553.1168699-1-jniethe5@gmail.com>
- <20230807014553.1168699-6-jniethe5@gmail.com>
-Date: Thu, 17 Aug 2023 22:23:58 +1000
-Message-ID: <877cpteu1t.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RRPQR2l7wz2xq8
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Aug 2023 22:27:06 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+	by localhost (Postfix) with ESMTP id 4RRPQH3JTrz9wtX;
+	Thu, 17 Aug 2023 14:27:03 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id NgwxOGfKXmVl; Thu, 17 Aug 2023 14:27:03 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4RRPQH2d82z9wsV;
+	Thu, 17 Aug 2023 14:27:03 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 571D48B76C;
+	Thu, 17 Aug 2023 14:27:03 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id 8-IGfLDVvTbu; Thu, 17 Aug 2023 14:27:03 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.19.54.59])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 192DB8B763;
+	Thu, 17 Aug 2023 14:27:03 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 37HCQq0n329744
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Thu, 17 Aug 2023 14:26:52 +0200
+Received: (from chleroy@localhost)
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 37HCQkc9329733;
+	Thu, 17 Aug 2023 14:26:46 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
+Subject: [PATCH] powerpc/8xx: Remove init_internal_rtc() to fix no previous prototype error
+Date: Thu, 17 Aug 2023 14:26:45 +0200
+Message-ID: <0aa1141e18a84d926e199093204b37ec993f0c87.1692275185.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1692275204; l=2196; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=TOxDx12z/TGZafKDLRg+BU2FZSV7XBUmOHECQ+4c28k=; b=UTzebFk0M2gtEKaAW/lC4jL6Ix5dzIFrfwhC6U550fzSde5Wv8lazoa7oopchyRfdssNLBY4p nQsfuSzRvuEDq/wLQ0YooVlT9EGOg9qL9THicZ1z/kbcZTeGvu7wCNf
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,46 +65,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, sbhat@linux.ibm.com, kvm@vger.kernel.org, amachhiw@linux.vnet.ibm.com, Jordan Niethe <jniethe5@gmail.com>, gautam@linux.ibm.com, npiggin@gmail.com, kvm-ppc@vger.kernel.org, vaibhav@linux.ibm.com, kconsul@linux.vnet.ibm.com
+Cc: Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Jordan Niethe <jniethe5@gmail.com> writes:
-> A series of hcalls have been added to the PAPR which allow a regular
-> guest partition to create and manage guest partitions of its own. KVM
-> already had an interface that allowed this on powernv platforms. This
-> existing interface will now be called "nestedv1". The newly added PAPR
-> interface will be called "nestedv2".  PHYP will support the nestedv2
-> interface. At this time the host side of the nestedv2 interface has not
-> been implemented on powernv but there is no technical reason why it
-> could not be added.
+A W=1 build of mpc885_ads_defconfig throws the following error:
 
-Some build errors with powernv_defconfig, I haven't dug into them but
-presumably some ifdefs needed.
+  CC      arch/powerpc/platforms/8xx/m8xx_setup.o
+arch/powerpc/platforms/8xx/m8xx_setup.c:41:1: error: no previous prototype for 'init_internal_rtc' [-Werror=missing-prototypes]
+   41 | init_internal_rtc(void)
+      | ^~~~~~~~~~~~~~~~~
 
-  ../arch/powerpc/kvm/book3s_hv_nestedv2.c: In function =E2=80=98kvmhv_nest=
-edv2_vcpu_create=E2=80=99:
-  ../arch/powerpc/kvm/book3s_hv_nestedv2.c:954:14: error: implicit declarat=
-ion of function =E2=80=98plpar_guest_create_vcpu=E2=80=99 [-Werror=3Dimplic=
-it-function-declaration]
-    954 |         rc =3D plpar_guest_create_vcpu(0, vcpu->kvm->arch.lpid, v=
-cpu->vcpu_id);
-        |              ^~~~~~~~~~~~~~~~~~~~~~~
-  ../arch/powerpc/kvm/guest-state-buffer.c: In function =E2=80=98kvmppc_gsb=
-_send=E2=80=99:
-  ../arch/powerpc/kvm/guest-state-buffer.c:592:14: error: implicit declarat=
-ion of function =E2=80=98plpar_guest_set_state=E2=80=99 [-Werror=3Dimplicit=
--function-declaration]
-    592 |         rc =3D plpar_guest_set_state(hflags, gsb->guest_id, gsb->=
-vcpu_id,
-        |              ^~~~~~~~~~~~~~~~~~~~~
-  ../arch/powerpc/kvm/guest-state-buffer.c: In function =E2=80=98kvmppc_gsb=
-_recv=E2=80=99:
-  ../arch/powerpc/kvm/guest-state-buffer.c:617:14: error: implicit declarat=
-ion of function =E2=80=98plpar_guest_get_state=E2=80=99 [-Werror=3Dimplicit=
--function-declaration]
-    617 |         rc =3D plpar_guest_get_state(hflags, gsb->guest_id, gsb->=
-vcpu_id,
+init_internal_rtc() was introduced by commit df34403dcaac ("[POWERPC]
+8xx: Add mpc885ads support and common mpc8xx files") as a weak
+function but has never been defined and/or used outside m8xx_setup.c
 
+As it is called only once there, just fold it into its caller and
+remove it.
 
-cheers
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Arnd Bergmann <arnd@arndb.de>
+---
+ arch/powerpc/platforms/8xx/m8xx_setup.c | 17 +++++------------
+ 1 file changed, 5 insertions(+), 12 deletions(-)
+
+diff --git a/arch/powerpc/platforms/8xx/m8xx_setup.c b/arch/powerpc/platforms/8xx/m8xx_setup.c
+index 3c5c4e08b6a9..2336b687bc96 100644
+--- a/arch/powerpc/platforms/8xx/m8xx_setup.c
++++ b/arch/powerpc/platforms/8xx/m8xx_setup.c
+@@ -36,17 +36,6 @@ static irqreturn_t timebase_interrupt(int irq, void *dev)
+ 	return IRQ_HANDLED;
+ }
+ 
+-/* per-board overridable init_internal_rtc() function. */
+-void __init __attribute__ ((weak))
+-init_internal_rtc(void)
+-{
+-	/* Disable the RTC one second and alarm interrupts. */
+-	clrbits16(&mpc8xx_immr->im_sit.sit_rtcsc, (RTCSC_SIE | RTCSC_ALE));
+-
+-	/* Enable the RTC */
+-	setbits16(&mpc8xx_immr->im_sit.sit_rtcsc, (RTCSC_RTF | RTCSC_RTE));
+-}
+-
+ static int __init get_freq(char *name, unsigned long *val)
+ {
+ 	struct device_node *cpu;
+@@ -117,7 +106,11 @@ void __init mpc8xx_calibrate_decr(void)
+ 	out_be32(&mpc8xx_immr->im_sitk.sitk_rtcsck, KAPWR_KEY);
+ 	out_be32(&mpc8xx_immr->im_sitk.sitk_tbk, KAPWR_KEY);
+ 
+-	init_internal_rtc();
++	/* Disable the RTC one second and alarm interrupts. */
++	clrbits16(&mpc8xx_immr->im_sit.sit_rtcsc, (RTCSC_SIE | RTCSC_ALE));
++
++	/* Enable the RTC */
++	setbits16(&mpc8xx_immr->im_sit.sit_rtcsc, (RTCSC_RTF | RTCSC_RTE));
+ 
+ 	/* Enabling the decrementer also enables the timebase interrupts
+ 	 * (or from the other point of view, to get decrementer interrupts
+-- 
+2.41.0
+
