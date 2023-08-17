@@ -1,26 +1,25 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AF7777FF17
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 22:32:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7F3077FF1F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 22:33:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RRcBT6XpPz3cRX
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Aug 2023 06:32:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RRcCj6DDvz3dC4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Aug 2023 06:33:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=omp.ru (client-ip=90.154.21.10; helo=mx01.omp.ru; envelope-from=s.shtylyov@omp.ru; receiver=lists.ozlabs.org)
-X-Greylist: delayed 66 seconds by postgrey-1.37 at boromir; Fri, 18 Aug 2023 06:32:04 AEST
 Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RRc9w297tz3cC5
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Aug 2023 06:32:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RRcC82jQ1z2xq8
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Aug 2023 06:33:08 +1000 (AEST)
 Received: from [192.168.1.103] (178.176.75.135) by msexch01.omp.ru
  (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Thu, 17 Aug
- 2023 23:31:58 +0300
-Subject: Re: [PATCH 7/9] ata: pata_falcon: Remove #include <asm/ide.h>
+ 2023 23:33:02 +0300
+Subject: Re: [PATCH 8/9] ata: pata_gayle: Remove #include <asm/ide.h>
 To: Geert Uytterhoeven <geert@linux-m68k.org>, Russell King
 	<linux@armlinux.org.uk>, "James E . J . Bottomley"
 	<James.Bottomley@HansenPartnership.com>, Helge Deller <deller@gmx.de>,
@@ -30,15 +29,15 @@ To: Geert Uytterhoeven <geert@linux-m68k.org>, Russell King
 	<dlemoal@kernel.org>, Christoph Hellwig <hch@lst.de>, Jens Axboe
 	<axboe@kernel.dk>
 References: <cover.1692288018.git.geert@linux-m68k.org>
- <1147903ba2f9c5e5e840d8b3c2d05b6eafc78340.1692288018.git.geert@linux-m68k.org>
+ <8a6ff4d7caad33dcb6b32ab49329b7bc4ec0c29b.1692288018.git.geert@linux-m68k.org>
 From: Sergey Shtylyov <s.shtylyov@omp.ru>
 Organization: Open Mobile Platform
-Message-ID: <ebf17deb-02cd-2394-dcdb-00e0e4889038@omp.ru>
-Date: Thu, 17 Aug 2023 23:31:57 +0300
+Message-ID: <5dbbce1d-eb01-1e8d-b82f-2aae50f07ca5@omp.ru>
+Date: Thu, 17 Aug 2023 23:33:01 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.10.1
 MIME-Version: 1.0
-In-Reply-To: <1147903ba2f9c5e5e840d8b3c2d05b6eafc78340.1692288018.git.geert@linux-m68k.org>
+In-Reply-To: <8a6ff4d7caad33dcb6b32ab49329b7bc4ec0c29b.1692288018.git.geert@linux-m68k.org>
 Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -59,6 +58,8 @@ X-KSE-AntiSpam-Info: {rep_avail}
 X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
 X-KSE-AntiSpam-Info: {relay has no DNS name}
 X-KSE-AntiSpam-Info: {SMTP from is not routable}
+X-KSE-AntiSpam-Info: {Found in DNSBL: 178.176.75.135 in (user)
+ dbl.spamhaus.org}
 X-KSE-AntiSpam-Info: 	127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;omp.ru:7.1.1;178.176.75.135:7.1.2
 X-KSE-AntiSpam-Info: FromAlignment: s
 X-KSE-AntiSpam-Info: {rdns complete}
@@ -95,7 +96,7 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 On 8/17/23 7:07 PM, Geert Uytterhoeven wrote:
 
-> The Atari Falcon PATA driver does not need anything from <asm/ide.h>.
+> The Amiga Gayle PATA driver does not need anything from <asm/ide.h>.
 > 
 > Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
