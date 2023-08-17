@@ -2,58 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AD3877F803
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 15:45:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18DF077F808
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 15:46:12 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VCExDrKF;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RRR8g0l17z3cTG
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 23:45:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RRR9Y6TGcz3cYh
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 23:46:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=fail (SPF fail - not authorized) smtp.mailfrom=csgroup.eu (client-ip=90.115.179.12; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase1.c-s.fr (unknown [90.115.179.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VCExDrKF;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RRR8818Rwz2ydN
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Aug 2023 23:44:50 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4RRR7x5bZRzB0Sh;
-	Thu, 17 Aug 2023 15:44:45 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id FousFlCk6thr; Thu, 17 Aug 2023 15:44:45 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4RRR7x4yfgzB0Sg;
-	Thu, 17 Aug 2023 15:44:45 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id A6B2A8B76C;
-	Thu, 17 Aug 2023 15:44:45 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id 5gO1jEp3d6SR; Thu, 17 Aug 2023 15:44:45 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.19.54.59])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 5A0208B763;
-	Thu, 17 Aug 2023 15:44:45 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 37HDibVq433875
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 17 Aug 2023 15:44:37 +0200
-Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 37HDiYBe433828;
-	Thu, 17 Aug 2023 15:44:34 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH] powerpc/4xx: Remove pika_dtm_[un]register_shutdown() to fix no previous prototype
-Date: Thu, 17 Aug 2023 15:44:26 +0200
-Message-ID: <830923f0e0375a14609204246d302c7476a8f948.1692279855.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.41.0
-MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1692279865; l=3351; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=Sbyk6OxfIJ6WJXDgRx9nz8WultA2O/aRcm7QwUEwtak=; b=AnI1p6Zia0OY67ubHT1k6Hs9VRBTsgbCT6Z1jctBs/hWRBywlgggbXxivSa3Ma2NRElgHXEOS Nm8/Ew30YKEAfTsThHJKP+az1JBdpHihIVsa1w6Py1rLfnyaQMaruqv
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RRR8X6Mryz3cNj
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Aug 2023 23:45:14 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1692279917; x=1723815917;
+  h=date:from:to:cc:subject:message-id;
+  bh=2MkW3E9oypqCz4kBarQl/IpUWSVPqASr+68CXdguqd8=;
+  b=VCExDrKFFTsdpjMQzHBk8hSJJM+g2NheAaczinILgxQRoASXuqcggkkd
+   uoxUDxk9IEdk0dcsXxNfukw4B/m7RfKlVRfGycx5ZwxHM2mDadDtA/w4L
+   RgqLJNqQLxZA4k7+J27b9sqRt6LpbCOUPASQ9ol0htgFrYjxqai+DW2j/
+   o8mVJRLn5Fw291paX65VidE8P8vFsDn+BTybiW4AHfBack6PerFgiL9QI
+   0BtmDMOcfk31U81VQ0fg/FUfY1IoCQaN+DtAFrdtjf9tv5rgKonvZY2ed
+   5azLFbxhtOyj1jjVgqT2xa6wLCVmogUWWfZTmBwOShJjwClfML86t371Q
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="459170744"
+X-IronPort-AV: E=Sophos;i="6.01,180,1684825200"; 
+   d="scan'208";a="459170744"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2023 06:45:09 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="764096963"
+X-IronPort-AV: E=Sophos;i="6.01,180,1684825200"; 
+   d="scan'208";a="764096963"
+Received: from lkp-server02.sh.intel.com (HELO a9caf1a0cf30) ([10.239.97.151])
+  by orsmga008.jf.intel.com with ESMTP; 17 Aug 2023 06:45:07 -0700
+Received: from kbuild by a9caf1a0cf30 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1qWdJC-0001BD-3C;
+	Thu, 17 Aug 2023 13:45:06 +0000
+Date: Thu, 17 Aug 2023 21:44:53 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:next] BUILD SUCCESS
+ fe8aa8e3379326ecb77203cae50e8e83c054aedc
+Message-ID: <202308172151.l99e8lL6-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,123 +66,148 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-ppc4xx_defconfig with W=1 results in:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+branch HEAD: fe8aa8e3379326ecb77203cae50e8e83c054aedc  powerpc/powernv/pci: use pci_dev_id() to simplify the code
 
-  CC      arch/powerpc/platforms/44x/warp.o
-arch/powerpc/platforms/44x/warp.c:369:5: error: no previous prototype for 'pika_dtm_register_shutdown' [-Werror=missing-prototypes]
-  369 | int pika_dtm_register_shutdown(void (*func)(void *arg), void *arg)
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~
-arch/powerpc/platforms/44x/warp.c:374:5: error: no previous prototype for 'pika_dtm_unregister_shutdown' [-Werror=missing-prototypes]
-  374 | int pika_dtm_unregister_shutdown(void (*func)(void *arg), void *arg)
-      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+elapsed time: 808m
 
-The functions were added by commit 4ebef31fa6e0 ("[POWERPC] PIKA Warp:
-Update platform code to support Rev B boards")
+configs tested: 125
+configs skipped: 9
 
-Those functions are not used localy and allthough their symbols are
-exported they are not declared in any header file so they can't be used.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Remove them, then remove the associated list as it will now remain empty
-hence becomes useless.
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r026-20230817   gcc  
+arc                  randconfig-r043-20230817   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                  randconfig-r004-20230817   gcc  
+arm                  randconfig-r012-20230817   clang
+arm                  randconfig-r046-20230817   clang
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r021-20230817   gcc  
+csky                                defconfig   gcc  
+csky                 randconfig-r013-20230817   gcc  
+csky                 randconfig-r033-20230817   gcc  
+hexagon              randconfig-r006-20230817   clang
+hexagon              randconfig-r024-20230817   clang
+hexagon              randconfig-r032-20230817   clang
+hexagon              randconfig-r041-20230817   clang
+hexagon              randconfig-r045-20230817   clang
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-r004-20230817   clang
+i386         buildonly-randconfig-r005-20230817   clang
+i386         buildonly-randconfig-r006-20230817   clang
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-i001-20230817   clang
+i386                 randconfig-i002-20230817   clang
+i386                 randconfig-i003-20230817   clang
+i386                 randconfig-i004-20230817   clang
+i386                 randconfig-i005-20230817   clang
+i386                 randconfig-i006-20230817   clang
+i386                 randconfig-i011-20230817   gcc  
+i386                 randconfig-i012-20230817   gcc  
+i386                 randconfig-i013-20230817   gcc  
+i386                 randconfig-i014-20230817   gcc  
+i386                 randconfig-i015-20230817   gcc  
+i386                 randconfig-i016-20230817   gcc  
+i386                 randconfig-r003-20230817   clang
+i386                 randconfig-r025-20230817   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch            randconfig-r001-20230817   gcc  
+m68k                             allmodconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                 randconfig-r005-20230817   gcc  
+m68k                 randconfig-r006-20230817   gcc  
+m68k                 randconfig-r031-20230817   gcc  
+m68k                 randconfig-r036-20230817   gcc  
+microblaze           randconfig-r026-20230817   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                 randconfig-r014-20230817   clang
+nios2                               defconfig   gcc  
+nios2                randconfig-r013-20230817   gcc  
+nios2                randconfig-r015-20230817   gcc  
+openrisc             randconfig-r014-20230817   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r002-20230817   gcc  
+parisc               randconfig-r034-20230817   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc              randconfig-r001-20230817   clang
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r004-20230817   clang
+riscv                randconfig-r011-20230817   gcc  
+riscv                randconfig-r022-20230817   gcc  
+riscv                randconfig-r042-20230817   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r034-20230817   clang
+s390                 randconfig-r044-20230817   gcc  
+sh                               allmodconfig   gcc  
+sh                   randconfig-r011-20230817   gcc  
+sh                   randconfig-r015-20230817   gcc  
+sh                   randconfig-r033-20230817   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                randconfig-r002-20230817   gcc  
+sparc64              randconfig-r021-20230817   gcc  
+sparc64              randconfig-r031-20230817   gcc  
+sparc64              randconfig-r035-20230817   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                   randconfig-r016-20230817   clang
+um                   randconfig-r023-20230817   clang
+um                           x86_64_defconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-r001-20230817   clang
+x86_64       buildonly-randconfig-r002-20230817   clang
+x86_64       buildonly-randconfig-r003-20230817   clang
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-r023-20230817   gcc  
+x86_64               randconfig-x001-20230817   gcc  
+x86_64               randconfig-x002-20230817   gcc  
+x86_64               randconfig-x003-20230817   gcc  
+x86_64               randconfig-x004-20230817   gcc  
+x86_64               randconfig-x005-20230817   gcc  
+x86_64               randconfig-x006-20230817   gcc  
+x86_64               randconfig-x011-20230817   clang
+x86_64               randconfig-x012-20230817   clang
+x86_64               randconfig-x013-20230817   clang
+x86_64               randconfig-x014-20230817   clang
+x86_64               randconfig-x015-20230817   clang
+x86_64               randconfig-x016-20230817   clang
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa               randconfig-r003-20230817   gcc  
+xtensa               randconfig-r016-20230817   gcc  
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Arnd Bergmann <arnd@arndb.de>
----
- arch/powerpc/platforms/44x/warp.c | 55 -------------------------------
- 1 file changed, 55 deletions(-)
-
-diff --git a/arch/powerpc/platforms/44x/warp.c b/arch/powerpc/platforms/44x/warp.c
-index bfeb9bdc3258..bf0188dcb918 100644
---- a/arch/powerpc/platforms/44x/warp.c
-+++ b/arch/powerpc/platforms/44x/warp.c
-@@ -83,45 +83,8 @@ static int __init warp_post_info(void)
- 
- #ifdef CONFIG_SENSORS_AD7414
- 
--static LIST_HEAD(dtm_shutdown_list);
- static void __iomem *dtm_fpga;
- 
--struct dtm_shutdown {
--	struct list_head list;
--	void (*func)(void *arg);
--	void *arg;
--};
--
--int pika_dtm_register_shutdown(void (*func)(void *arg), void *arg)
--{
--	struct dtm_shutdown *shutdown;
--
--	shutdown = kmalloc(sizeof(struct dtm_shutdown), GFP_KERNEL);
--	if (shutdown == NULL)
--		return -ENOMEM;
--
--	shutdown->func = func;
--	shutdown->arg = arg;
--
--	list_add(&shutdown->list, &dtm_shutdown_list);
--
--	return 0;
--}
--
--int pika_dtm_unregister_shutdown(void (*func)(void *arg), void *arg)
--{
--	struct dtm_shutdown *shutdown;
--
--	list_for_each_entry(shutdown, &dtm_shutdown_list, list)
--		if (shutdown->func == func && shutdown->arg == arg) {
--			list_del(&shutdown->list);
--			kfree(shutdown);
--			return 0;
--		}
--
--	return -EINVAL;
--}
--
- #define WARP_GREEN_LED	0
- #define WARP_RED_LED	1
- 
-@@ -153,17 +116,12 @@ static struct platform_device warp_gpio_leds = {
- 
- static irqreturn_t temp_isr(int irq, void *context)
- {
--	struct dtm_shutdown *shutdown;
- 	int value = 1;
- 
- 	local_irq_disable();
- 
- 	gpiod_set_value(warp_gpio_led_pins[WARP_GREEN_LED].gpiod, 0);
- 
--	/* Run through the shutdown list. */
--	list_for_each_entry(shutdown, &dtm_shutdown_list, list)
--		shutdown->func(shutdown->arg);
--
- 	printk(KERN_EMERG "\n\nCritical Temperature Shutdown\n\n");
- 
- 	while (1) {
-@@ -366,19 +324,6 @@ machine_late_initcall(warp, pika_dtm_start);
- 
- #else /* !CONFIG_SENSORS_AD7414 */
- 
--int pika_dtm_register_shutdown(void (*func)(void *arg), void *arg)
--{
--	return 0;
--}
--
--int pika_dtm_unregister_shutdown(void (*func)(void *arg), void *arg)
--{
--	return 0;
--}
--
- machine_late_initcall(warp, warp_post_info);
- 
- #endif
--
--EXPORT_SYMBOL(pika_dtm_register_shutdown);
--EXPORT_SYMBOL(pika_dtm_unregister_shutdown);
 -- 
-2.41.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
