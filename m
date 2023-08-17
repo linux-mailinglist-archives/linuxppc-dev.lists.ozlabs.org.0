@@ -1,54 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4032B77EF83
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 05:26:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5837D77EFCD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 06:20:36 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ryZg14br;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=lE4JMBK3;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RR9R00NWBz3cGJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 13:26:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RRBcy22kbz3c3c
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 14:20:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ryZg14br;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=lE4JMBK3;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RR9Q31rhfz2xpx
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Aug 2023 13:26:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RRBc22J3Gz2yWD
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Aug 2023 14:19:46 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1692242763;
-	bh=ZlmenDsbW60G7uJu2veM5G1rkGG/EEMpV5h+3Oe3uEg=;
+	s=201909; t=1692245983;
+	bh=46yCubrxx63LRVgs79NO4hFXQN620KYczJPZ0H00CuY=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=ryZg14br4OQt+fo/T+XGTbDRZaG5g03gpLyVNOZrOIHHv8Np/CnItphXx1cwBuhwk
-	 +3YrrFxzkcHaAC5mdnGAtp0kIoh/44J1Iqe0yuzTbl4nvzNvvHPUmztIfRzRPUO46J
-	 rTHOE7YKTOwBk6BEhQM8RQfcCakGK1JrUsHlWS2iMHx6GXf178hGz7lNyH8ZbVHo0W
-	 w3YBAvMyotpKM5+Fya4Dkm31h2f+2rU68XjkixrFAKJeYltmHO17tr0ZpENprendQa
-	 IZTAzmZjOvyEQI0QVR3jf2bjbvao2IU16QRKTvDAFkWfsNl5lE5MIadIdP2yqBsVCx
-	 gfk2KWTfNkK6g==
+	b=lE4JMBK30qnpZWrJz4xFHBgGig/yKUZ+TibmZnye0s8WDrUpJDF4tBEVHOaiguYDM
+	 O1tuycU+HIudU18qQ3bocu47yYK5moYKRW6obq+2MriTiZu8nHQe05bF9kSA/RdyNV
+	 MkMPTdEm5i6P2yDEt93dK4Clz0IUh6oizkEG7TUjTwqc/zDVuPUNpE7F5d0UUD7u1t
+	 52woLK6Rx5mtGHvGgbvPFcQfPOiI8i3fZtarRXbT2B8hI3zt4b1W7N4P3eFr6cQ3cm
+	 8kp797Lo1sszlr/wjWrrRyia6YYY8u/Y4ymiCTcI3SJu9QgMNOIRbQnovABEdgOqfY
+	 i2vFNiNsMyghQ==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RR9Q250Ymz4wb0;
-	Thu, 17 Aug 2023 13:26:02 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RRBbz1857z4wZn;
+	Thu, 17 Aug 2023 14:19:43 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v3 1/6] KVM: PPC: Use getters and setters for vcpu
- register state
-In-Reply-To: <20230807014553.1168699-2-jniethe5@gmail.com>
+Subject: Re: [PATCH v3 5/6] KVM: PPC: Add support for nestedv2 guests
+In-Reply-To: <20230807014553.1168699-6-jniethe5@gmail.com>
 References: <20230807014553.1168699-1-jniethe5@gmail.com>
- <20230807014553.1168699-2-jniethe5@gmail.com>
-Date: Thu, 17 Aug 2023 13:25:58 +1000
-Message-ID: <87cyzm73jt.fsf@mail.lhotse>
+ <20230807014553.1168699-6-jniethe5@gmail.com>
+Date: Thu, 17 Aug 2023 14:19:38 +1000
+Message-ID: <87a5uq712d.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,84 +63,34 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Jordan Niethe <jniethe5@gmail.com> writes:
-> There are already some getter and setter functions used for accessing
-> vcpu register state, e.g. kvmppc_get_pc(). There are also more
-> complicated examples that are generated by macros like
-> kvmppc_get_sprg0() which are generated by the SHARED_SPRNG_WRAPPER()
-> macro.
->
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 2357545dffd7..7d5edbc6ecd9 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -4165,7 +4231,10 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+>  	vcpu_vpa_increment_dispatch(vcpu);
+>  
+>  	if (kvmhv_on_pseries()) {
+> -		trap = kvmhv_vcpu_entry_p9_nested(vcpu, time_limit, lpcr, tb);
+> +		if (kvmhv_is_nestedv1())
+> +			trap = kvmhv_vcpu_entry_p9_nested(vcpu, time_limit, lpcr, tb);
+> +		else if (kvmhv_is_nestedv2())
+> +			trap = kvmhv_vcpu_entry_nestedv2(vcpu, time_limit, lpcr, tb);
 
-...
-> diff --git a/arch/powerpc/include/asm/kvm_book3s.h b/arch/powerpc/include=
-/asm/kvm_book3s.h
-> index bbf5e2c5fe09..1a7e837ea2d5 100644
-> --- a/arch/powerpc/include/asm/kvm_book3s.h
-> +++ b/arch/powerpc/include/asm/kvm_book3s.h
-> @@ -403,10 +413,121 @@ static inline ulong kvmppc_get_fault_dar(struct kv=
-m_vcpu *vcpu)
-...
-> +
-> +#ifdef CONFIG_VSX
-> +static inline void kvmppc_get_vsx_vr(struct kvm_vcpu *vcpu, int i, vecto=
-r128 *v)
-> +{
-> +	*v =3D  vcpu->arch.vr.vr[i];
-> +}
+Clang warns:
 
-This is causing build errors if VSX is disabled.
-
-I'm using g5_defconfig plus:
-
-  CONFIG_VIRTUALIZATION=3Dy
-  CONFIG_KVM_BOOK3S_64=3Dy
-  CONFIG_KVM_BOOK3S_64_PR=3Dy
-
-Which gives me:
-
-  ../arch/powerpc/kvm/powerpc.c: In function =E2=80=98kvmppc_set_vmx_dword=
-=E2=80=99:
-  ../arch/powerpc/kvm/powerpc.c:1061:9: error: implicit declaration of func=
-tion =E2=80=98kvmppc_get_vsx_vr=E2=80=99; did you mean =E2=80=98kvmppc_get_=
-vsx_fpr=E2=80=99? [-Werror=3Dimplicit-function-declaration]
-   1061 |         kvmppc_get_vsx_vr(vcpu, index, &val.vval);
-        |         ^~~~~~~~~~~~~~~~~
-        |         kvmppc_get_vsx_fpr
-  ../arch/powerpc/kvm/powerpc.c:1063:9: error: implicit declaration of func=
-tion =E2=80=98kvmppc_set_vsx_vr=E2=80=99; did you mean =E2=80=98kvmppc_set_=
-vsx_fpr=E2=80=99? [-Werror=3Dimplicit-function-declaration]
-   1063 |         kvmppc_set_vsx_vr(vcpu, index, &val.vval);
-        |         ^~~~~~~~~~~~~~~~~
-        |         kvmppc_set_vsx_fpr
-  In file included from ../arch/powerpc/kvm/powerpc.c:25:
-  ../arch/powerpc/kvm/powerpc.c: In function =E2=80=98kvm_vcpu_ioctl_get_on=
-e_reg=E2=80=99:
-  ../arch/powerpc/kvm/powerpc.c:1729:52: error: implicit declaration of fun=
-ction =E2=80=98kvmppc_get_vscr=E2=80=99; did you mean =E2=80=98kvmppc_get_s=
-r=E2=80=99? [-Werror=3Dimplicit-function-declaration]
-   1729 |                         val =3D get_reg_val(reg->id, kvmppc_get_v=
-scr(vcpu));
-        |                                                    ^~~~~~~~~~~~~~~
-  ../arch/powerpc/include/asm/kvm_ppc.h:412:29: note: in definition of macr=
-o =E2=80=98get_reg_val=E2=80=99
-    412 |         case 4: __u.wval =3D (reg); break;        \
-        |                             ^~~
-  ../arch/powerpc/kvm/powerpc.c: In function =E2=80=98kvm_vcpu_ioctl_set_on=
-e_reg=E2=80=99:
-  ../arch/powerpc/kvm/powerpc.c:1780:25: error: implicit declaration of fun=
-ction =E2=80=98kvmppc_set_vscr=E2=80=99; did you mean =E2=80=98kvmppc_set_f=
-scr=E2=80=99? [-Werror=3Dimplicit-function-declaration]
-   1780 |                         kvmppc_set_vscr(vcpu, set_reg_val(reg->id=
-, val));
-        |                         ^~~~~~~~~~~~~~~
-        |                         kvmppc_set_fscr
-
-
-Looking at kvm_vcpu_arch, the thread_vr_state and members are guarded by
-CONFIG_ALTIVEC, not CONFIG_VSX.
-
-Switching to that fixes the build.
-
-Whether it makes sense to be getting/setting those registers when VSX=3Dn
-is not immediately clear, but is a separate problem.
+/linux/arch/powerpc/kvm/book3s_hv.c:4236:12: error: variable 'trap' is used uninitialized whenever 'if' condition is false [-Werror,-Wsometimes-uninitialized]
+                else if (kvmhv_is_nestedv2())
+                         ^~~~~~~~~~~~~~~~~~~
+/linux/arch/powerpc/kvm/book3s_hv.c:4240:7: note: uninitialized use occurs here
+                if (trap == BOOK3S_INTERRUPT_SYSCALL && !nested &&
+                    ^~~~
+/linux/arch/powerpc/kvm/book3s_hv.c:4236:8: note: remove the 'if' if its condition is always true
+                else if (kvmhv_is_nestedv2())
+                     ^~~~~~~~~~~~~~~~~~~~~~~~
+/linux/arch/powerpc/kvm/book3s_hv.c:4219:10: note: initialize the variable 'trap' to silence this warning
+        int trap;
+                ^
+                 = 0
 
 cheers
