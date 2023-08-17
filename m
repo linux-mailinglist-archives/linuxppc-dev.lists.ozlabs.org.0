@@ -2,56 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7BD777F0B2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 08:45:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33A5977F145
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 09:34:14 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=pz9ElAba;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=F4UrenxJ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RRFrD69mQz3cLl
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 16:45:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RRGwN0hxGz3cKh
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 17:34:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=pz9ElAba;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=F4UrenxJ;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::535; helo=mail-ed1-x535.google.com; envelope-from=philmd@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RRFqN0B2tz2yVd
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Aug 2023 16:44:48 +1000 (AEST)
-Received: by gandalf.ozlabs.org (Postfix)
-	id 4RRFqC5H8lz4wy3; Thu, 17 Aug 2023 16:44:39 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1692254679;
-	bh=Wx3nMILiB1NeGS4OwS92O58JvJol6RuBMilPby1aexs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=pz9ElAbaHeW1WlM6FirXgpjKbRPGtcW5zyN9pjls0kdL5arkLwqzNAVC2PRn8qBwa
-	 H7IIeZkTzubrcVySUgmaLN+TVRI99448w/43xEZmkedXGjwkQqUrLNaZmEExYUZ3Bm
-	 XYqMrfLSaC1FaZ8/j+tbrK639d5HhNFaWXxueq9xAh/P7BTLPTGv/ijFYQk9ork8Cb
-	 7zE2UxOOMfQgPJPLpx84Pc0eVfEe3/KQ1eFlSzHg8H0DaTxISTWpBmNsNlo6kT5kM5
-	 tD6xpCigM1TCzd9uFuB1hn9Zb+Zagh9PO32Di7yumRtEJRKfvGIKl80K3hYIMqRr7g
-	 AGomz3KsKnWEA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RRFqC2jtTz4wZn;
-	Thu, 17 Aug 2023 16:44:39 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: mahesh@linux.ibm.com
-Subject: Re: [PATCH v8 1/2] powerpc/rtas: Rename rtas_error_rc to
- rtas_generic_errno
-In-Reply-To: <xzsx7qc3el674iyy2lsn3adm7j2vh5xj6cjaqxgjm6lwcjiz5u@evoqbrvhqf26>
-References: <169138864808.65607.6576358707894823512.stgit@jupiter>
- <877cpxdksx.fsf@mail.lhotse>
- <xzsx7qc3el674iyy2lsn3adm7j2vh5xj6cjaqxgjm6lwcjiz5u@evoqbrvhqf26>
-Date: Thu, 17 Aug 2023 16:44:38 +1000
-Message-ID: <87zg2q5fs9.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RRGvT1gLLz2yWD
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Aug 2023 17:33:23 +1000 (AEST)
+Received: by mail-ed1-x535.google.com with SMTP id 4fb4d7f45d1cf-51a52a7d859so1358083a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Aug 2023 00:33:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1692257596; x=1692862396;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=XqVwwc2dDlYlCMTarZ/PjmKE+CsteLytpeFTL+9lo0M=;
+        b=F4UrenxJRzj7RIgGu2RAZ2FUbmJEF38qgllIOTjkWb91A+EGbBRBvbhHqKxIO/AeNe
+         ff4+SIOxVHNabjcg7l5TwiX0NWBzieVdmlblIxPBlK0tY01TSyLib+9qnr2FnWt66sXZ
+         Ir7tJSfIR4U2c6qGCHcDZt7br1mzXyUdZM2BKRwvU3dv2PNOesfmlqTM6uJCvbzmf7DQ
+         /BQmQ2DmlmTrOy3n3WQLJj3lRTTEEqdsco+uzM60FV6tRtGpOrx4fUryqA+4w6F4oUt5
+         /mhOH7g/8a4pwXNbvv1PpfHTnJH1zcitg5hU892GdkgYp8jALVFToAUGlI5ExSdF6Tzl
+         Djkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692257596; x=1692862396;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XqVwwc2dDlYlCMTarZ/PjmKE+CsteLytpeFTL+9lo0M=;
+        b=A9oeiXzVOr+MP/FoCgjCjayI3V0Seoafgu/Z1b1jI9LMOzFBfYo5o0MT71yuY5L40L
+         xZzPNsToXjjRFiII+bjrkej7QV8BYEVxvRCfMDz9byDeziDO8JHp9oDb27gTwqMgvoIx
+         R1rXYUmCjtqMtLX3hnJFw4S1F8H1CZSGWjq98dZeCx7CpcDH7avQYldoB0/zCFffu6J2
+         p2ehS+eZQOOsViZ3bJR0eAykI7uWbp2VMpTsX3K+wrr40dF6OXy9F3AAEEqNP5IjsZdO
+         ysGIQKJY6f5WJCemvh6+dcnF6V/m5T/cvQ7lMbvaxZ7ducx73aIJ+D9gN4xiqs8wbLkt
+         7xSA==
+X-Gm-Message-State: AOJu0Yw/qFeltvlUU2YmorU+RCNl40PxKqy663Ru3yNpZQkefUmxCBw5
+	BiDgR2QFpKWTGA/gsFEZH3IbSw==
+X-Google-Smtp-Source: AGHT+IFghrFx0zxJbJiB3SRR94OfeZeGqRzD/iYhIlcu/DnH8WCxmeY5R8S/g/7SDRhGfDDg6uwxBg==
+X-Received: by 2002:a05:6402:40c8:b0:522:b9ae:db3c with SMTP id z8-20020a05640240c800b00522b9aedb3cmr2223766edb.6.1692257595980;
+        Thu, 17 Aug 2023 00:33:15 -0700 (PDT)
+Received: from [192.168.69.115] (mek33-h02-176-184-23-56.dsl.sta.abo.bbox.fr. [176.184.23.56])
+        by smtp.gmail.com with ESMTPSA id k15-20020a05640212cf00b00521f4ee396fsm9365410edx.12.2023.08.17.00.33.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 17 Aug 2023 00:33:15 -0700 (PDT)
+Message-ID: <f7230276-decf-2248-52b2-c2de4a13647c@linaro.org>
+Date: Thu, 17 Aug 2023 09:33:13 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH v2 3/4] arch/mips/configs/*_defconfig cleanup
+Content-Language: en-US
+To: Trevor Woerner <twoerner@gmail.com>, linux-kernel@vger.kernel.org,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+References: <20230817025942.3209-1-twoerner@gmail.com>
+ <20230817025942.3209-4-twoerner@gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230817025942.3209-4-twoerner@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,34 +83,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, Tyrel Datwyler <tyreld@linux.ibm.com>, linux-pci <linux-pci@vger.kernel.org>, Linux Kernel <linux-kernel@vger.kernel.org>, linuxppc-dev <linuxppc-dev@ozlabs.org>, Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>
+Cc: linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Mahesh J Salgaonkar <mahesh@linux.ibm.com> writes:
-> On 2023-08-15 13:52:14 Tue, Michael Ellerman wrote:
->> Mahesh Salgaonkar <mahesh@linux.ibm.com> writes:
-...
->> > diff --git a/arch/powerpc/include/asm/rtas.h b/arch/powerpc/include/asm/rtas.h
->> > index 3abe15ac79db1..5572a0a2f6e18 100644
->> > --- a/arch/powerpc/include/asm/rtas.h
->> > +++ b/arch/powerpc/include/asm/rtas.h
->> > @@ -202,7 +202,9 @@ typedef struct {
->> >  #define RTAS_USER_REGION_SIZE (64 * 1024)
->> >  
->> >  /* RTAS return status codes */
->> > -#define RTAS_BUSY		-2    /* RTAS Busy */
->> > +#define RTAS_HARDWARE_ERROR	(-1)  /* Hardware Error */
->> > +#define RTAS_BUSY		(-2)  /* RTAS Busy */
->> 
->> Are the brackets necessary?
->
-> During v5 changset I received offline review comment to add brackets,
-> hence continued here as well. I can take it away if Nathan is fine with
-> it.
+Hi Trevor,
 
-OK. I can't think of a context where the brackets are useful, but I'm
-probably just not thinking hard enough. I don't really mind adding them,
-I was just curious what the justification for them was.
+On 17/8/23 04:59, Trevor Woerner wrote:
+> Drop CONFIG_IP_NF_TARGET_CLUSTERIP from any remaining mips defconfigs as it
+> was removed in commit 57f8e00d8a82 ("usb: 71 musb: Drop old unused am35x
+> glue layer").
 
-cheers
+How 57f8e00d8a82 is related? Do you mean commit 9db5d918e2c0
+("netfilter: ip_tables: remove clusterip target")?
+
+> Signed-off-by: Trevor Woerner <twoerner@gmail.com>
+> ---
+>   arch/mips/configs/ip22_defconfig        | 1 -
+>   arch/mips/configs/malta_defconfig       | 1 -
+>   arch/mips/configs/malta_kvm_defconfig   | 1 -
+>   arch/mips/configs/maltaup_xpa_defconfig | 1 -
+>   arch/mips/configs/rm200_defconfig       | 1 -
+>   5 files changed, 5 deletions(-)
+> 
+> diff --git a/arch/mips/configs/ip22_defconfig b/arch/mips/configs/ip22_defconfig
+> index 44821f497261..dc49b09d492b 100644
+> --- a/arch/mips/configs/ip22_defconfig
+> +++ b/arch/mips/configs/ip22_defconfig
+> @@ -127,7 +127,6 @@ CONFIG_IP_NF_MATCH_TTL=m
+>   CONFIG_IP_NF_FILTER=m
+>   CONFIG_IP_NF_TARGET_REJECT=m
+>   CONFIG_IP_NF_MANGLE=m
+> -CONFIG_IP_NF_TARGET_CLUSTERIP=m
+>   CONFIG_IP_NF_TARGET_ECN=m
+>   CONFIG_IP_NF_TARGET_TTL=m
+>   CONFIG_IP_NF_RAW=m
+
