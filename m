@@ -1,88 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 883D977F6A2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 14:45:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B658B77F6B1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 14:48:25 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=XK3ztn4y;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=soYPp0Zh;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=kIK4mCA3;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RRPq337n5z3dBj
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 22:45:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RRPtv404Xz3cBb
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 22:48:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=XK3ztn4y;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=soYPp0Zh;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=kIK4mCA3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.230; helo=new4-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from new4-smtp.messagingengine.com (new4-smtp.messagingengine.com [66.111.4.230])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RRPnb3N1nz3cPS
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Aug 2023 22:43:47 +1000 (AEST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailnew.nyi.internal (Postfix) with ESMTP id 838E2580133;
-	Thu, 17 Aug 2023 08:43:45 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Thu, 17 Aug 2023 08:43:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm3; t=1692276225; x=1692283425; bh=yV
-	EqWTuuBHvfVKKWuTpdcLKJFe4ZBQt6BukSl2xV4tw=; b=XK3ztn4yhVZU6ek0hh
-	s159A2vncJlNdKOwOKv+jfVzoTR0CV6ExX5fyqqiekpE/QUzxwrUZgbIAjQLhSar
-	UZ8cSjdce3OJ/ES1FUMLUDeT1ap3WW+giMRlEEYwYyxIIBK8sS2C3r4oFTkVGZK3
-	V6rhj1TqMNhgSE/sy6Q8NQXCTG3oXk0SORORIESk5G4g01h38EFThCXY+OtOQYPa
-	Q7oYdodW2TJ5BBTRbCpa6SfqXv/NT97XGDcJwclYCNDIxzPgVOdQA+BXOzZjtKSm
-	4cpsD4QiMvOV41eKS9lMulxt9gSbVIhghYLwZnC/aH0rWubXp8RHY659fIzzi6Ki
-	05+A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm1; t=1692276225; x=1692283425; bh=yVEqWTuuBHvfV
-	KKWuTpdcLKJFe4ZBQt6BukSl2xV4tw=; b=soYPp0ZhU98gI/7cUtPtbx5swwFGI
-	UgNTPZKr76ecjWJVfkzgT9ldQOiqeANF9lqgl2RmfHaSPcBIOEYLfxGuOjEsg5J6
-	i3C7WZs/Q/+2aKyQRoyn0kNCpzeCBl5eJ8iaQzuDRLYMXEVwFVMQ3HTraHM+YsCy
-	gAMd2DXUMb8/P4PFRTaatlEXdr0X1GGJbSziguZ9p7eXQcowd+VHey8OgobCmYDS
-	eTnxYa4ZKdOPakjPzYviYV4j/s86j2HuINrX+64SoK7xMyF3qnqyU8LW/3MAa09f
-	gK5F0c/6yahqo2ipH6cQtS06KMHWUEmYxy907ow8DgG9aq/RATfMCDECw==
-X-ME-Sender: <xms:ARbeZGoa_fsWZ_-bW9SlrElBtNP3HArFPD6SdJYWxloZNIov7XhQJQ>
-    <xme:ARbeZEqXLT5Eyzj8WmVKVIsumh5F7Mk-qX_CYEIjaax9Hpoz43-jFuakNrE-j1YNO
-    CI_3pwW5Qb32mhEZpo>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudduuddgheehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgepudenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:ARbeZLM-7gpf-pqzncz_Zk3cosZPm9RJkeaPK5CEQO57lHL99C-J_Q>
-    <xmx:ARbeZF7wrP__kzgJqma0oVxodSczjF2aoA0Oo4MZcoUaZktq1zT7kw>
-    <xmx:ARbeZF6QgpOxy56_RxUa9Xff6x-EPffxiQM7F3hNu3XwkSp2kWo6Ow>
-    <xmx:ARbeZFEL4BfbqoapK1a1cC0WnMGh5-g6Hd1Ud5sOcEHf4I4wW4ZvDQ>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 4A488B60089; Thu, 17 Aug 2023 08:43:45 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-624-g7714e4406d-fm-20230801.001-g7714e440
-Mime-Version: 1.0
-Message-Id: <53dc5d0f-8267-480d-a40c-97330e7a290e@app.fastmail.com>
-In-Reply-To:  <0aa1141e18a84d926e199093204b37ec993f0c87.1692275185.git.christophe.leroy@csgroup.eu>
-References:  <0aa1141e18a84d926e199093204b37ec993f0c87.1692275185.git.christophe.leroy@csgroup.eu>
-Date: Thu, 17 Aug 2023 14:43:25 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "Michael Ellerman" <mpe@ellerman.id.au>,
- "Nicholas Piggin" <npiggin@gmail.com>
-Subject: Re: [PATCH] powerpc/8xx: Remove init_internal_rtc() to fix no previous
- prototype error
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RRPt36KJXz2yVp
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Aug 2023 22:47:39 +1000 (AEST)
+Received: by gandalf.ozlabs.org (Postfix)
+	id 4RRPt35m7qz4wy6; Thu, 17 Aug 2023 22:47:39 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1692276459;
+	bh=wZiTI8CR38/3QTUTH1PhMf9XS4nHplieDjj0LRk5an0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=kIK4mCA3pouUSyX2xZPGRmXQ/GKmdvJnQQE0h8FpVJXqrp4plQRKLqXeB+9rR+S+7
+	 Ssk002TqfBqwkHWVRpGwBNfLBpRsnUa3gKXml+sIVzmTvzHI1KbH90BN0NpMSaJvbU
+	 dxQ60AclpwofqNlN7xB8l5SWhQ4os8EnGeQIpLdf1wkvApTQDvtngXsYIJf12zPaup
+	 /uSvu4Um6GNAonA8q2jAu/2Mi97Yok10Jy6xLMhjIa7ne+5pqoQ13+zXx58BhFaRo0
+	 M0aNLM7la3xOjvGMKN/5A2S5+Jctthai75tOlv9kwOPHWy58M+GgJFP3BI/1gdxwIi
+	 R4ddJVqUKCfbQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RRPt34pCxz4wy5;
+	Thu, 17 Aug 2023 22:47:39 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev@ozlabs.org
+Subject: Re: [PATCH v2] powerpc/fadump: reset dump area size if fadump
+ memory reserve fails
+In-Reply-To: <8732c11e-77e4-2231-dc84-568a5e8ea652@linux.ibm.com>
+References: <20230704050715.203581-1-sourabhjain@linux.ibm.com>
+ <8732c11e-77e4-2231-dc84-568a5e8ea652@linux.ibm.com>
+Date: Thu, 17 Aug 2023 22:47:39 +1000
+Message-ID: <874jkxesyc.fsf@mail.lhotse>
+MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -95,29 +62,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: mahesh@linux.vnet.ibm.com, Mahesh Salgaonkar <mahesh@linux.ibm.com>, hbathini@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 17, 2023, at 14:26, Christophe Leroy wrote:
-> A W=1 build of mpc885_ads_defconfig throws the following error:
+Sourabh Jain <sourabhjain@linux.ibm.com> writes:
+> Hello Michael,
 >
->   CC      arch/powerpc/platforms/8xx/m8xx_setup.o
-> arch/powerpc/platforms/8xx/m8xx_setup.c:41:1: error: no previous 
-> prototype for 'init_internal_rtc' [-Werror=missing-prototypes]
->    41 | init_internal_rtc(void)
->       | ^~~~~~~~~~~~~~~~~
->
-> init_internal_rtc() was introduced by commit df34403dcaac ("[POWERPC]
-> 8xx: Add mpc885ads support and common mpc8xx files") as a weak
-> function but has never been defined and/or used outside m8xx_setup.c
->
-> As it is called only once there, just fold it into its caller and
-> remove it.
->
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> ---
+> Are there any reviews or comments on this fix?
 
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+No, looks fine. Will pick it up for 6.6.
 
+cheers
+
+> On 04/07/23 10:37, Sourabh Jain wrote:
+>> In case fadump_reserve_mem() fails to reserve memory, the
+>> reserve_dump_area_size variable will retain the reserve area size. This
+>> will lead to /sys/kernel/fadump/mem_reserved node displaying an incorrect
+>> memory reserved by fadump.
+>>
+>> To fix this problem, reserve dump area size variable is set to 0 if fadump
+>> failed to reserve memory.
+>>
+>> Fixes: 8255da95e545 ("powerpc/fadump: release all the memory above boot memory size")
+>> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+>> Acked-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+>> ---
+>> Chnages form V1:
+>> * Reset the dump area size within the error_out path to cover more
+>>    failure cases. Furthermore, the commit description has been modified
+>>    accordingly.
+>> ---
+>>   arch/powerpc/kernel/fadump.c | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+>> index f3166acab09b..5a07d0f9c7f0 100644
+>> --- a/arch/powerpc/kernel/fadump.c
+>> +++ b/arch/powerpc/kernel/fadump.c
+>> @@ -654,6 +654,7 @@ int __init fadump_reserve_mem(void)
+>>   	return ret;
+>>   error_out:
+>>   	fw_dump.fadump_enabled = 0;
+>> +	fw_dump.reserve_dump_area_size = 0;
+>>   	return 0;
+>>   }
+>>   
