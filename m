@@ -1,58 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB24677F8DD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 16:28:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F78577FB13
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Aug 2023 17:44:59 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Y7OkJ5kz;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RRS615XvYz3clf
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Aug 2023 00:28:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RRTpd0JHKz3cRp
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Aug 2023 01:44:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=fail (SPF fail - not authorized) smtp.mailfrom=csgroup.eu (client-ip=90.115.179.12; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase1.c-s.fr (unknown [90.115.179.12])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Y7OkJ5kz;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::136; helo=mail-lf1-x136.google.com; envelope-from=philmd@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RRS5X2MQTz3bWy
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Aug 2023 00:27:43 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4RRS5T1wrFz9x7v;
-	Thu, 17 Aug 2023 16:27:41 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id JZV6txLA989B; Thu, 17 Aug 2023 16:27:41 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4RRS5T1DJcz9x7n;
-	Thu, 17 Aug 2023 16:27:41 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 26A268B76C;
-	Thu, 17 Aug 2023 16:27:41 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id 12zksZKOPVCI; Thu, 17 Aug 2023 16:27:41 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.19.54.59])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id DD3688B763;
-	Thu, 17 Aug 2023 16:27:40 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 37HERT42446275
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 17 Aug 2023 16:27:29 +0200
-Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 37HERTJ8446236;
-	Thu, 17 Aug 2023 16:27:29 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH] powerpc/4xx: Add missing includes to fix no previous prototype errors
-Date: Thu, 17 Aug 2023 16:27:23 +0200
-Message-ID: <c8253017e355638132737ff47936e290df8738d1.1692282432.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.41.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RRTnj5P4dz3bWQ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Aug 2023 01:44:07 +1000 (AEST)
+Received: by mail-lf1-x136.google.com with SMTP id 2adb3069b0e04-4fe0c566788so12466599e87.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Aug 2023 08:44:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1692287038; x=1692891838;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Lp1IuZHqWfKCAVZooutFxjvYW2JldAzLdhi3fANGf+o=;
+        b=Y7OkJ5kzfBR9aS1o3hbSjWBbpDhDfQvuOJAbLWMeHIdCvYVqIqsch4xPQi6nhKj1sW
+         MyG2VLyh2d/VhqbZsXyum3ahPYS8bZD/3vhehfn8OxUL5vrX+3/9cMxCnE5qiSsgyDR/
+         fShe46mhdY+NApZpcWsPqTIffnvlvkPtOI+jgn4rIt384WQhvhdi97ih/Ilt5JjDZtjs
+         doYEk6M74dQhbXRqKo5cHgm5Sxala+iBlG/zi0HHIrvQSCxfxkgmFC1tMXvlzNgJkmoZ
+         rUDnjo4tsPM/cqSjpRMFtA5WxE0YyMxathg7q3nRUgdWs7XXqmVaU3lpDCCDHWNMmo6U
+         MjbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692287038; x=1692891838;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Lp1IuZHqWfKCAVZooutFxjvYW2JldAzLdhi3fANGf+o=;
+        b=foaOsu9wiQ7Rf1+EPNBOHCWi1E7E2KJ4h38g8OtF5v4F/nb38LyiYtNtGASlezRkxa
+         NArV1gGX1aRcPdmJNdvmnHFiM9iL/oiZcpdl6nyYFhsSLubKDzwZH5chdwSOon8oEWAt
+         YXqcH1sLoL+7QwxGmJ4iWW/ibdKJ7x0bPEdAgDr8oHqEwVgddsla2u987G/Ag41VK/na
+         vS6Meup/V5t0p3RNI8rIus2TneEhHvReuhTNbIu+BPxFvGZmLTaoXiIaOrwFpMJLZGAU
+         401uNx1huE1OVxc5FOvUMGMYAm14g4ClQ8PdjGc8lJ/YN2giZllbgZciLoi5CAoqanro
+         99XQ==
+X-Gm-Message-State: AOJu0Yx/1mivKO9ubWeyoVU8D/EboIE1s5vCbCvzjs3u15x1GnrszU+w
+	fWHhxGFhz4s4WYKpot1563ycnw==
+X-Google-Smtp-Source: AGHT+IGo/MkOhuQ87pyBbC2n512LcvZgd8ip292GYtt+yin2/JuZNeICWXDi7cMjkYGQ4p2MIAoVng==
+X-Received: by 2002:a2e:241a:0:b0:2b9:df53:4c2a with SMTP id k26-20020a2e241a000000b002b9df534c2amr4656731ljk.20.1692287038600;
+        Thu, 17 Aug 2023 08:43:58 -0700 (PDT)
+Received: from [192.168.69.115] (mek33-h02-176-184-23-56.dsl.sta.abo.bbox.fr. [176.184.23.56])
+        by smtp.gmail.com with ESMTPSA id lj5-20020a170906f9c500b0098d2d219649sm10418014ejb.174.2023.08.17.08.43.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 17 Aug 2023 08:43:57 -0700 (PDT)
+Message-ID: <c608d62f-e3fe-1ead-b0a7-f935fea80702@linaro.org>
+Date: Thu, 17 Aug 2023 17:43:56 +0200
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1692282442; l=1777; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=yGTRAmMTYM0Y3spDgeN3QkgVKi9Gx46oVPN1AD83t74=; b=WYxGZjBxhhd1DmqCSQYw0oT0E4p4RUZpBkLFnaiOkgn8Z2A27j150A0CWsCDO5ShRC3OTwe2F e7J0OaJfqlNAn8UA+vdC4ceBaTr9rjdUA3yHQT7nkdcra7Uo/auAIyx
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH v3 3/4] arch/mips/configs/*_defconfig cleanup
+Content-Language: en-US
+To: Trevor Woerner <twoerner@gmail.com>, linux-kernel@vger.kernel.org,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+References: <20230817115017.35663-1-twoerner@gmail.com>
+ <20230817115017.35663-4-twoerner@gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230817115017.35663-4-twoerner@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -65,58 +83,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-A W=1 build of ppc40x_defconfig throws the followings errors:
+On 17/8/23 13:50, Trevor Woerner wrote:
+> Drop CONFIG_IP_NF_TARGET_CLUSTERIP from any remaining mips defconfigs as it
+> was removed in commit 9db5d918e2c0 ("netfilter: ip_tables: remove clusterip
+> target").
+> 
+> Signed-off-by: Trevor Woerner <twoerner@gmail.com>
+> ---
+>   arch/mips/configs/ip22_defconfig        | 1 -
+>   arch/mips/configs/malta_defconfig       | 1 -
+>   arch/mips/configs/malta_kvm_defconfig   | 1 -
+>   arch/mips/configs/maltaup_xpa_defconfig | 1 -
+>   arch/mips/configs/rm200_defconfig       | 1 -
+>   5 files changed, 5 deletions(-)
 
-  CC      arch/powerpc/platforms/4xx/uic.o
-arch/powerpc/platforms/4xx/uic.c:274:13: warning: no previous prototype for 'uic_init_tree' [-Wmissing-prototypes]
-  274 | void __init uic_init_tree(void)
-      |             ^~~~~~~~~~~~~
-arch/powerpc/platforms/4xx/uic.c:319:14: warning: no previous prototype for 'uic_get_irq' [-Wmissing-prototypes]
-  319 | unsigned int uic_get_irq(void)
-      |              ^~~~~~~~~~~
-  CC      arch/powerpc/platforms/4xx/machine_check.o
-  CC      arch/powerpc/platforms/4xx/soc.o
-arch/powerpc/platforms/4xx/soc.c:193:6: warning: no previous prototype for 'ppc4xx_reset_system' [-Wmissing-prototypes]
-  193 | void ppc4xx_reset_system(char *cmd)
-      |      ^~~~~~~~~~~~~~~~~~~
-
-Add missing includes to get the missing prototypes.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Arnd Bergmann <arnd@arndb.de>
----
- arch/powerpc/platforms/4xx/soc.c | 1 +
- arch/powerpc/platforms/4xx/uic.c | 1 +
- 2 files changed, 2 insertions(+)
-
-diff --git a/arch/powerpc/platforms/4xx/soc.c b/arch/powerpc/platforms/4xx/soc.c
-index f91df0827877..b2d940437a66 100644
---- a/arch/powerpc/platforms/4xx/soc.c
-+++ b/arch/powerpc/platforms/4xx/soc.c
-@@ -21,6 +21,7 @@
- #include <asm/dcr.h>
- #include <asm/dcr-regs.h>
- #include <asm/reg.h>
-+#include <asm/ppc4xx.h>
- 
- static u32 dcrbase_l2c;
- 
-diff --git a/arch/powerpc/platforms/4xx/uic.c b/arch/powerpc/platforms/4xx/uic.c
-index d667ad039bd3..e3e148b9dd18 100644
---- a/arch/powerpc/platforms/4xx/uic.c
-+++ b/arch/powerpc/platforms/4xx/uic.c
-@@ -24,6 +24,7 @@
- #include <asm/irq.h>
- #include <asm/io.h>
- #include <asm/dcr.h>
-+#include <asm/uic.h>
- 
- #define NR_UIC_INTS	32
- 
--- 
-2.41.0
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
