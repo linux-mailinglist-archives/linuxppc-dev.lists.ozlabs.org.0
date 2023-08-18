@@ -1,63 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14F8B7806CF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Aug 2023 10:01:32 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YC1o0RkG;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0CA57807A9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Aug 2023 11:00:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RRvTP6JHHz3cRr
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Aug 2023 18:01:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RRwns6nP6z3cN8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Aug 2023 19:00:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YC1o0RkG;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=fail (SPF fail - not authorized) smtp.mailfrom=csgroup.eu (client-ip=90.115.179.12; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase1.c-s.fr (unknown [90.115.179.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RRvSV2s1Zz2yVw
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Aug 2023 18:00:39 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692345642; x=1723881642;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=UrMwbZh7etk/SoX6ujozcIHwKlca0dDPqmB5AACzLVw=;
-  b=YC1o0RkGZMVi/l448Bsw7ZXRjG5AB0e2AgBA1pGIXCJky3eihBo1mz1s
-   9fpQbIloJOlkf1O3fKlpO0hU31HWyviAqniSuKtDqpFad1X3uxMwFuXfo
-   v97qkoYqHkm1AWayo3Sl/BCh4JBcA60lVQJbAmBsSRbJLf4LSxuUjKL1+
-   nASqflB8KsSbdRZhh+mW1D7RlFzTGnPyOVrhGLXOwNqR3tRVUG3iRhpuF
-   YUZK/La/vDRYJcPn1H8OnqFIDKKp1jQuaf1FzwOb5SjvE8P1tPXyDk3KV
-   qPbqT7WT3Akq5dRuAtQSw9FVQKUHTeWp5Yk6R1lPg4GoC19E8hSW9Kzfn
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10805"; a="376801920"
-X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; 
-   d="scan'208";a="376801920"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2023 01:00:34 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10805"; a="849189503"
-X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; 
-   d="scan'208";a="849189503"
-Received: from lkp-server02.sh.intel.com (HELO a9caf1a0cf30) ([10.239.97.151])
-  by fmsmga002.fm.intel.com with ESMTP; 18 Aug 2023 01:00:32 -0700
-Received: from kbuild by a9caf1a0cf30 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1qWuPE-0002FW-2d;
-	Fri, 18 Aug 2023 08:00:29 +0000
-Date: Fri, 18 Aug 2023 15:59:33 +0800
-From: kernel test robot <lkp@intel.com>
-To: Arnd Bergmann <arnd@arndb.de>
-Subject: [powerpc:next-test 21/79]
- arch/powerpc/platforms/powermac/feature.c:137:19: error: unused function
- 'simple_feature_tweak'
-Message-ID: <202308181501.AR5HMDWC-lkp@intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RRwnK3KLMz3c3N
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Aug 2023 19:00:14 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+	by localhost (Postfix) with ESMTP id 4RRwn71zqjz9vpd;
+	Fri, 18 Aug 2023 11:00:11 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 1RWAnjpEpnmc; Fri, 18 Aug 2023 11:00:11 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4RRwn71C7Zz9vnt;
+	Fri, 18 Aug 2023 11:00:11 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 254248B76C;
+	Fri, 18 Aug 2023 11:00:11 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id u5rOJDBPTeM5; Fri, 18 Aug 2023 11:00:11 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (PO17626.IDSI0.si.c-s.fr [172.19.54.29])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id CE4108B763;
+	Fri, 18 Aug 2023 11:00:10 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 37I8xx7X067897
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 18 Aug 2023 10:59:59 +0200
+Received: (from chleroy@localhost)
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 37I8xsTm067893;
+	Fri, 18 Aug 2023 10:59:54 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
+Subject: [PATCH] powerpc/perf: Convert fsl_emb notifier to state machine callbacks
+Date: Fri, 18 Aug 2023 10:59:44 +0200
+Message-ID: <603e1facb32608f88f40b7d7b9094adc50e7b2dc.1692349125.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1692349183; l=2591; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=BDSzI3AZen6DGCYZz2OVeRyuTDOVTDC7impz5sm4Gkk=; b=46vx5Tsjz2fuaf6Y3hFNHg/B1XpD02F7n1Y/UyjSGVGBW0x2bhp+sfaCkkj6ImTJASzFQm+lb JzOcm3U1nVOBuaL/4wwZjf5da5wuKftDWQj8OhLRJk1v2wnOiGsj6Uv
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,64 +65,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: llvm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, oe-kbuild-all@lists.linux.dev
+Cc: Arnd Bergmann <arnd@arndb.de>, Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
-head:   c56963d48343b50998bacc6df949217c950163e3
-commit: 54f30b83fe627453082f15d83d7820b28b2d24bb [21/79] powerpc: address missing-prototypes warnings
-config: powerpc-g5_defconfig (https://download.01.org/0day-ci/archive/20230818/202308181501.AR5HMDWC-lkp@intel.com/config)
-compiler: clang version 15.0.7 (https://github.com/llvm/llvm-project.git 8dfdcc7b7bf66834a761bd8de445840ef68e4d1a)
-reproduce: (https://download.01.org/0day-ci/archive/20230818/202308181501.AR5HMDWC-lkp@intel.com/reproduce)
+  CC      arch/powerpc/perf/core-fsl-emb.o
+arch/powerpc/perf/core-fsl-emb.c:675:6: error: no previous prototype for 'hw_perf_event_setup' [-Werror=missing-prototypes]
+  675 | void hw_perf_event_setup(int cpu)
+      |      ^~~~~~~~~~~~~~~~~~~
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202308181501.AR5HMDWC-lkp@intel.com/
+Looks like fsl_emb was completely missed by commit 3f6da3905398 ("perf:
+Rework and fix the arch CPU-hotplug hooks")
 
-All errors (new ones prefixed by >>):
+So, apply same changes as commit 3f6da3905398 ("perf: Rework and fix
+the arch CPU-hotplug hooks") then commit 57ecde42cc74 ("powerpc/perf:
+Convert book3s notifier to state machine callbacks")
 
->> arch/powerpc/platforms/powermac/feature.c:137:19: error: unused function 'simple_feature_tweak' [-Werror,-Wunused-function]
-   static inline int simple_feature_tweak(struct device_node *node, int type,
-                     ^
-   1 error generated.
+While at it, also fix following error:
 
+arch/powerpc/perf/core-fsl-emb.c: In function 'perf_event_interrupt':
+arch/powerpc/perf/core-fsl-emb.c:648:13: error: variable 'found' set but not used [-Werror=unused-but-set-variable]
+  648 |         int found = 0;
+      |             ^~~~~
 
-vim +/simple_feature_tweak +137 arch/powerpc/platforms/powermac/feature.c
+Fixes: 3f6da3905398 ("perf: Rework and fix the arch CPU-hotplug hooks")
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Arnd Bergmann <arnd@arndb.de>
+---
+ arch/powerpc/perf/core-fsl-emb.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-14cf11af6cf608 arch/powerpc/platforms/powermac/pmac_feature.c Paul Mackerras 2005-09-26  132  
-14cf11af6cf608 arch/powerpc/platforms/powermac/pmac_feature.c Paul Mackerras 2005-09-26  133  /*
-14cf11af6cf608 arch/powerpc/platforms/powermac/pmac_feature.c Paul Mackerras 2005-09-26  134   * Here are the chip specific feature functions
-14cf11af6cf608 arch/powerpc/platforms/powermac/pmac_feature.c Paul Mackerras 2005-09-26  135   */
-14cf11af6cf608 arch/powerpc/platforms/powermac/pmac_feature.c Paul Mackerras 2005-09-26  136  
-14cf11af6cf608 arch/powerpc/platforms/powermac/pmac_feature.c Paul Mackerras 2005-09-26 @137  static inline int simple_feature_tweak(struct device_node *node, int type,
-14cf11af6cf608 arch/powerpc/platforms/powermac/pmac_feature.c Paul Mackerras 2005-09-26  138  				       int reg, u32 mask, int value)
-14cf11af6cf608 arch/powerpc/platforms/powermac/pmac_feature.c Paul Mackerras 2005-09-26  139  {
-14cf11af6cf608 arch/powerpc/platforms/powermac/pmac_feature.c Paul Mackerras 2005-09-26  140  	struct macio_chip*	macio;
-14cf11af6cf608 arch/powerpc/platforms/powermac/pmac_feature.c Paul Mackerras 2005-09-26  141  	unsigned long		flags;
-14cf11af6cf608 arch/powerpc/platforms/powermac/pmac_feature.c Paul Mackerras 2005-09-26  142  
-14cf11af6cf608 arch/powerpc/platforms/powermac/pmac_feature.c Paul Mackerras 2005-09-26  143  	macio = macio_find(node, type);
-14cf11af6cf608 arch/powerpc/platforms/powermac/pmac_feature.c Paul Mackerras 2005-09-26  144  	if (!macio)
-14cf11af6cf608 arch/powerpc/platforms/powermac/pmac_feature.c Paul Mackerras 2005-09-26  145  		return -ENODEV;
-14cf11af6cf608 arch/powerpc/platforms/powermac/pmac_feature.c Paul Mackerras 2005-09-26  146  	LOCK(flags);
-14cf11af6cf608 arch/powerpc/platforms/powermac/pmac_feature.c Paul Mackerras 2005-09-26  147  	if (value)
-14cf11af6cf608 arch/powerpc/platforms/powermac/pmac_feature.c Paul Mackerras 2005-09-26  148  		MACIO_BIS(reg, mask);
-14cf11af6cf608 arch/powerpc/platforms/powermac/pmac_feature.c Paul Mackerras 2005-09-26  149  	else
-14cf11af6cf608 arch/powerpc/platforms/powermac/pmac_feature.c Paul Mackerras 2005-09-26  150  		MACIO_BIC(reg, mask);
-14cf11af6cf608 arch/powerpc/platforms/powermac/pmac_feature.c Paul Mackerras 2005-09-26  151  	(void)MACIO_IN32(reg);
-14cf11af6cf608 arch/powerpc/platforms/powermac/pmac_feature.c Paul Mackerras 2005-09-26  152  	UNLOCK(flags);
-14cf11af6cf608 arch/powerpc/platforms/powermac/pmac_feature.c Paul Mackerras 2005-09-26  153  
-14cf11af6cf608 arch/powerpc/platforms/powermac/pmac_feature.c Paul Mackerras 2005-09-26  154  	return 0;
-14cf11af6cf608 arch/powerpc/platforms/powermac/pmac_feature.c Paul Mackerras 2005-09-26  155  }
-14cf11af6cf608 arch/powerpc/platforms/powermac/pmac_feature.c Paul Mackerras 2005-09-26  156  
-
-:::::: The code at line 137 was first introduced by commit
-:::::: 14cf11af6cf608eb8c23e989ddb17a715ddce109 powerpc: Merge enough to start building in arch/powerpc.
-
-:::::: TO: Paul Mackerras <paulus@samba.org>
-:::::: CC: Paul Mackerras <paulus@samba.org>
-
+diff --git a/arch/powerpc/perf/core-fsl-emb.c b/arch/powerpc/perf/core-fsl-emb.c
+index ee721f420a7b..1a53ab08447c 100644
+--- a/arch/powerpc/perf/core-fsl-emb.c
++++ b/arch/powerpc/perf/core-fsl-emb.c
+@@ -645,7 +645,6 @@ static void perf_event_interrupt(struct pt_regs *regs)
+ 	struct cpu_hw_events *cpuhw = this_cpu_ptr(&cpu_hw_events);
+ 	struct perf_event *event;
+ 	unsigned long val;
+-	int found = 0;
+ 
+ 	for (i = 0; i < ppmu->n_counter; ++i) {
+ 		event = cpuhw->event[i];
+@@ -654,7 +653,6 @@ static void perf_event_interrupt(struct pt_regs *regs)
+ 		if ((int)val < 0) {
+ 			if (event) {
+ 				/* event has overflowed */
+-				found = 1;
+ 				record_and_restart(event, val, regs);
+ 			} else {
+ 				/*
+@@ -672,11 +670,13 @@ static void perf_event_interrupt(struct pt_regs *regs)
+ 	isync();
+ }
+ 
+-void hw_perf_event_setup(int cpu)
++static int fsl_emb_pmu_prepare_cpu(unsigned int cpu)
+ {
+ 	struct cpu_hw_events *cpuhw = &per_cpu(cpu_hw_events, cpu);
+ 
+ 	memset(cpuhw, 0, sizeof(*cpuhw));
++
++	return 0;
+ }
+ 
+ int register_fsl_emb_pmu(struct fsl_emb_pmu *pmu)
+@@ -689,6 +689,8 @@ int register_fsl_emb_pmu(struct fsl_emb_pmu *pmu)
+ 		pmu->name);
+ 
+ 	perf_pmu_register(&fsl_emb_pmu, "cpu", PERF_TYPE_RAW);
++	cpuhp_setup_state(CPUHP_PERF_POWER, "perf/powerpc:prepare",
++			  fsl_emb_pmu_prepare_cpu, NULL);
+ 
+ 	return 0;
+ }
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.41.0
+
