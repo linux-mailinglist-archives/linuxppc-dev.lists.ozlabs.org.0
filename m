@@ -2,86 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE81E780BE7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Aug 2023 14:37:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C475A780BF2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Aug 2023 14:39:37 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=C5e9rXhJ;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=WvErnSoc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=d+bwoWlh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=ggAWAxVj;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RS1cP6Jvcz3cTN
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Aug 2023 22:37:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RS1fH4xTDz3cT3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Aug 2023 22:39:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=C5e9rXhJ;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=WvErnSoc;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=d+bwoWlh;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=ggAWAxVj;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=64.147.123.17; helo=wnew3-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
 Received: from wnew3-smtp.messagingengine.com (wnew3-smtp.messagingengine.com [64.147.123.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RS1bQ558Yz2xFn
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Aug 2023 22:37:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RS1dQ2Crqz2y1c
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Aug 2023 22:38:50 +1000 (AEST)
 Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailnew.west.internal (Postfix) with ESMTP id 5BAC22B00191;
-	Fri, 18 Aug 2023 08:37:01 -0400 (EDT)
+	by mailnew.west.internal (Postfix) with ESMTP id 84F162B00192;
+	Fri, 18 Aug 2023 08:38:47 -0400 (EDT)
 Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Fri, 18 Aug 2023 08:37:01 -0400
+  by compute6.internal (MEProxy); Fri, 18 Aug 2023 08:38:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
 	:cc:content-type:content-type:date:date:from:from:in-reply-to
 	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm3; t=1692362220; x=1692369420; bh=SQ
-	lAgMLU3HRev+9d1VH4auJeedGv3m900FTY4V8KdiA=; b=C5e9rXhJtnNi2TCu7l
-	8CCMb2Ohju/uda/ovu0B779p56tmqTdZJwmdZSRTzSlLiAluVrCX00jjepJOWOtq
-	nc6Nfrz5GAEuqfx2nHVe1+1LxMQ8Ff9bPSH4coUTygXiy/GEpljsZOSJieZDBX2H
-	MR/5CwY5tst2SGTcCOGgtsscMCUB7fJGWfuFdoRmtaZ8hwUrrBjw+hBq4OXgc3JJ
-	t63hN93j/ZO9GzWTLnuFjL6wp1kevlnmtjV4RoNULTL1ktJxhRyVrIHYspZ+KC7d
-	CndBxbjKo2B/y8JKAf7JNOoyhlSmcgWZ8GE0f4CJIsxD0Vw1NRUuN0I+CFYN8HdL
-	BSNw==
+	:subject:subject:to:to; s=fm3; t=1692362326; x=1692369526; bh=VR
+	Eevf5qPO8COed4/oy026pPJB7NxKFdDGSXwKxHqf0=; b=d+bwoWlht+7ouoS/7J
+	AhxzevDyh+g/uq5Kqt7iTZpMVfiisxGrCgzCzQk7UHxbx6IHyoOWiIdbtmWk6iet
+	GGrcDZuqAhp7jQX1PIDrldMHvYQdQwpBpvhBvLrfWjARX6m4dq0k0qXijDYxWx+O
+	1GaVMw7ieXDsRrGrp+MJsTHK7IXt76Dx8Tn3PcIlgipmqDnPsR2slSZyf6h4XlBd
+	A3DkVKM7pdSh+XeE66f7gba1ipuksmri4nYAqq3SdroDyHcMa5dAzQWfYjBhgwr0
+	uN2fZjk8N0pmQNOHj8CkCOYShaxvMtkTZZ1wZUnnKLZ3h5g2VhG0I4fItsK8A4v3
+	70wQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-type:content-type:date:date
 	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
 	:message-id:mime-version:references:reply-to:sender:subject
 	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm1; t=1692362220; x=1692369420; bh=SQlAgMLU3HRev
-	+9d1VH4auJeedGv3m900FTY4V8KdiA=; b=WvErnSocl35e2ZAgGXaYZxdlUOhel
-	didA48DngANn67Y80fNR7gIHLTM/hmDRikHFS+SOLFVhEz7QbJgutwEx0nOwYyAB
-	IBqYC8+zsl6vSaPyJ2nq8UfzfiGZnQ+Chzzp4LT/V6Yg3ld6uFuYKum6rIVv3LwT
-	3reQ09/6CEgIbLcKfVl15G6tUEc9tXbWAutJgRk59IuVv0HR0bHZ/41wbaur1qKx
-	4MwLYzh6wGMOOV1/l5Qe51l31aqU4p8QztXQ+8KAXWrhcXRljDr/QQ2wM+fSbk63
-	6sxQcDDX6I01WGw26r/+va5RIc1pj31c3jGNeSNeXJe0wNYoONNZcVRlg==
-X-ME-Sender: <xms:62XfZLuNPPlnBU9-wMKjSVV05BSyeD7j_oTBNp2vVWlUSgz6Wvp62w>
-    <xme:62XfZMd2eKCF3oI9OC-fobB6jU1XP1_Tuop21eLFFatnrXP7euNsvxRSlBWtlkHo_
-    ak4NY8gC6O5Dc_wMCo>
+	:x-sasl-enc; s=fm1; t=1692362326; x=1692369526; bh=VREevf5qPO8CO
+	ed4/oy026pPJB7NxKFdDGSXwKxHqf0=; b=ggAWAxVjraT1rHERwpEPLrJWBXiX5
+	jChRWcMsiX+/E8cuvXyF80WM/CSbxFBRmM/k1Vre9TjA9OaWN1UacrDECX3k4xFS
+	ze54UvpfJHraV0ui2P6xykunXtVpF9clvtgn5KNTuIW05pdFbsyZhDt5VWAhA8y4
+	72Lud6dLrIXuhK+wfZRlkL8ZO8Fa/mwXPTvD0H5JloeZoDb2BgAY444/mWKabtGC
+	UXagx98erOo9EHtgFpvGmp5QAp67BGOb0d7w3v/PVgUjApTMp3QQ2wzR1aTVCu5c
+	Jqve3hXeA9JBYQBSRqcjVVW+qDN+Y7KOzvAsLCQXrTmYMIkvzhER9vD6w==
+X-ME-Sender: <xms:VmbfZGxZHtWL2hA8NOocNgxaSWw68Ztap9HrKupd_1XWvWJrbhnJGw>
+    <xme:VmbfZCQ3yWHNjUpQwVOzK2xFKd7HDCUT3BJd6bDvYWdL1tM9yc90kcxby8baj6SPg
+    vOIcMqWFDEr6EFMRkk>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedruddufedgheehucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucenucfjughrpefofgggkfgjfhffhffvvefutgesth
-    dtredtreertdenucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnuges
-    rghrnhgusgdruggvqeenucggtffrrghtthgvrhhnpeevhfffledtgeehfeffhfdtgedvhe
-    ejtdfgkeeuvefgudffteettdekkeeufeehudenucffohhmrghinhepkhgvrhhnvghlrdho
-    rhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
+    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
     hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:7GXfZOy01ZaCBBVLKc-kqw_muk8j3uSg3CC_cWJEkOKv3FtHC2N26g>
-    <xmx:7GXfZKN8_e_dRw3GisVLk0WnUjC1IsJMxUQso0UcslY7FxvFRp9V5Q>
-    <xmx:7GXfZL9HcGmJR3P0-FEwiuR0boDwGPjvqjwKOAW5VbM1LP6Awmq8DA>
-    <xmx:7GXfZNLtbhDzc6MLwtZgmu-NXVNH9ymB5SqsVBjkbgMnkEl1d1S6Rcxnlto>
+X-ME-Proxy: <xmx:VmbfZIUqx27iRLZmO1UnoC5gOcDoLOdq32mkyYaFhYFBYh88bycIlA>
+    <xmx:VmbfZMgEgOgqLselMUkYb5bHUttOu_WwUCrxSQkf2l-CKnA4NwCVLA>
+    <xmx:VmbfZIB9cRfYyvqRSphs0qQdqPbgVGBYOuVFVOFHrsU3NhJMzGjoHA>
+    <xmx:VmbfZK3xxAmtYNh_lxnyRtXHM1aeGSwGHfvwfNrrqidR-EJWHPVyhIh6oGI>
 Feedback-ID: i56a14606:Fastmail
 Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id D8428B6008F; Fri, 18 Aug 2023 08:36:59 -0400 (EDT)
+	id 2374AB60089; Fri, 18 Aug 2023 08:38:46 -0400 (EDT)
 X-Mailer: MessagingEngine.com Webmail Interface
 User-Agent: Cyrus-JMAP/3.9.0-alpha0-624-g7714e4406d-fm-20230801.001-g7714e440
 Mime-Version: 1.0
-Message-Id: <6173828b-183c-490d-abca-bdc72221bafc@app.fastmail.com>
-In-Reply-To: <202308181501.AR5HMDWC-lkp@intel.com>
-References: <202308181501.AR5HMDWC-lkp@intel.com>
-Date: Fri, 18 Aug 2023 14:36:37 +0200
+Message-Id: <156fec7b-1a9f-4660-b1c3-65a8b9cd1405@app.fastmail.com>
+In-Reply-To:  <008c4b0a118d37abac6b1ec89b5677b1c6e347ae.1692345210.git.christophe.leroy@csgroup.eu>
+References:  <008c4b0a118d37abac6b1ec89b5677b1c6e347ae.1692345210.git.christophe.leroy@csgroup.eu>
+Date: Fri, 18 Aug 2023 14:38:23 +0200
 From: "Arnd Bergmann" <arnd@arndb.de>
-To: "kernel test robot" <lkp@intel.com>
-Subject: Re: [powerpc:next-test 21/79]
- arch/powerpc/platforms/powermac/feature.c:137:19: error: unused function
- 'simple_feature_tweak'
+To: "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Michael Ellerman" <mpe@ellerman.id.au>,
+ "Nicholas Piggin" <npiggin@gmail.com>, "Christoph Hellwig" <hch@lst.de>,
+ "Marek Szyprowski" <m.szyprowski@samsung.com>,
+ "Robin Murphy" <robin.murphy@arm.com>
+Subject: Re: [PATCH] dma-mapping, powerpc: Move arch_dma_set_mask() prototype into
+ dma-map-ops.h
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -94,36 +97,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: llvm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, oe-kbuild-all@lists.linux.dev
+Cc: iommu@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Aug 18, 2023, at 09:59, kernel test robot wrote:
-> tree:   
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git 
-> next-test
-> head:   c56963d48343b50998bacc6df949217c950163e3
-> commit: 54f30b83fe627453082f15d83d7820b28b2d24bb [21/79] powerpc: 
-> address missing-prototypes warnings
-
+On Fri, Aug 18, 2023, at 09:55, Christophe Leroy wrote:
+> To fix the following error,
 >
-> If you fix the issue in a separate patch/commit (i.e. not just a new 
-> version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: 
-> https://lore.kernel.org/oe-kbuild-all/202308181501.AR5HMDWC-lkp@intel.com/
+>   CC      arch/powerpc/kernel/dma-mask.o
+> arch/powerpc/kernel/dma-mask.c:7:6: error: no previous prototype for 
+> 'arch_dma_set_mask' [-Werror=missing-prototypes]
+>     7 | void arch_dma_set_mask(struct device *dev, u64 dma_mask)
+>       |      ^~~~~~~~~~~~~~~~~
 >
-> All errors (new ones prefixed by >>):
+> Move arch_dma_set_mask() definition into dma-map-ops.h and
+> include it in arch/powerpc/kernel/dma-mask.c
 >
->>> arch/powerpc/platforms/powermac/feature.c:137:19: error: unused function 'simple_feature_tweak' [-Werror,-Wunused-function]
->    static inline int simple_feature_tweak(struct device_node *node, int type,
->                      ^
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> ---
 
-This looks unrelated to my patch, but is easily addressed by marking
-the function __maybe_unused. The warning is triggered by clang specific
-behavior that treats inline functions in .c files differently, see
-6863f5643dd7 ("kbuild: allow Clang to find unused static inline functions
-for W=1 build")
+I sent the same patch, and this is already in linux-next as
+3d6f126b15d9 ("dma-mapping: move arch_dma_set_mask() declaration
+to header")
 
-     Arnd
+      Arnd
