@@ -1,63 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87A10781598
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Aug 2023 01:02:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C91847815A0
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Aug 2023 01:04:36 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=gS9arkhq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=EVGfgwe5;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RSHSx2HJGz3cWG
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Aug 2023 09:02:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RSHWQ4zX9z3cRt
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Aug 2023 09:04:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=gS9arkhq;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=EVGfgwe5;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=3spjfzaykdouzlhuqjnvvnsl.jvtspubewwj-klcspzaz.vgshiz.vyn@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=3zvjfzaykdg0dplyunrzzrwp.nzxwtyfiaan-opgwtded.zkwlmd.zcr@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RSHRz4dNGz2yPq
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Aug 2023 09:01:33 +1000 (AEST)
-Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-d745094c496so1166723276.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Aug 2023 16:01:33 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RSHVV1j8fz30MY
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Aug 2023 09:03:46 +1000 (AEST)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-589b0bbc290so18815537b3.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Aug 2023 16:03:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1692399688; x=1693004488;
+        d=google.com; s=20221208; t=1692399822; x=1693004622;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=usNReEG1yhZ2OoI1bkcsHZxi8vJT2uNEbLMV9P1BADc=;
-        b=gS9arkhq2BQM5wyG90faWG4pywmMu5sfjHEWd04bKy84agcqatheT6YSVqsnMAhJXs
-         7Ey6R/IsFpbuJAgflRTfCsGQSeE7z8aCnsHRbxEkKBK/PAH7FMZgZEavx3BeBXM+3P+2
-         Plq9VhZaRy5PbOx8EDNA03ytcClkYRB9Plt+OD+UltS53ZO5IOuVPHa/Yt8AOkDtjpGf
-         J0ReekJEPtY7ifZaoOCUWVj24ZOCPfNYabKI/jnVy+VGWVTelTn6BvdxHdiQrBc+k/kc
-         BoETN+5H+qyvqSzJ4nWEMxKRREF2ybV9p6gaBfB8lx1V/iAPfjWa3WjZDIbTKQp0bm0Z
-         IJkg==
+        bh=28NglzIO6cp/vzLfU4W3yc26zb3SzMF2NIoeJVJxjcQ=;
+        b=EVGfgwe5loZZR0WMUgpJEOZteslGNWIqlIRhDe/gbts+F4/yw7LopoWIr9pAXN/gct
+         vmDVXSSz1qYQsgmOG56EVjufIZ8uHJIc0K2fjYh54YGOjsi7Y2c13ZQR7k+mneDCdJ6K
+         fzW5DxeEtavJtj3e3uV6c2SWgwD/YmEbj2Rv9dwQ6wRuQzmdnahyzKBwtcnM92PUpCV2
+         6SViYhyQd8PzIgA5SnclKlRnW0JgjAUS06yCK7QyV0vkFW6Zt0VuYiJbLr9XMzWwR30M
+         Wq85gyIx9s0/FGvGJHcq/Jks4zP9GUvni76QMTBxGvpnvPGwvzqq5FqhBNo14dUbWrMQ
+         g0nA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692399688; x=1693004488;
+        d=1e100.net; s=20221208; t=1692399822; x=1693004622;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=usNReEG1yhZ2OoI1bkcsHZxi8vJT2uNEbLMV9P1BADc=;
-        b=il7euFWf5CQNBLqxn3M+KEc5pJmgyE4dRlHoTekm2Ujvxp7rQlbNTBGLSRqd7x58DD
-         0FFhZDvdJmE38LXE+p4ZdsIkvW4X34Th68V8Oa04Mhv0LP9ZhH1jgLlzDlEk71MlpM9b
-         2SLu1QR8M66wZGmCihk5drxGEExGa1KBWhRCOqRwLpBZ2n2pkUdQ3KS8t/BsIcM5zi9C
-         wfwuzWmCwB+lWpUtrEJ3GP+Cv/8nS1LdW2RNDdv+3k69jBz5PEBOx0reE3m0fP/gFzie
-         vtRiXes9NZ240hzoY0cDOThchvOqsVDvcK7QrNYnVIVGUrXFMuVZp+lv0AOBAYtpYcAv
-         i57g==
-X-Gm-Message-State: AOJu0YyDvMbPjxpE3j7UxtulKXYhSzuZdu5R+1d4Z32rzc3laywB8E3D
-	IRhT/LMutRyLCH/FVbGRI3emby3Y1fo=
-X-Google-Smtp-Source: AGHT+IHoaUgHi5iMS/0Xt5cvUarFzMCVBDWHJfa8lAvVIAai8wyXyMLBOgyLMJxxiXlZfzlnoz9PoDeIZVI=
+        bh=28NglzIO6cp/vzLfU4W3yc26zb3SzMF2NIoeJVJxjcQ=;
+        b=TA6aTH3x72O3y2+dQfh0WTGMBlktCnQAlNH0VLZ+METeZwAOYWwhvVRsM4Nv6ktXuA
+         lMoa2FRvx/lVPJn7Bu5Z4CMPbvxXlyjPrmE/7lv4Ejyyft0IO4DiaxuYmtCfwZpyGrhy
+         ZWMzPU6ghAlBdU5jO8QUk36gsTh8XoJmC4LtwgQCpE8RvcXV04h52RwN3rh+G92hecT/
+         MP1vYaA3Qo224JTVPrZJBdD2ooDEM020lnk7Hj8sovFRdWpg+GLjeKQsnE1+5c3VOtBF
+         iDpt+jpbMkQqUhy+y5NPecCCnln9+5OC4+SjUwFUU120GAqtRfmLnGP8aY9iF2EHXInG
+         Abug==
+X-Gm-Message-State: AOJu0Yx80gMEPqSaJN0mz71mmfraOczzEXqOBH+ncvlHIqFNg2S9yuRz
+	HFfwr6o4dGiNEEsvtrSNdBNu4QEhYIE=
+X-Google-Smtp-Source: AGHT+IEiW/RghuqZOFRro09VfZa9EIt3/32aXeBy5eI/raBp2zbRsudvcD77PZeJQ//x65k1pSmrq3qMqqs=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:6902:a8a:b0:d74:347:1e3 with SMTP id
- cd10-20020a0569020a8a00b00d74034701e3mr5755ybb.9.1692399688376; Fri, 18 Aug
- 2023 16:01:28 -0700 (PDT)
-Date: Fri, 18 Aug 2023 16:01:26 -0700
-In-Reply-To: <diqzleem306p.fsf@ackerleytng-ctop.c.googlers.com>
+ (user=seanjc job=sendgmr) by 2002:a25:d149:0:b0:d4c:2a34:aeab with SMTP id
+ i70-20020a25d149000000b00d4c2a34aeabmr6800ybg.11.1692399822583; Fri, 18 Aug
+ 2023 16:03:42 -0700 (PDT)
+Date: Fri, 18 Aug 2023 16:03:41 -0700
+In-Reply-To: <diqzo7ji30eo.fsf@ackerleytng-ctop.c.googlers.com>
 Mime-Version: 1.0
-References: <20230718234512.1690985-29-seanjc@google.com> <diqzleem306p.fsf@ackerleytng-ctop.c.googlers.com>
-Message-ID: <ZN/4RjDsBLf0FB98@google.com>
+References: <20230718234512.1690985-29-seanjc@google.com> <diqzo7ji30eo.fsf@ackerleytng-ctop.c.googlers.com>
+Message-ID: <ZN/4zZFrsPdh/mLo@google.com>
 Subject: Re: [RFC PATCH v11 28/29] KVM: selftests: Add basic selftest for guest_memfd()
 From: Sean Christopherson <seanjc@google.com>
 To: Ackerley Tng <ackerleytng@google.com>
@@ -79,70 +79,11 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 On Mon, Aug 07, 2023, Ackerley Tng wrote:
 > Sean Christopherson <seanjc@google.com> writes:
+> > +	ret = fallocate(fd, FALLOC_FL_KEEP_SIZE, total_size + page_size, page_size);
+> > +	TEST_ASSERT(ret, "fallocate beginning at total_size should fail");
 > 
-> > Add a selftest to verify the basic functionality of guest_memfd():
-> >
-> > <snip>
+> This should be
 > 
-> Here's one more test:
+> TEST_ASSERT(ret, "fallocate beginning after total_size should fail");
 
-First off, thank you!  I greatly appreciate all the selftests work you (and
-others!) have been doing.
-
-For v2, can you please post a standalone patch?  My workflow barfs on unrelated,
-inlined patches.  I'm guessing I can get b4 to play nice, but it's easier to just
-yell at people :-)
-
-> >From 72dc6836f01bdd613d64d4c6a4f2af8f2b777ba2 Mon Sep 17 00:00:00 2001
-> From: Ackerley Tng <ackerleytng@google.com>
-> Date: Tue, 1 Aug 2023 18:02:50 +0000
-> Subject: [PATCH] KVM: selftests: Add tests - invalid inputs for
->  KVM_CREATE_GUEST_MEMFD
-> 
-> Test that invalid inputs for KVM_CREATE_GUEST_MEMFD, such as
-> non-page-aligned page size and invalid flags, are rejected by the
-> KVM_CREATE_GUEST_MEMFD with EINVAL
-> 
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> ---
->  tools/testing/selftests/kvm/guest_memfd_test.c  | 17 +++++++++++++++++
->  .../selftests/kvm/include/kvm_util_base.h       | 11 +++++++++--
->  2 files changed, 26 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-> index eb93c608a7e0..ad20f11b2d2c 100644
-> --- a/tools/testing/selftests/kvm/guest_memfd_test.c
-> +++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-> @@ -90,6 +90,21 @@ static void test_fallocate(int fd, size_t page_size, size_t total_size)
->  	TEST_ASSERT(!ret, "fallocate to restore punched hole should succeed");
->  }
->  
-> +static void test_create_guest_memfd_invalid(struct kvm_vm *vm, size_t page_size)
-> +{
-> +	int fd;
-> +
-> +	/* Non-page-aligned page_size */
-
-Instead of adding a comment, use the message from TEST_ASSERT() to communicate
-that information to the reader *and* to anyone that encounters failures.
-
-> +	fd = __vm_create_guest_memfd(vm, 1, 0);
-
-ioctls() are fast.  Rather than hardcode one value, iterate over a range of
-values, e.g.
-
-	for (size = 0; size < page_size; size++) {
-		r = __vm_create_guest_memfd(vm, size, 0);
-		TEST_ASSERT(r && errno == EINVAL,
-			    "Informative error message...);
-	}
-		
-> +	ASSERT_EQ(errno, EINVAL);
-> +
-> +	/* Invalid flags */
-> +	fd = __vm_create_guest_memfd(vm, page_size, 99);
-> +	ASSERT_EQ(fd, -1);
-> +	ASSERT_EQ(errno, EINVAL);
-
-And then same thing here.  Then you can use the legal flags to determine what is
-and isn't valid, instead of using a completely arbitrary magic number.
+Roger that, I'll push a fixup commit directly to kvm-x86/guest_memfd.  Thanks!
