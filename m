@@ -2,103 +2,107 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CFAA780B23
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Aug 2023 13:30:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 322FD780B26
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Aug 2023 13:30:59 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tbeDllnJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=W5MIJZ9I;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RS0660Jy3z3cTY
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Aug 2023 21:30:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RS0750j3Sz3cY8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Aug 2023 21:30:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tbeDllnJ;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=W5MIJZ9I;
 	dkim-atps=neutral
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RS05C3Gw3z3cF1
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Aug 2023 21:29:19 +1000 (AEST)
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4RS05C2whyz4wy8
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Aug 2023 21:29:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RS05s2TCVz3cRc
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Aug 2023 21:29:53 +1000 (AEST)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4RS05s1sMsz4wy8
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Aug 2023 21:29:53 +1000 (AEST)
 Received: by gandalf.ozlabs.org (Postfix)
-	id 4RS05C2bF8z4wy5; Fri, 18 Aug 2023 21:29:19 +1000 (AEST)
+	id 4RS05s1mPmz4wy5; Fri, 18 Aug 2023 21:29:53 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: gandalf.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tbeDllnJ;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=W5MIJZ9I;
 	dkim-atps=neutral
 Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com; receiver=ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4RS05B4Nghz4wbP;
-	Fri, 18 Aug 2023 21:29:18 +1000 (AEST)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37IBMQBV022601;
-	Fri, 18 Aug 2023 11:29:16 GMT
+	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4RS05r6ZVQz4wbP;
+	Fri, 18 Aug 2023 21:29:52 +1000 (AEST)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37IBNFPj000823;
+	Fri, 18 Aug 2023 11:29:51 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : from : to : cc
- : date : message-id : content-type : content-transfer-encoding :
- mime-version; s=pp1; bh=fc2M/r+7xUmCuSN/G/vCZDqaS8VCMeOP55q/YgkshYY=;
- b=tbeDllnJwws5aDdFRXX39L1rvAH8paA4tOm8vQhheNLU65VPTDsxfV+sSUVmqu05XaON
- iynu3o7lA/qpqRIop+zEi5mRD1gMWh4bJEBrEDRJi3ntZ70DDiIO8gIZYZ+rMNkrcziH
- WDvOj8ZSMkJSDHldbyCmzAriZNTi7j3i2O23EdwMAsmtpFMinUquUhdHZgWGutNaOkHd
- QK7pVFLgnT1zTvbQBsfki+yUtDFBZgs2Vylpree3uq8h+t6FS+yl+vqi44BHnfca+ZGT
- 9lxF4CMp7wbb0571td8n+PNwpblr9p7jpQ2/ISCBAf71H79rCeZQnaj6pvbvWRox8R2y MA== 
+ : date : message-id : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=SssMv0d2ByOn45m1SrTUOIjfbO64T6j/UhE/PdcbH8Y=;
+ b=W5MIJZ9IGG5G1B8dzPbcKTkJVH3PhmC+yGECAuf7jHO+kLndrQrJmTfowFbB6qyeIsmq
+ RUcnLydjXJjN/sQlYne4pgPPDhO3DyX+Z9DiNzfLOFm2/lVomeRpAtAGF9HlWidKwpil
+ d1vFXCUyD9dZRIzaye8HhPVvwvekVHiJSzNvcdjqubxeEZIFBzqwQTTn3cwQ5hcl6hRU
+ TPpgj6wehGYKcTMzyF6qQFFm99D3D855muMuHLVlHv5CPkBYInGYun19E5kL8d9nayib
+ p/dlvVJWohjR1AfB4QZgWsixqnVLCtA9PnWKNwDGvzftMYdmSi/8onNZpJ56lfRzYQ8N 5A== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sj7qb05cp-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sj7qqr3re-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 18 Aug 2023 11:29:15 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37IBN4kh024617;
-	Fri, 18 Aug 2023 11:29:15 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sj7qb05c6-1
+	Fri, 18 Aug 2023 11:29:50 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37IBOBcl003449;
+	Fri, 18 Aug 2023 11:29:50 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sj7qqr3qr-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 18 Aug 2023 11:29:15 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 37IAjscM002408;
-	Fri, 18 Aug 2023 11:29:13 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sendnxjnt-1
+	Fri, 18 Aug 2023 11:29:50 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 37IACtpF001085;
+	Fri, 18 Aug 2023 11:29:48 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3semsyxwmq-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 18 Aug 2023 11:29:13 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 37IBTAB522217394
+	Fri, 18 Aug 2023 11:29:48 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 37IBTjVV24117886
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 18 Aug 2023 11:29:10 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B1BEA2004B;
-	Fri, 18 Aug 2023 11:29:10 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F092220043;
-	Fri, 18 Aug 2023 11:29:08 +0000 (GMT)
+	Fri, 18 Aug 2023 11:29:45 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7C80520040;
+	Fri, 18 Aug 2023 11:29:45 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CCE2420043;
+	Fri, 18 Aug 2023 11:29:43 +0000 (GMT)
 Received: from [9.113.206.79] (unknown [9.113.206.79])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 18 Aug 2023 11:29:08 +0000 (GMT)
-Subject: [PATCH v9 1/2] powerpc/rtas: export rtas_error_rc() for reuse.
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 18 Aug 2023 11:29:43 +0000 (GMT)
+Subject: [PATCH v9 2/2] PCI: rpaphp: Error out on busy status from
+ get-sensor-state
 From: Mahesh Salgaonkar <mahesh@linux.ibm.com>
 To: linuxppc-dev <linuxppc-dev@ozlabs.org>
-Date: Fri, 18 Aug 2023 16:59:07 +0530
-Message-ID: <169235811556.193557.1023625262204809514.stgit@jupiter>
+Date: Fri, 18 Aug 2023 16:59:43 +0530
+Message-ID: <169235815601.193557.13989873835811325343.stgit@jupiter>
+In-Reply-To: <169235811556.193557.1023625262204809514.stgit@jupiter>
+References: <169235811556.193557.1023625262204809514.stgit@jupiter>
 User-Agent: StGit/1.5
 Content-Type: text/plain; charset="utf-8"
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 4tK_0qneUppuI-d9HJ4FigQillqSpnQD
-X-Proofpoint-ORIG-GUID: qjYkAtMXet7hxwNQZK0LRWEu9iRNWaG-
+X-Proofpoint-ORIG-GUID: RGiu70qy3XvSfQhp5SJiFkoUg2XJyPDT
+X-Proofpoint-GUID: j-e0j1VxB30aWlUdL_cw4Guab4l-sJHO
 Content-Transfer-Encoding: 7bit
 X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
  definitions=2023-08-18_13,2023-08-18_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
- priorityscore=1501 phishscore=0 bulkscore=0 mlxlogscore=903 spamscore=0
- clxscore=1015 suspectscore=0 impostorscore=0 adultscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 adultscore=0
+ lowpriorityscore=0 bulkscore=0 mlxscore=0 phishscore=0 malwarescore=0
+ suspectscore=0 priorityscore=1501 impostorscore=0 spamscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2306200000 definitions=main-2308180102
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -115,107 +119,253 @@ Cc: Nathan Lynch <nathanl@linux.ibm.com>, Tyrel Datwyler <tyreld@linux.ibm.com>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Also, #define descriptive names for common rtas return codes and use it
-instead of numeric values.
+When certain PHB HW failure causes pHyp to recover PHB, it marks the PE
+state as temporarily unavailable until recovery is complete. This also
+triggers an EEH handler in Linux which needs to notify drivers, and perform
+recovery. But before notifying the driver about the PCI error it uses
+get_adapter_status()->rpaphp_get_sensor_state()->rtas_call(get-sensor-state)
+operation of the hotplug_slot to determine if the slot contains a device or
+not. If the slot is empty, the recovery is skipped entirely.
+
+eeh_event_handler()
+  ->eeh_handle_normal_event()
+    ->eeh_slot_presence_check()
+      ->get_adapter_status()
+        ->rpaphp_get_sensor_state()
+          ->rtas_get_sensor()
+            ->rtas_call(get-sensor-state)
+
+However on certain PHB failures, the RTAS call rtas_call(get-sensor-state)
+returns extended busy error (9902) until PHB is recovered by pHyp. Once PHB
+is recovered, the rtas_call(get-sensor-state) returns success with correct
+presence status. The RTAS call interface rtas_get_sensor() loops over the
+RTAS call on extended delay return code (9902) until the return value is
+either success (0) or error (-1). This causes the EEH handler to get stuck
+for ~6 seconds before it could notify that the PCI error has been detected
+and stop any active operations. Hence with running I/O traffic, during this
+6 seconds, the network driver continues its operation and hits a timeout
+(netdev watchdog).
+
+------------
+[52732.244731] DEBUG: ibm_read_slot_reset_state2()
+[52732.244762] DEBUG: ret = 0, rets[0]=5, rets[1]=1, rets[2]=4000, rets[3]=>
+[52732.244798] DEBUG: in eeh_slot_presence_check
+[52732.244804] DEBUG: error state check
+[52732.244807] DEBUG: Is slot hotpluggable
+[52732.244810] DEBUG: hotpluggable ops ?
+[52732.244953] DEBUG: Calling ops->get_adapter_status
+[52732.244958] DEBUG: calling rpaphp_get_sensor_state
+[52736.564262] ------------[ cut here ]------------
+[52736.564299] NETDEV WATCHDOG: enP64p1s0f3 (tg3): transmit queue 0 timed o>
+[52736.564324] WARNING: CPU: 1442 PID: 0 at net/sched/sch_generic.c:478 dev>
+[...]
+[52736.564505] NIP [c000000000c32368] dev_watchdog+0x438/0x440
+[52736.564513] LR [c000000000c32364] dev_watchdog+0x434/0x440
+------------
+
+On timeouts, network driver starts dumping debug information to console
+(e.g bnx2 driver calls bnx2x_panic_dump()), and go into recovery path while
+pHyp is still recovering the PHB. As part of recovery, the driver tries to
+reset the device and it keeps failing since every PCI read/write returns
+ff's. And when EEH recovery kicks-in, the driver is unable to recover the
+device. This impacts the ssh connection and leads to the system being
+inaccessible. To get the NIC working again it needs a reboot or re-assign
+the I/O adapter from HMC.
+
+[ 9531.168587] EEH: Beginning: 'slot_reset'
+[ 9531.168601] PCI 0013:01:00.0#10000: EEH: Invoking bnx2x->slot_reset()
+[...]
+[ 9614.110094] bnx2x: [bnx2x_func_stop:9129(enP19p1s0f0)]FUNC_STOP ramrod failed. Running a dry transaction
+[ 9614.110300] bnx2x: [bnx2x_igu_int_disable:902(enP19p1s0f0)]BUG! Proper val not read from IGU!
+[ 9629.178067] bnx2x: [bnx2x_fw_command:3055(enP19p1s0f0)]FW failed to respond!
+[ 9629.178085] bnx2x 0013:01:00.0 enP19p1s0f0: bc 7.10.4
+[ 9629.178091] bnx2x: [bnx2x_fw_dump_lvl:789(enP19p1s0f0)]Cannot dump MCP info while in PCI error
+[ 9644.241813] bnx2x: [bnx2x_io_slot_reset:14245(enP19p1s0f0)]IO slot reset --> driver unload
+[...]
+[ 9644.241819] PCI 0013:01:00.0#10000: EEH: bnx2x driver reports: 'disconnect'
+[ 9644.241823] PCI 0013:01:00.1#10000: EEH: Invoking bnx2x->slot_reset()
+[ 9644.241827] bnx2x: [bnx2x_io_slot_reset:14229(enP19p1s0f1)]IO slot reset initializing...
+[ 9644.241916] bnx2x 0013:01:00.1: enabling device (0140 -> 0142)
+[ 9644.258604] bnx2x: [bnx2x_io_slot_reset:14245(enP19p1s0f1)]IO slot reset --> driver unload
+[ 9644.258612] PCI 0013:01:00.1#10000: EEH: bnx2x driver reports: 'disconnect'
+[ 9644.258615] EEH: Finished:'slot_reset' with aggregate recovery state:'disconnect'
+[ 9644.258620] EEH: Unable to recover from failure from PHB#13-PE#10000.
+[ 9644.261811] EEH: Beginning: 'error_detected(permanent failure)'
+[...]
+[ 9644.261823] EEH: Finished:'error_detected(permanent failure)'
+
+Hence, it becomes important to inform driver about the PCI error detection
+as early as possible, so that driver is aware of PCI error and waits for
+EEH handler's next action for successful recovery.
+
+Current implementation uses rtas_get_sensor() API which blocks the slot
+check state until RTAS call returns success. To avoid this, fix the PCI
+hotplug driver (rpaphp) to return an error (-EBUSY) if the slot presence
+state can not be detected immediately while PE is in EEH recovery state.
+Change rpaphp_get_sensor_state() to invoke rtas_call(get-sensor-state)
+directly only if the respective PE is in EEH recovery state, and take
+actions based on RTAS return status. This way EEH handler will not be
+blocked on rpaphp_get_sensor_state() and can immediately notify driver
+about the PCI error and stop any active operations.
+
+In normal cases (non-EEH case) rpaphp_get_sensor_state() will continue to
+invoke rtas_get_sensor() as it was earlier with no change in existing
+behavior.
 
 Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Reviewed-by: Nathan Lynch <nathanl@linux.ibm.com>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 ---
 Change in v9:
-- Keep the existing function name rtas_error_rc().
-- Use EXPORT_SYMBOL_GPL instead of EXPORT_SYMBOL
-  https://lore.kernel.org/all/877cpxdksx.fsf@mail.lhotse/
+- Move get-sensor-state specific #defines of rtas return code from rtas.h
+  (patch 1/2) to rpaphp_pci.c
 
-Change in V7:
-- Until v6 there was only one patch with subject "PCI hotplug: rpaphp:
-  Error out on busy status from get-sensor-state". Starting from v7, adding
-  this new patch to introduce rtas_generic_errno() to handle generic rtas
-  error codes.
+Change in v8:
+- Removed redundant #ifdef CONFIG_EEH and addressed other review comments.
+  https://lore.kernel.org/lkml/20230801213808.GA51837@bhelgaas/
+
+Change in v7:
+- Modified patch description to explain affect of timeout on NIC
+  functioning.
+- Fix few nits requested in previous review at
+  https://lore.kernel.org/all/20220612170248.l6ftaneqjfof2jrc@in.ibm.com/
+- Add additional patch before this to introduce rtas_generic_errno() to
+  handle generic rtas error codes.
   https://lore.kernel.org/all/20220429162545.GA79541@bhelgaas/
----
- arch/powerpc/include/asm/rtas.h |    3 +++
- arch/powerpc/kernel/rtas.c      |   41 ++++++++++++++++++++-------------------
- 2 files changed, 24 insertions(+), 20 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/rtas.h b/arch/powerpc/include/asm/rtas.h
-index 3abe15ac79db1..c697c3c746946 100644
---- a/arch/powerpc/include/asm/rtas.h
-+++ b/arch/powerpc/include/asm/rtas.h
-@@ -202,7 +202,9 @@ typedef struct {
- #define RTAS_USER_REGION_SIZE (64 * 1024)
+Change in v6:
+- Fixed typo's in the patch description as per review comments.
+
+Change in v5:
+- Fixup #define macros with parentheses around the values.
+
+Change in V4:
+- Error out on sensor busy only if PE is going through EEH recovery instead
+  of always error out.
+
+Change in V3:
+- Invoke rtas_call(get-sensor-state) directly from
+  rpaphp_get_sensor_state() directly and do special handling.
+- See v2 at
+  https://lore.kernel.org/all/163817631601.2016996.16085383012429651821.stgit@jupiter/
+
+Change in V2:
+- Alternate approach to fix the EEH issue instead of delaying slot presence
+  check proposed at
+  https://lore.kernel.org/all/163767273634.1368569.7327743414665595326.stgit@jupiter/
+
+Also refer:
+https://lore.kernel.org/all/20211125053402.zyzpl3te5x3ryypx@in.ibm.com/
+---
+ drivers/pci/hotplug/rpaphp_pci.c |   84 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 81 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/pci/hotplug/rpaphp_pci.c b/drivers/pci/hotplug/rpaphp_pci.c
+index 630f77057c23d..2969fea233497 100644
+--- a/drivers/pci/hotplug/rpaphp_pci.c
++++ b/drivers/pci/hotplug/rpaphp_pci.c
+@@ -19,12 +19,91 @@
+ #include "../pci.h"		/* for pci_add_new_bus */
+ #include "rpaphp.h"
  
- /* RTAS return status codes */
-+#define RTAS_HARDWARE_ERROR	-1    /* Hardware Error */
- #define RTAS_BUSY		-2    /* RTAS Busy */
-+#define RTAS_INVALID_PARAMETER	-3    /* Invalid indicator/domain/sensor etc. */
- #define RTAS_EXTENDED_DELAY_MIN	9900
- #define RTAS_EXTENDED_DELAY_MAX	9905
- 
-@@ -425,6 +427,7 @@ extern int rtas_set_indicator(int indicator, int index, int new_value);
- extern int rtas_set_indicator_fast(int indicator, int index, int new_value);
- extern void rtas_progress(char *s, unsigned short hex);
- int rtas_ibm_suspend_me(int *fw_status);
-+int rtas_error_rc(int rtas_rc);
- 
- struct rtc_time;
- extern time64_t rtas_get_boot_time(void);
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index c087eeee320ff..8cef3ccb41d16 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -1330,33 +1330,34 @@ bool __ref rtas_busy_delay(int status)
- }
- EXPORT_SYMBOL_GPL(rtas_busy_delay);
- 
--static int rtas_error_rc(int rtas_rc)
-+int rtas_error_rc(int rtas_rc)
++/*
++ * RTAS call get-sensor-state(DR_ENTITY_SENSE) return values as per PAPR:
++ * -- generic return codes ---
++ *    -1: Hardware Error
++ *    -2: RTAS_BUSY
++ *    -3: Invalid sensor. RTAS Parameter Error.
++ * -- rtas_get_sensor function specific return codes ---
++ * -9000: Need DR entity to be powered up and unisolated before RTAS call
++ * -9001: Need DR entity to be powered up, but not unisolated, before RTAS call
++ * -9002: DR entity unusable
++ *  990x: Extended delay - where x is a number in the range of 0-5
++ */
++#define RTAS_SLOT_UNISOLATED		-9000
++#define RTAS_SLOT_NOT_UNISOLATED	-9001
++#define RTAS_SLOT_NOT_USABLE		-9002
++static int rtas_get_sensor_errno(int rtas_rc)
++{
++	switch (rtas_rc) {
++	case 0:
++		/* Success case */
++		return 0;
++	case RTAS_SLOT_UNISOLATED:
++	case RTAS_SLOT_NOT_UNISOLATED:
++		return -EFAULT;
++	case RTAS_SLOT_NOT_USABLE:
++		return -ENODEV;
++	case RTAS_BUSY:
++	case RTAS_EXTENDED_DELAY_MIN...RTAS_EXTENDED_DELAY_MAX:
++		return -EBUSY;
++	default:
++		return rtas_error_rc(rtas_rc);
++	}
++}
++
++/*
++ * get_adapter_status() can be called by the EEH handler during EEH recovery.
++ * On certain PHB failures, the RTAS call rtas_call(get-sensor-state) returns
++ * extended busy error (9902) until PHB is recovered by pHyp. The RTAS call
++ * interface rtas_get_sensor() loops over the RTAS call on extended delay
++ * return code (9902) until the return value is either success (0) or error
++ * (-1). This causes the EEH handler to get stuck for ~6 seconds before it
++ * could notify that the PCI error has been detected and stop any active
++ * operations. This sometimes causes EEH recovery to fail. To avoid this issue,
++ * invoke rtas_call(get-sensor-state) directly if the respective PE is in EEH
++ * recovery state and return -EBUSY error based on RTAS return status. This
++ * will help the EEH handler to notify the driver about the PCI error
++ * immediately and successfully proceed with EEH recovery steps.
++ */
++
++static int __rpaphp_get_sensor_state(struct slot *slot, int *state)
++{
++	int rc;
++	int token = rtas_token("get-sensor-state");
++	struct pci_dn *pdn;
++	struct eeh_pe *pe;
++	struct pci_controller *phb = PCI_DN(slot->dn)->phb;
++
++	if (token == RTAS_UNKNOWN_SERVICE)
++		return -ENOENT;
++
++	/*
++	 * Fallback to existing method for empty slot or PE isn't in EEH
++	 * recovery.
++	 */
++	pdn = list_first_entry_or_null(&PCI_DN(phb->dn)->child_list,
++					struct pci_dn, list);
++	if (!pdn)
++		goto fallback;
++
++	pe = eeh_dev_to_pe(pdn->edev);
++	if (pe && (pe->state & EEH_PE_RECOVERING)) {
++		rc = rtas_call(token, 2, 2, state, DR_ENTITY_SENSE,
++			       slot->index);
++		return rtas_get_sensor_errno(rc);
++	}
++fallback:
++	return rtas_get_sensor(DR_ENTITY_SENSE, slot->index, state);
++}
++
+ int rpaphp_get_sensor_state(struct slot *slot, int *state)
  {
  	int rc;
+ 	int setlevel;
  
- 	switch (rtas_rc) {
--		case -1: 		/* Hardware Error */
--			rc = -EIO;
--			break;
--		case -3:		/* Bad indicator/domain/etc */
--			rc = -EINVAL;
--			break;
--		case -9000:		/* Isolation error */
--			rc = -EFAULT;
--			break;
--		case -9001:		/* Outstanding TCE/PTE */
--			rc = -EEXIST;
--			break;
--		case -9002:		/* No usable slot */
--			rc = -ENODEV;
--			break;
--		default:
--			pr_err("%s: unexpected error %d\n", __func__, rtas_rc);
--			rc = -ERANGE;
--			break;
-+	case RTAS_HARDWARE_ERROR:	/* Hardware Error */
-+		rc = -EIO;
-+		break;
-+	case RTAS_INVALID_PARAMETER:	/* Bad indicator/domain/etc */
-+		rc = -EINVAL;
-+		break;
-+	case -9000:			/* Isolation error */
-+		rc = -EFAULT;
-+		break;
-+	case -9001:			/* Outstanding TCE/PTE */
-+		rc = -EEXIST;
-+		break;
-+	case -9002:			/* No usable slot */
-+		rc = -ENODEV;
-+		break;
-+	default:
-+		pr_err("%s: unexpected error %d\n", __func__, rtas_rc);
-+		rc = -ERANGE;
-+		break;
- 	}
- 	return rc;
- }
-+EXPORT_SYMBOL_GPL(rtas_error_rc);
+-	rc = rtas_get_sensor(DR_ENTITY_SENSE, slot->index, state);
++	rc = __rpaphp_get_sensor_state(slot, state);
  
- int rtas_get_power_level(int powerdomain, int *level)
- {
+ 	if (rc < 0) {
+ 		if (rc == -EFAULT || rc == -EEXIST) {
+@@ -40,8 +119,7 @@ int rpaphp_get_sensor_state(struct slot *slot, int *state)
+ 				dbg("%s: power on slot[%s] failed rc=%d.\n",
+ 				    __func__, slot->name, rc);
+ 			} else {
+-				rc = rtas_get_sensor(DR_ENTITY_SENSE,
+-						     slot->index, state);
++				rc = __rpaphp_get_sensor_state(slot, state);
+ 			}
+ 		} else if (rc == -ENODEV)
+ 			info("%s: slot is unusable\n", __func__);
 
 
