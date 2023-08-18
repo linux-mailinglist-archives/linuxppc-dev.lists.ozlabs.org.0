@@ -2,67 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6073C780635
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Aug 2023 09:16:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ABC4780645
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Aug 2023 09:23:09 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Ee1efWaw;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YQPZTf1I;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RRtTx212Hz2ysB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Aug 2023 17:16:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RRtd72Bltz3cBh
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Aug 2023 17:23:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Ee1efWaw;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YQPZTf1I;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mgamail.intel.com; envelope-from=adrian.hunter@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RRtSy1T13z2ytK
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Aug 2023 17:15:58 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692342962; x=1723878962;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Xb+sScC9CG+Wcg8gmAQfZwVhPDsFYdn1wwo2UBGqVP0=;
-  b=Ee1efWawLZiakg0o3tNQsUgMG8IFXLalVvdCK0//Q2r0zvtX55HuwrhU
-   01mCV6CtDwXhkNLMdTcV+ppBswvHH0WTmklyKUI78GWJx3E8P9S9N0ZUJ
-   gSDj/5N+vDla67ZwL5hcIrm4DR9+TZjWYtPart5gSW9km4hQAnVQ8Vr0c
-   vCdEJgs+zoQl3PA+0NWSh9/qKJaH590HZmpvAZ5kGQSNnJw1wFmLjQjVB
-   QDy/ox5MWtDg61rFNt5t9noorThjFRXDtEoad/JABQdykr7/rK/58eQl6
-   JUChXgMrHwsv1NusbqRZjZvfiZXm+UQRrgpBP6UgoclJAbKEr0HWZgx81
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10805"; a="404017313"
-X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; 
-   d="scan'208";a="404017313"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2023 00:15:54 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10805"; a="800379388"
-X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; 
-   d="scan'208";a="800379388"
-Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.251.212.27])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2023 00:15:51 -0700
-Message-ID: <da3492ac-5473-f25b-f229-f213242321b1@intel.com>
-Date: Fri, 18 Aug 2023 10:15:47 +0300
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RRtcG4tyWz2y1c
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Aug 2023 17:22:22 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1692343342;
+	bh=015QYjFFLOXVXqRjbnXpZsuq4KN9W6ebQx2wJB1AJjI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=YQPZTf1I3ODYtn+csq5jA+m4hjJ3hn4w2DO9X9KZ2Voxv6H9krgTgSalO9pTBTUlD
+	 JEqlNb1GDD+G+mMWuJzAc0WxSdx/g3lD1LQWaKovXqDCPhPhy3qVmYxBpOefYuvIId
+	 +wELr9jYwa93bd9QCFq67p3krFUt0pZXd6UyFuv7/EAhQSuefvxgVU2MWWTUwxIW6H
+	 /oafolFeXTJb8+0R5zkAZOxiU0s5J7tqG+LiEthv0weKlSnurbh/sTDD9XWsUzZyoR
+	 jHtw2Ki6p/g/3EcDlpp0T0iUS9DhWZfb5MzB5y1Bzr87mfhT7YTo1tSbGIhyQpvBuE
+	 2FLVPxv46/TgQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RRtcG3s95z4wZx;
+	Fri, 18 Aug 2023 17:22:22 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 3/4] powerpc: Add mm_cpumask warning when context switching
+In-Reply-To: <20230524060821.148015-4-npiggin@gmail.com>
+References: <20230524060821.148015-1-npiggin@gmail.com>
+ <20230524060821.148015-4-npiggin@gmail.com>
+Date: Fri, 18 Aug 2023 17:22:19 +1000
+Message-ID: <878ra8x1as.fsf@mail.lhotse>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.14.0
-Subject: Re: [PATCH V2 2/2] tools/perf/tests: Fix object code reading to skip
- address that falls out of text section
-Content-Language: en-US
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, acme@kernel.org,
- jolsa@kernel.org, irogers@google.com, namhyung@kernel.org
-References: <20230817171852.55629-1-atrajeev@linux.vnet.ibm.com>
- <20230817171852.55629-2-atrajeev@linux.vnet.ibm.com>
-From: Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-In-Reply-To: <20230817171852.55629-2-atrajeev@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,96 +58,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maddy@linux.ibm.com, kjain@linux.ibm.com, disgoel@linux.vnet.ibm.com, linux-perf-users@vger.kernel.org, Disha Goel <disgoel@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 17/08/23 20:18, Athira Rajeev wrote:
-> The testcase "Object code reading" fails in somecases
-> for "fs_something" sub test as below:
-> 
->     Reading object code for memory address: 0xc008000007f0142c
->     File is: /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko
->     On file address is: 0x1114cc
->     Objdump command is: objdump -z -d --start-address=0x11142c --stop-address=0x1114ac /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko
->     objdump read too few bytes: 128
->     test child finished with -1
-> 
-> This can alo be reproduced when running perf record with
-> workload that exercises fs_something() code. In the test
-> setup, this is exercising xfs code since root is xfs.
-> 
->     # perf record ./a.out
->     # perf report -v |grep "xfs.ko"
->       0.76% a.out /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko  0xc008000007de5efc B [k] xlog_cil_commit
->       0.74% a.out  /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko  0xc008000007d5ae18 B [k] xfs_btree_key_offset
->       0.74% a.out  /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko  0xc008000007e11fd4 B [k] 0x0000000000112074
-> 
-> Here addr "0xc008000007e11fd4" is not resolved. since this is a
-> kernel module, its offset is from the DSO. Xfs module is loaded
-> at 0xc008000007d00000
-> 
->    # cat /proc/modules | grep xfs
->     xfs 2228224 3 - Live 0xc008000007d00000
-> 
-> And size is 0x220000. So its loaded between  0xc008000007d00000
-> and 0xc008000007f20000. From objdump, text section is:
->     text 0010f7bc  0000000000000000 0000000000000000 000000a0 2**4
-> 
-> Hence perf captured ip maps to 0x112074 which is:
-> ( ip - start of module ) + a0
-> 
-> This offset 0x112074 falls out .text section which is up to 0x10f7bc
-> In this case for module, the address 0xc008000007e11fd4 is pointing
-> to stub instructions. This address range represents the module stubs
-> which is allocated on module load and hence is not part of DSO offset.
-> 
-> To address this issue in "object code reading", skip the sample if
-> address falls out of text section and is within the module end.
-> Use the "text_end" member of "struct dso" to do this check.
-> 
-> To address this issue in "perf report", exploring an option of
-> having stubs range as part of the /proc/kallsyms, so that perf
-> report can resolve addresses in stubs range
-> 
-> However this patch uses text_end to skip the stub range for
-> Object code reading testcase.
-> 
-> Reported-by: Disha Goel <disgoel@linux.ibm.com>
-> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Nicholas Piggin <npiggin@gmail.com> writes:
+> When context switching away from an mm, add a CONFIG_DEBUG_VM warning
+> check to ensure this CPU is still set in the mask. This could catch
+> bugs where the mask is improperly trimmed while the CPU is still using
+> the mm.
+>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->  tools/perf/tests/code-reading.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/tools/perf/tests/code-reading.c b/tools/perf/tests/code-reading.c
-> index ed3815163d1b..911f8fa13677 100644
-> --- a/tools/perf/tests/code-reading.c
-> +++ b/tools/perf/tests/code-reading.c
-> @@ -269,6 +269,14 @@ static int read_object_code(u64 addr, size_t len, u8 cpumode,
->  	if (addr + len > map__end(al.map))
->  		len = map__end(al.map) - addr;
->  
-> +	/* Check if the ip offset falls in stubs sections for kernel modules */
-
-What arches have stubs - maybe expand the comment a bit e.g.
-"Some architectures (such as blah blah) have stubs (trampolines) in kernel modules to manage long jumps"
-
-> +	if (strstr(dso->long_name, ".ko")) {
-> +		if ((al.addr < map__end(al.map)) && (al.addr > dso->text_end)) {
-
-Why check al.addr < map__end(al.map) ?  addr must be on the map mustn't it?
-
-Also please remove redundant parentheses.
-
-> +			pr_debug(" - skipping\n");
-
-"skipping" but why.  Maybe "skipping module address after text end"
-
-> +			goto out;
-> +		}
-> +	}
+>  arch/powerpc/mm/mmu_context.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/powerpc/mm/mmu_context.c b/arch/powerpc/mm/mmu_context.c
+> index 894468975a44..b24c19078eb1 100644
+> --- a/arch/powerpc/mm/mmu_context.c
+> +++ b/arch/powerpc/mm/mmu_context.c
+> @@ -101,6 +102,8 @@ void switch_mm_irqs_off(struct mm_struct *prev, struct mm_struct *next,
+>  	 * sub architectures. Out of line for now
+>  	 */
+>  	switch_mmu_context(prev, next, tsk);
 > +
->  	/* Read the object code using perf */
->  	ret_len = dso__data_read_offset(dso, maps__machine(thread__maps(thread)),
->  					al.addr, buf1, len);
+> +	VM_WARN_ON_ONCE(!cpumask_test_cpu(cpu, mm_cpumask(prev)));
 
+This is popping during CPU hotunplug. I guess some confusion about when
+the mask is cleared.
+
+cheers
+
+
+[  145.150374][    T0] ------------[ cut here ]------------
+[  145.150459][    T0] WARNING: CPU: 5 PID: 0 at arch/powerpc/mm/mmu_context.c:106 switch_mm_irqs_off+0x320/0x340
+[  145.150519][    T0] Modules linked in: bonding pseries_rng rng_core binfmt_misc aes_gcm_p10_crypto zram vmx_crypto gf128mul crc32c_vpmsum papr_scm ip6_tables ip_tables x_tables fuse autofs4
+[  145.150588][    T0] CPU: 5 PID: 0 Comm: swapper/5 Not tainted 6.5.0-rc3-00084-g01477eb5e323 #47
+[  145.150592][    T0] Hardware name: IBM,9080-HEX POWER10 (raw) 0x800200 0xf000006 of:IBM,FW1030.00 (NH1030_019) hv:phyp pSeries
+[  145.150595][    T0] NIP:  c0000000000cbc30 LR: c0000000000cbab0 CTR: c000000000181a40
+[  145.150598][    T0] REGS: c00000000985fb10 TRAP: 0700   Not tainted  (6.5.0-rc3-00084-g01477eb5e323)
+[  145.150602][    T0] MSR:  800000000282b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 24000208  XER: 0000011e
+[  145.150625][    T0] CFAR: c0000000000cbae4 IRQMASK: 1 
+[  145.150625][    T0] GPR00: c0000000000cbab0 c00000000985fdb0 c0000000027aaf00 c000000b02955f00 
+[  145.150625][    T0] GPR04: c0000000043e0b00 c0000000067c7000 0000000000000000 0000000000030e2d 
+[  145.150625][    T0] GPR08: c00000000451af00 0000000000000001 c00000000451af00 c00000000451af00 
+[  145.150625][    T0] GPR12: c000000000181a40 c00000050fffa300 0000000000000000 000000001eed51a0 
+[  145.150625][    T0] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
+[  145.150625][    T0] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000001 
+[  145.150625][    T0] GPR24: 0000000000000005 000000000000dedc c000000004468470 0000000000000001 
+[  145.150625][    T0] GPR28: c0000000067c7000 0000000000000000 0000000000000005 c000000b02956780 
+[  145.150711][    T0] NIP [c0000000000cbc30] switch_mm_irqs_off+0x320/0x340
+[  145.150716][    T0] LR [c0000000000cbab0] switch_mm_irqs_off+0x1a0/0x340
+[  145.150721][    T0] Call Trace:
+[  145.150724][    T0] [c00000000985fdb0] [c000000000448688] __smp_call_single_queue+0x198/0x1f0 (unreliable)
+[  145.150732][    T0] [c00000000985fdf0] [c0000000002af958] idle_task_exit+0xf8/0x230
+[  145.150740][    T0] [c00000000985fe40] [c000000000181aac] pseries_cpu_offline_self+0x6c/0x230
+[  145.150748][    T0] [c00000000985feb0] [c000000000092bb4] arch_cpu_idle_dead+0x64/0x90
+[  145.150755][    T0] [c00000000985fee0] [c0000000002fc09c] do_idle+0x25c/0x740
+[  145.150761][    T0] [c00000000985ff60] [c0000000002fcd14] cpu_startup_entry+0x84/0xa0
+[  145.150765][    T0] [c00000000985ff90] [c000000000092500] start_secondary+0x4e0/0x510
+[  145.150772][    T0] [c00000000985ffe0] [c00000000000e258] start_secondary_prolog+0x10/0x14
+[  145.150788][    T0] Code: 0fe00000 3ce201d7 e947a198 394a0001 f947a198 4bfffd70 60000000 60420000 3d4201d7 e92aa210 39290001 f92aa210 <0fe00000> 3d4201d7 e8010050 e92aa218 
+[  145.150828][    T0] irq event stamp: 49758
+[  145.150831][    T0] hardirqs last  enabled at (49757): [<c0000000004330c8>] tick_nohz_idle_enter+0x118/0x2b0
+[  145.150836][    T0] hardirqs last disabled at (49758): [<c0000000002fc038>] do_idle+0x1f8/0x740
+[  145.150839][    T0] softirqs last  enabled at (49724): [<c000000001f66398>] __do_softirq+0x5c8/0x7f4
+[  145.150847][    T0] softirqs last disabled at (49703): [<c00000000001bc90>] do_softirq_own_stack+0x50/0x80
+[  145.150852][    T0] ---[ end trace 0000000000000000 ]---
