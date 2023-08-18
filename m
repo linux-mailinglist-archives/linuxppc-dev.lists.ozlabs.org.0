@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ACDB7810D2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Aug 2023 18:47:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFE687810B0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Aug 2023 18:43:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RS7821bJMz3g8b
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Aug 2023 02:47:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RS74957dqz3dwG
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Aug 2023 02:43:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=fail (SPF fail - not authorized) smtp.mailfrom=csgroup.eu (client-ip=90.115.179.12; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
@@ -14,34 +14,34 @@ Received: from pegase1.c-s.fr (unknown [90.115.179.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RS70m6HqTz3dDw
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Aug 2023 02:40:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RS70G1S3Cz3ckw
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Aug 2023 02:40:30 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4RS6zy13R7z9vjC;
-	Fri, 18 Aug 2023 18:40:14 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4RS6zq0k5bz9vhr;
+	Fri, 18 Aug 2023 18:40:07 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
 	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 4U7RhbHWPQT8; Fri, 18 Aug 2023 18:40:14 +0200 (CEST)
+	with ESMTP id e3sU6JfKIHrC; Fri, 18 Aug 2023 18:40:07 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4RS6zl44p9z9vhW;
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4RS6zl1B1vz9vhJ;
 	Fri, 18 Aug 2023 18:40:03 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 815098B76D;
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 1F1E78B763;
 	Fri, 18 Aug 2023 18:40:03 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id cQvcVEpSSBcJ; Fri, 18 Aug 2023 18:40:03 +0200 (CEST)
+	with ESMTP id WAQGydDBpqb7; Fri, 18 Aug 2023 18:40:03 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (PO17626.IDSI0.si.c-s.fr [172.19.54.29])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 8DC028B77C;
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 6CC5C8B774;
 	Fri, 18 Aug 2023 18:40:01 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 37IGduno141957
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 37IGduIu141961
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
 	Fri, 18 Aug 2023 18:39:56 +0200
 Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 37IGdu5A141956;
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 37IGduB3141960;
 	Fri, 18 Aug 2023 18:39:56 +0200
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
@@ -61,14 +61,14 @@ To: Herve Codina <herve.codina@bootlin.com>,
         Nicolin Chen <nicoleotsuka@gmail.com>,
         Christophe Leroy <christophe.leroy@csgroup.eu>,
         Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH v4 04/28] soc: fsl: cpm1: qmc: Extend the API to provide Rx status
-Date: Fri, 18 Aug 2023 18:38:58 +0200
-Message-ID: <c9f7966da27455390848846a30e34f3c059427f9.1692376361.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v4 05/28] soc: fsl: cpm1: qmc: Remove inline function specifiers
+Date: Fri, 18 Aug 2023 18:38:59 +0200
+Message-ID: <5e4f6d8ae6c6f4e51fdc8d6b8cdbdd42bbdbfcf9.1692376361.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <cover.1692376360.git.christophe.leroy@csgroup.eu>
 References: <cover.1692376360.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1692376734; l=5458; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=NLobTtZwmX6+TiWRgTbk0b6G1wgEpGh/t2FaZYMhZLs=; b=31GwyewAkhJBnFz8bfeoy3PPfhugRG03/u3bJHd03c2Rb9ym1AZo3atjcAHYUlxNHwyRwxd4B 796HpaTjo9tCsgzHvVtoi/lQDyl1uU7j9XrNj69Wjvm1qMPCT6eSuat
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1692376734; l=1927; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=kk1Ixhq/BCVZyT9VsSP1IQf1Jw/ahn3zn+6m9m/YV/k=; b=M13QAt9aKgtJFw7MZl2TkKG6g2k3N0uDUJTk2EdWY9JLBRDZmNcT9oDY3wzhySPbXAyFxNXoY x7esQx7fdcsCaW8Ax7sFVrnxgjZrj6JI8RD7HBT011D+N3DB98fNoye
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -88,141 +88,69 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Herve Codina <herve.codina@bootlin.com>
 
-In HDLC mode, some status flags related to the data read transfer can be
-set by the hardware and need to be known by a QMC consumer for further
-analysis.
+The inline function specifier is present on some functions but it is
+better to let the compiler decide inlining or not these functions.
 
-Extend the API in order to provide these transfer status flags at the
-read complete() call.
+Remove inline specifiers.
 
-In TRANSPARENT mode, these flags have no meaning. Keep only one read
-complete() API and update the consumers working in transparent mode.
-In this case, the newly introduced flags parameter is simply unused.
-
+Fixes: 3178d58e0b97 ("soc: fsl: cpm1: Add support for QMC")
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Suggested-by: Andrew Lunn <andrew@lunn.ch>
 Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- drivers/soc/fsl/qe/qmc.c      | 29 +++++++++++++++++++++++++----
- include/soc/fsl/qe/qmc.h      | 15 ++++++++++++++-
- sound/soc/fsl/fsl_qmc_audio.c |  2 +-
- 3 files changed, 40 insertions(+), 6 deletions(-)
+ drivers/soc/fsl/qe/qmc.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/soc/fsl/qe/qmc.c b/drivers/soc/fsl/qe/qmc.c
-index 8dc73cc1a83b..2d2a9d88ba6c 100644
+index 2d2a9d88ba6c..459e0bbd723d 100644
 --- a/drivers/soc/fsl/qe/qmc.c
 +++ b/drivers/soc/fsl/qe/qmc.c
-@@ -166,7 +166,7 @@
- struct qmc_xfer_desc {
- 	union {
- 		void (*tx_complete)(void *context);
--		void (*rx_complete)(void *context, size_t length);
-+		void (*rx_complete)(void *context, size_t length, unsigned int flags);
- 	};
- 	void *context;
+@@ -218,37 +218,37 @@ struct qmc {
+ 	struct qmc_chan *chans[64];
  };
-@@ -421,7 +421,8 @@ static void qmc_chan_write_done(struct qmc_chan *chan)
+ 
+-static inline void qmc_write16(void __iomem *addr, u16 val)
++static void qmc_write16(void __iomem *addr, u16 val)
+ {
+ 	iowrite16be(val, addr);
  }
  
- int qmc_chan_read_submit(struct qmc_chan *chan, dma_addr_t addr, size_t length,
--			 void (*complete)(void *context, size_t length), void *context)
-+			 void (*complete)(void *context, size_t length, unsigned int flags),
-+			 void *context)
+-static inline u16 qmc_read16(void __iomem *addr)
++static u16 qmc_read16(void __iomem *addr)
  {
- 	struct qmc_xfer_desc *xfer_desc;
- 	unsigned long flags;
-@@ -454,6 +455,10 @@ int qmc_chan_read_submit(struct qmc_chan *chan, dma_addr_t addr, size_t length,
- 	xfer_desc->rx_complete = complete;
- 	xfer_desc->context = context;
- 
-+	/* Clear previous status flags */
-+	ctrl &= ~(QMC_BD_RX_L | QMC_BD_RX_F | QMC_BD_RX_LG | QMC_BD_RX_NO |
-+		  QMC_BD_RX_AB | QMC_BD_RX_CR);
-+
- 	/* Activate the descriptor */
- 	ctrl |= (QMC_BD_RX_E | QMC_BD_RX_UB);
- 	wmb(); /* Be sure to flush data before descriptor activation */
-@@ -485,7 +490,7 @@ EXPORT_SYMBOL(qmc_chan_read_submit);
- 
- static void qmc_chan_read_done(struct qmc_chan *chan)
- {
--	void (*complete)(void *context, size_t size);
-+	void (*complete)(void *context, size_t size, unsigned int flags);
- 	struct qmc_xfer_desc *xfer_desc;
- 	unsigned long flags;
- 	cbd_t __iomem *bd;
-@@ -527,7 +532,23 @@ static void qmc_chan_read_done(struct qmc_chan *chan)
- 
- 		if (complete) {
- 			spin_unlock_irqrestore(&chan->rx_lock, flags);
--			complete(context, datalen);
-+
-+			/*
-+			 * Avoid conversion between internal hardware flags and
-+			 * the software API flags.
-+			 * -> Be sure that the software API flags are consistent
-+			 *    with the hardware flags
-+			 */
-+			BUILD_BUG_ON(QMC_RX_FLAG_HDLC_LAST  != QMC_BD_RX_L);
-+			BUILD_BUG_ON(QMC_RX_FLAG_HDLC_FIRST != QMC_BD_RX_F);
-+			BUILD_BUG_ON(QMC_RX_FLAG_HDLC_OVF   != QMC_BD_RX_LG);
-+			BUILD_BUG_ON(QMC_RX_FLAG_HDLC_UNA   != QMC_BD_RX_NO);
-+			BUILD_BUG_ON(QMC_RX_FLAG_HDLC_ABORT != QMC_BD_RX_AB);
-+			BUILD_BUG_ON(QMC_RX_FLAG_HDLC_CRC   != QMC_BD_RX_CR);
-+
-+			complete(context, datalen,
-+				 ctrl & (QMC_BD_RX_L | QMC_BD_RX_F | QMC_BD_RX_LG |
-+					 QMC_BD_RX_NO | QMC_BD_RX_AB | QMC_BD_RX_CR));
- 			spin_lock_irqsave(&chan->rx_lock, flags);
- 		}
- 
-diff --git a/include/soc/fsl/qe/qmc.h b/include/soc/fsl/qe/qmc.h
-index 3c61a50d2ae2..6f1d6cebc9fe 100644
---- a/include/soc/fsl/qe/qmc.h
-+++ b/include/soc/fsl/qe/qmc.h
-@@ -9,6 +9,7 @@
- #ifndef __SOC_FSL_QMC_H__
- #define __SOC_FSL_QMC_H__
- 
-+#include <linux/bits.h>
- #include <linux/types.h>
- 
- struct device_node;
-@@ -56,8 +57,20 @@ int qmc_chan_set_param(struct qmc_chan *chan, const struct qmc_chan_param *param
- int qmc_chan_write_submit(struct qmc_chan *chan, dma_addr_t addr, size_t length,
- 			  void (*complete)(void *context), void *context);
- 
-+/* Flags available (ORed) for read complete() flags parameter in HDLC mode.
-+ * No flags are available in transparent mode and the read complete() flags
-+ * parameter has no meaning in transparent mode.
-+ */
-+#define QMC_RX_FLAG_HDLC_LAST	BIT(11) /* Last in frame */
-+#define QMC_RX_FLAG_HDLC_FIRST	BIT(10) /* First in frame */
-+#define QMC_RX_FLAG_HDLC_OVF	BIT(5)  /* Data overflow */
-+#define QMC_RX_FLAG_HDLC_UNA	BIT(4)  /* Unaligned (ie. bits received not multiple of 8) */
-+#define QMC_RX_FLAG_HDLC_ABORT	BIT(3)  /* Received an abort sequence (seven consecutive ones) */
-+#define QMC_RX_FLAG_HDLC_CRC	BIT(2)  /* CRC error */
-+
- int qmc_chan_read_submit(struct qmc_chan *chan, dma_addr_t addr, size_t length,
--			 void (*complete)(void *context, size_t length),
-+			 void (*complete)(void *context, size_t length,
-+					  unsigned int flags),
- 			 void *context);
- 
- #define QMC_CHAN_READ  (1<<0)
-diff --git a/sound/soc/fsl/fsl_qmc_audio.c b/sound/soc/fsl/fsl_qmc_audio.c
-index 7cbb8e4758cc..5d745aae17a8 100644
---- a/sound/soc/fsl/fsl_qmc_audio.c
-+++ b/sound/soc/fsl/fsl_qmc_audio.c
-@@ -99,7 +99,7 @@ static void qmc_audio_pcm_write_complete(void *context)
- 	snd_pcm_period_elapsed(prtd->substream);
+ 	return ioread16be(addr);
  }
  
--static void qmc_audio_pcm_read_complete(void *context, size_t length)
-+static void qmc_audio_pcm_read_complete(void *context, size_t length, unsigned int flags)
+-static inline void qmc_setbits16(void __iomem *addr, u16 set)
++static void qmc_setbits16(void __iomem *addr, u16 set)
  {
- 	struct qmc_dai_prtd *prtd = context;
- 	int ret;
+ 	qmc_write16(addr, qmc_read16(addr) | set);
+ }
+ 
+-static inline void qmc_clrbits16(void __iomem *addr, u16 clr)
++static void qmc_clrbits16(void __iomem *addr, u16 clr)
+ {
+ 	qmc_write16(addr, qmc_read16(addr) & ~clr);
+ }
+ 
+-static inline void qmc_write32(void __iomem *addr, u32 val)
++static void qmc_write32(void __iomem *addr, u32 val)
+ {
+ 	iowrite32be(val, addr);
+ }
+ 
+-static inline u32 qmc_read32(void __iomem *addr)
++static u32 qmc_read32(void __iomem *addr)
+ {
+ 	return ioread32be(addr);
+ }
+ 
+-static inline void qmc_setbits32(void __iomem *addr, u32 set)
++static void qmc_setbits32(void __iomem *addr, u32 set)
+ {
+ 	qmc_write32(addr, qmc_read32(addr) | set);
+ }
 -- 
 2.41.0
 
