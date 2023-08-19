@@ -2,54 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35AD47815E8
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Aug 2023 01:46:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D02E7816CE
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Aug 2023 04:47:57 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=pZH/ksRw;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UA/UNvXw;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RSJRB6mJtz3cR3
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Aug 2023 09:45:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RSNT72SGpz30QQ
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Aug 2023 12:47:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=pZH/ksRw;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UA/UNvXw;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=lists.ozlabs.org)
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=kuba@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RSJQ60lmxz3bP2
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Aug 2023 09:45:02 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=xTd+xM15uwaYqGAW/S8CZDkcwvuJ3aJIIjx1MPGNF/Y=; b=pZH/ksRwnPq3maIwYAlJC3Rrrr
-	9sXlHg5rZOuCTKksS/zIoMTj4CYgiei2BSHr/Fmq4d5o6u6K44iFq95QRQnAeXh21SPlKB1dSqI9S
-	Cfts7MiOtQtejm51Kqr727hN42qMODja2NIagNNWPITLUN3zgCX6JPHkj/KLLfXzJl6lnRj2IQpX0
-	rdlY37izaBlOJXXS/VdrrvoBUDNRoF1KuxWjFO1MPDhsEqGcrcCV503FRIC+zvjs3tCc/aw4OtNDw
-	1CgyBaH6pumLMmkbfGn+hR53qU8NQHPiWTB5c7oduD3LBzu4IRjjLr3T37jzgVW5PH9+G1oKRWkqj
-	I69daqCw==;
-Received: from [2601:1c2:980:9ec0::2764]
-	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1qX98o-00ABNX-07;
-	Fri, 18 Aug 2023 23:44:30 +0000
-Message-ID: <78a802c5-3f0d-e199-d974-e586c00180eb@infradead.org>
-Date: Fri, 18 Aug 2023 16:44:26 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RSNSG0xpfz2xFm
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Aug 2023 12:47:10 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id B1A5D6303B;
+	Sat, 19 Aug 2023 02:47:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE3ADC433C7;
+	Sat, 19 Aug 2023 02:46:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1692413221;
+	bh=oU+6WMg6c2UrnTMLgklxjc7ykpSmhNqopEee8qwkVPk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=UA/UNvXwmLrhSEAhg7lPYmOjNAVVkUkN9pybSImmVxT+0lHuWrCcaZDmCSoYrvjyf
+	 YhhI8bWGwgB+/99XZjtcruhpCWdBrpxn6MzuLWby7GqJRFG8rl8Cp+0RQ1VUqQk3jF
+	 mEoMvMZpzs2YDyofEWA2JeQE+79wztJn67eSs7aVEPegNN3LeoWHQEXUhIZblTGeku
+	 CuQQZAb6wJZuVe6I1lmEZcIgOQSfklhXfzmvPyJ2w9ky5Jtg3bfDWdjkqgDwrb5fbq
+	 HkwvaKBtm+RCRcUr1M0AFhFV57+Nb9oY7HsEgtMxvTIkF/G+3ZTn+MWUggMWo2BOeq
+	 9NRqhAAGGxXfw==
+Date: Fri, 18 Aug 2023 19:46:58 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v4 21/28] net: wan: Add framer framework support
+Message-ID: <20230818194658.369da77a@kernel.org>
+In-Reply-To: <5f671caf19be0a9bb7ea7b96a6c86381e243ca4c.1692376361.git.christophe.leroy@csgroup.eu>
+References: <cover.1692376360.git.christophe.leroy@csgroup.eu>
+	<5f671caf19be0a9bb7ea7b96a6c86381e243ca4c.1692376361.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH] treewide: drop CONFIG_EMBEDDED
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-To: Jesse Taube <mr.bossman075@gmail.com>
-References: <38e1a01b-1e8b-7c66-bafc-fc5861f08da9@gmail.com>
- <86e329b1-c8d7-47bf-8be8-3326daf74eb5@infradead.org>
-In-Reply-To: <86e329b1-c8d7-47bf-8be8-3326daf74eb5@infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,70 +62,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Jason A . Donenfeld" <Jason@zx2c4.com>, Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-kernel@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-riscv@lists.infradead.org, Greg Ungerer <gerg@linux-m68k.org>, linux-arch@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>, Masahiro Yamada <masahiroy@kernel.org>, Russell King <linux@armlinux.org.uk>, Vineet Gupta <vgupta@kernel.org>, linux-snps-arc@lists.infradead.org, Jonas Bonn <jonas@southpole.se>, Albert Ou <aou@eecs.berkeley.edu>, Arnd Bergmann <arnd@arndb.de>, linux-kbuild@vger.kernel.org, Josh Triplett <josh@joshtriplett.org>, Nicholas Piggin <npiggin@gmail.com>, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, linux-m68k@lists.linux-m68k.org, Paul Walmsley <paul.walmsley@sifive.com>, Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org, Brian Cain <bcain@quicinc.com>, Michal Simek <monstr@monstr.eu>, Thomas Boge
- ndoerfer <tsbogend@alpha.franken.de>, Max Filippov <jcmvbkbc@gmail.com>, linux-mips@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, linux-hexagon@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, wireguard@lists.zx2c4.com
+Cc: Andrew Lunn <andrew@lunn.ch>, alsa-devel@alsa-project.org, Herve Codina <herve.codina@bootlin.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Linus Walleij <linus.walleij@linaro.org>, Jaroslav Kysela <perex@perex.cz>, Eric Dumazet <edumazet@google.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Fabio Estevam <festevam@gmail.com>, Qiang Zhao <qiang.zhao@nxp.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Lee Jones <lee@kernel.org>, Paolo Abeni <pabeni@redhat.com>, devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, Nicolin Chen <nicoleotsuka@gmail.com>, linux-gpio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Takashi Iwai <tiwai@suse.com>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>, Liam Girdwood <lgirdwood@gmail.com>, Li Yang <leoyang.li@nxp.com>, Mark Brown <broonie@kernel.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller
+ " <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Jesse,
+On Fri, 18 Aug 2023 18:39:15 +0200 Christophe Leroy wrote:
+> From: Herve Codina <herve.codina@bootlin.com>
+> 
+> A framer is a component in charge of an E1/T1 line interface.
+> Connected usually to a TDM bus, it converts TDM frames to/from E1/T1
+> frames. It also provides information related to the E1/T1 line.
 
-I replied to your comment a few days ago, but for some reason
-your email to me contains:
-Reply-To: 20230816055010.31534-1-rdunlap@infradead.org
-so it wasn't sent directly to you.
+Okay, progress is being made, now it builds patch by patch.
+Still some kdoc warnings remain (W=1 build only catches
+kdoc warnings in sources, you gotta run ./scripts/kernel-doc -none
+explicitly on the headers):
 
-My former reply is below.
-
-On 8/16/23 20:15, Randy Dunlap wrote:
-> Hi Jesse,
-> 
-> On 8/16/23 15:45, Jesse Taube wrote:
->> Hi, Randy
->>
->>> diff -- a/init/Kconfig b/init/Kconfig
->>> --- a/init/Kconfig
->>> +++ b/init/Kconfig
->>> @@ -1790,14 +1790,6 @@ config DEBUG_RSEQ
->>>
->>>         If unsure, say N.
->>>
->>> -config EMBEDDED
->>> -    bool "Embedded system"
->>> -    select EXPERT
->>> -    help
->>> -      This option should be enabled if compiling the kernel for
->>> -      an embedded system so certain expert options are available
->>> -      for configuration.
->>
->> Wouldn't removing this break many out of tree configs?
-> 
-> I'm not familiar with out-of-tree configs.
-> Do you have some examples of some that use CONFIG_EMBEDDED?
-> (not distros)
-> 
->> Should there be a warning here to update change it instead of removal?
-> 
-> kconfig doesn't have a warning mechanism AFAIK.
-> Do you have an idea of how this would work?
-> 
-> We could make a smaller change to init/Kconfig, like so:
-> 
->  config EMBEDDED
-> -	bool "Embedded system"
-> +	bool "Embedded system (DEPRECATED)"
->  	select EXPERT
->  	help
-> -	  This option should be enabled if compiling the kernel for
-> -	  an embedded system so certain expert options are available
-> -	  for configuration.
-> +	  This option is being removed after Linux 6.6.
-> +	  Use EXPERT instead of EMBEDDED.
-> 
-> but there is no way to produce a warning message. I.e., even with this
-> change, the message will probably be overlooked.
-> 
-> ---
-> ~Randy
-
+include/linux/framer/framer.h:27: warning: Enum value 'FRAMER_IFACE_E1' not described in enum 'framer_iface'
+include/linux/framer/framer.h:27: warning: Enum value 'FRAMER_IFACE_T1' not described in enum 'framer_iface'
+include/linux/framer/framer.h:35: warning: expecting prototype for enum framer_clock_mode. Prototype was for enum framer_clock_type instead
+include/linux/framer/framer.h:47: warning: expecting prototype for struct framer_configuration. Prototype was for struct framer_config instead
+include/linux/framer/framer.h:60: warning: cannot understand function prototype: 'enum framer_event '
+include/linux/framer/framer.h:89: warning: Function parameter or member 'notify_status_work' not described in 'framer'
+include/linux/framer/framer.h:89: warning: Function parameter or member 'notifier_list' not described in 'framer'
+include/linux/framer/framer.h:89: warning: Function parameter or member 'polling_work' not described in 'framer'
 -- 
-~Randy
+pw-bot: cr
