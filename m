@@ -1,52 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E4F1781B50
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Aug 2023 01:01:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40184781B51
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Aug 2023 01:02:44 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QEQa61/o;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LOqGtJ7B;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RSvP06CHRz3c3b
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Aug 2023 09:01:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RSvQp0f3kz3c5s
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Aug 2023 09:02:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QEQa61/o;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LOqGtJ7B;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RSvN5149Yz2ypy
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Aug 2023 09:00:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RSvPy5RCCz2yTc
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Aug 2023 09:01:58 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id D2670606A0
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Aug 2023 23:00:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 2CCB5C433C7
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Aug 2023 23:00:16 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id F386660B6C
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Aug 2023 23:01:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 613D9C433C7
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Aug 2023 23:01:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1692486016;
-	bh=WFQKxUOyZbN0zv50ERc+p+o2Ptxd6AHFrBurkcCMAdA=;
+	s=k20201202; t=1692486116;
+	bh=YPVMlCoqr8oyTH0RNGHLTwtIanRNjDkFNekd8t4o87Q=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=QEQa61/o3n3sJb5fEN+Z/Xf1c6gAHAMKyM1RMHXmphshnXBm1RCN12eGFkbb9ATYe
-	 WKDforsPx40suNPTlOYo+eeJN77ln0ToHYM9s2eXxtwZgnQ8u/s6s7MPnEgxDoe2VA
-	 IncM6SRl8EyVC5u6BKuMNlfsw6EhEOOXsgPLUngLWf6Eomm4wDMB/KZfik//0YM3Xr
-	 6NijRSF+YPPTtb4KyIBdut/UZU3kr0sWZwSh7voIIo9pdYxQphL7GoV2F3Ma05wVNv
-	 v8TsOb2SbIdyEet2QerMfzU72GvqsE3gTCs63N2cknjhc559xZdLqKiFJZ6cEBtq8g
-	 CJkrG0QihkLuQ==
+	b=LOqGtJ7B9B+K3vi00oSSZmT9ztNAS88W1fNEyQBde3uJa3f0ctrrnZ1wFT+LiaTp8
+	 ZOwOyIynpUifX45d5tNK1tMg7IX3UgWtgeP1Wn0iZTBx3Ma6kV50JKdwZiZ/VCKc/e
+	 cXs6zBbTWlmomr5+7nHHEDd9NO8Q4Jadd5Rftir5IXpkpHcXb+HZYz8M7h5TDM8CHW
+	 7eEMUrShLMFeg24r3pabYOK2EvggPVzjiAK0lws+Q8qyKgjHrURV8BlbhDgLbeACDA
+	 Frz5Kms5dUIwOLkiTUXXP+ai3VDgtmRrMtPruX7k6v4CwumZX3D0GyHO912MNgTrGk
+	 0t4ivpS6xBSag==
 Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 0A380C4332E; Sat, 19 Aug 2023 23:00:16 +0000 (UTC)
+	id 4C2CFC4332E; Sat, 19 Aug 2023 23:01:56 +0000 (UTC)
 From: bugzilla-daemon@kernel.org
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 216156] kmemleak: Not scanning unknown object at
  0xc00000007f000000
-Date: Sat, 19 Aug 2023 23:00:15 +0000
+Date: Sat, 19 Aug 2023 23:01:56 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
@@ -62,7 +62,7 @@ X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
 X-Bugzilla-Changed-Fields: attachments.isobsolete attachments.created
-Message-ID: <bug-216156-206035-z4jwZ3FhUz@https.bugzilla.kernel.org/>
+Message-ID: <bug-216156-206035-W6JB9PvhqJ@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-216156-206035@https.bugzilla.kernel.org/>
 References: <bug-216156-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -90,43 +90,15 @@ Erhard F. (erhard_f@mailbox.org) changed:
 
            What    |Removed                     |Added
 ----------------------------------------------------------------------------
- Attachment #301230|0                           |1
+ Attachment #301231|0                           |1
         is obsolete|                            |
- Attachment #301232|0                           |1
-        is obsolete|                            |
- Attachment #303178|0                           |1
+ Attachment #303179|0                           |1
         is obsolete|                            |
 
---- Comment #8 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 304914
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D304914&action=3Dedit
-dmesg (6.5-rc6, PowerMac G5 11,2)
-
-Kernel 6.5-rc6 still affected.
-
-[...]
-PowerMac motherboard: PowerMac G5 Dual Core
-ioremap() called early from btext_map+0x6c/0xf0. Use early_ioremap() instead
-ioremap() called early from iommu_init_early_dart+0x270/0x948. Use
-early_ioremap() instead
-kmemleak: Not scanning unknown object at 0xc00000007f000000
-CPU: 0 PID: 0 Comm: swapper Tainted: G                T  6.5.0-rc6-PMacG5-d=
-irty
-#1
-Call Trace:
-[c00000000241fc70] [c000000000ff726c] dump_stack_lvl+0xb0/0x11c (unreliable)
-[c00000000241fcb0] [c00000000048fdc8] kmemleak_no_scan+0x118/0x130
-[c00000000241fd20] [c000000002021ad0] iommu_init_early_dart+0x300/0x948
-[c00000000241fe30] [c000000002022bf8] pmac_probe+0x1b8/0x228
-[c00000000241fe80] [c00000000200ec24] setup_arch+0x270/0x7d4
-[c00000000241ff30] [c000000002004f14] start_kernel+0xc0/0x850
-[c00000000241ffe0] [c00000000000cb48] start_here_common+0x1c/0x20
-DART table allocated at: (____ptrval____)
-DART IOMMU initialized for U4 type chipset
-Hardware name: PowerMac11,2 PPC970MP 0x440101 PowerMac
-printk: bootconsole [udbg0] enabled
-CPU maps initialized for 1 thread per core
-[...]
+--- Comment #9 from Erhard F. (erhard_f@mailbox.org) ---
+Created attachment 304915
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D304915&action=3Dedit
+kernel .config (6.5-rc6, PowerMac G5 11,2)
 
 --=20
 You may reply to this email to add a comment.
