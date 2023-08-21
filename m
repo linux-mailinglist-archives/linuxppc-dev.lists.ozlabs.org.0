@@ -2,134 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF46F7834A2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Aug 2023 23:08:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B11CC7834E5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Aug 2023 23:27:45 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=Kz310p7q;
-	dkim=pass (2048-bit key) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=Kz310p7q;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KaPrNJ7n;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KaPrNJ7n;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RV4nv46DKz3bq4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Aug 2023 07:08:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RV5DH3Zrmz3c24
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Aug 2023 07:27:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=Kz310p7q;
-	dkim=pass (2048-bit key) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=Kz310p7q;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KaPrNJ7n;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KaPrNJ7n;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=seco.com (client-ip=52.100.175.225; helo=eur05-vi1-obe.outbound.protection.outlook.com; envelope-from=sean.anderson@seco.com; receiver=lists.ozlabs.org)
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05hn2225.outbound.protection.outlook.com [52.100.175.225])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RV4mw6ypGz2xm3
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Aug 2023 07:07:26 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=r2nW6n8FYgTGaB2czyyuAu7bopoCC/YjzwHJjRjpZd4=;
- b=Kz310p7qAXhAHSDRYeBTO/HHLUAW4SfPEMi5ND7XHNH5K9loY/NXdsW/1D9No1n+3LFBS9Hlp9WUu9Mx7z/igTf7fV4r3siwePN+hZPscHuSqqWM48MCA0isDbncDkxS4+risjb/ey4UemEZGIa7jdg81DlwbED6Cx02ysO+QSIUjnok+sYkmufcyMC6rIu/C4+lBqo8hlmisowOD9j+bu7yomR7Vu4PQTBmJ8peYVFfXBkZk+vmjckFNJzafBdCeachP2B4AlKzCTmXKWfvoGyjgzjffBM1F5eXJBUGCwtD7cfT/eMcF/7k/xaIjiFY2se1EMoFcWqf7PUtZspomg==
-Received: from AS9PR05CA0007.eurprd05.prod.outlook.com (2603:10a6:20b:488::27)
- by DB3PR0302MB9207.eurprd03.prod.outlook.com (2603:10a6:10:436::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.24; Mon, 21 Aug
- 2023 21:07:05 +0000
-Received: from AM6EUR05FT053.eop-eur05.prod.protection.outlook.com
- (2603:10a6:20b:488:cafe::13) by AS9PR05CA0007.outlook.office365.com
- (2603:10a6:20b:488::27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.20 via Frontend
- Transport; Mon, 21 Aug 2023 21:07:05 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 20.160.56.84)
- smtp.mailfrom=seco.com; dkim=pass (signature was verified)
- header.d=seco.com;dmarc=pass action=none header.from=seco.com;
-Received-SPF: Pass (protection.outlook.com: domain of seco.com designates
- 20.160.56.84 as permitted sender) receiver=protection.outlook.com;
- client-ip=20.160.56.84; helo=inpost-eu.tmcas.trendmicro.com; pr=C
-Received: from inpost-eu.tmcas.trendmicro.com (20.160.56.84) by
- AM6EUR05FT053.mail.protection.outlook.com (10.233.240.62) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6723.15 via Frontend Transport; Mon, 21 Aug 2023 21:07:03 +0000
-Received: from outmta (unknown [192.168.82.135])
-	by inpost-eu.tmcas.trendmicro.com (Trend Micro CAS) with ESMTP id 6CB0A20080096;
-	Mon, 21 Aug 2023 21:07:03 +0000 (UTC)
-Received: from EUR04-DB3-obe.outbound.protection.outlook.com (unknown [104.47.12.51])
-	by repre.tmcas.trendmicro.com (Trend Micro CAS) with ESMTPS id E9CBF2008006E;
-	Mon, 21 Aug 2023 21:06:53 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Hm9tWjHG6vY0sYw/uduSE00Vj/KGm3gesl5jU0rLqRmKt9ctM4V3OvCJ8MqMUiv/Li2d43LvAlLrXMG2OD6xLdrcpu1Y578TalGtvkvn8ns4cB7X+uO3CpzY0ga946sBAFBsV/dMyNrOTC+FlyZokNTNWeWqjQhX+5gz1ofpsULVgWgMsG/Kz963n5/zaNpylWkkZw5P2a1gMUydjfgb8BliiYshGJyH9aKynGSs6tahvXVhyYbXaJBAKVMjXuEIY/F4kOVeMOfgjIM2NnNBr0dOWHzl6f++3XcRPsujXLZgZLk4CPEm/hcv9CFdRB89P8hFDe1lji7gppRKrVzXiw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=r2nW6n8FYgTGaB2czyyuAu7bopoCC/YjzwHJjRjpZd4=;
- b=LSWivH3285Ogt9DAD5Y3HdKIXEAvf3PqyoHEhbKkcZAxk7umqCOFoJ7GakV7+yi2vDKUIyigEiQrdKGpoghV/x3QHy9alIWc66oIS9+qCoS8f2yNK8HNDgU8ij3uqvAVAk2OVXPKa0PO30+qOALCATeWVxM3JVefCx+P7ICo0tjzWHTYkpowuns7eur7NaOkCFDFPj+4vketN6YEEMrqam1QwPMJ98GKkZRlxbrefMeQb4tY8B9gRCA+isBG/G6iOHQ+hxzsIQvm2/nCKa0ricUVapWfPB7P7yHwvGCX4QojXyKV7oczX6qEWAuKGARB81+T5OvQYN91MxD/h29DZQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=seco.com; dmarc=pass action=none header.from=seco.com;
- dkim=pass header.d=seco.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=r2nW6n8FYgTGaB2czyyuAu7bopoCC/YjzwHJjRjpZd4=;
- b=Kz310p7qAXhAHSDRYeBTO/HHLUAW4SfPEMi5ND7XHNH5K9loY/NXdsW/1D9No1n+3LFBS9Hlp9WUu9Mx7z/igTf7fV4r3siwePN+hZPscHuSqqWM48MCA0isDbncDkxS4+risjb/ey4UemEZGIa7jdg81DlwbED6Cx02ysO+QSIUjnok+sYkmufcyMC6rIu/C4+lBqo8hlmisowOD9j+bu7yomR7Vu4PQTBmJ8peYVFfXBkZk+vmjckFNJzafBdCeachP2B4AlKzCTmXKWfvoGyjgzjffBM1F5eXJBUGCwtD7cfT/eMcF/7k/xaIjiFY2se1EMoFcWqf7PUtZspomg==
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=seco.com;
-Received: from DB9PR03MB8847.eurprd03.prod.outlook.com (2603:10a6:10:3dd::13)
- by AM9PR03MB6819.eurprd03.prod.outlook.com (2603:10a6:20b:2d9::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.24; Mon, 21 Aug
- 2023 21:06:51 +0000
-Received: from DB9PR03MB8847.eurprd03.prod.outlook.com
- ([fe80::21bd:6579:b3d1:e5f7]) by DB9PR03MB8847.eurprd03.prod.outlook.com
- ([fe80::21bd:6579:b3d1:e5f7%5]) with mapi id 15.20.6699.022; Mon, 21 Aug 2023
- 21:06:51 +0000
-Message-ID: <a66c9abf-5351-62b6-5573-cae38e6768e2@seco.com>
-Date: Mon, 21 Aug 2023 17:06:46 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.1
-Subject: Re: [PATCH v14 00/15] phy: Add support for Lynx 10G SerDes
-Content-Language: en-US
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-References: <20230612163353.dwouatvqbuo6h4ea@skbuf>
- <1dd01fe2-08a8-ec2f-1184-a58b2f55ba85@seco.com>
- <20230613142754.wr5njtjo4tbloqwu@skbuf>
- <20230811150826.urp2hzl3tahesrjx@skbuf>
- <26623d0c-8a5a-614b-7df7-69214aaec524@seco.com>
- <20230811163637.bs7a46juasjgnmf4@skbuf>
- <20230821124952.mraqqp7pxlo56gkh@skbuf>
- <a2e3fcad-9857-f1b3-8ada-efb2013a4bf5@seco.com>
- <20230821181349.hls6pukp5d6rc5av@LXL00007.wbi.nxp.com>
- <73d59dd2-88f0-3c1a-0de2-de2e050cba5a@seco.com>
- <20230821195823.ns55h3livxgol7fp@skbuf>
-From: Sean Anderson <sean.anderson@seco.com>
-In-Reply-To: <20230821195823.ns55h3livxgol7fp@skbuf>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BLAPR03CA0127.namprd03.prod.outlook.com
- (2603:10b6:208:32e::12) To DB9PR03MB8847.eurprd03.prod.outlook.com
- (2603:10a6:10:3dd::13)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RV5CL05r6z2xqH
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Aug 2023 07:26:52 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1692653208;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Kc1lL9HfVMeZHEEA4arnyJkoU4jVLawdPSW/zCLOVpk=;
+	b=KaPrNJ7nbUAsMZcseyeZmdWhzliYD1KhRDMyReNAFe/0QUrUrRvQ5Xeuj7A/8+U+oPpoJi
+	JDb5n5AEGCyiWziwk2uzx8ilRsz9BfW7XEUwXOPxRmXPXeNmtXpeYVeD/r1e39AsmKbnDB
+	JTsAYEZM1rYVSjzlXzcXDMnVGaYLHLw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1692653208;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Kc1lL9HfVMeZHEEA4arnyJkoU4jVLawdPSW/zCLOVpk=;
+	b=KaPrNJ7nbUAsMZcseyeZmdWhzliYD1KhRDMyReNAFe/0QUrUrRvQ5Xeuj7A/8+U+oPpoJi
+	JDb5n5AEGCyiWziwk2uzx8ilRsz9BfW7XEUwXOPxRmXPXeNmtXpeYVeD/r1e39AsmKbnDB
+	JTsAYEZM1rYVSjzlXzcXDMnVGaYLHLw=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-654-ReZbZGN2OFCeossGMH7O3g-1; Mon, 21 Aug 2023 17:26:45 -0400
+X-MC-Unique: ReZbZGN2OFCeossGMH7O3g-1
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-63d2b88325bso10466596d6.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Aug 2023 14:26:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692653205; x=1693258005;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Kc1lL9HfVMeZHEEA4arnyJkoU4jVLawdPSW/zCLOVpk=;
+        b=NuRSAjKqrzuTdkmzeCXU/iYIYDaB4rmjkzLHgrf49UvaqGe52b7Fn6ZKOnyhrfdqwT
+         mjFibolFHklttSMdZnc+p0lmjeIzhfIIuGbRhpW7tz4EteuQcD4MUvAxZdoyPnicJFGU
+         WFeUKZso/px5/B7/+TddKruADNfR1LPhUCqyBJcsue4M8J3M8oIJGPKID4QI4JTCTU11
+         +fZKDZTCNbH3RpBnomQrttAXTIkPVLINRnc6j8oEL7+j+c8wB5JdR5ooMbqGHXyeS6Cg
+         OH6884JVK5xdQ4QcfXMXMxOipyrByD9gBbSh3WUGowpuBfK4B4KbQ8Q+eqjZGhHqw1EQ
+         2uEw==
+X-Gm-Message-State: AOJu0YzbZU+FjJU32AO2jym05DvCb5MS1lxeLkldSMbN24Hlft30fbEf
+	bZctu3x02dUA3kXXNAIeNTF/b1flXxhMI+My83OAz+oMYorXohSzVVg/li+wcWVS7+FkRsdBpCT
+	AH9Fh92RChiyKOzrlQ8qGgNkE/Q==
+X-Received: by 2002:ad4:5c63:0:b0:645:3c6:56ab with SMTP id i3-20020ad45c63000000b0064503c656abmr9748574qvh.1.1692653205343;
+        Mon, 21 Aug 2023 14:26:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEgtWCOPeUpEzGq/iv0oKzAPjh78y7co8OVUrk5dfltW9vOj/sBZqVpomm+P1HZkyDqvpN/4A==
+X-Received: by 2002:ad4:5c63:0:b0:645:3c6:56ab with SMTP id i3-20020ad45c63000000b0064503c656abmr9748513qvh.1.1692653205030;
+        Mon, 21 Aug 2023 14:26:45 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
+        by smtp.gmail.com with ESMTPSA id d28-20020a0cb2dc000000b0063d0b792469sm3261672qvf.136.2023.08.21.14.26.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Aug 2023 14:26:44 -0700 (PDT)
+Date: Mon, 21 Aug 2023 17:26:41 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Hugh Dickins <hughd@google.com>
+Subject: Re: [PATCH mm-unstable] mm/khugepaged: fix collapse_pte_mapped_thp()
+ versus uffd
+Message-ID: <ZOPWkS7joexET6q8@x1n>
+References: <4d31abf5-56c0-9f3d-d12f-c9317936691@google.com>
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic: 	DB9PR03MB8847:EE_|AM9PR03MB6819:EE_|AM6EUR05FT053:EE_|DB3PR0302MB9207:EE_
-X-MS-Office365-Filtering-Correlation-Id: b4fcb59c-1682-4da4-1c6d-08dba28a91ce
-X-TrendMicro-CAS-OUT-LOOP-IDENTIFIER: 656f966764b7fb185830381c646b41a1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted: BCL:0;
-X-Microsoft-Antispam-Message-Info-Original:  fiEzCXRKn520O4ko1UVQ7syguPx20Sfe24hSvnkPX5RqC8+ynzBsf1pcTMEKYyLDmcMoUiCKRSCARQUKonJRI2FftQN8n84yl+FnJm7k0/RzhzayBFHASEcyAcnF0v1u0LGhrfwiIqae9ZaXBK74ayRM5ZuImtxblwsi+prDANx2SG/1iItMv4ZYFRR4cJ10HhCgt8khgtzBzkAvAOHKgL475/tCfaK/KaXoDB5EbNUf9ujTSad81e0EKE1nErG37sgfA3dwVWeOA/KkEJCg/ujBsq0bzFIy5g0RKDSUWbZiSA2NNW4MmdjPmoJvKFPVR5zLPBS9BdXNniexneiM2x1uUz01FhXrFcBJaWzznA/E152RWEZgWDY7Q6QEsoChcVsjEJZrWTSCo728/FUYDlNwaWkVZ410vfXko+0v0ogjFuS3BJ2yXo2Woxic4cNR9zOD4oqBPUMZ1k+YTXSqPqnR1Fp9XPnB8oDKDlf2AxE9Maqc/O/DGtiKW+KnNe2l9JrljaJy086d7HEBxoFpOaWC3Qwmi20GEROKWqKCBMeWRL4hTZr85PumLYO5mv5P3Q38bPUfW0ZXqmC18fFMdKjKhl3nxwPfFNunxxB+d+LYC1Hh2ipVYpcitGI0NiXWB6zBTx5EsUaf2MunbcdiqvSLWzaoj90qMAm4Kj/mbbM=
-X-Forefront-Antispam-Report-Untrusted:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR03MB8847.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(376002)(136003)(39850400004)(346002)(366004)(186009)(1800799009)(451199024)(54906003)(6916009)(66476007)(66556008)(316002)(66946007)(6512007)(66899024)(8676002)(8936002)(2616005)(4326008)(36756003)(41300700001)(966005)(478600001)(6666004)(38100700002)(38350700002)(53546011)(52116002)(6506007)(6486002)(83380400001)(2906002)(7416002)(86362001)(31686004)(31696002)(44832011)(5660300002)(26005)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR03MB6819
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:  AM6EUR05FT053.eop-eur05.prod.protection.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs: 	df68f686-9e76-4d87-a038-08dba28a8a33
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	rwU0hfXF19WBRbQzDDsZeQOOiDRThf3dJQV7sFOF8MOVSPi9SZompW4mjYnpnox2+FmBXWsIfUDrpQkuBQ+A01brlqdrfkb9maQA3S7rSFnKTVtioDhsv8+LwJFay320w5aL0CGS9YIEZ+lWqKitBqY9iJbF95qYAJFzExO/DNnXfgWA2PfQitElXttnsun+xAJB1DUMzcoN4/hSg/Seg2ba/Syq3rxN8dOtQIgy9RABS891s61aJZf9YXmHPwekbJKNnf1hsSPvDyDPZM2HUDFh3ybx30w2bkHuULamYMag/GP9qu4HbBUHVG4SmmvOrt/mNgkHWkXrm+DM6PAFW85wUaFXJGuH9XtJwINSSaC17LI09h1Ca61JjxACnrE/Xgk7gJM7M8qw9B+3YrsLL1buoISKsVigZPNcP6LUW4mcRRM12G3NRGlmBQQS7pLFkHuau4HKPa1nrCjMGwFho1Fv2rOV5XLtaaXAUA1PICotXunoonaYekKpWEplsKxTR5TYDAX9jxCDFhWGFDh4TLgvtSQ/nC1SqH60Wa3+mc61u70QtrIgZWOcokjkvaXGDBdV2vfY/9XMnaqLXYnjZdB//tyjm3dxurKDu+Dn47mGlX5m/DXsQb5vPr9JCbPS9hPVwXzRB99TmPvcMSbhmoJn+8PUrKcrfrCVl6NHryodjquYF8NT/NLL6Xu9ia8aWD884+lphdy+ACsKF5KA8yvXHXnoOObX5H5aGVZ2vBxLaDYtQfQTJ5N5UM9rG8HYX9rDnwUxtfG6/eVFOAKCJI9N4yDMT6gu1/PdrZWsCc4=
-X-Forefront-Antispam-Report: 	CIP:20.160.56.84;CTRY:NL;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:inpost-eu.tmcas.trendmicro.com;PTR:inpost-eu.tmcas.trendmicro.com;CAT:NONE;SFS:(13230031)(346002)(136003)(376002)(396003)(39850400004)(82310400011)(451199024)(5400799018)(1800799009)(186009)(46966006)(36840700001)(2906002)(7416002)(53546011)(6486002)(40480700001)(6506007)(83380400001)(5660300002)(44832011)(336012)(26005)(86362001)(31686004)(36860700001)(31696002)(47076005)(8676002)(34070700002)(2616005)(8936002)(4326008)(70206006)(316002)(6512007)(6916009)(54906003)(70586007)(66899024)(966005)(478600001)(356005)(82740400003)(7596003)(6666004)(36756003)(41300700001)(7636003)(43740500002)(12100799039);DIR:OUT;SFP:1501;
-X-OriginatorOrg: seco.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2023 21:07:03.7979
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b4fcb59c-1682-4da4-1c6d-08dba28a91ce
-X-MS-Exchange-CrossTenant-Id: bebe97c3-6438-442e-ade3-ff17aa50e733
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=bebe97c3-6438-442e-ade3-ff17aa50e733;Ip=[20.160.56.84];Helo=[inpost-eu.tmcas.trendmicro.com]
-X-MS-Exchange-CrossTenant-AuthSource: 	AM6EUR05FT053.eop-eur05.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB3PR0302MB9207
+In-Reply-To: <4d31abf5-56c0-9f3d-d12f-c9317936691@google.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -141,85 +97,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?UTF-8?B?RmVybuKUnMOtbmRleiBSb2phcw==?= <noltari@gmail.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Madalin Bucur <madalin.bucur@nxp.com>, Michael Turquette <mturquette@baylibre.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Jonas Gorski <jonas.gorski@gmail.com>, linux-phy@lists.infradead.org, linux-clk@vger.kernel.org, Kishon Vijay Abraham I <kishon@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Bartosz Golaszewski <brgl@bgdev.pl>, linux-doc@vger.kernel.org, Camelia Alexandra Groza <camelia.groza@nxp.com>, Linus Walleij <linus.walleij@linaro.org>, devicetree@vger.kernel.org, linux-gpio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, linux-arm-kernel@lists.infradead.org, Stephen Boyd <sboyd@kernel.org>, linuxppc-dev@lists.ozlabs.org, Li Yang <leoyang.li@nxp.com>, Vinod Koul <vkoul@kernel.org>, Shawn Guo <shawnguo@kernel.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, Anshuman Khandual <anshuman.khandual@arm.com>, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Yang Shi <shy828301@gmail.com>, Qi Zheng <zhengqi.arch@bytedance.com>, kernel list <linux-kernel@vger.kernel.org>, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-s390 <linux-s390@vger.kernel.org>, Yu Zhao <yuzhao@google.com>, Ira Weiny <ira.weiny@intel.com>, Alistair Popple <apopple@nvidia.com>, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, Steven Price <steven.price@arm.com>, Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Zi Yan <ziy@nvidia.com>, Huang Ying <ying.huang@intel.com>, Axel Rasmussen <axelrasmussen@google.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraege
+ r <borntraeger@linux.ibm.com>, Thomas Hellstrom <thomas.hellstrom@linux.intel.com>, Ralph Campbell <rcampbell@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, Vasily Gorbik <gor@linux.ibm.com>, Jann Horn <jannh@google.com>, Heiko Carstens <hca@linux.ibm.com>, Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, Linux ARM <linux-arm-kernel@lists.infradead.org>, SeongJae Park <sj@kernel.org>, Lorenzo Stoakes <lstoakes@gmail.com>, Linux-MM <linux-mm@kvack.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Naoya Horiguchi <naoya.horiguchi@nec.com>, Zack Rusin <zackr@vmware.com>, Zach O'Keefe <zokeefe@google.com>, Vishal Moola <vishal.moola@gmail.com>, Minchan Kim <minchan@kernel.org>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, Mel Gorman <mgorman@techsingularity.net>, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 8/21/23 15:58, Vladimir Oltean wrote:
-> On Mon, Aug 21, 2023 at 02:46:53PM -0400, Sean Anderson wrote:
->> After further review, it seems the reason 28g can get away without this
->> is because there's a one-to-one mapping between protocol controllers and
->> lanes. Unfortunately, that regularity is not present for 10g.
->> 
->> --Sean
+On Mon, Aug 21, 2023 at 12:51:20PM -0700, Hugh Dickins wrote:
+> Jann Horn demonstrated how userfaultfd ioctl UFFDIO_COPY into a private
+> shmem mapping can add valid PTEs to page table collapse_pte_mapped_thp()
+> thought it had emptied: page lock on the huge page is enough to protect
+> against WP faults (which find the PTE has been cleared), but not enough
+> to protect against userfaultfd.  "BUG: Bad rss-counter state" followed.
 > 
-> There are some things I saw in your phy-fsl-lynx-10g.c driver and device
-> tree bindings that I don't understand (the concept of lane groups)
+> retract_page_tables() protects against this by checking !vma->anon_vma;
+> but we know that MADV_COLLAPSE needs to be able to work on private shmem
+> mappings, even those with an anon_vma prepared for another part of the
+> mapping; and we know that MADV_COLLAPSE needs to work on shared shmem
+> mappings which are userfaultfd_armed().  Whether it needs to work on
+> private shmem mappings which are userfaultfd_armed(), I'm not so sure:
+> but assume that it does.
+> 
+> Just for this case, take the pmd_lock() two steps earlier: not because
+> it gives any protection against this case itself, but because ptlock
+> nests inside it, and it's the dropping of ptlock which let the bug in.
+> In other cases, continue to minimize the pmd_lock() hold time.
+> 
+> Reported-by: Jann Horn <jannh@google.com>
+> Closes: https://lore.kernel.org/linux-mm/CAG48ez0FxiRC4d3VTu_a9h=rg5FW-kYD5Rg5xo_RDBM0LTTqZQ@mail.gmail.com/
+> Fixes: 1043173eb5eb ("mm/khugepaged: collapse_pte_mapped_thp() with mmap_read_lock()")
+> Signed-off-by: Hugh Dickins <hughd@google.com>
 
-Each lane group corresponds to a phy device (struct phy). For protocols
-like PCIe or XAUI which can use multiple lanes, this lets the driver
-coordinate configuring all lanes at once in the correct order.
+The locking is indeed slightly complicated.. but I didn't spot anything
+wrong.
 
-> and
-> I'm not sure if they're related with what you're saying here, so if you
-> could elaborate a bit more (ideally with an example) on the one-to-one
-> mapping and the specific problems it causes, it would be great.
+Acked-by: Peter Xu <peterx@redhat.com>
 
-For e.g. the LS2088A, SerDes1 lanes H-A use SG1-8 and XFI1-8. SerDes2
-lanes A-H use SG9-16 and XFI9-16. Each lane has its own controller, and
-the mapping is 1-to-1. In the PCCRs, each controller uses the same
-value, and is mapped in a regular way. So you can go directly from the
-lane number to the right value to mask in the PCCR, with a very simple
-translation scheme.
+Thanks,
 
-For e.g. the LS1046A, SerDes1 lane D uses XFI.9 (aka XFIA) and lane C
-uses XFI.10 (aka XFIB). This is the opposite of how SerDes1 lanes A-D
-use SGMII.9, .10, .5, and .6 (aka SGMIIA-D).
+-- 
+Peter Xu
 
-For e.g. the T4240, SerDes1 lanes A-H use sg1.5, .6, .10, .9, .1, .2,
-.3, .4 (aka SGMII E, F, H, G, A, B, C, D).
-
-For e.g. the B4860, SerDes lanes A uses sgmii1 or sgmii5 and B uses
-sgmii2 or sgmii6. The MAC selected is determined based on the value
-programmed into PCCR2.
-
-While I appreciate that your hardware engineers did a better job for
-28g, many 10g serdes arbitrarily map lanes to protocol controllers.
-I think the mapping is too irregular to tame, and it is better to say
-"if you want this configuration, program this value".
-
-> I may be off with my understanding of the regularity you are talking about,
-> but the LX2160 (and Lynx 28G block) also has multi-lane protocols like 40G,
-> 100G, assuming that's what you are talking about. I haven't started yet
-> working on those for the mtip_backplane driver, but I'm not currently
-> seeing a problem with the architecture where a phy_device represents a
-> single lane that's part of a multi-lane port, and not an entire group.
-
-Resetting one lane in a group will reset the rest, which could confuse
-the driver. Additionally, treating the lanes as one phy lets us set the
-reset direction and first lane bits correctly.
-
-> In my imagination, there are 2 cases:
-> - all 4 lanes are managed by the single dpaa2-mac consumer (which has 4
->   phandles, and iterates over them with a "for" loop)
-> - each of the 4 lanes is managed by the respective backplane AN/LT core,
->   and thus, there's one phandle to each lane
-
-By doing the grouping in the driver, we also simplify the consumer
-implementation. The MAC can always use a single phy, without worrying
-about the actual number of lanes. This matches the hardware, since the
-MAC is going to talk XGMII (or whatever) to the protocol controller
-anyway.
-
-I think it will be a lot easier to add multi-lane support with this
-method because it gives the driver more information about what's going
-on. The driver can control the whole configuration/reset process and the
-timing.
-
-> I sketched some dt-bindings for the second case here, so I guess it must
-> be the first scenario that's somehow problematic?
-> https://cas5-0-urlprotect.trendmicro.com:443/wis/clicktime/v1/query?url=https%3a%2f%2fpatchwork.kernel.org%2fproject%2fnetdevbpf%2fpatch%2f20230817150644.3605105%2d9%2dvladimir.oltean%40nxp.com%2f&umid=9e644233-009e-4197-a266-5d9a85eb1148&auth=d807158c60b7d2502abde8a2fc01f40662980862-cc1d5330d84af8fa40745b165a44849db50f8a67
-
-Yes, no issues with the second case.
-
---Sean
