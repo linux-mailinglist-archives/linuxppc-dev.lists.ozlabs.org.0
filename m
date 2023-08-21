@@ -1,47 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 614AF782B32
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Aug 2023 16:10:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E724782BC7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Aug 2023 16:29:13 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=FnNcbcrk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=EvQ96XJd;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RTvXG1c3Cz3byH
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Aug 2023 00:10:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RTvxM0ppWz3bbW
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Aug 2023 00:29:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=FnNcbcrk;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=EvQ96XJd;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RTvWL4gGjz30Pn
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Aug 2023 00:10:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RTvwS5TjVz30f4
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Aug 2023 00:28:24 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1692627004;
-	bh=atArDXB4Tm/i9elbPfYyrYL5vLGB7jTPhEekIutdxHk=;
+	s=201909; t=1692628104;
+	bh=S/aI7ekQPWDUo5vNJKCUmAeJUoruzb4ZJexTlHdan+o=;
 	h=From:To:Cc:Subject:Date:From;
-	b=FnNcbcrk/0Px5LUK7h2SrJVN1cfM6FD5h1nV91biCnoIUUHt0PsPY+31g4KOPbfc/
-	 n6YrKvbDaBHI+7/sp/zXVQVZv946wZ1ymhD9TByJSp2ibnwyhGyWky+VCMA1tQADmw
-	 h2ZqS2ZhsICzguSPH22I40leE2FY35qNoPfSBfG16HRH87NtoLPwYxvLSjoaQs/uxo
-	 wuX6ZHgp0ductpf0UPqDpYT15e2OzWtDDvlIwlV/7jmhMBmgX40FvLcd8lG0T+9mIt
-	 ZpDQbnsq8+l9H66SFhDSICvsYRNz0ssfwhNcuJtS7OMie31sY4BYmWzkHyCm6saVr5
-	 p+/DG4Q1yZiYA==
+	b=EvQ96XJd2423P4ssBwrrc1voJ0tdq+Z3vREgSKRMSq3efUUA9YrGpVIIq4kiZGJ6F
+	 6uNd6vqvd+4GPm+PpQtRBs3RJ1MPH2fzIBrKF5LAGkhTFa7zTDj3jtoGwPbF+93xZC
+	 fkflKJ87V37LlJ68n4ki6KuPoZ/SG+BL4GcDD6Tt2/R8XBYsx+zqb9rMR2H+SDzxHf
+	 ZP2Q7xnLuhwfw2Oben6wKTvKPhR4SKrRMA76mGPOOsbhApiIrsVU1MRjHF4vb1/7/P
+	 P8dTFPWQoz30yCK39g43EqM/QKWk+fZhZDUeRexCmLB880/csSZg/8jxseL+r5Dewv
+	 rRjMyGwYVifdA==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RTvWH4rBDz4wxW;
-	Tue, 22 Aug 2023 00:10:03 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RTvwS3BLhz4wb0;
+	Tue, 22 Aug 2023 00:28:24 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH] powerpc/powermac: Fix unused function warning
-Date: Tue, 22 Aug 2023 00:09:49 +1000
-Message-ID: <20230821140949.491881-1-mpe@ellerman.id.au>
+Subject: [PATCH 1/2] powerpc/powernv: Fix fortify source warnings in opal-prd.c
+Date: Tue, 22 Aug 2023 00:28:19 +1000
+Message-ID: <20230821142820.497107-1-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -56,50 +56,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: arnd@arndb.de
+Cc: jniethe5@gmail.com, mahesh@linux.ibm.com, joel@jms.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Clang reports:
-  arch/powerpc/platforms/powermac/feature.c:137:19: error: unused function 'simple_feature_tweak'
+As reported by Mahesh & Aneesh, opal_prd_msg_notifier() triggers a
+FORTIFY_SOURCE warning:
 
-It's only used inside the #ifndef CONFIG_PPC64 block, so move it in
-there to fix the warning. While at it drop the inline, the compiler will
-decide whether it should be inlined or not.
+  memcpy: detected field-spanning write (size 32) of single field "&item->msg" at arch/powerpc/platforms/powernv/opal-prd.c:355 (size 4)
+  WARNING: CPU: 9 PID: 660 at arch/powerpc/platforms/powernv/opal-prd.c:355 opal_prd_msg_notifier+0x174/0x188 [opal_prd]
+  NIP opal_prd_msg_notifier+0x174/0x188 [opal_prd]
+  LR  opal_prd_msg_notifier+0x170/0x188 [opal_prd]
+  Call Trace:
+    opal_prd_msg_notifier+0x170/0x188 [opal_prd] (unreliable)
+    notifier_call_chain+0xc0/0x1b0
+    atomic_notifier_call_chain+0x2c/0x40
+    opal_message_notify+0xf4/0x2c0
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202308181501.AR5HMDWC-lkp@intel.com/
+This happens because the copy is targetting item->msg, which is only 4
+bytes in size, even though the enclosing item was allocated with extra
+space following the msg.
+
+To fix the warning define struct opal_prd_msg with a union of the header
+and a flex array, and have the memcpy target the flex array.
+
+Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Reported-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/platforms/powermac/feature.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/powerpc/platforms/powernv/opal-prd.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/platforms/powermac/feature.c b/arch/powerpc/platforms/powermac/feature.c
-index ed472b797e28..ae62d432db8b 100644
---- a/arch/powerpc/platforms/powermac/feature.c
-+++ b/arch/powerpc/platforms/powermac/feature.c
-@@ -134,8 +134,10 @@ static struct pmac_mb_def pmac_mb;
-  * Here are the chip specific feature functions
-  */
+diff --git a/arch/powerpc/platforms/powernv/opal-prd.c b/arch/powerpc/platforms/powernv/opal-prd.c
+index 113bdb151f68..40e26e9f318f 100644
+--- a/arch/powerpc/platforms/powernv/opal-prd.c
++++ b/arch/powerpc/platforms/powernv/opal-prd.c
+@@ -24,13 +24,20 @@
+ #include <linux/uaccess.h>
  
--static inline int simple_feature_tweak(struct device_node *node, int type,
--				       int reg, u32 mask, int value)
-+#ifndef CONFIG_PPC64
+ 
++struct opal_prd_msg {
++	union {
++		struct opal_prd_msg_header header;
++		DECLARE_FLEX_ARRAY(u8, data);
++	};
++};
 +
-+static int simple_feature_tweak(struct device_node *node, int type, int reg,
-+				u32 mask, int value)
- {
- 	struct macio_chip*	macio;
- 	unsigned long		flags;
-@@ -154,8 +156,6 @@ static inline int simple_feature_tweak(struct device_node *node, int type,
- 	return 0;
- }
+ /*
+  * The msg member must be at the end of the struct, as it's followed by the
+  * message data.
+  */
+ struct opal_prd_msg_queue_item {
+-	struct list_head		list;
+-	struct opal_prd_msg_header	msg;
++	struct list_head	list;
++	struct opal_prd_msg	msg;
+ };
  
--#ifndef CONFIG_PPC64
--
- static long ohare_htw_scc_enable(struct device_node *node, long param,
- 				 long value)
- {
+ static struct device_node *prd_node;
+@@ -156,7 +163,7 @@ static ssize_t opal_prd_read(struct file *file, char __user *buf,
+ 	int rc;
+ 
+ 	/* we need at least a header's worth of data */
+-	if (count < sizeof(item->msg))
++	if (count < sizeof(item->msg.header))
+ 		return -EINVAL;
+ 
+ 	if (*ppos)
+@@ -186,7 +193,7 @@ static ssize_t opal_prd_read(struct file *file, char __user *buf,
+ 			return -EINTR;
+ 	}
+ 
+-	size = be16_to_cpu(item->msg.size);
++	size = be16_to_cpu(item->msg.header.size);
+ 	if (size > count) {
+ 		err = -EINVAL;
+ 		goto err_requeue;
+@@ -352,7 +359,7 @@ static int opal_prd_msg_notifier(struct notifier_block *nb,
+ 	if (!item)
+ 		return -ENOMEM;
+ 
+-	memcpy(&item->msg, msg->params, msg_size);
++	memcpy(&item->msg.data, msg->params, msg_size);
+ 
+ 	spin_lock_irqsave(&opal_prd_msg_queue_lock, flags);
+ 	list_add_tail(&item->list, &opal_prd_msg_queue);
 -- 
 2.41.0
 
