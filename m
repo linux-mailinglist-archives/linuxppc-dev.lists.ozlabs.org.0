@@ -2,67 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEA127830F1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Aug 2023 21:34:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA49478310D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Aug 2023 21:49:32 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=qpKSqx5I;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=O+l83h2L;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RV2j45CmYz3c1W
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Aug 2023 05:34:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RV32y5zDPz3c24
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Aug 2023 05:49:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=qpKSqx5I;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=O+l83h2L;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=39lvjzaykdckxjfsohlttlqj.htrqnszcuuh-ijaqnxyx.teqfgx.twl@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1049.google.com (mail-pj1-x1049.google.com [IPv6:2607:f8b0:4864:20::1049])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b2b; helo=mail-yb1-xb2b.google.com; envelope-from=hughd@google.com; receiver=lists.ozlabs.org)
+Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RV2hB0FlHz30BZ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Aug 2023 05:33:11 +1000 (AEST)
-Received: by mail-pj1-x1049.google.com with SMTP id 98e67ed59e1d1-26ecc4795a4so2336356a91.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Aug 2023 12:33:11 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RV3256B02z2ytX
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Aug 2023 05:48:44 +1000 (AEST)
+Received: by mail-yb1-xb2b.google.com with SMTP id 3f1490d57ef6-d45caf42d73so3691688276.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Aug 2023 12:48:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1692646389; x=1693251189;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+        d=google.com; s=20221208; t=1692647321; x=1693252121;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lTUf23UWw1SkKKJ2TYgJ195zKcBZk+aHzDWYw0jOr4Q=;
-        b=qpKSqx5ICliXSxPjZu0tOZy7xlqIAe6qVNImHFeHE99jDfjJ0rkalTo5f1yiylL8Zp
-         zW/oM/ylnbuxciYR4prkKI8mJaHp2WuQufXKGB2RG8EjyX49+7sODEpJkoODIpJFN+WQ
-         d92P7dg0Kdt0AwxXyEzQoriMz6/KeQrNijacO4IuCJVKS1YJTlTz834blo5E9EKqcgWL
-         PEM2JeCl6oJE3F68JjqgLe5PECwZdFSwKXlISOg41aNDBtfUtUCqAE2x2tOPTF0xf31f
-         3SefiEREMJ5D9AnExP5D9BLT2XJ6ZGgC24sHacNuUQH7uTJzB0bBXanlC1qACw6pUjbt
-         /CMg==
+        bh=TJzCfpxhVh8Bz41vGC0rk+kXrKf+GdQm6b6DEBJLp4Y=;
+        b=O+l83h2LbZSW4NI8EbJgXLVItI++RMuU2J1wzOBcgSbKmzQuEPI9eXLtSoWmn6sq+J
+         am9dOa1SFWGD7j5vN6h935pR1gM8rVAxXJEVaSWFJUrDFCRm4UId8TzMlS8g+nEJHA0L
+         HVmidw/jdT5JEjucAIAVHt18vnuAYYelLXsgg/3kJuYSEB8p5NXviLWxA6djEjfHQuvd
+         Tut8+np5BGIFwbD617Gj+qlh50yuNuK3sAB8TJC0oDpzrOvNE36+gxIvWggycyL1tEG0
+         x92tpf/QJeruWhF9JQ1/ULRqj6tCPttInh9D1ON2tnwj/rA0zB3U4trgXTgmjiozXI6e
+         zKYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692646389; x=1693251189;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+        d=1e100.net; s=20221208; t=1692647321; x=1693252121;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lTUf23UWw1SkKKJ2TYgJ195zKcBZk+aHzDWYw0jOr4Q=;
-        b=XPNdw13jUn4wzy8UXC4xGU6R4nFITguHhPrDZ5B7tQm4g2K0DRrm0c+FWq0i3PPfNN
-         gk2IhecBJAgRVhRPlyql5xNQMYtlSYjKQAhhgtiwiumFsMmskRkumA30o8sqJIbF3XhA
-         B5a9AnYe2pjQrbya0G39ALHMfkborwD3SCVzJRjaWkOaOf/lZnfTvFXQ4M4dBc1bFhYs
-         shp9bNxw8Pi7WKXVlBipVhAijLSK7sGYkFMd47NaAOqk9U55cnml7bAnWb3RZYr4Alsq
-         l2uaXOK1MLaXGqTsqZ6mrmIcncp9FfwuRhxYNn273l//f3zNR2CoVdGT3svIPdgL7iOO
-         /Rvg==
-X-Gm-Message-State: AOJu0YyU5Zuhk4h9vP8BpYklfk51k65pGNKSwZ5keSG7HPtShdQItu+k
-	Q3+0Tnh8h3I8EqhTklTD85Ro5fByWJY=
-X-Google-Smtp-Source: AGHT+IHapYFA1E8erMKTCUk5o1Pg5iPJ1NuCQ0fs2o2CFjrEymp3AKNMxkfs6EIdF0eDdCPrJxgkHXuIM1g=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:90a:d90b:b0:26d:1212:7924 with SMTP id
- c11-20020a17090ad90b00b0026d12127924mr1918689pjv.4.1692646388708; Mon, 21 Aug
- 2023 12:33:08 -0700 (PDT)
-Date: Mon, 21 Aug 2023 12:33:07 -0700
-In-Reply-To: <diqzzg2ktiao.fsf@ackerleytng-ctop.c.googlers.com>
-Mime-Version: 1.0
-References: <ZNvaJ3igvcvTZ/8k@google.com> <diqzzg2ktiao.fsf@ackerleytng-ctop.c.googlers.com>
-Message-ID: <ZOO782YGRY0YMuPu@google.com>
-Subject: Re: [RFC PATCH v11 12/29] KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for
- guest-specific backing memory
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Content-Type: text/plain; charset="us-ascii"
+        bh=TJzCfpxhVh8Bz41vGC0rk+kXrKf+GdQm6b6DEBJLp4Y=;
+        b=RPcyO414PQrt+6irvZ8D45reIp0ozixu9nZBYoPEQZogIDaOec0e2SGSeyFDOpTR0y
+         ihRXEjIgQXOvNxL4NUcGSaNwITu9E/oBqHg6yvNKYQaCmK69kciyc0cpulIOmGOzDDSn
+         wsbdbINFHlhBGLR5SQXehKSb7y+JhRwfMveJF7SWZyXVeMCYWyDQnt1ZDjGrdfBMw1u+
+         OMurFUgtcALfqMe7vp/PVkn7b+TVPqFG6+UF0jBcbhHAMbhIdoHn1vM4Nrfjf+1VaYSD
+         45nLSEIF6T1zu1tmKa4tlX3qKxX+I5rbiNJFKRWzktMHk/MXM6kQvgG8N7ty2HpyPFWQ
+         ghHQ==
+X-Gm-Message-State: AOJu0YzFDAPtcF2A89f+L9jFjSrP3XhiEixwwaM7vlaY4rqV5PQZsxxi
+	jMf1f4io5pkjSg02djQkdsdn+Q==
+X-Google-Smtp-Source: AGHT+IGa6N7zVO856T4SuLkkv15XMUTmB6PRYCGx3mJYt/D6fAu3o2zmClsjUxquvXD3gtA1EwMqjA==
+X-Received: by 2002:a25:157:0:b0:ced:974a:1aae with SMTP id 84-20020a250157000000b00ced974a1aaemr7593100ybb.58.1692647321154;
+        Mon, 21 Aug 2023 12:48:41 -0700 (PDT)
+Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id z4-20020a259cc4000000b00d5c4c949349sm1335996ybo.13.2023.08.21.12.48.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Aug 2023 12:48:40 -0700 (PDT)
+Date: Mon, 21 Aug 2023 12:48:29 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+X-X-Sender: hugh@ripple.attlocal.net
+To: Jann Horn <jannh@google.com>
+Subject: Re: [BUG] Re: [PATCH v3 10/13] mm/khugepaged: collapse_pte_mapped_thp()
+ with mmap_read_lock()
+In-Reply-To: <CAG48ez0FxiRC4d3VTu_a9h=rg5FW-kYD5Rg5xo_RDBM0LTTqZQ@mail.gmail.com>
+Message-ID: <e71190cf-c1e7-87d3-7a61-b4753c3932ed@google.com>
+References: <7cd843a9-aa80-14f-5eb2-33427363c20@google.com> <b53be6a4-7715-51f9-aad-f1347dcb7c4@google.com> <CAG48ez0FxiRC4d3VTu_a9h=rg5FW-kYD5Rg5xo_RDBM0LTTqZQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="-1463760895-1083013748-1692647320=:5414"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,110 +77,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, david@redhat.com, yu.c.zhang@linux.intel.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, chao.p.peng@linux.intel.com, linux-riscv@lists.infradead.org, isaku.yamahata@gmail.com, paul@paul-moore.com, maz@kernel.org, chenhuacai@kernel.org, jmorris@namei.org, willy@infradead.org, wei.w.wang@intel.com, tabba@google.com, jarkko@kernel.org, serge@hallyn.com, mail@maciej.szmigiero.name, aou@eecs.berkeley.edu, vbabka@suse.cz, michael.roth@amd.com, paul.walmsley@sifive.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, qperret@google.com, liam.merwick@oracle.com, linux-mips@vger.kernel.org, oliver.upton@linux.dev, linux-security-module@vger.kernel.org, palmer@dabbelt.com, kvm-riscv@lists.infradead.org, anup@brainfault.org, linux-fsdevel@vger.kernel.org, pbonzini@redhat.com, akpm@linux-foundation.org, vannapurve@google.com, linuxppc-dev@lists.ozlabs.org, kirill.shutemov@linux.intel.com
+Cc: Miaohe Lin <linmiaohe@huawei.com>, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Yang Shi <shy828301@gmail.com>, Peter Xu <peterx@redhat.com>, kernel list <linux-kernel@vger.kernel.org>, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-s390 <linux-s390@vger.kernel.org>, Yu Zhao <yuzhao@google.com>, Ira Weiny <ira.weiny@intel.com>, Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, Steven Price <steven.price@arm.com>, Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Zi Yan <ziy@nvidia.com>, Huang Ying <ying.huang@intel.com>, Axel Rasmussen <axelrasmussen@google.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ib
+ m.com>, Thomas Hellstrom <thomas.hellstrom@linux.intel.com>, Ralph Campbell <rcampbell@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, Vasily Gorbik <gor@linux.ibm.com>, Anshuman Khandual <anshuman.khandual@arm.com>, Heiko Carstens <hca@linux.ibm.com>, Qi Zheng <zhengqi.arch@bytedance.com>, Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, Linux ARM <linux-arm-kernel@lists.infradead.org>, SeongJae Park <sj@kernel.org>, Lorenzo Stoakes <lstoakes@gmail.com>, Linux-MM <linux-mm@kvack.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Naoya Horiguchi <naoya.horiguchi@nec.com>, Zack Rusin <zackr@vmware.com>, Zach O'Keefe <zokeefe@google.com>, Vishal Moola <vishal.moola@gmail.com>, Minchan Kim <minchan@kernel.org>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, Mel Gorman <mgorman@techsingularity.net>, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@or
+ acle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 21, 2023, Ackerley Tng wrote:
-> Sean Christopherson <seanjc@google.com> writes:
-> 
-> > On Tue, Aug 15, 2023, Ackerley Tng wrote:
-> >> Sean Christopherson <seanjc@google.com> writes:
-> >> > Nullifying the KVM pointer isn't sufficient, because without additional actions
-> >> > userspace could extract data from a VM by deleting its memslots and then binding
-> >> > the guest_memfd to an attacker controlled VM.  Or more likely with TDX and SNP,
-> >> > induce badness by coercing KVM into mapping memory into a guest with the wrong
-> >> > ASID/HKID.
-> >> >
-> >> > I can think of three ways to handle that:
-> >> >
-> >> >   (a) prevent a different VM from *ever* binding to the gmem instance
-> >> >   (b) free/zero physical pages when unbinding
-> >> >   (c) free/zero when binding to a different VM
-> >> >
-> >> > Option (a) is easy, but that pretty much defeats the purpose of decopuling
-> >> > guest_memfd from a VM.
-> >> >
-> >> > Option (b) isn't hard to implement, but it screws up the lifecycle of the memory,
-> >> > e.g. would require memory when a memslot is deleted.  That isn't necessarily a
-> >> > deal-breaker, but it runs counter to how KVM memlots currently operate.  Memslots
-> >> > are basically just weird page tables, e.g. deleting a memslot doesn't have any
-> >> > impact on the underlying data in memory.  TDX throws a wrench in this as removing
-> >> > a page from the Secure EPT is effectively destructive to the data (can't be mapped
-> >> > back in to the VM without zeroing the data), but IMO that's an oddity with TDX and
-> >> > not necessarily something we want to carry over to other VM types.
-> >> >
-> >> > There would also be performance implications (probably a non-issue in practice),
-> >> > and weirdness if/when we get to sharing, linking and/or mmap()ing gmem.  E.g. what
-> >> > should happen if the last memslot (binding) is deleted, but there outstanding userspace
-> >> > mappings?
-> >> >
-> >> > Option (c) is better from a lifecycle perspective, but it adds its own flavor of
-> >> > complexity, e.g. the performant way to reclaim TDX memory requires the TDMR
-> >> > (effectively the VM pointer), and so a deferred relcaim doesn't really work for
-> >> > TDX.  And I'm pretty sure it *can't* work for SNP, because RMP entries must not
-> >> > outlive the VM; KVM can't reuse an ASID if there are pages assigned to that ASID
-> >> > in the RMP, i.e. until all memory belonging to the VM has been fully freed.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-...
+---1463760895-1083013748-1692647320=:5414
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-> I agree with you that nulling the KVM pointer is insufficient to keep
-> host userspace out of the TCB. Among the three options (a) preventing a
-> different VM (HKID/ASID) from binding to the gmem instance, or zeroing
-> the memory either (b) on unbinding, or (c) on binding to another VM
-> (HKID/ASID),
-> 
-> (a) sounds like adding a check issued to TDX/SNP upon binding and this
->     check would just return OK for software-protected VMs (line of sight
->     to removing host userspace from TCB).
-> 
-> Or, we could go further for software-protected VMs and add tracking in
-> the inode to prevent the same inode from being bound to different
-> "HKID/ASID"s, perhaps like this:
-> 
-> + On first binding, store the KVM pointer in the inode - not file (but
->   not hold a refcount)
-> + On rebinding, check that the KVM matches the pointer in the inode
-> + On intra-host migration, update the KVM pointer in the inode to allow
->   binding to the new struct kvm
-> 
-> I think you meant associating the file with a struct kvm at creation
-> time as an implementation for (a), but technically since the inode is
-> the representation of memory, tracking of struct kvm should be with the
-> inode instead of the file.
-> 
-> (b) You're right that this messes up the lifecycle of the memory and
->     wouldn't work with intra-host migration.
-> 
-> (c) sounds like doing the clearing on a check similar to that of (a)
+On Mon, 14 Aug 2023, Jann Horn wrote:
+> On Wed, Jul 12, 2023 at 6:42=E2=80=AFAM Hugh Dickins <hughd@google.com> w=
+rote:
+> > Bring collapse_and_free_pmd() back into collapse_pte_mapped_thp().
+> > It does need mmap_read_lock(), but it does not need mmap_write_lock(),
+> > nor vma_start_write() nor i_mmap lock nor anon_vma lock.  All racing
+> > paths are relying on pte_offset_map_lock() and pmd_lock(), so use those=
+=2E
+>=20
+> We can still have a racing userfaultfd operation at the "/* step 4:
+> remove page table */" point that installs a new PTE before the page
+> table is removed.
 
-Sort of, though it's much nastier, because it requires the "old" KVM instance to
-be alive enough to support various operations.  I.e. we'd have to make stronger
-guarantees about exactly when the handoff/transition could happen.
+And you've been very polite not to remind me that this is exactly
+what you warned me about, in connection with retract_page_tables(),
+nearly three months ago:
 
-> If we track struct kvm with the inode, then I think (a), (b) and (c) can
-> be independent of the refcounting method. What do you think?
+https://lore.kernel.org/linux-mm/CAG48ez0aF1Rf1apSjn9YcnfyFQ4YqSd4GqB6f2wfh=
+F7jMdi5Hg@mail.gmail.com/
 
-No go.  Because again, the inode (physical memory) is coupled to the virtual machine
-as a thing, not to a "struct kvm".  Or more concretely, the inode is coupled to an
-ASID or an HKID, and there can be multiple "struct kvm" objects associated with a
-single ASID.  And at some point in the future, I suspect we'll have multiple KVM
-objects per HKID too.
+>=20
+> To reproduce, patch a delay into the kernel like this:
+>=20
+>=20
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 9a6e0d507759..27cc8dfbf3a7 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -20,6 +20,7 @@
+>  #include <linux/swapops.h>
+>  #include <linux/shmem_fs.h>
+>  #include <linux/ksm.h>
+> +#include <linux/delay.h>
+>=20
+>  #include <asm/tlb.h>
+>  #include <asm/pgalloc.h>
+> @@ -1617,6 +1618,11 @@ int collapse_pte_mapped_thp(struct mm_struct
+> *mm, unsigned long addr,
+>         }
+>=20
+>         /* step 4: remove page table */
+> +       if (strcmp(current->comm, "DELAYME") =3D=3D 0) {
+> +               pr_warn("%s: BEGIN DELAY INJECTION\n", __func__);
+> +               mdelay(5000);
+> +               pr_warn("%s: END DELAY INJECTION\n", __func__);
+> +       }
+>=20
+>         /* Huge page lock is still held, so page table must remain empty =
+*/
+>         pml =3D pmd_lock(mm, pmd);
+>=20
+>=20
+> And then run the attached reproducer against mm/mm-everything. You
+> should get this in dmesg:
+>=20
+> [  206.578096] BUG: Bad rss-counter state mm:000000000942ebea
+> type:MM_ANONPAGES val:1
 
-The current SEV use case is for the migration helper, where two KVM objects share
-a single ASID (the "real" VM and the helper).  I suspect TDX will end up with
-similar behavior where helper "VMs" can use the HKID of the "real" VM.  For KVM,
-that means multiple struct kvm objects being associated with a single HKID.
+Very helpful, thank you Jann.
 
-To prevent use-after-free, KVM "just" needs to ensure the helper instances can't
-outlive the real instance, i.e. can't use the HKID/ASID after the owning virtual
-machine has been destroyed.
+I got a bit distracted when I then found mm's recent addition of
+UFFDIO_POISON: thought I needed to change both collapse_pte_mapped_thp()
+and retract_page_tables() now to cope with mfill_atomic_pte_poison()
+inserting into even a userfaultfd_armed shared VMA.
 
-To put it differently, "struct kvm" is a KVM software construct that _usually_,
-but not always, is associated 1:1 with a virtual machine.
+But eventually, on second thoughts, realized that's only inserting a pte
+marker, invalid, so won't cause any actual trouble.  A little untidy,
+to leave that behind in a supposedly empty page table about to be freed,
+but not worth refactoring these functions to avoid a non-bug.
 
-And FWIW, stashing the pointer without holding a reference would not be a complete
-solution, because it couldn't guard against KVM reusing a pointer.  E.g. if a
-struct kvm was unbound and then freed, KVM could reuse the same memory for a new
-struct kvm, with a different ASID/HKID, and get a false negative on the rebinding
-check.
+And though syzbot and JH may find some fun with it, I don't think any
+real application would be insertng a PTE_MARKER_POISONED where a huge
+page collapse is almost complete.
+
+So I scaled back to a more proportionate fix, following.  Sorry, I've
+slightly messed up applying the "DELAY INJECTION" patch above: not
+intentional, honest!  (mdelay while holding the locks is still good.)
+
+Hugh
+---1463760895-1083013748-1692647320=:5414--
