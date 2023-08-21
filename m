@@ -1,58 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05A0B7828D4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Aug 2023 14:18:26 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VZ/bcmF0;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE10B78298F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Aug 2023 14:53:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RTs2R60Ktz3c0w
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Aug 2023 22:18:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RTsq052yqz3dVX
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Aug 2023 22:53:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VZ/bcmF0;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=lee@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=wangkefeng.wang@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RTs1W6hxlz2yVs
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Aug 2023 22:17:35 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 6C6DA633B4;
-	Mon, 21 Aug 2023 12:17:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7BC9C433C8;
-	Mon, 21 Aug 2023 12:17:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1692620250;
-	bh=veiDrmwqJU+LoUoffNhEFba5PtaFW4YWJImLcQ1gViU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VZ/bcmF0SGuuPh/Fr//uzxTs9s0uTNFMC38LvMOvmDtRaZKtCevzLk4gZG5ijLic+
-	 S77tyzVzxZIeaq5QQie+0NJ7cip+g8goSjREnFxw2+YWjUk9SIOwzP/8bPkVYIjWIa
-	 UJKXoS9zx7vrLi9SzLBicrnM8KGcEufV5aZPkfFFNCKfWYultt4gY+xpGfnPNorlHU
-	 sRR8dOWJb0DA8thc0XmU/4ErPDDBpvU11NFruKx4FH9YSE/AfRrkWFpxVyUpNn7Yxo
-	 p3fH52kDPvrBoaJ3q3V9Qq4PE1+KTpgj20k1XL5leYW3dtC0BAiJZH3urMeW8CT2rn
-	 Y2Hd9JlhNl+9g==
-Date: Mon, 21 Aug 2023 13:17:21 +0100
-From: Lee Jones <lee@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v4 23/28] mfd: core: Ensure disabled devices are skiped
- without aborting
-Message-ID: <20230821121721.GH1380343@google.com>
-References: <cover.1692376360.git.christophe.leroy@csgroup.eu>
- <528425d6472176bb1d02d79596b51f8c28a551cc.1692376361.git.christophe.leroy@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RTsnL4j0Nz3c1R
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Aug 2023 22:52:06 +1000 (AEST)
+Received: from dggpemm100001.china.huawei.com (unknown [172.30.72.57])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RTsHY0pyfzrSqg;
+	Mon, 21 Aug 2023 20:29:45 +0800 (CST)
+Received: from localhost.localdomain (10.175.112.125) by
+ dggpemm100001.china.huawei.com (7.185.36.93) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Mon, 21 Aug 2023 20:31:11 +0800
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+To: Andrew Morton <akpm@linux-foundation.org>, <linux-mm@kvack.org>
+Subject: [PATCH rfc -next v2 00/10] mm: convert to generic VMA lock-based page fault
+Date: Mon, 21 Aug 2023 20:30:46 +0800
+Message-ID: <20230821123056.2109942-1-wangkefeng.wang@huawei.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <528425d6472176bb1d02d79596b51f8c28a551cc.1692376361.git.christophe.leroy@csgroup.eu>
+Content-Type: text/plain
+X-Originating-IP: [10.175.112.125]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpemm100001.china.huawei.com (7.185.36.93)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,33 +46,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, alsa-devel@alsa-project.org, Herve Codina <herve.codina@bootlin.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Linus Walleij <linus.walleij@linaro.org>, Liam Girdwood <lgirdwood@gmail.com>, Eric Dumazet <edumazet@google.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Fabio Estevam <festevam@gmail.com>, Qiang Zhao <qiang.zhao@nxp.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, Nicolin Chen <nicoleotsuka@gmail.com>, linux-gpio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Jaroslav Kysela <perex@perex.cz>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>, Takashi Iwai <tiwai@suse.com>, Li Yang <leoyang.li@nxp.com>, Mark Brown <broonie@kernel.org>, linuxppc-dev@lists.ozlabs.org, "David S. 
- Miller" <davem@davemloft.net>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, x86@kernel.org, loongarch@lists.linux.dev, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, "H . Peter Anvin" <hpa@zytor.com>, WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, willy@infradead.org, Ingo Molnar <mingo@redhat.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>, surenb@google.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-ri
+ scv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 18 Aug 2023, Christophe Leroy wrote:
+Add a generic VMA lock-based page fault handler in mm core, and convert
+architectures to use it, which eliminate architectures's duplicated
+codes.
 
-> From: Herve Codina <herve.codina@bootlin.com>
-> 
-> The loop searching for a matching device based on its compatible
-> string is aborted when a matching disabled device is found.
-> This abort prevents to add devices as soon as one disabled device
-> is found.
-> 
-> Continue searching for an other device instead of aborting on the
-> first disabled one fixes the issue.
-> 
-> Fixes: 22380b65dc70 ("mfd: mfd-core: Ensure disabled devices are ignored without error")
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->  drivers/mfd/mfd-core.c | 17 ++++++++++++-----
->  1 file changed, 12 insertions(+), 5 deletions(-)
+With it, we can avoid multiple changes in architectures's code if we 
+add new feature or bugfix, in the end, enable this feature on ARM32
+and Loongarch.
 
-This is too big of a change to be added this late in the cycle.
+This is based on next-20230817, only built test.
 
-Pushing review until after v6.5 is out.
+v2: 
+- convert "int arch_vma_check_access()" to "bool arch_vma_access_error()"
+  still use __weak function for arch_vma_access_error(), which avoid to
+  declare access_error() in architecture's(x86/powerpc/riscv/loongarch)
+  headfile.
+- re-use struct vm_fault instead of adding new struct vm_locked_fault,
+  per Matthew Wilcox, add necessary pt_regs/fault error code/vm flags
+  into vm_fault since they could be used in arch_vma_access_error()
+- add special VM_FAULT_NONE and make try_vma_locked_page_fault() to
+  return vm_fault_t
+
+Kefeng Wang (10):
+  mm: add a generic VMA lock-based page fault handler
+  arm64: mm: use try_vma_locked_page_fault()
+  x86: mm: use try_vma_locked_page_fault()
+  s390: mm: use try_vma_locked_page_fault()
+  powerpc: mm: use try_vma_locked_page_fault()
+  riscv: mm: use try_vma_locked_page_fault()
+  ARM: mm: try VMA lock-based page fault handling first
+  loongarch: mm: cleanup __do_page_fault()
+  loongarch: mm: add access_error() helper
+  loongarch: mm: try VMA lock-based page fault handling first
+
+ arch/arm/Kconfig          |   1 +
+ arch/arm/mm/fault.c       |  35 ++++++++----
+ arch/arm64/mm/fault.c     |  60 ++++++++-------------
+ arch/loongarch/Kconfig    |   1 +
+ arch/loongarch/mm/fault.c | 111 ++++++++++++++++++++++----------------
+ arch/powerpc/mm/fault.c   |  66 +++++++++++------------
+ arch/riscv/mm/fault.c     |  58 +++++++++-----------
+ arch/s390/mm/fault.c      |  66 ++++++++++-------------
+ arch/x86/mm/fault.c       |  55 ++++++++-----------
+ include/linux/mm.h        |  17 ++++++
+ include/linux/mm_types.h  |   2 +
+ mm/memory.c               |  39 ++++++++++++++
+ 12 files changed, 278 insertions(+), 233 deletions(-)
+
 -- 
-Lee Jones [李琼斯]
+2.27.0
+
