@@ -1,69 +1,122 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BCBD7831A5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Aug 2023 21:52:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C5C57831AC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Aug 2023 21:59:43 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=NndR0ksI;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=ru0g7N0Z;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RV3676xZjz30hY
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Aug 2023 05:52:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RV3Gj0zGsz3c1K
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Aug 2023 05:59:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=NndR0ksI;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=ru0g7N0Z;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::112b; helo=mail-yw1-x112b.google.com; envelope-from=hughd@google.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x112b.google.com (mail-yw1-x112b.google.com [IPv6:2607:f8b0:4864:20::112b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f400:fe13::603; helo=eur02-am0-obe.outbound.protection.outlook.com; envelope-from=vladimir.oltean@nxp.com; receiver=lists.ozlabs.org)
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on20603.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe13::603])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RV35F18X3z2yVR
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Aug 2023 05:51:28 +1000 (AEST)
-Received: by mail-yw1-x112b.google.com with SMTP id 00721157ae682-591ba8bd094so21523177b3.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Aug 2023 12:51:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1692647486; x=1693252286;
-        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=K/XGDkPeLVVPvfADvrmUj6hQsONcx7CAy/VBzqur6kA=;
-        b=NndR0ksIoZBQcWmrMd/NDLEjSSelCSPs4qSBgLV5/C51jeq2YQI/BO5s8EuPCsYHjs
-         4mhgu+/VYY1ieT3LJ0uTF/r6mi2mMgzwPQnofwMFXd6+du7XYuTrt3C2BYB+UE+W0jMt
-         LfrgtW+JUtLFySySFAz+YqlRvr8/f/9GBp2imfas7GgMalU7cxn/4kyBOQp+mzr+dF9G
-         xOG2JDQDTu8p0jj5hmk4xhjc0te0MfHUfNbwBf3dOWE1AZGzkH1lK7uKp3ZJA3J7W+fQ
-         FAE2q4E77CqUNRImAVXU6LnPqDtsvyddu2WPFAC564jeeoZhspAiYe8QVcp5mjTUFaoF
-         80bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692647486; x=1693252286;
-        h=mime-version:message-id:subject:cc:to:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=K/XGDkPeLVVPvfADvrmUj6hQsONcx7CAy/VBzqur6kA=;
-        b=Q6SA5NnNlOfhh6Wf8VfF/hWHKA5zLHDVKnSZ76HPj7GkjwIjkHwLFyrVWYVvxa+aFs
-         D2/HiddLFMVpYOaIhjr/07+p4Cn4aqKkODPyoHMAS+CC5Ne+7BBZxq6D6dJBuRAvLgp5
-         LN54bP1FHHgXLZnK6j3nwKejfQqHMj+YdUGkeLPCSvTXg6eYAeOgRUVL8umZ71Ccq5re
-         Q6W+tEFnhNpfEAB4jXYQUivbaLH5xTzvX924MRJfN8juRqRzc3HvaFFqmZSz56DeSohy
-         /GXShrKIZhmXNfeI0CXKp6V75RpSf+YrJL9jGcQ6IpngfbsXno+4ZFpk+pfM8xZ7C6/8
-         stkQ==
-X-Gm-Message-State: AOJu0YwWg1mQi52zYrg5obhLRNYzoL+4rg9iDBK1L3q1QzYdjzeXpHnv
-	8+wTjRLqWvIDd7aDoSDsSdD1uA==
-X-Google-Smtp-Source: AGHT+IHkJ6q4xN1gFoj/dTBPdmg8L1RSRYwXvYCwJUuzq7cZqNfZCZl8UnATk59vGQ4CcJPeIgwl5A==
-X-Received: by 2002:a0d:d145:0:b0:581:5cb9:6c2b with SMTP id t66-20020a0dd145000000b005815cb96c2bmr7782127ywd.45.1692647485613;
-        Mon, 21 Aug 2023 12:51:25 -0700 (PDT)
-Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id o63-20020a817342000000b0058fc7604f45sm1401786ywc.130.2023.08.21.12.51.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Aug 2023 12:51:25 -0700 (PDT)
-Date: Mon, 21 Aug 2023 12:51:20 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-X-X-Sender: hugh@ripple.attlocal.net
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH mm-unstable] mm/khugepaged: fix collapse_pte_mapped_thp()
- versus uffd
-Message-ID: <4d31abf5-56c0-9f3d-d12f-c9317936691@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RV3Fn0nxtz2xVn
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Aug 2023 05:58:51 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=CbNz5YEedylV/dAjvzcDf+lesfJfwQyFHifk0Ed6VglTMTqy7i6mjjqsGlKBSYrlwd4Mig5peuFAPBIZ1KlHPlINcVfllpvVSGjU9Qaq0lI6wcPSra7mtwJwNhbCXiZ4TMea4aM4toyCX3C4+lmZ3xP642YZnrXPssv12F870HmcsCYBRrnZXuXwcJybXocw1UcQdxyT1dffeegEAJH6l0PMcVonEEojgkO7IiDZlAV8v9ZWMeRrJDdbXESIeZ+EMYRynZ0cKrn4uuDuSo6yowW5d67Q5ifoe015vHY5IH5nb97ivL/7iqTwNvmot/Fvs1eVRI9yrciSJLvt2yxLeg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3Uw2dqzeVz3mOz3X5TWJk+1gvqybhGGEkQvrrY8vXHk=;
+ b=Q6YbmuzweNKMNqE6GEEGc3D7m7l1Ts5ZmsCRzUB0KMIF5am1/i7f4OXxRLcEbRc3MpiSOqkD8SxJ/6cY49j/vGd2gE4XURsTmY4IaplU27n2u8Apj+C5syrs/FI5TAyIta/sJU93OmEpqokljSkAqfRqNhhGnQv79pVNOD2J232zZp3Ud8A4eLOdZBOv9FI03KzPQezfvXcvJqA+n8866P49c3DpU6JOfVaWmr4qpxl25k7wn5Y16Ml/FwjQHPWGfzlQ/DeQttxE7rUI9R72xHEUSYR7mKQAJe236IVe1pAUA3mLmk6HLZ4ksQ4v+9l4B/c8e0wefV+ZYh0mOPH9sQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3Uw2dqzeVz3mOz3X5TWJk+1gvqybhGGEkQvrrY8vXHk=;
+ b=ru0g7N0ZFuudho4dvhNNZ9B5VmEr6yKkrxxYArDLfQPN0nm2hXQMcAS6iwVW/QENtZZ8xOl+w9kqhZL9knJTT0hHC1QYskqM8YTPTPaMRPoZZL7DavslnxhKov8UFvrMJA2GYuyorVOk6eR1akxLuBbX7tA3aM90pdeGYg5IT8Q=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM0PR04MB6452.eurprd04.prod.outlook.com (2603:10a6:208:16d::21)
+ by PAXPR04MB8173.eurprd04.prod.outlook.com (2603:10a6:102:1ca::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.20; Mon, 21 Aug
+ 2023 19:58:28 +0000
+Received: from AM0PR04MB6452.eurprd04.prod.outlook.com
+ ([fe80::d4ed:20a0:8c0a:d9cf]) by AM0PR04MB6452.eurprd04.prod.outlook.com
+ ([fe80::d4ed:20a0:8c0a:d9cf%7]) with mapi id 15.20.6699.022; Mon, 21 Aug 2023
+ 19:58:28 +0000
+Date: Mon, 21 Aug 2023 22:58:23 +0300
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: Sean Anderson <sean.anderson@seco.com>
+Subject: Re: [PATCH v14 00/15] phy: Add support for Lynx 10G SerDes
+Message-ID: <20230821195823.ns55h3livxgol7fp@skbuf>
+References: <20230612163353.dwouatvqbuo6h4ea@skbuf>
+ <1dd01fe2-08a8-ec2f-1184-a58b2f55ba85@seco.com>
+ <20230613142754.wr5njtjo4tbloqwu@skbuf>
+ <20230811150826.urp2hzl3tahesrjx@skbuf>
+ <26623d0c-8a5a-614b-7df7-69214aaec524@seco.com>
+ <20230811163637.bs7a46juasjgnmf4@skbuf>
+ <20230821124952.mraqqp7pxlo56gkh@skbuf>
+ <a2e3fcad-9857-f1b3-8ada-efb2013a4bf5@seco.com>
+ <20230821181349.hls6pukp5d6rc5av@LXL00007.wbi.nxp.com>
+ <73d59dd2-88f0-3c1a-0de2-de2e050cba5a@seco.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <73d59dd2-88f0-3c1a-0de2-de2e050cba5a@seco.com>
+X-ClientProxiedBy: AM0PR06CA0108.eurprd06.prod.outlook.com
+ (2603:10a6:208:fa::49) To AM0PR04MB6452.eurprd04.prod.outlook.com
+ (2603:10a6:208:16d::21)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR04MB6452:EE_|PAXPR04MB8173:EE_
+X-MS-Office365-Filtering-Correlation-Id: 11a6bbbd-784b-4ed9-98f1-08dba280fc52
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:  y1xxVW3z5kJ7ohSZmxlKkJZt7qj4mTZxmBSaxQZnxISI8z+5IN17b224EA4hH9NmiJBPuFaMR3I2FfkPWNqxU6N+2Z0JKCopw3u3lkI5LLYeogScZJwHoF6iWsqdkgoNfZab+m21h0DCVgfrqkzlwkzSVQHDN1GUIydj34okQ17Ixo+GefeZIfyDJDc/bZ+oWLl8WUsaH1UZ3sTI1huL4fboDKw1Z/SZqoOJ9OQWA00q1B5csOWjfl2RMJiGrmdyHQosu8yi8QjQhlgnHmYJiF4N5i2rjDHSFCINYZ+QeDaZn7TflXicTtvocUWGlpc6sD+fWtHeXK0sP9MPU0d02Dj08sDXGY8yLCDdv6PTsKN0sAUB9U76aFVM/hGoTc2hdmEM1XBdnej/eros+rbkXoQerT2sA0nPydig9/VcUPs66owUSQ3gmk/pFYN8hkXZTguAdhAMgHbSBbHfzIHBq7isgyoxENZRRtIfsVBCs51fEYWq0mL0XcYsHyDH6kNsPWHAJ+Ykvym2y7Rv4HqvbrEB+09xc2j7iwKDY2AC80w=
+X-Forefront-Antispam-Report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6452.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(366004)(376002)(396003)(136003)(39860400002)(346002)(186009)(1800799009)(451199024)(1076003)(26005)(9686003)(6512007)(66899024)(86362001)(38100700002)(83380400001)(33716001)(41300700001)(316002)(8936002)(8676002)(66946007)(6916009)(66476007)(54906003)(66556008)(2906002)(44832011)(5660300002)(4326008)(7416002)(6666004)(6486002)(6506007)(966005)(478600001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:  =?us-ascii?Q?PXXVgPOj0v1x3m2uWPaunKNURW5jaRA+dutMJteJzhFPjkJrUR6cHKQGgvD0?=
+ =?us-ascii?Q?f6YLa5qzDAeydEJb6IwV3UinVcDJ6M2FinDWK9PHMzDCy0fSfhdPtJXH1sRd?=
+ =?us-ascii?Q?EJjUQO/o5P4yx3skSDrZivpPXrfC1hCIxwARaU9mriAeD1Iu0J4j1Yioda4E?=
+ =?us-ascii?Q?G9QpXkzHpDPVKQg2vLFPbotVw2osACQ42xpv0ajWId3T/ibG93+3xSYQ8FTI?=
+ =?us-ascii?Q?TwRg6Xudw3agOx7leEe4ISZjrE8jCJpJAzUGAf2S/vHildh4xs+L6kHnZ9R/?=
+ =?us-ascii?Q?nw6iSQey24d9QKTbxQK0PEKa7pTgdLWN+F1Np/K9UHc1b2Drv3vVQ2T5IUdv?=
+ =?us-ascii?Q?3/mO10PjnuRYWhI4AP/p6wicNq5FUK3xHh+3nb8NX67AUu2hqU1PQeHHPcfG?=
+ =?us-ascii?Q?rqAgxgjhGeR0fS1j6e9VtgEEQnoD96lio3A1nvjiEYrxN1xjIuvb6ek4JQtb?=
+ =?us-ascii?Q?LeSxQA0fHo7ZToAH46fClcUe9w/4oDZGXpHCl+C1JfWv4i13EvgYtB/L4NO+?=
+ =?us-ascii?Q?sQZ7RlFGuwHJr3ZQadgJSzrfapfAnFYtXpGfahOVk6bbRwYVyE3LWXNQHU1P?=
+ =?us-ascii?Q?x2QguDcrNN23UIQ+FTJOFGddKcaIUVdFO8dv3CIGowsL9jdOI6qWJP/DKg3V?=
+ =?us-ascii?Q?jPi/qvBAENoubges2GyD3FeK20cb6qUHt7IczMnXsuX9KhI6cW93eJTxpkEQ?=
+ =?us-ascii?Q?u/J0H1JJZB+/6llaCdRtcF+jPg9z+Qwtw1qeqN0CDbEdHeoICmEq62qjUmpk?=
+ =?us-ascii?Q?m5v2W/mYFYyLJp8IWoHVMjQSeH7KdcGL8894ixoSkxG8O8T8Q00pznCSNna7?=
+ =?us-ascii?Q?Iuvw+AKTFeMsg0GZG0dBMUnaG0iDsG3u03onIR1/Bq+J9fFIC1XLnUmFAtlw?=
+ =?us-ascii?Q?FTzHRbL4ODHxbqxX2hQ5hNkrjNk5RMA1kCgs4Vw96pWBwB0Y7WVPOKX2BB26?=
+ =?us-ascii?Q?J7ftV2ca9VL/L4zS/gyuLIB6sZAnKyy5BrD8o77MEsIdA2r/550dPniZB5Se?=
+ =?us-ascii?Q?UVomiV/1Dtp9UKDvVn143szZT8mlFoEdOUDIcJxmWOuMRxl5xNjSG7bmarQT?=
+ =?us-ascii?Q?1fmEnvXwsHbwnR7xA6+vmTVI7Ha4cEvxwTTZmgCygFZx7Tik8uPHGXRLwSXQ?=
+ =?us-ascii?Q?wCxDGQWkfLWU7CD9oSX1kJsQrZdHLj42a844Zq8j1laL/BW9Tqa5xwm1Q/7c?=
+ =?us-ascii?Q?EcLq8caD0TxHJf4fqHzfQdGTiZkwxMeYdsVDyQF4dvc7xqMXIAilFbgVlXnM?=
+ =?us-ascii?Q?VQhyZ2pNox+/1KVjSJKszTXua7SaXE6C39L4zgWbNfn1x2FiDYcXJTDGkr/Z?=
+ =?us-ascii?Q?62+ZyuKfjn0TBHcVzz6mC+cYbScjKvh3h+/ooLxG/ft7NU+q1BXUCYlpomST?=
+ =?us-ascii?Q?ygzg/g6/35oKn+ZgiERI+TCbni5mZ21eX09qRLnGCjlZ6pK55i2nIH4LfUK1?=
+ =?us-ascii?Q?KwUp8QNIREGf9jUUwwvs/9fClsllCIf++rcM61OQfX3Q2qPEAIsVrMnSuQBm?=
+ =?us-ascii?Q?1aC3v5pAj9T0Y8ufC0+ZI5Tw3CfG/wy9LIsVDnBGozBzHdpsr5rY+LL3JQdW?=
+ =?us-ascii?Q?zVxqmHLutUxFJzhgVSH6a+sJ9kxXC3FIq+AOz28G/lKbEJUcfnZHlc7Q1yLx?=
+ =?us-ascii?Q?3g=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 11a6bbbd-784b-4ed9-98f1-08dba280fc52
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6452.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2023 19:58:27.7888
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9dbcWDFzHB+CsIrdjgF5uvkQWBEYcGDwncaG2Y7ijQsZ+WvxGjsM/EMYwPgD4dfgtAI8+A3JQ6j9zBCNNPCqcQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8173
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,117 +128,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Miaohe Lin <linmiaohe@huawei.com>, Anshuman Khandual <anshuman.khandual@arm.com>, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Yang Shi <shy828301@gmail.com>, Peter Xu <peterx@redhat.com>, kernel list <linux-kernel@vger.kernel.org>, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-s390 <linux-s390@vger.kernel.org>, Yu Zhao <yuzhao@google.com>, Ira Weiny <ira.weiny@intel.com>, Alistair Popple <apopple@nvidia.com>, Russell King <linux@armlinux.org.uk>, Matthew Wilcox <willy@infradead.org>, Steven Price <steven.price@arm.com>, Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Zi Yan <ziy@nvidia.com>, Huang Ying <ying.huang@intel.com>, Axel Rasmussen <axelrasmussen@google.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntr
- aeger@linux.ibm.com>, Thomas Hellstrom <thomas.hellstrom@linux.intel.com>, Ralph Campbell <rcampbell@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, Vasily Gorbik <gor@linux.ibm.com>, Jann Horn <jannh@google.com>, Heiko Carstens <hca@linux.ibm.com>, Qi Zheng <zhengqi.arch@bytedance.com>, Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, Linux ARM <linux-arm-kernel@lists.infradead.org>, SeongJae Park <sj@kernel.org>, Lorenzo Stoakes <lstoakes@gmail.com>, Linux-MM <linux-mm@kvack.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Naoya Horiguchi <naoya.horiguchi@nec.com>, Zack Rusin <zackr@vmware.com>, Zach O'Keefe <zokeefe@google.com>, Vishal Moola <vishal.moola@gmail.com>, Minchan Kim <minchan@kernel.org>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Mel Gorman <mgorman@techsingularity.net>, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: =?utf-8?B?RmVybuKUnMOtbmRleg==?= Rojas <noltari@gmail.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Madalin Bucur <madalin.bucur@nxp.com>, Michael Turquette <mturquette@baylibre.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Jonas Gorski <jonas.gorski@gmail.com>, linux-phy@lists.infradead.org, linux-clk@vger.kernel.org, Kishon Vijay Abraham I <kishon@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Bartosz Golaszewski <brgl@bgdev.pl>, linux-doc@vger.kernel.org, Camelia Alexandra Groza <camelia.groza@nxp.com>, Linus Walleij <linus.walleij@linaro.org>, devicetree@vger.kernel.org, linux-gpio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, linux-arm-kernel@lists.infradead.org, Stephen Boyd <sboyd@kernel.org>, linuxppc-dev@lists.ozlabs.org, Li Yang <leoyang.li@nxp.com>, Vinod Koul <vkoul@kernel.org>, Shawn Guo <shawnguo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Jann Horn demonstrated how userfaultfd ioctl UFFDIO_COPY into a private
-shmem mapping can add valid PTEs to page table collapse_pte_mapped_thp()
-thought it had emptied: page lock on the huge page is enough to protect
-against WP faults (which find the PTE has been cleared), but not enough
-to protect against userfaultfd.  "BUG: Bad rss-counter state" followed.
+On Mon, Aug 21, 2023 at 02:46:53PM -0400, Sean Anderson wrote:
+> After further review, it seems the reason 28g can get away without this
+> is because there's a one-to-one mapping between protocol controllers and
+> lanes. Unfortunately, that regularity is not present for 10g.
+> 
+> --Sean
 
-retract_page_tables() protects against this by checking !vma->anon_vma;
-but we know that MADV_COLLAPSE needs to be able to work on private shmem
-mappings, even those with an anon_vma prepared for another part of the
-mapping; and we know that MADV_COLLAPSE needs to work on shared shmem
-mappings which are userfaultfd_armed().  Whether it needs to work on
-private shmem mappings which are userfaultfd_armed(), I'm not so sure:
-but assume that it does.
+There are some things I saw in your phy-fsl-lynx-10g.c driver and device
+tree bindings that I don't understand (the concept of lane groups), and
+I'm not sure if they're related with what you're saying here, so if you
+could elaborate a bit more (ideally with an example) on the one-to-one
+mapping and the specific problems it causes, it would be great.
 
-Just for this case, take the pmd_lock() two steps earlier: not because
-it gives any protection against this case itself, but because ptlock
-nests inside it, and it's the dropping of ptlock which let the bug in.
-In other cases, continue to minimize the pmd_lock() hold time.
+I may be off with my understanding of the regularity you are talking about,
+but the LX2160 (and Lynx 28G block) also has multi-lane protocols like 40G,
+100G, assuming that's what you are talking about. I haven't started yet
+working on those for the mtip_backplane driver, but I'm not currently
+seeing a problem with the architecture where a phy_device represents a
+single lane that's part of a multi-lane port, and not an entire group.
 
-Reported-by: Jann Horn <jannh@google.com>
-Closes: https://lore.kernel.org/linux-mm/CAG48ez0FxiRC4d3VTu_a9h=rg5FW-kYD5Rg5xo_RDBM0LTTqZQ@mail.gmail.com/
-Fixes: 1043173eb5eb ("mm/khugepaged: collapse_pte_mapped_thp() with mmap_read_lock()")
-Signed-off-by: Hugh Dickins <hughd@google.com>
----
- mm/khugepaged.c | 38 +++++++++++++++++++++++++++++---------
- 1 file changed, 29 insertions(+), 9 deletions(-)
+In my imagination, there are 2 cases:
+- all 4 lanes are managed by the single dpaa2-mac consumer (which has 4
+  phandles, and iterates over them with a "for" loop)
+- each of the 4 lanes is managed by the respective backplane AN/LT core,
+  and thus, there's one phandle to each lane
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 40d43eccdee8..d5650541083a 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1476,7 +1476,7 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
- 	struct page *hpage;
- 	pte_t *start_pte, *pte;
- 	pmd_t *pmd, pgt_pmd;
--	spinlock_t *pml, *ptl;
-+	spinlock_t *pml = NULL, *ptl;
- 	int nr_ptes = 0, result = SCAN_FAIL;
- 	int i;
- 
-@@ -1572,9 +1572,25 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
- 				haddr, haddr + HPAGE_PMD_SIZE);
- 	mmu_notifier_invalidate_range_start(&range);
- 	notified = true;
--	start_pte = pte_offset_map_lock(mm, pmd, haddr, &ptl);
-+
-+	/*
-+	 * pmd_lock covers a wider range than ptl, and (if split from mm's
-+	 * page_table_lock) ptl nests inside pml. The less time we hold pml,
-+	 * the better; but userfaultfd's mfill_atomic_pte() on a private VMA
-+	 * inserts a valid as-if-COWed PTE without even looking up page cache.
-+	 * So page lock of hpage does not protect from it, so we must not drop
-+	 * ptl before pgt_pmd is removed, so uffd private needs pml taken now.
-+	 */
-+	if (userfaultfd_armed(vma) && !(vma->vm_flags & VM_SHARED))
-+		pml = pmd_lock(mm, pmd);
-+
-+	start_pte = pte_offset_map_nolock(mm, pmd, haddr, &ptl);
- 	if (!start_pte)		/* mmap_lock + page lock should prevent this */
- 		goto abort;
-+	if (!pml)
-+		spin_lock(ptl);
-+	else if (ptl != pml)
-+		spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
- 
- 	/* step 2: clear page table and adjust rmap */
- 	for (i = 0, addr = haddr, pte = start_pte;
-@@ -1608,7 +1624,9 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
- 		nr_ptes++;
- 	}
- 
--	pte_unmap_unlock(start_pte, ptl);
-+	pte_unmap(start_pte);
-+	if (!pml)
-+		spin_unlock(ptl);
- 
- 	/* step 3: set proper refcount and mm_counters. */
- 	if (nr_ptes) {
-@@ -1616,12 +1634,12 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
- 		add_mm_counter(mm, mm_counter_file(hpage), -nr_ptes);
- 	}
- 
--	/* step 4: remove page table */
--
--	/* Huge page lock is still held, so page table must remain empty */
--	pml = pmd_lock(mm, pmd);
--	if (ptl != pml)
--		spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
-+	/* step 4: remove empty page table */
-+	if (!pml) {
-+		pml = pmd_lock(mm, pmd);
-+		if (ptl != pml)
-+			spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
-+	}
- 	pgt_pmd = pmdp_collapse_flush(vma, haddr, pmd);
- 	pmdp_get_lockless_sync();
- 	if (ptl != pml)
-@@ -1648,6 +1666,8 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
- 	}
- 	if (start_pte)
- 		pte_unmap_unlock(start_pte, ptl);
-+	if (pml && pml != ptl)
-+		spin_unlock(pml);
- 	if (notified)
- 		mmu_notifier_invalidate_range_end(&range);
- drop_hpage:
--- 
-2.35.3
-
+I sketched some dt-bindings for the second case here, so I guess it must
+be the first scenario that's somehow problematic?
+https://patchwork.kernel.org/project/netdevbpf/patch/20230817150644.3605105-9-vladimir.oltean@nxp.com/
