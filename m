@@ -1,32 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D83FC78298C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Aug 2023 14:52:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AD89782998
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Aug 2023 14:54:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RTsnq5B4nz3c4L
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Aug 2023 22:52:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RTsrW3dfHz3dmM
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Aug 2023 22:54:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=wangkefeng.wang@huawei.com; receiver=lists.ozlabs.org)
 Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RTsmp2RCJz3c68
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Aug 2023 22:51:38 +1000 (AEST)
-Received: from dggpemm100001.china.huawei.com (unknown [172.30.72.53])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RTsFG5XSpzNnTc;
-	Mon, 21 Aug 2023 20:27:46 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RTsnh1VYCz3dGQ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Aug 2023 22:52:24 +1000 (AEST)
+Received: from dggpemm100001.china.huawei.com (unknown [172.30.72.56])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RTsGr51ZwzVks7;
+	Mon, 21 Aug 2023 20:29:08 +0800 (CST)
 Received: from localhost.localdomain (10.175.112.125) by
  dggpemm100001.china.huawei.com (7.185.36.93) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Mon, 21 Aug 2023 20:31:19 +0800
+ 15.1.2507.31; Mon, 21 Aug 2023 20:31:20 +0800
 From: Kefeng Wang <wangkefeng.wang@huawei.com>
 To: Andrew Morton <akpm@linux-foundation.org>, <linux-mm@kvack.org>
-Subject: [PATCH rfc v2 06/10] riscv: mm: use try_vma_locked_page_fault()
-Date: Mon, 21 Aug 2023 20:30:52 +0800
-Message-ID: <20230821123056.2109942-7-wangkefeng.wang@huawei.com>
+Subject: [PATCH rfc v2 07/10] ARM: mm: try VMA lock-based page fault handling first
+Date: Mon, 21 Aug 2023 20:30:53 +0800
+Message-ID: <20230821123056.2109942-8-wangkefeng.wang@huawei.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20230821123056.2109942-1-wangkefeng.wang@huawei.com>
 References: <20230821123056.2109942-1-wangkefeng.wang@huawei.com>
@@ -53,129 +53,113 @@ Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, x86@kernel.org, loongarch@lists.li
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use new try_vma_locked_page_fault() helper to simplify code.
-No functional change intended.
+Attempt VMA lock-based page fault handling first, and fall back
+to the existing mmap_lock-based handling if that fails.
 
 Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 ---
- arch/riscv/mm/fault.c | 58 ++++++++++++++++++-------------------------
- 1 file changed, 24 insertions(+), 34 deletions(-)
+ arch/arm/Kconfig    |  1 +
+ arch/arm/mm/fault.c | 35 +++++++++++++++++++++++++----------
+ 2 files changed, 26 insertions(+), 10 deletions(-)
 
-diff --git a/arch/riscv/mm/fault.c b/arch/riscv/mm/fault.c
-index 6115d7514972..b46129b636f2 100644
---- a/arch/riscv/mm/fault.c
-+++ b/arch/riscv/mm/fault.c
-@@ -215,6 +215,13 @@ static inline bool access_error(unsigned long cause, struct vm_area_struct *vma)
- 	return false;
- }
- 
-+#ifdef CONFIG_PER_VMA_LOCK
-+bool arch_vma_access_error(struct vm_area_struct *vma, struct vm_fault *vmf)
-+{
-+	return access_error(vmf->fault_code, vma);
-+}
-+#endif
-+
- /*
-  * This routine handles page faults.  It determines the address and the
-  * problem, and then passes it off to one of the appropriate routines.
-@@ -223,17 +230,16 @@ void handle_page_fault(struct pt_regs *regs)
- {
- 	struct task_struct *tsk;
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 1a6a6eb48a15..8b6d4507ccee 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -34,6 +34,7 @@ config ARM
+ 	select ARCH_OPTIONAL_KERNEL_RWX_DEFAULT if CPU_V7
+ 	select ARCH_SUPPORTS_ATOMIC_RMW
+ 	select ARCH_SUPPORTS_HUGETLBFS if ARM_LPAE
++	select ARCH_SUPPORTS_PER_VMA_LOCK
+ 	select ARCH_USE_BUILTIN_BSWAP
+ 	select ARCH_USE_CMPXCHG_LOCKREF
+ 	select ARCH_USE_MEMTEST
+diff --git a/arch/arm/mm/fault.c b/arch/arm/mm/fault.c
+index fef62e4a9edd..d53bb028899a 100644
+--- a/arch/arm/mm/fault.c
++++ b/arch/arm/mm/fault.c
+@@ -242,8 +242,11 @@ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
  	struct vm_area_struct *vma;
--	struct mm_struct *mm;
--	unsigned long addr, cause;
--	unsigned int flags = FAULT_FLAG_DEFAULT;
-+	struct mm_struct *mm = current->mm;
-+	unsigned long addr = regs->badaddr;
-+	unsigned long cause = regs->cause;
- 	int code = SEGV_MAPERR;
+ 	int sig, code;
  	vm_fault_t fault;
--
--	cause = regs->cause;
--	addr = regs->badaddr;
--
--	tsk = current;
--	mm = tsk->mm;
+-	unsigned int flags = FAULT_FLAG_DEFAULT;
+-	unsigned long vm_flags = VM_ACCESS_FLAGS;
 +	struct vm_fault vmf = {
 +		.real_address = addr,
-+		.fault_code = cause,
 +		.flags = FAULT_FLAG_DEFAULT,
++		.vm_flags = VM_ACCESS_FLAGS,
 +	};
  
- 	if (kprobe_page_fault(regs, cause))
- 		return;
-@@ -268,7 +274,7 @@ void handle_page_fault(struct pt_regs *regs)
- 	}
+ 	if (kprobe_page_fault(regs, fsr))
+ 		return 0;
+@@ -261,15 +264,15 @@ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
+ 		goto no_context;
  
  	if (user_mode(regs))
 -		flags |= FAULT_FLAG_USER;
 +		vmf.flags |= FAULT_FLAG_USER;
  
- 	if (!user_mode(regs) && addr < TASK_SIZE && unlikely(!(regs->status & SR_SUM))) {
- 		if (fixup_exception(regs))
-@@ -280,37 +286,21 @@ void handle_page_fault(struct pt_regs *regs)
+ 	if (is_write_fault(fsr)) {
+-		flags |= FAULT_FLAG_WRITE;
+-		vm_flags = VM_WRITE;
++		vmf.flags |= FAULT_FLAG_WRITE;
++		vmf.vm_flags = VM_WRITE;
+ 	}
+ 
+ 	if (fsr & FSR_LNX_PF) {
+-		vm_flags = VM_EXEC;
++		vmf.vm_flags = VM_EXEC;
+ 
+ 		if (is_permission_fault(fsr) && !user_mode(regs))
+ 			die_kernel_fault("execution of memory",
+@@ -278,6 +281,18 @@ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
+ 
  	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, addr);
  
- 	if (cause == EXC_STORE_PAGE_FAULT)
--		flags |= FAULT_FLAG_WRITE;
-+		vmf.flags |= FAULT_FLAG_WRITE;
- 	else if (cause == EXC_INST_PAGE_FAULT)
--		flags |= FAULT_FLAG_INSTRUCTION;
--	if (!(flags & FAULT_FLAG_USER))
--		goto lock_mmap;
--
--	vma = lock_vma_under_rcu(mm, addr);
--	if (!vma)
--		goto lock_mmap;
-+		vmf.flags |= FAULT_FLAG_INSTRUCTION;
- 
--	if (unlikely(access_error(cause, vma))) {
--		vma_end_read(vma);
--		goto lock_mmap;
--	}
--
--	fault = handle_mm_fault(vma, addr, flags | FAULT_FLAG_VMA_LOCK, regs);
--	if (!(fault & (VM_FAULT_RETRY | VM_FAULT_COMPLETED)))
--		vma_end_read(vma);
--
--	if (!(fault & VM_FAULT_RETRY)) {
--		count_vm_vma_lock_event(VMA_LOCK_SUCCESS);
 +	fault = try_vma_locked_page_fault(&vmf);
 +	if (fault == VM_FAULT_NONE)
 +		goto retry;
 +	if (!(fault & VM_FAULT_RETRY))
- 		goto done;
--	}
--	count_vm_vma_lock_event(VMA_LOCK_RETRY);
- 
- 	if (fault_signal_pending(fault, regs)) {
- 		if (!user_mode(regs))
- 			no_context(regs, addr);
- 		return;
- 	}
--lock_mmap:
- 
++		goto done;
++
++	if (fault_signal_pending(fault, regs)) {
++		if (!user_mode(regs))
++			goto no_context;
++		return 0;
++	}
++
  retry:
  	vma = lock_mm_and_find_vma(mm, addr, regs);
-@@ -337,7 +327,7 @@ void handle_page_fault(struct pt_regs *regs)
- 	 * make sure we exit gracefully rather than endlessly redo
- 	 * the fault.
+ 	if (unlikely(!vma)) {
+@@ -289,10 +304,10 @@ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
+ 	 * ok, we have a good vm_area for this memory access, check the
+ 	 * permissions on the VMA allow for the fault which occurred.
  	 */
--	fault = handle_mm_fault(vma, addr, flags, regs);
-+	fault = handle_mm_fault(vma, addr, vmf.flags, regs);
+-	if (!(vma->vm_flags & vm_flags))
++	if (!(vma->vm_flags & vmf.vm_flags))
+ 		fault = VM_FAULT_BADACCESS;
+ 	else
+-		fault = handle_mm_fault(vma, addr & PAGE_MASK, flags, regs);
++		fault = handle_mm_fault(vma, addr & PAGE_MASK, vmf.flags, regs);
  
+ 	/* If we need to retry but a fatal signal is pending, handle the
+ 	 * signal first. We do not need to release the mmap_lock because
+@@ -310,13 +325,13 @@ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
+ 
+ 	if (!(fault & VM_FAULT_ERROR)) {
+ 		if (fault & VM_FAULT_RETRY) {
+-			flags |= FAULT_FLAG_TRIED;
++			vmf.flags |= FAULT_FLAG_TRIED;
+ 			goto retry;
+ 		}
+ 	}
+ 
+ 	mmap_read_unlock(mm);
+-
++done:
  	/*
- 	 * If we need to retry but a fatal signal is pending, handle the
-@@ -355,7 +345,7 @@ void handle_page_fault(struct pt_regs *regs)
- 		return;
- 
- 	if (unlikely(fault & VM_FAULT_RETRY)) {
--		flags |= FAULT_FLAG_TRIED;
-+		vmf.flags |= FAULT_FLAG_TRIED;
- 
- 		/*
- 		 * No need to mmap_read_unlock(mm) as we would
+ 	 * Handle the "normal" case first - VM_FAULT_MAJOR
+ 	 */
 -- 
 2.27.0
 
