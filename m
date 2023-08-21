@@ -1,58 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80F8378306A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Aug 2023 20:53:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEA127830F1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Aug 2023 21:34:02 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bMGxPQ8r;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=qpKSqx5I;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RV1pJ2JSbz3bxZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Aug 2023 04:53:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RV2j45CmYz3c1W
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Aug 2023 05:34:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bMGxPQ8r;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=qpKSqx5I;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=kuba@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=39lvjzaykdckxjfsohlttlqj.htrqnszcuuh-ijaqnxyx.teqfgx.twl@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x1049.google.com (mail-pj1-x1049.google.com [IPv6:2607:f8b0:4864:20::1049])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RV1nP0Sqnz2yD7
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Aug 2023 04:52:40 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 74AF0639E1;
-	Mon, 21 Aug 2023 18:52:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81722C433C7;
-	Mon, 21 Aug 2023 18:52:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1692643957;
-	bh=9Yw86enLpID5U94hXBP0Cn3sQwsJbGoXb+O9UlFco2A=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=bMGxPQ8rqPAL5n5G3OsOHhxVHf494arO950h0E03Bkpq/ThOfFIcvfpU40WvxVeKV
-	 aHkA1HtScEGLObzbbd+6tL3CXSZMGXEvg+JaHyZ03iY1ja2ys0omgqQepmYFZrwvzi
-	 mLS62DmzD4oDTyvstiobOa4nEjsduQIRNmSECOoneqWKmdGmZYcMYTFlK+5558d9oa
-	 tUbzRusq5FsHISJIAMZeuhHGQP9V//IzCuACBej/v3vZbxEEz551rZL0t9ufxRFT+d
-	 YnEEbAaRyNQJ6UO5v2gJol+93ylEwF5svR5zpLSwZf5dV1JL8et34ik50QG/Bu2MiQ
-	 AlaGlNaOmwT8A==
-Date: Mon, 21 Aug 2023 11:52:34 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v4 21/28] net: wan: Add framer framework support
-Message-ID: <20230821115234.3aa55965@kernel.org>
-In-Reply-To: <fc5f1daa-58a1-fb86-65ba-c6b236051d45@csgroup.eu>
-References: <cover.1692376360.git.christophe.leroy@csgroup.eu>
-	<5f671caf19be0a9bb7ea7b96a6c86381e243ca4c.1692376361.git.christophe.leroy@csgroup.eu>
-	<CACRpkdamyFvzqrQ1=k04CbfEJn1azOF+yP5Ls2Qa3Ux6WGq7_A@mail.gmail.com>
-	<fc5f1daa-58a1-fb86-65ba-c6b236051d45@csgroup.eu>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RV2hB0FlHz30BZ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Aug 2023 05:33:11 +1000 (AEST)
+Received: by mail-pj1-x1049.google.com with SMTP id 98e67ed59e1d1-26ecc4795a4so2336356a91.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Aug 2023 12:33:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1692646389; x=1693251189;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=lTUf23UWw1SkKKJ2TYgJ195zKcBZk+aHzDWYw0jOr4Q=;
+        b=qpKSqx5ICliXSxPjZu0tOZy7xlqIAe6qVNImHFeHE99jDfjJ0rkalTo5f1yiylL8Zp
+         zW/oM/ylnbuxciYR4prkKI8mJaHp2WuQufXKGB2RG8EjyX49+7sODEpJkoODIpJFN+WQ
+         d92P7dg0Kdt0AwxXyEzQoriMz6/KeQrNijacO4IuCJVKS1YJTlTz834blo5E9EKqcgWL
+         PEM2JeCl6oJE3F68JjqgLe5PECwZdFSwKXlISOg41aNDBtfUtUCqAE2x2tOPTF0xf31f
+         3SefiEREMJ5D9AnExP5D9BLT2XJ6ZGgC24sHacNuUQH7uTJzB0bBXanlC1qACw6pUjbt
+         /CMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692646389; x=1693251189;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lTUf23UWw1SkKKJ2TYgJ195zKcBZk+aHzDWYw0jOr4Q=;
+        b=XPNdw13jUn4wzy8UXC4xGU6R4nFITguHhPrDZ5B7tQm4g2K0DRrm0c+FWq0i3PPfNN
+         gk2IhecBJAgRVhRPlyql5xNQMYtlSYjKQAhhgtiwiumFsMmskRkumA30o8sqJIbF3XhA
+         B5a9AnYe2pjQrbya0G39ALHMfkborwD3SCVzJRjaWkOaOf/lZnfTvFXQ4M4dBc1bFhYs
+         shp9bNxw8Pi7WKXVlBipVhAijLSK7sGYkFMd47NaAOqk9U55cnml7bAnWb3RZYr4Alsq
+         l2uaXOK1MLaXGqTsqZ6mrmIcncp9FfwuRhxYNn273l//f3zNR2CoVdGT3svIPdgL7iOO
+         /Rvg==
+X-Gm-Message-State: AOJu0YyU5Zuhk4h9vP8BpYklfk51k65pGNKSwZ5keSG7HPtShdQItu+k
+	Q3+0Tnh8h3I8EqhTklTD85Ro5fByWJY=
+X-Google-Smtp-Source: AGHT+IHapYFA1E8erMKTCUk5o1Pg5iPJ1NuCQ0fs2o2CFjrEymp3AKNMxkfs6EIdF0eDdCPrJxgkHXuIM1g=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a17:90a:d90b:b0:26d:1212:7924 with SMTP id
+ c11-20020a17090ad90b00b0026d12127924mr1918689pjv.4.1692646388708; Mon, 21 Aug
+ 2023 12:33:08 -0700 (PDT)
+Date: Mon, 21 Aug 2023 12:33:07 -0700
+In-Reply-To: <diqzzg2ktiao.fsf@ackerleytng-ctop.c.googlers.com>
+Mime-Version: 1.0
+References: <ZNvaJ3igvcvTZ/8k@google.com> <diqzzg2ktiao.fsf@ackerleytng-ctop.c.googlers.com>
+Message-ID: <ZOO782YGRY0YMuPu@google.com>
+Subject: Re: [RFC PATCH v11 12/29] KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for
+ guest-specific backing memory
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Content-Type: text/plain; charset="us-ascii"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,27 +74,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>, Herve Codina <herve.codina@bootlin.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Linus Walleij <linus.walleij@linaro.org>, Jaroslav Kysela <perex@perex.cz>, Eric Dumazet <edumazet@google.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Fabio Estevam <festevam@gmail.com>, Qiang Zhao <qiang.zhao@nxp.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Lee Jones <lee@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, Conor Dooley <conor+dt@kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicolin Chen <nicoleotsuka@gmail.com>, "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>, Takashi Iwai <tiwai@suse.com>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "netdev@vger.kernel.org" <netdev@vger.ker
- nel.org>, Randy Dunlap <rdunlap@infradead.org>, Liam Girdwood <lgirdwood@gmail.com>, Li Yang <leoyang.li@nxp.com>, Mark Brown <broonie@kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "David S. Miller" <davem@davemloft.net>
+Cc: kvm@vger.kernel.org, david@redhat.com, yu.c.zhang@linux.intel.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, chao.p.peng@linux.intel.com, linux-riscv@lists.infradead.org, isaku.yamahata@gmail.com, paul@paul-moore.com, maz@kernel.org, chenhuacai@kernel.org, jmorris@namei.org, willy@infradead.org, wei.w.wang@intel.com, tabba@google.com, jarkko@kernel.org, serge@hallyn.com, mail@maciej.szmigiero.name, aou@eecs.berkeley.edu, vbabka@suse.cz, michael.roth@amd.com, paul.walmsley@sifive.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, qperret@google.com, liam.merwick@oracle.com, linux-mips@vger.kernel.org, oliver.upton@linux.dev, linux-security-module@vger.kernel.org, palmer@dabbelt.com, kvm-riscv@lists.infradead.org, anup@brainfault.org, linux-fsdevel@vger.kernel.org, pbonzini@redhat.com, akpm@linux-foundation.org, vannapurve@google.com, linuxppc-dev@lists.ozlabs.org, kirill.shutemov@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 21 Aug 2023 05:19:22 +0000 Christophe Leroy wrote:
-> As I said in the cover letter, this series only fixes critical build=20
-> failures that happened when CONFIG_MODULES is set. The purpose was to=20
-> allow robots to perform their job up to the end. Other feedback and=20
-> comments will be taken into account by Herv=C3=A9 when he is back from ho=
-lidays.
+On Mon, Aug 21, 2023, Ackerley Tng wrote:
+> Sean Christopherson <seanjc@google.com> writes:
+> 
+> > On Tue, Aug 15, 2023, Ackerley Tng wrote:
+> >> Sean Christopherson <seanjc@google.com> writes:
+> >> > Nullifying the KVM pointer isn't sufficient, because without additional actions
+> >> > userspace could extract data from a VM by deleting its memslots and then binding
+> >> > the guest_memfd to an attacker controlled VM.  Or more likely with TDX and SNP,
+> >> > induce badness by coercing KVM into mapping memory into a guest with the wrong
+> >> > ASID/HKID.
+> >> >
+> >> > I can think of three ways to handle that:
+> >> >
+> >> >   (a) prevent a different VM from *ever* binding to the gmem instance
+> >> >   (b) free/zero physical pages when unbinding
+> >> >   (c) free/zero when binding to a different VM
+> >> >
+> >> > Option (a) is easy, but that pretty much defeats the purpose of decopuling
+> >> > guest_memfd from a VM.
+> >> >
+> >> > Option (b) isn't hard to implement, but it screws up the lifecycle of the memory,
+> >> > e.g. would require memory when a memslot is deleted.  That isn't necessarily a
+> >> > deal-breaker, but it runs counter to how KVM memlots currently operate.  Memslots
+> >> > are basically just weird page tables, e.g. deleting a memslot doesn't have any
+> >> > impact on the underlying data in memory.  TDX throws a wrench in this as removing
+> >> > a page from the Secure EPT is effectively destructive to the data (can't be mapped
+> >> > back in to the VM without zeroing the data), but IMO that's an oddity with TDX and
+> >> > not necessarily something we want to carry over to other VM types.
+> >> >
+> >> > There would also be performance implications (probably a non-issue in practice),
+> >> > and weirdness if/when we get to sharing, linking and/or mmap()ing gmem.  E.g. what
+> >> > should happen if the last memslot (binding) is deleted, but there outstanding userspace
+> >> > mappings?
+> >> >
+> >> > Option (c) is better from a lifecycle perspective, but it adds its own flavor of
+> >> > complexity, e.g. the performant way to reclaim TDX memory requires the TDMR
+> >> > (effectively the VM pointer), and so a deferred relcaim doesn't really work for
+> >> > TDX.  And I'm pretty sure it *can't* work for SNP, because RMP entries must not
+> >> > outlive the VM; KVM can't reuse an ASID if there are pages assigned to that ASID
+> >> > in the RMP, i.e. until all memory belonging to the VM has been fully freed.
 
-I missed this too, FTR this is unacceptable.
+...
 
-Quoting documentation:
+> I agree with you that nulling the KVM pointer is insufficient to keep
+> host userspace out of the TCB. Among the three options (a) preventing a
+> different VM (HKID/ASID) from binding to the gmem instance, or zeroing
+> the memory either (b) on unbinding, or (c) on binding to another VM
+> (HKID/ASID),
+> 
+> (a) sounds like adding a check issued to TDX/SNP upon binding and this
+>     check would just return OK for software-protected VMs (line of sight
+>     to removing host userspace from TCB).
+> 
+> Or, we could go further for software-protected VMs and add tracking in
+> the inode to prevent the same inode from being bound to different
+> "HKID/ASID"s, perhaps like this:
+> 
+> + On first binding, store the KVM pointer in the inode - not file (but
+>   not hold a refcount)
+> + On rebinding, check that the KVM matches the pointer in the inode
+> + On intra-host migration, update the KVM pointer in the inode to allow
+>   binding to the new struct kvm
+> 
+> I think you meant associating the file with a struct kvm at creation
+> time as an implementation for (a), but technically since the inode is
+> the representation of memory, tracking of struct kvm should be with the
+> inode instead of the file.
+> 
+> (b) You're right that this messes up the lifecycle of the memory and
+>     wouldn't work with intra-host migration.
+> 
+> (c) sounds like doing the clearing on a check similar to that of (a)
 
-  **Do not** post your patches just to run them through the checks.
-  You must ensure that your patches are ready by testing them locally
-  before posting to the mailing list. The patchwork build bot instance
-  gets overloaded very easily and netdev@vger really doesn't need more
-  traffic if we can help it.
- =20
-See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#pa=
-tchwork-checks
+Sort of, though it's much nastier, because it requires the "old" KVM instance to
+be alive enough to support various operations.  I.e. we'd have to make stronger
+guarantees about exactly when the handoff/transition could happen.
+
+> If we track struct kvm with the inode, then I think (a), (b) and (c) can
+> be independent of the refcounting method. What do you think?
+
+No go.  Because again, the inode (physical memory) is coupled to the virtual machine
+as a thing, not to a "struct kvm".  Or more concretely, the inode is coupled to an
+ASID or an HKID, and there can be multiple "struct kvm" objects associated with a
+single ASID.  And at some point in the future, I suspect we'll have multiple KVM
+objects per HKID too.
+
+The current SEV use case is for the migration helper, where two KVM objects share
+a single ASID (the "real" VM and the helper).  I suspect TDX will end up with
+similar behavior where helper "VMs" can use the HKID of the "real" VM.  For KVM,
+that means multiple struct kvm objects being associated with a single HKID.
+
+To prevent use-after-free, KVM "just" needs to ensure the helper instances can't
+outlive the real instance, i.e. can't use the HKID/ASID after the owning virtual
+machine has been destroyed.
+
+To put it differently, "struct kvm" is a KVM software construct that _usually_,
+but not always, is associated 1:1 with a virtual machine.
+
+And FWIW, stashing the pointer without holding a reference would not be a complete
+solution, because it couldn't guard against KVM reusing a pointer.  E.g. if a
+struct kvm was unbound and then freed, KVM could reuse the same memory for a new
+struct kvm, with a different ASID/HKID, and get a false negative on the rebinding
+check.
