@@ -2,70 +2,134 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1541C782F70
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Aug 2023 19:31:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8227782FA1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Aug 2023 19:47:26 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=EeilR+Ek;
+	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=qo2hK3DK;
+	dkim=pass (2048-bit key) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=qo2hK3DK;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RTzzD6SNBz3c3D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Aug 2023 03:31:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RV0L44qstz3bTN
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Aug 2023 03:47:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=EeilR+Ek;
+	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=qo2hK3DK;
+	dkim=pass (2048-bit key) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=qo2hK3DK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--ackerleytng.bounces.google.com (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=3iz_jzaskdbw24c6jd6qlf88gg8d6.4gedafmphh4-56ndaklk.grd23k.gj8@flex--ackerleytng.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x649.google.com (mail-pl1-x649.google.com [IPv6:2607:f8b0:4864:20::649])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=seco.com (client-ip=52.100.13.203; helo=eur03-am7-obe.outbound.protection.outlook.com; envelope-from=sean.anderson@seco.com; receiver=lists.ozlabs.org)
+Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03hn2203.outbound.protection.outlook.com [52.100.13.203])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RTzyH6wDgz300q
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Aug 2023 03:30:13 +1000 (AEST)
-Received: by mail-pl1-x649.google.com with SMTP id d9443c01a7336-1bdfb00b851so54768635ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Aug 2023 10:30:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1692639009; x=1693243809;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PxPb6xmjGnrDhupKfwNZ6FElkwCeLY+o5DimQNV4hqs=;
-        b=EeilR+Ekgkx+cSM5iMGGI6Y6JUlPzIKJDzTMUqkf7lLLOnc6FpewNmU25aBx4uml07
-         kpJ/Y2FJC3CTbM1zhPEns2ri5EF0FucsNsARO2qiyP1aSTS0C5sBildhbwq/ouHiNd0i
-         qimLz+UE3zMmYJlBAqicri/5Fr6eTbJDWgtrq6dGUFxvLf98ghheK+KjfPI1ki9rbrDx
-         OwUj//jjlLo2noDnvWoDubwgN3vUsxvZ3ojvOIltLuZiZqNVPxwjvpAuB6SyalToGMao
-         EwF+zqvM7lCbm29FshYcImlpUndLxfSZBxyjQ8MgJRIV/NshYNyfOiLuklOGwcxVfF2o
-         7bcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692639009; x=1693243809;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=PxPb6xmjGnrDhupKfwNZ6FElkwCeLY+o5DimQNV4hqs=;
-        b=X0/H4NITtbXxIWf8Qp53oSg61L2tAQNdE2W+c4i5F1wQglgqJvY02Khu67loRuyHhq
-         eZRae2f8LRKiVLtaqQ+vxxnDcxR7/Wpf6KEWeytd1J9vl9W6x9Hm70AGsaopOwYMO5JN
-         5cDN9rZN5XX6x5drT++G10NhQUXBdX5SwQZUeoF9l3v15gLSJhe0HPZ61r3C2fzUJzL3
-         zH88aA7jpgYT3QOa/QZOTQZBZBfkW30TY6l3ikpp2AG3oKBRkXZNlD7OkMO2ThlJ25/v
-         QBp0fJurlHdE3JSWGsRBv2mbmrZ1v9R9u8r7x8sxYl9fdIst33Pz7vNvxyxWBVtjm2SE
-         63mQ==
-X-Gm-Message-State: AOJu0Yx4fui9i+n86sVx+XGjlaPxOA2w75kScLDiz9x/SNUSQ37PUFfF
-	PaDUPvNyA5vNRglJnSRBdCLOTramA0B2A9y1iA==
-X-Google-Smtp-Source: AGHT+IGoB8kJFRFmo//ezk9L60YAhs5f0Yw/TjMFB9a7nGOG7yPY7ezvdJVQyEjAsqVqDpDGeq6SzFD6orSBmlYJBQ==
-X-Received: from ackerleytng-ctop.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:13f8])
- (user=ackerleytng job=sendgmr) by 2002:a17:903:22cd:b0:1b8:9533:65b0 with
- SMTP id y13-20020a17090322cd00b001b8953365b0mr3304261plg.5.1692639009082;
- Mon, 21 Aug 2023 10:30:09 -0700 (PDT)
-Date: Mon, 21 Aug 2023 17:30:07 +0000
-In-Reply-To: <ZNvaJ3igvcvTZ/8k@google.com> (message from Sean Christopherson
- on Tue, 15 Aug 2023 13:03:51 -0700)
-Mime-Version: 1.0
-Message-ID: <diqzzg2ktiao.fsf@ackerleytng-ctop.c.googlers.com>
-Subject: Re: [RFC PATCH v11 12/29] KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for
- guest-specific backing memory
-From: Ackerley Tng <ackerleytng@google.com>
-To: Sean Christopherson <seanjc@google.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RV0K61zHkz2xr6
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Aug 2023 03:46:31 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7Do0ES/R4n0uKe8HW7ooeCtg6QCSVQDmGAwLgHrpy2s=;
+ b=qo2hK3DKcSN8kSGUGh3SUObYI6ZgezLMsYtJ1yL3uVTlv/2KWJNjMQrG8a293gtXG/N5Qu4uDO8tpUi/QkTKp4DpjQUeAxEd9dRpRdjMppI2IH80M6yQWlERtcw6lGZjNkXVw7Q6brB6S56fglGsmJO/6M0cUtes9mQVVH6/kg9/+2R7W9crsCfsI43mgdagYCdfD8nXK4WRE6N91sn3JeEwzaoXA+EB8C1FVQxl8mvC5rolsM32thiSHRm+Aph2T82fXYm4c0ZzHGFci9LvWj2p0yjq7tiAyx8vfO8QG+PuTmXEKKC/UZcfgGeqNjuPD3n6JMSb3f1IX+IdgZxQrA==
+Received: from DU2PR04CA0224.eurprd04.prod.outlook.com (2603:10a6:10:2b1::19)
+ by AS8PR03MB9045.eurprd03.prod.outlook.com (2603:10a6:20b:5b8::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.24; Mon, 21 Aug
+ 2023 17:46:11 +0000
+Received: from DB8EUR05FT056.eop-eur05.prod.protection.outlook.com
+ (2603:10a6:10:2b1:cafe::b) by DU2PR04CA0224.outlook.office365.com
+ (2603:10a6:10:2b1::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.20 via Frontend
+ Transport; Mon, 21 Aug 2023 17:46:11 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 20.160.56.84)
+ smtp.mailfrom=seco.com; dkim=pass (signature was verified)
+ header.d=seco.com;dmarc=pass action=none header.from=seco.com;
+Received-SPF: Pass (protection.outlook.com: domain of seco.com designates
+ 20.160.56.84 as permitted sender) receiver=protection.outlook.com;
+ client-ip=20.160.56.84; helo=inpost-eu.tmcas.trendmicro.com; pr=C
+Received: from inpost-eu.tmcas.trendmicro.com (20.160.56.84) by
+ DB8EUR05FT056.mail.protection.outlook.com (10.233.238.156) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6723.11 via Frontend Transport; Mon, 21 Aug 2023 17:46:11 +0000
+Received: from outmta (unknown [192.168.82.132])
+	by inpost-eu.tmcas.trendmicro.com (Trend Micro CAS) with ESMTP id D9AE920080096;
+	Mon, 21 Aug 2023 17:46:10 +0000 (UTC)
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com (unknown [104.47.12.52])
+	by repre.tmcas.trendmicro.com (Trend Micro CAS) with ESMTPS id 33DAC2008006F;
+	Mon, 21 Aug 2023 17:46:01 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ZOst99BlDDp+GIduCzISKJNhVdR2foWYn8UQNFVZivpMW/SE0Wjg25lRUDiX34YNLh7MoO1YuGuwEY6PrQkdUOHBKEmJbW1XhJ59HhhylEbw4GnHk/umHRzGAqeTioYKhrwYnp9QCkjCFQq12GZsil186Irm/6z4S7eVv13kB8I/NTfIGCYpslHfN1QhLVVh4VGfMDhHXALBFbTxSZBZxw44NVf6xG16veTN2mLD5oJ0QOO7yqbSwo0asLIDidwfAyFo53Xf04Pjrp3Q8HLxbEx9i66dz7tWszSKq8CjBza5uJPdT0g/utfGoQms4R9SEone5cRLX63mQ9CsaPp00w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7Do0ES/R4n0uKe8HW7ooeCtg6QCSVQDmGAwLgHrpy2s=;
+ b=aHipUbkd6MTJx4te2M6jswJNueUCMZT0OIQvq0izZBz8isKZJf17VEAKDW+a6ohIuH6ourEAaOkc+kas+5tmV7hk58uFd1RAz+QzHBihpXqoh5buA8l9C1d21q2LJYkUz5fcreNo6gK8e1HsSMDBXmzJ15VoXcxBNxFbZiY9qNcgphoeBahPaco9eOwRp38HTMcsqkalMVMX9Jv77qzTVwHn9ytT5sFC5AeuSftXp9m0G397YrvBaD3mhU/pQleHCV424rxpLmqDk75MV+NprGdps0/0Mp+4RgnKqYClM7jzS6ynW0ODPTmt/qVPLq3z4v4WRlei35l1wlxbNc23vg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=seco.com; dmarc=pass action=none header.from=seco.com;
+ dkim=pass header.d=seco.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7Do0ES/R4n0uKe8HW7ooeCtg6QCSVQDmGAwLgHrpy2s=;
+ b=qo2hK3DKcSN8kSGUGh3SUObYI6ZgezLMsYtJ1yL3uVTlv/2KWJNjMQrG8a293gtXG/N5Qu4uDO8tpUi/QkTKp4DpjQUeAxEd9dRpRdjMppI2IH80M6yQWlERtcw6lGZjNkXVw7Q6brB6S56fglGsmJO/6M0cUtes9mQVVH6/kg9/+2R7W9crsCfsI43mgdagYCdfD8nXK4WRE6N91sn3JeEwzaoXA+EB8C1FVQxl8mvC5rolsM32thiSHRm+Aph2T82fXYm4c0ZzHGFci9LvWj2p0yjq7tiAyx8vfO8QG+PuTmXEKKC/UZcfgGeqNjuPD3n6JMSb3f1IX+IdgZxQrA==
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=seco.com;
+Received: from DB9PR03MB8847.eurprd03.prod.outlook.com (2603:10a6:10:3dd::13)
+ by PR3PR03MB6377.eurprd03.prod.outlook.com (2603:10a6:102:74::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.20; Mon, 21 Aug
+ 2023 17:45:59 +0000
+Received: from DB9PR03MB8847.eurprd03.prod.outlook.com
+ ([fe80::21bd:6579:b3d1:e5f7]) by DB9PR03MB8847.eurprd03.prod.outlook.com
+ ([fe80::21bd:6579:b3d1:e5f7%5]) with mapi id 15.20.6699.022; Mon, 21 Aug 2023
+ 17:45:59 +0000
+Message-ID: <a2e3fcad-9857-f1b3-8ada-efb2013a4bf5@seco.com>
+Date: Mon, 21 Aug 2023 13:45:44 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.1
+Subject: Re: [PATCH v14 00/15] phy: Add support for Lynx 10G SerDes
+Content-Language: en-US
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+References: <20230522150010.q5zndfwcuvrb6pg2@skbuf>
+ <22a28a6f-2c84-a6b1-bb57-a269af34c993@seco.com>
+ <20230610222123.mzmfjx7zfw4nh2lo@skbuf>
+ <c702e2b6-cb0f-4ac9-86fe-a220284d45aa@seco.com>
+ <20230612163353.dwouatvqbuo6h4ea@skbuf>
+ <1dd01fe2-08a8-ec2f-1184-a58b2f55ba85@seco.com>
+ <20230613142754.wr5njtjo4tbloqwu@skbuf>
+ <20230811150826.urp2hzl3tahesrjx@skbuf>
+ <26623d0c-8a5a-614b-7df7-69214aaec524@seco.com>
+ <20230811163637.bs7a46juasjgnmf4@skbuf>
+ <20230821124952.mraqqp7pxlo56gkh@skbuf>
+From: Sean Anderson <sean.anderson@seco.com>
+In-Reply-To: <20230821124952.mraqqp7pxlo56gkh@skbuf>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0P220CA0006.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:a03:41b::29) To DB9PR03MB8847.eurprd03.prod.outlook.com
+ (2603:10a6:10:3dd::13)
+MIME-Version: 1.0
+X-MS-TrafficTypeDiagnostic: 	DB9PR03MB8847:EE_|PR3PR03MB6377:EE_|DB8EUR05FT056:EE_|AS8PR03MB9045:EE_
+X-MS-Office365-Filtering-Correlation-Id: d8d6eeaf-d0cc-4a1d-74c4-08dba26e81de
+X-TrendMicro-CAS-OUT-LOOP-IDENTIFIER: 656f966764b7fb185830381c646b41a1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted: BCL:0;
+X-Microsoft-Antispam-Message-Info-Original:  1TSxz1u6DyWY9KWp8JodjdZTADc7VOUh0LN3rDh6oxvTxE6jfasxaA3mcHjD6Yao43WpEZ29hm1mLli1htFZv/YU8GNF7+7rQRO7BizTddh8v2kmH1800zW/9SW1fpoIOJ2pAyO+0kJUHAsLLKj9L1/A3Np09JdGJX0hgJRrN+OLGTGosadKgRoMSi6/ZaioVzcxSLeqi25+Pk8naYk4/NzH8UQtBDUU48H5d9TLE13lSL8gJjRW6D3CFpc5k0YmTehCMLM/ssphkGKa7B7zXxv10cGH6Z5k3lXbk9T/RYNL/o/8UT+TJthqsq9s/xi2XLr5dV3K56s84NmA8xaZqrxHrvy2VvJA9M0PiMrNWxrMMUDJK7rBiScIa7Y2ey4ZEIAMTPb/NLY6ULZznJrRy3S3S9IX61Btvm1Kmxm80l3KD8uXPA0vRqN5Ks5HDmvustfp40huwSS10EsBXZAHzvQkilxm7080w8d5BHZ379yl3QbpE0UrH+7p18G7I24o7c5akZP0pZNcoVYU4DA6dPBl6ldDmW1Xv0FutyzPq0bCYKm99BTtSo4VQDjiDMcmAc2fs2fz0/HV6WEjAcsX/XjjfjerKZ9oY8Ed6zdQOi3mcVLD+wfcH1r6Ey/x3DQ97eNazUKTx8RAwYCCc9mUGY1bPXp7NvDAJ00sQfiOo46LoobQ1dt24nKZdYTQR50M
+X-Forefront-Antispam-Report-Untrusted:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR03MB8847.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39850400004)(136003)(346002)(366004)(396003)(376002)(451199024)(1800799009)(186009)(36756003)(316002)(54906003)(66476007)(66556008)(66946007)(6916009)(2906002)(31686004)(7416002)(44832011)(5660300002)(4326008)(8936002)(8676002)(26005)(6506007)(52116002)(6512007)(53546011)(6486002)(41300700001)(83380400001)(478600001)(6666004)(38100700002)(31696002)(38350700002)(2616005)(86362001)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR03MB6377
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:  DB8EUR05FT056.eop-eur05.prod.protection.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs: 	066c17d3-cd3d-484b-a868-08dba26e7a76
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	19vnDFT8CPB1Fctn+EcmraMhqke7NBuQh10Ir/UBpkiX1/bHtD1OLmPpOD8sFriwz5SVNae3ujzvjlJHrHD9GS6TL7QDvaSIigAMklVFhikagLXQIJy/nAKQ5S0yYJHQ/dGuvIZ64DiqLPRxq2nTWh8lrdUVCFzK8WsBtZni7ozk1s5aR6jnWVanspNKfL+RezyOHSLkKDvmCP8rhvvr7ftbqo5z0BistCNAoo0qu9W7sA9n7a7mEQMEOHxC5kmrnrZUkblEsGuStw5FZ5lMyDnYcB6aIpPdhIWKKaQSawVEc5mXVJ4575tAEfw068tu2zU5CBI49cabi75+17Am5RPyAXqQ6LlOYWeetKguFgwcpo8txHMXCn5TekoNaO2Zj8IEHPi4gmSamqRBNM2ED9wDm3vpZqsDEW8bfWJhfsN3jh0k5RGX2VhoyHmJoRWH4gpBYOHv8GIF65kyQybFcZfTIUqguGVEZNx0rmu2JHL6e+ARJoL4/8VnxztZYWisjmRuwUNY8asWpltaFsPZFFU/kiGuhQrxIG8Z7aovgNW2w6tTpHb5H9T82g+llu16e0dscJv1zZLVEjpJ+9wKVt8/Odl4p85wWpqQ1j9ClqmrWzlj0hXfhAuOMo/Rl4cqHV/al1o7A8wuqvLnkXRBLU37wjXbeY/jE/2ai7Fn2o2paEaquMpW17FiVSCsgkFIvNOkoJ+D7Z2zisBKekqVqhpiXzToHwwBxCnmPfVnGGoKp26zP9Pm4nUnVMYabAU6EwkCEV+IUuu3tE1YyMl9mPWxivGgpvATCLyB0Kjpe8bDiARPRcjt/3sxcheAQZcprMdp1TdJcqlHiWk+roI0hQ==
+X-Forefront-Antispam-Report: 	CIP:20.160.56.84;CTRY:NL;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:inpost-eu.tmcas.trendmicro.com;PTR:inpost-eu.tmcas.trendmicro.com;CAT:NONE;SFS:(13230031)(396003)(376002)(136003)(39850400004)(346002)(186009)(1800799009)(82310400011)(451199024)(5400799018)(46966006)(36840700001)(40470700004)(54906003)(6916009)(70586007)(70206006)(316002)(6512007)(8676002)(34070700002)(8936002)(2616005)(4326008)(7636003)(36756003)(41300700001)(40460700003)(7596003)(356005)(82740400003)(478600001)(6666004)(53546011)(6506007)(40480700001)(6486002)(83380400001)(2906002)(7416002)(86362001)(31686004)(47076005)(36860700001)(31696002)(336012)(44832011)(5660300002)(26005)(43740500002)(12100799039);DIR:OUT;SFP:1501;
+X-OriginatorOrg: seco.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2023 17:46:11.1061
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d8d6eeaf-d0cc-4a1d-74c4-08dba26e81de
+X-MS-Exchange-CrossTenant-Id: bebe97c3-6438-442e-ade3-ff17aa50e733
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=bebe97c3-6438-442e-ade3-ff17aa50e733;Ip=[20.160.56.84];Helo=[inpost-eu.tmcas.trendmicro.com]
+X-MS-Exchange-CrossTenant-AuthSource: 	DB8EUR05FT056.eop-eur05.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR03MB9045
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,313 +141,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, david@redhat.com, yu.c.zhang@linux.intel.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, chao.p.peng@linux.intel.com, linux-riscv@lists.infradead.org, isaku.yamahata@gmail.com, paul@paul-moore.com, maz@kernel.org, chenhuacai@kernel.org, jmorris@namei.org, willy@infradead.org, wei.w.wang@intel.com, tabba@google.com, jarkko@kernel.org, serge@hallyn.com, mail@maciej.szmigiero.name, aou@eecs.berkeley.edu, vbabka@suse.cz, michael.roth@amd.com, paul.walmsley@sifive.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, qperret@google.com, liam.merwick@oracle.com, linux-mips@vger.kernel.org, oliver.upton@linux.dev, linux-security-module@vger.kernel.org, palmer@dabbelt.com, kvm-riscv@lists.infradead.org, anup@brainfault.org, linux-fsdevel@vger.kernel.org, pbonzini@redhat.com, akpm@linux-foundation.org, vannapurve@google.com, linuxppc-dev@lists.ozlabs.org, kirill.shutemov@linux.intel.com
+Cc: =?UTF-8?B?RmVybuKUnMOtbmRleiBSb2phcw==?= <noltari@gmail.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Madalin Bucur <madalin.bucur@nxp.com>, Michael Turquette <mturquette@baylibre.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Jonas Gorski <jonas.gorski@gmail.com>, linux-phy@lists.infradead.org, linux-clk@vger.kernel.org, Kishon Vijay Abraham I <kishon@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Bartosz Golaszewski <brgl@bgdev.pl>, linux-doc@vger.kernel.org, Camelia Alexandra Groza <camelia.groza@nxp.com>, Linus Walleij <linus.walleij@linaro.org>, devicetree@vger.kernel.org, linux-gpio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, linux-arm-kernel@lists.infradead.org, Stephen Boyd <sboyd@kernel.org>, linuxppc-dev@lists.ozlabs.org, Li Yang <leoyang.li@nxp.com>, Vinod Koul <vkoul@kernel.org>, Shawn Guo <shawnguo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sean Christopherson <seanjc@google.com> writes:
+On 8/21/23 08:49, Vladimir Oltean wrote:
+> Hi Sean,
+> 
+> On Fri, Aug 11, 2023 at 07:36:37PM +0300, Vladimir Oltean wrote:
+>> Let me explain that approach, because your mention of "swapping out the
+>> bootloaders" makes it appear as if you are not visualising what I am
+>> proposing.
+>> 
+>> The Lynx SerDes family has 2 PLLs, and more lanes (4 or 8). Each lane
+>> uses one PLL or the other, to derive its protocol frequency. Through the
+>> RCW, you provision the 2 PLL frequencies that may be used by the lanes
+>> at runtime.
+>> 
+>> The Lynx 28G SerDes driver reads the PLL frequencies in
+>> lynx_28g_pll_read_configuration(), and determines the interface modes
+>> supportable by each PLL (this is used by phylink). But it never changes
+>> those PLL frequencies, since that operation is practically impossible in
+>> the general sense (PLLs are shared by multiple lanes, so changing a PLL
+>> frequency disrupts all lanes that use it).
+> 
+> Is my high-level feedback clear and actionable to you? I am suggesting
+> to keep the look and feel the same between the lynx-10g and lynx-28g
+> drivers, and to not use "fsl,type" protocols listed in the device tree
+> as the immutable source of information for populating mode->protos, but
+> instead the current PLL frequency configuration. So this implies that I
+> am requesting that the dt-bindings should not contain a listing of the
+> supported protocols.
 
-> On Tue, Aug 15, 2023, Ackerley Tng wrote:
->> Sean Christopherson <seanjc@google.com> writes:
->>
->> >> I feel that memslots form a natural way of managing usage of the gmem
->> >> file. When a memslot is created, it is using the file; hence we take =
-a
->> >> refcount on the gmem file, and as memslots are removed, we drop
->> >> refcounts on the gmem file.
->> >
->> > Yes and no.  It's definitely more natural *if* the goal is to allow gu=
-est_memfd
->> > memory to exist without being attached to a VM.  But I'm not at all co=
-nvinced
->> > that we want to allow that, or that it has desirable properties.  With=
- TDX and
->> > SNP in particuarly, I'm pretty sure that allowing memory to outlive th=
-e VM is
->> > very underisable (more below).
->> >
->>
->> This is a little confusing, with the file/inode split in gmem where the
->> physical memory/data is attached to the inode and the file represents
->> the VM's view of that memory, won't the memory outlive the VM?
->
-> Doh, I overloaded the term "VM".  By "VM" I meant the virtual machine as =
-a "thing"
-> the rest of the world sees and interacts with, not the original "struct k=
-vm" object.
->
-> Because yes, you're absolutely correct that the memory will outlive "stru=
-ct kvm",
-> but it won't outlive the virtual machine, and specifically won't outlive =
-the
-> ASID (SNP) / HKID (TDX) to which it's bound.
->
+Well, we have two pieces of information we need
 
-Yup we agree on this now :) The memory should not outlive the the ASID
-(SNP) / HKID (TDX) to which it's bound.
+- What values do we need to program in the PCCRs to select a particular
+  mode? This includes whether to e.g. set the KX bits.
+- Implied by the above, what protocols are supported on which lanes?
+  This is not strictly necessary, but will certainly solve a lot of
+  headscratching.
 
->> This [1] POC was built based on that premise, that the gmem inode can be
->> linked to another file and handed off to another VM, to facilitate
->> intra-host migration, where the point is to save the work of rebuilding
->> the VM's memory in the destination VM.
->>
->> With this, the bindings don't outlive the VM, but the data/memory
->> does. I think this split design you proposed is really nice.
->>
->> >> The KVM pointer is shared among all the bindings in gmem=E2=80=99s xa=
-rray, and we can
->> >> enforce that a gmem file is used only with one VM:
->> >>
->> >> + When binding a memslot to the file, if a kvm pointer exists, it mus=
-t
->> >>   be the same kvm as the one in this binding
->> >> + When the binding to the last memslot is removed from a file, NULL t=
-he
->> >>   kvm pointer.
->> >
->> > Nullifying the KVM pointer isn't sufficient, because without additiona=
-l actions
->> > userspace could extract data from a VM by deleting its memslots and th=
-en binding
->> > the guest_memfd to an attacker controlled VM.  Or more likely with TDX=
- and SNP,
->> > induce badness by coercing KVM into mapping memory into a guest with t=
-he wrong
->> > ASID/HKID.
->> >
->> > I can think of three ways to handle that:
->> >
->> >   (a) prevent a different VM from *ever* binding to the gmem instance
->> >   (b) free/zero physical pages when unbinding
->> >   (c) free/zero when binding to a different VM
->> >
->> > Option (a) is easy, but that pretty much defeats the purpose of decopu=
-ling
->> > guest_memfd from a VM.
->> >
->> > Option (b) isn't hard to implement, but it screws up the lifecycle of =
-the memory,
->> > e.g. would require memory when a memslot is deleted.  That isn't neces=
-sarily a
->> > deal-breaker, but it runs counter to how KVM memlots currently operate=
-.  Memslots
->> > are basically just weird page tables, e.g. deleting a memslot doesn't =
-have any
->> > impact on the underlying data in memory.  TDX throws a wrench in this =
-as removing
->> > a page from the Secure EPT is effectively destructive to the data (can=
-'t be mapped
->> > back in to the VM without zeroing the data), but IMO that's an oddity =
-with TDX and
->> > not necessarily something we want to carry over to other VM types.
->> >
->> > There would also be performance implications (probably a non-issue in =
-practice),
->> > and weirdness if/when we get to sharing, linking and/or mmap()ing gmem=
-.  E.g. what
->> > should happen if the last memslot (binding) is deleted, but there outs=
-tanding userspace
->> > mappings?
->> >
->> > Option (c) is better from a lifecycle perspective, but it adds its own=
- flavor of
->> > complexity, e.g. the performant way to reclaim TDX memory requires the=
- TDMR
->> > (effectively the VM pointer), and so a deferred relcaim doesn't really=
- work for
->> > TDX.  And I'm pretty sure it *can't* work for SNP, because RMP entries=
- must not
->> > outlive the VM; KVM can't reuse an ASID if there are pages assigned to=
- that ASID
->> > in the RMP, i.e. until all memory belonging to the VM has been fully f=
-reed.
->> >
->>
->> If we are on the same page that the memory should outlive the VM but not
->> the bindings, then associating the gmem inode to a new VM should be a
->> feature and not a bug.
->>
->> What do we want to defend against here?
->>
->> (a) Malicious host VMM
->>
->> For a malicious host VMM to read guest memory (with TDX and SNP), it can
->> create a new VM with the same HKID/ASID as the victim VM, rebind the
->> gmem inode to a VM crafted with an image that dumps the memory.
->>
->> I believe it is not possible for userspace to arbitrarily select a
->> matching HKID unless userspace uses the intra-host migration ioctls, but=
- if the
->> migration ioctl is used, then EPTs are migrated and the memory dumper VM
->> can't successfully run a different image from the victim VM. If the
->> dumper VM needs to run the same image as the victim VM, then it would be
->> a successful migration rather than an attack. (Perhaps we need to clean
->> up some #MCs here but that can be a separate patch).
->
-> From a guest security perspective, throw TDX and SNP out the window.  As =
-far as
-> the design of guest_memfd is concerned, I truly do not care what security=
- properties
-> they provide, I only care about whether or not KVM's support for TDX and =
-SNP is
-> clean, robust, and functionally correct.
->
-> Note, I'm not saying I don't care about TDX/SNP.  What I'm saying is that=
- I don't
-> want to design something that is beneficial only to what is currently a v=
-ery
-> niche class of VMs that require specific flavors of hardware.
->
->> (b) Malicious host kernel
->>
->> A malicious host kernel can allow a malicious host VMM to re-use a HKID
->> for the dumper VM, but this isn't something a better gmem design can
->> defend against.
->
-> Yep, completely out-of-scope.
->
->> (c) Attacks using gmem for software-protected VMs
->>
->> Attacks using gmem for software-protected VMs are possible since there
->> is no real encryption with HKID/ASID (yet?). The selftest for [1]
->> actually uses this lack of encryption to test that the destination VM
->> can read the source VM's memory after the migration. In the POC [1], as
->> long as both destination VM knows where in the inode's memory to read,
->> it can read what it wants to.
->
-> Encryption is not required to protect guest memory from less privileged s=
-oftware.
-> The selftests don't rely on lack of encryption, they rely on KVM incorpor=
-ating
-> host userspace into the TCB.
->
-> Just because this RFC doesn't remove the VMM from the TCB for SW-protecte=
-d VMS,
-> doesn't mean we _can't_ remove the VMM from the TCB.  pKVM has already sh=
-own that
-> such an implementation is possible.  We didn't tackle pKVM-like support i=
-n the
-> initial implementation because it's non-trivial, doesn't yet have a concr=
-ete use
-> case to fund/drive development, and would have significantly delayed supp=
-ort for
-> the use cases people do actually care about.
->
-> There are certainly benefits from memory being encrypted, but it's neithe=
-r a
-> requirement nor a panacea, as proven by the never ending stream of specul=
-ative
-> execution attacks.
->
->> This is a problem for software-protected VMs, but I feel that it is also=
- a
->> separate issue from gmem's design.
->
-> No, I don't want guest_memfd to be just be a vehicle for SNP/TDX VMs.  Ha=
-ving line
-> of sight to removing host userspace from the TCB is absolutely a must hav=
-e for me,
-> and having line of sight to improving KVM's security posture for "regular=
-" VMs is
-> even more of a must have.  If guest_memfd doesn't provide us a very direc=
-t path to
-> (eventually) achieving those goals, then IMO it's a failure.
->
-> Which leads me to:
->
-> (d) Buggy components
->
-> Today, for all intents and purposes, guest memory *must* be mapped writab=
-le in
-> the VMM, which means it is all too easy for a benign-but-buggy host compo=
-nent to
-> corrupt guest memory.  There are ways to mitigate potential problems, e.g=
-. by
-> developing userspace to adhere to the principle of least privilege inasmu=
-ch as
-> possible, but such mitigations would be far less robust than what can be =
-achieved
-> via guest_memfd, and practically speaking I don't see us (Google, but als=
-o KVM in
-> general) making progress on deprivileging userspace without forcing the i=
-ssue.
->
+This information varies between different socs, and different serdes on
+the same socs. We can't really look at the RCW or the clocks and figure
+out what we need to program. So what are our options?
 
-Thanks for adding this point! I should clarify that when I asked about
-what we want to defend against, I meant that in response to the point
-that nulling the KVM pointer is insufficient. IIUC (d) explains what the
-whole of gmem is meant to defend against.
+- We can have a separate compatible for each serdes on each SoC (e.g.
+  "fsl,lynx-10g-a"). This was rejected by the devicetree maintainers.
+- We can have one compatible for each SoC, and determine the serdes
+  based on the address. I would like to avoid this...
+- We can stick all the details which vary between serdes/socs into the
+  device tree. This is very flexible, since supporting new SoCs is
+  mostly a matter of adding a new compatible and writing a new
+  devicetree. On the other hand, if you have a bug in your devicetree,
+  it's not easy to fix it in the kernel.
+- Just don't support protocol switching. The 28G driver does this, which
+  is why it only has one compatible. However, supporting protocol
+  switching is a core goal of this driver, so dropping support is not an
+  option.
 
-I agree with you that nulling the KVM pointer is insufficient to keep
-host userspace out of the TCB. Among the three options (a) preventing a
-different VM (HKID/ASID) from binding to the gmem instance, or zeroing
-the memory either (b) on unbinding, or (c) on binding to another VM
-(HKID/ASID),
+I'm open to any other suggestions you have, but this was the best way I
+could figure out to get this information to the driver in a way which
+would be acceptable to the devicetree folks.
 
-(a) sounds like adding a check issued to TDX/SNP upon binding and this
-    check would just return OK for software-protected VMs (line of sight
-    to removing host userspace from TCB).
-
-Or, we could go further for software-protected VMs and add tracking in
-the inode to prevent the same inode from being bound to different
-"HKID/ASID"s, perhaps like this:
-
-+ On first binding, store the KVM pointer in the inode - not file (but
-  not hold a refcount)
-+ On rebinding, check that the KVM matches the pointer in the inode
-+ On intra-host migration, update the KVM pointer in the inode to allow
-  binding to the new struct kvm
-
-I think you meant associating the file with a struct kvm at creation
-time as an implementation for (a), but technically since the inode is
-the representation of memory, tracking of struct kvm should be with the
-inode instead of the file.
-
-(b) You're right that this messes up the lifecycle of the memory and
-    wouldn't work with intra-host migration.
-
-(c) sounds like doing the clearing on a check similar to that of (a)
-
-If we track struct kvm with the inode, then I think (a), (b) and (c) can
-be independent of the refcounting method. What do you think?
-
->> >> Could binding gmem files not on creation, but at memslot configuratio=
-n
->> >> time be sufficient and simpler?
->> >
->> > After working through the flows, I think binding on-demand would simpl=
-ify the
->> > refcounting (stating the obvious), but complicate the lifecycle of the=
- memory as
->> > well as the contract between KVM and userspace,
->>
->> If we are on the same page that the memory should outlive the VM but not
->> the bindings, does it still complicate the lifecycle of the memory and
->> the userspace/KVM contract? Could it just be a different contract?
->
-> Not entirely sure I understand what you're asking.  Does this question go=
- away
-> with my clarification about struct kvm vs. virtual machine?
->
-
-Yes, this question goes away. Thanks!
-
->> > and would break the separation of
->> > concerns between the inode (physical memory / data) and file (VM's vie=
-w / mappings).
->>
->> Binding on-demand is orthogonal to the separation of concerns between
->> inode and file, because it can be built regardless of whether we do the
->> gmem file/inode split.
->>
->> + This flip-the-refcounting POC is built with the file/inode split and
->> + In [2] (the delayed binding approach to solve intra-host migration), I
->>   also tried flipping the refcounting, and that without the gmem
->>   file/inode split. (Refcounting in [2] is buggy because the file can't
->>   take a refcount on KVM, but it would work without taking that refcount=
-)
->>
->> [1] https://lore.kernel.org/lkml/cover.1691446946.git.ackerleytng@google=
-.com/T/
->> [2] https://github.com/googleprodkernel/linux-cc/commit/dd5ac5e53f14a1ef=
-9915c9c1e4cc1006a40b49df
+--Sean
