@@ -1,103 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C778A7845A9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Aug 2023 17:34:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0BFE78483F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Aug 2023 19:11:40 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YTJoWRsr;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YTJoWRsr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel-dk.20221208.gappssmtp.com header.i=@kernel-dk.20221208.gappssmtp.com header.a=rsa-sha256 header.s=20221208 header.b=lc9+wps8;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RVYLc4F32z3c7Q
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Aug 2023 01:34:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RVbVL3fSfz3c1L
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Aug 2023 03:11:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YTJoWRsr;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YTJoWRsr;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel-dk.20221208.gappssmtp.com header.i=@kernel-dk.20221208.gappssmtp.com header.a=rsa-sha256 header.s=20221208 header.b=lc9+wps8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.dk (client-ip=2607:f8b0:4864:20::d2e; helo=mail-io1-xd2e.google.com; envelope-from=axboe@kernel.dk; receiver=lists.ozlabs.org)
+Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RVYKk2jhJz2yVc
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Aug 2023 01:34:01 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1692718438;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gfDVn6rZaVtHsRanik8WVSt7RnpiFjyAz4ecoDpN/hY=;
-	b=YTJoWRsrLWhhm+QydrbaNM1b4slmyvtQMut8mbhOJiyiE4w7YZKH9qlpPxSrULXM0WdcTW
-	2MshFfKXhmZBeyPE1QRepYb9VL09ES6Hj52n/PUn9wSmNBK1uPCObQwmPUpH5geynhkYOX
-	fR8w9MTfdH1aI+Z36ndQE34S0IQ9hho=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1692718438;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gfDVn6rZaVtHsRanik8WVSt7RnpiFjyAz4ecoDpN/hY=;
-	b=YTJoWRsrLWhhm+QydrbaNM1b4slmyvtQMut8mbhOJiyiE4w7YZKH9qlpPxSrULXM0WdcTW
-	2MshFfKXhmZBeyPE1QRepYb9VL09ES6Hj52n/PUn9wSmNBK1uPCObQwmPUpH5geynhkYOX
-	fR8w9MTfdH1aI+Z36ndQE34S0IQ9hho=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-43-71TjtVlkPI2sBc7-YqZllw-1; Tue, 22 Aug 2023 11:33:57 -0400
-X-MC-Unique: 71TjtVlkPI2sBc7-YqZllw-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-3fe919c0348so25482655e9.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Aug 2023 08:33:57 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RVbTM4zFlz2xl6
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Aug 2023 03:10:44 +1000 (AEST)
+Received: by mail-io1-xd2e.google.com with SMTP id ca18e2360f4ac-760dff4b701so40864839f.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Aug 2023 10:10:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20221208.gappssmtp.com; s=20221208; t=1692724240; x=1693329040;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LcSl7eIOF7x7GbMvE67YmruU3FXlviD1D6eE8yEnwjw=;
+        b=lc9+wps82YDm5s/Dm7c0JdZ7ZBrVXBgf9MbrtGr0lNiY9OhGOp6nE3SB1K3JqHbzjt
+         Zz4xyX9zZ60kc7fT9LuM8TKxX/FEQQUcSKkrPh4XRWcVoPq+nH536zXr/tcijZ0nkcui
+         XUeJp2QAPi08zIrVE2xGnwuQRdJvKMdp87vkavGMhkMahZh/wFecRkUbPLguG8jBt3sa
+         Hs9umPLrkEANbOKFlZsm0NARh5o278n8CYXY7lI0icXaUlV63wMgs+o4UaCG98bMxpjl
+         ptWfuiFw3YyK4O8PUtqBdFGRq6lsJU0iCs3fKFP/Rig/1x9FPDsS3Jo2HGU720GEVVjA
+         LvGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692718436; x=1693323236;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gfDVn6rZaVtHsRanik8WVSt7RnpiFjyAz4ecoDpN/hY=;
-        b=hDegfnwlYOz+siyMx1Wg6wbygvWFD2LfT/ZVhiOvUhlAlq4qYhgy6gC3WRmWI7VaCq
-         Coltvh1pEnp1QLETrfyJQYKhbr6ZzDE02e52W3grtg0XIed4rXLPKcIiBr7FOTwXeqgU
-         1GrtiylMd5VU3QhHaQKj1bmHrKMKodaVIagcvMt/hWRYl4tyyqrzFOTiE7apinehF6Ma
-         qhevhdta9xVy8dqETYcArg2dDGQE0ayd/DFrKuAfOJWqQJpey9g6WDzOGgczCxal/vTv
-         jKrZk4iVnkf0+eIGNAeT9Tld/KWy3WBokSGlasYxqwtD+q27R0oDmhee4yRxJnzXATk1
-         QyNw==
-X-Gm-Message-State: AOJu0Yyz34gWkwfOrjAQlBhrQsCHNsEnfibidqPFeXk0mOkJojLGdt46
-	PlQZ0t0CXSRbuFcOBOeXVDZzjCuP4jXFSC+/4vHdXQ4r1CA3rTZlilZLnn7WLdrICo/23qktw3D
-	bp0LUxd6KaYVHC/+vVejNKNhpzw==
-X-Received: by 2002:a05:600c:5122:b0:3fe:fbba:afa2 with SMTP id o34-20020a05600c512200b003fefbbaafa2mr1535348wms.6.1692718435898;
-        Tue, 22 Aug 2023 08:33:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEEzgSt6c0d06CTldkinI+npTxalTCO8OFb2Fse9kAQ1VCoxoVKY5diKxmxkF7aMIBFdM0KIA==
-X-Received: by 2002:a05:600c:5122:b0:3fe:fbba:afa2 with SMTP id o34-20020a05600c512200b003fefbbaafa2mr1535303wms.6.1692718435498;
-        Tue, 22 Aug 2023 08:33:55 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c706:7400:83da:ebad:ba7f:c97c? (p200300cbc706740083daebadba7fc97c.dip0.t-ipconnect.de. [2003:cb:c706:7400:83da:ebad:ba7f:c97c])
-        by smtp.gmail.com with ESMTPSA id s14-20020a05600c044e00b003fa96fe2bd9sm19752310wmb.22.2023.08.22.08.33.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Aug 2023 08:33:54 -0700 (PDT)
-Message-ID: <d05a6922-8dbc-e6fb-f2c5-48f331652f20@redhat.com>
-Date: Tue, 22 Aug 2023 17:33:52 +0200
+        d=1e100.net; s=20221208; t=1692724240; x=1693329040;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LcSl7eIOF7x7GbMvE67YmruU3FXlviD1D6eE8yEnwjw=;
+        b=juUr0mG2tdm4+Fp84SA+Ad1we16e4YVtoxS/CjA181a/ys+2J2OjuNzbGyKvcIP8lj
+         W0Q/+b3PCphPX8f4LNBnQVe/0HaYJbpaNB0C+l6GbqBAUUO5gfp/KYf1kBMR9BQRwdo4
+         nGdxOMe7EpWKxTushg1dhGSFVKOg347x/bWPyqE9kZuoieLdwh/VJSX0xkyE5wKpMtev
+         7U4lSQMSVXjDWWuRPs63pKo/eMfbJxUb3M49dmL0HEJFSnZDu/FABsMvCmfcavLW2ZZm
+         hXh9vuiOrlfIMmRPBk8jt74vA2OObLXrU1fiix+kiRlhUtbI5XaJ2wLB1p8bctMZEcHA
+         jhpg==
+X-Gm-Message-State: AOJu0YzCdOGUu2BxPQPzVd1eE38RUcJUlz6fA02N2lXZAGHaWlcI2pKY
+	NuSbFbuUMiMCPlT9GJFKtj7alQ==
+X-Google-Smtp-Source: AGHT+IEHbxaNNBJVjkW+ouhZWazYh5LGgU5X43YP5LQHZaIFzDLkUfgAH7lPfM/IT3rJdo0KA0zacQ==
+X-Received: by 2002:a6b:4e17:0:b0:790:958e:a667 with SMTP id c23-20020a6b4e17000000b00790958ea667mr11702982iob.2.1692724240238;
+        Tue, 22 Aug 2023 10:10:40 -0700 (PDT)
+Received: from [127.0.0.1] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id a13-20020a029f8d000000b0040908cbbc5asm3276898jam.68.2023.08.22.10.10.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Aug 2023 10:10:39 -0700 (PDT)
+From: Jens Axboe <axboe@kernel.dk>
+To: linux-block@vger.kernel.org, gjoyce@linux.vnet.ibm.com
+In-Reply-To: <20230721211534.3437070-1-gjoyce@linux.vnet.ibm.com>
+References: <20230721211534.3437070-1-gjoyce@linux.vnet.ibm.com>
+Subject: Re: [PATCH v5 0/3 RESEND] sed-opal: keyrings, discovery, revert,
+ key store
+Message-Id: <169272423884.46393.6970317689418988820.b4-ty@kernel.dk>
+Date: Tue, 22 Aug 2023 11:10:38 -0600
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH mm-unstable] mm/khugepaged: fix collapse_pte_mapped_thp()
- versus uffd
-To: Jann Horn <jannh@google.com>, Matthew Wilcox <willy@infradead.org>
-References: <4d31abf5-56c0-9f3d-d12f-c9317936691@google.com>
- <CAG48ez1XAePj5MUG8AUmnTjRLcxKre-NGYV82kB68-X8Rh6fxA@mail.gmail.com>
- <f2dc6d6b-c516-932-1598-a58e2afffe9a@google.com>
- <CAG48ez0S-RjAapaDiJ+oZXpn1vs9niWx54iqzusUScS-BYu0hw@mail.gmail.com>
- <ZOTSyv6fuC1pkt76@casper.infradead.org>
- <CAG48ez2NrQjB5T5++uJSZ8-id5-H2mbSRX8c36gAJ5p_BMHOFw@mail.gmail.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <CAG48ez2NrQjB5T5++uJSZ8-id5-H2mbSRX8c36gAJ5p_BMHOFw@mail.gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13-dev-034f2
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,89 +80,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Miaohe Lin <linmiaohe@huawei.com>, Peter Zijlstra <peterz@infradead.org>, Yang Shi <shy828301@gmail.com>, Qi Zheng <zhengqi.arch@bytedance.com>, kernel list <linux-kernel@vger.kernel.org>, Song Liu <song@kernel.org>, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-s390 <linux-s390@vger.kernel.org>, Yu Zhao <yuzhao@google.com>, Ira Weiny <ira.weiny@intel.com>, Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>, Russell King <linux@armlinux.org.uk>, Steven Price <steven.price@arm.com>, Christoph Hellwig <hch@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Zi Yan <ziy@nvidia.com>, Huang Ying <ying.huang@intel.com>, Axel Rasmussen <axelrasmussen@google.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Thomas Hellstrom <thomas.hellstrom@linux.intel.com>, Ralph 
- Campbell <rcampbell@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, Vasily Gorbik <gor@linux.ibm.com>, Anshuman Khandual <anshuman.khandual@arm.com>, Heiko Carstens <hca@linux.ibm.com>, Peter Xu <peterx@redhat.com>, Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, Linux ARM <linux-arm-kernel@lists.infradead.org>, SeongJae Park <sj@kernel.org>, Lorenzo Stoakes <lstoakes@gmail.com>, Linux-MM <linux-mm@kvack.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Naoya Horiguchi <naoya.horiguchi@nec.com>, Zack Rusin <zackr@vmware.com>, Zach O'Keefe <zokeefe@google.com>, Vishal Moola <vishal.moola@gmail.com>, Minchan Kim <minchan@kernel.org>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, Mel Gorman <mgorman@techsingularity.net>, "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: nayna@linux.ibm.com, okozina@redhat.com, dkeefe@redhat.com, keyrings@vger.kernel.org, jonathan.derrick@linux.dev, brking@linux.vnet.ibm.com, akpm@linux-foundation.org, msuchanek@suse.de, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 22.08.23 17:30, Jann Horn wrote:
-> On Tue, Aug 22, 2023 at 5:23 PM Matthew Wilcox <willy@infradead.org> wrote:
->> On Tue, Aug 22, 2023 at 04:39:43PM +0200, Jann Horn wrote:
->>>> Perhaps something else will want that same behaviour in future (it's
->>>> tempting, but difficult to guarantee correctness); for now, it is just
->>>> userfaultfd (but by saying "_armed" rather than "_missing", I'm half-
->>>> expecting uffd to add more such exceptional modes in future).
->>>
->>> Hm, yeah, sounds okay. (I guess we'd also run into this if we ever
->>> wanted to make it possible to reliably install PTE markers with
->>> madvise() or something like that, which might be nice for allowing
->>> userspace to create guard pages without unnecessary extra VMAs...)
->>
->> I don't know what a userspace API for this would look like, but I have
->> a dream of creating guard VMAs which only live in the maple tree and
->> don't require the allocation of a struct VMA.  Use some magic reserved
->> pointer value like XA_ZERO_ENTRY to represent them ... seems more
->> robust than putting a PTE marker in the page tables?
-> 
-> Chrome currently uses a lot of VMAs for its heap, which I think are
-> basically alternating PROT_NONE and PROT_READ|PROT_WRITE anonymous
-> VMAs. Like this:
+
+On Fri, 21 Jul 2023 16:15:31 -0500, gjoyce@linux.vnet.ibm.com wrote:
+> This patchset has gone through numerous rounds of review and
+> all comments/suggetions have been addressed. The reviews have
+> covered all relevant areas including reviews by block and keyring
+> developers as well as the SED Opal maintainer. The last
+> patchset submission has not solicited any responses in the
+> six weeks since it was last distributed. The changes are
+> generally useful and ready for inclusion.
 > 
 > [...]
-> 3a10002cf000-3a10002d0000 ---p 00000000 00:00 0
-> 3a10002d0000-3a10002e6000 rw-p 00000000 00:00 0
-> 3a10002e6000-3a10002e8000 ---p 00000000 00:00 0
-> 3a10002e8000-3a10002f2000 rw-p 00000000 00:00 0
-> 3a10002f2000-3a10002f4000 ---p 00000000 00:00 0
-> 3a10002f4000-3a10002fb000 rw-p 00000000 00:00 0
-> 3a10002fb000-3a10002fc000 ---p 00000000 00:00 0
-> 3a10002fc000-3a1000303000 rw-p 00000000 00:00 0
-> 3a1000303000-3a1000304000 ---p 00000000 00:00 0
-> 3a1000304000-3a100031b000 rw-p 00000000 00:00 0
-> 3a100031b000-3a100031c000 ---p 00000000 00:00 0
-> 3a100031c000-3a1000326000 rw-p 00000000 00:00 0
-> 3a1000326000-3a1000328000 ---p 00000000 00:00 0
-> 3a1000328000-3a100033a000 rw-p 00000000 00:00 0
-> 3a100033a000-3a100033c000 ---p 00000000 00:00 0
-> 3a100033c000-3a100038b000 rw-p 00000000 00:00 0
-> 3a100038b000-3a100038c000 ---p 00000000 00:00 0
-> 3a100038c000-3a100039b000 rw-p 00000000 00:00 0
-> 3a100039b000-3a100039c000 ---p 00000000 00:00 0
-> 3a100039c000-3a10003af000 rw-p 00000000 00:00 0
-> 3a10003af000-3a10003b0000 ---p 00000000 00:00 0
-> 3a10003b0000-3a10003e8000 rw-p 00000000 00:00 0
-> 3a10003e8000-3a1000401000 ---p 00000000 00:00 0
-> 3a1000401000-3a1000402000 rw-p 00000000 00:00 0
-> 3a1000402000-3a100040c000 ---p 00000000 00:00 0
-> 3a100040c000-3a100046f000 rw-p 00000000 00:00 0
-> 3a100046f000-3a1000470000 ---p 00000000 00:00 0
-> 3a1000470000-3a100047a000 rw-p 00000000 00:00 0
-> 3a100047a000-3a100047c000 ---p 00000000 00:00 0
-> 3a100047c000-3a1000492000 rw-p 00000000 00:00 0
-> 3a1000492000-3a1000494000 ---p 00000000 00:00 0
-> 3a1000494000-3a10004a2000 rw-p 00000000 00:00 0
-> 3a10004a2000-3a10004a4000 ---p 00000000 00:00 0
-> 3a10004a4000-3a10004b6000 rw-p 00000000 00:00 0
-> 3a10004b6000-3a10004b8000 ---p 00000000 00:00 0
-> 3a10004b8000-3a10004ea000 rw-p 00000000 00:00 0
-> 3a10004ea000-3a10004ec000 ---p 00000000 00:00 0
-> 3a10004ec000-3a10005f4000 rw-p 00000000 00:00 0
-> 3a10005f4000-3a1000601000 ---p 00000000 00:00 0
-> 3a1000601000-3a1000602000 rw-p 00000000 00:00 0
-> 3a1000602000-3a1000604000 ---p 00000000 00:00 0
-> 3a1000604000-3a100062b000 rw-p 00000000 00:00 0
-> 3a100062b000-3a1000801000 ---p 00000000 00:00 0
-> [...]
-> 
-> I was thinking if you used PTE markers as guards, you could maybe turn
-> all that into more or less a single VMA?
 
-I proposed the topic "A proper API for sparse memory mappings" for the 
-bi-weekly MM meeting on September 20, that would also cover exactly that 
-use case. :)
+Applied, thanks!
 
+[1/3] block: sed-opal: Implement IOC_OPAL_DISCOVERY
+      commit: 9fb10726ecc5145550180aec4fd0adf0a7b1d634
+[2/3] block: sed-opal: Implement IOC_OPAL_REVERT_LSP
+      commit: 5c82efc1aee8eb0919aa67a0d2559de5a326bd7c
+[3/3] block: sed-opal: keyring support for SED keys
+      commit: 3bfeb61256643281ac4be5b8a57e9d9da3db4335
+
+Best regards,
 -- 
-Cheers,
+Jens Axboe
 
-David / dhildenb
+
 
