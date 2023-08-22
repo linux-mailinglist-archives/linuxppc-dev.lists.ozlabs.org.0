@@ -1,53 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DA88784B49
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Aug 2023 22:21:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A130D784C1B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Aug 2023 23:34:54 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=kNmyLNVW;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GbD53HM6;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RVgj91vBsz3c50
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Aug 2023 06:21:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RVjL43v7qz3c3c
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Aug 2023 07:34:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=kNmyLNVW;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GbD53HM6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=lists.ozlabs.org)
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=devnull+nathanl.linux.ibm.com@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RVghF3gSlz2xdl
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Aug 2023 06:20:27 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=7/LTW4ARO//V3xdtFM8fbiG79s90dMawsmxlv8Tdz4s=; b=kNmyLNVWTPJyo1gYbyI29XsPB0
-	R8OlJ9zgFHoPYUPIUnzeoLu5thoaCMOb639NKhxPvFvNAkhfiZBydiHMLBi5wH54PABEhZUmR/E1C
-	DBuv7+QNmYXDQInS0dmtd24GYu6gL88QDIdGrnAPYwooLwcfdJWevbwPty7OdKQHCXvs5TfgxB/8J
-	jhTNNBPWQlDb/FDzjGvsV+vJjW5DtBg91H3/2ZqNCPSAaJgV4wJhzqPEMoC4p9gE6o/gvby4SpJ6Q
-	NzUdAU1x9weXyRtQmoE8LdqziEL4bR7Cd71pThbbpEsyjyUeFFPEhVYVFkaQymoZMtZ9ICsZp7+t6
-	+TS4RwgQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1qYXrG-000iCR-H4; Tue, 22 Aug 2023 20:20:10 +0000
-Date: Tue, 22 Aug 2023 21:20:10 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: "Darrick J. Wong" <djwong@kernel.org>
-Subject: Re: linux-next: build failure after merge of the mm tree
-Message-ID: <ZOUYekbtTv+n8hYf@casper.infradead.org>
-References: <20230822095537.500047f7@canb.auug.org.au>
- <ZOQLUMBB7amLUJLY@casper.infradead.org>
- <20230822112217.185c3357@canb.auug.org.au>
- <ZOQQjmxeLM920/Q/@casper.infradead.org>
- <20230822040043.GB11263@frogsfrogsfrogs>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RVjKC37PBz2yW6
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Aug 2023 07:34:07 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 5E40F6148C;
+	Tue, 22 Aug 2023 21:34:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C3B35C433C7;
+	Tue, 22 Aug 2023 21:34:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1692740044;
+	bh=z9fzCwu05p/kJat1VErjewoOFwejlqxL+Y9vVVA5YfE=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=GbD53HM6+VwIKGuA2dShSibowuDDyXPks2r8GrnI84WzUCNTLgvq962W1OjESqXcC
+	 786tEUR8zOoHDjklcOvdiN9aMOgWJKoOWN7EZoY+M+LcjIPwH09JjsvqjrWuTLqeda
+	 4OFuDhDzLT1PU0CkVGAh+QU8ftXcyh6QgUw2S7bM/FouQQX9/422q+OKA2xiJl8F+S
+	 I/0pxQWCAqPB9zaAirE8R79VEUDafU57jCS0v7hgpRoE6qFCw0/vs7KUpGqUFFgpcl
+	 LrBgNYUjBfusJ5mVtVzQqRIA0ljzrPbpmcS6eSjVfbcI5QBhcNRa0GDp//JV8CMRQi
+	 5QP+UuuCeHvxA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 97D16EE49A5;
+	Tue, 22 Aug 2023 21:34:04 +0000 (UTC)
+From: Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
+Subject: [PATCH RFC 0/2] powerpc/pseries: new character devices for RTAS
+ functions
+Date: Tue, 22 Aug 2023 16:33:38 -0500
+Message-Id:  <20230822-papr-sys_rtas-vs-lockdown-v1-0-932623cf3c7b@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230822040043.GB11263@frogsfrogsfrogs>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALIp5WQC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI2MDC0Nz3YLEgiLd4sri+KKSxGLdsmLdnPzk7JT88jxd02RTE1MD05Qkc0s
+ jJaD+gqLUtMwKsNnRSkFuzkqxtbUAE+q8h3AAAAA=
+To: Michael Ellerman <mpe@ellerman.id.au>, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ =?utf-8?q?Michal_Such=C3=A1nek?= <msuchanek@suse.de>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1692740044; l=2907;
+ i=nathanl@linux.ibm.com; s=20230817; h=from:subject:message-id;
+ bh=z9fzCwu05p/kJat1VErjewoOFwejlqxL+Y9vVVA5YfE=;
+ b=tbEDW3JN5f4jc5uhfkxn/pJjIwxbrWp0AnlI1Rn2WpSx8JKa/TFRAhPWQlr/3QzlYVb4lDWQ2
+ 7JLUF54mu9tABjKxRciHESjLtpbuk1GQB87ghoeTt3sTDqMbM6DSefl
+X-Developer-Key: i=nathanl@linux.ibm.com; a=ed25519;
+ pk=jPDF44RvT+9DGFOH3NGoIu1xN9dF+82pjdpnKjXfoJ0=
+X-Endpoint-Received:  by B4 Relay for nathanl@linux.ibm.com/20230817 with auth_id=78
+X-Original-From: Nathan Lynch <nathanl@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,49 +78,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, linux-xfs@vger.kernel.org, Linux Next Mailing List <linux-next@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Reply-To: nathanl@linux.ibm.com
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, tyreld@linux.ibm.com, gcwilson@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 21, 2023 at 09:00:43PM -0700, Darrick J. Wong wrote:
-> Please leave this ^^^ comment, because the need for TRACE_DEFINE_ENUM to
-> make enums work in tracepoints is not at all obvious.
-> 
-> "order %u" to match the (non dev_t) style of the rest of the xfs
-> tracepoints.
+This is a proposal for adding chardev-based access to a select subset
+of RTAS functions on the pseries platform.
 
-ACK, thanks.
+The problem: important platform features are enabled on Linux VMs
+through the powerpc-specific rtas() syscall in combination with
+writeable mappings of /dev/mem. In typical usage, this is encapsulated
+behind APIs provided by the librtas library. This paradigm is
+incompatible with lockdown, which prohibits /dev/mem access.
 
-Andrew, please add this -fix patch for "mm: Remove enum
-page_entry_size".
+The solution I'm working on is to add a small pseries-specific
+"driver" for each functional area, exposing the relevant features to
+user space in ways that are compatible with lockdown. In most of these
+areas, I believe it's possible to change librtas to prefer the new
+chardev interfaces without disrupting existing users.
 
-diff --git a/fs/xfs/xfs_trace.h b/fs/xfs/xfs_trace.h
-index 1904eaf7a2e9..fd789e00dfd6 100644
---- a/fs/xfs/xfs_trace.h
-+++ b/fs/xfs/xfs_trace.h
-@@ -802,9 +802,6 @@ DEFINE_INODE_EVENT(xfs_inode_inactivating);
-  * ring buffer.  Somehow this was only worth mentioning in the ftrace sample
-  * code.
-  */
--TRACE_DEFINE_ENUM(PMD_ORDER);
--TRACE_DEFINE_ENUM(PUD_ORDER);
--
- TRACE_DEFINE_ENUM(XFS_REFC_DOMAIN_SHARED);
- TRACE_DEFINE_ENUM(XFS_REFC_DOMAIN_COW);
- 
-@@ -823,13 +820,10 @@ TRACE_EVENT(xfs_filemap_fault,
- 		__entry->order = order;
- 		__entry->write_fault = write_fault;
- 	),
--	TP_printk("dev %d:%d ino 0x%llx %s write_fault %d",
-+	TP_printk("dev %d:%d ino 0x%llx order %u write_fault %d",
- 		  MAJOR(__entry->dev), MINOR(__entry->dev),
- 		  __entry->ino,
--		  __print_symbolic(__entry->order,
--			{ 0,		"PTE" },
--			{ PMD_ORDER,	"PMD" },
--			{ PUD_ORDER,	"PUD" }),
-+		  __entry->order,
- 		  __entry->write_fault)
- )
- 
+I've broken down the affected functions into the following areas and
+priorities:
+
+High priority:
+* VPD retrieval.
+* System parameters: retrieval and update.
+
+Medium priority:
+* Platform dump retrieval.
+* Light path diagnostics (get/set-dynamic-indicator,
+  get-dynamic-sensor-state, get-indices).
+
+Low priority (may never happen):
+* Error injection: would have to be carefully restricted.
+* Physical attestation: no known users.
+* LPAR perftools: no known users.
+
+Out of scope:
+* DLPAR (configure-connector et al): involves device tree updates
+  which must be handled entirely in-kernel for lockdown. This is the
+  object of a separate effort.
+
+See https://github.com/ibm-power-utilities/librtas/issues/29 for more
+details.
+
+In this RFC, I've included a single driver for VPD retrieval. Clients
+use ioctl() to obtain a file descriptor-based handle for the VPD they
+want. I think this could be a good model for the other areas too, but
+I'd like to get opinions on it.
+
+In the next iteration I expect to add a separate driver for system
+parameters.
+
+For reference, I floated a different approach for system parameters
+here:
+
+https://lore.kernel.org/linuxppc-dev/20220730000458.130938-1-nathanl@linux.ibm.com/
+
+---
+Nathan Lynch (2):
+      powerpc/pseries: papr-vpd char driver for VPD retrieval
+      powerpc/selftests: add test for papr-vpd
+
+ Documentation/userspace-api/ioctl/ioctl-number.rst |   2 +
+ arch/powerpc/include/uapi/asm/papr-vpd.h           |  29 ++
+ arch/powerpc/platforms/pseries/Makefile            |   1 +
+ arch/powerpc/platforms/pseries/papr-vpd.c          | 353 +++++++++++++++++++++
+ tools/testing/selftests/powerpc/Makefile           |   1 +
+ .../testing/selftests/powerpc/papr_vpd/.gitignore  |   1 +
+ tools/testing/selftests/powerpc/papr_vpd/Makefile  |  12 +
+ .../testing/selftests/powerpc/papr_vpd/papr_vpd.c  | 351 ++++++++++++++++++++
+ 8 files changed, 750 insertions(+)
+---
+base-commit: d77497508a229529830850ba07e1e52596463d21
+change-id: 20230817-papr-sys_rtas-vs-lockdown-5c54505db792
+
+Best regards,
+-- 
+Nathan Lynch <nathanl@linux.ibm.com>
+
