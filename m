@@ -1,46 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD5C078373F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Aug 2023 03:13:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B844783757
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Aug 2023 03:23:14 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=F1xtJhYN;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=Lc1ahpj1;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RVBDL5qjmz3c1B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Aug 2023 11:13:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RVBS009kWz3c3H
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Aug 2023 11:23:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=lists.ozlabs.org)
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=Lc1ahpj1;
+	dkim-atps=neutral
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RVBCQ0Yf9z2y1f
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Aug 2023 11:12:17 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=+oF89Epzp8rU2t09SgoDNvxKdBu+3pJgx9pUxaygLvw=; b=F1xtJhYNk1h4XTTrv3ReqmxINp
-	HieC3af3Dt1HbMRvxABAWnREuGbWuCwyJyu3kgI/UdhgQrfgjG4k/9czTB8V6ysaHIw5iqGhorsDR
-	JqoPNj03GX8z1Zv5AWoHBUaiO4lK1ul0GbEVgO59JUMFAoF80j1P3CCVv5nnsQfICWeMjAyE2+TOz
-	vsLdWt+UdO3JrQ/r2cR4h3YXBt1gcgKoWZfmMIBSXmNvxDIVY7j/RpSnc/R1Q9bk+6KkovLKFcber
-	e5YqtoSejVN8bTTsUSg5C7ZD+c3ZUTdPOqgPfNtjRRgLtCWsE6U7iU7evix+U2LrrG20dGlEeycjv
-	vkpKvMQg==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1qYFvs-00DRWs-DD; Tue, 22 Aug 2023 01:11:44 +0000
-Date: Tue, 22 Aug 2023 02:11:44 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Stephen Rothwell <sfr@canb.auug.org.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RVBR60NRTz2y1f
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Aug 2023 11:22:26 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1692667341;
+	bh=QsNDGFvVo1SvxEvhU10jBdQRvP3U/A2CgPljhigcvQg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Lc1ahpj1fWUVwYlCjg/HPm13YYYVnVyCLWQC8lbkw04saXWFi2yu8wC1Jv8iBaoWw
+	 o+C/wq2UFi/FzQqou+SQa5Rgqzy47ZMQTscW3nkmJo4aLpfnSkenVcZN9ByuWL98w9
+	 wKf5Xn+W8OEgiHEkV6eEn1rA+Cnssd9HGrcRklIdC3btw3XnFhWAjq3HAy/iMpiK+V
+	 xx3wQdDESzeMEbIALJ4wDINggUCpHuOdWGaz8wSXNXV0cH0cR8JJIBKGlCtpKz/ETv
+	 X1yUmWp655AzuJ/CpImlcFgjGS2oZVWKMlIQSTvb85iPVW6JwPhCsHpTdGCof59Fiq
+	 99711Z8IDpy/g==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RVBR13HQ0z4wxx;
+	Tue, 22 Aug 2023 11:22:21 +1000 (AEST)
+Date: Tue, 22 Aug 2023 11:22:17 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Matthew Wilcox <willy@infradead.org>
 Subject: Re: linux-next: build failure after merge of the mm tree
-Message-ID: <ZOQLUMBB7amLUJLY@casper.infradead.org>
+Message-ID: <20230822112217.185c3357@canb.auug.org.au>
+In-Reply-To: <ZOQLUMBB7amLUJLY@casper.infradead.org>
 References: <20230822095537.500047f7@canb.auug.org.au>
+	<ZOQLUMBB7amLUJLY@casper.infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230822095537.500047f7@canb.auug.org.au>
+Content-Type: multipart/signed; boundary="Sig_/CYCJ/0.1wJKizPBWXmOeEhD";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,18 +63,45 @@ Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux Next Mailing
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Aug 22, 2023 at 09:55:37AM +1000, Stephen Rothwell wrote:
-> In file included from include/trace/trace_events.h:27,
->                  from include/trace/define_trace.h:102,
->                  from fs/xfs/xfs_trace.h:4428,
->                  from fs/xfs/xfs_trace.c:45:
-> include/linux/pgtable.h:8:25: error: initializer element is not constant
->     8 | #define PMD_ORDER       (PMD_SHIFT - PAGE_SHIFT)
+--Sig_/CYCJ/0.1wJKizPBWXmOeEhD
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Ummm.  PowerPC doesn't have a compile-time constant PMD size?
+Hi Matthew,
 
-arch/powerpc/include/asm/book3s/64/pgtable.h:#define PMD_SHIFT  (PAGE_SHIFT + PTE_INDEX_SIZE)
-arch/powerpc/include/asm/book3s/64/pgtable.h:#define PTE_INDEX_SIZE  __pte_index_size
+On Tue, 22 Aug 2023 02:11:44 +0100 Matthew Wilcox <willy@infradead.org> wro=
+te:
+>
+> On Tue, Aug 22, 2023 at 09:55:37AM +1000, Stephen Rothwell wrote:
+> > In file included from include/trace/trace_events.h:27,
+> >                  from include/trace/define_trace.h:102,
+> >                  from fs/xfs/xfs_trace.h:4428,
+> >                  from fs/xfs/xfs_trace.c:45:
+> > include/linux/pgtable.h:8:25: error: initializer element is not constant
+> >     8 | #define PMD_ORDER       (PMD_SHIFT - PAGE_SHIFT) =20
+>=20
+> Ummm.  PowerPC doesn't have a compile-time constant PMD size?
 
-That's really annoying.  I'll try to work around it.
+Yeah, you are not the first (or probably the last) to be caught by that.
 
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/CYCJ/0.1wJKizPBWXmOeEhD
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmTkDckACgkQAVBC80lX
+0Gw/wAf/SCxysM9kgwBGXjE8mdNaMmTV0RuXSW5fILUfaH2K1bwzirH/1UYXENFe
+h78SXWxhzCtvQsEpLMYiaNRdaAsbFwXebMAreYkEVSA7y+QWZ+PyIlLE7/cjjSpO
+RPe10UzO/fdzXdjzz8Ll3MvCLgMiPxUWoonouaBz7roLcv8EAjEjXl/TS5fcQoqp
+XFZLn4PzY4HH7tNI2pVBhH8bhELoX8mU8FC+h3a2ygQSANdASi9u/2BXAroJVbCY
+7AwW30IKzdD0JJnmlsL+59JyaMEE9Pd1m+o3JzXkoi0MJicvpKiL3oIss2z74vfH
+7bupmKGqIkxtkbHGVd+UWhsMJWK/Iw==
+=u0m7
+-----END PGP SIGNATURE-----
+
+--Sig_/CYCJ/0.1wJKizPBWXmOeEhD--
