@@ -2,86 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4D81784038
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Aug 2023 14:01:45 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kroah.com header.i=@kroah.com header.a=rsa-sha256 header.s=fm1 header.b=jD3zGBoH;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=vZazz0SU;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id EF9DC784076
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Aug 2023 14:13:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RVScl3Gtzz3c1L
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Aug 2023 22:01:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RVStP5nN3z3c7Q
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Aug 2023 22:13:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kroah.com header.i=@kroah.com header.a=rsa-sha256 header.s=fm1 header.b=jD3zGBoH;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=vZazz0SU;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kroah.com (client-ip=64.147.123.25; helo=wout2-smtp.messagingengine.com; envelope-from=greg@kroah.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 533 seconds by postgrey-1.37 at boromir; Tue, 22 Aug 2023 22:00:53 AEST
-Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.255; helo=szxga08-in.huawei.com; envelope-from=wangkefeng.wang@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RVSbn4X9tz2yhS
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Aug 2023 22:00:53 +1000 (AEST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailout.west.internal (Postfix) with ESMTP id 9BF963200495;
-	Tue, 22 Aug 2023 07:51:53 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute6.internal (MEProxy); Tue, 22 Aug 2023 07:51:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm1; t=1692705113; x=1692791513; bh=WX
-	idqPU1bEX5huuNnsnICqlNlGqjuUA0dGv6wQlW+Nc=; b=jD3zGBoHdWaHl76sqq
-	NU/zn/UbZ15Ip8IgsSg3CHpN16uxVxQ3NY+FL2z5fmJBuJiPcJeIzK1ACxkRrqHT
-	Y3u8aLyJLpjTglwIi+RXVn/NV/Z62fEhuAXcDiYOQAx5hX75jJBOdLXfCPhYfdBG
-	/QuhXLXluSg4DCm1bBQrfdhkWRW7l5FYJRuWM1O2y3HtsakXiGDfF+3Bd1aEPtsK
-	b71fCf6pMTqpRWBZMKzGCrxlcSM+Zy/FpzyGU6XBBrwHsJ/A+WGwlYk8dsCIvPUm
-	t8m60OprdX6tr3nfa5avChlsE69MQjs006prWqOwq7uxCPy36KGHTIE7Fd1VaUvD
-	nWNQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm1; t=1692705113; x=1692791513; bh=WXidqPU1bEX5h
-	uuNnsnICqlNlGqjuUA0dGv6wQlW+Nc=; b=vZazz0SU7Wqtq+xBaWOn7smcdWfwY
-	/d9Ioa2GRv2lv8SYKKTB9/JMBJ6kHOC0NN4eWW7cFIn7obxLyVQG3/2ApYntf9ge
-	R7d2iDKnAQPvXRsIUQFThQIGjrf+pRrCIEkbdpyFDMfiBdLV3XzYtzCEbV/MJHSl
-	3MNaRsDKYoMjJl2qTQyqxPe5ITc3jeMx9xogfnNqKfq7+7uC7JYsUlDOhXa8GpOY
-	Sllr0Ec70pvcmEYxHXB8iQmHy5PKRtS6iVFGs9gw2T2twrgaYxzhbBGAFHfC4ydJ
-	q2lfjMqjjepMnrl6vBtbShjir985kpImAry3h4Z67ybjcL9TZsSLWe9kA==
-X-ME-Sender: <xms:WKHkZHpXR2DcKNKP_4TTVkHWFKNoVbfT-_R8nIpJ-Dk8xYEFHUESHA>
-    <xme:WKHkZBr3Zc-YtDYiblsWPRoqBWifLItk_2jVXrqaG6YcTwA6eOy3GhT8vqZEg6T2Z
-    qgK6ZYvr2JRBQ>
-X-ME-Received: <xmr:WKHkZEPqwzl2LuPM3uXeRSJf3OpSWRmR6bEBAtYHWJRjqXIoNl9V9cVTG_YmvRRUJkDRL0SLzoBDXwfMv-Z90l58lnEHtBw_XxPrOQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedruddvuddggeehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
-    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvd
-    evvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhs
-    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
-    hhrdgtohhm
-X-ME-Proxy: <xmx:WKHkZK5civFd6y7xxQTKgXbWH__L2ow2h8cSqoRNw-iPhZ_I_zhKkg>
-    <xmx:WKHkZG6O2bfIrNBuK7bEgzlsjEr6EahbEyr2vI8c9QeXPjT0-MiXWw>
-    <xmx:WKHkZCgV5-_fu-t2DHIabRH7F4lkN-TTGMYecPJos9Db1-N51UhkeQ>
-    <xmx:WaHkZDyYmLuXJgccN1SCRXM2urvaDWLcHh1Vq2c_Sds9HCYwDeZ1Vg>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 22 Aug 2023 07:51:52 -0400 (EDT)
-Date: Tue, 22 Aug 2023 13:51:50 +0200
-From: Greg KH <greg@kroah.com>
-To: Stephen Rothwell <sfr@canb.auug.org.au>
-Subject: Re: linux-next: manual merge of the tty tree with the powerpc tree
-Message-ID: <2023082218-pecan-chef-e4bc@gregkh>
-References: <20230818145826.00c7ead1@canb.auug.org.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RVSst3t8hz2xdc
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Aug 2023 22:13:04 +1000 (AEST)
+Received: from dggpemm100001.china.huawei.com (unknown [172.30.72.56])
+	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4RVSr13fyWz1L9DH;
+	Tue, 22 Aug 2023 20:11:29 +0800 (CST)
+Received: from [10.174.177.243] (10.174.177.243) by
+ dggpemm100001.china.huawei.com (7.185.36.93) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Tue, 22 Aug 2023 20:12:56 +0800
+Message-ID: <7fff8202-0be1-4989-959f-8c0b14ca1236@huawei.com>
+Date: Tue, 22 Aug 2023 20:12:55 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230818145826.00c7ead1@canb.auug.org.au>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH rfc v2 05/10] powerpc: mm: use try_vma_locked_page_fault()
+Content-Language: en-US
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Andrew Morton
+	<akpm@linux-foundation.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>
+References: <20230821123056.2109942-1-wangkefeng.wang@huawei.com>
+ <20230821123056.2109942-6-wangkefeng.wang@huawei.com>
+ <7eeed961-c2c0-2aeb-ff8c-3717de09d605@csgroup.eu>
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <7eeed961-c2c0-2aeb-ff8c-3717de09d605@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpemm100001.china.huawei.com (7.185.36.93)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,43 +52,167 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Next Mailing List <linux-next@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: "x86@kernel.org" <x86@kernel.org>, "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, "H . Peter Anvin" <hpa@zytor.com>, WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, "willy@infradead.org" <willy@infradead.org>, Ingo Molnar <mingo@redhat.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>, "surenb@google.com" <surenb@googl
+ e.com>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Aug 18, 2023 at 02:58:26PM +1000, Stephen Rothwell wrote:
-> Hi all,
-> 
-> Today's linux-next merge of the tty tree got a conflict in:
-> 
->   arch/powerpc/include/asm/fs_pd.h
-> 
-> between commits:
-> 
->   e6e077cb2aa4 ("powerpc/include: Declare mpc8xx_immr in 8xx_immap.h")
->   fecc436a97af ("powerpc/include: Remove mpc8260.h and m82xx_pci.h")
->   fbbf4280dae4 ("powerpc/8xx: Remove immr_map() and immr_unmap()")
->   7768716d2f19 ("powerpc/cpm2: Remove cpm2_map() and cpm2_unmap()")
-> 
-> from the powerpc tree and commit:
-> 
->   c2d6c1b4f034 ("serial: cpm_uart: Use get_baudrate() instead of uart_baudrate()")
-> 
-> from the tty tree.
-> 
-> I fixed it up (see below) and can carry the fix as necessary. This
-> is now fixed as far as linux-next is concerned, but any non trivial
-> conflicts should be mentioned to your upstream maintainer when your tree
-> is submitted for merging.  You may also want to consider cooperating
-> with the maintainer of the conflicting tree to minimise any particularly
-> complex conflicts.
-> 
-> Note that after all the above are applied, it looks like this file can
-> be removed completely as nothing in the tree includes it any more.
 
-Thanks for the notice, I'll let the ppc developers remove it as it's in
-their tree.
 
-thanks,
+On 2023/8/22 17:38, Christophe Leroy wrote:
+> 
+> 
+> Le 21/08/2023 à 14:30, Kefeng Wang a écrit :
+>> Use new try_vma_locked_page_fault() helper to simplify code.
+>> No functional change intended.
+> 
+> Does it really simplifies code ? It's 32 insertions versus 34 deletions
+> so only removing 2 lines.
 
-greg k-h
+Yes，it is unfriendly for powerpc as the arch's vma access check is much
+complex than other arch,
+> 
+> I don't like the struct vm_fault you are adding because when it was four
+> independant variables it was handled through local registers. Now that
+> it is a struct it has to go via the stack, leading to unnecessary memory
+> read and writes. And going back and forth between architecture code and
+> generic code may also be counter-performant.
+
+Because different arch has different var to check vma access, so the
+easy way to add them into vmf, I don' find a better way.
+> 
+> Did you make any performance analysis ? Page faults are really a hot
+> path when dealling with minor faults.
+
+no, this is only built and rfc to see the feedback about the conversion.
+
+Thanks.
+
+> 
+> Thanks
+> Christophe
+> 
+>>
+>> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+>> ---
+>>    arch/powerpc/mm/fault.c | 66 ++++++++++++++++++++---------------------
+>>    1 file changed, 32 insertions(+), 34 deletions(-)
+>>
+>> diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+>> index b1723094d464..52f9546e020e 100644
+>> --- a/arch/powerpc/mm/fault.c
+>> +++ b/arch/powerpc/mm/fault.c
+>> @@ -391,6 +391,22 @@ static int page_fault_is_bad(unsigned long err)
+>>    #define page_fault_is_bad(__err)	((__err) & DSISR_BAD_FAULT_32S)
+>>    #endif
+>>    
+>> +#ifdef CONFIG_PER_VMA_LOCK
+>> +bool arch_vma_access_error(struct vm_area_struct *vma, struct vm_fault *vmf)
+>> +{
+>> +	int is_exec = TRAP(vmf->regs) == INTERRUPT_INST_STORAGE;
+>> +	int is_write = page_fault_is_write(vmf->fault_code);
+>> +
+>> +	if (unlikely(access_pkey_error(is_write, is_exec,
+>> +				(vmf->fault_code & DSISR_KEYFAULT), vma)))
+>> +		return true;
+>> +
+>> +	if (unlikely(access_error(is_write, is_exec, vma)))
+>> +		return true;
+>> +	return false;
+>> +}
+>> +#endif
+>> +
+>>    /*
+>>     * For 600- and 800-family processors, the error_code parameter is DSISR
+>>     * for a data fault, SRR1 for an instruction fault.
+>> @@ -407,12 +423,18 @@ static int ___do_page_fault(struct pt_regs *regs, unsigned long address,
+>>    {
+>>    	struct vm_area_struct * vma;
+>>    	struct mm_struct *mm = current->mm;
+>> -	unsigned int flags = FAULT_FLAG_DEFAULT;
+>>    	int is_exec = TRAP(regs) == INTERRUPT_INST_STORAGE;
+>>    	int is_user = user_mode(regs);
+>>    	int is_write = page_fault_is_write(error_code);
+>>    	vm_fault_t fault, major = 0;
+>>    	bool kprobe_fault = kprobe_page_fault(regs, 11);
+>> +	struct vm_fault vmf = {
+>> +		.real_address = address,
+>> +		.fault_code = error_code,
+>> +		.regs = regs,
+>> +		.flags = FAULT_FLAG_DEFAULT,
+>> +	};
+>> +
+>>    
+>>    	if (unlikely(debugger_fault_handler(regs) || kprobe_fault))
+>>    		return 0;
+>> @@ -463,45 +485,21 @@ static int ___do_page_fault(struct pt_regs *regs, unsigned long address,
+>>    	 * mmap_lock held
+>>    	 */
+>>    	if (is_user)
+>> -		flags |= FAULT_FLAG_USER;
+>> +		vmf.flags |= FAULT_FLAG_USER;
+>>    	if (is_write)
+>> -		flags |= FAULT_FLAG_WRITE;
+>> +		vmf.flags |= FAULT_FLAG_WRITE;
+>>    	if (is_exec)
+>> -		flags |= FAULT_FLAG_INSTRUCTION;
+>> +		vmf.flags |= FAULT_FLAG_INSTRUCTION;
+>>    
+>> -	if (!(flags & FAULT_FLAG_USER))
+>> -		goto lock_mmap;
+>> -
+>> -	vma = lock_vma_under_rcu(mm, address);
+>> -	if (!vma)
+>> -		goto lock_mmap;
+>> -
+>> -	if (unlikely(access_pkey_error(is_write, is_exec,
+>> -				       (error_code & DSISR_KEYFAULT), vma))) {
+>> -		vma_end_read(vma);
+>> -		goto lock_mmap;
+>> -	}
+>> -
+>> -	if (unlikely(access_error(is_write, is_exec, vma))) {
+>> -		vma_end_read(vma);
+>> -		goto lock_mmap;
+>> -	}
+>> -
+>> -	fault = handle_mm_fault(vma, address, flags | FAULT_FLAG_VMA_LOCK, regs);
+>> -	if (!(fault & (VM_FAULT_RETRY | VM_FAULT_COMPLETED)))
+>> -		vma_end_read(vma);
+>> -
+>> -	if (!(fault & VM_FAULT_RETRY)) {
+>> -		count_vm_vma_lock_event(VMA_LOCK_SUCCESS);
+>> +	fault = try_vma_locked_page_fault(&vmf);
+>> +	if (fault == VM_FAULT_NONE)
+>> +		goto retry;
+>> +	if (!(fault & VM_FAULT_RETRY))
+>>    		goto done;
+>> -	}
+>> -	count_vm_vma_lock_event(VMA_LOCK_RETRY);
+>>    
+>>    	if (fault_signal_pending(fault, regs))
+>>    		return user_mode(regs) ? 0 : SIGBUS;
+>>    
+>> -lock_mmap:
+>> -
+>>    	/* When running in the kernel we expect faults to occur only to
+>>    	 * addresses in user space.  All other faults represent errors in the
+>>    	 * kernel and should generate an OOPS.  Unfortunately, in the case of an
+>> @@ -528,7 +526,7 @@ static int ___do_page_fault(struct pt_regs *regs, unsigned long address,
+>>    	 * make sure we exit gracefully rather than endlessly redo
+>>    	 * the fault.
+>>    	 */
+>> -	fault = handle_mm_fault(vma, address, flags, regs);
+>> +	fault = handle_mm_fault(vma, address, vmf.flags, regs);
+>>    
+>>    	major |= fault & VM_FAULT_MAJOR;
+>>    
+>> @@ -544,7 +542,7 @@ static int ___do_page_fault(struct pt_regs *regs, unsigned long address,
+>>    	 * case.
+>>    	 */
+>>    	if (unlikely(fault & VM_FAULT_RETRY)) {
+>> -		flags |= FAULT_FLAG_TRIED;
+>> +		vmf.flags |= FAULT_FLAG_TRIED;
+>>    		goto retry;
+>>    	}
+>>    
