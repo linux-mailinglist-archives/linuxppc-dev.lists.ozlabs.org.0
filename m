@@ -1,32 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 218CA7857C6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Aug 2023 14:17:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDC4F78576B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Aug 2023 14:04:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RW4wg0Wh8z3fkP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Aug 2023 22:17:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RW4dc5Pp0z3c3M
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Aug 2023 22:04:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RW4dB1jf6z3cLV
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Aug 2023 22:04:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RW4cY2yCLz2ytp
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Aug 2023 22:03:41 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RW4d62bWBz4x3H;
-	Wed, 23 Aug 2023 22:04:10 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RW4cW6Q5hz4wxR;
+	Wed, 23 Aug 2023 22:03:39 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Michal Suchanek <msuchanek@suse.de>
-In-Reply-To: <20230817162411.429-1-msuchanek@suse.de>
-References: <20230817162411.429-1-msuchanek@suse.de>
-Subject: Re: [PATCH] powerpc: Move DMA64_PROPNAME define to a header
-Message-Id: <169279175575.797584.229615824024413440.b4-ty@ellerman.id.au>
+To: linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, christophe.leroy@csgroup.eu, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+In-Reply-To: <20230801044447.11275-1-aneesh.kumar@linux.ibm.com>
+References: <20230801044447.11275-1-aneesh.kumar@linux.ibm.com>
+Subject: Re: (subset) [PATCH v4 1/2] powerpc/mm: Cleanup memory block size probing
+Message-Id: <169279175572.797584.16319542522074255631.b4-ty@ellerman.id.au>
 Date: Wed, 23 Aug 2023 21:55:55 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,18 +42,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rob Herring <robh@kernel.org>, Gaurav Batra <gbatra@linux.vnet.ibm.com>, Baoquan He <bhe@redhat.com>, Alexey Kardashevskiy <aik@ozlabs.ru>, Russell Currey <ruscur@russell.cc>, Deming Wang <wangdeming@inspur.com>, Alex Williamson <alex.williamson@redhat.com>, linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>, Timothy Pearson <tpearson@raptorengineering.com>, Nicholas Piggin <npiggin@gmail.com>, Li Chen <lchen@ambarella.com>, Brian King <brking@linux.vnet.ibm.com>, Sourabh Jain <sourabhjain@linux.ibm.com>, Laurent Dufour <ldufour@linux.ibm.com>
+Cc: foraker1@llnl.gov, Reza Arbab <arbab@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 17 Aug 2023 18:24:08 +0200, Michal Suchanek wrote:
-> Avoid redefining the same value in multiple source.
+On Tue, 01 Aug 2023 10:14:46 +0530, Aneesh Kumar K.V wrote:
+> Parse the device tree in early init to find the memory block size to be
+> used by the kernel. Consolidate the memory block size device tree parsing
+> to one helper and use that on both powernv and pseries. We still want to
+> use machine-specific callback because on all machine types other than
+> powernv and pseries we continue to return MIN_MEMORY_BLOCK_SIZE.
 > 
+> pseries_memory_block_size used to look for the second memory
+> block (memory@x) to determine the memory_block_size value. This patch
+> changed that to look at all memory blocks and make sure we can map them all
+> correctly using the computed memory block size value.
 > 
+> [...]
 
-Applied to powerpc/next.
+Patch 1 applied to powerpc/next.
 
-[1/1] powerpc: Move DMA64_PROPNAME define to a header
-      https://git.kernel.org/powerpc/c/89c9ce1c99df553029fc4503506ff5a1793f3eaf
+[1/2] powerpc/mm: Cleanup memory block size probing
+      https://git.kernel.org/powerpc/c/4d15721177d539d743fcf31d7bb376fb3b81aeb6
 
 cheers
