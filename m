@@ -2,34 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EC177857C3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Aug 2023 14:16:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 693007857B5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Aug 2023 14:13:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RW4vf1N6Dz3hc1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Aug 2023 22:16:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RW4qV2SsSz3dFS
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Aug 2023 22:13:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RW4d415QQz3cHP
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Aug 2023 22:04:08 +1000 (AEST)
-Received: by gandalf.ozlabs.org (Postfix)
-	id 4RW4d40gKkz4x2L; Wed, 23 Aug 2023 22:04:08 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RW4cq6lkLz3c53
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Aug 2023 22:03:55 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RW4d36fb2z4wy7;
-	Wed, 23 Aug 2023 22:04:07 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RW4cq5LxTz4x2X;
+	Wed, 23 Aug 2023 22:03:55 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev <linuxppc-dev@ozlabs.org>, Mahesh Salgaonkar <mahesh@linux.ibm.com>
-In-Reply-To: <169235811556.193557.1023625262204809514.stgit@jupiter>
-References: <169235811556.193557.1023625262204809514.stgit@jupiter>
-Subject: Re: [PATCH v9 1/2] powerpc/rtas: export rtas_error_rc() for reuse.
-Message-Id: <169279175579.797584.15043748481336876672.b4-ty@ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <0a667b7c2e05d3cf41ecd38f33cc334083a61c8d.1692282396.git.christophe.leroy@csgroup.eu>
+References: <0a667b7c2e05d3cf41ecd38f33cc334083a61c8d.1692282396.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2] powerpc/47x: Remove early_init_mmu_47x() to fix no previous prototype
+Message-Id: <169279175576.797584.1515002714869080486.b4-ty@ellerman.id.au>
 Date: Wed, 23 Aug 2023 21:55:55 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -45,21 +42,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, Tyrel Datwyler <tyreld@linux.ibm.com>, linux-pci <linux-pci@vger.kernel.org>, Linux Kernel <linux-kernel@vger.kernel.org>, Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 18 Aug 2023 16:59:07 +0530, Mahesh Salgaonkar wrote:
-> Also, #define descriptive names for common rtas return codes and use it
-> instead of numeric values.
+On Thu, 17 Aug 2023 16:26:44 +0200, Christophe Leroy wrote:
+> 4xx/iss476-smp_defconfig leads to:
 > 
+>   CC      arch/powerpc/mm/nohash/tlb.o
+> arch/powerpc/mm/nohash/tlb.c:322:13: error: no previous prototype for 'early_init_mmu_47x' [-Werror=missing-prototypes]
+>   322 | void __init early_init_mmu_47x(void)
+>       |             ^~~~~~~~~~~~~~~~~~
 > 
+> [...]
 
 Applied to powerpc/next.
 
-[1/2] powerpc/rtas: export rtas_error_rc() for reuse.
-      https://git.kernel.org/powerpc/c/e160bf64e2d3df7bf83ed41d09390a32490be6c5
-[2/2] PCI: rpaphp: Error out on busy status from get-sensor-state
-      https://git.kernel.org/powerpc/c/77583f77ed9b1452ac62caebf09b2206da10bbf9
+[1/1] powerpc/47x: Remove early_init_mmu_47x() to fix no previous prototype
+      https://git.kernel.org/powerpc/c/ed05c71a574235aec3418d2b5c94f24ae84cc2db
 
 cheers
