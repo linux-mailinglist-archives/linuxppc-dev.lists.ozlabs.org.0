@@ -1,70 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5AA8784C1D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Aug 2023 23:35:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1958C784E7D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Aug 2023 04:03:22 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=R3YlY7C1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=mWZ7sH7s;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RVjM248rdz3cBd
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Aug 2023 07:35:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RVqHr06PTz3c4y
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Aug 2023 12:03:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=R3YlY7C1;
+	dkim=pass (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=mWZ7sH7s;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=devnull+nathanl.linux.ibm.com@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=canonical.com (client-ip=185.125.188.123; helo=smtp-relay-internal-1.canonical.com; envelope-from=kai.heng.feng@canonical.com; receiver=lists.ozlabs.org)
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RVjKF3cM9z2yW6
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Aug 2023 07:34:09 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RVqGx3Rmxz2xdn
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Aug 2023 12:02:31 +1000 (AEST)
+Received: from mail-oa1-f71.google.com (mail-oa1-f71.google.com [209.85.160.71])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 8896564F0D;
-	Tue, 22 Aug 2023 21:34:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E7295C433CA;
-	Tue, 22 Aug 2023 21:34:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1692740044;
-	bh=YPAKX1mP1wB5ifCgUngCU7mSYIGAc3ungufvl8cjbdc=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=R3YlY7C19Yz0WwA+u4M3nxYAq2yofaVRMxXznI/rct38LjWu79fsLmCPvmwACpH95
-	 aYgsvx/0ccTSJ5koFQW9y9Ns2ftKIzcsHsvn5/SYTkrqiN4HRftzmW6GnXCxF8cpTT
-	 OKJlYXkzCKR+Svx+jgnySYVvEeIe1UwXyows+mGIJOdx3czLCWJeR81mVGNAs7VM+J
-	 XLRQjLSmagSNXlmVoOpjR/6O2RtoIkTmP6GKabJk+9bKch16XoAhgvHEjjdOnMJxuM
-	 SBroV7b/bxamWLfGoUZ1GfXqpNKq1OaUx/8ocVJ1rkhbKWvBF4lJowf+HXMwGo+srj
-	 +z3YwYUoR9RGw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CB91EEE49B1;
-	Tue, 22 Aug 2023 21:34:04 +0000 (UTC)
-From: Nathan Lynch via B4 Relay <devnull+nathanl.linux.ibm.com@kernel.org>
-Date: Tue, 22 Aug 2023 16:33:40 -0500
-Subject: [PATCH RFC 2/2] powerpc/selftests: add test for papr-vpd
+	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id ABBFA3F214
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Aug 2023 02:02:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1692756147;
+	bh=5DaKdBGMkxEbBMkn32LUjXYn/C5QI+ob7fnE+ftOKtY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type;
+	b=mWZ7sH7sq5vmGaSwaCQc2yEVoRTuWG73unCOGK+iM37mE3fmfmuUrXJKIGiu9NeKy
+	 2WLqSDQiTb5i9I1s2A8rpeJ6vMzBjQkObJndQBoISbpJRqSwsBzqcKsntPoigh4Ws1
+	 BisyQXltOsAdf9PJPp4wqOuUUS5BXAYZCfqEpOyyPGGBjNLDfYMtjvd4ntDUwFeMEK
+	 WGIaLDYrZ973XBDBJbb5b2JEoJKBjnCUSoI+Ck6bvtKSLg7VvN2Sujie9d7p+SWspZ
+	 Yy004h98PKZRaSGgwDzMnGkyl0mTB2J5s2ODImdEyH+YEerd/cHlmZQWXcNqc4XZZq
+	 Lt/lN04qSG8wA==
+Received: by mail-oa1-f71.google.com with SMTP id 586e51a60fabf-1c8c1f34aadso6513920fac.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Aug 2023 19:02:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692756146; x=1693360946;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5DaKdBGMkxEbBMkn32LUjXYn/C5QI+ob7fnE+ftOKtY=;
+        b=j2jgSIG9d9kYs+CEmg2EuvUe6WQJ7LFJ14e/rnbvoWZGoZxDkRMai4hG5Wgpa3V8Qz
+         MTNp59qQxMQ5cw54Z5EkOiW9UAmufa4Kz5tPHnyBW3hKZuA+7gwAprQPygsPYV8fXK1b
+         NV2Qh02EOdkAXEhS1Of6x/bZhm73EFXNtw0zZ85KoqLHeXEhLPru1DVXoCnzwtaIyPDL
+         aroV/vHiSnu+o3Ur3XJmiMCnc9t8LCIsq1ZGTPrxyCRhv4Z8g/Arp65VE/UvbevAITTD
+         qJ1lnfyOY9lrkCYQVOObTBqUDSAuMMSKqt4R4hB/g8VAFFh0zSCO5ji1ioq5D3PyPzDv
+         mUKg==
+X-Gm-Message-State: AOJu0YyI3OCsr3OAoJTsMfLMLvKlUMLI+a0dEw6sQzHosTBOPEfufTvw
+	rszc1+QHu129KQZtCxwB4Rlmmf6n5C/aH29IoKOVy0IZRIWAUs0hIzRsPwy1YVCC2S0htabH7Ho
+	fHnu0jf8TUcCX4gqZJNmJK66AiUbCpyA06VpwFok1bcJrG2cYIe7fOQjEkuQ=
+X-Received: by 2002:a05:6870:e889:b0:1b0:218b:8acc with SMTP id q9-20020a056870e88900b001b0218b8accmr16770340oan.7.1692756146423;
+        Tue, 22 Aug 2023 19:02:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFXE6jCLblN/l9DBja9Y85CLZ4DHKjKCGCejH4E5ZlU6AMZU76MDRddrpKkKh/GXqr9X9g8+ny5Ji1tce4Jjgg=
+X-Received: by 2002:a05:6870:e889:b0:1b0:218b:8acc with SMTP id
+ q9-20020a056870e88900b001b0218b8accmr16770311oan.7.1692756146087; Tue, 22 Aug
+ 2023 19:02:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id:  <20230822-papr-sys_rtas-vs-lockdown-v1-2-932623cf3c7b@linux.ibm.com>
-References:  <20230822-papr-sys_rtas-vs-lockdown-v1-0-932623cf3c7b@linux.ibm.com>
-In-Reply-To:  <20230822-papr-sys_rtas-vs-lockdown-v1-0-932623cf3c7b@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, 
- Nicholas Piggin <npiggin@gmail.com>, 
- =?utf-8?q?Michal_Such=C3=A1nek?= <msuchanek@suse.de>
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1692740044; l=10480;
- i=nathanl@linux.ibm.com; s=20230817; h=from:subject:message-id;
- bh=ZS1K91xgn894g6fTaLtnSTjQQwd42X1YB2FL/rK8h3g=;
- b=T7UR+2tsRfpqAp6VlBUHvk11iNlyKAWd53P5HGlFlJpG5c7FLriW1D9kRPg7X2ArFxPe+Z6iv
- 4BVp1H97jtOA9xS8H08Jze2ijGoJsZDbkCc60eQmMEnzDn6XbRKQUnO
-X-Developer-Key: i=nathanl@linux.ibm.com; a=ed25519;
- pk=jPDF44RvT+9DGFOH3NGoIu1xN9dF+82pjdpnKjXfoJ0=
-X-Endpoint-Received:  by B4 Relay for nathanl@linux.ibm.com/20230817 with auth_id=78
-X-Original-From: Nathan Lynch <nathanl@linux.ibm.com>
+References: <CAAd53p5QhaCA09G0BrhyDBXTKBbcgpXq0yAsj7PkG6wF8Qr=_w@mail.gmail.com>
+ <20230810105116.GA22621@bhelgaas> <CAAd53p4W3Amee9dJN0usG=spHfg=s1KZM3cdJ_rJjCgDhEymAw@mail.gmail.com>
+In-Reply-To: <CAAd53p4W3Amee9dJN0usG=spHfg=s1KZM3cdJ_rJjCgDhEymAw@mail.gmail.com>
+From: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Date: Wed, 23 Aug 2023 10:02:13 +0800
+Message-ID: <CAAd53p5Eqs9r6+ZGjPRpjmh5bJnPqJf=Kic7dyNS7KRKRCc9Rw@mail.gmail.com>
+Subject: Re: [PATCH v6 2/3] PCI/AER: Disable AER interrupt on suspend
+To: Bjorn Helgaas <helgaas@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,442 +84,205 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: nathanl@linux.ibm.com
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, tyreld@linux.ibm.com, gcwilson@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: sathyanarayanan.kuppuswamy@linux.intel.com, mika.westerberg@linux.intel.com, linux-pci@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, linux-kernel@vger.kernel.org, koba.ko@canonical.com, Oliver O'Halloran <oohall@gmail.com>, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+On Fri, Aug 11, 2023 at 4:00=E2=80=AFPM Kai-Heng Feng
+<kai.heng.feng@canonical.com> wrote:
+>
+> On Thu, Aug 10, 2023 at 6:51=E2=80=AFPM Bjorn Helgaas <helgaas@kernel.org=
+> wrote:
+> >
+> > On Thu, Aug 10, 2023 at 04:17:21PM +0800, Kai-Heng Feng wrote:
+> > > On Thu, Aug 10, 2023 at 2:52=E2=80=AFAM Bjorn Helgaas <helgaas@kernel=
+.org> wrote:
+> > > > On Fri, Jul 21, 2023 at 11:58:24AM +0800, Kai-Heng Feng wrote:
+> > > > > On Tue, Jul 18, 2023 at 7:17=E2=80=AFPM Bjorn Helgaas <helgaas@ke=
+rnel.org> wrote:
+> > > > > > On Fri, May 12, 2023 at 08:00:13AM +0800, Kai-Heng Feng wrote:
+> > > > > > > PCIe services that share an IRQ with PME, such as AER or DPC,
+> > > > > > > may cause a spurious wakeup on system suspend. To prevent thi=
+s,
+> > > > > > > disable the AER interrupt notification during the system susp=
+end
+> > > > > > > process.
+> > > > > >
+> > > > > > I see that in this particular BZ dmesg log, PME, AER, and DPC d=
+o share
+> > > > > > the same IRQ, but I don't think this is true in general.
+> > > > > >
+> > > > > > Root Ports usually use MSI or MSI-X.  PME and hotplug events us=
+e the
+> > > > > > Interrupt Message Number in the PCIe Capability, but AER uses t=
+he one
+> > > > > > in the AER Root Error Status register, and DPC uses the one in =
+the DPC
+> > > > > > Capability register.  Those potentially correspond to three dis=
+tinct
+> > > > > > MSI/MSI-X vectors.
+> > > > > >
+> > > > > > I think this probably has nothing to do with the IRQ being *sha=
+red*,
+> > > > > > but just that putting the downstream component into D3cold, whe=
+re the
+> > > > > > link state is L3, may cause the upstream component to log and s=
+ignal a
+> > > > > > link-related error as the link goes completely down.
+> > > > >
+> > > > > That's quite likely a better explanation than my wording.
+> > > > > Assuming AER IRQ and PME IRQ are not shared, does system get woke=
+n up
+> > > > > by AER IRQ?
+> > > >
+> > > > Rafael could answer this better than I can, but
+> > > > Documentation/power/suspend-and-interrupts.rst says device interrup=
+ts
+> > > > are generally disabled during suspend after the "late" phase of
+> > > > suspending devices, i.e.,
+> > > >
+> > > >   dpm_suspend_noirq
+> > > >     suspend_device_irqs           <-- disable non-wakeup IRQs
+> > > >     dpm_noirq_suspend_devices
+> > > >       ...
+> > > >         pci_pm_suspend_noirq      # (I assume)
+> > > >           pci_prepare_to_sleep
+> > > >
+> > > > I think the downstream component would be put in D3cold by
+> > > > pci_prepare_to_sleep(), so non-wakeup interrupts should be disabled=
+ by
+> > > > then.
+> > > >
+> > > > I assume PME would generally *not* be disabled since it's needed fo=
+r
+> > > > wakeup, so I think any interrupt that shares the PME IRQ and occurs
+> > > > during suspend may cause a spurious wakeup.
+> > >
+> > > Yes, that's the case here.
+> > >
+> > > > If so, it's exactly as you said at the beginning: AER/DPC/etc shari=
+ng
+> > > > the PME IRQ may cause spurious wakeups, and we would have to disabl=
+e
+> > > > those other interrupts at the source, e.g., by clearing
+> > > > PCI_ERR_ROOT_CMD_FATAL_EN etc (exactly as your series does).
+> > >
+> > > So is the series good to be merged now?
+> >
+> > If we merge as-is, won't we disable AER & DPC interrupts unnecessarily
+> > in the case where the link goes to D3hot?  In that case, there's no
+> > reason to expect interrupts related to the link going down, but things
+> > like PTM messages still work, and they may cause errors that we should
+> > know about.
+>
+> Because the issue can be observed on D3hot as well [0].
+> The root port device [0] is power managed by ACPI, so I wonder if it's
+> reasonable to disable AER & DPC for devices that power managed by
+> firmware?
 
-Add selftests for /dev/papr-vpd, exercising the common expected use
-cases:
+OK, I think the D3hot case is different to this one, so I'll work on
+next revision that only disable AER/DPC when power is really off.
 
-* Retrieve all VPD by passing an empty location code.
-* Retrieve the "system VPD" by passing a location code derived from DT
-  root node properties, as done by the vpdupdate command.
+In additional to disabling interrupt, is it reasonable to disable AER
+and DPC service completely, so unwanted electric noise wont trigger a
+DPC reset?
 
-The tests also verify that certain intended properties of the driver
-hold:
+Kai-Heng
 
-* Passing an unterminated location code to PAPR_VPD_CREATE_HANDLE gets
-  EINVAL.
-* Passing a NULL location code pointer to PAPR_VPD_CREATE_HANDLE gets
-  EFAULT.
-* Closing the device node without first issuing a
-  PAPR_VPD_CREATE_HANDLE command to it succeeds.
-* Releasing a handle without first consuming any data from it
-  succeeds.
-* Re-reading the contents of a handle returns the same data as the
-  first time.
-
-Some minimal validation of the returned data is performed.
-
-The tests are skipped on systems where the papr-vpd driver does not
-initialize, making this useful only on PowerVM LPARs at this point.
-
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
----
- tools/testing/selftests/powerpc/Makefile           |   1 +
- .../testing/selftests/powerpc/papr_vpd/.gitignore  |   1 +
- tools/testing/selftests/powerpc/papr_vpd/Makefile  |  12 +
- .../testing/selftests/powerpc/papr_vpd/papr_vpd.c  | 351 +++++++++++++++++++++
- 4 files changed, 365 insertions(+)
-
-diff --git a/tools/testing/selftests/powerpc/Makefile b/tools/testing/selftests/powerpc/Makefile
-index 49f2ad1793fd..7de972612786 100644
---- a/tools/testing/selftests/powerpc/Makefile
-+++ b/tools/testing/selftests/powerpc/Makefile
-@@ -32,6 +32,7 @@ SUB_DIRS = alignment		\
- 	   vphn         \
- 	   math		\
- 	   papr_attributes	\
-+	   papr_vpd		\
- 	   ptrace	\
- 	   security	\
- 	   mce
-diff --git a/tools/testing/selftests/powerpc/papr_vpd/.gitignore b/tools/testing/selftests/powerpc/papr_vpd/.gitignore
-new file mode 100644
-index 000000000000..49285031a656
---- /dev/null
-+++ b/tools/testing/selftests/powerpc/papr_vpd/.gitignore
-@@ -0,0 +1 @@
-+/papr_vpd
-diff --git a/tools/testing/selftests/powerpc/papr_vpd/Makefile b/tools/testing/selftests/powerpc/papr_vpd/Makefile
-new file mode 100644
-index 000000000000..06b719703bfd
---- /dev/null
-+++ b/tools/testing/selftests/powerpc/papr_vpd/Makefile
-@@ -0,0 +1,12 @@
-+# SPDX-License-Identifier: GPL-2.0
-+noarg:
-+	$(MAKE) -C ../
-+
-+TEST_GEN_PROGS := papr_vpd
-+
-+top_srcdir = ../../../../..
-+include ../../lib.mk
-+
-+$(TEST_GEN_PROGS): ../harness.c ../utils.c
-+
-+$(OUTPUT)/papr_vpd: CFLAGS += $(KHDR_INCLUDES)
-diff --git a/tools/testing/selftests/powerpc/papr_vpd/papr_vpd.c b/tools/testing/selftests/powerpc/papr_vpd/papr_vpd.c
-new file mode 100644
-index 000000000000..4102e06601db
---- /dev/null
-+++ b/tools/testing/selftests/powerpc/papr_vpd/papr_vpd.c
-@@ -0,0 +1,351 @@
-+#define _GNU_SOURCE
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/ioctl.h>
-+#include <unistd.h>
-+
-+#include <asm/papr-vpd.h>
-+
-+#include "utils.h"
-+
-+#define DEVPATH "/dev/papr-vpd"
-+
-+static int dev_papr_vpd_open_close(void)
-+{
-+	const int devfd = open(DEVPATH, O_RDONLY);
-+
-+	SKIP_IF_MSG(devfd < 0 && errno == ENOENT,
-+		    DEVPATH " not present");
-+
-+	FAIL_IF(devfd < 0);
-+	FAIL_IF(close(devfd) != 0);
-+
-+	return 0;
-+}
-+
-+static int dev_papr_vpd_get_handle_all(void)
-+{
-+	const int devfd = open(DEVPATH, O_RDONLY);
-+	struct papr_location_code lc = { .str = "", };
-+	off_t size;
-+	int fd;
-+
-+	SKIP_IF_MSG(devfd < 0 && errno == ENOENT,
-+		    DEVPATH " not present");
-+
-+	FAIL_IF(devfd < 0);
-+
-+	errno = 0;
-+	fd = ioctl(devfd, PAPR_VPD_CREATE_HANDLE, &lc);
-+	FAIL_IF(errno != 0);
-+	FAIL_IF(fd < 0);
-+
-+	FAIL_IF(close(devfd) != 0);
-+
-+	size = lseek(fd, 0, SEEK_END);
-+	FAIL_IF(size <= 0);
-+
-+	void *buf = malloc((size_t)size);
-+	FAIL_IF(!buf);
-+
-+	ssize_t consumed = pread(fd, buf, size, 0);
-+	FAIL_IF(consumed != size);
-+
-+	/* Ensure EOF */
-+	FAIL_IF(read(fd, buf, size) != 0);
-+	FAIL_IF(close(fd));
-+
-+	/* Verify that the buffer looks like VPD */
-+	const char needle[] = "System VPD";
-+	FAIL_IF(!memmem(buf, size, needle, strlen(needle)));
-+
-+	return 0;
-+}
-+
-+static int dev_papr_vpd_get_handle_byte_at_a_time(void)
-+{
-+	const int devfd = open(DEVPATH, O_RDONLY);
-+	struct papr_location_code lc = { .str = "", };
-+	int fd;
-+
-+	SKIP_IF_MSG(devfd < 0 && errno == ENOENT,
-+		    DEVPATH " not present");
-+
-+	FAIL_IF(devfd < 0);
-+
-+	errno = 0;
-+	fd = ioctl(devfd, PAPR_VPD_CREATE_HANDLE, &lc);
-+	FAIL_IF(errno != 0);
-+	FAIL_IF(fd < 0);
-+
-+	FAIL_IF(close(devfd) != 0);
-+
-+	size_t consumed = 0;
-+	while (1) {
-+		ssize_t res;
-+		char c;
-+
-+		errno = 0;
-+		res = read(fd, &c, sizeof(c));;
-+		FAIL_IF(res > sizeof(c));
-+		FAIL_IF(res < 0);
-+		FAIL_IF(errno != 0);
-+		consumed += res;
-+		if (res == 0)
-+			break;
-+	}
-+
-+	FAIL_IF(consumed != lseek(fd, 0, SEEK_END));
-+
-+	FAIL_IF(close(fd));
-+
-+	return 0;
-+}
-+
-+
-+static int dev_papr_vpd_unterm_loc_code(void)
-+{
-+	const int devfd = open(DEVPATH, O_RDONLY);
-+	struct papr_location_code lc = {};
-+	int fd;
-+
-+	SKIP_IF_MSG(devfd < 0 && errno == ENOENT,
-+		    DEVPATH " not present");
-+
-+	FAIL_IF(devfd < 0);
-+
-+	/*
-+	 * Place a non-null byte in every element of loc_code; the
-+	 * driver should reject this input.
-+	 */
-+	memset(lc.str, 'x', ARRAY_SIZE(lc.str));
-+
-+	errno = 0;
-+	fd = ioctl(devfd, PAPR_VPD_CREATE_HANDLE, &lc);
-+	FAIL_IF(fd != -1);
-+	FAIL_IF(errno != EINVAL);
-+
-+	FAIL_IF(close(devfd) != 0);
-+	return 0;
-+}
-+
-+static int dev_papr_vpd_null_handle(void)
-+{
-+	const int devfd = open(DEVPATH, O_RDONLY);
-+	int rc;
-+
-+	SKIP_IF_MSG(devfd < 0 && errno == ENOENT,
-+		    DEVPATH " not present");
-+
-+	FAIL_IF(devfd < 0);
-+
-+	errno = 0;
-+	rc = ioctl(devfd, PAPR_VPD_CREATE_HANDLE, NULL);
-+	FAIL_IF(rc != -1);
-+	FAIL_IF(errno != EFAULT);
-+
-+	FAIL_IF(close(devfd) != 0);
-+	return 0;
-+}
-+
-+static int papr_vpd_close_handle_without_reading(void)
-+{
-+	const int devfd = open(DEVPATH, O_RDONLY);
-+	struct papr_location_code lc;
-+	int fd;
-+
-+	SKIP_IF_MSG(devfd < 0 && errno == ENOENT,
-+		    DEVPATH " not present");
-+
-+	FAIL_IF(devfd < 0);
-+
-+	errno = 0;
-+	fd = ioctl(devfd, PAPR_VPD_CREATE_HANDLE, &lc);
-+	FAIL_IF(errno != 0);
-+	FAIL_IF(fd < 0);
-+
-+	/* close the handle without reading it */
-+	FAIL_IF(close(fd) != 0);
-+
-+	FAIL_IF(close(devfd) != 0);
-+	return 0;
-+}
-+
-+static int papr_vpd_reread(void)
-+{
-+	const int devfd = open(DEVPATH, O_RDONLY);
-+	struct papr_location_code lc = { .str = "", };
-+	int fd;
-+
-+	SKIP_IF_MSG(devfd < 0 && errno == ENOENT,
-+		    DEVPATH " not present");
-+
-+	FAIL_IF(devfd < 0);
-+
-+	errno = 0;
-+	fd = ioctl(devfd, PAPR_VPD_CREATE_HANDLE, &lc);
-+	FAIL_IF(errno != 0);
-+	FAIL_IF(fd < 0);
-+
-+	FAIL_IF(close(devfd) != 0);
-+
-+	const off_t size = lseek(fd, 0, SEEK_END);
-+	FAIL_IF(size <= 0);
-+
-+	char *bufs[2];
-+
-+	for (size_t i = 0; i < ARRAY_SIZE(bufs); ++i) {
-+		bufs[i] = malloc(size);
-+		FAIL_IF(!bufs[i]);
-+		ssize_t consumed = pread(fd, bufs[i], size, 0);
-+		FAIL_IF(consumed != size);
-+	}
-+
-+	FAIL_IF(memcmp(bufs[0], bufs[1], size));
-+
-+	FAIL_IF(close(fd) != 0);
-+
-+	return 0;
-+}
-+
-+static int get_system_loc_code(struct papr_location_code *lc)
-+{
-+	const char system_id_path[] = "/sys/firmware/devicetree/base/system-id";
-+	const char model_path[] = "/sys/firmware/devicetree/base/model";
-+	char *system_id;
-+	char *model;
-+	int err = -1;
-+
-+	if (read_file_alloc(model_path, &model, NULL))
-+		return err;
-+
-+	if (read_file_alloc(system_id_path, &system_id, NULL))
-+		goto free_model;
-+
-+	char *mtm;
-+	int sscanf_ret = sscanf(model, "IBM,%ms", &mtm);
-+	if (sscanf_ret != 1)
-+		goto free_system_id;
-+
-+	char *plant_and_seq;
-+	if (sscanf(system_id, "IBM,%*c%*c%ms", &plant_and_seq) != 1)
-+		goto free_mtm;
-+	/*
-+	 * Replace - with . to build location code.
-+	 */
-+	char *sep = strchr(mtm, '-');
-+	if (!sep)
-+		goto free_mtm;
-+	else
-+		*sep = '.';
-+
-+	snprintf(lc->str, sizeof(lc->str),
-+		 "U%s.%s", mtm, plant_and_seq);
-+	err = 0;
-+
-+	free(plant_and_seq);
-+free_mtm:
-+	free(mtm);
-+free_system_id:
-+	free(system_id);
-+free_model:
-+	free(model);
-+	return err;
-+}
-+
-+static int papr_vpd_system_loc_code(void)
-+{
-+	struct papr_location_code lc;
-+	const int devfd = open(DEVPATH, O_RDONLY);
-+	off_t size;
-+	int fd;
-+
-+	SKIP_IF_MSG(get_system_loc_code(&lc),
-+		    "Cannot determine system location code");
-+	SKIP_IF_MSG(devfd < 0 && errno == ENOENT,
-+		    DEVPATH " not present");
-+
-+	FAIL_IF(devfd < 0);
-+
-+	errno = 0;
-+	fd = ioctl(devfd, PAPR_VPD_CREATE_HANDLE, &lc);
-+	FAIL_IF(errno != 0);
-+	FAIL_IF(fd < 0);
-+
-+	FAIL_IF(close(devfd) != 0);
-+
-+	size = lseek(fd, 0, SEEK_END);
-+	FAIL_IF(size <= 0);
-+
-+	void *buf = malloc((size_t)size);
-+	FAIL_IF(!buf);
-+
-+	ssize_t consumed = pread(fd, buf, size, 0);
-+	FAIL_IF(consumed != size);
-+
-+	/* Ensure EOF */
-+	FAIL_IF(read(fd, buf, size) != 0);
-+	FAIL_IF(close(fd));
-+
-+	/* Verify that the buffer looks like VPD */
-+	const char needle[] = "System VPD";
-+	FAIL_IF(!memmem(buf, size, needle, strlen(needle)));
-+
-+	return 0;
-+}
-+
-+struct vpd_test {
-+	int (*function)(void);
-+	const char *description;
-+};
-+
-+static struct vpd_test vpd_tests[] = {
-+	{
-+		.function = dev_papr_vpd_open_close,
-+		.description = "open/close " DEVPATH,
-+	},
-+	{
-+		.function = dev_papr_vpd_unterm_loc_code,
-+		.description = "ensure EINVAL on unterminated location code",
-+	},
-+	{
-+		.function = dev_papr_vpd_null_handle,
-+		.description = "ensure EFAULT on bad handle addr",
-+	},
-+	{
-+		.function = dev_papr_vpd_get_handle_all,
-+		.description = "get handle for all VPD"
-+	},
-+	{
-+		.function = papr_vpd_close_handle_without_reading,
-+		.description = "close handle without consuming VPD"
-+	},
-+	{
-+		.function = dev_papr_vpd_get_handle_byte_at_a_time,
-+		.description = "read all VPD one byte at a time"
-+	},
-+	{
-+		.function = papr_vpd_reread,
-+		.description = "ensure re-read yields same results"
-+	},
-+	{
-+		.function = papr_vpd_system_loc_code,
-+		.description = "get handle for system VPD"
-+	},
-+};
-+
-+int main(void)
-+{
-+	size_t fails = 0;
-+
-+	for (size_t i = 0; i < ARRAY_SIZE(vpd_tests); ++i) {
-+		const struct vpd_test *t = &vpd_tests[i];
-+
-+		if (test_harness(t->function, t->description))
-+			++fails;
-+	}
-+
-+	return fails == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
-+}
-
--- 
-2.41.0
-
+> [0] https://bugzilla.kernel.org/show_bug.cgi?id=3D216295#c3
+>
+> Kai-Heng
+>
+> >
+> > > > > > I don't think D0-D3hot should be relevant here because in all t=
+hose
+> > > > > > states, the link should be active because the downstream config=
+ space
+> > > > > > remains accessible.  So I'm not sure if it's possible, but I wo=
+nder if
+> > > > > > there's a more targeted place we could do this, e.g., in the pa=
+th that
+> > > > > > puts downstream devices in D3cold.
+> > > > >
+> > > > > Let me try to work on this.
+> > > > >
+> > > > > Kai-Heng
+> > > > >
+> > > > > >
+> > > > > > > As Per PCIe Base Spec 5.0, section 5.2, titled "Link State Po=
+wer Management",
+> > > > > > > TLP and DLLP transmission are disabled for a Link in L2/L3 Re=
+ady (D3hot), L2
+> > > > > > > (D3cold with aux power) and L3 (D3cold) states. So disabling =
+the AER
+> > > > > > > notification during suspend and re-enabling them during the r=
+esume process
+> > > > > > > should not affect the basic functionality.
+> > > > > > >
+> > > > > > > Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D216295
+> > > > > > > Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com=
+>
+> > > > > > > Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+> > > > > > > ---
+> > > > > > > v6:
+> > > > > > > v5:
+> > > > > > >  - Wording.
+> > > > > > >
+> > > > > > > v4:
+> > > > > > > v3:
+> > > > > > >  - No change.
+> > > > > > >
+> > > > > > > v2:
+> > > > > > >  - Only disable AER IRQ.
+> > > > > > >  - No more check on PME IRQ#.
+> > > > > > >  - Use helper.
+> > > > > > >
+> > > > > > >  drivers/pci/pcie/aer.c | 22 ++++++++++++++++++++++
+> > > > > > >  1 file changed, 22 insertions(+)
+> > > > > > >
+> > > > > > > diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> > > > > > > index 1420e1f27105..9c07fdbeb52d 100644
+> > > > > > > --- a/drivers/pci/pcie/aer.c
+> > > > > > > +++ b/drivers/pci/pcie/aer.c
+> > > > > > > @@ -1356,6 +1356,26 @@ static int aer_probe(struct pcie_devic=
+e *dev)
+> > > > > > >       return 0;
+> > > > > > >  }
+> > > > > > >
+> > > > > > > +static int aer_suspend(struct pcie_device *dev)
+> > > > > > > +{
+> > > > > > > +     struct aer_rpc *rpc =3D get_service_data(dev);
+> > > > > > > +     struct pci_dev *pdev =3D rpc->rpd;
+> > > > > > > +
+> > > > > > > +     aer_disable_irq(pdev);
+> > > > > > > +
+> > > > > > > +     return 0;
+> > > > > > > +}
+> > > > > > > +
+> > > > > > > +static int aer_resume(struct pcie_device *dev)
+> > > > > > > +{
+> > > > > > > +     struct aer_rpc *rpc =3D get_service_data(dev);
+> > > > > > > +     struct pci_dev *pdev =3D rpc->rpd;
+> > > > > > > +
+> > > > > > > +     aer_enable_irq(pdev);
+> > > > > > > +
+> > > > > > > +     return 0;
+> > > > > > > +}
+> > > > > > > +
+> > > > > > >  /**
+> > > > > > >   * aer_root_reset - reset Root Port hierarchy, RCEC, or RCiE=
+P
+> > > > > > >   * @dev: pointer to Root Port, RCEC, or RCiEP
+> > > > > > > @@ -1420,6 +1440,8 @@ static struct pcie_port_service_driver =
+aerdriver =3D {
+> > > > > > >       .service        =3D PCIE_PORT_SERVICE_AER,
+> > > > > > >
+> > > > > > >       .probe          =3D aer_probe,
+> > > > > > > +     .suspend        =3D aer_suspend,
+> > > > > > > +     .resume         =3D aer_resume,
+> > > > > > >       .remove         =3D aer_remove,
+> > > > > > >  };
+> > > > > > >
+> > > > > > > --
+> > > > > > > 2.34.1
+> > > > > > >
