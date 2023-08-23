@@ -1,32 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B5657857C2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Aug 2023 14:16:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4124278577C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Aug 2023 14:05:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RW4v80v13z3fcf
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Aug 2023 22:16:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RW4fd1Nfgz3dd9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Aug 2023 22:05:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RW4cz3frRz3cDV
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Aug 2023 22:04:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RW4cZ718xz2ytp
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Aug 2023 22:03:42 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RW4cz2GpGz4x3D;
-	Wed, 23 Aug 2023 22:04:03 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RW4cZ5f70z4wxQ;
+	Wed, 23 Aug 2023 22:03:42 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Linus Walleij <linus.walleij@linaro.org>
-In-Reply-To: <20230809-virt-to-phys-powerpc-v1-1-12e912a7d439@linaro.org>
-References: <20230809-virt-to-phys-powerpc-v1-1-12e912a7d439@linaro.org>
-Subject: Re: [PATCH] powerpc: Make virt_to_pfn() a static inline
-Message-Id: <169279175548.797584.16810981257080808003.b4-ty@ellerman.id.au>
+To: linuxppc-dev@lists.ozlabs.org, Benjamin Gray <bgray@linux.ibm.com>
+In-Reply-To: <20230801011744.153973-1-bgray@linux.ibm.com>
+References: <20230801011744.153973-1-bgray@linux.ibm.com>
+Subject: Re: [PATCH 0/7] Rework perf and ptrace watchpoint tracking
+Message-Id: <169279175563.797584.15688679017292645953.b4-ty@ellerman.id.au>
 Date: Wed, 23 Aug 2023 21:55:55 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,23 +42,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 09 Aug 2023 10:07:13 +0200, Linus Walleij wrote:
-> Making virt_to_pfn() a static inline taking a strongly typed
-> (const void *) makes the contract of a passing a pointer of that
-> type to the function explicit and exposes any misuse of the
-> macro virt_to_pfn() acting polymorphic and accepting many types
-> such as (void *), (unitptr_t) or (unsigned long) as arguments
-> without warnings.
+On Tue, 01 Aug 2023 11:17:37 +1000, Benjamin Gray wrote:
+> Syzkaller triggered a null pointer dereference in the
+> arch_unregister_hw_breakpoint() hook. This is due to accessing
+> the bp->ctx->task field changing to -1 while we iterate the breakpoints.
+> 
+> This series refactors the breakpoint tracking logic to remove the
+> dependency on bp->ctx entirely. It also simplifies handling of ptrace and
+> perf breakpoints, making insertion less restrictive.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc: Make virt_to_pfn() a static inline
-      https://git.kernel.org/powerpc/c/58b6fed89ab0f602de0d143c617c29c3d4c67429
+[1/7] powerpc/watchpoints: Explain thread_change_pc() more
+      https://git.kernel.org/powerpc/c/8f8f1cd67aa026c9dab8eb4e087e4a2d8fa9d5bc
+[2/7] powerpc/watchpoints: Don't track info persistently
+      https://git.kernel.org/powerpc/c/668a6ec6ed57f0248070c490aba75a9572e4b0a4
+[3/7] powerpc/watchpoints: Track perf single step directly on the breakpoint
+      https://git.kernel.org/powerpc/c/1e60f3564bad09962646bf8c2af588ecf518d337
+[4/7] powerpc/watchpoints: Simplify watchpoint reinsertion
+      https://git.kernel.org/powerpc/c/5a2d8b9c06712b52b2f0f2fc9a144242277fda74
+[5/7] powerpc/watchpoints: Remove ptrace/perf exclusion tracking
+      https://git.kernel.org/powerpc/c/bd29813ae10698f7bdfb3c68eacbb6464ec701ff
+[6/7] selftests/powerpc/ptrace: Update ptrace-perf watchpoint selftest
+      https://git.kernel.org/powerpc/c/58709f6fc327a997daeeca77aa5e6bd4d4c238cf
+[7/7] perf/hw_breakpoint: Remove arch breakpoint hooks
+      https://git.kernel.org/powerpc/c/53834a0c09252dea7918a9e1788bad880690900b
 
 cheers
