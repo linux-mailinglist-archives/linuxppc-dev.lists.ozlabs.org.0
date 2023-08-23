@@ -2,31 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 741E67857C5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Aug 2023 14:17:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80B34785792
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Aug 2023 14:09:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RW4w82qhLz3hh8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Aug 2023 22:17:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RW4lC39jsz3dG5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Aug 2023 22:09:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RW4d561B6z3cK4
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Aug 2023 22:04:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RW4cj5YhYz3c4R
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Aug 2023 22:03:49 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RW4d44K0Pz4x2L;
-	Wed, 23 Aug 2023 22:04:08 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RW4cj44xXz4x2J;
+	Wed, 23 Aug 2023 22:03:49 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Masahiro Yamada <masahiroy@kernel.org>
-In-Reply-To: <20230806150954.394189-1-masahiroy@kernel.org>
-References: <20230806150954.394189-1-masahiroy@kernel.org>
-Subject: Re: [PATCH 1/3] powerpc: remove unneeded #include <asm/export.h>
-Message-Id: <169279175566.797584.2539796704506520702.b4-ty@ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <0aa1141e18a84d926e199093204b37ec993f0c87.1692275185.git.christophe.leroy@csgroup.eu>
+References: <0aa1141e18a84d926e199093204b37ec993f0c87.1692275185.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc/8xx: Remove init_internal_rtc() to fix no previous prototype error
+Message-Id: <169279175575.797584.8768847213468834876.b4-ty@ellerman.id.au>
 Date: Wed, 23 Aug 2023 21:55:55 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,23 +42,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 07 Aug 2023 00:09:52 +0900, Masahiro Yamada wrote:
-> There is no EXPORT_SYMBOL line there, hence #include <asm/export.h>
-> is unneeded.
+On Thu, 17 Aug 2023 14:26:45 +0200, Christophe Leroy wrote:
+> A W=1 build of mpc885_ads_defconfig throws the following error:
 > 
+>   CC      arch/powerpc/platforms/8xx/m8xx_setup.o
+> arch/powerpc/platforms/8xx/m8xx_setup.c:41:1: error: no previous prototype for 'init_internal_rtc' [-Werror=missing-prototypes]
+>    41 | init_internal_rtc(void)
+>       | ^~~~~~~~~~~~~~~~~
 > 
+> [...]
 
 Applied to powerpc/next.
 
-[1/3] powerpc: remove unneeded #include <asm/export.h>
-      https://git.kernel.org/powerpc/c/3eb3f168e83aa7a7b8477507cf4b08b9515b4b13
-[2/3] powerpc: replace #include <asm/export.h> with #include <linux/export.h>
-      https://git.kernel.org/powerpc/c/393261828740c3ed95fc810c3f4c1018b86af7e5
-[3/3] powerpc: remove <asm/export.h>
-      https://git.kernel.org/powerpc/c/efa1f85019537ce44832cf73a6db18611e3e41cd
+[1/1] powerpc/8xx: Remove init_internal_rtc() to fix no previous prototype error
+      https://git.kernel.org/powerpc/c/4531f128eac356144545b833908b6ffbc0292e16
 
 cheers
