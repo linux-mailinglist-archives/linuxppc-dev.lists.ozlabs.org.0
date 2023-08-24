@@ -2,53 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C7467866E2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Aug 2023 06:49:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DB5B786755
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Aug 2023 08:11:21 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=acNwiT+K;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=xen0n.name header.i=@xen0n.name header.a=rsa-sha256 header.s=mail header.b=Y4P9HQqP;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RWVww0VVwz3cPK
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Aug 2023 14:49:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RWXlW1G1kz3cDk
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Aug 2023 16:11:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=acNwiT+K;
+	dkim=pass (1024-bit key; unprotected) header.d=xen0n.name header.i=@xen0n.name header.a=rsa-sha256 header.s=mail header.b=Y4P9HQqP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=canonical.com (client-ip=185.125.188.120; helo=smtp-relay-canonical-0.canonical.com; envelope-from=kai.heng.feng@canonical.com; receiver=lists.ozlabs.org)
-Received: from smtp-relay-canonical-0.canonical.com (smtp-relay-canonical-0.canonical.com [185.125.188.120])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=xen0n.name (client-ip=115.28.160.31; helo=mailbox.box.xen0n.name; envelope-from=kernel@xen0n.name; receiver=lists.ozlabs.org)
+X-Greylist: delayed 475 seconds by postgrey-1.37 at boromir; Thu, 24 Aug 2023 16:10:30 AEST
+Received: from mailbox.box.xen0n.name (mail.xen0n.name [115.28.160.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RWVv74H6Dz2yst
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Aug 2023 14:47:47 +1000 (AEST)
-Received: from localhost.localdomain (unknown [10.101.196.174])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RWXkZ1LjGz30D2
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Aug 2023 16:10:29 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xen0n.name; s=mail;
+	t=1692856942; bh=vVRyuNLkZSfSbUTWRT7F8T0v3fD1MZl9S+fAoKzm0/g=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Y4P9HQqPdEgxcHNjnvkKJCVXn8KB4BAiIfRktjuzHtAPBoaa40s0h0ZbAkdHmx5M/
+	 iVKOfM8xKy8DitVEZYUgRHrn9jWDs0lB7szFluwBsKcfgdbD1jgxFDScOp+9Pvh0al
+	 7PEbU40iMtg9KCQYNzVZWQb5IwMPagSnPTMyCfzI=
+Received: from [192.168.9.172] (unknown [101.88.24.218])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id 528C6401C0;
-	Thu, 24 Aug 2023 04:47:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1692852464;
-	bh=gzh8CFjOP3xGUTmBskUbhLru7uSiTvUwnZrR616fQVw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version;
-	b=acNwiT+K3CAJqMILNvkz//RH7LxUzOHRB996jP69N1l3uflJPrHjRjQOjO0XK3D6q
-	 eQKbcLJBxZsYJDlfN3NBUIlru/zxfRIvwMKzSVDRrnGYhaqJLgWIE2VomepbQcYW3O
-	 h00GK0E2KDuc8TVpJMqQlslavRm2djPPBmdQgpPdwL7rDLrmOoDlX7dWzbCqsYwm40
-	 wBMWWYBlurTE7kLt+dZH1oZgO2eTgJH/vXXu2Afm6bzBDpjcW3snoWBWRKw+IJtEMG
-	 q/+or3+ZdhMi3L2WfyHs3qRmtPtL/Hx0P11qICmXSDHFXeHC+30GU44+j15jkSxI66
-	 LX06IKU95LZYg==
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
-To: bhelgaas@google.com
-Subject: [PATCH 3/3] PCI/DPC: Disable DPC service on suspend
-Date: Thu, 24 Aug 2023 12:46:45 +0800
-Message-Id: <20230824044645.423378-3-kai.heng.feng@canonical.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230824044645.423378-1-kai.heng.feng@canonical.com>
-References: <20230824044645.423378-1-kai.heng.feng@canonical.com>
+	by mailbox.box.xen0n.name (Postfix) with ESMTPSA id 2D5BD600DA;
+	Thu, 24 Aug 2023 14:02:22 +0800 (CST)
+Message-ID: <4df42f2b-3dde-f077-4ec9-b7e87d15fa4a@xen0n.name>
+Date: Thu, 24 Aug 2023 14:02:21 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH v3 2/4] arch/loongarch/configs/*_defconfig cleanup
+To: Trevor Woerner <twoerner@gmail.com>, linux-kernel@vger.kernel.org,
+ Huacai Chen <chenhuacai@kernel.org>
+References: <20230817115017.35663-1-twoerner@gmail.com>
+ <20230817115017.35663-3-twoerner@gmail.com>
+Content-Language: en-US
+From: WANG Xuerui <kernel@xen0n.name>
+In-Reply-To: <20230817115017.35663-3-twoerner@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,155 +61,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sathyanarayanan.kuppuswamy@linux.intel.com, linuxppc-dev@lists.ozlabs.org, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, linux-kernel@vger.kernel.org, koba.ko@canonical.com, Kai-Heng Feng <kai.heng.feng@canonical.com>, Oliver O'Halloran <oohall@gmail.com>, linux-pci@vger.kernel.org, mika.westerberg@linux.intel.com
+Cc: linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When the power rail gets cut off, the hardware can create some electric
-noise on the link that triggers AER. If IRQ is shared between AER with
-PME, such AER noise will cause a spurious wakeup on system suspend.
+On 8/17/23 19:50, Trevor Woerner wrote:
+> Drop CONFIG_IP_NF_TARGET_CLUSTERIP as it was removed in commit 9db5d918e2c0
+> ("netfilter: ip_tables: remove clusterip target").
+>
+> Drop CONFIG_NFT_OBJREF as it was removed in commit d037abc2414b
+> ("netfilter: nft_objref: make it builtin").
+>
+> Signed-off-by: Trevor Woerner <twoerner@gmail.com>
+> ---
+>   arch/loongarch/configs/loongson3_defconfig | 2 --
+>   1 file changed, 2 deletions(-)
+>
+> diff --git a/arch/loongarch/configs/loongson3_defconfig b/arch/loongarch/configs/loongson3_defconfig
+> index d64849b4cba1..4700655b2bcb 100644
+> --- a/arch/loongarch/configs/loongson3_defconfig
+> +++ b/arch/loongarch/configs/loongson3_defconfig
+> @@ -137,7 +137,6 @@ CONFIG_NFT_MASQ=m
+>   CONFIG_NFT_REDIR=m
+>   CONFIG_NFT_NAT=m
+>   CONFIG_NFT_TUNNEL=m
+> -CONFIG_NFT_OBJREF=m
+>   CONFIG_NFT_QUEUE=m
+>   CONFIG_NFT_QUOTA=m
+>   CONFIG_NFT_REJECT=m
+> @@ -227,7 +226,6 @@ CONFIG_IP_NF_TARGET_MASQUERADE=m
+>   CONFIG_IP_NF_TARGET_NETMAP=m
+>   CONFIG_IP_NF_TARGET_REDIRECT=m
+>   CONFIG_IP_NF_MANGLE=m
+> -CONFIG_IP_NF_TARGET_CLUSTERIP=m
+>   CONFIG_IP_NF_TARGET_ECN=m
+>   CONFIG_IP_NF_TARGET_TTL=m
+>   CONFIG_IP_NF_RAW=m
 
-When the power rail gets back, the firmware of the device resets itself
-and can create unexpected behavior like sending PTM messages. For this
-case, the driver will always be too late to toggle off features should
-be disabled.
+Acked-by: WANG Xuerui <git@xen0n.name>
 
-As Per PCIe Base Spec 5.0, section 5.2, titled "Link State Power
-Management", TLP and DLLP transmission are disabled for a Link in L2/L3
-Ready (D3hot), L2 (D3cold with aux power) and L3 (D3cold) states. So if
-the power will be turned off during suspend process, disable DPC service
-and re-enable it during the resume process. This should not affect the
-basic functionality.
+Thanks!
 
-Since DPC depends on AER to function, also disable DPC.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=209149
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216295
-
-v7:
- - Wording.
- - Disable DPC completely (again) if power will be turned off
-
-v6:
-v5:
- - Wording.
-
-v4:
-v3:
- - No change.
-
-v2:
- - Only disable DPC IRQ.
- - No more check on PME IRQ#.
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
----
- drivers/pci/pcie/dpc.c | 56 ++++++++++++++++++++++++++++++++++--------
- 1 file changed, 46 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-index 3ceed8e3de41..73426addb2f1 100644
---- a/drivers/pci/pcie/dpc.c
-+++ b/drivers/pci/pcie/dpc.c
-@@ -13,6 +13,7 @@
- #include <linux/interrupt.h>
- #include <linux/init.h>
- #include <linux/pci.h>
-+#include <linux/suspend.h>
- 
- #include "portdrv.h"
- #include "../pci.h"
-@@ -347,13 +348,34 @@ void pci_dpc_init(struct pci_dev *pdev)
- 	}
- }
- 
-+static void dpc_enable(struct pcie_device *dev)
-+{
-+	struct pci_dev *pdev = dev->port;
-+	u16 ctl;
-+
-+	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, &ctl);
-+
-+	ctl = (ctl & 0xfff4) | PCI_EXP_DPC_CTL_EN_FATAL | PCI_EXP_DPC_CTL_INT_EN;
-+	pci_write_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, ctl);
-+}
-+
-+static void dpc_disable(struct pcie_device *dev)
-+{
-+	struct pci_dev *pdev = dev->port;
-+	u16 ctl;
-+
-+	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, &ctl);
-+	ctl &= ~(PCI_EXP_DPC_CTL_EN_FATAL | PCI_EXP_DPC_CTL_INT_EN);
-+	pci_write_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, ctl);
-+}
-+
- #define FLAG(x, y) (((x) & (y)) ? '+' : '-')
- static int dpc_probe(struct pcie_device *dev)
- {
- 	struct pci_dev *pdev = dev->port;
- 	struct device *device = &dev->device;
- 	int status;
--	u16 ctl, cap;
-+	u16 cap;
- 
- 	if (!pcie_aer_is_native(pdev) && !pcie_ports_dpc_native)
- 		return -ENOTSUPP;
-@@ -368,10 +390,7 @@ static int dpc_probe(struct pcie_device *dev)
- 	}
- 
- 	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CAP, &cap);
--	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, &ctl);
--
--	ctl = (ctl & 0xfff4) | PCI_EXP_DPC_CTL_EN_FATAL | PCI_EXP_DPC_CTL_INT_EN;
--	pci_write_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, ctl);
-+	dpc_enable(dev);
- 	pci_info(pdev, "enabled with IRQ %d\n", dev->irq);
- 
- 	pci_info(pdev, "error containment capabilities: Int Msg #%d, RPExt%c PoisonedTLP%c SwTrigger%c RP PIO Log %d, DL_ActiveErr%c\n",
-@@ -384,14 +403,29 @@ static int dpc_probe(struct pcie_device *dev)
- 	return status;
- }
- 
--static void dpc_remove(struct pcie_device *dev)
-+static int dpc_suspend(struct pcie_device *dev)
- {
- 	struct pci_dev *pdev = dev->port;
--	u16 ctl;
- 
--	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, &ctl);
--	ctl &= ~(PCI_EXP_DPC_CTL_EN_FATAL | PCI_EXP_DPC_CTL_INT_EN);
--	pci_write_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, ctl);
-+	if (pci_ancestor_pr3_present(pdev) || pm_suspend_via_firmware())
-+		dpc_disable(dev);
-+
-+	return 0;
-+}
-+
-+static int dpc_resume(struct pcie_device *dev)
-+{
-+	struct pci_dev *pdev = dev->port;
-+
-+	if (pci_ancestor_pr3_present(pdev) || pm_resume_via_firmware())
-+		dpc_enable(dev);
-+
-+	return 0;
-+}
-+
-+static void dpc_remove(struct pcie_device *dev)
-+{
-+	dpc_disable(dev);
- }
- 
- static struct pcie_port_service_driver dpcdriver = {
-@@ -399,6 +433,8 @@ static struct pcie_port_service_driver dpcdriver = {
- 	.port_type	= PCIE_ANY_PORT,
- 	.service	= PCIE_PORT_SERVICE_DPC,
- 	.probe		= dpc_probe,
-+	.suspend	= dpc_suspend,
-+	.resume		= dpc_resume,
- 	.remove		= dpc_remove,
- };
- 
 -- 
-2.34.1
+WANG "xen0n" Xuerui
+
+Linux/LoongArch mailing list: https://lore.kernel.org/loongarch/
 
