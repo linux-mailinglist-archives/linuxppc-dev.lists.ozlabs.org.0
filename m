@@ -2,70 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CC4F7873D7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Aug 2023 17:16:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E0367874FB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Aug 2023 18:13:47 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=FtVfL5Tf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=o3QwsmK2;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RWmrl0jwXz3c67
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 01:16:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RWp6d1fPSz3cDl
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 02:13:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=FtVfL5Tf;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=o3QwsmK2;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com; envelope-from=3ixtnzaykdnqi40d926ee6b4.2ecb8dknff2-34lb8iji.epb01i.eh6@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::224; helo=relay4-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::224])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RWmqt6Bl9z30XM
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Aug 2023 01:15:53 +1000 (AEST)
-Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-d7475f45d31so6086503276.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Aug 2023 08:15:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1692890145; x=1693494945;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=BCC0wwp7wWSIy0MrdACmgS4Vp0ye9VEhwI7wuPMec4A=;
-        b=FtVfL5Tf+6L+aGO+3VLVFfVEdfsELAv/SkE1PTKpiAC3gFVBjTzmjrn/G6noL3tCwT
-         nY/EAJeRp1nUZ1X8yuA3Jxf69ZaoSNHuvOQh3ULPUAYpMu4LVrXdZw1h4nH2PAlfwGQ5
-         HGQOfNLw0wvbAHb80uzDgzcI3HY8lXjzMoOoHDVH4Pz8HXQOOW7DfntGjjOL04U2gBH5
-         ZxYs546ol999Lp9xjtgeFXwtR0AaARSkkT0m/gVyhfqtUMb/pTpVMTXHfDw9wPW17NyP
-         1E6e3/AVVS3EyluWhAt1DasCBBld/p7NdQ0UhAyRFy01f8SCDMvj/nvu0ZKPtEv3L+Gt
-         UNqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692890145; x=1693494945;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=BCC0wwp7wWSIy0MrdACmgS4Vp0ye9VEhwI7wuPMec4A=;
-        b=N2knIYCeSySIfFexQCKbv/Bk6pEAbIxpm/mOg/jRnQkqa+sZgyg3uWCrZyD7wHWdqt
-         l63lsUjvciVMd/+f8pmedzK9LbD4weTvFJR1qYDgJIl+0/51aWTeypzJ5hJSxAwtAAJE
-         nPLvxE1v892x1trxIU4vlWDuGrS1GMrYrN4wq3guQbYdDDSVl+zJX2UW7Z7wRtdNxnyR
-         wNz7Nv9/j3GJOatn24hAso3sGQIY3igBVMy0Q9w4AxFZA5wH75C3tZEqnCEmjUMV1J8F
-         Imbc6ZZiYaTFYH7sY8upGkT6ZmdC215+c//Wu+baEZhzy2+km4kdfVk/678HuOM0ILfg
-         NB6Q==
-X-Gm-Message-State: AOJu0YxpAqv2MKPE4Wt/hvU3lUiRvv7TiDAWd8TKKkUM4HEskEKKxO6P
-	ok+uenI9RzKJ+U0fYoBdjE479C2Lh+8=
-X-Google-Smtp-Source: AGHT+IEE5MT+OR26AI25mjbMCPL/tYmhkhOKeyxLgW2HJM/WWK+y8/HYNn2t4mxnVIC7aAY/Rh8OZ4/3wmA=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a25:2484:0:b0:d74:cdd7:d491 with SMTP id
- k126-20020a252484000000b00d74cdd7d491mr186602ybk.5.1692890145678; Thu, 24 Aug
- 2023 08:15:45 -0700 (PDT)
-Date: Thu, 24 Aug 2023 08:15:44 -0700
-In-Reply-To: <CAD=HUj7F6CUNt_9txEu0upB=PBwJzkL5dBhNs_BVHX1cicqBgw@mail.gmail.com>
-Mime-Version: 1.0
-References: <20230704075054.3344915-1-stevensd@google.com> <20230704075054.3344915-6-stevensd@google.com>
- <20230705102547.hr2zxkdkecdxp5tf@linux.intel.com> <CAD=HUj7F6CUNt_9txEu0upB=PBwJzkL5dBhNs_BVHX1cicqBgw@mail.gmail.com>
-Message-ID: <ZOd0IMeKSkBwGIer@google.com>
-Subject: Re: [PATCH v7 5/8] KVM: x86/mmu: Don't pass FOLL_GET to __kvm_follow_pfn
-From: Sean Christopherson <seanjc@google.com>
-To: David Stevens <stevensd@chromium.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RWp5m4D8cz3c3k
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Aug 2023 02:12:56 +1000 (AEST)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id F04C5E0005;
+	Thu, 24 Aug 2023 16:12:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1692893566;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FWHYcTT1R00OlgvYpsdbga3jUacdQWbdaLMRIeCkuOk=;
+	b=o3QwsmK2FkbSQQGVgH0r4CH2l+KHT1naLRa+8O4jnppkxUjmSV9BBELqg+inpHy5Cet2rp
+	qBDmniV7E0RwlKex4e4GRe5r+saUTse2nqNsGVNNzmqV+TeTp5wwbwsF6Kp9pftidD/etL
+	tOVcLgqL0xCEf//PmXkfER5jBDomV3tlg352m8cwcpRieChJYez7b4IaKHFwFmTrPgHWzw
+	hw3uA6S865nzlYdgJ+PrHS4sb6Ybrs7aFOmsdGwyTMlPts0FYdj5CV5fOjnoWasNCGK0y6
+	mRZuRCE3D9IJ4+PvTk1tiWYomxkq7J/NS8xSq18siGc9VMHe5mGR4m5TP8YzIg==
+Date: Thu, 24 Aug 2023 18:12:40 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH v4 06/28] dt-bindings: net: Add support for QMC HDLC
+Message-ID: <20230824181240.13d14f69@bootlin.com>
+In-Reply-To: <20230821204258.GA2253571-robh@kernel.org>
+References: <cover.1692376360.git.christophe.leroy@csgroup.eu>
+	<817d1418fa1e9e689375177bee4bdc68ceeab7be.1692376361.git.christophe.leroy@csgroup.eu>
+	<20230821204258.GA2253571-robh@kernel.org>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,58 +61,127 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, Marc Zyngier <maz@kernel.org>, linux-kernel@vger.kernel.org, Peter Xu <peterx@redhat.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Andrew Lunn <andrew@lunn.ch>, alsa-devel@alsa-project.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Linus Walleij <linus.walleij@linaro.org>, Jaroslav Kysela <perex@perex.cz>, Eric Dumazet <edumazet@google.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Fabio Estevam <festevam@gmail.com>, Qiang Zhao <qiang.zhao@nxp.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Lee Jones <lee@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, Nicolin Chen <nicoleotsuka@gmail.com>, linux-gpio@vger.kernel.org, Mark Brown <broonie@kernel.org>, Takashi Iwai <tiwai@suse.com>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>, Liam Girdwood <lgirdwood@gmail.com>, Li Yang <leoyang.li@nxp.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 24, 2023, David Stevens wrote:
-> On Wed, Jul 5, 2023 at 7:25=E2=80=AFPM Yu Zhang <yu.c.zhang@linux.intel.c=
-om> wrote:
-> >
-> > On Tue, Jul 04, 2023 at 04:50:50PM +0900, David Stevens wrote:
-> > > @@ -4529,7 +4540,8 @@ static int kvm_tdp_mmu_page_fault(struct kvm_vc=
-pu *vcpu,
-> > >
-> > >  out_unlock:
-> > >       read_unlock(&vcpu->kvm->mmu_lock);
-> > > -     kvm_release_pfn_clean(fault->pfn);
-> >
-> > Yet kvm_release_pfn() can still be triggered for the kvm_vcpu_maped gfn=
-s.
-> > What if guest uses a non-referenced page(e.g., as a vmcs12)? Although I
-> > believe this is not gonna happen in real world...
->=20
-> kvm_vcpu_map still uses gfn_to_pfn, which eventually passes FOLL_GET
-> to __kvm_follow_pfn. So if a guest tries to use a non-refcounted page
-> like that, then kvm_vcpu_map will fail and the guest will probably
-> crash. It won't trigger any bugs in the host, though.
->=20
-> It is unfortunate that the guest will be able to use certain types of
-> memory for some purposes but not for others. However, while it is
-> theoretically fixable, it's an unreasonable amount of work for
-> something that, as you say, nobody really cares about in practice [1].
->=20
-> [1] https://lore.kernel.org/all/ZBEEQtmtNPaEqU1i@google.com/
+On Mon, 21 Aug 2023 15:42:58 -0500
+Rob Herring <robh@kernel.org> wrote:
 
-There are use cases that care, which is why I suggested allow_unsafe_kmap.
-Specifically, AWS manages their pool of guest memory in userspace and maps =
-it all
-via /dev/mem.  Without that module param to let userspace opt-in, this seri=
-es will
-break such setups.  It still arguably is a breaking change since it require=
-s
-userspace to opt-in, but allowing such behavior by default is simply not a =
-viable
-option, and I don't have much sympathy since so much of this mess has its o=
-rigins
-in commit e45adf665a53 ("KVM: Introduce a new guest mapping API").
+> On Fri, Aug 18, 2023 at 06:39:00PM +0200, Christophe Leroy wrote:
+> > From: Herve Codina <herve.codina@bootlin.com>
+> > 
+> > The QMC (QUICC mutichannel controller) is a controller present in some
+> > PowerQUICC SoC such as MPC885.
+> > The QMC HDLC uses the QMC controller to transfer HDLC data.
+> > 
+> > Additionally, a framer can be connected to the QMC HDLC.
+> > If present, this framer is the interface between the TDM bus used by the
+> > QMC HDLC and the E1/T1 line.
+> > The QMC HDLC can use this framer to get information about the E1/T1 line
+> > and configure the E1/T1 line.
+> > 
+> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> > ---
+> >  .../devicetree/bindings/net/fsl,qmc-hdlc.yaml | 46 +++++++++++++++++++
+> >  1 file changed, 46 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/net/fsl,qmc-hdlc.yaml
+> > 
+> > diff --git a/Documentation/devicetree/bindings/net/fsl,qmc-hdlc.yaml b/Documentation/devicetree/bindings/net/fsl,qmc-hdlc.yaml
+> > new file mode 100644
+> > index 000000000000..13f3572f0feb
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/net/fsl,qmc-hdlc.yaml
+> > @@ -0,0 +1,46 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/net/fsl,qmc-hdlc.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Freescale/NXP QUICC Multichannel Controller (QMC) HDLC
+> > +
+> > +maintainers:
+> > +  - Herve Codina <herve.codina@bootlin.com>
+> > +
+> > +description: |  
+> 
+> Don't need '|'
 
-The use cases that no one cares about (AFAIK) is allowing _untrusted_ users=
-pace
-to back guest RAM with arbitrary memory.  In other words, I want KVM to all=
-ow
-(by default) mapping device memory into the guest for things like vGPUs, wi=
-thout
-having to do the massive and invasive overhaul needed to safely allow backi=
-ng guest
-RAM with completely arbitrary memory.
+Will be fixed in the next iteration.
+
+> 
+> > +  The QMC HDLC uses a QMC (QUICC Multichannel Controller) channel to transfer
+> > +  HDLC data.
+> > +
+> > +properties:
+> > +  compatible:
+> > +    const: fsl,qmc-hdlc
+> > +
+> > +  fsl,qmc-chan:
+> > +    $ref: /schemas/types.yaml#/definitions/phandle-array
+> > +    items:
+> > +      - items:
+> > +          - description: phandle to QMC node
+> > +          - description: Channel number
+> > +    description:
+> > +      Should be a phandle/number pair. The phandle to QMC node and the QMC
+> > +      channel to use.
+> > +
+> > +  framer:
+> > +    $ref: /schemas/types.yaml#/definitions/phandle
+> > +    description:
+> > +      phandle to the framer node  
+> 
+> What's the framer? 
+
+A framer is a component in charge of an E1/T1 line interface.
+Is is connected to the TDM bus and it converts TDM frames to/from E1/T1
+frames.
+The HDLC data are sent/received to/from the TDM bus and the framer is used to
+get information about the E1/T1 line such as link up/down.
+
+I can update the description to:
+--- 8< ---
+phandle to the framer node. The framer is in charge of an E1/T1 line
+interface connected to the TDM bus. It can be used to get the E1/T1 line
+status such as link up/down.
+--- 8< ---
+
+Is that better ?
+
+> 
+> > +
+> > +required:
+> > +  - compatible
+> > +  - fsl,qmc-chan
+> > +
+> > +additionalProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    hdlc {
+> > +        compatible = "fsl,qmc-hdlc";
+> > +        fsl,qmc-chan = <&qmc 16>;  
+> 
+> Where does this node live?
+> 
+> QMC is this[1]? Why don't you just add the compatible to channel@10 in 
+> the QMC node?
+
+Indeed, I will move the properties (compatible and framer phandle) to the
+QMC channel node.
+
+> 
+> Rob
+> 
+> [1] Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml
+
+Best regards,
+Hervé
+
+-- 
+Hervé Codina, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
