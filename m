@@ -2,49 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F26BC78756E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Aug 2023 18:33:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FFE278758B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Aug 2023 18:38:41 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=nFqLNEvP;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=KVloxLgO;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RWpYf0DBrz3cKV
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 02:33:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RWpgM20W4z3cCx
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 02:38:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=nFqLNEvP;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=KVloxLgO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.199; helo=relay9-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::225; helo=relay5-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RWpXn1rxPz3c5S
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Aug 2023 02:32:56 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id E7751FF805;
-	Thu, 24 Aug 2023 16:32:46 +0000 (UTC)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RWpfR1Hlsz3c5S
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Aug 2023 02:37:49 +1000 (AEST)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 877D71C000A;
+	Thu, 24 Aug 2023 16:37:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1692894771;
+	t=1692895064;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=bsZa7pZKZNbOWTMTAuaVYbIB0/GSiNJq7wZvQfer+ls=;
-	b=nFqLNEvPxHjcfURhNwgVrXak5QCYFYuY/xVoa2IdayasepT7+bAW6cycLkh5qxW2v/blqb
-	tIm3mQ5Vd8ytwAOyuhV3ZZOGkBO2OUcbGr1ZxCrLKW+ptuNJt4wNaLv3Xiq43vbcUs4q7h
-	vfD5hXaYwMqEzhVXe+iOUgiiyYBTQr5qnIFUytGfxXFyG5bPC9G49VMll2D7OxAI1LWeVR
-	PjTqnx2eyDwQWulJUtPAco2jbccZtAXUjq6YsfYQFfCqo/PvOaqu9s7dedj24KU02U8dGc
-	5/DxtsUwOk7cg6s2XKm6BNMJ58dM27YmcBy9wLVI0DkEMhSL4xig+IzZEYRZzw==
-Date: Thu, 24 Aug 2023 18:32:45 +0200
+	bh=Qc0gSQGS7Mn6+6HceGgBR0RcK1y+zZ+7o5CalwE35Qk=;
+	b=KVloxLgO93VPdn69vmE6N6DU9zktVCT12MTzLWPMDPd6QSW5Cyv10ovXuYaBhMjzyQv/9c
+	3VkH9JxTRNOAzoQRNkS27UPjZWLzsXauG+kNRvVXc57F46I4YbDOH0UUN5uhnADmNg6pzv
+	34h8ulme0TvRf2x+02fy0b4JHkMRbaOYiyB0j/EuflLjd+u1uLP9nOLKGg29xSqx6ngKPy
+	1MoShQDQWZmPYOTUPDK36k0zOHkeU9RQgOum/JQLEXq5+3PJhkgiJOb2IgH0ck+d8PSKi6
+	fXelw2BwMNgp1Cyxe1xj+D0Xr02pJPibav6zCnQSlg65mbsVTzoChnntAPHqMQ==
+Date: Thu, 24 Aug 2023 18:37:40 +0200
 From: Herve Codina <herve.codina@bootlin.com>
 To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: Re: [PATCH v4 20/28] wan: qmc_hdlc: Add runtime timeslots changes
- support
-Message-ID: <20230824183245.26bea22a@bootlin.com>
-In-Reply-To: <cbdcf645-f473-f10c-a76e-feb6316d2a47@wanadoo.fr>
+Subject: Re: [PATCH v4 21/28] net: wan: Add framer framework support
+Message-ID: <20230824183740.063e1a07@bootlin.com>
+In-Reply-To: <fcc6fed6-4234-559d-f3fb-f3c86482e6b0@wanadoo.fr>
 References: <cover.1692376360.git.christophe.leroy@csgroup.eu>
-	<1364a0742fc76e7d275273dbbc4c97b008ec70a5.1692376361.git.christophe.leroy@csgroup.eu>
-	<cbdcf645-f473-f10c-a76e-feb6316d2a47@wanadoo.fr>
+	<5f671caf19be0a9bb7ea7b96a6c86381e243ca4c.1692376361.git.christophe.leroy@csgroup.eu>
+	<fcc6fed6-4234-559d-f3fb-f3c86482e6b0@wanadoo.fr>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
@@ -68,16 +67,26 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 Hi Christophe,
 
-On Mon, 21 Aug 2023 07:40:26 +0200
+On Mon, 21 Aug 2023 08:02:10 +0200
 Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
 > Le 18/08/2023 à 18:39, Christophe Leroy a écrit :
 > > From: Herve Codina <herve.codina@bootlin.com>
 > > 
-> > QMC channels support runtime timeslots changes but nothing is done at
-> > the QMC HDLC driver to handle these changes.
+> > A framer is a component in charge of an E1/T1 line interface.
+> > Connected usually to a TDM bus, it converts TDM frames to/from E1/T1
+> > frames. It also provides information related to the E1/T1 line.
 > > 
-> > Use existing IFACE ioctl in order to configure the timeslots to use.
+> > The framer framework provides a set of APIs for the framer drivers
+> > (framer provider) to create/destroy a framer and APIs for the framer
+> > users (framer consumer) to obtain a reference to the framer, and
+> > use the framer.
+> > 
+> > This basic implementation provides a framer abstraction for:
+> >   - power on/off the framer
+> >   - get the framer status (line state)
+> >   - be notified on framer status changes
+> >   - get/set the framer configuration
 > > 
 > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 > > Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
@@ -86,184 +95,163 @@ Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 > 
 > Hi,
 > 
-> a few nits below, should there be a v5.
+> should there be a V5, some nits below.
 > 
-> >   drivers/net/wan/fsl_qmc_hdlc.c | 169 ++++++++++++++++++++++++++++++++-
-> >   1 file changed, 168 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/net/wan/fsl_qmc_hdlc.c b/drivers/net/wan/fsl_qmc_hdlc.c
-> > index 4f84ac5fc63e..4b8cb5761fd1 100644
-> > --- a/drivers/net/wan/fsl_qmc_hdlc.c
-> > +++ b/drivers/net/wan/fsl_qmc_hdlc.c
-> > @@ -32,6 +32,7 @@ struct qmc_hdlc {
-> >   	struct qmc_hdlc_desc tx_descs[8];
-> >   	unsigned int tx_out;
-> >   	struct qmc_hdlc_desc rx_descs[4];
-> > +	u32 slot_map;
-> >   };
-> >   
-> >   static inline struct qmc_hdlc *netdev_to_qmc_hdlc(struct net_device *netdev)
-> > @@ -202,6 +203,162 @@ static netdev_tx_t qmc_hdlc_xmit(struct sk_buff *skb, struct net_device *netdev)
-> >   	return NETDEV_TX_OK;
-> >   }
-> >   
-> > +static int qmc_hdlc_xlate_slot_map(struct qmc_hdlc *qmc_hdlc,
-> > +				   u32 slot_map, struct qmc_chan_ts_info *ts_info)
+> ...
+> 
+> > +int framer_power_off(struct framer *framer)
 > > +{
-> > +	u64 ts_mask_avail;
-> > +	unsigned int bit;
-> > +	unsigned int i;
-> > +	u64 ts_mask;
-> > +	u64 map = 0;  
+> > +	int ret;
+> > +
+> > +	mutex_lock(&framer->mutex);
+> > +	if (framer->power_count == 1 && framer->ops->power_off) {
+> > +		ret =  framer->ops->power_off(framer);  
 > 
-> This init looks useless.
-
-Will be removed in the next iteration.
-
-> 
-> > +
-> > +	/* Tx and Rx masks must be identical */
-> > +	if (ts_info->rx_ts_mask_avail != ts_info->tx_ts_mask_avail) {
-> > +		dev_err(qmc_hdlc->dev, "tx and rx available timeslots mismatch (0x%llx, 0x%llx)\n",
-> > +			ts_info->rx_ts_mask_avail, ts_info->tx_ts_mask_avail);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	ts_mask_avail = ts_info->rx_ts_mask_avail;
-> > +	ts_mask = 0;
-> > +	map = slot_map;
-> > +	bit = 0;
-> > +	for (i = 0; i < 64; i++) {
-> > +		if (ts_mask_avail & BIT_ULL(i)) {
-> > +			if (map & BIT_ULL(bit))
-> > +				ts_mask |= BIT_ULL(i);
-> > +			bit++;
-> > +		}
-> > +	}
-> > +
-> > +	if (hweight64(ts_mask) != hweight64(map)) {
-> > +		dev_err(qmc_hdlc->dev, "Cannot translate timeslots 0x%llx -> (0x%llx,0x%llx)\n",
-> > +			map, ts_mask_avail, ts_mask);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	ts_info->tx_ts_mask = ts_mask;
-> > +	ts_info->rx_ts_mask = ts_mask;
-> > +	return 0;
-> > +}
-> > +
-> > +static int qmc_hdlc_xlate_ts_info(struct qmc_hdlc *qmc_hdlc,
-> > +				  const struct qmc_chan_ts_info *ts_info, u32 *slot_map)
-> > +{
-> > +	u64 ts_mask_avail;
-> > +	unsigned int bit;
-> > +	unsigned int i;
-> > +	u64 ts_mask;
-> > +	u64 map = 0;  
-> 
-> This init looks useless.
+>                       ~~
+> Useless extra space
 
 Will be remove in the next iteration.
 
 > 
-> > +
-> > +	/* Tx and Rx masks must be identical */
-> > +	if (ts_info->rx_ts_mask_avail != ts_info->tx_ts_mask_avail) {
-> > +		dev_err(qmc_hdlc->dev, "tx and rx available timeslots mismatch (0x%llx, 0x%llx)\n",
-> > +			ts_info->rx_ts_mask_avail, ts_info->tx_ts_mask_avail);
-> > +		return -EINVAL;
-> > +	}
-> > +	if (ts_info->rx_ts_mask != ts_info->tx_ts_mask) {
-> > +		dev_err(qmc_hdlc->dev, "tx and rx timeslots mismatch (0x%llx, 0x%llx)\n",
-> > +			ts_info->rx_ts_mask, ts_info->tx_ts_mask);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	ts_mask_avail = ts_info->rx_ts_mask_avail;
-> > +	ts_mask = ts_info->rx_ts_mask;
-> > +	map = 0;
-> > +	bit = 0;
-> > +	for (i = 0; i < 64; i++) {
-> > +		if (ts_mask_avail & BIT_ULL(i)) {
-> > +			if (ts_mask & BIT_ULL(i))
-> > +				map |= BIT_ULL(bit);
-> > +			bit++;
+> > +		if (ret < 0) {
+> > +			dev_err(&framer->dev, "framer poweroff failed --> %d\n", ret);
+> > +			mutex_unlock(&framer->mutex);
+> > +			return ret;
 > > +		}
 > > +	}
+> > +	--framer->power_count;
+> > +	mutex_unlock(&framer->mutex);
+> > +	framer_pm_runtime_put(framer);
 > > +
-> > +	if (hweight64(ts_mask) != hweight64(map)) {
-> > +		dev_err(qmc_hdlc->dev, "Cannot translate timeslots (0x%llx,0x%llx) -> 0x%llx\n",
-> > +			ts_mask_avail, ts_mask, map);
-> > +		return -EINVAL;
-> > +	}
+> > +	if (framer->pwr)
+> > +		regulator_disable(framer->pwr);
 > > +
-> > +	if (map >= BIT_ULL(32)) {
-> > +		dev_err(qmc_hdlc->dev, "Slot map out of 32bit (0x%llx,0x%llx) -> 0x%llx\n",
-> > +			ts_mask_avail, ts_mask, map);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	*slot_map = map;
 > > +	return 0;
 > > +}  
 > 
 > ...
 > 
-> > +static int qmc_hdlc_ioctl(struct net_device *netdev, struct if_settings *ifs)
+> > +struct framer *framer_create(struct device *dev, struct device_node *node,
+> > +			     const struct framer_ops *ops)
 > > +{
-> > +	struct qmc_hdlc *qmc_hdlc = netdev_to_qmc_hdlc(netdev);
-> > +	te1_settings te1;
+> > +	int ret;
+> > +	int id;
+> > +	struct framer *framer;
 > > +
-> > +	switch (ifs->type) {
-> > +	case IF_GET_IFACE:
-> > +		ifs->type = IF_IFACE_E1;
-> > +		if (ifs->size < sizeof(te1)) {
-> > +			if (!ifs->size)
-> > +				return 0; /* only type requested */
+> > +	if (WARN_ON(!dev))
+> > +		return ERR_PTR(-EINVAL);
 > > +
-> > +			ifs->size = sizeof(te1); /* data size wanted */
-> > +			return -ENOBUFS;
-> > +		}
+> > +	/* get_status() is mandatory if the provider ask for polling status */
+> > +	if (WARN_ON((ops->flags & FRAMER_FLAG_POLL_STATUS) && !ops->get_status))
+> > +		return ERR_PTR(-EINVAL);
 > > +
-> > +		memset(&te1, 0, sizeof(te1));
+> > +	framer = kzalloc(sizeof(*framer), GFP_KERNEL);
+> > +	if (!framer)
+> > +		return ERR_PTR(-ENOMEM);
 > > +
-> > +		/* Update slot_map */
-> > +		te1.slot_map = qmc_hdlc->slot_map;
-> > +
-> > +		if (copy_to_user(ifs->ifs_ifsu.te1, &te1,  sizeof(te1)))  
+> > +	id = ida_simple_get(&framer_ida, 0, 0, GFP_KERNEL);  
 > 
->                                                           ~~
-> Extra space.
+> ida_alloc()?
+> (ida_simple_get() is deprecated)
 
-Will be fixed in the next iteration.
+Indeed, ida_alloc() and ida_free() will be used in the next iteration.
 
 > 
-> > +			return -EFAULT;
-> > +		return 0;
-> > +
-> > +	case IF_IFACE_E1:
-> > +	case IF_IFACE_T1:
-> > +		if (!capable(CAP_NET_ADMIN))
-> > +			return -EPERM;
-> > +
-> > +		if (netdev->flags & IFF_UP)
-> > +			return -EBUSY;
-> > +
-> > +		if (copy_from_user(&te1, ifs->ifs_ifsu.te1, sizeof(te1)))
-> > +			return -EFAULT;
-> > +
-> > +		return qmc_hdlc_set_iface(qmc_hdlc, ifs->type, &te1);
-> > +
-> > +	default:
-> > +		return hdlc_ioctl(netdev, ifs);
+> > +	if (id < 0) {
+> > +		dev_err(dev, "unable to get id\n");
+> > +		ret = id;
+> > +		goto free_framer;
 > > +	}
+> > +
+> > +	device_initialize(&framer->dev);
+> > +	mutex_init(&framer->mutex);
+> > +	INIT_WORK(&framer->notify_status_work, framer_notify_status_work);
+> > +	INIT_DELAYED_WORK(&framer->polling_work, framer_polling_work);
+> > +	BLOCKING_INIT_NOTIFIER_HEAD(&framer->notifier_list);
+> > +
+> > +	framer->dev.class = framer_class;
+> > +	framer->dev.parent = dev;
+> > +	framer->dev.of_node = node ? node : dev->of_node;
+> > +	framer->id = id;
+> > +	framer->ops = ops;
+> > +
+> > +	ret = dev_set_name(&framer->dev, "framer-%s.%d", dev_name(dev), id);
+> > +	if (ret)
+> > +		goto put_dev;
+> > +
+> > +	/* framer-supply */
+> > +	framer->pwr = regulator_get_optional(&framer->dev, "framer");
+> > +	if (IS_ERR(framer->pwr)) {
+> > +		ret = PTR_ERR(framer->pwr);
+> > +		if (ret == -EPROBE_DEFER)
+> > +			goto put_dev;
+> > +
+> > +		framer->pwr = NULL;
+> > +	}
+> > +
+> > +	ret = device_add(&framer->dev);
+> > +	if (ret)
+> > +		goto put_dev;
+> > +
+> > +	if (pm_runtime_enabled(dev)) {
+> > +		pm_runtime_enable(&framer->dev);
+> > +		pm_runtime_no_callbacks(&framer->dev);
+> > +	}
+> > +
+> > +	return framer;
+> > +
+> > +put_dev:
+> > +	put_device(&framer->dev);  /* calls framer_release() which frees resources */
+> > +	return ERR_PTR(ret);
+> > +
+> > +free_framer:
+> > +	kfree(framer);
+> > +	return ERR_PTR(ret);
+> > +}  
+> 
+> ...
+> 
+> > +void framer_provider_of_unregister(struct framer_provider *framer_provider)
+> > +{
+> > +	mutex_lock(&framer_provider_mutex);
+> > +	list_del(&framer_provider->list);
+> > +	of_node_put(framer_provider->dev->of_node);
+> > +	kfree(framer_provider);
+> > +	mutex_unlock(&framer_provider_mutex);  
+> 
+> If it make sense, of_node_put() and kfree() could maybe be out of the 
+> mutex, in order to match how things are done in 
+> __framer_provider_of_register().
+
+Yes, it makes sense.
+Both of_node_put() and kfree() will be moved out of the mutex.
+
+> 
+> > +}  
+> 
+> ...
+> 
+> > +static void framer_release(struct device *dev)
+> > +{
+> > +	struct framer *framer;
+> > +
+> > +	framer = dev_to_framer(dev);
+> > +	regulator_put(framer->pwr);
+> > +	ida_simple_remove(&framer_ida, framer->id);  
+> 
+> ida_free()?
+> (ida_simple_remove() is deprecated)
+
+Yes
+
+> 
+> > +	kfree(framer);
 > > +}  
 > 
 > ...
 > 
 
 Thanks for the review,
-Best regards,
 Hervé
 
 -- 
