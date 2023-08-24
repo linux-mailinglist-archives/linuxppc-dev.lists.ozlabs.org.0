@@ -1,50 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D49397867A4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Aug 2023 08:43:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E643786829
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Aug 2023 09:15:20 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=JYKyeeGA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Oi4TfOxu;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RWYSC54cpz3cFX
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Aug 2023 16:43:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RWZ9L0HTsz3c92
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Aug 2023 17:15:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=JYKyeeGA;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Oi4TfOxu;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RWYRL6vZrz3c4s
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Aug 2023 16:42:22 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1692859338;
-	bh=+3FMtEy9g7wzDsK7P4LdfGwc1Rcv4enc7seApF7GvHg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=JYKyeeGA9OUXvanKlMOVjOHEpQ/dOvDsNRVa5SVLoCzofqpaV1WvGpTxHfVOdgfXD
-	 pVIjwW6ew4VVXq92J65ULjsRUXJPNYCDUBECdl850L0q6TCh7ddmXdD8+eNbGcTq7u
-	 oHfs4gq/m6/f5aVNEKAXLH4WViN8LFHvh+jIyEZhkGLG/17Mhnprz+w0x+vHxaKikr
-	 k6oB5PxeiCwBiZHUuW96sZoJ3gAuFzJfU1ahl8N2iSB75djAg91siILOauhm5lCSbd
-	 ccDOJCmW5HSOfGFtCas/kFJwLYKMt0obJxJ3AfOQjuS7fwmBt4dgQF1vfk6BY+zb4h
-	 s7YAkP/HrZ3ww==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RWYRG2hzrz4wxN;
-	Thu, 24 Aug 2023 16:42:18 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH] powerpc: Hide empty pt_regs at base of the stack
-Date: Thu, 24 Aug 2023 16:42:10 +1000
-Message-ID: <20230824064210.907266-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.41.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RWZ860TrNz2yst
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Aug 2023 17:14:13 +1000 (AEST)
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37O79t9V007786;
+	Thu, 24 Aug 2023 07:12:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=WlYEZfZCf0ozJ1tZc7MZf5FbLW/t+nxFBsciNbifwtA=;
+ b=Oi4TfOxu6Sxi9puD2LucXhSgcaGmYR6GxEyyMnZWXYCm72n/s5LX8UoY6gPT8kwSjsi0
+ djDZlZcNPPZa8NP2I/NdX09KVld0f+c//v1W72ER5tNZS7lcVMQDnEjC/r7iQKcLlxos
+ 2bc9EnBcQGdO9+Q64ihV9S+dDR4fwsifhCvOY5R0yQZtg0sECyhba0kTqzSOEZyKQIvN
+ NQYLG0DzsapLaDTEyvB2uUuVuBkxL0n81D1HYhWBDGiPMS+UmOavGUyrPYJyJdqpfPiQ
+ zS8zT7UmJIDKtW1K8r8o3g2wfNzWMOtX0eQjC8BC5Rh7YzS3U5XpbPnNkMSWv7gaLJx2 wg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sp2ba09ak-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 24 Aug 2023 07:12:55 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37O7B3NX013367;
+	Thu, 24 Aug 2023 07:12:54 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sp2ba09a0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 24 Aug 2023 07:12:54 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 37O4MerU016435;
+	Thu, 24 Aug 2023 07:12:52 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sn227w42u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 24 Aug 2023 07:12:52 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 37O7Cnei9896518
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 24 Aug 2023 07:12:49 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3B2B020043;
+	Thu, 24 Aug 2023 07:12:49 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 39CD720040;
+	Thu, 24 Aug 2023 07:12:47 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.171.83.96])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 24 Aug 2023 07:12:47 +0000 (GMT)
+Date: Thu, 24 Aug 2023 09:12:45 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Kefeng Wang <wangkefeng.wang@huawei.com>
+Subject: Re: [PATCH rfc v2 01/10] mm: add a generic VMA lock-based page fault
+ handler
+Message-ID: <ZOcC7RsYy5yJLgNb@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+References: <20230821123056.2109942-1-wangkefeng.wang@huawei.com>
+ <20230821123056.2109942-2-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230821123056.2109942-2-wangkefeng.wang@huawei.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: XRoDdEmpcV5g5_mmP6WT_85M4g4eI751
+X-Proofpoint-ORIG-GUID: RuEgWxQsYQ1DVXl1GZzqprjH3NxBC5KY
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-24_03,2023-08-22_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
+ priorityscore=1501 impostorscore=0 bulkscore=0 clxscore=1011
+ suspectscore=0 mlxlogscore=456 mlxscore=0 spamscore=0 malwarescore=0
+ lowpriorityscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2308100000 definitions=main-2308240057
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,117 +97,149 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: joel@jms.id.au, npiggin@gmail.com
+Cc: x86@kernel.org, loongarch@lists.linux.dev, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org, "H . Peter Anvin" <hpa@zytor.com>, WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, willy@infradead.org, Ingo Molnar <mingo@redhat.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>, surenb@google.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, Sven
+  Schnelle <svens@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-A thread started via eg. user_mode_thread() runs in the kernel to begin
-with and then may later return to userspace. While it's running in the
-kernel it has a pt_regs at the base of its kernel stack, but that
-pt_regs is all zeroes.
+On Mon, Aug 21, 2023 at 08:30:47PM +0800, Kefeng Wang wrote:
 
-If the thread oopses in that state, it leads to an ugly stack trace with
-a big block of zero GPRs, as reported by Joel:
+Hi Kefeng,
 
-  Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(0,0)
-  CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.5.0-rc7-00004-gf7757129e3de-dirty #3
-  Hardware name: IBM PowerNV (emulated by qemu) POWER9 0x4e1200 opal:v7.0 PowerNV
-  Call Trace:
-  [c0000000036afb00] [c0000000010dd058] dump_stack_lvl+0x6c/0x9c (unreliable)
-  [c0000000036afb30] [c00000000013c524] panic+0x178/0x424
-  [c0000000036afbd0] [c000000002005100] mount_root_generic+0x250/0x324
-  [c0000000036afca0] [c0000000020057d0] prepare_namespace+0x2d4/0x344
-  [c0000000036afd20] [c0000000020049c0] kernel_init_freeable+0x358/0x3ac
-  [c0000000036afdf0] [c0000000000111b0] kernel_init+0x30/0x1a0
-  [c0000000036afe50] [c00000000000debc] ret_from_kernel_user_thread+0x14/0x1c
-  --- interrupt: 0 at 0x0
-  NIP:  0000000000000000 LR: 0000000000000000 CTR: 0000000000000000
-  REGS: c0000000036afe80 TRAP: 0000   Not tainted  (6.5.0-rc7-00004-gf7757129e3de-dirty)
-  MSR:  0000000000000000 <>  CR: 00000000  XER: 00000000
-  CFAR: 0000000000000000 IRQMASK: 0
-  GPR00: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-  GPR04: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-  GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-  GPR12: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-  GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-  GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-  GPR24: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-  GPR28: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-  NIP [0000000000000000] 0x0
-  LR [0000000000000000] 0x0
-  --- interrupt: 0
+> The ARCH_SUPPORTS_PER_VMA_LOCK are enabled by more and more architectures,
+> eg, x86, arm64, powerpc and s390, and riscv, those implementation are very
+> similar which results in some duplicated codes, let's add a generic VMA
+> lock-based page fault handler try_to_vma_locked_page_fault() to eliminate
+> them, and which also make us easy to support this on new architectures.
+> 
+> Since different architectures use different way to check vma whether is
+> accessable or not, the struct pt_regs, page fault error code and vma flags
+> are added into struct vm_fault, then, the architecture's page fault code
+> could re-use struct vm_fault to record and check vma accessable by each
+> own implementation.
+> 
+> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> ---
+>  include/linux/mm.h       | 17 +++++++++++++++++
+>  include/linux/mm_types.h |  2 ++
+>  mm/memory.c              | 39 +++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 58 insertions(+)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 3f764e84e567..22a6f4c56ff3 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -512,9 +512,12 @@ struct vm_fault {
+>  		pgoff_t pgoff;			/* Logical page offset based on vma */
+>  		unsigned long address;		/* Faulting virtual address - masked */
+>  		unsigned long real_address;	/* Faulting virtual address - unmasked */
+> +		unsigned long fault_code;	/* Faulting error code during page fault */
+> +		struct pt_regs *regs;		/* The registers stored during page fault */
+>  	};
+>  	enum fault_flag flags;		/* FAULT_FLAG_xxx flags
+>  					 * XXX: should really be 'const' */
+> +	vm_flags_t vm_flags;		/* VMA flags to be used for access checking */
+>  	pmd_t *pmd;			/* Pointer to pmd entry matching
+>  					 * the 'address' */
+>  	pud_t *pud;			/* Pointer to pud entry matching
+> @@ -774,6 +777,9 @@ static inline void assert_fault_locked(struct vm_fault *vmf)
+>  struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
+>  					  unsigned long address);
+>  
+> +bool arch_vma_access_error(struct vm_area_struct *vma, struct vm_fault *vmf);
+> +vm_fault_t try_vma_locked_page_fault(struct vm_fault *vmf);
+> +
+>  #else /* CONFIG_PER_VMA_LOCK */
+>  
+>  static inline bool vma_start_read(struct vm_area_struct *vma)
+> @@ -801,6 +807,17 @@ static inline void assert_fault_locked(struct vm_fault *vmf)
+>  	mmap_assert_locked(vmf->vma->vm_mm);
+>  }
+>  
+> +static inline struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
+> +		unsigned long address)
+> +{
+> +	return NULL;
+> +}
+> +
+> +static inline vm_fault_t try_vma_locked_page_fault(struct vm_fault *vmf)
+> +{
+> +	return VM_FAULT_NONE;
+> +}
+> +
+>  #endif /* CONFIG_PER_VMA_LOCK */
+>  
+>  extern const struct vm_operations_struct vma_dummy_vm_ops;
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index f5ba5b0bc836..702820cea3f9 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -1119,6 +1119,7 @@ typedef __bitwise unsigned int vm_fault_t;
+>   * fault. Used to decide whether a process gets delivered SIGBUS or
+>   * just gets major/minor fault counters bumped up.
+>   *
+> + * @VM_FAULT_NONE:		Special case, not starting to handle fault
+>   * @VM_FAULT_OOM:		Out Of Memory
+>   * @VM_FAULT_SIGBUS:		Bad access
+>   * @VM_FAULT_MAJOR:		Page read from storage
+> @@ -1139,6 +1140,7 @@ typedef __bitwise unsigned int vm_fault_t;
+>   *
+>   */
+>  enum vm_fault_reason {
+> +	VM_FAULT_NONE		= (__force vm_fault_t)0x000000,
+>  	VM_FAULT_OOM            = (__force vm_fault_t)0x000001,
+>  	VM_FAULT_SIGBUS         = (__force vm_fault_t)0x000002,
+>  	VM_FAULT_MAJOR          = (__force vm_fault_t)0x000004,
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 3b4aaa0d2fff..60fe35db5134 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -5510,6 +5510,45 @@ struct vm_area_struct *lock_vma_under_rcu(struct mm_struct *mm,
+>  	count_vm_vma_lock_event(VMA_LOCK_ABORT);
+>  	return NULL;
+>  }
+> +
+> +#ifdef CONFIG_PER_VMA_LOCK
+> +bool __weak arch_vma_access_error(struct vm_area_struct *vma, struct vm_fault *vmf)
+> +{
+> +	return (vma->vm_flags & vmf->vm_flags) == 0;
+> +}
+> +#endif
+> +
+> +vm_fault_t try_vma_locked_page_fault(struct vm_fault *vmf)
+> +{
+> +	vm_fault_t fault = VM_FAULT_NONE;
+> +	struct vm_area_struct *vma;
+> +
+> +	if (!(vmf->flags & FAULT_FLAG_USER))
+> +		return fault;
+> +
+> +	vma = lock_vma_under_rcu(current->mm, vmf->real_address);
+> +	if (!vma)
+> +		return fault;
+> +
+> +	if (arch_vma_access_error(vma, vmf)) {
+> +		vma_end_read(vma);
+> +		return fault;
+> +	}
+> +
+> +	fault = handle_mm_fault(vma, vmf->real_address,
+> +				vmf->flags | FAULT_FLAG_VMA_LOCK, vmf->regs);
+> +
+> +	if (!(fault & (VM_FAULT_RETRY | VM_FAULT_COMPLETED)))
+> +		vma_end_read(vma);
 
-The all-zero pt_regs looks ugly and conveys no useful information, other
-than its presence. So detect that case and just show the presence of the
-frame by printing the interrupt marker, eg:
+Could you please explain how vma_end_read() call could be conditional?
 
-  Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(0,0)
-  CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.5.0-rc3-00126-g18e9506562a0-dirty #301
-  Hardware name: IBM pSeries (emulated by qemu) POWER9 (raw) 0x4e1202 0xf000005 of:SLOF,HEAD hv:linux,kvm pSeries
-  Call Trace:
-  [c000000003aabb00] [c000000001143db8] dump_stack_lvl+0x6c/0x9c (unreliable)
-  [c000000003aabb30] [c00000000014c624] panic+0x178/0x424
-  [c000000003aabbd0] [c0000000020050fc] mount_root_generic+0x250/0x324
-  [c000000003aabca0] [c0000000020057cc] prepare_namespace+0x2d4/0x344
-  [c000000003aabd20] [c0000000020049bc] kernel_init_freeable+0x358/0x3ac
-  [c000000003aabdf0] [c0000000000111b0] kernel_init+0x30/0x1a0
-  [c000000003aabe50] [c00000000000debc] ret_from_kernel_user_thread+0x14/0x1c
-  --- interrupt: 0 at 0x0
-
-To avoid ever suppressing a valid pt_regs make sure the pt_regs has a
-zero MSR and TRAP value, and is located at the very base of the stack.
-
-Reported-by: Joel Stanley <joel@jms.id.au>
-Reported-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/kernel/process.c | 26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
-
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index b68898ac07e1..392404688cec 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -2258,6 +2258,22 @@ unsigned long __get_wchan(struct task_struct *p)
- 	return ret;
- }
- 
-+static bool empty_user_regs(struct pt_regs *regs, struct task_struct *tsk)
-+{
-+	unsigned long stack_page;
-+
-+	// A non-empty pt_regs should never have a zero MSR or TRAP value.
-+	if (regs->msr || regs->trap)
-+		return false;
-+
-+	// Check it sits at the very base of the stack
-+	stack_page = (unsigned long)task_stack_page(tsk);
-+	if ((unsigned long)(regs + 1) != stack_page + THREAD_SIZE)
-+		return false;
-+
-+	return true;
-+}
-+
- static int kstack_depth_to_print = CONFIG_PRINT_STACK_DEPTH;
- 
- void __no_sanitize_address show_stack(struct task_struct *tsk,
-@@ -2322,9 +2338,13 @@ void __no_sanitize_address show_stack(struct task_struct *tsk,
- 			lr = regs->link;
- 			printk("%s--- interrupt: %lx at %pS\n",
- 			       loglvl, regs->trap, (void *)regs->nip);
--			__show_regs(regs);
--			printk("%s--- interrupt: %lx\n",
--			       loglvl, regs->trap);
-+
-+			// Detect the case of an empty pt_regs at the very base
-+			// of the stack and suppress showing it in full.
-+			if (!empty_user_regs(regs, tsk)) {
-+				__show_regs(regs);
-+				printk("%s--- interrupt: %lx\n", loglvl, regs->trap);
-+			}
- 
- 			firstframe = 1;
- 		}
--- 
-2.41.0
-
+> +
+> +	if (fault & VM_FAULT_RETRY)
+> +		count_vm_vma_lock_event(VMA_LOCK_RETRY);
+> +	else
+> +		count_vm_vma_lock_event(VMA_LOCK_SUCCESS);
+> +
+> +	return fault;
+> +}
+> +
+>  #endif /* CONFIG_PER_VMA_LOCK */
+>  
+>  #ifndef __PAGETABLE_P4D_FOLDED
