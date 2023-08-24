@@ -1,134 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D5FE787B3E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 00:11:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9EDE787B8C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 00:37:12 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=TBwNzf3X;
-	dkim=pass (2048-bit key) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=TBwNzf3X;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=mWNn9xaQ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RWy3M3Fmqz3cHd
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 08:11:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RWyd22fClz3cKV
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 08:37:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=TBwNzf3X;
-	dkim=pass (2048-bit key) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=TBwNzf3X;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=mWNn9xaQ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=seco.com (client-ip=52.100.20.247; helo=eur05-db8-obe.outbound.protection.outlook.com; envelope-from=sean.anderson@seco.com; receiver=lists.ozlabs.org)
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05hn2247.outbound.protection.outlook.com [52.100.20.247])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::435; helo=mail-pf1-x435.google.com; envelope-from=keescook@chromium.org; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RWy2P0kwYz2yDd
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Aug 2023 08:10:34 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=79WQMo1An+kEjfD00O/FIsavhTriaIzAE1XWuOS+3hA=;
- b=TBwNzf3XKNPB7c8XLAMgR6IWsB7cuX7kJSU1iDUUJZfmsl4Gz/Tu4eSZU0xDha4VivD5Mn1fxvGD1aZopyL679vvtQyqk0f7mXf7Q1YT+8wHqv4+L7bn+p+IhOFoQ3oUPz6nY2vLe7OWsW2SGDUfs/ymPR/2vB9s3P27ZXotvH0Atcl3qQZ5GXGBirhMubpjeqHZ8H8GDmJs6qpELJTxiiLumnXTSCDOQxzKA+QkpQCWSmfwlm/Hqm06KK9oVhzVR6mdmv/MMPFmNPuKQbqsi3uX18XdzP7a5qj0n57WJLneVJj633Toc/LGAs9YV/cjWm5AYnFM3eP8efH9GsC/+A==
-Received: from DB3PR08CA0010.eurprd08.prod.outlook.com (2603:10a6:8::23) by
- AM7PR03MB6264.eurprd03.prod.outlook.com (2603:10a6:20b:13d::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6699.27; Thu, 24 Aug 2023 22:10:14 +0000
-Received: from DB8EUR05FT015.eop-eur05.prod.protection.outlook.com
- (2603:10a6:8:0:cafe::e2) by DB3PR08CA0010.outlook.office365.com
- (2603:10a6:8::23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.30 via Frontend
- Transport; Thu, 24 Aug 2023 22:10:14 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 20.160.56.85)
- smtp.mailfrom=seco.com; dkim=pass (signature was verified)
- header.d=seco.com;dmarc=pass action=none header.from=seco.com;
-Received-SPF: Pass (protection.outlook.com: domain of seco.com designates
- 20.160.56.85 as permitted sender) receiver=protection.outlook.com;
- client-ip=20.160.56.85; helo=inpost-eu.tmcas.trendmicro.com; pr=C
-Received: from inpost-eu.tmcas.trendmicro.com (20.160.56.85) by
- DB8EUR05FT015.mail.protection.outlook.com (10.233.238.127) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6723.16 via Frontend Transport; Thu, 24 Aug 2023 22:10:14 +0000
-Received: from outmta (unknown [192.168.82.135])
-	by inpost-eu.tmcas.trendmicro.com (Trend Micro CAS) with ESMTP id DE6A0200813A8;
-	Thu, 24 Aug 2023 22:10:13 +0000 (UTC)
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (unknown [104.47.17.175])
-	by repre.tmcas.trendmicro.com (Trend Micro CAS) with ESMTPS id 66CCA2008006E;
-	Thu, 24 Aug 2023 22:10:08 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aim7+34kmdpnPLquMdpMRc6Nsn2oyUjqA8iEUgrxtZ+pJCplXJw4CvoAGHv2L4HA1mNEUw3heDouacQ0q2ztldFJvCp2kVRGK7GYsGaD4BA99ZMksNM1OxNW7+TvDUp2Eh83A11WBHXCns4LSY3q8fboaHoG3yU1S6mJXVlEeW2swa+a7kYXE/WzyGJCMsbGxzf7rpY6bCpnHjbI9EvzxUOX/DOx9V4EyUWJnr/yeubBL4vX7YyvDwA+fSJjLWTlRl8QjH7DtP/ss7IigV0i3b5CNcHKlVSzYf9wT83eE7O6DXVdHb94ngTLXc4S1RCcU85HTBhmOVxR1yxYQmNcAw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=79WQMo1An+kEjfD00O/FIsavhTriaIzAE1XWuOS+3hA=;
- b=TOBsdNoED18bv+w/PUjLXmP1XEz13SIGIpYPuR95Jitc/AuWvA0X469zRrr0nGZMgPB4dLg/AgsxkdhZNkbLZxV6eIyHFMvYPVNA+SAD0SEnG5z77ke3GUnK6v8DpMSSvULGbHdL6ans3Nsje0J7FGryGmlbcasYlYJyvEmo1zNmp8YbWvpmqgyq8m0n90ESznegISB+RdFnVp4czxHu6mnUQOGyhVuDAeo3QZNQeUcQFxJK9a6YYYm9H3daMs05CbS2+cSnmq3zyeO/hZpTa88smvIcg+LzB6V6HaBZJxDkjxsghoyV6WaZ3Ephm+jsNhFundDK1F1VOodWoy8gmw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=seco.com; dmarc=pass action=none header.from=seco.com;
- dkim=pass header.d=seco.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=79WQMo1An+kEjfD00O/FIsavhTriaIzAE1XWuOS+3hA=;
- b=TBwNzf3XKNPB7c8XLAMgR6IWsB7cuX7kJSU1iDUUJZfmsl4Gz/Tu4eSZU0xDha4VivD5Mn1fxvGD1aZopyL679vvtQyqk0f7mXf7Q1YT+8wHqv4+L7bn+p+IhOFoQ3oUPz6nY2vLe7OWsW2SGDUfs/ymPR/2vB9s3P27ZXotvH0Atcl3qQZ5GXGBirhMubpjeqHZ8H8GDmJs6qpELJTxiiLumnXTSCDOQxzKA+QkpQCWSmfwlm/Hqm06KK9oVhzVR6mdmv/MMPFmNPuKQbqsi3uX18XdzP7a5qj0n57WJLneVJj633Toc/LGAs9YV/cjWm5AYnFM3eP8efH9GsC/+A==
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=seco.com;
-Received: from DB9PR03MB8847.eurprd03.prod.outlook.com (2603:10a6:10:3dd::13)
- by AM7PR03MB6673.eurprd03.prod.outlook.com (2603:10a6:20b:1b1::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.27; Thu, 24 Aug
- 2023 22:10:06 +0000
-Received: from DB9PR03MB8847.eurprd03.prod.outlook.com
- ([fe80::21bd:6579:b3d1:e5f7]) by DB9PR03MB8847.eurprd03.prod.outlook.com
- ([fe80::21bd:6579:b3d1:e5f7%5]) with mapi id 15.20.6699.027; Thu, 24 Aug 2023
- 22:10:00 +0000
-Message-ID: <54621dd6-275b-fd9d-a158-6871f1a04fd1@seco.com>
-Date: Thu, 24 Aug 2023 18:09:52 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.1
-Subject: Re: [PATCH v14 00/15] phy: Add support for Lynx 10G SerDes
-Content-Language: en-US
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-References: <26623d0c-8a5a-614b-7df7-69214aaec524@seco.com>
- <20230811163637.bs7a46juasjgnmf4@skbuf>
- <20230821124952.mraqqp7pxlo56gkh@skbuf>
- <a2e3fcad-9857-f1b3-8ada-efb2013a4bf5@seco.com>
- <20230821181349.hls6pukp5d6rc5av@LXL00007.wbi.nxp.com>
- <73d59dd2-88f0-3c1a-0de2-de2e050cba5a@seco.com>
- <20230821195823.ns55h3livxgol7fp@skbuf>
- <a66c9abf-5351-62b6-5573-cae38e6768e2@seco.com>
- <20230821224834.ppk4hmjyajupy7va@skbuf>
- <a4828cf7-9cac-286f-0aba-fcd1688c8422@seco.com>
- <20230821235917.mzawnkoi7oj4zgm6@skbuf>
-From: Sean Anderson <sean.anderson@seco.com>
-In-Reply-To: <20230821235917.mzawnkoi7oj4zgm6@skbuf>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BL0PR02CA0053.namprd02.prod.outlook.com
- (2603:10b6:207:3d::30) To DB9PR03MB8847.eurprd03.prod.outlook.com
- (2603:10a6:10:3dd::13)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RWyc402DSz2yhT
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Aug 2023 08:36:17 +1000 (AEST)
+Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-68a3ced3ec6so310964b3a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Aug 2023 15:36:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1692916572; x=1693521372;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IQNELjD9r6ncwNErU4xuVmyyowwITagxnHItwiBZGrI=;
+        b=mWNn9xaQh4q3l3U90jKHwZ2ZEd4bGDJnSnaHc7vLVMzLPXQ8/J7+Pl6/YVGxWcZmbF
+         dhpgwBg+v+6EREmJJ5x9+duUuJyt9SAsNlPtLBu7PDN3qZ60pRT8XhqYDqJgLIHUim9U
+         d07O/fy1n+aQq39qB2u01JYtIVhyu6UFqvx8k=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692916572; x=1693521372;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IQNELjD9r6ncwNErU4xuVmyyowwITagxnHItwiBZGrI=;
+        b=XXVMDFTAxWQ7C+6loEvELnK8N6A3Q28Pp2SbWfFTngEy938wS/jlB3fRpXzt3xkJ82
+         o3LEzUOIm8y0cb1XvZ8+59bbOX4I5apY1hs830dpsqL1iDnk0zVsP5XDigdrcEOhZ9S7
+         6UpBu4H9nwfRCwoA/WHN7H81/4JwF9Yy/OWFCkMWl5v6QOSa+dOSnvCRNAbrPP8iEs0/
+         7NXugALIIyQ67PAeY3F2e7EZ9GimojE/zYFtb9k7c/rVkuT2TO5f2ZjXsr5plEIazIBP
+         42bhrGJH70NAu5UZD68MAFKY3QsUx5TXFI9YLP5v4+y/ghoFGonn6jp/oxf0A44xnPf1
+         uzww==
+X-Gm-Message-State: AOJu0YxOVHif3/b3QIrxC4XIJ22gobBCH3O7xDagOo0rEoJPfZVQgfqE
+	+sb/oBPhixEgwIlbAekNOxoNTw==
+X-Google-Smtp-Source: AGHT+IHJ/TliPENGdo+B7a1Pbup7s10hHNj/3Lp+oQRDTxW2klVd28ofL2vRsevKBfDD315FF/w9pw==
+X-Received: by 2002:a05:6a20:42a5:b0:132:a85f:b20c with SMTP id o37-20020a056a2042a500b00132a85fb20cmr21691642pzj.38.1692916572618;
+        Thu, 24 Aug 2023 15:36:12 -0700 (PDT)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id t25-20020a63a619000000b0056da0ae25cdsm122431pge.80.2023.08.24.15.36.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Aug 2023 15:36:11 -0700 (PDT)
+From: Kees Cook <keescook@chromium.org>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH] kbuild: Show Kconfig fragments in "help"
+Date: Thu, 24 Aug 2023 15:36:10 -0700
+Message-Id: <20230824223606.never.762-kees@kernel.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic: 	DB9PR03MB8847:EE_|AM7PR03MB6673:EE_|DB8EUR05FT015:EE_|AM7PR03MB6264:EE_
-X-MS-Office365-Filtering-Correlation-Id: 810daba8-3d73-42e2-bed7-08dba4eee451
-X-TrendMicro-CAS-OUT-LOOP-IDENTIFIER: 656f966764b7fb185830381c646b41a1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted: BCL:0;
-X-Microsoft-Antispam-Message-Info-Original:  Xi8IaRb8efHNhChiX9wqVwb3hgrjvYpcIGB2Egp8N0XhCeqwAFxHdjm2C0w+nZgscwQfv0JxiJ2JcPxHRogAixlfyp1H7rvqHFm4z7qA5jWM5HZcmh1D1Y56qth0XnTRPvjtbCNDNSpZptJog0n4XeSAXsopBGH8SQUiFH+ECQbeUZu/qfoc9PEwOiaRtuh3JakXfClT8vjo03DgR555YXByDf7xNYBK56h9iidOna22Kg+EF1UMfmmkgtqKp42jp43/LiZUD1pmQgtmD5WrqhVWk5SQ+jy8DZbT31FSEO51WfT/0ytsSEqFfwlKnBsiptMv0IMPRh5BBR67FGuFmVJXzVVXG2CV1NPjJdSwljhW5az1Hp8HkhAje4VbFj/VGqP/fBUybHWv4EVha2hHQlsF5w9iUl2G80JO4U174muQF0O3e3ivq5i9T7JKbPXCxXBbvrF0N6k3dVqtQpPKUdIh4cLRTtPz8oEuil4mmCZrQgVTX3VEO7fR3KnCiPliZY2oD3TlqlHU9jAE/rZPZXx5CYagiTSXyJJsxjYfujAtiyZuMP9n/aTQthyMLFrJtiix7LbFRWphaMzwj19WZ7vW5Dwii0wXeJSDJP9u9TCdiTn9g16OlCUf12m8ERHlUOR/OLTMaL6jzQE+yhR5b/dBzmkI9nUJ/YuWwz5jRWIlSLHMlHXrAU/21PQiolKl
-X-Forefront-Antispam-Report-Untrusted:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR03MB8847.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(366004)(346002)(396003)(136003)(39850400004)(186009)(1800799009)(451199024)(66476007)(54906003)(66946007)(66556008)(316002)(6916009)(478600001)(26005)(6666004)(38350700002)(38100700002)(41300700001)(31696002)(6506007)(53546011)(6486002)(86362001)(52116002)(2906002)(6512007)(31686004)(4326008)(8676002)(8936002)(2616005)(5660300002)(7416002)(44832011)(36756003)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR03MB6673
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:  DB8EUR05FT015.eop-eur05.prod.protection.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs: 	280fc6de-da17-4c96-83d6-08dba4eedb8d
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	Cr10FIPobyKAN3bFuwPu+idIZMqCR+e3lgWu1b24poVeBvyrfl/sm3qVKuM49452UH+NAHZMBZWdPypLyxttv7PsyQmsSUtpQrJxCkLNxGkSkeeCYChRskeyZYGxHC7y0UGgAVsq9u6MaLo1DcONIAtZLurxv6KrJ8ItdnyemA8N2dKhbM0LlfBqmpVY3Y/9F6HTdoBVy2NHt7sBqmlCRnyrHvADP1jt3EMq1KFCoGAAxCmhZVGXcsf5YqJBhHp/BPO1tUmCEVHer+LmqgBlDPRuKOz78BR/iPJc4xymCcPrwncH3HPdTK7e9XIV0nRFyWZN7Gh9bg2I8vtqojxMVPMhDQ3zqpK9ykAVqOW56fDO6y9tBhfGTw+Y3HGnL80PK+nSC7hK2sFjsrrpCG+s7RSJevhQNK9eIwD0xgxgNgenT0rmMuEYVswpY5gPDec8MgWVKAw0OzdZXbMhWsgx9kmocf2WWpgPFo2fExirkAlUIm805abtArpYpw5dKCl+LARp6jxb2uQymMRSm2ktm7mp4go69id1yx74c4I1HA9G9hFosGVkfxc5Io/6YoNYcLA8hMG1D2yyPYWZF2sfNdtn+2klkfK7wLStegT7qgKrCcH5ZlK6BQg/vGdsn030ltkqRVOAi9fI8Y8/p+rAQWilQHNO9BEyH7wNtUhNMlx0i7lh/aQUIhu4GNLZ082RBLYCtO2s/vc/+gOpTp8IG02Plux1qQca4F4qnqNAJQf4Kg4ZWZmvKJGEKH2qHCf4V/Yt4UFAnOJk4vZbAYftE1phoQcfrzVQbd8fwwBKvSC5j91OspwVY+709R0RbgZ/
-X-Forefront-Antispam-Report: 	CIP:20.160.56.85;CTRY:NL;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:inpost-eu.tmcas.trendmicro.com;PTR:inpost-eu.tmcas.trendmicro.com;CAT:NONE;SFS:(13230031)(376002)(39850400004)(396003)(136003)(346002)(82310400011)(186009)(1800799009)(451199024)(5400799018)(36840700001)(46966006)(2616005)(5660300002)(34070700002)(4326008)(8676002)(8936002)(336012)(47076005)(36756003)(7416002)(44832011)(36860700001)(26005)(40480700001)(82740400003)(7596003)(356005)(7636003)(6666004)(70586007)(70206006)(54906003)(6916009)(316002)(478600001)(31686004)(53546011)(41300700001)(6512007)(6506007)(2906002)(86362001)(6486002)(31696002)(43740500002)(12100799039);DIR:OUT;SFP:1501;
-X-OriginatorOrg: seco.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Aug 2023 22:10:14.2166
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 810daba8-3d73-42e2-bed7-08dba4eee451
-X-MS-Exchange-CrossTenant-Id: bebe97c3-6438-442e-ade3-ff17aa50e733
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=bebe97c3-6438-442e-ade3-ff17aa50e733;Ip=[20.160.56.85];Helo=[inpost-eu.tmcas.trendmicro.com]
-X-MS-Exchange-CrossTenant-AuthSource: 	DB8EUR05FT015.eop-eur05.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR03MB6264
+X-Developer-Signature: v=1; a=openpgp-sha256; l=19925; i=keescook@chromium.org;
+ h=from:subject:message-id; bh=Y0hEgEolJmkc66ZpEOZIuED4Y5POHofSLOrN6lA4xz0=;
+ b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBk59tZi0qXSZLrk9vWztqgJhSrEQowuWl8TDY76
+ td80l1qBp6JAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCZOfbWQAKCRCJcvTf3G3A
+ JgdrD/9NVHEFfda2z2Q2f4X4pa9Q+6bKNb5CnGkY2TnLQT77D5Gnj4GoSnR5BcEd1KSYKTCuvwZ
+ 0R9I6ZLZ1q2kddp02Hkdl5UeondtQxgu5UljAHozzn4r8ynaPdDRuG/GKcO1Jng8w56XwKCHd4U
+ eDQJBNgu8MvOKXLHYjY9TCCJc7G5XFV8cHPBNVBxUSlMvdQgxL7MTE9B429ujzl0YayB3d/8piQ
+ wyu38mrzZXb7BNN6wYgnXVNlfgtiAXmh3ynonED1LxwZoVnLFaKQBRWMdQCepKhTDriJGnEOWbO
+ tWhHjg/2XCbcUySnuhDTh4dEUHppHvAqIrNm7rRnBRo8ExAtboc5qEpwB4u4yFDia08cSAEpF7H
+ UyASXsW7KXe4INjLMp4QCExnQQgd9lLE29stlIQ0Xpdb+JxZOVHMbXLQ5Cmey2tyqqJ0TOdwT5P
+ NvbDv/UDCjwDUgEqCG/dpQTmmxPzAyG88a9vG9Eilnm8n485Y+r8VRiy1P9NNJ93HxhYWenL6YG
+ TNCK0zSMaQigUi+pwlnrpNYyW+OjvwaERLtqHgQP9sxzH/Qwdur8/1mt7cQwFWZCt5UD0boFV39
+ KHB6UH3MVSROFAIMEIl0DKIVxNkC23aGQ3Yz6ctKZa404/8QdXjB5VFcSrX9UrF5ZhrGTlzzgpG
+ 5GW4wO K+cFT3C+A==
+X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -140,29 +87,503 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?UTF-8?B?RmVybuKUnMOtbmRleiBSb2phcw==?= <noltari@gmail.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Madalin Bucur <madalin.bucur@nxp.com>, Michael Turquette <mturquette@baylibre.com>, Ioana Ciornei <ioana.ciornei@nxp.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Jonas Gorski <jonas.gorski@gmail.com>, linux-phy@lists.infradead.org, linux-clk@vger.kernel.org, Kishon Vijay Abraham I <kishon@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Bartosz Golaszewski <brgl@bgdev.pl>, linux-doc@vger.kernel.org, Camelia Alexandra Groza <camelia.groza@nxp.com>, Linus Walleij <linus.walleij@linaro.org>, devicetree@vger.kernel.org, linux-gpio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, linux-arm-kernel@lists.infradead.org, Stephen Boyd <sboyd@kernel.org>, linuxppc-dev@lists.ozlabs.org, Li Yang <leoyang.li@nxp.com>, Vinod Koul <vkoul@kernel.org>, Shawn Guo <shawnguo@kernel.org>
+Cc: linux-s390@vger.kernel.org, Kees Cook <keescook@chromium.org>, linux-kbuild@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 8/21/23 19:59, Vladimir Oltean wrote:
-> On Mon, Aug 21, 2023 at 07:39:15PM -0400, Sean Anderson wrote:
->> Well, I think we should take the opportunity to think about the hardware
->> which exists and how we plan to model it. IMO grouping lanes into a
->> single phy simplifies both the phy driver and the mac driver.
-> 
-> Ok, but ungrouped for backplane and grouped for !backplane? For the KR
-> link modes, parallel link training, with separate consumers per lanes in
-> a group, will be needed per lane.
+Doing a "make help" would show only hard-coded Kconfig targets and
+depended on the archhelp target to include ".config" targets. There was
+nothing showing global kernel/configs/ targets. Solve this by walking
+the wildcard list and include them in the output, using the first comment
+line as the help text.
 
-Hm, this is the sort of thing I hadn't considered since separate link
-training isn't necessary for lynx 10g. But couldn't this be done by
-adding a "lane" parameter to phy_configure_opts_xgkr?
+Update all Kconfig fragments to include help text and adjust archhelp
+targets to avoid redundancy.
 
-Although, I am not sure how the driver is supposed to figure out what
-coefficients to use. c73 implies that the training frame should be sent
-on each lane. So I expected that there would be four copies of the
-link coefficient registers. However, when reading the LX2160ARM, I only
-saw one set of registers (e.g. 26.6.3.3). So is link training done
-serially? I didn't see anything like a "lane select" field.
+Adds the following section to "help" target output:
 
---Sean
+Configuration fragment targets (for enabling various Kconfig items):
+  debug.config         - Debugging for CI systems and finding regressions
+  kvm_guest.config     - Bootable as a KVM guest
+  nopm.config          - Disable Power Management
+  rust.config          - Enable Rust
+  tiny-base.config     - Minimal options for tiny systems
+  tiny.config          - Smallest possible kernel image
+  x86_debug.config     - Debugging options for tip tree testing
+  xen.config           - Bootable as a Xen guest
+  tiny.config          - x86-specific options for a small kernel image
+  xen.config           - x86-specific options for a Xen virtualization guest
+
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: x86@kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-riscv@lists.infradead.org
+Cc: linux-s390@vger.kernel.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+---
+ Makefile                                   |  1 -
+ arch/arm/configs/dram_0x00000000.config    |  1 +
+ arch/arm/configs/dram_0xc0000000.config    |  1 +
+ arch/arm/configs/dram_0xd0000000.config    |  1 +
+ arch/arm/configs/lpae.config               |  1 +
+ arch/arm64/configs/virt.config             |  1 +
+ arch/powerpc/configs/32-bit.config         |  1 +
+ arch/powerpc/configs/64-bit.config         |  1 +
+ arch/powerpc/configs/85xx-32bit.config     |  1 +
+ arch/powerpc/configs/85xx-64bit.config     |  1 +
+ arch/powerpc/configs/85xx-hw.config        |  1 +
+ arch/powerpc/configs/85xx-smp.config       |  1 +
+ arch/powerpc/configs/86xx-hw.config        |  1 +
+ arch/powerpc/configs/86xx-smp.config       |  1 +
+ arch/powerpc/configs/altivec.config        |  1 +
+ arch/powerpc/configs/be.config             |  1 +
+ arch/powerpc/configs/book3s_32.config      |  1 +
+ arch/powerpc/configs/corenet_base.config   |  1 +
+ arch/powerpc/configs/debug.config          |  1 +
+ arch/powerpc/configs/disable-werror.config |  1 +
+ arch/powerpc/configs/dpaa.config           |  1 +
+ arch/powerpc/configs/fsl-emb-nonhw.config  |  1 +
+ arch/powerpc/configs/guest.config          |  1 +
+ arch/powerpc/configs/le.config             |  1 +
+ arch/powerpc/configs/mpc85xx_base.config   |  1 +
+ arch/powerpc/configs/mpc86xx_base.config   |  1 +
+ arch/powerpc/configs/ppc64le.config        |  1 +
+ arch/powerpc/configs/security.config       |  4 +++-
+ arch/riscv/configs/32-bit.config           |  1 +
+ arch/riscv/configs/64-bit.config           |  1 +
+ arch/s390/configs/btf.config               |  1 +
+ arch/s390/configs/kasan.config             |  1 +
+ arch/x86/Makefile                          |  4 ----
+ arch/x86/configs/tiny.config               |  2 ++
+ arch/x86/configs/xen.config                |  2 ++
+ kernel/configs/debug.config                |  2 ++
+ kernel/configs/kvm_guest.config            |  1 +
+ kernel/configs/nopm.config                 |  2 ++
+ kernel/configs/rust.config                 |  1 +
+ kernel/configs/tiny-base.config            |  1 +
+ kernel/configs/tiny.config                 |  2 ++
+ kernel/configs/x86_debug.config            |  1 +
+ kernel/configs/xen.config                  |  2 ++
+ scripts/kconfig/Makefile                   | 13 ++++++++++---
+ 44 files changed, 59 insertions(+), 9 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 4739c21a63e2..91c90ce8e0e3 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1674,7 +1674,6 @@ help:
+ 	@echo  '  mrproper	  - Remove all generated files + config + various backup files'
+ 	@echo  '  distclean	  - mrproper + remove editor backup and patch files'
+ 	@echo  ''
+-	@echo  'Configuration targets:'
+ 	@$(MAKE) -f $(srctree)/scripts/kconfig/Makefile help
+ 	@echo  ''
+ 	@echo  'Other generic targets:'
+diff --git a/arch/arm/configs/dram_0x00000000.config b/arch/arm/configs/dram_0x00000000.config
+index db96dcb420ce..4de3fde0de9a 100644
+--- a/arch/arm/configs/dram_0x00000000.config
++++ b/arch/arm/configs/dram_0x00000000.config
+@@ -1 +1,2 @@
++# DRAM base at 0x00000000
+ CONFIG_DRAM_BASE=0x00000000
+diff --git a/arch/arm/configs/dram_0xc0000000.config b/arch/arm/configs/dram_0xc0000000.config
+index 343d5333d973..fdd4c7b1461e 100644
+--- a/arch/arm/configs/dram_0xc0000000.config
++++ b/arch/arm/configs/dram_0xc0000000.config
+@@ -1 +1,2 @@
++# DRAM base at 0xc0000000
+ CONFIG_DRAM_BASE=0xc0000000
+diff --git a/arch/arm/configs/dram_0xd0000000.config b/arch/arm/configs/dram_0xd0000000.config
+index 61ba7045f8a1..54defdc8d24c 100644
+--- a/arch/arm/configs/dram_0xd0000000.config
++++ b/arch/arm/configs/dram_0xd0000000.config
+@@ -1 +1,2 @@
++# DRAM base at 0xd0000000
+ CONFIG_DRAM_BASE=0xd0000000
+diff --git a/arch/arm/configs/lpae.config b/arch/arm/configs/lpae.config
+index a6d6f7ab3c01..e8d3cd8f1e4b 100644
+--- a/arch/arm/configs/lpae.config
++++ b/arch/arm/configs/lpae.config
+@@ -1,2 +1,3 @@
++# Enable Large Physical Address Extension mode
+ CONFIG_ARM_LPAE=y
+ CONFIG_VMSPLIT_2G=y
+diff --git a/arch/arm64/configs/virt.config b/arch/arm64/configs/virt.config
+index 6865d54e68f8..83333a9aa1a5 100644
+--- a/arch/arm64/configs/virt.config
++++ b/arch/arm64/configs/virt.config
+@@ -1,3 +1,4 @@
++# Virtualization guest
+ #
+ # Base options for platforms
+ #
+diff --git a/arch/powerpc/configs/32-bit.config b/arch/powerpc/configs/32-bit.config
+index ad6546850c68..1a4c93a17007 100644
+--- a/arch/powerpc/configs/32-bit.config
++++ b/arch/powerpc/configs/32-bit.config
+@@ -1 +1,2 @@
++# Build a 32-bit image
+ # CONFIG_PPC64 is not set
+diff --git a/arch/powerpc/configs/64-bit.config b/arch/powerpc/configs/64-bit.config
+index 0fe6406929e2..cc371309bb0c 100644
+--- a/arch/powerpc/configs/64-bit.config
++++ b/arch/powerpc/configs/64-bit.config
+@@ -1 +1,2 @@
++# Build a 64-bit image
+ CONFIG_PPC64=y
+diff --git a/arch/powerpc/configs/85xx-32bit.config b/arch/powerpc/configs/85xx-32bit.config
+index 6b8894d727a2..866e77e22762 100644
+--- a/arch/powerpc/configs/85xx-32bit.config
++++ b/arch/powerpc/configs/85xx-32bit.config
+@@ -1,3 +1,4 @@
++# Build a 32-bit 85xx image
+ CONFIG_HIGHMEM=y
+ CONFIG_KEXEC=y
+ CONFIG_PPC_85xx=y
+diff --git a/arch/powerpc/configs/85xx-64bit.config b/arch/powerpc/configs/85xx-64bit.config
+index 4aba81222885..cca4151ee889 100644
+--- a/arch/powerpc/configs/85xx-64bit.config
++++ b/arch/powerpc/configs/85xx-64bit.config
+@@ -1,3 +1,4 @@
++# Build a 64-bit 85xx image
+ CONFIG_MATH_EMULATION=y
+ CONFIG_MATH_EMULATION_HW_UNIMPLEMENTED=y
+ CONFIG_PPC64=y
+diff --git a/arch/powerpc/configs/85xx-hw.config b/arch/powerpc/configs/85xx-hw.config
+index 524db76f47b7..76b22f8a8172 100644
+--- a/arch/powerpc/configs/85xx-hw.config
++++ b/arch/powerpc/configs/85xx-hw.config
+@@ -1,3 +1,4 @@
++# Base hardware support for 86xx
+ CONFIG_AQUANTIA_PHY=y
+ CONFIG_AT803X_PHY=y
+ CONFIG_ATA=y
+diff --git a/arch/powerpc/configs/85xx-smp.config b/arch/powerpc/configs/85xx-smp.config
+index 3b4d1e54636d..d3525e71cb2f 100644
+--- a/arch/powerpc/configs/85xx-smp.config
++++ b/arch/powerpc/configs/85xx-smp.config
+@@ -1,2 +1,3 @@
++# Enable SMP on 85xx
+ CONFIG_NR_CPUS=24
+ CONFIG_SMP=y
+diff --git a/arch/powerpc/configs/86xx-hw.config b/arch/powerpc/configs/86xx-hw.config
+index 0cb24b33c88e..7b8d9f9c3c01 100644
+--- a/arch/powerpc/configs/86xx-hw.config
++++ b/arch/powerpc/configs/86xx-hw.config
+@@ -1,3 +1,4 @@
++# Base hardware support for 86xx
+ CONFIG_ATA=y
+ CONFIG_BLK_DEV_SD=y
+ CONFIG_BLK_DEV_SR=y
+diff --git a/arch/powerpc/configs/86xx-smp.config b/arch/powerpc/configs/86xx-smp.config
+index 40ac38d3038c..e6cd06a35624 100644
+--- a/arch/powerpc/configs/86xx-smp.config
++++ b/arch/powerpc/configs/86xx-smp.config
+@@ -1,2 +1,3 @@
++# Enable SMP on 86xx
+ CONFIG_NR_CPUS=2
+ CONFIG_SMP=y
+diff --git a/arch/powerpc/configs/altivec.config b/arch/powerpc/configs/altivec.config
+index 58a697cb5a62..1c8eb9b23a7f 100644
+--- a/arch/powerpc/configs/altivec.config
++++ b/arch/powerpc/configs/altivec.config
+@@ -1 +1,2 @@
++# Enable Altivec support
+ CONFIG_ALTIVEC=y
+diff --git a/arch/powerpc/configs/be.config b/arch/powerpc/configs/be.config
+index c5cdc99a6530..568bba8ea109 100644
+--- a/arch/powerpc/configs/be.config
++++ b/arch/powerpc/configs/be.config
+@@ -1 +1,2 @@
++# Enable Big Endian mode
+ CONFIG_CPU_BIG_ENDIAN=y
+diff --git a/arch/powerpc/configs/book3s_32.config b/arch/powerpc/configs/book3s_32.config
+index 8721eb7b1294..f33483f077db 100644
+--- a/arch/powerpc/configs/book3s_32.config
++++ b/arch/powerpc/configs/book3s_32.config
+@@ -1,2 +1,3 @@
++# Base support for Book3s
+ CONFIG_PPC64=n
+ CONFIG_PPC_BOOK3S_32=y
+diff --git a/arch/powerpc/configs/corenet_base.config b/arch/powerpc/configs/corenet_base.config
+index 1c40de1e764b..47bb6e25c90b 100644
+--- a/arch/powerpc/configs/corenet_base.config
++++ b/arch/powerpc/configs/corenet_base.config
+@@ -1,2 +1,3 @@
++# Base support for corenet
+ CONFIG_CORENET_GENERIC=y
+ CONFIG_PPC_QEMU_E500=y
+diff --git a/arch/powerpc/configs/debug.config b/arch/powerpc/configs/debug.config
+index a14ae1f20d60..223b8a2ee8ec 100644
+--- a/arch/powerpc/configs/debug.config
++++ b/arch/powerpc/configs/debug.config
+@@ -1 +1,2 @@
++# Enable PowerPC specific debug options
+ CONFIG_SCOM_DEBUGFS=y
+diff --git a/arch/powerpc/configs/disable-werror.config b/arch/powerpc/configs/disable-werror.config
+index 6ea12a12432c..76a7847f39ce 100644
+--- a/arch/powerpc/configs/disable-werror.config
++++ b/arch/powerpc/configs/disable-werror.config
+@@ -1 +1,2 @@
++# Disable -Werror
+ CONFIG_PPC_DISABLE_WERROR=y
+diff --git a/arch/powerpc/configs/dpaa.config b/arch/powerpc/configs/dpaa.config
+index 4ffacafe4036..65a13ba32813 100644
+--- a/arch/powerpc/configs/dpaa.config
++++ b/arch/powerpc/configs/dpaa.config
+@@ -1,3 +1,4 @@
++# Base suppot for DPPA
+ CONFIG_FSL_DPAA=y
+ CONFIG_FSL_PAMU=y
+ CONFIG_FSL_FMAN=y
+diff --git a/arch/powerpc/configs/fsl-emb-nonhw.config b/arch/powerpc/configs/fsl-emb-nonhw.config
+index 3009b0efaf34..d1249996cf45 100644
+--- a/arch/powerpc/configs/fsl-emb-nonhw.config
++++ b/arch/powerpc/configs/fsl-emb-nonhw.config
+@@ -1,3 +1,4 @@
++# Non-hardware options common to 85xx and corenet
+ CONFIG_ADFS_FS=m
+ CONFIG_AFFS_FS=m
+ CONFIG_AUDIT=y
+diff --git a/arch/powerpc/configs/guest.config b/arch/powerpc/configs/guest.config
+index fece83487215..f04ababbb35a 100644
+--- a/arch/powerpc/configs/guest.config
++++ b/arch/powerpc/configs/guest.config
+@@ -1,3 +1,4 @@
++# PowerPC specific virtualization guest options
+ CONFIG_VIRTIO_BLK=y
+ CONFIG_SCSI_VIRTIO=y
+ CONFIG_VIRTIO_NET=y
+diff --git a/arch/powerpc/configs/le.config b/arch/powerpc/configs/le.config
+index ee43fdb3b8f4..bcf657e1d21f 100644
+--- a/arch/powerpc/configs/le.config
++++ b/arch/powerpc/configs/le.config
+@@ -1 +1,2 @@
++# Enable Little Endian mode
+ CONFIG_CPU_LITTLE_ENDIAN=y
+diff --git a/arch/powerpc/configs/mpc85xx_base.config b/arch/powerpc/configs/mpc85xx_base.config
+index a1e4d72ed39d..20ecf6575c5c 100644
+--- a/arch/powerpc/configs/mpc85xx_base.config
++++ b/arch/powerpc/configs/mpc85xx_base.config
+@@ -1,3 +1,4 @@
++# Base mpc85xxx support
+ CONFIG_MATH_EMULATION=y
+ CONFIG_MPC8536_DS=y
+ CONFIG_MPC85xx_DS=y
+diff --git a/arch/powerpc/configs/mpc86xx_base.config b/arch/powerpc/configs/mpc86xx_base.config
+index 632c014b122d..8239d1e7785d 100644
+--- a/arch/powerpc/configs/mpc86xx_base.config
++++ b/arch/powerpc/configs/mpc86xx_base.config
+@@ -1,3 +1,4 @@
++# Base mpc85xxx support
+ CONFIG_PPC_86xx=y
+ CONFIG_GEF_PPC9A=y
+ CONFIG_GEF_SBC310=y
+diff --git a/arch/powerpc/configs/ppc64le.config b/arch/powerpc/configs/ppc64le.config
+index 14dca1062c1b..ac3614cd7926 100644
+--- a/arch/powerpc/configs/ppc64le.config
++++ b/arch/powerpc/configs/ppc64le.config
+@@ -1,2 +1,3 @@
++# Enable ppc64le mode
+ CONFIG_PPC64=y
+ CONFIG_CPU_LITTLE_ENDIAN=y
+diff --git a/arch/powerpc/configs/security.config b/arch/powerpc/configs/security.config
+index 1c91a35c6a73..f47034955d12 100644
+--- a/arch/powerpc/configs/security.config
++++ b/arch/powerpc/configs/security.config
+@@ -1,3 +1,5 @@
++# Common security options for PowerPC builds
++
+ # This is the equivalent of booting with lockdown=integrity
+ CONFIG_SECURITY=y
+ CONFIG_SECURITYFS=y
+@@ -12,4 +14,4 @@ CONFIG_INIT_ON_ALLOC_DEFAULT_ON=y
+ 
+ # UBSAN bounds checking is very cheap and good for hardening
+ CONFIG_UBSAN=y
+-# CONFIG_UBSAN_MISC is not set
+\ No newline at end of file
++# CONFIG_UBSAN_MISC is not set
+diff --git a/arch/riscv/configs/32-bit.config b/arch/riscv/configs/32-bit.config
+index f6af0f708df4..60dfa2809b19 100644
+--- a/arch/riscv/configs/32-bit.config
++++ b/arch/riscv/configs/32-bit.config
+@@ -1,3 +1,4 @@
++# Build a 32-bit image
+ CONFIG_ARCH_RV32I=y
+ CONFIG_32BIT=y
+ # CONFIG_PORTABLE is not set
+diff --git a/arch/riscv/configs/64-bit.config b/arch/riscv/configs/64-bit.config
+index 313edc554d84..31a1ad138944 100644
+--- a/arch/riscv/configs/64-bit.config
++++ b/arch/riscv/configs/64-bit.config
+@@ -1,2 +1,3 @@
++# Build a 64-bit image
+ CONFIG_ARCH_RV64I=y
+ CONFIG_64BIT=y
+diff --git a/arch/s390/configs/btf.config b/arch/s390/configs/btf.config
+index 39227b4511af..c69b1a370990 100644
+--- a/arch/s390/configs/btf.config
++++ b/arch/s390/configs/btf.config
+@@ -1 +1,2 @@
++# Enable BTF debug info
+ CONFIG_DEBUG_INFO_BTF=y
+diff --git a/arch/s390/configs/kasan.config b/arch/s390/configs/kasan.config
+index 700a8b25c3ff..da2e1f28c13c 100644
+--- a/arch/s390/configs/kasan.config
++++ b/arch/s390/configs/kasan.config
+@@ -1,3 +1,4 @@
++# Enable KASan for debugging
+ CONFIG_KASAN=y
+ CONFIG_KASAN_INLINE=y
+ CONFIG_KASAN_VMALLOC=y
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index fdc2e3abd615..c4b2a8a19fc8 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -335,9 +335,5 @@ define archhelp
+   echo  '			  bzdisk/fdimage*/hdimage/isoimage also accept:'
+   echo  '			  FDARGS="..."  arguments for the booted kernel'
+   echo  '			  FDINITRD=file initrd for the booted kernel'
+-  echo  ''
+-  echo  '  kvm_guest.config	- Enable Kconfig items for running this kernel as a KVM guest'
+-  echo  '  xen.config		- Enable Kconfig items for running this kernel as a Xen guest'
+-  echo  '  x86_debug.config	- Enable tip tree debugging options for testing'
+ 
+ endef
+diff --git a/arch/x86/configs/tiny.config b/arch/x86/configs/tiny.config
+index 66c9e2aab16c..4b75a11369e3 100644
+--- a/arch/x86/configs/tiny.config
++++ b/arch/x86/configs/tiny.config
+@@ -1,3 +1,5 @@
++# x86-specific options for a small kernel image
++#
+ CONFIG_NOHIGHMEM=y
+ # CONFIG_HIGHMEM4G is not set
+ # CONFIG_HIGHMEM64G is not set
+diff --git a/arch/x86/configs/xen.config b/arch/x86/configs/xen.config
+index 581296255b39..46653ec602e0 100644
+--- a/arch/x86/configs/xen.config
++++ b/arch/x86/configs/xen.config
+@@ -1,3 +1,5 @@
++# x86-specific options for a Xen virtualization guest
++#
+ # global x86 required specific stuff
+ # On 32-bit HIGHMEM4G is not allowed
+ CONFIG_HIGHMEM64G=y
+diff --git a/kernel/configs/debug.config b/kernel/configs/debug.config
+index e8db8d938661..874afe2cd7c0 100644
+--- a/kernel/configs/debug.config
++++ b/kernel/configs/debug.config
+@@ -1,3 +1,5 @@
++# Debugging for CI systems and finding regressions
++#
+ # The config is based on running daily CI for enterprise Linux distros to
+ # seek regressions on linux-next builds on different bare-metal and virtual
+ # platforms. It can be used for example,
+diff --git a/kernel/configs/kvm_guest.config b/kernel/configs/kvm_guest.config
+index 208481d91090..3cc2810147da 100644
+--- a/kernel/configs/kvm_guest.config
++++ b/kernel/configs/kvm_guest.config
+@@ -1,3 +1,4 @@
++# Bootable as a KVM guest
+ CONFIG_NET=y
+ CONFIG_NET_CORE=y
+ CONFIG_NETDEVICES=y
+diff --git a/kernel/configs/nopm.config b/kernel/configs/nopm.config
+index 81ff07863576..a377c5914218 100644
+--- a/kernel/configs/nopm.config
++++ b/kernel/configs/nopm.config
+@@ -1,3 +1,5 @@
++# Disable Power Management
++
+ CONFIG_PM=n
+ CONFIG_SUSPEND=n
+ CONFIG_HIBERNATION=n
+diff --git a/kernel/configs/rust.config b/kernel/configs/rust.config
+index 38a7c5362c9c..941c69c161ad 100644
+--- a/kernel/configs/rust.config
++++ b/kernel/configs/rust.config
+@@ -1 +1,2 @@
++# Enable Rust
+ CONFIG_RUST=y
+diff --git a/kernel/configs/tiny-base.config b/kernel/configs/tiny-base.config
+index 2f0e6bf6db2c..ac4d254abc3f 100644
+--- a/kernel/configs/tiny-base.config
++++ b/kernel/configs/tiny-base.config
+@@ -1 +1,2 @@
++# Minimal options for tiny systems
+ CONFIG_EMBEDDED=y
+diff --git a/kernel/configs/tiny.config b/kernel/configs/tiny.config
+index 00009f7d0835..ea643e8f7f14 100644
+--- a/kernel/configs/tiny.config
++++ b/kernel/configs/tiny.config
+@@ -1,3 +1,5 @@
++# Smallest possible kernel image
++#
+ # CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE is not set
+ CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+ # CONFIG_KERNEL_GZIP is not set
+diff --git a/kernel/configs/x86_debug.config b/kernel/configs/x86_debug.config
+index 6fac5b405334..8a1129a1d59a 100644
+--- a/kernel/configs/x86_debug.config
++++ b/kernel/configs/x86_debug.config
+@@ -1,3 +1,4 @@
++# Debugging options for tip tree testing
+ CONFIG_X86_DEBUG_FPU=y
+ CONFIG_LOCK_STAT=y
+ CONFIG_DEBUG_VM=y
+diff --git a/kernel/configs/xen.config b/kernel/configs/xen.config
+index 436f806aa1ed..d14880177fd2 100644
+--- a/kernel/configs/xen.config
++++ b/kernel/configs/xen.config
+@@ -1,3 +1,5 @@
++# Bootable as a Xen guest
++#
+ # global stuff - these enable us to allow some
+ # of the not so generic stuff below for xen
+ CONFIG_PARAVIRT=y
+diff --git a/scripts/kconfig/Makefile b/scripts/kconfig/Makefile
+index af1c96198f49..c523f24b504a 100644
+--- a/scripts/kconfig/Makefile
++++ b/scripts/kconfig/Makefile
+@@ -93,11 +93,11 @@ endif
+ %_defconfig: $(obj)/conf
+ 	$(Q)$< $(silent) --defconfig=arch/$(SRCARCH)/configs/$@ $(Kconfig)
+ 
+-configfiles=$(wildcard $(srctree)/kernel/configs/$@ $(srctree)/arch/$(SRCARCH)/configs/$@)
++configfiles=$(wildcard $(srctree)/kernel/configs/$(1) $(srctree)/arch/$(SRCARCH)/configs/$(1))
+ 
+ %.config: $(obj)/conf
+-	$(if $(call configfiles),, $(error No configuration exists for this target on this architecture))
+-	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/kconfig/merge_config.sh -m .config $(configfiles)
++	$(if $(call configfiles,$@),, $(error No configuration exists for this target on this architecture))
++	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/kconfig/merge_config.sh -m .config $(call configfiles,$@)
+ 	$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
+ 
+ PHONY += tinyconfig
+@@ -115,6 +115,7 @@ clean-files += tests/.cache
+ 
+ # Help text used by make help
+ help:
++	@echo  'Configuration targets:'
+ 	@echo  '  config	  - Update current config utilising a line-oriented program'
+ 	@echo  '  nconfig         - Update current config utilising a ncurses menu based program'
+ 	@echo  '  menuconfig	  - Update current config utilising a menu based program'
+@@ -141,6 +142,12 @@ help:
+ 	@echo  '                    default value without prompting'
+ 	@echo  '  tinyconfig	  - Configure the tiniest possible kernel'
+ 	@echo  '  testconfig	  - Run Kconfig unit tests (requires python3 and pytest)'
++	@echo  ''
++	@echo  'Configuration fragment targets (for enabling various Kconfig items):'
++	@$(foreach c, $(call configfiles,*.config), \
++		printf "  %-20s - %s\\n" \
++			$(shell basename $(c)) \
++			"$(subst # ,,$(shell grep -m1 '^# ' $(c)))";)
+ 
+ # ===========================================================================
+ # object files used by all kconfig flavours
+-- 
+2.34.1
+
