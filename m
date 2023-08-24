@@ -1,65 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BE9678698D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Aug 2023 10:07:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B29B178698F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Aug 2023 10:08:47 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=NMOxeuFc;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=G+ioXOlM;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RWbKw00LHz3dFf
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Aug 2023 18:07:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RWbM06p6Nz3dh5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Aug 2023 18:08:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=NMOxeuFc;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=G+ioXOlM;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=stevensd@chromium.org; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::62f; helo=mail-pl1-x62f.google.com; envelope-from=stevensd@chromium.org; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RWbGp3KnRz3dD2
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Aug 2023 18:05:06 +1000 (AEST)
-Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1bdf4752c3cso40459225ad.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Aug 2023 01:05:06 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RWbGv3rJlz3dDR
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Aug 2023 18:05:11 +1000 (AEST)
+Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1bf078d5f33so51410705ad.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Aug 2023 01:05:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1692864303; x=1693469103;
+        d=chromium.org; s=google; t=1692864308; x=1693469108;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XABl5efGX4dLDIDtb0EMToFN6DITOp/e+Uzd4Q9F18I=;
-        b=NMOxeuFctuvdMSGAHF6a3sNMAZVYTiQ15gzr51r5WSX9AD4Jp52VPhOlW4t3j7+BIp
-         EK+p3SbwjPGUMIyX9MCUaAGP1JNqTZ84JwBGpqtuFZhFFJqNseR/Ohu5UlCU6B+kWGXz
-         F1m0I2rqei5AcINJI6WK2oBjleuGwcva3t0q8=
+        bh=ZhPhAEYXOjd7Sn6E5mFHIsVfVenAXGYibiKvIzNeJhI=;
+        b=G+ioXOlMhzzSsFeOo98ApC0O6Bz+xTN7o7NvHt6zUSzMtMjnoOCwssUrtpM3Ea/f4q
+         QzZWnac70CX9Tsu8jkszmzYyq03LndVS91OTCpw8PH2TyoJt/jfWUy1VBPEHCSH5NHQI
+         lVh4ksRnv/2AHsWJlta0CGXZwJ81ZZyP1PIsU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692864303; x=1693469103;
+        d=1e100.net; s=20221208; t=1692864308; x=1693469108;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XABl5efGX4dLDIDtb0EMToFN6DITOp/e+Uzd4Q9F18I=;
-        b=hTP1ZorJz+SiK5fSfa/9eiIILItZGtFBsTPe6xEQabR/Kw0l74LQ+FsoKHV/yN1irh
-         yKtSrR+wSWbz84z6WOqHTmmT1vQoHqgFjo5Cc37HUvxlH1XEcVpRDUzo5P52EUJN2lZr
-         C+lZ92qkdm8ydiUkiFrL3jbI6zwvZaZ02CUnxKuXBiE0annNdk1HioD9wrlgfJvJ29nr
-         neLURkcWNE5K+YJR9auRAvLSt53inxwqIc5bD4qjO5tdcqrlxnJYg2Cw+nIKSoDbmOdW
-         sYUmBb+mTOF4x//0vmJWCXFK+O0uJhgT303pAokgn/DGnNIKCIv+vYJ/FA/392FsUww/
-         ObuQ==
-X-Gm-Message-State: AOJu0Yz0aP5tPK4urGrhrbwWlGaF/IEauIJ5cjo0rZXLg06+15ypVG+A
-	GmzouxurjPwxIHMhdSJ1Idlcvw==
-X-Google-Smtp-Source: AGHT+IFxDr7iOWu6Tl7iYobrbaczRccU42on6BqmhxkrRNhaRIO0VNSdRCiyULPVAj40XBMY9/nM9g==
-X-Received: by 2002:a17:902:8c85:b0:1bf:13a7:d3ef with SMTP id t5-20020a1709028c8500b001bf13a7d3efmr10608777plo.66.1692864303541;
-        Thu, 24 Aug 2023 01:05:03 -0700 (PDT)
+        bh=ZhPhAEYXOjd7Sn6E5mFHIsVfVenAXGYibiKvIzNeJhI=;
+        b=HE1034TDo5IPXgRknunVOHdqtOnCZZoz535rFrhZvx+htwgSOdWCbBliwsoZC4RFBJ
+         SWr+d/xeteXjdmOMM6nUGKPYkgW7AijOZLLwwcvpGeWOBZoLe18vqPDPiZIDd5SxX8Sa
+         SGRYnbahBf6rvKdWngfUApa4EqCir+sZCPdn/6Oj9zZkee76sDwsQfLo6CvjqXlHchEF
+         hKcBqeKEljGeowd/5qtRz0U362Cb7+DHXnejYHmPkKcjIu3vm5VGGMB6hVGzp2apSUdW
+         f7JSvBRLPfgsLUb5KRipCgX37L/VrW7XL6ieI9zmU2a18uZL8Ev2Rxd9UNvjoKzAY0gU
+         b1IA==
+X-Gm-Message-State: AOJu0YwgOPHnNNXXx5nS8f8j8/KJAT6cUdYJIL09DBVxtPBFH/IrZi5L
+	fyr+4hyLGtIinXSVFuOrRlGMKA==
+X-Google-Smtp-Source: AGHT+IFkCGH2GwA3ilX5jB05HUrrf1vUBIbmMJaFJx2swg78OUGHa276ImTXLpzo2mY30kNcsT6wbw==
+X-Received: by 2002:a17:902:c947:b0:1c0:7bac:13d4 with SMTP id i7-20020a170902c94700b001c07bac13d4mr10820347pla.65.1692864308600;
+        Thu, 24 Aug 2023 01:05:08 -0700 (PDT)
 Received: from localhost ([2401:fa00:8f:203:515:8b2a:90c3:b79e])
-        by smtp.gmail.com with UTF8SMTPSA id jd17-20020a170903261100b001bf20c80684sm12158428plb.6.2023.08.24.01.05.00
+        by smtp.gmail.com with UTF8SMTPSA id q6-20020a170902a3c600b001bf095dfb76sm12370611plb.237.2023.08.24.01.05.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Aug 2023 01:05:03 -0700 (PDT)
+        Thu, 24 Aug 2023 01:05:08 -0700 (PDT)
 From: David Stevens <stevensd@chromium.org>
 X-Google-Original-From: David Stevens <stevensd@google.com>
 To: Sean Christopherson <seanjc@google.com>
-Subject: [PATCH v8 3/8] KVM: mmu: Make __kvm_follow_pfn not imply FOLL_GET
-Date: Thu, 24 Aug 2023 17:04:03 +0900
-Message-ID: <20230824080408.2933205-4-stevensd@google.com>
+Subject: [PATCH v8 4/8] KVM: x86/mmu: Migrate to __kvm_follow_pfn
+Date: Thu, 24 Aug 2023 17:04:04 +0900
+Message-ID: <20230824080408.2933205-5-stevensd@google.com>
 X-Mailer: git-send-email 2.42.0.rc1.204.g551eb34607-goog
 In-Reply-To: <20230824080408.2933205-1-stevensd@google.com>
 References: <20230824080408.2933205-1-stevensd@google.com>
@@ -82,237 +82,81 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: David Stevens <stevensd@chromium.org>
 
-Make it so that __kvm_follow_pfn does not imply FOLL_GET. This allows
-callers to resolve a gfn when the associated pfn has a valid struct page
-that isn't being actively refcounted (e.g. tail pages of non-compound
-higher order pages). For a caller to safely omit FOLL_GET, all usages of
-the returned pfn must be guarded by a mmu notifier.
-
-This also adds a is_refcounted_page out parameter to kvm_follow_pfn that
-is set when the returned pfn has an associated struct page with a valid
-refcount. Callers that don't pass FOLL_GET should remember this value
-and use it to avoid places like kvm_is_ad_tracked_page that assume a
-non-zero refcount.
+Migrate from __gfn_to_pfn_memslot to __kvm_follow_pfn. Most arguments
+directly map to the new API. The largest change is replacing the async
+in/out parameter with FOLL_NOWAIT parameter and the KVM_PFN_ERR_NEEDS_IO
+return value.
 
 Signed-off-by: David Stevens <stevensd@chromium.org>
 ---
- include/linux/kvm_host.h |  7 ++++
- virt/kvm/kvm_main.c      | 84 ++++++++++++++++++++++++----------------
- virt/kvm/pfncache.c      |  2 +-
- 3 files changed, 58 insertions(+), 35 deletions(-)
+ arch/x86/kvm/mmu/mmu.c | 41 +++++++++++++++++++++++++++++++----------
+ 1 file changed, 31 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 59d9b5e5db33..713fc2d91f95 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -1164,10 +1164,17 @@ struct kvm_follow_pfn {
- 	bool atomic;
- 	/* Try to create a writable mapping even for a read fault */
- 	bool try_map_writable;
-+	/*
-+	 * Usage of the returned pfn will be guared by a mmu notifier. Must
-+	 * be true if FOLL_GET is not set.
-+	 */
-+	bool guarded_by_mmu_notifier;
- 
- 	/* Outputs of __kvm_follow_pfn */
- 	hva_t hva;
- 	bool writable;
-+	/* True if the returned pfn is for a page with a valid refcount. */
-+	bool is_refcounted_page;
- };
- 
- kvm_pfn_t __kvm_follow_pfn(struct kvm_follow_pfn *foll);
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 5fde46f05117..963b96cd8ff9 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -2481,6 +2481,25 @@ static inline int check_user_page_hwpoison(unsigned long addr)
- 	return rc == -EHWPOISON;
- }
- 
-+static kvm_pfn_t kvm_follow_refcounted_pfn(struct kvm_follow_pfn *foll,
-+					   struct page *page)
-+{
-+	kvm_pfn_t pfn = page_to_pfn(page);
-+
-+	foll->is_refcounted_page = true;
-+
-+	/*
-+	 * FIXME: Ideally, KVM wouldn't pass FOLL_GET to gup() when the caller
-+	 * doesn't want to grab a reference, but gup() doesn't support getting
-+	 * just the pfn, i.e. FOLL_GET is effectively mandatory.  If that ever
-+	 * changes, drop this and simply don't pass FOLL_GET to gup().
-+	 */
-+	if (!(foll->flags & FOLL_GET))
-+		put_page(page);
-+
-+	return pfn;
-+}
-+
- /*
-  * The fast path to get the writable pfn which will be stored in @pfn,
-  * true indicates success, otherwise false is returned.  It's also the
-@@ -2499,8 +2518,8 @@ static bool hva_to_pfn_fast(struct kvm_follow_pfn *foll, kvm_pfn_t *pfn)
- 		return false;
- 
- 	if (get_user_page_fast_only(foll->hva, FOLL_WRITE, page)) {
--		*pfn = page_to_pfn(page[0]);
- 		foll->writable = true;
-+		*pfn = kvm_follow_refcounted_pfn(foll, page[0]);
- 		return true;
- 	}
- 
-@@ -2513,7 +2532,7 @@ static bool hva_to_pfn_fast(struct kvm_follow_pfn *foll, kvm_pfn_t *pfn)
-  */
- static int hva_to_pfn_slow(struct kvm_follow_pfn *foll, kvm_pfn_t *pfn)
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index ec169f5c7dce..dabae67f198b 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -4296,7 +4296,12 @@ void kvm_arch_async_page_ready(struct kvm_vcpu *vcpu, struct kvm_async_pf *work)
+ static int __kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
  {
--	unsigned int flags = FOLL_HWPOISON | foll->flags;
-+	unsigned int flags = FOLL_HWPOISON | FOLL_GET | foll->flags;
- 	struct page *page;
- 	int npages;
- 
-@@ -2535,7 +2554,7 @@ static int hva_to_pfn_slow(struct kvm_follow_pfn *foll, kvm_pfn_t *pfn)
- 			page = wpage;
- 		}
- 	}
--	*pfn = page_to_pfn(page);
-+	*pfn = kvm_follow_refcounted_pfn(foll, page);
- 	return npages;
- }
- 
-@@ -2550,16 +2569,6 @@ static bool vma_is_valid(struct vm_area_struct *vma, bool write_fault)
- 	return true;
- }
- 
--static int kvm_try_get_pfn(kvm_pfn_t pfn)
--{
--	struct page *page = kvm_pfn_to_refcounted_page(pfn);
--
--	if (!page)
--		return 1;
--
--	return get_page_unless_zero(page);
--}
--
- static int hva_to_pfn_remapped(struct vm_area_struct *vma,
- 			       struct kvm_follow_pfn *foll, kvm_pfn_t *p_pfn)
- {
-@@ -2568,6 +2577,7 @@ static int hva_to_pfn_remapped(struct vm_area_struct *vma,
- 	pte_t pte;
- 	spinlock_t *ptl;
- 	bool write_fault = foll->flags & FOLL_WRITE;
-+	struct page *page;
- 	int r;
- 
- 	r = follow_pte(vma->vm_mm, foll->hva, &ptep, &ptl);
-@@ -2601,28 +2611,29 @@ static int hva_to_pfn_remapped(struct vm_area_struct *vma,
- 	pfn = pte_pfn(pte);
+ 	struct kvm_memory_slot *slot = fault->slot;
+-	bool async;
++	struct kvm_follow_pfn foll = {
++		.slot = slot,
++		.gfn = fault->gfn,
++		.flags = FOLL_GET | (fault->write ? FOLL_WRITE : 0),
++		.try_map_writable = true,
++	};
  
  	/*
--	 * Get a reference here because callers of *hva_to_pfn* and
--	 * *gfn_to_pfn* ultimately call kvm_release_pfn_clean on the
--	 * returned pfn.  This is only needed if the VMA has VM_MIXEDMAP
--	 * set, but the kvm_try_get_pfn/kvm_release_pfn_clean pair will
--	 * simply do nothing for reserved pfns.
--	 *
--	 * Whoever called remap_pfn_range is also going to call e.g.
--	 * unmap_mapping_range before the underlying pages are freed,
--	 * causing a call to our MMU notifier.
-+	 * Now deal with reference counting. If kvm_pfn_to_refcounted_page
-+	 * returns NULL, then there's no refcount to worry about.
- 	 *
--	 * Certain IO or PFNMAP mappings can be backed with valid
--	 * struct pages, but be allocated without refcounting e.g.,
--	 * tail pages of non-compound higher order allocations, which
--	 * would then underflow the refcount when the caller does the
--	 * required put_page. Don't allow those pages here.
-+	 * Otherwise, certain IO or PFNMAP mappings can be backed with valid
-+	 * struct pages but be allocated without refcounting e.g., tail pages of
-+	 * non-compound higher order allocations. If FOLL_GET is set and we
-+	 * increment such a refcount, then when that pfn is eventually passed to
-+	 * kvm_release_pfn_clean, its refcount would hit zero and be incorrectly
-+	 * freed. Therefore don't allow those pages here when FOLL_GET is set.
+ 	 * Retry the page fault if the gfn hit a memslot that is being deleted
+@@ -4325,12 +4330,20 @@ static int __kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
+ 			return RET_PF_EMULATE;
+ 	}
+ 
+-	async = false;
+-	fault->pfn = __gfn_to_pfn_memslot(slot, fault->gfn, false, false, &async,
+-					  fault->write, &fault->map_writable,
+-					  &fault->hva);
+-	if (!async)
+-		return RET_PF_CONTINUE; /* *pfn has correct page already */
++	foll.flags |= FOLL_NOWAIT;
++	fault->pfn = __kvm_follow_pfn(&foll);
++
++	if (!is_error_noslot_pfn(fault->pfn))
++		goto success;
++
++	/*
++	 * If __kvm_follow_pfn() failed because I/O is needed to fault in the
++	 * page, then either set up an asynchronous #PF to do the I/O, or if
++	 * doing an async #PF isn't possible, retry __kvm_follow_pfn() with
++	 * I/O allowed. All other failures are fatal, i.e. retrying won't help.
++	 */
++	if (fault->pfn != KVM_PFN_ERR_NEEDS_IO)
++		return RET_PF_CONTINUE;
+ 
+ 	if (!fault->prefetch && kvm_can_do_async_pf(vcpu)) {
+ 		trace_kvm_try_async_get_page(fault->addr, fault->gfn);
+@@ -4348,9 +4361,17 @@ static int __kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
+ 	 * to wait for IO.  Note, gup always bails if it is unable to quickly
+ 	 * get a page and a fatal signal, i.e. SIGKILL, is pending.
  	 */
--	if (!kvm_try_get_pfn(pfn))
--		r = -EFAULT;
-+	page = kvm_pfn_to_refcounted_page(pfn);
-+	if (!page)
-+		goto out;
+-	fault->pfn = __gfn_to_pfn_memslot(slot, fault->gfn, false, true, NULL,
+-					  fault->write, &fault->map_writable,
+-					  &fault->hva);
++	foll.flags |= FOLL_INTERRUPTIBLE;
++	foll.flags &= ~FOLL_NOWAIT;
++	fault->pfn = __kvm_follow_pfn(&foll);
 +
-+	if (get_page_unless_zero(page))
-+		WARN_ON_ONCE(kvm_follow_refcounted_pfn(foll, page) != pfn);
- 
- out:
- 	pte_unmap_unlock(ptep, ptl);
--	*p_pfn = pfn;
-+	if (!foll->is_refcounted_page && !foll->guarded_by_mmu_notifier)
-+		r = -EFAULT;
-+	else
-+		*p_pfn = pfn;
- 
- 	return r;
++	if (!is_error_noslot_pfn(fault->pfn))
++		goto success;
++
++	return RET_PF_CONTINUE;
++success:
++	fault->hva = foll.hva;
++	fault->map_writable = foll.writable;
+ 	return RET_PF_CONTINUE;
  }
-@@ -2696,6 +2707,11 @@ kvm_pfn_t hva_to_pfn(struct kvm_follow_pfn *foll)
- kvm_pfn_t __kvm_follow_pfn(struct kvm_follow_pfn *foll)
- {
- 	foll->writable = false;
-+	foll->is_refcounted_page = false;
-+
-+	if (WARN_ON_ONCE(!(foll->flags & FOLL_GET) && !foll->guarded_by_mmu_notifier))
-+		return KVM_PFN_ERR_FAULT;
-+
- 	foll->hva = __gfn_to_hva_many(foll->slot, foll->gfn, NULL,
- 				      foll->flags & FOLL_WRITE);
- 
-@@ -2720,7 +2736,7 @@ kvm_pfn_t __gfn_to_pfn_memslot(const struct kvm_memory_slot *slot, gfn_t gfn,
- 	struct kvm_follow_pfn foll = {
- 		.slot = slot,
- 		.gfn = gfn,
--		.flags = 0,
-+		.flags = FOLL_GET,
- 		.atomic = atomic,
- 		.try_map_writable = !!writable,
- 	};
-@@ -2752,7 +2768,7 @@ kvm_pfn_t gfn_to_pfn_prot(struct kvm *kvm, gfn_t gfn, bool write_fault,
- 	struct kvm_follow_pfn foll = {
- 		.slot = gfn_to_memslot(kvm, gfn),
- 		.gfn = gfn,
--		.flags = write_fault ? FOLL_WRITE : 0,
-+		.flags = FOLL_GET | (write_fault ? FOLL_WRITE : 0),
- 		.try_map_writable = !!writable,
- 	};
- 	pfn = __kvm_follow_pfn(&foll);
-@@ -2767,7 +2783,7 @@ kvm_pfn_t gfn_to_pfn_memslot(const struct kvm_memory_slot *slot, gfn_t gfn)
- 	struct kvm_follow_pfn foll = {
- 		.slot = slot,
- 		.gfn = gfn,
--		.flags = FOLL_WRITE,
-+		.flags = FOLL_GET | FOLL_WRITE,
- 	};
- 	return __kvm_follow_pfn(&foll);
- }
-@@ -2778,7 +2794,7 @@ kvm_pfn_t gfn_to_pfn_memslot_atomic(const struct kvm_memory_slot *slot, gfn_t gf
- 	struct kvm_follow_pfn foll = {
- 		.slot = slot,
- 		.gfn = gfn,
--		.flags = FOLL_WRITE,
-+		.flags = FOLL_GET | FOLL_WRITE,
- 		.atomic = true,
- 	};
- 	return __kvm_follow_pfn(&foll);
-diff --git a/virt/kvm/pfncache.c b/virt/kvm/pfncache.c
-index 86cd40acad11..c558f510ab51 100644
---- a/virt/kvm/pfncache.c
-+++ b/virt/kvm/pfncache.c
-@@ -147,7 +147,7 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
- 	struct kvm_follow_pfn foll = {
- 		.slot = gpc->memslot,
- 		.gfn = gpa_to_gfn(gpc->gpa),
--		.flags = FOLL_WRITE,
-+		.flags = FOLL_WRITE | FOLL_GET,
- 		.hva = gpc->uhva,
- 	};
  
 -- 
 2.42.0.rc1.204.g551eb34607-goog
