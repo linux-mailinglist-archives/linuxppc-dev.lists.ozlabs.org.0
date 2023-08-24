@@ -2,54 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1D087875D5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Aug 2023 18:45:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16F0A787659
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Aug 2023 19:04:12 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=KTVnzD5e;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=WrjeBYzE;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=P0cx/Wiw;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RWpqh4Ls8z3c7c
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 02:45:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RWqDn5RWlz3cRR
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 03:04:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=KTVnzD5e;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=WrjeBYzE;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=P0cx/Wiw;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.196; helo=relay4-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=tiwai@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RWppm1Z2dz3c5Y
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Aug 2023 02:45:02 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id C1707E0004;
-	Thu, 24 Aug 2023 16:44:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1692895499;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RWqCw4YxDz3012
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Aug 2023 03:03:24 +1000 (AEST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 9112622088;
+	Thu, 24 Aug 2023 17:03:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1692896590; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sgKRd8PXna9jddAQ7rYYlYUO4KIn7jskOvosbl+/UOs=;
-	b=KTVnzD5eVG2mw9j6CEqcZhnTJSoCHDBkb/MYYvlHhrk7z6MfEr8ZRX0TSl957if3mHmwzS
-	6frES6KAXz+WuMYXmtFLD13OjX3VJcXVNJNMy7D6DCPoRgPj1bT8AtppiE+olPLBuMGg//
-	JxxP0rArWBg88Nbj10QQwE39F6YhX3z3MDZGAnJf48nbqoGxGXN8Xia5wJbKAGfZBJ+N6Q
-	HZA6C5qZftnN7pcS/5UaU+tLfQg+VnUhV0Zik7VF4qhFoxdGtvxD+UIMBMYu3kVD898JBR
-	BQPsXzVrFkC3MWJPlEnpAEFtwQr2EIdoqd1el7kRXYhmwqMBOoOEs+RVJBd09g==
-Date: Thu, 24 Aug 2023 18:44:54 +0200
-From: Herve Codina <herve.codina@bootlin.com>
-To: Simon Horman <horms@kernel.org>
-Subject: Re: [PATCH v4 21/28] net: wan: Add framer framework support
-Message-ID: <20230824184454.2a96b6fc@bootlin.com>
-In-Reply-To: <ZOJKH0xHpQc4HdUP@vergenet.net>
-References: <cover.1692376360.git.christophe.leroy@csgroup.eu>
-	<5f671caf19be0a9bb7ea7b96a6c86381e243ca4c.1692376361.git.christophe.leroy@csgroup.eu>
-	<ZOJKH0xHpQc4HdUP@vergenet.net>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
-MIME-Version: 1.0
+	bh=jrAG7m96VPC1mkTaluLxh7W982yxT13Stt9OhGrTnBs=;
+	b=WrjeBYzEG/Pn5m6AeyEiknOSIMqtAdDqClNOS/3SjpN58WUjMFzLtjWQPgshHDcl79tLiI
+	pxGoPHEF3b0DYnskNcEh8VSmQw6Xa2qWdmmlc4u5l1QWP7QDLGB92Bk0sKT8MxcMJxZcIx
+	44n9rZ7Dpuf3fD+u1C6AVuwrd/5ldKo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1692896590;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jrAG7m96VPC1mkTaluLxh7W982yxT13Stt9OhGrTnBs=;
+	b=P0cx/WiwaKOXPVf85RzezDUPaF9gG2B68rMGFZe+R6tSPL2WBYVwB1RO8q432Pfsjn6t3C
+	sMP+sAcwlmMjXFDQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 2AAA11336F;
+	Thu, 24 Aug 2023 17:03:10 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id 7QA8CU6N52Q8bgAAMHmgww
+	(envelope-from <tiwai@suse.de>); Thu, 24 Aug 2023 17:03:10 +0000
+Date: Thu, 24 Aug 2023 19:03:09 +0200
+Message-ID: <87wmxk8jaq.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Shengjiu Wang <shengjiu.wang@gmail.com>
+Subject: Re: [RFC PATCH v2 0/7] Add audio support in v4l2 framework
+In-Reply-To: <CAA+D8AN34-NVrgksRAG014PuHGUssTm0p-KR-HYGe+Pt8Yejxg@mail.gmail.com>
+References: <1690265540-25999-1-git-send-email-shengjiu.wang@nxp.com>
+	<47d66c28-1eb2-07f5-d6f9-779d675aefe8@xs4all.nl>
+	<87il9xu1ro.wl-tiwai@suse.de>
+	<CAA+D8ANmBKMp_L2GS=Lp-saMQKja6L4E6No3yP-e=a5YQBD_jQ@mail.gmail.com>
+	<87il9xoddo.wl-tiwai@suse.de>
+	<CAA+D8AOVEpGxO0YNeS1p+Ym86k6VP-CNQB3JmbeT7mPKg0R99A@mail.gmail.com>
+	<844ef9b6-d5e2-46a9-b7a5-7ee86a2e449c@sirena.org.uk>
+	<CAA+D8AOnsx+7t3MrWm42waxtetL07nbKURLsh1hBx39LUDm+Zg@mail.gmail.com>
+	<CAA+D8AMriHO60SD2OqQSDMmi7wm=0MkoW6faR5nyve-j2Q5AEQ@mail.gmail.com>
+	<CAA+D8AN34-NVrgksRAG014PuHGUssTm0p-KR-HYGe+Pt8Yejxg@mail.gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,210 +89,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, alsa-devel@alsa-project.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Linus Walleij <linus.walleij@linaro.org>, Jaroslav Kysela <perex@perex.cz>, Eric Dumazet <edumazet@google.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Fabio Estevam <festevam@gmail.com>, Qiang Zhao <qiang.zhao@nxp.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Lee Jones <lee@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, Nicolin Chen <nicoleotsuka@gmail.com>, linux-gpio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Takashi Iwai <tiwai@suse.com>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>, Liam Girdwood <lgirdwood@gmail.com>, Li Yang <leoyang.li@nxp.com>, Mark Brown <broonie@kernel.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <dave
- m@davemloft.net>
+Cc: nicoleotsuka@gmail.com, alsa-devel@alsa-project.org, lgirdwood@gmail.com, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-media@vger.kernel.org, tfiga@chromium.org, Hans Verkuil <hverkuil@xs4all.nl>, linuxppc-dev@lists.ozlabs.org, Mark Brown <broonie@kernel.org>, sakari.ailus@iki.fi, perex@perex.cz, mchehab@kernel.org, festevam@gmail.com, m.szyprowski@samsung.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Simon,
+On Wed, 23 Aug 2023 16:33:19 +0200,
+Shengjiu Wang wrote:
+> 
+> On Fri, Aug 11, 2023 at 7:05 PM Shengjiu Wang <shengjiu.wang@gmail.com> wrote:
+> >
+> > Hi Mark, Takashi
+> >
+> > On Thu, Aug 3, 2023 at 9:11 PM Shengjiu Wang <shengjiu.wang@gmail.com> wrote:
+> > >
+> > > On Thu, Aug 3, 2023 at 1:28 AM Mark Brown <broonie@kernel.org> wrote:
+> > > >
+> > > > On Wed, Aug 02, 2023 at 10:41:43PM +0800, Shengjiu Wang wrote:
+> > > >
+> > > > > Currently the ASRC in ALSA is to connect to another I2S device as
+> > > > > a sound card.  But we'd like to the ASRC can be used by user space directly
+> > > > > that user space application can get the output after conversion from ASRC.
+> > > >
+> > > > That sort of use case would be handled via DPCM at the minute, though
+> > > > persuading it to connect two front ends together might be fun (which is
+> > > > the sort of reason why we want to push digital information down into
+> > > > DAPM and make everything a component).
+> > >
+> > > Thanks.
+> > >
+> > > ASRC M2M case needs to run as fast as possible, no sync clock control.
+> > > If use sound card to handle ASRC M2M case,  the user application
+> > > should be aplay/arecord, then we need to consider xrun issue, buffer
+> > > may timeout, sync between aplay and arecord,  these should't be
+> > > considered by pure memory to memory operation.
+> > >
+> > > DPCM may achitect all the audio things in components and sound
+> > > card,  it is good. but for the M2M case, it is complcated. not sure
+> > > it is doable.
+> > >
+> >
+> > Beside the concern in previous mail,
+> >
+> > DPCM needs to separate ASRC to be two substreams (playback and capture).
+> >
+> > But the ASRC needs the sample rate & format of input and output first
+> > then start conversion.
+> >
+> > If the playback controls the rate & format of input,  capture substream
+> > controls the rate & format of output,  as a result
+> > one substream needs to get information(dma buffer address, size...
+> > rate, format) from another substream, then start both substreams in the
+> > last substream. How to synchronize these two substreams is a problem.
+> > One stream can be released but another stream doesn't know .
+> >
+> > So I don't think it is a good idea to use DPCM for pure M2M case.
+> >
+> > So can I persuade you to consider the V4L2 solution?
+> >
+> 
+> Just a summary:
+> 
+> Basic M2M conversion can work with DPCM, I have tried with some
+> workaround to make it work.
+> 
+> But there are several issues:
+> 1. Need to create sound cards.  ASRC module support multi instances, then
+> need to create multi sound cards for each instance.
 
-On Sun, 20 Aug 2023 19:15:11 +0200
-Simon Horman <horms@kernel.org> wrote:
+Hm, why can't it be multiple PCM instances instead?
 
-> On Fri, Aug 18, 2023 at 06:39:15PM +0200, Christophe Leroy wrote:
-> > From: Herve Codina <herve.codina@bootlin.com>
-> > 
-> > A framer is a component in charge of an E1/T1 line interface.
-> > Connected usually to a TDM bus, it converts TDM frames to/from E1/T1
-> > frames. It also provides information related to the E1/T1 line.
-> > 
-> > The framer framework provides a set of APIs for the framer drivers
-> > (framer provider) to create/destroy a framer and APIs for the framer
-> > users (framer consumer) to obtain a reference to the framer, and
-> > use the framer.
-> > 
-> > This basic implementation provides a framer abstraction for:
-> >  - power on/off the framer
-> >  - get the framer status (line state)
-> >  - be notified on framer status changes
-> >  - get/set the framer configuration
-> > 
-> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> > Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>  
-> 
-> Hi Christophe and Herve,
-> 
-> some minor feedback from my side.
-> 
-> ...
-> 
-> > diff --git a/drivers/net/wan/framer/framer-core.c b/drivers/net/wan/framer/framer-core.c  
-> 
-> ...
-> 
-> > +/**
-> > + * framer_create() - create a new framer
-> > + * @dev: device that is creating the new framer
-> > + * @node: device node of the framer. default to dev->of_node.
-> > + * @ops: function pointers for performing framer operations
-> > + *
-> > + * Called to create a framer using framer framework.
-> > + */
-> > +struct framer *framer_create(struct device *dev, struct device_node *node,
-> > +			     const struct framer_ops *ops)
-> > +{
-> > +	int ret;
-> > +	int id;
-> > +	struct framer *framer;  
-> 
-> Please arrange local variable declarations for Networking code
-> using reverse xmas tree order - longest line to shortest.
+> 2. The ASRC is an entirety but with DPCM we need to separate input port and
+> output port to playback substream and capture stream. Synchronous between
+> playback substream and capture substream is a problem.
+> How to start them and stop them at the same time.
 
-Yes, will be done in the next iteration.
+This could be done by enforcing the full duplex and linking the both
+PCM streams, I suppose.
 
-> 
-> https://github.com/ecree-solarflare/xmastree is helpful here.
-> 
-> ...
-> 
-> > diff --git a/include/linux/framer/framer-provider.h b/include/linux/framer/framer-provider.h  
-> 
-> ...
-> 
-> > +/**
-> > + * struct framer_ops - set of function pointers for performing framer operations
-> > + * @init: operation to be performed for initializing the framer
-> > + * @exit: operation to be performed while exiting
-> > + * @power_on: powering on the framer
-> > + * @power_off: powering off the framer
-> > + * @flags: OR-ed flags (FRAMER_FLAG_*) to ask for core functionality
-> > + *          - @FRAMER_FLAG_POLL_STATUS:
-> > + *            Ask the core to perfom a polling to get the framer status and  
-> 
-> nit: perfom -> perform
+> 3. How to handle the xrun issue. pause or resume. which are brought by ALSA.
 
-Will be fixed in the next iteration.
+Doesn't V4L2 handle the overrun/underrun at all?  Also, no resume
+support?
 
-> 
->      checkpatch.pl --codespell is your friend here
-> 
-> > + *            notify consumers on change.
-> > + *            The framer should call @framer_notify_status_change() when it
-> > + *            detects a status change. This is usally done using interrutps.  
-> 
-> nit: usally -> usually
->      interrutps -> interrupts
+Pause and resume are optional in ALSA frame work, you don't need to
+implement them unless you want/need.
 
-Will be fixed in the next iteration.
+> So shall we make the decision that we can go to the V4L2 solution?
 
-> 
-> ...
-> 
-> > diff --git a/include/linux/framer/framer.h b/include/linux/framer/framer.h
-> > new file mode 100644
-> > index 000000000000..0bee7135142f
-> > --- /dev/null
-> > +++ b/include/linux/framer/framer.h
-> > @@ -0,0 +1,199 @@
-> > +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> > +/*
-> > + * Generic framer header file
-> > + *
-> > + * Copyright 2023 CS GROUP France
-> > + *
-> > + * Author: Herve Codina <herve.codina@bootlin.com>
-> > + */
-> > +
-> > +#ifndef __DRIVERS_FRAMER_H
-> > +#define __DRIVERS_FRAMER_H
-> > +
-> > +#include <linux/err.h>
-> > +#include <linux/mutex.h>
-> > +#include <linux/notifier.h>
-> > +#include <linux/of.h>
-> > +#include <linux/device.h>
-> > +#include <linux/workqueue.h>
-> > +
-> > +/**
-> > + * enum framer_iface - Framer interface  
-> 
-> As this is a kernel-doc, please include documentation for
-> the defined constants: FRAMER_IFACE_E1 and FRAMER_IFACE_T1.
-> 
-> As flagged by: ./scripts/kernel-doc -none
+Honestly speaking, I don't mind much whether it's implemented in V2L4
+or not -- at least for the kernel part, we can reorganize / refactor
+things internally.  But, the biggest remaining question to me is
+whether this user-space interface is the most suitable one.  Is it
+well defined, usable and maintained for the audio applications?  Or
+is it meant to be a stop-gap for a specific use case?
 
-Will be done in the next iteration.
 
-> 
-> > + */
-> > +enum framer_iface {
-> > +	FRAMER_IFACE_E1,      /* E1 interface */
-> > +	FRAMER_IFACE_T1,      /* T1 interface */
-> > +};
-> > +
-> > +/**
-> > + * enum framer_clock_mode - Framer clock mode  
-> 
-> Likewise here too.
-> 
-> Also, nit: framer_clock_mode -> framer_clock_type
-> 
+thanks,
 
-Will be updated (doc and change to framer_clock_type) in the next iteration.
-
-> > + */
-> > +enum framer_clock_type {
-> > +	FRAMER_CLOCK_EXT, /* External clock */
-> > +	FRAMER_CLOCK_INT, /* Internal clock */
-> > +};
-> > +
-> > +/**
-> > + * struct framer_configuration - Framer configuration  
-> 
-> nit: framer_configuration -> framer_config
-
-Will be fixed in the next iteration.
-
-> 
-> > + * @line_iface: Framer line interface
-> > + * @clock_mode: Framer clock type
-> > + * @clock_rate: Framer clock rate
-> > + */
-> > +struct framer_config {
-> > +	enum framer_iface iface;
-> > +	enum framer_clock_type clock_type;
-> > +	unsigned long line_clock_rate;
-> > +};
-> > +
-> > +/**
-> > + * struct framer_status - Framer status
-> > + * @link_is_on: Framer link state. true, the link is on, false, the link is off.
-> > + */
-> > +struct framer_status {
-> > +	bool link_is_on;
-> > +};
-> > +
-> > +/**
-> > + * framer_event - event available for notification  
-> 
-> nit: framer_event -> enum framer_event
-
-Will be fixed in the next iteration.
-
-> 
-> A~d please document FRAMER_EVENT_STATUS in the kernel doc too.
-
-Will be documented in the next iteration.
-
-> 
-> > + */
-> > +enum framer_event {
-> > +	FRAMER_EVENT_STATUS,	/* Event notified on framer_status changes */
-> > +};  
-> 
-> ...
-
-Thanks for the review,
-Best regards,
-Hervé
+Takashi
