@@ -2,82 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA308788C58
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 17:20:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68106788C5B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 17:21:16 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OQut1+bw;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IRNQtvZz;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RXNtc2f04z303l
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Aug 2023 01:20:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RXNvZ01HVz3dFT
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Aug 2023 01:21:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OQut1+bw;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IRNQtvZz;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RXNrk2NP4z2ygq
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RXNrl1Hw6z2ygq
 	for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Aug 2023 01:18:46 +1000 (AEST)
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37PEv9sn027614;
-	Fri, 25 Aug 2023 15:18:25 GMT
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37PF9WvF014635;
+	Fri, 25 Aug 2023 15:18:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=b5iyNSIy/dvRWAiwMyb1JSzXYVNw0u1Ec3TtzrL04SQ=;
- b=OQut1+bw+xkxIX/4ANflemNi7NjPXnqHXFYrUVzypPhmmr/gPN4qPZOkiO6ieOYXrOAd
- PBnRkcDJ+w6yekptz9qtty6zhxU5pzIsZHM+/H03ML30rGFjD+UM9H6wjTzH3iMpEiM2
- Afyt+taEfzzOBxhJaYZoTtLJAIVGcUCC/U8Avr2jJG9a9o0gGtT3w0GHbMHotH9X9cA/
- m6dRV+TobwmNuZL45UPWgNJHx3gZfjbfd4gT3y3jWMv/waF67oYnSVLeuxvtt1fxgJXq
- 5lmNuzATUIFaAEG3v82RnRO9FV2KNO0b27Ha5q9SDSOMxZuMmMN/ObPLeMhmDzVkKYAp Tw== 
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3spxgqrnwj-1
+ bh=UZEd8+YCglfM3/F3LtFpJaUhBqLI+b8upZY92+tzIpg=;
+ b=IRNQtvZz6zcETBDiCd31d4Uq3OPTbwD1ycp0eityIjqPHG2tCTA9bTf/5iRz3hA49TMG
+ 68D1RTIXGiCS3tswXq9DR+AjDPzqR77UsNRnwPxV527uhda/GWVcAp0c1rUvFW21phnp
+ Y1IsnDmRXTNWt0FJtCNa5dc3FKyNZpVBodGwrlZ6ygtntjla4FXzFJY8gh7XJRteFXkI
+ +EWxFyO5rnfADfYkfo5xxCR0IX61ex8JyBS+67fR9M/WMw+ubjR8qtj9DdjGEilwk6uq
+ c31FKccm4eoIga9HKYXBgMDaolVsznXkkKK4etfb6GUo6Z1AGZX4pgR9keN8S2JCe/qD fw== 
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3spvrmbxtf-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Aug 2023 15:18:24 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 37PF4Bkn026133;
-	Fri, 25 Aug 2023 15:18:23 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3snqgtfwq3-1
+	Fri, 25 Aug 2023 15:18:27 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 37PFAfGM027398;
+	Fri, 25 Aug 2023 15:18:26 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sn20t0k74-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Aug 2023 15:18:23 +0000
+	Fri, 25 Aug 2023 15:18:26 +0000
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 37PFIMEM44761614
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 37PFIOZI20251356
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 25 Aug 2023 15:18:22 GMT
+	Fri, 25 Aug 2023 15:18:24 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 271F62004D;
+	by IMSVA (Postfix) with ESMTP id 8BEE220043;
+	Fri, 25 Aug 2023 15:18:24 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 80CC220040;
 	Fri, 25 Aug 2023 15:18:22 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1FA4420040;
-	Fri, 25 Aug 2023 15:18:20 +0000 (GMT)
 Received: from li-bd3f974c-2712-11b2-a85c-df1cec4d728e.ibm.com.com (unknown [9.43.75.97])
 	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 25 Aug 2023 15:18:19 +0000 (GMT)
+	Fri, 25 Aug 2023 15:18:22 +0000 (GMT)
 From: Hari Bathini <hbathini@linux.ibm.com>
 To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bpf@vger.kernel.org
-Subject: [PATCH v3 3/5] powerpc/bpf: use bpf_jit_binary_pack_[alloc|finalize|free]
-Date: Fri, 25 Aug 2023 20:48:08 +0530
-Message-ID: <20230825151810.164418-4-hbathini@linux.ibm.com>
+Subject: [PATCH v3 4/5] powerpc/code-patching: introduce patch_instructions()
+Date: Fri, 25 Aug 2023 20:48:09 +0530
+Message-ID: <20230825151810.164418-5-hbathini@linux.ibm.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230825151810.164418-1-hbathini@linux.ibm.com>
 References: <20230825151810.164418-1-hbathini@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: tOhpBRY7cfgmApMakPcjrxsT_Y-p-691
-X-Proofpoint-ORIG-GUID: tOhpBRY7cfgmApMakPcjrxsT_Y-p-691
+X-Proofpoint-GUID: 2ojPeD5syQ5h0JKvYFBs3YOUuQaKJ7Ry
+X-Proofpoint-ORIG-GUID: 2ojPeD5syQ5h0JKvYFBs3YOUuQaKJ7Ry
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
  definitions=2023-08-25_13,2023-08-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1015
- lowpriorityscore=0 malwarescore=0 bulkscore=0 adultscore=0 suspectscore=0
- spamscore=0 priorityscore=1501 mlxscore=0 phishscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
- definitions=main-2308250134
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ clxscore=1015 phishscore=0 impostorscore=0 malwarescore=0 adultscore=0
+ mlxlogscore=697 spamscore=0 mlxscore=0 priorityscore=1501 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2308250134
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,387 +93,190 @@ Cc: Song Liu <songliubraving@fb.com>, Daniel Borkmann <daniel@iogearbox.net>, Al
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use bpf_jit_binary_pack_alloc in powerpc jit. The jit engine first
-writes the program to the rw buffer. When the jit is done, the program
-is copied to the final location with bpf_jit_binary_pack_finalize.
-With multiple jit_subprogs, bpf_jit_free is called on some subprograms
-that haven't got bpf_jit_binary_pack_finalize() yet. Implement custom
-bpf_jit_free() like in commit 1d5f82d9dd47 ("bpf, x86: fix freeing of
-not-finalized bpf_prog_pack") to call bpf_jit_binary_pack_finalize(),
-if necessary. While here, correct the misnomer powerpc64_jit_data to
-powerpc_jit_data as it is meant for both ppc32 and ppc64.
+patch_instruction() entails setting up pte, patching the instruction,
+clearing the pte and flushing the tlb. If multiple instructions need
+to be patched, every instruction would have to go through the above
+drill unnecessarily. Instead, introduce function patch_instructions()
+that sets up the pte, clears the pte and flushes the tlb only once per
+page range of instructions to be patched. This adds a slight overhead
+to patch_instruction() call while improving the patching time for
+scenarios where more than one instruction needs to be patched.
 
 Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
 ---
- arch/powerpc/net/bpf_jit.h        |  12 ++--
- arch/powerpc/net/bpf_jit_comp.c   | 110 ++++++++++++++++++++++--------
- arch/powerpc/net/bpf_jit_comp32.c |  13 ++--
- arch/powerpc/net/bpf_jit_comp64.c |  10 +--
- 4 files changed, 98 insertions(+), 47 deletions(-)
+ arch/powerpc/include/asm/code-patching.h |  1 +
+ arch/powerpc/lib/code-patching.c         | 94 ++++++++++++++++++++----
+ 2 files changed, 80 insertions(+), 15 deletions(-)
 
-diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
-index 72b7bb34fade..02bd89aa8ea5 100644
---- a/arch/powerpc/net/bpf_jit.h
-+++ b/arch/powerpc/net/bpf_jit.h
-@@ -36,9 +36,6 @@
- 		EMIT(PPC_RAW_BRANCH(offset));				      \
- 	} while (0)
+diff --git a/arch/powerpc/include/asm/code-patching.h b/arch/powerpc/include/asm/code-patching.h
+index 3f881548fb61..4f5f0c091586 100644
+--- a/arch/powerpc/include/asm/code-patching.h
++++ b/arch/powerpc/include/asm/code-patching.h
+@@ -74,6 +74,7 @@ int create_cond_branch(ppc_inst_t *instr, const u32 *addr,
+ int patch_branch(u32 *addr, unsigned long target, int flags);
+ int patch_instruction(u32 *addr, ppc_inst_t instr);
+ int raw_patch_instruction(u32 *addr, ppc_inst_t instr);
++int patch_instructions(void *addr, void *code, size_t len, bool fill_insn);
  
--/* bl (unconditional 'branch' with link) */
--#define PPC_BL(dest)	EMIT(PPC_RAW_BL((dest) - (unsigned long)(image + ctx->idx)))
--
- /* "cond" here covers BO:BI fields. */
- #define PPC_BCC_SHORT(cond, dest)					      \
- 	do {								      \
-@@ -169,16 +166,17 @@ static inline void bpf_clear_seen_register(struct codegen_context *ctx, int i)
- }
- 
- void bpf_jit_init_reg_mapping(struct codegen_context *ctx);
--int bpf_jit_emit_func_call_rel(u32 *image, struct codegen_context *ctx, u64 func);
--int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *ctx,
-+int bpf_jit_emit_func_call_rel(u32 *image, u32 *fimage, struct codegen_context *ctx, u64 func);
-+int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct codegen_context *ctx,
- 		       u32 *addrs, int pass, bool extra_pass);
- void bpf_jit_build_prologue(u32 *image, struct codegen_context *ctx);
- void bpf_jit_build_epilogue(u32 *image, struct codegen_context *ctx);
- void bpf_jit_realloc_regs(struct codegen_context *ctx);
- int bpf_jit_emit_exit_insn(u32 *image, struct codegen_context *ctx, int tmp_reg, long exit_addr);
- 
--int bpf_add_extable_entry(struct bpf_prog *fp, u32 *image, int pass, struct codegen_context *ctx,
--			  int insn_idx, int jmp_off, int dst_reg);
-+int bpf_add_extable_entry(struct bpf_prog *fp, u32 *image, u32 *fimage, int pass,
-+			  struct codegen_context *ctx, int insn_idx,
-+			  int jmp_off, int dst_reg);
- 
- #endif
- 
-diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
-index 7cd4cf53d61c..c60d7570e05d 100644
---- a/arch/powerpc/net/bpf_jit_comp.c
-+++ b/arch/powerpc/net/bpf_jit_comp.c
-@@ -64,10 +64,13 @@ int bpf_jit_emit_exit_insn(u32 *image, struct codegen_context *ctx, int tmp_reg,
- 	return 0;
- }
- 
--struct powerpc64_jit_data {
--	struct bpf_binary_header *header;
-+struct powerpc_jit_data {
-+	/* address of rw header */
-+	struct bpf_binary_header *hdr;
-+	/* address of ro final header */
-+	struct bpf_binary_header *fhdr;
- 	u32 *addrs;
--	u8 *image;
-+	u8 *fimage;
- 	u32 proglen;
- 	struct codegen_context ctx;
- };
-@@ -84,15 +87,18 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
- 	u8 *image = NULL;
- 	u32 *code_base;
- 	u32 *addrs;
--	struct powerpc64_jit_data *jit_data;
-+	struct powerpc_jit_data *jit_data;
- 	struct codegen_context cgctx;
- 	int pass;
- 	int flen;
--	struct bpf_binary_header *bpf_hdr;
-+	struct bpf_binary_header *fhdr = NULL;
-+	struct bpf_binary_header *hdr = NULL;
- 	struct bpf_prog *org_fp = fp;
- 	struct bpf_prog *tmp_fp;
- 	bool bpf_blinded = false;
- 	bool extra_pass = false;
-+	u8 *fimage = NULL;
-+	u32 *fcode_base;
- 	u32 extable_len;
- 	u32 fixup_len;
- 
-@@ -122,9 +128,16 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
- 	addrs = jit_data->addrs;
- 	if (addrs) {
- 		cgctx = jit_data->ctx;
--		image = jit_data->image;
--		bpf_hdr = jit_data->header;
-+		/*
-+		 * JIT compiled to a writable location (image/code_base) first.
-+		 * It is then moved to the readonly final location (fimage/fcode_base)
-+		 * using instruction patching.
-+		 */
-+		fimage = jit_data->fimage;
-+		fhdr = jit_data->fhdr;
- 		proglen = jit_data->proglen;
-+		hdr = jit_data->hdr;
-+		image = (void *)hdr + ((void *)fimage - (void *)fhdr);
- 		extra_pass = true;
- 		/* During extra pass, ensure index is reset before repopulating extable entries */
- 		cgctx.exentry_idx = 0;
-@@ -144,7 +157,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
- 	cgctx.stack_size = round_up(fp->aux->stack_depth, 16);
- 
- 	/* Scouting faux-generate pass 0 */
--	if (bpf_jit_build_body(fp, 0, &cgctx, addrs, 0, false)) {
-+	if (bpf_jit_build_body(fp, NULL, NULL, &cgctx, addrs, 0, false)) {
- 		/* We hit something illegal or unsupported. */
- 		fp = org_fp;
- 		goto out_addrs;
-@@ -159,7 +172,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
- 	 */
- 	if (cgctx.seen & SEEN_TAILCALL || !is_offset_in_branch_range((long)cgctx.idx * 4)) {
- 		cgctx.idx = 0;
--		if (bpf_jit_build_body(fp, 0, &cgctx, addrs, 0, false)) {
-+		if (bpf_jit_build_body(fp, NULL, NULL, &cgctx, addrs, 0, false)) {
- 			fp = org_fp;
- 			goto out_addrs;
- 		}
-@@ -181,17 +194,19 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
- 	proglen = cgctx.idx * 4;
- 	alloclen = proglen + FUNCTION_DESCR_SIZE + fixup_len + extable_len;
- 
--	bpf_hdr = bpf_jit_binary_alloc(alloclen, &image, 4, bpf_jit_fill_ill_insns);
--	if (!bpf_hdr) {
-+	fhdr = bpf_jit_binary_pack_alloc(alloclen, &fimage, 4, &hdr, &image,
-+					      bpf_jit_fill_ill_insns);
-+	if (!fhdr) {
- 		fp = org_fp;
- 		goto out_addrs;
- 	}
- 
- 	if (extable_len)
--		fp->aux->extable = (void *)image + FUNCTION_DESCR_SIZE + proglen + fixup_len;
-+		fp->aux->extable = (void *)fimage + FUNCTION_DESCR_SIZE + proglen + fixup_len;
- 
- skip_init_ctx:
- 	code_base = (u32 *)(image + FUNCTION_DESCR_SIZE);
-+	fcode_base = (u32 *)(fimage + FUNCTION_DESCR_SIZE);
- 
- 	/* Code generation passes 1-2 */
- 	for (pass = 1; pass < 3; pass++) {
-@@ -199,8 +214,10 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
- 		cgctx.idx = 0;
- 		cgctx.alt_exit_addr = 0;
- 		bpf_jit_build_prologue(code_base, &cgctx);
--		if (bpf_jit_build_body(fp, code_base, &cgctx, addrs, pass, extra_pass)) {
--			bpf_jit_binary_free(bpf_hdr);
-+		if (bpf_jit_build_body(fp, code_base, fcode_base, &cgctx, addrs, pass,
-+				       extra_pass)) {
-+			bpf_arch_text_copy(&fhdr->size, &hdr->size, sizeof(hdr->size));
-+			bpf_jit_binary_pack_free(fhdr, hdr);
- 			fp = org_fp;
- 			goto out_addrs;
- 		}
-@@ -220,17 +237,19 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
- 
- #ifdef CONFIG_PPC64_ELF_ABI_V1
- 	/* Function descriptor nastiness: Address + TOC */
--	((u64 *)image)[0] = (u64)code_base;
-+	((u64 *)image)[0] = (u64)fcode_base;
- 	((u64 *)image)[1] = local_paca->kernel_toc;
- #endif
- 
--	fp->bpf_func = (void *)image;
-+	fp->bpf_func = (void *)fimage;
- 	fp->jited = 1;
- 	fp->jited_len = proglen + FUNCTION_DESCR_SIZE;
- 
--	bpf_flush_icache(bpf_hdr, (u8 *)bpf_hdr + bpf_hdr->size);
- 	if (!fp->is_func || extra_pass) {
--		bpf_jit_binary_lock_ro(bpf_hdr);
-+		if (bpf_jit_binary_pack_finalize(fp, fhdr, hdr)) {
-+			fp = org_fp;
-+			goto out_addrs;
-+		}
- 		bpf_prog_fill_jited_linfo(fp, addrs);
- out_addrs:
- 		kfree(addrs);
-@@ -240,8 +259,9 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
- 		jit_data->addrs = addrs;
- 		jit_data->ctx = cgctx;
- 		jit_data->proglen = proglen;
--		jit_data->image = image;
--		jit_data->header = bpf_hdr;
-+		jit_data->fimage = fimage;
-+		jit_data->fhdr = fhdr;
-+		jit_data->hdr = hdr;
- 	}
- 
- out:
-@@ -255,12 +275,13 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
-  * The caller should check for (BPF_MODE(code) == BPF_PROBE_MEM) before calling
-  * this function, as this only applies to BPF_PROBE_MEM, for now.
-  */
--int bpf_add_extable_entry(struct bpf_prog *fp, u32 *image, int pass, struct codegen_context *ctx,
--			  int insn_idx, int jmp_off, int dst_reg)
-+int bpf_add_extable_entry(struct bpf_prog *fp, u32 *image, u32 *fimage, int pass,
-+			  struct codegen_context *ctx, int insn_idx, int jmp_off,
-+			  int dst_reg)
+ static inline unsigned long patch_site_addr(s32 *site)
  {
- 	off_t offset;
- 	unsigned long pc;
--	struct exception_table_entry *ex;
-+	struct exception_table_entry *ex, *ex_entry;
- 	u32 *fixup;
- 
- 	/* Populate extable entries only in the last pass */
-@@ -271,9 +292,16 @@ int bpf_add_extable_entry(struct bpf_prog *fp, u32 *image, int pass, struct code
- 	    WARN_ON_ONCE(ctx->exentry_idx >= fp->aux->num_exentries))
- 		return -EINVAL;
- 
-+	/*
-+	 * Program is first written to image before copying to the
-+	 * final location (fimage). Accordingly, update in the image first.
-+	 * As all offsets used are relative, copying as is to the
-+	 * final location should be alright.
-+	 */
- 	pc = (unsigned long)&image[insn_idx];
-+	ex = (void *)fp->aux->extable - (void *)fimage + (void *)image;
- 
--	fixup = (void *)fp->aux->extable -
-+	fixup = (void *)ex -
- 		(fp->aux->num_exentries * BPF_FIXUP_LEN * 4) +
- 		(ctx->exentry_idx * BPF_FIXUP_LEN * 4);
- 
-@@ -284,17 +312,17 @@ int bpf_add_extable_entry(struct bpf_prog *fp, u32 *image, int pass, struct code
- 	fixup[BPF_FIXUP_LEN - 1] =
- 		PPC_RAW_BRANCH((long)(pc + jmp_off) - (long)&fixup[BPF_FIXUP_LEN - 1]);
- 
--	ex = &fp->aux->extable[ctx->exentry_idx];
-+	ex_entry = &ex[ctx->exentry_idx];
- 
--	offset = pc - (long)&ex->insn;
-+	offset = pc - (long)&ex_entry->insn;
- 	if (WARN_ON_ONCE(offset >= 0 || offset < INT_MIN))
- 		return -ERANGE;
--	ex->insn = offset;
-+	ex_entry->insn = offset;
- 
--	offset = (long)fixup - (long)&ex->fixup;
-+	offset = (long)fixup - (long)&ex_entry->fixup;
- 	if (WARN_ON_ONCE(offset >= 0 || offset < INT_MIN))
- 		return -ERANGE;
--	ex->fixup = offset;
-+	ex_entry->fixup = offset;
- 
- 	ctx->exentry_idx++;
- 	return 0;
-@@ -328,3 +356,27 @@ int bpf_arch_text_invalidate(void *dst, size_t len)
- 
- 	return ret;
+diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
+index b00112d7ad46..60d446e16b42 100644
+--- a/arch/powerpc/lib/code-patching.c
++++ b/arch/powerpc/lib/code-patching.c
+@@ -278,20 +278,25 @@ static void unmap_patch_area(unsigned long addr)
+ 	flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
  }
-+
-+void bpf_jit_free(struct bpf_prog *fp)
-+{
-+	if (fp->jited) {
-+		struct powerpc_jit_data *jit_data = fp->aux->jit_data;
-+		struct bpf_binary_header *hdr;
-+
-+		/*
-+		 * If we fail the final pass of JIT (from jit_subprogs),
-+		 * the program may not be finalized yet. Call finalize here
-+		 * before freeing it.
-+		 */
-+		if (jit_data) {
-+			bpf_jit_binary_pack_finalize(fp, jit_data->fhdr, jit_data->hdr);
-+			kvfree(jit_data->addrs);
-+			kfree(jit_data);
+ 
+-static int __do_patch_instruction_mm(u32 *addr, ppc_inst_t instr)
++/*
++ * A page is mapped and instructions that fit the page are patched.
++ * Assumes 'len' to be (PAGE_SIZE - offset_in_page(addr)) or below.
++ */
++static int __do_patch_instructions_mm(u32 *addr, void *code, size_t len, bool fill_insn)
+ {
+-	int err;
+-	u32 *patch_addr;
+ 	unsigned long text_poke_addr;
+ 	pte_t *pte;
+ 	unsigned long pfn = get_patch_pfn(addr);
+ 	struct mm_struct *patching_mm;
+ 	struct mm_struct *orig_mm;
++	ppc_inst_t instr;
++	void *patch_addr;
+ 	spinlock_t *ptl;
++	int ilen, err;
+ 
+ 	patching_mm = __this_cpu_read(cpu_patching_context.mm);
+ 	text_poke_addr = __this_cpu_read(cpu_patching_context.addr);
+-	patch_addr = (u32 *)(text_poke_addr + offset_in_page(addr));
++	patch_addr = (void *)(text_poke_addr + offset_in_page(addr));
+ 
+ 	pte = get_locked_pte(patching_mm, text_poke_addr, &ptl);
+ 	if (!pte)
+@@ -307,11 +312,22 @@ static int __do_patch_instruction_mm(u32 *addr, ppc_inst_t instr)
+ 
+ 	orig_mm = start_using_temp_mm(patching_mm);
+ 
+-	err = __patch_instruction(addr, instr, patch_addr);
++	while (len > 0) {
++		instr = ppc_inst_read(code);
++		ilen = ppc_inst_len(instr);
++		err = __patch_instruction(addr, instr, patch_addr);
++		/* hwsync performed by __patch_instruction (sync) if successful */
++		if (err) {
++			mb();  /* sync */
++			break;
 +		}
-+		hdr = bpf_jit_binary_pack_hdr(fp);
-+		bpf_jit_binary_pack_free(hdr, NULL);
-+		WARN_ON_ONCE(!bpf_prog_kallsyms_verify_off(fp));
+ 
+-	/* hwsync performed by __patch_instruction (sync) if successful */
+-	if (err)
+-		mb();  /* sync */
++		len -= ilen;
++		patch_addr = patch_addr + ilen;
++		addr = (void *)addr + ilen;
++		if (!fill_insn)
++			code = code + ilen;
++	}
+ 
+ 	/* context synchronisation performed by __patch_instruction (isync or exception) */
+ 	stop_using_temp_mm(patching_mm, orig_mm);
+@@ -328,16 +344,21 @@ static int __do_patch_instruction_mm(u32 *addr, ppc_inst_t instr)
+ 	return err;
+ }
+ 
+-static int __do_patch_instruction(u32 *addr, ppc_inst_t instr)
++/*
++ * A page is mapped and instructions that fit the page are patched.
++ * Assumes 'len' to be (PAGE_SIZE - offset_in_page(addr)) or below.
++ */
++static int __do_patch_instructions(u32 *addr, void *code, size_t len, bool fill_insn)
+ {
+-	int err;
+-	u32 *patch_addr;
+ 	unsigned long text_poke_addr;
+ 	pte_t *pte;
+ 	unsigned long pfn = get_patch_pfn(addr);
++	void *patch_addr;
++	ppc_inst_t instr;
++	int ilen, err;
+ 
+ 	text_poke_addr = (unsigned long)__this_cpu_read(cpu_patching_context.addr) & PAGE_MASK;
+-	patch_addr = (u32 *)(text_poke_addr + offset_in_page(addr));
++	patch_addr = (void *)(text_poke_addr + offset_in_page(addr));
+ 
+ 	pte = __this_cpu_read(cpu_patching_context.pte);
+ 	__set_pte_at(&init_mm, text_poke_addr, pte, pfn_pte(pfn, PAGE_KERNEL), 0);
+@@ -345,7 +366,19 @@ static int __do_patch_instruction(u32 *addr, ppc_inst_t instr)
+ 	if (radix_enabled())
+ 		asm volatile("ptesync": : :"memory");
+ 
+-	err = __patch_instruction(addr, instr, patch_addr);
++	while (len > 0) {
++		instr = ppc_inst_read(code);
++		ilen = ppc_inst_len(instr);
++		err = __patch_instruction(addr, instr, patch_addr);
++		if (err)
++			break;
++
++		len -= ilen;
++		patch_addr = patch_addr + ilen;
++		addr = (void *)addr + ilen;
++		if (!fill_insn)
++			code = code + ilen;
++	}
+ 
+ 	pte_clear(&init_mm, text_poke_addr, pte);
+ 	flush_tlb_kernel_range(text_poke_addr, text_poke_addr + PAGE_SIZE);
+@@ -369,15 +402,46 @@ int patch_instruction(u32 *addr, ppc_inst_t instr)
+ 
+ 	local_irq_save(flags);
+ 	if (mm_patch_enabled())
+-		err = __do_patch_instruction_mm(addr, instr);
++		err = __do_patch_instructions_mm(addr, &instr, ppc_inst_len(instr), false);
+ 	else
+-		err = __do_patch_instruction(addr, instr);
++		err = __do_patch_instructions(addr, &instr, ppc_inst_len(instr), false);
+ 	local_irq_restore(flags);
+ 
+ 	return err;
+ }
+ NOKPROBE_SYMBOL(patch_instruction);
+ 
++/*
++ * Patch 'addr' with 'len' bytes of instructions from 'code'.
++ */
++int patch_instructions(void *addr, void *code, size_t len, bool fill_insn)
++{
++	unsigned long flags;
++	size_t plen;
++	int err;
++
++	while (len > 0) {
++		plen = min_t(size_t, PAGE_SIZE - offset_in_page(addr), len);
++
++		local_irq_save(flags);
++		if (mm_patch_enabled())
++			err = __do_patch_instructions_mm(addr, code, plen, fill_insn);
++		else
++			err = __do_patch_instructions(addr, code, plen, fill_insn);
++		local_irq_restore(flags);
++		if (err)
++			break;
++
++		len -= plen;
++		addr = addr + plen;
++		if (!fill_insn)
++			code = code + plen;
 +	}
 +
-+	bpf_prog_unlock_free(fp);
++	return err;
 +}
-diff --git a/arch/powerpc/net/bpf_jit_comp32.c b/arch/powerpc/net/bpf_jit_comp32.c
-index 7f91ea064c08..434417c755fd 100644
---- a/arch/powerpc/net/bpf_jit_comp32.c
-+++ b/arch/powerpc/net/bpf_jit_comp32.c
-@@ -200,12 +200,13 @@ void bpf_jit_build_epilogue(u32 *image, struct codegen_context *ctx)
- 	EMIT(PPC_RAW_BLR());
- }
- 
--int bpf_jit_emit_func_call_rel(u32 *image, struct codegen_context *ctx, u64 func)
-+/* Relative offset needs to be calculated based on final image location */
-+int bpf_jit_emit_func_call_rel(u32 *image, u32 *fimage, struct codegen_context *ctx, u64 func)
++NOKPROBE_SYMBOL(patch_instructions);
++
+ int patch_branch(u32 *addr, unsigned long target, int flags)
  {
--	s32 rel = (s32)func - (s32)(image + ctx->idx);
-+	s32 rel = (s32)func - (s32)(fimage + ctx->idx);
- 
- 	if (image && rel < 0x2000000 && rel >= -0x2000000) {
--		PPC_BL(func);
-+		EMIT(PPC_RAW_BL(rel));
- 	} else {
- 		/* Load function address into r0 */
- 		EMIT(PPC_RAW_LIS(_R0, IMM_H(func)));
-@@ -278,7 +279,7 @@ static int bpf_jit_emit_tail_call(u32 *image, struct codegen_context *ctx, u32 o
- }
- 
- /* Assemble the body code between the prologue & epilogue */
--int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *ctx,
-+int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct codegen_context *ctx,
- 		       u32 *addrs, int pass, bool extra_pass)
- {
- 	const struct bpf_insn *insn = fp->insnsi;
-@@ -997,7 +998,7 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
- 					jmp_off += 4;
- 				}
- 
--				ret = bpf_add_extable_entry(fp, image, pass, ctx, insn_idx,
-+				ret = bpf_add_extable_entry(fp, image, fimage, pass, ctx, insn_idx,
- 							    jmp_off, dst_reg);
- 				if (ret)
- 					return ret;
-@@ -1053,7 +1054,7 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
- 				EMIT(PPC_RAW_STW(bpf_to_ppc(BPF_REG_5), _R1, 12));
- 			}
- 
--			ret = bpf_jit_emit_func_call_rel(image, ctx, func_addr);
-+			ret = bpf_jit_emit_func_call_rel(image, fimage, ctx, func_addr);
- 			if (ret)
- 				return ret;
- 
-diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
-index 0f8048f6dad6..79f23974a320 100644
---- a/arch/powerpc/net/bpf_jit_comp64.c
-+++ b/arch/powerpc/net/bpf_jit_comp64.c
-@@ -240,7 +240,7 @@ static int bpf_jit_emit_func_call_hlp(u32 *image, struct codegen_context *ctx, u
- 	return 0;
- }
- 
--int bpf_jit_emit_func_call_rel(u32 *image, struct codegen_context *ctx, u64 func)
-+int bpf_jit_emit_func_call_rel(u32 *image, u32 *fimage, struct codegen_context *ctx, u64 func)
- {
- 	unsigned int i, ctx_idx = ctx->idx;
- 
-@@ -361,7 +361,7 @@ asm (
- );
- 
- /* Assemble the body code between the prologue & epilogue */
--int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *ctx,
-+int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct codegen_context *ctx,
- 		       u32 *addrs, int pass, bool extra_pass)
- {
- 	enum stf_barrier_type stf_barrier = stf_barrier_type_get();
-@@ -940,8 +940,8 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
- 				addrs[++i] = ctx->idx * 4;
- 
- 			if (BPF_MODE(code) == BPF_PROBE_MEM) {
--				ret = bpf_add_extable_entry(fp, image, pass, ctx, ctx->idx - 1,
--							    4, dst_reg);
-+				ret = bpf_add_extable_entry(fp, image, fimage, pass, ctx,
-+							    ctx->idx - 1, 4, dst_reg);
- 				if (ret)
- 					return ret;
- 			}
-@@ -995,7 +995,7 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
- 			if (func_addr_fixed)
- 				ret = bpf_jit_emit_func_call_hlp(image, ctx, func_addr);
- 			else
--				ret = bpf_jit_emit_func_call_rel(image, ctx, func_addr);
-+				ret = bpf_jit_emit_func_call_rel(image, fimage, ctx, func_addr);
- 
- 			if (ret)
- 				return ret;
+ 	ppc_inst_t instr;
 -- 
 2.41.0
 
