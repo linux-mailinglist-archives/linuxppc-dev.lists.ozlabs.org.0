@@ -1,85 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 483AD7887C3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 14:49:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 946D3788910
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 15:55:07 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=feKBvwST;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=oaXz39cK;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=49KR5S3p;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RXKXJ61ypz30fF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 22:49:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RXM0936TSz3bV2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 23:55:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=feKBvwST;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=oaXz39cK;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=49KR5S3p;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=disgoel@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=tiwai@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RXHvm6QJrz3bwX
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Aug 2023 21:36:04 +1000 (AEST)
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37PBWDIc023885;
-	Fri, 25 Aug 2023 11:35:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
- message-id : date : mime-version : subject : to : cc : references : from :
- in-reply-to; s=pp1; bh=YusWZWXF1gn8oDPaa5B8VcVUwd4fXCj8GFQ29eKXiGU=;
- b=feKBvwSTcj4PjEiyvYt7/2k5Ki5hO0rfH2taTxzALDz4zZuMzDL87dxaf6NuKc8NXZqL
- 5W9jpu7Vj4DM7mo8rd8Df3lT4bhNAqDUV4tVkawjgSsgRcRD/DimF+tFQ2vP8xQ+G52/
- nbl+hiQTGWKXh5BkkHaJghXS7doKuNQGmvLD7XHditscv+rwD9EQt6pDi7UX/IYnvZPv
- q1gkpcv4N4HTTI3j/DFhMch54TFaTnawyuTTt6cnD5FESUUkCLfpt7QnSN5LZ7zokdHg
- KuL5LVndQUhQSmy2SC5sdnhwq3rtlHbrzYsSgDD18aqrgS9pAQM2zmPllpSGZpdkKi2Q UA== 
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3spugxr2k0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Aug 2023 11:35:57 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 37PASx4C027333;
-	Fri, 25 Aug 2023 11:35:56 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sn20sy7fj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Aug 2023 11:35:56 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 37PBZrOv53412112
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 25 Aug 2023 11:35:53 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5A63320049;
-	Fri, 25 Aug 2023 11:35:53 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 117FA20040;
-	Fri, 25 Aug 2023 11:35:51 +0000 (GMT)
-Received: from [9.43.29.72] (unknown [9.43.29.72])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 25 Aug 2023 11:35:50 +0000 (GMT)
-Content-Type: multipart/alternative;
- boundary="------------q0866BmGonmaPIAY76fPjSJy"
-Message-ID: <f1e676a4-4222-725c-dbe9-7efbe160fc9e@linux.ibm.com>
-Date: Fri, 25 Aug 2023 17:05:49 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH] powerpc/perf/hv-24x7: Update domain value check
-To: Kajol Jain <kjain@linux.ibm.com>, mpe@ellerman.id.au
-References: <20230825055601.360083-1-kjain@linux.ibm.com>
-From: Disha Goel <disgoel@linux.ibm.com>
-In-Reply-To: <20230825055601.360083-1-kjain@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 1tPNAhu7w88AA0WnRpr7LhFe4538LhTe
-X-Proofpoint-ORIG-GUID: 1tPNAhu7w88AA0WnRpr7LhFe4538LhTe
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-25_10,2023-08-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 impostorscore=0
- malwarescore=0 adultscore=0 mlxlogscore=999 phishscore=0
- priorityscore=1501 bulkscore=0 lowpriorityscore=0 mlxscore=0 spamscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2308250101
-X-Mailman-Approved-At: Fri, 25 Aug 2023 22:48:36 +1000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RXLzG68mvz2yVT
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Aug 2023 23:54:18 +1000 (AEST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id B05A11F45E;
+	Fri, 25 Aug 2023 13:54:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1692971653; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XKT17FbYypZcEOfeXYaNtZ6Vwk1v8XxDX315rlANfbM=;
+	b=oaXz39cK3qcNjEBK5WwfqkPFOhZhOdCfDdzvyCvqfMG8kYdvk/WFEM8AQgd4KY9W+/Xo2/
+	E+14Ro0lcO4OSf9Zxf0w6da0XFtLFm0z2H4ik4XsNMVFtKFhMI6QmdOl5ydZYav7rGyV2j
+	qQEgupRXOTNkG1M7/ff3FJeiWUtYUfk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1692971653;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XKT17FbYypZcEOfeXYaNtZ6Vwk1v8XxDX315rlANfbM=;
+	b=49KR5S3p5IqEhp4UE32uf1qWdQM0x6sRKyRhKKMSfQBcjoZj/rr1e+PqWIINOHy9PPiXBz
+	Tf09mag9blyJ2gBA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 39122138F9;
+	Fri, 25 Aug 2023 13:54:13 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id tc/pDIWy6GTCBgAAMHmgww
+	(envelope-from <tiwai@suse.de>); Fri, 25 Aug 2023 13:54:13 +0000
+Date: Fri, 25 Aug 2023 15:54:12 +0200
+Message-ID: <8735076xdn.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Shengjiu Wang <shengjiu.wang@gmail.com>
+Subject: Re: [RFC PATCH v2 0/7] Add audio support in v4l2 framework
+In-Reply-To: <CAA+D8AM_pqbjQaE59n6Qm5gypLb8zPAwOpJR+_ZEG89-q3B8pg@mail.gmail.com>
+References: <47d66c28-1eb2-07f5-d6f9-779d675aefe8@xs4all.nl>
+	<87il9xu1ro.wl-tiwai@suse.de>
+	<CAA+D8ANmBKMp_L2GS=Lp-saMQKja6L4E6No3yP-e=a5YQBD_jQ@mail.gmail.com>
+	<87il9xoddo.wl-tiwai@suse.de>
+	<CAA+D8AOVEpGxO0YNeS1p+Ym86k6VP-CNQB3JmbeT7mPKg0R99A@mail.gmail.com>
+	<844ef9b6-d5e2-46a9-b7a5-7ee86a2e449c@sirena.org.uk>
+	<CAA+D8AOnsx+7t3MrWm42waxtetL07nbKURLsh1hBx39LUDm+Zg@mail.gmail.com>
+	<CAA+D8AMriHO60SD2OqQSDMmi7wm=0MkoW6faR5nyve-j2Q5AEQ@mail.gmail.com>
+	<CAA+D8AN34-NVrgksRAG014PuHGUssTm0p-KR-HYGe+Pt8Yejxg@mail.gmail.com>
+	<87wmxk8jaq.wl-tiwai@suse.de>
+	<ZOe74PO4S6bj/QlV@finisterre.sirena.org.uk>
+	<CAA+D8AM_pqbjQaE59n6Qm5gypLb8zPAwOpJR+_ZEG89-q3B8pg@mail.gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,152 +91,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: atrajeev@linux.vnet.ibm.com, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, Krishan Gopal Sarawast <krishang@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: nicoleotsuka@gmail.com, alsa-devel@alsa-project.org, lgirdwood@gmail.com, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-media@vger.kernel.org, tfiga@chromium.org, Hans Verkuil <hverkuil@xs4all.nl>, linuxppc-dev@lists.ozlabs.org, Mark Brown <broonie@kernel.org>, sakari.ailus@iki.fi, perex@perex.cz, mchehab@kernel.org, festevam@gmail.com, m.szyprowski@samsung.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a multi-part message in MIME format.
---------------q0866BmGonmaPIAY76fPjSJy
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+On Fri, 25 Aug 2023 05:46:43 +0200,
+Shengjiu Wang wrote:
+> 
+> On Fri, Aug 25, 2023 at 4:21 AM Mark Brown <broonie@kernel.org> wrote:
+> >
+> > On Thu, Aug 24, 2023 at 07:03:09PM +0200, Takashi Iwai wrote:
+> > > Shengjiu Wang wrote:
+> >
+> > > > But there are several issues:
+> > > > 1. Need to create sound cards.  ASRC module support multi instances, then
+> > > > need to create multi sound cards for each instance.
+> >
+> > > Hm, why can't it be multiple PCM instances instead?
+> >
+> > I'm having a hard time following this one too.
+> >
+> > > > 2. The ASRC is an entirety but with DPCM we need to separate input port and
+> > > > output port to playback substream and capture stream. Synchronous between
+> > > > playback substream and capture substream is a problem.
+> > > > How to start them and stop them at the same time.
+> >
+> > > This could be done by enforcing the full duplex and linking the both
+> > > PCM streams, I suppose.
+> >
+> > > > So shall we make the decision that we can go to the V4L2 solution?
+> >
+> > > Honestly speaking, I don't mind much whether it's implemented in V2L4
+> > > or not -- at least for the kernel part, we can reorganize / refactor
+> > > things internally.  But, the biggest remaining question to me is
+> > > whether this user-space interface is the most suitable one.  Is it
+> > > well defined, usable and maintained for the audio applications?  Or
+> > > is it meant to be a stop-gap for a specific use case?
+> >
+> > I'm having a really hard time summoning much enthusiasm for using v4l
+> > here, it feels like this is heading down the same bodge route as DPCM
+> > but directly as ABI so even harder to fix properly.  That said all the
+> > ALSA APIs are really intended to be used in real time and this sounds
+> > like a non real time application?  I don't fully understand what the
+> > actual use case is here.
+> 
+> Thanks for your reply.
+> 
+> This asrc memory to memory (memory ->asrc->memory) case is a non
+> real time use case.
+> 
+> User fills the input buffer to the asrc module,  after conversion, then asrc
+> sends back the output buffer to user. So it is not a traditional ALSA playback
+> and capture case. I think it is not good to create sound card for it,  it is
+> not a sound card actually.
+> 
+> It is a specific use case,  there is no reference in current kernel.
+> v4l2 memory to memory is the closed implementation,  v4l2 current
+> support video, image, radio, tuner, touch devices, so it is not
+> complicated to add support for this specific audio case.
+> 
+> Maybe you can go through these patches first.  Because we
+> had implemented the "memory -> asrc ->i2s device-> codec"
+> use case in ALSA.  Now the "memory->asrc->memory" needs
+> to reuse the code in asrc driver, so the first 3 patches is for refining
+> the code to make it can be shared by the "memory->asrc->memory"
+> driver.
+> 
+> The main change is in the v4l2 side, A /dev/vl42-audio will be created,
+> user applications only use the ioctl of v4l2 framework.
 
-On 25/08/23 11:26 am, Kajol Jain wrote:
+Ah, now I'm slowly understanding.  So, what you want is to have an
+interface to perform the batch conversion of a data stream from an
+input to an output?  And ALSA PCM interface doesn't fit fully for that
+purpose because the data handling is batched and it's not like a
+normal PCM streaming?
 
-> Valid domain value is in range 1 to HV_PERF_DOMAIN_MAX.
-> Current code has check for domain value greater than or
-> equal to HV_PERF_DOMAIN_MAX. But the check for domain value 0
-> is missing.
-> Fix this issue by adding check for domain value 0.
->
-> Fixes: ebd4a5a3ebd9 ("powerpc/perf/hv-24x7: Minor improvements")
-> Reported-by: Krishan Gopal Sarawast<krishang@linux.vnet.ibm.com>  
-> Signed-off-by: Kajol Jain<kjain@linux.ibm.com>
+Basically the whole M2M arguments are rather subtle.  Those are
+implementation details that can be resolved in several different ways
+in the kernel side.  But the design of the operation is the crucial
+point.
 
-Tested the patch on power, with domain=0 not getting hcall failure after patch changes.
+Maybe we can consider implementing a similar feature in ALSA API, too.
+But it's too far-stretched for now.
 
-Before patch changes:
-# ./perf stat -v -e hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/ sleep 1
-Using CPUID 00800200
-Control descriptor is not initialized
-Error:
-The sys_perf_event_open() syscall returned with 5 (Input/output error) for
-event (hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/).
-/bin/dmesg | grep -i perf may provide additional information.
+So, if v4l2 interface provides the requested feature (the batched
+audio stream conversion), it's OK to ride on it.
 
-Result from dmesg:
-[   37.819387] hv-24x7: hcall failed: [0 0x60040000 0x100 0] => ret
-0xfffffffffffffffc (-4) detail=0x2000000 failing ix=0
 
-After patch changes:
-# ./perf stat -v -e hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/ sleep 1
-Using CPUID 00800200
-Control descriptor is not initialized
-Warning:
-hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/ event is not supported by the kernel.
-failed to read counter hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/
+thanks,
 
-  Performance counter stats for 'system wide':
-
-    <not supported>      hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/
-
-        1.001352771 seconds time elapsed
-
-Tested-by: Disha Goel<disgoel@linux.ibm.com>
-
-> ---
->   arch/powerpc/perf/hv-24x7.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/perf/hv-24x7.c b/arch/powerpc/perf/hv-24x7.c
-> index 317175791d23..644881cc1c00 100644
-> --- a/arch/powerpc/perf/hv-24x7.c
-> +++ b/arch/powerpc/perf/hv-24x7.c
-> @@ -1418,7 +1418,7 @@ static int h_24x7_event_init(struct perf_event *event)
->   	}
->   
->   	domain = event_get_domain(event);
-> -	if (domain >= HV_PERF_DOMAIN_MAX) {
-> +	if (domain  == 0 || domain >= HV_PERF_DOMAIN_MAX) {
->   		pr_devel("invalid domain %d\n", domain);
->   		return -EINVAL;
->   	}
---------------q0866BmGonmaPIAY76fPjSJy
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <pre>On 25/08/23 11:26 am, Kajol Jain wrote:</pre>
-    <blockquote type="cite"
-      cite="mid:20230825055601.360083-1-kjain@linux.ibm.com">
-      <pre class="moz-quote-pre" wrap="">Valid domain value is in range 1 to HV_PERF_DOMAIN_MAX.
-Current code has check for domain value greater than or
-equal to HV_PERF_DOMAIN_MAX. But the check for domain value 0
-is missing.
-Fix this issue by adding check for domain value 0.
-
-Fixes: ebd4a5a3ebd9 ("powerpc/perf/hv-24x7: Minor improvements")
-Reported-by: Krishan Gopal Sarawast <a class="moz-txt-link-rfc2396E" href="mailto:krishang@linux.vnet.ibm.com">&lt;krishang@linux.vnet.ibm.com&gt;</a> 
-Signed-off-by: Kajol Jain <a class="moz-txt-link-rfc2396E" href="mailto:kjain@linux.ibm.com">&lt;kjain@linux.ibm.com&gt;</a></pre>
-    </blockquote>
-    <pre>Tested the patch on power, with domain=0 not getting hcall failure after patch changes.
-
-Before patch changes:
-# ./perf stat -v -e hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/ sleep 1
-Using CPUID 00800200
-Control descriptor is not initialized
-Error:
-The sys_perf_event_open() syscall returned with 5 (Input/output error) for
-event (hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/).
-/bin/dmesg | grep -i perf may provide additional information.
-
-Result from dmesg:
-[   37.819387] hv-24x7: hcall failed: [0 0x60040000 0x100 0] =&gt; ret
-0xfffffffffffffffc (-4) detail=0x2000000 failing ix=0
-
-After patch changes:
-# ./perf stat -v -e hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/ sleep 1
-Using CPUID 00800200
-Control descriptor is not initialized
-Warning:
-hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/ event is not supported by the kernel.
-failed to read counter hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/
-
- Performance counter stats for 'system wide':
-
-   &lt;not supported&gt;      hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/
-
-       1.001352771 seconds time elapsed
-
-Tested-by: Disha Goel <a class="moz-txt-link-rfc2396E" href="mailto:disgoel@linux.ibm.com">&lt;disgoel@linux.ibm.com&gt;</a>
-</pre>
-    <blockquote type="cite"
-      cite="mid:20230825055601.360083-1-kjain@linux.ibm.com">
-      <pre class="moz-quote-pre" wrap="">
----
- arch/powerpc/perf/hv-24x7.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/perf/hv-24x7.c b/arch/powerpc/perf/hv-24x7.c
-index 317175791d23..644881cc1c00 100644
---- a/arch/powerpc/perf/hv-24x7.c
-+++ b/arch/powerpc/perf/hv-24x7.c
-@@ -1418,7 +1418,7 @@ static int h_24x7_event_init(struct perf_event *event)
- 	}
- 
- 	domain = event_get_domain(event);
--	if (domain &gt;= HV_PERF_DOMAIN_MAX) {
-+	if (domain  == 0 || domain &gt;= HV_PERF_DOMAIN_MAX) {
- 		pr_devel("invalid domain %d\n", domain);
- 		return -EINVAL;
- 	}
-</pre>
-    </blockquote>
-  </body>
-</html>
-
---------------q0866BmGonmaPIAY76fPjSJy--
-
+Takashi
