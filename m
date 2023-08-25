@@ -1,48 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88C20787C71
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 02:10:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC067787C5F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 02:05:10 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=MrRC1d6L;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=NZRmeKsA;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RX0j32P3Yz3cHT
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 10:10:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RX0ZX3dXcz3cBC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 10:05:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=MrRC1d6L;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=skinsburskii@linux.microsoft.com; receiver=lists.ozlabs.org)
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RX0hB2w0hz3bpd
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Aug 2023 10:10:02 +1000 (AEST)
-Received: from skinsburskii. (c-67-170-100-148.hsd1.wa.comcast.net [67.170.100.148])
-	by linux.microsoft.com (Postfix) with ESMTPSA id AF9CE2127C80;
-	Thu, 24 Aug 2023 17:09:29 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com AF9CE2127C80
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1692922170;
-	bh=sv6DcWBBSEGmhA8F4G7aY7hVhke3+bslRKfTB+4Ii7U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MrRC1d6L9JAZEHExoNj55zYorTOtyuAuuF6yHy3YMYISl2FaIWwzWl5k6NBjgheNg
-	 64cVkfXKIBCseKIaDIMZk19ekt6kO0bW5f0ghjV0qtDJtfqIwswpGdLb1+LndPE0Gp
-	 DTR7Mji6Q+4m0A5Ugqtc2thBSoCF3P/pD2ymgCGc=
-Date: Tue, 22 Aug 2023 14:26:43 -0700
-From: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
-To: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH 0/7] Expect immutable pointer in
- virt_to_phys/isa_virt_to_bus prototypes
-Message-ID: <20230822212643.GA24539@skinsburskii.>
-References: <168155718437.13678.714141668943813263.stgit@skinsburskii.localdomain>
- <52dd950a-e714-4ebe-a663-4e0ec6463d03@app.fastmail.com>
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=lists.ozlabs.org)
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RX0YV1M0Wz2yw0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Aug 2023 10:04:11 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=vmLNsvDlbkyIYpEkO8eNcxoQJchqhoHOSemi0JGSdvc=; b=NZRmeKsAfkmgAA6LpunC8rC5Dc
+	6TMSKwMSi9DIBtwAzrZChPIPgpzg2Qu1o7mmwg+gO61ze0Wdv/Yb/RdjCPLaMcWBOS5iX2MvgYBpy
+	AZe8Y7MRVMO2tuVm64QfKEmy2CgUQ1KNk/oxulmE7B9tP+D/TEuDM09pN8zO7x04G0HWkhM50K14O
+	oE++tlkqDVIVJwwqmxqut6MrPcMvArkX49RuaV/dMvFulx+2JQEYazuuTQN0YrMRu7j8aby1dAdj7
+	XbAkwelcoGM6/fSREBI/linqqEd4CVW/VQEAa6il6B3j+vSldg3Aq16jPWpAYkNn4ICmSZmwTIWRd
+	koqOHYpw==;
+Received: from [2601:1c2:980:9ec0::2764]
+	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+	id 1qZKJ2-0040rp-0h;
+	Fri, 25 Aug 2023 00:04:04 +0000
+Message-ID: <21193a52-0425-f5ae-90f0-10e4c578ae90@infradead.org>
+Date: Thu, 24 Aug 2023 17:04:02 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <52dd950a-e714-4ebe-a663-4e0ec6463d03@app.fastmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH] kbuild: Show Kconfig fragments in "help"
+Content-Language: en-US
+To: Kees Cook <keescook@chromium.org>, Masahiro Yamada <masahiroy@kernel.org>
+References: <20230824223606.never.762-kees@kernel.org>
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20230824223606.never.762-kees@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,32 +57,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>, Dave Hansen <dave.hansen@linux.intel.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-mips@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>, linux-hexagon@vger.kernel.org, Omar Sandoval <osandov@fb.com>, Linux-Arch <linux-arch@vger.kernel.org>, Florian Fainelli <f.fainelli@gmail.com>, Helge Deller <deller@gmx.de>, x86@kernel.org, Stanislav Kinsburskii <stanislav.kinsburskii@gmail.com>, Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>, Matt Turner <mattst88@gmail.com>, Richard Henderson <richard.henderson@linaro.org>, Nicholas Piggin <npiggin@gmail.com>, Mark Brown <broonie@kernel.org>, Borislav Petkov <bp@alien8.de>, Bjorn Helgaas <bhelgaas@google.com>, Thomas Gleixner <tglx@linutronix.de>, Brian Cain <bcain@quicinc.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Chris Down <chris@chrisdown.name>, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, Ivan Kokshaysky <ink@
- jurassic.park.msu.ru>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org, linux-kbuild@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 28, 2023 at 08:40:51AM +0100, Arnd Bergmann wrote:
-> On Sat, Apr 15, 2023, at 12:17, Stanislav Kinsburskii wrote:
-> > This series is aimed to address compilation warnings when a constant pointer
-> > is passed to virt_to_phys and isa_virt_to_bus functions:
-> >
-> >   warning: passing argument 1 of ‘virt_to_phys’ discards ‘const’ 
-> > qualifier from pointer target type
-> >   warning: passing argument 1 of ‘isa_virt_to_bus’ discards ‘const’ 
-> > qualifier from pointer target type
-> >
-> > The change(s) is the same for all architectures, but it's split into a series on
-> > per-arch basis to simplify applying and testing on the maintainers side.
-> >
+Hi Kees,
+
+On 8/24/23 15:36, Kees Cook wrote:
+> Doing a "make help" would show only hard-coded Kconfig targets and
+> depended on the archhelp target to include ".config" targets. There was
+> nothing showing global kernel/configs/ targets. Solve this by walking
+> the wildcard list and include them in the output, using the first comment
+> line as the help text.
 > 
-> Looks all good to me. If everyone is happy with it, I'll queue it up
-> after in the asm-generic tree for 6.5, once rc1 is out.
+> Update all Kconfig fragments to include help text and adjust archhelp
+> targets to avoid redundancy.
 > 
+> Adds the following section to "help" target output:
+> 
+> Configuration fragment targets (for enabling various Kconfig items):
+>   debug.config         - Debugging for CI systems and finding regressions
+>   kvm_guest.config     - Bootable as a KVM guest
+>   nopm.config          - Disable Power Management
+>   rust.config          - Enable Rust
+>   tiny-base.config     - Minimal options for tiny systems
+>   tiny.config          - Smallest possible kernel image
+>   x86_debug.config     - Debugging options for tip tree testing
+>   xen.config           - Bootable as a Xen guest
+>   tiny.config          - x86-specific options for a small kernel image
+>   xen.config           - x86-specific options for a Xen virtualization guest
 
-Hello Arnd,
-Is the plan to merge this series into 6.5 still on?
+ISTM that you are missing the "why" part of this change in the commit
+description.
 
-Stanislav
+"make tinyconfig" is the real target here.  The other (tiny.) files are just
+implementation details.
+We can't put all implementation details into help messages and it's not
+difficult to find that the (tiny.) config files are merged to make the
+final .config file.
 
->  Arnd
+So what is it that you are trying to solve?
+
+-- 
+~Randy
