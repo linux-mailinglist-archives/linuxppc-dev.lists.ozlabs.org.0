@@ -1,83 +1,93 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0EDB788F61
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 21:50:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29B5F788FC8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 22:24:45 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=eiVi6GUE;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=h/IiRGuH;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=h/IiRGuH;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RXVtD4nXXz3c56
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Aug 2023 05:50:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RXWdk5g0dz3cC3
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Aug 2023 06:24:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=eiVi6GUE;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=h/IiRGuH;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=h/IiRGuH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::432; helo=mail-pf1-x432.google.com; envelope-from=keescook@chromium.org; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=jsnitsel@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RXVqP4pwzz2ypy
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Aug 2023 05:48:00 +1000 (AEST)
-Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-68a440a8a20so1170515b3a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Aug 2023 12:48:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1692992877; x=1693597677;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lRCZqfcIoPdjWycDLHPr9pRRfllmQvXWDcXX249Q0Rk=;
-        b=eiVi6GUEjvcqj+2SlX8CkBk72qfjyCdowr9WAGoYR1YfPMBnZ5fJIC0gMFLQE5jFe/
-         AZ64CnGR/sdsXFGGhrwjCJbioUqYAIlYZK3lNa48Qa4AK5dSvv4LDvWDFBhDfKVkgwMF
-         tTV0VlQElY/FlpFt/rNgUwiGoOsy01MqJ/2bI=
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RXWcq48WSz304l
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Aug 2023 06:23:54 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1692995031;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6UBqcsz+qyHMazVNsnwC+GgF7rp1trrk3H8y0CxPC4U=;
+	b=h/IiRGuHzZzKuF7AeqrNzrlcYnWBY9ijKnSCsySjI6ejiJL170XTlomgMvf1CPPZLXTPTI
+	kTmD/cltb3QDNugiaDR0gmcsCO6WVKHawqHnal+N0NHunjoJWbhdS+bYD8FLKWSnVpAqkA
+	EIAdceJGV461QgRB1yxUggtTeTYnntA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1692995031;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6UBqcsz+qyHMazVNsnwC+GgF7rp1trrk3H8y0CxPC4U=;
+	b=h/IiRGuHzZzKuF7AeqrNzrlcYnWBY9ijKnSCsySjI6ejiJL170XTlomgMvf1CPPZLXTPTI
+	kTmD/cltb3QDNugiaDR0gmcsCO6WVKHawqHnal+N0NHunjoJWbhdS+bYD8FLKWSnVpAqkA
+	EIAdceJGV461QgRB1yxUggtTeTYnntA=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-455-_OwKjAn4OSqsgmSxmiSLtQ-1; Fri, 25 Aug 2023 16:23:50 -0400
+X-MC-Unique: _OwKjAn4OSqsgmSxmiSLtQ-1
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-64a5f9a165aso15334256d6.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Aug 2023 13:23:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692992877; x=1693597677;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lRCZqfcIoPdjWycDLHPr9pRRfllmQvXWDcXX249Q0Rk=;
-        b=dXfIKHt4F9ga8EBfwvofGZLzCGvvfq0WbaKImrFfbl2PL93WfbOBSvlrc9o0XI6TqJ
-         /ZKRtyaPO9RVUbbr8T3ekoBtuM3i3qsEKj9SIC9YUYLAPe3Vfp2VGIhs1qvcEoxIxF02
-         FZvKNbkmNyhjnfNEQo2klg6JZgQkTIhgvkriAo8KVMgCh8eNe207WbzbuCNfF4jUBdXK
-         jO68AnNBipqitVe9kfp1k4xJIHcCCbNgI0TW54u/UAGLSIBwzzvpAv8J9I1iP6vuRRLW
-         UlvRA6I/X95CMeNDZS3lwSO6OLJEYAxxgOJCAm4yK2Bp/j+dxjytDi08iqKnHBj/FeIv
-         6AGw==
-X-Gm-Message-State: AOJu0YwCZzC5u7II+BVbALtagTZgz9CXrUpZO012ne2SXf5hoihy5TG5
-	aLNXFC2i/QopbSRSbJMaS/M7rQ==
-X-Google-Smtp-Source: AGHT+IFSKug2EyO8CyjKx150dEE+7lb0gZsL7hrHvDAEvCps+/PY9kVg2rcZA4wm+qgMnv7ZCnmkGw==
-X-Received: by 2002:a05:6a20:1441:b0:148:656b:9a1f with SMTP id a1-20020a056a20144100b00148656b9a1fmr23652914pzi.20.1692992877130;
-        Fri, 25 Aug 2023 12:47:57 -0700 (PDT)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id x2-20020aa79182000000b00689e01ae8fcsm1926428pfa.206.2023.08.25.12.47.55
+        d=1e100.net; s=20221208; t=1692995029; x=1693599829;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6UBqcsz+qyHMazVNsnwC+GgF7rp1trrk3H8y0CxPC4U=;
+        b=Flt+gWGAouvQfwY8tprMsOEP5legNbeXiurWNLRAJaDLTSzhwMHUvWkUIVSpFbpEHB
+         NEqjctSyP+yFAGoy0VrhgwF3Zh0dhF8v2LDSeLJ6qjxHTiLhm33M1DieCY0ludk+qM8y
+         m+mIPnNPOQKJpTfY/zuCwAhp1galUj3UhJLQgsGuOmDuXihwKJRKGaLwpE1WkkBsymkn
+         jvE0NO1Ou46fdc7CodX3zER/rB8uFq8LdbD3etLltcBg5Hutayizbi5tM2FR59OuqAqx
+         CrALFI2z7pCH8NX4yQsO4SrxvPrBPX6Gw/rb845tai3518bAUAl+D52t3GtfGF1mYxWx
+         bAKQ==
+X-Gm-Message-State: AOJu0Yw+Kw4Ov4S1nEmmBnuVenSVIgEp/9yXX7Qi99BbBLvGuy7gwiPm
+	48+lUY3YzDVXwBEJ5Op8nRLqwKk4112YAwMM5nyT5Bv7TEpBdxxF+aVPJi1i5u0gA17ExsvDEAe
+	oqdmybQU1soD2TFfMHmDkCFB0uQ==
+X-Received: by 2002:a0c:9c06:0:b0:64f:3e2d:93db with SMTP id v6-20020a0c9c06000000b0064f3e2d93dbmr20305622qve.6.1692995029818;
+        Fri, 25 Aug 2023 13:23:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGhcq54IOGRl9sNdHkLdvPnzpjB/PihT5afG6dr52Z2uB4cbUOhKAsFPETyVjj3ta3v5KMJ7g==
+X-Received: by 2002:a0c:9c06:0:b0:64f:3e2d:93db with SMTP id v6-20020a0c9c06000000b0064f3e2d93dbmr20305555qve.6.1692995029386;
+        Fri, 25 Aug 2023 13:23:49 -0700 (PDT)
+Received: from localhost (ip98-179-76-75.ph.ph.cox.net. [98.179.76.75])
+        by smtp.gmail.com with ESMTPSA id a6-20020a05620a124600b0076c72dad35dsm738410qkl.63.2023.08.25.13.23.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Aug 2023 12:47:56 -0700 (PDT)
-From: Kees Cook <keescook@chromium.org>
-To: Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH v2 2/2] kbuild: Split internal config targets from .config into .fragment
-Date: Fri, 25 Aug 2023 12:47:53 -0700
-Message-Id: <20230825194755.854823-2-keescook@chromium.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230825194329.gonna.911-kees@kernel.org>
-References: <20230825194329.gonna.911-kees@kernel.org>
+        Fri, 25 Aug 2023 13:23:48 -0700 (PDT)
+Date: Fri, 25 Aug 2023 13:23:47 -0700
+From: Jerry Snitselaar <jsnitsel@redhat.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Subject: Re: [PATCH v7 02/24] iommu: Add IOMMU_DOMAIN_PLATFORM
+Message-ID: <uwi23vasgop7nrnrvalquu6e4jepyiub7aopj7bcgiaw26zx2x@xslngjsllztb>
+References: <0-v7-de04a3217c48+15055-iommu_all_defdom_jgg@nvidia.com>
+ <2-v7-de04a3217c48+15055-iommu_all_defdom_jgg@nvidia.com>
+ <hbmfqpq2oyjjz3loccfbslpalzhlsyr2w3bpx6qasq23kyrfso@e6kry74ifgnt>
+ <ZOjneiqLzRRD7ulL@nvidia.com>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=13600; i=keescook@chromium.org;
- h=from:subject; bh=WsGA2w70Z2jH6+E3FM9RqepsW5TMIoqDQO9WuzRD4IM=;
- b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBk6QVpiPplcGybCpBXAOFBqTWSKZQd6b83G7SmR
- btUuusJB1KJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCZOkFaQAKCRCJcvTf3G3A
- JtTQD/90/3TwiNJbod0/y+IQ3nFFarC3ro5zIc+s35NoFbhu/aboq+1GVWEGGXbEGyAwt/qDPdA
- EHOlaIDxIfZPLUTE4cnLHonEtEsWM+cvimQqDR8Ywcj98v7LVqyvAEmnbZNuCvaYdTIWDPCYJA7
- h/gdMQB4JuNgWy4kO06uWAwo5GUMrbghrLw9tzjy84Ywu4XclD1G+V9NOqvCAbzWQs95Te1o1eo
- bRt1GUpvfEVRq3hPvLZv/4njLwoHbvH6J7NlKAKU55LJFwGozNPdpE207mxM9N/VDcIrQpSegL4
- IpS87nenP2ZjHdVMX6OTHs5EzHRCICVK9NHbN8G61TX+ZwBlcdCwouYsdFMWRk8b6Tu6D9Ia6M7
- ZFK+HRaBeSmc1ds5LcVzwkVyazBvLlXsY7a+NkY1iKPhELinscjs46IeZkEvXtxbLOsVOND76o/
- SrQgPbGTLbMA0YIy/u7fxKwgAaHm3NxonjdVAqunkWTPSBn5I2kjdup0hkBFOl8vyI+p8F2HK9q
- FP73oUvIvq28fwCK5LAzNU8stFHKahUHQAdNm8BgHKBr3cM828AvZmqv8BCLRVuXRrvefjHhgpT
- Vy0dIafA7356d0vg1gp1Pxeakm+m1daIloarMPBWgpvWvKasYnV1wlANJHGPkNiL7psV6Llzxgv QjnNcERunEHTZag==
-X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZOjneiqLzRRD7ulL@nvidia.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,287 +99,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>, Kees Cook <keescook@chromium.org>, linux-kbuild@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, Nicolas Schier <nicolas@fjasle.eu>
+Cc: Heiko Stuebner <heiko@sntech.de>, Matthew Rosato <mjrosato@linux.ibm.com>, Matthias Brugger <matthias.bgg@gmail.com>, Thierry Reding <thierry.reding@gmail.com>, Jernej Skrabec <jernej.skrabec@gmail.com>, Alim Akhtar <alim.akhtar@samsung.com>, Dmitry Osipenko <digetx@gmail.com>, Steven Price <steven.price@arm.com>, Will Deacon <will@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, linux-s390@vger.kernel.org, linux-samsung-soc@vger.kernel.org, Samuel Holland <samuel@sholland.org>, Joerg Roedel <joro@8bytes.org>, Russell King <linux@armlinux.org.uk>, Jonathan Hunter <jonathanh@nvidia.com>, linux-rockchip@lists.infradead.org, iommu@lists.linux.dev, Andy Gross <agross@kernel.org>, Nicolin Chen <nicolinc@nvidia.com>, Yong Wu <yong.wu@mediatek.com>, Orson Zhai <orsonzhai@gmail.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Thierry Reding <treding@nvidia.com>, linux-sunxi@lists.linux.dev, Rob Clark <robdclark@gmail.com>, Kevin Tian <kevin.tian@intel.com>, Niklas Schnelle
+  <schnelle@linux.ibm.com>, linux-arm-msm@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Krishna Reddy <vdumpa@nvidia.com>, linux-mediatek@lists.infradead.org, Baolin Wang <baolin.wang@linux.alibaba.com>, linux-tegra@vger.kernel.org, Chen-Yu Tsai <wens@csie.org>, linux-arm-kernel@lists.infradead.org, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Robin Murphy <robin.murphy@arm.com>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Chunyan Zhang <zhang.lyra@gmail.com>, linuxppc-dev@lists.ozlabs.org, Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Many Kconfig fragments are being used internally to construct hard-coded
-targets and shouldn't be reachable directly through the build system.
-Splitting these out also means that the "help" target can display only
-the "complete" .config targets intended for general use. This is
-especially useful for powerpc where most of the arch fragments aren't
-intended to be consumed individually.
+On Fri, Aug 25, 2023 at 02:40:10PM -0300, Jason Gunthorpe wrote:
+> On Thu, Aug 24, 2023 at 06:51:48PM -0700, Jerry Snitselaar wrote:
+> 
+> > > +	/*
+> > > +	 * Allow legacy drivers to specify the domain that will be the default
+> > > +	 * domain. This should always be either an IDENTITY or PLATFORM domain.
+> > > +	 * Do not use in new drivers.
+> > > +	 */
+> > 
+> > Would it be worthwhile to mention this in iommu.h for the iommu_ops default_domain?
+> 
+> I did this:
+> 
+> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+> index 11d47f9ac9b345..7fa53d28feca87 100644
+> --- a/drivers/iommu/iommu.c
+> +++ b/drivers/iommu/iommu.c
+> @@ -1757,8 +1757,8 @@ iommu_group_alloc_default_domain(struct iommu_group *group, int req_type)
+>  
+>         /*
+>          * Allow legacy drivers to specify the domain that will be the default
+> -        * domain. This should always be either an IDENTITY or PLATFORM domain.
+> -        * Do not use in new drivers.
+> +        * domain. This should always be either an IDENTITY/BLOCKED/PLATFORM
+> +        * domain. Do not use in new drivers.
+>          */
+>         if (ops->default_domain) {
+>                 if (req_type)
+> diff --git a/include/linux/iommu.h b/include/linux/iommu.h
+> index 7e9d94a56f473e..6f9e0aacc4431a 100644
+> --- a/include/linux/iommu.h
+> +++ b/include/linux/iommu.h
+> @@ -267,6 +267,8 @@ struct iommu_iotlb_gather {
+>   * @blocked_domain: An always available, always attachable blocking
+>   *                  translation.
+>   * @default_domain: If not NULL this will always be set as the default domain.
+> + *                  This should be an IDENTITY/BLOCKED/PLATFORM domain.
+> + *                  Do not use in new drivers.
+>   */
+>  struct iommu_ops {
+>         bool (*capable)(struct device *dev, enum iommu_cap);
+> 
+> Thanks,
+> Jason
+> 
 
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: x86@kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-kbuild@vger.kernel.org
-Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Kees Cook <keescook@chromium.org>
----
- arch/powerpc/Makefile                         | 26 +++++++++----------
- .../{32-bit.config => 32-bit.fragment}        |  0
- .../{64-bit.config => 64-bit.fragment}        |  0
- ...{85xx-32bit.config => 85xx-32bit.fragment} |  0
- ...{85xx-64bit.config => 85xx-64bit.fragment} |  0
- .../{85xx-hw.config => 85xx-hw.fragment}      |  0
- .../{85xx-smp.config => 85xx-smp.fragment}    |  0
- .../{86xx-hw.config => 86xx-hw.fragment}      |  0
- .../{86xx-smp.config => 86xx-smp.fragment}    |  0
- .../{altivec.config => altivec.fragment}      |  0
- .../configs/{be.config => be.fragment}        |  0
- .../{book3s_32.config => book3s_32.fragment}  |  0
- ...enet_base.config => corenet_base.fragment} |  0
- .../configs/{dpaa.config => dpaa.fragment}    |  0
- ...mb-nonhw.config => fsl-emb-nonhw.fragment} |  0
- .../configs/{guest.config => guest.fragment}  |  0
- .../configs/{le.config => le.fragment}        |  0
- ...85xx_base.config => mpc85xx_base.fragment} |  0
- ...86xx_base.config => mpc86xx_base.fragment} |  0
- .../{ppc64le.config => ppc64le.fragment}      |  0
- {kernel => arch/x86}/configs/x86_debug.config |  0
- .../{tiny-base.config => tiny-base.fragment}  |  0
- scripts/Makefile.defconf                      | 12 ++++++---
- scripts/kconfig/Makefile                      |  2 +-
- 24 files changed, 22 insertions(+), 18 deletions(-)
- rename arch/powerpc/configs/{32-bit.config => 32-bit.fragment} (100%)
- rename arch/powerpc/configs/{64-bit.config => 64-bit.fragment} (100%)
- rename arch/powerpc/configs/{85xx-32bit.config => 85xx-32bit.fragment} (100%)
- rename arch/powerpc/configs/{85xx-64bit.config => 85xx-64bit.fragment} (100%)
- rename arch/powerpc/configs/{85xx-hw.config => 85xx-hw.fragment} (100%)
- rename arch/powerpc/configs/{85xx-smp.config => 85xx-smp.fragment} (100%)
- rename arch/powerpc/configs/{86xx-hw.config => 86xx-hw.fragment} (100%)
- rename arch/powerpc/configs/{86xx-smp.config => 86xx-smp.fragment} (100%)
- rename arch/powerpc/configs/{altivec.config => altivec.fragment} (100%)
- rename arch/powerpc/configs/{be.config => be.fragment} (100%)
- rename arch/powerpc/configs/{book3s_32.config => book3s_32.fragment} (100%)
- rename arch/powerpc/configs/{corenet_base.config => corenet_base.fragment} (100%)
- rename arch/powerpc/configs/{dpaa.config => dpaa.fragment} (100%)
- rename arch/powerpc/configs/{fsl-emb-nonhw.config => fsl-emb-nonhw.fragment} (100%)
- rename arch/powerpc/configs/{guest.config => guest.fragment} (100%)
- rename arch/powerpc/configs/{le.config => le.fragment} (100%)
- rename arch/powerpc/configs/{mpc85xx_base.config => mpc85xx_base.fragment} (100%)
- rename arch/powerpc/configs/{mpc86xx_base.config => mpc86xx_base.fragment} (100%)
- rename arch/powerpc/configs/{ppc64le.config => ppc64le.fragment} (100%)
- rename {kernel => arch/x86}/configs/x86_debug.config (100%)
- rename kernel/configs/{tiny-base.config => tiny-base.fragment} (100%)
+For all of 02/24
 
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index dac7ca153886..b73f2b40a0bc 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -267,66 +267,66 @@ powernv_be_defconfig:
- 
- generated_configs += mpc85xx_defconfig
- mpc85xx_defconfig:
--	$(call merge_into_defconfig,mpc85xx_base.config,\
-+	$(call merge_into_defconfig,mpc85xx_base.fragment,\
- 		85xx-32bit 85xx-hw fsl-emb-nonhw)
- 
- generated_configs += mpc85xx_smp_defconfig
- mpc85xx_smp_defconfig:
--	$(call merge_into_defconfig,mpc85xx_base.config,\
-+	$(call merge_into_defconfig,mpc85xx_base.fragment,\
- 		85xx-32bit 85xx-smp 85xx-hw fsl-emb-nonhw)
- 
- generated_configs += corenet32_smp_defconfig
- corenet32_smp_defconfig:
--	$(call merge_into_defconfig,corenet_base.config,\
-+	$(call merge_into_defconfig,corenet_base.fragment,\
- 		85xx-32bit 85xx-smp 85xx-hw fsl-emb-nonhw dpaa)
- 
- generated_configs += corenet64_smp_defconfig
- corenet64_smp_defconfig:
--	$(call merge_into_defconfig,corenet_base.config,\
-+	$(call merge_into_defconfig,corenet_base.fragment,\
- 		85xx-64bit 85xx-smp altivec 85xx-hw fsl-emb-nonhw dpaa)
- 
- generated_configs += mpc86xx_defconfig
- mpc86xx_defconfig:
--	$(call merge_into_defconfig,mpc86xx_base.config,\
-+	$(call merge_into_defconfig,mpc86xx_base.fragment,\
- 		86xx-hw fsl-emb-nonhw)
- 
- generated_configs += mpc86xx_smp_defconfig
- mpc86xx_smp_defconfig:
--	$(call merge_into_defconfig,mpc86xx_base.config,\
-+	$(call merge_into_defconfig,mpc86xx_base.fragment,\
- 		86xx-smp 86xx-hw fsl-emb-nonhw)
- 
- generated_configs += ppc32_allmodconfig
- ppc32_allmodconfig:
--	$(Q)$(MAKE) KCONFIG_ALLCONFIG=$(srctree)/arch/powerpc/configs/book3s_32.config \
-+	$(Q)$(MAKE) KCONFIG_ALLCONFIG=$(srctree)/arch/powerpc/configs/book3s_32.fragment \
- 		-f $(srctree)/Makefile allmodconfig
- 
- generated_configs += ppc_defconfig
- ppc_defconfig:
--	$(call merge_into_defconfig,book3s_32.config,)
-+	$(call merge_into_defconfig,book3s_32.fragment,)
- 
- generated_configs += ppc64le_allmodconfig
- ppc64le_allmodconfig:
--	$(Q)$(MAKE) KCONFIG_ALLCONFIG=$(srctree)/arch/powerpc/configs/le.config \
-+	$(Q)$(MAKE) KCONFIG_ALLCONFIG=$(srctree)/arch/powerpc/configs/le.fragment \
- 		-f $(srctree)/Makefile allmodconfig
- 
- generated_configs += ppc64le_allnoconfig
- ppc64le_allnoconfig:
--	$(Q)$(MAKE) KCONFIG_ALLCONFIG=$(srctree)/arch/powerpc/configs/ppc64le.config \
-+	$(Q)$(MAKE) KCONFIG_ALLCONFIG=$(srctree)/arch/powerpc/configs/ppc64le.fragment \
- 		-f $(srctree)/Makefile allnoconfig
- 
- generated_configs += ppc64_book3e_allmodconfig
- ppc64_book3e_allmodconfig:
--	$(Q)$(MAKE) KCONFIG_ALLCONFIG=$(srctree)/arch/powerpc/configs/85xx-64bit.config \
-+	$(Q)$(MAKE) KCONFIG_ALLCONFIG=$(srctree)/arch/powerpc/configs/85xx-64bit.fragment \
- 		-f $(srctree)/Makefile allmodconfig
- 
- generated_configs += ppc32_randconfig
- ppc32_randconfig:
--	$(Q)$(MAKE) KCONFIG_ALLCONFIG=$(srctree)/arch/powerpc/configs/32-bit.config \
-+	$(Q)$(MAKE) KCONFIG_ALLCONFIG=$(srctree)/arch/powerpc/configs/32-bit.fragment \
- 		-f $(srctree)/Makefile randconfig
- 
- generated_configs += ppc64_randconfig
- ppc64_randconfig:
--	$(Q)$(MAKE) KCONFIG_ALLCONFIG=$(srctree)/arch/powerpc/configs/64-bit.config \
-+	$(Q)$(MAKE) KCONFIG_ALLCONFIG=$(srctree)/arch/powerpc/configs/64-bit.fragment \
- 		-f $(srctree)/Makefile randconfig
- 
- PHONY += $(generated_configs)
-diff --git a/arch/powerpc/configs/32-bit.config b/arch/powerpc/configs/32-bit.fragment
-similarity index 100%
-rename from arch/powerpc/configs/32-bit.config
-rename to arch/powerpc/configs/32-bit.fragment
-diff --git a/arch/powerpc/configs/64-bit.config b/arch/powerpc/configs/64-bit.fragment
-similarity index 100%
-rename from arch/powerpc/configs/64-bit.config
-rename to arch/powerpc/configs/64-bit.fragment
-diff --git a/arch/powerpc/configs/85xx-32bit.config b/arch/powerpc/configs/85xx-32bit.fragment
-similarity index 100%
-rename from arch/powerpc/configs/85xx-32bit.config
-rename to arch/powerpc/configs/85xx-32bit.fragment
-diff --git a/arch/powerpc/configs/85xx-64bit.config b/arch/powerpc/configs/85xx-64bit.fragment
-similarity index 100%
-rename from arch/powerpc/configs/85xx-64bit.config
-rename to arch/powerpc/configs/85xx-64bit.fragment
-diff --git a/arch/powerpc/configs/85xx-hw.config b/arch/powerpc/configs/85xx-hw.fragment
-similarity index 100%
-rename from arch/powerpc/configs/85xx-hw.config
-rename to arch/powerpc/configs/85xx-hw.fragment
-diff --git a/arch/powerpc/configs/85xx-smp.config b/arch/powerpc/configs/85xx-smp.fragment
-similarity index 100%
-rename from arch/powerpc/configs/85xx-smp.config
-rename to arch/powerpc/configs/85xx-smp.fragment
-diff --git a/arch/powerpc/configs/86xx-hw.config b/arch/powerpc/configs/86xx-hw.fragment
-similarity index 100%
-rename from arch/powerpc/configs/86xx-hw.config
-rename to arch/powerpc/configs/86xx-hw.fragment
-diff --git a/arch/powerpc/configs/86xx-smp.config b/arch/powerpc/configs/86xx-smp.fragment
-similarity index 100%
-rename from arch/powerpc/configs/86xx-smp.config
-rename to arch/powerpc/configs/86xx-smp.fragment
-diff --git a/arch/powerpc/configs/altivec.config b/arch/powerpc/configs/altivec.fragment
-similarity index 100%
-rename from arch/powerpc/configs/altivec.config
-rename to arch/powerpc/configs/altivec.fragment
-diff --git a/arch/powerpc/configs/be.config b/arch/powerpc/configs/be.fragment
-similarity index 100%
-rename from arch/powerpc/configs/be.config
-rename to arch/powerpc/configs/be.fragment
-diff --git a/arch/powerpc/configs/book3s_32.config b/arch/powerpc/configs/book3s_32.fragment
-similarity index 100%
-rename from arch/powerpc/configs/book3s_32.config
-rename to arch/powerpc/configs/book3s_32.fragment
-diff --git a/arch/powerpc/configs/corenet_base.config b/arch/powerpc/configs/corenet_base.fragment
-similarity index 100%
-rename from arch/powerpc/configs/corenet_base.config
-rename to arch/powerpc/configs/corenet_base.fragment
-diff --git a/arch/powerpc/configs/dpaa.config b/arch/powerpc/configs/dpaa.fragment
-similarity index 100%
-rename from arch/powerpc/configs/dpaa.config
-rename to arch/powerpc/configs/dpaa.fragment
-diff --git a/arch/powerpc/configs/fsl-emb-nonhw.config b/arch/powerpc/configs/fsl-emb-nonhw.fragment
-similarity index 100%
-rename from arch/powerpc/configs/fsl-emb-nonhw.config
-rename to arch/powerpc/configs/fsl-emb-nonhw.fragment
-diff --git a/arch/powerpc/configs/guest.config b/arch/powerpc/configs/guest.fragment
-similarity index 100%
-rename from arch/powerpc/configs/guest.config
-rename to arch/powerpc/configs/guest.fragment
-diff --git a/arch/powerpc/configs/le.config b/arch/powerpc/configs/le.fragment
-similarity index 100%
-rename from arch/powerpc/configs/le.config
-rename to arch/powerpc/configs/le.fragment
-diff --git a/arch/powerpc/configs/mpc85xx_base.config b/arch/powerpc/configs/mpc85xx_base.fragment
-similarity index 100%
-rename from arch/powerpc/configs/mpc85xx_base.config
-rename to arch/powerpc/configs/mpc85xx_base.fragment
-diff --git a/arch/powerpc/configs/mpc86xx_base.config b/arch/powerpc/configs/mpc86xx_base.fragment
-similarity index 100%
-rename from arch/powerpc/configs/mpc86xx_base.config
-rename to arch/powerpc/configs/mpc86xx_base.fragment
-diff --git a/arch/powerpc/configs/ppc64le.config b/arch/powerpc/configs/ppc64le.fragment
-similarity index 100%
-rename from arch/powerpc/configs/ppc64le.config
-rename to arch/powerpc/configs/ppc64le.fragment
-diff --git a/kernel/configs/x86_debug.config b/arch/x86/configs/x86_debug.config
-similarity index 100%
-rename from kernel/configs/x86_debug.config
-rename to arch/x86/configs/x86_debug.config
-diff --git a/kernel/configs/tiny-base.config b/kernel/configs/tiny-base.fragment
-similarity index 100%
-rename from kernel/configs/tiny-base.config
-rename to kernel/configs/tiny-base.fragment
-diff --git a/scripts/Makefile.defconf b/scripts/Makefile.defconf
-index ab271b2051a2..46d0ecdda391 100644
---- a/scripts/Makefile.defconf
-+++ b/scripts/Makefile.defconf
-@@ -6,11 +6,13 @@
- # Usage:
- #   $(call merge_into_defconfig,base_config,config_fragment1 config_fragment2 ...)
- #
--# Input config fragments without '.config' suffix
-+# Input config fragments without '.config' or '.fragment' suffix
- define merge_into_defconfig
- 	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/kconfig/merge_config.sh \
- 		-m -O $(objtree) $(srctree)/arch/$(ARCH)/configs/$(1) \
--		$(foreach config,$(2),$(srctree)/arch/$(ARCH)/configs/$(config).config)
-+		$(foreach config,$(2), \
-+			$(wildcard $(srctree)/arch/$(ARCH)/configs/$(config).config \
-+				   $(srctree)/arch/$(ARCH)/configs/$(config).fragment))
- 	+$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
- endef
- 
-@@ -20,10 +22,12 @@ endef
- # Usage:
- #   $(call merge_into_defconfig_override,base_config,config_fragment1 config_fragment2 ...)
- #
--# Input config fragments without '.config' suffix
-+# Input config fragments without '.config' or '.fragment' suffix
- define merge_into_defconfig_override
- 	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/kconfig/merge_config.sh \
- 		-Q -m -O $(objtree) $(srctree)/arch/$(ARCH)/configs/$(1) \
--		$(foreach config,$(2),$(srctree)/arch/$(ARCH)/configs/$(config).config)
-+		$(foreach config,$(2), \
-+			$(wildcard $(srctree)/arch/$(ARCH)/configs/$(config).config \
-+				   $(srctree)/arch/$(ARCH)/configs/$(config).fragment))
- 	+$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
- endef
-diff --git a/scripts/kconfig/Makefile b/scripts/kconfig/Makefile
-index 370ff6bba78d..a03388eb735f 100644
---- a/scripts/kconfig/Makefile
-+++ b/scripts/kconfig/Makefile
-@@ -102,7 +102,7 @@ configfiles=$(wildcard $(srctree)/kernel/configs/$(1) $(srctree)/arch/$(SRCARCH)
- 
- PHONY += tinyconfig
- tinyconfig:
--	$(Q)KCONFIG_ALLCONFIG=kernel/configs/tiny-base.config $(MAKE) -f $(srctree)/Makefile allnoconfig
-+	$(Q)KCONFIG_ALLCONFIG=kernel/configs/tiny-base.fragment $(MAKE) -f $(srctree)/Makefile allnoconfig
- 	$(Q)$(MAKE) -f $(srctree)/Makefile tiny.config
- 
- # CHECK: -o cache_dir=<path> working?
--- 
-2.34.1
+Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
+
+> _______________________________________________
+> Linux-rockchip mailing list
+> Linux-rockchip@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-rockchip
 
