@@ -1,90 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84158787FA5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 08:15:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00904787FAC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 08:16:49 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rOSan7c1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=iXSFfKON;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RX8nK2W4Kz3dGm
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 16:15:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RX8qM48Mmz3dLK
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 16:16:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rOSan7c1;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=iXSFfKON;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=name@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RX8jb2Q5Jz2ygx
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Aug 2023 16:11:47 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37P67Cw5003974;
-	Fri, 25 Aug 2023 06:11:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=dE/Or6i1TzCiES71n9nI1/TR0UqSuY2ZEP4H24E1S1A=;
- b=rOSan7c1GG81TkulV7fpKinpWZQb1lRExDDUzhZIY/WYOoYZfOF0AfFlCgfd4EjgFzGd
- PbI6KZSEsCWHraztW1GjErBEkk7KjgKhvdX3zi8z4m+iP2pHkUoE6BQt9VOHuryYyS52
- z9aFccqqhHAvf8M4Hoheu4vw/hUCSk2VVhOc3DRu5h98NrJ3egk2/kVKiguZVR0H+QVL
- EWdMcltf4FNWdKB2E5OlbpVVUJqvQN1Zd2WswaSYgo1OJazWwDi2l2p4eMDkEqUDe9h6
- HX3iGFeZALsqZUYYwSwi1p0F1JoV1Su2M+nKIVcddfnQNeews4fc157YevwIm21ZzoKM pw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3spp0ah1kh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Aug 2023 06:11:42 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37P69Q4W013115;
-	Fri, 25 Aug 2023 06:11:42 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3spp0ah1k8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Aug 2023 06:11:42 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 37P5cTHF018217;
-	Fri, 25 Aug 2023 06:11:41 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3sn21swa4e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Aug 2023 06:11:41 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 37P6Bc3R9700036
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 25 Aug 2023 06:11:38 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7B5DE2004B;
-	Fri, 25 Aug 2023 06:11:38 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6A9DF20040;
-	Fri, 25 Aug 2023 06:11:36 +0000 (GMT)
-Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.in.ibm.com (unknown [9.109.199.72])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 25 Aug 2023 06:11:36 +0000 (GMT)
-From: Aditya Gupta <adityag@linux.ibm.com>
-To: acme@kernel.org, jolsa@kernel.org, irogers@google.com, namhyung@kernel.org
-Subject: [PATCH 4/4] tools/perf/tests: Update probe_vfs_getname.sh script to use perf build --has
-Date: Fri, 25 Aug 2023 11:41:25 +0530
-Message-ID: <20230825061125.24312-5-adityag@linux.ibm.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230825061125.24312-1-adityag@linux.ibm.com>
-References: <20230825061125.24312-1-adityag@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RX8jr6mPNz3cF2
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Aug 2023 16:12:00 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1692943919;
+	bh=Cc2wNrVySgQWB1oZUr5oEwkwqvGvweIc8X/OBtG4+Wg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=iXSFfKONhaS61Wio3k/V1b70XjLLTQdt8vrEOUswdKDp7oPYD+2VsdrF14uK01p64
+	 XXlT9K+fMxudJ8FOKNRLR6XGVcf35t4ZKkoKMI8rzvIHhKUlVXdEuAhvNneqf/3BKB
+	 zxIP+l0zO05GipBAPeUhsSs3ZPmmChBaE4wXoIVUixOzyK7TIexFrSpeC7Sl9v0kGz
+	 q8BWc/9IsPu+6fJocKU/6khYcBr1rEVzf06tM/e4KaUSImp+IRv5bY+pH9J7IsQG/j
+	 dkA4oO/aRIG2l8rjLjajtdwh4qjdqeh8OAtvDnuqzZ5Yrqcq5mhGzx+uYqjvY3iwzJ
+	 sDFScRxVAy46g==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RX8jp5yZWz4wxR;
+	Fri, 25 Aug 2023 16:11:58 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Kees Cook <keescook@chromium.org>, Masahiro Yamada <masahiroy@kernel.org>
+Subject: Re: [PATCH] kbuild: Show Kconfig fragments in "help"
+In-Reply-To: <20230824223606.never.762-kees@kernel.org>
+References: <20230824223606.never.762-kees@kernel.org>
+Date: Fri, 25 Aug 2023 16:11:58 +1000
+Message-ID: <87a5ufvefl.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: InAngQ_7Urp8YnBQEEoY9nOhqenaZ3-l
-X-Proofpoint-ORIG-GUID: 5_cnxoxgDU7PkUNS7EcwToeOXvBqeUFg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-25_04,2023-08-24_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 impostorscore=0
- lowpriorityscore=0 suspectscore=0 spamscore=0 mlxscore=0 adultscore=0
- priorityscore=1501 malwarescore=0 phishscore=0 clxscore=1015
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2308250051
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,70 +57,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org, Kees Cook <keescook@chromium.org>, linux-kbuild@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Kees Cook <keescook@chromium.org> writes:
+> Doing a "make help" would show only hard-coded Kconfig targets and
+> depended on the archhelp target to include ".config" targets. There was
+> nothing showing global kernel/configs/ targets. Solve this by walking
+> the wildcard list and include them in the output, using the first comment
+> line as the help text.
+>
+> Update all Kconfig fragments to include help text and adjust archhelp
+> targets to avoid redundancy.
+>
+> Adds the following section to "help" target output:
+>
+> Configuration fragment targets (for enabling various Kconfig items):
+>   debug.config         - Debugging for CI systems and finding regressions
+>   kvm_guest.config     - Bootable as a KVM guest
+>   nopm.config          - Disable Power Management
+>   rust.config          - Enable Rust
+>   tiny-base.config     - Minimal options for tiny systems
+>   tiny.config          - Smallest possible kernel image
+>   x86_debug.config     - Debugging options for tip tree testing
+>   xen.config           - Bootable as a Xen guest
+>   tiny.config          - x86-specific options for a small kernel image
+>   xen.config           - x86-specific options for a Xen virtualization guest
 
-In probe_vfs_getname.sh, current we use "perf record --dry-run"
-to check for libtraceevent and skip the test if perf is not
-build with libtraceevent. Change the check to use "perf build --has"
-option
+I think we need a way to opt some files out.
 
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
----
- tools/perf/tests/shell/lib/probe_vfs_getname.sh           | 4 ++--
- tools/perf/tests/shell/record+probe_libc_inet_pton.sh     | 5 ++++-
- tools/perf/tests/shell/record+script_probe_vfs_getname.sh | 5 ++++-
- 3 files changed, 10 insertions(+), 4 deletions(-)
+It's a bit ugly on powerpc because there are so many fragments:
 
-diff --git a/tools/perf/tests/shell/lib/probe_vfs_getname.sh b/tools/perf/tests/shell/lib/probe_vfs_getname.sh
-index bf4c1fb71c4b..a5da9f035afe 100644
---- a/tools/perf/tests/shell/lib/probe_vfs_getname.sh
-+++ b/tools/perf/tests/shell/lib/probe_vfs_getname.sh
-@@ -27,7 +27,7 @@ skip_if_no_debuginfo() {
- # check if perf is compiled with libtraceevent support
- skip_no_probe_record_support() {
- 	if [ $had_vfs_getname -eq 1 ] ; then
--		perf record --dry-run -e $1 2>&1 | grep "libtraceevent is necessary for tracepoint support" && return 2
--		return 1
-+		perf build --has libtraceevent >/dev/null && return 1
-+		return 2
- 	fi
- }
-diff --git a/tools/perf/tests/shell/record+probe_libc_inet_pton.sh b/tools/perf/tests/shell/record+probe_libc_inet_pton.sh
-index 89214a6d9951..0c00e94b83ff 100755
---- a/tools/perf/tests/shell/record+probe_libc_inet_pton.sh
-+++ b/tools/perf/tests/shell/record+probe_libc_inet_pton.sh
-@@ -58,7 +58,10 @@ trace_libc_inet_pton_backtrace() {
- 
- 	# Check presence of libtraceevent support to run perf record
- 	skip_no_probe_record_support "$event_name/$eventattr/"
--	[ $? -eq 2 ] && return 2
-+	if [ $? -eq 2 ]; then
-+		echo "WARN: Skipping test trace_libc_inet_pton_backtrace. No libtraceevent support."
-+		return 2
-+	fi
- 
- 	perf record -e $event_name/$eventattr/ -o $perf_data ping -6 -c 1 ::1 > /dev/null 2>&1
- 	# check if perf data file got created in above step.
-diff --git a/tools/perf/tests/shell/record+script_probe_vfs_getname.sh b/tools/perf/tests/shell/record+script_probe_vfs_getname.sh
-index 7f664f1889d9..c7416d21fc92 100755
---- a/tools/perf/tests/shell/record+script_probe_vfs_getname.sh
-+++ b/tools/perf/tests/shell/record+script_probe_vfs_getname.sh
-@@ -19,7 +19,10 @@ record_open_file() {
- 	echo "Recording open file:"
- 	# Check presence of libtraceevent support to run perf record
- 	skip_no_probe_record_support "probe:vfs_getname*"
--	[ $? -eq 2 ] && return 2
-+	if [ $? -eq 2 ]; then
-+		echo "WARN: Skipping test record_open_file. No libtraceevent support"
-+		return 2
-+	fi
- 	perf record -o ${perfdata} -e probe:vfs_getname\* touch $file
- }
- 
--- 
-2.41.0
+Configuration fragment targets (for enabling various Kconfig items):
+  debug.config         - Debugging for CI systems and finding regressions
+  kvm_guest.config     - Bootable as a KVM guest
+  nopm.config          - Disable Power Management
+  rust.config          - Enable Rust
+  tiny-base.config     - Minimal options for tiny systems
+  tiny.config          - Smallest possible kernel image
+  x86_debug.config     - Debugging options for tip tree testing
+  xen.config           - Bootable as a Xen guest
+  32-bit.config        - Build a 32-bit image
+  64-bit.config        - Build a 64-bit image
+  85xx-32bit.config    - Build a 32-bit 85xx image
+  85xx-64bit.config    - Build a 64-bit 85xx image
+  85xx-hw.config       - Base hardware support for 86xx
+  85xx-smp.config      - Enable SMP on 85xx
+  86xx-hw.config       - Base hardware support for 86xx
+  86xx-smp.config      - Enable SMP on 86xx
+  altivec.config       - Enable Altivec support
+  be.config            - Enable Big Endian mode
+  book3s_32.config     - Base support for Book3s
+  corenet_base.config  - Base support for corenet
+  debug.config         - Enable PowerPC specific debug options
+  disable-werror.config - Disable -Werror
+  dpaa.config          - Base suppot for DPPA
+  fsl-emb-nonhw.config - Non-hardware options common to 85xx and corenet
+  guest.config         - PowerPC specific virtualization guest options
+  kvm_guest.config     - Bootable as a KVM guest
+  le.config            - Enable Little Endian mode
+  mpc85xx_base.config  - Base mpc85xxx support
+  mpc86xx_base.config  - Base mpc85xxx support
+  ppc64le.config       - Enable ppc64le mode
+  security.config      - Common security options for PowerPC builds
 
+And some of those are not intended for use with "make foo.config",
+they're used internally for generating our "normal" defconfigs and they
+don't necessarily work on their own.
+
+Also I'd like to add more fragments in future, to the point where nearly
+all our configs are generated by them.
+
+Can we have some way to differentiate fragments that are intended to be
+used with "make foo.config" vs just being used internally to generate
+other configs.
+
+The obvious thing would be to use a different suffix, eg. "foo.fragment"
+for internal use fragments. That would require changing
+merge_into_defconfig and merge_into_defconfig_override to not assume the
+.config suffix, and update the users in arm, arm64 and powerpc.
+
+The other option would be to ignore .config files starting with eg. "_".
+
++       @$(foreach c, $(filter-out $(call configfiles,_*.config),$(call configfiles,*.config)), \
++               printf "  %-20s - %s\\n" \
++                       $(shell basename $(c)) \
++                       "$(subst # ,,$(shell grep -m1 '^# ' $(c)))";)
+
+Not sure which is preferable.
+
+cheers
