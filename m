@@ -2,58 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B736B788597
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 13:26:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 483AD7887C3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 14:49:23 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=feKBvwST;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RXHhg0qcQz3cnR
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 21:26:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RXKXJ61ypz30fF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 22:49:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=feKBvwST;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=disgoel@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RXHh82Z72z2xdm
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Aug 2023 21:25:58 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4RXHgz5Ym8z9vbk;
-	Fri, 25 Aug 2023 13:25:51 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id CnZ899-xiQmK; Fri, 25 Aug 2023 13:25:51 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4RXHgz4jH5z9vbh;
-	Fri, 25 Aug 2023 13:25:51 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 9DC6E8B7BE;
-	Fri, 25 Aug 2023 13:25:51 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id ZVNk_mHNg-9E; Fri, 25 Aug 2023 13:25:51 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.234.95])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 65AD28B765;
-	Fri, 25 Aug 2023 13:25:51 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 37PBPjL11400397
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 25 Aug 2023 13:25:45 +0200
-Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 37PBPiN21400384;
-	Fri, 25 Aug 2023 13:25:44 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH] powerpc/8xx: Fix pte_access_permitted() for PAGE_NONE
-Date: Fri, 25 Aug 2023 13:25:36 +0200
-Message-ID: <30de3838862d1a7d55582963ca5fe567b3a91b28.1692962717.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.41.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RXHvm6QJrz3bwX
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Aug 2023 21:36:04 +1000 (AEST)
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37PBWDIc023885;
+	Fri, 25 Aug 2023 11:35:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
+ message-id : date : mime-version : subject : to : cc : references : from :
+ in-reply-to; s=pp1; bh=YusWZWXF1gn8oDPaa5B8VcVUwd4fXCj8GFQ29eKXiGU=;
+ b=feKBvwSTcj4PjEiyvYt7/2k5Ki5hO0rfH2taTxzALDz4zZuMzDL87dxaf6NuKc8NXZqL
+ 5W9jpu7Vj4DM7mo8rd8Df3lT4bhNAqDUV4tVkawjgSsgRcRD/DimF+tFQ2vP8xQ+G52/
+ nbl+hiQTGWKXh5BkkHaJghXS7doKuNQGmvLD7XHditscv+rwD9EQt6pDi7UX/IYnvZPv
+ q1gkpcv4N4HTTI3j/DFhMch54TFaTnawyuTTt6cnD5FESUUkCLfpt7QnSN5LZ7zokdHg
+ KuL5LVndQUhQSmy2SC5sdnhwq3rtlHbrzYsSgDD18aqrgS9pAQM2zmPllpSGZpdkKi2Q UA== 
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3spugxr2k0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 25 Aug 2023 11:35:57 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 37PASx4C027333;
+	Fri, 25 Aug 2023 11:35:56 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sn20sy7fj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 25 Aug 2023 11:35:56 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 37PBZrOv53412112
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 25 Aug 2023 11:35:53 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5A63320049;
+	Fri, 25 Aug 2023 11:35:53 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 117FA20040;
+	Fri, 25 Aug 2023 11:35:51 +0000 (GMT)
+Received: from [9.43.29.72] (unknown [9.43.29.72])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 25 Aug 2023 11:35:50 +0000 (GMT)
+Content-Type: multipart/alternative;
+ boundary="------------q0866BmGonmaPIAY76fPjSJy"
+Message-ID: <f1e676a4-4222-725c-dbe9-7efbe160fc9e@linux.ibm.com>
+Date: Fri, 25 Aug 2023 17:05:49 +0530
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1692962735; l=1818; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=jJZQF1YAq1al9uZuIZE8KXIy71bQEkSgP4654a7NyxE=; b=O4xNO0bIpYOM9y1YXEh2bceNCrnTBsQKWXyv25+M7lDTNBnA4WaNnexjFanfNwtmPg51JPtsg 99NF9WtYnZXD5QlvjVr/Cgv8dQJdIYSkzX2AX2HKKsLOr+3nepdXiLu
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [PATCH] powerpc/perf/hv-24x7: Update domain value check
+To: Kajol Jain <kjain@linux.ibm.com>, mpe@ellerman.id.au
+References: <20230825055601.360083-1-kjain@linux.ibm.com>
+From: Disha Goel <disgoel@linux.ibm.com>
+In-Reply-To: <20230825055601.360083-1-kjain@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 1tPNAhu7w88AA0WnRpr7LhFe4538LhTe
+X-Proofpoint-ORIG-GUID: 1tPNAhu7w88AA0WnRpr7LhFe4538LhTe
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-25_10,2023-08-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 impostorscore=0
+ malwarescore=0 adultscore=0 mlxlogscore=999 phishscore=0
+ priorityscore=1501 bulkscore=0 lowpriorityscore=0 mlxscore=0 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2308250101
+X-Mailman-Approved-At: Fri, 25 Aug 2023 22:48:36 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,57 +91,152 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: atrajeev@linux.vnet.ibm.com, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, Krishan Gopal Sarawast <krishang@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 8xx, PAGE_NONE is handled by setting _PAGE_NA instead of clearing
-_PAGE_USER.
+This is a multi-part message in MIME format.
+--------------q0866BmGonmaPIAY76fPjSJy
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-But then pte_user() returns 1 also for PAGE_NONE.
+On 25/08/23 11:26 am, Kajol Jain wrote:
 
-As _PAGE_NA prevent reads, add a specific version of pte_read()
-that returns 0 when _PAGE_NA is set instead of always returning 1.
+> Valid domain value is in range 1 to HV_PERF_DOMAIN_MAX.
+> Current code has check for domain value greater than or
+> equal to HV_PERF_DOMAIN_MAX. But the check for domain value 0
+> is missing.
+> Fix this issue by adding check for domain value 0.
+>
+> Fixes: ebd4a5a3ebd9 ("powerpc/perf/hv-24x7: Minor improvements")
+> Reported-by: Krishan Gopal Sarawast<krishang@linux.vnet.ibm.com>  
+> Signed-off-by: Kajol Jain<kjain@linux.ibm.com>
 
-Fixes: 351750331fc1 ("powerpc/mm: Introduce _PAGE_NA")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Tested the patch on power, with domain=0 not getting hcall failure after patch changes.
+
+Before patch changes:
+# ./perf stat -v -e hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/ sleep 1
+Using CPUID 00800200
+Control descriptor is not initialized
+Error:
+The sys_perf_event_open() syscall returned with 5 (Input/output error) for
+event (hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/).
+/bin/dmesg | grep -i perf may provide additional information.
+
+Result from dmesg:
+[   37.819387] hv-24x7: hcall failed: [0 0x60040000 0x100 0] => ret
+0xfffffffffffffffc (-4) detail=0x2000000 failing ix=0
+
+After patch changes:
+# ./perf stat -v -e hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/ sleep 1
+Using CPUID 00800200
+Control descriptor is not initialized
+Warning:
+hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/ event is not supported by the kernel.
+failed to read counter hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/
+
+  Performance counter stats for 'system wide':
+
+    <not supported>      hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/
+
+        1.001352771 seconds time elapsed
+
+Tested-by: Disha Goel<disgoel@linux.ibm.com>
+
+> ---
+>   arch/powerpc/perf/hv-24x7.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/powerpc/perf/hv-24x7.c b/arch/powerpc/perf/hv-24x7.c
+> index 317175791d23..644881cc1c00 100644
+> --- a/arch/powerpc/perf/hv-24x7.c
+> +++ b/arch/powerpc/perf/hv-24x7.c
+> @@ -1418,7 +1418,7 @@ static int h_24x7_event_init(struct perf_event *event)
+>   	}
+>   
+>   	domain = event_get_domain(event);
+> -	if (domain >= HV_PERF_DOMAIN_MAX) {
+> +	if (domain  == 0 || domain >= HV_PERF_DOMAIN_MAX) {
+>   		pr_devel("invalid domain %d\n", domain);
+>   		return -EINVAL;
+>   	}
+--------------q0866BmGonmaPIAY76fPjSJy
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <pre>On 25/08/23 11:26 am, Kajol Jain wrote:</pre>
+    <blockquote type="cite"
+      cite="mid:20230825055601.360083-1-kjain@linux.ibm.com">
+      <pre class="moz-quote-pre" wrap="">Valid domain value is in range 1 to HV_PERF_DOMAIN_MAX.
+Current code has check for domain value greater than or
+equal to HV_PERF_DOMAIN_MAX. But the check for domain value 0
+is missing.
+Fix this issue by adding check for domain value 0.
+
+Fixes: ebd4a5a3ebd9 ("powerpc/perf/hv-24x7: Minor improvements")
+Reported-by: Krishan Gopal Sarawast <a class="moz-txt-link-rfc2396E" href="mailto:krishang@linux.vnet.ibm.com">&lt;krishang@linux.vnet.ibm.com&gt;</a> 
+Signed-off-by: Kajol Jain <a class="moz-txt-link-rfc2396E" href="mailto:kjain@linux.ibm.com">&lt;kjain@linux.ibm.com&gt;</a></pre>
+    </blockquote>
+    <pre>Tested the patch on power, with domain=0 not getting hcall failure after patch changes.
+
+Before patch changes:
+# ./perf stat -v -e hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/ sleep 1
+Using CPUID 00800200
+Control descriptor is not initialized
+Error:
+The sys_perf_event_open() syscall returned with 5 (Input/output error) for
+event (hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/).
+/bin/dmesg | grep -i perf may provide additional information.
+
+Result from dmesg:
+[   37.819387] hv-24x7: hcall failed: [0 0x60040000 0x100 0] =&gt; ret
+0xfffffffffffffffc (-4) detail=0x2000000 failing ix=0
+
+After patch changes:
+# ./perf stat -v -e hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/ sleep 1
+Using CPUID 00800200
+Control descriptor is not initialized
+Warning:
+hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/ event is not supported by the kernel.
+failed to read counter hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/
+
+ Performance counter stats for 'system wide':
+
+   &lt;not supported&gt;      hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/
+
+       1.001352771 seconds time elapsed
+
+Tested-by: Disha Goel <a class="moz-txt-link-rfc2396E" href="mailto:disgoel@linux.ibm.com">&lt;disgoel@linux.ibm.com&gt;</a>
+</pre>
+    <blockquote type="cite"
+      cite="mid:20230825055601.360083-1-kjain@linux.ibm.com">
+      <pre class="moz-quote-pre" wrap="">
 ---
- arch/powerpc/include/asm/nohash/32/pte-8xx.h | 7 +++++++
- arch/powerpc/include/asm/nohash/pgtable.h    | 2 ++
- 2 files changed, 9 insertions(+)
+ arch/powerpc/perf/hv-24x7.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/nohash/32/pte-8xx.h b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
-index 1a89ebdc3acc..0238e6bd0d6c 100644
---- a/arch/powerpc/include/asm/nohash/32/pte-8xx.h
-+++ b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
-@@ -94,6 +94,13 @@ static inline pte_t pte_wrprotect(pte_t pte)
+diff --git a/arch/powerpc/perf/hv-24x7.c b/arch/powerpc/perf/hv-24x7.c
+index 317175791d23..644881cc1c00 100644
+--- a/arch/powerpc/perf/hv-24x7.c
++++ b/arch/powerpc/perf/hv-24x7.c
+@@ -1418,7 +1418,7 @@ static int h_24x7_event_init(struct perf_event *event)
+ 	}
  
- #define pte_wrprotect pte_wrprotect
- 
-+static inline int pte_read(pte_t pte)
-+{
-+	return (pte_val(pte) & _PAGE_RO) != _PAGE_NA;
-+}
-+
-+#define pte_read pte_read
-+
- static inline int pte_write(pte_t pte)
- {
- 	return !(pte_val(pte) & _PAGE_RO);
-diff --git a/arch/powerpc/include/asm/nohash/pgtable.h b/arch/powerpc/include/asm/nohash/pgtable.h
-index a6caaaab6f92..3af11981fcd5 100644
---- a/arch/powerpc/include/asm/nohash/pgtable.h
-+++ b/arch/powerpc/include/asm/nohash/pgtable.h
-@@ -25,7 +25,9 @@ static inline int pte_write(pte_t pte)
- 	return pte_val(pte) & _PAGE_RW;
- }
- #endif
-+#ifndef pte_read
- static inline int pte_read(pte_t pte)		{ return 1; }
-+#endif
- static inline int pte_dirty(pte_t pte)		{ return pte_val(pte) & _PAGE_DIRTY; }
- static inline int pte_special(pte_t pte)	{ return pte_val(pte) & _PAGE_SPECIAL; }
- static inline int pte_none(pte_t pte)		{ return (pte_val(pte) & ~_PTE_NONE_MASK) == 0; }
--- 
-2.41.0
+ 	domain = event_get_domain(event);
+-	if (domain &gt;= HV_PERF_DOMAIN_MAX) {
++	if (domain  == 0 || domain &gt;= HV_PERF_DOMAIN_MAX) {
+ 		pr_devel("invalid domain %d\n", domain);
+ 		return -EINVAL;
+ 	}
+</pre>
+    </blockquote>
+  </body>
+</html>
+
+--------------q0866BmGonmaPIAY76fPjSJy--
 
