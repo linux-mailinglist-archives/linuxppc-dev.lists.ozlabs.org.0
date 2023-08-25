@@ -1,56 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73FCD788072
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 09:00:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58DFE7880A9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 09:10:56 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=MuX3sYZm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NFOUTRRo;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RX9nT0RStz3cCr
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 17:00:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RXB1p1H35z3cF2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 17:10:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=MuX3sYZm;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NFOUTRRo;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.136; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RX9mb5K5Gz300f
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Aug 2023 16:59:27 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1692946767;
-	bh=XrZZdCb4kEPgFY291tVmpWomtWhcCVj2wXLBrYPOU4E=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=MuX3sYZmwkt/jmFpfuUYkKbF/nSC7GuOSYEI1AoXQ0/88y8SmCQ5NRcqSGj2er4Cz
-	 YUUsjrjJCPAYyH/XLweWF74bsRZje8qiz4Z4xmH0O6EianvFsdBK64HQjjYPRSO7Cp
-	 Y0vNvR1IATFdjtZOTnlsCr7UwR/+LCWxYaReRKt9rd5PRw4WXWohchHZ6CTzzYozBY
-	 vKL7sxXWdXodSU1bHOEELwxpy9eapnsq2DlsS2+9bUBrK7W7Gj+NSOG1fnr7JZ9R3o
-	 bKRrG09MF9Glo2U8U8wJRl4OhRglQJrxgTYbRbQs0gOzVVavW04TuD1p95bSECnjNl
-	 /s7itSsM0MNxA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RX9mb0Rqbz4wxQ;
-	Fri, 25 Aug 2023 16:59:27 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Joel Stanley <joel@jms.id.au>
-Subject: Re: [PATCH 4/4] powerpc/64s: Use POWER10 stsync barrier for wmb()
-In-Reply-To: <CACPK8Xeq3G2g2nY1_Wm32tB0JyfS5k+=YAjQNom3x=cc2Qs7mA@mail.gmail.com>
-References: <20230609100026.8946-1-npiggin@gmail.com>
- <20230609100026.8946-4-npiggin@gmail.com> <87wn07foos.fsf@mail.lhotse>
- <87ttvafuxi.fsf@mail.lhotse> <CTCUKC30VVC4.KMUHD1RN0W79@wheely>
- <87leglfmlc.fsf@mail.lhotse> <87fs48vdw6.fsf@mail.lhotse>
- <87cyzcvdux.fsf@mail.lhotse>
- <CACPK8Xeq3G2g2nY1_Wm32tB0JyfS5k+=YAjQNom3x=cc2Qs7mA@mail.gmail.com>
-Date: Fri, 25 Aug 2023 16:59:23 +1000
-Message-ID: <877cpjvc8k.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RXB0s4p3Bz300f
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Aug 2023 17:10:03 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1692947406; x=1724483406;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=HxtjP/eWI5irDDcXkwHLdeRMWrol5auXuwj5c4Fn374=;
+  b=NFOUTRRob8DuANb6qI9ZMZvHpNhtr8i43fZbCIPYkooHJ2UvOfUvsDSw
+   qHfDwDfTGLyRH6BNctHVyONCPg5PWcDr+CUoVAdjvHajOFzXyGHgM3ZuH
+   rbdRQyTKagEDiOmaaUpzWl6tDWBfyrpvaMiVrafe/BCt08eHyY6x5CAfA
+   r0sIZuRre4XnSkVuo+6DZW7vpXkyw3L+dF1Q9aFpUfyBeQr1rgMJumQbU
+   4EESX5zw6Q10ibXshlp2cb487hscoFGoMZYIvc7j63GapKWl2w7L0zWQi
+   5tJ5wZzW8jRsJVKyVlozy1m+5lQO7eGXJLkVTDUA2j9w+u+RauhrGKox/
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10812"; a="354179023"
+X-IronPort-AV: E=Sophos;i="6.02,195,1688454000"; 
+   d="scan'208";a="354179023"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2023 00:09:58 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10812"; a="687203794"
+X-IronPort-AV: E=Sophos;i="6.02,195,1688454000"; 
+   d="scan'208";a="687203794"
+Received: from lkp-server02.sh.intel.com (HELO daf8bb0a381d) ([10.239.97.151])
+  by orsmga003.jf.intel.com with ESMTP; 25 Aug 2023 00:09:56 -0700
+Received: from kbuild by daf8bb0a381d with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1qZQx9-0003IK-1m;
+	Fri, 25 Aug 2023 07:09:55 +0000
+Date: Fri, 25 Aug 2023 15:09:49 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Subject: [powerpc:next 84/128] arch/powerpc/mm/init_64.c:477:38: error: use
+ of undeclared identifier 'SECTION_SIZE_BITS'
+Message-ID: <202308251532.k9PpWEAD-lkp@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,63 +68,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: Reza Arbab <arbab@linux.ibm.com>, llvm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, oe-kbuild-all@lists.linux.dev
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Joel Stanley <joel@jms.id.au> writes:
-> On Thu, 24 Aug 2023 at 12:12, Michael Ellerman <mpe@ellerman.id.au> wrote:
->>
->> Michael Ellerman <mpe@ellerman.id.au> writes:
->> > Michael Ellerman <mpe@ellerman.id.au> writes:
->> >> "Nicholas Piggin" <npiggin@gmail.com> writes:
->> >>> On Wed Jun 14, 2023 at 3:56 PM AEST, Michael Ellerman wrote:
->> >>>> Michael Ellerman <mpe@ellerman.id.au> writes:
->> >>>> > Nicholas Piggin <npiggin@gmail.com> writes:
->> >>>> >> The most expensive ordering for hwsync to provide is the store-load
->> >>>> >> barrier, because all prior stores have to be drained to the caches
->> >>>> >> before subsequent instructions can complete.
->> >>>> >>
->> >>>> >> stsync just orders stores which means it can just be a barrer that
->> >>>> >> goes down the store queue and orders draining, and does not prevent
->> >>>> >> completion of subsequent instructions. So it should be faster than
->> >>>> >> hwsync.
->> >>>> >>
->> >>>> >> Use stsync for wmb(). Older processors that don't recognise the SC
->> >>>> >> field should treat this as hwsync.
->> >>>> >
->> >>>> > qemu (7.1) emulating ppc64e does not :/
->> >>>> >
->> >>>> >   mpic: Setting up MPIC " OpenPIC  " version 1.2 at fe0040000, max 1 CPUs
->> >>>> >   mpic: ISU size: 256, shift: 8, mask: ff
->> >>>> >   mpic: Initializing for 256 sources
->> >>>> >   Oops: Exception in kernel mode, sig: 4 [#1]
->> >>>> ..
->> >>>> >
->> >>>> > I guess just put it behind an #ifdef 64S.
->> >>>>
->> >>>> That doesn't work because qemu emulating a G5 also doesn't accept it.
->> >>>>
->> >>>> So either we need to get qemu updated and wait a while for that to
->> >>>> percolate, or do some runtime patching of wmbs in the kernel >_<
->> >>>
->> >>> Gah, sorry. QEMU really should be ignoring reserved fields in
->> >>> instructions :(
->> >>
->> >> Yeah, it's an annoying discrepancy vs real hardware and the ISA.
->> >>
->> >>> I guess leave it out for now. Should fix QEMU but we probably also need
->> >>> to do patching so as not to break older QEMUs.
->> >>
->> >> I'll plan to take the first 3 patches, they seem OK as-is.
->> >
->> > I didn't do that in the end, because patch 2 suffers from the same
->>                                              ^
->>                                              3
->> > problem of not working on QEMU.
->
-> Did we get a patch to fix this in to Qemu?
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+head:   b9bbbf4979073d5536b7650decd37fcb901e6556
+commit: 4d15721177d539d743fcf31d7bb376fb3b81aeb6 [84/128] powerpc/mm: Cleanup memory block size probing
+config: powerpc64-randconfig-r005-20230825 (https://download.01.org/0day-ci/archive/20230825/202308251532.k9PpWEAD-lkp@intel.com/config)
+compiler: clang version 17.0.0 (https://github.com/llvm/llvm-project.git 4a5ac14ee968ff0ad5d2cc1ffa0299048db4c88a)
+reproduce: (https://download.01.org/0day-ci/archive/20230825/202308251532.k9PpWEAD-lkp@intel.com/reproduce)
 
-No. Nick might have looked at it but he hasn't posted anything AFAIK.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202308251532.k9PpWEAD-lkp@intel.com/
 
-cheers
+All errors (new ones prefixed by >>):
+
+>> arch/powerpc/mm/init_64.c:477:38: error: use of undeclared identifier 'SECTION_SIZE_BITS'
+     477 |         unsigned long section_size = 1UL << SECTION_SIZE_BITS;
+         |                                             ^
+   arch/powerpc/mm/init_64.c:510:18: error: use of undeclared identifier 'SECTION_SIZE_BITS'
+     510 |                         *block_size = MIN_MEMORY_BLOCK_SIZE;
+         |                                       ^
+   include/linux/memory.h:23:43: note: expanded from macro 'MIN_MEMORY_BLOCK_SIZE'
+      23 | #define MIN_MEMORY_BLOCK_SIZE     (1UL << SECTION_SIZE_BITS)
+         |                                           ^
+   2 errors generated.
+
+
+vim +/SECTION_SIZE_BITS +477 arch/powerpc/mm/init_64.c
+
+   474	
+   475	static void update_memory_block_size(unsigned long *block_size, unsigned long mem_size)
+   476	{
+ > 477		unsigned long section_size = 1UL << SECTION_SIZE_BITS;
+   478	
+   479		for (; *block_size > section_size; *block_size >>= 2) {
+   480	
+   481			if ((mem_size & *block_size) == 0)
+   482				break;
+   483		}
+   484	}
+   485	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
