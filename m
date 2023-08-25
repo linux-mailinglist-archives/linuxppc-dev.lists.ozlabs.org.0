@@ -1,88 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B8BF788E63
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 20:16:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C021788E80
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 20:21:31 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kEZ7Vqwa;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=E4mC5YAX;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RXSnH2FrNz303p
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Aug 2023 04:16:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RXSvX6sw6z3bVp
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Aug 2023 04:21:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kEZ7Vqwa;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=E4mC5YAX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::52f; helo=mail-pg1-x52f.google.com; envelope-from=keescook@chromium.org; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RXSmJ0fxkz2y1Y
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Aug 2023 04:15:11 +1000 (AEST)
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37PI6rIq031177;
-	Fri, 25 Aug 2023 18:14:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=NeXVYWHkVo+QL2tc3Wf4sqBVf7FNluO78WFdmMiRrBU=;
- b=kEZ7Vqwap8o9dWigtL2QMK0IRZccw1DLmwOL+4c4mv/31rVk2CwuVDr4LAV46uNUOnDt
- SmNekR2iAqmucijCXjh4JG0CaRq4jYbiIDzSY5o5QnRv+zFkQ/f4fkEvDmLp14d1vPwX
- 3ebQNBJWyg+zqQTDxtGy6RRd+HBypB6eD7BLnpk20I63bw7Om6BZqxPhXMCBfp7GBYHv
- 3rU0oqG4OCXvpIMwhatZNwl6bviwD4OsFPneEMqqOhButhXQihAJOS7HJhTaOVe6YF0U
- 2BmR3a6hSBWZ+Rb9FSjiygnQswsG2NM5n0GSIEJSK43lmrRRBD1imI3ONnSnFgqxaHn0 tw== 
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sq0p092pb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Aug 2023 18:14:56 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 37PHrDmY027333;
-	Fri, 25 Aug 2023 18:14:54 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sn20t1mjy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Aug 2023 18:14:54 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 37PIEqFR24314394
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 25 Aug 2023 18:14:52 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6446E20040;
-	Fri, 25 Aug 2023 18:14:52 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E757820043;
-	Fri, 25 Aug 2023 18:14:50 +0000 (GMT)
-Received: from [9.43.10.206] (unknown [9.43.10.206])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 25 Aug 2023 18:14:50 +0000 (GMT)
-Message-ID: <f7a8070c-ee4e-c485-487b-a5da860a1330@linux.ibm.com>
-Date: Fri, 25 Aug 2023 23:44:49 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [powerpc:next 84/128] arch/powerpc/mm/init_64.c:477:38: error:
- use of undeclared identifier 'SECTION_SIZE_BITS'
-To: kernel test robot <lkp@intel.com>
-References: <202308251532.k9PpWEAD-lkp@intel.com>
-Content-Language: en-US
-From: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>
-In-Reply-To: <202308251532.k9PpWEAD-lkp@intel.com>
-Content-Type: text/plain; charset=UTF-8
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: oF6YQjjPGp9Ammrv8J5rP6yhmKVFOsuw
-X-Proofpoint-GUID: oF6YQjjPGp9Ammrv8J5rP6yhmKVFOsuw
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RXStd6KR8z2yWD
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Aug 2023 04:20:39 +1000 (AEST)
+Received: by mail-pg1-x52f.google.com with SMTP id 41be03b00d2f7-56c250ff3d3so1641704a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Aug 2023 11:20:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1692987633; x=1693592433;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=GYd1wVFPRI7NiM/Sx4/tad/ZtbY6g9sye8P5AXqu+fc=;
+        b=E4mC5YAXMMgmUHgfRiWFcSZjAFYw1waD0EqZCNwtYhRSRtgJoFZVlCS3JG3wV7FXjd
+         sXVU7RTKIYiV68OaJT+pNyPhtCG1CpcRdXA82AG5ofhhqR/vSGm3tvd1mpbR6M1weagG
+         NwWQJu1Josu1pkUS1L/DPphW0b+C0Nzy+d45c=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692987633; x=1693592433;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GYd1wVFPRI7NiM/Sx4/tad/ZtbY6g9sye8P5AXqu+fc=;
+        b=abUON2U9rClTQm14TdsJUTTm6jny4Z1NtV/ohZb6SO5T1SW2dLn1RDgGNVHyhbN1hE
+         q/n7gB5788biCM45PHzD6sCmCkBCB/lztbVO6Fx9iuu9Kd8+IWj8xJAkwf3ZGL3UNoYL
+         imk0XnVlV0YT7LA47BZ7fnB4yv3YIt87exZy0yn/8zuYsOyY9fNJ5L4FAyHyn0ThKlwZ
+         EM8N/u/jzXpMq62WDSad0RWHZBY7zz53TKmg+7XiH61qPSPCWj2GwiCGis2PcuOgEXWM
+         sEn3UuFUvFjzR99DiG2j+0ZM5qs/IIrwbL4T0ng8ua7iF4u6IMVazpoHOWPIyd/wk91a
+         gkWQ==
+X-Gm-Message-State: AOJu0YxIgoaex7ApvBxhrfhHCtgTJgWlTbj21kVXYcpuRfoxZeY0xAUJ
+	f2ms94n/c16Y+oHapU6fLSe1Nw==
+X-Google-Smtp-Source: AGHT+IF6DSGG+sLTemEr6zFswCsdJsrOmZC3VrMrE6v1fI8J4N4rJsVzak2qfPMHQ2MCnkGlwtuaPA==
+X-Received: by 2002:a17:90a:c08d:b0:267:f8f4:73ab with SMTP id o13-20020a17090ac08d00b00267f8f473abmr28444155pjs.16.1692987633516;
+        Fri, 25 Aug 2023 11:20:33 -0700 (PDT)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id d12-20020a17090a628c00b0026b3f76a063sm1910536pjj.44.2023.08.25.11.20.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Aug 2023 11:20:32 -0700 (PDT)
+Date: Fri, 25 Aug 2023 11:20:32 -0700
+From: Kees Cook <keescook@chromium.org>
+To: Randy Dunlap <rdunlap@infradead.org>
+Subject: Re: [PATCH] kbuild: Show Kconfig fragments in "help"
+Message-ID: <202308251119.B93C95A3A7@keescook>
+References: <20230824223606.never.762-kees@kernel.org>
+ <21193a52-0425-f5ae-90f0-10e4c578ae90@infradead.org>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-25_16,2023-08-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- lowpriorityscore=0 bulkscore=0 phishscore=0 mlxlogscore=999
- priorityscore=1501 mlxscore=0 suspectscore=0 impostorscore=0 clxscore=1011
- spamscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2308250162
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <21193a52-0425-f5ae-90f0-10e4c578ae90@infradead.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,84 +75,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Reza Arbab <arbab@linux.ibm.com>, llvm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, oe-kbuild-all@lists.linux.dev
+Cc: linux-s390@vger.kernel.org, linux-kbuild@vger.kernel.org, Masahiro Yamada <masahiroy@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 8/25/23 12:39 PM, kernel test robot wrote:
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-> head:   b9bbbf4979073d5536b7650decd37fcb901e6556
-> commit: 4d15721177d539d743fcf31d7bb376fb3b81aeb6 [84/128] powerpc/mm: Cleanup memory block size probing
-> config: powerpc64-randconfig-r005-20230825 (https://download.01.org/0day-ci/archive/20230825/202308251532.k9PpWEAD-lkp@intel.com/config)
-> compiler: clang version 17.0.0 (https://github.com/llvm/llvm-project.git 4a5ac14ee968ff0ad5d2cc1ffa0299048db4c88a)
-> reproduce: (https://download.01.org/0day-ci/archive/20230825/202308251532.k9PpWEAD-lkp@intel.com/reproduce)
+On Thu, Aug 24, 2023 at 05:04:02PM -0700, Randy Dunlap wrote:
+> Hi Kees,
 > 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202308251532.k9PpWEAD-lkp@intel.com/
+> On 8/24/23 15:36, Kees Cook wrote:
+> > Doing a "make help" would show only hard-coded Kconfig targets and
+> > depended on the archhelp target to include ".config" targets. There was
+> > nothing showing global kernel/configs/ targets. Solve this by walking
+> > the wildcard list and include them in the output, using the first comment
+> > line as the help text.
+> > 
+> > Update all Kconfig fragments to include help text and adjust archhelp
+> > targets to avoid redundancy.
+> > 
+> > Adds the following section to "help" target output:
+> > 
+> > Configuration fragment targets (for enabling various Kconfig items):
+> >   debug.config         - Debugging for CI systems and finding regressions
+> >   kvm_guest.config     - Bootable as a KVM guest
+> >   nopm.config          - Disable Power Management
+> >   rust.config          - Enable Rust
+> >   tiny-base.config     - Minimal options for tiny systems
+> >   tiny.config          - Smallest possible kernel image
+> >   x86_debug.config     - Debugging options for tip tree testing
+> >   xen.config           - Bootable as a Xen guest
+> >   tiny.config          - x86-specific options for a small kernel image
+> >   xen.config           - x86-specific options for a Xen virtualization guest
 > 
-> All errors (new ones prefixed by >>):
-> 
->>> arch/powerpc/mm/init_64.c:477:38: error: use of undeclared identifier 'SECTION_SIZE_BITS'
->      477 |         unsigned long section_size = 1UL << SECTION_SIZE_BITS;
->          |                                             ^
->    arch/powerpc/mm/init_64.c:510:18: error: use of undeclared identifier 'SECTION_SIZE_BITS'
->      510 |                         *block_size = MIN_MEMORY_BLOCK_SIZE;
->          |                                       ^
->    include/linux/memory.h:23:43: note: expanded from macro 'MIN_MEMORY_BLOCK_SIZE'
->       23 | #define MIN_MEMORY_BLOCK_SIZE     (1UL << SECTION_SIZE_BITS)
->          |                                           ^
->    2 errors generated.
-> 
-> 
-> vim +/SECTION_SIZE_BITS +477 arch/powerpc/mm/init_64.c
-> 
->    474	
->    475	static void update_memory_block_size(unsigned long *block_size, unsigned long mem_size)
->    476	{
->  > 477		unsigned long section_size = 1UL << SECTION_SIZE_BITS;
->    478	
->    479		for (; *block_size > section_size; *block_size >>= 2) {
->    480	
->    481			if ((mem_size & *block_size) == 0)
->    482				break;
->    483		}
->    484	}
->    485	
-> 
+> ISTM that you are missing the "why" part of this change in the commit
+> description.
 
-Not a nice fix: 
+I want to see what fragments are available without needing to know the
+source tree layout for their locations. :)
 
-modified   arch/powerpc/mm/init_64.c
-@@ -472,11 +472,17 @@ static int __init dt_scan_mmu_pid_width(unsigned long node,
- 	return 1;
- }
- 
-+#ifndef CONFIG_MEMORY_HOTPLUG
-+#define MEMORY_BLOCK_SIZE     SZ_16M
-+#else
-+#define MEMORY_BLOCK_SIZE MIN_MEMORY_BLOCK_SIZE
-+#endif
-+
- static void update_memory_block_size(unsigned long *block_size, unsigned long mem_size)
- {
--	unsigned long section_size = 1UL << SECTION_SIZE_BITS;
-+	unsigned long min_memory_block_size = MEMORY_BLOCK_SIZE;
- 
--	for (; *block_size > section_size; *block_size >>= 2) {
-+	for (; *block_size > min_memory_block_size; *block_size >>= 2) {
- 
- 		if ((mem_size & *block_size) == 0)
- 			break;
-@@ -507,7 +513,7 @@ static int __init probe_memory_block_size(unsigned long node, const char *uname,
- 			/*
- 			 * Nothing in the device tree
- 			 */
--			*block_size = MIN_MEMORY_BLOCK_SIZE;
-+			*block_size = MEMORY_BLOCK_SIZE;
- 		else
- 			*block_size = of_read_number(prop, dt_root_size_cells);
- 		/*
+> "make tinyconfig" is the real target here.  The other (tiny.) files are just
+> implementation details.
+> We can't put all implementation details into help messages and it's not
+> difficult to find that the (tiny.) config files are merged to make the
+> final .config file.
 
+Yeah, this seems true for much of the ppc stuff to, as pointed out by
+mpe. I'll go answer there...
 
+-- 
+Kees Cook
