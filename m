@@ -1,69 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47637788E96
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 20:24:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93A14788EC2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 20:34:40 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=HnyXQbm8;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=fs2vsxHk;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RXSyc69c3z2yKy
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Aug 2023 04:24:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RXTBk35n4z3c5Q
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Aug 2023 04:34:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=HnyXQbm8;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=fs2vsxHk;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::634; helo=mail-pl1-x634.google.com; envelope-from=keescook@chromium.org; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::436; helo=mail-pf1-x436.google.com; envelope-from=keescook@chromium.org; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RXSxj3tdSz2xSN
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Aug 2023 04:23:21 +1000 (AEST)
-Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1bf092a16c9so10316165ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Aug 2023 11:23:21 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RXT9p6vLgz2yPG
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Aug 2023 04:33:48 +1000 (AEST)
+Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-68bed8de5b9so1018781b3a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Aug 2023 11:33:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1692987798; x=1693592598;
+        d=chromium.org; s=google; t=1692988426; x=1693593226;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KJ9zjJeALE62O4cw5IYTaJTtY+w53cmCJ0tqcg+cbfo=;
-        b=HnyXQbm8I0wncS7q6bqpL+84nVc+SRO3gOlr6HSanLhtlUGqe3qLtjl9NoeWnceonY
-         Wszkh9DExW9bToZKm+r3bfPJgD20l6FVa29cqrrXaEROEvs3vo6ecpcyMCQpnRom2zMm
-         0cq8MEdGxeVtq9mis1PNV+itkvcfNqdyC6/XE=
+        bh=8lUGjqed5vBEF61//Ts3J+LsbHjaPbzQsfTJT+JEbFA=;
+        b=fs2vsxHkz2wP7TObW5d0DadYscN9gIp3iQDmbXDJFZ9TXLBpCjfEgbr249m+hpnt0H
+         N8eHUiqtK7UcSX0JDYTqI1A6bnyDPDj8c4Ou7YGA0GVwgInqr0iTvOzvDiJxGlCaQxLN
+         RIAxlHY6RydO0bYtLOKbnqDYX0Yp0fkHde1d8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692987798; x=1693592598;
+        d=1e100.net; s=20221208; t=1692988426; x=1693593226;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KJ9zjJeALE62O4cw5IYTaJTtY+w53cmCJ0tqcg+cbfo=;
-        b=bOUrGUQ3/om1MqAGY8PJFEYhE7MyHoRX0F+DVXu9phJYpPxi7tmVSPPflVY+8f1g3a
-         fyNW7/qXI7cqTa8XUNxPVDLyNqJ+Zid/tRg7RvA06jQwcKfKuGWuhnGWviRkYt3YMHlH
-         /HJoFi6wb/htHj2/+X8l17CUSVgINK1qsEVDQu6P9NW5S8v9zZMTdPoFVGkejVB+SsaZ
-         hDyGRQ1aHBmPC8kHJTneFTYaMldeubIz3MfTZNYmfl5PFpBK29Bwcxi8xs4Ldt6I62he
-         559GA6mhPZfMj9PxXoMaVj6Fin4TpCVl0Bl1e8xFTKDjFv8yJg8jfyc+8P3QMpXHIYMJ
-         4TJQ==
-X-Gm-Message-State: AOJu0YzODLcdRiNPdaeblKOf5p2XRipBfkcMkeD5Y6G1syhTNWzcji1p
-	dhJylmfl6rH04I+QiFdUCe4sTg==
-X-Google-Smtp-Source: AGHT+IF5mGfC+hpo4uDUVvE34Zd1neo+8AiXRx90NzQv5YAzJzW8HNQDHc63LgGceQ+tSuoW87RpyA==
-X-Received: by 2002:a17:903:24f:b0:1bf:4833:9c25 with SMTP id j15-20020a170903024f00b001bf48339c25mr22325045plh.36.1692987798689;
-        Fri, 25 Aug 2023 11:23:18 -0700 (PDT)
+        bh=8lUGjqed5vBEF61//Ts3J+LsbHjaPbzQsfTJT+JEbFA=;
+        b=RbK/QyqQADjMbbcJIjq9mLKfzRaAC627H1WOsW0e4HqppCiiGIwm3VvjH6L9UyeBfF
+         H0/MHbKgMcnjQK4KH6g9AYMqT9D391IY2qT+SdnwdL8horXY5uUnL6QdS9VeZUC30aaZ
+         KkP2HzZknshZQlg6Ln83QrTz8mg2cek+0ia/XK3gS8CEjnn2uyT7NZf/uVO9/4RWLeQE
+         8ytxwSCJGhFNWIfVSrmm+VWdsZ7GsDXKGdxZ2ZqNqa9hxNGar2iwmwLMsrZA9/sK5Q4H
+         hGKJhE+sBZ1m7rRpOQO4EqLXPSOX9bRaFZyNaYcFM3edyFM5JNDfK7pKdOIGijmbuWqE
+         Cvcg==
+X-Gm-Message-State: AOJu0YxKMmiWDXriJSmQlzRZ+DZ+TfQhrIes8QKXJG7BFFlbkwp9kgBI
+	EaTc+EJWFGHDmhQib3msY8VA3A==
+X-Google-Smtp-Source: AGHT+IGDxoqIqcJZyjYGVuOgm8M01AX2FlPXYmdv5h9gJHh0STQ7ADq/UhT1DHG724uSr8yjfQvnWw==
+X-Received: by 2002:a05:6a00:23c6:b0:68a:406f:8a11 with SMTP id g6-20020a056a0023c600b0068a406f8a11mr18065379pfc.15.1692988425770;
+        Fri, 25 Aug 2023 11:33:45 -0700 (PDT)
 Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id d10-20020a170902654a00b001bc930d4517sm2078150pln.42.2023.08.25.11.23.17
+        by smtp.gmail.com with ESMTPSA id u14-20020aa7838e000000b0065980654baasm1891186pfm.130.2023.08.25.11.33.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Aug 2023 11:23:18 -0700 (PDT)
-Date: Fri, 25 Aug 2023 11:23:17 -0700
+        Fri, 25 Aug 2023 11:33:45 -0700 (PDT)
+Date: Fri, 25 Aug 2023 11:33:44 -0700
 From: Kees Cook <keescook@chromium.org>
-To: Nicolas Schier <n.schier@avm.de>
+To: Michael Ellerman <mpe@ellerman.id.au>
 Subject: Re: [PATCH] kbuild: Show Kconfig fragments in "help"
-Message-ID: <202308251121.23BAF46E@keescook>
+Message-ID: <202308251123.D87F05DC@keescook>
 References: <20230824223606.never.762-kees@kernel.org>
- <ZOg/pqoqhp/3rerZ@buildd.core.avm.de>
+ <87a5ufvefl.fsf@mail.lhotse>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZOg/pqoqhp/3rerZ@buildd.core.avm.de>
+In-Reply-To: <87a5ufvefl.fsf@mail.lhotse>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,88 +79,105 @@ Cc: linux-s390@vger.kernel.org, linux-kbuild@vger.kernel.org, Masahiro Yamada <m
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Aug 25, 2023 at 07:44:06AM +0200, Nicolas Schier wrote:
-> On Thu, Aug 24, 2023 at 03:36:10PM -0700, Kees Cook wrote:
+On Fri, Aug 25, 2023 at 04:11:58PM +1000, Michael Ellerman wrote:
+> Kees Cook <keescook@chromium.org> writes:
 > > Doing a "make help" would show only hard-coded Kconfig targets and
 > > depended on the archhelp target to include ".config" targets. There was
 > > nothing showing global kernel/configs/ targets. Solve this by walking
 > > the wildcard list and include them in the output, using the first comment
 > > line as the help text.
-> > [...]
+> >
+> > Update all Kconfig fragments to include help text and adjust archhelp
+> > targets to avoid redundancy.
+> >
+> > Adds the following section to "help" target output:
+> >
+> > Configuration fragment targets (for enabling various Kconfig items):
+> >   debug.config         - Debugging for CI systems and finding regressions
+> >   kvm_guest.config     - Bootable as a KVM guest
+> >   nopm.config          - Disable Power Management
+> >   rust.config          - Enable Rust
+> >   tiny-base.config     - Minimal options for tiny systems
+> >   tiny.config          - Smallest possible kernel image
+> >   x86_debug.config     - Debugging options for tip tree testing
+> >   xen.config           - Bootable as a Xen guest
+> >   tiny.config          - x86-specific options for a small kernel image
+> >   xen.config           - x86-specific options for a Xen virtualization guest
 > 
-> Thanks for that patch!  Several times I found myself searching the tree
-> to find a specific kconfig fragment; I think you found a nice solution.
-> Two minor things below.
+> I think we need a way to opt some files out.
 > 
-> [...]
-> > diff --git a/kernel/configs/tiny-base.config b/kernel/configs/tiny-base.config
-> > index 2f0e6bf6db2c..ac4d254abc3f 100644
-> > --- a/kernel/configs/tiny-base.config
-> > +++ b/kernel/configs/tiny-base.config
-> > @@ -1 +1,2 @@
-> > +# Minimal options for tiny systems
-> >  CONFIG_EMBEDDED=y
+> It's a bit ugly on powerpc because there are so many fragments:
 > 
-> (just a note: Randy prepared a patch for removing CONFIG_EMBEDDED:
-> https://lore.kernel.org/linux-kbuild/20230816055010.31534-1-rdunlap@infradead.org/)
-
-Ah yeah, I'll rebase this after the merge window, I guess...
-
-> > diff --git a/kernel/configs/tiny.config b/kernel/configs/tiny.config
-> > index 00009f7d0835..ea643e8f7f14 100644
-> > --- a/kernel/configs/tiny.config
-> > +++ b/kernel/configs/tiny.config
-> > @@ -1,3 +1,5 @@
-> > +# Smallest possible kernel image
+> Configuration fragment targets (for enabling various Kconfig items):
+>   debug.config         - Debugging for CI systems and finding regressions
+>   kvm_guest.config     - Bootable as a KVM guest
+>   nopm.config          - Disable Power Management
+>   rust.config          - Enable Rust
+>   tiny-base.config     - Minimal options for tiny systems
+>   tiny.config          - Smallest possible kernel image
+>   x86_debug.config     - Debugging options for tip tree testing
+>   xen.config           - Bootable as a Xen guest
+>   32-bit.config        - Build a 32-bit image
+>   64-bit.config        - Build a 64-bit image
+>   85xx-32bit.config    - Build a 32-bit 85xx image
+>   85xx-64bit.config    - Build a 64-bit 85xx image
+>   85xx-hw.config       - Base hardware support for 86xx
+>   85xx-smp.config      - Enable SMP on 85xx
+>   86xx-hw.config       - Base hardware support for 86xx
+>   86xx-smp.config      - Enable SMP on 86xx
+>   altivec.config       - Enable Altivec support
+>   be.config            - Enable Big Endian mode
+>   book3s_32.config     - Base support for Book3s
+>   corenet_base.config  - Base support for corenet
+>   debug.config         - Enable PowerPC specific debug options
+>   disable-werror.config - Disable -Werror
+>   dpaa.config          - Base suppot for DPPA
+>   fsl-emb-nonhw.config - Non-hardware options common to 85xx and corenet
+>   guest.config         - PowerPC specific virtualization guest options
+>   kvm_guest.config     - Bootable as a KVM guest
+>   le.config            - Enable Little Endian mode
+>   mpc85xx_base.config  - Base mpc85xxx support
+>   mpc86xx_base.config  - Base mpc85xxx support
+>   ppc64le.config       - Enable ppc64le mode
+>   security.config      - Common security options for PowerPC builds
 > 
-> For this fragment alone (not within 'tinyconfig'), "Size-optimize kernel
-> image" possibly fits better?
-
-Sounds good to me!
-
-> > diff --git a/scripts/kconfig/Makefile b/scripts/kconfig/Makefile
-> > index af1c96198f49..c523f24b504a 100644
-> > --- a/scripts/kconfig/Makefile
-> > +++ b/scripts/kconfig/Makefile
-> > @@ -93,11 +93,11 @@ endif
-> >  %_defconfig: $(obj)/conf
-> >  	$(Q)$< $(silent) --defconfig=arch/$(SRCARCH)/configs/$@ $(Kconfig)
-> >  
-> > -configfiles=$(wildcard $(srctree)/kernel/configs/$@ $(srctree)/arch/$(SRCARCH)/configs/$@)
-> > +configfiles=$(wildcard $(srctree)/kernel/configs/$(1) $(srctree)/arch/$(SRCARCH)/configs/$(1))
-> >  
-> >  %.config: $(obj)/conf
-> > -	$(if $(call configfiles),, $(error No configuration exists for this target on this architecture))
-> > -	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/kconfig/merge_config.sh -m .config $(configfiles)
-> > +	$(if $(call configfiles,$@),, $(error No configuration exists for this target on this architecture))
-> > +	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/kconfig/merge_config.sh -m .config $(call configfiles,$@)
-> >  	$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
-> >  
-> >  PHONY += tinyconfig
-> > @@ -115,6 +115,7 @@ clean-files += tests/.cache
-> >  
-> >  # Help text used by make help
-> >  help:
-> > +	@echo  'Configuration targets:'
-> >  	@echo  '  config	  - Update current config utilising a line-oriented program'
-> >  	@echo  '  nconfig         - Update current config utilising a ncurses menu based program'
-> >  	@echo  '  menuconfig	  - Update current config utilising a menu based program'
-> > @@ -141,6 +142,12 @@ help:
-> >  	@echo  '                    default value without prompting'
-> >  	@echo  '  tinyconfig	  - Configure the tiniest possible kernel'
-> >  	@echo  '  testconfig	  - Run Kconfig unit tests (requires python3 and pytest)'
-> > +	@echo  ''
-> > +	@echo  'Configuration fragment targets (for enabling various Kconfig items):'
-> > +	@$(foreach c, $(call configfiles,*.config), \
-> > +		printf "  %-20s - %s\\n" \
-> > +			$(shell basename $(c)) \
-> > +			"$(subst # ,,$(shell grep -m1 '^# ' $(c)))";)
+> And some of those are not intended for use with "make foo.config",
+> they're used internally for generating our "normal" defconfigs and they
+> don't necessarily work on their own.
 > 
-> Better use '$(notdir $(c))` instead of forking a shell with
-> '$(shell basename $(c))'.
+> Also I'd like to add more fragments in future, to the point where nearly
+> all our configs are generated by them.
+> 
+> Can we have some way to differentiate fragments that are intended to be
+> used with "make foo.config" vs just being used internally to generate
+> other configs.
+> 
+> The obvious thing would be to use a different suffix, eg. "foo.fragment"
+> for internal use fragments. That would require changing
+> merge_into_defconfig and merge_into_defconfig_override to not assume the
+> .config suffix, and update the users in arm, arm64 and powerpc.
+> 
+> The other option would be to ignore .config files starting with eg. "_".
+> 
+> +       @$(foreach c, $(filter-out $(call configfiles,_*.config),$(call configfiles,*.config)), \
+> +               printf "  %-20s - %s\\n" \
+> +                       $(shell basename $(c)) \
+> +                       "$(subst # ,,$(shell grep -m1 '^# ' $(c)))";)
+> 
+> Not sure which is preferable.
 
-Ah! Thank you. I *knew* there was a function for this but couldn't find
-it for some reason. :)
+Yeah, I wasn't too happy about some of these results. There seems to be
+three cases a fragment:
+
+- user-visible make target
+- used internally
+- arch-specific settings for a user-visible make target (redundant)
+
+Only the first should be visible. The trouble is that some user-visible
+targets are arch-specific.
+
+I think I like your idea of having both .config and .fragment... I'll
+give that a try and see how it looks.
 
 -- 
 Kees Cook
