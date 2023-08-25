@@ -2,50 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC067787C5F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 02:05:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B310787C8D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 02:29:55 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=NZRmeKsA;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256 header.s=google header.b=i3hogvNy;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RX0ZX3dXcz3cBC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 10:05:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RX1745HNwz3cD0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Aug 2023 10:29:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=lists.ozlabs.org)
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256 header.s=google header.b=i3hogvNy;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::631; helo=mail-ej1-x631.google.com; envelope-from=joel.stan@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RX0YV1M0Wz2yw0
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Aug 2023 10:04:11 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=vmLNsvDlbkyIYpEkO8eNcxoQJchqhoHOSemi0JGSdvc=; b=NZRmeKsAfkmgAA6LpunC8rC5Dc
-	6TMSKwMSi9DIBtwAzrZChPIPgpzg2Qu1o7mmwg+gO61ze0Wdv/Yb/RdjCPLaMcWBOS5iX2MvgYBpy
-	AZe8Y7MRVMO2tuVm64QfKEmy2CgUQ1KNk/oxulmE7B9tP+D/TEuDM09pN8zO7x04G0HWkhM50K14O
-	oE++tlkqDVIVJwwqmxqut6MrPcMvArkX49RuaV/dMvFulx+2JQEYazuuTQN0YrMRu7j8aby1dAdj7
-	XbAkwelcoGM6/fSREBI/linqqEd4CVW/VQEAa6il6B3j+vSldg3Aq16jPWpAYkNn4ICmSZmwTIWRd
-	koqOHYpw==;
-Received: from [2601:1c2:980:9ec0::2764]
-	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1qZKJ2-0040rp-0h;
-	Fri, 25 Aug 2023 00:04:04 +0000
-Message-ID: <21193a52-0425-f5ae-90f0-10e4c578ae90@infradead.org>
-Date: Thu, 24 Aug 2023 17:04:02 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RX1696xtdz3byH
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Aug 2023 10:29:04 +1000 (AEST)
+Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-9936b3d0286so44408566b.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Aug 2023 17:29:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=jms.id.au; s=google; t=1692923337; x=1693528137;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=KQ+lJz/TPLyrlrV/oSYnL62Mlz55rOtV8U7RoZ1GqqU=;
+        b=i3hogvNywDsH/4dRHa8jmUIFUEZEmma8DKJxtMLTE7M6WYXq+W7h28hgEFzBIygw0L
+         Exsk0LeyviRcWbTmumtMwc4bEtXdDhlqsE5EhWOVpOH8ASvkL3ItGFH9iQ5GoFdjDso2
+         j0+Eeaypk6NwmtkqExDv7MGJnKIHmJStkp8Qs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692923337; x=1693528137;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KQ+lJz/TPLyrlrV/oSYnL62Mlz55rOtV8U7RoZ1GqqU=;
+        b=NWsfERtL24GQMxMnKnR1Q44qy4vHfnCclmvf6+jwE4Mk6zVBfxdOzkwfuutp+1TrE3
+         2WLE8mK1bpYsLZVpYFQYTbwJXEHGVOJ0y1V8rtF6Py+rCj32aufU9TncuzDX/JNFgsx6
+         MX5H2yXp/pWmewrxE3ulPqnOMfRi9y1kjZNOsstjFhvZes9QZpzWkwvX0kwSa++3sfqL
+         5nAciFF3/Hq2ZG64rC2cKoEd27hyX9kdZ4enU2eqmUW8KasNkphhznMU1TntK5uFHuIK
+         na28OYrT3KDPrus+wK23tz6VusaWvGQ/dKmoZ21X9QvalKIubq6TIbb7schalkIm5j2J
+         M7Ig==
+X-Gm-Message-State: AOJu0YxWfRJQ17vzRgxumcmzisYQyYuLgkuhwaft5FE14LKQuXnQI7Tf
+	hac3nw2CzEyfnZ4nJlXAKEkOsV+vSFk4sWTtDTY=
+X-Google-Smtp-Source: AGHT+IEBQm2ybDWfs242GQvMOdGndECAS3oJpsFSEKTjstztVum1jbBjV+xuugIR1eyJq282i++6skYK1LtzCM2S/6o=
+X-Received: by 2002:a17:906:10cd:b0:9a2:26d8:f180 with SMTP id
+ v13-20020a17090610cd00b009a226d8f180mr1860923ejv.70.1692923337283; Thu, 24
+ Aug 2023 17:28:57 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH] kbuild: Show Kconfig fragments in "help"
-Content-Language: en-US
-To: Kees Cook <keescook@chromium.org>, Masahiro Yamada <masahiroy@kernel.org>
-References: <20230824223606.never.762-kees@kernel.org>
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20230824223606.never.762-kees@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20230609100026.8946-1-npiggin@gmail.com> <20230609100026.8946-4-npiggin@gmail.com>
+ <87wn07foos.fsf@mail.lhotse> <87ttvafuxi.fsf@mail.lhotse> <CTCUKC30VVC4.KMUHD1RN0W79@wheely>
+ <87leglfmlc.fsf@mail.lhotse> <87fs48vdw6.fsf@mail.lhotse> <87cyzcvdux.fsf@mail.lhotse>
+In-Reply-To: <87cyzcvdux.fsf@mail.lhotse>
+From: Joel Stanley <joel@jms.id.au>
+Date: Fri, 25 Aug 2023 00:28:35 +0000
+Message-ID: <CACPK8Xeq3G2g2nY1_Wm32tB0JyfS5k+=YAjQNom3x=cc2Qs7mA@mail.gmail.com>
+Subject: Re: [PATCH 4/4] powerpc/64s: Use POWER10 stsync barrier for wmb()
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,46 +72,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, linux-kbuild@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Kees,
+On Thu, 24 Aug 2023 at 12:12, Michael Ellerman <mpe@ellerman.id.au> wrote:
+>
+> Michael Ellerman <mpe@ellerman.id.au> writes:
+> > Michael Ellerman <mpe@ellerman.id.au> writes:
+> >> "Nicholas Piggin" <npiggin@gmail.com> writes:
+> >>> On Wed Jun 14, 2023 at 3:56 PM AEST, Michael Ellerman wrote:
+> >>>> Michael Ellerman <mpe@ellerman.id.au> writes:
+> >>>> > Nicholas Piggin <npiggin@gmail.com> writes:
+> >>>> >> The most expensive ordering for hwsync to provide is the store-load
+> >>>> >> barrier, because all prior stores have to be drained to the caches
+> >>>> >> before subsequent instructions can complete.
+> >>>> >>
+> >>>> >> stsync just orders stores which means it can just be a barrer that
+> >>>> >> goes down the store queue and orders draining, and does not prevent
+> >>>> >> completion of subsequent instructions. So it should be faster than
+> >>>> >> hwsync.
+> >>>> >>
+> >>>> >> Use stsync for wmb(). Older processors that don't recognise the SC
+> >>>> >> field should treat this as hwsync.
+> >>>> >
+> >>>> > qemu (7.1) emulating ppc64e does not :/
+> >>>> >
+> >>>> >   mpic: Setting up MPIC " OpenPIC  " version 1.2 at fe0040000, max 1 CPUs
+> >>>> >   mpic: ISU size: 256, shift: 8, mask: ff
+> >>>> >   mpic: Initializing for 256 sources
+> >>>> >   Oops: Exception in kernel mode, sig: 4 [#1]
+> >>>> ..
+> >>>> >
+> >>>> > I guess just put it behind an #ifdef 64S.
+> >>>>
+> >>>> That doesn't work because qemu emulating a G5 also doesn't accept it.
+> >>>>
+> >>>> So either we need to get qemu updated and wait a while for that to
+> >>>> percolate, or do some runtime patching of wmbs in the kernel >_<
+> >>>
+> >>> Gah, sorry. QEMU really should be ignoring reserved fields in
+> >>> instructions :(
+> >>
+> >> Yeah, it's an annoying discrepancy vs real hardware and the ISA.
+> >>
+> >>> I guess leave it out for now. Should fix QEMU but we probably also need
+> >>> to do patching so as not to break older QEMUs.
+> >>
+> >> I'll plan to take the first 3 patches, they seem OK as-is.
+> >
+> > I didn't do that in the end, because patch 2 suffers from the same
+>                                              ^
+>                                              3
+> > problem of not working on QEMU.
 
-On 8/24/23 15:36, Kees Cook wrote:
-> Doing a "make help" would show only hard-coded Kconfig targets and
-> depended on the archhelp target to include ".config" targets. There was
-> nothing showing global kernel/configs/ targets. Solve this by walking
-> the wildcard list and include them in the output, using the first comment
-> line as the help text.
-> 
-> Update all Kconfig fragments to include help text and adjust archhelp
-> targets to avoid redundancy.
-> 
-> Adds the following section to "help" target output:
-> 
-> Configuration fragment targets (for enabling various Kconfig items):
->   debug.config         - Debugging for CI systems and finding regressions
->   kvm_guest.config     - Bootable as a KVM guest
->   nopm.config          - Disable Power Management
->   rust.config          - Enable Rust
->   tiny-base.config     - Minimal options for tiny systems
->   tiny.config          - Smallest possible kernel image
->   x86_debug.config     - Debugging options for tip tree testing
->   xen.config           - Bootable as a Xen guest
->   tiny.config          - x86-specific options for a small kernel image
->   xen.config           - x86-specific options for a Xen virtualization guest
+Did we get a patch to fix this in to Qemu?
 
-ISTM that you are missing the "why" part of this change in the commit
-description.
+Qemu has recently developed a stable tree process, so if we had a
+backportable fix we could get it in there too.
 
-"make tinyconfig" is the real target here.  The other (tiny.) files are just
-implementation details.
-We can't put all implementation details into help messages and it's not
-difficult to find that the (tiny.) config files are merged to make the
-final .config file.
+Cheers,
 
-So what is it that you are trying to solve?
-
--- 
-~Randy
+Joel
