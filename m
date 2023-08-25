@@ -1,47 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F3E47892DD
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Aug 2023 03:07:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 673017893B6
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Aug 2023 05:55:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RXdw96Kflz3c1L
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Aug 2023 11:07:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RXjdM1n3Bz3cNl
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Aug 2023 13:55:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.255; helo=szxga08-in.huawei.com; envelope-from=wangkefeng.wang@huawei.com; receiver=lists.ozlabs.org)
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=astralinux.ru (client-ip=217.74.38.119; helo=mail.astralinux.ru; envelope-from=adiupina@astralinux.ru; receiver=lists.ozlabs.org)
+X-Greylist: delayed 373 seconds by postgrey-1.37 at boromir; Sat, 26 Aug 2023 00:38:20 AEST
+Received: from mail.astralinux.ru (mail.astralinux.ru [217.74.38.119])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RXdvf2R9Jz2ypy
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Aug 2023 11:07:09 +1000 (AEST)
-Received: from dggpemm100001.china.huawei.com (unknown [172.30.72.55])
-	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4RXdsj5kCdz1L9Gp;
-	Sat, 26 Aug 2023 09:05:29 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemm100001.china.huawei.com (7.185.36.93) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Sat, 26 Aug 2023 09:07:01 +0800
-Message-ID: <2e047e5a-d833-4c6b-8b7c-85d29e19ceed@huawei.com>
-Date: Sat, 26 Aug 2023 09:07:00 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RXMy42N5Fz2ygY
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Aug 2023 00:38:19 +1000 (AEST)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.astralinux.ru (Postfix) with ESMTP id 88D0F1867F2E;
+	Fri, 25 Aug 2023 17:31:59 +0300 (MSK)
+Received: from mail.astralinux.ru ([127.0.0.1])
+	by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id 8GwYOjxrMV8q; Fri, 25 Aug 2023 17:31:59 +0300 (MSK)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.astralinux.ru (Postfix) with ESMTP id 1579C1866E63;
+	Fri, 25 Aug 2023 17:31:59 +0300 (MSK)
+X-Virus-Scanned: amavisd-new at astralinux.ru
+Received: from mail.astralinux.ru ([127.0.0.1])
+	by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id Mw8i77wbVndL; Fri, 25 Aug 2023 17:31:58 +0300 (MSK)
+Received: from rbta-msk-lt-302690.astralinux.ru (unknown [10.177.233.189])
+	by mail.astralinux.ru (Postfix) with ESMTPSA id A98BD1867E38;
+	Fri, 25 Aug 2023 17:31:57 +0300 (MSK)
+From: Alexandra Diupina <adiupina@astralinux.ru>
+To: Zhao Qiang <qiang.zhao@nxp.com>
+Subject: [PATCH] fsl_ucc_hdlc: add a check of the return value from hdlc_open
+Date: Fri, 25 Aug 2023 17:31:12 +0300
+Message-Id: <20230825143112.16184-1-adiupina@astralinux.ru>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rfc v2 04/10] s390: mm: use try_vma_locked_page_fault()
-Content-Language: en-US
-To: Heiko Carstens <hca@linux.ibm.com>, Alexander Gordeev
-	<agordeev@linux.ibm.com>
-References: <20230821123056.2109942-1-wangkefeng.wang@huawei.com>
- <20230821123056.2109942-5-wangkefeng.wang@huawei.com>
- <ZOcR4Z1WnCy1vl9T@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
- <20230824083225.10112-A-hca@linux.ibm.com>
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <20230824083225.10112-A-hca@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemm100001.china.huawei.com (7.185.36.93)
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: quoted-printable
+X-Mailman-Approved-At: Sat, 26 Aug 2023 13:54:38 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,69 +53,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, loongarch@lists.linux.dev, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org, "H . Peter Anvin" <hpa@zytor.com>, WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, willy@infradead.org, Ingo Molnar <mingo@redhat.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>, surenb@google.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, And
- rew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Alexandra Diupina <adiupina@astralinux.ru>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, lvc-project@linuxtesting.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Process the result of hold_open() and return it from
+uhdlc_open() in case of an error
+It is necessary to pass the error code up the control flow,
+similar to a possible error in request_irq()
 
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-On 2023/8/24 16:32, Heiko Carstens wrote:
-> On Thu, Aug 24, 2023 at 10:16:33AM +0200, Alexander Gordeev wrote:
->> On Mon, Aug 21, 2023 at 08:30:50PM +0800, Kefeng Wang wrote:
->>> Use new try_vma_locked_page_fault() helper to simplify code.
->>> No functional change intended.
->>>
->>> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
->>> ---
->>>   arch/s390/mm/fault.c | 66 ++++++++++++++++++--------------------------
->>>   1 file changed, 27 insertions(+), 39 deletions(-)
-> ...
->>> -	fault = handle_mm_fault(vma, address, flags | FAULT_FLAG_VMA_LOCK, regs);
->>> -	if (!(fault & (VM_FAULT_RETRY | VM_FAULT_COMPLETED)))
->>> -		vma_end_read(vma);
->>> -	if (!(fault & VM_FAULT_RETRY)) {
->>> -		count_vm_vma_lock_event(VMA_LOCK_SUCCESS);
->>> -		if (likely(!(fault & VM_FAULT_ERROR)))
->>> -			fault = 0;
->>
->> This fault fixup is removed in the new version.
-> ...
-> 
->>> +		vmf.vm_flags = VM_WRITE;
->>> +	if (vmf.vm_flags == VM_WRITE)
->>> +		vmf.flags |= FAULT_FLAG_WRITE;
->>> +
->>> +	fault = try_vma_locked_page_fault(&vmf);
->>> +	if (fault == VM_FAULT_NONE)
->>> +		goto lock_mm;
->>
->> Because VM_FAULT_NONE is set to 0 it gets confused with
->> the success code of 0 returned by a fault handler. In the
->> former case we want to continue, while in the latter -
->> successfully return. I think it applies to all archs.
-> ...
->> FWIW, this series ends up with kernel BUG at arch/s390/mm/fault.c:341!
-> 
+Fixes: c19b6d246a35 ("drivers/net: support hdlc function for QE-UCC")
+Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
+---
+ drivers/net/wan/fsl_ucc_hdlc.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-I didn't test and only built, this is a RFC to want to know whether
-the way to add three more numbers into vmf and using vmf in arch's page
-fault is feasible or not.
+diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdl=
+c.c
+index 47c2ad7a3e42..cdd9489c712e 100644
+--- a/drivers/net/wan/fsl_ucc_hdlc.c
++++ b/drivers/net/wan/fsl_ucc_hdlc.c
+@@ -708,6 +708,7 @@ static int uhdlc_open(struct net_device *dev)
+ 	hdlc_device *hdlc =3D dev_to_hdlc(dev);
+ 	struct ucc_hdlc_private *priv =3D hdlc->priv;
+ 	struct ucc_tdm *utdm =3D priv->utdm;
++	int rc =3D 0;
+=20
+ 	if (priv->hdlc_busy !=3D 1) {
+ 		if (request_irq(priv->ut_info->uf_info.irq,
+@@ -731,10 +732,12 @@ static int uhdlc_open(struct net_device *dev)
+ 		napi_enable(&priv->napi);
+ 		netdev_reset_queue(dev);
+ 		netif_start_queue(dev);
+-		hdlc_open(dev);
++		rc =3D hdlc_open(dev);
++		if (rc)
++			return rc;
+ 	}
+=20
+-	return 0;
++	return rc;
+ }
+=20
+ static void uhdlc_memclean(struct ucc_hdlc_private *priv)
+--=20
+2.30.2
 
-> Without having looked in detail into this patch: all of this is likely
-> because s390's fault handling is quite odd. Not only because fault is set
-> to 0, but also because of the private VM_FAULT values like
-> VM_FAULT_BADCONTEXT. I'm just cleaning up all of this, but it won't make it
-> for the next merge window.
-
-Sure, if re-post, will drop the s390's change, but as mentioned above, 
-the abstract of the generic vma locked and changes may be not perfect,
-let's wait for more response.
-
-Thanks all.
-
-> 
-> Therefore I'd like to ask to drop the s390 conversion of this series, and
-> if this series is supposed to be merged the s390 conversion needs to be
-> done later. Let's not waste more time on the current implementation,
-> please.
