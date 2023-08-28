@@ -2,86 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42CA278B9B8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Aug 2023 22:48:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A031078B9CA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Aug 2023 22:54:15 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iazrZORR;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iazrZORR;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=M0FHN3D7;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=M0FHN3D7;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RZN1P0WVGz3bNm
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Aug 2023 06:48:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RZN8P35nfz3Wts
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Aug 2023 06:54:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iazrZORR;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iazrZORR;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=M0FHN3D7;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=M0FHN3D7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=jsnitsel@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=jsnitsel@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RZN0S6KT0z2yVZ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Aug 2023 06:47:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RZN7T2C3Lz2yW1
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Aug 2023 06:53:24 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1693255637;
+	s=mimecast20190719; t=1693256001;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ZPnnQCDZkoCLUNIk6pqqLPBY9OW9d6paRIVLOJnAj78=;
-	b=iazrZORRX/UhsxIjGLXrcxD1xUvPI250w5LYintdwMBb/dKL6kA9hIsH8mUFxLtdTumpE8
-	ox3FaubQT50lAoVbCAB+3mndN5NavIN/NgMA71VBua/c5AAdlhXlNuoi80WQ0t/rnj73OH
-	hT5yGbaDF4bmfbinBJoiUsvndFACPfo=
+	bh=qzw/wSjdBQfPlF1y1vWCr8uR+Xbcc5Ojc8ATgenlbFw=;
+	b=M0FHN3D7l8ynHyniTatW4TxRpBL+UCo9G3jNOLLE/IQ+3qt6kFG1Cqud2BfzY/9mi9tZiQ
+	Pv4VmsWXO6vb27JBt9gG3qrHMo99Oz/LsrNsmDECLjeWCnPf6NDlohnKdBVINH3mDKqfHJ
+	Ypk0FaKlh4gUWAsbamiRZ8ouIebxHqI=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1693255637;
+	s=mimecast20190719; t=1693256001;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ZPnnQCDZkoCLUNIk6pqqLPBY9OW9d6paRIVLOJnAj78=;
-	b=iazrZORRX/UhsxIjGLXrcxD1xUvPI250w5LYintdwMBb/dKL6kA9hIsH8mUFxLtdTumpE8
-	ox3FaubQT50lAoVbCAB+3mndN5NavIN/NgMA71VBua/c5AAdlhXlNuoi80WQ0t/rnj73OH
-	hT5yGbaDF4bmfbinBJoiUsvndFACPfo=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=qzw/wSjdBQfPlF1y1vWCr8uR+Xbcc5Ojc8ATgenlbFw=;
+	b=M0FHN3D7l8ynHyniTatW4TxRpBL+UCo9G3jNOLLE/IQ+3qt6kFG1Cqud2BfzY/9mi9tZiQ
+	Pv4VmsWXO6vb27JBt9gG3qrHMo99Oz/LsrNsmDECLjeWCnPf6NDlohnKdBVINH3mDKqfHJ
+	Ypk0FaKlh4gUWAsbamiRZ8ouIebxHqI=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-681--IoPVlDQMOq1nE9scjLtHQ-1; Mon, 28 Aug 2023 16:47:14 -0400
-X-MC-Unique: -IoPVlDQMOq1nE9scjLtHQ-1
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-76de9c09746so458930585a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Aug 2023 13:47:14 -0700 (PDT)
+ us-mta-292-ID1wNrSTMTK5VFLFVb9bBQ-1; Mon, 28 Aug 2023 16:53:19 -0400
+X-MC-Unique: ID1wNrSTMTK5VFLFVb9bBQ-1
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-40ff67467c9so40565661cf.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Aug 2023 13:53:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693255633; x=1693860433;
+        d=1e100.net; s=20221208; t=1693255999; x=1693860799;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZPnnQCDZkoCLUNIk6pqqLPBY9OW9d6paRIVLOJnAj78=;
-        b=USVQs7E48/hkbugky+c/c0unC2X68e4hKQKuTlVpdawO66q6S1Ii74lTTW1qIfg4J4
-         Ba5LbCv+WB1ilEwljm+zk7XEcsCF1sAJOkpaOZbVnlT4vRzzBygfJOFwiGlZxWfpWKWQ
-         SJEFAuny+SZS/zhrqdWu5EY7QXNRnCNFEH273dtER+kFbHWSyV307X5mShvz18Fg/HxQ
-         E6lzgfuYFLlovmvBII7xEA2PsCHpgi2f9JPPQpyJR2rO0igauawIygRJqjCvHL0/A0l5
-         dttKuR/qhHnggeRmhRfvdCMdSbGx/LySB1NMX4QN+WklZ4H3HsAsGCrEooLhlZAxixEz
-         zHFA==
-X-Gm-Message-State: AOJu0YzRlMAi/uLEdP7TYJ1Qm+czkyKUnA66GS2uxr5tF9aOcidWL4UL
-	raMOmJpA0PtmCQALnneHzEIuiC7R+jwbvpKAtnMyn5eECWZkSa0wa+TOMis0v10x6G3l993WuZ3
-	6XC2R6r2DUWpLOxAdEX/0HicPEg==
-X-Received: by 2002:a05:620a:4614:b0:76d:aa3b:ac9c with SMTP id br20-20020a05620a461400b0076daa3bac9cmr24655274qkb.46.1693255633392;
-        Mon, 28 Aug 2023 13:47:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHwVuI8ZPuQEBsqBHLA4mM96XswCj3GuW2ha49h3MQX3EuB7tqhbB8UeA/K6lT7Jvy4c0Wwkw==
-X-Received: by 2002:a05:620a:4614:b0:76d:aa3b:ac9c with SMTP id br20-20020a05620a461400b0076daa3bac9cmr24655228qkb.46.1693255633141;
-        Mon, 28 Aug 2023 13:47:13 -0700 (PDT)
+        bh=qzw/wSjdBQfPlF1y1vWCr8uR+Xbcc5Ojc8ATgenlbFw=;
+        b=TLyto6EkDWW1ZGQ2vVdY++WP+8vb+HRY3hUCvgZ5nfsrkbzcy0po4/2+IW4ws5lt3l
+         /p3rz6sU1yhG/C6eM1+Cke+filarnkk3gu/1dbzbArTvU1ocfGzOGZHTNb1YxOCYXUxP
+         ZaQmLE9IcFxErSmLOYLW2HIki7qrvew63fSWhyEuPRPcSyUVwut5mYhjHSfk0LBFZKRi
+         8rNrNxtN5HnvtGtWHB4nv+9s7kt989sYbDI3DnnZVneFJdsCnrsjn6SNsdmsAHlgdWmu
+         HQGukiXhSTTOErKyQsKCVjOIA5ahitwmkO8zDEVGe5MhNEYQLfjnKUSvPOVsYpLvAxLy
+         HMtg==
+X-Gm-Message-State: AOJu0YxNVdT0HQ8RyOhtGUwWc3ketclsk8z9QNmUxsrikqXUaLxTH3uT
+	mwX1okIPOdL3UbI6jMNnbNHY0yQhy9EzPGbVQ2bUecouBisImmL74d1bfsygh5gTucsu+8FrKmZ
+	h6vkQA2zvs6ERI/BwSBMbbgalYA==
+X-Received: by 2002:a05:622a:13cc:b0:407:fb08:c44c with SMTP id p12-20020a05622a13cc00b00407fb08c44cmr31265792qtk.47.1693255998868;
+        Mon, 28 Aug 2023 13:53:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG1P7U6WABsjNUNOIrt30Nh8s3ysfvweacBVh9WudC6nYyRn08u0phTJIzmGkwySv3sSUL+sw==
+X-Received: by 2002:a05:622a:13cc:b0:407:fb08:c44c with SMTP id p12-20020a05622a13cc00b00407fb08c44cmr31265764qtk.47.1693255998660;
+        Mon, 28 Aug 2023 13:53:18 -0700 (PDT)
 Received: from localhost (ip98-179-76-75.ph.ph.cox.net. [98.179.76.75])
-        by smtp.gmail.com with ESMTPSA id g9-20020a05620a13c900b0076db1caab16sm2631338qkl.22.2023.08.28.13.47.12
+        by smtp.gmail.com with ESMTPSA id z21-20020ac84555000000b0040ff0590fd2sm2553633qtn.87.2023.08.28.13.53.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Aug 2023 13:47:12 -0700 (PDT)
-Date: Mon, 28 Aug 2023 13:47:11 -0700
+        Mon, 28 Aug 2023 13:53:18 -0700 (PDT)
+Date: Mon, 28 Aug 2023 13:53:16 -0700
 From: Jerry Snitselaar <jsnitsel@redhat.com>
 To: Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [PATCH v7 13/24] iommu/omap: Implement an IDENTITY domain
-Message-ID: <242a7ntgcvqofkvw2aapftr3pgczpueam3beyr4qey5mgx2rh4@odjyxtbbscfz>
+Subject: Re: [PATCH v7 14/24] iommu/msm: Implement an IDENTITY domain
+Message-ID: <37fnmzxe5cqs57gei3i6irsnnybzkbkdjf3nhertw55bb4ke6w@un2o657nczbc>
 References: <0-v7-de04a3217c48+15055-iommu_all_defdom_jgg@nvidia.com>
- <13-v7-de04a3217c48+15055-iommu_all_defdom_jgg@nvidia.com>
+ <14-v7-de04a3217c48+15055-iommu_all_defdom_jgg@nvidia.com>
 MIME-Version: 1.0
-In-Reply-To: <13-v7-de04a3217c48+15055-iommu_all_defdom_jgg@nvidia.com>
+In-Reply-To: <14-v7-de04a3217c48+15055-iommu_all_defdom_jgg@nvidia.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
@@ -102,9 +102,9 @@ Cc: Heiko Stuebner <heiko@sntech.de>, Matthew Rosato <mjrosato@linux.ibm.com>, M
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Aug 23, 2023 at 01:47:27PM -0300, Jason Gunthorpe wrote:
-> What omap does during omap_iommu_set_platform_dma() is actually putting
-> the iommu into identity mode.
+On Wed, Aug 23, 2023 at 01:47:28PM -0300, Jason Gunthorpe wrote:
+> What msm does during msm_iommu_set_platform_dma() is actually putting the
+> iommu into identity mode.
 > 
 > Move to the new core support for ARM_DMA_USE_IOMMU by defining
 > ops->identity_domain.
@@ -115,8 +115,8 @@ On Wed, Aug 23, 2023 at 01:47:27PM -0300, Jason Gunthorpe wrote:
 > Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
 > Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 > ---
->  drivers/iommu/omap-iommu.c | 21 ++++++++++++++++++---
->  1 file changed, 18 insertions(+), 3 deletions(-)
+>  drivers/iommu/msm_iommu.c | 23 +++++++++++++++++++----
+>  1 file changed, 19 insertions(+), 4 deletions(-)
 > 
 
 Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
