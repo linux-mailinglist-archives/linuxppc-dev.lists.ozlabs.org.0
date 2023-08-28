@@ -1,63 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 104E078A99E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Aug 2023 12:09:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8531B78A9A3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Aug 2023 12:10:04 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=LVg55P2e;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RZ5rD063Hz3c39
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Aug 2023 20:09:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RZ5s62S4Kz3c5P
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Aug 2023 20:10:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.167.173; helo=mail-oi1-f173.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=LVg55P2e;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::631; helo=mail-pl1-x631.google.com; envelope-from=schmitzmic@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RZ1Hh5gYjz2yDD
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Aug 2023 16:44:15 +1000 (AEST)
-Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-3a8036d805eso2265061b6e.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Aug 2023 23:44:15 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RZ38J2l1Tz2xwD
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Aug 2023 18:08:00 +1000 (AEST)
+Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-1c0bae4da38so19223505ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Aug 2023 01:08:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1693210077; x=1693814877;
+        h=content-transfer-encoding:in-reply-to:mime-version:user-agent:date
+         :message-id:from:cc:references:to:subject:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pnrE6dyfVAprK/xFUC60jFewyVljQRt3NNtTMulp0V0=;
+        b=LVg55P2ejT0BJXH9H1+hgJHcBL2A+IF5g+KpwZsnJ2WoqXmcrL9ZfEfa3T6fNEdxE+
+         ga2nqaZ+gZjmffBcNuVnaXDtmvodkJeUEflTba5i6j/rIlhBduWdBgZRPVnHwy+erFMo
+         Q2sF5ZgAuDt+03EKZEd8qEogPdBU5cTg8EccDlTx6cSnC2QLYfomUfDCZyZGJl19L0Ry
+         zfDO9BgqWN0KlkikpK3fWA7KZvQWChySAj+L6JXiUhVTo7xH2gRnW3f4Al2lAGJTZzAW
+         5ZruNkogVGDYB3ptB7Tk7PeewBGyh+fZdTDyBJ7/jPzoGq3RnYeGV17VCUydj0j+5OXO
+         MJDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693205053; x=1693809853;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1ZAs6BPn0UEnVbrYLaaDeF3O9l7Iturm7FWJFQ5jda0=;
-        b=XyGE/Sn3SYhNneXiMkXk1pWYsiZeiwvEPHWC7n8/unbXdGchWnrwIcVOOhMO7pLQGL
-         WxnWHmY9WSivTpTeHNErWaFKDMwlp31H1jbVJnRz2xDeZdAh9irJAct9TKYk6WNhCmCO
-         9UQ+sLZdj+nAQd9lK1bh4DIAD01sRH4CnYXP34XZDu7tsC3f4ni54o10dpyYGp9F1+xg
-         NDFCH/120TSJl+7CUPmAeKmwwdT41dZqsQ2E2V5K8eP1/rLCny21UycDMo+69RISUUZ9
-         bwoz+EhJ7vtkTLRo7S8HnsGNNeiM9c1Az0Acbss71ns+XsAXh2C2gG9z2YW4k4dj9qRL
-         zS5w==
-X-Gm-Message-State: AOJu0YwbgVblOj1lAbBdeADKe/v2aCNtysOqBhmG/TB34GR561wZwvYU
-	GSC7p4xmpgiR6Anvy6kqQPnFg7hXVS/MCA==
-X-Google-Smtp-Source: AGHT+IFAVTZXs9Qq9oF5em10LUC5Ya/7NQgUxn0YnOVPSsxDHsQ5cf+fY267NBQJT0xTU5OambLuNA==
-X-Received: by 2002:aca:f08:0:b0:3a4:316c:8eeb with SMTP id 8-20020aca0f08000000b003a4316c8eebmr9578236oip.40.1693205052699;
-        Sun, 27 Aug 2023 23:44:12 -0700 (PDT)
-Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com. [2607:f8b0:4864:20::232])
-        by smtp.gmail.com with ESMTPSA id e9-20020aca2309000000b003a724566afdsm3092681oie.20.2023.08.27.23.44.12
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 27 Aug 2023 23:44:12 -0700 (PDT)
-Received: by mail-oi1-x232.google.com with SMTP id 5614622812f47-3a7f4f7a8easo1563198b6e.2
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Aug 2023 23:44:12 -0700 (PDT)
-X-Received: by 2002:a25:8502:0:b0:d7a:e348:1e47 with SMTP id
- w2-20020a258502000000b00d7ae3481e47mr3956815ybk.36.1693204971245; Sun, 27 Aug
- 2023 23:42:51 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230810141947.1236730-1-arnd@kernel.org> <169292577153.789945.11297239773543112051.b4-ty@oracle.com>
- <3956e2a4-c545-1212-e95f-3cf61a60d6a4@gmail.com> <CAMuHMdWC2S330_Vb_NTHTDC=BakBsw4ouP-eFJv0erV1-jmvTQ@mail.gmail.com>
- <130b3b57-edb0-184d-5b5f-69b013715773@gmail.com>
-In-Reply-To: <130b3b57-edb0-184d-5b5f-69b013715773@gmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 28 Aug 2023 08:42:39 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdUkZmkBSksvaGcDCKz2tsgkwyWgDa+WwCJm2UxFMCj1jw@mail.gmail.com>
-Message-ID: <CAMuHMdUkZmkBSksvaGcDCKz2tsgkwyWgDa+WwCJm2UxFMCj1jw@mail.gmail.com>
+        d=1e100.net; s=20221208; t=1693210077; x=1693814877;
+        h=content-transfer-encoding:in-reply-to:mime-version:user-agent:date
+         :message-id:from:cc:references:to:subject:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=pnrE6dyfVAprK/xFUC60jFewyVljQRt3NNtTMulp0V0=;
+        b=YwU/QClC4a6c3HSR+pS2RN7ipu9m2gc4Iji59BAWUCsFJLBpdqJxRh8HilWcAp30fL
+         /n3WqZjICNy9IuM0/gO/lXrcYqWrtsRqsSb4cCC8HW35X7eXof8SYGZYyHzU7rNI+4LH
+         XL1Z+RI4/5qnmIuvtC8mlP3I4TB4ejCWyRQfngvGfJDVUOOrYjqVXELpyg9k+Q+DayGw
+         wAOXDHww80HdAbKLFyN63BTYY3DFz3FL9FzzFffAWVcE6s2YtSNsQbqcwX9kYdGkoF4m
+         YRCnzsIOmtujwNEPRJTlz1WNnrGzDoAzDnuvZscf8FDpP2gTcrWGAI1e4CdiVvryM7jJ
+         rCLQ==
+X-Gm-Message-State: AOJu0YwmGUDx6tLX2z/G/ZCXGFt5/Z62Y/Oo4g0h2hL3+W2R3wp3Zcfs
+	ep2+0U+Ya4BM39yjGFg0BuU=
+X-Google-Smtp-Source: AGHT+IHEN6rjlzubXIy3DuU1iYHuYGfJmUDj7MCrRMJIjxExjNAtfO/xrf/2cugqJ3sCcKtAmuhffg==
+X-Received: by 2002:a17:903:41d1:b0:1bf:193a:70b6 with SMTP id u17-20020a17090341d100b001bf193a70b6mr38374653ple.5.1693210077452;
+        Mon, 28 Aug 2023 01:07:57 -0700 (PDT)
+Received: from [10.1.1.24] (125-236-136-221-fibre.sparkbb.co.nz. [125.236.136.221])
+        by smtp.gmail.com with ESMTPSA id x19-20020a170902ea9300b001bc445e2497sm6610519plb.79.2023.08.28.01.07.30
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 28 Aug 2023 01:07:57 -0700 (PDT)
 Subject: Re: (subset) [PATCH 00/17] -Wmissing-prototype warning fixes
-To: Michael Schmitz <schmitzmic@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+References: <20230810141947.1236730-1-arnd@kernel.org>
+ <169292577153.789945.11297239773543112051.b4-ty@oracle.com>
+ <3956e2a4-c545-1212-e95f-3cf61a60d6a4@gmail.com>
+ <CAMuHMdWC2S330_Vb_NTHTDC=BakBsw4ouP-eFJv0erV1-jmvTQ@mail.gmail.com>
+ <130b3b57-edb0-184d-5b5f-69b013715773@gmail.com>
+ <CAMuHMdUkZmkBSksvaGcDCKz2tsgkwyWgDa+WwCJm2UxFMCj1jw@mail.gmail.com>
+From: Michael Schmitz <schmitzmic@gmail.com>
+Message-ID: <dbed3311-6b8e-a396-7e9e-2747902c5d6a@gmail.com>
+Date: Mon, 28 Aug 2023 20:07:27 +1200
+User-Agent: Mozilla/5.0 (X11; Linux ppc; rv:45.0) Gecko/20100101
+ Icedove/45.4.0
+MIME-Version: 1.0
+In-Reply-To: <CAMuHMdUkZmkBSksvaGcDCKz2tsgkwyWgDa+WwCJm2UxFMCj1jw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Mailman-Approved-At: Mon, 28 Aug 2023 20:08:51 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -76,25 +92,28 @@ Cc: x86@kernel.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Catali
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Aug 26, 2023 at 12:44=E2=80=AFAM Michael Schmitz <schmitzmic@gmail.=
-com> wrote:
-> (Incidentally - did you ever publish the m68k full history tree anywhere
-> in git?)
+Hi Geert,
 
-You mean the gitified version of the Linux/m68k CVS tree Ralf created
-for me because my machine wasn't powerful enough?
-No, and I should look into doing that...
+Am 28.08.2023 um 18:42 schrieb Geert Uytterhoeven:
+> On Sat, Aug 26, 2023 at 12:44 AM Michael Schmitz <schmitzmic@gmail.com> wrote:
+>> (Incidentally - did you ever publish the m68k full history tree anywhere
+>> in git?)
+>
+> You mean the gitified version of the Linux/m68k CVS tree Ralf created
+> for me because my machine wasn't powerful enough?
 
-Gr{oetje,eeting}s,
+The very same ...
 
-                        Geert
+> No, and I should look into doing that...
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+No pressure!
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+Cheers,
+
+	Michael
+
+>
+> Gr{oetje,eeting}s,
+>
+>                         Geert
+>
