@@ -2,87 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FFD078BA23
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Aug 2023 23:19:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1C8A78BA4D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Aug 2023 23:32:43 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZEbHQQyG;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZEbHQQyG;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Lau8zgtj;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FkCoQeiT;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RZNjd22D5z3c26
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Aug 2023 07:19:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RZP0n5L1Dz3c3H
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Aug 2023 07:32:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZEbHQQyG;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZEbHQQyG;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Lau8zgtj;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FkCoQeiT;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=jsnitsel@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RZNhm1SXWz2xdd
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Aug 2023 07:18:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RZNzx4BClz2xLR
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Aug 2023 07:31:57 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1693257524;
+	s=mimecast20190719; t=1693258314;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FodHUOB7sj0ZriayRa+3vwqEqhxX2ARBJWyM2p3lcBE=;
-	b=ZEbHQQyGyX4TQrbpNbbYQBzrULYs9z4H8s0szAfDSd1V9nphu/zd1u2t0ZDvju+viXcWt9
-	iZh+AZ4xBULIwun+Cz1/4PmPSCnTWbWqrdJYi7t5l9pgXqHh5/xjW6xa9DAjW2iKdPKr2w
-	+EqbTXtZErHWRBSpAsCla2ymJnHAyYU=
+	bh=dVb5tmc8EbITtSkSc6gJJy1RyzNckSiwLu+iLvVILak=;
+	b=Lau8zgtjsq1xfaMsthbVscRzJDNaG8nLYcBgVoic9zvHk6QFdxuluFVZKet/GoIK5D6yTT
+	6SQDtNWX+oT04JxNjcG7ejEc/OxOXnTni1gSNyVIUqOX11ZnuMwzonHStJyQVGdHK2GMht
+	gC5xhzr2m0Vwvmz6rwcgQ9d99Ip7hP8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1693257524;
+	s=mimecast20190719; t=1693258315;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FodHUOB7sj0ZriayRa+3vwqEqhxX2ARBJWyM2p3lcBE=;
-	b=ZEbHQQyGyX4TQrbpNbbYQBzrULYs9z4H8s0szAfDSd1V9nphu/zd1u2t0ZDvju+viXcWt9
-	iZh+AZ4xBULIwun+Cz1/4PmPSCnTWbWqrdJYi7t5l9pgXqHh5/xjW6xa9DAjW2iKdPKr2w
-	+EqbTXtZErHWRBSpAsCla2ymJnHAyYU=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=dVb5tmc8EbITtSkSc6gJJy1RyzNckSiwLu+iLvVILak=;
+	b=FkCoQeiTIqj23kEz3iyY6j401ZPwzO7UgQruj/C3jHFNDsFdHnGrSXh67BGPYVOjsczF+m
+	mtoW3AMv9QV+/Zly2YhMmc/midAf3BTWaJPERYHdLrRPNuL5xP2P5GyrJOxXaTC9iXV3UV
+	Fsp72xrq+baxlVTm+Iw5Xszvk2qcrkM=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-55-Y8uHUT6qOuqp6Tx0b8q0Nw-1; Mon, 28 Aug 2023 17:18:42 -0400
-X-MC-Unique: Y8uHUT6qOuqp6Tx0b8q0Nw-1
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-64f41d94d16so45500306d6.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Aug 2023 14:18:42 -0700 (PDT)
+ us-mta-331-nzJ6lgxsPbCh4s8JZvJ2QQ-1; Mon, 28 Aug 2023 17:31:52 -0400
+X-MC-Unique: nzJ6lgxsPbCh4s8JZvJ2QQ-1
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-76f1e2d6ea4so11322885a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Aug 2023 14:31:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693257522; x=1693862322;
+        d=1e100.net; s=20221208; t=1693258312; x=1693863112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FodHUOB7sj0ZriayRa+3vwqEqhxX2ARBJWyM2p3lcBE=;
-        b=S8UR8AgoyXTGS3TyFoyWOs/D5tb3UaHSwUUF6g8LzgRGReAGVRjBj3Idpwlw72TH29
-         SMsraWfEo2o/RUnNfDBT0ky0c7FUXZirBUtvPrNPRNSFrjJ6IZssxgrONykumMtXfepi
-         3WWMlN22TEvo3t/1iBQvcwbWLU7astKTfc/VYS8VOdv2kfp1bcDnthZl2YMTlPVUJqUl
-         FXb0MAh8XFhZZL93vVjZOYQCb2hP8d+AxNu+oL7w73WIa8TQFrC0SwnNTgVOSc0EUa46
-         oDG1+n3Tm1/OnlPHKs8H8SNeZ/Z7xIYyobOK2vBfdSwm+xUYDL+3C+DrcTSbk5Yq/GO6
-         Uqug==
-X-Gm-Message-State: AOJu0YweULDFzTB3UYpYFh9/grXJGx5ZB5iOwRSR6Aez2MhF887O6qJ/
-	8ThtOF0e3Wsz5rleX6s5DdldQphaJOxlAZoM5w7UMpwnT9uVfJ/ZIaNYD92gbBsv/6Q+RLaTOaj
-	q+rvMLYYFI1lAzjiZL1GML2UDkQ==
-X-Received: by 2002:a0c:f444:0:b0:647:19b6:135a with SMTP id h4-20020a0cf444000000b0064719b6135amr29394536qvm.51.1693257522417;
-        Mon, 28 Aug 2023 14:18:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGHFP88UT9IzTJ8TXv+xW4YnqZau3haGE42Vmh/o6wjgQIKEglBvEtYvuI7Puclm3mw8YK0bQ==
-X-Received: by 2002:a0c:f444:0:b0:647:19b6:135a with SMTP id h4-20020a0cf444000000b0064719b6135amr29394508qvm.51.1693257522132;
-        Mon, 28 Aug 2023 14:18:42 -0700 (PDT)
+        bh=dVb5tmc8EbITtSkSc6gJJy1RyzNckSiwLu+iLvVILak=;
+        b=Cwss5+zNlGjCnBOt7qPOwjDbGoLYjlhPkCBK/Qa6eILoupCDOcmQQufGtoO13xuusj
+         ZNr9+IAnya1qae3Dt5Ikx9u0k1nseHjRXWWpct1pC8NhkR3sNQgqdxNeOnZXUjkjxyS0
+         c0dz4VEaZkcH3vAgvuYycXAbFxORXW5RslCWd0BJQ2VodsxGmIVGnBVOZO6Uaxmd52+c
+         vQMxumc/hINBG4XGGj4nhazejjstlOnsNjIhUHqaHRlKOj4ikOih9dfNCT4s6TRxTVnn
+         mzqet66P3aq88Lno8phLSWiA/uqJttAHr51c208rdf57bUnoyu594iy4ZMQp+JXzu1S6
+         KxZQ==
+X-Gm-Message-State: AOJu0YzXa/MzFZenWX/VgtoZ4qJ4aXLcvD9qSBWTrB78i8g4dC25OgLr
+	SmMQY9oot9aGzQ7id3TW1RT2M9Kfx+Rvr+TLbPFM85Qd22O65EEXCvj7oois02nl5q8BoGM1Ebc
+	VKI57KT/TtD+39nwpB3JdA90rpg==
+X-Received: by 2002:a05:620a:9c7:b0:766:fe28:35a3 with SMTP id y7-20020a05620a09c700b00766fe2835a3mr28616622qky.32.1693258312085;
+        Mon, 28 Aug 2023 14:31:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHuVcTMTBbnLPs86MnCDU8eGTgJIDkNhQ+SHq++g5N+BlxbjD8TqX467y2sj6EMGyNhF/9w9w==
+X-Received: by 2002:a05:620a:9c7:b0:766:fe28:35a3 with SMTP id y7-20020a05620a09c700b00766fe2835a3mr28616567qky.32.1693258311828;
+        Mon, 28 Aug 2023 14:31:51 -0700 (PDT)
 Received: from localhost (ip98-179-76-75.ph.ph.cox.net. [98.179.76.75])
-        by smtp.gmail.com with ESMTPSA id k14-20020a0cf58e000000b0064f46422ddasm2855459qvm.145.2023.08.28.14.18.41
+        by smtp.gmail.com with ESMTPSA id a12-20020a05620a124c00b0076f16a00693sm697233qkl.47.2023.08.28.14.31.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Aug 2023 14:18:41 -0700 (PDT)
-Date: Mon, 28 Aug 2023 14:18:40 -0700
+        Mon, 28 Aug 2023 14:31:51 -0700 (PDT)
+Date: Mon, 28 Aug 2023 14:31:49 -0700
 From: Jerry Snitselaar <jsnitsel@redhat.com>
 To: Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [PATCH v7 20/24] iommu: Require a default_domain for all iommu
- drivers
-Message-ID: <55jub5vyeqqofj4wclvwk2qotlb6a5iu3darddrbzwdc7izsa2@qip6tyjmr7j2>
+Subject: Re: [PATCH v7 21/24] iommu: Add __iommu_group_domain_alloc()
+Message-ID: <dwrebxdzqjhnryum3czsh6zroapbhpjre7untly3cvl2tn3nij@hpckzx65oxx6>
 References: <0-v7-de04a3217c48+15055-iommu_all_defdom_jgg@nvidia.com>
- <20-v7-de04a3217c48+15055-iommu_all_defdom_jgg@nvidia.com>
+ <21-v7-de04a3217c48+15055-iommu_all_defdom_jgg@nvidia.com>
 MIME-Version: 1.0
-In-Reply-To: <20-v7-de04a3217c48+15055-iommu_all_defdom_jgg@nvidia.com>
+In-Reply-To: <21-v7-de04a3217c48+15055-iommu_all_defdom_jgg@nvidia.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
@@ -103,78 +102,16 @@ Cc: Heiko Stuebner <heiko@sntech.de>, Matthew Rosato <mjrosato@linux.ibm.com>, M
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Aug 23, 2023 at 01:47:34PM -0300, Jason Gunthorpe wrote:
-> At this point every iommu driver will cause a default_domain to be
-> selected, so we can finally remove this gap from the core code.
+On Wed, Aug 23, 2023 at 01:47:35PM -0300, Jason Gunthorpe wrote:
+> Allocate a domain from a group. Automatically obtains the iommu_ops to use
+> from the device list of the group. Convert the internal callers to use it.
 > 
-> The following table explains what each driver supports and what the
-> resulting default_domain will be:
-> 
->                                         ops->defaut_domain
->                     IDENTITY   DMA  PLATFORM    v      ARM32          dma-iommu  ARCH
-> amd/iommu.c             Y       Y                       N/A             either
-> apple-dart.c            Y       Y                       N/A             either
-> arm-smmu.c              Y       Y                       IDENTITY        either
-> qcom_iommu.c            G       Y                       IDENTITY        either
-> arm-smmu-v3.c           Y       Y                       N/A             either
-> exynos-iommu.c          G       Y                       IDENTITY        either
-> fsl_pamu_domain.c                       Y       Y       N/A             N/A     PLATFORM
-> intel/iommu.c           Y       Y                       N/A             either
-> ipmmu-vmsa.c            G       Y                       IDENTITY        either
-> msm_iommu.c             G                               IDENTITY        N/A
-> mtk_iommu.c             G       Y                       IDENTITY        either
-> mtk_iommu_v1.c          G                               IDENTITY        N/A
-> omap-iommu.c            G                               IDENTITY        N/A
-> rockchip-iommu.c        G       Y                       IDENTITY        either
-> s390-iommu.c                            Y       Y       N/A             N/A     PLATFORM
-> sprd-iommu.c                    Y                       N/A             DMA
-> sun50i-iommu.c          G       Y                       IDENTITY        either
-> tegra-smmu.c            G       Y                       IDENTITY        IDENTITY
-> virtio-iommu.c          Y       Y                       N/A             either
-> spapr                                   Y       Y       N/A             N/A     PLATFORM
->  * G means ops->identity_domain is used
->  * N/A means the driver will not compile in this configuration
-> 
-> ARM32 drivers select an IDENTITY default domain through either the
-> ops->identity_domain or directly requesting an IDENTIY domain through
-> alloc_domain().
-> 
-> In ARM64 mode tegra-smmu will still block the use of dma-iommu.c and
-> forces an IDENTITY domain.
-> 
-> S390 uses a PLATFORM domain to represent when the dma_ops are set to the
-> s390 iommu code.
-> 
-> fsl_pamu uses an PLATFORM domain.
-> 
-> POWER SPAPR uses PLATFORM and blocking to enable its weird VFIO mode.
-> 
-> The x86 drivers continue unchanged.
-> 
-> After this patch group->default_domain is only NULL for a short period
-> during bus iommu probing while all the groups are constituted. Otherwise
-> it is always !NULL.
-> 
-> This completes changing the iommu subsystem driver contract to a system
-> where the current iommu_domain always represents some form of translation
-> and the driver is continuously asserting a definable translation mode.
-> 
-> It resolves the confusion that the original ops->detach_dev() caused
-> around what translation, exactly, is the IOMMU performing after
-> detach. There were at least three different answers to that question in
-> the tree, they are all now clearly named with domain types.
-> 
-> Tested-by: Heiko Stuebner <heiko@sntech.de>
-> Tested-by: Niklas Schnelle <schnelle@linux.ibm.com>
 > Tested-by: Steven Price <steven.price@arm.com>
 > Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
 > Tested-by: Nicolin Chen <nicolinc@nvidia.com>
 > Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
 > Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 > ---
->  drivers/iommu/iommu.c | 22 +++++++---------------
->  1 file changed, 7 insertions(+), 15 deletions(-)
-> 
 
 Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
 
