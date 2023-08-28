@@ -1,73 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84C9D78B9A3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Aug 2023 22:40:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42CA278B9B8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Aug 2023 22:48:11 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=urfxC/+o;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iazrZORR;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iazrZORR;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RZMr537JWz3bw3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Aug 2023 06:40:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RZN1P0WVGz3bNm
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Aug 2023 06:48:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=urfxC/+o;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iazrZORR;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iazrZORR;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--ndesaulniers.bounces.google.com (client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com; envelope-from=38axtzawkdn0mcdr9tkmhdqrfnnfkd.bnlkhmtwoob-cdukhrsr.nyk9ar.nqf@flex--ndesaulniers.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=jsnitsel@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RZMqB5K4lz2y1b
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Aug 2023 06:39:17 +1000 (AEST)
-Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-d74b711ec0dso4519386276.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Aug 2023 13:39:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1693255152; x=1693859952;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=XhrkWiQBnHmzMnkAE+NYbdoZdy6UiyASIH0GRgNQ/sU=;
-        b=urfxC/+oTHLuj+i6cn0/azuq+FFaWj+TnME6nhesd8cw0L5Hhx/TUyll1F+Er3mk1V
-         EPtJEawuJ7LmK9shNHvS9h/gGI6VsaHwg4Nca8og7fCRD7CQB4X3Kfa9FsaRnST6k8xO
-         0dr5yHSkjVGAHS3J7o6VojOEbV63NzFkgqMmpXOQ582xX256DdnHrjUmmPC4cmLFHEin
-         Z1O8sfXNGBnPb7WSs4WCuskoLd5HzDd2PmDt8VBcd9vco3CTPXvj+3hemrc7Ly+8daso
-         R24co0ytNidRJebijXU8YN6wM8GK/12rUxTgs3qJ/AEYZkHtELGzmn5jHkz2rJQRiQlW
-         odaQ==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RZN0S6KT0z2yVZ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Aug 2023 06:47:20 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1693255637;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZPnnQCDZkoCLUNIk6pqqLPBY9OW9d6paRIVLOJnAj78=;
+	b=iazrZORRX/UhsxIjGLXrcxD1xUvPI250w5LYintdwMBb/dKL6kA9hIsH8mUFxLtdTumpE8
+	ox3FaubQT50lAoVbCAB+3mndN5NavIN/NgMA71VBua/c5AAdlhXlNuoi80WQ0t/rnj73OH
+	hT5yGbaDF4bmfbinBJoiUsvndFACPfo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1693255637;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZPnnQCDZkoCLUNIk6pqqLPBY9OW9d6paRIVLOJnAj78=;
+	b=iazrZORRX/UhsxIjGLXrcxD1xUvPI250w5LYintdwMBb/dKL6kA9hIsH8mUFxLtdTumpE8
+	ox3FaubQT50lAoVbCAB+3mndN5NavIN/NgMA71VBua/c5AAdlhXlNuoi80WQ0t/rnj73OH
+	hT5yGbaDF4bmfbinBJoiUsvndFACPfo=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-681--IoPVlDQMOq1nE9scjLtHQ-1; Mon, 28 Aug 2023 16:47:14 -0400
+X-MC-Unique: -IoPVlDQMOq1nE9scjLtHQ-1
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-76de9c09746so458930585a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Aug 2023 13:47:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693255152; x=1693859952;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XhrkWiQBnHmzMnkAE+NYbdoZdy6UiyASIH0GRgNQ/sU=;
-        b=dOJbIkkOkw5e7foHXIa+XwoJej5CUew9OJklbpDeFqUKQ59fy0eCQhQa6Av530QLjA
-         SXe+G6FYm16NmvDpgCNJzBCVuGpb5AzoUvhx0PwULUj8pQiEkHGYQW5C+mYdIbCEc4Ef
-         bXC3KaGJ2tdQoIDvstD5lrl+KA3lKc254GYSbMHQf12liKqkespeaLgtmhsEFLuZnBLh
-         HGqSyHBWGL3HDJX6G74/xzZqJfqA5MjCBgDxWFKN8xi28pewzf+soLOkwy2I3nMCCfWw
-         5BtH0nkBa3HbCspkOk9GHM9d8CuQgthSS75XrC2zMlXZ3c2Mtoe5tm+GNWRVKKwktuIL
-         SIYA==
-X-Gm-Message-State: AOJu0YwPsO65Ra1cCTuztDzGytKps4JE83E1qbFRULV3cR1cCedHx4E5
-	XPxPpXFtjc/yU3nhj4AJyTaXSEjrGUy/qdZXi1Y=
-X-Google-Smtp-Source: AGHT+IGlwLCXXsjKROwMA/eBuqL6pO5hd66mEIQL7qVwZn+m6vX+Qy5OakE1dsfnaIt9WkB4KXLqeb7R2EWnAWB0U3E=
-X-Received: from ndesaulniers-desktop.svl.corp.google.com ([2620:15c:2d1:203:b64:7817:9989:9eba])
- (user=ndesaulniers job=sendgmr) by 2002:a25:74c6:0:b0:d0c:c83b:94ed with SMTP
- id p189-20020a2574c6000000b00d0cc83b94edmr811734ybc.10.1693255152253; Mon, 28
- Aug 2023 13:39:12 -0700 (PDT)
-Date: Mon, 28 Aug 2023 13:39:06 -0700
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAOkF7WQC/3WMwQ7CIBAFf6XZsxhAKtiT/2Eao7hQEi1kaYim4
- d/F3j3Oy5tZISMFzDB0KxCWkEOcG8hdB3a6zR5ZeDQGyeWBG2lYSvZK2K5ICzsqraR2XFkU0JR E6MJ7y13GxlPIS6TPVi/it/4JFcEE08r1/d0Ic+L67GP0T9zb+IKx1voFZACn56kAAAA=
-X-Developer-Key: i=ndesaulniers@google.com; a=ed25519; pk=eMOZeIQ4DYNKvsNmDNzVbQZqpdex34Aww3b8Ah957X4=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1693255150; l=2020;
- i=ndesaulniers@google.com; s=20230823; h=from:subject:message-id;
- bh=xcYx2Rp6x+lRWSqPslFnv6rJuAz/HxMw+0OdY1ALQZs=; b=v17oTu32hcx8X2o5oavi8I5UUOWMaIGdmbzoTP9nH19+mbccNNnrpEkGWrOiXO5zDJPWL5d/n
- rm1iEXciqeaAqQHb6RBdzIzkcNFhLuv32jqEmsXHABpaRsTnDZThqrj
-X-Mailer: b4 0.12.3
-Message-ID: <20230828-ppc_rerevert-v2-1-46b71a3656c6@google.com>
-Subject: [PATCH v2] reapply: powerpc/xmon: Relax frame size for clang
-From: Nick Desaulniers <ndesaulniers@google.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="utf-8"
+        d=1e100.net; s=20221208; t=1693255633; x=1693860433;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZPnnQCDZkoCLUNIk6pqqLPBY9OW9d6paRIVLOJnAj78=;
+        b=USVQs7E48/hkbugky+c/c0unC2X68e4hKQKuTlVpdawO66q6S1Ii74lTTW1qIfg4J4
+         Ba5LbCv+WB1ilEwljm+zk7XEcsCF1sAJOkpaOZbVnlT4vRzzBygfJOFwiGlZxWfpWKWQ
+         SJEFAuny+SZS/zhrqdWu5EY7QXNRnCNFEH273dtER+kFbHWSyV307X5mShvz18Fg/HxQ
+         E6lzgfuYFLlovmvBII7xEA2PsCHpgi2f9JPPQpyJR2rO0igauawIygRJqjCvHL0/A0l5
+         dttKuR/qhHnggeRmhRfvdCMdSbGx/LySB1NMX4QN+WklZ4H3HsAsGCrEooLhlZAxixEz
+         zHFA==
+X-Gm-Message-State: AOJu0YzRlMAi/uLEdP7TYJ1Qm+czkyKUnA66GS2uxr5tF9aOcidWL4UL
+	raMOmJpA0PtmCQALnneHzEIuiC7R+jwbvpKAtnMyn5eECWZkSa0wa+TOMis0v10x6G3l993WuZ3
+	6XC2R6r2DUWpLOxAdEX/0HicPEg==
+X-Received: by 2002:a05:620a:4614:b0:76d:aa3b:ac9c with SMTP id br20-20020a05620a461400b0076daa3bac9cmr24655274qkb.46.1693255633392;
+        Mon, 28 Aug 2023 13:47:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHwVuI8ZPuQEBsqBHLA4mM96XswCj3GuW2ha49h3MQX3EuB7tqhbB8UeA/K6lT7Jvy4c0Wwkw==
+X-Received: by 2002:a05:620a:4614:b0:76d:aa3b:ac9c with SMTP id br20-20020a05620a461400b0076daa3bac9cmr24655228qkb.46.1693255633141;
+        Mon, 28 Aug 2023 13:47:13 -0700 (PDT)
+Received: from localhost (ip98-179-76-75.ph.ph.cox.net. [98.179.76.75])
+        by smtp.gmail.com with ESMTPSA id g9-20020a05620a13c900b0076db1caab16sm2631338qkl.22.2023.08.28.13.47.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Aug 2023 13:47:12 -0700 (PDT)
+Date: Mon, 28 Aug 2023 13:47:11 -0700
+From: Jerry Snitselaar <jsnitsel@redhat.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Subject: Re: [PATCH v7 13/24] iommu/omap: Implement an IDENTITY domain
+Message-ID: <242a7ntgcvqofkvw2aapftr3pgczpueam3beyr4qey5mgx2rh4@odjyxtbbscfz>
+References: <0-v7-de04a3217c48+15055-iommu_all_defdom_jgg@nvidia.com>
+ <13-v7-de04a3217c48+15055-iommu_all_defdom_jgg@nvidia.com>
+MIME-Version: 1.0
+In-Reply-To: <13-v7-de04a3217c48+15055-iommu_all_defdom_jgg@nvidia.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,59 +97,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel test robot <lkp@intel.com>, Tom Rix <trix@redhat.com>, llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Heiko Stuebner <heiko@sntech.de>, Matthew Rosato <mjrosato@linux.ibm.com>, Matthias Brugger <matthias.bgg@gmail.com>, Thierry Reding <thierry.reding@gmail.com>, Jernej Skrabec <jernej.skrabec@gmail.com>, Alim Akhtar <alim.akhtar@samsung.com>, Dmitry Osipenko <digetx@gmail.com>, Steven Price <steven.price@arm.com>, Will Deacon <will@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, linux-s390@vger.kernel.org, linux-samsung-soc@vger.kernel.org, Samuel Holland <samuel@sholland.org>, Joerg Roedel <joro@8bytes.org>, Russell King <linux@armlinux.org.uk>, Jonathan Hunter <jonathanh@nvidia.com>, linux-rockchip@lists.infradead.org, iommu@lists.linux.dev, Andy Gross <agross@kernel.org>, Nicolin Chen <nicolinc@nvidia.com>, Yong Wu <yong.wu@mediatek.com>, Orson Zhai <orsonzhai@gmail.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Thierry Reding <treding@nvidia.com>, linux-sunxi@lists.linux.dev, Rob Clark <robdclark@gmail.com>, Kevin Tian <kevin.tian@intel.com>, Niklas Schnelle
+  <schnelle@linux.ibm.com>, linux-arm-msm@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Krishna Reddy <vdumpa@nvidia.com>, linux-mediatek@lists.infradead.org, Baolin Wang <baolin.wang@linux.alibaba.com>, linux-tegra@vger.kernel.org, Chen-Yu Tsai <wens@csie.org>, linux-arm-kernel@lists.infradead.org, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Robin Murphy <robin.murphy@arm.com>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Chunyan Zhang <zhang.lyra@gmail.com>, linuxppc-dev@lists.ozlabs.org, Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a manual revert of commit
-7f3c5d099b6f8452dc4dcfe4179ea48e6a13d0eb, but using
-ccflags-$(CONFIG_CC_IS_CLANG) which is shorter.
+On Wed, Aug 23, 2023 at 01:47:27PM -0300, Jason Gunthorpe wrote:
+> What omap does during omap_iommu_set_platform_dma() is actually putting
+> the iommu into identity mode.
+> 
+> Move to the new core support for ARM_DMA_USE_IOMMU by defining
+> ops->identity_domain.
+> 
+> This driver does not support IOMMU_DOMAIN_DMA, however it cannot be
+> compiled on ARM64 either. Most likely it is fine to support dma-iommu.c
+> 
+> Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+> ---
+>  drivers/iommu/omap-iommu.c | 21 ++++++++++++++++++---
+>  1 file changed, 18 insertions(+), 3 deletions(-)
+> 
 
-Turns out that this is reproducible still under specific compiler
-versions (mea culpa: I did not test every supported version of clang),
-and even a few randconfigs bots found.
-
-We'll have to revisit this again in the future, for now back this out.
-
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Closes: https://github.com/ClangBuiltLinux/linux/issues/252#issuecomment-1690371256
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/llvm/202308260344.Vc4Giuk7-lkp@intel.com/
-Suggested-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
----
-Changes in v2:
-- Use ccflags-$(CONFIG_CC_IS_CLANG) as per Nathan.
-- Move that to be below the initial setting of ccflags-y as per Nathan.
-- Add Nathan's Suggested-by and Reviewed-by tags.
-- Update commit message slightly, including oneline.
-- Link to v1: https://lore.kernel.org/r/20230828-ppc_rerevert-v1-1-74f55b818907@google.com
----
- arch/powerpc/xmon/Makefile | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/arch/powerpc/xmon/Makefile b/arch/powerpc/xmon/Makefile
-index 7705aa74a24d..682c7c0a6f77 100644
---- a/arch/powerpc/xmon/Makefile
-+++ b/arch/powerpc/xmon/Makefile
-@@ -12,6 +12,10 @@ ccflags-remove-$(CONFIG_FUNCTION_TRACER) += $(CC_FLAGS_FTRACE)
- 
- ccflags-$(CONFIG_PPC64) := $(NO_MINIMAL_TOC)
- 
-+# Clang stores addresses on the stack causing the frame size to blow
-+# out. See https://github.com/ClangBuiltLinux/linux/issues/252
-+ccflags-$(CONFIG_CC_IS_CLANG) += -Wframe-larger-than=4096
-+
- obj-y			+= xmon.o nonstdio.o spr_access.o xmon_bpts.o
- 
- ifdef CONFIG_XMON_DISASSEMBLY
-
----
-base-commit: 2ee82481c392eec06a7ef28df61b7f0d8e45be2e
-change-id: 20230828-ppc_rerevert-647427f04ce1
-
-Best regards,
--- 
-Nick Desaulniers <ndesaulniers@google.com>
+Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
 
