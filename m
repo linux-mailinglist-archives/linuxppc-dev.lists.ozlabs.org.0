@@ -2,72 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9407578A35D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Aug 2023 01:19:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4682C78A3BE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Aug 2023 03:05:05 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=UmW3nbgE;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=h9r8Xs18;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RYqPy5qn1z3bbW
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Aug 2023 09:19:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RYsmG5r3Xz3byL
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Aug 2023 11:05:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=UmW3nbgE;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=h9r8Xs18;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=mailbox.org (client-ip=80.241.56.152; helo=mout-p-102.mailbox.org; envelope-from=erhard_f@mailbox.org; receiver=lists.ozlabs.org)
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RYqP30SwLz307V
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Aug 2023 09:18:11 +1000 (AEST)
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RYslM5Z11z2yVc
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Aug 2023 11:04:15 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4RYqNp3H4rz9sqG;
-	Mon, 28 Aug 2023 01:18:02 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1693178282;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dyOLuD8KX58dqMifqQVuAEXmZPgLOmuWadz+jg6VLu8=;
-	b=UmW3nbgE+pVNWk/61KsH3ORcCRSmqTpehUiefwAKcF7SvVtbTCsOvgAsGQckgYOJdQvqUV
-	YUxKVLdK94LdoLkaNwyCwvrjsz9ZObx7By4xs/4JjJdy+yVUkrM4g+U+WDo0YxKjxqxGZ4
-	9d8zgA9xfOB3FpgxmqkAiizBNJ2Zvi+NYDCodnWECpmwEFi4rLS2znmhWkj/K9K0W5xQdl
-	1eAUuFP2Zyrx9EekBEubGaPBGnvqwDGjwnqg37UeViqbLBMdG5+TvPAJINqY9HGKBxEb2n
-	pCWWmeab2v8Q9xG8tcSVncuj0X7X/fbtglg6ECmT9KzokYNNrX0hw/PiyxacZQ==
-Date: Mon, 28 Aug 2023 01:17:58 +0200
-From: Erhard Furtner <erhard_f@mailbox.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: KASAN debug kernel fails to boot at early stage when
- CONFIG_SMP=y is set (kernel 6.5-rc5, PowerMac G4 3,6)
-Message-ID: <20230828011758.3b7b9daf@yea>
-In-Reply-To: <87jztkvfid.fsf@mail.lhotse>
-References: <20230811014845.1bf6771d@yea>
-	<f8f09049-3568-621d-88ce-1b61fe8b63fe@csgroup.eu>
-	<20230813213855.794b3c8f@yea>
-	<57bdfad9-cbec-1a9f-aca7-5956d22a8ada@csgroup.eu>
-	<20230814192748.56525c82@yea>
-	<6d710a2b-5cac-9f0a-cd30-0ad18172932b@csgroup.eu>
-	<20230815220156.5c234b52@yea>
-	<0876e754-7bee-ec61-4e3c-c0ee08d59d87@csgroup.eu>
-	<20230817203202.2b4c273c@yea>
-	<87y1i9clf2.fsf@mail.lhotse>
-	<20230818111641.7f680ce7@yea>
-	<fcdf2bf7-0834-b27f-4d24-28e05815ee6f@csgroup.eu>
-	<20230818182316.79303545@yea>
-	<5ea3302e-0fb1-1670-e4b6-adba5115ab94@csgroup.eu>
-	<20230824020015.78733931@yea>
-	<87jztkvfid.fsf@mail.lhotse>
+	by dfw.source.kernel.org (Postfix) with ESMTPS id AB4FF60F9A
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Aug 2023 01:04:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD08C433CC
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Aug 2023 01:04:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1693184650;
+	bh=7d6QsySf2gd+L+AO0DGE52ifXzUav4vvh3Pzbz+MguI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=h9r8Xs18EEJZy6xGdnpurwAcC4dI8Zo0XkCbPLZsQfEZ8h+twtCBqTaZN+iKLUk/F
+	 ZOv1YpC6wlvRCCWCXaGzPtMX/B//7KpYhatc4+ErFMHjQMEznee9wzgYHonoMV0A8b
+	 hV7Cih9zxqMGSVPWJf92hQOnVHToGZzWH5KjTLGRDclwMuFLPS7gJYd3voFEElpxhY
+	 wQkve6zevEN4Cit56v6svNMujPuQ/xxnYkjcqgKt0CAwBy2ENQf/6YXKuk5h6nOrTU
+	 Suvfx/Byjw5Z/LbQFR5+DPpXbv8KS32TrAD8jVFsmU4EOFvxtZnQEIRyCgB6ACgOv/
+	 Ri/nBxhUeeqew==
+Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-1c50438636fso1859348fac.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Aug 2023 18:04:10 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yx0YiMTOODWvt2uShrdAdrPqb5YvZNmhVSC9tWW7E9RLsQf4gXF
+	FVMU4rVm1EaZ3wBfzQL+VR1NtX8htxnPzxrdmdM=
+X-Google-Smtp-Source: AGHT+IEak5zcXFSIFNfF8EdO9/s3v9inAZbyIexqYgsn9SCfLTxxBE6ChlOh4wUhzQSAPtM3t40DM0c5ZfD6PzA7Hog=
+X-Received: by 2002:a05:6870:b523:b0:1c8:b870:4e55 with SMTP id
+ v35-20020a056870b52300b001c8b8704e55mr10551563oap.49.1693184649240; Sun, 27
+ Aug 2023 18:04:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20230825194329.gonna.911-kees@kernel.org>
+In-Reply-To: <20230825194329.gonna.911-kees@kernel.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Mon, 28 Aug 2023 10:03:32 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATcTw+btQVri7SBA8gFbDNMYz7D2gMQaoZp9sQGFjCw8Q@mail.gmail.com>
+Message-ID: <CAK7LNATcTw+btQVri7SBA8gFbDNMYz7D2gMQaoZp9sQGFjCw8Q@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] kbuild: Show Kconfig fragments in "help"
+To: Kees Cook <keescook@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-MBO-RS-META: 8ytzk15zi9bkj8icfxijxnercdowahxw
-X-MBO-RS-ID: 180fa4cab9efe2ecfe6
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,139 +70,145 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-s390@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 24 Aug 2023 21:36:26 +1000
-Michael Ellerman <mpe@ellerman.id.au> wrote:
+On Sat, Aug 26, 2023 at 4:55=E2=80=AFAM Kees Cook <keescook@chromium.org> w=
+rote:
+>
+> Hi,
+>
+> This is my series to show *.config targets in the "help" target so these
+> various topics can be more easily discoverd.
+>
+> v2:
+>  - split .fragment from .config to hide "internal" fragments
 
-> > printk: bootconsole [udbg0] enabled
-> > Total memory =3D 2048MB; using 4096kB for hash table
-> > mapin_ram:125
-> > mmu_mapin_ram:169 0 30000000 1400000 2000000
-> > __mmu_mapin_ram:146 0 1400000
-> > __mmu_mapin_ram:155 1400000
-> > __mmu_mapin_ram:146 1400000 30000000
-> > __mmu_mapin_ram:155 20000000
-> > __mapin_ram_chunk:107 20000000 30000000
-> > __mapin_ram_chunk:117
-> > mapin_ram:134
-> > kasan_mmu_init:129
-> > kasan_mmu_init:132 0
-> > kasan_mmu_init:137
-> > ioremap() called early from btext_map+0x64/0xdc. Use early_ioremap() in=
-stead
-> > Linux version 6.5.0-rc7-PMacG4-dirty (root@T1000) (gcc (Gentoo 12.3.1_p=
-20230526 p2) 12.3.1 20230526, GNU ld (Gentoo 2.40 p7) 2.40.0) #4 SMP Wed Au=
-g 23 12:59:11 CEST 2023
-> >
-> > which shows one line (Linux version...) more than before. Most of the t=
-ime I get this more interesting output however:
-> >
-> > kasan_mmu_init:129
-> > kasan_mmu_init:132 0
-> > kasan_mmu_init:137
-> > Linux version 6.5.0-rc7-PMacG4-dirty (root@T1000) (gcc (Gentoo 12.3.1_p=
-20230526 p2) 12.3.1 20230526, GNU ld (Gentoo 2.40 p7) 2.40.0) #4 SMP Wed Au=
-g 23 12:59:11 CEST 2023
-> > KASAN init done
-> > list_add corruption. prev->next should be next (c17100c0), but was 2c03=
-0000. (prev=3Dc036ac7c).
-> > ------------[ cut here ]------------
-> > kernel BUG at lib/list_debug.c:30!
-> > ------------[ cut here ]------------
-> > WARNING: CPU: 0 PID: 0 at arch/powerpc/include/asm/machdep.h:227 die+0x=
-d8/0x39c =20
->=20
-> This is a WARN hit while handling the original bug.
->=20
-> Can you apply this patch to avoid that happening, so we can see the
-> original but better.
->=20
-> diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-> index eeff136b83d9..341a0635e131 100644
-> --- a/arch/powerpc/kernel/traps.c
-> +++ b/arch/powerpc/kernel/traps.c
-> @@ -198,8 +198,6 @@ static unsigned long oops_begin(struct pt_regs *regs)
->  	die_owner =3D cpu;
->  	console_verbose();
->  	bust_spinlocks(1);
-> -	if (machine_is(powermac))
-> -		pmac_backlight_unblank();
->  	return flags;
->  }
->  NOKPROBE_SYMBOL(oops_begin);
->=20
->=20
-> cheers
-
-Ok, so I tested now:
-   Replace btext_unmap() with btext_map() at the end of MMU_init() + Michae=
-ls patch.
-
-With the patch I get interesting output less often, but when I do it's:
-
-printk: bootconsole [udbg0] enabled
-Total memory =3D 2048MB; using 4096kB for hash table
-mapin_ram:125
-mmu_mapin_ram:169 0 30000000 1400000 2000000
-__mmu_mapin_ram:146 0 1400000
-__mmu_mapin_ram:155 1400000
-__mmu_mapin_ram:146 1400000 30000000
-__mmu_mapin_ram:155 20000000
-__mapin_ram_chunk:107 20000000 30000000
-__mapin_ram_chunk:117
-mapin_ram:134
-kasan_mmu_init:129
-kasan_mmu_init:132 0
-kasan_mmu_init:137
-Linux version 6.5.0-rc7-PMacG4-dirty (root@T1000) (gcc (Gentoo 12.3.1_p2023=
-0526 p2) 12.3.1 20230526, GNU ld (Gentoo 2.40 p7) 2.40.0) #4 SMP Wed Aug 23=
- 12:59:11 CEST 2023
-KASAN init done
-BUG: spinlock bad magic on CPU#0, swapper/0
- lock: 0xc16cbc60, .magic: c036ab84, .owner: <none>/-1, .owner_cpu: -1
-CPU: 0 PID: 0 Comm: swapper Tainted: G                T xxxxxxxxxxx
-Call Trace:
-[c1717c20] [c0f4e288] dump_stack_lvl+0x60/0xa4 (unreliable)
-[c1717c40] [c01065e8] do_raw_spin_lock+0x15c/0x1a8
-[c1717c70] [c0fa3890] _raw_spin_lock_irqsave+0x20/0x40
-[c1717c90] [c0c140ec] of_find_property+0x3c/0x140
-[c1717cc0] [c0c14204] of_get_property+0x14/0x4c
-[c1717ce0] [c0c22c6c] unlatten_dt_nodes+0x76c/0x894
-[c1717f10] [c0c22e88] __unflatten_device_tree+0xf4/0x244
-[c1717f50] [c1458050] unflatten_device_tree+0x48/0x84
-[c1717f70] [c140b100] setup_arch+0x78/0x44c
-[c1717fc0] [c14045b8] start_kernel+0x78/0x2d8
-[c1717ff0] [000035d0] 0x35d0
+Please do not do this churn.
 
 
-and then the freeze. Or less often I get:
-
-[...]
-Modules linked in: _various ASCII chars_ |(EK) _various ASCII chars_ =C2=A7=
-=3D(EKTN)
-BUG: Unable to handle kernel data access on read at 0x813f0200
-Faulting instruction address: 0xc014e444
-Thread overran stack, or stack corrupted
-Oops: Kernel access of bad area, sig: 11 [#3544]
-BE PAGE_SIZE=3D4K MMU=3DHash SMP NR_CPUS=3D2
-Modules linked in: _various ASCII chars_ =C2=A7=3D(EKTN)
-BUG: Unable to handle kernel data access on read at 0x813f0200
-Faulting instruction address: 0xc014e444
-Thread overran stack, or stack corrupted
-Oops: Kernel access of bad area, sig: 11 [#3545]
-BE PAGE_SIZE=3D4K MMU=3DHash SMP NR_CPUS=3D2
+Like Randy, I did not get "why" part quiet well,
+but if you are eager about this,
+you can show help message only when the following
+("# Help:" prefix for example) is found in the first line.
 
 
-Number after "sig: 11" gets counted up rapidly to #3545 so I can't follow t=
-he output on the OF console. Remaining output on screen before the freeze a=
-re [#3535] to [#3545] but apart from the numbers the adresses in this outpu=
-t do not change. _various ASCII chars_ in the "Modules linked in:" stay the=
- same but are special characters so hard to transcribe.
+# Help: blah blah
+# other comment
 
-Hope that helps.
 
-Regards,
-Erhard
+
+
+
+
+
+
+>  - fix various typos
+>  - avoid duplicate entries
+> v1: https://lore.kernel.org/all/20230824223606.never.762-kees@kernel.org
+>
+> Thanks!
+>
+> -Kees
+>
+> Kees Cook (2):
+>   kbuild: Show Kconfig fragments in "help"
+>   kbuild: Split internal config targets from .config into .fragment
+>
+>  Makefile                                      |  1 -
+>  arch/arm/configs/dram_0x00000000.config       |  1 +
+>  arch/arm/configs/dram_0xc0000000.config       |  1 +
+>  arch/arm/configs/dram_0xd0000000.config       |  1 +
+>  arch/arm/configs/lpae.config                  |  1 +
+>  arch/arm64/configs/virt.config                |  1 +
+>  arch/powerpc/Makefile                         | 26 +++++++++----------
+>  .../{32-bit.config =3D> 32-bit.fragment}        |  1 +
+>  arch/powerpc/configs/64-bit.config            |  1 -
+>  arch/powerpc/configs/64-bit.fragment          |  2 ++
+>  ...{85xx-32bit.config =3D> 85xx-32bit.fragment} |  1 +
+>  ...{85xx-64bit.config =3D> 85xx-64bit.fragment} |  1 +
+>  .../{85xx-hw.config =3D> 85xx-hw.fragment}      |  1 +
+>  .../{85xx-smp.config =3D> 85xx-smp.fragment}    |  1 +
+>  .../{86xx-hw.config =3D> 86xx-hw.fragment}      |  1 +
+>  .../{86xx-smp.config =3D> 86xx-smp.fragment}    |  1 +
+>  arch/powerpc/configs/altivec.config           |  1 -
+>  arch/powerpc/configs/altivec.fragment         |  2 ++
+>  arch/powerpc/configs/be.config                |  1 -
+>  arch/powerpc/configs/be.fragment              |  2 ++
+>  .../{book3s_32.config =3D> book3s_32.fragment}  |  1 +
+>  ...enet_base.config =3D> corenet_base.fragment} |  1 +
+>  arch/powerpc/configs/debug.config             |  1 +
+>  arch/powerpc/configs/disable-werror.config    |  1 +
+>  .../configs/{dpaa.config =3D> dpaa.fragment}    |  1 +
+>  ...mb-nonhw.config =3D> fsl-emb-nonhw.fragment} |  1 +
+>  .../configs/{guest.config =3D> guest.fragment}  |  1 +
+>  arch/powerpc/configs/le.config                |  1 -
+>  arch/powerpc/configs/le.fragment              |  2 ++
+>  ...85xx_base.config =3D> mpc85xx_base.fragment} |  1 +
+>  ...86xx_base.config =3D> mpc86xx_base.fragment} |  1 +
+>  .../{ppc64le.config =3D> ppc64le.fragment}      |  1 +
+>  arch/powerpc/configs/security.config          |  4 ++-
+>  arch/riscv/configs/32-bit.config              |  1 +
+>  arch/riscv/configs/64-bit.config              |  1 +
+>  arch/s390/configs/btf.config                  |  1 +
+>  arch/s390/configs/kasan.config                |  1 +
+>  arch/x86/Makefile                             |  4 ---
+>  arch/x86/configs/tiny.config                  |  2 ++
+>  {kernel =3D> arch/x86}/configs/x86_debug.config |  1 +
+>  arch/x86/configs/xen.config                   |  2 ++
+>  kernel/configs/debug.config                   |  2 ++
+>  kernel/configs/kvm_guest.config               |  1 +
+>  kernel/configs/nopm.config                    |  2 ++
+>  kernel/configs/rust.config                    |  1 +
+>  kernel/configs/tiny-base.config               |  1 -
+>  kernel/configs/tiny-base.fragment             |  2 ++
+>  kernel/configs/tiny.config                    |  2 ++
+>  kernel/configs/xen.config                     |  2 ++
+>  scripts/Makefile.defconf                      | 12 ++++++---
+>  scripts/kconfig/Makefile                      | 16 +++++++++---
+>  51 files changed, 87 insertions(+), 32 deletions(-)
+>  rename arch/powerpc/configs/{32-bit.config =3D> 32-bit.fragment} (53%)
+>  delete mode 100644 arch/powerpc/configs/64-bit.config
+>  create mode 100644 arch/powerpc/configs/64-bit.fragment
+>  rename arch/powerpc/configs/{85xx-32bit.config =3D> 85xx-32bit.fragment}=
+ (76%)
+>  rename arch/powerpc/configs/{85xx-64bit.config =3D> 85xx-64bit.fragment}=
+ (78%)
+>  rename arch/powerpc/configs/{85xx-hw.config =3D> 85xx-hw.fragment} (98%)
+>  rename arch/powerpc/configs/{85xx-smp.config =3D> 85xx-smp.fragment} (59=
+%)
+>  rename arch/powerpc/configs/{86xx-hw.config =3D> 86xx-hw.fragment} (98%)
+>  rename arch/powerpc/configs/{86xx-smp.config =3D> 86xx-smp.fragment} (58=
+%)
+>  delete mode 100644 arch/powerpc/configs/altivec.config
+>  create mode 100644 arch/powerpc/configs/altivec.fragment
+>  delete mode 100644 arch/powerpc/configs/be.config
+>  create mode 100644 arch/powerpc/configs/be.fragment
+>  rename arch/powerpc/configs/{book3s_32.config =3D> book3s_32.fragment} (=
+52%)
+>  rename arch/powerpc/configs/{corenet_base.config =3D> corenet_base.fragm=
+ent} (64%)
+>  rename arch/powerpc/configs/{dpaa.config =3D> dpaa.fragment} (80%)
+>  rename arch/powerpc/configs/{fsl-emb-nonhw.config =3D> fsl-emb-nonhw.fra=
+gment} (98%)
+>  rename arch/powerpc/configs/{guest.config =3D> guest.fragment} (85%)
+>  delete mode 100644 arch/powerpc/configs/le.config
+>  create mode 100644 arch/powerpc/configs/le.fragment
+>  rename arch/powerpc/configs/{mpc85xx_base.config =3D> mpc85xx_base.fragm=
+ent} (94%)
+>  rename arch/powerpc/configs/{mpc86xx_base.config =3D> mpc86xx_base.fragm=
+ent} (86%)
+>  rename arch/powerpc/configs/{ppc64le.config =3D> ppc64le.fragment} (65%)
+>  rename {kernel =3D> arch/x86}/configs/x86_debug.config (90%)
+>  delete mode 100644 kernel/configs/tiny-base.config
+>  create mode 100644 kernel/configs/tiny-base.fragment
+>
+> --
+> 2.34.1
+>
+
+
+--=20
+Best Regards
+Masahiro Yamada
