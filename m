@@ -1,92 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B3B078BB76
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Aug 2023 01:25:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BE0B78BD11
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Aug 2023 04:55:22 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=T7S8Elai;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cOfXsuej;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=aJjaitgE;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RZRVd2CB0z2yVd
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Aug 2023 09:25:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RZX9436jmz3bN9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Aug 2023 12:55:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=T7S8Elai;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cOfXsuej;
+	dkim=pass (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=aJjaitgE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=jsnitsel@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=quicinc.com (client-ip=205.220.168.131; helo=mx0a-0031df01.pphosted.com; envelope-from=quic_eberman@quicinc.com; receiver=lists.ozlabs.org)
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RZRTV3l8Vz2xb2
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Aug 2023 09:24:13 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1693265050;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xTlRxnsNejmw67GltYX+utAoy4aZnJxgNkm5+nl9i5c=;
-	b=T7S8Elai61ys1oWHJjvGYV9rCDgvUnw/qKzSn7VRd2bohwHLbtzo8ywvTqKqa0MqDD7z7w
-	jiB1nCxzRKzfJCVXb4Xl9xivyWv1PKce6lq9e6Sbw0DFZT8g3BOvdDmSzzghGffPOAevDq
-	RfdQxZtVgrb82D4SXo6XIRMYG1gKMlw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1693265051;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xTlRxnsNejmw67GltYX+utAoy4aZnJxgNkm5+nl9i5c=;
-	b=cOfXsuejhrMaatdgt/Biy3qQv1zWborSJ4UGoc31sYouabrvZexEVMnKW5IGjyzox62qUC
-	q6eRvEbQOdhToyG/r6ooYsszL4CTS30PvF8ZtgA+Kv1SZovasTkBL5P62p1p+ZckeJjUg5
-	pFsh/frmGle6gJ72P/Y9y5Ut5ehSHHI=
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
- [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-110-PT1_LDpBOJabceiZMEbXTA-1; Mon, 28 Aug 2023 19:24:06 -0400
-X-MC-Unique: PT1_LDpBOJabceiZMEbXTA-1
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-57013c62b3dso1180110a12.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Aug 2023 16:24:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693265046; x=1693869846;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xTlRxnsNejmw67GltYX+utAoy4aZnJxgNkm5+nl9i5c=;
-        b=BUeSEWoXEYoT8K0Vj7UWsXdWyaXFtalV65QvOG41Jd1lPmsDEaJEmAF4iKwFnBgsD/
-         FQHzEZiEECU+y3HOishmustUhXyCwEkX7uRj91cJ9L1zJ/gDXdZqhJrG+PyhAMFSzhB9
-         bAJr/tlc/n5HgxhX+JqRijYNJ2i99yaW7vMfLzxUvRQ/f6K8kWIzxfJeGuTKckqhZBQn
-         EIS0TuP9Iu91THq4qVuD8B1WgLhN/5mjv+ZAb2Isq2+08hd8dnUvOi6lrYRFMLqRhSQi
-         dzQkf06A5y0pLzdxaG1aocoV/zUlCzdK4+8ZQQvF2ZcbHjsx1s8JyFRT9V9oRXhKI/os
-         +QHg==
-X-Gm-Message-State: AOJu0YxV53Y+AetrgM/vhuyiU38x0ojwYdvwEIAOk+zH6Pgi8O2nkl/b
-	2AtA9xIbOIMwuHhnHDIKG2edmoWXIPpIiCvgnoZylQ106qFmFTD8LlclQcG9hnt/Zhjn2lEGI7A
-	2uCw2doxafZR7ZHnf3psFIoVCUw==
-X-Received: by 2002:a05:6a20:138f:b0:10c:7c72:bdf9 with SMTP id hn15-20020a056a20138f00b0010c7c72bdf9mr18329554pzc.29.1693265045860;
-        Mon, 28 Aug 2023 16:24:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE8Ty56TNbGFuBUAvk0gJFhf9IoSXDvKLMofXm6bHW4BVTeieXHXsUmxMoZ3DKq2KwFtbABPg==
-X-Received: by 2002:a05:6a20:138f:b0:10c:7c72:bdf9 with SMTP id hn15-20020a056a20138f00b0010c7c72bdf9mr18329511pzc.29.1693265045554;
-        Mon, 28 Aug 2023 16:24:05 -0700 (PDT)
-Received: from localhost (ip98-179-76-75.ph.ph.cox.net. [98.179.76.75])
-        by smtp.gmail.com with ESMTPSA id v12-20020a170902b7cc00b001993a1fce7bsm7913930plz.196.2023.08.28.16.24.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Aug 2023 16:24:05 -0700 (PDT)
-Date: Mon, 28 Aug 2023 16:24:04 -0700
-From: Jerry Snitselaar <jsnitsel@redhat.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [PATCH v7 24/24] iommu: Convert remaining simple drivers to
- domain_alloc_paging()
-Message-ID: <4pidxw6zc2sk2sypjdobusdrdbpwa7gddifxwnm2c2sdtfsp7t@yg3hup2mhpbr>
-References: <0-v7-de04a3217c48+15055-iommu_all_defdom_jgg@nvidia.com>
- <24-v7-de04a3217c48+15055-iommu_all_defdom_jgg@nvidia.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RZX884L3Sz2yVN
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Aug 2023 12:54:30 +1000 (AEST)
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37T2NYix025517;
+	Tue, 29 Aug 2023 02:53:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=cKhR/hXI9TfQVMxJKBEpbKXuPkzD/6c5MCP4RSxTLCw=;
+ b=aJjaitgE+MNEcv6pStestGm3ovNl2PCHIDgAS0ezUu1PJhWjiVAJkaWbVdyPPMxXqeuv
+ J8TGIrU+0GAuxQX7eIIapM8gHoJ/i/+3Lg86ilvRhCdks0OYIgvIXDu+m1F9qvPig1n9
+ qmaPZSttzxHapTHsQhqj+8ez1Mh6AU41gyUZuYSjEw/M6ix2alFl2clZcq2fzw9TRV8m
+ T3VdqIsiJZXsGkuNzRqG8q7Wyez0X9VKsY1Jq2v4Bt+32v5og2RtpbTDAMPn6awuDbIF
+ bXfmOhB1JZWgA6QKAkE/ndq/tn0aSh7gBLV6EKEnJxvPb+roMqUGXj3Ar6OaLs3F+VbY DQ== 
+Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ss7mer1wr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 29 Aug 2023 02:53:30 +0000
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37T2rTft030498
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 29 Aug 2023 02:53:29 GMT
+Received: from [10.110.29.109] (10.80.80.8) by nasanex01b.na.qualcomm.com
+ (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Mon, 28 Aug
+ 2023 19:53:26 -0700
+Message-ID: <253965df-6d80-bbfd-ab01-f9e69b274bf3@quicinc.com>
+Date: Mon, 28 Aug 2023 19:53:26 -0700
 MIME-Version: 1.0
-In-Reply-To: <24-v7-de04a3217c48+15055-iommu_all_defdom_jgg@nvidia.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [RFC PATCH v11 12/29] KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for
+ guest-specific backing memory
+Content-Language: en-US
+To: Ackerley Tng <ackerleytng@google.com>,
+        Sean Christopherson
+	<seanjc@google.com>
+References: <diqzttsiu67n.fsf@ackerleytng-ctop.c.googlers.com>
+From: Elliot Berman <quic_eberman@quicinc.com>
+In-Reply-To: <diqzttsiu67n.fsf@ackerleytng-ctop.c.googlers.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: j_S7WCFYaAduXo62GgrPKoDWB6xd2scP
+X-Proofpoint-GUID: j_S7WCFYaAduXo62GgrPKoDWB6xd2scP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-28_20,2023-08-28_04,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
+ bulkscore=0 adultscore=0 suspectscore=0 lowpriorityscore=0 malwarescore=0
+ mlxlogscore=999 phishscore=0 priorityscore=1501 clxscore=1011 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
+ definitions=main-2308290024
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,38 +87,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Heiko Stuebner <heiko@sntech.de>, Matthew Rosato <mjrosato@linux.ibm.com>, Matthias Brugger <matthias.bgg@gmail.com>, Thierry Reding <thierry.reding@gmail.com>, Jernej Skrabec <jernej.skrabec@gmail.com>, Alim Akhtar <alim.akhtar@samsung.com>, Dmitry Osipenko <digetx@gmail.com>, Steven Price <steven.price@arm.com>, Will Deacon <will@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, linux-s390@vger.kernel.org, linux-samsung-soc@vger.kernel.org, Samuel Holland <samuel@sholland.org>, Joerg Roedel <joro@8bytes.org>, Russell King <linux@armlinux.org.uk>, Jonathan Hunter <jonathanh@nvidia.com>, linux-rockchip@lists.infradead.org, iommu@lists.linux.dev, Andy Gross <agross@kernel.org>, Nicolin Chen <nicolinc@nvidia.com>, Yong Wu <yong.wu@mediatek.com>, Orson Zhai <orsonzhai@gmail.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Thierry Reding <treding@nvidia.com>, linux-sunxi@lists.linux.dev, Rob Clark <robdclark@gmail.com>, Kevin Tian <kevin.tian@intel.com>, Niklas Schnelle
-  <schnelle@linux.ibm.com>, linux-arm-msm@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Krishna Reddy <vdumpa@nvidia.com>, linux-mediatek@lists.infradead.org, Baolin Wang <baolin.wang@linux.alibaba.com>, linux-tegra@vger.kernel.org, Chen-Yu Tsai <wens@csie.org>, linux-arm-kernel@lists.infradead.org, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Robin Murphy <robin.murphy@arm.com>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Chunyan Zhang <zhang.lyra@gmail.com>, linuxppc-dev@lists.ozlabs.org, Lu Baolu <baolu.lu@linux.intel.com>
+Cc: kvm@vger.kernel.org, david@redhat.com, yu.c.zhang@linux.intel.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, chao.p.peng@linux.intel.com, linux-riscv@lists.infradead.org, isaku.yamahata@gmail.com, paul@paul-moore.com, maz@kernel.org, chenhuacai@kernel.org, jmorris@namei.org, willy@infradead.org, wei.w.wang@intel.com, tabba@google.com, jarkko@kernel.org, serge@hallyn.com, mail@maciej.szmigiero.name, aou@eecs.berkeley.edu, vbabka@suse.cz, michael.roth@amd.com, paul.walmsley@sifive.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, qperret@google.com, liam.merwick@oracle.com, linux-mips@vger.kernel.org, oliver.upton@linux.dev, linux-security-module@vger.kernel.org, palmer@dabbelt.com, kvm-riscv@lists.infradead.org, anup@brainfault.org, linux-fsdevel@vger.kernel.org, pbonzini@redhat.com, akpm@linux-foundation.org, vannapurve@google.com, linuxppc-dev@lists.ozlabs.org, kirill.shutemov@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Aug 23, 2023 at 01:47:38PM -0300, Jason Gunthorpe wrote:
-> These drivers don't support IOMMU_DOMAIN_DMA, so this commit effectively
-> allows them to support that mode.
-> 
-> The prior work to require default_domains makes this safe because every
-> one of these drivers is either compilation incompatible with dma-iommu.c,
-> or already establishing a default_domain. In both cases alloc_domain()
-> will never be called with IOMMU_DOMAIN_DMA for these drivers so it is safe
-> to drop the test.
-> 
-> Removing these tests clarifies that the domain allocation path is only
-> about the functionality of a paging domain and has nothing to do with
-> policy of how the paging domain is used for UNMANAGED/DMA/DMA_FQ.
-> 
-> Tested-by: Niklas Schnelle <schnelle@linux.ibm.com>
-> Tested-by: Steven Price <steven.price@arm.com>
-> Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-> Tested-by: Nicolin Chen <nicolinc@nvidia.com>
-> Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-> ---
->  drivers/iommu/msm_iommu.c    | 7 ++-----
->  drivers/iommu/mtk_iommu_v1.c | 7 ++-----
->  drivers/iommu/omap-iommu.c   | 7 ++-----
->  drivers/iommu/s390-iommu.c   | 7 ++-----
->  4 files changed, 8 insertions(+), 20 deletions(-)
-> 
 
-Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
 
+On 8/28/2023 3:56 PM, Ackerley Tng wrote:
+ > 1. Since the physical memory's representation is the inode and should be
+ >     coupled to the virtual machine (as a concept, not struct kvm), should
+ >     the binding/coupling be with the file, or the inode?
+ >
+
+I've been working on Gunyah's implementation in parallel (not yet posted 
+anywhere). Thus far, I've coupled the virtual machine struct to the 
+struct file so that I can increment the file refcount when mapping the 
+gmem to the virtual machine.
+
+ > 2. Should struct kvm still be bound to the file/inode at gmem file
+ >     creation time, since
+ >
+ >     + struct kvm isn't a good representation of a "virtual machine"
+ >     + we currently don't have anything that really represents a "virtual
+ >       machine" without hardware support
+ >
+ >
+ > I'd also like to bring up another userspace use case that Google has:
+ > re-use of gmem files for rebooting guests when the KVM instance is
+ > destroyed and rebuilt.
+ >
+ > When rebooting a VM there are some steps relating to gmem that are
+ > performance-sensitive:
+ >
+ > a.      Zeroing pages from the old VM when we close a gmem file/inode
+ > b. Deallocating pages from the old VM when we close a gmem file/inode
+ > c.   Allocating pages for the new VM from the new gmem file/inode
+ > d.      Zeroing pages on page allocation
+ >
+ > We want to reuse the gmem file to save re-allocating pages (b. and c.),
+ > and one of the two page zeroing allocations (a. or d.).
+ >
+ > Binding the gmem file to a struct kvm on creation time means the gmem
+ > file can't be reused with another VM on reboot. Also, host userspace is
+ > forced to close the gmem file to allow the old VM to be freed.
+ >
+ > For other places where files pin KVM, like the stats fd pinning vCPUs, I
+ > guess that matters less since there isn't much of a penalty to close and
+ > re-open the stats fd.
+
+I had a 3rd question that's related to how to wire the gmem up to a 
+virtual machine:
+
+I learned of a usecase to implement copy-on-write for gmem. The premise 
+would be to have a "golden copy" of the memory that multiple virtual 
+machines can map in as RO. If a virtual machine tries to write to those 
+pages, they get copied to a virtual machine-specific page that isn't 
+shared with other VMs. How do we track those pages?
+
+Thanks,
+Elliot
