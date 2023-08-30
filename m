@@ -1,51 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0933278D29C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Aug 2023 05:57:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ACCA78D29E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Aug 2023 05:58:32 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=C+B8K/E0;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=R2eMjMGc;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rb9VY5lcqz3c2n
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Aug 2023 13:57:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rb9WV1vJxz2yVn
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Aug 2023 13:58:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=C+B8K/E0;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=R2eMjMGc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=ftp.linux.org.uk (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org)
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=jlayton@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rb4lL0WBBz2yKy;
-	Wed, 30 Aug 2023 10:23:25 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=zZxZUyqerb7julFXQ03Jti/01WDk420m8vSi4C3S7Zg=; b=C+B8K/E0jwmlP3x0ynEg/wW0oT
-	8W+g7CEhf7EdCVJx+aCWMaLZ8rDm21ORLwQNEzBBlnKI8nSnQEIfBUqrKOBnjUNllXW768GzG3qB7
-	+cpJ/jhntfWbFQ/3QFzCMkG1sg2st+PpzLnPrKtYydQR6EDaMR8Bc+aEbQhcPGU53TF4NXxBCLwrJ
-	Y+Cse/dfbORxx77QJVsCQ4BCKysmxvXtFDzxb882a/rtaocFDwQw24nZDPRB3CytP/MOuWTM+mTfa
-	+8MJ/m4rwupUEXN1Mh5oBPLgZehFHGmgz56mU9Gh95pn90zVDOFdIxrpzwqUqcKtUFnurzTC7a4a3
-	phr8qPBQ==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.96 #2 (Red Hat Linux))
-	id 1qb8vV-001xXV-0L;
-	Wed, 30 Aug 2023 00:19:17 +0000
-Date: Wed, 30 Aug 2023 01:19:17 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Jeff Layton <jlayton@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rb5K275glz2yV5;
+	Wed, 30 Aug 2023 10:49:10 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 727CE61187;
+	Wed, 30 Aug 2023 00:49:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15649C433C8;
+	Wed, 30 Aug 2023 00:48:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1693356547;
+	bh=Y6mimTT4f5bHTNOgMAPJs7UzoDd9JcRrnEgta8s7/7g=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=R2eMjMGcVP6twJXzPd3GjCC/QAkoBXyIXwyF0PetiX1VDQJtkSU/FrVUdLPhlHeJk
+	 dBHqNW4EShjtZaWh7sFQvaiUl3mq77UH9KDN3DI2snJ6o1c+81N9JuEjNxovdv+bSx
+	 sgcIB4JoE+RW7C4bNpHemTP/NmKBpTL7+v/S4iHTHVlduZjb2wd1jti+ZtvOSZrtwV
+	 l+HJJMf2BwuQ5fHlwOGaHAX0BTHl6xVSRaJy3EeRODk9yD0xK9grM4eFB73+9nNR6U
+	 SUPRRhBT9hKA3cHo92ct+4AiPcoeZ/GYLow2fGYu2g/oM5lHg/5skk6mbUINrwlVsy
+	 FRJBQs41w8qcA==
+Message-ID: <d73e7de5056a34578a193185770e46584450d8b7.camel@kernel.org>
 Subject: Re: [PATCH v2 08/92] fs: new helper: simple_rename_timestamp
-Message-ID: <20230830001917.GC461907@ZenIV>
+From: Jeff Layton <jlayton@kernel.org>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Date: Tue, 29 Aug 2023 20:48:48 -0400
+In-Reply-To: <20230830001917.GC461907@ZenIV>
 References: <20230705185812.579118-1-jlayton@kernel.org>
- <20230705185812.579118-3-jlayton@kernel.org>
+	 <20230705185812.579118-3-jlayton@kernel.org>
+	 <20230830001917.GC461907@ZenIV>
+Content-Type: text/plain; charset="ISO-8859-15"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230705185812.579118-3-jlayton@kernel.org>
 X-Mailman-Approved-At: Wed, 30 Aug 2023 13:57:00 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -67,18 +74,30 @@ Cc: lucho@ionkov.net, rafael@kernel.org, djwong@kernel.org, al@alarsen.net, cmll
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jul 05, 2023 at 02:58:11PM -0400, Jeff Layton wrote:
+On Wed, 2023-08-30 at 01:19 +0100, Al Viro wrote:
+> On Wed, Jul 05, 2023 at 02:58:11PM -0400, Jeff Layton wrote:
+>=20
+> > + * POSIX mandates that the old and new parent directories have their c=
+time and
+> > + * mtime updated, and that inodes of @old_dentry and @new_dentry (if a=
+ny), have
+> > + * their ctime updated.
+>=20
+> APPLICATION USAGE
+> Some implementations mark for update the last file status change timestam=
+p
+> of renamed files and some do not. Applications which make use of the
+> last file status change timestamp may behave differently with respect
+> to renamed files unless they are designed to allow for either behavior.
+>
+> So for children POSIX permits rather than mandates.  Doesn't really matte=
+r;
+> Linux behaviour had been to touch ctime on children since way back, if
+> not since the very beginning.
 
-> + * POSIX mandates that the old and new parent directories have their ctime and
-> + * mtime updated, and that inodes of @old_dentry and @new_dentry (if any), have
-> + * their ctime updated.
+Mea culpa. You're quite correct. I'll plan to roll a small patch to
+update the comment over this function.
 
-APPLICATION USAGE
-Some implementations mark for update the last file status change timestamp
-of renamed files and some do not. Applications which make use of the
-last file status change timestamp may behave differently with respect
-to renamed files unless they are designed to allow for either behavior.
-
-So for children POSIX permits rather than mandates.  Doesn't really matter;
-Linux behaviour had been to touch ctime on children since way back, if
-not since the very beginning.
+Thanks!
+--=20
+Jeff Layton <jlayton@kernel.org>
