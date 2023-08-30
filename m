@@ -1,95 +1,96 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7414D78DEAD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Aug 2023 21:52:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0809078E195
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Aug 2023 23:48:36 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=DoI3vSr5;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=L/Jph3j1;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bw2EU0ot;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bw2EU0ot;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RbZh820Pvz3c2Z
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Aug 2023 05:52:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RbdG96nYLz3c2y
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Aug 2023 07:48:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=DoI3vSr5;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=L/Jph3j1;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bw2EU0ot;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bw2EU0ot;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=64.147.123.21; helo=wout5-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=joe.lawrence@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RbZg80hBKz2xdn
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Aug 2023 05:51:31 +1000 (AEST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailout.west.internal (Postfix) with ESMTP id 473173200681;
-	Wed, 30 Aug 2023 15:51:26 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Wed, 30 Aug 2023 15:51:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm3; t=1693425085; x=1693511485; bh=EA
-	AokXkBZ1oabmHLEd4xI3A+ZO14oLciXrp5+OaR49E=; b=DoI3vSr5VzKvXd7sPf
-	vRiV8hH4rK6fXmpdJRGIVz1xGTgPKfqxxjxs24kmW6FihHX3N0yEKJ8qik6UEGYb
-	95CHQ6ljd4jxgRKFewqaAnNDL0JPJm3B5SGXKL9Evt0PvSK8XunFWlPJ7q8dC1pX
-	f+XJHFZYW51CKc9uWzF73aumHv/iTm1jzTDMeosWM5Q17KXBxjKMqIqnv1n+wSUH
-	eyTyuY85ZMSBpy5vJvMmZECuzaz9Ma/NHSiqsHNdwnq0d1aZBNpnNOI9utHoOU9J
-	gwqUgdnaYkRQK5DO47QZ7WJrVANHCPMtolWnf/7GcrtDYnTcSw9i+Q6PzcM7p+NS
-	0Qlw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm1; t=1693425085; x=1693511485; bh=EAAokXkBZ1oab
-	mHLEd4xI3A+ZO14oLciXrp5+OaR49E=; b=L/Jph3j1eWucO0jOVPQwlTO5pQs0i
-	Oa6lNnCSl1I4DN3KB5hNWbqv8JQBp2j7r9d8DsVoc/W3GZj0ZvbfWcpXxFkOJT0/
-	xrftvIs7dkBf5CCzG8MHY3sdizv0DjtM4PnyiPV/GX1JFSlltO6gZZ35IBDQAp+e
-	g6tgTurFihzq0RQPk09i9wb7+nTsfRAslfqOG14Kj4TblbyOQ81FSpT0g/KDW7tJ
-	Narg1/ORjjTOz/4gd+j1jRc6EtJ6Tv94/lXXzWqMz0ik2H8ND5yfHmEW8AgglMJ9
-	/2sbZLr8idRZcbpl98+PxcUqsvtEh7084D3d1gVXzLD02/wRY1Eg8lLqg==
-X-ME-Sender: <xms:vJ3vZMv0SI2oeOcUO_qrvCHdVfncwt-xTicrG-Hh0D-D8L8vWYXFPA>
-    <xme:vJ3vZJe4GLF3uWbGnIuBaz6fW_SjcddvKynT3EAfcKAOQVIbpsyE8vKuXKuoVIqwR
-    OvBpwAEHswci-5M468>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudefkedgudeggecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdet
-    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
-    htthgvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedt
-    keetffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:vJ3vZHya8rFzM3ZWaUkc_0L78fMJGWsuFavX5429EJzhI_YZIzrgCA>
-    <xmx:vJ3vZPOaSvJN-gwiqYhVSY4bWeTHvX9b7yuvVLoQPViDqBFSvqktDg>
-    <xmx:vJ3vZM8PQv_XjkHXjy4_uFZIB8s_CT2nvs7nPBEhf097Lr6-wNjw_g>
-    <xmx:vZ3vZNjSLyi2FUZobnkLrgMlbC0JTdK73QaaP7HMVy6rBf63jdmuEg>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 3B057B6008D; Wed, 30 Aug 2023 15:51:24 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-701-g9b2f44d3ee-fm-20230823.001-g9b2f44d3
-Mime-Version: 1.0
-Message-Id: <0036d0ee-4329-4fd8-9317-95818f576e98@app.fastmail.com>
-In-Reply-To:  <e53f0f8da1607856028d941e7ac8646aa2abc555.1692288018.git.geert@linux-m68k.org>
-References: <cover.1692288018.git.geert@linux-m68k.org>
- <e53f0f8da1607856028d941e7ac8646aa2abc555.1692288018.git.geert@linux-m68k.org>
-Date: Wed, 30 Aug 2023 15:51:03 -0400
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Geert Uytterhoeven" <geert@linux-m68k.org>,
- "Russell King" <linux@armlinux.org.uk>,
- "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
- "Helge Deller" <deller@gmx.de>, "Michael Ellerman" <mpe@ellerman.id.au>,
- "Nicholas Piggin" <npiggin@gmail.com>,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "David S . Miller" <davem@davemloft.net>,
- "Sergey Shtylyov" <s.shtylyov@omp.ru>, "Damien Le Moal" <dlemoal@kernel.org>,
- "Christoph Hellwig" <hch@lst.de>, "Jens Axboe" <axboe@kernel.dk>
-Subject: Re: [PATCH 1/9] ARM: Remove <asm/ide.h>
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RbdFF6RSCz2y1c
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Aug 2023 07:47:44 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1693432059;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UUcwBG4nsZ2S/sQ42rRb0yMsRkdTvD9Tq37GYF9pDHA=;
+	b=bw2EU0otHAaRQK+f0kfP49+ltQcc1GddoP33QTn8zVitl8W/xxAYx+BwPwl7xrO1tJFzPn
+	nDsv4iCoj57TgXPL3y1SAUDDLBd64kkQciTMKwASOh3cgknsP4ioGS+jlZjFfq9T0ar4oX
+	KrwYv9q1Reqrtm+/PkE+vblxXpdXjUE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1693432059;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UUcwBG4nsZ2S/sQ42rRb0yMsRkdTvD9Tq37GYF9pDHA=;
+	b=bw2EU0otHAaRQK+f0kfP49+ltQcc1GddoP33QTn8zVitl8W/xxAYx+BwPwl7xrO1tJFzPn
+	nDsv4iCoj57TgXPL3y1SAUDDLBd64kkQciTMKwASOh3cgknsP4ioGS+jlZjFfq9T0ar4oX
+	KrwYv9q1Reqrtm+/PkE+vblxXpdXjUE=
+Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com
+ [209.85.210.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-352-I_s7QhQzNXKr15xFaounnA-1; Wed, 30 Aug 2023 17:47:37 -0400
+X-MC-Unique: I_s7QhQzNXKr15xFaounnA-1
+Received: by mail-ot1-f71.google.com with SMTP id 46e09a7af769-6bc7afd0498so344724a34.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Aug 2023 14:47:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693432057; x=1694036857;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UUcwBG4nsZ2S/sQ42rRb0yMsRkdTvD9Tq37GYF9pDHA=;
+        b=dZ3uYekcFGxZr5Dp5w4y/yckSO8LIhcvxBFhJopOk8ITLAziqDhIeUXgm9x6DuyHbD
+         2TAA3nd1kMPD++HnJrAljlXKpyVP+mGq3Ac67lY7P0HH56Qn3k7ct20++l2C7arBXxOp
+         D7MxWL0rBAIgJGW9Out/VLSZrIgAKBZ71O4qL2eTC/oaIQJSydNkVikwkwT7/iTjVyR7
+         Mu0d6DspvPxNCF/f0KmA2Ibe8fL2uRMHb4Q/9i/0yWh2xstwLGH6gYn8jFER6ljxWsYD
+         kRcY7c24byWItgGjygOobzImPmyqAog08Kn8PrAVwg9vgRU2Hvy+s8s5SmRmZC7bfs+p
+         dbKA==
+X-Gm-Message-State: AOJu0YxrB3f26MwDBBzztQrAq5lkHAXSyXAeBVa6vBMBtg/bQZ/gUGu7
+	ijvlYiSvK2oH5O48unRMto3U8hgAFAMHJHwXSH+i5cqt8pgwuIboFCNIHTxZI4gOcvrQxKkq8F4
+	gucX6ujdBtqO5cgq+RLe2om+LmQ==
+X-Received: by 2002:a05:6830:2017:b0:6bd:b10:c321 with SMTP id e23-20020a056830201700b006bd0b10c321mr3792135otp.10.1693432057048;
+        Wed, 30 Aug 2023 14:47:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGixZZGfNZpc2TcsPswTDuhkrzYsm6YEBuIj13Oq30Mc6BUMAb9Y3bxVcPusJxHvaZdZGkI/A==
+X-Received: by 2002:a05:6830:2017:b0:6bd:b10:c321 with SMTP id e23-20020a056830201700b006bd0b10c321mr3792128otp.10.1693432056807;
+        Wed, 30 Aug 2023 14:47:36 -0700 (PDT)
+Received: from [192.168.1.17] (pool-68-160-135-240.bstnma.fios.verizon.net. [68.160.135.240])
+        by smtp.gmail.com with ESMTPSA id s29-20020a05620a031d00b007671cfe8a18sm43892qkm.13.2023.08.30.14.47.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 30 Aug 2023 14:47:36 -0700 (PDT)
+Message-ID: <cca0770c-1510-3a02-d0ba-82ee5a0ae4f2@redhat.com>
+Date: Wed, 30 Aug 2023 17:47:35 -0400
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: Recent Power changes and stack_trace_save_tsk_reliable?
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+References: <ZO4K6hflM/arMjse@redhat.com> <87o7ipxtdc.fsf@mail.lhotse>
+ <87il8xxcg7.fsf@mail.lhotse>
+From: Joe Lawrence <joe.lawrence@redhat.com>
+In-Reply-To: <87il8xxcg7.fsf@mail.lhotse>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,15 +102,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-Arch <linux-arch@vger.kernel.org>, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-ide@vger.kernel.org, linux-m68k@lists.linux-m68k.org, sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: live-patching@vger.kernel.org, Ryan Sullivan <rysulliv@redhat.com>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 17, 2023, at 12:07, Geert Uytterhoeven wrote:
-> As of commit b7fb14d3ac63117e ("ide: remove the legacy ide driver") in
-> v5.14, there are no more generic users of <asm/ide.h>.
->
-> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> ---
+On 8/30/23 02:37, Michael Ellerman wrote:
+> Michael Ellerman <mpe@ellerman.id.au> writes:
+>> Joe Lawrence <joe.lawrence@redhat.com> writes:
+>>> Hi ppc-dev list,
+>>>
+>>> We noticed that our kpatch integration tests started failing on ppc64le
+>>> when targeting the upstream v6.4 kernel, and then confirmed that the
+>>> in-tree livepatching kselftests similarly fail, too.  From the kselftest
+>>> results, it appears that livepatch transitions are no longer completing.
+>>
+>> Hi Joe,
+>>
+>> Thanks for the report.
+>>
+>> I thought I was running the livepatch tests, but looks like somewhere
+>> along the line my kernel .config lost CONFIG_TEST_LIVEPATCH=m, so I have
+>> been running the test but it just skips. :/
+>>
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+That config option is easy to drop if you use `make localmodconfig` to
+try and expedite the builds :D  Been there, done that too many times.
+
+>> I can reproduce the failure, and will see if I can bisect it more
+>> successfully.
+> 
+> It's caused by:
+> 
+>   eed7c420aac7 ("powerpc: copy_thread differentiate kthreads and user mode threads")
+> 
+> Which is obvious in hindsight :)
+> 
+> The diff below fixes it for me, can you test that on your setup?
+> 
+
+Thanks for the fast triage of this one.  The proposed fix works well on
+our setup.  I have yet to try the kpatch integration tests with this,
+but I can verify that all of the kernel livepatching kselftests now
+happily run.
+
+--
+Joe
+
+> A proper fix will need to be a bit bigger because the comments in there
+> are all slightly wrong now since the above commit.
+> 
+> Possibly we can also rework that code more substantially now that
+> copy_thread() is more careful about setting things up, but that would be
+> a follow-up.
+> 
+> diff --git a/arch/powerpc/kernel/stacktrace.c b/arch/powerpc/kernel/stacktrace.c
+> index 5de8597eaab8..d0b3509f13ee 100644
+> --- a/arch/powerpc/kernel/stacktrace.c
+> +++ b/arch/powerpc/kernel/stacktrace.c
+> @@ -73,7 +73,7 @@ int __no_sanitize_address arch_stack_walk_reliable(stack_trace_consume_fn consum
+>  	bool firstframe;
+>  
+>  	stack_end = stack_page + THREAD_SIZE;
+> -	if (!is_idle_task(task)) {
+> +	if (!(task->flags & PF_KTHREAD)) {
+>  		/*
+>  		 * For user tasks, this is the SP value loaded on
+>  		 * kernel entry, see "PACAKSAVE(r13)" in _switch() and
+> 
+> 
+> cheers
+> 
+
