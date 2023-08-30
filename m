@@ -2,76 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD53578D257
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Aug 2023 05:12:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4401378D2D0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Aug 2023 06:38:19 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=JXCa1fLT;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=WhrJ37Ng;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rb8V44hYGz3c2n
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Aug 2023 13:12:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RbBPP0wBqz3c33
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Aug 2023 14:38:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=JXCa1fLT;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=WhrJ37Ng;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::e31; helo=mail-vs1-xe31.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-vs1-xe31.google.com (mail-vs1-xe31.google.com [IPv6:2607:f8b0:4864:20::e31])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rb8TB702cz2yVc
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Aug 2023 13:11:25 +1000 (AEST)
-Received: by mail-vs1-xe31.google.com with SMTP id ada2fe7eead31-44e84fbaab9so2306912137.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Aug 2023 20:11:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693365082; x=1693969882; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l/zpOgLvIkPFvPcaR4xxmX73FKY11ocg9236FvpZH8M=;
-        b=JXCa1fLTWmD8bMfNDrpFAhDEDrAGdCCQLuyW0V+lWaGw1k8lnVYBU3vqNCWJhYk1/d
-         sfhg+vS0yjDlXit1+tNvm+I3Vfmv16ASFEuK6hawkfHvGl7GBjSOgiecNRGU8KPPKAx1
-         iuOEwB//IURm6m/qZ1UpWfsIP480ErsD2uJ0UyGbd38BFaJsshvCtRSWR39Rkve/liQj
-         V18IQ8ZzBfrZamCGaTLt6ijmfjvEKwbNOfpcjVGI0J0eUAFgDinLLFjAujGaE2xhOsN0
-         pXEfdllhnEk8M0IgpmhSkECF4FZ69YOSMSct2WuTAe4Af6PSjFvemReK6lWIjhDlzc+l
-         EUQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693365082; x=1693969882;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=l/zpOgLvIkPFvPcaR4xxmX73FKY11ocg9236FvpZH8M=;
-        b=kWy0w7WmexWGkSJqNcDpixgQGFOg4z3/JDbSaEmNjsEnXGZnNy8h/WqGEyyewb1UYY
-         /tOAOwU2USm43FrdQNBm+IXjLfoKpMBhnb4B7llZxMlGPF568Z37UCFXV7lDaA3igb+k
-         wIfdrGEWD4BtEJkPjWAm9zkywgzbDbZCPLV1zRJDEUY27ef0dx1buTfBXFZ+u21Gh6Yv
-         XXNfjstpZPL4HCDOom1khCNEjFZB6r7EqWkf6iRdZwGbVDPaghn+tZ70to9PXOO8XG+w
-         0zMTgm8EuPa9Sk4YA1X1xCqoUvcafQVCSkj50V/p/buWTkK55oZrreMfK+PVK3rueYoV
-         i7QA==
-X-Gm-Message-State: AOJu0YwmzIN1TgXeUVVTPZHP+JC1MffV2GuuholC1KN01PSh8xesl395
-	xqPvdWdrI8VmlBXUidWkVFL1IPfUaaSPRjzD+Mw=
-X-Google-Smtp-Source: AGHT+IFcKHvGWkCwrHeUph6QKacvUFGeoVK+QuP9OlsWGA4RbslTUal2tr2ZR3/eQCQuMJw2exL8eO3QY5zcc/iGMW8=
-X-Received: by 2002:a05:6102:3ce:b0:44e:dd43:38e1 with SMTP id
- n14-20020a05610203ce00b0044edd4338e1mr1018093vsq.1.1693365081966; Tue, 29 Aug
- 2023 20:11:21 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RbBNX1Dqxz2xrD
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Aug 2023 14:37:32 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1693370247;
+	bh=c+9MpWQMtdfgC8YXuHMOdEhIy1GyCHMukyePakrXBU0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=WhrJ37NgGgIrDiOYhgSMgEqK+AQE6+sANg31odcvrL94HTlJptwIDLpJpSGtOdNSZ
+	 9hfxSB7bD5n07ta2ySjzeOjoBKtxmoE5gOqmRNWiVy4EWDFAFmWkQ1Ds0qa7sATE32
+	 29LJk7NWbksL0bl6tQ3O8X3np7CxOz3uXFd2FljlJ0P9BDmrIdShVj+xlnFJvp41qF
+	 U4A1QuwhV/BSSqVa+EIsVxTvPbiV1J0oGikrNdG9ntJipVLJRiXxx6OkEQ0eObADGx
+	 24VuPpqtN5PM/2J6YKpzBkG53u2JVeWMYYvcUIdYVfHeV3kB7X9zAskvd9+0T/r1N0
+	 7onwQ3n6TmCFg==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RbBNQ0cMXz4wd0;
+	Wed, 30 Aug 2023 14:37:25 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Danny Tsen <dtsen@linux.ibm.com>, linux-crypto@vger.kernel.org
+Subject: Re: [PATCH] crypto: vmx: Improved AES/XTS performance of 6-way
+ unrolling for ppc.
+In-Reply-To: <20230829153704.135475-1-dtsen@linux.ibm.com>
+References: <20230829153704.135475-1-dtsen@linux.ibm.com>
+Date: Wed, 30 Aug 2023 14:37:25 +1000
+Message-ID: <87ledtxi0q.fsf@mail.lhotse>
 MIME-Version: 1.0
-References: <47d66c28-1eb2-07f5-d6f9-779d675aefe8@xs4all.nl>
- <87il9xu1ro.wl-tiwai@suse.de> <CAA+D8ANmBKMp_L2GS=Lp-saMQKja6L4E6No3yP-e=a5YQBD_jQ@mail.gmail.com>
- <87il9xoddo.wl-tiwai@suse.de> <CAA+D8AOVEpGxO0YNeS1p+Ym86k6VP-CNQB3JmbeT7mPKg0R99A@mail.gmail.com>
- <844ef9b6-d5e2-46a9-b7a5-7ee86a2e449c@sirena.org.uk> <CAA+D8AOnsx+7t3MrWm42waxtetL07nbKURLsh1hBx39LUDm+Zg@mail.gmail.com>
- <CAA+D8AMriHO60SD2OqQSDMmi7wm=0MkoW6faR5nyve-j2Q5AEQ@mail.gmail.com>
- <CAA+D8AN34-NVrgksRAG014PuHGUssTm0p-KR-HYGe+Pt8Yejxg@mail.gmail.com>
- <87wmxk8jaq.wl-tiwai@suse.de> <ZOe74PO4S6bj/QlV@finisterre.sirena.org.uk>
- <CAA+D8AM_pqbjQaE59n6Qm5gypLb8zPAwOpJR+_ZEG89-q3B8pg@mail.gmail.com>
- <8735076xdn.wl-tiwai@suse.de> <bc12f76e-a2ac-2818-f136-b31f6fa49310@xs4all.nl>
-In-Reply-To: <bc12f76e-a2ac-2818-f136-b31f6fa49310@xs4all.nl>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Wed, 30 Aug 2023 11:11:10 +0800
-Message-ID: <CAA+D8AMdvnBnaNyZ6jPpn9g=zwRa4Ht+mi=aU0o02zw_W-fEag@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 0/7] Add audio support in v4l2 framework
-To: Hans Verkuil <hverkuil@xs4all.nl>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,138 +58,501 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, lgirdwood@gmail.com, Xiubo.Lee@gmail.com, Takashi Iwai <tiwai@suse.de>, linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-media@vger.kernel.org, tfiga@chromium.org, nicoleotsuka@gmail.com, linuxppc-dev@lists.ozlabs.org, Mark Brown <broonie@kernel.org>, sakari.ailus@iki.fi, perex@perex.cz, mchehab@kernel.org, festevam@gmail.com, m.szyprowski@samsung.com
+Cc: herbert@gondor.apana.org.au, dtsen@us.ibm.com, nayna@linux.ibm.com, linux-kernel@vger.kernel.org, Danny Tsen <dtsen@linux.ibm.com>, appro@cryptogams.org, ltcgcw@linux.vnet.ibm.com, leitao@debian.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Aug 25, 2023 at 10:15=E2=80=AFPM Hans Verkuil <hverkuil@xs4all.nl> =
-wrote:
+Danny Tsen <dtsen@linux.ibm.com> writes:
+> Improve AES/XTS performance of 6-way unrolling for PowerPC up
+> to 17% with tcrypt.  This is done by using one instruction,
+> vpermxor, to replace xor and vsldoi.
 >
-> On 25/08/2023 15:54, Takashi Iwai wrote:
-> > On Fri, 25 Aug 2023 05:46:43 +0200,
-> > Shengjiu Wang wrote:
-> >>
-> >> On Fri, Aug 25, 2023 at 4:21=E2=80=AFAM Mark Brown <broonie@kernel.org=
-> wrote:
-> >>>
-> >>> On Thu, Aug 24, 2023 at 07:03:09PM +0200, Takashi Iwai wrote:
-> >>>> Shengjiu Wang wrote:
-> >>>
-> >>>>> But there are several issues:
-> >>>>> 1. Need to create sound cards.  ASRC module support multi instances=
-, then
-> >>>>> need to create multi sound cards for each instance.
-> >>>
-> >>>> Hm, why can't it be multiple PCM instances instead?
-> >>>
-> >>> I'm having a hard time following this one too.
-> >>>
-> >>>>> 2. The ASRC is an entirety but with DPCM we need to separate input =
-port and
-> >>>>> output port to playback substream and capture stream. Synchronous b=
-etween
-> >>>>> playback substream and capture substream is a problem.
-> >>>>> How to start them and stop them at the same time.
-> >>>
-> >>>> This could be done by enforcing the full duplex and linking the both
-> >>>> PCM streams, I suppose.
-> >>>
-> >>>>> So shall we make the decision that we can go to the V4L2 solution?
-> >>>
-> >>>> Honestly speaking, I don't mind much whether it's implemented in V2L=
-4
-> >>>> or not -- at least for the kernel part, we can reorganize / refactor
-> >>>> things internally.  But, the biggest remaining question to me is
-> >>>> whether this user-space interface is the most suitable one.  Is it
-> >>>> well defined, usable and maintained for the audio applications?  Or
-> >>>> is it meant to be a stop-gap for a specific use case?
-> >>>
-> >>> I'm having a really hard time summoning much enthusiasm for using v4l
-> >>> here, it feels like this is heading down the same bodge route as DPCM
-> >>> but directly as ABI so even harder to fix properly.  That said all th=
-e
-> >>> ALSA APIs are really intended to be used in real time and this sounds
-> >>> like a non real time application?  I don't fully understand what the
-> >>> actual use case is here.
-> >>
-> >> Thanks for your reply.
-> >>
-> >> This asrc memory to memory (memory ->asrc->memory) case is a non
-> >> real time use case.
-> >>
-> >> User fills the input buffer to the asrc module,  after conversion, the=
-n asrc
-> >> sends back the output buffer to user. So it is not a traditional ALSA =
-playback
-> >> and capture case. I think it is not good to create sound card for it, =
- it is
-> >> not a sound card actually.
-> >>
-> >> It is a specific use case,  there is no reference in current kernel.
-> >> v4l2 memory to memory is the closed implementation,  v4l2 current
-> >> support video, image, radio, tuner, touch devices, so it is not
-> >> complicated to add support for this specific audio case.
-> >>
-> >> Maybe you can go through these patches first.  Because we
-> >> had implemented the "memory -> asrc ->i2s device-> codec"
-> >> use case in ALSA.  Now the "memory->asrc->memory" needs
-> >> to reuse the code in asrc driver, so the first 3 patches is for refini=
-ng
-> >> the code to make it can be shared by the "memory->asrc->memory"
-> >> driver.
-> >>
-> >> The main change is in the v4l2 side, A /dev/vl42-audio will be created=
-,
-> >> user applications only use the ioctl of v4l2 framework.
-> >
-> > Ah, now I'm slowly understanding.  So, what you want is to have an
-> > interface to perform the batch conversion of a data stream from an
-> > input to an output?  And ALSA PCM interface doesn't fit fully for that
-> > purpose because the data handling is batched and it's not like a
-> > normal PCM streaming?
-> >
-> > Basically the whole M2M arguments are rather subtle.  Those are
-> > implementation details that can be resolved in several different ways
-> > in the kernel side.  But the design of the operation is the crucial
-> > point.
-> >
-> > Maybe we can consider implementing a similar feature in ALSA API, too.
-> > But it's too far-stretched for now.
-> >
-> > So, if v4l2 interface provides the requested feature (the batched
-> > audio stream conversion), it's OK to ride on it.
+> This patch has been tested with the kernel crypto module tcrypt.ko and
+> has passed the selftest.  The patch is also tested with
+> CONFIG_CRYPTO_MANAGER_EXTRA_TESTS enabled.
 >
-> The V4L2 M2M interface is simple: you open a video device and then you ca=
-n
-> pass data to the hardware, it processes it and you get the processed data=
- back.
->
-> The hardware just processes the data as fast as it can. Each time you ope=
-n
-> the video device a new instance is created, and each instance can pass jo=
-bs
-> to the hardware.
->
-> Currently it is used for video scalers, deinterlacers, colorspace convert=
-ers and
-> codecs, but in the end it is just data in, data out with some job schedul=
-ing (fifo)
-> towards the hardware. So supporting audio using the same core m2m framewo=
-rk wouldn't
-> be a big deal. We'd probably make a /dev/v4l-audio device for that.
->
-> It doesn't come for free: it is a new API, so besides adding support for =
-it, it
-> also needs to be documented, we would need compliance tests, and very lik=
-ely I
-> would want a new virtual driver for this (vim2m.c would be a good templat=
-e).
->
+> Signed-off-by: Danny Tsen <dtsen@linux.ibm.com>
+> ---
+>  drivers/crypto/vmx/aesp8-ppc.pl | 141 +++++++++++++++++++++-----------
+>  1 file changed, 92 insertions(+), 49 deletions(-)
 
-Thanks all.
+That's CRYPTOGAMS code, and is so far largely unchanged from the
+original. I see you've sent the same change to openssl, but it's not
+merged yet. Please document that in the change log, we want to keep the
+code in sync as much as possible, and document any divergences.
 
-I will try to pass the compliance test.  Should the virtual driver be added=
- now?
+cheers
 
-Best regards
-Wang Shengiu
+> diff --git a/drivers/crypto/vmx/aesp8-ppc.pl b/drivers/crypto/vmx/aesp8-ppc.pl
+> index 50a0a18f35da..f729589d792e 100644
+> --- a/drivers/crypto/vmx/aesp8-ppc.pl
+> +++ b/drivers/crypto/vmx/aesp8-ppc.pl
+> @@ -132,11 +132,12 @@ rcon:
+>  .long	0x1b000000, 0x1b000000, 0x1b000000, 0x1b000000	?rev
+>  .long	0x0d0e0f0c, 0x0d0e0f0c, 0x0d0e0f0c, 0x0d0e0f0c	?rev
+>  .long	0,0,0,0						?asis
+> +.long	0x0f102132, 0x43546576, 0x8798a9ba, 0xcbdcedfe
+>  Lconsts:
+>  	mflr	r0
+>  	bcl	20,31,\$+4
+>  	mflr	$ptr	 #vvvvv "distance between . and rcon
+> -	addi	$ptr,$ptr,-0x48
+> +	addi	$ptr,$ptr,-0x58
+>  	mtlr	r0
+>  	blr
+>  	.long	0
+> @@ -2495,6 +2496,17 @@ _aesp8_xts_encrypt6x:
+>  	li		$x70,0x70
+>  	mtspr		256,r0
+>  
+> +	xxlor		2, 32+$eighty7, 32+$eighty7
+> +	vsldoi		$eighty7,$tmp,$eighty7,1        # 0x010101..87
+> +	xxlor		1, 32+$eighty7, 32+$eighty7
+> +
+> +	# Load XOR Lconsts.
+> +	mr		$x70, r6
+> +	bl		Lconsts
+> +	lxvw4x		0, $x40, r6		# load XOR contents
+> +	mr		r6, $x70
+> +	li		$x70,0x70
+> +
+>  	subi		$rounds,$rounds,3	# -4 in total
+>  
+>  	lvx		$rndkey0,$x00,$key1	# load key schedule
+> @@ -2537,69 +2549,77 @@ Load_xts_enc_key:
+>  	?vperm		v31,v31,$twk5,$keyperm
+>  	lvx		v25,$x10,$key_		# pre-load round[2]
+>  
+> +	# Switch to use the following codes with 0x010101..87 to generate tweak.
+> +	#     eighty7 = 0x010101..87
+> +	# vsrab         tmp, tweak, seven       # next tweak value, right shift 7 bits
+> +	# vand          tmp, tmp, eighty7       # last byte with carry
+> +	# vaddubm       tweak, tweak, tweak     # left shift 1 bit (x2)
+> +	# xxlor         vsx, 0, 0
+> +	# vpermxor      tweak, tweak, tmp, vsx
+> +
+>  	 vperm		$in0,$inout,$inptail,$inpperm
+>  	 subi		$inp,$inp,31		# undo "caller"
+>  	vxor		$twk0,$tweak,$rndkey0
+>  	vsrab		$tmp,$tweak,$seven	# next tweak value
+>  	vaddubm		$tweak,$tweak,$tweak
+> -	vsldoi		$tmp,$tmp,$tmp,15
+>  	vand		$tmp,$tmp,$eighty7
+>  	 vxor		$out0,$in0,$twk0
+> -	vxor		$tweak,$tweak,$tmp
+> +	xxlor		32+$in1, 0, 0
+> +	vpermxor	$tweak, $tweak, $tmp, $in1
+>  
+>  	 lvx_u		$in1,$x10,$inp
+>  	vxor		$twk1,$tweak,$rndkey0
+>  	vsrab		$tmp,$tweak,$seven	# next tweak value
+>  	vaddubm		$tweak,$tweak,$tweak
+> -	vsldoi		$tmp,$tmp,$tmp,15
+>  	 le?vperm	$in1,$in1,$in1,$leperm
+>  	vand		$tmp,$tmp,$eighty7
+>  	 vxor		$out1,$in1,$twk1
+> -	vxor		$tweak,$tweak,$tmp
+> +	xxlor		32+$in2, 0, 0
+> +	vpermxor	$tweak, $tweak, $tmp, $in2
+>  
+>  	 lvx_u		$in2,$x20,$inp
+>  	 andi.		$taillen,$len,15
+>  	vxor		$twk2,$tweak,$rndkey0
+>  	vsrab		$tmp,$tweak,$seven	# next tweak value
+>  	vaddubm		$tweak,$tweak,$tweak
+> -	vsldoi		$tmp,$tmp,$tmp,15
+>  	 le?vperm	$in2,$in2,$in2,$leperm
+>  	vand		$tmp,$tmp,$eighty7
+>  	 vxor		$out2,$in2,$twk2
+> -	vxor		$tweak,$tweak,$tmp
+> +	xxlor		32+$in3, 0, 0
+> +	vpermxor	$tweak, $tweak, $tmp, $in3
+>  
+>  	 lvx_u		$in3,$x30,$inp
+>  	 sub		$len,$len,$taillen
+>  	vxor		$twk3,$tweak,$rndkey0
+>  	vsrab		$tmp,$tweak,$seven	# next tweak value
+>  	vaddubm		$tweak,$tweak,$tweak
+> -	vsldoi		$tmp,$tmp,$tmp,15
+>  	 le?vperm	$in3,$in3,$in3,$leperm
+>  	vand		$tmp,$tmp,$eighty7
+>  	 vxor		$out3,$in3,$twk3
+> -	vxor		$tweak,$tweak,$tmp
+> +	xxlor		32+$in4, 0, 0
+> +	vpermxor	$tweak, $tweak, $tmp, $in4
+>  
+>  	 lvx_u		$in4,$x40,$inp
+>  	 subi		$len,$len,0x60
+>  	vxor		$twk4,$tweak,$rndkey0
+>  	vsrab		$tmp,$tweak,$seven	# next tweak value
+>  	vaddubm		$tweak,$tweak,$tweak
+> -	vsldoi		$tmp,$tmp,$tmp,15
+>  	 le?vperm	$in4,$in4,$in4,$leperm
+>  	vand		$tmp,$tmp,$eighty7
+>  	 vxor		$out4,$in4,$twk4
+> -	vxor		$tweak,$tweak,$tmp
+> +	xxlor		32+$in5, 0, 0
+> +	vpermxor	$tweak, $tweak, $tmp, $in5
+>  
+>  	 lvx_u		$in5,$x50,$inp
+>  	 addi		$inp,$inp,0x60
+>  	vxor		$twk5,$tweak,$rndkey0
+>  	vsrab		$tmp,$tweak,$seven	# next tweak value
+>  	vaddubm		$tweak,$tweak,$tweak
+> -	vsldoi		$tmp,$tmp,$tmp,15
+>  	 le?vperm	$in5,$in5,$in5,$leperm
+>  	vand		$tmp,$tmp,$eighty7
+>  	 vxor		$out5,$in5,$twk5
+> -	vxor		$tweak,$tweak,$tmp
+> +	xxlor		32+$in0, 0, 0
+> +	vpermxor	$tweak, $tweak, $tmp, $in0
+>  
+>  	vxor		v31,v31,$rndkey0
+>  	mtctr		$rounds
+> @@ -2625,6 +2645,8 @@ Loop_xts_enc6x:
+>  	lvx		v25,$x10,$key_		# round[4]
+>  	bdnz		Loop_xts_enc6x
+>  
+> +	xxlor		32+$eighty7, 1, 1	# 0x010101..87
+> +
+>  	subic		$len,$len,96		# $len-=96
+>  	 vxor		$in0,$twk0,v31		# xor with last round key
+>  	vcipher		$out0,$out0,v24
+> @@ -2634,7 +2656,6 @@ Loop_xts_enc6x:
+>  	 vaddubm	$tweak,$tweak,$tweak
+>  	vcipher		$out2,$out2,v24
+>  	vcipher		$out3,$out3,v24
+> -	 vsldoi		$tmp,$tmp,$tmp,15
+>  	vcipher		$out4,$out4,v24
+>  	vcipher		$out5,$out5,v24
+>  
+> @@ -2642,7 +2663,8 @@ Loop_xts_enc6x:
+>  	 vand		$tmp,$tmp,$eighty7
+>  	vcipher		$out0,$out0,v25
+>  	vcipher		$out1,$out1,v25
+> -	 vxor		$tweak,$tweak,$tmp
+> +	 xxlor		32+$in1, 0, 0
+> +	 vpermxor	$tweak, $tweak, $tmp, $in1
+>  	vcipher		$out2,$out2,v25
+>  	vcipher		$out3,$out3,v25
+>  	 vxor		$in1,$twk1,v31
+> @@ -2653,13 +2675,13 @@ Loop_xts_enc6x:
+>  
+>  	and		r0,r0,$len
+>  	 vaddubm	$tweak,$tweak,$tweak
+> -	 vsldoi		$tmp,$tmp,$tmp,15
+>  	vcipher		$out0,$out0,v26
+>  	vcipher		$out1,$out1,v26
+>  	 vand		$tmp,$tmp,$eighty7
+>  	vcipher		$out2,$out2,v26
+>  	vcipher		$out3,$out3,v26
+> -	 vxor		$tweak,$tweak,$tmp
+> +	 xxlor		32+$in2, 0, 0
+> +	 vpermxor	$tweak, $tweak, $tmp, $in2
+>  	vcipher		$out4,$out4,v26
+>  	vcipher		$out5,$out5,v26
+>  
+> @@ -2673,7 +2695,6 @@ Loop_xts_enc6x:
+>  	 vaddubm	$tweak,$tweak,$tweak
+>  	vcipher		$out0,$out0,v27
+>  	vcipher		$out1,$out1,v27
+> -	 vsldoi		$tmp,$tmp,$tmp,15
+>  	vcipher		$out2,$out2,v27
+>  	vcipher		$out3,$out3,v27
+>  	 vand		$tmp,$tmp,$eighty7
+> @@ -2681,7 +2702,8 @@ Loop_xts_enc6x:
+>  	vcipher		$out5,$out5,v27
+>  
+>  	addi		$key_,$sp,$FRAME+15	# rewind $key_
+> -	 vxor		$tweak,$tweak,$tmp
+> +	 xxlor		32+$in3, 0, 0
+> +	 vpermxor	$tweak, $tweak, $tmp, $in3
+>  	vcipher		$out0,$out0,v28
+>  	vcipher		$out1,$out1,v28
+>  	 vxor		$in3,$twk3,v31
+> @@ -2690,7 +2712,6 @@ Loop_xts_enc6x:
+>  	vcipher		$out2,$out2,v28
+>  	vcipher		$out3,$out3,v28
+>  	 vaddubm	$tweak,$tweak,$tweak
+> -	 vsldoi		$tmp,$tmp,$tmp,15
+>  	vcipher		$out4,$out4,v28
+>  	vcipher		$out5,$out5,v28
+>  	lvx		v24,$x00,$key_		# re-pre-load round[1]
+> @@ -2698,7 +2719,8 @@ Loop_xts_enc6x:
+>  
+>  	vcipher		$out0,$out0,v29
+>  	vcipher		$out1,$out1,v29
+> -	 vxor		$tweak,$tweak,$tmp
+> +	 xxlor		32+$in4, 0, 0
+> +	 vpermxor	$tweak, $tweak, $tmp, $in4
+>  	vcipher		$out2,$out2,v29
+>  	vcipher		$out3,$out3,v29
+>  	 vxor		$in4,$twk4,v31
+> @@ -2708,14 +2730,14 @@ Loop_xts_enc6x:
+>  	vcipher		$out5,$out5,v29
+>  	lvx		v25,$x10,$key_		# re-pre-load round[2]
+>  	 vaddubm	$tweak,$tweak,$tweak
+> -	 vsldoi		$tmp,$tmp,$tmp,15
+>  
+>  	vcipher		$out0,$out0,v30
+>  	vcipher		$out1,$out1,v30
+>  	 vand		$tmp,$tmp,$eighty7
+>  	vcipher		$out2,$out2,v30
+>  	vcipher		$out3,$out3,v30
+> -	 vxor		$tweak,$tweak,$tmp
+> +	 xxlor		32+$in5, 0, 0
+> +	 vpermxor	$tweak, $tweak, $tmp, $in5
+>  	vcipher		$out4,$out4,v30
+>  	vcipher		$out5,$out5,v30
+>  	 vxor		$in5,$twk5,v31
+> @@ -2725,7 +2747,6 @@ Loop_xts_enc6x:
+>  	vcipherlast	$out0,$out0,$in0
+>  	 lvx_u		$in0,$x00,$inp		# load next input block
+>  	 vaddubm	$tweak,$tweak,$tweak
+> -	 vsldoi		$tmp,$tmp,$tmp,15
+>  	vcipherlast	$out1,$out1,$in1
+>  	 lvx_u		$in1,$x10,$inp
+>  	vcipherlast	$out2,$out2,$in2
+> @@ -2738,7 +2759,10 @@ Loop_xts_enc6x:
+>  	vcipherlast	$out4,$out4,$in4
+>  	 le?vperm	$in2,$in2,$in2,$leperm
+>  	 lvx_u		$in4,$x40,$inp
+> -	 vxor		$tweak,$tweak,$tmp
+> +	 xxlor		10, 32+$in0, 32+$in0
+> +	 xxlor		32+$in0, 0, 0
+> +	 vpermxor	$tweak, $tweak, $tmp, $in0
+> +	 xxlor		32+$in0, 10, 10
+>  	vcipherlast	$tmp,$out5,$in5		# last block might be needed
+>  						# in stealing mode
+>  	 le?vperm	$in3,$in3,$in3,$leperm
+> @@ -2771,6 +2795,8 @@ Loop_xts_enc6x:
+>  	mtctr		$rounds
+>  	beq		Loop_xts_enc6x		# did $len-=96 borrow?
+>  
+> +	xxlor		32+$eighty7, 2, 2	# 0x010101..87
+> +
+>  	addic.		$len,$len,0x60
+>  	beq		Lxts_enc6x_zero
+>  	cmpwi		$len,0x20
+> @@ -3147,6 +3173,17 @@ _aesp8_xts_decrypt6x:
+>  	li		$x70,0x70
+>  	mtspr		256,r0
+>  
+> +	xxlor		2, 32+$eighty7, 32+$eighty7
+> +	vsldoi		$eighty7,$tmp,$eighty7,1        # 0x010101..87
+> +	xxlor		1, 32+$eighty7, 32+$eighty7
+> +
+> +	# Load XOR Lconsts.
+> +	mr		$x70, r6
+> +	bl		Lconsts
+> +	lxvw4x		0, $x40, r6		# load XOR contents
+> +	mr		r6, $x70
+> +	li		$x70,0x70
+> +
+>  	subi		$rounds,$rounds,3	# -4 in total
+>  
+>  	lvx		$rndkey0,$x00,$key1	# load key schedule
+> @@ -3194,64 +3231,64 @@ Load_xts_dec_key:
+>  	vxor		$twk0,$tweak,$rndkey0
+>  	vsrab		$tmp,$tweak,$seven	# next tweak value
+>  	vaddubm		$tweak,$tweak,$tweak
+> -	vsldoi		$tmp,$tmp,$tmp,15
+>  	vand		$tmp,$tmp,$eighty7
+>  	 vxor		$out0,$in0,$twk0
+> -	vxor		$tweak,$tweak,$tmp
+> +	xxlor		32+$in1, 0, 0
+> +	vpermxor	$tweak, $tweak, $tmp, $in1
+>  
+>  	 lvx_u		$in1,$x10,$inp
+>  	vxor		$twk1,$tweak,$rndkey0
+>  	vsrab		$tmp,$tweak,$seven	# next tweak value
+>  	vaddubm		$tweak,$tweak,$tweak
+> -	vsldoi		$tmp,$tmp,$tmp,15
+>  	 le?vperm	$in1,$in1,$in1,$leperm
+>  	vand		$tmp,$tmp,$eighty7
+>  	 vxor		$out1,$in1,$twk1
+> -	vxor		$tweak,$tweak,$tmp
+> +	xxlor		32+$in2, 0, 0
+> +	vpermxor	$tweak, $tweak, $tmp, $in2
+>  
+>  	 lvx_u		$in2,$x20,$inp
+>  	 andi.		$taillen,$len,15
+>  	vxor		$twk2,$tweak,$rndkey0
+>  	vsrab		$tmp,$tweak,$seven	# next tweak value
+>  	vaddubm		$tweak,$tweak,$tweak
+> -	vsldoi		$tmp,$tmp,$tmp,15
+>  	 le?vperm	$in2,$in2,$in2,$leperm
+>  	vand		$tmp,$tmp,$eighty7
+>  	 vxor		$out2,$in2,$twk2
+> -	vxor		$tweak,$tweak,$tmp
+> +	xxlor		32+$in3, 0, 0
+> +	vpermxor	$tweak, $tweak, $tmp, $in3
+>  
+>  	 lvx_u		$in3,$x30,$inp
+>  	 sub		$len,$len,$taillen
+>  	vxor		$twk3,$tweak,$rndkey0
+>  	vsrab		$tmp,$tweak,$seven	# next tweak value
+>  	vaddubm		$tweak,$tweak,$tweak
+> -	vsldoi		$tmp,$tmp,$tmp,15
+>  	 le?vperm	$in3,$in3,$in3,$leperm
+>  	vand		$tmp,$tmp,$eighty7
+>  	 vxor		$out3,$in3,$twk3
+> -	vxor		$tweak,$tweak,$tmp
+> +	xxlor		32+$in4, 0, 0
+> +	vpermxor	$tweak, $tweak, $tmp, $in4
+>  
+>  	 lvx_u		$in4,$x40,$inp
+>  	 subi		$len,$len,0x60
+>  	vxor		$twk4,$tweak,$rndkey0
+>  	vsrab		$tmp,$tweak,$seven	# next tweak value
+>  	vaddubm		$tweak,$tweak,$tweak
+> -	vsldoi		$tmp,$tmp,$tmp,15
+>  	 le?vperm	$in4,$in4,$in4,$leperm
+>  	vand		$tmp,$tmp,$eighty7
+>  	 vxor		$out4,$in4,$twk4
+> -	vxor		$tweak,$tweak,$tmp
+> +	xxlor		32+$in5, 0, 0
+> +	vpermxor	$tweak, $tweak, $tmp, $in5
+>  
+>  	 lvx_u		$in5,$x50,$inp
+>  	 addi		$inp,$inp,0x60
+>  	vxor		$twk5,$tweak,$rndkey0
+>  	vsrab		$tmp,$tweak,$seven	# next tweak value
+>  	vaddubm		$tweak,$tweak,$tweak
+> -	vsldoi		$tmp,$tmp,$tmp,15
+>  	 le?vperm	$in5,$in5,$in5,$leperm
+>  	vand		$tmp,$tmp,$eighty7
+>  	 vxor		$out5,$in5,$twk5
+> -	vxor		$tweak,$tweak,$tmp
+> +	xxlor		32+$in0, 0, 0
+> +	vpermxor	$tweak, $tweak, $tmp, $in0
+>  
+>  	vxor		v31,v31,$rndkey0
+>  	mtctr		$rounds
+> @@ -3277,6 +3314,8 @@ Loop_xts_dec6x:
+>  	lvx		v25,$x10,$key_		# round[4]
+>  	bdnz		Loop_xts_dec6x
+>  
+> +	xxlor		32+$eighty7, 1, 1	# 0x010101..87
+> +
+>  	subic		$len,$len,96		# $len-=96
+>  	 vxor		$in0,$twk0,v31		# xor with last round key
+>  	vncipher	$out0,$out0,v24
+> @@ -3286,7 +3325,6 @@ Loop_xts_dec6x:
+>  	 vaddubm	$tweak,$tweak,$tweak
+>  	vncipher	$out2,$out2,v24
+>  	vncipher	$out3,$out3,v24
+> -	 vsldoi		$tmp,$tmp,$tmp,15
+>  	vncipher	$out4,$out4,v24
+>  	vncipher	$out5,$out5,v24
+>  
+> @@ -3294,7 +3332,8 @@ Loop_xts_dec6x:
+>  	 vand		$tmp,$tmp,$eighty7
+>  	vncipher	$out0,$out0,v25
+>  	vncipher	$out1,$out1,v25
+> -	 vxor		$tweak,$tweak,$tmp
+> +	 xxlor		32+$in1, 0, 0
+> +	 vpermxor	$tweak, $tweak, $tmp, $in1
+>  	vncipher	$out2,$out2,v25
+>  	vncipher	$out3,$out3,v25
+>  	 vxor		$in1,$twk1,v31
+> @@ -3305,13 +3344,13 @@ Loop_xts_dec6x:
+>  
+>  	and		r0,r0,$len
+>  	 vaddubm	$tweak,$tweak,$tweak
+> -	 vsldoi		$tmp,$tmp,$tmp,15
+>  	vncipher	$out0,$out0,v26
+>  	vncipher	$out1,$out1,v26
+>  	 vand		$tmp,$tmp,$eighty7
+>  	vncipher	$out2,$out2,v26
+>  	vncipher	$out3,$out3,v26
+> -	 vxor		$tweak,$tweak,$tmp
+> +	 xxlor		32+$in2, 0, 0
+> +	 vpermxor	$tweak, $tweak, $tmp, $in2
+>  	vncipher	$out4,$out4,v26
+>  	vncipher	$out5,$out5,v26
+>  
+> @@ -3325,7 +3364,6 @@ Loop_xts_dec6x:
+>  	 vaddubm	$tweak,$tweak,$tweak
+>  	vncipher	$out0,$out0,v27
+>  	vncipher	$out1,$out1,v27
+> -	 vsldoi		$tmp,$tmp,$tmp,15
+>  	vncipher	$out2,$out2,v27
+>  	vncipher	$out3,$out3,v27
+>  	 vand		$tmp,$tmp,$eighty7
+> @@ -3333,7 +3371,8 @@ Loop_xts_dec6x:
+>  	vncipher	$out5,$out5,v27
+>  
+>  	addi		$key_,$sp,$FRAME+15	# rewind $key_
+> -	 vxor		$tweak,$tweak,$tmp
+> +	 xxlor		32+$in3, 0, 0
+> +	 vpermxor	$tweak, $tweak, $tmp, $in3
+>  	vncipher	$out0,$out0,v28
+>  	vncipher	$out1,$out1,v28
+>  	 vxor		$in3,$twk3,v31
+> @@ -3342,7 +3381,6 @@ Loop_xts_dec6x:
+>  	vncipher	$out2,$out2,v28
+>  	vncipher	$out3,$out3,v28
+>  	 vaddubm	$tweak,$tweak,$tweak
+> -	 vsldoi		$tmp,$tmp,$tmp,15
+>  	vncipher	$out4,$out4,v28
+>  	vncipher	$out5,$out5,v28
+>  	lvx		v24,$x00,$key_		# re-pre-load round[1]
+> @@ -3350,7 +3388,8 @@ Loop_xts_dec6x:
+>  
+>  	vncipher	$out0,$out0,v29
+>  	vncipher	$out1,$out1,v29
+> -	 vxor		$tweak,$tweak,$tmp
+> +	 xxlor		32+$in4, 0, 0
+> +	 vpermxor	$tweak, $tweak, $tmp, $in4
+>  	vncipher	$out2,$out2,v29
+>  	vncipher	$out3,$out3,v29
+>  	 vxor		$in4,$twk4,v31
+> @@ -3360,14 +3399,14 @@ Loop_xts_dec6x:
+>  	vncipher	$out5,$out5,v29
+>  	lvx		v25,$x10,$key_		# re-pre-load round[2]
+>  	 vaddubm	$tweak,$tweak,$tweak
+> -	 vsldoi		$tmp,$tmp,$tmp,15
+>  
+>  	vncipher	$out0,$out0,v30
+>  	vncipher	$out1,$out1,v30
+>  	 vand		$tmp,$tmp,$eighty7
+>  	vncipher	$out2,$out2,v30
+>  	vncipher	$out3,$out3,v30
+> -	 vxor		$tweak,$tweak,$tmp
+> +	 xxlor		32+$in5, 0, 0
+> +	 vpermxor	$tweak, $tweak, $tmp, $in5
+>  	vncipher	$out4,$out4,v30
+>  	vncipher	$out5,$out5,v30
+>  	 vxor		$in5,$twk5,v31
+> @@ -3377,7 +3416,6 @@ Loop_xts_dec6x:
+>  	vncipherlast	$out0,$out0,$in0
+>  	 lvx_u		$in0,$x00,$inp		# load next input block
+>  	 vaddubm	$tweak,$tweak,$tweak
+> -	 vsldoi		$tmp,$tmp,$tmp,15
+>  	vncipherlast	$out1,$out1,$in1
+>  	 lvx_u		$in1,$x10,$inp
+>  	vncipherlast	$out2,$out2,$in2
+> @@ -3390,7 +3428,10 @@ Loop_xts_dec6x:
+>  	vncipherlast	$out4,$out4,$in4
+>  	 le?vperm	$in2,$in2,$in2,$leperm
+>  	 lvx_u		$in4,$x40,$inp
+> -	 vxor		$tweak,$tweak,$tmp
+> +	 xxlor		10, 32+$in0, 32+$in0
+> +	 xxlor		32+$in0, 0, 0
+> +	 vpermxor	$tweak, $tweak, $tmp, $in0
+> +	 xxlor		32+$in0, 10, 10
+>  	vncipherlast	$out5,$out5,$in5
+>  	 le?vperm	$in3,$in3,$in3,$leperm
+>  	 lvx_u		$in5,$x50,$inp
+> @@ -3421,6 +3462,8 @@ Loop_xts_dec6x:
+>  	mtctr		$rounds
+>  	beq		Loop_xts_dec6x		# did $len-=96 borrow?
+>  
+> +	xxlor		32+$eighty7, 2, 2	# 0x010101..87
+> +
+>  	addic.		$len,$len,0x60
+>  	beq		Lxts_dec6x_zero
+>  	cmpwi		$len,0x20
+> -- 
+> 2.31.1
