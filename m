@@ -1,59 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ACCA78D29E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Aug 2023 05:58:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD53578D257
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Aug 2023 05:12:14 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=R2eMjMGc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=JXCa1fLT;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rb9WV1vJxz2yVn
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Aug 2023 13:58:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rb8V44hYGz3c2n
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Aug 2023 13:12:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=R2eMjMGc;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=JXCa1fLT;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=jlayton@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::e31; helo=mail-vs1-xe31.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-vs1-xe31.google.com (mail-vs1-xe31.google.com [IPv6:2607:f8b0:4864:20::e31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rb5K275glz2yV5;
-	Wed, 30 Aug 2023 10:49:10 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 727CE61187;
-	Wed, 30 Aug 2023 00:49:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15649C433C8;
-	Wed, 30 Aug 2023 00:48:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1693356547;
-	bh=Y6mimTT4f5bHTNOgMAPJs7UzoDd9JcRrnEgta8s7/7g=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=R2eMjMGcVP6twJXzPd3GjCC/QAkoBXyIXwyF0PetiX1VDQJtkSU/FrVUdLPhlHeJk
-	 dBHqNW4EShjtZaWh7sFQvaiUl3mq77UH9KDN3DI2snJ6o1c+81N9JuEjNxovdv+bSx
-	 sgcIB4JoE+RW7C4bNpHemTP/NmKBpTL7+v/S4iHTHVlduZjb2wd1jti+ZtvOSZrtwV
-	 l+HJJMf2BwuQ5fHlwOGaHAX0BTHl6xVSRaJy3EeRODk9yD0xK9grM4eFB73+9nNR6U
-	 SUPRRhBT9hKA3cHo92ct+4AiPcoeZ/GYLow2fGYu2g/oM5lHg/5skk6mbUINrwlVsy
-	 FRJBQs41w8qcA==
-Message-ID: <d73e7de5056a34578a193185770e46584450d8b7.camel@kernel.org>
-Subject: Re: [PATCH v2 08/92] fs: new helper: simple_rename_timestamp
-From: Jeff Layton <jlayton@kernel.org>
-To: Al Viro <viro@zeniv.linux.org.uk>
-Date: Tue, 29 Aug 2023 20:48:48 -0400
-In-Reply-To: <20230830001917.GC461907@ZenIV>
-References: <20230705185812.579118-1-jlayton@kernel.org>
-	 <20230705185812.579118-3-jlayton@kernel.org>
-	 <20230830001917.GC461907@ZenIV>
-Content-Type: text/plain; charset="ISO-8859-15"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rb8TB702cz2yVc
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Aug 2023 13:11:25 +1000 (AEST)
+Received: by mail-vs1-xe31.google.com with SMTP id ada2fe7eead31-44e84fbaab9so2306912137.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Aug 2023 20:11:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1693365082; x=1693969882; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=l/zpOgLvIkPFvPcaR4xxmX73FKY11ocg9236FvpZH8M=;
+        b=JXCa1fLTWmD8bMfNDrpFAhDEDrAGdCCQLuyW0V+lWaGw1k8lnVYBU3vqNCWJhYk1/d
+         sfhg+vS0yjDlXit1+tNvm+I3Vfmv16ASFEuK6hawkfHvGl7GBjSOgiecNRGU8KPPKAx1
+         iuOEwB//IURm6m/qZ1UpWfsIP480ErsD2uJ0UyGbd38BFaJsshvCtRSWR39Rkve/liQj
+         V18IQ8ZzBfrZamCGaTLt6ijmfjvEKwbNOfpcjVGI0J0eUAFgDinLLFjAujGaE2xhOsN0
+         pXEfdllhnEk8M0IgpmhSkECF4FZ69YOSMSct2WuTAe4Af6PSjFvemReK6lWIjhDlzc+l
+         EUQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693365082; x=1693969882;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=l/zpOgLvIkPFvPcaR4xxmX73FKY11ocg9236FvpZH8M=;
+        b=kWy0w7WmexWGkSJqNcDpixgQGFOg4z3/JDbSaEmNjsEnXGZnNy8h/WqGEyyewb1UYY
+         /tOAOwU2USm43FrdQNBm+IXjLfoKpMBhnb4B7llZxMlGPF568Z37UCFXV7lDaA3igb+k
+         wIfdrGEWD4BtEJkPjWAm9zkywgzbDbZCPLV1zRJDEUY27ef0dx1buTfBXFZ+u21Gh6Yv
+         XXNfjstpZPL4HCDOom1khCNEjFZB6r7EqWkf6iRdZwGbVDPaghn+tZ70to9PXOO8XG+w
+         0zMTgm8EuPa9Sk4YA1X1xCqoUvcafQVCSkj50V/p/buWTkK55oZrreMfK+PVK3rueYoV
+         i7QA==
+X-Gm-Message-State: AOJu0YwmzIN1TgXeUVVTPZHP+JC1MffV2GuuholC1KN01PSh8xesl395
+	xqPvdWdrI8VmlBXUidWkVFL1IPfUaaSPRjzD+Mw=
+X-Google-Smtp-Source: AGHT+IFcKHvGWkCwrHeUph6QKacvUFGeoVK+QuP9OlsWGA4RbslTUal2tr2ZR3/eQCQuMJw2exL8eO3QY5zcc/iGMW8=
+X-Received: by 2002:a05:6102:3ce:b0:44e:dd43:38e1 with SMTP id
+ n14-20020a05610203ce00b0044edd4338e1mr1018093vsq.1.1693365081966; Tue, 29 Aug
+ 2023 20:11:21 -0700 (PDT)
 MIME-Version: 1.0
-X-Mailman-Approved-At: Wed, 30 Aug 2023 13:57:00 +1000
+References: <47d66c28-1eb2-07f5-d6f9-779d675aefe8@xs4all.nl>
+ <87il9xu1ro.wl-tiwai@suse.de> <CAA+D8ANmBKMp_L2GS=Lp-saMQKja6L4E6No3yP-e=a5YQBD_jQ@mail.gmail.com>
+ <87il9xoddo.wl-tiwai@suse.de> <CAA+D8AOVEpGxO0YNeS1p+Ym86k6VP-CNQB3JmbeT7mPKg0R99A@mail.gmail.com>
+ <844ef9b6-d5e2-46a9-b7a5-7ee86a2e449c@sirena.org.uk> <CAA+D8AOnsx+7t3MrWm42waxtetL07nbKURLsh1hBx39LUDm+Zg@mail.gmail.com>
+ <CAA+D8AMriHO60SD2OqQSDMmi7wm=0MkoW6faR5nyve-j2Q5AEQ@mail.gmail.com>
+ <CAA+D8AN34-NVrgksRAG014PuHGUssTm0p-KR-HYGe+Pt8Yejxg@mail.gmail.com>
+ <87wmxk8jaq.wl-tiwai@suse.de> <ZOe74PO4S6bj/QlV@finisterre.sirena.org.uk>
+ <CAA+D8AM_pqbjQaE59n6Qm5gypLb8zPAwOpJR+_ZEG89-q3B8pg@mail.gmail.com>
+ <8735076xdn.wl-tiwai@suse.de> <bc12f76e-a2ac-2818-f136-b31f6fa49310@xs4all.nl>
+In-Reply-To: <bc12f76e-a2ac-2818-f136-b31f6fa49310@xs4all.nl>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Wed, 30 Aug 2023 11:11:10 +0800
+Message-ID: <CAA+D8AMdvnBnaNyZ6jPpn9g=zwRa4Ht+mi=aU0o02zw_W-fEag@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 0/7] Add audio support in v4l2 framework
+To: Hans Verkuil <hverkuil@xs4all.nl>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,39 +83,138 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: lucho@ionkov.net, rafael@kernel.org, djwong@kernel.org, al@alarsen.net, cmllamas@google.com, andrii@kernel.org, hughd@google.com, john.johansen@canonical.com, agordeev@linux.ibm.com, hch@lst.de, hubcap@omnibond.com, pc@manguebit.com, linux-xfs@vger.kernel.org, bvanassche@acm.org, jeffxu@chromium.org, john@keeping.me.uk, yi.zhang@huawei.com, jmorris@namei.org, code@tyhicks.com, stern@rowland.harvard.edu, borntraeger@linux.ibm.com, devel@lists.orangefs.org, mirimmad17@gmail.com, sprasad@microsoft.com, jaharkes@cs.cmu.edu, linux-um@lists.infradead.org, npiggin@gmail.com, jlbec@evilplan.org, ericvh@kernel.org, surenb@google.com, trond.myklebust@hammerspace.com, anton@tuxera.com, brauner@kernel.org, wsa+renesas@sang-engineering.com, gregkh@linuxfoundation.org, stephen.smalley.work@gmail.com, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, lsahlber@redhat.com, senozhatsky@chromium.org, arve@android.com, chuck.lever@oracle.com, svens@linux.ibm.com, jolsa@kernel.org, jack@suse.c
- om, tj@kernel.org, akpm@linux-foundation.org, linux-trace-kernel@vger.kernel.org, xu.xin16@zte.com.cn, shaggy@kernel.org, dhavale@google.com, penguin-kernel@i-love.sakura.ne.jp, zohar@linux.ibm.com, linux-mm@kvack.org, joel@joelfernandes.org, edumazet@google.com, sdf@google.com, jomajm@gmail.com, linux-s390@vger.kernel.org, linux-nilfs@vger.kernel.org, paul@paul-moore.com, leon@kernel.org, john.fastabend@gmail.com, mcgrof@kernel.org, chi.minghao@zte.com.cn, codalist@coda.cs.cmu.edu, selinux@vger.kernel.org, zhangpeng362@huawei.com, quic_ugoswami@quicinc.com, yhs@fb.com, yzaikin@google.com, linkinjeon@kernel.org, mhiramat@kernel.org, ecryptfs@vger.kernel.org, tkjos@android.com, madkar@cs.stonybrook.edu, gor@linux.ibm.com, yuzhe@nfschina.com, linuxppc-dev@lists.ozlabs.org, reiserfs-devel@vger.kernel.org, miklos@szeredi.hu, huyue2@coolpad.com, jaegeuk@kernel.org, gargaditya08@live.com, maco@android.com, hirofumi@mail.parknet.co.jp, haoluo@google.com, tony.luck@intel.com, tytso@mit.edu,
-  nico@fluxnic.net, linux-ntfs-dev@lists.sourceforge.net, muchun.song@linux.dev, roberto.sassu@huawei.com, linux-f2fs-devel@lists.sourceforge.net, yang.yang29@zte.com.cn, gpiccoli@igalia.com, ebiederm@xmission.com, anna@kernel.org, quic_uaggarwa@quicinc.com, bwarrum@linux.ibm.com, mike.kravetz@oracle.com, jingyuwang_vip@163.com, linux-efi@vger.kernel.org, error27@gmail.com, martin@omnibond.com, trix@redhat.com, ocfs2-devel@lists.linux.dev, ast@kernel.org, sebastian.reichel@collabora.com, clm@fb.com, linux-mtd@lists.infradead.org, willy@infradead.org, marc.dionne@auristor.com, linux-afs@lists.infradead.org, raven@themaw.net, naohiro.aota@wdc.com, daniel@iogearbox.net, dennis.dalessandro@cornelisnetworks.com, linux-rdma@vger.kernel.org, quic_linyyuan@quicinc.com, coda@cs.cmu.edu, slava@dubeyko.com, idryomov@gmail.com, pabeni@redhat.com, adobriyan@gmail.com, serge@hallyn.com, chengzhihao1@huawei.com, axboe@kernel.dk, amir73il@gmail.com, linuszeng@tencent.com, keescook@chromium.org, arnd
- @arndb.de, autofs@vger.kernel.org, rostedt@goodmis.org, yifeliu@cs.stonybrook.edu, dlemoal@kernel.org, eparis@parisplace.org, ceph-devel@vger.kernel.org, xiang@kernel.org, yijiangshan@kylinos.cn, dhowells@redhat.com, linux-nfs@vger.kernel.org, linux-ext4@vger.kernel.org, kolga@netapp.com, song@kernel.org, samba-technical@lists.samba.org, sfrench@samba.org, jk@ozlabs.org, netdev@vger.kernel.org, rpeterso@redhat.com, linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org, ntfs3@lists.linux.dev, linux-erofs@lists.ozlabs.org, davem@davemloft.net, jfs-discussion@lists.sourceforge.net, princekumarmaurya06@gmail.com, ebiggers@google.com, neilb@suse.de, asmadeus@codewreck.org, linux_oss@crudebyte.com, me@bobcopeland.com, kpsingh@kernel.org, okanatov@gmail.com, almaz.alexandrovich@paragon-software.com, joseph.qi@linux.alibaba.com, hayama@lineo.co.jp, adilger.kernel@dilger.ca, mikulas@artax.karlin.mff.cuni.cz, shaozhengchao@huawei.com, chenzhongjin@huawei.com, ardb@kernel.org, anton.ivanov@cambri
- dgegreys.com, agruenba@redhat.com, richard@nod.at, mark@fasheh.com, shr@devkernel.io, Dai.Ngo@oracle.com, cluster-devel@redhat.com, jgg@ziepe.ca, kuba@kernel.org, riel@surriel.com, salah.triki@gmail.com, dushistov@mail.ru, linux-cifs@vger.kernel.org, hca@linux.ibm.com, chao@kernel.org, apparmor@lists.ubuntu.com, josef@toxicpanda.com, Liam.Howlett@oracle.com, tom@talpey.com, hdegoede@redhat.com, linux-hardening@vger.kernel.org, aivazian.tigran@gmail.com, dchinner@redhat.com, dsterba@suse.com, xiubli@redhat.com, konishi.ryusuke@gmail.com, jgross@suse.com, jth@kernel.org, rituagar@linux.ibm.com, luisbg@kernel.org, martin.lau@linux.dev, v9fs@lists.linux.dev, fmdefrancesco@gmail.com, linux-unionfs@vger.kernel.org, lrh2000@pku.edu.cn, linux-security-module@vger.kernel.org, ezk@cs.stonybrook.edu, jefflexu@linux.alibaba.com, linux@treblig.org, hannes@cmpxchg.org, phillip@squashfs.org.uk, johannes@sipsolutions.net, sj1557.seo@samsung.com, dwmw2@infradead.org, linux-karma-devel@lists.sourcefo
- rge.net, linux-btrfs@vger.kernel.org
+Cc: alsa-devel@alsa-project.org, lgirdwood@gmail.com, Xiubo.Lee@gmail.com, Takashi Iwai <tiwai@suse.de>, linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-media@vger.kernel.org, tfiga@chromium.org, nicoleotsuka@gmail.com, linuxppc-dev@lists.ozlabs.org, Mark Brown <broonie@kernel.org>, sakari.ailus@iki.fi, perex@perex.cz, mchehab@kernel.org, festevam@gmail.com, m.szyprowski@samsung.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2023-08-30 at 01:19 +0100, Al Viro wrote:
-> On Wed, Jul 05, 2023 at 02:58:11PM -0400, Jeff Layton wrote:
->=20
-> > + * POSIX mandates that the old and new parent directories have their c=
-time and
-> > + * mtime updated, and that inodes of @old_dentry and @new_dentry (if a=
-ny), have
-> > + * their ctime updated.
->=20
-> APPLICATION USAGE
-> Some implementations mark for update the last file status change timestam=
-p
-> of renamed files and some do not. Applications which make use of the
-> last file status change timestamp may behave differently with respect
-> to renamed files unless they are designed to allow for either behavior.
+On Fri, Aug 25, 2023 at 10:15=E2=80=AFPM Hans Verkuil <hverkuil@xs4all.nl> =
+wrote:
 >
-> So for children POSIX permits rather than mandates.  Doesn't really matte=
-r;
-> Linux behaviour had been to touch ctime on children since way back, if
-> not since the very beginning.
+> On 25/08/2023 15:54, Takashi Iwai wrote:
+> > On Fri, 25 Aug 2023 05:46:43 +0200,
+> > Shengjiu Wang wrote:
+> >>
+> >> On Fri, Aug 25, 2023 at 4:21=E2=80=AFAM Mark Brown <broonie@kernel.org=
+> wrote:
+> >>>
+> >>> On Thu, Aug 24, 2023 at 07:03:09PM +0200, Takashi Iwai wrote:
+> >>>> Shengjiu Wang wrote:
+> >>>
+> >>>>> But there are several issues:
+> >>>>> 1. Need to create sound cards.  ASRC module support multi instances=
+, then
+> >>>>> need to create multi sound cards for each instance.
+> >>>
+> >>>> Hm, why can't it be multiple PCM instances instead?
+> >>>
+> >>> I'm having a hard time following this one too.
+> >>>
+> >>>>> 2. The ASRC is an entirety but with DPCM we need to separate input =
+port and
+> >>>>> output port to playback substream and capture stream. Synchronous b=
+etween
+> >>>>> playback substream and capture substream is a problem.
+> >>>>> How to start them and stop them at the same time.
+> >>>
+> >>>> This could be done by enforcing the full duplex and linking the both
+> >>>> PCM streams, I suppose.
+> >>>
+> >>>>> So shall we make the decision that we can go to the V4L2 solution?
+> >>>
+> >>>> Honestly speaking, I don't mind much whether it's implemented in V2L=
+4
+> >>>> or not -- at least for the kernel part, we can reorganize / refactor
+> >>>> things internally.  But, the biggest remaining question to me is
+> >>>> whether this user-space interface is the most suitable one.  Is it
+> >>>> well defined, usable and maintained for the audio applications?  Or
+> >>>> is it meant to be a stop-gap for a specific use case?
+> >>>
+> >>> I'm having a really hard time summoning much enthusiasm for using v4l
+> >>> here, it feels like this is heading down the same bodge route as DPCM
+> >>> but directly as ABI so even harder to fix properly.  That said all th=
+e
+> >>> ALSA APIs are really intended to be used in real time and this sounds
+> >>> like a non real time application?  I don't fully understand what the
+> >>> actual use case is here.
+> >>
+> >> Thanks for your reply.
+> >>
+> >> This asrc memory to memory (memory ->asrc->memory) case is a non
+> >> real time use case.
+> >>
+> >> User fills the input buffer to the asrc module,  after conversion, the=
+n asrc
+> >> sends back the output buffer to user. So it is not a traditional ALSA =
+playback
+> >> and capture case. I think it is not good to create sound card for it, =
+ it is
+> >> not a sound card actually.
+> >>
+> >> It is a specific use case,  there is no reference in current kernel.
+> >> v4l2 memory to memory is the closed implementation,  v4l2 current
+> >> support video, image, radio, tuner, touch devices, so it is not
+> >> complicated to add support for this specific audio case.
+> >>
+> >> Maybe you can go through these patches first.  Because we
+> >> had implemented the "memory -> asrc ->i2s device-> codec"
+> >> use case in ALSA.  Now the "memory->asrc->memory" needs
+> >> to reuse the code in asrc driver, so the first 3 patches is for refini=
+ng
+> >> the code to make it can be shared by the "memory->asrc->memory"
+> >> driver.
+> >>
+> >> The main change is in the v4l2 side, A /dev/vl42-audio will be created=
+,
+> >> user applications only use the ioctl of v4l2 framework.
+> >
+> > Ah, now I'm slowly understanding.  So, what you want is to have an
+> > interface to perform the batch conversion of a data stream from an
+> > input to an output?  And ALSA PCM interface doesn't fit fully for that
+> > purpose because the data handling is batched and it's not like a
+> > normal PCM streaming?
+> >
+> > Basically the whole M2M arguments are rather subtle.  Those are
+> > implementation details that can be resolved in several different ways
+> > in the kernel side.  But the design of the operation is the crucial
+> > point.
+> >
+> > Maybe we can consider implementing a similar feature in ALSA API, too.
+> > But it's too far-stretched for now.
+> >
+> > So, if v4l2 interface provides the requested feature (the batched
+> > audio stream conversion), it's OK to ride on it.
+>
+> The V4L2 M2M interface is simple: you open a video device and then you ca=
+n
+> pass data to the hardware, it processes it and you get the processed data=
+ back.
+>
+> The hardware just processes the data as fast as it can. Each time you ope=
+n
+> the video device a new instance is created, and each instance can pass jo=
+bs
+> to the hardware.
+>
+> Currently it is used for video scalers, deinterlacers, colorspace convert=
+ers and
+> codecs, but in the end it is just data in, data out with some job schedul=
+ing (fifo)
+> towards the hardware. So supporting audio using the same core m2m framewo=
+rk wouldn't
+> be a big deal. We'd probably make a /dev/v4l-audio device for that.
+>
+> It doesn't come for free: it is a new API, so besides adding support for =
+it, it
+> also needs to be documented, we would need compliance tests, and very lik=
+ely I
+> would want a new virtual driver for this (vim2m.c would be a good templat=
+e).
+>
 
-Mea culpa. You're quite correct. I'll plan to roll a small patch to
-update the comment over this function.
+Thanks all.
 
-Thanks!
---=20
-Jeff Layton <jlayton@kernel.org>
+I will try to pass the compliance test.  Should the virtual driver be added=
+ now?
+
+Best regards
+Wang Shengiu
