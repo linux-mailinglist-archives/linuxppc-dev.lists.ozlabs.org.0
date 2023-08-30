@@ -2,50 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C93EB78D365
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Aug 2023 08:38:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24CB278D398
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Aug 2023 09:30:15 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=L/3BFnHH;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=a7iPapvR;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=VRb/XPyy;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RbF4C4Q3Dz3c1J
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Aug 2023 16:38:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RbGCm6rsXz3bv9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Aug 2023 17:30:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=L/3BFnHH;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=a7iPapvR;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=VRb/XPyy;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RbF3H1Z59z2xps
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Aug 2023 16:37:47 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1693377466;
-	bh=vRm+U0m7WUTiTK+V6GXUqnaveSMN3SbjFT0m0KXkE2A=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=L/3BFnHHBXlTUXyXo3M3BZs2XZWsABinbhUDMk+ZcKQnnO8F9o9OZ4YsUFVh/7BAl
-	 l9+iVEiOppz0K3uNJflKLZDNGa60oG7NaTxc5OFuzlt0edO83aIP0DZ9EBpMJgSiar
-	 zvObsOKVS9WtDHbntPvR1AjviBVPyJBZO4Ay296NYFrKLsUIuFmLTz3G0xA7gLXct2
-	 iIJb8/bgv7NfIVDwq5qK590LycaXz4lkRyVgulRCmP808vz5KQW9ZFBe7k02NxGaQ1
-	 FyS6bAaFRo6v/FfXZpce3XBS/CCCkIy+VW9m3MScKL6NvpmA/f8JO7Fn7OyAG17G/o
-	 oOZPN6IOGcMLQ==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RbGBs6BRWz2xqw
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Aug 2023 17:29:25 +1000 (AEST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out1.suse.de (Postfix) with ESMTP id 2A4AA21857;
+	Wed, 30 Aug 2023 07:29:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1693380551; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8RDKL3FVR0q+3mrYHwwsm4NJ+Qv2pWJE5r9SemDUWx8=;
+	b=a7iPapvR0AMqUYR8z7J3NwjG1qnBeWgQ8v7gDMgkHdXRoF+OqT0wRh2JvYKcrp5R/01VUI
+	EQKXFa5j2Gw4dTAZQ8sOexRIar59hrde4JLfUHgksXGmaZusR61ZpN9oQd+hhwDBS27Bzv
+	uL5d+jRehDdG1QlpfiIs3fOHDK2VYWI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1693380551;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8RDKL3FVR0q+3mrYHwwsm4NJ+Qv2pWJE5r9SemDUWx8=;
+	b=VRb/XPyyZbjXqcB1w2q2t6NDgsoHsxg/4kv4MfGj6WL+77gGh9ahWKz6AVCnllUtA1/X8x
+	S1JB9MprdX+eZrCA==
+Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RbF3G65L3z4wy4;
-	Wed, 30 Aug 2023 16:37:46 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Joe Lawrence <joe.lawrence@redhat.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: Recent Power changes and stack_trace_save_tsk_reliable?
-In-Reply-To: <87o7ipxtdc.fsf@mail.lhotse>
-References: <ZO4K6hflM/arMjse@redhat.com> <87o7ipxtdc.fsf@mail.lhotse>
-Date: Wed, 30 Aug 2023 16:37:44 +1000
-Message-ID: <87il8xxcg7.fsf@mail.lhotse>
+	by relay2.suse.de (Postfix) with ESMTPS id 501C32C142;
+	Wed, 30 Aug 2023 07:29:10 +0000 (UTC)
+Date: Wed, 30 Aug 2023 09:29:09 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: nathanl@linux.ibm.com
+Subject: Re: [PATCH RFC 1/2] powerpc/pseries: papr-vpd char driver for VPD
+ retrieval
+Message-ID: <20230830072801.GC8826@kitsune.suse.cz>
+References: <20230822-papr-sys_rtas-vs-lockdown-v1-0-932623cf3c7b@linux.ibm.com>
+ <20230822-papr-sys_rtas-vs-lockdown-v1-1-932623cf3c7b@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230822-papr-sys_rtas-vs-lockdown-v1-1-932623cf3c7b@linux.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,58 +72,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: live-patching@vger.kernel.org, Joe Lawrence <joe.lawrence@redhat.com>, Ryan Sullivan <rysulliv@redhat.com>, Nicholas Piggin <npiggin@gmail.com>
+Cc: gcwilson@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, tyreld@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Ellerman <mpe@ellerman.id.au> writes:
-> Joe Lawrence <joe.lawrence@redhat.com> writes:
->> Hi ppc-dev list,
->>
->> We noticed that our kpatch integration tests started failing on ppc64le
->> when targeting the upstream v6.4 kernel, and then confirmed that the
->> in-tree livepatching kselftests similarly fail, too.  From the kselftest
->> results, it appears that livepatch transitions are no longer completing.
->
-> Hi Joe,
->
-> Thanks for the report.
->
-> I thought I was running the livepatch tests, but looks like somewhere
-> along the line my kernel .config lost CONFIG_TEST_LIVEPATCH=m, so I have
-> been running the test but it just skips. :/
->
-> I can reproduce the failure, and will see if I can bisect it more
-> successfully.
+Hello,
 
-It's caused by:
+thanks for working on this.
 
-  eed7c420aac7 ("powerpc: copy_thread differentiate kthreads and user mode threads")
+On Tue, Aug 22, 2023 at 04:33:39PM -0500, Nathan Lynch via B4 Relay wrote:
+> From: Nathan Lynch <nathanl@linux.ibm.com>
+> 
+> PowerVM LPARs may retrieve Vital Product Data (VPD) for system
+> components using the ibm,get-vpd RTAS function.
+> 
+> We can expose this to user space with a /dev/papr-vpd character
+> device, where the programming model is:
+> 
+>   struct papr_location_code plc = { .str = "", }; /* obtain all VPD */
+>   int devfd = open("/dev/papr-vpd", O_WRONLY);
+>   int vpdfd = ioctl(devfd, PAPR_VPD_CREATE_HANDLE, &plc);
+>   size_t size = lseek(vpdfd, 0, SEEK_END);
+>   char *buf = malloc(size);
+>   pread(devfd, buf, size, 0);
+> 
+> When a file descriptor is obtained from ioctl(PAPR_VPD_CREATE_HANDLE),
+> the file contains the result of a complete ibm,get-vpd sequence. The
 
-Which is obvious in hindsight :)
+Could this be somewhat less obfuscated?
 
-The diff below fixes it for me, can you test that on your setup?
+What the caller wants is the result of "ibm,get-vpd", which is a
+well-known string identifier of the rtas call.
 
-A proper fix will need to be a bit bigger because the comments in there
-are all slightly wrong now since the above commit.
+Yet this identifier is never passed in. Instead we have this new
+PAPR_VPD_CREATE_HANDLE. This is a completely new identifier, specific to
+this call only as is the /dev/papr-vpd device name, another new
+identifier.
 
-Possibly we can also rework that code more substantially now that
-copy_thread() is more careful about setting things up, but that would be
-a follow-up.
+Maybe the interface could provide a way to specify the service name?
 
-diff --git a/arch/powerpc/kernel/stacktrace.c b/arch/powerpc/kernel/stacktrace.c
-index 5de8597eaab8..d0b3509f13ee 100644
---- a/arch/powerpc/kernel/stacktrace.c
-+++ b/arch/powerpc/kernel/stacktrace.c
-@@ -73,7 +73,7 @@ int __no_sanitize_address arch_stack_walk_reliable(stack_trace_consume_fn consum
- 	bool firstframe;
- 
- 	stack_end = stack_page + THREAD_SIZE;
--	if (!is_idle_task(task)) {
-+	if (!(task->flags & PF_KTHREAD)) {
- 		/*
- 		 * For user tasks, this is the SP value loaded on
- 		 * kernel entry, see "PACAKSAVE(r13)" in _switch() and
+> file contents are immutable from the POV of user space. To get a new
+> view of VPD, clients must create a new handle.
 
+Which is basically the same as creating a file descriptor with open().
 
-cheers
+Maybe creating a directory in sysfs or procfs with filenames
+corresponding to rtas services would do the same job without extra
+obfuscation?
+
+> This design choice insulates user space from most of the complexities
+> that ibm,get-vpd brings:
+> 
+> * ibm,get-vpd must be called more than once to obtain complete
+>   results.
+> * Only one ibm,get-vpd call sequence should be in progress at a time;
+>   concurrent sequences will disrupt each other. Callers must have a
+>   protocol for serializing their use of the function.
+> * A call sequence in progress may receive a "VPD changed, try again"
+>   status, requiring the client to start over. (The driver does not yet
+>   handle this, but it should be easy to add.)
+
+That certainly reduces the complexity of the user interface making it
+much saner.
+
+> The memory required for the VPD buffers seems acceptable, around 20KB
+> for all VPD on one of my systems. And the value of the
+> /rtas/ibm,vpd-size DT property (the estimated maximum size of VPD) is
+> consistently 300KB across various systems I've checked.
+> 
+> I've implemented support for this new ABI in the rtas_get_vpd()
+> function in librtas, which the vpdupdate command currently uses to
+> populate its VPD database. I've verified that an unmodified vpdupdate
+> binary generates an identical database when using a librtas.so that
+> prefers the new ABI.
+> 
+> Likely remaining work:
+> 
+> * Handle RTAS call status -4 (VPD changed) during ibm,get-vpd call
+>   sequence.
+> * Prevent ibm,get-vpd calls via rtas(2) from disrupting ibm,get-vpd
+>   call sequences in this driver.
+> * (Maybe) implement a poll method for delivering notifications of
+>   potential changes to VPD, e.g. after a partition migration.
+
+That sounds like something for netlink. If that is desired maybe it
+should be used in the first place?
+
+> Questions, points for discussion:
+> 
+> * Am I allocating the ioctl numbers correctly?
+> * The only way to discover the size of a VPD buffer is
+>   lseek(SEEK_END). fstat() doesn't work for anonymous fds like
+>   this. Is this OK, or should the buffer length be discoverable some
+>   other way?
+
+So long as users have /rtas/ibm,vpd-size as the top bound of the data
+they can receive I don't think it's critical to know the current VPD
+size.
+
+Thanks
+
+Michal
