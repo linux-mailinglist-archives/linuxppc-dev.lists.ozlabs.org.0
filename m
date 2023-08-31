@@ -1,32 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E293B78E542
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Aug 2023 06:06:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 052BF78E55A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Aug 2023 06:12:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RbnfJ623vz3c7C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Aug 2023 14:06:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RbnnQ6B3Rz3dmq
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Aug 2023 14:12:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RbncH3tS2z2xdb
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Aug 2023 14:04:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RbncV013wz3c3D
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Aug 2023 14:04:58 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RbncH2yLRz4wy7;
-	Thu, 31 Aug 2023 14:04:47 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RbncL4sDmz4x3G;
+	Thu, 31 Aug 2023 14:04:50 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Joel Stanley <joel@jms.id.au>
-In-Reply-To: <20230705023056.16273-1-joel@jms.id.au>
-References: <20230705023056.16273-1-joel@jms.id.au>
-Subject: Re: [PATCH] powerpc/config: Disable SLAB_DEBUG_ON in skiroot
-Message-Id: <169345455032.11824.1134842974966694048.b4-ty@ellerman.id.au>
+To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
+In-Reply-To: <20230823055317.751786-4-mpe@ellerman.id.au>
+References: <20230823055317.751786-1-mpe@ellerman.id.au> <20230823055317.751786-4-mpe@ellerman.id.au>
+Subject: Re: (subset) [PATCH v2 4/4] powerpc/pseries: Rework lppaca_shared_proc() to avoid DEBUG_PREEMPT
+Message-Id: <169345455029.11824.10985056549717167842.b4-ty@ellerman.id.au>
 Date: Thu, 31 Aug 2023 14:02:30 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,24 +42,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: ruscur@russell.cc
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 05 Jul 2023 12:00:56 +0930, Joel Stanley wrote:
-> In 5.10 commit 5e84dd547bce ("powerpc/configs/skiroot: Enable some more
-> hardening options") set SLUB_DEUBG_ON.
+On Wed, 23 Aug 2023 15:53:17 +1000, Michael Ellerman wrote:
+> lppaca_shared_proc() takes a pointer to the lppaca which is typically
+> accessed through get_lppaca().  With DEBUG_PREEMPT enabled, this leads
+> to checking if preemption is enabled, for example:
 > 
-> When 5.14 came around, commit 792702911f58 ("slub: force on
-> no_hash_pointers when slub_debug is enabled") print all the
-> pointers when SLUB_DEUBG_ON is set. This was fine, but in 5.12 commit
-> 5ead723a20e0 ("lib/vsprintf: no_hash_pointers prints all addresses as
-> unhashed") added the warning at boot.
+>   BUG: using smp_processor_id() in preemptible [00000000] code: grep/10693
+>   caller is lparcfg_data+0x408/0x19a0
+>   CPU: 4 PID: 10693 Comm: grep Not tainted 6.5.0-rc3 #2
+>   Call Trace:
+>     dump_stack_lvl+0x154/0x200 (unreliable)
+>     check_preemption_disabled+0x214/0x220
+>     lparcfg_data+0x408/0x19a0
+>     ...
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/config: Disable SLAB_DEBUG_ON in skiroot
-      https://git.kernel.org/powerpc/c/cdebfd27292ecdebe7d493830354e302368b3188
+[4/4] powerpc/pseries: Rework lppaca_shared_proc() to avoid DEBUG_PREEMPT
+      https://git.kernel.org/powerpc/c/eac030b22ea12cdfcbb2e941c21c03964403c63f
 
 cheers
