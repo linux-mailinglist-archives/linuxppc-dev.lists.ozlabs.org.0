@@ -1,125 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8B9B78F544
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Sep 2023 00:06:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E59278F547
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Sep 2023 00:07:42 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=selector1 header.b=RtXBpV8O;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=X53Tl6y2;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RcFcp5jzxz3cBs
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Sep 2023 08:06:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RcFdl6ytZz3c5b
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Sep 2023 08:07:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=selector1 header.b=RtXBpV8O;
+	dkim=pass (2048-bit key; unprotected) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=X53Tl6y2;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2a01:111:f400:fe0d::60c; helo=eur04-he1-obe.outbound.protection.outlook.com; envelope-from=tzimmermann@suse.com; receiver=lists.ozlabs.org)
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on060c.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe0d::60c])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=ndufresne.ca (client-ip=2607:f8b0:4864:20::f31; helo=mail-qv1-xf31.google.com; envelope-from=nicolas@ndufresne.ca; receiver=lists.ozlabs.org)
+Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rc3ld0dnLz2xdK
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Sep 2023 00:42:03 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Nmdb2P9xK7anB0VcVgHrjBXNQyyiIJfHJ/f+pX3I445pQwvTpxy8zXTXBbvNfgOtst4n+8yywCCu2i9pOw6vfCRzMOhGUsicchDTFWcRN4SKpoRe9lrIL8S72VOFeaTxjom3Ab1h9SKLbnecCJ/A+NxR8oK66Q5ZeITh23WVI6J2b2WdOwyO8cEOekaEdEmw4CxpLF9LWf2vmk63g65MX32Alcv29sJ9B2vcLt3iXZQsLSxzi7oMzBLTC8GywTVA5KaDzBA4P+FPWtY+F44RR7vObR/iEqRUypiBnUYuBJW21Nrc3CJy9SW9FJ27pGlP+rBJSAwIv6JMvr7kCYUKWQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tHcgeIXPodfBdJrsLIgMvIIMpu15yCaKTRVJBIMEJt0=;
- b=Gz54hkVC92XtYNEJir4tXquUIoGCwzRhECWFCvSTp/Y+yl4n+wlsEpQfzvqsaKJKp+xkJCHE9Zmf0qK5wbT68sRmTtwkwCxRfpf3fQPFv2cNylkbgu7TUUIhNmcNAN2xHQU6Cb+GmjJEgWVUtixg23INkH2WAR9r0Lp4iow1e04Gv9l1HcpbUeWjTjp45JixelFdmw1gnAG+42eRO84FimbHsHRVJJH26pbPo5nsEBfL+oS3GH7C3vwJHd/5hUyjgLff5O3ALoTjlkMuc1Iu1rhl3helu4PEQgjCbRKA3EojieMpTLCp9a9ZwOz5owYscIZbRsZec5i7SKabF7Qmvw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=suse.com; dmarc=pass action=none header.from=suse.com;
- dkim=pass header.d=suse.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tHcgeIXPodfBdJrsLIgMvIIMpu15yCaKTRVJBIMEJt0=;
- b=RtXBpV8OR5Gp+CrRlJk4FG9/kDU99efi41jnJN3ejwbbKe2UjL6hIpOLb9aaHsSaWPVpsLCdk8dWlZv7zDbCBxZ+7hAjmbsvplH+2BFIBplbvU6f5QiOKxRTv5ZfoHVDdH0llX8zlb2njKq44n9/pP5cXqOjjpLHANLHZEHxl6fjn42Rvawuf7rokkPDUytmK0AhjlUktIirz1xRy3Mm9QojofGmnZDthRCoMZvaRJWuCpo8NKx6ZdrsSLxzZxdH7hWBh4Vi9zIiAemYs2V8eO9zp7gZxHWUuYa/v7Qv5ogBDPXQdRjH37+o5JRRdiKNynuNif37OTQz33cs3s3bpQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=suse.com;
-Received: from DU0PR04MB9564.eurprd04.prod.outlook.com (2603:10a6:10:316::14)
- by PA4PR04MB9223.eurprd04.prod.outlook.com (2603:10a6:102:2a2::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.21; Thu, 31 Aug
- 2023 14:41:38 +0000
-Received: from DU0PR04MB9564.eurprd04.prod.outlook.com
- ([fe80::a818:c656:57a0:cc6b]) by DU0PR04MB9564.eurprd04.prod.outlook.com
- ([fe80::a818:c656:57a0:cc6b%5]) with mapi id 15.20.6745.021; Thu, 31 Aug 2023
- 14:41:38 +0000
-Message-ID: <5501ba80-bdb0-6344-16b0-0466a950f82c@suse.com>
-Date: Thu, 31 Aug 2023 16:41:35 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.com>
-Subject: Framebuffer mmap on PowerPC
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
- <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>,
- Arnd Bergmann <arnd@arndb.de>, Helge Deller <deller@gmx.de>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------Ki0otvOR4MKCyWJxn2IUhSK5"
-X-ClientProxiedBy: FR3P281CA0138.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:95::17) To DU0PR04MB9564.eurprd04.prod.outlook.com
- (2603:10a6:10:316::14)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RcCkp1HT2z2xVR
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Sep 2023 06:41:53 +1000 (AEST)
+Received: by mail-qv1-xf31.google.com with SMTP id 6a1803df08f44-64b98479a66so6742806d6.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Aug 2023 13:41:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1693514508; x=1694119308; darn=lists.ozlabs.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=MGb8UE4K7J1/tZAx27Ih4ZHLsp9ZwY6jXWa1wmWSSW0=;
+        b=X53Tl6y20zRnSOCNXb7ZwC4rwnm75IWt34QwaGmGVZ2BYZ4uDEGGnfXYddJ0EG+lPD
+         Mj+RSyetcR54VnXErOV8PfGFhIqRQ8j1sycJHd4oks/52y4ItRB5Pi5hvDfVlUOXYcMB
+         Ay0gaioxFZTkT802mKzFhmyLXakXnGDG61DgIoJvDz++34PBW1rARhLTLJZGRGafh0TX
+         TIQa2zjiXPGOY/BW/sm6quAxnPB/DpgC6jGreEO4RRVQaV/+N28GeiNo2gQurmQqIfb8
+         ofiBKgYAW4GnOYHG92vhALhifkwv6iDDeJ4zTvoLAerCsZZxnxj7y5GetMTt0rgnk4a6
+         8feA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693514508; x=1694119308;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MGb8UE4K7J1/tZAx27Ih4ZHLsp9ZwY6jXWa1wmWSSW0=;
+        b=LMbUe+q5w9iO5tKuAiKw2HdDYtPllJIBFFyq2at6/tRNafb6mrC+24KmWTufZnLheH
+         SvlLZtA8EbcjdqmDwRpVEcpQvRZJn0f4BpcTXHseguXex1pewO/4Rq+sT7PRaX+xiLg2
+         UVFfBYBWRKIwdUDllWHsVNAxhKEFX2u5P3ju9Lr68ah8sNpZHGIby0NJtcmwKL7z0Vur
+         VyLnJsW6T7eE2USJozvLfBCEu2yyFMMrkSijf5UKLz2lPQSZqx/ZvVM640tuxKNzdGLn
+         FwXJldQVgE51wUqXkFhA0rwbZAvl84X05DtNqiMP5RwbPDxDjbUqbJoO+7Qzutbel+j9
+         8A4g==
+X-Gm-Message-State: AOJu0Yz4aq6rMsAytLWe8DXykIBlUXfMD2LCPfk7lf4coeV5r26/FtWN
+	cNRtqusWPf+F3DyMte7/JUm2fw==
+X-Google-Smtp-Source: AGHT+IFU9aOd57XMHkjUfgCesvQh4jI8dOaEF345CS48c+uA4Ci+ij/CalBUYdApLt8nWIG9HHvAmA==
+X-Received: by 2002:a0c:8c8e:0:b0:641:8df1:79e3 with SMTP id p14-20020a0c8c8e000000b006418df179e3mr358262qvb.29.1693514508451;
+        Thu, 31 Aug 2023 13:41:48 -0700 (PDT)
+Received: from nicolas-tpx395.localdomain ([2606:6d00:15:bae9::7a9])
+        by smtp.gmail.com with ESMTPSA id u11-20020a0c8dcb000000b0064f45b8c02bsm899553qvb.49.2023.08.31.13.41.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 31 Aug 2023 13:41:47 -0700 (PDT)
+Message-ID: <fea0cb4a94ab9ba757f32ad5539d075089dc63e7.camel@ndufresne.ca>
+Subject: Re: [RFC PATCH v2 0/7] Add audio support in v4l2 framework
+From: Nicolas Dufresne <nicolas@ndufresne.ca>
+To: Takashi Iwai <tiwai@suse.de>, Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Thu, 31 Aug 2023 16:41:46 -0400
+In-Reply-To: <87wmxk8jaq.wl-tiwai@suse.de>
+References: <1690265540-25999-1-git-send-email-shengjiu.wang@nxp.com>
+	 <47d66c28-1eb2-07f5-d6f9-779d675aefe8@xs4all.nl>
+	 <87il9xu1ro.wl-tiwai@suse.de>
+	 <CAA+D8ANmBKMp_L2GS=Lp-saMQKja6L4E6No3yP-e=a5YQBD_jQ@mail.gmail.com>
+	 <87il9xoddo.wl-tiwai@suse.de>
+	 <CAA+D8AOVEpGxO0YNeS1p+Ym86k6VP-CNQB3JmbeT7mPKg0R99A@mail.gmail.com>
+	 <844ef9b6-d5e2-46a9-b7a5-7ee86a2e449c@sirena.org.uk>
+	 <CAA+D8AOnsx+7t3MrWm42waxtetL07nbKURLsh1hBx39LUDm+Zg@mail.gmail.com>
+	 <CAA+D8AMriHO60SD2OqQSDMmi7wm=0MkoW6faR5nyve-j2Q5AEQ@mail.gmail.com>
+	 <CAA+D8AN34-NVrgksRAG014PuHGUssTm0p-KR-HYGe+Pt8Yejxg@mail.gmail.com>
+	 <87wmxk8jaq.wl-tiwai@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR04MB9564:EE_|PA4PR04MB9223:EE_
-X-MS-Office365-Filtering-Correlation-Id: 521a387f-9099-4fd5-8e07-08dbaa3061fb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	Mlvqv+7m851y8t9lDAhyRr35nrOUlQclOMswSsXURxfaDpAiJVad2So9ExEcKFiIvcC+c5ACSPcyHsgJRAuBi8CQqGhHfnTW+vIz4fT7LVvX5AFDZsnF2C7U6Q1qfBvY1ReaDdsBATJbosMhbK6DV0ADfg593EBhGmoqmTGmo7AMn9sMcwhgiZ5Tt7FVg6hbEXCZHj6548CFhNP8LbSKNMmMN45GmBIkKXwVcRUFmK1txzqlMJHSN441sEPPDyZnQd9/C/zWpTYfsvwtlH0STwnT5W6myV10ke6YwjK54LIcBaGpi34KswsiJrfRhDEQvWdSwo1sE55z4sSwCyF7F+7jzuU4r71WCpIiQvi7/DClTn8FPAEalDFaA+IUx/5q1Gv9O5OTANQm/0zg7gDugDNJle8fR7XmGbbB1kVd/F/YKbSJN6lSS4i5Ond0NjVu1a73LwaplI+EOGYaHFn+4gTpHmdwj5sVu2a4kcLNRmjXbAKsCChDY65BJJd7NCoLZB2zyHwuwMoRhBstII/XaFZ7zShImM45VgAVDkzCkYYkYsKWc8X2zJ/0wuaKox/72SB4GReRRGiqXzmryVwbyMfbyZFWpJrTqnqhCjXqlwGn/vJoPlNrKx2+0NTN9Qf1DF3h+A5y1E1mH4tKiMLn4Q==
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9564.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(366004)(346002)(39860400002)(396003)(376002)(451199024)(1800799009)(186009)(3480700007)(36756003)(21480400003)(86362001)(235185007)(41300700001)(31696002)(6666004)(6512007)(31686004)(83380400001)(2616005)(6486002)(6506007)(33964004)(38100700002)(8676002)(5660300002)(4326008)(8936002)(54906003)(316002)(66946007)(66476007)(66556008)(110136005)(966005)(2906002)(478600001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?U215czFLUFFXbXAyVGJMMTlZczVTWW1rREYzakN1OHUrOGxUblFwc0xXcSt5?=
- =?utf-8?B?NHN1OTRhZmhSQ0FlcU54WDQzcEkxSUJrbVRLRmd1NitNRSt1UjAxVWlQUkwr?=
- =?utf-8?B?U1Z3eGZtUkRHdU9wcGtKWW1DQlJpcXhjNitaajhMRkFBOEFyeGRUeHJkKy8w?=
- =?utf-8?B?Ty8zNGRFYkdNZGkvdms1cDVoamswa21paERhdEZLVjNDSWkrRWoxOEgyQ3lv?=
- =?utf-8?B?SlhJR1JpeThwUnJEK0xTNCtHTEh1Y2ZpaXA0eWxPV0cwR2JBZlFJRWNDQ1d4?=
- =?utf-8?B?UncwWTduUjFjOFJGd2pwaVlqYURBbzluZW55N1k4Mzkrd2pXblNYUTlnc1lr?=
- =?utf-8?B?clQ5ejR0cHFGWGRueTZXcEsxWHRMTzFrMjU4dlJSVkJ3aVpMQXVIbUlsSUNM?=
- =?utf-8?B?N1AwNGtTaXMrcW96a1c5N1dDZ2dhbUl3QkdEMVFsY0RlM0t4T2M4YnhrZGVy?=
- =?utf-8?B?ekFWVVd3eVpyMWhXRGNxQ2VxRWFmOFllaXFaeEN1SENhWFpOcHl6bkZMQSs3?=
- =?utf-8?B?N29OKzAycmFpeFhocHRsYk9nSGVYZUJ0NGMyYXNzS1BNbk5sWWFGS2NFWGtv?=
- =?utf-8?B?ODhzTURzUFl1bktYM2xtT1d2ZUp6Ky9lWWhOTzZsV0FZMGNPOWxaUmx0cmFh?=
- =?utf-8?B?WG5sdWhyb0NpZXNrcnJxTFQ1WHJLM2ljZndwSHFITmJoNm8xT3huL3A5N0c2?=
- =?utf-8?B?Ty9oK2poN2lPOFhzYmRncUtDZjF5dXR3UWF2ZER1cEN5Vmw3aHJxbGlsV1Yx?=
- =?utf-8?B?N1h4MGxjRWZmekpvR2o4MEpnMzZLUGdtdGtaTC9RL20wQ2NBZWRycXcwTWJs?=
- =?utf-8?B?QXhSbFY2SlVsSSsyaGRDRTFqREpIOXlhL3NVMFN1QzdZVUR6cVJOTnQzZEVR?=
- =?utf-8?B?RmhqZ3pOVGlJTzhPaHZxa3A3dHJtSmFIMVRqUlhOSUxwbGo0emxObHV6eTRN?=
- =?utf-8?B?NGhvcU5ELzZpdG00UytPMFFiNCsxbnc1TkpJbU53dkhieWxJYVVDNUUvNTBI?=
- =?utf-8?B?OURrV1g0SHRGQldiVFNzbWNGSzlJcmE3K0tLS2RmNmpzcWNWVmxWTHBsQlln?=
- =?utf-8?B?cjBybnBLRzlHK21uZjJmY3RNcFN2Vy93elBmSTF5bVJ0T3d1RGtmdGN0aktN?=
- =?utf-8?B?dkhjc3lLVTRDM2cxQzNrd1RTMS9TeDZ2SWx5VHRCQ3pEMmNhb3NhcXQxSFhF?=
- =?utf-8?B?V0c3YVlZN3U4TC8ybW5aNU1nN3oxTk44NXhRcWdENEhSc3FzMThZWkgzUnJz?=
- =?utf-8?B?em56bm5pdXJHdGVFNEduUitzY3VHZnVRbENyNGd1M2o0dGp4QmozWWozNEdC?=
- =?utf-8?B?TzFhZnlENWhBbGIrREF3RzlibHJKejNkbHJXaUZVYVBLM3ZnTnlwdDlsQU1h?=
- =?utf-8?B?QlVXNzNSVHBrTkM1TXczS24vT3JjcVFaQXYyZTV5K3psSzM1SitYaVdIYzVi?=
- =?utf-8?B?cUVnUGVDaG5ZOTFFdm1WSUZrQVREaWI0Z1ZYQUhGVUx4cWZaWVQvY0RIcy9T?=
- =?utf-8?B?d0hyOEF3MlcvM3MybFdBMjYrckp6ZE02YjBZdHc5TWh1Q3hyVkx2dW45SFhR?=
- =?utf-8?B?VUVvMk04ZVFxT3hZV04xcHpFRGpadHlKQ2ttVjdMUlNTVzFUcEp1cUhITXBr?=
- =?utf-8?B?R1JvZ3pzdmorNUVrY2VQaWxQQThIZTZQcllhaGtVNFk1RHVqTjdhR0FSbEhD?=
- =?utf-8?B?ck5vdndvWlBYaDJ0L0FsVFM3RTJJVlRvdExqcWtvM0tXVUNSdTNhRmtmV2Fo?=
- =?utf-8?B?aGk0N0c5WW5pamhsVnRUNkM0bkZ3Y2liSEE1MitTY3NWblc3dlFFT3F5aWhj?=
- =?utf-8?B?SlV4QnNLbXZHaVpPOFc5K1dXZkptOVUyOFA2UXlaaFF5SUVDb0RNRnRCUG9D?=
- =?utf-8?B?RXFmRTUydDJOUVJuWjMzdlM1amcrOU1hOUwzRE1YMjlWZVNsM0NEbm0reGht?=
- =?utf-8?B?dnBtd000NmNDQnR4eU5hMzdjNWxkV3hvM3p5TTYwb2NYQVIvanpsUUlRMmxz?=
- =?utf-8?B?VllBODNJaWJOVlJRZVBPeThiWDRBRXRmNnk1TTBIS2VLNUpobzRTYUlicFM2?=
- =?utf-8?B?MGE1bThFS2VqK0x0UHI3dGZUSHZJd1ZnV3pyWFlTWDJwdnFNd1BBcDJvQjNr?=
- =?utf-8?B?a0gwY0x1TkRSL0x3bWI3M1hTZU5yQU9vaUdsN1h0aUpXN1YxaDFNRW5CUXV2?=
- =?utf-8?Q?yGU837wio0hRSt94tuTZ4J94zcCot0OoEhj7hp8IZal+?=
-X-OriginatorOrg: suse.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 521a387f-9099-4fd5-8e07-08dbaa3061fb
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9564.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2023 14:41:38.4004
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hwmUpEuy7LxpjyK93PIKToX00PvmF8MQ9ooAFGKMn6ZYwxuIVUafRwLeCHo1kio6gYQctZycpebt0ubELzN3RQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9223
 X-Mailman-Approved-At: Fri, 01 Sep 2023 08:06:06 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -132,72 +90,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-Arch <linux-arch@vger.kernel.org>, Linux Fbdev development list <linux-fbdev@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, dri-devel <dri-devel@lists.freedesktop.org>
+Cc: nicoleotsuka@gmail.com, alsa-devel@alsa-project.org, lgirdwood@gmail.com, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-media@vger.kernel.org, tfiga@chromium.org, Hans Verkuil <hverkuil@xs4all.nl>, linuxppc-dev@lists.ozlabs.org, Mark Brown <broonie@kernel.org>, sakari.ailus@iki.fi, perex@perex.cz, mchehab@kernel.org, festevam@gmail.com, m.szyprowski@samsung.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---------------Ki0otvOR4MKCyWJxn2IUhSK5
-Content-Type: multipart/mixed; boundary="------------J8aUUf6ZzyqnANOsu26S8YC7";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
- <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>,
- Arnd Bergmann <arnd@arndb.de>, Helge Deller <deller@gmx.de>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux-Arch <linux-arch@vger.kernel.org>,
- Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
- dri-devel <dri-devel@lists.freedesktop.org>
-Message-ID: <5501ba80-bdb0-6344-16b0-0466a950f82c@suse.com>
-Subject: Framebuffer mmap on PowerPC
+Hi,
 
---------------J8aUUf6ZzyqnANOsu26S8YC7
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Le jeudi 24 ao=C3=BBt 2023 =C3=A0 19:03 +0200, Takashi Iwai a =C3=A9crit=C2=
+=A0:
+> > 3. How to handle the xrun issue. pause or resume. which are brought by =
+ALSA.
+>=20
+> Doesn't V4L2 handle the overrun/underrun at all?=C2=A0 Also, no resume
+> support?
 
-SGksDQoNCnRoZXJlJ3MgYSBwZXItYXJjaGl0ZWN0dXJlIGZ1bmN0aW9uIGNhbGxlZCBmYl9w
-Z3Byb3RlY3QoKSB0aGF0IHNldHMgDQpWTUEncyB2bV9wYWdlX3Byb3QgZm9yIG1tYXBlZCBm
-cmFtZWJ1ZmZlcnMuIE1vc3QgYXJjaGl0ZWN0dXJlcyB1c2UgYSANCnNpbXBsZSBpbXBsZW1l
-bnRhdGlvbiBiYXNlZCBvbiBwZ3Byb3Rfd3JpdGVjb21pbmUoKSBbMV0gb3IgDQpwZ3Byb3Rf
-bm9uY2FjaGVkKCkuIFsyXQ0KDQpPbiBQUEMgdGhpcyBmdW5jdGlvbiB1c2VzIHBoeXNfbWVt
-X2FjY2Vzc19wcm90KCkgYW5kIHRoZXJlZm9yZSByZXF1aXJlcyANCnRoZSBtbWFwIGNhbGwn
-cyBmaWxlIHN0cnVjdC4gWzNdIFJlbW92aW5nIHRoZSBmaWxlIGFyZ3VtZW50IHdvdWxkIGhl
-bHAgDQp3aXRoIHNpbXBsaWZ5aW5nIHRoZSBjYWxsZXIgb2YgZmJfcGdwcm90ZWN0KCkuIFs0
-XQ0KDQpXaHkgaXMgdGhlIGZpbGUgZXZlbiByZXF1aXJlZCBvbiBQUEM/DQoNCklzIGl0IHBv
-c3NpYmxlIHRvIHJlcGxhY2UgcGh5c19tZW1fYWNjZXNzX3Byb3QoKSB3aXRoIHNvbWV0aGlu
-ZyBzaW1wbGVyIA0KdGhhdCBkb2VzIG5vdCB1c2UgdGhlIGZpbGUgc3RydWN0Pw0KDQpCZXN0
-IHJlZ2FyZHMNClRob21hcw0KDQoNClsxXSANCmh0dHBzOi8vZWxpeGlyLmJvb3RsaW4uY29t
-L2xpbnV4L3Y2LjUvc291cmNlL2luY2x1ZGUvYXNtLWdlbmVyaWMvZmIuaCNMMTkNClsyXSAN
-Cmh0dHBzOi8vZWxpeGlyLmJvb3RsaW4uY29tL2xpbnV4L3Y2LjUvc291cmNlL2FyY2gvbWlw
-cy9pbmNsdWRlL2FzbS9mYi5oI0wxMQ0KWzNdIA0KaHR0cHM6Ly9lbGl4aXIuYm9vdGxpbi5j
-b20vbGludXgvdjYuNS9zb3VyY2UvYXJjaC9wb3dlcnBjL2luY2x1ZGUvYXNtL2ZiLmgjTDEy
-DQpbNF0gDQpodHRwczovL2VsaXhpci5ib290bGluLmNvbS9saW51eC92Ni41L3NvdXJjZS9k
-cml2ZXJzL3ZpZGVvL2ZiZGV2L2NvcmUvZmJtZW0uYyNMMTI5OQ0KDQoNCi0tIA0KVGhvbWFz
-IFppbW1lcm1hbm4NCkdyYXBoaWNzIERyaXZlciBEZXZlbG9wZXINClNVU0UgU29mdHdhcmUg
-U29sdXRpb25zIEdlcm1hbnkgR21iSA0KRnJhbmtlbnN0cmFzc2UgMTQ2LCA5MDQ2MSBOdWVy
-bmJlcmcsIEdlcm1hbnkNCkdGOiBJdm8gVG90ZXYsIEFuZHJldyBNeWVycywgQW5kcmV3IE1j
-RG9uYWxkLCBCb3VkaWVuIE1vZXJtYW4NCkhSQiAzNjgwOSAoQUcgTnVlcm5iZXJnKQ0K
+just a 2 cents comment. All our video m2m are job based. When there is no j=
+ob
+available they stop and resume when there is more work in queues. As there =
+is no
+time constraints coming from the hardware, there is also no API to know tha=
+t
+there has been a period of time without anything being executed (under
+utilization). Only overrun can be detected by application, each chunk of wo=
+rk is
+in its own v4l2_buffer and the application will run out of buffer in that c=
+ase,
+and will have to wait for free space in the queue. Understand though that t=
+he
+larger the queue, the large the latency. There is currently no way to submi=
+t job
+ahead of the data (unlike DRM subsystem).
 
---------------J8aUUf6ZzyqnANOsu26S8YC7--
+I have slight impression that all this seems rather inefficient for high ra=
+te /
+small buffer. I'd suggest creating a dummy benchmark driver to verify that =
+the
+overhead isn't just too much for an audio use case.
 
---------------Ki0otvOR4MKCyWJxn2IUhSK5
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
-
------BEGIN PGP SIGNATURE-----
-
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmTwpp8FAwAAAAAACgkQlh/E3EQov+Dk
-WRAAr+FS9Ricev/pES/ATyLqLhod7iYPojEgIeU9hd4hAZgy1BWqulbDZFQzszDwuFtp9SNuFqVX
-6A0QdjOf5tXNCqPi1+L3DjzR0eWOCKq9HfzP/WADPs8xmDse0UrbbhjHjMT+VnS25bdUt87d1RKa
-m0LA+TeIx1dYT5pg6eIiG8fZU72iKEwIX+m6GTgK/1Df+2w1xk71kj2zGtr5u6/H4Pu+xBLGCIb2
-DRuCp/JMDquSOtM1IzvofUyCGOWzmbJvEl3TagRVHSsvLwiU6aii3hunocLQVK+BEB30d74jqKLs
-j1U9Un5hR9c855TwI4CH3zAGbVJiA4oK7sGtYUgFm+kRwei+uS9DnRHozNx6OKZ/ugn/zRspNdWF
-uD5yBO901GOh4W7nlpbNDJKvgdZi7P09jnzOSDIky8PjBel9XBGwPnLSyzVYjA2SF5ciUm7MNaDA
-UBHowvpdQ/qGS1erU4nKFPm3Mm5jEQSM4F6xCUJCy1+TfqVYNGBgwWcR9XC0y0gU9lKhvzfxH5VZ
-lu9qbmbv+E4QXt7OjdlBVC2ZK7ApXleb9DYUCGffN4f2Lc1BZzxM0Q9+V7sBeA0/L6pfTtca6J2k
-gx/q0SSxnEx8DMgwAp0vaNLESHwumscemMORuJY4AsqEkheY++/oMgPn1ysij7zE9sbShccoWpQK
-rrA=
-=a6RX
------END PGP SIGNATURE-----
-
---------------Ki0otvOR4MKCyWJxn2IUhSK5--
+Nicolas
