@@ -2,61 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 869A378EA4E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Aug 2023 12:39:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6234578EC21
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Aug 2023 13:36:22 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=0C2Py9o/;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=0xy5/+l5;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=UF3L/Qvw;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=GXWjUDpU;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RbyMF1fMDz3c1W
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Aug 2023 20:39:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RbzdJ1RBNz3bP2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Aug 2023 21:36:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=0C2Py9o/;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=0xy5/+l5;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=UF3L/Qvw;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=GXWjUDpU;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2001:67c:2178:6::1c; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 97737 seconds by postgrey-1.37 at boromir; Thu, 31 Aug 2023 20:38:19 AEST
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RbyLM4BbTz2yh2
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Aug 2023 20:38:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RbzcP2Rgpz303p
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Aug 2023 21:35:32 +1000 (AEST)
 Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out1.suse.de (Postfix) with ESMTP id D43A22185F;
-	Thu, 31 Aug 2023 10:38:12 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTP id 37CD42185A;
+	Thu, 31 Aug 2023 11:35:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1693478292; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1693481729; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=yHb+3N4Vh9kOY9b8iQpCi9S3OqTdP36yLPH+f2icChQ=;
-	b=0C2Py9o/WoRzQic3JIzJfLEhl3GY/YV37dtIuXIryq+E/yKT3fIMBoZXMbLrRZeeIlbz5u
-	wA14EQCUh/ByhZLkSdXUJHhUd/YM3gfUfFDZWHvZylVv3fK7gokgTpAth+O0VQHdj7TDOD
-	ygH67ZC7mjPy6CM67Yt/N6pPO0QrLTk=
+	bh=b6MX7PW+1n+B/o2Itfvqj8gySQ2KC8/I/7WQRX5hGAs=;
+	b=UF3L/QvwwIt+vPZq4etLR0uzpuWmFeC/rOQIAeUDfZw0amPVFxorLdQTOqhrpuA7IkPE5g
+	IE9kCvZDDvwYiBTHfJFJ+GgOi++RQ1Qxdv/xeT7LT188JZz45pXFrDFpZUSQckU5VRyHZV
+	KMfB8PvxzbUg9hMEfaTgBvFjLdg7gnc=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1693478292;
+	s=susede2_ed25519; t=1693481729;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=yHb+3N4Vh9kOY9b8iQpCi9S3OqTdP36yLPH+f2icChQ=;
-	b=0xy5/+l5J+XdT26kAHvJNjlSrZtnZ0iI5QsNYZiGP+fBSH1YUk/qAHGQYQKJSu1Mk1/DYK
-	sJIl80Y+fUp3FNBA==
+	bh=b6MX7PW+1n+B/o2Itfvqj8gySQ2KC8/I/7WQRX5hGAs=;
+	b=GXWjUDpUIdeztpAphFkD3NgYN2MiZ0R6wdOpb+vl2e09IybmlsLR8S5/emTdC+VOwfwGiU
+	efGT3eojnOkTVwBw==
 Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id B311D2C142;
-	Thu, 31 Aug 2023 10:38:12 +0000 (UTC)
-Date: Thu, 31 Aug 2023 12:38:11 +0200
+	by relay2.suse.de (Postfix) with ESMTPS id 1A7CC2C142;
+	Thu, 31 Aug 2023 11:35:29 +0000 (UTC)
+Date: Thu, 31 Aug 2023 13:35:27 +0200
 From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
 To: Michael Ellerman <mpe@ellerman.id.au>
 Subject: Re: [PATCH RFC 1/2] powerpc/pseries: papr-vpd char driver for VPD
  retrieval
-Message-ID: <20230831103811.GF8826@kitsune.suse.cz>
+Message-ID: <20230831113527.GG8826@kitsune.suse.cz>
 References: <20230822-papr-sys_rtas-vs-lockdown-v1-0-932623cf3c7b@linux.ibm.com>
  <20230822-papr-sys_rtas-vs-lockdown-v1-1-932623cf3c7b@linux.ibm.com>
  <20230830072801.GC8826@kitsune.suse.cz>
@@ -121,6 +120,10 @@ On Thu, Aug 31, 2023 at 03:34:37PM +1000, Michael Ellerman wrote:
 > But hopefully if the underlying mechanism changed the kernel would be
 > able to hide that detail behind this new API, and users would not need
 > to change at all.
+
+Still the kernel could use the name that is well-known today even if it
+uses different implementation internally in the future.
+
 > 
 > > Yet this identifier is never passed in. Instead we have this new
 > > PAPR_VPD_CREATE_HANDLE. This is a completely new identifier, specific to
@@ -136,10 +139,44 @@ On Thu, Aug 31, 2023 at 03:34:37PM +1000, Michael Ellerman wrote:
 > 
 > Sort of. But much cleaner becuase you don't need to create a file in the
 > filesystem and tell userspace how to find it.
+> 
+> This pattern of creating file descriptors from existing file descriptors
+> to model a hiearachy of objects is well established in eg. the KVM and
+> DRM APIs.
 
-You very much do. There is the /dev/papr-vpd and PAPR_VPD_CREATE_HANDLE
-which userspace has to know about, the PAPR_VPD_CREATE_HANDLE is not
-even possible to find at all.
+> 
+> >> The memory required for the VPD buffers seems acceptable, around 20KB
+> >> for all VPD on one of my systems. And the value of the
+> >> /rtas/ibm,vpd-size DT property (the estimated maximum size of VPD) is
+> >> consistently 300KB across various systems I've checked.
+> >> 
+> >> I've implemented support for this new ABI in the rtas_get_vpd()
+> >> function in librtas, which the vpdupdate command currently uses to
+> >> populate its VPD database. I've verified that an unmodified vpdupdate
+> >> binary generates an identical database when using a librtas.so that
+> >> prefers the new ABI.
+> >> 
+> >> Likely remaining work:
+> >> 
+> >> * Handle RTAS call status -4 (VPD changed) during ibm,get-vpd call
+> >>   sequence.
+> >> * Prevent ibm,get-vpd calls via rtas(2) from disrupting ibm,get-vpd
+> >>   call sequences in this driver.
+> >> * (Maybe) implement a poll method for delivering notifications of
+> >>   potential changes to VPD, e.g. after a partition migration.
+> >
+> > That sounds like something for netlink. If that is desired maybe it
+> > should be used in the first place?
+> 
+> I don't see why that is related to netlink. It's entirely normal for
+> file descriptor based APIs to implement poll.
+> 
+> netlink adds a lot of complexity for zero gain IMO.
+
+It kind of solves the problem with shoehorning something that's not
+really a file into file descriptors. You don't have to when not using
+them. It also solves how to access multiple services without creating a
+large number of files and large number of obscure constants.
 
 Thanks
 
