@@ -2,31 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D51578E545
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Aug 2023 06:07:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F67478E557
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Aug 2023 06:12:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rbnfq2Wyzz3dgC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Aug 2023 14:06:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rbnmw6vkqz3fht
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Aug 2023 14:12:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RbncH6sr8z2xdb
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Aug 2023 14:04:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RbncT5Kxxz3c3c
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Aug 2023 14:04:57 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RbncH5PNgz4x09;
-	Thu, 31 Aug 2023 14:04:47 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RbncL2gklz4wy8;
+	Thu, 31 Aug 2023 14:04:50 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230705145743.292855-1-krzysztof.kozlowski@linaro.org>
-References: <20230705145743.292855-1-krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH] powerpc: dts: add missing space before {
-Message-Id: <169345455032.11824.15489073432019958248.b4-ty@ellerman.id.au>
+To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
+In-Reply-To: <20230821140949.491881-1-mpe@ellerman.id.au>
+References: <20230821140949.491881-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/powermac: Fix unused function warning
+Message-Id: <169345455029.11824.14129377291329335109.b4-ty@ellerman.id.au>
 Date: Thu, 31 Aug 2023 14:02:30 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,17 +42,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: arnd@arndb.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 05 Jul 2023 16:57:43 +0200, Krzysztof Kozlowski wrote:
-> Add missing whitespace between node name/label and opening {.
+On Tue, 22 Aug 2023 00:09:49 +1000, Michael Ellerman wrote:
+> Clang reports:
+>   arch/powerpc/platforms/powermac/feature.c:137:19: error: unused function 'simple_feature_tweak'
 > 
+> It's only used inside the #ifndef CONFIG_PPC64 block, so move it in
+> there to fix the warning. While at it drop the inline, the compiler will
+> decide whether it should be inlined or not.
 > 
+> [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc: dts: add missing space before {
-      https://git.kernel.org/powerpc/c/11073886cc4a2746845e8d113cadec2578c85033
+[1/1] powerpc/powermac: Fix unused function warning
+      https://git.kernel.org/powerpc/c/1eafbd8764b10798934344bd40395b27cec63145
 
 cheers
