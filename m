@@ -1,96 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0809078E195
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Aug 2023 23:48:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF5D678E3B5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Aug 2023 02:04:36 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bw2EU0ot;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bw2EU0ot;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=UofDTBQE;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RbdG96nYLz3c2y
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Aug 2023 07:48:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RbhH64bQxz30fK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Aug 2023 10:04:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bw2EU0ot;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bw2EU0ot;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=UofDTBQE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=joe.lawrence@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::530; helo=mail-pg1-x530.google.com; envelope-from=keescook@chromium.org; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RbdFF6RSCz2y1c
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Aug 2023 07:47:44 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1693432059;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UUcwBG4nsZ2S/sQ42rRb0yMsRkdTvD9Tq37GYF9pDHA=;
-	b=bw2EU0otHAaRQK+f0kfP49+ltQcc1GddoP33QTn8zVitl8W/xxAYx+BwPwl7xrO1tJFzPn
-	nDsv4iCoj57TgXPL3y1SAUDDLBd64kkQciTMKwASOh3cgknsP4ioGS+jlZjFfq9T0ar4oX
-	KrwYv9q1Reqrtm+/PkE+vblxXpdXjUE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1693432059;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UUcwBG4nsZ2S/sQ42rRb0yMsRkdTvD9Tq37GYF9pDHA=;
-	b=bw2EU0otHAaRQK+f0kfP49+ltQcc1GddoP33QTn8zVitl8W/xxAYx+BwPwl7xrO1tJFzPn
-	nDsv4iCoj57TgXPL3y1SAUDDLBd64kkQciTMKwASOh3cgknsP4ioGS+jlZjFfq9T0ar4oX
-	KrwYv9q1Reqrtm+/PkE+vblxXpdXjUE=
-Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com
- [209.85.210.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-352-I_s7QhQzNXKr15xFaounnA-1; Wed, 30 Aug 2023 17:47:37 -0400
-X-MC-Unique: I_s7QhQzNXKr15xFaounnA-1
-Received: by mail-ot1-f71.google.com with SMTP id 46e09a7af769-6bc7afd0498so344724a34.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Aug 2023 14:47:37 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RbhGD4vQPz2xjw
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Aug 2023 10:03:46 +1000 (AEST)
+Received: by mail-pg1-x530.google.com with SMTP id 41be03b00d2f7-56c2e882416so267917a12.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Aug 2023 17:03:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1693440223; x=1694045023; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6VbAFF+mQ3qo4IqvELdDEKnEePt5q/NF9cOLJ4fQs4c=;
+        b=UofDTBQEN4+syQu+8W1FXeIOMZAOz6QJrDvS5d0bX7LU/n6jR37CWRrbmdHXbdJAU7
+         QlylGL3DHVFJ4+60sc1BzVbKolBXdzLLP1SPHfWoOdJc631vpyPDO5ox2I0axr4MR9xt
+         VcurCWfk0wtJwD7metAWBV+VSy875cHRMoswo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693432057; x=1694036857;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UUcwBG4nsZ2S/sQ42rRb0yMsRkdTvD9Tq37GYF9pDHA=;
-        b=dZ3uYekcFGxZr5Dp5w4y/yckSO8LIhcvxBFhJopOk8ITLAziqDhIeUXgm9x6DuyHbD
-         2TAA3nd1kMPD++HnJrAljlXKpyVP+mGq3Ac67lY7P0HH56Qn3k7ct20++l2C7arBXxOp
-         D7MxWL0rBAIgJGW9Out/VLSZrIgAKBZ71O4qL2eTC/oaIQJSydNkVikwkwT7/iTjVyR7
-         Mu0d6DspvPxNCF/f0KmA2Ibe8fL2uRMHb4Q/9i/0yWh2xstwLGH6gYn8jFER6ljxWsYD
-         kRcY7c24byWItgGjygOobzImPmyqAog08Kn8PrAVwg9vgRU2Hvy+s8s5SmRmZC7bfs+p
-         dbKA==
-X-Gm-Message-State: AOJu0YxrB3f26MwDBBzztQrAq5lkHAXSyXAeBVa6vBMBtg/bQZ/gUGu7
-	ijvlYiSvK2oH5O48unRMto3U8hgAFAMHJHwXSH+i5cqt8pgwuIboFCNIHTxZI4gOcvrQxKkq8F4
-	gucX6ujdBtqO5cgq+RLe2om+LmQ==
-X-Received: by 2002:a05:6830:2017:b0:6bd:b10:c321 with SMTP id e23-20020a056830201700b006bd0b10c321mr3792135otp.10.1693432057048;
-        Wed, 30 Aug 2023 14:47:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGixZZGfNZpc2TcsPswTDuhkrzYsm6YEBuIj13Oq30Mc6BUMAb9Y3bxVcPusJxHvaZdZGkI/A==
-X-Received: by 2002:a05:6830:2017:b0:6bd:b10:c321 with SMTP id e23-20020a056830201700b006bd0b10c321mr3792128otp.10.1693432056807;
-        Wed, 30 Aug 2023 14:47:36 -0700 (PDT)
-Received: from [192.168.1.17] (pool-68-160-135-240.bstnma.fios.verizon.net. [68.160.135.240])
-        by smtp.gmail.com with ESMTPSA id s29-20020a05620a031d00b007671cfe8a18sm43892qkm.13.2023.08.30.14.47.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Aug 2023 14:47:36 -0700 (PDT)
-Message-ID: <cca0770c-1510-3a02-d0ba-82ee5a0ae4f2@redhat.com>
-Date: Wed, 30 Aug 2023 17:47:35 -0400
+        d=1e100.net; s=20221208; t=1693440223; x=1694045023;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6VbAFF+mQ3qo4IqvELdDEKnEePt5q/NF9cOLJ4fQs4c=;
+        b=bzVu1ThEtoN8cvv8GQYHxjCwDn+XEP696oY4cufTjY+kwFuKskvE++nT5aiWqN7P6C
+         sCQYM/inJZzGuqIFqT+WyNGW5QB3fsywBbTPYkxX57xNrNcTHeNQkGDWc1adu2swLuBG
+         FW9lxRDiXKlJY8h6FDzCbcd2V9TWuucA9rvWnqO03JyCAHzHYVRX2cgoYD7ya8GCywpS
+         f7ctbBywxUqFCtX40xL+VvVN2KnGgQTqGjKACzGiGuWVgd06qGIotSzeR5P6Uem98c6t
+         t5FrVFpuSD+Kawu+t6+jlpeefe6F5d7Ng19o95whdAwSB9wq4Xy5yQ2t0sOUf2cTFFmp
+         N5IQ==
+X-Gm-Message-State: AOJu0Yxvw77lHhwGvK1OxNq6LRFKbEanIRE14WsRgxunGFoh9OxBO3Ka
+	/UldtNXgTG6hyfvg/6M+TFqYBA==
+X-Google-Smtp-Source: AGHT+IGzXuhNKvCDESQE2QRrtYZBrvFQDlCXvQaZKzcZ7GFJqvb5A0aJYkymW5POHQPY6ycQWRimsg==
+X-Received: by 2002:a17:90a:fa88:b0:26f:4685:5b66 with SMTP id cu8-20020a17090afa8800b0026f46855b66mr3639939pjb.8.1693440223411;
+        Wed, 30 Aug 2023 17:03:43 -0700 (PDT)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id ft15-20020a17090b0f8f00b002684b837d88sm152885pjb.14.2023.08.30.17.03.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Aug 2023 17:03:42 -0700 (PDT)
+Date: Wed, 30 Aug 2023 17:03:42 -0700
+From: Kees Cook <keescook@chromium.org>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Subject: Re: [PATCH v2 0/2] kbuild: Show Kconfig fragments in "help"
+Message-ID: <202308301702.4EB6F55@keescook>
+References: <20230825194329.gonna.911-kees@kernel.org>
+ <CAK7LNATcTw+btQVri7SBA8gFbDNMYz7D2gMQaoZp9sQGFjCw8Q@mail.gmail.com>
+ <87ttsjlmho.fsf@mail.lhotse>
+ <ZO2NVLipjlzIh0YS@bergen.fjasle.eu>
+ <CAK7LNARjsB+LTBGRfWX68Ld7oehhuBv9SY8scoC=Xk8EJc-OHw@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: Recent Power changes and stack_trace_save_tsk_reliable?
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-References: <ZO4K6hflM/arMjse@redhat.com> <87o7ipxtdc.fsf@mail.lhotse>
- <87il8xxcg7.fsf@mail.lhotse>
-From: Joe Lawrence <joe.lawrence@redhat.com>
-In-Reply-To: <87il8xxcg7.fsf@mail.lhotse>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK7LNARjsB+LTBGRfWX68Ld7oehhuBv9SY8scoC=Xk8EJc-OHw@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,74 +78,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: live-patching@vger.kernel.org, Ryan Sullivan <rysulliv@redhat.com>, Nicholas Piggin <npiggin@gmail.com>
+Cc: linux-s390@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 8/30/23 02:37, Michael Ellerman wrote:
-> Michael Ellerman <mpe@ellerman.id.au> writes:
->> Joe Lawrence <joe.lawrence@redhat.com> writes:
->>> Hi ppc-dev list,
->>>
->>> We noticed that our kpatch integration tests started failing on ppc64le
->>> when targeting the upstream v6.4 kernel, and then confirmed that the
->>> in-tree livepatching kselftests similarly fail, too.  From the kselftest
->>> results, it appears that livepatch transitions are no longer completing.
->>
->> Hi Joe,
->>
->> Thanks for the report.
->>
->> I thought I was running the livepatch tests, but looks like somewhere
->> along the line my kernel .config lost CONFIG_TEST_LIVEPATCH=m, so I have
->> been running the test but it just skips. :/
->>
+On Tue, Aug 29, 2023 at 11:57:19PM +0900, Masahiro Yamada wrote:
+> The attached patch will work too.
+> 
+> I dropped the "in the first line" restriction
+> because SPDX might be placed in the first line
+> of config fragments.
 
-That config option is easy to drop if you use `make localmodconfig` to
-try and expedite the builds :D  Been there, done that too many times.
+Good call. Yes, this looks excellent; thank you! Do you want to send a
+formal patch? Please consider it:
 
->> I can reproduce the failure, and will see if I can bisect it more
->> successfully.
-> 
-> It's caused by:
-> 
->   eed7c420aac7 ("powerpc: copy_thread differentiate kthreads and user mode threads")
-> 
-> Which is obvious in hindsight :)
-> 
-> The diff below fixes it for me, can you test that on your setup?
-> 
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
-Thanks for the fast triage of this one.  The proposed fix works well on
-our setup.  I have yet to try the kpatch integration tests with this,
-but I can verify that all of the kernel livepatching kselftests now
-happily run.
-
---
-Joe
-
-> A proper fix will need to be a bit bigger because the comments in there
-> are all slightly wrong now since the above commit.
-> 
-> Possibly we can also rework that code more substantially now that
-> copy_thread() is more careful about setting things up, but that would be
-> a follow-up.
-> 
-> diff --git a/arch/powerpc/kernel/stacktrace.c b/arch/powerpc/kernel/stacktrace.c
-> index 5de8597eaab8..d0b3509f13ee 100644
-> --- a/arch/powerpc/kernel/stacktrace.c
-> +++ b/arch/powerpc/kernel/stacktrace.c
-> @@ -73,7 +73,7 @@ int __no_sanitize_address arch_stack_walk_reliable(stack_trace_consume_fn consum
->  	bool firstframe;
->  
->  	stack_end = stack_page + THREAD_SIZE;
-> -	if (!is_idle_task(task)) {
-> +	if (!(task->flags & PF_KTHREAD)) {
->  		/*
->  		 * For user tasks, this is the SP value loaded on
->  		 * kernel entry, see "PACAKSAVE(r13)" in _switch() and
-> 
-> 
-> cheers
-> 
-
+-- 
+Kees Cook
