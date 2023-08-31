@@ -1,62 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0763178F3B1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Aug 2023 21:55:20 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rPB36fpt;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D6F378F3E3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Aug 2023 22:21:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RcBj06Z8Gz3c26
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Sep 2023 05:55:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RcCH86PQwz3cLX
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Sep 2023 06:21:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rPB36fpt;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=tinylab.org (client-ip=43.155.65.254; helo=bg4.exmail.qq.com; envelope-from=tanyuan@tinylab.org; receiver=lists.ozlabs.org)
+Received: from bg4.exmail.qq.com (bg4.exmail.qq.com [43.155.65.254])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RcBh85WCxz2xm5
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Sep 2023 05:54:32 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 8C7A962129;
-	Thu, 31 Aug 2023 19:54:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E7EC0C433C7;
-	Thu, 31 Aug 2023 19:54:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1693511669;
-	bh=4xBwQYrDYvELTUVIq5HoKyekNXLiRMNL1WiKGCIHSGE=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=rPB36fpt8aXiurhkM9PYEXHy+mON8p24DqHQ3HoO+zGOLNZtLX9v3tuvUUqk9XYfW
-	 H7NwzRTGzmDlKUHFX6S9bMDtHVn9XP2notR++pRw9OOiVN3csEEMSc71Thw+GtblCi
-	 n9HIrmiP5syeoV14aNdncQcBN6ekqOMTz0wfhVVUKwpuRhx+REzkYupEC2fttYws7U
-	 1nm2vbJ2MWU4ayRjNbU57Z9ld/CCBjWHyynV1CjzYA12KRYgZ+GerlNgycnxySXMCz
-	 52GHe7VnpoqzAJSOKcKK5ZQH3WwLUT1lJHcGibgSWe5VB7mGEoiSJRFQLoZp95M6eN
-	 b8Vb5Bmakj8tA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id D3380C595D2;
-	Thu, 31 Aug 2023 19:54:28 +0000 (UTC)
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.6-1 tag
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <87o7in1iz3.fsf@mail.lhotse>
-References: <87o7in1iz3.fsf@mail.lhotse>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <87o7in1iz3.fsf@mail.lhotse>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.6-1
-X-PR-Tracked-Commit-Id: 85a616416e9e01db0bfa92f26457e92642e2236b
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 4ad0a4c2343d3981e92df2b39fa262be62a9091a
-Message-Id: <169351166885.26416.7613414703938254596.pr-tracker-bot@kernel.org>
-Date: Thu, 31 Aug 2023 19:54:28 +0000
-To: Michael Ellerman <mpe@ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RcCFV3xPXz3cDg
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Sep 2023 06:19:58 +1000 (AEST)
+X-QQ-mid: bizesmtp80t1693513054tfheb4kk
+Received: from main2-ubuntu.tail147f4.ts.net ( [202.201.15.117])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 01 Sep 2023 04:17:31 +0800 (CST)
+X-QQ-SSF: 01200000000000907000B00A0000000
+X-QQ-FEAT: zT6n3Y95oi2JZhQOJPJkow3+Z1z8O+aKI4VLH+g5LEAEDXda4seSdGQIPMUTJ
+	2MqnaBQTMGrp52orgxZuFCDsSVgNcRMCmODohotYW4kejOvH3DXUcKjB+CsUWTgYLVyrqDj
+	SZJZhd7AlReP2Nj/umbKaMNMutVbb0QESpSaOfm85HGE1V+fdMnh7VJVxpaqxxhljoR5biq
+	gM0BiLC8BhCw60DCjSWK6PjlURr3JmPqIGJJ4ZXheCylIF5I6IIsqj1/QpCmMIWYkR+qAth
+	xYNCq/tnRWcEKuYJcPXhiUqM99WMxMBj/g77TwWXASvPM94nROO5F1u1C0Z8flhZk6Zxtj4
+	7eklrvxyFlOYFN2mN12a+Wc3AhH4Q==
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 9549962173314934248
+From: Yuan Tan <tanyuan@tinylab.org>
+To: mpe@ellerman.id.au,
+	christophe.leroy@csgroup.eu,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	tsbogend@alpha.franken.de,
+	hdegoede@redhat.com
+Subject: [PATCH v1 0/3] Add dependencies of POWER_RESET for MIPS Malta, x86, and PowerMac.
+Date: Fri,  1 Sep 2023 04:17:27 +0800
+Message-Id: <20230831201727.3177853-1-tanyuan@tinylab.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:tinylab.org:qybglogicsvrgz:qybglogicsvrgz5a-1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,19 +54,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linus.walleij@linaro.org, ruscur@russell.cc, linux-kernel@vger.kernel.org, zhangjialin11@huawei.com, bgray@linux.ibm.com, windhl@126.com, osandov@fb.com, tanyuan@tinylab.org, robh@kernel.org, zhengzengkai@huawei.com, aneesh.kumar@linux.ibm.com, masahiroy@kernel.org, wangxiongfeng2@huawei.com, joel@jms.id.au, u.kleine-koenig@pengutronix.de, msuchanek@suse.de, mirimmad17@gmail.com, nathanl@linux.ibm.com, ajd@linux.ibm.com, arnd@arndb.de, kjain@linux.ibm.com, naveen@kernel.org, npiggin@gmail.com, ruanjinjie@huawei.com, bhelgaas@google.com, ldufour@linux.ibm.com, hbathini@linux.ibm.com, twoerner@gmail.com, Linus Torvalds <torvalds@linux-foundation.org>, rdunlap@infradead.org, ndesaulniers@google.com, mahesh@linux.ibm.com, sourabhjain@linux.ibm.com, krzysztof.kozlowski@linaro.org, justinstitt@google.com, fbarrat@linux.ibm.com, vaibhav@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, gautam@linux.ibm.com
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org, linux-mips@vger.kernel.org, linux@weissschuh.net, falcon@tinylab.org, linuxppc-dev@lists.ozlabs.org, w@1wt.eu, Yuan Tan <tanyuan@tinylab.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pull request you sent on Thu, 31 Aug 2023 22:42:24 +1000:
+These patches is to add dependencies of POWER_RESET for MIPS Malta, x86,
+and PowerMac.
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.6-1
+To simplify the enablement of the poweroff support, selecting the
+required options for CONFIG_POWER_RESET=y may make many people
+happyespecially when they are using a customized config (maybe
+tinyconfigbased) for a target qemu board. Without normal poweroff
+support from the kernel side, qemu will simply hang[1] there after a
+'poweroff' command, which is a very bad experience for the automatical
+tests.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/4ad0a4c2343d3981e92df2b39fa262be62a9091a
+Currently, based on tinyconfig, it is very hard to find the exact
+poweroff options[2]. Some architectures' poweroff works well without
+any dependence, the others' poweroff options are hidden deeply, which
+make things hard.
 
-Thank you!
+After multiple verifications, these options have been identified as the
+minimum dependencies required for poweroff to function normally.
+
+Zhangjin and I invested a significant amount of time in searching for
+the current options on these devices. We hope that this set of
+patcheswill save time for others. If community like it, we will consider
+adding dependencies for POWER_RESET on other devices.
+
+---
+[1]: https://lore.kernel.org/lkml/511b2f6009fb830b3f32b4be3dca99596c684fa3.1689759351.git.falcon@tinylab.org/
+[2]: https://lore.kernel.org/all/983843582e52e83fba79ad45cea6c79e1f62ec6c.1690489039.git.falcon@tinylab.org/
+
+
+Yuan Tan (3):
+  kconfig: add dependencies of POWER_RESET for mips malta
+  kconfig: add dependencies of POWER_RESET for x86
+  kconfig: add dependencies of POWER_RESET for PowerMac
+
+ arch/mips/Kconfig                       | 3 +++
+ arch/powerpc/platforms/powermac/Kconfig | 1 +
+ arch/x86/Kconfig                        | 2 ++
+ 3 files changed, 6 insertions(+)
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.34.1
+
