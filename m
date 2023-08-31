@@ -1,32 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55AF778E550
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Aug 2023 06:09:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C141F78E554
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Aug 2023 06:10:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RbnjL270pz3dS0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Aug 2023 14:09:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RbnlP62l4z3fXV
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Aug 2023 14:10:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RbncL1KQgz2xdb
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Aug 2023 14:04:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RbncN6w60z3btq
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Aug 2023 14:04:52 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RbncL0Pjzz4x3F;
-	Thu, 31 Aug 2023 14:04:50 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RbncK5TKNz4x3D;
+	Thu, 31 Aug 2023 14:04:49 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <20230823055430.752550-1-mpe@ellerman.id.au>
-References: <20230823055430.752550-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc: Drop zalloc_maybe_bootmem()
-Message-Id: <169345455028.11824.5523013276138425964.b4-ty@ellerman.id.au>
+In-Reply-To: <20230329234308.2215833-1-mpe@ellerman.id.au>
+References: <20230329234308.2215833-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/64s: Move CPU -mtune options into Kconfig
+Message-Id: <169345455030.11824.2703955170389037894.b4-ty@ellerman.id.au>
 Date: Thu, 31 Aug 2023 14:02:30 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -45,21 +45,21 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 23 Aug 2023 15:54:30 +1000, Michael Ellerman wrote:
-> The only callers of zalloc_maybe_bootmem() are PCI setup routines. These
-> used to be called early during boot before slab setup, and also during
-> runtime due to hotplug.
+On Thu, 30 Mar 2023 10:43:08 +1100, Michael Ellerman wrote:
+> Currently the -mtune options are set in the Makefile, depending on what
+> the compiler supports.
 > 
-> But commit 5537fcb319d0 ("powerpc/pci: Add ppc_md.discover_phbs()")
-> moved the boot-time calls later, after slab setup, meaning there's no
-> longer any need for zalloc_maybe_bootmem(), kzalloc() can be used in all
-> cases.
+> One downside of doing it that way is that the chosen -mtune option is
+> not recorded in the .config.
+> 
+> Another downside is that if there's ever a need to do more complicated
+> logic to calculate the correct option, that gets messy in the Makefile.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc: Drop zalloc_maybe_bootmem()
-      https://git.kernel.org/powerpc/c/fabdb27da78afb93b0a83c0579025cb8d05c0d2d
+[1/1] powerpc/64s: Move CPU -mtune options into Kconfig
+      https://git.kernel.org/powerpc/c/50832720ec54c39ab189cd5e057aec1c514978ce
 
 cheers
