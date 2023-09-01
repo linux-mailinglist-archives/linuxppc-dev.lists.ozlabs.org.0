@@ -1,64 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CFFF78F96F
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Sep 2023 10:00:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CAD678F9E7
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Sep 2023 10:21:30 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AaRktxRV;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=r4Avfguv;
+	dkim=fail reason="signature verification failed" header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=LDBeIJn7;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RcVnK3HWFz3c2L
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Sep 2023 18:00:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RcWFz6Y3hz3c3p
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Sep 2023 18:21:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AaRktxRV;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=r4Avfguv;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=LDBeIJn7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=softfail (domain owner discourages use of this host) smtp.mailfrom=suse.cz (client-ip=2001:67c:2178:6::1c; helo=smtp-out1.suse.de; envelope-from=vbabka@suse.cz; receiver=lists.ozlabs.org)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RcVmP4g56z30Q4
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Sep 2023 17:59:17 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RcWF46hRlz30Q4
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Sep 2023 18:20:40 +1000 (AEST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 3FD1061E2B
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Sep 2023 07:59:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90E98C433CD
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Sep 2023 07:59:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1693555154;
-	bh=GYFYHNBwiYIMyxXYhNMZBkYnxr8aCSZaJphpVUbR/gI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=AaRktxRVhEkyJ9abOTUx7V1990sLCQZsTcFUleQ9gIPImVoGeS5XT88pEptizfQDW
-	 nHQgbPUErQ/EtGTelQCn2JhACffAb906a3fJ4in3B4pCmK6qM0io61lBIOnhXZ01m0
-	 H5w1WWX4mbREPA9UDC2fe+zlPL9TSAvCy5V5R8UagFmSy8vYheYL0hPJCXf5I91b7T
-	 TooNiVCUoUTRJvGRT3I4IL6EjI/AcDVnd0G4O3HqcJT1EWm5mQPzH+sLC+Ivo0edUD
-	 zFOJ+InUvPaokhPEzGYCjmb5rvDpXKLESGTzYoF9j92Jto02sA1aNf4Ycj8NwKOsMP
-	 OOd4SSi9NU49A==
-Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-573921661a6so1038157eaf.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Sep 2023 00:59:14 -0700 (PDT)
-X-Gm-Message-State: AOJu0YyMwHdbnVCo/xWNxJu2boPiSgvuykbxuPF/zy4je//3Dq6oowNc
-	1wtcThxFsx+dxI03S5e9i6+wez2uVPS8PEYx3mc=
-X-Google-Smtp-Source: AGHT+IHWr1PcUpOyQTzQJYAg/TVFLv3Ywby9u7RUE31cJ6C0yBF+em+y7ml6sODmNo5t9DAFJN+2Shqq08kJwtSujfQ=
-X-Received: by 2002:a4a:919c:0:b0:56e:4921:deb0 with SMTP id
- d28-20020a4a919c000000b0056e4921deb0mr1662294ooh.8.1693555153843; Fri, 01 Sep
- 2023 00:59:13 -0700 (PDT)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B16B32185C;
+	Fri,  1 Sep 2023 08:20:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1693556430; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=0WI96qvBSKjcD8skIYDzJyfhIXrX2VNlBg1bDAXSO7w=;
+	b=r4AvfguvEQvHBhS4L8lDsEaveieeJTkNCYi5f+9IRURkHs9QHXGXU55bgZKYP/UIN96eLm
+	Su7gVEZFmwF5EXNaNlCErp7Hgj8GQqdQewKT6RBq+dcvYVgxoLUZe9WovHMiX8iQwt+NsA
+	NGR32KTwfyM1j9J07mti1C+WlqZc3DM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1693556430;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=0WI96qvBSKjcD8skIYDzJyfhIXrX2VNlBg1bDAXSO7w=;
+	b=LDBeIJn7DjHmpeWPe/JUiDen1A1u3hmJEXiXvjRyh5pbOBnd20g14NvrGZHMhmcFppSIaI
+	jb3axaR9hQtT2aCA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 27C7D1358B;
+	Fri,  1 Sep 2023 08:20:30 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id M/8FCc6e8WSYGwAAMHmgww
+	(envelope-from <vbabka@suse.cz>); Fri, 01 Sep 2023 08:20:30 +0000
+From: Vlastimil Babka <vbabka@suse.cz>
+To: seanjc@google.com
+Subject: [PATCH gmem FIXUP] mm, compaction: make testing mapping_unmovable() safe
+Date: Fri,  1 Sep 2023 10:20:26 +0200
+Message-ID: <20230901082025.20548-2-vbabka@suse.cz>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <20230831191335.give.534-kees@kernel.org>
-In-Reply-To: <20230831191335.give.534-kees@kernel.org>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Fri, 1 Sep 2023 16:58:37 +0900
-X-Gmail-Original-Message-ID: <CAK7LNATENQQy6LrWS10S-EXsyAvTraSj2WA=O7rFsS9Ht6a+3g@mail.gmail.com>
-Message-ID: <CAK7LNATENQQy6LrWS10S-EXsyAvTraSj2WA=O7rFsS9Ht6a+3g@mail.gmail.com>
-Subject: Re: [PATCH v3] kbuild: Show marked Kconfig fragments in "help"
-To: Kees Cook <keescook@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,104 +73,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: kvm@vger.kernel.org, david@redhat.com, yu.c.zhang@linux.intel.com, linux-mips@vger.kernel.org, linux-mm@kvack.org, pbonzini@redhat.com, chao.p.peng@linux.intel.com, linux-riscv@lists.infradead.org, isaku.yamahata@gmail.com, paul@paul-moore.com, anup@brainfault.org, chenhuacai@kernel.org, jmorris@namei.org, willy@infradead.org, wei.w.wang@intel.com, tabba@google.com, jarkko@kernel.org, serge@hallyn.com, mail@maciej.szmigiero.name, aou@eecs.berkeley.edu, vbabka@suse.cz, michael.roth@amd.com, ackerleytng@google.com, paul.walmsley@sifive.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, qperret@google.com, linux-kernel@vger.kernel.org, oliver.upton@linux.dev, linux-security-module@vger.kernel.org, palmer@dabbelt.com, kvm-riscv@lists.infradead.org, maz@kernel.org, linux-fsdevel@vger.kernel.org, liam.merwick@oracle.com, akpm@linux-foundation.org, vannapurve@google.com, linuxppc-dev@lists.ozlabs.org, kirill.shutemov@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Sep 1, 2023 at 4:13=E2=80=AFAM Kees Cook <keescook@chromium.org> wr=
-ote:
->
-> Currently the Kconfig fragments in kernel/configs and arch/*/configs
-> that aren't used internally aren't discoverable through "make help",
-> which consists of hard-coded lists of config fragments. Instead, list
-> all the fragment targets that have a "# Help: " comment prefix so the
-> targets can be generated dynamically.
->
-> Add logic to the Makefile to search for and display the fragment and
-> comment. Add comments to fragments that are intended to be direct targets=
-.
->
-> Cc: Nicolas Schier <nicolas@fjasle.eu>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Cc: Randy Dunlap <rdunlap@infradead.org>
-> Cc: linux-kernel@vger.kernel.org
-> Cc: x86@kernel.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-riscv@lists.infradead.org
-> Cc: linux-s390@vger.kernel.org
-> Cc: linux-kbuild@vger.kernel.org
-> Cc: linux-hardening@vger.kernel.org
-> Signed-off-by: Kees Cook <keescook@chromium.org>
-> Co-developed-by: Masahiro Yamada <masahiroy@kernel.org>
-> ---
-> v3:
-> - Use Makefile logic from Masahiro Yamada
-> - Use "# Help: " prefix, but only on desired fragment targets
-> v2: https://lore.kernel.org/all/20230825194329.gonna.911-kees@kernel.org
-> v1: https://lore.kernel.org/all/20230824223606.never.762-kees@kernel.org
-> ---
->  Makefile                                   |  1 -
->  arch/arm/configs/dram_0x00000000.config    |  1 +
->  arch/arm/configs/dram_0xc0000000.config    |  1 +
->  arch/arm/configs/dram_0xd0000000.config    |  1 +
->  arch/arm/configs/lpae.config               |  1 +
->  arch/arm64/configs/virt.config             |  1 +
->  arch/powerpc/configs/disable-werror.config |  1 +
->  arch/powerpc/configs/security.config       |  4 +++-
->  arch/riscv/configs/32-bit.config           |  1 +
->  arch/riscv/configs/64-bit.config           |  1 +
->  arch/s390/configs/btf.config               |  1 +
->  arch/s390/configs/kasan.config             |  1 +
->  arch/x86/Makefile                          |  4 ----
->  kernel/configs/debug.config                |  2 ++
->  kernel/configs/kvm_guest.config            |  1 +
->  kernel/configs/nopm.config                 |  2 ++
->  kernel/configs/rust.config                 |  1 +
->  kernel/configs/tiny.config                 |  2 ++
->  kernel/configs/x86_debug.config            |  1 +
->  kernel/configs/xen.config                  |  2 ++
->  scripts/kconfig/Makefile                   | 15 ++++++++++++---
->  21 files changed, 36 insertions(+), 9 deletions(-)
->
+As Kirill pointed out, mapping can be removed under us due to
+truncation. Test it under folio lock as already done for the async
+compaction / dirty folio case. To prevent locking every folio with
+mapping to do the test, do it only for unevictable folios, as we can
+expect the unmovable mapping folios are also unevictable - it is the
+case for guest memfd folios.
 
+Also incorporate comment update suggested by Matthew.
 
-Just one thing.
+Fixes: 3424873596ce ("mm: Add AS_UNMOVABLE to mark mapping as completely unmovable")
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+---
+Feel free to squash into 3424873596ce.
 
+ mm/compaction.c | 49 ++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 32 insertions(+), 17 deletions(-)
 
+diff --git a/mm/compaction.c b/mm/compaction.c
+index a3d2b132df52..e0e439b105b5 100644
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -862,6 +862,7 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
+ 
+ 	/* Time to isolate some pages for migration */
+ 	for (; low_pfn < end_pfn; low_pfn++) {
++		bool is_dirty, is_unevictable;
+ 
+ 		if (skip_on_failure && low_pfn >= next_skip_pfn) {
+ 			/*
+@@ -1047,10 +1048,6 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
+ 		if (!mapping && (folio_ref_count(folio) - 1) > folio_mapcount(folio))
+ 			goto isolate_fail_put;
+ 
+-		/* The mapping truly isn't movable. */
+-		if (mapping && mapping_unmovable(mapping))
+-			goto isolate_fail_put;
+-
+ 		/*
+ 		 * Only allow to migrate anonymous pages in GFP_NOFS context
+ 		 * because those do not depend on fs locks.
+@@ -1062,8 +1059,10 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
+ 		if (!folio_test_lru(folio))
+ 			goto isolate_fail_put;
+ 
++		is_unevictable = folio_test_unevictable(folio);
++
+ 		/* Compaction might skip unevictable pages but CMA takes them */
+-		if (!(mode & ISOLATE_UNEVICTABLE) && folio_test_unevictable(folio))
++		if (!(mode & ISOLATE_UNEVICTABLE) && is_unevictable)
+ 			goto isolate_fail_put;
+ 
+ 		/*
+@@ -1075,26 +1074,42 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
+ 		if ((mode & ISOLATE_ASYNC_MIGRATE) && folio_test_writeback(folio))
+ 			goto isolate_fail_put;
+ 
+-		if ((mode & ISOLATE_ASYNC_MIGRATE) && folio_test_dirty(folio)) {
+-			bool migrate_dirty;
++		is_dirty = folio_test_dirty(folio);
++
++		if (((mode & ISOLATE_ASYNC_MIGRATE) && is_dirty)
++		    || (mapping && is_unevictable)) {
++			bool migrate_dirty = true;
++			bool is_unmovable;
+ 
+ 			/*
+-			 * Only pages without mappings or that have a
+-			 * ->migrate_folio callback are possible to migrate
+-			 * without blocking. However, we can be racing with
+-			 * truncation so it's necessary to lock the page
+-			 * to stabilise the mapping as truncation holds
+-			 * the page lock until after the page is removed
+-			 * from the page cache.
++			 * Only folios without mappings or that have
++			 * a ->migrate_folio callback are possible to migrate
++			 * without blocking.
++			 *
++			 * Folios from unmovable mappings are not migratable.
++			 *
++			 * However, we can be racing with truncation, which can
++			 * free the mapping that we need to check. Truncation
++			 * holds the folio lock until after the folio is removed
++			 * from the page so holding it ourselves is sufficient.
++			 *
++			 * To avoid this folio locking to inspect every folio
++			 * with mapping for being unmovable, we assume every
++			 * such folio is also unevictable, which is a cheaper
++			 * test. If our assumption goes wrong, it's not a bug,
++			 * just potentially wasted cycles.
+ 			 */
+ 			if (!folio_trylock(folio))
+ 				goto isolate_fail_put;
+ 
+ 			mapping = folio_mapping(folio);
+-			migrate_dirty = !mapping ||
+-					mapping->a_ops->migrate_folio;
++			if ((mode & ISOLATE_ASYNC_MIGRATE) && is_dirty) {
++				migrate_dirty = !mapping ||
++						mapping->a_ops->migrate_folio;
++			}
++			is_unmovable = mapping && mapping_unmovable(mapping);
+ 			folio_unlock(folio);
+-			if (!migrate_dirty)
++			if (!migrate_dirty || is_unmovable)
+ 				goto isolate_fail_put;
+ 		}
+ 
+-- 
+2.41.0
 
-
-
-> diff --git a/kernel/configs/tiny.config b/kernel/configs/tiny.config
-> index 00009f7d0835..60a4b6d80b36 100644
-> --- a/kernel/configs/tiny.config
-> +++ b/kernel/configs/tiny.config
-> @@ -1,3 +1,5 @@
-> +# Help: Size-optimized kernel image
-
-
-I will drop this.
-
-
-We already have a hard-coded help message.
-
-  tinyconfig   - Configure the tiniest possible kernel
-
-
-
-
-Then, some lines below, again.
-
-  tiny.config               - Size-optimized kernel image
-
-
-
-tiny.config is for internal use for tinyconfig.
-
-
-
-
---=20
-Best Regards
-Masahiro Yamada
