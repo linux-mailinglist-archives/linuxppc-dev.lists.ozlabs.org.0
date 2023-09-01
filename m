@@ -2,89 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63E8378F6D2
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Sep 2023 03:46:57 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=lov1Fblw;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=KNqq/RgJ;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F84578F746
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Sep 2023 04:43:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RcLVl1kpjz3c5H
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Sep 2023 11:46:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RcMmR1V94z3c2L
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Sep 2023 12:43:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=lov1Fblw;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=KNqq/RgJ;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.26; helo=out2-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=tinylab.org (client-ip=43.155.65.254; helo=bg4.exmail.qq.com; envelope-from=tanyuan@tinylab.org; receiver=lists.ozlabs.org)
+Received: from bg4.exmail.qq.com (bg4.exmail.qq.com [43.155.65.254])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RcLTn1MFXz2xr6
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Sep 2023 11:46:04 +1000 (AEST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailout.nyi.internal (Postfix) with ESMTP id 1E29B5C007C;
-	Thu, 31 Aug 2023 21:46:00 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Thu, 31 Aug 2023 21:46:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm3; t=1693532760; x=1693619160; bh=/d
-	C0IWBjlOk1cS3fGjjVkXrON0sGSFSdKCiYoOsqrQ0=; b=lov1FblwV5W5dXCW3y
-	PyhVhnq8a0HDk2STH0OY515uM4YgLit8RKC+mD4F7jyfHGCKgqpDsj7HOrGzgonS
-	RJIMYIS5rdW8g1u4KDce3nmlUJWX/3/Trdj8E+c4+hm8pdu0yemEOslldINe2KdB
-	MDT3AMS0+xzBcGael/Q3t6mjl8uXNsXeg06Akf2qONFaDhXcGowEkvhKd+1WQQhZ
-	8Av4E57X48mSAUu/XuACqnpalmTajcrvnzn+hudkGgPP2kbgh3RAzsAhtbPyUqSa
-	YZ+2+KvrjOvv6zGJULSyuYuLibwJiiNufhd6YXiiiCaMHHlkZWe/ayOofE67Lcrl
-	TNeQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm1; t=1693532760; x=1693619160; bh=/dC0IWBjlOk1c
-	S3fGjjVkXrON0sGSFSdKCiYoOsqrQ0=; b=KNqq/RgJqoO2rbDyJbQroiP9/8Y75
-	WalTecsNOJmxB9enurBhjpkyDFqmOmnBfZcA8c1bYAnnZheb8B6wmEI7LXJgcZNf
-	O69Wtof8HXrRjU0fANKAtKCK/yxhtHYuY6qBr5YuDj9XY+kR3vonsp0T/1LELLyX
-	8gItwmw8Xqi/k9HiKjVi4G+i81a0qd48Ed9N42NGgUThYzNOTAGbut1DnMMsKIJE
-	0TKStVwxfSq2VoqD/jVUA7/LpvJSFqf1HSqZ6N511RjAjfKj+2Y8vIKJbc6CJhqA
-	mElnFI/nuJCtcWPjZDzRwun1SBjFmcnBldXMl/pSTxHkX4rOHq6ikTY2Q==
-X-ME-Sender: <xms:V0LxZOt375m-3W8VOySJrjnjr9ObhvdGxUmMdn04bqErZBhnqNAkIQ>
-    <xme:V0LxZDdNTU-ss4sANAeM8AHqiCe-VSw3RHijcQZZG-sP6F-M5Gn8lDenFsgvKXnwP
-    uZjvtoszEM_GhndjvI>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudeguddggeelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:V0LxZJyiXQ8Yw6bEIvINotqM1dyr27oQwtGb7O0bxkKU_1Cz34gKPQ>
-    <xmx:V0LxZJPQqR-wEf4eK6SJLtq6RvhCnuEyv9Rdmqn4M8yvLGIf6HG7Lg>
-    <xmx:V0LxZO-keQqiLYWIaNv0YxcGr1Xh2g8vSrHDvNxCaGYfOshb7-coCQ>
-    <xmx:WELxZOytphZ83V37PscaQPVRM8UhnBenszVdE_DQmhdZVq4tCXrP2A>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 89BB0B6008D; Thu, 31 Aug 2023 21:45:59 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-701-g9b2f44d3ee-fm-20230823.001-g9b2f44d3
-Mime-Version: 1.0
-Message-Id: <6ddd3504-9833-4ac8-a30c-cd63494f7ed8@app.fastmail.com>
-In-Reply-To: <5501ba80-bdb0-6344-16b0-0466a950f82c@suse.com>
-References: <5501ba80-bdb0-6344-16b0-0466a950f82c@suse.com>
-Date: Thu, 31 Aug 2023 21:44:06 -0400
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Thomas Zimmermann" <tzimmermann@suse.com>,
- "Michael Ellerman" <mpe@ellerman.id.au>,
- "Nicholas Piggin" <npiggin@gmail.com>,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "Helge Deller" <deller@gmx.de>
-Subject: Re: Framebuffer mmap on PowerPC
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RcMlt0xbkz2yVm
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Sep 2023 12:43:16 +1000 (AEST)
+X-QQ-mid: bizesmtp74t1693536160toaj6r1k
+Received: from main2-ubuntu.tail147f4.ts.net ( [202.201.15.117])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 01 Sep 2023 10:42:37 +0800 (CST)
+X-QQ-SSF: 01200000000000907000000A0000000
+X-QQ-FEAT: Q4gfBD3K7t8LHx8FTZT7R0pzOr2xQ6PVUi1NqX923gFepa7VKzyhODmAnf/j0
+	FFzWi/HfxQmD+/itG5KD65p28ioecp5k/AJ+x1vHkVpR/b5F0y7QQvib9awrU1wl1sKPmgR
+	DGcWYU0UGPPOFXS0wtLkBVDtTntXGwDgSJYX2GGowmoGMr6K4cFE9c9WYMhLDQQfrnqjY4F
+	Zz2mRZtdE0ujBac9ry3WNOT8lOQbTUrLOs6YLl9H9jMnB89w1yfbN+4wILm134/jMTdE/k0
+	gEvzTPdgjWMiPXf+dfGlNIRjeKO3tZEQZmPMyn5OocSfuJPkfkpla+lAgDMxG5FeEuR626H
+	Pz0sgpL5DCfb6CCkwJ452J6ANiL5/P1yKGEH0dvVSFZT1JEi58=
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 14128962257822734387
+From: Yuan Tan <tanyuan@tinylab.org>
+To: mpe@ellerman.id.au,
+	christophe.leroy@csgroup.eu,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	tsbogend@alpha.franken.de,
+	hdegoede@redhat.com
+Subject: [PATCH v2 0/3] Add dependencies of POWER_RESET for MIPS Malta, x86, and PowerMac
+Date: Fri,  1 Sep 2023 10:42:36 +0800
+Message-Id: <cover.1693535514.git.tanyuan@tinylab.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:tinylab.org:qybglogicsvrgz:qybglogicsvrgz5a-1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,45 +54,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-Arch <linux-arch@vger.kernel.org>, Linux Fbdev development list <linux-fbdev@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, dri-devel <dri-devel@lists.freedesktop.org>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org, linux-mips@vger.kernel.org, linux@weissschuh.net, falcon@tinylab.org, linuxppc-dev@lists.ozlabs.org, w@1wt.eu, Yuan Tan <tanyuan@tinylab.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 31, 2023, at 10:41, Thomas Zimmermann wrote:
-> Hi,
->
-> there's a per-architecture function called fb_pgprotect() that sets 
-> VMA's vm_page_prot for mmaped framebuffers. Most architectures use a 
-> simple implementation based on pgprot_writecomine() [1] or 
-> pgprot_noncached(). [2]
->
-> On PPC this function uses phys_mem_access_prot() and therefore requires 
-> the mmap call's file struct. [3] Removing the file argument would help 
-> with simplifying the caller of fb_pgprotect(). [4]
->
-> Why is the file even required on PPC?
->
-> Is it possible to replace phys_mem_access_prot() with something simpler 
-> that does not use the file struct?
+These patches are to add dependencies of POWER_RESET for MIPS Malta, x86,
+and PowerMac.
 
-What what I can tell, the structure of the code is a result of
-these constraints:
+I am really sorry I forget to use --thread in v1[1] as I stayed up too
+late. So here I am resending v2 patch with a mirror fix and
+consolidating them into a thread.
 
-- some powerpc platforms use different page table flags for
-  prefetchable vs nonprefetchable BARs on PCI memory.
+To simplify the enablement of the poweroff support, selecting the
+required options for CONFIG_POWER_RESET=y may make many people happy
+especially when they are using a customized config (maybe tinyconfig
+based) for a target qemu board. Without normal poweroff support from the
+kernel side, qemu will simply hang[2] there after a 'poweroff' command,
+which is a very bad experience for the automatical tests.
 
-- page table flags must match between all mappings, in particular
-  here between /dev/fb0 and /dev/mem, as mismatched attributes
-  cause a checkstop. On other architectures this may cause
-  undefined behavior instead of a checkstop
+Currently, based on tinyconfig, it is very hard to find the exact
+poweroff options[3]. Some architectures' poweroff works well without
+any dependence, the others' poweroff options are hidden deeply, which
+make things hard.
 
-It's unfortunate that we have multiple incompatible ways
-to determine the page flags based on firmware (ia64),
-pci (powerpc) or file->f_flags (arm, csky), when they all
-try to solve the same problem here.
+After multiple verifications, these options have been identified as the
+minimum dependencies required for poweroff to function normally.
 
-Christophe's suggested approach to simplify it is probably
-fine, another way would be to pass the f_flags value instead
-of the file pointer.
+Zhangjin and I invested a significant amount of time in searching for
+the current options on these devices. We hope that this set of patches
+will save time for others. If community like it, we will consider adding
+dependencies for POWER_RESET on other devices.
 
-      Arnd
+---
+[1]: https://lore.kernel.org/lkml/20230831201727.3177853-1-tanyuan@tinylab.org/
+[2]: https://lore.kernel.org/lkml/511b2f6009fb830b3f32b4be3dca99596c684fa3.1689759351.git.falcon@tinylab.org/
+[3]: https://lore.kernel.org/all/983843582e52e83fba79ad45cea6c79e1f62ec6c.1690489039.git.falcon@tinylab.org/
+
+---
+Changes since v1:
+- Fix the mistake of using spaces instead of tabs in kconfig.
+
+Yuan Tan (3):
+  kconfig: add dependencies of POWER_RESET for mips malta
+  kconfig: add dependencies of POWER_RESET for x86
+  kconfig: add dependencies of POWER_RESET for PowerMac
+
+ arch/mips/Kconfig                       | 3 +++
+ arch/powerpc/platforms/powermac/Kconfig | 1 +
+ arch/x86/Kconfig                        | 2 ++
+ 3 files changed, 6 insertions(+)
+
+-- 
+2.34.1
+
