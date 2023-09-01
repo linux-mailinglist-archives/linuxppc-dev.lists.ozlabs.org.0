@@ -1,114 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 307257901E0
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Sep 2023 20:04:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1386679026B
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Sep 2023 21:10:32 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=dKGNzyzK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OSvkeEOl;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RcmBZ73ZBz3c9d
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Sep 2023 04:04:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rcnft01TQz3c9x
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Sep 2023 05:10:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=dKGNzyzK;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OSvkeEOl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=outlook.com (client-ip=2a01:111:f400:7e8a::81b; helo=nam10-bn7-obe.outbound.protection.outlook.com; envelope-from=mirimmad@outlook.com; receiver=lists.ozlabs.org)
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10olkn2081b.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e8a::81b])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rcm9k3tsVz3bxL
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Sep 2023 04:03:37 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CqDrz3eFggw6AOAoyMp//Jt4wiYi0j627wvjTFCDfjOvwAIe9OtrRPE3KVKHgyFo2baGSh1OlMmofw2F2SBXNbTD7iXEzGJLH913SUA4jnY9zmbwp2INt6Ax6RXIbfxOsRJvwQZNQJmE5QSo1BAm46hiNM0cm+IiHekzS6fYME+1aprbjcfRASw8CV6pofW5im6mAL1AjkP8YsRz9CJiptqryZbfGWhhK3czqYs7R0rClqYbpSBzlGsFcR7TrvwRI0iNtZMafBYBTwD8CVbAAnAylCpxLatSxiXpg+vsqLHz0wsnuWj+KLbn7HkfufRfvoSWtV091iwzw7wSufgYtg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=j0FJYR6GtUGAEadg2dpfOHIguqpQFVo7Nz1AHHxUwgY=;
- b=ckF8z+GHJX1Xo4i10iGTnnfsyQuTSHle4SsmXEPbTroymjT0A6ImehGmMbqxDkUYaGChinjvbqV/jMAS86DNv+ndHD2pcb50EZGUCg+ALQCjiBKGl7/0ZlJDr1tn+7z+V6Ay4egfCsQjdY/QcDnZrk2Voeq2l505/ofsf4VgW+B6HLhf1Uvk/5IlovsEI4g0gFmCfg6lpI6Cgw2wnStZjEpGEA8gEWuNJf8WvELOh+zzbIh6m+boRXOe6r6uKRLNnhIeLshLevu4XNeATziQTSFstKKc8R7Xt0eSkcLgIASPU1x2fGC/RAAK4i4Qt/j/bpCVG8vkqOZmDREB7UWZ+g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=j0FJYR6GtUGAEadg2dpfOHIguqpQFVo7Nz1AHHxUwgY=;
- b=dKGNzyzK2lLHHa0gP0xGCWAYu5hRnk/IXt4JuIz14hPRm4twj+Mj4lWSeqGK3bkRC4wdh1JWqvoXEj+AmAlCivJCWoaPMO46HASsIQKc8F3wMOPrlr2lLtloovq3QoJqdd6ZLqyL3EhcSsRQmwlJl63cqjlaILEBFM3mF4hJsBuFXbiSNexl+OEwjlcpEVrw0mBnFWn/q4ySSCe8Yipwwg8BLNKxbu8J/vL2v+J8qlL56qNB+f01Vo+pLL/iTWzMc2N4avxXyn6wosgMw6VjUbCRyzW2Q00F4BrvL0BzhPirQCyoAdyrW01Z4x9PDtmxm5ab9tjHTtY4l/1Si+c4PA==
-Received: from CY5PR12MB6455.namprd12.prod.outlook.com (2603:10b6:930:35::10)
- by SN7PR12MB6957.namprd12.prod.outlook.com (2603:10b6:806:263::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.34; Fri, 1 Sep
- 2023 18:03:18 +0000
-Received: from CY5PR12MB6455.namprd12.prod.outlook.com
- ([fe80::912:a56e:f6d2:86fa]) by CY5PR12MB6455.namprd12.prod.outlook.com
- ([fe80::912:a56e:f6d2:86fa%4]) with mapi id 15.20.6745.015; Fri, 1 Sep 2023
- 18:03:18 +0000
-Message-ID:  <CY5PR12MB64558C413B3D8A60AA5C202DC6E4A@CY5PR12MB6455.namprd12.prod.outlook.com>
-Date: Fri, 1 Sep 2023 23:33:06 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] powerpc/powernv: use appropiate error code
-Content-Language: en-US
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-References: <CY5PR12MB64550ACC0B90FDD120D21E47C6E4A@CY5PR12MB6455.namprd12.prod.outlook.com>
- <fdb8d83d-84ce-76d6-db9a-bb232492170c@csgroup.eu>
-From: Immad Mir <mirimmad@outlook.com>
-In-Reply-To: <fdb8d83d-84ce-76d6-db9a-bb232492170c@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rcndv5X91z3bhy
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Sep 2023 05:09:39 +1000 (AEST)
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 381Iuvxe005116;
+	Fri, 1 Sep 2023 19:05:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=abz7DsaqRVyL3JWeUDJAxMA/No8BSDwXicByVatLfhM=;
+ b=OSvkeEOlDYCSRMRbOTh/YZo2F9vEgUa76TBcIqjdla/pn0uY9gcYn7dq4TAAIlEczoN+
+ zSeTUDBrbYHMagBKQuhqIdFMOkg/h1cdCbUo35jVEiPUk1/yKW/FA3VWgNhlts+jvuSp
+ qaqaBEEvcqm0Cn8Iw/Cpl2x6yxtnupAwgnzArhrkMVCBnCJQ2PleBJsWjD94mBiHNX7a
+ L1dSBFbud9gwC5WtUJ1j8sgoJukt7C7d6oJgZWqClKKYEjGjwJwcxLH047/38ZOYhXsn
+ c/GQHimfMYEYPGqiQoQioXrRVvaDXDJSbwcWjmAyqHPsfWqpW8V0ubSc2cZYfEgywQjU +A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sunpdrj78-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 01 Sep 2023 19:05:44 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 381J0V4a016970;
+	Fri, 1 Sep 2023 19:05:42 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sunpdrbv4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 01 Sep 2023 19:05:38 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 381IcJHp019180;
+	Fri, 1 Sep 2023 19:04:44 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3sqxe2en48-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 01 Sep 2023 19:04:43 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 381J4fcp42271386
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 1 Sep 2023 19:04:41 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1778520043;
+	Fri,  1 Sep 2023 19:04:41 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1F9EC20040;
+	Fri,  1 Sep 2023 19:04:39 +0000 (GMT)
+Received: from li-bd3f974c-2712-11b2-a85c-df1cec4d728e.ibm.com.com (unknown [9.43.87.168])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  1 Sep 2023 19:04:38 +0000 (GMT)
+From: Hari Bathini <hbathini@linux.ibm.com>
+To: lkml <linux-kernel@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Kexec-ml <kexec@lists.infradead.org>
+Subject: [PATCH 1/2] vmcore: allow alternate dump capturing methods to export vmcore without is_kdump_kernel()
+Date: Sat,  2 Sep 2023 00:34:37 +0530
+Message-ID: <20230901190438.375678-1-hbathini@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: qPGrvZomjqCvGlH34QW5pZjv0TREspuq
+X-Proofpoint-GUID: pFVwYX-oi8xbqPIvFe_R4Of1xELHkOzV
 Content-Transfer-Encoding: 8bit
-X-TMN: [E+IBbG3kYOKcJbF9K4f/oHmO8TH9bVtlRF+zqrPumx6KdPM5BhR/Gm9BcnA+GPAQ]
-X-ClientProxiedBy: PN2PR01CA0023.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:25::28) To CY5PR12MB6455.namprd12.prod.outlook.com
- (2603:10b6:930:35::10)
-X-Microsoft-Original-Message-ID:  <1706716d-a52d-e991-cb80-611039697f7e@outlook.com>
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY5PR12MB6455:EE_|SN7PR12MB6957:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7b6e0aad-2ab5-4ad9-cbe3-08dbab15b882
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	vD9Nb4stEFRZ4r64IHCzwIuk0R4lBL/GWKGMqH9iWi2j7CVgrKWrXjXo9y2XImi1b07MFzb5oLJW3iXeGBmDhHnLCdWQvB30U4T/KNwLGBJVLHygYmyzwvGFAnxx3Ioy3xYokoFuzjWmr4EL3aUgaCwtGXk5SmVF0KEyZKLimB7UF13JXlf1PraRHbRmZHYMCugWjxapoU3aqZrpE9uw4uxxFG3pUQA0bDBSNxTdcF1jB5gZomAea6MIaqV/WjSqXOACea1yfDrho0Q/LGQXj1VNp+aLV2tjIuPSByLKoQBj71bvyPMnD1Kowp++iyCbk/6aguJMYr37dG8BcToyzrU7OS1plm3o7RjkD2tEPUZeBR9TjsyNBPdln603v/YrcivWxqUlIDGZxSPBOhEJdPvx2Q72DJ3ykGwHps8m2bu2KGgAMruIDzm28KqbdTnvMfqVOWoFEaaKwjG6vKLnIuSumRNfFm6dEmKH1x+5VitkNCrBvWu5btbK00wMVfQP4oYd4hJ06TxgppjhANHMZ9wPBSvd7bX7Ng43GpPNB6Y+USFefWtAv6rshErYR37o
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?L0F0dWdBOHBrelNCUHFDSEZpQzJFR2NBdXk5UlZCSWtaS0h4azNiRHpvMTk2?=
- =?utf-8?B?Q1lxVFVCQmg3VDdYVlBudFQzQi9zN0NJOERTb0lBSk0xWmF4aURubHM0dWNx?=
- =?utf-8?B?R052ZnhqTXMzOG00QnZJK1VCODkvQ0llaUhTbnl5Umw5Uy9HZjNwTEpGOWZZ?=
- =?utf-8?B?cElWYWpPQUYwbFUvejQ1TXZHZStBM2EreGFoMmN2SWJ5WGJqQ2N3UktBanlV?=
- =?utf-8?B?OFhNM3VUTEVvQm9ra1phVk1TQnp3OEdid3dVa3lUUGtwZHppZHpXOVk1YVVN?=
- =?utf-8?B?Y29oZlk0VXBFSmR0Y05hVTNnWU5ocHpKSjEzMmw4T0dUWEE4cHJOeE04L3la?=
- =?utf-8?B?SUUyOUJLWHlMYzFmZytZbndBdEJLT3M1VjQraERYMGFDWlplTm5oNUVQdDdh?=
- =?utf-8?B?c0czQ3hwMWllTUUvd1lPamdwUGJyc1U2aExjRTZJOHR1M2tRUVlPY3hQZXNh?=
- =?utf-8?B?VzNnUHVUckJ2cGtDSWQ1UWVFbU5BTlJkaEZ0NkxKQy9CZVBtU01INzNUNXhy?=
- =?utf-8?B?WGFGYko1YnBIa3FwMWNJa3hXSlZ5UXdoam9FaW1tV0JPeFpaV3Y1U1k2ZmQv?=
- =?utf-8?B?dlZXTE5ycm5CeVVha2dVK1VSWCthRGR2MVh3RWpKSTZPOWNmTTNKZTJ0TFZG?=
- =?utf-8?B?QnZIZy9kcGVwRHZHZ1J2Y3RIVzRqcmwzSHIvRWk1UDNVVkdnV0pMSjVkT2RM?=
- =?utf-8?B?ZXpESEwxM2FSSVQ0eWt5d3NSbkdxdGhGcXF4bXViekRrL2xUbTZibTYxQUhI?=
- =?utf-8?B?YWxOclRnM1JwaERBZTkvUzc0N21Uemc1Y04wei8rejZwcmlueFVYWTk4d09M?=
- =?utf-8?B?d0xsT2ZDWVVJRUl1QUVJMytBcWMxWENvOTEyQXpYSVJDSTZnZFk4VmViSjFl?=
- =?utf-8?B?QVppK2tWOU11UjIrdGtzNE5YRHZtN0p2RmRYdUFCMjBFTVRIT0RlSjFhekR4?=
- =?utf-8?B?MHRUemFldEQ4UUQrdWVVZVpwcHNMOVlLN2lkdEYvNXNWRDRnWndQN2MzYnZP?=
- =?utf-8?B?ZlRvUDNoRTZjREhhdXFLblhsKzc3QmkvWElCeDNBNVNwbnlVWlM2MklORkFU?=
- =?utf-8?B?dXJhTmwrazJBeGFWZWpnOXFRaGU2eW5KQlVyOEtxU3hrajZGM2ZuRnEyTHgx?=
- =?utf-8?B?SVJhOWZKejVGaWZoZ3dWa0JWc0wyWVV2bEZqRVpJeEtmZlZyUWxkQlgwVDFI?=
- =?utf-8?B?NUEvY0dCa2NTaEVQUHdMaGJyblN2dVYwN0E0MWc0QkhCT1lvWkVOUW5xcm5a?=
- =?utf-8?B?VkdnZURhZEo5TzJ4UmZkRlNUUm84c2ttR01tMEE1aEMrQURDNXY2S1daNWJ2?=
- =?utf-8?B?cFNHU2MxUS9pbHUyRTVKcFNBR3dyWDEwRlNDWmRLUlRZRDUwOWJJeGoxSlFl?=
- =?utf-8?B?NCtITmZQdWUxamNPRUlCSVVMbjZkeXZETXBMWm4xa1JYSmhaamF1MmRyejVB?=
- =?utf-8?B?STdEUlh3YUpBWFh5NU1nZEhla2NITkJBbWVGR1ZKbXIxMFlWWnZuUkVaN21P?=
- =?utf-8?B?dHMvdFE4TGlqS1hkNEFmZ0JOWW1mRS9yQlBLVjIrMnBwdlplaGRJTEllQzdW?=
- =?utf-8?B?c0UvQWRDZy9GZmUxcTRLSFJXTUQvVHZadEhWVC9HR2ZaWk9uODcyTWFlRGxL?=
- =?utf-8?B?dHpucndjN1NDRkFVY1h6d1JtQ0tRU3BjL3BBcis3Rm1YM3R6TEQwellUWDBp?=
- =?utf-8?B?djloSVVEMzc3ancvOWloT0FITU1OQUVMWVNPRlRvVUJzN016bEhHcHBBPT0=?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7b6e0aad-2ab5-4ad9-cbe3-08dbab15b882
-X-MS-Exchange-CrossTenant-AuthSource: CY5PR12MB6455.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2023 18:03:18.3581
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6957
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-01_16,2023-08-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ bulkscore=0 suspectscore=0 lowpriorityscore=0 malwarescore=0 adultscore=0
+ spamscore=0 clxscore=1011 mlxscore=0 impostorscore=0 mlxlogscore=994
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309010179
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -120,64 +96,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, open list <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)" <linuxppc-dev@lists.ozlabs.org>, Immad Mir <mirimmad17@gmail.com>
+Cc: Sourabh Jain <sourabhjain@linux.ibm.com>, Dave Young <dyoung@redhat.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Baoquan He <bhe@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Currently, is_kdump_kernel() returns true when elfcorehdr_addr is set.
+While elfcorehdr_addr is set for kexec based kernel dump mechanism,
+alternate dump capturing methods like fadump [1] also set it to export
+the vmcore. is_kdump_kernel() is used to restrict resources in crash
+dump capture kernel but such restrictions may not be desirable for
+fadump. Allow is_kdump_kernel() to be defined differently for such
+scenarios. With this, is_kdump_kernel() could be false while vmcore
+is usable. So, introduce is_crashdump_kernel() to return true when
+elfcorehdr_addr is set and use it for vmcore related checks.
 
-On 01/09/23 11:10 pm, Christophe Leroy wrote:
->
-> Le 01/09/2023 à 19:19, mirimmad@outlook.com a écrit :
->> [Vous ne recevez pas souvent de courriers de mirimmad@outlook.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
->>
->> From: Immad Mir <mirimmad17@gmail.com>
->>
->> -1 is not a valid error code. This patch replaces it with -EPERM.
-> Can you explain how it will work ?
-> In scom_debug_init() rc is built by oring the value returned by
-> scom_debug_init_one().
-> What will be the result when oring some valid values with -EPERM ?
-> It was working well with -1 because when you or -1 with anything you get
-> -1 as result. But with your change I don't think it will work.
+[1] https://docs.kernel.org/powerpc/firmware-assisted-dump.html
 
+Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+---
+ include/linux/crash_dump.h | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-if EPERM is not always necessarily equal to 1, we can put a check in 
-scom_debug_init before returning rc. If it is less than 1 (because AFAIK 
-or-ring with negative number results back into the same negative number) 
-we set rc equal to -1.
+diff --git a/include/linux/crash_dump.h b/include/linux/crash_dump.h
+index 0f3a656293b0..1052a0faf0dd 100644
+--- a/include/linux/crash_dump.h
++++ b/include/linux/crash_dump.h
+@@ -50,6 +50,7 @@ void vmcore_cleanup(void);
+ #define vmcore_elf64_check_arch(x) (elf_check_arch(x) || vmcore_elf_check_arch_cross(x))
+ #endif
+ 
++#ifndef is_kdump_kernel
+ /*
+  * is_kdump_kernel() checks whether this kernel is booting after a panic of
+  * previous kernel or not. This is determined by checking if previous kernel
+@@ -64,6 +65,19 @@ static inline bool is_kdump_kernel(void)
+ {
+ 	return elfcorehdr_addr != ELFCORE_ADDR_MAX;
+ }
++#endif
++
++/*
++ * Return true if this is a dump capture kernel, where vmcore needs to be
++ * exported, irrespective of the dump capture mechanism in use.
++ *
++ * Same as is_kdump_kernel() unless arch specific code defines is_kdump_kernel()
++ * differently while supporting other dump capturing mechanisms.
++ */
++static inline bool is_crashdump_kernel(void)
++{
++	return elfcorehdr_addr != ELFCORE_ADDR_MAX;
++}
+ 
+ /* is_vmcore_usable() checks if the kernel is booting after a panic and
+  * the vmcore region is usable.
+@@ -75,7 +89,7 @@ static inline bool is_kdump_kernel(void)
+ 
+ static inline int is_vmcore_usable(void)
+ {
+-	return is_kdump_kernel() && elfcorehdr_addr != ELFCORE_ADDR_ERR ? 1 : 0;
++	return is_crashdump_kernel() && elfcorehdr_addr != ELFCORE_ADDR_ERR ? 1 : 0;
+ }
+ 
+ /* vmcore_unusable() marks the vmcore as unusable,
+@@ -84,7 +98,7 @@ static inline int is_vmcore_usable(void)
+ 
+ static inline void vmcore_unusable(void)
+ {
+-	if (is_kdump_kernel())
++	if (is_crashdump_kernel())
+ 		elfcorehdr_addr = ELFCORE_ADDR_ERR;
+ }
+ 
+-- 
+2.41.0
 
-Immad.
-
->
-> Christophe
->
->> Signed-off-by: Immad Mir <mirimmad17@gmail.com>
->> ---
->>    arch/powerpc/platforms/powernv/opal-xscom.c | 4 ++--
->>    1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/powerpc/platforms/powernv/opal-xscom.c b/arch/powerpc/platforms/powernv/opal-xscom.c
->> index 262cd6fac..ce4b089dd 100644
->> --- a/arch/powerpc/platforms/powernv/opal-xscom.c
->> +++ b/arch/powerpc/platforms/powernv/opal-xscom.c
->> @@ -171,7 +171,7 @@ static int scom_debug_init_one(struct dentry *root, struct device_node *dn,
->>           if (IS_ERR(dir)) {
->>                   kfree(ent->path.data);
->>                   kfree(ent);
->> -               return -1;
->> +               return -EPERM;
->>           }
->>
->>           debugfs_create_blob("devspec", 0400, dir, &ent->path);
->> @@ -191,7 +191,7 @@ static int scom_debug_init(void)
->>
->>           root = debugfs_create_dir("scom", arch_debugfs_dir);
->>           if (IS_ERR(root))
->> -               return -1;
->> +               return -EPERM;
->>
->>           rc = 0;
->>           for_each_node_with_property(dn, "scom-controller") {
->> --
->> 2.40.0
->>
