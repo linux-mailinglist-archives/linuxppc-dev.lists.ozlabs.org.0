@@ -2,74 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CCB278F5C2
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Sep 2023 00:45:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63E8378F6D2
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Sep 2023 03:46:57 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=yh7JMTDq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=lov1Fblw;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=KNqq/RgJ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RcGTR5pPdz2xq6
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Sep 2023 08:45:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RcLVl1kpjz3c5H
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Sep 2023 11:46:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=yh7JMTDq;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=lov1Fblw;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=KNqq/RgJ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=mailbox.org (client-ip=2001:67c:2050:0:465::202; helo=mout-p-202.mailbox.org; envelope-from=erhard_f@mailbox.org; receiver=lists.ozlabs.org)
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [IPv6:2001:67c:2050:0:465::202])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.26; helo=out2-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RcGSR6wh4z2xqw
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Sep 2023 08:44:35 +1000 (AEST)
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4RcGS428Hpz9t0S;
-	Fri,  1 Sep 2023 00:44:20 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1693521860;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qUw2H/dvjsNLuSO1gvdUjEjuokgX99MyTBeskHf2Zic=;
-	b=yh7JMTDqvWjwpMOCR8ATCNf+P2YBSVH7WgiWtNR4+ijgteacpuIjxZhQ9w+SDULUdtalZB
-	5awH7JjeqfYYp5Ny9iI1L+P6gnjGA0g0/SMbEBjASexgZnD7ngGPesLrD8CVOo7Lbeqz5s
-	l8VMrJ+r1KI+M6ZLXGO3PTxvk89BfLRm9kZU7KgoUgS2dabdKoiSAJPkBY6Sqp6sYpQq6r
-	U4/xNoOQxTG440kLO+6l97Mf5Ujqt8+VqrVtsbA2ByH22gQY9qoOp5e3mXzONKED6Kxo+I
-	iH1zUuIKqxWDVpRIFcZgQZG4M6iWnVRwHl70Jsrmhsr+NCs32VEQcHYVe50ktQ==
-Date: Fri, 1 Sep 2023 00:44:17 +0200
-From: Erhard Furtner <erhard_f@mailbox.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: KASAN debug kernel fails to boot at early stage when
- CONFIG_SMP=y is set (kernel 6.5-rc5, PowerMac G4 3,6)
-Message-ID: <20230901004417.631dc019@yea>
-In-Reply-To: <1085cc49-b5e8-0aa5-dc97-ec4a100463b5@csgroup.eu>
-References: <20230811014845.1bf6771d@yea>
-	<f8f09049-3568-621d-88ce-1b61fe8b63fe@csgroup.eu>
-	<20230813213855.794b3c8f@yea>
-	<57bdfad9-cbec-1a9f-aca7-5956d22a8ada@csgroup.eu>
-	<20230814192748.56525c82@yea>
-	<6d710a2b-5cac-9f0a-cd30-0ad18172932b@csgroup.eu>
-	<20230815220156.5c234b52@yea>
-	<0876e754-7bee-ec61-4e3c-c0ee08d59d87@csgroup.eu>
-	<20230817203202.2b4c273c@yea>
-	<87y1i9clf2.fsf@mail.lhotse>
-	<20230818111641.7f680ce7@yea>
-	<fcdf2bf7-0834-b27f-4d24-28e05815ee6f@csgroup.eu>
-	<20230818182316.79303545@yea>
-	<5ea3302e-0fb1-1670-e4b6-adba5115ab94@csgroup.eu>
-	<20230824020015.78733931@yea>
-	<87jztkvfid.fsf@mail.lhotse>
-	<20230828011758.3b7b9daf@yea>
-	<1085cc49-b5e8-0aa5-dc97-ec4a100463b5@csgroup.eu>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-MBO-RS-META: j4o7k6jorqit5wbffujeysj4ac64psbh
-X-MBO-RS-ID: 56dc74d21470090ae9e
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RcLTn1MFXz2xr6
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Sep 2023 11:46:04 +1000 (AEST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailout.nyi.internal (Postfix) with ESMTP id 1E29B5C007C;
+	Thu, 31 Aug 2023 21:46:00 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Thu, 31 Aug 2023 21:46:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:sender
+	:subject:subject:to:to; s=fm3; t=1693532760; x=1693619160; bh=/d
+	C0IWBjlOk1cS3fGjjVkXrON0sGSFSdKCiYoOsqrQ0=; b=lov1FblwV5W5dXCW3y
+	PyhVhnq8a0HDk2STH0OY515uM4YgLit8RKC+mD4F7jyfHGCKgqpDsj7HOrGzgonS
+	RJIMYIS5rdW8g1u4KDce3nmlUJWX/3/Trdj8E+c4+hm8pdu0yemEOslldINe2KdB
+	MDT3AMS0+xzBcGael/Q3t6mjl8uXNsXeg06Akf2qONFaDhXcGowEkvhKd+1WQQhZ
+	8Av4E57X48mSAUu/XuACqnpalmTajcrvnzn+hudkGgPP2kbgh3RAzsAhtbPyUqSa
+	YZ+2+KvrjOvv6zGJULSyuYuLibwJiiNufhd6YXiiiCaMHHlkZWe/ayOofE67Lcrl
+	TNeQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:sender:subject
+	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+	:x-sasl-enc; s=fm1; t=1693532760; x=1693619160; bh=/dC0IWBjlOk1c
+	S3fGjjVkXrON0sGSFSdKCiYoOsqrQ0=; b=KNqq/RgJqoO2rbDyJbQroiP9/8Y75
+	WalTecsNOJmxB9enurBhjpkyDFqmOmnBfZcA8c1bYAnnZheb8B6wmEI7LXJgcZNf
+	O69Wtof8HXrRjU0fANKAtKCK/yxhtHYuY6qBr5YuDj9XY+kR3vonsp0T/1LELLyX
+	8gItwmw8Xqi/k9HiKjVi4G+i81a0qd48Ed9N42NGgUThYzNOTAGbut1DnMMsKIJE
+	0TKStVwxfSq2VoqD/jVUA7/LpvJSFqf1HSqZ6N511RjAjfKj+2Y8vIKJbc6CJhqA
+	mElnFI/nuJCtcWPjZDzRwun1SBjFmcnBldXMl/pSTxHkX4rOHq6ikTY2Q==
+X-ME-Sender: <xms:V0LxZOt375m-3W8VOySJrjnjr9ObhvdGxUmMdn04bqErZBhnqNAkIQ>
+    <xme:V0LxZDdNTU-ss4sANAeM8AHqiCe-VSw3RHijcQZZG-sP6F-M5Gn8lDenFsgvKXnwP
+    uZjvtoszEM_GhndjvI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudeguddggeelucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
+    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:V0LxZJyiXQ8Yw6bEIvINotqM1dyr27oQwtGb7O0bxkKU_1Cz34gKPQ>
+    <xmx:V0LxZJPQqR-wEf4eK6SJLtq6RvhCnuEyv9Rdmqn4M8yvLGIf6HG7Lg>
+    <xmx:V0LxZO-keQqiLYWIaNv0YxcGr1Xh2g8vSrHDvNxCaGYfOshb7-coCQ>
+    <xmx:WELxZOytphZ83V37PscaQPVRM8UhnBenszVdE_DQmhdZVq4tCXrP2A>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 89BB0B6008D; Thu, 31 Aug 2023 21:45:59 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-701-g9b2f44d3ee-fm-20230823.001-g9b2f44d3
+Mime-Version: 1.0
+Message-Id: <6ddd3504-9833-4ac8-a30c-cd63494f7ed8@app.fastmail.com>
+In-Reply-To: <5501ba80-bdb0-6344-16b0-0466a950f82c@suse.com>
+References: <5501ba80-bdb0-6344-16b0-0466a950f82c@suse.com>
+Date: Thu, 31 Aug 2023 21:44:06 -0400
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Thomas Zimmermann" <tzimmermann@suse.com>,
+ "Michael Ellerman" <mpe@ellerman.id.au>,
+ "Nicholas Piggin" <npiggin@gmail.com>,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Helge Deller" <deller@gmx.de>
+Subject: Re: Framebuffer mmap on PowerPC
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,106 +96,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Linux-Arch <linux-arch@vger.kernel.org>, Linux Fbdev development list <linux-fbdev@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, dri-devel <dri-devel@lists.freedesktop.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 31 Aug 2023 05:32:46 +0000
-Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
+On Thu, Aug 31, 2023, at 10:41, Thomas Zimmermann wrote:
+> Hi,
+>
+> there's a per-architecture function called fb_pgprotect() that sets 
+> VMA's vm_page_prot for mmaped framebuffers. Most architectures use a 
+> simple implementation based on pgprot_writecomine() [1] or 
+> pgprot_noncached(). [2]
+>
+> On PPC this function uses phys_mem_access_prot() and therefore requires 
+> the mmap call's file struct. [3] Removing the file argument would help 
+> with simplifying the caller of fb_pgprotect(). [4]
+>
+> Why is the file even required on PPC?
+>
+> Is it possible to replace phys_mem_access_prot() with something simpler 
+> that does not use the file struct?
 
-> Ok so there is some corrupted memory somewhere.
-> 
-> Can you try what happens when you remove the call to kasan_init() at the 
-> start of setup_arch() in arch/powerpc/kernel/setup-common.c
+What what I can tell, the structure of the code is a result of
+these constraints:
 
-Ok, so I left the other patches in place + btext_map() instead of btext_unmap() at the end of MMU_init() + Michaels patch and additionally commented-out kasan_init() as stated above. The outcome is rather interesting! Now I deterministically get this output at boot OF console, regardless wheter it's a cold boot or warm boot:
+- some powerpc platforms use different page table flags for
+  prefetchable vs nonprefetchable BARs on PCI memory.
 
-via-pmu: Server Mode is disabled
-PMU driver v2 initialized for Core99, firmware: 0c
-ioremap() called early from pmac_nvram_init+0x208/0x7c0. Use early_ioremap() instead
-nvram: Checking bank 0...
-nvram: gen0=3234, gen1=3235
-nvram: Active bank is: 1
-nvram: OF partition at 0x410
-nvram: XP partition at 0x1020
-nvram: NR partition at 0x1120
-Top of RAM: 0x80000000, Total RAM: 0x80000000
-Memory hole size: 0MB
-Zone ranges:
-  DMA      [mem 0x0000000000000000-0x000000002fffffff]
-  Normal   empty
-  HighMem  [mem 0x0000000030000000-0x000000007fffffff]
-Movable zone start for each node
-Early memory node ranges
-  node   0: [mem 0x0000000000000000-0x000000007fffffff]
-Initmem setup node 0 [mem 0x0000000000000000-0x000000007fffffff]
-percpu: Embedded 14 pages/cpu s24608 r8192 d24544 u57344
-pcpu-alloc: s24608 r8192 d24544 u57344 alloc=14*4096
-pcpu-alloc: [0] 0 
-Kernel command line: ro root=/dev/sda5 nr_cpus=1 zswap.max_pool_percent=16 slub_debug=FZP page_poison=1 netconsole=6666@192.168.178.8/eth0,6666@192.168.178.3/70:85:C2:30:EC:01 init=/usr/lib/systemd/systemd 
-Dentry cache hash table entries: 131072 (order: 7, 524288 bytes, linear)
-Inode-cache hash table entries: 65536 (order: 6, 262144 bytes, linear)
-Built 1 zonelists, mobility grouping on.  Total pages: 522560
-mem auto-init: stack:all(pattern), heap alloc:off, heap free:off
-stackdepot: allocating hash table via alloc_large_system_hash
-stackdepot hash table entries: 1048576 (order: 10, 4194304 bytes, linear)
-==================================================================
-BUG: KASAN: stack-out-of-bounds in __kernel_poison_pages+0x6c/0xd0
-Write of size 4896 at addr c17a7000 by task swapper/0
+- page table flags must match between all mappings, in particular
+  here between /dev/fb0 and /dev/mem, as mismatched attributes
+  cause a checkstop. On other architectures this may cause
+  undefined behavior instead of a checkstop
 
-CPU: 0 PID: 0 Comm: swapper Tainted: G                T 6.5.0-rc7-PMacG4-dirty #7
-Hardware name: PowerMac3,6 7455 0x80010303 PowerMac
-Call Trace:
-[c1717ce0] [c0f4ec40] dump_stack_lvl+0x60/0xa4 (unreliable)
-[c1717d00] [c0368380] print_report+0x154/0x548
-[c1717d50] [c036813c] kasan_report+0xd0/0x160
-[c1717db0] [c0369bb4] kasan_check_range+0x1c8/0x308
-[c1717dc0] [c036ae88] memset+0x34/0x90
-[c1717de0] [c035b6e0] __kernel_poison_pages+0x6c/0xd0
-[c1717e00] [c03355e4] __free_pages_ok+0x418/0x500
-[c1717e60] [c14372c8] memblock_free_all+0x268/0x400
-[c1717f20] [c14103fc] mem_init+0x8c/0x274
-[c1717f60] [c1431cd0] mm_core_init+0x240/0x4e0
-[c1717fc0] [c1404694] start_kernel+0x150/0x2d8
-[c1717f00] [000035d0] 0x35d0
+It's unfortunate that we have multiple incompatible ways
+to determine the page flags based on firmware (ia64),
+pci (powerpc) or file->f_flags (arm, csky), when they all
+try to solve the same problem here.
 
-The buggy address belongs to the physical page:
-page:(ptrval) refcount:0 mapcount:0 mapping:00000000 index:0x0 pfn:0x17a7
-flags: 0x0(zone=0)
-page_type: 0xffffffff()
-raw: 00000000 eee15380 eee15380 00000000 00000000 00000000 ffffffff 00000000
-raw: 00000000
-page dumped because: kasan: bad access detected
+Christophe's suggested approach to simplify it is probably
+fine, another way would be to pass the f_flags value instead
+of the file pointer.
 
-Memory state around the buggy address:
- c17a7d00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- c17a7d80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->c17a7e00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 f1 f1
-                                                     ^
- c17a7e80: f1 f1 04 f2 04 f2 00 f3 f3 f3 00 00 00 00 00 00
- c17a7f00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-==================================================================
-Disabling lock debugging due to kernel taint
-
-> I'd also be curious to know what happens when CONFIG_DEBUG_SPINLOCK is 
-> disabled.
-
-Disabling CONFIG_DEBUG_SPINLOCK does not change the output above. ^^
-
-> Another question which I'm no sure I asked already: Is it a new problem 
-> you have got with recent kernels or is it just that you never tried such 
-> a config with older kernels ?
-
-I wanted to revisit https://bugzilla.kernel.org/show_bug.cgi?id=216041 and verify whether it was resolved. KASAN worked around 2019-2021 on my G4 as I reported some bugs with it around that time and you fixed some of the bugs. ;) Like kernel bugzilla #205099, #216190, #205885.
-
-But it always seemed flaky on the G4 and had it's problems. So I can't tell whether this specific issue was there back then or if it's new. At least bug #216190 was also about KASAN and SMP issues.
-
-> Also, when you say you need to start with another SMP kernel first and 
-> then you don't have the problem anymore until the next cold reboot, do 
-> you mean you have some old kernel with KASAN that works, or is it a 
-> kernel without KASAN that you have to start first ?
-
-First. I start with a non-KASAN SMP kernel and afterwards reboot into a KASAN kernel. But now with kasan_init() commented-out in start of setup_arch() in arch/powerpc/kernel/setup-common.c this does not work anymore. I get the dmesg above all the time, at cold and warm boots.
-
-Regards,
-Erhard
+      Arnd
