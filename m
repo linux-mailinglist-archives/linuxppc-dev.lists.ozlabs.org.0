@@ -1,92 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EFF679026D
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Sep 2023 21:16:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55E2B7902A3
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Sep 2023 21:51:24 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OJuHOXyn;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=SsBBGJkl;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RcnnM3MtMz3c5C
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Sep 2023 05:16:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RcpZ21hM8z3c62
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Sep 2023 05:51:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OJuHOXyn;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=SsBBGJkl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::634; helo=mail-pl1-x634.google.com; envelope-from=keescook@chromium.org; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RcnmR1tz7z3bhy
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Sep 2023 05:15:18 +1000 (AEST)
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 381J9HNH006835;
-	Fri, 1 Sep 2023 19:15:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=s+3NeorMcULnI76AxEKRXmNLozU/9pZ6CJ5NNbhCP9A=;
- b=OJuHOXyn1/C8LkiswmZEEIdppakdqr5jL7x8PJtwdBqi+iq/JqqhPkIrOPFcnCVLgyf4
- avAbU/wkWWzoEngh79UK2gl+OZ2x4KTfpLc3YrFgcbiVBtNhzPRB1Qp4bvEWVeQiwR5i
- QYvVW72MBLZYldfNy2UCdccbyvSfJCkAQyBYs9sdf8t6FBHR5EmTPFw5jB6/uLyo/V1f
- nMpAOi0eNbnOUQonaQB+NszQri9C+iDwmsjhFDR6vYJXQ8tqRoKRfjc0EPHfwFrIMzgu
- 5YP9TKDmxk+kMYjTmYFj//GdBayu2Osgo4aomPTGWsFONu2pIevUhJcmfcSsk4EpVxmJ 1A== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sunpdrs2w-67
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Sep 2023 19:15:05 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 381J0atd017105;
-	Fri, 1 Sep 2023 19:07:14 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sunpdrc38-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Sep 2023 19:07:12 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 381Ibcgj004891;
-	Fri, 1 Sep 2023 19:04:46 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3squqtfh1s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Sep 2023 19:04:46 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 381J4hSl17760990
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 1 Sep 2023 19:04:43 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4C3B420043;
-	Fri,  1 Sep 2023 19:04:43 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7039820040;
-	Fri,  1 Sep 2023 19:04:41 +0000 (GMT)
-Received: from li-bd3f974c-2712-11b2-a85c-df1cec4d728e.ibm.com.com (unknown [9.43.87.168])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  1 Sep 2023 19:04:41 +0000 (GMT)
-From: Hari Bathini <hbathini@linux.ibm.com>
-To: lkml <linux-kernel@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Kexec-ml <kexec@lists.infradead.org>
-Subject: [PATCH 2/2] powerpc/fadump: make is_kdump_kernel() return false when fadump is active
-Date: Sat,  2 Sep 2023 00:34:38 +0530
-Message-ID: <20230901190438.375678-2-hbathini@linux.ibm.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230901190438.375678-1-hbathini@linux.ibm.com>
-References: <20230901190438.375678-1-hbathini@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RcpY65dwPz3by8
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Sep 2023 05:50:32 +1000 (AEST)
+Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1bdbf10333bso19561045ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Sep 2023 12:50:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1693597831; x=1694202631; darn=lists.ozlabs.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=TnGlOgpcJfhSyX3oWtweduRxRFI+vcvjVBEfz8W6REE=;
+        b=SsBBGJklF95171iS/33j9ZayfIiguxz3k+SoucFHOYz5JQimXh2+jWRAwybixaP5e+
+         ARt2fAnOWAt4iiftlHH6lF6BGDXglImZVxRV8V6fo39VuT7qCQf7ZnVMNXYdo4FGrtGx
+         IlL0juBCqpOp7jEtWT10UfHUHP8oQZM3YHVxw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693597831; x=1694202631;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TnGlOgpcJfhSyX3oWtweduRxRFI+vcvjVBEfz8W6REE=;
+        b=ccwC4bqX5DY16qEeBg5mMfrBGkJBb63IhUg3bpTN7AobeAFYzmc7rfbM17t6WP7EPY
+         qJNxaNYxW1B7f/Ie2tdy0iJdSBJAC5GNkLG6IWoSFGOOPwgJam3vqIo9J4ekvWvAzlMa
+         a3uwVVrQ/Vjyv1665Qr0pX1/hM08QDEFO49mrxy399U4jjAfOeRtejdD6hf1g+vUwfKg
+         zYzBVeMTow13StUFmKyd4yZiy1v4IvJfYWNRDgLwk0sCr+7Z3Ocfs4mwEyhu3Yrf3Gb5
+         qL3xk0q3y0IjIe6BGwpdw7/+zpZ+sXURWuBZlvU9LqBvaxaEU4jW2y5HIXVcURQU9c2G
+         ix0A==
+X-Gm-Message-State: AOJu0YxptaMHK8PmoECADVumCwXRINGtmjfRThsuZnitKJDxm12DjDbo
+	l8Wvy7yhLF4JQEGWEo72tGOAUA==
+X-Google-Smtp-Source: AGHT+IFLMLtB06xgjItzzUv50zhsXFZ37ehwBfgJSIF2V6heU41cis1M/xhTkDTyzQL7J2okpu7MHw==
+X-Received: by 2002:a17:902:f682:b0:1c0:b7f4:5b86 with SMTP id l2-20020a170902f68200b001c0b7f45b86mr3871500plg.65.1693597830846;
+        Fri, 01 Sep 2023 12:50:30 -0700 (PDT)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id d10-20020a170902654a00b001b8b2b95068sm3397478pln.204.2023.09.01.12.50.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Sep 2023 12:50:30 -0700 (PDT)
+Date: Fri, 1 Sep 2023 12:50:29 -0700
+From: Kees Cook <keescook@chromium.org>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Subject: Re: [PATCH v3] kbuild: Show marked Kconfig fragments in "help"
+Message-ID: <202309011250.AB0DAA03@keescook>
+References: <20230831191335.give.534-kees@kernel.org>
+ <CAK7LNATENQQy6LrWS10S-EXsyAvTraSj2WA=O7rFsS9Ht6a+3g@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: hYavF-Vx3mzG0UCkc-WOOU12s7d6S7mh
-X-Proofpoint-GUID: Fr0uXum4M1SzGrwM4gQ4xCzeYmB3yEYJ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-01_16,2023-08-31_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- bulkscore=0 suspectscore=0 lowpriorityscore=0 malwarescore=0 adultscore=0
- spamscore=0 clxscore=1015 mlxscore=0 impostorscore=0 mlxlogscore=999
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309010179
+In-Reply-To: <CAK7LNATENQQy6LrWS10S-EXsyAvTraSj2WA=O7rFsS9Ht6a+3g@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,76 +77,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>, Dave Young <dyoung@redhat.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Baoquan He <bhe@redhat.com>
+Cc: linux-s390@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently, is_kdump_kernel() returns true in crash dump capture kernel
-for both kdump and fadump crash dump capturing methods, as both these
-methods set elfcorehdr_addr. Some restrictions enforced for crash dump
-capture kernel, based on is_kdump_kernel(), are specifically meant for
-kdump case and not desirable for fadump - eg. IO queues restriction in
-device drivers. So, define is_kdump_kernel() to return false when f/w
-assisted adump is active. For fadump case, is_fadump_active() can be
-used for capture kernel specific checks.
+On Fri, Sep 01, 2023 at 04:58:37PM +0900, Masahiro Yamada wrote:
+> On Fri, Sep 1, 2023 at 4:13 AM Kees Cook <keescook@chromium.org> wrote:
+> >
+> > Currently the Kconfig fragments in kernel/configs and arch/*/configs
+> > that aren't used internally aren't discoverable through "make help",
+> > which consists of hard-coded lists of config fragments. Instead, list
+> > all the fragment targets that have a "# Help: " comment prefix so the
+> > targets can be generated dynamically.
+> >
+> > Add logic to the Makefile to search for and display the fragment and
+> > comment. Add comments to fragments that are intended to be direct targets.
+> >
+> > Cc: Nicolas Schier <nicolas@fjasle.eu>
+> > Cc: Michael Ellerman <mpe@ellerman.id.au>
+> > Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> > Cc: Randy Dunlap <rdunlap@infradead.org>
+> > Cc: linux-kernel@vger.kernel.org
+> > Cc: x86@kernel.org
+> > Cc: linux-arm-kernel@lists.infradead.org
+> > Cc: linuxppc-dev@lists.ozlabs.org
+> > Cc: linux-riscv@lists.infradead.org
+> > Cc: linux-s390@vger.kernel.org
+> > Cc: linux-kbuild@vger.kernel.org
+> > Cc: linux-hardening@vger.kernel.org
+> > Signed-off-by: Kees Cook <keescook@chromium.org>
+> > Co-developed-by: Masahiro Yamada <masahiroy@kernel.org>
+> > ---
+> > v3:
+> > - Use Makefile logic from Masahiro Yamada
+> > - Use "# Help: " prefix, but only on desired fragment targets
+> > v2: https://lore.kernel.org/all/20230825194329.gonna.911-kees@kernel.org
+> > v1: https://lore.kernel.org/all/20230824223606.never.762-kees@kernel.org
+> > ---
+> >  Makefile                                   |  1 -
+> >  arch/arm/configs/dram_0x00000000.config    |  1 +
+> >  arch/arm/configs/dram_0xc0000000.config    |  1 +
+> >  arch/arm/configs/dram_0xd0000000.config    |  1 +
+> >  arch/arm/configs/lpae.config               |  1 +
+> >  arch/arm64/configs/virt.config             |  1 +
+> >  arch/powerpc/configs/disable-werror.config |  1 +
+> >  arch/powerpc/configs/security.config       |  4 +++-
+> >  arch/riscv/configs/32-bit.config           |  1 +
+> >  arch/riscv/configs/64-bit.config           |  1 +
+> >  arch/s390/configs/btf.config               |  1 +
+> >  arch/s390/configs/kasan.config             |  1 +
+> >  arch/x86/Makefile                          |  4 ----
+> >  kernel/configs/debug.config                |  2 ++
+> >  kernel/configs/kvm_guest.config            |  1 +
+> >  kernel/configs/nopm.config                 |  2 ++
+> >  kernel/configs/rust.config                 |  1 +
+> >  kernel/configs/tiny.config                 |  2 ++
+> >  kernel/configs/x86_debug.config            |  1 +
+> >  kernel/configs/xen.config                  |  2 ++
+> >  scripts/kconfig/Makefile                   | 15 ++++++++++++---
+> >  21 files changed, 36 insertions(+), 9 deletions(-)
+> >
+> 
+> 
+> Just one thing.
+> 
+> 
+> 
+> 
+> 
+> > diff --git a/kernel/configs/tiny.config b/kernel/configs/tiny.config
+> > index 00009f7d0835..60a4b6d80b36 100644
+> > --- a/kernel/configs/tiny.config
+> > +++ b/kernel/configs/tiny.config
+> > @@ -1,3 +1,5 @@
+> > +# Help: Size-optimized kernel image
+> 
+> 
+> I will drop this.
+> 
+> 
+> We already have a hard-coded help message.
+> 
+>   tinyconfig   - Configure the tiniest possible kernel
+> 
+> 
+> 
+> 
+> Then, some lines below, again.
+> 
+>   tiny.config               - Size-optimized kernel image
+> 
+> 
+> 
+> tiny.config is for internal use for tinyconfig.
 
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
----
- arch/powerpc/include/asm/kexec.h |  8 ++++++--
- arch/powerpc/kernel/crash_dump.c | 12 ++++++++++++
- 2 files changed, 18 insertions(+), 2 deletions(-)
+Shall I send a v4, or did you fix this up already?
 
-diff --git a/arch/powerpc/include/asm/kexec.h b/arch/powerpc/include/asm/kexec.h
-index a1ddba01e7d1..e1b43aa12175 100644
---- a/arch/powerpc/include/asm/kexec.h
-+++ b/arch/powerpc/include/asm/kexec.h
-@@ -99,10 +99,14 @@ void relocate_new_kernel(unsigned long indirection_page, unsigned long reboot_co
- 
- void kexec_copy_flush(struct kimage *image);
- 
--#if defined(CONFIG_CRASH_DUMP) && defined(CONFIG_PPC_RTAS)
-+#if defined(CONFIG_CRASH_DUMP)
-+bool is_kdump_kernel(void);
-+#define is_kdump_kernel			is_kdump_kernel
-+#if defined(CONFIG_PPC_RTAS)
- void crash_free_reserved_phys_range(unsigned long begin, unsigned long end);
- #define crash_free_reserved_phys_range crash_free_reserved_phys_range
--#endif
-+#endif /* CONFIG_PPC_RTAS */
-+#endif /* CONFIG_CRASH_DUMP */
- 
- #ifdef CONFIG_KEXEC_FILE
- extern const struct kexec_file_ops kexec_elf64_ops;
-diff --git a/arch/powerpc/kernel/crash_dump.c b/arch/powerpc/kernel/crash_dump.c
-index 9a3b85bfc83f..2086fa6cdc25 100644
---- a/arch/powerpc/kernel/crash_dump.c
-+++ b/arch/powerpc/kernel/crash_dump.c
-@@ -19,6 +19,7 @@
- #include <linux/uio.h>
- #include <asm/rtas.h>
- #include <asm/inst.h>
-+#include <asm/fadump.h>
- 
- #ifdef DEBUG
- #include <asm/udbg.h>
-@@ -92,6 +93,17 @@ ssize_t copy_oldmem_page(struct iov_iter *iter, unsigned long pfn,
- 	return csize;
- }
- 
-+/*
-+ * Return true only when kexec based kernel dump capturing method is used.
-+ * This ensures all restritions applied for kdump case are not automatically
-+ * applied for fadump case.
-+ */
-+bool is_kdump_kernel(void)
-+{
-+	return !is_fadump_active() && elfcorehdr_addr != ELFCORE_ADDR_MAX;
-+}
-+EXPORT_SYMBOL_GPL(is_kdump_kernel);
-+
- #ifdef CONFIG_PPC_RTAS
- /*
-  * The crashkernel region will almost always overlap the RTAS region, so
 -- 
-2.41.0
-
+Kees Cook
