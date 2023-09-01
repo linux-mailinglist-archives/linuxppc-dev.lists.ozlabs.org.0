@@ -2,62 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E46978F783
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Sep 2023 05:46:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E3E778F7F6
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Sep 2023 07:21:23 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kbuFz6Dk;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jFoJDJp6;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RcP980bsTz3bhy
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Sep 2023 13:46:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RcRG92Kkjz3c5g
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Sep 2023 15:21:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kbuFz6Dk;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jFoJDJp6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.151; helo=mgamail.intel.com; envelope-from=binbin.wu@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RcP8B6DW6z2ykV
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Sep 2023 13:46:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RcRFF2prRz302F
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Sep 2023 15:20:30 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1693539962; x=1725075962;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=dQBtg8NKz/pLl187/eYnyafMQC+Yh2bQyqEr25y1Bps=;
-  b=kbuFz6DkuNISkb8r910V5pMF7Jy6TmbYYKwmDyfrIVKa1zEeooGjVLUa
-   X/4pp0O/8CFkwdKu8JI/1bCrCfGbIhiPQSE4/FIK8vYc6ckKR9/Ds673P
-   KlsGu3qgyVAskqRWabpCswQtX1yfm1nEBWHmSij2lxCgg2InRSeCrrk0k
-   A8tOSrhiujfoDncaA9y3R918tGgMg18dZD6ZeACYg5Ecrsd/O5D6KgHvQ
-   9DVj4L/r2eSh8Jvv6XGBQzUnMSjpBpzxrsYvwuYsBUx5QwKaTbzSbkZDl
-   tPIXyZzO3Lho6Itsd7xPc20fdDO6qLSMiRmM1g4O2vgJng8M13tFEuXg0
+  t=1693545633; x=1725081633;
+  h=date:from:to:cc:subject:message-id;
+  bh=Hfei8VKMdR1T0RqeD6++O9+GhLdlnRz/RCve0Ui6Kck=;
+  b=jFoJDJp6t2B9mW0hbskpmTrWMA1WQQY1nTF7xFJgIeFc+ooAGMsMI5vG
+   IhWWf5207D5f1a30zakLknx/mT48g+MU4cG99pT/MMmeC17mTkWjjsbze
+   elDwTpXZOusOn05GFD/Yw6DWgzuflghRJXO8FVTYp+CnPmBtoFztQ2l3Y
+   4DPZfHNA8hp4DnmsemVcHkk/KfP6h+bI1dnKLIybYSPTKcxk7JTzcn+Vl
+   TkPWw892B9BZW4BrjBArdKDdjwGgciiqgkllrjp+HHVp4CpWrsEObC7JT
+   B/WhLdOEZZJIQgyRsfBBG6NHrC1vXJdexazi/vv/5cnUrszORpsbwEzJA
    A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10819"; a="356441913"
+X-IronPort-AV: E=McAfee;i="6600,9927,10819"; a="440119436"
 X-IronPort-AV: E=Sophos;i="6.02,218,1688454000"; 
-   d="scan'208";a="356441913"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2023 20:45:54 -0700
+   d="scan'208";a="440119436"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2023 22:20:25 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10819"; a="742962743"
+X-IronPort-AV: E=McAfee;i="6600,9927,10819"; a="805297027"
 X-IronPort-AV: E=Sophos;i="6.02,218,1688454000"; 
-   d="scan'208";a="742962743"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.93.2.44]) ([10.93.2.44])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2023 20:45:45 -0700
-Message-ID: <f7aaf097-6f83-0ee9-e16d-713d392b2299@linux.intel.com>
-Date: Fri, 1 Sep 2023 11:45:43 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [RFC PATCH v11 12/29] KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for
- guest-specific backing memory
-To: Ackerley Tng <ackerleytng@google.com>
-References: <diqz5y4wfpj0.fsf@ackerleytng-ctop.c.googlers.com>
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <diqz5y4wfpj0.fsf@ackerleytng-ctop.c.googlers.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+   d="scan'208";a="805297027"
+Received: from lkp-server01.sh.intel.com (HELO 5d8055a4f6aa) ([10.239.97.150])
+  by fmsmga008.fm.intel.com with ESMTP; 31 Aug 2023 22:20:23 -0700
+Received: from kbuild by 5d8055a4f6aa with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1qbwZx-0000uG-2h;
+	Fri, 01 Sep 2023 05:20:21 +0000
+Date: Fri, 01 Sep 2023 13:19:51 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS
+ 5c28fde1e3240c87cae1ed98a82a10118fdfa9d7
+Message-ID: <202309011349.3F3VxGf3-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,119 +66,227 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, david@redhat.com, yu.c.zhang@linux.intel.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, chao.p.peng@linux.intel.com, linux-riscv@lists.infradead.org, isaku.yamahata@gmail.com, maz@kernel.org, paul@paul-moore.com, anup@brainfault.org, chenhuacai@kernel.org, jmorris@namei.org, willy@infradead.org, wei.w.wang@intel.com, tabba@google.com, jarkko@kernel.org, serge@hallyn.com, mail@maciej.szmigiero.name, aou@eecs.berkeley.edu, vbabka@suse.cz, michael.roth@amd.com, paul.walmsley@sifive.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, qperret@google.com, seanjc@google.com, liam.merwick@oracle.com, linux-mips@vger.kernel.org, oliver.upton@linux.dev, linux-security-module@vger.kernel.org, palmer@dabbelt.com, kvm-riscv@lists.infradead.org, linux-fsdevel@vger.kernel.org, pbonzini@redhat.com, akpm@linux-foundation.org, vannapurve@google.com, linuxppc-dev@lists.ozlabs.org, kirill.shutemov@linux.intel.com
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: 5c28fde1e3240c87cae1ed98a82a10118fdfa9d7  Automatic merge of 'next' into merge (2023-08-31 22:11)
 
+elapsed time: 1024m
 
-On 8/31/2023 12:44 AM, Ackerley Tng wrote:
-> Binbin Wu <binbin.wu@linux.intel.com> writes:
->
->>> <snip>
->>>
->>> +static long kvm_gmem_allocate(struct inode *inode, loff_t offset, loff_t len)
->>> +{
->>> +	struct address_space *mapping = inode->i_mapping;
->>> +	pgoff_t start, index, end;
->>> +	int r;
->>> +
->>> +	/* Dedicated guest is immutable by default. */
->>> +	if (offset + len > i_size_read(inode))
->>> +		return -EINVAL;
->>> +
->>> +	filemap_invalidate_lock_shared(mapping);
->>> +
->>> +	start = offset >> PAGE_SHIFT;
->>> +	end = (offset + len) >> PAGE_SHIFT;
->>> +
->>> +	r = 0;
->>> +	for (index = start; index < end; ) {
->>> +		struct folio *folio;
->>> +
->>> +		if (signal_pending(current)) {
->>> +			r = -EINTR;
->>> +			break;
->>> +		}
->>> +
->>> +		folio = kvm_gmem_get_folio(inode, index);
->>> +		if (!folio) {
->>> +			r = -ENOMEM;
->>> +			break;
->>> +		}
->>> +
->>> +		index = folio_next_index(folio);
->>> +
->>> +		folio_unlock(folio);
->>> +		folio_put(folio);
->> May be a dumb question, why we get the folio and then put it immediately?
->> Will it make the folio be released back to the page allocator?
->>
-> I was wondering this too, but it is correct.
->
-> In filemap_grab_folio(), the refcount is incremented in three places:
->
-> + When the folio is created in filemap_alloc_folio(), it is given a
->    refcount of 1 in
->
->      filemap_alloc_folio() -> folio_alloc() -> __folio_alloc_node() ->
->      __folio_alloc() -> __alloc_pages() -> get_page_from_freelist() ->
->      prep_new_page() -> post_alloc_hook() -> set_page_refcounted()
->
-> + Then, in filemap_add_folio(), the refcount is incremented twice:
->
->      + The first is from the filemap (1 refcount per page if this is a
->        hugepage):
->
->          filemap_add_folio() -> __filemap_add_folio() -> folio_ref_add()
->
->      + The second is a refcount from the lru list
->
->          filemap_add_folio() -> folio_add_lru() -> folio_get() ->
->          folio_ref_inc()
->
-> In the other path, if the folio exists in the page cache (filemap), the
-> refcount is also incremented through
->
->      filemap_grab_folio() -> __filemap_get_folio() -> filemap_get_entry()
->      -> folio_try_get_rcu()
->
-> I believe all the branches in kvm_gmem_get_folio() are taking a refcount
-> on the folio while the kernel does some work on the folio like clearing
-> the folio in clear_highpage() or getting the next index, and then when
-> done, the kernel does folio_put().
->
-> This pattern is also used in shmem and hugetlb. :)
+configs tested: 204
+configs skipped: 2
 
-Thanks for your explanation. It helps a lot.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
->
-> I'm not sure whose refcount the folio_put() in kvm_gmem_allocate() is
-> dropping though:
->
-> + The refcount for the filemap depends on whether this is a hugepage or
->    not, but folio_put() strictly drops a refcount of 1.
-> + The refcount for the lru list is just 1, but doesn't the page still
->    remain in the lru list?
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r026-20230901   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20230901   gcc  
+arc                  randconfig-r013-20230901   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                   randconfig-001-20230901   clang
+arm                  randconfig-r005-20230901   gcc  
+arm                  randconfig-r012-20230901   clang
+arm                  randconfig-r016-20230901   clang
+arm                  randconfig-r021-20230901   clang
+arm                  randconfig-r033-20230901   gcc  
+arm64                            allmodconfig   gcc  
+arm64                             allnoconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r004-20230901   clang
+arm64                randconfig-r013-20230901   gcc  
+arm64                randconfig-r022-20230901   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                 randconfig-r003-20230901   gcc  
+csky                 randconfig-r011-20230901   gcc  
+csky                 randconfig-r023-20230901   gcc  
+csky                 randconfig-r025-20230901   gcc  
+hexagon               randconfig-001-20230901   clang
+hexagon               randconfig-002-20230901   clang
+hexagon              randconfig-r032-20230901   clang
+hexagon              randconfig-r033-20230901   clang
+hexagon              randconfig-r036-20230901   clang
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20230901   clang
+i386         buildonly-randconfig-002-20230901   clang
+i386         buildonly-randconfig-003-20230901   clang
+i386         buildonly-randconfig-004-20230901   clang
+i386         buildonly-randconfig-005-20230901   clang
+i386         buildonly-randconfig-006-20230901   clang
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                  randconfig-001-20230901   clang
+i386                  randconfig-002-20230901   clang
+i386                  randconfig-003-20230901   clang
+i386                  randconfig-004-20230901   clang
+i386                  randconfig-005-20230901   clang
+i386                  randconfig-006-20230901   clang
+i386                  randconfig-011-20230901   gcc  
+i386                  randconfig-012-20230901   gcc  
+i386                  randconfig-013-20230901   gcc  
+i386                  randconfig-014-20230901   gcc  
+i386                  randconfig-015-20230901   gcc  
+i386                  randconfig-016-20230901   gcc  
+i386                 randconfig-r006-20230901   clang
+i386                 randconfig-r015-20230901   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                        allyesconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20230901   gcc  
+loongarch            randconfig-r013-20230901   gcc  
+loongarch            randconfig-r016-20230901   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                 randconfig-r011-20230901   gcc  
+m68k                 randconfig-r031-20230901   gcc  
+m68k                 randconfig-r035-20230901   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+microblaze           randconfig-r021-20230901   gcc  
+microblaze           randconfig-r024-20230901   gcc  
+microblaze           randconfig-r025-20230901   gcc  
+mips                             allmodconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                 randconfig-r002-20230901   gcc  
+mips                 randconfig-r006-20230901   gcc  
+mips                 randconfig-r021-20230901   clang
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                randconfig-r011-20230901   gcc  
+nios2                randconfig-r022-20230901   gcc  
+openrisc                         allmodconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+openrisc             randconfig-r023-20230901   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r015-20230901   gcc  
+parisc               randconfig-r034-20230901   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   gcc  
+powerpc              randconfig-r001-20230901   clang
+powerpc              randconfig-r002-20230901   clang
+powerpc              randconfig-r006-20230901   clang
+powerpc              randconfig-r025-20230901   gcc  
+powerpc64            randconfig-r004-20230901   clang
+powerpc64            randconfig-r005-20230901   clang
+powerpc64            randconfig-r022-20230901   gcc  
+powerpc64            randconfig-r023-20230901   gcc  
+powerpc64            randconfig-r024-20230901   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                 randconfig-001-20230901   clang
+riscv                randconfig-r012-20230901   gcc  
+riscv                randconfig-r026-20230901   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                              allnoconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                  randconfig-001-20230901   gcc  
+s390                 randconfig-r014-20230901   gcc  
+s390                 randconfig-r036-20230901   clang
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                   randconfig-r012-20230901   gcc  
+sh                   randconfig-r015-20230901   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                randconfig-r024-20230901   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64              randconfig-r001-20230901   gcc  
+sparc64              randconfig-r003-20230901   gcc  
+sparc64              randconfig-r005-20230901   gcc  
+sparc64              randconfig-r014-20230901   gcc  
+sparc64              randconfig-r016-20230901   gcc  
+sparc64              randconfig-r031-20230901   gcc  
+sparc64              randconfig-r035-20230901   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                   randconfig-r001-20230901   gcc  
+um                   randconfig-r002-20230901   gcc  
+um                   randconfig-r032-20230901   gcc  
+um                   randconfig-r034-20230901   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-001-20230901   clang
+x86_64       buildonly-randconfig-002-20230901   clang
+x86_64       buildonly-randconfig-003-20230901   clang
+x86_64       buildonly-randconfig-004-20230901   clang
+x86_64       buildonly-randconfig-005-20230901   clang
+x86_64       buildonly-randconfig-006-20230901   clang
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20230901   gcc  
+x86_64                randconfig-002-20230901   gcc  
+x86_64                randconfig-003-20230901   gcc  
+x86_64                randconfig-004-20230901   gcc  
+x86_64                randconfig-005-20230901   gcc  
+x86_64                randconfig-006-20230901   gcc  
+x86_64                randconfig-011-20230901   clang
+x86_64                randconfig-012-20230901   clang
+x86_64                randconfig-013-20230901   clang
+x86_64                randconfig-014-20230901   clang
+x86_64                randconfig-015-20230901   clang
+x86_64                randconfig-016-20230901   clang
+x86_64                randconfig-071-20230901   clang
+x86_64                randconfig-072-20230901   clang
+x86_64                randconfig-073-20230901   clang
+x86_64                randconfig-074-20230901   clang
+x86_64                randconfig-075-20230901   clang
+x86_64                randconfig-076-20230901   clang
+x86_64               randconfig-r003-20230901   clang
+x86_64               randconfig-r004-20230901   clang
+x86_64               randconfig-r014-20230901   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa                            allnoconfig   gcc  
+xtensa                           allyesconfig   gcc  
+xtensa               randconfig-r026-20230901   gcc  
+xtensa               randconfig-r032-20230901   gcc  
 
-I guess the refcount drop here is the one get on the fresh allocation.
-Now the filemap has grabbed the folio, so the lifecycle of the folio now 
-is decided by the filemap/inode?
-
->
->>> +
->>> +		/* 64-bit only, wrapping the index should be impossible. */
->>> +		if (WARN_ON_ONCE(!index))
->>> +			break;
->>> +
->>> +		cond_resched();
->>> +	}
->>> +
->>> +	filemap_invalidate_unlock_shared(mapping);
->>> +
->>> +	return r;
->>> +}
->>> +
->>>
->>> <snip>
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
