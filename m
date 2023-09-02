@@ -1,65 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AAF6790590
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Sep 2023 08:19:06 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hIUKwpwm;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 756317907C3
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Sep 2023 14:05:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rd4VJ1jZ2z3cBH
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Sep 2023 16:19:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RdD9w01Kgz3cDk
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Sep 2023 22:05:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hIUKwpwm;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rd4TR1gPJz2yh4
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Sep 2023 16:18:19 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id A63FD61681
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Sep 2023 06:18:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08789C433CA
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Sep 2023 06:18:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1693635495;
-	bh=S2JjhDQaQjCUBS5BoHwvNrpSReY7nD+6fFAceggH5L4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=hIUKwpwmhpYMtn3fTmQXOATMfWHK5+QPj14H0A97QXLXMppSSF9eVXCHQIGuGPsDY
-	 JjzSpA3VOzM9M2jNUI1NrIRu8zgcBXHLxoQM6oHLaopiRUU3znUlfC12Ro9UhBiyLx
-	 uQT/EorLWHbocPK7E0C1R7T0Ceo4xuq7MBqd0VBTtdv+WbnaPLX7CNg9/sp8uC4d1q
-	 E6nGabVyu+eSwVBRG+WRXgYyuhhV+6YVwCc4NAO2vfjaKe5QtdE0vr3jDD9pYrofL/
-	 ZGRbk7ZUIJXJ2i3EKLtq2t4f9yRJMYPM7drBRGh6gbPpID1D4FJKbE/iBAkuyvuhrL
-	 efRJeyXUxdCfw==
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-1c8d895a602so1722659fac.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Sep 2023 23:18:14 -0700 (PDT)
-X-Gm-Message-State: AOJu0YzvT4EIN9ffCblrvL/+dHZWS2Feu2Tm/lvxdjQ9pL6QYA/SqKGn
-	MgAvgDnYj18tGbUNxymlyEwXvjxTG4ETPqiobHA=
-X-Google-Smtp-Source: AGHT+IESGICPQ/WBafsIpCkqlmLOntDrnFZ4mcqJsB8bb0Bsgx61YqGasOzlsnoQknaLtIFXHXJ++FKkRqersGaIAOU=
-X-Received: by 2002:a05:6870:ac12:b0:1b7:3f07:e431 with SMTP id
- kw18-20020a056870ac1200b001b73f07e431mr5406945oab.54.1693635494264; Fri, 01
- Sep 2023 23:18:14 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RdD9Q3HHYz2yNf
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Sep 2023 22:04:57 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+	by localhost (Postfix) with ESMTP id 4RdD9J3WZ7z9vPg;
+	Sat,  2 Sep 2023 14:04:52 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 2o1jhLsrF7Vt; Sat,  2 Sep 2023 14:04:52 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4RdD9J2b5Sz9vPf;
+	Sat,  2 Sep 2023 14:04:52 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4BDFB8B76C;
+	Sat,  2 Sep 2023 14:04:52 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id WoRFulWQ2RFb; Sat,  2 Sep 2023 14:04:52 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.235.22])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id F0FB88B763;
+	Sat,  2 Sep 2023 14:04:51 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 3828aUdQ2428775
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Sat, 2 Sep 2023 10:36:30 +0200
+Received: (from chleroy@localhost)
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 3828aTJx2428773;
+	Sat, 2 Sep 2023 10:36:29 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
+Subject: [PATCH] powerpc/64e: Fix wrong test in __ptep_test_and_clear_young()
+Date: Sat,  2 Sep 2023 10:36:25 +0200
+Message-ID: <2daed51109cbd7e7fbd26fab4e77fc6a27dee63e.1693643773.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <20230831191335.give.534-kees@kernel.org> <CAK7LNATENQQy6LrWS10S-EXsyAvTraSj2WA=O7rFsS9Ht6a+3g@mail.gmail.com>
- <202309011250.AB0DAA03@keescook>
-In-Reply-To: <202309011250.AB0DAA03@keescook>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Sat, 2 Sep 2023 15:17:37 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAQgcdwg_3Mtu_ZQYWLKPf5Pzm9syQkqxEDPmD6tic3J6A@mail.gmail.com>
-Message-ID: <CAK7LNAQgcdwg_3Mtu_ZQYWLKPf5Pzm9syQkqxEDPmD6tic3J6A@mail.gmail.com>
-Subject: Re: [PATCH v3] kbuild: Show marked Kconfig fragments in "help"
-To: Kees Cook <keescook@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1693643784; l=1101; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=haMtYnjtQxVqMvpY7oYaDEZ6lXZKfbxyxvv2KRJklvA=; b=SMOZnYSVdFWxyfkaytiI7/rsWvWbYxB8jB+29qOUFgJx/M7ggTQnryPciLxfYvnq7aLVMgDQQ sKr0eLfYZaUCEHbvWyRaS6DBkrtq24gnGVmvyqAdEDjgfqiBvCPRXqR
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,119 +65,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Sep 2, 2023 at 4:50=E2=80=AFAM Kees Cook <keescook@chromium.org> wr=
-ote:
->
-> On Fri, Sep 01, 2023 at 04:58:37PM +0900, Masahiro Yamada wrote:
-> > On Fri, Sep 1, 2023 at 4:13=E2=80=AFAM Kees Cook <keescook@chromium.org=
-> wrote:
-> > >
-> > > Currently the Kconfig fragments in kernel/configs and arch/*/configs
-> > > that aren't used internally aren't discoverable through "make help",
-> > > which consists of hard-coded lists of config fragments. Instead, list
-> > > all the fragment targets that have a "# Help: " comment prefix so the
-> > > targets can be generated dynamically.
-> > >
-> > > Add logic to the Makefile to search for and display the fragment and
-> > > comment. Add comments to fragments that are intended to be direct tar=
-gets.
-> > >
-> > > Cc: Nicolas Schier <nicolas@fjasle.eu>
-> > > Cc: Michael Ellerman <mpe@ellerman.id.au>
-> > > Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> > > Cc: Randy Dunlap <rdunlap@infradead.org>
-> > > Cc: linux-kernel@vger.kernel.org
-> > > Cc: x86@kernel.org
-> > > Cc: linux-arm-kernel@lists.infradead.org
-> > > Cc: linuxppc-dev@lists.ozlabs.org
-> > > Cc: linux-riscv@lists.infradead.org
-> > > Cc: linux-s390@vger.kernel.org
-> > > Cc: linux-kbuild@vger.kernel.org
-> > > Cc: linux-hardening@vger.kernel.org
-> > > Signed-off-by: Kees Cook <keescook@chromium.org>
-> > > Co-developed-by: Masahiro Yamada <masahiroy@kernel.org>
-> > > ---
-> > > v3:
-> > > - Use Makefile logic from Masahiro Yamada
-> > > - Use "# Help: " prefix, but only on desired fragment targets
-> > > v2: https://lore.kernel.org/all/20230825194329.gonna.911-kees@kernel.=
-org
-> > > v1: https://lore.kernel.org/all/20230824223606.never.762-kees@kernel.=
-org
-> > > ---
-> > >  Makefile                                   |  1 -
-> > >  arch/arm/configs/dram_0x00000000.config    |  1 +
-> > >  arch/arm/configs/dram_0xc0000000.config    |  1 +
-> > >  arch/arm/configs/dram_0xd0000000.config    |  1 +
-> > >  arch/arm/configs/lpae.config               |  1 +
-> > >  arch/arm64/configs/virt.config             |  1 +
-> > >  arch/powerpc/configs/disable-werror.config |  1 +
-> > >  arch/powerpc/configs/security.config       |  4 +++-
-> > >  arch/riscv/configs/32-bit.config           |  1 +
-> > >  arch/riscv/configs/64-bit.config           |  1 +
-> > >  arch/s390/configs/btf.config               |  1 +
-> > >  arch/s390/configs/kasan.config             |  1 +
-> > >  arch/x86/Makefile                          |  4 ----
-> > >  kernel/configs/debug.config                |  2 ++
-> > >  kernel/configs/kvm_guest.config            |  1 +
-> > >  kernel/configs/nopm.config                 |  2 ++
-> > >  kernel/configs/rust.config                 |  1 +
-> > >  kernel/configs/tiny.config                 |  2 ++
-> > >  kernel/configs/x86_debug.config            |  1 +
-> > >  kernel/configs/xen.config                  |  2 ++
-> > >  scripts/kconfig/Makefile                   | 15 ++++++++++++---
-> > >  21 files changed, 36 insertions(+), 9 deletions(-)
-> > >
-> >
-> >
-> > Just one thing.
-> >
-> >
-> >
-> >
-> >
-> > > diff --git a/kernel/configs/tiny.config b/kernel/configs/tiny.config
-> > > index 00009f7d0835..60a4b6d80b36 100644
-> > > --- a/kernel/configs/tiny.config
-> > > +++ b/kernel/configs/tiny.config
-> > > @@ -1,3 +1,5 @@
-> > > +# Help: Size-optimized kernel image
-> >
-> >
-> > I will drop this.
-> >
-> >
-> > We already have a hard-coded help message.
-> >
-> >   tinyconfig   - Configure the tiniest possible kernel
-> >
-> >
-> >
-> >
-> > Then, some lines below, again.
-> >
-> >   tiny.config               - Size-optimized kernel image
-> >
-> >
-> >
-> > tiny.config is for internal use for tinyconfig.
->
-> Shall I send a v4, or did you fix this up already?
+Commit 45201c879469 ("powerpc/nohash: Remove hash related code from
+nohash headers.") replaced:
 
+  if ((pte_val(*ptep) & (_PAGE_ACCESSED | _PAGE_HASHPTE)) == 0)
+	return 0;
 
-Locally fixed-up.
+By:
 
-If nobody points out anything else,
-you do not need to send v4.
+  if (pte_young(*ptep))
+	return 0;
 
+But it should be:
 
+  if (!pte_young(*ptep))
+	return 0;
 
+Fix it.
 
+Fixes: 45201c879469 ("powerpc/nohash: Remove hash related code from nohash headers.")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/include/asm/nohash/64/pgtable.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---=20
-Best Regards
-Masahiro Yamada
+diff --git a/arch/powerpc/include/asm/nohash/64/pgtable.h b/arch/powerpc/include/asm/nohash/64/pgtable.h
+index 4ff6aa66b29a..6114a17ed234 100644
+--- a/arch/powerpc/include/asm/nohash/64/pgtable.h
++++ b/arch/powerpc/include/asm/nohash/64/pgtable.h
+@@ -154,7 +154,7 @@ static inline int __ptep_test_and_clear_young(struct mm_struct *mm,
+ {
+ 	unsigned long old;
+ 
+-	if (pte_young(*ptep))
++	if (!pte_young(*ptep))
+ 		return 0;
+ 	old = pte_update(mm, addr, ptep, _PAGE_ACCESSED, 0, 0);
+ 	return (old & _PAGE_ACCESSED) != 0;
+-- 
+2.41.0
+
