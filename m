@@ -1,59 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 756317907C3
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Sep 2023 14:05:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C51A879082D
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Sep 2023 16:01:24 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=M/kbn/GS;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RdD9w01Kgz3cDk
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Sep 2023 22:05:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RdGlk5CLbz3cCG
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Sep 2023 00:01:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=M/kbn/GS;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=lists.ozlabs.org)
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RdD9Q3HHYz2yNf
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Sep 2023 22:04:57 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4RdD9J3WZ7z9vPg;
-	Sat,  2 Sep 2023 14:04:52 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 2o1jhLsrF7Vt; Sat,  2 Sep 2023 14:04:52 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4RdD9J2b5Sz9vPf;
-	Sat,  2 Sep 2023 14:04:52 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4BDFB8B76C;
-	Sat,  2 Sep 2023 14:04:52 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id WoRFulWQ2RFb; Sat,  2 Sep 2023 14:04:52 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.235.22])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id F0FB88B763;
-	Sat,  2 Sep 2023 14:04:51 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 3828aUdQ2428775
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Sat, 2 Sep 2023 10:36:30 +0200
-Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 3828aTJx2428773;
-	Sat, 2 Sep 2023 10:36:29 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH] powerpc/64e: Fix wrong test in __ptep_test_and_clear_young()
-Date: Sat,  2 Sep 2023 10:36:25 +0200
-Message-ID: <2daed51109cbd7e7fbd26fab4e77fc6a27dee63e.1693643773.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.41.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RdGkj6zM7z2yVw
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  3 Sep 2023 00:00:25 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=ykAU0IuBWCOAh/V+bHoSxJwmB/ONT4m36dnHXVeI+gc=; b=M/kbn/GSgML7w28FfggmH7XG6B
+	AoIOPSIS/rWN+MsWq75QfC/Aee19klAuIvycRMJdm8AER52SmM8ldLrimDyFfGzgfA1Lh27sJMhjx
+	9yR6IcYoIrGndMgjYzvRoVm4M/ZCmqT4UI5tCYhmnQUr66neucxUcFUTIXtw2EMPmynRUEf96gTef
+	F7fCCcZU2Z6YpiIZfwoADbPIrShS3D2YGkNno4Vrc5chfgi8c+J1r/XUDm2LU5pVzVck07858xIDd
+	e7YyQUXHRVLmmrJ2hEWQiN04YMXTLjuPogl7tDhN6y4GH1ZZAKxIH2VC7FBmAjAZduDxoiuRKz6Xp
+	RntoFSfw==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1qcR9o-00EvUv-Kx; Sat, 02 Sep 2023 13:59:24 +0000
+Date: Sat, 2 Sep 2023 14:59:24 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Vlastimil Babka <vbabka@suse.cz>
+Subject: Re: [PATCH gmem FIXUP] mm, compaction: make testing
+ mapping_unmovable() safe
+Message-ID: <ZPM/vJnwI4bi9bo2@casper.infradead.org>
+References: <20230901082025.20548-2-vbabka@suse.cz>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1693643784; l=1101; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=haMtYnjtQxVqMvpY7oYaDEZ6lXZKfbxyxvv2KRJklvA=; b=SMOZnYSVdFWxyfkaytiI7/rsWvWbYxB8jB+29qOUFgJx/M7ggTQnryPciLxfYvnq7aLVMgDQQ sKr0eLfYZaUCEHbvWyRaS6DBkrtq24gnGVmvyqAdEDjgfqiBvCPRXqR
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230901082025.20548-2-vbabka@suse.cz>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,47 +56,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org, david@redhat.com, linux-mips@vger.kernel.org, linux-mm@kvack.org, pbonzini@redhat.com, chao.p.peng@linux.intel.com, linux-riscv@lists.infradead.org, isaku.yamahata@gmail.com, linux-security-module@vger.kernel.org, paul@paul-moore.com, anup@brainfault.org, chenhuacai@kernel.org, jmorris@namei.org, wei.w.wang@intel.com, tabba@google.com, yu.c.zhang@linux.intel.com, serge@hallyn.com, mail@maciej.szmigiero.name, aou@eecs.berkeley.edu, michael.roth@amd.com, ackerleytng@google.com, paul.walmsley@sifive.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, qperret@google.com, seanjc@google.com, linux-kernel@vger.kernel.org, oliver.upton@linux.dev, jarkko@kernel.org, palmer@dabbelt.com, kvm-riscv@lists.infradead.org, maz@kernel.org, linux-fsdevel@vger.kernel.org, liam.merwick@oracle.com, akpm@linux-foundation.org, vannapurve@google.com, linuxppc-dev@lists.ozlabs.org, kirill.shutemov@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit 45201c879469 ("powerpc/nohash: Remove hash related code from
-nohash headers.") replaced:
+On Fri, Sep 01, 2023 at 10:20:26AM +0200, Vlastimil Babka wrote:
+> As Kirill pointed out, mapping can be removed under us due to
+> truncation. Test it under folio lock as already done for the async
+> compaction / dirty folio case. To prevent locking every folio with
+> mapping to do the test, do it only for unevictable folios, as we can
+> expect the unmovable mapping folios are also unevictable - it is the
+> case for guest memfd folios.
+> 
+> Also incorporate comment update suggested by Matthew.
 
-  if ((pte_val(*ptep) & (_PAGE_ACCESSED | _PAGE_HASHPTE)) == 0)
-	return 0;
-
-By:
-
-  if (pte_young(*ptep))
-	return 0;
-
-But it should be:
-
-  if (!pte_young(*ptep))
-	return 0;
-
-Fix it.
-
-Fixes: 45201c879469 ("powerpc/nohash: Remove hash related code from nohash headers.")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/include/asm/nohash/64/pgtable.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/include/asm/nohash/64/pgtable.h b/arch/powerpc/include/asm/nohash/64/pgtable.h
-index 4ff6aa66b29a..6114a17ed234 100644
---- a/arch/powerpc/include/asm/nohash/64/pgtable.h
-+++ b/arch/powerpc/include/asm/nohash/64/pgtable.h
-@@ -154,7 +154,7 @@ static inline int __ptep_test_and_clear_young(struct mm_struct *mm,
- {
- 	unsigned long old;
- 
--	if (pte_young(*ptep))
-+	if (!pte_young(*ptep))
- 		return 0;
- 	old = pte_update(mm, addr, ptep, _PAGE_ACCESSED, 0, 0);
- 	return (old & _PAGE_ACCESSED) != 0;
--- 
-2.41.0
+In the meantime, 866ff80176aa went upstream earlier this merge window,
+so it's going to have some conflicts.
 
