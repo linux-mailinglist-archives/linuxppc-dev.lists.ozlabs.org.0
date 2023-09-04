@@ -1,77 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D5C8790E17
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Sep 2023 23:07:36 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=q+3FquAm;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B22E57911A1
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Sep 2023 08:50:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rf4921Fjnz3c58
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Sep 2023 07:07:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RfK5t4PM1z30hn
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Sep 2023 16:50:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=q+3FquAm;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=mailbox.org (client-ip=80.241.56.171; helo=mout-p-201.mailbox.org; envelope-from=erhard_f@mailbox.org; receiver=lists.ozlabs.org)
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.128.180; helo=mail-yw1-f180.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rf48955hMz30h5
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Sep 2023 07:06:47 +1000 (AEST)
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4Rf47y6CF9z9sl9;
-	Sun,  3 Sep 2023 23:06:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1693775198;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cByUbwSlMR7dvpZFyGVaYniTMc0wsKAg0Y/ykzouZbc=;
-	b=q+3FquAmQs+a+YouYHo+RtIPgZKKz/Bc0GDnlt98OLZNtTdX8kESFRfNEst5KEOHaHEEdv
-	dMdMDChBpz28k1sV5XrizW6Ulj61m5zcub2nay+cQUS4kVkfdfKm2fuhYF2Pjxt4yPL6ra
-	UI3elmUwNE4Z70+NGEFbE3Aa69oOfM/HDYwVspuQabGoqzrowimCSGdSEEuk0gPuwt7nV+
-	/5UEP5RFYw+148PuzltUv6lrJ4v+b9ZbB1nbBvKWYX7LgUEQi525rBcMBm2UZ14dl8K2Kd
-	qdpF55Dfi0aVFAg3clNfJJzckZ19FfgEJaSOEyXs+O0NzYyErjzKgoFmUJ48lw==
-Date: Sun, 3 Sep 2023 23:06:35 +0200
-From: Erhard Furtner <erhard_f@mailbox.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: KASAN debug kernel fails to boot at early stage when
- CONFIG_SMP=y is set (kernel 6.5-rc5, PowerMac G4 3,6)
-Message-ID: <20230903230635.5751b620@yea>
-In-Reply-To: <b9671cd2-9cad-c5d9-dd94-8b39f67e29b4@csgroup.eu>
-References: <20230811014845.1bf6771d@yea>
-	<f8f09049-3568-621d-88ce-1b61fe8b63fe@csgroup.eu>
-	<20230813213855.794b3c8f@yea>
-	<57bdfad9-cbec-1a9f-aca7-5956d22a8ada@csgroup.eu>
-	<20230814192748.56525c82@yea>
-	<6d710a2b-5cac-9f0a-cd30-0ad18172932b@csgroup.eu>
-	<20230815220156.5c234b52@yea>
-	<0876e754-7bee-ec61-4e3c-c0ee08d59d87@csgroup.eu>
-	<20230817203202.2b4c273c@yea>
-	<87y1i9clf2.fsf@mail.lhotse>
-	<20230818111641.7f680ce7@yea>
-	<fcdf2bf7-0834-b27f-4d24-28e05815ee6f@csgroup.eu>
-	<20230818182316.79303545@yea>
-	<5ea3302e-0fb1-1670-e4b6-adba5115ab94@csgroup.eu>
-	<20230824020015.78733931@yea>
-	<87jztkvfid.fsf@mail.lhotse>
-	<20230828011758.3b7b9daf@yea>
-	<1085cc49-b5e8-0aa5-dc97-ec4a100463b5@csgroup.eu>
-	<20230901004417.631dc019@yea>
-	<b9671cd2-9cad-c5d9-dd94-8b39f67e29b4@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RfK5M7250z2ygT
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Sep 2023 16:50:14 +1000 (AEST)
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-58dfe2d5b9aso15061127b3.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 03 Sep 2023 23:50:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693810210; x=1694415010;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3rK9iNlhM9qm2dLN2U9ruHBYs+JWxgylVxpO0f1W8IM=;
+        b=D8lKB9NgK/jhQPIHSPnrJpkEhr2vlNVDShXvgbRfJDztydpzmKKyNHUJFrrf/J5P/3
+         VCkh+0ommzA0UrllGj+CgSOxyxFQBTgvj4695Jwfw5rvgXF40+sokLYG19cUNRpxBVE9
+         A+a+kNv7/HOkRY/3k7eAU6X0cmeGzUKlTqnCR5U+vy8TvDEO2YBOfTBe50UqRHCB9Fly
+         kvOP7Evv2Zy+dGE1J1WonxK9csSq//mfOV+yifgKV/CjIqnQMo7yww+KmlkjLxEHzdT5
+         uRd6BxjBt7W0euani7GWTwSPk/ZouB11SiFH1ylwaxwzG+Hhb0TOTbnMYdaR+pP6NPdL
+         MR6g==
+X-Gm-Message-State: AOJu0Yzb3gyuIxjfMj+PpaXwZicZtRj28T1n3OZHJy6+/TMMfdQ5WXXt
+	qSzhO9cXf1VvrdC5/s5GnYQjohKUsuXcDw==
+X-Google-Smtp-Source: AGHT+IGrgHT39l9rDCESFkkNOFcTEV5po3KM/eLuJAabrYa8zr7CTtP+IY4EUujdLBDKF1rb9lqT+Q==
+X-Received: by 2002:a81:a092:0:b0:56d:2d82:63de with SMTP id x140-20020a81a092000000b0056d2d8263demr12219454ywg.3.1693810210577;
+        Sun, 03 Sep 2023 23:50:10 -0700 (PDT)
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com. [209.85.219.174])
+        by smtp.gmail.com with ESMTPSA id z198-20020a0dd7cf000000b005925d7b62e0sm2483906ywd.24.2023.09.03.23.50.09
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 03 Sep 2023 23:50:09 -0700 (PDT)
+Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-d7766072ba4so2728035276.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 03 Sep 2023 23:50:09 -0700 (PDT)
+X-Received: by 2002:a25:a1a9:0:b0:d7b:a78e:6b2d with SMTP id
+ a38-20020a25a1a9000000b00d7ba78e6b2dmr12488603ybi.20.1693810209384; Sun, 03
+ Sep 2023 23:50:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-MBO-RS-META: 3hmsoyiy3enk3jxw64d9zqyj8gbnfync
-X-MBO-RS-ID: 7c174c73231db0a0916
+References: <20230901142659.31787-1-tzimmermann@suse.de> <20230901142659.31787-5-tzimmermann@suse.de>
+In-Reply-To: <20230901142659.31787-5-tzimmermann@suse.de>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 4 Sep 2023 08:49:57 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdV+0P40QpPcLeuSAd0HJ_Z2uPpmhyBKXnxoOQibtGAVFg@mail.gmail.com>
+Message-ID: <CAMuHMdV+0P40QpPcLeuSAd0HJ_Z2uPpmhyBKXnxoOQibtGAVFg@mail.gmail.com>
+Subject: Re: [PATCH 4/4] fbdev: Replace fb_pgprotect() with fb_pgprot_device()
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,24 +67,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-arch@vger.kernel.org, linux-fbdev@vger.kernel.org, linux-ia64@vger.kernel.org, dri-devel@lists.freedesktop.org, arnd@arndb.de, deller@gmx.de, linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org, npiggin@gmail.com, sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 1 Sep 2023 07:43:34 +0000
-Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
+On Sat, Sep 2, 2023 at 11:13=E2=80=AFAM Thomas Zimmermann <tzimmermann@suse=
+.de> wrote:
+> Rename the fbdev mmap helper fb_pgprotect() to fb_pgprot_device().
+> The helper sets VMA page-access flags for framebuffers in device I/O
+> memory. The new name follows pgprot_device(), which does the same for
+> arbitrary devices.
+>
+> Also clean up the helper's parameters and return value. Instead of
+> the VMA instance, pass the individial parameters separately: existing
+> page-access flags, the VMAs start and end addresses and the offset
+> in the underlying device memory rsp file. Return the new page-access
+> flags. These changes align fb_pgprot_device() closer with pgprot_device.
+>
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 
-> >> Can you try what happens when you remove the call to kasan_init() at the
-> >> start of setup_arch() in arch/powerpc/kernel/setup-common.c  
-> > 
-> > Ok, so I left the other patches in place + btext_map() instead of btext_unmap() at the end of MMU_init() + Michaels patch and additionally commented-out kasan_init() as stated above. The outcome is rather interesting! Now I deterministically get this output at boot OF console, regardless wheter it's a cold boot or warm boot:  
-> 
-> Ah, my bad. You also need to remove the call to kasan_late_init() in 
-> mem_init() in arch/powerpc/mm/mem.c
+>  arch/m68k/include/asm/fb.h           | 19 ++++++++++---------
 
-Not tragic. Meanwhile I commented-out kasan_late_init() and updated to kernel v6.5.1.
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
-dmesg did not change however, getting the same "BUG: KASAN: stack-out-of-bounds in __kernel_poison_pages+0x6c/0xd0" as last time only on v6.5.1.
 
-Regards,
-Erhard
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
