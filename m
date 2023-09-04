@@ -2,70 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 699B079128B
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Sep 2023 09:50:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 776A97915E4
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Sep 2023 12:52:22 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=V0P94YmB;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=I31yd+Ta;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=D6OGya4V;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RfLQH2Tyxz3btq
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Sep 2023 17:49:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RfQSh2vZpz3by6
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Sep 2023 20:52:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=V0P94YmB;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=I31yd+Ta;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=D6OGya4V;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2001:67c:2178:6::1d; helo=smtp-out2.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::62d; helo=mail-ej1-x62d.google.com; envelope-from=philmd@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RfLPQ2K3sz2yV5
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Sep 2023 17:49:13 +1000 (AEST)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out2.suse.de (Postfix) with ESMTP id 82A4C1F892;
-	Mon,  4 Sep 2023 07:48:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1693813716; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TcE11iaCJGwMeFr61ni8PMScazteO6GKmBlkpABTtrg=;
-	b=V0P94YmBiGsGr4t5IESYBdrBJ/hKU45khJOM1tf34xqrWa6Da+kwP0EtwiWHA2CjhiYu0I
-	Eodo8sBeVOuou8KkUAfXfN4+kHxciT5gz/mul4MIfT1wCZz5z1QV+nVHuCGC2v29acIPkv
-	d9IW4AywNLzpmuJ081CNAKjw5FuGt1o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1693813716;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TcE11iaCJGwMeFr61ni8PMScazteO6GKmBlkpABTtrg=;
-	b=I31yd+TaT+i7JU89GmQqP9Yw1Uwhq7HgG+7WdQmJLytT/zxAGX9MJKPaK5+A1TpPXCccfc
-	6ilMSyhYNpa/KKCA==
-Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id 65CA92C142;
-	Mon,  4 Sep 2023 07:48:36 +0000 (UTC)
-Date: Mon, 4 Sep 2023 09:48:35 +0200
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH RFC 1/2] powerpc/pseries: papr-vpd char driver for VPD
- retrieval
-Message-ID: <20230904074835.GO8826@kitsune.suse.cz>
-References: <20230822-papr-sys_rtas-vs-lockdown-v1-0-932623cf3c7b@linux.ibm.com>
- <20230822-papr-sys_rtas-vs-lockdown-v1-1-932623cf3c7b@linux.ibm.com>
- <20230830072801.GC8826@kitsune.suse.cz>
- <8734zz3hci.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RfQRm3r7Wz30PY
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Sep 2023 20:51:30 +1000 (AEST)
+Received: by mail-ej1-x62d.google.com with SMTP id a640c23a62f3a-99bcfe28909so190375066b.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Sep 2023 03:51:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1693824684; x=1694429484; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0k6kpnoserckYuHCVkNe+zAAW3vEA36IOzUTy2u6khE=;
+        b=D6OGya4VyUVUqK7oKN7WLQyeKGku31ycdPJYz+CWpJi0zcMOiWMPdtCwnxUBhWCH0b
+         0qiM0Agks4DI/vgoDPxt8sNTPnGF9FXlR3CSBzSLpe4c+/YelgmFoD9H7t/U9eLrPNvc
+         51GMk/BmIeh3KngtJA/snRWIpL10G0FvXGuKNZndNzrYcrfOHpG69KyHyU4OOjT1MNDI
+         lJgk0vlk8KevccBTwELMKrhLyQsgnH6KQBz0KU3m9Je1fTa+C74pVt4E6oo8G6pMwvVo
+         Z3/NZm4LT0cL5H+9O7X6XBZYf4uEtWbJNen4/KwKzayhiLCRqNw8Kd2ApSNH90hLf3Yy
+         eEew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693824684; x=1694429484;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0k6kpnoserckYuHCVkNe+zAAW3vEA36IOzUTy2u6khE=;
+        b=lIYkvX1xRBHp5cOH+GiG3DJLl3TKKtB6870213JyE97nMAmkNAgWh6QDPFAy0maMIW
+         Nn2c4+WZli6XmJ2VhwlwS/bYFFmh1Pjd/cM9IqkF+61ABwu7zRfZu+Z7JMrlTA74bDyk
+         2zTBZ5sw1acEUqgSm+GFq2VwSdYOAl67jGZ9LPzWSJO2Oc83ba69zh4LO3wp1/gcVifR
+         ZJM6lols8CwDO7WThfSDaXVxzhC5elQSa7PVECw+G/D59YyVBNTUPY+rEzCe4Yd9cgWl
+         3HecjsYIVlbLyRIknnVRt7jYqEFJwaOJtOeHSb59SwmIOG9MJjoa6xVi15flc4paX/xU
+         1lGw==
+X-Gm-Message-State: AOJu0YzmXGg3CVyrTX8wmbNbNWjaNPuwITmxdtVoA8eG/XMpbx8kYlQ9
+	UrIYiLWIFQKLbxcvHt2o2N57Xw==
+X-Google-Smtp-Source: AGHT+IHLxjjFNCyTlcsS0kQD510zndajm47ZwOZ93DZLzEmRrA9Ih7FEO70vfAaqUvHv81Md1l9q9A==
+X-Received: by 2002:a17:907:762e:b0:9a5:9f3c:9615 with SMTP id jy14-20020a170907762e00b009a59f3c9615mr6535057ejc.63.1693824684574;
+        Mon, 04 Sep 2023 03:51:24 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.209.227])
+        by smtp.gmail.com with ESMTPSA id jj17-20020a170907985100b009888aa1da11sm6010410ejc.188.2023.09.04.03.51.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 Sep 2023 03:51:24 -0700 (PDT)
+Message-ID: <c001c34b-e20c-f32e-f247-722d34a8db3d@linaro.org>
+Date: Mon, 4 Sep 2023 12:51:22 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH v2 1/3] kconfig: add dependencies of POWER_RESET for mips
+ malta
+Content-Language: en-US
+To: Yuan Tan <tanyuan@tinylab.org>, mpe@ellerman.id.au,
+ christophe.leroy@csgroup.eu, tglx@linutronix.de, mingo@redhat.com,
+ tsbogend@alpha.franken.de, hdegoede@redhat.com
+References: <cover.1693535514.git.tanyuan@tinylab.org>
+ <1c17f017d6c837ef887d08bd2f85102df3fbc17c.1693535514.git.tanyuan@tinylab.org>
+ <915a9e2d-36ea-4a74-7b1b-9688f215b6f1@linaro.org>
+ <55C9BDEDAB4E0B76+838dbd4f-425d-4f2e-94ee-f2bc3092ae13@tinylab.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <55C9BDEDAB4E0B76+838dbd4f-425d-4f2e-94ee-f2bc3092ae13@tinylab.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <8734zz3hci.fsf@mail.lhotse>
-User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,131 +87,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, tyreld@linux.ibm.com, gcwilson@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org, linux-mips@vger.kernel.org, linux@weissschuh.net, falcon@tinylab.org, linuxppc-dev@lists.ozlabs.org, w@1wt.eu
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 31, 2023 at 03:34:37PM +1000, Michael Ellerman wrote:
-> Michal Such�nek <msuchanek@suse.de> writes:
-> > Hello,
-> >
-> > thanks for working on this.
-> >
-> > On Tue, Aug 22, 2023 at 04:33:39PM -0500, Nathan Lynch via B4 Relay wrote:
-> >> From: Nathan Lynch <nathanl@linux.ibm.com>
-> >> 
-> >> PowerVM LPARs may retrieve Vital Product Data (VPD) for system
-> >> components using the ibm,get-vpd RTAS function.
-> >> 
-> >> We can expose this to user space with a /dev/papr-vpd character
-> >> device, where the programming model is:
-> >> 
-> >>   struct papr_location_code plc = { .str = "", }; /* obtain all VPD */
-> >>   int devfd = open("/dev/papr-vpd", O_WRONLY);
-> >>   int vpdfd = ioctl(devfd, PAPR_VPD_CREATE_HANDLE, &plc);
-> >>   size_t size = lseek(vpdfd, 0, SEEK_END);
-> >>   char *buf = malloc(size);
-> >>   pread(devfd, buf, size, 0);
-> >> 
-> >> When a file descriptor is obtained from ioctl(PAPR_VPD_CREATE_HANDLE),
-> >> the file contains the result of a complete ibm,get-vpd sequence. The
-> >
-> > Could this be somewhat less obfuscated?
-> >
-> > What the caller wants is the result of "ibm,get-vpd", which is a
-> > well-known string identifier of the rtas call.
+On 4/9/23 11:24, Yuan Tan wrote:
+> Hi,
 > 
-> Not really. What the caller wants is *the VPD*. Currently that's done
-> by calling the RTAS "ibm,get-vpd" function, but that could change in
-> future. There's RTAS calls that have been replaced with a "version 2" in
-> the past, that could happen here too. Or the RTAS call could be replaced
-> by a hypercall (though unlikely).
+> On 9/4/2023 3:40 PM, Philippe Mathieu-Daudé wrote:
+>> Hi,
+>>
+>> On 1/9/23 04:42, Yuan Tan wrote:
+>>> MIPS Malta's power off depends on PCI, PCI_QUIRKS, and
+>>> POWER_RESET_PIIX4_POWEROFF to work. Enable them when POWER_RESET is set
+>>> for convenience.
+>>>
+>>> Suggested-by: Zhangjin Wu <falcon@tinylab.org>
+>>> Signed-off-by: Yuan Tan <tanyuan@tinylab.org>
+>>> ---
+>>>   arch/mips/Kconfig | 3 +++
+>>>   1 file changed, 3 insertions(+)
+>>>
+>>> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+>>> index bc8421859006..13bacbd05125 100644
+>>> --- a/arch/mips/Kconfig
+>>> +++ b/arch/mips/Kconfig
+>>> @@ -547,6 +547,9 @@ config MIPS_MALTA
+>>>       select MIPS_L1_CACHE_SHIFT_6
+>>>       select MIPS_MSC
+>>>       select PCI_GT64XXX_PCI0
+>>> +    select PCI if POWER_RESET
+>>> +    select PCI_QUIRKS if POWER_RESET
+>>> +    select POWER_RESET_PIIX4_POWEROFF if POWER_RESET
+>>>       select SMP_UP if SMP
+>>>       select SWAP_IO_SPACE
+>>>       select SYS_HAS_CPU_MIPS32_R1
+>>
+>> Shouldn't we also update the _defconfig files?
+>>
+> Sorry, in my last email, I forgot to reply to all. So I am now resending 
+> this email.
 > 
-> But hopefully if the underlying mechanism changed the kernel would be
-> able to hide that detail behind this new API, and users would not need
-> to change at all.
-
-With the device named rtas-vpd it's clearly tied to rtas.
-
-If 'version 2' of the call happens it's more likely than not going to
-have new data format because limit of current format was reached. Then
-emulating that old call with the new one would be counterproductive or
-impossible.
-
-Even if the same data is available through different call there is no
-problem. If the user really used the well-known "ibm,get-vpd" identifier
-documented in the specification then the kernel can translate it
-internally to whatever new method for obtaining the data exists. The
-current revisions of the specification are not going to go away, and the
-identifier is still well-known and documented, even if newer revisions
-of the platform use different way to provide the data to the kernel.
-
-Sure, with the current syscall interface it would not work because the
-user translates this well-known identifier into a function token, and
-passes that to the kernel. With that if the "ibm,get-vpd" is gone the
-kernel cannot provide the data anymore.
-
-That was done to make it possible to call functions that were not yet
-known when the kernel was written. This is no longer allowed, and the
-kernel has functionality for translating function names to tokens for
-the functions it does know about. Then it can do the translation for
-userspace as well, and when the call is implemented differently in the
-future abstract that detail away.
-
-> > Yet this identifier is never passed in. Instead we have this new
-> > PAPR_VPD_CREATE_HANDLE. This is a completely new identifier, specific to
-> > this call only as is the /dev/papr-vpd device name, another new
-> > identifier.
-> >
-> > Maybe the interface could provide a way to specify the service name?
-> >
-> >> file contents are immutable from the POV of user space. To get a new
-> >> view of VPD, clients must create a new handle.
-> >
-> > Which is basically the same as creating a file descriptor with open().
+> In malta_defconfig, PCI and POWER_RESET_PIIX4_POWEROFF have already been 
+> set and PCI_QUIRKS is also selected by FSL_PCI [=n].
 > 
-> Sort of. But much cleaner becuase you don't need to create a file in the
-> filesystem and tell userspace how to find it.
+> So shutdown and reboot with malta_defconfig is working and there is no 
+> need to update the malta_defconfig 🙂
 
-Instead, you create a device in the filesystem, and assign an IOCTL, and
-need to tell the userspace how to find both.
+Since the dependency is now enforced by Kconfig, the defconfig can
+be simplified:
 
-> 
-> This pattern of creating file descriptors from existing file descriptors
-> to model a hiearachy of objects is well established in eg. the KVM and
-> DRM APIs.
+--- a/arch/mips/configs/malta_defconfig
++++ b/arch/mips/configs/malta_defconfig
+@@ -306,3 +306,2 @@ CONFIG_SERIAL_8250_CONSOLE=y
+  CONFIG_POWER_RESET=y
+-CONFIG_POWER_RESET_PIIX4_POWEROFF=y
+  CONFIG_POWER_RESET_SYSCON=y
 
-Yet there is no object hierarchy to speak of here. There is one device
-with one ioctl on it. The device name is tied to this specific call so a
-different call will need both a new device and new IOCTL.
-
-> 
-> > Maybe creating a directory in sysfs or procfs with filenames
-> > corresponding to rtas services would do the same job without extra
-> > obfuscation?
-> 
-> It's not obfuscation, it's abstraction. The kernel talks to firmware to
-> do things, and provides an API to user space. Not all the details of how
-> the firmware works are relevant to user space, including the exact
-> firmware calls required to implement a certain feature.
-
-Well, it's not static data, it's a call. There might be different ways
-to go around passing the arguments in and getting the results out.
-
-Hiding the buffer management and chunking of the resulting data is an
-abstraction, great.
-
-Hiding the translation of well-known function name to the
-system-specific token is an abstraction, great.
-
-Translating the rtas error codes to well-known error codes specified in
-errno.h is an abstraction, great.
-
-Replacing the well-known function name defined in the specification with
-Linux-specific device name and IOCLT number is not an abstraction. It's
-more abstract than the system-specific function token but it's less
-abstract than the well-known name defined by the specification.
-
-Thanks
-
-Michal
+But maybe we don't care, I don't know.
