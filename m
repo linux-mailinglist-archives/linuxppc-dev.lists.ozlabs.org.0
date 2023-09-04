@@ -2,60 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B22E57911A1
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Sep 2023 08:50:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB2C07911FB
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Sep 2023 09:21:38 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=C0Mf8wbU;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=v48ti8b0;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RfK5t4PM1z30hn
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Sep 2023 16:50:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RfKnX4Zwqz3bt2
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Sep 2023 17:21:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.128.180; helo=mail-yw1-f180.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=C0Mf8wbU;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=v48ti8b0;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2001:67c:2178:6::1d; helo=smtp-out2.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RfK5M7250z2ygT
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Sep 2023 16:50:14 +1000 (AEST)
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-58dfe2d5b9aso15061127b3.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 03 Sep 2023 23:50:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693810210; x=1694415010;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3rK9iNlhM9qm2dLN2U9ruHBYs+JWxgylVxpO0f1W8IM=;
-        b=D8lKB9NgK/jhQPIHSPnrJpkEhr2vlNVDShXvgbRfJDztydpzmKKyNHUJFrrf/J5P/3
-         VCkh+0ommzA0UrllGj+CgSOxyxFQBTgvj4695Jwfw5rvgXF40+sokLYG19cUNRpxBVE9
-         A+a+kNv7/HOkRY/3k7eAU6X0cmeGzUKlTqnCR5U+vy8TvDEO2YBOfTBe50UqRHCB9Fly
-         kvOP7Evv2Zy+dGE1J1WonxK9csSq//mfOV+yifgKV/CjIqnQMo7yww+KmlkjLxEHzdT5
-         uRd6BxjBt7W0euani7GWTwSPk/ZouB11SiFH1ylwaxwzG+Hhb0TOTbnMYdaR+pP6NPdL
-         MR6g==
-X-Gm-Message-State: AOJu0Yzb3gyuIxjfMj+PpaXwZicZtRj28T1n3OZHJy6+/TMMfdQ5WXXt
-	qSzhO9cXf1VvrdC5/s5GnYQjohKUsuXcDw==
-X-Google-Smtp-Source: AGHT+IGrgHT39l9rDCESFkkNOFcTEV5po3KM/eLuJAabrYa8zr7CTtP+IY4EUujdLBDKF1rb9lqT+Q==
-X-Received: by 2002:a81:a092:0:b0:56d:2d82:63de with SMTP id x140-20020a81a092000000b0056d2d8263demr12219454ywg.3.1693810210577;
-        Sun, 03 Sep 2023 23:50:10 -0700 (PDT)
-Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com. [209.85.219.174])
-        by smtp.gmail.com with ESMTPSA id z198-20020a0dd7cf000000b005925d7b62e0sm2483906ywd.24.2023.09.03.23.50.09
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 03 Sep 2023 23:50:09 -0700 (PDT)
-Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-d7766072ba4so2728035276.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 03 Sep 2023 23:50:09 -0700 (PDT)
-X-Received: by 2002:a25:a1a9:0:b0:d7b:a78e:6b2d with SMTP id
- a38-20020a25a1a9000000b00d7ba78e6b2dmr12488603ybi.20.1693810209384; Sun, 03
- Sep 2023 23:50:09 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RfKmd392Rz2yTN
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Sep 2023 17:20:49 +1000 (AEST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out2.suse.de (Postfix) with ESMTP id 742A41F38D;
+	Mon,  4 Sep 2023 07:20:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1693812039; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9A67NxvEX2h1/v4+LUuiZ01h0Et7i6T5mGr4ReHF0Zc=;
+	b=C0Mf8wbUEB/IfKwTL86n88Qcww1W7e0Px1gU9UlWm57TYSFs0NSlc/ehZYWv1TV57hqpQ5
+	rBTY8Cuix7pDbYLfAvOWqgMRdNHF1u2XKIw7YNtBW9RtnK5fR4gD+v8fiR13BwJVHZOYGV
+	OwvvQUiiZtFXBIFYifJvAXGUNDOqGOQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1693812039;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9A67NxvEX2h1/v4+LUuiZ01h0Et7i6T5mGr4ReHF0Zc=;
+	b=v48ti8b0W9Ye60VIVNTQm1Wn4UJR8HxabewwnCCG1TV7Pg1pUpNPLsxje8Pjo4n0COQw+X
+	itdT4U15Ux9KPTAQ==
+Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by relay2.suse.de (Postfix) with ESMTPS id AB5322C142;
+	Mon,  4 Sep 2023 07:20:38 +0000 (UTC)
+Date: Mon, 4 Sep 2023 09:20:37 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Nathan Lynch <nathanl@linux.ibm.com>
+Subject: Re: [PATCH RFC 1/2] powerpc/pseries: papr-vpd char driver for VPD
+ retrieval
+Message-ID: <20230904072037.GN8826@kitsune.suse.cz>
+References: <20230822-papr-sys_rtas-vs-lockdown-v1-0-932623cf3c7b@linux.ibm.com>
+ <20230822-papr-sys_rtas-vs-lockdown-v1-1-932623cf3c7b@linux.ibm.com>
+ <20230830072801.GC8826@kitsune.suse.cz>
+ <8734zz3hci.fsf@mail.lhotse>
+ <20230831103811.GF8826@kitsune.suse.cz>
+ <87r0nj1lzr.fsf@mail.lhotse>
+ <20230831114431.GH8826@kitsune.suse.cz>
+ <875y4vytxe.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
 MIME-Version: 1.0
-References: <20230901142659.31787-1-tzimmermann@suse.de> <20230901142659.31787-5-tzimmermann@suse.de>
-In-Reply-To: <20230901142659.31787-5-tzimmermann@suse.de>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 4 Sep 2023 08:49:57 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdV+0P40QpPcLeuSAd0HJ_Z2uPpmhyBKXnxoOQibtGAVFg@mail.gmail.com>
-Message-ID: <CAMuHMdV+0P40QpPcLeuSAd0HJ_Z2uPpmhyBKXnxoOQibtGAVFg@mail.gmail.com>
-Subject: Re: [PATCH 4/4] fbdev: Replace fb_pgprotect() with fb_pgprot_device()
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <875y4vytxe.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,40 +81,142 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-fbdev@vger.kernel.org, linux-ia64@vger.kernel.org, dri-devel@lists.freedesktop.org, arnd@arndb.de, deller@gmx.de, linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org, npiggin@gmail.com, sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: gcwilson@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, tyreld@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Sep 2, 2023 at 11:13=E2=80=AFAM Thomas Zimmermann <tzimmermann@suse=
-.de> wrote:
-> Rename the fbdev mmap helper fb_pgprotect() to fb_pgprot_device().
-> The helper sets VMA page-access flags for framebuffers in device I/O
-> memory. The new name follows pgprot_device(), which does the same for
-> arbitrary devices.
->
-> Also clean up the helper's parameters and return value. Instead of
-> the VMA instance, pass the individial parameters separately: existing
-> page-access flags, the VMAs start and end addresses and the offset
-> in the underlying device memory rsp file. Return the new page-access
-> flags. These changes align fb_pgprot_device() closer with pgprot_device.
->
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Hello,
 
->  arch/m68k/include/asm/fb.h           | 19 ++++++++++---------
+On Thu, Aug 31, 2023 at 12:59:25PM -0500, Nathan Lynch wrote:
+> Michal Suchánek <msuchanek@suse.de> writes:
+> > On Thu, Aug 31, 2023 at 09:37:12PM +1000, Michael Ellerman wrote:
+> >> Michal Suchánek <msuchanek@suse.de> writes:
+> >> > On Thu, Aug 31, 2023 at 03:34:37PM +1000, Michael Ellerman wrote:
+> >> >> Michal Suchánek <msuchanek@suse.de> writes:
+> >> >> > On Tue, Aug 22, 2023 at 04:33:39PM -0500, Nathan Lynch via B4 Relay wrote:
+> >> >> >> From: Nathan Lynch <nathanl@linux.ibm.com>
+> >> >> >> 
+> >> >> >> PowerVM LPARs may retrieve Vital Product Data (VPD) for system
+> >> >> >> components using the ibm,get-vpd RTAS function.
+> >> >> >> 
+> >> >> >> We can expose this to user space with a /dev/papr-vpd character
+> >> >> >> device, where the programming model is:
+> >> >> >> 
+> >> >> >>   struct papr_location_code plc = { .str = "", }; /* obtain all VPD */
+> >> >> >>   int devfd = open("/dev/papr-vpd", O_WRONLY);
+> >> >> >>   int vpdfd = ioctl(devfd, PAPR_VPD_CREATE_HANDLE, &plc);
+> >> >> >>   size_t size = lseek(vpdfd, 0, SEEK_END);
+> >> >> >>   char *buf = malloc(size);
+> >> >> >>   pread(devfd, buf, size, 0);
+> >> >> >> 
+> >> >> >> When a file descriptor is obtained from ioctl(PAPR_VPD_CREATE_HANDLE),
+> >> >> >> the file contains the result of a complete ibm,get-vpd sequence. The
+> >> >> >
+> >> >> > Could this be somewhat less obfuscated?
+> >> >> >
+> >> >> > What the caller wants is the result of "ibm,get-vpd", which is a
+> >> >> > well-known string identifier of the rtas call.
+> >> >> 
+> >> >> Not really. What the caller wants is *the VPD*. Currently that's done
+> >> >> by calling the RTAS "ibm,get-vpd" function, but that could change in
+> >> >> future. There's RTAS calls that have been replaced with a "version 2" in
+> >> >> the past, that could happen here too. Or the RTAS call could be replaced
+> >> >> by a hypercall (though unlikely).
+> >> >> 
+> >> >> But hopefully if the underlying mechanism changed the kernel would be
+> >> >> able to hide that detail behind this new API, and users would not need
+> >> >> to change at all.
+> >> >> 
+> >> >> > Yet this identifier is never passed in. Instead we have this new
+> >> >> > PAPR_VPD_CREATE_HANDLE. This is a completely new identifier, specific to
+> >> >> > this call only as is the /dev/papr-vpd device name, another new
+> >> >> > identifier.
+> >> >> >
+> >> >> > Maybe the interface could provide a way to specify the service name?
+> >> >> >
+> >> >> >> file contents are immutable from the POV of user space. To get a new
+> >> >> >> view of VPD, clients must create a new handle.
+> >> >> >
+> >> >> > Which is basically the same as creating a file descriptor with open().
+> >> >> 
+> >> >> Sort of. But much cleaner becuase you don't need to create a file in the
+> >> >> filesystem and tell userspace how to find it.
+> >> >
+> >> > You very much do. There is the /dev/papr-vpd and PAPR_VPD_CREATE_HANDLE
+> >> > which userspace has to know about, the PAPR_VPD_CREATE_HANDLE is not
+> >> > even possible to find at all.
+> >> 
+> >> Well yeah you need the device itself :)
+> >
+> > And as named it's specific to this call, and new devices will be needed
+> > for any additional rtas called implemented.
+> >
+> >> 
+> >> And yes the ioctl is defined in a header, not in the filesystem, but
+> >> that's entirely normal for an ioctl based API.
+> >
+> > Of course, because the ioctl API has no safe way of passing a string
+> > identifier for the function. Then it needs to create these obscure IDs.
+> >
+> > Other APIs that don't have this problem exist.
+> 
+> Looking at the cover letter for the series, I wonder if my framing and
+> word choice is confusing? Instead of "new character devices for RTAS
+> functions", what I would really like to convey is "new character devices
+> for platform features that are currently only accessible through the
+> rtas() syscall". But that's too long :-)
 
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+and does that really change anything?
 
+> You (Michal) seem to favor a kernel-user ABI where user space is allowed
+> to invoke arbitrary RTAS functions by name. But we already have that in
+> the form of the rtas() syscall. (User space looks up function tokens by
+> name in the DT.) The point of the series is that we need to move away
+> from that. It's too low-level and user space has to use /dev/mem when
+> invoking any of the less-simple RTAS functions.
 
-Gr{oetje,eeting}s,
+We don't have that, directly accessing /dev/mem does not really work.
+And that's what needs fixing in my view.
 
-                        Geert
+The rtas calls are all mechanically the same, the function implemented
+here should be able to call any of them if there was a way to specify
+the call.
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+Given that there is desire to have access to multiple calls I don't
+think it makes sense to allocate a separate device with different name
+for each.
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+The ioclt interface is not nice for this. however.
+
+Given that different calls have different parameters having one ioctl
+for all of them would be quite messy.
+
+Still even as is the ioctl takes a string argument which is problematic
+on its own.
+
+Given that there is an argument to the call it cannot be reasonably
+implemented as sysfs file, either.
+
+That's probably why the crypto API ended up with using netlink. The
+situation is very similar there: there are algorithms identified by
+strings, there are parameters that vary by the algorithm, the operation
+requested, and other parameters.
+
+Unlike ioctl netlink has helpers for packing multiple fields into a
+message and getting them out, on both kernel and user side. With that no
+string pointers need to be passed around between kernel space and user
+space, only one message buffer. Passing the buffer length and field
+length is part of the protocol, and cannot be missed. When an argument
+is not passed it is clearly not there, in the ioctl case it becomes
+garbage.
+
+Adding one call through netlink may require more effort than ioctl.
+However, adding additional calls will be easy, especially for simpla
+calls that don't take arguments.
+
+Even if ioctls are used adding all rtas ioctls on one device at least
+reduces redundancy of allocated identifiers.
+
+Thanks
+
+Michal
