@@ -1,83 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74DCE79223E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Sep 2023 13:44:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D44457922C1
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Sep 2023 14:45:03 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cfCvmGno;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=keVYfmc4;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=vIhIJzxZ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rg3Yr23pkz3cNY
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Sep 2023 21:44:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rg4wF5dxMz3c6c
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Sep 2023 22:45:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cfCvmGno;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=keVYfmc4;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=vIhIJzxZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2001:67c:2178:6::1d; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rg3Vv3W9Jz3bq1
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Sep 2023 21:41:27 +1000 (AEST)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 385BcofA000329;
-	Tue, 5 Sep 2023 11:41:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=ORn7litIpstzuD0uULWjNNFDZSKEhy8vEiVXUQ3RoLo=;
- b=cfCvmGnovZyOT/Z4t8682MHIQM6GwxS1yq5qwndbLOaZ4r11xanzq2S34vcxxeZt3J4a
- EjXmnN4J1Ah0NbOh/BJCtV0hQ7hvJoThwDJVQ90iTbXzKUvhrHKuUL64ubIToI4kaucs
- 3GpePoG22onLIyLe1ZnFYGWDStHCteh8I3RvMXITlCVreD6CQGpHuqVv0+F+ggPwfQLR
- vGrfdUyHVQS7K95wHhKeSvskoWQztH9gciC5acZCLyoz5pDpV4xD2fVzuwxwIIqI6ONz
- ZEWtGcVRNpF0r+H6mztfw6ebyxtX91R17kdn+cJhNpIynE0MPa7DNQMIwvhEhD2naMB2 LA== 
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3swtk8k12v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 Sep 2023 11:41:21 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 385A7b9G006611;
-	Tue, 5 Sep 2023 11:41:19 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3svgvka1r0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 Sep 2023 11:41:19 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 385BfBCQ46334402
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 5 Sep 2023 11:41:12 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BD97C20043;
-	Tue,  5 Sep 2023 11:41:11 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 23F3120040;
-	Tue,  5 Sep 2023 11:41:09 +0000 (GMT)
-Received: from li-e8dccbcc-2adc-11b2-a85c-bc1f33b9b810.ibm.com.com (unknown [9.43.100.85])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  5 Sep 2023 11:41:08 +0000 (GMT)
-From: Kajol Jain <kjain@linux.ibm.com>
-To: acme@kernel.org
-Subject: [PATCH v2 3/3] perf vendor events: Update metric events for power10 platform
-Date: Tue,  5 Sep 2023 17:10:39 +0530
-Message-Id: <20230905114039.176645-3-kjain@linux.ibm.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20230905114039.176645-1-kjain@linux.ibm.com>
-References: <20230905114039.176645-1-kjain@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rg4vN2NsLz2y1f
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Sep 2023 22:44:15 +1000 (AEST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id D1BC51FDB0;
+	Tue,  5 Sep 2023 12:44:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1693917849; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FkN9fHLyAfRcHsilGUbRusJjN/has0O6CzUMKzXJasI=;
+	b=keVYfmc48mpS4Nt09vnh12VZJSCRjao6bLq8+mD13pxU9x71zSHfdmFp8Kfx0sIOXsaSP1
+	QLaKzvB23hHyKAMtuhTve0e7QYNrA8bdsPZW4JDoFRxpWeBAZBhQKf86/lYvhAs1FAC7Sa
+	J4Fk+xaeTOI5b+kunmcl9yd9y6d2wU4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1693917849;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FkN9fHLyAfRcHsilGUbRusJjN/has0O6CzUMKzXJasI=;
+	b=vIhIJzxZZmb5DcNB3OjOlwl7lrOhkEIHzE4KHaujlzT60ABsQijnddOVu6k4DIbcF4Ojdb
+	PcktSvBRfw9cC5Aw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 7C3ED13911;
+	Tue,  5 Sep 2023 12:44:09 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id 9K0AHZki92SuHQAAMHmgww
+	(envelope-from <tzimmermann@suse.de>); Tue, 05 Sep 2023 12:44:09 +0000
+Message-ID: <5265f1eb-e1a6-c91e-9bc2-75089d594a0e@suse.de>
+Date: Tue, 5 Sep 2023 14:44:08 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: aiWQX65khYpWypCWHn4_KbvR9PGUFxun
-X-Proofpoint-ORIG-GUID: aiWQX65khYpWypCWHn4_KbvR9PGUFxun
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-05_10,2023-09-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- suspectscore=0 priorityscore=1501 adultscore=0 spamscore=0 phishscore=0
- clxscore=1015 malwarescore=0 mlxscore=0 impostorscore=0 bulkscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309050103
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH 0/4] ppc, fbdev: Clean up fbdev mmap helper
+Content-Language: en-US
+To: Michael Ellerman <mpe@ellerman.id.au>, npiggin@gmail.com,
+ christophe.leroy@csgroup.eu, arnd@arndb.de, deller@gmx.de
+References: <20230901142659.31787-1-tzimmermann@suse.de>
+ <874jk9ibf7.fsf@mail.lhotse>
+From: Thomas Zimmermann <tzimmermann@suse.de>
+In-Reply-To: <874jk9ibf7.fsf@mail.lhotse>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------8cnkOZ3clMojcrflCUVqPiyi"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,486 +83,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, namhyung@kernel.org, disgoel@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, linux-fbdev@vger.kernel.org, linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-m68k@lists.linux-m68k.org, sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Update JSON/events for power10 platform with additional metrics.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------8cnkOZ3clMojcrflCUVqPiyi
+Content-Type: multipart/mixed; boundary="------------vggYL9Fu9Mr0081TqvPYGkw1";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: Michael Ellerman <mpe@ellerman.id.au>, npiggin@gmail.com,
+ christophe.leroy@csgroup.eu, arnd@arndb.de, deller@gmx.de
+Cc: linuxppc-dev@lists.ozlabs.org, linux-fbdev@vger.kernel.org,
+ linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ linux-mips@vger.kernel.org, sparclinux@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-arch@vger.kernel.org
+Message-ID: <5265f1eb-e1a6-c91e-9bc2-75089d594a0e@suse.de>
+Subject: Re: [PATCH 0/4] ppc, fbdev: Clean up fbdev mmap helper
+References: <20230901142659.31787-1-tzimmermann@suse.de>
+ <874jk9ibf7.fsf@mail.lhotse>
+In-Reply-To: <874jk9ibf7.fsf@mail.lhotse>
 
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
----
- .../arch/powerpc/power10/metrics.json         | 388 ++++++++++++++++++
- 1 file changed, 388 insertions(+)
+--------------vggYL9Fu9Mr0081TqvPYGkw1
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-diff --git a/tools/perf/pmu-events/arch/powerpc/power10/metrics.json b/tools/perf/pmu-events/arch/powerpc/power10/metrics.json
-index 4d66b75c6ad5..a36621858ea3 100644
---- a/tools/perf/pmu-events/arch/powerpc/power10/metrics.json
-+++ b/tools/perf/pmu-events/arch/powerpc/power10/metrics.json
-@@ -434,6 +434,13 @@
-         "MetricName": "L1_INST_MISS_RATE",
-         "ScaleUnit": "1%"
-     },
-+    {
-+        "BriefDescription": "Percentage of completed instructions that were demand fetches that missed the L1 and L2 instruction cache",
-+        "MetricExpr": "PM_INST_FROM_L2MISS * 100 / PM_RUN_INST_CMPL",
-+        "MetricGroup": "General",
-+        "MetricName": "L2_INST_MISS_RATE",
-+        "ScaleUnit": "1%"
-+    },
-     {
-         "BriefDescription": "Percentage of completed instructions that were demand fetches that reloaded from beyond the L3 icache",
-         "MetricExpr": "PM_INST_FROM_L3MISS / PM_RUN_INST_CMPL * 100",
-@@ -466,6 +473,13 @@
-         "MetricGroup": "General",
-         "MetricName": "LOADS_PER_INST"
-     },
-+    {
-+        "BriefDescription": "Percentage of demand loads that reloaded from the L2 per completed instruction",
-+        "MetricExpr": "PM_DATA_FROM_L2 * 100 / PM_RUN_INST_CMPL",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_L2_RATE",
-+        "ScaleUnit": "1%"
-+    },
-     {
-         "BriefDescription": "Percentage of demand loads that reloaded from beyond the L2 per completed instruction",
-         "MetricExpr": "PM_DATA_FROM_L2MISS / PM_RUN_INST_CMPL * 100",
-@@ -473,6 +487,34 @@
-         "MetricName": "DL1_RELOAD_FROM_L2_MISS_RATE",
-         "ScaleUnit": "1%"
-     },
-+    {
-+        "BriefDescription": "Percentage of demand loads that reloaded using modified data from another core's L2 or L3 on a remote chip, per completed instruction",
-+        "MetricExpr": "PM_DATA_FROM_RL2L3_MOD * 100 / PM_RUN_INST_CMPL",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_RL2L3_MOD_RATE",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand loads that reloaded using shared data from another core's L2 or L3 on a remote chip, per completed instruction",
-+        "MetricExpr": "PM_DATA_FROM_RL2L3_SHR * 100 / PM_RUN_INST_CMPL",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_RL2L3_SHR_RATE",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand loads that reloaded from the L3 per completed instruction",
-+        "MetricExpr": "PM_DATA_FROM_L3 * 100 / PM_RUN_INST_CMPL",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_L3_RATE",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand loads that reloaded with data brought into the L3 by prefetch per completed instruction",
-+        "MetricExpr": "PM_DATA_FROM_L3_MEPF * 100 / PM_RUN_INST_CMPL",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_L3_MEPF_RATE",
-+        "ScaleUnit": "1%"
-+    },
-     {
-         "BriefDescription": "Percentage of demand loads that reloaded from beyond the L3 per completed instruction",
-         "MetricExpr": "PM_DATA_FROM_L3MISS / PM_RUN_INST_CMPL * 100",
-@@ -480,6 +522,66 @@
-         "MetricName": "DL1_RELOAD_FROM_L3_MISS_RATE",
-         "ScaleUnit": "1%"
-     },
-+    {
-+        "BriefDescription": "Percentage of demand loads that reloaded using modified data from another core's L2 or L3 on a distant chip, per completed instruction",
-+        "MetricExpr": "PM_DATA_FROM_DL2L3_MOD * 100 / PM_RUN_INST_CMPL",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_DL2L3_MOD_RATE",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand loads that reloaded using shared data from another core's L2 or L3 on a distant chip, per completed instruction",
-+        "MetricExpr": "PM_DATA_FROM_DL2L3_SHR * 100 / PM_RUN_INST_CMPL",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_DL2L3_SHR_RATE",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand loads that reloaded from local memory per completed instruction",
-+        "MetricExpr": "PM_DATA_FROM_LMEM * 100 / PM_RUN_INST_CMPL",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_LMEM_RATE",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand loads that reloaded from remote memory per completed instruction",
-+        "MetricExpr": "PM_DATA_FROM_RMEM * 100 / PM_RUN_INST_CMPL",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_RMEM_RATE",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand loads that reloaded from distant memory per completed instruction",
-+        "MetricExpr": "PM_DATA_FROM_DMEM * 100 / PM_RUN_INST_CMPL",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_DMEM_RATE",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of data reloads from local memory per data reloads from any memory",
-+        "MetricExpr": "PM_DATA_FROM_LMEM * 100 / (PM_DATA_FROM_LMEM + PM_DATA_FROM_RMEM + PM_DATA_FROM_DMEM)",
-+        "MetricGroup": "Memory",
-+        "MetricName": "MEM_LOCALITY",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Number of data reloads from local memory per data reloads from remote memory",
-+        "MetricExpr": "PM_DATA_FROM_LMEM / PM_DATA_FROM_RMEM",
-+        "MetricGroup": "Memory",
-+        "MetricName": "LD_LMEM_PER_LD_RMEM"
-+    },
-+    {
-+        "BriefDescription": "Number of data reloads from local memory per data reloads from distant memory",
-+        "MetricExpr": "PM_DATA_FROM_LMEM / PM_DATA_FROM_DMEM",
-+        "MetricGroup": "Memory",
-+        "MetricName": "LD_LMEM_PER_LD_DMEM"
-+    },
-+    {
-+        "BriefDescription": "Number of data reloads from local memory per data reloads from distant and remote memory",
-+        "MetricExpr": "PM_DATA_FROM_LMEM / (PM_DATA_FROM_DMEM + PM_DATA_FROM_RMEM)",
-+        "MetricGroup": "Memory",
-+        "MetricName": "LD_LMEM_PER_LD_MEM"
-+    },
-     {
-         "BriefDescription": "Percentage of ITLB misses per completed run instruction",
-         "MetricExpr": "PM_ITLB_MISS / PM_RUN_INST_CMPL * 100",
-@@ -487,6 +589,12 @@
-         "MetricName": "ITLB_MISS_RATE",
-         "ScaleUnit": "1%"
-     },
-+    {
-+        "BriefDescription": "Number of data reloads from remote memory per data reloads from distant memory",
-+        "MetricExpr": "PM_DATA_FROM_RMEM / PM_DATA_FROM_DMEM",
-+        "MetricGroup": "Memory",
-+        "MetricName": "LD_RMEM_PER_LD_DMEM"
-+    },
-     {
-         "BriefDescription": "Percentage of DERAT misses with 4k page size per completed instruction",
-         "MetricExpr": "PM_DERAT_MISS_4K / PM_RUN_INST_CMPL * 100",
-@@ -501,6 +609,76 @@
-         "MetricName": "DERAT_64K_MISS_RATE",
-         "ScaleUnit": "1%"
-     },
-+    {
-+        "BriefDescription": "Percentage of ICache misses that were reloaded from the L2",
-+        "MetricExpr": "PM_INST_FROM_L2 * 100 / PM_L1_ICACHE_MISS",
-+        "MetricGroup": "Instruction_Stats",
-+        "MetricName": "INST_FROM_L2",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of ICache misses that were reloaded from the L3",
-+        "MetricExpr": "PM_INST_FROM_L3 * 100 / PM_L1_ICACHE_MISS",
-+        "MetricGroup": "Instruction_Stats",
-+        "MetricName": "INST_FROM_L3",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of ICache misses that were reloaded from local memory",
-+        "MetricExpr": "PM_INST_FROM_LMEM * 100 / PM_L1_ICACHE_MISS",
-+        "MetricGroup": "Instruction_Stats",
-+        "MetricName": "INST_FROM_LMEM",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of ICache misses that were reloaded from remote memory",
-+        "MetricExpr": "PM_INST_FROM_RMEM * 100 / PM_L1_ICACHE_MISS",
-+        "MetricGroup": "Instruction_Stats",
-+        "MetricName": "INST_FROM_RMEM",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of ICache misses that were reloaded from distant memory",
-+        "MetricExpr": "PM_INST_FROM_DMEM * 100 / PM_L1_ICACHE_MISS",
-+        "MetricGroup": "Instruction_Stats",
-+        "MetricName": "INST_FROM_DMEM",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of ICache reloads from the L2 per completed instruction",
-+        "MetricExpr": "PM_INST_FROM_L2 * 100 / PM_RUN_INST_CMPL",
-+        "MetricGroup": "Instruction_Misses",
-+        "MetricName": "INST_FROM_L2_RATE",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of ICache reloads from the L3 per completed instruction",
-+        "MetricExpr": "PM_INST_FROM_L3 * 100 / PM_RUN_INST_CMPL",
-+        "MetricGroup": "Instruction_Misses",
-+        "MetricName": "INST_FROM_L3_RATE",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of ICache reloads from local memory per completed instruction",
-+        "MetricExpr": "PM_INST_FROM_LMEM * 100 / PM_RUN_INST_CMPL",
-+        "MetricGroup": "Instruction_Misses",
-+        "MetricName": "INST_FROM_LMEM_RATE",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of ICache reloads from remote memory per completed instruction",
-+        "MetricExpr": "PM_INST_FROM_RMEM * 100 / PM_RUN_INST_CMPL",
-+        "MetricGroup": "Instruction_Misses",
-+        "MetricName": "INST_FROM_RMEM_RATE",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of ICache reloads from distant memory per completed instruction",
-+        "MetricExpr": "PM_INST_FROM_DMEM * 100 / PM_RUN_INST_CMPL",
-+        "MetricGroup": "Instruction_Misses",
-+        "MetricName": "INST_FROM_DMEM_RATE",
-+        "ScaleUnit": "1%"
-+    },
-     {
-         "BriefDescription": "Average number of run cycles per completed instruction",
-         "MetricExpr": "PM_RUN_CYC / PM_RUN_INST_CMPL",
-@@ -607,6 +785,13 @@
-         "MetricName": "DL1_MISS_RELOADS",
-         "ScaleUnit": "1%"
-     },
-+    {
-+        "BriefDescription": "Percentage of demand load misses that reloaded from the local L2",
-+        "MetricExpr": "PM_DATA_FROM_L2 * 100 / PM_LD_DEMAND_MISS_L1",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_L2",
-+        "ScaleUnit": "1%"
-+    },
-     {
-         "BriefDescription": "Percentage of demand load misses that reloaded from beyond the local L2",
-         "MetricExpr": "PM_DATA_FROM_L2MISS / PM_LD_DEMAND_MISS_L1 * 100",
-@@ -614,6 +799,13 @@
-         "MetricName": "DL1_RELOAD_FROM_L2_MISS",
-         "ScaleUnit": "1%"
-     },
-+    {
-+        "BriefDescription": "Percentage of demand load misses that reloaded from the local L3",
-+        "MetricExpr": "PM_DATA_FROM_L3 * 100 / PM_LD_DEMAND_MISS_L1",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_L3",
-+        "ScaleUnit": "1%"
-+    },
-     {
-         "BriefDescription": "Percentage of demand load misses that reloaded from beyond the local L3",
-         "MetricExpr": "PM_DATA_FROM_L3MISS / PM_LD_DEMAND_MISS_L1 * 100",
-@@ -621,6 +813,188 @@
-         "MetricName": "DL1_RELOAD_FROM_L3_MISS",
-         "ScaleUnit": "1%"
-     },
-+    {
-+        "BriefDescription": "Percentage of demand load misses that reloaded from the local L3 with modified data",
-+        "MetricExpr": "PM_DATA_FROM_L3_MEPF * 100 / PM_LD_DEMAND_MISS_L1",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_L3_MEPF",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand load misses that reloaded from another core's L2 on the same regent with modified data",
-+        "MetricExpr": "PM_DATA_FROM_L21_REGENT_MOD * 100 / PM_LD_DEMAND_MISS_L1",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_L21_REGENT_MOD",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand load misses that reloaded from another core's L2 on the same regent with shared data",
-+        "MetricExpr": "PM_DATA_FROM_L21_REGENT_SHR * 100 / PM_LD_DEMAND_MISS_L1",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_L21_REGENT_SHR",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand load misses that reloaded from another core's L2 on the same chip in a different regent with modified data",
-+        "MetricExpr": "PM_DATA_FROM_L21_NON_REGENT_MOD * 100 / PM_LD_DEMAND_MISS_L1",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_L21_NON_REGENT_MOD",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand load misses that reloaded from another core's L2 on the same chip in a different regent with shared data",
-+        "MetricExpr": "PM_DATA_FROM_L21_NON_REGENT_SHR * 100 / PM_LD_DEMAND_MISS_L1",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_L21_NON_REGENT_SHR",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand load misses that reloaded from another core's L3 on the same regent with modified data",
-+        "MetricExpr": "PM_DATA_FROM_L31_REGENT_MOD * 100 / PM_LD_DEMAND_MISS_L1",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_L31_REGENT_MOD",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand load misses that reloaded from another core's L3 on the same regent with shared data",
-+        "MetricExpr": "PM_DATA_FROM_L31_REGENT_SHR * 100 / PM_LD_DEMAND_MISS_L1",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_L31_REGENT_SHR",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand load misses that reloaded from another core's L3 on the same chip in a different regent with modified data",
-+        "MetricExpr": "PM_DATA_FROM_L31_NON_REGENT_MOD * 100 / PM_LD_DEMAND_MISS_L1",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_L31_NON_REGENT_MOD",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand load misses that reloaded from another core's L3 on the same chip in a different regent with shared data",
-+        "MetricExpr": "PM_DATA_FROM_L31_NON_REGENT_SHR * 100 / PM_LD_DEMAND_MISS_L1",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_L31_NON_REGENT_SHR",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand load misses that reloaded from another core's L2 on a remote chip with modified data",
-+        "MetricExpr": "PM_DATA_FROM_RL2_MOD * 100 / PM_LD_DEMAND_MISS_L1",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_RL2_MOD",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand load misses that reloaded from another core's L2 on a remote chip with shared data",
-+        "MetricExpr": "PM_DATA_FROM_RL2_SHR * 100 / PM_LD_DEMAND_MISS_L1",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_RL2_SHR",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand load misses that reloaded from another core's L3 on a remote chip with modified data",
-+        "MetricExpr": "PM_DATA_FROM_RL3_MOD * 100 / PM_LD_DEMAND_MISS_L1",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_RL3_MOD",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand load misses that reloaded from another core's L3 on a remote chip with shared data",
-+        "MetricExpr": "PM_DATA_FROM_RL3_SHR * 100 / PM_LD_DEMAND_MISS_L1",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_RL3_SHR",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand load misses that reloaded from another core's L2 on a distant chip with modified data",
-+        "MetricExpr": "PM_DATA_FROM_DL2_MOD * 100 / PM_LD_DEMAND_MISS_L1",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_DL2_MOD",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand load misses that reloaded from another core's L2 on a distant chip with shared data",
-+        "MetricExpr": "PM_DATA_FROM_DL2_SHR * 100 / PM_LD_DEMAND_MISS_L1",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_DL2_SHR",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand load misses that reloaded from another core's L3 on a distant chip with modified data",
-+        "MetricExpr": "PM_DATA_FROM_DL3_MOD * 100 / PM_LD_DEMAND_MISS_L1",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_DL3_MOD",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand load misses that reloaded from another core's L3 on a distant chip with shared data",
-+        "MetricExpr": "PM_DATA_FROM_DL3_SHR * 100 / PM_LD_DEMAND_MISS_L1",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_DL3_SHR",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand load misses that reloaded from the local chip's memory",
-+        "MetricExpr": "PM_DATA_FROM_LMEM * 100 / PM_LD_DEMAND_MISS_L1",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_LMEM",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand load misses that reloaded from the local chip's OpenCAPI Cache",
-+        "MetricExpr": "PM_DATA_FROM_L_OC_CACHE * 100 / PM_LD_DEMAND_MISS_L1",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_L_OC_CACHE",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand load misses that reloaded from the local chip's OpenCAPI memory",
-+        "MetricExpr": "PM_DATA_FROM_L_OC_MEM * 100 / PM_LD_DEMAND_MISS_L1",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_L_OC_MEM",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand load misses that reloaded from a remote chip's memory",
-+        "MetricExpr": "PM_DATA_FROM_RMEM * 100 / PM_LD_DEMAND_MISS_L1",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_RMEM",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand load misses that reloaded from a remote chip's OpenCAPI Cache",
-+        "MetricExpr": "PM_DATA_FROM_R_OC_CACHE * 100 / PM_LD_DEMAND_MISS_L1",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_R_OC_CACHE",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand load misses that reloaded from a remote chip's OpenCAPI memory",
-+        "MetricExpr": "PM_DATA_FROM_R_OC_MEM * 100 / PM_LD_DEMAND_MISS_L1",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_R_OC_MEM",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand load misses that reloaded from a distant chip's memory",
-+        "MetricExpr": "PM_DATA_FROM_DMEM * 100 / PM_LD_DEMAND_MISS_L1",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_DMEM",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand load misses that reloaded from a distant chip's OpenCAPI Cache",
-+        "MetricExpr": "PM_DATA_FROM_D_OC_CACHE * 100 / PM_LD_DEMAND_MISS_L1",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_D_OC_CACHE",
-+        "ScaleUnit": "1%"
-+    },
-+    {
-+        "BriefDescription": "Percentage of demand load misses that reloaded from a distant chip's OpenCAPI memory",
-+        "MetricExpr": "PM_DATA_FROM_D_OC_MEM * 100 / PM_LD_DEMAND_MISS_L1",
-+        "MetricGroup": "dL1_Reloads",
-+        "MetricName": "DL1_RELOAD_FROM_D_OC_MEM",
-+        "ScaleUnit": "1%"
-+    },
-     {
-         "BriefDescription": "Percentage of cycles stalled due to the NTC instruction waiting for a load miss to resolve from a source beyond the local L2 and local L3",
-         "MetricExpr": "DMISS_L3MISS_STALL_CPI / RUN_CPI * 100",
-@@ -686,6 +1060,13 @@
-         "MetricName": "DERAT_MISS_RELOAD",
-         "ScaleUnit": "1%"
-     },
-+    {
-+        "BriefDescription": "Percentage of ICache misses that were reloaded from beyond the local L2",
-+        "MetricExpr": "PM_INST_FROM_L2MISS * 100 / PM_L1_ICACHE_MISS",
-+        "MetricGroup": "Instruction_Misses",
-+        "MetricName": "INST_FROM_L2_MISS",
-+        "ScaleUnit": "1%"
-+    },
-     {
-         "BriefDescription": "Percentage of icache misses that were reloaded from beyond the local L3",
-         "MetricExpr": "PM_INST_FROM_L3MISS / PM_L1_ICACHE_MISS * 100",
-@@ -693,6 +1074,13 @@
-         "MetricName": "INST_FROM_L3_MISS",
-         "ScaleUnit": "1%"
-     },
-+    {
-+        "BriefDescription": "Percentage of ICache reloads from beyond the L2 per completed instruction",
-+        "MetricExpr": "PM_INST_FROM_L2MISS * 100 / PM_RUN_INST_CMPL",
-+        "MetricGroup": "Instruction_Misses",
-+        "MetricName": "INST_FROM_L2_MISS_RATE",
-+        "ScaleUnit": "1%"
-+    },
-     {
-         "BriefDescription": "Percentage of icache reloads from the beyond the L3 per completed instruction",
-         "MetricExpr": "PM_INST_FROM_L3MISS / PM_RUN_INST_CMPL * 100",
--- 
-2.39.3
+SGkNCg0KQW0gMDUuMDkuMjMgdW0gMDQ6NDcgc2NocmllYiBNaWNoYWVsIEVsbGVybWFuOg0K
+PiBUaG9tYXMgWmltbWVybWFubiA8dHppbW1lcm1hbm5Ac3VzZS5kZT4gd3JpdGVzOg0KPj4g
+UmVmYWN0b3IgZmJfcGdwcm90ZWN0KCkgaW4gUG93ZXJQQyB0byB3b3JrIHdpdGhvdXQgc3Ry
+dWN0IGZpbGUuIFRoZW4NCj4+IGNsZWFuIHVwIGFuZCByZW5hbWUgZmJfcGdwcm90ZWN0KCku
+IFRoaXMgY2hhbmdlIGhhcyBiZWVuIGRpc2N1c3NlZCBhdA0KPj4gWzFdIGluIHRoZSBjb250
+ZXh0IG9mIHJlZmFjdG9yaW5nIGZiZGV2J3MgbW1hcCBjb2RlLg0KPj4NCj4+IFRoZSBmaXJz
+dCB0aHJlZSBwYXRjaGVzIGFkYXB0IFBvd2VyUEMncyBpbnRlcm5hbCBpbnRlcmZhY2VzIHRv
+DQo+PiBwcm92aWRlIGEgcGh5c19tZW1fYWNjZXNzX3Byb3QoKSB0aGF0IHdvcmtzIHdpdGhv
+dXQgc3RydWN0IGZpbGUuIE5laXRoZXINCj4+IHRoZSBhcmNoaXRlY3R1cmUgY29kZSBvciBm
+YmRldiBoZWxwZXJzIG5lZWQgdGhlIHBhcmFtZXRlci4NCj4+DQo+PiBQYXRjaCA0IHJlcGxh
+Y2VzIGZiZGV2J3MgZmJfcGdwcm90ZWN0KCkgd2l0aCBmYl9wZ3Byb3RfZGV2aWNlKCkgb24N
+Cj4+IGFsbCBhcmNoaXRlY3R1cmVzLiBUaGUgbmV3IGhlbHBlciB3aXRoIGl0cyBzdHJlYW0t
+bGluZWQgaW50ZXJmYWNlDQo+PiBlbmFibGVzIG1vcmUgcmVmYWN0b3Jpbmcgd2l0aGluIGZi
+ZGV2J3MgbW1hcCBpbXBsZW1lbnRhdGlvbi4NCj4gDQo+IFRoZSBjb250ZW50IG9mIHRoaXMg
+c2VyaWVzIGlzIE9LLCBidXQgdGhlIHdheSBpdCdzIHN0cnVjdHVyZWQgbWFrZXMgaXQgYQ0K
+PiByZWFsIGhlYWRhY2hlIHRvIG1lcmdlLCBiZWNhdXNlIGl0J3MgbW9zdGx5IHBvd2VycGMg
+Y2hhbmdlcyBhbmQgdGhlbiBhDQo+IGRlcGVuZGFudCBjcm9zcyBhcmNoaXRlY3R1cmUgcGF0
+Y2ggYXQgdGhlIGVuZC4NCj4gDQo+IEl0IHdvdWxkIGJlIHNpbXBsZXIgaWYgcGF0Y2ggNCB3
+YXMgZmlyc3QgYW5kIGp1c3QgcGFzc2VkIGZpbGU9TlVMTCB0bw0KPiB0aGUgcG93ZXJwYyBo
+ZWxwZXIsIHdpdGggYW4gZXhwbGFuYXRpb24gdGhhdCBpdCdzIHVudXNlZCBhbmQgd2lsbCBi
+ZQ0KPiBkcm9wcGVkIGluIGEgZnV0dXJlIGNsZWFudXAuDQo+IA0KPiBXZSBjb3VsZCB0aGVu
+IHB1dCB0aGUgZmlyc3QgcGF0Y2ggKHByZXZpb3VzbHkgcGF0Y2ggNCkgaW4gYSB0b3BpYyBi
+cmFuY2gNCj4gdGhhdCBpcyBzaGFyZWQgYmV0d2VlbiB0aGUgcG93ZXJwYyB0cmVlIGFuZCB0
+aGUgZmJkZXYgdHJlZSwgYW5kIHRoZW4gdGhlDQo+IHBvd2VycGMgY2hhbmdlcyBjb3VsZCBi
+ZSBzdGFnZWQgb24gdG9wIG9mIHRoYXQgdGhyb3VnaCB0aGUgcG93ZXJwYyB0cmVlLg0KDQpP
+aywgdGhhbmtzIGZvciByZXZpZXdpbmcuIFRoZSBmYmRldiBwYXRjaCB3b3VsZCBnbyB0aHJv
+dWdoIHRoZSBkcm0tbWlzYyANCnRyZWUgYXMgYmFzZSBmb3IgZnVydGhlciByZWZhY3Rvcmlu
+Zy4NCg0KSSdsbCB1cGRhdGUgdGhlIHBhdGNoc2V0IGFjY29yZGluZ2x5Lg0KDQpCZXN0IHJl
+Z2FyZHMNClRob21hcw0KDQo+IA0KPiBjaGVlcnMNCg0KLS0gDQpUaG9tYXMgWmltbWVybWFu
+bg0KR3JhcGhpY3MgRHJpdmVyIERldmVsb3Blcg0KU1VTRSBTb2Z0d2FyZSBTb2x1dGlvbnMg
+R2VybWFueSBHbWJIDQpGcmFua2Vuc3RyYXNzZSAxNDYsIDkwNDYxIE51ZXJuYmVyZywgR2Vy
+bWFueQ0KR0Y6IEl2byBUb3RldiwgQW5kcmV3IE15ZXJzLCBBbmRyZXcgTWNEb25hbGQsIEJv
+dWRpZW4gTW9lcm1hbg0KSFJCIDM2ODA5IChBRyBOdWVybmJlcmcpDQo=
 
+--------------vggYL9Fu9Mr0081TqvPYGkw1--
+
+--------------8cnkOZ3clMojcrflCUVqPiyi
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
+
+-----BEGIN PGP SIGNATURE-----
+
+wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmT3IpgFAwAAAAAACgkQlh/E3EQov+Ar
+2BAAx4GyhqkGBaJfv3puNbbvuB7PEZosJZ/vqe3G59Ue+8wRBHUTSKhDolnDRYRTbKQgZ1SQOrZG
+s6+W76rPXD1Ut4CVvr8k7nTHykj6zZleDub7NrWbfct6eQCj162khf2dJa4gR75GQ2xD+SDj3i4W
+1LGY55I1ufx+7SulJur+5EUbmRBHxru6iU5MYxADPt5aUUbwMNWCr6sobziieqr0IP/20SfispBk
+dUdtMdCkU3Lw2ZK2n9UVUVxmO7XSgRU2UFJEGr3/0BIMhnHMuxkiXPYn/JJlddIgbC24PsKp/gAW
+mcWBqdQnCLya6eb0TYII9VyeJGHISNWx01SprtAnuvp7yuKOwizJEVWC6XclHcSA89RgaRCm0Yx5
++WPhWrlzgI1Bw9ZwpEP/xRtDXUTFRYBipih65g7Aijb3FiSg3kNTAbE6A4m5agaj28L1ctOaUpz4
+ntRjkcG3o7CyqSKp6sZh6+pvzf7HR1sdFiQuDgG8ySlNND/EJVdu4QS/17JYC0Eo8rdtduUTDhqv
+13/YT17csTxF5EGvFMKS+FXFDansioQxoUsA+Dr+nhakhID6DXmmICnbQSa2f+/4rG1MKN2qxzKe
+3dNq15p4ARLrfNQ6GJsXLOTw+OtJHK4TPzPcP3NaK9UK+HQC3YGExb3Fge10A1SQK1ZJAwfpWaae
+D/g=
+=iHVQ
+-----END PGP SIGNATURE-----
+
+--------------8cnkOZ3clMojcrflCUVqPiyi--
