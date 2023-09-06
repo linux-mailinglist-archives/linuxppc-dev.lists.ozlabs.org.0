@@ -1,65 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D76FE793845
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Sep 2023 11:31:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C78A793C8F
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Sep 2023 14:24:32 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=t1ywYpjT;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=y2ltyVw5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ese8C4pR;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RgcZk59M4z3c2K
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Sep 2023 19:31:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RghQ56SCnz3cBd
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Sep 2023 22:24:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=t1ywYpjT;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=y2ltyVw5;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ese8C4pR;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=devnull+j.granados.samsung.com@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RgcYs3N0cz2xm6
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Sep 2023 19:30:57 +1000 (AEST)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out2.suse.de (Postfix) with ESMTP id 2B8C720292;
-	Wed,  6 Sep 2023 09:30:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1693992654; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XjnQopGq/uLFLC5cC5K58nxffVQJcRXw+uVRmEAntTc=;
-	b=t1ywYpjTXP5YD617quxeXYS6qPb8fIP9CKa7m0ngnlx/f1XCgESkTM3H47JG7MS6cmS0Il
-	+wuvIVKqAqxS2t8VNQbtpDXAFrupcLrY1wPMTFzunWB29N74swOrSCH86qZkaqu+FGpqsk
-	ECOJ2OJZLmjGv0Ua+qgYXGmuZRPOawI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1693992654;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XjnQopGq/uLFLC5cC5K58nxffVQJcRXw+uVRmEAntTc=;
-	b=y2ltyVw5f0oYhqxj6NloN3roDOsXZzXyFXlB/Ak160k0U3fX4QHwtWr4TZ1zprcOHPxGEh
-	IsJE6jBNUJrDB0Aw==
-Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RgdJG1LlBz2xnK
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Sep 2023 20:04:13 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id 10D8C2C143;
-	Wed,  6 Sep 2023 09:30:54 +0000 (UTC)
-Date: Wed, 6 Sep 2023 11:30:52 +0200
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: nathanl@linux.ibm.com
-Subject: Re: [PATCH RFC 0/2] powerpc/pseries: new character devices for RTAS
- functions
-Message-ID: <20230906093052.GY8826@kitsune.suse.cz>
-References: <20230822-papr-sys_rtas-vs-lockdown-v1-0-932623cf3c7b@linux.ibm.com>
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 3DAE460FCF;
+	Wed,  6 Sep 2023 10:04:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 94ABBC433C7;
+	Wed,  6 Sep 2023 10:04:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1693994648;
+	bh=RZlV/34Vua6RtOG2tuKplOnqI0FsyqjllBam2o71Lr0=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=ese8C4pRWP6sY3+OCXNcdC9B9Ipym4Ex+ewzusA1Zs0AkrZPJZZY2VICLL4eKVsiI
+	 a8TNKVvmiffN6QZJkZY8XSy0dKpBtMBhSZI/CNr48thLuWUBpIVxOOcMopUcuDlANm
+	 Kun4QmDOty8OpcB8RepxUa5/x/bzCTcZJzeQOBkolfk7JxJayJD7pBnxvN503nNOUK
+	 94iwF1PL+EqNLU8wEGX/wGR9FV4dQk96MRZOydTcwRQ/J+zeHk2Hcd+/FH7YAGni04
+	 5VumWZ8CNzAzkKFtDCGxQhL2cO6NEFuhVFRjMUC44nJ3m56DRjdrA3wna1+ry5O2Ka
+	 O7320tIeDGr9Q==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6CE12EB8FAD;
+	Wed,  6 Sep 2023 10:04:08 +0000 (UTC)
+From: Joel Granados via B4 Relay <devnull+j.granados.samsung.com@kernel.org>
+Subject: [PATCH 0/8] sysctl: Remove sentinel elements from arch
+Date: Wed, 06 Sep 2023 12:03:21 +0200
+Message-Id:  <20230906-jag-sysctl_remove_empty_elem_arch-v1-0-3935d4854248@samsung.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230822-papr-sys_rtas-vs-lockdown-v1-0-932623cf3c7b@linux.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGlO+GQC/x3NWwqDMBBG4a3IPDcQL0jbrZQS0vGvTjEqMyIVc
+ e8NffxezjnIoAKje3GQYhOTecooLwXxEKceTrpsqnxV+5tv3Cf2znbjdQyKNG8ISMu6B4xIISo
+ P7lp2Lx9btMwN5c6ieMv3/3g8z/MHGVjrR3MAAAA=
+To: Luis Chamberlain <mcgrof@kernel.org>, willy@infradead.org, 
+ josh@joshtriplett.org, Kees Cook <keescook@chromium.org>, 
+ Iurii Zaikin <yzaikin@google.com>, Heiko Carstens <hca@linux.ibm.com>, 
+ Vasily Gorbik <gor@linux.ibm.com>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Sven Schnelle <svens@linux.ibm.com>, 
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+ Mark Rutland <mark.rutland@arm.com>, Thomas Gleixner <tglx@linutronix.de>, 
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+ "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, 
+ Paul Walmsley <paul.walmsley@sifive.com>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, Guo Ren <guoren@kernel.org>
+X-Mailer: b4 0.13-dev-86aa5
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8530;
+ i=j.granados@samsung.com; h=from:subject:message-id;
+ bh=yV8IUVtpYik//LpZ/IfLgtpn217RZWSw2cuIGmPdr2I=;
+ b=owEB7QES/pANAwAKAbqXzVK3lkFPAcsmYgBk+E6RSaFgJaXIBYPqWoRCs+nSM68bDy7gJkBbN
+ VhSeKZt+2+JAbMEAAEKAB0WIQSuRwlXJeYxJc7LJ5C6l81St5ZBTwUCZPhOkQAKCRC6l81St5ZB
+ T5h2C/0RyAVnXCKcWDruWBXTX/Nondl8NBwULb74ObwLNamHm0CYtKL5NwOozUcq+O0Ukkt2yRg
+ sEgpDscIbsoe+TjDUKn1Sd9YYIasdB7UE4gxOPZydkJvk8sIWRf7knr7PTpBIXqSIEDBfjd2zWJ
+ hqOheXtxPT+ctxIRV8mw5Y9JRlr8ECZcE5rogXAlssFCAM+ICnyGVMvG+vJtu0BRHhL+YJkn+jx
+ o/tNRp5qoIgGNvjQrq+fDNXtIk+q/yn3nMo01ty6KHGYLOV0ingU/pLfSy7ougzV4vwgODMt+gA
+ BG835F3bTbdXaX72HlOw8zGTzdodDr5aCoMtkLENcUrA2J5qBfCANhl22VJxxb3pbpEBm7KehFg
+ e07TDiN+NCXXcLJhPsRedx6yDE75tQu4HJSORbK7wHQzXLwrTSLYdQ50E2fdqwZUk7oFmq3mDx/
+ 0iKUMx/8TtfqRtvuSbp11fWpXo8c2FQa36rdpra2HbhbxqpliJ+Vpv0bDJVgmtRYlPZBQ=
+X-Developer-Key: i=j.granados@samsung.com; a=openpgp;
+ fpr=F1F8E46D30F0F6C4A45FF4465895FAAC338C6E77
+X-Endpoint-Received:  by B4 Relay for j.granados@samsung.com/default with auth_id=70
+X-Original-From: Joel Granados <j.granados@samsung.com>
+X-Mailman-Approved-At: Wed, 06 Sep 2023 22:22:58 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,73 +100,196 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: gcwilson@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, tyreld@linux.ibm.com
+Reply-To: j.granados@samsung.com
+Cc: Joel Granados <j.granados@samsung.com>, linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+From: Joel Granados <j.granados@samsung.com>
 
-On Tue, Aug 22, 2023 at 04:33:38PM -0500, Nathan Lynch via B4 Relay wrote:
-> This is a proposal for adding chardev-based access to a select subset
-> of RTAS functions on the pseries platform.
-> 
-> The problem: important platform features are enabled on Linux VMs
-> through the powerpc-specific rtas() syscall in combination with
-> writeable mappings of /dev/mem. In typical usage, this is encapsulated
-> behind APIs provided by the librtas library. This paradigm is
-> incompatible with lockdown, which prohibits /dev/mem access.
-> 
-> The solution I'm working on is to add a small pseries-specific
-> "driver" for each functional area, exposing the relevant features to
-> user space in ways that are compatible with lockdown. In most of these
-> areas, I believe it's possible to change librtas to prefer the new
-> chardev interfaces without disrupting existing users.
+What?
+These commits remove the sentinel element (last empty element) from the
+sysctl arrays of all the files under the "arch/" directory that use a
+sysctl array for registration. The merging of the preparation patches
+(in https://lore.kernel.org/all/ZO5Yx5JFogGi%2FcBo@bombadil.infradead.org/)
+to mainline allows us to just remove sentinel elements without changing
+behavior (more info on how this was done here [1]).
 
-thanks for the driver.
+These commits are part of a bigger set (bigger patchset here
+https://github.com/Joelgranados/linux/tree/tag/sysctl_remove_empty_elem_V4)
+that remove the ctl_table sentinel. The idea is to make the review
+process easier by chunking the 52 commits into manageable pieces. By
+sending out one chunk at a time, they can be reviewed separately without
+noise from parallel sets. After the "arch/" commits in this set are
+reviewed, I will continue with drivers/*, fs/*, kernel/*, net/* and
+miscellaneous. The final set will remove the unneeded check for
+->procname == NULL.
 
-> 
-> I've broken down the affected functions into the following areas and
-> priorities:
-> 
-> High priority:
-> * VPD retrieval.
-> * System parameters: retrieval and update.
-> 
-> Medium priority:
-> * Platform dump retrieval.
-> * Light path diagnostics (get/set-dynamic-indicator,
->   get-dynamic-sensor-state, get-indices).
-> 
-> Low priority (may never happen):
-> * Error injection: would have to be carefully restricted.
-> * Physical attestation: no known users.
-> * LPAR perftools: no known users.
-> 
-> Out of scope:
-> * DLPAR (configure-connector et al): involves device tree updates
->   which must be handled entirely in-kernel for lockdown. This is the
->   object of a separate effort.
-> 
-> See https://github.com/ibm-power-utilities/librtas/issues/29 for more
-> details.
-> 
-> In this RFC, I've included a single driver for VPD retrieval. Clients
-> use ioctl() to obtain a file descriptor-based handle for the VPD they
-> want. I think this could be a good model for the other areas too, but
-> I'd like to get opinions on it.
+Why?
+By removing the sysctl sentinel elements we avoid kernel bloat as
+ctl_table arrays get moved out of kernel/sysctl.c into their own
+respective subsystems. This move was started long ago to avoid merge
+conflicts; the sentinel removal bit came after Mathew Wilcox suggested
+it to avoid bloating the kernel by one element as arrays moved out. This
+patchset will reduce the overall build time size of the kernel and run
+time memory bloat by about ~64 bytes per declared ctl_table array. I
+have consolidated some links that shed light on the history of this
+effort [2].
 
-The call has parameters so it cannot be reasonably done with sysfs or
-similar.
+Testing:
+* Ran sysctl selftests (./tools/testing/selftests/sysctl/sysctl.sh)
+* Ran this through 0-day with no errors or warnings
 
-The paramater is string which is unweildy with ioctl, and netlink has
-helpers for getting strings into and out of messages without garbage
-pointers nad crashes. However, netlink does not have permissions, and
-setting permissions for the different platform features available
-through rtas is desirable.
+Size saving after removing all sentinels:
+  A consequence of eventually removing all the sentinels (64 bytes per
+  sentinel) is the bytes we save. These are *not* numbers that we will
+  get after this patch set; these are the numbers that we will get after
+  removing all the sentinels. I included them here because they are
+  relevant and to get an idea of just how much memory we are talking
+  about.
+    * bloat-o-meter:
+        - The "yesall" configuration results save 9158 bytes (bloat-o-meter output here
+          https://lore.kernel.org/all/20230621091000.424843-1-j.granados@samsung.com/)
+        - The "tiny" config + CONFIG_SYSCTL save 1215 bytes (bloat-o-meter output here
+          https://lore.kernel.org/all/20230809105006.1198165-1-j.granados@samsung.com/)
+    * memory usage:
+        we save some bytes in main memory as well. In my testing kernel
+        I measured a difference of 7296 bytes. I include the way to
+        measure in [3]
 
-Then this is as good as it gets with the kernel facilities Linux
-provides.
+Size saving after this patchset:
+  Here I give the values that I measured for the architecture that I'm
+  running (x86_64). This can give an approximation of how many bytes are
+  saved for each arch. I won't publish for all the archs because I don't
+  have access to all of them.
+    * bloat-o-meter
+        - The "yesall" config saves 192 bytes (bloat-o-meter output [4])
+        - The "tiny" config saves 64 bytes (bloat-o-meter output [5])
+    * memory usage:
+        In this case there were no bytes saved. To measure it comment the
+        printk in `new_dir` and uncomment the if conditional in `new_links`
+        [3].
 
-Thanks
+Comments/feedback greatly appreciated
 
-Michal
+Best
+Joel
+
+[1]
+We are able to remove a sentinel table without behavioral change by
+introducing a table_size argument in the same place where procname is
+checked for NULL. The idea is for it to keep stopping when it hits
+->procname == NULL, while the sentinel is still present. And when the
+sentinel is removed, it will stop on the table_size. You can go to 
+(https://lore.kernel.org/all/20230809105006.1198165-1-j.granados@samsung.com/)
+for more information.
+
+[2]
+Links Related to the ctl_table sentinel removal:
+* Good summary from Luis sent with the "pull request" for the
+  preparation patches.
+  https://lore.kernel.org/all/ZO5Yx5JFogGi%2FcBo@bombadil.infradead.org/
+* Another very good summary from Luis.
+  https://lore.kernel.org/all/ZMFizKFkVxUFtSqa@bombadil.infradead.org/
+* This is a patch set that replaces register_sysctl_table with register_sysctl
+  https://lore.kernel.org/all/20230302204612.782387-1-mcgrof@kernel.org/
+* Patch set to deprecate register_sysctl_paths()
+  https://lore.kernel.org/all/20230302202826.776286-1-mcgrof@kernel.org/
+* Here there is an explicit expectation for the removal of the sentinel element.
+  https://lore.kernel.org/all/20230321130908.6972-1-frank.li@vivo.com
+* The "ARRAY_SIZE" approach was mentioned (proposed?) in this thread
+  https://lore.kernel.org/all/20220220060626.15885-1-tangmeng@uniontech.com
+
+[3]
+To measure the in memory savings apply this on top of this patchset.
+
+"
+diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
+index c88854df0b62..e0073a627bac 100644
+--- a/fs/proc/proc_sysctl.c
++++ b/fs/proc/proc_sysctl.c
+@@ -976,6 +976,8 @@ static struct ctl_dir *new_dir(struct ctl_table_set *set,
+        table[0].procname = new_name;
+        table[0].mode = S_IFDIR|S_IRUGO|S_IXUGO;
+        init_header(&new->header, set->dir.header.root, set, node, table, 1);
++       // Counts additional sentinel used for each new dir.
++       printk("%ld sysctl saved mem kzalloc \n", sizeof(struct ctl_table));
+
+        return new;
+ }
+@@ -1199,6 +1201,9 @@ static struct ctl_table_header *new_links(struct ctl_dir *dir, struct ctl_table_
+                link_name += len;
+                link++;
+        }
++       // Counts additional sentinel used for each new registration
++       //if ((head->ctl_table + head->ctl_table_size)->procname)
++               printk("%ld sysctl saved mem kzalloc \n", sizeof(struct ctl_table));
+        init_header(links, dir->header.root, dir->header.set, node, link_table,
+                    head->ctl_table_size);
+        links->nreg = nr_entries;
+"
+and then run the following bash script in the kernel:
+
+accum=0
+for n in $(dmesg | grep kzalloc | awk '{print $3}') ; do
+    echo $n
+    accum=$(calc "$accum + $n")
+done
+echo $accum
+
+[4]
+add/remove: 0/0 grow/shrink: 0/3 up/down: 0/-192 (-192)
+Function                                     old     new   delta
+sld_sysctls                                  128      64     -64
+itmt_kern_table                              128      64     -64
+abi_table2                                   128      64     -64
+Total: Before=429173594, After=429173402, chg -0.00%
+
+[5]
+add/remove: 0/0 grow/shrink: 1/0 up/down: 64/0 (64)
+Function                                     old     new   delta
+sld_sysctls                                   64     128     +64
+Total: Before=1886119, After=1886183, chg +0.00%
+
+Signed-off-by: Joel Granados <j.granados@samsung.com>
+
+---
+
+---
+Joel Granados (8):
+      S390: Remove sentinel elem from ctl_table arrays
+      arm: Remove sentinel elem from ctl_table arrays
+      arch/x86: Remove sentinel elem from ctl_table arrays
+      x86 vdso: rm sentinel element from ctl_table array
+      riscv: Remove sentinel element from ctl_table array
+      powerpc: Remove sentinel element from ctl_table arrays
+      ia64: Remove sentinel element from ctl_table array
+      c-sky: rm sentinel element from ctl_talbe array
+
+ arch/arm/kernel/isa.c                     | 4 ++--
+ arch/arm64/kernel/armv8_deprecated.c      | 8 +++-----
+ arch/arm64/kernel/fpsimd.c                | 6 ++----
+ arch/arm64/kernel/process.c               | 3 +--
+ arch/csky/abiv1/alignment.c               | 3 +--
+ arch/ia64/kernel/crash.c                  | 3 +--
+ arch/powerpc/kernel/idle.c                | 3 +--
+ arch/powerpc/platforms/pseries/mobility.c | 3 +--
+ arch/riscv/kernel/vector.c                | 3 +--
+ arch/s390/appldata/appldata_base.c        | 6 ++----
+ arch/s390/kernel/debug.c                  | 3 +--
+ arch/s390/kernel/topology.c               | 3 +--
+ arch/s390/mm/cmm.c                        | 3 +--
+ arch/s390/mm/pgalloc.c                    | 3 +--
+ arch/x86/entry/vdso/vdso32-setup.c        | 3 +--
+ arch/x86/kernel/cpu/intel.c               | 3 +--
+ arch/x86/kernel/itmt.c                    | 3 +--
+ drivers/perf/arm_pmuv3.c                  | 3 +--
+ 18 files changed, 23 insertions(+), 43 deletions(-)
+---
+base-commit: 708283abf896dd4853e673cc8cba70acaf9bf4ea
+change-id: 20230904-jag-sysctl_remove_empty_elem_arch-81db0a6e6cc4
+
+Best regards,
+-- 
+Joel Granados <j.granados@samsung.com>
+
