@@ -2,90 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92FD77943F9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Sep 2023 21:54:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D22879458C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Sep 2023 23:59:54 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=B9YGq+m+;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=0eyhXlcs;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=m2yx96YV;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RgtP836fsz3c5L
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Sep 2023 05:54:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RgxB02wmrz3c5f
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Sep 2023 07:59:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=B9YGq+m+;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=0eyhXlcs;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=m2yx96YV;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.230; helo=new4-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from new4-smtp.messagingengine.com (new4-smtp.messagingengine.com [66.111.4.230])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::430; helo=mail-wr1-x430.google.com; envelope-from=mingo.kernel.org@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RgtN814LMz2yW4
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Sep 2023 05:53:27 +1000 (AEST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailnew.nyi.internal (Postfix) with ESMTP id A7AB858128A;
-	Wed,  6 Sep 2023 15:53:23 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Wed, 06 Sep 2023 15:53:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm1; t=1694030003; x=1694037203; bh=VH
-	oiOAVzKFrc1qoVv7v9Mr1BrXqTyFKUxLZW2/6sh7A=; b=B9YGq+m+TaGkZYwKEv
-	mwtpybd3N+c0fMrFAnCMSThlV38UxHGUZar4YL61wnZ8hebh7VNwhdEot1JcM314
-	t90DsstQsCqV320qKAeQxaOy7tIjIN6MM/i7+eNgzBWjvsQZqPhhSdxBflKsD8i4
-	ZRmBezwM15eJWbtMRS/w4aPfiuZYSuhzLqNmuw0oqg7NEL0rlnGLcZEyGKEzrxEN
-	G08pXwkhHEmxCZCmVwpMqwrwJ4jOuXUkafTKfsioh4wptnHthM/+o0QpCzaVlAt5
-	p2HsVsrVY9rdSP1XPW2+akPPpXdZ+NhnO5DN6OVHV68jOgT0d4LVctgdofyw14lg
-	P1wQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm1; t=1694030003; x=1694037203; bh=VHoiOAVzKFrc1
-	qoVv7v9Mr1BrXqTyFKUxLZW2/6sh7A=; b=0eyhXlcs6SwaXsTsohvaVHSDkEW5t
-	pf9IsSwsFxNCmJrnjsC1r2Ar4uKNxAccIwEZcHP0Glfwt7Pk+h/JnKu5+mRrT8Kq
-	IhOhf9SukEJcq9eb/lSO1m3E0oyB542WZP6lVYMF9zXLOsG7pFDQA7FcQlbIGsWO
-	v/7uE15f2PEQTL46VW9VAMeDZf2i5MRnBuAxMk289lztpWbEepsINFs8crl/i4pi
-	cZ6D7fyA0rWRODs/fQ5p4A4vUmfV2n21gu6zI9vyGqm0BY+5Rsgd482HgncvaExW
-	Sz8l5d7mijRz1HFOBAzL8e10OB5UlqpB6CLhAj7KXk+bFmgGbRpuCuFfg==
-X-ME-Sender: <xms:stj4ZMFT5bUXIujyx8rG3XMkkz8xGkw5hclkerDPojseR-OAKoh2EQ>
-    <xme:stj4ZFUrxldM_py_4Cti_MuQgJweGk5z0Yka0QIrf8JQxP8NlU6tdbgihMPfx7dbz
-    agIOq8G_U8LGbygxoU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudehfedgudegudcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdet
-    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
-    htthgvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedt
-    keetffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:stj4ZGIpCwrWbQMuQnRKui1vq0jlD_Hw-xaxveFWC1c7nV6BvZOFpg>
-    <xmx:stj4ZOEWKrXyPg7eu5ukVGzSe0cetY7fwF7mwZBQdjSY6eR8XT8jvQ>
-    <xmx:stj4ZCWoKWWomrXTKgZTmEmwM7RaOCq6OifEZR2NKWwutIUZbzo0SQ>
-    <xmx:s9j4ZLONDqSf7o5Z4aSE1onERACQAtFksbMuJmduHrqscQGtXIS0jA>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id AE25DB60089; Wed,  6 Sep 2023 15:53:22 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-711-g440737448e-fm-20230828.001-g44073744
-Mime-Version: 1.0
-Message-Id: <8865aa0a-ec40-41ca-a77e-9172cec49f07@app.fastmail.com>
-In-Reply-To: <20230906144801.25297-3-tzimmermann@suse.de>
-References: <20230906144801.25297-1-tzimmermann@suse.de>
- <20230906144801.25297-3-tzimmermann@suse.de>
-Date: Wed, 06 Sep 2023 15:53:02 -0400
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Thomas Zimmermann" <tzimmermann@suse.de>,
- "Michael Ellerman" <mpe@ellerman.id.au>,
- "Nicholas Piggin" <npiggin@gmail.com>,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "Helge Deller" <deller@gmx.de>
-Subject: Re: [PATCH v2 2/5] fbdev: Replace fb_pgprotect() with fb_pgprot_device()
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rgx935bfDz2xpx
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Sep 2023 07:59:02 +1000 (AEST)
+Received: by mail-wr1-x430.google.com with SMTP id ffacd0b85a97d-31c65820134so311758f8f.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Sep 2023 14:59:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1694037535; x=1694642335; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fUEsUDVRFl9we3IvMz1iDQ5wrm80qIsR/HrhiCU8qwU=;
+        b=m2yx96YVQYXR8Usg7d0Ql48NNLMDRNyfD3Wjclx2EolO83lr3BofKIdSR6mTAy/ths
+         DW3hOTOef3E4UIMLo2wfs+iy5mhPXY9Z3dOmBhmgRnSM4j2Ts5OdxyJP/edJW+InvSR4
+         KtUYfJKWSbGCghto0Fa3b06yV8bMn+jDdq+ygTZUR6xpGoNehegBUQDYvT3HhUUHv26Y
+         Max0XEpiw9UR6+rQwRscfMx9x0qDwkgtdY6e8MzJBRZU4AGqs+4wn+p9Qa7CfoYS5yst
+         vSqCq0fgYagLY9RA400zCsFGjBQRZj5vE5LtnuscsXNDkBiMC3j6toc0tS1vLhH5epSr
+         +7dQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1694037535; x=1694642335;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fUEsUDVRFl9we3IvMz1iDQ5wrm80qIsR/HrhiCU8qwU=;
+        b=Sf0ZjK2hLOSjj2/gzNrEjUn1Nsqz/fN/3h18QSNlVWRrj7WTMm5xpd8g/GmDPwCHkL
+         ZLkoHoE96nauQHZwsZA3YOs3xovB9uBcHAdE7p81LW3/6llehoOpj+P8CLJvZ0zWL4op
+         zo7+uzr3lP+47UFvfMPoLaxPNG0hzL3gqom13Vc7/I7cAXfNmvz39geZ8xlqa0bDdi7f
+         C/xfQHb++iYUFGENPynHVZXHht4juqzGFIuR01E/waht1IptHw3CjUYbxKBJotRkHHUp
+         kSt2JQvtLUYSI8cdBbenVeAdlpmp+qTyVFLjLbxt8A4NraEBIbDKVEvTt6Tcf6WitscJ
+         HGlA==
+X-Gm-Message-State: AOJu0YwGUWOg1GfYM3FLYvwbOJfM9qNqvSkx22W5HYTm3CxXe8EywyI2
+	89NXJAiEvTMQFg9H9Q0wks8=
+X-Google-Smtp-Source: AGHT+IG5nMeuL/VoGmcwCLwFLhOfCIhRsiIb9391lHp1yY958vfciaCR4r3uuUZhhDYYQHGkLNQJgQ==
+X-Received: by 2002:a5d:604b:0:b0:30e:3da5:46e5 with SMTP id j11-20020a5d604b000000b0030e3da546e5mr3830642wrt.59.1694037535283;
+        Wed, 06 Sep 2023 14:58:55 -0700 (PDT)
+Received: from gmail.com (1F2EF6A2.nat.pool.telekom.hu. [31.46.246.162])
+        by smtp.gmail.com with ESMTPSA id n10-20020adffe0a000000b003140f47224csm21447397wrr.15.2023.09.06.14.58.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Sep 2023 14:58:50 -0700 (PDT)
+Date: Wed, 6 Sep 2023 23:58:47 +0200
+From: Ingo Molnar <mingo@kernel.org>
+To: Dave Hansen <dave.hansen@intel.com>
+Subject: Re: [PATCH 3/8] arch/x86: Remove sentinel elem from ctl_table arrays
+Message-ID: <ZPj2F4retSgg3vAj@gmail.com>
+References: <20230906-jag-sysctl_remove_empty_elem_arch-v1-0-3935d4854248@samsung.com>
+ <20230906-jag-sysctl_remove_empty_elem_arch-v1-3-3935d4854248@samsung.com>
+ <d0d30ad4-7837-b0c4-39f4-3e317e35a41b@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d0d30ad4-7837-b0c4-39f4-3e317e35a41b@intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,31 +80,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-Arch <linux-arch@vger.kernel.org>, linux-fbdev@vger.kernel.org, linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-m68k@lists.linux-m68k.org, sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: j.granados@samsung.com, Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, x86@kernel.org, Russell King <linux@armlinux.org.uk>, willy@infradead.org, Ingo Molnar <mingo@redhat.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Kees Cook <keescook@chromium.org>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, josh@joshtriplett.org, Nicholas Piggin <npiggin@gmail.com>, linux-csky@vger.kernel.org, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+  Iurii Zaikin <yzaikin@google.com>, linux-kernel@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 6, 2023, at 10:35, Thomas Zimmermann wrote:
-> Rename the fbdev mmap helper fb_pgprotect() to fb_pgprot_device().
-> The helper sets VMA page-access flags for framebuffers in device I/O
-> memory. The new name follows pgprot_device(), which does the same for
-> arbitrary devices.
->
-> Also clean up the helper's parameters and return value. Instead of
-> the VMA instance, pass the individial parameters separately: existing
-> page-access flags, the VMAs start and end addresses and the offset
-> in the underlying device memory rsp file. Return the new page-access
-> flags. These changes align fb_pgprot_device() closer with pgprot_device.
->
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 
-This makes sense as a cleanup, but I'm not sure the new naming is helpful.
+* Dave Hansen <dave.hansen@intel.com> wrote:
 
-The 'pgprot_device' permissions are based on Arm's memory attributes,
-which have slightly different behavior for "device", "uncached" and
-"writecombine" mappings. I think simply calling this one pgprot_fb()
-or fb_pgprot() would be less confusing, since depending on the architecture
-it appears to give either uncached or writecombine mappings but not
-"device" on the architectures where this is different.
+> On 9/6/23 03:03, Joel Granados via B4 Relay wrote:
+> > This commit comes at the tail end of a greater effort to remove the
+> > empty elements at the end of the ctl_table arrays (sentinels) which
+> > will reduce the overall build time size of the kernel and run time
+> > memory bloat by ~64 bytes per sentinel (further information Link :
+> > https://lore.kernel.org/all/ZO5Yx5JFogGi%2FcBo@bombadil.infradead.org/)
+> > 
+> > Remove sentinel element from sld_sysctl and itmt_kern_table.
+> 
+> There's a *LOT* of content to read for a reviewer to figure out what's
+> going on here between all the links.  I would have appreciated one more
+> sentence here, maybe:
+> 
+> 	This is now safe because the sysctl registration code
+> 	(register_sysctl()) implicitly uses ARRAY_SIZE() in addition
+> 	to checking for a sentinel.
+> 
+> That needs to be more prominent _somewhere_.  Maybe here, or maybe in
+> the cover letter, but _somewhere_.
+> 
+> That said, feel free to add this to the two x86 patches:
+> 
+> Acked-by: Dave Hansen <dave.hansen@linux.intel.com> # for x86
 
-      Arnd
+Absolutely needs to be in the title as well, something like:
+
+   arch/x86: Remove now superfluous sentinel elem from ctl_table arrays
+
+With that propagated into the whole series:
+
+   Reviewed-by: Ingo Molnar <mingo@kernel.org>
+
+Thanks,
+
+	Ingo
