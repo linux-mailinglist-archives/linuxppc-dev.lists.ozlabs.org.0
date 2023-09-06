@@ -1,55 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FE09793C96
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Sep 2023 14:25:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C38BB793CA3
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Sep 2023 14:28:35 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AvJt7V+5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZP55AfhY;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RghR173qhz3c2n
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Sep 2023 22:25:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RghVn4rYpz3c68
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Sep 2023 22:28:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AvJt7V+5;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZP55AfhY;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=devnull+j.granados.samsung.com@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=devnull+j.granados.samsung.com@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RgdJG1P8lz2xpm
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Sep 2023 20:04:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RgdJJ1qZJz2xq6
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Sep 2023 20:04:16 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 8DD2260FEC;
+	by dfw.source.kernel.org (Postfix) with ESMTPS id BC43360FF2;
 	Wed,  6 Sep 2023 10:04:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 30DD3C4AF6A;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4748FC116A4;
 	Wed,  6 Sep 2023 10:04:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1693994649;
-	bh=h0a5x4tcjiRLI8hBcyPKIVxtaEtL9PHUZfFV4ZC2g6Y=;
+	bh=aS1CKaB6IFSQkKTbYW+1TFmWQDgffGuIc55cdYEnypg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=AvJt7V+5voaWDvo82nQl2Rw6T11YgG4afxMzvHyyxnIcmbw5kcK+qFHjnW+PHVU9B
-	 Fud0JMe7TPH4Dvn3AjYKpKOCUO5S9e51+dz2SDencAHrwF1i9D46Wmg24VdR4+7UV+
-	 ZX1WaMuOCtLFE4IKchvqCBSri48qndIH5Aa8ttMHybFQYfEhJrWDJ4OetnUnOKh0x6
-	 OgS59PEZQX22SqHGJamFivJGssHHrFozSancic+89UND9ML4CQuhR5X5ptvW3chOKY
-	 QUCym4fANBCGPbSEV1PMnHEH8unlrog1mxFAxGSmPPC/rDJ6Xcd7waqLVWeHxVDr8h
-	 0y90e1GdV1nkA==
+	b=ZP55AfhYN50EjDrCcB8iW90YByCyC9iI7NvOypziRPiBsL36v4/AH2CIRK5jiBx71
+	 FFnu77u00PPBrzOpwW99gzZlzkv0btytdQzqjvyoOQMjpDCaSorBYmJ4sO0dJv58qR
+	 2jsxP3XA2cOYiZH/ihFSxL88c11EEngkf3G67jxi/kOsjw6H/q5EzwPVprfDKYmmq6
+	 u+i3v4S2PaNE5NWxYG44kOk4AO/h9ykWOIx+gX9L+yO1LkgWLrmIvtAUQBmwg8N0aN
+	 WDMRwKzn4CxUyIfjfdILa1m5J6Nmo6MdV6iHbPJN3zWpCnEvw5Qx/tqIe9MCcDonn4
+	 Q/rnhxDsvinSA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C85AEB8FB9;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 32D19EB8FA5;
 	Wed,  6 Sep 2023 10:04:09 +0000 (UTC)
 From: Joel Granados via B4 Relay <devnull+j.granados.samsung.com@kernel.org>
-Date: Wed, 06 Sep 2023 12:03:28 +0200
-Subject: [PATCH 7/8] ia64: Remove sentinel element from ctl_table array
+Date: Wed, 06 Sep 2023 12:03:29 +0200
+Subject: [PATCH 8/8] c-sky: rm sentinel element from ctl_talbe array
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id:  <20230906-jag-sysctl_remove_empty_elem_arch-v1-7-3935d4854248@samsung.com>
+Message-Id:  <20230906-jag-sysctl_remove_empty_elem_arch-v1-8-3935d4854248@samsung.com>
 References:  <20230906-jag-sysctl_remove_empty_elem_arch-v1-0-3935d4854248@samsung.com>
 In-Reply-To:  <20230906-jag-sysctl_remove_empty_elem_arch-v1-0-3935d4854248@samsung.com>
 To: Luis Chamberlain <mcgrof@kernel.org>, willy@infradead.org, 
@@ -71,17 +71,17 @@ To: Luis Chamberlain <mcgrof@kernel.org>, willy@infradead.org,
  Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
  Christophe Leroy <christophe.leroy@csgroup.eu>, Guo Ren <guoren@kernel.org>
 X-Mailer: b4 0.13-dev-86aa5
-X-Developer-Signature: v=1; a=openpgp-sha256; l=904; i=j.granados@samsung.com;
- h=from:subject:message-id; bh=KVD0r38Cili5TZDRzSBYSSUVuCqs3hfxf9D58EVeiJs=;
- b=owEB7QES/pANAwAKAbqXzVK3lkFPAcsmYgBk+E6WE//Xcwga/1NK2RLvtOot92IMQidneKT5p
- v+BAfqJ9cuJAbMEAAEKAB0WIQSuRwlXJeYxJc7LJ5C6l81St5ZBTwUCZPhOlgAKCRC6l81St5ZB
- TydxC/9h8/rccF341foOCgTiAME0wS/e9CbIyL0MBWHLnGQcnYp+RhqdOL0GqHAz726Be1j15kO
- v6YfgptJJw0OJvMP2WWim+xDgOYuBwfWffbIOEjiAZuahyU2itf1YdleanEZfHhbUqci//oJqSh
- 0ajDFBrA+FJKGxCR89VZ01mvGJI5OzswbPnBN32NY4P6KwIE5UoxBLOyxfcT7EtwIQWKpqTk8Pk
- Tulducj2tt8/hPjMNRJetxGELK6ZaYDuLeG7JX3IXgv06/gZXR08QuTLJXmTBEC7oy80w8isUKr
- hY3CrAwd+3lFltSZdYchIvP73k94L3GvSEJz/G4tAoYa/ULVVQw5ClmPo4Se9AmCl7KWNCFFxk3
- YU67Wru1bC8mqE+BTU32baxgXb4PMz/bRGO5NXF5C2K7CYClJy4ZobHb94Ib7QdkgbMhGjwyBoE
- AxKe/dAVVCRcQ7EK66c3SmG+78AEf84jHaVHhmR0xjp7NumHR5XRJFCWi13YS3+jpgjhc=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=980; i=j.granados@samsung.com;
+ h=from:subject:message-id; bh=7bf5/tJGBhUQ9WK71ygDU4S0n97i+v0/NjwZE0o5pgU=;
+ b=owEB7QES/pANAwAKAbqXzVK3lkFPAcsmYgBk+E6WREfxGpSEon2IoEhHuwmPhd3lTNK0oImor
+ fAfRY0k+XKJAbMEAAEKAB0WIQSuRwlXJeYxJc7LJ5C6l81St5ZBTwUCZPhOlgAKCRC6l81St5ZB
+ TyDwC/9FZEUSgEzlF7Ci/QWFlhzpOZwTgs6G1qVsDC2AsbhA0jgrplsVHcwsNKyVlmGgQ5vfrta
+ AH8fSSOEcSJfoy1ev1mzCDfYY+AwZD0Iy9ga2WQ2skPBd9sjsJmzzsq01zWuRA3K8vELOvAmw5X
+ 5wDlhgg73sM7bY5QFpAvBOUwA0iCDvesjkqvKzOcDtOI7UHvrhvA4aU707BZq6KxCZ2sjHNMG7/
+ L0mYjBGd9aLOWanKzP6FdWafWJZVG1SXFRLtfhYGo1kAHi0uSOYPGzvhR0TCbXXWVgwaFfJgjyJ
+ CIDqEL5JsAA1uo9NErYbwccIFdf77G8k2faRS0nqc9bwzQkHIYpauUZZgzHkq7RlWXiMx+wiIsX
+ ZNw2x+uXfqg2gDOa2PUzENunfeKSWXRdUUbLHyvQylboT6rPMLIct3GIuYh6cpwNTkzK886rmRn
+ 7/5Cf/CQU1gWgoVV9rRFdJSkFrYISwOHblDUKSVegiC+VPuuYfY+EPVPZcrT2S+IYb74U=
 X-Developer-Key: i=j.granados@samsung.com; a=openpgp;
  fpr=F1F8E46D30F0F6C4A45FF4465895FAAC338C6E77
 X-Endpoint-Received:  by B4 Relay for j.granados@samsung.com/default with auth_id=70
@@ -111,27 +111,27 @@ will reduce the overall build time size of the kernel and run time
 memory bloat by ~64 bytes per sentinel (further information Link :
 https://lore.kernel.org/all/ZO5Yx5JFogGi%2FcBo@bombadil.infradead.org/)
 
-Remove sentinel from kdump_ctl_table.
+Remove sentinel from alignment_tbl ctl_table array.
 
 Signed-off-by: Joel Granados <j.granados@samsung.com>
 ---
- arch/ia64/kernel/crash.c | 3 +--
+ arch/csky/abiv1/alignment.c | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/ia64/kernel/crash.c b/arch/ia64/kernel/crash.c
-index 88b3ce3e66cd..fbf8893a570c 100644
---- a/arch/ia64/kernel/crash.c
-+++ b/arch/ia64/kernel/crash.c
-@@ -231,8 +231,7 @@ static struct ctl_table kdump_ctl_table[] = {
- 		.maxlen = sizeof(int),
- 		.mode = 0644,
- 		.proc_handler = proc_dointvec,
+diff --git a/arch/csky/abiv1/alignment.c b/arch/csky/abiv1/alignment.c
+index b60259daed1b..0d75ce7b0328 100644
+--- a/arch/csky/abiv1/alignment.c
++++ b/arch/csky/abiv1/alignment.c
+@@ -328,8 +328,7 @@ static struct ctl_table alignment_tbl[5] = {
+ 		.maxlen = sizeof(align_usr_count),
+ 		.mode = 0666,
+ 		.proc_handler = &proc_dointvec
 -	},
--	{ }
+-	{}
 +	}
  };
- #endif
  
+ static int __init csky_alignment_init(void)
 
 -- 
 2.30.2
