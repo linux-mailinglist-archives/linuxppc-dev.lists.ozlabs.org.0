@@ -2,59 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFCEC793427
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Sep 2023 05:39:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44BEE79341C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Sep 2023 05:25:14 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XZUD/xT7;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=YYYGmugU;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RgSmq5T9lz3cNT
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Sep 2023 13:39:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RgSRr0rKzz3c5T
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Sep 2023 13:25:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XZUD/xT7;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=YYYGmugU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=patchwork-bot+f2fs@kernel.org; receiver=lists.ozlabs.org)
-X-Greylist: delayed 436 seconds by postgrey-1.37 at boromir; Tue, 05 Sep 2023 04:18:36 AEST
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2a00:1450:4864:20::229; helo=mail-lj1-x229.google.com; envelope-from=stevensd@chromium.org; receiver=lists.ozlabs.org)
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RfcMc1vKvz2yh6;
-	Tue,  5 Sep 2023 04:18:36 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 9B152B80ED0;
-	Mon,  4 Sep 2023 18:11:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 26F6EC433BB;
-	Mon,  4 Sep 2023 18:11:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1693851069;
-	bh=XLoa47KxRcps38wwidPhLGQHNoTClCg5nlSU2UvnxSI=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=XZUD/xT7QAeS9CwkDxlRqT/gRWQx0TmxhnpK0eSpl5TdmWje1tq2yvGH+3vZ2+BCT
-	 jCeZ3PliMwtj4PI/YG14pbxznaZzZiLpm9dwOITxs9QimCVLsdgcY+tXdL8VHHo6Xo
-	 yN1Gfw9YZmIyD8m43UuRL17+XTyHWk7a5WXn6oF5ggWXw6RS9S101xrDjQsPd+ZkCx
-	 1CnWWAtQSCxTFtksNwHsJ+bzmvgeWVNV2ZHBFMah4WlUviOzbSHDkb9JT06sfaty1l
-	 sU4YI09Bt9xI2xASG0RHXL6Mglihp9xk051QekITKNbwSi+f4qbVFzWkXoKrsHAJfp
-	 TL/wsjYXrOQBg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id C90EDC2BBD7;
-	Mon,  4 Sep 2023 18:11:08 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RgSQx1VYfz2yKy
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Sep 2023 13:24:22 +1000 (AEST)
+Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2b962c226ceso52764111fa.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 Sep 2023 20:24:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1693970653; x=1694575453; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1wmE8wbgp7/QOlIvwHT/FgwjU8cYsXeBtzWV3ElQoLw=;
+        b=YYYGmugUO9WJEQJ4h6bfdI8COs5xggGxekMGGu+QgOPcR18LgJg8XCAuA1HCDtAYVe
+         EpuUaDc+icWQAN7AOLZ87dDDO7cZzatLK71cmz0FtBCB1j1t7s5FIp1ORpd5B1m6egeK
+         75ZH31cQOf2ki5kjDzu/bLdNDqTWKF0iqY0A4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693970653; x=1694575453;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1wmE8wbgp7/QOlIvwHT/FgwjU8cYsXeBtzWV3ElQoLw=;
+        b=Bm8QoHWsefbBO6ZV+cht/2gbCtk90qR5r4bUKU3RbUrSQdNWJ5AGZiiH7Cpsfr1rKx
+         3dIJw9N2GQhcHDffVoSgT3N6nKQySVWry+eXkk/LWUjzgSKsusEfRnxtMzRnqNmBAdoM
+         f6i4YhAvGlmItUtKrcNEQXbbq87xY9CMa1sRfKjxeKyuDIz3XMLu9IA9jGlxgeogVewG
+         dzWu/ct3z5ukL5g1hbpmBxNVSdeTdOJCw7vSj46DcIRy1H/ffIMtynnW/Umi4Y49gwsT
+         dyMnDuAj5Ng8SatAo0ngexWcXCXiznv9Ymgqb01PKYrHJvMmgAj7oeV4vZxKD9oBUpJ0
+         hnaQ==
+X-Gm-Message-State: AOJu0YwrPjWnzppHAUu3eOTAVQ2mpCe5wixk97M+bincC4Hs4cZwVJwD
+	06aj33tvijQKQc0jMnTVSWSTjc5PP22nsvoHRm/6RA==
+X-Google-Smtp-Source: AGHT+IFIqz9sY6doupMHIx90lUVuiy33PnMwlqInijBiQEoNPRggDmrV8lalf3ySzga8iU+82w2g3AQNKlFjp+co1tk=
+X-Received: by 2002:a2e:8781:0:b0:2bb:78ad:56cb with SMTP id
+ n1-20020a2e8781000000b002bb78ad56cbmr1034016lji.37.1693970652777; Tue, 05 Sep
+ 2023 20:24:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [f2fs-dev] [PATCH v2 00/89] fs: new accessors for inode->i_ctime
-From: patchwork-bot+f2fs@kernel.org
-Message-Id:  <169385106881.19669.3510550425397118597.git-patchwork-notify@kernel.org>
-Date: Mon, 04 Sep 2023 18:11:08 +0000
-References: <20230705185812.579118-1-jlayton@kernel.org>
-In-Reply-To: <20230705185812.579118-1-jlayton@kernel.org>
-To: Jeff Layton <jlayton@kernel.org>
-X-Mailman-Approved-At: Wed, 06 Sep 2023 13:38:47 +1000
+References: <20230704075054.3344915-1-stevensd@google.com> <20230704075054.3344915-4-stevensd@google.com>
+ <20230705161914.00004070.zhi.wang.linux@gmail.com> <CAD=HUj5cbzjrc0KD7xcibtRMRCzoJRJAzt7jTHSXUSpzyAYbdg@mail.gmail.com>
+ <20230711203348.00000fb8.zhi.wang.linux@gmail.com> <ZK3Q34WNLjGVQQw+@google.com>
+ <CAD=HUj6SoKHhA02oNpCt--ofE_n1wjdY1ddBURXDiS5Rwu=Q-g@mail.gmail.com> <ZPfLjnG8b9LJV4p7@google.com>
+In-Reply-To: <ZPfLjnG8b9LJV4p7@google.com>
+From: David Stevens <stevensd@chromium.org>
+Date: Wed, 6 Sep 2023 12:24:01 +0900
+Message-ID: <CAD=HUj4W4PF3O9oLZx-3Rd_W51x1z30hQ36m_fcWUpw=mxUpSA@mail.gmail.com>
+Subject: Re: [PATCH v7 3/8] KVM: Make __kvm_follow_pfn not imply FOLL_GET
+To: Sean Christopherson <seanjc@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,47 +75,310 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: lucho@ionkov.net, rafael@kernel.org, djwong@kernel.org, al@alarsen.net, cmllamas@google.com, andrii@kernel.org, hughd@google.com, john.johansen@canonical.com, agordeev@linux.ibm.com, hch@lst.de, hubcap@omnibond.com, pc@manguebit.com, linux-xfs@vger.kernel.org, bvanassche@acm.org, jeffxu@chromium.org, john@keeping.me.uk, yi.zhang@huawei.com, jmorris@namei.org, code@tyhicks.com, stern@rowland.harvard.edu, borntraeger@linux.ibm.com, devel@lists.orangefs.org, mirimmad17@gmail.com, sprasad@microsoft.com, jaharkes@cs.cmu.edu, linux-um@lists.infradead.org, npiggin@gmail.com, viro@zeniv.linux.org.uk, ericvh@kernel.org, surenb@google.com, trond.myklebust@hammerspace.com, anton@tuxera.com, brauner@kernel.org, wsa+renesas@sang-engineering.com, gregkh@linuxfoundation.org, stephen.smalley.work@gmail.com, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, lsahlber@redhat.com, senozhatsky@chromium.org, arve@android.com, chuck.lever@oracle.com, svens@linux.ibm.com, jolsa@kernel.org, jack@s
- use.com, tj@kernel.org, akpm@linux-foundation.org, linux-trace-kernel@vger.kernel.org, xu.xin16@zte.com.cn, shaggy@kernel.org, dhavale@google.com, penguin-kernel@I-love.SAKURA.ne.jp, zohar@linux.ibm.com, linux-mm@kvack.org, joel@joelfernandes.org, edumazet@google.com, sdf@google.com, jomajm@gmail.com, linux-s390@vger.kernel.org, linux-nilfs@vger.kernel.org, paul@paul-moore.com, leon@kernel.org, john.fastabend@gmail.com, mcgrof@kernel.org, chi.minghao@zte.com.cn, codalist@coda.cs.cmu.edu, selinux@vger.kernel.org, zhangpeng362@huawei.com, quic_ugoswami@quicinc.com, yhs@fb.com, yzaikin@google.com, linkinjeon@kernel.org, mhiramat@kernel.org, ecryptfs@vger.kernel.org, tkjos@android.com, madkar@cs.stonybrook.edu, gor@linux.ibm.com, yuzhe@nfschina.com, linuxppc-dev@lists.ozlabs.org, reiserfs-devel@vger.kernel.org, miklos@szeredi.hu, huyue2@coolpad.com, jaegeuk@kernel.org, gargaditya08@live.com, maco@android.com, hirofumi@mail.parknet.co.jp, haoluo@google.com, tony.luck@intel.com, tytso@mit
- .edu, nico@fluxnic.net, linux-ntfs-dev@lists.sourceforge.net, muchun.song@linux.dev, roberto.sassu@huawei.com, linux-f2fs-devel@lists.sourceforge.net, yang.yang29@zte.com.cn, gpiccoli@igalia.com, ebiederm@xmission.com, anna@kernel.org, quic_uaggarwa@quicinc.com, bwarrum@linux.ibm.com, mike.kravetz@oracle.com, jingyuwang_vip@163.com, linux-efi@vger.kernel.org, error27@gmail.com, martin@omnibond.com, trix@redhat.com, ocfs2-devel@lists.linux.dev, ast@kernel.org, sebastian.reichel@collabora.com, clm@fb.com, linux-mtd@lists.infradead.org, willy@infradead.org, marc.dionne@auristor.com, linux-afs@lists.infradead.org, raven@themaw.net, naohiro.aota@wdc.com, daniel@iogearbox.net, dennis.dalessandro@cornelisnetworks.com, linux-rdma@vger.kernel.org, quic_linyyuan@quicinc.com, coda@cs.cmu.edu, slava@dubeyko.com, idryomov@gmail.com, pabeni@redhat.com, adobriyan@gmail.com, serge@hallyn.com, chengzhihao1@huawei.com, axboe@kernel.dk, amir73il@gmail.com, linuszeng@tencent.com, keescook@chromium.org,
-  arnd@arndb.de, autofs@vger.kernel.org, rostedt@goodmis.org, yifeliu@cs.stonybrook.edu, dlemoal@kernel.org, eparis@parisplace.org, ceph-devel@vger.kernel.org, xiang@kernel.org, yijiangshan@kylinos.cn, dhowells@redhat.com, linux-nfs@vger.kernel.org, linux-ext4@vger.kernel.org, kolga@netapp.com, song@kernel.org, samba-technical@lists.samba.org, sfrench@samba.org, jk@ozlabs.org, netdev@vger.kernel.org, rpeterso@redhat.com, linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org, ntfs3@lists.linux.dev, linux-erofs@lists.ozlabs.org, davem@davemloft.net, jfs-discussion@lists.sourceforge.net, princekumarmaurya06@gmail.com, ebiggers@google.com, neilb@suse.de, asmadeus@codewreck.org, linux_oss@crudebyte.com, me@bobcopeland.com, kpsingh@kernel.org, okanatov@gmail.com, almaz.alexandrovich@paragon-software.com, joseph.qi@linux.alibaba.com, hayama@lineo.co.jp, adilger.kernel@dilger.ca, mikulas@artax.karlin.mff.cuni.cz, shaozhengchao@huawei.com, chenzhongjin@huawei.com, ardb@kernel.org, anton.ivanov@c
- ambridgegreys.com, agruenba@redhat.com, richard@nod.at, mark@fasheh.com, shr@devkernel.io, Dai.Ngo@oracle.com, cluster-devel@redhat.com, jgg@ziepe.ca, kuba@kernel.org, riel@surriel.com, salah.triki@gmail.com, dushistov@mail.ru, linux-cifs@vger.kernel.org, hca@linux.ibm.com, chao@kernel.org, apparmor@lists.ubuntu.com, josef@toxicpanda.com, Liam.Howlett@Oracle.com, tom@talpey.com, hdegoede@redhat.com, linux-hardening@vger.kernel.org, aivazian.tigran@gmail.com, dchinner@redhat.com, dsterba@suse.com, xiubli@redhat.com, konishi.ryusuke@gmail.com, jgross@suse.com, jth@kernel.org, rituagar@linux.ibm.com, luisbg@kernel.org, martin.lau@linux.dev, v9fs@lists.linux.dev, fmdefrancesco@gmail.com, linux-unionfs@vger.kernel.org, lrh2000@pku.edu.cn, linux-security-module@vger.kernel.org, ezk@cs.stonybrook.edu, jefflexu@linux.alibaba.com, linux@treblig.org, hannes@cmpxchg.org, phillip@squashfs.org.uk, johannes@sipsolutions.net, sj1557.seo@samsung.com, dwmw2@infradead.org, linux-karma-devel@lists.sou
- rceforge.net, linux-btrfs@vger.kernel.org, jlbec@evilplan.org
+Cc: Zhi Wang <zhi.wang.linux@gmail.com>, kvm@vger.kernel.org, Marc Zyngier <maz@kernel.org>, linux-kernel@vger.kernel.org, Peter Xu <peterx@redhat.com>, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello:
+On Wed, Sep 6, 2023 at 9:45=E2=80=AFAM Sean Christopherson <seanjc@google.c=
+om> wrote:
+>
+> On Tue, Sep 05, 2023, David Stevens wrote:
+> > On Wed, Jul 12, 2023 at 7:00=E2=80=AFAM Sean Christopherson <seanjc@goo=
+gle.com> wrote:
+> > >
+> > > On Tue, Jul 11, 2023, Zhi Wang wrote:
+> > > > On Thu, 6 Jul 2023 15:49:39 +0900
+> > > > David Stevens <stevensd@chromium.org> wrote:
+> > > >
+> > > > > On Wed, Jul 5, 2023 at 10:19___PM Zhi Wang <zhi.wang.linux@gmail.=
+com> wrote:
+> > > > > >
+> > > > > > On Tue,  4 Jul 2023 16:50:48 +0900
+> > > > > > David Stevens <stevensd@chromium.org> wrote:
+> > > > > > If yes, do we have to use FOLL_GET to resolve GFN associated wi=
+th a tail page?
+> > > > > > It seems gup can tolerate gup_flags without FOLL_GET, but it is=
+ more like a
+> > > > > > temporary solution. I don't think it is a good idea to play tri=
+cks with
+> > > > > > a temporary solution, more like we are abusing the toleration.
+> > > > >
+> > > > > I'm not sure I understand what you're getting at. This series nev=
+er
+> > > > > calls gup without FOLL_GET.
+> > > > >
+> > > > > This series aims to provide kvm_follow_pfn as a unified API on to=
+p of
+> > > > > gup+follow_pte. Since one of the major clients of this API uses a=
+n mmu
+> > > > > notifier, it makes sense to support returning a pfn without takin=
+g a
+> > > > > reference. And we indeed need to do that for certain types of mem=
+ory.
+> > > > >
+> > > >
+> > > > I am not having prob with taking a pfn without taking a ref. I am
+> > > > questioning if using !FOLL_GET in struct kvm_follow_pfn to indicate=
+ taking
+> > > > a pfn without a ref is a good idea or not, while there is another f=
+lag
+> > > > actually showing it.
+> > > >
+> > > > I can understand that using FOLL_XXX in kvm_follow_pfn saves some
+> > > > translation between struct kvm_follow_pfn.{write, async, xxxx} and =
+GUP
+> > > > flags. However FOLL_XXX is for GUP. Using FOLL_XXX for reflecting t=
+he
+> > > > requirements of GUP in the code path that going to call GUP is reas=
+onable.
+> > > >
+> > > > But using FOLL_XXX with purposes that are not related to GUP call r=
+eally
+> > > > feels off.
+> > >
+> > > I agree, assuming you're talking specifically about the logic in hva_=
+to_pfn_remapped()
+> > > that handles non-refcounted pages, i.e. this
+> > >
+> > >         if (get_page_unless_zero(page)) {
+> > >                 foll->is_refcounted_page =3D true;
+> > >                 if (!(foll->flags & FOLL_GET))
+> > >                         put_page(page);
+> > >         } else if (foll->flags & FOLL_GET) {
+> > >                 r =3D -EFAULT;
+> > >         }
+> > >
+> > > should be
+> > >
+> > >         if (get_page_unless_zero(page)) {
+> > >                 foll->is_refcounted_page =3D true;
+> > >                 if (!(foll->flags & FOLL_GET))
+> > >                         put_page(page);
+> > >         else if (!foll->guarded_by_mmu_notifier)
+> > >                 r =3D -EFAULT;
+> > >
+> > > because it's not the desire to grab a reference that makes getting no=
+n-refcounted
+> > > pfns "safe", it's whether or not the caller is plugged into the MMU n=
+otifiers.
+> > >
+> > > Though that highlights that checking guarded_by_mmu_notifier should b=
+e done for
+> > > *all* non-refcounted pfns, not just non-refcounted struct page memory=
+.
+> >
+> > I think things are getting confused here because there are multiple
+> > things which "safe" refers to. There are three different definitions
+> > that I think are relevant here:
+> >
+> > 1) "safe" in the sense that KVM doesn't corrupt page reference counts
+> > 2) "safe" in the sense that KVM doesn't access pfns after they have bee=
+n freed
+> > 3) "safe" in the sense that KVM doesn't use stale hva -> pfn translatio=
+ns
+> >
+> > For property 1, FOLL_GET is important. If the caller passes FOLL_GET,
+> > then they expect to be able to pass the returned pfn to
+> > kvm_release_pfn. This means that when FOLL_GET is set, if
+> > kvm_pfn_to_refcounted_page returns a page, then hva_to_pfn_remapped
+> > must take a reference count to avoid eventually corrupting the page
+> > ref count. I guess replacing the FOLL_GET check with
+> > !guarded_by_mmu_notifier is logically equivalent because
+> > __kvm_follow_pfn requires that at least one of guarded_by_mmu_notifier
+> > and FOLL_GET is set. But since we're concerned about a property of the
+> > refcount, I think that checking FOLL_GET is clearer.
+> >
+> > For property 2, FOLL_GET is also important. If guarded_by_mmu_notifier
+> > is set, then we're all good here. If guarded_by_mmu_notifier is not
+> > set, then the check in __kvm_follow_pfn guarantees that FOLL_GET is
+> > set. For struct page memory, we're safe because KVM will hold a
+> > reference as long as it's still using the page. For non struct page
+> > memory, we're not safe - this is where the breaking change of
+> > allow_unsafe_mappings would go. Note that for non-refcounted struct
+> > page, we can't use the allow_unsafe_mappings escape hatch. Since
+> > FOLL_GET was requested, if we returned such a page, then the caller
+> > would eventually corrupt the page refcount via kvm_release_pfn.
+>
+> Yes we can.  The caller simply needs to be made aware of is_refcounted_pa=
+ge.   I
+> didn't include that in the snippet below because I didn't want to write t=
+he entire
+> patch.  The whole point of adding is_refcounted_page is so that callers c=
+an
+> identify exactly what type of page was at the end of the trail that was f=
+ollowed.
 
-This series was applied to jaegeuk/f2fs.git (dev)
-by Christian Brauner <brauner@kernel.org>:
+Are you asking me to completely migrate every caller of any gfn_to_pfn
+variant to __kvm_follow_pfn, so that they can respect
+is_refcounted_page? That's the only way to make it safe for
+allow_unsafe_mappings to apply to non-refcounted pages. That is
+decidedly not simple. Or is kvm_vcpu_map the specific call site you
+care about? At best, I can try to migrate x86, and then just add some
+sort of compatibility shim for other architectures that rejects
+non-refcounted pages.
 
-On Wed,  5 Jul 2023 14:58:09 -0400 you wrote:
-> v2:
-> - prepend patches to add missing ctime updates
-> - add simple_rename_timestamp helper function
-> - rename ctime accessor functions as inode_get_ctime/inode_set_ctime_*
-> - drop individual inode_ctime_set_{sec,nsec} helpers
-> 
-> I've been working on a patchset to change how the inode->i_ctime is
-> accessed in order to give us conditional, high-res timestamps for the
-> ctime and mtime. struct timespec64 has unused bits in it that we can use
-> to implement this. In order to do that however, we need to wrap all
-> accesses of inode->i_ctime to ensure that bits used as flags are
-> appropriately handled.
-> 
-> [...]
+> > Property 3 would be nice, but we've already concluded that guarding
+> > all translations with mmu notifiers is infeasible. So maintaining
+> > property 2 is the best we can hope for.
+>
+> No, #3 is just a variant of #2.  Unless you're talking about not making g=
+uarantees
+> about guest accesses being ordered with respect to VMA/memslot updates, b=
+ut I
+> don't think that's the case.
 
-Here is the summary with links:
-  - [f2fs-dev,v2,07/92] fs: add ctime accessors infrastructure
-    https://git.kernel.org/jaegeuk/f2fs/c/9b6304c1d537
-  - [f2fs-dev,v2,08/92] fs: new helper: simple_rename_timestamp
-    https://git.kernel.org/jaegeuk/f2fs/c/0c4767923ed6
-  - [f2fs-dev,v2,92/92] fs: rename i_ctime field to __i_ctime
-    https://git.kernel.org/jaegeuk/f2fs/c/13bc24457850
+I'm talking about the fact that kvm_vcpu_map is busted with respect to
+updates to VMA updates. It won't corrupt host memory because the
+mapping keeps a reference to the page, but it will continue to use
+stale translations. From [1], it sounds like you've granted that
+fixing that is not feasible, so I just wanted to make sure that this
+isn't the "unsafe" referred to by allow_unsafe_mappings.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+[1] https://lore.kernel.org/all/ZBEEQtmtNPaEqU1i@google.com/
 
+> > > As for the other usage of FOLL_GET in this series (using it to condit=
+ionally do
+> > > put_page()), IMO that's very much related to the GUP call.  Invoking =
+put_page()
+> > > is a hack to workaround the fact that GUP doesn't provide a way to ge=
+t the pfn
+> > > without grabbing a reference to the page.  In an ideal world, KVM wou=
+ld NOT pass
+> > > FOLL_GET to the various GUP helpers, i.e. FOLL_GET would be passed as=
+-is and KVM
+> > > wouldn't "need" to kinda sorta overload FOLL_GET to manually drop the=
+ reference.
+> > >
+> > > I do think it's worth providing a helper to consolidate and document =
+that hacky
+> > > code, e.g. add a kvm_follow_refcounted_pfn() helper.
+> > >
+> > > All in all, I think the below (completely untested) is what we want?
+> > >
+> > > David (and others), I am planning on doing a full review of this seri=
+es "soon",
+> > > but it will likely be a few weeks until that happens.  I jumped in on=
+ this
+> > > specific thread because this caught my eye and I really don't want to=
+ throw out
+> > > *all* of the FOLL_GET usage.
+> > >
+> > > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> > > index 5b5afd70f239..90d424990e0a 100644
+> > > --- a/virt/kvm/kvm_main.c
+> > > +++ b/virt/kvm/kvm_main.c
+> > > @@ -2481,6 +2481,25 @@ static inline int check_user_page_hwpoison(uns=
+igned long addr)
+> > >         return rc =3D=3D -EHWPOISON;
+> > >  }
+> > >
+> > > +static kvm_pfn_t kvm_follow_refcounted_pfn(struct kvm_follow_pfn *fo=
+ll,
+> > > +                                          struct page *page)
+> > > +{
+> > > +       kvm_pfn_t pfn =3D page_to_pfn(page);
+> > > +
+> > > +       foll->is_refcounted_page =3D true;
+> > > +
+> > > +       /*
+> > > +        * FIXME: Ideally, KVM wouldn't pass FOLL_GET to gup() when t=
+he caller
+> > > +        * doesn't want to grab a reference, but gup() doesn't suppor=
+t getting
+> > > +        * just the pfn, i.e. FOLL_GET is effectively mandatory.  If =
+that ever
+> > > +        * changes, drop this and simply don't pass FOLL_GET to gup()=
+.
+> > > +        */
+> > > +       if (!(foll->flags & FOLL_GET))
+> > > +               put_page(page);
+> > > +
+> > > +       return pfn;
+> > > +}
+> > > +
+> > >  /*
+> > >   * The fast path to get the writable pfn which will be stored in @pf=
+n,
+> > >   * true indicates success, otherwise false is returned.  It's also t=
+he
+> > > @@ -2500,11 +2519,9 @@ static bool hva_to_pfn_fast(struct kvm_follow_=
+pfn *foll, kvm_pfn_t *pfn)
+> > >                 return false;
+> > >
+> > >         if (get_user_page_fast_only(foll->hva, FOLL_WRITE, page)) {
+> > > -               *pfn =3D page_to_pfn(page[0]);
+> > >                 foll->writable =3D foll->allow_write_mapping;
+> > > -               foll->is_refcounted_page =3D true;
+> > > -               if (!(foll->flags & FOLL_GET))
+> > > -                       put_page(page[0]);
+> > > +
+> > > +               *pfn =3D kvm_follow_refcounted_pfn(foll, page[0]);
+> > >                 return true;
+> > >         }
+> > >
+> > > @@ -2528,7 +2545,6 @@ static int hva_to_pfn_slow(struct kvm_follow_pf=
+n *foll, kvm_pfn_t *pfn)
+> > >                 return npages;
+> > >
+> > >         foll->writable =3D (foll->flags & FOLL_WRITE) && foll->allow_=
+write_mapping;
+> > > -       foll->is_refcounted_page =3D true;
+> > >
+> > >         /* map read fault as writable if possible */
+> > >         if (unlikely(!foll->writable) && foll->allow_write_mapping) {
+> > > @@ -2540,9 +2556,8 @@ static int hva_to_pfn_slow(struct kvm_follow_pf=
+n *foll, kvm_pfn_t *pfn)
+> > >                         page =3D wpage;
+> > >                 }
+> > >         }
+> > > -       *pfn =3D page_to_pfn(page);
+> > > -       if (!(foll->flags & FOLL_GET))
+> > > -               put_page(page);
+> > > +
+> > > +       *pfn =3D kvm_follow_refcounted_pfn(foll, page);
+> > >         return npages;
+> > >  }
+> > >
+> > > @@ -2610,17 +2625,16 @@ static int hva_to_pfn_remapped(struct vm_area=
+_struct *vma, struct kvm_follow_pfn
+> > >         if (!page)
+> > >                 goto out;
+> > >
+> > > -       if (get_page_unless_zero(page)) {
+> > > -               foll->is_refcounted_page =3D true;
+> > > -               if (!(foll->flags & FOLL_GET))
+> > > -                       put_page(page);
+> > > -       } else if (foll->flags & FOLL_GET) {
+> > > -               r =3D -EFAULT;
+> > > -       }
+> > > -
+> > > +       if (get_page_unless_zero(page))
+> > > +               WARN_ON_ONCE(kvm_follow_refcounted_pfn(foll, page) !=
+=3D pfn);
+> > >  out:
+> > >         pte_unmap_unlock(ptep, ptl);
+> > > -       *p_pfn =3D pfn;
+> > > +
+> > > +       if (!foll->is_refcounted_page && !foll->guarded_by_mmu_notifi=
+er &&
+> > > +           !allow_unsafe_mappings)
+> > > +               r =3D -EFAULT;
+> > > +       else
+> > > +               *p_pfn =3D pfn;
+> > >
+> > >         return r;
+> > >  }
+> > >
+> >
+> > As I pointed out above, this suggestion is broken because a FOLL_GET
+> > && !guarded_by_mmu_notifier request (e.g. kvm_vcpu_map) for a
+> > non-refcounted page will result in the refcount eventually being
+> > corrupted.
+>
+> I don't think so, unless I'm misunderstanding the concern.  It just wasn'=
+t a
+> complete patch, and wasn't intended to be.
 
+I guess I misunderstood the scale of the changes you're suggesting.
+
+-David
