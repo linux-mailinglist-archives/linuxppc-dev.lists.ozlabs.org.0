@@ -2,60 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF41E797318
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Sep 2023 16:37:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D79E07975C8
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Sep 2023 17:56:04 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XDfKQ1nY;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RhMJV5PCjz3cPK
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Sep 2023 00:36:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RhP3k4zfjz3c4r
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Sep 2023 01:56:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.160.51; helo=mail-oa1-f51.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XDfKQ1nY;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RhMJ03q7Gz2yh2
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Sep 2023 00:36:31 +1000 (AEST)
-Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-1cca0a1b3c7so704217fac.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Sep 2023 07:36:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1694097388; x=1694702188;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pHLh0XIuAU9BJlqzEfpp7VQfwKfBKemsHfjkdXxbouo=;
-        b=Z4LyfvsHgOUghdTEqFt7UEMxDO0ZwsL8eax3os5w33ZcsDH3JpnGkRPKaTxvGlBvpt
-         6u7UwBWHCShS49mhdhSaZAxGlm9YwGJ5iKxT9TYV/WI+8OjAoHDa45AqA/RHTUcjWTgz
-         +kXh3E0OBKSU6nRQY/yMkL26TWT5vZvFOmUHNHYRYlEz3UUeeI+wreo6fJTVGP1EB/x9
-         jksIuCOuW6lvCpV8yJNWLosALNDf3oYWXe6OeIsOmQbj1NSSD2sCylusqt38LdO5K7ox
-         dynpxIu6/1H79O3QhzIlK+LLabc2RgQ9mSv77ooSzVeF9S1TCKpruSCLpDPypwdimviU
-         FD2g==
-X-Gm-Message-State: AOJu0Ywm1mnTqqDe0DYstsTea9UI4Nsk4k24UcKjjRRlgVaN1fKszgLB
-	e5nwNLNd4WJeXUhn1GkM5cSdWyyp9AFlCA==
-X-Google-Smtp-Source: AGHT+IGeo0GIbyPRAR8sSwlYUapAr41Kvd2ZFlalJyW+msXNml8EStExtlrv2b7I2+wqTJxfQw2CcA==
-X-Received: by 2002:a05:6808:1449:b0:3a7:4e0c:faa7 with SMTP id x9-20020a056808144900b003a74e0cfaa7mr27628925oiv.14.1694097386314;
-        Thu, 07 Sep 2023 07:36:26 -0700 (PDT)
-Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com. [209.85.219.174])
-        by smtp.gmail.com with ESMTPSA id g127-20020a0ddd85000000b0059b17647dcbsm1241639ywe.69.2023.09.07.07.36.25
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 Sep 2023 07:36:25 -0700 (PDT)
-Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-d7b8d2631fdso967293276.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Sep 2023 07:36:25 -0700 (PDT)
-X-Received: by 2002:a25:ad91:0:b0:d2c:32cb:c631 with SMTP id
- z17-20020a25ad91000000b00d2c32cbc631mr20648715ybi.27.1694097385344; Thu, 07
- Sep 2023 07:36:25 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1694095086.git.geert@linux-m68k.org> <5c80dc63-e7d0-5d82-de83-7e35c54b8351@csgroup.eu>
-In-Reply-To: <5c80dc63-e7d0-5d82-de83-7e35c54b8351@csgroup.eu>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 7 Sep 2023 16:36:14 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdWzOsAa1qtnqBP0Wr_AaTGWUnxVHnWryoCDPX0d-v1EBg@mail.gmail.com>
-Message-ID: <CAMuHMdWzOsAa1qtnqBP0Wr_AaTGWUnxVHnWryoCDPX0d-v1EBg@mail.gmail.com>
-Subject: Re: [PATCH 0/2] m68k/powerpc: Kill references to non-existent README.legal
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RhP2p0q5wz3bxH
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Sep 2023 01:55:13 +1000 (AEST)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 387Fo6di009659;
+	Thu, 7 Sep 2023 15:55:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=DlK2KDcs67VhPntfaLp7idki9xz6KkCol91doJwrMJI=;
+ b=XDfKQ1nYxcQ/ECsw1AqX2NHowGnDosv4TDBlXP4BPyVJNgfMqs8wxVmGUTWiVSOcwX0p
+ YNqqGUDkoIb9V/S7nkq/yVxKzQjJWWMI1vPB8NZgIg3FdfMVksSKwnCx/72tf9j/JGAG
+ Qa69N4+Rsuyu43vFvEnvwNduR7sYa3+po0F+nd7kUC6UyrfDg+hn/lyxM6LY/IGEZUKC
+ HTuaJEA85m7mIBFXryXvfZVljFg8PLYHYuwqKL8DncHXyoigpeGXOzSqdd5Oz3YccAav
+ HHdm+uCAfgWnX9h8U7mPOKkYVacCFk4fH2eSZxwq19C9CB//ALIAbPMiov81aWeLI8Sl 4A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3syg2puhj1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 Sep 2023 15:55:00 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 387FaR89013522;
+	Thu, 7 Sep 2023 15:54:59 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3syg2puhht-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 Sep 2023 15:54:59 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 387EJfNe006651;
+	Thu, 7 Sep 2023 15:54:58 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3svgvkvkm1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 Sep 2023 15:54:58 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 387Fstdn23397034
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 7 Sep 2023 15:54:55 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E2B7120043;
+	Thu,  7 Sep 2023 15:54:54 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CC1D120040;
+	Thu,  7 Sep 2023 15:54:52 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.43.9.102])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu,  7 Sep 2023 15:54:52 +0000 (GMT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.700.6\))
+Subject: Re: [PATCH V2 1/2] tools/perf: Add text_end to "struct dso" to save
+ .text section size
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <a407d3fd-6d40-060d-eb0c-c880e09b2a5f@intel.com>
+Date: Thu, 7 Sep 2023 21:24:40 +0530
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <4FB560DB-E78D-4E17-AD11-B88F6C7EAA27@linux.vnet.ibm.com>
+References: <20230817171852.55629-1-atrajeev@linux.vnet.ibm.com>
+ <a407d3fd-6d40-060d-eb0c-c880e09b2a5f@intel.com>
+To: Adrian Hunter <adrian.hunter@intel.com>
+X-Mailer: Apple Mail (2.3731.700.6)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 1HgtdVv_7vDH2PW3FxQl2Rowlosd9BKh
+X-Proofpoint-ORIG-GUID: 6KWl0N7iDhycF0fSlu5Yv_JwrkYG1lML
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-07_07,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
+ lowpriorityscore=0 bulkscore=0 spamscore=0 phishscore=0 suspectscore=0
+ priorityscore=1501 mlxlogscore=999 adultscore=0 impostorscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
+ definitions=main-2309070138
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,88 +100,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Linux SPDX Licenses <linux-spdx@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Ian Rogers <irogers@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Disha Goel <disgoel@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-perf-users@vger.kernel.org, Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Disha Goel <disgoel@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christophe,
 
-On Thu, Sep 7, 2023 at 4:25=E2=80=AFPM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
-> Le 07/09/2023 =C3=A0 16:21, Geert Uytterhoeven a =C3=A9crit :
-> > Several source files contain license boilerplate that refers to the fil=
-e
-> > "README.legal", which never existed in upstream Linux.  This is a relic
-> > from the early port of Linux to the m68k processor family, before it wa=
-s
-> > merged in v1.3.94.  Later, copies of this boilerplate ended up in the
-> > PowerPC port.
-> >
-> > The "README.legal" file (from e.g. [1]) read:
-> >
-> > ---8<-----------------------------------------------------------------
-> > Legal information about the Linux/68k software package
-> >
-> > All files contained in this archive are copyrighted by one or more
-> > person.  They are not in the public domain.
-> >
-> > Most of the files are copyrighted by Linus Torvalds, the original
-> > writer of Linux for IBM PC clone systems.  Some parts are copyrighted
-> > by other IBM PC linux developers.  Other parts are copyrighted by
-> > Linux/68k developers.
-> >
-> > This package is subject to the terms and conditions of the GNU General
-> > Public License.  A copy of this license may be found in the file named
-> > "COPYING" which should be in the same directory as this file.  If the
-> > file has been omitted, you may obtain it by writing to the Free
-> > Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-> > ----------------------------------------------------------------->8---
-> >
-> > Note that the "COPYING" file at that time corresponded to the version
-> > from upstream Linux v0.99.11 until v2.1.104, and thus predated the
-> > addition of the "only valid GPL version is v2" clause in v2.4.0-test8.
-> >
-> > This patch series gets rid of the references to README.legal by
-> > replacing the boilerplate with SPDX license identifiers.
-> >
-> > Thanks for your comments!
->
-> As far as I know this kind of patch has to be copied to
-> linux-spdx@vger.kernel.org
 
-Thanks, added to CC.
+> On 18-Aug-2023, at 12:07 PM, Adrian Hunter <adrian.hunter@intel.com> =
+wrote:
+>=20
+> On 17/08/23 20:18, Athira Rajeev wrote:
+>> Update "struct dso" to include new member "text_end".
+>> This new field will represent the offset for end of text
+>> section for a dso. This value is derived as:
+>> sh_size (Size of section in byes) + sh_offset (Section file
+>> offst) of the elf header for text.
+>>=20
+>> To resolve the address from a sample, perf looks at the
+>> DSO maps. In case of address from a kernel module, there
+>> were some address found to be not resolved. This was
+>> observed while running perf test for "Object code reading".
+>> Though the ip falls beteen the start address of the loaded
+>> module (perf map->start ) and end address ( perf map->end),
+>> it was unresolved.
+>>=20
+>> Example:
+>>=20
+>>    Reading object code for memory address: 0xc008000007f0142c
+>>    File is: /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko
+>>    On file address is: 0x1114cc
+>>    Objdump command is: objdump -z -d --start-address=3D0x11142c =
+--stop-address=3D0x1114ac /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko
+>>    objdump read too few bytes: 128
+>>    test child finished with -1
+>>=20
+>> Here, module is loaded at:
+>>    # cat /proc/modules | grep xfs
+>>    xfs 2228224 3 - Live 0xc008000007d00000
+>>=20
+>> =46rom objdump for xfs module, text section is:
+>>    text 0010f7bc  0000000000000000 0000000000000000 000000a0 2**4
+>>=20
+>> Here the offset for 0xc008000007f0142c ie  0x112074 falls out
+>> .text section which is up to 0x10f7bc.
+>>=20
+>> In this case for module, the address 0xc008000007e11fd4 is pointing
+>> to stub instructions. This address range represents the module stubs
+>> which is allocated on module load and hence is not part of DSO =
+offset.
+>>=20
+>> To identify such  address, which falls out of text
+>> section and within module end, added the new field "text_end" to
+>> "struct dso".
+>>=20
+>> Reported-by: Disha Goel <disgoel@linux.ibm.com>
+>> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+>> ---
+>> Changelog:
+>>   v1 -> v2:
+>>   Changed commit message to explain need for "text_end"
+>>=20
+>> tools/perf/util/dso.h        | 1 +
+>> tools/perf/util/symbol-elf.c | 4 +++-
+>> 2 files changed, 4 insertions(+), 1 deletion(-)
+>>=20
+>> diff --git a/tools/perf/util/dso.h b/tools/perf/util/dso.h
+>> index b41c9782c754..70fe0fe69bef 100644
+>> --- a/tools/perf/util/dso.h
+>> +++ b/tools/perf/util/dso.h
+>> @@ -181,6 +181,7 @@ struct dso {
+>> u8  rel;
+>> struct build_id  bid;
+>> u64  text_offset;
+>> + u64  text_end;
+>> const char  *short_name;
+>> const char  *long_name;
+>> u16  long_name_len;
+>> diff --git a/tools/perf/util/symbol-elf.c =
+b/tools/perf/util/symbol-elf.c
+>> index 8bd466d1c2bd..252d26a59e64 100644
+>> --- a/tools/perf/util/symbol-elf.c
+>> +++ b/tools/perf/util/symbol-elf.c
+>> @@ -1512,8 +1512,10 @@ dso__load_sym_internal(struct dso *dso, struct =
+map *map, struct symsrc *syms_ss,
+>> }
+>>=20
+>> if (elf_section_by_name(runtime_ss->elf, &runtime_ss->ehdr, &tshdr,
+>> - ".text", NULL))
+>> + ".text", NULL)) {
+>> dso->text_offset =3D tshdr.sh_addr - tshdr.sh_offset;
+>> + dso->text_end =3D tshdr.sh_offset + tshdr.sh_size;
+>> + }
+>>=20
+>> if (runtime_ss->opdsec)
+>> opddata =3D elf_rawdata(runtime_ss->opdsec, NULL);
+>=20
+> Should probably amend dso__load_bfd_symbols() also
 
-> > [1] https://www.ibiblio.org/pub/historic-linux/ftp-archives/tsx-11.mit.=
-edu/Oct-07-1996/680x0/v0.9/linux-0.9.tar.gz
-> >
-> > Geert Uytterhoeven (2):
-> >    m68k: Replace GPL 2.0+ README.legal boilerplate by SPDX
-> >    powerpc: Replace GPL 2.0+ README.legal boilerplate by SPDX
-> >
-> >   arch/m68k/68000/entry.S             | 7 ++-----
-> >   arch/m68k/bvme6000/config.c         | 5 +----
-> >   arch/m68k/coldfire/entry.S          | 7 ++-----
-> >   arch/m68k/ifpsp060/Makefile         | 6 ++----
-> >   arch/m68k/kernel/entry.S            | 7 ++-----
-> >   arch/m68k/kernel/head.S             | 8 ++------
-> >   arch/m68k/mvme147/config.c          | 5 +----
-> >   arch/m68k/mvme16x/config.c          | 5 +----
-> >   arch/m68k/q40/config.c              | 5 +----
-> >   arch/powerpc/kernel/ptrace/ptrace.c | 5 +----
-> >   arch/powerpc/kernel/signal.c        | 5 +----
-> >   arch/powerpc/kernel/signal.h        | 7 ++-----
-> >   12 files changed, 18 insertions(+), 54 deletions(-)
+Hi Adrian,
 
-Gr{oetje,eeting}s,
+Thanks for checking. Will address this in V2=20
 
-                        Geert
+Thanks
+Athira
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
