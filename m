@@ -1,69 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CC34798A91
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Sep 2023 18:16:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B573798B95
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Sep 2023 19:49:59 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=dOClJ1LW;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=T21hhDVq;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rj1T76pCPz3c7Q
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Sep 2023 02:16:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rj3Xj2NS3z3cHc
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Sep 2023 03:49:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20221208 header.b=dOClJ1LW;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=T21hhDVq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::134; helo=mail-il1-x134.google.com; envelope-from=irogers@google.com; receiver=lists.ozlabs.org)
-Received: from mail-il1-x134.google.com (mail-il1-x134.google.com [IPv6:2607:f8b0:4864:20::134])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rj1SF5rKXz2ymM
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Sep 2023 02:15:56 +1000 (AEST)
-Received: by mail-il1-x134.google.com with SMTP id e9e14a558f8ab-34f3dd14b66so132425ab.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 08 Sep 2023 09:15:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1694189753; x=1694794553; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oQEJvDuRs3UkoD1b56O/pI7tuDGHQtmDCny6dwGdlzI=;
-        b=dOClJ1LWexukf41oqcIDUnFJ/hUO4Eb+IuJmHYGsYopz8uNl5EmiUypiS3gDM6sSv4
-         bhUky2DN7g1QlD6sZuH0RQFfk6BzQM7yu2bqowyx5ACfazMpmqBovcJ3FKqk+DMKOpt2
-         gfgOelYrref8A15G/vRjr1pa3cOM518vF8GdoJUA18amzQpQQ8T6zQhcubqAT4ZjzQQv
-         asuxqUKY+iY+PPpB/k5387sWJIVUlslk46dCpSi5Okg5tNrXcC0U6eiW+H8X9yHs0u1Z
-         yan6wT4HyZSwTP99Lquv9ykkRFslVer1QRHcdNJ1VML5KOoOCSDmGH+drluKBbcyM2Kf
-         hkvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694189753; x=1694794553;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oQEJvDuRs3UkoD1b56O/pI7tuDGHQtmDCny6dwGdlzI=;
-        b=GMJ5w59PMA0VM2rokXZ1OGDWmGSiCd1txYO61TdCmoqYespfjbmfKJAmEn4uFSiXmg
-         KiGamAd6KgYCXCrJN0wlaCsFnOGGqhEytF+xFCH8BLBhbUOnTz7PV2PXHFPPRvsTY0PF
-         +IUYUkXtfozBrxGTMfmrxLuZI+RCbIH3mquj3CnV0vZfZDFGYjozAt3cQO4Xmyr64sfj
-         KEmHAVmrS72QzNju51r52YJ50sfQEJiOlve2dYtaNDH051FBzAO26KI3gXkGOA3d7Wjl
-         Tbrkz9SZQ4e23rh/HJF8uUe0nBhnTlVSrg2vi7brtbG6oYldenbTM1tQ8YYiFIVI0Ne6
-         BEoA==
-X-Gm-Message-State: AOJu0Yx9VabxicFts02k2obzOjEWdBP18dxumFA90o9FokWdCW9TSh7V
-	kXLApF3KmjjS4HIflJNk5WwALPrIBscg8NESOnOkiQ==
-X-Google-Smtp-Source: AGHT+IFdl02AUmaxNkylaUSkhXBIdzRaYxZPDMOHsucFGY/+tT+qzQzwY8yH6GcE4mmVkzJEkzHPv9t4YhNmE7YaT0k=
-X-Received: by 2002:a92:c569:0:b0:34f:21e9:7239 with SMTP id
- b9-20020a92c569000000b0034f21e97239mr232372ilj.23.1694189752833; Fri, 08 Sep
- 2023 09:15:52 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rj3Wn4bzyz3c28
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Sep 2023 03:49:09 +1000 (AEST)
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 388HgJpH025233;
+	Fri, 8 Sep 2023 17:49:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : content-type :
+ mime-version; s=pp1; bh=NqVDnPEb9BBDfHTA/G+QTrU2XtPf8U+UzqqbikN08hE=;
+ b=T21hhDVqzzto30b7vhn3Z+rQeI/c/f7V+eB+KTR9pibvbpr0dVqo1J0o4uxoO3SUdv0h
+ RS8lBGumMGRd8yJQNytlDbMn3V1ByzxdJA7hz+4zAZqvZpt1yRZ2o5JLl+uSN2GCryK+
+ OzoDMcUQq1PrnXwDniqR/YGQGbWCkwEIdlZJ3xqpZ+HfxWTzWWcUCtkEFWxIVxk5i6G7
+ no9tRFyx/Ra5nIf/HPTqN/yLYO9v/P3n++Iyx05XjYq5l+43KAD1K7zbj7IGrzgzMVqM
+ vn+95OcHz/fWGf7Q/0+J2lqXiay05cKjeBRR6PCFoj4pDLfrm2Wr2KjS7kZmhTXxUEYo ew== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t088ar595-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 Sep 2023 17:49:01 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 388HgeYd027445;
+	Fri, 8 Sep 2023 17:49:00 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t088ar589-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 Sep 2023 17:49:00 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 388FsJaE026750;
+	Fri, 8 Sep 2023 17:48:59 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3svgcp5k9r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 Sep 2023 17:48:59 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 388HmwMB4391612
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 8 Sep 2023 17:48:58 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DCAA758063;
+	Fri,  8 Sep 2023 17:48:57 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B9A1F58053;
+	Fri,  8 Sep 2023 17:48:57 +0000 (GMT)
+Received: from localhost (unknown [9.61.104.229])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  8 Sep 2023 17:48:57 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>
+Subject: Re: [PATCH RFC] powerpc/rtas: Make it possible to disable sys_rtas
+In-Reply-To: <20230907171907.GC8826@kitsune.suse.cz>
+References: <20230822-papr-sys_rtas-vs-lockdown-v1-0-932623cf3c7b@linux.ibm.com>
+ <20230906120855.28331-1-msuchanek@suse.de>
+ <87bkefw0ws.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+ <20230907160134.GZ8826@kitsune.suse.cz>
+ <878r9ivsbn.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+ <20230907171907.GC8826@kitsune.suse.cz>
+Date: Fri, 08 Sep 2023 12:48:57 -0500
+Message-ID: <875y4kwo6u.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: yKxoe6Izy7vtLu8FLimWh6uWi3LnyTS5
+X-Proofpoint-ORIG-GUID: F82kr152tz_j57BnonTgTPLgQxKpYMjj
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-References: <20230908145045.47408-1-atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <20230908145045.47408-1-atrajeev@linux.vnet.ibm.com>
-From: Ian Rogers <irogers@google.com>
-Date: Fri, 8 Sep 2023 09:15:38 -0700
-Message-ID: <CAP-5=fVZacRGiU2e1_vW8WWd4tF6f2msbBvA7+U7VqkRinR31w@mail.gmail.com>
-Subject: Re: [PATCH V2] tools/perf: Add includes for detected configs in Makefile.perf
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-08_13,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ spamscore=0 clxscore=1015 impostorscore=0 phishscore=0 mlxlogscore=693
+ adultscore=0 bulkscore=0 mlxscore=0 malwarescore=0 suspectscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309080160
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,84 +100,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maddy@linux.ibm.com, kjain@linux.ibm.com, adrian.hunter@intel.com, acme@kernel.org, linux-perf-users@vger.kernel.org, jolsa@kernel.org, namhyung@kernel.org, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: gcwilson@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, tyreld@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Sep 8, 2023 at 7:51=E2=80=AFAM Athira Rajeev
-<atrajeev@linux.vnet.ibm.com> wrote:
->
-> Makefile.perf uses "CONFIG_*" checks in the code. Example the config
-> for libtraceevent is used to set PYTHON_EXT_SRCS
->
->         ifeq ($(CONFIG_LIBTRACEEVENT),y)
->           PYTHON_EXT_SRCS :=3D $(shell grep -v ^\# util/python-ext-source=
-s)
->         else
->           PYTHON_EXT_SRCS :=3D $(shell grep -v '^\#\|util/trace-event.c' =
-util/python-ext-sources)
->         endif
->
-> But this is not picking the value for CONFIG_LIBTRACEEVENT that is
-> set using the settings in Makefile.config. Include the file
-> ".config-detected" so that make will use the system detected
-> configuration in the CONFIG checks. This will fix isues that
-> could arise when other "CONFIG_*" checks are added to Makefile.perf
-> in future as well.
->
-> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> ---
-> Changelog:
->  v1 -> v2:
->  Added $(OUTPUT) prefix to config-detected as pointed
->  out by Ian
->
->  tools/perf/Makefile.perf | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
-> index 37af6df7b978..66b9dc61c32f 100644
-> --- a/tools/perf/Makefile.perf
-> +++ b/tools/perf/Makefile.perf
-> @@ -351,6 +351,9 @@ export PYTHON_EXTBUILD_LIB PYTHON_EXTBUILD_TMP
->
->  python-clean :=3D $(call QUIET_CLEAN, python) $(RM) -r $(PYTHON_EXTBUILD=
-) $(OUTPUT)python/perf*.so
->
-> +# Use the detected configuration
-> +include $(OUTPUT).config-detected
 
-The Makefile.build version also has a "-include" rather than "include"
-in case the .config-detected file is missing. In Makefile.perf
-including Makefile.config is optional:
-https://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.git/tr=
-ee/tools/perf/Makefile.perf?h=3Dperf-tools-next#n253
-
-and there are certain targets that where we don't include it:
-https://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.git/tr=
-ee/tools/perf/Makefile.perf?h=3Dperf-tools-next#n200
-
-So playing devil's advocate, if we ran "make clean" we'd remove
-.config-detected:
-https://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.git/tr=
-ee/tools/perf/Makefile.perf?h=3Dperf-tools-next#n1131
-
-If we then ran "make tags" then we wouldn't include Makefile.config
-and so .config-detected wouldn't be generated and I think the build
-would fail due to a missing include here. So I think this should be
--include or perhaps:
-
-ifeq ($(config),1)
-include $(OUTPUT).config-detected
-endif
-
-Thanks,
-Ian
-
-> +
->  ifeq ($(CONFIG_LIBTRACEEVENT),y)
->    PYTHON_EXT_SRCS :=3D $(shell grep -v ^\# util/python-ext-sources)
->  else
-> --
-> 2.31.1
+>> > There are about 3 known use cases that absolutely need access by other
+>> > means than sys_rtas to work with lockdown, and about other 3 that would
+>> > work either way.
+>> 
+>> How do you figure that? I count 11 librtas APIs that use work areas (and
+>> therefore /dev/mem) that are definitely broken under lockdown. Maybe a
+>> couple of them are unused.
 >
+> I am referring to this list of known uses:
+>
+> https://github.com/ibm-power-utilities/librtas/issues/29
+>
+> rtas_get_vpd is used by lsvpd (through libvpd and librtas)
+> rtas_platform_dump and rtas_get_indices is used by ppc64-diag
+> rtas_cfg_connector is used by powerpc-utils and is planned to be
+> replaced by in-kernel solution
+>
+> That covers the complex cases.
+>
+> rtas_set_sysparm is used by ppc64-diag and powerpc-utils
+> rtas_set_dynamic_indicator, rtas_get_dynamic_sensor are used by
+> ppc64-diag (related to rtas_get_indices)
+> rtas_errinjct + open/close are used by powerpc-utils
+>
+> That's the simple cases.
+
+None of these would work "either way" with lockdown. They all use work
+area buffer arguments and must move away from sys_rtas and /dev/mem. The
+librtas issue you refer to makes that clear.
+
+
+>> > That's not so staggering that it could not be implemented in the kernel
+>> > from the start.
+>> > How long it will take for the known userspace users to catch up is
+>> > anotehr questio but again it's something that can be addressed.
+>> >
+>> > Making it possible to turn off sys_rtas will make it easier to uncover
+>> > the not yet known cases.
+>> 
+>> This is also true of making the configuration more granular than on or
+>> off. You would be free to disallow all calls if desired.
+>> 
+>> > What people want to support depends a lot on what is converted, and also
+>> > the situation of the distribution in question. Fast-rollong
+>> > distributions may want only the new interface quite soon, and so may
+>> > distributions that are starting development of new release.
+>> >
+>> > All this makes sense only if there is a plan to discontinue sys_rtas
+>> > entirely. For the simple calls that don't need data buffers it's still
+>> > usable.
+>> 
+>> I don't understand. How would it remain usable for the simple calls if
+>> it can be completely disabled?
+>
+> Either the goal is to completely remove sys_rtas, and then an option for
+> disabling it is helpful for uncovering unexpected problems. Or thre
+> isn't a goal of sys_rtas removal, and then there is no point in having
+> an option to disable it, and it can be used for calls that don't need
+> buffers indefinitely.
+
+I don't agree that those are the only two options, but removal of
+sys_rtas is not going to be a goal of this series. The goal is to
+provide alternative ABIs that are compatible with lockdown.
