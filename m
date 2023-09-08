@@ -2,66 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C1FC79835E
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Sep 2023 09:43:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43494798487
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Sep 2023 11:03:16 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=0Tr1RiLs;
-	dkim=fail reason="signature verification failed" header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=r9UDzDCi;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bOXNj24S;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rhp4p3W7dz3cD3
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Sep 2023 17:43:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rhqrx0pcLz3cMj
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Sep 2023 19:03:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=0Tr1RiLs;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=r9UDzDCi;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bOXNj24S;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=softfail (domain owner discourages use of this host) smtp.mailfrom=suse.cz (client-ip=2001:67c:2178:6::1c; helo=smtp-out1.suse.de; envelope-from=vbabka@suse.cz; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=guoren@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rhp3x50SHz2yts
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Sep 2023 17:42:36 +1000 (AEST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rhqr2544tz3bTt
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Sep 2023 19:02:26 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 2588421832;
-	Fri,  8 Sep 2023 07:42:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1694158947; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=NHJKcpKlZ/+yii6ZB0cLfqW7JVxO+ELAe/deKUrmJ80=;
-	b=0Tr1RiLsGK9TKLdxwSc9RwxLIVKmEae8PGUWUTGhYIhqkvcnxmKXE3HYt5+5SqUjjUpxEZ
-	DCTZmPbwNt5ToqgWZJ00UT0I0Plhw1i14U2HJUY0Px379BJbaU56+RSKEu8z+V/xOMo2xd
-	woPLeoFeQ7kp5dfAXicDw3PDice1ftM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1694158947;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=NHJKcpKlZ/+yii6ZB0cLfqW7JVxO+ELAe/deKUrmJ80=;
-	b=r9UDzDCi5/bP4K3dBarcJVpQtk/FZHh8rlyYCrXu3EqfT7loeAs6cgqxhTivXkBssY2kKX
-	lV8TgWuOzutVQyDw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 96D2A132F2;
-	Fri,  8 Sep 2023 07:42:26 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id WIYoJGLQ+mTfFQAAMHmgww
-	(envelope-from <vbabka@suse.cz>); Fri, 08 Sep 2023 07:42:26 +0000
-From: Vlastimil Babka <vbabka@suse.cz>
-To: seanjc@google.com
-Subject: [PATCH gmem FIXUP v2] mm, compaction: make testing mapping_unmovable() safe
-Date: Fri,  8 Sep 2023 09:42:23 +0200
-Message-ID: <20230908074222.28723-2-vbabka@suse.cz>
-X-Mailer: git-send-email 2.42.0
+	by sin.source.kernel.org (Postfix) with ESMTPS id 10B01CE1B66
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Sep 2023 09:02:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70F06C433CB
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Sep 2023 09:02:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1694163739;
+	bh=rRKEvIB0lVb2uGUWPoA0+XeAQvNtg/fARJrpqhmZI3E=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=bOXNj24SHdKL79z6qfM1jz0YMFFEnZqcAWfQGXW2LdIVaQDbeY0DQhD5/JprtiyDj
+	 5D1k99+9Ug9dFN3lpUVgUMFb+noK4GaCPvJKFCJwg7T2e2+JUsNC8ryA59UAI/MjA+
+	 nhZly7RSUCbgUDXu5rbOkRxYN7fIeaweU9f951Eubr4hYUupmCp3r0d0X0xr56GoG7
+	 TSWC4FWPFYAvPS4fSD21+7m/TJTDKv1lgcMSbfjITw67g2TtEjYcmoKItUG7Y97Hw0
+	 VZNeNKEm7ZluvzqobouSn1v3ioXDS3dPfdRUJCnjtDuu6e2FCsvfTpz6bPkSMQxquU
+	 qkfRaTdEcE2/w==
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-99c4923195dso225186966b.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 08 Sep 2023 02:02:19 -0700 (PDT)
+X-Gm-Message-State: AOJu0YxE5/JMiftdtskCDiNpWdB9Rf+I1oJDjy8CAknq3DE9dIDYTzIH
+	nYSWqIcl2yqs8eePmskrXmFjVdxFxNgf6sQZMvw=
+X-Google-Smtp-Source: AGHT+IHIxkho9CXfRVQdHREUP1Ny9xnSRZ4p9AxmPd+t8Z6hWpbhNEsJKkVWz7HAOHHA2nwechuLx9pmYabZgwNqZ0U=
+X-Received: by 2002:a17:906:18aa:b0:9a1:c42e:5e5e with SMTP id
+ c10-20020a17090618aa00b009a1c42e5e5emr1264248ejf.42.1694163717201; Fri, 08
+ Sep 2023 02:01:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20230906-jag-sysctl_remove_empty_elem_arch-v1-0-3935d4854248@samsung.com>
+ <20230906-jag-sysctl_remove_empty_elem_arch-v1-8-3935d4854248@samsung.com>
+In-Reply-To: <20230906-jag-sysctl_remove_empty_elem_arch-v1-8-3935d4854248@samsung.com>
+From: Guo Ren <guoren@kernel.org>
+Date: Fri, 8 Sep 2023 17:01:44 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTRFrd4zs_8vv5-n5p_+GYxnTJcRBtYDJaMZQQMOVKKOTw@mail.gmail.com>
+Message-ID: <CAJF2gTRFrd4zs_8vv5-n5p_+GYxnTJcRBtYDJaMZQQMOVKKOTw@mail.gmail.com>
+Subject: Re: [PATCH 8/8] c-sky: rm sentinel element from ctl_talbe array
+To: j.granados@samsung.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,149 +71,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, david@redhat.com, yu.c.zhang@linux.intel.com, linux-mips@vger.kernel.org, linux-mm@kvack.org, pbonzini@redhat.com, chao.p.peng@linux.intel.com, linux-riscv@lists.infradead.org, isaku.yamahata@gmail.com, paul@paul-moore.com, anup@brainfault.org, chenhuacai@kernel.org, jmorris@namei.org, willy@infradead.org, wei.w.wang@intel.com, tabba@google.com, jarkko@kernel.org, serge@hallyn.com, mail@maciej.szmigiero.name, aou@eecs.berkeley.edu, vbabka@suse.cz, michael.roth@amd.com, ackerleytng@google.com, paul.walmsley@sifive.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, qperret@google.com, linux-kernel@vger.kernel.org, oliver.upton@linux.dev, linux-security-module@vger.kernel.org, palmer@dabbelt.com, kvm-riscv@lists.infradead.org, maz@kernel.org, linux-fsdevel@vger.kernel.org, liam.merwick@oracle.com, akpm@linux-foundation.org, vannapurve@google.com, linuxppc-dev@lists.ozlabs.org, kirill.shutemov@linux.intel.com
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, x86@kernel.org, Russell King <linux@armlinux.org.uk>, willy@infradead.org, Ingo Molnar <mingo@redhat.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Kees Cook <keescook@chromium.org>, Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, josh@joshtriplett.org, Nicholas Piggin <npiggin@gmail.com>, linux-csky@vger.kernel.org, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Iurii Zaikin <yzaikin@google.com>, linux-kernel@vger
+ .kernel.org, Luis Chamberlain <mcgrof@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-As Kirill pointed out, mapping can be removed under us due to
-truncation. Test it under folio lock as already done for the async
-compaction / dirty folio case. To prevent locking every folio with
-mapping to do the test, do it only for unevictable folios, as we can
-expect the unmovable mapping folios are also unevictable. To enforce
-that expecation, make mapping_set_unmovable() also set AS_UNEVICTABLE.
+Acked-by: Guo Ren <guoren@kernel.org>
 
-Also incorporate comment update suggested by Matthew.
+On Wed, Sep 6, 2023 at 6:04=E2=80=AFPM Joel Granados via B4 Relay
+<devnull+j.granados.samsung.com@kernel.org> wrote:
+>
+> From: Joel Granados <j.granados@samsung.com>
+>
+> This commit comes at the tail end of a greater effort to remove the
+> empty elements at the end of the ctl_table arrays (sentinels) which
+> will reduce the overall build time size of the kernel and run time
+> memory bloat by ~64 bytes per sentinel (further information Link :
+> https://lore.kernel.org/all/ZO5Yx5JFogGi%2FcBo@bombadil.infradead.org/)
+>
+> Remove sentinel from alignment_tbl ctl_table array.
+>
+> Signed-off-by: Joel Granados <j.granados@samsung.com>
+> ---
+>  arch/csky/abiv1/alignment.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/arch/csky/abiv1/alignment.c b/arch/csky/abiv1/alignment.c
+> index b60259daed1b..0d75ce7b0328 100644
+> --- a/arch/csky/abiv1/alignment.c
+> +++ b/arch/csky/abiv1/alignment.c
+> @@ -328,8 +328,7 @@ static struct ctl_table alignment_tbl[5] =3D {
+>                 .maxlen =3D sizeof(align_usr_count),
+>                 .mode =3D 0666,
+>                 .proc_handler =3D &proc_dointvec
+> -       },
+> -       {}
+> +       }
+>  };
+>
+>  static int __init csky_alignment_init(void)
+>
+> --
+> 2.30.2
+>
 
-Fixes: 3424873596ce ("mm: Add AS_UNMOVABLE to mark mapping as completely unmovable")
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
----
-v2: mapping_set_unmovable() sets also AS_UNEVICTABLE, as Sean suggested.
 
- include/linux/pagemap.h |  6 +++++
- mm/compaction.c         | 49 +++++++++++++++++++++++++++--------------
- virt/kvm/guest_mem.c    |  2 +-
- 3 files changed, 39 insertions(+), 18 deletions(-)
-
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index 931d2f1da7d5..4070c59e6f25 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -276,6 +276,12 @@ static inline int mapping_use_writeback_tags(struct address_space *mapping)
- 
- static inline void mapping_set_unmovable(struct address_space *mapping)
- {
-+	/*
-+	 * It's expected unmovable mappings are also unevictable. Compaction
-+	 * migrate scanner (isolate_migratepages_block()) relies on this to
-+	 * reduce page locking.
-+	 */
-+	set_bit(AS_UNEVICTABLE, &mapping->flags);
- 	set_bit(AS_UNMOVABLE, &mapping->flags);
- }
- 
-diff --git a/mm/compaction.c b/mm/compaction.c
-index a3d2b132df52..e0e439b105b5 100644
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -862,6 +862,7 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
- 
- 	/* Time to isolate some pages for migration */
- 	for (; low_pfn < end_pfn; low_pfn++) {
-+		bool is_dirty, is_unevictable;
- 
- 		if (skip_on_failure && low_pfn >= next_skip_pfn) {
- 			/*
-@@ -1047,10 +1048,6 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
- 		if (!mapping && (folio_ref_count(folio) - 1) > folio_mapcount(folio))
- 			goto isolate_fail_put;
- 
--		/* The mapping truly isn't movable. */
--		if (mapping && mapping_unmovable(mapping))
--			goto isolate_fail_put;
--
- 		/*
- 		 * Only allow to migrate anonymous pages in GFP_NOFS context
- 		 * because those do not depend on fs locks.
-@@ -1062,8 +1059,10 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
- 		if (!folio_test_lru(folio))
- 			goto isolate_fail_put;
- 
-+		is_unevictable = folio_test_unevictable(folio);
-+
- 		/* Compaction might skip unevictable pages but CMA takes them */
--		if (!(mode & ISOLATE_UNEVICTABLE) && folio_test_unevictable(folio))
-+		if (!(mode & ISOLATE_UNEVICTABLE) && is_unevictable)
- 			goto isolate_fail_put;
- 
- 		/*
-@@ -1075,26 +1074,42 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
- 		if ((mode & ISOLATE_ASYNC_MIGRATE) && folio_test_writeback(folio))
- 			goto isolate_fail_put;
- 
--		if ((mode & ISOLATE_ASYNC_MIGRATE) && folio_test_dirty(folio)) {
--			bool migrate_dirty;
-+		is_dirty = folio_test_dirty(folio);
-+
-+		if (((mode & ISOLATE_ASYNC_MIGRATE) && is_dirty)
-+		    || (mapping && is_unevictable)) {
-+			bool migrate_dirty = true;
-+			bool is_unmovable;
- 
- 			/*
--			 * Only pages without mappings or that have a
--			 * ->migrate_folio callback are possible to migrate
--			 * without blocking. However, we can be racing with
--			 * truncation so it's necessary to lock the page
--			 * to stabilise the mapping as truncation holds
--			 * the page lock until after the page is removed
--			 * from the page cache.
-+			 * Only folios without mappings or that have
-+			 * a ->migrate_folio callback are possible to migrate
-+			 * without blocking.
-+			 *
-+			 * Folios from unmovable mappings are not migratable.
-+			 *
-+			 * However, we can be racing with truncation, which can
-+			 * free the mapping that we need to check. Truncation
-+			 * holds the folio lock until after the folio is removed
-+			 * from the page so holding it ourselves is sufficient.
-+			 *
-+			 * To avoid this folio locking to inspect every folio
-+			 * with mapping for being unmovable, we assume every
-+			 * such folio is also unevictable, which is a cheaper
-+			 * test. If our assumption goes wrong, it's not a bug,
-+			 * just potentially wasted cycles.
- 			 */
- 			if (!folio_trylock(folio))
- 				goto isolate_fail_put;
- 
- 			mapping = folio_mapping(folio);
--			migrate_dirty = !mapping ||
--					mapping->a_ops->migrate_folio;
-+			if ((mode & ISOLATE_ASYNC_MIGRATE) && is_dirty) {
-+				migrate_dirty = !mapping ||
-+						mapping->a_ops->migrate_folio;
-+			}
-+			is_unmovable = mapping && mapping_unmovable(mapping);
- 			folio_unlock(folio);
--			if (!migrate_dirty)
-+			if (!migrate_dirty || is_unmovable)
- 				goto isolate_fail_put;
- 		}
- 
-diff --git a/virt/kvm/guest_mem.c b/virt/kvm/guest_mem.c
-index c81d2bb9ae93..85903c32163f 100644
---- a/virt/kvm/guest_mem.c
-+++ b/virt/kvm/guest_mem.c
-@@ -390,7 +390,7 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags,
- 	inode->i_size = size;
- 	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
- 	mapping_set_large_folios(inode->i_mapping);
--	mapping_set_unevictable(inode->i_mapping);
-+	/* this also sets the mapping as unevictable */
- 	mapping_set_unmovable(inode->i_mapping);
- 
- 	fd = get_unused_fd_flags(0);
--- 
-2.42.0
-
+--=20
+Best Regards
+ Guo Ren
