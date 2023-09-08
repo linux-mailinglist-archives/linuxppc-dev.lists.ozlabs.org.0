@@ -2,74 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1ECF79889B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Sep 2023 16:23:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86A6D79893C
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Sep 2023 16:51:51 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gj6+HOIN;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gj6+HOIN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=J4Ixs0xg;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RhyyS4vQnz3c8D
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Sep 2023 00:23:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rhzb93JRhz3cK8
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Sep 2023 00:51:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gj6+HOIN;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gj6+HOIN;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=J4Ixs0xg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=piliu@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rhytl2mHXz3cRn
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Sep 2023 00:20:15 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1694182812;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sgpEMaHVobI+NyRMHSyQTMrhDCPMtnu0GB3IP2St3Fc=;
-	b=gj6+HOINtcWzdFQDGNu6PawsL3Gyp6JFKM5uHH9/+rV7p6duVyVks+rY7v4DFJT74xKu1e
-	2RME3Qz97vKtOTQQNWRqIX5ehOE/JzfmXnusZSX05BIBg5x3+O+NHoh9c/9OQ2hjXBtmAs
-	xY23orpoPjxaQn6n7qPjRfR/WTPNZo8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1694182812;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sgpEMaHVobI+NyRMHSyQTMrhDCPMtnu0GB3IP2St3Fc=;
-	b=gj6+HOINtcWzdFQDGNu6PawsL3Gyp6JFKM5uHH9/+rV7p6duVyVks+rY7v4DFJT74xKu1e
-	2RME3Qz97vKtOTQQNWRqIX5ehOE/JzfmXnusZSX05BIBg5x3+O+NHoh9c/9OQ2hjXBtmAs
-	xY23orpoPjxaQn6n7qPjRfR/WTPNZo8=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-53-_rLRtwXQPfivtrdBO3M9qw-1; Fri, 08 Sep 2023 10:20:10 -0400
-X-MC-Unique: _rLRtwXQPfivtrdBO3M9qw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2D3B53C100CA;
-	Fri,  8 Sep 2023 14:20:10 +0000 (UTC)
-Received: from piliu.users.ipa.redhat.com (unknown [10.72.120.3])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id BBD5E2026D37;
-	Fri,  8 Sep 2023 14:20:05 +0000 (UTC)
-From: Pingfan Liu <piliu@redhat.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCHv5 3/3] powerpc/setup: alloc extra paca_ptrs to hold boot_cpuid
-Date: Fri,  8 Sep 2023 22:19:41 +0800
-Message-Id: <20230908141941.13660-4-piliu@redhat.com>
-In-Reply-To: <20230908141941.13660-1-piliu@redhat.com>
-References: <20230908141941.13660-1-piliu@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RhzZG2ZSqz30gH
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Sep 2023 00:51:01 +1000 (AEST)
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 388Ejx6L031313;
+	Fri, 8 Sep 2023 14:50:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=FHcGlw/HUIejK0iC+SukPZQTuP9xnez8jr8uT4B6EjM=;
+ b=J4Ixs0xgNDU+UTHw2RlFb/0dVGacOukekPoag+rw5pooJcdzb9EXfmpz3sfBZiJXmwQ0
+ FY2HCRL9l3qV/bEi8BL3un8ZZR9MU/AX7UGJRZdxINhdf7S5HtQC3f78heeNDRIGLdjv
+ 3Hh8eTrMsIFL2LUm5ifEi+wNd6SfdsQuggKWjAC3+PcHsIHSEN7GOog3aT945yQbmE7F
+ 7MnvzTJwe0yjD0PONz5td31V93FCGG7dbwcHLHLljshml2JMyODywgjqLZq+J5qybNSZ
+ d2G6Y3foImpgXF7zzemBBlEgIj1GTkQDl9SQFHUggFd6TvtDyNX43ofwqWugxsHVWM7e fg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t05afgu7x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 Sep 2023 14:50:56 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 388EnB7S009937;
+	Fri, 8 Sep 2023 14:50:55 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t05afgu7f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 Sep 2023 14:50:55 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 388Ci8dL001614;
+	Fri, 8 Sep 2023 14:50:54 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3svfctcqgu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 Sep 2023 14:50:54 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 388EopGK62521612
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 8 Sep 2023 14:50:52 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D6DF420043;
+	Fri,  8 Sep 2023 14:50:51 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8E73920040;
+	Fri,  8 Sep 2023 14:50:49 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.43.123.252])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  8 Sep 2023 14:50:49 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
+        irogers@google.com, namhyung@kernel.org
+Subject: [PATCH V2] tools/perf: Add includes for detected configs in Makefile.perf
+Date: Fri,  8 Sep 2023 20:20:45 +0530
+Message-Id: <20230908145045.47408-1-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="US-ASCII"; x-default=true
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 9xcpWUnkaWfmKD28UCCghCEY5vv0xhBi
+X-Proofpoint-GUID: DgxBA91vzEQPZF9Oc1fDyit5ta1Z3c7j
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-08_11,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
+ lowpriorityscore=0 phishscore=0 adultscore=0 mlxscore=0 suspectscore=0
+ priorityscore=1501 spamscore=0 bulkscore=0 malwarescore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
+ definitions=main-2309080135
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,91 +94,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Baoquan He <bhe@redhat.com>, Pingfan Liu <piliu@redhat.com>, kexec@lists.infradead.org, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Ming Lei <ming.lei@redhat.com>, Wen Xiong <wenxiong@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
+Cc: atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-paca_ptrs should be large enough to hold the boot_cpuid, hence, its
-lower boundary is set to the bigger one between boot_cpuid+1 and
-nr_cpus.
+Makefile.perf uses "CONFIG_*" checks in the code. Example the config
+for libtraceevent is used to set PYTHON_EXT_SRCS
 
-On the other hand, some kernel component: -1. the timer assumes cpu0
-online since the timer_list->flags subfield 'TIMER_CPUMASK' is zero if
-not initialized to a proper present cpu.  -2. power9_idle_stop() assumes
-the primary thread's paca is allocated.
+	ifeq ($(CONFIG_LIBTRACEEVENT),y)
+	  PYTHON_EXT_SRCS := $(shell grep -v ^\# util/python-ext-sources)
+	else
+	  PYTHON_EXT_SRCS := $(shell grep -v '^\#\|util/trace-event.c' util/python-ext-sources)
+	endif
 
-Hence lift nr_cpu_ids from one to two to ensure cpu0 is onlined, if the
-boot cpu is not cpu0.
+But this is not picking the value for CONFIG_LIBTRACEEVENT that is
+set using the settings in Makefile.config. Include the file
+".config-detected" so that make will use the system detected
+configuration in the CONFIG checks. This will fix isues that
+could arise when other "CONFIG_*" checks are added to Makefile.perf
+in future as well.
 
-Signed-off-by: Pingfan Liu <piliu@redhat.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Cc: Wen Xiong <wenxiong@linux.ibm.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Ming Lei <ming.lei@redhat.com>
-Cc: kexec@lists.infradead.org
-To: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 ---
- arch/powerpc/kernel/paca.c | 10 ++++++----
- arch/powerpc/kernel/prom.c |  9 ++++++---
- 2 files changed, 12 insertions(+), 7 deletions(-)
+Changelog:
+ v1 -> v2:
+ Added $(OUTPUT) prefix to config-detected as pointed
+ out by Ian
 
-diff --git a/arch/powerpc/kernel/paca.c b/arch/powerpc/kernel/paca.c
-index cda4e00b67c1..91e2401de1bd 100644
---- a/arch/powerpc/kernel/paca.c
-+++ b/arch/powerpc/kernel/paca.c
-@@ -242,9 +242,10 @@ static int __initdata paca_struct_size;
+ tools/perf/Makefile.perf | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
+index 37af6df7b978..66b9dc61c32f 100644
+--- a/tools/perf/Makefile.perf
++++ b/tools/perf/Makefile.perf
+@@ -351,6 +351,9 @@ export PYTHON_EXTBUILD_LIB PYTHON_EXTBUILD_TMP
  
- void __init allocate_paca_ptrs(void)
- {
--	paca_nr_cpu_ids = nr_cpu_ids;
-+	int n = (boot_cpuid + 1) > nr_cpu_ids ? (boot_cpuid + 1) : nr_cpu_ids;
+ python-clean := $(call QUIET_CLEAN, python) $(RM) -r $(PYTHON_EXTBUILD) $(OUTPUT)python/perf*.so
  
--	paca_ptrs_size = sizeof(struct paca_struct *) * nr_cpu_ids;
-+	paca_nr_cpu_ids = n;
-+	paca_ptrs_size = sizeof(struct paca_struct *) * n;
- 	paca_ptrs = memblock_alloc_raw(paca_ptrs_size, SMP_CACHE_BYTES);
- 	if (!paca_ptrs)
- 		panic("Failed to allocate %d bytes for paca pointers\n",
-@@ -287,13 +288,14 @@ void __init allocate_paca(int cpu)
- void __init free_unused_pacas(void)
- {
- 	int new_ptrs_size;
-+	int n = (boot_cpuid + 1) > nr_cpu_ids ? (boot_cpuid + 1) : nr_cpu_ids;
- 
--	new_ptrs_size = sizeof(struct paca_struct *) * nr_cpu_ids;
-+	new_ptrs_size = sizeof(struct paca_struct *) * n;
- 	if (new_ptrs_size < paca_ptrs_size)
- 		memblock_phys_free(__pa(paca_ptrs) + new_ptrs_size,
- 				   paca_ptrs_size - new_ptrs_size);
- 
--	paca_nr_cpu_ids = nr_cpu_ids;
-+	paca_nr_cpu_ids = n;
- 	paca_ptrs_size = new_ptrs_size;
- 
- #ifdef CONFIG_PPC_64S_HASH_MMU
-diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-index 72be75d4f003..eca6a1568749 100644
---- a/arch/powerpc/kernel/prom.c
-+++ b/arch/powerpc/kernel/prom.c
-@@ -360,9 +360,12 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
- 			 */
- 			boot_cpuid = i;
- 			found = true;
--			/* This works around the hole in paca_ptrs[]. */
--			if (nr_cpu_ids < nthreads)
--				nr_cpu_ids = nthreads;
-+			/*
-+			 * Ideally, nr_cpus=1 can be achieved if each kernel
-+			 * component does not assume cpu0 is onlined.
-+			 */
-+			if (boot_cpuid != 0 && nr_cpu_ids < 2)
-+				nr_cpu_ids = 2;
- 		}
- #ifdef CONFIG_SMP
- 		/* logical cpu id is always 0 on UP kernels */
++# Use the detected configuration
++include $(OUTPUT).config-detected
++
+ ifeq ($(CONFIG_LIBTRACEEVENT),y)
+   PYTHON_EXT_SRCS := $(shell grep -v ^\# util/python-ext-sources)
+ else
 -- 
 2.31.1
 
