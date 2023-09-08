@@ -2,87 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86A6D79893C
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Sep 2023 16:51:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A16447989F2
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Sep 2023 17:25:39 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=J4Ixs0xg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hQ8JnI1Q;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rhzb93JRhz3cK8
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Sep 2023 00:51:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rj0L93rSyz3cB7
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Sep 2023 01:25:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=J4Ixs0xg;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hQ8JnI1Q;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=srs0=tpkv=ey=robh_at_kernel.org=rob@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RhzZG2ZSqz30gH
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Sep 2023 00:51:01 +1000 (AEST)
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 388Ejx6L031313;
-	Fri, 8 Sep 2023 14:50:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=FHcGlw/HUIejK0iC+SukPZQTuP9xnez8jr8uT4B6EjM=;
- b=J4Ixs0xgNDU+UTHw2RlFb/0dVGacOukekPoag+rw5pooJcdzb9EXfmpz3sfBZiJXmwQ0
- FY2HCRL9l3qV/bEi8BL3un8ZZR9MU/AX7UGJRZdxINhdf7S5HtQC3f78heeNDRIGLdjv
- 3Hh8eTrMsIFL2LUm5ifEi+wNd6SfdsQuggKWjAC3+PcHsIHSEN7GOog3aT945yQbmE7F
- 7MnvzTJwe0yjD0PONz5td31V93FCGG7dbwcHLHLljshml2JMyODywgjqLZq+J5qybNSZ
- d2G6Y3foImpgXF7zzemBBlEgIj1GTkQDl9SQFHUggFd6TvtDyNX43ofwqWugxsHVWM7e fg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t05afgu7x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 08 Sep 2023 14:50:56 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 388EnB7S009937;
-	Fri, 8 Sep 2023 14:50:55 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t05afgu7f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 08 Sep 2023 14:50:55 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 388Ci8dL001614;
-	Fri, 8 Sep 2023 14:50:54 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3svfctcqgu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 08 Sep 2023 14:50:54 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 388EopGK62521612
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 8 Sep 2023 14:50:52 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D6DF420043;
-	Fri,  8 Sep 2023 14:50:51 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8E73920040;
-	Fri,  8 Sep 2023 14:50:49 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.43.123.252])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  8 Sep 2023 14:50:49 +0000 (GMT)
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
-        irogers@google.com, namhyung@kernel.org
-Subject: [PATCH V2] tools/perf: Add includes for detected configs in Makefile.perf
-Date: Fri,  8 Sep 2023 20:20:45 +0530
-Message-Id: <20230908145045.47408-1-atrajeev@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.35.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rj0KB2yV0z3c1P
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Sep 2023 01:24:46 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by sin.source.kernel.org (Postfix) with ESMTPS id 6E239CE1C03;
+	Fri,  8 Sep 2023 15:24:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C17C433CA;
+	Fri,  8 Sep 2023 15:24:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1694186680;
+	bh=fXjtOigHLEJ1WJtElTztBusz+atOZCq2/IkS7MCl4mI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=hQ8JnI1QGiaOPzyQCrUAKYcKFiIfMtN+Z8YcXcMAyXuIXtViVyNsJdlscKqw9pUsS
+	 dVDADrj8VYVR3WNLRMd3q8liRxJvA2ocLp8kpZ/K55Y6wr6UnDmpEvStLhtrlPrmcN
+	 H3y21oFY09jV2qmCTLm3LLSHGyh0H0GZqjbtm1vVk6EOrrX+EoWJ666WVTq3nnh90m
+	 W3weEyPPg37eZuETSlOoZtu263MMF3eFfIH7ENpCH+My9xDSnz7cVJ2/Ne2nIBob8y
+	 DMLBRYkHQY0c/BOazlKE/2C9o+EemoDt8pSx4CVmMG19CiEhIIwqqDskiPtmgLvCIF
+	 /vfrerZDJqFKQ==
+Received: (nullmailer pid 3971375 invoked by uid 1000);
+	Fri, 08 Sep 2023 15:24:38 -0000
+From: Rob Herring <robh@kernel.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v2] cpufreq: pmac32: Use of_property_read_reg() to parse "reg"
+Date: Fri,  8 Sep 2023 10:23:47 -0500
+Message-Id: <20230908152429.3970492-1-robh@kernel.org>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 9xcpWUnkaWfmKD28UCCghCEY5vv0xhBi
-X-Proofpoint-GUID: DgxBA91vzEQPZF9Oc1fDyit5ta1Z3c7j
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-08_11,2023-09-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
- lowpriorityscore=0 phishscore=0 adultscore=0 mlxscore=0 suspectscore=0
- priorityscore=1501 spamscore=0 bulkscore=0 malwarescore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
- definitions=main-2309080135
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,50 +61,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Makefile.perf uses "CONFIG_*" checks in the code. Example the config
-for libtraceevent is used to set PYTHON_EXT_SRCS
+Use the recently added of_property_read_reg() helper to get the
+untranslated "reg" address value.
 
-	ifeq ($(CONFIG_LIBTRACEEVENT),y)
-	  PYTHON_EXT_SRCS := $(shell grep -v ^\# util/python-ext-sources)
-	else
-	  PYTHON_EXT_SRCS := $(shell grep -v '^\#\|util/trace-event.c' util/python-ext-sources)
-	endif
-
-But this is not picking the value for CONFIG_LIBTRACEEVENT that is
-set using the settings in Makefile.config. Include the file
-".config-detected" so that make will use the system detected
-configuration in the CONFIG checks. This will fix isues that
-could arise when other "CONFIG_*" checks are added to Makefile.perf
-in future as well.
-
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Rob Herring <robh@kernel.org>
 ---
-Changelog:
- v1 -> v2:
- Added $(OUTPUT) prefix to config-detected as pointed
- out by Ian
+v2:
+ - Add missing include
+---
+ drivers/cpufreq/pmac32-cpufreq.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
- tools/perf/Makefile.perf | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
-index 37af6df7b978..66b9dc61c32f 100644
---- a/tools/perf/Makefile.perf
-+++ b/tools/perf/Makefile.perf
-@@ -351,6 +351,9 @@ export PYTHON_EXTBUILD_LIB PYTHON_EXTBUILD_TMP
+diff --git a/drivers/cpufreq/pmac32-cpufreq.c b/drivers/cpufreq/pmac32-cpufreq.c
+index ec75e79659ac..df3567c1e93b 100644
+--- a/drivers/cpufreq/pmac32-cpufreq.c
++++ b/drivers/cpufreq/pmac32-cpufreq.c
+@@ -24,6 +24,7 @@
+ #include <linux/device.h>
+ #include <linux/hardirq.h>
+ #include <linux/of.h>
++#include <linux/of_address.h>
  
- python-clean := $(call QUIET_CLEAN, python) $(RM) -r $(PYTHON_EXTBUILD) $(OUTPUT)python/perf*.so
+ #include <asm/machdep.h>
+ #include <asm/irq.h>
+@@ -378,10 +379,9 @@ static int pmac_cpufreq_cpu_init(struct cpufreq_policy *policy)
  
-+# Use the detected configuration
-+include $(OUTPUT).config-detected
-+
- ifeq ($(CONFIG_LIBTRACEEVENT),y)
-   PYTHON_EXT_SRCS := $(shell grep -v ^\# util/python-ext-sources)
- else
+ static u32 read_gpio(struct device_node *np)
+ {
+-	const u32 *reg = of_get_property(np, "reg", NULL);
+-	u32 offset;
++	u64 offset;
+ 
+-	if (reg == NULL)
++	if (of_property_read_reg(np, 0, &offset, NULL) < 0)
+ 		return 0;
+ 	/* That works for all keylargos but shall be fixed properly
+ 	 * some day... The problem is that it seems we can't rely
+@@ -389,7 +389,6 @@ static u32 read_gpio(struct device_node *np)
+ 	 * relative to the base of KeyLargo or to the base of the
+ 	 * GPIO space, and the device-tree doesn't help.
+ 	 */
+-	offset = *reg;
+ 	if (offset < KEYLARGO_GPIO_LEVELS0)
+ 		offset += KEYLARGO_GPIO_LEVELS0;
+ 	return offset;
 -- 
-2.31.1
+2.40.1
 
