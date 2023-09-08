@@ -1,47 +1,93 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70D2D798069
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Sep 2023 04:09:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9C8E798190
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Sep 2023 07:35:45 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SFD9zNUy;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rhfgv1nfyz3cKV
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Sep 2023 12:09:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RhlFW4YkNz3cCK
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Sep 2023 15:35:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=srs0=fec8=ey=linux-m68k.org=gerg@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SFD9zNUy;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RhfgM5SXxz2yVN
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Sep 2023 12:09:19 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 3D9DE6118C;
-	Fri,  8 Sep 2023 02:09:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21316C433C7;
-	Fri,  8 Sep 2023 02:09:13 +0000 (UTC)
-Message-ID: <f0682bfa-e779-499c-4c85-bf923e23383b@linux-m68k.org>
-Date: Fri, 8 Sep 2023 12:09:11 +1000
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 1/2] m68k: Replace GPL 2.0+ README.legal boilerplate by
- SPDX
-Content-Language: en-US
-To: Geert Uytterhoeven <geert@linux-m68k.org>,
- linux-m68k@lists.linux-m68k.org, Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>
-References: <cover.1694095086.git.geert@linux-m68k.org>
- <db6225d078aae61474ccbde322851758d02e94a9.1694095086.git.geert@linux-m68k.org>
-From: Greg Ungerer <gerg@linux-m68k.org>
-In-Reply-To: <db6225d078aae61474ccbde322851758d02e94a9.1694095086.git.geert@linux-m68k.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RhlDd2wr2z2ytr
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Sep 2023 15:34:56 +1000 (AEST)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3884dFNv030246;
+	Fri, 8 Sep 2023 05:34:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=IojGGN4k9PhjOTjGTzYF5mBqzccJUXOLnP6JomWQxyY=;
+ b=SFD9zNUy+cgxSbXtBnR9nuY36hbHjyvV4TyV7GzJP4bzzwV1egU36P/t1DHr3IUcMNou
+ r/CsJpLysyC1drxN0plmYUXtLXKQIj/AAnRmG69/UHikulmk5jOFcf73vdPW3ALyUT2x
+ PLPM60P3r6COonKFaup8vTTysjS1GEBeIDNIBEEJeshEnZur2jIJw8i18U0pBDicZhoq
+ gUG+GDEsX26WZeFCFd7D36r6GwWbKC/RE5igg5kvBTmAcIDIh6HmGC9Z1mg90yMEO5Se
+ H/TNA4w6vZf6FhqCdFwZYSk/ceEOXxa8duf6Q7T7n4bBuzo8+E9FDkHSa9jWHVo8UGjo Rg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sys0j4u14-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 Sep 2023 05:34:32 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3885GKaQ026040;
+	Fri, 8 Sep 2023 05:34:32 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sys0j4u09-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 Sep 2023 05:34:32 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3883mVSk001624;
+	Fri, 8 Sep 2023 05:34:31 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3svfct9rpq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 Sep 2023 05:34:31 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3885YSe846334228
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 8 Sep 2023 05:34:28 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CA33B2004B;
+	Fri,  8 Sep 2023 05:34:28 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9CE1720040;
+	Fri,  8 Sep 2023 05:34:26 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.109.241.220])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  8 Sep 2023 05:34:26 +0000 (GMT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.700.6\))
+Subject: Re: [PATCH V2] perf test: Fix parse-events tests to skip parametrized
+ events
+From: Sachin Sant <sachinp@linux.ibm.com>
+In-Reply-To: <20230907165933.36442-1-atrajeev@linux.vnet.ibm.com>
+Date: Fri, 8 Sep 2023 11:04:14 +0530
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <1F3D650F-91B5-4570-85D2-A925320BE7AE@linux.ibm.com>
+References: <20230907165933.36442-1-atrajeev@linux.vnet.ibm.com>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+X-Mailer: Apple Mail (2.3731.700.6)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Ncwsrs04b4s9ZRI7YTYEROvyP4bbozc5
+X-Proofpoint-ORIG-GUID: 6YcKZ6TZ9YDNIE33NRW5NF3B0g7Xvwaz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-08_02,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ mlxlogscore=999 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ clxscore=1011 adultscore=0 spamscore=0 phishscore=0 priorityscore=1501
+ bulkscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309080046
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,217 +99,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: irogers@google.com, Madhavan Srinivasan <maddy@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>, adrian.hunter@intel.com, acme@kernel.org, linux-perf-users@vger.kernel.org, jolsa@kernel.org, namhyung@kernel.org, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Geert,
 
-On 8/9/23 00:21, Geert Uytterhoeven wrote:
-> Upstream Linux never had a "README.legal" file, but it was present
-> in early source releases of Linux/m68k.  It contained a simple copyright
-> notice and a link to a version of the "COPYING" file that predated the
-> addition of the "only valid GPL version is v2" clause.
-> 
-> Get rid of the references to non-existant files by replacing the
-> boilerplate with SPDX license identifiers.
-> 
-> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+
+> On 07-Sep-2023, at 10:29 PM, Athira Rajeev =
+<atrajeev@linux.vnet.ibm.com> wrote:
+>=20
+> Testcase "Parsing of all PMU events from sysfs" parse events for
+> all PMUs, and not just cpu. In case of powerpc, the PowerVM
+> environment supports events from hv_24x7 and hv_gpci PMU which
+> is of example format like below:
+>=20
+> - hv_24x7/CPM_ADJUNCT_INST,domain=3D?,core=3D?/
+> - hv_gpci/event,partition_id=3D?/
+>=20
+> The value for "?" needs to be filled in depending on system
+> configuration. It is better to skip these parametrized events
+> in this test as it is done in:
+> 'commit b50d691e50e6 ("perf test: Fix "all PMU test" to skip
+> parametrized events")' which handled a simialr instance with
+> "all PMU test".
+>=20
+> Fix parse-events test to skip parametrized events since
+> it needs proper setup of the parameters.
+>=20
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 > ---
->   arch/m68k/68000/entry.S     | 7 ++-----
->   arch/m68k/bvme6000/config.c | 5 +----
->   arch/m68k/coldfire/entry.S  | 7 ++-----
->   arch/m68k/ifpsp060/Makefile | 6 ++----
->   arch/m68k/kernel/entry.S    | 7 ++-----
->   arch/m68k/kernel/head.S     | 8 ++------
->   arch/m68k/mvme147/config.c  | 5 +----
->   arch/m68k/mvme16x/config.c  | 5 +----
->   arch/m68k/q40/config.c      | 5 +----
->   9 files changed, 14 insertions(+), 41 deletions(-)
+> Changelog:
+> v1 -> v2:
+> Addressed review comments from Ian. Updated size of
+> pmu event name variable and changed bool name which is
+> used to skip the test.
+>=20
 
-Thank you for taking care of the ColdFire and 68000 ones as well!
+The patch fixes the reported issue.
 
-Acked-by: Greg Ungerer <gerg@linux-m68k.org>
+6.2: Parsing of all PMU events from sysfs                          : Ok
+6.3: Parsing of given PMU events from sysfs                        : Ok
 
-Regards
-Greg
+Tested-by: Sachin Sant <sachinp@linux.ibm.com>
 
-
-> diff --git a/arch/m68k/68000/entry.S b/arch/m68k/68000/entry.S
-> index 7d63e2f1555a03dc..72e95663b62ffd54 100644
-> --- a/arch/m68k/68000/entry.S
-> +++ b/arch/m68k/68000/entry.S
-> @@ -1,12 +1,9 @@
-> -/*
-> +/* SPDX-License-Identifier: GPL-2.0-or-later
-> + *
->    *  entry.S -- non-mmu 68000 interrupt and exception entry points
->    *
->    *  Copyright (C) 1991, 1992  Linus Torvalds
->    *
-> - * This file is subject to the terms and conditions of the GNU General Public
-> - * License.  See the file README.legal in the main directory of this archive
-> - * for more details.
-> - *
->    * Linux/m68k support by Hamish Macdonald
->    */
->   
-> diff --git a/arch/m68k/bvme6000/config.c b/arch/m68k/bvme6000/config.c
-> index e604fe6602461334..8a2ee69a09f6659c 100644
-> --- a/arch/m68k/bvme6000/config.c
-> +++ b/arch/m68k/bvme6000/config.c
-> @@ -1,3 +1,4 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
->   /*
->    *  arch/m68k/bvme6000/config.c
->    *
-> @@ -8,10 +9,6 @@
->    *  linux/amiga/config.c
->    *
->    *  Copyright (C) 1993 Hamish Macdonald
-> - *
-> - * This file is subject to the terms and conditions of the GNU General Public
-> - * License.  See the file README.legal in the main directory of this archive
-> - * for more details.
->    */
->   
->   #include <linux/types.h>
-> diff --git a/arch/m68k/coldfire/entry.S b/arch/m68k/coldfire/entry.S
-> index 35104c5417ff4d07..4ea08336e2fb0aae 100644
-> --- a/arch/m68k/coldfire/entry.S
-> +++ b/arch/m68k/coldfire/entry.S
-> @@ -1,4 +1,5 @@
-> -/*
-> +/* SPDX-License-Identifier: GPL-2.0-or-later
-> + *
->    *  entry.S  -- interrupt and exception processing for ColdFire
->    *
->    *  Copyright (C) 1999-2007, Greg Ungerer (gerg@snapgear.com)
-> @@ -13,10 +14,6 @@
->    *
->    *  Copyright (C) 1991, 1992  Linus Torvalds
->    *
-> - * This file is subject to the terms and conditions of the GNU General Public
-> - * License.  See the file README.legal in the main directory of this archive
-> - * for more details.
-> - *
->    * Linux/m68k support by Hamish Macdonald
->    *
->    * 68060 fixes by Jesper Skov
-> diff --git a/arch/m68k/ifpsp060/Makefile b/arch/m68k/ifpsp060/Makefile
-> index 56b530a96c2f33b5..00d0621f547ccb93 100644
-> --- a/arch/m68k/ifpsp060/Makefile
-> +++ b/arch/m68k/ifpsp060/Makefile
-> @@ -1,7 +1,5 @@
-> -# Makefile for 680x0 Linux 68060 integer/floating point support package
-> +# SPDX-License-Identifier: GPL-2.0-or-later
->   #
-> -# This file is subject to the terms and conditions of the GNU General Public
-> -# License.  See the file "README.legal" in the main directory of this archive
-> -# for more details.
-> +# Makefile for 680x0 Linux 68060 integer/floating point support package
->   
->   obj-y := fskeleton.o iskeleton.o os.o
-> diff --git a/arch/m68k/kernel/entry.S b/arch/m68k/kernel/entry.S
-> index 4dd2fd7acba9ea07..3bcdd32a6b36613d 100644
-> --- a/arch/m68k/kernel/entry.S
-> +++ b/arch/m68k/kernel/entry.S
-> @@ -1,13 +1,10 @@
-> -/* -*- mode: asm -*-
-> +/* SPDX-License-Identifier: GPL-2.0-or-later
-> + * -*- mode: asm -*-
->    *
->    *  linux/arch/m68k/kernel/entry.S
->    *
->    *  Copyright (C) 1991, 1992  Linus Torvalds
->    *
-> - * This file is subject to the terms and conditions of the GNU General Public
-> - * License.  See the file README.legal in the main directory of this archive
-> - * for more details.
-> - *
->    * Linux/m68k support by Hamish Macdonald
->    *
->    * 68060 fixes by Jesper Skov
-> diff --git a/arch/m68k/kernel/head.S b/arch/m68k/kernel/head.S
-> index 9e812d8606be8301..852255cf60dec132 100644
-> --- a/arch/m68k/kernel/head.S
-> +++ b/arch/m68k/kernel/head.S
-> @@ -1,4 +1,5 @@
-> -/* -*- mode: asm -*-
-> +/* SPDX-License-Identifier: GPL-2.0-or-later
-> +** -*- mode: asm -*-
->   **
->   ** head.S -- This file contains the initial boot code for the
->   **	     Linux/68k kernel.
-> @@ -25,11 +26,6 @@
->   **            for linux-2.1.115
->   ** 1999/02/11  Richard Zidlicky: added Q40 support (initial version 99/01/01)
->   ** 2004/05/13 Kars de Jong: Finalised HP300 support
-> -**
-> -** This file is subject to the terms and conditions of the GNU General Public
-> -** License. See the file README.legal in the main directory of this archive
-> -** for more details.
-> -**
->   */
->   
->   /*
-> diff --git a/arch/m68k/mvme147/config.c b/arch/m68k/mvme147/config.c
-> index 7dfacd0b207a9750..8b5dc07f0811f2fc 100644
-> --- a/arch/m68k/mvme147/config.c
-> +++ b/arch/m68k/mvme147/config.c
-> @@ -1,3 +1,4 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
->   /*
->    *  arch/m68k/mvme147/config.c
->    *
-> @@ -7,10 +8,6 @@
->    * Based on:
->    *
->    *  Copyright (C) 1993 Hamish Macdonald
-> - *
-> - * This file is subject to the terms and conditions of the GNU General Public
-> - * License.  See the file README.legal in the main directory of this archive
-> - * for more details.
->    */
->   
->   #include <linux/types.h>
-> diff --git a/arch/m68k/mvme16x/config.c b/arch/m68k/mvme16x/config.c
-> index 9bb9a33e43c246c4..d1fbd1704d65822f 100644
-> --- a/arch/m68k/mvme16x/config.c
-> +++ b/arch/m68k/mvme16x/config.c
-> @@ -1,3 +1,4 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
->   /*
->    *  arch/m68k/mvme16x/config.c
->    *
-> @@ -8,10 +9,6 @@
->    *  linux/amiga/config.c
->    *
->    *  Copyright (C) 1993 Hamish Macdonald
-> - *
-> - * This file is subject to the terms and conditions of the GNU General Public
-> - * License.  See the file README.legal in the main directory of this archive
-> - * for more details.
->    */
->   
->   #include <linux/types.h>
-> diff --git a/arch/m68k/q40/config.c b/arch/m68k/q40/config.c
-> index 2c51c2b4a4fbbf79..de7870ad2a30620d 100644
-> --- a/arch/m68k/q40/config.c
-> +++ b/arch/m68k/q40/config.c
-> @@ -1,3 +1,4 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
->   /*
->    *  arch/m68k/q40/config.c
->    *
-> @@ -6,10 +7,6 @@
->    * originally based on:
->    *
->    *  linux/bvme/config.c
-> - *
-> - * This file is subject to the terms and conditions of the GNU General Public
-> - * License.  See the file README.legal in the main directory of this archive
-> - * for more details.
->    */
->   
->   #include <linux/errno.h>
+- Sachin=
