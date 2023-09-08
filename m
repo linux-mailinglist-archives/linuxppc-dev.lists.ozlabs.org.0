@@ -1,40 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3E61798295
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Sep 2023 08:45:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C1FC79835E
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Sep 2023 09:43:24 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=0Tr1RiLs;
+	dkim=fail reason="signature verification failed" header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=r9UDzDCi;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RhmpV631Mz3cNV
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Sep 2023 16:45:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rhp4p3W7dz3cD3
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Sep 2023 17:43:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=0Tr1RiLs;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=r9UDzDCi;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=softfail (domain owner discourages use of this host) smtp.mailfrom=suse.cz (client-ip=2001:67c:2178:6::1c; helo=smtp-out1.suse.de; envelope-from=vbabka@suse.cz; receiver=lists.ozlabs.org)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rhmp20kk1z30PY
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Sep 2023 16:45:30 +1000 (AEST)
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rhmnx5sZhz4xFD;
-	Fri,  8 Sep 2023 16:45:25 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rhp3x50SHz2yts
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Sep 2023 17:42:36 +1000 (AEST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rhmnx1wnCz4xF9;
-	Fri,  8 Sep 2023 16:45:25 +1000 (AEST)
-From: Michael Ellerman <michaele@au1.ibm.com>
-To: Sachin Sant <sachinp@linux.ibm.com>, linuxppc-dev
- <linuxppc-dev@lists.ozlabs.org>, linux-mm@kvack.org, liushixin2@huawei.com
-Subject: Re: Kernel crash during ltp(min_free_kbytes) test run
- (zone_reclaimable_pages)
-In-Reply-To: <F00144DE-2A3F-4463-8203-45E0D57E313E@linux.ibm.com>
-References: <F00144DE-2A3F-4463-8203-45E0D57E313E@linux.ibm.com>
-Date: Fri, 08 Sep 2023 16:45:19 +1000
-Message-ID: <878r9hcge8.fsf@mail.lhotse>
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 2588421832;
+	Fri,  8 Sep 2023 07:42:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1694158947; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=NHJKcpKlZ/+yii6ZB0cLfqW7JVxO+ELAe/deKUrmJ80=;
+	b=0Tr1RiLsGK9TKLdxwSc9RwxLIVKmEae8PGUWUTGhYIhqkvcnxmKXE3HYt5+5SqUjjUpxEZ
+	DCTZmPbwNt5ToqgWZJ00UT0I0Plhw1i14U2HJUY0Px379BJbaU56+RSKEu8z+V/xOMo2xd
+	woPLeoFeQ7kp5dfAXicDw3PDice1ftM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1694158947;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=NHJKcpKlZ/+yii6ZB0cLfqW7JVxO+ELAe/deKUrmJ80=;
+	b=r9UDzDCi5/bP4K3dBarcJVpQtk/FZHh8rlyYCrXu3EqfT7loeAs6cgqxhTivXkBssY2kKX
+	lV8TgWuOzutVQyDw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 96D2A132F2;
+	Fri,  8 Sep 2023 07:42:26 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id WIYoJGLQ+mTfFQAAMHmgww
+	(envelope-from <vbabka@suse.cz>); Fri, 08 Sep 2023 07:42:26 +0000
+From: Vlastimil Babka <vbabka@suse.cz>
+To: seanjc@google.com
+Subject: [PATCH gmem FIXUP v2] mm, compaction: make testing mapping_unmovable() safe
+Date: Fri,  8 Sep 2023 09:42:23 +0200
+Message-ID: <20230908074222.28723-2-vbabka@suse.cz>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,110 +73,149 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: cgroups@vger.kernel.org, open list <linux-kernel@vger.kernel.org>
+Cc: kvm@vger.kernel.org, david@redhat.com, yu.c.zhang@linux.intel.com, linux-mips@vger.kernel.org, linux-mm@kvack.org, pbonzini@redhat.com, chao.p.peng@linux.intel.com, linux-riscv@lists.infradead.org, isaku.yamahata@gmail.com, paul@paul-moore.com, anup@brainfault.org, chenhuacai@kernel.org, jmorris@namei.org, willy@infradead.org, wei.w.wang@intel.com, tabba@google.com, jarkko@kernel.org, serge@hallyn.com, mail@maciej.szmigiero.name, aou@eecs.berkeley.edu, vbabka@suse.cz, michael.roth@amd.com, ackerleytng@google.com, paul.walmsley@sifive.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, qperret@google.com, linux-kernel@vger.kernel.org, oliver.upton@linux.dev, linux-security-module@vger.kernel.org, palmer@dabbelt.com, kvm-riscv@lists.infradead.org, maz@kernel.org, linux-fsdevel@vger.kernel.org, liam.merwick@oracle.com, akpm@linux-foundation.org, vannapurve@google.com, linuxppc-dev@lists.ozlabs.org, kirill.shutemov@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sachin Sant <sachinp@linux.ibm.com> writes:
-> While running LTP tests (specifically min_free_kbytes) on a Power server
-> booted with 6.5.0-next-20230906 following crash was encountered.
->
-> [ 3952.404936] __vm_enough_memory: pid: 440285, comm: min_free_kbytes, not enough memory for the allocation
-> [ 3956.895519] __vm_enough_memory: pid: 440286, comm: min_free_kbytes, not enough memory for the allocation
-> [ 3961.296168] __vm_enough_memory: pid: 440287, comm: min_free_kbytes, not enough memory for the allocation
-> [ 3982.202651] Kernel attempted to read user page (28) - exploit attempt? (uid: 0)
-> [ 3982.202669] BUG: Kernel NULL pointer dereference on read at 0x00000028
-> [ 3982.202674] Faulting instruction address: 0xc000000000469660
-> [ 3982.202679] Oops: Kernel access of bad area, sig: 11 [#1]
-> [ 3982.202682] LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=8192 NUMA pSeries
-> [ 3982.202688] Modules linked in: nfsv3 nfs_acl nfs lockd grace fscache netfs brd overlay exfat vfat fat btrfs blake2b_generic xor raid6_pq zstd_compress xfs loop sctp ip6_udp_tunnel udp_tunnel dm_mod nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 bonding rfkill tls ip_set nf_tables libcrc32c nfnetlink sunrpc pseries_rng vmx_crypto ext4 mbcache jbd2 sd_mod t10_pi crc64_rocksoft crc64 sg ibmvscsi ibmveth scsi_transport_srp fuse [last unloaded: init_module(O)]
-> [ 3982.202756] CPU: 18 PID: 440288 Comm: min_free_kbytes Tainted: G O 6.5.0-next-20230906 #1
-> [ 3982.202762] Hardware name: IBM,9080-HEX POWER10 (raw) 0x800200 0xf000006 of:IBM,FW1030.20 (NH1030_058) hv:phyp pSeries
-> [ 3982.202767] NIP: c000000000469660 LR: c0000000004694a8 CTR: 0000000000000000
-> [ 3982.202771] REGS: c00000001d6af410 TRAP: 0300 Tainted: G O (6.5.0-next-20230906)
-> [ 3982.202776] MSR: 8000000000009033 <SF,EE,ME,IR,DR,RI,LE> CR: 24402444 XER: 00000000
-> [ 3982.202787] CFAR: c0000000004694fc DAR: 0000000000000028 DSISR: 40000000 IRQMASK: 0 
-> [ 3982.202787] GPR00: c0000000004696b8 c00000001d6af6b0 c000000001451100 0000000000000080 
-> [ 3982.202787] GPR04: 0000000000000080 0000000000000081 0000000000000020 0000000000000000 
-> [ 3982.202787] GPR08: 0000000000000080 00000000000048d9 0000000000000000 00000000000014de 
-> [ 3982.202787] GPR12: 0000000000008000 c0000013ffab5300 c000000002f27238 c000000002c9d4d8 
-> [ 3982.202787] GPR16: 0000000000000000 0000000000000000 c000000006924d40 c000000002d174f8 
-> [ 3982.202787] GPR20: c000000002d17500 0000000000000002 60000000000000e0 00000000000008c0 
-> [ 3982.202787] GPR24: 0000000000000000 0000000000000000 0000000000000000 c000000002c9a7e8 
-> [ 3982.202787] GPR28: c000000002c9be10 c0000013ff1d1500 0000000000000488 0000000000000950 
-> [ 3982.202839] NIP [c000000000469660] zone_reclaimable_pages+0x2a0/0x2c0
-> [ 3982.202847] LR [c0000000004694a8] zone_reclaimable_pages+0xe8/0x2c0
-> [ 3982.202852] Call Trace:
-> [ 3982.202854] [c00000001d6af6b0] [5deadbeef0000122] 0x5deadbeef0000122 (unreliable)
-> [ 3982.202861] [c00000001d6af710] [c0000000004696b8] allow_direct_reclaim.part.72+0x38/0x190
-> [ 3982.202867] [c00000001d6af760] [c000000000469990] throttle_direct_reclaim+0x180/0x400
-> [ 3982.202873] [c00000001d6af7e0] [c00000000046de88] try_to_free_pages+0xd8/0x2a0
-> [ 3982.202879] [c00000001d6af8a0] [c0000000004e7370] __alloc_pages_slowpath.constprop.92+0x490/0x1000
-> [ 3982.202886] [c00000001d6afa50] [c0000000004e822c] __alloc_pages+0x34c/0x3d0
-> [ 3982.202893] [c00000001d6afad0] [c0000000004e8ce4] __folio_alloc+0x34/0x90
-> [ 3982.202898] [c00000001d6afb00] [c00000000051ba50] vma_alloc_folio+0xe0/0x460
-> [ 3982.202905] [c00000001d6afbc0] [c0000000004af108] do_pte_missing+0x2a8/0xca0
-> [ 3982.202912] [c00000001d6afc10] [c0000000004b3590] __handle_mm_fault+0x3f0/0x1060
-> [ 3982.202917] [c00000001d6afd20] [c0000000004b43c4] handle_mm_fault+0x1c4/0x330
-> [ 3982.202923] [c00000001d6afd70] [c000000000092a14] ___do_page_fault+0x2d4/0xaa0
-> [ 3982.202930] [c00000001d6afe20] [c0000000000934d0] do_page_fault+0xa0/0x2a0
-> [ 3982.202936] [c00000001d6afe50] [c000000000008be0] data_access_common_virt+0x210/0x220
-> [ 3982.202943] --- interrupt: 300 at 0x7fffb3cc6360
-> [ 3982.202946] NIP: 00007fffb3cc6360 LR: 0000000010005644 CTR: 0000000000001200
-> [ 3982.202950] REGS: c00000001d6afe80 TRAP: 0300 Tainted: G O (6.5.0-next-20230906)
-> [ 3982.202955] MSR: 800000000200d033 <SF,VEC,EE,PR,ME,IR,DR,RI,LE> CR: 44002444 XER: 00000000
-> [ 3982.202966] CFAR: 00007fffb3cc6384 DAR: 00007fea3bc70000 DSISR: 42000000 IRQMASK: 0 
-> [ 3982.202966] GPR00: 0000000000002000 00007fffd0497ae0 0000000010057f00 00007fea3bc00000 
-> [ 3982.202966] GPR04: 0000000000000001 0000000000100000 00007fea3bc70000 0000000000000000 
-> [ 3982.202966] GPR08: 1000000000000000 00007fea3bc00000 0000000000000000 0000000000000000 
-> [ 3982.202966] GPR12: 00007fffb3cc62a0 00007fffb410b080 0000000000000000 0000000000000000 
-> [ 3982.202966] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
-> [ 3982.202966] GPR20: 000000001002c260 000000001002c208 cccccccccccccccd a3d70a3d70a3d70b 
-> [ 3982.202966] GPR24: 000000001002c2d0 000000001002c238 00007fffb3e01888 000000001002c260 
-> [ 3982.202966] GPR28: 0000000000000000 000000001002c1f0 000000001002c218 0000000000000000 
-> [ 3982.203016] NIP [00007fffb3cc6360] 0x7fffb3cc6360
-> [ 3982.203020] LR [0000000010005644] 0x10005644
-> [ 3982.203023] --- interrupt: 300
-> [ 3982.203026] Code: eb21ffc8 eb81ffe0 eba1ffe8 ebc1fff0 7fffd214 eb41ffd0 7c0803a6 7fe3fb78 ebe1fff8 4e800020 60000000 60000000 <a12a0028> 3900ffff 7909782c b12a0028 
-> [ 3982.203044] ---[ end trace 0000000000000000 ]---
-> [ 3982.299095] pstore: backend (nvram) writing error (-1)
-> [ 3982.299105] 
-> [ 3983.299108] Kernel panic - not syncing: Fatal exception
-> [ 3983.564309] Rebooting in 10 seconds..
->
-> Git bisect point to the following patch
->
-> commit 92039ae85e8d018e82b9ba2597ca22e9851447fe
->     mm: vmscan: try to reclaim swapcache pages if no swap space
+As Kirill pointed out, mapping can be removed under us due to
+truncation. Test it under folio lock as already done for the async
+compaction / dirty folio case. To prevent locking every folio with
+mapping to do the test, do it only for unevictable folios, as we can
+expect the unmovable mapping folios are also unevictable. To enforce
+that expecation, make mapping_set_unmovable() also set AS_UNEVICTABLE.
 
-Looks to be a direct NULL pointer deref, because
-can_reclaim_anon_pages() is passed sc = NULL:
+Also incorporate comment update suggested by Matthew.
 
+Fixes: 3424873596ce ("mm: Add AS_UNMOVABLE to mark mapping as completely unmovable")
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+---
+v2: mapping_set_unmovable() sets also AS_UNEVICTABLE, as Sean suggested.
 
-unsigned long zone_reclaimable_pages(struct zone *zone)
-{
-	unsigned long nr;
+ include/linux/pagemap.h |  6 +++++
+ mm/compaction.c         | 49 +++++++++++++++++++++++++++--------------
+ virt/kvm/guest_mem.c    |  2 +-
+ 3 files changed, 39 insertions(+), 18 deletions(-)
 
-	nr = zone_page_state_snapshot(zone, NR_ZONE_INACTIVE_FILE) +
-		zone_page_state_snapshot(zone, NR_ZONE_ACTIVE_FILE);
-	if (can_reclaim_anon_pages(NULL, zone_to_nid(zone), NULL))
-                                                            ^^^^
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 931d2f1da7d5..4070c59e6f25 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -276,6 +276,12 @@ static inline int mapping_use_writeback_tags(struct address_space *mapping)
+ 
+ static inline void mapping_set_unmovable(struct address_space *mapping)
+ {
++	/*
++	 * It's expected unmovable mappings are also unevictable. Compaction
++	 * migrate scanner (isolate_migratepages_block()) relies on this to
++	 * reduce page locking.
++	 */
++	set_bit(AS_UNEVICTABLE, &mapping->flags);
+ 	set_bit(AS_UNMOVABLE, &mapping->flags);
+ }
+ 
+diff --git a/mm/compaction.c b/mm/compaction.c
+index a3d2b132df52..e0e439b105b5 100644
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -862,6 +862,7 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
+ 
+ 	/* Time to isolate some pages for migration */
+ 	for (; low_pfn < end_pfn; low_pfn++) {
++		bool is_dirty, is_unevictable;
+ 
+ 		if (skip_on_failure && low_pfn >= next_skip_pfn) {
+ 			/*
+@@ -1047,10 +1048,6 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
+ 		if (!mapping && (folio_ref_count(folio) - 1) > folio_mapcount(folio))
+ 			goto isolate_fail_put;
+ 
+-		/* The mapping truly isn't movable. */
+-		if (mapping && mapping_unmovable(mapping))
+-			goto isolate_fail_put;
+-
+ 		/*
+ 		 * Only allow to migrate anonymous pages in GFP_NOFS context
+ 		 * because those do not depend on fs locks.
+@@ -1062,8 +1059,10 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
+ 		if (!folio_test_lru(folio))
+ 			goto isolate_fail_put;
+ 
++		is_unevictable = folio_test_unevictable(folio);
++
+ 		/* Compaction might skip unevictable pages but CMA takes them */
+-		if (!(mode & ISOLATE_UNEVICTABLE) && folio_test_unevictable(folio))
++		if (!(mode & ISOLATE_UNEVICTABLE) && is_unevictable)
+ 			goto isolate_fail_put;
+ 
+ 		/*
+@@ -1075,26 +1074,42 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
+ 		if ((mode & ISOLATE_ASYNC_MIGRATE) && folio_test_writeback(folio))
+ 			goto isolate_fail_put;
+ 
+-		if ((mode & ISOLATE_ASYNC_MIGRATE) && folio_test_dirty(folio)) {
+-			bool migrate_dirty;
++		is_dirty = folio_test_dirty(folio);
++
++		if (((mode & ISOLATE_ASYNC_MIGRATE) && is_dirty)
++		    || (mapping && is_unevictable)) {
++			bool migrate_dirty = true;
++			bool is_unmovable;
+ 
+ 			/*
+-			 * Only pages without mappings or that have a
+-			 * ->migrate_folio callback are possible to migrate
+-			 * without blocking. However, we can be racing with
+-			 * truncation so it's necessary to lock the page
+-			 * to stabilise the mapping as truncation holds
+-			 * the page lock until after the page is removed
+-			 * from the page cache.
++			 * Only folios without mappings or that have
++			 * a ->migrate_folio callback are possible to migrate
++			 * without blocking.
++			 *
++			 * Folios from unmovable mappings are not migratable.
++			 *
++			 * However, we can be racing with truncation, which can
++			 * free the mapping that we need to check. Truncation
++			 * holds the folio lock until after the folio is removed
++			 * from the page so holding it ourselves is sufficient.
++			 *
++			 * To avoid this folio locking to inspect every folio
++			 * with mapping for being unmovable, we assume every
++			 * such folio is also unevictable, which is a cheaper
++			 * test. If our assumption goes wrong, it's not a bug,
++			 * just potentially wasted cycles.
+ 			 */
+ 			if (!folio_trylock(folio))
+ 				goto isolate_fail_put;
+ 
+ 			mapping = folio_mapping(folio);
+-			migrate_dirty = !mapping ||
+-					mapping->a_ops->migrate_folio;
++			if ((mode & ISOLATE_ASYNC_MIGRATE) && is_dirty) {
++				migrate_dirty = !mapping ||
++						mapping->a_ops->migrate_folio;
++			}
++			is_unmovable = mapping && mapping_unmovable(mapping);
+ 			folio_unlock(folio);
+-			if (!migrate_dirty)
++			if (!migrate_dirty || is_unmovable)
+ 				goto isolate_fail_put;
+ 		}
+ 
+diff --git a/virt/kvm/guest_mem.c b/virt/kvm/guest_mem.c
+index c81d2bb9ae93..85903c32163f 100644
+--- a/virt/kvm/guest_mem.c
++++ b/virt/kvm/guest_mem.c
+@@ -390,7 +390,7 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags,
+ 	inode->i_size = size;
+ 	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
+ 	mapping_set_large_folios(inode->i_mapping);
+-	mapping_set_unevictable(inode->i_mapping);
++	/* this also sets the mapping as unevictable */
+ 	mapping_set_unmovable(inode->i_mapping);
+ 
+ 	fd = get_unused_fd_flags(0);
+-- 
+2.42.0
 
-static inline bool can_reclaim_anon_pages(struct mem_cgroup *memcg,
-					  int nid,
-					  struct scan_control *sc)
-{
-	if (memcg == NULL) {
-		/*
-		 * For non-memcg reclaim, is there
-		 * space in any swap device?
-		 */
-		if (get_nr_swap_pages() > 0)
-			return true;
-		/* Is there any swapcache pages to reclaim? */
-		if (total_swapcache_pages() > 0) {
-			sc->swapcache_only = 1;
-
-sc is NULL -> oops.
-
-cheers
