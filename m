@@ -1,58 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FF6F799431
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Sep 2023 02:39:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD4BC799432
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Sep 2023 02:40:19 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=madNvtyK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DGPFegxt;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RjDdF2NG4z3cGw
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Sep 2023 10:39:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RjDf95ZMcz3dJ1
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Sep 2023 10:40:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=madNvtyK;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DGPFegxt;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RjDcP4JM9z3c47
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Sep 2023 10:38:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RjDdG2dvPz3dFf
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Sep 2023 10:39:30 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id C007C615C1;
-	Sat,  9 Sep 2023 00:38:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAEBEC116B1;
-	Sat,  9 Sep 2023 00:38:42 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTPS id 56A72CE1CAA;
+	Sat,  9 Sep 2023 00:39:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA95C43140;
+	Sat,  9 Sep 2023 00:39:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1694219923;
-	bh=B5o/qp2zORkq9M9rsXTWIo4K7yN4DH5plfGCf8hNBxQ=;
+	s=k20201202; t=1694219965;
+	bh=TPIuh+2sJJpu77e2C3tJB6Yh9/wzL5z2S91+OFaBVqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=madNvtyKK8hRDgK7lx3AGjGqqJtnD9Y/bgofENJVfeAvwI9sFRKkDIqur/dspqOzZ
-	 3I4z3NSlAwVhDNTgjEJGBltP/5zmQ5R44f6aO1muoh7jFkaYJL7dW9yQTwtwBk+rUK
-	 X5yKCudEbnWtS2lbCW37y2xOvHRLLAnQ0AA5y5kAjLwdp1uoZ5m8DbeMCfMztoKxQm
-	 MIReCSbVqoZpklYZRlqy8wLKLmzvhmcGFrYMsqfKB6elzH8B0ixp4wBLOkdhDK71+F
-	 vs4TfrB+8UMKP81ztVI9MkvYQq4WY4kyDAjvVgJq6PUswVdLaXpyYrAXA3gDF1zHKt
-	 bF3BJqVmDklhw==
+	b=DGPFegxtTLGPkPZdeufLknNLKhblXvLn6AMLQei8/Fm+sTSigHUizSY8t+1WocEul
+	 7uOqAfO0xUndgau1qsYM3R53xDjxAmkYOGAOcHtEi38GdDcrl2s9shgJYT61RPTN92
+	 NB2CRpCPEl+ue9SFM3QJQQ3bqGQI0pruuodwHw8mAJB1QRVc4buKYwHoeT2HnOeI24
+	 VZAK9zdszRDarQ3+HkwdmOe5JdKQcYcF5tntxf8bh0P4yQAOs15sRaUrImRbBjR2hb
+	 5EpN9RiVnmuN/OI+miJMs738gE2JbOj+Tf5CqDd2lBd+KEC5C8zr7Ps4fESde3GA47
+	 PYP4CfG/7jDCg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 13/24] usb: gadget: fsl_qe_udc: validate endpoint index for ch9 udc
-Date: Fri,  8 Sep 2023 20:38:05 -0400
-Message-Id: <20230909003818.3580081-13-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 11/19] usb: gadget: fsl_qe_udc: validate endpoint index for ch9 udc
+Date: Fri,  8 Sep 2023 20:38:55 -0400
+Message-Id: <20230909003903.3580394-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230909003818.3580081-1-sashal@kernel.org>
-References: <20230909003818.3580081-1-sashal@kernel.org>
+In-Reply-To: <20230909003903.3580394-1-sashal@kernel.org>
+References: <20230909003903.3580394-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.52
+X-stable-base: Linux 5.15.131
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -86,10 +86,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+)
 
 diff --git a/drivers/usb/gadget/udc/fsl_qe_udc.c b/drivers/usb/gadget/udc/fsl_qe_udc.c
-index 3b1cc8fa30c83..f4e5cbd193b7b 100644
+index 15db7a3868fe4..aff4050f96dd6 100644
 --- a/drivers/usb/gadget/udc/fsl_qe_udc.c
 +++ b/drivers/usb/gadget/udc/fsl_qe_udc.c
-@@ -1959,6 +1959,8 @@ static void ch9getstatus(struct qe_udc *udc, u8 request_type, u16 value,
+@@ -1956,6 +1956,8 @@ static void ch9getstatus(struct qe_udc *udc, u8 request_type, u16 value,
  	} else if ((request_type & USB_RECIP_MASK) == USB_RECIP_ENDPOINT) {
  		/* Get endpoint status */
  		int pipe = index & USB_ENDPOINT_NUMBER_MASK;
