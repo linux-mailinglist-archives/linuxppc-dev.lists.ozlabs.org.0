@@ -1,58 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AF8C7993B9
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Sep 2023 02:37:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11D1F7993D1
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Sep 2023 02:38:30 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SUUZ8792;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VQb4euej;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RjDZj28fWz3cPN
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Sep 2023 10:37:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RjDc36qCwz3dD8
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Sep 2023 10:38:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SUUZ8792;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VQb4euej;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RjDYs6YG0z3byL
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Sep 2023 10:36:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RjDbD1Xpsz3c47
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Sep 2023 10:37:44 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by sin.source.kernel.org (Postfix) with ESMTPS id 92900CE1C4D;
-	Sat,  9 Sep 2023 00:36:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F45BC433BF;
-	Sat,  9 Sep 2023 00:36:30 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTPS id CBF5DB82318;
+	Sat,  9 Sep 2023 00:37:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FFDBC116AE;
+	Sat,  9 Sep 2023 00:37:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1694219791;
-	bh=ZLXgUkDL+2uOO3dZ2Sksq+m2QSu5DqbUvXd4HAgPvi8=;
+	s=k20201202; t=1694219860;
+	bh=B5o/qp2zORkq9M9rsXTWIo4K7yN4DH5plfGCf8hNBxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SUUZ8792PLwKIQ4AQktpHjMiv+Dh5lJuE0iRwSOi46u8az1MiqVu+EoxlG7WFQLCe
-	 9/+llLN39ZbanUlOUP3Q+fR5clsfXK9wJIJIACpnd3h7vmJ9/CzbBnAFm6ZWWubHEs
-	 nNA83QeFuOFCjF1Q1DlQmhjoC66eUCxA2a9KruKmhEkHuUyocEsGdaL75YPNT0gm+N
-	 528HtZ9f/lpabRCWpXow6bM+I4Ebh8BI2wMpPxWXw4Q3dBj8oLJ2Zmp9Q3+5LjrYWF
-	 htaVmlEOw7+r5BfIwC0MxFku0nS+yqlz6EOV3gBL1C/o444X9TN3MCTCsgH+Od9X3q
-	 eW1iv05CTpdew==
+	b=VQb4euejZCnlzTSOdPzUPNEGzpqaMMcvogxAvXihshL2vKmPgwX1uTOEDshPLrPt5
+	 CFoFPoEUCxjuoi915hT8y50fGPPpYtu1fU/L9Tg+AnPl4zmRcj8apiGk8YyGSM4wVY
+	 acfoaUy6zZhvswRM63z+A/rSep7GyPtmK7Wgxbnd4ez6X/mta2VCALhft0+YPRrOWS
+	 nZYjHlkPevF++bLtPtGJfNMgqxtm7kI1b/0lAOhqtoxNOck5hFz/A781EsPFlNYsf9
+	 sYhbKbJyYf0DW2WL+9grfz2uTQ+/37sMB+ehQiNZGyaDBY1vBPSiXd4aEd7ieQhezx
+	 Yz1O+F+7fciMg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.5 14/28] usb: gadget: fsl_qe_udc: validate endpoint index for ch9 udc
-Date: Fri,  8 Sep 2023 20:35:48 -0400
-Message-Id: <20230909003604.3579407-14-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.4 13/25] usb: gadget: fsl_qe_udc: validate endpoint index for ch9 udc
+Date: Fri,  8 Sep 2023 20:37:01 -0400
+Message-Id: <20230909003715.3579761-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230909003604.3579407-1-sashal@kernel.org>
-References: <20230909003604.3579407-1-sashal@kernel.org>
+In-Reply-To: <20230909003715.3579761-1-sashal@kernel.org>
+References: <20230909003715.3579761-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.5.2
+X-stable-base: Linux 6.4.15
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -86,7 +86,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+)
 
 diff --git a/drivers/usb/gadget/udc/fsl_qe_udc.c b/drivers/usb/gadget/udc/fsl_qe_udc.c
-index 9c5dc1c1a68ea..4aae86b47edfc 100644
+index 3b1cc8fa30c83..f4e5cbd193b7b 100644
 --- a/drivers/usb/gadget/udc/fsl_qe_udc.c
 +++ b/drivers/usb/gadget/udc/fsl_qe_udc.c
 @@ -1959,6 +1959,8 @@ static void ch9getstatus(struct qe_udc *udc, u8 request_type, u16 value,
