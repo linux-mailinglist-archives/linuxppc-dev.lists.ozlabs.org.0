@@ -2,56 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 348A079A44F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Sep 2023 09:17:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 420C779A69C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Sep 2023 11:15:11 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XJQRqB+G;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RkdMN0lHPz3cDg
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Sep 2023 17:17:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RkgzK0YV3z3c3x
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Sep 2023 19:15:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.208.47; helo=mail-ed1-f47.google.com; envelope-from=jirislaby@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XJQRqB+G;
+	dkim-atps=neutral
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RkdLw2LYrz2yDM
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Sep 2023 17:16:55 +1000 (AEST)
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-52a23227567so5218033a12.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Sep 2023 00:16:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694416611; x=1695021411;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pifjIYv6Hyk5rsiSFmdRIaR5tzpXVSFZgH+NJpSIZKo=;
-        b=j4T1wNrlzaRrUp6XD4e5unldU84jOWLBod/M3y9IsLWWVSq4KOJh+gUOjZvH7+upuW
-         1IGEQOxR4jL3ChmDQekVQtVccXMyFjINRhsivA3752Vz+dtFKBmqzf4A2Qn315fv8eff
-         gYHEVcA7C1K/aEBbGMSDyFg+4WPB4p++PFE6v/HapgpUKvyUklvu+OAiMsQuK6OlqCzK
-         IY4nF8Wp2e4mUwrE5jGdD8b0jogcrlN1AOOKdCX+Ghprn1vwgHjCkYsso1mN3Rhnvss7
-         9d8wmbQarRPyJBkQw+IitEYDBvL/N/zFSxgv7ttCRGGNjfBwr6+vg/CsSQ4Js1Cb4Pds
-         nKPQ==
-X-Gm-Message-State: AOJu0YwKXAU2XEkgyfuPepUz87jYLtAZ9EFvBngqzflyYZVJqQCeP5FM
-	KeCWfUjptN/Zipb+ROpuB8M=
-X-Google-Smtp-Source: AGHT+IF8WwlA+cjc7QZ3b7ObgufEBSdtFZ7KGlJIYi0Vw11q+BUCebVWj2pxlmXKlPh+iGDNpddDFw==
-X-Received: by 2002:a17:906:31d8:b0:9a5:b814:8254 with SMTP id f24-20020a17090631d800b009a5b8148254mr6660837ejf.24.1694416611007;
-        Mon, 11 Sep 2023 00:16:51 -0700 (PDT)
-Received: from [192.168.1.58] (185-219-167-24-static.vivo.cz. [185.219.167.24])
-        by smtp.gmail.com with ESMTPSA id x1-20020a170906134100b009926928d486sm4848237ejb.35.2023.09.11.00.16.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Sep 2023 00:16:50 -0700 (PDT)
-Message-ID: <9a3ed34a-10f2-c778-501e-8be600dce167@kernel.org>
-Date: Mon, 11 Sep 2023 09:16:49 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RkgyP32n7z3bP9
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Sep 2023 19:14:21 +1000 (AEST)
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4RkgyM6Q5hz4xF3
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Sep 2023 19:14:19 +1000 (AEST)
+Received: by gandalf.ozlabs.org (Postfix)
+	id 4RkgyM62Wtz4x7V; Mon, 11 Sep 2023 19:14:19 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: gandalf.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XJQRqB+G;
+	dkim-atps=neutral
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=name@linux.ibm.com; receiver=ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4RkgyM2HyZz4x5K;
+	Mon, 11 Sep 2023 19:14:19 +1000 (AEST)
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38B9Cn9Y006819;
+	Mon, 11 Sep 2023 09:14:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=H7G7OhvKoGshjq2wjfhr9uoXe8Iwcgec0+lfPahLuEM=;
+ b=XJQRqB+GQkU6AlDIBdFviuVjRMBIDIhzK+PRzUqBceQ675t3K4I3k79erql4bnt6bhPO
+ 4Lu4GmVLdofQygNa07BaFnOjA2+t3uDnWwnEAArxL7Y3iHEZmUmIE+Ik4dwcZbQxqyI6
+ +D+ZJjgf9OSKeYpiDL8EDiTsT/Bic0fxM1uf3mKKC9iHEyRT7Z1qrPnsSU8V8y4pWqQR
+ PImowxIlfmnJQP7vgu4Bp+n1is4cg2+ED/gslnoQxf96879mbsxzTGgXZXkKoqeOmwhc
+ 5esR8lwUzd0B1vkn0GiV8qYOXU32sJsIQiJ+V7peuGID3xZTaLvh3XWg2N4WI0TeJUOA KQ== 
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t202a0155-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 Sep 2023 09:14:16 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 38B80LCx002724;
+	Mon, 11 Sep 2023 09:14:15 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3t14hkh5qc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 Sep 2023 09:14:15 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 38B9ECM245547928
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 11 Sep 2023 09:14:12 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3A9442004D;
+	Mon, 11 Sep 2023 09:14:12 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D5B1C20040;
+	Mon, 11 Sep 2023 09:14:10 +0000 (GMT)
+Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.in.ibm.com (unknown [9.109.199.72])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 11 Sep 2023 09:14:10 +0000 (GMT)
+From: Aditya Gupta <adityag@linux.ibm.com>
+To: linuxppc-dev@ozlabs.org, mpe@ellerman.id.au
+Subject: [PATCH] powerpc: add `cur_cpu_spec` symbol to vmcoreinfo
+Date: Mon, 11 Sep 2023 14:44:09 +0530
+Message-ID: <20230911091409.415662-1-adityag@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH] tty: hvc: remove set but unused variable
-Content-Language: en-US
-To: Bo Liu <liubo03@inspur.com>, gregkh@linuxfoundation.org
-References: <20230908061726.2641-1-liubo03@inspur.com>
-From: Jiri Slaby <jirislaby@kernel.org>
-In-Reply-To: <20230908061726.2641-1-liubo03@inspur.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 8vzmb9GsdFHD-c2DVjp5UFc7iGeQgpKL
+X-Proofpoint-GUID: 8vzmb9GsdFHD-c2DVjp5UFc7iGeQgpKL
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-11_06,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=678 mlxscore=0
+ spamscore=0 phishscore=0 lowpriorityscore=0 adultscore=0 impostorscore=0
+ suspectscore=0 clxscore=1011 priorityscore=1501 malwarescore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
+ definitions=main-2309110082
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,19 +102,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
+Cc: Sourabh Jain <sourabhjain@linux.ibm.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 08. 09. 23, 8:17, Bo Liu wrote:
-> The local variable vdev in hvcs_destruct_port() is set
-> but not used. Remove the variable and related code.
-> 
-> Signed-off-by: Bo Liu <liubo03@inspur.com>
+Presently, while reading a vmcore, makedumpfile uses
+`cur_cpu_spec.mmu_features` to decide whether the crashed system had
+RADIX MMU or not.
 
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Currently, makedumpfile fails to get the `cur_cpu_spec` symbol (unless
+a vmlinux is passed with the `-x` flag to makedumpfile), and hence
+assigns offsets and shifts (such as pgd_offset_l4) incorrecly considering
+MMU to be hash MMU.
 
+Add `cur_cpu_spec` symbol and offset of `mmu_features` in the
+`cpu_spec` struct, to VMCOREINFO, so that the symbol address and offset
+is accessible to makedumpfile, without needing the vmlinux file
+
+Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
+---
+ arch/powerpc/kexec/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/powerpc/kexec/core.c b/arch/powerpc/kexec/core.c
+index de64c7962991..369b8334a4f0 100644
+--- a/arch/powerpc/kexec/core.c
++++ b/arch/powerpc/kexec/core.c
+@@ -63,6 +63,8 @@ void arch_crash_save_vmcoreinfo(void)
+ #ifndef CONFIG_NUMA
+ 	VMCOREINFO_SYMBOL(contig_page_data);
+ #endif
++	VMCOREINFO_SYMBOL(cur_cpu_spec);
++	VMCOREINFO_OFFSET(cpu_spec, mmu_features);
+ #if defined(CONFIG_PPC64) && defined(CONFIG_SPARSEMEM_VMEMMAP)
+ 	VMCOREINFO_SYMBOL(vmemmap_list);
+ 	VMCOREINFO_SYMBOL(mmu_vmemmap_psize);
 -- 
-js
-suse labs
+2.41.0
 
