@@ -2,76 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FA1A79A832
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Sep 2023 15:12:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC0B779A840
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Sep 2023 15:20:01 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=mSW0q6ME;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=1vgu7+3t;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iXzbrho4;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iXzbrho4;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RknDx4QVKz3cVK
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Sep 2023 23:12:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RknPq56Dlz3c4w
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Sep 2023 23:19:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=mSW0q6ME;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=1vgu7+3t;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iXzbrho4;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iXzbrho4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=piliu@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RknC715trz30PJ
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Sep 2023 23:10:43 +1000 (AEST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RknNy59Zhz2xdm
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Sep 2023 23:19:13 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1694438349;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=23bwaDVIUeu1xrOkLjrcpotMczUMf0CbTLoopyLaEdA=;
+	b=iXzbrho4CyMdNk5a0t2AzfHrF/4qM096Hz1OYsHBkVLiNvpAaTn9ByMJq0bTTgqtgTeKaU
+	i46FtA96wZ0jdnfI6+Ig7NVKH4kQvYtnHG0Q+gGOAYj1KHgh3FZhXUV2MiunW4SFcDfo5K
+	/foYHZhwVqF48Or7GZ98hUYdWJgANuU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1694438349;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=23bwaDVIUeu1xrOkLjrcpotMczUMf0CbTLoopyLaEdA=;
+	b=iXzbrho4CyMdNk5a0t2AzfHrF/4qM096Hz1OYsHBkVLiNvpAaTn9ByMJq0bTTgqtgTeKaU
+	i46FtA96wZ0jdnfI6+Ig7NVKH4kQvYtnHG0Q+gGOAYj1KHgh3FZhXUV2MiunW4SFcDfo5K
+	/foYHZhwVqF48Or7GZ98hUYdWJgANuU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-33-6aQ1HiQLPTmuF6_IFR5hlw-1; Mon, 11 Sep 2023 09:19:05 -0400
+X-MC-Unique: 6aQ1HiQLPTmuF6_IFR5hlw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 1C6C81F8B3;
-	Mon, 11 Sep 2023 13:10:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1694437840; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jV/rHFCKWKhe5o/Dlji+h0tSxNvEv9pGQp8HF0qfFsw=;
-	b=mSW0q6MEj1KPMzPB3d033smSU/+7P1DQZVJqlxl4zkjcvaNs0tKzMPrs+l0BU4UwLspSEz
-	dPPl6Og7wtUn0CnjdgtL8nIdW8oOgLfPq0SNe2p+1ylQv9frtr6w0t6HLCjs9CiOGppeLM
-	Yg90LmS9KjNGcMjrbiE+VLEQtoXug14=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1694437840;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jV/rHFCKWKhe5o/Dlji+h0tSxNvEv9pGQp8HF0qfFsw=;
-	b=1vgu7+3tLZznWqsP9qfvBNfnUnK3VaR8QMmFTtpI2YuFLcX8K/kILGi/DxpMWvVMqpVEQC
-	D8E9OsoTutCCHgBQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id C895F13780;
-	Mon, 11 Sep 2023 13:10:39 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id 0AuGL88R/2SCIwAAMHmgww
-	(envelope-from <tzimmermann@suse.de>); Mon, 11 Sep 2023 13:10:39 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	christophe.leroy@csgroup.eu,
-	arnd@arndb.de,
-	deller@gmx.de
-Subject: [PATCH v3 5/5] arch/powerpc: Call internal __phys_mem_access_prot() in fbdev code
-Date: Mon, 11 Sep 2023 15:08:35 +0200
-Message-ID: <20230911131033.27745-6-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911131033.27745-1-tzimmermann@suse.de>
-References: <20230911131033.27745-1-tzimmermann@suse.de>
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 26680101A529;
+	Mon, 11 Sep 2023 13:19:05 +0000 (UTC)
+Received: from piliu.users.ipa.redhat.com (unknown [10.72.120.8])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 8DE692156701;
+	Mon, 11 Sep 2023 13:19:00 +0000 (UTC)
+From: Pingfan Liu <piliu@redhat.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCHv6 0/3] enable nr_cpus for powerpc
+Date: Mon, 11 Sep 2023 21:18:52 +0800
+Message-Id: <20230911131855.40738-1-piliu@redhat.com>
 MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"; x-default=true
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,36 +77,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-fbdev@vger.kernel.org, linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-m68k@lists.linux-m68k.org, Thomas Zimmermann <tzimmermann@suse.de>, sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Baoquan He <bhe@redhat.com>, Pingfan Liu <piliu@redhat.com>, kexec@lists.infradead.org, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Ming Lei <ming.lei@redhat.com>, Wen Xiong <wenxiong@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Call __phys_mem_access_prot() from the fbdev mmap helper
-pgprot_framebuffer(). Allows to avoid the file argument of NULL.
+Since my last v4 [1], the code has undergone great changes. The paca[]
+array has been reorganized and indexed by paca_ptrs[], which
+dramatically decreases the memory consumption even if there are many
+unpresent cpus in the middle.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
----
- arch/powerpc/include/asm/fb.h | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+However, reordering the logical cpu numbers can further decrease the
+size of paca_ptrs[] in the kdump case. So I keep [1/3], which
+rotate-shifts the cpu's sequence number in the device tree to obtain the
+logical cpu id.
 
-diff --git a/arch/powerpc/include/asm/fb.h b/arch/powerpc/include/asm/fb.h
-index 3cecf14d51de8..c0c5d1df7ad1e 100644
---- a/arch/powerpc/include/asm/fb.h
-+++ b/arch/powerpc/include/asm/fb.h
-@@ -8,12 +8,7 @@ static inline pgprot_t pgprot_framebuffer(pgprot_t prot,
- 					  unsigned long vm_start, unsigned long vm_end,
- 					  unsigned long offset)
- {
--	/*
--	 * PowerPC's implementation of phys_mem_access_prot() does
--	 * not use the file argument. Set it to NULL in preparation
--	 * of later updates to the interface.
--	 */
--	return phys_mem_access_prot(NULL, PHYS_PFN(offset), vm_end - vm_start, prot);
-+	return __phys_mem_access_prot(PHYS_PFN(offset), vm_end - vm_start, prot);
- }
- #define pgprot_framebuffer pgprot_framebuffer
- 
+Patch [2-3/3] make efforts to decrease the nr_cpus to be less than or
+equal to two.
+
+[1]: https://lore.kernel.org/linuxppc-dev/1520829790-14029-1-git-send-email-kernelfans@gmail.com/
+
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Cc: Wen Xiong <wenxiong@linux.ibm.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Ming Lei <ming.lei@redhat.com>
+Cc: kexec@lists.infradead.org
+To: linuxppc-dev@lists.ozlabs.org
+
+v5 -> v6:
+  assign nr_cpu_ids by set_nr_cpu_ids() to tackle with the issue if nr_cpu_ids is
+configured as a constant
+
+Pingfan Liu (3):
+  powerpc/setup: Loosen the mapping between cpu logical id and its seq
+    in dt
+  powerpc/setup: Handle the case when boot_cpuid greater than nr_cpus
+  powerpc/setup: alloc extra paca_ptrs to hold boot_cpuid
+
+ arch/powerpc/kernel/paca.c         |  10 +--
+ arch/powerpc/kernel/prom.c         |  28 +++++---
+ arch/powerpc/kernel/setup-common.c | 106 ++++++++++++++++++++++++-----
+ 3 files changed, 113 insertions(+), 31 deletions(-)
+
 -- 
-2.42.0
+2.31.1
 
