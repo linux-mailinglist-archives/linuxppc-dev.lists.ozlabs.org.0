@@ -2,57 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96939799F46
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Sep 2023 20:01:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E43479A2D7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Sep 2023 07:31:32 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WNCcNX0j;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pSA9Hybv;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RkHj03p7Tz3cD7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Sep 2023 04:01:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rkb1G0dV8z3c57
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Sep 2023 15:31:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WNCcNX0j;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pSA9Hybv;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=lists.ozlabs.org)
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RkHh20hs2z2ygY
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Sep 2023 04:00:34 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 55F8FB80CA9;
-	Sun, 10 Sep 2023 18:00:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D277FC433C8;
-	Sun, 10 Sep 2023 18:00:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1694368821;
-	bh=7pMVydPneVg3URKXwfaH+adzpHN2LLjVZsTSGuRN/Dc=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=WNCcNX0j78tRLBxMWD5xHUNdVWsV4X1c4GJprcT9133xluNlViXTJ+y1MbbMmvw4S
-	 9l6p0mwmq1ciXkoHmtsYyK8lFvb1p3EVodnEbrR25eIRn+6jRHWBjTxm2wzjyRS6Mh
-	 /jvEouU2JwW8Gm/EnKA/L+ncaZS7ANxE1SqxSdP9VAlRZQQbAQGSZNr44Pfjzomk2O
-	 YmugA3EJ+2/4ZTwGg7O1MhyTBgt+SEpxLAiqRaqU5NrZ9WSluxkkNsOvrlaLWdV7jR
-	 voEyBX1vKb3bWRjPhlJDd4v26hqNBBRPVghPsTewXgHu/u+K2aUEWjjrhAgY/J0FrG
-	 nZp7NWsEXqO2w==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id B8F74F1D6A8;
-	Sun, 10 Sep 2023 18:00:21 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 00/11] add missing of_node_put
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id:  <169436882175.20878.16500068409286410519.git-patchwork-notify@kernel.org>
-Date: Sun, 10 Sep 2023 18:00:21 +0000
-References: <20230907095521.14053-1-Julia.Lawall@inria.fr>
-In-Reply-To: <20230907095521.14053-1-Julia.Lawall@inria.fr>
-To: Julia Lawall <julia.lawall@inria.fr>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rkb0N4jFVz30fk;
+	Mon, 11 Sep 2023 15:30:43 +1000 (AEST)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38B58sex019506;
+	Mon, 11 Sep 2023 05:30:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=/apmyYlDFcp9QzOO9NRRrWiQUrCwuIqBtIy16R70c2Q=;
+ b=pSA9Hybv0ds0WHG7vHLjn3wr3Lo3fS/yukiH9uGUS5LRc00oWlXQnEhDjr8LcXWnFyJ5
+ sHvmHUw+4sSruSi2sBEfdtsDa7n+wCFh1GzXArBhPNjRCrprPhsYuanXsl59VGybkuKm
+ hs359vTkj4ku5vLURSp/LnUkdKUYiDnt5Lf/XUQW8ryB0mY7CHSlX8gIeIdzIeD5WJNj
+ bjH2da7T5lOpLgjt1oYaFhn+B5Gg9lC3hmgkezZI1J1GgpajI+AteB7T21GEsoNyJNaQ
+ NXAVoaC0J+bNT92VoL77Y3OiVSox5TTZ2FGhG5n4ZCNugITdm/TUMCzN0OQO8KGIXNiS JA== 
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t1m3p8jpu-5
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 Sep 2023 05:30:37 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 38B3qOZu024103;
+	Mon, 11 Sep 2023 05:01:47 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3t131sr9ep-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 Sep 2023 05:01:47 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 38B51iCo44040736
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 11 Sep 2023 05:01:44 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B32FB20043;
+	Mon, 11 Sep 2023 05:01:44 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1459220040;
+	Mon, 11 Sep 2023 05:01:43 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.43.122.71])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 11 Sep 2023 05:01:42 +0000 (GMT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.700.6\))
+Subject: Re: [PATCH V5 3/3] skiboot: Update IMC PMU node names for power10
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <f45ca55e-7d63-451a-9763-d3a6b8196179@arbab-laptop>
+Date: Mon, 11 Sep 2023 10:31:31 +0530
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <7B2C376F-4326-4C79-9EEA-FD1EC2E677FC@linux.vnet.ibm.com>
+References: <20230717032431.33778-1-atrajeev@linux.vnet.ibm.com>
+ <20230717032431.33778-3-atrajeev@linux.vnet.ibm.com>
+ <f45ca55e-7d63-451a-9763-d3a6b8196179@arbab-laptop>
+To: Reza Arbab <arbab@linux.ibm.com>
+X-Mailer: Apple Mail (2.3731.700.6)
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: AXw5x_VqzSfQgLQ0MVDjax1DmsAabdra
+X-Proofpoint-GUID: AXw5x_VqzSfQgLQ0MVDjax1DmsAabdra
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-11_02,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 spamscore=0
+ clxscore=1015 impostorscore=0 priorityscore=1501 malwarescore=0
+ phishscore=0 mlxlogscore=999 suspectscore=0 lowpriorityscore=0
+ adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309110046
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,42 +93,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, linux-pm@vger.kernel.org, netdev@vger.kernel.org, dri-devel@lists.freedesktop.org, amitk@kernel.org, kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org, npiggin@gmail.com, linux-mediatek@lists.infradead.org, bcm-kernel-feedback-list@broadcom.com, linux-mmc@vger.kernel.org, rui.zhang@intel.com, linux-media@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, angelogioacchino.delregno@collabora.com
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, =?utf-8?Q?Dan_Hor=C3=A1k?= <dan@danny.cz>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>, skiboot@lists.ozlabs.org, Disha Goel <disgoel@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello:
 
-This patch was applied to netdev/net.git (main)
-by David S. Miller <davem@davemloft.net>:
 
-On Thu,  7 Sep 2023 11:55:10 +0200 you wrote:
-> Add of_node_put on a break out of an of_node loop.
-> 
-> ---
-> 
->  arch/powerpc/kexec/file_load_64.c                    |    8 ++++++--
->  arch/powerpc/platforms/powermac/low_i2c.c            |    4 +++-
->  arch/powerpc/platforms/powermac/smp.c                |    4 +++-
->  drivers/bus/arm-cci.c                                |    4 +++-
->  drivers/genpd/ti/ti_sci_pm_domains.c                 |    8 ++++++--
->  drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c      |    4 +++-
->  drivers/gpu/drm/mediatek/mtk_drm_drv.c               |    4 +++-
->  drivers/media/platform/mediatek/mdp3/mtk-mdp3-comp.c |    1 +
->  drivers/mmc/host/atmel-mci.c                         |    8 ++++++--
->  drivers/net/ethernet/broadcom/asp2/bcmasp.c          |    1 +
->  drivers/soc/dove/pmu.c                               |    5 ++++-
->  drivers/thermal/thermal_of.c                         |    8 ++++++--
->  sound/soc/sh/rcar/core.c                             |    1 +
->  13 files changed, 46 insertions(+), 14 deletions(-)
+> On 10-Aug-2023, at 3:28 AM, Reza Arbab <arbab@linux.ibm.com> wrote:
+>=20
+> On Mon, Jul 17, 2023 at 08:54:31AM +0530, Athira Rajeev wrote:
+>> @@ -408,14 +469,129 @@ static void disable_unavailable_units(struct =
+dt_node *dev)
+>> avl_vec =3D (0xffULL) << 56;
+>> }
+>>=20
+>> - for (i =3D 0; i < ARRAY_SIZE(nest_pmus); i++) {
+>> - if (!(PPC_BITMASK(i, i) & avl_vec)) {
+>> - /* Check if the device node exists */
+>> - target =3D dt_find_by_name_before_addr(dev, nest_pmus[i]);
+>> - if (!target)
+>> - continue;
+>> - /* Remove the device node */
+>> - dt_free(target);
+>> + if (proc_gen =3D=3D proc_gen_p9) {
+>> + for (i =3D 0; i < ARRAY_SIZE(nest_pmus_p9); i++) {
+>> + if (!(PPC_BITMASK(i, i) & avl_vec)) {
+>=20
+> I think all these PPC_BITMASK(i, i) can be changed to PPC_BIT(i).
 
-Here is the summary with links:
-  - [02/11] net: bcmasp: add missing of_node_put
-    https://git.kernel.org/netdev/net/c/e73d1ab6cd7e
+Hi Reza,
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Thanks for reviewing the changes.
+Yes. I will add the change in next version
 
+Thanks
+Athira
+>=20
+>> + /* Check if the device node exists */
+>> + target =3D dt_find_by_name_before_addr(dev, nest_pmus_p9[i]);
+>> + if (!target)
+>> + continue;
+>> + /* Remove the device node */
+>> + dt_free(target);
+>> + }
+>> + }
+>> + } else if (proc_gen =3D=3D proc_gen_p10) {
+>> + int val;
+>> + char name[8];
+>> +
+>> + for (i =3D 0; i < 11; i++) {
+>> + if (!(PPC_BITMASK(i, i) & avl_vec)) {
+>> + /* Check if the device node exists */
+>> + target =3D dt_find_by_name_before_addr(dev, nest_pmus_p10[i]);
+>> + if (!target)
+>> + continue;
+>> + /* Remove the device node */
+>> + dt_free(target);
+>> + }
+>> + }
+>> +
+>> + for (i =3D 35; i < 41; i++) {
+>> + if (!(PPC_BITMASK(i, i) & avl_vec)) {
+>> + /* Check if the device node exists for phb */
+>> + for (j =3D 0; j < 3; j++) {
+>> + snprintf(name, sizeof(name), "phb%d_%d", (i-35), j);
+>> + target =3D dt_find_by_name_before_addr(dev, name);
+>> + if (!target)
+>> + continue;
+>> + /* Remove the device node */
+>> + dt_free(target);
+>> + }
+>> + }
+>> + }
+>> +
+>> + for (i =3D 41; i < 58; i++) {
+>> + if (!(PPC_BITMASK(i, i) & avl_vec)) {
+>> + /* Check if the device node exists */
+>> + target =3D dt_find_by_name_before_addr(dev, nest_pmus_p10[i]);
+>> + if (!target)
+>> + continue;
+>> + /* Remove the device node */
+>> + dt_free(target);
+>> + }
+>> + }
+>=20
+> --=20
+> Reza Arbab
 
