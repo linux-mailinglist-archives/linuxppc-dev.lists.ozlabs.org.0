@@ -1,60 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5977979CC62
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Sep 2023 11:50:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E228C79CD72
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Sep 2023 12:11:25 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ueMO6ien;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=ORpXVav/;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RlJk11Tmtz3cNK
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Sep 2023 19:50:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RlK9l5vN6z3cD0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Sep 2023 20:11:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ueMO6ien;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=ORpXVav/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.194; helo=relay2-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RlJj56yGyz3c3q
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Sep 2023 19:50:01 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 813C3616B6;
-	Tue, 12 Sep 2023 09:49:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 229BCC43395;
-	Tue, 12 Sep 2023 09:49:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1694512196;
-	bh=iIW7ciGWybIARozzfiRHtOz95Ez3pQ72Bb9zv5s25O4=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=ueMO6ienw+FxLK4joCzSYY6ODFNbmyw2ZVZS4SLV+q0gdsvP13kQPbNMeRxiYaIex
-	 R1tbQO6X4qyb1TOHjTIu8mC1/LYRzfJSV1/FnKongdVWOUbVgrEVumBuw7jiIHfVm4
-	 5ajfx+/abCKX3IW0w2UHNVUWFp9+InyfR8w/j5CLy0I0B87ZRTqmBlcIGaq/ZIyMAD
-	 PyzPRwlIvc1DMQnL4u5vC4j9RnME2dZ7+U1vTsMJYyff3UHoUjKCB7ESPG6T8yPDa4
-	 5IMFWYvqr9Yvxt5YO5BW5Xoj2OgibYec9P7rt77g3nUUlfiMgAHEHs0rUY5eKiM48Y
-	 W5WCiv25FzynQ==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 12 Sep 2023 12:49:52 +0300
-Message-Id: <CVGUFUEQVCHS.37OA20PNG9EVB@suppilovahvero>
-Subject: Re: [PATCH] integrity: powerpc: Do not select CA_MACHINE_KEYRING
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: =?utf-8?q?Michal_Such=C3=A1nek?= <msuchanek@suse.de>, "Nayna"
- <nayna@linux.vnet.ibm.com>
-X-Mailer: aerc 0.14.0
-References: <20230907165224.32256-1-msuchanek@suse.de>
- <20230907173232.GD8826@kitsune.suse.cz>
- <92e23f29-1a16-54da-48d1-59186158e923@linux.vnet.ibm.com>
- <20230912074116.GL8826@kitsune.suse.cz>
-In-Reply-To: <20230912074116.GL8826@kitsune.suse.cz>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RlK8t0nLZz3c5j
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Sep 2023 20:10:36 +1000 (AEST)
+Received: by mail.gandi.net (Postfix) with ESMTPA id E1B7040003;
+	Tue, 12 Sep 2023 10:10:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1694513431;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=e9HcidEq+A9xaDn4cDf1UskGOrMSLdgPTMn8dmPNgNc=;
+	b=ORpXVav/8v2nGgIh1dhRskAUabjXdDfQkWSO1dPfulthcfojOC1x3Se99trJUjBUSLjazj
+	cZXt26HWVi8pA5p3xDR83S9/uTZzIcqKh66BH98cuE5TBUpTPboObIHEgt3e8m/ztRcZ+f
+	/zB4fS+cnSvIs3mDXIbEoIeHW2UGP7h5v/ZSpOD87nOMzEqoSgxdEKEY6qdUGSC0neU5eb
+	9tiYOYBGCBTReAwTV4JDfrYAaEIHACZqzjKK9zeeXeOsj9HoPQ4sAXzZYi7F9xzo9LxMyu
+	1t1ygsOzh0UTT1ABmjnoE/Yi9M/KRTvWe2VmQXD2MrlYNbvRnzyqCsnqK6E/Cg==
+From: Herve Codina <herve.codina@bootlin.com>
+To: Herve Codina <herve.codina@bootlin.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Qiang Zhao <qiang.zhao@nxp.com>,
+	Li Yang <leoyang.li@nxp.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Randy Dunlap <rdunlap@infradead.org>
+Subject: [PATCH v5 08/31] dt-bindings: soc: fsl: cpm_qe: cpm1-scc-qmc: Add support for QMC HDLC
+Date: Tue, 12 Sep 2023 12:10:18 +0200
+Message-ID: <20230912101018.225246-1-herve.codina@bootlin.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230912081527.208499-1-herve.codina@bootlin.com>
+References: <20230912081527.208499-1-herve.codina@bootlin.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,56 +79,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Eric Snowberg <eric.snowberg@oracle.com>, Paul Moore <paul@paul-moore.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, Nayna Jain <nayna@linux.ibm.com>, James Morris <jmorris@namei.org>, Mimi Zohar <zohar@linux.ibm.com>, linux-kernel@vger.kernel.org, joeyli <jlee@suse.com>, linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "Serge E.
- Hallyn" <serge@hallyn.com>
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, Christophe JAILLET <christophe.jaillet@wanadoo.fr>, Simon Horman <horms@kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue Sep 12, 2023 at 10:41 AM EEST, Michal Such=C3=A1nek wrote:
-> On Mon, Sep 11, 2023 at 11:39:38PM -0400, Nayna wrote:
-> >=20
-> > On 9/7/23 13:32, Michal Such=C3=A1nek wrote:
-> > > Adding more CC's from the original patch, looks like get_maintainers =
-is
-> > > not that great for this file.
-> > >=20
-> > > On Thu, Sep 07, 2023 at 06:52:19PM +0200, Michal Suchanek wrote:
-> > > > No other platform needs CA_MACHINE_KEYRING, either.
-> > > >=20
-> > > > This is policy that should be decided by the administrator, not Kco=
-nfig
-> > > > dependencies.
-> >=20
-> > We certainly agree that flexibility is important. However, in this case=
-,
-> > this also implies that we are expecting system admins to be security
-> > experts. As per our understanding, CA based infrastructure(PKI) is the
-> > standard to be followed and not the policy decision. And we can only sp=
-eak
-> > for Power.
-> >=20
-> > INTEGRITY_CA_MACHINE_KEYRING ensures that we always have CA signed leaf
-> > certs.
->
-> And that's the problem.
->
-> From a distribution point of view there are two types of leaf certs:
->
->  - leaf certs signed by the distribution CA which need not be imported
->    because the distribution CA cert is enrolled one way or another
->  - user generated ad-hoc certificates that are not signed in any way,
->    and enrolled by the user
->
-> The latter are vouched for by the user by enrolling the certificate, and
-> confirming that they really want to trust this certificate. Enrolling
-> user certificates is vital for usability or secure boot. Adding extra
-> step of creating a CA certificate stored on the same system only
-> complicates things with no added benefit.
+The QMC (QUICC mutichannel controller) is a controller present in some
+PowerQUICC SoC such as MPC885.
+The QMC HDLC uses the QMC controller to transfer HDLC data.
 
-This all comes down to the generic fact that kernel should not
-proactively define what it *expects* sysadmins.
+Additionally, a framer can be connected to the QMC HDLC.
+If present, this framer is the interface between the TDM bus used by the
+QMC HDLC and the E1/T1 line.
+The QMC HDLC can use this framer to get information about the E1/T1 line
+and configure the E1/T1 line.
 
-CA based infrastructure like anything is a policy decision not
-a decision to be enforced by kernel.
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+---
+ .../bindings/soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml   | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-BR, Jarkko
+diff --git a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml
+index 82d9beb48e00..b5073531f3f1 100644
+--- a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml
++++ b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml
+@@ -101,6 +101,16 @@ patternProperties:
+           Channel assigned Rx time-slots within the Rx time-slots routed by the
+           TSA to this cell.
+ 
++      compatible:
++        const: fsl,qmc-hdlc
++
++      fsl,framer:
++        $ref: /schemas/types.yaml#/definitions/phandle
++        description:
++          phandle to the framer node. The framer is in charge of an E1/T1 line
++          interface connected to the TDM bus. It can be used to get the E1/T1 line
++          status such as link up/down.
++
+     required:
+       - reg
+       - fsl,tx-ts-mask
+@@ -159,5 +169,8 @@ examples:
+             fsl,operational-mode = "hdlc";
+             fsl,tx-ts-mask = <0x00000000 0x0000ff00>;
+             fsl,rx-ts-mask = <0x00000000 0x0000ff00>;
++
++            compatible = "fsl,qmc-hdlc";
++            fsl,framer = <&framer>;
+         };
+     };
+-- 
+2.41.0
+
