@@ -1,69 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A09D79D30F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Sep 2023 16:01:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2954479D3BC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Sep 2023 16:32:47 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=MqaNon/5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IzfFF5eS;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RlQGs3m87z3dJb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Sep 2023 00:01:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RlQzJ6v5Rz3dH6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Sep 2023 00:32:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=MqaNon/5;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IzfFF5eS;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::82c; helo=mail-qt1-x82c.google.com; envelope-from=irogers@google.com; receiver=lists.ozlabs.org)
-Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RlQFx0n0Rz3cD0
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Sep 2023 00:00:20 +1000 (AEST)
-Received: by mail-qt1-x82c.google.com with SMTP id d75a77b69052e-414ba610766so334911cf.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Sep 2023 07:00:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1694527215; x=1695132015; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GDs/ms03yISSc3Q3UiOqo0nosrYG3nv1ybC8XW7Xs6s=;
-        b=MqaNon/59OlMhMQSUby83AqHxSIWA/LRD4Dr/qP6h9tQn2BD4ZgMwvZl5qeSGL9mvY
-         1kYa2LTQLCjA0Ds9l/IMoHkMIuP+k4KnxB+g0/QsZCgaLlPe2sY5eY7qpHOSvGj5rsVu
-         6kjBRZUc5GMhtpahq1H4LbTR23BHoNBElTxgDLgW4oXLaWAnJAunAQWunWJPQBKTgguX
-         UHmUNAQw+M2Xofr0pM1jOZ/QldM4Rtr8mS/c2t/gs5t68bWNitFXbYV8QT1VbIraOOXd
-         OvbjEDvljlGd5QY7F2gAMdtDL1kSwwi5Lq5VVBXHnLfBdx6FWSl7OSzn3er7Z2qVPqrF
-         eVVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694527215; x=1695132015;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GDs/ms03yISSc3Q3UiOqo0nosrYG3nv1ybC8XW7Xs6s=;
-        b=bKpnmOR+ULynZ4nRHqmKi9bFzhzKch3kyL6nHkTGNO/M2xD+Wn8qvG90GkXAFYX7CO
-         IwpAgVokWk3za44AqFz7AGdJPQqdNMIDZ/kuqAOgbEnSK7P23E90ah8bxXhs/3I0Jh6s
-         ujpKWJVe6R/9GYjs7YIrVg8a32K22VQgHR10S4jxm3zGpZnii+6cbmfDK6RkvBOu7SRD
-         4UNQgeHRAJNaSY8/nfGtdz4QZJOyqc69LhT90dwKIjImhNGyjM84Z7cy/MAsaNnpYKN2
-         0/efNGZqiDQoJdEshmgYyX4dUCxy/3jprHxStX2g2ZHSJ3qvbD4NNK9/kQWHIogInu8K
-         54jg==
-X-Gm-Message-State: AOJu0YzCLQYckR94w55ULpww7cgFL+x0Akh1iLV0cnkkP3qrgOtHaMyg
-	2e/YLS2g3HFUP+Hp2gbMrnOZLXjKIosQ22eJKtZm2Q==
-X-Google-Smtp-Source: AGHT+IEo8w3504Qe2c4oLczzX+JcbZh6VtZSHm+Cg+yDS5SdjKyydJl6tkOJB8VZGXLP2wgtRLqeFGyfO5BrT0idoz0=
-X-Received: by 2002:ac8:7dd5:0:b0:3de:1aaa:42f5 with SMTP id
- c21-20020ac87dd5000000b003de1aaa42f5mr207058qte.15.1694527214305; Tue, 12 Sep
- 2023 07:00:14 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RlQyQ32Xxz3cJ0
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Sep 2023 00:31:58 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by sin.source.kernel.org (Postfix) with ESMTPS id A2F1BCE1AE5;
+	Tue, 12 Sep 2023 14:31:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C545DC433C7;
+	Tue, 12 Sep 2023 14:31:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1694529113;
+	bh=nCDXCDraqsGo2IZGYAIOuK+jrylfUNs1NltItNEvSsQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IzfFF5eS0jKjFYDvO5isyKITSFx9Gnoou/xv7WTkxJg7qowQ87WM6A8bDeU4fZUs1
+	 v+AU3kBJHoO/qvhkLBzY1LHIpY+mFTnKXIPiUxYl/w3RS3wkGKbFB69UBKlSVcpHoO
+	 R9UMiesRBocyKoVCX9r61gVBb0m6a5HpXfKUD+oA6NSEynLpVPIsfvefLOWbcbq1lx
+	 JGxEqnf0JXnj8shzNl1oXaeaaONd/2cX0VDR3d3YkhmkxsgAFwQcbMbGIsdIR/eV5I
+	 SgC7qCUyKhiuK2IY0LWMINLlX//w2erE1Q9rltkmWhDbYoOgH/htDJbxJx4vH1fshy
+	 XtHNCvawzd3Vg==
+Date: Tue, 12 Sep 2023 15:31:44 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH v5 28/31] pinctrl: Add support for the Lantic PEF2256
+ pinmux
+Message-ID: <71761f94-14ea-4e2a-a079-c74dfa32387a@sirena.org.uk>
+References: <20230912081527.208499-1-herve.codina@bootlin.com>
+ <20230912101505.225899-1-herve.codina@bootlin.com>
+ <CACRpkdbxdMZt4E1SF1v9as-jw=TpvS1mk2TQqAgywMBLbKaNoA@mail.gmail.com>
 MIME-Version: 1.0
-References: <20230912063807.74250-1-atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <20230912063807.74250-1-atrajeev@linux.vnet.ibm.com>
-From: Ian Rogers <irogers@google.com>
-Date: Tue, 12 Sep 2023 07:00:00 -0700
-Message-ID: <CAP-5=fU644=VvHf1JcQ1LN7tb_wAkrnrE+n4xCVyWae=UxTFyg@mail.gmail.com>
-Subject: Re: [PATCH V3] tools/perf: Add includes for detected configs in Makefile.perf
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="rHoxlvq7D/pkDAXf"
+Content-Disposition: inline
+In-Reply-To: <CACRpkdbxdMZt4E1SF1v9as-jw=TpvS1mk2TQqAgywMBLbKaNoA@mail.gmail.com>
+X-Cookie: Mickey Mouse wears a Spiro Agnew watch.
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,67 +66,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maddy@linux.ibm.com, kjain@linux.ibm.com, acme@kernel.org, linux-perf-users@vger.kernel.org, jolsa@kernel.org, namhyung@kernel.org, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: Andrew Lunn <andrew@lunn.ch>, alsa-devel@alsa-project.org, Herve Codina <herve.codina@bootlin.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Jaroslav Kysela <perex@perex.cz>, Eric Dumazet <edumazet@google.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Fabio Estevam <festevam@gmail.com>, Qiang Zhao <qiang.zhao@nxp.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Lee Jones <lee@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, Nicolin Chen <nicoleotsuka@gmail.com>, linux-gpio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Christophe JAILLET <christophe.jaillet@wanadoo.fr>, Takashi Iwai <tiwai@suse.com>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>, Liam Girdwood <lgirdwood@gmail.com>, Li Yang <leoyang.li@nxp.com>, Simon Horman <horms@kernel.org>, lin
+ uxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Sep 11, 2023 at 11:38=E2=80=AFPM Athira Rajeev
-<atrajeev@linux.vnet.ibm.com> wrote:
->
-> Makefile.perf uses "CONFIG_*" checks in the code. Example the config
-> for libtraceevent is used to set PYTHON_EXT_SRCS
->
->         ifeq ($(CONFIG_LIBTRACEEVENT),y)
->           PYTHON_EXT_SRCS :=3D $(shell grep -v ^\# util/python-ext-source=
-s)
->         else
->           PYTHON_EXT_SRCS :=3D $(shell grep -v '^\#\|util/trace-event.c' =
-util/python-ext-sources)
->         endif
->
-> But this is not picking the value for CONFIG_LIBTRACEEVENT that is
-> set using the settings in Makefile.config. Include the file
-> ".config-detected" so that make will use the system detected
-> configuration in the CONFIG checks. This will fix isues that
-> could arise when other "CONFIG_*" checks are added to Makefile.perf
-> in future as well.
->
-> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 
-Reviewed-by: Ian Rogers <irogers@google.com>
+--rHoxlvq7D/pkDAXf
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks,
-Ian
+On Tue, Sep 12, 2023 at 01:04:56PM +0200, Linus Walleij wrote:
+> On Tue, Sep 12, 2023 at 12:15=E2=80=AFPM Herve Codina <herve.codina@bootl=
+in.com> wrote:
 
-> ---
-> Changelog:
-> v2 -> v3:
-> Added -include since in some cases make clean or make
-> will fail when config is not included and if config-detected
-> file is not present.
->
-> v1 -> v2:
-> Added $(OUTPUT) prefix to config-detected as pointed
-> out by Ian
->
->  tools/perf/Makefile.perf | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
-> index 37af6df7b978..f6fdc2d5a92f 100644
-> --- a/tools/perf/Makefile.perf
-> +++ b/tools/perf/Makefile.perf
-> @@ -351,6 +351,9 @@ export PYTHON_EXTBUILD_LIB PYTHON_EXTBUILD_TMP
->
->  python-clean :=3D $(call QUIET_CLEAN, python) $(RM) -r $(PYTHON_EXTBUILD=
-) $(OUTPUT)python/perf*.so
->
-> +# Use the detected configuration
-> +-include $(OUTPUT).config-detected
-> +
->  ifeq ($(CONFIG_LIBTRACEEVENT),y)
->    PYTHON_EXT_SRCS :=3D $(shell grep -v ^\# util/python-ext-sources)
->  else
-> --
-> 2.31.1
->
+> > +/* SPDX-License-Identifier: GPL-2.0 */
+> > +/*
+
+> I think SPDX mandates that you start the tag with C99 comments
+
+> // SPDX-License-Identifier: GPL-2.0-only
+
+Not for headers, they should use C style since they might be included in
+contexts where C++ isn't supported.
+
+--rHoxlvq7D/pkDAXf
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmUAdlAACgkQJNaLcl1U
+h9AGMQf/fLsnOOVZlCeXkVRLWX87qtu4s7nr7P5jfwyYxnA4Bhl8MwftHW5rxDOf
+TJcMOnHaQLx46ThWnYrWFopJsLO9g5x+NTP78wZTRCXJaJp4usJtpbNzUm4JAgfr
+wJ7T2LLNlVFW5eJfODg+A+sL23DKqJ0B6MwZDixKhNM0tRYibE5ULV+DGzqxyvgz
+yBkeRf5GWl9c4qVLP9Qg2VGx/9jbeOjiYGTd3LWeqJ6HxR8EItWZvKS72fGhOw+t
+dp3VMrMnK9/HtTllRrE+m9GWdtkjG+FjaBGfp8LhzJ1IvYZb+Hyic+EVrTIQ+aC3
+xmRd5GYPdrIG1w50Eci2Fa5Zqd4N4A==
+=vkfj
+-----END PGP SIGNATURE-----
+
+--rHoxlvq7D/pkDAXf--
