@@ -2,76 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 819FB79D2EC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Sep 2023 15:55:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A09D79D30F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Sep 2023 16:01:11 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Ew6/ShMt;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=mCQGGEEq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=MqaNon/5;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RlQ7r33Crz3dLc
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Sep 2023 23:55:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RlQGs3m87z3dJb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Sep 2023 00:01:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Ew6/ShMt;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=mCQGGEEq;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=MqaNon/5;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2001:67c:2178:6::1d; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::82c; helo=mail-qt1-x82c.google.com; envelope-from=irogers@google.com; receiver=lists.ozlabs.org)
+Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RlQ3B2Rzhz3cFq
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Sep 2023 23:51:02 +1000 (AEST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 2C8EF1F85D;
-	Tue, 12 Sep 2023 13:50:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1694526653; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jV/rHFCKWKhe5o/Dlji+h0tSxNvEv9pGQp8HF0qfFsw=;
-	b=Ew6/ShMt2eLj+cJ80uJN98SHanYPOov+NxTUOhOU2guO/sjidGDeaB2opl7TgIjsFoZos8
-	iOlarOI9lXf4fNYAryBRhul5DvdlSagyy+aXg3gIylx9rejm+0l1lebNZd9nDylzoTpDG0
-	KnwoLVFIiyCSTzh2hKHA6n2k7Nv7/qg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1694526653;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jV/rHFCKWKhe5o/Dlji+h0tSxNvEv9pGQp8HF0qfFsw=;
-	b=mCQGGEEqAUZk6FbEVgwGjMaR7bNzYn80/YZJFR4O0MHHOph1X0dtseZydWjo0aeJynBB8b
-	GZfd9/6d+QYFB4Dw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id DF0E913A3B;
-	Tue, 12 Sep 2023 13:50:52 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id OMKiNbxsAGVKQwAAMHmgww
-	(envelope-from <tzimmermann@suse.de>); Tue, 12 Sep 2023 13:50:52 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	christophe.leroy@csgroup.eu,
-	arnd@arndb.de,
-	deller@gmx.de
-Subject: [PATCH v4 5/5] arch/powerpc: Call internal __phys_mem_access_prot() in fbdev code
-Date: Tue, 12 Sep 2023 15:49:03 +0200
-Message-ID: <20230912135050.17155-6-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230912135050.17155-1-tzimmermann@suse.de>
-References: <20230912135050.17155-1-tzimmermann@suse.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RlQFx0n0Rz3cD0
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Sep 2023 00:00:20 +1000 (AEST)
+Received: by mail-qt1-x82c.google.com with SMTP id d75a77b69052e-414ba610766so334911cf.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Sep 2023 07:00:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1694527215; x=1695132015; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GDs/ms03yISSc3Q3UiOqo0nosrYG3nv1ybC8XW7Xs6s=;
+        b=MqaNon/59OlMhMQSUby83AqHxSIWA/LRD4Dr/qP6h9tQn2BD4ZgMwvZl5qeSGL9mvY
+         1kYa2LTQLCjA0Ds9l/IMoHkMIuP+k4KnxB+g0/QsZCgaLlPe2sY5eY7qpHOSvGj5rsVu
+         6kjBRZUc5GMhtpahq1H4LbTR23BHoNBElTxgDLgW4oXLaWAnJAunAQWunWJPQBKTgguX
+         UHmUNAQw+M2Xofr0pM1jOZ/QldM4Rtr8mS/c2t/gs5t68bWNitFXbYV8QT1VbIraOOXd
+         OvbjEDvljlGd5QY7F2gAMdtDL1kSwwi5Lq5VVBXHnLfBdx6FWSl7OSzn3er7Z2qVPqrF
+         eVVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694527215; x=1695132015;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GDs/ms03yISSc3Q3UiOqo0nosrYG3nv1ybC8XW7Xs6s=;
+        b=bKpnmOR+ULynZ4nRHqmKi9bFzhzKch3kyL6nHkTGNO/M2xD+Wn8qvG90GkXAFYX7CO
+         IwpAgVokWk3za44AqFz7AGdJPQqdNMIDZ/kuqAOgbEnSK7P23E90ah8bxXhs/3I0Jh6s
+         ujpKWJVe6R/9GYjs7YIrVg8a32K22VQgHR10S4jxm3zGpZnii+6cbmfDK6RkvBOu7SRD
+         4UNQgeHRAJNaSY8/nfGtdz4QZJOyqc69LhT90dwKIjImhNGyjM84Z7cy/MAsaNnpYKN2
+         0/efNGZqiDQoJdEshmgYyX4dUCxy/3jprHxStX2g2ZHSJ3qvbD4NNK9/kQWHIogInu8K
+         54jg==
+X-Gm-Message-State: AOJu0YzCLQYckR94w55ULpww7cgFL+x0Akh1iLV0cnkkP3qrgOtHaMyg
+	2e/YLS2g3HFUP+Hp2gbMrnOZLXjKIosQ22eJKtZm2Q==
+X-Google-Smtp-Source: AGHT+IEo8w3504Qe2c4oLczzX+JcbZh6VtZSHm+Cg+yDS5SdjKyydJl6tkOJB8VZGXLP2wgtRLqeFGyfO5BrT0idoz0=
+X-Received: by 2002:ac8:7dd5:0:b0:3de:1aaa:42f5 with SMTP id
+ c21-20020ac87dd5000000b003de1aaa42f5mr207058qte.15.1694527214305; Tue, 12 Sep
+ 2023 07:00:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20230912063807.74250-1-atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <20230912063807.74250-1-atrajeev@linux.vnet.ibm.com>
+From: Ian Rogers <irogers@google.com>
+Date: Tue, 12 Sep 2023 07:00:00 -0700
+Message-ID: <CAP-5=fU644=VvHf1JcQ1LN7tb_wAkrnrE+n4xCVyWae=UxTFyg@mail.gmail.com>
+Subject: Re: [PATCH V3] tools/perf: Add includes for detected configs in Makefile.perf
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,36 +75,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-fbdev@vger.kernel.org, linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-m68k@lists.linux-m68k.org, Thomas Zimmermann <tzimmermann@suse.de>, sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: maddy@linux.ibm.com, kjain@linux.ibm.com, acme@kernel.org, linux-perf-users@vger.kernel.org, jolsa@kernel.org, namhyung@kernel.org, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Call __phys_mem_access_prot() from the fbdev mmap helper
-pgprot_framebuffer(). Allows to avoid the file argument of NULL.
+On Mon, Sep 11, 2023 at 11:38=E2=80=AFPM Athira Rajeev
+<atrajeev@linux.vnet.ibm.com> wrote:
+>
+> Makefile.perf uses "CONFIG_*" checks in the code. Example the config
+> for libtraceevent is used to set PYTHON_EXT_SRCS
+>
+>         ifeq ($(CONFIG_LIBTRACEEVENT),y)
+>           PYTHON_EXT_SRCS :=3D $(shell grep -v ^\# util/python-ext-source=
+s)
+>         else
+>           PYTHON_EXT_SRCS :=3D $(shell grep -v '^\#\|util/trace-event.c' =
+util/python-ext-sources)
+>         endif
+>
+> But this is not picking the value for CONFIG_LIBTRACEEVENT that is
+> set using the settings in Makefile.config. Include the file
+> ".config-detected" so that make will use the system detected
+> configuration in the CONFIG checks. This will fix isues that
+> could arise when other "CONFIG_*" checks are added to Makefile.perf
+> in future as well.
+>
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
----
- arch/powerpc/include/asm/fb.h | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+Reviewed-by: Ian Rogers <irogers@google.com>
 
-diff --git a/arch/powerpc/include/asm/fb.h b/arch/powerpc/include/asm/fb.h
-index 3cecf14d51de8..c0c5d1df7ad1e 100644
---- a/arch/powerpc/include/asm/fb.h
-+++ b/arch/powerpc/include/asm/fb.h
-@@ -8,12 +8,7 @@ static inline pgprot_t pgprot_framebuffer(pgprot_t prot,
- 					  unsigned long vm_start, unsigned long vm_end,
- 					  unsigned long offset)
- {
--	/*
--	 * PowerPC's implementation of phys_mem_access_prot() does
--	 * not use the file argument. Set it to NULL in preparation
--	 * of later updates to the interface.
--	 */
--	return phys_mem_access_prot(NULL, PHYS_PFN(offset), vm_end - vm_start, prot);
-+	return __phys_mem_access_prot(PHYS_PFN(offset), vm_end - vm_start, prot);
- }
- #define pgprot_framebuffer pgprot_framebuffer
- 
--- 
-2.42.0
+Thanks,
+Ian
 
+> ---
+> Changelog:
+> v2 -> v3:
+> Added -include since in some cases make clean or make
+> will fail when config is not included and if config-detected
+> file is not present.
+>
+> v1 -> v2:
+> Added $(OUTPUT) prefix to config-detected as pointed
+> out by Ian
+>
+>  tools/perf/Makefile.perf | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
+> index 37af6df7b978..f6fdc2d5a92f 100644
+> --- a/tools/perf/Makefile.perf
+> +++ b/tools/perf/Makefile.perf
+> @@ -351,6 +351,9 @@ export PYTHON_EXTBUILD_LIB PYTHON_EXTBUILD_TMP
+>
+>  python-clean :=3D $(call QUIET_CLEAN, python) $(RM) -r $(PYTHON_EXTBUILD=
+) $(OUTPUT)python/perf*.so
+>
+> +# Use the detected configuration
+> +-include $(OUTPUT).config-detected
+> +
+>  ifeq ($(CONFIG_LIBTRACEEVENT),y)
+>    PYTHON_EXT_SRCS :=3D $(shell grep -v ^\# util/python-ext-sources)
+>  else
+> --
+> 2.31.1
+>
