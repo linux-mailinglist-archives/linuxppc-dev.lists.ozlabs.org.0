@@ -2,61 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D376379DC27
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Sep 2023 00:47:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5778079DC34
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Sep 2023 00:50:20 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=dENn2CK6;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=m5vAzGkP;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rldyb4l9nz3d80
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Sep 2023 08:47:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rlf1Q0wlwz3dlb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Sep 2023 08:50:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=dENn2CK6;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=m5vAzGkP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::432; helo=mail-wr1-x432.google.com; envelope-from=puranjay12@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::329; helo=mail-wm1-x329.google.com; envelope-from=puranjay12@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rldxg0lt4z3c1R
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Sep 2023 08:47:02 +1000 (AEST)
-Received: by mail-wr1-x432.google.com with SMTP id ffacd0b85a97d-313e742a787so195261f8f.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Sep 2023 15:47:02 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rldxg5Y23z3c2r
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Sep 2023 08:47:03 +1000 (AEST)
+Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-401d6f6b2e0so1846945e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Sep 2023 15:47:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694558818; x=1695163618; darn=lists.ozlabs.org;
+        d=gmail.com; s=20221208; t=1694558819; x=1695163619; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sT29HscYryKGVaLS4ITmGogx99J9Puoxilk7JdApwLE=;
-        b=dENn2CK6x26DG5A9iAfvWHgsZ17VStW0Zs/qdpoCHHSx7uYsi5JqyCvfPsGvTQKN0g
-         FWJgXGfNXNtuJvLLL5PoZInr+TSLbJf7gERrRE6FDvmh+PVRzbZyBFRi/jMyPpidGAbv
-         dIW8i+zTMIE3rqekIEWO8RTOak/1PSkpUArL+Yhrj4hL2cgw7XqAvUUCjvGnMgMMzF8n
-         hmZsmcqtqYR0jtasvNEaTdlblJcD9+Zb6UBlhmvo1/BxPa7sSF05OW89TLKcMdEHUeWu
-         G9lm8oEEBceg2A0Kge6ZNEcszw1BMpuqGiPWmvoW9P+puAp+J0k6QkVyyczOETfeAYhj
-         c8XQ==
+        bh=Oda7cl9iVFTkbJ1PzPqgjhpi/bhkWFnkRBdUJ5tFX88=;
+        b=m5vAzGkPzeMnObn5guqSJXmflaB5sPd52/DKEZIbXaRAHSdqCibI6PCzOn7fsQUW4f
+         dV46xiM4RyJ+gETB0B0b8ucOHgrP5USt/3wOxyhIYzp5SCd77H2sCx3yifRuut2EG0q0
+         8biVno/egrdka6Km9v1apZONGQtKQIVBFxbAdf2bLKW9dDX/ENrxVoMv5dV6DxFVZnEu
+         Te5APkzely639OXIrRB1FKjJvUQhE4qnpMXPG/F3cSynSkDsrV1XOd9FsppoJ1CDNWzl
+         fRuGFYLbvloT1eqDdjTE8AlAhoJ2rgDmhGBYrPJ1XPfI0CN9F3jlAS+dMfy69Y7nPZS8
+         VZYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694558818; x=1695163618;
+        d=1e100.net; s=20230601; t=1694558819; x=1695163619;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=sT29HscYryKGVaLS4ITmGogx99J9Puoxilk7JdApwLE=;
-        b=K3s5Mk4Kw0qNJMK0RSifV2NjeeXzsgxaf353Fxt+3YFk6Dgrc+sAK2rucDGECYYXtv
-         z4LhcLREwiwYpHBVURe9tB2PpWbOKQjz/jAllyh4L8R3IRPl7RLZdrHJ6MZN2d1aGnHX
-         o3OCLX6Q6sSNSeGqAW+70qtUkjIzpXHOOz5ywG1PRU2/BsBqyp5CEqPDokS65WdYmWBt
-         tEhSVJUQQLqUZrAIvuORcaqKqrqQpeQN+j/nMU+JxC30ZnOrZGiHt/4ZnOSdug8SougU
-         LsC0WJ68WAGq+GBcBkKncKSE+kVefTp3Pyr2vQoxQoLMSBzwd+vl3vQN9kondXsdvkUT
-         oDpw==
-X-Gm-Message-State: AOJu0YxsaElJFejEtaLDtLtaIZ9KE/qTe4hRQXbisJtzdY36QUgSfsMn
-	buwqNSCkpbGH0fCMTpFHlNE=
-X-Google-Smtp-Source: AGHT+IGmXcseiJIR5TJ93E0zDMbc0daNf/KmJUUYoyIE/Gf3HMcwKKCMLML9MVROQedqC+pALyVq0A==
-X-Received: by 2002:adf:dc85:0:b0:319:5234:5c92 with SMTP id r5-20020adfdc85000000b0031952345c92mr596882wrj.35.1694558818289;
-        Tue, 12 Sep 2023 15:46:58 -0700 (PDT)
+        bh=Oda7cl9iVFTkbJ1PzPqgjhpi/bhkWFnkRBdUJ5tFX88=;
+        b=Lpr6bEGRfaFj9NlXJDoKjXO4Se/+X4blJ7UgwIO16+IUywDXtIvqDBZrtkpmJ+xncm
+         mK5UBY4hEiAjBrYoutTRqm5q0nx/ZNsY3N4Jg1cu7hnMPkHy+Pyy39htbthLJu6NTIky
+         sk2v/3DU/LNlJ/st6DRU4kT9mdsm0rQMkJtiiiGEuhZMzVSHjKK9DLfFR/YtC5JCeEQD
+         jz5UXKd5eZcbowr3IDMGf8qg7uQD+mKzTGVgh1bq7KzDI89v3Yl0u0Q7NKg3uE0RnYpG
+         B8971dApunIH8H0ioluoXlHhRKpgxVg5ypbigcK9TSP39Xs+cUR7kq9lULGgEP6ymk40
+         Y9bw==
+X-Gm-Message-State: AOJu0YyI1JgjAiqsFkKBdLwYRdoiM4lmHxxzr0ExUO1OrPSv+87y0VZf
+	FTPV4LAfr63S0ZCibD0Sex8=
+X-Google-Smtp-Source: AGHT+IHcd9xLp1ws84Is5QLcU4SiUEHRnEtZ9HHHFgMinXaJVjwni/sneatzZERdYAHhMylr9POa6g==
+X-Received: by 2002:a5d:484a:0:b0:31a:cca0:2f3a with SMTP id n10-20020a5d484a000000b0031acca02f3amr3150339wrs.0.1694558819326;
+        Tue, 12 Sep 2023 15:46:59 -0700 (PDT)
 Received: from ip-172-31-30-46.eu-west-1.compute.internal (ec2-34-242-166-189.eu-west-1.compute.amazonaws.com. [34.242.166.189])
-        by smtp.gmail.com with ESMTPSA id e15-20020a5d594f000000b00317df42e91dsm13921794wri.4.2023.09.12.15.46.57
+        by smtp.gmail.com with ESMTPSA id e15-20020a5d594f000000b00317df42e91dsm13921794wri.4.2023.09.12.15.46.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Sep 2023 15:46:58 -0700 (PDT)
+        Tue, 12 Sep 2023 15:46:59 -0700 (PDT)
 From: Puranjay Mohan <puranjay12@gmail.com>
 To: Alexei Starovoitov <ast@kernel.org>,
 	Daniel Borkmann <daniel@iogearbox.net>,
@@ -90,9 +90,9 @@ To: Alexei Starovoitov <ast@kernel.org>,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-riscv@lists.infradead.org,
 	netdev@vger.kernel.org
-Subject: [PATCH bpf-next 2/6] bpf, x86-32: Always zero extend for LDX with B/W/H
-Date: Tue, 12 Sep 2023 22:46:50 +0000
-Message-Id: <20230912224654.6556-3-puranjay12@gmail.com>
+Subject: [PATCH bpf-next 3/6] bpf, parisc32: Always zero extend for LDX with B/W/H
+Date: Tue, 12 Sep 2023 22:46:51 +0000
+Message-Id: <20230912224654.6556-4-puranjay12@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230912224654.6556-1-puranjay12@gmail.com>
 References: <20230912224654.6556-1-puranjay12@gmail.com>
@@ -122,22 +122,35 @@ after LDX.
 
 Signed-off-by: Puranjay Mohan <puranjay12@gmail.com>
 ---
- arch/x86/net/bpf_jit_comp32.c | 2 --
- 1 file changed, 2 deletions(-)
+ arch/parisc/net/bpf_jit_comp32.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/net/bpf_jit_comp32.c b/arch/x86/net/bpf_jit_comp32.c
-index 429a89c5468b..aef9183ff107 100644
---- a/arch/x86/net/bpf_jit_comp32.c
-+++ b/arch/x86/net/bpf_jit_comp32.c
-@@ -2050,8 +2050,6 @@ static int do_jit(struct bpf_prog *bpf_prog, int *addrs, u8 *image,
- 			case BPF_B:
- 			case BPF_H:
- 			case BPF_W:
--				if (bpf_prog->aux->verifier_zext)
--					break;
- 				if (dstk) {
- 					EMIT3(0xC7, add_1reg(0x40, IA32_EBP),
- 					      STACK_VAR(dst_hi));
+diff --git a/arch/parisc/net/bpf_jit_comp32.c b/arch/parisc/net/bpf_jit_comp32.c
+index 5ff0cf925fe9..cc3972d6c971 100644
+--- a/arch/parisc/net/bpf_jit_comp32.c
++++ b/arch/parisc/net/bpf_jit_comp32.c
+@@ -1026,18 +1026,15 @@ static int emit_load_r64(const s8 *dst, const s8 *src, s16 off,
+ 	switch (size) {
+ 	case BPF_B:
+ 		emit(hppa_ldb(off + 0, srcreg, lo(rd)), ctx);
+-		if (!ctx->prog->aux->verifier_zext)
+-			emit_hppa_copy(HPPA_REG_ZERO, hi(rd), ctx);
++		emit_hppa_copy(HPPA_REG_ZERO, hi(rd), ctx);
+ 		break;
+ 	case BPF_H:
+ 		emit(hppa_ldh(off + 0, srcreg, lo(rd)), ctx);
+-		if (!ctx->prog->aux->verifier_zext)
+-			emit_hppa_copy(HPPA_REG_ZERO, hi(rd), ctx);
++		emit_hppa_copy(HPPA_REG_ZERO, hi(rd), ctx);
+ 		break;
+ 	case BPF_W:
+ 		emit(hppa_ldw(off + 0, srcreg, lo(rd)), ctx);
+-		if (!ctx->prog->aux->verifier_zext)
+-			emit_hppa_copy(HPPA_REG_ZERO, hi(rd), ctx);
++		emit_hppa_copy(HPPA_REG_ZERO, hi(rd), ctx);
+ 		break;
+ 	case BPF_DW:
+ 		emit(hppa_ldw(off + 0, srcreg, hi(rd)), ctx);
 -- 
 2.39.2
 
