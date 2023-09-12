@@ -2,149 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 447C979C889
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Sep 2023 09:49:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77D0379C9E5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Sep 2023 10:28:35 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=SQrRbNxv;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=YKngppwd;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RlG1W1Pwvz3dFb
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Sep 2023 17:49:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RlGv52ln8z3cVr
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Sep 2023 18:28:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=SQrRbNxv;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=YKngppwd;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e18::631; helo=fra01-pr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from FRA01-PR2-obe.outbound.protection.outlook.com (mail-pr2fra01on20631.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e18::631])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.193; helo=relay1-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RlG0Z60tGz2xl6
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Sep 2023 17:48:13 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=doak5QWHbKt4hzr1V0OvBo777GVxEfsqhdr4H7Ti2RHFzTy+kwddGiG+kH1xSsNUC7w2bkVDTBkbSK5Js9BNj7vSJa2KE5SImKn9QY4G7D7kQ3WgYMXCq+jkT4ig/U7hn/wfAl1Ydk5xwLoK/W4o8w5+lkPMX2+XzqHs1KqJQ8DEqQsSGOi9ll4NiGmBr1MTu2kAkU67L1solGTEmQ+uOg6GAku08cHwHPQsYWa4V5j6PGgSCdqKHd1F5b9I3GmVX3QrF8JUGwqPPrJgxt6grzEib+gbtyGlVheV7GchFdJRSLR2EJjTYLexyQkP28cD6wTlTQOt+9Yf11ZTYps+nA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=o0k++9swEvWZ6QAb79cYSrXHvye2RsWZQF25EIkav9Y=;
- b=TShHsS4pPqSgQG0895hGMJGUbCeNoY449fkocJ7F6ZG0zuiKPqUnpY84fdHgntEFQcAZA59fHU2kH0gdd+TdCQba1JkXwiOg8idNf7ny4pY5cqUHEKfFvS5dBPK8lvT/DHtKcO+xlZLJ83WaikMaA+SKrCRq83V/98FLuCxjymok1I0LkvqlVohiBjUp4Z6DgWAqUPcl6XaB99WqWkMynb0RrCJLGuX6FkBzx6nBCMUi/zgUBGYpMDp6w3bwlZ2CYn29qcZAWppUpZApl5/XmbY2LwDSrLt7tUEDhrH0HRgKsijR/yW0+xluu1w7dvwG08Q7nb66Wc1sQFZxkfnuMA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=o0k++9swEvWZ6QAb79cYSrXHvye2RsWZQF25EIkav9Y=;
- b=SQrRbNxvabxk0eAyRBoWiuZxOhcpE1wynOzReaW3AWV+Hxj0v60FHz2FltPC92a7fncgkOikL2Z22/ER+5xF1a1CfRmg2KWVfAFkS3BlDG4JvTX/6wVAW4tHnTLEi582edGSO42WZRe4/Mvre4K67A/qaNsiiUTWde63LAsbphsuvf/xM2j7g+eVoDZrMLzCpUqGrrYJvorcKPp8iHCXtrluKSOxwysq8ZsJqknsTxJZ3G+UCoLjj7/uVFL8NpdCkHp4iDRlf+oHUQQbvG5eQFLSKy0D2/zmOK50zG5jAoeIkOwXDKgzFxXGcsTtMZcXBeoCg1cucYyrHAKOiOSqjg==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by MRZP264MB3081.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:1a::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6768.37; Tue, 12 Sep
- 2023 07:47:50 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::2820:d3a6:1cdf:c60e]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::2820:d3a6:1cdf:c60e%7]) with mapi id 15.20.6768.036; Tue, 12 Sep 2023
- 07:47:50 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Erhard Furtner <erhard_f@mailbox.org>
-Subject: Re: KASAN debug kernel fails to boot at early stage when CONFIG_SMP=y
- is set (kernel 6.5-rc5, PowerMac G4 3,6)
-Thread-Topic: KASAN debug kernel fails to boot at early stage when
- CONFIG_SMP=y is set (kernel 6.5-rc5, PowerMac G4 3,6)
-Thread-Index:  AQHZy+ViBGkHrlry0EW7JbY0oo0AC6/kpveAgAP81YCAAOsxAIAAgoIAgAGRmwCAACvKAIABTb0AgAG9zgCAAE6agIAAqJKAgABtOACAAAn3AIAFtNyAgAKmeoCAAMKDAIAFewAAgAUftACAASA2gIAAlqsAgAQFCICAASjBgIAAAdaAgAubzoCAAH9ogA==
-Date: Tue, 12 Sep 2023 07:47:50 +0000
-Message-ID: <22f67fc2-ae70-bbc7-ca2a-dffbf62731f3@csgroup.eu>
-References: <20230811014845.1bf6771d@yea>
- <f8f09049-3568-621d-88ce-1b61fe8b63fe@csgroup.eu>
- <20230813213855.794b3c8f@yea>
- <57bdfad9-cbec-1a9f-aca7-5956d22a8ada@csgroup.eu>
- <20230814192748.56525c82@yea>
- <6d710a2b-5cac-9f0a-cd30-0ad18172932b@csgroup.eu>
- <20230815220156.5c234b52@yea>
- <0876e754-7bee-ec61-4e3c-c0ee08d59d87@csgroup.eu>
- <20230817203202.2b4c273c@yea> <87y1i9clf2.fsf@mail.lhotse>
- <20230818111641.7f680ce7@yea>
- <fcdf2bf7-0834-b27f-4d24-28e05815ee6f@csgroup.eu>
- <20230818182316.79303545@yea>
- <5ea3302e-0fb1-1670-e4b6-adba5115ab94@csgroup.eu>
- <20230824020015.78733931@yea> <87jztkvfid.fsf@mail.lhotse>
- <20230828011758.3b7b9daf@yea>
- <1085cc49-b5e8-0aa5-dc97-ec4a100463b5@csgroup.eu>
- <20230901004417.631dc019@yea>
- <b9671cd2-9cad-c5d9-dd94-8b39f67e29b4@csgroup.eu>
- <20230903230635.5751b620@yea>
- <438d8790-8a55-2f36-4ef0-2fddcb39edae@csgroup.eu>
- <c0891617-43b9-5b56-2c51-69eec81e3b48@csgroup.eu>
- <20230912021147.57c85033@yea>
-In-Reply-To: <20230912021147.57c85033@yea>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|MRZP264MB3081:EE_
-x-ms-office365-filtering-correlation-id: 71136df0-2753-4eb8-5a33-08dbb364903b
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  T/nVbUnOhPdBuW/KPcnsb7nsKGOs4i/WB5Fa0TxSMi7OgnP0Z2+HdrhAwwjmqAq0Pcn9EV5catx6Iwebz2cvqTK7nH3VJQDFP+nY2gczW5yMYGjGJ8A42iDsZwyRyJd6BPj2/7tdSBGLorzI4kxpuvEgapF0RY9p0rdij7/3Rl18JW0zT3lBHtnEqCNg38dNxiLygoIrBvzCkemdrerqryg4U8HR8TZVZZQMlo+ZEzjg3xkOiNcZoiPEttkDoatT6dyeXl+DAAPwzhusqq/0hiIQeCUGjGDo8sSNAOK374c9rgLqShdZhbgFaBHpCTtRm2ucLh19Q0HTJXy0jCY+CnGDO03gSg57AJPajVs4PF0FDWEyhTjQSiilXUY06UyLeX1RsH3092bl9tX7x5ZrLKBjaeXI+yviliCVivxw/ulshY/QJCUj5b6CaXwk9MG6xGL5FlKhwh8SMvTqVCj6LPn/3vMmuhZl4Vnv9O3AvaH4oolt+m7iN//+AfxtRmz6V8/CYWCvH2cSJSI75GGjf7r3qdl6CYdXYEtSZ6FPi81hlpNIbsfOb0Lf6CyrztfIA6XYX8UqDd8Ngx4Zm47g6JVH/dWAZ7JQWR7OpqDgjMHf5acSoAQbo588z5fyYtRfNcpNzPh92u21kmfxviwInGwJ76Z/f9ZZY/hHyTZbOd5xpa4LGibnuahiWnXmfHpk
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(136003)(39850400004)(346002)(396003)(376002)(366004)(186009)(451199024)(1800799009)(6512007)(31686004)(5660300002)(71200400001)(6506007)(6486002)(26005)(478600001)(2906002)(2616005)(83380400001)(44832011)(4326008)(8936002)(66946007)(8676002)(6916009)(41300700001)(66574015)(76116006)(122000001)(38100700002)(91956017)(36756003)(64756008)(66446008)(54906003)(66476007)(316002)(38070700005)(31696002)(86362001)(66556008)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?UFJrcFlYVHRJMHIvYUdUQ2c5b2hVaklYU0tHV2xVVExCT2xkNjFFckNrUHBu?=
- =?utf-8?B?VFRMVTlDWUZMZE9lRkFWcEk2bC9hTEt4TGRqbXhBRGk0WnlvSmRQNkJSWHNh?=
- =?utf-8?B?ZFVVdnBCZHBhV3hITzZqY1RtUnBFeFdxbXNaN01CbEV5UHUzRGRmamphRnhv?=
- =?utf-8?B?ZlRLTlVqMVdIMXdMWWM5MHpEV2MyM0pVbXJDRGNBTGs0cXFYM21hWmQ0Q21l?=
- =?utf-8?B?R3lJL3VKanJUV3lLWWdpcXlrbHBmdEwxeHN6eGp0Y255TDJlRURGQ0M2UlQ0?=
- =?utf-8?B?RkRPWjVZNE9EaEZIbTNpRHNMR3FhRExaeHE2WVhhQnZhekFUWGZDVEVIVEE0?=
- =?utf-8?B?endUT0IwUnFYKyt0T1psWUk3Y2JHb2NSL1I3OVhlOGRnWFlFVC9lRnhQUytq?=
- =?utf-8?B?QlhRelcwYTJyZ2NRck9nekJVR2t5Q251V2tpU0kybWk3aWNxR1VtZWl2YXB1?=
- =?utf-8?B?Qkt2eVdqMEx6ekwxZnVJOXF5L2dzVjhzZDRNQUlJakw1c0pNZ00yZklXRjBU?=
- =?utf-8?B?SktsaFdKNTRsTkRaRmkyS1RGSlFGSHBNV1NXdXNrUmpKRWwyRlpVREdIc1FS?=
- =?utf-8?B?bnhYM1V0REVTaDZXMjQzRVJNSTdOVkVvbXFlZEpWL1ExZVRINlVjS0xBdXRU?=
- =?utf-8?B?enRHeEJqQ2lvQkRXbU1CWVV6bk9Yd1FFTVJPdkZsT0wwTWRKOExnaWR5OXR1?=
- =?utf-8?B?UjhEWTlNOTFBdmRUOFRGNzFhd0VYSWVwOVRwUGg1ZmQ5QjkxS1BGWjRQODlG?=
- =?utf-8?B?RTAxODRjbzBNc0ZqT1pxeVgrNERYSW9CK3d1VUdrQ1JZdUFFZ1REWjRaZU1N?=
- =?utf-8?B?ZzV6UWdPemxjM04vbFIxSWJkdXVWR2c5LzcvZGE2QTBleUpGREc5NzhzenJ6?=
- =?utf-8?B?Yjc0TGFSK2pEeThDRkVwMWJkVjBxWWw2VGFrN3RVTGtKeXpuVlVzWjR5M3hH?=
- =?utf-8?B?R25CQzZLalE4VDBtQ0N4Z2ZYaW9YRGRLNGE4VWNhVjJOd0NpaEdSUnZBa09p?=
- =?utf-8?B?ZXFTa1UyTVplK055V0t3NUs5YU5TUWxjbTNEcStsQmtyQ0hXbXFRNURQSFdt?=
- =?utf-8?B?S0ZLOHp3cXJHcjRRb0ZveFlKWmxWemlNVld5QjNlQThhM2I3T2RsY3I2MmtJ?=
- =?utf-8?B?dElPM0lNNUtFbXRldlMyYXVabmk3UUNPWDhhVWFUZlp3ZFNxdWQ0aDBBNlVh?=
- =?utf-8?B?MENQaHN6OVhmdzExeDZJNmY4S2JXNFYxTU95QTBzbGNyRmw4TkNuTy9MWDky?=
- =?utf-8?B?WjIwUXRQWUFCL01YT0ZOaDkwak1MU29XNVczSExISmNZUXM0aTZjVUZ4S1pH?=
- =?utf-8?B?WGY3YU9YNUpXQlFodDRnajRQRlBIUXlvYW1aVXREVWl5czY4RzZKVFVXNldN?=
- =?utf-8?B?d2hXdEdzbDF2M1BFN3JWOUZPM2c1b1l4NjdiYWR3SitXREZOdC9mcTg2Qlhn?=
- =?utf-8?B?NmJHQS9DdTQxWS9MV01rMzg1N21aZnhtazhtektIa3g5T0xBZDF0eEJ6ZWVW?=
- =?utf-8?B?QUNESlJhd2FYVVVGMFpSSStBWTdmZU8zT0lFcFhwdzFwVVhDaTEvMUVacTlz?=
- =?utf-8?B?ekdjbjM2YUtwMGc4UzdlVHBXbWZMUUp6WmhPeFRVb1BqSmsxbk5HTkQzNnBL?=
- =?utf-8?B?ZjJNL3hUMW5BY2dtdVlJUmxWSU53TnJDSTlxaTJIUnVuSHp4TThwSFE3Mi94?=
- =?utf-8?B?WmptU29YaXlXUXFQWDdCbWhDN2ZvUDNYODBCM0hsWlpYbEJxQVdqRDZCSDBS?=
- =?utf-8?B?TTNmMXRsY1RqWW5QNlpsWENXbEt2akxPSWFKYkFiOFphVlZ5V1dWTkg3cXcx?=
- =?utf-8?B?QloxRklwT3c4VFg4c3VjbUpGQTIxY2ZEMFFQUkJUNjJSSHBxUUp5bHJhVHdU?=
- =?utf-8?B?M015azlsK3AvUlZUOXY0S2ZMUDl4SGFXVVdNNHQzMTY1Ty81Rjd0dmtFVGFu?=
- =?utf-8?B?SG5LaG44RG1MbldqTlg0VUY3ZHBxK2VnT1NZdmU2OHE5UXppM3BQbnN2VjdK?=
- =?utf-8?B?U2Z1STNaY1hLRjNWc3NPRzdWTFRtYjFEM0NtYTc4V0hGTGxucXErUGdYQWJl?=
- =?utf-8?B?MmNZZGpaK3JmcHlsTDNPT2g3SEFBam5KeloxUDRHYndGQ3FLZnNEc2t6NWlR?=
- =?utf-8?Q?j4hNE62FvkqJh9wN9/PES8cUS?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <D4F78A51F86D7142808430120D2CA56D@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RlGt940Ddz3bZv
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Sep 2023 18:27:42 +1000 (AEST)
+Received: by mail.gandi.net (Postfix) with ESMTPA id AF29F240016;
+	Tue, 12 Sep 2023 08:15:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1694507256;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=NNWFLazESxtDfZ0O18bgdLpVRYNM1p8Orh6JoHPD9OQ=;
+	b=YKngppwdh40YfWiGLJAS/KGVy3lcyyimFa5IhNF2BFpY76MQv7PcAngjWD5emB/NpPdZVs
+	XuFHa7GDsZeCDN4VtR1DBdOhhQMg7F0sKFJAb1MDA7SiI1aMS1uljTxpDobJ34HUMqgBjt
+	FHOxQNRcNFQVzbTLPwBJsz8bn9G8RLA4WP+TyyXemwpqd4wrtR0zPRPD7LXQ8thvcbVeuZ
+	ExcT1Fcq50Uh6D73l3yfs6AqzdGcuV9dXnjY+Tgn2jvV+Rk9i1RjFps/RP9BqIFKYwuwfR
+	kO8gTvwFMC5ooqNP3G2Onc78ybIs69RViNXNP4dTCVaFKEEPSvcfTmBa6iIIVg==
+From: Herve Codina <herve.codina@bootlin.com>
+To: Herve Codina <herve.codina@bootlin.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Qiang Zhao <qiang.zhao@nxp.com>,
+	Li Yang <leoyang.li@nxp.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Randy Dunlap <rdunlap@infradead.org>
+Subject: [PATCH v5 00/31] Add support for QMC HDLC, framer infrastructure and PEF2256 framer
+Date: Tue, 12 Sep 2023 10:14:51 +0200
+Message-ID: <20230912081527.208499-1-herve.codina@bootlin.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 71136df0-2753-4eb8-5a33-08dbb364903b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Sep 2023 07:47:50.0800
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: n+/IKdRSDM5vtFb9uuXgw7xY5tBBlgkw/NyWspimnvzi4//I0XLr/kYzJSorbA5f6ehMtn2vzN4lPbx1LJmlTHN0qFkp+lhJh2QWkqGzN5k=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB3081
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -156,58 +77,314 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, Christophe JAILLET <christophe.jaillet@wanadoo.fr>, Simon Horman <horms@kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDEyLzA5LzIwMjMgw6AgMDI6MTEsIEVyaGFyZCBGdXJ0bmVyIGEgw6ljcml0wqA6DQo+
-IE9uIE1vbiwgNCBTZXAgMjAyMyAxNDo1NToxNyArMDAwMA0KPiBDaHJpc3RvcGhlIExlcm95IDxj
-aHJpc3RvcGhlLmxlcm95QGNzZ3JvdXAuZXU+IHdyb3RlOg0KPiANCj4+IEFub3RoZXIgdGhpbmcg
-dGhhdCBjb3VsZCBiZSBpbnRlcmVzdGluZyB0byB0ZXN0IGlzIHRvIHJlbW92ZSAob3IgY29tbWVu
-dA0KPj4gb3V0KSB0aGUgZm9sbG93aW5nIGxpbmUgaW4gYXJjaC9wb3dlcnBjL21tL2thc2FuL01h
-a2VmaWxlIDoNCj4+DQo+PiAgICAgb2JqLSQoQ09ORklHX1BQQ19CT09LM1NfMzIpCSs9IGJvb2sz
-c18zMi5vDQo+Pg0KPj4gVGhhdCB3YXksIHRoZSB3ZWFrIHZlcnNpb24gb2Yga2FzYW5faW5pdF9y
-ZWdpb24oKSB3aWxsIGJlIHVzZWQgaW5zdGVhZA0KPj4gb2YgdGhlIG9uZSBpbiBib29rM3NfMzIu
-Yw0KPiANCj4gVGlua2VyZWQgYXJvdW5kIHdpdGggb2xkZXIga2VybmVscyBhbmQgLmNvbmZpZyBv
-cHRpb25zIG1lYW53aGlsZS4gSSBmb3VuZCBvdXQgaXQncyBub3QgYSBuZXcgaXNzdWUsIGFsc28g
-aGFwcGVucyBvbiBrZXJuZWwgdjYuMC4gSGF2ZSBub3QgdHJpZWQgb2xkZXIga2VybmVscyB5ZXQu
-DQo+IA0KPiBBbHNvIG9uIHY2LjAgdGhlIGlzc3VlIGRpc2FwcGVhcnMgd2hlbiBJIGNvbW1lbnQg
-b3V0ICJvYmotJChDT05GSUdfUFBDX0JPT0szU18zMikgKz0gYm9vazNzXzMyLm8iIGluIGFyY2gv
-cG93ZXJwYy9tbS9rYXNhbi9NYWtlZmlsZS4NCj4gDQo+IEV2ZW4gbW9yZSBpbnRlcmVzdGluZyBp
-cyB0aGUgaXNzdWUgZGlzYXBwZWFycyB0b28gd2hlbiBJIGRlc2VsZWN0IElOSVRfU1RBQ0tfQUxM
-X1BBVFRFUk4gaW4gbXkga2VybmVsIC5jb25maWcuIFRoZSBrZXJuZWwgYm9vdHMganVzdCBmaW5l
-IHdpdGggS0FTQU4gd2hlbiBJTklUX1NUQUNLX05PTkU9eSBpcyBzZXQhIFRydWUgZm9yIGtlcm5l
-bCB2Ni4wIGFuZCB2Ni42LXJjMS4NCj4gDQo+IEN1cnJlbnQgdjYuNi1yYzEga2VybmVsIC5jb25m
-aWcgYW5kIGRtZXNnIGF0dGFjaGVkLg0KPiANCg0KSSBzdXNwZWN0IHNvbWV0aGluZyB3cm9uZyB3
-aGVuIHdlIHNldCB0aGUgQkFUcy4NCg0KQ2FuIHlvdSB0cnkgd2l0aCB0aGUgZm9sbG93aW5nIGFk
-ZGl0aW9uYWwgdHJhY2VzOg0KDQpkaWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBjL21tL2thc2FuL2Jv
-b2szc18zMi5jIA0KYi9hcmNoL3Bvd2VycGMvbW0va2FzYW4vYm9vazNzXzMyLmMNCmluZGV4IDQ1
-MGE2N2VmMGJiZS4uOTk1NGI3YTNiN2FlIDEwMDY0NA0KLS0tIGEvYXJjaC9wb3dlcnBjL21tL2th
-c2FuL2Jvb2szc18zMi5jDQorKysgYi9hcmNoL3Bvd2VycGMvbW0va2FzYW4vYm9vazNzXzMyLmMN
-CkBAIC0xNSw2ICsxNSw3IEBAIGludCBfX2luaXQga2FzYW5faW5pdF9yZWdpb24odm9pZCAqc3Rh
-cnQsIHNpemVfdCBzaXplKQ0KICAJcGh5c19hZGRyX3QgcGh5czsNCiAgCWludCByZXQ7DQoNCisJ
-cHJfZXJyKCIlczogJXB4ICV4ICVseCAlbHhcbiIsIF9fZnVuY19fLCBzdGFydCwgc2l6ZSwga19z
-dGFydCwga19lbmQpOw0KICAJd2hpbGUgKGtfbm9iYXQgPCBrX2VuZCkgew0KICAJCXVuc2lnbmVk
-IGludCBrX3NpemUgPSBiYXRfYmxvY2tfc2l6ZShrX25vYmF0LCBrX2VuZCk7DQogIAkJaW50IGlk
-eCA9IGZpbmRfZnJlZV9iYXQoKTsNCkBAIC0yOCw2ICsyOSw3IEBAIGludCBfX2luaXQga2FzYW5f
-aW5pdF9yZWdpb24odm9pZCAqc3RhcnQsIHNpemVfdCBzaXplKQ0KICAJCWlmICghcGh5cykNCiAg
-CQkJYnJlYWs7DQoNCisJCXByX2VycigiJXM6IHNldGJhdCAlZCAlbHggJXggJXhcbiIsIF9fZnVu
-Y19fLCBpZHgsIGtfbm9iYXQsIHBoeXMsIA0Ka19zaXplKTsNCiAgCQlzZXRiYXQoaWR4LCBrX25v
-YmF0LCBwaHlzLCBrX3NpemUsIFBBR0VfS0VSTkVMKTsNCiAgCQlrX25vYmF0ICs9IGtfc2l6ZTsN
-CiAgCX0NCkBAIC00Nyw2ICs0OSw3IEBAIGludCBfX2luaXQga2FzYW5faW5pdF9yZWdpb24odm9p
-ZCAqc3RhcnQsIHNpemVfdCBzaXplKQ0KDQogIAlrYXNhbl91cGRhdGVfZWFybHlfcmVnaW9uKGtf
-c3RhcnQsIGtfbm9iYXQsIF9fcHRlKDApKTsNCg0KKwlwcl9lcnIoIiVzOiBsb29wICVseCAlbHhc
-biIsIF9fZnVuY19fLCBrX25vYmF0LCBrX2VuZCk7DQogIAlmb3IgKGtfY3VyID0ga19ub2JhdDsg
-a19jdXIgPCBrX2VuZDsga19jdXIgKz0gUEFHRV9TSVpFKSB7DQogIAkJcG1kX3QgKnBtZCA9IHBt
-ZF9vZmZfayhrX2N1cik7DQogIAkJcHRlX3QgcHRlID0gcGZuX3B0ZShQSFlTX1BGTihwaHlzICsg
-a19jdXIgLSBrX25vYmF0KSwgUEFHRV9LRVJORUwpOw0KDQoNCllvdSdkIHRoZW4gZ2V0IHNvbWV0
-aGluZyBsaWtlOg0KDQpUb3RhbCBtZW1vcnkgPSAyMDQ4TUI7IHVzaW5nIDQwOTZrQiBmb3IgaGFz
-aCB0YWJsZQ0KQWN0aXZhdGluZyBLZXJuZWwgVXNlcnNwYWNlIEFjY2VzcyBQcm90ZWN0aW9uDQpB
-Y3RpdmF0aW5nIEtlcm5lbCBVc2Vyc3BhY2UgRXhlY3V0aW9uIFByZXZlbnRpb24NCkxpbnV4IHZl
-cnNpb24gNi42LjAtcmMxKyAoY2hsZXJveUBQTzIwMzM1LklEU0kwLnNpLmMtcy5mcikgDQoocG93
-ZXJwYzY0LWxpbnV4LWdjYyAoR0NDKSAxMi4yLjAsIEdOVSBsZCAoR05VIEJpbnV0aWxzKSAyLjM5
-KSAjNDYxIFR1ZSANClNlcCAxMiAwOTozNzoxMSBDRVNUIDIwMjMNCmthc2FuX2luaXRfcmVnaW9u
-OiBjMDAwMDAwMCAzMDAwMDAwMCBmODAwMDAwMCBmZTAwMDAwMA0Ka2FzYW5faW5pdF9yZWdpb246
-IHNldGJhdCAzIGY4MDAwMDAwIDdjMDAwMDAwIDQwMDAwMDANCmthc2FuX2luaXRfcmVnaW9uOiBs
-b29wIGZjMDAwMDAwIGZlMDAwMDAwDQpLQVNBTiBpbml0IGRvbmUNCg0KDQpUaGFua3MNCkNocmlz
-dG9waGUNCg==
+Hi,
+
+I have a system where I need to handle an HDLC interface and some audio
+data.
+
+The HDLC data are transferred using a TDM bus on which a PEF2256
+(E1/T1 framer) is present. The PEF2256 transfers data from/to the TDM
+bus to/from the E1 line. This PEF2256 is connected to a PowerQUICC SoC
+for the control path and the TDM is connected to the SoC (QMC component)
+for the data path.
+
+From the QMC HDLC driver, I need to handle HDLC data using the QMC,
+carrier detection using the PEF2256 (E1 line carrier) and set/get some
+PEF2256 configuration.
+
+The QMC HDLC driver considers the PEF2256 as a generic framer.
+It performs operations that involve the PEF2256 through the generic
+framer API.
+
+The audio data are exchanged with the PEF2256 using a CPU DAI connected
+to the TDM bus through the QMC and the PEF2256 needs to be seen as a
+codec in order to be linked to the CPU DAI.
+The codec handles the carrier detection using the PEF2256 and reports
+the carrier state to the ALSA subsystem using the ASoC jack detection.
+
+The codec, even if instantiated by the PEF2256 driver, considers the
+PEF2256 as a generic framer.
+
+The generic framer has:
+ - 2 consumers (QMC HDLC drv and codec)
+ - 1 provider (PEF2256)
+
+So, the design is the following:
+                        +------------------+           +---------+
+                        | QMC              | <- TDM -> | PEF2256 | <-> E1
+     +---------+        |  +-------------+ |           |         |
+     | CPU DAI | <-data--> | QMC channel | |           |         |
+     +---------+        |  +-------------+ |           |         |
++--------------+        |  +-------------+ |           |         |
+| QMC HDLC drv | <-data--> | QMC channel | |           |         |
++--------------+        |  +-------------+ |           |         |
+     ^                  +------------------+           |         |
+     |   +--------+     +-------------+                |         |
+     +-> | framer | <-> | PEF2256 drv | <- local bus ->|         |
+         |        |     |             |                +---------+
+     +-> |        |     |             |
+     |   +--------+     |  +-------+  |
+     +-------------------> | codec |  |
+                        |  +-------+  |
+                        +-------------+
+
+Further more, the TDM timeslots used by the QMC HDLC driver need to be
+configured at runtime (QMC dynamic timeslots).
+
+Several weeks ago, I sent two series related to this topic:
+ - Add the Lantiq PEF2256 audio support [1]
+ - RFC Add support for QMC HDLC and PHY [2]
+This current series is a rework of these two series taking into account
+feedbacks previously received.
+
+In order to implement all of this, I do the following:
+ 1) Perform some fixes (patches 1, 2, 3, 4, 5, 6, 7)
+ 2) Introduce the QMC HDLC driver (patches 8, 9, 10, 11)
+ 3) Add QMC dynamic timeslot support (patches 12 - 22)
+ 4) Add timeslots change support in QMC HDLC (patch 23)
+ 5) Introduce framer infrastructure (patch 24)
+ 6) Add PEF2256 framer provider (patches 25, 26, 27, 28, 29)
+ 7) Add framer codec as a framer consumer (patch 30)
+ 8) Add framer support as a framer consumer in QMC HDLC (patch 31)
+
+The series contains the full story and detailed modifications.
+If needed, the series can be split and/or commits can be squashed.
+Let me know.
+
+Compare to the previous iteration
+  https://lore.kernel.org/linux-kernel/cover.1692376360.git.christophe.leroy@csgroup.eu/
+This v5 series mainly:
+ - Fixes the DT bindings
+ - Adds QMC child devices support
+ - Fixes typos and documentation
+
+Best regards,
+Hervé
+
+[1]: https://lore.kernel.org/all/20230417171601.74656-1-herve.codina@bootlin.com/
+[2]: https://lore.kernel.org/all/20230323103154.264546-1-herve.codina@bootlin.com/
+
+Changes v4 -> v5
+
+  - Patches 1 to 5
+    No changes
+
+  - Patch 6 (new in v5)
+    Fix QMC binding example
+
+  - Patch 7 (new in v5)
+    Add missing 'additionalProperties: false'
+
+  - Patch 8 (new in v5, replace v4 patch 6)
+    Add QMC HDLC properties in the QMC channel node
+    Renamed the 'framer' property to 'fsl,framer'
+
+  - Patch 9 (new in v5)
+    Add support for QMC child devices
+
+  - Patch 10 (patch 7 in v4)
+    No changes
+
+  - Patch 11 (patch 8 in v4)
+    Remove fsl,qmc-hdlc.yaml (no more existing file)
+
+  - Patches 12 to 22 (patches 9 to 19 in v4)
+    No changes
+
+  - Patch 23 (patch 20 in v4)
+    Remove unused variable initializations
+    Remove extra space
+
+  - Patch 24 (patch 21 in v4)
+    Improve Kconfig help text
+    Fix variable declaration (reverse xmas tree)
+    Fix typos and extra spaces
+    Fix documentation issues raised by 'kernel-doc -none'
+    Move of_node_put() and kfree() out of the mutex
+    Replace ida_simple_{get,remove}() by ida_{alloc,free}()
+    Support framer device-tree nodes without '#framer-cells' property
+
+  - Patch 25 (patch 22 in v4)
+    Fix $ref in the pinctrl subnode
+    Remove '#framer-cells' property
+    Add needed '|'
+
+  - Patch 26 (patch 23 in v4)
+    Fix a typo in the commit subject
+
+  - Patches 27, 28, 29 (patch 24, 25, 26 in v4)
+    No changes
+
+  - Patch 30 (patch 27 in v4)
+    Fix a typo in the commit log
+
+  - Patch 31 (patch 28 in v4)
+    Used 'fsl,framer' property name instead of 'framer'
+
+Changes v3 -> v4
+
+  - Patch 21
+    Fixes build failure with CONFIG_MODULES
+
+Changes v2 -> v3
+
+  - Patches 1, 2, 3, 4
+    Add 'Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>'
+
+  - New patch
+    Remove inline keyword from the existing registers accessors helpers
+
+  - Patch 6 (patches 5, 27 in v2)
+    Update the binding title
+    Squash patch 27
+
+  - Patch 7 (patch 6 in v2)
+    Remove the cast in netdev_to_qmc_hdlc()
+    Add 'Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>'
+
+  - Patch 8 (patch 7 in v2): No change
+
+  - Patches 9, 10 (patches 8, 9 in v2)
+    Add 'Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>'
+
+  - Patch 11 (patch 10 in v2)
+    Remove inline keyword from the introduced qmc_clrsetbits16() helper
+    Add 'Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>'
+
+  - Patches 12, 13, 14, 15, 16, 17, 18, 19, 20
+    Add 'Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>'
+
+  - Patch 21 (patch 20 in v2)
+    Remove unneeded framer NULL pointer check
+    Add 'Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>'
+
+  - Patch 22 (patch 21 in v2)
+    Change sclkr and sclkx clocks description
+    Remove the framer phandle property from the framer subnodes
+    (ie. from framer-codec nodes)
+
+  - Patch 23 (patch 22 in v2)
+    Initialize 'disabled' variable at declaration
+    Fix commit log
+    Add 'Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>'
+
+  - Patch 24 (patch 23 in v2)
+    Remove inline keyword from the existing registers accessors helpers
+    Use dev_warn_ratelimited() in default interrupt handler
+    Add 'Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>'
+
+  - Patch 25 (patch 24 in v2)
+    Replace #include "linux/bitfield.h" by #include <linux/bitfield.h>
+    Fold the pinctrl anonymous struct into the struct pef2256_pinctrl
+    Update commit log
+    Add 'Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>'
+
+  - Patch 26 (patch 25 in v2)
+    Add 'Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>'
+
+  - Patch 27 (patch 26 in v2)
+    Fix error message
+    Changed the ch.max computation in framer_dai_hw_rule_channels_by_format()
+    Add 'Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>'
+
+  - Patch 28
+    Add 'Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>'
+
+Changes v1 -> v2
+  - Patches 1, 2 (New in v2)
+    Fix __iomem addresses declaration
+
+  - Patch 19 (17 in v1)
+    Fix a compilation warning
+
+  - Patch 26 (24 in v1)
+    Fix a typo in Kconfig file
+    Fix issues raised by sparse (make C=1)
+
+Herve Codina (31):
+  soc: fsl: cpm1: tsa: Fix __iomem addresses declaration
+  soc: fsl: cpm1: qmc: Fix __iomem addresses declaration
+  soc: fsl: cpm1: qmc: Fix rx channel reset
+  soc: fsl: cpm1: qmc: Extend the API to provide Rx status
+  soc: fsl: cpm1: qmc: Remove inline function specifiers
+  dt-bindings: soc: fsl: cpm_qe: cpm1-scc-qmc: Fix example property name
+  dt-bindings: soc: fsl: cpm_qe: cpm1-scc-qmc: Add
+    'additionalProperties: false' in child nodes
+  dt-bindings: soc: fsl: cpm_qe: cpm1-scc-qmc: Add support for QMC HDLC
+  soc: fsl: cpm1: qmc: Add support for child devices
+  net: wan: Add support for QMC HDLC
+  MAINTAINERS: Add the Freescale QMC HDLC driver entry
+  soc: fsl: cpm1: qmc: Introduce available timeslots masks
+  soc: fsl: cpm1: qmc: Rename qmc_setup_tsa* to qmc_init_tsa*
+  soc: fsl: cpm1: qmc: Introduce qmc_chan_setup_tsa*
+  soc: fsl: cpm1: qmc: Remove no more needed checks from
+    qmc_check_chans()
+  soc: fsl: cpm1: qmc: Check available timeslots in qmc_check_chans()
+  soc: fsl: cpm1: qmc: Add support for disabling channel TSA entries
+  soc: fsl: cpm1: qmc: Split Tx and Rx TSA entries setup
+  soc: fsl: cpm1: qmc: Introduce is_tsa_64rxtx flag
+  soc: fsl: cpm1: qmc: Handle timeslot entries at channel start() and
+    stop()
+  soc: fsl: cpm1: qmc: Remove timeslots handling from setup_chan()
+  soc: fsl: cpm1: qmc: Introduce functions to change timeslots at
+    runtime
+  wan: qmc_hdlc: Add runtime timeslots changes support
+  net: wan: Add framer framework support
+  dt-bindings: net: Add the Lantiq PEF2256 E1/T1/J1 framer
+  mfd: core: Ensure disabled devices are skipped without aborting
+  net: wan: framer: Add support for the Lantiq PEF2256 framer
+  pinctrl: Add support for the Lantic PEF2256 pinmux
+  MAINTAINERS: Add the Lantiq PEF2256 driver entry
+  ASoC: codecs: Add support for the framer codec
+  net: wan: fsl_qmc_hdlc: Add framer support
+
+ .../bindings/net/lantiq,pef2256.yaml          | 214 +++++
+ .../soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml      |  20 +-
+ MAINTAINERS                                   |  16 +
+ drivers/mfd/mfd-core.c                        |  17 +-
+ drivers/net/wan/Kconfig                       |  14 +
+ drivers/net/wan/Makefile                      |   3 +
+ drivers/net/wan/framer/Kconfig                |  39 +
+ drivers/net/wan/framer/Makefile               |   7 +
+ drivers/net/wan/framer/framer-core.c          | 887 ++++++++++++++++++
+ drivers/net/wan/framer/pef2256/Makefile       |   8 +
+ drivers/net/wan/framer/pef2256/pef2256-regs.h | 250 +++++
+ drivers/net/wan/framer/pef2256/pef2256.c      | 880 +++++++++++++++++
+ drivers/net/wan/fsl_qmc_hdlc.c                | 820 ++++++++++++++++
+ drivers/pinctrl/Kconfig                       |  14 +
+ drivers/pinctrl/Makefile                      |   1 +
+ drivers/pinctrl/pinctrl-pef2256-regs.h        |  65 ++
+ drivers/pinctrl/pinctrl-pef2256.c             | 308 ++++++
+ drivers/soc/fsl/qe/qmc.c                      | 592 +++++++++---
+ drivers/soc/fsl/qe/tsa.c                      |  22 +-
+ include/linux/framer/framer-provider.h        | 194 ++++
+ include/linux/framer/framer.h                 | 205 ++++
+ include/linux/framer/pef2256.h                |  31 +
+ include/soc/fsl/qe/qmc.h                      |  27 +-
+ sound/soc/codecs/Kconfig                      |  15 +
+ sound/soc/codecs/Makefile                     |   2 +
+ sound/soc/codecs/framer-codec.c               | 413 ++++++++
+ sound/soc/fsl/fsl_qmc_audio.c                 |   2 +-
+ 27 files changed, 4921 insertions(+), 145 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/lantiq,pef2256.yaml
+ create mode 100644 drivers/net/wan/framer/Kconfig
+ create mode 100644 drivers/net/wan/framer/Makefile
+ create mode 100644 drivers/net/wan/framer/framer-core.c
+ create mode 100644 drivers/net/wan/framer/pef2256/Makefile
+ create mode 100644 drivers/net/wan/framer/pef2256/pef2256-regs.h
+ create mode 100644 drivers/net/wan/framer/pef2256/pef2256.c
+ create mode 100644 drivers/net/wan/fsl_qmc_hdlc.c
+ create mode 100644 drivers/pinctrl/pinctrl-pef2256-regs.h
+ create mode 100644 drivers/pinctrl/pinctrl-pef2256.c
+ create mode 100644 include/linux/framer/framer-provider.h
+ create mode 100644 include/linux/framer/framer.h
+ create mode 100644 include/linux/framer/pef2256.h
+ create mode 100644 sound/soc/codecs/framer-codec.c
+
+-- 
+2.41.0
+
