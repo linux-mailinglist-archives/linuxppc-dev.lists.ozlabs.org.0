@@ -2,60 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0B7479DC83
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Sep 2023 01:12:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F223779DC8C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Sep 2023 01:16:32 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256 header.s=pandora-2019 header.b=l1RiQBK7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KR3EE3kN;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RlfWQ4M0Kz3fll
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Sep 2023 09:12:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rlfbf62bqz3gZV
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Sep 2023 09:16:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256 header.s=pandora-2019 header.b=l1RiQBK7;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KR3EE3kN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=armlinux.org.uk (client-ip=2001:4d48:ad52:32c8:5054:ff:fe00:142; helo=pandora.armlinux.org.uk; envelope-from=linux+linuxppc-dev=lists.ozlabs.org@armlinux.org.uk; receiver=lists.ozlabs.org)
-X-Greylist: delayed 443 seconds by postgrey-1.37 at boromir; Wed, 13 Sep 2023 09:12:02 AEST
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RlfVV3tJjz3dGr
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Sep 2023 09:12:02 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=8Xnsts4Cfn+cOT3sGgRWXdJJo7XuO0f7Sydd31WHTcA=; b=l1RiQBK7aQEeAsxzffD6ydEe/f
-	NM+7cytrM7BkaxV8cbnuaUSMNBrvTLl+1kI6ycPclYye8dQeFhv6BYOZ5d5lDyTkq7p8yRsWccYMq
-	nOLM5MDkKFXrsC52KEyCubDJflkn4N4KzOpbwIvg1CK8cVHV2xeX2HXhLWZbjB7Jgqvkw5IfPB2/4
-	jnlEVaw8jyP5ATaifqb6WdAKZa8ftjMdlEbrSPwalEPFEKYIdhoeGJZwtWyqW/TQR/kxWH4hdDs5j
-	5PRd3ZFf+lSo0hiVCswIub4eXPhFv0buNl6FdPSAq3eSvp599F4IZ2+mb2sAbrNukx9zu++JWJt+3
-	FmxzjG+w==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:33570)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1qgCQF-0001kz-0s;
-	Wed, 13 Sep 2023 00:03:56 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1qgCQ9-000384-3j; Wed, 13 Sep 2023 00:03:49 +0100
-Date: Wed, 13 Sep 2023 00:03:49 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Puranjay Mohan <puranjay12@gmail.com>
-Subject: Re: [PATCH bpf-next 5/6] bpf, arm32: Always zero extend for LDX with
- B/H/W
-Message-ID: <ZQDuVTSycDcjDkvi@shell.armlinux.org.uk>
-References: <20230912224654.6556-1-puranjay12@gmail.com>
- <20230912224654.6556-6-puranjay12@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RlfZk1N9lz3frM
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Sep 2023 09:15:38 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1694560542; x=1726096542;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=LJZGJFi7GZz4wA9x2VjN00+2e/nzonJhFIZL6HEpirQ=;
+  b=KR3EE3kNIm5k9sUwSrBwK2i/RE7BgrnETQD+nh5CGEaoHfjB120gTLvo
+   RGKzYYxkacpREC30gcN1qMtClfiMZXHBFFRXt3V6Pnx612YGeykWC9qa5
+   FTB63NzRBOynZLnv5/o8ZPMRQNDfly2dJ/ArBdgA3B/MlpDVu/bS2hmqf
+   x0c/qDOCVJ1BrRx5HyA8rBSj/eNWV3K5xllNfYf7fPt1R87f2XKQrTwPP
+   FrLKMlCEgtudkZ4XYWpdPRGDqKgSsKraCBKf4RvsZctHRi5lYxWxol75S
+   NzPVwdyJ/UVyeuDSlpbvr3YQMLBvlAeHB//gaxI0mWH0SXKymgx6G2EEN
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="368783615"
+X-IronPort-AV: E=Sophos;i="6.02,141,1688454000"; 
+   d="scan'208";a="368783615"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2023 16:15:08 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="990675275"
+X-IronPort-AV: E=Sophos;i="6.02,141,1688454000"; 
+   d="scan'208";a="990675275"
+Received: from lkp-server02.sh.intel.com (HELO 47e905db7d2b) ([10.239.97.151])
+  by fmsmga006.fm.intel.com with ESMTP; 12 Sep 2023 16:15:06 -0700
+Received: from kbuild by 47e905db7d2b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1qgCb2-0000Pd-1E;
+	Tue, 12 Sep 2023 23:15:04 +0000
+Date: Wed, 13 Sep 2023 07:14:56 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jordan Niethe <jniethe5@gmail.com>
+Subject: [powerpc:topic/ppc-kvm 8/11]
+ arch/powerpc/kvm/guest-state-buffer.c:505: warning: expecting prototype for
+ kvmppc_gsm_init(). Prototype was for kvmppc_gsm_new() instead
+Message-ID: <202309130700.eRu2IdWo-lkp@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230912224654.6556-6-puranjay12@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,38 +69,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Song Liu <song@kernel.org>, Stanislav Fomichev <sdf@google.com>, Yonghong Song <yonghong.song@linux.dev>, Shubham Bansal <illusionist.neo@gmail.com>, linux-riscv@lists.infradead.org, Daniel Borkmann <daniel@iogearbox.net>, Helge Deller <deller@gmx.de>, John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Xi Wang <xi.wang@gmail.com>, Albert Ou <aou@eecs.berkeley.edu>, Luke Nelson <luke.r.nels@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, KP Singh <kpsingh@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, linux-arm-kernel@lists.infradead.org, Hao Luo <haoluo@google.com>, linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Wang YanQing <udknight@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Jiri Olsa <jolsa@kernel.org>, netdev@vger.kernel.org, bpf@vger.kernel.org
- , Martin KaFai Lau <martin.lau@linux.dev>
+Cc: linuxppc-dev@lists.ozlabs.org, oe-kbuild-all@lists.linux.dev
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Sep 12, 2023 at 10:46:53PM +0000, Puranjay Mohan wrote:
-> The JITs should not depend on the verifier for zero extending the upper
-> 32 bits of the destination register when loading a byte, half-word, or
-> word.
-> 
-> A following patch will make the verifier stop patching zext instructions
-> after LDX.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git topic/ppc-kvm
+head:   5af8497e01ed97410b2f19ca8320a3bcdcfe267b
+commit: c531e958f40241e921456e7b77574a25f713a2e5 [8/11] KVM: PPC: Add helper library for Guest State Buffers
+config: powerpc-ppc64_defconfig (https://download.01.org/0day-ci/archive/20230913/202309130700.eRu2IdWo-lkp@intel.com/config)
+compiler: powerpc64-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230913/202309130700.eRu2IdWo-lkp@intel.com/reproduce)
 
-This was introduced by:
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202309130700.eRu2IdWo-lkp@intel.com/
 
-163541e6ba34 ("arm: bpf: eliminate zero extension code-gen")
+All warnings (new ones prefixed by >>):
 
-along with an additional function. So three points:
+>> arch/powerpc/kvm/guest-state-buffer.c:505: warning: expecting prototype for kvmppc_gsm_init(). Prototype was for kvmppc_gsm_new() instead
+>> arch/powerpc/kvm/guest-state-buffer.c:565: warning: expecting prototype for kvmppc_gsm_fill_info(). Prototype was for kvmppc_gsm_refresh_info() instead
 
-1) the commit should probably explain why it has now become undesirable
-to access this verifier state, whereas it appears it was explicitly
-added to permit this optimisation.
-2) you state that jits should not depend on this state, but the above
-commit adds more references than you're removing, so aren't there still
-references to the verifier remaining after this patch? I count a total
-of 10, and the patch below removes three.
-3) what about the bpf_jit_needs_zext() function that was added to
-support the export of this zext state?
 
-Essentially, the logic stated in the commit message doesn't seem to be
-reflected by the proposed code change.
+vim +505 arch/powerpc/kvm/guest-state-buffer.c
+
+   493	
+   494	/**
+   495	 * kvmppc_gsm_init() - creates a new guest state message
+   496	 * @ops: callbacks
+   497	 * @data: private data
+   498	 * @flags: guest wide or thread wide
+   499	 * @gfp_flags: GFP allocation flags
+   500	 *
+   501	 * Returns an initialized guest state message.
+   502	 */
+   503	struct kvmppc_gs_msg *kvmppc_gsm_new(struct kvmppc_gs_msg_ops *ops, void *data,
+   504					     unsigned long flags, gfp_t gfp_flags)
+ > 505	{
+   506		struct kvmppc_gs_msg *gsm;
+   507	
+   508		gsm = kzalloc(sizeof(*gsm), gfp_flags);
+   509		if (!gsm)
+   510			return NULL;
+   511	
+   512		kvmppc_gsm_init(gsm, ops, data, flags);
+   513	
+   514		return gsm;
+   515	}
+   516	EXPORT_SYMBOL_GPL(kvmppc_gsm_new);
+   517	
+   518	/**
+   519	 * kvmppc_gsm_size() - creates a new guest state message
+   520	 * @gsm: self
+   521	 *
+   522	 * Returns the size required for the message.
+   523	 */
+   524	size_t kvmppc_gsm_size(struct kvmppc_gs_msg *gsm)
+   525	{
+   526		if (gsm->ops->get_size)
+   527			return gsm->ops->get_size(gsm);
+   528		return 0;
+   529	}
+   530	EXPORT_SYMBOL_GPL(kvmppc_gsm_size);
+   531	
+   532	/**
+   533	 * kvmppc_gsm_free() - free guest state message
+   534	 * @gsm: guest state message
+   535	 *
+   536	 * Returns the size required for the message.
+   537	 */
+   538	void kvmppc_gsm_free(struct kvmppc_gs_msg *gsm)
+   539	{
+   540		kfree(gsm);
+   541	}
+   542	EXPORT_SYMBOL_GPL(kvmppc_gsm_free);
+   543	
+   544	/**
+   545	 * kvmppc_gsm_fill_info() - serialises message to guest state buffer format
+   546	 * @gsm: self
+   547	 * @gsb: buffer to serialise into
+   548	 */
+   549	int kvmppc_gsm_fill_info(struct kvmppc_gs_msg *gsm, struct kvmppc_gs_buff *gsb)
+   550	{
+   551		if (!gsm->ops->fill_info)
+   552			return -EINVAL;
+   553	
+   554		return gsm->ops->fill_info(gsb, gsm);
+   555	}
+   556	EXPORT_SYMBOL_GPL(kvmppc_gsm_fill_info);
+   557	
+   558	/**
+   559	 * kvmppc_gsm_fill_info() - deserialises from guest state buffer
+   560	 * @gsm: self
+   561	 * @gsb: buffer to serialise from
+   562	 */
+   563	int kvmppc_gsm_refresh_info(struct kvmppc_gs_msg *gsm,
+   564				    struct kvmppc_gs_buff *gsb)
+ > 565	{
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
