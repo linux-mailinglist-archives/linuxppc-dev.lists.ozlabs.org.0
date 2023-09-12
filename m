@@ -2,39 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 408A779CC19
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Sep 2023 11:40:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92ACA79CC74
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Sep 2023 11:52:49 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=bI7lpfAf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=K+nnYXVg;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RlJVR16jKz3cN4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Sep 2023 19:40:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RlJmH3T6bz3cF7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Sep 2023 19:52:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=bI7lpfAf;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=K+nnYXVg;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.193; helo=relay1-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
 Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RlJTY2WDzz3c3q
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Sep 2023 19:39:59 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPA id C1FAE240082;
-	Tue, 12 Sep 2023 09:27:53 +0000 (UTC)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RlJlS40Zyz3c58
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Sep 2023 19:52:03 +1000 (AEST)
+Received: by mail.gandi.net (Postfix) with ESMTPA id 5A722240009;
+	Tue, 12 Sep 2023 09:39:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1694511597;
+	t=1694512320;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YiX9aOtaC+6K2XdrRqRYZkRlaV8Okxw4XwCIYaNdukw=;
-	b=bI7lpfAfWtU7Q8ViyDs1nq0+U9EuyVWula6gYSA2xoQBxxiPKuUfPHwf0kFXX4/rKOiDjy
-	7YHWUW2sqrIHCt4LcolKyHfopgkS/HC2eAlX5zl6S55NTVbWr880OpKkWoujJ5an3pOb5b
-	+oUAJAV47RPTT624Dlxkebtw+4W2NJQfjYRBSZqpokaCEm5dflZEn/dksvX42jlQN2m6hX
-	gD9FP8Z0CYaY0ZYoJUpfFkzYQ5vK10sVMOropkSPxdmx0Qj0RYqZjQxdk+2ochGuenl0Ex
-	WEct+LKOA6aV4VWVRH2k+p+rShJagQqsPaaKXfmXj2oYkVpjRMU/Wed8vOOdKg==
+	bh=ScPjzuZaLLYh2lcosF7mjC3LbbKogbqWDUhQ8RkAceU=;
+	b=K+nnYXVgVTeIYLV1BYZk8yVPM7a2nPu/2JA6GWMyyv0Za8enlurHjBH7plSt2lkrUaQgFx
+	0f+eic3JBBgKxtWXmU15F2NOL2ZoHFXm8dROGgnxxRWdTKbO53xzFHJjRrH2cKPixxWiIQ
+	X0H50mqA/O7gee/qxhpcScSAQrz6oC5amb4tHHTsy3EQ30w3liig4hh60CmVmm0cSjrsOm
+	3+A4lbr4FIsGWAyRl0hBgn4ip8FNO3Untij7ggUFAU3Q5C3z+B+ux/Tq3eCFHsmlxJXwfW
+	EQItj5FZbLmxsodLOd0QDPWT6RUBUWUp7yQWKgN05HapEUcrPwoojI25LbtKJQ==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Herve Codina <herve.codina@bootlin.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -59,9 +59,9 @@ To: Herve Codina <herve.codina@bootlin.com>,
 	Nicolin Chen <nicoleotsuka@gmail.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH v5 06/31] dt-bindings: soc: fsl: cpm_qe: cpm1-scc-qmc: Fix example property name
-Date: Tue, 12 Sep 2023 10:14:57 +0200
-Message-ID: <20230912081527.208499-7-herve.codina@bootlin.com>
+Subject: [PATCH v5 07/31] dt-bindings: soc: fsl: cpm_qe: cpm1-scc-qmc: Add 'additionalProperties: false' in child nodes
+Date: Tue, 12 Sep 2023 10:14:58 +0200
+Message-ID: <20230912081527.208499-8-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230912081527.208499-1-herve.codina@bootlin.com>
 References: <20230912081527.208499-1-herve.codina@bootlin.com>
@@ -83,48 +83,27 @@ Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, Thomas Petazzoni <t
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The given example mentions the 'fsl,mode' property whereas the
-correct property name, the one described, is 'fsl,operational-mode'.
+Additional properties in child node should not be allowed.
 
-Fix the example to use the correct property name.
+Prevent them adding 'additionalProperties: false'
 
-Fixes: a9b121327c93 ("dt-bindings: soc: fsl: cpm_qe: Add QMC controller")
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- .../bindings/soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml           | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ .../devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml     | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml
-index ec888f48cac8..450a0354cb1d 100644
+index 450a0354cb1d..82d9beb48e00 100644
 --- a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml
 +++ b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml
-@@ -137,7 +137,7 @@ examples:
-         channel@16 {
-             /* Ch16 : First 4 even TS from all routed from TSA */
-             reg = <16>;
--            fsl,mode = "transparent";
-+            fsl,operational-mode = "transparent";
-             fsl,reverse-data;
-             fsl,tx-ts-mask = <0x00000000 0x000000aa>;
-             fsl,rx-ts-mask = <0x00000000 0x000000aa>;
-@@ -146,7 +146,7 @@ examples:
-         channel@17 {
-             /* Ch17 : First 4 odd TS from all routed from TSA */
-             reg = <17>;
--            fsl,mode = "transparent";
-+            fsl,operational-mode = "transparent";
-             fsl,reverse-data;
-             fsl,tx-ts-mask = <0x00000000 0x00000055>;
-             fsl,rx-ts-mask = <0x00000000 0x00000055>;
-@@ -155,7 +155,7 @@ examples:
-         channel@19 {
-             /* Ch19 : 8 TS (TS 8..15) from all routed from TSA */
-             reg = <19>;
--            fsl,mode = "hdlc";
-+            fsl,operational-mode = "hdlc";
-             fsl,tx-ts-mask = <0x00000000 0x0000ff00>;
-             fsl,rx-ts-mask = <0x00000000 0x0000ff00>;
-         };
+@@ -64,6 +64,7 @@ patternProperties:
+     description:
+       A channel managed by this controller
+     type: object
++    additionalProperties: false
+ 
+     properties:
+       reg:
 -- 
 2.41.0
 
