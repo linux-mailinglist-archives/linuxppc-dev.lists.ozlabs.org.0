@@ -1,77 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5306479DB14
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Sep 2023 23:43:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1E3D79D9E9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Sep 2023 22:10:26 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sigma-star.at header.i=@sigma-star.at header.a=rsa-sha256 header.s=google header.b=owIaiJgy;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=PPR3Ahs7;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RlcXJ0rZ2z3dRh
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Sep 2023 07:43:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RlZSw4qcJz3dTV
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Sep 2023 06:10:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=sigma-star.at header.i=@sigma-star.at header.a=rsa-sha256 header.s=google header.b=owIaiJgy;
+	dkim=pass (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=PPR3Ahs7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sigma-star.at (client-ip=2a00:1450:4864:20::52a; helo=mail-ed1-x52a.google.com; envelope-from=david@sigma-star.at; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=mailbox.org (client-ip=2001:67c:2050:0:465::202; helo=mout-p-202.mailbox.org; envelope-from=erhard_f@mailbox.org; receiver=lists.ozlabs.org)
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [IPv6:2001:67c:2050:0:465::202])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RlLWj0mPbz3cDS
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Sep 2023 21:12:00 +1000 (AEST)
-Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-52f31fb26e2so3538541a12.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Sep 2023 04:12:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sigma-star.at; s=google; t=1694517117; x=1695121917; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+qntkmutwprS+2oQeQzgmaP97TAaIsTbzLeg5qvDo3I=;
-        b=owIaiJgyUNH8aKY64G8S8clLTzuTvGwjZj8J3tkc6WXRrYuYesh/xNPIgo8BIf18H7
-         2kKn1bR1ttrIXhRSHt7whPhOCoqwa+59V0Uiut2lZQewIwt7GWRsSZOQi5pOfZ6dILW5
-         a88cdbz7fA6V3ChxnlsRruKYbGogp5n280m98xH0NeBIHx8QCWwp/mA8D/Dsov4hD+sO
-         c/Ef2GOIAwkiCyq7rcNhpmhakLSN5vPYc2nIXb83sp335zLPCfiaYq4SgxRJO8+++CYg
-         4zCBCIICInSYDs1AuuAXwE6GjHUAuUUCn5XZn4DHNRQU7pBQZxIP1on580CiCcr4SuRW
-         Q81A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694517117; x=1695121917;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+qntkmutwprS+2oQeQzgmaP97TAaIsTbzLeg5qvDo3I=;
-        b=wpVAvnMhIEylEjUDoVFP4xr4atnOSusA13Xgfx2WXIhFCqezxvowmPdrp8gTtJ9Sjl
-         LGeRDuPzKXjWuKvk6tN8qSPBWz25Fx6ioHna7HCEmhhgh+25kGlGEGEhKVzeOMmOIZ/X
-         TJl1Gp+0r7D8Lo0Nr9XvWmYgBDVwdmlcrBR0juLeiZub782svqeacQ0BPDk2J83cQD9Y
-         ako5VjJV+wCLYG4AFNigNJZkXM1b/O8HfC7pX+33dQIRoEn6lBtqcTVrqghJa2TCh2eE
-         YOEEeKC8MlrdILa4JPEdxLiQZkNb1fUpPqhRdoThHyQp/51J3eQMaWyvbqwT38WBek4F
-         WzJg==
-X-Gm-Message-State: AOJu0Yx18P+096p4NU3KtYjG8cyxkXdl6QxQSA9c4/gOOyZ93bfPyqm1
-	X9tLFyviEwQeaDkQd+Pbl/BGqA==
-X-Google-Smtp-Source: AGHT+IFcfRE8ddxwpToYbqFfRtOil3lX24xXTcYqNYqRo7uISxMJRRm2P8R9+XFaZVp+WcaxzQj80A==
-X-Received: by 2002:a17:906:51c8:b0:9a9:e4ce:c9a2 with SMTP id v8-20020a17090651c800b009a9e4cec9a2mr10496806ejk.53.1694517117122;
-        Tue, 12 Sep 2023 04:11:57 -0700 (PDT)
-Received: from localhost ([82.150.214.1])
-        by smtp.gmail.com with UTF8SMTPSA id u17-20020a170906069100b009a5f7fb51d5sm6638903ejb.21.2023.09.12.04.11.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Sep 2023 04:11:56 -0700 (PDT)
-From: David Gstir <david@sigma-star.at>
-To: Mimi Zohar <zohar@linux.ibm.com>,
-	James Bottomley <jejb@linux.ibm.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH v2 3/3] doc: trusted-encrypted: add DCP as new trust source
-Date: Tue, 12 Sep 2023 13:11:14 +0200
-Message-ID: <20230912111115.24274-4-david@sigma-star.at>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230912111115.24274-1-david@sigma-star.at>
-References: <20230912111115.24274-1-david@sigma-star.at>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RlZS30p7Xz3cN6
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Sep 2023 06:09:35 +1000 (AEST)
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4RlZRm1yq8z9spL;
+	Tue, 12 Sep 2023 22:09:24 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1694549364;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5CTaseLYOsDjBEddHRSS1kLR/MtlG0vJlK7mZIYlxMk=;
+	b=PPR3Ahs7fgYzEWryZmgagw7s7mLptcmMjGoVq22Ezcl83SPOjapP8y9UMN309tY7DYZool
+	WotDqKJzxnRlA5A8uWplR5vN/Kjdj3WQn+23Aa9tFuCrBBG14HjSdhgkSwz6deK5z1u2iH
+	MCpYl3E8WIFBrUXm9v5cQuxLu6mP86MarUbCB7+Pjtn6HLtTteTvqJ+tyCH4T3Xv5Ee2Tr
+	C0TbPe05VHCNGh/q3FzMfW3ud1pvV4X7gvj8JwhNVpIE3jjd9Kz9wti/DjVDv8FLWwD0gJ
+	QqYqv7B9rFdthY+upXNshBbPNe5iLFceaR+fM6zuLMHq1wnJ1FQ1zxn3PuiE5w==
+Date: Tue, 12 Sep 2023 22:09:20 +0200
+From: Erhard Furtner <erhard_f@mailbox.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: KASAN debug kernel fails to boot at early stage when
+ CONFIG_SMP=y is set (kernel 6.5-rc5, PowerMac G4 3,6)
+Message-ID: <20230912220920.64a9ac3c@yea>
+In-Reply-To: <453090a5-0d01-40ee-50a5-794c8f0f1f95@csgroup.eu>
+References: <20230811014845.1bf6771d@yea>
+	<20230814192748.56525c82@yea>
+	<6d710a2b-5cac-9f0a-cd30-0ad18172932b@csgroup.eu>
+	<20230815220156.5c234b52@yea>
+	<0876e754-7bee-ec61-4e3c-c0ee08d59d87@csgroup.eu>
+	<20230817203202.2b4c273c@yea>
+	<87y1i9clf2.fsf@mail.lhotse>
+	<20230818111641.7f680ce7@yea>
+	<fcdf2bf7-0834-b27f-4d24-28e05815ee6f@csgroup.eu>
+	<20230818182316.79303545@yea>
+	<5ea3302e-0fb1-1670-e4b6-adba5115ab94@csgroup.eu>
+	<20230824020015.78733931@yea>
+	<87jztkvfid.fsf@mail.lhotse>
+	<20230828011758.3b7b9daf@yea>
+	<1085cc49-b5e8-0aa5-dc97-ec4a100463b5@csgroup.eu>
+	<20230901004417.631dc019@yea>
+	<b9671cd2-9cad-c5d9-dd94-8b39f67e29b4@csgroup.eu>
+	<20230903230635.5751b620@yea>
+	<438d8790-8a55-2f36-4ef0-2fddcb39edae@csgroup.eu>
+	<c0891617-43b9-5b56-2c51-69eec81e3b48@csgroup.eu>
+	<20230912021147.57c85033@yea>
+	<22f67fc2-ae70-bbc7-ca2a-dffbf62731f3@csgroup.eu>
+	<20230912175941.0fca47bb@yea>
+	<453090a5-0d01-40ee-50a5-794c8f0f1f95@csgroup.eu>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Wed, 13 Sep 2023 07:36:32 +1000
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-MBO-RS-ID: 636a533f3eb030c4528
+X-MBO-RS-META: yd7wong3i1uxkxwaxsdjkw75mjr6ruxx
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,162 +87,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Gstir <david@sigma-star.at>, linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org, Fabio Estevam <festevam@gmail.com>, Ahmad Fatoum <a.fatoum@pengutronix.de>, Paul Moore <paul@paul-moore.com>, Jonathan Corbet <corbet@lwn.net>, Richard Weinberger <richard@nod.at>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, James Morris <jmorris@namei.org>, NXP Linux Team <linux-imx@nxp.com>, "Serge E. Hallyn" <serge@hallyn.com>, "Paul E. McKenney" <paulmck@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, sigma star Kernel Team <upstream+dcp@sigma-star.at>, "Steven Rostedt \(Google\)" <rostedt@goodmis.org>, David Oberhollenzer <david.oberhollenzer@sigma-star.at>, linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, linux-security-module@vger.kernel.org, linux-crypto@vger.kernel.org, Pengutroni
- x Kernel Team <kernel@pengutronix.de>, Tejun Heo <tj@kernel.org>, linux-integrity@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Update the documentation for trusted and encrypted KEYS with DCP as new
-trust source:
+On Tue, 12 Sep 2023 17:39:10 +0000
+Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
 
-- Describe security properties of DCP trust source
-- Describe key usage
-- Document blob format
+> Ah ok, maybe your CPU only has 4 BATs and they are all used, following 
+> change would tell us.
+> 
+> diff --git a/arch/powerpc/mm/book3s32/mmu.c b/arch/powerpc/mm/book3s32/mmu.c
+> index 850783cfa9c7..bd26767edce7 100644
+> --- a/arch/powerpc/mm/book3s32/mmu.c
+> +++ b/arch/powerpc/mm/book3s32/mmu.c
+> @@ -86,6 +86,7 @@ int __init find_free_bat(void)
+>   		if (!(bat[1].batu & 3))
+>   			return b;
+>   	}
+> +	pr_err("NO FREE BAT (%d)\n", n);
+>   	return -1;
+>   }
+> 
+> Or you have 8 BATs in which case it's an alignment problem, you need to 
+> increase CONFIG_DATA_SHIFT to 23, for that you need CONFIG_ADVANCED and 
+> CONFIG_DATA_SHIFT_BOOL
 
-Co-developed-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Co-developed-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-Signed-off-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-Signed-off-by: David Gstir <david@sigma-star.at>
----
- .../security/keys/trusted-encrypted.rst       | 85 +++++++++++++++++++
- 1 file changed, 85 insertions(+)
+Applied all your patches. According to the output my G4 DP seems to have 8 BATs. Now I get the following output on screen before the freeze:
 
-diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Documentation/security/keys/trusted-encrypted.rst
-index 9bc9db8ec651..4452070afbe9 100644
---- a/Documentation/security/keys/trusted-encrypted.rst
-+++ b/Documentation/security/keys/trusted-encrypted.rst
-@@ -42,6 +42,14 @@ safe.
-          randomly generated and fused into each SoC at manufacturing time.
-          Otherwise, a common fixed test key is used instead.
- 
-+     (4) DCP (Data Co-Processor: crypto accelerator of various i.MX SoCs)
-+
-+         Rooted to a one-time programmable key (OTP) that is generally burnt
-+         in the on-chip fuses and is accessible to the DCP encryption engine only.
-+         DCP provides two keys that can be used as root of trust: the OTP key
-+         and the UNIQUE key. Default is to use the UNIQUE key, but selecting
-+         the OTP key can be done via a module parameter (dcp_use_otp_key).
-+
-   *  Execution isolation
- 
-      (1) TPM
-@@ -57,6 +65,12 @@ safe.
- 
-          Fixed set of operations running in isolated execution environment.
- 
-+     (4) DCP
-+
-+         Fixed set of cryptographic operations running in isolated execution
-+         environment. Only basic blob key encryption is executed there.
-+         The actual key sealing/unsealing is done on main processor/kernel space.
-+
-   * Optional binding to platform integrity state
- 
-      (1) TPM
-@@ -79,6 +93,11 @@ safe.
-          Relies on the High Assurance Boot (HAB) mechanism of NXP SoCs
-          for platform integrity.
- 
-+     (4) DCP
-+
-+         Relies on Secure/Trusted boot process (called HAB by vendor) for
-+         platform integrity.
-+
-   *  Interfaces and APIs
- 
-      (1) TPM
-@@ -94,6 +113,11 @@ safe.
- 
-          Interface is specific to silicon vendor.
- 
-+     (4) DCP
-+
-+         Vendor-specific API that is implemented as part of the DCP crypto driver in
-+         ``drivers/crypto/mxs-dcp.c``.
-+
-   *  Threat model
- 
-      The strength and appropriateness of a particular trust source for a given
-@@ -129,6 +153,13 @@ selected trust source:
-      CAAM HWRNG, enable CRYPTO_DEV_FSL_CAAM_RNG_API and ensure the device
-      is probed.
- 
-+  *  DCP (Data Co-Processor: crypto accelerator of various i.MX SoCs)
-+
-+     The DCP hardware device itself does not provide a dedicated RNG interface,
-+     so the kernel default RNG is used. SoCs with DCP like the i.MX6ULL do have
-+     a dedicated hardware RNG that is independent from DCP which can be enabled
-+     to back the kernel RNG.
-+
- Users may override this by specifying ``trusted.rng=kernel`` on the kernel
- command-line to override the used RNG with the kernel's random number pool.
- 
-@@ -231,6 +262,19 @@ Usage::
- CAAM-specific format.  The key length for new keys is always in bytes.
- Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
- 
-+Trusted Keys usage: DCP
-+-----------------------
-+
-+Usage::
-+
-+    keyctl add trusted name "new keylen" ring
-+    keyctl add trusted name "load hex_blob" ring
-+    keyctl print keyid
-+
-+"keyctl print" returns an ASCII hex copy of the sealed key, which is in format
-+specific to this DCP key-blob implementation.  The key length for new keys is
-+always in bytes. Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
-+
- Encrypted Keys usage
- --------------------
- 
-@@ -426,3 +470,44 @@ string length.
- privkey is the binary representation of TPM2B_PUBLIC excluding the
- initial TPM2B header which can be reconstructed from the ASN.1 octed
- string length.
-+
-+DCP Blob Format
-+---------------
-+
-+The Data Co-Processor (DCP) provides hardware-bound AES keys using its
-+AES encryption engine only. It does not provide direct key sealing/unsealing.
-+To make DCP hardware encryption keys usable as trust source, we define
-+our own custom format that uses a hardware-bound key to secure the sealing
-+key stored in the key blob.
-+
-+Whenever a new trusted key using DCP is generated, we generate a random 128-bit
-+blob encryption key (BEK) and 128-bit nonce. The BEK and nonce are used to
-+encrypt the trusted key payload using AES-128-GCM.
-+
-+The BEK itself is encrypted using the hardware-bound key using the DCP's AES
-+encryption engine with AES-128-ECB. The encrypted BEK, generated nonce,
-+BEK-encrypted payload and authentication tag make up the blob format together
-+with a version number, payload length and authentication tag::
-+
-+    /*
-+     * struct dcp_blob_fmt - DCP BLOB format.
-+     *
-+     * @fmt_version: Format version, currently being %1
-+     * @blob_key: Random AES 128 key which is used to encrypt @payload,
-+     *            @blob_key itself is encrypted with OTP or UNIQUE device key in
-+     *            AES-128-ECB mode by DCP.
-+     * @nonce: Random nonce used for @payload encryption.
-+     * @payload_len: Length of the plain text @payload.
-+     * @payload: The payload itself, encrypted using AES-128-GCM and @blob_key,
-+     *           GCM auth tag of size AES_BLOCK_SIZE is attached at the end of it.
-+     *
-+     * The total size of a DCP BLOB is sizeof(struct dcp_blob_fmt) + @payload_len +
-+     * AES_BLOCK_SIZE.
-+     */
-+    struct dcp_blob_fmt {
-+            __u8 fmt_version;
-+            __u8 blob_key[AES_KEYSIZE_128];
-+            __u8 nonce[AES_KEYSIZE_128];
-+            __le32 payload_len;
-+            __u8 payload[];
-+    } __packed;
--- 
-2.35.3
+printk: bootconsole [udbg0] enabled
+Total memory = 2048MB; using 4096kB for hash table
+mapin_ram:125
+mmu_mapin_ram:170 0 30000000 1400000 2000000
+__mmu_mapin_ram:147 0 1400000
+__mmu_mapin_ram:156 1400000
+__mmu_mapin_ram:147 1400000 30000000
+NO FREE BAT (8)
+__mmu_mapin_ram:156 20000000
+__mapin_ram_chunk:107 20000000 30000000
+__mapin_ram_chunk:117
+mapin_ram:134
+kasan_mmu_init:132
+kasan_mmu_init:135 0
+kasan_mmu_init:140
+ioremap() called early from btext_map+0x64/0xdc. Use early_ioremap() instead
+Linux version 6.6.0-rc1-PMacG4-dirty (root@T1000) (gcc (Gentoo 12.3.1_p20230526 p2) 12.3.1 20230526, GNU ld (Gentoo 2.40 p7) 2.40.0) #5 SMP Tue Sep 12 16:50:47 CEST 2023
+kasan_init_region: c0000000 30000000 f8000000 fe000000
+NO FREE BAT (8)
+kasan_init_region: loop f8000000 fe000000
 
+
+So I set CONFIG_DATA_SHIFT=23 as suggested but then I only get:
+
+printk: bootconsole [udbg0] enabled
+Total memory = 2048MB; using 4096kB for hash table
+mapin_ram:125
+mmu_mapin_ram:170 0 30000000 1400000 2000000
+__mmu_mapin_ram:147 0 1400000
+__mmu_mapin_ram:156 1400000
+__mmu_mapin_ram:147 1400000 30000000
+NO FREE BAT (8)
+__mmu_mapin_ram:156 20000000
+__mapin_ram_chunk:107 20000000 30000000
+__mapin_ram_chunk:117
+mapin_ram:134
+kasan_mmu_init:132
+kasan_mmu_init:135 0
+kasan_mmu_init:140
+
+
+With btext_unmap() left in place in init_32.c I only get:
+
+printk: bootconsole [udbg0] enabled
+Total memory = 2048MB; using 4096kB for hash table
+mapin_ram:125
+mmu_mapin_ram:170 0 30000000 1400000 2000000
+__mmu_mapin_ram:147 0 1400000
+__mmu_mapin_ram:156 1400000
+__mmu_mapin_ram:147 1400000 30000000
+NO FREE BAT (8)
+__mmu_mapin_ram:156 20000000
+__mapin_ram_chunk:107 20000000 30000000
+__mapin_ram_chunk:117
+mapin_ram:134
+btext_unmap:129
+
+Hope the output sheds at least some light on what's going wrong!
+
+Regards,
+Erhard
