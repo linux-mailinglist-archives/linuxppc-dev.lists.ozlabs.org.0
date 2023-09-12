@@ -2,127 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AE2F79CEF9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Sep 2023 12:57:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 194F879CF34
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Sep 2023 13:06:01 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=RkkuMbxW;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=U5/sS5Tx;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RlLBZ72wlz3c9S
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Sep 2023 20:57:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RlLNk34zPz3cML
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Sep 2023 21:05:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=RkkuMbxW;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=U5/sS5Tx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::61d; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-mr2fra01on2061d.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e19::61d])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::b33; helo=mail-yb1-xb33.google.com; envelope-from=linus.walleij@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RlL9g6D79z3072
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Sep 2023 20:56:22 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RM0hoaUuWkRtcw0sUzhhkuDtkC4xCJJYwf9vkY345h8NZf7qTn8SVhRrxsh/7F6iN0UsB72f5uoipCszgabl4SgIFb/ydOVgzncjFDKCOM9toxNAT/+sLteNs09sKasoetfw+efu7iOtLMMxO2YmVXMYKT61bhqrPscLMdnbk2AjMqcp+S/dt2UMSYuJYxUZ8a2iTWpO7rw5f0ijFeL5RHCWIlCewOqgYF2agOnQytLXtai3Qs6CW1NBxPTbr7mrqheSwld2pwqjGP0P0OBkWQ3s+AkgvMyaN+5BvDxL+xjvQ0h5sbdR2jsjkTe3TwO7km5sh0K3DA4zROa5mWeJDA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aTRG70Mr+ApUPLxskYyycg4dLds0sbPYjxM8ackewkc=;
- b=RPv5Hi1kbxfBQ6TILwqm95hrcTBCXQzWSoeoU2UFSO/EAx11DPy+kL8K6irMAaFu2hfXClOvtg2FPTJyZ3jf4kaff1u7ejrL3DaP/VGuPXzkmv70ySDUqt7aqdjbRzDWoHcxPheOk5FQVzNkrvNhCRYewW0S6tJKaQ0DLQn2CvoGpPck63uDanLDDluObhzO56b2OdXmnKcZItn6VZoc4EzVW7K6EBcSasMtMfNvHCWb4cYt0KdmySUomuz03bR6xcGgdTBMD859IUf/2Ip3VczjVVrCJuejbwCi5/ysuPYAFi77nkkp1GyPSm261mf3+WL0I4or9z6M/lUkQZqldg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aTRG70Mr+ApUPLxskYyycg4dLds0sbPYjxM8ackewkc=;
- b=RkkuMbxWQ3oYFwpl3ZYmxdD8/d+2yZw0wDJR/Pz0HVfumlP31tqVtXWwhfWCIXtylB21TJ5hd7XTStT7XLsvs8RtVtk5mmYfcz9obvwPxmgufDPnPCCv7cTIN8nx4GF2CHchMR++F5LWYEsSRTzvRlG5/P/ykBtiyLGG5Fs5H6yejRnjk4dsPLoOlK2816OcLqmWdZpguK3O+Vq3t/lTsuLBC4eGuFyf9nynGD3GX2uvLqlYgVZhPbMg4Yagt19qGZ05J7/HJYpUE0xKHrsqckMoOKpY0u/p2YTWkYAvW1RvRqecTqxJ37pyPdrSs0oqOdQSKmIPoKSZJmixE1rwgQ==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PR0P264MB2273.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:169::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6768.37; Tue, 12 Sep
- 2023 10:56:01 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::2820:d3a6:1cdf:c60e]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::2820:d3a6:1cdf:c60e%7]) with mapi id 15.20.6768.036; Tue, 12 Sep 2023
- 10:56:01 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Morton
-	<akpm@linux-foundation.org>
-Subject: WARN: Interrupts were enabled early [bisected cfeb6ae8bcb9
- ("maple_tree: disable mas_wr_append() when other readers are possible")]
-Thread-Topic: WARN: Interrupts were enabled early [bisected cfeb6ae8bcb9
- ("maple_tree: disable mas_wr_append() when other readers are possible")]
-Thread-Index: AQHZ5We4ALEPBRjj9E2YFxQ2agYoYg==
-Date: Tue, 12 Sep 2023 10:56:01 +0000
-Message-ID: <a981d84d-e2aa-a4dd-ad11-d7ac1a814e5e@csgroup.eu>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PR0P264MB2273:EE_
-x-ms-office365-filtering-correlation-id: a8c703c5-bace-481a-75d5-08dbb37eda8d
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  9GrUMIZJbyt7pQuvne+hner0hT3Jx9+Nc7Jima3KSRYSqcrIPgKQNDkY43YOFqjkbw1O5/oRCXD5S1Sg8K1bfpPoShyVLuoXsJkzOj5IPaTQ7iE39lBvTWhM8UTUhV7gkht35fIrTSXrzVHRFRLd4r47YUgMLj26dhbVNxMTcgR4tyHWt7PwkN6Qno1S8KezSzPVDIyK93EH8caANiEo2owtfcE1aY78c7lqcW5BkVbaRC+vjJF7+UI3ZUsm6g1WChps3nqaGtLSRpGy1Rb2CLsLg1OElLYR+EwBsgCmR/vzdHb1C7uV3RQuWfXu36FTZkJTa8o5IKhHiMuue1EVodzAGad7anwuQ14lPJdQe24aURdsJt6hNCWXXb6SGReqvuz7PUN2Z7WafB73yTGjJ+vxq3vuyYzetY9AQfkWh5WLib1o1njpaXyeaQ22q3frKCVOueM7scxum8kaOREs5Cc/ztBMBhXM4rVkLjE6bsaKXwb5nAF0JUzpLxJYYmJuuEDmuX+IZlqJYq+4F5W1h9022HSbHDBLpL6cg65Aq7VKGyBDMFOYAMV9plHMwrBHTZa0GC+B5+buQGe2hJ7UcZUcMjwsXe4Rsg9aq4hhp6zseZXQFt9ZGmAlU+WTdbmYnqtrOAPW7fnbAtNCGL/oifRCRLZKNCLlwo0HpANmZcGLBxq8aycrGc/DbJDz4Jht
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(346002)(39860400002)(396003)(376002)(366004)(136003)(1800799009)(186009)(451199024)(316002)(41300700001)(71200400001)(66446008)(76116006)(64756008)(91956017)(66556008)(66946007)(110136005)(38070700005)(38100700002)(66476007)(122000001)(478600001)(36756003)(45080400002)(54906003)(2906002)(31696002)(86362001)(5660300002)(44832011)(26005)(8676002)(4326008)(8936002)(2616005)(83380400001)(31686004)(6512007)(6506007)(6486002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?dzV3K1Ryd1JGSXVtMEtkUlFNbEdaL1RITmY1SEdocHRzMWlIMkNwMFk0dVFw?=
- =?utf-8?B?dS9nYzIvOUpLbzN4dlAvd1VyL2ZHNFFaNkxqc0tTSHhHYlphSHBvK3d4cTdW?=
- =?utf-8?B?YmRIYVg4dDE1SUU3eTY4cmZvVDlQc1hWMEZYMzVKTU1Vcys5TE9tZVgrL3lx?=
- =?utf-8?B?d1pwV05DVlRqYWFZbFFZdGRCZGZ2bi9wbS80R3M4VFRZTzZ5dXdzQm9CSEFo?=
- =?utf-8?B?bXJXZGs4U0syMjlUZlMza3R4c0lyVFljM3hIakJOU0h6Y213YWg1di9lRWIw?=
- =?utf-8?B?RGlOckloT1h4S1Q2VjBVVzVWdWQ0dFB6QUduK3IrdE5BVG9IQ2JZZXovLzlG?=
- =?utf-8?B?eHE1TXNIWU1uSEY2bXhQMEpzUFNuUjM5MGxZZ2xkUmo2ZXlla01iUXR2UFdW?=
- =?utf-8?B?djRQZkc2Q3FuVUh0VHlBOCtyUTU2WUVvVmV6d1pBUUZJc2o0Kzc5SVpvdEkv?=
- =?utf-8?B?ZjRsWWdIMEEvTnJValZ1ZWtlc01RZnZIUFJyUWsxMkdpdnVjTzFxZ2RtWVRz?=
- =?utf-8?B?a0NuYXp0aXE1WFFja0UzdlZuUkV2aDFjU0JLUEpLUDUzS1FzdE90cENObjY0?=
- =?utf-8?B?LzlwdFRBZllvNUxHNU1CSnA2Q1U4aWM2WTk4N1Jja1RpZDJJL0hNbmVuaVJ2?=
- =?utf-8?B?U2VLYW0wNTZLMG9LL09yK2lKdUkrR2dHRHoxZWhtdTAyaE5iZ3p2d3lXbzBo?=
- =?utf-8?B?N1FITFlKRXlmQkFpeUpxZ21VNG9ZdUR3Nitkbi9JdmkzRkJoMXlTa1psQSs5?=
- =?utf-8?B?Q1RiRzQ4a0dYMmd2aXc0M0dWaE4zejFaRVpkS0Zjell6VmtCY3ZYQWthVlVl?=
- =?utf-8?B?ZWRaYWlzQUFJSFJ4WnFtUlkxT1dONW12UHdyeHNjUkhLZEdPbnlXSHlBa2J0?=
- =?utf-8?B?b0pTUEZ6RkdJWW9CcFZGa2dhWVEzRElQZnIwWGxGOVlrbEh6UEtaZmNDRHpV?=
- =?utf-8?B?eTM5aXdoOXpvYVlWWGdsTW5Tc01McmFFR0NMNlhWeUNDbjZvS2lEbXhZRlJz?=
- =?utf-8?B?M3BXRXEyVzg1U0VVV3U3U3J6aVFTTEZZd2hTVjVqTW56cFdLNzdLUEdZRlBa?=
- =?utf-8?B?SjBORjRhUjVQZVpZZURjWWN6ejB5dDB3S05qekNpNU52UHhpeTk0RVR5UStK?=
- =?utf-8?B?QzB0M3RzYkE3MkNWL01uR2JjSlMwMS93TnM4MDJlUTNNVDJBMHVwUFlBTWpJ?=
- =?utf-8?B?cmNPaUpoMkNJVlBHKzdidldWR29jdElsWi9TTDBvM0FkVkpXdWlOWnNGcEV5?=
- =?utf-8?B?aEw0TkcyMnI3MUIvbFZzd3VXUERvNElGWmRIKzBsaUlwbjFMMlQyTVJ2NVFF?=
- =?utf-8?B?VG9KeEJCdXdLWGVpM1ZFUENuRkhTOEpuUHBxV3lJSG53aWpxaHU0c1ZORkdT?=
- =?utf-8?B?dy9BQnFNd0xSbzJkT0g4NVVRaEJOVWFmbjk5KzNtTzJDWEx2UnVGZSsxSVQv?=
- =?utf-8?B?cVRGTmo5SGgvRjRLSHA0aVJNZmFXdnl0RUFSS3lBdHhGQTNTTjhmdi9SZ21n?=
- =?utf-8?B?OEY5ZTN6ajlwVHVLT3VnWEtuT3RPV1NTcDJKREx3YysrY0JJcXFxRzhYTnJ4?=
- =?utf-8?B?ZFBkNHUxUkYyK0ZockJnaEJhcHUxWUgrTXpuajFwK2VGWHdSN2Ntd0ZFNkZ6?=
- =?utf-8?B?M0Y3eDAremo5OVpmcFhRT3hYSlNOL0d3bVlFTWtKRUQwMU4vWGpvVmxaQVZ3?=
- =?utf-8?B?OWZPNzNSVE8rZDIxb0hHb3F0U0svUTF6Nm9HMGRTN1AyVHJ3OWJmSmNxeC8r?=
- =?utf-8?B?NzdPQ0FQUFQyeDkxY2VWRXhBRVdOcUhsZnQvcUo4aWFKNUpnQVBOK200WUJM?=
- =?utf-8?B?MWpMN0pvZ05yMVh6SFFKd3pNbTJBeVlGUUFqTHVqcVo0bm4zWXRoMm85MlJa?=
- =?utf-8?B?dnhPdmZ1MXhnaHMrYkhudEcwd1BWRkRhYjZNT3RiUzNBcWtTUzd2UWZOTDVF?=
- =?utf-8?B?YWxvWUg4VTZGWXIxanIrMGY3d2tCMGs5bUhjYXFIejJoN3k1LzlqRU1Hakl6?=
- =?utf-8?B?SGNobEtXZlRiakpXM2dyTFI1Y0tKb1BHcjFCUlJQL1NvYXJXNFhTR0dwVTFv?=
- =?utf-8?B?Nm9HcmF3dHhnVnZWTVhiMmt0VThvaVdzS0llOGd6S3ZrblRsZzg1cUVpRUtP?=
- =?utf-8?Q?Cm71UkR55QQ2TEDQYETyf0QyM?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <C4913BE6BD70C248B8A646216DFE90D5@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RlLMr3WkBz30fd
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Sep 2023 21:05:11 +1000 (AEST)
+Received: by mail-yb1-xb33.google.com with SMTP id 3f1490d57ef6-d7b9de8139fso4755628276.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Sep 2023 04:05:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1694516708; x=1695121508; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8FMoBWtmvLq6bgdekThyp6v4fhBAV0YiqC8BS8aCPcE=;
+        b=U5/sS5TxgX0QDQ0S8CL5D+Xn6zh3lcnM0IgPN6AQcFFQiKwm31qrazGxt5JUyJp3b8
+         G3etJ8+L4dW5moYbGhcso6ub4/uFiSmNW5fikuE0R3mhkQzhzeYvyiGnJTkSl9JrOItf
+         3BlqzFkK3r+cyrV+0t2QaZMuv4+jw4XGEYuqG9e63zH4iW1Xmf2idgJYFsQ9mFBc46BK
+         3rnJMK1BTOS9gZI4SaEzMhNgZaZhBFpnugdXpDb0zze0RQvozQ6rjm1hWmZnBwbAVtNa
+         2YHuLZiXOFvmbGnCcDEPgig0v3TA367hnwM/H4o8I2otzmRBPZmzBMunz0Ey2eqOk7am
+         l34A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694516708; x=1695121508;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8FMoBWtmvLq6bgdekThyp6v4fhBAV0YiqC8BS8aCPcE=;
+        b=T+zrZz0pT/ZK8R1hBGN2PG2q1Y/DrnYox/EF+OvyLdzr4hA3l6buJsqi6qwg1uYrIn
+         aUbC7rT61AI6DBwbM1ajIK9hmXeliu8PdHK4e50/qwZOUMiX9GCNlSJyhfVvn1KSdEBs
+         jvNvcVw59OmjXkTtfNvXaWiVb7xHd/nvDoVJTgw+jmeptTe+Paie1JhoJg//WRPUkhFt
+         qRMBOBcNAKgtwGo/xHgYIxB33hU+QftUoh2Tib/1+aMDY9Hf1A8CjGKzBph/5IONdNWP
+         2BDO4t0wLYJEd8OkusnSQwO1aZ6QjuRg3kBzOXNm8jOvOtsjO8BRfh8F0p/c66s59IUy
+         FkHg==
+X-Gm-Message-State: AOJu0Yxmc8ilw3ASxtpfuE7r0YQ4pMvvncbyIknb7SQ8YP3DYvT+NbJd
+	4kG7LtvLDIWnNteU61/KZU1JS858mk6nStuPp6G6VA==
+X-Google-Smtp-Source: AGHT+IHWFG9XShCR9EYCQbjpGN6Qxg22q5tUHNLhGUJSf212PqAwCH8zHTtn0AYfPfJADbtFAnVTC3aGLAvqi8JMMgU=
+X-Received: by 2002:a25:d695:0:b0:d62:6514:45b7 with SMTP id
+ n143-20020a25d695000000b00d62651445b7mr11205815ybg.37.1694516708153; Tue, 12
+ Sep 2023 04:05:08 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: a8c703c5-bace-481a-75d5-08dbb37eda8d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Sep 2023 10:56:01.7011
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 4RcH7v6uqCroHPjvc/3XN8GHqJGcx8Tash7rH+I7DvoCo7CrayZlXPT6cv1kyPJeXfjd0YDoperUaRrbkaf/t2ixNv4KaR7pYUhMKSMIKRI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR0P264MB2273
+References: <20230912081527.208499-1-herve.codina@bootlin.com> <20230912101505.225899-1-herve.codina@bootlin.com>
+In-Reply-To: <20230912101505.225899-1-herve.codina@bootlin.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Tue, 12 Sep 2023 13:04:56 +0200
+Message-ID: <CACRpkdbxdMZt4E1SF1v9as-jw=TpvS1mk2TQqAgywMBLbKaNoA@mail.gmail.com>
+Subject: Re: [PATCH v5 28/31] pinctrl: Add support for the Lantic PEF2256 pinmux
+To: Herve Codina <herve.codina@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -134,32 +75,111 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, alsa-devel@alsa-project.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Jaroslav Kysela <perex@perex.cz>, Eric Dumazet <edumazet@google.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Fabio Estevam <festevam@gmail.com>, Qiang Zhao <qiang.zhao@nxp.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Lee Jones <lee@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, Nicolin Chen <nicoleotsuka@gmail.com>, linux-gpio@vger.kernel.org, Mark Brown <broonie@kernel.org>, Christophe JAILLET <christophe.jaillet@wanadoo.fr>, Takashi Iwai <tiwai@suse.com>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>, Liam Girdwood <lgirdwood@gmail.com>, Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>, Simon Horman <horms@kernel.org>, linuxppc-de
+ v@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-SGksDQoNCldpdGggcG1hYzMyX2RlZmNvbmZpZyBvbiBRRU1VIEkgZ2V0IHRoZSBmb2xsb3dpbmcg
-V0FSTiB3aXRoIDYuNi1yYzENCg0KQmlzZWN0ZWQgdG8gY2ZlYjZhZThiY2I5ICgibWFwbGVfdHJl
-ZTogZGlzYWJsZSBtYXNfd3JfYXBwZW5kKCkgd2hlbiANCm90aGVyIHJlYWRlcnMgYXJlIHBvc3Np
-YmxlIikNCg0KSSBoYXZlIGFic29sdXRlbHkgbm8gaWRlYSB3aGF0IGl0IGNhbiBiZSwgZG8geW91
-ID8NCg0KLS0tLS0tLS0tLS0tWyBjdXQgaGVyZSBdLS0tLS0tLS0tLS0tDQpJbnRlcnJ1cHRzIHdl
-cmUgZW5hYmxlZCBlYXJseQ0KV0FSTklORzogQ1BVOiAwIFBJRDogMCBhdCBpbml0L21haW4uYzo5
-OTIgc3RhcnRfa2VybmVsKzB4NGQ4LzB4NWMwDQpNb2R1bGVzIGxpbmtlZCBpbjoNCkNQVTogMCBQ
-SUQ6IDAgQ29tbTogc3dhcHBlciBOb3QgdGFpbnRlZCA2LjYuMC1yYzEgIzQ4MA0KSGFyZHdhcmUg
-bmFtZTogUG93ZXJNYWMzLDEgNzQwMCAweGMwMjA5IFBvd2VyTWFjDQpOSVA6ICBjMGE2MDUyYyBM
-UjogYzBhNjA1MmMgQ1RSOiAwMDAwMDAwMA0KUkVHUzogYzBjNGRlZTAgVFJBUDogMDcwMCAgIE5v
-dCB0YWludGVkICAoNi42LjAtcmMxKQ0KTVNSOiAgMDAwMjkwMzIgPEVFLE1FLElSLERSLFJJPiAg
-Q1I6IDI0MDAwMjgyICBYRVI6IDIwMDAwMDAwDQoNCkdQUjAwOiBjMGE2MDUyYyBjMGM0ZGZhMCBj
-MGI5MjU4MCAwMDAwMDAxZCBjMGI5ZDEyOCAwMDAwMDAwMSBjMGI5ZDE0OCANCjNmZmZmZGZmDQpH
-UFIwODogYzBiYTgwZjAgMDAwMDAwMDAgMDAwMDAwMDAgM2ZmZmZlMDAgNDQwMDAyODIgMDAwMDAw
-MDAgMDAwMDAwMDAgDQowMTk5YWJmOA0KR1BSMTY6IDAxOTliMGEwIDdmZGU3ZmE0IDdmYzVhYzBj
-IDAwMDAwMGJiIDQxMDAwMDAwIDAxYzY5MGM4IGMwYjkyMDE0IA0KYzA5YjRiY2MNCkdQUjI0OiBj
-MGM1NTIyMCBjMGFjMDAwMCAwMDAwMDAwMCBlZmZmOTEwOSBlZmZmOTEwMCAwMDAwMDAwYSBjMGM2
-ZDAwMCANCmMwYjkyMGEwDQpOSVAgW2MwYTYwNTJjXSBzdGFydF9rZXJuZWwrMHg0ZDgvMHg1YzAN
-CkxSIFtjMGE2MDUyY10gc3RhcnRfa2VybmVsKzB4NGQ4LzB4NWMwDQpDYWxsIFRyYWNlOg0KW2Mw
-YzRkZmEwXSBbYzBhNjA1MmNdIHN0YXJ0X2tlcm5lbCsweDRkOC8weDVjMCAodW5yZWxpYWJsZSkN
-CltjMGM0ZGZmMF0gWzAwMDAzNTQwXSAweDM1NDANCkNvZGU6IDQ4MDAzN2IxIDQ4MDIzYzA1IDRi
-YWI4OGNkIDkwNjIwMjYwIDQ4MDEzOWU5IDRiNjU3Y2NkIDdkMjAwMGE2IA0KNzEyOTgwMDAgNDFh
-MjAwMTQgM2M2MGMwOWEgMzg2M2I3ODggNGI1ZTljY2QgPDBmZTAwMDAwPiAzOTIwMDAwMCANCjk5
-MzgwMDA4IDdkMjAwMGE2DQotLS1bIGVuZCB0cmFjZSAwMDAwMDAwMDAwMDAwMDAwIF0tLS0NCg0K
-Q2hyaXN0b3BoZQ0K
+Hi Herve,
+
+thanks for your patch!
+
+On Tue, Sep 12, 2023 at 12:15=E2=80=AFPM Herve Codina <herve.codina@bootlin=
+.com> wrote:
+
+> The Lantiq PEF2256 is a framer and line interface component designed to
+> fulfill all required interfacing between an analog E1/T1/J1 line and the
+> digital PCM system highway/H.100 bus.
+>
+> This kind of component can be found in old telecommunication system.
+> It was used to digital transmission of many simultaneous telephone calls
+> by time-division multiplexing. Also using HDLC protocol, WAN networks
+> can be reached through the framer.
+>
+> This pinmux support handles the pin muxing part (pins RP(A..D) and pins
+> XP(A..D)) of the PEF2256.
+>
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+
+Nice to see this as a proper pin control driver!
+
+>  drivers/pinctrl/pinctrl-pef2256-regs.h |  65 ++++++
+>  drivers/pinctrl/pinctrl-pef2256.c      | 308 +++++++++++++++++++++++++
+
+Do you really need a separate header just for some registers?
+But it's a matter of taste so I'm not gonna complain if you want
+it this way.
+
+> +config PINCTRL_PEF2256
+> +       tristate "Lantiq PEF2256 (FALC56) pin controller driver"
+> +       depends on OF && FRAMER_PEF2256
+> +       select PINMUX
+
+select PINCONF
+
+> +       select GENERIC_PINCONF
+
+This brings it in implicitly but I prefer that you just select it.
+
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+
+I think SPDX mandates that you start the tag with C99 comments
+
+// SPDX-License-Identifier: GPL-2.0-only
+
+> +       /* We map 1 group <-> 1 pin */
+
+Also known as "the qualcomm trick", but hey: it's fine.
+
+> +static int pef2256_register_pinctrl(struct pef2256_pinctrl *pef2256)
+> +{
+> +       struct pinctrl_dev      *pctrl;
+> +
+> +       pef2256->pctrl_desc.name    =3D dev_name(pef2256->dev);
+> +       pef2256->pctrl_desc.owner   =3D THIS_MODULE;
+> +       pef2256->pctrl_desc.pctlops =3D &pef2256_pctlops;
+> +       pef2256->pctrl_desc.pmxops  =3D &pef2256_pmxops;
+> +       if (pef2256->version =3D=3D PEF2256_VERSION_1_2) {
+> +               pef2256->pctrl_desc.pins  =3D pef2256_v12_pins;
+> +               pef2256->pctrl_desc.npins =3D ARRAY_SIZE(pef2256_v12_pins=
+);
+> +               pef2256->functions  =3D pef2256_v12_functions;
+> +               pef2256->nfunctions =3D ARRAY_SIZE(pef2256_v12_functions)=
+;
+> +       } else {
+> +               pef2256->pctrl_desc.pins  =3D pef2256_v2x_pins;
+> +               pef2256->pctrl_desc.npins =3D ARRAY_SIZE(pef2256_v2x_pins=
+);
+> +               pef2256->functions  =3D pef2256_v2x_functions;
+> +               pef2256->nfunctions =3D ARRAY_SIZE(pef2256_v2x_functions)=
+;
+> +       }
+> +
+> +       pctrl =3D devm_pinctrl_register(pef2256->dev, &pef2256->pctrl_des=
+c, pef2256);
+> +       if (IS_ERR(pctrl)) {
+> +               dev_err(pef2256->dev, "pinctrl driver registration failed=
+\n");
+> +               return PTR_ERR(pctrl);
+> +       }
+> +
+> +       return 0;
+
+You could use
+return dev_err_probe(...);
+
+> +       pef2256_reset_pinmux(pef2256_pinctrl);
+> +       ret =3D pef2256_register_pinctrl(pef2256_pinctrl);
+> +       if (ret)
+> +               return ret;
+
+Or you could use it down here.
+
+With or without these changes (because they are nitpicks)
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+
+Yours,
+Linus Walleij
