@@ -2,86 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A06F79C715
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Sep 2023 08:39:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55FCB79C865
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Sep 2023 09:42:19 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IHnDcBju;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=qfpMKXaj;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=QkoiDsZl;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RlDTC1xPhz3cnT
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Sep 2023 16:39:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RlFsj1Skvz3dDw
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Sep 2023 17:42:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IHnDcBju;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=qfpMKXaj;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=QkoiDsZl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2001:67c:2178:6::1c; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RlFrp2tXpz3c1M
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Sep 2023 17:41:29 +1000 (AEST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out1.suse.de (Postfix) with ESMTP id 3842C215EE;
+	Tue, 12 Sep 2023 07:41:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1694504479; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dTICBUf7E+hE+S8045VvIlps+lXGngZTeEQFyd8jt4g=;
+	b=qfpMKXajaRD3rIzXEgIGHFvpTNknPjk3p1OXq8hRp7wJsIRjJLDaj53OAHIS5UWF+W4BT5
+	J2Wpk5acv0uq49e9ergvHEUjC03/hUMpQT/VueImfd5evSwEf7O45WI2NoKmaPSzLPwZQm
+	sSrtfETIYlq2qV6PSB11hDDhvwWMSU4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1694504479;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dTICBUf7E+hE+S8045VvIlps+lXGngZTeEQFyd8jt4g=;
+	b=QkoiDsZlT/iyfgcS7nwVRil93cjCF/rjF8cIJyvj/thDtj8fOsw6TrzU+WwKN7S6IecVtx
+	LTxSAHn7h7gp6CBQ==
+Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RlDSL6GHvz3cnS
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Sep 2023 16:38:42 +1000 (AEST)
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38C6aeQZ003197;
-	Tue, 12 Sep 2023 06:38:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=mHX5r4EE7M9edmf1gTkvH6HdkVNl1vwejw5sDbrux50=;
- b=IHnDcBjurkl7JIy6f9AIYHvJe8tLelrehvBSI3RxLTcVU1PRwQz/8N/sDk22qU+4wACs
- ZvYy8ccsuhxzpq1vpAsUerQfttgKlnjghcN57dUzQKuo1XY9QBdJLLcSlrB4XpEPkpmW
- mwkRpcBsp0N/vfqMCK1VqhtQsusu37ddDW0zVArcnCc6gqdXa8zgfBRbcdqt/qnfvHg/
- U+pTtJp97nqZ+u6XYqN50ACkWG3WpD103JFxDEZrlOiUBmAQ5997sw55hK9ammsvhJic
- jAgcTU6KnyKJzOmx68nkgZxVh9Oc6eILiAdJDQnp3E06o+C5J3YAppwNYCXdp92+JPCv 5Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t2hv51ck5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Sep 2023 06:38:30 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38C6cUtl009875;
-	Tue, 12 Sep 2023 06:38:30 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t2hv51cjs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Sep 2023 06:38:30 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 38C6Kxre002724;
-	Tue, 12 Sep 2023 06:38:28 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3t14hkrstn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Sep 2023 06:38:28 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 38C6cPMf45809970
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 12 Sep 2023 06:38:25 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7DD3420049;
-	Tue, 12 Sep 2023 06:38:25 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 27BC920040;
-	Tue, 12 Sep 2023 06:38:22 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.43.60.12])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 12 Sep 2023 06:38:21 +0000 (GMT)
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: acme@kernel.org, jolsa@kernel.org, irogers@google.com, namhyung@kernel.org
-Subject: [PATCH V3] tools/perf: Add includes for detected configs in Makefile.perf
-Date: Tue, 12 Sep 2023 12:08:07 +0530
-Message-Id: <20230912063807.74250-1-atrajeev@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.35.1
+	by relay2.suse.de (Postfix) with ESMTPS id 23F502C142;
+	Tue, 12 Sep 2023 07:41:17 +0000 (UTC)
+Date: Tue, 12 Sep 2023 09:41:16 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Nayna <nayna@linux.vnet.ibm.com>
+Subject: Re: [PATCH] integrity: powerpc: Do not select CA_MACHINE_KEYRING
+Message-ID: <20230912074116.GL8826@kitsune.suse.cz>
+References: <20230907165224.32256-1-msuchanek@suse.de>
+ <20230907173232.GD8826@kitsune.suse.cz>
+ <92e23f29-1a16-54da-48d1-59186158e923@linux.vnet.ibm.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: ywloclwEZv9rTynK_qG3jP0fkLL_jCVy
-X-Proofpoint-GUID: LY3L4GxxZf1010LV6G6GnXywxUHKVrx7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-12_03,2023-09-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 adultscore=0
- malwarescore=0 lowpriorityscore=0 priorityscore=1501 mlxscore=0
- clxscore=1015 bulkscore=0 spamscore=0 mlxlogscore=999 suspectscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309120054
+In-Reply-To: <92e23f29-1a16-54da-48d1-59186158e923@linux.vnet.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,55 +75,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: Eric Snowberg <eric.snowberg@oracle.com>, Paul Moore <paul@paul-moore.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, Nayna Jain <nayna@linux.ibm.com>, James Morris <jmorris@namei.org>, Mimi Zohar <zohar@linux.ibm.com>, linux-kernel@vger.kernel.org, joeyli <jlee@suse.com>, linux-security-module@vger.kernel.org, Jarkko Sakkinen <jarkko@kernel.org>, linux-integrity@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "Serge E. Hallyn" <serge@hallyn.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Makefile.perf uses "CONFIG_*" checks in the code. Example the config
-for libtraceevent is used to set PYTHON_EXT_SRCS
+On Mon, Sep 11, 2023 at 11:39:38PM -0400, Nayna wrote:
+> 
+> On 9/7/23 13:32, Michal Suchánek wrote:
+> > Adding more CC's from the original patch, looks like get_maintainers is
+> > not that great for this file.
+> > 
+> > On Thu, Sep 07, 2023 at 06:52:19PM +0200, Michal Suchanek wrote:
+> > > No other platform needs CA_MACHINE_KEYRING, either.
+> > > 
+> > > This is policy that should be decided by the administrator, not Kconfig
+> > > dependencies.
+> 
+> We certainly agree that flexibility is important. However, in this case,
+> this also implies that we are expecting system admins to be security
+> experts. As per our understanding, CA based infrastructure(PKI) is the
+> standard to be followed and not the policy decision. And we can only speak
+> for Power.
+> 
+> INTEGRITY_CA_MACHINE_KEYRING ensures that we always have CA signed leaf
+> certs.
 
-	ifeq ($(CONFIG_LIBTRACEEVENT),y)
-	  PYTHON_EXT_SRCS := $(shell grep -v ^\# util/python-ext-sources)
-	else
-	  PYTHON_EXT_SRCS := $(shell grep -v '^\#\|util/trace-event.c' util/python-ext-sources)
-	endif
+And that's the problem.
 
-But this is not picking the value for CONFIG_LIBTRACEEVENT that is
-set using the settings in Makefile.config. Include the file
-".config-detected" so that make will use the system detected
-configuration in the CONFIG checks. This will fix isues that
-could arise when other "CONFIG_*" checks are added to Makefile.perf
-in future as well.
+From a distribution point of view there are two types of leaf certs:
 
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
----
-Changelog:
-v2 -> v3:
-Added -include since in some cases make clean or make
-will fail when config is not included and if config-detected
-file is not present.
+ - leaf certs signed by the distribution CA which need not be imported
+   because the distribution CA cert is enrolled one way or another
+ - user generated ad-hoc certificates that are not signed in any way,
+   and enrolled by the user
 
-v1 -> v2:
-Added $(OUTPUT) prefix to config-detected as pointed
-out by Ian
+The latter are vouched for by the user by enrolling the certificate, and
+confirming that they really want to trust this certificate. Enrolling
+user certificates is vital for usability or secure boot. Adding extra
+step of creating a CA certificate stored on the same system only
+complicates things with no added benefit.
 
- tools/perf/Makefile.perf | 3 +++
- 1 file changed, 3 insertions(+)
+> INTEGRITY_CA_MACHINE_KEYRING_MAX ensures that CA is only allowed to do key
+> signing and not code signing.
+> 
+> Having CA signed certs also permits easy revocation of all leaf certs.
 
-diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
-index 37af6df7b978..f6fdc2d5a92f 100644
---- a/tools/perf/Makefile.perf
-+++ b/tools/perf/Makefile.perf
-@@ -351,6 +351,9 @@ export PYTHON_EXTBUILD_LIB PYTHON_EXTBUILD_TMP
- 
- python-clean := $(call QUIET_CLEAN, python) $(RM) -r $(PYTHON_EXTBUILD) $(OUTPUT)python/perf*.so
- 
-+# Use the detected configuration
-+-include $(OUTPUT).config-detected
-+
- ifeq ($(CONFIG_LIBTRACEEVENT),y)
-   PYTHON_EXT_SRCS := $(shell grep -v ^\# util/python-ext-sources)
- else
--- 
-2.31.1
+Revocation can be also done be removing the certificate from the keyring.
 
+If the user can add it they should also be able to remove it.
+
+> Loading certificates is completely new for Power Systems. We would like to
+> make it as clean as possible from the start. We want to enforce CA signed
+> leaf certificates(INTEGRITY_CA_MACHINE_KEYRING). As per
+> keyUsage(INTEGRITY_CA_MACHINE_KEYRING_MAX), if we want more flexibility,
+> probably a boot time override can be considered.
+
+If boot time override can exist it can as well be made permanent with a
+Kconfig option.
+
+I think that a boot time override is even more problematic for security
+than a Kconfig option - the kernel arguments are rarely signed.
+
+Thanks
+
+Michal
+
+> 
+> Thanks & Regards,
+> 
+>     - Nayna
+> 
+> 
+> > > 
+> > > cc: joeyli <jlee@suse.com>
+> > > Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+> > > ---
+> > >   security/integrity/Kconfig | 2 --
+> > >   1 file changed, 2 deletions(-)
+> > > 
+> > > diff --git a/security/integrity/Kconfig b/security/integrity/Kconfig
+> > > index 232191ee09e3..b6e074ac0227 100644
+> > > --- a/security/integrity/Kconfig
+> > > +++ b/security/integrity/Kconfig
+> > > @@ -68,8 +68,6 @@ config INTEGRITY_MACHINE_KEYRING
+> > >   	depends on INTEGRITY_ASYMMETRIC_KEYS
+> > >   	depends on SYSTEM_BLACKLIST_KEYRING
+> > >   	depends on LOAD_UEFI_KEYS || LOAD_PPC_KEYS
+> > > -	select INTEGRITY_CA_MACHINE_KEYRING if LOAD_PPC_KEYS
+> > > -	select INTEGRITY_CA_MACHINE_KEYRING_MAX if LOAD_PPC_KEYS
+> > >   	help
+> > >   	 If set, provide a keyring to which Machine Owner Keys (MOK) may
+> > >   	 be added. This keyring shall contain just MOK keys.  Unlike keys
+> > > -- 
+> > > 2.41.0
+> > > 
