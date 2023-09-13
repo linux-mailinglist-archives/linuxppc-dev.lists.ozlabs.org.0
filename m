@@ -1,77 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78C7D79F1CE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Sep 2023 21:16:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C06B79F339
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Sep 2023 22:50:44 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=k8YLSIVT;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=vgOarfiI;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rm9Dg5Q8Qz3cNS
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Sep 2023 05:16:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RmCJy3PQHz3cQ7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Sep 2023 06:50:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=k8YLSIVT;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=vgOarfiI;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.dk (client-ip=2607:f8b0:4864:20::d2a; helo=mail-io1-xd2a.google.com; envelope-from=axboe@kernel.dk; receiver=lists.ozlabs.org)
-Received: from mail-io1-xd2a.google.com (mail-io1-xd2a.google.com [IPv6:2607:f8b0:4864:20::d2a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::f35; helo=mail-qv1-xf35.google.com; envelope-from=ndesaulniers@google.com; receiver=lists.ozlabs.org)
+Received: from mail-qv1-xf35.google.com (mail-qv1-xf35.google.com [IPv6:2607:f8b0:4864:20::f35])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rm9Cl1tMWz3bdG
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Sep 2023 05:16:00 +1000 (AEST)
-Received: by mail-io1-xd2a.google.com with SMTP id ca18e2360f4ac-77dcff76e35so2121439f.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Sep 2023 12:16:00 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RmCJ61DdDz3c3g
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Sep 2023 06:49:57 +1000 (AEST)
+Received: by mail-qv1-xf35.google.com with SMTP id 6a1803df08f44-655d25f3678so1649956d6.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Sep 2023 13:49:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1694632555; x=1695237355; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=x4zSkAY9ImGwNcCjHTTaJbM5GM/WyQlYdRbd+ef7TV4=;
-        b=k8YLSIVTl0p+/GZo0cZMJA7ytpXe3GCf0tiKZcf31HHs+eIQ74FD3fXxTKOZ9Nv4yP
-         xq5i8R7MldfzdqwNyh7jbVK33tFpq7PI4p61RHlGdhaDs4bPjmItsr/DfCagQVveLONt
-         KBZjuOUn25URTxjlupxyMcrPsWrm0IQLgD32uZSS5bczZ3eN7ZSACpM/zX6FOVjTl1QD
-         YCTKkiDS+0iTX+dw9+FFWcQ4SjzQ7jRbAj0Lr3V9V3pJ9Ry2eMOeydLSO6V0P9n1l+FI
-         qN97zM+AXorzfR/Y6Udg0LCuq9IyprDxBIWB4OCqeWYK5Zy42xCtD1GdSckiuRco5bKu
-         j1NA==
+        d=google.com; s=20230601; t=1694638193; x=1695242993; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EFwFw82a57aBtQryliubY+OdXAAQrHVkDDwYmB6bvo8=;
+        b=vgOarfiIJVRRrivvTfdd4xPa5PGz91w7z9AZzLGqV779uBFweeXXTYjKFMb8boN1Qn
+         bdqNrYtBNT1PBMIzQwm3kvNTgBslfAkjg2aPY2Rmeyf8zrV7sqqMzF97tOeESV3cfUT8
+         cRLPoL9Yiu2I1I/NvgI9yHpaQ7u4m8xgRFFNxuqu9YGHAdkD7AGPj+12pb9dT12bJegN
+         pbO9XlUdu3rIPq8gHtKwEuds7+OJGz/7AHWckwcj82ZpXonDvO0pTx8TNydUfMakWOkA
+         cj6l//lw4Plv2k6X77gemo0G29HhGd8w169mjTQ/EJMi4BucjImqMpWvB9lQTjjiTKzL
+         u10A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694632555; x=1695237355;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=x4zSkAY9ImGwNcCjHTTaJbM5GM/WyQlYdRbd+ef7TV4=;
-        b=ORPCXifu2jRiOQ6w+8jFr3gmQcecBnkSjajPqgXcwreTLCivZvvWhYEWJKyyckSa1B
-         H425zNkxamJEeWpBkmkSxZA26z3odbLeTgOkRNySSJ4DUkDEdrQimN3aizpscv0hvMuE
-         NBXQ6y5dK5dhR4CLDPJjephSx2JyXYlAY/AL1vJcwXF/nPKOLuhQfKKNwqqOXF500Ptw
-         d/T6V7kfOCs1y7WTv8By7xBRBDmJjjoskIS/9TNS93H99/WDjl1t3aaHAsxusV5mKp/Y
-         0lrOIMkAS/Na9nVdQwdVdfneLuSUyjns+pRhlWq9ekJ3G4L2p8UfBrb+In5Bgy+1Zs7K
-         B1qA==
-X-Gm-Message-State: AOJu0Ywl1vT2vTr/UqLe8qTgorP+n0I+cTCfijcsxEeOgpSDjmdJFpyM
-	B1G/swfqjUHApPXym+94khLPMg==
-X-Google-Smtp-Source: AGHT+IHyPlzHEiXrLYtOyG3dd+H5yVcu5Qbi6bs9p/FW1+eqTxe7UgbDnBr+u2tVkyeRzeqLOmvZQw==
-X-Received: by 2002:a05:6e02:20c7:b0:34f:9fbc:8c7c with SMTP id 7-20020a056e0220c700b0034f9fbc8c7cmr2722113ilq.3.1694632555483;
-        Wed, 13 Sep 2023 12:15:55 -0700 (PDT)
-Received: from [192.168.1.94] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id o9-20020a92d389000000b0034f13bcaf9asm3815116ilo.22.2023.09.13.12.15.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Sep 2023 12:15:54 -0700 (PDT)
-Message-ID: <def46b96-b881-4806-bd0c-ca0b0462e72e@kernel.dk>
-Date: Wed, 13 Sep 2023 13:15:53 -0600
+        d=1e100.net; s=20230601; t=1694638193; x=1695242993;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EFwFw82a57aBtQryliubY+OdXAAQrHVkDDwYmB6bvo8=;
+        b=nDIUEa5PhY4R0kSIU0u/Mn1cF0/1pf2pId9/4E/6LZPwDh1DHGYo+/dNKwliPiEkNR
+         2iHxDRkjAR92AlyGb/LJ2KMNoYRX9EOM/C7SqxoHP+5/E9Gg2HZ+4N+sjP/EvE3cAobH
+         DQOHfjbznlhFiBrVmyAlBitXNUPbLT9BVg5sGHmCzEEfOQrpQ9iwOw9it2tmrnVZ2lKw
+         Je1Vr5EKeagG6tLVCqVujyLibr6wr+FK0fWUajGgHvVozfiDomHAbnlg2STq6jwDwIRM
+         wgC3c4i7EqhCYeL65Pv3ukc6YfJy8MA8EP1vwxtLrllYHa44tRHmDQGzbWkSG8m+W8XA
+         N0gw==
+X-Gm-Message-State: AOJu0Yz56xNc+uMmDbSTIKOZSo8ErGunNSvoBafXHoq9rBgB55X5547G
+	0jaQIhrTu7GMQ1++KSIem7XyaJRV+8KgU+WqTwk9Aw==
+X-Google-Smtp-Source: AGHT+IHyO+7qjdiOWvRrn0TL1tvmNTBKXt4WU5GdAv9X4AWVEJU+Ajo7u738qSi8gvalqluc4GkG9Xfyc7iZk8lZYKw=
+X-Received: by 2002:a05:6214:140e:b0:651:75a4:75b0 with SMTP id
+ pr14-20020a056214140e00b0065175a475b0mr3474295qvb.1.1694638193146; Wed, 13
+ Sep 2023 13:49:53 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 3/3 RESEND] powerpc/pseries: PLPKS SED Opal keystore
- support
-Content-Language: en-US
-To: Nathan Chancellor <nathan@kernel.org>, gjoyce@linux.vnet.ibm.com
 References: <20230908153056.3503975-1-gjoyce@linux.vnet.ibm.com>
- <20230908153056.3503975-4-gjoyce@linux.vnet.ibm.com>
- <20230913185951.GA3643621@dev-arch.thelio-3990X>
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <20230913185951.GA3643621@dev-arch.thelio-3990X>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <20230908153056.3503975-2-gjoyce@linux.vnet.ibm.com> <20230913165612.GA2213586@dev-arch.thelio-3990X>
+In-Reply-To: <20230913165612.GA2213586@dev-arch.thelio-3990X>
+From: Nick Desaulniers <ndesaulniers@google.com>
+Date: Wed, 13 Sep 2023 13:49:39 -0700
+Message-ID: <CAKwvOdnbKA-DiWRorWMR93JPFX-OjUjO=SQXSRf4=DpwzvZ=pQ@mail.gmail.com>
+Subject: Re: [PATCH v7 1/3 RESEND] block:sed-opal: SED Opal keystore
+To: Nathan Chancellor <nathan@kernel.org>, gjoyce@linux.vnet.ibm.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,34 +76,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nayna@linux.ibm.com, linux-block@vger.kernel.org, jarkko@kernel.org, keyrings@vger.kernel.org, jonathan.derrick@linux.dev, brking@linux.vnet.ibm.com, akpm@linux-foundation.org, msuchanek@suse.de, linuxppc-dev@lists.ozlabs.org
+Cc: axboe@kernel.dk, llvm@lists.linux.dev, nayna@linux.ibm.com, linux-block@vger.kernel.org, jarkko@kernel.org, keyrings@vger.kernel.org, jonathan.derrick@linux.dev, brking@linux.vnet.ibm.com, akpm@linux-foundation.org, msuchanek@suse.de, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 9/13/23 12:59 PM, Nathan Chancellor wrote:
+On Wed, Sep 13, 2023 at 9:56=E2=80=AFAM Nathan Chancellor <nathan@kernel.or=
+g> wrote:
+>
 > Hi Greg,
-> 
-> On Fri, Sep 08, 2023 at 10:30:56AM -0500, gjoyce@linux.vnet.ibm.com wrote:
->> From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
->>
->> Define operations for SED Opal to read/write keys
->> from POWER LPAR Platform KeyStore(PLPKS). This allows
->> non-volatile storage of SED Opal keys.
->>
->> Signed-off-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
->> Reviewed-by: Jonathan Derrick <jonathan.derrick@linux.dev>
->> Reviewed-by: Hannes Reinecke <hare@suse.de>
-> 
-> After this change in -next as commit 9f2c7411ada9 ("powerpc/pseries:
-> PLPKS SED Opal keystore support"), I see the following crash when
-> booting some distribution configurations, such as OpenSUSE's [1] (the
-> rootfs is available at [2] if necessary):
+>
+> On Fri, Sep 08, 2023 at 10:30:54AM -0500, gjoyce@linux.vnet.ibm.com wrote=
+:
+> > From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+> >
+> > Add read and write functions that allow SED Opal keys to stored
+> > in a permanent keystore.
+> >
+> > Signed-off-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+> > Reviewed-by: Jonathan Derrick <jonathan.derrick@linux.dev>
+> > ---
+> >  block/Makefile               |  2 +-
+> >  block/sed-opal-key.c         | 24 ++++++++++++++++++++++++
+> >  include/linux/sed-opal-key.h | 15 +++++++++++++++
+> >  3 files changed, 40 insertions(+), 1 deletion(-)
+> >  create mode 100644 block/sed-opal-key.c
+> >  create mode 100644 include/linux/sed-opal-key.h
+> >
+> > diff --git a/block/Makefile b/block/Makefile
+> > index 46ada9dc8bbf..ea07d80402a6 100644
+> > --- a/block/Makefile
+> > +++ b/block/Makefile
+> > @@ -34,7 +34,7 @@ obj-$(CONFIG_BLK_DEV_ZONED) +=3D blk-zoned.o
+> >  obj-$(CONFIG_BLK_WBT)                +=3D blk-wbt.o
+> >  obj-$(CONFIG_BLK_DEBUG_FS)   +=3D blk-mq-debugfs.o
+> >  obj-$(CONFIG_BLK_DEBUG_FS_ZONED)+=3D blk-mq-debugfs-zoned.o
+> > -obj-$(CONFIG_BLK_SED_OPAL)   +=3D sed-opal.o
+> > +obj-$(CONFIG_BLK_SED_OPAL)   +=3D sed-opal.o sed-opal-key.o
+> >  obj-$(CONFIG_BLK_PM)         +=3D blk-pm.o
+> >  obj-$(CONFIG_BLK_INLINE_ENCRYPTION)  +=3D blk-crypto.o blk-crypto-prof=
+ile.o \
+> >                                          blk-crypto-sysfs.o
+> > diff --git a/block/sed-opal-key.c b/block/sed-opal-key.c
+> > new file mode 100644
+> > index 000000000000..16f380164c44
+> > --- /dev/null
+> > +++ b/block/sed-opal-key.c
+> > @@ -0,0 +1,24 @@
+> > +// SPDX-License-Identifier: GPL-2.0-only
+> > +/*
+> > + * SED key operations.
+> > + *
+> > + * Copyright (C) 2022 IBM Corporation
+> > + *
+> > + * These are the accessor functions (read/write) for SED Opal
+> > + * keys. Specific keystores can provide overrides.
+> > + *
+> > + */
+> > +
+> > +#include <linux/kernel.h>
+> > +#include <linux/errno.h>
+> > +#include <linux/sed-opal-key.h>
+> > +
+> > +int __weak sed_read_key(char *keyname, char *key, u_int *keylen)
+> > +{
+> > +     return -EOPNOTSUPP;
+> > +}
+> > +
+> > +int __weak sed_write_key(char *keyname, char *key, u_int keylen)
+> > +{
+> > +     return -EOPNOTSUPP;
+> > +}
+>
+> This change causes a build failure for certain clang configurations due
+> to an unfortunate issue [1] with recordmcount, clang's integrated
+> assembler, and object files that contain a section with only weak
+> functions/symbols (in this case, the .text section in sed-opal-key.c),
+> resulting in
+>
+>   Cannot find symbol for section 2: .text.
+>   block/sed-opal-key.o: failed
+>
+> when building this file.
 
-I'll drop the series for now - I didn't push out the main branch just
-yet as I don't publish the block next tree until at least at -rc2 time,
-so it's just in a private branch for now.
+The definitions in
+block/sed-opal-key.c
+should be deleted. Instead, in
+include/linux/sed-opal-key.h
+CONFIG_PSERIES_PLPKS_SED should be used to define static inline
+versions when CONFIG_PSERIES_PLPKS_SED is not defined.
 
--- 
-Jens Axboe
+#ifdef CONFIG_PSERIES_PLPKS_SED
+int sed_read_key(char *keyname, char *key, u_int *keylen);
+int sed_write_key(char *keyname, char *key, u_int keylen);
+#else
+static inline
+int sed_read_key(char *keyname, char *key, u_int *keylen) {
+  return -EOPNOTSUPP;
+}
+static inline
+int sed_write_key(char *keyname, char *key, u_int keylen);
+  return -EOPNOTSUPP;
+}
+#endif
+
+>
+> Is there any real reason to have a separate translation unit for these
+> two functions versus just having them living in sed-opal.c? Those two
+> object files share the same Kconfig dependency. I am happy to send a
+> patch if that is an acceptable approach.
+>
+> [1]: https://github.com/ClangBuiltLinux/linux/issues/981
+>
+> Cheers,
+> Nathan
+>
 
 
+--=20
+Thanks,
+~Nick Desaulniers
