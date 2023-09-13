@@ -2,55 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6003579E0D2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Sep 2023 09:27:44 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=id5wBw+5;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 17BD879E19B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Sep 2023 10:09:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RlsVQ1g8Gz3cGL
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Sep 2023 17:27:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RltR452htz3cnc
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Sep 2023 18:09:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=id5wBw+5;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.196; helo=relay4-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.219.177; helo=mail-yb1-f177.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RlsTW1l8cz30MQ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Sep 2023 17:26:52 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 26012E000C;
-	Wed, 13 Sep 2023 07:26:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1694590007;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O+j8CLkeQqfE/jh3KUACTiWhEVCfAwwkGv+CICyZc1E=;
-	b=id5wBw+5IoW5nrGIWPBxMOPgujgtR6RcLR+FMdrunmLvgVotlzLE4P7GYyysXkHSpptRua
-	AUfDx7XqGPnc1pFdO+2bGGISGvLbBCzyXlMgzpVW7v7AYC53V4Eaa7Giqyjg+JY6+zA/6X
-	ae1i0V0aWjGLBf6bo0hPvjiAFVEw+x3XTs3VCD8PXidN9bityZlJLHPojdkWvSYwfW1nil
-	jAHS1xzlhg0SXt7dGRnbvV2Qsa4Q1uRXGy564WEw0irLFiw0glEyZRzK5O1GQJ3au0virI
-	6//y6UwVKL0i+itAqUc3X0+fgIxkEkCePNW0m4OkaNXvPS+DkPuU9xPTWVApzw==
-Date: Wed, 13 Sep 2023 09:26:40 +0200
-From: Herve Codina <herve.codina@bootlin.com>
-To: Conor Dooley <conor@kernel.org>
-Subject: Re: [PATCH v5 08/31] dt-bindings: soc: fsl: cpm_qe: cpm1-scc-qmc:
- Add support for QMC HDLC
-Message-ID: <20230913092640.76934b31@bootlin.com>
-In-Reply-To: <20230912-capable-stash-c7a3e33078ac@spud>
-References: <20230912081527.208499-1-herve.codina@bootlin.com>
-	<20230912101018.225246-1-herve.codina@bootlin.com>
-	<20230912-capable-stash-c7a3e33078ac@spud>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RltQc0Yzdz2yt6
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Sep 2023 18:09:26 +1000 (AEST)
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-d7b91422da8so5660744276.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Sep 2023 01:09:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694592562; x=1695197362;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uCz1YqPLlml0me4QSAkCQsY8FV1Cudx91zoZbXBVMOA=;
+        b=c4goPputaa3GgNLjuEXuG4zGwQ1heQkURaB0PPAfufU8YHExRC2Eq9IQkArQdn+m3N
+         NUNUXaxSX05yiM4ZVLZnYCIxZXhDwpwJlFMR+un4O+nNw+bQ0XeyJ12PZJTcpFk4BYBU
+         e3O8lhkrYOysAPpfzt1C+an2hD8LuuvI+TYfahPXkSdEHhgyHDoGJ+okCAPHXUfQvlZZ
+         SU5BezQU7S1aSIjKrz066i+d2Byw+HwfAv6uyFmXyg/GChkIB5utiJPOKaSIkmY7VPo0
+         ajKNO+r2F8YaxcQjjHc0aLAusWfgMmH3yjAaI01BDCu4KPrCRFMEwbxjI7hDRT+LC1WD
+         LkrA==
+X-Gm-Message-State: AOJu0YwSyGLOlImAAFYaFWnVNuhQO6iVY0TA7vqSdjb74BoypoP/4mgN
+	8DAKsiuEutGKB42UMm0sTS416pJYEeH43w==
+X-Google-Smtp-Source: AGHT+IFbBN699UDtjRJ7YDp7Mawp/6ZlRlOS2yy/q1Bxprn2LOVqm9cS+PoD2cEITlt+WXrymewsPA==
+X-Received: by 2002:a05:6902:285:b0:d81:5ec1:80cf with SMTP id v5-20020a056902028500b00d815ec180cfmr616471ybh.12.1694592562631;
+        Wed, 13 Sep 2023 01:09:22 -0700 (PDT)
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com. [209.85.219.177])
+        by smtp.gmail.com with ESMTPSA id o9-20020a254109000000b00d74c9618c6fsm2622397yba.1.2023.09.13.01.09.22
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 Sep 2023 01:09:22 -0700 (PDT)
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-d776e1f181bso5673070276.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Sep 2023 01:09:22 -0700 (PDT)
+X-Received: by 2002:a25:9844:0:b0:d81:4e98:4f5c with SMTP id
+ k4-20020a259844000000b00d814e984f5cmr1178332ybo.47.1694592562230; Wed, 13 Sep
+ 2023 01:09:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20230912135050.17155-1-tzimmermann@suse.de> <20230912135050.17155-3-tzimmermann@suse.de>
+In-Reply-To: <20230912135050.17155-3-tzimmermann@suse.de>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 13 Sep 2023 10:09:10 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdU66MLdWM9Qjk-2qmHUZA6F8L-W1iAoc73-HvSB1n-drg@mail.gmail.com>
+Message-ID: <CAMuHMdU66MLdWM9Qjk-2qmHUZA6F8L-W1iAoc73-HvSB1n-drg@mail.gmail.com>
+Subject: Re: [PATCH v4 2/5] fbdev: Replace fb_pgprotect() with pgprot_framebuffer()
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: herve.codina@bootlin.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,98 +67,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, alsa-devel@alsa-project.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Linus Walleij <linus.walleij@linaro.org>, Jaroslav Kysela <perex@perex.cz>, Eric Dumazet <edumazet@google.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Fabio Estevam <festevam@gmail.com>, Qiang Zhao <qiang.zhao@nxp.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Lee Jones <lee@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, Nicolin Chen <nicoleotsuka@gmail.com>, linux-gpio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Christophe JAILLET <christophe.jaillet@wanadoo.fr>, Takashi Iwai <tiwai@suse.com>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>, Liam Girdwood <lgirdwood@gmail.com>, Li Yang <leoyang.li@nxp.com>, Mark Brown <broonie@kernel.org>, Si
- mon Horman <horms@kernel.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: linux-arch@vger.kernel.org, linux-fbdev@vger.kernel.org, linux-ia64@vger.kernel.org, dri-devel@lists.freedesktop.org, arnd@arndb.de, deller@gmx.de, linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org, npiggin@gmail.com, sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Conor,
+Hi Thomas,
 
-On Tue, 12 Sep 2023 18:21:58 +0100
-Conor Dooley <conor@kernel.org> wrote:
+On Tue, Sep 12, 2023 at 5:32=E2=80=AFPM Thomas Zimmermann <tzimmermann@suse=
+.de> wrote:
+> Rename the fbdev mmap helper fb_pgprotect() to pgprot_framebuffer(
+> The helper sets VMA page-access flags for framebuffers in device I/O
+> memory.
+>
+> Also clean up the helper's parameters and return value. Instead of
+> the VMA instance, pass the individial parameters separately: existing
+> page-access flags, the VMAs start and end addresses and the offset
+> in the underlying device memory rsp file. Return the new page-access
+> flags. These changes align pgprot_framebuffer() with other pgprot_()
+> functions.
+>
+> v4:
+>         * fix commit message (Christophe)
+> v3:
+>         * rename fb_pgprotect() to pgprot_framebuffer() (Arnd)
+>
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 
-> On Tue, Sep 12, 2023 at 12:10:18PM +0200, Herve Codina wrote:
-> > The QMC (QUICC mutichannel controller) is a controller present in some
-> > PowerQUICC SoC such as MPC885.
-> > The QMC HDLC uses the QMC controller to transfer HDLC data.
-> >=20
-> > Additionally, a framer can be connected to the QMC HDLC.
-> > If present, this framer is the interface between the TDM bus used by the
-> > QMC HDLC and the E1/T1 line.
-> > The QMC HDLC can use this framer to get information about the E1/T1 line
-> > and configure the E1/T1 line.
-> >=20
-> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> > ---
-> >  .../bindings/soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml   | 13 +++++++++++++
-> >  1 file changed, 13 insertions(+)
-> >=20
-> > diff --git a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-=
-scc-qmc.yaml b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-sc=
-c-qmc.yaml
-> > index 82d9beb48e00..b5073531f3f1 100644
-> > --- a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-scc-qmc=
-.yaml
-> > +++ b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-scc-qmc=
-.yaml
-> > @@ -101,6 +101,16 @@ patternProperties:
-> >            Channel assigned Rx time-slots within the Rx time-slots rout=
-ed by the
-> >            TSA to this cell.
-> > =20
-> > +      compatible:
-> > +        const: fsl,qmc-hdlc
-> > +
-> > +      fsl,framer:
-> > +        $ref: /schemas/types.yaml#/definitions/phandle
-> > +        description:
-> > +          phandle to the framer node. The framer is in charge of an E1=
-/T1 line
-> > +          interface connected to the TDM bus. It can be used to get th=
-e E1/T1 line
-> > +          status such as link up/down. =20
->=20
-> Sounds like this fsl,framer property should depend on the compatible
-> being present, no?
+Thanks for your patch!
 
-Well from the implementation point of view, only the QMC HDLC driver uses t=
-his
-property.
+>  arch/m68k/include/asm/fb.h           | 19 ++++++++++---------
 
-=46rom the hardware description point of view, this property means that the t=
-ime slots
-handled by this channel are connected to the framer. So I think it makes se=
-nse for
-any channel no matter the compatible (even if compatible is not present).
+Looks like you forgot to apply my
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+given on v1.
 
-Should I change and constraint the fsl,framer property to the compatible pr=
-esence ?
-If so, is the following correct for this contraint ?
-   --- 8< ---
-   dependencies:
-     - fsl,framer: [ compatible ];
-   --- 8< ---
+I didn't notice before, as I never received v2 and v3 due to the
+gmail/vger email issues.
 
-Regards,
-Herv=C3=A9
+Gr{oetje,eeting}s,
 
->=20
-> Thanks,
-> Conor.
->=20
-> > +
-> >      required:
-> >        - reg
-> >        - fsl,tx-ts-mask
-> > @@ -159,5 +169,8 @@ examples:
-> >              fsl,operational-mode =3D "hdlc";
-> >              fsl,tx-ts-mask =3D <0x00000000 0x0000ff00>;
-> >              fsl,rx-ts-mask =3D <0x00000000 0x0000ff00>;
-> > +
-> > +            compatible =3D "fsl,qmc-hdlc";
-> > +            fsl,framer =3D <&framer>;
-> >          };
-> >      };
-> > --=20
-> > 2.41.0
-> >  =20
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
