@@ -2,76 +2,94 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF2EE79E240
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Sep 2023 10:37:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 902E179E341
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Sep 2023 11:13:19 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sigma-star.at header.i=@sigma-star.at header.a=rsa-sha256 header.s=google header.b=okpTwTVP;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=o3v1Q0Af;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rlv2j4dkPz3cRC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Sep 2023 18:37:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rlvr60VCWz30NP
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Sep 2023 19:13:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=sigma-star.at header.i=@sigma-star.at header.a=rsa-sha256 header.s=google header.b=okpTwTVP;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=o3v1Q0Af;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sigma-star.at (client-ip=2a00:1450:4864:20::331; helo=mail-wm1-x331.google.com; envelope-from=david@sigma-star.at; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=devnull+j.granados.samsung.com@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rlv1n4QRRz2yVQ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Sep 2023 18:36:27 +1000 (AEST)
-Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-401b3ea0656so68948225e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Sep 2023 01:36:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sigma-star.at; s=google; t=1694594184; x=1695198984; darn=lists.ozlabs.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uolj6bycuQLgVCoKuVx7OW6O8ol63jhVI8+H9GWvM7E=;
-        b=okpTwTVPoWo0nMIeH4sE/eQt3AcP0sWNkQ2M20JUMeCBd6WP5x32/i4Q81nz4eJdHW
-         Hh/Ue3o7x9uSQvSMxGW7Mxmpg84zpA++lJgcJ1eWT4XbGp8ccbXw6ddEs7pVWhDNGP0/
-         BuXjDMEBJyL8cRFBnqtW+ZGXB3SYoOwcGT9uMRS/C60D1Ygv1I0VD4xKl8yTP3Hg10Rk
-         hExTuwJS9bH1TSfajyB/WRE+eQVSj2ygnUIqYF8A8EtZN2dT63bH1c7KrjKFy+mZFXYA
-         Y3LGIXEN1EtWynVRyWvO5We1bIShqA0LI3dDAC4gmLonaZ4o2uL6YrWqGDno7FrbZrSX
-         cuQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694594184; x=1695198984;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uolj6bycuQLgVCoKuVx7OW6O8ol63jhVI8+H9GWvM7E=;
-        b=htRv7tD7nhX+oWUhXFiT3TuxRXuMvOJZLtx/N5fmieDkF3KNlEyDRyveVuI1rsinEM
-         fEwPoylJkDhFeGu3lrgCHl5CkipAg1cNcYtFTnqJG2jz+jKFLVYy1P6sDE9TgYO9Ho2H
-         3g0WSOkH7AYKn5/ydUj43OL5hH4Ga9nTq+PiQ+uZ/i8GOeg5saEGv21Mh7WtFty7POvG
-         GFaKyucTb7PtmG9fcHiaDtoq3TpBW+n4BiJ1yWC5BINQ+4lnyuAiGOc1Jpsa5l3ysaWE
-         WIbxIh7e6huvt6Zp75UTlmYX4uRtqbVXDsynQhHhVFZqhp4dnsNrqDTUmXx5ZWwSP7p+
-         TBmg==
-X-Gm-Message-State: AOJu0Yyo1qZWzn8QReUczqWoL6/GrxLw/v8GVYlYlJlPs5DdvQfZmBiF
-	/rSNaAk+VGCT9FK2IxIcjXM2eQ==
-X-Google-Smtp-Source: AGHT+IGXZEXOiBFL14tbu7JB9wJiL81o7SR10ExAo1isVi5iswnBwwcoSwfHQtzWGjeJP8MxZaq/dw==
-X-Received: by 2002:a05:600c:2159:b0:402:f503:6d1b with SMTP id v25-20020a05600c215900b00402f5036d1bmr1463747wml.0.1694594183662;
-        Wed, 13 Sep 2023 01:36:23 -0700 (PDT)
-Received: from smtpclient.apple (clnet-p106-198.ikbnet.co.at. [83.175.106.198])
-        by smtp.gmail.com with ESMTPSA id y17-20020adff151000000b0031c5dda3aedsm14955606wro.95.2023.09.13.01.36.22
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 13 Sep 2023 01:36:23 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.700.6\))
-Subject: Re: [PATCH v2 1/3] crypto: mxs-dcp: Add support for hardware provided
- keys
-From: David Gstir <david@sigma-star.at>
-In-Reply-To: <CVH49V57VE6R.2488KOQMR5AKQ@suppilovahvero>
-Date: Wed, 13 Sep 2023 10:36:11 +0200
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <F2794F55-D63B-448D-B954-C3C25E0B474D@sigma-star.at>
-References: <20230912111115.24274-1-david@sigma-star.at>
- <20230912111115.24274-2-david@sigma-star.at>
- <CVH49V57VE6R.2488KOQMR5AKQ@suppilovahvero>
-To: Jarkko Sakkinen <jarkko@kernel.org>
-X-Mailer: Apple Mail (2.3731.700.6)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RlvpG1pr8z30P0
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Sep 2023 19:11:34 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 2DDB46181B;
+	Wed, 13 Sep 2023 09:11:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 823C4C433C7;
+	Wed, 13 Sep 2023 09:11:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1694596290;
+	bh=IF6j2/SpYlg2pfwUX2eh+AoPnu93Roh0uk49wRv/q+Y=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=o3v1Q0AfOS98gJRgbnbYgSFhJATKnAvbBJjBxbwn9AC7FIEBGLlRtFYi99uY7nV4M
+	 JOrf5t82biXrDRr5EtdvK+2PcQaxHhjxkGalXZv2hecWcXdCDwFhL87diGF2fVkeet
+	 hjTXvYIbY+7pJUzqsIqnJvSsGclXxVeTaR8f6C0Yk8gK9U+4jKKLuglOz2AzNyuXSs
+	 e/lLStT/8DRe6NSajTHgAS0KheQv7Tjs5EtrJFsypzCdY6XXee66vdGFDGY7SAr/J5
+	 jzK7lIj5Ba8XNKS7W/DjrohUJqxf7pVpNo4bANYheFqqLnDB74eVT/Lh4JDaSsNWqg
+	 V8eya7i54N8NA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5E9D1CA5518;
+	Wed, 13 Sep 2023 09:11:30 +0000 (UTC)
+From: Joel Granados via B4 Relay <devnull+j.granados.samsung.com@kernel.org>
+Subject: [PATCH v2 0/8] sysctl: Remove sentinel elements from arch
+Date: Wed, 13 Sep 2023 11:10:54 +0200
+Message-Id:  <20230913-jag-sysctl_remove_empty_elem_arch-v2-0-d1bd13a29bae@samsung.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJ58AWUC/42NQQ6CMBAAv0L2bE0phYAn/2FIU8sKNZSSLjYSw
+ t+tJN49zhxmNiAMFgku2QYBoyXrpwTilIEZ9NQjs11iEFwUvOGSPXXPaCWzjCqg8xEVunlZFY7
+ olA5mYHXe3bmusDJGQurMAR/2fTxubeLB0uLDeixj/rW/evVHPeaMs6Ipyk7WpRSyvpJ29Jr6s
+ /EO2n3fPyJm99bUAAAA
+To: Luis Chamberlain <mcgrof@kernel.org>, willy@infradead.org, 
+ josh@joshtriplett.org, Kees Cook <keescook@chromium.org>, 
+ Iurii Zaikin <yzaikin@google.com>, Heiko Carstens <hca@linux.ibm.com>, 
+ Vasily Gorbik <gor@linux.ibm.com>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Sven Schnelle <svens@linux.ibm.com>, 
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+ Mark Rutland <mark.rutland@arm.com>, Thomas Gleixner <tglx@linutronix.de>, 
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+ "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, 
+ Paul Walmsley <paul.walmsley@sifive.com>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, Guo Ren <guoren@kernel.org>, 
+ Alexey Gladkov <legion@kernel.org>
+X-Mailer: b4 0.13-dev-86aa5
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8698;
+ i=j.granados@samsung.com; h=from:subject:message-id;
+ bh=KIqswrAVMdhaWb/JbcZcIzXf/NYrgSb7sP/BTqWOdYY=;
+ b=owEB7QES/pANAwAKAbqXzVK3lkFPAcsmYgBlAXy963a+0HLyfnoYmbG27az0WEoNmgVTomdUX
+ Hr6xAbPgcuJAbMEAAEKAB0WIQSuRwlXJeYxJc7LJ5C6l81St5ZBTwUCZQF8vQAKCRC6l81St5ZB
+ T8o4C/0Zq95HrASlp0txb2/xovzLqmJ9WEKkTKx2USnCrRDjlxRQmgR5U7DmMUuohQFIV+0KR9S
+ vyHAWw53ehtrNqeX++6LB6slyNaFUJeY4mDs/l3MjRAzWhYJ7yWZV51U77MLeFn1YuiScWaHIo2
+ xXk6mQ8R6ZUUpXKkYIhsfH5ozGwLJYGChNF6/1UhfehOaYd5mUAhzy4RMsHC97fAlUTQtfxW1NT
+ dUPcHF6ZSfLHD2MDKITxxbWh+qZgAXSgibDGmOaM8Tmo1axwGvXqJxSez/zax7kUPjPJ3WT6hb4
+ rbWXkzRkT7XJg9dGYAhWhjGHDk1bqcDMOCLkLDw+PfhYXUKSpBDtmoRrKD6kThbn+IelfgDr9Yt
+ RISkf0KOqi8SKPATEEMtz/SScWjBavkqQvxZe3tIOoEb+ezASWYTlcBKSbiHSOTFjxLXc+Gp29Y
+ jdNYL0jmq2y5Y6G4u+FXOrVCfHlFsP/QKZ14pwBmq9CpPV3G5eg2foyffZMFJXmfqiwS4=
+X-Developer-Key: i=j.granados@samsung.com; a=openpgp;
+ fpr=F1F8E46D30F0F6C4A45FF4465895FAAC338C6E77
+X-Endpoint-Received:  by B4 Relay for j.granados@samsung.com/default with auth_id=70
+X-Original-From: Joel Granados <j.granados@samsung.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,104 +101,198 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>, "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>, Fabio Estevam <festevam@gmail.com>, Ahmad Fatoum <a.fatoum@pengutronix.de>, Herbert Xu <herbert@gondor.apana.org.au>, Jonathan Corbet <corbet@lwn.net>, Richard Weinberger <richard@nod.at>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, James Morris <jmorris@namei.org>, NXP Linux Team <linux-imx@nxp.com>, James Bottomley <jejb@linux.ibm.com>, "Serge E. Hallyn" <serge@hallyn.com>, "Paul E. McKenney" <paulmck@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, sigma star Kernel Team <upstream+dcp@sigma-star.at>, "Steven Rostedt \(Google\)" <rostedt@goodmis.org>, David Oberhollenzer <david.oberhollenzer@sigma-star.at>, linux-arm-kernel@lists.infradead.org, Paul Moore <paul@paul-moore.com>, linuxppc-dev@lists.ozlabs.org, Randy Dunlap <rdunlap@infradead.org>, "linux-kernel@vger.kernel.org" 
- <linux-kernel@vger.kernel.org>, Li Yang <leoyang.li@nxp.com>, "linux-security-module@vger.kernel.org" <linux-security-module@vger.kernel.org>, "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, "kernel@pengutronix.de" <kernel@pengutronix.de>, Tejun Heo <tj@kernel.org>, "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>, Shawn Guo <shawnguo@kernel.org>, "David S. Miller" <davem@davemloft.net>
+Reply-To: j.granados@samsung.com
+Cc: Joel Granados <j.granados@samsung.com>, linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Ingo Molnar <mingo@kernel.org>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Jarkko,
+From: Joel Granados <j.granados@samsung.com>
 
-thanks for the review!
+What?
+These commits remove the sentinel element (last empty element) from the
+sysctl arrays of all the files under the "arch/" directory that use a
+sysctl array for registration. The merging of the preparation patches
+(in https://lore.kernel.org/all/ZO5Yx5JFogGi%2FcBo@bombadil.infradead.org/)
+to mainline allows us to just remove sentinel elements without changing
+behavior. This is now safe because the sysctl registration code
+(register_sysctl() and friends) use the array size in addition to
+checking for a sentinel ([1] for more info).
 
-> On 12.09.2023, at 19:32, Jarkko Sakkinen <jarkko@kernel.org> wrote:
->=20
-> On Tue Sep 12, 2023 at 2:11 PM EEST, David Gstir wrote:
+These commits are part of a bigger set (bigger patchset here
+https://github.com/Joelgranados/linux/tree/tag/sysctl_remove_empty_elem_V4)
+that remove the ctl_table sentinel. The idea is to make the review
+process easier by chunking the 52 commits into manageable pieces. By
+sending out one chunk at a time, they can be reviewed separately without
+noise from parallel sets. After the "arch/" commits in this set are
+reviewed, I will continue with drivers/*, fs/*, kernel/*, net/* and
+miscellaneous. The final set will remove the unneeded check for
+->procname == NULL.
 
-[...]
+Why?
+By removing the sysctl sentinel elements we avoid kernel bloat as
+ctl_table arrays get moved out of kernel/sysctl.c into their own
+respective subsystems. This move was started long ago to avoid merge
+conflicts; the sentinel removal bit came after Mathew Wilcox suggested
+it to avoid bloating the kernel by one element as arrays moved out. This
+patchset will reduce the overall build time size of the kernel and run
+time memory bloat by about ~64 bytes per declared ctl_table array. I
+have consolidated some links that shed light on the history of this
+effort [2].
 
->> - /* Payload contains the key. */
->> - desc->control0 |=3D MXS_DCP_CONTROL0_PAYLOAD_KEY;
->> + if (key_referenced) {
->> + /* Set OTP key bit to select the key via KEY_SELECT. */
->> + desc->control0 |=3D MXS_DCP_CONTROL0_OTP_KEY;
->> + } else {
->> + /* Payload contains the key. */
->> + desc->control0 |=3D MXS_DCP_CONTROL0_PAYLOAD_KEY;
->> + }
->=20
-> Remove curly braces (coding style).
+V2:
+* Added clarification both in the commit messages and the coverletter as
+  to why this patch is safe to apply.
+* Added {Acked,Reviewed,Tested}-by from list
+* Link to v1: https://lore.kernel.org/r/20230906-jag-sysctl_remove_empty_elem_arch-v1-0-3935d4854248@samsung.com
 
-Will fix that and all similar cases for v3.
+Testing:
+* Ran sysctl selftests (./tools/testing/selftests/sysctl/sysctl.sh)
+* Ran this through 0-day with no errors or warnings
 
+Size saving after removing all sentinels:
+  A consequence of eventually removing all the sentinels (64 bytes per
+  sentinel) is the bytes we save. These are *not* numbers that we will
+  get after this patch set; these are the numbers that we will get after
+  removing all the sentinels. I included them here because they are
+  relevant and to get an idea of just how much memory we are talking
+  about.
+    * bloat-o-meter:
+        - The "yesall" configuration results save 9158 bytes (bloat-o-meter output here
+          https://lore.kernel.org/all/20230621091000.424843-1-j.granados@samsung.com/)
+        - The "tiny" config + CONFIG_SYSCTL save 1215 bytes (bloat-o-meter output here
+          https://lore.kernel.org/all/20230809105006.1198165-1-j.granados@samsung.com/)
+    * memory usage:
+        we save some bytes in main memory as well. In my testing kernel
+        I measured a difference of 7296 bytes. I include the way to
+        measure in [3]
 
->> +static int mxs_dcp_aes_setrefkey(struct crypto_skcipher *tfm, const =
-u8 *key,
->> + unsigned int len)
->> +{
->> + struct dcp_async_ctx *actx =3D crypto_skcipher_ctx(tfm);
->> +
->> + if (len !=3D DCP_PAES_KEYSIZE)
->> + return -EINVAL;
->> +
->> + switch (key[0]) {
->> + case DCP_PAES_KEY_SLOT0:
->> + case DCP_PAES_KEY_SLOT1:
->> + case DCP_PAES_KEY_SLOT2:
->> + case DCP_PAES_KEY_SLOT3:
->> + case DCP_PAES_KEY_UNIQUE:
->> + case DCP_PAES_KEY_OTP:
->> + memcpy(actx->key, key, len);
->> + break;
->=20
-> I don't understand why the "commit" is split into two parts
-> (memcpy and assignments in different code blocks). You should
-> probably rather:
->=20
-> switch (key[0]) {
-> case DCP_PAES_KEY_SLOT0:
-> case DCP_PAES_KEY_SLOT1:
-> case DCP_PAES_KEY_SLOT2:
-> case DCP_PAES_KEY_SLOT3:
-> case DCP_PAES_KEY_UNIQUE:
-> case DCP_PAES_KEY_OTP:
-> memcpy(actx->key, key, len);
-> actx->key_len =3D len;
-> actx->refkey =3D true;
-> return 0;
->=20
-> default:
-> return -EINVAL;
-> }
-> }
->=20
-> Or alternatively you can move all operations after the switch-case
-> statement. IMHO, any state change is better to put into a singular
-> location.
+Size saving after this patchset:
+  Here I give the values that I measured for the architecture that I'm
+  running (x86_64). This can give an approximation of how many bytes are
+  saved for each arch. I won't publish for all the archs because I don't
+  have access to all of them.
+    * bloat-o-meter
+        - The "yesall" config saves 192 bytes (bloat-o-meter output [4])
+        - The "tiny" config saves 64 bytes (bloat-o-meter output [5])
+    * memory usage:
+        In this case there were no bytes saved. To measure it comment the
+        printk in `new_dir` and uncomment the if conditional in `new_links`
+        [3].
 
-Makes sense. I=E2=80=99ll change that.
+Comments/feedback greatly appreciated
 
+Best
+Joel
 
->> diff --git a/include/soc/fsl/dcp.h b/include/soc/fsl/dcp.h
->> new file mode 100644
->> index 000000000000..df6678ee10a1
->> --- /dev/null
->> +++ b/include/soc/fsl/dcp.h
->> @@ -0,0 +1,19 @@
->> +/* SPDX-License-Identifier: GPL-2.0-only */
->> +/*
->> + * Copyright (C) 2021 sigma star gmbh
->> + * Authors: David Gstir <david@sigma-star.at>
->> + *          Richard Weinberger <richard@sigma-star.at>
->=20
-> Git already has author-field and commit can have co-developed-by so
-> this is totally obsolete.
+[1]
+https://lore.kernel.org/all/20230809105006.1198165-1-j.granados@samsung.com/
 
-Also noted for v3.
+[2]
+Links Related to the ctl_table sentinel removal:
+* Good summary from Luis sent with the "pull request" for the
+  preparation patches.
+  https://lore.kernel.org/all/ZO5Yx5JFogGi%2FcBo@bombadil.infradead.org/
+* Another very good summary from Luis.
+  https://lore.kernel.org/all/ZMFizKFkVxUFtSqa@bombadil.infradead.org/
+* This is a patch set that replaces register_sysctl_table with register_sysctl
+  https://lore.kernel.org/all/20230302204612.782387-1-mcgrof@kernel.org/
+* Patch set to deprecate register_sysctl_paths()
+  https://lore.kernel.org/all/20230302202826.776286-1-mcgrof@kernel.org/
+* Here there is an explicit expectation for the removal of the sentinel element.
+  https://lore.kernel.org/all/20230321130908.6972-1-frank.li@vivo.com
+* The "ARRAY_SIZE" approach was mentioned (proposed?) in this thread
+  https://lore.kernel.org/all/20220220060626.15885-1-tangmeng@uniontech.com
 
-Thanks,
-- David
+[3]
+To measure the in memory savings apply this on top of this patchset.
 
---
-sigma star gmbh | Eduard-Bodem-Gasse 6, 6020 Innsbruck, Austria
-UID/VAT Nr: ATU 66964118 | FN: 374287y
+"
+diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
+index c88854df0b62..e0073a627bac 100644
+--- a/fs/proc/proc_sysctl.c
++++ b/fs/proc/proc_sysctl.c
+@@ -976,6 +976,8 @@ static struct ctl_dir *new_dir(struct ctl_table_set *set,
+        table[0].procname = new_name;
+        table[0].mode = S_IFDIR|S_IRUGO|S_IXUGO;
+        init_header(&new->header, set->dir.header.root, set, node, table, 1);
++       // Counts additional sentinel used for each new dir.
++       printk("%ld sysctl saved mem kzalloc \n", sizeof(struct ctl_table));
+
+        return new;
+ }
+@@ -1199,6 +1201,9 @@ static struct ctl_table_header *new_links(struct ctl_dir *dir, struct ctl_table_
+                link_name += len;
+                link++;
+        }
++       // Counts additional sentinel used for each new registration
++       //if ((head->ctl_table + head->ctl_table_size)->procname)
++               printk("%ld sysctl saved mem kzalloc \n", sizeof(struct ctl_table));
+        init_header(links, dir->header.root, dir->header.set, node, link_table,
+                    head->ctl_table_size);
+        links->nreg = nr_entries;
+"
+and then run the following bash script in the kernel:
+
+accum=0
+for n in $(dmesg | grep kzalloc | awk '{print $3}') ; do
+    echo $n
+    accum=$(calc "$accum + $n")
+done
+echo $accum
+
+[4]
+add/remove: 0/0 grow/shrink: 0/3 up/down: 0/-192 (-192)
+Function                                     old     new   delta
+sld_sysctls                                  128      64     -64
+itmt_kern_table                              128      64     -64
+abi_table2                                   128      64     -64
+Total: Before=429173594, After=429173402, chg -0.00%
+
+[5]
+add/remove: 0/0 grow/shrink: 1/0 up/down: 64/0 (64)
+Function                                     old     new   delta
+sld_sysctls                                   64     128     +64
+Total: Before=1886119, After=1886183, chg +0.00%
+
+Signed-off-by: Joel Granados <j.granados@samsung.com>
+
+---
+
+---
+Joel Granados (8):
+      S390: Remove now superfluous sentinel elem from ctl_table arrays
+      arm: Remove now superfluous sentinel elem from ctl_table arrays
+      arch/x86: Remove now superfluous sentinel elem from ctl_table arrays
+      x86/vdso: Remove now superfluous sentinel element from ctl_table array
+      riscv: Remove now superfluous sentinel element from ctl_table array
+      powerpc: Remove now superfluous sentinel element from ctl_table arrays
+      ia64: Remove now superfluous sentinel element from ctl_table array
+      c-sky: Remove now superfluous sentinel element from ctl_talbe array
+
+ arch/arm/kernel/isa.c                     | 4 ++--
+ arch/arm64/kernel/armv8_deprecated.c      | 8 +++-----
+ arch/arm64/kernel/fpsimd.c                | 6 ++----
+ arch/arm64/kernel/process.c               | 3 +--
+ arch/csky/abiv1/alignment.c               | 3 +--
+ arch/ia64/kernel/crash.c                  | 3 +--
+ arch/powerpc/kernel/idle.c                | 3 +--
+ arch/powerpc/platforms/pseries/mobility.c | 3 +--
+ arch/riscv/kernel/vector.c                | 3 +--
+ arch/s390/appldata/appldata_base.c        | 6 ++----
+ arch/s390/kernel/debug.c                  | 3 +--
+ arch/s390/kernel/topology.c               | 3 +--
+ arch/s390/mm/cmm.c                        | 3 +--
+ arch/s390/mm/pgalloc.c                    | 3 +--
+ arch/x86/entry/vdso/vdso32-setup.c        | 3 +--
+ arch/x86/kernel/cpu/intel.c               | 3 +--
+ arch/x86/kernel/itmt.c                    | 3 +--
+ drivers/perf/arm_pmuv3.c                  | 3 +--
+ 18 files changed, 23 insertions(+), 43 deletions(-)
+---
+base-commit: 708283abf896dd4853e673cc8cba70acaf9bf4ea
+change-id: 20230904-jag-sysctl_remove_empty_elem_arch-81db0a6e6cc4
+
+Best regards,
+-- 
+Joel Granados <j.granados@samsung.com>
 
