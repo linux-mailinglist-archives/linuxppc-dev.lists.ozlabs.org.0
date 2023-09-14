@@ -1,67 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 375F379F899
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Sep 2023 05:07:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C727B79F8A7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Sep 2023 05:07:51 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=OOcV0Bt8;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=YH6fs4CE;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RmMg9197Fz3cG0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Sep 2023 13:07:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RmMh54dsZz3c6c
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Sep 2023 13:07:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=OOcV0Bt8;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20221208 header.b=YH6fs4CE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::631; helo=mail-pl1-x631.google.com; envelope-from=jniethe5@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=jniethe5@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RmMfG17tYz2yh5
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Sep 2023 13:06:12 +1000 (AEST)
-Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-1c06f6f98c0so3974595ad.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Sep 2023 20:06:12 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RmMfK6nR5z2yh5
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Sep 2023 13:06:17 +1000 (AEST)
+Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1c3887039d4so3927585ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Sep 2023 20:06:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694660769; x=1695265569; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=O8YlVN4IbOgrOqt60oWCv0RbnxFLj0Vrr/ZjRhXoN8Q=;
-        b=OOcV0Bt82sOVY04AhI2AG8NHf+ch2aAaQyTZHaDWpTLDj6VbmIO3bxbsphQIyoD51O
-         0RxdbH6bbi7f70Vkhk5eQBqe6aJONPuLtlknn8NQwYoEj/LsGeZE73cazj6s899AZj+E
-         apyGwD1OnB4//c9U4SmH6QIA+4WKlqh23prEv2yH/eg7S4hBZul57R2aAJgJ8fO3XqCo
-         SL9xmyUqwMF00j3+b87bE61aGcSFz2cMBVhIjP9svxGVhGU/ic8sEkYDYQExqn4LiROI
-         lyPLkCjBHGr2XO6GUZ37yCJjNo+b6G2jHR5lICYVtQcNFe7hWayXH8ALx/iSgrJy9APX
-         QGRQ==
+        d=gmail.com; s=20221208; t=1694660775; x=1695265575; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=O40+8ZcyF7i45coCovtz7BFXegxRcC292Q0Q5Dn+068=;
+        b=YH6fs4CEJX5k6TpmaCNJT7I5P234ICoXG7YJYu6pwlmMO/2qPcOv04Xt/z3/4SpdFQ
+         Tf3RODrrup+v+We5EVpJxByFwoR6PtZxmaxTeNoN0cRm9yNPn2BdP+TCzzdOLylWcBxq
+         HbTwpgcjNpTw5jN0s69FyiCHAYTAvLubixsyEIx8CZZu7zhP5s/yHot/MqkIzeIDQWUm
+         hQqlFiOUsII1qhk2rkIJTsNsKqnoqchGH7RzZQdiu2paGVCSpTBJz3GyCLpyxWyfi7wK
+         7dT+xQ2uzuv+LvKRCswth5vF2Zib0SReWM4W+oRWAqCw6s1wtb14G1tD7auQR/6prQXx
+         QZFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694660769; x=1695265569;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=O8YlVN4IbOgrOqt60oWCv0RbnxFLj0Vrr/ZjRhXoN8Q=;
-        b=AoxL2alYvsg0YZ98AiVNd+6kKrty6TuEIdgcQ8dL1DR2lzuXyeb1HnXLbPVg7t0xMg
-         XhG/FOXF38ffIuqaZtcclWZCGYpYB59NiAXR34z43frGZXrUEkNM9q6WyRIRjN5Stpie
-         mpofYuNL6YG27QTDQIEnReO8qJ12hEKXofZDF/MkQXQ705Ky00Uw4HEkLzoAF09ao865
-         2lo4iGxQRU8gewP4Kk/I7NcbvZ5etT/KJ4lrxx2uWbAngnK8vTuOSExOrAgvmf0JZC/7
-         Hl2DGjVeP16eLGgxJnqDD3kekSLmhkOg0flHhQCnVgtsgYQt0eLNdOeho1KFLQx3Hhuk
-         vV8A==
-X-Gm-Message-State: AOJu0YyHswJ8SSXn3SrqzLZhDFr+DI2/rfS2mEyEJbMKXHnkou8yPuWb
-	ktN6TQY8S7EKdpYxKMSHBc8oEueJ0fn6aA==
-X-Google-Smtp-Source: AGHT+IGCQsKhJ+vR2grids/lf321xOTzBsPhOn6M5hOhbVBgTG+j5DISOur9Ci6YEJe6RtD9fVIiwQ==
-X-Received: by 2002:a17:902:b40a:b0:1c3:90c7:b99d with SMTP id x10-20020a170902b40a00b001c390c7b99dmr3786844plr.41.1694660769461;
-        Wed, 13 Sep 2023 20:06:09 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1694660775; x=1695265575;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=O40+8ZcyF7i45coCovtz7BFXegxRcC292Q0Q5Dn+068=;
+        b=YCTM4m81TQG08Y6fxZ/8hpn4DU13engQGCmz7pgJTmPZkKDKYhjiqb5U9noW+GQP/K
+         ImZ26lJMHECWM0tuIPyIL6Qs+MxswK29qGnaVuF/nT/EVQmRWxlGP0C27of8N+5eZ8no
+         uIcEuKCzjZjyNq5/ej8+2mtrgjz6S/V8kLGti5P7d5gwovbpv4lDpqsfzW8yGz5uVcrw
+         l5B1DGmGECPkWMA2ojrx8LnQ70nlgrl6d0oazfs0W8CKorf38qKRAyL2cjpEzIDmgIah
+         CDdiWt4JdsI0rEyMqZ1v9r84uZy/r7NMuav3fzMLqOGjvq32HoKCK5P38XK325ahpFN/
+         9tlw==
+X-Gm-Message-State: AOJu0YydlRXs8QHOY2nT1YyLjfM+ol61T3UetxZ7yF/BRwe3LlilEF4/
+	MWXy9Sja6ae7WTR8XCeV5cBhZdI1ROQdtA==
+X-Google-Smtp-Source: AGHT+IH9LPUFgyk6sF+p0ea+YM+pEUlobcU9+6GFzkXo/QurcKo+dOmMxOWWeSHXSG1u7/knwcJjPg==
+X-Received: by 2002:a17:902:db03:b0:1bd:f314:7896 with SMTP id m3-20020a170902db0300b001bdf3147896mr4977810plx.25.1694660775119;
+        Wed, 13 Sep 2023 20:06:15 -0700 (PDT)
 Received: from pwon.ozlabs.ibm.com ([146.112.118.69])
-        by smtp.gmail.com with ESMTPSA id w2-20020a170902904200b001b567bbe82dsm330521plz.150.2023.09.13.20.06.04
+        by smtp.gmail.com with ESMTPSA id w2-20020a170902904200b001b567bbe82dsm330521plz.150.2023.09.13.20.06.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Sep 2023 20:06:08 -0700 (PDT)
+        Wed, 13 Sep 2023 20:06:14 -0700 (PDT)
 From: Jordan Niethe <jniethe5@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v5 00/11] KVM: PPC: Nested APIv2 guest support
-Date: Thu, 14 Sep 2023 13:05:49 +1000
-Message-Id: <20230914030600.16993-1-jniethe5@gmail.com>
+Subject: [PATCH v5 01/11] KVM: PPC: Always use the GPR accessors
+Date: Thu, 14 Sep 2023 13:05:50 +1000
+Message-Id: <20230914030600.16993-2-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20230914030600.16993-1-jniethe5@gmail.com>
+References: <20230914030600.16993-1-jniethe5@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -79,207 +82,159 @@ Cc: mikey@neuling.org, sbhat@linux.ibm.com, kvm@vger.kernel.org, amachhiw@linux.
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Always use the GPR accessor functions. This will be important later for
+Nested APIv2 support which requires additional functionality for
+accessing and modifying VCPU state.
 
-A nested-HV API for PAPR has been developed based on the KVM-specific
-nested-HV API that is upstream in Linux/KVM and QEMU. The PAPR API had
-to break compatibility to accommodate implementation in other
-hypervisors and partitioning firmware. The existing KVM-specific API
-will be known as the Nested APIv1 and the PAPR API will be known as the
-Nested APIv2. 
+Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+---
+v4:
+  - Split into unique patch
+---
+ arch/powerpc/kvm/book3s_64_vio.c     | 4 ++--
+ arch/powerpc/kvm/book3s_hv.c         | 8 ++++++--
+ arch/powerpc/kvm/book3s_hv_builtin.c | 6 +++++-
+ arch/powerpc/kvm/book3s_hv_rm_mmu.c  | 8 ++++----
+ arch/powerpc/kvm/book3s_hv_rm_xics.c | 4 ++--
+ arch/powerpc/kvm/book3s_xive.c       | 4 ++--
+ 6 files changed, 21 insertions(+), 13 deletions(-)
 
-The control flow and interrupt processing between L0, L1, and L2 in
-the Nested APIv2 are conceptually unchanged. Where Nested APIv1 is almost
-stateless, the Nested APIv2 is stateful, with the L1 registering L2 virtual
-machines and vCPUs with the L0. Supervisor-privileged register switching
-duty is now the responsibility for the L0, which holds canonical L2
-register state and handles all switching. This new register handling
-motivates the "getters and setters" wrappers to assist in syncing the
-L2s state in the L1 and the L0.
-
-Broadly, the new hcalls will be used for  creating and managing guests
-by a regular partition in the following way:
-
-  - L1 and L0 negotiate capabilities with
-    H_GUEST_{G,S}ET_CAPABILITIES
-
-  - L1 requests the L0 create a L2 with
-    H_GUEST_CREATE and receives a handle to use in future hcalls
-
-  - L1 requests the L0 create a L2 vCPU with
-    H_GUEST_CREATE_VCPU
-
-  - L1 sets up the L2 using H_GUEST_SET and the
-    H_GUEST_VCPU_RUN input buffer
-
-  - L1 requests the L0 runs the L2 vCPU using H_GUEST_VCPU_RUN
-
-  - L2 returns to L1 with an exit reason and L1 reads the
-    H_GUEST_VCPU_RUN output buffer populated by the L0
-
-  - L1 handles the exit using H_GET_STATE if necessary
-
-  - L1 reruns L2 vCPU with H_GUEST_VCPU_RUN
-
-  - L1 frees the L2 in the L0 with H_GUEST_DELETE
-
-Further details are available in Documentation/powerpc/kvm-nested.rst.
-
-This series adds KVM support for using this hcall interface as a regular
-PAPR partition, i.e. the L1. It does not add support for running as the
-L0.
-
-The new hcalls have been implemented in the spapr qemu model for
-testing.
-
-This is available at https://github.com/planetharsh/qemu/tree/upstream-0714-kop
-
-There are scripts available to assist in setting up an environment for
-testing nested guests at https://github.com/iamjpn/kvm-powervm-test
-
-A tree with this series is available at
-https://github.com/iamjpn/linux/tree/features/kvm-nestedv2-v5
-
-Thanks to Amit Machhiwal, Kautuk Consul, Vaibhav Jain, Michael Neuling,
-Shivaprasad Bhat, Harsh Prateek Bora, Paul Mackerras and Nicholas
-Piggin.
-
-Change overview in v5:
-  - KVM: PPC: Add helper library for Guest State Buffers:
-    - Fix mismatched function comments
-  - KVM: PPC: Add support for nestedv2 guests:
-    - Check H_BUSY for {g,s}etting capabilities
-    - Message if plpar_guest_get_capabilities() fails and nestedv1
-      support will be attempted.
-    - Remove unused amor variable
-  - KVM: PPC: Book3S HV: Use accessors for VCPU registers:
-    - Remove unneeded trailing comment for line length
-
-
-Change overview in v4:
-  - Split previous "KVM: PPC: Use getters and setters for vcpu register
-    state" into a number of seperate patches
-    - Remove _hv suffix from VCORE wrappers
-    - Do not create arch_compat and lpcr setters, use the existing ones
-    - Use #ifdef ALTIVEC
-  - KVM: PPC: Rename accessor generator macros
-    - Fix typo
-  - KVM: PPC: Book3s HV: Hold LPIDs in an unsigned long
-    - Use u64
-    - Change format strings instead of casting
-  - KVM: PPC: Add support for nestedv2 guests
-    - Batch H_GUEST_GET calls in kvmhv_nestedv2_reload_ptregs()
-    - Fix compile without CONFIG_PSERIES
-    - Fix maybe uninitialized 'trap' in kvmhv_p9_guest_entry()
-    - Extend existing setters for arch_compat and lpcr
-
-
-Change overview in v3:
-  - KVM: PPC: Use getters and setters for vcpu register state
-      - Do not add a helper for pvr
-      - Use an expression when declaring variable in case
-      - Squash in all getters and setters
-      - Pass vector registers by reference
-  - KVM: PPC: Rename accessor generator macros
-      - New to series
-  - KVM: PPC: Add helper library for Guest State Buffers
-      - Use EXPORT_SYMBOL_GPL()
-      - Use the kvmppc namespace
-      - Move kvmppc_gsb_reset() out of kvmppc_gsm_fill_info()
-      - Comments for GSID elements
-      - Pass vector elements by reference
-      - Remove generic put and get functions
-  - KVM: PPC: Book3s HV: Hold LPIDs in an unsigned long
-      - New to series
-  - KVM: PPC: Add support for nestedv2 guests
-      - Use EXPORT_SYMBOL_GPL()
-      - Change to kvmhv_nestedv2 namespace
-      - Make kvmhv_enable_nested() return -ENODEV on NESTEDv2 L1 hosts
-      - s/kvmhv_on_papr/kvmhv_is_nestedv2/
-      - mv book3s_hv_papr.c book3s_hv_nestedv2.c
-      - Handle shared regs without a guest state id in the same wrapper
-      - Use a static key for API version
-      - Add a positive test for NESTEDv1
-      - Give the amor a static value
-      - s/struct kvmhv_nestedv2_host/struct kvmhv_nestedv2_io/
-      - Propagate failure in kvmhv_vcpu_entry_nestedv2()
-      - WARN if getters and setters fail
-      - Progagate failure from kvmhv_nestedv2_parse_output()
-      - Replace delay with sleep in plpar_guest_{create,delete,create_vcpu}()
-      - Add logical PVR handling
-      - Replace kvmppc_gse_{get,put} with specific version
-  - docs: powerpc: Document nested KVM on POWER
-      - Fix typos
-
-
-Change overview in v2:
-  - Rebase on top of kvm ppc prefix instruction support
-  - Make documentation an individual patch
-  - Move guest state buffer files from arch/powerpc/lib/ to
-    arch/powerpc/kvm/
-  - Use kunit for testing guest state buffer
-  - Fix some build errors
-  - Change HEIR element from 4 bytes to 8 bytes
-
-Previous revisions:
-
-  - v1: https://lore.kernel.org/linuxppc-dev/20230508072332.2937883-1-jpn@linux.vnet.ibm.com/
-  - v2: https://lore.kernel.org/linuxppc-dev/20230605064848.12319-1-jpn@linux.vnet.ibm.com/
-  - v3: https://lore.kernel.org/linuxppc-dev/20230807014553.1168699-1-jniethe5@gmail.com/
-  - v4: https://lore.kernel.org/linuxppc-dev/20230905034658.82835-1-jniethe5@gmail.com/
-
-Jordan Niethe (10):
-  KVM: PPC: Always use the GPR accessors
-  KVM: PPC: Introduce FPR/VR accessor functions
-  KVM: PPC: Rename accessor generator macros
-  KVM: PPC: Use accessors for VCPU registers
-  KVM: PPC: Use accessors for VCORE registers
-  KVM: PPC: Book3S HV: Use accessors for VCPU registers
-  KVM: PPC: Book3S HV: Introduce low level MSR accessor
-  KVM: PPC: Add helper library for Guest State Buffers
-  KVM: PPC: Book3s HV: Hold LPIDs in an unsigned long
-  KVM: PPC: Add support for nestedv2 guests
-
-Michael Neuling (1):
-  docs: powerpc: Document nested KVM on POWER
-
- Documentation/powerpc/index.rst               |   1 +
- Documentation/powerpc/kvm-nested.rst          | 636 +++++++++++
- arch/powerpc/Kconfig.debug                    |  12 +
- arch/powerpc/include/asm/guest-state-buffer.h | 995 ++++++++++++++++++
- arch/powerpc/include/asm/hvcall.h             |  30 +
- arch/powerpc/include/asm/kvm_book3s.h         | 220 +++-
- arch/powerpc/include/asm/kvm_book3s_64.h      |   8 +-
- arch/powerpc/include/asm/kvm_booke.h          |  10 +
- arch/powerpc/include/asm/kvm_host.h           |  22 +-
- arch/powerpc/include/asm/kvm_ppc.h            | 102 +-
- arch/powerpc/include/asm/plpar_wrappers.h     | 267 ++++-
- arch/powerpc/kvm/Makefile                     |   4 +
- arch/powerpc/kvm/book3s.c                     |  38 +-
- arch/powerpc/kvm/book3s_64_mmu_hv.c           |   7 +-
- arch/powerpc/kvm/book3s_64_mmu_radix.c        |  31 +-
- arch/powerpc/kvm/book3s_64_vio.c              |   4 +-
- arch/powerpc/kvm/book3s_hv.c                  | 358 +++++--
- arch/powerpc/kvm/book3s_hv.h                  |  76 ++
- arch/powerpc/kvm/book3s_hv_builtin.c          |  11 +-
- arch/powerpc/kvm/book3s_hv_nested.c           |  44 +-
- arch/powerpc/kvm/book3s_hv_nestedv2.c         | 994 +++++++++++++++++
- arch/powerpc/kvm/book3s_hv_p9_entry.c         |   4 +-
- arch/powerpc/kvm/book3s_hv_ras.c              |   4 +-
- arch/powerpc/kvm/book3s_hv_rm_mmu.c           |   8 +-
- arch/powerpc/kvm/book3s_hv_rm_xics.c          |   4 +-
- arch/powerpc/kvm/book3s_hv_uvmem.c            |   2 +-
- arch/powerpc/kvm/book3s_xive.c                |  12 +-
- arch/powerpc/kvm/emulate_loadstore.c          |   6 +-
- arch/powerpc/kvm/guest-state-buffer.c         | 621 +++++++++++
- arch/powerpc/kvm/powerpc.c                    |  76 +-
- arch/powerpc/kvm/test-guest-state-buffer.c    | 328 ++++++
- 31 files changed, 4672 insertions(+), 263 deletions(-)
- create mode 100644 Documentation/powerpc/kvm-nested.rst
- create mode 100644 arch/powerpc/include/asm/guest-state-buffer.h
- create mode 100644 arch/powerpc/kvm/book3s_hv_nestedv2.c
- create mode 100644 arch/powerpc/kvm/guest-state-buffer.c
- create mode 100644 arch/powerpc/kvm/test-guest-state-buffer.c
-
+diff --git a/arch/powerpc/kvm/book3s_64_vio.c b/arch/powerpc/kvm/book3s_64_vio.c
+index 93b695b289e9..4ba048f272f2 100644
+--- a/arch/powerpc/kvm/book3s_64_vio.c
++++ b/arch/powerpc/kvm/book3s_64_vio.c
+@@ -786,12 +786,12 @@ long kvmppc_h_get_tce(struct kvm_vcpu *vcpu, unsigned long liobn,
+ 	idx = (ioba >> stt->page_shift) - stt->offset;
+ 	page = stt->pages[idx / TCES_PER_PAGE];
+ 	if (!page) {
+-		vcpu->arch.regs.gpr[4] = 0;
++		kvmppc_set_gpr(vcpu, 4, 0);
+ 		return H_SUCCESS;
+ 	}
+ 	tbl = (u64 *)page_address(page);
+ 
+-	vcpu->arch.regs.gpr[4] = tbl[idx % TCES_PER_PAGE];
++	kvmppc_set_gpr(vcpu, 4, tbl[idx % TCES_PER_PAGE]);
+ 
+ 	return H_SUCCESS;
+ }
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 130bafdb1430..4af5b68cf7f8 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -1267,10 +1267,14 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ 			return RESUME_HOST;
+ 		break;
+ #endif
+-	case H_RANDOM:
+-		if (!arch_get_random_seed_longs(&vcpu->arch.regs.gpr[4], 1))
++	case H_RANDOM: {
++		unsigned long rand;
++
++		if (!arch_get_random_seed_longs(&rand, 1))
+ 			ret = H_HARDWARE;
++		kvmppc_set_gpr(vcpu, 4, rand);
+ 		break;
++	}
+ 	case H_RPT_INVALIDATE:
+ 		ret = kvmppc_h_rpt_invalidate(vcpu, kvmppc_get_gpr(vcpu, 4),
+ 					      kvmppc_get_gpr(vcpu, 5),
+diff --git a/arch/powerpc/kvm/book3s_hv_builtin.c b/arch/powerpc/kvm/book3s_hv_builtin.c
+index 0f5b021fa559..f3afe194e616 100644
+--- a/arch/powerpc/kvm/book3s_hv_builtin.c
++++ b/arch/powerpc/kvm/book3s_hv_builtin.c
+@@ -182,9 +182,13 @@ EXPORT_SYMBOL_GPL(kvmppc_hwrng_present);
+ 
+ long kvmppc_rm_h_random(struct kvm_vcpu *vcpu)
+ {
++	unsigned long rand;
++
+ 	if (ppc_md.get_random_seed &&
+-	    ppc_md.get_random_seed(&vcpu->arch.regs.gpr[4]))
++	    ppc_md.get_random_seed(&rand)) {
++		kvmppc_set_gpr(vcpu, 4, rand);
+ 		return H_SUCCESS;
++	}
+ 
+ 	return H_HARDWARE;
+ }
+diff --git a/arch/powerpc/kvm/book3s_hv_rm_mmu.c b/arch/powerpc/kvm/book3s_hv_rm_mmu.c
+index 9182324dbef9..17cb75a127b0 100644
+--- a/arch/powerpc/kvm/book3s_hv_rm_mmu.c
++++ b/arch/powerpc/kvm/book3s_hv_rm_mmu.c
+@@ -776,8 +776,8 @@ long kvmppc_h_read(struct kvm_vcpu *vcpu, unsigned long flags,
+ 			r = rev[i].guest_rpte | (r & (HPTE_R_R | HPTE_R_C));
+ 			r &= ~HPTE_GR_RESERVED;
+ 		}
+-		vcpu->arch.regs.gpr[4 + i * 2] = v;
+-		vcpu->arch.regs.gpr[5 + i * 2] = r;
++		kvmppc_set_gpr(vcpu, 4 + i * 2, v);
++		kvmppc_set_gpr(vcpu, 5 + i * 2, r);
+ 	}
+ 	return H_SUCCESS;
+ }
+@@ -824,7 +824,7 @@ long kvmppc_h_clear_ref(struct kvm_vcpu *vcpu, unsigned long flags,
+ 			}
+ 		}
+ 	}
+-	vcpu->arch.regs.gpr[4] = gr;
++	kvmppc_set_gpr(vcpu, 4, gr);
+ 	ret = H_SUCCESS;
+  out:
+ 	unlock_hpte(hpte, v & ~HPTE_V_HVLOCK);
+@@ -872,7 +872,7 @@ long kvmppc_h_clear_mod(struct kvm_vcpu *vcpu, unsigned long flags,
+ 			kvmppc_set_dirty_from_hpte(kvm, v, gr);
+ 		}
+ 	}
+-	vcpu->arch.regs.gpr[4] = gr;
++	kvmppc_set_gpr(vcpu, 4, gr);
+ 	ret = H_SUCCESS;
+  out:
+ 	unlock_hpte(hpte, v & ~HPTE_V_HVLOCK);
+diff --git a/arch/powerpc/kvm/book3s_hv_rm_xics.c b/arch/powerpc/kvm/book3s_hv_rm_xics.c
+index e165bfa842bf..e42984878503 100644
+--- a/arch/powerpc/kvm/book3s_hv_rm_xics.c
++++ b/arch/powerpc/kvm/book3s_hv_rm_xics.c
+@@ -481,7 +481,7 @@ static void icp_rm_down_cppr(struct kvmppc_xics *xics, struct kvmppc_icp *icp,
+ 
+ unsigned long xics_rm_h_xirr_x(struct kvm_vcpu *vcpu)
+ {
+-	vcpu->arch.regs.gpr[5] = get_tb();
++	kvmppc_set_gpr(vcpu, 5, get_tb());
+ 	return xics_rm_h_xirr(vcpu);
+ }
+ 
+@@ -518,7 +518,7 @@ unsigned long xics_rm_h_xirr(struct kvm_vcpu *vcpu)
+ 	} while (!icp_rm_try_update(icp, old_state, new_state));
+ 
+ 	/* Return the result in GPR4 */
+-	vcpu->arch.regs.gpr[4] = xirr;
++	kvmppc_set_gpr(vcpu, 4, xirr);
+ 
+ 	return check_too_hard(xics, icp);
+ }
+diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xive.c
+index f4115819e738..48d11baf1f16 100644
+--- a/arch/powerpc/kvm/book3s_xive.c
++++ b/arch/powerpc/kvm/book3s_xive.c
+@@ -328,7 +328,7 @@ static unsigned long xive_vm_h_xirr(struct kvm_vcpu *vcpu)
+ 	 */
+ 
+ 	/* Return interrupt and old CPPR in GPR4 */
+-	vcpu->arch.regs.gpr[4] = hirq | (old_cppr << 24);
++	kvmppc_set_gpr(vcpu, 4, hirq | (old_cppr << 24));
+ 
+ 	return H_SUCCESS;
+ }
+@@ -364,7 +364,7 @@ static unsigned long xive_vm_h_ipoll(struct kvm_vcpu *vcpu, unsigned long server
+ 	hirq = xive_vm_scan_interrupts(xc, pending, scan_poll);
+ 
+ 	/* Return interrupt and old CPPR in GPR4 */
+-	vcpu->arch.regs.gpr[4] = hirq | (xc->cppr << 24);
++	kvmppc_set_gpr(vcpu, 4, hirq | (xc->cppr << 24));
+ 
+ 	return H_SUCCESS;
+ }
 -- 
 2.39.3
 
