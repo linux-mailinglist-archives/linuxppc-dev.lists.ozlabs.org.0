@@ -2,66 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9F537A0CB0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Sep 2023 20:25:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A4377A0D72
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Sep 2023 20:46:37 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=eN4VMf22;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=b7yR++Mw;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=Zhh9mXIg;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rmm2f68X0z3cRH
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Sep 2023 04:25:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RmmWG6W9Pz3dK9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Sep 2023 04:46:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=eN4VMf22;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=b7yR++Mw;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=Zhh9mXIg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mgamail.intel.com; envelope-from=adrian.hunter@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=john.ogness@linutronix.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 373 seconds by postgrey-1.37 at boromir; Fri, 15 Sep 2023 04:44:57 AEST
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rmm1g49RJz3cBd
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Sep 2023 04:24:22 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694715864; x=1726251864;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=vQEad+iVRYrnSICTqMKn5SStFtxk1n6bfGZFb++F47I=;
-  b=eN4VMf22C1jkGZKk3qLT/+Dw6mJUICuFRENz4XxiEnXHCx2dpuao3Gcw
-   EzAO5P/+M11El0VC2xU69gfA1CXOyfmnkIKAXFeVa2fDnluim5XuHqJtp
-   2PMNzS7V0rtwhvf/R3QIGejVV/Kdpq8u35OMzA5s6YF6H3dDiil84b17A
-   F2evrUi50DjO7evgNJT3uSr80wqhg4mZg98raHyF5QSUQR3TdnUTRfjqQ
-   AXRzdZ+WI70hGAprABA/FcvBlWPs7jRQAhhIYMLlpdNTZWM1Y27qWr8nC
-   xrzmw6Ud6NDFNOI+rS4A0I/w7alHA41QFtykf30t9krod8m4SN60bwRF8
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="378958688"
-X-IronPort-AV: E=Sophos;i="6.02,146,1688454000"; 
-   d="scan'208";a="378958688"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2023 11:24:19 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="814824645"
-X-IronPort-AV: E=Sophos;i="6.02,146,1688454000"; 
-   d="scan'208";a="814824645"
-Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.252.36.59])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2023 11:24:10 -0700
-Message-ID: <dd332de9-5b51-fe88-f0ed-012c8143d2be@intel.com>
-Date: Thu, 14 Sep 2023 21:24:01 +0300
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RmmTP5Hjtz3c7s
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Sep 2023 04:44:57 +1000 (AEST)
+From: John Ogness <john.ogness@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1694716738;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FJW0TuhSdXUv9FTqZdQkgamZVGooxW5FNHg4lshg/t0=;
+	b=b7yR++MwVrSn/oZyZAiFtiEqhu8NcXqsYfx3rC/XpO4EZC4l5KrgdrtxsgqwvyuxTMaR7k
+	oSdj9dUk7NFQ+BFfCloJuU548l879b5L9FheE1cQ3gTo3ltCq2YlPCl/dNESytplQ3xBI5
+	sqMc5zikJ/QWSA41fnYP+BMaNx6vgjH9hLhc4B/5h+/MVluHgK13bFvOLvDkM2wBTqGkgz
+	+Ax3E/cSzbm5VKAVC4asblEB+O0hFtsLIA9tJM8v3WBEcFwIRqIZ6JnK2Nt+I9VEVRecXz
+	2l1SEH/EGbna5YRWcFOtxN9XVe9HF3CeDUYBPgarRCC5BW8nw4VNiyBRU61ItQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1694716738;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FJW0TuhSdXUv9FTqZdQkgamZVGooxW5FNHg4lshg/t0=;
+	b=Zhh9mXIgjMHMUzh4F4Pe2Bl3bw4SjfghqkK66A25GbHwssWjWIzB0B37CiHQnHnWaU8Y2k
+	8Rclrpq4v1Rb1JBQ==
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH tty v1 47/74] serial: pmac_zilog: Use port lock wrappers
+Date: Thu, 14 Sep 2023 20:44:04 +0206
+Message-Id: <20230914183831.587273-48-john.ogness@linutronix.de>
+In-Reply-To: <20230914183831.587273-1-john.ogness@linutronix.de>
+References: <20230914183831.587273-1-john.ogness@linutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.15.0
-Subject: Re: [V2 2/2] tools/perf/tests: Fix object code reading to skip
- address that falls out of text section
-Content-Language: en-US
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, acme@kernel.org,
- jolsa@kernel.org, irogers@google.com, namhyung@kernel.org
-References: <20230907164529.36222-1-atrajeev@linux.vnet.ibm.com>
- <20230907164529.36222-2-atrajeev@linux.vnet.ibm.com>
-From: Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-In-Reply-To: <20230907164529.36222-2-atrajeev@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -74,108 +66,237 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maddy@linux.ibm.com, kjain@linux.ibm.com, disgoel@linux.vnet.ibm.com, linux-perf-users@vger.kernel.org, Disha Goel <disgoel@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Petr Mladek <pmladek@suse.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-serial@vger.kernel.org, =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, Jiri Slaby <jirislaby@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/09/23 19:45, Athira Rajeev wrote:
-> The testcase "Object code reading" fails in somecases
-> for "fs_something" sub test as below:
-> 
->     Reading object code for memory address: 0xc008000007f0142c
->     File is: /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko
->     On file address is: 0x1114cc
->     Objdump command is: objdump -z -d --start-address=0x11142c --stop-address=0x1114ac /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko
->     objdump read too few bytes: 128
->     test child finished with -1
-> 
-> This can alo be reproduced when running perf record with
-> workload that exercises fs_something() code. In the test
-> setup, this is exercising xfs code since root is xfs.
-> 
->     # perf record ./a.out
->     # perf report -v |grep "xfs.ko"
->       0.76% a.out /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko  0xc008000007de5efc B [k] xlog_cil_commit
->       0.74% a.out  /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko  0xc008000007d5ae18 B [k] xfs_btree_key_offset
->       0.74% a.out  /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko  0xc008000007e11fd4 B [k] 0x0000000000112074
-> 
-> Here addr "0xc008000007e11fd4" is not resolved. since this is a
-> kernel module, its offset is from the DSO. Xfs module is loaded
-> at 0xc008000007d00000
-> 
->    # cat /proc/modules | grep xfs
->     xfs 2228224 3 - Live 0xc008000007d00000
-> 
-> And size is 0x220000. So its loaded between  0xc008000007d00000
-> and 0xc008000007f20000. From objdump, text section is:
->     text 0010f7bc  0000000000000000 0000000000000000 000000a0 2**4
-> 
-> Hence perf captured ip maps to 0x112074 which is:
-> ( ip - start of module ) + a0
-> 
-> This offset 0x112074 falls out .text section which is up to 0x10f7bc
-> In this case for module, the address 0xc008000007e11fd4 is pointing
-> to stub instructions. This address range represents the module stubs
-> which is allocated on module load and hence is not part of DSO offset.
-> 
-> To address this issue in "object code reading", skip the sample if
-> address falls out of text section and is within the module end.
-> Use the "text_end" member of "struct dso" to do this check.
-> 
-> To address this issue in "perf report", exploring an option of
-> having stubs range as part of the /proc/kallsyms, so that perf
-> report can resolve addresses in stubs range
-> 
-> However this patch uses text_end to skip the stub range for
-> Object code reading testcase.
-> 
-> Reported-by: Disha Goel <disgoel@linux.ibm.com>
-> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> ---
-> Changelog:
->  v1 -> v2:
->  Updated comment to add description on which arch has stub and
->  reason for skipping as suggested by Adrian
-> 
->  tools/perf/tests/code-reading.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
-> 
-> diff --git a/tools/perf/tests/code-reading.c b/tools/perf/tests/code-reading.c
-> index ed3815163d1b..3cf6c2d42416 100644
-> --- a/tools/perf/tests/code-reading.c
-> +++ b/tools/perf/tests/code-reading.c
-> @@ -269,6 +269,18 @@ static int read_object_code(u64 addr, size_t len, u8 cpumode,
->  	if (addr + len > map__end(al.map))
->  		len = map__end(al.map) - addr;
->  
-> +	/*
-> +	 * Some architectures (ex: powerpc) have stubs (trampolines) in kernel
-> +	 * modules to manage long jumps. Check if the ip offset falls in stubs
-> +	 * sections for kernel modules. And skip module address after text end
-> +	 */
-> +	if (strstr(dso->long_name, ".ko")) {
+From: Thomas Gleixner <tglx@linutronix.de>
 
-Sorry for slow reply
+When a serial port is used for kernel console output, then all
+modifications to the UART registers which are done from other contexts,
+e.g. getty, termios, are interference points for the kernel console.
 
-!strtailcmp() is slightly better here
+So far this has been ignored and the printk output is based on the
+principle of hope. The rework of the console infrastructure which aims to
+support threaded and atomic consoles, requires to mark sections which
+modify the UART registers as unsafe. This allows the atomic write function
+to make informed decisions and eventually to restore operational state. It
+also allows to prevent the regular UART code from modifying UART registers
+while printk output is in progress.
 
-> +		if (al.addr > dso->text_end) {
+All modifications of UART registers are guarded by the UART port lock,
+which provides an obvious synchronization point with the console
+infrastructure.
 
-We normally avoid nesting if-statements e.g.
+To avoid adding this functionality to all UART drivers, wrap the
+spin_[un]lock*() invocations for uart_port::lock into helper functions
+which just contain the spin_[un]lock*() invocations for now. In a
+subsequent step these helpers will gain the console synchronization
+mechanisms.
 
-	if (!strtailcmp(dso->long_name, ".ko") && al.addr > dso->text_end)
+Converted with coccinelle. No functional change.
 
-Make those changes and you can add:
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+---
+ drivers/tty/serial/pmac_zilog.c | 52 ++++++++++++++++-----------------
+ 1 file changed, 26 insertions(+), 26 deletions(-)
 
-Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
-
-
-> +			pr_debug("skipping the module address %#"PRIx64" after text end\n", al.addr);
-> +			goto out;
-> +		}
-> +	}
-> +
->  	/* Read the object code using perf */
->  	ret_len = dso__data_read_offset(dso, maps__machine(thread__maps(thread)),
->  					al.addr, buf1, len);
+diff --git a/drivers/tty/serial/pmac_zilog.c b/drivers/tty/serial/pmac_zilog.c
+index 13668ffdb1e7..c8bf08c19c64 100644
+--- a/drivers/tty/serial/pmac_zilog.c
++++ b/drivers/tty/serial/pmac_zilog.c
+@@ -246,9 +246,9 @@ static bool pmz_receive_chars(struct uart_pmac_port *uap)
+ #endif /* USE_CTRL_O_SYSRQ */
+ 		if (uap->port.sysrq) {
+ 			int swallow;
+-			spin_unlock(&uap->port.lock);
++			uart_port_unlock(&uap->port);
+ 			swallow = uart_handle_sysrq_char(&uap->port, ch);
+-			spin_lock(&uap->port.lock);
++			uart_port_lock(&uap->port);
+ 			if (swallow)
+ 				goto next_char;
+ 		}
+@@ -435,7 +435,7 @@ static irqreturn_t pmz_interrupt(int irq, void *dev_id)
+ 	uap_a = pmz_get_port_A(uap);
+ 	uap_b = uap_a->mate;
+ 
+-	spin_lock(&uap_a->port.lock);
++	uart_port_lock(&uap_a->port);
+ 	r3 = read_zsreg(uap_a, R3);
+ 
+ 	/* Channel A */
+@@ -456,14 +456,14 @@ static irqreturn_t pmz_interrupt(int irq, void *dev_id)
+ 		rc = IRQ_HANDLED;
+ 	}
+  skip_a:
+-	spin_unlock(&uap_a->port.lock);
++	uart_port_unlock(&uap_a->port);
+ 	if (push)
+ 		tty_flip_buffer_push(&uap->port.state->port);
+ 
+ 	if (!uap_b)
+ 		goto out;
+ 
+-	spin_lock(&uap_b->port.lock);
++	uart_port_lock(&uap_b->port);
+ 	push = false;
+ 	if (r3 & (CHBEXT | CHBTxIP | CHBRxIP)) {
+ 		if (!ZS_IS_OPEN(uap_b)) {
+@@ -481,7 +481,7 @@ static irqreturn_t pmz_interrupt(int irq, void *dev_id)
+ 		rc = IRQ_HANDLED;
+ 	}
+  skip_b:
+-	spin_unlock(&uap_b->port.lock);
++	uart_port_unlock(&uap_b->port);
+ 	if (push)
+ 		tty_flip_buffer_push(&uap->port.state->port);
+ 
+@@ -497,9 +497,9 @@ static inline u8 pmz_peek_status(struct uart_pmac_port *uap)
+ 	unsigned long flags;
+ 	u8 status;
+ 	
+-	spin_lock_irqsave(&uap->port.lock, flags);
++	uart_port_lock_irqsave(&uap->port, &flags);
+ 	status = read_zsreg(uap, R0);
+-	spin_unlock_irqrestore(&uap->port.lock, flags);
++	uart_port_unlock_irqrestore(&uap->port, flags);
+ 
+ 	return status;
+ }
+@@ -685,7 +685,7 @@ static void pmz_break_ctl(struct uart_port *port, int break_state)
+ 	else
+ 		clear_bits |= SND_BRK;
+ 
+-	spin_lock_irqsave(&port->lock, flags);
++	uart_port_lock_irqsave(port, &flags);
+ 
+ 	new_reg = (uap->curregs[R5] | set_bits) & ~clear_bits;
+ 	if (new_reg != uap->curregs[R5]) {
+@@ -693,7 +693,7 @@ static void pmz_break_ctl(struct uart_port *port, int break_state)
+ 		write_zsreg(uap, R5, uap->curregs[R5]);
+ 	}
+ 
+-	spin_unlock_irqrestore(&port->lock, flags);
++	uart_port_unlock_irqrestore(port, flags);
+ }
+ 
+ #ifdef CONFIG_PPC_PMAC
+@@ -865,18 +865,18 @@ static void pmz_irda_reset(struct uart_pmac_port *uap)
+ {
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&uap->port.lock, flags);
++	uart_port_lock_irqsave(&uap->port, &flags);
+ 	uap->curregs[R5] |= DTR;
+ 	write_zsreg(uap, R5, uap->curregs[R5]);
+ 	zssync(uap);
+-	spin_unlock_irqrestore(&uap->port.lock, flags);
++	uart_port_unlock_irqrestore(&uap->port, flags);
+ 	msleep(110);
+ 
+-	spin_lock_irqsave(&uap->port.lock, flags);
++	uart_port_lock_irqsave(&uap->port, &flags);
+ 	uap->curregs[R5] &= ~DTR;
+ 	write_zsreg(uap, R5, uap->curregs[R5]);
+ 	zssync(uap);
+-	spin_unlock_irqrestore(&uap->port.lock, flags);
++	uart_port_unlock_irqrestore(&uap->port, flags);
+ 	msleep(10);
+ }
+ 
+@@ -896,9 +896,9 @@ static int pmz_startup(struct uart_port *port)
+ 	 * initialize the chip
+ 	 */
+ 	if (!ZS_IS_CONS(uap)) {
+-		spin_lock_irqsave(&port->lock, flags);
++		uart_port_lock_irqsave(port, &flags);
+ 		pwr_delay = __pmz_startup(uap);
+-		spin_unlock_irqrestore(&port->lock, flags);
++		uart_port_unlock_irqrestore(port, flags);
+ 	}	
+ 	sprintf(uap->irq_name, PMACZILOG_NAME"%d", uap->port.line);
+ 	if (request_irq(uap->port.irq, pmz_interrupt, IRQF_SHARED,
+@@ -921,9 +921,9 @@ static int pmz_startup(struct uart_port *port)
+ 		pmz_irda_reset(uap);
+ 
+ 	/* Enable interrupt requests for the channel */
+-	spin_lock_irqsave(&port->lock, flags);
++	uart_port_lock_irqsave(port, &flags);
+ 	pmz_interrupt_control(uap, 1);
+-	spin_unlock_irqrestore(&port->lock, flags);
++	uart_port_unlock_irqrestore(port, flags);
+ 
+ 	return 0;
+ }
+@@ -933,7 +933,7 @@ static void pmz_shutdown(struct uart_port *port)
+ 	struct uart_pmac_port *uap = to_pmz(port);
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&port->lock, flags);
++	uart_port_lock_irqsave(port, &flags);
+ 
+ 	/* Disable interrupt requests for the channel */
+ 	pmz_interrupt_control(uap, 0);
+@@ -948,19 +948,19 @@ static void pmz_shutdown(struct uart_port *port)
+ 		pmz_maybe_update_regs(uap);
+ 	}
+ 
+-	spin_unlock_irqrestore(&port->lock, flags);
++	uart_port_unlock_irqrestore(port, flags);
+ 
+ 	/* Release interrupt handler */
+ 	free_irq(uap->port.irq, uap);
+ 
+-	spin_lock_irqsave(&port->lock, flags);
++	uart_port_lock_irqsave(port, &flags);
+ 
+ 	uap->flags &= ~PMACZILOG_FLAG_IS_OPEN;
+ 
+ 	if (!ZS_IS_CONS(uap))
+ 		pmz_set_scc_power(uap, 0);	/* Shut the chip down */
+ 
+-	spin_unlock_irqrestore(&port->lock, flags);
++	uart_port_unlock_irqrestore(port, flags);
+ }
+ 
+ /* Shared by TTY driver and serial console setup.  The port lock is held
+@@ -1247,7 +1247,7 @@ static void pmz_set_termios(struct uart_port *port, struct ktermios *termios,
+ 	struct uart_pmac_port *uap = to_pmz(port);
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&port->lock, flags);	
++	uart_port_lock_irqsave(port, &flags);	
+ 
+ 	/* Disable IRQs on the port */
+ 	pmz_interrupt_control(uap, 0);
+@@ -1259,7 +1259,7 @@ static void pmz_set_termios(struct uart_port *port, struct ktermios *termios,
+ 	if (ZS_IS_OPEN(uap))
+ 		pmz_interrupt_control(uap, 1);
+ 
+-	spin_unlock_irqrestore(&port->lock, flags);
++	uart_port_unlock_irqrestore(port, flags);
+ }
+ 
+ static const char *pmz_type(struct uart_port *port)
+@@ -1896,7 +1896,7 @@ static void pmz_console_write(struct console *con, const char *s, unsigned int c
+ 	struct uart_pmac_port *uap = &pmz_ports[con->index];
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&uap->port.lock, flags);
++	uart_port_lock_irqsave(&uap->port, &flags);
+ 
+ 	/* Turn of interrupts and enable the transmitter. */
+ 	write_zsreg(uap, R1, uap->curregs[1] & ~TxINT_ENAB);
+@@ -1908,7 +1908,7 @@ static void pmz_console_write(struct console *con, const char *s, unsigned int c
+ 	write_zsreg(uap, R1, uap->curregs[1]);
+ 	/* Don't disable the transmitter. */
+ 
+-	spin_unlock_irqrestore(&uap->port.lock, flags);
++	uart_port_unlock_irqrestore(&uap->port, flags);
+ }
+ 
+ /*
+-- 
+2.39.2
 
