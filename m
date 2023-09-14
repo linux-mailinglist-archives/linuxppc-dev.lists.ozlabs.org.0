@@ -1,68 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F51D7A0C59
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Sep 2023 20:16:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3F137A0CA2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Sep 2023 20:20:44 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=QUWdmjVj;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JKLBn98j;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rmlrw1Bgrz3cCT
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Sep 2023 04:16:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RmlxQ5YTQz3cSn
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Sep 2023 04:20:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=QUWdmjVj;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JKLBn98j;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::114a; helo=mail-yw1-x114a.google.com; envelope-from=32k0dzqykdlejvreatxffxcv.tfdczeloggt-uvmczjkj.fqcrsj.fix@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mgamail.intel.com; envelope-from=adrian.hunter@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rmlqy1Ytcz3cBd
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Sep 2023 04:15:56 +1000 (AEST)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-58f9db8bc1dso17820837b3.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Sep 2023 11:15:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1694715354; x=1695320154; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=NotwC0wYPH9Bmm+eHoPAvBDfUZeidJiPlRdc5f2ZPWA=;
-        b=QUWdmjVjzmME630QllXZ/2HZlPTZjy385Pr3nRKorXh53ZFOPrL1UMGZYHR0IQEB8S
-         7TEwAoIkhf15vJufrZLFIIfDXHALNoSNoV/emmCPGjTmOGOdL3Yd22I0Rl/J4F7vkelv
-         G6TojlYVTtJiAUH3YbfdMgUlUittQPWIh75svItcydOG+i+h5J1b1yjpi0geBeGL5nA0
-         PvPxV3bAlL/845Ps8kj2dq4SDOLM6i4KZ+VXya6gp/qMgWavIo5QtHy8lSGzqc85ppcg
-         r3eSmfBiIMSvmYFYm2ghAFWUqXZenrizd4YsH1eUPnM52fIYiu0PXHAfMel9lD+D/xta
-         giig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694715354; x=1695320154;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NotwC0wYPH9Bmm+eHoPAvBDfUZeidJiPlRdc5f2ZPWA=;
-        b=PUCjGyMyPP2wwoM3IkvXhYqh/TKisSr+Yj01iyzHdydFbPT6gmTLtnAndBGCzMVV+s
-         srE34IpjUrBjzNz0UaPC/2T27bSIJbkzg/FvcbbkrZLr0IFnWxJUWhnePnF9UMsXqcAY
-         omFtrlHI+uMsf4P0E9AthpAguTih8NmSNUgyUaMvMVUkHymzq9oR+fq+f8ZRH5i3jtYL
-         cw32n9tRIofnPTty1JgWjtQMJw7pPtSwdRIuNtwnTJYjndUvyhBjQj5bCXpw5lrlCQmn
-         8R4FW6i/JQ69s7dmHqHu+Uaag6ZWji4THfUCqg8N1dSHMqqIKTku0NUQHTrp011mOXL9
-         ZK3g==
-X-Gm-Message-State: AOJu0YwDn7S7Cj2EBdHz1oRtjzddTlkv5TOxoYE4CaXFZ6JXpvUauBrK
-	DM2ZQpM6sPr/JbVvtCVgseIioaa1Mow=
-X-Google-Smtp-Source: AGHT+IGPJqA/+ZACxXOUgdzWN4hGcwV50i6jcfcPa2GrWEQEeACHClOtxAN3Jr9h2WjxVFoJdPIyBK0jy04=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:690c:3187:b0:59b:e81f:62b3 with SMTP id
- fd7-20020a05690c318700b0059be81f62b3mr91025ywb.10.1694715354294; Thu, 14 Sep
- 2023 11:15:54 -0700 (PDT)
-Date: Thu, 14 Sep 2023 11:15:52 -0700
-In-Reply-To: <diqzttsiu67n.fsf@ackerleytng-ctop.c.googlers.com>
-Mime-Version: 1.0
-References: <ZOO782YGRY0YMuPu@google.com> <diqzttsiu67n.fsf@ackerleytng-ctop.c.googlers.com>
-Message-ID: <ZQNN2AyDJ8dF0/6D@google.com>
-Subject: Re: [RFC PATCH v11 12/29] KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for
- guest-specific backing memory
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Content-Type: text/plain; charset="us-ascii"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RmlwW2JCsz3cBL
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Sep 2023 04:19:52 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1694715595; x=1726251595;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=De4HkXcpldj5d0/4spgjzJrO6UBeAYkur32cA5gYHKs=;
+  b=JKLBn98jwBZPSc1v/P1c7SU5PZ8sqv9v9XJ94Wpd4JBNb6MnLE5hZHRj
+   pyBgUT47Gc+JRH0/5xjRQ+KPlaHZgFnce9CHqn90KkHaHs7jDccMuCUBo
+   FjBFnpJ0j6W0b1xl6Q4pzOXZ2TYzkk47PDla+nY6nzgQUc55bCuFa5ET8
+   IyBK+l1cU2BIH9haU0bBtcNhJ4Gu3I8bz2xn3cg+cNh/xeC+fLVOlPGmg
+   rp6brqAQKOCjPmOCANp68EGn4zbOrkL/pS+vOMjKXmXDLm0r6o6djnXzE
+   FHnKMxYh9thscfalkCc8ZW238N6Vm+HjabL6W3CrllJYtSNnfCAXxgMIf
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="359295311"
+X-IronPort-AV: E=Sophos;i="6.02,146,1688454000"; 
+   d="scan'208";a="359295311"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2023 11:19:45 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="834838103"
+X-IronPort-AV: E=Sophos;i="6.02,146,1688454000"; 
+   d="scan'208";a="834838103"
+Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.252.36.59])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2023 11:19:41 -0700
+Message-ID: <3a03f694-ab6a-3985-9386-203e7137ae7f@intel.com>
+Date: Thu, 14 Sep 2023 21:19:34 +0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.15.0
+Subject: Re: [V2 1/2] tools/perf: Add text_end to "struct dso" to save .text
+ section size
+Content-Language: en-US
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, acme@kernel.org,
+ jolsa@kernel.org, irogers@google.com, namhyung@kernel.org
+References: <20230907164529.36222-1-atrajeev@linux.vnet.ibm.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+In-Reply-To: <20230907164529.36222-1-atrajeev@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,142 +73,116 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, david@redhat.com, yu.c.zhang@linux.intel.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, chao.p.peng@linux.intel.com, linux-riscv@lists.infradead.org, isaku.yamahata@gmail.com, paul@paul-moore.com, maz@kernel.org, chenhuacai@kernel.org, jmorris@namei.org, willy@infradead.org, wei.w.wang@intel.com, tabba@google.com, jarkko@kernel.org, serge@hallyn.com, mail@maciej.szmigiero.name, aou@eecs.berkeley.edu, vbabka@suse.cz, michael.roth@amd.com, paul.walmsley@sifive.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, qperret@google.com, liam.merwick@oracle.com, linux-mips@vger.kernel.org, oliver.upton@linux.dev, linux-security-module@vger.kernel.org, palmer@dabbelt.com, kvm-riscv@lists.infradead.org, anup@brainfault.org, linux-fsdevel@vger.kernel.org, pbonzini@redhat.com, akpm@linux-foundation.org, vannapurve@google.com, linuxppc-dev@lists.ozlabs.org, kirill.shutemov@linux.intel.com
+Cc: maddy@linux.ibm.com, kjain@linux.ibm.com, disgoel@linux.vnet.ibm.com, linux-perf-users@vger.kernel.org, Disha Goel <disgoel@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 28, 2023, Ackerley Tng wrote:
-> Sean Christopherson <seanjc@google.com> writes:
-> >> If we track struct kvm with the inode, then I think (a), (b) and (c) can
-> >> be independent of the refcounting method. What do you think?
-> >
-> > No go.  Because again, the inode (physical memory) is coupled to the virtual machine
-> > as a thing, not to a "struct kvm".  Or more concretely, the inode is coupled to an
-> > ASID or an HKID, and there can be multiple "struct kvm" objects associated with a
-> > single ASID.  And at some point in the future, I suspect we'll have multiple KVM
-> > objects per HKID too.
-> >
-> > The current SEV use case is for the migration helper, where two KVM objects share
-> > a single ASID (the "real" VM and the helper).  I suspect TDX will end up with
-> > similar behavior where helper "VMs" can use the HKID of the "real" VM.  For KVM,
-> > that means multiple struct kvm objects being associated with a single HKID.
-> >
-> > To prevent use-after-free, KVM "just" needs to ensure the helper instances can't
-> > outlive the real instance, i.e. can't use the HKID/ASID after the owning virtual
-> > machine has been destroyed.
-> >
-> > To put it differently, "struct kvm" is a KVM software construct that _usually_,
-> > but not always, is associated 1:1 with a virtual machine.
-> >
-> > And FWIW, stashing the pointer without holding a reference would not be a complete
-> > solution, because it couldn't guard against KVM reusing a pointer.  E.g. if a
-> > struct kvm was unbound and then freed, KVM could reuse the same memory for a new
-> > struct kvm, with a different ASID/HKID, and get a false negative on the rebinding
-> > check.
+On 7/09/23 19:45, Athira Rajeev wrote:
+> Update "struct dso" to include new member "text_end".
+> This new field will represent the offset for end of text
+> section for a dso. For elf, this value is derived as:
+> sh_size (Size of section in byes) + sh_offset (Section file
+> offst) of the elf header for text.
 > 
-> I agree that inode (physical memory) is coupled to the virtual machine
-> as a more generic concept.
+> For bfd, this value is derived as:
+> 1. For PE file,
+> section->size + ( section->vma - dso->text_offset)
+> 2. Other cases:
+> section->filepos (file position) + section->size (size of
+> section)
 > 
-> I was hoping that in the absence of CC hardware providing a HKID/ASID,
-> the struct kvm pointer could act as a representation of the "virtual
-> machine". You're definitely right that KVM could reuse a pointer and so
-> that idea doesn't stand.
+> To resolve the address from a sample, perf looks at the
+> DSO maps. In case of address from a kernel module, there
+> were some address found to be not resolved. This was
+> observed while running perf test for "Object code reading".
+> Though the ip falls beteen the start address of the loaded
+> module (perf map->start ) and end address ( perf map->end),
+> it was unresolved.
 > 
-> I thought about generating UUIDs to represent "virtual machines" in the
-> absence of CC hardware, and this UUID could be transferred during
-> intra-host migration, but this still doesn't take host userspace out of
-> the TCB. A malicious host VMM could just use the migration ioctl to copy
-> the UUID to a malicious dumper VM, which would then pass checks with a
-> gmem file linked to the malicious dumper VM. This is fine for HKID/ASIDs
-> because the memory is encrypted; with UUIDs there's no memory
-> encryption.
-
-I don't understand what problem you're trying to solve.  I don't see a need to
-provide a single concrete representation/definition of a "virtual machine".  E.g.
-there's no need for a formal definition to securely perform intrahost migration,
-KVM just needs to ensure that the migration doesn't compromise guest security,
-functionality, etc.
-
-That gets a lot more complex if the target KVM instance (module, not "struct kvm")
-is a different KVM, e.g. when migrating to a different host.  Then there needs to
-be a way to attest that the target is trusted and whatnot, but that still doesn't
-require there to be a formal definition of a "virtual machine".
-
-> Circling back to the original topic, was associating the file with
-> struct kvm at gmem file creation time meant to constrain the use of the
-> gmem file to one struct kvm, or one virtual machine, or something else?
-
-It's meant to keep things as simple as possible (relatively speaking).  A 1:1
-association between a KVM instance and a gmem instance means we don't have to
-worry about the edge cases and oddities I pointed out earlier in this thread.
-
-> Follow up questions:
+> Example:
 > 
-> 1. Since the physical memory's representation is the inode and should be
->    coupled to the virtual machine (as a concept, not struct kvm), should
->    the binding/coupling be with the file, or the inode?
-
-Both.  The @kvm instance is bound to a file, because the file is that @kvm's view
-of the underlying memory, e.g. effectively provides the translation of guest
-addresses to host memory.  The @kvm instance is indirectly bound to the inode
-because the file is bound to the inode.
-
-> 2. Should struct kvm still be bound to the file/inode at gmem file
->    creation time, since
-
-Yes.
-
->    + struct kvm isn't a good representation of a "virtual machine"
-
-I don't see how this is relevant, because as above, I don't see why we need a
-canonical represenation of a virtual machine.
-
->    + we currently don't have anything that really represents a "virtual
->      machine" without hardware support
-
-HKIDs and ASIDs don't provide a "virtual machine" representation either.  E.g. if
-a TDX guest is live migrated to a different host, it will likely have a different
-HKID, and definitely have a different encryption key, but it's still the same
-virtual machine.
-
-> I'd also like to bring up another userspace use case that Google has:
-> re-use of gmem files for rebooting guests when the KVM instance is
-> destroyed and rebuilt.
->
-> When rebooting a VM there are some steps relating to gmem that are
-> performance-sensitive:
-
-If we (Google) really cared about performance, then we shouldn't destroy and recreate
-the VM in the first place.  E.g. the cost of zapping, freeing, re-allocating and
-re-populating SPTEs is far from trivial.  Pulling RESET shouldn't change what
-memory that is assigned to a VM, and reseting stats is downright bizarre IMO.
-
-In other words, I think Google's approach of destroying the VM to emulate a reboot
-is asinine.  I'm not totally against extending KVM's uAPI to play nice with such
-an approach, but I'm not exactly sympathetic either.
-
-> a.      Zeroing pages from the old VM when we close a gmem file/inode
-> b. Deallocating pages from the old VM when we close a gmem file/inode
-> c.   Allocating pages for the new VM from the new gmem file/inode
-> d.      Zeroing pages on page allocation
+>     Reading object code for memory address: 0xc008000007f0142c
+>     File is: /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko
+>     On file address is: 0x1114cc
+>     Objdump command is: objdump -z -d --start-address=0x11142c --stop-address=0x1114ac /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko
+>     objdump read too few bytes: 128
+>     test child finished with -1
 > 
-> We want to reuse the gmem file to save re-allocating pages (b. and c.),
-> and one of the two page zeroing allocations (a. or d.).
+> Here, module is loaded at:
+>     # cat /proc/modules | grep xfs
+>     xfs 2228224 3 - Live 0xc008000007d00000
 > 
-> Binding the gmem file to a struct kvm on creation time means the gmem
-> file can't be reused with another VM on reboot.
+> From objdump for xfs module, text section is:
+>     text 0010f7bc  0000000000000000 0000000000000000 000000a0 2**4
+> 
+> Here the offset for 0xc008000007f0142c ie  0x112074 falls out
+> .text section which is up to 0x10f7bc.
+> 
+> In this case for module, the address 0xc008000007e11fd4 is pointing
+> to stub instructions. This address range represents the module stubs
+> which is allocated on module load and hence is not part of DSO offset.
+> 
+> To identify such  address, which falls out of text
+> section and within module end, added the new field "text_end" to
+> "struct dso".
+> 
+> Reported-by: Disha Goel <disgoel@linux.ibm.com>
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 
-Not without KVM's assistance, which userspace will need for TDX and SNP VMs no
-matter what, e.g. to ensure the new and old KVM instance get the same HKID/ASID.
-And we've already mapped out the more complex case of intrahost migration, so I
-don't expect this to be at all challenging to implement.
+Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
 
-> Also, host userspace is forced to close the gmem file to allow the old VM to
-> be freed.
+> ---
+> Changelog:
+>  v1 -> v2:
+>  Added text_end for bfd also by updating dso__load_bfd_symbols
+>  as suggested by Adrian.
+> 
+>  tools/perf/util/dso.h        | 1 +
+>  tools/perf/util/symbol-elf.c | 4 +++-
+>  tools/perf/util/symbol.c     | 2 ++
+>  3 files changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tools/perf/util/dso.h b/tools/perf/util/dso.h
+> index b41c9782c754..70fe0fe69bef 100644
+> --- a/tools/perf/util/dso.h
+> +++ b/tools/perf/util/dso.h
+> @@ -181,6 +181,7 @@ struct dso {
+>  	u8		 rel;
+>  	struct build_id	 bid;
+>  	u64		 text_offset;
+> +	u64		 text_end;
+>  	const char	 *short_name;
+>  	const char	 *long_name;
+>  	u16		 long_name_len;
+> diff --git a/tools/perf/util/symbol-elf.c b/tools/perf/util/symbol-elf.c
+> index 95e99c332d7e..9e7eeaf616b8 100644
+> --- a/tools/perf/util/symbol-elf.c
+> +++ b/tools/perf/util/symbol-elf.c
+> @@ -1514,8 +1514,10 @@ dso__load_sym_internal(struct dso *dso, struct map *map, struct symsrc *syms_ss,
+>  	}
+>  
+>  	if (elf_section_by_name(runtime_ss->elf, &runtime_ss->ehdr, &tshdr,
+> -				".text", NULL))
+> +				".text", NULL)) {
+>  		dso->text_offset = tshdr.sh_addr - tshdr.sh_offset;
+> +		dso->text_end = tshdr.sh_offset + tshdr.sh_size;
+> +	}
+>  
+>  	if (runtime_ss->opdsec)
+>  		opddata = elf_rawdata(runtime_ss->opdsec, NULL);
+> diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
+> index 3f36675b7c8f..f25e4e62cf25 100644
+> --- a/tools/perf/util/symbol.c
+> +++ b/tools/perf/util/symbol.c
+> @@ -1733,8 +1733,10 @@ int dso__load_bfd_symbols(struct dso *dso, const char *debugfile)
+>  			/* PE symbols can only have 4 bytes, so use .text high bits */
+>  			dso->text_offset = section->vma - (u32)section->vma;
+>  			dso->text_offset += (u32)bfd_asymbol_value(symbols[i]);
+> +			dso->text_end = (section->vma - dso->text_offset) + section->size;
+>  		} else {
+>  			dso->text_offset = section->vma - section->filepos;
+> +			dso->text_end = section->filepos + section->size;
+>  		}
+>  	}
+>  
 
-Yes, but that can happen after the "new" VM has instantiated its file/view of
-guest memory.
-
-> For other places where files pin KVM, like the stats fd pinning vCPUs, I
-> guess that matters less since there isn't much of a penalty to close and
-> re-open the stats fd.
