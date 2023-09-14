@@ -1,51 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C03A7A0691
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Sep 2023 15:56:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C3527A0726
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Sep 2023 16:20:50 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=VaujRNU3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=w1cB3UVe;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rmf492DPFz3cBN
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Sep 2023 23:56:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rmfcc2x1dz3cCj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Sep 2023 00:20:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=VaujRNU3;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=w1cB3UVe;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=3jxydzqykdpyqcylhaemmejc.amkjglsvnna-bctjgqrq.mxjyzq.mpe@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rmf3H23bRz3c2D
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Sep 2023 23:55:23 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1694699721;
-	bh=o8o8jDofRoRgnbHKjb0mJYlD6JP64jWv24MHd3G+E18=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=VaujRNU3E1mvPJuHTcqi+E9b6y79P1bwqG1kLKW6Z/63d6I/cu5i/xfCT2uoKOyIp
-	 zwZKbxDg7hOweWhfBcnX5v6eBw4OT5y0BfGUYQJu7vMz55GzyV3Onwl166xAD8nls+
-	 tUtZ3xJoL9sGJEFl7aN+E+T0vQLEgfg0UxPQvlxXxYzk80Fkh9CkzHflMK6SqziP8e
-	 Eug+BJtKs7+oyAXbFTv8yrDe7L6SGRxvM1oIuatUcwsd+Ch1oOueolt0prVt7wY9xq
-	 GSvfJZWSOd2uSeUeKCZ16TOWVWjacQvygU/a4y30qoJbBaH51BNTWwdnaFTT4nGTgA
-	 YJRb2lgJfsEkA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rmf3D6xLrz4wxf;
-	Thu, 14 Sep 2023 23:55:20 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Benjamin Gray <bgray@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] powerpc/dexcr: Move HASHCHK trap handler
-In-Reply-To: <20230825014910.488822-1-bgray@linux.ibm.com>
-References: <20230825014910.488822-1-bgray@linux.ibm.com>
-Date: Thu, 14 Sep 2023 23:55:18 +1000
-Message-ID: <87o7i47tbt.fsf@mail.lhotse>
-MIME-Version: 1.0
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rmfbk4ywBz3c2D
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Sep 2023 00:20:01 +1000 (AEST)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-d8186d705a9so1257619276.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Sep 2023 07:20:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1694701199; x=1695305999; darn=lists.ozlabs.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=OinN3M2z4I/Qg8aCda0iI1MRdyz332KlEPPYu5muKwI=;
+        b=w1cB3UVevpj1o+dTt/KT8fCwRQTsIwv4HewO940j2MuwOOY3ptGrdbG7LBQ4aghhKr
+         477vi+SqaHFGkfxN23UrtIdwdLQZLcnvy2APdyXRhfVPZHy5c03mWwE1do1VjpYnfhSn
+         k2xkSHZdbxpr3pPu7IWCK1HTsIp0XF9Txiv6Vqph6wsBV41oTg8gM0A6nVCO/CyoYUdO
+         3n7FNvGI8FN8UQf51cuOjOvSbVf9wvTFyviFoWTe32gYGsQqF/KvJP6dSy73Zl9pVPrc
+         1t9VN3s333LUFfbUYQEIW1EgrMeaU8gZx4cBxZ0+F/U5shsToNzv/TUEPnfa/UYP50Mz
+         NdjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694701199; x=1695305999;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OinN3M2z4I/Qg8aCda0iI1MRdyz332KlEPPYu5muKwI=;
+        b=XPu1SddZKNgALrlah3BgFUHWKXk76lUmeWrK/cnpPsmkTCXCfrz2qUtqg3GolOZfII
+         5PXlXJQVitBxvHgdBztjiHvPQgffmhEEWeHg8k59fC7XtvieoT/JsMelV1efATiXPuMq
+         OabxmaH65T/lDGtg/BZJhs2JYOoaJrr6C/NyLbaOVTkIJNYY4t2xGZoVJSr+VnO7Unuj
+         Iznn5pfIdAADgql4wLeyDAaMJYeWpaL7oVQbj6L5UoIBwXujZXDASixZHzDMxiqVQ0G5
+         YN2LalLamZAAD3XOe1wsR3JM7vuP3w6aKltFWfyBGi6sl461icfU2vGc8dRp6gs4QjiO
+         klmA==
+X-Gm-Message-State: AOJu0YzX20Kr+y7FUIvojjm8xCW7fsegs6SwrNU4AtAukCnK75nYXw/r
+	5qn5gRK8jKnvwPpQ4eareYJgGwrAoY0=
+X-Google-Smtp-Source: AGHT+IEn69IOl2rxglDVCjXW4KTdScyqCw6tLi48MQpyb+nW1MjRKbjq1lfqPgEextp+IedkDxkiKrdOCXU=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a25:e6c4:0:b0:d78:f45:d7bd with SMTP id
+ d187-20020a25e6c4000000b00d780f45d7bdmr129688ybh.4.1694701199053; Thu, 14 Sep
+ 2023 07:19:59 -0700 (PDT)
+Date: Thu, 14 Sep 2023 07:19:57 -0700
+In-Reply-To: <54d3e6bf-d374-caa5-0920-bb2fe3b7595c@linux.intel.com>
+Mime-Version: 1.0
+References: <20230914015531.1419405-1-seanjc@google.com> <20230914015531.1419405-3-seanjc@google.com>
+ <54d3e6bf-d374-caa5-0920-bb2fe3b7595c@linux.intel.com>
+Message-ID: <ZQMWjbt/SzKvag2K@google.com>
+Subject: Re: [RFC PATCH v12 02/33] KVM: Use gfn instead of hva for mmu_notifier_retry
+From: Sean Christopherson <seanjc@google.com>
+To: Binbin Wu <binbin.wu@linux.intel.com>
+Content-Type: text/plain; charset="us-ascii"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,111 +74,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Benjamin Gray <bgray@linux.ibm.com>, ruscur@russell.cc
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Paul Moore <paul@paul-moore.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, James Morris <jmorris@namei.org>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, "Serge E. Hallyn" <serge@hallyn.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Vlastimil Babka <vbabka@suse.cz>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Isaku Yamahata <isaku.yamahata@intel.com>, Quentin Perret <qperret@google.com>, Liam Merwick <liam.merwick@orac
+ le.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, linux-security-module@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, Xu Yilun <yilun.xu@intel.com>, Anish Moorthy <amoorthy@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Benjamin Gray <bgray@linux.ibm.com> writes:
-> To determine if a trap was caused by a HASHCHK instruction, we inspect
-> the user instruction that triggered the trap. However this may sleep
-> if the page needs to be faulted in.
+On Thu, Sep 14, 2023, Binbin Wu wrote:
+> 
+> On 9/14/2023 9:55 AM, Sean Christopherson wrote:
+> > +void kvm_mmu_invalidate_end(struct kvm *kvm)
+> >   {
+> >   	/*
+> >   	 * This sequence increase will notify the kvm page fault that
+> > @@ -833,6 +848,13 @@ void kvm_mmu_invalidate_end(struct kvm *kvm, unsigned long start,
+> >   	 * in conjunction with the smp_rmb in mmu_invalidate_retry().
+> >   	 */
+> >   	kvm->mmu_invalidate_in_progress--;
+> > +
+> > +	/*
+> > +	 * Assert that at least one range must be added between start() and
+> > +	 * end().  Not adding a range isn't fatal, but it is a KVM bug.
+> > +	 */
+> > +	WARN_ON_ONCE(kvm->mmu_invalidate_in_progress &&
+> > +		     kvm->mmu_invalidate_range_start == INVALID_GPA);
+> Should the check happen before the decrease of kvm->mmu_invalidate_in_progress?
+> Otherwise, KVM calls kvm_mmu_invalidate_begin(), then kvm_mmu_invalidate_end()
+> the check will not take effect.
 
-It would be good to include the output from the might_sleep() check that
-failed.
+Indeed.  I'm pretty sure I added this code, not sure what I was thinking.  There's
+no reason to check mmu_invalidate_in_progress, it's not like KVM allows
+mmu_invalidate_in_progress to go negative.  The comment is also a bit funky.  I'll
+post a fixup patch to make it look like this (assuming I'm not forgetting a subtle
+reason for guarding the check with the in-progress flag):
 
-And I think this was found by syzkaller? If so we should say so.
+	/*
+	 * Assert that at least one range was added between start() and end().
+	 * Not adding a range isn't fatal, but it is a KVM bug.
+	 */
+	WARN_ON_ONCE(kvm->mmu_invalidate_range_start == INVALID_GPA);
 
-cheers
+Regarding kvm->mmu_invalidate_in_progress, this would be a good opportunity to
+move the BUG_ON() into the common end(), e.g. as is, an end() without a start()
+from something other than the generic mmu_notifier would go unnoticed.  And I
+_think_ we can replace the BUG_ON() with a KVM_BUG_ON() without putting the
+kernel at risk.  E.g.
 
-> Move the HASHCHK handler logic to after we allow IRQs, which is fine
-> because we are only interested in HASHCHK if it's a user space trap.
->
-> Fixes: 5bcba4e6c13f ("powerpc/dexcr: Handle hashchk exception")
-> Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
-> ---
->  arch/powerpc/kernel/traps.c | 56 ++++++++++++++++++++++++-------------
->  1 file changed, 36 insertions(+), 20 deletions(-)
->
-> diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-> index f5ce282dc4b8..32b5e841ea97 100644
-> --- a/arch/powerpc/kernel/traps.c
-> +++ b/arch/powerpc/kernel/traps.c
-> @@ -1512,23 +1512,11 @@ static void do_program_check(struct pt_regs *regs)
->  			return;
->  		}
->  
-> -		if (cpu_has_feature(CPU_FTR_DEXCR_NPHIE) && user_mode(regs)) {
-> -			ppc_inst_t insn;
-> -
-> -			if (get_user_instr(insn, (void __user *)regs->nip)) {
-> -				_exception(SIGSEGV, regs, SEGV_MAPERR, regs->nip);
-> -				return;
-> -			}
-> -
-> -			if (ppc_inst_primary_opcode(insn) == 31 &&
-> -			    get_xop(ppc_inst_val(insn)) == OP_31_XOP_HASHCHK) {
-> -				_exception(SIGILL, regs, ILL_ILLOPN, regs->nip);
-> -				return;
-> -			}
-> +		/* User mode considers other cases after enabling IRQs */
-> +		if (!user_mode(regs)) {
-> +			_exception(SIGTRAP, regs, TRAP_BRKPT, regs->nip);
-> +			return;
->  		}
-> -
-> -		_exception(SIGTRAP, regs, TRAP_BRKPT, regs->nip);
-> -		return;
->  	}
->  #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
->  	if (reason & REASON_TM) {
-> @@ -1561,16 +1549,44 @@ static void do_program_check(struct pt_regs *regs)
->  
->  	/*
->  	 * If we took the program check in the kernel skip down to sending a
-> -	 * SIGILL. The subsequent cases all relate to emulating instructions
-> -	 * which we should only do for userspace. We also do not want to enable
-> -	 * interrupts for kernel faults because that might lead to further
-> -	 * faults, and loose the context of the original exception.
-> +	 * SIGILL. The subsequent cases all relate to user space, such as
-> +	 * emulating instructions which we should only do for user space. We
-> +	 * also do not want to enable interrupts for kernel faults because that
-> +	 * might lead to further faults, and loose the context of the original
-> +	 * exception.
->  	 */
->  	if (!user_mode(regs))
->  		goto sigill;
->  
->  	interrupt_cond_local_irq_enable(regs);
->  
-> +	/*
-> +	 * (reason & REASON_TRAP) is mostly handled before enabling IRQs,
-> +	 * except get_user_instr() can sleep so we cannot reliably inspect the
-> +	 * current instruction in that context. Now that we know we are
-> +	 * handling a user space trap and can sleep, we can check if the trap
-> +	 * was a hashchk failure.
-> +	 */
-> +	if (reason & REASON_TRAP) {
-> +		if (cpu_has_feature(CPU_FTR_DEXCR_NPHIE)) {
-> +			ppc_inst_t insn;
-> +
-> +			if (get_user_instr(insn, (void __user *)regs->nip)) {
-> +				_exception(SIGSEGV, regs, SEGV_MAPERR, regs->nip);
-> +				return;
-> +			}
-> +
-> +			if (ppc_inst_primary_opcode(insn) == 31 &&
-> +			    get_xop(ppc_inst_val(insn)) == OP_31_XOP_HASHCHK) {
-> +				_exception(SIGILL, regs, ILL_ILLOPN, regs->nip);
-> +				return;
-> +			}
-> +		}
-> +
-> +		_exception(SIGTRAP, regs, TRAP_BRKPT, regs->nip);
-> +		return;
-> +	}
-> +
->  	/* (reason & REASON_ILLEGAL) would be the obvious thing here,
->  	 * but there seems to be a hardware bug on the 405GP (RevD)
->  	 * that means ESR is sometimes set incorrectly - either to
-> -- 
-> 2.41.0
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index dd948276e5d6..54480655bcce 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -870,6 +870,7 @@ void kvm_mmu_invalidate_end(struct kvm *kvm)
+         * in conjunction with the smp_rmb in mmu_invalidate_retry().
+         */
+        kvm->mmu_invalidate_in_progress--;
++       KVM_BUG_ON(kvm->mmu_invalidate_in_progress < 0, kvm);
+ 
+        /*
+         * Assert that at least one range was added between start() and end().
+@@ -905,8 +906,6 @@ static void kvm_mmu_notifier_invalidate_range_end(struct mmu_notifier *mn,
+         */
+        if (wake)
+                rcuwait_wake_up(&kvm->mn_memslots_update_rcuwait);
+-
+-       BUG_ON(kvm->mmu_invalidate_in_progress < 0);
+ }
+ 
+ static int kvm_mmu_notifier_clear_flush_young(struct mmu_notifier *mn,
+
