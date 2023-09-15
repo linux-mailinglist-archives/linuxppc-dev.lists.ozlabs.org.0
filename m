@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D324F7A155A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Sep 2023 07:26:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 996207A1566
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Sep 2023 07:27:53 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Qe3kA7Op;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Ae+1+OVN;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rn2k54mvjz3byH
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Sep 2023 15:26:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rn2lC37Bbz3dFx
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Sep 2023 15:27:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Qe3kA7Op;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Ae+1+OVN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::429; helo=mail-pf1-x429.google.com; envelope-from=keescook@chromium.org; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mgamail.intel.com; envelope-from=adrian.hunter@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rn2gp44VSz3byH
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Sep 2023 15:24:54 +1000 (AEST)
-Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-68fac346f6aso1576551b3a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Sep 2023 22:24:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1694755490; x=1695360290; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=x0qVdiNnNK1x44nux0ZGC5YO/63axRdKDDjAcPyMmoU=;
-        b=Qe3kA7OpQopwbC9d2HYprK1ZAAPTcbfSG8UOIVSPiElwWLitqZSuayMz9ySnTLSNEp
-         EnEBMHZdEv0P8vbvCZ1PAO3uaUTpmKNgmVJiK3rv+sU13u/9xYq20I3KQmmHM//u39pe
-         DgcBhavWJAKHjHX4e0FbtSpju6cUF5YkT4Cw4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694755490; x=1695360290;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=x0qVdiNnNK1x44nux0ZGC5YO/63axRdKDDjAcPyMmoU=;
-        b=SVHfD6VyOei8s4L7uiTwksOrgoKxAzYw+bPiJBZdHZOl602ylJrpC9IZO6ipxnUC3q
-         +Sm3E+JaHFAsN+2/Hl8Rb/KbOruaXRx2RTR4TISKJT+BeY2Ceyl0HsBfOI+padOa56KL
-         akIbMjChANF/5OoQCSK6XDNh6fe0b65BoFZjFe4AkxwbHMZOZb4HmpVAZ6oNm/rhoSdi
-         OvtpGfe8D1fW/vGlPM5UHxNm+gcXWA7fIlCdcn4OqS7PFHRIzPSATh6asTreTBkUD5gm
-         vwv1sDfXGr3k0KKSvqzoP8ZuHL3iuUCwWxjoaC62+9aMFSudU2y0OI8vRkhXQ9/8EWlt
-         3OVg==
-X-Gm-Message-State: AOJu0YxVUWAxXyMmla47uUMbGwkrScdFoYYIkBfYReHqRanC9HDPol5A
-	rkFo2ZR/TmDtSD34Fk4HFqDeHQ==
-X-Google-Smtp-Source: AGHT+IFED1FDb4BajsYclNy37LUDYQbCJaFpMaXLXHfXnR4m0zHZlA65aGamnmGLaiEoj43nxFWQ+w==
-X-Received: by 2002:a05:6a20:244e:b0:134:8d7f:f4d9 with SMTP id t14-20020a056a20244e00b001348d7ff4d9mr1002623pzc.52.1694755490009;
-        Thu, 14 Sep 2023 22:24:50 -0700 (PDT)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id d5-20020a170902c18500b001aadd0d7364sm2521635pld.83.2023.09.14.22.24.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Sep 2023 22:24:49 -0700 (PDT)
-Date: Thu, 14 Sep 2023 22:24:48 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Justin Stitt <justinstitt@google.com>
-Subject: Re: [PATCH] hwmon: (ibmpowernv) refactor deprecated strncpy
-Message-ID: <202309142223.D16446A30D@keescook>
-References: <20230914-strncpy-drivers-hwmon-ibmpowernv-c-v1-1-ba6b7f42c98c@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rn2kG6vHWz3dHL
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Sep 2023 15:27:00 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1694755623; x=1726291623;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=36IV7hYksJ1v6vHb3GyDuA/GQJujBm32nV6ivmAaysM=;
+  b=Ae+1+OVNFFSxwvbkxBBPINGbV3E8kR04SPVBO74T26+3ax8ijx9LPoMQ
+   tlkylGOWuq8bsmO+RS21tj1KlK/NZ7yN8J8cRiEWa+ro4eFbEBBThZWm8
+   WcVl49KylNurQ9A/TZl0Ai93LiUBpTYZzS6W5QN9N/lVNmL5ClXLy24GT
+   KAVwINF6+LpKuf1+wOCddkOloAsRymmfWkgWYjTVIV57I2GBMEUlWAJhZ
+   CnwIKAZ0+Hy5CIaci7MyxoHCXH1vyWwID8fA9eGxBDyTqPpyAg8A0qjod
+   7v5Kz7AlQmjCW0gpXkrxCHnrLF6Ka3jShy0Rqq1/p7H/dixlU0p6kFqrb
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="376498001"
+X-IronPort-AV: E=Sophos;i="6.02,148,1688454000"; 
+   d="scan'208";a="376498001"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2023 22:26:56 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="779949358"
+X-IronPort-AV: E=Sophos;i="6.02,148,1688454000"; 
+   d="scan'208";a="779949358"
+Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.249.45.225])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2023 22:26:52 -0700
+Message-ID: <d4bf783c-191a-a80b-8001-3597c634e814@intel.com>
+Date: Fri, 15 Sep 2023 08:26:48 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230914-strncpy-drivers-hwmon-ibmpowernv-c-v1-1-ba6b7f42c98c@google.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.15.1
+Subject: Re: [PATCH V3 2/2] tools/perf/tests: Fix object code reading to skip
+ address that falls out of text section
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, acme@kernel.org,
+ jolsa@kernel.org, irogers@google.com, namhyung@kernel.org
+References: <20230915052412.2643-1-atrajeev@linux.vnet.ibm.com>
+ <20230915052412.2643-2-atrajeev@linux.vnet.ibm.com>
+Content-Language: en-US
+From: Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+In-Reply-To: <20230915052412.2643-2-atrajeev@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,58 +74,100 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hwmon@vger.kernel.org, Jean Delvare <jdelvare@suse.com>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, Guenter Roeck <linux@roeck-us.net>, linux-hardening@vger.kernel.org
+Cc: maddy@linux.ibm.com, kjain@linux.ibm.com, disgoel@linux.vnet.ibm.com, linux-perf-users@vger.kernel.org, Disha Goel <disgoel@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Sep 14, 2023 at 11:21:06PM +0000, Justin Stitt wrote:
-> `strncpy` is deprecated for use on NUL-terminated destination strings [1].
+On 15/09/23 08:24, Athira Rajeev wrote:
+> The testcase "Object code reading" fails in somecases
+> for "fs_something" sub test as below:
 > 
-> We should prefer more robust and less ambiguous string interfaces.
+>     Reading object code for memory address: 0xc008000007f0142c
+>     File is: /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko
+>     On file address is: 0x1114cc
+>     Objdump command is: objdump -z -d --start-address=0x11142c --stop-address=0x1114ac /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko
+>     objdump read too few bytes: 128
+>     test child finished with -1
 > 
-> A suitable replacement is `strscpy` [2] due to the fact that it
-> guarantees NUL-termination on the destination buffer without
-> unnecessarily NUL-padding since `buf` is already zero-initialized.
+> This can alo be reproduced when running perf record with
+> workload that exercises fs_something() code. In the test
+> setup, this is exercising xfs code since root is xfs.
 > 
-> Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
-> Link: https://manpages.debian.org/testing/linux-manual-4.8/strscpy.9.en.html [2]
-> Link: https://github.com/KSPP/linux/issues/90
-> Cc: linux-hardening@vger.kernel.org
-> Signed-off-by: Justin Stitt <justinstitt@google.com>
+>     # perf record ./a.out
+>     # perf report -v |grep "xfs.ko"
+>       0.76% a.out /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko  0xc008000007de5efc B [k] xlog_cil_commit
+>       0.74% a.out  /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko  0xc008000007d5ae18 B [k] xfs_btree_key_offset
+>       0.74% a.out  /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko  0xc008000007e11fd4 B [k] 0x0000000000112074
+> 
+> Here addr "0xc008000007e11fd4" is not resolved. since this is a
+> kernel module, its offset is from the DSO. Xfs module is loaded
+> at 0xc008000007d00000
+> 
+>    # cat /proc/modules | grep xfs
+>     xfs 2228224 3 - Live 0xc008000007d00000
+> 
+> And size is 0x220000. So its loaded between  0xc008000007d00000
+> and 0xc008000007f20000. From objdump, text section is:
+>     text 0010f7bc  0000000000000000 0000000000000000 000000a0 2**4
+> 
+> Hence perf captured ip maps to 0x112074 which is:
+> ( ip - start of module ) + a0
+> 
+> This offset 0x112074 falls out .text section which is up to 0x10f7bc
+> In this case for module, the address 0xc008000007e11fd4 is pointing
+> to stub instructions. This address range represents the module stubs
+> which is allocated on module load and hence is not part of DSO offset.
+> 
+> To address this issue in "object code reading", skip the sample if
+> address falls out of text section and is within the module end.
+> Use the "text_end" member of "struct dso" to do this check.
+> 
+> To address this issue in "perf report", exploring an option of
+> having stubs range as part of the /proc/kallsyms, so that perf
+> report can resolve addresses in stubs range
+> 
+> However this patch uses text_end to skip the stub range for
+> Object code reading testcase.
+> 
+> Reported-by: Disha Goel <disgoel@linux.ibm.com>
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> Tested-by: Disha Goel<disgoel@linux.ibm.com>
+> Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
 > ---
->  drivers/hwmon/ibmpowernv.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Changelog:
+>  v2 -> v3:
+>  Used strtailcmp in comparison for module check and added Reviewed-by
+>  from Adrian, Tested-by from Disha.
 > 
-> diff --git a/drivers/hwmon/ibmpowernv.c b/drivers/hwmon/ibmpowernv.c
-> index 594254d6a72d..57d829dbcda6 100644
-> --- a/drivers/hwmon/ibmpowernv.c
-> +++ b/drivers/hwmon/ibmpowernv.c
-> @@ -234,7 +234,7 @@ static int get_sensor_index_attr(const char *name, u32 *index, char *attr)
->  	if (copy_len >= sizeof(buf))
->  		return -EINVAL;
+>  v1 -> v2:
+>  Updated comment to add description on which arch has stub and
+>  reason for skipping as suggested by Adrian
+> 
+>  tools/perf/tests/code-reading.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/tools/perf/tests/code-reading.c b/tools/perf/tests/code-reading.c
+> index ed3815163d1b..45334d26058e 100644
+> --- a/tools/perf/tests/code-reading.c
+> +++ b/tools/perf/tests/code-reading.c
+> @@ -269,6 +269,16 @@ static int read_object_code(u64 addr, size_t len, u8 cpumode,
+>  	if (addr + len > map__end(al.map))
+>  		len = map__end(al.map) - addr;
 >  
-> -	strncpy(buf, hash_pos + 1, copy_len);
-> +	strscpy(buf, hash_pos + 1, copy_len);
+> +	/*
+> +	 * Some architectures (ex: powerpc) have stubs (trampolines) in kernel
+> +	 * modules to manage long jumps. Check if the ip offset falls in stubs
+> +	 * sections for kernel modules. And skip module address after text end
+> +	 */
+> +	if (!strtailcmp(dso->long_name, ".ko") && al.addr > dso->text_end) {
+> +			pr_debug("skipping the module address %#"PRIx64" after text end\n", al.addr);
+> +			goto out;
 
-This is another case of precise byte copying -- this just needs to be
-memcpy. Otherwise this truncates the trailing character. Imagine a name
-input of "fan#2-data". "buf" wants to get "2". copy_len is 1, and
-strscpy would eat it. :)
+Double indent
 
--Kees
+> +	}
+> +
+>  	/* Read the object code using perf */
+>  	ret_len = dso__data_read_offset(dso, maps__machine(thread__maps(thread)),
+>  					al.addr, buf1, len);
 
->  
->  	err = kstrtou32(buf, 10, index);
->  	if (err)
-> 
-> ---
-> base-commit: 3669558bdf354cd352be955ef2764cde6a9bf5ec
-> change-id: 20230914-strncpy-drivers-hwmon-ibmpowernv-c-80a03f16d93a
-> 
-> Best regards,
-> --
-> Justin Stitt <justinstitt@google.com>
-> 
-
--- 
-Kees Cook
