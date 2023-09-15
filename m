@@ -1,128 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D81047A151C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Sep 2023 07:06:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EA407A1551
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Sep 2023 07:19:31 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=RQnIhUl1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NN1a6gtF;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rn2Gf5Chcz3dD9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Sep 2023 15:06:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rn2YY1P24z3cnh
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Sep 2023 15:19:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=RQnIhUl1;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NN1a6gtF;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e18::628; helo=fra01-pr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from FRA01-PR2-obe.outbound.protection.outlook.com (mail-pr2fra01on20628.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e18::628])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rn2Fj4WS9z3bxY
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Sep 2023 15:05:43 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Z8BaiHbRhdoNrNkcY52YR8o45q1h7/A2bglB2LVfOdNaGyt2QKoWy8X1uMwWltNLfYcwsAYi9ZP5i4HTbtSqC2xD1myBV3y5QyFfcBNvOwUnedZF8tQMVW/yjiByyB8ZhQKV0RlFLf0PjVoCi9W55DT7OFPbFApt+NpUCnnFtWVjN4NehTWn0DeJDOnYbU+Xj11cCxkgAR+JVad/549zsHjRl62+Ln6u2CIh/3jIKXv+bQJcsB1PPMBqa0ObpD7sX2R79xi0MTT1iQxl9s7ajHKPuKkBo5uq+ur5pyVBJa+jyVsuDdHwEtkSehuIzPeaolrWBJwTHaq6raM2shvs5Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cqqrAPdyjvvJA1dYAZU7Typa555c+MdIk0w8etrn5Ow=;
- b=a90+1zODwvdcOADRoUlkxto3OgypVLklORsGLTS5iA0COXQt+fY2AI1qeO6faMXL4dKtcp35WHY93PK8XOXzAmNAHQ45bAOJssto1U0cFzESCfFsu+1T1ONb3lDMEtSaN0uaVabfr91A1HePj/jwpq39B5OpaQgad2KY/GboW/GkXVAr/g5/Ip60ZYrktTLlAGK7CxmHQSOETdSY3Bl3CWjlPr20f8f9ScbVJkwZdyjKsofJR7rveTaJ6djzjNNIcpgxcyfFrcvtcdW5H/cExORS2fcBjq20v60ecLY8oMhm1Oka11sOt0SrB1zz0XsajrnfhDtNJkHUiNywK6c91g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cqqrAPdyjvvJA1dYAZU7Typa555c+MdIk0w8etrn5Ow=;
- b=RQnIhUl1aDKaMlOFXJ4D2fklYswx9Y5UrVngabfaVRu/MoO9zTpzw6W7f9zkKIqH2QtX2FHrdnIPZy/8l+PdurmVDnn/JkmxPITbmXT5gdEHijWhKzJV1Wj9m2Fj2V16y5OSmhTQ2XSpMLQphtpsenN3Pubh7R9MexxPXzdBPSPqd5wdCFo9xp8nOUa3OPj8Mg244Jq2NNcuYt24MurV2cykJJYG7zvqN92mWeNQifOfdAc7Neo+KPynoMJeTn9fkkWaDmK/JmwfDrjhgzu2j/ga0VW38cRSfOS+nSN8AI2xSYI5xuaCXgEX9zLxJOuugDVsj6WKIvtUaG0DHhzhsQ==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PR1P264MB3418.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:181::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.21; Fri, 15 Sep
- 2023 05:05:21 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::2820:d3a6:1cdf:c60e]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::2820:d3a6:1cdf:c60e%7]) with mapi id 15.20.6792.021; Fri, 15 Sep 2023
- 05:05:21 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH] powerpc/82xx: Select FSL_SOC
-Thread-Topic: [PATCH] powerpc/82xx: Select FSL_SOC
-Thread-Index: AQHZ5x+BaAGcyaRyjEqAtwm8NNEjybAbDSyAgABJBQA=
-Date: Fri, 15 Sep 2023 05:05:21 +0000
-Message-ID: <c481fa91-0cfb-1c19-2da7-cf768bc56aea@csgroup.eu>
-References:  <7ab513546148ebe33ddd4b0ea92c7bfd3cce3ad7.1694705016.git.christophe.leroy@csgroup.eu>
- <87led86zaq.fsf@mail.lhotse>
-In-Reply-To: <87led86zaq.fsf@mail.lhotse>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PR1P264MB3418:EE_
-x-ms-office365-filtering-correlation-id: 3867ec5c-fd17-4cc9-8c07-08dbb5a95ca6
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  bPk4srsZTZ58p5OHUk/Y7xsLnQ3cupOB74KkY0yB49vGmZyxJsMwf+6Ady5w/ZrWPpHd0m+/LkKHEwCOsh+16V3sOE3HGVpFauKXiLE7dBVym8lzueNvJA875pD+XArhLwMOGaK+2o3ENshgNn3/aIcXzCwFPMTgqjLqEA8rBQW23CnjQvRPpOEDJgGpOc2e/gmqUb9i7QLZWb4TwFkdVr1GXN0uZiq0fHYvz2S4MF2U4z8iNWcnE5YeMa9EdCqYYCBLl4lI7timw9ERAomU5Oue5OGpyAzIRt3eGafg+nOzzSHn3aYM02KqgYJePgLxlWlTDtd87zlCTMliuqZ3IzCnEhdw0NB+Ean+3N7ZqBEtHeVGDbpPVCXyQXMbjFk2NpeaACXXpTuI40SqkyPLajCHsts1m9DMbXXVGq8TeYHzW6/oEf+CFJ+/qKI6IJE+5yX0J2yW2EGXVW9HA7uxXQzStuvZeEquO92Mcvp4ezC6GgQ+JBKGBb1VcVWaBZ2omji+lfs5XzarAtL1uRlkCWnk2PytzbeD2GzuCs+1Bv9rAPhJtW/PyRTiotxVdWnOxiOgMtT/g8zfSohOm+dg8ZsdWuTK0Slx5qt9aRjtk8kH71ejGfGAfefR7nFZwS8Lt6iQc7rvGcONv8SzmlBOK7Uw2dmSMn6GGR/2rGkm1PPeH0jdsc7bGF4XKceDUR2M
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(39850400004)(396003)(136003)(366004)(346002)(376002)(451199024)(1800799009)(186009)(38100700002)(38070700005)(66574015)(41300700001)(110136005)(36756003)(91956017)(122000001)(316002)(8936002)(8676002)(2906002)(66946007)(66556008)(76116006)(4326008)(66476007)(44832011)(66446008)(64756008)(6512007)(54906003)(71200400001)(6506007)(5660300002)(6486002)(83380400001)(26005)(86362001)(31696002)(2616005)(31686004)(478600001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?dmVmbWQwZ24yYzZuNllZMjBEYnNmdFIxTFJuc0RIZXBOUm81eEp6WEh5aXVo?=
- =?utf-8?B?ZzM1d0FYY1JGeFFsSGhLZnR0MzlYWWkrTW1vL3lhaDdOU3VZR1haVWxDMnRQ?=
- =?utf-8?B?RFJ2UE9yLzhuU08zYnJXSkRHQ3NYZ2lDQkZycEtaMUhZalRJaXR4dVhNQ0lZ?=
- =?utf-8?B?UndTTjRMVG9IdHUxazNHQTlTOTZKV2t6UWhkT0Z2dThxRUllb0VwdVBjdmZs?=
- =?utf-8?B?NDRmL0NlNzF4NEIwSDdPNjl5WU5HS09xZzYrR0pVaisvdEx2NnBFNzhlTC8w?=
- =?utf-8?B?WHZja0tCODJwZTJaM1ZzY1lKR09YOGhpUllHVjh3ZWMrT3E0RjV6ekhIUWcw?=
- =?utf-8?B?Y1orYWhoQ1V5d1NYc0JzMnZjRW1Dbk9heG5Kd3pkczcxYm5kQ1lJd0NuVEY5?=
- =?utf-8?B?YTlOV2k0dERCNFVIb0JydTl5clB1UVdxaktFYkVkMkFwN2pRMWdQdEhrU1Rs?=
- =?utf-8?B?dlc0cEFiVmtPSGRVdDBNL0laQzg3OXJwdk84V0VCcnlrOVVXNUNOVUF4SS9H?=
- =?utf-8?B?OURnVFlGd1p3cENBZ09zTlhhazFta25ZaEF0b083YmZSaWtUVEM1Z05IZ09q?=
- =?utf-8?B?ekRHK2RoRkhWS0RPYlMzL3QvUi9uMWNET3ppcWhEdGxxaFNqZ3dmNXkxOGwv?=
- =?utf-8?B?QW1ZRy9mWWFVMGYrcUlxcGh1bm9uNnJ6dW5WUjlOT0NONk55NUJBRE5HaDhs?=
- =?utf-8?B?MzBvMWJaTmhZclRHb3NMaVBiemFpSlpaNkJrYzRmNzd3K1h4djExYjVJZFYr?=
- =?utf-8?B?c3p6RkgwNm9TUGF5SEFOVURVRjkvSzc5eWlHaG04OWRXSWJUWUFWU3NPNlpo?=
- =?utf-8?B?TjY2MDV6TVA5U2NzSmM1VXpOWXYxZ1hHL3pLUHhzMW1sNnc3TkNuZHd6OEZJ?=
- =?utf-8?B?YUdGMWJKQyt2N2xUWitHeUFycndPVGZBRTYycCtiYTIzU3M5SFV0OSt6bmQ2?=
- =?utf-8?B?OGxtOXZtbFJNK251RXJZcHFySFF3c3RnYXlGZzRkSzJGa3FyOU16L2ZVeVAz?=
- =?utf-8?B?UU5IS2cxaklYaUt6UTFPNjUvUGV4Rm9LRC9NK3prSytkcnVrU2xpclRNT3gy?=
- =?utf-8?B?M1BUeGlhTStTeGdjTEpnZzNiR3V5NGcrYUtrOTk2WUwxSEFyQzJpdEUrby83?=
- =?utf-8?B?TkZmT2ZQSlZxTkVUZHZZbHFQeDFXVXMvUlBDN2hGSWRRejl2QkRvczQ4c2ky?=
- =?utf-8?B?M1JmSnFydWdESEpzVkpwUkt4SU1VQ01hOStTV2JHMUJBbXZoZEZ5Y3Q0YTF3?=
- =?utf-8?B?KzFuSmJxUUYvVkxKK3FJSnByZFVENlVDUHN0ckpQZDlMVEpVMkVQcm9BWno2?=
- =?utf-8?B?aWZCOGY3UkFrN01GRFBzV0w4blhwd3BHY01UR3o0NXUrNHdRWHI3U0tucURI?=
- =?utf-8?B?dURMQ0hZZlAwK2Z0ZjdrNzEzT25CS003ZzNqUWJDQjBwbUdOU29uUUtlZjlV?=
- =?utf-8?B?eFZwaFZoak13cHlqc3Jmcm9NcE8vbG1mdjM3TGovNTlTYWNzbVFWOXpVWjZl?=
- =?utf-8?B?RWhTQ1Ixb2tZaU01UC9wd2JncjNVU2JLS0hCa25hWGUzYS8vVWRqV0ltaXdQ?=
- =?utf-8?B?Qlo4dzdLT1cxck5sYlJQczVObWZGTHZjY2F1UzRNWE8yTm1kMTlWWXNodFF3?=
- =?utf-8?B?QnpZbytkUTlkZFpXOVRna0ltY05BdTJ6c1lVRjRyTGlaTHVjak4vSEc3WDN1?=
- =?utf-8?B?TGVJUjlpRklua1RGNFR1WVFuVHNNeFQwbldwOHkxRVFWeEdpRGxDNkpOY0c4?=
- =?utf-8?B?amVndjJFVWZDZHZHWVJsbTE1UVRmTkdUdTRPdUtqcm95Rk5jM2FrbjJVNjJX?=
- =?utf-8?B?TXVpK2JnT0NNbXhhK0F4TUZiVTZ5eTFMeEFTSnozbmlDNUUwanZaSmtjYjlh?=
- =?utf-8?B?bHBhVGVVTXdmaTZ3anhJZTloTWxiSjBMMmxuZEszd1VNcVBOaEpXdUd4ckMv?=
- =?utf-8?B?UEhwaUlvZGtHV0tBS0FpN0h6RjRJcWhhV2YrOG1HRWkyazVHYTZVRFRxSmEw?=
- =?utf-8?B?aVk1ZGJNVUZTNVY4WDhUTm1YaU5taXdIaCtSZWwzZTh4Q2NYM1hPdHdiOWNn?=
- =?utf-8?B?bXJOUkZSVEIzUWhCcitKNU9SZ0hNMVZxeWZKOStOQU91UTJPcElSc1BicTV2?=
- =?utf-8?Q?LAcCev/Wd37kHBDFHvCGxi737?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <2465177CBB33334BA337744C49C1A01E@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3867ec5c-fd17-4cc9-8c07-08dbb5a95ca6
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Sep 2023 05:05:21.1148
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: //SOaI2nadY1TXjFYQiPzEBW88Qg7TOI75FifS3x889dg977pvkbzWu8ZbJtfJZDhwuufAlzdmlGpg4jwDDVSqbfvZn4xKNLeGJcCoE6ZMo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR1P264MB3418
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rn2Xc4ZLtz301f
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Sep 2023 15:18:39 +1000 (AEST)
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38F5C1fp002847;
+	Fri, 15 Sep 2023 05:18:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=qjBLmxXh2CNl4fzeaMD1SlhQrXnevEk8zQPkZABxJL8=;
+ b=NN1a6gtFpS5g36ahK/Nhw4TO5OchjwchShbeQochVfGB6JG+4A5IJcinNNl88U87fNV/
+ 7hsPinWrQXc+P0zpj1Y14SY7fiXdYSjWsenPWeMDU0Ddvp/R0C7NTfemJADR+YUrkPGI
+ 4zt5+9mzidiOevxUJRhL2uFor3ZI9ugNyAAPwt0r6Ke6IP3afTv+lK4pfAbs4ieZFQlc
+ p3eIgE06kYeN6n/U4u+AsmJHA16Oe5IwqK5pfPMPgAkwpQmo+wCzxKQyhqJd3V3I8KM9
+ W+3VGNbZGaKUsx2RPOjoCaIayVYmuy3EfcP9Z/9CjiRdcdARH1KXhTsPYfg9ZUktnvZE wQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t4gwk05u5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 15 Sep 2023 05:18:27 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38F5Dc1o009983;
+	Fri, 15 Sep 2023 05:18:26 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t4gwk05tq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 15 Sep 2023 05:18:26 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 38F409fk024061;
+	Fri, 15 Sep 2023 05:18:25 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3t131trv0u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 15 Sep 2023 05:18:25 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 38F5IMFV62193990
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 15 Sep 2023 05:18:22 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7DC962004D;
+	Fri, 15 Sep 2023 05:18:22 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7BB7E20040;
+	Fri, 15 Sep 2023 05:18:20 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.43.67.213])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 15 Sep 2023 05:18:20 +0000 (GMT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.700.6\))
+Subject: Re: [V2 1/2] tools/perf: Add text_end to "struct dso" to save .text
+ section size
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <3a03f694-ab6a-3985-9386-203e7137ae7f@intel.com>
+Date: Fri, 15 Sep 2023 10:48:08 +0530
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <7427EEAF-2E67-47CE-953D-55ED87329752@linux.vnet.ibm.com>
+References: <20230907164529.36222-1-atrajeev@linux.vnet.ibm.com>
+ <3a03f694-ab6a-3985-9386-203e7137ae7f@intel.com>
+To: Adrian Hunter <adrian.hunter@intel.com>
+X-Mailer: Apple Mail (2.3731.700.6)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: LS_ESXEXGUyHwB2Ce2j7Ww2YfByyOTAQ
+X-Proofpoint-ORIG-GUID: PV4QzvjAntXRGFSJRF34ZHQxKKz5VYza
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-15_04,2023-09-14_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1015
+ impostorscore=0 adultscore=0 phishscore=0 mlxlogscore=999 malwarescore=0
+ mlxscore=0 suspectscore=0 lowpriorityscore=0 priorityscore=1501
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309150044
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -134,47 +100,132 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Randy Dunlap <rdunlap@infradead.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: Ian Rogers <irogers@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Disha Goel <disgoel@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-perf-users@vger.kernel.org, Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Disha Goel <disgoel@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDE1LzA5LzIwMjMgw6AgMDI6NDMsIE1pY2hhZWwgRWxsZXJtYW4gYSDDqWNyaXTCoDoN
-Cj4gQ2hyaXN0b3BoZSBMZXJveSA8Y2hyaXN0b3BoZS5sZXJveUBjc2dyb3VwLmV1PiB3cml0ZXM6
-DQo+PiBJdCB1c2VkIHRvIGJlIGltcG9zc2libGUgdG8gc2VsZWN0IENPTkZJR19DUE0yIHdpdGhv
-dXQgc2VsZWN0aW5nDQo+PiBDT05GSUdfRlNMX1NPQyBhdCB0aGUgc2FtZSB0aW1lIGJlY2F1c2Ug
-Q09ORklHX0NQTTIgd2FzIGRlcGVuZGVudA0KPj4gb24gQ09ORklHXzgyNjAgYW5kIENPTkZJR184
-MjYwIHdhcyBzZWxlY3RpbmcgQ09ORklHX0ZTTF9TT0MuDQo+Pg0KPj4gQnV0IGFmdGVyIGNvbW1p
-dCBlYjVhYTIxMzcyNzUgKCJwb3dlcnBjLzgyeHg6IFJlbW92ZSBDT05GSUdfODI2MA0KPj4gYW5k
-IENPTkZJR184MjcyIikgQ09ORklHX0NQTTIgZGVwZW5kcyBvbiBDT05GSUdfTVBDODJ4eCBpbnN0
-ZWFkDQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXg0KPiAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIENPTkZJR19QUENfODJ4
-eA0KPiANCj4gQWxsIHRoZSByZWZlcmVuY2VzIHRvIENPTkZJR19NUEM4Mnh4IHNob3VsZCBiZSBD
-T05GSUdfUFBDXzgyeHggcmlnaHQ/DQo+IEkgY2FuIHVwZGF0ZSB3aGVuIGFwcGx5aW5nLg0KDQpB
-aCByaWdodCwgSSBtaXhlZCB0aGluZ3MgdXAuIFRoaXMgaXMgQ09ORklHX1BQQ184Mnh4LCBDT05G
-SUdfUFBDXzh4eCwgDQpDT05GSUdfUFBDXzgzeHggYW5kIENPTkZJR19QUENfTVBDNTEyeA0KDQo+
-IA0KPiBjaGVlcnMNCj4gDQo+IA0KPj4gYnV0IENPTkZJR19NUEM4Mnh4IGRvZXNuJ3QgZGlyZWN0
-bHkgc2VsZWN0cyBDT05GSUdfRlNMX1NPQy4NCj4+DQo+PiBGaXggaXQgYnkgZm9yY2luZyBDT05G
-SUdfTVBDODJ4eCB0byBzZWxlY3QgQ09ORklHX0ZTTF9TT0MganVzdA0KPj4gbGlrZSBhbHJlYWR5
-IGRvbmUgYnkgTVBDOHh4LCBNUEM1MTJ4LCBNUEM4M3h4LCBQUENfODZ4eC4NCj4+DQo+PiBSZXBv
-cnRlZC1ieTogUmFuZHkgRHVubGFwIDxyZHVubGFwQGluZnJhZGVhZC5vcmc+DQo+PiBGaXhlczog
-ZWI1YWEyMTM3Mjc1ICgicG93ZXJwYy84Mnh4OiBSZW1vdmUgQ09ORklHXzgyNjAgYW5kIENPTkZJ
-R184MjcyIikNCj4+IFNpZ25lZC1vZmYtYnk6IENocmlzdG9waGUgTGVyb3kgPGNocmlzdG9waGUu
-bGVyb3lAY3Nncm91cC5ldT4NCj4+IC0tLQ0KPj4gICBhcmNoL3Bvd2VycGMvcGxhdGZvcm1zLzgy
-eHgvS2NvbmZpZyB8IDMgKy0tDQo+PiAgIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwg
-MiBkZWxldGlvbnMoLSkNCj4+DQo+PiBkaWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBjL3BsYXRmb3Jt
-cy84Mnh4L0tjb25maWcgYi9hcmNoL3Bvd2VycGMvcGxhdGZvcm1zLzgyeHgvS2NvbmZpZw0KPj4g
-aW5kZXggZDlmMWEyYTgzMTU4Li4xODI0NTM2Y2Y2ZjIgMTAwNjQ0DQo+PiAtLS0gYS9hcmNoL3Bv
-d2VycGMvcGxhdGZvcm1zLzgyeHgvS2NvbmZpZw0KPj4gKysrIGIvYXJjaC9wb3dlcnBjL3BsYXRm
-b3Jtcy84Mnh4L0tjb25maWcNCj4+IEBAIC0yLDYgKzIsNyBAQA0KPj4gICBtZW51Y29uZmlnIFBQ
-Q184Mnh4DQo+PiAgIAlib29sICI4Mnh4LWJhc2VkIGJvYXJkcyAoUFEgSUkpIg0KPj4gICAJZGVw
-ZW5kcyBvbiBQUENfQk9PSzNTXzMyDQo+PiArCXNlbGVjdCBGU0xfU09DDQo+PiAgIA0KPj4gICBp
-ZiBQUENfODJ4eA0KPj4gICANCj4+IEBAIC05LDcgKzEwLDYgQEAgY29uZmlnIEVQODI0OEUNCj4+
-ICAgCWJvb2wgIkVtYmVkZGVkIFBsYW5ldCBFUDgyNDhFIChhLmsuYS4gQ1dILVBQQy04MjQ4Ti1W
-RSkiDQo+PiAgIAlzZWxlY3QgQ1BNMg0KPj4gICAJc2VsZWN0IFBQQ19JTkRJUkVDVF9QQ0kgaWYg
-UENJDQo+PiAtCXNlbGVjdCBGU0xfU09DDQo+PiAgIAlzZWxlY3QgUEhZTElCIGlmIE5FVERFVklD
-RVMNCj4+ICAgCXNlbGVjdCBNRElPX0JJVEJBTkcgaWYgUEhZTElCDQo+PiAgIAloZWxwDQo+PiBA
-QCAtMjIsNyArMjIsNiBAQCBjb25maWcgTUdDT0dFDQo+PiAgIAlib29sICJLZXltaWxlIE1HQ09H
-RSINCj4+ICAgCXNlbGVjdCBDUE0yDQo+PiAgIAlzZWxlY3QgUFBDX0lORElSRUNUX1BDSSBpZiBQ
-Q0kNCj4+IC0Jc2VsZWN0IEZTTF9TT0MNCj4+ICAgCWhlbHANCj4+ICAgCSAgVGhpcyBlbmFibGVz
-IHN1cHBvcnQgZm9yIHRoZSBLZXltaWxlIE1HQ09HRSBib2FyZC4NCj4+ICAgDQo+PiAtLSANCj4+
-IDIuNDEuMA0K
+
+
+> On 14-Sep-2023, at 11:49 PM, Adrian Hunter <adrian.hunter@intel.com> =
+wrote:
+>=20
+> On 7/09/23 19:45, Athira Rajeev wrote:
+>> Update "struct dso" to include new member "text_end".
+>> This new field will represent the offset for end of text
+>> section for a dso. For elf, this value is derived as:
+>> sh_size (Size of section in byes) + sh_offset (Section file
+>> offst) of the elf header for text.
+>>=20
+>> For bfd, this value is derived as:
+>> 1. For PE file,
+>> section->size + ( section->vma - dso->text_offset)
+>> 2. Other cases:
+>> section->filepos (file position) + section->size (size of
+>> section)
+>>=20
+>> To resolve the address from a sample, perf looks at the
+>> DSO maps. In case of address from a kernel module, there
+>> were some address found to be not resolved. This was
+>> observed while running perf test for "Object code reading".
+>> Though the ip falls beteen the start address of the loaded
+>> module (perf map->start ) and end address ( perf map->end),
+>> it was unresolved.
+>>=20
+>> Example:
+>>=20
+>>    Reading object code for memory address: 0xc008000007f0142c
+>>    File is: /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko
+>>    On file address is: 0x1114cc
+>>    Objdump command is: objdump -z -d --start-address=3D0x11142c =
+--stop-address=3D0x1114ac /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko
+>>    objdump read too few bytes: 128
+>>    test child finished with -1
+>>=20
+>> Here, module is loaded at:
+>>    # cat /proc/modules | grep xfs
+>>    xfs 2228224 3 - Live 0xc008000007d00000
+>>=20
+>> =46rom objdump for xfs module, text section is:
+>>    text 0010f7bc  0000000000000000 0000000000000000 000000a0 2**4
+>>=20
+>> Here the offset for 0xc008000007f0142c ie  0x112074 falls out
+>> .text section which is up to 0x10f7bc.
+>>=20
+>> In this case for module, the address 0xc008000007e11fd4 is pointing
+>> to stub instructions. This address range represents the module stubs
+>> which is allocated on module load and hence is not part of DSO =
+offset.
+>>=20
+>> To identify such  address, which falls out of text
+>> section and within module end, added the new field "text_end" to
+>> "struct dso".
+>>=20
+>> Reported-by: Disha Goel <disgoel@linux.ibm.com>
+>> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+>=20
+> Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
+
+Hi Adrian
+
+Thanks for the review
+
+>=20
+>> ---
+>> Changelog:
+>> v1 -> v2:
+>> Added text_end for bfd also by updating dso__load_bfd_symbols
+>> as suggested by Adrian.
+>>=20
+>> tools/perf/util/dso.h        | 1 +
+>> tools/perf/util/symbol-elf.c | 4 +++-
+>> tools/perf/util/symbol.c     | 2 ++
+>> 3 files changed, 6 insertions(+), 1 deletion(-)
+>>=20
+>> diff --git a/tools/perf/util/dso.h b/tools/perf/util/dso.h
+>> index b41c9782c754..70fe0fe69bef 100644
+>> --- a/tools/perf/util/dso.h
+>> +++ b/tools/perf/util/dso.h
+>> @@ -181,6 +181,7 @@ struct dso {
+>> u8  rel;
+>> struct build_id  bid;
+>> u64  text_offset;
+>> + u64  text_end;
+>> const char  *short_name;
+>> const char  *long_name;
+>> u16  long_name_len;
+>> diff --git a/tools/perf/util/symbol-elf.c =
+b/tools/perf/util/symbol-elf.c
+>> index 95e99c332d7e..9e7eeaf616b8 100644
+>> --- a/tools/perf/util/symbol-elf.c
+>> +++ b/tools/perf/util/symbol-elf.c
+>> @@ -1514,8 +1514,10 @@ dso__load_sym_internal(struct dso *dso, struct =
+map *map, struct symsrc *syms_ss,
+>> }
+>>=20
+>> if (elf_section_by_name(runtime_ss->elf, &runtime_ss->ehdr, &tshdr,
+>> - ".text", NULL))
+>> + ".text", NULL)) {
+>> dso->text_offset =3D tshdr.sh_addr - tshdr.sh_offset;
+>> + dso->text_end =3D tshdr.sh_offset + tshdr.sh_size;
+>> + }
+>>=20
+>> if (runtime_ss->opdsec)
+>> opddata =3D elf_rawdata(runtime_ss->opdsec, NULL);
+>> diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
+>> index 3f36675b7c8f..f25e4e62cf25 100644
+>> --- a/tools/perf/util/symbol.c
+>> +++ b/tools/perf/util/symbol.c
+>> @@ -1733,8 +1733,10 @@ int dso__load_bfd_symbols(struct dso *dso, =
+const char *debugfile)
+>> /* PE symbols can only have 4 bytes, so use .text high bits */
+>> dso->text_offset =3D section->vma - (u32)section->vma;
+>> dso->text_offset +=3D (u32)bfd_asymbol_value(symbols[i]);
+>> + dso->text_end =3D (section->vma - dso->text_offset) + =
+section->size;
+>> } else {
+>> dso->text_offset =3D section->vma - section->filepos;
+>> + dso->text_end =3D section->filepos + section->size;
+>> }
+>> }
+
+
