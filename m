@@ -2,69 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5544C7A1645
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Sep 2023 08:40:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28BB27A1669
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Sep 2023 08:48:25 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=mjuE2FMG;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mHFS763Z;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rn4LS1374z3dJV
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Sep 2023 16:40:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rn4X66z0Nz3cnD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Sep 2023 16:48:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=mjuE2FMG;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mHFS763Z;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2001:4860:4864:20::35; helo=mail-oa1-x35.google.com; envelope-from=keescook@chromium.org; receiver=lists.ozlabs.org)
-Received: from mail-oa1-x35.google.com (mail-oa1-x35.google.com [IPv6:2001:4860:4864:20::35])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mgamail.intel.com; envelope-from=xiaoyao.li@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rn4Kb53q3z3dFv
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Sep 2023 16:39:15 +1000 (AEST)
-Received: by mail-oa1-x35.google.com with SMTP id 586e51a60fabf-1d5bb38117dso1019535fac.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Sep 2023 23:39:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1694759948; x=1695364748; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=y9krPXP60RvOc/Jly4MzMbTGFZqB63oEeqar0n+mZto=;
-        b=mjuE2FMGinsLWBczeSzUb0mM31+ajIUbXEo3F0CLBS4KOUOun80+qeSCoJLOXZAHHf
-         Sn1DSTJ4TIvnY49sS3x7EGA6r/0IBTymJAFLD5jJA8nwvV4ZpVB5CgY+hLc/gE7/gvKc
-         4CXwXnCH3tkEfOrIqamVaV4ypqwbKMrv4e7vI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694759948; x=1695364748;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=y9krPXP60RvOc/Jly4MzMbTGFZqB63oEeqar0n+mZto=;
-        b=OGCBAdEweO61oOfeR+YWqywdaynM0YYIvrA1LlPPMqUZkLiMee1djPOOMA3UwP0eVm
-         aCJ5ziK5mBtHHcymLX3m9DjfB7lyadpPXnxOJOeQh1/tES9oGu55kygy3FBkhPBk8spC
-         +GMoGs0mj700HJEN5HHLtGV8Uyl0kA9U0w/kLV9Ncs0iUam2h+yPExG6QTZ9Foj0XPyU
-         svUphAj3zBjIJrARefc08X77dx4wFquvXeKMbCfUpeyFpoFrZX+Z6+tZXPOkZk+AxVk3
-         gH9K5IKURi0QcRSRbnPihByojMLSGdiiyTV/oRJLIEKOfRLzQIMlaLguiigTzPc4XBk3
-         CBxA==
-X-Gm-Message-State: AOJu0YySxYz63UT377gMDQVDAeoEyK55dSLLcKNs+S/z/RSc1yW2wl9r
-	BcKuqUTPaImJxe9SK1KGjV+K4Q==
-X-Google-Smtp-Source: AGHT+IFDmhw7ZRBNGNOL6ig8k8GdAMIkgXC0ino4cM4yA0zOj4mNkUi7jC3Ss/34A3XxvP1tmTpnBg==
-X-Received: by 2002:a05:6870:64a2:b0:1d6:3f77:c214 with SMTP id cz34-20020a05687064a200b001d63f77c214mr725392oab.55.1694759948598;
-        Thu, 14 Sep 2023 23:39:08 -0700 (PDT)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id n19-20020a637213000000b0056c52d25771sm2114306pgc.69.2023.09.14.23.39.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Sep 2023 23:39:07 -0700 (PDT)
-Date: Thu, 14 Sep 2023 23:39:07 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH] hwmon: (ibmpowernv) refactor deprecated strncpy
-Message-ID: <202309142334.0F81E0EA2D@keescook>
-References: <20230914-strncpy-drivers-hwmon-ibmpowernv-c-v1-1-ba6b7f42c98c@google.com>
- <202309142223.D16446A30D@keescook>
- <4b490305-0ab7-403f-7bec-a08fb8f20b56@roeck-us.net>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rn4WB1l4Yz3c5f
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Sep 2023 16:47:32 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1694760454; x=1726296454;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=nbiNTtCye3B4MOA9keAnL3jGRC3Z0ZFqO6c5ckMzgn4=;
+  b=mHFS763Z5TjTj9z0F26i0h6YmpxGC1my9sVdzaIJPD6lOM3QJZJx4dH8
+   qe37FeJA6OQE66SJfyKGRRZxffiu5w3XyPzRJRU609Ptu0GnPMjrauvFt
+   WCY+3kA4kidXQNAIvuGHztpkBjazSac0fZN9BtiL+Fa2NmB0wDxQWnShN
+   IuHtUCS8DTFHysQ4MWu95919L5fqXv7L3ZHzdh26Sr60h+HFVqs/Jvk6z
+   xsYmI6I/vcSJLnIBTnmrvs4A+nfPbocN+VbGN4kH4y+zTnkQzxXjwPWx2
+   GgbhDdk+ZfTZiltTzrXuMlIakVeNBnRCZqocXXIdC4PvDnqfF/Nm2YnRT
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="383000920"
+X-IronPort-AV: E=Sophos;i="6.02,148,1688454000"; 
+   d="scan'208";a="383000920"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2023 23:47:28 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="744857575"
+X-IronPort-AV: E=Sophos;i="6.02,148,1688454000"; 
+   d="scan'208";a="744857575"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.29.154]) ([10.93.29.154])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2023 23:47:16 -0700
+Message-ID: <d4166c97-6ab3-89a2-eb12-f492f7521f69@intel.com>
+Date: Fri, 15 Sep 2023 14:47:13 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4b490305-0ab7-403f-7bec-a08fb8f20b56@roeck-us.net>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.15.1
+Subject: Re: [RFC PATCH v12 01/33] KVM: Tweak kvm_hva_range and hva_handler_t
+ to allow reusing for gfn ranges
+Content-Language: en-US
+To: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>,
+ Oliver Upton <oliver.upton@linux.dev>, Huacai Chen <chenhuacai@kernel.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, Anup Patel <anup@brainfault.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Paul Moore <paul@paul-moore.com>,
+ James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>
+References: <20230914015531.1419405-1-seanjc@google.com>
+ <20230914015531.1419405-2-seanjc@google.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20230914015531.1419405-2-seanjc@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,20 +79,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hwmon@vger.kernel.org, Jean Delvare <jdelvare@suse.com>, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Justin Stitt <justinstitt@google.com>, linuxppc-dev@lists.ozlabs.org, linux-hardening@vger.kernel.org
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, linux-security-module@vger.kernel.org, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, linux-arm-kernel@lists.infradead.org, Maciej Szmigiero <mail@maciej.szmigiero.name>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, kvmarm@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>, Isaku Yamahata <isaku.yamahata@intel.com>, Quentin Perret <qperret@google.com>, linux-mips@vger.kernel.org, Jarkko Sakkinen <jarkko@kernel.org>, Yu Zhang <yu.c.zhang@linux.intel.com>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, kvm-riscv@lists.infradead.org, linux-fsdevel@vger.kernel.org, Liam Merwick <liam.merwick@oracle.com>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, Xu Yilun <yilun.xu@intel.com>, Ani
+ sh Moorthy <amoorthy@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Sep 14, 2023 at 10:40:37PM -0700, Guenter Roeck wrote:
-> It is really sad that the submitters of such "cleanup" patches can't be bothered
-> to check what they are doing. They can't even be bothered to write a coccinelle
-> script that would avoid pitfalls like this one, and they expect others to do their
-> homework for them.
+On 9/14/2023 9:54 AM, Sean Christopherson wrote:
+> Rework and rename "struct kvm_hva_range" into "kvm_mmu_notifier_range" so
+> that the structure can be used to handle notifications that operate on gfn
+> context, i.e. that aren't tied to a host virtual address.
+> 
+> Practically speaking, this is a nop for 64-bit kernels as the only
+> meaningful change is to store start+end as u64s instead of unsigned longs.
+> 
+> Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+>   virt/kvm/kvm_main.c | 34 +++++++++++++++++++---------------
+>   1 file changed, 19 insertions(+), 15 deletions(-)
+> 
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 486800a7024b..0524933856d4 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -541,18 +541,22 @@ static inline struct kvm *mmu_notifier_to_kvm(struct mmu_notifier *mn)
+>   	return container_of(mn, struct kvm, mmu_notifier);
+>   }
+>   
+> -typedef bool (*hva_handler_t)(struct kvm *kvm, struct kvm_gfn_range *range);
+> +typedef bool (*gfn_handler_t)(struct kvm *kvm, struct kvm_gfn_range *range);
 
-Well I'm not sure that's entirely fair to Justin's efforts (I know he's
-been studying these changes and everyone makes mistakes), but that's why
-I'm helping review his findings -- some code behaviors are more obvious
-than others. :)
+Is it worth mentioning the rename of it as well in changelog?
 
--- 
-Kees Cook
+Anyway,
+
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
