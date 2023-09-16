@@ -2,66 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ED767A2CC2
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Sep 2023 02:53:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9055C7A2CC3
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Sep 2023 02:54:17 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=a/NS0SYy;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=cUA61XnS;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RnXbx31Tvz3gbh
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Sep 2023 10:53:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RnXd33Lgwz3dkt
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Sep 2023 10:54:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=a/NS0SYy;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=cUA61XnS;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::64a; helo=mail-pl1-x64a.google.com; envelope-from=3ivcezqykdlstfbokdhpphmf.dpnmjovyqqd-efwmjtut.p0mbct.psh@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x64a.google.com (mail-pl1-x64a.google.com [IPv6:2607:f8b0:4864:20::64a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::114a; helo=mail-yw1-x114a.google.com; envelope-from=3jfcezqykdl4wierngksskpi.gsqpmry1ttg-hizpmwxw.s3pefw.svk@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RnX7c4C4xz3dJX
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Sep 2023 10:32:12 +1000 (AEST)
-Received: by mail-pl1-x64a.google.com with SMTP id d9443c01a7336-1c4375c1406so10019505ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Sep 2023 17:32:12 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RnX7h2XHhz3dKm
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Sep 2023 10:32:16 +1000 (AEST)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-59beb3a8291so33638237b3.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Sep 2023 17:32:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1694824331; x=1695429131; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=XQKt9ip81eNaA/ioPgL3dH9e9vr3TzqljSeTBinzyVo=;
-        b=a/NS0SYyvbZYTKQpXPzME2NfZ3HjCgc53mWIL2jhdKwxvJDGuDXbzqn42VZo79lcRC
-         v80Gjy91D1o3peJflLC/HbSFP9VFeehQts3SMK4ARwrhoMpgsNTN1nhg8LOBK/rH1zI1
-         XczL6R7unTjepZSoY/jfGq4FLjpAItYyd6LX6bFUIIHHHKtXWQINqLu8UBQA36+PZ1zF
-         S++W+2R6h+bGjAIfcd6skfgeOVvwpVbUj+ZaP7pXyJDb11CtX945ke8cQl97LUKELtPB
-         hY0hL1Oh8dGqUG0WnDYHfwMnQ5ngH0e6o2bS9BAMvPUgnnCXXFJlLvAZ4fv+Oz+R8o4e
-         DEnw==
+        d=google.com; s=20230601; t=1694824333; x=1695429133; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:reply-to:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KxFx3Fi7YuxuIuavK7ybnF2fqrq2iHl6ALoFtRauezE=;
+        b=cUA61XnS3w4xLLy0r2fqRv6GBtRYc1tcEWPonaqqkg7uyahtaAv+7edYedWGHBvNQO
+         QZ8igLuGBsaNSypivrK6rADCUgDy9es5EokyCE+CHrjvrOJds/yP3lneznXeozYNsNRb
+         Cto3RkGCuVar3SvmKOjZ6kxfZkafF/p4dLhyKqNg5nvM9PCnMa9n/0gL1EmAtsujwhFH
+         zXYGSb6i2R2PBmNixhoo7VDKZnLgbI07PTVZb0gN6nufqBKOICXMt9x1+XEurXQXEZ2j
+         wJE1yn+rf0+7LlehNjFjD+oK1ObnfJ4Jta6HnHxZjOODTMVrruO0tzGk+hQD2ZcqimJN
+         mcqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694824331; x=1695429131;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XQKt9ip81eNaA/ioPgL3dH9e9vr3TzqljSeTBinzyVo=;
-        b=gZibjQ21hiIahxzr9CocMcBYMnVVwP0Hf6AfcemiMPthRz1/IT/Q5Gl+iTbnUZ9i5n
-         K7y9dEJB0kacPNTuiTL97dTfEIVqL/eONrY5hXI+LzNCq6cq0Dy/5TTorrbyp1kFgRGp
-         YFKR8xApVDuAZZCHM9BoCBuMBc+kDFhEuC5AUfCiqslODZjequ+Qpy7pqrQWkVVj9L/u
-         5VQ9FxQjjmRI1G3TrsUimNN2Vt8o1UAcKAhvRCo7fnZWx9RS7laUh0WdlJbLbzfTTPMN
-         N4jhK4EC5gK9UsJc3Z5tV8LD4nNPGb1+HHCnfRxzlklLcicaOzFC5AlU6el+tU3XvYI4
-         CGdQ==
-X-Gm-Message-State: AOJu0YyWgJMuKR0/wC0XDGpJUcgDtwxausClQICjHGoDgxRIHhOfNHo5
-	E1RaSy18SCClVWXaJsrNP/LK3/MYb/w=
-X-Google-Smtp-Source: AGHT+IGF/tpivhdzzMxCzu4p2COJ/tsujORVDRvqtMyofX9ypz/OjlCrOXRz/aOj6KmZJ7FZTcTX3ecEuUc=
+        d=1e100.net; s=20230601; t=1694824333; x=1695429133;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:reply-to:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=KxFx3Fi7YuxuIuavK7ybnF2fqrq2iHl6ALoFtRauezE=;
+        b=ZmK2DhpZmZWOqp959RY+lA3CJUID0AWeB9nMDOWQZsZJf2uOlJ3AiydtKRumoGn+6+
+         CyMhr+ciTyADeODvYbshiA0o1U7saoFJnAMa2s4/K+Y5C9Fe+zBEfJf2eM9zSctw1k66
+         q1g2iiiL9VuPJwm04cPv7O1Hs9T2fUZcuwDIhQKvKQiJwW0PDJYSo4sI+SLorQUrPLFi
+         EFMsYBnTcnkGhwNxgFKdHlt1GoxNPNqXjw6VyHGF290mBuGWCjH0w3+fFWpKqGULI/GX
+         L4roqKZBigu8CxIIjhTDodqTRCPpyHUHJ7y2P9BqZD7FrvddpTapBwrIhLbSTv0pJn0d
+         5KLw==
+X-Gm-Message-State: AOJu0Yw1bPqwJITBCS7YGsM5CH8hSFfNXI51L2GECrOshHAzIIEzKGrc
+	PNo/K4JLMGiugGsMvaWpGDCLPFYH99s=
+X-Google-Smtp-Source: AGHT+IEXzS/r4n0jWXYqmldfe2JXkH8I7F6JhHKmdXW7QQez9wS/RPm4WWzKr0H7Mg/fmcjRSnqE67DRs+k=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:902:d4c7:b0:1bc:5182:1de2 with SMTP id
- o7-20020a170902d4c700b001bc51821de2mr81466plg.1.1694824330917; Fri, 15 Sep
- 2023 17:32:10 -0700 (PDT)
-Date: Fri, 15 Sep 2023 17:31:17 -0700
+ (user=seanjc job=sendgmr) by 2002:a25:aa24:0:b0:d81:43c7:61ed with SMTP id
+ s33-20020a25aa24000000b00d8143c761edmr78301ybi.5.1694824333108; Fri, 15 Sep
+ 2023 17:32:13 -0700 (PDT)
+Date: Fri, 15 Sep 2023 17:31:18 -0700
 In-Reply-To: <20230916003118.2540661-1-seanjc@google.com>
 Mime-Version: 1.0
 References: <20230916003118.2540661-1-seanjc@google.com>
 X-Mailer: git-send-email 2.42.0.459.ge4e396fd5e-goog
-Message-ID: <20230916003118.2540661-26-seanjc@google.com>
-Subject: [PATCH 25/26] KVM: PPC: Rearrange code in kvm_ppc.h to isolate
- "public" information
+Message-ID: <20230916003118.2540661-27-seanjc@google.com>
+Subject: [PATCH 26/26] KVM: Hide KVM internal data structures and values from
+ kernel at-large
 From: Sean Christopherson <seanjc@google.com>
 To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
 	Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
@@ -79,6 +80,7 @@ To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
 	Jason Herne <jjherne@linux.ibm.com>, Harald Freudenberger <freude@linux.ibm.com>, 
 	Alex Williamson <alex.williamson@redhat.com>, Andy Lutomirski <luto@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,356 +97,594 @@ Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org, Venkatesh Srinivas <venkate
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Move all declarations and definitions in kvm_ppc.h that are consumed by
-things other than KVM to the top of the file.  This will allow wrapping
-the parts of kvm_ppc.h that are intended only for KVM, i.e. are intended
-to be "private" to KVM, with an #ifdef to hide KVM's internal details from
-the kernel at-large.
+Wrap all KVM internal APIs, data structures, values, etc. in public
+headers with "#ifdef __KVM__" to effectively hide KVM's internal details
+from other subsystems and the kernel at-large.  Hiding KVM details for
+all architectures will, in the very distant future, allow loading a new
+(or old) KVM module without needing to rebuild and reboot the entire
+kernel, or to even allow loading and running multiple versions of KVM
+simultaneously on a single host.
 
+To allow different instances of KVM modules to freely modify KVM data
+structures, enums, #defines, etc., e.g. the struct kvm_vcpu layout, there
+must be exactly zero dereferences of KVM-defined structures/values in
+non-KVM code (excepting code for architectures that don't support such
+shenanigans).  Any such references could lead to latent bugs, e.g. as the
+kernel would think a KVM structure has layout X, but in reality the
+current incarnation of KVM uses layout Y.
+
+In KVM x86, all remaining non-KVM references to KVM details have been now
+eliminated.  To harden KVM against new references being introduced, hide
+KVM's details to ensure that KVM doesn=E2=80=99t create a de facto ABI with=
+ the
+rest of the kernel.
+
+Use #ifdeffery to hide KVM details as doing so requires, by far, the least
+amount of churn and impact on architectures that freely share select KVM
+details with the rest of the kernel, e.g. s390, ARM64 and PPC, have
+significant usage of KVM-defined APIs, structures, values, etc.  E.g.
+attempting to extract the "private" chunks into dedicated KVM-internal
+headers would require massive churn, even on x86, and it's not obvious the
+end result would be a net positive (all attempts at moving code around
+failed long before getting anywhere near compiling cleanly).
+
+Another (bad) alternative that would be relative churn-free would be to
+move the KVM headers to a dedicated KVM-specific path while maintaining
+the generic layout, e.g. something like virt/kvm/include/linux.  That
+would allow x86 to simply omit the KVM-specific include path.  But that
+would require modifying the global include path, i.e. would make KVM a
+really special snowflake and set the awful precedent that it's "ok" to
+add subsystem specific directories to the global include path.
+
+Grant exceptions to asm-offsets.c as needed, and to s390's VFIO AP driver.
+Creating a KVM-specific asm-offsets, as was done for x86, adds no value
+(x86 did so to avoid exposing vendor specific headers) and doesn't create
+much of a "slippery slope" risk.  s390's VFIO AP driver on the other hand
+is simply too intertwined with KVM to realistically treat it as anything
+other than KVM code, despite it living in crypto drivers, e.g. the driver
+has some rather crazy lock ordering rules between the device and KVM.
+
+Add a static assert that __KVM__ is defined in trace/events/kvm.h, as that
+is effectively a private KVM header that just happens to live in a public
+path.
+
+Shuffle a few PPC includes and an s390 declaration as needed, and
+opportunistically include kvm_host.h in trace/events.kvm.h instead of
+relying on the parent to provide the right includes.
+
+Cc: Anish Ghulati <aghulati@google.com>
+Cc: Venkatesh Srinivas <venkateshs@chromium.org>
+Cc: Andrew Thornton <andrewth@google.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/powerpc/include/asm/kvm_ppc.h | 302 +++++++++++++++--------------
- 1 file changed, 153 insertions(+), 149 deletions(-)
+ arch/arm64/include/asm/kvm_emulate.h     | 3 +++
+ arch/arm64/include/asm/kvm_host.h        | 2 ++
+ arch/arm64/include/asm/kvm_mmu.h         | 4 ++++
+ arch/arm64/kernel/asm-offsets.c          | 2 ++
+ arch/arm64/kvm/hyp/Makefile              | 2 +-
+ arch/arm64/kvm/hyp/nvhe/Makefile         | 3 ++-
+ arch/arm64/kvm/hyp/vhe/Makefile          | 2 +-
+ arch/mips/include/asm/kvm_host.h         | 2 ++
+ arch/mips/kernel/asm-offsets.c           | 2 ++
+ arch/powerpc/include/asm/kvm_book3s.h    | 3 +++
+ arch/powerpc/include/asm/kvm_book3s_64.h | 2 ++
+ arch/powerpc/include/asm/kvm_booke.h     | 4 ++++
+ arch/powerpc/include/asm/kvm_host.h      | 7 ++++---
+ arch/powerpc/include/asm/kvm_ppc.h       | 2 ++
+ arch/powerpc/kernel/asm-offsets.c        | 1 +
+ arch/riscv/include/asm/kvm_host.h        | 3 +++
+ arch/riscv/kernel/asm-offsets.c          | 1 +
+ arch/s390/include/asm/kvm_host.h         | 7 +++++--
+ arch/s390/kernel/asm-offsets.c           | 1 +
+ arch/x86/include/asm/kvm_host.h          | 3 +++
+ drivers/s390/crypto/vfio_ap_drv.c        | 1 +
+ drivers/s390/crypto/vfio_ap_ops.c        | 2 ++
+ include/linux/kvm_host.h                 | 4 ++++
+ include/linux/kvm_types.h                | 3 +++
+ include/trace/events/kvm.h               | 5 +++++
+ virt/kvm/Makefile.kvm                    | 2 +-
+ 26 files changed, 64 insertions(+), 9 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
-index 72fee202d3ec..ead2ad892ebc 100644
+diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/=
+kvm_emulate.h
+index 3d6725ff0bf6..5861fa00763b 100644
+--- a/arch/arm64/include/asm/kvm_emulate.h
++++ b/arch/arm64/include/asm/kvm_emulate.h
+@@ -21,6 +21,8 @@
+ #include <asm/cputype.h>
+ #include <asm/virt.h>
+=20
++#ifdef __KVM__
++
+ #define CURRENT_EL_SP_EL0_VECTOR	0x0
+ #define CURRENT_EL_SP_ELx_VECTOR	0x200
+ #define LOWER_EL_AArch64_VECTOR		0x400
+@@ -615,4 +617,5 @@ static __always_inline void kvm_reset_cptr_el2(struct k=
+vm_vcpu *vcpu)
+=20
+ 	kvm_write_cptr_el2(val);
+ }
++#endif /* __KVM__ */
+ #endif /* __ARM64_KVM_EMULATE_H__ */
+diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm=
+_host.h
+index 89b40c34f0af..ba4065db5d5c 100644
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -93,6 +93,7 @@ static inline bool kvm_pmu_counter_deferred(struct perf_e=
+vent_attr *attr)
+ 	return (!has_vhe() && attr->exclude_host);
+ }
+=20
++#ifdef __KVM__
+ DECLARE_STATIC_KEY_FALSE(userspace_irqchip_in_use);
+=20
+ extern unsigned int __ro_after_init kvm_sve_max_vl;
+@@ -1149,4 +1150,5 @@ int kvm_trng_call(struct kvm_vcpu *vcpu);
+ void kvm_arm_vcpu_power_off(struct kvm_vcpu *vcpu);
+ bool kvm_arm_vcpu_stopped(struct kvm_vcpu *vcpu);
+=20
++#endif /* __KVM__ */
+ #endif /* __ARM64_KVM_HOST_H__ */
+diff --git a/arch/arm64/include/asm/kvm_mmu.h b/arch/arm64/include/asm/kvm_=
+mmu.h
+index 96a80e8f6226..9d8c92cda3b6 100644
+--- a/arch/arm64/include/asm/kvm_mmu.h
++++ b/arch/arm64/include/asm/kvm_mmu.h
+@@ -125,6 +125,8 @@ void kvm_update_va_mask(struct alt_instr *alt,
+ void kvm_compute_layout(void);
+ void kvm_apply_hyp_relocations(void);
+=20
++#ifdef __KVM__
++
+ #define __hyp_pa(x) (((phys_addr_t)(x)) + hyp_physvirt_offset)
+=20
+ static __always_inline unsigned long __kern_hyp_va(unsigned long v)
+@@ -314,5 +316,7 @@ static inline struct kvm *kvm_s2_mmu_to_kvm(struct kvm_=
+s2_mmu *mmu)
+ {
+ 	return container_of(mmu->arch, struct kvm, arch);
+ }
++
++#endif /* __KVM__ */
+ #endif /* __ASSEMBLY__ */
+ #endif /* __ARM64_KVM_MMU_H__ */
+diff --git a/arch/arm64/kernel/asm-offsets.c b/arch/arm64/kernel/asm-offset=
+s.c
+index 5ff1942b04fc..dc02ea9a002c 100644
+--- a/arch/arm64/kernel/asm-offsets.c
++++ b/arch/arm64/kernel/asm-offsets.c
+@@ -7,6 +7,8 @@
+  * Copyright (C) 2012 ARM Ltd.
+  */
+=20
++#define __KVM__
++
+ #include <linux/arm_sdei.h>
+ #include <linux/sched.h>
+ #include <linux/ftrace.h>
+diff --git a/arch/arm64/kvm/hyp/Makefile b/arch/arm64/kvm/hyp/Makefile
+index 4ce8c86967b5..99982b75671a 100644
+--- a/arch/arm64/kvm/hyp/Makefile
++++ b/arch/arm64/kvm/hyp/Makefile
+@@ -5,6 +5,6 @@
+=20
+ incdir :=3D $(srctree)/$(src)/include
+ subdir-asflags-y :=3D -I$(incdir) -I$(srctree)/arch/arm64/kvm
+-subdir-ccflags-y :=3D -I$(incdir) -I$(srctree)/arch/arm64/kvm
++subdir-ccflags-y :=3D -I$(incdir) -I$(srctree)/arch/arm64/kvm -D__KVM__
+=20
+ obj-$(CONFIG_KVM) +=3D vhe/ nvhe/ pgtable.o
+diff --git a/arch/arm64/kvm/hyp/nvhe/Makefile b/arch/arm64/kvm/hyp/nvhe/Mak=
+efile
+index 2250253a6429..b5f4750fa16e 100644
+--- a/arch/arm64/kvm/hyp/nvhe/Makefile
++++ b/arch/arm64/kvm/hyp/nvhe/Makefile
+@@ -9,7 +9,8 @@ asflags-y :=3D -D__KVM_NVHE_HYPERVISOR__ -D__DISABLE_EXPORT=
+S
+ # there is no way to execute them and any such MMIO access from nVHE KVM
+ # will explode instantly (Words of Marc Zyngier). So introduce a generic f=
+lag
+ # __DISABLE_TRACE_MMIO__ to disable MMIO tracing for nVHE KVM.
+-ccflags-y :=3D -D__KVM_NVHE_HYPERVISOR__ -D__DISABLE_EXPORTS -D__DISABLE_T=
+RACE_MMIO__
++ccflags-y :=3D -D__KVM_NVHE_HYPERVISOR__ -D__DISABLE_EXPORTS \
++	     -D__DISABLE_TRACE_MMIO__  -D__KVM__
+ ccflags-y +=3D -fno-stack-protector	\
+ 	     -DDISABLE_BRANCH_PROFILING	\
+ 	     $(DISABLE_STACKLEAK_PLUGIN)
+diff --git a/arch/arm64/kvm/hyp/vhe/Makefile b/arch/arm64/kvm/hyp/vhe/Makef=
+ile
+index 3b9e5464b5b3..54cd3c444102 100644
+--- a/arch/arm64/kvm/hyp/vhe/Makefile
++++ b/arch/arm64/kvm/hyp/vhe/Makefile
+@@ -4,7 +4,7 @@
+ #
+=20
+ asflags-y :=3D -D__KVM_VHE_HYPERVISOR__
+-ccflags-y :=3D -D__KVM_VHE_HYPERVISOR__
++ccflags-y :=3D -D__KVM_VHE_HYPERVISOR__ -D__KVM__
+=20
+ obj-y :=3D timer-sr.o sysreg-sr.o debug-sr.o switch.o tlb.o
+ obj-y +=3D ../vgic-v3-sr.o ../aarch32.o ../vgic-v2-cpuif-proxy.o ../entry.=
+o \
+diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_h=
+ost.h
+index f8f63d0aa399..6fd7c998d7b9 100644
+--- a/arch/mips/include/asm/kvm_host.h
++++ b/arch/mips/include/asm/kvm_host.h
+@@ -25,6 +25,7 @@
+ #include <asm/inst.h>
+ #include <asm/mipsregs.h>
+=20
++#ifdef __KVM__
+ /* MIPS KVM register ids */
+ #define MIPS_CP0_32(_R, _S)					\
+ 	(KVM_REG_MIPS_CP0 | KVM_REG_SIZE_U32 | (8 * (_R) + (_S)))
+@@ -897,4 +898,5 @@ static inline void kvm_arch_vcpu_unblocking(struct kvm_=
+vcpu *vcpu) {}
+=20
+ #define __KVM_HAVE_ARCH_FLUSH_REMOTE_TLBS
+=20
++#endif /* __KVM__ */
+ #endif /* __MIPS_KVM_HOST_H__ */
+diff --git a/arch/mips/kernel/asm-offsets.c b/arch/mips/kernel/asm-offsets.=
+c
+index d1b11f66f748..8a233bddfea0 100644
+--- a/arch/mips/kernel/asm-offsets.c
++++ b/arch/mips/kernel/asm-offsets.c
+@@ -9,6 +9,8 @@
+  * Kevin Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com
+  * Copyright (C) 2000 MIPS Technologies, Inc.
+  */
++#define __KVM__
++
+ #include <linux/compat.h>
+ #include <linux/types.h>
+ #include <linux/sched.h>
+diff --git a/arch/powerpc/include/asm/kvm_book3s.h b/arch/powerpc/include/a=
+sm/kvm_book3s.h
+index bbf5e2c5fe09..8880bc7c8a32 100644
+--- a/arch/powerpc/include/asm/kvm_book3s.h
++++ b/arch/powerpc/include/asm/kvm_book3s.h
+@@ -13,6 +13,8 @@
+ #include <linux/kvm_host.h>
+ #include <asm/kvm_book3s_asm.h>
+=20
++#ifdef __KVM__
++
+ struct kvmppc_bat {
+ 	u64 raw;
+ 	u32 bepi;
+@@ -483,4 +485,5 @@ static inline u32 kvmppc_pack_vcpu_id(struct kvm *kvm, =
+u32 id)
+ 	return packed_id;
+ }
+=20
++#endif /* __KVM__ */
+ #endif /* __ASM_KVM_BOOK3S_H__ */
+diff --git a/arch/powerpc/include/asm/kvm_book3s_64.h b/arch/powerpc/includ=
+e/asm/kvm_book3s_64.h
+index d49065af08e9..a807716ccae6 100644
+--- a/arch/powerpc/include/asm/kvm_book3s_64.h
++++ b/arch/powerpc/include/asm/kvm_book3s_64.h
+@@ -16,6 +16,7 @@
+ #include <asm/ppc-opcode.h>
+ #include <asm/pte-walk.h>
+=20
++#ifdef __KVM__
+ /*
+  * Structure for a nested guest, that is, for a guest that is managed by
+  * one of our guests.
+@@ -679,4 +680,5 @@ extern pte_t *find_kvm_nested_guest_pte(struct kvm *kvm=
+, unsigned long lpid,
+=20
+ #endif /* CONFIG_KVM_BOOK3S_HV_POSSIBLE */
+=20
++#endif /* __KVM__ */
+ #endif /* __ASM_KVM_BOOK3S_64_H__ */
+diff --git a/arch/powerpc/include/asm/kvm_booke.h b/arch/powerpc/include/as=
+m/kvm_booke.h
+index 0c3401b2e19e..85ebc0314539 100644
+--- a/arch/powerpc/include/asm/kvm_booke.h
++++ b/arch/powerpc/include/asm/kvm_booke.h
+@@ -12,6 +12,8 @@
+ #include <linux/types.h>
+ #include <linux/kvm_host.h>
+=20
++#ifdef __KVM__
++
+ /*
+  * Number of available lpids. Only the low-order 6 bits of LPID rgister ar=
+e
+  * implemented on e500mc+ cores.
+@@ -105,4 +107,6 @@ static inline bool kvmppc_supports_magic_page(struct kv=
+m_vcpu *vcpu)
+ 	return false;
+ #endif
+ }
++
++#endif /* __KVM__ */
+ #endif /* __ASM_KVM_BOOKE_H__ */
+diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm=
+/kvm_host.h
+index 14ee0dece853..1e7a008ce085 100644
+--- a/arch/powerpc/include/asm/kvm_host.h
++++ b/arch/powerpc/include/asm/kvm_host.h
+@@ -14,6 +14,7 @@
+ #include <linux/interrupt.h>
+ #include <linux/types.h>
+ #include <linux/kvm_types.h>
++#include <linux/mmu_notifier.h>
+ #include <linux/threads.h>
+ #include <linux/spinlock.h>
+ #include <linux/kvm_para.h>
+@@ -25,13 +26,14 @@
+ #include <asm/cacheflush.h>
+ #include <asm/hvcall.h>
+ #include <asm/mce.h>
++#include <asm/cputhreads.h>
+=20
++#ifdef __KVM__
+ #define __KVM_HAVE_ARCH_VCPU_DEBUGFS
+=20
+ #define KVM_MAX_VCPUS		NR_CPUS
+ #define KVM_MAX_VCORES		NR_CPUS
+=20
+-#include <asm/cputhreads.h>
+=20
+ #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
+ #include <asm/kvm_book3s_asm.h>		/* for MAX_SMT_THREADS */
+@@ -60,8 +62,6 @@
+ #define KVM_REQ_EPR_EXIT	KVM_ARCH_REQ(1)
+ #define KVM_REQ_PENDING_TIMER	KVM_ARCH_REQ(2)
+=20
+-#include <linux/mmu_notifier.h>
+-
+ #define KVM_ARCH_WANT_MMU_NOTIFIER
+=20
+ #define HPTEG_CACHE_NUM			(1 << 15)
+@@ -883,4 +883,5 @@ static inline void kvm_arch_sched_in(struct kvm_vcpu *v=
+cpu, int cpu) {}
+ static inline void kvm_arch_vcpu_blocking(struct kvm_vcpu *vcpu) {}
+ static inline void kvm_arch_vcpu_unblocking(struct kvm_vcpu *vcpu) {}
+=20
++#endif /* __KVM__ */
+ #endif /* __POWERPC_KVM_HOST_H__ */
+diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/=
+kvm_ppc.h
+index ead2ad892ebc..03d9998d0111 100644
 --- a/arch/powerpc/include/asm/kvm_ppc.h
 +++ b/arch/powerpc/include/asm/kvm_ppc.h
-@@ -30,6 +30,159 @@
+@@ -183,6 +183,7 @@ static inline void kvmppc_clear_host_ipi(int cpu)
+ static inline bool kvm_hv_mode_active(void)		{ return false; }
  #endif
- #include <asm/inst.h>
- 
-+struct openpic;
-+
-+#ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
-+extern void kvm_cma_reserve(void) __init;
-+static inline void kvmppc_set_xics_phys(int cpu, unsigned long addr)
-+{
-+	paca_ptrs[cpu]->kvm_hstate.xics_phys = (void __iomem *)addr;
-+}
-+
-+static inline void kvmppc_set_xive_tima(int cpu,
-+					unsigned long phys_addr,
-+					void __iomem *virt_addr)
-+{
-+	paca_ptrs[cpu]->kvm_hstate.xive_tima_phys = (void __iomem *)phys_addr;
-+	paca_ptrs[cpu]->kvm_hstate.xive_tima_virt = virt_addr;
-+}
-+
-+static inline u32 kvmppc_get_xics_latch(void)
-+{
-+	u32 xirr;
-+
-+	xirr = get_paca()->kvm_hstate.saved_xirr;
-+	get_paca()->kvm_hstate.saved_xirr = 0;
-+	return xirr;
-+}
-+
-+/*
-+ * To avoid the need to unnecessarily exit fully to the host kernel, an IPI to
-+ * a CPU thread that's running/napping inside of a guest is by default regarded
-+ * as a request to wake the CPU (if needed) and continue execution within the
-+ * guest, potentially to process new state like externally-generated
-+ * interrupts or IPIs sent from within the guest itself (e.g. H_PROD/H_IPI).
-+ *
-+ * To force an exit to the host kernel, kvmppc_set_host_ipi() must be called
-+ * prior to issuing the IPI to set the corresponding 'host_ipi' flag in the
-+ * target CPU's PACA. To avoid unnecessary exits to the host, this flag should
-+ * be immediately cleared via kvmppc_clear_host_ipi() by the IPI handler on
-+ * the receiving side prior to processing the IPI work.
-+ *
-+ * NOTE:
-+ *
-+ * We currently issue an smp_mb() at the beginning of kvmppc_set_host_ipi().
-+ * This is to guard against sequences such as the following:
-+ *
-+ *      CPU
-+ *        X: smp_muxed_ipi_set_message():
-+ *        X:   smp_mb()
-+ *        X:   message[RESCHEDULE] = 1
-+ *        X: doorbell_global_ipi(42):
-+ *        X:   kvmppc_set_host_ipi(42)
-+ *        X:   ppc_msgsnd_sync()/smp_mb()
-+ *        X:   ppc_msgsnd() -> 42
-+ *       42: doorbell_exception(): // from CPU X
-+ *       42:   ppc_msgsync()
-+ *      105: smp_muxed_ipi_set_message():
-+ *      105:   smb_mb()
-+ *           // STORE DEFERRED DUE TO RE-ORDERING
-+ *    --105:   message[CALL_FUNCTION] = 1
-+ *    | 105: doorbell_global_ipi(42):
-+ *    | 105:   kvmppc_set_host_ipi(42)
-+ *    |  42:   kvmppc_clear_host_ipi(42)
-+ *    |  42: smp_ipi_demux_relaxed()
-+ *    |  42: // returns to executing guest
-+ *    |      // RE-ORDERED STORE COMPLETES
-+ *    ->105:   message[CALL_FUNCTION] = 1
-+ *      105:   ppc_msgsnd_sync()/smp_mb()
-+ *      105:   ppc_msgsnd() -> 42
-+ *       42: local_paca->kvm_hstate.host_ipi == 0 // IPI ignored
-+ *      105: // hangs waiting on 42 to process messages/call_single_queue
-+ *
-+ * We also issue an smp_mb() at the end of kvmppc_clear_host_ipi(). This is
-+ * to guard against sequences such as the following (as well as to create
-+ * a read-side pairing with the barrier in kvmppc_set_host_ipi()):
-+ *
-+ *      CPU
-+ *        X: smp_muxed_ipi_set_message():
-+ *        X:   smp_mb()
-+ *        X:   message[RESCHEDULE] = 1
-+ *        X: doorbell_global_ipi(42):
-+ *        X:   kvmppc_set_host_ipi(42)
-+ *        X:   ppc_msgsnd_sync()/smp_mb()
-+ *        X:   ppc_msgsnd() -> 42
-+ *       42: doorbell_exception(): // from CPU X
-+ *       42:   ppc_msgsync()
-+ *           // STORE DEFERRED DUE TO RE-ORDERING
-+ *    -- 42:   kvmppc_clear_host_ipi(42)
-+ *    |  42: smp_ipi_demux_relaxed()
-+ *    | 105: smp_muxed_ipi_set_message():
-+ *    | 105:   smb_mb()
-+ *    | 105:   message[CALL_FUNCTION] = 1
-+ *    | 105: doorbell_global_ipi(42):
-+ *    | 105:   kvmppc_set_host_ipi(42)
-+ *    |      // RE-ORDERED STORE COMPLETES
-+ *    -> 42:   kvmppc_clear_host_ipi(42)
-+ *       42: // returns to executing guest
-+ *      105:   ppc_msgsnd_sync()/smp_mb()
-+ *      105:   ppc_msgsnd() -> 42
-+ *       42: local_paca->kvm_hstate.host_ipi == 0 // IPI ignored
-+ *      105: // hangs waiting on 42 to process messages/call_single_queue
-+ */
-+static inline void kvmppc_set_host_ipi(int cpu)
-+{
-+	/*
-+	 * order stores of IPI messages vs. setting of host_ipi flag
-+	 *
-+	 * pairs with the barrier in kvmppc_clear_host_ipi()
-+	 */
-+	smp_mb();
-+	WRITE_ONCE(paca_ptrs[cpu]->kvm_hstate.host_ipi, 1);
-+}
-+
-+static inline void kvmppc_clear_host_ipi(int cpu)
-+{
-+	WRITE_ONCE(paca_ptrs[cpu]->kvm_hstate.host_ipi, 0);
-+	/*
-+	 * order clearing of host_ipi flag vs. processing of IPI messages
-+	 *
-+	 * pairs with the barrier in kvmppc_set_host_ipi()
-+	 */
-+	smp_mb();
-+}
-+
-+extern void kvmppc_xics_ipi_action(void);
-+
-+extern void kvm_hv_vm_activated(void);
-+extern void kvm_hv_vm_deactivated(void);
-+extern bool kvm_hv_mode_active(void);
-+#else
-+static inline void __init kvm_cma_reserve(void)
-+{}
-+
-+static inline void kvmppc_set_xics_phys(int cpu, unsigned long addr)
-+{}
-+
-+static inline void kvmppc_set_xive_tima(int cpu,
-+					unsigned long phys_addr,
-+					void __iomem *virt_addr)
-+{}
-+
-+static inline u32 kvmppc_get_xics_latch(void)
-+{
-+	return 0;
-+}
-+
-+static inline void kvmppc_set_host_ipi(int cpu)
-+{}
-+
-+static inline void kvmppc_clear_host_ipi(int cpu)
-+{}
-+
-+static inline bool kvm_hv_mode_active(void)		{ return false; }
-+#endif
-+
+=20
++#ifdef __KVM__
  /*
   * KVMPPC_INST_SW_BREAKPOINT is debug Instruction
   * for supporting software breakpoint.
-@@ -443,166 +596,18 @@ void kvmppc_set_pid(struct kvm_vcpu *vcpu, u32 pid);
- struct openpic;
- 
- #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
--extern void kvm_cma_reserve(void) __init;
--static inline void kvmppc_set_xics_phys(int cpu, unsigned long addr)
--{
--	paca_ptrs[cpu]->kvm_hstate.xics_phys = (void __iomem *)addr;
--}
--
--static inline void kvmppc_set_xive_tima(int cpu,
--					unsigned long phys_addr,
--					void __iomem *virt_addr)
--{
--	paca_ptrs[cpu]->kvm_hstate.xive_tima_phys = (void __iomem *)phys_addr;
--	paca_ptrs[cpu]->kvm_hstate.xive_tima_virt = virt_addr;
--}
--
--static inline u32 kvmppc_get_xics_latch(void)
--{
--	u32 xirr;
--
--	xirr = get_paca()->kvm_hstate.saved_xirr;
--	get_paca()->kvm_hstate.saved_xirr = 0;
--	return xirr;
--}
--
--/*
-- * To avoid the need to unnecessarily exit fully to the host kernel, an IPI to
-- * a CPU thread that's running/napping inside of a guest is by default regarded
-- * as a request to wake the CPU (if needed) and continue execution within the
-- * guest, potentially to process new state like externally-generated
-- * interrupts or IPIs sent from within the guest itself (e.g. H_PROD/H_IPI).
-- *
-- * To force an exit to the host kernel, kvmppc_set_host_ipi() must be called
-- * prior to issuing the IPI to set the corresponding 'host_ipi' flag in the
-- * target CPU's PACA. To avoid unnecessary exits to the host, this flag should
-- * be immediately cleared via kvmppc_clear_host_ipi() by the IPI handler on
-- * the receiving side prior to processing the IPI work.
-- *
-- * NOTE:
-- *
-- * We currently issue an smp_mb() at the beginning of kvmppc_set_host_ipi().
-- * This is to guard against sequences such as the following:
-- *
-- *      CPU
-- *        X: smp_muxed_ipi_set_message():
-- *        X:   smp_mb()
-- *        X:   message[RESCHEDULE] = 1
-- *        X: doorbell_global_ipi(42):
-- *        X:   kvmppc_set_host_ipi(42)
-- *        X:   ppc_msgsnd_sync()/smp_mb()
-- *        X:   ppc_msgsnd() -> 42
-- *       42: doorbell_exception(): // from CPU X
-- *       42:   ppc_msgsync()
-- *      105: smp_muxed_ipi_set_message():
-- *      105:   smb_mb()
-- *           // STORE DEFERRED DUE TO RE-ORDERING
-- *    --105:   message[CALL_FUNCTION] = 1
-- *    | 105: doorbell_global_ipi(42):
-- *    | 105:   kvmppc_set_host_ipi(42)
-- *    |  42:   kvmppc_clear_host_ipi(42)
-- *    |  42: smp_ipi_demux_relaxed()
-- *    |  42: // returns to executing guest
-- *    |      // RE-ORDERED STORE COMPLETES
-- *    ->105:   message[CALL_FUNCTION] = 1
-- *      105:   ppc_msgsnd_sync()/smp_mb()
-- *      105:   ppc_msgsnd() -> 42
-- *       42: local_paca->kvm_hstate.host_ipi == 0 // IPI ignored
-- *      105: // hangs waiting on 42 to process messages/call_single_queue
-- *
-- * We also issue an smp_mb() at the end of kvmppc_clear_host_ipi(). This is
-- * to guard against sequences such as the following (as well as to create
-- * a read-side pairing with the barrier in kvmppc_set_host_ipi()):
-- *
-- *      CPU
-- *        X: smp_muxed_ipi_set_message():
-- *        X:   smp_mb()
-- *        X:   message[RESCHEDULE] = 1
-- *        X: doorbell_global_ipi(42):
-- *        X:   kvmppc_set_host_ipi(42)
-- *        X:   ppc_msgsnd_sync()/smp_mb()
-- *        X:   ppc_msgsnd() -> 42
-- *       42: doorbell_exception(): // from CPU X
-- *       42:   ppc_msgsync()
-- *           // STORE DEFERRED DUE TO RE-ORDERING
-- *    -- 42:   kvmppc_clear_host_ipi(42)
-- *    |  42: smp_ipi_demux_relaxed()
-- *    | 105: smp_muxed_ipi_set_message():
-- *    | 105:   smb_mb()
-- *    | 105:   message[CALL_FUNCTION] = 1
-- *    | 105: doorbell_global_ipi(42):
-- *    | 105:   kvmppc_set_host_ipi(42)
-- *    |      // RE-ORDERED STORE COMPLETES
-- *    -> 42:   kvmppc_clear_host_ipi(42)
-- *       42: // returns to executing guest
-- *      105:   ppc_msgsnd_sync()/smp_mb()
-- *      105:   ppc_msgsnd() -> 42
-- *       42: local_paca->kvm_hstate.host_ipi == 0 // IPI ignored
-- *      105: // hangs waiting on 42 to process messages/call_single_queue
-- */
--static inline void kvmppc_set_host_ipi(int cpu)
--{
--	/*
--	 * order stores of IPI messages vs. setting of host_ipi flag
--	 *
--	 * pairs with the barrier in kvmppc_clear_host_ipi()
--	 */
--	smp_mb();
--	WRITE_ONCE(paca_ptrs[cpu]->kvm_hstate.host_ipi, 1);
--}
--
--static inline void kvmppc_clear_host_ipi(int cpu)
--{
--	WRITE_ONCE(paca_ptrs[cpu]->kvm_hstate.host_ipi, 0);
--	/*
--	 * order clearing of host_ipi flag vs. processing of IPI messages
--	 *
--	 * pairs with the barrier in kvmppc_set_host_ipi()
--	 */
--	smp_mb();
--}
--
- static inline void kvmppc_fast_vcpu_kick(struct kvm_vcpu *vcpu)
- {
- 	vcpu->kvm->arch.kvm_ops->fast_vcpu_kick(vcpu);
+@@ -1076,4 +1077,5 @@ static inline ulong kvmppc_get_ea_indexed(struct kvm_=
+vcpu *vcpu, int ra, int rb)
+ 	return ea;
  }
- 
--extern void kvm_hv_vm_activated(void);
--extern void kvm_hv_vm_deactivated(void);
--extern bool kvm_hv_mode_active(void);
--
- extern void kvmppc_check_need_tlb_flush(struct kvm *kvm, int pcpu);
- 
- #else
--static inline void __init kvm_cma_reserve(void)
--{}
--
--static inline void kvmppc_set_xics_phys(int cpu, unsigned long addr)
--{}
--
--static inline void kvmppc_set_xive_tima(int cpu,
--					unsigned long phys_addr,
--					void __iomem *virt_addr)
--{}
--
--static inline u32 kvmppc_get_xics_latch(void)
--{
--	return 0;
--}
--
--static inline void kvmppc_set_host_ipi(int cpu)
--{}
--
--static inline void kvmppc_clear_host_ipi(int cpu)
--{}
--
- static inline void kvmppc_fast_vcpu_kick(struct kvm_vcpu *vcpu)
- {
- 	kvm_vcpu_kick(vcpu);
+=20
++#endif /* __KVM__ */
+ #endif /* __POWERPC_KVM_PPC_H__ */
+diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-of=
+fsets.c
+index 9f14d95b8b32..872d44971536 100644
+--- a/arch/powerpc/kernel/asm-offsets.c
++++ b/arch/powerpc/kernel/asm-offsets.c
+@@ -8,6 +8,7 @@
+  * compile this file to assembler, and then extract the
+  * #defines from the assembly-language output.
+  */
++#define __KVM__
+=20
+ #include <linux/compat.h>
+ #include <linux/signal.h>
+diff --git a/arch/riscv/include/asm/kvm_host.h b/arch/riscv/include/asm/kvm=
+_host.h
+index 1ebf20dfbaa6..a81ae8c4b739 100644
+--- a/arch/riscv/include/asm/kvm_host.h
++++ b/arch/riscv/include/asm/kvm_host.h
+@@ -22,6 +22,8 @@
+ #include <asm/kvm_vcpu_timer.h>
+ #include <asm/kvm_vcpu_pmu.h>
+=20
++#ifdef __KVM__
++
+ #define KVM_MAX_VCPUS			1024
+=20
+ #define KVM_HALT_POLL_NS_DEFAULT	500000
+@@ -354,4 +356,5 @@ bool kvm_riscv_vcpu_has_interrupts(struct kvm_vcpu *vcp=
+u, u64 mask);
+ void kvm_riscv_vcpu_power_off(struct kvm_vcpu *vcpu);
+ void kvm_riscv_vcpu_power_on(struct kvm_vcpu *vcpu);
+=20
++#endif /* __KVM__ */
+ #endif /* __RISCV_KVM_HOST_H__ */
+diff --git a/arch/riscv/kernel/asm-offsets.c b/arch/riscv/kernel/asm-offset=
+s.c
+index d6a75aac1d27..476263e78f39 100644
+--- a/arch/riscv/kernel/asm-offsets.c
++++ b/arch/riscv/kernel/asm-offsets.c
+@@ -5,6 +5,7 @@
+  */
+=20
+ #define GENERATING_ASM_OFFSETS
++#define __KVM__
+=20
+ #include <linux/kbuild.h>
+ #include <linux/mm.h>
+diff --git a/arch/s390/include/asm/kvm_host.h b/arch/s390/include/asm/kvm_h=
+ost.h
+index 427f9528a7b6..9153420bb5ac 100644
+--- a/arch/s390/include/asm/kvm_host.h
++++ b/arch/s390/include/asm/kvm_host.h
+@@ -380,6 +380,10 @@ struct sie_page {
+ 	__u8 reserved700[2304];		/* 0x0700 */
+ };
+=20
++extern char sie_exit;
++
++#ifdef __KVM__
++
+ struct kvm_vcpu_stat {
+ 	struct kvm_vcpu_stat_generic generic;
+ 	u64 exit_userspace;
+@@ -1028,8 +1032,6 @@ static inline int sie64a(struct kvm_s390_sie_block *s=
+ie_block, u64 *rsa)
+ 	return __sie64a(virt_to_phys(sie_block), sie_block, rsa);
  }
+=20
+-extern char sie_exit;
 -
--static inline bool kvm_hv_mode_active(void)		{ return false; }
--
+ bool kvm_s390_pv_is_protected(struct kvm *kvm);
+ bool kvm_s390_pv_cpu_is_protected(struct kvm_vcpu *vcpu);
+=20
+@@ -1049,6 +1051,7 @@ static inline void kvm_arch_vcpu_unblocking(struct kv=
+m_vcpu *vcpu) {}
+=20
+ #define __KVM_HAVE_ARCH_VM_FREE
+ void kvm_arch_free_vm(struct kvm *kvm);
++#endif /* __KVM__ */
+=20
+ struct zpci_kvm_hook {
+ 	int (*kvm_register)(void *opaque, struct kvm *kvm);
+diff --git a/arch/s390/kernel/asm-offsets.c b/arch/s390/kernel/asm-offsets.=
+c
+index fa5f6885c74a..22ed673871ee 100644
+--- a/arch/s390/kernel/asm-offsets.c
++++ b/arch/s390/kernel/asm-offsets.c
+@@ -6,6 +6,7 @@
+  */
+=20
+ #define ASM_OFFSETS_C
++#define __KVM__
+=20
+ #include <linux/kbuild.h>
+ #include <linux/kvm_host.h>
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_hos=
+t.h
+index 29db870dbaae..eda45a937666 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -37,6 +37,8 @@
+ #include <asm/kvm_vcpu_regs.h>
+ #include <asm/hyperv-tlfs.h>
+=20
++#ifdef __KVM__
++
+ #define __KVM_HAVE_ARCH_VCPU_DEBUGFS
+=20
+ #define KVM_MAX_VCPUS 1024
+@@ -2229,4 +2231,5 @@ int memslot_rmap_alloc(struct kvm_memory_slot *slot, =
+unsigned long npages);
+  */
+ #define KVM_EXIT_HYPERCALL_MBZ		GENMASK_ULL(31, 1)
+=20
++#endif /* __KVM__ */
+ #endif /* _ASM_X86_KVM_HOST_H */
+diff --git a/drivers/s390/crypto/vfio_ap_drv.c b/drivers/s390/crypto/vfio_a=
+p_drv.c
+index a5ab03e42ff1..55744f0f4758 100644
+--- a/drivers/s390/crypto/vfio_ap_drv.c
++++ b/drivers/s390/crypto/vfio_ap_drv.c
+@@ -7,6 +7,7 @@
+  * Author(s): Tony Krowiak <akrowiak@linux.ibm.com>
+  *	      Pierre Morel <pmorel@linux.ibm.com>
+  */
++#define __KVM__
+=20
+ #include <linux/module.h>
+ #include <linux/mod_devicetable.h>
+diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_a=
+p_ops.c
+index 4db538a55192..0dd98f42e9d5 100644
+--- a/drivers/s390/crypto/vfio_ap_ops.c
++++ b/drivers/s390/crypto/vfio_ap_ops.c
+@@ -8,6 +8,8 @@
+  *	      Halil Pasic <pasic@linux.ibm.com>
+  *	      Pierre Morel <pmorel@linux.ibm.com>
+  */
++#define __KVM__
++
+ #include <linux/string.h>
+ #include <linux/vfio.h>
+ #include <linux/device.h>
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index d520d6801070..f0afe549c0d6 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -45,6 +45,8 @@
+ #include <asm/kvm_host.h>
+ #include <linux/kvm_dirty_ring.h>
+=20
++#ifdef __KVM__
++
+ #ifndef KVM_MAX_VCPU_IDS
+ #define KVM_MAX_VCPU_IDS KVM_MAX_VCPUS
  #endif
- 
- #ifdef CONFIG_PPC_PSERIES
-@@ -642,7 +647,6 @@ extern u64 kvmppc_xics_get_icp(struct kvm_vcpu *vcpu);
- extern int kvmppc_xics_set_icp(struct kvm_vcpu *vcpu, u64 icpval);
- extern int kvmppc_xics_connect_vcpu(struct kvm_device *dev,
- 			struct kvm_vcpu *vcpu, u32 cpu);
--extern void kvmppc_xics_ipi_action(void);
- extern void kvmppc_xics_set_mapped(struct kvm *kvm, unsigned long guest_irq,
- 				   unsigned long host_irq);
- extern void kvmppc_xics_clr_mapped(struct kvm *kvm, unsigned long guest_irq,
--- 
+@@ -2329,4 +2331,6 @@ static inline void kvm_account_pgtable_pages(void *vi=
+rt, int nr)
+ /* Max number of entries allowed for each kvm dirty ring */
+ #define  KVM_DIRTY_RING_MAX_ENTRIES  65536
+=20
++#endif /* __KVM__ */
++
+ #endif
+diff --git a/include/linux/kvm_types.h b/include/linux/kvm_types.h
+index 6f4737d5046a..4804bce2a655 100644
+--- a/include/linux/kvm_types.h
++++ b/include/linux/kvm_types.h
+@@ -48,6 +48,8 @@ typedef u64            hfn_t;
+=20
+ typedef hfn_t kvm_pfn_t;
+=20
++#ifdef __KVM__
++
+ enum pfn_cache_usage {
+ 	KVM_GUEST_USES_PFN =3D BIT(0),
+ 	KVM_HOST_USES_PFN  =3D BIT(1),
+@@ -123,4 +125,5 @@ struct kvm_vcpu_stat_generic {
+=20
+ #define KVM_STATS_NAME_SIZE	48
+=20
++#endif /* __KVM__ */
+ #endif /* __KVM_TYPES_H__ */
+diff --git a/include/trace/events/kvm.h b/include/trace/events/kvm.h
+index 3bd31ea23fee..aee85527bb74 100644
+--- a/include/trace/events/kvm.h
++++ b/include/trace/events/kvm.h
+@@ -2,8 +2,13 @@
+ #if !defined(_TRACE_KVM_MAIN_H) || defined(TRACE_HEADER_MULTI_READ)
+ #define _TRACE_KVM_MAIN_H
+=20
++#include <linux/kvm_host.h>
+ #include <linux/tracepoint.h>
+=20
++#ifndef __KVM__
++static_assert(0, "Do not include trace/events/kvm.h from non-KVM code");
++#endif
++
+ #undef TRACE_SYSTEM
+ #define TRACE_SYSTEM kvm
+=20
+diff --git a/virt/kvm/Makefile.kvm b/virt/kvm/Makefile.kvm
+index e85079ad245d..4de10d447ef3 100644
+--- a/virt/kvm/Makefile.kvm
++++ b/virt/kvm/Makefile.kvm
+@@ -3,7 +3,7 @@
+ # Makefile for Kernel-based Virtual Machine module
+ #
+=20
+-ccflags-y +=3D -I$(srctree)/$(src)
++ccflags-y +=3D -I$(srctree)/$(src) -D__KVM__
+=20
+ KVM ?=3D ../../../virt/kvm
+=20
+--=20
 2.42.0.459.ge4e396fd5e-goog
 
