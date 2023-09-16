@@ -2,65 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C06B7A2CA4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Sep 2023 02:45:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4BCD7A2CAA
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Sep 2023 02:46:33 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=zUXyEBQq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=DygTur6Z;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RnXR32mR4z3fPQ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Sep 2023 10:45:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RnXS73TYJz3fXm
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Sep 2023 10:46:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=zUXyEBQq;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=DygTur6Z;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=3epcezqykdkkbnjwslpxxpun.lxvurwdgyyl-mneurbcb.xiujkb.xap@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=3evcezqykdksdplyunrzzrwp.nzxwtyfiaan-opgwtded.zkwlmd.zcr@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
 Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RnX7H129Fz3dGS
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Sep 2023 10:31:55 +1000 (AEST)
-Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-d7e7e70fa52so3134495276.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Sep 2023 17:31:55 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RnX7J6J1Qz3dGw
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Sep 2023 10:31:56 +1000 (AEST)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-d81a47e12b5so2554684276.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Sep 2023 17:31:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1694824313; x=1695429113; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1694824315; x=1695429115; darn=lists.ozlabs.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=pl7bBxxWVXjTf9iTQwKV6iNN5dTCLVhIVjlh92R6IC4=;
-        b=zUXyEBQqrN2uwW3VJ/FgM262AGNakAgSmDDxjzEvdAbij4c6MIVsJiNUTw8g7cEwJN
-         JnQvIjW1hl2GBwVRNlLxYHkScpmdqLlsVoqz0FPdwzAdCZS13jiUFdT//bfSjF+oTTBT
-         kisq1FqeyIX95PUu4ujFjn3+OJHApwtCvgemThYs8oBuYXf0PFwfSCOKMbm/AmIyCYfV
-         KKx3XIjyyPSvSbOvteGpZHnmZXLhm6HPZbxbXQ1CdIl8paMf9ls1ql12DGwDIcXQWKC1
-         gdQi6ugIeebmA98Jnly5axKanb5R/uiuBuYROmGotYq2hnuayi18D6cOmjU6uZ68EblP
-         QB4A==
+        bh=PzobvpQc4vWfR42iy4RjYEgAb/kHLuzC5INLwcS+RqY=;
+        b=DygTur6Z9NYVg54OkksLMgpSZvfRHX8Scv/HuBAa4FMElpbXZHLYQtKfub4AeNeTZc
+         IUxYU8h/iEYlxYhK97M6l99xRXTE5zD4gLBRGFO6QPnRVjiNi1YQUo9jlcKmHbOwis6E
+         XXDGiJ+gsD2pZPo3cwQwgU/LRxyp/4rHVyCUTzylByRCkSEp+HEgbiJP31xmYrVETsP0
+         OetcoThvJ39h/QLoP+dDumiPcdq35fU0jMiqa33OvdyMqHZ3imeZ01xqXAn9q/S9i/xp
+         SZkkpHhIagHUF4bl1XxhjesMlhl9Q8O4eCrhEh3bfqSfn8f9RFoHpAKmuNEKALz9KJ8t
+         R46Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694824313; x=1695429113;
+        d=1e100.net; s=20230601; t=1694824315; x=1695429115;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=pl7bBxxWVXjTf9iTQwKV6iNN5dTCLVhIVjlh92R6IC4=;
-        b=aN+cTVhEgl65zTO9poF7Y5ZJwU1YNEoATO4jAGGe0mIehZ1zgGFCiisPbfvssHP/Sn
-         IR15mJHkwmp8n5vT4fdlNbdEyc8e7osBJJXLefgl7ykikvDiw6OVbTP9V7eXNJmKb984
-         Fz0FcXe3LimmeHCOzXw3S9kHb0sdjpKCCTpnP4acMJpaxDtSMYvazigoJ5IDRf1Rgf1C
-         HAFfT7MmctTrDcAcQq/93arGYZ6xXm+GFJ3/VdbrUsLucIv1LBb5/kZFNtuD/fm8H4cp
-         KchNINcqheHQorxr2JmAoqR9VuVZI3K/Zp1QdTBpSxZUfWBnQ91dL8+UNwBAW99JV9RO
-         YOVg==
-X-Gm-Message-State: AOJu0YxAWQcy8LSsaNXo3qfXFul9sPtRQ3vrxYUW0YnTnd6fwqikOnuH
-	30DzxP+Wxmr+kkuBQ1Mu6FdhZOtQXsk=
-X-Google-Smtp-Source: AGHT+IHIEoJ5Qp0cT7058FSDnFlcgu0NfKZ+k2cnwo0UQE0i+ifeNt8ssvIZEJlieWuqLdMggeWcLX6T9W4=
+        bh=PzobvpQc4vWfR42iy4RjYEgAb/kHLuzC5INLwcS+RqY=;
+        b=IhAaIbgrZXN8SgpkAv0ikiu78EQhZI5R+FF3T1o1X+PW8cs9pUh02TvXqUVxC8Bbrm
+         4eJ5tAynQff05caChTobskCA5Mlw6Bkr+ns6JawgP8wmC0vulQRtK28+seALc7aFxEVy
+         J/qHciDyrM+kTN+1E1GCUDx/sgSctFwhiJ/QHdCASbVSsCA6g/bowjxh7l8y6j2XocsH
+         fqQf2cnw/Pn9BxloWeDjeclGlSeL2vETxIaciPWq72FsNZkY3xFPjLTsKwojXWL8fKNj
+         vW7F5uXf4QDmcqviyIzyO5Se6u7Q7y/Q8hD80R3bRp0atnTHV6HcnO2H/HFCEYYO9i16
+         5aCA==
+X-Gm-Message-State: AOJu0Yy51GYPS7q9xqG25Zncr1y/FEh/yigMgB6jvK7EB0wcwFHo/OSh
+	X61Jwhx1NacFeQPz489rcnDaw2EVhHY=
+X-Google-Smtp-Source: AGHT+IEHyBaVn0yDFSDy5XyxKJ2PGYyocUtrZpuSTqYnDVflp7SqStNr9ZpB4/OYXqxtlzASuEez5Ye4vGU=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:6902:4cf:b0:d7b:92d7:5629 with SMTP id
- v15-20020a05690204cf00b00d7b92d75629mr82335ybs.8.1694824312956; Fri, 15 Sep
- 2023 17:31:52 -0700 (PDT)
-Date: Fri, 15 Sep 2023 17:31:08 -0700
+ (user=seanjc job=sendgmr) by 2002:a25:2e06:0:b0:d77:fb4e:d85e with SMTP id
+ u6-20020a252e06000000b00d77fb4ed85emr78448ybu.6.1694824314795; Fri, 15 Sep
+ 2023 17:31:54 -0700 (PDT)
+Date: Fri, 15 Sep 2023 17:31:09 -0700
 In-Reply-To: <20230916003118.2540661-1-seanjc@google.com>
 Mime-Version: 1.0
 References: <20230916003118.2540661-1-seanjc@google.com>
 X-Mailer: git-send-email 2.42.0.459.ge4e396fd5e-goog
-Message-ID: <20230916003118.2540661-17-seanjc@google.com>
-Subject: [PATCH 16/26] KVM: MIPS: Stop adding virt/kvm to the arch include path
+Message-ID: <20230916003118.2540661-18-seanjc@google.com>
+Subject: [PATCH 17/26] KVM: PPC: Stop adding virt/kvm to the arch include path
 From: Sean Christopherson <seanjc@google.com>
 To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
 	Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
@@ -94,29 +94,29 @@ Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org, Venkatesh Srinivas <venkate
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Don't add virt/kvm to KVM MIPS' include path, the headers in virt/kvm are
+Don't add virt/kvm to KVM PPC's include path, the headers in virt/kvm are
 intended to be used only by other code in virt/kvm, i.e. are "private" to
-the core KVM code.  It's not clear that MIPS *ever* included a header from
+the core KVM code.  It's not clear that PPC *ever* included a header from
 virt/kvm, i.e. odds are good the "-Ivirt/kvm" was copied from a different
-architecture's Makefile when MIPS support was first added.
+architecture's Makefile when PPC support was first added.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/mips/kvm/Makefile | 2 +-
+ arch/powerpc/kvm/Makefile | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/kvm/Makefile b/arch/mips/kvm/Makefile
-index 805aeea2166e..96a7cd21b140 100644
---- a/arch/mips/kvm/Makefile
-+++ b/arch/mips/kvm/Makefile
-@@ -4,7 +4,7 @@
+diff --git a/arch/powerpc/kvm/Makefile b/arch/powerpc/kvm/Makefile
+index 5319d889b184..08a0e53d58c7 100644
+--- a/arch/powerpc/kvm/Makefile
++++ b/arch/powerpc/kvm/Makefile
+@@ -3,7 +3,7 @@
+ # Makefile for Kernel-based Virtual Machine module
+ #
+ 
+-ccflags-y := -Ivirt/kvm -Iarch/powerpc/kvm
++ccflags-y := -Iarch/powerpc/kvm
  
  include $(srctree)/virt/kvm/Makefile.kvm
- 
--ccflags-y += -Ivirt/kvm -Iarch/mips/kvm
-+ccflags-y += -Iarch/mips/kvm
- 
- kvm-$(CONFIG_CPU_HAS_MSA) += msa.o
  
 -- 
 2.42.0.459.ge4e396fd5e-goog
