@@ -1,66 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E1517A2C90
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Sep 2023 02:38:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAC0A7A2C92
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Sep 2023 02:39:47 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=UD0lbaDh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Id4+B6tx;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RnXHF3RXJz3dWY
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Sep 2023 10:38:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RnXJK4Yw2z3cnP
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Sep 2023 10:39:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=UD0lbaDh;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Id4+B6tx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=3apcezqykdjkl73gc59hh9e7.5hfebgnqii5-67oeblml.hse34l.hk9@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com; envelope-from=3avcezqykdjsn95ie7bjjbg9.7jhgdipskk7-89qgdnon.jug56n.jmb@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RnX6y2sSpz3cPf
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Sep 2023 10:31:38 +1000 (AEST)
-Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-d81a47e12b5so2554455276.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Sep 2023 17:31:38 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RnX702LBlz3dFC
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Sep 2023 10:31:40 +1000 (AEST)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-d8141d6fbe3so3253457276.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Sep 2023 17:31:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1694824296; x=1695429096; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1694824298; x=1695429098; darn=lists.ozlabs.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=2bGNmVCdNvvogzEXgW0zNdAXreJziaadtBBldNfFmhI=;
-        b=UD0lbaDhV+DvOUSemEuCCQU9y3Jgbz7meZQoMJ34e/43dn5bQ3UvrLXaFDKXgY8mTg
-         bvxE6Hpa1+ljnDZPLyG6KKY7d9Np3oY5RPcz6GYMTK2ItkMSpRA+4jFOMc1zSGSBESPB
-         cX2Y8Wezp95Eitbp0iRRI2sgjYLDAIBwyGkBpH8NNqWvRFE24rOW/qMsn6H5DwIC81cY
-         ZUuEuLC6v3Nrnm/UDfUiQckqZNL4dS4KxcOHQxuzKq7tcOCdudXfWeE0CSaOY7uA6jg1
-         ujgKr9bpnpCU1pymLwkcOZi5g9T26Wgr1y53Xq+LGF0lNFtGGLw4QWqfbT6ykhsuA36q
-         1pGQ==
+        bh=OjnVLG9a9LJLqorH8Rj1ZnrY26noTE5ZeEoscx0wCrE=;
+        b=Id4+B6tx0rSV7Arx05dHZWuUrzkAz5gDSSWeD+drIEB5/z7IE6QbJq9wRGsctVYldT
+         ZzptlAOT9xPK9Cfg29Fww0SYMATPkuo0fLchhrEzV3TwCUpNm2E4yvScXDaNrJi/6AdE
+         sndWPQ2xdNXWQKO/U+ygjmI1BVfN4UxPJN2PoXZFVvIiKU9iitv3W/2W+EjRMANjZWJg
+         qkbd7gU/vC/sy6CcR24w7fRVAXxIGUHbvX5g4pO390XXN+EUlcHT54QVWhK0hyWqTDpt
+         uWTSL8VBzKtseWVGecBCAmNbM0XPtCcUuVAT94reS6H7bImXziPw3jYUyPGdqP02bRZt
+         lxag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694824296; x=1695429096;
+        d=1e100.net; s=20230601; t=1694824298; x=1695429098;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=2bGNmVCdNvvogzEXgW0zNdAXreJziaadtBBldNfFmhI=;
-        b=ImwyFuGgP8rJe2nCmQAv0dpa5USzI6PYB69xcGQXrTL2Ea5U7RSDvGUG4dy2GY/vAF
-         N195Yew9M3oZawAw74plD2T1yS76RGTqmJF0cLbZRPQDwTox4MQf4fKCF2MZk3Qqa3Ov
-         1gelXgdknGcu9HGhaT9eyT27VhRiMCTQweIQkaQEZLoMg9+FUpnE6p4CTrtmazTutg3l
-         ggMK2rZnbq7cI9lBl0nQm3b+3YjmzEqO9WS5OAdWFc48eeH8yqejKhCwbzUupdgK9KHf
-         1DwteeYjEmJoTLTvifhr3sqskL8aRnAou7H7vwulOAauTiyfLPRvvZ5iA2rK//X/LNpL
-         kTCw==
-X-Gm-Message-State: AOJu0Yx8YRniz/hAhpNe9dHaoh68eYSGiFLSkjiQD5ZHuUlstnSgjsWb
-	yiK7cMqNMGUL8JIOnoBxPdYsW+KtO48=
-X-Google-Smtp-Source: AGHT+IEii4782d+JzWBACVp4gsfxYcFW3PZ67SLHnb796XbOz2rrTeQdE9Xb83Qlv7LO8McNRbBpWAwnK1E=
+        bh=OjnVLG9a9LJLqorH8Rj1ZnrY26noTE5ZeEoscx0wCrE=;
+        b=r1L561yAbwTEtx9lWqP3DxKffgIR5K7efOukai6FpZd+jfPdx3jLHecf6WjAbQ112v
+         rkyOZzPh21zhoXFE38aLsC1J+8MiMaPE7d9WrtyOjkHFIvjW+Z1XVrka1prLPyDqZ58s
+         selPEaFLqdAh7NgXMsrqk1nhnBesIqGdNmKCtQRwyOxCDuzJWWOkw5OOkR1eEmQisMj8
+         FfQ/VrEhRrFVuhUFoRfDldHrxDh5oZA5RQzZGqU0pCkVcs2OeH88hFMSbQ/WckMBTduK
+         qxUPaoj/szO05gm4/H3hyDaobXFCB3qINcKtVms8Kfig/c76XsjOU1Bo0r4KBJHezMSG
+         FM3w==
+X-Gm-Message-State: AOJu0YxkQmwxQRpZ/6i7Z5/rPweGbgzdrIXHqxBxAtmvTy5CJo/J2KPy
+	7+VPYGwROfj/rIFN38PmUp/NaaM0TmY=
+X-Google-Smtp-Source: AGHT+IEejUplN0yThqJglSyf2PAl899GMvDcyB4OaKD9HL7AL2P8QSuIFDWAjhltJc72cwzADimsWD5lopA=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a25:2982:0:b0:d05:98ef:c16b with SMTP id
- p124-20020a252982000000b00d0598efc16bmr77753ybp.5.1694824296181; Fri, 15 Sep
- 2023 17:31:36 -0700 (PDT)
-Date: Fri, 15 Sep 2023 17:31:00 -0700
+ (user=seanjc job=sendgmr) by 2002:a05:6902:138e:b0:d78:245a:aac4 with SMTP id
+ x14-20020a056902138e00b00d78245aaac4mr82623ybu.1.1694824298283; Fri, 15 Sep
+ 2023 17:31:38 -0700 (PDT)
+Date: Fri, 15 Sep 2023 17:31:01 -0700
 In-Reply-To: <20230916003118.2540661-1-seanjc@google.com>
 Mime-Version: 1.0
 References: <20230916003118.2540661-1-seanjc@google.com>
 X-Mailer: git-send-email 2.42.0.459.ge4e396fd5e-goog
-Message-ID: <20230916003118.2540661-9-seanjc@google.com>
-Subject: [PATCH 08/26] KVM: x86: Stop selecting and depending on HAVE_KVM
+Message-ID: <20230916003118.2540661-10-seanjc@google.com>
+Subject: [PATCH 09/26] KVM: arm64: Stop selecting and depending on HAVE_KVM
 From: Sean Christopherson <seanjc@google.com>
 To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
 	Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
@@ -94,47 +94,39 @@ Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org, Venkatesh Srinivas <venkate
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now that nothing in x86 or architecture agnostic code consumes HAVE_KVM,
-stop selecting it in x86.  This is one of several steps towards deleting
+Now that nothing in arm64 or architecture agnostic code consumes HAVE_KVM,
+stop selecting it in arm64.  This is one of several steps towards deleting
 HAVE_KVM from the common KVM Kconfig.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/Kconfig     | 1 -
- arch/x86/kvm/Kconfig | 2 --
- 2 files changed, 3 deletions(-)
+ arch/arm64/Kconfig     | 1 -
+ arch/arm64/kvm/Kconfig | 1 -
+ 2 files changed, 2 deletions(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 982b777eadc7..32eb288a4e3a 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -240,7 +240,6 @@ config X86
- 	select HAVE_FUNCTION_ERROR_INJECTION
- 	select HAVE_KRETPROBES
- 	select HAVE_RETHOOK
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index b10515c0200b..7d99f132e57c 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -214,7 +214,6 @@ config ARM64
+ 	select HAVE_HW_BREAKPOINT if PERF_EVENTS
+ 	select HAVE_IOREMAP_PROT
+ 	select HAVE_IRQ_TIME_ACCOUNTING
 -	select HAVE_KVM
- 	select HAVE_LIVEPATCH			if X86_64
- 	select HAVE_MIXED_BREAKPOINTS_REGS
  	select HAVE_MOD_ARCH_SPECIFIC
-diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-index 0f01e5600b5f..8c5fb7f57b4c 100644
---- a/arch/x86/kvm/Kconfig
-+++ b/arch/x86/kvm/Kconfig
-@@ -7,7 +7,6 @@ source "virt/kvm/Kconfig"
+ 	select HAVE_NMI
+ 	select HAVE_PERF_EVENTS
+diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
+index 2b5c332f157d..c76af1973315 100644
+--- a/arch/arm64/kvm/Kconfig
++++ b/arch/arm64/kvm/Kconfig
+@@ -20,7 +20,6 @@ if VIRTUALIZATION
  
- menuconfig VIRTUALIZATION
- 	bool "Virtualization"
--	depends on HAVE_KVM || X86
- 	default y
- 	help
- 	  Say Y here to get to see options for using your Linux host to run other
-@@ -20,7 +19,6 @@ if VIRTUALIZATION
- 
- config KVM
- 	tristate "Kernel-based Virtual Machine (KVM) support"
+ menuconfig KVM
+ 	bool "Kernel-based Virtual Machine (KVM) support"
 -	depends on HAVE_KVM
- 	depends on HIGH_RES_TIMERS
- 	depends on X86_LOCAL_APIC
+ 	select KVM_GENERIC_HARDWARE_ENABLING
+ 	select MMU_NOTIFIER
  	select PREEMPT_NOTIFIERS
 -- 
 2.42.0.459.ge4e396fd5e-goog
