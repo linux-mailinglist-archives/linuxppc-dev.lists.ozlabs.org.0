@@ -1,47 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2A367A3AA9
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Sep 2023 22:07:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B7117A3ABC
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Sep 2023 22:08:37 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=c+UChdxh;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=VMoFO+O8;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rpf9Y5CjLz3cjh
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Sep 2023 06:07:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RpfBW0Vh7z3cBY
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Sep 2023 06:08:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=c+UChdxh;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=VMoFO+O8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rpf6t497Rz3c8v
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Sep 2023 06:05:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rpf7Y00C6z3cBK
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Sep 2023 06:06:00 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by sin.source.kernel.org (Postfix) with ESMTPS id 56910CE0AF2;
-	Sun, 17 Sep 2023 20:05:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA8BFC433C8;
-	Sun, 17 Sep 2023 20:05:22 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 67EFB60C5C;
+	Sun, 17 Sep 2023 20:05:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11306C433CA;
+	Sun, 17 Sep 2023 20:05:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1694981123;
-	bh=0K3ETDvIpwxJ4t5USA8VHYGCrOE6KfAYQpW2wy0CmXM=;
+	s=korg; t=1694981157;
+	bh=AcUDdRyH7qYeCFpzWUgeeRK7h+hUf9upgMa7Ss0V+XQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c+UChdxhMTRUJV6/hAXug3kZk5v8snblxBvn6kyPy4XmlGHasMPhUOeqbxTFVJbz8
-	 Xh2xFACjcJobqpJ7/sDv2ckGKlGoDtjOW0+83MPMgbPNHKdcCbMYmCcAdyZAEBF2Ac
-	 n2OOiK2t455yAMY25EHPOJ9jVR27zXbbxbiZNwxk=
+	b=VMoFO+O82FEk+MmW9FYv3h0Snra3ykzPhJdE2oLmMOibKPwAJvTg4M0b0ThF7I5YV
+	 iK0Q+Iyvv2O85R1mArP25O0oPWOSaVOlBtgsPKGkONq5VgpU4Cus4LfRNle1ssmkeC
+	 2mCnRKUfG5Bn1a8L2ulNam/JNmP4zyjlHmEqDDVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
-Subject: [PATCH 6.1 076/219] perf vendor events: Drop STORES_PER_INST metric event for power10 platform
-Date: Sun, 17 Sep 2023 21:13:23 +0200
-Message-ID: <20230917191043.728390910@linuxfoundation.org>
+Subject: [PATCH 6.1 080/219] perf test stat_bpf_counters_cgrp: Fix shellcheck issue about logical operators
+Date: Sun, 17 Sep 2023 21:13:27 +0200
+Message-ID: <20230917191043.869526841@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917191040.964416434@linuxfoundation.org>
 References: <20230917191040.964416434@linuxfoundation.org>
@@ -61,7 +61,7 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Ian Rogers <irogers@google.com>, Athira Rajeev <atrajeev@linux.vnet.ibm.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, patches@lists.linux.dev, Arnaldo Carvalho de Melo <acme@redhat.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>, Namhyung Kim <namhyung@kernel.org>, Disha Goel <disgoel@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, Ian Rogers <irogers@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, patches@lists.linux.dev, Arnaldo Carvalho de Melo <acme@redhat.com>, Athira Rajeev <atrajeev@linux.vnet.ibm.com>, Jiri Olsa <jolsa@kernel.org>, Kajol Jain <kjain@linux.ibm.com>, Namhyung Kim <namhyung@kernel.org>, Disha Goel <disgoel@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
@@ -71,45 +71,116 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Kajol Jain <kjain@linux.ibm.com>
 
-[ Upstream commit 4836b9a85ef148c7c9779b66fab3f7279e488d90 ]
+[ Upstream commit 0dd1f815545d7210150642741c364521cc5cf116 ]
 
-Drop STORES_PER_INST metric event for the power10 platform, as the
-metric expression of STORES_PER_INST metric event using dropped event
-PM_ST_FIN.
+Running shellcheck on lock_contention.sh generates below warning:
 
-Fixes: 3ca3af7d1f230d1f ("perf vendor events power10: Add metric events JSON file for power10 platform")
+In stat_bpf_counters_cgrp.sh line 28:
+	if [ -d /sys/fs/cgroup/system.slice -a -d /sys/fs/cgroup/user.slice ]; then
+                                            ^-- SC2166 (warning): Prefer [ p ] && [ q ] as [ p -a q ] is not well defined.
+
+In stat_bpf_counters_cgrp.sh line 34:
+	local self_cgrp=$(grep perf_event /proc/self/cgroup | cut -d: -f3)
+        ^-------------^ SC3043 (warning): In POSIX sh, 'local' is undefined.
+              ^-------^ SC2155 (warning): Declare and assign separately to avoid masking return values.
+                        ^-- SC2046 (warning): Quote this to prevent word splitting.
+
+In stat_bpf_counters_cgrp.sh line 51:
+	local output
+        ^----------^ SC3043 (warning): In POSIX sh, 'local' is undefined.
+
+In stat_bpf_counters_cgrp.sh line 65:
+	local output
+        ^----------^ SC3043 (warning): In POSIX sh, 'local' is undefined.
+
+Fixed above warnings by:
+- Changing the expression [p -a q] to [p] && [q].
+- Fixing shellcheck warnings for local usage, by prefixing
+  function name to the variable.
+
 Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Disha Goel <disgoel@linux.ibm.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Kajol Jain <kjain@linux.ibm.com>
+Acked-by: Ian Rogers <irogers@google.com>
+Cc: Disha Goel <disgoel@linux.vnet.ibm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: linuxppc-dev@lists.ozlabs.org
-Link: https://lore.kernel.org/r/20230814112803.1508296-3-kjain@linux.ibm.com
+Link: https://lore.kernel.org/r/20230709182800.53002-6-atrajeev@linux.vnet.ibm.com
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: a84260e31402 ("perf test stat_bpf_counters_cgrp: Enhance perf stat cgroup BPF counter test")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/pmu-events/arch/powerpc/power10/metrics.json | 6 ------
- 1 file changed, 6 deletions(-)
+ .../tests/shell/stat_bpf_counters_cgrp.sh     | 28 ++++++++-----------
+ 1 file changed, 12 insertions(+), 16 deletions(-)
 
-diff --git a/tools/perf/pmu-events/arch/powerpc/power10/metrics.json b/tools/perf/pmu-events/arch/powerpc/power10/metrics.json
-index b57526fa44f2d..6e76f65c314ce 100644
---- a/tools/perf/pmu-events/arch/powerpc/power10/metrics.json
-+++ b/tools/perf/pmu-events/arch/powerpc/power10/metrics.json
-@@ -453,12 +453,6 @@
-         "MetricGroup": "General",
-         "MetricName": "LOADS_PER_INST"
-     },
--    {
--        "BriefDescription": "Average number of finished stores per completed instruction",
--        "MetricExpr": "PM_ST_FIN / PM_RUN_INST_CMPL",
--        "MetricGroup": "General",
--        "MetricName": "STORES_PER_INST"
--    },
-     {
-         "BriefDescription": "Percentage of demand loads that reloaded from beyond the L2 per completed instruction",
-         "MetricExpr": "PM_DATA_FROM_L2MISS / PM_RUN_INST_CMPL * 100",
+diff --git a/tools/perf/tests/shell/stat_bpf_counters_cgrp.sh b/tools/perf/tests/shell/stat_bpf_counters_cgrp.sh
+index d724855d097c2..a74440a00b6b6 100755
+--- a/tools/perf/tests/shell/stat_bpf_counters_cgrp.sh
++++ b/tools/perf/tests/shell/stat_bpf_counters_cgrp.sh
+@@ -25,22 +25,22 @@ check_bpf_counter()
+ find_cgroups()
+ {
+ 	# try usual systemd slices first
+-	if [ -d /sys/fs/cgroup/system.slice -a -d /sys/fs/cgroup/user.slice ]; then
++	if [ -d /sys/fs/cgroup/system.slice ] && [ -d /sys/fs/cgroup/user.slice ]; then
+ 		test_cgroups="system.slice,user.slice"
+ 		return
+ 	fi
+ 
+ 	# try root and self cgroups
+-	local self_cgrp=$(grep perf_event /proc/self/cgroup | cut -d: -f3)
+-	if [ -z ${self_cgrp} ]; then
++	find_cgroups_self_cgrp=$(grep perf_event /proc/self/cgroup | cut -d: -f3)
++	if [ -z ${find_cgroups_self_cgrp} ]; then
+ 		# cgroup v2 doesn't specify perf_event
+-		self_cgrp=$(grep ^0: /proc/self/cgroup | cut -d: -f3)
++		find_cgroups_self_cgrp=$(grep ^0: /proc/self/cgroup | cut -d: -f3)
+ 	fi
+ 
+-	if [ -z ${self_cgrp} ]; then
++	if [ -z ${find_cgroups_self_cgrp} ]; then
+ 		test_cgroups="/"
+ 	else
+-		test_cgroups="/,${self_cgrp}"
++		test_cgroups="/,${find_cgroups_self_cgrp}"
+ 	fi
+ }
+ 
+@@ -48,13 +48,11 @@ find_cgroups()
+ # Just check if it runs without failure and has non-zero results.
+ check_system_wide_counted()
+ {
+-	local output
+-
+-	output=$(perf stat -a --bpf-counters --for-each-cgroup ${test_cgroups} -e cpu-clock -x, sleep 1  2>&1)
+-	if echo ${output} | grep -q -F "<not "; then
++	check_system_wide_counted_output=$(perf stat -a --bpf-counters --for-each-cgroup ${test_cgroups} -e cpu-clock -x, sleep 1  2>&1)
++	if echo ${check_system_wide_counted_output} | grep -q -F "<not "; then
+ 		echo "Some system-wide events are not counted"
+ 		if [ "${verbose}" = "1" ]; then
+-			echo ${output}
++			echo ${check_system_wide_counted_output}
+ 		fi
+ 		exit 1
+ 	fi
+@@ -62,13 +60,11 @@ check_system_wide_counted()
+ 
+ check_cpu_list_counted()
+ {
+-	local output
+-
+-	output=$(perf stat -C 1 --bpf-counters --for-each-cgroup ${test_cgroups} -e cpu-clock -x, taskset -c 1 sleep 1  2>&1)
+-	if echo ${output} | grep -q -F "<not "; then
++	check_cpu_list_counted_output=$(perf stat -C 1 --bpf-counters --for-each-cgroup ${test_cgroups} -e cpu-clock -x, taskset -c 1 sleep 1  2>&1)
++	if echo ${check_cpu_list_counted_output} | grep -q -F "<not "; then
+ 		echo "Some CPU events are not counted"
+ 		if [ "${verbose}" = "1" ]; then
+-			echo ${output}
++			echo ${check_cpu_list_counted_output}
+ 		fi
+ 		exit 1
+ 	fi
 -- 
 2.40.1
 
