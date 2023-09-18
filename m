@@ -1,56 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ABF97A44DC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Sep 2023 10:36:44 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=odhYABxa;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 199F27A4632
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Sep 2023 11:40:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rpynj6C7gz300q
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Sep 2023 18:36:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rq0CV0H90z3cSg
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Sep 2023 19:40:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=odhYABxa;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.200; helo=relay7-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.98; helo=out30-98.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org)
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rpymn057lz2xl6
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Sep 2023 18:35:50 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 447DF20004;
-	Mon, 18 Sep 2023 08:35:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1695026146;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PIpUMSw/2404AMS4Yo5lxieSUrVtp4AW1CJFXc7BrJs=;
-	b=odhYABxaRFjWsbpVj+xwjaWnzsTPysdiTFLNxA143gxz1iv0ARdos2si28g0FvPNRJfsf0
-	igTTeSj9hOhAqT6WSZud7AhrNda9CqPeN5PToxzt17WLYZqrS7tcAk8lFN57RUn3qpNRhE
-	axfLCMiY3kNHK6sZsERj4OZGA3JB2nhfkCfqOQC+MpQw43+dglF1J/3dgc4hzlfWktvcWT
-	YpEl/Xnb2C0XOfhwkDTsXYka/KFGolot4npq0MbCNCidMtsN0Z0yYsupn3/3Xbc+g6cEOQ
-	xEMnYzwq1m+uwdoUDuMZ5gO7ubkRx5I7/tiJ126KShCLAKMDSrnEnITmLJj8Rw==
-Date: Mon, 18 Sep 2023 10:35:40 +0200
-From: Herve Codina <herve.codina@bootlin.com>
-To: Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH v5 28/31] pinctrl: Add support for the Lantic PEF2256
- pinmux
-Message-ID: <20230918103540.5902af4c@bootlin.com>
-In-Reply-To: <CACRpkdbxdMZt4E1SF1v9as-jw=TpvS1mk2TQqAgywMBLbKaNoA@mail.gmail.com>
-References: <20230912081527.208499-1-herve.codina@bootlin.com>
-	<20230912101505.225899-1-herve.codina@bootlin.com>
-	<CACRpkdbxdMZt4E1SF1v9as-jw=TpvS1mk2TQqAgywMBLbKaNoA@mail.gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rq0Bx716Sz2yGv
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Sep 2023 19:40:07 +1000 (AEST)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046060;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0VsKThJJ_1695029998;
+Received: from 30.240.112.49(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VsKThJJ_1695029998)
+          by smtp.aliyun-inc.com;
+          Mon, 18 Sep 2023 17:40:00 +0800
+Message-ID: <e486db16-d36d-9e14-4f10-dc755c0ef97d@linux.alibaba.com>
+Date: Mon, 18 Sep 2023 17:39:58 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Content-Language: en-US
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+Subject: Questions: Should kernel panic when PCIe fatal error occurs?
+To: "lenb@kernel.org" <lenb@kernel.org>,
+ "james.morse@arm.com" <james.morse@arm.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
+ mahesh@linux.ibm.com, bhelgaas@google.com,
+ Jonathan Cameron <Jonathan.Cameron@Huawei.com>, gregkh@linuxfoundation.org
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,124 +46,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, alsa-devel@alsa-project.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Jaroslav Kysela <perex@perex.cz>, Eric Dumazet <edumazet@google.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Fabio Estevam <festevam@gmail.com>, Qiang Zhao <qiang.zhao@nxp.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Lee Jones <lee@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, Nicolin Chen <nicoleotsuka@gmail.com>, linux-gpio@vger.kernel.org, Mark Brown <broonie@kernel.org>, Christophe JAILLET <christophe.jaillet@wanadoo.fr>, Takashi Iwai <tiwai@suse.com>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>, Liam Girdwood <lgirdwood@gmail.com>, Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>, Simon Horman <horms@kernel.org>, linuxppc-de
- v@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: Linux PCI <linux-pci@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, Shuai Xue <xueshuai@linux.alibaba.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 12 Sep 2023 13:04:56 +0200
-Linus Walleij <linus.walleij@linaro.org> wrote:
+Hi, all folks,
 
-> Hi Herve,
-> 
-> thanks for your patch!
-> 
-> On Tue, Sep 12, 2023 at 12:15 PM Herve Codina <herve.codina@bootlin.com> wrote:
-> 
-> > The Lantiq PEF2256 is a framer and line interface component designed to
-> > fulfill all required interfacing between an analog E1/T1/J1 line and the
-> > digital PCM system highway/H.100 bus.
-> >
-> > This kind of component can be found in old telecommunication system.
-> > It was used to digital transmission of many simultaneous telephone calls
-> > by time-division multiplexing. Also using HDLC protocol, WAN networks
-> > can be reached through the framer.
-> >
-> > This pinmux support handles the pin muxing part (pins RP(A..D) and pins
-> > XP(A..D)) of the PEF2256.
-> >
-> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> > Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>  
-> 
-> Nice to see this as a proper pin control driver!
-> 
-> >  drivers/pinctrl/pinctrl-pef2256-regs.h |  65 ++++++
-> >  drivers/pinctrl/pinctrl-pef2256.c      | 308 +++++++++++++++++++++++++  
-> 
-> Do you really need a separate header just for some registers?
-> But it's a matter of taste so I'm not gonna complain if you want
-> it this way.
+Error reporting and recovery are one of the important features of PCIe, and
+the kernel has been supporting them since version 2.6, 17 years ago.
+I am very curious about the expected behavior of the software.
+I first recap the error classification and then list my questions bellow it.
 
-Will be move to the .c file in the next iteration.
+## Recap: Error classification
 
-> 
-> > +config PINCTRL_PEF2256
-> > +       tristate "Lantiq PEF2256 (FALC56) pin controller driver"
-> > +       depends on OF && FRAMER_PEF2256
-> > +       select PINMUX  
-> 
-> select PINCONF
+- Fatal Errors
 
-Will be added in the next iteration.
+Fatal errors are uncorrectable error conditions which render the particular
+Link and related hardware unreliable. For Fatal errors, a reset of the
+components on the Link may be required to return to reliable operation.
+Platform handling of Fatal errors, and any efforts to limit the effects of
+these errors, is platform implementation specific. (PCIe 6.0.1, sec
+6.2.2.2.1 Fatal Errors).
 
-> 
-> > +       select GENERIC_PINCONF  
-> 
-> This brings it in implicitly but I prefer that you just select it.
-> 
-> > +/* SPDX-License-Identifier: GPL-2.0 */
-> > +/*  
-> 
-> I think SPDX mandates that you start the tag with C99 comments
+- Non-Fatal Errors
 
-Already replied by Mark, C style comment is correct -> No change.
+Non-fatal errors are uncorrectable errors which cause a particular
+transaction to be unreliable but the Link is otherwise fully functional.
+Isolating Non-fatal from Fatal errors provides Requester/Receiver logic in
+a device or system management software the opportunity to recover from the
+error without resetting the components on the Link and disturbing other
+transactions in progress. Devices not associated with the transaction in
+error are not impacted by the error.  (PCIe 6.0.1, sec 6.2.2.2.1 Non-Fatal
+Errors).
 
-> 
-> // SPDX-License-Identifier: GPL-2.0-only
-> 
-> > +       /* We map 1 group <-> 1 pin */  
-> 
-> Also known as "the qualcomm trick", but hey: it's fine.
-> 
-> > +static int pef2256_register_pinctrl(struct pef2256_pinctrl *pef2256)
-> > +{
-> > +       struct pinctrl_dev      *pctrl;
-> > +
-> > +       pef2256->pctrl_desc.name    = dev_name(pef2256->dev);
-> > +       pef2256->pctrl_desc.owner   = THIS_MODULE;
-> > +       pef2256->pctrl_desc.pctlops = &pef2256_pctlops;
-> > +       pef2256->pctrl_desc.pmxops  = &pef2256_pmxops;
-> > +       if (pef2256->version == PEF2256_VERSION_1_2) {
-> > +               pef2256->pctrl_desc.pins  = pef2256_v12_pins;
-> > +               pef2256->pctrl_desc.npins = ARRAY_SIZE(pef2256_v12_pins);
-> > +               pef2256->functions  = pef2256_v12_functions;
-> > +               pef2256->nfunctions = ARRAY_SIZE(pef2256_v12_functions);
-> > +       } else {
-> > +               pef2256->pctrl_desc.pins  = pef2256_v2x_pins;
-> > +               pef2256->pctrl_desc.npins = ARRAY_SIZE(pef2256_v2x_pins);
-> > +               pef2256->functions  = pef2256_v2x_functions;
-> > +               pef2256->nfunctions = ARRAY_SIZE(pef2256_v2x_functions);
-> > +       }
-> > +
-> > +       pctrl = devm_pinctrl_register(pef2256->dev, &pef2256->pctrl_desc, pef2256);
-> > +       if (IS_ERR(pctrl)) {
-> > +               dev_err(pef2256->dev, "pinctrl driver registration failed\n");
-> > +               return PTR_ERR(pctrl);
-> > +       }
-> > +
-> > +       return 0;  
-> 
-> You could use
-> return dev_err_probe(...);
+## What the kernel do?
 
-Indeed, I will change.
+The Linux kernel supports both the OS native and firmware first modes in
+AER and DPC drivers. The error recovery API is defined in `struct
+pci_error_handlers`, and the recovery process is performed in several
+stages in pcie_do_recovery(). One main difference in handling PCIe errors
+is that the kernel only resets the link when a fatal error is detected.
 
-> 
-> > +       pef2256_reset_pinmux(pef2256_pinctrl);
-> > +       ret = pef2256_register_pinctrl(pef2256_pinctrl);
-> > +       if (ret)
-> > +               return ret;  
-> 
-> Or you could use it down here.
-> 
-> With or without these changes (because they are nitpicks)
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> 
-> Yours,
-> Linus Walleij
+## Questions
 
-Thanks for your comment.
+1. Should kernel panic when fatal errors occur without AER recovery?
 
-Best regards,
-Hervé
+IMHO, the answer is NO. The AER driver handles both fatal and non-fatal
+errors, and I have not found any panic changes in the recovery path in OS
+native mode.
+
+As far as I know, on many X86 platforms, struct `acpi_hest_generic_status::error_severity`
+is set as CPER_SEV_FATAL in firmware first mode. As a result, kernel will
+panic immediately in ghes_proc() when fatal AER errors occur, and there
+is no chance to handle the error and perform recovery in AER driver.
+
+For fatal and non-fatal errors, struct `acpi_hest_generic_status::error_severity`
+should as CPER_SEV_RECOVERABLE, and struct `acpi_hest_generic_data::error_severity`
+should reflect its real severity. Then, the kernel is equivalent to handling
+PCIe errors in Firmware first mode as it does in OS native mode.
+Please correct me if I am wrong.
+
+However, I have changed my mind on this issue as I encounter a case where
+a error propagation is detected due to fatal DLLP (Data Link Protocol
+Error) error. A DLLP error occurred in the Compute node, causing the
+node to panic because `struct acpi_hest_generic_status::error_severity` was
+set as CPER_SEV_FATAL. However, data corruption was still detected in the
+storage node by CRC.
+
+2. Should kernel panic when AER recovery failed?
+
+This question is actually a TODO that was added when the AER driver was
+first upstreamed 17 years ago, and it is still relevant today. The kernel
+does not proactively panic regardless of the error types occurring in OS
+native mode. The DLLP error propagation case indicates that the kernel
+might should panic when recovery failed?
+
+3. Should DPC be enabled by default to contain fatal and non-fatal error?
+
+According to the PCIe specification, DPC halts PCIe traffic below a
+Downstream Port after an unmasked uncorrectable error is detected at or
+below the Port, avoiding the potential spread of any data corruption.
+
+The kernel configures DPC to be triggered only on ERR_FATAL. Literally
+speaking, only fatal error have the potential spread of any data
+corruption? In addition, the AER Severity is programable by the
+Uncorrectable Error Severity Register (Offset 0Ch in PCIe AER cap). If a
+default fatal error, e.g. DLLP, set as non-fatal, DPC will not be
+triggered.
+
+
+Looking forward to any comments and reply :)
+
+Thank you.
+
+Best Regards,
+Shuai
+
+
+[1] https://github.com/torvalds/linux/commit/6c2b374d74857e892080ee726184ec1d15e7d4e4#diff-fea64904d30501b59d2e948189bbedc476fc270ed4c15e4ae29d7f0efd06771aR438
+
+
+
+
+
+
+
+
+
