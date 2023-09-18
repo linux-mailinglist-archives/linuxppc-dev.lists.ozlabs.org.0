@@ -2,98 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 471F57A55E9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Sep 2023 00:49:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02E1D7A55EB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Sep 2023 00:50:17 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=wovO6PVL;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=n8pjl.ca header.i=@n8pjl.ca header.a=rsa-sha256 header.s=protonmail2 header.b=XDyAGqfx;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RqKjZ67wsz3ccJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Sep 2023 08:49:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RqKkZ5hmZz3dC9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Sep 2023 08:50:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=wovO6PVL;
+	dkim=pass (2048-bit key; secure) header.d=n8pjl.ca header.i=@n8pjl.ca header.a=rsa-sha256 header.s=protonmail2 header.b=XDyAGqfx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=2a01:111:f400:7eae::600; helo=nam11-bn8-obe.outbound.protection.outlook.com; envelope-from=michael.roth@amd.com; receiver=lists.ozlabs.org)
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on20600.outbound.protection.outlook.com [IPv6:2a01:111:f400:7eae::600])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=n8pjl.ca (client-ip=185.70.43.21; helo=mail-4321.protonmail.ch; envelope-from=peter@n8pjl.ca; receiver=lists.ozlabs.org)
+Received: from mail-4321.protonmail.ch (mail-4321.protonmail.ch [185.70.43.21])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rq9SX3cSMz307V
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Sep 2023 02:37:29 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=eu2RQKimjXlXW7W9cE+unZHe7lMxN724HXxOLWbhq0SWPNbOK5nnCkFu/t3OOrdPWjNcLSep/lwXYu2CiZ+7oF8en7zQNf5gkfFebShPO+uA7uY02CH/ibkQNM65aN7l3Tz84f0MIYvloiWzMn9xTNgvAzQYWS/FmAgg3texq3lVg+YB6YywO8nffffn8cdUFB9cKf4KE3lzF0ckvJOXlWZWwJ9PONy0j7YS9KxKG5eJiKJipOgI5RoRXEwDw/sEQwJkmfc0oPTM4pwJkRfyv/kjS/25l++YENPN3HZR/qfaY9+L7gcIWjCLNfJyD+FDoaeqAz+lPNs86SB6t3j9mg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jyzmYcLV+sptuG5IDyfXVowshZf+33f9QlVSHiv27bA=;
- b=TrEAXZtGTAW9okbDr0jzgUxyPkg6ADla8SlxNh0Dq9CFtXP3A6MjUxu8oBsR8oEJ7ejBu1vIrDDplPochZhV0kXH7Iqs3W1HLa/mWwSeU1rbk5DQnNgxp8S5SPmqaBS2S5k76aSi18Y3EoMsniW044XCSvgYg58pJ8bYrxf/NUsDIn75cgMdGq6QFmm2QzGnex6QNIosH1nOVDgCgzESk1IDNZ+FHPNxbSfaGmlf57i0j5kVBQKv/eKINhHHpFB6e7JMrGD89NrbmuQ0XscC83M9Qm38IMNHpAXiCYk4wZumJNq0s5J/zCrp4iLo/NqFEGKYjR7xlNC1bVysKQGUpA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jyzmYcLV+sptuG5IDyfXVowshZf+33f9QlVSHiv27bA=;
- b=wovO6PVLfH+XOvbKxZzF44pw7e/8zDeQedjg2pIOcEgAw3zkcg799SvqAph1oRX2v2fuL5hUvgaI878XikR4pOae11ICUFm9a6wPvWLKvkLkk0oAouoxcIlimllisDM0TOH2IsXW5ny6qFf4lx6WvXGl1GI8huDh2xObWCT5fCM=
-Received: from CY5PR15CA0060.namprd15.prod.outlook.com (2603:10b6:930:1b::6)
- by PH8PR12MB6820.namprd12.prod.outlook.com (2603:10b6:510:1cb::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.24; Mon, 18 Sep
- 2023 16:37:05 +0000
-Received: from CY4PEPF0000EE31.namprd05.prod.outlook.com
- (2603:10b6:930:1b:cafe::4e) by CY5PR15CA0060.outlook.office365.com
- (2603:10b6:930:1b::6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.27 via Frontend
- Transport; Mon, 18 Sep 2023 16:37:05 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CY4PEPF0000EE31.mail.protection.outlook.com (10.167.242.37) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6792.20 via Frontend Transport; Mon, 18 Sep 2023 16:37:04 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 18 Sep
- 2023 11:37:04 -0500
-Date: Mon, 18 Sep 2023 11:36:47 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: Sean Christopherson <seanjc@google.com>
-Subject: Re: [RFC PATCH v12 14/33] KVM: Add KVM_CREATE_GUEST_MEMFD ioctl()
- for guest-specific backing memory
-Message-ID: <20230918163647.m6bjgwusc7ww5tyu@amd.com>
-References: <20230914015531.1419405-1-seanjc@google.com>
- <20230914015531.1419405-15-seanjc@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RqCCp4zvxz3byH
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Sep 2023 03:56:38 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=n8pjl.ca;
+	s=protonmail2; t=1695059779; x=1695318979;
+	bh=KDmGL0149HMvYz0D68P8rK9iJncYI66ZFd51OEaftAc=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=XDyAGqfxs1IhZyrSbs3kXmWVIDtAAGsbXg/jRzsX7fuS5Oxw4QNBzYWsvFGPZ+ksw
+	 S5Zcze4DfsU+j4F71vMZOBVGe3BZKYabMh1wfnbZ2ABquD3iq/MryJ0VB04GGHqRW3
+	 gnQBHdLwQI3E7N3+pV5UgFQGhEjTazGFHroCb4KlhwP9A18gG508T7Pqs5jbffIgxO
+	 cUkXsv81IXGY6O6u6TWRNYFNwN9rAhwcn1b7zAnxuUbHTSaeD2idJu0SKxFygNCYtF
+	 S9e7CJc5qlz+kEo5lV3WyEyT1tOTgZkgAyKcyZB3b18aHv/xFJwzM9+FJT8sFeXCTe
+	 SfZ1idLrRGTVw==
+Date: Mon, 18 Sep 2023 17:56:09 +0000
+To: reiserfs-devel@vger.kernel.org
+From: Peter Lafreniere <peter@n8pjl.ca>
+Subject: [PATCH 0/7] arch/*: config: Remove ReiserFS from defconfig
+Message-ID: <20230918175529.19011-1-peter@n8pjl.ca>
+Feedback-ID: 53133685:user:proton
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20230914015531.1419405-15-seanjc@google.com>
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE31:EE_|PH8PR12MB6820:EE_
-X-MS-Office365-Filtering-Correlation-Id: 312b407d-0494-4860-7bea-08dbb8657e1e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	Hf//+xF5X+HV33ANfZQIRomTlciR8+GA0BiVUWGu5B+F91TEL3LTJYqKqauYTW2CWFMAxpwIwjJGv+qSrZ0PPP0MBW5O1quxWbBo6OPKR7BdgHTT1fXM2hCgLqyOvn3zRuMkPByquecngUqCBCsHpOLzysOCDrQ6Pwx87Ge87D9mWg+VY+cTBansVNl6TrO0/qWypNLlzh74pJVWj4hgPOtFa6pqwYRGE58jL0VQpdxPZBNfE9mDOi62QUsbWgh/IWSiuU8UtK5z9woKU6PdR0jK1oc1kAHB3QNCmzMB0ETc7gaJR1sDjD/agQP4B6wddykv4CgE3/8OkUy6juVoVTBEdIbSJINERAmaGz87uEZ63HOmzvxktHELEbV+iXtGJjzIhMqc8dWSYuxtYZvOpFCH8wvEFoKUvxiGUY4HoFjZnfj52+8ABI2L8mKOAQRNvxw19Wh+V19pnoFe28qJ9l8WuieIdabWkgKezdpCAYkwGSN/tcsxiOEIq39xPsWg/O1/nYmH8yc11k02trlse7XBCYVH568XabbjBJikmhb27UDC5+a5gAf18rhMmXGYmuL6pXK0qrp2aJDUiUlY/0XQYlcP4lPlMjQspwiyaDbZsZYrxSWuHU7RKkc9OafZYkfcplyfdUYsytt6h+fW5ylA5TiARBx96xAaO15pR26vbouxBloAO2PlxRu5zdyOAwYmNEHk3EFM4eBQ9q2V4oyv38Gib1hNd2TPJErB/wNDhTAu5eZnyHFJyf/144wGWtQm8DWgspiXjKDKVESgvQ==
-X-Forefront-Antispam-Report: 	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(376002)(346002)(39860400002)(136003)(396003)(186009)(1800799009)(82310400011)(451199024)(40470700004)(46966006)(36840700001)(26005)(5660300002)(16526019)(1076003)(8936002)(4326008)(8676002)(40460700003)(36860700001)(2616005)(2906002)(7406005)(7416002)(86362001)(82740400003)(81166007)(356005)(36756003)(47076005)(83380400001)(336012)(426003)(40480700001)(70586007)(70206006)(54906003)(44832011)(6666004)(478600001)(41300700001)(316002)(6916009)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2023 16:37:04.9098
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 312b407d-0494-4860-7bea-08dbb8657e1e
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: 	CY4PEPF0000EE31.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6820
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Mailman-Approved-At: Tue, 19 Sep 2023 08:48:37 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -106,231 +54,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Paul Moore <paul@paul-moore.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, James Morris <jmorris@namei.org>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, "Serge E. Hallyn" <serge@hallyn.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Vlastimil Babka <vbabka@suse.cz>, Ackerley Tng <ackerleytng@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Isaku Yamahata <isaku.yamahata@intel.com>, Quentin Perret <qperret@google.com>, Liam Merwick <liam.merwick@oracle.com>, linux-mips@vger.kernel.org, 
- Oliver Upton <oliver.upton@linux.dev>, linux-security-module@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, Xu Yilun <yilun.xu@intel.com>, Anish Moorthy <amoorthy@google.com>
+Cc: tsbogend@alpha.franken.de, jack@suse.cz, linux-sh@vger.kernel.org, ink@jurassic.park.msu.ru, richard@nod.at, linux-um@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org, geert@linux-m68k.org, Peter Lafreniere <peter@n8pjl.ca>, linux-alpha@vger.kernel.org, linux@armlinux.org.uk, johannes@sipsolutions.net, richard.henderson@linaro.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, anton.ivanov@cambridgegreys.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 13, 2023 at 06:55:12PM -0700, Sean Christopherson wrote:
-> TODO
-> 
-> Cc: Fuad Tabba <tabba@google.com>
-> Cc: Vishal Annapurve <vannapurve@google.com>
-> Cc: Ackerley Tng <ackerleytng@google.com>
-> Cc: Jarkko Sakkinen <jarkko@kernel.org>
-> Cc: Maciej Szmigiero <mail@maciej.szmigiero.name>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Quentin Perret <qperret@google.com>
-> Cc: Michael Roth <michael.roth@amd.com>
-> Cc: Wang <wei.w.wang@intel.com>
-> Cc: Liam Merwick <liam.merwick@oracle.com>
-> Cc: Isaku Yamahata <isaku.yamahata@gmail.com>
-> Co-developed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Co-developed-by: Yu Zhang <yu.c.zhang@linux.intel.com>
-> Signed-off-by: Yu Zhang <yu.c.zhang@linux.intel.com>
-> Co-developed-by: Chao Peng <chao.p.peng@linux.intel.com>
-> Signed-off-by: Chao Peng <chao.p.peng@linux.intel.com>
-> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> Co-developed-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->  include/linux/kvm_host.h   |  48 +++
->  include/uapi/linux/kvm.h   |  15 +-
->  include/uapi/linux/magic.h |   1 +
->  virt/kvm/Kconfig           |   4 +
->  virt/kvm/Makefile.kvm      |   1 +
->  virt/kvm/guest_mem.c       | 593 +++++++++++++++++++++++++++++++++++++
->  virt/kvm/kvm_main.c        |  61 +++-
->  virt/kvm/kvm_mm.h          |  38 +++
->  8 files changed, 756 insertions(+), 5 deletions(-)
->  create mode 100644 virt/kvm/guest_mem.c
-> 
+ReiserFS has been considered deprecated for 19 months since commit
+eb103a51640e ("reiserfs: Deprecate reiserfs"). However, there are
+several architectures that still build it into their defconfig kernels.
 
-<snip>
+As ReiserFS will be removed in 2025, delete all ReiserFS-related options
+from defconfig files before the filesystem's removal.
 
-> +static long kvm_gmem_punch_hole(struct inode *inode, loff_t offset, loff_t len)
-> +{
-> +	struct list_head *gmem_list = &inode->i_mapping->private_list;
-> +	pgoff_t start = offset >> PAGE_SHIFT;
-> +	pgoff_t end = (offset + len) >> PAGE_SHIFT;
-> +	struct kvm_gmem *gmem;
-> +
-> +	/*
-> +	 * Bindings must stable across invalidation to ensure the start+end
-> +	 * are balanced.
-> +	 */
-> +	filemap_invalidate_lock(inode->i_mapping);
-> +
-> +	list_for_each_entry(gmem, gmem_list, entry) {
-> +		kvm_gmem_invalidate_begin(gmem, start, end);
+The series is intended to be approved/rejected on an arch-by-arch basis.
+No patch is dependant upon another in the series.
 
-In v11 we used to call truncate_inode_pages_range() here to drop filemap's
-reference on the folio. AFAICT the folios are only getting free'd upon
-guest shutdown without this. Was this on purpose?
+See discussion originating in,
+Link: https://lore.kernel.org/linux-um/20230918125744.4342-1-peter@n8pjl.ca=
+/
 
-> +		kvm_gmem_invalidate_end(gmem, start, end);
-> +	}
-> +
-> +	filemap_invalidate_unlock(inode->i_mapping);
-> +
-> +	return 0;
-> +}
-> +
-> +static long kvm_gmem_allocate(struct inode *inode, loff_t offset, loff_t len)
-> +{
-> +	struct address_space *mapping = inode->i_mapping;
-> +	pgoff_t start, index, end;
-> +	int r;
-> +
-> +	/* Dedicated guest is immutable by default. */
-> +	if (offset + len > i_size_read(inode))
-> +		return -EINVAL;
-> +
-> +	filemap_invalidate_lock_shared(mapping);
+Peter Lafreniere (7):
+  arch: um: remove ReiserFS from defconfig
+  arch: powerpc: remove ReiserFS from defconfig
+  arch: sh: remove ReiserFS from defconfig
+  arch: mips: remove ReiserFS from defconfig
+  arch: m68k: remove ReiserFS from defconfig
+  arch: arm: remove ReiserFS from defconfig
+  arch: alpha: remove ReiserFS from defconfig
 
-We take the filemap lock here, but not for
-kvm_gmem_get_pfn()->kvm_gmem_get_folio(). Is it needed there as well?
+ arch/alpha/configs/defconfig                | 1 -
+ arch/arm/configs/pxa_defconfig              | 4 ----
+ arch/m68k/configs/amiga_defconfig           | 1 -
+ arch/m68k/configs/apollo_defconfig          | 1 -
+ arch/m68k/configs/atari_defconfig           | 1 -
+ arch/m68k/configs/bvme6000_defconfig        | 1 -
+ arch/m68k/configs/hp300_defconfig           | 1 -
+ arch/m68k/configs/mac_defconfig             | 1 -
+ arch/m68k/configs/multi_defconfig           | 1 -
+ arch/m68k/configs/mvme147_defconfig         | 1 -
+ arch/m68k/configs/mvme16x_defconfig         | 1 -
+ arch/m68k/configs/q40_defconfig             | 1 -
+ arch/m68k/configs/sun3_defconfig            | 1 -
+ arch/m68k/configs/sun3x_defconfig           | 1 -
+ arch/mips/configs/fuloong2e_defconfig       | 1 -
+ arch/mips/configs/jazz_defconfig            | 4 ----
+ arch/mips/configs/lemote2f_defconfig        | 3 ---
+ arch/mips/configs/malta_defconfig           | 5 -----
+ arch/mips/configs/malta_kvm_defconfig       | 5 -----
+ arch/mips/configs/maltaup_xpa_defconfig     | 5 -----
+ arch/mips/configs/rm200_defconfig           | 4 ----
+ arch/powerpc/configs/44x/sam440ep_defconfig | 1 -
+ arch/powerpc/configs/g5_defconfig           | 4 ----
+ arch/powerpc/configs/ppc64e_defconfig       | 4 ----
+ arch/powerpc/configs/ppc6xx_defconfig       | 5 -----
+ arch/sh/configs/landisk_defconfig           | 1 -
+ arch/sh/configs/titan_defconfig             | 1 -
+ arch/um/configs/i386_defconfig              | 1 -
+ arch/um/configs/x86_64_defconfig            | 1 -
+ 29 files changed, 62 deletions(-)
 
-> +
-> +	start = offset >> PAGE_SHIFT;
-> +	end = (offset + len) >> PAGE_SHIFT;
-> +
-> +	r = 0;
-> +	for (index = start; index < end; ) {
-> +		struct folio *folio;
-> +
-> +		if (signal_pending(current)) {
-> +			r = -EINTR;
-> +			break;
-> +		}
-> +
-> +		folio = kvm_gmem_get_folio(inode, index);
-> +		if (!folio) {
-> +			r = -ENOMEM;
-> +			break;
-> +		}
-> +
-> +		index = folio_next_index(folio);
-> +
-> +		folio_unlock(folio);
-> +		folio_put(folio);
-> +
-> +		/* 64-bit only, wrapping the index should be impossible. */
-> +		if (WARN_ON_ONCE(!index))
-> +			break;
-> +
-> +		cond_resched();
-> +	}
-> +
-> +	filemap_invalidate_unlock_shared(mapping);
-> +
-> +	return r;
-> +}
-> +
+--=20
+2.42.0
 
-<snip>
 
-> +static int __kvm_gmem_create(struct kvm *kvm, loff_t size, struct vfsmount *mnt)
-> +{
-> +	const char *anon_name = "[kvm-gmem]";
-> +	const struct qstr qname = QSTR_INIT(anon_name, strlen(anon_name));
-> +	struct kvm_gmem *gmem;
-> +	struct inode *inode;
-> +	struct file *file;
-> +	int fd, err;
-> +
-> +	inode = alloc_anon_inode(mnt->mnt_sb);
-> +	if (IS_ERR(inode))
-> +		return PTR_ERR(inode);
-> +
-> +	err = security_inode_init_security_anon(inode, &qname, NULL);
-> +	if (err)
-> +		goto err_inode;
-> +
-> +	inode->i_private = (void *)(unsigned long)flags;
-
-The 'flags' argument isn't added until the subsequent patch that adds THP
-support.
-
-<snip>
-
-> +static bool kvm_gmem_is_valid_size(loff_t size, u64 flags)
-> +{
-> +	if (size < 0 || !PAGE_ALIGNED(size))
-> +		return false;
-> +
-> +	return true;
-> +}
-> +
-> +int kvm_gmem_create(struct kvm *kvm, struct kvm_create_guest_memfd *args)
-> +{
-> +	loff_t size = args->size;
-> +	u64 flags = args->flags;
-> +	u64 valid_flags = 0;
-> +
-> +	if (flags & ~valid_flags)
-> +		return -EINVAL;
-> +
-> +	if (!kvm_gmem_is_valid_size(size, flags))
-> +		return -EINVAL;
-> +
-> +	return __kvm_gmem_create(kvm, size, flags, kvm_gmem_mnt);
-> +}
-> +
-> +int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
-> +		  unsigned int fd, loff_t offset)
-> +{
-> +	loff_t size = slot->npages << PAGE_SHIFT;
-> +	unsigned long start, end, flags;
-> +	struct kvm_gmem *gmem;
-> +	struct inode *inode;
-> +	struct file *file;
-> +
-> +	BUILD_BUG_ON(sizeof(gfn_t) != sizeof(slot->gmem.pgoff));
-> +
-> +	file = fget(fd);
-> +	if (!file)
-> +		return -EBADF;
-> +
-> +	if (file->f_op != &kvm_gmem_fops)
-> +		goto err;
-> +
-> +	gmem = file->private_data;
-> +	if (gmem->kvm != kvm)
-> +		goto err;
-> +
-> +	inode = file_inode(file);
-> +	flags = (unsigned long)inode->i_private;
-> +
-> +	/*
-> +	 * For simplicity, require the offset into the file and the size of the
-> +	 * memslot to be aligned to the largest possible page size used to back
-> +	 * the file (same as the size of the file itself).
-> +	 */
-> +	if (!kvm_gmem_is_valid_size(offset, flags) ||
-> +	    !kvm_gmem_is_valid_size(size, flags))
-> +		goto err;
-
-I needed to relax this check for SNP. KVM_GUEST_MEMFD_ALLOW_HUGEPAGE
-applies to entire gmem inode, so it makes sense for userspace to enable
-hugepages if start/end are hugepage-aligned, but QEMU will do things
-like map overlapping regions for ROMs and other things on top of the
-GPA range that the gmem inode was originally allocated for. For
-instance:
-
-  692500@1689108688.696338:kvm_set_user_memory AddrSpace#0 Slot#0 flags=0x4 gpa=0x0 size=0x80000000 ua=0x7fbf5be00000 ret=0 restricted_fd=19 restricted_offset=0x0
-  692500@1689108688.699802:kvm_set_user_memory AddrSpace#0 Slot#1 flags=0x4 gpa=0x100000000 size=0x380000000 ua=0x7fbfdbe00000 ret=0 restricted_fd=19 restricted_offset=0x80000000
-  692500@1689108688.795412:kvm_set_user_memory AddrSpace#0 Slot#0 flags=0x0 gpa=0x0 size=0x0 ua=0x7fbf5be00000 ret=0 restricted_fd=19 restricted_offset=0x0
-  692500@1689108688.795550:kvm_set_user_memory AddrSpace#0 Slot#0 flags=0x4 gpa=0x0 size=0xc0000 ua=0x7fbf5be00000 ret=0 restricted_fd=19 restricted_offset=0x0
-  692500@1689108688.796227:kvm_set_user_memory AddrSpace#0 Slot#6 flags=0x4 gpa=0x100000 size=0x7ff00000 ua=0x7fbf5bf00000 ret=0 restricted_fd=19 restricted_offset=0x100000
-
-Because of that the KVM_SET_USER_MEMORY_REGIONs for non-THP-aligned GPAs
-will fail. Maybe instead it should be allowed, and kvm_gmem_get_folio()
-should handle the alignment checks on a case-by-case and simply force 4k
-for offsets corresponding to unaligned bindings?
-
--Mike
