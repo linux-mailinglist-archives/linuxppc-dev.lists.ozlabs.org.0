@@ -1,50 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F30DB7A42DD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Sep 2023 09:36:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 290987A42E3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Sep 2023 09:37:15 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=L26X5Mym;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QwbKIwCm;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RpxS75hL5z3ckT
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Sep 2023 17:36:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RpxT50Rgrz3dSF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Sep 2023 17:37:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=L26X5Mym;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QwbKIwCm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RpxLD38Yqz3c2B
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Sep 2023 17:31:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RpxLP6bfcz3bVp
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Sep 2023 17:31:25 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by sin.source.kernel.org (Postfix) with ESMTPS id 03A47CE0C47;
-	Mon, 18 Sep 2023 07:31:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2285FC433AD;
-	Mon, 18 Sep 2023 07:31:03 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTPS id B566CCE0BDB;
+	Mon, 18 Sep 2023 07:31:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3F8CC433BF;
+	Mon, 18 Sep 2023 07:31:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1695022273;
-	bh=GrzrJESS7vx7QyV0O3w+oX12p1W5MbqUcsXcqyR+rMA=;
+	s=k20201202; t=1695022283;
+	bh=uhUpg7LkgDj87OPKWv+2ZQQTqeXwsgqGQfVhMMOlf6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L26X5Mym5jbDCDCi9pBttJiCUmGDJK7QCrrwON0wsqLsaMRtQtziMfk+8vmq102wK
-	 apB9eMngz4FDoZOnyfOnpxsYAYV+s6z6uy/A7GUFANPsDrtCidzVD8sw9PZ9EeZeSS
-	 BBZbnyT3UkLAeKFTSJ+WQXJ44CEr3Yz7/npPDOeCiIyuKPQdJ6wFULwDSI42C+21i2
-	 TtK4M26N760ml2Bd8ec+c+dtMjxHoi8aQYpVD0iQ48GL/MfHLj1xfBm+sXCRSzVgn2
-	 IlOo26svfqfJVEKxvnTHvne8XyU+XB4i1UAyBnP2cTSXuXl9ONzyCPVFbHoWx7LKOg
-	 fqTz/6KsDW2hQ==
+	b=QwbKIwCmsi/m+QIPzGWyDvn+Tk81CaEzaNlQaj1OrbfY6aH7VjNTOMfyqPjfbO3ZI
+	 IrekkL8ga776lr+J3x8Ygyh2wVMU8QELU6aweeJeBpGEbBfrtJxHf+rNjrvDsHVs7+
+	 6bm1TS2tPNGOkx/h7R28N2r8hennFfDFz6aE6FuiYGkO4GZPqz8JGrUJkS1iup7wLd
+	 Isg0JWVRjOAmJTjw/rUuKi838+cqznX9dO82PejgtCEzU2RQuKCDDPVyOOKasyX6kb
+	 8fpNnivohYt0YSrYt8tzLAAtD+1zq8pRlzkl8JhZ7kRPGcY2/LRuqibiB20CPobXX4
+	 xLjJAnEDRG4hQ==
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v3 06/13] mm/execmem: introduce execmem_data_alloc()
-Date: Mon, 18 Sep 2023 10:29:48 +0300
-Message-Id: <20230918072955.2507221-7-rppt@kernel.org>
+Subject: [PATCH v3 07/13] arm64, execmem: extend execmem_params for generated code allocations
+Date: Mon, 18 Sep 2023 10:29:49 +0300
+Message-Id: <20230918072955.2507221-8-rppt@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230918072955.2507221-1-rppt@kernel.org>
 References: <20230918072955.2507221-1-rppt@kernel.org>
@@ -68,185 +68,91 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: "Mike Rapoport (IBM)" <rppt@kernel.org>
 
-Data related to code allocations, such as module data section, need to
-comply with architecture constraints for its placement and its
-allocation right now was done using execmem_text_alloc().
+The memory allocations for kprobes and BPF on arm64 can be placed
+anywhere in vmalloc address space and currently this is implemented with
+overrides of alloc_insn_page() and bpf_jit_alloc_exec() in arm64.
 
-Create a dedicated API for allocating data related to code allocations
-and allow architectures to define address ranges for data allocations.
-
-Since currently this is only relevant for powerpc variants that use the
-VMALLOC address space for module data allocations, automatically reuse
-address ranges defined for text unless address range for data is
-explicitly defined by an architecture.
-
-With separation of code and data allocations, data sections of the
-modules are now mapped as PAGE_KERNEL rather than PAGE_KERNEL_EXEC which
-was a default on many architectures.
+Define EXECMEM_KPROBES and EXECMEM_BPF ranges in arm64::execmem_params and
+drop overrides of alloc_insn_page() and bpf_jit_alloc_exec().
 
 Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
 ---
- arch/powerpc/kernel/module.c | 12 ++++++++++++
- include/linux/execmem.h      | 19 +++++++++++++++++++
- kernel/module/main.c         | 15 +++------------
- mm/execmem.c                 | 17 ++++++++++++++++-
- 4 files changed, 50 insertions(+), 13 deletions(-)
+ arch/arm64/kernel/module.c         | 13 +++++++++++++
+ arch/arm64/kernel/probes/kprobes.c |  7 -------
+ arch/arm64/net/bpf_jit_comp.c      | 11 -----------
+ 3 files changed, 13 insertions(+), 18 deletions(-)
 
-diff --git a/arch/powerpc/kernel/module.c b/arch/powerpc/kernel/module.c
-index f4dd26f693a3..824d9541a310 100644
---- a/arch/powerpc/kernel/module.c
-+++ b/arch/powerpc/kernel/module.c
-@@ -95,6 +95,9 @@ static struct execmem_params execmem_params __ro_after_init = {
- 		[EXECMEM_DEFAULT] = {
- 			.alignment = 1,
+diff --git a/arch/arm64/kernel/module.c b/arch/arm64/kernel/module.c
+index cd6320de1c54..d27db168d2a2 100644
+--- a/arch/arm64/kernel/module.c
++++ b/arch/arm64/kernel/module.c
+@@ -116,6 +116,16 @@ static struct execmem_params execmem_params __ro_after_init = {
+ 			.flags = EXECMEM_KASAN_SHADOW,
+ 			.alignment = MODULE_ALIGN,
  		},
-+		[EXECMEM_MODULE_DATA] = {
++		[EXECMEM_KPROBES] = {
++			.start = VMALLOC_START,
++			.end = VMALLOC_END,
++			.alignment = 1,
++		},
++		[EXECMEM_BPF] = {
++			.start = VMALLOC_START,
++			.end = VMALLOC_END,
 +			.alignment = 1,
 +		},
  	},
  };
  
-@@ -103,7 +106,12 @@ struct execmem_params __init *execmem_arch_params(void)
- 	pgprot_t prot = strict_module_rwx_enabled() ? PAGE_KERNEL : PAGE_KERNEL_EXEC;
- 	struct execmem_range *range = &execmem_params.ranges[EXECMEM_DEFAULT];
- 
-+	/*
-+	 * BOOK3S_32 and 8xx define MODULES_VADDR for text allocations and
-+	 * allow allocating data in the entire vmalloc space
-+	 */
- #ifdef MODULES_VADDR
-+	struct execmem_range *data = &execmem_params.ranges[EXECMEM_MODULE_DATA];
- 	unsigned long limit = (unsigned long)_etext - SZ_32M;
- 
- 	/* First try within 32M limit from _etext to avoid branch trampolines */
-@@ -116,6 +124,10 @@ struct execmem_params __init *execmem_arch_params(void)
- 		range->start = MODULES_VADDR;
- 		range->end = MODULES_END;
+@@ -140,6 +150,9 @@ struct execmem_params __init *execmem_arch_params(void)
+ 		r->end = module_plt_base + SZ_2G;
  	}
-+	data->start = VMALLOC_START;
-+	data->end = VMALLOC_END;
-+	data->pgprot = PAGE_KERNEL;
-+	data->alignment = 1;
- #else
- 	range->start = VMALLOC_START;
- 	range->end = VMALLOC_END;
-diff --git a/include/linux/execmem.h b/include/linux/execmem.h
-index 519bdfdca595..09d45ac786e9 100644
---- a/include/linux/execmem.h
-+++ b/include/linux/execmem.h
-@@ -29,6 +29,7 @@
-  * @EXECMEM_KPROBES: parameters for kprobes
-  * @EXECMEM_FTRACE: parameters for ftrace
-  * @EXECMEM_BPF: parameters for BPF
-+ * @EXECMEM_MODULE_DATA: parameters for module data sections
-  * @EXECMEM_TYPE_MAX:
-  */
- enum execmem_type {
-@@ -37,6 +38,7 @@ enum execmem_type {
- 	EXECMEM_KPROBES,
- 	EXECMEM_FTRACE,
- 	EXECMEM_BPF,
-+	EXECMEM_MODULE_DATA,
- 	EXECMEM_TYPE_MAX,
- };
  
-@@ -107,6 +109,23 @@ struct execmem_params *execmem_arch_params(void);
-  */
- void *execmem_text_alloc(enum execmem_type type, size_t size);
- 
-+/**
-+ * execmem_data_alloc - allocate memory for data coupled to code
-+ * @type: type of the allocation
-+ * @size: how many bytes of memory are required
-+ *
-+ * Allocates memory that will contain data coupled with executable code,
-+ * like data sections in kernel modules.
-+ *
-+ * The memory will have protections defined by architecture.
-+ *
-+ * The allocated memory will reside in an area that does not impose
-+ * restrictions on the addressing modes.
-+ *
-+ * Return: a pointer to the allocated memory or %NULL
-+ */
-+void *execmem_data_alloc(enum execmem_type type, size_t size);
++	execmem_params.ranges[EXECMEM_KPROBES].pgprot = PAGE_KERNEL_ROX;
++	execmem_params.ranges[EXECMEM_BPF].pgprot = PAGE_KERNEL;
 +
- /**
-  * execmem_free - free executable memory
-  * @ptr: pointer to the memory that should be freed
-diff --git a/kernel/module/main.c b/kernel/module/main.c
-index c4146bfcd0a7..2ae83a6abf66 100644
---- a/kernel/module/main.c
-+++ b/kernel/module/main.c
-@@ -1188,25 +1188,16 @@ void __weak module_arch_freeing_init(struct module *mod)
- {
+ 	return &execmem_params;
  }
  
--static bool mod_mem_use_vmalloc(enum mod_mem_type type)
+diff --git a/arch/arm64/kernel/probes/kprobes.c b/arch/arm64/kernel/probes/kprobes.c
+index 70b91a8c6bb3..6fccedd02b2a 100644
+--- a/arch/arm64/kernel/probes/kprobes.c
++++ b/arch/arm64/kernel/probes/kprobes.c
+@@ -129,13 +129,6 @@ int __kprobes arch_prepare_kprobe(struct kprobe *p)
+ 	return 0;
+ }
+ 
+-void *alloc_insn_page(void)
 -{
--	return IS_ENABLED(CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC) &&
--		mod_mem_type_is_core_data(type);
+-	return __vmalloc_node_range(PAGE_SIZE, 1, VMALLOC_START, VMALLOC_END,
+-			GFP_KERNEL, PAGE_KERNEL_ROX, VM_FLUSH_RESET_PERMS,
+-			NUMA_NO_NODE, __builtin_return_address(0));
 -}
 -
- static void *module_memory_alloc(unsigned int size, enum mod_mem_type type)
+ /* arm kprobe: install breakpoint in text */
+ void __kprobes arch_arm_kprobe(struct kprobe *p)
  {
--	if (mod_mem_use_vmalloc(type))
--		return vzalloc(size);
-+	if (mod_mem_type_is_data(type))
-+		return execmem_data_alloc(EXECMEM_MODULE_DATA, size);
- 	return execmem_text_alloc(EXECMEM_MODULE_TEXT, size);
+diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
+index 150d1c6543f7..3a7590f828d1 100644
+--- a/arch/arm64/net/bpf_jit_comp.c
++++ b/arch/arm64/net/bpf_jit_comp.c
+@@ -1687,17 +1687,6 @@ u64 bpf_jit_alloc_exec_limit(void)
+ 	return VMALLOC_END - VMALLOC_START;
  }
  
- static void module_memory_free(void *ptr, enum mod_mem_type type)
+-void *bpf_jit_alloc_exec(unsigned long size)
+-{
+-	/* Memory is intended to be executable, reset the pointer tag. */
+-	return kasan_reset_tag(vmalloc(size));
+-}
+-
+-void bpf_jit_free_exec(void *addr)
+-{
+-	return vfree(addr);
+-}
+-
+ /* Indicate the JIT backend supports mixing bpf2bpf and tailcalls. */
+ bool bpf_jit_supports_subprog_tailcalls(void)
  {
--	if (mod_mem_use_vmalloc(type))
--		vfree(ptr);
--	else
--		execmem_free(ptr);
-+	execmem_free(ptr);
- }
- 
- static void free_mod_mem(struct module *mod)
-diff --git a/mm/execmem.c b/mm/execmem.c
-index abcbd07e05ac..aeff85261360 100644
---- a/mm/execmem.c
-+++ b/mm/execmem.c
-@@ -53,11 +53,23 @@ static void *execmem_alloc(size_t size, struct execmem_range *range)
- 	return kasan_reset_tag(p);
- }
- 
-+static inline bool execmem_range_is_data(enum execmem_type type)
-+{
-+	return type == EXECMEM_MODULE_DATA;
-+}
-+
- void *execmem_text_alloc(enum execmem_type type, size_t size)
- {
- 	return execmem_alloc(size, &execmem_params.ranges[type]);
- }
- 
-+void *execmem_data_alloc(enum execmem_type type, size_t size)
-+{
-+	WARN_ON_ONCE(!execmem_range_is_data(type));
-+
-+	return execmem_alloc(size, &execmem_params.ranges[type]);
-+}
-+
- void execmem_free(void *ptr)
- {
- 	/*
-@@ -93,7 +105,10 @@ static void execmem_init_missing(struct execmem_params *p)
- 		struct execmem_range *r = &p->ranges[i];
- 
- 		if (!r->start) {
--			r->pgprot = default_range->pgprot;
-+			if (execmem_range_is_data(i))
-+				r->pgprot = PAGE_KERNEL;
-+			else
-+				r->pgprot = default_range->pgprot;
- 			r->alignment = default_range->alignment;
- 			r->start = default_range->start;
- 			r->end = default_range->end;
 -- 
 2.39.2
 
