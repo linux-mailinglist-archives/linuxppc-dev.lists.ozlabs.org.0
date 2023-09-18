@@ -2,76 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76F2D7A4B7F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Sep 2023 17:17:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 638227A4B89
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Sep 2023 17:18:38 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=P40gAJhu;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=kK5nhQAo;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rq7hK2xyGz3c8W
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Sep 2023 01:17:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rq7jS1ktwz3cDR
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Sep 2023 01:18:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=P40gAJhu;
+	dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=kK5nhQAo;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::834; helo=mail-qt1-x834.google.com; envelope-from=jgg@ziepe.ca; receiver=lists.ozlabs.org)
-Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com [IPv6:2607:f8b0:4864:20::834])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ziepe.ca (client-ip=2001:4860:4864:20::32; helo=mail-oa1-x32.google.com; envelope-from=jgg@ziepe.ca; receiver=lists.ozlabs.org)
+Received: from mail-oa1-x32.google.com (mail-oa1-x32.google.com [IPv6:2001:4860:4864:20::32])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rq7gL67Czz30PY
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Sep 2023 01:16:45 +1000 (AEST)
-Received: by mail-qt1-x834.google.com with SMTP id d75a77b69052e-4121f006c30so27235771cf.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Sep 2023 08:16:45 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rq7gy4TzZz3c7q
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Sep 2023 01:17:18 +1000 (AEST)
+Received: by mail-oa1-x32.google.com with SMTP id 586e51a60fabf-1d6baffcac2so1354124fac.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Sep 2023 08:17:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1695050199; x=1695654999; darn=lists.ozlabs.org;
+        d=ziepe.ca; s=google; t=1695050232; x=1695655032; darn=lists.ozlabs.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6Ucvab0+WYvq4UufE5S4SV2ca9jdWUsP9GGHLs6BCgo=;
-        b=P40gAJhuauVBSp345Kwo5VzhdhFDkbJ1QNqIk2WG1MM60BpKHsaPKQRqAqbR9bQmUx
-         rDXL1T8/4cXWQF5JAfwedLSGYBr0gIhnvRcRhEVVf+ZAxMHR4DClkwT+uA6rvwiiIoBL
-         FMMJ7bcQPrjpqwa+t/ZXIiY/NGpeH9KYyJX1xFOgAhYOxz/axShKApcbccMIY6pXO2XE
-         QiZ2Ky2qpW9Lhy0XbIZ4/AvpC8wRSEI0Y4l1ffzo6giQnA3ZKuUU85b5X/EnDrhORTER
-         ogloP2WnzKkEGCiG/bc3LXrF4ahOdZzqXNH5vDuAQx0RS5R1sA4y5YFqDljU/SuMwS1E
-         FujA==
+        bh=/NB9QogE7/hqQA3eAPgSewNzbsnZd2QFPin+QhCO7do=;
+        b=kK5nhQAokliC9GrlrRNNGPSoB+KFWaf0m3XevkylslvP7SOhd3lYL/ry6zqd3rJ2PQ
+         lluR7pTw2IOXzHoLZMdYt7xIqzfTpNqd8CxGuO0aCGV0Q5S19MDWihnPfqTqmwCeUNls
+         fy643N6+0yTpDDE4ksUNHfwz3VGeWBKSQyBEfnfvu3KoUFZQ+dihxTTqzb5Wet/oZPgz
+         Sua7NM+6FscRgrZhpGI1IsJ3qYgAqrZHOvBjwqzwM5QuBRDnrzQqa2mvs+YiRo+Moi+O
+         q8rDceCtvjcYbfLg/eOKNCA3T3ECyaPdHA2d+00OX4v3fP722n1Or34zNhP/JmNDmqx2
+         mZow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695050199; x=1695654999;
+        d=1e100.net; s=20230601; t=1695050232; x=1695655032;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6Ucvab0+WYvq4UufE5S4SV2ca9jdWUsP9GGHLs6BCgo=;
-        b=Gu1LsW295nw4HZjF7QoqySg6/ZLQ6zLbHTl/YkBEX2+Vf/D/2Io2Z8IiMFcea0Zu1I
-         9RpAQA4TOLubod42jAkfgNlA4+IFg9X70N8H0OJhL/mofbh7v21mvh0/kN0N6HUKDhZy
-         IQYwEbfmATXeauDC2qG1qOGbyHnrb0tK+UtWOX36I9n4+QTx7zTXavuGfZPQQAX4hsPG
-         37TLBJl2aJxfrzmmnvymPeIiX1e6L1yFDa0Rm+m5E7aAUVCNpSBnp02/XT3a/rZzBOxS
-         RFSyXUqEknV8Pvq9oqD7EA/XV3GwKyL+S8Zs9VaKl8HQitDP6vXOirYCdlrYLNa64iq7
-         tD4w==
-X-Gm-Message-State: AOJu0YyT1ib4YwpARIE2GmoGbhaO80ylr67qsuXMD0TXM4MQrNqB4tfH
-	ElzGDm5z2ehvwWq+k3yPY1lF+w==
-X-Google-Smtp-Source: AGHT+IE1nILLKPaFxe5im/MfVjUE0HuRytyibnYnzCmrjBnu/bqUhqldLHu9krEWO371lIWoHdHJrg==
-X-Received: by 2002:ac8:5ac9:0:b0:403:ef0a:ac69 with SMTP id d9-20020ac85ac9000000b00403ef0aac69mr11892621qtd.62.1695050199490;
-        Mon, 18 Sep 2023 08:16:39 -0700 (PDT)
+        bh=/NB9QogE7/hqQA3eAPgSewNzbsnZd2QFPin+QhCO7do=;
+        b=iAPu8ed8NjMGX+Ptv1QtqIGnkSx+Ev2NRVqvInyJSJkqWCqS5amjcoFF6mz/JKdRzG
+         fdyKvsmK5Hbu2OweUvH+5QbwMcacp5VdDcBflx8ZofN6iwD3LPLDjxXgzUCWtK082A8r
+         53OIfrBavQowe9CO1gUcXYVl8kGp00krLK2cYkxhZISJbvkQuLhUxnnPWstnYjF0pi8d
+         byv7y9DmfVd1iVn8cWEauFZP5tVcdEcQGJ07NpuF3Z2EK2zw/xj+hBJZvnVSnkZi/Ftl
+         /0aFRMv8YlbBbSFZQ8dyerWMznYrIauD1CbYHs6s9ufjB2SlcBDqWF5B2Q2u65uLxA6P
+         h8iQ==
+X-Gm-Message-State: AOJu0YxWQRdmvwV+HqFQLeJaOGJssawwvjjEQe8P6utHAdZF/dZR2tZQ
+	3S+apHTKqG92/+6flJRI0v34UQ==
+X-Google-Smtp-Source: AGHT+IGk3T+gnY/Ry6RzP8KMpZ6etd0YaUlt1+KGAcu6zz40/S34i/NvbRLiXeftEMRhME9haaF4Dg==
+X-Received: by 2002:a05:6870:b691:b0:1d5:b442:5de7 with SMTP id cy17-20020a056870b69100b001d5b4425de7mr10054844oab.35.1695050231963;
+        Mon, 18 Sep 2023 08:17:11 -0700 (PDT)
 Received: from ziepe.ca (hlfxns017vw-142-68-26-201.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.26.201])
-        by smtp.gmail.com with ESMTPSA id z22-20020ac87116000000b004108f6788a6sm3081779qto.41.2023.09.18.08.16.37
+        by smtp.gmail.com with ESMTPSA id r13-20020a0ce28d000000b0064f50e2c551sm1477356qvl.1.2023.09.18.08.17.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Sep 2023 08:16:38 -0700 (PDT)
+        Mon, 18 Sep 2023 08:17:11 -0700 (PDT)
 Received: from jgg by wakko with local (Exim 4.95)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1qiFzJ-0005Nh-7L;
-	Mon, 18 Sep 2023 12:16:37 -0300
-Date: Mon, 18 Sep 2023 12:16:37 -0300
+	id 1qiFzq-0005O4-IS;
+	Mon, 18 Sep 2023 12:17:10 -0300
+Date: Mon, 18 Sep 2023 12:17:10 -0300
 From: Jason Gunthorpe <jgg@ziepe.ca>
 To: Sean Christopherson <seanjc@google.com>
-Subject: Re: [PATCH 01/26] vfio: Wrap KVM helpers with CONFIG_KVM instead of
- CONFIG_HAVE_KVM
-Message-ID: <20230918151637.GF13795@ziepe.ca>
+Subject: Re: [PATCH 02/26] vfio: Move KVM get/put helpers to colocate it with
+ other KVM related code
+Message-ID: <20230918151710.GG13795@ziepe.ca>
 References: <20230916003118.2540661-1-seanjc@google.com>
- <20230916003118.2540661-2-seanjc@google.com>
+ <20230916003118.2540661-3-seanjc@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230916003118.2540661-2-seanjc@google.com>
+In-Reply-To: <20230916003118.2540661-3-seanjc@google.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,21 +88,15 @@ Cc: x86@kernel.org, kvm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Sep 15, 2023 at 05:30:53PM -0700, Sean Christopherson wrote:
-> Wrap the helpers for getting references to KVM instances with a check on
-> CONFIG_KVM being enabled, not on CONFIG_HAVE_KVM being defined.  PPC does
-> NOT select HAVE_KVM, despite obviously supporting KVM, and guarding code
-> to get references to KVM based on whether or not the architecture supports
-> KVM is nonsensical.
-> 
-> Drop the guard around linux/kvm_host.h entirely, conditionally including a
-> generic headers is completely unnecessary.
+On Fri, Sep 15, 2023 at 05:30:54PM -0700, Sean Christopherson wrote:
+> Move the definitions of vfio_device_get_kvm_safe() and vfio_device_put_kvm()
+> down in vfio_main.c to colocate them with other KVM-specific functions,
+> e.g. to allow wrapping them all with a single CONFIG_KVM check.
 > 
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
 > ---
->  drivers/vfio/vfio.h      | 2 +-
->  drivers/vfio/vfio_main.c | 4 +---
->  2 files changed, 2 insertions(+), 4 deletions(-)
+>  drivers/vfio/vfio_main.c | 104 +++++++++++++++++++--------------------
+>  1 file changed, 52 insertions(+), 52 deletions(-)
 
 Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 
