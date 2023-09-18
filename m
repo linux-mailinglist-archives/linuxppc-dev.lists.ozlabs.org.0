@@ -2,75 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAF667A4C4E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Sep 2023 17:30:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B4757A4D7C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Sep 2023 17:50:54 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=HSE4bAtJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=pzJ/o8mW;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rq7zJ40hGz3c56
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Sep 2023 01:30:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rq8Qh2qYwz3cGc
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Sep 2023 01:50:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=HSE4bAtJ;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=pzJ/o8mW;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::72e; helo=mail-qk1-x72e.google.com; envelope-from=jgg@ziepe.ca; receiver=lists.ozlabs.org)
-Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com [IPv6:2607:f8b0:4864:20::72e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com; envelope-from=3p3eizqykdnooa6jf8ckkcha.8kihejqtll8-9arheopo.kvh67o.knc@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rq7yS0Stlz2yTx
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Sep 2023 01:29:50 +1000 (AEST)
-Received: by mail-qk1-x72e.google.com with SMTP id af79cd13be357-773ac11de71so231971785a.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Sep 2023 08:29:50 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rq8Pm2skVz3bZ1
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Sep 2023 01:50:02 +1000 (AEST)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-d8153284d6eso5253761276.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Sep 2023 08:50:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1695050988; x=1695655788; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nmpxNm78kWfejPgZcglZLNttpcA+aOzIbjCglm6BlEY=;
-        b=HSE4bAtJvUayXTCNy/Onix81pjGv/fAdn3FpXKQZPPdPAzGaL+hETeQcymONB0ip/7
-         9L7wwZKFle4OgW0SgCxxig3STFuh0w5YHTgtKdQfrbCP6jR3oX/sSFGgERkjkCO7qQ+i
-         tVXDMG76pdc4MbSrNdgry9Rl9OXZQtmuMGZguI8jVACtVKT901bVsBy6fH7PWm0bcb1e
-         3EfubQ3zP5rEJbmV/wB5HPGYxmLIHfB+z1uJ/mY87KM1NAhpxIyoDdcY1TJoB4Gj3AFo
-         8TU/2Fn8XzEksQIbXwD5hH6JCi4rb3VH4MEROiVpM4Qb7FpY4ApREpemweYp/bL8BG8Q
-         gjdw==
+        d=google.com; s=20230601; t=1695052199; x=1695656999; darn=lists.ozlabs.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=sNXD76U7haNeW91VMZlpdLB8TVqFEiovhx95zes76gg=;
+        b=pzJ/o8mW7IunGPP9qVv0bFIiJZy6tpfBkOlUQlQfFg4mxIWPEPox0hsVHf+oLFsgtJ
+         zPLIZRQCdOksxUtvPg2L4oPBbNTVAdiNDjM6cEnD05r3odUsFp1yzgBCDH0eWHjh1wk2
+         lO1umolrCukVPgtNfAYQ8LZ+7ce9UanMmJ98jqTjycDmPa/2ciNf3+0zISbEOtjjNA3+
+         fkj9HEiHsHN0zR54I2ltWugPPsq5WaphE9tFUIGqurt+X2dhYe7w6eXQULGPHlXVBi2e
+         GJsAdAwZBK/VuGcd7xoX8UN8jCz9Honap4zTypuHPYSZM3+sPUGLtDGyBZ9tszpViEQn
+         GTEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695050988; x=1695655788;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nmpxNm78kWfejPgZcglZLNttpcA+aOzIbjCglm6BlEY=;
-        b=iR6iL66PaoLCXHMVEXER9bFkhphkP4Z3i682Wlc2QdkWsPOq3qS7GI7vdscXWJCe5v
-         KD67v+fjQtjlZISeF2zPme1zYTE7UVgnys5Z0VeiGLJ+Q0eQ3H3GghHCp3MViWk2IT5T
-         FEZils4/k9HwhnMsjm5IKnAQYPCuL90eSPVthtA1A6lowJws7/PTk6UYG0KXDDj0vlH7
-         ZhMCSR1HtCWPq9PwdetBBC/NLLFAgD3gi7mmCnK7QXxioS2wSMcaz4cBJN/RykbjhTxo
-         W3iLgq4x9Mj4RGVcdhi4LwZQF/4IZKm1QS26g+h56sDiMcv6yd7S0DsErYn/RHDKlFpo
-         FV6w==
-X-Gm-Message-State: AOJu0Yz9JeWsTfF0imyxH9JgtRM5Yggcx4meQ2SrXC8hHnGJ9ac7dhbN
-	1ErJxCiW3hKTf/A1l7QdNrxvwA==
-X-Google-Smtp-Source: AGHT+IE5R1x821mq0T9l2iChMZP/v62/zLl2heVXzUEZigk+bm+oq/r6FG+m4/T/InbSxJxTjGr9mw==
-X-Received: by 2002:a05:620a:2887:b0:76d:aa93:2e3c with SMTP id j7-20020a05620a288700b0076daa932e3cmr11157815qkp.24.1695050987781;
-        Mon, 18 Sep 2023 08:29:47 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-68-26-201.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.26.201])
-        by smtp.gmail.com with ESMTPSA id s4-20020a05620a16a400b0076d0312b8basm3183843qkj.131.2023.09.18.08.29.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Sep 2023 08:29:47 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.95)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1qiGC2-0005S2-Ku;
-	Mon, 18 Sep 2023 12:29:46 -0300
-Date: Mon, 18 Sep 2023 12:29:46 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Sean Christopherson <seanjc@google.com>
-Subject: Re: [PATCH 06/26] KVM: Drop CONFIG_KVM_VFIO and just look at KVM+VFIO
-Message-ID: <20230918152946.GJ13795@ziepe.ca>
-References: <20230916003118.2540661-1-seanjc@google.com>
- <20230916003118.2540661-7-seanjc@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230916003118.2540661-7-seanjc@google.com>
+        d=1e100.net; s=20230601; t=1695052199; x=1695656999;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sNXD76U7haNeW91VMZlpdLB8TVqFEiovhx95zes76gg=;
+        b=qF3kHv5Wqd/U2qpHa5DNdjn4PiTPueEyuachR0K06FuZEHmjKnJcD0Unu9lKYLt5Ix
+         6PjBZFepflPJJzgA8hfCXx+LyuW5fq/O6w5maFdRlgSzVfKMbF4gnNo7fWMpjccpxzlw
+         xkX0aC3TYgEhzwKt/xFEf5hZIJrjJx1LH3mRu+wbZAvRgtfqiywve5Zw5jmKBr2ZkjMt
+         jAi5GgG/ncWpDgiuCfN0xpCijBgNSwuW/h6sHZzmWbITnQuUeq7utcDaj120fvjRb0lf
+         RXUzTKtP38WR30jgaZRLAeB9gFpyF6IxvSgCJkQNqcdBzYTiWSk7fgTNhFCT3wz3W3En
+         Sv5w==
+X-Gm-Message-State: AOJu0YypD+8S/Bx8Lwnp5GjdrkS+BWjoSj1Zrn8lKrPkZE2tLcsnRRsk
+	73+mv87kK3qLbwha+GXBpWL5yJRoMvU=
+X-Google-Smtp-Source: AGHT+IE1DPoRp0N2nDleDeL+nMknRqhKzdJCPwHMJrwMUBjkYLBNjcfJz91+ASKxJdGzFGGlGgloaP/fXoU=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a25:2411:0:b0:d81:78ec:c403 with SMTP id
+ k17-20020a252411000000b00d8178ecc403mr192905ybk.12.1695052199184; Mon, 18 Sep
+ 2023 08:49:59 -0700 (PDT)
+Date: Mon, 18 Sep 2023 08:49:57 -0700
+In-Reply-To: <20230918152110.GI13795@ziepe.ca>
+Mime-Version: 1.0
+References: <20230916003118.2540661-1-seanjc@google.com> <20230916003118.2540661-6-seanjc@google.com>
+ <20230918152110.GI13795@ziepe.ca>
+Message-ID: <ZQhxpesyXeG+qbS6@google.com>
+Subject: Re: [PATCH 05/26] vfio: KVM: Pass get/put helpers from KVM to VFIO,
+ don't do circular lookup
+From: Sean Christopherson <seanjc@google.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Content-Type: text/plain; charset="us-ascii"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,48 +80,41 @@ Cc: x86@kernel.org, kvm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, 
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Sep 15, 2023 at 05:30:58PM -0700, Sean Christopherson wrote:
-> Drop KVM's KVM_VFIO Kconfig, and instead compile in VFIO support if
-> and only if VFIO itself is enabled.  Similar to the recent change to have
-> VFIO stop looking at HAVE_KVM, compiling in support for talking to VFIO
-> just because the architecture supports VFIO is nonsensical.
+On Mon, Sep 18, 2023, Jason Gunthorpe wrote:
+> On Fri, Sep 15, 2023 at 05:30:57PM -0700, Sean Christopherson wrote:
+> > Explicitly pass KVM's get/put helpers to VFIO when attaching a VM to
+> > VFIO instead of having VFIO do a symbol lookup back into KVM.  Having both
+> > KVM and VFIO do symbol lookups increases the overall complexity and places
+> > an unnecessary dependency on KVM (from VFIO) without adding any value.
+> > 
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > ---
+> >  drivers/vfio/vfio.h      |  2 ++
+> >  drivers/vfio/vfio_main.c | 74 +++++++++++++++++++---------------------
+> >  include/linux/vfio.h     |  4 ++-
+> >  virt/kvm/vfio.c          |  9 +++--
+> >  4 files changed, 47 insertions(+), 42 deletions(-)
 > 
-> This fixes a bug where RISC-V doesn't select KVM_VFIO, i.e. would silently
-> fail to do connect KVM and VFIO, even though RISC-V supports VFIO.  The
-> bug is benign as the only driver in all of Linux that actually uses the
-> KVM reference provided by VFIO is KVM-GT, which is x86/Intel specific.
+> I don't mind this, but Christoph had disliked my prior attempt to do
+> this with function pointers..
+> 
+> The get can be inlined, IIRC, what about putting a pointer to the put
+> inside the kvm struct?
 
-Hmm, I recall that all the S390 drivers need it as well.
+That wouldn't allow us to achieve our goal, which is to hide the details of
+"struct kvm" from VFIO (and the rest of the kernel).
 
-static int vfio_ap_mdev_open_device(struct vfio_device *vdev)
-{
-        struct ap_matrix_mdev *matrix_mdev =
-                container_of(vdev, struct ap_matrix_mdev, vdev);
+What's the objection to handing VFIO a function pointer?
 
-        if (!vdev->kvm)
-                return -EINVAL;
+> The the normal kvm get/put don't have to exported symbols at all?
 
-        return vfio_ap_mdev_set_kvm(matrix_mdev, vdev->kvm);
+The export of kvm_get_kvm_safe() can go away (I forgot to do that in this series),
+but kvm_get_kvm() will hang around as it's needed by KVM sub-modules (PPC and x86),
+KVMGT (x86), and drivers/s390/crypto/vfio_ap_ops.c (no idea what to call that beast).
 
+Gah, KVMGT doesn't actually need to call get/put, that can be handled by
+kvm_page_track_register_notifier().
 
-I wonder if we should be making the VFIO drivers that need the kvm to
-ask for it? 'select CONFIG_NEED_VFIO_KVM' or something?
-
-Regardless, I fully agree with getting rid of the arch flag.
-
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-
-> --- a/virt/kvm/Makefile.kvm
-> +++ b/virt/kvm/Makefile.kvm
-> @@ -6,7 +6,9 @@
->  KVM ?= ../../../virt/kvm
->  
->  kvm-y := $(KVM)/kvm_main.o $(KVM)/eventfd.o $(KVM)/binary_stats.o
-> -kvm-$(CONFIG_KVM_VFIO) += $(KVM)/vfio.o
-> +ifdef CONFIG_VFIO
-> +kvm-y += $(KVM)/vfio.o
-> +endif
-
-I wonder if kvm-m magically works in kbuild so you don't need the ifdef?
-
-Jason
+I am planning on making exports for sub-modules conditional on there actually
+being submodules, so that's 2 of the 3 gone, but tackling the s390 crypto driver
+is an entirely different story.
