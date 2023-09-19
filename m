@@ -1,47 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C1257A5F50
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Sep 2023 12:19:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E04B17A5F05
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Sep 2023 12:06:37 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=DcXPXZ8R;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rqd1s2vvyz3cRg
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Sep 2023 20:19:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rqckz4NpHz3cRX
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Sep 2023 20:06:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.13; helo=inva020.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=DcXPXZ8R;
+	dkim-atps=neutral
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rqd1J2Z4dz2yW4
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Sep 2023 20:18:59 +1000 (AEST)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id A9A191A07B0;
-	Tue, 19 Sep 2023 12:18:55 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 72F7A1A0313;
-	Tue, 19 Sep 2023 12:18:55 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id E62CA1820F58;
-	Tue, 19 Sep 2023 18:18:53 +0800 (+08)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com,
-	festevam@gmail.com,
-	nicoleotsuka@gmail.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	alsa-devel@alsa-project.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	matuszpd@gmail.com
-Subject: [PATCH] ASoC: fsl_sai: Don't disable bitclock for i.MX8MP
-Date: Tue, 19 Sep 2023 17:42:13 +0800
-Message-Id: <1695116533-23287-1-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-X-Virus-Scanned: ClamAV using ClamSMTP
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rqck469JWz30fm
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Sep 2023 20:05:48 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1695117942;
+	bh=qnEPlg47MH9dE/ib7+sBEVpstd8KaTfTXJ6XGs34D+8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=DcXPXZ8RevrVci8TzkhlGkgvXdCrEBGdTI2ecUCjD+lo37dLcg/XalDi/y6ZSG3e0
+	 ZfEzOeTrwD4zUqaZkYMLKWxU04OEzjxLQDC3oyiUnT4jIYpx7i/x1SBjc8jkZH5ZuF
+	 cVZ1q7BPhuYhUjawCqSBGXNdIqZqKyhCCqVjn9RWYMp8fBWJuxYnqI5RyU+loysU60
+	 R60cgwWXRUkFdLL1zXe+Q3zjl8pQpNIoUWLtNqMX4O71AUgnk8VqxHI3hGED+d3Skm
+	 CV7dsCNdJcOtIGs720eP25IE4XlnGlkEUMzuUl3lhLv8dYuwFzPI60JiRRP7dHAAfq
+	 sHJslzYoFLf2A==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rqcjx2f8tz4xNj;
+	Tue, 19 Sep 2023 20:05:41 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH v2 2/2] powerpc: Replace GPL 2.0+ README.legal
+ boilerplate with SPDX
+In-Reply-To: <CAMuHMdW6=wnOjT7qG4tHvc5X4JAJkkHMnVDsQ-dKM6i3FKyWWw@mail.gmail.com>
+References: <cover.1695031668.git.geert@linux-m68k.org>
+ <d91725ff1ed5d4b6ba42474e2ebfeebe711cba23.1695031668.git.geert@linux-m68k.org>
+ <87h6nqlxli.fsf@mail.lhotse>
+ <CAMuHMdW6=wnOjT7qG4tHvc5X4JAJkkHMnVDsQ-dKM6i3FKyWWw@mail.gmail.com>
+Date: Tue, 19 Sep 2023 20:05:35 +1000
+Message-ID: <87o7hytr4g.fsf@mail.lhotse>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,52 +62,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, Nicholas Piggin <npiggin@gmail.com>, linux-spdx@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org, Greg Ungerer <gerg@linux-m68k.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On i.MX8MP, the BCE and TERE bit are binding with mclk
-enablement, if BCE and TERE are cleared the MCLK also be
-disabled on output pin, that cause the external codec (wm8960)
-in wrong state.
+Geert Uytterhoeven <geert@linux-m68k.org> writes:
+> Hi Michael,
+>
+> On Tue, Sep 19, 2023 at 4:13=E2=80=AFAM Michael Ellerman <mpe@ellerman.id=
+.au> wrote:
+>> Geert Uytterhoeven <geert@linux-m68k.org> writes:
+>> > Upstream Linux never had a "README.legal" file, but it was present
+>> > in early source releases of Linux/m68k.  It contained a simple copyrig=
+ht
+>> > notice and a link to a version of the "COPYING" file that predated the
+>> > addition of the "only valid GPL version is v2" clause.
+>> >
+>> > Get rid of the references to non-existent files by replacing the
+>> > boilerplate with SPDX license identifiers.
+>> >
+>> > Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+>>
+>> LGTM.
+>>
+>> Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+>
+> Can you please take it through the PPC tree?
 
-Codec (wm8960) is using the mclk to generate PLL clock,
-if mclk is disabled before disabling PLL, the codec (wm8960)
-won't generate bclk and frameclk when sysclk switch to
-MCLK source in next test case.
+Sure thing.
 
-The test case:
-$aplay -r44100 test1.wav (PLL source)
-$aplay -r48000 test2.wav (MCLK source)
-aplay: pcm_write:2127: write error: Input/output error
-
-Fixes: 269f399dc19f ("ASoC: fsl_sai: Disable bit clock with transmitter")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- sound/soc/fsl/fsl_sai.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-index 1e4020fae05a..8a9a30dd31e2 100644
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -710,10 +710,15 @@ static void fsl_sai_config_disable(struct fsl_sai *sai, int dir)
- {
- 	unsigned int ofs = sai->soc_data->reg_offset;
- 	bool tx = dir == TX;
--	u32 xcsr, count = 100;
-+	u32 xcsr, count = 100, mask;
-+
-+	if (sai->soc_data->mclk_with_tere && sai->mclk_direction_output)
-+		mask = FSL_SAI_CSR_TERE;
-+	else
-+		mask = FSL_SAI_CSR_TERE | FSL_SAI_CSR_BCE;
- 
- 	regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
--			   FSL_SAI_CSR_TERE | FSL_SAI_CSR_BCE, 0);
-+			   mask, 0);
- 
- 	/* TERE will remain set till the end of current frame */
- 	do {
--- 
-2.34.1
-
+cheers
