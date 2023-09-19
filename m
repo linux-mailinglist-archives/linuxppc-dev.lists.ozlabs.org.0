@@ -1,51 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B62EB7A65EF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Sep 2023 15:57:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E807F7A669B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Sep 2023 16:25:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rqjs54BPhz3cR1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Sep 2023 23:57:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RqkV66XgWz3cPf
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Sep 2023 00:25:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=lists.ozlabs.org)
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=astralinux.ru (client-ip=217.74.38.119; helo=mail.astralinux.ru; envelope-from=adiupina@astralinux.ru; receiver=lists.ozlabs.org)
+Received: from mail.astralinux.ru (mail.astralinux.ru [217.74.38.119])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rqjrc0XMPz2yWD
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Sep 2023 23:56:48 +1000 (AEST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1qiapq-0004gh-E9; Tue, 19 Sep 2023 15:32:14 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1qiapp-007T3c-Uh; Tue, 19 Sep 2023 15:32:13 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1qiapp-0030eS-LR; Tue, 19 Sep 2023 15:32:13 +0200
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 15/59] dma: fsldma: Convert to platform remove callback returning void
-Date: Tue, 19 Sep 2023 15:31:23 +0200
-Message-Id: <20230919133207.1400430-16-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230919133207.1400430-1-u.kleine-koenig@pengutronix.de>
-References: <20230919133207.1400430-1-u.kleine-koenig@pengutronix.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RqkTY2mPfz2ytJ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Sep 2023 00:25:19 +1000 (AEST)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.astralinux.ru (Postfix) with ESMTP id CF242186686B;
+	Tue, 19 Sep 2023 17:25:12 +0300 (MSK)
+Received: from mail.astralinux.ru ([127.0.0.1])
+	by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id txwk927cRQHZ; Tue, 19 Sep 2023 17:25:12 +0300 (MSK)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.astralinux.ru (Postfix) with ESMTP id 72C471866AFE;
+	Tue, 19 Sep 2023 17:25:12 +0300 (MSK)
+X-Virus-Scanned: amavisd-new at astralinux.ru
+Received: from mail.astralinux.ru ([127.0.0.1])
+	by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id HIkNsWFKyl_9; Tue, 19 Sep 2023 17:25:12 +0300 (MSK)
+Received: from rbta-msk-lt-302690.astralinux.ru (unknown [10.177.235.105])
+	by mail.astralinux.ru (Postfix) with ESMTPSA id DE370186681B;
+	Tue, 19 Sep 2023 17:25:10 +0300 (MSK)
+From: Alexandra Diupina <adiupina@astralinux.ru>
+To: Zhao Qiang <qiang.zhao@nxp.com>
+Subject: [PATCH v5] drivers/net: process the result of hdlc_open() and add call of hdlc_close() in uhdlc_close()
+Date: Tue, 19 Sep 2023 17:25:02 +0300
+Message-Id: <20230919142502.13898-1-adiupina@astralinux.ru>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <c1437313a3fea94a66d33f7bf97f363c77838359.camel@redhat.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1707; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=lH2QKyTRMosTUBamQ8ap+SHPRBpiN3LLvYfnazK5ypI=; b=owGbwMvMwMXY3/A7olbonx/jabUkhlTOhfvdfOtrIzfVP8kqMm7kTXnOtUOS3+aZMOtktuhPe e0Xv7d1MhqzMDByMciKKbLYN67JtKqSi+xc++8yzCBWJpApDFycAjCRAAP2/wGutwOmb0g1PS2w VTSEX7DLruP55Wm/Zx+ZkPfpcbPilVyOxXfNtouIs3814GQvf169Jr9xt9Eml3M3OPeFZe9+ILh F6PwaNtdFmb03vx3n8youkLc9w2+idfrNB/eIlr2spUwrxdvcQ2587Ko/0HhSyWQ7X9wW6+I+Y0 /PT7svJy/rT8iv9XtQu+l175O9AZMW18nz+UbLtAt0+b/2++s869WSVex7bvCnWHq8vbPrZ3BNh b3r87NfvK8f4raQ+JIk1hi6sVvKWZwtKaBt8//4WRcYrm45nlnhuos96L23TmOL7uMVy34bNyz+ bjtRYJ6V1D0OQyUeiXK2+FUfbBhOvJo4g0s9XzRXc28kAA==
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,58 +53,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dmaengine@vger.kernel.org, Zhang Wei <zw@zh-kernel.org>, linuxppc-dev@lists.ozlabs.org, kernel@pengutronix.de, Li Yang <leoyang.li@nxp.com>
+Cc: Alexandra Diupina <adiupina@astralinux.ru>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, lvc-project@linuxtesting.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is ignored (apart
-from emitting a warning) and this typically results in resource leaks.
-To improve here there is a quest to make the remove callback return
-void. In the first step of this quest all drivers are converted to
-.remove_new() which already returns void. Eventually after all drivers
-are converted, .remove_new() is renamed to .remove().
+Process the result of hdlc_open() and call uhdlc_close()
+in case of an error. It is necessary to pass the error
+code up the control flow, similar to a possible
+error in request_irq().
+Also add a hdlc_close() call to the uhdlc_close()
+because the comment to hdlc_close() says it must be called
+by the hardware driver when the HDLC device is being closed
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Fixes: c19b6d246a35 ("drivers/net: support hdlc function for QE-UCC")
+Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
 ---
- drivers/dma/fsldma.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+v5: do some refactoring as Paolo Abeni <pabeni@redhat.com> and=20
+Christophe Leroy <christophe.leroy@csgroup.eu> suggested
+v4: undo all the things done prior to hdlc_open() as=20
+Jakub Kicinski <kuba@kernel.org> suggested,=20
+add hdlc_close() call to the uhdlc_close() to match the function comment,=
+=20
+add uhdlc_close() declaration to the top of the file not to put the=20
+uhdlc_close() function definition before uhdlc_open()
+v3: Fix the commits tree
+v2: Remove the 'rc' variable (stores the return value of the=20
+hdlc_open()) as Christophe Leroy <christophe.leroy@csgroup.eu> suggested
+ drivers/net/wan/fsl_ucc_hdlc.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/dma/fsldma.c b/drivers/dma/fsldma.c
-index ddcf736d283d..18a6c4bf6275 100644
---- a/drivers/dma/fsldma.c
-+++ b/drivers/dma/fsldma.c
-@@ -1306,7 +1306,7 @@ static int fsldma_of_probe(struct platform_device *op)
- 	return err;
- }
- 
--static int fsldma_of_remove(struct platform_device *op)
-+static void fsldma_of_remove(struct platform_device *op)
- {
- 	struct fsldma_device *fdev;
- 	unsigned int i;
-@@ -1324,8 +1324,6 @@ static int fsldma_of_remove(struct platform_device *op)
- 
- 	iounmap(fdev->regs);
- 	kfree(fdev);
--
+diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdl=
+c.c
+index 47c2ad7a3e42..fd50bb313b92 100644
+--- a/drivers/net/wan/fsl_ucc_hdlc.c
++++ b/drivers/net/wan/fsl_ucc_hdlc.c
+@@ -34,6 +34,8 @@
+ #define TDM_PPPOHT_SLIC_MAXIN
+ #define RX_BD_ERRORS (R_CD_S | R_OV_S | R_CR_S | R_AB_S | R_NO_S | R_LG_=
+S)
+=20
++static int uhdlc_close(struct net_device *dev);
++
+ static struct ucc_tdm_info utdm_primary_info =3D {
+ 	.uf_info =3D {
+ 		.tsa =3D 0,
+@@ -708,6 +710,7 @@ static int uhdlc_open(struct net_device *dev)
+ 	hdlc_device *hdlc =3D dev_to_hdlc(dev);
+ 	struct ucc_hdlc_private *priv =3D hdlc->priv;
+ 	struct ucc_tdm *utdm =3D priv->utdm;
++	int rc =3D 0;
+=20
+ 	if (priv->hdlc_busy !=3D 1) {
+ 		if (request_irq(priv->ut_info->uf_info.irq,
+@@ -731,10 +734,13 @@ static int uhdlc_open(struct net_device *dev)
+ 		napi_enable(&priv->napi);
+ 		netdev_reset_queue(dev);
+ 		netif_start_queue(dev);
+-		hdlc_open(dev);
++
++		rc =3D hdlc_open(dev);
++		if (rc)
++			uhdlc_close(dev);
+ 	}
+=20
 -	return 0;
++	return rc;
  }
- 
- #ifdef CONFIG_PM
-@@ -1406,7 +1404,7 @@ static struct platform_driver fsldma_of_driver = {
- #endif
- 	},
- 	.probe = fsldma_of_probe,
--	.remove = fsldma_of_remove,
-+	.remove_new = fsldma_of_remove,
- };
- 
- /*----------------------------------------------------------------------------*/
--- 
-2.40.1
+=20
+ static void uhdlc_memclean(struct ucc_hdlc_private *priv)
+@@ -824,6 +830,8 @@ static int uhdlc_close(struct net_device *dev)
+ 	netdev_reset_queue(dev);
+ 	priv->hdlc_busy =3D 0;
+=20
++	hdlc_close(dev);
++
+ 	return 0;
+ }
+=20
+--=20
+2.30.2
 
