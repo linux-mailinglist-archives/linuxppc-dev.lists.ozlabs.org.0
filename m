@@ -2,126 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F23097A6C99
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Sep 2023 22:59:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BFCC7A7296
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Sep 2023 08:09:37 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=Zx6Rl/ry;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HcobFU1e;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RqvDR4qJQz3cRd
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Sep 2023 06:59:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rr7R31b6kz3cGG
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Sep 2023 16:09:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=Zx6Rl/ry;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HcobFU1e;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=2a01:111:f400:fe59::601; helo=nam12-dm6-obe.outbound.protection.outlook.com; envelope-from=terry.bowman@amd.com; receiver=lists.ozlabs.org)
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on20601.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe59::601])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mgamail.intel.com; envelope-from=yilun.xu@intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Wed, 20 Sep 2023 16:08:50 AEST
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RqvCS3pBsz30NP
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Sep 2023 06:58:41 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GD73qAAuiN5TGyLNZkimfwWp4vPoc9v4gZquXhaiH+boWLEbWrBr1F0iNFfz/xt51FD3pyMfV8KBYcIAkNiUliXH3Xq7QrbfrQ9UllaCQVl0E4Y9bLc8EWw0HnICBEa/wXch0RXCIy4AB64k/oEKgeGWnHaRLq2iQnB1Hsy+9wzaoAPyhlmiPkipJYY6q5yaGpNzf9cKLxp1+3e+plSm8Syof78WOk1paUFq7pIW8+zLlZGNqGwT/Fn7bg8HI7LDmpqA4YPhReehGTStyhefnp2zwGu9SRho8XubqtlYgJze6gspC3H1DIUZa3pxM1KaMbySlv2F8W7Xnz1e43HTyw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7zElzrxuNAbWiS9RwjEVapl/4lKIEH2mbNZK6HPzhqc=;
- b=lEh1rxQc1iEkoU9P61EdKXjICFEOg8AIXZb2PwV9aFT1aWb4JmIiCIo3IjaPXvbOjx5XQ1b4j57im66MVazoduK6ZDRHpvFgZESwG1MsBRm3enKEgJF77Ef8LeCHq2rgJoixHJ2msSr0ejxgsqCy4ipjf/Ozxy8ks7L8Xr9Tf2BUHUbUzX9fT8a4S1R9V2Vw4vg4DT8zslVErnjSgYlWUSV6LTpm0OHOh8zvYh3Bq3wbw/2v/HiZ1Lon/rloYHnwKYFeUkYMSbmeb1PQH+27+hdsUzZuMCKgQRgxWpBnNVFvS/iGZSvZTSaJprOY0xPU74FnP1Li8IF6z52NUTqMlQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7zElzrxuNAbWiS9RwjEVapl/4lKIEH2mbNZK6HPzhqc=;
- b=Zx6Rl/ry4Fif136yKBzGj9DNvp2gsxkDf7dvtDs7R4vBVjhoEGMsEPMH46vEuxo93eGRa4GtX0W/UsReZk7XbS2pWXmbGxvMcU8FwufbxE1/ZPnDPJwxtKkrjqVlRIEAnO0HxH7tzJVt491YY6SwAoWOhsNk85Qk6UXTSCKdYXk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DS0PR12MB6390.namprd12.prod.outlook.com (2603:10b6:8:ce::7) by
- MN0PR12MB5931.namprd12.prod.outlook.com (2603:10b6:208:37e::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6792.27; Tue, 19 Sep 2023 20:58:15 +0000
-Received: from DS0PR12MB6390.namprd12.prod.outlook.com
- ([fe80::5b90:dbf9:e0a5:64cc]) by DS0PR12MB6390.namprd12.prod.outlook.com
- ([fe80::5b90:dbf9:e0a5:64cc%6]) with mapi id 15.20.6792.026; Tue, 19 Sep 2023
- 20:58:15 +0000
-Message-ID: <cfa1aaca-49f1-cb8c-f4d9-f96e5bdc9892@amd.com>
-Date: Tue, 19 Sep 2023 15:58:12 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v10 13/15] PCI/AER: Forward RCH downstream port-detected
- errors to the CXL.mem dev handler
-Content-Language: en-US
-To: Dan Williams <dan.j.williams@intel.com>, alison.schofield@intel.com,
- vishal.l.verma@intel.com, ira.weiny@intel.com, bwidawsk@kernel.org,
- dave.jiang@intel.com, Jonathan.Cameron@huawei.com, linux-cxl@vger.kernel.org
-References: <20230831170248.185078-1-terry.bowman@amd.com>
- <20230831170248.185078-6-terry.bowman@amd.com>
- <64f0f9984932b_31c2db29461@dwillia2-xfh.jf.intel.com.notmuch>
-From: Terry Bowman <Terry.Bowman@amd.com>
-In-Reply-To: <64f0f9984932b_31c2db29461@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA9PR11CA0003.namprd11.prod.outlook.com
- (2603:10b6:806:6e::8) To DS0PR12MB6390.namprd12.prod.outlook.com
- (2603:10b6:8:ce::7)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rr7QB5SPdz2yq2
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Sep 2023 16:08:50 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1695190131; x=1726726131;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xzxB1PT2WKDcrdmJMNjWM/AAXQaE89QtQicHLkgqo00=;
+  b=HcobFU1eAO16NdmvneyrjaSiC0c3PHsyNRLAYnI1XCHsYFHh2qwxnnvS
+   p8D2suLUQB35usSUXfhtMrVnKZDBzy0yr2Pz8gqYu50D5/NMfaUiwsxZ6
+   T07L716OWS2FgwMX6LCd/no0JsdGm3vXDqyzNF2rV4YjOfA/YJUJBwVMe
+   +5s3sKV2Yt07w8W/V6484Szz9uCwgAazmyNSzyTJSF8qaR+nZZ60l1zxZ
+   7n0uu1Q3XNKEXF/c/Dl3JxxaQUR6uu0yTSIi0iaIvBoWx7FZ4Osh5GaGv
+   gojeATd3iJys3EIFOB+8Zr0jhezrgd/YyCw98MqS/bKgPUC3hJAIjqRLx
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10838"; a="370449384"
+X-IronPort-AV: E=Sophos;i="6.02,161,1688454000"; 
+   d="scan'208";a="370449384"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2023 23:07:37 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10838"; a="870242723"
+X-IronPort-AV: E=Sophos;i="6.02,161,1688454000"; 
+   d="scan'208";a="870242723"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orsmga004.jf.intel.com with ESMTP; 19 Sep 2023 23:07:26 -0700
+Date: Wed, 20 Sep 2023 14:07:00 +0800
+From: Xu Yilun <yilun.xu@intel.com>
+To: Sean Christopherson <seanjc@google.com>
+Subject: Re: [RFC PATCH v12 02/33] KVM: Use gfn instead of hva for
+ mmu_notifier_retry
+Message-ID: <ZQqMBEL61p739dpF@yilunxu-OptiPlex-7050>
+References: <20230914015531.1419405-1-seanjc@google.com>
+ <20230914015531.1419405-3-seanjc@google.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB6390:EE_|MN0PR12MB5931:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7412abf0-d5e5-4f5d-6393-08dbb9532481
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	47xGYoJRM9oc/dA4IVGgxe7AcmzIzsRH644hpTczp757TMtaXlaJ0Jp4O5kckNBXwCI/nv04NGBu/hHzJG5PtUAq2QdxoDs6bXE7L4zTpIlWs0rHgk3IgKJ1QOD7KAP7gBVFTxDtk9MVI8PiQ7+OsufFyQGfW3fetW6w/hz+c9Bw3/muzl2JGLfhNpMrW+vQC4fD8sbb1pykcytz5oOmVGegD61wm7aA6+WPx670ead22HeznpjWX3X3IHVaTOZSStPx8Xgv7OwO5ryQgC9iTzDy6RUjAuIxMNj/Gj8Zk89QhzhTRSu6HHoow8/KQq6MmdTqkh3lkm1eE0fj60rtOe0A5fPoF+/rZaGu7359Vxz5UVZSeUilWjcxnGHH49j/57d3R85nW4Sems4cwfReHrTzkCE/uh8gB4W/JaJcWJ9scXnoCZMUQzbhLHstz0bVRuZWChhrq0quI1ZWd9CNzTENa6339Netu0J+hYnpRlONM4HCVgsTpG+M9MFcGPu7/EPKkbjasFtPBvhqqD74fld4Bhoxp4nn57gFU8icF/1AqG1UdSJU0uHv6L0bHSXB++usba69tcpTxJIBKtuOxZgvoi42trQbMWYYFGCkBmS0UdxOG0WD0DtZvXS5eBwCEO4q8x86IgOHUQ5k+tRFOw==
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6390.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(396003)(366004)(39860400002)(376002)(346002)(451199024)(186009)(1800799009)(38100700002)(36756003)(31696002)(86362001)(478600001)(966005)(66476007)(66556008)(66946007)(2906002)(6512007)(6666004)(53546011)(6506007)(6486002)(8936002)(8676002)(5660300002)(4326008)(41300700001)(7416002)(31686004)(316002)(26005)(2616005)(83380400001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?a0svSkNWYzdOYXIxaU1mQVRPVG9VckowL3czZ2dvQmZZL2JOWFJHUTY3b0NY?=
- =?utf-8?B?MHdzTEFVbnZ2ck4yZFM3WVJSYXFYRGRxaDhRTDhpQlRUWm1YMGwyVGRwUFlJ?=
- =?utf-8?B?Rk43YVNNMkhjQ01rK3hHNGlXQ3BpQzNXOXlyWGg5ekgvYVNVMmdOM0FMWTJr?=
- =?utf-8?B?cGZsRzQrQnRjc0VYUmZUU1BYWHlEVVN2am1nMm1MYmI1UEhkYUU5OFQzdGJh?=
- =?utf-8?B?LzNyU0ltRWVqRktkS05KTUxLbG52QTl4Nk1wVGVvd003U3dtQmZuYWE5Y0x5?=
- =?utf-8?B?UWR2OXAwOHFkdy96dms3MEZqZDV3UEszT2ZPYmttbmtnNXJoUDdHVkVuRjha?=
- =?utf-8?B?b0Nwam91Szk3T3A1R3JCcG5sTnhEVFhhQmk0RjZlUmhnRU5lcWoyblovSTRv?=
- =?utf-8?B?Zm1lOFNqNk14Zy9HeG9ZTjF4Qi9Rbk9LSCtnWE5XVnNjWTBOek1UamNRNWRK?=
- =?utf-8?B?aEJkczRLQ0RJRXo1Y2RoNzRqL0NmQm42MEVqaGRPMHdtOEFnODNHMThmS25R?=
- =?utf-8?B?QklOV0tWVlpueDdlS1JDRzV6ZVFqUEQ5Z2dKMStidWdlandOTnBDWGhlM3NO?=
- =?utf-8?B?WjlBSmVPYVI2VW1Wb1FRaUxXRVBVc2lQR0lMZTQvRHdSWlpON2wwRnpnT0Z3?=
- =?utf-8?B?a0x6eXFBZW8zSWhtcXY1TXk5dTJ5bDBRSHlXd05pbFkyaGluWkx5ZUVZVlJy?=
- =?utf-8?B?VnlFL2thZUlRVE9aRE1Pdm9FblYrcE5qNHk2bXIwdjVNWUdXWmpTcUlLb1JV?=
- =?utf-8?B?SU5zampPTzBlR0dOcVBCb0I2MGFDRkhaSnMzd0Y2QkF2bjZMOHlDWG42RElO?=
- =?utf-8?B?cTJ2Q0QyMUpuZXdVMEplQ1BOQjYvM05mODAwb2pXMFVHVHM4clZyb2hoUGo2?=
- =?utf-8?B?YjdWblJyRldzeEhzcVZtemNDdTA4ekpRVXk3TlZLWWFZb1QrNXJUaWpic1Uz?=
- =?utf-8?B?cytneE9PMHNkR2Qvdm1PeUVTUE0wN2RzNEp3cWZ2dW4xWUU0SjZBU3d1OU5F?=
- =?utf-8?B?ZlkxNFlFSWxsVjdhMVYrZ1hvczE2TFp0ZVUvbDIzaUpLdUVvL2lzQXNBSWVS?=
- =?utf-8?B?TUNlR3MxZXRlRXpTY0h0RUk3cWJ4Qk5ZN2E3OEVpMzB3WnNCdlYvM1Yza08r?=
- =?utf-8?B?VVlYT256dmtDTVdXc25LWnhQVWRwZHJML0NtemF1dmlIMU9yRytMVGtmSW04?=
- =?utf-8?B?d0RyRytoZFdMMVZJMERmazd0QW9Wc1hoeXgvWmd5NXdUb3k2V3puZVJlQTk1?=
- =?utf-8?B?QWg1L0dtZWZUTFE2bEZiMTRoTUJFK0ZtR0tBQlFZSEM5empuSnJ6c25uQ2ds?=
- =?utf-8?B?dFZnUS9hVlhoeGs5VnhuWkpyV1hwbnJOZUNPT0N6NUhPZUlFWnZzdnZrWUJU?=
- =?utf-8?B?c3FTUnZqSGhMcElpQ0Ryd2RSYklGMW05UFpITTRKZUo3Y0dJekVMMDI2UmN4?=
- =?utf-8?B?WHZjUnJEaGJBL0RNeFBWWmxMYUk3VDIwS3lyb25la3dTQUNiMXVWVW9hVm9n?=
- =?utf-8?B?MkJld0JzK0txNEFRaXVnbWd1eHlDNitseXZSdlh0bHVHYTFzWElOSkhwa3pj?=
- =?utf-8?B?QzdpeFJaVW9lZS9NYXYwVjdyaUF6aTFxOU12dUkxTGtNSjhLMk16NW95MFRm?=
- =?utf-8?B?SWUwd3NFS3o3YU01czMyUWR0YXZjYnBVdEY4bjN1aDFRcDZDSmwwQXRNRlRT?=
- =?utf-8?B?SldFLzJsdGdTQ1R2bmpaeExXTzdTMXhxNTZwOEFZREUxN2c5ZnJzdlNLbVBI?=
- =?utf-8?B?bndEQWVLdk9kM3BlTmd4MVAvZ3greDhvUDQ4RWxrRGF4V3Bqdk9ldHdUbUZE?=
- =?utf-8?B?Tm5acWMzUjNyWktzRXE1Yzh3Y3FicnU1a2hsS1B4WWtRc0xmZWV4bUQ2QWVi?=
- =?utf-8?B?ZGlVNUtubU1JVWNZNCtOMXFVOTVTeWdOekpXSTB5aUR2NkFQcW94UmJaa0RQ?=
- =?utf-8?B?UGNwNXhaVlBteGU1RXNYTkg4RkpjdHdIMnNMaVl4SStkanR4SG5mbTVveDNM?=
- =?utf-8?B?YUE1ZHRqUDJZclBuaGd5aDlJd1dmMkozSlJKOGp5RTZDRFFrTUxjVmxiMEk0?=
- =?utf-8?B?aVJ0am9IRDNacEJwWENxM2tBaEhIYTFydmkybG9nUnJrQWdQcHlNUmhKcUo2?=
- =?utf-8?Q?RQQRKZEw5KtJdY0ON6kU5CQW1?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7412abf0-d5e5-4f5d-6393-08dbb9532481
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6390.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2023 20:58:15.0418
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jJku53xsmc8nEY9L/Whj8oXylE7Mz+zEa2R5i9RHs3IiwICSxAlt/Ll0XCZsbX/eJ7GW5ULrSbtDqWeM1pisJQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5931
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230914015531.1419405-3-seanjc@google.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -133,269 +69,301 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: rrichter@amd.com, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, Oliver O'Halloran <oohall@gmail.com>, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Paul Moore <paul@paul-moore.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, James Morris <jmorris@namei.org>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, "Serge E. Hallyn" <serge@hallyn.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Vlastimil Babka <vbabka@suse.cz>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Isaku Yamahata <isaku.yamahata@intel.com>, Quentin Perret <qperret@google.com>, Liam Merwick <liam.merwick@orac
+ le.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, linux-security-module@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, Anish Moorthy <amoorthy@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Dan,
-
-On 8/31/23 15:35, Dan Williams wrote:
-> Terry Bowman wrote:
->> From: Robert Richter <rrichter@amd.com>
->>
->> In Restricted CXL Device (RCD) mode a CXL device is exposed as an
->> RCiEP, but CXL downstream and upstream ports are not enumerated and
->> not visible in the PCIe hierarchy. [1] Protocol and link errors from
->> these non-enumerated ports are signaled as internal AER errors, either
->> Uncorrectable Internal Error (UIE) or Corrected Internal Errors (CIE)
->> via an RCEC.
->>
->> Restricted CXL host (RCH) downstream port-detected errors have the
->> Requester ID of the RCEC set in the RCEC's AER Error Source ID
->> register. A CXL handler must then inspect the error status in various
->> CXL registers residing in the dport's component register space (CXL
->> RAS capability) or the dport's RCRB (PCIe AER extended
->> capability). [2]
->>
->> Errors showing up in the RCEC's error handler must be handled and
->> connected to the CXL subsystem. Implement this by forwarding the error
->> to all CXL devices below the RCEC. Since the entire CXL device is
->> controlled only using PCIe Configuration Space of device 0, function
->> 0, only pass it there [3]. The error handling is limited to currently
->> supported devices with the Memory Device class code set (CXL Type 3
->> Device, PCI_CLASS_MEMORY_CXL, 502h), handle downstream port errors in
->> the device's cxl_pci driver. Support for other CXL Device Types
->> (e.g. a CXL.cache Device) can be added later.
->>
->> To handle downstream port errors in addition to errors directed to the
->> CXL endpoint device, a handler must also inspect the CXL RAS and PCIe
->> AER capabilities of the CXL downstream port the device is connected
->> to.
->>
->> Since CXL downstream port errors are signaled using internal errors,
->> the handler requires those errors to be unmasked. This is subject of a
->> follow-on patch.
->>
->> The reason for choosing this implementation is that the AER service
->> driver claims the RCEC device, but does not allow it to register a
->> custom specific handler to support CXL. Connecting the RCEC hard-wired
->> with a CXL handler does not work, as the CXL subsystem might not be
->> present all the time. The alternative to add an implementation to the
->> portdrv to allow the registration of a custom RCEC error handler isn't
->> worth doing it as CXL would be its only user. Instead, just check for
->> an CXL RCEC and pass it down to the connected CXL device's error
->> handler. With this approach the code can entirely be implemented in
->> the PCIe AER driver and is independent of the CXL subsystem. The CXL
->> driver only provides the handler.
->>
->> [1] CXL 3.0 spec: 9.11.8 CXL Devices Attached to an RCH
->> [2] CXL 3.0 spec, 12.2.1.1 RCH Downstream Port-detected Errors
->> [3] CXL 3.0 spec, 8.1.3 PCIe DVSEC for CXL Devices
->>
->> Co-developed-by: Terry Bowman <terry.bowman@amd.com>
->> Signed-off-by: Terry Bowman <terry.bowman@amd.com>
->> Signed-off-by: Robert Richter <rrichter@amd.com>
->> Cc: "Oliver O'Halloran" <oohall@gmail.com>
->> Cc: Bjorn Helgaas <bhelgaas@google.com>
->> Cc: linuxppc-dev@lists.ozlabs.org
->> Cc: linux-pci@vger.kernel.org
->> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
->> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
->> ---
->>  drivers/pci/pcie/Kconfig | 12 +++++
->>  drivers/pci/pcie/aer.c   | 96 +++++++++++++++++++++++++++++++++++++++-
->>  2 files changed, 106 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/pci/pcie/Kconfig b/drivers/pci/pcie/Kconfig
->> index 228652a59f27..4f0e70fafe2d 100644
->> --- a/drivers/pci/pcie/Kconfig
->> +++ b/drivers/pci/pcie/Kconfig
->> @@ -49,6 +49,18 @@ config PCIEAER_INJECT
->>  	  gotten from:
->>  	     https://git.kernel.org/cgit/linux/kernel/git/gong.chen/aer-inject.git/
->>  
->> +config PCIEAER_CXL
->> +	bool "PCI Express CXL RAS support for Restricted Hosts (RCH)"
+On 2023-09-13 at 18:55:00 -0700, Sean Christopherson wrote:
+> From: Chao Peng <chao.p.peng@linux.intel.com>
 > 
-> Why the "for Restricted Hosts (RCH)" clarification? I am seeing nothing
-> that prevents this from working with RCECs on VH topologies.
+> Currently in mmu_notifier invalidate path, hva range is recorded and
+> then checked against by mmu_notifier_retry_hva() in the page fault
+                          ^
+
+Now it is mmu_invalidate_retry_hva().
+
+> handling path. However, for the to be introduced private memory, a page
+> fault may not have a hva associated, checking gfn(gpa) makes more sense.
 > 
-
-The same option can be used in VH mode. Will remove the RCH reference.
-
+> For existing hva based shared memory, gfn is expected to also work. The
+> only downside is when aliasing multiple gfns to a single hva, the
+> current algorithm of checking multiple ranges could result in a much
+> larger range being rejected. Such aliasing should be uncommon, so the
+> impact is expected small.
 > 
->> +	default y
+> Suggested-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Chao Peng <chao.p.peng@linux.intel.com>
+> Reviewed-by: Fuad Tabba <tabba@google.com>
+> Tested-by: Fuad Tabba <tabba@google.com>
+> [sean: convert vmx_set_apic_access_page_addr() to gfn-based API]
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+>  arch/x86/kvm/mmu/mmu.c   | 10 ++++++----
+>  arch/x86/kvm/vmx/vmx.c   | 11 +++++------
+>  include/linux/kvm_host.h | 33 +++++++++++++++++++++------------
+>  virt/kvm/kvm_main.c      | 40 +++++++++++++++++++++++++++++++---------
+>  4 files changed, 63 insertions(+), 31 deletions(-)
 > 
-> Minor, but I think "default PCIEAER" makes it slightly clearer that CXL
-> error handling comes along for the ride with PCIE AER.
->
+> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> index e1d011c67cc6..0f0231d2b74f 100644
+> --- a/arch/x86/kvm/mmu/mmu.c
+> +++ b/arch/x86/kvm/mmu/mmu.c
+> @@ -3056,7 +3056,7 @@ static void direct_pte_prefetch(struct kvm_vcpu *vcpu, u64 *sptep)
+>   *
+>   * There are several ways to safely use this helper:
+>   *
+> - * - Check mmu_invalidate_retry_hva() after grabbing the mapping level, before
+> + * - Check mmu_invalidate_retry_gfn() after grabbing the mapping level, before
+>   *   consuming it.  In this case, mmu_lock doesn't need to be held during the
+>   *   lookup, but it does need to be held while checking the MMU notifier.
+>   *
+> @@ -4358,7 +4358,7 @@ static bool is_page_fault_stale(struct kvm_vcpu *vcpu,
+>  		return true;
+>  
+>  	return fault->slot &&
+> -	       mmu_invalidate_retry_hva(vcpu->kvm, fault->mmu_seq, fault->hva);
+> +	       mmu_invalidate_retry_gfn(vcpu->kvm, fault->mmu_seq, fault->gfn);
+>  }
+>  
+>  static int direct_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
+> @@ -6253,7 +6253,9 @@ void kvm_zap_gfn_range(struct kvm *kvm, gfn_t gfn_start, gfn_t gfn_end)
+>  
+>  	write_lock(&kvm->mmu_lock);
+>  
+> -	kvm_mmu_invalidate_begin(kvm, 0, -1ul);
+> +	kvm_mmu_invalidate_begin(kvm);
+> +
+> +	kvm_mmu_invalidate_range_add(kvm, gfn_start, gfn_end);
+>  
+>  	flush = kvm_rmap_zap_gfn_range(kvm, gfn_start, gfn_end);
+>  
+> @@ -6266,7 +6268,7 @@ void kvm_zap_gfn_range(struct kvm *kvm, gfn_t gfn_start, gfn_t gfn_end)
+>  	if (flush)
+>  		kvm_flush_remote_tlbs_range(kvm, gfn_start, gfn_end - gfn_start);
+>  
+> -	kvm_mmu_invalidate_end(kvm, 0, -1ul);
+> +	kvm_mmu_invalidate_end(kvm);
+>  
+>  	write_unlock(&kvm->mmu_lock);
+>  }
+> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+> index 72e3943f3693..6e502ba93141 100644
+> --- a/arch/x86/kvm/vmx/vmx.c
+> +++ b/arch/x86/kvm/vmx/vmx.c
+> @@ -6757,10 +6757,10 @@ static void vmx_set_apic_access_page_addr(struct kvm_vcpu *vcpu)
+>  		return;
+>  
+>  	/*
+> -	 * Grab the memslot so that the hva lookup for the mmu_notifier retry
+> -	 * is guaranteed to use the same memslot as the pfn lookup, i.e. rely
+> -	 * on the pfn lookup's validation of the memslot to ensure a valid hva
+> -	 * is used for the retry check.
+> +	 * Explicitly grab the memslot using KVM's internal slot ID to ensure
+> +	 * KVM doesn't unintentionally grab a userspace memslot.  It _should_
+> +	 * be impossible for userspace to create a memslot for the APIC when
+> +	 * APICv is enabled, but paranoia won't hurt in this case.
+>  	 */
+>  	slot = id_to_memslot(slots, APIC_ACCESS_PAGE_PRIVATE_MEMSLOT);
+>  	if (!slot || slot->flags & KVM_MEMSLOT_INVALID)
+> @@ -6785,8 +6785,7 @@ static void vmx_set_apic_access_page_addr(struct kvm_vcpu *vcpu)
+>  		return;
+>  
+>  	read_lock(&vcpu->kvm->mmu_lock);
+> -	if (mmu_invalidate_retry_hva(kvm, mmu_seq,
+> -				     gfn_to_hva_memslot(slot, gfn))) {
+> +	if (mmu_invalidate_retry_gfn(kvm, mmu_seq, gfn)) {
+>  		kvm_make_request(KVM_REQ_APIC_PAGE_RELOAD, vcpu);
+>  		read_unlock(&vcpu->kvm->mmu_lock);
+>  		goto out;
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index fb6c6109fdca..11d091688346 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -787,8 +787,8 @@ struct kvm {
+>  	struct mmu_notifier mmu_notifier;
+>  	unsigned long mmu_invalidate_seq;
+>  	long mmu_invalidate_in_progress;
+> -	unsigned long mmu_invalidate_range_start;
+> -	unsigned long mmu_invalidate_range_end;
+> +	gfn_t mmu_invalidate_range_start;
+> +	gfn_t mmu_invalidate_range_end;
+>  #endif
+>  	struct list_head devices;
+>  	u64 manual_dirty_log_protect;
+> @@ -1392,10 +1392,9 @@ void kvm_mmu_free_memory_cache(struct kvm_mmu_memory_cache *mc);
+>  void *kvm_mmu_memory_cache_alloc(struct kvm_mmu_memory_cache *mc);
+>  #endif
+>  
+> -void kvm_mmu_invalidate_begin(struct kvm *kvm, unsigned long start,
+> -			      unsigned long end);
+> -void kvm_mmu_invalidate_end(struct kvm *kvm, unsigned long start,
+> -			    unsigned long end);
+> +void kvm_mmu_invalidate_begin(struct kvm *kvm);
+> +void kvm_mmu_invalidate_range_add(struct kvm *kvm, gfn_t start, gfn_t end);
+> +void kvm_mmu_invalidate_end(struct kvm *kvm);
+>  
+>  long kvm_arch_dev_ioctl(struct file *filp,
+>  			unsigned int ioctl, unsigned long arg);
+> @@ -1970,9 +1969,9 @@ static inline int mmu_invalidate_retry(struct kvm *kvm, unsigned long mmu_seq)
+>  	return 0;
+>  }
+>  
+> -static inline int mmu_invalidate_retry_hva(struct kvm *kvm,
+> +static inline int mmu_invalidate_retry_gfn(struct kvm *kvm,
+>  					   unsigned long mmu_seq,
+> -					   unsigned long hva)
+> +					   gfn_t gfn)
+>  {
+>  	lockdep_assert_held(&kvm->mmu_lock);
+>  	/*
+> @@ -1981,10 +1980,20 @@ static inline int mmu_invalidate_retry_hva(struct kvm *kvm,
+>  	 * that might be being invalidated. Note that it may include some false
+>  	 * positives, due to shortcuts when handing concurrent invalidations.
+>  	 */
+> -	if (unlikely(kvm->mmu_invalidate_in_progress) &&
+> -	    hva >= kvm->mmu_invalidate_range_start &&
+> -	    hva < kvm->mmu_invalidate_range_end)
+> -		return 1;
+> +	if (unlikely(kvm->mmu_invalidate_in_progress)) {
+> +		/*
+> +		 * Dropping mmu_lock after bumping mmu_invalidate_in_progress
+> +		 * but before updating the range is a KVM bug.
+> +		 */
+> +		if (WARN_ON_ONCE(kvm->mmu_invalidate_range_start == INVALID_GPA ||
+> +				 kvm->mmu_invalidate_range_end == INVALID_GPA))
+> +			return 1;
+> +
+> +		if (gfn >= kvm->mmu_invalidate_range_start &&
+> +		    gfn < kvm->mmu_invalidate_range_end)
+> +			return 1;
+> +	}
+> +
+>  	if (kvm->mmu_invalidate_seq != mmu_seq)
+>  		return 1;
+>  	return 0;
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 0524933856d4..4fad3b01dc1f 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -543,9 +543,7 @@ static inline struct kvm *mmu_notifier_to_kvm(struct mmu_notifier *mn)
+>  
+>  typedef bool (*gfn_handler_t)(struct kvm *kvm, struct kvm_gfn_range *range);
+>  
+> -typedef void (*on_lock_fn_t)(struct kvm *kvm, unsigned long start,
+> -			     unsigned long end);
+> -
+> +typedef void (*on_lock_fn_t)(struct kvm *kvm);
+>  typedef void (*on_unlock_fn_t)(struct kvm *kvm);
+>  
+>  struct kvm_mmu_notifier_range {
+> @@ -637,7 +635,8 @@ static __always_inline int __kvm_handle_hva_range(struct kvm *kvm,
+>  				locked = true;
+>  				KVM_MMU_LOCK(kvm);
+>  				if (!IS_KVM_NULL_FN(range->on_lock))
+> -					range->on_lock(kvm, range->start, range->end);
+> +					range->on_lock(kvm);
+> +
+>  				if (IS_KVM_NULL_FN(range->handler))
+>  					break;
+>  			}
+> @@ -742,15 +741,26 @@ static void kvm_mmu_notifier_change_pte(struct mmu_notifier *mn,
+>  	kvm_handle_hva_range(mn, address, address + 1, arg, kvm_change_spte_gfn);
+>  }
+>  
+> -void kvm_mmu_invalidate_begin(struct kvm *kvm, unsigned long start,
+> -			      unsigned long end)
+> +void kvm_mmu_invalidate_begin(struct kvm *kvm)
+>  {
+> +	lockdep_assert_held_write(&kvm->mmu_lock);
+>  	/*
+>  	 * The count increase must become visible at unlock time as no
+>  	 * spte can be established without taking the mmu_lock and
+>  	 * count is also read inside the mmu_lock critical section.
+>  	 */
+>  	kvm->mmu_invalidate_in_progress++;
+> +
+> +	if (likely(kvm->mmu_invalidate_in_progress == 1))
+> +		kvm->mmu_invalidate_range_start = INVALID_GPA;
+> +}
+> +
+> +void kvm_mmu_invalidate_range_add(struct kvm *kvm, gfn_t start, gfn_t end)
+> +{
+> +	lockdep_assert_held_write(&kvm->mmu_lock);
+> +
+> +	WARN_ON_ONCE(!kvm->mmu_invalidate_in_progress);
+> +
+>  	if (likely(kvm->mmu_invalidate_in_progress == 1)) {
+>  		kvm->mmu_invalidate_range_start = start;
+>  		kvm->mmu_invalidate_range_end = end;
 
-We found Kconfig entries do not typically list a dependancy and the default 
-to be the same. We prefer to leave as 'default y'. If you want we can make 
-your requested change. 
+IIUC, Now we only add or override a part of the invalidate range in
+these fields, IOW only the range in last slot is stored when we unlock.
+That may break mmu_invalidate_retry_gfn() cause it can never know the
+whole invalidate range.
 
->> +	depends on PCIEAER && CXL_PCI
->> +	help
->> +	  Enables error handling of downstream ports of a CXL host
->> +	  that is operating in RCD mode (Restricted CXL Host, RCH).
->> +	  The downstream port reports AER errors to a given RCEC.
->> +	  Errors are handled by the CXL memory device driver.
->> +
->> +	  If unsure, say Y.
->> +
->>  #
->>  # PCI Express ECRC
->>  #
->> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
->> index d3344fcf1f79..c354ca5e8f2b 100644
->> --- a/drivers/pci/pcie/aer.c
->> +++ b/drivers/pci/pcie/aer.c
->> @@ -946,14 +946,100 @@ static bool find_source_device(struct pci_dev *parent,
->>  	return true;
->>  }
->>  
->> +#ifdef CONFIG_PCIEAER_CXL
->> +
->> +static bool is_cxl_mem_dev(struct pci_dev *dev)
->> +{
->> +	/*
->> +	 * The capability, status, and control fields in Device 0,
->> +	 * Function 0 DVSEC control the CXL functionality of the
->> +	 * entire device (CXL 3.0, 8.1.3).
->> +	 */
->> +	if (dev->devfn != PCI_DEVFN(0, 0))
->> +		return false;
->> +
->> +	/*
->> +	 * CXL Memory Devices must have the 502h class code set (CXL
->> +	 * 3.0, 8.1.12.1).
->> +	 */
->> +	if ((dev->class >> 8) != PCI_CLASS_MEMORY_CXL)
->> +		return false;
-> 
-> Type-2 devices are going to support the same error flows but without
-> advertising the CXL class code. Should this perhaps be something that
-> CXL drivers can opt into by setting a flag in the pci_dev? It is already
-> the case that the driver needs to be attached for the error handler to
-> be found, so might as well allow the CXL AER handling to be opted-in by
-> the driver as well.
-> 
+How about we extend the mmu_invalidate_range_start/end everytime so that
+it records the whole invalidate range:
 
-At the momment type-2 devices are unsupported and the drivers are not 
-available. The absence of CXL class information in type-2 devices will present 
-a challenge in identifying here. We would like to defer making change here 
-and address this in a future a patchset. 
+if (kvm->mmu_invalidate_range_start == INVALID_GPA) {
+	kvm->mmu_invalidate_range_start = start;
+	kvm->mmu_invalidate_range_end = end;
+} else {
+	kvm->mmu_invalidate_range_start =
+		min(kvm->mmu_invalidate_range_start, start);
+	kvm->mmu_invalidate_range_end =
+		max(kvm->mmu_invalidate_range_end, end);
+}
 
->> +
->> +	return true;
->> +}
->> +
->> +static bool cxl_error_is_native(struct pci_dev *dev)
->> +{
->> +	struct pci_host_bridge *host = pci_find_host_bridge(dev->bus);
->> +
->> +	if (pcie_ports_native)
->> +		return true;
->> +
->> +	return host->native_aer && host->native_cxl_error;
->> +}
->> +
->> +static bool is_internal_error(struct aer_err_info *info)
->> +{
->> +	if (info->severity == AER_CORRECTABLE)
->> +		return info->status & PCI_ERR_COR_INTERNAL;
->> +
->> +	return info->status & PCI_ERR_UNC_INTN;
->> +}
->> +
->> +static int cxl_rch_handle_error_iter(struct pci_dev *dev, void *data)
->> +{
->> +	struct aer_err_info *info = (struct aer_err_info *)data;
->> +	const struct pci_error_handlers *err_handler;
->> +
->> +	if (!is_cxl_mem_dev(dev) || !cxl_error_is_native(dev))
->> +		return 0;
->> +
->> +	/* protect dev->driver */
->> +	device_lock(&dev->dev);
->> +
->> +	err_handler = dev->driver ? dev->driver->err_handler : NULL;
->> +	if (!err_handler)
->> +		goto out;
->> +
->> +	if (info->severity == AER_CORRECTABLE) {
->> +		if (err_handler->cor_error_detected)
->> +			err_handler->cor_error_detected(dev);
->> +	} else if (err_handler->error_detected) {
->> +		if (info->severity == AER_NONFATAL)
->> +			err_handler->error_detected(dev, pci_channel_io_normal);
->> +		else if (info->severity == AER_FATAL)
->> +			err_handler->error_detected(dev, pci_channel_io_frozen);
->> +	}
->> +out:
->> +	device_unlock(&dev->dev);
->> +	return 0;
->> +}
->> +
->> +static void cxl_rch_handle_error(struct pci_dev *dev, struct aer_err_info *info)
->> +{
->> +	/*
->> +	 * Internal errors of an RCEC indicate an AER error in an
->> +	 * RCH's downstream port. Check and handle them in the CXL.mem
->> +	 * device driver.
->> +	 */
->> +	if (pci_pcie_type(dev) == PCI_EXP_TYPE_RC_EC &&
->> +	    is_internal_error(info))
->> +		pcie_walk_rcec(dev, cxl_rch_handle_error_iter, info);
-> 
-> This would seem to work generically for RCEC reported errors in a VH
-> topology, so I think the "_rch" distinction can be dropped.
-> 
+Thanks,
+Yilun
 
-The pcie_walk_rcec() filters on PCI_EXP_TYPE_RC_END devices. As a result this 
-iterator will not apply to VH mode devices (PCI_EXP_TYPE_ENDPOINT, PCI_EXP_TYPE_ROOT_PORT,
-PCI_EXP_TYPE_DOWNSTREAM). This series is focused on RCH mode. VH mode port error 
-handling will be addressed in future patchset. 
-
-Regards,
-Terry
-
->> +}
->> +
->> +#else
->> +static inline void cxl_rch_handle_error(struct pci_dev *dev,
->> +					struct aer_err_info *info) { }
->> +#endif
->> +
->>  /**
->> - * handle_error_source - handle logging error into an event log
->> + * pci_aer_handle_error - handle logging error into an event log
->>   * @dev: pointer to pci_dev data structure of error source device
->>   * @info: comprehensive error information
->>   *
->>   * Invoked when an error being detected by Root Port.
->>   */
->> -static void handle_error_source(struct pci_dev *dev, struct aer_err_info *info)
->> +static void pci_aer_handle_error(struct pci_dev *dev, struct aer_err_info *info)
->>  {
->>  	int aer = dev->aer_cap;
->>  
->> @@ -977,6 +1063,12 @@ static void handle_error_source(struct pci_dev *dev, struct aer_err_info *info)
->>  		pcie_do_recovery(dev, pci_channel_io_normal, aer_root_reset);
->>  	else if (info->severity == AER_FATAL)
->>  		pcie_do_recovery(dev, pci_channel_io_frozen, aer_root_reset);
->> +}
->> +
->> +static void handle_error_source(struct pci_dev *dev, struct aer_err_info *info)
->> +{
->> +	cxl_rch_handle_error(dev, info);
->> +	pci_aer_handle_error(dev, info);
->>  	pci_dev_put(dev);
->>  }
->>  
->> -- 
->> 2.34.1
->>
-> 
+> @@ -771,6 +781,12 @@ void kvm_mmu_invalidate_begin(struct kvm *kvm, unsigned long start,
+>  	}
+>  }
+>  
+> +static bool kvm_mmu_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
+> +{
+> +	kvm_mmu_invalidate_range_add(kvm, range->start, range->end);
+> +	return kvm_unmap_gfn_range(kvm, range);
+> +}
+> +
+>  static int kvm_mmu_notifier_invalidate_range_start(struct mmu_notifier *mn,
+>  					const struct mmu_notifier_range *range)
+>  {
+> @@ -778,7 +794,7 @@ static int kvm_mmu_notifier_invalidate_range_start(struct mmu_notifier *mn,
+>  	const struct kvm_mmu_notifier_range hva_range = {
+>  		.start		= range->start,
+>  		.end		= range->end,
+> -		.handler	= kvm_unmap_gfn_range,
+> +		.handler	= kvm_mmu_unmap_gfn_range,
+>  		.on_lock	= kvm_mmu_invalidate_begin,
+>  		.on_unlock	= kvm_arch_guest_memory_reclaimed,
+>  		.flush_on_ret	= true,
+> @@ -817,8 +833,7 @@ static int kvm_mmu_notifier_invalidate_range_start(struct mmu_notifier *mn,
+>  	return 0;
+>  }
+>  
+> -void kvm_mmu_invalidate_end(struct kvm *kvm, unsigned long start,
+> -			    unsigned long end)
+> +void kvm_mmu_invalidate_end(struct kvm *kvm)
+>  {
+>  	/*
+>  	 * This sequence increase will notify the kvm page fault that
+> @@ -833,6 +848,13 @@ void kvm_mmu_invalidate_end(struct kvm *kvm, unsigned long start,
+>  	 * in conjunction with the smp_rmb in mmu_invalidate_retry().
+>  	 */
+>  	kvm->mmu_invalidate_in_progress--;
+> +
+> +	/*
+> +	 * Assert that at least one range must be added between start() and
+> +	 * end().  Not adding a range isn't fatal, but it is a KVM bug.
+> +	 */
+> +	WARN_ON_ONCE(kvm->mmu_invalidate_in_progress &&
+> +		     kvm->mmu_invalidate_range_start == INVALID_GPA);
+>  }
+>  
+>  static void kvm_mmu_notifier_invalidate_range_end(struct mmu_notifier *mn,
+> -- 
+> 2.42.0.283.g2d96d420d3-goog
 > 
