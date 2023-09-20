@@ -2,99 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4D4A7A8670
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Sep 2023 16:24:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE5867A867A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Sep 2023 16:25:11 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sNy/LsCd;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=rPpPY2C7;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RrLPw5cLxz3c5c
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 00:24:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RrLQs5Ky9z3cTt
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 00:25:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sNy/LsCd;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=rPpPY2C7;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=3igalzqykdouzlhuqjnvvnsl.jvtspubewwj-klcspzaz.vgshiz.vyn@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x1049.google.com (mail-pj1-x1049.google.com [IPv6:2607:f8b0:4864:20::1049])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RrLP13hdQz2ymM
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Sep 2023 00:23:33 +1000 (AEST)
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4RrLNy3qZVz4xNq
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Sep 2023 00:23:30 +1000 (AEST)
-Received: by gandalf.ozlabs.org (Postfix)
-	id 4RrLNy3n0fz4xMC; Thu, 21 Sep 2023 00:23:30 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: gandalf.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: gandalf.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sNy/LsCd;
-	dkim-atps=neutral
-Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=adityag@linux.ibm.com; receiver=ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4RrLNy0NHzz4xM7;
-	Thu, 21 Sep 2023 00:23:29 +1000 (AEST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38KE8Rjv023043;
-	Wed, 20 Sep 2023 14:23:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : content-type : in-reply-to :
- mime-version; s=pp1; bh=4aE2SLoygx07GBR/lTFAmg/RClnb4J5raV/Poy84coA=;
- b=sNy/LsCdgqIP20mXyYhqbntTLJ/xUtLYR85Jeq3qgGO/1NHatzw0C7nMNOGavGJ3X66c
- cy+d8sJ2h9BvawSL2xTZ+WJCUaeAVt5YAw3ndBROiGeZUSDFXlNvtP3ozV8fNQYstIs2
- XZLyfLUhMsaLgNsjJycuUxobeBNnl6hilVmQexxy+bR8KEdZ8SKal5RdSsCRYTlWGR6v
- bX7MaEuxUvckxVnWkGlMRKUknBKTcfpcBl2O5HWOOyWFRWL3RXsdXYevEBJSPuNzPjVb
- NH0fAcY13dB3EjzuxYT+t5WHiGkCsANkux9bz0wirXlIZfgo9G8kL0ku5b6ZZaMG+09K sw== 
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t7ydwnk9e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 20 Sep 2023 14:23:26 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 38KDUmlC010122;
-	Wed, 20 Sep 2023 14:23:26 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3t5rwke7pd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 20 Sep 2023 14:23:25 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 38KENNes14352992
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 20 Sep 2023 14:23:23 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1653520040;
-	Wed, 20 Sep 2023 14:23:23 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3BD3E20043;
-	Wed, 20 Sep 2023 14:23:21 +0000 (GMT)
-Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com (unknown [9.171.39.62])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 20 Sep 2023 14:23:20 +0000 (GMT)
-Date: Wed, 20 Sep 2023 19:53:16 +0530
-From: Aditya Gupta <adityag@linux.ibm.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH v2 1/2] powerpc: add `cur_cpu_spec` symbol to vmcoreinfo
-Message-ID: <qja6dkvqkcgxjxmgjo4cu6rpa7zvcgnvwa3gxux3f3sjpenejx@7dfbbykea3fw>
-References: <20230920105706.853626-1-adityag@linux.ibm.com>
- <87y1h1vy53.fsf@linux.ibm.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87y1h1vy53.fsf@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: b_Wr2NPN1duhzdEuPpriAVKNfwwApVmZ
-X-Proofpoint-ORIG-GUID: b_Wr2NPN1duhzdEuPpriAVKNfwwApVmZ
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
-MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-20_05,2023-09-20_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- priorityscore=1501 suspectscore=0 phishscore=0 adultscore=0 bulkscore=0
- mlxlogscore=999 lowpriorityscore=0 mlxscore=0 clxscore=1015
- impostorscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2308100000 definitions=main-2309200115
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RrLPp4kLmz3cDn
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Sep 2023 00:24:13 +1000 (AEST)
+Received: by mail-pj1-x1049.google.com with SMTP id 98e67ed59e1d1-27472e97c0bso4647046a91.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Sep 2023 07:24:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1695219850; x=1695824650; darn=lists.ozlabs.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=DOI6e5Fz0eSccYOGv0a2XgOrMIQyrqURVkPdu4XpUSk=;
+        b=rPpPY2C7WjkCYrjLAHWzEyz84Tru2xXqHy0qi+eQ7xxWqi1Ty3Qa6njB1x1y7PurM4
+         CTfrcTrrgxOvxokXTsHqOs5yKcTuawp2CXD6cE940xAE5g2+TWy+sp952K+pbop8sqFq
+         RtJt55xwZTFT9v6iqXYJ4Q/P8COVjObzqwqPE5abBCAOgnznwibULllfbuRf41mP/kQX
+         YETQJL9tCUSva6ozspCy5ZPEKkhqZ84si9sPwPWv05Rlcp1qjJ0j6cg/CJff4H+7Tpkg
+         Tz1rQ5aELNJ7teylqCSgj7BfK/zd+WiORVy1RcOs9Awkqzfym5tWhdOWUjlSEUWpeVQ+
+         uyMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695219850; x=1695824650;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DOI6e5Fz0eSccYOGv0a2XgOrMIQyrqURVkPdu4XpUSk=;
+        b=QHmqUhjioh3WWQphfE8Qv2KW9remNFtlMXhbfWcEzVfZuiMtqq++jsszw3ulHcOonR
+         3v3z6nhrW/8z18HU3BNC/LN8wTwq1x9e66jItK/NYl4UtBxmTyjS9leMEAQe1FYTgAMd
+         Y+FAodQsuxJDzW6fMglSZxIEtkfoHF/RAnzFMIEpketr/EGmYPaRaGyQNJBtx0WfM0Di
+         fuBDTml7Mq1C3hlAZdnP1/iAZpMFZAwJ+c3PCRfuqsKEplF4iVQj+lDsWRE5wJe8QZ6V
+         dkAISmSGwvGs0jLrO+Fq+3b/J9PnVGoclR2hUtdqUDiu9i5XnThc+gbtrcEWO9NVFlXC
+         mMEw==
+X-Gm-Message-State: AOJu0YwiU5PKlJxE/K5MP5ZyR0cks6nxX9DG0QOO/4yTCdIhTx6pFaJr
+	0Alo+O9igCnf+YYgO5+L5G+3cyM4VSI=
+X-Google-Smtp-Source: AGHT+IG+7+KaIB01fLVIPGeb7tjb/zu/hrsNFs+xXo/mmyM/aDSVQYbb0kWI4ACm+gkgu18FM/xCEI0V+P0=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a17:902:f203:b0:1c0:ac09:4032 with SMTP id
+ m3-20020a170902f20300b001c0ac094032mr25326plc.9.1695219850013; Wed, 20 Sep
+ 2023 07:24:10 -0700 (PDT)
+Date: Wed, 20 Sep 2023 07:24:08 -0700
+In-Reply-To: <e397d30c-c6af-e68f-d18e-b4e3739c5389@linux.intel.com>
+Mime-Version: 1.0
+References: <20230914015531.1419405-1-seanjc@google.com> <20230914015531.1419405-15-seanjc@google.com>
+ <e397d30c-c6af-e68f-d18e-b4e3739c5389@linux.intel.com>
+Message-ID: <ZQsAiGuw/38jIOV7@google.com>
+Subject: Re: [RFC PATCH v12 14/33] KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for
+ guest-specific backing memory
+From: Sean Christopherson <seanjc@google.com>
+To: Binbin Wu <binbin.wu@linux.intel.com>
+Content-Type: text/plain; charset="us-ascii"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,79 +75,127 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev@ozlabs.org, Sachin Sant <sachinp@linux.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>
+Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Paul Moore <paul@paul-moore.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, James Morris <jmorris@namei.org>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, "Serge E. Hallyn" <serge@hallyn.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Vlastimil Babka <vbabka@suse.cz>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Isaku Yamahata <isaku.yamahata@intel.com>, Quentin Perret <qperret@google.com>, Liam Merwick <liam.merwick@orac
+ le.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, linux-security-module@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, Xu Yilun <yilun.xu@intel.com>, Anish Moorthy <amoorthy@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 20, 2023 at 05:45:36PM +0530, Aneesh Kumar K.V wrote:
-> Aditya Gupta <adityag@linux.ibm.com> writes:
+On Tue, Sep 19, 2023, Binbin Wu wrote:
 > 
-> > Since below commit, address mapping for vmemmap has changed for Radix
-> > MMU, where address mapping is stored in kernel page table itself,
-> > instead of earlier used 'vmemmap_list'.
-> >
-> >     commit 368a0590d954 ("powerpc/book3s64/vmemmap: switch radix to use
-> >     a different vmemmap handling function")
-> >
-> > Hence with upstream kernel, in case of Radix MMU, makedumpfile fails to do
-> > address translation for vmemmap addresses, as it depended on vmemmap_list,
-> > which can now be empty.
-> >
-> > While fixing the address translation in makedumpfile, it was identified
-> > that currently makedumpfile cannot distinguish between Hash MMU and
-> > Radix MMU, unless VMLINUX is passed with -x flag to makedumpfile.
-> > And hence fails to assign offsets and shifts correctly (such as in L4 to
-> > PGDIR offset calculation in makedumpfile).
-> >
-> > For getting the MMU, makedumpfile uses `cur_cpu_spec.mmu_features`.
-> >
-> > Add `cur_cpu_spec` symbol and offset of `mmu_features` in the
-> > `cpu_spec` struct, to VMCOREINFO, so that makedumpfile can assign the
-> > offsets correctly, without needing a VMLINUX.
-> >
-> > Fixes: 368a0590d954 ("powerpc/book3s64/vmemmap: switch radix to use a different vmemmap handling function")
-> > Reported-by: Sachin Sant <sachinp@linux.ibm.com>
-> > Tested-by: Sachin Sant <sachinp@linux.ibm.com>
-> > Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
-> >
-> > ---
-> > Corresponding makedumpfile patches to fix address translation, in Radix
-> > MMU case:
-> >
-> > Link: https://lore.kernel.org/kexec/B5F0F00E-F2B1-47D7-A143-5683D10DC29A@linux.ibm.com/T/#t
-> > ---
-> > ---
-> >  arch/powerpc/kexec/core.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > diff --git a/arch/powerpc/kexec/core.c b/arch/powerpc/kexec/core.c
-> > index de64c7962991..369b8334a4f0 100644
-> > --- a/arch/powerpc/kexec/core.c
-> > +++ b/arch/powerpc/kexec/core.c
-> > @@ -63,6 +63,8 @@ void arch_crash_save_vmcoreinfo(void)
-> >  #ifndef CONFIG_NUMA
-> >  	VMCOREINFO_SYMBOL(contig_page_data);
-> >  #endif
-> > +	VMCOREINFO_SYMBOL(cur_cpu_spec);
-> > +	VMCOREINFO_OFFSET(cpu_spec, mmu_features);
-> >  #if defined(CONFIG_PPC64) && defined(CONFIG_SPARSEMEM_VMEMMAP)
-> >  	VMCOREINFO_SYMBOL(vmemmap_list);
-> >  	VMCOREINFO_SYMBOL(mmu_vmemmap_psize);
-> >
 > 
-> That implies we now have to be careful when updating MMU_FTR_* #defines.
-> It is not bad considering other hacks we do in crash to identify kernel
-> changes tied to version number. But i am wondering if there another way
-> to identify radix vs hash?
+> On 9/14/2023 9:55 AM, Sean Christopherson wrote:
+> [...]
+> > +
+> > +static void kvm_gmem_invalidate_begin(struct kvm_gmem *gmem, pgoff_t start,
+> > +				      pgoff_t end)
+> > +{
+> > +	struct kvm_memory_slot *slot;
+> > +	struct kvm *kvm = gmem->kvm;
+> > +	unsigned long index;
+> > +	bool flush = false;
+> > +
+> > +	KVM_MMU_LOCK(kvm);
+> > +
+> > +	kvm_mmu_invalidate_begin(kvm);
+> > +
+> > +	xa_for_each_range(&gmem->bindings, index, slot, start, end - 1) {
+> > +		pgoff_t pgoff = slot->gmem.pgoff;
+> > +
+> > +		struct kvm_gfn_range gfn_range = {
+> > +			.start = slot->base_gfn + max(pgoff, start) - pgoff,
+> > +			.end = slot->base_gfn + min(pgoff + slot->npages, end) - pgoff,
+> > +			.slot = slot,
+> > +			.may_block = true,
+> > +		};
+> > +
+> > +		flush |= kvm_mmu_unmap_gfn_range(kvm, &gfn_range);
+> > +	}
+> > +
+> > +	if (flush)
+> > +		kvm_flush_remote_tlbs(kvm);
+> > +
+> > +	KVM_MMU_UNLOCK(kvm);
+> > +}
+> > +
+> > +static void kvm_gmem_invalidate_end(struct kvm_gmem *gmem, pgoff_t start,
+> > +				    pgoff_t end)
+> > +{
+> > +	struct kvm *kvm = gmem->kvm;
+> > +
+> > +	KVM_MMU_LOCK(kvm);
+> > +	if (xa_find(&gmem->bindings, &start, end - 1, XA_PRESENT))
+> > +		kvm_mmu_invalidate_end(kvm);
+> kvm_mmu_invalidate_begin() is called unconditionally in
+> kvm_gmem_invalidate_begin(),
+> but kvm_mmu_invalidate_end() is not here.
+> This makes the kvm_gmem_invalidate_{begin, end}() calls asymmetric.
+
+Another ouch :-(
+
+And there should be no need to acquire mmu_lock() unconditionally, the inode's
+mutex protects the bindings, not mmu_lock.
+
+I'll get a fix posted today.  I think KVM can also add a sanity check to detect
+unresolved invalidations, e.g.
+
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 7ba1ab1832a9..2a2d18070856 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -1381,8 +1381,13 @@ static void kvm_destroy_vm(struct kvm *kvm)
+         * No threads can be waiting in kvm_swap_active_memslots() as the
+         * last reference on KVM has been dropped, but freeing
+         * memslots would deadlock without this manual intervention.
++        *
++        * If the count isn't unbalanced, i.e. KVM did NOT unregister between
++        * a start() and end(), then there shouldn't be any in-progress
++        * invalidations.
+         */
+        WARN_ON(rcuwait_active(&kvm->mn_memslots_update_rcuwait));
++       WARN_ON(!kvm->mn_active_invalidate_count && kvm->mmu_invalidate_in_progress);
+        kvm->mn_active_invalidate_count = 0;
+ #else
+        kvm_flush_shadow_all(kvm);
+
+
+or an alternative style
+
+	if (kvm->mn_active_invalidate_count)
+		kvm->mn_active_invalidate_count = 0;
+	else
+		WARN_ON(kvm->mmu_invalidate_in_progress)
+
+> > +	KVM_MMU_UNLOCK(kvm);
+> > +}
+> > +
+> > +static long kvm_gmem_punch_hole(struct inode *inode, loff_t offset, loff_t len)
+> > +{
+> > +	struct list_head *gmem_list = &inode->i_mapping->private_list;
+> > +	pgoff_t start = offset >> PAGE_SHIFT;
+> > +	pgoff_t end = (offset + len) >> PAGE_SHIFT;
+> > +	struct kvm_gmem *gmem;
+> > +
+> > +	/*
+> > +	 * Bindings must stable across invalidation to ensure the start+end
+> > +	 * are balanced.
+> > +	 */
+> > +	filemap_invalidate_lock(inode->i_mapping);
+> > +
+> > +	list_for_each_entry(gmem, gmem_list, entry) {
+> > +		kvm_gmem_invalidate_begin(gmem, start, end);
+> > +		kvm_gmem_invalidate_end(gmem, start, end);
+> > +	}
+> Why to loop for each gmem in gmem_list here?
 > 
+> IIUIC, offset is the offset according to the inode, it is only meaningful to
+> the inode passed in, i.e, it is only meaningful to the gmem binding with the
+> inode, not others.
 
-I could not find another way to get any other flag for RADIX vs HASH in
-makedumpfile. And currently I don't know of any other way.
+The code is structured to allow for multiple gmem instances per inode.  This isn't
+actually possible in the initial code base, but it's on the horizon[*].  I included
+the list-based infrastructure in this initial series to ensure that guest_memfd
+can actually support multiple files per inode, and to minimize the churn when the
+"link" support comes along.
 
-Both makedumpfile and crash look for '0x40' flag set in
-'cur_cpu_spec.mmu_features', so only requirement for 'MMU_FTR_TYPE_RADIX' is to
-be '0x40', or we will need to change the value accordingly in the tools.
-
-Thanks,
-- Aditya Gupta
+[*] https://lore.kernel.org/all/cover.1691446946.git.ackerleytng@google.com
 
