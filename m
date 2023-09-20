@@ -2,28 +2,28 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D55EE7A78C8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Sep 2023 12:12:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B7D97A78CC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Sep 2023 12:13:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RrDqV5nFYz3dm9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Sep 2023 20:12:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RrDr11lGxz3dCH
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Sep 2023 20:13:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.13; helo=inva020.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.21; helo=inva021.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RrDmQ1vbBz3cBQ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Sep 2023 20:09:58 +1000 (AEST)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 5F6191A0989;
-	Wed, 20 Sep 2023 12:09:55 +0200 (CEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RrDmR2rxwz3cCr
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Sep 2023 20:09:59 +1000 (AEST)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 9B37F200B9B;
+	Wed, 20 Sep 2023 12:09:56 +0200 (CEST)
 Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 272141A0D5F;
-	Wed, 20 Sep 2023 12:09:55 +0200 (CEST)
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 62489200B96;
+	Wed, 20 Sep 2023 12:09:56 +0200 (CEST)
 Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 115211802200;
-	Wed, 20 Sep 2023 18:09:53 +0800 (+08)
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 7B1581820F59;
+	Wed, 20 Sep 2023 18:09:54 +0800 (+08)
 From: Shengjiu Wang <shengjiu.wang@nxp.com>
 To: hverkuil@xs4all.nl,
 	sakari.ailus@iki.fi,
@@ -42,9 +42,9 @@ To: hverkuil@xs4all.nl,
 	tiwai@suse.com,
 	alsa-devel@alsa-project.org,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH v4 05/11] ASoC: fsl_easrc: register m2m platform device
-Date: Wed, 20 Sep 2023 17:32:44 +0800
-Message-Id: <1695202370-24678-6-git-send-email-shengjiu.wang@nxp.com>
+Subject: [RFC PATCH v4 06/11] media: uapi: Add V4L2_CAP_AUDIO_M2M capability flag
+Date: Wed, 20 Sep 2023 17:32:45 +0800
+Message-Id: <1695202370-24678-7-git-send-email-shengjiu.wang@nxp.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1695202370-24678-1-git-send-email-shengjiu.wang@nxp.com>
 References: <1695202370-24678-1-git-send-email-shengjiu.wang@nxp.com>
@@ -63,49 +63,54 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Register m2m platform device,that user can
-use M2M feature.
+V4L2_CAP_AUDIO_M2M is similar to V4L2_CAP_VIDEO_M2M flag.
+
+It is used for audio memory to memory case.
 
 Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 ---
- sound/soc/fsl/fsl_easrc.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ Documentation/userspace-api/media/v4l/vidioc-querycap.rst    | 3 +++
+ Documentation/userspace-api/media/videodev2.h.rst.exceptions | 1 +
+ include/uapi/linux/videodev2.h                               | 1 +
+ 3 files changed, 5 insertions(+)
 
-diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
-index f517b407672d..b719d517f9b4 100644
---- a/sound/soc/fsl/fsl_easrc.c
-+++ b/sound/soc/fsl/fsl_easrc.c
-@@ -2084,6 +2084,7 @@ MODULE_DEVICE_TABLE(of, fsl_easrc_dt_ids);
- static int fsl_easrc_probe(struct platform_device *pdev)
- {
- 	struct fsl_easrc_priv *easrc_priv;
-+	struct fsl_asrc_m2m_pdata m2m_pdata;
- 	struct device *dev = &pdev->dev;
- 	struct fsl_asrc *easrc;
- 	struct resource *res;
-@@ -2202,11 +2203,23 @@ static int fsl_easrc_probe(struct platform_device *pdev)
- 		return ret;
- 	}
+diff --git a/Documentation/userspace-api/media/v4l/vidioc-querycap.rst b/Documentation/userspace-api/media/v4l/vidioc-querycap.rst
+index 6c57b8428356..0b3cefefc86b 100644
+--- a/Documentation/userspace-api/media/v4l/vidioc-querycap.rst
++++ b/Documentation/userspace-api/media/v4l/vidioc-querycap.rst
+@@ -259,6 +259,9 @@ specification the ioctl returns an ``EINVAL`` error code.
+         video topology configuration, including which I/O entity is routed to
+         the input/output, is configured by userspace via the Media Controller.
+         See :ref:`media_controller`.
++    * - ``V4L2_CAP_AUDIO_M2M``
++      - 0x40000000
++      - The device supports the audio Memory-To-Memory interface.
+     * - ``V4L2_CAP_DEVICE_CAPS``
+       - 0x80000000
+       - The driver fills the ``device_caps`` field. This capability can
+diff --git a/Documentation/userspace-api/media/videodev2.h.rst.exceptions b/Documentation/userspace-api/media/videodev2.h.rst.exceptions
+index 3e58aac4ef0b..da6d0b8e4c2c 100644
+--- a/Documentation/userspace-api/media/videodev2.h.rst.exceptions
++++ b/Documentation/userspace-api/media/videodev2.h.rst.exceptions
+@@ -197,6 +197,7 @@ replace define V4L2_CAP_META_OUTPUT device-capabilities
+ replace define V4L2_CAP_DEVICE_CAPS device-capabilities
+ replace define V4L2_CAP_TOUCH device-capabilities
+ replace define V4L2_CAP_IO_MC device-capabilities
++replace define V4L2_CAP_AUDIO_M2M device-capabilities
  
-+	m2m_pdata.asrc = easrc;
-+	easrc->m2m_pdev = platform_device_register_data(&pdev->dev,
-+							M2M_DRV_NAME,
-+							PLATFORM_DEVID_AUTO,
-+							&m2m_pdata,
-+							sizeof(m2m_pdata));
-+
- 	return 0;
- }
+ # V4L2 pix flags
+ replace define V4L2_PIX_FMT_PRIV_MAGIC :c:type:`v4l2_pix_format`
+diff --git a/include/uapi/linux/videodev2.h b/include/uapi/linux/videodev2.h
+index 78260e5d9985..3decf7d73870 100644
+--- a/include/uapi/linux/videodev2.h
++++ b/include/uapi/linux/videodev2.h
+@@ -508,6 +508,7 @@ struct v4l2_capability {
+ #define V4L2_CAP_TOUCH                  0x10000000  /* Is a touch device */
  
- static void fsl_easrc_remove(struct platform_device *pdev)
- {
-+	struct fsl_asrc *easrc = dev_get_drvdata(&pdev->dev);
-+
-+	if (easrc->m2m_pdev && !IS_ERR(easrc->m2m_pdev))
-+		platform_device_unregister(easrc->m2m_pdev);
-+
- 	pm_runtime_disable(&pdev->dev);
- }
+ #define V4L2_CAP_IO_MC			0x20000000  /* Is input/output controlled by the media controller */
++#define V4L2_CAP_AUDIO_M2M              0x40000000  /* audio memory to memory */
+ 
+ #define V4L2_CAP_DEVICE_CAPS            0x80000000  /* sets device capabilities field */
  
 -- 
 2.34.1
