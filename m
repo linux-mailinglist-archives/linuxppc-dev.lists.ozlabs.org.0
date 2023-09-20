@@ -1,68 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 075597A8417
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Sep 2023 15:56:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D8037A8657
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Sep 2023 16:17:25 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=0GCnVMcB;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=mmU68D+o;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RrKn969WRz3bw9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Sep 2023 23:55:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RrLFv3wNmz3cJl
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 00:17:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=0GCnVMcB;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=mmU68D+o;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::114a; helo=mail-yw1-x114a.google.com; envelope-from=3uvkkzqykdak1njwslpxxpun.lxvurw36yyl-mn4ur121.x8ujk1.x0p@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RrKmH3Tkpz2xYt
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Sep 2023 23:55:09 +1000 (AEST)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-5924b2aac52so89054657b3.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Sep 2023 06:55:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1695218106; x=1695822906; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0APReAt4bNnnd5kx+NahuCYj0tgbUgwxY6/xmv3q1x8=;
-        b=0GCnVMcBO/XLEWkhFR8jICfNlDKw3ydCxvnGpVJVx/H81FgBbWmbdn+K2dnzwndJ1h
-         tew3ysu+jDx/NZdlGOGh8XvG2pTPtRPVJELlBfut4JggGjQNZ87woyBhxAzzTMnC6P9k
-         YSZ3cSpNLNCS9ad7T2Rs8zwgqfREsIJtnw85sOEgCLpxIODOKBAERmmZyp+pbKR/ioFw
-         rsRC4xzFChasYy+NfN95ZnKcS5dfBBJ5M4B5lvYkeMbpmFhm5IFPTpxqWqhE3Ia53Mmb
-         GKnn1X9NXtWLALJMdA7XkT6JO+n9F6uynY2bCfGWY/Nyes4TYDYve4qRFLmQI6eOGS+W
-         S+aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695218106; x=1695822906;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0APReAt4bNnnd5kx+NahuCYj0tgbUgwxY6/xmv3q1x8=;
-        b=iG6qlmhckqhC+7ntot/EQp7Z0Aaer04KE7F/I+JpoGiSS4iX7hTuQiLsafA7+e2sYo
-         /ZLvJE38ynBcVQpv/nbIPEdYGsPurUNc2G2MRnY5u9icp5OhPqRE7nLcjP5TnS0hUt/8
-         siwXh6hPiloLBuwjTe3dlQ7+toTM1zLoJj3/m6G56MyTXoR+vXSDB5HsJ7i8GnRUp6H0
-         hC58/N2fSZA7+yu0ijE3wyHfjYlzlIrnk19xMKgwv6sK896UQC4X03mqdP0YcchB9Q3o
-         oYFLzKMFVHog2LLoC+e0ugSI0A07634RiOWuiXYKbEKXFVbBW5OKH9dJ+RRZ1mf7rPIp
-         Ol3Q==
-X-Gm-Message-State: AOJu0YwVHx/pJUMnRjkts2NRa5XRyMWRG0z7KwPUxfEOPc6fRrz4ZyCr
-	r3k12tEN9CcjBYSIiwLXFhJEOA0AD9Y=
-X-Google-Smtp-Source: AGHT+IHuQ24Hy0wlZqpKThD2hndi3rYWapG+J/d1L/ai4z7W/k7rmZdxNg2zwHr4zmYKJTJyjaSKmjFgB/U=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a81:ae57:0:b0:59b:ee27:bbe9 with SMTP id
- g23-20020a81ae57000000b0059bee27bbe9mr35901ywk.9.1695218106527; Wed, 20 Sep
- 2023 06:55:06 -0700 (PDT)
-Date: Wed, 20 Sep 2023 06:55:05 -0700
-In-Reply-To: <ZQqMBEL61p739dpF@yilunxu-OptiPlex-7050>
-Mime-Version: 1.0
-References: <20230914015531.1419405-1-seanjc@google.com> <20230914015531.1419405-3-seanjc@google.com>
- <ZQqMBEL61p739dpF@yilunxu-OptiPlex-7050>
-Message-ID: <ZQr5uXhV6Cnx4DYT@google.com>
-Subject: Re: [RFC PATCH v12 02/33] KVM: Use gfn instead of hva for mmu_notifier_retry
-From: Sean Christopherson <seanjc@google.com>
-To: Xu Yilun <yilun.xu@intel.com>
-Content-Type: text/plain; charset="us-ascii"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RrLF01Mryz2ygX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Sep 2023 00:16:34 +1000 (AEST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out2.suse.de (Postfix) with ESMTP id 645631FF2C;
+	Wed, 20 Sep 2023 14:16:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1695219391; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=r92pwsodrWk5oBqS0cdXZqSV+7pX7kIETuIqrWvBLxw=;
+	b=mmU68D+oiMP6qLaksJbVOllJtvqq3pC6gnjPZrXOrfE1pwxFiR5I04VDxOur1T2CQDwUge
+	qALZqqcIWoAGIFzbq2D/px5SX0jXeHt7kGfZHgIn3e7nleqc04SrXlC2xr3KWvRcqTB2BF
+	oJbg+r9VMCXwSy1GVHr/ioG3gI2kCJU=
+Received: from suse.cz (pmladek.tcp.ovpn2.prg.suse.de [10.100.208.146])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by relay2.suse.de (Postfix) with ESMTPS id A3EF32C142;
+	Wed, 20 Sep 2023 14:16:30 +0000 (UTC)
+Date: Wed, 20 Sep 2023 16:16:30 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: Joe Lawrence <joe.lawrence@redhat.com>
+Subject: Re: Recent Power changes and stack_trace_save_tsk_reliable?
+Message-ID: <ZQr-vmBBQ66TRobQ@alley>
+References: <ZO4K6hflM/arMjse@redhat.com>
+ <87o7ipxtdc.fsf@mail.lhotse>
+ <87il8xxcg7.fsf@mail.lhotse>
+ <cca0770c-1510-3a02-d0ba-82ee5a0ae4f2@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cca0770c-1510-3a02-d0ba-82ee5a0ae4f2@redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,44 +62,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Paul Moore <paul@paul-moore.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, James Morris <jmorris@namei.org>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, "Serge E. Hallyn" <serge@hallyn.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Vlastimil Babka <vbabka@suse.cz>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Isaku Yamahata <isaku.yamahata@intel.com>, Quentin Perret <qperret@google.com>, Liam Merwick <liam.merwick@orac
- le.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, linux-security-module@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, Anish Moorthy <amoorthy@google.com>
+Cc: Ryan Sullivan <rysulliv@redhat.com>, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, live-patching@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 20, 2023, Xu Yilun wrote:
-> On 2023-09-13 at 18:55:00 -0700, Sean Christopherson wrote:
-> > +void kvm_mmu_invalidate_range_add(struct kvm *kvm, gfn_t start, gfn_t end)
-> > +{
-> > +	lockdep_assert_held_write(&kvm->mmu_lock);
-> > +
-> > +	WARN_ON_ONCE(!kvm->mmu_invalidate_in_progress);
-> > +
-> >  	if (likely(kvm->mmu_invalidate_in_progress == 1)) {
-> >  		kvm->mmu_invalidate_range_start = start;
-> >  		kvm->mmu_invalidate_range_end = end;
+On Wed 2023-08-30 17:47:35, Joe Lawrence wrote:
+> On 8/30/23 02:37, Michael Ellerman wrote:
+> > Michael Ellerman <mpe@ellerman.id.au> writes:
+> >> Joe Lawrence <joe.lawrence@redhat.com> writes:
+> >>> Hi ppc-dev list,
+> >>>
+> >>> We noticed that our kpatch integration tests started failing on ppc64le
+> >>> when targeting the upstream v6.4 kernel, and then confirmed that the
+> >>> in-tree livepatching kselftests similarly fail, too.  From the kselftest
+> >>> results, it appears that livepatch transitions are no longer completing.
+> >>
+> >> Hi Joe,
+> >>
+> >> Thanks for the report.
+> >>
+> >> I thought I was running the livepatch tests, but looks like somewhere
+> >> along the line my kernel .config lost CONFIG_TEST_LIVEPATCH=m, so I have
+> >> been running the test but it just skips. :/
+> >>
 > 
-> IIUC, Now we only add or override a part of the invalidate range in
-> these fields, IOW only the range in last slot is stored when we unlock.
-
-Ouch.  Good catch!
-
-> That may break mmu_invalidate_retry_gfn() cause it can never know the
-> whole invalidate range.
+> That config option is easy to drop if you use `make localmodconfig` to
+> try and expedite the builds :D  Been there, done that too many times.
 > 
-> How about we extend the mmu_invalidate_range_start/end everytime so that
-> it records the whole invalidate range:
+> >> I can reproduce the failure, and will see if I can bisect it more
+> >> successfully.
+> > 
+> > It's caused by:
+> > 
+> >   eed7c420aac7 ("powerpc: copy_thread differentiate kthreads and user mode threads")
+> > 
+> > Which is obvious in hindsight :)
+> > 
+> > The diff below fixes it for me, can you test that on your setup?
+> > 
 > 
-> if (kvm->mmu_invalidate_range_start == INVALID_GPA) {
-> 	kvm->mmu_invalidate_range_start = start;
-> 	kvm->mmu_invalidate_range_end = end;
-> } else {
-> 	kvm->mmu_invalidate_range_start =
-> 		min(kvm->mmu_invalidate_range_start, start);
-> 	kvm->mmu_invalidate_range_end =
-> 		max(kvm->mmu_invalidate_range_end, end);
-> }
+> Thanks for the fast triage of this one.  The proposed fix works well on
+> our setup.  I have yet to try the kpatch integration tests with this,
+> but I can verify that all of the kernel livepatching kselftests now
+> happily run.
 
-Yeah, that does seem to be the easiest solution.
+Have this been somehow handled, please? I do not see the proposed
+change in linux-next as of now.
 
-I'll post a fixup patch, unless you want the honors.
+> > A proper fix will need to be a bit bigger because the comments in there
+> > are all slightly wrong now since the above commit.
+> > 
+> > Possibly we can also rework that code more substantially now that
+> > copy_thread() is more careful about setting things up, but that would be
+> > a follow-up.
+> > 
+> > diff --git a/arch/powerpc/kernel/stacktrace.c b/arch/powerpc/kernel/stacktrace.c
+> > index 5de8597eaab8..d0b3509f13ee 100644
+> > --- a/arch/powerpc/kernel/stacktrace.c
+> > +++ b/arch/powerpc/kernel/stacktrace.c
+> > @@ -73,7 +73,7 @@ int __no_sanitize_address arch_stack_walk_reliable(stack_trace_consume_fn consum
+> >  	bool firstframe;
+> >  
+> >  	stack_end = stack_page + THREAD_SIZE;
+> > -	if (!is_idle_task(task)) {
+> > +	if (!(task->flags & PF_KTHREAD)) {
+> >  		/*
+> >  		 * For user tasks, this is the SP value loaded on
+> >  		 * kernel entry, see "PACAKSAVE(r13)" in _switch() and
+
+If I read the change in the commit eed7c420aac7fde ("powerpc: copy_thread
+differentiate kthreads and user mode threads") correctly then the
+above fix is correct.
+
+It is probably just enough to update the comment about that
+STACK_FRAME_MIN_SIZE is used by all kthreads.
+
+Best Regards,
+Petr
