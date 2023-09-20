@@ -1,70 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FD857A77A9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Sep 2023 11:35:33 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hHW7X4m7;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AC9A7A78AF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Sep 2023 12:10:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RrD0g3cG3z3cDg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Sep 2023 19:35:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RrDmp1Yv9z3c5j
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Sep 2023 20:10:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hHW7X4m7;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=lee@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.21; helo=inva021.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RrCzr1S2Jz2xmC
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Sep 2023 19:34:48 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by sin.source.kernel.org (Postfix) with ESMTPS id 6E0ACCE1AA7;
-	Wed, 20 Sep 2023 09:34:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51BA7C433C8;
-	Wed, 20 Sep 2023 09:34:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1695202484;
-	bh=QRqraJthrB8s9rPFRvGC6l5CWWwWQnee/47O8rOjCCw=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=hHW7X4m7KYpDH5gfY61PdqOpjN3Y7rHvb8kCZPi2x4QeZ4282xmLjtH/VG98fLLt2
-	 nnMOFneixT9add37HLtFNJq4cPxFz0G0CYiPYBF4mfuu0Wd7Ylcic2Yyig9S88zxI/
-	 wZ1y138LMKQb3ZE6Dc99cRaKauE718Qsi7GkZqONwyB7rIFvccLpXII9v54328Y5Xf
-	 QMXEZusEupYfBMolEIdWaI69MR1OWSs30AEjcVl3TLDIdedsK3IFxjtHA+Oc2h17Q8
-	 HkBgJqIzsp7+r3Xf1XkVKFMg6EwaPxvbBnArHbwZ0wuxPx8VLJEKw6szjW+9BTpb7T
-	 nXEayUPV2CyBA==
-From: Lee Jones <lee@kernel.org>
-To: Herve Codina <herve.codina@bootlin.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh+dt@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>, 
- Linus Walleij <linus.walleij@linaro.org>, Qiang Zhao <qiang.zhao@nxp.com>, 
- Li Yang <leoyang.li@nxp.com>, Liam Girdwood <lgirdwood@gmail.com>, 
- Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>, 
- Takashi Iwai <tiwai@suse.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, 
- Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>, 
- Nicolin Chen <nicoleotsuka@gmail.com>, Randy Dunlap <rdunlap@infradead.org>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <528425d6472176bb1d02d79596b51f8c28a551cc.1692376361.git.christophe.leroy@csgroup.eu>
-References: <cover.1692376360.git.christophe.leroy@csgroup.eu>
- <528425d6472176bb1d02d79596b51f8c28a551cc.1692376361.git.christophe.leroy@csgroup.eu>
-Subject: Re: (subset) [PATCH v4 23/28] mfd: core: Ensure disabled devices
- are skiped without aborting
-Message-Id: <169520247904.3353856.9378855807085829647.b4-ty@kernel.org>
-Date: Wed, 20 Sep 2023 10:34:39 +0100
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.12.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RrDmK2tqBz303l
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Sep 2023 20:09:52 +1000 (AEST)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 63D11200B77;
+	Wed, 20 Sep 2023 12:09:48 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 092EB200B82;
+	Wed, 20 Sep 2023 12:09:48 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 2632A180327D;
+	Wed, 20 Sep 2023 18:09:46 +0800 (+08)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: hverkuil@xs4all.nl,
+	sakari.ailus@iki.fi,
+	tfiga@chromium.org,
+	m.szyprowski@samsung.com,
+	mchehab@kernel.org,
+	linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	festevam@gmail.com,
+	nicoleotsuka@gmail.com,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	alsa-devel@alsa-project.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [RFC PATCH v4 00/11] Add audio support in v4l2 framework
+Date: Wed, 20 Sep 2023 17:32:39 +0800
+Message-Id: <1695202370-24678-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,26 +58,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 18 Aug 2023 18:39:17 +0200, Christophe Leroy wrote:
-> The loop searching for a matching device based on its compatible
-> string is aborted when a matching disabled device is found.
-> This abort prevents to add devices as soon as one disabled device
-> is found.
-> 
-> Continue searching for an other device instead of aborting on the
-> first disabled one fixes the issue.
-> 
-> [...]
+Audio signal processing also has the requirement for memory to
+memory similar as Video.
 
-Applied, thanks!
+This asrc memory to memory (memory ->asrc->memory) case is a non
+real time use case.
 
-[23/28] mfd: core: Ensure disabled devices are skiped without aborting
-        commit: 36d139dc63db18eb95165fcc2bd3c670c948d605
+User fills the input buffer to the asrc module, after conversion, then asrc
+sends back the output buffer to user. So it is not a traditional ALSA playback
+and capture case.
 
---
-Lee Jones [李琼斯]
+It is a specific use case,  there is no reference in current kernel.
+v4l2 memory to memory is the closed implementation,  v4l2 current
+support video, image, radio, tuner, touch devices, so it is not
+complicated to add support for this specific audio case.
+
+Because we had implemented the "memory -> asrc ->i2s device-> codec"
+use case in ALSA.  Now the "memory->asrc->memory" needs
+to reuse the code in asrc driver, so the first 3 patches is for refining
+the code to make it can be shared by the "memory->asrc->memory"
+driver.
+
+The main change is in the v4l2 side, A /dev/vl4-audioX will be created,
+user applications only use the ioctl of v4l2 framework.
+
+Other change is to add memory to memory support for two kinds of i.MX ASRC
+module.
+
+changes in v4:
+- update document style
+- separate V4L2_AUDIO_FMT_LPCM and V4L2_CAP_AUDIO_M2M in separate commit
+
+changes in v3:
+- Modify documents for adding audio m2m support
+- Add audio virtual m2m driver
+- Defined V4L2_AUDIO_FMT_LPCM format type for audio.
+- Defined V4L2_CAP_AUDIO_M2M capability type for audio m2m case.
+- with modification in v4l-utils, pass v4l2-compliance test.
+
+changes in v2:
+- decouple the implementation in v4l2 and ALSA
+- implement the memory to memory driver as a platfrom driver
+  and move it to driver/media
+- move fsl_asrc_common.h to include/sound folder
+
+Shengjiu Wang (11):
+  ASoC: fsl_asrc: define functions for memory to memory usage
+  ASoC: fsl_easrc: define functions for memory to memory usage
+  ASoC: fsl_asrc: move fsl_asrc_common.h to include/sound
+  ASoC: fsl_asrc: register m2m platform device
+  ASoC: fsl_easrc: register m2m platform device
+  media: uapi: Add V4L2_CAP_AUDIO_M2M capability flag
+  media: uapi: Add V4L2_AUDIO_FMT_LPCM fourcc format
+  media: v4l2: Add audio capture and output support
+  media: uapi: Add V4L2_CID_USER_IMX_ASRC_RATIO_MOD control
+  media: audm2m: add virtual driver for audio memory to memory
+  media: imx-asrc: Add memory to memory driver
+
+ .../userspace-api/media/v4l/audio-formats.rst |   15 +
+ .../userspace-api/media/v4l/buffer.rst        |    6 +
+ .../userspace-api/media/v4l/control.rst       |    5 +
+ .../userspace-api/media/v4l/dev-audio.rst     |   63 +
+ .../userspace-api/media/v4l/devices.rst       |    1 +
+ .../media/v4l/pixfmt-aud-lpcm.rst             |   61 +
+ .../userspace-api/media/v4l/pixfmt.rst        |    1 +
+ .../media/v4l/vidioc-enum-fmt.rst             |    2 +
+ .../userspace-api/media/v4l/vidioc-g-fmt.rst  |    4 +
+ .../media/v4l/vidioc-querycap.rst             |    3 +
+ .../media/videodev2.h.rst.exceptions          |    3 +
+ .../media/common/videobuf2/videobuf2-v4l2.c   |    4 +
+ drivers/media/platform/nxp/Kconfig            |   12 +
+ drivers/media/platform/nxp/Makefile           |    1 +
+ drivers/media/platform/nxp/imx-asrc.c         | 1058 +++++++++++++++++
+ drivers/media/test-drivers/Kconfig            |    9 +
+ drivers/media/test-drivers/Makefile           |    1 +
+ drivers/media/test-drivers/audm2m.c           |  767 ++++++++++++
+ drivers/media/v4l2-core/v4l2-ctrls-defs.c     |    1 +
+ drivers/media/v4l2-core/v4l2-dev.c            |   17 +
+ drivers/media/v4l2-core/v4l2-ioctl.c          |   53 +
+ include/media/v4l2-dev.h                      |    2 +
+ include/media/v4l2-ioctl.h                    |   34 +
+ .../fsl => include/sound}/fsl_asrc_common.h   |   54 +
+ include/uapi/linux/v4l2-controls.h            |    1 +
+ include/uapi/linux/videodev2.h                |   25 +
+ sound/soc/fsl/fsl_asrc.c                      |  162 +++
+ sound/soc/fsl/fsl_asrc.h                      |    4 +-
+ sound/soc/fsl/fsl_asrc_dma.c                  |    2 +-
+ sound/soc/fsl/fsl_easrc.c                     |  239 ++++
+ sound/soc/fsl/fsl_easrc.h                     |    8 +-
+ 31 files changed, 2615 insertions(+), 3 deletions(-)
+ create mode 100644 Documentation/userspace-api/media/v4l/audio-formats.rst
+ create mode 100644 Documentation/userspace-api/media/v4l/dev-audio.rst
+ create mode 100644 Documentation/userspace-api/media/v4l/pixfmt-aud-lpcm.rst
+ create mode 100644 drivers/media/platform/nxp/imx-asrc.c
+ create mode 100644 drivers/media/test-drivers/audm2m.c
+ rename {sound/soc/fsl => include/sound}/fsl_asrc_common.h (60%)
+
+-- 
+2.34.1
 
