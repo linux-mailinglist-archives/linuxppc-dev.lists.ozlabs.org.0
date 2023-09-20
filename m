@@ -1,68 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08EE67A86A5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Sep 2023 16:34:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24B347A87E8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Sep 2023 17:08:08 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=f/9GjGYX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=BHuLRfyy;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=qgZHhiyU;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RrLdD1M7kz3c5Y
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 00:34:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RrMNQ0XSxz3cM7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 01:08:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=f/9GjGYX;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=BHuLRfyy;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=qgZHhiyU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2001:4860:4864:20::35; helo=mail-oa1-x35.google.com; envelope-from=keescook@chromium.org; receiver=lists.ozlabs.org)
-Received: from mail-oa1-x35.google.com (mail-oa1-x35.google.com [IPv6:2001:4860:4864:20::35])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.29; helo=out5-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RrLcL2CWmz2yPq
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Sep 2023 00:33:20 +1000 (AEST)
-Received: by mail-oa1-x35.google.com with SMTP id 586e51a60fabf-1d651ab1d77so4017221fac.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Sep 2023 07:33:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1695220392; x=1695825192; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=R0M1U7qooz1MSsev8bUf20ajQA/cHs54guIocLK69iQ=;
-        b=f/9GjGYXdCx9eSn3daXzJRx1leAONwF+WEEhw9z1zo8HtPjAfSYp7yf+3SCuP41Cj4
-         PyE608GRZz23AT4INBzb0Si6RwQAL91BikgpvRiyqLGnlQOPfBF6Mi/67wJb27KvecfV
-         qPEkxqB5ISHcqOpKbtCOgWJ6GuuoVvhcm5j2g=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695220392; x=1695825192;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=R0M1U7qooz1MSsev8bUf20ajQA/cHs54guIocLK69iQ=;
-        b=Fj+BFmLhcUzALJvQyDAdbqkRz1W7xnyFAHYs2LLlj75KMDkSK/eDyJe/qH17F8sRTw
-         7vXGdHgm/0Uzw/vaS9+wKZWoj1Ey/GAErlSC62VUfYiAacxShattaEbs8QTpEPV/6R04
-         dazoDNlabew0gmHaaD+Ek642KQnDm6iekJoAG2B/oDbJ9CU0UFN56KUdbqjqKEGqDBiY
-         aBz4W2SFqzw7qbviWBHMI701yDMEsx9Xb1lv61gwVgWMAUPul9wPp92h8/JEypBk3/a8
-         nup9tdMNvPcl8EeC8+AVnUcklUfCvYmaZ1fEiO4UA1lOMEVAN5bBOi79NoJ+74Ue8akr
-         h3kQ==
-X-Gm-Message-State: AOJu0Yzy8sBqTfzLWroMh//Gn5ciO8gpOpEJ6FQVoiAohmXziMpYUEt6
-	PrW7J5qZZ6uE14WztpdlPTjxYw==
-X-Google-Smtp-Source: AGHT+IHnG2fdejIvfQiUN3o+flnl539Mq0RwoAuzUXucWVFbeZV6npGQfTNnuQS5wk243vtr8CwbVA==
-X-Received: by 2002:a05:6870:8926:b0:1be:f4b3:7f49 with SMTP id i38-20020a056870892600b001bef4b37f49mr2879591oao.23.1695220392694;
-        Wed, 20 Sep 2023 07:33:12 -0700 (PDT)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id t13-20020a63954d000000b00564be149a15sm9614073pgn.65.2023.09.20.07.33.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Sep 2023 07:33:12 -0700 (PDT)
-Date: Wed, 20 Sep 2023 07:33:11 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Justin Stitt <justinstitt@google.com>
-Subject: Re: [PATCH] i2c: replace deprecated strncpy
-Message-ID: <202309200732.29C44010F6@keescook>
-References: <20230920-strncpy-drivers-i2c-busses-i2c-powermac-c-v1-1-0a3e9a107f8a@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RrMMQ5bNrz2yts
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Sep 2023 01:07:13 +1000 (AEST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailout.nyi.internal (Postfix) with ESMTP id DE07F5C01BB;
+	Wed, 20 Sep 2023 11:07:08 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Wed, 20 Sep 2023 11:07:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:sender
+	:subject:subject:to:to; s=fm1; t=1695222428; x=1695308828; bh=ms
+	4LUioRCx9g5Fcd6Nj2Z553BmfY/nfNy++/9p0eMTE=; b=BHuLRfyyuipWu6am6/
+	M3C5KuEVtPRgHdnUSWE2tXf1NF5z/c0HjnG1qXb1WaGZu8Uq7k1Lq5DXx3SfUhLJ
+	+AGNDQ0Gvdy1xUAqZGHxFG0dPweDd4IWaDHtLa1Ju8frSZGFQNlRlxX/YTmR+QTm
+	FrxvvQHeQGOAH4tKQgxAP8/n/XDBfPur4ivYpz7AqfbRaoZFC/0DB/LRt6ogTvDK
+	ibhf89hk7VyhvpN4sS3aoNoWA5NNg9KqAE+6NjLPwBok0RZB1mJOs3iV6MFt/MH4
+	Dtvydol1NjIVeiH0yas9c7mbU50veoZbaGHU9IbQP2FByO/vbbLSQKTuw+/nHr+K
+	WV2g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:sender:subject
+	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+	:x-sasl-enc; s=fm2; t=1695222428; x=1695308828; bh=ms4LUioRCx9g5
+	Fcd6Nj2Z553BmfY/nfNy++/9p0eMTE=; b=qgZHhiyUGnQdiRx/usTNHt32rPNJr
+	9B5WYZMfGf4Wh7FyO6A52lomoJ9ynn4fijFhbL1uXxQvXbZqDqwI3RtNixlUDdBY
+	nr7g83/UKByMv2jpbfoqr0MMhEyLeVl4HTvngpxiAH2TNzYOuQTYsysj+12PQUhh
+	NfZeCSd5kQ2vll+YcV+q/+APQLD6yBY/5mJ6KzJ/VXaqAf54B8D5OfAW8ja+q4S8
+	OwObw1sDeIiXVgJxGcmw5NakTXzLLouS4lIeLJo/w8h5AT4kacfRuTF+izO/lkmJ
+	F56Yyuk075kXqXJcxdmlOPxlIIi+Xm++i+2jPz5jH6sqj1NLjf7H1eCog==
+X-ME-Sender: <xms:nAoLZYwrTKoT42bcnpXZ4-w53D73C76DbJIuYsMLzYvbbB86qR_ffQ>
+    <xme:nAoLZcRulMbaUjUAhbE-QFya1Gxyi5QzCzhATtS7FolBRFqxN9c07Aga3yV4Qoxiq
+    eWbYSyImVFth6dskDE>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudekfedgkeehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
+    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:nAoLZaWZx_TRLb7BjvQU3lpTtrt3jJpa0avXJjdRrHX-EzABxErB_A>
+    <xmx:nAoLZWgVBoycMfqp10qcSIzofTqfa999ofexvDZjpX2k4ORya7JL9g>
+    <xmx:nAoLZaBR9j0jFMUdPxCKTuDNgoxms16P9lFOofBz07ktzPmbvA4Yng>
+    <xmx:nAoLZe6LFDULF3sZ_R6NM9MvFBnTENxcVdrZ0bbn_jFL0BMhje4eJA>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id EC7C5B60089; Wed, 20 Sep 2023 11:07:07 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-761-gece9e40c48-fm-20230913.001-gece9e40c
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230920-strncpy-drivers-i2c-busses-i2c-powermac-c-v1-1-0a3e9a107f8a@google.com>
+Message-Id: <df784a58-23f8-43d2-8506-ab1d351da8fe@app.fastmail.com>
+In-Reply-To: <20230912135050.17155-1-tzimmermann@suse.de>
+References: <20230912135050.17155-1-tzimmermann@suse.de>
+Date: Wed, 20 Sep 2023 11:06:48 -0400
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Thomas Zimmermann" <tzimmermann@suse.de>,
+ "Michael Ellerman" <mpe@ellerman.id.au>,
+ "Nicholas Piggin" <npiggin@gmail.com>,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Helge Deller" <deller@gmx.de>
+Subject: Re: [PATCH v4 0/5] ppc, fbdev: Clean up fbdev mmap helper
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,35 +96,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andi Shyti <andi.shyti@kernel.org>, linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org
+Cc: Linux-Arch <linux-arch@vger.kernel.org>, linux-fbdev@vger.kernel.org, linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-m68k@lists.linux-m68k.org, sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 20, 2023 at 11:07:35AM +0000, Justin Stitt wrote:
-> `strncpy` is deprecated for use on NUL-terminated destination strings [1].
-> 
-> We should prefer more robust and less ambiguous string interfaces.
-> 
-> `info.type` is expected to be NUL-terminated judging by its use in
-> `i2c_new_client_device()` wherein it is used to populate `client->name`:
-> |	strscpy(client->name, info->type, sizeof(client->name));
-> 
-> NUL-padding is not required and even if it was, `client` is already
-> zero-initialized.
-> 
-> Considering the two points from above, a suitable replacement is
-> `strscpy` [2] due to the fact that it guarantees NUL-termination on the
-> destination buffer without unnecessarily NUL-padding.
-> 
-> Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
-> Link: https://manpages.debian.org/testing/linux-manual-4.8/strscpy.9.en.html [2]
-> Link: https://github.com/KSPP/linux/issues/90
-> Cc: linux-hardening@vger.kernel.org
-> Signed-off-by: Justin Stitt <justinstitt@google.com>
+On Tue, Sep 12, 2023, at 09:48, Thomas Zimmermann wrote:
+> Clean up and rename fb_pgprotect() to work without struct file. Then
+> refactor the implementation for PowerPC. This change has been discussed
+> at [1] in the context of refactoring fbdev's mmap code.
+>
+> The first two patches update fbdev and replace fbdev's fb_pgprotect()
+> with pgprot_framebuffer() on all architectures. The new helper's stream-
+> lined interface enables more refactoring within fbdev's mmap
+> implementation.
+>
+> Patches 3 to 5 adapt PowerPC's internal interfaces to provide
+> phys_mem_access_prot() that works without struct file. Neither the
+> architecture code or fbdev helpers need the parameter.
+>
+> v4:
+> 	* fix commit message (Christophe)
+> v3:
+> 	* rename fb_pgrotect() to pgprot_framebuffer() (Arnd)
 
-Looks like a straight replacement. Thanks!
+I had another look today, and everything look good to me now.
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
+Whole series
 
--- 
-Kees Cook
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
