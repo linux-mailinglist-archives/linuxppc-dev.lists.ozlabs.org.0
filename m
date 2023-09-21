@@ -1,56 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD2B37A9450
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 14:39:45 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=R8UsfmiZ;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 040417A94A7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 15:23:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rrw2l5gPLz3cRX
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 22:39:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rrx0f6NtKz3cTZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 23:22:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=R8UsfmiZ;
-	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=aculab.com (client-ip=185.58.85.151; helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com; receiver=lists.ozlabs.org)
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rrw1q5mvkz3c12
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Sep 2023 22:38:55 +1000 (AEST)
-Received: by gandalf.ozlabs.org (Postfix)
-	id 4Rrw1q5NHFz4x5K; Thu, 21 Sep 2023 22:38:55 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1695299935;
-	bh=CLkOspf+4HZWLuETs6pfGw9Yv+ayf/DSw9/WnUp2Bus=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=R8UsfmiZrwWPAjvUKTvRDSsMCcMOQ7lybntnt5aM7AKtRcs3rQ65JHuvZGGjO9MOz
-	 CEWvEsL0LYrI/11nWO0+YOMm+9LgXUyfVKZ7mU0g2fnROpxerwFEWwEOVqKfIHd1Rn
-	 OPvjQ+Km1xYyD1OpPp+O83cX9aa4W0+pCbv8n7v4f+82X9H4iHEBqr+yWgZBCZ5B07
-	 Pi/ivmP/pAd3TVLQJLcgHTo7TrXs1sTOpuXn3AjYqKLwJV0g632HisC8UivynkP6j5
-	 1rVR0GieJV7rNjeANDOjxcJ5qma1v7VRhEJe+T7PWT6bY3CpAitDM96ZSsIwuyd2+J
-	 LIKUBbhctkXEw==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rrw1q4cQxz4x5J;
-	Thu, 21 Sep 2023 22:38:55 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Aditya Gupta
- <adityag@linux.ibm.com>, linuxppc-dev@ozlabs.org
-Subject: Re: [PATCH v2 1/2] powerpc: add `cur_cpu_spec` symbol to vmcoreinfo
-In-Reply-To: <87y1h1vy53.fsf@linux.ibm.com>
-References: <20230920105706.853626-1-adityag@linux.ibm.com>
- <87y1h1vy53.fsf@linux.ibm.com>
-Date: Thu, 21 Sep 2023 22:38:55 +1000
-Message-ID: <87y1gzn1k0.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rrx021XXmz3c40
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Sep 2023 23:22:25 +1000 (AEST)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-275-3ANp1ejCPpKMCXrfXPnzNA-1; Thu, 21 Sep 2023 14:20:59 +0100
+X-MC-Unique: 3ANp1ejCPpKMCXrfXPnzNA-1
+Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
+ (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Thu, 21 Sep
+ 2023 14:20:58 +0100
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Thu, 21 Sep 2023 14:20:58 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Shuai Xue' <xueshuai@linux.alibaba.com>, Bjorn Helgaas
+	<helgaas@kernel.org>
+Subject: RE: Questions: Should kernel panic when PCIe fatal error occurs?
+Thread-Topic: Questions: Should kernel panic when PCIe fatal error occurs?
+Thread-Index: AQHZ7ISwt0MI+BDoAEe5dUPUvfmXNrAlQDAw
+Date: Thu, 21 Sep 2023 13:20:58 +0000
+Message-ID: <2e5870e416f84e8fad8340061ec303e2@AcuMS.aculab.com>
+References: <20230920230257.GA280837@bhelgaas>
+ <d84b6d17-7fe9-222a-c874-798af4d9faea@linux.alibaba.com>
+In-Reply-To: <d84b6d17-7fe9-222a-c874-798af4d9faea@linux.alibaba.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,84 +59,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Hari Bathini <hbathini@linux.ibm.com>, Sourabh Jain <sourabhjain@linux.ibm.com>, Sachin Sant <sachinp@linux.ibm.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, "mahesh@linux.ibm.com" <mahesh@linux.ibm.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, "bp@alien8.de" <bp@alien8.de>, Baolin Wang <baolin.wang@linux.alibaba.com>, Linux PCI <linux-pci@vger.kernel.org>, "bhelgaas@google.com" <bhelgaas@google.com>, "james.morse@arm.com" <james.morse@arm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "lenb@kernel.org" <lenb@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
-> Aditya Gupta <adityag@linux.ibm.com> writes:
->
->> Since below commit, address mapping for vmemmap has changed for Radix
->> MMU, where address mapping is stored in kernel page table itself,
->> instead of earlier used 'vmemmap_list'.
->>
->>     commit 368a0590d954 ("powerpc/book3s64/vmemmap: switch radix to use
->>     a different vmemmap handling function")
->>
->> Hence with upstream kernel, in case of Radix MMU, makedumpfile fails to do
->> address translation for vmemmap addresses, as it depended on vmemmap_list,
->> which can now be empty.
->>
->> While fixing the address translation in makedumpfile, it was identified
->> that currently makedumpfile cannot distinguish between Hash MMU and
->> Radix MMU, unless VMLINUX is passed with -x flag to makedumpfile.
->> And hence fails to assign offsets and shifts correctly (such as in L4 to
->> PGDIR offset calculation in makedumpfile).
->>
->> For getting the MMU, makedumpfile uses `cur_cpu_spec.mmu_features`.
->>
->> Add `cur_cpu_spec` symbol and offset of `mmu_features` in the
->> `cpu_spec` struct, to VMCOREINFO, so that makedumpfile can assign the
->> offsets correctly, without needing a VMLINUX.
->>
->> Fixes: 368a0590d954 ("powerpc/book3s64/vmemmap: switch radix to use a different vmemmap handling function")
->> Reported-by: Sachin Sant <sachinp@linux.ibm.com>
->> Tested-by: Sachin Sant <sachinp@linux.ibm.com>
->> Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
->>
->> ---
->> Corresponding makedumpfile patches to fix address translation, in Radix
->> MMU case:
->>
->> Link: https://lore.kernel.org/kexec/B5F0F00E-F2B1-47D7-A143-5683D10DC29A@linux.ibm.com/T/#t
->> ---
->> ---
->>  arch/powerpc/kexec/core.c | 2 ++
->>  1 file changed, 2 insertions(+)
->>
->> diff --git a/arch/powerpc/kexec/core.c b/arch/powerpc/kexec/core.c
->> index de64c7962991..369b8334a4f0 100644
->> --- a/arch/powerpc/kexec/core.c
->> +++ b/arch/powerpc/kexec/core.c
->> @@ -63,6 +63,8 @@ void arch_crash_save_vmcoreinfo(void)
->>  #ifndef CONFIG_NUMA
->>  	VMCOREINFO_SYMBOL(contig_page_data);
->>  #endif
->> +	VMCOREINFO_SYMBOL(cur_cpu_spec);
->> +	VMCOREINFO_OFFSET(cpu_spec, mmu_features);
->>  #if defined(CONFIG_PPC64) && defined(CONFIG_SPARSEMEM_VMEMMAP)
->>  	VMCOREINFO_SYMBOL(vmemmap_list);
->>  	VMCOREINFO_SYMBOL(mmu_vmemmap_psize);
->>
->
-> That implies we now have to be careful when updating MMU_FTR_* #defines.
- 
-Yeah, that's a good point.
+Li4uDQpJJ3ZlIGdvdCBhIHRhcmdldCB0byBnZW5lcmF0ZSBBRVIgZXJyb3JzIGJ5IGdlbmVyYXRp
+bmcgcmVhZCBjeWNsZXMNCnRoYXQgYXJlIGluc2lkZSB0aGUgYWRkcmVzcyByYW5nZSB0aGF0IHRo
+ZSBicmlkZ2UgZm9yd2FyZHMgYnV0DQpvdXRzaWRlIG9mIGFueSBCQVIgYmVjYXVzZSB0aGVyZSBh
+cmUgMiBkaWZmZXJlbnQgc2l6ZWQgQkFScy4NCihQcmV0dHkgZWFzeSB0byBzZXR1cC4pDQpPbiB0
+aGUgc3lzdGVtIEkgd2FzIHVzaW5nIHRoZXkgZGlkbid0IGdldCBwcm9wYWdhdGVkIGFsbCB0aGUg
+d2F5DQp0byB0aGUgcm9vdCBicmlkZ2UgLSBidXQgd2VyZSB2aXNpYmxlIGluIHRoZSBsb3dlciBi
+cmlkZ2UuDQpJdCB3b3VsZCBiZSBuaWNlIGZvciBhIGRyaXZlciB0byBiZSBhYmxlIHRvIGRldGVj
+dC9jbGVhciBzdWNoDQphIGZsYWcgaWYgaXQgZ2V0cyBhbiB1bmV4cGVjdGVkIH4wdSByZWFkIHZh
+bHVlLg0KKEknbSBub3Qgc3VyZSBhbiBlcnJvciBjYWxsYmFjayBoZWxwcy4pDQoNCk9UT0ggYSAn
+bmVicyBjb21wbGlhbnQnIHNlcnZlciByb3V0ZWQgYW55IGtpbmQgb2YgUENJZSBsaW5rIGVycm9y
+DQp0aHJvdWdoIHRvIHNvbWUgJ3N5c3RlbSBtYW5hZ2VtZW50JyBsb2dpYyB0aGF0IHRoZW4gcmFp
+c2VkIGFuIE5NSS4NCkknbSBub3Qgc3VyZSB3aG8gdGhvdWdodCBhbiBOTUkgd2FzIGEgZ29vZCBp
+ZGVhIC0gdGhleSBhcmUgcHJldHR5DQppbXBvc3NpYmxlIHRvIGhhbmRsZSBpbiB0aGUga2VybmVs
+IGFuZCB0b28gbGF0ZSB0byBiZSBvZiB1c2UgdG8NCnRoZSBjb2RlIHBlcmZvcm1pbmcgdGhlIGFj
+Y2Vzcy4NCg0KSW4gYW55IGNhc2Ugd2Ugd2VyZSBnZXR0aW5nIG9uZSBhZnRlciAnZWNobyAxID54
+eHgvcmVtb3ZlJyBhbmQNCnRoZW4gdGFraW5nIHRoZSBQQ0llIGxpbmsgZG93biBieSByZXByb2dy
+YW1taW5nIHRoZSBmcGdhLg0KU28gdGhlIGxpbmsgZ29pbmcgZG93biB3YXMgZW50aXJlbHkgZXhw
+ZWN0ZWQsIGJ1dCB0aGVyZSBzZWVtZWQNCnRvIGJlIG5vdGhpbmcgd2UgY291bGQgZG8gdG8gc3Rv
+cCB0aGUga2VybmVsIGNyYXNoaW5nLg0KDQpJJ20gc3VyZSAnbmVicyBjb21wbGlhbnQnIG91Z2h0
+IHRvIGNvbnRhaW4gc29tZSByZXF1aXJlbWVudHMgZm9yDQpyZXNpbGllbmNlIHRvIGhhcmR3YXJl
+IGZhaWx1cmVzIQ0KDQoJRGF2aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBC
+cmFtbGV5IFJvYWQsIE1vdW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdp
+c3RyYXRpb24gTm86IDEzOTczODYgKFdhbGVzKQ0K
 
-> It is not bad considering other hacks we do in crash to identify kernel
-> changes tied to version number. But i am wondering if there another way
-> to identify radix vs hash?
-
-Ultimately crash just has to accept that the kernel will change over
-time, and some times crash will have to adapt.
-
-We can try not to change values unnecessarily, but given the knowledge
-of kernel internals crash has there will be breakage from time to time.
-
-The only other alternative I think is to create a well defined data
-structure that is explicitly provided by the kernel for crash with
-various information in a set format. With a committment that the data
-structure will be maintained in a forward-compatible manner. Which
-sounds like a bunch of work :)
-
-cheers
