@@ -2,67 +2,118 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 162BF7A9568
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 17:00:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D2D67A9597
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 17:38:39 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Dg9soKZU;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=TCGOMFhz;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rrz8f4zGsz3cNj
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Sep 2023 01:00:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rs0190W88z3ccM
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Sep 2023 01:38:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Dg9soKZU;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=TCGOMFhz;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=3qfomzqykdfuf1xa6z3bb381.zb985ahkccz-01i85fgf.bm8xyf.be3@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f400:7d00::616; helo=eur05-vi1-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org)
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on20616.outbound.protection.outlook.com [IPv6:2a01:111:f400:7d00::616])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rrz7p6n5Rz3c53
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Sep 2023 00:59:17 +1000 (AEST)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-59c27703cc6so14257167b3.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Sep 2023 07:59:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1695308352; x=1695913152; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4hX9qb1Iw7SkuB3FcSZYopfwd6y9xnz247DDm3mrX40=;
-        b=Dg9soKZUN8rq3tZIGIofD3Y/jm+Gc+IQKGUs8bPYkN/GvOvKhNYGhcDdEG3TslMsEY
-         QfuRnzV81WYXV/OlXaJuu1XMmezderLVQCSH5MWikAAkW20kou3iTKggFi4oN29Av3kM
-         2DWHqYcPOpnO2sPosliLXT97giuL4MpI9Pdd0wZdSH+HNoYDy4PJ2cEWRRxzv3QDF6KG
-         50vfakfqs4aOVeONj7MYvBKWaMFW+q9euVWzfBsZz9NnONdh5/OyGogLjcm6mHK7eLJ1
-         feDSfUtvf8LIqx5gV8AqJmd2Ir7Q6OhdKuq7Zphn6J8KEdjdV9D7gkPeufMUiKSlR8oh
-         V4pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695308352; x=1695913152;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4hX9qb1Iw7SkuB3FcSZYopfwd6y9xnz247DDm3mrX40=;
-        b=tHNbzWT7zOmu5OFBgCau69hgJmo47RKVYyCH7rSHRoMfkxqQdEHpyk9bGbZ3rct8O0
-         hKjlQ9v5SgFcdom32EjUAFvH5gKhhPyJ7J7h+CkvBprM4NB5AjCg6IVrDz79UWuZ4yPr
-         EU8nE7lTSw4xTQ66XIt4WBHZ/vYfe6B4gR/xZOpMcQCwfioZlc7aFpFp6+PkcdrB66oS
-         4sP2r11O8D3b6LrA8UEhfOHAn5RwSxyi9evSyD+7udqM4UVHECIvWYyyMh2hWpwUTJou
-         to8zPBAJJoIXd2JzF+BALOn8Dv1WBtrmGu8AI3pru6hYFnmKxWj6FqM9MoJ4RvJz5E2E
-         oSyw==
-X-Gm-Message-State: AOJu0YwNPsn+x4XT1LlEfc1evopM8wUbFOIig/QREXO1uGjMdS0G2f6f
-	r7srXBdBYzy8NDWv5cq1+pjuiIelLsg=
-X-Google-Smtp-Source: AGHT+IGMlI3r5pTKtUH2X22CRcKkDXwZa01FQ/zuLj/x6iC6Lpx1DAvznI7oMbumBcX5i3FsE4fH+yzcjSE=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:690c:2906:b0:59e:ee51:52a1 with SMTP id
- eg6-20020a05690c290600b0059eee5152a1mr76581ywb.10.1695308352199; Thu, 21 Sep
- 2023 07:59:12 -0700 (PDT)
-Date: Thu, 21 Sep 2023 07:59:10 -0700
-In-Reply-To: <ZQef3zAEYjZMkn9k@yzhao56-desk.sh.intel.com>
-Mime-Version: 1.0
-References: <20230914015531.1419405-1-seanjc@google.com> <20230914015531.1419405-19-seanjc@google.com>
- <ZQPuMK6D/7UzDH+D@yzhao56-desk.sh.intel.com> <ZQRpiOd1DNDDJQ3r@google.com> <ZQef3zAEYjZMkn9k@yzhao56-desk.sh.intel.com>
-Message-ID: <ZQxaPsNiFgfXH7aq@google.com>
-Subject: Re: [RFC PATCH v12 18/33] KVM: x86/mmu: Handle page fault for private memory
-From: Sean Christopherson <seanjc@google.com>
-To: Yan Zhao <yan.y.zhao@intel.com>
-Content-Type: text/plain; charset="us-ascii"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rs00F19kgz303l
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Sep 2023 01:37:47 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=fIKHQoNi4/KNcdIad7O0NoKRFvzU33tp25thdmw2/hSkHLrv81IQMAvVZ8h2j8AeG4FfeS4MDY/zBc+XxDz0sBp3Y0TWgemWW30/C87gruIwvEfstGpygdJgw+4TNnyZYE+QC3U7mDExvyPDGHEI8hcO2Gkbh2Am3lh6dQ5bobsjgcDh/ZHdVlEZ+SaUyMd9JepIg1Y8fVcRy5lhgfkoNi7MDQ8zBvD9MUzgUP7FVsHUM0bCocGjoD8EC8DBRmNx1ufDtSTYrElohAgVemiESXEmo7ZaJTCbtOzZVpDwExN+JmsQPHPLek3VwLjWmwimCOeW8jdHOTkGF55kNfXzGw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xoPOA8PdPEdc3whI2OL1rN+IbmmJYsfcBLtfm+rD4TA=;
+ b=kRYMEMOwkhxNstNF7Lli/WF4EXVron2b3851Lqjq08vl/ek53RmzKGE5iCV0/CQ7DPDKcME/5vFMPu6yaa997OD417eBIPl2OchN5h0rrUxq9R7PK/xFj4RmIz9GSbzCwWdu+jV0LmncSELk3E2FOdB0yqmu843wP7ODpAM7RwBg6OAeqhh8COwu+OQ4m3klNdY8ZeMPslGIYmgsVShTvk7wYHj4RkWE0uVnn4uptucUhNMOpvqYHEVKFFM/26eVSmz0Rb71ivgy9OQXo5Bdta2i/7gjOAgGsDl9yP3pAeLCLFXn8xdtg3aYTdSYvpdQzwcRixSPK4qdDLZrY+hUHA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xoPOA8PdPEdc3whI2OL1rN+IbmmJYsfcBLtfm+rD4TA=;
+ b=TCGOMFhzJDkiL57amMwS5c6yUqkJCiQnhBjPjp/PajrCH8jrTMnp9Zr7aCndOp/+bctDf4wk7nkuLfutR9+nX130dZHd7fibcH0wCJdV/kO9InfKfI8Kj3gmUkeLo2MlsuKIH1y5xPSjjEeVAaKVfUMYgwg5DBQSKU8q1WFM3Pc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
+ by GVXPR04MB10021.eurprd04.prod.outlook.com (2603:10a6:150:112::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.20; Thu, 21 Sep
+ 2023 15:37:23 +0000
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::1774:e25f:f99:aca2]) by AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::1774:e25f:f99:aca2%4]) with mapi id 15.20.6792.026; Thu, 21 Sep 2023
+ 15:37:23 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Minghuan Lian <minghuan.Lian@nxp.com>,
+	Mingkai Hu <mingkai.hu@nxp.com>,
+	Roy Zang <roy.zang@nxp.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	linuxppc-dev@lists.ozlabs.org (open list:PCI DRIVER FOR FREESCALE LAYERSCAPE),
+	linux-pci@vger.kernel.org (open list:PCI DRIVER FOR FREESCALE LAYERSCAPE),
+	linux-arm-kernel@lists.infradead.org (moderated list:PCI DRIVER FOR FREESCALE LAYERSCAPE),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH 1/1] PCI: layerscape-ep: set 64-bit DMA mask
+Date: Thu, 21 Sep 2023 11:37:02 -0400
+Message-Id: <20230921153702.3281289-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR01CA0014.prod.exchangelabs.com (2603:10b6:a02:80::27)
+ To AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|GVXPR04MB10021:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0ee72aec-17a6-4f26-783c-08dbbab8a646
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	UpdzYVz3qFUopoKH+vtGwAtWgM9QNHAo39owoYk8pw823cDJNp9uWRCnkKHtDUDN0w4kq+sKB2UGLIuRdXahLq6ll3Uu1BYKLi2bxFyp1rUgov39bdC7kSWuctpsACiBQyRPp9kbZgQCred6QiQczXZX882fGgwfk4vhCNmZqvkjT8d4tpWm/GC2pkEiKZ5uOzvvSeCBeC+jrPYMPvLXxT8fGGSDxViDvBI5EisVRkbCTMcv0bKwwJQs/5GnxIZlOXE9BLqgzNo+sYQiSa0lGpOc7QTsfhGhkuFmQfjOYQCmQ7Wsdcg9mg5HPKnEIOoDbqyQTK1yT2sYXjPHz68D0Ovvh4ydmV1gR8QeK4Xuj2naD2uHAv+aly10ahqeZcjRLGKxh0AdooSaFU/97X5DsEhWRr+xPN2BJ0rSLzctS5oDe2pKgYllt7+W1FaJkB/vEstr+3cwbfLbWUf6bmIjToubJqdwRGoALeY9mYrmVXFsNJAH9nLOD9UqET4dvp0dEN51LYVaDSxWIW3G1brFFtc8YSa+/1dGJACu/5z5dhlz55YKqAfF90EdfDGSh6aixFrZ9Mwxwu0n1n5Mxap2EdYrFsnJv4B8C2m4+ChTGcnUWAvFJCRywPb9F6Brf5OsbBuo0HLWw4WiOhfTcUldyA==
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(136003)(376002)(366004)(346002)(396003)(1800799009)(186009)(451199024)(52116002)(8936002)(478600001)(110136005)(66946007)(66476007)(66556008)(8676002)(6512007)(6506007)(6666004)(6486002)(316002)(5660300002)(38100700002)(36756003)(38350700002)(86362001)(4326008)(2906002)(1076003)(26005)(2616005)(41300700001)(921005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?93nuSsMfMTxcywNVQglFz+N9tYovUEH9t/gr/pGDWN0G5b4gYuwFDmTgyi8o?=
+ =?us-ascii?Q?8tFASgR99EqKf8PEY+cutANvs6ZsweoL9QH7LRGoUCd/Jp49Vdg6XO1uGvXh?=
+ =?us-ascii?Q?bQlYrK0EPW0VEc/n0Z71jnhd6hI/2YjURmV+bTXZ3ePechXf5uO+CC1fEpR6?=
+ =?us-ascii?Q?IuoLeUGP1zQlW7FeJztJzw9bEDZppvtRO0/Cj44ge6Z6ObXjIddyECJmf8s2?=
+ =?us-ascii?Q?e1is16tlbOwNd/JlPowp9GzQc+EmZKG7R1XP4HRKIARADrYbNAfrulZDhB5I?=
+ =?us-ascii?Q?Il3I5DndyByHqXt2J/JSKP+Gm9nYJRdMhv653eEV4KG7jb6bGQ49+G766BHl?=
+ =?us-ascii?Q?cIOWtjqSPa9t2s9CngNUew5deIcDNLPJ4LXzZAulwxGDbjHWMuFISGWDlBjk?=
+ =?us-ascii?Q?aUhkHhuAux3lBsV/akfM6u60+KlPGtzO9JEe/vPcn8VW22vJw1n3J7AFBjD6?=
+ =?us-ascii?Q?10/GLyhEFdsD7KsSKxQIWeDXFAF99+1WEh9/7FdOMIjOBsL7raAsAL7VLrXb?=
+ =?us-ascii?Q?6BzLmRCOia8v5QZi7cnTtUzw4fHVbceUWldzj+iDNdomYVtyuglzDEZ51pt/?=
+ =?us-ascii?Q?sz5MNwgFuvfmS01zbeqGG2of0R5m2Fyu3Jl5tsZ839+7jGfGS/O1FSYkVMmh?=
+ =?us-ascii?Q?Td1npyAx+320jHZJJqcoTLx2FiiEgESdmM5xW7Far4bQfrfOzCLLwZrWOPYv?=
+ =?us-ascii?Q?7j1qxN/t6Wy3xpCk/6ZVTccBZSoIK4RYo2SiA3Xq1N5fKBuq2qX/9KWBoOIi?=
+ =?us-ascii?Q?fqVClMwl+BJZWsMdaJr3qcCvh0BD3s96dM1sSN4Th7ykQ/kEEJMLhU0Pw0Ix?=
+ =?us-ascii?Q?EW70wtK4+GU3/bSYFRb2Mi3e3/Vgr09ZJ5VJqzbqJqa20dOXg7CNCqGKURL3?=
+ =?us-ascii?Q?43F67ihKM+ryYqhl8QDjUH509VO6C9STvraePwaRQSD2XWX9Na5mc1IKchex?=
+ =?us-ascii?Q?Z387/XJextTOeAoQ7WxSfGDOa/G0VkJQPXJeKiV6CPJZ75aXAAfAjllcU5HW?=
+ =?us-ascii?Q?PN8R2KkHXWcuBRyT1OCx9oWn6IJb/2+ZL3vnwWji8AZtV88zTuH6hnSpj4Zt?=
+ =?us-ascii?Q?iFHSovC+kdUdvRhOSl7d5Z7Dc6yXhrRoBKhSIikz/hiF7nEtFkNoOA1yjlM+?=
+ =?us-ascii?Q?N/r+4OJFbpVmOoNVkvdfHFQEUMGeagQcjqVHCKrHYZFnqJArlescOY13YF/W?=
+ =?us-ascii?Q?+0xdghvBQkewvVRfd1usCOB470FKwPtq/X5S+CaQTcccVLhuEbM5/m84eDGa?=
+ =?us-ascii?Q?qZbWGimhVU7Xrf3lLxiKkbWGzyO6tHsjKKbVo8KHeBWcCoEEJHtX8mfJZhIZ?=
+ =?us-ascii?Q?7fQ2tFEWajVwJxocvpzVsBd3Rp84Mrp/le1FH5w6l+diORzUcEtVc42lzqnk?=
+ =?us-ascii?Q?0Y1PbSOimjfZ7n9KMsS3BoG8eg6GCChnoXavTPMMcW1D6H987esWOA/4M7sr?=
+ =?us-ascii?Q?PnidFkx/FW7yLWpRWIUgxDGiCMjVzGELPgN1nu5Q4yb4RmytN0qBkknDMw/j?=
+ =?us-ascii?Q?B9ERpULKDN+onJrkoEEdc665BWzQOihqVHpat3I6W5LXk6U9QLD7I1eMgW0+?=
+ =?us-ascii?Q?ZFUt5nWn0PZZw9W1CUk14XD/6lYnQqYqt3I88BEj?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0ee72aec-17a6-4f26-783c-08dbbab8a646
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2023 15:37:23.2623
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: r/IXUJDcvQMbwiyJP8wLhxtIClbOdUCxtQil6YwpZXfSusdz2iwXnjCyrGG0VkBkUh4UiRZxwiVCrhrazs0CtA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10021
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,91 +125,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Paul Moore <paul@paul-moore.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, James Morris <jmorris@namei.org>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, "Serge E. Hallyn" <serge@hallyn.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Vlastimil Babka <vbabka@suse.cz>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Isaku Yamahata <isaku.yamahata@intel.com>, Quentin Perret <qperret@google.com>, Liam Merwick <liam.merwick@orac
- le.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, linux-security-module@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, Xu Yilun <yilun.xu@intel.com>, Anish Moorthy <amoorthy@google.com>
+Cc: imx@lists.linux.dev
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Sep 18, 2023, Yan Zhao wrote:
-> On Fri, Sep 15, 2023 at 07:26:16AM -0700, Sean Christopherson wrote:
-> > On Fri, Sep 15, 2023, Yan Zhao wrote:
-> > > >  static int __kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
-> > > >  {
-> > > >  	struct kvm_memory_slot *slot = fault->slot;
-> > > > @@ -4293,6 +4356,14 @@ static int __kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
-> > > >  			return RET_PF_EMULATE;
-> > > >  	}
-> > > >  
-> > > > +	if (fault->is_private != kvm_mem_is_private(vcpu->kvm, fault->gfn)) {
-> > > In patch 21,
-> > > fault->is_private is set as:
-> > > 	".is_private = kvm_mem_is_private(vcpu->kvm, cr2_or_gpa >> PAGE_SHIFT)",
-> > > then, the inequality here means memory attribute has been updated after
-> > > last check.
-> > > So, why an exit to user space for converting is required instead of a mere retry?
-> > > 
-> > > Or, is it because how .is_private is assigned in patch 21 is subjected to change
-> > > in future? 
-> > 
-> > This.  Retrying on SNP or TDX would hang the guest.  I suppose we could special
-> Is this because if the guest access a page in private way (e.g. via
-> private key in TDX), the returned page must be a private page?
+From: Guanhua Gao <guanhua.gao@nxp.com>
 
-Yes, the returned page must be private, because the GHCI (TDX) and GHCB (SNP)
-require that the host allow implicit conversions.  I.e. if the guest accesses
-memory as private (or shared), then the host must map memory as private (or shared).
-Simply resuming the guest will not change the guest access, nor will it change KVM's
-memory attributes.
+Set DMA mask and coherent DMA mask to enable 64-bit addressing.
 
-Ideally (IMO), implicit conversions would be disallowed, but even if implicit
-conversions weren't a thing, retrying would still be wrong as KVM would either
-inject an exception into the guest or exit to userspace to let userspace handle
-the illegal access.
+Signed-off-by: Guanhua Gao <guanhua.gao@nxp.com>
+Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+ drivers/pci/controller/dwc/pci-layerscape-ep.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-> > case VMs where .is_private is derived from the memory attributes, but the
-> > SW_PROTECTED_VM type is primary a development vehicle at this point.  I'd like to
-> > have it mimic SNP/TDX as much as possible; performance is a secondary concern.
-> Ok. But this mimic is somewhat confusing as it may be problematic in below scenario,
-> though sane guest should ensure no one is accessing a page before doing memory
-> conversion.
-> 
-> 
-> CPU 0                           CPU 1
-> access GFN A in private way
-> fault->is_private=true
->                                 convert GFN A to shared
-> 			        set memory attribute of A to shared
-> 
-> faultin, mismatch and exit
-> set memory attribute of A
-> to private
-> 
->                                 vCPU access GFN A in shared way
->                                 fault->is_private = true
->                                 faultin, match and map a private PFN B
-> 
->                                 vCPU accesses private PFN B in shared way
+diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+index de4c1758a6c33..6fd0dea38a32c 100644
+--- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
++++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+@@ -249,6 +249,11 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
+ 
+ 	pcie->big_endian = of_property_read_bool(dev->of_node, "big-endian");
+ 
++	/* set 64-bit DMA mask and coherent DMA mask */
++	if (dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64)))
++		if (dma_set_mask_and_coherent(dev, DMA_BIT_MASK(32)))
++			return -EIO;
++
+ 	platform_set_drvdata(pdev, pcie);
+ 
+ 	ret = dw_pcie_ep_init(&pci->ep);
+-- 
+2.34.1
 
-If this is a TDX or SNP VM, then the private vs. shared information comes from
-the guest itself, e.g. this sequence
-
-                                   vCPU access GFN A in shared way
-                                   fault->is_private = true
-
-cannot happen because is_private will be false based on the error code (SNP) or
-the GPA (TDX).
-
-And when hardware doesn't generate page faults based on private vs. shared, i.e.
-for non-TDX/SNP VMs, from a fault handling perspective there is no concept of the
-guest accessing a GFN in a "private way" or a "shared way".  I.e. there are no
-implicit conversions.
-
-For SEV and SEV-ES, the guest can access memory as private vs. shared, but the
-and the host VMM absolutely must be in agreement and synchronized with respect to
-the state of a page, otherwise guest memory will be corrupted.  But that has
-nothing to do with the fault handling, e.g. creating aliases in the guest to access
-a single GFN as shared and private from two CPUs will create incoherent cache
-entries and/or corrupt data without any involvement from KVM.
-
-In other words, the above isn't possible for TDX/SNP, and for all other types,
-the conflict between CPU0 and CPU1 is unequivocally a guest bug.
