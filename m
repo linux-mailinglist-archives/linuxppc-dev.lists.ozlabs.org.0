@@ -1,52 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22E617A9446
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 14:27:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B7BB7A9448
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 14:28:35 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=b687BW/T;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=Xdx4hQsT;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=AsHXnvbT;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RrvmM6wdSz3cGG
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 22:27:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rrvns2p6xz3cGJ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 22:28:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=b687BW/T;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=Xdx4hQsT;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=AsHXnvbT;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=64.147.123.17; helo=wnew3-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from wnew3-smtp.messagingengine.com (wnew3-smtp.messagingengine.com [64.147.123.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RrvlS20xMz2ymM
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Sep 2023 22:26:28 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1695299186;
-	bh=bC6X1py1SuoJtQxgFRw2Ryvn0wAzoIONYvfkgObrO/E=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=b687BW/TgpeWKwniyy7LJa+Q+crc7hK9dcN5nxIiKaTQwPR20r4+nJoMYJ7svqNCj
-	 /9RmYxIq7saR8Kb1/TIP2XEODSZ4i5hv8Q/hZeq7pF11pfpX5EG7q1Ib7+4WXf6b2Q
-	 8A7PwdhUfkL042R8T1EpbwTr+S5QU+MY4gwQ/D/+Jhje4RjhdUNe7v4w4rDLoIRrDx
-	 s08TCC0peYnEmH8y4ZL3QgHOv3QQcIu5t8azjGBN2Ko+2/C5eKQHnbVvMwhyhxAywb
-	 8wqnarIilxNt6r1mqCBJ+jahygWV0uJGWRAKev5Wx5qUJzMjPWTsO/6HidLroKFqhB
-	 RpNBBqLs/S+hw==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4RrvlP6nYLz4wy9;
-	Thu, 21 Sep 2023 22:26:25 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Petr Mladek <pmladek@suse.com>, Joe Lawrence <joe.lawrence@redhat.com>
-Subject: Re: Recent Power changes and stack_trace_save_tsk_reliable?
-In-Reply-To: <ZQr-vmBBQ66TRobQ@alley>
-References: <ZO4K6hflM/arMjse@redhat.com> <87o7ipxtdc.fsf@mail.lhotse>
- <87il8xxcg7.fsf@mail.lhotse>
- <cca0770c-1510-3a02-d0ba-82ee5a0ae4f2@redhat.com> <ZQr-vmBBQ66TRobQ@alley>
-Date: Thu, 21 Sep 2023 22:26:22 +1000
-Message-ID: <8734z7ogpd.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rrvmt70jYz2yVh
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Sep 2023 22:27:42 +1000 (AEST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailnew.west.internal (Postfix) with ESMTP id 0FCFB2B00167;
+	Thu, 21 Sep 2023 08:27:35 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Thu, 21 Sep 2023 08:27:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:sender
+	:subject:subject:to:to; s=fm1; t=1695299255; x=1695306455; bh=Xq
+	U4+PADbmN/YvqQXLrRCGcZ07y18plfxqgBBJgIpjw=; b=Xdx4hQsTzl4c24llIz
+	192HiWdE2r0Z17h7hha/5B+uybwHOw+lHySp5dgSFIyremltJv6BupWCCE7vqAtS
+	DUduuni5p7SDjaoxP7Y0c3dI1L3DDC96hM3q6xwLck95D6CeqCmsxrkKZ6Zgv2mQ
+	ih8pZz4GlPyAEKT2EByi/sbL53k7F9MpaztW3ubpkI67GluVKqoEgJAoZkJac6xf
+	L40yx+zPXQSonM/qQqXr+/44QEGY/LW3tmoWxfCIXGmvbDY8YlzEj56Y1t4Q3Ooi
+	aLhMW+mRkUenODaIJ7pTKXCN8HhFkJ2SLPpatk0e1cLMSpNqYk1QxmquZjzyFqfT
+	dFiw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:sender:subject
+	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+	:x-sasl-enc; s=fm2; t=1695299255; x=1695306455; bh=XqU4+PADbmN/Y
+	vqQXLrRCGcZ07y18plfxqgBBJgIpjw=; b=AsHXnvbTE0NoKn8UR1wNiZEQ0Izgl
+	oJ1le/svDXQKmB5iunzfl757K0xMqaKgwpjVCaw2UuP2Vt2mi2RMkN55AQsiD+0o
+	/NGYpK0Q1N3N8f+y8hlvcaJaEnVYzzUXulTecLj6OPE2kfCABIE81WZlt/TQWRym
+	a3YS2kb9o3UDiIqmT6Muw7WaDcpWDjOLS4FEg9ERk6Zsv5Hp/uVcGqvfRusPbRxs
+	/TkNZpWQa1QyBFLzjTES+Opz/HvajxF5Bnwti4DvpslyUHWi81WsLXmneMghKGmm
+	5uLl0cSZ1BQNDmkjOK4WmcBmk5Rvp6jy4BVNblrnY0nqT6NYPATO7irCQ==
+X-ME-Sender: <xms:tzYMZUXcSuZhEjYsCWLs0tRkqLt6ojmPoMPl4a4ip4r-sgw8vTC6og>
+    <xme:tzYMZYnjV322WYYdSTMoXm4rPGFrj126uFz03pQ5jZLRtclncn1Vn2e5IKuSknQur
+    nwLBT-aUOiRNbskyLQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudekiedgheduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
+    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:tzYMZYZPhdycibP7W_ddmUBtLn0YGUONRmMTwUtOUl4FxP4TbdnjHQ>
+    <xmx:tzYMZTWsoHJEmyjcJspV67bM8725seq0dG7wF9ka6iwdPlA97rgN6Q>
+    <xmx:tzYMZem0QBzUTaJpXkKhVHcTIdTE5qwySok6bADpAf29P4FWOrLpBA>
+    <xmx:tzYMZdec6437asUuro7oN_lGHpAgzzqxstK0csnQRsD1an1TXXRMnjq-9-g>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 0F24AB60089; Thu, 21 Sep 2023 08:27:34 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-761-gece9e40c48-fm-20230913.001-gece9e40c
 MIME-Version: 1.0
+Message-Id: <c4a96578-b27c-44fa-82ef-1c5bf43b972a@app.fastmail.com>
+In-Reply-To: <20230921110424.215592-4-bhe@redhat.com>
+References: <20230921110424.215592-1-bhe@redhat.com>
+ <20230921110424.215592-4-bhe@redhat.com>
+Date: Thu, 21 Sep 2023 08:27:14 -0400
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Baoquan He" <bhe@redhat.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 3/4] arch/*/io.h: remove ioremap_uc in some architectures
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -59,35 +93,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: live-patching@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, Ryan Sullivan <rysulliv@redhat.com>
+Cc: Linux-Arch <linux-arch@vger.kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org, Helge Deller <deller@gmx.de>, linux-m68k@lists.linux-m68k.org, Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-mips@vger.kernel.org, Christoph Hellwig <hch@infradead.org>, linux-mm@kvack.org, Luis Chamberlain <mcgrof@kernel.org>, Florian Fainelli <f.fainelli@gmail.com>, Geert Uytterhoeven <geert@linux-m68k.org>, linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Petr Mladek <pmladek@suse.com> writes:
-> On Wed 2023-08-30 17:47:35, Joe Lawrence wrote:
->> On 8/30/23 02:37, Michael Ellerman wrote:
->> > Michael Ellerman <mpe@ellerman.id.au> writes:
->> >> Joe Lawrence <joe.lawrence@redhat.com> writes:
->> >>> We noticed that our kpatch integration tests started failing on ppc64le
->> >>> when targeting the upstream v6.4 kernel, and then confirmed that the
->> >>> in-tree livepatching kselftests similarly fail, too.  From the kselftest
->> >>> results, it appears that livepatch transitions are no longer completing.
-...
->> > 
->> > The diff below fixes it for me, can you test that on your setup?
->> > 
->> 
->> Thanks for the fast triage of this one.  The proposed fix works well on
->> our setup.  I have yet to try the kpatch integration tests with this,
->> but I can verify that all of the kernel livepatching kselftests now
->> happily run.
+On Thu, Sep 21, 2023, at 07:04, Baoquan He wrote:
+> ioremap_uc() is only meaningful on old x86-32 systems with the PAT
+> extension, and on ia64 with its slightly unconventional ioremap()
+> behavior. So remove the ioremap_uc() definition in architecutures
+> other than x86 and ia64. These architectures all have asm-generic/io.h
+> included and will have the default ioremap_uc() definition which
+> returns NULL.
 >
-> Have this been somehow handled, please? I do not see the proposed
-> change in linux-next as of now.
+> This changes the existing behaviour, while no need to worry about
+> any breakage because in the only callsite of ioremap_uc(), code
+> has been adjusted to eliminate the impact. Please see
+> atyfb_setup_generic() of drivers/video/fbdev/aty/atyfb_base.c.
+>
+> If any new invocation of ioremap_uc() need be added, please consider
+> using ioremap() intead or adding a ARCH specific version if necessary.
+>
+> Signed-off-by: Baoquan He <bhe@redhat.com>
+> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+> Acked-by: Helge Deller <deller@gmx.de>  # parisc
+> Cc: linux-alpha@vger.kernel.org
+> Cc: linux-hexagon@vger.kernel.org
+> Cc: linux-m68k@lists.linux-m68k.org
+> Cc: linux-mips@vger.kernel.org
+> Cc: linux-parisc@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-sh@vger.kernel.org
+> Cc: sparclinux@vger.kernel.org
 
-I thought I was waiting for Joe to run the kpatch integration tests, but
-in hindsight maybe he was hinting that someone else should run them (ie. me) ;)
-
-Patch incoming.
-
-cheers
+Acked-by: Arnd Bergmann <arnd@arndb.de>
