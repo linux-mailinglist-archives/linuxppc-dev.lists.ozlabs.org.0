@@ -2,63 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E9387A9101
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 04:41:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 474937A9191
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 07:52:53 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=meXopBuV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CLz6/Zmx;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rrfm249mmz3c03
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 12:41:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rrl1H0JXNz3cN2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 15:52:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=meXopBuV;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CLz6/Zmx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mgamail.intel.com; envelope-from=yilun.xu@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.43; helo=mgamail.intel.com; envelope-from=binbin.wu@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rrfl56Ggtz2ykc
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Sep 2023 12:39:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rrl0L34ysz2ynB
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Sep 2023 15:52:00 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1695264018; x=1726800018;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=iSkpE1N9Jcp84HPqnZ+sK/v5B9D3q8Q2ZGh6iASUxTU=;
-  b=meXopBuVi64o9rKjrq9ImRjwrn7FzQENxFLjZtX/PaykmMbJPWzM5njA
-   vvawycxKMDHbH9gtQTcncnCKKtbX3ZdhGHTchTEfjF/lFLDYUjsWzHDbv
-   t8r2cx4LpQSeW5A3A4LfYTo1AxkuMIGpxjhBC1NEOze4/w+LSz8k8KsT5
-   aFaTwn1jMH+wD0mPxrGBP38Kj98PM5R2i4IMYe6TAAlDylnRW7W+tLQTZ
-   1c2OhzB7Vlw5tYsVzQsbEEByn17Anm9LHMWXDUKH0+cuugC9dB6/YUZTl
-   46n8udV1eIwpbvsFezdqjrC/zmLnhfF+OF7owjkkpkneXUtw7x4r8umZX
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10839"; a="360653940"
+  t=1695275522; x=1726811522;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=oZ26NaKC2zv5YONE8y6jW8KHDfibqQbE4Lcj557476A=;
+  b=CLz6/Zmx1HuzJzz0rbxY5fzIOxEtJbyK5nsT24g7mXkO3h1SFjPCUDk9
+   1EQcy267TEM/jjhymrrtD5t8GQDoWD1X09jD6JDBtk8qaxv4ESlRpmQci
+   wH3pleyEdzAUmES5//OLfT8gKylRIqyyHwQM3pmDvS12YYN6HmV6tV+Le
+   1eAQzUxZEsa4bzs84zPcTYq1TwGDFEecH8QKWnd8+kRJ9DO9wd85M6yb9
+   imOhkf1CpHqGuliOAHZFdMZcdUpJeLszcO4xGGykd36lZaDZLhfmUgNpx
+   m/ODZzUu6P5lTMNpFGOVNowL+e/XkZtrAezqO6y9CP92Xk9htit7jx2rW
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10839"; a="466734483"
 X-IronPort-AV: E=Sophos;i="6.03,164,1694761200"; 
-   d="scan'208";a="360653940"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2023 19:39:54 -0700
+   d="scan'208";a="466734483"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2023 22:51:47 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10839"; a="1077731075"
+X-IronPort-AV: E=McAfee;i="6600,9927,10839"; a="837187245"
 X-IronPort-AV: E=Sophos;i="6.03,164,1694761200"; 
-   d="scan'208";a="1077731075"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmsmga005.fm.intel.com with ESMTP; 20 Sep 2023 19:39:45 -0700
-Date: Thu, 21 Sep 2023 10:39:18 +0800
-From: Xu Yilun <yilun.xu@intel.com>
-To: Sean Christopherson <seanjc@google.com>
-Subject: Re: [RFC PATCH v12 02/33] KVM: Use gfn instead of hva for
- mmu_notifier_retry
-Message-ID: <ZQus1v3AvEZjuat9@yilunxu-OptiPlex-7050>
-References: <20230914015531.1419405-1-seanjc@google.com>
- <20230914015531.1419405-3-seanjc@google.com>
- <ZQqMBEL61p739dpF@yilunxu-OptiPlex-7050>
- <ZQr5uXhV6Cnx4DYT@google.com>
+   d="scan'208";a="837187245"
+Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.93.17.222]) ([10.93.17.222])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2023 22:51:36 -0700
+Message-ID: <ef36db9d-bb9c-e042-2617-830cf44602de@linux.intel.com>
+Date: Thu, 21 Sep 2023 13:51:34 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZQr5uXhV6Cnx4DYT@google.com>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [RFC PATCH v12 18/33] KVM: x86/mmu: Handle page fault for private
+ memory
+To: Sean Christopherson <seanjc@google.com>, Yan Zhao <yan.y.zhao@intel.com>
+References: <20230914015531.1419405-1-seanjc@google.com>
+ <20230914015531.1419405-19-seanjc@google.com>
+ <ZQPuMK6D/7UzDH+D@yzhao56-desk.sh.intel.com> <ZQRpiOd1DNDDJQ3r@google.com>
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <ZQRpiOd1DNDDJQ3r@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,58 +72,82 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Paul Moore <paul@paul-moore.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, James Morris <jmorris@namei.org>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Wang <wei.w.wang@intel.com>, Fuad Tabba <tabba@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, "Serge E. Hallyn" <serge@hallyn.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Vlastimil Babka <vbabka@suse.cz>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Isaku Yamahata <isaku.yamahata@intel.com>, Quentin Perret <qperret@google.com>, Liam Merwick <liam.merwick@orac
- le.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, linux-security-module@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, Anish Moorthy <amoorthy@google.com>
+ le.com>, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, linux-security-module@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, Xu Yilun <yilun.xu@intel.com>, Anish Moorthy <amoorthy@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2023-09-20 at 06:55:05 -0700, Sean Christopherson wrote:
-> On Wed, Sep 20, 2023, Xu Yilun wrote:
-> > On 2023-09-13 at 18:55:00 -0700, Sean Christopherson wrote:
-> > > +void kvm_mmu_invalidate_range_add(struct kvm *kvm, gfn_t start, gfn_t end)
-> > > +{
-> > > +	lockdep_assert_held_write(&kvm->mmu_lock);
-> > > +
-> > > +	WARN_ON_ONCE(!kvm->mmu_invalidate_in_progress);
-> > > +
-> > >  	if (likely(kvm->mmu_invalidate_in_progress == 1)) {
-> > >  		kvm->mmu_invalidate_range_start = start;
-> > >  		kvm->mmu_invalidate_range_end = end;
-> > 
-> > IIUC, Now we only add or override a part of the invalidate range in
-> > these fields, IOW only the range in last slot is stored when we unlock.
-> 
-> Ouch.  Good catch!
-> 
-> > That may break mmu_invalidate_retry_gfn() cause it can never know the
-> > whole invalidate range.
-> > 
-> > How about we extend the mmu_invalidate_range_start/end everytime so that
-> > it records the whole invalidate range:
-> > 
-> > if (kvm->mmu_invalidate_range_start == INVALID_GPA) {
-> > 	kvm->mmu_invalidate_range_start = start;
-> > 	kvm->mmu_invalidate_range_end = end;
-> > } else {
-> > 	kvm->mmu_invalidate_range_start =
-> > 		min(kvm->mmu_invalidate_range_start, start);
-> > 	kvm->mmu_invalidate_range_end =
-> > 		max(kvm->mmu_invalidate_range_end, end);
-> > }
-> 
-> Yeah, that does seem to be the easiest solution.
-> 
-> I'll post a fixup patch, unless you want the honors.
 
-Please go ahead, cause at a second thought I'm wondering if this simple
-range extension is reasonable.
 
-When the invalidation acrosses multiple slots, I'm not sure if the
-contiguous HVA range must correspond to contiguous GFN range. If not,
-are we producing a larger range than required?
+On 9/15/2023 10:26 PM, Sean Christopherson wrote:
+> On Fri, Sep 15, 2023, Yan Zhao wrote:
+>> On Wed, Sep 13, 2023 at 06:55:16PM -0700, Sean Christopherson wrote:
+>> ....
+>>> +static void kvm_mmu_prepare_memory_fault_exit(struct kvm_vcpu *vcpu,
+>>> +					      struct kvm_page_fault *fault)
+>>> +{
+>>> +	kvm_prepare_memory_fault_exit(vcpu, fault->gfn << PAGE_SHIFT,
+>>> +				      PAGE_SIZE, fault->write, fault->exec,
+>>> +				      fault->is_private);
+>>> +}
+>>> +
+>>> +static int kvm_faultin_pfn_private(struct kvm_vcpu *vcpu,
+>>> +				   struct kvm_page_fault *fault)
+>>> +{
+>>> +	int max_order, r;
+>>> +
+>>> +	if (!kvm_slot_can_be_private(fault->slot)) {
+>>> +		kvm_mmu_prepare_memory_fault_exit(vcpu, fault);
+>>> +		return -EFAULT;
+>>> +	}
+>>> +
+>>> +	r = kvm_gmem_get_pfn(vcpu->kvm, fault->slot, fault->gfn, &fault->pfn,
+>>> +			     &max_order);
+>>> +	if (r) {
+>>> +		kvm_mmu_prepare_memory_fault_exit(vcpu, fault);
+>>> +		return r;
+>>> +	}
+>>> +
+>>> +	fault->max_level = min(kvm_max_level_for_order(max_order),
+>>> +			       fault->max_level);
+>>> +	fault->map_writable = !(fault->slot->flags & KVM_MEM_READONLY);
+>>> +
+>>> +	return RET_PF_CONTINUE;
+>>> +}
+>>> +
+>>>   static int __kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
+>>>   {
+>>>   	struct kvm_memory_slot *slot = fault->slot;
+>>> @@ -4293,6 +4356,14 @@ static int __kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
+>>>   			return RET_PF_EMULATE;
+>>>   	}
+>>>   
+>>> +	if (fault->is_private != kvm_mem_is_private(vcpu->kvm, fault->gfn)) {
+>> In patch 21,
+>> fault->is_private is set as:
+>> 	".is_private = kvm_mem_is_private(vcpu->kvm, cr2_or_gpa >> PAGE_SHIFT)",
+>> then, the inequality here means memory attribute has been updated after
+>> last check.
+>> So, why an exit to user space for converting is required instead of a mere retry?
+>>
+>> Or, is it because how .is_private is assigned in patch 21 is subjected to change
+>> in future?
+> This.  Retrying on SNP or TDX would hang the guest.  I suppose we could special
+> case VMs where .is_private is derived from the memory attributes, but the
+> SW_PROTECTED_VM type is primary a development vehicle at this point.  I'd like to
+> have it mimic SNP/TDX as much as possible; performance is a secondary concern.
+So when .is_private is derived from the memory attributes, and if I 
+didn't miss
+anything, there is no explicit conversion mechanism introduced yet so 
+far, does
+it mean for pure sw-protected VM (withouth SNP/TDX), the page fault will be
+handled according to the memory attributes setup by host/user vmm, no 
+implicit
+conversion will be triggered, right?
 
-And when the invalidation acrosses multiple address space, I'm almost
-sure it is wrong to merge GFN ranges from different address spaces. But
-I have no clear solution yet.
 
-Thanks,
-Yilun
+>
+> E.g. userspace needs to be prepared for "spurious" exits due to races on SNP and
+> TDX, which this can theoretically exercise.  Though the window is quite small so
+> I doubt that'll actually happen in practice; which of course also makes it less
+> important to retry instead of exiting.
+
