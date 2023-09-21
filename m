@@ -2,31 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47D227A9321
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 11:34:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DED747A9323
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 11:35:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RrqxD1fn5z3dmF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 19:34:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rrqxk63F1z3f08
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 19:35:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rrqvh58WDz2ymM
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Sep 2023 19:33:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rrqvk6SYJz3cF2
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Sep 2023 19:33:22 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rrqvh3Y4kz4xPX;
-	Thu, 21 Sep 2023 19:33:20 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rrqvj0M5wz4xPc;
+	Thu, 21 Sep 2023 19:33:21 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: lkml <linux-kernel@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Kexec-ml <kexec@lists.infradead.org>, Hari Bathini <hbathini@linux.ibm.com>
-In-Reply-To: <20230912082950.856977-1-hbathini@linux.ibm.com>
-References: <20230912082950.856977-1-hbathini@linux.ibm.com>
-Subject: Re: [PATCH v3 1/2] vmcore: remove dependency with is_kdump_kernel() for exporting vmcore
-Message-Id: <169528860033.876432.15480467889695445457.b4-ty@ellerman.id.au>
+To: alsa-devel@alsa-project.org, Julia Lawall <Julia.Lawall@inria.fr>
+In-Reply-To: <20230907095521.14053-1-Julia.Lawall@inria.fr>
+References: <20230907095521.14053-1-Julia.Lawall@inria.fr>
+Subject: Re: [PATCH 00/11] add missing of_node_put
+Message-Id: <169528860030.876432.17353767421208248949.b4-ty@ellerman.id.au>
 Date: Thu, 21 Sep 2023 19:30:00 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,28 +42,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>, Dave Young <dyoung@redhat.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Baoquan He <bhe@redhat.com>
+Cc: linux-pm@vger.kernel.org, netdev@vger.kernel.org, dri-devel@lists.freedesktop.org, Amit Kucheria <amitk@kernel.org>, kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-mediatek@lists.infradead.org, bcm-kernel-feedback-list@broadcom.com, linux-mmc@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>, linux-media@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 12 Sep 2023 13:59:49 +0530, Hari Bathini wrote:
-> Currently, is_kdump_kernel() returns true when elfcorehdr_addr is set.
-> While elfcorehdr_addr is set for kexec based kernel dump mechanism,
-> alternate dump capturing methods like fadump [1] also set it to export
-> the vmcore. Since, is_kdump_kernel() is used to restrict resources in
-> crash dump capture kernel and such restrictions may not be desirable
-> for fadump, allow is_kdump_kernel() to be defined differently for such
-> scenarios. With this, is_kdump_kernel() could be false while vmcore is
-> usable. So, remove unnecessary dependency with is_kdump_kernel(), for
-> exporting vmcore.
+On Thu, 07 Sep 2023 11:55:10 +0200, Julia Lawall wrote:
+> Add of_node_put on a break out of an of_node loop.
 > 
-> [...]
 
-Applied to powerpc/next.
+Patches 3 and 6 applied to powerpc/next.
 
-[1/2] vmcore: remove dependency with is_kdump_kernel() for exporting vmcore
-      https://git.kernel.org/powerpc/c/86328b338c3996b814417dd68e3f899a1a649059
-[2/2] powerpc/fadump: make is_kdump_kernel() return false when fadump is active
-      https://git.kernel.org/powerpc/c/b098f1c32365304633077d73e4ae21c72d4241b3
+[03/11] powerpc/powermac: add missing of_node_put
+        https://git.kernel.org/powerpc/c/a59e9eb25216eb1dc99e14fc31b76aa648d79540
+[06/11] powerpc/kexec_file: add missing of_node_put
+        https://git.kernel.org/powerpc/c/06b627c1236216ac1239c5e1afcc75359af3fb72
 
 cheers
