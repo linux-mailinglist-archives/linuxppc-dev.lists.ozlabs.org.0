@@ -2,48 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F30197A9341
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 11:47:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 162FD7A93BD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 13:01:32 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=npXDkE07;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=S3h5NUBB;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RrrCq6ZfTz2yq2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 19:47:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RrssQ04LZz3cTK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 21:01:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=npXDkE07;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=S3h5NUBB;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aboorvad@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rrr9Y6l3dz3cCT
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Sep 2023 19:45:21 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1695289521;
-	bh=RnTI8fNdbZjWAEu2Dfslcn699MAz2b9JB5o2kUxoocI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=npXDkE07KoiOvtc1s8QOJjUrnNnaxOs9VeIQYpCJ/jUzxIfm/H05icmkVlb7Yo3s3
-	 TvgAysDQ1KRYvBJ7dsV4smvzY7T+U6NrhFkZEwAMqpJM0/j+UDJmWecy6AxsoqI0tf
-	 EN1k5ZdqyXH7tJQeojkV3Nd3QrqIfaa5xYksmYdY3iH7xzVa28gbFjRUwYzbh0/zQ0
-	 3UNWVHJoLPM5W+clap5QcGlv916l7guiUQ2JZkEtfecH7ZAieB+PUTgSmE7goqjW1p
-	 gIqlK64OdY5zswry+0KkP2WN1NDEHH444bSCoqkf81RYKFSE0FMu7FsFz9MPQUySwF
-	 RZAy8xe3ChuoA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rrr9Y5YGTz4xP9;
-	Thu, 21 Sep 2023 19:45:21 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.6-2 tag
-Date: Thu, 21 Sep 2023 19:45:21 +1000
-Message-ID: <875y43oo5q.fsf@mail.lhotse>
-MIME-Version: 1.0
-Content-Type: text/plain
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RrsrT0dmXz2xFl
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Sep 2023 21:00:40 +1000 (AEST)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38LAn48G031167;
+	Thu, 21 Sep 2023 11:00:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : reply-to : to : cc : date : in-reply-to : references : content-type
+ : mime-version : content-transfer-encoding; s=pp1;
+ bh=p8EsBeNIrJi9VQT0CnLm9BaoTVOkiFg8QdPNBbVzQY4=;
+ b=S3h5NUBBeOy2OWmbxAgmfZe/8u0fehWLI8SSSAfMWXwNig8LRqUO8aMsJPof7bcNQVAD
+ BgKx2Zyrs96OKtsfONvrEYqj0p+vK68J2WUIOdbrNRn4YlYBP/JMr+wpE9NWOqgUrGkL
+ 7V7K/ayr08XYl14FmYAjCUwNHsHmJrpV0ZxGS1TF9aWEMR3JvjgnZOQkbUkszZSya18M
+ vbHM8IjhVHYO+gxnancZ4jjRAaYFNc76QX8suBmJCLZZxaU6hn2dYpBP9dWLBYvzDBpQ
+ j0OA5jSb8nDdGoAuiUmhR1JR+YVxt6l+yBbfp6sIPns8E1dv0WFRy8/vYY6cgh9qGz1H Aw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t803f0b1n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 21 Sep 2023 11:00:28 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38LB07Yc016358;
+	Thu, 21 Sep 2023 11:00:27 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t803f0b16-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 21 Sep 2023 11:00:27 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 38LAjd0p010385;
+	Thu, 21 Sep 2023 11:00:26 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3t5rwkqsu5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 21 Sep 2023 11:00:26 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 38LB0P1866060618
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 21 Sep 2023 11:00:25 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D1C105806A;
+	Thu, 21 Sep 2023 11:00:24 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B952C5805D;
+	Thu, 21 Sep 2023 11:00:20 +0000 (GMT)
+Received: from li-34d1fccc-27cd-11b2-a85c-c167793e56f7.ibm.com (unknown [9.204.200.131])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 21 Sep 2023 11:00:20 +0000 (GMT)
+Message-ID: <50798cd4558299eb62e2c3a11e367a6dbe11f915.camel@linux.vnet.ibm.com>
+Subject: Re: [RFC v3 1/2] powerpc/cpuidle: cpuidle wakeup latency based on
+ IPI and timer events
+From: Aboorva Devarajan <aboorvad@linux.vnet.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Date: Thu, 21 Sep 2023 16:30:19 +0530
+In-Reply-To: <87a5trvw88.fsf@mail.lhotse>
+References: <20230911053620.87973-1-aboorvad@linux.vnet.ibm.com>
+	 <20230911053620.87973-2-aboorvad@linux.vnet.ibm.com>
+	 <87a5trvw88.fsf@mail.lhotse>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-22.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: U6OLfEr1xVJJ58ZvUgMVyFoD8lhjrPU0
+X-Proofpoint-ORIG-GUID: 4TT-OWudeNNSff_lXJVKJf0lNCiNhmfS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-21_07,2023-09-20_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ adultscore=0 suspectscore=0 clxscore=1011 malwarescore=0 spamscore=0
+ mlxscore=0 phishscore=0 impostorscore=0 mlxlogscore=744 lowpriorityscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309210092
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,77 +100,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kjain@linux.ibm.com, naveen@kernel.org, linux-kernel@vger.kernel.org, bgray@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Reply-To: 87a5trvw88.fsf@mail.lhotse
+Cc: srikar@linux.vnet.ibm.com, arnd@arndb.de, pratik.r.sampat@gmail.com, sshegde@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, linux-kernel@vger.kernel.org, rmclure@linux.ibm.com, joel@jms.id.au, linux-kselftest@vger.kernel.org, shuah@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+On Wed, 2023-09-13 at 08:54 +1000, Michael Ellerman wrote:
+> Aboorva Devarajan <aboorvad@linux.vnet.ibm.com> writes:
+> > From: Pratik R. Sampat <psampat@linux.ibm.com>
+> > 
+> > Introduce a mechanism to fire directed IPIs from a source CPU to a
+> > specified target CPU and measure the time incurred on waking up the
+> > target CPU in response.
+> > 
+> > Also, introduce a mechanism to queue a hrtimer on a specified CPU
+> > and
+> > subsequently measure the time taken to wakeup the CPU.
+> > 
+> > Define a simple debugfs interface that allows for adjusting the
+> > settings to trigger IPI and timer events on a designated CPU, and
+> > to
+> > observe the resulting cpuidle wakeup latencies.
+> > 
+> > Reviewed-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+> > Signed-off-by: Pratik R. Sampat <psampat@linux.ibm.com>
+> > Signed-off-by: Aboorva Devarajan <aboorvad@linux.vnet.ibm.com>
+> > ---
+> >  arch/powerpc/Kconfig.debug                 |  10 ++
+> >  arch/powerpc/kernel/Makefile               |   1 +
+> >  arch/powerpc/kernel/test_cpuidle_latency.c | 154
+> > +++++++++++++++++++++
+>   
+> I don't see anything here that's powerpc specific?
+> 
+> Which makes me wonder 1) could this be done with some existing
+> generic
+> mechanism?, and 2) if not can this test code be made generic.
+> 
+> At the very least this should be Cc'ed to the cpuidle lists &
+> maintainers given it's a test for cpuidle latency :)
+> 
+> cheers
 
-Hi Linus,
+Hi Michael,
 
-Please pull some powerpc fixes for 6.6:
+Thanks a lot for taking a look at this.
 
-The following changes since commit ce9ecca0238b140b88f43859b211c9fdfd8e5b70:
+Yes, this test-case can be used as a generic benchmark for evaluating
+CPU idle latencies across different architectures, as it has thus far
+been exclusively tested and used on PowerPC, so we thought it would be
+more beneficial to incorporate it into a PowerPC specific self-test
+suite. But I will work on making it a generic self-test and send across
+a v4.
 
-  Linux 6.6-rc2 (2023-09-17 14:40:24 -0700)
-
-are available in the git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.6-2
-
-for you to fetch changes up to c3f4309693758b13fbb34b3741c2e2801ad28769:
-
-  powerpc/dexcr: Move HASHCHK trap handler (2023-09-18 12:23:48 +1000)
-
-- ------------------------------------------------------------------
-powerpc fixes for 6.6 #2
-
- - A fix for breakpoint handling which was using get_user() while atomic.
-
- - Fix the Power10 HASHCHK handler which was using get_user() while atomic.
-
- - A few build fixes for issues caused by recent changes.
-
-Thanks to: Benjamin Gray, Christophe Leroy, Kajol Jain, Naveen N Rao.
-
-- ------------------------------------------------------------------
-Benjamin Gray (4):
-      powerpc/watchpoints: Disable preemption in thread_change_pc()
-      powerpc/watchpoint: Disable pagefaults when getting user instruction
-      powerpc/watchpoints: Annotate atomic context in more places
-      powerpc/dexcr: Move HASHCHK trap handler
-
-Christophe Leroy (1):
-      powerpc/82xx: Select FSL_SOC
-
-Kajol Jain (1):
-      powerpc/perf/hv-24x7: Update domain value check
-
-Naveen N Rao (1):
-      powerpc: Fix build issue with LD_DEAD_CODE_DATA_ELIMINATION and FTRACE_MCOUNT_USE_PATCHABLE_FUNCTION_ENTRY
-
-
- arch/powerpc/Kconfig                            |  2 +-
- arch/powerpc/kernel/hw_breakpoint.c             | 16 +++++-
- arch/powerpc/kernel/hw_breakpoint_constraints.c |  7 ++-
- arch/powerpc/kernel/traps.c                     | 56 +++++++++++++-------
- arch/powerpc/perf/hv-24x7.c                     |  2 +-
- arch/powerpc/platforms/82xx/Kconfig             |  3 +-
- 6 files changed, 60 insertions(+), 26 deletions(-)
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmUMEHgACgkQUevqPMjh
-pYDDQw/+IuTozHtltaJEigsvcf9htmKoTBDqZqX3io+b8tg4dVnHIcfFlwAzr5XE
-u7y0ktoqzldKBs2cOJh6hboafhazE/EdJlXEJP/79RQHf7Qyn2qFrH+627Az0dzi
-ApuKpJtWqDyx934U+Xoys8dE8vDssGMD5kdjg0QMS6bp5pIXeJVLvxQUp/S+CQg3
-MNcPGyFOXPd23FaXLCXuOL1rO4eyJCpiH5JOlBsod3YY85eyVD6Gpl4Uoi488C5j
-fFpqOIKI+FmdA2NkbWxXPhC4j95y65l2qPhjANEfr2GnnKTW37RFmXS8OECleCHU
-g8XB5quhNMeBkrRB5ZsmJ88M7IeYRJyYnsV+SKiR/NesiUrlWZKaZUdhiTnjDcVo
-xzvLq9ZZjOx1opH23luC6HaXs/XiGD7n190OVw/8oBfklUkkqjhSN1pZXRWLsbL3
-duGOFS+VuTI6UO4w8mqzQSrUjptR9UaQng/z5iloxzrbvwlnUrbccKFqf7seuv0c
-HLyAbl5tMoGIhHWANn+1U0sMrgJy5L2b4es0cEsN0IxhCpNno+YnrtqVBdhDFfJZ
-7TLxw6J8rVz5LN0bjXBwAiknGgi9xobJcIqP/nbG/jMjnCJ8w8XVnnOfZhJFSMEZ
-nsQii1wmAuUTzFKJ/73Y+X61P1MYfs8sQOfqgqvLkhRNUI7TrFc=
-=NfRO
------END PGP SIGNATURE-----
