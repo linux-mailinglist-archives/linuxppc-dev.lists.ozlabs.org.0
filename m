@@ -2,87 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D99B17A9C2B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 21:11:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 746C77A9ED1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 22:12:57 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=3V0HHgAx;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=wanadoo.fr header.i=@wanadoo.fr header.a=rsa-sha256 header.s=t20230301 header.b=VycdaZQ+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rs4kj5TQPz3cms
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Sep 2023 05:11:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rs65g2brNz3ccB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Sep 2023 06:12:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=3V0HHgAx;
+	dkim=pass (2048-bit key; unprotected) header.d=wanadoo.fr header.i=@wanadoo.fr header.a=rsa-sha256 header.s=t20230301 header.b=VycdaZQ+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=3lpumzqykdlkrdzmibfnnfkd.bnlkhmtwoob-cdukhrsr.nykzar.nqf@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rs4jt0Yspz3cRv
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Sep 2023 05:10:40 +1000 (AEST)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-59beea5ce93so25729667b3.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Sep 2023 12:10:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1695323438; x=1695928238; darn=lists.ozlabs.org;
-        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=msCRqftjzvMka6Rl5V/NvDEz768neF2Qswneru1ptF4=;
-        b=3V0HHgAxxC7SuOdFflpzIefwA5UsKP5WqCibJTPBKNZEkVRtg9ZpWJyhHx9Drvl5FE
-         Xd0Z6kKy7bqfS0vRsvLVNakfhyljB4RllcelaaSKlqJtBS4fo8JvqZrR871le9fQSoeC
-         29UEn6igiSFXNRl8hVKHdv78rHgSRYAMP8HR5VJm79RwZkSM59dJ9A5wIgi8CVJ6wiTX
-         9xvtVI/brIaKfXDFZSEXFS14CXh4FPIQ/14Z0U5A6S9AA03ObknAK37utjdXTUBrxe3R
-         B9VAaklv8mNuh9/TankPdAqpV3X+exdVamMSrE/bWT1xCCyfwWhWus++Sl8EweNS4uFX
-         vuzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695323438; x=1695928238;
-        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=msCRqftjzvMka6Rl5V/NvDEz768neF2Qswneru1ptF4=;
-        b=UtYjLnLAFIxmO/gNudj0wN9kK/54GlQTpUiecL/zwS/oHxi2SXNXcSsHCVm7BtfN/U
-         RBoK53ZGqB18eS+I7ee6uXTNnqCcFCu6DklUcGRlb9vTUKA2kXsN1OSO7gqmvOj70A95
-         8EtlHRRlNTvv7WCZU71CBghDiwoTmB5pEKK+DiaGsmNGE2I5U85Ek71spJAR+HWuz9QD
-         RIxnzD8lpAAQ7f4IVXt3ufxHooo2iJDUBIJER+5MuJ2pKUCXRsJ5Erc0Wj7SmeSyp3Qc
-         i3VGWpcQYGeKd27DpVhrg7kD2VRLLiPtNpKO6pNMu7V2AEdwpelYOQLIhnjT7pPmmkwP
-         PFKw==
-X-Gm-Message-State: AOJu0YzRFxPbsDyj3tsV+gf1Dqxkou7q4pm0AmC8w2YjzocwOiYwJVQh
-	fOxYMkWojOHG7atibv3t5/rx056E1oM=
-X-Google-Smtp-Source: AGHT+IHW881nAqFnjABVXUT4908B5v4pAo/onJespz4HnG5MCVd8NLEq9DsMcDxqDXD3hJb4Zo/K0u0JOVE=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:690c:70a:b0:58c:e8da:4d1a with SMTP id
- bs10-20020a05690c070a00b0058ce8da4d1amr8361ywb.2.1695323438500; Thu, 21 Sep
- 2023 12:10:38 -0700 (PDT)
-Date: Thu, 21 Sep 2023 12:10:36 -0700
-In-Reply-To: <20230914015531.1419405-15-seanjc@google.com>
-Mime-Version: 1.0
-References: <20230914015531.1419405-1-seanjc@google.com> <20230914015531.1419405-15-seanjc@google.com>
-Message-ID: <ZQyVLEKXbpJ9Wvud@google.com>
-Subject: Re: [RFC PATCH v12 14/33] KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for
- guest-specific backing memory
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oliver.upton@linux.dev>, Huacai Chen <chenhuacai@kernel.org>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Anup Patel <anup@brainfault.org>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Paul Moore <paul@paul-moore.com>, 
-	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, kvm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Chao Peng <chao.p.peng@linux.intel.com>, Fuad Tabba <tabba@google.com>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Anish Moorthy <amoorthy@google.com>, 
-	Yu Zhang <yu.c.zhang@linux.intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>, 
-	Xu Yilun <yilun.xu@intel.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Vishal Annapurve <vannapurve@google.com>, Ackerley Tng <ackerleytng@google.com>, 
-	Maciej Szmigiero <mail@maciej.szmigiero.name>, David Hildenbrand <david@redhat.com>, 
-	Quentin Perret <qperret@google.com>, Michael Roth <michael.roth@amd.com>, Wang <wei.w.wang@intel.com>, 
-	Liam Merwick <liam.merwick@oracle.com>, Isaku Yamahata <isaku.yamahata@gmail.com>, 
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
-Content-Type: text/plain; charset="us-ascii"
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=wanadoo.fr (client-ip=80.12.242.16; helo=smtp.smtpout.orange.fr; envelope-from=christophe.jaillet@wanadoo.fr; receiver=lists.ozlabs.org)
+Received: from smtp.smtpout.orange.fr (smtp-16.smtpout.orange.fr [80.12.242.16])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rs64n4SRXz3cKc
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Sep 2023 06:12:06 +1000 (AEST)
+Received: from [192.168.1.18] ([86.243.2.178])
+	by smtp.orange.fr with ESMTPA
+	id jPuaqsc4hWkeLjPuaqqtyH; Thu, 21 Sep 2023 22:04:34 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1695326674;
+	bh=pgVovfgULLuIhHghHoiORjK2SMAEHL0Uj/DD3vZku1U=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=VycdaZQ+0TA5bG9VG8uVWgoDY5dWp3W3qbrI62siiyl3WzJ/IKbczu2rVGt82EpBD
+	 8Bfc7RkJQB5nZKYY2kJDkqjhG1sEjfcTxKjpv4+ei1yeRaK0D3dbiIeIt1ZiJqCGF7
+	 dAyXxtK02y1SFHlgx7tqV0AKykLGPo7tdc+fPcGyhop1kOEU7837rN3UjXjyB4QPmm
+	 E7vfhv1T7y9azS+yHgvTHnb11jY1esCHDK798pxwRoUjs5RNsSbkQfxS+Puc3cRfjy
+	 r2lTWgCTF8ysgh8MxiqwjQG8nR0aF9V9wENah4iyLRXsP43db8WWpz3kS0YLLid20P
+	 5dB93JYy3cRRg==
+X-ME-Helo: [192.168.1.18]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Thu, 21 Sep 2023 22:04:34 +0200
+X-ME-IP: 86.243.2.178
+Message-ID: <c6f07289-2e69-fab4-32dc-46fe5e5713e7@wanadoo.fr>
+Date: Thu, 21 Sep 2023 22:04:31 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 1/1] PCI: layerscape-ep: set 64-bit DMA mask
+Content-Language: fr
+To: Frank Li <Frank.li@nxp.com>
+References: <20230921153702.3281289-1-Frank.Li@nxp.com>
+ <925da248-f582-6dd5-57ab-0fadc4e84f9e@wanadoo.fr>
+ <ZQyM+9uxFoX5TgPa@lizhi-Precision-Tower-5810>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <ZQyM+9uxFoX5TgPa@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,17 +62,111 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>, Rob Herring <robh@kernel.org>, "open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-pci@vger.kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>, "open list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linuxppc-dev@lists.ozlabs.org>, open list <linux-kernel@vger.kernel.org>, Christoph Hellwig <hch@infradead.org>, Minghuan Lian <minghuan.Lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>, Bjorn Helgaas <bhelgaas@google.com>, imx@lists.linux.dev, "moderated list:PCI DRIVER FOR FREESCALE LAYERSCAPE" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 13, 2023, Sean Christopherson wrote:
->  virt/kvm/guest_mem.c       | 593 +++++++++++++++++++++++++++++++++++++
+Le 21/09/2023 à 20:35, Frank Li a écrit :
+> On Thu, Sep 21, 2023 at 07:59:51PM +0200, Christophe JAILLET wrote:
+>> Le 21/09/2023 à 17:37, Frank Li a écrit :
+>>> From: Guanhua Gao <guanhua.gao@nxp.com>
+>>>
+>>> Set DMA mask and coherent DMA mask to enable 64-bit addressing.
+>>>
+>>> Signed-off-by: Guanhua Gao <guanhua.gao@nxp.com>
+>>> Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
+>>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+>>> ---
+>>>    drivers/pci/controller/dwc/pci-layerscape-ep.c | 5 +++++
+>>>    1 file changed, 5 insertions(+)
+>>>
+>>> diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+>>> index de4c1758a6c33..6fd0dea38a32c 100644
+>>> --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
+>>> +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+>>> @@ -249,6 +249,11 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
+>>>    	pcie->big_endian = of_property_read_bool(dev->of_node, "big-endian");
+>>> +	/* set 64-bit DMA mask and coherent DMA mask */
+>>> +	if (dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64)))
+>>> +		if (dma_set_mask_and_coherent(dev, DMA_BIT_MASK(32)))
+>>
+>> As stated in [1], dma_set_mask() with a 64-bit mask will never
+>> fail if dev->dma_mask is non-NULL.
+>>
+>> So, if it fails, the 32 bits case will also fail for the same reason.
+>> There is no need for the 2nd test.
+>>
+>>
+>> See [1] for Christoph Hellwig comment about it.
+> 
+> I don't think it is true. the below is dma_set_mask()'s implementation
 
-Getting to the really important stuff...
+I'll try to recollect a more detailled explanation from Christoph.
 
-Anyone object to naming the new file guest_memfd.c instead of guest_mem.c?  Just
-the file, i.e. still keep the gmem namespace.
+I also checked all paths some times ago, and the conclusion was that if 
+dma_set_mask(64) failed, dma_set_mask(32) would fail for the exact same 
+reasons.
 
-Using guest_memfd.c would make it much more obvious that the file holds more than
-generic "guest memory" APIs, and would provide a stronger conceptual connection
-with memfd.c.
+I'll try to find the corresponding mail and come back to you.
+
+I don't thing that implementation details have changed since that times, 
+so the conclusion should still be valid.
+
+Adding Christoph in cc, if he wants to give another look at it, or if he 
+beats me finding the 1 or 2 years old mails.
+
+CJ
+
+> 
+> int dma_set_mask(struct device *dev, u64 mask)
+> {
+> 	/*
+> 	 * Truncate the mask to the actually supported dma_addr_t width to
+> 	 * avoid generating unsupportable addresses.
+> 	 */
+> 	mask = (dma_addr_t)mask;
+> 
+> 	if (!dev->dma_mask || !dma_supported(dev, mask))
+> 				^^^^^^^
+> 		return -EIO;
+> 
+> 	arch_dma_set_mask(dev, mask);
+> 	*dev->dma_mask = mask;
+> 	return 0;
+> }
+> 
+> dma_supported() may return failiure.
+> 
+> static int dma_supported(struct device *dev, u64 mask)
+> {
+> 	const struct dma_map_ops *ops = get_dma_ops(dev);
+> 
+> 	/*
+> 	 * ->dma_supported sets the bypass flag, so we must always call
+> 	 * into the method here unless the device is truly direct mapped.
+> 	 */
+> 	if (!ops)
+> 		return dma_direct_supported(dev, mask);
+> 	if (!ops->dma_supported)
+> 		return 1;
+> 	return ops->dma_supported(dev, mask);
+>                      ^^^^^^
+> 			DMA driver or IOMMU driver may return failure.
+> }
+> 
+>   
+> Frank
+> 
+>>
+>> CJ
+>>
+>>
+>> [1]: https://lkml.org/lkml/2021/6/7/398
+>>
+>>> +			return -EIO;
+>>> +
+>>>    	platform_set_drvdata(pdev, pcie);
+>>>    	ret = dw_pcie_ep_init(&pci->ep);
+>>
+> 
+
