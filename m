@@ -1,60 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C7D57AA486
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Sep 2023 00:11:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EEB97AA4B7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Sep 2023 00:15:59 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Wvqk0n6j;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=L+gPhURi;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rs8kW1Z6rz3cbq
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Sep 2023 08:11:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rs8qd2VWKz3cd9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Sep 2023 08:15:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Wvqk0n6j;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=L+gPhURi;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=song@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=song@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rs8jc4Qssz300f
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Sep 2023 08:10:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rs8pn4h3nz304l
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Sep 2023 08:15:13 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 106E1620E4
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Sep 2023 22:10:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 757E8C433CC
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Sep 2023 22:10:40 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTPS id C41D3CE23FC
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Sep 2023 22:15:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 989B8C43391
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Sep 2023 22:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1695334240;
-	bh=N5hdFpyXSiGpYG0511NDyp6fv24cJcs4QSVnP7w1UAU=;
+	s=k20201202; t=1695334508;
+	bh=j+YpilMLGCC5ERDcgjdZY/UEYbvSwBxJ4mCRlrG3+go=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Wvqk0n6jq0ct52sblCUd8L/Xq8+N+SorW8zAWVSuS8RApVD17k7plQRRz/k5AtqcZ
-	 GfT0CHWwJxWi4gUehtxR+8ljjuQTqjvYKgxWb2XNuVdjKevxRu1ENJFvPX5YXAHSbF
-	 Ix9CdbGlyzCm8uVsj2Qxltwpt5fiLP3w48irVYCfZTdJDqTfRku6xjijf57j/ZypWU
-	 97yg0mO2y5J78oLs+yCmKD+nXRc3T+EFcvHppUt3wuFXOaWZdvIvQ4j8dq0mhxHV1+
-	 hn7FVpnRYo4KhRE7dodDocdh21fQMMb+Di7kRnH5vPdK32pTNVgx3GHtydByNaiHSX
-	 2EmQpYW6b+alA==
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2c008042211so25275261fa.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Sep 2023 15:10:40 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yyl7yIkot1AE/mAisCryjGpjcDRK5G7FnGtGLjhVQJvNB/r8eRR
-	8AU/d59UFtUz0qK8sLypT0LBdG+ky8+YH0vDmnM=
-X-Google-Smtp-Source: AGHT+IFpnRd6TFzlAtTmG0SVL+ey3URugDNbqT5vmaLEkxDXDZHK88BxPcak1tSmyXSq9q54rWpyKjCd5XFO26LBHOk=
-X-Received: by 2002:a19:6903:0:b0:4fe:2d93:2b50 with SMTP id
- e3-20020a196903000000b004fe2d932b50mr5173357lfc.31.1695334238605; Thu, 21 Sep
- 2023 15:10:38 -0700 (PDT)
+	b=L+gPhURipQCVv5lQ6lMZEeHafe2Map2Z3SouhfPMvOq3LIN5npAvywgTLrdsrYoDw
+	 lcSQt8Ka8fmcf1d8ZM8qIlXPNumlpX3JZKdESMC/KpenaIBv7uGMi+LUkvfCfO+Vlt
+	 Ms3BphwgqclEjVmwfHiEkkrb7+Ta8zh3Ag+RqoFwGGlsIzXfHKrtVOjxsaXB9alIhH
+	 JK+MwyCKXlDL+alHW9KkokkF6FFQuanhqMW2Sdmh2NRZkCVnTo9ppIcJLwe1SwZkYz
+	 JQdTcMm4ZdnaSVT+CVcsNzzz7DKO5EXfQ9zO0FIrMF11/hIqK2vZeqyr2ZUZVULtBX
+	 NHK7vuo8iml0w==
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2bffc55af02so26235251fa.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Sep 2023 15:15:08 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yy9rxn8DGsVybhw0id93Femx/8cSBXacKiVzMXSq184Sk4EZhRd
+	ICN5dPrXxHXtOe3LbG5+lCLNm8ZMrh2mT69wgBo=
+X-Google-Smtp-Source: AGHT+IEOsdVYa+3bdtK+lEO/ooz4+HKzafq7xPbE1njdx3C8+57KFx3hJ2XTTULe0kNONSMtwPONNYKDgjY7yPaLcMU=
+X-Received: by 2002:a05:6512:3254:b0:503:1c07:f7f9 with SMTP id
+ c20-20020a056512325400b005031c07f7f9mr5552939lfr.29.1695334506735; Thu, 21
+ Sep 2023 15:15:06 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230918072955.2507221-1-rppt@kernel.org> <20230918072955.2507221-3-rppt@kernel.org>
 In-Reply-To: <20230918072955.2507221-3-rppt@kernel.org>
 From: Song Liu <song@kernel.org>
-Date: Thu, 21 Sep 2023 15:10:26 -0700
-X-Gmail-Original-Message-ID: <CAPhsuW4bQY5fo_+K2z4uUdd4r0wYF1eT3bAya=YqcEcmqdGXvg@mail.gmail.com>
-Message-ID: <CAPhsuW4bQY5fo_+K2z4uUdd4r0wYF1eT3bAya=YqcEcmqdGXvg@mail.gmail.com>
+Date: Thu, 21 Sep 2023 15:14:54 -0700
+X-Gmail-Original-Message-ID: <CAPhsuW7y2T+tajK71NfYhquhGJKpLpL+EoxxzqrVhEuAamDH3w@mail.gmail.com>
+Message-ID: <CAPhsuW7y2T+tajK71NfYhquhGJKpLpL+EoxxzqrVhEuAamDH3w@mail.gmail.com>
 Subject: Re: [PATCH v3 02/13] mm: introduce execmem_text_alloc() and execmem_free()
 To: Mike Rapoport <rppt@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
@@ -80,38 +80,40 @@ ote:
 >
 [...]
 > +
-> +#include <linux/mm.h>
-> +#include <linux/vmalloc.h>
-> +#include <linux/execmem.h>
-> +#include <linux/moduleloader.h>
-> +
-> +static void *execmem_alloc(size_t size)
-> +{
-> +       return module_alloc(size);
-> +}
-> +
-> +void *execmem_text_alloc(enum execmem_type type, size_t size)
-> +{
-> +       return execmem_alloc(size);
-> +}
+> +/**
+> + * enum execmem_type - types of executable memory ranges
+> + *
+> + * There are several subsystems that allocate executable memory.
+> + * Architectures define different restrictions on placement,
+> + * permissions, alignment and other parameters for memory that can be us=
+ed
+> + * by these subsystems.
+> + * Types in this enum identify subsystems that allocate executable memor=
+y
+> + * and let architectures define parameters for ranges suitable for
+> + * allocations by each subsystem.
+> + *
+> + * @EXECMEM_DEFAULT: default parameters that would be used for types tha=
+t
+> + * are not explcitly defined.
+> + * @EXECMEM_MODULE_TEXT: parameters for module text sections
+> + * @EXECMEM_KPROBES: parameters for kprobes
+> + * @EXECMEM_FTRACE: parameters for ftrace
+> + * @EXECMEM_BPF: parameters for BPF
+> + * @EXECMEM_TYPE_MAX:
+> + */
+> +enum execmem_type {
+> +       EXECMEM_DEFAULT,
 
-execmem_text_alloc (and later execmem_data_alloc) both take "type" as
-input. I guess we can just use execmem_alloc(type, size) for everything?
+I found EXECMEM_DEFAULT more confusing than helpful.
 
-Thanks,
 Song
 
+> +       EXECMEM_MODULE_TEXT =3D EXECMEM_DEFAULT,
+> +       EXECMEM_KPROBES,
+> +       EXECMEM_FTRACE,
+> +       EXECMEM_BPF,
+> +       EXECMEM_TYPE_MAX,
+> +};
 > +
-> +void execmem_free(void *ptr)
-> +{
-> +       /*
-> +        * This memory may be RO, and freeing RO memory in an interrupt i=
-s not
-> +        * supported by vmalloc.
-> +        */
-> +       WARN_ON(in_interrupt());
-> +       vfree(ptr);
-> +}
-> --
-> 2.39.2
->
+[...]
