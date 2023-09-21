@@ -2,31 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DED747A9323
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 11:35:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB6D87A931F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 11:33:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rrqxk63F1z3f08
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 19:35:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rrqw86P0fz3cn3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 19:33:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rrqvk6SYJz3cF2
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Sep 2023 19:33:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rrqvh09H6z2ymM
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Sep 2023 19:33:20 +1000 (AEST)
+Received: by gandalf.ozlabs.org (Postfix)
+	id 4Rrqvg4v4qz4xPL; Thu, 21 Sep 2023 19:33:19 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rrqvj0M5wz4xPc;
-	Thu, 21 Sep 2023 19:33:21 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rrqvg46KSz4wy6;
+	Thu, 21 Sep 2023 19:33:19 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: alsa-devel@alsa-project.org, Julia Lawall <Julia.Lawall@inria.fr>
-In-Reply-To: <20230907095521.14053-1-Julia.Lawall@inria.fr>
-References: <20230907095521.14053-1-Julia.Lawall@inria.fr>
-Subject: Re: [PATCH 00/11] add missing of_node_put
-Message-Id: <169528860030.876432.17353767421208248949.b4-ty@ellerman.id.au>
+To: linuxppc-dev@ozlabs.org, Aditya Gupta <adityag@linux.ibm.com>
+In-Reply-To: <20230911091409.415662-1-adityag@linux.ibm.com>
+References: <20230911091409.415662-1-adityag@linux.ibm.com>
+Subject: Re: [PATCH] powerpc: add `cur_cpu_spec` symbol to vmcoreinfo
+Message-Id: <169528860032.876432.12152654406988174161.b4-ty@ellerman.id.au>
 Date: Thu, 21 Sep 2023 19:30:00 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,19 +45,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pm@vger.kernel.org, netdev@vger.kernel.org, dri-devel@lists.freedesktop.org, Amit Kucheria <amitk@kernel.org>, kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-mediatek@lists.infradead.org, bcm-kernel-feedback-list@broadcom.com, linux-mmc@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>, linux-media@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Hari Bathini <hbathini@linux.ibm.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Sourabh Jain <sourabhjain@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 07 Sep 2023 11:55:10 +0200, Julia Lawall wrote:
-> Add of_node_put on a break out of an of_node loop.
+On Mon, 11 Sep 2023 14:44:09 +0530, Aditya Gupta wrote:
+> Presently, while reading a vmcore, makedumpfile uses
+> `cur_cpu_spec.mmu_features` to decide whether the crashed system had
+> RADIX MMU or not.
 > 
+> Currently, makedumpfile fails to get the `cur_cpu_spec` symbol (unless
+> a vmlinux is passed with the `-x` flag to makedumpfile), and hence
+> assigns offsets and shifts (such as pgd_offset_l4) incorrecly considering
+> MMU to be hash MMU.
+> 
+> [...]
 
-Patches 3 and 6 applied to powerpc/next.
+Applied to powerpc/next.
 
-[03/11] powerpc/powermac: add missing of_node_put
-        https://git.kernel.org/powerpc/c/a59e9eb25216eb1dc99e14fc31b76aa648d79540
-[06/11] powerpc/kexec_file: add missing of_node_put
-        https://git.kernel.org/powerpc/c/06b627c1236216ac1239c5e1afcc75359af3fb72
+[1/1] powerpc: add `cur_cpu_spec` symbol to vmcoreinfo
+      https://git.kernel.org/powerpc/c/7135b921b32966d7602ede396b7286d372aee63f
 
 cheers
