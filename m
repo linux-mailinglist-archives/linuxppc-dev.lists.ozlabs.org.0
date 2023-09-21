@@ -1,69 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B9BC7A9502
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 16:01:27 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=DqGfr+w+;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1B947A9510
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Sep 2023 16:10:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rrxs11nqhz3cGG
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Sep 2023 00:01:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rry3N54mfz3cBs
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Sep 2023 00:10:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=DqGfr+w+;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52b; helo=mail-pg1-x52b.google.com; envelope-from=festevam@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=srs0=dhvk=ff=xs4all.nl=hverkuil@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rrxr36xJnz3c40
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Sep 2023 00:00:34 +1000 (AEST)
-Received: by mail-pg1-x52b.google.com with SMTP id 41be03b00d2f7-51f64817809so98473a12.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Sep 2023 07:00:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695304831; x=1695909631; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Tc23TH0KdG9d7oJL/fNpMbI3CeGhcYjMRjPeLFllkb4=;
-        b=DqGfr+w+X5bH2wAZv/oKVp7qt+s8PKgkMoYee1xkajd8fBdOppsSDbVLzz/7NVULce
-         Z0CVALUzbflLPhf85gEujhK1SbS6/0uYchDjYt+IzIP75Y11hEkmrBremiYent84ie6t
-         NkJtK2gkzwgMHDxtRDQ67RNTvVkUa/f/DbkN1w8qwBewwRO3QFtCls3lH6zdAIjR96tE
-         A/MHnq8PFQacqiOx66Qz8FnIJpITHotXeaPmxtAsZszpck+nUorYii7ClDrnNmm2qGvo
-         R2hXPtgckFpt0bBopEWjvzeg3uP8mRHnSb2D6C5MImkSsXnUa0hb2gB8xYSeQzXbTLnf
-         /KwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695304831; x=1695909631;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Tc23TH0KdG9d7oJL/fNpMbI3CeGhcYjMRjPeLFllkb4=;
-        b=Tm27AeKbpXJaYvgdvePkdmFmSXVRg7yuitGuc7yNXO7aH4+G2keDNZN4yDxOsuRCRD
-         0n0nEyWvINlFMXVwuLNSYteWQAODRzNxQrSEHTvbTkpq8AGdMsXx1/n4g6BQxlmSUyZr
-         G/ZGNJDIgsqsCUmbBlgGx5R5fvdtudleo1BwnZFk8n0pMpT6Ie9s+NBaISsl2qEoFJ+P
-         K0VRGS4ylMx4j/OLlcf4m52cP8sZOLqNNNOja8o413Zjx8aeanRzint5VRG2Eny98nTl
-         crE5535iMJf7+aLOP/afxJyNHhAFyioRCJ/keN3Yjer2UH6HwTf7VcjC1mKzXXZ1Poe5
-         aUzA==
-X-Gm-Message-State: AOJu0YzjV3JWtXzlw7PCwHGU6luuFP5dq0i8bPbvUmYv8uYkxIiUHn2D
-	SOef/Rlkc1KhFBDZyfQaNrfRGvWYfcDbj48yecc=
-X-Google-Smtp-Source: AGHT+IFhRwDvm/yyhVcWlHi6I3H4gEl8VRUEkcWr8N8SNVEqUHsIKOIva4COX9kmaaCRUgrPCfUAVQ4pAN/e6dsvzV4=
-X-Received: by 2002:a05:6a21:339e:b0:145:3bd9:1377 with SMTP id
- yy30-20020a056a21339e00b001453bd91377mr6044154pzb.5.1695304831383; Thu, 21
- Sep 2023 07:00:31 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rry2t0qBbz3c5j
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Sep 2023 00:09:58 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by sin.source.kernel.org (Postfix) with ESMTPS id 59A68CE1D21;
+	Thu, 21 Sep 2023 14:09:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5535FC4E750;
+	Thu, 21 Sep 2023 14:09:50 +0000 (UTC)
+Message-ID: <2d44d574-08e5-4db3-87d9-5d12657f8935@xs4all.nl>
+Date: Thu, 21 Sep 2023 16:09:48 +0200
 MIME-Version: 1.0
-References: <20230921084808.840381-1-emas@bang-olufsen.dk>
-In-Reply-To: <20230921084808.840381-1-emas@bang-olufsen.dk>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Thu, 21 Sep 2023 11:00:20 -0300
-Message-ID: <CAOMZO5B2L4OxtDTcUhn_w3K5zimDMOFB--DVL_d6TjeBjD5VUQ@mail.gmail.com>
-Subject: Re: [PATCH] ASoC: fsl_sai: sw reset consumer on pause/stop
-To: Emil Abildgaard Svendsen <EMAS@bang-olufsen.dk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v4 09/11] media: uapi: Add
+ V4L2_CID_USER_IMX_ASRC_RATIO_MOD control
+Content-Language: en-US, nl
+To: Shengjiu Wang <shengjiu.wang@gmail.com>
+References: <1695202370-24678-1-git-send-email-shengjiu.wang@nxp.com>
+ <1695202370-24678-10-git-send-email-shengjiu.wang@nxp.com>
+ <fbedcbf1-d925-47d6-b9fb-c9e15263c117@xs4all.nl>
+ <CAA+D8APyNGFSry1GUv6TOW0nKYHKSwQd5bTcRNuT7cu0Xf8eUA@mail.gmail.com>
+ <5292ce53-643e-44f0-b2cc-cb66efee9712@xs4all.nl>
+ <CAA+D8AMZN59uTRs2sOrSeVb5AGopTzurNVCTNwJOVPahfEXd+w@mail.gmail.com>
+From: Hans Verkuil <hverkuil@xs4all.nl>
+Autocrypt: addr=hverkuil@xs4all.nl; keydata=
+ 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
+In-Reply-To: <CAA+D8AMZN59uTRs2sOrSeVb5AGopTzurNVCTNwJOVPahfEXd+w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,22 +96,195 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>, Xiubo Li <Xiubo.Lee@gmail.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>, Matus Gajdos <matuszpd@gmail.com>, Shengjiu Wang <shengjiu.wang@gmail.com>
+Cc: alsa-devel@alsa-project.org, lgirdwood@gmail.com, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-media@vger.kernel.org, tfiga@chromium.org, nicoleotsuka@gmail.com, linuxppc-dev@lists.ozlabs.org, broonie@kernel.org, sakari.ailus@iki.fi, perex@perex.cz, mchehab@kernel.org, festevam@gmail.com, m.szyprowski@samsung.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Sep 21, 2023 at 5:48=E2=80=AFAM Emil Abildgaard Svendsen
-<EMAS@bang-olufsen.dk> wrote:
->
-> When in consumer mode with BCLK disabled (FSL_SAI_CSR_BCE =3D 0) the
-> FIFO's can still contain data when resumed. It might also be possible
-> with BCLK enabled but just less likely.
->
-> When the FIFO's still contain data on resume it can cause channel
-> shifting on e.g. XRUNS. A Software Reset will reset the FIFO's and make
-> sure channels are aligned.
->
-> Fixes: 269f399dc19f ("ASoC: fsl_sai: Disable bit clock with transmitter")
-> Signed-off-by: Emil Svendsen <emas@bang-olufsen.dk>
+On 21/09/2023 13:13, Shengjiu Wang wrote:
+> On Thu, Sep 21, 2023 at 3:11 PM Hans Verkuil <hverkuil@xs4all.nl> wrote:
+>>
+>> On 21/09/2023 08:55, Shengjiu Wang wrote:
+>>> On Wed, Sep 20, 2023 at 6:19 PM Hans Verkuil <hverkuil@xs4all.nl> wrote:
+>>>>
+>>>> On 20/09/2023 11:32, Shengjiu Wang wrote:
+>>>>> The input clock and output clock may not be the accurate
+>>>>> rate as the sample rate, there is some drift, so the convert
+>>>>> ratio of i.MX ASRC module need to be changed according to
+>>>>> actual clock rate.
+>>>>>
+>>>>> Add V4L2_CID_USER_IMX_ASRC_RATIO_MOD control for user to
+>>>>> adjust the ratio.
+>>>>>
+>>>>> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+>>>>> ---
+>>>>>  Documentation/userspace-api/media/v4l/control.rst | 5 +++++
+>>>>>  drivers/media/v4l2-core/v4l2-ctrls-defs.c         | 1 +
+>>>>>  include/uapi/linux/v4l2-controls.h                | 1 +
+>>>>>  3 files changed, 7 insertions(+)
+>>>>>
+>>>>> diff --git a/Documentation/userspace-api/media/v4l/control.rst b/Documentation/userspace-api/media/v4l/control.rst
+>>>>> index 4463fce694b0..2bc175900a34 100644
+>>>>> --- a/Documentation/userspace-api/media/v4l/control.rst
+>>>>> +++ b/Documentation/userspace-api/media/v4l/control.rst
+>>>>> @@ -318,6 +318,11 @@ Control IDs
+>>>>>      depending on particular custom controls should check the driver name
+>>>>>      and version, see :ref:`querycap`.
+>>>>>
+>>>>> +.. _v4l2-audio-imx:
+>>>>> +
+>>>>> +``V4L2_CID_USER_IMX_ASRC_RATIO_MOD``
+>>>>> +    sets the rasampler ratio modifier of i.MX asrc module.
+>>>>
+>>>> rasampler -> resampler (I think?)
+>>>>
+>>>> This doesn't document at all what the type of the control is or how to interpret it.
+>>>>
+>>>>> +
+>>>>>  Applications can enumerate the available controls with the
+>>>>>  :ref:`VIDIOC_QUERYCTRL` and
+>>>>>  :ref:`VIDIOC_QUERYMENU <VIDIOC_QUERYCTRL>` ioctls, get and set a
+>>>>> diff --git a/drivers/media/v4l2-core/v4l2-ctrls-defs.c b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+>>>>> index 8696eb1cdd61..16f66f66198c 100644
+>>>>> --- a/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+>>>>> +++ b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
+>>>>> @@ -1242,6 +1242,7 @@ const char *v4l2_ctrl_get_name(u32 id)
+>>>>>       case V4L2_CID_COLORIMETRY_CLASS:        return "Colorimetry Controls";
+>>>>>       case V4L2_CID_COLORIMETRY_HDR10_CLL_INFO:               return "HDR10 Content Light Info";
+>>>>>       case V4L2_CID_COLORIMETRY_HDR10_MASTERING_DISPLAY:      return "HDR10 Mastering Display";
+>>>>> +     case V4L2_CID_USER_IMX_ASRC_RATIO_MOD:                  return "ASRC RATIO MOD";
+>>>>
+>>>> Let's stay consistent with the other control names:
+>>>>
+>>>> "ASRC Ratio Modifier"
+>>>>
+>>>> But if this is a driver specific control, then this doesn't belong here.
+>>>>
+>>>> Driver specific controls are defined in the driver itself, including this
+>>>> description.
+>>>>
+>>>> Same for the control documentation: if it is driver specific, then that
+>>>> typically is documented either in a driver-specific public header, or
+>>>> possibly in driver-specific documentation (Documentation/admin-guide/media/).
+>>>>
+>>>> But is this imx specific? Wouldn't other similar devices need this?
+>>>
+>>> It is imx specific.
+>>
+>> Why? I'm not opposed to this, but I wonder if you looked at datasheets of
+>> similar devices from other vendors: would they use something similar?
+> 
+> I tried to find some datasheets for other vendors, but failed to find them.
+> So I don't know how they implement this part.
+> 
+> Ratio modification on i.MX is to modify the configured ratio.
+> For example, the input rate is 44.1kHz,  output rate is 48kHz,
+> configured ratio = 441/480,   the ratio modification is to modify
+> the fractional part of (441/480) with small steps.  because the
+> input clock or output clock has drift in the real hardware.
+> The ratio modification is signed value, it is added to configured
+> ratio.
+> 
+> In our case, we have some sysfs interface for user to get the
+> clock from input audio device and output audio device, user
+> need to calculate the ratio dynamically , then configure the
+> modification to driver
 
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
+So this ratio modifier comes into play when either the audio input
+or audio output (or both) are realtime audio inputs/outputs where
+the sample rate is not a perfect 44.1 or 48 kHz, but slightly different?
+
+If you would use this resampler to do offline resampling (i.e. resample
+a 44.1 kHz wav file to a 48 kHz wav file), then this wouldn't be needed,
+correct?
+
+When dealing with realtime audio, userspace will know how to get the
+precise sample rate, but that is out-of-scope of this driver. Here
+you just need a knob to slightly tweak the resampling ratio.
+
+If my understanding is correct, then I wonder if it is such a good
+idea to put the rate into the v4l2_audio_format: it really has nothing
+to do with the audio format as it is stored in memory.
+
+What if you would drop that 'rate' field and instead create just a single
+control for the resampling ratio. This can use struct v4l2_fract to represent
+a fraction. It would be more work since v4l2_fract is currently not supported
+for controls, but it is not hard to add support for that (just a bit tedious)
+and I actually think this might be a perfect solution.
+
+That way userspace can quite precisely tweak the ratio on the fly, and
+it is a generic solution as well instead of mediatek specific.
+
+Regards,
+
+	Hans
+
+> 
+> May be other vendors has similar implementation. or make
+> the definition be generic is an option.
+> 
+> best regards
+> wang shengjiu
+> 
+>>
+>> And the very short description you gave in the commit log refers to input
+>> and output clock: how would userspace know those clock frequencies? In
+>> other words, what information does userspace need in order to set this
+>> control correctly? And is that information actually available? How would
+>> you use this control?
+>>
+>> I don't really understand how this is supposed to be used.
+>>
+>>>
+>>> Does this mean that I need to create a header file in include/uapi/linux
+>>> folder to put this definition?  I just hesitate if this is necessary.
+>>
+>> Yes, put it there. There are some examples of this already:
+>>
+>> include/uapi/linux/aspeed-video.h
+>> include/uapi/linux/max2175.h
+>>
+>>>
+>>> There is folder Documentation/userspace-api/media/drivers/ for drivers
+>>> Should this document in this folder, not in the
+>>> Documentation/admin-guide/media/?
+>>
+>> Yes, you are correct. For the headers above, the corresponding documentation
+>> is in:
+>>
+>> Documentation/userspace-api/media/drivers/aspeed-video.rst
+>> Documentation/userspace-api/media/drivers/max2175.rst
+>>
+>> So you have some examples as reference.
+>>
+>> Frankly, what is in admin-guide and in userspace-api is a bit random, it
+>> probably could use a cleanup.
+>>
+>> Regards,
+>>
+>>         Hans
+>>
+>>>
+>>> Best regards
+>>> Wang shengjiu
+>>>>
+>>>>>       default:
+>>>>>               return NULL;
+>>>>>       }
+>>>>> diff --git a/include/uapi/linux/v4l2-controls.h b/include/uapi/linux/v4l2-controls.h
+>>>>> index c3604a0a3e30..b1c319906d12 100644
+>>>>> --- a/include/uapi/linux/v4l2-controls.h
+>>>>> +++ b/include/uapi/linux/v4l2-controls.h
+>>>>> @@ -162,6 +162,7 @@ enum v4l2_colorfx {
+>>>>>  /* The base for the imx driver controls.
+>>>>>   * We reserve 16 controls for this driver. */
+>>>>>  #define V4L2_CID_USER_IMX_BASE                       (V4L2_CID_USER_BASE + 0x10b0)
+>>>>> +#define V4L2_CID_USER_IMX_ASRC_RATIO_MOD     (V4L2_CID_USER_IMX_BASE + 0)
+>>>>>
+>>>>>  /*
+>>>>>   * The base for the atmel isc driver controls.
+>>>>
+>>>> Regards,
+>>>>
+>>>>         Hans
+>>
+
