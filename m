@@ -1,74 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70D087AA71D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Sep 2023 04:52:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8DA37AA728
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Sep 2023 04:55:37 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=lN30A9ly;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=VTQ6TT1n;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RsGyt2hl7z3ccb
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Sep 2023 12:52:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RsH2H59Sqz3cSg
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Sep 2023 12:55:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=lN30A9ly;
+	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=VTQ6TT1n;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::536; helo=mail-pg1-x536.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::434; helo=mail-pf1-x434.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RsGxy2sbwz3cDg
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Sep 2023 12:51:48 +1000 (AEST)
-Received: by mail-pg1-x536.google.com with SMTP id 41be03b00d2f7-577fb90bb76so1009322a12.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Sep 2023 19:51:48 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RsH1Q1CpPz3cDg
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Sep 2023 12:54:48 +1000 (AEST)
+Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-690f8e63777so418216b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Sep 2023 19:54:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695351104; x=1695955904; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EYkrqB9uA7M+0eOAqW1r8qSkknHUZhDVrIi/aSlq6T8=;
-        b=lN30A9lyP2dY6fCXtr8UVJCY6FziwPResgzlLbK/Rhlt+yjhNACSUSd3ylbWjyCBki
-         2DTdxWrxibmnYuDuG6lXtlrZQ7Xr+KUt6CTaExbEhiKFEHUEqL3/krvWT2V/yaQYGJmD
-         +EpbQhkYU9fgynOlRjtTCtqT1nDgvvBB8aSKi0capQrANxlmZtap4oxSnKkqlSOKAXoS
-         qoBAABfewPO5ROPcVdjBskWTTZVNibMNmhAPpO0RUuQUrMOF5SMj2C+kB+qT7L+K7Dmj
-         ckRjuk66FlXj2sk6TqbIB5XkhUAMmmmsnzHcO/hFvGWDcoZVb+ty912A9NA8Mclguvat
-         avBA==
+        d=bytedance.com; s=google; t=1695351286; x=1695956086; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=br+/C/v821nNYRFlkBHOr44NAy7oCmXwb/N/stsA46I=;
+        b=VTQ6TT1nz4lGgZKnWKrQ6qin6/8ObcDAWLoE4pz5CZocqsuxDJ/xojDZ22eNqtQARK
+         WLjJTddmhYlQx9+2MOeVpXtw8blMtQrwGRcOBZtt7KDPJGmJlSXWxbkBsHgJ1W0qGfcF
+         XRuPCuaXB8svQTS715eFWNCPwxnofqcQKz7ITTsV0FNr4hF8hzonjF0xtOVhI7fkveQp
+         AMFn+RRlCM5SlPmCYmqVKWVVSFQ5o9s387Z/XxRkyKHHsPstxidXjAAWUTuGdOFhXeVP
+         Vx3kNXK0j1/2PYdDOTL3gc3cXyNkGbyYFdDOuyB+AW8jUpEwRFBJVGi8Rcs5ezaF0QfX
+         cuLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695351104; x=1695955904;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EYkrqB9uA7M+0eOAqW1r8qSkknHUZhDVrIi/aSlq6T8=;
-        b=BB37yx2yBcACO+xOPvM19RbOXLjSkwCfBJ8hs8dOJqIrWYNmtO1qCXzINR/zfNqVIE
-         Ut4AHjGWventD7wLCe+qChqqf1EhGBZIa3+yCqoU0xZqUlhHQcHSFiwA3wiZyqrEpcNj
-         ybg7K1Uf+ko+Wzu7C869UUuXdZtDl01LzxF+qBdR94r7ZAa6DnhdQzc+b0pzhljm8ReP
-         zNHQI03mi+zHYSRmKvbPrHx4PM0lszVODqDEDb4bTgdLpl+Mq9Pfc8ctjR5N9FasC4xq
-         0GgqZErTZs5o1+iffxaoC624jHi94gkJfYlSVvdtMvfuuWu8BywgLKogZSHRM+F/dds5
-         b9KA==
-X-Gm-Message-State: AOJu0YwZudgYXAowTMFiwDrPJy48DBmO2k6jpxWhYEmNFgJdSjOfKs9g
-	SzjO2fX+keVn0ievnGoEGYepKoCxudu5GMC5u/uPfbqmXek=
-X-Google-Smtp-Source: AGHT+IGtiz5wXyrbAhyFg8avb8jX5ymjFN23gqRi0pY8tk76E77xHmkQsY5RA8geWyon6mrn/RqdLparfr1kcZjp+nY=
-X-Received: by 2002:a17:90b:19cb:b0:276:cd68:6081 with SMTP id
- nm11-20020a17090b19cb00b00276cd686081mr5418829pjb.40.1695351103836; Thu, 21
- Sep 2023 19:51:43 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1695351286; x=1695956086;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=br+/C/v821nNYRFlkBHOr44NAy7oCmXwb/N/stsA46I=;
+        b=vE7YKq/gVrXxROcUdVgIKiuH9HA8jd0g6R0P/MGYMrwEU6c7SUmUs4rt2Xc19X3ACx
+         aWyOjCR1bmfvhHMeo2TnVvx2MLym7J9uB4cls53BFlRO9SLECPIfQVJ5Fk2JQRLyu9Fp
+         FZZRghLfl/EtWlD7gvvwpIm/DrI3Bmh+piRlmOlOaGC4ZHXxHINRnRJlAM9up9cV4JpZ
+         N19YMKQnqdQ4v5px7tA/5dlFRgbvkG52j3LpYzLU82ASY4mY6mzAZx0drmtDjXaXDyiY
+         jLTEtBETpfZ+VpYC8beXsBQFM7b/l34EZXVIc0bxsxBu35c/ymTeY/NN8pRC59KmypwZ
+         evZQ==
+X-Gm-Message-State: AOJu0YzcAHM004zozvKZ/tEJdqGYpYmNW/snoSB6Ur6rDxRTV+84i5xp
+	REI/JbB95Ncbc28DAax3E0Qk+Q==
+X-Google-Smtp-Source: AGHT+IE6azF5uKJJ3m1Yb0ly5UPZHOK7EZhY5CJWIi1/96fWzCl6d26UEkh5dqVknV//4FTGeJthoQ==
+X-Received: by 2002:a05:6a20:c1aa:b0:15c:b7ba:e9ba with SMTP id bg42-20020a056a20c1aa00b0015cb7bae9bamr6999312pzb.0.1695351285575;
+        Thu, 21 Sep 2023 19:54:45 -0700 (PDT)
+Received: from [10.84.155.178] ([203.208.167.146])
+        by smtp.gmail.com with ESMTPSA id gp24-20020a17090adf1800b00268032f6a64sm3855746pjb.25.2023.09.21.19.54.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 21 Sep 2023 19:54:45 -0700 (PDT)
+Message-ID: <217bb956-b9f6-1057-914b-436d4c775a8b@bytedance.com>
+Date: Fri, 22 Sep 2023 10:54:32 +0800
 MIME-Version: 1.0
-References: <1695202370-24678-1-git-send-email-shengjiu.wang@nxp.com>
- <1695202370-24678-10-git-send-email-shengjiu.wang@nxp.com>
- <fbedcbf1-d925-47d6-b9fb-c9e15263c117@xs4all.nl> <CAA+D8APyNGFSry1GUv6TOW0nKYHKSwQd5bTcRNuT7cu0Xf8eUA@mail.gmail.com>
- <5292ce53-643e-44f0-b2cc-cb66efee9712@xs4all.nl> <CAA+D8AMZN59uTRs2sOrSeVb5AGopTzurNVCTNwJOVPahfEXd+w@mail.gmail.com>
- <2d44d574-08e5-4db3-87d9-5d12657f8935@xs4all.nl>
-In-Reply-To: <2d44d574-08e5-4db3-87d9-5d12657f8935@xs4all.nl>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Fri, 22 Sep 2023 10:51:32 +0800
-Message-ID: <CAA+D8AN+Uz+3CN9BnD5R_gp5opD1v-D8FBjANRpGrH43Ac2tdg@mail.gmail.com>
-Subject: Re: [RFC PATCH v4 09/11] media: uapi: Add V4L2_CID_USER_IMX_ASRC_RATIO_MOD
- control
-To: Hans Verkuil <hverkuil@xs4all.nl>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH v1 8/8] arm64: hugetlb: Fix set_huge_pte_at() to work with
+ all swap entries
+Content-Language: en-US
+To: Ryan Roberts <ryan.roberts@arm.com>
+References: <20230921162007.1630149-1-ryan.roberts@arm.com>
+ <20230921162007.1630149-9-ryan.roberts@arm.com>
+From: Qi Zheng <zhengqi.arch@bytedance.com>
+In-Reply-To: <20230921162007.1630149-9-ryan.roberts@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,244 +83,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, lgirdwood@gmail.com, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>, tiwai@suse.com, linux-media@vger.kernel.org, tfiga@chromium.org, nicoleotsuka@gmail.com, linuxppc-dev@lists.ozlabs.org, broonie@kernel.org, sakari.ailus@iki.fi, perex@perex.cz, mchehab@kernel.org, festevam@gmail.com, m.szyprowski@samsung.com
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Peter Xu <peterx@redhat.com>, "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, linux-mm@kvack.org, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>, Helge Deller <deller@gmx.de>, Christoph Hellwig <hch@infradead.org>, Axel Rasmussen <axelrasmussen@google.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Arnd Bergmann <arnd@arndb.de>, Anshuman Khandual <anshuman.khandual@arm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Qi Zheng <zhengqi.arch@bytedance.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-arm-kernel@lists.infradead.org, SeongJae Park <sj@kernel.org>, Lorenzo Stoakes <lstoakes@gmail.com>, linux-parisc@vger.kernel.org, Muchun Song <muchun.so
+ ng@linux.dev>, linux-kernel@vger.kernel.org, stable@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Sep 21, 2023 at 10:09=E2=80=AFPM Hans Verkuil <hverkuil@xs4all.nl> =
-wrote:
->
-> On 21/09/2023 13:13, Shengjiu Wang wrote:
-> > On Thu, Sep 21, 2023 at 3:11=E2=80=AFPM Hans Verkuil <hverkuil@xs4all.n=
-l> wrote:
-> >>
-> >> On 21/09/2023 08:55, Shengjiu Wang wrote:
-> >>> On Wed, Sep 20, 2023 at 6:19=E2=80=AFPM Hans Verkuil <hverkuil@xs4all=
-.nl> wrote:
-> >>>>
-> >>>> On 20/09/2023 11:32, Shengjiu Wang wrote:
-> >>>>> The input clock and output clock may not be the accurate
-> >>>>> rate as the sample rate, there is some drift, so the convert
-> >>>>> ratio of i.MX ASRC module need to be changed according to
-> >>>>> actual clock rate.
-> >>>>>
-> >>>>> Add V4L2_CID_USER_IMX_ASRC_RATIO_MOD control for user to
-> >>>>> adjust the ratio.
-> >>>>>
-> >>>>> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> >>>>> ---
-> >>>>>  Documentation/userspace-api/media/v4l/control.rst | 5 +++++
-> >>>>>  drivers/media/v4l2-core/v4l2-ctrls-defs.c         | 1 +
-> >>>>>  include/uapi/linux/v4l2-controls.h                | 1 +
-> >>>>>  3 files changed, 7 insertions(+)
-> >>>>>
-> >>>>> diff --git a/Documentation/userspace-api/media/v4l/control.rst b/Do=
-cumentation/userspace-api/media/v4l/control.rst
-> >>>>> index 4463fce694b0..2bc175900a34 100644
-> >>>>> --- a/Documentation/userspace-api/media/v4l/control.rst
-> >>>>> +++ b/Documentation/userspace-api/media/v4l/control.rst
-> >>>>> @@ -318,6 +318,11 @@ Control IDs
-> >>>>>      depending on particular custom controls should check the drive=
-r name
-> >>>>>      and version, see :ref:`querycap`.
-> >>>>>
-> >>>>> +.. _v4l2-audio-imx:
-> >>>>> +
-> >>>>> +``V4L2_CID_USER_IMX_ASRC_RATIO_MOD``
-> >>>>> +    sets the rasampler ratio modifier of i.MX asrc module.
-> >>>>
-> >>>> rasampler -> resampler (I think?)
-> >>>>
-> >>>> This doesn't document at all what the type of the control is or how =
-to interpret it.
-> >>>>
-> >>>>> +
-> >>>>>  Applications can enumerate the available controls with the
-> >>>>>  :ref:`VIDIOC_QUERYCTRL` and
-> >>>>>  :ref:`VIDIOC_QUERYMENU <VIDIOC_QUERYCTRL>` ioctls, get and set a
-> >>>>> diff --git a/drivers/media/v4l2-core/v4l2-ctrls-defs.c b/drivers/me=
-dia/v4l2-core/v4l2-ctrls-defs.c
-> >>>>> index 8696eb1cdd61..16f66f66198c 100644
-> >>>>> --- a/drivers/media/v4l2-core/v4l2-ctrls-defs.c
-> >>>>> +++ b/drivers/media/v4l2-core/v4l2-ctrls-defs.c
-> >>>>> @@ -1242,6 +1242,7 @@ const char *v4l2_ctrl_get_name(u32 id)
-> >>>>>       case V4L2_CID_COLORIMETRY_CLASS:        return "Colorimetry C=
-ontrols";
-> >>>>>       case V4L2_CID_COLORIMETRY_HDR10_CLL_INFO:               retur=
-n "HDR10 Content Light Info";
-> >>>>>       case V4L2_CID_COLORIMETRY_HDR10_MASTERING_DISPLAY:      retur=
-n "HDR10 Mastering Display";
-> >>>>> +     case V4L2_CID_USER_IMX_ASRC_RATIO_MOD:                  retur=
-n "ASRC RATIO MOD";
-> >>>>
-> >>>> Let's stay consistent with the other control names:
-> >>>>
-> >>>> "ASRC Ratio Modifier"
-> >>>>
-> >>>> But if this is a driver specific control, then this doesn't belong h=
-ere.
-> >>>>
-> >>>> Driver specific controls are defined in the driver itself, including=
- this
-> >>>> description.
-> >>>>
-> >>>> Same for the control documentation: if it is driver specific, then t=
-hat
-> >>>> typically is documented either in a driver-specific public header, o=
-r
-> >>>> possibly in driver-specific documentation (Documentation/admin-guide=
-/media/).
-> >>>>
-> >>>> But is this imx specific? Wouldn't other similar devices need this?
-> >>>
-> >>> It is imx specific.
-> >>
-> >> Why? I'm not opposed to this, but I wonder if you looked at datasheets=
- of
-> >> similar devices from other vendors: would they use something similar?
-> >
-> > I tried to find some datasheets for other vendors, but failed to find t=
-hem.
-> > So I don't know how they implement this part.
-> >
-> > Ratio modification on i.MX is to modify the configured ratio.
-> > For example, the input rate is 44.1kHz,  output rate is 48kHz,
-> > configured ratio =3D 441/480,   the ratio modification is to modify
-> > the fractional part of (441/480) with small steps.  because the
-> > input clock or output clock has drift in the real hardware.
-> > The ratio modification is signed value, it is added to configured
-> > ratio.
-> >
-> > In our case, we have some sysfs interface for user to get the
-> > clock from input audio device and output audio device, user
-> > need to calculate the ratio dynamically , then configure the
-> > modification to driver
->
-> So this ratio modifier comes into play when either the audio input
-> or audio output (or both) are realtime audio inputs/outputs where
-> the sample rate is not a perfect 44.1 or 48 kHz, but slightly different?
+Hi Ryan,
 
-yes.
+On 2023/9/22 00:20, Ryan Roberts wrote:
+> When called with a swap entry that does not embed a PFN (e.g.
+> PTE_MARKER_POISONED or PTE_MARKER_UFFD_WP), the previous implementation
+> of set_huge_pte_at() would either cause a BUG() to fire (if
+> CONFIG_DEBUG_VM is enabled) or cause a dereference of an invalid address
+> and subsequent panic.
+> 
+> arm64's huge pte implementation supports multiple huge page sizes, some
+> of which are implemented in the page table with contiguous mappings. So
+> set_huge_pte_at() needs to work out how big the logical pte is, so that
+> it can also work out how many physical ptes (or pmds) need to be
+> written. It does this by grabbing the folio out of the pte and querying
+> its size.
+> 
+> However, there are cases when the pte being set is actually a swap
+> entry. But this also used to work fine, because for huge ptes, we only
+> ever saw migration entries and hwpoison entries. And both of these types
+> of swap entries have a PFN embedded, so the code would grab that and
+> everything still worked out.
+> 
+> But over time, more calls to set_huge_pte_at() have been added that set
+> swap entry types that do not embed a PFN. And this causes the code to go
+> bang. The triggering case is for the uffd poison test, commit
+> 99aa77215ad0 ("selftests/mm: add uffd unit test for UFFDIO_POISON"),
+> which sets a PTE_MARKER_POISONED swap entry. But review shows there are
+> other places too (PTE_MARKER_UFFD_WP).
+> 
+> So the root cause is due to commit 18f3962953e4 ("mm: hugetlb: kill
+> set_huge_swap_pte_at()"), which aimed to simplify the interface to the
+> core code by removing set_huge_swap_pte_at() (which took a page size
+> parameter) and replacing it with calls to set_huge_swap_pte_at() where
+> the size was inferred from the folio, as descibed above. While that
+> commit didn't break anything at the time, 
 
->
-> If you would use this resampler to do offline resampling (i.e. resample
-> a 44.1 kHz wav file to a 48 kHz wav file), then this wouldn't be needed,
-> correct?
+If it didn't break anything at that time, then shouldn't the Fixes tag
+be added to this commit?
 
-yes.
+> it did break the interface
+> because it couldn't handle swap entries without PFNs. And since then new
+> callers have come along which rely on this working.
 
->
-> When dealing with realtime audio, userspace will know how to get the
-> precise sample rate, but that is out-of-scope of this driver. Here
-> you just need a knob to slightly tweak the resampling ratio.
->
-> If my understanding is correct, then I wonder if it is such a good
-> idea to put the rate into the v4l2_audio_format: it really has nothing
-> to do with the audio format as it is stored in memory.
->
-> What if you would drop that 'rate' field and instead create just a single
-> control for the resampling ratio. This can use struct v4l2_fract to repre=
-sent
-> a fraction. It would be more work since v4l2_fract is currently not suppo=
-rted
-> for controls, but it is not hard to add support for that (just a bit tedi=
-ous)
-> and I actually think this might be a perfect solution.
->
-> That way userspace can quite precisely tweak the ratio on the fly, and
-> it is a generic solution as well instead of mediatek specific.
->
+So the Fixes tag should be added only to the commit that introduces the
+first new callers?
 
-(rate, channel, format) are the basic parameters for audio stream.
-For example, if there is decoder/encoder requirement, the rate field is
-still needed,  I think the rate shouldn't be removed.
+Other than that, LGTM.
 
-tweak ratio is not always needed by use case. As you said, for
-file to file conversion, it is not needed, so keeping 'rate' is necessary.
+Thanks,
+Qi
 
-best regards
-wang shengjiu
-
-> Regards,
->
->         Hans
->
-> >
-> > May be other vendors has similar implementation. or make
-> > the definition be generic is an option.
-> >
-> > best regards
-> > wang shengjiu
-> >
-> >>
-> >> And the very short description you gave in the commit log refers to in=
-put
-> >> and output clock: how would userspace know those clock frequencies? In
-> >> other words, what information does userspace need in order to set this
-> >> control correctly? And is that information actually available? How wou=
-ld
-> >> you use this control?
-> >>
-> >> I don't really understand how this is supposed to be used.
-> >>
-> >>>
-> >>> Does this mean that I need to create a header file in include/uapi/li=
-nux
-> >>> folder to put this definition?  I just hesitate if this is necessary.
-> >>
-> >> Yes, put it there. There are some examples of this already:
-> >>
-> >> include/uapi/linux/aspeed-video.h
-> >> include/uapi/linux/max2175.h
-> >>
-> >>>
-> >>> There is folder Documentation/userspace-api/media/drivers/ for driver=
-s
-> >>> Should this document in this folder, not in the
-> >>> Documentation/admin-guide/media/?
-> >>
-> >> Yes, you are correct. For the headers above, the corresponding documen=
-tation
-> >> is in:
-> >>
-> >> Documentation/userspace-api/media/drivers/aspeed-video.rst
-> >> Documentation/userspace-api/media/drivers/max2175.rst
-> >>
-> >> So you have some examples as reference.
-> >>
-> >> Frankly, what is in admin-guide and in userspace-api is a bit random, =
-it
-> >> probably could use a cleanup.
-> >>
-> >> Regards,
-> >>
-> >>         Hans
-> >>
-> >>>
-> >>> Best regards
-> >>> Wang shengjiu
-> >>>>
-> >>>>>       default:
-> >>>>>               return NULL;
-> >>>>>       }
-> >>>>> diff --git a/include/uapi/linux/v4l2-controls.h b/include/uapi/linu=
-x/v4l2-controls.h
-> >>>>> index c3604a0a3e30..b1c319906d12 100644
-> >>>>> --- a/include/uapi/linux/v4l2-controls.h
-> >>>>> +++ b/include/uapi/linux/v4l2-controls.h
-> >>>>> @@ -162,6 +162,7 @@ enum v4l2_colorfx {
-> >>>>>  /* The base for the imx driver controls.
-> >>>>>   * We reserve 16 controls for this driver. */
-> >>>>>  #define V4L2_CID_USER_IMX_BASE                       (V4L2_CID_USE=
-R_BASE + 0x10b0)
-> >>>>> +#define V4L2_CID_USER_IMX_ASRC_RATIO_MOD     (V4L2_CID_USER_IMX_BA=
-SE + 0)
-> >>>>>
-> >>>>>  /*
-> >>>>>   * The base for the atmel isc driver controls.
-> >>>>
-> >>>> Regards,
-> >>>>
-> >>>>         Hans
-> >>
->
+> 
+> Now that we have modified the set_huge_pte_at() interface to pass the
+> vma, we can extract the huge page size from it and fix this issue.
+> 
+> I'm tagging the commit that added the uffd poison feature, since that is
+> what exposed the problem, as well as the original change that broke the
+> interface. Hopefully this is valuable for people doing bisect.
+> 
+> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+> Fixes: 18f3962953e4 ("mm: hugetlb: kill set_huge_swap_pte_at()")
+> Fixes: 8a13897fb0da ("mm: userfaultfd: support UFFDIO_POISON for hugetlbfs")
+> ---
+>   arch/arm64/mm/hugetlbpage.c | 17 +++--------------
+>   1 file changed, 3 insertions(+), 14 deletions(-)
+> 
+> diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+> index 844832511c1e..a08601a14689 100644
+> --- a/arch/arm64/mm/hugetlbpage.c
+> +++ b/arch/arm64/mm/hugetlbpage.c
+> @@ -241,13 +241,6 @@ static void clear_flush(struct mm_struct *mm,
+>   	flush_tlb_range(&vma, saddr, addr);
+>   }
+>   
+> -static inline struct folio *hugetlb_swap_entry_to_folio(swp_entry_t entry)
+> -{
+> -	VM_BUG_ON(!is_migration_entry(entry) && !is_hwpoison_entry(entry));
+> -
+> -	return page_folio(pfn_to_page(swp_offset_pfn(entry)));
+> -}
+> -
+>   void set_huge_pte_at(struct vm_area_struct *vma, unsigned long addr,
+>   			    pte_t *ptep, pte_t pte)
+>   {
+> @@ -258,13 +251,10 @@ void set_huge_pte_at(struct vm_area_struct *vma, unsigned long addr,
+>   	unsigned long pfn, dpfn;
+>   	pgprot_t hugeprot;
+>   
+> -	if (!pte_present(pte)) {
+> -		struct folio *folio;
+> -
+> -		folio = hugetlb_swap_entry_to_folio(pte_to_swp_entry(pte));
+> -		ncontig = num_contig_ptes(folio_size(folio), &pgsize);
+> +	ncontig = num_contig_ptes(huge_page_size(hstate_vma(vma)), &pgsize);
+>   
+> -		for (i = 0; i < ncontig; i++, ptep++)
+> +	if (!pte_present(pte)) {
+> +		for (i = 0; i < ncontig; i++, ptep++, addr += pgsize)
+>   			set_pte_at(mm, addr, ptep, pte);
+>   		return;
+>   	}
+> @@ -274,7 +264,6 @@ void set_huge_pte_at(struct vm_area_struct *vma, unsigned long addr,
+>   		return;
+>   	}
+>   
+> -	ncontig = find_num_contig(mm, addr, ptep, &pgsize);
+>   	pfn = pte_pfn(pte);
+>   	dpfn = pgsize >> PAGE_SHIFT;
+>   	hugeprot = pte_pgprot(pte);
