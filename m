@@ -1,55 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51C857AA699
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Sep 2023 03:38:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 879CF7AA6A4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Sep 2023 03:45:49 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PNAAsjxZ;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QBxW0ZKp;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RsFJx1tncz3cjv
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Sep 2023 11:38:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RsFTl2VSRz3cks
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Sep 2023 11:45:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PNAAsjxZ;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QBxW0ZKp;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=sj@kernel.org; receiver=lists.ozlabs.org)
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RsFJ20jqQz3cFt
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Sep 2023 11:37:22 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 0642EB820DA;
-	Fri, 22 Sep 2023 01:37:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2723CC433C8;
-	Fri, 22 Sep 2023 01:37:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1695346635;
-	bh=zRyL223DT0AFJx1gaOEUn6WcLlX2Kysk+6Fs0mtLrOo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PNAAsjxZ/e5mSgGg/LPftlkbNKpcN/rnJGyJdb//w0VkNEAdvtPkglz83EUpi+iRP
-	 CUifgPcEfIXikkO8FSBVWAewa4zbTOyW/Yl5flrqUDllqJAE3SzG2kmjrjAZrmJDHo
-	 crbAM8SWYY+JnkBboXDn+/Qz7CHhlgXE7xG/2qP2x0dmB0tprvlPXeP9NzkYvk+r3s
-	 0uxngMBI0XN0BvxVhCId+ACbyTDCZOXDjS5wdL3TxpEGcwtg23dBoXZkT0xPOs4c86
-	 SSz1LUNN37N0YRjVtKgcGjRfXwPjXi9P2JOPVjrrrvT7bUtXub+Siisb+MvwlrdxSE
-	 a+KWdAyrmeGOA==
-From: SeongJae Park <sj@kernel.org>
-To: Ryan Roberts <ryan.roberts@arm.com>
-Subject: Re: [PATCH v1 6/8] mm: hugetlb: Convert set_huge_pte_at() to take vma
-Date: Fri, 22 Sep 2023 01:37:11 +0000
-Message-Id: <20230922013711.100278-1-sj@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230921162007.1630149-7-ryan.roberts@arm.com>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RsFSs19wwz3cbl
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Sep 2023 11:44:59 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1695347101; x=1726883101;
+  h=date:from:to:cc:subject:message-id;
+  bh=H3csq1bVYFiZTqMm4GeJ9FkQPip91VF4FGtDgaRh5hw=;
+  b=QBxW0ZKpkldNAKTHssA9B37wFMLIrsQ0TvWVJUyL248S6ioy74B4GMil
+   V1OXjbhTPhRXhrTjmQAWpH/eEzbeYsgCCRS1/eTjAnoeOQpKIJilcOYHe
+   iP5DbYpjGvWlYKLGlAsrmrzxqKJ1tWEFg1N5L5VOeemuJ+Sb5zL0/ApS0
+   hpIlOFmoojL3arjwvGkseKgY4x5p0CTpBMtiqVDWVZfA2ab2oL8BDsZ5I
+   Hp4lft9qsM7m1IjDOA+dLRfA2c2t8P4SxOG4JiyEf7B5xvmDWI094CPDx
+   E9KGUvP8XIPHMNAlIyVIwkWBrmQ0OuWnaI3F9U+bxIAra1Zuz9gMKBt2/
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10840"; a="378006573"
+X-IronPort-AV: E=Sophos;i="6.03,167,1694761200"; 
+   d="scan'208";a="378006573"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2023 18:44:55 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10840"; a="782457334"
+X-IronPort-AV: E=Sophos;i="6.03,167,1694761200"; 
+   d="scan'208";a="782457334"
+Received: from lkp-server02.sh.intel.com (HELO b77866e22201) ([10.239.97.151])
+  by orsmga001.jf.intel.com with ESMTP; 21 Sep 2023 18:44:53 -0700
+Received: from kbuild by b77866e22201 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1qjVDv-0000dj-2D;
+	Fri, 22 Sep 2023 01:44:51 +0000
+Date: Fri, 22 Sep 2023 09:44:22 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS
+ 7c9749edebd772b65aae2d616aa538f26f054c30
+Message-ID: <202309220919.CXazJ3Ns-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,103 +66,159 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Xu <peterx@redhat.com>, "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, linux-mm@kvack.org, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>, Helge Deller <deller@gmx.de>, Christoph Hellwig <hch@infradead.org>, Axel Rasmussen <axelrasmussen@google.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Arnd Bergmann <arnd@arndb.de>, Anshuman Khandual <anshuman.khandual@arm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Qi Zheng <zhengqi.arch@bytedance.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-arm-kernel@lists.infradead.org, SeongJae Park <sj@kernel.org>, Lorenzo Stoakes <lstoakes@gmail.com>, linux-parisc@vger.kernel.org, Muchun Song <muchun.song@linux.dev>, linux-kernel@vger.kernel.org
- , stable@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Ryan,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: 7c9749edebd772b65aae2d616aa538f26f054c30  Automatic merge of 'next' into merge (2023-09-21 19:35)
 
-On Thu, 21 Sep 2023 17:20:05 +0100 Ryan Roberts <ryan.roberts@arm.com> wrote:
+elapsed time: 929m
 
-> In order to fix a bug, arm64 needs access to the vma inside it's
-> implementation of set_huge_pte_at(). Provide for this by converting the
-> mm parameter to be a vma. Any implementations that require the mm can
-> access it via vma->vm_mm.
-> 
-> This commit makes the required modifications to the core mm. Separate
-> commits update the arches, before the actual bug is fixed in arm64.
-> 
-> No behavioral changes intended.
-> 
-> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+configs tested: 136
+configs skipped: 2
 
-For mm/damon/ part change,
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Reviewed-by: SeongJae Park <sj@kernel.org>
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20230921   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                                 defconfig   gcc  
+arm                   randconfig-001-20230921   gcc  
+arm64                            allmodconfig   gcc  
+arm64                             allnoconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20230921   gcc  
+i386         buildonly-randconfig-002-20230921   gcc  
+i386         buildonly-randconfig-003-20230921   gcc  
+i386         buildonly-randconfig-004-20230921   gcc  
+i386         buildonly-randconfig-005-20230921   gcc  
+i386         buildonly-randconfig-006-20230921   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                  randconfig-001-20230921   gcc  
+i386                  randconfig-002-20230921   gcc  
+i386                  randconfig-003-20230921   gcc  
+i386                  randconfig-004-20230921   gcc  
+i386                  randconfig-005-20230921   gcc  
+i386                  randconfig-006-20230921   gcc  
+i386                  randconfig-011-20230921   gcc  
+i386                  randconfig-012-20230921   gcc  
+i386                  randconfig-013-20230921   gcc  
+i386                  randconfig-014-20230921   gcc  
+i386                  randconfig-015-20230921   gcc  
+i386                  randconfig-016-20230921   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                        allyesconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20230921   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+openrisc                         allmodconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                 randconfig-001-20230921   gcc  
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                              allnoconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                  randconfig-001-20230921   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                 randconfig-001-20230921   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                            allnoconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-001-20230921   gcc  
+x86_64       buildonly-randconfig-002-20230921   gcc  
+x86_64       buildonly-randconfig-003-20230921   gcc  
+x86_64       buildonly-randconfig-004-20230921   gcc  
+x86_64       buildonly-randconfig-005-20230921   gcc  
+x86_64       buildonly-randconfig-006-20230921   gcc  
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20230921   gcc  
+x86_64                randconfig-002-20230921   gcc  
+x86_64                randconfig-003-20230921   gcc  
+x86_64                randconfig-004-20230921   gcc  
+x86_64                randconfig-005-20230921   gcc  
+x86_64                randconfig-006-20230921   gcc  
+x86_64                randconfig-011-20230921   gcc  
+x86_64                randconfig-012-20230921   gcc  
+x86_64                randconfig-013-20230921   gcc  
+x86_64                randconfig-014-20230921   gcc  
+x86_64                randconfig-015-20230921   gcc  
+x86_64                randconfig-016-20230921   gcc  
+x86_64                randconfig-071-20230921   gcc  
+x86_64                randconfig-072-20230921   gcc  
+x86_64                randconfig-073-20230921   gcc  
+x86_64                randconfig-074-20230921   gcc  
+x86_64                randconfig-075-20230921   gcc  
+x86_64                randconfig-076-20230921   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa                            allnoconfig   gcc  
+xtensa                           allyesconfig   gcc  
 
-
-Thanks,
-SJ
-
-
-> ---
->  include/asm-generic/hugetlb.h |  6 +++---
->  include/linux/hugetlb.h       |  6 +++---
->  mm/damon/vaddr.c              |  2 +-
->  mm/hugetlb.c                  | 30 +++++++++++++++---------------
->  mm/migrate.c                  |  2 +-
->  mm/rmap.c                     | 10 +++++-----
->  mm/vmalloc.c                  |  5 ++++-
->  7 files changed, 32 insertions(+), 29 deletions(-)
-> 
-> diff --git a/include/asm-generic/hugetlb.h b/include/asm-generic/hugetlb.h
-> index 4da02798a00b..515e4777fb65 100644
-> --- a/include/asm-generic/hugetlb.h
-> +++ b/include/asm-generic/hugetlb.h
-> @@ -75,10 +75,10 @@ static inline void hugetlb_free_pgd_range(struct mmu_gather *tlb,
->  #endif
->  
->  #ifndef __HAVE_ARCH_HUGE_SET_HUGE_PTE_AT
-> -static inline void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
-> -		pte_t *ptep, pte_t pte)
-> +static inline void set_huge_pte_at(struct vm_area_struct *vma,
-> +		unsigned long addr, pte_t *ptep, pte_t pte)
->  {
-> -	set_pte_at(mm, addr, ptep, pte);
-> +	set_pte_at(vma->vm_mm, addr, ptep, pte);
->  }
->  #endif
->  
-> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-> index 5b2626063f4f..08184f32430c 100644
-> --- a/include/linux/hugetlb.h
-> +++ b/include/linux/hugetlb.h
-> @@ -984,7 +984,7 @@ static inline void huge_ptep_modify_prot_commit(struct vm_area_struct *vma,
->  						unsigned long addr, pte_t *ptep,
->  						pte_t old_pte, pte_t pte)
->  {
-> -	set_huge_pte_at(vma->vm_mm, addr, ptep, pte);
-> +	set_huge_pte_at(vma, addr, ptep, pte);
->  }
->  #endif
->  
-> @@ -1172,8 +1172,8 @@ static inline pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
->  #endif
->  }
->  
-> -static inline void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
-> -				   pte_t *ptep, pte_t pte)
-> +static inline void set_huge_pte_at(struct vm_area_struct *vma,
-> +				   unsigned long addr, pte_t *ptep, pte_t pte)
->  {
->  }
->  
-> diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-> index 4c81a9dbd044..55da8cee8fbc 100644
-> --- a/mm/damon/vaddr.c
-> +++ b/mm/damon/vaddr.c
-> @@ -347,7 +347,7 @@ static void damon_hugetlb_mkold(pte_t *pte, struct mm_struct *mm,
->  	if (pte_young(entry)) {
->  		referenced = true;
->  		entry = pte_mkold(entry);
-> -		set_huge_pte_at(mm, addr, pte, entry);
-> +		set_huge_pte_at(vma, addr, pte, entry);
->  	}
->  
->  #ifdef CONFIG_MMU_NOTIFIER
-[...]
-
-
-Thanks,
-SJ
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
