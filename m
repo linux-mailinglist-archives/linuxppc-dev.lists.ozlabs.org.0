@@ -1,92 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91D567AACDB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Sep 2023 10:39:17 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JQjm1m5Y;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JQjm1m5Y;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E1C97AACE2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Sep 2023 10:40:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RsQfq2pSJz3f5r
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Sep 2023 18:39:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RsQhZ3xw6z3gVt
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Sep 2023 18:40:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JQjm1m5Y;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JQjm1m5Y;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=fmartine@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RsQR81VYYz3fP9
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Sep 2023 18:29:07 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1695371343;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xUT8FtJmdwXZ1XdzLxxJQDSF0F15AqqVAfggCoYwa/o=;
-	b=JQjm1m5Y6NdPRz6o1+yrBAU9eudVCHhMq9LCtrhYC4kEIyOPB2ngin6g7Q1rSkuiUj6wXV
-	JJBVMVDmoN0/qwDBLv8lF5mndDx8wylqRtTAOwCuOle9tXPaSZJIzdjNRXPqmK3PAzUJsj
-	oruXWwnndZpEeO3LjQDJABQyWqGTM3o=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1695371343;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xUT8FtJmdwXZ1XdzLxxJQDSF0F15AqqVAfggCoYwa/o=;
-	b=JQjm1m5Y6NdPRz6o1+yrBAU9eudVCHhMq9LCtrhYC4kEIyOPB2ngin6g7Q1rSkuiUj6wXV
-	JJBVMVDmoN0/qwDBLv8lF5mndDx8wylqRtTAOwCuOle9tXPaSZJIzdjNRXPqmK3PAzUJsj
-	oruXWwnndZpEeO3LjQDJABQyWqGTM3o=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-681-CYIuOJYwOLaUbxPsiZ37Cg-1; Fri, 22 Sep 2023 04:29:01 -0400
-X-MC-Unique: CYIuOJYwOLaUbxPsiZ37Cg-1
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-40526a782f7so14588105e9.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Sep 2023 01:29:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695371340; x=1695976140;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xUT8FtJmdwXZ1XdzLxxJQDSF0F15AqqVAfggCoYwa/o=;
-        b=pJT8IUXDAa2iC0lIxSIyLvz1HgEXAcVP8JR+8Vx6qgaG6r28bT9NLYv4NOOpHB6b/U
-         ANbwLktSEaEJwevjkW3kHIZdox44MYwh3Viz74RHzHXoc77s+pmI+7ExcVCvIYDk0RjW
-         Dy/iPrjNqJTQH5I0BmJCGzHpurzazjkZOV2AT71cvcvUbhwm20hDJRjqKKRIbyvSx/WB
-         XAKjAw4TkMcSU2w8h/z6f7zTJir73pFOMsyijD8nIpb2oMojhJ1gnceR8hysIadTsQAi
-         c50xrY5OxDGHAlD+AQt5fFt8C5/O46ktbv25Pn645GfvRgu/NzxTMCieo7epd0LoA1m2
-         icww==
-X-Gm-Message-State: AOJu0YxngZCbxKtcHnNt0l5RD+Tj2mfS4RkjiDFbT1UuNl9mAbQsjkhy
-	u5CGjz818OsoaqI+4WaK/JK0ZJOrHfUeIW/ek0KD3vtxwTfgHgXuWDQXFc/cx6TS1/hMBNFnCAm
-	5dxvLu1DEoG8FDEL0XhguP+HxxA==
-X-Received: by 2002:a05:600c:1e0b:b0:405:4002:825a with SMTP id ay11-20020a05600c1e0b00b004054002825amr568122wmb.13.1695371340724;
-        Fri, 22 Sep 2023 01:29:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGrR9BIVVw8Y2WgBOUvl/XqDvvu2Yb9s8zAvf4Vn3nfvNA1NNc3OCwyRPJ1UY+bCHomzJ5jcg==
-X-Received: by 2002:a05:600c:1e0b:b0:405:4002:825a with SMTP id ay11-20020a05600c1e0b00b004054002825amr568100wmb.13.1695371340371;
-        Fri, 22 Sep 2023 01:29:00 -0700 (PDT)
-Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id x14-20020a05600c21ce00b003fefcbe7fa8sm4004012wmj.28.2023.09.22.01.28.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Sep 2023 01:29:00 -0700 (PDT)
-From: Javier Martinez Canillas <javierm@redhat.com>
-To: Thomas Zimmermann <tzimmermann@suse.de>, mpe@ellerman.id.au,
- npiggin@gmail.com, christophe.leroy@csgroup.eu, arnd@arndb.de,
- deller@gmx.de
-Subject: Re: [PATCH v5 2/5] fbdev: Replace fb_pgprotect() with
- pgprot_framebuffer()
-In-Reply-To: <20230922080636.26762-3-tzimmermann@suse.de>
-References: <20230922080636.26762-1-tzimmermann@suse.de>
- <20230922080636.26762-3-tzimmermann@suse.de>
-Date: Fri, 22 Sep 2023 10:28:59 +0200
-Message-ID: <87wmwik3w4.fsf@minerva.mail-host-address-is-not-set>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RsQc26csKz3ffb
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Sep 2023 18:36:48 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8B69FDA7;
+	Fri, 22 Sep 2023 01:36:52 -0700 (PDT)
+Received: from [10.57.65.11] (unknown [10.57.65.11])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2F7F03F67D;
+	Fri, 22 Sep 2023 01:36:09 -0700 (PDT)
+Message-ID: <fc85f58e-e8ed-4b24-a3e5-d6288156595e@arm.com>
+Date: Fri, 22 Sep 2023 09:36:07 +0100
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 3/8] riscv: hugetlb: Convert set_huge_pte_at() to take
+ vma
+Content-Language: en-GB
+To: Alexandre Ghiti <alex@ghiti.fr>, Catalin Marinas
+ <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ "David S. Miller" <davem@davemloft.net>, Arnd Bergmann <arnd@arndb.de>,
+ Mike Kravetz <mike.kravetz@oracle.com>, Muchun Song <muchun.song@linux.dev>,
+ SeongJae Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>, Christoph Hellwig <hch@infradead.org>,
+ Lorenzo Stoakes <lstoakes@gmail.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>, Peter Xu <peterx@redhat.com>,
+ Axel Rasmussen <axelrasmussen@google.com>,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+References: <20230921162007.1630149-1-ryan.roberts@arm.com>
+ <20230921162007.1630149-4-ryan.roberts@arm.com>
+ <7bbceed4-c5f6-42d4-5d94-060032b73385@ghiti.fr>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <7bbceed4-c5f6-42d4-5d94-060032b73385@ghiti.fr>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,39 +64,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-fbdev@vger.kernel.org, linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-m68k@lists.linux-m68k.org, Geert Uytterhoeven <geert@linux-m68k.org>, Thomas Zimmermann <tzimmermann@suse.de>, sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, linux-mm@kvack.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Thomas Zimmermann <tzimmermann@suse.de> writes:
+On 22/09/2023 08:54, Alexandre Ghiti wrote:
+> Hi Ryan,
+> 
+> On 21/09/2023 18:20, Ryan Roberts wrote:
+>> In order to fix a bug, arm64 needs access to the vma inside it's
+>> implementation of set_huge_pte_at(). Provide for this by converting the
+>> mm parameter to be a vma. Any implementations that require the mm can
+>> access it via vma->vm_mm.
+>>
+>> This commit makes the required riscv modifications. Separate commits
+>> update the other arches and core code, before the actual bug is fixed in
+>> arm64.
+>>
+>> No behavioral changes intended.
+>>
+>> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+>> ---
+>>   arch/riscv/include/asm/hugetlb.h | 2 +-
+>>   arch/riscv/mm/hugetlbpage.c      | 3 ++-
+>>   2 files changed, 3 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/arch/riscv/include/asm/hugetlb.h b/arch/riscv/include/asm/hugetlb.h
+>> index 34e24f078cc1..be1ac8582bc2 100644
+>> --- a/arch/riscv/include/asm/hugetlb.h
+>> +++ b/arch/riscv/include/asm/hugetlb.h
+>> @@ -17,7 +17,7 @@ void huge_pte_clear(struct mm_struct *mm, unsigned long addr,
+>>               pte_t *ptep, unsigned long sz);
+>>     #define __HAVE_ARCH_HUGE_SET_HUGE_PTE_AT
+>> -void set_huge_pte_at(struct mm_struct *mm,
+>> +void set_huge_pte_at(struct vm_area_struct *vma,
+>>                unsigned long addr, pte_t *ptep, pte_t pte);
+>>     #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+>> diff --git a/arch/riscv/mm/hugetlbpage.c b/arch/riscv/mm/hugetlbpage.c
+>> index 96225a8533ad..7cdbf0960772 100644
+>> --- a/arch/riscv/mm/hugetlbpage.c
+>> +++ b/arch/riscv/mm/hugetlbpage.c
+>> @@ -177,11 +177,12 @@ pte_t arch_make_huge_pte(pte_t entry, unsigned int
+>> shift, vm_flags_t flags)
+>>       return entry;
+>>   }
+>>   -void set_huge_pte_at(struct mm_struct *mm,
+>> +void set_huge_pte_at(struct vm_area_struct *vma,
+>>                unsigned long addr,
+>>                pte_t *ptep,
+>>                pte_t pte)
+>>   {
+>> +    struct mm_struct *mm = vma->vm_mm;
+>>       int i, pte_num;
+>>         if (!pte_napot(pte)) {
+> 
+> 
+> You can add:
+> 
+> Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-> Rename the fbdev mmap helper fb_pgprotect() to pgprot_framebuffer().
-> The helper sets VMA page-access flags for framebuffers in device I/O
-> memory.
->
-> Also clean up the helper's parameters and return value. Instead of
-> the VMA instance, pass the individial parameters separately: existing
-> page-access flags, the VMAs start and end addresses and the offset
-> in the underlying device memory rsp file. Return the new page-access
-> flags. These changes align pgprot_framebuffer() with other pgprot_()
-> functions.
->
-> v4:
-> 	* fix commit message (Christophe)
-> v3:
-> 	* rename fb_pgprotect() to pgprot_framebuffer() (Arnd)
->
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org> # m68k
-> ---
+Thanks!
 
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+> 
+> I realize that we may have the same issue with our contig pte implementation
+> (called napot in riscv) as we don't handle swap/migration entries at all. So I
+> guess we need something similar, and I'll implement it (unless you want to do it
+> of course, but I guess it's easier for me to test). 
 
--- 
-Best regards,
+Yes -I'll leave you to do the riscv part.
 
-Javier Martinez Canillas
-Core Platforms
-Red Hat
+> One (maybe stupid) question
+> though: wouldn't it be possible to extract the contig pte size from the value of
+> ptep instead of using a vma?
+
+Not for arm64: We support contpmd, pmd and contpte entries as backing for the
+logical huge pte, depending on size. So without the size, we can't distinguish
+between a coincidentally-aligned pmd entry vs a contpmd entry (which is just a
+fixed size block of pmd entries).
+
+Discussion with Christophe on the powerpc patch triggered some thinking; There
+is theoretical problem with my current approach because there is one call site
+in the core code that calls set_huge_pte_at(&init_mm). I've changed that to:
+
+  struct vm_area_struct vma = TLB_FLUSH_VMA(&init_mm, 0);
+  set_huge_pte_at(&vma);
+
+knowing that this will never actually get called for arm64 because we return
+PAGE_SIZE for arch_vmap_pte_range_map_size() and all other arches just take the
+mm and ignore the rest of the vma. So it's safe, but fragile.
+
+But it looks like riscv overrides arch_vmap_pte_range_map_size() and therefore
+the call will be made there. And if riscv also needs to determine the size from
+the vma, then bang.
+
+So I'm going to rework it to continue to pass the mm in, but also add a size
+parameter. Then it's totally safe. Will post a v2 later today.
+
+Thanks,
+Ryan
+
+> 
+> Thanks,
+> 
+> Alex
+> 
 
