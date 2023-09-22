@@ -2,76 +2,109 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8DA37AA728
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Sep 2023 04:55:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD59E7AA7C8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Sep 2023 06:30:08 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=VTQ6TT1n;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=VlLuyN0y;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RsH2H59Sqz3cSg
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Sep 2023 12:55:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RsK7L504bz3cQr
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Sep 2023 14:30:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=VTQ6TT1n;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=VlLuyN0y;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::434; helo=mail-pf1-x434.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f400:7e1b::623; helo=eur05-am6-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org)
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on20623.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e1b::623])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RsH1Q1CpPz3cDg
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Sep 2023 12:54:48 +1000 (AEST)
-Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-690f8e63777so418216b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Sep 2023 19:54:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1695351286; x=1695956086; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=br+/C/v821nNYRFlkBHOr44NAy7oCmXwb/N/stsA46I=;
-        b=VTQ6TT1nz4lGgZKnWKrQ6qin6/8ObcDAWLoE4pz5CZocqsuxDJ/xojDZ22eNqtQARK
-         WLjJTddmhYlQx9+2MOeVpXtw8blMtQrwGRcOBZtt7KDPJGmJlSXWxbkBsHgJ1W0qGfcF
-         XRuPCuaXB8svQTS715eFWNCPwxnofqcQKz7ITTsV0FNr4hF8hzonjF0xtOVhI7fkveQp
-         AMFn+RRlCM5SlPmCYmqVKWVVSFQ5o9s387Z/XxRkyKHHsPstxidXjAAWUTuGdOFhXeVP
-         Vx3kNXK0j1/2PYdDOTL3gc3cXyNkGbyYFdDOuyB+AW8jUpEwRFBJVGi8Rcs5ezaF0QfX
-         cuLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695351286; x=1695956086;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=br+/C/v821nNYRFlkBHOr44NAy7oCmXwb/N/stsA46I=;
-        b=vE7YKq/gVrXxROcUdVgIKiuH9HA8jd0g6R0P/MGYMrwEU6c7SUmUs4rt2Xc19X3ACx
-         aWyOjCR1bmfvhHMeo2TnVvx2MLym7J9uB4cls53BFlRO9SLECPIfQVJ5Fk2JQRLyu9Fp
-         FZZRghLfl/EtWlD7gvvwpIm/DrI3Bmh+piRlmOlOaGC4ZHXxHINRnRJlAM9up9cV4JpZ
-         N19YMKQnqdQ4v5px7tA/5dlFRgbvkG52j3LpYzLU82ASY4mY6mzAZx0drmtDjXaXDyiY
-         jLTEtBETpfZ+VpYC8beXsBQFM7b/l34EZXVIc0bxsxBu35c/ymTeY/NN8pRC59KmypwZ
-         evZQ==
-X-Gm-Message-State: AOJu0YzcAHM004zozvKZ/tEJdqGYpYmNW/snoSB6Ur6rDxRTV+84i5xp
-	REI/JbB95Ncbc28DAax3E0Qk+Q==
-X-Google-Smtp-Source: AGHT+IE6azF5uKJJ3m1Yb0ly5UPZHOK7EZhY5CJWIi1/96fWzCl6d26UEkh5dqVknV//4FTGeJthoQ==
-X-Received: by 2002:a05:6a20:c1aa:b0:15c:b7ba:e9ba with SMTP id bg42-20020a056a20c1aa00b0015cb7bae9bamr6999312pzb.0.1695351285575;
-        Thu, 21 Sep 2023 19:54:45 -0700 (PDT)
-Received: from [10.84.155.178] ([203.208.167.146])
-        by smtp.gmail.com with ESMTPSA id gp24-20020a17090adf1800b00268032f6a64sm3855746pjb.25.2023.09.21.19.54.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Sep 2023 19:54:45 -0700 (PDT)
-Message-ID: <217bb956-b9f6-1057-914b-436d4c775a8b@bytedance.com>
-Date: Fri, 22 Sep 2023 10:54:32 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RsK6T0gdVz3bP4
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Sep 2023 14:29:19 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=fIrY/v1vmG4R/C8F9oOcpRAMNazU0fJ5C9w4H88SiXDDTPKFLX1hDgsHkggzS1p8SkaRu8KwbpUCezerMouLacRmNbA7MNDZGa4grt5GatLhkbl6StogNbMNio6I0djFghhQBDi4gdGnBf2HdXYkwhXp8QVkMc82EemaF1uJm27zyNupnCjuULfeOD6u+pkXDfjw2kTCflPl6nXzbUKn+aTi9C27XKLsFQbXoHaibppyZy3juNGS9+e0LrQEGK16n91JEE8SD+WSJ/l7SEG6A0d0xZeyKVC78htjwAHMwxl3N8+9LiK1TYAGMV/CXFiCS6eysCsVjgittUY/Ldt73w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ch0fIy8u8ZzKD9dw6NfdlEgvdYMI3x8irCe6QTsdiEI=;
+ b=D7i39q61muuBz4F2TKw8gksm+EHXNncyi/QXqO4ON71mOPQitRNas6Ho7qGS4bQmYpAzitsixwsAfS/Lkvi2awp1QCKhi/B5Yn6NIN8J/nOBJShPGWUD9EP/zbftVAbMjK/5v0jUxDuDUB6B6ATJt/dm9naPIxG7JkmYpYPlyR6af2zOHSrKERwu6/bPssRBZfJJhWNf01nyLlSdmukI3pGEuVbbowFu3KcnL4Fh2fn0RnRjdgAVurC8PrLP0TBWtGh5BjLZDoGe8D4OY/pTm7nY96xFbXGfF/+MlK3fvBfstASixqigiEsIjsUm9bG/c1eeMPespms6DcSyfsdHIQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ch0fIy8u8ZzKD9dw6NfdlEgvdYMI3x8irCe6QTsdiEI=;
+ b=VlLuyN0yLobAu9Q6AJhRPjiFactcunRp7s0BIn1W1wDJi4Q3Jl26EAg5+qESkj69ianvnjUXabLI2tugp+xReNxXHxWeLOdZJWLgmsQhfdT0KsSlNenazfOdan4baYYnyDRBbc9q2NaWlbRm1vIEDcIiK2rcPQty06cD+KXaxB4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
+ by AS8PR04MB8851.eurprd04.prod.outlook.com (2603:10a6:20b:42e::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.20; Fri, 22 Sep
+ 2023 04:28:57 +0000
+Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::1774:e25f:f99:aca2]) by AM6PR04MB4838.eurprd04.prod.outlook.com
+ ([fe80::1774:e25f:f99:aca2%4]) with mapi id 15.20.6792.026; Fri, 22 Sep 2023
+ 04:28:56 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: christophe.jaillet@wanadoo.fr
+Subject: [PATCH v2 1/1] PCI: layerscape-ep: set 64-bit DMA mask
+Date: Fri, 22 Sep 2023 00:28:36 -0400
+Message-Id: <20230922042836.3311689-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: PH7PR17CA0016.namprd17.prod.outlook.com
+ (2603:10b6:510:324::19) To AM6PR04MB4838.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4::16)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v1 8/8] arm64: hugetlb: Fix set_huge_pte_at() to work with
- all swap entries
-Content-Language: en-US
-To: Ryan Roberts <ryan.roberts@arm.com>
-References: <20230921162007.1630149-1-ryan.roberts@arm.com>
- <20230921162007.1630149-9-ryan.roberts@arm.com>
-From: Qi Zheng <zhengqi.arch@bytedance.com>
-In-Reply-To: <20230921162007.1630149-9-ryan.roberts@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|AS8PR04MB8851:EE_
+X-MS-Office365-Filtering-Correlation-Id: 705c4718-dbc7-470d-0730-08dbbb246f47
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	gEnN5iZ3hfrZVgq0qL+t+CWfkapi/9ziOccaFx6xHJ2TFlbZaM25Y19xOeNyIUbrRrtk+AY9viyVyG/KYbJmHxP9jHPKec0RZIatVcV/C+rlzFb2f0vISbkiMGrbjda8AiwhvZk2Tj9iKRUW5oSUObMDuFxeHgAIz3sOdWXe7LilTUgKskybb8V7OfYIuNK8+m3Gz192DbW2l42ALtPIOrto8qJfsaYHP7D+PaJxh3RKtncdYXxAmZXOMwnrPuiayPl1Uima2SSu3gpe8sBGTGJ1mhzVwJYaAGOhX28H+zxyHoxdBwi8lRKv+NLQHHaKtDkH6ZoOE41n+qoLtzJNUDKsW+LID81DbsSYoQQ0UwXwT+znxZn2xkZ93OQAHpC/ItpRzC5iZepAatt7ssUuMgDvfsM+6DrbFjTH6AcC5qq4npz7XoNmjMIuY6wd5FqUWLuYSx1a00G6zj+y6dX8gd5dB46I54cUMpyVhwqbFpwx6CeYSDDgY5RTzH0LPSJkfwlLfvuwtyVrcKx0ABqARZIZYsDhBy4I5BPUL1sCrWyV7vS4y8ul09CKAOQqF56K04R8VhoxTUqNDAOepuSNc17bHwWVifSnFh/UW85pD8JQrPhctNoLrz1ntZxooSnm3MnjUWDoM+bhW58hLjjmvGOUo38sab1AMSirtURS2BY=
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(396003)(136003)(366004)(39860400002)(376002)(1800799009)(451199024)(186009)(6666004)(38350700002)(38100700002)(1076003)(6512007)(2616005)(86362001)(7416002)(4326008)(36756003)(5660300002)(8936002)(2906002)(6506007)(66476007)(66946007)(66556008)(6486002)(52116002)(6916009)(41300700001)(316002)(26005)(478600001)(8676002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?WNcGkH5YfBpfyFMsHSCfaCh/tt0QnQyrp5v7z8+sMU5o17lGJrKjstxf5PWG?=
+ =?us-ascii?Q?VcpB/ssdWamagxNdqts83OqZEKL3Ck3SfIo2432ZL7KoQwzLnVKgxnJ8FycE?=
+ =?us-ascii?Q?dz/ycGNB5Q3NL0ifR4YAJWUQ5+vwDbY+JG9KGyYpCL+d0wF8VromGHVYac2k?=
+ =?us-ascii?Q?hftLwwZBEEX2sLbGcLoRzYEw/c1DygDStnf9nVq+5NpZuD2D/4LiPo8QyKJp?=
+ =?us-ascii?Q?OPH7RQeUhXEdakFdc4lpvoSf5+IAZaUSCJcVBw9co1QgRmazvaNcAVLHlug8?=
+ =?us-ascii?Q?khcohfX5jm7XQFsAAyULhipVziwCkXqN64unEzyaVPvLwyJm523/2cdx+pOI?=
+ =?us-ascii?Q?YfAr2tuPebEpmDu2OTXRKE1TovERZ+gyvLEhrzTwYWO0I19AdQ2emiUwoD0/?=
+ =?us-ascii?Q?K87aR2AYe21sX/7lfHBMbPXBBibOikyJQ8umW7rdfB40ldGPFmMkh6TR18PJ?=
+ =?us-ascii?Q?s19IPehqNFi7TLJkVZdrhyLj5mQkrBSMz4TPbe47n3TuK5XFGBrpECsnQgxs?=
+ =?us-ascii?Q?WqLdhfmHNvBDDunqMh591piBNRQQY7jSmPCOmEOrtdNrFzBdpeukiCK0UbTR?=
+ =?us-ascii?Q?BqTKIjdRk4eY2hUebsh1EabWTzOxDVfQCBBa12YrQio4HzuKvlEHUKARtkHg?=
+ =?us-ascii?Q?2sUsrNO9TtwDeMh5jSUUKBnzHLg25cjrb6cW5nAcBGSpbu+EhggavQ3raIaY?=
+ =?us-ascii?Q?+M6ERn03Hie7rTKiQNwbp1vbeCnOm/2KqooUlEnYj6xQ3e3JH4POFYEWgXZ2?=
+ =?us-ascii?Q?1+Ok36MqB24CCynpBaN2QthZRZM8XCeTw4AE7DKSCI3MVwwAERrQGkE2cbYv?=
+ =?us-ascii?Q?FVO4IOf9MgOz/CWPWOklDMn0HXz/bUp3PO9cV4c2ZARaU1mr3y40VuWu1f6u?=
+ =?us-ascii?Q?+Csgaa5Wbyltr7uIplL2FI7iHKt7v5HmzEA/bSpW3ZUR46+SCHozpdwIOrlk?=
+ =?us-ascii?Q?sDw9Nmj/3FD1qeib31dR7X0IXW5xTWnpFbzEoCEJmiW1PONifKP8t1Rt65R3?=
+ =?us-ascii?Q?/ggHZEhNX0LnU3gMmvxSteZYt5Yq23djdeaCwLfUZEDnnz0f2SGjy0QCYkAZ?=
+ =?us-ascii?Q?HHAWGuG8Yjyn8k0lC7b8Lm2YNFx/rb4av6bRrLP0Q+hP/Fa1bLZOJsq+h/yP?=
+ =?us-ascii?Q?dkgzwgT7K0VKOOh+bxB0Nr70AMTO3VQQ4tZoCCDVqAuV2wtmQz1rCO8Vo0fH?=
+ =?us-ascii?Q?hsM7CwfmwkdeFAfgwN33V3LE7hQQSmormJIM4hqz1SJz5ayO5RQAK1Zi4ADm?=
+ =?us-ascii?Q?yO6mTyZ3k/k/Vtv8aYDdnWrPJhbw0/H4RjGwgbh9gibdVqdSj5+7h1Ocv3QH?=
+ =?us-ascii?Q?HNTVJmUrTsNmdt7ZejS4mAux141ffvPihcXWQOhXAnoTbqmgsVHe9RBU/zbr?=
+ =?us-ascii?Q?yFj3/OIFVpNiwWskR7cy57+mQqCTiiMuhrEwCJfJ2WhzIQ/xL2jdcerhtJS3?=
+ =?us-ascii?Q?gew6kR+hiSNvv4DeuoiyaJZ2TmWqKsIXmM3BeQMiixHpUaCh11JDvya5hiEh?=
+ =?us-ascii?Q?9e5aN+Qui/8LamMZO7eBpcM2toSORGFDaNnIH0F3JWe7YO29lAOZ5WYAwGks?=
+ =?us-ascii?Q?3ZtBiP+AbhEyw4wIlko=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 705c4718-dbc7-470d-0730-08dbbb246f47
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2023 04:28:56.7340
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7hXAINvKAJocNDMqZ+KTdEDkY9Tqr2Qk6orHWU9L/aFISryKpBuviqoBPWRA6QnKNgQ9W5oDIQ/zmzNcJC86Jg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8851
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,117 +116,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Peter Xu <peterx@redhat.com>, "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, linux-mm@kvack.org, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>, Helge Deller <deller@gmx.de>, Christoph Hellwig <hch@infradead.org>, Axel Rasmussen <axelrasmussen@google.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Arnd Bergmann <arnd@arndb.de>, Anshuman Khandual <anshuman.khandual@arm.com>, Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Qi Zheng <zhengqi.arch@bytedance.com>, Paul Walmsley <paul.walmsley@sifive.com>, linux-arm-kernel@lists.infradead.org, SeongJae Park <sj@kernel.org>, Lorenzo Stoakes <lstoakes@gmail.com>, linux-parisc@vger.kernel.org, Muchun Song <muchun.so
- ng@linux.dev>, linux-kernel@vger.kernel.org, stable@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: kw@linux.com, imx@lists.linux.dev, linux-pci@vger.kernel.org, lpieralisi@kernel.org, Frank.li@nxp.com, linux-kernel@vger.kernel.org, hch@infradead.org, minghuan.Lian@nxp.com, mingkai.hu@nxp.com, roy.zang@nxp.com, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org, robh@kernel.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Ryan,
+From: Guanhua Gao <guanhua.gao@nxp.com>
 
-On 2023/9/22 00:20, Ryan Roberts wrote:
-> When called with a swap entry that does not embed a PFN (e.g.
-> PTE_MARKER_POISONED or PTE_MARKER_UFFD_WP), the previous implementation
-> of set_huge_pte_at() would either cause a BUG() to fire (if
-> CONFIG_DEBUG_VM is enabled) or cause a dereference of an invalid address
-> and subsequent panic.
-> 
-> arm64's huge pte implementation supports multiple huge page sizes, some
-> of which are implemented in the page table with contiguous mappings. So
-> set_huge_pte_at() needs to work out how big the logical pte is, so that
-> it can also work out how many physical ptes (or pmds) need to be
-> written. It does this by grabbing the folio out of the pte and querying
-> its size.
-> 
-> However, there are cases when the pte being set is actually a swap
-> entry. But this also used to work fine, because for huge ptes, we only
-> ever saw migration entries and hwpoison entries. And both of these types
-> of swap entries have a PFN embedded, so the code would grab that and
-> everything still worked out.
-> 
-> But over time, more calls to set_huge_pte_at() have been added that set
-> swap entry types that do not embed a PFN. And this causes the code to go
-> bang. The triggering case is for the uffd poison test, commit
-> 99aa77215ad0 ("selftests/mm: add uffd unit test for UFFDIO_POISON"),
-> which sets a PTE_MARKER_POISONED swap entry. But review shows there are
-> other places too (PTE_MARKER_UFFD_WP).
-> 
-> So the root cause is due to commit 18f3962953e4 ("mm: hugetlb: kill
-> set_huge_swap_pte_at()"), which aimed to simplify the interface to the
-> core code by removing set_huge_swap_pte_at() (which took a page size
-> parameter) and replacing it with calls to set_huge_swap_pte_at() where
-> the size was inferred from the folio, as descibed above. While that
-> commit didn't break anything at the time, 
+Set DMA mask and coherent DMA mask to enable 64-bit addressing.
 
-If it didn't break anything at that time, then shouldn't the Fixes tag
-be added to this commit?
+Signed-off-by: Guanhua Gao <guanhua.gao@nxp.com>
+Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
 
-> it did break the interface
-> because it couldn't handle swap entries without PFNs. And since then new
-> callers have come along which rely on this working.
+Notes:
+    change from v1 to v2
+    - Remove 32bit DMA mask set.
 
-So the Fixes tag should be added only to the commit that introduces the
-first new callers?
+ drivers/pci/controller/dwc/pci-layerscape-ep.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Other than that, LGTM.
+diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+index de4c1758a6c33..026bf08611e13 100644
+--- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
++++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+@@ -249,6 +249,11 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
+ 
+ 	pcie->big_endian = of_property_read_bool(dev->of_node, "big-endian");
+ 
++	/* set 64-bit DMA mask and coherent DMA mask */
++	ret = dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64));
++	if (ret)
++		return ret;
++
+ 	platform_set_drvdata(pdev, pcie);
+ 
+ 	ret = dw_pcie_ep_init(&pci->ep);
+-- 
+2.34.1
 
-Thanks,
-Qi
-
-> 
-> Now that we have modified the set_huge_pte_at() interface to pass the
-> vma, we can extract the huge page size from it and fix this issue.
-> 
-> I'm tagging the commit that added the uffd poison feature, since that is
-> what exposed the problem, as well as the original change that broke the
-> interface. Hopefully this is valuable for people doing bisect.
-> 
-> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-> Fixes: 18f3962953e4 ("mm: hugetlb: kill set_huge_swap_pte_at()")
-> Fixes: 8a13897fb0da ("mm: userfaultfd: support UFFDIO_POISON for hugetlbfs")
-> ---
->   arch/arm64/mm/hugetlbpage.c | 17 +++--------------
->   1 file changed, 3 insertions(+), 14 deletions(-)
-> 
-> diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
-> index 844832511c1e..a08601a14689 100644
-> --- a/arch/arm64/mm/hugetlbpage.c
-> +++ b/arch/arm64/mm/hugetlbpage.c
-> @@ -241,13 +241,6 @@ static void clear_flush(struct mm_struct *mm,
->   	flush_tlb_range(&vma, saddr, addr);
->   }
->   
-> -static inline struct folio *hugetlb_swap_entry_to_folio(swp_entry_t entry)
-> -{
-> -	VM_BUG_ON(!is_migration_entry(entry) && !is_hwpoison_entry(entry));
-> -
-> -	return page_folio(pfn_to_page(swp_offset_pfn(entry)));
-> -}
-> -
->   void set_huge_pte_at(struct vm_area_struct *vma, unsigned long addr,
->   			    pte_t *ptep, pte_t pte)
->   {
-> @@ -258,13 +251,10 @@ void set_huge_pte_at(struct vm_area_struct *vma, unsigned long addr,
->   	unsigned long pfn, dpfn;
->   	pgprot_t hugeprot;
->   
-> -	if (!pte_present(pte)) {
-> -		struct folio *folio;
-> -
-> -		folio = hugetlb_swap_entry_to_folio(pte_to_swp_entry(pte));
-> -		ncontig = num_contig_ptes(folio_size(folio), &pgsize);
-> +	ncontig = num_contig_ptes(huge_page_size(hstate_vma(vma)), &pgsize);
->   
-> -		for (i = 0; i < ncontig; i++, ptep++)
-> +	if (!pte_present(pte)) {
-> +		for (i = 0; i < ncontig; i++, ptep++, addr += pgsize)
->   			set_pte_at(mm, addr, ptep, pte);
->   		return;
->   	}
-> @@ -274,7 +264,6 @@ void set_huge_pte_at(struct vm_area_struct *vma, unsigned long addr,
->   		return;
->   	}
->   
-> -	ncontig = find_num_contig(mm, addr, ptep, &pgsize);
->   	pfn = pte_pfn(pte);
->   	dpfn = pgsize >> PAGE_SHIFT;
->   	hugeprot = pte_pgprot(pte);
