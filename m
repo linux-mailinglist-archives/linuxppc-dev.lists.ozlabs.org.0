@@ -1,56 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E592A7AC353
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Sep 2023 17:39:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D3D87AC35D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Sep 2023 17:42:46 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fw2A/tcO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bKxK0sfn;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RtCxj68fMz3cbq
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Sep 2023 01:39:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RtD100X9Mz3bcS
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Sep 2023 01:42:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fw2A/tcO;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bKxK0sfn;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RtCwr5ySmz30P3
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Sep 2023 01:39:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RtD085L1Vz307V
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Sep 2023 01:42:00 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id A4F7AB80092;
-	Sat, 23 Sep 2023 15:39:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2139BC433C8;
-	Sat, 23 Sep 2023 15:38:51 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTP id AA562B8068F;
+	Sat, 23 Sep 2023 15:41:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78B41C433C7;
+	Sat, 23 Sep 2023 15:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1695483543;
-	bh=44aW6DcKJaHGXelf02UJMtFK5RbIa4QmGjb00e/7p/A=;
+	s=k20201202; t=1695483716;
+	bh=vXbqktT7b0Qri8xOnKmQsZG7jQ4zimMSvWYPtuArZ7U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fw2A/tcOcobQiglJay8dvPT5bEfVdzbbmq0FwMYYkRDEvMMNze6l5vdxXC61b2ule
-	 JFCwMCsxrAuMW6D9gVnh2enWSeUtDeXGmVEjWBDuVv9KbPW1MRt9tzybn9NNKJQMj2
-	 y3Lc/W+nmmCK2KsTrqRVvz29GuwFbt1mGULYw6jBfPPwRcYXpuSga9okI5ya4zHkUD
-	 tynDeAbBph8ozw0L4VOesv/AFGSBeSrp7QqXSV98fLRWfSHzHFilN6nNqox4/XsFqb
-	 GBdnrmPrEZw+uXG8gLcDpColobXRcu9WsCK8bgQKX9ms+oqH3fV0ph2eOZh795NWNU
-	 moLZ9gWnlnDaA==
-Date: Sat, 23 Sep 2023 18:38:08 +0300
+	b=bKxK0sfnvR6Mn54iFskJjz+iqQzT7d+5NzV6O/KDvtN3lXtUe/L3iPwKCcy9RJgP3
+	 mbD8bMb58MYWC7Tl7U7Pm9c2CxFIZly2LFF5bwScXgaoAZuVMJ1eJZhU6ecWVwTfEE
+	 r2oNyeJK2AahVHVr99AtDOSv5pGe23KHFoafNeDpxxm0mmvwtmbI1d6kPT0nWu68z/
+	 VE6hznLFs1/tWZv4nZKOvDCd21ai8PHSne6FmcZ1g1J53YE3NQHUgtGoEfJtdU67X3
+	 wLZ8mTH2uPqXeKbDrNozy3tf88DdS8OExFmk2KljS0ivcPxrGjBb2Vj5e645SQEJ/u
+	 hwwLepGJAxXyg==
+Date: Sat, 23 Sep 2023 18:40:59 +0300
 From: Mike Rapoport <rppt@kernel.org>
 To: Song Liu <song@kernel.org>
 Subject: Re: [PATCH v3 02/13] mm: introduce execmem_text_alloc() and
  execmem_free()
-Message-ID: <20230923153808.GI3303@kernel.org>
+Message-ID: <20230923154059.GJ3303@kernel.org>
 References: <20230918072955.2507221-1-rppt@kernel.org>
  <20230918072955.2507221-3-rppt@kernel.org>
- <CAPhsuW5-=H1V=VXUYxyGnUdJuNUpRt44QmpwjkDUD=9i0itjuw@mail.gmail.com>
+ <CAPhsuW7y2T+tajK71NfYhquhGJKpLpL+EoxxzqrVhEuAamDH3w@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAPhsuW5-=H1V=VXUYxyGnUdJuNUpRt44QmpwjkDUD=9i0itjuw@mail.gmail.com>
+In-Reply-To: <CAPhsuW7y2T+tajK71NfYhquhGJKpLpL+EoxxzqrVhEuAamDH3w@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,51 +67,52 @@ Cc: Mark Rutland <mark.rutland@arm.com>, x86@kernel.org, Catalin Marinas <catali
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Sep 21, 2023 at 03:34:18PM -0700, Song Liu wrote:
+On Thu, Sep 21, 2023 at 03:14:54PM -0700, Song Liu wrote:
 > On Mon, Sep 18, 2023 at 12:30 AM Mike Rapoport <rppt@kernel.org> wrote:
 > >
-> 
 > [...]
+> > +
+> > +/**
+> > + * enum execmem_type - types of executable memory ranges
+> > + *
+> > + * There are several subsystems that allocate executable memory.
+> > + * Architectures define different restrictions on placement,
+> > + * permissions, alignment and other parameters for memory that can be used
+> > + * by these subsystems.
+> > + * Types in this enum identify subsystems that allocate executable memory
+> > + * and let architectures define parameters for ranges suitable for
+> > + * allocations by each subsystem.
+> > + *
+> > + * @EXECMEM_DEFAULT: default parameters that would be used for types that
+> > + * are not explcitly defined.
+> > + * @EXECMEM_MODULE_TEXT: parameters for module text sections
+> > + * @EXECMEM_KPROBES: parameters for kprobes
+> > + * @EXECMEM_FTRACE: parameters for ftrace
+> > + * @EXECMEM_BPF: parameters for BPF
+> > + * @EXECMEM_TYPE_MAX:
+> > + */
+> > +enum execmem_type {
+> > +       EXECMEM_DEFAULT,
 > 
-> > diff --git a/arch/s390/kernel/module.c b/arch/s390/kernel/module.c
-> > index 42215f9404af..db5561d0c233 100644
-> > --- a/arch/s390/kernel/module.c
-> > +++ b/arch/s390/kernel/module.c
-> > @@ -21,6 +21,7 @@
-> >  #include <linux/moduleloader.h>
-> >  #include <linux/bug.h>
-> >  #include <linux/memory.h>
-> > +#include <linux/execmem.h>
-> >  #include <asm/alternative.h>
-> >  #include <asm/nospec-branch.h>
-> >  #include <asm/facility.h>
-> > @@ -76,7 +77,7 @@ void *module_alloc(unsigned long size)
-> >  #ifdef CONFIG_FUNCTION_TRACER
-> >  void module_arch_cleanup(struct module *mod)
-> >  {
-> > -       module_memfree(mod->arch.trampolines_start);
-> > +       execmem_free(mod->arch.trampolines_start);
-> >  }
-> >  #endif
-> >
-> > @@ -510,7 +511,7 @@ static int module_alloc_ftrace_hotpatch_trampolines(struct module *me,
-> >
-> >         size = FTRACE_HOTPATCH_TRAMPOLINES_SIZE(s->sh_size);
-> >         numpages = DIV_ROUND_UP(size, PAGE_SIZE);
-> > -       start = module_alloc(numpages * PAGE_SIZE);
-> > +       start = execmem_text_alloc(EXECMEM_FTRACE, numpages * PAGE_SIZE);
-> 
-> This should be EXECMEM_MODULE_TEXT?
+> I found EXECMEM_DEFAULT more confusing than helpful.
 
-This is an ftrace trampoline, so I think it should be FTRACE type of
-allocation.
+I hesitated a lot about that, but in the end decided to have
+EXECMEM_DEFAULT and alias EXECMEM_MODULE_TEXT to it because this is what we
+essentially have now for the most architectures.
+
+If you'll take a look at arch-specific patches, in many cases there is only
+EXECMEM_DEFAULT that an architecture defines and that default is used by
+all the subsystems.
  
-> Thanks,
 > Song
 > 
-> >         if (!start)
-> >                 return -ENOMEM;
-> >         set_memory_rox((unsigned long)start, numpages);
+> > +       EXECMEM_MODULE_TEXT = EXECMEM_DEFAULT,
+> > +       EXECMEM_KPROBES,
+> > +       EXECMEM_FTRACE,
+> > +       EXECMEM_BPF,
+> > +       EXECMEM_TYPE_MAX,
+> > +};
+> > +
 > [...]
 
 -- 
