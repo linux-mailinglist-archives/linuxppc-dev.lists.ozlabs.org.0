@@ -2,61 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41B747AC5BA
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Sep 2023 00:37:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD70F7AC617
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Sep 2023 03:20:17 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HsXeC8Fz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RuI1eeeo;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RtPCD2Jzfz3cF4
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Sep 2023 08:37:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RtSqM4YR4z3cbv
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Sep 2023 11:20:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HsXeC8Fz;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RuI1eeeo;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=song@kernel.org; receiver=lists.ozlabs.org)
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RtPBG4hCtz2xmC
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Sep 2023 08:36:22 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id 908F7B80189
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Sep 2023 22:36:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02EE4C43142
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Sep 2023 22:36:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1695508576;
-	bh=p6KwkG6gIDCpi+5ECOWCYMC6fT/RtPXwryMv7tZb+xk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=HsXeC8FzbnuL2HGBLJZiuCDBblJ3dC0CWJZAs7Ko9Pk0M9quq/h5gqiWTqvrdcgwk
-	 itKojR8YTR5ZBLsDVT+aVMKIf/+4SYrOFwd/ZyLEbjm7omRRiWzviOumN9tiOOdnYJ
-	 ALYv4PaFyHMzjV7o2XFeI8EdbI8lLpQm06kuLrCiYQ+VE7VxvnEjf9LyC4q/8eQo6l
-	 nGIKccvQzYkcSBx7ujsOkNay4Ive+Liq+LoCw+rptMs27n07a/FqcH2Vg4DkRpHXHs
-	 aw4RsjS5gQWL57hCW1ty8y+9xbRAkIK6sgZ3PssfBL/jcSH6zIeiLfRwU8+hpo+Vua
-	 cFXFeedFkSJfg==
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-502e7d66c1eso6587569e87.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Sep 2023 15:36:15 -0700 (PDT)
-X-Gm-Message-State: AOJu0YzbWHYy29Je1b1rdGf10HKkygZWxBSGcSB6Evw8Gmjs2ii6h8xh
-	PjMqfeiqhspfL6E52YpgACLG/vU8kd2EKWJsjyA=
-X-Google-Smtp-Source: AGHT+IHGEMyzPMP0PdtKXqSKknw0oXHfeYEIvmKQhWxGVhq9jrC3LZkcXvNIlQvBWHbanSZQKP0MnXe/fed+WldiSzw=
-X-Received: by 2002:a05:6512:250d:b0:4fb:90c6:c31a with SMTP id
- be13-20020a056512250d00b004fb90c6c31amr2958776lfb.14.1695508573892; Sat, 23
- Sep 2023 15:36:13 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RtSpS2lJWz3bWW
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Sep 2023 11:19:24 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1695518368; x=1727054368;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=qwbdzZ9YZc4PEwm2scK07yVZxE/6WeEX40p1ME2mjec=;
+  b=RuI1eeeoGGIBeAhGf/biJTAIqxQNg4wwrOO1caWxG91r/mPElWKIyI/8
+   24pAENvexRvKer/Z9qxCSsN0rk2RCAdsYlJw40jLqDPyYS26ILCemvFfS
+   G2yDhWUxkSdCi1uKcZOFwuLM+4HGxy63YOD+RQvNyc7NOSdCnMV7Efijr
+   edl1yzpFKG0SsdjYBo2/HGNtaBnRB2n2JPvWitP0sSJ+JsW91WwwZbxQ0
+   llNHaI0ZHSPsPMccYlI/VdMvDnaid5VgRT9LyECzzcA9Q709gcyYBNtUr
+   lIJwVTr/wZJcq2tTqHRE78zAPjJcLJ0FOLU+dLe3pIVonBGvMWcYG0Il9
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10842"; a="361317426"
+X-IronPort-AV: E=Sophos;i="6.03,171,1694761200"; 
+   d="scan'208";a="361317426"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2023 18:19:20 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10842"; a="994958657"
+X-IronPort-AV: E=Sophos;i="6.03,171,1694761200"; 
+   d="scan'208";a="994958657"
+Received: from lkp-server02.sh.intel.com (HELO 493f6c7fed5d) ([10.239.97.151])
+  by fmsmga006.fm.intel.com with ESMTP; 23 Sep 2023 18:19:18 -0700
+Received: from kbuild by 493f6c7fed5d with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1qkDmG-00034f-09;
+	Sun, 24 Sep 2023 01:19:16 +0000
+Date: Sun, 24 Sep 2023 09:18:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: Yuanjun Gong <ruc_gongyuanjun@163.com>, tyreld@linux.ibm.com
+Subject: Re: [PATCH v2 1/1] powerpc: fix a memory leak
+Message-ID: <202309240954.1H3G2rpy-lkp@intel.com>
+References: <20230915020559.3396566-1-ruc_gongyuanjun@163.com>
 MIME-Version: 1.0
-References: <20230918072955.2507221-1-rppt@kernel.org> <20230918072955.2507221-3-rppt@kernel.org>
- <CAPhsuW5-=H1V=VXUYxyGnUdJuNUpRt44QmpwjkDUD=9i0itjuw@mail.gmail.com> <20230923153808.GI3303@kernel.org>
-In-Reply-To: <20230923153808.GI3303@kernel.org>
-From: Song Liu <song@kernel.org>
-Date: Sat, 23 Sep 2023 15:36:01 -0700
-X-Gmail-Original-Message-ID: <CAPhsuW6TxG87ZBwQ_027iiE+_UmXweZEPh8wKHkHo7wA+qXZUg@mail.gmail.com>
-Message-ID: <CAPhsuW6TxG87ZBwQ_027iiE+_UmXweZEPh8wKHkHo7wA+qXZUg@mail.gmail.com>
-Subject: Re: [PATCH v3 02/13] mm: introduce execmem_text_alloc() and execmem_free()
-To: Mike Rapoport <rppt@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230915020559.3396566-1-ruc_gongyuanjun@163.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,64 +71,172 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, Luis Chamberlain <mcgrof@kernel.org>, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Nadav Amit <nadav.amit@gmail.com>, linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Russell King <linux@armlinux.org.uk>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linux-trace-kernel@vger.kernel.org, Will Deacon <will@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>, loongarch@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Puranjay Mohan <puranjay12@gmail.com>, netdev@vger.kernel.org, Kent Overstreet <kent.overstreet@linux.dev>, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, =?UTF-8?B?QmrDtnJuIF
- TDtnBlbA==?= <bjorn@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, linux-modules@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, npiggin@gmail.com, Yuanjun Gong <ruc_gongyuanjun@163.com>, oe-kbuild-all@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Sep 23, 2023 at 8:39=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
-te:
->
-> On Thu, Sep 21, 2023 at 03:34:18PM -0700, Song Liu wrote:
-> > On Mon, Sep 18, 2023 at 12:30=E2=80=AFAM Mike Rapoport <rppt@kernel.org=
-> wrote:
-> > >
-> >
-> > [...]
-> >
-> > > diff --git a/arch/s390/kernel/module.c b/arch/s390/kernel/module.c
-> > > index 42215f9404af..db5561d0c233 100644
-> > > --- a/arch/s390/kernel/module.c
-> > > +++ b/arch/s390/kernel/module.c
-> > > @@ -21,6 +21,7 @@
-> > >  #include <linux/moduleloader.h>
-> > >  #include <linux/bug.h>
-> > >  #include <linux/memory.h>
-> > > +#include <linux/execmem.h>
-> > >  #include <asm/alternative.h>
-> > >  #include <asm/nospec-branch.h>
-> > >  #include <asm/facility.h>
-> > > @@ -76,7 +77,7 @@ void *module_alloc(unsigned long size)
-> > >  #ifdef CONFIG_FUNCTION_TRACER
-> > >  void module_arch_cleanup(struct module *mod)
-> > >  {
-> > > -       module_memfree(mod->arch.trampolines_start);
-> > > +       execmem_free(mod->arch.trampolines_start);
-> > >  }
-> > >  #endif
-> > >
-> > > @@ -510,7 +511,7 @@ static int module_alloc_ftrace_hotpatch_trampolin=
-es(struct module *me,
-> > >
-> > >         size =3D FTRACE_HOTPATCH_TRAMPOLINES_SIZE(s->sh_size);
-> > >         numpages =3D DIV_ROUND_UP(size, PAGE_SIZE);
-> > > -       start =3D module_alloc(numpages * PAGE_SIZE);
-> > > +       start =3D execmem_text_alloc(EXECMEM_FTRACE, numpages * PAGE_=
-SIZE);
-> >
-> > This should be EXECMEM_MODULE_TEXT?
->
-> This is an ftrace trampoline, so I think it should be FTRACE type of
-> allocation.
+Hi Yuanjun,
 
-Yeah, I was aware of the ftrace trampoline. My point was, ftrace trampoline
-doesn't seem to have any special requirements. Therefore, it is probably no=
-t
-necessary to have a separate type just for it.
+kernel test robot noticed the following build errors:
 
-AFAICT, kprobe, ftrace, and BPF (JIT and trampoline) can share the same
-execmem_type. We may need some work for some archs, but nothing is
-fundamentally different among these.
+[auto build test ERROR on linus/master]
+[also build test ERROR on v6.6-rc2 next-20230921]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Thanks,
-Song
+url:    https://github.com/intel-lab-lkp/linux/commits/Yuanjun-Gong/powerpc-fix-a-memory-leak/20230915-100832
+base:   linus/master
+patch link:    https://lore.kernel.org/r/20230915020559.3396566-1-ruc_gongyuanjun%40163.com
+patch subject: [PATCH v2 1/1] powerpc: fix a memory leak
+config: powerpc-powernv_defconfig (https://download.01.org/0day-ci/archive/20230924/202309240954.1H3G2rpy-lkp@intel.com/config)
+compiler: powerpc64le-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230924/202309240954.1H3G2rpy-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202309240954.1H3G2rpy-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   arch/powerpc/platforms/powernv/vas.c: In function 'init_vas_instance':
+>> arch/powerpc/platforms/powernv/vas.c:106:17: error: expected ';' before 'goto'
+     106 |                 goto free_vinst;
+         |                 ^~~~
+
+
+vim +106 arch/powerpc/platforms/powernv/vas.c
+
+0d17de03ce6a7a Haren Myneni        2020-04-15   49  
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   50  static int init_vas_instance(struct platform_device *pdev)
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   51  {
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   52  	struct device_node *dn = pdev->dev.of_node;
+c20e1e299d936c Haren Myneni        2020-04-15   53  	struct vas_instance *vinst;
+c20e1e299d936c Haren Myneni        2020-04-15   54  	struct xive_irq_data *xd;
+c20e1e299d936c Haren Myneni        2020-04-15   55  	uint32_t chipid, hwirq;
+c20e1e299d936c Haren Myneni        2020-04-15   56  	struct resource *res;
+c20e1e299d936c Haren Myneni        2020-04-15   57  	int rc, cpu, vasid;
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   58  
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   59  	rc = of_property_read_u32(dn, "ibm,vas-id", &vasid);
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   60  	if (rc) {
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   61  		pr_err("No ibm,vas-id property for %s?\n", pdev->name);
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   62  		return -ENODEV;
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   63  	}
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   64  
+c20e1e299d936c Haren Myneni        2020-04-15   65  	rc = of_property_read_u32(dn, "ibm,chip-id", &chipid);
+c20e1e299d936c Haren Myneni        2020-04-15   66  	if (rc) {
+c20e1e299d936c Haren Myneni        2020-04-15   67  		pr_err("No ibm,chip-id property for %s?\n", pdev->name);
+c20e1e299d936c Haren Myneni        2020-04-15   68  		return -ENODEV;
+c20e1e299d936c Haren Myneni        2020-04-15   69  	}
+c20e1e299d936c Haren Myneni        2020-04-15   70  
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   71  	if (pdev->num_resources != 4) {
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   72  		pr_err("Unexpected DT configuration for [%s, %d]\n",
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   73  				pdev->name, vasid);
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   74  		return -ENODEV;
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   75  	}
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   76  
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   77  	vinst = kzalloc(sizeof(*vinst), GFP_KERNEL);
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   78  	if (!vinst)
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   79  		return -ENOMEM;
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   80  
+9dd31b11370380 Cédric Le Goater    2020-12-12   81  	vinst->name = kasprintf(GFP_KERNEL, "vas-%d", vasid);
+9dd31b11370380 Cédric Le Goater    2020-12-12   82  	if (!vinst->name) {
+9dd31b11370380 Cédric Le Goater    2020-12-12   83  		kfree(vinst);
+9dd31b11370380 Cédric Le Goater    2020-12-12   84  		return -ENOMEM;
+9dd31b11370380 Cédric Le Goater    2020-12-12   85  	}
+9dd31b11370380 Cédric Le Goater    2020-12-12   86  
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   87  	INIT_LIST_HEAD(&vinst->node);
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   88  	ida_init(&vinst->ida);
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   89  	mutex_init(&vinst->mutex);
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   90  	vinst->vas_id = vasid;
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   91  	vinst->pdev = pdev;
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   92  
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   93  	res = &pdev->resource[0];
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   94  	vinst->hvwc_bar_start = res->start;
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   95  
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   96  	res = &pdev->resource[1];
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   97  	vinst->uwc_bar_start = res->start;
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   98  
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28   99  	res = &pdev->resource[2];
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28  100  	vinst->paste_base_addr = res->start;
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28  101  
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28  102  	res = &pdev->resource[3];
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28  103  	if (res->end > 62) {
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28  104  		pr_err("Bad 'paste_win_id_shift' in DT, %llx\n", res->end);
+1e5daa4a4c0658 Yuanjun Gong        2023-09-15  105  		rc = -ENODEV
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28 @106  		goto free_vinst;
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28  107  	}
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28  108  
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28  109  	vinst->paste_win_id_shift = 63 - res->end;
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28  110  
+c20e1e299d936c Haren Myneni        2020-04-15  111  	hwirq = xive_native_alloc_irq_on_chip(chipid);
+c20e1e299d936c Haren Myneni        2020-04-15  112  	if (!hwirq) {
+c20e1e299d936c Haren Myneni        2020-04-15  113  		pr_err("Inst%d: Unable to allocate global irq for chip %d\n",
+c20e1e299d936c Haren Myneni        2020-04-15  114  				vinst->vas_id, chipid);
+1e5daa4a4c0658 Yuanjun Gong        2023-09-15  115  		rc = -ENOENT;
+1e5daa4a4c0658 Yuanjun Gong        2023-09-15  116  		goto free_vinst;
+c20e1e299d936c Haren Myneni        2020-04-15  117  	}
+c20e1e299d936c Haren Myneni        2020-04-15  118  
+c20e1e299d936c Haren Myneni        2020-04-15  119  	vinst->virq = irq_create_mapping(NULL, hwirq);
+c20e1e299d936c Haren Myneni        2020-04-15  120  	if (!vinst->virq) {
+c20e1e299d936c Haren Myneni        2020-04-15  121  		pr_err("Inst%d: Unable to map global irq %d\n",
+c20e1e299d936c Haren Myneni        2020-04-15  122  				vinst->vas_id, hwirq);
+1e5daa4a4c0658 Yuanjun Gong        2023-09-15  123  		rc = -EINVAL;
+1e5daa4a4c0658 Yuanjun Gong        2023-09-15  124  		goto free_vinst;
+c20e1e299d936c Haren Myneni        2020-04-15  125  	}
+c20e1e299d936c Haren Myneni        2020-04-15  126  
+c20e1e299d936c Haren Myneni        2020-04-15  127  	xd = irq_get_handler_data(vinst->virq);
+c20e1e299d936c Haren Myneni        2020-04-15  128  	if (!xd) {
+c20e1e299d936c Haren Myneni        2020-04-15  129  		pr_err("Inst%d: Invalid virq %d\n",
+c20e1e299d936c Haren Myneni        2020-04-15  130  				vinst->vas_id, vinst->virq);
+1e5daa4a4c0658 Yuanjun Gong        2023-09-15  131  		rc = -EINVAL;
+1e5daa4a4c0658 Yuanjun Gong        2023-09-15  132  		goto free_vinst;
+c20e1e299d936c Haren Myneni        2020-04-15  133  	}
+c20e1e299d936c Haren Myneni        2020-04-15  134  
+c20e1e299d936c Haren Myneni        2020-04-15  135  	vinst->irq_port = xd->trig_page;
+c20e1e299d936c Haren Myneni        2020-04-15  136  	pr_devel("Initialized instance [%s, %d] paste_base 0x%llx paste_win_id_shift 0x%llx IRQ %d Port 0x%llx\n",
+c20e1e299d936c Haren Myneni        2020-04-15  137  			pdev->name, vasid, vinst->paste_base_addr,
+c20e1e299d936c Haren Myneni        2020-04-15  138  			vinst->paste_win_id_shift, vinst->virq,
+c20e1e299d936c Haren Myneni        2020-04-15  139  			vinst->irq_port);
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28  140  
+ca03258b6b338b Sukadev Bhattiprolu 2017-11-07  141  	for_each_possible_cpu(cpu) {
+ca03258b6b338b Sukadev Bhattiprolu 2017-11-07  142  		if (cpu_to_chip_id(cpu) == of_get_ibm_chip_id(dn))
+ca03258b6b338b Sukadev Bhattiprolu 2017-11-07  143  			per_cpu(cpu_vas_id, cpu) = vasid;
+ca03258b6b338b Sukadev Bhattiprolu 2017-11-07  144  	}
+ca03258b6b338b Sukadev Bhattiprolu 2017-11-07  145  
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28  146  	mutex_lock(&vas_mutex);
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28  147  	list_add(&vinst->node, &vas_instances);
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28  148  	mutex_unlock(&vas_mutex);
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28  149  
+9774628acf8640 Haren Myneni        2020-04-15  150  	spin_lock_init(&vinst->fault_lock);
+0d17de03ce6a7a Haren Myneni        2020-04-15  151  	/*
+0d17de03ce6a7a Haren Myneni        2020-04-15  152  	 * IRQ and fault handling setup is needed only for user space
+0d17de03ce6a7a Haren Myneni        2020-04-15  153  	 * send windows.
+0d17de03ce6a7a Haren Myneni        2020-04-15  154  	 */
+0d17de03ce6a7a Haren Myneni        2020-04-15  155  	if (vinst->virq) {
+0d17de03ce6a7a Haren Myneni        2020-04-15  156  		rc = vas_irq_fault_window_setup(vinst);
+0d17de03ce6a7a Haren Myneni        2020-04-15  157  		/*
+0d17de03ce6a7a Haren Myneni        2020-04-15  158  		 * Fault window is used only for user space send windows.
+0d17de03ce6a7a Haren Myneni        2020-04-15  159  		 * So if vinst->virq is NULL, tx_win_open returns -ENODEV
+0d17de03ce6a7a Haren Myneni        2020-04-15  160  		 * for user space.
+0d17de03ce6a7a Haren Myneni        2020-04-15  161  		 */
+0d17de03ce6a7a Haren Myneni        2020-04-15  162  		if (rc)
+0d17de03ce6a7a Haren Myneni        2020-04-15  163  			vinst->virq = 0;
+0d17de03ce6a7a Haren Myneni        2020-04-15  164  	}
+0d17de03ce6a7a Haren Myneni        2020-04-15  165  
+ece4e51291485b Sukadev Bhattiprolu 2017-11-07  166  	vas_instance_init_dbgdir(vinst);
+ece4e51291485b Sukadev Bhattiprolu 2017-11-07  167  
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28  168  	dev_set_drvdata(&pdev->dev, vinst);
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28  169  
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28  170  	return 0;
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28  171  
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28  172  free_vinst:
+9dd31b11370380 Cédric Le Goater    2020-12-12  173  	kfree(vinst->name);
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28  174  	kfree(vinst);
+1e5daa4a4c0658 Yuanjun Gong        2023-09-15  175  	return rc;
+4dea2d1a927c61 Sukadev Bhattiprolu 2017-08-28  176  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
