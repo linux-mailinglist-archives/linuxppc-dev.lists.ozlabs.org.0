@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 751687ADF3A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Sep 2023 20:46:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE2B07ADF2E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Sep 2023 20:43:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RvX0d32y1z3htg
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Sep 2023 04:46:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RvWwY4WFhz3hbw
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Sep 2023 04:43:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
@@ -14,46 +14,46 @@ Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RvWj53ZBfz3cRC
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Sep 2023 04:33:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RvWhZ5Fdcz3dVF
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Sep 2023 04:33:02 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4RvWgZ4F6Vz9vB3;
-	Mon, 25 Sep 2023 20:32:10 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4RvWgP2zhyz9tlk;
+	Mon, 25 Sep 2023 20:32:01 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
 	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id JRgL3VdRgIrP; Mon, 25 Sep 2023 20:32:10 +0200 (CEST)
+	with ESMTP id fyCSMTZh-3Qo; Mon, 25 Sep 2023 20:32:01 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4RvWg545v4z9vC5;
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4RvWg51s0Kz9v8B;
 	Mon, 25 Sep 2023 20:31:45 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 89CB38B78C;
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 3B2DE8B763;
 	Mon, 25 Sep 2023 20:31:45 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id 60eUuk7TKb54; Mon, 25 Sep 2023 20:31:45 +0200 (CEST)
+	with ESMTP id ZkekK_SlgARD; Mon, 25 Sep 2023 20:31:45 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.232.137])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 5C2828B7A0;
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4A0BC8B78C;
 	Mon, 25 Sep 2023 20:31:44 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 38PIVZPS1499223
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 38PIVZNv1499228
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
 	Mon, 25 Sep 2023 20:31:35 +0200
 Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 38PIVZLr1499222;
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 38PIVZT31499227;
 	Mon, 25 Sep 2023 20:31:35 +0200
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH v2 23/37] powerpc: Remove pte_mkuser() and pte_mkpriviledged()
-Date: Mon, 25 Sep 2023 20:31:37 +0200
-Message-ID: <1a1dc18816456c637dc8a9c38d532f7598b60ac4.1695659959.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v2 24/37] powerpc: Rely on address instead of pte_user()
+Date: Mon, 25 Sep 2023 20:31:38 +0200
+Message-ID: <c778dad89fad07727c31717a9c62f45357c29ebc.1695659959.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <cover.1695659959.git.christophe.leroy@csgroup.eu>
 References: <cover.1695659959.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1695666675; l=4628; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=4IpNSMWmiL1iL/Y9JmoIU6o/p33WZ1XVr0Bhz5VwC0Y=; b=X7cYcxqlP3KYJMcVFH+ofWvZqFRZK0Gbz8saBkTC2Ue30hNG413EUaMYicFomQjLDY8pA0W1N f48GCjwPyrHDr7x58hIHaKx0apGkKnKCmlNb5VK9Bac5XpQ2gnKBmeJ
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1695666675; l=6826; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=AG/C1wK4MgYRRJL1LBTuq/tg9aJmNrUXNeX46APsBrs=; b=7AXFVSitzYUSzUC90v1Ln68vJ1sBzKXZAqD1n4fere9XxzSE6HGOdk6TY70KTosm8DRwmdYY2 E60cZe0Uw90DcY96vaZCbFVo95QjdNagUvnSeVFkk+rWnO9qAZ+hH9O
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -71,144 +71,191 @@ Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-pte_mkuser() is never used. Remove it.
+pte_user() may return 'false' when a user page is PAGE_NONE.
 
-pte_mkpriviledged() is not used anymore. Remove it too.
+In that case it is still a user page and needs to be handled
+as such. So use is_kernel_addr() instead.
+
+And remove "user" text from ptdump as ptdump only dumps
+kernel tables.
+
+Note: no change done for book3s/64 which still has it
+'priviledge' bit.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/book3s/32/pgtable.h | 10 ----------
- arch/powerpc/include/asm/book3s/64/pgtable.h | 10 ----------
- arch/powerpc/include/asm/nohash/32/pte-8xx.h | 14 --------------
- arch/powerpc/include/asm/nohash/pgtable.h    | 14 --------------
- arch/powerpc/include/asm/nohash/pte-e500.h   | 15 ---------------
- 5 files changed, 63 deletions(-)
+ arch/powerpc/include/asm/nohash/pgtable.h |  2 +-
+ arch/powerpc/mm/book3s32/mmu.c            |  4 ++--
+ arch/powerpc/mm/nohash/e500.c             |  2 +-
+ arch/powerpc/mm/pgtable.c                 | 22 +++++++++++-----------
+ arch/powerpc/mm/ptdump/8xx.c              |  5 -----
+ arch/powerpc/mm/ptdump/shared.c           |  5 -----
+ 6 files changed, 15 insertions(+), 25 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/book3s/32/pgtable.h b/arch/powerpc/include/asm/book3s/32/pgtable.h
-index 45b69ae2631e..80505915c77c 100644
---- a/arch/powerpc/include/asm/book3s/32/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/32/pgtable.h
-@@ -522,16 +522,6 @@ static inline pte_t pte_mkhuge(pte_t pte)
- 	return pte;
- }
- 
--static inline pte_t pte_mkprivileged(pte_t pte)
--{
--	return __pte(pte_val(pte) & ~_PAGE_USER);
--}
--
--static inline pte_t pte_mkuser(pte_t pte)
--{
--	return __pte(pte_val(pte) | _PAGE_USER);
--}
--
- static inline pte_t pte_modify(pte_t pte, pgprot_t newprot)
- {
- 	return __pte((pte_val(pte) & _PAGE_CHG_MASK) | pgprot_val(newprot));
-diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index dbd545e73161..c3b921769ece 100644
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -630,16 +630,6 @@ static inline pte_t pte_mkdevmap(pte_t pte)
- 	return __pte_raw(pte_raw(pte) | cpu_to_be64(_PAGE_SPECIAL | _PAGE_DEVMAP));
- }
- 
--static inline pte_t pte_mkprivileged(pte_t pte)
--{
--	return __pte_raw(pte_raw(pte) | cpu_to_be64(_PAGE_PRIVILEGED));
--}
--
--static inline pte_t pte_mkuser(pte_t pte)
--{
--	return __pte_raw(pte_raw(pte) & cpu_to_be64(~_PAGE_PRIVILEGED));
--}
--
- /*
-  * This is potentially called with a pmd as the argument, in which case it's not
-  * safe to check _PAGE_DEVMAP unless we also confirm that _PAGE_PTE is set.
-diff --git a/arch/powerpc/include/asm/nohash/32/pte-8xx.h b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
-index 52395a5ecd70..843fe0138a66 100644
---- a/arch/powerpc/include/asm/nohash/32/pte-8xx.h
-+++ b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
-@@ -122,20 +122,6 @@ static inline bool pte_user(pte_t pte)
- 
- #define pte_user pte_user
- 
--static inline pte_t pte_mkprivileged(pte_t pte)
--{
--	return __pte(pte_val(pte) | _PAGE_SH);
--}
--
--#define pte_mkprivileged pte_mkprivileged
--
--static inline pte_t pte_mkuser(pte_t pte)
--{
--	return __pte(pte_val(pte) & ~_PAGE_SH);
--}
--
--#define pte_mkuser pte_mkuser
--
- static inline pte_t pte_mkhuge(pte_t pte)
- {
- 	return __pte(pte_val(pte) | _PAGE_SPS | _PAGE_HUGE);
 diff --git a/arch/powerpc/include/asm/nohash/pgtable.h b/arch/powerpc/include/asm/nohash/pgtable.h
-index 1493f0b09ae9..9619beae4454 100644
+index 9619beae4454..200f2dbf48e2 100644
 --- a/arch/powerpc/include/asm/nohash/pgtable.h
 +++ b/arch/powerpc/include/asm/nohash/pgtable.h
-@@ -252,20 +252,6 @@ static inline pte_t pte_mkhuge(pte_t pte)
+@@ -58,7 +58,7 @@ static inline pte_basic_t pte_update(struct mm_struct *mm, unsigned long addr, p
+ 
+ 	*p = __pte(new);
+ 
+-	if (IS_ENABLED(CONFIG_44x) && (old & _PAGE_USER) && (old & _PAGE_EXEC))
++	if (IS_ENABLED(CONFIG_44x) && !is_kernel_addr(addr) && (old & _PAGE_EXEC))
+ 		icache_44x_need_flush = 1;
+ 
+ 	/* huge pages use the old page table lock */
+diff --git a/arch/powerpc/mm/book3s32/mmu.c b/arch/powerpc/mm/book3s32/mmu.c
+index 850783cfa9c7..d1041c946ce2 100644
+--- a/arch/powerpc/mm/book3s32/mmu.c
++++ b/arch/powerpc/mm/book3s32/mmu.c
+@@ -127,7 +127,7 @@ static void setibat(int index, unsigned long virt, phys_addr_t phys,
+ 	wimgxpp = (flags & _PAGE_COHERENT) | (_PAGE_EXEC ? BPP_RX : BPP_XX);
+ 	bat[0].batu = virt | (bl << 2) | 2; /* Vs=1, Vp=0 */
+ 	bat[0].batl = BAT_PHYS_ADDR(phys) | wimgxpp;
+-	if (flags & _PAGE_USER)
++	if (!is_kernel_addr(virt))
+ 		bat[0].batu |= 1;	/* Vp = 1 */
  }
+ 
+@@ -280,7 +280,7 @@ void __init setbat(int index, unsigned long virt, phys_addr_t phys,
+ 	wimgxpp |= (flags & _PAGE_RW)? BPP_RW: BPP_RX;
+ 	bat[1].batu = virt | (bl << 2) | 2; /* Vs=1, Vp=0 */
+ 	bat[1].batl = BAT_PHYS_ADDR(phys) | wimgxpp;
+-	if (flags & _PAGE_USER)
++	if (!is_kernel_addr(virt))
+ 		bat[1].batu |= 1; 	/* Vp = 1 */
+ 	if (flags & _PAGE_GUARDED) {
+ 		/* G bit must be zero in IBATs */
+diff --git a/arch/powerpc/mm/nohash/e500.c b/arch/powerpc/mm/nohash/e500.c
+index 40a4e69ae1a9..5b7d7a932bfd 100644
+--- a/arch/powerpc/mm/nohash/e500.c
++++ b/arch/powerpc/mm/nohash/e500.c
+@@ -122,7 +122,7 @@ static void settlbcam(int index, unsigned long virt, phys_addr_t phys,
+ 		TLBCAM[index].MAS7 = (u64)phys >> 32;
+ 
+ 	/* Below is unlikely -- only for large user pages or similar */
+-	if (pte_user(__pte(flags))) {
++	if (!is_kernel_addr(virt)) {
+ 		TLBCAM[index].MAS3 |= MAS3_UR;
+ 		TLBCAM[index].MAS3 |= (flags & _PAGE_EXEC) ? MAS3_UX : 0;
+ 		TLBCAM[index].MAS3 |= (flags & _PAGE_RW) ? MAS3_UW : 0;
+diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
+index 3f86fd217690..781a68c69c2f 100644
+--- a/arch/powerpc/mm/pgtable.c
++++ b/arch/powerpc/mm/pgtable.c
+@@ -46,13 +46,13 @@ static inline int is_exec_fault(void)
+  * and we avoid _PAGE_SPECIAL and cache inhibited pte. We also only do that
+  * on userspace PTEs
+  */
+-static inline int pte_looks_normal(pte_t pte)
++static inline int pte_looks_normal(pte_t pte, unsigned long addr)
+ {
+ 
+ 	if (pte_present(pte) && !pte_special(pte)) {
+ 		if (pte_ci(pte))
+ 			return 0;
+-		if (pte_user(pte))
++		if (!is_kernel_addr(addr))
+ 			return 1;
+ 	}
+ 	return 0;
+@@ -79,11 +79,11 @@ static struct folio *maybe_pte_to_folio(pte_t pte)
+  * support falls into the same category.
+  */
+ 
+-static pte_t set_pte_filter_hash(pte_t pte)
++static pte_t set_pte_filter_hash(pte_t pte, unsigned long addr)
+ {
+ 	pte = __pte(pte_val(pte) & ~_PAGE_HPTEFLAGS);
+-	if (pte_looks_normal(pte) && !(cpu_has_feature(CPU_FTR_COHERENT_ICACHE) ||
+-				       cpu_has_feature(CPU_FTR_NOEXECUTE))) {
++	if (pte_looks_normal(pte, addr) && !(cpu_has_feature(CPU_FTR_COHERENT_ICACHE) ||
++					     cpu_has_feature(CPU_FTR_NOEXECUTE))) {
+ 		struct folio *folio = maybe_pte_to_folio(pte);
+ 		if (!folio)
+ 			return pte;
+@@ -97,7 +97,7 @@ static pte_t set_pte_filter_hash(pte_t pte)
+ 
+ #else /* CONFIG_PPC_BOOK3S */
+ 
+-static pte_t set_pte_filter_hash(pte_t pte) { return pte; }
++static pte_t set_pte_filter_hash(pte_t pte, unsigned long addr) { return pte; }
+ 
+ #endif /* CONFIG_PPC_BOOK3S */
+ 
+@@ -105,7 +105,7 @@ static pte_t set_pte_filter_hash(pte_t pte) { return pte; }
+  * as we don't have two bits to spare for _PAGE_EXEC and _PAGE_HWEXEC so
+  * instead we "filter out" the exec permission for non clean pages.
+  */
+-static inline pte_t set_pte_filter(pte_t pte)
++static inline pte_t set_pte_filter(pte_t pte, unsigned long addr)
+ {
+ 	struct folio *folio;
+ 
+@@ -113,10 +113,10 @@ static inline pte_t set_pte_filter(pte_t pte)
+ 		return pte;
+ 
+ 	if (mmu_has_feature(MMU_FTR_HPTE_TABLE))
+-		return set_pte_filter_hash(pte);
++		return set_pte_filter_hash(pte, addr);
+ 
+ 	/* No exec permission in the first place, move on */
+-	if (!pte_exec(pte) || !pte_looks_normal(pte))
++	if (!pte_exec(pte) || !pte_looks_normal(pte, addr))
+ 		return pte;
+ 
+ 	/* If you set _PAGE_EXEC on weird pages you're on your own */
+@@ -200,7 +200,7 @@ void set_ptes(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
+ 	 * this context might not have been activated yet when this
+ 	 * is called.
+ 	 */
+-	pte = set_pte_filter(pte);
++	pte = set_pte_filter(pte, addr);
+ 
+ 	/* Perform the setting of the PTE */
+ 	arch_enter_lazy_mmu_mode();
+@@ -301,7 +301,7 @@ void set_huge_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep, pte_
+ 	 */
+ 	VM_WARN_ON(pte_hw_valid(*ptep) && !pte_protnone(*ptep));
+ 
+-	pte = set_pte_filter(pte);
++	pte = set_pte_filter(pte, addr);
+ 
+ 	val = pte_val(pte);
+ 
+diff --git a/arch/powerpc/mm/ptdump/8xx.c b/arch/powerpc/mm/ptdump/8xx.c
+index fac932eb8f9a..b5c79b11ea3c 100644
+--- a/arch/powerpc/mm/ptdump/8xx.c
++++ b/arch/powerpc/mm/ptdump/8xx.c
+@@ -20,11 +20,6 @@ static const struct flag_info flag_array[] = {
  #endif
+ 		.set	= "huge",
+ 		.clear	= "    ",
+-	}, {
+-		.mask	= _PAGE_SH,
+-		.val	= 0,
+-		.set	= "user",
+-		.clear	= "    ",
+ 	}, {
+ 		.mask	= _PAGE_RO | _PAGE_NA,
+ 		.val	= 0,
+diff --git a/arch/powerpc/mm/ptdump/shared.c b/arch/powerpc/mm/ptdump/shared.c
+index f884760ca5cf..5ff101654c45 100644
+--- a/arch/powerpc/mm/ptdump/shared.c
++++ b/arch/powerpc/mm/ptdump/shared.c
+@@ -11,11 +11,6 @@
  
--#ifndef pte_mkprivileged
--static inline pte_t pte_mkprivileged(pte_t pte)
--{
--	return __pte(pte_val(pte) & ~_PAGE_USER);
--}
--#endif
--
--#ifndef pte_mkuser
--static inline pte_t pte_mkuser(pte_t pte)
--{
--	return __pte(pte_val(pte) | _PAGE_USER);
--}
--#endif
--
- static inline pte_t pte_modify(pte_t pte, pgprot_t newprot)
- {
- 	return __pte((pte_val(pte) & _PAGE_CHG_MASK) | pgprot_val(newprot));
-diff --git a/arch/powerpc/include/asm/nohash/pte-e500.h b/arch/powerpc/include/asm/nohash/pte-e500.h
-index 99288e26b6b0..9f9e3f02d414 100644
---- a/arch/powerpc/include/asm/nohash/pte-e500.h
-+++ b/arch/powerpc/include/asm/nohash/pte-e500.h
-@@ -54,7 +54,6 @@
- #define _PAGE_KERNEL_RWX	(_PAGE_BAP_SW | _PAGE_BAP_SR | _PAGE_DIRTY | _PAGE_BAP_SX)
- #define _PAGE_KERNEL_ROX	(_PAGE_BAP_SR | _PAGE_BAP_SX)
- #define _PAGE_USER		(_PAGE_BAP_UR | _PAGE_BAP_SR) /* Can be read */
--#define _PAGE_PRIVILEGED	(_PAGE_BAP_SR)
- 
- #define _PAGE_SPECIAL	_PAGE_SW0
- 
-@@ -99,20 +98,6 @@
- #define PAGE_READONLY_X	__pgprot(_PAGE_BASE | _PAGE_USER | _PAGE_BAP_UX)
- 
- #ifndef __ASSEMBLY__
--static inline pte_t pte_mkprivileged(pte_t pte)
--{
--	return __pte((pte_val(pte) & ~_PAGE_USER) | _PAGE_PRIVILEGED);
--}
--
--#define pte_mkprivileged pte_mkprivileged
--
--static inline pte_t pte_mkuser(pte_t pte)
--{
--	return __pte((pte_val(pte) & ~_PAGE_PRIVILEGED) | _PAGE_USER);
--}
--
--#define pte_mkuser pte_mkuser
--
- static inline pte_t pte_mkexec(pte_t pte)
- {
- 	return __pte((pte_val(pte) & ~_PAGE_BAP_SX) | _PAGE_BAP_UX);
+ static const struct flag_info flag_array[] = {
+ 	{
+-		.mask	= _PAGE_USER,
+-		.val	= _PAGE_USER,
+-		.set	= "user",
+-		.clear	= "    ",
+-	}, {
+ 		.mask	= _PAGE_RW,
+ 		.val	= 0,
+ 		.set	= "r ",
 -- 
 2.41.0
 
