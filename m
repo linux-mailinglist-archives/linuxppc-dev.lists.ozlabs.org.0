@@ -1,124 +1,128 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23C947AD64F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Sep 2023 12:45:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 633A77AD6CA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Sep 2023 13:12:23 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=oKJmAHGi;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=UtvSzIEP;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RvKK86qrmz3cHN
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Sep 2023 20:45:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RvKw52Rtxz3dKK
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Sep 2023 21:12:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=oKJmAHGi;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=UtvSzIEP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::530; helo=mail-ed1-x530.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f400:7e1b::60b; helo=eur05-am6-obe.outbound.protection.outlook.com; envelope-from=chancel.liu@nxp.com; receiver=lists.ozlabs.org)
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2060b.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e1b::60b])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RvKJF2w4lz3bhc
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Sep 2023 20:44:43 +1000 (AEST)
-Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-533f193fc8dso2562123a12.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Sep 2023 03:44:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1695638679; x=1696243479; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YPKwu29nswr19PRfxmThaRgCyfVAPPnrF03AJDF6RVE=;
-        b=oKJmAHGi40mbKgGXGoNOwvE1JAuwAH/j5ch42srvSTDFOc5lZhTO3G4J3pXEDPIeFW
-         8PCj4IhLy0Zid3FECSuVUPTkonT2jeeEASEueWv3DK8WLwfW6U+shfRRDLGIXH6QLqTR
-         hdXWnRQVykge3XAMwbTb70cQXhhwPdGH8c50iNTZM1EJNPKtkp9PcoxtrkxUqMv+scAc
-         k/Ozj1iN7Onb52COmtKrroAJd+9T+4NWuEvxL57ZowvucO0BKTftOk+O0hNtQFjbTKbK
-         kEB4rEoTzoO6wWHyfKfpeLDRgR+Pp9iuqaBWYs1K10O5/Y83MLF2cpte1xUDzSPi39aH
-         XKsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695638679; x=1696243479;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YPKwu29nswr19PRfxmThaRgCyfVAPPnrF03AJDF6RVE=;
-        b=h72mSDIWsHf2NG5LHRDXeNrygU8eMknptkygM8W1k1SXO0sp9jH3yIJrL5/e5Hrg9u
-         DZydL9WZDWcBvJd/fTx1R3Ofsnv1M9Qx1DQHs4+P5BrEyI9fEKX4fJ1+NsA5mbaUzZC8
-         0pGnQJyNOcenEuHVXRGTdNqIwcEPmgav4XL6Z9ejqZE4LmTs9tDwKNn3cCQpYxC6zi0W
-         M/YrvNghozFXMPiOL3SElIroa1PH/RiYY6728Y7ChFyR8++SOAfTOiUjtXxBuinaIiYF
-         /tqLPMj7rAkCHmYXRUDUun7R8km9PIBQ/juB9Whwi/L4fz3D2Ov5gN76bbI49tLIxlOo
-         v+iQ==
-X-Gm-Message-State: AOJu0YwrWVIZpl3F9SG1FtfUTXkky9JZBmJuxr5Bv4jOK160iU5Niwdh
-	KGgMMn5ml3lz9u7DY4Ox55Tr6g==
-X-Google-Smtp-Source: AGHT+IFdMo5I5c373VJKI1Qiq+6RT/IKdTELM18C3QX5YTHa873Vh8IoMEaubO6qaZj1vsmpa+IZ6Q==
-X-Received: by 2002:a05:6402:b5b:b0:533:d1cd:62c5 with SMTP id bx27-20020a0564020b5b00b00533d1cd62c5mr3976542edb.17.1695638679365;
-        Mon, 25 Sep 2023 03:44:39 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.219.100])
-        by smtp.gmail.com with ESMTPSA id l14-20020aa7cace000000b0053331f9094dsm5356947edt.52.2023.09.25.03.44.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Sep 2023 03:44:38 -0700 (PDT)
-Message-ID: <e02ebde7-f208-40a4-bb10-aa5962ee9864@linaro.org>
-Date: Mon, 25 Sep 2023 12:44:35 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RvKtB4KGcz3c4M
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Sep 2023 21:10:41 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=RWj5VRNYi1Ubn1EoSnv5McFkN8azhtdoJ3clI7eLE1NOHf/URaayddenNTkF5vWWFaPaJd1er0rrYVtWV0+lt2kRCnm2ZKmSkNluG2AOHrN1YUQYNLNnt+sjomZKjgHjjfEmBRRRGOM6Jij8l4RVEC48YoinEjdIjdPjplkq9/elrGyofr+dw0EG+WHaUogiepS+j6M6eKNtwaWlaXL077duzaAX2FN9quB49dZ33bPKvxwd//Tx342zT/DTfs2Cf7c0dfp521INQPvmB6X8iLlmqDS6qW6Vd1jgXEBiBzy7yQ/Tg4NAMwS9eD70S9DOMUGGDHRkrlGQroVWL+J/7g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PI4uIdIkV9AyG0puYfKz4ztIaAoslrT9fpFWHeY2n3M=;
+ b=Ao+vol1bSAmLTreHQgAmRCNJyrVNykwL0n7fyTgTUxAFREKV7jhO/QCua4MUlqKzI16x4XEEPyFUiRKUM0htQ8m4zNLWLrAdL7qGaizmC1EXf/bFJqE5JC+IhoiirS5NoNm9GPWsAhFAvrvdXEh1hdm9xjSLkqHF/niug7aw+EEyQWPZB3jy7pLNiKFY9IZCZFRz1zdxKsBdi+UJvhqf7bKGDYjyUAFajXdHJ1eOZRdiBT6cZRewmjerDNUKJ38GnP+mOMzsjfIXAlreNHqYRtggxwkHcAjlrlfoB8ibAkNIWfhye5xhpYE8um3Olp2oLEgB7yKe7U/PIbDT5UbtrQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PI4uIdIkV9AyG0puYfKz4ztIaAoslrT9fpFWHeY2n3M=;
+ b=UtvSzIEPcPKJiHH8UBLoGELYNzywXhgBBaGT80DTUn0lwtPuZND6OZRyvSN3MIcGB6BqBOQW6eLpBhtzDGLn4YpiYt0KYuSlrVp/EW/F5x0PYjk3gfNu72SyKwaD3SEa6SBSiWIf38pjKjQjyTy8BCYNdgGyJ69pa8HpI17GzGQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DB9PR04MB9498.eurprd04.prod.outlook.com (2603:10a6:10:360::21)
+ by DBBPR04MB7884.eurprd04.prod.outlook.com (2603:10a6:10:1f2::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.28; Mon, 25 Sep
+ 2023 11:10:17 +0000
+Received: from DB9PR04MB9498.eurprd04.prod.outlook.com
+ ([fe80::51f9:b8d2:7ddd:c74f]) by DB9PR04MB9498.eurprd04.prod.outlook.com
+ ([fe80::51f9:b8d2:7ddd:c74f%6]) with mapi id 15.20.6813.027; Mon, 25 Sep 2023
+ 11:10:16 +0000
+From: Chancel Liu <chancel.liu@nxp.com>
+To: lgirdwood@gmail.com,
+	broonie@kernel.org,
+	robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org,
+	shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	festevam@gmail.com,
+	nicoleotsuka@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	alsa-devel@alsa-project.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v2 1/2] ASoC: dt-bindings: fsl_rpmsg: List DAPM endpoints ignoring system suspend
+Date: Mon, 25 Sep 2023 19:09:45 +0800
+Message-Id: <20230925110946.3156100-1-chancel.liu@nxp.com>
+X-Mailer: git-send-email 2.25.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI1PR02CA0023.apcprd02.prod.outlook.com
+ (2603:1096:4:1f4::19) To DB9PR04MB9498.eurprd04.prod.outlook.com
+ (2603:10a6:10:360::21)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 08/30] dt-bindings: soc: fsl: cpm_qe: cpm1-scc-qmc: Add
- support for QMC HDLC
-Content-Language: en-US
-To: Herve Codina <herve.codina@bootlin.com>
-References: <20230922075913.422435-1-herve.codina@bootlin.com>
- <20230922075913.422435-9-herve.codina@bootlin.com>
- <5efae150-3d92-81b8-5c25-68846d27132e@linaro.org>
- <20230925101703.1bf083f1@bootlin.com>
- <5b804a1a-6bfd-429d-ad84-696b7ecef72d@linaro.org>
- <20230925122758.43963736@bootlin.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20230925122758.43963736@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB9PR04MB9498:EE_|DBBPR04MB7884:EE_
+X-MS-Office365-Filtering-Correlation-Id: e90646e2-6d6a-470a-f9b9-08dbbdb7ff47
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	C59mhd3rGIjNzXfeK6SNPJL0GTDqg6SQNc0SKdk8iAuyAJd/IeXjV0lerT7bILTrMq/Q63ffoJJAmcIgzzdH/LcJbhkreSIqEOesva1jq5Nx3TcaZq+/Z5QViNUk288+NXj+4Y/sbLWmU0CsSGZKRL207Er0kKqsYjUiWJhB4UZr1iUWt/swVr2C0yq8oyNiSyHNNuGjzoYSxjX99EQitkMJ4vYRoEtPqyLDZ0sia7KmuX2aVPe31Qm6xXBKaHyhadkF4kJOK6pTn77IwJKOkgcTr3a0ub6xIgHg9IbylpZmsPJswlA0R0nJfeAMG5/ynmMRESuQkTDyUXcXnOlYcYQstAkJhStA0QkC8PZugSLAdjXG+2nYnfAcu137rOKNHqdX14xxmjXdp1sIOk/Wx8sa99OCRJoK4WapzDwGiYWUy+97X/Txqocdfhu2Ea6COT/PjrpKQj2KIEvjsgWo8tpJzKGM9uIfN8V2QG+oQZ03/qvfUTy/Nun4/xwDIQ2c/6iTAwv1bGGE2+DRuii13zgu6LTfMgx0NjwBDgB7PaeLBh4ne7MVuXA2J8+p+1ylwW5n/JL942WHrDo4WwJmoiMk581nI6VRbt7TEkjzV7QoNAKZ0TyJIZnpLlodBowT+ZNOoGJUn2lGmFTALKsB2Q==
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9498.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(346002)(39860400002)(376002)(366004)(396003)(230922051799003)(1800799009)(186009)(451199024)(6506007)(52116002)(6512007)(6666004)(1076003)(2616005)(66476007)(86362001)(66946007)(66556008)(6486002)(478600001)(38100700002)(38350700002)(921005)(83380400001)(2906002)(7416002)(8936002)(8676002)(4326008)(36756003)(15650500001)(316002)(5660300002)(41300700001)(44832011)(26005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?Qr5kSPlv5BemCjZD4v2K1E4uJjBvj31h9TKjN9+TGm4XvYdTqCeTx1+ecM5T?=
+ =?us-ascii?Q?kSi2CpaG/43Y/86vd/VlWzYFV0cKrDRs6B2FCfzICmaqgqIKsR7V0rfxxx08?=
+ =?us-ascii?Q?1H+ZjzRzmfyvBFxm1mJqJ33AKk17xKOAr/r0oZw7acEvrUG0rhNOhVSfd64e?=
+ =?us-ascii?Q?JAaysHKgaFBXHvtRoVaQ8nV4j93XdSPtxXo/9ABGZ/xnJ+0DgnviDuVVgzek?=
+ =?us-ascii?Q?z+fgeRdkMxhLcmwTX7Jiv/3ysyPSl9pH0WXMG4bEnhQ0CVVjfZUZo7umYHYQ?=
+ =?us-ascii?Q?FVu5HsoK/+M1VDdFdj/i6vBd/WH+3GbsVfzwkEBE15nidblpTmzGYubSsE0Q?=
+ =?us-ascii?Q?oZrC0wgZGlCu4faPQMgPPah86t/HQvXcvq608FbU6muUbkkzM2IScHQ+ohUQ?=
+ =?us-ascii?Q?DzVfmBrX1iP0a/7sPJy9L+Y3771xdWCHoWGyTlE7f8KXg7X6kLq/gPb9zHbj?=
+ =?us-ascii?Q?2LOgaMYmG4BBGH9mfpplI1qmGnfKURhUhwC9bb2lGFq5J8F7PKtNNimytw5v?=
+ =?us-ascii?Q?TlfGhUoJodohSKK1/tuusqCUKHbfV3xjbAT6cUdW2YEbBXME+AeIoZMV+mjT?=
+ =?us-ascii?Q?S8jYJzdW4Q1A2CSAOGyBm/W7K2mcro6sgn/z5f9sogS/LD29zkiaeKdaMDKT?=
+ =?us-ascii?Q?HQvmleZ868hjFaAghzJqUMwX/xPB+SRPci3PgYezygTdHshji2mGqDcLPzjH?=
+ =?us-ascii?Q?JkyMLl8UvUTvk5BtSgIIGjaXTJj0tILu1jViKXQwuivuAP5b12pVOg9Ci0+i?=
+ =?us-ascii?Q?56ZemChAAd/AlpaqC9SmL9oLBztyuqBYCivBf0TI+zRLvH3XqtmzBT2AJfM6?=
+ =?us-ascii?Q?Eb5PiLfVc5cYZCOhn/1Pf1G9SOrZdaq1+aLy6yBbY1bN3zgRhz0UtCgSNzxr?=
+ =?us-ascii?Q?bWyCA05QJCfCyn2xWa264ypaHLHEg4n+FdgSx8kH4wVRiU2P7x5xmz/KFK6J?=
+ =?us-ascii?Q?sARNL6cHPiNWCNUsnGXTsBmOYZB1WcqGaaT4FCxtHNm2aH8bDcDHR5JlDD/n?=
+ =?us-ascii?Q?73roJUrnGXCQL556IFq5EFcui52JOtqHm78TpEUPBfOEHkaJLTX4E0YZCcpI?=
+ =?us-ascii?Q?Gd4SHhP3sfsKHNRFX3p27FsAhZGPyDpOQR1/prnVDv8FACXx03LFRBbaw3o7?=
+ =?us-ascii?Q?4qN3sfZtbdbXhtJ7TSztvZObbCnryN4KSbG6iUrf4QdFzcjnAN0tOeFyHIPD?=
+ =?us-ascii?Q?wR9ZusaPDAtcAamdYdYdHILMB+p0WmGcf8HIxBcfXT+7fRDmoJbFrVOxegYq?=
+ =?us-ascii?Q?XfIpEcC2gjCT5BmI5sqkyG6U3dnHnyAHUwJLXyjR1cTI9EFab4PwFLaglTbq?=
+ =?us-ascii?Q?HEprEU0yROFRtCVpqP7YX0n2wjmdv5Kg5Edetb2y71eU9ZJTf224sRM9/BmM?=
+ =?us-ascii?Q?iS0H91BcBYID3DyZlcjc9ojV/l1oxH52zWUHWaRuzqLchYlcgxq6gsweLoUk?=
+ =?us-ascii?Q?E6n99sgO+qc3GAdw3aB55bp3u/DZe1dwlnmBM2WpAdioPDkFPI1EP84iS4f3?=
+ =?us-ascii?Q?KegwSh55fh+TMmeTh9MbCDFGx16HWp2IT8dVcqcm5zU498NhmMQyMtJck7fE?=
+ =?us-ascii?Q?5clEkm8b6oXfBdAEBV8gl/TG867wLob6ic5qdO8G?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e90646e2-6d6a-470a-f9b9-08dbbdb7ff47
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9498.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2023 11:10:16.5136
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hGflbsOZg+xOQecSoXbMQK2jsJy0xvAVUiaMpkiI9D7Dp+amvyh2FThd0/zN34FB6A6ux0Ghyh0PpbXhid5yPA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7884
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -130,94 +134,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, alsa-devel@alsa-project.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Linus Walleij <linus.walleij@linaro.org>, Jaroslav Kysela <perex@perex.cz>, Eric Dumazet <edumazet@google.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Fabio Estevam <festevam@gmail.com>, Qiang Zhao <qiang.zhao@nxp.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Lee Jones <lee@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, Nicolin Chen <nicoleotsuka@gmail.com>, linux-gpio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Christophe JAILLET <christophe.jaillet@wanadoo.fr>, Takashi Iwai <tiwai@suse.com>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>, Liam Girdwood <lgirdwood@gmail.com>, Li Yang <leoyang.li@nxp.com>, Mark Brown <broonie@kernel.org>, Si
- mon Horman <horms@kernel.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: Chancel Liu <chancel.liu@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 25/09/2023 12:27, Herve Codina wrote:
-> On Mon, 25 Sep 2023 10:21:15 +0200
-> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
-> 
->> On 25/09/2023 10:17, Herve Codina wrote:
->>> Hi Krzysztof,
->>>
->>> On Sat, 23 Sep 2023 19:39:49 +0200
->>> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
->>>   
->>>> On 22/09/2023 09:58, Herve Codina wrote:  
->>>>> The QMC (QUICC mutichannel controller) is a controller present in some
->>>>> PowerQUICC SoC such as MPC885.
->>>>> The QMC HDLC uses the QMC controller to transfer HDLC data.
->>>>>
->>>>> Additionally, a framer can be connected to the QMC HDLC.
->>>>> If present, this framer is the interface between the TDM bus used by the
->>>>> QMC HDLC and the E1/T1 line.
->>>>> The QMC HDLC can use this framer to get information about the E1/T1 line
->>>>> and configure the E1/T1 line.
->>>>>
->>>>> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
->>>>> ---
->>>>>  .../soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml      | 24 +++++++++++++++++++
->>>>>  1 file changed, 24 insertions(+)
->>>>>
->>>>> diff --git a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml
->>>>> index 82d9beb48e00..61dfd5ef7407 100644
->>>>> --- a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml
->>>>> +++ b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml
->>>>> @@ -101,6 +101,27 @@ patternProperties:
->>>>>            Channel assigned Rx time-slots within the Rx time-slots routed by the
->>>>>            TSA to this cell.
->>>>>  
->>>>> +      compatible:
->>>>> +        const: fsl,qmc-hdlc    
->>>>
->>>> Why this is not a device/SoC specific compatible?  
->>>
->>> This compatible is present in a QMC channel.
->>> The parent node (the QMC itself) contains a compatible with device/SoC:
->>> --- 8< ---
->>>   compatible:
->>>     items:
->>>       - enum:
->>>           - fsl,mpc885-scc-qmc
->>>           - fsl,mpc866-scc-qmc
->>>       - const: fsl,cpm1-scc-qmc
->>> --- 8< ---
->>>
->>> At the child level (ie QMC channel), I am not sure that adding device/SoC
->>> makes sense. This compatible indicates that the QMC channel is handled by
->>> the QMC HDLC driver.
->>> At this level, whatever the device/SoC, we have to be QMC compliant.
->>>
->>> With these details, do you still think I need to change the child (channel)
->>> compatible ?  
->>
->> From OS point of view, you have a driver binding to this child-level
->> compatible. How do you enforce Linux driver binding based on parent
->> compatible? I looked at your next patch and I did not see it.
-> 
-> We do not need to have the child driver binding based on parent.
+Add a property to list DAPM endpoints which mark paths between these
+endpoints should not be disabled when system enters in suspend state.
 
-Exactly, that's what I said.
+LPA means low power audio case. On asymmetric multiprocessor, there are
+Cortex-A core and Cortex-M core, Linux is running on Cortex-A core,
+RTOS or other OS is running on Cortex-M core. The audio hardware
+devices can be controlled by Cortex-M. LPA can be explained as a
+mechanism that Cortex-A allocates a large buffer and fill audio data,
+then Cortex-A can enter into suspend for the purpose of power saving.
+Cortex-M continues to play the sound during suspend phase of Cortex-A.
+When the data in buffer is consumed, Cortex-M will trigger the Cortex-A
+to wakeup to fill data. LPA requires some audio paths still enabled
+when Cortex-A enters into suspend.
 
-> We have to ensure that the child handles a QMC channel and the parent provides
-> a QMC channel.
-> 
-> A QMC controller (parent) has to implement the QMC API (include/soc/fsl/qe/qmc.h)
-> and a QMC channel driver (child) has to use the QMC API.
+Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
+---
+ .../devicetree/bindings/sound/fsl,rpmsg.yaml      | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-How does this solve my concerns? Sorry, I do not understand. Your driver
-is a platform driver and binds to the generic compatible. How do you
-solve regular compatibility issues (need for quirks) if parent
-compatible is not used?
-
-How does being QMC compliant affects driver binding and
-compatibility/quirks?
-
-We are back to my original question and I don't think you answered to
-any of the concerns.
-
-Best regards,
-Krzysztof
+diff --git a/Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml b/Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml
+index 188f38baddec..d8fd17615bf2 100644
+--- a/Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml
++++ b/Documentation/devicetree/bindings/sound/fsl,rpmsg.yaml
+@@ -91,6 +91,21 @@ properties:
+       - rpmsg-audio-channel
+       - rpmsg-micfil-channel
+ 
++  fsl,lpa-widgets:
++    $ref: /schemas/types.yaml#/definitions/non-unique-string-array
++    description: |
++      A list of DAPM endpoints which mark paths between these endpoints should
++      not be disabled when system enters in suspend state. LPA means low power
++      audio case. On asymmetric multiprocessor, there are Cortex-A core and
++      Cortex-M core, Linux is running on Cortex-A core, RTOS or other OS is
++      running on Cortex-M core. The audio hardware devices can be controlled by
++      Cortex-M. LPA can be explained as a mechanism that Cortex-A allocates a
++      large buffer and fill audio data, then Cortex-A can enter into suspend
++      for the purpose of power saving. Cortex-M continues to play the sound
++      during suspend phase of Cortex-A. When the data in buffer is consumed,
++      Cortex-M will trigger the Cortex-A to wakeup to fill data. LPA requires
++      some audio paths still enabled when Cortex-A enters into suspend.
++
+ required:
+   - compatible
+ 
+-- 
+2.25.1
 
