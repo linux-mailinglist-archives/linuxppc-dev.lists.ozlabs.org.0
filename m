@@ -1,97 +1,124 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F5A7AD630
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Sep 2023 12:38:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23C947AD64F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Sep 2023 12:45:35 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=j3LEEoDO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=oKJmAHGi;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RvK8v2ZB1z3clc
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Sep 2023 20:38:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RvKK86qrmz3cHN
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Sep 2023 20:45:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=j3LEEoDO;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=oKJmAHGi;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::530; helo=mail-ed1-x530.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RvK743V14z3bhc
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Sep 2023 20:36:48 +1000 (AEST)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38PA9c5W021138;
-	Mon, 25 Sep 2023 10:36:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=5F1oylzLfZW9ei1Y338Ggfpt72zuIfLri+q2JVeKhOU=;
- b=j3LEEoDO6B2rC1xB7qDwzrd8SOTCsTeKk9SF/a3bDEP95ESqgsFvjBwjDeMbRs5xX8ZF
- qeNcWVHWITijeh3uzB2dnZamQ+C+zpji9xFX7LIwugb0vz8ihpw5hnucbEBrsXCPVxQA
- wRvnNQmbBIEM1CJ6xngd6pxc5olVta1Q0hCvXxndvsBtS9DF7MLpE7KuAPsPPLjvIdAx
- G5gUzUydx84uswH+rx/A+E76F70Z5rZ/javu5Tp2T0e2GuMK7omNKDmTzEBnIEqevUG+
- iZ83zid2XYXgzwxPSrE57fsKDiqWDV+2tISCMMKxEvPMpTdGYv1BMC+fUvZaM3nkXYdn Mw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ta53qrh8h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 25 Sep 2023 10:36:41 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38PAa23J010172;
-	Mon, 25 Sep 2023 10:36:41 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ta53qrh82-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 25 Sep 2023 10:36:41 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 38PASBCV030392;
-	Mon, 25 Sep 2023 10:36:40 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tad218v1s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 25 Sep 2023 10:36:40 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 38PAabTB21234190
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 25 Sep 2023 10:36:38 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D890A20063;
-	Mon, 25 Sep 2023 10:36:37 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C50552004F;
-	Mon, 25 Sep 2023 10:36:34 +0000 (GMT)
-Received: from [9.43.77.183] (unknown [9.43.77.183])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 25 Sep 2023 10:36:34 +0000 (GMT)
-Message-ID: <82088dc7-3010-8c5a-ce67-ccb395cf2b7e@linux.ibm.com>
-Date: Mon, 25 Sep 2023 16:06:33 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RvKJF2w4lz3bhc
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Sep 2023 20:44:43 +1000 (AEST)
+Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-533f193fc8dso2562123a12.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Sep 2023 03:44:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1695638679; x=1696243479; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YPKwu29nswr19PRfxmThaRgCyfVAPPnrF03AJDF6RVE=;
+        b=oKJmAHGi40mbKgGXGoNOwvE1JAuwAH/j5ch42srvSTDFOc5lZhTO3G4J3pXEDPIeFW
+         8PCj4IhLy0Zid3FECSuVUPTkonT2jeeEASEueWv3DK8WLwfW6U+shfRRDLGIXH6QLqTR
+         hdXWnRQVykge3XAMwbTb70cQXhhwPdGH8c50iNTZM1EJNPKtkp9PcoxtrkxUqMv+scAc
+         k/Ozj1iN7Onb52COmtKrroAJd+9T+4NWuEvxL57ZowvucO0BKTftOk+O0hNtQFjbTKbK
+         kEB4rEoTzoO6wWHyfKfpeLDRgR+Pp9iuqaBWYs1K10O5/Y83MLF2cpte1xUDzSPi39aH
+         XKsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695638679; x=1696243479;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YPKwu29nswr19PRfxmThaRgCyfVAPPnrF03AJDF6RVE=;
+        b=h72mSDIWsHf2NG5LHRDXeNrygU8eMknptkygM8W1k1SXO0sp9jH3yIJrL5/e5Hrg9u
+         DZydL9WZDWcBvJd/fTx1R3Ofsnv1M9Qx1DQHs4+P5BrEyI9fEKX4fJ1+NsA5mbaUzZC8
+         0pGnQJyNOcenEuHVXRGTdNqIwcEPmgav4XL6Z9ejqZE4LmTs9tDwKNn3cCQpYxC6zi0W
+         M/YrvNghozFXMPiOL3SElIroa1PH/RiYY6728Y7ChFyR8++SOAfTOiUjtXxBuinaIiYF
+         /tqLPMj7rAkCHmYXRUDUun7R8km9PIBQ/juB9Whwi/L4fz3D2Ov5gN76bbI49tLIxlOo
+         v+iQ==
+X-Gm-Message-State: AOJu0YwrWVIZpl3F9SG1FtfUTXkky9JZBmJuxr5Bv4jOK160iU5Niwdh
+	KGgMMn5ml3lz9u7DY4Ox55Tr6g==
+X-Google-Smtp-Source: AGHT+IFdMo5I5c373VJKI1Qiq+6RT/IKdTELM18C3QX5YTHa873Vh8IoMEaubO6qaZj1vsmpa+IZ6Q==
+X-Received: by 2002:a05:6402:b5b:b0:533:d1cd:62c5 with SMTP id bx27-20020a0564020b5b00b00533d1cd62c5mr3976542edb.17.1695638679365;
+        Mon, 25 Sep 2023 03:44:39 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.219.100])
+        by smtp.gmail.com with ESMTPSA id l14-20020aa7cace000000b0053331f9094dsm5356947edt.52.2023.09.25.03.44.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Sep 2023 03:44:38 -0700 (PDT)
+Message-ID: <e02ebde7-f208-40a4-bb10-aa5962ee9864@linaro.org>
+Date: Mon, 25 Sep 2023 12:44:35 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH V4 2/2] tools/perf/tests: Fix object code reading to skip
- address that falls out of text section
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 08/30] dt-bindings: soc: fsl: cpm_qe: cpm1-scc-qmc: Add
+ support for QMC HDLC
 Content-Language: en-US
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, acme@kernel.org,
-        jolsa@kernel.org, adrian.hunter@intel.com, irogers@google.com,
-        namhyung@kernel.org
-References: <20230915053752.3012-1-atrajeev@linux.vnet.ibm.com>
- <20230915053752.3012-2-atrajeev@linux.vnet.ibm.com>
-From: kajoljain <kjain@linux.ibm.com>
-In-Reply-To: <20230915053752.3012-2-atrajeev@linux.vnet.ibm.com>
+To: Herve Codina <herve.codina@bootlin.com>
+References: <20230922075913.422435-1-herve.codina@bootlin.com>
+ <20230922075913.422435-9-herve.codina@bootlin.com>
+ <5efae150-3d92-81b8-5c25-68846d27132e@linaro.org>
+ <20230925101703.1bf083f1@bootlin.com>
+ <5b804a1a-6bfd-429d-ad84-696b7ecef72d@linaro.org>
+ <20230925122758.43963736@bootlin.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20230925122758.43963736@bootlin.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: jNYwPN4E-IfbRrDigRXaFHAoC1xvIeAm
-X-Proofpoint-ORIG-GUID: ElnTOcbXYreqWPy0Nj70khanp5OJBeEj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-09-25_07,2023-09-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 impostorscore=0
- lowpriorityscore=0 suspectscore=0 adultscore=0 bulkscore=0 malwarescore=0
- mlxlogscore=999 priorityscore=1501 mlxscore=0 phishscore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
- definitions=main-2309250078
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,106 +130,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-perf-users@vger.kernel.org, Disha Goel <disgoel@linux.ibm.com>, maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, disgoel@linux.vnet.ibm.com
+Cc: Andrew Lunn <andrew@lunn.ch>, alsa-devel@alsa-project.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Linus Walleij <linus.walleij@linaro.org>, Jaroslav Kysela <perex@perex.cz>, Eric Dumazet <edumazet@google.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Fabio Estevam <festevam@gmail.com>, Qiang Zhao <qiang.zhao@nxp.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Lee Jones <lee@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, Nicolin Chen <nicoleotsuka@gmail.com>, linux-gpio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Christophe JAILLET <christophe.jaillet@wanadoo.fr>, Takashi Iwai <tiwai@suse.com>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>, Liam Girdwood <lgirdwood@gmail.com>, Li Yang <leoyang.li@nxp.com>, Mark Brown <broonie@kernel.org>, Si
+ mon Horman <horms@kernel.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Patch looks good to me.
+On 25/09/2023 12:27, Herve Codina wrote:
+> On Mon, 25 Sep 2023 10:21:15 +0200
+> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+> 
+>> On 25/09/2023 10:17, Herve Codina wrote:
+>>> Hi Krzysztof,
+>>>
+>>> On Sat, 23 Sep 2023 19:39:49 +0200
+>>> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+>>>   
+>>>> On 22/09/2023 09:58, Herve Codina wrote:  
+>>>>> The QMC (QUICC mutichannel controller) is a controller present in some
+>>>>> PowerQUICC SoC such as MPC885.
+>>>>> The QMC HDLC uses the QMC controller to transfer HDLC data.
+>>>>>
+>>>>> Additionally, a framer can be connected to the QMC HDLC.
+>>>>> If present, this framer is the interface between the TDM bus used by the
+>>>>> QMC HDLC and the E1/T1 line.
+>>>>> The QMC HDLC can use this framer to get information about the E1/T1 line
+>>>>> and configure the E1/T1 line.
+>>>>>
+>>>>> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+>>>>> ---
+>>>>>  .../soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml      | 24 +++++++++++++++++++
+>>>>>  1 file changed, 24 insertions(+)
+>>>>>
+>>>>> diff --git a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml
+>>>>> index 82d9beb48e00..61dfd5ef7407 100644
+>>>>> --- a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml
+>>>>> +++ b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml
+>>>>> @@ -101,6 +101,27 @@ patternProperties:
+>>>>>            Channel assigned Rx time-slots within the Rx time-slots routed by the
+>>>>>            TSA to this cell.
+>>>>>  
+>>>>> +      compatible:
+>>>>> +        const: fsl,qmc-hdlc    
+>>>>
+>>>> Why this is not a device/SoC specific compatible?  
+>>>
+>>> This compatible is present in a QMC channel.
+>>> The parent node (the QMC itself) contains a compatible with device/SoC:
+>>> --- 8< ---
+>>>   compatible:
+>>>     items:
+>>>       - enum:
+>>>           - fsl,mpc885-scc-qmc
+>>>           - fsl,mpc866-scc-qmc
+>>>       - const: fsl,cpm1-scc-qmc
+>>> --- 8< ---
+>>>
+>>> At the child level (ie QMC channel), I am not sure that adding device/SoC
+>>> makes sense. This compatible indicates that the QMC channel is handled by
+>>> the QMC HDLC driver.
+>>> At this level, whatever the device/SoC, we have to be QMC compliant.
+>>>
+>>> With these details, do you still think I need to change the child (channel)
+>>> compatible ?  
+>>
+>> From OS point of view, you have a driver binding to this child-level
+>> compatible. How do you enforce Linux driver binding based on parent
+>> compatible? I looked at your next patch and I did not see it.
+> 
+> We do not need to have the child driver binding based on parent.
 
-Reviewed-by: Kajol Jain <kjain@linux.ibm.com>
+Exactly, that's what I said.
 
-Thanks,
-Kajol Jain
+> We have to ensure that the child handles a QMC channel and the parent provides
+> a QMC channel.
+> 
+> A QMC controller (parent) has to implement the QMC API (include/soc/fsl/qe/qmc.h)
+> and a QMC channel driver (child) has to use the QMC API.
 
-On 9/15/23 11:07, Athira Rajeev wrote:
-> The testcase "Object code reading" fails in somecases
-> for "fs_something" sub test as below:
-> 
->     Reading object code for memory address: 0xc008000007f0142c
->     File is: /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko
->     On file address is: 0x1114cc
->     Objdump command is: objdump -z -d --start-address=0x11142c --stop-address=0x1114ac /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko
->     objdump read too few bytes: 128
->     test child finished with -1
-> 
-> This can alo be reproduced when running perf record with
-> workload that exercises fs_something() code. In the test
-> setup, this is exercising xfs code since root is xfs.
-> 
->     # perf record ./a.out
->     # perf report -v |grep "xfs.ko"
->       0.76% a.out /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko  0xc008000007de5efc B [k] xlog_cil_commit
->       0.74% a.out  /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko  0xc008000007d5ae18 B [k] xfs_btree_key_offset
->       0.74% a.out  /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko  0xc008000007e11fd4 B [k] 0x0000000000112074
-> 
-> Here addr "0xc008000007e11fd4" is not resolved. since this is a
-> kernel module, its offset is from the DSO. Xfs module is loaded
-> at 0xc008000007d00000
-> 
->    # cat /proc/modules | grep xfs
->     xfs 2228224 3 - Live 0xc008000007d00000
-> 
-> And size is 0x220000. So its loaded between  0xc008000007d00000
-> and 0xc008000007f20000. From objdump, text section is:
->     text 0010f7bc  0000000000000000 0000000000000000 000000a0 2**4
-> 
-> Hence perf captured ip maps to 0x112074 which is:
-> ( ip - start of module ) + a0
-> 
-> This offset 0x112074 falls out .text section which is up to 0x10f7bc
-> In this case for module, the address 0xc008000007e11fd4 is pointing
-> to stub instructions. This address range represents the module stubs
-> which is allocated on module load and hence is not part of DSO offset.
-> 
-> To address this issue in "object code reading", skip the sample if
-> address falls out of text section and is within the module end.
-> Use the "text_end" member of "struct dso" to do this check.
-> 
-> To address this issue in "perf report", exploring an option of
-> having stubs range as part of the /proc/kallsyms, so that perf
-> report can resolve addresses in stubs range
-> 
-> However this patch uses text_end to skip the stub range for
-> Object code reading testcase.
-> 
-> Reported-by: Disha Goel <disgoel@linux.ibm.com>
-> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> Tested-by: Disha Goel<disgoel@linux.ibm.com>
-> Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
-> ---
-> Changelog:
->  v3 -> v4:
->  Fixed indent in V3
-> 
->  v2 -> v3:
->  Used strtailcmp in comparison for module check and added Reviewed-by
->  from Adrian, Tested-by from Disha.
-> 
->  v1 -> v2:
->  Updated comment to add description on which arch has stub and
->  reason for skipping as suggested by Adrian
-> 
->  tools/perf/tests/code-reading.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/tools/perf/tests/code-reading.c b/tools/perf/tests/code-reading.c
-> index ed3815163d1b..9e6e6c985840 100644
-> --- a/tools/perf/tests/code-reading.c
-> +++ b/tools/perf/tests/code-reading.c
-> @@ -269,6 +269,16 @@ static int read_object_code(u64 addr, size_t len, u8 cpumode,
->  	if (addr + len > map__end(al.map))
->  		len = map__end(al.map) - addr;
->  
-> +	/*
-> +	 * Some architectures (ex: powerpc) have stubs (trampolines) in kernel
-> +	 * modules to manage long jumps. Check if the ip offset falls in stubs
-> +	 * sections for kernel modules. And skip module address after text end
-> +	 */
-> +	if (!strtailcmp(dso->long_name, ".ko") && al.addr > dso->text_end) {
-> +		pr_debug("skipping the module address %#"PRIx64" after text end\n", al.addr);
-> +		goto out;
-> +	}
-> +
->  	/* Read the object code using perf */
->  	ret_len = dso__data_read_offset(dso, maps__machine(thread__maps(thread)),
->  					al.addr, buf1, len);
+How does this solve my concerns? Sorry, I do not understand. Your driver
+is a platform driver and binds to the generic compatible. How do you
+solve regular compatibility issues (need for quirks) if parent
+compatible is not used?
+
+How does being QMC compliant affects driver binding and
+compatibility/quirks?
+
+We are back to my original question and I don't think you answered to
+any of the concerns.
+
+Best regards,
+Krzysztof
+
