@@ -2,38 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 588057ACDAB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Sep 2023 03:44:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B2057ACE20
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Sep 2023 04:31:09 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MOnk0rt0;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rv5Jv2Z15z3c5f
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Sep 2023 11:44:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rv6Lg2K15z3cFt
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Sep 2023 12:31:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.130; helo=out30-130.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org)
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MOnk0rt0;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.120; helo=mgamail.intel.com; envelope-from=baolu.lu@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rv5JN0H76z30f8
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Sep 2023 11:44:01 +1000 (AEST)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R211e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046060;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0Vsjl30y_1695606232;
-Received: from 30.240.112.49(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Vsjl30y_1695606232)
-          by smtp.aliyun-inc.com;
-          Mon, 25 Sep 2023 09:43:54 +0800
-Message-ID: <f70e93c6-ba5b-a71c-4b82-33b279c76b0e@linux.alibaba.com>
-Date: Mon, 25 Sep 2023 09:43:52 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rv6Kk3N5Gz3c28
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Sep 2023 12:30:17 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1695609018; x=1727145018;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=38lEStwphX64OpE2A2DbRTLCtqjQh1vzpQGGTEpXLCk=;
+  b=MOnk0rt0JozoieCVLTkKpdYgF8k5FvZO72Dnt/n4/RiPWuBO9do3zfsW
+   5aA2g2AhyPpxJ7wfMdu4qf9oYwbdemcHEfTEefycLJs4aMKoV71ac8HlJ
+   5VkxXMrjAVcRqPCLz5914BTPF0uzkLjWOWwzptE4LRWEu86N0OS/E01cA
+   O7p94h9nTP1TOPBYCiaHKZqERlWB031RyRcA/Y6RYPCwDjhPIWQXCAH74
+   oCrLd+5KOYrd9X2zjahRspe0l+Q1FjddE1vGSS54i1ogehGwffxuvvTUZ
+   PAqu2VfCSzzNB3/ugzaezt0aOlTf1+nrgMb/tLfkbaoMtr6/PPA+r7R2G
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10843"; a="380026689"
+X-IronPort-AV: E=Sophos;i="6.03,174,1694761200"; 
+   d="scan'208";a="380026689"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2023 19:30:12 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10843"; a="741746070"
+X-IronPort-AV: E=Sophos;i="6.03,174,1694761200"; 
+   d="scan'208";a="741746070"
+Received: from allen-box.sh.intel.com (HELO [10.239.159.127]) ([10.239.159.127])
+  by orsmga007.jf.intel.com with ESMTP; 24 Sep 2023 19:30:08 -0700
+Message-ID: <4c3bc724-e162-98d7-1ecd-0ed8950bbb34@linux.intel.com>
+Date: Mon, 25 Sep 2023 10:26:54 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: Questions: Should kernel panic when PCIe fatal error occurs?
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 1/8] iommu: Move IOMMU_DOMAIN_BLOCKED global statics to
+ ops->blocked_domain
 Content-Language: en-US
-To: David Laight <David.Laight@ACULAB.COM>, Bjorn Helgaas <helgaas@kernel.org>
-References: <20230920230257.GA280837@bhelgaas>
- <d84b6d17-7fe9-222a-c874-798af4d9faea@linux.alibaba.com>
- <2e5870e416f84e8fad8340061ec303e2@AcuMS.aculab.com>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <2e5870e416f84e8fad8340061ec303e2@AcuMS.aculab.com>
-Content-Type: text/plain; charset=UTF-8
+To: Jason Gunthorpe <jgg@nvidia.com>, Alyssa Rosenzweig
+ <alyssa@rosenzweig.io>, asahi@lists.linux.dev,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ David Woodhouse <dwmw2@infradead.org>, iommu@lists.linux.dev,
+ Joerg Roedel <joro@8bytes.org>, Kevin Tian <kevin.tian@intel.com>,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ Hector Martin <marcan@marcan.st>, Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>, Robin Murphy <robin.murphy@arm.com>,
+ Sven Peter <sven@svenpeter.dev>, Will Deacon <will@kernel.org>
+References: <1-v1-8060f06462cc+c0a39-dart_paging_jgg@nvidia.com>
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <1-v1-8060f06462cc+c0a39-dart_paging_jgg@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -46,56 +78,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, "mahesh@linux.ibm.com" <mahesh@linux.ibm.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, "bp@alien8.de" <bp@alien8.de>, Baolin Wang <baolin.wang@linux.alibaba.com>, Linux PCI <linux-pci@vger.kernel.org>, "bhelgaas@google.com" <bhelgaas@google.com>, "james.morse@arm.com" <james.morse@arm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "lenb@kernel.org" <lenb@kernel.org>
+Cc: baolu.lu@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 2023/9/21 21:20, David Laight wrote:
-> ...
-> I've got a target to generate AER errors by generating read cycles
-> that are inside the address range that the bridge forwards but
-> outside of any BAR because there are 2 different sized BARs.
-> (Pretty easy to setup.)
-> On the system I was using they didn't get propagated all the way
-> to the root bridge - but were visible in the lower bridge.
-
-So how did you observe it? If the error message does not propagate
-to the root bridge, I think no AER interrupt will be trigger.
-
-> It would be nice for a driver to be able to detect/clear such
-> a flag if it gets an unexpected ~0u read value.
-> (I'm not sure an error callback helps.)
-
-IMHO, a general model is that error detected at endpoint should be
-routed to upstream port for example: RCiEP route error message to RCEC,
-so that the AER port service could handle the error, the device driver
-only have to implement error handler callback.
-
+On 9/23/23 1:07 AM, Jason Gunthorpe wrote:
+> Following the pattern of identity domains, just assign the BLOCKED domain
+> global statics to a value in ops. Update the core code to use the global
+> static directly.
 > 
-> OTOH a 'nebs compliant' server routed any kind of PCIe link error
-> through to some 'system management' logic that then raised an NMI.
-> I'm not sure who thought an NMI was a good idea - they are pretty
-> impossible to handle in the kernel and too late to be of use to
-> the code performing the access.
-
-I think it is the responsibility of the device to prevent the spread of
-errors while reporting that errors have been detected. For example, drop
-the current, (drain submit queue) and report error in completion record.
-Both NMI and MSI are asynchronous interrupts.
-
+> Update powerpc to use the new scheme and remove its empty domain_alloc
+> callback.
 > 
-> In any case we were getting one after 'echo 1 >xxx/remove' and
-> then taking the PCIe link down by reprogramming the fpga.
-> So the link going down was entirely expected, but there seemed
-> to be nothing we could do to stop the kernel crashing.
-> 
-> I'm sure 'nebs compliant' ought to contain some requirements for
-> resilience to hardware failures!
+> Signed-off-by: Jason Gunthorpe<jgg@nvidia.com>
+> ---
+>   arch/powerpc/kernel/iommu.c | 9 +--------
+>   drivers/iommu/iommu.c       | 2 ++
+>   include/linux/iommu.h       | 3 +++
+>   3 files changed, 6 insertions(+), 8 deletions(-)
 
-How the kernel crash after a link down? Did the system detect a surprise
-down error?
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
 
-Best Regards,
-Shuai
+Best regards,
+baolu
