@@ -2,56 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49D087ADBA5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Sep 2023 17:37:21 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OBSbeMUL;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C53F7ADC73
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Sep 2023 17:56:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RvRnq0qWfz3c92
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Sep 2023 01:37:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RvSD33YBGz3ccC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Sep 2023 01:56:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OBSbeMUL;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RvRmx6kLWz2yDD
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Sep 2023 01:36:33 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 0B4676104A;
-	Mon, 25 Sep 2023 15:36:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16B32C433C7;
-	Mon, 25 Sep 2023 15:36:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1695656191;
-	bh=EBwf2O6prBWO7RrYIfhatYa7cjkeNvHSSNARmccxmg4=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=OBSbeMULFI+93NhBngoPsVJT2c9uI4undw5PGiPcd6vTKq5Mg7pn0+UCWU0jD195q
-	 rtOGbOzNpVvsiO9J9tRPojjrtIKHnh8PA3MNPHXrN4f4FEaQmwho9ycioWLvalDiMb
-	 nkvqq2Li2/neaPDc8pjJA5SIimrlBxqkmvL0atnc8YUEnj77cSTLg5eXhgi2OlDVLF
-	 JI0kV07+P+D6CQCqqhHq8cQhl9r2nSfj6qzeHeZbDeibrHhX5XPTej3iwinTa8/zGa
-	 u6ByFNFpQk0w4gTsXb/sd5KuFBLaRMYb3pJyd61kcreUQuG8uhPiM0x/yeXc+b8VNg
-	 JO6YFGeoA+owQ==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 25 Sep 2023 18:36:22 +0300
-Message-Id: <CVS3Y8LWVFMR.1W6LHHUUSHWB6@suppilovahvero>
-Subject: Re: [PATCH v3 3/3] doc: trusted-encrypted: add DCP as new trust
- source
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "David Gstir" <david@sigma-star.at>, "Mimi Zohar" <zohar@linux.ibm.com>,
- "James Bottomley" <jejb@linux.ibm.com>, "Herbert Xu"
- <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>
-X-Mailer: aerc 0.14.0
-References: <20230918141826.8139-1-david@sigma-star.at>
- <20230918141826.8139-4-david@sigma-star.at>
-In-Reply-To: <20230918141826.8139-4-david@sigma-star.at>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RvSCT24bkz300q
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Sep 2023 01:56:02 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+	by localhost (Postfix) with ESMTP id 4RvSCK6vZ7z9v2F;
+	Mon, 25 Sep 2023 17:55:57 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id HsMsA_o4T0Gr; Mon, 25 Sep 2023 17:55:57 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4RvSCK6BKgz9v26;
+	Mon, 25 Sep 2023 17:55:57 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id D11C98B78D;
+	Mon, 25 Sep 2023 17:55:57 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id dXB25KsCgd1Q; Mon, 25 Sep 2023 17:55:57 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.25.230.108])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id BA5FE8B763;
+	Mon, 25 Sep 2023 17:55:57 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 38PFtqF51492430
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 25 Sep 2023 17:55:53 +0200
+Received: (from chleroy@localhost)
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 38PFtqAq1492429;
+	Mon, 25 Sep 2023 17:55:52 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
+Subject: [PATCH] powerpc/85xx: Fix math emulation exception
+Date: Mon, 25 Sep 2023 17:55:51 +0200
+Message-ID: <066caa6d9480365da9b8ed83692d7101e10ac5f8.1695657339.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.41.0
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1695657351; l=1257; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=Gqvr+bgJ0qNPYaA9Xdu3Ijfr4pVH9xgAqrxOwYJYMRo=; b=GF/CoTj6pH3Yre2nZ2Qp4226FjxjCrH3E05eJ5fFZbxts/VvBDggdp/NjLgEaqcPx/Yfcsoaj 7IwwMSgV9q1CeuyAVOQMW4VpzhghoqsoAOBACtaQMTEr2ysIQHlEKZM
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,169 +65,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org, Fabio Estevam <festevam@gmail.com>, Ahmad Fatoum <a.fatoum@pengutronix.de>, Paul Moore <paul@paul-moore.com>, Jonathan Corbet <corbet@lwn.net>, Richard Weinberger <richard@nod.at>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, James Morris <jmorris@namei.org>, NXP Linux
- Team <linux-imx@nxp.com>, "Serge E.
- Hallyn" <serge@hallyn.com>, "Paul E. McKenney" <paulmck@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, sigma
- star Kernel Team <upstream+dcp@sigma-star.at>, "Steven Rostedt
- \(Google\)" <rostedt@goodmis.org>, David Oberhollenzer <david.oberhollenzer@sigma-star.at>, linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Randy
- Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, linux-security-module@vger.kernel.org, linux-crypto@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.de>, Tejun Heo <tj@kernel.org>, linux-integrity@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon Sep 18, 2023 at 5:18 PM EEST, David Gstir wrote:
-> Update the documentation for trusted and encrypted KEYS with DCP as new
-> trust source:
->
-> - Describe security properties of DCP trust source
-> - Describe key usage
-> - Document blob format
->
-> Co-developed-by: Richard Weinberger <richard@nod.at>
-> Signed-off-by: Richard Weinberger <richard@nod.at>
-> Co-developed-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-> Signed-off-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-> Signed-off-by: David Gstir <david@sigma-star.at>
-> ---
->  .../security/keys/trusted-encrypted.rst       | 85 +++++++++++++++++++
->  1 file changed, 85 insertions(+)
->
-> diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Document=
-ation/security/keys/trusted-encrypted.rst
-> index 9bc9db8ec651..4452070afbe9 100644
-> --- a/Documentation/security/keys/trusted-encrypted.rst
-> +++ b/Documentation/security/keys/trusted-encrypted.rst
-> @@ -42,6 +42,14 @@ safe.
->           randomly generated and fused into each SoC at manufacturing tim=
-e.
->           Otherwise, a common fixed test key is used instead.
-> =20
-> +     (4) DCP (Data Co-Processor: crypto accelerator of various i.MX SoCs=
-)
-> +
-> +         Rooted to a one-time programmable key (OTP) that is generally b=
-urnt
-> +         in the on-chip fuses and is accessible to the DCP encryption en=
-gine only.
-> +         DCP provides two keys that can be used as root of trust: the OT=
-P key
-> +         and the UNIQUE key. Default is to use the UNIQUE key, but selec=
-ting
-> +         the OTP key can be done via a module parameter (dcp_use_otp_key=
-).
-> +
->    *  Execution isolation
-> =20
->       (1) TPM
-> @@ -57,6 +65,12 @@ safe.
-> =20
->           Fixed set of operations running in isolated execution environme=
-nt.
-> =20
-> +     (4) DCP
-> +
-> +         Fixed set of cryptographic operations running in isolated execu=
-tion
-> +         environment. Only basic blob key encryption is executed there.
-> +         The actual key sealing/unsealing is done on main processor/kern=
-el space.
-> +
->    * Optional binding to platform integrity state
-> =20
->       (1) TPM
-> @@ -79,6 +93,11 @@ safe.
->           Relies on the High Assurance Boot (HAB) mechanism of NXP SoCs
->           for platform integrity.
-> =20
-> +     (4) DCP
-> +
-> +         Relies on Secure/Trusted boot process (called HAB by vendor) fo=
-r
-> +         platform integrity.
-> +
->    *  Interfaces and APIs
-> =20
->       (1) TPM
-> @@ -94,6 +113,11 @@ safe.
-> =20
->           Interface is specific to silicon vendor.
-> =20
-> +     (4) DCP
-> +
-> +         Vendor-specific API that is implemented as part of the DCP cryp=
-to driver in
-> +         ``drivers/crypto/mxs-dcp.c``.
-> +
->    *  Threat model
-> =20
->       The strength and appropriateness of a particular trust source for a=
- given
-> @@ -129,6 +153,13 @@ selected trust source:
->       CAAM HWRNG, enable CRYPTO_DEV_FSL_CAAM_RNG_API and ensure the devic=
-e
->       is probed.
-> =20
-> +  *  DCP (Data Co-Processor: crypto accelerator of various i.MX SoCs)
-> +
-> +     The DCP hardware device itself does not provide a dedicated RNG int=
-erface,
-> +     so the kernel default RNG is used. SoCs with DCP like the i.MX6ULL =
-do have
-> +     a dedicated hardware RNG that is independent from DCP which can be =
-enabled
-> +     to back the kernel RNG.
-> +
->  Users may override this by specifying ``trusted.rng=3Dkernel`` on the ke=
-rnel
->  command-line to override the used RNG with the kernel's random number po=
-ol.
-> =20
-> @@ -231,6 +262,19 @@ Usage::
->  CAAM-specific format.  The key length for new keys is always in bytes.
->  Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
-> =20
-> +Trusted Keys usage: DCP
-> +-----------------------
-> +
-> +Usage::
-> +
-> +    keyctl add trusted name "new keylen" ring
-> +    keyctl add trusted name "load hex_blob" ring
-> +    keyctl print keyid
-> +
-> +"keyctl print" returns an ASCII hex copy of the sealed key, which is in =
-format
-> +specific to this DCP key-blob implementation.  The key length for new ke=
-ys is
-> +always in bytes. Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
-> +
->  Encrypted Keys usage
->  --------------------
-> =20
-> @@ -426,3 +470,44 @@ string length.
->  privkey is the binary representation of TPM2B_PUBLIC excluding the
->  initial TPM2B header which can be reconstructed from the ASN.1 octed
->  string length.
-> +
-> +DCP Blob Format
-> +---------------
-> +
-> +The Data Co-Processor (DCP) provides hardware-bound AES keys using its
-> +AES encryption engine only. It does not provide direct key sealing/unsea=
-ling.
-> +To make DCP hardware encryption keys usable as trust source, we define
-> +our own custom format that uses a hardware-bound key to secure the seali=
-ng
-> +key stored in the key blob.
-> +
-> +Whenever a new trusted key using DCP is generated, we generate a random =
-128-bit
-> +blob encryption key (BEK) and 128-bit nonce. The BEK and nonce are used =
-to
-> +encrypt the trusted key payload using AES-128-GCM.
+Booting mpc85xx_defconfig kernel on QEMU leads to:
 
-"When a new trusted key using DCP is created, a random 128-bit
-blob encryption key (BEK) and 128-bit nonce are generated."
+Bad trap at PC: fe9bab0, SR: 2d000, vector=800
+awk[82]: unhandled trap (5) at 0 nip fe9bab0 lr fe9e01c code 5 in libc-2.27.so[fe5a000+17a000]
+awk[82]: code: 3aa00000 3a800010 4bffe03c 9421fff0 7ca62b78 38a00000 93c10008 83c10008
+awk[82]: code: 38210010 4bffdec8 9421ffc0 7c0802a6 <fc00048e> d8010008 4815190d 93810030
+Trace/breakpoint trap
+WARNING: no useful console
 
-... or along the lines.
+This is because allthough CONFIG_MATH_EMULATION is selected,
+Exception 800 calls unknown_exception().
 
-BR, Jarkko
+Call emulation_assist_interrupt() instead.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/kernel/head_85xx.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/kernel/head_85xx.S b/arch/powerpc/kernel/head_85xx.S
+index 97e9ea0c7297..0f1641a31250 100644
+--- a/arch/powerpc/kernel/head_85xx.S
++++ b/arch/powerpc/kernel/head_85xx.S
+@@ -395,7 +395,7 @@ interrupt_base:
+ #ifdef CONFIG_PPC_FPU
+ 	FP_UNAVAILABLE_EXCEPTION
+ #else
+-	EXCEPTION(0x0800, FP_UNAVAIL, FloatingPointUnavailable, unknown_exception)
++	EXCEPTION(0x0800, FP_UNAVAIL, FloatingPointUnavailable, emulation_assist_interrupt)
+ #endif
+ 
+ 	/* System Call Interrupt */
+-- 
+2.41.0
+
