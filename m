@@ -1,75 +1,99 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16B847AD27E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Sep 2023 09:58:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8D0E7AD297
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Sep 2023 10:01:13 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Wk9wk5hW;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Wk9wk5hW;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=uSF52cca;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=bmW6Dv6g;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RvFcQ5DRrz3cm1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Sep 2023 17:58:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RvFgW61Ghz3ckK
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Sep 2023 18:01:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Wk9wk5hW;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Wk9wk5hW;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=uSF52cca;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=bmW6Dv6g;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=piliu@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RvFWv14yRz3cdk
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Sep 2023 17:54:34 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1695628472;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dvNFT/d/eIC1YCuTjJ6oHLqFtIHv+K5OABHBij7vEFw=;
-	b=Wk9wk5hWvSNdJTIB36gWk7ZlxnQLyJ9smDZWMUMWUHBFqVz1L+sp73WJV9pSn+yYf6IcMG
-	61u9DwXuD0a5wVklrGiIviROIOL48HfXKAb8UFfWRZB3aWgg2BiuxnajS34bar9+qxlhMj
-	pMflQAgfEywEgcHsKeuUV8MjGaQy+/w=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1695628472;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dvNFT/d/eIC1YCuTjJ6oHLqFtIHv+K5OABHBij7vEFw=;
-	b=Wk9wk5hWvSNdJTIB36gWk7ZlxnQLyJ9smDZWMUMWUHBFqVz1L+sp73WJV9pSn+yYf6IcMG
-	61u9DwXuD0a5wVklrGiIviROIOL48HfXKAb8UFfWRZB3aWgg2BiuxnajS34bar9+qxlhMj
-	pMflQAgfEywEgcHsKeuUV8MjGaQy+/w=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-615-EiVCJwtKPXe35uy12tmFnA-1; Mon, 25 Sep 2023 03:54:27 -0400
-X-MC-Unique: EiVCJwtKPXe35uy12tmFnA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RvFfd1PrYz2xpx
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Sep 2023 18:00:24 +1000 (AEST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 505E785A5BE;
-	Mon, 25 Sep 2023 07:54:27 +0000 (UTC)
-Received: from piliu.users.ipa.redhat.com (unknown [10.72.120.2])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 62A4540C6EA8;
-	Mon, 25 Sep 2023 07:54:23 +0000 (UTC)
-From: Pingfan Liu <piliu@redhat.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCHv7 4/4] powerpc/setup: alloc extra paca_ptrs to hold boot_cpuid
-Date: Mon, 25 Sep 2023 15:53:48 +0800
-Message-Id: <20230925075348.16654-5-piliu@redhat.com>
-In-Reply-To: <20230925075348.16654-1-piliu@redhat.com>
-References: <20230925075348.16654-1-piliu@redhat.com>
+	by smtp-out1.suse.de (Postfix) with ESMTPS id CA1DF21865;
+	Mon, 25 Sep 2023 08:00:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1695628820; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=qTH8gZm0MyF+kzuhQ5/fA+S+2mk5RISCXxaHsfjda/c=;
+	b=uSF52ccaQX/M9MRz8Hsrj0NZSIQpyfqQD1exCWDsoYbHctNstAL8nRIP0CmCSOTeJjFx36
+	yTva2QsV+dUpycPkUAR7RImWLXUG2V5eBVjw3xMbDJ9opazWxUhKEFoNKgxmyuHM2eoOCL
+	fGVT86Gd8gSNmw8QDfnWr1DoRSK69JQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1695628820;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=qTH8gZm0MyF+kzuhQ5/fA+S+2mk5RISCXxaHsfjda/c=;
+	b=bmW6Dv6g5QP+NBQR3cSOYgwlpg/hB+arCL+klhUqA8AY/sv1UrxP6su7CWAWElsDAfBphA
+	AtGzxu4d4HXC7IAA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 84CC013A67;
+	Mon, 25 Sep 2023 08:00:20 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id 3ABMHxQ+EWX5TQAAMHmgww
+	(envelope-from <tzimmermann@suse.de>); Mon, 25 Sep 2023 08:00:20 +0000
+Message-ID: <de09143e-ab7f-4ccc-8a5a-50e0f48c1b40@suse.de>
+Date: Mon, 25 Sep 2023 10:00:19 +0200
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="US-ASCII"; x-default=true
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 0/5] ppc, fbdev: Clean up fbdev mmap helper
+Content-Language: en-US
+To: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+ arnd@arndb.de, deller@gmx.de, javierm@redhat.com
+References: <20230922080636.26762-1-tzimmermann@suse.de>
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20230922080636.26762-1-tzimmermann@suse.de>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------q82hWMO8aTWh56X0j3GgJefx"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,97 +105,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Baoquan He <bhe@redhat.com>, Pingfan Liu <piliu@redhat.com>, kexec@lists.infradead.org, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Ming Lei <ming.lei@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, Wen Xiong <wenxiong@us.ibm.com>
+Cc: linux-arch@vger.kernel.org, linux-fbdev@vger.kernel.org, linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-m68k@lists.linux-m68k.org, sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-paca_ptrs should be large enough to hold the boot_cpuid, hence, its
-lower boundary is set to the bigger one between boot_cpuid+1 and
-nr_cpus.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------q82hWMO8aTWh56X0j3GgJefx
+Content-Type: multipart/mixed; boundary="------------Fluze0fCGK5ao12VH4rOtnGR";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+ arnd@arndb.de, deller@gmx.de, javierm@redhat.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-fbdev@vger.kernel.org,
+ linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ linux-mips@vger.kernel.org, sparclinux@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-arch@vger.kernel.org
+Message-ID: <de09143e-ab7f-4ccc-8a5a-50e0f48c1b40@suse.de>
+Subject: Re: [PATCH v5 0/5] ppc, fbdev: Clean up fbdev mmap helper
+References: <20230922080636.26762-1-tzimmermann@suse.de>
+In-Reply-To: <20230922080636.26762-1-tzimmermann@suse.de>
 
-On the other hand, some kernel component: -1. the timer assumes cpu0
-online since the timer_list->flags subfield 'TIMER_CPUMASK' is zero if
-not initialized to a proper present cpu.  -2. power9_idle_stop() assumes
-the primary thread's paca is allocated.
+--------------Fluze0fCGK5ao12VH4rOtnGR
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-Hence lift nr_cpu_ids from one to two to ensure cpu0 is onlined, if the
-boot cpu is not cpu0.
+RllJLCBJIGludGVudCB0byBtZXJnZSBwYXRjaGVzIDEgYW5kIDIgb2YgdGhpcyBwYXRjaHNl
+dCBpbnRvIA0KZHJtLW1pc2MtbmV4dC4gVGhlIHVwZGF0ZXMgZm9yIFBvd2VyUEMgY2FuIGJl
+IG1lcmdlZCB0aHJvdWdoIFBQQyB0cmVlcyANCmxhdGVyLiBMZXQgbWUga25vdyBpZiB0aGlz
+IGRvZXMgbm90IHdvcmsgZm9yIHlvdS4NCg0KQmVzdCByZWdhcmRzDQpUaG9tYXMNCg0KQW0g
+MjIuMDkuMjMgdW0gMTA6MDQgc2NocmllYiBUaG9tYXMgWmltbWVybWFubjoNCj4gQ2xlYW4g
+dXAgYW5kIHJlbmFtZSBmYl9wZ3Byb3RlY3QoKSB0byB3b3JrIHdpdGhvdXQgc3RydWN0IGZp
+bGUuIFRoZW4NCj4gcmVmYWN0b3IgdGhlIGltcGxlbWVudGF0aW9uIGZvciBQb3dlclBDLiBU
+aGlzIGNoYW5nZSBoYXMgYmVlbiBkaXNjdXNzZWQNCj4gYXQgWzFdIGluIHRoZSBjb250ZXh0
+IG9mIHJlZmFjdG9yaW5nIGZiZGV2J3MgbW1hcCBjb2RlLg0KPiANCj4gVGhlIGZpcnN0IHR3
+byBwYXRjaGVzIHVwZGF0ZSBmYmRldiBhbmQgcmVwbGFjZSBmYmRldidzIGZiX3BncHJvdGVj
+dCgpDQo+IHdpdGggcGdwcm90X2ZyYW1lYnVmZmVyKCkgb24gYWxsIGFyY2hpdGVjdHVyZXMu
+IFRoZSBuZXcgaGVscGVyJ3Mgc3RyZWFtLQ0KPiBsaW5lZCBpbnRlcmZhY2UgZW5hYmxlcyBt
+b3JlIHJlZmFjdG9yaW5nIHdpdGhpbiBmYmRldidzIG1tYXANCj4gaW1wbGVtZW50YXRpb24u
+DQo+IA0KPiBQYXRjaGVzIDMgdG8gNSBhZGFwdCBQb3dlclBDJ3MgaW50ZXJuYWwgaW50ZXJm
+YWNlcyB0byBwcm92aWRlDQo+IHBoeXNfbWVtX2FjY2Vzc19wcm90KCkgdGhhdCB3b3JrcyB3
+aXRob3V0IHN0cnVjdCBmaWxlLiBOZWl0aGVyIHRoZQ0KPiBhcmNoaXRlY3R1cmUgY29kZSBv
+ciBmYmRldiBoZWxwZXJzIG5lZWQgdGhlIHBhcmFtZXRlci4NCj4gDQo+IHY1Og0KPiAJKiBp
+bXByb3ZlIGNvbW1pdCBkZXNjcmlwdGlvbnMgKEphdmllcikNCj4gCSogYWRkIG1pc3Npbmcg
+dGFncyAoR2VlcnQpDQo+IHY0Og0KPiAJKiBmaXggY29tbWl0IG1lc3NhZ2UgKENocmlzdG9w
+aGUpDQo+IHYzOg0KPiAJKiByZW5hbWUgZmJfcGdyb3RlY3QoKSB0byBwZ3Byb3RfZnJhbWVi
+dWZmZXIoKSAoQXJuZCkNCj4gdjI6DQo+IAkqIHJlb3JkZXIgcGF0Y2hlcyB0byBzaW1wbGlm
+eSBtZXJnaW5nIChNaWNoYWVsKQ0KPiANCj4gWzFdIGh0dHBzOi8vbG9yZS5rZXJuZWwub3Jn
+L2xpbnV4cHBjLWRldi81NTAxYmE4MC1iZGIwLTYzNDQtMTZiMC0wNDY2YTk1MGY4MmNAc3Vz
+ZS5jb20vDQo+IA0KPiBUaG9tYXMgWmltbWVybWFubiAoNSk6DQo+ICAgIGZiZGV2OiBBdm9p
+ZCBmaWxlIGFyZ3VtZW50IGluIGZiX3BncHJvdGVjdCgpDQo+ICAgIGZiZGV2OiBSZXBsYWNl
+IGZiX3BncHJvdGVjdCgpIHdpdGggcGdwcm90X2ZyYW1lYnVmZmVyKCkNCj4gICAgYXJjaC9w
+b3dlcnBjOiBSZW1vdmUgdHJhaWxpbmcgd2hpdGVzcGFjZXMNCj4gICAgYXJjaC9wb3dlcnBj
+OiBSZW1vdmUgZmlsZSBwYXJhbWV0ZXIgZnJvbSBwaHlzX21lbV9hY2Nlc3NfcHJvdCBjb2Rl
+DQo+ICAgIGFyY2gvcG93ZXJwYzogQ2FsbCBpbnRlcm5hbCBfX3BoeXNfbWVtX2FjY2Vzc19w
+cm90KCkgaW4gZmJkZXYgY29kZQ0KPiANCj4gICBhcmNoL2lhNjQvaW5jbHVkZS9hc20vZmIu
+aCAgICAgICAgICAgICAgICB8IDE1ICsrKysrKystLS0tLS0tLQ0KPiAgIGFyY2gvbTY4ay9p
+bmNsdWRlL2FzbS9mYi5oICAgICAgICAgICAgICAgIHwgMTkgKysrKysrKysrKy0tLS0tLS0t
+LQ0KPiAgIGFyY2gvbWlwcy9pbmNsdWRlL2FzbS9mYi5oICAgICAgICAgICAgICAgIHwgMTEg
+KysrKystLS0tLS0NCj4gICBhcmNoL3Bvd2VycGMvaW5jbHVkZS9hc20vYm9vazNzL3BndGFi
+bGUuaCB8IDEwICsrKysrKysrLS0NCj4gICBhcmNoL3Bvd2VycGMvaW5jbHVkZS9hc20vZmIu
+aCAgICAgICAgICAgICB8IDEzICsrKysrLS0tLS0tLS0NCj4gICBhcmNoL3Bvd2VycGMvaW5j
+bHVkZS9hc20vbWFjaGRlcC5oICAgICAgICB8IDEzICsrKysrKy0tLS0tLS0NCj4gICBhcmNo
+L3Bvd2VycGMvaW5jbHVkZS9hc20vbm9oYXNoL3BndGFibGUuaCB8IDEwICsrKysrKysrLS0N
+Cj4gICBhcmNoL3Bvd2VycGMvaW5jbHVkZS9hc20vcGNpLmggICAgICAgICAgICB8ICA0ICst
+LS0NCj4gICBhcmNoL3Bvd2VycGMva2VybmVsL3BjaS1jb21tb24uYyAgICAgICAgICB8ICAz
+ICstLQ0KPiAgIGFyY2gvcG93ZXJwYy9tbS9tZW0uYyAgICAgICAgICAgICAgICAgICAgIHwg
+IDggKysrKy0tLS0NCj4gICBhcmNoL3NwYXJjL2luY2x1ZGUvYXNtL2ZiLmggICAgICAgICAg
+ICAgICB8IDE1ICsrKysrKysrKy0tLS0tLQ0KPiAgIGFyY2gveDg2L2luY2x1ZGUvYXNtL2Zi
+LmggICAgICAgICAgICAgICAgIHwgMTAgKysrKysrLS0tLQ0KPiAgIGFyY2gveDg2L3ZpZGVv
+L2ZiZGV2LmMgICAgICAgICAgICAgICAgICAgIHwgMTUgKysrKysrKystLS0tLS0tDQo+ICAg
+ZHJpdmVycy92aWRlby9mYmRldi9jb3JlL2ZiX2NocmRldi5jICAgICAgfCAgMyArKy0NCj4g
+ICBpbmNsdWRlL2FzbS1nZW5lcmljL2ZiLmggICAgICAgICAgICAgICAgICB8IDEyICsrKysr
+Ky0tLS0tLQ0KPiAgIDE1IGZpbGVzIGNoYW5nZWQsIDg2IGluc2VydGlvbnMoKyksIDc1IGRl
+bGV0aW9ucygtKQ0KPiANCj4gDQo+IGJhc2UtY29tbWl0OiBmOGQyMWNiMTdhOTliNzU4NjIx
+OTYwMzZiYjRiYjkzZWU5NjM3Yjc0DQoNCi0tIA0KVGhvbWFzIFppbW1lcm1hbm4NCkdyYXBo
+aWNzIERyaXZlciBEZXZlbG9wZXINClNVU0UgU29mdHdhcmUgU29sdXRpb25zIEdlcm1hbnkg
+R21iSA0KRnJhbmtlbnN0cmFzc2UgMTQ2LCA5MDQ2MSBOdWVybmJlcmcsIEdlcm1hbnkNCkdG
+OiBJdm8gVG90ZXYsIEFuZHJldyBNeWVycywgQW5kcmV3IE1jRG9uYWxkLCBCb3VkaWVuIE1v
+ZXJtYW4NCkhSQiAzNjgwOSAoQUcgTnVlcm5iZXJnKQ0K
 
-Result:
-When nr_cpus=1, taskset -c 14 bash -c 'echo c > /proc/sysrq-trigger'
-the kdump kernel brings up two cpus.
-While when taskset -c 4 bash -c 'echo c > /proc/sysrq-trigger',
-the kdump kernel brings up one cpu.
+--------------Fluze0fCGK5ao12VH4rOtnGR--
 
-Signed-off-by: Pingfan Liu <piliu@redhat.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Cc: Wen Xiong <wenxiong@us.ibm.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Ming Lei <ming.lei@redhat.com>
-Cc: kexec@lists.infradead.org
-To: linuxppc-dev@lists.ozlabs.org
----
- arch/powerpc/kernel/paca.c | 10 ++++++----
- arch/powerpc/kernel/prom.c |  9 ++++++---
- 2 files changed, 12 insertions(+), 7 deletions(-)
+--------------q82hWMO8aTWh56X0j3GgJefx
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
-diff --git a/arch/powerpc/kernel/paca.c b/arch/powerpc/kernel/paca.c
-index cda4e00b67c1..91e2401de1bd 100644
---- a/arch/powerpc/kernel/paca.c
-+++ b/arch/powerpc/kernel/paca.c
-@@ -242,9 +242,10 @@ static int __initdata paca_struct_size;
- 
- void __init allocate_paca_ptrs(void)
- {
--	paca_nr_cpu_ids = nr_cpu_ids;
-+	int n = (boot_cpuid + 1) > nr_cpu_ids ? (boot_cpuid + 1) : nr_cpu_ids;
- 
--	paca_ptrs_size = sizeof(struct paca_struct *) * nr_cpu_ids;
-+	paca_nr_cpu_ids = n;
-+	paca_ptrs_size = sizeof(struct paca_struct *) * n;
- 	paca_ptrs = memblock_alloc_raw(paca_ptrs_size, SMP_CACHE_BYTES);
- 	if (!paca_ptrs)
- 		panic("Failed to allocate %d bytes for paca pointers\n",
-@@ -287,13 +288,14 @@ void __init allocate_paca(int cpu)
- void __init free_unused_pacas(void)
- {
- 	int new_ptrs_size;
-+	int n = (boot_cpuid + 1) > nr_cpu_ids ? (boot_cpuid + 1) : nr_cpu_ids;
- 
--	new_ptrs_size = sizeof(struct paca_struct *) * nr_cpu_ids;
-+	new_ptrs_size = sizeof(struct paca_struct *) * n;
- 	if (new_ptrs_size < paca_ptrs_size)
- 		memblock_phys_free(__pa(paca_ptrs) + new_ptrs_size,
- 				   paca_ptrs_size - new_ptrs_size);
- 
--	paca_nr_cpu_ids = nr_cpu_ids;
-+	paca_nr_cpu_ids = n;
- 	paca_ptrs_size = new_ptrs_size;
- 
- #ifdef CONFIG_PPC_64S_HASH_MMU
-diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-index 87272a2d8c10..15c994f54bf9 100644
---- a/arch/powerpc/kernel/prom.c
-+++ b/arch/powerpc/kernel/prom.c
-@@ -362,9 +362,12 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
- 			 */
- 			boot_cpuid = i;
- 			found = true;
--			/* This works around the hole in paca_ptrs[]. */
--			if (nr_cpu_ids < nthreads)
--				set_nr_cpu_ids(nthreads);
-+			/*
-+			 * Ideally, nr_cpus=1 can be achieved if each kernel
-+			 * component does not assume cpu0 is onlined.
-+			 */
-+			if (boot_cpuid != 0 && nr_cpu_ids < 2)
-+				set_nr_cpu_ids(2);
- 		}
- #ifdef CONFIG_SMP
- 		/* logical cpu id is always 0 on UP kernels */
--- 
-2.31.1
+-----BEGIN PGP SIGNATURE-----
 
+wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmURPhQFAwAAAAAACgkQlh/E3EQov+Bx
+2Q//SqO8b2GRtxEIaJ3wV0O6yIScRYeHaRTeKGsBfTNJL8MJZBQvrpqHh/k0SfZzan1OHmk+BcDl
+V4cUUn2PU5cx53XW0YAXXZWmsxGDDvgP8wnG9caJ3n2yzAAsXHU0L53/o6X9vir2jtM0mCwaSn0i
+rXX097++MnsvKGpvIA8pwzHXOYMeHFTT/65WDzdQJUlZ5Gd/dtalp4Gs0k7aNtITW/6GBkBMM3pY
+Vr3KVGIaWfsYcjtrFAApWgh3ztR10RBxCVsI0Pq5hVDIxoehv4YBHUU1VXqMa2FPXx/Ykl8xKdpb
+BEdn540KUUvgbZEGKifaSHpwOcB/KATjnPAHITXTmycF/4lXZfYfY6fSy8awBOAIin2oWvbdvKOU
+ZJpqprGwG2Iau61ukxqOtp79uEnwaHAL6E1j0XPKyLufxTlIzxPO1FwshsApmacuHU8GAfgFW6rX
+YEgwCTy3dUX78ZJLkjvGcR/Nd/S6nYNxMwyEsyXiZgJoJxtdmTaldXZ+yx6R3Ww73kLK0jHVTp1p
+bc//mLihQyzThV3APmse9d6bt4m53672cAdQFe1BPq9bjJECS256w/Z1rzAKKY/xSfzBtiCDXwuf
+ELOsnzXEAwhnw6rR6ADPWVCJgfrU76H2HiZVTAdW+Kuf3B9WbiuIIEbjhfXihe6e96s/fCPzl1/Q
+CQQ=
+=u3tQ
+-----END PGP SIGNATURE-----
+
+--------------q82hWMO8aTWh56X0j3GgJefx--
