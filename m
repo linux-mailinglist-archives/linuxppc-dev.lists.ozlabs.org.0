@@ -1,96 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 433C97AD2A9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Sep 2023 10:06:32 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ihwTLsAd;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78F6F7AD2B4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Sep 2023 10:08:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RvFnf1Cvxz2yVg
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Sep 2023 18:06:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RvFqm2VrPz3cdY
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Sep 2023 18:08:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ihwTLsAd;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=aculab.com (client-ip=185.58.85.151; helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com; receiver=lists.ozlabs.org)
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RvFmk6pdNz2xpx
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Sep 2023 18:05:42 +1000 (AEST)
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38P8023w011032;
-	Mon, 25 Sep 2023 08:05:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=2DB9KC7d1xLCq7zZE9xGcP41ZOeZ94BTzPQzAzaPvcI=;
- b=ihwTLsAdOylL2LNnp+wLz1ImLWIaQemNLyIrU//Uk8AxyOwDFox49DCIAAEMy/hn7gwT
- Kg2cKs8Ws7/Fni5qpWnfRkwHgzOkFVtvsaV08crOdVKA2IR3ASpmNViX79tPaJfFwYEz
- SgzWktuRfvd27ka4Pmqhbg+x9lRLdef5rWoejYZsHcAca+fuq05z+wb4kpvKLVLoVtea
- kp2fpS6FmOUuGLuAyCdMiFOoAtmxlDLB9aZwQm5iuucQ3wOiUzn8OlUmp7if62a88Q1b
- UOoe6foimXprJA3b2smKTbwenmyLlNPRFJ1YxwPg46zRqxDqNrLGQ9NGdRLyyo3tJcnQ /A== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ta66yd4sj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 25 Sep 2023 08:05:35 +0000
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38P7rJRH011959;
-	Mon, 25 Sep 2023 08:05:34 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ta66yd4sa-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 25 Sep 2023 08:05:34 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 38P65HTj008250;
-	Mon, 25 Sep 2023 08:05:34 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tabbmrj06-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 25 Sep 2023 08:05:34 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 38P84H0N19923646
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 25 Sep 2023 08:04:17 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 45A4820043;
-	Mon, 25 Sep 2023 08:04:17 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BADDB20040;
-	Mon, 25 Sep 2023 08:04:13 +0000 (GMT)
-Received: from [9.43.77.183] (unknown [9.43.77.183])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 25 Sep 2023 08:04:13 +0000 (GMT)
-Message-ID: <e5e806c3-da4a-8672-9c8e-6c341c6bd27d@linux.ibm.com>
-Date: Mon, 25 Sep 2023 13:34:12 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 0/3] Fix for shellcheck issues with version "0.6"
-Content-Language: en-US
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, acme@kernel.org,
-        jolsa@kernel.org, adrian.hunter@intel.com, irogers@google.com,
-        namhyung@kernel.org
-References: <20230907171540.36736-1-atrajeev@linux.vnet.ibm.com>
-From: kajoljain <kjain@linux.ibm.com>
-In-Reply-To: <20230907171540.36736-1-atrajeev@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: E_6F2SC12iiUvi61TAr0y7cIWtdhH0NQ
-X-Proofpoint-ORIG-GUID: Z501TpPl4i-GhCAYc8hhGeXC0_2jltcS
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RvFqG0sYwz2yDD
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Sep 2023 18:07:52 +1000 (AEST)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-40-yCHXM_ZnNDeRG6PClZKq0A-1; Mon, 25 Sep 2023 09:07:37 +0100
+X-MC-Unique: yCHXM_ZnNDeRG6PClZKq0A-1
+Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
+ (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Mon, 25 Sep
+ 2023 09:07:36 +0100
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Mon, 25 Sep 2023 09:07:36 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Shuai Xue' <xueshuai@linux.alibaba.com>, Bjorn Helgaas
+	<helgaas@kernel.org>
+Subject: RE: Questions: Should kernel panic when PCIe fatal error occurs?
+Thread-Topic: Questions: Should kernel panic when PCIe fatal error occurs?
+Thread-Index: AQHZ7ISwt0MI+BDoAEe5dUPUvfmXNrAlQDAwgAV5fACAAHb74A==
+Date: Mon, 25 Sep 2023 08:07:35 +0000
+Message-ID: <acd250505687437b85830a0b2f4d69b0@AcuMS.aculab.com>
+References: <20230920230257.GA280837@bhelgaas>
+ <d84b6d17-7fe9-222a-c874-798af4d9faea@linux.alibaba.com>
+ <2e5870e416f84e8fad8340061ec303e2@AcuMS.aculab.com>
+ <f70e93c6-ba5b-a71c-4b82-33b279c76b0e@linux.alibaba.com>
+In-Reply-To: <f70e93c6-ba5b-a71c-4b82-33b279c76b0e@linux.alibaba.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-09-25_04,2023-09-21_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- bulkscore=0 mlxlogscore=999 mlxscore=0 priorityscore=1501 malwarescore=0
- adultscore=0 spamscore=0 impostorscore=0 clxscore=1015 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2309250057
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,60 +61,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, root <root@ltcden13-lp4.aus.stglabs.ibm.com>, disgoel@linux.vnet.ibm.com
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, "mahesh@linux.ibm.com" <mahesh@linux.ibm.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, "bp@alien8.de" <bp@alien8.de>, Baolin Wang <baolin.wang@linux.alibaba.com>, Linux PCI <linux-pci@vger.kernel.org>, "bhelgaas@google.com" <bhelgaas@google.com>, "james.morse@arm.com" <james.morse@arm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "lenb@kernel.org" <lenb@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+RnJvbTogU2h1YWkgWHVlDQo+IFNlbnQ6IDI1IFNlcHRlbWJlciAyMDIzIDAyOjQ0DQo+IA0KPiBP
+biAyMDIzLzkvMjEgMjE6MjAsIERhdmlkIExhaWdodCB3cm90ZToNCj4gPiAuLi4NCj4gPiBJJ3Zl
+IGdvdCBhIHRhcmdldCB0byBnZW5lcmF0ZSBBRVIgZXJyb3JzIGJ5IGdlbmVyYXRpbmcgcmVhZCBj
+eWNsZXMNCj4gPiB0aGF0IGFyZSBpbnNpZGUgdGhlIGFkZHJlc3MgcmFuZ2UgdGhhdCB0aGUgYnJp
+ZGdlIGZvcndhcmRzIGJ1dA0KPiA+IG91dHNpZGUgb2YgYW55IEJBUiBiZWNhdXNlIHRoZXJlIGFy
+ZSAyIGRpZmZlcmVudCBzaXplZCBCQVJzLg0KPiA+IChQcmV0dHkgZWFzeSB0byBzZXR1cC4pDQo+
+ID4gT24gdGhlIHN5c3RlbSBJIHdhcyB1c2luZyB0aGV5IGRpZG4ndCBnZXQgcHJvcGFnYXRlZCBh
+bGwgdGhlIHdheQ0KPiA+IHRvIHRoZSByb290IGJyaWRnZSAtIGJ1dCB3ZXJlIHZpc2libGUgaW4g
+dGhlIGxvd2VyIGJyaWRnZS4NCj4gDQo+IFNvIGhvdyBkaWQgeW91IG9ic2VydmUgaXQ/IElmIHRo
+ZSBlcnJvciBtZXNzYWdlIGRvZXMgbm90IHByb3BhZ2F0ZQ0KPiB0byB0aGUgcm9vdCBicmlkZ2Us
+IEkgdGhpbmsgbm8gQUVSIGludGVycnVwdCB3aWxsIGJlIHRyaWdnZXIuDQoNCkkgbG9va2VkIGF0
+IHRoZSBpbnRlcm5hbCByZWdpc3RlcnMgKElJUkMgaW4gUENJZSBjb25maWcgc3BhY2UpDQpvZiB0
+aGUgaW50ZXJtZWRpYXRlIGJyaWRnZS4NCkkgZG9uJ3QgdGhpbmsgdGhlIHJvb3QgYnJpZGdlIG9u
+IHRoYXQgc3lzdGVtIHN1cHBvcnRlZCBBRVIuDQooSSB3YXMgdGVzdGluZyB0aGUgZ2VuZXJhdGlv
+biBvZiBBRVIgaW5kaWNhdGlvbnMgYnkgb3VyIGZwZ2EuKQ0KDQo+IA0KPiA+IEl0IHdvdWxkIGJl
+IG5pY2UgZm9yIGEgZHJpdmVyIHRvIGJlIGFibGUgdG8gZGV0ZWN0L2NsZWFyIHN1Y2gNCj4gPiBh
+IGZsYWcgaWYgaXQgZ2V0cyBhbiB1bmV4cGVjdGVkIH4wdSByZWFkIHZhbHVlLg0KPiA+IChJJ20g
+bm90IHN1cmUgYW4gZXJyb3IgY2FsbGJhY2sgaGVscHMuKQ0KPiANCj4gSU1ITywgYSBnZW5lcmFs
+IG1vZGVsIGlzIHRoYXQgZXJyb3IgZGV0ZWN0ZWQgYXQgZW5kcG9pbnQgc2hvdWxkIGJlDQo+IHJv
+dXRlZCB0byB1cHN0cmVhbSBwb3J0IGZvciBleGFtcGxlOiBSQ2lFUCByb3V0ZSBlcnJvciBtZXNz
+YWdlIHRvIFJDRUMsDQo+IHNvIHRoYXQgdGhlIEFFUiBwb3J0IHNlcnZpY2UgY291bGQgaGFuZGxl
+IHRoZSBlcnJvciwgdGhlIGRldmljZSBkcml2ZXINCj4gb25seSBoYXZlIHRvIGltcGxlbWVudCBl
+cnJvciBoYW5kbGVyIGNhbGxiYWNrLg0KDQpUaGUgcHJvYmxlbSBpcyB0aGF0IHRoYXQgYW5kIGNh
+bGxiYWNrIGlzIHRvbyBsYXRlIGZvciBzb21ldGhpbmcNCnRyaWdnZXJlZCBieSBhIFBDSWUgcmVh
+ZC4NClRoZSBkcml2ZXIgaGFzIHRvIGRldGVjdCB0aGF0IHRoZSB2YWx1ZSBpcyAnZHViaW91cycg
+YW5kIHdhbnRzDQphIG1ldGhvZCBvZiBkZXRlY3Rpbmcgd2hldGhlciB0aGVyZSB3YXMgYW4gYXNz
+b2NpYXRlZCBBRVIgKG9yIG90aGVyKQ0KZXJyb3IuDQpJZiB0aGUgQUVSIGluZGljYXRpb24gaXMg
+cm91dGVkIHRocm91Z2ggc29tZSBleHRlcm5hbCBlbnRpdHkgKGxpa2UNCmJvYXJkIG1hbmFnZW1l
+bnQgaGFyZHdhcmUpIHRoZXJlIHdpbGwgYmUgYWRkaXRpb25hbCBsYXRlbmN5IHRoYXQNCm1lYW5z
+IHRoYXQgdGhlIGFzc29jaWF0ZWQgaW50ZXJydXB0IChldmVuIGlmIGFuIE5NSSkgbWF5IG5vdCBo
+YXZlDQpiZWVuIHByb2Nlc3NlZCB3aGVuIHRoZSBkcml2ZXIgY29kZSBpcyB0cnlpbmcgdG8gZGV0
+ZXJtaW5lIHdoYXQNCmhhcHBlbmVkLg0KVGhpcyBjYW4gb25seSBiZSBtYWRlIHdvcnNlIGJ5IHRo
+ZSBpbnRlcnJ1cHQgY29taW5nIGluIG9uIGENCmRpZmZlcmVudCBjcHUuDQoNCj4gPiBPVE9IIGEg
+J25lYnMgY29tcGxpYW50JyBzZXJ2ZXIgcm91dGVkIGFueSBraW5kIG9mIFBDSWUgbGluayBlcnJv
+cg0KPiA+IHRocm91Z2ggdG8gc29tZSAnc3lzdGVtIG1hbmFnZW1lbnQnIGxvZ2ljIHRoYXQgdGhl
+biByYWlzZWQgYW4gTk1JLg0KPiA+IEknbSBub3Qgc3VyZSB3aG8gdGhvdWdodCBhbiBOTUkgd2Fz
+IGEgZ29vZCBpZGVhIC0gdGhleSBhcmUgcHJldHR5DQo+ID4gaW1wb3NzaWJsZSB0byBoYW5kbGUg
+aW4gdGhlIGtlcm5lbCBhbmQgdG9vIGxhdGUgdG8gYmUgb2YgdXNlIHRvDQo+ID4gdGhlIGNvZGUg
+cGVyZm9ybWluZyB0aGUgYWNjZXNzLg0KPiANCj4gSSB0aGluayBpdCBpcyB0aGUgcmVzcG9uc2li
+aWxpdHkgb2YgdGhlIGRldmljZSB0byBwcmV2ZW50IHRoZSBzcHJlYWQgb2YNCj4gZXJyb3JzIHdo
+aWxlIHJlcG9ydGluZyB0aGF0IGVycm9ycyBoYXZlIGJlZW4gZGV0ZWN0ZWQuIEZvciBleGFtcGxl
+LCBkcm9wDQo+IHRoZSBjdXJyZW50LCAoZHJhaW4gc3VibWl0IHF1ZXVlKSBhbmQgcmVwb3J0IGVy
+cm9yIGluIGNvbXBsZXRpb24gcmVjb3JkLg0KDQpFaD8NCkkgY2FuIGdlbmVyYXRlIHR3byB0eXBl
+cyBvZiBQQ0llIGVycm9yOg0KLSBSZWFkL3dyaXRlIHJlcXVlc3RzIGZvciBhZGRyZXNzZXMgdGhh
+dCBhcmVuJ3QgaW5zaWRlIGEgQkFSLg0KLSBMaW5rIGZhaWx1cmVzIHRoYXQgY2F1c2UgcmV0cmFp
+bmluZyBhbmQgbWlnaHQgbmVlZCBjb25maWcNCiAgc3BhY2UgcmVjb25maWd1cmluZy4NCg0KPiBC
+b3RoIE5NSSBhbmQgTVNJIGFyZSBhc3luY2hyb25vdXMgaW50ZXJydXB0cy4NCg0KSW5kZWVkLCB3
+aGljaCBtYWtlcyBuZWl0aGVyIG9mIHRoZW0gc3VpdGFibGUgZm9yIGFueSBpbmRpY2F0aW9uDQpy
+ZWxhdGluZyB0byBhIGJ1cyBjeWNsZSBmYWlsdXJlLg0KDQo+ID4gSW4gYW55IGNhc2Ugd2Ugd2Vy
+ZSBnZXR0aW5nIG9uZSBhZnRlciAnZWNobyAxID54eHgvcmVtb3ZlJyBhbmQNCj4gPiB0aGVuIHRh
+a2luZyB0aGUgUENJZSBsaW5rIGRvd24gYnkgcmVwcm9ncmFtbWluZyB0aGUgZnBnYS4NCj4gPiBT
+byB0aGUgbGluayBnb2luZyBkb3duIHdhcyBlbnRpcmVseSBleHBlY3RlZCwgYnV0IHRoZXJlIHNl
+ZW1lZA0KPiA+IHRvIGJlIG5vdGhpbmcgd2UgY291bGQgZG8gdG8gc3RvcCB0aGUga2VybmVsIGNy
+YXNoaW5nLg0KPiA+DQo+ID4gSSdtIHN1cmUgJ25lYnMgY29tcGxpYW50JyBvdWdodCB0byBjb250
+YWluIHNvbWUgcmVxdWlyZW1lbnRzIGZvcg0KPiA+IHJlc2lsaWVuY2UgdG8gaGFyZHdhcmUgZmFp
+bHVyZXMhDQo+IA0KPiBIb3cgdGhlIGtlcm5lbCBjcmFzaCBhZnRlciBhIGxpbmsgZG93bj8gRGlk
+IHRoZSBzeXN0ZW0gZGV0ZWN0IGEgc3VycHJpc2UNCj4gZG93biBlcnJvcj8NCg0KSXQgd2FzIGEg
+Y291cGxlIG9mIHllYXJzIGFnby4uDQpJSVJDIHRoZSAnbGluayBkb3duJyBjYXVzZSB0aGUgaHVi
+IHRvIGdlbmVyYXRlIGFuIEFFUiBlcnJvci4NClRoZSByb290IGh1YiBmb3J3YXJkZWQgaXQgdG8g
+c29tZSAnYm9hcmQgbWFuYWdlbWVudCBoYXJkd2FyZS9zb2Z0d2FyZScNCnRoYXQgdGhlbiByYWlz
+ZWQgYW5kIE5NSS4NClRoZSBrZXJuZWwgY3Jhc2hlZCBiZWNhdXNlIG9mIGFuIHVuZXhwZWN0ZWQg
+Tk1JLg0KDQoJRGF2aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5
+IFJvYWQsIE1vdW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRp
+b24gTm86IDEzOTczODYgKFdhbGVzKQ0K
 
-
-On 9/7/23 22:45, Athira Rajeev wrote:
-> From: root <root@ltcden13-lp4.aus.stglabs.ibm.com>
-> 
-> shellcheck was run on perf tool shell scripts s a pre-requisite
-> to include a build option for shellcheck discussed here:
-> https://www.spinics.net/lists/linux-perf-users/msg25553.html
-> 
-> And fixes were added for the coding/formatting issues in
-> two patchsets:
-> https://lore.kernel.org/linux-perf-users/20230613164145.50488-1-atrajeev@linux.vnet.ibm.com/
-> https://lore.kernel.org/linux-perf-users/20230709182800.53002-1-atrajeev@linux.vnet.ibm.com/
-> 
-> Three additional issues are observed with shellcheck "0.6" and
-> this patchset covers those. With this patchset,
-> 
-> # for F in $(find tests/shell/ -perm -o=x -name '*.sh'); do shellcheck -S warning $F; done
-> # echo $?
-> 0
-> 
-
-Patchset looks good to me.
-
-Reviewed-by: Kajol Jain <kjain@linux.ibm.com>
-
-Thanks,
-Kajol Jain
-
-> Athira Rajeev (3):
->   tests/shell: Fix shellcheck SC1090 to handle the location of sourced
->     files
->   tests/shell: Fix shellcheck issues in tests/shell/stat+shadow_stat.sh
->     tetscase
->   tests/shell: Fix shellcheck warnings for SC2153 in multiple scripts
-> 
->  tools/perf/tests/shell/coresight/asm_pure_loop.sh            | 4 ++++
->  tools/perf/tests/shell/coresight/memcpy_thread_16k_10.sh     | 4 ++++
->  tools/perf/tests/shell/coresight/thread_loop_check_tid_10.sh | 4 ++++
->  tools/perf/tests/shell/coresight/thread_loop_check_tid_2.sh  | 4 ++++
->  tools/perf/tests/shell/coresight/unroll_loop_thread_10.sh    | 4 ++++
->  tools/perf/tests/shell/probe_vfs_getname.sh                  | 2 ++
->  tools/perf/tests/shell/record+probe_libc_inet_pton.sh        | 2 ++
->  tools/perf/tests/shell/record+script_probe_vfs_getname.sh    | 2 ++
->  tools/perf/tests/shell/record.sh                             | 1 +
->  tools/perf/tests/shell/stat+csv_output.sh                    | 1 +
->  tools/perf/tests/shell/stat+csv_summary.sh                   | 4 ++--
->  tools/perf/tests/shell/stat+shadow_stat.sh                   | 4 ++--
->  tools/perf/tests/shell/stat+std_output.sh                    | 1 +
->  tools/perf/tests/shell/test_intel_pt.sh                      | 1 +
->  tools/perf/tests/shell/trace+probe_vfs_getname.sh            | 1 +
->  15 files changed, 35 insertions(+), 4 deletions(-)
-> 
