@@ -2,111 +2,109 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 194497AEE4B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Sep 2023 16:01:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C91B67AEE50
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Sep 2023 16:06:09 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=YpNPVnNQ;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=D3Wkcn7x;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rw1dB6mTVz3cCM
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Sep 2023 00:01:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rw1k74ShDz3dFZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Sep 2023 00:06:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=YpNPVnNQ;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=D3Wkcn7x;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f400:fe1e::618; helo=eur01-he1-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org)
-Received: from EUR01-HE1-obe.outbound.protection.outlook.com (mail-he1eur01on0618.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe1e::618])
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f400:7e1b::625; helo=eur05-am6-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org)
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on20625.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e1b::625])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rw1cD3YHRz3bsP
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Sep 2023 00:00:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rw1jF02fGz3bst
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Sep 2023 00:05:20 +1000 (AEST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AWb8qQneDuuqSDxsgUo3+RopZrDM9r4QKsKyITXvR2XmEJ/az03eaylRcmyeQYAW5IU8Bza2hE4wr0+g+kcs7Za0VUKfICnusGQvM6qet6Zk6G4WDDXOX0xxwfo35naebMomxwqSMvZpCwTjK0+dudxV8HsHSSATbtczh/vgCpyl0oZLVSZnXFi/u6bFfkFUL9BckMuQdbAbicdHRLZ6b+YUTfkRgArZ6tOx8xYsmJqc8oVNoWVK3l7dS0MkJkJoz/YODPIB/w2Gm9Oz5PEt78X+LMd4AC390ptmfPU1NTSRlgxTtJCMIrTgyzkdUg6YundGf8E5SnB+6jc/zyKGhA==
+ b=gybZIo80J9MaMSYwN/96E3/3QHmbrkrA6ln72Vv8xzVE+KzbBnCbAY/6pJYaC50JbZoEf8/2vkAH85PUtxz/eUo54us8i6xKr/ps8vV+exNZrsBbi3YsMaYadLZSaS4qw6d5ujKT6DKzUCGTMyGk1yMrrs7C6H+pKPgLH089UsAViVHZ026Sj2yFBptw8Zwo/jNVCYYW964CNcy+u8RHcSyfJwRe0byldZelhK+Oz/ac/aV5GLpY1E7RSjUahyFTEr7JevZ52mqS3DmiYaQu3UCFkfT5fPQYclznCvgFQoyZdsWzmHdU2JPzGVnNujChDMnHdRBViyTKy4gCE1qBkA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yn43rfHET6DXaSDlUmpGZixca78ritdYAzW44QgFm4c=;
- b=crhMdKwZX6nrCQ6jOk1PTzSaFvBsO7YWr7aTRS1wiRChiHPRStkGmrNCiVJGqWIOGxSxQq/mu4URIifmQR+6dR7diieLX3lzef9bEw19Fj3JYNojX754irAUHslDQohde4q9Cu7eJCD3u0CZtbGquL6YEzwOHF6q6C005YwnI11sAWWiB56zlLWEQsghQz3Ew+/Dgiek6he/de5aqqWLf6iDm8iPcZpJK7k+rnKG0wzvIy/Yz1rjJTzmUwTlBIa8hQQoeS7qPLrIe+phlk8s5r3qF6UwtdOwja5wDVqk9fOxvNXCDBA/avZlzWVzfX9lb5XGIlk91WNdeCjjRCXWsA==
+ bh=hlyh8vwETYESwYwgXe38QDcsWIhrSffS1ZxPq3/Q7BY=;
+ b=Z1CJExPQBe004QORJL2ty6nJDwVB6YtcQFi+UvqZsLbrii/AIo+yHNzlp+ZbzKLjW9DwxBgCt+YVxef5c6jLqY8OTvNPDw9IH9sRLEfwtHLl5RQYB8mdEYr1w8YZMVOYJWZlZcQtxmzT9yjYtqa4ca//8L+MWtncz3Asygyr+fg5vUfuXBK3eLFGPFHRRm7LvYGPDb5JHfBp7pC8wGlyS0Vp20CCSMd9hPQWZRnbJ46rSBKtrN93KOfTGcGX+iRluSSqOMWmeCVyqyIe7GMU6elNhrDkd8tljxDnWLFw/Wme819lgDKUPRhS1KRf/s4qLS+1yCAUr27A6t/678qIUw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yn43rfHET6DXaSDlUmpGZixca78ritdYAzW44QgFm4c=;
- b=YpNPVnNQHv2Q0NlZwTW0b5/59+ApnPi24ZquYyHtdTytJ6KfTtYgAWy8rOBcuUDHw4CipVDDiT4nWT/qQXCJKofKSJ6F1TrwvxgxouHqOzeEFxVh292KreudWvA7q0HC4FRx212wM94MpSWmgldbVF9IGMgXkuC1VD+u9sGapDA=
+ bh=hlyh8vwETYESwYwgXe38QDcsWIhrSffS1ZxPq3/Q7BY=;
+ b=D3Wkcn7x9B+iv1wyokI9vdfbsLtGo6M1XWgEkHyTMi27dv6mwGJndzeDXwP/U+eHRH8O5KhEaDBPWJWuKi9XnH8BCQfJwiyxybk2AIYcruCOqaV1xBeymNdSKLPgdI9tiAiKHa9kKekxcTrCZwGzsAwjaRoilLOao1gDMAGCVLY=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com (2603:10a6:20b:4::16)
- by AM9PR04MB8923.eurprd04.prod.outlook.com (2603:10a6:20b:40a::21) with
+ by DBAPR04MB7429.eurprd04.prod.outlook.com (2603:10a6:10:1a2::22) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.28; Tue, 26 Sep
- 2023 14:00:29 +0000
+ 2023 14:05:01 +0000
 Received: from AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::1774:e25f:f99:aca2]) by AM6PR04MB4838.eurprd04.prod.outlook.com
  ([fe80::1774:e25f:f99:aca2%4]) with mapi id 15.20.6813.027; Tue, 26 Sep 2023
- 14:00:29 +0000
-Date: Tue, 26 Sep 2023 10:00:18 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Christoph Hellwig <hch@infradead.org>
-Subject: Re: [PATCH v2 1/1] PCI: layerscape-ep: set 64-bit DMA mask
-Message-ID: <ZRLj8nHJrXB1DkkO@lizhi-Precision-Tower-5810>
-References: <20230922042836.3311689-1-Frank.Li@nxp.com>
- <ZRKH5CTucrT5BFwC@infradead.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZRKH5CTucrT5BFwC@infradead.org>
-X-ClientProxiedBy: BY5PR13CA0008.namprd13.prod.outlook.com
- (2603:10b6:a03:180::21) To AM6PR04MB4838.eurprd04.prod.outlook.com
+ 14:05:01 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: hch@infradead.org
+Subject: [PATCH v3 1/1] PCI: layerscape-ep: set 64-bit DMA mask
+Date: Tue, 26 Sep 2023 10:04:45 -0400
+Message-Id: <20230926140445.3855365-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR11CA0082.namprd11.prod.outlook.com
+ (2603:10b6:a03:f4::23) To AM6PR04MB4838.eurprd04.prod.outlook.com
  (2603:10a6:20b:4::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|AM9PR04MB8923:EE_
-X-MS-Office365-Filtering-Correlation-Id: bdd9632a-704a-4d9e-aba3-08dbbe98f0ca
+X-MS-TrafficTypeDiagnostic: AM6PR04MB4838:EE_|DBAPR04MB7429:EE_
+X-MS-Office365-Filtering-Correlation-Id: 185fcf7b-2531-423c-4cc6-08dbbe999361
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	IGUgPTBSj5bANXhEicKQTcoC9JliBJ3CUQLEdxlFEewT64dD/TRgXV9jlWpOnQpyr84D/o5Z2gZ1ZwY9IknZQfJRvPxZHM1nk6S3IeanOc0uozPgDig9Bl65GVt+JV6aDK46n2AoTx8ha/ZbCLUYTEXPFe6/KoweqmVOovqM7hHZUGA6PFqelxCd+6CjIlIdftfeoMwE9pk73N5t7PCSyhY1rfoOpSnNkVCQ6M+HoXZNPDReXeNCH3FirN6RjOUzMKDOTFpjAdvXYRa1gEk/NLdRljxwn7gbWDhatp8+mWyAadursJH3Dvi8QfDjjKgI+9n8x/94KFWeCFAQpEUq1x7HHk9jyfxKhM+04dmEASbzh7KtUaz5088MFWiLyDsHh+tzoBrR5hNcBlu9uoyldATkmVsPyQDloVm/MKA7tG8Smu9/uh4H9YQ4/i7FkvY4YFylxvLOJVxbv8aiBoU4du0dGEFuAIV/xe7vr6b9yTa9Z71wSZI1QqrWemnVPJ+45z+FxMw/iuHPQV0vnB86+Rb7pQ1GJElaO/BVff1SJFZmckxYrdv38QmtCBmAnKX8rALmmsEu+gLEjcsbu6wvo9hymHSA02ZZz2zqYp/qZYIRo4Rl3FSR5BOCPqHkEURK
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(366004)(39860400002)(396003)(376002)(136003)(346002)(230922051799003)(1800799009)(451199024)(186009)(7416002)(4326008)(4744005)(2906002)(5660300002)(316002)(41300700001)(6916009)(8676002)(8936002)(66946007)(66476007)(86362001)(66556008)(6666004)(52116002)(6506007)(9686003)(6486002)(6512007)(26005)(38100700002)(38350700002)(33716001)(478600001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: 	4DtxdnozAKMJG9RT7j6M8wNxO+/Nq132uQbJLiU6wttEZohBzDeEud6HPpO3mJ0HRpo+K+6h6JcqbPTMGzcd+21KX02uuEZZ11jOt6zkGmxqPAvgoH4lO+OXwOLJ8lioHWaOQk+kpr53HZWocvOAhWN949/Hczo1kfVtaX7MRqyN92gRyAIM4aYhb00jp0lPPaWaiuTNoOoBM61+xYGzX/kXi4PZMqx9E5LEMy8O+0C19nHBFYPVsGubjFQzy/74Tmp8UtlTvq2Xht8XPObC1rqUvf6+R5CmW/FYOvyOOu8wAPeFwbNpYxxr4S7CeCfevwMY9JLDvlhIKo/wbCZeMqREoicdQfW2YaEVQnqiLsRZAf46QLQz35yLnO5S4iHAi+QNgQe6HhtbyRgZ1/gM4Cmx2+dfyBY+pOuPpG1hrVnOU1P9zZO5qpG8Drceyi3u7xy5RHuMG34kwUBuufJEN6sMojkY4GmkTiwdUHFRTdflHjuxUyOckLcLdiIXZrZkpYvvo5R6KaFwmw4S8Mn5YzCdxinzR6zn9RIkakCVZT3ig58LKHdjL5r8t2RGtMo9XzpQ8sBzTGaB/BoCPgyfWuQFinPjGcl+Vfw+AXlCca99uYDNRPlAxkDLBXaN37Ct
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB4838.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(136003)(376002)(39860400002)(366004)(346002)(230922051799003)(1800799009)(186009)(451199024)(6512007)(52116002)(6486002)(6666004)(6506007)(86362001)(38100700002)(38350700002)(36756003)(1076003)(2616005)(26005)(2906002)(316002)(7416002)(41300700001)(66476007)(66946007)(6916009)(478600001)(4326008)(8936002)(8676002)(5660300002)(66556008);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?M49ymGOOQwP2cwMW1GZV8o29L3yoIPXUdCmVM+i4ngvNVkI/fzRPLunZUi+o?=
- =?us-ascii?Q?1vKRD/0yeWd0Gi31Szi1a8ixbrrUgFRikiKJ9Q3ocXCC2AyeDvkfAlHjiOw+?=
- =?us-ascii?Q?udop1Svj0tSzoqCypvHniEdyMymkQ6ct44Lp2c3h3ljBzf4rJtTjUTy3QAoa?=
- =?us-ascii?Q?02U5scc1SzneMnL6Kn6NLQ1pJmtiUSiw6bgls2I4sASTnYuvrNnqsn5oxU+J?=
- =?us-ascii?Q?1H+jId4brTRKu8OB3aUAogcpZuVHTfhmsbRkutE3ju/whzmOk8xn5O10wfyF?=
- =?us-ascii?Q?/A5wQosKjwSnd/2CM0Tk7uMk1RHBe6x0cwEBXtHiD9Gccm2c75g4a2MVDCrC?=
- =?us-ascii?Q?3nXeoCvsyWuHnuHO7/gWMNaSC6mp0uno+w2H4dlqr4s7M4+T6H2bZF+yYDJP?=
- =?us-ascii?Q?fzrT6HqXxGCwoExfMnn2ItN53cuAE7l1TdpmtHuHRIMFlCazRdvy/tJg3UMu?=
- =?us-ascii?Q?IWwG1ATrwEif2IXC9hj0GCeCLNszLon8DtOKKdeyAzqoAodnF2hKEe1UEnj7?=
- =?us-ascii?Q?NIjlHo0ExsaVpkunKnNk5vNZ9GGGowU54+ROPmcXLTwvvABdnNrUBJ/oaeQM?=
- =?us-ascii?Q?2Zna8PJRyD6V5e4LcwHwCm5fxeO0GhBXIr/eBVLqvAOmBG7hs+WXwz+l0xpH?=
- =?us-ascii?Q?i4hDwQ1UcEeVdfL039TLbhGLNs8Gly+Mq7v+9T5vHa6upEM0E727iF2aWa+B?=
- =?us-ascii?Q?gD0EmsNz7GaZfAXVd2NoKF6YJrdOWcfOdQq2mQOvOvsAsiu1Y+i1yqJwqXMq?=
- =?us-ascii?Q?oioxP+p6PkJGCAV1iDu7gCwEzSYcXrdNSbQUjUD1v+NV5Vu2EaeZKu8cZ3OX?=
- =?us-ascii?Q?tFK9WEqNcRu7U57L1VaLs3V/JA+4Au3pj7G1Sg11pGaIddXJsKeGpX1xkMl8?=
- =?us-ascii?Q?JGIQweMCYM8w802zCUv+3OvfOubUhC1jDay9jpJfVXJjY83OQ2omJvJni1T1?=
- =?us-ascii?Q?IMlDffpLak022oIVPP8W3+OY+X5vXzmGZpPRKoQLvEIy7lA4AgHFN8QIhxu8?=
- =?us-ascii?Q?hCz0+tRfKUyBB9S1/55PfNDhEMIb36MdET/DnAWHqYW1WkJ2hozf8YmGRZSv?=
- =?us-ascii?Q?huR7l2X388Vb2DYvkn4tV/lDThtAx75AoseyNYjcY9HnbLlfA9xi6E/WoBLC?=
- =?us-ascii?Q?At4NXYViVx18KDwHEzbsNVSUaSVnEAVr6mbeKthdzUwNJsDARSylyC6so4Mq?=
- =?us-ascii?Q?5s3UYZJRahPUJMFDbx3albJhLDAg6/msrzQlecNbHpQTMaT+YuyeBlriR3rr?=
- =?us-ascii?Q?tcbcAnJK2CXysV06hRN3jw+nSGhCX9bziLshwcvIWXRoQxEz1nHdUrZ7zVSh?=
- =?us-ascii?Q?r3OIDHdKE2s6wcAZfLWBlJojlrxuSD5M2VquQIINvLq3aFGracoHVNE/tuBC?=
- =?us-ascii?Q?sB4C31ET76m8RjKs+mT1YvINE7aINohctYsPzmD3/j4MdMEzYRWWixgZHHiy?=
- =?us-ascii?Q?HZMZVwmG5mCaewjm7cqOkKAKKLE97zgCwZGyCL6eJOvrAWyJbOFOU9Zqbb65?=
- =?us-ascii?Q?HQfKAEuub6WuSE9rlJKPGphd7aaqRnYg223ScMn60IVIPWIKLITl2gkXm539?=
- =?us-ascii?Q?V82p2/HrBRyHai3Ivmg=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?9q1HVKydWBYasikPO/F7Mu2kAaIqpQethbNdTHEFpVzc+HEFKBsGS7/dfAi9?=
+ =?us-ascii?Q?mroh+kml5sAJHRpr37JwuwcinzoXGWDLBi22NyC3cdeSwu+LFYTIKSTADMvX?=
+ =?us-ascii?Q?vqs6G57656a5pKIDJKi43yvUMiqifZi7OoGluVw4q2Z64B5YfwIdDu2JV3jl?=
+ =?us-ascii?Q?6LpGEmlLI6bM4FaXs36Qmk9ERX9yC9CafRO/CM04ir36ot4fKfSRqBwrnnuW?=
+ =?us-ascii?Q?aOJYdJpGmlQXE0RPni13/uL5UcXInT34z+WIEQy92xfcx1MNwg4hHm7UDz/E?=
+ =?us-ascii?Q?GppY0hgFVdOBrpsu/r98K6l6E4UdCM+JGj1LvCmZTOfKVctHYbAfFqlZPntZ?=
+ =?us-ascii?Q?M8gPj3Bp8UrC+KwIHJ1/XTtpuTYG4mhKzQ6RT1nRmAGMZM0rsLl2esAPPW3m?=
+ =?us-ascii?Q?mYs12EM9I8k12oteu6jl94C47B6Ary25EgDimJd00KSASK9EpFW4zB76Jaii?=
+ =?us-ascii?Q?c5Zg++iTOx0TuqYt9WZ4t9g3av1wvAGWYKXDbIiDmCRkP6jgdl6u4CGFsa3v?=
+ =?us-ascii?Q?j1Pgf/xOhNJOXdRULY8QLNbJbTL+neKAoNynCICvVQknQHXCqhRmSPS2bbJa?=
+ =?us-ascii?Q?3Izfd+rBnPpUC/gK1xndjRwGvc0L26vBPEpEBmr4KfkmcynFeW1Hd1TSWw7+?=
+ =?us-ascii?Q?f3TFYZ6ZfEy47f5xlexfBke+eWWK77bVZ0XwTIe01jVfT/Pb8FzDoSKC4xny?=
+ =?us-ascii?Q?rduMidNt2M5qcM4W5S6QLAjbOMTTmeYmwHK1LANCDaUHcwcHYR38lvWsVEwN?=
+ =?us-ascii?Q?xXz4Hz6I5+qLbTnE/UsLX/3fV4J1aKQwIPBrTMnYly4rTqgFARrTqrRWxw3b?=
+ =?us-ascii?Q?L/WE8JXP1SwWHBY43j50Sb6pLdP+n6zD958XhCJnuJ25IcImc0146mXrvPVL?=
+ =?us-ascii?Q?/5+wD7i0cQ7MLXcYKn2Zd8sL0jHbA06x9Dfc1GMWRiIDDiD9NIA/atNAhGs6?=
+ =?us-ascii?Q?N6qitDalXkCcODMcrlo5z5g9FbSyXC28AKgUMPweYS48D9u4q4w5RpkWwPHv?=
+ =?us-ascii?Q?PVrfyHp0SmKYLYLZBQeCnqmHaWJqbysWFdtgaamkJUClpdZTjwgOVYNy1l/S?=
+ =?us-ascii?Q?cyKjP9S5SuuXY40OsNfRLkoD+66vVOrf6XeDnG1noy5BtU8EzgTtavLVISgd?=
+ =?us-ascii?Q?Gdas1ceV6rOed0tLPwYvcqE1k0TWntZDi2t5driCAmoOXSmvRjJsqoOZz8j7?=
+ =?us-ascii?Q?HMZy12IedBU9YuzN0Wnrygbysmu7mHeO0Ua8zYbEsYBtcZ9sfIMbhi18xTuw?=
+ =?us-ascii?Q?bBQYw0l6Lmf5aMBdVesHL6cUpcY/x3HxuzYcS0A7HRFQHdIlhs8e90rFLDaX?=
+ =?us-ascii?Q?BYr5Us9ZeVM7mxQY+NokDWA1RMH5BxtbCHVy2I58X9QC5PotE6VmX0DiDVmJ?=
+ =?us-ascii?Q?U/5a5rn6uGnHTDPo6e7qQmVRaYNNcBrZb48jiQk4Fk9CTmf+WrjuCSABdOGK?=
+ =?us-ascii?Q?c77CGS6jXd1PY5Iq/DP0Uut5HzY2H3CRsJ4A9W4+/IWLDa99H0UXJA+imXv7?=
+ =?us-ascii?Q?1m29rUD7XRRQSohNp1XpLLlmcYdn+kMwQUSkOjzD65LAJsBu3kROyr9KafW9?=
+ =?us-ascii?Q?arclnmTCKCwabdXPUZ9svghvmDLzwSmx6afBUGL/?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bdd9632a-704a-4d9e-aba3-08dbbe98f0ca
+X-MS-Exchange-CrossTenant-Network-Message-Id: 185fcf7b-2531-423c-4cc6-08dbbe999361
 X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB4838.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Sep 2023 14:00:28.8704
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Sep 2023 14:05:01.8234
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CNYGWIaWW8PwVJbOmNBlRL5i3oo9uWkGearFF2JLuNg/75Hdp5rRH8SR36EEpoq6hUL3r5ZXz7DzpIwXweZ0Gw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8923
+X-MS-Exchange-CrossTenant-UserPrincipalName: tw+fJur7bQM8tzNYmHzbUkrIgfjIeOeEd7D0F6NXTNAhSxjGiRuY6cTNGCFaoSnP5qhH+PPkO0Ho938sZVFLkw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7429
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -118,21 +116,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: imx@lists.linux.dev, kw@linux.com, linux-pci@vger.kernel.org, lpieralisi@kernel.org, linux-kernel@vger.kernel.org, minghuan.Lian@nxp.com, christophe.jaillet@wanadoo.fr, mingkai.hu@nxp.com, roy.zang@nxp.com, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org, robh@kernel.org, linux-arm-kernel@lists.infradead.org
+Cc: kw@linux.com, imx@lists.linux.dev, linux-pci@vger.kernel.org, lpieralisi@kernel.org, Frank.Li@nxp.com, linux-kernel@vger.kernel.org, minghuan.Lian@nxp.com, christophe.jaillet@wanadoo.fr, mingkai.hu@nxp.com, roy.zang@nxp.com, bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org, robh@kernel.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Sep 26, 2023 at 12:27:32AM -0700, Christoph Hellwig wrote:
-> > +	/* set 64-bit DMA mask and coherent DMA mask */
-> > +	ret = dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64));
-> 
-> The comment is a bit silly :)
-> 
-> > +	if (ret)
-> > +		return ret;
-> 
-> Also no need to check the return value when setting a 64-bit mask,
-> but I guess it desn't hurt here.
-> 
+From: Guanhua Gao <guanhua.gao@nxp.com>
 
-You are right, let me remove check.
+Set DMA mask and coherent DMA mask to enable 64-bit addressing.
+
+Signed-off-by: Guanhua Gao <guanhua.gao@nxp.com>
+Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+
+Notes:
+    change from v2 to v3
+    - remove check return value of dma_set_mask_and_coherent. 64bit mask always
+    return success.
+    - remove redundate comments
+    change from v1 to v2
+    - Remove 32bit DMA mask set.
+
+ drivers/pci/controller/dwc/pci-layerscape-ep.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+index de4c1758a6c3..2c2c9aaa8700 100644
+--- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
++++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+@@ -249,6 +249,8 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
+ 
+ 	pcie->big_endian = of_property_read_bool(dev->of_node, "big-endian");
+ 
++	dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64));
++
+ 	platform_set_drvdata(pdev, pcie);
+ 
+ 	ret = dw_pcie_ep_init(&pci->ep);
+-- 
+2.34.1
+
