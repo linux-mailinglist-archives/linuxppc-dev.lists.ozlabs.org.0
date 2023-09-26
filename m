@@ -1,90 +1,126 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96CB27AF5BA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Sep 2023 23:30:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F0607AF598
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Sep 2023 23:00:17 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=permerror header.d=jannau.net header.i=@jannau.net header.a=rsa-sha1 header.s=fm1 header.b=kKw7XbpC;
-	dkim=permerror header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha1 header.s=i47b949f6.fm2 header.b=KUzo3ljM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=RpEo5zfx;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RwCZK4VPtz3cdt
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Sep 2023 07:30:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RwBvz1Qpgz3cBH
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Sep 2023 07:00:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=jannau.net header.i=@jannau.net header.a=rsa-sha256 header.s=fm1 header.b=kKw7XbpC;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=i47b949f6.fm2 header.b=KUzo3ljM;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=RpEo5zfx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=jannau.net (client-ip=64.147.123.18; helo=wnew4-smtp.messagingengine.com; envelope-from=janne@jannau.net; receiver=lists.ozlabs.org)
-Received: from wnew4-smtp.messagingengine.com (wnew4-smtp.messagingengine.com [64.147.123.18])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::536; helo=mail-ed1-x536.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rw8Q40Y6Rz3c2X
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Sep 2023 05:07:40 +1000 (AEST)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailnew.west.internal (Postfix) with ESMTP id CAFE22B00139;
-	Tue, 26 Sep 2023 15:07:36 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Tue, 26 Sep 2023 15:07:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm1; t=1695755256; x=1695758856; bh=YD
-	o6eC1pWX0Zqv0pmi3rbnqY8yGcQr0MnMkqXd/VPtI=; b=kKw7XbpCvCn0lQQ+1a
-	PIuZkUm0Zdt8RikObUsnEVPxGANMOMKYIcn7A4evrXGmPtBi5yFlMGB9ScK0Jkoq
-	BRZA9vF9eqcPTEZxKErOVLU66Cj9BN0b5NyblhYD2shc5Hy05sik2UvpPFVRffO/
-	G1BmJY6lw1/mTwABgCa742MSY4NwAAb0l1IMBZG+n6SxrF7G5xY0xo1SylltEhYr
-	1jd0j88tpIB6rWzEUniTN61hsdCH/0qt5Q6bImSI6YJfYIJqRIQRNT/CqsD97yiQ
-	2gAYnr86NIw4srks3xINBNTRopFDUKslwzDNUbSpG8hBX/xdvqRTn6AG63Wt25SZ
-	0dnQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=i47b949f6.fm2; t=1695755256; x=1695758856; bh=YDo
-	6eC1pWX0Zqv0pmi3rbnqY8yGcQr0MnMkqXd/VPtI=; b=KUzo3ljMHtKyWqfmbfD
-	jEd0ZKci1dVDcAiE+X9HFaV+fgIxuM/+98NOUwqh6cevLfKap7z6rqYblgrArXZn
-	0lX7ZSD6c3mUDkt7If+fhdqmsaYv1c6Qg/tdLXKQVMblRg0ZvXjQtL11gXNaJft9
-	6T9OSDdvqsiUpucn1jqQiVVd19MN0IBX0rM1/YvWelPskVIXVsfl0/BSxECr/grv
-	uj9b0Y2jfyoOS72nL+t4Y95/1p6Q58H9AYOMfNLo1qMDPmyP5Et4Az9JZCCJ1GWB
-	tVs40pj9/Y5Bx0SHHKgi/2D5MRIkc7Se9mEA7x7zxo9dQyfMJvtyfe8+fiRTUyk7
-	HMA==
-X-ME-Sender: <xms:9isTZbzzlr4WTTr5f1w19zE5_0GM08wF6QcGsaUrhh6DiMZyDLPBpg>
-    <xme:9isTZTTLhsZj74fNnAPOCriAIeVkBLrON_5rx5afVk0nyKTfua86LPyVmOZQUq0kj
-    3eFN_G3W43hZZJ2GVg>
-X-ME-Received: <xmr:9isTZVWVRQVzn_Rr87HULypiW1tzs5fQdTECk3T6wC-REOUQDFq7CFQMzg2skK7Fwvn8haesbhLb4bAfjBwxR4reKu72JGDurw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvjedrtddtgddutdegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtjeenucfhrhhomheplfgrnhhn
-    vgcuifhruhhnrghuuceojhesjhgrnhhnrghurdhnvghtqeenucggtffrrghtthgvrhhnpe
-    fgvdffveelgedujeeffeehheekheelheefgfejffeftedugeethfeuudefheefteenucev
-    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjrghnnhgvse
-    hjrghnnhgruhdrnhgvth
-X-ME-Proxy: <xmx:9isTZVhfCmg2lkKqKMcbtqKHdUbKP7HQ1HoGwvLcKXoVO5dgzwbrAA>
-    <xmx:9isTZdBsdw97CdD73Jk_YyTJYMvqBKubBULSbJIWjcICj8L87vjpnQ>
-    <xmx:9isTZeLQQhJiA2aIdTk6NLOD8-Flrs-g_wUp2McpDzRyttPL8u2lKw>
-    <xmx:-CsTZXR0BDwR-7loYryqP26ZjBMxC1haNwEXKM4xg9Y7HXrc9ph8FlOnEaQ>
-Feedback-ID: i47b949f6:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 26 Sep 2023 15:07:34 -0400 (EDT)
-Date: Tue, 26 Sep 2023 21:07:33 +0200
-From: Janne Grunau <j@jannau.net>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [PATCH 8/8] iommu/dart: Call apple_dart_finalize_domain() as
- part of alloc_paging()
-Message-ID: <ZRMr9SK3F85WGXE7@robin>
-References: <0-v1-8060f06462cc+c0a39-dart_paging_jgg@nvidia.com>
- <8-v1-8060f06462cc+c0a39-dart_paging_jgg@nvidia.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RwBv26NXmz3c5Y
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Sep 2023 06:59:24 +1000 (AEST)
+Received: by mail-ed1-x536.google.com with SMTP id 4fb4d7f45d1cf-533d9925094so7813488a12.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Sep 2023 13:59:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1695761958; x=1696366758; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nbm0fl6t7js3aniuoVoiV7uhTyT8SoKhMhmvTfEHKF0=;
+        b=RpEo5zfxrJcgm5mVyfdAmvSt4cos7U8Bbnzn8er1Nj3y9BEK44bubeeC28yzQg4FX1
+         x5Jjhg7KagDFOF9oVRreoqZUos0bsVyYp6PLog7Zbm2UUsiGQ/tOuIv3lArVbrY/vnsu
+         3cCYyEJs4zPKbImPisXvyEdILvb7YO9e7ULvf6cHO+5dXYd/Yvlt3QQmLo27DF2j07xk
+         XlJw4ClqU4zGx/Xov668Z+pv4hUQZxTvSXggK4DQVddgViU2NGJNZVawQ5+/+jptEUoA
+         v52E+S+SBx4RdPp0F+szcWvx05/e7lAEaSsxD/R2eiyDg0OLlMMIOYKg91N6LLnS04y7
+         JtDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695761958; x=1696366758;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nbm0fl6t7js3aniuoVoiV7uhTyT8SoKhMhmvTfEHKF0=;
+        b=fTXCeKaM+/sNmPTk3n3l7XZHWphO6oUHb6nHPkcu0CX6HJPpwJzUs4VF7LEV6fx854
+         Wb47+hjkEvG4ZjmxOReEkJdzrpe07pGjqQYLZtylaMVCo/XDrKx/Mk40aq28N9PUfbyk
+         3NzyhyKwt1BZRfuwLW6MnFIGobO3qOjn+0n9lfx6jdrpszUipJCuBeyrKSiqkqD54xx8
+         BK9h7mMJY0pef5uUmHU4DME7+MyXRXFN6svt1FSVWHpIkIdiV4LrstqkHFqLWAhuK8pa
+         XDXxUYLLl4z/xRJ7mQmfrsKV4KR86D+6P8ai8IsjZKoifjVH2+aHWvvey40QTwn5H/40
+         bLmw==
+X-Gm-Message-State: AOJu0YwiA3fYZm7BXZ/+w6iy05VGcHozElFG9Ipd1hI1v7weik3EhhZD
+	q2CvL5AaqM9p6mGvjUuKxuK3bw==
+X-Google-Smtp-Source: AGHT+IENJ0xPYi4uzaeTJwwedZ+8tWUxG3QlM6olVDYu5bRBD5Pc+AxjzgEP0mdOv30vPgdF5uo+og==
+X-Received: by 2002:a17:906:8457:b0:9b2:89ec:7fca with SMTP id e23-20020a170906845700b009b289ec7fcamr5558979ejy.34.1695761957945;
+        Tue, 26 Sep 2023 13:59:17 -0700 (PDT)
+Received: from [192.168.1.145] (host-87-4-82-94.retail.telecomitalia.it. [87.4.82.94])
+        by smtp.gmail.com with ESMTPSA id gu20-20020a170906f29400b009ad8796a6aesm8202912ejb.56.2023.09.26.13.59.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 26 Sep 2023 13:59:17 -0700 (PDT)
+Message-ID: <e8ee6529-b194-4588-96c0-1459f214d005@linaro.org>
+Date: Tue, 26 Sep 2023 22:59:14 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <8-v1-8060f06462cc+c0a39-dart_paging_jgg@nvidia.com>
-X-Mailman-Approved-At: Wed, 27 Sep 2023 07:27:38 +1000
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 08/30] dt-bindings: soc: fsl: cpm_qe: cpm1-scc-qmc: Add
+ support for QMC HDLC
+Content-Language: en-US
+To: Herve Codina <herve.codina@bootlin.com>
+References: <20230922075913.422435-1-herve.codina@bootlin.com>
+ <20230922075913.422435-9-herve.codina@bootlin.com>
+ <5efae150-3d92-81b8-5c25-68846d27132e@linaro.org>
+ <20230925101703.1bf083f1@bootlin.com>
+ <5b804a1a-6bfd-429d-ad84-696b7ecef72d@linaro.org>
+ <20230925122758.43963736@bootlin.com>
+ <e02ebde7-f208-40a4-bb10-aa5962ee9864@linaro.org>
+ <20230925154929.2b6a9cab@bootlin.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20230925154929.2b6a9cab@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,91 +132,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arm-kernel@lists.infradead.org, Kevin Tian <kevin.tian@intel.com>, Will Deacon <will@kernel.org>, Sven Peter <sven@svenpeter.dev>, linuxppc-dev@lists.ozlabs.org, Joerg Roedel <joro@8bytes.org>, Hector Martin <marcan@marcan.st>, Nicholas Piggin <npiggin@gmail.com>, Robin Murphy <robin.murphy@arm.com>, iommu@lists.linux.dev, asahi@lists.linux.dev, David Woodhouse <dwmw2@infradead.org>, Alyssa Rosenzweig <alyssa@rosenzweig.io>, Lu Baolu <baolu.lu@linux.intel.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, alsa-devel@alsa-project.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Linus Walleij <linus.walleij@linaro.org>, Jaroslav Kysela <perex@perex.cz>, Eric Dumazet <edumazet@google.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Fabio Estevam <festevam@gmail.com>, Qiang Zhao <qiang.zhao@nxp.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Lee Jones <lee@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, Nicolin Chen <nicoleotsuka@gmail.com>, linux-gpio@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Christophe JAILLET <christophe.jaillet@wanadoo.fr>, Takashi Iwai <tiwai@suse.com>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>, Liam Girdwood <lgirdwood@gmail.com>, Li Yang <leoyang.li@nxp.com>, Mark Brown <broonie@kernel.org>, Si
+ mon Horman <horms@kernel.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Sep 22, 2023 at 02:07:59PM -0300, Jason Gunthorpe wrote:
-> In many cases the dev argument will now be !NULL so we should use it to
-> finalize the domain at allocation.
+On 25/09/2023 15:50, Herve Codina wrote:
+>>>>> With these details, do you still think I need to change the child (channel)
+>>>>> compatible ?    
+>>>>
+>>>> From OS point of view, you have a driver binding to this child-level
+>>>> compatible. How do you enforce Linux driver binding based on parent
+>>>> compatible? I looked at your next patch and I did not see it.  
+>>>
+>>> We do not need to have the child driver binding based on parent.  
+>>
+>> Exactly, that's what I said.
+>>
+>>> We have to ensure that the child handles a QMC channel and the parent provides
+>>> a QMC channel.
+>>>
+>>> A QMC controller (parent) has to implement the QMC API (include/soc/fsl/qe/qmc.h)
+>>> and a QMC channel driver (child) has to use the QMC API.  
+>>
+>> How does this solve my concerns? Sorry, I do not understand. Your driver
+>> is a platform driver and binds to the generic compatible. How do you
+>> solve regular compatibility issues (need for quirks) if parent
+>> compatible is not used?
+>>
+>> How does being QMC compliant affects driver binding and
+>> compatibility/quirks?
+>>
+>> We are back to my original question and I don't think you answered to
+>> any of the concerns.
 > 
-> Make apple_dart_finalize_domain() accept the correct type.
+> Well, to be sure that I understand correctly, do you mean that I should
+> provide a compatible for the child (HDLC) with something like this:
+> --- 8< ---
+>   compatible:
+>     items:
+>       - enum:
+>           - fsl,mpc885-qmc-hdlc
+>           - fsl,mpc866-qmc-hdlc
+>       - const: fsl,cpm1-qmc-hdlc
+>       - const: fsl,qmc-hdlc
+> --- 8< ---
+
+Yes, more or less, depending on actual compatibility and SoC-family.
+Maybe "fsl,cpm1-qmc-hdlc" item in the middle is not needed.
+
 > 
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-> ---
->  drivers/iommu/apple-dart.c | 26 ++++++++++++++++++--------
->  1 file changed, 18 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/iommu/apple-dart.c b/drivers/iommu/apple-dart.c
-> index 62efe0aa056f60..2c1832e357c7c6 100644
-> --- a/drivers/iommu/apple-dart.c
-> +++ b/drivers/iommu/apple-dart.c
-> @@ -568,10 +568,9 @@ apple_dart_setup_translation(struct apple_dart_domain *domain,
->  	stream_map->dart->hw->invalidate_tlb(stream_map);
->  }
->  
-> -static int apple_dart_finalize_domain(struct iommu_domain *domain,
-> +static int apple_dart_finalize_domain(struct apple_dart_domain *dart_domain,
->  				      struct apple_dart_master_cfg *cfg)
->  {
-> -	struct apple_dart_domain *dart_domain = to_dart_domain(domain);
->  	struct apple_dart *dart = cfg->stream_maps[0].dart;
->  	struct io_pgtable_cfg pgtbl_cfg;
->  	int ret = 0;
-> @@ -597,16 +596,17 @@ static int apple_dart_finalize_domain(struct iommu_domain *domain,
->  		.iommu_dev = dart->dev,
->  	};
->  
-> -	dart_domain->pgtbl_ops =
-> -		alloc_io_pgtable_ops(dart->hw->fmt, &pgtbl_cfg, domain);
-> +	dart_domain->pgtbl_ops = alloc_io_pgtable_ops(dart->hw->fmt, &pgtbl_cfg,
-> +						      &dart_domain->domain);
->  	if (!dart_domain->pgtbl_ops) {
->  		ret = -ENOMEM;
->  		goto done;
->  	}
->  
-> -	domain->pgsize_bitmap = pgtbl_cfg.pgsize_bitmap;
-> -	domain->geometry.aperture_start = 0;
-> -	domain->geometry.aperture_end = (dma_addr_t)DMA_BIT_MASK(dart->ias);
-> +	dart_domain->domain.pgsize_bitmap = pgtbl_cfg.pgsize_bitmap;
-> +	dart_domain->domain.geometry.aperture_start = 0;
-> +	dart_domain->domain.geometry.aperture_end =
-> +		(dma_addr_t)DMA_BIT_MASK(dart->ias);
->  
->  	dart_domain->finalized = true;
->  
-> @@ -661,7 +661,7 @@ static int apple_dart_attach_dev_paging(struct iommu_domain *domain,
->  	if (cfg->stream_maps[0].dart->force_bypass)
->  		return -EINVAL;
->  
-> -	ret = apple_dart_finalize_domain(domain, cfg);
-> +	ret = apple_dart_finalize_domain(dart_domain, cfg);
->  	if (ret)
->  		return ret;
->  
-> @@ -757,6 +757,16 @@ static struct iommu_domain *apple_dart_domain_alloc_paging(struct device *dev)
->  
->  	mutex_init(&dart_domain->init_lock);
->  
-> +	if (dev) {
-> +		struct apple_dart_master_cfg *cfg = dev_iommu_priv_get(dev);
-> +		int ret;
-> +
-> +		ret = apple_dart_finalize_domain(dart_domain, cfg);
-> +		if (ret) {
-> +			kfree(dart_domain);
-> +			return ERR_PTR(ret);
-> +		}
-> +	}
->  	return &dart_domain->domain;
->  }
->  
-> -- 
-> 2.42.0
+> If so, I didn't do that because a QMC channel consumer (driver matching
+> fsl,qmc-hdlc) doesn't contains any SoC specific part.
 
-Reviewed-by: Janne Grunau <j@jannau.net>
+Just like hundreds of other drivers. :)
 
-best regards
+There is a paragraph about specific compatibles here:
+https://www.kernel.org/doc/html/latest/devicetree/bindings/writing-schema.html
 
-Janne
+
+> It uses the channel as a communication channel to send/receive HDLC frames
+> to/from this communication channel.
+> All the specific SoC part is handled by the QMC controller (parent) itself and
+> not by any consumer (child).
+
+OK, so you guarantee in 100% for this hardware and all future (including
+designs unknown currently), that they will be 100% compatible with
+existing QMC channel consumer (child, matching fsl,qmc-hdlc) driver,
+thus there will be no need for any quirk. Specifically, there will be no
+chances that it would be reasonable to re-use the same driver for child
+(currently fsl,qmc-hdlc) in different parent.
+
+P.S. If you received this email twice, apologies, I have here troubles
+with internet.
+
+Best regards,
+Krzysztof
+
