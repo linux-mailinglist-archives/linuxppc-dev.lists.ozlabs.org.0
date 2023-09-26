@@ -1,53 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 980C17AF65C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Sep 2023 00:37:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B96447AF683
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Sep 2023 01:03:44 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EAvZ3vNy;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RwF4b43Xvz3cFh
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Sep 2023 08:37:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RwFfQ4DLwz3c2G
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Sep 2023 09:03:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.166.50; helo=mail-io1-f50.google.com; envelope-from=namhyung@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-io1-f50.google.com (mail-io1-f50.google.com [209.85.166.50])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EAvZ3vNy;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RwF4719p6z30Q4
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Sep 2023 08:37:26 +1000 (AEST)
-Received: by mail-io1-f50.google.com with SMTP id ca18e2360f4ac-79f96f83270so310617439f.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Sep 2023 15:37:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695767843; x=1696372643;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6GH96LiNc6wK6MXQb714sEPdA/4C5gNr2ow4kqLj+00=;
-        b=VByrNH8D6ADY8iHCkSI5Apkvrd9ApIk0YKQ8Ho4Ungri7M+zaySM8++PS1TWFotlNX
-         9zoVIvTBzeEGXCnn+R2zD6bm7aEDpbh1zfgHSg9yViyYoZSAb8FqG70I1i0miWZB62GW
-         nT+9md+2cIBRAVr6o5OP8yI5Vg9RZQLYG4xwD0D2N6qZIWeeu9LHNntPp6aZuRgoB2cn
-         Le5O4l4n/vlnd8PfTHml7/+kzMlvB4UzBgF6J1T1Dfid3YWqHbojbKy+jsHhOcMHR3h1
-         tWwLAhhOMftKxEjK5OXYk6vVURzLGAzO5o10a0eobwvtCSHOPIezWiEtg+0lFTW+MdoV
-         4/FA==
-X-Gm-Message-State: AOJu0YzCqz7rvVVR7XPkAczuPaTDymRdTL6twgzlKff5GQk90WGM5dAb
-	d8kz/T6QqfYezYiNW3CTKccsPeCsWngcZIQwVIQ=
-X-Google-Smtp-Source: AGHT+IEYuHig40h2Sk4Ta/ViVmjYwQksQIPo0D2f+Okq+2a8j2jNjoxOkvEhnfwwp5/anaD4GvcRmv41tCiiti4v4oQ=
-X-Received: by 2002:a5d:9251:0:b0:79f:e9ac:f60a with SMTP id
- e17-20020a5d9251000000b0079fe9acf60amr153708iol.20.1695767843632; Tue, 26 Sep
- 2023 15:37:23 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RwFdV06dbz3bx0
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Sep 2023 09:02:53 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by ams.source.kernel.org (Postfix) with ESMTP id 1DF70B81240;
+	Tue, 26 Sep 2023 23:02:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD1EC433C7;
+	Tue, 26 Sep 2023 23:02:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1695769369;
+	bh=je6g4sK4peKsh1qGI9bWWT/XBfOKZh3dIb4/VXqVR94=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=EAvZ3vNy2vbk5wk/qfuZFLTEzYgxPC0IYYVZYNR1ywjJCc/PknMAGU9l9YgkeUC0D
+	 IuCC0cbREtDSWvQO/d+8xxXF+rvW+7sIJh4gkPkycF0XSKWoHqOd8kzk10XbDgzylE
+	 y6loJllN6SBw6Lqj3JNsIraIOGu+Q1prRZTdWYcFyEXnYtiHcGW/Nbdv9wpENKYprW
+	 3Zt76Rn69EOBuO3S/HiKtmJg9qR2z4o6HsIVeHe3BhsCs8hvQWo1SEXbnScSnTsI0w
+	 bLtk+MvKaBJqKNx4vERctWe0Lk/crpGPtb3oigWZknhckvTcDY3fmVO5ShaLZpfJxG
+	 5z1iuIuI0PrsA==
+Date: Tue, 26 Sep 2023 18:02:47 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Shuai Xue <xueshuai@linux.alibaba.com>
+Subject: Re: Questions: Should kernel panic when PCIe fatal error occurs?
+Message-ID: <20230926230247.GA429368@bhelgaas>
 MIME-Version: 1.0
-References: <20230907165933.36442-1-atrajeev@linux.vnet.ibm.com>
- <1F3D650F-91B5-4570-85D2-A925320BE7AE@linux.ibm.com> <298307AE-8AB5-40B6-A9CC-C1DBE720450C@linux.vnet.ibm.com>
- <2C5606DF-4532-4263-9482-50D5668C09AF@linux.vnet.ibm.com> <CA+JHD90aQ5OM3PLrrt2nnBDL1b6-Hx7EsRjpnzawzYY3VSYi3Q@mail.gmail.com>
-In-Reply-To: <CA+JHD90aQ5OM3PLrrt2nnBDL1b6-Hx7EsRjpnzawzYY3VSYi3Q@mail.gmail.com>
-From: Namhyung Kim <namhyung@kernel.org>
-Date: Tue, 26 Sep 2023 15:37:12 -0700
-Message-ID: <CAM9d7cj=h=8omHwerjXPaWJbNFOpaiogjw8gsTdvwS7mTschsg@mail.gmail.com>
-Subject: Re: [PATCH V2] perf test: Fix parse-events tests to skip parametrized events
-To: Arnaldo Carvalho de Melo <arnaldo.melo@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fdc7a4ee-250f-7ec8-ca15-32cbd480bd3e@linux.alibaba.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,87 +57,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ian Rogers <irogers@google.com>, Athira Rajeev <atrajeev@linux.vnet.ibm.com>, Sachin Sant <sachinp@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>, Adrian Hunter <adrian.hunter@intel.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-perf-users <linux-perf-users@vger.kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Jiri Olsa <jolsa@kernel.org>, Disha Goel <disgoel@linux.vnet.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, "wangkefeng.wang@huawei.com" <wangkefeng.wang@huawei.com>, "Rafael J. Wysocki" <rafael@kernel.org>, gregkh@linuxfoundation.org, Linux PCI <linux-pci@vger.kernel.org>, mahesh@linux.ibm.com, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, "tanxiaofei@huawei.com" <tanxiaofei@huawei.com>, "bp@alien8.de" <bp@alien8.de>, Baolin Wang <baolin.wang@linux.alibaba.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, bhelgaas@google.com, "james.morse@arm.com" <james.morse@arm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "lenb@kernel.org" <lenb@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+On Fri, Sep 22, 2023 at 10:46:36AM +0800, Shuai Xue wrote:
+> ...
 
-On Mon, Sep 25, 2023 at 10:37=E2=80=AFAM Arnaldo Carvalho de Melo
-<arnaldo.melo@gmail.com> wrote:
->
->
->
-> On Wed, Sep 13, 2023, 7:40 AM Athira Rajeev <atrajeev@linux.vnet.ibm.com>=
- wrote:
->>
->>
->>
->> > On 08-Sep-2023, at 7:48 PM, Athira Rajeev <atrajeev@linux.vnet.ibm.com=
-> wrote:
->> >
->> >
->> >
->> >> On 08-Sep-2023, at 11:04 AM, Sachin Sant <sachinp@linux.ibm.com> wrot=
-e:
->> >>
->> >>
->> >>
->> >>> On 07-Sep-2023, at 10:29 PM, Athira Rajeev <atrajeev@linux.vnet.ibm.=
-com> wrote:
->> >>>
->> >>> Testcase "Parsing of all PMU events from sysfs" parse events for
->> >>> all PMUs, and not just cpu. In case of powerpc, the PowerVM
->> >>> environment supports events from hv_24x7 and hv_gpci PMU which
->> >>> is of example format like below:
->> >>>
->> >>> - hv_24x7/CPM_ADJUNCT_INST,domain=3D?,core=3D?/
->> >>> - hv_gpci/event,partition_id=3D?/
->> >>>
->> >>> The value for "?" needs to be filled in depending on system
->> >>> configuration. It is better to skip these parametrized events
->> >>> in this test as it is done in:
->> >>> 'commit b50d691e50e6 ("perf test: Fix "all PMU test" to skip
->> >>> parametrized events")' which handled a simialr instance with
->> >>> "all PMU test".
->> >>>
->> >>> Fix parse-events test to skip parametrized events since
->> >>> it needs proper setup of the parameters.
->> >>>
->> >>> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
->> >>> ---
->> >>> Changelog:
->> >>> v1 -> v2:
->> >>> Addressed review comments from Ian. Updated size of
->> >>> pmu event name variable and changed bool name which is
->> >>> used to skip the test.
->> >>>
->> >>
->> >> The patch fixes the reported issue.
->> >>
->> >> 6.2: Parsing of all PMU events from sysfs                          : =
-Ok
->> >> 6.3: Parsing of given PMU events from sysfs                        : =
-Ok
->> >>
->> >> Tested-by: Sachin Sant <sachinp@linux.ibm.com>
->> >>
->> >> - Sachin
->> >
->> > Hi Sachin, Ian
->> >
->> > Thanks for testing the patch
->>
->> Hi Arnaldo
->>
->> Can you please check and pull this if it looks good to go .
->
->
-> Namhyung, can you please take a look?
+> Actually, this is a question from my colleague from firmware team.
+> The original question is that:
+> 
+>     "Should I set CPER_SEV_FATAL for Generic Error Status Block when a
+>     PCIe fatal error is detected? If set, kernel will always panic.
+>     Otherwise, kernel will always not panic."
+> 
+> So I pull a question about desired behavior of Linux kernel first :)
+> From the perspective of the kernel, CPER_SEV_FATAL for Generic Error
+> Status Block is not reasonable. The kernel will attempt to recover
+> Fatal errors, although recovery may fail.
 
-Yep sure.  I think it needs to close the file when getline() fails.
+I don't know the semantics of CPER_SEV_FATAL or why it's there.
+With CPER, we have *two* error severities: a "native" one defined by
+the PCIe spec and another defined by the platform via CPER.
 
-Athira, can you please send v3 with that?
+I speculate that the reason for the CPER severity could be to provide
+a severity for error sources that don't have a "native" severity like
+AER does, or for the vendor to force the OS to restart (for
+CPER_SEV_FATAL, anyway) in cases where it might not otherwise.
 
-Thanks,
-Namhyung
+In the native case, we only have the PCIe severity and don't have the
+CPER severity at all, and I suspect that unless there's uncontained
+data corruption, we would rather handle even the most severe PCIe
+fatal error by disabling the specific device(s) instead of panicking
+and restarting the whole machine.
+
+So for PCIe errors, I'm not sure setting CPER_SEV_FATAL is beneficial
+unless the platform wants to force the OS to panic, e.g., maybe the
+platform knows about data corruption and/or the vendor wants the OS to
+panic as part of a reliability story.
+
+Presumably the platform has already logged the error, and I assume the
+platform *could* restart without even returning to the OS, but maybe
+it wants the OS to do a crashdump or shutdown in a more orderly way.
+
+Bjorn
