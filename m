@@ -2,70 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB7BC7B0D7A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Sep 2023 22:31:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE2787B0F2A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Sep 2023 00:58:39 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=MAC4HcxD;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BghfInz1;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RwpDp4ctBz3cPS
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Sep 2023 06:31:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RwsV56MV8z3c9x
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Sep 2023 08:58:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=MAC4HcxD;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BghfInz1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::32f; helo=mail-wm1-x32f.google.com; envelope-from=ndesaulniers@google.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=andersson@kernel.org; receiver=lists.ozlabs.org)
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RwpCx3YWCz2yVh
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Sep 2023 06:31:08 +1000 (AEST)
-Received: by mail-wm1-x32f.google.com with SMTP id 5b1f17b1804b1-40528376459so122395065e9.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Sep 2023 13:31:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1695846662; x=1696451462; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1bPQ4W+m4k6grk2QsqsO+u/OMm6oUavQe8VAaeMpNSM=;
-        b=MAC4HcxDvImEG1MFfkt+nrwZ04lmK46oTOYESrvBnxE101y5GvwbnTA0xd7cp1i3fx
-         VdwEMgvgcL/CNnV2H1j7WE0gzDw1UtIbX/rfFUhLCXMWflc4BOBDiuSBjJcVUDVT+FB2
-         XXyBVzVGo8MHrt26kj3BuLXx/Y/6cAgyvkdclQKHoG0qiAET43e231AHjISojQ7toKEd
-         u7rTP6cX0EtEgE2cyCBVneXlWiYBMzCeZunfYm+k/HR/egb7W73VCEb2Z0dkMknEzUSQ
-         LHDXT+sZSoSlnEh9s48wKLJupyL1wBU3tDP+ztN5jLkMJkEDdEVqnAxfxYayRdpyUdVk
-         dcEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695846662; x=1696451462;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1bPQ4W+m4k6grk2QsqsO+u/OMm6oUavQe8VAaeMpNSM=;
-        b=qj/0HOk8lT14dOtn7C7mHmnyDd3qPwtnurfi01/d43QUdW58Vo/7qAb6S4SpRCMIVc
-         VYQWKdJVomRQlYU7tdNIn//Tw/jjbm1M/xtVskPTbqEok3BdipMNrg1/CxykjbV5u1tW
-         gIW1firHBlMaYkdXdeovZqoi2xSVuUU5AgjB7meIeY7QZ7EY4HH8kkoP8FgtkG/Tu5vi
-         dxojyENcYYePRFd+J0CCyBpsLIsrEwk42BVDfUnrLkUM9mSba0Wln68g489uO73CvLf5
-         lLBFUdLsvyWNTXdtit5b4q33QYh5mRdMB6EsXAkP5G9LcF9On4Iu9I4yQxIVemoDVk6v
-         gB/Q==
-X-Gm-Message-State: AOJu0Ywr0lsBvoE7wDQ1/KgWh1kkAhGJX6JKP2iLYDz3fFs6YKSSyp4+
-	m9XLciJCpF2bPkAkTZOP+Pfq9Ft9CM3OJKUOn4ZFjA==
-X-Google-Smtp-Source: AGHT+IGHhim/72mDyUSht5r5coAg+DnoIeszZ0PMJICln5voUh7kOaTJ+BemafS1Ina7CW/UDOHZ0LdSqDwwnM/oVG8=
-X-Received: by 2002:adf:ee4b:0:b0:31a:e972:3601 with SMTP id
- w11-20020adfee4b000000b0031ae9723601mr2637429wro.54.1695846662401; Wed, 27
- Sep 2023 13:31:02 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RwsTF08v4z2y1j;
+	Thu, 28 Sep 2023 08:57:52 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by ams.source.kernel.org (Postfix) with ESMTP id 0A5BAB818F7;
+	Wed, 27 Sep 2023 22:57:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E53C9C433C7;
+	Wed, 27 Sep 2023 22:57:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1695855467;
+	bh=U6mvGN6IUsN3aQ3Mg+rtFDHole4TLUqxeXU4RuqCc9I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BghfInz1dtGj+a0NwGrQpQyiHTPQFE7pGKytrpsBClpu9NX2eDcjSChVYZmAF6XDB
+	 owkxfj0jdteMSoWlG/cGItYI7rwQRUHp8gvgTfu6LqVuG2Ju3NmaLW+PzihWROGETC
+	 8im2c1V6bhHXdTgg2FyeVqoOoGl2C9rGCm7cO+QnD4KASaYNOMS1b5kWe3RD3hlBwa
+	 8K94UVok49+wD2jCK35a7ooWNY6CyXEsRolTaaTlHbmMq6gapMGZ2q5sD3ePlXHOQS
+	 huIRK9HVFU8DWh9mV8DVS8hYOkca+rRCVDtybY9i3VxzNc3SAJ8sCy+Qm1xR/Ceo4m
+	 4kcCfJF20jzJQ==
+Date: Wed, 27 Sep 2023 16:01:58 -0700
+From: Bjorn Andersson <andersson@kernel.org>
+To: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH 00/40] soc: Convert to platform remove callback returning
+ void
+Message-ID: <f4hvrslynlgmxu4a2gogc5idvumskhaalxgwildy56yqk2wz7d@lkh4swkv52mi>
+References: <20230925095532.1984344-1-u.kleine-koenig@pengutronix.de>
+ <CACPK8XeROYz_XaB3TvUhdXm7Vm8fjC8yU+mfvA58=_FiDrBy-g@mail.gmail.com>
+ <1b2fddf8-c0a6-4afa-8ad0-f280dea1607f@app.fastmail.com>
 MIME-Version: 1.0
-References: <20230908153056.3503975-1-gjoyce@linux.vnet.ibm.com>
- <20230908153056.3503975-2-gjoyce@linux.vnet.ibm.com> <20230913165612.GA2213586@dev-arch.thelio-3990X>
- <CAKwvOdnbKA-DiWRorWMR93JPFX-OjUjO=SQXSRf4=DpwzvZ=pQ@mail.gmail.com> <d07b66c55e957c78aff8ab9a6170747832cbc8c5.camel@linux.vnet.ibm.com>
-In-Reply-To: <d07b66c55e957c78aff8ab9a6170747832cbc8c5.camel@linux.vnet.ibm.com>
-From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Wed, 27 Sep 2023 13:30:47 -0700
-Message-ID: <CAKwvOd=K_xNK71DpivVsyKOKWPo1XG78zGsAdZTWvj=tHmh2ZQ@mail.gmail.com>
-Subject: Re: [PATCH v7 1/3 RESEND] block:sed-opal: SED Opal keystore
-To: gjoyce@linux.vnet.ibm.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1b2fddf8-c0a6-4afa-8ad0-f280dea1607f@app.fastmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,146 +62,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: axboe@kernel.dk, linux-block@vger.kernel.org, llvm@lists.linux.dev, nayna@linux.ibm.com, Nathan Chancellor <nathan@kernel.org>, jarkko@kernel.org, keyrings@vger.kernel.org, jonathan.derrick@linux.dev, brking@linux.vnet.ibm.com, akpm@linux-foundation.org, msuchanek@suse.de, linuxppc-dev@lists.ozlabs.org
+Cc: Nishanth Menon <nm@ti.com>, Herve Codina <herve.codina@bootlin.com>, Heiko =?utf-8?Q?St=C3=BCbner?= <heiko@sntech.de>, Mateusz Holenko <mholenko@antmicro.com>, Muhammad Usama Anjum <usama.anjum@collabora.com>, linux-tegra@vger.kernel.org, "Conor.Dooley" <conor.dooley@microchip.com>, Thierry Reding <thierry.reding@gmail.com>, Alim Akhtar <alim.akhtar@samsung.com>, linux-riscv@lists.infradead.org, Karol Gugala <kgugala@antmicro.com>, Qiang Zhao <qiang.zhao@nxp.com>, Hitomi Hasegawa <hasegawa-hitomi@fujitsu.com>, Rob Herring <robh@kernel.org>, linux-samsung-soc@vger.kernel.org, linux-aspeed@lists.ozlabs.org, Ruan Jinjie <ruanjinjie@huawei.com>, Yinbo Zhu <zhuyinbo@loongson.cn>, Jon Hunter <jonathanh@nvidia.com>, linux-rockchip@lists.infradead.org, Gabriel Somlo <gsomlo@gmail.com>, Andy Gross <agross@kernel.org>, Huisong Li <lihuisong@huawei.com>, Joel Stanley <joel@jms.id.au>, Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, Sumit Gupta <sumitg@nvidia.com>, "zhang
+ .songyi" <zhang.songyi@zte.com.cn>, Zev Weiss <zev@bewilderbeest.net>, linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org, Yang Yingliang <yangyingliang@huawei.com>, Lubomir Rintel <lkundrak@v3.sk>, Krzysztof Halasa <khalasa@piap.pl>, loongarch@lists.linux.dev, Santosh Shilimkar <ssantosh@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, Michal Simek <michal.simek@amd.com>, linux-arm-kernel@lists.infradead.org, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Daire McNamara <daire.mcnamara@microchip.com>, linux-kernel@vger.kernel.org, Shang XiaoJing <shangxiaojing@huawei.com>, Leo Li <leoyang.li@nxp.com>, Konrad Dybcio <konrad.dybcio@linaro.org>, Andrew Jeffery <andrew@aj.id.au>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, linux-mediatek@lists.infradead.org, Nick Alcock <nick.alcock@oracle.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 27, 2023 at 1:26=E2=80=AFPM Greg Joyce <gjoyce@linux.vnet.ibm.c=
-om> wrote:
->
-> On Wed, 2023-09-13 at 13:49 -0700, Nick Desaulniers wrote:
-> > On Wed, Sep 13, 2023 at 9:56=E2=80=AFAM Nathan Chancellor <nathan@kerne=
-l.org>
-> > wrote:
-> > > Hi Greg,
-> > >
-> > > On Fri, Sep 08, 2023 at 10:30:54AM -0500, gjoyce@linux.vnet.ibm.com
-> > >  wrote:
-> > > > From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
-> > > >
-> > > > Add read and write functions that allow SED Opal keys to stored
-> > > > in a permanent keystore.
-> > > >
-> > > > Signed-off-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
-> > > > Reviewed-by: Jonathan Derrick <jonathan.derrick@linux.dev>
-> > > > ---
-> > > >  block/Makefile               |  2 +-
-> > > >  block/sed-opal-key.c         | 24 ++++++++++++++++++++++++
-> > > >  include/linux/sed-opal-key.h | 15 +++++++++++++++
-> > > >  3 files changed, 40 insertions(+), 1 deletion(-)
-> > > >  create mode 100644 block/sed-opal-key.c
-> > > >  create mode 100644 include/linux/sed-opal-key.h
-> > > >
-> > > > diff --git a/block/Makefile b/block/Makefile
-> > > > index 46ada9dc8bbf..ea07d80402a6 100644
-> > > > --- a/block/Makefile
-> > > > +++ b/block/Makefile
-> > > > @@ -34,7 +34,7 @@ obj-$(CONFIG_BLK_DEV_ZONED) +=3D blk-zoned.o
-> > > >  obj-$(CONFIG_BLK_WBT)                +=3D blk-wbt.o
-> > > >  obj-$(CONFIG_BLK_DEBUG_FS)   +=3D blk-mq-debugfs.o
-> > > >  obj-$(CONFIG_BLK_DEBUG_FS_ZONED)+=3D blk-mq-debugfs-zoned.o
-> > > > -obj-$(CONFIG_BLK_SED_OPAL)   +=3D sed-opal.o
-> > > > +obj-$(CONFIG_BLK_SED_OPAL)   +=3D sed-opal.o sed-opal-key.o
-> > > >  obj-$(CONFIG_BLK_PM)         +=3D blk-pm.o
-> > > >  obj-$(CONFIG_BLK_INLINE_ENCRYPTION)  +=3D blk-crypto.o blk-crypto-
-> > > > profile.o \
-> > > >                                          blk-crypto-sysfs.o
-> > > > diff --git a/block/sed-opal-key.c b/block/sed-opal-key.c
-> > > > new file mode 100644
-> > > > index 000000000000..16f380164c44
-> > > > --- /dev/null
-> > > > +++ b/block/sed-opal-key.c
-> > > > @@ -0,0 +1,24 @@
-> > > > +// SPDX-License-Identifier: GPL-2.0-only
-> > > > +/*
-> > > > + * SED key operations.
-> > > > + *
-> > > > + * Copyright (C) 2022 IBM Corporation
-> > > > + *
-> > > > + * These are the accessor functions (read/write) for SED Opal
-> > > > + * keys. Specific keystores can provide overrides.
-> > > > + *
-> > > > + */
-> > > > +
-> > > > +#include <linux/kernel.h>
-> > > > +#include <linux/errno.h>
-> > > > +#include <linux/sed-opal-key.h>
-> > > > +
-> > > > +int __weak sed_read_key(char *keyname, char *key, u_int *keylen)
-> > > > +{
-> > > > +     return -EOPNOTSUPP;
-> > > > +}
-> > > > +
-> > > > +int __weak sed_write_key(char *keyname, char *key, u_int keylen)
-> > > > +{
-> > > > +     return -EOPNOTSUPP;
-> > > > +}
-> > >
-> > > This change causes a build failure for certain clang configurations
-> > > due
-> > > to an unfortunate issue [1] with recordmcount, clang's integrated
-> > > assembler, and object files that contain a section with only weak
-> > > functions/symbols (in this case, the .text section in sed-opal-
-> > > key.c),
-> > > resulting in
-> > >
-> > >   Cannot find symbol for section 2: .text.
-> > >   block/sed-opal-key.o: failed
-> > >
-> > > when building this file.
+On Wed, Sep 27, 2023 at 10:43:16AM +0200, Arnd Bergmann wrote:
+> On Wed, Sep 27, 2023, at 04:25, Joel Stanley wrote:
+> > On Mon, 25 Sept 2023 at 09:55, Uwe Kleine-König <u.kleine-koenig@pengutronix.de> wrote:
+> >>
+> >> this series converts all platform drivers below drivers/soc to use
+> >> .remove_new(). The motivation is to get rid of an integer return code
+> >> that is (mostly) ignored by the platform driver core and error prone on
+> >> the driver side.
+> >>
+> >> See commit 5c5a7680e67b ("platform: Provide a remove callback that
+> >> returns no value") for an extended explanation and the eventual goal.
+> >>
+> >> As there is no single maintainer team for drivers/soc, I suggest the
+> >> individual maintainers to pick up "their" patches.
 > >
-> > The definitions in
-> > block/sed-opal-key.c
-> > should be deleted. Instead, in
-> > include/linux/sed-opal-key.h
-> > CONFIG_PSERIES_PLPKS_SED should be used to define static inline
-> > versions when CONFIG_PSERIES_PLPKS_SED is not defined.
+> > I'd be happy if Arnd merged the lot at once. Arnd, what do you think?
 > >
-> > #ifdef CONFIG_PSERIES_PLPKS_SED
-> > int sed_read_key(char *keyname, char *key, u_int *keylen);
-> > int sed_write_key(char *keyname, char *key, u_int keylen);
-> > #else
-> > static inline
-> > int sed_read_key(char *keyname, char *key, u_int *keylen) {
-> >   return -EOPNOTSUPP;
-> > }
-> > static inline
-> > int sed_write_key(char *keyname, char *key, u_int keylen);
-> >   return -EOPNOTSUPP;
-> > }
-> > #endif
->
-> This change will certainly work for pseries. The intent of the weak
-> functions was to allow a different unknown permanent keystore to be the
-> source for seeding SED Opal keys. It also kept platform specific code
-> out of the block directory.
->
-> I'm happy to switch to the approach above, if losing those two goals
-> isn't a concern.
+> > If that will be too messy then I understand. I have queued the aspeed
+> > ones locally and will push that out if we decide that's the best way
+> > to go.
+> 
+> The main downside of merging it all at once through the soc tree
+> is that there may be patches that conflict with other work going on
+> in individual drivers.
+> 
+> What I'd suggest doing here is:
+> 
+> - have platform maintainers pick up patches for their drivers
+>   if that is their preference for any reason
+> 
 
-Assuming those would have mutually exclusive KConfigs, then the
-pattern I describe would be preferred.
+I'd prefer this for the qcom drivers at least, please let me know if you
+would like me to proceed.
 
->
-> >
-> > > Is there any real reason to have a separate translation unit for
-> > > these
-> > > two functions versus just having them living in sed-opal.c? Those
-> > > two
-> > > object files share the same Kconfig dependency. I am happy to send
-> > > a
-> > > patch if that is an acceptable approach.
-> > >
-> > > [1]: https://github.com/ClangBuiltLinux/linux/issues/981
-> > >
-> > > Cheers,
-> > > Nathan
-> > >
-> >
-> >
->
+Regards,
+Bjorn
 
-
---=20
-Thanks,
-~Nick Desaulniers
+> - get a pull request from Uwe for the soc tree for anything that has
+>   not been picked up in one or two weeks from now
+> 
+>       Arnd
