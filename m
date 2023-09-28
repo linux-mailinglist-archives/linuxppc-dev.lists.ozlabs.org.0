@@ -1,42 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E7F17B1BED
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Sep 2023 14:16:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67B3C7B1BF5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Sep 2023 14:17:46 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=V+wOzFnc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bFxyq+wI;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RxCCC2PKpz3cms
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Sep 2023 22:16:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RxCD81glWz3dCq
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Sep 2023 22:17:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=V+wOzFnc;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bFxyq+wI;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=jlayton@kernel.org; receiver=lists.ozlabs.org)
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=jlayton@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rx9df1V4Zz2yMJ;
-	Thu, 28 Sep 2023 21:06:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rx9dy2PBtz2xwD;
+	Thu, 28 Sep 2023 21:06:30 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id 69215B81BB2;
+	by sin.source.kernel.org (Postfix) with ESMTP id 5B9D9CE1D1B;
+	Thu, 28 Sep 2023 11:06:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B2DC07618;
 	Thu, 28 Sep 2023 11:06:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B45DC433C8;
-	Thu, 28 Sep 2023 11:05:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1695899170;
-	bh=AhfBjRw4Zieo7d/UWgS6g+DDX4jTgfxPdqjByEx9qhM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=V+wOzFncXPhDXQFQdHny1CsSK9qUJSENwQ3KCibIzAaql9xTx9HnhDcijW4/7BOtC
-	 kszW/YDyA0AMr7XQAUyJiZeb60fme2uDkyobxKoT8cY6VhZHy5eoMPnsaN6X7TtxCq
-	 QTaef29MEouz7MkE+tPPdhmCepxFcMdSgkZxMJFkcJInXSuCSMx/JWDM3dr1kZYemo
-	 enoSOcU6aqdkN9wSvXmqf6Z9xnaErzYq51O9jQbKnwkBY5wjm/kE01rgGkYxHItLa5
-	 5cRJCieL6/r3mfMz8yZQYtWkWaXM39nIwleCYU584hrkq3VtvO021SVUVEZ1qpwd4S
-	 nSI/tWahGoeXg==
+	s=k20201202; t=1695899185;
+	bh=EREGf1zcL5EA1z4Sr1OlKcRcr7XPDG3rng7QCUAKDtA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=bFxyq+wI82J/WQ/3LWfsBekhh8OiaT2wYsSAjrDQk/NrGOURDgw5PWuMWCgk6npZ6
+	 gYLI9nWuVeVxeze31PlhCET+PdMZY70Xy9a1ckPrunnaxH93RrMhwAf8QKEfxBAiMW
+	 A3cOqQLFufYccE9l6906MspLgdIVzFHYGgIdgAYxkIU2uPLpvYnElaoBbxLu/GOElz
+	 nfJ0kqX0lpMPX7fozYTYh3xQ6uUVAew7yxgjGjuRy8Oehoifs61PNFQPPpZBViM2G3
+	 Q4xpsOM8kKsqE0iTJbEpoU+nreDJHiQfBK4Xqt/1AbCybTiYxp8gYPp3ucvOuJLoxK
+	 YlW0JpzEkcqqQ==
 From: Jeff Layton <jlayton@kernel.org>
 To: Alexander Viro <viro@zeniv.linux.org.uk>,
 	Christian Brauner <brauner@kernel.org>,
@@ -176,10 +176,12 @@ To: Alexander Viro <viro@zeniv.linux.org.uk>,
 	"Serge E. Hallyn" <serge@hallyn.com>,
 	Stephen Smalley <stephen.smalley.work@gmail.com>,
 	Eric Paris <eparis@parisplace.org>
-Subject: [PATCH 85/87] fs: rename i_atime and i_mtime fields to __i_atime and __i_mtime
-Date: Thu, 28 Sep 2023 07:05:52 -0400
-Message-ID: <20230928110554.34758-1-jlayton@kernel.org>
+Subject: [PATCH 86/87] fs: switch timespec64 fields in inode to discrete integers
+Date: Thu, 28 Sep 2023 07:05:53 -0400
+Message-ID: <20230928110554.34758-2-jlayton@kernel.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230928110554.34758-1-jlayton@kernel.org>
+References: <20230928110554.34758-1-jlayton@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Mailman-Approved-At: Thu, 28 Sep 2023 22:14:32 +1000
@@ -199,60 +201,91 @@ Cc: jfs-discussion@lists.sourceforge.net, linux-efi@vger.kernel.org, platform-dr
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Make it clear that these fields are private now, and that the accessors
-should be used instead.
+This shaves 8 bytes off struct inode, according to pahole.
 
 Signed-off-by: Jeff Layton <jlayton@kernel.org>
 ---
- include/linux/fs.h | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ include/linux/fs.h | 32 +++++++++++++++++++++++---------
+ 1 file changed, 23 insertions(+), 9 deletions(-)
 
 diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 12d247b82aa0..831657011036 100644
+index 831657011036..de902ff2938b 100644
 --- a/include/linux/fs.h
 +++ b/include/linux/fs.h
-@@ -671,9 +671,9 @@ struct inode {
+@@ -671,9 +671,12 @@ struct inode {
  	};
  	dev_t			i_rdev;
  	loff_t			i_size;
--	struct timespec64	i_atime;
--	struct timespec64	i_mtime;
--	struct timespec64	__i_ctime; /* use inode_*_ctime accessors! */
-+	struct timespec64	__i_atime; /* use inode_*_atime accessors */
-+	struct timespec64	__i_mtime; /* use inode_*_mtime accessors */
-+	struct timespec64	__i_ctime; /* use inode_*_ctime accessors */
+-	struct timespec64	__i_atime; /* use inode_*_atime accessors */
+-	struct timespec64	__i_mtime; /* use inode_*_mtime accessors */
+-	struct timespec64	__i_ctime; /* use inode_*_ctime accessors */
++	time64_t		i_atime_sec;
++	time64_t		i_mtime_sec;
++	time64_t		i_ctime_sec;
++	u32			i_atime_nsec;
++	u32			i_mtime_nsec;
++	u32			i_ctime_nsec;
  	spinlock_t		i_lock;	/* i_blocks, i_bytes, maybe i_size */
  	unsigned short          i_bytes;
  	u8			i_blkbits;
-@@ -1555,13 +1555,13 @@ static inline struct timespec64 inode_set_ctime(struct inode *inode,
+@@ -1519,7 +1522,9 @@ struct timespec64 inode_set_ctime_current(struct inode *inode);
+  */
+ static inline struct timespec64 inode_get_ctime(const struct inode *inode)
+ {
+-	return inode->__i_ctime;
++	struct timespec64 ts = { .tv_sec  = inode->i_ctime_sec,
++				 .tv_nsec = inode->i_ctime_nsec };
++	return ts;
+ }
+ 
+ /**
+@@ -1532,7 +1537,8 @@ static inline struct timespec64 inode_get_ctime(const struct inode *inode)
+ static inline struct timespec64 inode_set_ctime_to_ts(struct inode *inode,
+ 						      struct timespec64 ts)
+ {
+-	inode->__i_ctime = ts;
++	inode->i_ctime_sec = ts.tv_sec;
++	inode->i_ctime_nsec = ts.tv_sec;
+ 	return ts;
+ }
+ 
+@@ -1555,13 +1561,17 @@ static inline struct timespec64 inode_set_ctime(struct inode *inode,
  
  static inline struct timespec64 inode_get_atime(const struct inode *inode)
  {
--	return inode->i_atime;
-+	return inode->__i_atime;
+-	return inode->__i_atime;
++	struct timespec64 ts = { .tv_sec  = inode->i_atime_sec,
++				 .tv_nsec = inode->i_atime_nsec };
++
++	return ts;
  }
  
  static inline struct timespec64 inode_set_atime_to_ts(struct inode *inode,
  						      struct timespec64 ts)
  {
--	inode->i_atime = ts;
-+	inode->__i_atime = ts;
+-	inode->__i_atime = ts;
++	inode->i_atime_sec = ts.tv_sec;
++	inode->i_atime_nsec = ts.tv_sec;
  	return ts;
  }
  
-@@ -1575,13 +1575,13 @@ static inline struct timespec64 inode_set_atime(struct inode *inode,
+@@ -1575,13 +1585,17 @@ static inline struct timespec64 inode_set_atime(struct inode *inode,
  
  static inline struct timespec64 inode_get_mtime(const struct inode *inode)
  {
--	return inode->i_mtime;
-+	return inode->__i_mtime;
+-	return inode->__i_mtime;
++	struct timespec64 ts = { .tv_sec  = inode->i_mtime_sec,
++				 .tv_nsec = inode->i_mtime_nsec };
++
++	return ts;
  }
  
  static inline struct timespec64 inode_set_mtime_to_ts(struct inode *inode,
  						      struct timespec64 ts)
  {
--	inode->i_mtime = ts;
-+	inode->__i_mtime = ts;
+-	inode->__i_mtime = ts;
++	inode->i_atime_sec = ts.tv_sec;
++	inode->i_atime_nsec = ts.tv_sec;
  	return ts;
  }
  
