@@ -2,55 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38DB57B1C09
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Sep 2023 14:20:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 561207B1DEE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Sep 2023 15:22:19 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=X75jpHew;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=scDsG9Gn;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RxCGz0KJJz3dWs
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Sep 2023 22:20:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RxDfd19dxz3cc8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Sep 2023 23:22:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=X75jpHew;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=scDsG9Gn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=jlayton@kernel.org; receiver=lists.ozlabs.org)
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=devnull+j.granados.samsung.com@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RxBtB5JJzz3c5F;
-	Thu, 28 Sep 2023 22:02:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RxDcm05WCz3c4r
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Sep 2023 23:20:39 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id 63305B81BE2;
-	Thu, 28 Sep 2023 12:02:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DA9FC433C8;
-	Thu, 28 Sep 2023 12:01:51 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 8693D61B7D;
+	Thu, 28 Sep 2023 13:20:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 22F39C433C7;
+	Thu, 28 Sep 2023 13:20:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1695902525;
-	bh=1OUz3HfWq12NDsf5pt/6tI4U8Mw0C+kMAWU6iE/wPW8=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=X75jpHewuenH5i4yKP6hTRRG96bBnvYSW9ppyaPCvnjRr7Vm9FFZm7UX9cHhEdgJN
-	 9sWsiJl4JoQqsZw/GKoi7gqY0vw1WSuYAKrfeyF1owUUDgi337zCsV6xBykTFrjqQ4
-	 1IMm02SWv3ExmYV6PPhf6pdloK7xjV68MtysVko9J4sCrAu5RV7rZ7A69VK3LrHZj/
-	 A70QTwuFIQFa4pBSyL7/hVskPkmrikqba+e0r1Z/ds7+Y2X+m8S6nvykGKta//EbMF
-	 i8R56KOYB+jvupadzk05Se+6sdUCAkxdoK6c3HGUXdwYBTc4QSGFZzFBPryJ+pbGMH
-	 lSy4ugTII5Mvw==
-Message-ID: <f88106b26a2b647a1541d049999d5546d2ee3e51.camel@kernel.org>
-Subject: Re: [PATCH 87/87] fs: move i_blocks up a few places in struct inode
-From: Jeff Layton <jlayton@kernel.org>
-To: Amir Goldstein <amir73il@gmail.com>
-Date: Thu, 28 Sep 2023 08:01:50 -0400
-In-Reply-To: <CAOQ4uxjSrgGr+6UOs4ADGYCderpQ7hAaPjNmB1DExAPLQQsHSg@mail.gmail.com>
-References: <20230928110554.34758-1-jlayton@kernel.org>
-	 <20230928110554.34758-3-jlayton@kernel.org>
-	 <CAOQ4uxjSrgGr+6UOs4ADGYCderpQ7hAaPjNmB1DExAPLQQsHSg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+	s=k20201202; t=1695907236;
+	bh=/ReCWJpDrK72V/iL+mSIF6lFswNe6gbu22VtPYv0d5U=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=scDsG9Gnm4LK1PUQmm/g4t7Yvsh9MWkqBLOTgxKwSv1rX0HENZ99rl9HkYmZid4Zb
+	 bIn8GQ4wV7+unUrupqZjboa6kgSdyT8476xXJ1nJX2i90M1s3RHtRZaS2HFXL81A9a
+	 dySqhoGIT7lwggto3jmjfRopEK9uYgDdirPJaa3DkpVDer/E0WzANyQHvbwBrUtIUq
+	 HCabb4Y0YRwY1SDpgpJKhfjkadV/eSRTJmhHg6sTlZZqgnNBb+A4itWQ8FqDIa0qTt
+	 EBJorY1Q3z4tLv5PiZ71YL8SHfoeNT8QNK01uMcakd4pQPkPR4oX5F/BTOP1gOobk2
+	 t07n0M7IKCT4A==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E9633E732D0;
+	Thu, 28 Sep 2023 13:20:35 +0000 (UTC)
+From: Joel Granados via B4 Relay <devnull+j.granados.samsung.com@kernel.org>
+Subject: [PATCH 00/15] sysctl: Remove sentinel elements from drivers
+Date: Thu, 28 Sep 2023 15:21:25 +0200
+Message-Id:  <20230928-jag-sysctl_remove_empty_elem_drivers-v1-0-e59120fca9f9@samsung.com>
 MIME-Version: 1.0
-X-Mailman-Approved-At: Thu, 28 Sep 2023 22:14:32 +1000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANV9FWUC/x3NQQrCMBBG4auUWRuIqaj1KiIhJH/rSNOWmRIsp
+ Xc3uPw27+2kEIbSo9lJUFh5nirOp4biO0wDDKdqcta1tnM38wmD0U3jOnpBngs88rJuHiOyT8I
+ Foqa37aW7umDTPVJNLYKev//N83UcPwjXVN92AAAA
+To: Luis Chamberlain <mcgrof@kernel.org>, willy@infradead.org, 
+ josh@joshtriplett.org, Kees Cook <keescook@chromium.org>, 
+ Phillip Potter <phil@philpotter.co.uk>, 
+ Clemens Ladisch <clemens@ladisch.de>, Arnd Bergmann <arnd@arndb.de>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Juergen Gross <jgross@suse.com>, 
+ Stefano Stabellini <sstabellini@kernel.org>, 
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, 
+ Jiri Slaby <jirislaby@kernel.org>, 
+ "James E.J. Bottomley" <jejb@linux.ibm.com>, 
+ "Martin K. Petersen" <martin.petersen@oracle.com>, 
+ Doug Gilbert <dgilbert@interlog.com>, 
+ Sudip Mukherjee <sudipm.mukherjee@gmail.com>, 
+ Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
+ Corey Minyard <minyard@acm.org>, Theodore Ts'o <tytso@mit.edu>, 
+ "Jason A. Donenfeld" <Jason@zx2c4.com>, David Ahern <dsahern@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Robin Holt <robinmholt@gmail.com>, Steve Wahl <steve.wahl@hpe.com>, 
+ Russ Weight <russell.h.weight@intel.com>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Song Liu <song@kernel.org>, 
+ "K. Y. Srinivasan" <kys@microsoft.com>, 
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+ Dexuan Cui <decui@microsoft.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, 
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+ Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, 
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>
+X-Mailer: b4 0.13-dev-86aa5
+X-Developer-Signature: v=1; a=openpgp-sha256; l=10065;
+ i=j.granados@samsung.com; h=from:subject:message-id;
+ bh=fRUi88e8Yrfs5rdUzu1POWjh/qONRBnWNcqSlQXmGgc=;
+ b=owEB7QES/pANAwAKAbqXzVK3lkFPAcsmYgBlFX3bNyb1VxuwdtMXcfZEsTF6o4ERzgUMNE5M8
+ lqmBKMN3YiJAbMEAAEKAB0WIQSuRwlXJeYxJc7LJ5C6l81St5ZBTwUCZRV92wAKCRC6l81St5ZB
+ T4AtC/4mhShg1QMnei1FJl3JIv1Quh127jI/+NM0CoRgmiCk+zTJLLlylW6VOYX1i8V8pr9JOo4
+ vny6+C4lgliXTc+PohQ77bmfuM/TDLZeVOnKnuIrsJWYwW4Kf8EshmF7Z+S3HzYBDHWn4jC6r7l
+ Pffc4T8MVQMtDD2xLl3mDsjmiCLck/UiOBLcpNFd5gKKLiICG33x/vmFvDN5Bt01LeEe45GD4NG
+ O1uuxbZLByRu2Nxs5hSMK+WstfoyThZ9klbHQdSyFzlRNVbZsJhNV/35qYf8JSInt63K/fwVivN
+ pftbvCU/Yu7xhzpGL0OcEQMhW+TwzbRh72FP7LoRbW9Y+KWfogwMPIdWHWSW/yU4Grw1DWHEU+I
+ lI8DJ789JvZR3iYix0NrBVRczvxeopZSBMLSbu4KcByTnJm5/egA6gwRDwR/mDO8qZV41BwmsKH
+ ffucunTJ6gTNc87dnIILxwbb13f7weZvk5go6QdqwvuIgXwv2hZyR90mGRyNdtFobBzT8=
+X-Developer-Key: i=j.granados@samsung.com; a=openpgp;
+ fpr=F1F8E46D30F0F6C4A45FF4465895FAAC338C6E77
+X-Endpoint-Received:  by B4 Relay for j.granados@samsung.com/default with auth_id=70
+X-Original-From: Joel Granados <j.granados@samsung.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,42 +106,216 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Latchesar Ionkov <lucho@ionkov.net>, Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, "Rafael
- J. Wysocki" <rafael@kernel.org>, "Darrick J. Wong" <djwong@kernel.org>, Anders Larsen <al@alarsen.net>, Carlos Llamas <cmllamas@google.com>, Andrii Nakryiko <andrii@kernel.org>, Mattia Dongili <malattia@linux.it>, Hugh Dickins <hughd@google.com>, John Johansen <john.johansen@canonical.com>, Yonghong Song <yonghong.song@linux.dev>, Alexander Gordeev <agordeev@linux.ibm.com>, Christoph Hellwig <hch@lst.de>, Mike Marshall <hubcap@omnibond.com>, Paulo Alcantara <pc@manguebit.com>, linux-xfs@vger.kernel.org, James Morris <jmorris@namei.org>, Christoph Hellwig <hch@infradead.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, devel@lists.orangefs.org, Shyam Prasad N <sprasad@microsoft.com>, linux-um@lists.infradead.org, Nicholas Piggin <npiggin@gmail.com>, Alexander Viro <viro@zeniv.linux.org.uk>, Eric Van Hensbergen <ericvh@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Trond Myklebust <trond.myklebust@hammerspace.com>, Anton Altaparmakov <anton@tuxera.com>, Christian Brauner 
- <brauner@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Stephen Smalley <stephen.smalley.work@gmail.com>, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, Ronnie Sahlberg <lsahlber@redhat.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, Arve =?ISO-8859-1?Q?Hj=F8nnev=E5g?= <arve@android.com>, Chuck Lever <chuck.lever@oracle.com>, Sven Schnelle <svens@linux.ibm.com>, Jiri Olsa <jolsa@kernel.org>, Jan Kara <jack@suse.com>, Tejun Heo <tj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linux-trace-kernel@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>, Dave Kleikamp <shaggy@kernel.org>, linux-mm@kvack.org, Joel Fernandes <joel@joelfernandes.org>, Eric Dumazet <edumazet@google.com>, Stanislav Fomichev <sdf@google.com>, linux-s390@vger.kernel.org, linux-nilfs@vger.kernel.org, Paul Moore <paul@paul-moore.com>, Leon Romanovsky <leon@kernel.org>, John Fastabend <john.fastabend@gmail.com>, Luis Chamberlain <mcgrof@kernel.org>, codalist@coda.cs
- .cmu.edu, Iurii Zaikin <yzaikin@google.com>, Namjae Jeon <linkinjeon@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>, Todd Kjos <tkjos@android.com>, Vasily Gorbik <gor@linux.ibm.com>, selinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, reiserfs-devel@vger.kernel.org, Miklos Szeredi <miklos@szeredi.hu>, Yue Hu <huyue2@coolpad.com>, Jaegeuk Kim <jaegeuk@kernel.org>, Martijn Coenen <maco@android.com>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, Hao Luo <haoluo@google.com>, Tony Luck <tony.luck@intel.com>, Theodore Ts'o <tytso@mit.edu>, Nicolas Pitre <nico@fluxnic.net>, linux-ntfs-dev@lists.sourceforge.net, Muchun Song <muchun.song@linux.dev>, linux-f2fs-devel@lists.sourceforge.net, "Guilherme G.
- Piccoli" <gpiccoli@igalia.com>, gfs2@lists.linux.dev, Eric Biederman <ebiederm@xmission.com>, Anna Schumaker <anna@kernel.org>, Brad Warrum <bwarrum@linux.ibm.com>, Mike Kravetz <mike.kravetz@oracle.com>, linux-efi@vger.kernel.org, Martin Brandenburg <martin@omnibond.com>, ocfs2-devel@lists.linux.dev, Alexei Starovoitov <ast@kernel.org>, platform-driver-x86@vger.kernel.org, Chris Mason <clm@fb.com>, linux-mtd@lists.infradead.org, linux-hardening@vger.kernel.org, Marc Dionne <marc.dionne@auristor.com>, Jiri Slaby <jirislaby@kernel.org>, linux-afs@lists.infradead.org, Ian Kent <raven@themaw.net>, Naohiro Aota <naohiro.aota@wdc.com>, Daniel Borkmann <daniel@iogearbox.net>, Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, linux-rdma@vger.kernel.org, coda@cs.cmu.edu, Ilpo =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>, Ilya Dryomov <idryomov@gmail.com>, Paolo Abeni <pabeni@redhat.com>, "Serge E. Hallyn" <serge@hallyn.com>, Kees Cook <keescook@chromium.org>, Arnd
-  Bergmann <arnd@arndb.de>, autofs@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>, Mark Gross <markgross@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, Eric Paris <eparis@parisplace.org>, ceph-devel@vger.kernel.org, Gao Xiang <xiang@kernel.org>, Jan Harkes <jaharkes@cs.cmu.edu>, linux-nfs@vger.kernel.org, linux-ext4@vger.kernel.org, Olga Kornievskaia <kolga@netapp.com>, Song Liu <song@kernel.org>, samba-technical@lists.samba.org, Steve French <sfrench@samba.org>, Jeremy Kerr <jk@ozlabs.org>, netdev@vger.kernel.org, Bob Peterson <rpeterso@redhat.com>, linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org, ntfs3@lists.linux.dev, linux-erofs@lists.ozlabs.org, "David S.
- Miller" <davem@davemloft.net>, Chandan Babu R <chandan.babu@oracle.com>, jfs-discussion@lists.sourceforge.net, Jan Kara <jack@suse.cz>, Neil Brown <neilb@suse.de>, Dominique Martinet <asmadeus@codewreck.org>, Christian Schoenebeck <linux_oss@crudebyte.com>, Bob Copeland <me@bobcopeland.com>, KP Singh <kpsingh@kernel.org>, linux-unionfs@vger.kernel.org, David Howells <dhowells@redhat.com>, Joseph Qi <joseph.qi@linux.alibaba.com>, Andreas Dilger <adilger.kernel@dilger.ca>, Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>, Ard Biesheuvel <ardb@kernel.org>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, Andreas Gruenbacher <agruenba@redhat.com>, Richard Weinberger <richard@nod.at>, Mark Fasheh <mark@fasheh.com>, Dai Ngo <Dai.Ngo@oracle.com>, Jason Gunthorpe <jgg@ziepe.ca>, linux-serial@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, Salah Triki <salah.triki@gmail.com>, Evgeniy Dushistov <dushistov@mail.ru>, linux-cifs@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Chao Yu <c
- hao@kernel.org>, apparmor@lists.ubuntu.com, Josef Bacik <josef@toxicpanda.com>, Tom Talpey <tom@talpey.com>, Hans de Goede <hdegoede@redhat.com>, "Tigran A. Aivazian" <aivazian.tigran@gmail.com>, David Sterba <dsterba@suse.com>, Xiubo Li <xiubli@redhat.com>, Ryusuke Konishi <konishi.ryusuke@gmail.com>, Johannes Thumshirn <jth@kernel.org>, Ritu Agarwal <rituagar@linux.ibm.com>, Luis de Bethencourt <luisbg@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, v9fs@lists.linux.dev, David Sterba <dsterba@suse.cz>, linux-security-module@vger.kernel.org, Jeffle Xu <jefflexu@linux.alibaba.com>, Phillip Lougher <phillip@squashfs.org.uk>, Johannes Berg <johannes@sipsolutions.net>, Sungjong Seo <sj1557.seo@samsung.com>, David Woodhouse <dwmw2@infradead.org>, linux-karma-devel@lists.sourceforge.net, linux-btrfs@vger.kernel.org, Joel Becker <jlbec@evilplan.org>
+Reply-To: j.granados@samsung.com
+Cc: Joel Granados <j.granados@samsung.com>, linux-hyperv@vger.kernel.org, linux-scsi@vger.kernel.org, linux-rdma@vger.kernel.org, netdev@vger.kernel.org, intel-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-raid@vger.kernel.org, linux-serial@vger.kernel.org, xen-devel@lists.xenproject.org, openipmi-developer@lists.sourceforge.net, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2023-09-28 at 14:35 +0300, Amir Goldstein wrote:
-> On Thu, Sep 28, 2023 at 2:06=E2=80=AFPM Jeff Layton <jlayton@kernel.org> =
-wrote:
-> >=20
-> > The recent change to use discrete integers instead of struct timespec64
-> > in struct inode shaved 8 bytes off of it, but it also moves the i_lock
-> > into the previous cacheline, away from the fields that it protects.
-> >=20
-> > Move i_blocks up above the i_lock, which moves the new 4 byte hole to
-> > just after the timestamps, without changing the size of the structure.
-> >=20
->=20
-> Instead of creating an implicit hole, can you please move i_generation
-> to fill the 4 bytes hole.
->=20
-> It makes sense in the same cache line with i_ino and I could
-> use the vacant 4 bytes hole above i_fsnotify_mask to expand the
-> mask to 64bit (the 32bit event mask space is running out).
->=20
-> Thanks,
-> Amir.
->=20
+From: Joel Granados <j.granados@samsung.com>
 
-Sounds like a plan. Resulting struct inode size is the same (616 bytes
-with my kdevops kconfig). BTW: all of these changes are in my "amtime"
-branch if anyone wants to pull them down.
---
-Jeff Layton <jlayton@kernel.org>
+What?
+These commits remove the sentinel element (last empty element) from the
+sysctl arrays of all the files under the "drivers/" directory that use a
+sysctl array for registration. The merging of the preparation patches
+(in https://lore.kernel.org/all/ZO5Yx5JFogGi%2FcBo@bombadil.infradead.org/)
+to mainline allows us to just remove sentinel elements without changing
+behavior (more info here [1]).
+
+These commits are part of a bigger set (here
+https://github.com/Joelgranados/linux/tree/tag/sysctl_remove_empty_elem_V4)
+that remove the ctl_table sentinel. Make the review process easier by
+chunking the commits into manageable pieces. Each chunk can be reviewed
+separately without noise from parallel sets.
+
+Now that the architecture chunk has been mostly reviewed [6], we send
+the "drivers/" directory. Once this one is done, it will be follwed by
+"fs/*", "kernel/*", "net/*" and miscellaneous. The final set will remove
+the unneeded check for ->procname == NULL.
+
+Why?
+By removing the sysctl sentinel elements we avoid kernel bloat as
+ctl_table arrays get moved out of kernel/sysctl.c into their own
+respective subsystems. This move was started long ago to avoid merge
+conflicts; the sentinel removal bit came after Mathew Wilcox suggested
+it to avoid bloating the kernel by one element as arrays moved out. This
+patchset will reduce the overall build time size of the kernel and run
+time memory bloat by about ~64 bytes per declared ctl_table array. I
+have consolidated some links that shed light on the history of this
+effort [2].
+
+Testing:
+* Ran sysctl selftests (./tools/testing/selftests/sysctl/sysctl.sh)
+* Ran this through 0-day with no errors or warnings
+
+Size saving after removing all sentinels:
+  These are the bytes that we save after removing all the sentinels
+  (this plus all the other chunks). I included them to get an idea of
+  how much memory we are talking about.
+    * bloat-o-meter:
+        - The "yesall" configuration results save 9158 bytes
+          https://lore.kernel.org/all/20230621091000.424843-1-j.granados@samsung.com/
+        - The "tiny" config + CONFIG_SYSCTL save 1215 bytes
+          https://lore.kernel.org/all/20230809105006.1198165-1-j.granados@samsung.com/
+    * memory usage:
+        In memory savings are measured to be 7296 bytes. (here is how to
+        measure [3])
+
+Size saving after this patchset:
+    * bloat-o-meter
+        - The "yesall" config saves 2432 bytes [4]
+        - The "tiny" config saves 64 bytes [5]
+    * memory usage:
+        In this case there were no bytes saved because I do not have any
+        of the drivers in the patch. To measure it comment the printk in
+        `new_dir` and uncomment the if conditional in `new_links` [3].
+
+Comments/feedback greatly appreciated
+
+Best
+Joel
+
+[1]
+We are able to remove a sentinel table without behavioral change by
+introducing a table_size argument in the same place where procname is
+checked for NULL. The idea is for it to keep stopping when it hits
+->procname == NULL, while the sentinel is still present. And when the
+sentinel is removed, it will stop on the table_size. You can go to 
+(https://lore.kernel.org/all/20230809105006.1198165-1-j.granados@samsung.com/)
+for more information.
+
+[2]
+Links Related to the ctl_table sentinel removal:
+* Good summary from Luis sent with the "pull request" for the
+  preparation patches.
+  https://lore.kernel.org/all/ZO5Yx5JFogGi%2FcBo@bombadil.infradead.org/
+* Another very good summary from Luis.
+  https://lore.kernel.org/all/ZMFizKFkVxUFtSqa@bombadil.infradead.org/
+* This is a patch set that replaces register_sysctl_table with register_sysctl
+  https://lore.kernel.org/all/20230302204612.782387-1-mcgrof@kernel.org/
+* Patch set to deprecate register_sysctl_paths()
+  https://lore.kernel.org/all/20230302202826.776286-1-mcgrof@kernel.org/
+* Here there is an explicit expectation for the removal of the sentinel element.
+  https://lore.kernel.org/all/20230321130908.6972-1-frank.li@vivo.com
+* The "ARRAY_SIZE" approach was mentioned (proposed?) in this thread
+  https://lore.kernel.org/all/20220220060626.15885-1-tangmeng@uniontech.com
+
+[3]
+To measure the in memory savings apply this on top of this patchset.
+
+"
+diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
+index c88854df0b62..e0073a627bac 100644
+--- a/fs/proc/proc_sysctl.c
++++ b/fs/proc/proc_sysctl.c
+@@ -976,6 +976,8 @@ static struct ctl_dir *new_dir(struct ctl_table_set *set,
+        table[0].procname = new_name;
+        table[0].mode = S_IFDIR|S_IRUGO|S_IXUGO;
+        init_header(&new->header, set->dir.header.root, set, node, table, 1);
++       // Counts additional sentinel used for each new dir.
++       printk("%ld sysctl saved mem kzalloc \n", sizeof(struct ctl_table));
+
+        return new;
+ }
+@@ -1199,6 +1201,9 @@ static struct ctl_table_header *new_links(struct ctl_dir *dir, struct ctl_table_
+                link_name += len;
+                link++;
+        }
++       // Counts additional sentinel used for each new registration
++       //if ((head->ctl_table + head->ctl_table_size)->procname)
++               printk("%ld sysctl saved mem kzalloc \n", sizeof(struct ctl_table));
+        init_header(links, dir->header.root, dir->header.set, node, link_table,
+                    head->ctl_table_size);
+        links->nreg = nr_entries;
+"
+and then run the following bash script in the kernel:
+
+accum=0
+for n in $(dmesg | grep kzalloc | awk '{print $3}') ; do
+    echo $n
+    accum=$(calc "$accum + $n")
+done
+echo $accum
+
+[4]
+add/remove: 0/0 grow/shrink: 0/21 up/down: 0/-2432 (-2432)
+Function                                     old     new   delta
+xpc_sys_xpc_hb                               192     128     -64
+xpc_sys_xpc                                  128      64     -64
+vrf_table                                    128      64     -64
+ucma_ctl_table                               128      64     -64
+tty_table                                    192     128     -64
+sg_sysctls                                   128      64     -64
+scsi_table                                   128      64     -64
+random_table                                 448     384     -64
+raid_table                                   192     128     -64
+oa_table                                     192     128     -64
+mac_hid_files                                256     192     -64
+iwcm_ctl_table                               128      64     -64
+ipmi_table                                   128      64     -64
+hv_ctl_table                                 128      64     -64
+hpet_table                                   128      64     -64
+firmware_config_table                        192     128     -64
+cdrom_table                                  448     384     -64
+balloon_table                                128      64     -64
+parport_sysctl_template                      912     720    -192
+parport_default_sysctl_table                 584     136    -448
+parport_device_sysctl_template               776     136    -640
+Total: Before=429940038, After=429937606, chg -0.00%
+
+[5]
+add/remove: 0/0 grow/shrink: 0/1 up/down: 0/-64 (-64)
+Function                                     old     new   delta
+random_table                                 448     384     -64
+Total: Before=1885527, After=1885463, chg -0.00%
+
+[6] https://lore.kernel.org/all/20230913-jag-sysctl_remove_empty_elem_arch-v2-0-d1bd13a29bae@samsung.com/
+
+Signed-off-by: Joel Granados <j.granados@samsung.com>
+
+---
+
+---
+Joel Granados (15):
+      cdrom: Remove now superfluous sentinel element from ctl_table array
+      hpet: Remove now superfluous sentinel element from ctl_table array
+      xen: Remove now superfluous sentinel element from ctl_table array
+      tty: Remove now superfluous sentinel element from ctl_table array
+      scsi: Remove now superfluous sentinel element from ctl_table array
+      parport: Remove the now superfluous sentinel element from ctl_table array
+      macintosh: Remove the now superfluous sentinel element from ctl_table array
+      infiniband: Remove the now superfluous sentinel element from ctl_table array
+      char-misc: Remove the now superfluous sentinel element from ctl_table array
+      vrf: Remove the now superfluous sentinel element from ctl_table array
+      sgi-xp: Remove the now superfluous sentinel element from ctl_table array
+      fw loader: Remove the now superfluous sentinel element from ctl_table array
+      raid: Remove now superfluous sentinel element from ctl_table array
+      hyper-v/azure: Remove now superfluous sentinel element from ctl_table array
+      intel drm: Remove now superfluous sentinel element from ctl_table array
+
+ drivers/base/firmware_loader/fallback_table.c |  3 +-
+ drivers/cdrom/cdrom.c                         |  3 +-
+ drivers/char/hpet.c                           |  3 +-
+ drivers/char/ipmi/ipmi_poweroff.c             |  3 +-
+ drivers/char/random.c                         |  3 +-
+ drivers/gpu/drm/i915/i915_perf.c              |  3 +-
+ drivers/hv/hv_common.c                        |  3 +-
+ drivers/infiniband/core/iwcm.c                |  3 +-
+ drivers/infiniband/core/ucma.c                |  3 +-
+ drivers/macintosh/mac_hid.c                   |  3 +-
+ drivers/md/md.c                               |  3 +-
+ drivers/misc/sgi-xp/xpc_main.c                |  6 ++--
+ drivers/net/vrf.c                             |  3 +-
+ drivers/parport/procfs.c                      | 42 ++++++++++++---------------
+ drivers/scsi/scsi_sysctl.c                    |  3 +-
+ drivers/scsi/sg.c                             |  3 +-
+ drivers/tty/tty_io.c                          |  3 +-
+ drivers/xen/balloon.c                         |  3 +-
+ 18 files changed, 36 insertions(+), 60 deletions(-)
+---
+base-commit: 0e945134b680040b8613e962f586d91b6d40292d
+change-id: 20230927-jag-sysctl_remove_empty_elem_drivers-f034962a0d8c
+
+Best regards,
+-- 
+Joel Granados <j.granados@samsung.com>
+
