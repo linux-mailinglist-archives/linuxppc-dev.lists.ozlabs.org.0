@@ -2,57 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 867377B2728
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Sep 2023 23:10:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 961137B272B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Sep 2023 23:10:50 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tQiaTNqc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PglCb2mT;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RxR2H3KdFz3dTF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Sep 2023 07:09:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RxR3D3drDz3dfk
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Sep 2023 07:10:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tQiaTNqc;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PglCb2mT;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=song@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=song@kernel.org; receiver=lists.ozlabs.org)
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RxR1J0hh1z3dG9
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Sep 2023 07:09:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RxR1t5rHsz3dKf
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Sep 2023 07:09:38 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id B0F2CCE222D
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Sep 2023 21:09:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BEB1C433D9
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Sep 2023 21:09:05 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTP id 97455B81E00
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Sep 2023 21:09:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDB18C433C8
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Sep 2023 21:09:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1695935345;
-	bh=7te1mmtwRAR7CnjCs+EpdXe/jmMMQFgw1qqKxIIPsH4=;
+	s=k20201202; t=1695935374;
+	bh=DOYtT8XqWvaKAWXjcDsdY5Ix4lfUlVYiGzpyiAu7WjA=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=tQiaTNqc8UJR/3iLTF+2e52J5yaQlugX9dYPBfhXXPbWQxi25MmCdMx7KF+e30vkP
-	 YS4h5dG+L5T7DN/0q2Ils6qcU3UTuuvvBEZHrEm20IoG46Eo6KtYAk77eRgg8pS/NN
-	 TeteGAvB/B3ggREcJXb5oAwesn4i2UeVRS4zWL0FG6FQ5fwXzCft3ERMfUa52mkBdh
-	 OgK4HATQfZEDfZWoeLR+af26s6LzcgUbHUb3vNVdv7g2l+3stqlQWM+fHXynEKi3+z
-	 9W9viwhlNIyNOWIhc9a4JMRPM7+lA7edwmDc2e9r7c6bL76jQXW4xv//G5DW9mTe64
-	 316EZnJ0z+0tg==
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5045cb9c091so15171711e87.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Sep 2023 14:09:05 -0700 (PDT)
-X-Gm-Message-State: AOJu0YxXvV5Xwr8kg0imWBpJozH1BDxlojvPv6I+dCoJFqLJAchu2i5y
-	229wet+FIj/enG95x8ZUFb1eiifeC2MOoEdAfXk=
-X-Google-Smtp-Source: AGHT+IHxEtFCbxS9MI1VFWusXoUBlvfGE+D0KZwKEIE5zEdHhgaN5BXgPngRbRFOCYv1VllS5IeyhBSrtieUv01AUDc=
-X-Received: by 2002:a19:4304:0:b0:503:7c0:ae96 with SMTP id
- q4-20020a194304000000b0050307c0ae96mr1876456lfa.20.1695935343374; Thu, 28 Sep
- 2023 14:09:03 -0700 (PDT)
+	b=PglCb2mT2oev2Olo975Shfw6rH+q8o5CA88LGaUQCMlr8YAxb4TUhLzvTkHjWRntA
+	 Cf/1nUsX21ZeouR/28Q4Ck3lEaasKeHD6aw0wDMvu2pNNI7Oj+hRiLxIyzf0Kj8ySp
+	 ISgPfPIaF1uusOib9F8KL3wmB7j4fVyQbqY24MhLE2zPtuBktalKDv9TEzc4Ap7jFv
+	 ceLm2Cpvtv6bewPqnGwWe4eT9wuSyriz7/RPV3HaqHfUhrx1ZOVA7pMLoVDMC7T+BF
+	 JXLxm1ieTr8F7lhvWYq2EZCPSc3SrpUnXEVHhhZO6bCsK24yldxM87dB01D1o95hwj
+	 7YB8Ma+e5bVtA==
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-503065c4b25so21160800e87.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Sep 2023 14:09:33 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yyj5wp87NgRzVwm55LN/TgBpeaHv5XinTg3Pe67n9Fy4MKVHYSk
+	rzJEYPJx4PxjK61w/0LvVAS0ATm0ra916kyx+ts=
+X-Google-Smtp-Source: AGHT+IHtMR6OkeIBT4okRR6COTrfyiA8wsez9F9aBZFhUSyDUgbI8N7ZIA0ELzokJn8uKzfN8L6mJ1DVH+w+tjlOFyo=
+X-Received: by 2002:a05:6512:47c:b0:503:38ef:eb54 with SMTP id
+ x28-20020a056512047c00b0050338efeb54mr2210868lfd.37.1695935372169; Thu, 28
+ Sep 2023 14:09:32 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230928194818.261163-1-hbathini@linux.ibm.com> <20230928194818.261163-3-hbathini@linux.ibm.com>
-In-Reply-To: <20230928194818.261163-3-hbathini@linux.ibm.com>
+References: <20230928194818.261163-1-hbathini@linux.ibm.com> <20230928194818.261163-4-hbathini@linux.ibm.com>
+In-Reply-To: <20230928194818.261163-4-hbathini@linux.ibm.com>
 From: Song Liu <song@kernel.org>
-Date: Thu, 28 Sep 2023 14:08:50 -0700
-X-Gmail-Original-Message-ID: <CAPhsuW520Tw1eUBvAhSRrEJ5wy6x4zLjRZsNzr8Ca2U6a1_o4w@mail.gmail.com>
-Message-ID: <CAPhsuW520Tw1eUBvAhSRrEJ5wy6x4zLjRZsNzr8Ca2U6a1_o4w@mail.gmail.com>
-Subject: Re: [PATCH v5 2/5] powerpc/bpf: implement bpf_arch_text_copy
+Date: Thu, 28 Sep 2023 14:09:20 -0700
+X-Gmail-Original-Message-ID: <CAPhsuW70FyyLnn-JUXrJke6V9srguKL6yrUP4hqW1eWcxCaZwQ@mail.gmail.com>
+Message-ID: <CAPhsuW70FyyLnn-JUXrJke6V9srguKL6yrUP4hqW1eWcxCaZwQ@mail.gmail.com>
+Subject: Re: [PATCH v5 3/5] powerpc/bpf: implement bpf_arch_text_invalidate
+ for bpf_prog_pack
 To: Hari Bathini <hbathini@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -71,12 +72,11 @@ Cc: Song Liu <songliubraving@fb.com>, Daniel Borkmann <daniel@iogearbox.net>, Al
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Sep 28, 2023 at 12:48=E2=80=AFPM Hari Bathini <hbathini@linux.ibm.c=
+On Thu, Sep 28, 2023 at 12:49=E2=80=AFPM Hari Bathini <hbathini@linux.ibm.c=
 om> wrote:
 >
-> bpf_arch_text_copy is used to dump JITed binary to RX page, allowing
-> multiple BPF programs to share the same page. Use the newly introduced
-> patch_instructions() to implement it.
+> Implement bpf_arch_text_invalidate and use it to fill unused part of
+> the bpf_prog_pack with trap instructions when a BPF program is freed.
 >
 > Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
 
