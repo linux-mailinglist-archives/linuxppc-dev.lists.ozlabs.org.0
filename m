@@ -2,53 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 458507B17C7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Sep 2023 11:43:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECC557B182D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Sep 2023 12:22:07 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=M3CVEWod;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rx7p30xZrz3cc2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Sep 2023 19:43:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rx8fj5Wvfz3cLX
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Sep 2023 20:22:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.13; helo=inva020.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=M3CVEWod;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=vkoul@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rx7gk4N0xz3cTy
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Sep 2023 19:37:54 +1000 (AEST)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 0A4F81A15C9;
-	Thu, 28 Sep 2023 11:37:52 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 9B48C1A059B;
-	Thu, 28 Sep 2023 11:37:51 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id A849A181D0C0;
-	Thu, 28 Sep 2023 17:37:49 +0800 (+08)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: hverkuil@xs4all.nl,
-	sakari.ailus@iki.fi,
-	tfiga@chromium.org,
-	m.szyprowski@samsung.com,
-	mchehab@kernel.org,
-	linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com,
-	festevam@gmail.com,
-	nicoleotsuka@gmail.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	alsa-devel@alsa-project.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH v5 11/11] media: audm2m: add virtual driver for audio memory to memory
-Date: Thu, 28 Sep 2023 17:00:19 +0800
-Message-Id: <1695891619-32393-12-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1695891619-32393-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1695891619-32393-1-git-send-email-shengjiu.wang@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rx5Cm62c9z2ytJ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Sep 2023 17:47:00 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 39B5B61B45;
+	Thu, 28 Sep 2023 07:46:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00BADC433C7;
+	Thu, 28 Sep 2023 07:46:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1695887215;
+	bh=Af7aDzVx41jirnSASQ/UkmQmVSgstLQVhYHpLf/6830=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=M3CVEWodpA6shzaMBLBOu0zeQ+lMo1Bgzbr/6kL40UAJkJPSAeDfixt9HbxwfelSL
+	 VN4FQDlcS4YUoDRxwhJukMx/5PZ+MgNb25LXGJcyCNVBg9TVySD5P9XI6cvycLgK/b
+	 t1qj9t7+qjOcMf1zx9YWLc0nHfCEhxuMkDo8I9hstXQ6pMjHePsrJ31HlBMZ+Jhg9/
+	 CAlRrDo/Tur6t0L4tkdelzmjpsK4sDJxxLEXIjPqY/ne/z+Uqou0IOJT3oHAeZm686
+	 RdYG5LjWImNoTQa51vaSZTWmDaUBeZczfVywHCf95iuE5R1Apti8bSE9IRjR1OHUjq
+	 yyUa+0wrAOZmA==
+From: Vinod Koul <vkoul@kernel.org>
+To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20230919133207.1400430-1-u.kleine-koenig@pengutronix.de>
+References: <20230919133207.1400430-1-u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH 00/59] dma: Convert to platform remove callback
+ returning void
+Message-Id: <169588719663.133598.11807608811384105232.b4-ty@kernel.org>
+Date: Thu, 28 Sep 2023 13:16:36 +0530
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.12.3
+X-Mailman-Approved-At: Thu, 28 Sep 2023 20:21:23 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,870 +61,148 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>, linux-arm-msm@vger.kernel.org, Brian Xu <brian.xu@amd.com>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, Paul Cercueil <paul@crapouillou.net>, Biju Das <biju.das.jz@bp.renesas.com>, Chen-Yu Tsai <wens@csie.org>, Laxman Dewangan <ldewangan@nvidia.com>, Chunyan Zhang <zhang.lyra@gmail.com>, Jernej Skrabec <jernej.skrabec@gmail.com>, Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>, Stefan Roese <sr@denx.de>, Fabio Estevam <festevam@gmail.com>, Swati Agarwal <swati.agarwal@amd.com>, Alyssa Rosenzweig <alyssa@rosenzweig.io>, Rob Herring <robh@kernel.org>, Peter Korsgaard <peter@korsgaard.com>, Lars-Peter Clausen <lars@metafoo.de>, Florian Fainelli <florian.fainelli@broadcom.com>, Samuel Holland <samuel@sholland.org>, Green Wan <green.wan@sifive.com>, Viresh Kumar <vireshk@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, Sinan Kaya <okaya@kernel.org>, Ludovic Desroches <ludovic.desroches@microchip.com>, Peter Ujfalusi <peter.ujfalu
+ si@gmail.com>, Jon Hunter <jonathanh@nvidia.com>, Zhang Wei <zw@zh-kernel.org>, Tudor Ambarus <tudor.ambarus@linaro.org>, Andy Gross <agross@kernel.org>, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, NXP Linux Team <linux-imx@nxp.com>, ye xingchen <ye.xingchen@zte.com.cn>, Olivier Dautricourt <olivierdautricourt@gmail.com>, Yangtao Li <frank.li@vivo.com>, Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>, Patrice Chotard <patrice.chotard@foss.st.com>, linux-tegra@vger.kernel.org, Kees Cook <keescook@chromium.org>, Sven Peter <sven@svenpeter.dev>, Ray Jui <rjui@broadcom.com>, Sascha Hauer <s.hauer@pengutronix.de>, Sean Wang <sean.wang@mediatek.com>, linux-actions@lists.infradead.org, Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Haojian Zhuang <haojian.zhuang@gmail.com>, Liu Shixin <liushixin2@huawei.com>, Robert Jarzmik <robert.jarzmik@free.fr>, linux-mediatek@lists.infradead.org, linux-rpi-kernel@lists.infradead.org, Baolin Wang <baolin.wang@
+ linux.alibaba.com>, Orson Zhai <orsonzhai@gmail.com>, Matthias Brugger <matthias.bgg@gmail.com>, Raj Kumar Rampelli <raj.kumar.rampelli@amd.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Michal Simek <michal.simek@amd.com>, linux-arm-kernel@lists.infradead.org, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Harini Katakam <harini.katakam@amd.com>, Lizhi Hou <lizhi.hou@amd.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Scott Branden <sbranden@broadcom.com>, Shawn Guo <shawnguo@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Hector Martin <marcan@marcan.st>, linux-mips@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, Konrad Dybcio <konrad.dybcio@linaro.org>, linux-sunxi@lists.linux.dev, Thierry Reding <thierry.reding@gmail.com>, asahi@lists.linux.dev, kernel@pengutronix.de, Pavel Machek <pavel@denx.de>, dmaengine@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, =?utf-8?q?Andreas_F=C3=A4rber?= <afaerber@suse.de>, Daniel Mack <daniel@zon
+ que.org>, Hien Huynh <hien.huynh.px@renesas.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Audio memory to memory virtual driver use video memory to memory
-virtual driver vim2m.c as example. The main difference is
-device type is VFL_TYPE_AUDIO and device cap type is V4L2_CAP_AUDIO_M2M.
 
-The device_run function is a dummy function, which is simply
-copy the data from input buffer to output buffer.
+On Tue, 19 Sep 2023 15:31:08 +0200, Uwe Kleine-König wrote:
+> this series convert nearly all platform drivers below drivers/dma to use
+> .remove_new(). The motivation is to get rid of an integer return code
+> that is (mostly) ignored by the platform driver core and error prone on
+> the driver side.
+> 
+> See commit 5c5a7680e67b ("platform: Provide a remove callback that
+> returns no value") for an extended explanation and the eventual goal.
+> 
+> [...]
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- drivers/media/test-drivers/Kconfig  |   9 +
- drivers/media/test-drivers/Makefile |   1 +
- drivers/media/test-drivers/audm2m.c | 808 ++++++++++++++++++++++++++++
- 3 files changed, 818 insertions(+)
- create mode 100644 drivers/media/test-drivers/audm2m.c
+Applied, thanks!
 
-diff --git a/drivers/media/test-drivers/Kconfig b/drivers/media/test-drivers/Kconfig
-index 459b433e9fae..be60d73cbf97 100644
---- a/drivers/media/test-drivers/Kconfig
-+++ b/drivers/media/test-drivers/Kconfig
-@@ -17,6 +17,15 @@ config VIDEO_VIM2M
- 	  This is a virtual test device for the memory-to-memory driver
- 	  framework.
- 
-+config VIDEO_AUDM2M
-+	tristate "Virtual Memory-to-Memory Driver For Audio"
-+	depends on VIDEO_DEV
-+	select VIDEOBUF2_VMALLOC
-+	select V4L2_MEM2MEM_DEV
-+	help
-+	  This is a virtual audio test device for the memory-to-memory driver
-+	  framework.
-+
- source "drivers/media/test-drivers/vicodec/Kconfig"
- source "drivers/media/test-drivers/vimc/Kconfig"
- source "drivers/media/test-drivers/vivid/Kconfig"
-diff --git a/drivers/media/test-drivers/Makefile b/drivers/media/test-drivers/Makefile
-index 740714a4584d..b53ed7e6eaf1 100644
---- a/drivers/media/test-drivers/Makefile
-+++ b/drivers/media/test-drivers/Makefile
-@@ -10,6 +10,7 @@ obj-$(CONFIG_DVB_VIDTV) += vidtv/
- 
- obj-$(CONFIG_VIDEO_VICODEC) += vicodec/
- obj-$(CONFIG_VIDEO_VIM2M) += vim2m.o
-+obj-$(CONFIG_VIDEO_AUDM2M) += audm2m.o
- obj-$(CONFIG_VIDEO_VIMC) += vimc/
- obj-$(CONFIG_VIDEO_VIVID) += vivid/
- obj-$(CONFIG_VIDEO_VISL) += visl/
-diff --git a/drivers/media/test-drivers/audm2m.c b/drivers/media/test-drivers/audm2m.c
-new file mode 100644
-index 000000000000..566cfc48748b
---- /dev/null
-+++ b/drivers/media/test-drivers/audm2m.c
-@@ -0,0 +1,808 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * A virtual v4l2-mem2mem example for audio device.
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/delay.h>
-+#include <linux/fs.h>
-+#include <linux/sched.h>
-+#include <linux/slab.h>
-+
-+#include <linux/platform_device.h>
-+#include <media/v4l2-mem2mem.h>
-+#include <media/v4l2-device.h>
-+#include <media/v4l2-ioctl.h>
-+#include <media/v4l2-ctrls.h>
-+#include <media/v4l2-event.h>
-+#include <media/videobuf2-vmalloc.h>
-+#include <sound/dmaengine_pcm.h>
-+
-+MODULE_DESCRIPTION("Virtual device for audio mem2mem testing");
-+MODULE_LICENSE("GPL");
-+MODULE_VERSION("0.1");
-+MODULE_ALIAS("audio_mem2mem_testdev");
-+
-+static unsigned int debug;
-+module_param(debug, uint, 0644);
-+MODULE_PARM_DESC(debug, "debug level");
-+
-+/* Flags that indicate a format can be used for capture/output */
-+#define MEM2MEM_CAPTURE	BIT(0)
-+#define MEM2MEM_OUTPUT	BIT(1)
-+
-+#define MEM2MEM_NAME "audm2m"
-+
-+#define dprintk(dev, lvl, fmt, arg...) \
-+	v4l2_dbg(lvl, debug, &(dev)->v4l2_dev, "%s: " fmt, __func__, ## arg)
-+
-+#define SAMPLE_NUM 4096
-+
-+static void audm2m_dev_release(struct device *dev)
-+{}
-+
-+static struct platform_device audm2m_pdev = {
-+	.name		= MEM2MEM_NAME,
-+	.dev.release	= audm2m_dev_release,
-+};
-+
-+struct audm2m_fmt {
-+	u32	fourcc;
-+	snd_pcm_format_t     format;
-+	u32     types;
-+};
-+
-+static struct audm2m_fmt formats[] = {
-+	{
-+		.fourcc = V4L2_AUDIO_FMT_S8,
-+		.format = SNDRV_PCM_FORMAT_S8,
-+		.types  = MEM2MEM_CAPTURE | MEM2MEM_OUTPUT,
-+	},
-+	{
-+		.fourcc = V4L2_AUDIO_FMT_S16_LE,
-+		.format = SNDRV_PCM_FORMAT_S16_LE,
-+		.types  = MEM2MEM_CAPTURE | MEM2MEM_OUTPUT,
-+	},
-+	{
-+		.fourcc = V4L2_AUDIO_FMT_U16_LE,
-+		.format = SNDRV_PCM_FORMAT_U16_LE,
-+		.types  = MEM2MEM_CAPTURE | MEM2MEM_OUTPUT,
-+	},
-+	{
-+		.fourcc = V4L2_AUDIO_FMT_S24_LE,
-+		.format = SNDRV_PCM_FORMAT_S24_LE,
-+		.types  = MEM2MEM_CAPTURE | MEM2MEM_OUTPUT,
-+	},
-+	{
-+		.fourcc = V4L2_AUDIO_FMT_S24_3LE,
-+		.format = SNDRV_PCM_FORMAT_S24_3LE,
-+		.types  = MEM2MEM_CAPTURE | MEM2MEM_OUTPUT,
-+	},
-+	{
-+		.fourcc = V4L2_AUDIO_FMT_U24_LE,
-+		.format = SNDRV_PCM_FORMAT_U24_LE,
-+		.types  = MEM2MEM_CAPTURE | MEM2MEM_OUTPUT,
-+	},
-+	{
-+		.fourcc = V4L2_AUDIO_FMT_U24_3LE,
-+		.format = SNDRV_PCM_FORMAT_U24_3LE,
-+		.types  = MEM2MEM_CAPTURE | MEM2MEM_OUTPUT,
-+	},
-+	{
-+		.fourcc = V4L2_AUDIO_FMT_S32_LE,
-+		.format = SNDRV_PCM_FORMAT_S32_LE,
-+		.types  = MEM2MEM_CAPTURE | MEM2MEM_OUTPUT,
-+	},
-+	{
-+		.fourcc = V4L2_AUDIO_FMT_U32_LE,
-+		.format = SNDRV_PCM_FORMAT_U32_LE,
-+		.types  = MEM2MEM_CAPTURE | MEM2MEM_OUTPUT,
-+	},
-+	{
-+		.fourcc = V4L2_AUDIO_FMT_S20_3LE,
-+		.format = SNDRV_PCM_FORMAT_S20_3LE,
-+		.types  = MEM2MEM_CAPTURE | MEM2MEM_OUTPUT,
-+	},
-+	{
-+		.fourcc = V4L2_AUDIO_FMT_U20_3LE,
-+		.format = SNDRV_PCM_FORMAT_U20_3LE,
-+		.types  = MEM2MEM_CAPTURE | MEM2MEM_OUTPUT,
-+	},
-+};
-+
-+#define NUM_FORMATS ARRAY_SIZE(formats)
-+
-+/* Per-queue, driver-specific private data */
-+struct audm2m_q_data {
-+	unsigned int		rate;
-+	unsigned int		channels;
-+	unsigned int		buffersize;
-+	struct audm2m_fmt	*fmt;
-+};
-+
-+enum {
-+	V4L2_M2M_SRC = 0,
-+	V4L2_M2M_DST = 1,
-+};
-+
-+static struct audm2m_fmt *find_format(u32 fourcc)
-+{
-+	struct audm2m_fmt *fmt;
-+	unsigned int k;
-+
-+	for (k = 0; k < NUM_FORMATS; k++) {
-+		fmt = &formats[k];
-+		if (fmt->fourcc == fourcc)
-+			break;
-+	}
-+
-+	if (k == NUM_FORMATS)
-+		return NULL;
-+
-+	return &formats[k];
-+}
-+
-+struct audm2m_dev {
-+	struct v4l2_device	v4l2_dev;
-+	struct video_device	vfd;
-+
-+	atomic_t		num_inst;
-+	struct mutex		dev_mutex;
-+
-+	struct v4l2_m2m_dev	*m2m_dev;
-+};
-+
-+struct audm2m_ctx {
-+	struct v4l2_fh		fh;
-+	struct audm2m_dev	*dev;
-+
-+	struct mutex		vb_mutex;
-+
-+	/* Abort requested by m2m */
-+	int			aborting;
-+
-+	/* Source and destination queue data */
-+	struct audm2m_q_data   q_data[2];
-+};
-+
-+static inline struct audm2m_ctx *file2ctx(struct file *file)
-+{
-+	return container_of(file->private_data, struct audm2m_ctx, fh);
-+}
-+
-+static struct audm2m_q_data *get_q_data(struct audm2m_ctx *ctx,
-+					enum v4l2_buf_type type)
-+{
-+	switch (type) {
-+	case V4L2_BUF_TYPE_AUDIO_OUTPUT:
-+		return &ctx->q_data[V4L2_M2M_SRC];
-+	case V4L2_BUF_TYPE_AUDIO_CAPTURE:
-+		return &ctx->q_data[V4L2_M2M_DST];
-+	default:
-+		return NULL;
-+	}
-+}
-+
-+static const char *type_name(enum v4l2_buf_type type)
-+{
-+	switch (type) {
-+	case V4L2_BUF_TYPE_AUDIO_OUTPUT:
-+		return "Output";
-+	case V4L2_BUF_TYPE_AUDIO_CAPTURE:
-+		return "Capture";
-+	default:
-+		return "Invalid";
-+	}
-+}
-+
-+/*
-+ * mem2mem callbacks
-+ */
-+
-+/*
-+ * job_ready() - check whether an instance is ready to be scheduled to run
-+ */
-+static int job_ready(void *priv)
-+{
-+	struct audm2m_ctx *ctx = priv;
-+
-+	if (v4l2_m2m_num_src_bufs_ready(ctx->fh.m2m_ctx) < 1 ||
-+	    v4l2_m2m_num_dst_bufs_ready(ctx->fh.m2m_ctx) < 1) {
-+		dprintk(ctx->dev, 1, "Not enough buffers available\n");
-+		return 0;
-+	}
-+
-+	return 1;
-+}
-+
-+static void job_abort(void *priv)
-+{
-+	struct audm2m_ctx *ctx = priv;
-+
-+	/* Will cancel the transaction in the next interrupt handler */
-+	ctx->aborting = 1;
-+}
-+
-+/*
-+ * device_run() - prepares and starts the device
-+ */
-+static void device_run(void *priv)
-+{
-+	struct audm2m_ctx *ctx = priv;
-+	struct audm2m_dev *audm2m_dev;
-+	struct vb2_v4l2_buffer *src_buf, *dst_buf;
-+	struct audm2m_q_data *q_data_src, *q_data_dst;
-+	int src_size, dst_size;
-+
-+	audm2m_dev = ctx->dev;
-+
-+	q_data_src = get_q_data(ctx, V4L2_BUF_TYPE_AUDIO_OUTPUT);
-+	if (!q_data_src)
-+		return;
-+
-+	q_data_dst = get_q_data(ctx, V4L2_BUF_TYPE_AUDIO_CAPTURE);
-+	if (!q_data_dst)
-+		return;
-+
-+	src_buf = v4l2_m2m_next_src_buf(ctx->fh.m2m_ctx);
-+	dst_buf = v4l2_m2m_next_dst_buf(ctx->fh.m2m_ctx);
-+
-+	/* Process the conversion */
-+	src_size = vb2_get_plane_payload(&src_buf->vb2_buf, 0);
-+
-+	if (src_size > q_data_dst->buffersize)
-+		dst_size = q_data_dst->buffersize;
-+	else
-+		dst_size = src_size;
-+
-+	memcpy(vb2_plane_vaddr(&dst_buf->vb2_buf, 0),
-+	       vb2_plane_vaddr(&src_buf->vb2_buf, 0),
-+	       dst_size);
-+
-+	vb2_set_plane_payload(&dst_buf->vb2_buf, 0, dst_size);
-+
-+	src_buf = v4l2_m2m_src_buf_remove(ctx->fh.m2m_ctx);
-+	dst_buf = v4l2_m2m_dst_buf_remove(ctx->fh.m2m_ctx);
-+
-+	v4l2_m2m_buf_done(src_buf, VB2_BUF_STATE_DONE);
-+	v4l2_m2m_buf_done(dst_buf, VB2_BUF_STATE_DONE);
-+	v4l2_m2m_job_finish(audm2m_dev->m2m_dev, ctx->fh.m2m_ctx);
-+}
-+
-+static int audm2m_querycap(struct file *file, void *priv,
-+			   struct v4l2_capability *cap)
-+{
-+	strscpy(cap->driver, MEM2MEM_NAME, sizeof(cap->driver));
-+	strscpy(cap->card, MEM2MEM_NAME, sizeof(cap->card));
-+	snprintf(cap->bus_info, sizeof(cap->bus_info),
-+		 "platform:%s", MEM2MEM_NAME);
-+
-+	return 0;
-+}
-+
-+static int enum_fmt(struct v4l2_fmtdesc *f, u32 type)
-+{
-+	int i, num;
-+	struct audm2m_fmt *fmt;
-+
-+	num = 0;
-+
-+	for (i = 0; i < NUM_FORMATS; ++i) {
-+		if (formats[i].types & type) {
-+			if (num == f->index)
-+				break;
-+			/*
-+			 * Correct type but haven't reached our index yet,
-+			 * just increment per-type index
-+			 */
-+			++num;
-+		}
-+	}
-+
-+	if (i < NUM_FORMATS) {
-+		/* Format found */
-+		fmt = &formats[i];
-+		f->pixelformat = fmt->fourcc;
-+		return 0;
-+	}
-+
-+	/* Format not found */
-+	return -EINVAL;
-+}
-+
-+static int audm2m_enum_fmt_audio_cap(struct file *file, void *priv,
-+				     struct v4l2_fmtdesc *f)
-+{
-+	return enum_fmt(f, MEM2MEM_CAPTURE);
-+}
-+
-+static int audm2m_enum_fmt_audio_out(struct file *file, void *priv,
-+				     struct v4l2_fmtdesc *f)
-+{
-+	return enum_fmt(f, MEM2MEM_OUTPUT);
-+}
-+
-+static int audm2m_g_fmt(struct audm2m_ctx *ctx, struct v4l2_format *f)
-+{
-+	struct vb2_queue *vq;
-+	struct audm2m_q_data *q_data;
-+
-+	vq = v4l2_m2m_get_vq(ctx->fh.m2m_ctx, f->type);
-+	if (!vq)
-+		return -EINVAL;
-+
-+	q_data = get_q_data(ctx, f->type);
-+	if (!q_data)
-+		return -EINVAL;
-+
-+	f->fmt.audio.pixelformat = q_data->fmt->fourcc;
-+	f->fmt.audio.channels	= q_data->channels;
-+	f->fmt.audio.buffersize = q_data->buffersize;
-+
-+	return 0;
-+}
-+
-+static int audm2m_g_fmt_audio_out(struct file *file, void *priv,
-+				  struct v4l2_format *f)
-+{
-+	return audm2m_g_fmt(file2ctx(file), f);
-+}
-+
-+static int audm2m_g_fmt_audio_cap(struct file *file, void *priv,
-+				  struct v4l2_format *f)
-+{
-+	return audm2m_g_fmt(file2ctx(file), f);
-+}
-+
-+static int audm2m_try_fmt(struct v4l2_format *f, struct audm2m_fmt *fmt)
-+{
-+	if (f->fmt.audio.channels < 1)
-+		f->fmt.audio.channels = 1;
-+	else if (f->fmt.audio.channels > 8)
-+		f->fmt.audio.channels = 8;
-+
-+	f->fmt.audio.buffersize = f->fmt.audio.channels *
-+				  snd_pcm_format_physical_width(fmt->format) *
-+				  SAMPLE_NUM;
-+	return 0;
-+}
-+
-+static int audm2m_try_fmt_audio_cap(struct file *file, void *priv,
-+				    struct v4l2_format *f)
-+{
-+	struct audm2m_fmt *fmt;
-+	struct audm2m_ctx *ctx = file2ctx(file);
-+
-+	fmt = find_format(f->fmt.audio.pixelformat);
-+	if (!fmt) {
-+		f->fmt.audio.pixelformat = formats[0].fourcc;
-+		fmt = find_format(f->fmt.audio.pixelformat);
-+	}
-+
-+	if (!(fmt->types & MEM2MEM_CAPTURE)) {
-+		v4l2_err(&ctx->dev->v4l2_dev,
-+			 "Fourcc format (0x%08x) invalid.\n",
-+			 f->fmt.audio.pixelformat);
-+		return -EINVAL;
-+	}
-+
-+	return audm2m_try_fmt(f, fmt);
-+}
-+
-+static int audm2m_try_fmt_audio_out(struct file *file, void *priv,
-+				    struct v4l2_format *f)
-+{
-+	struct audm2m_fmt *fmt;
-+	struct audm2m_ctx *ctx = file2ctx(file);
-+
-+	fmt = find_format(f->fmt.audio.pixelformat);
-+	if (!fmt) {
-+		f->fmt.audio.pixelformat = formats[0].fourcc;
-+		fmt = find_format(f->fmt.audio.pixelformat);
-+	}
-+
-+	if (!(fmt->types & MEM2MEM_OUTPUT)) {
-+		v4l2_err(&ctx->dev->v4l2_dev,
-+			 "Fourcc format (0x%08x) invalid.\n",
-+			 f->fmt.audio.pixelformat);
-+		return -EINVAL;
-+	}
-+
-+	return audm2m_try_fmt(f, fmt);
-+}
-+
-+static int audm2m_s_fmt(struct audm2m_ctx *ctx, struct v4l2_format *f)
-+{
-+	struct audm2m_q_data *q_data;
-+	struct vb2_queue *vq;
-+
-+	vq = v4l2_m2m_get_vq(ctx->fh.m2m_ctx, f->type);
-+	if (!vq)
-+		return -EINVAL;
-+
-+	q_data = get_q_data(ctx, f->type);
-+	if (!q_data)
-+		return -EINVAL;
-+
-+	if (vb2_is_busy(vq)) {
-+		v4l2_err(&ctx->dev->v4l2_dev, "%s queue busy\n", __func__);
-+		return -EBUSY;
-+	}
-+
-+	q_data->fmt	= find_format(f->fmt.audio.pixelformat);
-+	q_data->channels = f->fmt.audio.channels;
-+	q_data->buffersize = q_data->channels *
-+			     snd_pcm_format_physical_width(q_data->fmt->format) *
-+			     SAMPLE_NUM;
-+
-+	dprintk(ctx->dev, 1,
-+		"Format for type %s: %d/%d, fmt: %c%c%c%c\n",
-+		type_name(f->type), q_data->rate,
-+		q_data->channels,
-+		(q_data->fmt->fourcc & 0xff),
-+		(q_data->fmt->fourcc >>  8) & 0xff,
-+		(q_data->fmt->fourcc >> 16) & 0xff,
-+		(q_data->fmt->fourcc >> 24) & 0xff);
-+
-+	return 0;
-+}
-+
-+static int audm2m_s_fmt_audio_cap(struct file *file, void *priv,
-+				  struct v4l2_format *f)
-+{
-+	int ret;
-+
-+	ret = audm2m_try_fmt_audio_cap(file, priv, f);
-+	if (ret)
-+		return ret;
-+
-+	return audm2m_s_fmt(file2ctx(file), f);
-+}
-+
-+static int audm2m_s_fmt_audio_out(struct file *file, void *priv,
-+				  struct v4l2_format *f)
-+{
-+	int ret;
-+
-+	ret = audm2m_try_fmt_audio_out(file, priv, f);
-+	if (ret)
-+		return ret;
-+
-+	return audm2m_s_fmt(file2ctx(file), f);
-+}
-+
-+static const struct v4l2_ioctl_ops audm2m_ioctl_ops = {
-+	.vidioc_querycap		= audm2m_querycap,
-+
-+	.vidioc_enum_fmt_audio_cap	= audm2m_enum_fmt_audio_cap,
-+	.vidioc_g_fmt_audio_cap		= audm2m_g_fmt_audio_cap,
-+	.vidioc_try_fmt_audio_cap	= audm2m_try_fmt_audio_cap,
-+	.vidioc_s_fmt_audio_cap		= audm2m_s_fmt_audio_cap,
-+
-+	.vidioc_enum_fmt_audio_out	= audm2m_enum_fmt_audio_out,
-+	.vidioc_g_fmt_audio_out		= audm2m_g_fmt_audio_out,
-+	.vidioc_try_fmt_audio_out	= audm2m_try_fmt_audio_out,
-+	.vidioc_s_fmt_audio_out		= audm2m_s_fmt_audio_out,
-+
-+	.vidioc_reqbufs			= v4l2_m2m_ioctl_reqbufs,
-+	.vidioc_querybuf		= v4l2_m2m_ioctl_querybuf,
-+	.vidioc_qbuf			= v4l2_m2m_ioctl_qbuf,
-+	.vidioc_dqbuf			= v4l2_m2m_ioctl_dqbuf,
-+	.vidioc_prepare_buf		= v4l2_m2m_ioctl_prepare_buf,
-+	.vidioc_create_bufs		= v4l2_m2m_ioctl_create_bufs,
-+	.vidioc_expbuf			= v4l2_m2m_ioctl_expbuf,
-+
-+	.vidioc_streamon		= v4l2_m2m_ioctl_streamon,
-+	.vidioc_streamoff		= v4l2_m2m_ioctl_streamoff,
-+
-+	.vidioc_subscribe_event		= v4l2_ctrl_subscribe_event,
-+	.vidioc_unsubscribe_event	= v4l2_event_unsubscribe,
-+};
-+
-+/*
-+ * Queue operations
-+ */
-+static int audm2m_queue_setup(struct vb2_queue *vq,
-+			      unsigned int *nbuffers,
-+			      unsigned int *nplanes,
-+			      unsigned int sizes[],
-+			      struct device *alloc_devs[])
-+{
-+	struct audm2m_ctx *ctx = vb2_get_drv_priv(vq);
-+	struct audm2m_q_data *q_data;
-+
-+	q_data = get_q_data(ctx, vq->type);
-+	if (!q_data)
-+		return -EINVAL;
-+
-+	*nplanes = 1;
-+	sizes[0] = q_data->buffersize;
-+
-+	dprintk(ctx->dev, 1, "%s: get %d buffer(s) of size %d each.\n",
-+		type_name(vq->type), *nplanes, sizes[0]);
-+
-+	return 0;
-+}
-+
-+static void audm2m_buf_queue(struct vb2_buffer *vb)
-+{
-+	struct vb2_v4l2_buffer *vbuf = to_vb2_v4l2_buffer(vb);
-+	struct audm2m_ctx *ctx = vb2_get_drv_priv(vb->vb2_queue);
-+
-+	v4l2_m2m_buf_queue(ctx->fh.m2m_ctx, vbuf);
-+}
-+
-+static int audm2m_start_streaming(struct vb2_queue *q, unsigned int count)
-+{
-+	struct audm2m_ctx *ctx = vb2_get_drv_priv(q);
-+	struct audm2m_q_data *q_data = get_q_data(ctx, q->type);
-+
-+	if (!q_data)
-+		return -EINVAL;
-+
-+	if (V4L2_TYPE_IS_OUTPUT(q->type))
-+		ctx->aborting = 0;
-+
-+	return 0;
-+}
-+
-+static void audm2m_stop_streaming(struct vb2_queue *q)
-+{
-+	struct audm2m_ctx *ctx = vb2_get_drv_priv(q);
-+	struct vb2_v4l2_buffer *vbuf;
-+
-+	for (;;) {
-+		if (V4L2_TYPE_IS_OUTPUT(q->type))
-+			vbuf = v4l2_m2m_src_buf_remove(ctx->fh.m2m_ctx);
-+		else
-+			vbuf = v4l2_m2m_dst_buf_remove(ctx->fh.m2m_ctx);
-+		if (!vbuf)
-+			return;
-+		v4l2_m2m_buf_done(vbuf, VB2_BUF_STATE_ERROR);
-+	}
-+}
-+
-+static const struct vb2_ops audm2m_qops = {
-+	.queue_setup	 = audm2m_queue_setup,
-+	.buf_queue	 = audm2m_buf_queue,
-+	.start_streaming = audm2m_start_streaming,
-+	.stop_streaming  = audm2m_stop_streaming,
-+	.wait_prepare	 = vb2_ops_wait_prepare,
-+	.wait_finish	 = vb2_ops_wait_finish,
-+};
-+
-+static int queue_init(void *priv, struct vb2_queue *src_vq,
-+		      struct vb2_queue *dst_vq)
-+{
-+	struct audm2m_ctx *ctx = priv;
-+	int ret;
-+
-+	src_vq->type = V4L2_BUF_TYPE_AUDIO_OUTPUT;
-+	src_vq->io_modes = VB2_MMAP | VB2_DMABUF;
-+	src_vq->drv_priv = ctx;
-+	src_vq->buf_struct_size = sizeof(struct v4l2_m2m_buffer);
-+	src_vq->ops = &audm2m_qops;
-+	src_vq->mem_ops = &vb2_vmalloc_memops;
-+	src_vq->timestamp_flags = V4L2_BUF_FLAG_TIMESTAMP_COPY;
-+	src_vq->lock = &ctx->vb_mutex;
-+	src_vq->min_buffers_needed = 1;
-+
-+	ret = vb2_queue_init(src_vq);
-+	if (ret)
-+		return ret;
-+
-+	dst_vq->type = V4L2_BUF_TYPE_AUDIO_CAPTURE;
-+	dst_vq->io_modes = VB2_MMAP | VB2_DMABUF;
-+	dst_vq->drv_priv = ctx;
-+	dst_vq->buf_struct_size = sizeof(struct v4l2_m2m_buffer);
-+	dst_vq->ops = &audm2m_qops;
-+	dst_vq->mem_ops = &vb2_vmalloc_memops;
-+	dst_vq->timestamp_flags = V4L2_BUF_FLAG_TIMESTAMP_COPY;
-+	dst_vq->lock = &ctx->vb_mutex;
-+	dst_vq->min_buffers_needed = 1;
-+
-+	return vb2_queue_init(dst_vq);
-+}
-+
-+/*
-+ * File operations
-+ */
-+static int audm2m_open(struct file *file)
-+{
-+	struct audm2m_dev *dev = video_drvdata(file);
-+	struct audm2m_ctx *ctx = NULL;
-+	int width;
-+	int rc = 0;
-+
-+	if (mutex_lock_interruptible(&dev->dev_mutex))
-+		return -ERESTARTSYS;
-+	ctx = kzalloc(sizeof(*ctx), GFP_KERNEL);
-+	if (!ctx) {
-+		rc = -ENOMEM;
-+		goto open_unlock;
-+	}
-+
-+	v4l2_fh_init(&ctx->fh, video_devdata(file));
-+	file->private_data = &ctx->fh;
-+	ctx->dev = dev;
-+
-+	ctx->q_data[V4L2_M2M_SRC].fmt = &formats[0];
-+	ctx->q_data[V4L2_M2M_SRC].rate = 8000;
-+	ctx->q_data[V4L2_M2M_SRC].channels = 2;
-+
-+	/* Fix to 4096 samples */
-+	width = snd_pcm_format_physical_width(formats[0].format);
-+	ctx->q_data[V4L2_M2M_SRC].buffersize = SAMPLE_NUM * 2 * width;
-+	ctx->q_data[V4L2_M2M_DST] = ctx->q_data[V4L2_M2M_SRC];
-+
-+	ctx->fh.m2m_ctx = v4l2_m2m_ctx_init(dev->m2m_dev, ctx, &queue_init);
-+
-+	mutex_init(&ctx->vb_mutex);
-+
-+	if (IS_ERR(ctx->fh.m2m_ctx)) {
-+		rc = PTR_ERR(ctx->fh.m2m_ctx);
-+
-+		v4l2_fh_exit(&ctx->fh);
-+		kfree(ctx);
-+		goto open_unlock;
-+	}
-+
-+	v4l2_fh_add(&ctx->fh);
-+	atomic_inc(&dev->num_inst);
-+
-+	dprintk(dev, 1, "Created instance: %p, m2m_ctx: %p\n",
-+		ctx, ctx->fh.m2m_ctx);
-+
-+open_unlock:
-+	mutex_unlock(&dev->dev_mutex);
-+	return rc;
-+}
-+
-+static int audm2m_release(struct file *file)
-+{
-+	struct audm2m_dev *dev = video_drvdata(file);
-+	struct audm2m_ctx *ctx = file2ctx(file);
-+
-+	dprintk(dev, 1, "Releasing instance %p\n", ctx);
-+
-+	v4l2_fh_del(&ctx->fh);
-+	v4l2_fh_exit(&ctx->fh);
-+	mutex_lock(&dev->dev_mutex);
-+	v4l2_m2m_ctx_release(ctx->fh.m2m_ctx);
-+	mutex_unlock(&dev->dev_mutex);
-+	kfree(ctx);
-+
-+	atomic_dec(&dev->num_inst);
-+
-+	return 0;
-+}
-+
-+static void audm2m_device_release(struct video_device *vdev)
-+{
-+	struct audm2m_dev *dev = container_of(vdev, struct audm2m_dev, vfd);
-+
-+	v4l2_device_unregister(&dev->v4l2_dev);
-+	v4l2_m2m_release(dev->m2m_dev);
-+
-+	kfree(dev);
-+}
-+
-+static const struct v4l2_file_operations audm2m_fops = {
-+	.owner		= THIS_MODULE,
-+	.open		= audm2m_open,
-+	.release	= audm2m_release,
-+	.poll		= v4l2_m2m_fop_poll,
-+	.unlocked_ioctl	= video_ioctl2,
-+	.mmap		= v4l2_m2m_fop_mmap,
-+};
-+
-+static const struct video_device audm2m_videodev = {
-+	.name		= MEM2MEM_NAME,
-+	.vfl_dir	= VFL_DIR_M2M,
-+	.fops		= &audm2m_fops,
-+	.ioctl_ops	= &audm2m_ioctl_ops,
-+	.minor		= -1,
-+	.release	= audm2m_device_release,
-+	.device_caps	= V4L2_CAP_AUDIO_M2M | V4L2_CAP_STREAMING,
-+};
-+
-+static const struct v4l2_m2m_ops m2m_ops = {
-+	.device_run	= device_run,
-+	.job_ready	= job_ready,
-+	.job_abort	= job_abort,
-+};
-+
-+static int audm2m_probe(struct platform_device *pdev)
-+{
-+	struct audm2m_dev *dev;
-+	struct video_device *vfd;
-+	int ret;
-+
-+	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
-+	if (!dev)
-+		return -ENOMEM;
-+
-+	ret = v4l2_device_register(&pdev->dev, &dev->v4l2_dev);
-+	if (ret)
-+		goto error_free;
-+
-+	atomic_set(&dev->num_inst, 0);
-+	mutex_init(&dev->dev_mutex);
-+
-+	dev->vfd = audm2m_videodev;
-+	vfd = &dev->vfd;
-+	vfd->lock = &dev->dev_mutex;
-+	vfd->v4l2_dev = &dev->v4l2_dev;
-+
-+	video_set_drvdata(vfd, dev);
-+	v4l2_info(&dev->v4l2_dev,
-+		  "Device registered as /dev/v4l-audio%d\n", vfd->num);
-+
-+	platform_set_drvdata(pdev, dev);
-+
-+	dev->m2m_dev = v4l2_m2m_init(&m2m_ops);
-+	if (IS_ERR(dev->m2m_dev)) {
-+		v4l2_err(&dev->v4l2_dev, "Failed to init mem2mem device\n");
-+		ret = PTR_ERR(dev->m2m_dev);
-+		dev->m2m_dev = NULL;
-+		goto error_dev;
-+	}
-+
-+	ret = video_register_device(vfd, VFL_TYPE_AUDIO, 0);
-+	if (ret) {
-+		v4l2_err(&dev->v4l2_dev, "Failed to register video device\n");
-+		goto error_m2m;
-+	}
-+
-+	return 0;
-+
-+error_m2m:
-+	v4l2_m2m_release(dev->m2m_dev);
-+error_dev:
-+	v4l2_device_unregister(&dev->v4l2_dev);
-+error_free:
-+	kfree(dev);
-+
-+	return ret;
-+}
-+
-+static void audm2m_remove(struct platform_device *pdev)
-+{
-+	struct audm2m_dev *dev = platform_get_drvdata(pdev);
-+
-+	v4l2_info(&dev->v4l2_dev, "Removing " MEM2MEM_NAME);
-+
-+	video_unregister_device(&dev->vfd);
-+}
-+
-+static struct platform_driver audm2m_pdrv = {
-+	.probe		= audm2m_probe,
-+	.remove_new	= audm2m_remove,
-+	.driver		= {
-+		.name	= MEM2MEM_NAME,
-+	},
-+};
-+
-+static void __exit audm2m_exit(void)
-+{
-+	platform_driver_unregister(&audm2m_pdrv);
-+	platform_device_unregister(&audm2m_pdev);
-+}
-+
-+static int __init audm2m_init(void)
-+{
-+	int ret;
-+
-+	ret = platform_device_register(&audm2m_pdev);
-+	if (ret)
-+		return ret;
-+
-+	ret = platform_driver_register(&audm2m_pdrv);
-+	if (ret)
-+		platform_device_unregister(&audm2m_pdev);
-+
-+	return ret;
-+}
-+
-+module_init(audm2m_init);
-+module_exit(audm2m_exit);
+[01/59] dma: altera-msgdma: Convert to platform remove callback returning void
+        commit: 8876762f285fff08b1aefeba52c7157a2c9beec1
+[02/59] dma: apple-admac: Convert to platform remove callback returning void
+        commit: e7d5aa30c8a19e6d9c4ec19d3b9e501df22e1d1a
+[03/59] dma: at_hdmac: Convert to platform remove callback returning void
+        commit: ae3f38e495b42494414cbace3b3bd3cb6dc10506
+[04/59] dma: at_xdmac: Convert to platform remove callback returning void
+        commit: b13af3c41bad5f4e45a73d6978f31ad48ffc2dee
+[05/59] dma: bcm-sba-raid: Convert to platform remove callback returning void
+        commit: 017df796a3635edee5169a0700634da6dac92f6a
+[06/59] dma: bcm2835-dma: Convert to platform remove callback returning void
+        commit: 8f63a2da288454e9228f6b438b86627f6ceae36b
+[07/59] dma: bestcomm: bestcomm: Convert to platform remove callback returning void
+        commit: 7689bca111997e0d7a12cf6457fc26a52b8c800f
+[08/59] dma: dma-axi-dmac: Convert to platform remove callback returning void
+        commit: b5f095a70117629c3abb49bcb07dfa954d275e99
+[09/59] dma: dma-jz4780: Convert to platform remove callback returning void
+        commit: a8c85540bee12d492904a430c0c1105a4b7b101c
+[10/59] dma: dw-axi-dmac: dw-axi-dmac-platform: Convert to platform remove callback returning void
+        commit: c689a2fd2a3f2a0a9e775c59c0f02ea64677c254
+[11/59] dma: dw: platform: Convert to platform remove callback returning void
+        commit: 67572bfe2e35c232c3497b3fc8babbfe62600ce0
+[12/59] dma: fsl-edma-main: Convert to platform remove callback returning void
+        commit: fa13c3ef3f45bca5a1474755dac57bfaf28ef61b
+[13/59] dma: fsl-qdma: Convert to platform remove callback returning void
+        commit: fe3d44cdaea41173e50833440db84982e2a8d2a7
+[14/59] dma: fsl_raid: Convert to platform remove callback returning void
+        commit: 37b24b50c5f8ad9037fbe81f1ee43f5e16fb5334
+[15/59] dma: fsldma: Convert to platform remove callback returning void
+        commit: d69f80110da5d0e665d7f2872bf2185fe7f14409
+[16/59] dma: idma64: Convert to platform remove callback returning void
+        commit: e8da277fbb8701308cfd2337afb13d34cc233349
+[17/59] dma: img-mdc-dma: Convert to platform remove callback returning void
+        commit: 6e1b4a907e860071d957baee688a30a0bff102ef
+[18/59] dma: imx-dma: Convert to platform remove callback returning void
+        commit: 14c49dd0c34e457d71494b04290c27d7a14584d7
+[19/59] dma: imx-sdma: Convert to platform remove callback returning void
+        commit: 06e4f653fafdeec7b13958b771226efa1cdf76d2
+[20/59] dma: k3dma: Convert to platform remove callback returning void
+        commit: 3faf902cb808163e9e65bf568c235a272215aed2
+[21/59] dma: mcf-edma-main: Convert to platform remove callback returning void
+        commit: 48236cb8314238917788f73353290dd1afb9a7c6
+[22/59] dma: mediatek: mtk-cqdma: Convert to platform remove callback returning void
+        commit: bdeb61f5180efc920cf55b966a2a30bc2336d6d4
+[23/59] dma: mediatek: mtk-hsdma: Convert to platform remove callback returning void
+        commit: 97283173effa6e53ea698726ea5d07f7ca06e5cf
+[24/59] dma: mediatek: mtk-uart-apdma: Convert to platform remove callback returning void
+        commit: 4db30945a001ac97b5044db2aa2990b8e7df9452
+[25/59] dma: mmp_pdma: Convert to platform remove callback returning void
+        commit: c0f0d93fc1da36de564da9b3f0462b5bdc4b1948
+[26/59] dma: mmp_tdma: Convert to platform remove callback returning void
+        commit: f543b251500a0de589bc4c97da45b88410bf7c56
+[27/59] dma: moxart-dma: Convert to platform remove callback returning void
+        commit: 1a65831fa037457114ca75ea262d87fbde3158f0
+[28/59] dma: mpc512x_dma: Convert to platform remove callback returning void
+        commit: 80d0159bbe80d8de6f64c0a8554b4066c66eb378
+[29/59] dma: mv_xor_v2: Convert to platform remove callback returning void
+        commit: 733dbb8d62f33448c0d7470ba06ce39bdd790ddd
+[30/59] dma: nbpfaxi: Convert to platform remove callback returning void
+        commit: 44d5338c4a5d7f3f1ef07d502b9db22a29a8756a
+[31/59] dma: owl-dma: Convert to platform remove callback returning void
+        commit: 1260486a347567c33e0118626bb8778e342e6080
+[32/59] dma: ppc4xx: adma: Convert to platform remove callback returning void
+        commit: 5f8f212fb416dc3600046955fb008732a512fa5c
+[33/59] dma: pxa_dma: Convert to platform remove callback returning void
+        commit: 44ea88715d37dc31145b7712b5474808258bab5f
+[34/59] dma: qcom: bam_dma: Convert to platform remove callback returning void
+        commit: 8d0f1ca5e4037f671cee43a4a582c0f8c6e8e31d
+[35/59] dma: qcom: hidma: Convert to platform remove callback returning void
+        commit: af9bc3c26b08714eb2309dcbf9a74a6c7af6327f
+[36/59] dma: qcom: qcom_adm: Convert to platform remove callback returning void
+        commit: 1a6d1c87542d6bb178db5bc2befc9abf99447684
+[37/59] dma: sa11x0-dma: Convert to platform remove callback returning void
+        commit: d6798037fa1c01e6b9486cc1fbe1b5a272dde477
+[38/59] dma: sf-pdma: sf-pdma: Convert to platform remove callback returning void
+        commit: 3d97deeb3b3077b3a6f9636f3ea312fef7f54059
+[39/59] dma: sh: rcar-dmac: Convert to platform remove callback returning void
+        commit: 8ca342994ab8abda069c4b918aab5fa6b8c1614f
+[40/59] dma: sh: rz-dmac: Convert to platform remove callback returning void
+        commit: bd4205f52310a158c78171d3a5f68c7301a532fd
+[41/59] dma: sh: shdmac: Convert to platform remove callback returning void
+        commit: 384ba9a683d3ba9f2f598b4c5fbf6f79a9213e94
+[42/59] dma: sh: usb-dmac: Convert to platform remove callback returning void
+        commit: 9f2812a7fe47c422a367ef95e418dd63fced7238
+[43/59] dma: sprd-dma: Convert to platform remove callback returning void
+        commit: 8d82eb85a74246afb9b4bc69abf6e79014b06d4f
+[44/59] dma: st_fdma: Convert to platform remove callback returning void
+        commit: 9c52ffa09f580c49df1cc0b1998d7ea8fdf2c0b4
+[45/59] dma: sun4i-dma: Convert to platform remove callback returning void
+        commit: 2db76471c8f45837efafdd7d57633aa9f194d787
+[46/59] dma: sun6i-dma: Convert to platform remove callback returning void
+        commit: 7d6ef7550a4577ae943194421dea73f3df084265
+[47/59] dma: tegra186-gpc-dma: Convert to platform remove callback returning void
+        commit: d669b198efac1ea97fa39d6f8be59aefe5f39171
+[48/59] dma: tegra20-apb-dma: Convert to platform remove callback returning void
+        commit: afd1ac2e1b9b39040bb5eedd94b2b152020994e0
+[49/59] dma: tegra210-adma: Convert to platform remove callback returning void
+        commit: 1a3fa3e369bf54bef0021a8c840567622f52354f
+[50/59] dma: ti: cppi41: Convert to platform remove callback returning void
+        commit: 36a7e98c36a598c2865daf748a7d9d889a34aaf3
+[51/59] dma: ti: edma: Convert to platform remove callback returning void
+        commit: 68bcaf5c4e03ada2696b4fbd03ee775781945034
+[52/59] dma: ti: omap-dma: Convert to platform remove callback returning void
+        commit: 5ea68dc1cee00e5ecf174f2a3ef13d63520971cb
+[53/59] dma: timb_dma: Convert to platform remove callback returning void
+        commit: 4f339d6efa6a74a16f77fd9a06adf01d9df84734
+[54/59] dma: txx9dmac: Convert to platform remove callback returning void
+        commit: a3b4af719e571bd899b7952626c2b4d8ec7c0c77
+[55/59] dma: xgene-dma: Convert to platform remove callback returning void
+        commit: 2c9d879fae9ab1be3d4926ebea5e85305998cf93
+[56/59] dma: xilinx: xdma: Convert to platform remove callback returning void
+        commit: 78369eb5dc8881d78f163434ee2788a800b89219
+[57/59] dma: xilinx: xilinx_dma: Convert to platform remove callback returning void
+        commit: cc99582d46b428ba4c2cb7ecd05df4569b02d1f4
+[58/59] dma: xilinx: xilinx_dpdma: Convert to platform remove callback returning void
+        commit: c962eca73c5cce72936a8b3bd23a24b29852ea97
+[59/59] dma: xilinx: zynqmp_dma: Convert to platform remove callback returning void
+        commit: b1c50ac25425385b576dd58b7b38c1c5963dde85
+
+Best regards,
 -- 
-2.34.1
+~Vinod
+
 
