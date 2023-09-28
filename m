@@ -1,49 +1,199 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4028E7B2994
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Sep 2023 02:32:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B875E7B2998
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Sep 2023 02:33:24 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=dim-sum.org header.i=@dim-sum.org header.a=rsa-sha256 header.s=chowmein header.b=LW+N+dK0;
+	dkim=permerror header.d=arndb.de header.i=@arndb.de header.a=rsa-sha1 header.s=fm1 header.b=Zb4LJ/iW;
+	dkim=permerror header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha1 header.s=fm2 header.b=n/Qf6qJX;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RxWX11J2Gz3cc2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Sep 2023 10:32:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RxWXy472Tz3ccW
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Sep 2023 10:33:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=dim-sum.org header.i=@dim-sum.org header.a=rsa-sha256 header.s=chowmein header.b=LW+N+dK0;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=Zb4LJ/iW;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=n/Qf6qJX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=dim-sum.org (client-ip=81.187.240.206; helo=chowmein.spicy.dim-sum.org; envelope-from=drw@dim-sum.org; receiver=lists.ozlabs.org)
-X-Greylist: delayed 355 seconds by postgrey-1.37 at boromir; Thu, 28 Sep 2023 23:00:02 AEST
-Received: from chowmein.spicy.dim-sum.org (chowmein.spicy.dim-sum.org [81.187.240.206])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=66.111.4.229; helo=new3-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from new3-smtp.messagingengine.com (new3-smtp.messagingengine.com [66.111.4.229])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RxD8y1wdMz300f
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Sep 2023 23:00:02 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=dim-sum.org;
-	s=chowmein; t=1695905638;
-	bh=nlqMPIPQ2nk7liNiI2T4ncccE2lWWB2ZxXWUinb+ev4=;
-	h=Date:From:To:Subject:From;
-	b=LW+N+dK0BUu7anVf8h5vL/e2dOCa1s68aki9pyyG7LUpJ6kWMtmbaP1FH6EWJEjsp
-	 oQPRFwUP5KKUietfQx5xIsQBbfRx2rU2OLXPvkLS6ai+iWn6AbQXoyGrzG+q6CUQv/
-	 KURLeewI7p1NAFCDJe09swkGHTbVTScaL6iSd03WKtK7Tx4AQ/tdSP0YHkEAtf2C4w
-	 Q7MsahxOlpyM5BXxe0Df90BjwgVtNX8v4vC4KA5wUTD5EcSWWxW57U/RpTcIiT+kjB
-	 otB92qp6Nl7nRU2LOQd8a0gk0GlK78O/5pTZ519XPJBQksG3W75ksjodWzMvUNw/5K
-	 X/WvlktSg4v+Q==
-Received: from dim-sum.org (b.8.4.f.1.4.e.f.f.f.1.5.6.4.c.e.4.1.0.0.9.9.f.f.0.b.8.0.1.0.0.2.ip6.arpa [IPv6:2001:8b0:ff99:14:ec46:51ff:fe41:f48b])
-	by chowmein.spicy.dim-sum.org (Postfix) with ESMTPS id DF6F4E00036
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Sep 2023 13:53:56 +0100 (BST)
-Date: Thu, 28 Sep 2023 13:53:55 +0100
-From: Dan Whitehouse <drw@dim-sum.org>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: Kernel Panic 6.5.0-1 PPC
-Message-ID: <ZRV3Y3g2fTvE91Zs@dim-sum.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RxHvg64Q0z3cCg
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Sep 2023 01:48:47 +1000 (AEST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailnew.nyi.internal (Postfix) with ESMTP id 5C6B0581DAC;
+	Thu, 28 Sep 2023 11:48:43 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Thu, 28 Sep 2023 11:48:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:sender
+	:subject:subject:to:to; s=fm1; t=1695916123; x=1695923323; bh=AE
+	M/fDbI9O0BImAELzI+hfXsnObtdXB3nh8ZZCXXqn0=; b=Zb4LJ/iWxs7PYCxfSp
+	Mmj7xYkSAgWplciC0+hZqHaIVvkpCb/Wp0lEpODKkSCM40frExHvLz4EZAD1HZJ2
+	9ttgDzhZqI1ch1xpfCA8FHvF2/PahtOaTm//TzyXbpTROeAOQjegRsYYeSoWNyYK
+	byMO63AHEnUHVIOFCUm+mvxA/KjnXoKo0xnweP/w+dWDOvLPjGksvDhU3ohZT6Yp
+	QpiswLlY9kvUQhVEctTQH/u+sDAFDQssEAik0gF+XDqfmAiKXNJoWxztil5xTMTb
+	X/lrYQ3vvVFk9wvd6DyfBmvUprhzlzpKTyylDH3eDykTx5H6fgxF/6J3HRQ+0H0e
+	vkbw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:sender:subject
+	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+	:x-sasl-enc; s=fm2; t=1695916123; x=1695923323; bh=AEM/fDbI9O0BI
+	mAELzI+hfXsnObtdXB3nh8ZZCXXqn0=; b=n/Qf6qJXucXyk4LW4CL1tlnrKQD+5
+	he13BWxPblPpTww3+/1Dnpdhq7Gwr3a+fNA/QON3ImAoB4q0Q/wz7xwPYTvIh6y4
+	pI+Bd8aWYcux+cr2fpJzmkbS+P4O02I2hebi06+hrjnSwnPE23SfqSF4cbFR4hlH
+	YaVmK8v0yltudUYq72xKx5sAA01J7qL+ne43uzwAXwT6ryRFwbNVU+Y1mHF2dF66
+	agNWj0CMsq4gNWlnonaqngyXaD0pPv6qEhlNb+XbjMdBnMkU2kFvOV0FzP6pW1Jx
+	vJR5UdEjaUxDazFxTy4TLY4x736COIBHAoRVIXDZypp4DjDlHgBb2dBag==
+X-ME-Sender: <xms:VqAVZehkLTOXwS_xg_6r9_9U7myXUu9Xf4xrZ0lmC-mNKcMCcnNsJw>
+    <xme:VqAVZfCC0hBNW-6zWSNUDpimotTv1K_lD4MorQPse5pJgj_jwgOrIpVTd1e1lCsJ4
+    CyxiAxCxEI04_Mnbzk>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrtddtgdeifecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
+    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
+    gvrhhnpeevhfffledtgeehfeffhfdtgedvheejtdfgkeeuvefgudffteettdekkeeufeeh
+    udenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptd
+    enucfrrghrrghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:VqAVZWG45Rd33BgqA4LgSTkoIL6Ot1dfOvbe8RgsboLNiKSqszWOAg>
+    <xmx:VqAVZXQTxuydNZS_enwE9LlRoOhiuGF9gCIhq3TRrDdNwtGtt6FbIQ>
+    <xmx:VqAVZbxEBIkR5teHqxhFLdOZo9wRUGgFdkIYaLd2pyKQSq2CtJDzCg>
+    <xmx:W6AVZTZKpR7w9NLRl_L1L6zoNyttDC4RXO7dBXqniz-srYv7BlTPTA>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id BE4B9B60089; Thu, 28 Sep 2023 11:48:38 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-958-g1b1b911df8-fm-20230927.002-g1b1b911d
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Message-Id: <6020d6e7-b187-4abb-bf38-dc09d8bd0f6d@app.fastmail.com>
+In-Reply-To: <20230928110554.34758-2-jlayton@kernel.org>
+References: <20230928110554.34758-1-jlayton@kernel.org>
+ <20230928110554.34758-2-jlayton@kernel.org>
+Date: Thu, 28 Sep 2023 11:48:16 -0400
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Jeff Layton" <jlayton@kernel.org>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Christian Brauner" <brauner@kernel.org>,
+ "Linus Torvalds" <torvalds@linux-foundation.org>,
+ "David Sterba" <dsterba@suse.cz>, "Amir Goldstein" <amir73il@gmail.com>,
+ "Theodore Ts'o" <tytso@mit.edu>,
+ "Eric W. Biederman" <ebiederm@xmission.com>,
+ "Kees Cook" <keescook@chromium.org>, "Jeremy Kerr" <jk@ozlabs.org>,
+ "Michael Ellerman" <mpe@ellerman.id.au>,
+ "Nicholas Piggin" <npiggin@gmail.com>,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Heiko Carstens" <hca@linux.ibm.com>,
+ "Vasily Gorbik" <gor@linux.ibm.com>,
+ "Alexander Gordeev" <agordeev@linux.ibm.com>,
+ "Christian Borntraeger" <borntraeger@linux.ibm.com>,
+ "Sven Schnelle" <svens@linux.ibm.com>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+ "Todd Kjos" <tkjos@android.com>, "Martijn Coenen" <maco@android.com>,
+ "Joel Fernandes" <joel@joelfernandes.org>,
+ "Carlos Llamas" <cmllamas@google.com>,
+ "Suren Baghdasaryan" <surenb@google.com>,
+ "Mattia Dongili" <malattia@linux.it>,
+ "Dennis Dalessandro" <dennis.dalessandro@cornelisnetworks.com>,
+ "Jason Gunthorpe" <jgg@ziepe.ca>, "Leon Romanovsky" <leon@kernel.org>,
+ "Brad Warrum" <bwarrum@linux.ibm.com>,
+ "Ritu Agarwal" <rituagar@linux.ibm.com>,
+ "Hans de Goede" <hdegoede@redhat.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ "Mark Gross" <markgross@kernel.org>, "Jiri Slaby" <jirislaby@kernel.org>,
+ "Eric Van Hensbergen" <ericvh@kernel.org>,
+ "Latchesar Ionkov" <lucho@ionkov.net>,
+ "Dominique Martinet" <asmadeus@codewreck.org>,
+ "Christian Schoenebeck" <linux_oss@crudebyte.com>,
+ "David Sterba" <dsterba@suse.com>, "David Howells" <dhowells@redhat.com>,
+ "Marc Dionne" <marc.dionne@auristor.com>, "Ian Kent" <raven@themaw.net>,
+ "Luis de Bethencourt" <luisbg@kernel.org>,
+ "Salah Triki" <salah.triki@gmail.com>,
+ "Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
+ "Chris Mason" <clm@fb.com>, "Josef Bacik" <josef@toxicpanda.com>,
+ "Xiubo Li" <xiubli@redhat.com>, "Ilya Dryomov" <idryomov@gmail.com>,
+ "Jan Harkes" <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu,
+ "Joel Becker" <jlbec@evilplan.org>, "Christoph Hellwig" <hch@lst.de>,
+ "Nicolas Pitre" <nico@fluxnic.net>,
+ "Rafael J . Wysocki" <rafael@kernel.org>,
+ "Ard Biesheuvel" <ardb@kernel.org>, "Gao Xiang" <xiang@kernel.org>,
+ "Chao Yu" <chao@kernel.org>, "Yue Hu" <huyue2@coolpad.com>,
+ "Jeffle Xu" <jefflexu@linux.alibaba.com>,
+ "Namjae Jeon" <linkinjeon@kernel.org>,
+ "Sungjong Seo" <sj1557.seo@samsung.com>, "Jan Kara" <jack@suse.com>,
+ "Andreas Dilger" <adilger.kernel@dilger.ca>,
+ "Jaegeuk Kim" <jaegeuk@kernel.org>,
+ "OGAWA Hirofumi" <hirofumi@mail.parknet.co.jp>,
+ "Christoph Hellwig" <hch@infradead.org>,
+ "Miklos Szeredi" <miklos@szeredi.hu>,
+ "Bob Peterson" <rpeterso@redhat.com>,
+ "Andreas Gruenbacher" <agruenba@redhat.com>,
+ "Richard Weinberger" <richard@nod.at>,
+ "Anton Ivanov" <anton.ivanov@cambridgegreys.com>,
+ "Johannes Berg" <johannes@sipsolutions.net>,
+ "Mikulas Patocka" <mikulas@artax.karlin.mff.cuni.cz>,
+ "Mike Kravetz" <mike.kravetz@oracle.com>,
+ "Muchun Song" <muchun.song@linux.dev>, "Jan Kara" <jack@suse.cz>,
+ "David Woodhouse" <dwmw2@infradead.org>,
+ "Dave Kleikamp" <shaggy@kernel.org>, "Tejun Heo" <tj@kernel.org>,
+ "Trond Myklebust" <trond.myklebust@hammerspace.com>,
+ "Anna Schumaker" <anna@kernel.org>,
+ "Chuck Lever" <chuck.lever@oracle.com>, "Neil Brown" <neilb@suse.de>,
+ "Olga Kornievskaia" <kolga@netapp.com>, "Dai Ngo" <Dai.Ngo@oracle.com>,
+ "Tom Talpey" <tom@talpey.com>,
+ "Ryusuke Konishi" <konishi.ryusuke@gmail.com>,
+ "Anton Altaparmakov" <anton@tuxera.com>,
+ "Konstantin Komarov" <almaz.alexandrovich@paragon-software.com>,
+ "Mark Fasheh" <mark@fasheh.com>,
+ "Joseph Qi" <joseph.qi@linux.alibaba.com>,
+ "Bob Copeland" <me@bobcopeland.com>,
+ "Mike Marshall" <hubcap@omnibond.com>,
+ "Martin Brandenburg" <martin@omnibond.com>,
+ "Luis Chamberlain" <mcgrof@kernel.org>,
+ "Iurii Zaikin" <yzaikin@google.com>, "Tony Luck" <tony.luck@intel.com>,
+ "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+ "Anders Larsen" <al@alarsen.net>, "Steve French" <sfrench@samba.org>,
+ "Paulo Alcantara" <pc@manguebit.com>,
+ "Ronnie Sahlberg" <lsahlber@redhat.com>,
+ "Shyam Prasad N" <sprasad@microsoft.com>,
+ "Sergey Senozhatsky" <senozhatsky@chromium.org>,
+ "Phillip Lougher" <phillip@squashfs.org.uk>,
+ "Steven Rostedt" <rostedt@goodmis.org>,
+ "Masami Hiramatsu" <mhiramat@kernel.org>,
+ "Evgeniy Dushistov" <dushistov@mail.ru>,
+ "Chandan Babu R" <chandan.babu@oracle.com>,
+ "Darrick J. Wong" <djwong@kernel.org>,
+ "Damien Le Moal" <dlemoal@kernel.org>,
+ "Naohiro Aota" <naohiro.aota@wdc.com>,
+ "Johannes Thumshirn" <jth@kernel.org>,
+ "Alexei Starovoitov" <ast@kernel.org>,
+ "Daniel Borkmann" <daniel@iogearbox.net>,
+ "Andrii Nakryiko" <andrii@kernel.org>,
+ "Martin KaFai Lau" <martin.lau@linux.dev>, "Song Liu" <song@kernel.org>,
+ "Yonghong Song" <yonghong.song@linux.dev>,
+ "John Fastabend" <john.fastabend@gmail.com>,
+ "KP Singh" <kpsingh@kernel.org>, "Stanislav Fomichev" <sdf@google.com>,
+ "Hao Luo" <haoluo@google.com>, "Jiri Olsa" <jolsa@kernel.org>,
+ "Hugh Dickins" <hughd@google.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "David S . Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
+ "Paolo Abeni" <pabeni@redhat.com>,
+ "John Johansen" <john.johansen@canonical.com>,
+ "Paul Moore" <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>,
+ "Serge E. Hallyn" <serge@hallyn.com>,
+ "Stephen Smalley" <stephen.smalley.work@gmail.com>,
+ "Eric Paris" <eparis@parisplace.org>
+Subject: Re: [PATCH 86/87] fs: switch timespec64 fields in inode to discrete integers
+Content-Type: text/plain
 X-Mailman-Approved-At: Fri, 29 Sep 2023 10:31:49 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -56,48 +206,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: jfs-discussion@lists.sourceforge.net, linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org, gfs2@lists.linux.dev, linux-mm@kvack.org, linux-mtd@lists.infradead.org, linux-hardening@vger.kernel.org, linux-afs@lists.infradead.org, linux-s390@vger.kernel.org, linux-nilfs@vger.kernel.org, linux-rdma@vger.kernel.org, linux-unionfs@vger.kernel.org, codalist@coda.cs.cmu.edu, linux-serial@vger.kernel.org, linux-ext4@vger.kernel.org, devel@lists.orangefs.org, linux-trace-kernel@vger.kernel.org, linux-cifs@vger.kernel.org, selinux@vger.kernel.org, apparmor@lists.ubuntu.com, autofs@vger.kernel.org, linux-um@lists.infradead.org, reiserfs-devel@vger.kernel.org, ocfs2-devel@lists.linux.dev, ceph-devel@vger.kernel.org, linux-nfs@vger.kernel.org, linux-ntfs-dev@lists.sourceforge.net, linuxppc-dev@lists.ozlabs.org, v9fs@lists.linux.dev, linux-usb@vger.kernel.org, samba-technical@lists.samba.org, linux-kernel@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, linux-xfs@vger.kernel.
+ org, linux-security-module@vger.kernel.org, Netdev <netdev@vger.kernel.org>, linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org, ntfs3@lists.linux.dev, linux-erofs@lists.ozlabs.org, linux-karma-devel@lists.sourceforge.net, linux-btrfs@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi, 
-I'm running Debian on an old Powermac (32-bit PPC G4).
-I'm seeing kernel panics with 6.5.0-1.
-Everything seems to be fine with:
+On Thu, Sep 28, 2023, at 07:05, Jeff Layton wrote:
+> This shaves 8 bytes off struct inode, according to pahole.
+>
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
 
-Linux powermac-g4 6.4.0-4-powerpc #1 Debian 6.4.13-1 (2023-08-31) ppc
-GNU/Linux
+FWIW, this is similar to the approach that Deepa suggested
+back in 2016:
 
- 0.000000] MSR:    00009032 <EE,ME,IR,DR,RI>  CR:  48024242  XER:  00000000
-    0.000000]
-    0.000000] GPR00: c0b29234 c13fde60 c12f3580 c12f3580 c12f3580 c13fde74 0000
-cc0 00000000
-    0.000000] GPR08: 00000000 00009032 00000000 00000000 28024242 00000000 0000
-000 00000004
-    0.000000] GPR16: 02d159f4 00000000 02d1515c c00f6d38 00000000 00000004 0000
-cc0 00000000
-    0.000000] GPR24: c12f398c c0b29704 00000001 00000003 c12f3580 c1305080 c12f
-5cc c12f3580
-    0.000000] NIP [c0b28e4c] __schedule+0x364/0x920
-    0.000000] LR [c0b29234] __schedule+0x74c/0x920
-    0.000000] --- interrupt: 900
-    0.000000] [c13fdeb0] [c0b29704] __cond_resched+0x40/060
-    0.000000] [c13fdec0] [c0b2b5f0] mutex_lock_killable+0x24/0x74
-    0.000000] [c13fdee0] [c02c3930] pcpu_alloc+0x54c/0x798
-    0.000000] [c13fdf50] [c00f6d38] alloc_desc.irsa.0+0x60/0x174
-    0.000000] [c13fdf80] [c1199c58] early_irq_init+0x70/0x9c
-    0.000000] [c13fdfa0] [c1183abc] start_kernel+0x4e4/0x640
-    0.000000] [c13fdff0] [00003540] 0x3540
-    0.000000] Code: 7d2a01a4 4c00012c 4bffff28 7c0802a6 90010004 60000000 9421f
-e0 7c0802a6 3d20c141 93e1001c 90010024 83e9c294 <943f1ff0> 7fe1fb78 48b24909 80
-10000
-    0.000000] ---[ end trace 0000000000000000 ]---
-    0.000000]
-    0.000000] Kernel panic - not syncing: Attempted to kill the idle task!
-    0.000000] ---[ end Kernel panic - not syncing: Attempted to kill the idle t
-ask! ]---
+https://lore.kernel.org/lkml/1452144972-15802-3-git-send-email-deepa.kernel@gmail.com/
 
--- 
-Dan Whitehouse
+It was NaKed at the time because of the added complexity,
+though it would have been much easier to do it then,
+as we had to touch all the timespec references anyway.
 
-GPG: 3AA4 369C 86E1 4939 D420  AB25 D0DC 7BDD CA92 AD2E
-Telephone: +44(0)203 0955088
+The approach still seems ok to me, but I'm not sure it's worth
+doing it now if we didn't do it then.
+
+     Arnd
