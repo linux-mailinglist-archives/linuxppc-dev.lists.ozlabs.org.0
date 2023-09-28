@@ -1,40 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 867D17B105D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Sep 2023 03:30:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 647AB7B1157
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Sep 2023 05:54:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rwwrl3kfqz3cd0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Sep 2023 11:29:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rx0411qqyz3cCg
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Sep 2023 13:54:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.166.46; helo=mail-io1-f46.google.com; envelope-from=namhyung@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-io1-f46.google.com (mail-io1-f46.google.com [209.85.166.46])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rww2w1rmNz2xnK
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Sep 2023 10:53:44 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rww2s3tzDz4xG0;
-	Thu, 28 Sep 2023 10:53:41 +1000 (AEST)
-Date: Thu, 28 Sep 2023 10:53:40 +1000
-From: Michael Ellerman <michael@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Ariel Miculas <ariel.miculas@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: =?US-ASCII?Q?Re=3A_Fwd=3A_=5BPATCH=5D_powerpc/?= =?US-ASCII?Q?ptrace=3A_Fix_buffer_overflo?= =?US-ASCII?Q?w_when_handling_PTRACE=5FPEEKUSER_and_PTRACE=5FPOKEUSER?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <CAPDJoNvADrCj8L2RAthXVbBxMNrjbY_4pnHu0QtKKARgyoQ-QA@mail.gmail.com>
-References: <CAPDJoNtU9Vuh87PxDkxo+7M_Kg_K4PPNGksPuW_guFbChYu-jA@mail.gmail.com> <20220601155702.176588-1-ariel.miculas@gmail.com> <CAPDJoNvZmeeU+T94rp8BJ0+bH5pDXQCEKPHiQF0Kcu=JrRRfrg@mail.gmail.com> <CAPDJoNsb-HtfOQhD6ntZ8Hqx3fv3WAh1U5Jd3GzyN5EwO8znWA@mail.gmail.com> <CAPDJoNuR8pNa+rp-PG_eeS14EvpMBLAmjNf9JvL=+0QTpwww-w@mail.gmail.com> <d6bd3632-207e-b232-b4a1-0c592a3aaae9@csgroup.eu> <CAPDJoNvADrCj8L2RAthXVbBxMNrjbY_4pnHu0QtKKARgyoQ-QA@mail.gmail.com>
-Message-ID: <6C0E6F54-FE56-4A89-8A0B-D954D0BA61A0@ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rx03T0zvtz307h
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Sep 2023 13:54:27 +1000 (AEST)
+Received: by mail-io1-f46.google.com with SMTP id ca18e2360f4ac-79fa2dbd793so373072539f.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Sep 2023 20:54:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695873264; x=1696478064;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6ffh5AuBADYvsfT7a3KQemhZt061Q+/YJzr1xF3hsJY=;
+        b=kzFB9a0nnBqfuiBj/jelWqGsvxnlhCXv0wEripiPB90dDA6+JFnrZ/srE0afdixsg9
+         bClB/uLG0u865reffUp1QBUU2hBuEWkWn1I4oVyfiSSPl+GVG5+3eibzEmVo1VrsoqXh
+         O+AX9b9pfhawFYzluaHuoXjiQHL5xxXUs74VkEShHbB1DtW+nQ0dfFgng+n9a2ijzKdS
+         CWbb2d9gSdadaE21YtlDVqhM8e+w33tN/dX31kPHJ3kZpBY/T8sFZwDUOLTEXl5aURG/
+         +F7d//dsCu8sTHjhY7Jv9S+sRsPBGHWx8I7Ror4aON5qHF9EOGt4zNjr0CY7U2c4wR6v
+         ftcw==
+X-Gm-Message-State: AOJu0Yyry5CmByXExjyeqdM18vQCEcjKbahKvTZI24GgKq9zaeMeQbdM
+	eyPcR90bIw6WjRMoA3syaWCZVlW77NzPU9asy84=
+X-Google-Smtp-Source: AGHT+IHejStbeE558odE76K+o5Iv15QNsvtUJIfzQ0Z7pMMjVunz5I/JAr4eiOxxtAhfmjJ1B52foGpUDGi3P1LgrkU=
+X-Received: by 2002:a5e:8804:0:b0:791:1e87:b47e with SMTP id
+ l4-20020a5e8804000000b007911e87b47emr49195ioj.15.1695873263829; Wed, 27 Sep
+ 2023 20:54:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
- boundary=----UDE9JG84HY1OBTMDQWZ9F9LSSC501E
-Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Thu, 28 Sep 2023 11:29:35 +1000
+References: <20230907171540.36736-1-atrajeev@linux.vnet.ibm.com>
+ <e5e806c3-da4a-8672-9c8e-6c341c6bd27d@linux.ibm.com> <11B32809-962E-4632-95FD-EAF07EE04D1D@linux.vnet.ibm.com>
+In-Reply-To: <11B32809-962E-4632-95FD-EAF07EE04D1D@linux.vnet.ibm.com>
+From: Namhyung Kim <namhyung@kernel.org>
+Date: Wed, 27 Sep 2023 20:54:12 -0700
+Message-ID: <CAM9d7cgtBCHZWt1h8jZj1k1VuJUvGXjmXuXBmE-4sZXW_inzPA@mail.gmail.com>
+Subject: Re: [PATCH 0/3] Fix for shellcheck issues with version "0.6"
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,66 +58,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: Ian Rogers <irogers@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, kajoljain <kjain@linux.ibm.com>, Adrian Hunter <adrian.hunter@intel.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-perf-users@vger.kernel.org, Jiri Olsa <jolsa@kernel.org>, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, root <root@ltcden13-lp4.aus.stglabs.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-------UDE9JG84HY1OBTMDQWZ9F9LSSC501E
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-
-Hi Ariel,
-
-I'm sorry about the way I handled your patch=2E I should have spent more t=
-ime working with you to develop your patch=2E
-
-I agree that the Reported-by tag doesn't properly reflect the contribution=
- you made, I should have realised that at the time=2E
-
-cheers
-
-(Apologies for the brief reply, I'm on vacation and replying from my phone=
-)
-
-On September 28, 2023 1:27:24 AM GMT+10:00, Ariel Miculas <ariel=2Emiculas=
-@gmail=2Ecom> wrote:
->I've forwarded this old email thread for visibility and discussion's
->sake around my recent blog post [1][2]
+On Tue, Sep 26, 2023 at 9:29=E2=80=AFPM Athira Rajeev
+<atrajeev@linux.vnet.ibm.com> wrote:
 >
->Regards,
->Ariel
 >
->[1] https://news=2Eycombinator=2Ecom/item?id=3D37671991
->[2] https://www=2Ereddit=2Ecom/r/programming/comments/16tf5ne/how_i_got_r=
-obbed_of_my_first_kernel_contribution/?ref=3Dshare&ref_source=3Dlink
+>
+> > On 25-Sep-2023, at 1:34 PM, kajoljain <kjain@linux.ibm.com> wrote:
+> >
+> >
+> >
+> > On 9/7/23 22:45, Athira Rajeev wrote:
+> >> From: root <root@ltcden13-lp4.aus.stglabs.ibm.com>
+> >>
+> >> shellcheck was run on perf tool shell scripts s a pre-requisite
+> >> to include a build option for shellcheck discussed here:
+> >> https://www.spinics.net/lists/linux-perf-users/msg25553.html
+> >>
+> >> And fixes were added for the coding/formatting issues in
+> >> two patchsets:
+> >> https://lore.kernel.org/linux-perf-users/20230613164145.50488-1-atraje=
+ev@linux.vnet.ibm.com/
+> >> https://lore.kernel.org/linux-perf-users/20230709182800.53002-1-atraje=
+ev@linux.vnet.ibm.com/
+> >>
+> >> Three additional issues are observed with shellcheck "0.6" and
+> >> this patchset covers those. With this patchset,
+> >>
+> >> # for F in $(find tests/shell/ -perm -o=3Dx -name '*.sh'); do shellche=
+ck -S warning $F; done
+> >> # echo $?
+> >> 0
+> >>
+> >
+> > Patchset looks good to me.
+> >
+> > Reviewed-by: Kajol Jain <kjain@linux.ibm.com>
+> >
+> > Thanks,
+> > Kajol Jain
+> >
+>
+> Hi Namhyunbg,
+>
+> Can you please check for this patchset also
 
---=20
-Sent from my Android phone with K-9 Mail=2E Please excuse my brevity=2E
-------UDE9JG84HY1OBTMDQWZ9F9LSSC501E
-Content-Type: text/html;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-
-<html><head></head><body><div dir=3D"auto">Hi Ariel,<br><br>I'm sorry about=
- the way I handled your patch=2E I should have spent more time working with=
- you to develop your patch=2E<br><br>I agree that the Reported-by tag doesn=
-'t properly reflect the contribution you made, I should have realised that =
-at the time=2E<br><br>cheers<br><br>(Apologies for the brief reply, I'm on =
-vacation and replying from my phone)</div><br><br><div class=3D"gmail_quote=
-"><div dir=3D"auto">On September 28, 2023 1:27:24 AM GMT+10:00, Ariel Micul=
-as &lt;ariel=2Emiculas@gmail=2Ecom&gt; wrote:</div><blockquote class=3D"gma=
-il_quote" style=3D"margin: 0pt 0pt 0pt 0=2E8ex; border-left: 1px solid rgb(=
-204, 204, 204); padding-left: 1ex;">
-<pre class=3D"k9mail"><div dir=3D"auto">I've forwarded this old email thre=
-ad for visibility and discussion's<br>sake around my recent blog post [1][2=
-]<br><br>Regards,<br>Ariel<br><br>[1] <a href=3D"https://news=2Eycombinator=
-=2Ecom/item?id=3D37671991">https://news=2Eycombinator=2Ecom/item?id=3D37671=
-991</a><br>[2] <a href=3D"https://www=2Ereddit=2Ecom/r/programming/comments=
-/16tf5ne/how_i_got_robbed_of_my_first_kernel_contribution/?ref=3Dshare&amp;=
-ref_source=3Dlink">https://www=2Ereddit=2Ecom/r/programming/comments/16tf5n=
-e/how_i_got_robbed_of_my_first_kernel_contribution/?ref=3Dshare&amp;ref_sou=
-rce=3Dlink</a><br></div></pre></blockquote></div><div dir=3D"auto"><div cla=
-ss=3D'k9mail-signature'>-- <br>Sent from my Android phone with K-9 Mail=2E =
-Please excuse my brevity=2E</div></div></body></html>
-------UDE9JG84HY1OBTMDQWZ9F9LSSC501E--
+Sure, it's applied to perf-tools-next, thanks!
