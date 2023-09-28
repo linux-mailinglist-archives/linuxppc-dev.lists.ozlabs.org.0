@@ -2,54 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8F747B1830
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Sep 2023 12:22:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D8587B199B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Sep 2023 13:05:06 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=C07hz1x9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QtotdQ5V;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rx8gf5MCdz3cjV
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Sep 2023 20:22:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rx9cJ3qrBz3ccW
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Sep 2023 21:05:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=C07hz1x9;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QtotdQ5V;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=vkoul@kernel.org; receiver=lists.ozlabs.org)
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=jlayton@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rx5GT2nKyz2ytV
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Sep 2023 17:49:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rx9bS2gPFz2yMJ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Sep 2023 21:04:20 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id D8092B81A6E;
-	Thu, 28 Sep 2023 07:49:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87A57C433C8;
-	Thu, 28 Sep 2023 07:49:16 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id 32FD3CE1D18;
+	Thu, 28 Sep 2023 11:04:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD4F5C433C9;
+	Thu, 28 Sep 2023 11:04:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1695887357;
-	bh=Gs6aFP7wkoeloUPjh3P+7ZqWXKrUV+lmRvPOXvjf8Ds=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=C07hz1x9ZBOot13NmBg/w+8/7UOMHZqam5kdmBhRs0FIMx+p817yeI0/AwYqADdFf
-	 LyROsByfc7udfgvzO+iVFxt40scEHqiTsEuBV2anPvz2pvOqA5rNaglngGFVYkDqNi
-	 8llzR1bKPikKnXdUU/UiExt0M1sNhonfI2Tg9VWZ4Ep2jjWHYlWMlubIYLpGAoPemh
-	 /llBuONh0YVRMZh24Aia4Qvo0KfHmtLVm+XDoqoKF4CTK02whHvixcoVQ+egWgMk7x
-	 FTO4SCB3n9ecoNHU2OdnjDnT9Gq59BrqP6Jgw3zOEG+2pLxraJj4zpxQ8BtWBKRvcG
-	 KuqZYg3uAID5g==
-Date: Thu, 28 Sep 2023 13:19:13 +0530
-From: Vinod Koul <vkoul@kernel.org>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Subject: Re: [PATCH 00/59] dma: Convert to platform remove callback returning
- void
-Message-ID: <ZRUv+WgkovPotwIr@matsya>
-References: <20230919133207.1400430-1-u.kleine-koenig@pengutronix.de>
+	s=k20201202; t=1695899056;
+	bh=vy4iAqS+2cdTey8A1Hl+Z+9oNsRq3NaJubtqW8MD3oU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=QtotdQ5VeXWt9qtlPLzJfVS978zsBoD95Vsr3Vwe3/bMBUfsDw7LIoVItXc4yuUui
+	 0qVKpaE8LAbipCamK4hwvmjgx+8OTbSajy6cy+Cb/UWvpUFqHhxDcjGopD9HYL9sEZ
+	 hP6gCGRPRf1rQWybWszN/Jaa5+//XTPoPeDe0c7hSOLw08DlfPAJZC+AOyoI3eCFlQ
+	 sqLESoWAUvzT8zYinaBp7EptGyIyiRmXptcmpIHirb4q1/8BDwNyy93KnnUV9LEAtG
+	 MiZBgYvA8J2zUuauvH+sD4dAU+Gap1cvQNcvbZYoM2uRbh292ukBO+PRtJ9GaOBEjP
+	 mvTBnCVYZthRA==
+From: Jeff Layton <jlayton@kernel.org>
+To: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 03/87] arch/powerpc/platforms/cell/spufs: convert to new inode {a,m}time accessors
+Date: Thu, 28 Sep 2023 07:02:12 -0400
+Message-ID: <20230928110413.33032-2-jlayton@kernel.org>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230928110413.33032-1-jlayton@kernel.org>
+References: <20230928110300.32891-1-jlayton@kernel.org>
+ <20230928110413.33032-1-jlayton@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230919133207.1400430-1-u.kleine-koenig@pengutronix.de>
-X-Mailman-Approved-At: Thu, 28 Sep 2023 20:21:23 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,44 +62,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>, linux-arm-msm@vger.kernel.org, Brian Xu <brian.xu@amd.com>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, Paul Cercueil <paul@crapouillou.net>, Biju Das <biju.das.jz@bp.renesas.com>, Chen-Yu Tsai <wens@csie.org>, Laxman Dewangan <ldewangan@nvidia.com>, Chunyan Zhang <zhang.lyra@gmail.com>, Jernej Skrabec <jernej.skrabec@gmail.com>, Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>, Stefan Roese <sr@denx.de>, Fabio Estevam <festevam@gmail.com>, Swati Agarwal <swati.agarwal@amd.com>, Alyssa Rosenzweig <alyssa@rosenzweig.io>, Rob Herring <robh@kernel.org>, Peter Korsgaard <peter@korsgaard.com>, Lars-Peter Clausen <lars@metafoo.de>, Florian Fainelli <florian.fainelli@broadcom.com>, Samuel Holland <samuel@sholland.org>, Green Wan <green.wan@sifive.com>, Viresh Kumar <vireshk@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, Sinan Kaya <okaya@kernel.org>, Ludovic Desroches <ludovic.desroches@microchip.com>, Peter Ujfalusi <peter.ujfalu
- si@gmail.com>, Jon Hunter <jonathanh@nvidia.com>, Zhang Wei <zw@zh-kernel.org>, Tudor Ambarus <tudor.ambarus@linaro.org>, Andy Gross <agross@kernel.org>, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, NXP Linux Team <linux-imx@nxp.com>, ye xingchen <ye.xingchen@zte.com.cn>, Olivier Dautricourt <olivierdautricourt@gmail.com>, Yangtao Li <frank.li@vivo.com>, Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>, Patrice Chotard <patrice.chotard@foss.st.com>, linux-tegra@vger.kernel.org, Kees Cook <keescook@chromium.org>, Sven Peter <sven@svenpeter.dev>, Ray Jui <rjui@broadcom.com>, Sascha Hauer <s.hauer@pengutronix.de>, Sean Wang <sean.wang@mediatek.com>, linux-actions@lists.infradead.org, Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Haojian Zhuang <haojian.zhuang@gmail.com>, Liu Shixin <liushixin2@huawei.com>, Robert Jarzmik <robert.jarzmik@free.fr>, linux-mediatek@lists.infradead.org, linux-rpi-kernel@lists.infradead.org, Baolin Wang <baolin.wang@
- linux.alibaba.com>, Orson Zhai <orsonzhai@gmail.com>, Matthias Brugger <matthias.bgg@gmail.com>, Raj Kumar Rampelli <raj.kumar.rampelli@amd.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Michal Simek <michal.simek@amd.com>, linux-arm-kernel@lists.infradead.org, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Harini Katakam <harini.katakam@amd.com>, Lizhi Hou <lizhi.hou@amd.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Scott Branden <sbranden@broadcom.com>, Shawn Guo <shawnguo@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Hector Martin <marcan@marcan.st>, linux-mips@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, Konrad Dybcio <konrad.dybcio@linaro.org>, linux-sunxi@lists.linux.dev, Thierry Reding <thierry.reding@gmail.com>, asahi@lists.linux.dev, kernel@pengutronix.de, Pavel Machek <pavel@denx.de>, dmaengine@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Andreas =?iso-8859-1?Q?F=E4rber?= <afaerber@suse.de>, Daniel Mack <daniel@z
- onque.org>, Hien Huynh <hien.huynh.px@renesas.com>
+Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 19-09-23, 15:31, Uwe Kleine-König wrote:
-> Hello,
-> 
-> this series convert nearly all platform drivers below drivers/dma to use
-> .remove_new(). The motivation is to get rid of an integer return code
-> that is (mostly) ignored by the platform driver core and error prone on
-> the driver side.
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+---
+ arch/powerpc/platforms/cell/spufs/inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I have applied this, with change of subsystem to dmaengine: xxx
-> 
-> See commit 5c5a7680e67b ("platform: Provide a remove callback that
-> returns no value") for an extended explanation and the eventual goal.
-> 
-> There are 4 drivers I didn't convert in this series:
-> 
-> 	drivers/dma/milbeaut-hdmac.c
-> 	drivers/dma/milbeaut-xdmac.c
-> 	drivers/dma/uniphier-mdmac.c
-> 	drivers/dma/uniphier-xdmac.c
-> 
-> These all might return early in .remove() if dmaengine_terminate_sync()
-> fails. I only looked deeper into the first one, and this shows exactly
-> the error that is easy to make with .remove() returning an int: When
-> returning early from .remove(), some cleanup (here:
-> dma_async_device_unregister()) is skipped. So the dma device stays
-> known, but the device is still unregistered and the devm allocated stuff
-> (here e.g. *mdev) is freed. So it can probably easily happen, that
-> something tries to use the dma device and this will likely result in an
-> oops.
-
-We should convert these too, thanks for your work for the conversion
-
+diff --git a/arch/powerpc/platforms/cell/spufs/inode.c b/arch/powerpc/platforms/cell/spufs/inode.c
+index 38c5be34c895..10c1320adfd0 100644
+--- a/arch/powerpc/platforms/cell/spufs/inode.c
++++ b/arch/powerpc/platforms/cell/spufs/inode.c
+@@ -86,7 +86,7 @@ spufs_new_inode(struct super_block *sb, umode_t mode)
+ 	inode->i_mode = mode;
+ 	inode->i_uid = current_fsuid();
+ 	inode->i_gid = current_fsgid();
+-	inode->i_atime = inode->i_mtime = inode_set_ctime_current(inode);
++	simple_inode_init_ts(inode);
+ out:
+ 	return inode;
+ }
 -- 
-~Vinod
+2.41.0
+
