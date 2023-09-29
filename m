@@ -2,87 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A035D7B2ADD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Sep 2023 06:12:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 459AE7B2ADE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Sep 2023 06:13:28 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XcK3Wm+7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JPIWAKmi;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RxcPx3gjTz3cNv
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Sep 2023 14:12:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RxcQt1FHzz3cg5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Sep 2023 14:13:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XcK3Wm+7;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JPIWAKmi;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RxcP25rDCz3cCl
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RxcP25THdz3cCg
 	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Sep 2023 14:11:50 +1000 (AEST)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38T3o43w026372;
-	Fri, 29 Sep 2023 04:11:44 GMT
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38T3uA2h028799;
+	Fri, 29 Sep 2023 04:11:46 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=M2f2NQKR6R4c9td5psaqQEO+kGrjwqhUC34sVvQoxjA=;
- b=XcK3Wm+7C8aJHIp1lb+AoXQeluMU02MwWau3yM/lllN5L8a9K5xO2KYCl47ZsQ2Ib2n/
- 4b9zHjrYooKad58Q8HEO2qqjGiATp/HF2fZJedZ6Xs8MYIf0z4AxV161CIIOyWPqrtwd
- p3EGGPByJi/O+Bkg3zx1PJFScAr7fEsBKm1uVLMfjj13aie/mguy5v/zArHgWJqc+0aQ
- JGkfOH+fBCaQvF8Xu34F7wOuHr0qdh5gK07VAVhodhfpwe4L3asxUND/5C8ga9O1EWlJ
- DAD9RMPrmVqMpdj+UiahWJ4QqGASS7o32eTq0lECJ5ESM6KdgXCKDfNZGF1vM6CBQgLO Pg== 
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=8Ax1gl/JIAW04qmf4Gd6c2Rq8twKWJwpAAmFum6DjXo=;
+ b=JPIWAKmiw+e5OL5GlByy1gOsTOLfATZ1T69bIrtjuzvp+VjhZbkT+VU2Yo+Z7UgLQrzV
+ Dqdk4OJd+LfWLggJntY9bfdT6VtyOBzIax6BRe9yokPmUEdWtXJpegF0mv1q8U/6NydC
+ a9rHUp164AcQpNf27MNDqkZBGk/ydaDKVieJ5mcCdwdKHfq2cb2125Vs9ERZwW/lp3bm
+ 8EQ3Kf08G5+2lMA6BUaWXE3blLpGWCVWbNsjUquKrmkYryQbhGnAKU51AAx+DsKNGwl9
+ MC61HOSaL13nHzzqlWWWVRGICSjpDRcjy5K7VyKx1A0JuUbhYNA3V58c0aOEf7c6xDAx jw== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tdq130ggt-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tdq3y0e9p-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 Sep 2023 04:11:43 +0000
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38T3qpon032647;
+	Fri, 29 Sep 2023 04:11:45 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38T49MIV013588;
+	Fri, 29 Sep 2023 04:11:45 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tdq3y0e9a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 29 Sep 2023 04:11:45 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 38T3aEB4008233;
 	Fri, 29 Sep 2023 04:11:43 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tdq130ggg-1
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tabbnsyp5-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Fri, 29 Sep 2023 04:11:43 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 38T48LFs011010;
-	Fri, 29 Sep 2023 04:11:41 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tabum1t30-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 Sep 2023 04:11:41 +0000
 Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 38T4BcrN27460208
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 38T4BetA26739428
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 29 Sep 2023 04:11:38 GMT
+	Fri, 29 Sep 2023 04:11:40 GMT
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 75F2820040;
+	by IMSVA (Postfix) with ESMTP id B478220043;
+	Fri, 29 Sep 2023 04:11:40 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BB9F520040;
 	Fri, 29 Sep 2023 04:11:38 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 69D1320043;
-	Fri, 29 Sep 2023 04:11:36 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.43.86.96])
 	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 29 Sep 2023 04:11:36 +0000 (GMT)
+	Fri, 29 Sep 2023 04:11:38 +0000 (GMT)
 From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 To: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
         irogers@google.com, namhyung@kernel.org
-Subject: [PATCH 0/3] Fix for shellcheck issues with latest scripts in tests/shell
-Date: Fri, 29 Sep 2023 09:41:30 +0530
-Message-Id: <20230929041133.95355-1-atrajeev@linux.vnet.ibm.com>
+Subject: [PATCH 1/3] perf tests test_arm_coresight: Fix the shellcheck warning in latest test_arm_coresight.sh
+Date: Fri, 29 Sep 2023 09:41:31 +0530
+Message-Id: <20230929041133.95355-2-atrajeev@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.35.1
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: aYRU7Cg5iEc2xuyjV5SdntdTVISwMopf
-X-Proofpoint-ORIG-GUID: wJ17ls0aQAKV0fftG4sMOXPvrynT1J5R
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+In-Reply-To: <20230929041133.95355-1-atrajeev@linux.vnet.ibm.com>
+References: <20230929041133.95355-1-atrajeev@linux.vnet.ibm.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 5gVPHXbDO6uZZCRr2NUBiSjQdqpsaM7A
+X-Proofpoint-ORIG-GUID: QpO7f2YqD17LG0k9CIsYiW0XIuo2ZM6c
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-09-29_01,2023-09-28_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
- bulkscore=0 spamscore=0 mlxscore=0 adultscore=0 lowpriorityscore=0
- phishscore=0 mlxlogscore=794 clxscore=1015 impostorscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ adultscore=0 mlxscore=0 spamscore=0 impostorscore=0 lowpriorityscore=0
+ clxscore=1015 phishscore=0 malwarescore=0 mlxlogscore=999 suspectscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2309180000 definitions=main-2309290034
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -99,44 +101,48 @@ Cc: atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com, linux-perf-users@vger.kern
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-shellcheck was run on perf tool shell scripts as a pre-requisite
-to include a build option for shellcheck discussed here:
-https://www.spinics.net/lists/linux-perf-users/msg25553.html
+Running shellcheck on tests/shell/test_arm_coresight.sh
+throws below warnings:
 
-And fixes were added for the coding/formatting issues in
-two patchsets:
-https://lore.kernel.org/linux-perf-users/20230613164145.50488-1-atrajeev@linux.vnet.ibm.com/
-https://lore.kernel.org/linux-perf-users/20230709182800.53002-1-atrajeev@linux.vnet.ibm.com/
+	In tests/shell/test_arm_coresight.sh line 15:
+	cs_etm_path=$(find  /sys/bus/event_source/devices/cs_etm/ -name cpu* -print -quit)
+                  ^--^ SC2061: Quote the parameter to -name so the shell won't interpret it.
 
-Three additional issues were observed and fixes are part of:
-https://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.git/log/?h=perf-tools-next
+	In tests/shell/test_arm_coresight.sh line 20:
+		if [ $archhver -eq 5 -a "$(printf "0x%X\n" $archpart)" = "0xA13" ] ; then
+                	             ^-- SC2166: Prefer [ p ] && [ q ] as [ p -a q ] is not well defined
 
-With recent commits in perf, other three issues are observed.
-shellcheck version: 0.6.0
+This warning is observed after commit:
+"commit bb350847965d ("perf test: Update cs_etm testcase for Arm ETE")"
 
-With this patchset:
+Fixed this issue by using quoting 'cpu*' for SC2061 and
+using "&&" in line number 20 for SC2166 warning
 
-for F in $(find tests/shell/ -perm -o=x -name '*.sh'); do shellcheck -S warning $F; done
-echo $?
-0
-
-The changes are with recent commits ( which is mentioned in each patch)
-for ock_contention, record_sideband and test_arm_coresight testcases.
-The changes are made on top of:
-https://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.git/log/?h=perf-tools-next
-
-Athira Rajeev (3):
-  perf tests test_arm_coresight: Fix the shellcheck warning in latest
-    test_arm_coresight.sh
-  tools/perf/tests Ignore the shellcheck SC2046 warning in
-    lock_contentio
-  tools/perf/tests: Fix shellcheck warning in record_sideband.sh test
-
- tools/perf/tests/shell/lock_contention.sh    | 1 +
- tools/perf/tests/shell/record_sideband.sh    | 2 +-
+Fixes: bb350847965d ("perf test: Update cs_etm testcase for Arm ETE")
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+---
  tools/perf/tests/shell/test_arm_coresight.sh | 4 ++--
- 3 files changed, 4 insertions(+), 3 deletions(-)
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/tools/perf/tests/shell/test_arm_coresight.sh b/tools/perf/tests/shell/test_arm_coresight.sh
+index fe78c4626e45..f2115dfa24a5 100755
+--- a/tools/perf/tests/shell/test_arm_coresight.sh
++++ b/tools/perf/tests/shell/test_arm_coresight.sh
+@@ -12,12 +12,12 @@
+ glb_err=0
+ 
+ cs_etm_dev_name() {
+-	cs_etm_path=$(find  /sys/bus/event_source/devices/cs_etm/ -name cpu* -print -quit)
++	cs_etm_path=$(find  /sys/bus/event_source/devices/cs_etm/ -name 'cpu*' -print -quit)
+ 	trcdevarch=$(cat ${cs_etm_path}/mgmt/trcdevarch)
+ 	archhver=$((($trcdevarch >> 12) & 0xf))
+ 	archpart=$(($trcdevarch & 0xfff))
+ 
+-	if [ $archhver -eq 5 -a "$(printf "0x%X\n" $archpart)" = "0xA13" ] ; then
++	if [ $archhver -eq 5 ] && [ "$(printf "0x%X\n" $archpart)" = "0xA13" ] ; then
+ 		echo "ete"
+ 	else
+ 		echo "etm"
 -- 
 2.31.1
 
