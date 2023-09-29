@@ -2,129 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 918EE7B3246
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Sep 2023 14:17:21 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=sIIMdzCD;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 281727B331E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Sep 2023 15:11:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rxq9C2nPzz3ccd
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Sep 2023 22:17:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RxrN16Wqxz3cn1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Sep 2023 23:11:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=sIIMdzCD;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=samsung.com (client-ip=210.118.77.11; helo=mailout1.w1.samsung.com; envelope-from=j.granados@samsung.com; receiver=lists.ozlabs.org)
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=leemhuis.info (client-ip=80.237.130.52; helo=wp530.webpack.hosteurope.de; envelope-from=regressions@leemhuis.info; receiver=lists.ozlabs.org)
+X-Greylist: delayed 2227 seconds by postgrey-1.37 at boromir; Fri, 29 Sep 2023 23:11:17 AEST
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rxq8K6gL8z30GC
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Sep 2023 22:16:33 +1000 (AEST)
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20230929121624euoutp01de2544920d5c5f332d3892fb00ca92f9~JXbkk7tk41063110631euoutp01I;
-	Fri, 29 Sep 2023 12:16:24 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20230929121624euoutp01de2544920d5c5f332d3892fb00ca92f9~JXbkk7tk41063110631euoutp01I
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1695989784;
-	bh=PASHHEyP2CkxpN9N4L3kLehKjI5RN7oHEZcm3GbcotM=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=sIIMdzCDWTL3n5QYCAYuS4svR+ViKbFYykTF6Tn1g/RRWywRGRFTKKiMggc1NKSJJ
-	 77PfWgBQf7IQt6d8DbZzo4n8PkbCkW+OefxTzWOTd5IxWwvhPiAw08TvwWFpLtAEhI
-	 lg48Qa7GwYqF0YQNakAtrRKrc3xfjTuk1x2NpIbQ=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-	20230929121624eucas1p27199de26748151267e32dfe79c617fd4~JXbkVdv0N3145131451eucas1p2J;
-	Fri, 29 Sep 2023 12:16:24 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-	eusmges2new.samsung.com (EUCPMTA) with SMTP id 4A.92.11320.710C6156; Fri, 29
-	Sep 2023 13:16:24 +0100 (BST)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20230929121623eucas1p2500651283c0dfe212127844c61ed9d23~JXbjxT1iI0248502485eucas1p21;
-	Fri, 29 Sep 2023 12:16:23 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
-	eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-	20230929121623eusmtrp17c9678af9dbea2f492a4dbec682bf168~JXbjuIMco1450314503eusmtrp1i;
-	Fri, 29 Sep 2023 12:16:23 +0000 (GMT)
-X-AuditID: cbfec7f4-97dff70000022c38-ca-6516c017bb15
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-	eusmgms1.samsung.com (EUCPMTA) with SMTP id FB.91.10549.710C6156; Fri, 29
-	Sep 2023 13:16:23 +0100 (BST)
-Received: from CAMSVWEXC02.scsc.local (unknown [106.1.227.72]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20230929121623eusmtip1d3e2f6bb3accde09091b07bde550487e~JXbjaIUt42058220582eusmtip1w;
-	Fri, 29 Sep 2023 12:16:23 +0000 (GMT)
-Received: from localhost (106.210.248.178) by CAMSVWEXC02.scsc.local
-	(2002:6a01:e348::6a01:e348) with Microsoft SMTP Server (TLS) id 15.0.1497.2;
-	Fri, 29 Sep 2023 13:16:22 +0100
-Date: Fri, 29 Sep 2023 14:17:30 +0200
-From: Joel Granados <j.granados@samsung.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH 01/15] cdrom: Remove now superfluous sentinel element
- from ctl_table array
-Message-ID: <20230929121730.bwzhrpaptf45smfy@localhost>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RxrMT2Ggsz3c3D
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Sep 2023 23:11:16 +1000 (AEST)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1qmCh1-0003Ck-Fq; Fri, 29 Sep 2023 14:34:03 +0200
+Message-ID: <908333ab-1cf2-4b72-b40f-fca4328e160f@leemhuis.info>
+Date: Fri, 29 Sep 2023 14:34:03 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="zcz64lhnvlbjtldp"
-Content-Disposition: inline
-In-Reply-To: <2023092855-cultivate-earthy-4d25@gregkh>
-X-Originating-IP: [106.210.248.178]
-X-ClientProxiedBy: CAMSVWEXC01.scsc.local (2002:6a01:e347::6a01:e347) To
-	CAMSVWEXC02.scsc.local (2002:6a01:e348::6a01:e348)
-X-Brightmail-Tracker: H4sIAAAAAAAAA2WTe1BUZRjG/c45e85CgYdF5eMyo4OlBkIGiu+kFDU4nhnHcqyxGafCTc4A
-	AYvDcoumxOQm1+U2wgq6XlgWMaAFV1y5RQ2gSFAQVyFgwFKWEEW5Y7scLGf67/c9z/t83/P+
-	8YlJyQBjJw6QhfGhMmmQI21O6Rrn2lxw/QZ+x9lFEpq7LxGwlNnIwJXmYQKe6zJIyG+LpaA2
-	VougNvd7GjqfTtJQqo8jYKxxhIHTl8to6LrBwTlFBQFFHWUIhn63g0s9OgLycpsR5Pe6wd8F
-	DlBz0XifKgTuJgdDuy5NBKMl1xnIni8kISfjEQ0d+nwaEi7oEdxvSKUgubuKhruXUxlYmFkW
-	QVHTMgE9ijEESekJCBpVG2B2YUEE1UOjCJ61GBDkqF2hYDqHBI2hgIQ6ZRcDhXkaEpqKlmgo
-	KfWBuuxrJNS3ZBul5WiIS5lj4CdtHwELs8aHZyqzCK9dXEfnAW5hPhNx52J+pbjK4l6Cu1d4
-	E3E1z1QUd1M5wHAqbTin159iuAqNE3e5+gHBLZ3x4PrGPTnt1TM0N6tJJznFpXp0aONR872+
-	fFBABB/65jvHzP311cXEiVbrqPw5DYpBP7NJyEyM2Z14uKZKlITMxRJWg/BYuZo0GRJ2GuEO
-	BScYTxCeq+6kXyRia7IowShCOF1hIP+dKlYlEsLhOsJlBecpU4RiX8ffpd8gTEyz23Gb4d7K
-	G+tYd5zeqmRMAZI9txbHLjYxJsOaPYafTypEJrZgd+OMwQEksBW+nTe6cinJRuFf/hgystjI
-	9rhoWWySzVgPfGWmQCRU3Yxny1tWa3+D71T2rZTDbNKreKBYSQmGN1Y/UJACW+OHTZWMwA64
-	JSuFEgJZCNctP2KEQwnC6lNPCWFqD47tHF1NvIfvlCWSpkaYtcQ9E1ZCUUucqTu7KlvgxHiJ
-	ML0FlwwaKAXarHxpNeVLqyn/W02Qt2PVrcf0/2RnrL44TgrsiUtLJykVYq4iGz5cHuzHy91k
-	fKSrXBosD5f5uR4PCdYi469rWW6arkJFD6dcGxAhRg3oNWN4pLykHdlRshAZ77jOYrhfwkss
-	fKVfRfOhIT6h4UG8vAHZiylHGwtnz9vHJayfNIwP5PkTfOgLlxCb2cUQqdx67XG7kW6Pare7
-	KfNu8fYVMxW/6Y7+4KIe+eLwRJxjUGvCJnMVe+TqlQsnq2wnvF1992vG91908LpGpS2+odl7
-	uP3rrolXbH4MXN/8ef+ha6RVVmRSQ+BWL++tke9PnVYOubWuc1pz0Mxh6v5Bifj8/gOG5H46
-	J3/02aYP3T2UXqR7/KflDmaZH3TFDlblFxoiIm39PopS+vSfHIcxF9u8pb5P6tz/itj5di34
-	39omKz/y5VDlxj0+uwOmpniJJtfbxzIvty7aumrbYck+94HKP7U1CzmBQbrm5k3SQ85+LlvW
-	pNU+Vn8ckFiw4+guq7x9YUvTxU/a3vWdL/Sr7a77rFf07QNHSu4vfcuJDJVL/wHmgstA8AQA
-	AA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA2WTe0xTZxjG951TTgtbZ8dFTxA3R11cUAsFWl4QcJdkOW7JMjZlC26BBk4o
-	DlrWFjcxRqYQLg5ablEKVQQrIAywXGVcak0AhxuwykUEAgxwDCZT7reyQl1msv9+3/M+7/O+
-	+fJ9LNx2hXBkRUgUtEwiinQmbBgdprahQ7v0O2m3/hoHaO8rwGAjo5UJ19tHMdisTcchrzOe
-	Ac3xOgTNl38k4MHCLAHlDQkYTLSOMeFCYQUBvXUU5KqqMCgyViAY6XGEgv5aDHIutyPIe+gO
-	TzRO0HTNnJcvhfsXo6CrNs0KxktrmJC1qsUhO/1vAowNeQQkXm1AMGlIZcDFvnoC7hemMmFt
-	yWQFRW0mDPpVEwhSlIkIWvN3wvLamhU0jowjWOyYQZB9gwea+Wwcimc0OLSoe5mgzSnGoa1o
-	g4DS8mBoySrDQd+RZZZMsZDwwwoT7uoGMFhbNg9eqs7E3hFQxgcfUWurGYjKjetmUNUlDzFq
-	UHsbUU2L+QzqtnqISeXrYqiGhu+ZVFWxC1XYOIVRG8lCamDaj9LdTCao5WIlTqkK9OiTN4J4
-	vjJpjILeK5bKFX7OJ/jgzuN7A8/d05vH9/D6ysdd4Ozq7xtGR0acomWu/iE8cV1zYHSH3XeZ
-	iWlYHDJwUpA1i+R4kvFNmYwUZMOy5WgRWfisl2EpOJG35nusLGxHrvemEBbTU0TqVJeeH2oQ
-	WV/yF7blYnDeIs8r67aZ4BwkO2cG8S2253iQyl/UzK0GnJO7g2xe6N+OteOEkJuzqm1mc7zI
-	9OEhZEktwcjRjGzMUniNvJczvr0TzjlFTlWsmk0sM+8mi0ysLdmaIySvL2mer8ollys7CAuf
-	Jec2JpEK2alfSFK/kKT+L8kiu5D9pinsf/IB8sa1adzCfmR5+SwjHzFvIns6Rh4VHiXn8+Si
-	KHmMJJwXKo3SIfO7r21dqapHV/58yjMgjIUMaJ+5c6yytAs5MiRSCe1szx59ZEvbssNEp2Np
-	mTRYFhNJyw1IYL7GdNzRIVRq/kQSRTBf6Cbgewq93QTeQg/nXeyj0UkiW064SEF/TdPRtOzf
-	Poxl7RiHYTuaNtvLXtLHV40PU/Hrh+99WpKsHPfz/y3sWE7P/HHfIemzpHf3VT+O6LuTtt7i
-	WlIW8NnxSK8cA4vrM5WU+2SifC/RGHqF+8h3/88H2YKgRT3L/oOPz2h2K60SJ86lfvFYrDzZ
-	Nlp7waZr9KersYfSZ/1OfzMV5DAZppWURJsUAbXH5kyBxtUD57QB1e69c9zEDmHSq3bdZ9hW
-	xCsh72uGZ9biB2zm5h3/qHyZKwo6kifsDNT7Gk86hZz/3Paw10JDknr/hnjqS2nayNmx1/3Z
-	70XsieOKj04UfassvNPrsDR45M3Eu906pfyWMSErLzjF+pI6dXpPtM/bfr9Gf5ij+N33hDND
-	LhbxXXCZXPQP0Flh2owEAAA=
-X-CMS-MailID: 20230929121623eucas1p2500651283c0dfe212127844c61ed9d23
-X-Msg-Generator: CA
-X-RootMTR: 20230928133705eucas1p182bd81a8e6aff530e43f9b0746a24eaa
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20230928133705eucas1p182bd81a8e6aff530e43f9b0746a24eaa
-References: <20230928-jag-sysctl_remove_empty_elem_drivers-v1-0-e59120fca9f9@samsung.com>
-	<20230928-jag-sysctl_remove_empty_elem_drivers-v1-1-e59120fca9f9@samsung.com>
-	<CGME20230928133705eucas1p182bd81a8e6aff530e43f9b0746a24eaa@eucas1p1.samsung.com>
-	<2023092855-cultivate-earthy-4d25@gregkh>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Bisected] PowerMac G5 fails booting kernel 6.6-rc3 (BUG: Unable
+ to handle kernel data access at 0xfeffbb62ffec65fe)
+Content-Language: en-US, de-DE
+To: Erhard Furtner <erhard_f@mailbox.org>, linuxppc-dev@lists.ozlabs.org
+References: <20230929132750.3cd98452@yea>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+In-Reply-To: <20230929132750.3cd98452@yea>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1695993077;fa02de49;
+X-HE-SMSGID: 1qmCh1-0003Ck-Fq
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -136,82 +47,151 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, Steve Wahl <steve.wahl@hpe.com>, Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Clemens Ladisch <clemens@ladisch.de>, linux-hyperv@vger.kernel.org, dri-devel@lists.freedesktop.org, Phillip Potter <phil@philpotter.co.uk>, Song Liu <song@kernel.org>, Eric Dumazet <edumazet@google.com>, "K. Y. Srinivasan" <kys@microsoft.com>, Jiri Slaby <jirislaby@kernel.org>, Russ Weight <russell.h.weight@intel.com>, Wei Liu <wei.liu@kernel.org>, Stefano Stabellini <sstabellini@kernel.org>, Corey Minyard <minyard@acm.org>, Leon Romanovsky <leon@kernel.org>, linux-rdma@vger.kernel.org, David Airlie <airlied@gmail.com>, "Rafael J.
- Wysocki" <rafael@kernel.org>, Dexuan Cui <decui@microsoft.com>, willy@infradead.org, Jason Gunthorpe <jgg@ziepe.ca>, linux-serial@vger.kernel.org, Doug Gilbert <dgilbert@interlog.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Haiyang Zhang <haiyangz@microsoft.com>, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org, "James
- E.J. Bottomley" <jejb@linux.ibm.com>, intel-gfx@lists.freedesktop.org, josh@joshtriplett.org, Jani Nikula <jani.nikula@linux.intel.com>, linux-raid@vger.kernel.org, Rodrigo Vivi <rodrigo.vivi@intel.com>, xen-devel@lists.xenproject.org, openipmi-developer@lists.sourceforge.net, Juergen Gross <jgross@suse.com>, Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, Theodore Ts'o <tytso@mit.edu>, linux-scsi@vger.kernel.org, "Martin K. Petersen" <martin.petersen@oracle.com>, netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>, Robin Holt <robinmholt@gmail.com>, Sudip Mukherjee <sudipm.mukherjee@gmail.com>, Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, Luis Chamberlain <mcgrof@kernel.org>, Daniel Vetter <daniel@ffwll.ch>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+Cc: Linux kernel regressions list <regressions@lists.linux.dev>, willy@infradead.org, LKML <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---zcz64lhnvlbjtldp
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+[CCing the regression list, as it should be in the loop for regressions:
+https://docs.kernel.org/admin-guide/reporting-regressions.html]
 
-On Thu, Sep 28, 2023 at 03:36:55PM +0200, Greg Kroah-Hartman wrote:
-> On Thu, Sep 28, 2023 at 03:21:26PM +0200, Joel Granados via B4 Relay wrot=
-e:
-> > From: Joel Granados <j.granados@samsung.com>
-> >=20
-> > This commit comes at the tail end of a greater effort to remove the
-> > empty elements at the end of the ctl_table arrays (sentinels) which
-> > will reduce the overall build time size of the kernel and run time
-> > memory bloat by ~64 bytes per sentinel (further information Link :
-> > https://lore.kernel.org/all/ZO5Yx5JFogGi%2FcBo@bombadil.infradead.org/)
-> >=20
-> > Remove sentinel element from cdrom_table
-> >=20
-> > Signed-off-by: Joel Granados <j.granados@samsung.com>
-> > ---
-> >  drivers/cdrom/cdrom.c | 3 +--
-> >  1 file changed, 1 insertion(+), 2 deletions(-)
-> >=20
-> > diff --git a/drivers/cdrom/cdrom.c b/drivers/cdrom/cdrom.c
-> > index cc2839805983..451907ade389 100644
-> > --- a/drivers/cdrom/cdrom.c
-> > +++ b/drivers/cdrom/cdrom.c
-> > @@ -3654,8 +3654,7 @@ static struct ctl_table cdrom_table[] =3D {
-> >  		.maxlen		=3D sizeof(int),
-> >  		.mode		=3D 0644,
-> >  		.proc_handler	=3D cdrom_sysctl_handler
-> > -	},
-> > -	{ }
-> > +	}
->=20
-> You should have the final entry as "}," so as to make any future
-> additions to the list to only contain that entry, that's long been the
-> kernel style for lists like this.
-Will send a V2 with this included. Thx.
+[TLDR: I'm adding this report to the list of tracked Linux kernel
+regressions; the text you find below is based on a few templates
+paragraphs you might have encountered already in similar form.
+See link in footer if these mails annoy you.]
 
->=20
-> So your patches will just remove one line, not 2 and add 1, making it a
-> smaller diff.
-indeed.
+On 29.09.23 13:27, Erhard Furtner wrote:
+> Greetings!
+> 
+> Kernel 6.5.5 boots fine on my PowerMac G5 11,2 but kernel 6.6-rc3 fails to boot with following dmesg shown on the OpenFirmware console (transcribed screenshot):
+> 
+> [...]
+> SLUB: HWalign=128, Order=0-3, MinObjects=0, CPUs=2, Nodes=1
+> rcu: Hierarchical RCU implementation.
+>  Tracing variant of Tasks RCU enabled.
+> rcu: RCU calculated value of scheduler-enlistment delay is 30 jiffies.
+> NR_IRQS: 512, nr_irqs: 512, preallocated irqs: 16
+> mpic: Setting up MPIC " MPIC 1   " version 1.2 at f8040000, max 2 CPUs
+> mpic: ISU size: 124, shift: 7, mask: 7f
+> mpic: Initializing for 124 sources
+> mpic: Setting up HT PICs workarounds for U3/U4
+> BUG: Unable to handle kernel data access at 0xfeffbb62ffec65fe
+> Faulting instruction address: 0xc00000000005dc40
+> Oops: Kernel access of bad area, sig: 11 [#1]
+> BE PAGE_SIZE=4K MMU=Hash SMP NR_CPUS=2 PowerMac
+> Modules linked in:
+> CPU: 0 PID: 0 Comm: swapper/0 Tainted: G                T  6.6.0-rc3-PMacGS #1
+> Hardware name: PowerMac11,2 PPC970MP 0x440101 PowerMac
+> NIP:  c00000000005dc40 LR: c000000000066660 CTR: c000000000007730
+> REGS: c0000000022bf510 TRAP: 0380   Tainted: G                T (6.6.0-rc3-PMacGS)
+> MSR:  9000000000001032 <SF,HV,ME,IR,DR,RI>  CR: 44004242  XER: 00000000
+> IRQMASK: 3
+> GPR00: 0000000000000000 c0000000022bf7b0 c0000000010c0b00 00000000000001ac
+> GPR04: 0000000003c80000 0000000000000300 c0000000f20001ae 0000000000000300
+> GPR08: 0000000000000006 feffbb62ffec65ff 0000000000000001 0000000000000000
+> GPR12: 9000000000001032 c000000002362000 c000000000f76b80 000000000349ecd8
+> GPR16: 0000000002367ba8 0000000002367f08 0000000000000006 0000000000000000
+> GPR20: 00000000000001ac c000000000f6f920 c0000000022cd985 000000000000000c
+> GPR24: 0000000000000300 00000003b0a3691d c0003e008030000e 0000000000000000
+> GPR28: c00000000000000c c0000000f20001ee feffbb62ffec65fe 00000000000001ac
+> NIP [c00000000005dc40] hash_page_do_lazy_icache+0x50/0x100
+> LR [c000000000066660] __hash_page_4K+0x420/0x590
+> Call Trace:
+> [c0000000022bf7e0] [ffffffffffffffff] 0xffffffffffffffff
+> [c0000000022bf8c0] [c00000000005e164] hash_page_mm+0x364/0x6f0
+> [c0000000022bf990] [c00000000005e684] do_hash_fault+0x114/0x2b0
+> [c0000000022bf9c0] [c0000000000078e8] data_access_common_virt+0x198/0x1f0
+> --- interrupt: 300 at mpic_init+0x4bc/0x10c4
+> NIP:  c000000002020a5c LR: c000000002020a04 CTR: 0000000000000000
+> REGS: c0000000022bf9f0 TRAP: 0300   Tainted: G                T (6.6.0-rc3-PMacGS)
+> MSR:  9000000000001032 <SF,HV,ME,IR,DR,RI>  CR: 24004248  XER: 00000000
+> DAR: c0003e008030000e DSISR: 40000000 IRQMASK: 1
+> GPR00: 0000000000000000 c0000000022bfc90 c0000000010c0b00 c0003e0080300000
+> GPR04: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+> GPR08: 0000000000000000 221b80894c06df2f 0000000000000000 0000000000000000
+> GPR12: 0000000000000000 c000000002362000 c000000000f76b80 000000000349ecd8
+> GPR16: 0000000002367ba8 0000000002367f08 0000000002367c70 0000000000000000
+> GPR20: 567ce25e8c9202b7 c000000000f6f920 0000000000000001 c0003e0080300000
+> GPR24: c00000000226f348 0000000000000004 c00000000404c640 0000000000000000
+> GPR28: c0003e0080300000 c00000000404c000 45886d8559cb69b4 c0000000022bfc90
+> NIP [c00000000005dc40] mpic_init+0x4bc/0x10c4
+> LR [c000000000066660] mpic_init+0x464/0x10c4
+> ~~~ interrupt: 300
+> [c0000000022bfd90] [c000000002022ae4] pmac_setup_one_mpic+0x258/0x2dc
+> [c0000000022bf2e0] [c000000002022df4] pmac_pic_init+0x28c/0x3d8
+> [c0000000022bfef0] [c00000000200b750] init_IRQ+0x90/0x140
+> [c0000000022bff30] [c0000000020053c0] start_kernel+0x57c/0x78c
+> [c0000000022bffe0] [c00000000000cb48] start_here_common+0x1c/0x20
+> Code: 09290000 7c292040 4081007c fbc10020 3d220127 78843664 3929d700 ebc90000 7fde2214 e93e0000 712a0001 40820064 <e93e0000> 71232000 40820048 e93e0000
+> ---[ end trace 0000000000000000 ]---
+> 
+> Kernel panic - not syncing: Fatal exception
+> Rebooting in 40 seconds..
+> 
+> 
+> I bisected the issue and got 9fee28baa601f4dbf869b1373183b312d2d5ef3d as 1st bad commit:
+> 
+>  # git bisect good
+> 9fee28baa601f4dbf869b1373183b312d2d5ef3d is the first bad commit
+> commit 9fee28baa601f4dbf869b1373183b312d2d5ef3d
+> Author: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Date:   Wed Aug 2 16:13:49 2023 +0100
+> 
+>     powerpc: implement the new page table range API
+>     
+>     Add set_ptes(), update_mmu_cache_range() and flush_dcache_folio().  Change
+>     the PG_arch_1 (aka PG_dcache_dirty) flag from being per-page to per-folio.
+>     
+>     [willy@infradead.org: re-export flush_dcache_icache_folio()]
+>       Link: https://lkml.kernel.org/r/ZMx1daYwvD9EM7Cv@casper.infradead.org
+>     Link: https://lkml.kernel.org/r/20230802151406.3735276-22-willy@infradead.org
+>     Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+>     Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
+>     Cc: Michael Ellerman <mpe@ellerman.id.au>
+>     Cc: Nicholas Piggin <npiggin@gmail.com>
+>     Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+>     Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> 
+>  arch/powerpc/include/asm/book3s/32/pgtable.h |  5 ---
+>  arch/powerpc/include/asm/book3s/64/pgtable.h |  6 +---
+>  arch/powerpc/include/asm/book3s/pgtable.h    | 11 ++----
+>  arch/powerpc/include/asm/cacheflush.h        | 14 +++++---
+>  arch/powerpc/include/asm/kvm_ppc.h           | 10 +++---
+>  arch/powerpc/include/asm/nohash/pgtable.h    | 16 +++------
+>  arch/powerpc/include/asm/pgtable.h           | 12 +++++++
+>  arch/powerpc/mm/book3s64/hash_utils.c        | 11 +++---
+>  arch/powerpc/mm/cacheflush.c                 | 41 ++++++++-------------
+>  arch/powerpc/mm/nohash/e500_hugetlbpage.c    |  3 +-
+>  arch/powerpc/mm/pgtable.c                    | 53 ++++++++++++++++------------
+>  11 files changed, 89 insertions(+), 93 deletions(-)
+> 
+> 
+> And indeed when I revert commit 9fee28baa601f4dbf869b1373183b312d2d5ef3d I get a booting kernel again. I reverted the commit on top of 864609c6a0b5f0464f6ec7869cb2a45a529c35d7 (HEAD) as I get build issues when I revert it on top of 6.6-rc3.
+> 
+> dmesg of the successful boot with the reverted commit attached, also kernel .config and the bisect.log.
 
->=20
-> thanks,
->=20
-> greg k-h
+Thanks for the report. To be sure the issue doesn't fall through the
+cracks unnoticed, I'm adding it to regzbot, the Linux kernel regression
+tracking bot:
 
---=20
+#regzbot ^introduced 9fee28baa601f4dbf869b1373183b312d
+#regzbot title powerpc: new page table range API causes PowerMac G5 to
+fail booting
+#regzbot ignore-activity
 
-Joel Granados
+This isn't a regression? This issue or a fix for it are already
+discussed somewhere else? It was fixed already? You want to clarify when
+the regression started to happen? Or point out I got the title or
+something else totally wrong? Then just reply and tell me -- ideally
+while also telling regzbot about it, as explained by the page listed in
+the footer of this mail.
 
---zcz64lhnvlbjtldp
-Content-Type: application/pgp-signature; name="signature.asc"
+Developers: When fixing the issue, remember to add 'Link:' tags pointing
+to the report (the parent of this mail). See page linked in footer for
+details.
 
------BEGIN PGP SIGNATURE-----
-
-iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmUWwFoACgkQupfNUreW
-QU/Eqwv/RH28JknZG1s6JWiUUmWVbCiC6ZMEv1fxYdNyfq+X2wpGNHySWx2kmx+B
-/mF0BfTu/5o5adc5Pb8fw8w5N1n/9zGlG1MuGg6WiiKT5Bfrj3Y96+u3ngMrNkHN
-+LlqjMxZNw2Snrq6J0PiecEOD/jhSP2dWmf7nuvkqQOrSjMEaGKWr58aguiB6Cw3
-ZCeicpyWHltbn8QGkeX8OSjfRnQplKwd8FxbE97gIbAwRCv0gisjaHJ13JVnghcG
-0Zu3q+D6iJRz4ZCftC7ZOwSqqzpIywrKiKO3+4IB9Bi33+BOBJcntewv4mJiqR6x
-sCJmMrtEQ7O/4lp5pBQrpnGfH/LieKfQ6T86LoiQJrVCIuNp6AgJxKSFOduHnjLV
-/DlSB4ChJAQmyQMjk/Gu4cOPAnCZjbGv6bRFTQR3vuBJ+fhpcPdwW/ASDRFkP5VQ
-LPsDEF9Xkvs9ywDFfc5NNMHqqAfHe27BAWILap3GaoB4pIQG04m1Snw7ttTrWnUI
-X93esemi
-=klCv
------END PGP SIGNATURE-----
-
---zcz64lhnvlbjtldp--
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+That page also explains what to do if mails like this annoy you.
