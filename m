@@ -1,132 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0A9D7B2C8F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Sep 2023 08:44:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A0717B2CA5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Sep 2023 08:50:21 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=Kh6rYIYX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fATQLnpl;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rxgmz56lCz3dCw
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Sep 2023 16:44:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rxgvv3zdBz3dFd
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Sep 2023 16:50:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector2 header.b=Kh6rYIYX;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fATQLnpl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::631; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-mr2fra01on20631.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e19::631])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rxgm44Lb0z3c2f
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Sep 2023 16:43:31 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kjR27uHn5swsdCj8vdTsi4mBLHFYuBXsmqe83rU84fyFBE4ufAEkGVbOzaKqNxsBX7x/0JL372LXT6pvfBcwn42EGOuvgye2UmWm8tDjwS1sWPnEKKdbirIyl4g+d6tg79UDrxTLZ47CO8yTym7S7P/7+tPXfMnjyAEcr0PmDFmpCjGC6SYUiZmZcQqvm/y8XQL7VsYHXIqPUPjF1hz3rVjYrz9+o1bxzTgAKC8f4XhhRY+CCkTER4VHgaXiGZVITrPb3WNncYrn8xQBZew5Yx+CKVyu0HEESLONQsdr/0ABBTH9tE17/m4wN6jS8f0R141avextXkOOlfXz1FPSCw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sn/ZbXW1n0kwV+nFUZYrza4XfXiNLR58X6o33HICllQ=;
- b=eDV4z0hRMhI2fQO8IkVS0b45riMMnF8Kw0KoRCJtUKlBItdbwJOZIRTt0TV99ak0GLshB8asNG/dY8Ho23vApctmk4EOc8FlcyEe4PBWkima+oJXDiDrVjVEQNCeDiTmKjdm2Ws5R2xvxc0iqSEVYdaSlYZ12kKsZx7bj3zWJqKVIM1s57Vk+gMPv9W6uFqlUeEfGBa34Pk4NojY0jhFxrutgxkQBhdEFDYTGAfdP2nNoh28HAVm3IUCAw2n/TUA7f6n8eogm51fvTaCv5nq3Dk0SHAUkM7CaJ1YuL1wEAiJC1j34PfxWnzEuk7TGAxVyBaha8ckZVPzA+bNHwjWpA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sn/ZbXW1n0kwV+nFUZYrza4XfXiNLR58X6o33HICllQ=;
- b=Kh6rYIYXQFvb9Mmr9W3pcrChdWJ3kPqex9dsBcHD5Vvyvi1D6NxGzOKNUI3n59dG5mAWQ5huPWu30MoWiQA0FOd5YLJXqY8kN+FyvZ4AkWX2Zr2cBWslBK0zlm6vOHxKxjxuFJkSH3zUnPyyPEaOqDRY8LYWtwSjnGf1sVa8kvTxD7kF86qahq0ApX48vmPhHAJVWm+rDy2qOd240Ag3bhpfHfQ72kJxHJduiV8eT1EydXPmtDRXf5HKPFHFFBIJ5hyOV+Gy1N1hnseOLhiS1Qia3FTyZ9W37n5af5fN6eQU5fcAbY9WkBvWFw1yJgeP45NxEsi4wPKMJTOJEukZiA==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by MRZP264MB1912.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:c::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6838.26; Fri, 29 Sep 2023 06:43:08 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::27df:697c:bd7d:774f]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::27df:697c:bd7d:774f%6]) with mapi id 15.20.6838.024; Fri, 29 Sep 2023
- 06:43:08 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Wen Xiong <wenxiong@us.ibm.com>, Pingfan Liu <piliu@redhat.com>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCHv7 2/4] powerpc/setup: Loosen the mapping between cpu
- logical id and its seq in dt
-Thread-Topic: [PATCHv7 2/4] powerpc/setup: Loosen the mapping between cpu
- logical id and its seq in dt
-Thread-Index: AQHZ74WAhi5ZYt4k2kaFizCJZ0DwEbAwt80AgACpjoA=
-Date: Fri, 29 Sep 2023 06:43:08 +0000
-Message-ID: <a0a712a0-ce9b-a0a5-6e96-fdf372ced6d7@csgroup.eu>
-References: <20230925075348.16654-1-piliu@redhat.com>
- <20230925075348.16654-3-piliu@redhat.com>
- <BL3PR15MB54581456FAB1CF28C9F761B4F0C1A@BL3PR15MB5458.namprd15.prod.outlook.com>
-In-Reply-To:  <BL3PR15MB54581456FAB1CF28C9F761B4F0C1A@BL3PR15MB5458.namprd15.prod.outlook.com>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|MRZP264MB1912:EE_
-x-ms-office365-filtering-correlation-id: 2e93c8df-6a95-43d7-952c-08dbc0b75762
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  Kf+qmjvWdD9FYOi//+mI2kT92vUzr6o8khmpPM/0Dud5tTD2Wlk5qu62mRNtj8WkCdARp8UbPI9P/+Vl+Y6aajyJuEJOa9vGhJyE6fiAzpCwhLJRnZj4t/UPf5oWgcbTNIvz3ASsnr1x9vmL0WYavrOtXbB2rbfgYv0BZL1DlmXeJAnHHvEGSWC/g2tq1jU3xJapEzkI5CpspE5Bsx7q6aWKzCGAc7i5RfZtK0OpG/s98Pve5/ng7VFJO1TQhkyC8iik3tVaBIdqfK4r1GaKzy+WlTNDJsXllM+Lt8RvmF/k2TM86iU+Db3DVoC5Yfs2wfr/bXu2PZDkugyIk70YbDA96b+kSBmK3peIGGLdehYoqcLrJF/wVOowbqO9yEyzofiTPhXjcGg4wjPruKbkgLFvtheVUV/Wr/kobvom4BYZR8shgRXWTit4FPizEosJNth/p33v8O5Ek3LVcyZGQrLze66RSGwle/nQVnHQQB4d9N0C983d78GJgvngQH/tsXWlwRvH17nEvdorVrrJ5fr+MTnTIB/z0GHE7ucNGA8JmOBKPAVcn6BbWpmwFNXhMNpfmX8RKsFtVudYV3+KiQbo4KgS6y7V8WJm+J5ukUjB9Jgvmqoy1Ua/ztHXT6fiD89YexqcMLqTigUpmZpVNTtvIw1LDm8F202q0JC8tHU=
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(376002)(346002)(39860400002)(396003)(136003)(366004)(230922051799003)(451199024)(64100799003)(1800799009)(186009)(122000001)(83380400001)(966005)(44832011)(5660300002)(6486002)(8936002)(8676002)(478600001)(4326008)(66946007)(66556008)(66476007)(66446008)(64756008)(54906003)(76116006)(110136005)(41300700001)(91956017)(36756003)(316002)(71200400001)(26005)(53546011)(2616005)(2906002)(6506007)(6512007)(86362001)(31686004)(38100700002)(38070700005)(31696002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?eU96QkRxQk1YSnZJR0gzQVJTT0Q3NzNxTE16M2FpLzNQUTdmTFBVdWNha2tI?=
- =?utf-8?B?TjV6OXRibUZRa3VyZ1VXOTZlQ1B1OUlwZW1TOXZuV1hkc2p5QklXY2Ura3ZW?=
- =?utf-8?B?cS9Vc1BMUk9nR0M1ZWRPWXhUZnh0Yjl5MnB1bmRwL2QrZHB4YTJNOSt4YzZX?=
- =?utf-8?B?Sm1kZEtNenNZQUxqT0xPR0R2b0RXNnY3T0RvTXVjN0NuSGx2R3hQZzBKOGNk?=
- =?utf-8?B?MkdRNDN4OHpWczlZTkx6Y1NQVlMxN2h6dVVNUzl6aTdBMzBvc3Jld0xrNytr?=
- =?utf-8?B?bXBCaWRSbHp6Y1oxMTU5SGgwaDhJN1orYzVxdDdtbXpyblBYeGNlVlJIY0My?=
- =?utf-8?B?T1NzejV0Z2FFSjlzTEJiYVR0OURjeGxkZHh6b1NqNEs2V2s4Y3BxSXdLWE5X?=
- =?utf-8?B?VnZVNlZKdXQ5YUxoUTh4bjFyZlE4WkRORzlzTlFJZm9YZFJzY054cDFFTFBV?=
- =?utf-8?B?TVNvRktta1p0ZW9DdFRxcDIreDk1SXpvR3Racmp1SUE4Z3BhNGxoSnpaWk5D?=
- =?utf-8?B?MmtrQ25rcDNaUExqZjhQNTloQ3pqMkgvYmZacWZNdVNxbFRNQzJBUXBVcUx3?=
- =?utf-8?B?cm52VnlKbjZINDl2cWo3NHRRSGJ4V2x2dGMwRThmNTdQc2UyWDdWUDJBbDBW?=
- =?utf-8?B?ZGRtcWpTS3k4ZUdUVkwrRWJWY0ovWDNDNjdCODc1UWFhMEo3dldaN0FnQmR3?=
- =?utf-8?B?VHRLOExmQytPWklTWWxNdUVmTUdsd0JmNVYrRW9seHVwSjNWQmdtSHBxQjNt?=
- =?utf-8?B?YzFEQ3J0MWhtckdodlQrTXdPOWpDeEJTdnpROXFjcW1UVnNBM0lNN2tiUlF6?=
- =?utf-8?B?dlZPc1RIb1RjazE0VTFPSmF3NSs2dW5heUJ3QmRqakNNc3hCWEVvdm43M2Q5?=
- =?utf-8?B?dDlJaEVWOFZwb2hpQlZQTkNJTjR4NkErNGpjUnZzUm5qcmpPOHExMFVSbUVZ?=
- =?utf-8?B?L1g3L0RLWk9walpKeWZ5Sm84TlhwZ3RoSVpMcHBoSXBJU0RCejVkMWVHaWJZ?=
- =?utf-8?B?aXNXUVZyZVZBUythdTlQWnFRZjQ3Rkdiek1uZDlYSjIyTnVvaTJWTEJuZ2lD?=
- =?utf-8?B?OEdncXFpbjc4QzJwcFhBbDIrQmZ4eURvc1NsK2JQWVZGdkJqdENsZzBCSlRk?=
- =?utf-8?B?VHpneFNJeFJwMXZNdm1jaHZsWnVNdzNXSnd1WHRLY2htQmRnQUhXVEJ1bjlv?=
- =?utf-8?B?eWtvdit1bjZxQnN4T3lwakg5WGcvS0o4ZnBxRDNqQ0RXZTBiTkxveWlydUlX?=
- =?utf-8?B?Vms4YnZTaDFKbktSNmlhMnp2K1FhMlFZTEtYRkpGTGNrR0RRR1YvSjFrenRl?=
- =?utf-8?B?STJWaXppaWh6RUJFdVVUV0ZSMVFCUCtiR1RVc1g2dmN2a0tuRG1JVURBZHpK?=
- =?utf-8?B?dTRKZmVUemFmRkU0SnJmcjZUVVBsRGVkK055b1IweE5qSnFWc2IrcC9FVnB6?=
- =?utf-8?B?SkRzVzlnaUtIcmJVN01NSUNIM0kweURXN2NSRExxdVRoOUUvSC9YRUcvRi9u?=
- =?utf-8?B?djVvMWtlUmxVWno3c2hHUGRSOUZaL2xnRHlnVlQ2SE9OREtnUGpaWWFydThv?=
- =?utf-8?B?SERaZTloaEdpZHhGb0ZIQWlBTXdEalFMeWQrWERUK1ZkbFQrYzJENDRFak1m?=
- =?utf-8?B?Z3dwZzN5OW0zQ2VxZzRYc3VoYTJVSWxGaGY4b2VkTkI1a3M3S0l2RDFKMDEv?=
- =?utf-8?B?QWFaWE9LWmp4MW4rV25yRjJNR01naGVmWmh0U0M5M2RBb1dRVUdKOVBNWTNk?=
- =?utf-8?B?S3NORHVwbnZPNWMxamhrekhFdVVXYjlySmI3M3AvbjRqd3RsY3Y4Z083RzFP?=
- =?utf-8?B?Wm5VRVJ3RmM1YVRxWUNVV2NnMTVwMFFBcXFLWjFyMGhuQm5OUmVNZWRndmNK?=
- =?utf-8?B?VXBBVXdwVGltNlNmVHlJOWRva2hJM3VFSjVEbzE0dmRmL1ZTL2s4V29JMkdL?=
- =?utf-8?B?MlFSK3Erd0NRYUcrYmRRaUFpT1l1dXJEcjFDUlZGS1hiTk4vR3djL1B5WEV2?=
- =?utf-8?B?bVZVdXZzZkR3SU1tU0wwbUgvTTJOajNwTU96bmVHQ012eEZKbjNWRGlDOFk2?=
- =?utf-8?B?cGdWWTFyTmRQZzRPeHo4OXhHSUlMMTFSSUFHUXhlVTFuVXJnVXJPNEJQc2w1?=
- =?utf-8?B?ZWRMeDVyLzFrZmphNHFaS0ZhWStndjNybEp1NlVSTzNhNUk1SFNZSW1sZThC?=
- =?utf-8?B?Rmc9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <AFE28F3C44D9AE42A403F1BE3EAA241A@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rxgv12xcgz3cM4
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Sep 2023 16:49:32 +1000 (AEST)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38T6cY9Q021179;
+	Fri, 29 Sep 2023 06:49:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=KH8PlRenTtNX+JIRcQjU2ssuXbVpPOcTprrV/Sy6JhU=;
+ b=fATQLnplnQbupXRgND3VOEkBM1hTtMAbgKoUgJDEb4VAwnElybp6UPF+RGHHrxtsha8U
+ wPSsNKVsAbNsKMW5PJ61ZhNxSG4NESJigbP6Lxbf1yS0UBVIAqxy3ciZ0j8yl/8zwL/D
+ aK0xq3K5smb+6o59MJfZW4oEeN2FaT4+zjDDIJo1LILCPRWm/XPe/bS9BgO9nkycVZeK
+ Qz9rEOsZi6oorjCk2i84THt5Eo13XAVQGOeTHnYJxylCIYmoI7733C424oqP8F6ss1XK
+ ngSaM78mWor3+t53PmK2V/OxIkJaa8DSdjDX/Gt/NlH3OHOga9yrswGwmljEGvun7MEn 1A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tds73rm4k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 29 Sep 2023 06:49:22 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38T6T9K4016832;
+	Fri, 29 Sep 2023 06:49:22 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tds73rm4b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 29 Sep 2023 06:49:22 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 38T6YG3D011019;
+	Fri, 29 Sep 2023 06:49:20 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tabum2k7v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 29 Sep 2023 06:49:20 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 38T6nHDJ28574278
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 29 Sep 2023 06:49:17 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7659220040;
+	Fri, 29 Sep 2023 06:49:17 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5FF5220043;
+	Fri, 29 Sep 2023 06:49:15 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.43.86.96])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 29 Sep 2023 06:49:15 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
+        irogers@google.com, namhyung@kernel.org
+Subject: [PATCH V2] tools/perf: Add perf binary dependent rule for shellcheck log in Makefile.perf
+Date: Fri, 29 Sep 2023 12:19:09 +0530
+Message-Id: <20230929064909.1152-1-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2e93c8df-6a95-43d7-952c-08dbc0b75762
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Sep 2023 06:43:08.0471
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: pWL2RSvAMz4v87TwCXhKytOoNIYHOS3iWN3XR95mjq/0av3lznNJ/PH5aY/3fUFr+4gSLHtbLMQksBdu5SSiyFhqK1fcHXrPdykDkPMMpOM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB1912
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: FszEnu_qeMw2trl0ZklG4767vdVDvFTN
+X-Proofpoint-GUID: B7-_9QCzdVnmUzyWRES4kvig6bNBX_aN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-09-29_04,2023-09-28_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ phishscore=0 suspectscore=0 adultscore=0 malwarescore=0 bulkscore=0
+ impostorscore=0 mlxscore=0 spamscore=0 clxscore=1015 mlxlogscore=999
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2309290055
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -138,215 +94,134 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Baoquan He <bhe@redhat.com>, "kexec@lists.infradead.org" <kexec@lists.infradead.org>, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Ming Lei <ming.lei@redhat.com>
+Cc: atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDI4LzA5LzIwMjMgw6AgMjI6MzYsIFdlbiBYaW9uZyBhIMOpY3JpdMKgOg0KPiBIaSBQ
-aW5nZmFuLA0KPiANCj4gKyAgICAgICAgICAgICAgIGF2YWlsID0gaW50c2Vydl9ub2RlLT5hdmFp
-bDsNCj4gKyAgICAgICAgICAgICAgIG50aHJlYWRzID0gaW50c2Vydl9ub2RlLT5sZW4gLyBzaXpl
-b2YoaW50KTsNCj4gKyAgICAgICAgICAgICAgIGZvciAoaiA9IDA7IGogPCBudGhyZWFkcyAmJiBj
-cHUgPCBucl9jcHVfaWRzOyBqKyspIHsNCj4gICAgICAgICAgICAgICAgICAgICAgICAgIHNldF9j
-cHVfcHJlc2VudChjcHUsIGF2YWlsKTsNCj4gICAgICAgICAgICAgICAgICAgICAgICAgIHNldF9j
-cHVfcG9zc2libGUoY3B1LCB0cnVlKTsNCj4gLSAgICAgICAgICAgICAgICAgICAgICAgY3B1X3Rv
-X3BoeXNfaWRbY3B1XSA9IGJlMzJfdG9fY3B1KGludHNlcnZbal0pOw0KPiArICAgICAgICAgICAg
-ICAgICAgICAgICBjcHVfdG9fcGh5c19pZFtjcHVdID0gYmUzMl90b19jcHUoaW50c2Vydl9ub2Rl
-LT5pbnRzZXJ2W2pdKTsNCj4gKyAgICAgICAgICAgICAgICAgICAgICAgREJHKCIgICAgdGhyZWFk
-ICVkIC0+IGNwdSAlZCAoaGFyZCBpZCAlZClcbiIsDQo+ICsgICAgICAgICAgICAgICAgICAgICAg
-ICAgICBqLCBjcHUsIGJlMzJfdG9fY3B1KGludHNlcnZbal0pKTsNCj4gDQo+IEludHNlcnYgaXMg
-bm90IGRlZmluZWQuIFNob3VsZCAiYmUzMl90b19jcHUoaW50c2Vydl9ub2RlLT5pbnRzZXJ2W2pd
-KT8NCj4gICAgICAgICAgICAgICAgICAgICAgICAgIGNwdSsrOw0KPiAgICAgICAgICAgICAgICAg
-IH0NCj4gKyAgICAgICB9DQoNClBsZWFzZSBkb24ndCB0b3AtcG9zdCAsIHNlZSANCmh0dHBzOi8v
-ZG9jcy5rZXJuZWwub3JnL3Byb2Nlc3Mvc3VibWl0dGluZy1wYXRjaGVzLmh0bWwjdXNlLXRyaW1t
-ZWQtaW50ZXJsZWF2ZWQtcmVwbGllcy1pbi1lbWFpbC1kaXNjdXNzaW9ucw0KDQpNYWtlIGNvbW1l
-bnRzIGluc2lkZSB0aGUgcGF0Y2ggZGlyZWN0bHksIG1ha2luZyBzdXJlIHRoYXQgeW91ciBtYWls
-IA0KY2xpZW50IGlzIHByb3Blcmx5IGNvbmZpZ3VyZWQgdG8gYWRkIHRoZSBzdGFuZGFyZCA+IGlu
-IGZyb250IG9mIGFsbCANCmxpbmVzIG9mIHRoZSBxdW90ZWQgbWFpbC4NCg0KQ2hyaXN0b3BoZQ0K
-DQo+IA0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBQaW5nZmFuIExpdSA8
-cGlsaXVAcmVkaGF0LmNvbT4NCj4gU2VudDogTW9uZGF5LCBTZXB0ZW1iZXIgMjUsIDIwMjMgMjo1
-NCBBTQ0KPiBUbzogbGludXhwcGMtZGV2QGxpc3RzLm96bGFicy5vcmcNCj4gQ2M6IFBpbmdmYW4g
-TGl1IDxwaWxpdUByZWRoYXQuY29tPjsgTWljaGFlbCBFbGxlcm1hbiA8bXBlQGVsbGVybWFuLmlk
-LmF1PjsgTmljaG9sYXMgUGlnZ2luIDxucGlnZ2luQGdtYWlsLmNvbT47IENocmlzdG9waGUgTGVy
-b3kgPGNocmlzdG9waGUubGVyb3lAY3Nncm91cC5ldT47IE1haGVzaCBTYWxnYW9ua2FyIDxtYWhl
-c2hAbGludXguaWJtLmNvbT47IFdlbiBYaW9uZyA8d2VueGlvbmdAdXMuaWJtLmNvbT47IEJhb3F1
-YW4gSGUgPGJoZUByZWRoYXQuY29tPjsgTWluZyBMZWkgPG1pbmcubGVpQHJlZGhhdC5jb20+OyBr
-ZXhlY0BsaXN0cy5pbmZyYWRlYWQub3JnDQo+IFN1YmplY3Q6IFtFWFRFUk5BTF0gW1BBVENIdjcg
-Mi80XSBwb3dlcnBjL3NldHVwOiBMb29zZW4gdGhlIG1hcHBpbmcgYmV0d2VlbiBjcHUgbG9naWNh
-bCBpZCBhbmQgaXRzIHNlcSBpbiBkdA0KPiANCj4gKioqIElkZWEgKioqDQo+IEZvciBrZXhlYyAt
-cCwgdGhlIGJvb3QgY3B1IGNhbiBiZSBub3QgdGhlIGNwdTAsIHRoaXMgY2F1c2VzIHRoZSBwcm9i
-bGVtIG9mIGFsbG9jYXRpbmcgbWVtb3J5IGZvciBwYWNhX3B0cnNbXS4gSG93ZXZlciwgaW4gdGhl
-b3J5LCB0aGVyZSBpcyBubyByZXF1aXJlbWVudCB0byBhc3NpZ24gY3B1J3MgbG9naWNhbCBpZCBh
-cyBpdHMgcHJlc2VudCBzZXF1ZW5jZSBpbiB0aGUgZGV2aWNlIHRyZWUuIEJ1dCB0aGVyZSBpcyBz
-b21ldGhpbmcgbGlrZSBjcHVfZmlyc3RfdGhyZWFkX3NpYmxpbmcoKSwgd2hpY2ggbWFrZXMgYXNz
-dW1wdGlvbiBvbiB0aGUgbWFwcGluZyBpbnNpZGUgYSBjb3JlLiBIZW5jZSBwYXJ0aWFsbHkgbG9v
-c2VuaW5nIHRoZSBtYXBwaW5nLCBpLmUuIHVuYmluZCB0aGUgbWFwcGluZyBvZiBjb3JlIHdoaWxl
-IGtlZXAgdGhlIG1hcHBpbmcgaW5zaWRlIGEgY29yZS4NCj4gDQo+ICoqKiBJbXBsZW1lbnQgKioq
-DQo+IEF0IHRoaXMgZWFybHkgc3RhZ2UsIHRoZXJlIGFyZSBwbGVudHkgb2YgbWVtb3J5IHRvIHV0
-aWxpemUuIEhlbmNlLCB0aGlzIHBhdGNoIGFsbG9jYXRlcyBpbnRlcmltIG1lbW9yeSB0byBsaW5r
-IHRoZSBjcHUgaW5mbyBvbiBhIGxpc3QsIHRoZW4gcmVvcmRlciBjcHVzIGJ5IGNoYW5naW5nIHRo
-ZSBsaXN0IGhlYWQuIEFzIGEgcmVzdWx0LCB0aGVyZSBpcyBhIHJvdGF0ZSBzaGlmdCBiZXR3ZWVu
-IHRoZSBzZXF1ZW5jZSBudW1iZXIgaW4gZHQgYW5kIHRoZSBjcHUgbG9naWNhbCBudW1iZXIuDQo+
-IA0KPiAqKiogUmVzdWx0ICoqKg0KPiBBZnRlciB0aGlzIHBhdGNoLCBhIGJvb3QtY3B1J3MgbG9n
-aWNhbCBpZCB3aWxsIGFsd2F5cyBiZSBtYXBwZWQgaW50byB0aGUgcmFuZ2UgWzAsdGhyZWFkc19w
-ZXJfY29yZSkuDQo+IA0KPiBCZXNpZGVzIHRoaXMsIGF0IHRoaXMgcGhhc2UsIGFsbCB0aHJlYWRz
-IGluIHRoZSBib290IGNvcmUgYXJlIGZvcmNlZCB0byBiZSBvbmxpbmVkLiBUaGlzIHJlc3RyaWN0
-aW9uIHdpbGwgYmUgbGlmdGVkIGluIGEgbGF0ZXIgcGF0Y2ggd2l0aCBleHRyYSBlZmZvcnQuDQo+
-IA0KPiBTaWduZWQtb2ZmLWJ5OiBQaW5nZmFuIExpdSA8cGlsaXVAcmVkaGF0LmNvbT4NCj4gQ2M6
-IE1pY2hhZWwgRWxsZXJtYW4gPG1wZUBlbGxlcm1hbi5pZC5hdT4NCj4gQ2M6IE5pY2hvbGFzIFBp
-Z2dpbiA8bnBpZ2dpbkBnbWFpbC5jb20+DQo+IENjOiBDaHJpc3RvcGhlIExlcm95IDxjaHJpc3Rv
-cGhlLmxlcm95QGNzZ3JvdXAuZXU+DQo+IENjOiBNYWhlc2ggU2FsZ2FvbmthciA8bWFoZXNoQGxp
-bnV4LmlibS5jb20+DQo+IENjOiBXZW4gWGlvbmcgPHdlbnhpb25nQHVzLmlibS5jb20+DQo+IENj
-OiBCYW9xdWFuIEhlIDxiaGVAcmVkaGF0LmNvbT4NCj4gQ2M6IE1pbmcgTGVpIDxtaW5nLmxlaUBy
-ZWRoYXQuY29tPg0KPiBDYzoga2V4ZWNAbGlzdHMuaW5mcmFkZWFkLm9yZw0KPiBUbzogbGludXhw
-cGMtZGV2QGxpc3RzLm96bGFicy5vcmcNCj4gLS0tDQo+ICAgYXJjaC9wb3dlcnBjL2tlcm5lbC9w
-cm9tLmMgICAgICAgICB8IDI1ICsrKysrLS0tLQ0KPiAgIGFyY2gvcG93ZXJwYy9rZXJuZWwvc2V0
-dXAtY29tbW9uLmMgfCA4NyArKysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0NCj4gICAyIGZp
-bGVzIGNoYW5nZWQsIDg1IGluc2VydGlvbnMoKyksIDI3IGRlbGV0aW9ucygtKQ0KPiANCj4gZGlm
-ZiAtLWdpdCBhL2FyY2gvcG93ZXJwYy9rZXJuZWwvcHJvbS5jIGIvYXJjaC9wb3dlcnBjL2tlcm5l
-bC9wcm9tLmMgaW5kZXggZWM4MmY1YmRhOTA4Li44NzI3MmEyZDhjMTAgMTAwNjQ0DQo+IC0tLSBh
-L2FyY2gvcG93ZXJwYy9rZXJuZWwvcHJvbS5jDQo+ICsrKyBiL2FyY2gvcG93ZXJwYy9rZXJuZWwv
-cHJvbS5jDQo+IEBAIC03Niw3ICs3Niw5IEBAIHU2NCBwcGM2NF9ybWFfc2l6ZTsNCj4gICB1bnNp
-Z25lZCBpbnQgYm9vdF9jcHVfbm9kZV9jb3VudCBfX3JvX2FmdGVyX2luaXQ7ICAjZW5kaWYgIHN0
-YXRpYyBwaHlzX2FkZHJfdCBmaXJzdF9tZW1ibG9ja19zaXplOw0KPiArI2lmZGVmIENPTkZJR19T
-TVANCj4gICBzdGF0aWMgaW50IF9faW5pdGRhdGEgYm9vdF9jcHVfY291bnQ7DQo+ICsjZW5kaWYN
-Cj4gDQo+ICAgc3RhdGljIGludCBfX2luaXQgZWFybHlfcGFyc2VfbWVtKGNoYXIgKnApICB7IEBA
-IC0zMzEsOCArMzMzLDcgQEAgc3RhdGljIGludCBfX2luaXQgZWFybHlfaW5pdF9kdF9zY2FuX2Nw
-dXModW5zaWduZWQgbG9uZyBub2RlLA0KPiAgICAgICAgICBjb25zdCBfX2JlMzIgKmludHNlcnY7
-DQo+ICAgICAgICAgIGludCBpLCBudGhyZWFkczsNCj4gICAgICAgICAgaW50IGxlbjsNCj4gLSAg
-ICAgICBpbnQgZm91bmQgPSAtMTsNCj4gLSAgICAgICBpbnQgZm91bmRfdGhyZWFkID0gMDsNCj4g
-KyAgICAgICBib29sIGZvdW5kID0gZmFsc2U7DQo+IA0KPiAgICAgICAgICAvKiBXZSBhcmUgc2Nh
-bm5pbmcgImNwdSIgbm9kZXMgb25seSAqLw0KPiAgICAgICAgICBpZiAodHlwZSA9PSBOVUxMIHx8
-IHN0cmNtcCh0eXBlLCAiY3B1IikgIT0gMCkgQEAgLTM1NSw4ICszNTYsMTUgQEAgc3RhdGljIGlu
-dCBfX2luaXQgZWFybHlfaW5pdF9kdF9zY2FuX2NwdXModW5zaWduZWQgbG9uZyBub2RlLA0KPiAg
-ICAgICAgICBmb3IgKGkgPSAwOyBpIDwgbnRocmVhZHM7IGkrKykgew0KPiAgICAgICAgICAgICAg
-ICAgIGlmIChiZTMyX3RvX2NwdShpbnRzZXJ2W2ldKSA9PQ0KPiAgICAgICAgICAgICAgICAgICAg
-ICAgICAgZmR0X2Jvb3RfY3B1aWRfcGh5cyhpbml0aWFsX2Jvb3RfcGFyYW1zKSkgew0KPiAtICAg
-ICAgICAgICAgICAgICAgICAgICBmb3VuZCA9IGJvb3RfY3B1X2NvdW50Ow0KPiAtICAgICAgICAg
-ICAgICAgICAgICAgICBmb3VuZF90aHJlYWQgPSBpOw0KPiArICAgICAgICAgICAgICAgICAgICAg
-ICAvKg0KPiArICAgICAgICAgICAgICAgICAgICAgICAgKiBhbHdheXMgbWFwIHRoZSBib290LWNw
-dSBsb2dpY2FsIGlkIGludG8gdGhlDQo+ICsgICAgICAgICAgICAgICAgICAgICAgICAqIHJhbmdl
-IG9mIFswLCB0aHJlYWRfcGVyX2NvcmUpDQo+ICsgICAgICAgICAgICAgICAgICAgICAgICAqLw0K
-PiArICAgICAgICAgICAgICAgICAgICAgICBib290X2NwdWlkID0gaTsNCj4gKyAgICAgICAgICAg
-ICAgICAgICAgICAgZm91bmQgPSB0cnVlOw0KPiArICAgICAgICAgICAgICAgICAgICAgICAvKiBU
-aGlzIHdvcmtzIGFyb3VuZCB0aGUgaG9sZSBpbiBwYWNhX3B0cnNbXS4gKi8NCj4gKyAgICAgICAg
-ICAgICAgICAgICAgICAgaWYgKG5yX2NwdV9pZHMgPCBudGhyZWFkcykNCj4gKyAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICBzZXRfbnJfY3B1X2lkcyhudGhyZWFkcyk7DQo+ICAgICAgICAg
-ICAgICAgICAgfQ0KPiAgICNpZmRlZiBDT05GSUdfU01QDQo+ICAgICAgICAgICAgICAgICAgLyog
-bG9naWNhbCBjcHUgaWQgaXMgYWx3YXlzIDAgb24gVVAga2VybmVscyAqLyBAQCAtMzY1LDE0ICsz
-NzMsMTMgQEAgc3RhdGljIGludCBfX2luaXQgZWFybHlfaW5pdF9kdF9zY2FuX2NwdXModW5zaWdu
-ZWQgbG9uZyBub2RlLA0KPiAgICAgICAgICB9DQo+IA0KPiAgICAgICAgICAvKiBOb3QgdGhlIGJv
-b3QgQ1BVICovDQo+IC0gICAgICAgaWYgKGZvdW5kIDwgMCkNCj4gKyAgICAgICBpZiAoIWZvdW5k
-KQ0KPiAgICAgICAgICAgICAgICAgIHJldHVybiAwOw0KPiANCj4gLSAgICAgICBEQkcoImJvb3Qg
-Y3B1OiBsb2dpY2FsICVkIHBoeXNpY2FsICVkXG4iLCBmb3VuZCwNCj4gLSAgICAgICAgICAgYmUz
-Ml90b19jcHUoaW50c2Vydltmb3VuZF90aHJlYWRdKSk7DQo+IC0gICAgICAgYm9vdF9jcHVpZCA9
-IGZvdW5kOw0KPiArICAgICAgIERCRygiYm9vdCBjcHU6IGxvZ2ljYWwgJWQgcGh5c2ljYWwgJWRc
-biIsIGJvb3RfY3B1aWQsDQo+ICsgICAgICAgICAgIGJlMzJfdG9fY3B1KGludHNlcnZbYm9vdF9j
-cHVpZF0pKTsNCj4gDQo+IC0gICAgICAgYm9vdF9jcHVfaHdpZCA9IGJlMzJfdG9fY3B1KGludHNl
-cnZbZm91bmRfdGhyZWFkXSk7DQo+ICsgICAgICAgYm9vdF9jcHVfaHdpZCA9IGJlMzJfdG9fY3B1
-KGludHNlcnZbYm9vdF9jcHVpZF0pOw0KPiANCj4gICAgICAgICAgLyoNCj4gICAgICAgICAgICog
-UEFQUiBkZWZpbmVzICJsb2dpY2FsIiBQVlIgdmFsdWVzIGZvciBjcHVzIHRoYXQgZGlmZiAtLWdp
-dCBhL2FyY2gvcG93ZXJwYy9rZXJuZWwvc2V0dXAtY29tbW9uLmMgYi9hcmNoL3Bvd2VycGMva2Vy
-bmVsL3NldHVwLWNvbW1vbi5jDQo+IGluZGV4IDFiMTlhOTgxNTY3Mi4uZjZkMzIzMjRiNWE1IDEw
-MDY0NA0KPiAtLS0gYS9hcmNoL3Bvd2VycGMva2VybmVsL3NldHVwLWNvbW1vbi5jDQo+ICsrKyBi
-L2FyY2gvcG93ZXJwYy9rZXJuZWwvc2V0dXAtY29tbW9uLmMNCj4gQEAgLTM2LDYgKzM2LDcgQEAN
-Cj4gICAjaW5jbHVkZSA8bGludXgvb2ZfcGxhdGZvcm0uaD4NCj4gICAjaW5jbHVkZSA8bGludXgv
-aHVnZXRsYi5oPg0KPiAgICNpbmNsdWRlIDxsaW51eC9wZ3RhYmxlLmg+DQo+ICsjaW5jbHVkZSA8
-bGludXgvbGlzdC5oPg0KPiAgICNpbmNsdWRlIDxhc20vaW8uaD4NCj4gICAjaW5jbHVkZSA8YXNt
-L3BhY2EuaD4NCj4gICAjaW5jbHVkZSA8YXNtL3Byb2Nlc3Nvci5oPg0KPiBAQCAtNDI1LDYgKzQy
-NiwxMyBAQCBzdGF0aWMgdm9pZCBfX2luaXQgY3B1X2luaXRfdGhyZWFkX2NvcmVfbWFwcyhpbnQg
-dHBjKQ0KPiANCj4gICB1MzIgKmNwdV90b19waHlzX2lkID0gTlVMTDsNCj4gDQo+ICtzdHJ1Y3Qg
-aW50ZXJydXB0X3NlcnZlcl9ub2RlIHsNCj4gKyAgICAgICBzdHJ1Y3QgbGlzdF9oZWFkIG5vZGU7
-DQo+ICsgICAgICAgYm9vbCAgICBhdmFpbDsNCj4gKyAgICAgICBpbnQgICAgIGxlbjsNCj4gKyAg
-ICAgICBfX2JlMzIgKmludHNlcnY7DQo+ICt9Ow0KPiArDQo+ICAgLyoqDQo+ICAgICogc2V0dXBf
-Y3B1X21hcHMgLSBpbml0aWFsaXplIHRoZSBmb2xsb3dpbmcgY3B1IG1hcHM6DQo+ICAgICogICAg
-ICAgICAgICAgICAgICBjcHVfcG9zc2libGVfbWFzaw0KPiBAQCAtNDQ2LDExICs0NTQsMTYgQEAg
-dTMyICpjcHVfdG9fcGh5c19pZCA9IE5VTEw7ICB2b2lkIF9faW5pdCBzbXBfc2V0dXBfY3B1X21h
-cHModm9pZCkgIHsNCj4gICAgICAgICAgc3RydWN0IGRldmljZV9ub2RlICpkbjsNCj4gLSAgICAg
-ICBpbnQgY3B1ID0gMDsNCj4gLSAgICAgICBpbnQgbnRocmVhZHMgPSAxOw0KPiArICAgICAgIGlu
-dCBzaGlmdCA9IDAsIGNwdSA9IDA7DQo+ICsgICAgICAgaW50IGosIG50aHJlYWRzID0gMTsNCj4g
-KyAgICAgICBpbnQgbGVuOw0KPiArICAgICAgIHN0cnVjdCBpbnRlcnJ1cHRfc2VydmVyX25vZGUg
-KmludHNlcnZfbm9kZSwgKm47DQo+ICsgICAgICAgc3RydWN0IGxpc3RfaGVhZCAqYnRfbm9kZSwg
-aGVhZDsNCj4gKyAgICAgICBib29sIGF2YWlsLCBmb3VuZF9ib290X2NwdSA9IGZhbHNlOw0KPiAN
-Cj4gICAgICAgICAgREJHKCJzbXBfc2V0dXBfY3B1X21hcHMoKVxuIik7DQo+IA0KPiArICAgICAg
-IElOSVRfTElTVF9IRUFEKCZoZWFkKTsNCj4gICAgICAgICAgY3B1X3RvX3BoeXNfaWQgPSBtZW1i
-bG9ja19hbGxvYyhucl9jcHVfaWRzICogc2l6ZW9mKHUzMiksDQo+ICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgX19hbGlnbm9mX18odTMyKSk7DQo+ICAgICAgICAgIGlm
-ICghY3B1X3RvX3BoeXNfaWQpDQo+IEBAIC00NjAsNyArNDczLDYgQEAgdm9pZCBfX2luaXQgc21w
-X3NldHVwX2NwdV9tYXBzKHZvaWQpDQo+ICAgICAgICAgIGZvcl9lYWNoX25vZGVfYnlfdHlwZShk
-biwgImNwdSIpIHsNCj4gICAgICAgICAgICAgICAgICBjb25zdCBfX2JlMzIgKmludHNlcnY7DQo+
-ICAgICAgICAgICAgICAgICAgX19iZTMyIGNwdV9iZTsNCj4gLSAgICAgICAgICAgICAgIGludCBq
-LCBsZW47DQo+IA0KPiAgICAgICAgICAgICAgICAgIERCRygiICAqICVwT0YuLi5cbiIsIGRuKTsN
-Cj4gDQo+IEBAIC00ODAsMjkgKzQ5Miw2OCBAQCB2b2lkIF9faW5pdCBzbXBfc2V0dXBfY3B1X21h
-cHModm9pZCkNCj4gICAgICAgICAgICAgICAgICAgICAgICAgIH0NCj4gICAgICAgICAgICAgICAg
-ICB9DQo+IA0KPiAtICAgICAgICAgICAgICAgbnRocmVhZHMgPSBsZW4gLyBzaXplb2YoaW50KTsN
-Cj4gLQ0KPiAtICAgICAgICAgICAgICAgZm9yIChqID0gMDsgaiA8IG50aHJlYWRzICYmIGNwdSA8
-IG5yX2NwdV9pZHM7IGorKykgew0KPiAtICAgICAgICAgICAgICAgICAgICAgICBib29sIGF2YWls
-Ow0KPiArICAgICAgICAgICAgICAgYXZhaWwgPSBvZl9kZXZpY2VfaXNfYXZhaWxhYmxlKGRuKTsN
-Cj4gKyAgICAgICAgICAgICAgIGlmICghYXZhaWwpDQo+ICsgICAgICAgICAgICAgICAgICAgICAg
-IGF2YWlsID0gIW9mX3Byb3BlcnR5X21hdGNoX3N0cmluZyhkbiwNCj4gKyAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICJlbmFibGUtbWV0aG9kIiwgInNwaW4tdGFibGUiKTsN
-Cj4gDQo+IC0gICAgICAgICAgICAgICAgICAgICAgIERCRygiICAgIHRocmVhZCAlZCAtPiBjcHUg
-JWQgKGhhcmQgaWQgJWQpXG4iLA0KPiAtICAgICAgICAgICAgICAgICAgICAgICAgICAgaiwgY3B1
-LCBiZTMyX3RvX2NwdShpbnRzZXJ2W2pdKSk7DQo+IA0KPiAtICAgICAgICAgICAgICAgICAgICAg
-ICBhdmFpbCA9IG9mX2RldmljZV9pc19hdmFpbGFibGUoZG4pOw0KPiAtICAgICAgICAgICAgICAg
-ICAgICAgICBpZiAoIWF2YWlsKQ0KPiAtICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGF2
-YWlsID0gIW9mX3Byb3BlcnR5X21hdGNoX3N0cmluZyhkbiwNCj4gLSAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgImVuYWJsZS1tZXRob2QiLCAic3Bpbi10YWJs
-ZSIpOw0KPiArICAgICAgICAgICAgICAgaW50c2Vydl9ub2RlID0gbWVtYmxvY2tfYWxsb2Moc2l6
-ZW9mKHN0cnVjdCBpbnRlcnJ1cHRfc2VydmVyX25vZGUpICsgbGVuLA0KPiArICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgX19hbGlnbm9mX18odTMyKSk7DQo+ICsgICAgICAg
-ICAgICAgICBpZiAoIWludHNlcnZfbm9kZSkNCj4gKyAgICAgICAgICAgICAgICAgICAgICAgcGFu
-aWMoIiVzOiBGYWlsZWQgdG8gYWxsb2NhdGUgJXp1IGJ5dGVzIGFsaWduPTB4JXp4XG4iLA0KPiAr
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF9fZnVuY19fLA0KPiArICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgIHNpemVvZihzdHJ1Y3QgaW50ZXJydXB0X3NlcnZlcl9ub2RlKSAr
-IGxlbiwNCj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBfX2FsaWdub2ZfXyh1MzIp
-KTsNCj4gKyAgICAgICAgICAgICAgIGludHNlcnZfbm9kZS0+aW50c2VydiA9IChfX2JlMzIgKiko
-KGNoYXIgKilpbnRzZXJ2X25vZGUgKw0KPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICBzaXplb2Yoc3RydWN0IGludGVycnVwdF9zZXJ2ZXJfbm9kZSkpOw0K
-PiArICAgICAgICAgICAgICAgaW50c2Vydl9ub2RlLT5sZW4gPSBsZW47DQo+ICsgICAgICAgICAg
-ICAgICBtZW1jcHkoaW50c2Vydl9ub2RlLT5pbnRzZXJ2LCBpbnRzZXJ2LCBsZW4pOw0KPiArICAg
-ICAgICAgICAgICAgaW50c2Vydl9ub2RlLT5hdmFpbCA9IGF2YWlsOw0KPiArICAgICAgICAgICAg
-ICAgSU5JVF9MSVNUX0hFQUQoJmludHNlcnZfbm9kZS0+bm9kZSk7DQo+ICsgICAgICAgICAgICAg
-ICBsaXN0X2FkZF90YWlsKCZpbnRzZXJ2X25vZGUtPm5vZGUsICZoZWFkKTsNCj4gKw0KPiArICAg
-ICAgICAgICAgICAgaWYgKCFmb3VuZF9ib290X2NwdSkgew0KPiArICAgICAgICAgICAgICAgICAg
-ICAgICBudGhyZWFkcyA9IGxlbiAvIHNpemVvZihpbnQpOw0KPiArICAgICAgICAgICAgICAgICAg
-ICAgICBmb3IgKGogPSAwIDsgaiA8IG50aHJlYWRzOyBqKyspIHsNCj4gKyAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICBpZiAoYmUzMl90b19jcHUoaW50c2VydltqXSkgPT0gYm9vdF9jcHVf
-aHdpZCkgew0KPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYnRfbm9k
-ZSA9ICZpbnRzZXJ2X25vZGUtPm5vZGU7DQo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICBmb3VuZF9ib290X2NwdSA9IHRydWU7DQo+ICsgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAvKg0KPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICogUmVjb3JkIHRoZSByb3VuZC1zaGlmdCBiZXR3ZWVuIGR0DQo+ICsgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKiBzZXEgYW5kIGNwdSBsb2dpY2FsIG51
-bWJlcg0KPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICovDQo+ICsg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzaGlmdCA9IGNwdSAtIGo7DQo+
-ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBicmVhazsNCj4gKyAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICB9DQo+ICsNCj4gKyAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICBjcHUrKzsNCj4gKyAgICAgICAgICAgICAgICAgICAgICAgfQ0KPiArICAgICAg
-ICAgICAgICAgfQ0KPiANCj4gKyAgICAgICB9DQo+ICsgICAgICAgY3B1ID0gMDsNCj4gKyAgICAg
-ICBsaXN0X2RlbF9pbml0KCZoZWFkKTsNCj4gKyAgICAgICAvKiBTZWxlY3QgdGhlIHByaW1hcnkg
-dGhyZWFkLCB0aGUgYm9vdCBjcHUncyBzbGliaW5nLCBhcyB0aGUgbG9naWMgMCAqLw0KPiArICAg
-ICAgIGxpc3RfYWRkX3RhaWwoJmhlYWQsIGJ0X25vZGUpOw0KPiArICAgICAgIHByX2luZm8oInRo
-ZSByb3VuZCBzaGlmdCBiZXR3ZWVuIGR0IHNlcSBhbmQgdGhlIGNwdSBsb2dpYyBudW1iZXI6ICVk
-XG4iLCBzaGlmdCk7DQo+ICsgICAgICAgbGlzdF9mb3JfZWFjaF9lbnRyeShpbnRzZXJ2X25vZGUs
-ICZoZWFkLCBub2RlKSB7DQo+ICsNCj4gKyAgICAgICAgICAgICAgIGF2YWlsID0gaW50c2Vydl9u
-b2RlLT5hdmFpbDsNCj4gKyAgICAgICAgICAgICAgIG50aHJlYWRzID0gaW50c2Vydl9ub2RlLT5s
-ZW4gLyBzaXplb2YoaW50KTsNCj4gKyAgICAgICAgICAgICAgIGZvciAoaiA9IDA7IGogPCBudGhy
-ZWFkcyAmJiBjcHUgPCBucl9jcHVfaWRzOyBqKyspIHsNCj4gICAgICAgICAgICAgICAgICAgICAg
-ICAgIHNldF9jcHVfcHJlc2VudChjcHUsIGF2YWlsKTsNCj4gICAgICAgICAgICAgICAgICAgICAg
-ICAgIHNldF9jcHVfcG9zc2libGUoY3B1LCB0cnVlKTsNCj4gLSAgICAgICAgICAgICAgICAgICAg
-ICAgY3B1X3RvX3BoeXNfaWRbY3B1XSA9IGJlMzJfdG9fY3B1KGludHNlcnZbal0pOw0KPiArICAg
-ICAgICAgICAgICAgICAgICAgICBjcHVfdG9fcGh5c19pZFtjcHVdID0gYmUzMl90b19jcHUoaW50
-c2Vydl9ub2RlLT5pbnRzZXJ2W2pdKTsNCj4gKyAgICAgICAgICAgICAgICAgICAgICAgREJHKCIg
-ICAgdGhyZWFkICVkIC0+IGNwdSAlZCAoaGFyZCBpZCAlZClcbiIsDQo+ICsgICAgICAgICAgICAg
-ICAgICAgICAgICAgICBqLCBjcHUsIGJlMzJfdG9fY3B1KGludHNlcnZbal0pKTsNCj4gICAgICAg
-ICAgICAgICAgICAgICAgICAgIGNwdSsrOw0KPiAgICAgICAgICAgICAgICAgIH0NCj4gKyAgICAg
-ICB9DQo+IA0KPiAtICAgICAgICAgICAgICAgaWYgKGNwdSA+PSBucl9jcHVfaWRzKSB7DQo+IC0g
-ICAgICAgICAgICAgICAgICAgICAgIG9mX25vZGVfcHV0KGRuKTsNCj4gLSAgICAgICAgICAgICAg
-ICAgICAgICAgYnJlYWs7DQo+IC0gICAgICAgICAgICAgICB9DQo+ICsgICAgICAgbGlzdF9mb3Jf
-ZWFjaF9lbnRyeV9zYWZlKGludHNlcnZfbm9kZSwgbiwgJmhlYWQsIG5vZGUpIHsNCj4gKyAgICAg
-ICAgICAgICAgIGxlbiA9IHNpemVvZihzdHJ1Y3QgaW50ZXJydXB0X3NlcnZlcl9ub2RlKSArIGlu
-dHNlcnZfbm9kZS0+bGVuOw0KPiArICAgICAgICAgICAgICAgbWVtYmxvY2tfZnJlZShpbnRzZXJ2
-X25vZGUsIGxlbik7DQo+ICAgICAgICAgIH0NCj4gDQo+ICAgICAgICAgIC8qIElmIG5vIFNNVCBz
-dXBwb3J0ZWQsIG50aHJlYWRzIGlzIGZvcmNlZCB0byAxICovDQo+IC0tDQo+IDIuMzEuMQ0KPiAN
-Cg==
+Add rule in new Makefile "tests/Makefile.tests" for running
+shellcheck on shell test scripts. This automates below shellcheck
+into the build.
+
+	$ for F in $(find tests/shell/ -perm -o=x -name '*.sh'); do shellcheck -S warning $F; done
+
+Condition for shellcheck is added in Makefile.perf to avoid build
+breakage in the absence of shellcheck binary. Update Makefile.perf
+to contain new rule for "SHELLCHECK_TEST" which is for making
+shellcheck test as a dependency on perf binary. Added
+"tests/Makefile.tests" to run shellcheck on shellscripts in
+tests/shell. The make rule "SHLLCHECK_RUN" ensures that, every
+time during make, shellcheck will be run only on modified files
+during subsequent invocations. By this, if any newly added shell
+scripts or fixes in existing scripts breaks coding/formatting
+style, it will get captured during the perf build.
+
+Example build failure with present scripts in tests/shell:
+
+	INSTALL libsubcmd_headers
+	INSTALL libperf_headers
+	INSTALL libapi_headers
+	INSTALL libsymbol_headers
+	INSTALL libbpf_headers
+	make[3]: *** [/root/athira/namhyung/perf-tools-next/tools/perf/tests/Makefile.tests:17: output/tests/shell/record_sideband.dep] Error 1
+	make[3]: *** Waiting for unfinished jobs....
+	make[3]: *** [/root/athira/namhyung/perf-tools-next/tools/perf/tests/Makefile.tests:17: output/tests/shell/test_arm_coresight.dep] Error 1
+	make[3]: *** [/root/athira/namhyung/perf-tools-next/tools/perf/tests/Makefile.tests:17: output/tests/shell/lock_contention.dep] Error 1
+	make[2]: *** [Makefile.perf:675: SHELLCHECK_TEST] Error 2
+	make[1]: *** [Makefile.perf:238: sub-make] Error 2
+	make: *** [Makefile:70: all] Error 2
+
+After this, for testing, changed "tests/shell/record.sh" to
+break shellcheck format. In the next make run, it is
+also captured:
+
+	make[3]: *** [/root/athira/namhyung/perf-tools-next/tools/perf/tests/Makefile.tests:17: output/tests/shell/record_sideband.dep] Error 1
+	make[3]: *** Waiting for unfinished jobs....
+	make[3]: *** [/root/athira/namhyung/perf-tools-next/tools/perf/tests/Makefile.tests:17: output/tests/shell/record.dep] Error 1
+	make[3]: *** [/root/athira/namhyung/perf-tools-next/tools/perf/tests/Makefile.tests:17: output/tests/shell/test_arm_coresight.dep] Error 1
+	make[3]: *** [/root/athira/namhyung/perf-tools-next/tools/perf/tests/Makefile.tests:17: output/tests/shell/lock_contention.dep] Error 1
+	make[2]: *** [Makefile.perf:675: SHELLCHECK_TEST] Error 2
+	make[1]: *** [Makefile.perf:238: sub-make] Error 2
+	make: *** [Makefile:70: all] Error 2
+
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+---
+Changelog:
+ v1 -> v2:
+ Version1 had shellcheck in feature check which is not
+ required since shellcheck is already a binary. Presence
+ of binary can be checked using:
+ $(shell command -v shellcheck)
+ Addressed these changes as suggested by Namhyung in V2
+ Feature test logic is removed in V2. Also added example
+ for build breakage when shellcheck fails in commit message
+
+ tools/perf/Makefile.perf        | 14 +++++++++++++-
+ tools/perf/tests/Makefile.tests | 24 ++++++++++++++++++++++++
+ 2 files changed, 37 insertions(+), 1 deletion(-)
+ create mode 100644 tools/perf/tests/Makefile.tests
+
+diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
+index 98604e396ac3..56a66ca253ab 100644
+--- a/tools/perf/Makefile.perf
++++ b/tools/perf/Makefile.perf
+@@ -667,7 +667,18 @@ $(PERF_IN): prepare FORCE
+ $(PMU_EVENTS_IN): FORCE prepare
+ 	$(Q)$(MAKE) -f $(srctree)/tools/build/Makefile.build dir=pmu-events obj=pmu-events
+ 
+-$(OUTPUT)perf: $(PERFLIBS) $(PERF_IN) $(PMU_EVENTS_IN)
++# Runs shellcheck on perf test shell scripts
++
++SHELLCHECK := $(shell command -v shellcheck)
++ifneq ($(SHELLCHECK),)
++SHELLCHECK_TEST: FORCE prepare
++	$(Q)$(MAKE) -f $(srctree)/tools/perf/tests/Makefile.tests
++else
++SHELLCHECK_TEST:
++	@:
++endif
++
++$(OUTPUT)perf: $(PERFLIBS) $(PERF_IN) $(PMU_EVENTS_IN) SHELLCHECK_TEST
+ 	$(QUIET_LINK)$(CC) $(CFLAGS) $(LDFLAGS) \
+ 		$(PERF_IN) $(PMU_EVENTS_IN) $(LIBS) -o $@
+ 
+@@ -1130,6 +1141,7 @@ bpf-skel-clean:
+ 	$(call QUIET_CLEAN, bpf-skel) $(RM) -r $(SKEL_TMP_OUT) $(SKELETONS)
+ 
+ clean:: $(LIBAPI)-clean $(LIBBPF)-clean $(LIBSUBCMD)-clean $(LIBSYMBOL)-clean $(LIBPERF)-clean fixdep-clean python-clean bpf-skel-clean tests-coresight-targets-clean
++	$(Q)$(MAKE) -f $(srctree)/tools/perf/tests/Makefile.tests clean
+ 	$(call QUIET_CLEAN, core-objs)  $(RM) $(LIBPERF_A) $(OUTPUT)perf-archive $(OUTPUT)perf-iostat $(LANG_BINDINGS)
+ 	$(Q)find $(or $(OUTPUT),.) -name '*.o' -delete -o -name '\.*.cmd' -delete -o -name '\.*.d' -delete
+ 	$(Q)$(RM) $(OUTPUT).config-detected
+diff --git a/tools/perf/tests/Makefile.tests b/tools/perf/tests/Makefile.tests
+new file mode 100644
+index 000000000000..8011e99768a3
+--- /dev/null
++++ b/tools/perf/tests/Makefile.tests
+@@ -0,0 +1,24 @@
++# SPDX-License-Identifier: GPL-2.0
++# Athira Rajeev <atrajeev@linux.vnet.ibm.com>, 2023
++
++PROGS = $(subst ./,,$(shell find tests/shell -perm -o=x -type f -name '*.sh'))
++DEPS = $(addprefix output/,$(addsuffix .dep,$(basename $(PROGS))))
++DIRS = $(shell echo $(dir $(DEPS)) | xargs -n1 | sort -u | xargs)
++
++.PHONY: all
++all: SHELLCHECK_RUN
++	@:
++
++SHELLCHECK_RUN: $(DEPS) $(DIRS)
++
++output/%.dep: %.sh | $(DIRS)
++	$(call rule_mkdir)
++	$(eval input_file := $(subst output/,./,$(patsubst %.dep, %.sh, $@)))
++	$(Q)$(call frecho-cmd,test)@shellcheck -S warning ${input_file} 1> $@.log && ([[ ! -s $@.log ]])
++	$(Q)$(call frecho-cmd,test)@touch $@
++	$(Q)$(call frecho-cmd,test)@rm -rf $@.log
++$(DIRS):
++	@mkdir -p $@
++
++clean:
++	@rm -rf output
+-- 
+2.31.1
+
