@@ -1,91 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E6327B2A73
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Sep 2023 05:20:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C99A7B2B21
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Sep 2023 07:19:41 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=g9ZRsYoy;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OxmuzcsQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=WHrN4YR9;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RxbFx3VRWz3cTt
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Sep 2023 13:20:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RxdvH1Xz3z3cfg
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Sep 2023 15:19:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=g9ZRsYoy;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OxmuzcsQ;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=WHrN4YR9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=piliu@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::936; helo=mail-ua1-x936.google.com; envelope-from=amir73il@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ua1-x936.google.com (mail-ua1-x936.google.com [IPv6:2607:f8b0:4864:20::936])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4RxbF03Q7cz3cGv
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Sep 2023 13:19:46 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1695957583;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UykpZJmeyPI4JTRsPXGJ9I1irxHeGjy+W1ttfAslUsU=;
-	b=g9ZRsYoyqR+u36J1326napcMPk698WYHT3n68EtiqJwBOo7qzUrawZdfC6YUnPqVTt4OY+
-	qOrXNbkigbaRUPQlq7EOTnTFWVAszgDuLVBKuiZd6DblMQQjXyRZyrNLWM+VB0JVIfhON0
-	vhrqBapObVdR1cNdNqYtlSFEoQIA9vE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1695957584;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UykpZJmeyPI4JTRsPXGJ9I1irxHeGjy+W1ttfAslUsU=;
-	b=OxmuzcsQW7y9vsb3SJb055m+VgYl5bE8KKPD1Zn+Fmx0uhq4+LlhIOK5unA+0jd+jSC5pR
-	7fZsxxZWg5IkO2pfq6zKieKa0kiHEG9JXN/bR6DjoCccDFruQSk0OAkJmSvKdycYfcxAic
-	s3us/TL4J4qCzV2uOEd1/LtZUmwdtKM=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-657-8XVOhOKbMN6Jyo7a4vFAdQ-1; Thu, 28 Sep 2023 23:19:39 -0400
-X-MC-Unique: 8XVOhOKbMN6Jyo7a4vFAdQ-1
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-417f9e1def0so208055241cf.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Sep 2023 20:19:39 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4RxbQk2xHjz3cBx;
+	Fri, 29 Sep 2023 13:28:12 +1000 (AEST)
+Received: by mail-ua1-x936.google.com with SMTP id a1e0cc1a2514c-7a803afa8c5so5182911241.0;
+        Thu, 28 Sep 2023 20:28:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695958089; x=1696562889; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IiAb/i1gc98L6SazD4d4ItKm7HOWY4Sc1dUvsARnIt8=;
+        b=WHrN4YR9bvsrJkO5F6RKzlvzfyMeGOqmZ3fAh5wCEQAa6FO+02trfeXXaFlhtW/IJ2
+         052bkaxZJaOtM8QC9DXyalRk7PnBxQTnnFWMQG1eUP5a18SrBnBAuU91FFYyJPOVdd6N
+         nrTRre42ecOT8uTT8pOUJO+7wLBvw5eND9I3YggHWbhP0wEoLH1ue37ZSxycCsrIcEZy
+         un6LpP0lh+xYeF40icfEUbWz8JBM3GpK99ZE9/DacOCF5kLzmfwnqQssXKVd9ChwumKX
+         Pg/pjFYPoAWLl/Xhs0rCvk1mbJl4kTiGhF5JdGJez/UDhx8q2xg0MvNLmytq6pUEDSAd
+         6fSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695957579; x=1696562379;
+        d=1e100.net; s=20230601; t=1695958089; x=1696562889;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=UykpZJmeyPI4JTRsPXGJ9I1irxHeGjy+W1ttfAslUsU=;
-        b=jYjHsxbJci63H+0xoylTey4FKJtai/3gD3z9msnuciELUNOGXWHr9bsA8aIDvWvSPD
-         hzDcH4TOvU3UF0N16gJq1IODC/bcLojEMI4frHYFyKH7mdi03AyIr0JR0AYOWSzFMw/a
-         /qh0duNvtcvIDr+760gwxQ6wBmGY9Jq+acp2N4spsMyprQYN+i13UTzLPb4J24MSqBty
-         Z/L/8TymVYuVhpcdpcEGnRQJeprC2Ap56ARVT2gNkzbFZdqTu9mJLbnkgAOFUWhiNkPu
-         7egjKXP5RjSXkIwX5cGI0Sdrko5N1fWe+20uyWLEftlDNVl3XYBc+KQoA98B3B4dMDod
-         azzQ==
-X-Gm-Message-State: AOJu0YyKl+PxnuYzKQj2qhwkgk5D6p7YafeCATCiMaXlsyN/A6d5Utu3
-	Lqzpk4jOSUkfEZbG3spxlPbqggmqg0RHIi8rootnGHtKwMvPm7r0gQBN+55ibBLm/W9nV1l2B21
-	TXjKbdgR4wbWPDbwkEFW+p+rMn1Oj6lbiHcW5rD9qDw==
-X-Received: by 2002:a05:622a:8c:b0:40f:ce6d:775e with SMTP id o12-20020a05622a008c00b0040fce6d775emr4000944qtw.42.1695957578992;
-        Thu, 28 Sep 2023 20:19:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGfB18pBrA1jY1RU14klA5ihc066BEoR2Ze1+sGoa2bef+DqO4dIwyoFI82AZYErEAsjlLh3UNEB6wWodFUd8w=
-X-Received: by 2002:a05:622a:8c:b0:40f:ce6d:775e with SMTP id
- o12-20020a05622a008c00b0040fce6d775emr4000922qtw.42.1695957578581; Thu, 28
- Sep 2023 20:19:38 -0700 (PDT)
+        bh=IiAb/i1gc98L6SazD4d4ItKm7HOWY4Sc1dUvsARnIt8=;
+        b=dbBXddTAhoItqpYqDrOzgNJ3jWWu1/GkV8q+dMiW9VXsCXKx9rrpummx0e0RHBzHlt
+         PKSTpBsdDgjJ5wCyo+/4m+2kqxgfxEeDzNTdIq7gKV5V0u/PbmqHBGKfGQ6EyfZMAXAZ
+         e1Jp7cP9CHAi7JWMadPrxOHYTAEs/GVFr58m/teWAIiYnbhV3BPZXAcaOr6gmIuee8Ht
+         nZJNUCrbr7o9ifR3WVsINdcIVCmxefJdpAUqjlH+23F+bn9dTnlF6QOVFWxkZOg+SgB7
+         qTpbbGxG2U3/+r7QmmBOhB77z/KWdc2C5lAnpOOrimyunR4JlcsM+caO6AhsoLxcHXoL
+         zErg==
+X-Gm-Message-State: AOJu0YzQuS/bDfN/IzS/gvu1jQq2BYdZJSjFLfWd92cLc/qo10b6zHRr
+	XG20FeVnFtT++m4BvviYmjYLfO02KGfOSdyR60A=
+X-Google-Smtp-Source: AGHT+IFwxD5MHwB8nCElH3p97gGzSZFtR6vWTxEs/mssfRQyF6PkJIQiA0uHM4z+FM+M3FEQI561MxdOs0m92SBkdVk=
+X-Received: by 2002:a05:6102:d8:b0:452:6da0:678f with SMTP id
+ u24-20020a05610200d800b004526da0678fmr2890488vsp.9.1695958089382; Thu, 28 Sep
+ 2023 20:28:09 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230925075348.16654-1-piliu@redhat.com> <20230925075348.16654-3-piliu@redhat.com>
- <BL3PR15MB54581456FAB1CF28C9F761B4F0C1A@BL3PR15MB5458.namprd15.prod.outlook.com>
-In-Reply-To: <BL3PR15MB54581456FAB1CF28C9F761B4F0C1A@BL3PR15MB5458.namprd15.prod.outlook.com>
-From: Pingfan Liu <piliu@redhat.com>
-Date: Fri, 29 Sep 2023 11:19:27 +0800
-Message-ID: <CAF+s44RfOZ3U5Ny4L7M2vhVWC+2t8SRJsP6Rgqyz_apAZUVDGg@mail.gmail.com>
-Subject: Re: [PATCHv7 2/4] powerpc/setup: Loosen the mapping between cpu
- logical id and its seq in dt
-To: Wen Xiong <wenxiong@us.ibm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+References: <20230928110554.34758-1-jlayton@kernel.org> <20230928110554.34758-2-jlayton@kernel.org>
+ <6020d6e7-b187-4abb-bf38-dc09d8bd0f6d@app.fastmail.com> <af047e4a1c6947c59d4a13d4ae221c784a5386b4.camel@kernel.org>
+ <20230928171943.GK11439@frogsfrogsfrogs>
+In-Reply-To: <20230928171943.GK11439@frogsfrogsfrogs>
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Fri, 29 Sep 2023 06:27:57 +0300
+Message-ID: <CAOQ4uxjTpPPUa3VXW+DWKy72JABOZBCXD6pjNk-FhJZWnqvNPA@mail.gmail.com>
+Subject: Re: [PATCH 86/87] fs: switch timespec64 fields in inode to discrete integers
+To: "Darrick J. Wong" <djwong@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Mailman-Approved-At: Fri, 29 Sep 2023 15:18:56 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,296 +78,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Baoquan He <bhe@redhat.com>, "kexec@lists.infradead.org" <kexec@lists.infradead.org>, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Ming Lei <ming.lei@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Latchesar Ionkov <lucho@ionkov.net>, Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, "Rafael J . Wysocki" <rafael@kernel.org>, Hugh Dickins <hughd@google.com>, Anders Larsen <al@alarsen.net>, Carlos Llamas <cmllamas@google.com>, Andrii Nakryiko <andrii@kernel.org>, Mattia Dongili <malattia@linux.it>, John Johansen <john.johansen@canonical.com>, Yonghong Song <yonghong.song@linux.dev>, Alexander Gordeev <agordeev@linux.ibm.com>, Christoph Hellwig <hch@lst.de>, Mike Marshall <hubcap@omnibond.com>, Paulo Alcantara <pc@manguebit.com>, linux-xfs@vger.kernel.org, James Morris <jmorris@namei.org>, Christoph Hellwig <hch@infradead.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, devel@lists.orangefs.org, Shyam Prasad N <sprasad@microsoft.com>, linux-um@lists.infradead.org, Nicholas Piggin <npiggin@gmail.com>, Alexander Viro <viro@zeniv.linux.org.uk>, Eric Van Hensbergen <ericvh@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Trond Myklebust <trond.myklebust@ha
+ mmerspace.com>, Anton Altaparmakov <anton@tuxera.com>, Christian Brauner <brauner@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Stephen Smalley <stephen.smalley.work@gmail.com>, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, Ronnie Sahlberg <lsahlber@redhat.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, Chuck Lever <chuck.lever@oracle.com>, Sven Schnelle <svens@linux.ibm.com>, Jiri Olsa <jolsa@kernel.org>, Jan Kara <jack@suse.com>, Tejun Heo <tj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linux-trace-kernel@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>, Dave Kleikamp <shaggy@kernel.org>, samba-technical@lists.samba.org, linux-mm@kvack.org, Joel Fernandes <joel@joelfernandes.org>, Eric Dumazet <edumazet@google.com>, Stanislav Fomichev <sdf@google.com>, linux-s390@vger.kernel.org, linux-nilfs@vger.kernel.org, Paul Moore <paul@paul-moore.com>, Leon Romanovsky <leon@ker
+ nel.org>, John Fastabend <john.fastabend@gmail.com>, Luis Chamberlain <mcgrof@kernel.org>, codalist@coda.cs.cmu.edu, Iurii Zaikin <yzaikin@google.com>, Namjae Jeon <linkinjeon@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>, Todd Kjos <tkjos@android.com>, Vasily Gorbik <gor@linux.ibm.com>, selinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, reiserfs-devel@vger.kernel.org, Miklos Szeredi <miklos@szeredi.hu>, Yue Hu <huyue2@coolpad.com>, Jaegeuk Kim <jaegeuk@kernel.org>, Martijn Coenen <maco@android.com>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, Hao Luo <haoluo@google.com>, Tony Luck <tony.luck@intel.com>, Theodore Ts'o <tytso@mit.edu>, Nicolas Pitre <nico@fluxnic.net>, linux-ntfs-dev@lists.sourceforge.net, Muchun Song <muchun.song@linux.dev>, linux-f2fs-devel@lists.sourceforge.net, "Guilherme G. Piccoli" <gpiccoli@igalia.com>, gfs2@lists.linux.dev, "Eric W. Biederman" <ebiederm@xmission.com>, Anna Schumaker <anna@kernel.org>, Brad Warrum <bwarrum@linux.ibm.com>, Mike Kra
+ vetz <mike.kravetz@oracle.com>, linux-efi@vger.kernel.org, Martin Brandenburg <martin@omnibond.com>, ocfs2-devel@lists.linux.dev, Alexei Starovoitov <ast@kernel.org>, platform-driver-x86@vger.kernel.org, Chris Mason <clm@fb.com>, linux-mtd@lists.infradead.org, linux-hardening@vger.kernel.org, Marc Dionne <marc.dionne@auristor.com>, Jiri Slaby <jirislaby@kernel.org>, linux-afs@lists.infradead.org, Ian Kent <raven@themaw.net>, Naohiro Aota <naohiro.aota@wdc.com>, Daniel Borkmann <daniel@iogearbox.net>, Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, linux-rdma@vger.kernel.org, coda@cs.cmu.edu, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, Ilya Dryomov <idryomov@gmail.com>, Paolo Abeni <pabeni@redhat.com>, "Serge E. Hallyn" <serge@hallyn.com>, Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>, autofs@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>, Mark Gross <markgross@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, Eric Paris <ep
+ aris@parisplace.org>, ceph-devel@vger.kernel.org, Gao Xiang <xiang@kernel.org>, Jan Harkes <jaharkes@cs.cmu.edu>, linux-nfs@vger.kernel.org, linux-ext4@vger.kernel.org, Olga Kornievskaia <kolga@netapp.com>, Song Liu <song@kernel.org>, Jeff Layton <jlayton@kernel.org>, Steve French <sfrench@samba.org>, Jeremy Kerr <jk@ozlabs.org>, Netdev <netdev@vger.kernel.org>, Bob Peterson <rpeterso@redhat.com>, linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org, ntfs3@lists.linux.dev, linux-erofs@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>, Chandan Babu R <chandan.babu@oracle.com>, jfs-discussion@lists.sourceforge.net, Jan Kara <jack@suse.cz>, Neil Brown <neilb@suse.de>, Dominique Martinet <asmadeus@codewreck.org>, Christian Schoenebeck <linux_oss@crudebyte.com>, Bob Copeland <me@bobcopeland.com>, KP Singh <kpsingh@kernel.org>, linux-unionfs@vger.kernel.org, David Howells <dhowells@redhat.com>, Joseph Qi <joseph.qi@linux.alibaba.com>, Andreas Dilger <adilger.kernel@dilger.ca>, Miku
+ las Patocka <mikulas@artax.karlin.mff.cuni.cz>, Ard Biesheuvel <ardb@kernel.org>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, Andreas Gruenbacher <agruenba@redhat.com>, Richard Weinberger <richard@nod.at>, Mark Fasheh <mark@fasheh.com>, Dai Ngo <Dai.Ngo@oracle.com>, Jason Gunthorpe <jgg@ziepe.ca>, linux-serial@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, Salah Triki <salah.triki@gmail.com>, Evgeniy Dushistov <dushistov@mail.ru>, linux-cifs@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Chao Yu <chao@kernel.org>, apparmor@lists.ubuntu.com, Josef Bacik <josef@toxicpanda.com>, Tom Talpey <tom@talpey.com>, Hans de Goede <hdegoede@redhat.com>, "Tigran A. Aivazian" <aivazian.tigran@gmail.com>, David Sterba <dsterba@suse.com>, Xiubo Li <xiubli@redhat.com>, Ryusuke Konishi <konishi.ryusuke@gmail.com>, Johannes Thumshirn <jth@kernel.org>, Ritu Agarwal <rituagar@linux.ibm.com>, Luis de Bethencourt <luisbg@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, v9fs@lists.linux.d
+ ev, David Sterba <dsterba@suse.cz>, linux-security-module@vger.kernel.org, Jeffle Xu <jefflexu@linux.alibaba.com>, Phillip Lougher <phillip@squashfs.org.uk>, Johannes Berg <johannes@sipsolutions.net>, Sungjong Seo <sj1557.seo@samsung.com>, David Woodhouse <dwmw2@infradead.org>, linux-karma-devel@lists.sourceforge.net, linux-btrfs@vger.kernel.org, Joel Becker <jlbec@evilplan.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Sep 29, 2023 at 4:36=E2=80=AFAM Wen Xiong <wenxiong@us.ibm.com> wro=
-te:
+On Thu, Sep 28, 2023 at 8:19=E2=80=AFPM Darrick J. Wong <djwong@kernel.org>=
+ wrote:
 >
-> Hi Pingfan,
+> On Thu, Sep 28, 2023 at 01:06:03PM -0400, Jeff Layton wrote:
+> > On Thu, 2023-09-28 at 11:48 -0400, Arnd Bergmann wrote:
+> > > On Thu, Sep 28, 2023, at 07:05, Jeff Layton wrote:
+> > > > This shaves 8 bytes off struct inode, according to pahole.
+> > > >
+> > > > Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> > >
+> > > FWIW, this is similar to the approach that Deepa suggested
+> > > back in 2016:
+> > >
+> > > https://lore.kernel.org/lkml/1452144972-15802-3-git-send-email-deepa.=
+kernel@gmail.com/
+> > >
+> > > It was NaKed at the time because of the added complexity,
+> > > though it would have been much easier to do it then,
+> > > as we had to touch all the timespec references anyway.
+> > >
+> > > The approach still seems ok to me, but I'm not sure it's worth
+> > > doing it now if we didn't do it then.
+> > >
+> >
+> > I remember seeing those patches go by. I don't remember that change
+> > being NaK'ed, but I wasn't paying close attention at the time
+> >
+> > Looking at it objectively now, I think it's worth it to recover 8 bytes
+> > per inode and open a 4 byte hole that Amir can use to grow the
+> > i_fsnotify_mask. We might even able to shave off another 12 bytes
+> > eventually if we can move to a single 64-bit word per timestamp.
 >
-> +               avail =3D intserv_node->avail;
-> +               nthreads =3D intserv_node->len / sizeof(int);
-> +               for (j =3D 0; j < nthreads && cpu < nr_cpu_ids; j++) {
->                         set_cpu_present(cpu, avail);
->                         set_cpu_possible(cpu, true);
-> -                       cpu_to_phys_id[cpu] =3D be32_to_cpu(intserv[j]);
-> +                       cpu_to_phys_id[cpu] =3D be32_to_cpu(intserv_node-=
->intserv[j]);
-> +                       DBG("    thread %d -> cpu %d (hard id %d)\n",
-> +                           j, cpu, be32_to_cpu(intserv[j]));
+> I don't think you can, since btrfs timestamps utilize s64 seconds
+> counting in both directions from the Unix epoch.  They also support ns
+> resolution:
 >
-> Intserv is not defined. Should "be32_to_cpu(intserv_node->intserv[j])?
+>         struct btrfs_timespec {
+>                 __le64 sec;
+>                 __le32 nsec;
+>         } __attribute__ ((__packed__));
+>
+> --D
+>
 
-Yes, thanks. Sorry that I did not turn on the DBG macro and not catch this =
-bug.
+Sure we can.
+That's what btrfs_inode is for.
+vfs inode also does not store i_otime (birth time) and there is even a
+precedent of vfs/btrfs variable size mismatch:
+
+        /* full 64 bit generation number, struct vfs_inode doesn't have a b=
+ig
+         * enough field for this.
+         */
+        u64 generation;
+
+If we decide that vfs should use "bigtime", btrfs pre-historic
+timestamps are not a show stopper.
 
 Thanks,
-
-Pingfan
->                         cpu++;
->                 }
-> +       }
->
-> -----Original Message-----
-> From: Pingfan Liu <piliu@redhat.com>
-> Sent: Monday, September 25, 2023 2:54 AM
-> To: linuxppc-dev@lists.ozlabs.org
-> Cc: Pingfan Liu <piliu@redhat.com>; Michael Ellerman <mpe@ellerman.id.au>=
-; Nicholas Piggin <npiggin@gmail.com>; Christophe Leroy <christophe.leroy@c=
-sgroup.eu>; Mahesh Salgaonkar <mahesh@linux.ibm.com>; Wen Xiong <wenxiong@u=
-s.ibm.com>; Baoquan He <bhe@redhat.com>; Ming Lei <ming.lei@redhat.com>; ke=
-xec@lists.infradead.org
-> Subject: [EXTERNAL] [PATCHv7 2/4] powerpc/setup: Loosen the mapping betwe=
-en cpu logical id and its seq in dt
->
-> *** Idea ***
-> For kexec -p, the boot cpu can be not the cpu0, this causes the problem o=
-f allocating memory for paca_ptrs[]. However, in theory, there is no requir=
-ement to assign cpu's logical id as its present sequence in the device tree=
-. But there is something like cpu_first_thread_sibling(), which makes assum=
-ption on the mapping inside a core. Hence partially loosening the mapping, =
-i.e. unbind the mapping of core while keep the mapping inside a core.
->
-> *** Implement ***
-> At this early stage, there are plenty of memory to utilize. Hence, this p=
-atch allocates interim memory to link the cpu info on a list, then reorder =
-cpus by changing the list head. As a result, there is a rotate shift betwee=
-n the sequence number in dt and the cpu logical number.
->
-> *** Result ***
-> After this patch, a boot-cpu's logical id will always be mapped into the =
-range [0,threads_per_core).
->
-> Besides this, at this phase, all threads in the boot core are forced to b=
-e onlined. This restriction will be lifted in a later patch with extra effo=
-rt.
->
-> Signed-off-by: Pingfan Liu <piliu@redhat.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-> Cc: Wen Xiong <wenxiong@us.ibm.com>
-> Cc: Baoquan He <bhe@redhat.com>
-> Cc: Ming Lei <ming.lei@redhat.com>
-> Cc: kexec@lists.infradead.org
-> To: linuxppc-dev@lists.ozlabs.org
-> ---
->  arch/powerpc/kernel/prom.c         | 25 +++++----
->  arch/powerpc/kernel/setup-common.c | 87 +++++++++++++++++++++++-------
->  2 files changed, 85 insertions(+), 27 deletions(-)
->
-> diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c inde=
-x ec82f5bda908..87272a2d8c10 100644
-> --- a/arch/powerpc/kernel/prom.c
-> +++ b/arch/powerpc/kernel/prom.c
-> @@ -76,7 +76,9 @@ u64 ppc64_rma_size;
->  unsigned int boot_cpu_node_count __ro_after_init;  #endif  static phys_a=
-ddr_t first_memblock_size;
-> +#ifdef CONFIG_SMP
->  static int __initdata boot_cpu_count;
-> +#endif
->
->  static int __init early_parse_mem(char *p)  { @@ -331,8 +333,7 @@ static=
- int __init early_init_dt_scan_cpus(unsigned long node,
->         const __be32 *intserv;
->         int i, nthreads;
->         int len;
-> -       int found =3D -1;
-> -       int found_thread =3D 0;
-> +       bool found =3D false;
->
->         /* We are scanning "cpu" nodes only */
->         if (type =3D=3D NULL || strcmp(type, "cpu") !=3D 0) @@ -355,8 +35=
-6,15 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
->         for (i =3D 0; i < nthreads; i++) {
->                 if (be32_to_cpu(intserv[i]) =3D=3D
->                         fdt_boot_cpuid_phys(initial_boot_params)) {
-> -                       found =3D boot_cpu_count;
-> -                       found_thread =3D i;
-> +                       /*
-> +                        * always map the boot-cpu logical id into the
-> +                        * range of [0, thread_per_core)
-> +                        */
-> +                       boot_cpuid =3D i;
-> +                       found =3D true;
-> +                       /* This works around the hole in paca_ptrs[]. */
-> +                       if (nr_cpu_ids < nthreads)
-> +                               set_nr_cpu_ids(nthreads);
->                 }
->  #ifdef CONFIG_SMP
->                 /* logical cpu id is always 0 on UP kernels */ @@ -365,14=
- +373,13 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
->         }
->
->         /* Not the boot CPU */
-> -       if (found < 0)
-> +       if (!found)
->                 return 0;
->
-> -       DBG("boot cpu: logical %d physical %d\n", found,
-> -           be32_to_cpu(intserv[found_thread]));
-> -       boot_cpuid =3D found;
-> +       DBG("boot cpu: logical %d physical %d\n", boot_cpuid,
-> +           be32_to_cpu(intserv[boot_cpuid]));
->
-> -       boot_cpu_hwid =3D be32_to_cpu(intserv[found_thread]);
-> +       boot_cpu_hwid =3D be32_to_cpu(intserv[boot_cpuid]);
->
->         /*
->          * PAPR defines "logical" PVR values for cpus that diff --git a/a=
-rch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
-> index 1b19a9815672..f6d32324b5a5 100644
-> --- a/arch/powerpc/kernel/setup-common.c
-> +++ b/arch/powerpc/kernel/setup-common.c
-> @@ -36,6 +36,7 @@
->  #include <linux/of_platform.h>
->  #include <linux/hugetlb.h>
->  #include <linux/pgtable.h>
-> +#include <linux/list.h>
->  #include <asm/io.h>
->  #include <asm/paca.h>
->  #include <asm/processor.h>
-> @@ -425,6 +426,13 @@ static void __init cpu_init_thread_core_maps(int tpc=
-)
->
->  u32 *cpu_to_phys_id =3D NULL;
->
-> +struct interrupt_server_node {
-> +       struct list_head node;
-> +       bool    avail;
-> +       int     len;
-> +       __be32 *intserv;
-> +};
-> +
->  /**
->   * setup_cpu_maps - initialize the following cpu maps:
->   *                  cpu_possible_mask
-> @@ -446,11 +454,16 @@ u32 *cpu_to_phys_id =3D NULL;  void __init smp_setu=
-p_cpu_maps(void)  {
->         struct device_node *dn;
-> -       int cpu =3D 0;
-> -       int nthreads =3D 1;
-> +       int shift =3D 0, cpu =3D 0;
-> +       int j, nthreads =3D 1;
-> +       int len;
-> +       struct interrupt_server_node *intserv_node, *n;
-> +       struct list_head *bt_node, head;
-> +       bool avail, found_boot_cpu =3D false;
->
->         DBG("smp_setup_cpu_maps()\n");
->
-> +       INIT_LIST_HEAD(&head);
->         cpu_to_phys_id =3D memblock_alloc(nr_cpu_ids * sizeof(u32),
->                                         __alignof__(u32));
->         if (!cpu_to_phys_id)
-> @@ -460,7 +473,6 @@ void __init smp_setup_cpu_maps(void)
->         for_each_node_by_type(dn, "cpu") {
->                 const __be32 *intserv;
->                 __be32 cpu_be;
-> -               int j, len;
->
->                 DBG("  * %pOF...\n", dn);
->
-> @@ -480,29 +492,68 @@ void __init smp_setup_cpu_maps(void)
->                         }
->                 }
->
-> -               nthreads =3D len / sizeof(int);
-> -
-> -               for (j =3D 0; j < nthreads && cpu < nr_cpu_ids; j++) {
-> -                       bool avail;
-> +               avail =3D of_device_is_available(dn);
-> +               if (!avail)
-> +                       avail =3D !of_property_match_string(dn,
-> +                                       "enable-method", "spin-table");
->
-> -                       DBG("    thread %d -> cpu %d (hard id %d)\n",
-> -                           j, cpu, be32_to_cpu(intserv[j]));
->
-> -                       avail =3D of_device_is_available(dn);
-> -                       if (!avail)
-> -                               avail =3D !of_property_match_string(dn,
-> -                                               "enable-method", "spin-ta=
-ble");
-> +               intserv_node =3D memblock_alloc(sizeof(struct interrupt_s=
-erver_node) + len,
-> +                                       __alignof__(u32));
-> +               if (!intserv_node)
-> +                       panic("%s: Failed to allocate %zu bytes align=3D0=
-x%zx\n",
-> +                               __func__,
-> +                               sizeof(struct interrupt_server_node) + le=
-n,
-> +                               __alignof__(u32));
-> +               intserv_node->intserv =3D (__be32 *)((char *)intserv_node=
- +
-> +                                               sizeof(struct interrupt_s=
-erver_node));
-> +               intserv_node->len =3D len;
-> +               memcpy(intserv_node->intserv, intserv, len);
-> +               intserv_node->avail =3D avail;
-> +               INIT_LIST_HEAD(&intserv_node->node);
-> +               list_add_tail(&intserv_node->node, &head);
-> +
-> +               if (!found_boot_cpu) {
-> +                       nthreads =3D len / sizeof(int);
-> +                       for (j =3D 0 ; j < nthreads; j++) {
-> +                               if (be32_to_cpu(intserv[j]) =3D=3D boot_c=
-pu_hwid) {
-> +                                       bt_node =3D &intserv_node->node;
-> +                                       found_boot_cpu =3D true;
-> +                                       /*
-> +                                        * Record the round-shift between=
- dt
-> +                                        * seq and cpu logical number
-> +                                        */
-> +                                       shift =3D cpu - j;
-> +                                       break;
-> +                               }
-> +
-> +                               cpu++;
-> +                       }
-> +               }
->
-> +       }
-> +       cpu =3D 0;
-> +       list_del_init(&head);
-> +       /* Select the primary thread, the boot cpu's slibing, as the logi=
-c 0 */
-> +       list_add_tail(&head, bt_node);
-> +       pr_info("the round shift between dt seq and the cpu logic number:=
- %d\n", shift);
-> +       list_for_each_entry(intserv_node, &head, node) {
-> +
-> +               avail =3D intserv_node->avail;
-> +               nthreads =3D intserv_node->len / sizeof(int);
-> +               for (j =3D 0; j < nthreads && cpu < nr_cpu_ids; j++) {
->                         set_cpu_present(cpu, avail);
->                         set_cpu_possible(cpu, true);
-> -                       cpu_to_phys_id[cpu] =3D be32_to_cpu(intserv[j]);
-> +                       cpu_to_phys_id[cpu] =3D be32_to_cpu(intserv_node-=
->intserv[j]);
-> +                       DBG("    thread %d -> cpu %d (hard id %d)\n",
-> +                           j, cpu, be32_to_cpu(intserv[j]));
->                         cpu++;
->                 }
-> +       }
->
-> -               if (cpu >=3D nr_cpu_ids) {
-> -                       of_node_put(dn);
-> -                       break;
-> -               }
-> +       list_for_each_entry_safe(intserv_node, n, &head, node) {
-> +               len =3D sizeof(struct interrupt_server_node) + intserv_no=
-de->len;
-> +               memblock_free(intserv_node, len);
->         }
->
->         /* If no SMT supported, nthreads is forced to 1 */
-> --
-> 2.31.1
->
-
+Amir.
