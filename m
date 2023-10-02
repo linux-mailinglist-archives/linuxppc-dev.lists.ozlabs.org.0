@@ -1,96 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89AF97B5C6E
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Oct 2023 23:20:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 190317B5C74
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Oct 2023 23:23:05 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GlQP1vi4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=kV+Au7MU;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rzv4T1zFwz3vZD
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Oct 2023 08:20:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rzv7W0Gstz3vXj
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Oct 2023 08:23:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GlQP1vi4;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=kV+Au7MU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=bergner@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::1135; helo=mail-yw1-x1135.google.com; envelope-from=dmitry.baryshkov@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rzv3W1yPxz3c5k
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Oct 2023 08:19:34 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 392LJDiQ000786;
-	Mon, 2 Oct 2023 21:19:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=gatv7sy+EOwFxHcezDJOHWDu3nM1vA3GE7rgG9QZ/KI=;
- b=GlQP1vi4L/n3i6tR1nGdk/3FPGSstrkoaNsqO4MIqQAX6UMER+faRjVDlwFX9DCxp0+1
- wiAQ48fc1fts/APs9F35r79/zWcAmhCyA9vlYUri6XeznNlLqh0QNxlECmANXFM1LdpX
- DA/5v2LmVEjll0UO0BANCz4/xTvdpJrWiLhNMt1bisI1k3crGOJ1JjxwpxfVPnev4I/r
- wCtQ8Ubva8GRIkuwA7hmAur9l/D5oaHhWIY+B9+oF8NrktxgJoY49+Kis3E9WplluL4/
- uba3lt24vcN+N71c5W9JmS8eP/Nvc06UWk/b5rEpZDTVbz+4jQ66Lx5vyxvB6P2aIrmH Nw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tg5p3002v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 02 Oct 2023 21:19:14 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 392LJD0T000844;
-	Mon, 2 Oct 2023 21:19:13 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tg5p3002b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 02 Oct 2023 21:19:13 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 392K30dV005924;
-	Mon, 2 Oct 2023 21:19:12 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tex0scuh2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 02 Oct 2023 21:19:12 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 392LJBht65733118
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 2 Oct 2023 21:19:12 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A80FB58058;
-	Mon,  2 Oct 2023 21:19:11 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0832858057;
-	Mon,  2 Oct 2023 21:19:11 +0000 (GMT)
-Received: from [9.61.61.107] (unknown [9.61.61.107])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  2 Oct 2023 21:19:10 +0000 (GMT)
-Message-ID: <891957ad-453e-4c68-9c5a-7a979667543d@linux.ibm.com>
-Date: Mon, 2 Oct 2023 16:19:10 -0500
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rzv6c5jSPz3c2k
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Oct 2023 08:22:15 +1100 (AEDT)
+Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-5a229ac185aso3292087b3.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Oct 2023 14:22:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1696281731; x=1696886531; darn=lists.ozlabs.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=KY1yTwg5kkSQ1PPrVUqg1E2GU9pyZpek6FOp/omImxs=;
+        b=kV+Au7MUpwXKfZsRSQA7ZyQrojudMDy7WLyelGemfRxb2K9q/vr9SoZV9lqs4ugz3L
+         XkxO+hVxOQ/NTXvlEesuihDnXhdK/ue3V35Z4DKBU9Q1m4Gb+eSb9zhA9qgY/e5dLUjt
+         KvhUiRxRSK0cwJFrfwhJJeDBdnDXThjAEULO92EabhCY8h9NAIseHpaDsf2SlaQvudXP
+         X+mM9X7CJsAYQRQXH6+sIRLbrXaZ6/ZrhV8gynROJyKLIfiRFs+bdMo3ybufoiVNaH+d
+         qquGOk/h0OGqqDLDWP1zPLyB1LpaujZnjAPZgbn3A0xv+zEka5f37GcxgsFaOBEjjrht
+         QtSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696281731; x=1696886531;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KY1yTwg5kkSQ1PPrVUqg1E2GU9pyZpek6FOp/omImxs=;
+        b=dBy6DTaJNcYMQgUwdfQZb6wj+UoWBVqyztR/I2/MKsgrtYmpRT3SZv+GtWXkqDUDdt
+         KlTu1iL5iO6BV/gl8Ts8PdmOuD0QZ/vGeM+ZAPNipdkALb/ScWAUoIi+2xy7dgFiJJTL
+         g758iBy63CoaU0NVceenwoNYmHUkk5W679VT1VMfrbwFI1ZZN9JQcJWOSzfuxVWuzCNE
+         gRlpGkPwcFultSV7dU+1g16VgCOAVSa/xGrb6S2BwDXgot9aZr4+tojThiwvz4aEn0zK
+         6fQcQA9QD9M0gYb+i6AthD0ZBnUCDKMQfvLLu0lQgIVd/MH28ik/iihg5R6JfjwyaDRM
+         JnpA==
+X-Gm-Message-State: AOJu0Yx6fM9W1dGdiX17FHiw4N/s4yILEu2fsvDAscOD9zz7Y4V15MQ8
+	3e3oD4DwKQUcjQAW83BBQ/rUXSDxskx6x0C9DZBqqQ==
+X-Google-Smtp-Source: AGHT+IFaRCfqm0SlfcT/sMeXMK7dbF3zxTUUIPxu3awMhgeV/37hJ6olOIew2lBKO7L65qL9ql+xhT0CDDmED9Aaft4=
+X-Received: by 2002:a0d:c906:0:b0:595:9135:83c7 with SMTP id
+ l6-20020a0dc906000000b00595913583c7mr11373199ywd.47.1696281730897; Mon, 02
+ Oct 2023 14:22:10 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] uapi/auxvec: Define AT_HWCAP3 and AT_HWCAP4 aux vector,
- entries
-Content-Language: en-US
-To: Adhemerval Zanella Netto <adhemerval.zanella@linaro.org>,
-        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <fd879f60-3f0b-48d1-bfa1-6d337768207e@linux.ibm.com>
- <97eb2099-23c2-4921-89ac-9523226ad221@linaro.org>
-From: Peter Bergner <bergner@linux.ibm.com>
-In-Reply-To: <97eb2099-23c2-4921-89ac-9523226ad221@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: iwOxse1LKTd-mzgBl_gDQrG6AZJZ2pID
-X-Proofpoint-GUID: oXttozJ5pEGhCYcwaRXxZAKaOtCxpjge
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-02_15,2023-10-02_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 spamscore=0
- phishscore=0 mlxlogscore=716 malwarescore=0 clxscore=1011 suspectscore=0
- priorityscore=1501 impostorscore=0 adultscore=0 lowpriorityscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310020163
+References: <0-v8-81230027b2fa+9d-iommu_all_defdom_jgg@nvidia.com> <20-v8-81230027b2fa+9d-iommu_all_defdom_jgg@nvidia.com>
+In-Reply-To: <20-v8-81230027b2fa+9d-iommu_all_defdom_jgg@nvidia.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Tue, 3 Oct 2023 00:21:59 +0300
+Message-ID: <CAA8EJprz7VVmBG68U9zLuqPd0UdSRHYoLDJSP6tCj6H6qanuTQ@mail.gmail.com>
+Subject: Re: [PATCH v8 20/24] iommu: Require a default_domain for all iommu drivers
+To: Jason Gunthorpe <jgg@nvidia.com>, Rob Clark <robdclark@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,70 +73,147 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: GNU C Library <libc-alpha@sourceware.org>, Nicholas Piggin <npiggin@gmail.com>
+Cc: Heiko Stuebner <heiko@sntech.de>, Matthew Rosato <mjrosato@linux.ibm.com>, Jerry Snitselaar <jsnitsel@redhat.com>, Matthias Brugger <matthias.bgg@gmail.com>, Thierry Reding <thierry.reding@gmail.com>, Jernej Skrabec <jernej.skrabec@gmail.com>, Alim Akhtar <alim.akhtar@samsung.com>, Dmitry Osipenko <digetx@gmail.com>, Steven Price <steven.price@arm.com>, Will Deacon <will@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, linux-s390@vger.kernel.org, linux-samsung-soc@vger.kernel.org, Samuel Holland <samuel@sholland.org>, Joerg Roedel <joro@8bytes.org>, Russell King <linux@armlinux.org.uk>, Jonathan Hunter <jonathanh@nvidia.com>, linux-rockchip@lists.infradead.org, iommu@lists.linux.dev, Andy Gross <agross@kernel.org>, Nicolin Chen <nicolinc@nvidia.com>, Yong Wu <yong.wu@mediatek.com>, Orson Zhai <orsonzhai@gmail.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Thierry Reding <treding@nvidia.com>, linux-sunxi@lists.linux.dev, Kevin Tian <kevin.tian@intel.com>, Niklas S
+ chnelle <schnelle@linux.ibm.com>, linux-arm-msm@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Krishna Reddy <vdumpa@nvidia.com>, linux-mediatek@lists.infradead.org, Baolin Wang <baolin.wang@linux.alibaba.com>, linux-tegra@vger.kernel.org, Chen-Yu Tsai <wens@csie.org>, linux-arm-kernel@lists.infradead.org, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Robin Murphy <robin.murphy@arm.com>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Chunyan Zhang <zhang.lyra@gmail.com>, linuxppc-dev@lists.ozlabs.org, Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Adhemerval, sorry for the delay in replying, I was a little under the
-weather last week.
+On Wed, 13 Sept 2023 at 16:45, Jason Gunthorpe <jgg@nvidia.com> wrote:
+>
+> At this point every iommu driver will cause a default_domain to be
+> selected, so we can finally remove this gap from the core code.
+>
+> The following table explains what each driver supports and what the
+> resulting default_domain will be:
+>
+>                                         ops->defaut_domain
+>                     IDENTITY   DMA  PLATFORM    v      ARM32          dma-iommu  ARCH
+> amd/iommu.c             Y       Y                       N/A             either
+> apple-dart.c            Y       Y                       N/A             either
+> arm-smmu.c              Y       Y                       IDENTITY        either
+> qcom_iommu.c            G       Y                       IDENTITY        either
+> arm-smmu-v3.c           Y       Y                       N/A             either
+> exynos-iommu.c          G       Y                       IDENTITY        either
+> fsl_pamu_domain.c                       Y       Y       N/A             N/A     PLATFORM
+> intel/iommu.c           Y       Y                       N/A             either
+> ipmmu-vmsa.c            G       Y                       IDENTITY        either
+> msm_iommu.c             G                               IDENTITY        N/A
+
+Unfortunately this patch breaks msm_iommu platforms. This driver
+doesn't select ARM_DMA_USE_IOMMU, so iommu_get_default_domain_type()
+returns 0, bus_iommu_probe() fails with -ENODEV.
+If I make MSM_IOMMU select ARM_DMA_USE_IOMMU, then GPU probing fails
+with -EBUSY.
+
+> mtk_iommu.c             G       Y                       IDENTITY        either
+> mtk_iommu_v1.c          G                               IDENTITY        N/A
+> omap-iommu.c            G                               IDENTITY        N/A
+> rockchip-iommu.c        G       Y                       IDENTITY        either
+> s390-iommu.c                            Y       Y       N/A             N/A     PLATFORM
+> sprd-iommu.c                    Y                       N/A             DMA
+> sun50i-iommu.c          G       Y                       IDENTITY        either
+> tegra-smmu.c            G       Y                       IDENTITY        IDENTITY
+> virtio-iommu.c          Y       Y                       N/A             either
+> spapr                                   Y       Y       N/A             N/A     PLATFORM
+>  * G means ops->identity_domain is used
+>  * N/A means the driver will not compile in this configuration
+>
+> ARM32 drivers select an IDENTITY default domain through either the
+> ops->identity_domain or directly requesting an IDENTIY domain through
+> alloc_domain().
+>
+> In ARM64 mode tegra-smmu will still block the use of dma-iommu.c and
+> forces an IDENTITY domain.
+>
+> S390 uses a PLATFORM domain to represent when the dma_ops are set to the
+> s390 iommu code.
+>
+> fsl_pamu uses an PLATFORM domain.
+>
+> POWER SPAPR uses PLATFORM and blocking to enable its weird VFIO mode.
+>
+> The x86 drivers continue unchanged.
+>
+> After this patch group->default_domain is only NULL for a short period
+> during bus iommu probing while all the groups are constituted. Otherwise
+> it is always !NULL.
+>
+> This completes changing the iommu subsystem driver contract to a system
+> where the current iommu_domain always represents some form of translation
+> and the driver is continuously asserting a definable translation mode.
+>
+> It resolves the confusion that the original ops->detach_dev() caused
+> around what translation, exactly, is the IOMMU performing after
+> detach. There were at least three different answers to that question in
+> the tree, they are all now clearly named with domain types.
+>
+> Tested-by: Heiko Stuebner <heiko@sntech.de>
+> Tested-by: Niklas Schnelle <schnelle@linux.ibm.com>
+> Tested-by: Steven Price <steven.price@arm.com>
+> Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> Tested-by: Nicolin Chen <nicolinc@nvidia.com>
+> Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+> Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
+> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+> ---
+>  drivers/iommu/iommu.c | 22 +++++++---------------
+>  1 file changed, 7 insertions(+), 15 deletions(-)
+>
+> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+> index 42a4585dd76da6..cfb597751f5bad 100644
+> --- a/drivers/iommu/iommu.c
+> +++ b/drivers/iommu/iommu.c
+> @@ -1865,7 +1865,6 @@ static int iommu_get_def_domain_type(struct iommu_group *group,
+>  static int iommu_get_default_domain_type(struct iommu_group *group,
+>                                          int target_type)
+>  {
+> -       const struct iommu_ops *ops = group_iommu_ops(group);
+>         struct device *untrusted = NULL;
+>         struct group_device *gdev;
+>         int driver_type = 0;
+> @@ -1876,11 +1875,13 @@ static int iommu_get_default_domain_type(struct iommu_group *group,
+>          * ARM32 drivers supporting CONFIG_ARM_DMA_USE_IOMMU can declare an
+>          * identity_domain and it will automatically become their default
+>          * domain. Later on ARM_DMA_USE_IOMMU will install its UNMANAGED domain.
+> -        * Override the selection to IDENTITY if we are sure the driver supports
+> -        * it.
+> +        * Override the selection to IDENTITY.
+>          */
+> -       if (IS_ENABLED(CONFIG_ARM_DMA_USE_IOMMU) && ops->identity_domain)
+> +       if (IS_ENABLED(CONFIG_ARM_DMA_USE_IOMMU)) {
+> +               static_assert(!(IS_ENABLED(CONFIG_ARM_DMA_USE_IOMMU) &&
+> +                               IS_ENABLED(CONFIG_IOMMU_DMA)));
+>                 driver_type = IOMMU_DOMAIN_IDENTITY;
+> +       }
+>
+>         for_each_group_device(group, gdev) {
+>                 driver_type = iommu_get_def_domain_type(group, gdev->dev,
+> @@ -3016,18 +3017,9 @@ static int iommu_setup_default_domain(struct iommu_group *group,
+>         if (req_type < 0)
+>                 return -EINVAL;
+>
+> -       /*
+> -        * There are still some drivers which don't support default domains, so
+> -        * we ignore the failure and leave group->default_domain NULL.
+> -        */
+>         dom = iommu_group_alloc_default_domain(group, req_type);
+> -       if (!dom) {
+> -               /* Once in default_domain mode we never leave */
+> -               if (group->default_domain)
+> -                       return -ENODEV;
+> -               group->default_domain = NULL;
+> -               return 0;
+> -       }
+> +       if (!dom)
+> +               return -ENODEV;
+>
+>         if (group->default_domain == dom)
+>                 return 0;
+> --
+> 2.42.0
+>
 
 
-On 9/27/23 11:03 AM, Adhemerval Zanella Netto wrote:
-> On 26/09/23 19:02, Peter Bergner wrote:
->> The powerpc toolchain keeps a copy of the HWCAP bit masks in our TCB for fast
->> access by our __builtin_cpu_supports built-in function.  The TCB space for
->> the HWCAP entries - which are created in pairs - is an ABI extension, so
->> waiting to create the space for HWCAP3 and HWCAP4 until we need them is
->> problematical, given distro unwillingness to apply ABI modifying patches
->> to distro point releases.  Define AT_HWCAP3 and AT_HWCAP4 in the generic
->> uapi header so they can be used in GLIBC to reserve space in the powerpc
->> TCB for their future use.
-> 
-> This is different than previously exported auxv, where each AT_* constant
-> would have a auxv entry. On glibc it would require changing _dl_parse_auxv
-> to iterate over the auxv_values to find AT_HWCAP3/AT_HWCAP4 (not ideal, 
-> but doable).
-
-When you say different, do you mean because all AUXVs exported by the kernel
-*will* have an AT_HWCAP and AT_HWCAP2 entry and AT_HWCAP3/AT_HWCAP4 won't?
-I don't think that's a problem for either kernel or glibc side of things.
-I'm not even sure there is a guarantee that every AT_* value *must* be
-present in the exported AUXV.
-
-The new AT_HWCAP3/AT_HWCAP4 defines are less than AT_MINSIGSTKSZ, so they
-don't affect the size of _dl_parse_auxv's auxv_values array size and the
-AT_HWCAP3 and AT_HWCAP4 entries in auxv_values[] are already initialized
-to zero today.  Additionally, the loop in _dl_parse_auxv already parses
-the entire AUXV, so there is no extra work for it to do, unless and until
-AT_HWCAP3 and AT_HWCAP4 start being exported by the kernel.  Really, the
-only extra work _dl_parse_auxv would need to do, is add two new stores:
-
-  GLRO(dl_hwcap3) = auxv_values[AT_HWCAP3];
-  GLRO(dl_hwcap4) = auxv_values[AT_HWCAP4];
-
-
-
-> Wouldn't be better to always export it on fs/binfmt_elf.c, along with all 
-> the machinery to setup it (ELF_HWCAP3, etc), along with proper documentation?
-
-You mean modify the kernel now to export AT_HWCAP3 and AT_HWCAP4 as zero
-masks?  Is that really necessary since we don't need or have any features
-defined in them yet?  GLIBC's _dl_parse_auxv doesn't really need them to
-be exported either, since in the absence of the entries, it will just end
-up using zero masks for dl_hwcap3 and dl_hwcap4, so everything is copacetic
-even without any kernel changes.
-
-As I mentioned, our real problem is the lead time for getting changes that
-affect the user ABI into a distro release, and ppc's copy/cache of the HWCAP
-masks is an ABI change.  If we wait to add this support until when we
-actually have a need for HWCAP3, then we won't have any support until
-the next major distro release.  However, if we can add this support now,
-which I don't think is an onerous change on glibc's part, then we can
-start using it immediately when Linux starts exporting them.
-
-
-Peter
-
-
-
-
+-- 
+With best wishes
+Dmitry
