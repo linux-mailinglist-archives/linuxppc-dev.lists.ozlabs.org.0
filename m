@@ -2,56 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3B3A7B5D6A
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Oct 2023 00:56:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 321E57B5D69
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Oct 2023 00:55:58 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=HZ3pP6j7;
+	dkim=pass (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=KsF/+a8U;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4RzxCd4w8qz3vw7
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Oct 2023 09:56:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4RzxBh0hkgz3vsh
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Oct 2023 09:55:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=HZ3pP6j7;
+	dkim=pass (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=KsF/+a8U;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=quicinc.com (client-ip=205.220.168.131; helo=mx0a-0031df01.pphosted.com; envelope-from=quic_jjohnson@quicinc.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 2616 seconds by postgrey-1.37 at boromir; Tue, 03 Oct 2023 03:52:57 AEDT
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=quicinc.com (client-ip=205.220.180.131; helo=mx0b-0031df01.pphosted.com; envelope-from=quic_jjohnson@quicinc.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 2058 seconds by postgrey-1.37 at boromir; Tue, 03 Oct 2023 03:47:32 AEDT
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rzn7s3PpZz2yq4
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Oct 2023 03:52:54 +1100 (AEDT)
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 392FLAQB027199;
-	Mon, 2 Oct 2023 16:08:20 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rzn1c0mkcz2ydW
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Oct 2023 03:47:29 +1100 (AEDT)
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 392DfUlg027347;
+	Mon, 2 Oct 2023 16:12:17 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
  mime-version : subject : to : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=qcppdkim1;
- bh=T9yCwFrS5AoooxlKBeLdSc8An+tppK1rapyiK3ru7OU=;
- b=HZ3pP6j7Ib+6fTbkOdd8Ly/OEv9HPqy0690lI4jtvxiW25clJXZp+846T/Uz3iu9qHoP
- N1VAVfU0wfzInuSNVCGo4UUw6GxXIsQpRW1Br5T77nJ4pVicOz/4wOSgjyg0y9yhYjj7
- c903k8sL3Sh5f9EAk1K34OoQ+tmVgUBBdsnVxoKAfLR0ArjoixzYgTSKSSbSBW8bE3dM
- kY8YXHvOVs5/sndPD7RsA5I+UMEdiJ0eXwxatpRgGGQjBOurxAC/Ay4jieUrOwwksSsl
- AeI+uNSauNz++7j96MzLdUc4YYmdQxK4ufjMq9HLzeKWvV4mceIbYHnjCinKHJ7eUDYa jQ== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tecygbyct-1
+ bh=4U6I1yGXylUwoYhJHHuq9oq3NNPfZ9+VoPLpLJ7ibnI=;
+ b=KsF/+a8U2akYJdmW5doJsr/I51j/zCz0l/Ob9xnFSqzsGzNWRzaYwzy7wQVXQH4WnkCX
+ FR4I4WE+DID+Z52T96TUB0WYhMCJPNVyhuVVEsiGFfC2ranbQYWocqL39f6GwGIiUtae
+ AFLes8D0LFiBiLc+5V1la63eH5p3bvGfNVXe7BcXPP1J6dLSTZZtOvDFo/MDwOn3kRLp
+ PozHZXDEYcWl98g+vHP3zHdFp9v++8UA6jgakVOd+AXC435PtBh4+4dQZ51UIyoir1S4
+ EtVAVTfYVLuTlPbiqPRptAh+mdHNfzcvuWr9Ti0atL38FvVhrg8h5ybM27N62PDgsAZ8 9A== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3teapeuu3x-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 02 Oct 2023 16:08:20 +0000
+	Mon, 02 Oct 2023 16:12:16 +0000
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 392G8IMZ026834
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 392GCEiI001194
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 2 Oct 2023 16:08:18 GMT
+	Mon, 2 Oct 2023 16:12:14 GMT
 Received: from [10.111.179.185] (10.49.16.6) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Mon, 2 Oct
- 2023 09:08:16 -0700
-Message-ID: <9a65ff82-e6b0-4253-be86-a0962e673bc4@quicinc.com>
-Date: Mon, 2 Oct 2023 09:08:14 -0700
+ 2023 09:12:11 -0700
+Message-ID: <5680429a-72fc-4aae-8e92-d6b31aabe205@quicinc.com>
+Date: Mon, 2 Oct 2023 09:12:11 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next PATCH 2/4] netdev: make napi_schedule return bool on
- NAPI successful schedule
+Subject: Re: [net-next PATCH 3/4] netdev: replace napi_reschedule with
+ napi_schedule
 Content-Language: en-US
 To: Christian Marangi <ansuelsmth@gmail.com>, Jason Gunthorpe <jgg@ziepe.ca>,
         Leon Romanovsky <leon@kernel.org>,
@@ -137,9 +137,9 @@ To: Christian Marangi <ansuelsmth@gmail.com>, Jason Gunthorpe <jgg@ziepe.ca>,
         <linux-arm-kernel@lists.infradead.org>, <ath10k@lists.infradead.org>,
         <linux-wireless@vger.kernel.org>
 References: <20231002151023.4054-1-ansuelsmth@gmail.com>
- <20231002151023.4054-2-ansuelsmth@gmail.com>
+ <20231002151023.4054-3-ansuelsmth@gmail.com>
 From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20231002151023.4054-2-ansuelsmth@gmail.com>
+In-Reply-To: <20231002151023.4054-3-ansuelsmth@gmail.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.49.16.6]
@@ -147,16 +147,16 @@ X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: OG9E9tRT0CgWmcphKGvEtpMdVBHFNb-n
-X-Proofpoint-ORIG-GUID: OG9E9tRT0CgWmcphKGvEtpMdVBHFNb-n
+X-Proofpoint-ORIG-GUID: 6kWc5rKZHGshQIEa0G4RBCakTBJKOynB
+X-Proofpoint-GUID: 6kWc5rKZHGshQIEa0G4RBCakTBJKOynB
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-10-02_10,2023-10-02_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
- lowpriorityscore=0 adultscore=0 mlxscore=0 priorityscore=1501
- suspectscore=0 malwarescore=0 bulkscore=0 phishscore=0 impostorscore=0
- mlxlogscore=999 spamscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2309180000 definitions=main-2310020123
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 spamscore=0
+ adultscore=0 clxscore=1015 mlxlogscore=825 lowpriorityscore=0
+ suspectscore=0 priorityscore=1501 impostorscore=0 phishscore=0 mlxscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310020124
 X-Mailman-Approved-At: Tue, 03 Oct 2023 09:51:27 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -173,41 +173,19 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 10/2/2023 8:10 AM, Christian Marangi wrote:
-> Change napi_schedule to return a bool on NAPI successful schedule. This
-> might be useful for some driver to do additional step after a NAPI ahs
-
-nit:s/ahs/has/
-
-> been scheduled.
+> Now that napi_schedule return a bool, we can drop napi_reschedule that
+> does the same exact function. The function comes from a very old commit
+> bfe13f54f502 ("ibm_emac: Convert to use napi_struct independent of struct
+> net_device") and the purpose is actually deprecated in favour of
+> different logic.
+> 
+> Convert every user of napi_reschedule to napi_schedule.
 > 
 > Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
 > ---
->   include/linux/netdevice.h | 11 +++++++++--
->   1 file changed, 9 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-> index 7e520c14eb8c..2bead8e2a14d 100644
-> --- a/include/linux/netdevice.h
-> +++ b/include/linux/netdevice.h
-> @@ -490,11 +490,18 @@ bool napi_schedule_prep(struct napi_struct *n);
->    *
->    * Schedule NAPI poll routine to be called if it is not already
->    * running.
-> + * Return true if we schedule a NAPI or false if not.
-> + * Refer to napi_schedule_prep() for additional reason on why
-> + * a NAPI might not be scheduled.
->    */
-> -static inline void napi_schedule(struct napi_struct *n)
-> +static inline bool napi_schedule(struct napi_struct *n)
->   {
-> -	if (napi_schedule_prep(n))
-> +	if (napi_schedule_prep(n)) {
->   		__napi_schedule(n);
-> +		return true;
-> +	}
-> +
-> +	return false;
->   }
->   
->   /**
+
+For
+>   drivers/net/wireless/ath/ath10k/pci.c                  |  2 +-
+
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
