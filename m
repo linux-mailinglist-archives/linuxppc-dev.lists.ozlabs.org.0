@@ -1,80 +1,139 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 373977B5CFE
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Oct 2023 00:04:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 809367B5D60
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Oct 2023 00:52:39 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jbrgSVWp;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=YJeHe/bs;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rzw2k0pyQz3cfT
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Oct 2023 09:03:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rzx6s22CTz3vcP
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Oct 2023 09:52:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jbrgSVWp;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=YJeHe/bs;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gbatra@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::334; helo=mail-wm1-x334.google.com; envelope-from=ansuelsmth@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rzw1m2xwwz3cCl
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Oct 2023 09:03:08 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 392M1kYZ012913;
-	Mon, 2 Oct 2023 22:03:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=4EcadeJIOfsidZwfBv0CSr/w1ff192w0CyNTgmgx9lU=;
- b=jbrgSVWpWdl9tenkaXdIo5xEn//KNH6WM3X2EQqqwmkAwAJtqC11IJlYK0KyxGdA2hdj
- KogTw+TQPmHfVTPc5nroetBzMs33svNGu7skacgOt6yeD89kp09ocsOmAdjmK1SpscBo
- 7m5uW0yT2ErGw0BO6kOmmlhpmCatzBQjYPaQrI8825vQ4AvJBNAKFurCWgb0NktYUq1z
- D3Uat2GRzG9qpwqEL7iGB/0FBdJ4BBwo5KtesBDUZieFcM0N3jSGHoQGwVTdLgzotx7E
- ypJuZc4TipD979+HdtlY9sfqd5l7mZU0lmHHst4B+1d0tKgEvdMwgweX2ODk7gHVSskx gA== 
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tg69xr1kr-12
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 02 Oct 2023 22:03:02 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 392LFqk9007512;
-	Mon, 2 Oct 2023 21:46:05 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3teygk4fe8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 02 Oct 2023 21:46:05 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 392Lk5qo58654994
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 2 Oct 2023 21:46:05 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3FA565805A;
-	Mon,  2 Oct 2023 21:46:05 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6EB2F58054;
-	Mon,  2 Oct 2023 21:46:04 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.67.151.197])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  2 Oct 2023 21:46:04 +0000 (GMT)
-From: Gaurav Batra <gbatra@linux.vnet.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH] powerpc/pseries/iommu: enable_ddw incorrectly returns direct mapping for SR-IOV device.
-Date: Mon,  2 Oct 2023 16:46:03 -0500
-Message-Id: <20231002214603.43881-1-gbatra@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.39.2 (Apple Git-143)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rzksr17Rbz2xTR
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Oct 2023 02:10:39 +1100 (AEDT)
+Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-405505b07dfso18801635e9.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Oct 2023 08:10:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1696259435; x=1696864235; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ow78hAE0yIyUemUyYOBz3q9ywNhxcPT95anou49aj54=;
+        b=YJeHe/bsqUyasd4rlodO6ABkzeqryo3fH53eRhYfLjij7n3153vE1dZZi7Ta0rIl9H
+         MhPP+EY8ydK0dIinKRVCpOOZei8roTkx5hOjEpvJAuOD9ClffaYic6O26v985bnO1Mw8
+         BYavnNwcw0lSuwnjGAlqCfuwhKLUCqjyy7E7yFN6as3wCnGjQeg79WPWWqOJ4EbNVAWQ
+         XBVynL0UYIU3OdoPIPJLhIqgHCyI3xiJtyTbaO+YM+Fqp7NtyhTgJVj43TfraDW4mN67
+         fFOAcuB9B14rgjjXIen6R+gZ4NX2mF3/U0O+nMDiBWgHHmxkXwZoyMQyxlX6phtjSM8J
+         +Xlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696259435; x=1696864235;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ow78hAE0yIyUemUyYOBz3q9ywNhxcPT95anou49aj54=;
+        b=ZGIril4v59v8nUnvIDmZP44eRyYuZ0Z1U4o+VgLANc7Qp4E9NXktNYTstvvlFLHMsR
+         d7A2ZnM7TzKALEdodOXq8+2fQh4hL3qwiy/4f9qUtTX2Mr6hO3UqazWLYhIURmNQ9VEy
+         S5I/X8/XScCbAFLFA3tThD/1Psw6S2f1IU8zqAMKS1VNDhWUqcOfxhNNpqQ2Oh6Pqz1/
+         sZE5M9lyygNI8Xekn5FiXmjseCgCawb/sGQbO+KlDUG5WDYMd21Ydg+j5OJ4y+PsXIHv
+         YgU1mHroHN0m/GORv7+rhdIVTUO4dJ8KcgDEoK3LSq7mp9dX9brS4vSED04iTo3rV2CN
+         Djog==
+X-Gm-Message-State: AOJu0YzlTK8b6loB7emsM2l9yhljwgLxOM6BBPBANM0zZaZv0bJzpSNe
+	vD1jVNpT6SUZ7ZszIT/b+Mo=
+X-Google-Smtp-Source: AGHT+IER54DFWa7vQIFTj6+iJgsPdY5/GDB29GHbGeIgWOfOFDfcvPSoorLgTOCTW0kTjVMyBnWZcA==
+X-Received: by 2002:a05:600c:4991:b0:401:b92f:eec5 with SMTP id h17-20020a05600c499100b00401b92feec5mr10163374wmp.9.1696259434455;
+        Mon, 02 Oct 2023 08:10:34 -0700 (PDT)
+Received: from localhost.localdomain (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
+        by smtp.googlemail.com with ESMTPSA id t15-20020a1c770f000000b00406408dc788sm7421565wmi.44.2023.10.02.08.10.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Oct 2023 08:10:32 -0700 (PDT)
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Wolfgang Grandegger <wg@grandegger.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Chris Snook <chris.snook@gmail.com>,
+	Raju Rangoju <rajur@chelsio.com>,
+	Jeroen de Borst <jeroendb@google.com>,
+	Praveen Kaligineedi <pkaligineedi@google.com>,
+	Shailend Chand <shailend@google.com>,
+	Douglas Miller <dougmill@linux.ibm.com>,
+	Nick Child <nnac123@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Haren Myneni <haren@linux.ibm.com>,
+	Rick Lindsley <ricklind@linux.ibm.com>,
+	Dany Madden <danymadden@us.ibm.com>,
+	Thomas Falcon <tlfalcon@linux.ibm.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Krzysztof Halasa <khalasa@piap.pl>,
+	Kalle Valo <kvalo@kernel.org>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>,
+	Intel Corporation <linuxwwan@intel.com>,
+	Chiranjeevi Rapolu <chiranjeevi.rapolu@linux.intel.com>,
+	Liu Haijun <haijun.liu@mediatek.com>,
+	M Chetan Kumar <m.chetan.kumar@linux.intel.com>,
+	Ricardo Martinez <ricardo.martinez@linux.intel.com>,
+	Loic Poulain <loic.poulain@linaro.org>,
+	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Yuanjun Gong <ruc_gongyuanjun@163.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Alex Elder <elder@linaro.org>,
+	Simon Horman <horms@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Bailey Forrest <bcf@google.com>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Junfeng Guo <junfeng.guo@intel.com>,
+	Ziwei Xiao <ziweixiao@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Rushil Gupta <rushilg@google.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Yuri Karpov <YKarpov@ispras.ru>,
+	Zhengchao Shao <shaozhengchao@huawei.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Zheng Zengkai <zhengzengkai@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Lee Jones <lee@kernel.org>,
+	Dawei Li <set_pte_at@outlook.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+	linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-can@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	ath10k@lists.infradead.org,
+	linux-wireless@vger.kernel.org
+Subject: [net-next PATCH 1/4] netdev: replace simple napi_schedule_prep/__napi_schedule to napi_schedule
+Date: Mon,  2 Oct 2023 17:10:20 +0200
+Message-Id: <20231002151023.4054-1-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: rDyPhxMgA7SL4h5M-L8Jtyq1eY8ruy-U
-X-Proofpoint-ORIG-GUID: rDyPhxMgA7SL4h5M-L8Jtyq1eY8ruy-U
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-02_15,2023-10-02_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- impostorscore=0 mlxscore=0 suspectscore=0 phishscore=0 mlxlogscore=934
- lowpriorityscore=0 adultscore=0 bulkscore=0 clxscore=1011 spamscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310020171
+X-Mailman-Approved-At: Tue, 03 Oct 2023 09:51:27 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,61 +145,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: brking@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, Gaurav Batra <gbatra@linux.vnet.ibm.com>, gjoyce@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When a device is initialized, the driver invokes dma_supported() twice - first
-for streaming mappings followed by coherent mappings. For an SR-IOV device,
-default window is deleted and DDW created. With vPMEM enabled, TCE mappings
-are dynamically created for both vPMEM and SR-IOV device. There are no direct
-mappings.
+Replace drivers that still use napi_schedule_prep/__napi_schedule
+with napi_schedule helper as it does the same exact check and call.
 
-First time when dma_supported() is called with 64 bit mask, DDW is created and
-marked as dynamic window. The second time dma_supported() is called, enable_ddw()
-finds existing window for the device and incorrectly returns it as "direct mapping".
-
-This only happens when size of DDW is capable of mapping max LPAR memory.
-
-This results in streaming TCEs to not get dynamically mapped, since code incorrently
-assumes these are already pre-mapped. The adapter initially comes up but goes down
-due to EEH.
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
 ---
- arch/powerpc/platforms/pseries/iommu.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/ni/nixge.c     | 3 +--
+ drivers/net/ethernet/wiznet/w5100.c | 4 ++--
+ 2 files changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index 16d93b580f61..d8b4adcef1ad 100644
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -914,7 +914,8 @@ static int remove_ddw(struct device_node *np, bool remove_prop, const char *win_
- 	return 0;
- }
+diff --git a/drivers/net/ethernet/ni/nixge.c b/drivers/net/ethernet/ni/nixge.c
+index 97f4798f4b42..f71a4f8bbb89 100644
+--- a/drivers/net/ethernet/ni/nixge.c
++++ b/drivers/net/ethernet/ni/nixge.c
+@@ -755,8 +755,7 @@ static irqreturn_t nixge_rx_irq(int irq, void *_ndev)
+ 		cr &= ~(XAXIDMA_IRQ_IOC_MASK | XAXIDMA_IRQ_DELAY_MASK);
+ 		nixge_dma_write_reg(priv, XAXIDMA_RX_CR_OFFSET, cr);
  
--static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr, int *window_shift)
-+static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr, int *window_shift,
-+			      bool *direct_mapping)
- {
- 	struct dma_win *window;
- 	const struct dynamic_dma_window_prop *dma64;
-@@ -927,6 +928,7 @@ static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr, int *windo
- 			dma64 = window->prop;
- 			*dma_addr = be64_to_cpu(dma64->dma_base);
- 			*window_shift = be32_to_cpu(dma64->window_shift);
-+			*direct_mapping = window->direct;
- 			found = true;
- 			break;
- 		}
-@@ -1270,8 +1272,7 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+-		if (napi_schedule_prep(&priv->napi))
+-			__napi_schedule(&priv->napi);
++		napi_schedule(&priv->napi);
+ 		goto out;
+ 	}
+ 	if (!(status & XAXIDMA_IRQ_ALL_MASK)) {
+diff --git a/drivers/net/ethernet/wiznet/w5100.c b/drivers/net/ethernet/wiznet/w5100.c
+index 341ee2f249fd..5613fd6a9f0a 100644
+--- a/drivers/net/ethernet/wiznet/w5100.c
++++ b/drivers/net/ethernet/wiznet/w5100.c
+@@ -930,8 +930,8 @@ static irqreturn_t w5100_interrupt(int irq, void *ndev_instance)
  
- 	mutex_lock(&dma_win_init_mutex);
- 
--	if (find_existing_ddw(pdn, &dev->dev.archdata.dma_offset, &len)) {
--		direct_mapping = (len >= max_ram_len);
-+	if (find_existing_ddw(pdn, &dev->dev.archdata.dma_offset, &len, &direct_mapping)) {
- 		goto out_unlock;
+ 		if (priv->ops->may_sleep)
+ 			queue_work(priv->xfer_wq, &priv->rx_work);
+-		else if (napi_schedule_prep(&priv->napi))
+-			__napi_schedule(&priv->napi);
++		else
++			napi_schedule(&priv->napi)
  	}
  
+ 	return IRQ_HANDLED;
 -- 
-2.39.2 (Apple Git-143)
+2.40.1
 
