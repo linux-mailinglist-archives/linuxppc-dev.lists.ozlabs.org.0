@@ -1,56 +1,96 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B4357B5717
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Oct 2023 18:09:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89AF97B5C6E
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Oct 2023 23:20:27 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uHpSZwV+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GlQP1vi4;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Rzm9r3FW1z3vfV
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Oct 2023 03:09:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Rzv4T1zFwz3vZD
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Oct 2023 08:20:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uHpSZwV+;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GlQP1vi4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=srs0=mcio=fq=robh_at_kernel.org=rob@kernel.org; receiver=lists.ozlabs.org)
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=bergner@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rzm8x3WfMz3cNl
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Oct 2023 03:08:49 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id 3A78FB8119C;
-	Mon,  2 Oct 2023 16:08:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEAD3C433C7;
-	Mon,  2 Oct 2023 16:08:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1696262924;
-	bh=A8RHgRJTdq1YDreXk6pMR2+4zGGe3daZlhUNpP+YvT0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uHpSZwV+lJDbbehLSb/Spt3d5nct5tqN+zguTdzkPGP78BtxJA5slWfkTHCE8nFQo
-	 5Yp3/oCpoJUvujCt8oxxEYnhBkzbbfdWcUXXSLMC2qKfBUPFd2AhM75roBWtzG12r+
-	 zyO3n4G2YX0Ps18ARR/RDgmN7gspcIylPGhayXOz1Z3HxoUpPcb7dfOrvn+RuO5jOI
-	 k2O/32V4DaM8k2gyvWyggG3PutfRoMw1ofZehwhbd+Ft3ixdNjLhr1VYMPu4nJnQko
-	 xeOCGFGk/lxGzbnX61GXQT0EuQIbzaoX+ArQPRhaz4CGLZCfceZXmw3nFUYhiiDYic
-	 5M3ipz/e+xiTA==
-Received: (nullmailer pid 1849866 invoked by uid 1000);
-	Mon, 02 Oct 2023 16:08:40 -0000
-Date: Mon, 2 Oct 2023 11:08:40 -0500
-From: Rob Herring <robh@kernel.org>
-To: Herve Codina <herve.codina@bootlin.com>
-Subject: Re: [PATCH v7 25/30] dt-bindings: net: Add the Lantiq PEF2256
- E1/T1/J1 framer
-Message-ID: <169626292036.1849826.7381200671829119399.robh@kernel.org>
-References: <20230928070652.330429-1-herve.codina@bootlin.com>
- <20230928070652.330429-26-herve.codina@bootlin.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Rzv3W1yPxz3c5k
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Oct 2023 08:19:34 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 392LJDiQ000786;
+	Mon, 2 Oct 2023 21:19:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=gatv7sy+EOwFxHcezDJOHWDu3nM1vA3GE7rgG9QZ/KI=;
+ b=GlQP1vi4L/n3i6tR1nGdk/3FPGSstrkoaNsqO4MIqQAX6UMER+faRjVDlwFX9DCxp0+1
+ wiAQ48fc1fts/APs9F35r79/zWcAmhCyA9vlYUri6XeznNlLqh0QNxlECmANXFM1LdpX
+ DA/5v2LmVEjll0UO0BANCz4/xTvdpJrWiLhNMt1bisI1k3crGOJ1JjxwpxfVPnev4I/r
+ wCtQ8Ubva8GRIkuwA7hmAur9l/D5oaHhWIY+B9+oF8NrktxgJoY49+Kis3E9WplluL4/
+ uba3lt24vcN+N71c5W9JmS8eP/Nvc06UWk/b5rEpZDTVbz+4jQ66Lx5vyxvB6P2aIrmH Nw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tg5p3002v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 02 Oct 2023 21:19:14 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 392LJD0T000844;
+	Mon, 2 Oct 2023 21:19:13 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tg5p3002b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 02 Oct 2023 21:19:13 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 392K30dV005924;
+	Mon, 2 Oct 2023 21:19:12 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tex0scuh2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 02 Oct 2023 21:19:12 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 392LJBht65733118
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 2 Oct 2023 21:19:12 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A80FB58058;
+	Mon,  2 Oct 2023 21:19:11 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0832858057;
+	Mon,  2 Oct 2023 21:19:11 +0000 (GMT)
+Received: from [9.61.61.107] (unknown [9.61.61.107])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  2 Oct 2023 21:19:10 +0000 (GMT)
+Message-ID: <891957ad-453e-4c68-9c5a-7a979667543d@linux.ibm.com>
+Date: Mon, 2 Oct 2023 16:19:10 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230928070652.330429-26-herve.codina@bootlin.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] uapi/auxvec: Define AT_HWCAP3 and AT_HWCAP4 aux vector,
+ entries
+Content-Language: en-US
+To: Adhemerval Zanella Netto <adhemerval.zanella@linaro.org>,
+        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+References: <fd879f60-3f0b-48d1-bfa1-6d337768207e@linux.ibm.com>
+ <97eb2099-23c2-4921-89ac-9523226ad221@linaro.org>
+From: Peter Bergner <bergner@linux.ibm.com>
+In-Reply-To: <97eb2099-23c2-4921-89ac-9523226ad221@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: iwOxse1LKTd-mzgBl_gDQrG6AZJZ2pID
+X-Proofpoint-GUID: oXttozJ5pEGhCYcwaRXxZAKaOtCxpjge
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-02_15,2023-10-02_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 spamscore=0
+ phishscore=0 mlxlogscore=716 malwarescore=0 clxscore=1011 suspectscore=0
+ priorityscore=1501 impostorscore=0 adultscore=0 lowpriorityscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310020163
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,44 +102,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, alsa-devel@alsa-project.org,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Xiubo Li <Xiubo.Lee@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Fabio Estevam <festevam@gmail.com>, Qiang Zhao <qiang.zhao@nxp.com>,
-	Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Takashi Iwai <tiwai@suse.com>, linux-gpio@vg,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
-	er.kernel.org@lists.ozlabs.org,
-	Nicolin Chen <nicoleotsuka@gmail.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Jaroslav Kysela <perex@perex.cz>,
-	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Liam Girdwood <lgirdwood@gmail.com>, Li Yang <leoyang.li@nxp.com>,
-	Mark Brown <broonie@kernel.org>, Simon Horman <horms@kernel.org>,
-	linuxppc-dev@lists.ozlabs.org,
-	"David S. Miller" <davem@davemloft.net>
+Cc: GNU C Library <libc-alpha@sourceware.org>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Adhemerval, sorry for the delay in replying, I was a little under the
+weather last week.
 
-On Thu, 28 Sep 2023 09:06:43 +0200, Herve Codina wrote:
-> The Lantiq PEF2256 is a framer and line interface component designed to
-> fulfill all required interfacing between an analog E1/T1/J1 line and the
-> digital PCM system highway/H.100 bus.
-> 
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->  .../bindings/net/lantiq,pef2256.yaml          | 213 ++++++++++++++++++
->  1 file changed, 213 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/net/lantiq,pef2256.yaml
-> 
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+On 9/27/23 11:03 AM, Adhemerval Zanella Netto wrote:
+> On 26/09/23 19:02, Peter Bergner wrote:
+>> The powerpc toolchain keeps a copy of the HWCAP bit masks in our TCB for fast
+>> access by our __builtin_cpu_supports built-in function.  The TCB space for
+>> the HWCAP entries - which are created in pairs - is an ABI extension, so
+>> waiting to create the space for HWCAP3 and HWCAP4 until we need them is
+>> problematical, given distro unwillingness to apply ABI modifying patches
+>> to distro point releases.  Define AT_HWCAP3 and AT_HWCAP4 in the generic
+>> uapi header so they can be used in GLIBC to reserve space in the powerpc
+>> TCB for their future use.
+> 
+> This is different than previously exported auxv, where each AT_* constant
+> would have a auxv entry. On glibc it would require changing _dl_parse_auxv
+> to iterate over the auxv_values to find AT_HWCAP3/AT_HWCAP4 (not ideal, 
+> but doable).
+
+When you say different, do you mean because all AUXVs exported by the kernel
+*will* have an AT_HWCAP and AT_HWCAP2 entry and AT_HWCAP3/AT_HWCAP4 won't?
+I don't think that's a problem for either kernel or glibc side of things.
+I'm not even sure there is a guarantee that every AT_* value *must* be
+present in the exported AUXV.
+
+The new AT_HWCAP3/AT_HWCAP4 defines are less than AT_MINSIGSTKSZ, so they
+don't affect the size of _dl_parse_auxv's auxv_values array size and the
+AT_HWCAP3 and AT_HWCAP4 entries in auxv_values[] are already initialized
+to zero today.  Additionally, the loop in _dl_parse_auxv already parses
+the entire AUXV, so there is no extra work for it to do, unless and until
+AT_HWCAP3 and AT_HWCAP4 start being exported by the kernel.  Really, the
+only extra work _dl_parse_auxv would need to do, is add two new stores:
+
+  GLRO(dl_hwcap3) = auxv_values[AT_HWCAP3];
+  GLRO(dl_hwcap4) = auxv_values[AT_HWCAP4];
+
+
+
+> Wouldn't be better to always export it on fs/binfmt_elf.c, along with all 
+> the machinery to setup it (ELF_HWCAP3, etc), along with proper documentation?
+
+You mean modify the kernel now to export AT_HWCAP3 and AT_HWCAP4 as zero
+masks?  Is that really necessary since we don't need or have any features
+defined in them yet?  GLIBC's _dl_parse_auxv doesn't really need them to
+be exported either, since in the absence of the entries, it will just end
+up using zero masks for dl_hwcap3 and dl_hwcap4, so everything is copacetic
+even without any kernel changes.
+
+As I mentioned, our real problem is the lead time for getting changes that
+affect the user ABI into a distro release, and ppc's copy/cache of the HWCAP
+masks is an ABI change.  If we wait to add this support until when we
+actually have a need for HWCAP3, then we won't have any support until
+the next major distro release.  However, if we can add this support now,
+which I don't think is an onerous change on glibc's part, then we can
+start using it immediately when Linux starts exporting them.
+
+
+Peter
+
+
+
 
