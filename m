@@ -1,142 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5D417B744D
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Oct 2023 00:53:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 098A37B7407
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Oct 2023 00:13:48 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=XKcCrF15;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HCirntTj;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S0Y5g5KxDz3vY6
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Oct 2023 09:53:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S0XCY6w7Rz3cDr
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Oct 2023 09:13:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=XKcCrF15;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HCirntTj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::333; helo=mail-wm1-x333.google.com; envelope-from=ansuelsmth@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=bergner@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S0RPF5ppKz3vXJ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Oct 2023 05:36:49 +1100 (AEDT)
-Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-405524e6768so12625235e9.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Oct 2023 11:36:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696358206; x=1696963006; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6gyQNJ2XnyFpWZfsSOVQ7NTvT9jbamCtiO1RkGRSocs=;
-        b=XKcCrF15mt4L1XRMi1Poyh/OLhxtCm7uvtQ/UN+AN6rfknF5beV1q4oPifkudgHgLe
-         DRAGnD9CJCNVZSrcWxLTWUXRZggc8kALyk6MJbiua6/kaA1ckvmWqJNIjGwdo08canuL
-         rn4iiwP4/ytt113w59D9ZCyqO4JD9vu6D1tRv0MAilP3cGVf1i22LmjRNlZKsnH+kzsG
-         gCtlxrU46t7zChe5GhYd5PlCRlRz/B6v75UunyNbPWODmaXTs2b9zbboErybnfAPbRFL
-         LNEV96+8Q4swp4IMukOwD9pzdbAsB7Ff8qAdLI0GaI4ZJqGkndUfwRz5wzW/O5uJHWIX
-         CIdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696358206; x=1696963006;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6gyQNJ2XnyFpWZfsSOVQ7NTvT9jbamCtiO1RkGRSocs=;
-        b=HCjk5y+fwX5/xt8ro2jlPlgm8qLJBuNhO5nGSCQjSxBmvzN8XsFOnryrlx2+h6JNWA
-         dfM3VKyuwSQE87qyfDtDaPC/K+h+Y6hG2Wd2sJ4/SGmuNyyC1XtjgoKqQkbkNracO598
-         F/qcF/QSxD1uqZOIN8Q0TGWHqSSVGFOqtpY+3bqM917ko+cucEnIi7hPRe69+3a5NQ+C
-         dE1F+KRn0YkPQG947Vq5TxrpHvpIfu7ZCzVnqsgNG53qkj1UseJ1e0LvI2REELnPQrtu
-         qFafXB6lJgVNmnD+YFiZ+9uzBUcKYb3lBUIx8EoyhcvcowPoypJ5YiszNO/mH2djRCYk
-         eEDA==
-X-Gm-Message-State: AOJu0Yw8SXAHWfoIyfoy64uY+vz4qOVTSk2Qsh0ucIIaPoVScFgwTXgP
-	y0GvMRLEYN7ucnGXr22VpKU=
-X-Google-Smtp-Source: AGHT+IEYiqmB3FHX80gX8tQMzI8kEwWFIYbZ3oxXBoRCokmvLgveVRe6BiL4NPRW0r5qNgswYRjDHQ==
-X-Received: by 2002:a05:600c:22ce:b0:405:4c3a:796f with SMTP id 14-20020a05600c22ce00b004054c3a796fmr308411wmg.2.1696358205305;
-        Tue, 03 Oct 2023 11:36:45 -0700 (PDT)
-Received: from localhost.localdomain (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
-        by smtp.googlemail.com with ESMTPSA id k15-20020a7bc40f000000b004013797efb6sm10147400wmi.9.2023.10.03.11.36.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Oct 2023 11:36:45 -0700 (PDT)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>,
-	Wolfgang Grandegger <wg@grandegger.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Chris Snook <chris.snook@gmail.com>,
-	Raju Rangoju <rajur@chelsio.com>,
-	Jeroen de Borst <jeroendb@google.com>,
-	Praveen Kaligineedi <pkaligineedi@google.com>,
-	Shailend Chand <shailend@google.com>,
-	Douglas Miller <dougmill@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Nick Child <nnac123@linux.ibm.com>,
-	Haren Myneni <haren@linux.ibm.com>,
-	Rick Lindsley <ricklind@linux.ibm.com>,
-	Dany Madden <danymadden@us.ibm.com>,
-	Thomas Falcon <tlfalcon@linux.ibm.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Krzysztof Halasa <khalasa@piap.pl>,
-	Kalle Valo <kvalo@kernel.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>,
-	Intel Corporation <linuxwwan@intel.com>,
-	Chiranjeevi Rapolu <chiranjeevi.rapolu@linux.intel.com>,
-	Liu Haijun <haijun.liu@mediatek.com>,
-	M Chetan Kumar <m.chetan.kumar@linux.intel.com>,
-	Ricardo Martinez <ricardo.martinez@linux.intel.com>,
-	Loic Poulain <loic.poulain@linaro.org>,
-	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Yuanjun Gong <ruc_gongyuanjun@163.com>,
-	Simon Horman <horms@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Ziwei Xiao <ziweixiao@google.com>,
-	Rushil Gupta <rushilg@google.com>,
-	Coco Li <lixiaoyan@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Junfeng Guo <junfeng.guo@intel.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Wei Fang <wei.fang@nxp.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Yuri Karpov <YKarpov@ispras.ru>,
-	Zhengchao Shao <shaozhengchao@huawei.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Zheng Zengkai <zhengzengkai@huawei.com>,
-	Lee Jones <lee@kernel.org>,
-	Maximilian Luz <luzmaximilian@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Dawei Li <set_pte_at@outlook.com>,
-	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-can@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	ath10k@lists.infradead.org,
-	linux-wireless@vger.kernel.org
-Subject: [net-next PATCH v2 4/4] netdev: use napi_schedule bool instead of napi_schedule_prep/__napi_schedule
-Date: Tue,  3 Oct 2023 16:51:50 +0200
-Message-Id: <20231003145150.2498-4-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20231003145150.2498-1-ansuelsmth@gmail.com>
-References: <20231003145150.2498-1-ansuelsmth@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S0XBd2Vpfz3bd6
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Oct 2023 09:12:56 +1100 (AEDT)
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 393M841h017578;
+	Tue, 3 Oct 2023 22:12:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=YP5wAVIPc/j/VuI7EZ2emXZX/mLoB2rjvhdkiLByvlM=;
+ b=HCirntTjn/QkQiFBB4hOlGZfTF3baZd3CuljLrtOMexdxPWXvTzZA04BXAMxIayANAGA
+ DrtZ/hcr09JrM/RaY3/jgdaOIXP7DH81nNrMQci1aGZL4eVG8vq6Ni+nZxyhjjEur0Md
+ gYOyr6qPbJFFq2mojj+T9DS6M1E3zx2ZxfLYXIH46Ux4CPMFZ0JSHNHIAZF2ySxrp7jr
+ wDWM7ohlpLE27ZsyUx1D8lLAQFELpouHm7SRlquW9gKKVqLNr4SWS/kwuCOt5vu+mvon
+ zlmAuaPEobbR/rh3JV/OaO83OczxWR4Z3s4iZDPh+vH/LITJnfKEBL3uQwHa+U3RYWW6 cw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tgu8909kk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Oct 2023 22:12:43 +0000
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 393M90vj020103;
+	Tue, 3 Oct 2023 22:12:43 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tgu8909k9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Oct 2023 22:12:43 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 393KhBFR010898;
+	Tue, 3 Oct 2023 22:12:42 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tf0q1nmd3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Oct 2023 22:12:42 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 393MCfbj26673772
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 3 Oct 2023 22:12:41 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BA40858058;
+	Tue,  3 Oct 2023 22:12:41 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1E05D58057;
+	Tue,  3 Oct 2023 22:12:41 +0000 (GMT)
+Received: from [9.61.61.107] (unknown [9.61.61.107])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  3 Oct 2023 22:12:41 +0000 (GMT)
+Message-ID: <b4864730-1b12-4dd8-b6e9-85d78dad5e34@linux.ibm.com>
+Date: Tue, 3 Oct 2023 17:12:40 -0500
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Wed, 04 Oct 2023 09:50:30 +1100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] uapi/auxvec: Define AT_HWCAP3 and AT_HWCAP4 aux vector,
+ entries
+Content-Language: en-US
+To: Adhemerval Zanella Netto <adhemerval.zanella@linaro.org>,
+        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+References: <fd879f60-3f0b-48d1-bfa1-6d337768207e@linux.ibm.com>
+ <97eb2099-23c2-4921-89ac-9523226ad221@linaro.org>
+ <891957ad-453e-4c68-9c5a-7a979667543d@linux.ibm.com>
+ <057366c2-ee65-441d-b2ac-f40e1d94b44e@linaro.org>
+From: Peter Bergner <bergner@linux.ibm.com>
+In-Reply-To: <057366c2-ee65-441d-b2ac-f40e1d94b44e@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: QBv_-BKDIIjD6Ym1H1PQ2Xb6PFMUBl_I
+X-Proofpoint-GUID: Tb47txw3PRJ5F1pBchWwQ_ZiRAOEEZ1e
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-03_18,2023-10-02_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
+ priorityscore=1501 lowpriorityscore=0 phishscore=0 clxscore=1015
+ malwarescore=0 mlxscore=0 adultscore=0 suspectscore=0 mlxlogscore=598
+ spamscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2309180000 definitions=main-2310030167
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -148,71 +104,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: GNU C Library <libc-alpha@sourceware.org>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Replace if condition of napi_schedule_prep/__napi_schedule and use bool
-from napi_schedule directly where possible.
+On 10/3/23 9:08 AM, Adhemerval Zanella Netto wrote:
+> What it is not clear to me is what kind of ABI boundary you are trying to
+> preemptively add support here. The TCB ABI for __builtin_cpu_supports is
+> userland only, so if your intention is just to allow gcc to work on older
+> glibcs, it should be a matter to just reserve the space on tcbhead_t.
 
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
- drivers/net/ethernet/atheros/atlx/atl1.c     | 4 +---
- drivers/net/ethernet/toshiba/tc35815.c       | 4 +---
- drivers/net/wireless/intel/iwlwifi/pcie/rx.c | 4 +---
- 3 files changed, 3 insertions(+), 9 deletions(-)
+Yes, extending tcbhead_t to contain the slots for hwcap3 and hwcap4 are the
+ABI extensions we are interested in, and not something that can be backported
+into a distro point release.  Yes, we don't strictly need the AT_HWCAP3 and
+AT_HWCAP4 kernel defines to reserve (and clear) that space in glibc, but....
 
-diff --git a/drivers/net/ethernet/atheros/atlx/atl1.c b/drivers/net/ethernet/atheros/atlx/atl1.c
-index 02aa6fd8ebc2..a9014d7932db 100644
---- a/drivers/net/ethernet/atheros/atlx/atl1.c
-+++ b/drivers/net/ethernet/atheros/atlx/atl1.c
-@@ -2446,7 +2446,7 @@ static int atl1_rings_clean(struct napi_struct *napi, int budget)
- 
- static inline int atl1_sched_rings_clean(struct atl1_adapter* adapter)
- {
--	if (!napi_schedule_prep(&adapter->napi))
-+	if (!napi_schedule(&adapter->napi))
- 		/* It is possible in case even the RX/TX ints are disabled via IMR
- 		 * register the ISR bits are set anyway (but do not produce IRQ).
- 		 * To handle such situation the napi functions used to check is
-@@ -2454,8 +2454,6 @@ static inline int atl1_sched_rings_clean(struct atl1_adapter* adapter)
- 		 */
- 		return 0;
- 
--	__napi_schedule(&adapter->napi);
--
- 	/*
- 	 * Disable RX/TX ints via IMR register if it is
- 	 * allowed. NAPI handler must reenable them in same
-diff --git a/drivers/net/ethernet/toshiba/tc35815.c b/drivers/net/ethernet/toshiba/tc35815.c
-index 14cf6ecf6d0d..a8b8a0e13f9a 100644
---- a/drivers/net/ethernet/toshiba/tc35815.c
-+++ b/drivers/net/ethernet/toshiba/tc35815.c
-@@ -1436,9 +1436,7 @@ static irqreturn_t tc35815_interrupt(int irq, void *dev_id)
- 	if (!(dmactl & DMA_IntMask)) {
- 		/* disable interrupts */
- 		tc_writel(dmactl | DMA_IntMask, &tr->DMA_Ctl);
--		if (napi_schedule_prep(&lp->napi))
--			__napi_schedule(&lp->napi);
--		else {
-+		if (!napi_schedule(&lp->napi)) {
- 			printk(KERN_ERR "%s: interrupt taken in poll\n",
- 			       dev->name);
- 			BUG();
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-index 23b5a0adcbd6..146bc7bd14fb 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-@@ -1660,9 +1660,7 @@ irqreturn_t iwl_pcie_irq_rx_msix_handler(int irq, void *dev_id)
- 	IWL_DEBUG_ISR(trans, "[%d] Got interrupt\n", entry->entry);
- 
- 	local_bh_disable();
--	if (napi_schedule_prep(&rxq->napi))
--		__napi_schedule(&rxq->napi);
--	else
-+	if (!napi_schedule(&rxq->napi))
- 		iwl_pcie_clear_irq(trans, entry->entry);
- 	local_bh_enable();
- 
--- 
-2.40.1
+
+
+> If your intention is to also add support on glibc, it makes more sense to
+> already reserve it.  For __builtin_cpu_supports it should work, although
+> for glibc itself some backporting would be required (to correctly showing
+> the bits with LD_SHOW_AUXV).
+
+Our intention is to also add the glibc support too once we have the
+AT_HWCAP3 and AT_HWCAP4 kernel macros defined.  1) Once the defines are
+there, adding the support should be pretty straight forward, so why wait?
+And 2) part of the glibc and compiler support introduces a new symbol
+that is exported by glibc and referenced by the compilers to ensure the
+compilers *never* access the hwcap* fields in the TCB unless the glibc
+supports them.  See the symbol __parse_hwcap_and_convert_at_platform used
+for HWCAP/HWCAP2.  We'll need a similar one for HWCAP3/HWCAP4 and I'm
+doubtful whether the distros will allow the backport of a patch that
+introduces a new exported symbol from glibc in a distro point release.
+
+
+Peter
+
 
