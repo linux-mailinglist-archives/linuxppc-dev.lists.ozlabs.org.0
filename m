@@ -1,70 +1,115 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28A657B7133
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Oct 2023 20:41:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2466D7B72B5
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Oct 2023 22:47:11 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=nu1ILZRd;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Vf83A38O;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S0RVx6sYtz3vfD
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Oct 2023 05:41:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S0VHd0X05z3cP7
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Oct 2023 07:47:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=nu1ILZRd;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Vf83A38O;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::f34; helo=mail-qv1-xf34.google.com; envelope-from=tabba@google.com; receiver=lists.ozlabs.org)
-Received: from mail-qv1-xf34.google.com (mail-qv1-xf34.google.com [IPv6:2607:f8b0:4864:20::f34])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::32c; helo=mail-wm1-x32c.google.com; envelope-from=jernej.skrabec@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S0RKs3t8pz3vcT
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Oct 2023 05:33:52 +1100 (AEDT)
-Received: by mail-qv1-xf34.google.com with SMTP id 6a1803df08f44-65af72cf9e7so7188356d6.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Oct 2023 11:33:52 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S0VGj1grpz2xm3
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Oct 2023 07:46:19 +1100 (AEDT)
+Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-40535597f01so13664645e9.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Oct 2023 13:46:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1696358027; x=1696962827; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1696365972; x=1696970772; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=R9RZg3twPdN7SJarZ/3IsJk/93o/jgnrY3ylxDmEVWY=;
-        b=nu1ILZRdfbIkxOFFzgVMTH2McNpKFpXSE0XNrkUWEz3dtwPE+hhy1klUyZQe2Qz61Z
-         hzP2OkPTQjiQQBgWR4oftgQe6rOKz8hWyx8XIRoUekr+0BBsA0rjiUvzCNZ4Fp6OBNkN
-         H4qpbHaviW3Uj4dOtuO5gy1hdpD1Q2tN3bWSDE9Xmhl6pVuddoWI9YA2ZntB4VA0Yrlp
-         a9No5edrOT1pBmzQWte2siy2Z/HMwxCzFFly13Yrj+YHZKvLiD1im3Uj1nOxgYOdZ5ul
-         g9Gz6THnb6Qt/xdAbavCythZnoVJzVvPS7zMxkc9Nz4IkPZ0Vf+aiFt+lKRNYU42WAmG
-         LsXA==
+        bh=q6Lqo6EXcJhqD7YAD47SfErx0K73IWhi7QqvFI+/oWo=;
+        b=Vf83A38OoZm4T3z/pMN2tvhOtnPam3xNjZDVWHJUkA9k/PY7iOn+BfCYlbunOx8iyf
+         ADpOOG9/tzlFvWlxDNtozPG7IYNxcR/qeO986Stdxc/ZfrQmgk9u6ST5N1xbT0bjVm3f
+         UwTPnm2C8IzA9RExaVYtSTe/qq/8NFkvVAbkegg8ZPiq+JH3PnMuP1dLVqsogaK1+T4Z
+         yDjHU4xEcN8Yx2xGOrq1enukO42HSOdX/VYuaNQAk+auHqvoKLyFWluqR8wm8a20NQO7
+         y5qsqwKni+xpN2HaromvetX3cvuntvNKpeUNi3P3wxC3/O2GYxTuRrI1K4wzjyQ8Wl1J
+         JM0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696358027; x=1696962827;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1696365972; x=1696970772;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=R9RZg3twPdN7SJarZ/3IsJk/93o/jgnrY3ylxDmEVWY=;
-        b=FZOEZ5yJ/FCVeR99Vy5G2arIfCST5/x57A1+TQ+P6RBe0sdvknXfspEHAijXBhpakI
-         PmBZDw8e4Pu6g5ArQFFCC83dgdaIM0RCmTlScxmpIm1+RFflGY07qUMRZrbSeXa7iRD2
-         DClQWUvcWABFTeFOTMhJoi1KMeeH7nLmgzCdj1IDU/GosHFuNvhJDCEqGdmmEZxkdqLT
-         tLre6JixAeCI4dNMvOMlMk2c41rI1Cbm9GkPHPWqKRpfMdlmdHdYIPNmpL2DinQaWYzI
-         Odto2cLndaBC81fYiH+wPLCSHsQGXSVrcGj080En0ZDpXJtNUn0Uh1DMAh0t9uUccXEj
-         NEJw==
-X-Gm-Message-State: AOJu0YyHqKg+MVtUmCzU1yQQVzfzzUfzBiz3yHGMBgEUqeUCMf196rqV
-	NR19VJT+p5gwYJaer3FtUvOfkGIJ3pPswak/V2TuvA==
-X-Google-Smtp-Source: AGHT+IFD9MiWpIrPl+X1KG+mF8SaIxZsGnEuN1WGAxrVYz5JoBkTLtzwKfCvY0TUsCLlDtWXvgqIVLrhKrhnAnrWPa0=
-X-Received: by 2002:a0c:c409:0:b0:64f:3699:90cd with SMTP id
- r9-20020a0cc409000000b0064f369990cdmr170157qvi.42.1696358027177; Tue, 03 Oct
- 2023 11:33:47 -0700 (PDT)
+        bh=q6Lqo6EXcJhqD7YAD47SfErx0K73IWhi7QqvFI+/oWo=;
+        b=lTCaERMz3X+ZcUkmQApTnkQbqHpGuQvnEtesaOTuS9J6wnHFKWdiG1HdGXzPIOWY2r
+         9xIrpGEXIfIEAMl5yGQrZG0tBpoQ/PAaM79T9AqKnep8JPbAT8sc/zxyEUBKSKa/PU4C
+         dB1/hmelIItDzq6Kp2/ClInHlXeLPy+A8T2wkcUHNyjhkFjWYxmQvSyvAsX5G9oeG92z
+         CBcT7hKow7/Xq+fBNmz2mLrlehI3CKFJ2Ll9l0pd+Na+Oc/3mrz2CgpxHqbBypoQDkrz
+         gBu7v9YGdKQ0itqSiqfAPRdwf7Lh7b7DpvOhI1yxBXecmDGH/WbpGykGVFbhnj81J1Yz
+         H4xQ==
+X-Gm-Message-State: AOJu0YwTAX0Q8Bd5X8Wcmi+fheEfDOOOVN2qPf+v7vMRWGASbWF1Thiw
+	ERKaHQ6rMiixHNl2EF6d7qY=
+X-Google-Smtp-Source: AGHT+IFlB2I0tpfgMNGi5Et2M0Gs5p8+TB82XqkW3yDkZZneS8tvsZaesKCYyvaz/7o0dmUQWRFB8A==
+X-Received: by 2002:a05:600c:220d:b0:406:5301:317c with SMTP id z13-20020a05600c220d00b004065301317cmr478470wml.6.1696365972052;
+        Tue, 03 Oct 2023 13:46:12 -0700 (PDT)
+Received: from jernej-laptop.localnet (82-149-12-148.dynamic.telemach.net. [82.149.12.148])
+        by smtp.gmail.com with ESMTPSA id l15-20020a1c790f000000b00404719b05b5sm6983wme.27.2023.10.03.13.46.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Oct 2023 13:46:11 -0700 (PDT)
+From: Jernej =?utf-8?B?xaBrcmFiZWM=?= <jernej.skrabec@gmail.com>
+To: Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
+ Takashi Iwai <tiwai@suse.com>, Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Peter Rosin <peda@axentia.se>, Ray Jui <rjui@broadcom.com>,
+ Scott Branden <sbranden@broadcom.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+ James Schulman <james.schulman@cirrus.com>,
+ David Rhodes <david.rhodes@cirrus.com>,
+ Richard Fitzgerald <rf@opensource.cirrus.com>,
+ Support Opensource <support.opensource@diasemi.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>,
+ Baojun Xu <baojun.xu@ti.com>, Oder Chiou <oder_chiou@realtek.com>,
+ Fabio Estevam <festevam@gmail.com>, Kiseok Jo <kiseok.jo@irondevice.com>,
+ Kevin Cernekee <cernekee@chromium.org>,
+ Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>,
+ Nicolin Chen <nicoleotsuka@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ NXP Linux Team <linux-imx@nxp.com>,
+ Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+ Banajit Goswami <bgoswami@quicinc.com>,
+ Nicolas Frattaroli <frattaroli.nicolas@gmail.com>,
+ Heiko Stuebner <heiko@sntech.de>,
+ Sylwester Nawrocki <s.nawrocki@samsung.com>, Chen-Yu Tsai <wens@csie.org>,
+ Samuel Holland <samuel@sholland.org>, Ban Tao <fengzheng923@gmail.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+ Jarkko Nikula <jarkko.nikula@bitmer.com>,
+ Cezary Rojewski <cezary.rojewski@intel.com>,
+ Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+ Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+ Bard Liao <yung-chuan.liao@linux.intel.com>,
+ Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+ Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+ Olivier Moysan <olivier.moysan@foss.st.com>,
+ Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH RESEND 1/5] ASoC: Explicitly include correct DT includes
+Date: Tue, 03 Oct 2023 22:46:08 +0200
+Message-ID: <2157599.irdbgypaU6@jernej-laptop>
+In-Reply-To: <20231003-dt-asoc-header-cleanups-v1-1-05b5d6447e5a@kernel.org>
+References:  <20231003-dt-asoc-header-cleanups-v1-0-05b5d6447e5a@kernel.org>
+ <20231003-dt-asoc-header-cleanups-v1-1-05b5d6447e5a@kernel.org>
 MIME-Version: 1.0
-References: <20230914015531.1419405-1-seanjc@google.com> <20230914015531.1419405-12-seanjc@google.com>
- <CA+EHjTzSUXx8P9gWmUERg4owxH6r6yNPm1_RL-BzS_2CNPtRKw@mail.gmail.com> <ZRw6X2BptZnRPNK7@google.com>
-In-Reply-To: <ZRw6X2BptZnRPNK7@google.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Tue, 3 Oct 2023 19:33:09 +0100
-Message-ID: <CA+EHjTzx+0pxh7DYONZUeJsm1GCiC6L8Vg_Tm9MLVEae-FKuQg@mail.gmail.com>
-Subject: Re: [RFC PATCH v12 11/33] KVM: Introduce per-page memory attributes
-To: Sean Christopherson <seanjc@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,168 +121,170 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Yu Zhang <yu.c.zhang@linux.intel.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Chao Peng <chao.p.peng@linux.intel.com>, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, Paul Moore <paul@paul-moore.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, James Morris <jmorris@namei.org>, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>, Wang <wei.w.wang@intel.com>, Vlastimil Babka <vbabka@suse.cz>, Jarkko Sakkinen <jarkko@kernel.org>, "Serge E. Hallyn" <serge@hallyn.com>, Maciej Szmigiero <mail@maciej.szmigiero.name>, Albert Ou <aou@eecs.berkeley.edu>, Michael Roth <michael.roth@amd.com>, Ackerley Tng <ackerleytng@google.com>, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Isaku Yamahata <isaku.yamahata@intel.com>, Quentin Perret <qperret@google.com>, Liam Merwick <liam.merwick@oracle.com>, linux-mips@vger.kernel
- .org, Oliver Upton <oliver.upton@linux.dev>, linux-security-module@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Vishal Annapurve <vannapurve@google.com>, linuxppc-dev@lists.ozlabs.org, Xu Yilun <yilun.xu@intel.com>, Anish Moorthy <amoorthy@google.com>
+Cc: patches@opensource.cirrus.com, alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Sean,
+Dne torek, 03. oktober 2023 ob 20:13:10 CEST je Rob Herring napisal(a):
+> The DT of_device.h and of_platform.h date back to the separate
+> of_platform_bus_type before it was merged into the regular platform bus.
+> As part of that merge prepping Arm DT support 13 years ago, they
+> "temporarily" include each other. They also include platform_device.h
+> and of.h. As a result, there's a pretty much random mix of those include
+> files used throughout the tree. In order to detangle these headers and
+> replace the implicit includes with struct declarations, users need to
+> explicitly include the correct includes.
+> 
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
+>  sound/soc/atmel/atmel_wm8904.c                             | 1 -
+>  sound/soc/atmel/mchp-i2s-mcc.c                             | 2 +-
+>  sound/soc/atmel/tse850-pcm5142.c                           | 1 -
+>  sound/soc/bcm/cygnus-ssp.c                                 | 2 +-
+>  sound/soc/codecs/adau1701.c                                | 1 -
+>  sound/soc/codecs/adau1977-spi.c                            | 1 -
+>  sound/soc/codecs/ak4104.c                                  | 2 +-
+>  sound/soc/codecs/ak4118.c                                  | 2 +-
+>  sound/soc/codecs/ak4375.c                                  | 2 +-
+>  sound/soc/codecs/ak4458.c                                  | 2 +-
+>  sound/soc/codecs/ak4613.c                                  | 2 +-
+>  sound/soc/codecs/ak4642.c                                  | 2 +-
+>  sound/soc/codecs/ak5558.c                                  | 2 +-
+>  sound/soc/codecs/cs35l32.c                                 | 2 +-
+>  sound/soc/codecs/cs35l33.c                                 | 2 --
+>  sound/soc/codecs/cs35l34.c                                 | 2 +-
+>  sound/soc/codecs/cs35l35.c                                 | 3 +--
+>  sound/soc/codecs/cs35l36.c                                 | 3 +--
+>  sound/soc/codecs/cs35l41-i2c.c                             | 2 +-
+>  sound/soc/codecs/cs35l41.c                                 | 1 -
+>  sound/soc/codecs/cs4270.c                                  | 2 +-
+>  sound/soc/codecs/cs42l42.c                                 | 1 -
+>  sound/soc/codecs/cs42l56.c                                 | 2 +-
+>  sound/soc/codecs/cs42xx8-i2c.c                             | 2 +-
+>  sound/soc/codecs/cs43130.c                                 | 3 +--
+>  sound/soc/codecs/cs4349.c                                  | 2 +-
+>  sound/soc/codecs/da7213.c                                  | 2 +-
+>  sound/soc/codecs/da7219.c                                  | 2 +-
+>  sound/soc/codecs/da9055.c                                  | 1 -
+>  sound/soc/codecs/es8328.c                                  | 1 -
+>  sound/soc/codecs/gtm601.c                                  | 2 +-
+>  sound/soc/codecs/lpass-macro-common.c                      | 2 +-
+>  sound/soc/codecs/mt6351.c                                  | 2 +-
+>  sound/soc/codecs/mt6358.c                                  | 2 +-
+>  sound/soc/codecs/mt6359-accdet.c                           | 4 ----
+>  sound/soc/codecs/mt6359.c                                  | 2 +-
+>  sound/soc/codecs/nau8540.c                                 | 2 +-
+>  sound/soc/codecs/pcm1681.c                                 | 2 --
+>  sound/soc/codecs/rt715.c                                   | 2 --
+>  sound/soc/codecs/sgtl5000.c                                | 2 +-
+>  sound/soc/codecs/sma1303.c                                 | 2 +-
+>  sound/soc/codecs/sta32x.c                                  | 3 +--
+>  sound/soc/codecs/sta350.c                                  | 3 +--
+>  sound/soc/codecs/tas571x.c                                 | 2 +-
+>  sound/soc/codecs/uda1334.c                                 | 2 +-
+>  sound/soc/codecs/wm8510.c                                  | 2 +-
+>  sound/soc/codecs/wm8523.c                                  | 2 +-
+>  sound/soc/codecs/wm8524.c                                  | 2 +-
+>  sound/soc/codecs/wm8580.c                                  | 2 +-
+>  sound/soc/codecs/wm8711.c                                  | 2 +-
+>  sound/soc/codecs/wm8728.c                                  | 2 +-
+>  sound/soc/codecs/wm8731-i2c.c                              | 2 +-
+>  sound/soc/codecs/wm8731-spi.c                              | 2 +-
+>  sound/soc/codecs/wm8737.c                                  | 2 +-
+>  sound/soc/codecs/wm8741.c                                  | 2 +-
+>  sound/soc/codecs/wm8750.c                                  | 2 +-
+>  sound/soc/codecs/wm8753.c                                  | 2 +-
+>  sound/soc/codecs/wm8770.c                                  | 2 +-
+>  sound/soc/codecs/wm8776.c                                  | 2 +-
+>  sound/soc/codecs/wm8804.c                                  | 1 -
+>  sound/soc/fsl/efika-audio-fabric.c                         | 4 ++--
+>  sound/soc/fsl/fsl_aud2htx.c                                | 3 +--
+>  sound/soc/fsl/fsl_mqs.c                                    | 2 +-
+>  sound/soc/fsl/fsl_rpmsg.c                                  | 3 +--
+>  sound/soc/fsl/fsl_sai.c                                    | 3 +--
+>  sound/soc/fsl/fsl_spdif.c                                  | 4 +---
+>  sound/soc/fsl/imx-audmux.c                                 | 1 -
+>  sound/soc/fsl/imx-card.c                                   | 3 +--
+>  sound/soc/fsl/imx-rpmsg.c                                  | 3 ++-
+>  sound/soc/fsl/mpc5200_dma.c                                | 4 ++--
+>  sound/soc/fsl/mpc5200_psc_ac97.c                           | 3 +--
+>  sound/soc/fsl/mpc5200_psc_i2s.c                            | 3 +--
+>  sound/soc/fsl/mpc8610_hpcd.c                               | 2 +-
+>  sound/soc/fsl/p1022_ds.c                                   | 2 +-
+>  sound/soc/fsl/p1022_rdk.c                                  | 2 +-
+>  sound/soc/fsl/pcm030-audio-fabric.c                        | 3 +--
+>  sound/soc/generic/audio-graph-card.c                       | 2 --
+>  sound/soc/generic/audio-graph-card2.c                      | 2 --
+>  sound/soc/generic/simple-card.c                            | 2 +-
+>  sound/soc/generic/test-component.c                         | 2 +-
+>  sound/soc/mediatek/mt2701/mt2701-afe-pcm.c                 | 2 --
+>  sound/soc/mediatek/mt8183/mt8183-da7219-max98357.c         | 2 +-
+>  sound/soc/mediatek/mt8183/mt8183-mt6358-ts3a227-max98357.c | 2 +-
+>  sound/soc/mediatek/mt8186/mt8186-mt6366-da7219-max98357.c  | 2 +-
+>  sound/soc/mediatek/mt8186/mt8186-mt6366-rt1019-rt5682s.c   | 2 +-
+>  sound/soc/mediatek/mt8188/mt8188-mt6359.c                  | 2 +-
+>  sound/soc/mediatek/mt8192/mt8192-mt6359-rt1015-rt5682.c    | 2 +-
+>  sound/soc/mediatek/mt8195/mt8195-mt6359.c                  | 2 +-
+>  sound/soc/mxs/mxs-saif.c                                   | 1 -
+>  sound/soc/mxs/mxs-sgtl5000.c                               | 1 -
+>  sound/soc/qcom/apq8096.c                                   | 2 +-
+>  sound/soc/qcom/qdsp6/q6apm-dai.c                           | 2 +-
+>  sound/soc/qcom/qdsp6/q6asm-dai.c                           | 2 +-
+>  sound/soc/qcom/qdsp6/q6dsp-lpass-clocks.c                  | 1 -
+>  sound/soc/qcom/qdsp6/q6routing.c                           | 3 +--
+>  sound/soc/qcom/sc7180.c                                    | 2 +-
+>  sound/soc/qcom/sc7280.c                                    | 2 +-
+>  sound/soc/qcom/sc8280xp.c                                  | 2 +-
+>  sound/soc/qcom/sdm845.c                                    | 2 +-
+>  sound/soc/qcom/sm8250.c                                    | 2 +-
+>  sound/soc/rockchip/rockchip_i2s_tdm.c                      | 4 +---
+>  sound/soc/rockchip/rockchip_max98090.c                     | 3 +--
+>  sound/soc/rockchip/rockchip_pdm.c                          | 1 -
+>  sound/soc/samsung/aries_wm8994.c                           | 1 -
+>  sound/soc/samsung/arndale.c                                | 2 +-
+>  sound/soc/samsung/i2s.c                                    | 2 --
+>  sound/soc/samsung/midas_wm1811.c                           | 2 --
+>  sound/soc/samsung/odroid.c                                 | 1 -
+>  sound/soc/samsung/smdk_wm8994.c                            | 1 -
+>  sound/soc/samsung/snow.c                                   | 1 -
+>  sound/soc/sh/fsi.c                                         | 1 -
+>  sound/soc/sh/rcar/core.c                                   | 1 +
+>  sound/soc/sh/rcar/rsnd.h                                   | 4 +---
+>  sound/soc/sh/rcar/src.c                                    | 1 +
+>  sound/soc/sh/rcar/ssi.c                                    | 2 ++
+>  sound/soc/sh/rz-ssi.c                                      | 1 -
+>  sound/soc/sunxi/sun4i-codec.c                              | 4 ----
+>  sound/soc/sunxi/sun4i-i2s.c                                | 2 +-
+>  sound/soc/sunxi/sun4i-spdif.c                              | 3 +--
+>  sound/soc/sunxi/sun50i-codec-analog.c                      | 3 +--
+>  sound/soc/sunxi/sun50i-dmic.c                              | 2 +-
+>  sound/soc/sunxi/sun8i-codec-analog.c                       | 1 -
+>  sound/soc/sunxi/sun8i-codec.c                              | 2 +-
+
+For sunxi:
+Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+
+Best regards,
+Jernej
+
+>  sound/soc/tegra/tegra186_asrc.c                            | 3 +--
+>  sound/soc/tegra/tegra186_dspk.c                            | 2 +-
+>  sound/soc/tegra/tegra20_spdif.c                            | 2 +-
+>  sound/soc/tegra/tegra210_adx.c                             | 3 +--
+>  sound/soc/tegra/tegra210_amx.c                             | 3 +--
+>  sound/soc/tegra/tegra210_dmic.c                            | 2 +-
+>  sound/soc/tegra/tegra210_i2s.c                             | 2 +-
+>  sound/soc/tegra/tegra210_mixer.c                           | 3 +--
+>  sound/soc/tegra/tegra210_mvc.c                             | 3 +--
+>  sound/soc/tegra/tegra210_ope.c                             | 3 +--
+>  sound/soc/tegra/tegra210_peq.c                             | 1 -
+>  sound/soc/tegra/tegra210_sfc.c                             | 1 -
+>  sound/soc/tegra/tegra30_i2s.c                              | 1 -
+>  sound/soc/tegra/tegra_asoc_machine.c                       | 1 -
+>  sound/soc/tegra/tegra_audio_graph_card.c                   | 2 +-
+>  sound/soc/ti/omap-dmic.c                                   | 2 +-
+>  sound/soc/ti/omap-mcpdm.c                                  | 2 +-
+>  140 files changed, 109 insertions(+), 181 deletions(-)
 
 
-On Tue, Oct 3, 2023 at 4:59=E2=80=AFPM Sean Christopherson <seanjc@google.c=
-om> wrote:
->
-> On Tue, Oct 03, 2023, Fuad Tabba wrote:
-> > Hi,
-> >
-> > > diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> > > index d2d913acf0df..f8642ff2eb9d 100644
-> > > --- a/include/uapi/linux/kvm.h
-> > > +++ b/include/uapi/linux/kvm.h
-> > > @@ -1227,6 +1227,7 @@ struct kvm_ppc_resize_hpt {
-> > >  #define KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE 228
-> > >  #define KVM_CAP_ARM_SUPPORTED_BLOCK_SIZES 229
-> > >  #define KVM_CAP_USER_MEMORY2 230
-> > > +#define KVM_CAP_MEMORY_ATTRIBUTES 231
-> > >
-> > >  #ifdef KVM_CAP_IRQ_ROUTING
-> > >
-> > > @@ -2293,4 +2294,17 @@ struct kvm_s390_zpci_op {
-> > >  /* flags for kvm_s390_zpci_op->u.reg_aen.flags */
-> > >  #define KVM_S390_ZPCIOP_REGAEN_HOST    (1 << 0)
-> > >
-> > > +/* Available with KVM_CAP_MEMORY_ATTRIBUTES */
-> > > +#define KVM_GET_SUPPORTED_MEMORY_ATTRIBUTES    _IOR(KVMIO,  0xd2, __=
-u64)
-> > > +#define KVM_SET_MEMORY_ATTRIBUTES              _IOW(KVMIO,  0xd3, st=
-ruct kvm_memory_attributes)
-> > > +
-> > > +struct kvm_memory_attributes {
-> > > +       __u64 address;
-> > > +       __u64 size;
-> > > +       __u64 attributes;
-> > > +       __u64 flags;
-> > > +};
-> > > +
-> > > +#define KVM_MEMORY_ATTRIBUTE_PRIVATE           (1ULL << 3)
-> > > +
-> >
-> > In pKVM, we don't want to allow setting (or clearing) of PRIVATE/SHARED
-> > attributes from userspace.
->
-> Why not?  The whole thing falls apart if userspace doesn't *know* the sta=
-te of a
-> page, and the only way for userspace to know the state of a page at a giv=
-en moment
-> in time is if userspace controls the attributes.  E.g. even if KVM were t=
-o provide
-> a way for userspace to query attributes, the attributes exposed to usrspa=
-ce would
-> become stale the instant KVM drops slots_lock (or whatever lock protects =
-the attributes)
-> since userspace couldn't prevent future changes.
 
-I think I might not quite understand the purpose of the
-KVM_SET_MEMORY_ATTRIBUTES ABI. In pKVM, all of a protected guest's
-memory is private by default, until the guest shares it with the host
-(via a hypercall), or another guest (future work). When the guest
-shares it, userspace is notified via KVM_EXIT_HYPERCALL. In many use
-cases, userspace doesn't need to keep track directly of all of this,
-but can reactively un/map the memory being un/shared.
-
-> Why does pKVM need to prevent userspace from stating *its* view of attrib=
-utes?
->
-> If the goal is to reduce memory overhead, that can be solved by using an =
-internal,
-> non-ABI attributes flag to track pKVM's view of SHARED vs. PRIVATE.  If t=
-he guest
-> attempts to access memory where pKVM and userspace don't agree on the sta=
-te,
-> generate an exit to userspace.  Or kill the guest.  Or do something else =
-entirely.
-
-For the pKVM hypervisor the guest's view of the attributes doesn't
-matter. The hypervisor at the end of the day is the ultimate arbiter
-for what is shared and with how. For pKVM (at least in my port of
-guestmem), we use the memory attributes from guestmem essentially to
-control which memory can be mapped by the host.
-
-One difference between pKVM and TDX (as I understand it), is that TDX
-uses the msb of the guest's IPA to indicate whether memory is shared
-or private, and that can generate a mismatch on guest memory access
-between what it thinks the state is, and what the sharing state in
-reality is. pKVM doesn't have that. Memory is private by default, and
-can be shared in-place, both in the guest's IPA space as well as the
-underlying physical page.
-
-> > However, we'd like to use the attributes xarray to track the sharing st=
-ate of
-> > guest pages at the host kernel.
-> >
-> > Moreover, we'd rather the default guest page state be PRIVATE, and
-> > only specify which pages are shared. All pKVM guest pages start off as
-> > private, and the majority will remain so.
->
-> I would rather optimize kvm_vm_set_mem_attributes() to generate range-bas=
-ed
-> xarray entries, at which point it shouldn't matter all that much whether =
-PRIVATE
-> or SHARED is the default "empty" state.  We opted not to do that for the =
-initial
-> merge purely to keep the code as simple as possible (which is obviously s=
-till not
-> exactly simple).
->
-> With range-based xarray entries, the cost of tagging huge chunks of memor=
-y as
-> PRIVATE should be a non-issue.  And if that's not enough for whatever rea=
-son, I
-> would rather define the polarity of PRIVATE on a per-VM basis, but only f=
-or internal
-> storage.
-
-Sounds good.
-
-> > I'm not sure if this is the best way to do this: One idea would be to m=
-ove
-> > the definition of KVM_MEMORY_ATTRIBUTE_PRIVATE to
-> > arch/*/include/asm/kvm_host.h, which is where kvm_arch_supported_attrib=
-utes()
-> > lives as well. This would allow different architectures to specify thei=
-r own
-> > attributes (i.e., instead we'd have a KVM_MEMORY_ATTRIBUTE_SHARED for p=
-KVM).
-> > This wouldn't help in terms of preventing userspace from clearing attri=
-butes
-> > (i.e., setting a 0 attribute) though.
-> >
-> > The other thing, which we need for pKVM anyway, is to make
-> > kvm_vm_set_mem_attributes() global, so that it can be called from outsi=
-de of
-> > kvm_main.c (already have a local patch for this that declares it in
-> > kvm_host.h),
->
-> That's no problem, but I am definitely opposed to KVM modifying attribute=
-s that
-> are owned by userspace.
->
-> > and not gate this function by KVM_GENERIC_MEMORY_ATTRIBUTES.
->
-> As above, I am opposed to pKVM having a completely different ABI for mana=
-ging
-> PRIVATE vs. SHARED.  I have no objection to pKVM using unclaimed flags in=
- the
-> attributes to store extra metadata, but if KVM_SET_MEMORY_ATTRIBUTES does=
-n't work
-> for pKVM, then we've failed miserably and should revist the uAPI.
-
-Like I said, pKVM doesn't need a userspace ABI for managing
-PRIVATE/SHARED, just a way of tracking in the host kernel of what is
-shared (as opposed to the hypervisor, which already has the
-knowledge). The solution could simply be that pKVM does not enable
-KVM_GENERIC_MEMORY_ATTRIBUTES, has its own tracking of the status of
-the guest pages, and only selects KVM_PRIVATE_MEM.
-
-Thanks!
-/fuad
