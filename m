@@ -2,79 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 986807B5E75
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Oct 2023 03:06:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A57287B5F04
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Oct 2023 04:23:35 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Qjo96mCW;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fh8kvpSL;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S005l3ttMz3dC5
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Oct 2023 12:06:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S01pF4DV2z3vXB
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Oct 2023 13:23:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Qjo96mCW;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fh8kvpSL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=andersson@kernel.org; receiver=lists.ozlabs.org)
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S004s4NYQz2ydW;
-	Tue,  3 Oct 2023 12:06:05 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id 9053FB80D70;
-	Tue,  3 Oct 2023 01:06:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99EB4C433C8;
-	Tue,  3 Oct 2023 01:05:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1696295161;
-	bh=F4f0krFznweIk4taQ98VjdjNBbxdo6qbxD3mNrr0nSM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qjo96mCWqTKW7xGjcbugvTHPxzMEDCajwcw1va4Y2FbcHxO3ZcGKJhTfC83106ARL
-	 tU6n9aOW7ZWhDLjnQiboRRQ82EVD3td822hvni2XK2g9yNk3HSm2Ur7Z555ck5rG+o
-	 12dhoHDmpsg6GbUi7vFsQpePSjmL7y7isIq5rL6cYanqyxddTPGOhvh9UX6i8cVIA7
-	 ZNczfsHMS606tgeAt9grrKxT2FqCR0UULw6bIjRTIClFh9JhkLAVjJWQ9lZKETlzhR
-	 YTYWmLkKqRpNbxBQIivk0G2e/6Y+0MGkQudKU03TMbdV9ij8lvPLibuVE8O1+k6oVB
-	 UoMFwMLszD8rA==
-From: Bjorn Andersson <andersson@kernel.org>
-To: Joel Stanley <joel@jms.id.au>,
-	Li Yang <leoyang.li@nxp.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Qiang Zhao <qiang.zhao@nxp.com>,
-	Hitomi Hasegawa <hasegawa-hitomi@fujitsu.com>,
-	Huisong Li <lihuisong@huawei.com>,
-	Krzysztof Halasa <khalasa@piap.pl>,
-	Karol Gugala <kgugala@antmicro.com>,
-	Mateusz Holenko <mholenko@antmicro.com>,
-	Gabriel Somlo <gsomlo@gmail.com>,
-	Yinbo Zhu <zhuyinbo@loongson.cn>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Daire McNamara <daire.mcnamara@microchip.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Andy Gross <agross@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Sumit Gupta <sumitg@nvidia.com>,
-	Shang XiaoJing <shangxiaojing@huawei.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Rob Herring <robh@kernel.org>,
-	Nishanth Menon <nm@ti.com>,
-	Santosh Shilimkar <ssantosh@kernel.org>,
-	Michal Simek <michal.simek@amd.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Subject: Re: (subset) [PATCH 00/40] soc: Convert to platform remove callback returning void
-Date: Mon,  2 Oct 2023 18:10:02 -0700
-Message-ID: <169629539848.1944895.16954663145011378401.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230925095532.1984344-1-u.kleine-koenig@pengutronix.de>
-References: <20230925095532.1984344-1-u.kleine-koenig@pengutronix.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S01nM29fBz3c57
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Oct 2023 13:22:47 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3932HVdG010839;
+	Tue, 3 Oct 2023 02:22:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=SZwaleVpIQzkeA67WV/Bm+zqgoi+GnVh7ghXdVuCxo8=;
+ b=fh8kvpSL0sHcZNV7GkIiiYKvKHnwi8dyO/dJ4nzfWH/h3iyUWnlKCFEh4cZQqdoUtUhA
+ zdPfoEtBT3QXXy8HB9FBbWs+gKnPv2zlj+gLAfG4CYr2zA2r8MgLhL+bvcXbSkn3YA/U
+ /vCTlrzGzPPDk/SZNkiz17PXfTXWQ1XEofoOBeAMRocPQZuig5CR5KPKDsKy+I0RRrkT
+ Z07tjJE7nOK8b1An3x+KSqlLTMVWVC0SH5Yvyjv0kXoxYsRVmXkslNqjJRJA3amG6cR0
+ fVLl8qVTpFgEOrjt+yK47p83ywLyxRCiPX965vrhG1+avBYe5aZZIsjTi9SMAsK6+794 Rg== 
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tga1x02b3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Oct 2023 02:22:39 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3931NZfo025047;
+	Tue, 3 Oct 2023 02:22:38 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3texcxxasb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Oct 2023 02:22:38 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3932MaFc10093248
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 3 Oct 2023 02:22:36 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A53D520043;
+	Tue,  3 Oct 2023 02:22:36 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B3FC820040;
+	Tue,  3 Oct 2023 02:22:35 +0000 (GMT)
+Received: from [9.204.207.183] (unknown [9.204.207.183])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  3 Oct 2023 02:22:35 +0000 (GMT)
+Message-ID: <a29c5d79-b56d-4314-508f-e6bbac7bc498@linux.ibm.com>
+Date: Tue, 3 Oct 2023 07:52:34 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] powerpc/pseries/iommu: enable_ddw incorrectly returns
+ direct mapping for SR-IOV device.
+To: Gaurav Batra <gbatra@linux.vnet.ibm.com>, mpe@ellerman.id.au
+References: <20231002214603.43881-1-gbatra@linux.vnet.ibm.com>
+Content-Language: en-US
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+In-Reply-To: <20231002214603.43881-1-gbatra@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: fK24skQHecJECCh_tgt0YWwKS3ummoQb
+X-Proofpoint-GUID: fK24skQHecJECCh_tgt0YWwKS3ummoQb
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-02_16,2023-10-02_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
+ mlxlogscore=999 bulkscore=0 impostorscore=0 adultscore=0 spamscore=0
+ priorityscore=1501 phishscore=0 mlxscore=0 clxscore=1011
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310030016
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,49 +93,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Zev Weiss <zev@bewilderbeest.net>, Alim Akhtar <alim.akhtar@samsung.com>, linux-riscv@lists.infradead.org, linux-samsung-soc@vger.kernel.org, linux-aspeed@lists.ozlabs.org, Ruan Jinjie <ruanjinjie@huawei.com>, linux-rockchip@lists.infradead.org, Yang Yingliang <yangyingliang@huawei.com>, Nick Alcock <nick.alcock@oracle.com>, Arnd Bergmann <arnd@arndb.de>, linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org, Lubomir Rintel <lkundrak@v3.sk>, linux-mediatek@lists.infradead.org, loongarch@lists.linux.dev, linux-tegra@vger.kernel.org, linux-arm-kernel@lists.infradead.org, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Andrew Jeffery <andrew@aj.id.au>, linux-kernel@vger.kernel.org, kernel@pengutronix.de, zhang songyi <zhang.songyi@zte.com.cn>, linuxppc-dev@lists.ozlabs.org
+Cc: brking@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, gjoyce@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-On Mon, 25 Sep 2023 11:54:51 +0200, Uwe Kleine-König wrote:
-> this series converts all platform drivers below drivers/soc to use
-> .remove_new(). The motivation is to get rid of an integer return code
-> that is (mostly) ignored by the platform driver core and error prone on
-> the driver side.
-> 
-> See commit 5c5a7680e67b ("platform: Provide a remove callback that
-> returns no value") for an extended explanation and the eventual goal.
-> 
-> [...]
+On 10/3/23 3:16 AM, Gaurav Batra wrote:
+> When a device is initialized, the driver invokes dma_supported() twice - first
+> for streaming mappings followed by coherent mappings. For an SR-IOV device,
+> default window is deleted and DDW created. With vPMEM enabled, TCE mappings
+> are dynamically created for both vPMEM and SR-IOV device. There are no direct
+> mappings.
+>
+> First time when dma_supported() is called with 64 bit mask, DDW is created and
+> marked as dynamic window. The second time dma_supported() is called, enable_ddw()
+> finds existing window for the device and incorrectly returns it as "direct mapping".
+>
+> This only happens when size of DDW is capable of mapping max LPAR memory.
+>
+> This results in streaming TCEs to not get dynamically mapped, since code incorrently
+> assumes these are already pre-mapped. The adapter initially comes up but goes down
+> due to EEH.
 
-Applied, thanks!
+Just checked for patch submission and it is missing "Signed-off-by:"
+It is good to run once with checkpatch.pl before posting to mailing list
 
-[18/40] soc/qcom: icc-bwmon: Convert to platform remove callback returning void
-        commit: dd714c568ed4e6f79017be45077de71e9908af03
-[19/40] soc/qcom: llcc-qcom: Convert to platform remove callback returning void
-        commit: d85a9d18a58156fc8b5ab185e00e078adaaeefde
-[20/40] soc/qcom: ocmem: Convert to platform remove callback returning void
-        commit: 0b742c498bcd7d215501b10fe9df72a16237735a
-[21/40] soc/qcom: pmic_glink: Convert to platform remove callback returning void
-        commit: 4b3373e42dc2caa34394ac090c8c70bed49badd6
-[22/40] soc/qcom: qcom_aoss: Convert to platform remove callback returning void
-        commit: ffbe84a514f863a46a85c1e47b2b6d930b1b463e
-[23/40] soc/qcom: qcom_gsbi: Convert to platform remove callback returning void
-        commit: 57b31729bd2c72b00d400106e18db91e9d95d3c3
-[24/40] soc/qcom: qcom_stats: Convert to platform remove callback returning void
-        commit: a47ff90bf2f93ce4ca99858948a74a0c10a2bc45
-[25/40] soc/qcom: rmtfs_mem: Convert to platform remove callback returning void
-        commit: 7c93da5b8b69d4e4e7270c33ba3206af43930e1d
-[26/40] soc/qcom: smem: Convert to platform remove callback returning void
-        commit: 4b8dee9a34d51a61f60add996fae6a7140a20ae5
-[27/40] soc/qcom: smp2p: Convert to platform remove callback returning void
-        commit: 1cd966c2dc19654ed08c843e5c933db8c1349636
-[28/40] soc/qcom: smsm: Convert to platform remove callback returning void
-        commit: bdd7cc62cf69fe989557445d65d6c8cb2f956518
-[29/40] soc/qcom: socinfo: Convert to platform remove callback returning void
-        commit: c0989f7d1264b2b1885345a28a32fd5e1e61f9c7
+maddy
 
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
+> ---
+>   arch/powerpc/platforms/pseries/iommu.c | 7 ++++---
+>   1 file changed, 4 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+> index 16d93b580f61..d8b4adcef1ad 100644
+> --- a/arch/powerpc/platforms/pseries/iommu.c
+> +++ b/arch/powerpc/platforms/pseries/iommu.c
+> @@ -914,7 +914,8 @@ static int remove_ddw(struct device_node *np, bool remove_prop, const char *win_
+>   	return 0;
+>   }
+>
+> -static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr, int *window_shift)
+> +static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr, int *window_shift,
+> +			      bool *direct_mapping)
+>   {
+>   	struct dma_win *window;
+>   	const struct dynamic_dma_window_prop *dma64;
+> @@ -927,6 +928,7 @@ static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr, int *windo
+>   			dma64 = window->prop;
+>   			*dma_addr = be64_to_cpu(dma64->dma_base);
+>   			*window_shift = be32_to_cpu(dma64->window_shift);
+> +			*direct_mapping = window->direct;
+>   			found = true;
+>   			break;
+>   		}
+> @@ -1270,8 +1272,7 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>
+>   	mutex_lock(&dma_win_init_mutex);
+>
+> -	if (find_existing_ddw(pdn, &dev->dev.archdata.dma_offset, &len)) {
+> -		direct_mapping = (len >= max_ram_len);
+> +	if (find_existing_ddw(pdn, &dev->dev.archdata.dma_offset, &len, &direct_mapping)) {
+>   		goto out_unlock;
+>   	}
+>
