@@ -1,58 +1,162 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEE297B70A5
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Oct 2023 20:18:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF6467B712F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Oct 2023 20:40:41 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PUYvToG+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cEXs0C/L;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S0QzX68Wsz3vkF
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Oct 2023 05:18:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S0RTg5ZmNz3w0L
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Oct 2023 05:40:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PUYvToG+;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cEXs0C/L;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=srs0=fdhd=fr=robh_at_kernel.org=rob@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mgamail.intel.com; envelope-from=sohil.mehta@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S0Qtk5Mg4z3cl3
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Oct 2023 05:13:50 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 3A5A5CE19A1;
-	Tue,  3 Oct 2023 18:13:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 926AEC433CB;
-	Tue,  3 Oct 2023 18:13:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1696356828;
-	bh=udaKZLIi1CYObfyyh2v53zS71KdRSemhW+CCyu9kXBA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PUYvToG+U7U2OxiT4ysgszRljUPkukQ/fqdxB9hKkfSDei+enLQYadxvNhgGgOQna
-	 APg4A2IYpx+9wZHTlmcoLtDUEbLGZs7ttXosCxb6KwNxKogC+XvFFl3EneCkXfATG+
-	 QWfujLLVZ6ooUClk6fvzCec0pSThLKuM0Z09I+4Xx1IERPbD4s9Gvci6HTAdgJ3zqq
-	 wz/iMpZm3DbMnKl6QnucNDsokSNtuMmJ5UG+JrErOk65bw0WBM48hBvD2QHivmsepI
-	 6tuOZWVmibSz5TGLd39DYNHIgqg2BgrsOqeelc6ubCRC1cqP1YCI98nH2PQkX3Qenb
-	 wuGHRfElfflug==
-Received: (nullmailer pid 1020049 invoked by uid 1000);
-	Tue, 03 Oct 2023 18:13:14 -0000
-From: Rob Herring <robh@kernel.org>
-To: Claudiu Beznea <claudiu.beznea@tuxon.dev>, Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, Nicolas Ferre <nicolas.ferre@microchip.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, Peter Rosin <peda@axentia.se>, Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, Lars-Peter Clausen <lars@metafoo.de>, =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, James Schulman <james.schulman@cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, Richard Fitzgerald <rf@opensource.cirrus.com>, Support Opensource <support.opensource@diasemi.com>, Matthias Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>, Baojun Xu <baojun.xu@ti.com>, Oder Chiou <oder_chiou@realtek.com>, Fabio Estevam <festevam@gmail.com>, Kiseok Jo <kiseok.jo@irondevice.com>, Kevin Cernekee <cernekee@chromium.org>, Shengjiu Wang <shengjiu.wang@
- gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, NXP Linux Team <linux-imx@nxp.com>, Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, Banajit Goswami <bgoswami@quicinc.com>, Nicolas Frattaroli <frattaroli.nicolas@gmail.com>, Heiko Stuebner <heiko@sntech.de>, Sylwester Nawrocki <s.nawrocki@samsung.com>, Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, Ban Tao <fengzheng923@gmail.com>, Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, Peter Ujfalusi <peter.ujfalusi@gmail.com>, Jarkko Nikula <jarkko.nikula@bitmer.com>, Cezary Rojewski <cezary.rojewski@intel.com>, Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, Bard Liao <yung-chuan.liao@linux.intel.com>, Ranjani Sridharan <r
- anjani.sridharan@linux.intel.com>, Kai Vehmanen <kai.vehmanen@linux.intel.com>, Olivier Moysan <olivier.moysan@foss.st.com>, Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>
-Subject: [PATCH RESEND 5/5] ASoC: Use device_get_match_data()
-Date: Tue,  3 Oct 2023 13:13:14 -0500
-Message-Id: <20231003-dt-asoc-header-cleanups-v1-5-05b5d6447e5a@kernel.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20231003-dt-asoc-header-cleanups-v1-0-05b5d6447e5a@kernel.org>
-References: <20231003-dt-asoc-header-cleanups-v1-0-05b5d6447e5a@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S0R411CxQz2yVR
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Oct 2023 05:21:50 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1696357313; x=1727893313;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=7oKKf9wStDYbZ/NEty51zTPtDYrBegjyYgNv6LrOOXA=;
+  b=cEXs0C/L+lMkUh9dOz11t+vMewTffPNeMThRARaEzgePeC/2yVI3NZG0
+   Wg0QEEhIn08hPa/W8zIaherXuRosaxP+Y85BgROJoqE918PU+mlJD8Gvb
+   2Elw72u7nfUEJV0+3i3eriJWmfgzYoWFcMd03uAiU0rBj6ckjXELOb5Hj
+   r5wlf/6H4qFtksGzGnt1u/I++RQGD0mbygv4nD7yMN1ekgN+j/xAc5Pza
+   QyYGZKO7iBh74jxWrVEISDl9cYONK2AWhwM5o69fusoEvQ20syqXvaFLu
+   +m/jYNfrXyhktZl6RzMFLCJVsP8b1Lx5fnJXKP3lTF3VIZz5hMe15HQ8P
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10852"; a="381819814"
+X-IronPort-AV: E=Sophos;i="6.03,198,1694761200"; 
+   d="scan'208";a="381819814"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2023 11:21:40 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10852"; a="754547121"
+X-IronPort-AV: E=Sophos;i="6.03,198,1694761200"; 
+   d="scan'208";a="754547121"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+  by fmsmga007.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 03 Oct 2023 11:21:39 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Tue, 3 Oct 2023 11:21:39 -0700
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32 via Frontend Transport; Tue, 3 Oct 2023 11:21:39 -0700
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.173)
+ by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.32; Tue, 3 Oct 2023 11:21:39 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=m0+/E7DtERhUJ/MXLxqTwkD1pjkkKyKpaZo3ExQ6CCNggW5l0jZMdxZLfFYg5MwMVrqWc0MKV6cM/rfedKuU2I9PAYc9WJ8vJPAtSRwVYqdV60rEvV9ThKGUmUQ4UrJUgsG8XKcOCMiKDWOWiu6qA/CVwdwkzmP0/qhYtnWcT1vROAAspfTOGmhsyQoI5vq3MNFHKYuCTQ/qQYI6r9ts5DhIfaECwOArloMql/58lGmdIrM+av+6AY6jceBXizqgnvxNQA3JGm0GHaLXH7ZkfDciN/nDH33KE82ipCcF9eWGvhE8qAw+LKmqqlh2GKv/kG72Fdwaf+Df1hzW/Gd+iA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3L9KYCNjFEswnoGrgnzZKwGg1ekcHIguei2I/Xqd7yI=;
+ b=PIgaEpwNbWWvhafhczP731YcffEuwKIV9SbMmbwwA1hJTSOqrSows3GiGXKg0mY0fOOjmMI+LJmJevaoICGbpBibn35fwWROZr82XAJmVTPfkSeiLI8HyfbFWjli10lcRw5EJQUeJ+bUi1QM8Q4qFVKIBrk/PMVSfA2DV0AX5LG1Z8/wIPqDxlkt7TBqx+6u6+1IEb5n45yeWDh2+LtavXtxQ8j3WlWoAPG+EqYu//xTD+pGtOZ5+CNDc0brc2/ceufiPOamLvrwx4g+x6bVzJLTvWa+MnPuTbGZ/gvn84ivb5i3XSsrWLZhLhJqnjoJO8iNnjsRSKYIQi1kKaKLZA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BYAPR11MB3320.namprd11.prod.outlook.com (2603:10b6:a03:18::25)
+ by CO1PR11MB4770.namprd11.prod.outlook.com (2603:10b6:303:94::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.31; Tue, 3 Oct
+ 2023 18:21:37 +0000
+Received: from BYAPR11MB3320.namprd11.prod.outlook.com
+ ([fe80::5e34:ee45:c5e8:59d0]) by BYAPR11MB3320.namprd11.prod.outlook.com
+ ([fe80::5e34:ee45:c5e8:59d0%7]) with mapi id 15.20.6838.028; Tue, 3 Oct 2023
+ 18:21:36 +0000
+Message-ID: <0af98e18-718a-38e2-20b3-6eb22b1ebabe@intel.com>
+Date: Tue, 3 Oct 2023 11:21:32 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v2] syscalls: Cleanup references to sys_lookup_dcookie()
+Content-Language: en-US
+To: Arnd Bergmann <arnd@arndb.de>, <linux-api@vger.kernel.org>, Linux-Arch
+	<linux-arch@vger.kernel.org>
+References: <20230628230935.1196180-1-sohil.mehta@intel.com>
+ <20230710185124.3848462-1-sohil.mehta@intel.com>
+ <5748f659-4063-0e18-c5d4-941a863d0d93@intel.com>
+ <cdada842-2a7e-5f1d-eea3-3d99b637c26b@intel.com>
+ <ac03a633-5d74-4735-a7bb-0214f54242c9@app.fastmail.com>
+From: Sohil Mehta <sohil.mehta@intel.com>
+In-Reply-To: <ac03a633-5d74-4735-a7bb-0214f54242c9@app.fastmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR03CA0378.namprd03.prod.outlook.com
+ (2603:10b6:a03:3a1::23) To BYAPR11MB3320.namprd11.prod.outlook.com
+ (2603:10b6:a03:18::25)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.13-dev
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BYAPR11MB3320:EE_|CO1PR11MB4770:EE_
+X-MS-Office365-Filtering-Correlation-Id: 05d55efc-729a-4fff-d14e-08dbc43d9489
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: JKjQq76201tigN9ATrU8QWEIyFvpi5QsyPjdWcGY3UbG76rBrvxDnu1dnWdaZvpUoBBlBku9ydxVwvk8dkvyZqa9PwCoUGxKH5hQLjWn1FRdi6wuMQckv0jK8aXHBkQu8fJBT7OFxWs4fdyKauvenaz2dCzO+osHjuPgKlKcjbd+S81+sHHFd63Y62+tkv63wT+tKfmi2ui5OkoKBuvIfcLClkwnfpIgXXsWnJgUrvgIdt/eXQkKWxwrMeA7gZmRfpxBsWJ+3Fof9vJSmM/PoAfytNCG7Pyaa9wt+duAjdpEmbCFGtyk3lCP3gUYvh/3fBiT/iLvo00JM+mclmjMdUjrsAQBhfZT9UjaIRfa1lchHfZT7sVk7C5OxmE7Bk/oj1pfehHryKaiiSMeldQzcJolC73BmtHBYl05zqsn53NtIfeFPXDs++HgrCpEfN8Aenj17dGi/rz6l36t5/SwimeM0MdjtjSuzYRvysyP27umuY4u8/OnUyzk2Vg/Lr4zZOFDouTEJr3aYIILhzezuhhEYUJrXNoln7S0js6fELV1Uj7ppkctbufy3gqkLsTCtpjns6ufVWatSsOJDzPWq0meOUsnMxnFhUR0vFSeEBjYSCTIU6d1wP2MRYjHvOBODvWJqp0gSptnuWpubpWSUQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3320.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(376002)(136003)(366004)(396003)(39860400002)(230922051799003)(64100799003)(186009)(451199024)(1800799009)(66476007)(66556008)(54906003)(66946007)(26005)(110136005)(6512007)(36756003)(83380400001)(38100700002)(6666004)(82960400001)(558084003)(86362001)(31696002)(53546011)(6486002)(316002)(2616005)(478600001)(6506007)(7416002)(7366002)(7406005)(2906002)(31686004)(4326008)(8936002)(8676002)(41300700001)(5660300002)(44832011)(45980500001)(43740500002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NFBVamFiRm5adVFnTldXUjhBU1QvRFExZ2tubFlpTFIxQVBkZG9ENHB1ZVlo?=
+ =?utf-8?B?Mis2TTZnakdmNmxYQ01XTVlqY3ZHaWY2N3F3bG9jUGRBaWR6WTEwTFRKOHlJ?=
+ =?utf-8?B?YzJnV3R1dE0wV3k2TFhSSE01ZEF6RHJ2cGhmMjJ3YlZVR3cwRHorTnJlNElG?=
+ =?utf-8?B?ZWFpdXZObElyNXdUbDlFeTNwa0xXdXhDbkxiVlc3d1FVNVBYVGloZis2SU1P?=
+ =?utf-8?B?SUtvdVRiMnJtQWFUR1FuZWdJOFZiL095OVNvVG9PV1VhZ0EwazExaXJjczZT?=
+ =?utf-8?B?U1V1M3ZvWEE0WDhQaUcvRE4yRWlud2lJTUxZSnhvUTFSellYZ0dvS3BQYjNL?=
+ =?utf-8?B?ZTNuNllIWDQxbTJFNGZBMzg0OXlmbnFWREYwaDQ0QTVBdU93a1JUSlFrQXlr?=
+ =?utf-8?B?My9mZTlmSmNyQW0rNjhuOG9KNHRRRForSDVXeS9jV3VzYlpSTmxBcFV1QnJa?=
+ =?utf-8?B?Q0U2TmtnaEhWbUJsdUhUcGZLc3U1L2JETmVLWGFKVzVZa2phZnZ6VnloS0Jn?=
+ =?utf-8?B?eEJJY05mSnlLL2pyRHdRaWt4VzdOcVV4NEZtd0hQTWJiT2prODdoSmxhUEIz?=
+ =?utf-8?B?d25OVnFWeXVQSDN6SkJXM1pLdjBRK1luR25vV24zTHg5d1AzOXRQQ1VWTGQ1?=
+ =?utf-8?B?K2NtZWRCTHgzcDNBTEowVEpYNjhZQWFyWmxaWWZOMGtkbllGaGh0MUtyRjdI?=
+ =?utf-8?B?UTZaTDByWDVPcmpMRUN2QjN6YjV3OFYzWWxYYmRlQ1N3bG1tZk95OGsrZEJE?=
+ =?utf-8?B?NVNRM1lzSWJqaUVZQTFoWWZXMVR5ZHhxVC8xNFBTVG5DRmtqc2VzUGNUME1V?=
+ =?utf-8?B?VTlEcmhYa1Vya0JvMWk3N3QycXpjRjlTbmhFZWlDWXVhVHRGWVBMTW53Mklp?=
+ =?utf-8?B?RTdyeHVlUEJMVnpuTGQzMWJhL0NPSjZnY0NuRGp3YlVWMVpDVElQT3lzS0g5?=
+ =?utf-8?B?dW1BbFhFb1c3SlhhVnZoYngyMWZxV2FReEZSS2M4MXZaVmlGeXRiQ2tPbkkv?=
+ =?utf-8?B?bnBGRks5eDdvcnZNNjRTSVk4cWRxakdEcy9IWTRQOHVyaVQ1cytoMnlhaisx?=
+ =?utf-8?B?dkt4YXFacklseENPTkhDRzcwd1dXTDBReURYZ0NkaWRFVHJhVzBBaDhpdnM1?=
+ =?utf-8?B?TWFPTzVXVWljaS9KcWRrRlRsT01RZ1ZpUkx0VHc2bHVTM3JrUFZDb3BtUmRi?=
+ =?utf-8?B?MTN0c3Q4VEZLL1I1Q0p2YVRkMGR4RVE4aTRMdnkvM2VGWEpESjQ3WWpHVjdU?=
+ =?utf-8?B?M0cxWkNVWHBQdlp2NkdmKzJac2ZSZk9CNDZTanlEM2ZDZGJ6a2VteHFGVkdT?=
+ =?utf-8?B?aExaL0FnME52VUZKNkFDeEloQ2xkbVNzNWV1dE45WUlnZWx4WFZJWWljSnlF?=
+ =?utf-8?B?V2R3K0RhdnFwTjMzMnczK3N2Y0FRTlVNVDNzdm5hbnNWcWs2TitybEdhajgr?=
+ =?utf-8?B?LzRtek83d3RxZnJ3QmVhZzNnc1pTTjd4NGtSWmlIWFhKT0tYY0xjaUx2VDc5?=
+ =?utf-8?B?c0VOMnRGMHlDRGo2MXIrOGZZM25rS25SZ091R2plZi9yam11cEFURWRaR0Zs?=
+ =?utf-8?B?NVZEY2dRTjhhblhzTjcrOEc3UFQybmFZaXpFOXdtVFV4M0taeHNiMDBZTzhr?=
+ =?utf-8?B?NTZnRzJZdFFzVWVBVkRPakRJTC9BVnZ1Q0JvaWpxdGFtbjFYQWxwZmU4Y08z?=
+ =?utf-8?B?elNaL0VJQ0R1cFZiTVoxWnpUbnA2YzVDSXBOL3ZadTcxejRtWERCVFRXWlZ5?=
+ =?utf-8?B?NFlNSzZkcHAvdVJMd05GS1JqdDhHVjZHWHRaYTYzUTBjSnorblI0TlFLMmRE?=
+ =?utf-8?B?UU44eTluU01iMDg0WUJoVnFQVVhNdUF2NmRsbCtPM01UL3N0bjJGZmhKNXla?=
+ =?utf-8?B?VXdyZXVEY3c1SEVlRmNNMWk1SG5NTUJVV2wzc29QcURtbkYvOXV5UDM3ZE5V?=
+ =?utf-8?B?Ri9jV3VrMktIUEs1bFJXQzQrR1dQTng4dU1JaTJIZkNBa0FWSldzV0NZRSs3?=
+ =?utf-8?B?MWJGSUNkY0xJclBZWlg4bzN5K0ExMjdXOGlnbXV4WnN1WXcxN0NHV1l3N0VM?=
+ =?utf-8?B?MmhqR1NzSlY1UkxrYVY1QUlMTW04dGxVSWFhN0tLMTBwZ0dOY2lvRFhuSjd4?=
+ =?utf-8?Q?9y/BANc7hR256Wnj8el9fWpQE?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 05d55efc-729a-4fff-d14e-08dbc43d9489
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB3320.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Oct 2023 18:21:36.8607
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nESPZxay6vXiX7BD2O3E12nXGPQy5SS/4jVZaz/+XPQsyI/G+a4PUU8dudZdoDA2CsN3o59pWmGuyVASG3vZrg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4770
+X-OriginatorOrg: intel.com
+X-Mailman-Approved-At: Wed, 04 Oct 2023 05:32:24 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,548 +168,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: patches@opensource.cirrus.com, alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Mark Rutland <mark.rutland@arm.com>, Ian Rogers <irogers@google.com>, Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>, Max
+ Filippov <jcmvbkbc@gmail.com>, Andreas Schwab <schwab@linux-m68k.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will
+ Deacon <will@kernel.org>, linux-s390@vger.kernel.org, "Eric W. Biederman" <ebiederm@xmission.com>, Yoshinori
+ Sato <ysato@users.sourceforge.jp>, Helge
+ Deller <deller@gmx.de>, x86@kernel.org, Russell King <linux@armlinux.org.uk>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>, Lukas Bulwahn <lukas.bulwahn@gmail.com>, Matt Turner <mattst88@gmail.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Sergei Trofimovich <slyich@gmail.com>, Vasily Gorbik <gor@linux.ibm.com>, Brian Gerst <brgerst@gmail.com>, Heiko Carstens <hca@linux.ibm.com>, Richard Henderson <richard.henderson@linaro.org>, Nicholas
+ Piggin <npiggin@gmail.com>, linux-mips@vger.kernel.org, Rohan McLure <rmclure@linux.ibm.com>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Arnaldo Carvalho de Melo <acme@kernel.org>, Andy Lutomirski <luto@kernel.org>, John Paul
+ Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>, Michal
+ Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-m68k@lists.linux-m68k.org, Randy Dunlap <rdunlap@infradead.org>, Adrian Hunter <adrian.hunter@intel.com>, linux-perf-users@vger.kernel.org, Sven Schnelle <svens@linux.ibm.com>, Jiri Olsa <jolsa@kernel.org>, linux-alpha@vger.kernel.org, Borislav Petkov <bp@alien8.de>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use preferred device_get_match_data() instead of of_match_device() to
-get the driver match data. With this, adjust the includes to explicitly
-include the correct headers.
+On 10/3/2023 10:53 AM, Arnd Bergmann wrote:
+> Thanks a lot for the reminder, I've added it to my asm-generic
+> branch for v6.7 now, it should be in linux-next tomorrow.
+> 
 
-Signed-off-by: Rob Herring <robh@kernel.org>
----
- sound/soc/intel/keembay/kmb_platform.c | 13 +------------
- sound/soc/qcom/lpass-cpu.c             | 15 +++++----------
- sound/soc/rockchip/rockchip_i2s.c      |  8 +++-----
- sound/soc/rockchip/rockchip_i2s_tdm.c  | 20 +++++++-------------
- sound/soc/rockchip/rockchip_pdm.c      |  6 +-----
- sound/soc/samsung/smdk_wm8994.c        | 27 +++------------------------
- sound/soc/stm/stm32_i2s.c              |  7 ++-----
- sound/soc/stm/stm32_sai.c              |  8 ++++----
- sound/soc/stm/stm32_sai_sub.c          |  6 +-----
- sound/soc/stm/stm32_spdifrx.c          |  8 ++------
- sound/soc/tegra/tegra210_amx.c         |  7 +------
- sound/soc/ti/davinci-evm.c             |  7 ++-----
- sound/soc/ti/davinci-mcasp.c           |  9 ++++-----
- sound/soc/ti/omap-mcbsp.c              | 10 ++++------
- 14 files changed, 40 insertions(+), 111 deletions(-)
+No problem at all. Thanks for picking up the patch!
 
-diff --git a/sound/soc/intel/keembay/kmb_platform.c b/sound/soc/intel/keembay/kmb_platform.c
-index e929497a5eb5..37ea2e1d2e92 100644
---- a/sound/soc/intel/keembay/kmb_platform.c
-+++ b/sound/soc/intel/keembay/kmb_platform.c
-@@ -11,7 +11,6 @@
- #include <linux/io.h>
- #include <linux/module.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
- #include <sound/dmaengine_pcm.h>
- #include <sound/pcm.h>
- #include <sound/pcm_params.h>
-@@ -820,7 +819,6 @@ static int kmb_plat_dai_probe(struct platform_device *pdev)
- {
- 	struct device_node *np = pdev->dev.of_node;
- 	struct snd_soc_dai_driver *kmb_i2s_dai;
--	const struct of_device_id *match;
- 	struct device *dev = &pdev->dev;
- 	struct kmb_i2s_info *kmb_i2s;
- 	struct resource *res;
-@@ -831,16 +829,7 @@ static int kmb_plat_dai_probe(struct platform_device *pdev)
- 	if (!kmb_i2s)
- 		return -ENOMEM;
- 
--	kmb_i2s_dai = devm_kzalloc(dev, sizeof(*kmb_i2s_dai), GFP_KERNEL);
--	if (!kmb_i2s_dai)
--		return -ENOMEM;
--
--	match = of_match_device(kmb_plat_of_match, &pdev->dev);
--	if (!match) {
--		dev_err(&pdev->dev, "Error: No device match found\n");
--		return -ENODEV;
--	}
--	kmb_i2s_dai = (struct snd_soc_dai_driver *) match->data;
-+	kmb_i2s_dai = (struct snd_soc_dai_driver *)device_get_match_data(&pdev->dev);
- 
- 	/* Prepare the related clocks */
- 	kmb_i2s->clk_apb = devm_clk_get(dev, "apb_clk");
-diff --git a/sound/soc/qcom/lpass-cpu.c b/sound/soc/qcom/lpass-cpu.c
-index 18aff2654f89..ac0feb89b458 100644
---- a/sound/soc/qcom/lpass-cpu.c
-+++ b/sound/soc/qcom/lpass-cpu.c
-@@ -9,7 +9,6 @@
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
- #include <linux/platform_device.h>
- #include <sound/pcm.h>
- #include <sound/pcm_params.h>
-@@ -1106,7 +1105,6 @@ int asoc_qcom_lpass_cpu_platform_probe(struct platform_device *pdev)
- 	struct resource *res;
- 	const struct lpass_variant *variant;
- 	struct device *dev = &pdev->dev;
--	const struct of_device_id *match;
- 	int ret, i, dai_id;
- 
- 	dsp_of_node = of_parse_phandle(pdev->dev.of_node, "qcom,adsp", 0);
-@@ -1121,17 +1119,14 @@ int asoc_qcom_lpass_cpu_platform_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 	platform_set_drvdata(pdev, drvdata);
- 
--	match = of_match_device(dev->driver->of_match_table, dev);
--	if (!match || !match->data)
-+	variant = device_get_match_data(dev);
-+	if (!variant)
- 		return -EINVAL;
- 
--	if (of_device_is_compatible(dev->of_node, "qcom,lpass-cpu-apq8016")) {
--		dev_warn(dev, "%s compatible is deprecated\n",
--			 match->compatible);
--	}
-+	if (of_device_is_compatible(dev->of_node, "qcom,lpass-cpu-apq8016"))
-+		dev_warn(dev, "qcom,lpass-cpu-apq8016 compatible is deprecated\n");
- 
--	drvdata->variant = (struct lpass_variant *)match->data;
--	variant = drvdata->variant;
-+	drvdata->variant = variant;
- 
- 	of_lpass_cpu_parse_dai_data(dev, drvdata);
- 
-diff --git a/sound/soc/rockchip/rockchip_i2s.c b/sound/soc/rockchip/rockchip_i2s.c
-index 74e7d6ee0f28..b0c3ef030e06 100644
---- a/sound/soc/rockchip/rockchip_i2s.c
-+++ b/sound/soc/rockchip/rockchip_i2s.c
-@@ -10,8 +10,8 @@
- #include <linux/module.h>
- #include <linux/mfd/syscon.h>
- #include <linux/delay.h>
-+#include <linux/of.h>
- #include <linux/of_gpio.h>
--#include <linux/of_device.h>
- #include <linux/clk.h>
- #include <linux/pinctrl/consumer.h>
- #include <linux/pm_runtime.h>
-@@ -736,7 +736,6 @@ static int rockchip_i2s_init_dai(struct rk_i2s_dev *i2s, struct resource *res,
- static int rockchip_i2s_probe(struct platform_device *pdev)
- {
- 	struct device_node *node = pdev->dev.of_node;
--	const struct of_device_id *of_id;
- 	struct rk_i2s_dev *i2s;
- 	struct snd_soc_dai_driver *dai;
- 	struct resource *res;
-@@ -752,11 +751,10 @@ static int rockchip_i2s_probe(struct platform_device *pdev)
- 
- 	i2s->grf = syscon_regmap_lookup_by_phandle(node, "rockchip,grf");
- 	if (!IS_ERR(i2s->grf)) {
--		of_id = of_match_device(rockchip_i2s_match, &pdev->dev);
--		if (!of_id || !of_id->data)
-+		i2s->pins = device_get_match_data(&pdev->dev);
-+		if (!i2s->pins)
- 			return -EINVAL;
- 
--		i2s->pins = of_id->data;
- 	}
- 
- 	/* try to prepare related clocks */
-diff --git a/sound/soc/rockchip/rockchip_i2s_tdm.c b/sound/soc/rockchip/rockchip_i2s_tdm.c
-index 111740166449..7e996550d1df 100644
---- a/sound/soc/rockchip/rockchip_i2s_tdm.c
-+++ b/sound/soc/rockchip/rockchip_i2s_tdm.c
-@@ -73,7 +73,7 @@ struct rk_i2s_tdm_dev {
- 	struct snd_dmaengine_dai_dma_data playback_dma_data;
- 	struct reset_control *tx_reset;
- 	struct reset_control *rx_reset;
--	struct rk_i2s_soc_data *soc_data;
-+	const struct rk_i2s_soc_data *soc_data;
- 	bool is_master_mode;
- 	bool io_multiplex;
- 	bool mclk_calibrate;
-@@ -1275,21 +1275,21 @@ static const struct txrx_config rv1126_txrx_config[] = {
- 	{ 0xff800000, 0x10260, RV1126_I2S0_CLK_TXONLY, RV1126_I2S0_CLK_RXONLY },
- };
- 
--static struct rk_i2s_soc_data px30_i2s_soc_data = {
-+static const struct rk_i2s_soc_data px30_i2s_soc_data = {
- 	.softrst_offset = 0x0300,
- 	.configs = px30_txrx_config,
- 	.config_count = ARRAY_SIZE(px30_txrx_config),
- 	.init = common_soc_init,
- };
- 
--static struct rk_i2s_soc_data rk1808_i2s_soc_data = {
-+static const struct rk_i2s_soc_data rk1808_i2s_soc_data = {
- 	.softrst_offset = 0x0300,
- 	.configs = rk1808_txrx_config,
- 	.config_count = ARRAY_SIZE(rk1808_txrx_config),
- 	.init = common_soc_init,
- };
- 
--static struct rk_i2s_soc_data rk3308_i2s_soc_data = {
-+static const struct rk_i2s_soc_data rk3308_i2s_soc_data = {
- 	.softrst_offset = 0x0400,
- 	.grf_reg_offset = 0x0308,
- 	.grf_shift = 5,
-@@ -1298,14 +1298,14 @@ static struct rk_i2s_soc_data rk3308_i2s_soc_data = {
- 	.init = common_soc_init,
- };
- 
--static struct rk_i2s_soc_data rk3568_i2s_soc_data = {
-+static const struct rk_i2s_soc_data rk3568_i2s_soc_data = {
- 	.softrst_offset = 0x0400,
- 	.configs = rk3568_txrx_config,
- 	.config_count = ARRAY_SIZE(rk3568_txrx_config),
- 	.init = common_soc_init,
- };
- 
--static struct rk_i2s_soc_data rv1126_i2s_soc_data = {
-+static const struct rk_i2s_soc_data rv1126_i2s_soc_data = {
- 	.softrst_offset = 0x0300,
- 	.configs = rv1126_txrx_config,
- 	.config_count = ARRAY_SIZE(rv1126_txrx_config),
-@@ -1542,7 +1542,6 @@ static int rockchip_i2s_tdm_rx_path_prepare(struct rk_i2s_tdm_dev *i2s_tdm,
- static int rockchip_i2s_tdm_probe(struct platform_device *pdev)
- {
- 	struct device_node *node = pdev->dev.of_node;
--	const struct of_device_id *of_id;
- 	struct rk_i2s_tdm_dev *i2s_tdm;
- 	struct resource *res;
- 	void __iomem *regs;
-@@ -1554,13 +1553,8 @@ static int rockchip_i2s_tdm_probe(struct platform_device *pdev)
- 
- 	i2s_tdm->dev = &pdev->dev;
- 
--	of_id = of_match_device(rockchip_i2s_tdm_match, &pdev->dev);
--	if (!of_id)
--		return -EINVAL;
--
- 	spin_lock_init(&i2s_tdm->lock);
--	i2s_tdm->soc_data = (struct rk_i2s_soc_data *)of_id->data;
--
-+	i2s_tdm->soc_data = device_get_match_data(&pdev->dev);
- 	i2s_tdm->frame_width = 64;
- 
- 	i2s_tdm->clk_trcm = TRCM_TXRX;
-diff --git a/sound/soc/rockchip/rockchip_pdm.c b/sound/soc/rockchip/rockchip_pdm.c
-index 93048ed937e4..d16a4a67a6a2 100644
---- a/sound/soc/rockchip/rockchip_pdm.c
-+++ b/sound/soc/rockchip/rockchip_pdm.c
-@@ -571,7 +571,6 @@ static int rockchip_pdm_path_parse(struct rk_pdm_dev *pdm, struct device_node *n
- static int rockchip_pdm_probe(struct platform_device *pdev)
- {
- 	struct device_node *node = pdev->dev.of_node;
--	const struct of_device_id *match;
- 	struct rk_pdm_dev *pdm;
- 	struct resource *res;
- 	void __iomem *regs;
-@@ -581,10 +580,7 @@ static int rockchip_pdm_probe(struct platform_device *pdev)
- 	if (!pdm)
- 		return -ENOMEM;
- 
--	match = of_match_device(rockchip_pdm_match, &pdev->dev);
--	if (match)
--		pdm->version = (uintptr_t)match->data;
--
-+	pdm->version = (enum rk_pdm_version)device_get_match_data(&pdev->dev);
- 	if (pdm->version == RK_PDM_RK3308) {
- 		pdm->reset = devm_reset_control_get(&pdev->dev, "pdm-m");
- 		if (IS_ERR(pdm->reset))
-diff --git a/sound/soc/samsung/smdk_wm8994.c b/sound/soc/samsung/smdk_wm8994.c
-index 271735253425..def92cc09f9c 100644
---- a/sound/soc/samsung/smdk_wm8994.c
-+++ b/sound/soc/samsung/smdk_wm8994.c
-@@ -31,15 +31,6 @@
- /* SMDK has a 16.934MHZ crystal attached to WM8994 */
- #define SMDK_WM8994_FREQ 16934000
- 
--struct smdk_wm8994_data {
--	int mclk1_rate;
--};
--
--/* Default SMDKs */
--static struct smdk_wm8994_data smdk_board_data = {
--	.mclk1_rate = SMDK_WM8994_FREQ,
--};
--
- static int smdk_hw_params(struct snd_pcm_substream *substream,
- 	struct snd_pcm_hw_params *params)
- {
-@@ -135,8 +126,8 @@ static struct snd_soc_card smdk = {
- 	.num_links = ARRAY_SIZE(smdk_dai),
- };
- 
--static const struct of_device_id samsung_wm8994_of_match[] __maybe_unused = {
--	{ .compatible = "samsung,smdk-wm8994", .data = &smdk_board_data },
-+static const struct of_device_id samsung_wm8994_of_match[] = {
-+	{ .compatible = "samsung,smdk-wm8994" },
- 	{},
- };
- MODULE_DEVICE_TABLE(of, samsung_wm8994_of_match);
-@@ -146,15 +137,9 @@ static int smdk_audio_probe(struct platform_device *pdev)
- 	int ret;
- 	struct device_node *np = pdev->dev.of_node;
- 	struct snd_soc_card *card = &smdk;
--	struct smdk_wm8994_data *board;
--	const struct of_device_id *id;
- 
- 	card->dev = &pdev->dev;
- 
--	board = devm_kzalloc(&pdev->dev, sizeof(*board), GFP_KERNEL);
--	if (!board)
--		return -ENOMEM;
--
- 	if (np) {
- 		smdk_dai[0].cpus->dai_name = NULL;
- 		smdk_dai[0].cpus->of_node = of_parse_phandle(np,
-@@ -170,12 +155,6 @@ static int smdk_audio_probe(struct platform_device *pdev)
- 		smdk_dai[0].platforms->of_node = smdk_dai[0].cpus->of_node;
- 	}
- 
--	id = of_match_device(samsung_wm8994_of_match, &pdev->dev);
--	if (id)
--		*board = *((struct smdk_wm8994_data *)id->data);
--
--	platform_set_drvdata(pdev, board);
--
- 	ret = devm_snd_soc_register_card(&pdev->dev, card);
- 
- 	if (ret)
-@@ -187,7 +166,7 @@ static int smdk_audio_probe(struct platform_device *pdev)
- static struct platform_driver smdk_audio_driver = {
- 	.driver		= {
- 		.name	= "smdk-audio-wm8994",
--		.of_match_table = of_match_ptr(samsung_wm8994_of_match),
-+		.of_match_table = samsung_wm8994_of_match,
- 		.pm	= &snd_soc_pm_ops,
- 	},
- 	.probe		= smdk_audio_probe,
-diff --git a/sound/soc/stm/stm32_i2s.c b/sound/soc/stm/stm32_i2s.c
-index 06a42130f5e4..46098e111142 100644
---- a/sound/soc/stm/stm32_i2s.c
-+++ b/sound/soc/stm/stm32_i2s.c
-@@ -1024,7 +1024,6 @@ static int stm32_i2s_parse_dt(struct platform_device *pdev,
- 			      struct stm32_i2s_data *i2s)
- {
- 	struct device_node *np = pdev->dev.of_node;
--	const struct of_device_id *of_id;
- 	struct reset_control *rst;
- 	struct resource *res;
- 	int irq, ret;
-@@ -1032,10 +1031,8 @@ static int stm32_i2s_parse_dt(struct platform_device *pdev,
- 	if (!np)
- 		return -ENODEV;
- 
--	of_id = of_match_device(stm32_i2s_ids, &pdev->dev);
--	if (of_id)
--		i2s->regmap_conf = (const struct regmap_config *)of_id->data;
--	else
-+	i2s->regmap_conf = device_get_match_data(&pdev->dev);
-+	if (!i2s->regmap_conf)
- 		return -EINVAL;
- 
- 	i2s->base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
-diff --git a/sound/soc/stm/stm32_sai.c b/sound/soc/stm/stm32_sai.c
-index 8e21e6f886fc..b45ee7e24f22 100644
---- a/sound/soc/stm/stm32_sai.c
-+++ b/sound/soc/stm/stm32_sai.c
-@@ -151,8 +151,8 @@ static int stm32_sai_set_sync(struct stm32_sai_data *sai_client,
- static int stm32_sai_probe(struct platform_device *pdev)
- {
- 	struct stm32_sai_data *sai;
-+	const struct stm32_sai_conf *conf;
- 	struct reset_control *rst;
--	const struct of_device_id *of_id;
- 	u32 val;
- 	int ret;
- 
-@@ -164,9 +164,9 @@ static int stm32_sai_probe(struct platform_device *pdev)
- 	if (IS_ERR(sai->base))
- 		return PTR_ERR(sai->base);
- 
--	of_id = of_match_device(stm32_sai_ids, &pdev->dev);
--	if (of_id)
--		memcpy(&sai->conf, (const struct stm32_sai_conf *)of_id->data,
-+	conf = device_get_match_data(&pdev->dev);
-+	if (conf)
-+		memcpy(&sai->conf, (const struct stm32_sai_conf *)conf,
- 		       sizeof(struct stm32_sai_conf));
- 	else
- 		return -EINVAL;
-diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
-index 8bcb98d9b64e..ad2492efb1cd 100644
---- a/sound/soc/stm/stm32_sai_sub.c
-+++ b/sound/soc/stm/stm32_sai_sub.c
-@@ -1506,7 +1506,6 @@ static int stm32_sai_sub_parse_of(struct platform_device *pdev,
- static int stm32_sai_sub_probe(struct platform_device *pdev)
- {
- 	struct stm32_sai_sub_data *sai;
--	const struct of_device_id *of_id;
- 	const struct snd_dmaengine_pcm_config *conf = &stm32_sai_pcm_config;
- 	int ret;
- 
-@@ -1514,10 +1513,7 @@ static int stm32_sai_sub_probe(struct platform_device *pdev)
- 	if (!sai)
- 		return -ENOMEM;
- 
--	of_id = of_match_device(stm32_sai_sub_ids, &pdev->dev);
--	if (!of_id)
--		return -EINVAL;
--	sai->id = (uintptr_t)of_id->data;
-+	sai->id = (uintptr_t)device_get_match_data(&pdev->dev);
- 
- 	sai->pdev = pdev;
- 	mutex_init(&sai->ctrl_lock);
-diff --git a/sound/soc/stm/stm32_spdifrx.c b/sound/soc/stm/stm32_spdifrx.c
-index a359b528b26b..9eed3c57e3f1 100644
---- a/sound/soc/stm/stm32_spdifrx.c
-+++ b/sound/soc/stm/stm32_spdifrx.c
-@@ -908,17 +908,13 @@ static int stm32_spdifrx_parse_of(struct platform_device *pdev,
- 				  struct stm32_spdifrx_data *spdifrx)
- {
- 	struct device_node *np = pdev->dev.of_node;
--	const struct of_device_id *of_id;
- 	struct resource *res;
- 
- 	if (!np)
- 		return -ENODEV;
- 
--	of_id = of_match_device(stm32_spdifrx_ids, &pdev->dev);
--	if (of_id)
--		spdifrx->regmap_conf =
--			(const struct regmap_config *)of_id->data;
--	else
-+	spdifrx->regmap_conf = device_get_match_data(&pdev->dev);
-+	if (!spdifrx->regmap_conf)
- 		return -EINVAL;
- 
- 	spdifrx->base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
-diff --git a/sound/soc/tegra/tegra210_amx.c b/sound/soc/tegra/tegra210_amx.c
-index 95816f6007bd..dd1a2c77c6ea 100644
---- a/sound/soc/tegra/tegra210_amx.c
-+++ b/sound/soc/tegra/tegra210_amx.c
-@@ -535,18 +535,13 @@ static int tegra210_amx_platform_probe(struct platform_device *pdev)
- 	struct tegra210_amx *amx;
- 	void __iomem *regs;
- 	int err;
--	const struct of_device_id *match;
- 	struct tegra210_amx_soc_data *soc_data;
- 
--	match = of_match_device(tegra210_amx_of_match, dev);
--
--	soc_data = (struct tegra210_amx_soc_data *)match->data;
--
- 	amx = devm_kzalloc(dev, sizeof(*amx), GFP_KERNEL);
- 	if (!amx)
- 		return -ENOMEM;
- 
--	amx->soc_data = soc_data;
-+	amx->soc_data = device_get_match_data(dev);
- 
- 	dev_set_drvdata(dev, amx);
- 
-diff --git a/sound/soc/ti/davinci-evm.c b/sound/soc/ti/davinci-evm.c
-index ae7fdd761a7a..1bf333d2740d 100644
---- a/sound/soc/ti/davinci-evm.c
-+++ b/sound/soc/ti/davinci-evm.c
-@@ -175,20 +175,17 @@ static struct snd_soc_card evm_soc_card = {
- static int davinci_evm_probe(struct platform_device *pdev)
- {
- 	struct device_node *np = pdev->dev.of_node;
--	const struct of_device_id *match;
- 	struct snd_soc_dai_link *dai;
- 	struct snd_soc_card_drvdata_davinci *drvdata = NULL;
- 	struct clk *mclk;
- 	int ret = 0;
- 
--	match = of_match_device(of_match_ptr(davinci_evm_dt_ids), &pdev->dev);
--	if (!match) {
-+	dai = (struct snd_soc_dai_link *) device_get_match_data(&pdev->dev);
-+	if (!dai) {
- 		dev_err(&pdev->dev, "Error: No device match found\n");
- 		return -ENODEV;
- 	}
- 
--	dai = (struct snd_soc_dai_link *) match->data;
--
- 	evm_soc_card.dai_link = dai;
- 
- 	dai->codecs->of_node = of_parse_phandle(np, "ti,audio-codec", 0);
-diff --git a/sound/soc/ti/davinci-mcasp.c b/sound/soc/ti/davinci-mcasp.c
-index 7e7d665a5504..b892d66f7847 100644
---- a/sound/soc/ti/davinci-mcasp.c
-+++ b/sound/soc/ti/davinci-mcasp.c
-@@ -21,8 +21,6 @@
- #include <linux/clk.h>
- #include <linux/pm_runtime.h>
- #include <linux/of.h>
--#include <linux/of_platform.h>
--#include <linux/of_device.h>
- #include <linux/platform_data/davinci_asp.h>
- #include <linux/math64.h>
- #include <linux/bitmap.h>
-@@ -1882,9 +1880,10 @@ static bool davinci_mcasp_have_gpiochip(struct davinci_mcasp *mcasp)
- static int davinci_mcasp_get_config(struct davinci_mcasp *mcasp,
- 				    struct platform_device *pdev)
- {
--	const struct of_device_id *match = of_match_device(mcasp_dt_ids, &pdev->dev);
- 	struct device_node *np = pdev->dev.of_node;
- 	struct davinci_mcasp_pdata *pdata = NULL;
-+	const struct davinci_mcasp_pdata *match_pdata =
-+		device_get_match_data(&pdev->dev);
- 	const u32 *of_serial_dir32;
- 	u32 val;
- 	int i;
-@@ -1893,8 +1892,8 @@ static int davinci_mcasp_get_config(struct davinci_mcasp *mcasp,
- 		pdata = pdev->dev.platform_data;
- 		pdata->dismod = DISMOD_LOW;
- 		goto out;
--	} else if (match) {
--		pdata = devm_kmemdup(&pdev->dev, match->data, sizeof(*pdata),
-+	} else if (match_pdata) {
-+		pdata = devm_kmemdup(&pdev->dev, match_pdata, sizeof(*pdata),
- 				     GFP_KERNEL);
- 		if (!pdata)
- 			return -ENOMEM;
-diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
-index bfe51221f541..7643a54592f5 100644
---- a/sound/soc/ti/omap-mcbsp.c
-+++ b/sound/soc/ti/omap-mcbsp.c
-@@ -13,7 +13,6 @@
- #include <linux/device.h>
- #include <linux/pm_runtime.h>
- #include <linux/of.h>
--#include <linux/of_device.h>
- #include <sound/core.h>
- #include <sound/pcm.h>
- #include <sound/pcm_params.h>
-@@ -1360,23 +1359,22 @@ MODULE_DEVICE_TABLE(of, omap_mcbsp_of_match);
- static int asoc_mcbsp_probe(struct platform_device *pdev)
- {
- 	struct omap_mcbsp_platform_data *pdata = dev_get_platdata(&pdev->dev);
-+	const struct omap_mcbsp_platform_data *match_pdata =
-+		device_get_match_data(&pdev->dev);
- 	struct omap_mcbsp *mcbsp;
--	const struct of_device_id *match;
- 	int ret;
- 
--	match = of_match_device(omap_mcbsp_of_match, &pdev->dev);
--	if (match) {
-+	if (match_pdata) {
- 		struct device_node *node = pdev->dev.of_node;
- 		struct omap_mcbsp_platform_data *pdata_quirk = pdata;
- 		int buffer_size;
- 
--		pdata = devm_kzalloc(&pdev->dev,
-+		pdata = devm_kmemdup(&pdev->dev, match_pdata,
- 				     sizeof(struct omap_mcbsp_platform_data),
- 				     GFP_KERNEL);
- 		if (!pdata)
- 			return -ENOMEM;
- 
--		memcpy(pdata, match->data, sizeof(*pdata));
- 		if (!of_property_read_u32(node, "ti,buffer-size", &buffer_size))
- 			pdata->buffer_size = buffer_size;
- 		if (pdata_quirk)
-
--- 
-2.40.1
-
+Sohil
