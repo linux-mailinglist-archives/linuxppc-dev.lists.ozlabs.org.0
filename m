@@ -1,71 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8974D7B60F1
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Oct 2023 08:46:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20BE87B60F3
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Oct 2023 08:47:57 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=MnCuCkWb;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=n4ICHowB;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S07f83Sx6z3vY3
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Oct 2023 17:46:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S07gG3nmYz3cNV
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Oct 2023 17:47:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=MnCuCkWb;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=n4ICHowB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::52b; helo=mail-ed1-x52b.google.com; envelope-from=edumazet@google.com; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S05mF2ddjz30fd
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Oct 2023 16:22:03 +1100 (AEDT)
-Received: by mail-ed1-x52b.google.com with SMTP id 4fb4d7f45d1cf-537f07dfe8eso5243a12.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Oct 2023 22:22:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1696310518; x=1696915318; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XqpR6B8+nR6pcymfGZfMhsWiKXO7OC+lMbowiW4LVxc=;
-        b=MnCuCkWbnATrS/TN62x1vlkxql5XT5aUknpQiI2ufsQLvNy/QZ9Hv+75H/s1aslJyp
-         926kByvrzahClh9w1IE5z2wgs2u+YN6qk0cYTgBudJs5G+J2eER4eth5ueiSrhxtaVyg
-         4G+uhUOqX7GFkW4z3xPRlpqNnfDKHawEo5ZwUs9oa+Wr83HKUFVRDnB40MEVowWCsnJa
-         j0YmYjD8NVAP86bygWwRXWevOMnshz/f3poy61Zs1sftOT2fETPgzD5P/QFA6q68s/AQ
-         EjrgSNSAZEd3j3/3ZRGuzI39Qy3tb0of5iEDhiPczpNZ4TaxklCMOYLwhrSrYyfWjIC+
-         wZ6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696310518; x=1696915318;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XqpR6B8+nR6pcymfGZfMhsWiKXO7OC+lMbowiW4LVxc=;
-        b=ej8giI46LkM+rPDVcy2EA3K5pAt06cPty9wrMC2JylxUXS0DODLBOa9fBzirGvjbHy
-         IYwsBY+9jf0qgf0C5dmeTkFWZ6eLE/oNFuNoIr2M2GfP/UIoBIbIpcSBCzoYgW2UFvuu
-         yrhUyH5ZQj2KvaJoiCbO1Gn+zvr53QgTATbSAeq4A1XCMm4a6oFdcCcFG8rnJpxNa3UG
-         25IyU2XOYTskGnOmyOZO51kNiA3lkG5ompisZiPFRZsmVCfZhFC7TophwpTuiphxCq4F
-         NdK3BDjyML66w3jJhXdnN+KRlby8dNo02J3tf1hX7JwPdGNVsyeW4o10X6oO8KHTSOdG
-         s7Jw==
-X-Gm-Message-State: AOJu0YzTwUaaN2aTgAxuTEWlgXmoWnf1ffTEGaQAMf8dlDmuyKlCQ8d9
-	bjA90pG77+N5mM486iLCQeAMP50voYNfqALLo/CQcw==
-X-Google-Smtp-Source: AGHT+IFKI0HKrYVLDl5vmsJpfAS1RFLGp2hw35YvLJzj9lzKha+Fza93n9nqgIQgLugkI+eoDblKihBS9oaXtRjP+8s=
-X-Received: by 2002:a50:d4d7:0:b0:538:1d3b:172f with SMTP id
- e23-20020a50d4d7000000b005381d3b172fmr49263edj.3.1696310517644; Mon, 02 Oct
- 2023 22:21:57 -0700 (PDT)
-MIME-Version: 1.0
-References: <20231002151023.4054-1-ansuelsmth@gmail.com> <20231002151023.4054-2-ansuelsmth@gmail.com>
-In-Reply-To: <20231002151023.4054-2-ansuelsmth@gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 3 Oct 2023 07:21:46 +0200
-Message-ID: <CANn89i+eSWYuE=wE1TPJFtAS1OCfFYytC_nAjDWkizxmR9e6JQ@mail.gmail.com>
-Subject: Re: [net-next PATCH 2/4] netdev: make napi_schedule return bool on
- NAPI successful schedule
-To: Christian Marangi <ansuelsmth@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S07fQ0HXgz3cP5
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Oct 2023 17:47:09 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3936BlRT015226;
+	Tue, 3 Oct 2023 06:46:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=mAaM52uzREdG61jLeSrjT1DjSjYRpUkcn8Yyp7+j+QA=;
+ b=n4ICHowBkC6rU2EsfUED0Pxdk7oUKrLVwDMfXtqVALU6VYZKJB2Pl4zoS38r3sZrakm/
+ FntloJB5beI72ZgXD8pVHL7d8I10g4cmzNVYp8vmovWzl/5HXWtneIKjZPe/mwbwzUbQ
+ 0MemMNXJd7gfK8sT7TKLYX1QSBVgW+VbiydhTwBpc8GR68nvQwPeWCG7eSucnmp//N2l
+ io0zEUGlVcXntoWW08f/XW4dMGZR0jOl9tKIqqgbB4cQLBAYMrQ5ev4K9DlzN+EA5EMm
+ u7ZU9KlQlR9opZczlKny8nJXW7YdMupH9ZXt+dWNifJiFwPalyaY1ntPgRynkGkqWlYw Vg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tgdfn8wrb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Oct 2023 06:46:57 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3936PYod024669;
+	Tue, 3 Oct 2023 06:46:57 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tgdfn8wr6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Oct 2023 06:46:57 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3934C5Qk025205;
+	Tue, 3 Oct 2023 06:46:56 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3texcxyrc3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Oct 2023 06:46:56 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3936kr4124707732
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 3 Oct 2023 06:46:53 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 46A342004B;
+	Tue,  3 Oct 2023 06:46:53 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2D9DE20040;
+	Tue,  3 Oct 2023 06:46:51 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.109.214.47])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue,  3 Oct 2023 06:46:50 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.700.6\))
+Subject: Re: [PATCH V5 1/3] tools/perf: Add text_end to "struct dso" to save
+ .text section size
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <CAM9d7cj0iLdrV6EYmo_oC9M_32fuRVv_geBPz4GJv41jZR5WNQ@mail.gmail.com>
+Date: Tue, 3 Oct 2023 12:16:39 +0530
 Content-Transfer-Encoding: quoted-printable
-X-Mailman-Approved-At: Tue, 03 Oct 2023 17:46:13 +1100
+Message-Id: <63F6D59C-3C40-4E39-BC63-4CB2DDAD0F47@linux.vnet.ibm.com>
+References: <20230928075213.84392-1-atrajeev@linux.vnet.ibm.com>
+ <CAM9d7cj0iLdrV6EYmo_oC9M_32fuRVv_geBPz4GJv41jZR5WNQ@mail.gmail.com>
+To: Namhyung Kim <namhyung@kernel.org>
+X-Mailer: Apple Mail (2.3731.700.6)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 9-uSWuQ3BMjC9J9fBw8xFSBi8vLTaEJy
+X-Proofpoint-ORIG-GUID: l9ktcvjadUgzEB204aAFyk5_MXwsFkDi
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-03_03,2023-10-02_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1015
+ lowpriorityscore=0 suspectscore=0 mlxlogscore=999 mlxscore=0 phishscore=0
+ adultscore=0 priorityscore=1501 bulkscore=0 malwarescore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
+ definitions=main-2310030052
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,25 +100,153 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Sergey Ryazanov <ryazanov.s.a@gmail.com>, Ziwei Xiao <ziweixiao@google.com>, Chris Snook <chris.snook@gmail.com>, Rick Lindsley <ricklind@linux.ibm.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-kernel@vger.kernel.org, Krzysztof Halasa <khalasa@piap.pl>, Yuri Karpov <YKarpov@ispras.ru>, Lee Jones <lee@kernel.org>, Dany Madden <danymadden@us.ibm.com>, Gregory Greenman <gregory.greenman@intel.com>, Zhengchao Shao <shaozhengchao@huawei.com>, Chiranjeevi Rapolu <chiranjeevi.rapolu@linux.intel.com>, Dawei Li <set_pte_at@outlook.com>, Intel Corporation <linuxwwan@intel.com>, Rob Herring <robh@kernel.org>, Jeroen de Borst <jeroendb@google.com>, Leon Romanovsky <leon@kernel.org>, linux-rdma@vger.kernel.org, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Haren Myneni <haren@linux.ibm.com>, linux-stm32@st-md-mailman.stormreply.com, Rushil Gupta <rushilg@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, Thomas Falcon <tlfalcon@linux.ibm.com>, Jose A
- breu <joabreu@synopsys.com>, Alex Elder <elder@linaro.org>, linux-wireless@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Wei Fang <wei.fang@nxp.com>, Wolfgang Grandegger <wg@grandegger.com>, Nick Child <nnac123@linux.ibm.com>, Simon Horman <horms@kernel.org>, Liu Haijun <haijun.liu@mediatek.com>, Kalle Valo <kvalo@kernel.org>, =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, Bailey Forrest <bcf@google.com>, Nicholas Piggin <npiggin@gmail.com>, linux-can@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>, Yuanjun Gong <ruc_gongyuanjun@163.com>, Shailend Chand <shailend@google.com>, Marc Kleine-Budde <mkl@pengutronix.de>, Benjamin Berg <benjamin.berg@intel.com>, M Chetan Kumar <m.chetan.kumar@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>, Ricardo Martinez <ricardo.martinez@linux.intel.com>, Loic Poulain <loic.poulain@l
- inaro.org>, Zheng Zengkai <zhengzengkai@huawei.com>, netdev@vger.kernel.org, Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>, linuxppc-dev@lists.ozlabs.org, Douglas Miller <dougmill@linux.ibm.com>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, Junfeng Guo <junfeng.guo@intel.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Raju Rangoju <rajur@chelsio.com>, Praveen Kaligineedi <pkaligineedi@google.com>, Johannes Berg <johannes@sipsolutions.net>, ath10k@lists.infradead.org, Jeff Johnson <quic_jjohnson@quicinc.com>, "David S. Miller" <davem@davemloft.net>
+Cc: Ian Rogers <irogers@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Disha Goel <disgoel@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>, Adrian Hunter <adrian.hunter@intel.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-perf-users <linux-perf-users@vger.kernel.org>, Jiri Olsa <jolsa@kernel.org>, Disha Goel <disgoel@linux.vnet.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Oct 2, 2023 at 5:10=E2=80=AFPM Christian Marangi <ansuelsmth@gmail.=
-com> wrote:
->
-> Change napi_schedule to return a bool on NAPI successful schedule. This
-> might be useful for some driver to do additional step after a NAPI ahs
 
-This might be useful for some drivers to do additional steps after a
-NAPI has been scheduled.
 
-> been scheduled.
->
-> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> On 03-Oct-2023, at 9:58 AM, Namhyung Kim <namhyung@kernel.org> wrote:
+>=20
+> Hello,
+>=20
+> On Thu, Sep 28, 2023 at 12:52=E2=80=AFAM Athira Rajeev
+> <atrajeev@linux.vnet.ibm.com> wrote:
+>>=20
+>> Update "struct dso" to include new member "text_end".
+>> This new field will represent the offset for end of text
+>> section for a dso. For elf, this value is derived as:
+>> sh_size (Size of section in byes) + sh_offset (Section file
+>> offst) of the elf header for text.
+>>=20
+>> For bfd, this value is derived as:
+>> 1. For PE file,
+>> section->size + ( section->vma - dso->text_offset)
+>> 2. Other cases:
+>> section->filepos (file position) + section->size (size of
+>> section)
+>>=20
+>> To resolve the address from a sample, perf looks at the
+>> DSO maps. In case of address from a kernel module, there
+>> were some address found to be not resolved. This was
+>> observed while running perf test for "Object code reading".
+>> Though the ip falls beteen the start address of the loaded
+>> module (perf map->start ) and end address ( perf map->end),
+>> it was unresolved.
+>>=20
+>> Example:
+>>=20
+>>    Reading object code for memory address: 0xc008000007f0142c
+>>    File is: /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko
+>>    On file address is: 0x1114cc
+>>    Objdump command is: objdump -z -d --start-address=3D0x11142c =
+--stop-address=3D0x1114ac /lib/modules/6.5.0-rc3+/kernel/fs/xfs/xfs.ko
+>>    objdump read too few bytes: 128
+>>    test child finished with -1
+>>=20
+>> Here, module is loaded at:
+>>    # cat /proc/modules | grep xfs
+>>    xfs 2228224 3 - Live 0xc008000007d00000
+>>=20
+>> =46rom objdump for xfs module, text section is:
+>>    text 0010f7bc  0000000000000000 0000000000000000 000000a0 2**4
+>>=20
+>> Here the offset for 0xc008000007f0142c ie  0x112074 falls out
+>> .text section which is up to 0x10f7bc.
+>>=20
+>> In this case for module, the address 0xc008000007e11fd4 is pointing
+>> to stub instructions. This address range represents the module stubs
+>> which is allocated on module load and hence is not part of DSO =
+offset.
+>>=20
+>> To identify such  address, which falls out of text
+>> section and within module end, added the new field "text_end" to
+>> "struct dso".
+>>=20
+>> Reported-by: Disha Goel <disgoel@linux.ibm.com>
+>> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+>> Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
+>> Reviewed-by: Kajol Jain <kjain@linux.ibm.com>
+>=20
+> For the series,
+> Acked-by: Namhyung Kim <namhyung@kernel.org>
+>=20
+> Thanks,
+> Namhyung
 
-Yeah, I guess you forgot to mention I suggested this patch ...
+Thanks for checking Namhyung,
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+Athira
+>=20
+>=20
+>> ---
+>> Changelog:
+>> v2 -> v3:
+>> Added Reviewed-by from Adrian
+>>=20
+>> v1 -> v2:
+>> Added text_end for bfd also by updating dso__load_bfd_symbols
+>> as suggested by Adrian.
+>>=20
+>> tools/perf/util/dso.h        | 1 +
+>> tools/perf/util/symbol-elf.c | 4 +++-
+>> tools/perf/util/symbol.c     | 2 ++
+>> 3 files changed, 6 insertions(+), 1 deletion(-)
+>>=20
+>> diff --git a/tools/perf/util/dso.h b/tools/perf/util/dso.h
+>> index b41c9782c754..70fe0fe69bef 100644
+>> --- a/tools/perf/util/dso.h
+>> +++ b/tools/perf/util/dso.h
+>> @@ -181,6 +181,7 @@ struct dso {
+>>        u8               rel;
+>>        struct build_id  bid;
+>>        u64              text_offset;
+>> +       u64              text_end;
+>>        const char       *short_name;
+>>        const char       *long_name;
+>>        u16              long_name_len;
+>> diff --git a/tools/perf/util/symbol-elf.c =
+b/tools/perf/util/symbol-elf.c
+>> index 95e99c332d7e..9e7eeaf616b8 100644
+>> --- a/tools/perf/util/symbol-elf.c
+>> +++ b/tools/perf/util/symbol-elf.c
+>> @@ -1514,8 +1514,10 @@ dso__load_sym_internal(struct dso *dso, struct =
+map *map, struct symsrc *syms_ss,
+>>        }
+>>=20
+>>        if (elf_section_by_name(runtime_ss->elf, &runtime_ss->ehdr, =
+&tshdr,
+>> -                               ".text", NULL))
+>> +                               ".text", NULL)) {
+>>                dso->text_offset =3D tshdr.sh_addr - tshdr.sh_offset;
+>> +               dso->text_end =3D tshdr.sh_offset + tshdr.sh_size;
+>> +       }
+>>=20
+>>        if (runtime_ss->opdsec)
+>>                opddata =3D elf_rawdata(runtime_ss->opdsec, NULL);
+>> diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
+>> index 3f36675b7c8f..f25e4e62cf25 100644
+>> --- a/tools/perf/util/symbol.c
+>> +++ b/tools/perf/util/symbol.c
+>> @@ -1733,8 +1733,10 @@ int dso__load_bfd_symbols(struct dso *dso, =
+const char *debugfile)
+>>                        /* PE symbols can only have 4 bytes, so use =
+.text high bits */
+>>                        dso->text_offset =3D section->vma - =
+(u32)section->vma;
+>>                        dso->text_offset +=3D =
+(u32)bfd_asymbol_value(symbols[i]);
+>> +                       dso->text_end =3D (section->vma - =
+dso->text_offset) + section->size;
+>>                } else {
+>>                        dso->text_offset =3D section->vma - =
+section->filepos;
+>> +                       dso->text_end =3D section->filepos + =
+section->size;
+>>                }
+>>        }
+>>=20
+>> --
+>> 2.31.1
+
+
