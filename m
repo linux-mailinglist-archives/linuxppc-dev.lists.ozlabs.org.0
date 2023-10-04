@@ -2,67 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CC9C7B7AC1
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Oct 2023 10:52:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29A377B7E29
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Oct 2023 13:29:14 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=cirrus.com header.i=@cirrus.com header.a=rsa-sha256 header.s=PODMain02222019 header.b=MKm1hEnL;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=UvWBEAXH;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S0pNV1h7nz3cVd
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Oct 2023 19:52:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S0ssM2pQTz3vcZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Oct 2023 22:29:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=cirrus.com header.i=@cirrus.com header.a=rsa-sha256 header.s=PODMain02222019 header.b=MKm1hEnL;
+	dkim=pass (1024-bit key; unprotected) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=UvWBEAXH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=opensource.cirrus.com (client-ip=67.231.149.25; helo=mx0b-001ae601.pphosted.com; envelope-from=prvs=5641f542b1=ckeepax@opensource.cirrus.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 974 seconds by postgrey-1.37 at boromir; Wed, 04 Oct 2023 19:51:01 AEDT
-Received: from mx0b-001ae601.pphosted.com (mx0a-001ae601.pphosted.com [67.231.149.25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=foxmail.com (client-ip=203.205.221.192; helo=out203-205-221-192.mail.qq.com; envelope-from=zhang_shurong@foxmail.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 245 seconds by postgrey-1.37 at boromir; Wed, 04 Oct 2023 18:25:05 AEDT
+Received: from out203-205-221-192.mail.qq.com (out203-205-221-192.mail.qq.com [203.205.221.192])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S0pLs2vznz3c8n
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Oct 2023 19:51:01 +1100 (AEDT)
-Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
-	by mx0a-001ae601.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 39461LK5031802;
-	Wed, 4 Oct 2023 03:33:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=
-	date:from:to:cc:subject:message-id:references:mime-version
-	:content-type:in-reply-to; s=PODMain02222019; bh=C03Kz69TBbxck4h
-	yYh7pZ/332ziUW1qlTgjfP8Qf2Tg=; b=MKm1hEnLBCfTn8s5VJjtjUgmfX/JTvm
-	+OrRe1LWGGwQbaoNRf2GWfGYSjE6o45VTn1nyuudObMD4lODrlfjwrOlZtVOx6Qh
-	37dHacwtaXA6jLq+M2WNBVm7MVHRQldFk2ZTFgTKQLNtyASpRXzz9EnpGq5mzSc1
-	mIMYUabBH9Wst4ROoD5x0QVA1i/N1k5SpI3r8ACY7STWH5NcYwovm835M+4Z/TW8
-	KlIAE8jw8j9AiyEpmE+APRK5qiC22T5sHotstaVVs1Lm9quG99MahE/rVrK66KPe
-	3huRn/gK94po0HHXw77W4HccUrAoZSUK4itBjTrTuVLYFTYwHrdWGyw==
-Received: from ediex01.ad.cirrus.com ([84.19.233.68])
-	by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 3th2dt85sm-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Oct 2023 03:33:35 -0500 (CDT)
-Received: from ediex01.ad.cirrus.com (198.61.84.80) by ediex01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.37; Wed, 4 Oct
- 2023 09:33:32 +0100
-Received: from ediswmail.ad.cirrus.com (198.61.86.93) by ediex01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server id 15.2.1118.37 via Frontend
- Transport; Wed, 4 Oct 2023 09:33:32 +0100
-Received: from ediswmail.ad.cirrus.com (ediswmail.ad.cirrus.com [198.61.86.93])
-	by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 4BC2AB06;
-	Wed,  4 Oct 2023 08:33:32 +0000 (UTC)
-Date: Wed, 4 Oct 2023 08:33:32 +0000
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
-To: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH 2/5] ASoC: Drop unnecessary of_match_device() calls
-Message-ID: <20231004083332.GQ103419@ediswmail.ad.cirrus.com>
-References: <20231003-dt-asoc-header-cleanups-v1-0-308666806378@kernel.org>
- <20231003-dt-asoc-header-cleanups-v1-2-308666806378@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S0mRj30Srz3bTn
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Oct 2023 18:25:03 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1696404301;
+	bh=nnsazRl0VawtG0Ot+fpS8kiTavsPsKlA4kc+rHNHQmU=;
+	h=From:To:Cc:Subject:Date;
+	b=UvWBEAXHop5cqhRXiZHj16UV+k2HVjhBZ5g80mLzmCPzicsEO7sqt29mo/fakj6EP
+	 ryYIk+rvMI+PmvTJMabXUI54VPiJoWSjiq5tMZzrYiMNcbiFrQsOsDXSSMweNUlmJW
+	 rAetQ970EJLoViiW4neQ+cAK2ZO5rRu1ZYitoKjI=
+Received: from KernelDevBox.byted.org ([180.184.49.4])
+	by newxmesmtplogicsvrsza7-0.qq.com (NewEsmtp) with SMTP
+	id 3071DA8C; Wed, 04 Oct 2023 15:12:07 +0800
+X-QQ-mid: xmsmtpt1696403527tq1y2h3b8
+Message-ID: <tencent_681B0528D436898B1B945A8B2D46300C0F07@qq.com>
+X-QQ-XMAILINFO: M5ZQ+xctoGy32JF2BS+69Ng/YkDt5B0Lg7DW4BkRYST/lLCvbYHJTGm0NllUmu
+	 D69sI1B/XbiUDrolkyjamC4AYqdlhGJvMdGX+BaoYDGEhmdDg8hisMOlN9/D6M0Xg2loqGHDBGkx
+	 Jbt5lrV0JxzxQU47wEKg5RkKBCVQLafviOR0h+ftgTNpHBS0kWLj8Ht5WC3Jp6YaNmgJsAEV0UrE
+	 M7LLS+lZAX4bRzNFOXLxlnlYKjbVsPf29BfXF3YxcZkZM26aIfY5bNfcPAZBzzV7RNWsLsCJCDBZ
+	 I08mmmNrBiCezn6iZXFMiAcHUNdRQZSryKV4geVq0Ur51WDhjq76d6FAe3K0EF6kSHgAV1cIF1eU
+	 eR1GaEIU5z2FgC6Cx8mkJopFZbxbjR4m/r0uCA/jUaw5YNN0HaMcpl4EtDD5zCOmRPZAnJmibh6p
+	 3VfZcXxbsB8fcfsKnXEmbiu06tVmSujcpCO4nGDuj5MOOUlA7OtuGE4eSyoqi7Drit+cLDhAFMmR
+	 Rn/5Aan1+PxrMn1wu6lSFavUdcx3Jekp2bJBElfzShplchKK0MEmUrUn5AI6WfHZAWQwdWyb0Ys7
+	 OD2jakV3BMJmmIn/Llguqn1PEM+s5BJ6svDtDYwAcoOnnAkTk9ZktdSKmwSlG0rkKgYORO/kNdRB
+	 n3fNM8brtoaT49CskpiVAMO86Y8VfZ8noNTktPyqX/N4PdVAO88o+GPey2LLvzUFQ18bJRdJD5Tm
+	 XEnpxuzUDja0UzyMD7hQWFTrQuq18gNyxjwRjLepDzEcBCOAXW7zRW/rWh1iI0ZhxOMDEmOctoqN
+	 DJEGcovROsDoaaL3C/wLrOCdVDkPnH1jYTgZr0k9dRL2NyGwvyrHGAS5fbhmKcJxH47Cs1W/lu3L
+	 B+LztfDUYpLw+8ViKP8CMN9RNG1iLgp7YXo/+dxeaxRs28m8FkMQ+1k+TBlHDjosqn2hHus+enMW
+	 r60evUAPfdYRqsFWNtjjDFk7QS2gQEX4CgdPBtCEAdvFRXiLVOfGJu9bCbmTfX
+X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
+From: Zhang Shurong <zhang_shurong@foxmail.com>
+To: shengjiu.wang@gmail.com
+Subject: [PATCH] ASoC: fsl: Fix PM disable depth imbalance in fsl_easrc_probe
+Date: Wed,  4 Oct 2023 15:12:05 +0800
+X-OQ-MSGID: <20231004071205.3857082-1-zhang_shurong@foxmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20231003-dt-asoc-header-cleanups-v1-2-308666806378@kernel.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Proofpoint-ORIG-GUID: cvmrx7nPMYCDUdYHAhx7anCT9XLT2sn8
-X-Proofpoint-GUID: cvmrx7nPMYCDUdYHAhx7anCT9XLT2sn8
-X-Proofpoint-Spam-Reason: safe
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Wed, 04 Oct 2023 22:28:01 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,25 +69,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexandre
- Belloni <alexandre.belloni@bootlin.com>, Heiko Stuebner <heiko@sntech.de>, Bard Liao <yung-chuan.liao@linux.intel.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Cezary Rojewski <cezary.rojewski@intel.com>, Takashi Iwai <tiwai@suse.com>, Kevin Lu <kevin-lu@ti.com>, Thierry Reding <thierry.reding@gmail.com>, Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, Sylwester Nawrocki <s.nawrocki@samsung.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, Fabio Estevam <festevam@gmail.com>, Kai Vehmanen <kai.vehmanen@linux.intel.com>, Lars-Peter
- Clausen <lars@metafoo.de>, Ban Tao <fengzheng923@gmail.com>, Samuel Holland <samuel@sholland.org>, Alexandre Torgue <alexandre.torgue@foss.st.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>, Jernej Skrabec <jernej.skrabec@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, Nicolas Frattaroli <frattaroli.nicolas@gmail.com>, Chen-Yu Tsai <wens@csie.org>, NXP Linux Team <linux-imx@nxp.com>, Olivier Moysan <olivier.moysan@foss.st.com>, Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>, Baojun Xu <baojun.xu@ti.com>, Jaroslav Kysela <perex@perex.cz>, Banajit Goswami <bgoswami@quicinc.com>, alsa-devel@alsa-project.org, Ray
- Jui <rjui@broadcom.com>, Sascha Hauer <s.hauer@pengutronix.de>, linuxppc-dev@lists.ozlabs.org, Shenghao Ding <shenghao-ding@ti.com>, James Schulman <james.schulman@cirrus.com>, Nicolin Chen <nicoleotsuka@gmail.com>, Richard Fitzgerald <rf@opensource.cirrus.com>, Mark Brown <broonie@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Oder Chiou <oder_chiou@realtek.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Support Opensource <support.opensource@diasemi.com>, Scott Branden <sbranden@broadcom.com>, Shawn Guo <shawnguo@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, linux-kernel@vger.kernel.org, Kiseok Jo <kiseok.jo@irondevice.com>, Peter Ujfalusi <peter.ujfalusi@gmail.com>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, patches@opensource.cirrus.com, Ranjani Sridharan <r.anjani.sridharan@linux.intel.com>, Kevin Cernekee <cernekee@chromium.org>, David Rhodes <david.rhodes@cirrus.com>, Peter Rosin <peda@axentia.se>, Jarkko Nikula <jarkko.nikula@bitmer.com>
+Cc: alsa-devel@alsa-project.org, Xiubo.Lee@gmail.com, linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, lgirdwood@gmail.com, perex@perex.cz, nicoleotsuka@gmail.com, broonie@kernel.org, festevam@gmail.com, linux-kernel@vger.kernel.org, Zhang Shurong <zhang_shurong@foxmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Oct 03, 2023 at 11:43:08AM -0500, Rob Herring wrote:
-> If probe is reached, we've already matched the device and in the case of
-> DT matching, the struct device_node pointer will be set. Therefore, there
-> is no need to call of_match_device() in probe.
-> 
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
+The pm_runtime_enable will increase power disable depth. Thus
+a pairing decrement is needed on the error handling path to
+keep it balanced according to context. We fix it by calling
+pm_runtime_disable when error returns.
 
-For the cirrus bits:
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+---
+ sound/soc/fsl/fsl_easrc.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
+index ba62995c909a..ec53bda46a46 100644
+--- a/sound/soc/fsl/fsl_easrc.c
++++ b/sound/soc/fsl/fsl_easrc.c
+@@ -1966,17 +1966,21 @@ static int fsl_easrc_probe(struct platform_device *pdev)
+ 					      &fsl_easrc_dai, 1);
+ 	if (ret) {
+ 		dev_err(dev, "failed to register ASoC DAI\n");
+-		return ret;
++		goto err_pm_disable;
+ 	}
+ 
+ 	ret = devm_snd_soc_register_component(dev, &fsl_asrc_component,
+ 					      NULL, 0);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to register ASoC platform\n");
+-		return ret;
++		goto err_pm_disable;
+ 	}
+ 
+ 	return 0;
++
++err_pm_disable:
++	pm_runtime_disable(&pdev->dev);
++	return ret;
+ }
+ 
+ static void fsl_easrc_remove(struct platform_device *pdev)
+-- 
+2.30.2
 
-Thanks,
-Charles
