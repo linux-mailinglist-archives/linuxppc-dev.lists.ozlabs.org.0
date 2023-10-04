@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF3FF7B7AB0
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Oct 2023 10:51:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CC9C7B7AC1
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Oct 2023 10:52:28 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=cirrus.com header.i=@cirrus.com header.a=rsa-sha256 header.s=PODMain02222019 header.b=FkPSHjHT;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=cirrus.com header.i=@cirrus.com header.a=rsa-sha256 header.s=PODMain02222019 header.b=MKm1hEnL;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S0pMZ1YXvz3ccQ
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Oct 2023 19:51:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S0pNV1h7nz3cVd
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Oct 2023 19:52:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=cirrus.com header.i=@cirrus.com header.a=rsa-sha256 header.s=PODMain02222019 header.b=FkPSHjHT;
+	dkim=pass (2048-bit key; unprotected) header.d=cirrus.com header.i=@cirrus.com header.a=rsa-sha256 header.s=PODMain02222019 header.b=MKm1hEnL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=opensource.cirrus.com (client-ip=67.231.152.168; helo=mx0b-001ae601.pphosted.com; envelope-from=prvs=5641f542b1=ckeepax@opensource.cirrus.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 1290 seconds by postgrey-1.37 at boromir; Wed, 04 Oct 2023 19:50:50 AEDT
-Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=opensource.cirrus.com (client-ip=67.231.149.25; helo=mx0b-001ae601.pphosted.com; envelope-from=prvs=5641f542b1=ckeepax@opensource.cirrus.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 974 seconds by postgrey-1.37 at boromir; Wed, 04 Oct 2023 19:51:01 AEDT
+Received: from mx0b-001ae601.pphosted.com (mx0a-001ae601.pphosted.com [67.231.149.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S0pLf24fwz30Q4
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Oct 2023 19:50:49 +1100 (AEDT)
-Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
-	by mx0b-001ae601.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 3948ScCJ021667;
-	Wed, 4 Oct 2023 03:28:38 -0500
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S0pLs2vznz3c8n
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Oct 2023 19:51:01 +1100 (AEDT)
+Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
+	by mx0a-001ae601.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 39461LK5031802;
+	Wed, 4 Oct 2023 03:33:35 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=
 	date:from:to:cc:subject:message-id:references:mime-version
-	:content-type:in-reply-to; s=PODMain02222019; bh=cx4j1u2cB/RSNNO
-	JLWI4IUS4jJGgAFRWe5mxjA6ot+c=; b=FkPSHjHTRZJ7+JgSxFK8tXOclrwQk6D
-	erGe55nCKmcgwS4pjnCa7kx1t0KIUQRtp6DiLVx44+462zqwJ8IHQxXw3IZS3qCK
-	dgoVBaX0bfhZaQm0BRHVtj0P6703R28AQy9Moikhz0h1Hk5FfaFO+6kD95DFY1n4
-	6OV+Nm6qkRSYAlc/A3eMbDBImbyhazxV2Ob1kCGGe1jsAo342KW2wxFmjc9kfXI5
-	uZVCADBJlHGRF/5hjD2uAdYyKdiCYm2rPazpPjo5nz/x5wiAxgTj0cBQUhiTkISf
-	HLO6AcCL2/hwACfFWus/kRMLo9mY4pCvdBfYY9IzNGhz9DH3nUAvmNQ==
+	:content-type:in-reply-to; s=PODMain02222019; bh=C03Kz69TBbxck4h
+	yYh7pZ/332ziUW1qlTgjfP8Qf2Tg=; b=MKm1hEnLBCfTn8s5VJjtjUgmfX/JTvm
+	+OrRe1LWGGwQbaoNRf2GWfGYSjE6o45VTn1nyuudObMD4lODrlfjwrOlZtVOx6Qh
+	37dHacwtaXA6jLq+M2WNBVm7MVHRQldFk2ZTFgTKQLNtyASpRXzz9EnpGq5mzSc1
+	mIMYUabBH9Wst4ROoD5x0QVA1i/N1k5SpI3r8ACY7STWH5NcYwovm835M+4Z/TW8
+	KlIAE8jw8j9AiyEpmE+APRK5qiC22T5sHotstaVVs1Lm9quG99MahE/rVrK66KPe
+	3huRn/gK94po0HHXw77W4HccUrAoZSUK4itBjTrTuVLYFTYwHrdWGyw==
 Received: from ediex01.ad.cirrus.com ([84.19.233.68])
-	by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3teg3k55km-1
+	by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 3th2dt85sm-2
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Oct 2023 03:28:38 -0500 (CDT)
+	Wed, 04 Oct 2023 03:33:35 -0500 (CDT)
 Received: from ediex01.ad.cirrus.com (198.61.84.80) by ediex01.ad.cirrus.com
  (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.37; Wed, 4 Oct
- 2023 09:28:36 +0100
+ 2023 09:33:32 +0100
 Received: from ediswmail.ad.cirrus.com (198.61.86.93) by ediex01.ad.cirrus.com
  (198.61.84.80) with Microsoft SMTP Server id 15.2.1118.37 via Frontend
- Transport; Wed, 4 Oct 2023 09:28:36 +0100
+ Transport; Wed, 4 Oct 2023 09:33:32 +0100
 Received: from ediswmail.ad.cirrus.com (ediswmail.ad.cirrus.com [198.61.86.93])
-	by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 6973611AA;
-	Wed,  4 Oct 2023 08:28:36 +0000 (UTC)
-Date: Wed, 4 Oct 2023 08:28:36 +0000
+	by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 4BC2AB06;
+	Wed,  4 Oct 2023 08:33:32 +0000 (UTC)
+Date: Wed, 4 Oct 2023 08:33:32 +0000
 From: Charles Keepax <ckeepax@opensource.cirrus.com>
 To: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH 1/5] ASoC: Explicitly include correct DT includes
-Message-ID: <20231004082836.GP103419@ediswmail.ad.cirrus.com>
+Subject: Re: [PATCH 2/5] ASoC: Drop unnecessary of_match_device() calls
+Message-ID: <20231004083332.GQ103419@ediswmail.ad.cirrus.com>
 References: <20231003-dt-asoc-header-cleanups-v1-0-308666806378@kernel.org>
- <20231003-dt-asoc-header-cleanups-v1-1-308666806378@kernel.org>
+ <20231003-dt-asoc-header-cleanups-v1-2-308666806378@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20231003-dt-asoc-header-cleanups-v1-1-308666806378@kernel.org>
+In-Reply-To: <20231003-dt-asoc-header-cleanups-v1-2-308666806378@kernel.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Proofpoint-GUID: jGlpUZphMoUFhGT30mAikeonWPxMmR74
-X-Proofpoint-ORIG-GUID: jGlpUZphMoUFhGT30mAikeonWPxMmR74
+X-Proofpoint-ORIG-GUID: cvmrx7nPMYCDUdYHAhx7anCT9XLT2sn8
+X-Proofpoint-GUID: cvmrx7nPMYCDUdYHAhx7anCT9XLT2sn8
 X-Proofpoint-Spam-Reason: safe
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -82,20 +82,15 @@ Cc: Alexandre
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Oct 03, 2023 at 11:43:07AM -0500, Rob Herring wrote:
-> The DT of_device.h and of_platform.h date back to the separate
-> of_platform_bus_type before it was merged into the regular platform bus.
-> As part of that merge prepping Arm DT support 13 years ago, they
-> "temporarily" include each other. They also include platform_device.h
-> and of.h. As a result, there's a pretty much random mix of those include
-> files used throughout the tree. In order to detangle these headers and
-> replace the implicit includes with struct declarations, users need to
-> explicitly include the correct includes.
+On Tue, Oct 03, 2023 at 11:43:08AM -0500, Rob Herring wrote:
+> If probe is reached, we've already matched the device and in the case of
+> DT matching, the struct device_node pointer will be set. Therefore, there
+> is no need to call of_match_device() in probe.
 > 
 > Signed-off-by: Rob Herring <robh@kernel.org>
 > ---
 
-For the Wolfson/Cirrus bits:
+For the cirrus bits:
 
 Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
 
