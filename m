@@ -1,93 +1,93 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4AF57B7E2B
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Oct 2023 13:30:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 379A77B7E2D
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Oct 2023 13:30:53 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Fo2m5kvr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FjJZ4EFD;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4S0stJ6TfBz3bZN
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Oct 2023 22:30:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4S0svG47yPz3vjK
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Oct 2023 22:30:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Fo2m5kvr;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FjJZ4EFD;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=tasmiya@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4S0qhw1YCwz308M
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Oct 2023 20:51:43 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3949hgFI032098;
-	Wed, 4 Oct 2023 09:51:20 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4S0rDY67fQz3bZN
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Oct 2023 21:15:41 +1100 (AEDT)
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3949sFSG025808;
+	Wed, 4 Oct 2023 10:15:25 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
- message-id : date : mime-version : from : subject : to : cc; s=pp1;
- bh=TPo/GhaPOfYLxZHyqxKJ+QCAxDbMg3uqSy23J2uUd8w=;
- b=Fo2m5kvrDIyzchfmNBjpcnP4BYy5N+NyAY1ZX17z+cv7UWSCCfp7PmoJE19DzXa2zhjg
- AGmIsUlVrdPw5N6+NfDsRYtloEiwq9PXngiZ4ZYqlfmQqlSY6HEC6F/ymKr5mP/LYN+W
- 2s/1p4xsU1mWyxSPqh/Tntar91MSQ/Vh5re3eobXBRcBs2aIld42PtyMG/YgVX6DU8sS
- MWLCAt/7X8jzZfkoN1mCpsPsB9bWNdW0ti8jl+p1uw+01jS+fn/XsY1JkyiI35rSxH4Y
- xu8UhPjPu8WCIp3qjlnB70vRq9mJtKeTgReVh1WE9LihV/aGpHMQGTZHSpE53dJijYg9 zg== 
+ message-id : date : mime-version : to : cc : from : subject; s=pp1;
+ bh=fs2M7VJ5RMUgPyg0gKrxo8w48/v2k1M88LOjr2O4P8U=;
+ b=FjJZ4EFDAPQ1k1Hum8ratXf87ZM9xjYskT43mltc+jpE/G6dlpi4XbaPEnR+D4vhdmK0
+ kRqCNZx6N/j2ujvQ6jJ5N6gRV9WCrqdNBc5IckayHUB//PY88pvPkWsKIM6KcvrRJH1F
+ 3NnZSpu8NiUZrcLUmiry5Pnw+2CahfsIJte3kw+qLsrIohnEsAPh2sjeG26Sb2M42bZi
+ dxANRTZOjVKVMnJ//aIAXaE76r7M2JcNb7gTDBVcwhhKMOtsiq38NSIjLHhu/RLH8cTD
+ +KCWowTY+PsEMaGVJKSb3ROKJCyjoJNE2kZzxi5Iu+VxypJquF09LmYWI3BAIuKw0W4B MA== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3th5p2r623-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3th5u0rhcj-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Oct 2023 09:51:19 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3949hvVc032541;
-	Wed, 4 Oct 2023 09:51:18 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3th5p2r61w-1
+	Wed, 04 Oct 2023 10:15:25 +0000
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 394AA0xG025593;
+	Wed, 4 Oct 2023 10:15:24 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3th5u0rhc0-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Oct 2023 09:51:18 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3948bGVE010891;
-	Wed, 4 Oct 2023 09:51:18 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tf0q1t3fa-1
+	Wed, 04 Oct 2023 10:15:24 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 394A0hCI006692;
+	Wed, 4 Oct 2023 10:15:22 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tf07k2jp3-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Oct 2023 09:51:17 +0000
+	Wed, 04 Oct 2023 10:15:22 +0000
 Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3949pHMw62980480
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 394AFMNI20251304
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 4 Oct 2023 09:51:17 GMT
+	Wed, 4 Oct 2023 10:15:22 GMT
 Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E8D5258052;
-	Wed,  4 Oct 2023 09:51:16 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 39F5158063;
+	Wed,  4 Oct 2023 10:15:22 +0000 (GMT)
 Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8854858056;
-	Wed,  4 Oct 2023 09:51:07 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 0E8D55805A;
+	Wed,  4 Oct 2023 10:15:14 +0000 (GMT)
 Received: from [9.171.38.44] (unknown [9.171.38.44])
 	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  4 Oct 2023 09:51:06 +0000 (GMT)
+	Wed,  4 Oct 2023 10:15:13 +0000 (GMT)
 Content-Type: multipart/alternative;
- boundary="------------q7ZoqPXVlfOBUJ63Nizo80W3"
-Message-ID: <e1fd406d-7b57-4fc0-738e-88d2089cfef0@linux.vnet.ibm.com>
-Date: Wed, 4 Oct 2023 15:21:05 +0530
+ boundary="------------5I0qkyN0XVAbRUFNms8ppK7L"
+Message-ID: <d7e7997f-2cda-ec87-5bc9-8a1d95b378ab@linux.vnet.ibm.com>
+Date: Wed, 4 Oct 2023 15:45:11 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
 Content-Language: en-US
+To: linux-kernel@vger.kernel.org, linux-next@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        iommu@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
 From: Tasmiya Nalatwad <tasmiya@linux.vnet.ibm.com>
 Subject: [Bisected] [commit 2ad56efa80dba89162106c06ebc00b611325e584]
  [linux-next] WARNING while booting to kernel 6.6.0-rc3-next-20230929
-To: linux-next@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 9FCsqCpfsyFDOLBiqpp0ucms9c7zlxbD
-X-Proofpoint-GUID: eL65j53AObMvJwHCuaF_YuDarkD34hnP
+X-Proofpoint-ORIG-GUID: 50Kjv5H21oMQ6rOQV0WcpKNzAFf1QjAp
+X-Proofpoint-GUID: RoH14IDK4kClkX3ZKZH6rJq8yRaAyWyt
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-10-04_01,2023-10-02_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 spamscore=0
- adultscore=0 mlxlogscore=873 mlxscore=0 bulkscore=0 phishscore=0
- malwarescore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310040060
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ bulkscore=0 clxscore=1011 impostorscore=0 lowpriorityscore=0
+ malwarescore=0 mlxlogscore=731 mlxscore=0 spamscore=0 adultscore=0
+ phishscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2309180000 definitions=main-2310040060
 X-Mailman-Approved-At: Wed, 04 Oct 2023 22:28:01 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -100,12 +100,12 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jroedel@suse.de, gbatra@linux.vnet.ibm.com, jgg@ziepe.ca, aik@ozlabs.ru, mputtash@linux.vnet.com, jsnitsel@redhat.com, sachinp@linux.vnet.com, abdhalee@linux.vnet.ibm.com, alex.williamson@redhat.com, npiggin@gmail.com, baolu.lu@linux.intel.com
+Cc: jroedel@suse.de, gbatra@linux.vnet.ibm.com, abdhalee@linux.vnet.ibm.com, jsnitsel@redhat.com, sachinp@linux.vnet.com, jgg@ziepe.ca, npiggin@gmail.com, mputtash@linux.vnet.com, baolu.lu@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 This is a multi-part message in MIME format.
---------------q7ZoqPXVlfOBUJ63Nizo80W3
+--------------5I0qkyN0XVAbRUFNms8ppK7L
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
@@ -196,9 +196,6 @@ start_kernel_thread+0x14/0x18
 gitbisect is pointing to the below commit
 
 commit 2ad56efa80dba89162106c06ebc00b611325e584
-Author: Jason Gunthorpe <jgg@nvidia.com>
-Date:   Wed Sep 13 10:43:36 2023 -0300
-
      powerpc/iommu: Setup a default domain and remove set_platform_dma_ops
 
 -- 
@@ -206,7 +203,7 @@ Regards,
 Tasmiya Nalatwad
 IBM Linux Technology Center
 
---------------q7ZoqPXVlfOBUJ63Nizo80W3
+--------------5I0qkyN0XVAbRUFNms8ppK7L
 Content-Type: text/html; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
@@ -219,17 +216,21 @@ Content-Transfer-Encoding: 8bit
     <p>Greetings,</p>
     <p>[linux-next] [6.6.0-rc3-next-20230929] [git bisect -&gt;
       2ad56efa80dba89162106c06ebc00b611325e584]WARNING: CPU: 0 PID: 8 at
-      arch/powerpc/kernel/<a class="moz-txt-link-freetext" href="iommu.c:407">iommu.c:407</a> __iommu_free+0x1e4/0x1f0</p>
+      arch/powerpc/kernel/<a class="moz-txt-link-freetext"
+        href="iommu.c:407">iommu.c:407</a> __iommu_free+0x1e4/0x1f0</p>
     <p>--- Traces ---</p>
-    <p>[   62.578338] WARNING: CPU: 0 PID: 8 at
-      arch/powerpc/kernel/<a class="moz-txt-link-freetext" href="iommu.c:407">iommu.c:407</a> __iommu_free+0x1e4/0x1f0<br>
+    <p>[   62.578338] WARNING: CPU: 0 PID: 8 at arch/powerpc/kernel/<a
+        class="moz-txt-link-freetext" href="iommu.c:407">iommu.c:407</a>
+      __iommu_free+0x1e4/0x1f0<br>
       [   62.578345] Modules linked in: sd_mod t10_pi crc64_rocksoft
       crc64 sg ibmvfc mlx5_core(+) scsi_transport_fc ibmveth mlxfw
       psample dm_multipath dm_mirror dm_region_hash dm_log dm_mod fuse<br>
       [   62.578362] CPU: 0 PID: 8 Comm: kworker/0:0 Not tainted
       6.6.0-rc3-next-20230929-auto #1<br>
       [   62.578366] Hardware name: IBM,9080-HEX POWER10 (raw) 0x800200
-      0xf000006 <a class="moz-txt-link-freetext" href="of:IBM,FW1030.30">of:IBM,FW1030.30</a> (NH1030_062) <a class="moz-txt-link-freetext" href="hv:phyp">hv:phyp</a> pSeries<br>
+      0xf000006 <a class="moz-txt-link-freetext"
+        href="of:IBM,FW1030.30">of:IBM,FW1030.30</a> (NH1030_062) <a
+        class="moz-txt-link-freetext" href="hv:phyp">hv:phyp</a> pSeries<br>
       [   62.578369] Workqueue: events work_for_cpu_fn<br>
       [   62.578374] NIP:  c00000000005f6d4 LR: c00000000005f6d0 CTR:
       00000000005ca81c<br>
@@ -302,14 +303,9 @@ Content-Transfer-Encoding: 8bit
       <br class="Apple-interchange-newline">
     </p>
     <p>gitbisect is pointing to the below commit</p>
-    <p>commit 2ad56efa80dba89162106c06ebc00b611325e584<br>
-      Author: Jason Gunthorpe <a class="moz-txt-link-rfc2396E" href="mailto:jgg@nvidia.com">&lt;jgg@nvidia.com&gt;</a><br>
-      Date:   Wed Sep 13 10:43:36 2023 -0300<br>
-      <br>
-          powerpc/iommu: Setup a default domain and remove
-      set_platform_dma_ops<br>
-      <br>
-    </p>
+    commit 2ad56efa80dba89162106c06ebc00b611325e584<br>
+        powerpc/iommu: Setup a default domain and remove
+    set_platform_dma_ops<br>
     <p></p>
     <pre class="moz-signature" cols="72">-- 
 Regards,
@@ -318,5 +314,5 @@ IBM Linux Technology Center</pre>
   </body>
 </html>
 
---------------q7ZoqPXVlfOBUJ63Nizo80W3--
+--------------5I0qkyN0XVAbRUFNms8ppK7L--
 
